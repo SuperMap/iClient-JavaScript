@@ -1,0 +1,239 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>热点网格图</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 553px;
+                border:1px solid #3473b7;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var map, layer, heatGridLayer,selectGrid,infowin;
+            //定义网格的styles
+            var items=[
+                {
+                    start:0,
+                    end:2,
+                    style:{
+                        strokeColor: "#C69944",
+                        strokeWidth: 1,
+                        fillColor: "#B8E4B8",
+                        fillOpacity: 0.5
+                    }
+                },
+                {
+                    start:2,
+                    end:4,
+                    style:{
+                        strokeColor: "#C69944",
+                        strokeWidth: 1,
+                        fillColor: "#66dd66",
+                        fillOpacity: 0.5
+                    }
+                },
+                {
+                    start:4,
+                    end:6,
+                    style:{
+                        strokeColor: "#C69944",
+                        strokeWidth: 1,
+                        fillColor: "#00ee00",
+                        fillOpacity: 0.5
+                    }
+                },
+                {
+                    start:6,
+                    end:8,
+                    style:{
+                        strokeColor: "#C69944",
+                        strokeWidth: 1,
+                        fillColor: "#008800",
+                        fillOpacity: 0.5
+                    }
+                },
+                {
+                    start:8,
+                    end:10,
+                    style:{
+                        strokeColor: "#C69944",
+                        strokeWidth: 1,
+                        fillColor: "#df8505",
+                        fillOpacity: 0.5
+                    }
+                },
+                {
+                    start:10,
+                    end:12,
+                    style:{
+                        strokeColor: "#C69944",
+                        strokeWidth: 1,
+                        fillColor: "#CC9933",
+                        fillOpacity: 0.5
+                    }
+                },
+                {
+                    start:12,
+                    end:16,
+                    style:{
+                        strokeColor: "#C69944",
+                        strokeWidth: 1,
+                        fillColor: "#FF0000",
+                        fillOpacity: 0.5
+                    }
+                }
+            ];
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var url=host+"/iserver/services/map-world/rest/maps/World";
+            //初始化
+            function init(){
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+                });
+                map.addControl(new SuperMap.Control.MousePosition());
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("World",url, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+               //创建热点网格图
+                heatGridLayer = new SuperMap.Layer.HeatGridLayer("heatGrid");
+                layer.events.on({"layerInitialized": addLayer});
+            }
+              //添加图层、注册事件、激活格网选择控件
+            function addLayer() {
+                map.addLayers([layer,heatGridLayer]);
+                map.setCenter(new SuperMap.LonLat(0, 0), 0);
+                // 创建格网选择控件
+                var select = new SuperMap.Control.SelectGrid(heatGridLayer,{
+                    callbacks:{
+                        //点击feature事件
+                        clickFeature:function(f){
+                            closeInfoWin();
+                            openInfoWin(f);
+                        },
+                        clickout:function(){
+                            closeInfoWin();
+                        }
+                    }
+                });
+                map.events.on({"movestart":function(){
+                    closeInfoWin();
+                }});
+                map.addControl(select);
+                select.activate();
+                createHeatPoints();
+            }
+            //向服务器发送请求，获取数据
+            function createHeatPoints(){
+                var points =[new SuperMap.Geometry.Point(-180,90),
+                            new SuperMap.Geometry.Point(180,90),
+                            new SuperMap.Geometry.Point(180,-90),
+                            new SuperMap.Geometry.Point(-180,-90)
+                        ],
+                        linearRings = new SuperMap.Geometry.LinearRing(points),
+                        region = new SuperMap.Geometry.Polygon([linearRings]);
+                var queryParam, queryByGeometryParameters, queryService;
+                //设置查询数据集的查询过滤参数
+                queryParam = new SuperMap.REST.FilterParameter({name: "Capitals@World.1"});
+                //设置 Geometry查询的相关参数
+                queryByGeometryParameters = new SuperMap.REST.QueryByGeometryParameters({
+                    queryParams: [queryParam],
+                    geometry: region,
+                    spatialQueryMode: SuperMap.REST.SpatialQueryMode.INTERSECT
+                });
+                queryService = new SuperMap.REST.QueryByGeometryService(url, {
+                    eventListeners: {
+                        "processCompleted": processCompleted,
+                        "processFailed": processFailed
+                    }
+                });
+                queryService.processAsync(queryByGeometryParameters);
+
+
+            }
+            function processCompleted(queryEventArgs){
+                var i, j, result = queryEventArgs.result;
+                var  heatFeatures = [];
+                if (result && result.recordsets) {
+                    for (i=0, recordsets=result.recordsets, len=recordsets.length; i<len; i++) {
+                        if (recordsets[i].features) {
+                            for (j=0; j<recordsets[i].features.length; j++) {
+                                var feature = recordsets[i].features[j];
+                                var point = feature.geometry;
+                                if(point.CLASS_NAME == SuperMap.Geometry.Point.prototype.CLASS_NAME){
+
+                                    feature.attributes.temperature = parseInt(Math.random()*45*10)/10;
+                                    feature.style = {
+                                        pointRadius: 4,
+                                        graphic:true,
+                                        externalGraphic:"images/country.png",
+                                        graphicWidth:6,
+                                        graphicHeight:6
+                                    };
+                                    heatFeatures.push(feature);
+                                }
+
+                            }
+                        }
+                    }
+                }
+                //设置地图在第4级的时候进行格网散开
+                heatGridLayer.spreadZoom = 4;
+                heatGridLayer.items=items;
+                //设置label显示的数据为字段temperature的内容
+                heatGridLayer.dataField = "temperature";
+                heatGridLayer.addFeatures(heatFeatures);
+            }
+            function processFailed(e) {
+                alert(e.error.errorMsg);
+            }
+
+            //弹出信息框
+            function openInfoWin(feature){
+                var geo = feature.geometry;
+                var bounds = geo.getBounds();
+                var center = bounds.getCenterLonLat();
+                var contentHTML = "<div style='font-size:.8em; opacity: 0.8; overflow-y:hidden;'>";
+                contentHTML += "<div>"+"SmID："+feature.data.SmID+"<br />"+"国家："+feature.data.COUNTRY+"<br />"+"首都："+feature.data.CAPITAL+"</div></div>";
+
+                var popup = new SuperMap.Popup.FramedCloud("popwin",
+                        new SuperMap.LonLat(center.lon,center.lat),
+                        null,
+                        contentHTML,
+                        null,
+                        true);
+
+                feature.popup = popup;
+                infowin = popup;
+                map.addPopup(popup);
+            }
+            //关闭信息框
+            function closeInfoWin(){
+                if(infowin){
+                    try{
+                        infowin.hide();
+                        infowin.destroy();
+                    }
+                    catch(e){}
+                }
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="map"></div>
+    </body>
+</html>

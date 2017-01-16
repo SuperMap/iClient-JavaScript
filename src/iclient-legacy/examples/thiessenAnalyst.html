@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>泰森多边形</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 500px;
+            border:1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+        var map, local, baseLayer, resultLayer, spatialAnalystURL,
+                url1=host+"/iserver/services/map-changchun/rest/maps/长春市区图",
+                url2=host+"/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+        function init(){
+            map = new SuperMap.Map("map", { controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })], units: "m"
+            });
+            map.allOverlays = true;
+            baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("Changchun", url1, {transparent: true, cacheEnabled: true}, { maxResolution: "auto" });
+            baseLayer.events.on({ "layerInitialized": addLayer });
+            resultLayer = new SuperMap.Layer.Vector("分析结果");
+
+        }
+        function addLayer()
+        {
+            map.addLayers([baseLayer,resultLayer]);
+            map.setCenter(new SuperMap.LonLat(5102.23 , -2959.65),0);
+        }
+        //数据集泰森多边形
+        function bufferAnalystProcess(){
+            resultLayer.removeAllFeatures();
+            var myThiessenAnalystService = new SuperMap.REST.ThiessenAnalystService(url2),
+                    dThiessenAnalystParameters  = new SuperMap.REST.DatasetThiessenAnalystParameters({
+                        dataset:"Factory@Changchun"
+                    });
+            myThiessenAnalystService.events.on({"processCompleted": thiessenAnalystCompleted, "processFailed": thiessenAnalystFailed }) ;
+            myThiessenAnalystService.processAsync(dThiessenAnalystParameters) ;
+        }
+        //几何泰森多边形
+        function geometryAnalystProcess()
+        {
+            resultLayer.removeAllFeatures();
+             //新建几何对象数组
+            var points=[
+            new SuperMap.Geometry.Point(5238.998556,-1724.229865),
+            new SuperMap.Geometry.Point(4996.270055,-2118.538477),
+            new SuperMap.Geometry.Point(5450.34263,-2070.794081),
+            new SuperMap.Geometry.Point(5317.70775,-2521.162355),
+            new SuperMap.Geometry.Point(5741.149405,-1970.130198),
+            new SuperMap.Geometry.Point(4716.133098,-1575.858795),
+            new SuperMap.Geometry.Point(5447.671615,-2255.928819),
+            new SuperMap.Geometry.Point(4783.423507	-1135.598744),
+            new SuperMap.Geometry.Point(5472.712382,-2189.15344),
+            new SuperMap.Geometry.Point(5752.716961,-2425.40363)  ];
+
+            var myThiessenAnalystService = new SuperMap.REST.ThiessenAnalystService(url2); //初始化泰森多边形分析服务类
+            var gThiessenAnalystParameters=  new SuperMap.REST.GeometryThiessenAnalystParameters ({points:points});   //初始化泰森多边形分析参数基类
+            myThiessenAnalystService.events.on({"processCompleted": thiessenAnalystCompleted, "processFailed": thiessenAnalystFailed }) ;
+            //向iserver发送请求
+            myThiessenAnalystService.processAsync(gThiessenAnalystParameters) ;
+
+
+        }
+        //请求成功
+        function thiessenAnalystCompleted(serviceEventArgs) {
+            resultLayer.removeAllFeatures();
+            var feature,polygonFeature,features = [];
+            for(var i=0;i<serviceEventArgs.result.regions.length;i++){
+                feature = serviceEventArgs.result.regions[i];
+                polygonFeature=new SuperMap.Feature.Vector(feature);
+                features.push(polygonFeature);
+            }
+            resultLayer.addFeatures(features);
+        }
+         //请求失败
+        function thiessenAnalystFailed(serviceEventArgs) {
+            alert(serviceEventArgs.error.errorMsg);
+        }
+
+        function removeResult() {
+            resultLayer.removeAllFeatures();
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="数据集泰森多边形" onclick="bufferAnalystProcess()" />
+    <input type="button" class="btn" value="几何泰森多边形" onclick="geometryAnalystProcess()" />
+    <input type="button" class="btn" value="移除结果" onclick="removeResult()" />
+</div>
+<div id="map"></div>
+</body>
+</html>

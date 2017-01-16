@@ -1,0 +1,99 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Geolocate</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+            #btn{
+                margin-top: 5px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var map, layer, positionLayer, lat, lon, geolocate,
+            host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+            url=host+"/iserver/services/map-china400/rest/maps/China";
+            function init(){
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })],
+                    projection: "EPSG:3857"
+                });
+                //添加geo定位控件
+                geolocate = new SuperMap.Control.Geolocate({
+                    bind: false,
+                    geolocationOptions: {
+                        enableHighAccuracy: false,
+                        maximumAge: 0
+                    },
+                    eventListeners: {
+                        "locationupdated": getGeolocationCompleted,
+                        "locationfailed": getGeolocationFailed
+                    }
+                });
+                //激活控件
+                map.addControl(geolocate);
+                //初始化图层
+                positionLayer = new SuperMap.Layer.Markers("Markers");
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("China",url, {transparent: true, cacheEnabled: true, redirect: true}, {maxResolution:"auto"});
+                layer.events.on({"layerInitialized": addLayer});
+            }
+
+
+            function addLayer() {
+                var center = new SuperMap.LonLat(11733502.481499,4614406.969325);
+                map.addLayers([layer,positionLayer]);
+                map.setCenter(center, 4);
+            }
+
+            function geoLocation(){
+                if(!geolocate.active){
+                    geolocate.activate();
+                }
+                geolocate.getCurrentLocation();
+            }
+
+            //更新定位
+            function getGeolocationCompleted(event) {
+                var lonLat = new SuperMap.LonLat(event.point.x,event.point.y);
+                positionLayer.clearMarkers()
+                size = new SuperMap.Size(44, 33),
+                offset = new SuperMap.Pixel(-(size.w/2), -size.h),
+                icon = new SuperMap.Icon("../theme/images/marker.png", size, offset);
+                positionLayer.addMarker(new SuperMap.Marker(lonLat, icon));
+                map.setCenter(lonLat);
+            }
+            function getGeolocationFailed(event){
+                alert("您当前使用的浏览器不支持地图定位服务");
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input id="btn" class="btn" type="button" value="定位" onclick="geoLocation()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

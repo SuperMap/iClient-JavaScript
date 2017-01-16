@@ -1,0 +1,102 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>缓冲区分析一</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, local, baseLayer, resultLayer, vectorLayer, spatialAnalystURL,
+			
+            url1=host+"/iserver/services/map-changchun/rest/maps/长春市区图",
+            url2=host+"/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+            function init(){
+                map = new SuperMap.Map("map", { controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })], units: "m"
+                });
+                map.allOverlays = true;
+                baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("Changchun", url1, {transparent: true, cacheEnabled: true}, { maxResolution: "auto" });
+                baseLayer.events.on({ "layerInitialized": addLayer });
+                resultLayer = new SuperMap.Layer.Vector("缓冲区分析结果");
+            }
+
+            function addLayer() {
+                map.addLayers([baseLayer, resultLayer/*, vectorLayer*/]);
+                map.setCenter(new SuperMap.LonLat(5105, -3375), 4);
+            }
+            function bufferAnalystProcess() {
+                resultLayer.removeAllFeatures();
+                var bufferServiceByDatasets = new SuperMap.REST.BufferAnalystService(url2),
+                        bufferDistance = new SuperMap.REST.BufferDistance({
+                            value: 200
+                        }),
+                        bufferSetting = new SuperMap.REST.BufferSetting({
+                            endType: SuperMap.REST.BufferEndType.ROUND,
+                            leftDistance: bufferDistance,
+                            rightDistance: bufferDistance,
+                            semicircleLineSegment: 10
+                        }),
+                        filterParameter = new SuperMap.REST.FilterParameter({
+                            attributeFilter: "SmID>0",
+                        }),
+                        dsBufferAnalystParameters = new SuperMap.REST.DatasetBufferAnalystParameters({
+                            dataset: "Point_Buffer@Changchun",
+							isUnion: true,
+                            filterQueryParameter: filterParameter,
+                            bufferSetting: bufferSetting
+                        });
+                bufferServiceByDatasets.events.on({ "processCompleted": bufferAnalystCompleted, "processFailed": bufferAnalystFailed });
+                bufferServiceByDatasets.processAsync(dsBufferAnalystParameters);
+            }
+
+            function bufferAnalystCompleted(args) {
+                console.log(args);
+
+                var features = args.result.recordset.features;
+                resultLayer.addFeatures(features);
+            }
+
+            function bufferAnalystFailed(args) {
+                alert(args.error.errorMsg);
+            }
+
+            function removeResult() {
+                resultLayer.removeAllFeatures();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="缓冲区分析" onclick="bufferAnalystProcess()" />
+            <input type="button" class="btn" value="移除结果" onclick="removeResult()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

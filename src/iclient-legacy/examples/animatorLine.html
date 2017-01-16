@@ -1,0 +1,169 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>线渐变</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+        #toolbar{
+            position: relative;
+            padding-top:5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script src="data/animationLineData.js"></script>
+    <script type="text/javascript">
+        var map, layer,animatorVector,     host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-china400/rest/maps/China";
+        var style1 = {
+            strokeColor: "#b6fb7e",
+            strokeWidth: 2
+        };
+        var style2=
+        {
+            strokeColor: "#ffff00",
+            strokeWidth: 2
+        };
+        var style3=
+        {
+            strokeColor: "#efad3b",
+            strokeWidth: 2
+        };
+        var style4=
+        {
+            strokeColor: "#ef8425",
+            strokeWidth: 2
+        };
+        var style5=
+        {
+            strokeColor: "#ef255e",
+            strokeWidth: 2
+        };
+        var style6=
+        {
+            strokeColor: "#f80f1a",
+            strokeWidth: 2
+        };
+        var style7=
+        {
+            strokeColor: "#ff000",
+            strokeWidth: 2
+        };
+        function init() {
+            if(!document.createElement('canvas').getContext) {
+                alert('您的浏览器不支持 canvas，请升级');
+                return;
+            }
+            //初始化地图
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })],
+                projection: "EPSG:3857"
+            });
+            layer = new SuperMap.Layer.CloudLayer();
+            //初始化动画矢量图层
+            animatorVector = new SuperMap.Layer.AnimatorVector("Train", {},{
+                //设置速度为每帧播放0.01小时的数据
+                speed:0.01,
+                //开始时间为12点
+                startTime:12,
+                //每秒播放12帧
+                frameRate:12,
+                //结束时间设置为15点
+                endTime:15
+            });
+            map.addLayers([layer,animatorVector]);
+            map.setCenter(new SuperMap.LonLat(11586634.286396, 3588716.5813769), 12);
+            //增加数据
+            addLine();
+        }
+        //添加线数据
+        function addLine()
+        {
+            var lineFeatures = [];
+            for(var i = 0,len = lines.length;i<len;i++)
+            {
+                var arr = [];
+                for(var j=0;j<lines[i][3].length;j++)
+                {
+                    var point = new SuperMap.Geometry.Point(lines[i][3][j][0],lines[i][3][j][1]);
+                    arr.push(point);
+                }
+                var line = new SuperMap.Geometry.LineString(arr);
+                var style;
+                if(lines[i][2] == 30)
+                {
+                    style = style1;
+                }
+                else if(lines[i][2] == 31)
+                {
+                    style = style2;
+                }
+                else if(lines[i][2] == 32)
+                {
+                    style = style3;
+                }
+                else if(lines[i][2] == 33)
+                {
+                    style = style4;
+                }
+                else if(lines[i][2] == 34)
+                {
+                    style = style5;
+                }
+                else if(lines[i][2] == 35)
+                {
+                    style = style6;
+                }
+                else if(lines[i][2] == 36)
+                {
+                    style = style7;
+                }
+                var lineFeature = new SuperMap.Feature.Vector(line,{
+                    FEATUREID:lines[i][0],
+                    TIME:lines[i][1],
+                    TEMPERATURE:lines[i][2]
+                },style);
+
+
+                lineFeatures.push(lineFeature);
+            }
+            animatorVector.addFeatures(lineFeatures);
+        }
+        //开始播放动画
+        function startAnimator(){
+            animatorVector.animator.start();
+        }
+        //暂停播放动画
+        function pauseAnimator(){
+            animatorVector.animator.pause();
+        }
+
+    </script>
+</head>
+
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="播放" onclick="startAnimator()" />
+    <input type="button" class="btn" value="暂停" onclick="pauseAnimator()" />
+</div>
+<div id="map"></div>
+</body>
+</html>

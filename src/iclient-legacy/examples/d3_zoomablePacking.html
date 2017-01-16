@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>D3拾取器</title>
+<style>
+    body{
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+    }
+    #map{
+        position: relative;
+        height: 553px;
+        border:1px solid #3473b7;
+    }
+
+    #box{
+        background-color: #ffffff;
+        font-family: Arial;
+        border: 1px solid #379082;
+        border-radius: 10px;
+        padding: 10px 10px;
+        width: 310px;
+    }
+    #box > div{
+        overflow: hidden;
+        overflow: hidden;;
+        text-align:center;
+        opacity: 0.7;
+    }
+    #popwin_contentDiv {
+        overflow: hidden;
+    }
+
+    .node {
+        cursor: pointer;
+    }
+
+    .node:hover {
+        stroke: #000;
+        stroke-width: 1.5px;
+    }
+
+    .node--leaf {
+        fill: white;
+    }
+
+    .label {
+        font: 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
+        text-anchor: middle;
+        text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+    }
+
+    .label,
+    .node--root,
+    .node--leaf {
+        pointer-events: none;
+    }
+</style>
+    <!--<link href='./css/bootstrap.min.css' rel='stylesheet' />-->
+    <!--<link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />-->
+<script src='../libs/SuperMap.Include.js'></script>
+<script src="js/d3.v3.min.js"></script>
+<script>
+var worldCountryInfo = [
+    ['新西兰', '29.174235956394114', '174.8072164108394', '-41.33484005165742'],
+    ['澳大利亚', '695.5399346214508', '149.04200743036952', '-35.350002057001724'],
+    ['拉脱维亚', '9.516091977409815', '24.04999831855966', '56.88000003428641'],
+    ['爱沙尼亚', '7.107818374643102', '24.75000031924904', '59.416667932981184'],
+    ['乌克兰', '73.48295930493987', '30.50210739128974', '50.44815906914981'],
+    ['白俄罗斯', '28.15780526434537', '27.575559329931593', '53.89993803274737'],
+    ['俄罗斯', '2931.554593770361', '37.70000133930645', '55.74999602682895'],
+    ['意大利', '33.05506087308913', '12.519999338142895', '41.87999704393327'],
+    ['西班牙', '53.610781509409136', '-3.690971698244965', '40.442220073506434'],
+    ['土耳其', '81.19930219469461', '32.85299737691997', '39.92900394684892'],
+    ['葡萄牙', '9.641563211488574', '-9.12999560218097', '38.72999705969055'],
+    ['保加利亚', '12.210432929783565', '23.33187039624326', '42.70726805874146'],
+    ['罗马尼亚', '27.498306337311078', '26.12296842782999', '44.43048001493676'],
+    ['斯洛文尼亚', '2.376986789131479', '14.639607376076782', '46.068299920805856'],
+    ['匈牙利', '11.033293646723905', '19.094004336066007', '47.51499596400467'],
+    ['捷克', '9.824207258823662', '14.456997316697482', '50.10599694699265'],
+    ['波兰', '40.91073109364697', '21.011877368143843', '52.24494605306201'],
+    ['斯洛伐克', '5.978073764857982', '17.129997438550106', '48.14999995502585'],
+    ['德国', '45.87205763302518', '13.327569357857186', '52.51626892335375'],
+    ['瑞士', '4.889274569378358', '7.445997303541986', '46.94799599331836'],
+    ['丹麦', '6.142943083979844', '12.549996395535771', '55.71999896943609'],
+    ['芬兰', '62.65498121370547', '24.97670134829545', '60.196418991223055'],
+    ['挪威', '59.93964994602538', '10.711998354074979', '59.9380020260172'],
+    ['比利时', '3.8955219766376104', '4.367997439032962', '50.83700396604216'],
+    ['英国', '33.740018575668834', '-0.17800167655576615', '51.48791093669834'],
+    ['法国', '64.34832264506642', '2.4329973446941153', '48.8819970628075'],
+    ['荷兰', '4.677572945859083', '4.894839324693237', '52.373042981927085'],
+    ['阿根廷', '278.3089524010138', '-58.44983369684459', '-34.622496010243125'],
+    ['巴西', '707.0506786671417', '-47.8977476573595', '-15.792110943058866'],
+    ['古巴', '9.52728555372596', '-82.41645556215907', '23.048955006622577'],
+    ['牙买加', '0.9424347225140082', '-76.79951967992427', '17.966925028753693'],
+    ['多米尼加', '4.147566520878172', '-69.8990036733499', '18.48899701342542'],
+    ['巴拿马', '6.088299470397033', '-79.51707859374812', '9.00287992114162'],
+    ['墨西哥', '174.11766745569184', '-99.1275746461327', '19.4270490779827'],
+    ['加拿大', '1694.0251615091693', '-75.65100268456125', '45.374003962164295'],
+    ['美国', '1116.6706382613484', '-76.95383368844213', '38.89090807427654'],
+    ['津巴布韦', '33.46313087468934', '31.020003395825285', '-17.829999013060934'],
+    ['喀麦隆', '37.972713199220834', '11.513997366407239', '3.864996064152848'],
+    ['肯尼亚', '47.3068528143186', '36.803997348645254', '-1.269998944599834'],
+    ['埃塞俄比亚', '92.7227504971338', '38.70000039130997', '9.029997066415987'],
+    ['突尼斯', '15.188934756238268', '10.16600438261787', '36.81900003913003'],
+    ['乌兹别克斯坦', '48.370006065262714', '69.34986930626746', '41.247936014304685'],
+    ['哈萨克斯坦', '343.1600648165404', '71.43200141832125', '51.189002933344426'],
+    ['阿塞拜疆', ' 0.086600', '49.815999303821741', '40.323996065224122'],
+    ['格鲁吉亚', '7.623239405831555', '44.78312740526016', '41.7218130345648'],
+    ['伊朗', '161.76988961015377', '51.44799633617973', '35.774001015720245'],
+    ['印度', '272.3191563077348', '77.21675130049576', '28.568726992960762'],
+    ['印度尼西亚', '153.00252996300375', '106.80000339972676', '-6.166665049519089'],
+    ['泰国', '43.14321767192996', '100.51667144183207', '13.750001918531567'],
+    ['日本', '37.94131046523398', '139.80900636524117', '35.683002048058015'],
+    ['蒙古', '184.43204108648933', '106.91199943050063', '47.92899603190966'],
+    ['韩国', '9.766875186847756', '126.93524432884405', '37.542357079588854'],
+    ['朝鲜', '12.918861162514077', '125.75700034541975', '39.029004022272574'],
+    ['中华人民共和国', '960.4537031350538', '116.38803641666053', '39.90618904574261']
+];
+
+var map, baseLayer, d3Layer, popup,
+        host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+        url=host+"/iserver/services/map-world/rest/maps/World";
+
+function init(){
+    /*
+     * 不支持 SVG 的浏览器不能运行该范例
+     * android 设备也不能运行该范例*/
+    var broz = SuperMap.Util.getBrowser();
+    if (!hasSVG()) {
+        alert('您的浏览器不支持 SVG，请升级');
+        return;
+    }
+    else if (broz.device === 'android'|| broz.device === 'apple') {
+        alert('您的设备不支持，请使用pc或其他设备');
+        return;
+    }
+    map = new SuperMap.Map("map",{controls: [
+        new SuperMap.Control.LayerSwitcher(),
+        new SuperMap.Control.ScaleLine(),
+        new SuperMap.Control.Zoom(),
+        new SuperMap.Control.Navigation({
+            dragPanOptions: {
+                enableKinetic: true
+            }
+        })
+    ]});
+
+    baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("Word", url, {transparent: true, cacheEnabled: true}, {maxResolution: "auto"});
+    baseLayer.events.on({"layerInitialized": addLayer});
+}
+
+function hasSVG(){
+    var doc = document;
+    var SVG_NS = 'http://www.w3.org/2000/svg';
+    return !!doc.createElementNS && !!doc.createElementNS(SVG_NS, 'svg').createSVGRect;
+}
+
+function addLayer() {
+    //创建Elements的实例
+    d3Layer = new SuperMap.Layer.Elements("D3Layer");
+    map.addLayers([baseLayer,d3Layer]);
+    map.setCenter(new SuperMap.LonLat(0, 0), 0);
+
+    //获得Elements div
+    var layerDiv = d3Layer.getDiv();
+
+    var contentHTML = "<div id = 'box'>";
+    contentHTML += "<div>北京奥运会金牌分布拾取器</div>";
+    contentHTML +=  "<div id= 'vis'></div>" ;
+    contentHTML += "</div>";
+    layerDiv.innerHTML = contentHTML;
+
+    //添加D3 拾取器
+    addZoomableCirclePacking();
+}
+
+function addZoomableCirclePacking(){
+    var margin = 10,
+            diameter = 300;
+
+    var color = d3.scale.linear()
+            .domain([-1, 5])
+            .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
+            .interpolate(d3.interpolateHcl);
+
+    var pack = d3.layout.pack()
+            .padding(2)
+            .size([diameter - margin, diameter - margin])
+            .value(function(d) { return d.size; })
+
+    var svg = d3.select("#vis").append("svg")
+            .attr("width", diameter)
+            .attr("height", diameter)
+            .append("g")
+            .attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+
+    d3.json("data/goldMedalData.json", function(error, root) {
+        if (error) return console.error(error);
+
+        var focus = root,
+                nodes = pack.nodes(root),
+                view;
+
+        var circle = svg.selectAll("circle")
+                .data(nodes)
+                .enter().append("circle")
+                .attr("class", function(d) { return d.parent ? d.children ? "node" : "node node--leaf" : "node node--root"; })
+                .style("fill", function(d) { return d.children ? color(d.depth) : null; })
+                .on("click", function(d) { if (focus !== d) zoom(d), d3.event.stopPropagation(); })
+                .on("mouseup",function(d){
+                    showGoldMedal(d);
+                });
+
+        var text = svg.selectAll("text")
+                .data(nodes)
+                .enter().append("text")
+                .attr("class", "label")
+                .style("fill-opacity", function(d) { return d.parent === root ? 1 : 0; })
+                .style("display", function(d) { return d.parent === root ? null : "none"; })
+                .text(function(d) { return d.name; });
+
+        var node = svg.selectAll("circle,text");
+
+        d3.select("#vis")
+                .style("background", color(-1))
+                .style("opacity", 0.8)
+                .on("click", function() { zoom(root); });
+
+        zoomTo([root.x, root.y, root.r * 2 + margin]);
+
+        function zoom(d) {
+            var focus = d;
+
+            var transition = d3.transition()
+                    .duration(d3.event.altKey ? 7500 : 750)
+                    .tween("zoom", function(d) {
+                        var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
+                        return function(t) { zoomTo(i(t)); };
+                    });
+
+            transition.selectAll("text")
+                    .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
+                    .style("fill-opacity", function(d) { return d.parent === focus ? 1 : 0; })
+                    .each("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
+                    .each("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+        }
+
+        function zoomTo(v) {
+            var k = diameter / v[2]; view = v;
+            node.attr("transform", function(d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
+            circle.attr("r", function(d) { return d.r * k; });
+        }
+    });
+
+    //显示金牌
+    function showGoldMedal(d){
+        var word = d.name;
+        var indexWord = -1;
+        for(var i=0;i<worldCountryInfo.length;i++){
+            if(word == worldCountryInfo[i][0])
+                indexWord = i;
+        }
+        if(indexWord == -1){
+            closeInfoWin();
+            if(d.depth){
+                map.zoomTo(d.depth);
+            }else{
+                map.zoomTo(0);
+            }
+            return;
+        }
+
+        if(!d.children || !d.children[0].size) return;
+        var goldCount = d.children[0].size;
+
+        var lon = worldCountryInfo[indexWord][2];
+        var lat = worldCountryInfo[indexWord][3];
+        var lonlat =  new SuperMap.LonLat(lon, lat);
+
+        map.setCenter(new SuperMap.LonLat(lon + 2, lat), 5);
+        openInfoWin(lonlat, word, goldCount);
+    }
+
+    //添加弹出窗
+    function openInfoWin(lonlat, name, count){
+        closeInfoWin();
+        var contentHTML = "<div style='width:160px; opacity: 0.8; overflow: hidden; text-align: center'>";
+        contentHTML += "<div>" + name  + "</div>";
+        contentHTML += "<div>";
+        contentHTML +=  "<img src = 'images/aoyunjinpai08.png'/>" ;
+        contentHTML +=  "<div ><strong style='font-size:1.2em;color: blue'>" + count + "</strong><span> 枚</span></div>" ;
+        contentHTML += "</div>";
+
+        popup = new SuperMap.Popup.FramedCloud("popwin",new SuperMap.LonLat(lonlat.lon,lonlat.lat),null,contentHTML,null,true,function(){
+            closeInfoWin();
+        },false);
+        map.addPopup(popup);
+    }
+
+    //关闭弹出窗
+    function closeInfoWin() {
+        if (popup) {
+            try {
+                map.removePopup(popup);
+            }
+            catch (e) {
+            }
+        }
+    }
+}
+</script>
+</head>
+<body onload="init()">
+<div id="map"></div>
+</body>
+</html>

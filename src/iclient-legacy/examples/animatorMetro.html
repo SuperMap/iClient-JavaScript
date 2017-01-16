@@ -1,0 +1,348 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>地铁修建模拟</title>
+<style type="text/css">
+    body{
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+    }
+    #map{
+        position: relative;
+        height: 520px;
+        border:1px solid #3473b7;
+    }
+    #d_GroupDiv  .smPopupContent{
+        padding-top:0px;
+    }
+</style>
+<link href='./css/bootstrap.min.css' rel='stylesheet' />
+<link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+<script src='../libs/SuperMap.Include.js'></script>
+<script src="data/animationExtendLineData.js"></script>
+<script type="text/javascript">
+var map, layer,animatorVector,vectorLayer,popup,     host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+url = host + "/iserver/services/map-china400/rest/maps/China";
+url2 = host + "/iserver/services/data-DynamicData/rest/data";
+var features = {};
+var popups = {};
+var style = {
+    style1:{
+        fillColor: "#cc0000",
+        pointRadius: 3,
+        strokeColor: "#cc0000",
+        strokeWidth: 5
+    },
+    style2:{
+        fillColor: "#0066cc",
+        pointRadius: 3,
+        strokeColor: "#0066cc",
+        strokeWidth: 5
+    },
+    style4:{
+        fillColor: "#008d9e",
+        pointRadius: 3,
+        strokeColor: "#008d9e",
+        strokeWidth: 5
+    },
+    style5:{
+        fillColor: "#a71c81",
+        pointRadius: 3,
+        strokeColor: "#a71c81",
+        strokeWidth: 5
+    },
+    style6:{
+        fillColor: "#d19708",
+        pointRadius: 3,
+        strokeColor: "#d19708",
+        strokeWidth: 5
+    },
+    style8:{
+        fillColor: "#019a6b",
+        pointRadius: 3,
+        strokeColor: "#019a6b",
+        strokeWidth: 5
+    },
+    style9:{
+        fillColor: "#8cc31f",
+        pointRadius: 3,
+        strokeColor: "#8cc31f",
+        strokeWidth: 5
+    },
+    style10:{
+        fillColor: "#019bc1",
+        pointRadius: 3,
+        strokeColor: "#019bc1",
+        strokeWidth: 5
+    },
+    style13:{
+        fillColor: "#fad15c",
+        pointRadius: 3,
+        strokeColor: "#fad15c",
+        strokeWidth: 5
+    },
+    style14:{
+        fillColor: "#d6a6a2",
+        pointRadius: 3,
+        strokeColor: "#d6a6a2",
+        strokeWidth: 5
+    },
+    style15:{
+        fillColor: "#69347c",
+        pointRadius: 3,
+        strokeColor: "#69347c",
+        strokeWidth: 5
+    },
+    style16:{
+        fillColor: "#cc0000",
+        pointRadius: 3,
+        strokeColor: "#cc0000",
+        strokeWidth: 5
+    },
+    style17:{
+        fillColor: "#db83b3",
+        pointRadius: 3,
+        strokeColor: "#db83b3",
+        strokeWidth: 5
+    },
+    style18:{
+        fillColor: "#e50075",
+        pointRadius: 3,
+        strokeColor: "#e50075",
+        strokeWidth: 5
+    },
+    style19:{
+        fillColor: "#e46022",
+        pointRadius: 3,
+        strokeColor: "#e46022",
+        strokeWidth: 5
+    },
+    style20:{
+        fillColor: "#a49abc",
+        pointRadius: 3,
+        strokeColor: "#a49abc",
+        strokeWidth: 5
+    }
+};
+
+function init() {
+    if(!document.createElement('canvas').getContext) {
+        alert('您的浏览器不支持 canvas，请升级');
+        return;
+    }
+    //初始化地图
+    map = new SuperMap.Map("map",{controls: [
+        new SuperMap.Control.ScaleLine(),
+        new SuperMap.Control.Zoom(),
+        new SuperMap.Control.MousePosition(),
+        new SuperMap.Control.Navigation({
+            dragPanOptions: {
+                enableKinetic: true
+            }
+        })],
+        projection: "EPSG:3857"
+    });
+    layer = new SuperMap.Layer.CloudLayer();
+    addLayer();
+}
+function addLayer() {
+    //初始化动画矢量图层
+    animatorVector = new SuperMap.Layer.AnimatorVector("Metro", {rendererType:"StretchLine"},{
+        repeat:false,
+        //设置速度为每帧播放0.05的数据
+        speed:0.05,
+        //开始时间为0
+        startTime:0,
+        //每秒渲染12帧
+        frameRate:12,
+        //结束时间设置为10
+        endTime:10
+    });
+    vectorLayer = new SuperMap.Layer.Vector("point");
+    animatorVector.events.on({"drawfeaturestart": drawfeaturestart});
+    animatorVector.animator.events.on({"firstframestart":framestart});
+    map.addLayers([layer,animatorVector,vectorLayer]);
+    map.setCenter(new SuperMap.LonLat(12958264.797366,4846889.6362871), 11);
+    var selectFeature = new SuperMap.Control.SelectFeature(vectorLayer, {
+        onSelect: onFeatureSelected
+    });
+    map.addControl(selectFeature);
+    selectFeature.activate();
+    addMetro();
+    layer.setVisibility(true);
+}
+function framestart()
+{
+    vectorLayer.removeAllFeatures();
+    map.removeAllPopup();
+}
+function drawfeaturestart(feature)
+{
+    var featureId = feature.attributes.FEATUREID;
+    //删除弹出框
+    if(!popups[featureId]) popups[featureId] = [];
+    for(var n = 0;n<popups[featureId].length;n++)
+    {
+        map.removePopup(popups[featureId][n]);
+    }
+    popups[featureId] = [];
+    var arr = [];
+    for(var i = 0;i<feature.geometry.components.length;i++)
+    {
+        var ml = feature.geometry.components[i];
+        var po = ml.components[0];
+        var contentHTML = "";
+        contentHTML += "<span style=' font-size:12px; line-height: 12px;background-color: #fff'>";
+        contentHTML += po.MetroName+"站";
+        contentHTML += "</span>";
+        var popup = new SuperMap.Popup("d",
+                new SuperMap.LonLat(po.x,po.y),
+                new SuperMap.Size((po.MetroName.length+1)*12,12),
+                contentHTML,
+                false);
+        popup.setOpacity(0.8);
+        popup.setBackgroundColor("#fff");
+        popup.setBorder("1px solid "+feature.style.fillColor);
+        popups[featureId].push(popup);
+        map.addPopup(popup);
+
+        var fea = new SuperMap.Feature.Vector(
+                po,
+                {
+                    metro:po.Metro,
+                    name:po.MetroName
+                },
+                feature.style
+        );
+        arr.push(fea);
+    }
+    vectorLayer.addFeatures(arr);
+}
+//选择具体地铁站
+function onFeatureSelected(e)
+{
+    if(popup)
+    {
+        map.removePopup(popup);
+    }
+
+    popup = new SuperMap.Popup.FramedCloud("chicken",
+            new SuperMap.LonLat(e.geometry.x,e.geometry.y),
+            null,
+            "地铁"+e.attributes["metro"]+"</br>"+e.attributes["name"]+"站",
+            null,
+            true);
+    map.addPopup(popup);
+}
+//添加数据
+function addMetro()
+{
+    var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+
+    getFeatureParam = new SuperMap.REST.FilterParameter({
+        name: "Metro@DynamicData",
+        attributeFilter: "SmID < 138"
+    });
+    getFeatureBySQLParams = new SuperMap.REST.GetFeaturesBySQLParameters({
+        queryParameter: getFeatureParam,
+        datasetNames:["DynamicData:Metro"]
+    });
+    getFeatureBySQLParams.toIndex  = 137;
+    getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url2, {
+        eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}});
+
+    getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+
+}
+function processCompleted(getFeaturesEventArgs){
+    var features,result = getFeaturesEventArgs.result;
+    if (result && result.features) {
+        features = result.features;
+    }
+    var lineFeatures = [];
+    //循环有几条地铁
+    for(var i = 0,len = features.length;i<len;i++)
+    {
+        //有几个部分的情况
+        var arrL = [];
+        if(features[i].geometry.CLASS_NAME == "SuperMap.Geometry.MultiLineString"){
+            var metro = features[i].geometry.components;
+            //循环每一条地铁分几部分修建
+            for(var j=0;j<metro.length;j++)
+            {
+                var part = metro[j];
+                var arrP = [];
+                var m = 0;
+                for(var k=0;k < part.components.length;k++)
+                {
+                    var pp = part.components[k];
+                    var point = new SuperMap.Geometry.Point(pp.x,pp.y);
+                    //名字
+                    var metroname = [];
+                    metroname =  features[i].attributes.ATTRIBUTION.split(",");
+                    point.MetroName = metroname[m];
+                    m = m + 1;
+                    point.Metro = features[i].attributes.LINENAME;
+                    arrP.push(point);
+                }
+                var lineString = new SuperMap.Geometry.LineString(arrP);
+                arrL.push(lineString);
+            }
+        }
+        else{
+            var metro1 = features[i].geometry.components;
+            var arrP1 = [];
+            for(var a=0;a<metro1.length;a++)
+            {
+                var point1 = metro1[a];
+                metroname1 = features[i].attributes.ATTRIBUTION.split(",");
+                point1.MetroName = metroname1[a];
+                point1.Metro = features[i].attributes.LINENAME;
+                arrP1.push(point1);
+            }
+            var lineString1 = new SuperMap.Geometry.LineString(arrP1);
+            arrL.push(lineString1);
+        }
+        var multiLineString = new SuperMap.Geometry.MultiLineString(arrL);
+
+        var mm = parseInt(features[i].attributes.LINENUMBER);
+        var sty = style["style"+mm];
+
+        var lineFeature = new SuperMap.Feature.Vector(multiLineString,{
+            FEATUREID:features[i].attributes.FEATUREID,
+            TIME:features[i].attributes.TIME
+        },sty);
+        lineFeatures.push(lineFeature);
+    }
+    animatorVector.addFeatures(lineFeatures);
+}
+function processFailed(e){
+    alert(e.error.errorMsg);
+}
+//开始播放动画
+function startAnimator(){
+    animatorVector.animator.start();
+}
+//暂停播放动画
+function pauseAnimator(){
+    animatorVector.animator.pause();
+}
+//切换底图的显示
+function show(){
+    layer.setVisibility(!layer.getVisibility());
+}
+
+</script>
+</head>
+
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="播放" onclick="startAnimator()" />
+    <input type="button" class="btn" value="暂停" onclick="pauseAnimator()" />
+    <input type="button" class="btn" value="显示/隐藏底图" onclick="show()"/>
+</div>
+<div id="map"></div>
+</body>
+</html>

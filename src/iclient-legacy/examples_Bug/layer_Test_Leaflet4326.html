@@ -1,0 +1,31 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <title>SuperMap4326</title>
+    <link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
+    <script src="http://leafletjs.com/dist/leaflet.js"></script>
+    <script type="text/javascript" src="../libs/SuperMap.Include.js"></script>
+    <script type="text/javascript" src="js/iConnector/iConnectorLeaflet.js"></script>
+    <script type="text/javascript">
+        var map,
+        url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+        function init()
+        {
+            map = L.map('map',{
+                center: [0, 0],
+                zoom: 1,
+                crs:L.CRS.EPSG4326
+            });
+            var  tileLayer=   SuperMap.Web.iConnector.Leaflet.getLayer(url,{projection:"4326"});
+            tileLayer.addTo(map);
+            L.control.scale().addTo(map);
+            map.on('click', function(e) {
+                alert(e.latlng);
+            });
+        }
+    </script>
+</head>
+<body onload="init()" style="width: 100%; height: 100%">
+<div id="map"  style="width: 100%; height: 500px;"></div>
+</body>
+</html>

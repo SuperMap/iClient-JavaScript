@@ -1,0 +1,99 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>叠加分析</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, local, baseLayer, resultLayer, Spatialanalyst_sample,
+            style = {
+                strokeColor: "#343434",
+                strokeWidth: 0.1,
+                pointerEvents: "visiblePainted",
+                fill: true,
+                fillColor: "#304DBE",
+                fillOpacity: 0.8
+            },
+            url=host+"/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图",
+            url2=host+"/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+            function init(){
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+                });
+                baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("京津地区人口分布图_专题图", url, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+                baseLayer.events.on({"layerInitialized": addLayer});
+                resultLayer = new SuperMap.Layer.Vector("叠加结果");
+            }
+
+            function addLayer() {
+                map.addLayers([baseLayer, resultLayer]);
+                map.setCenter(new SuperMap.LonLat(117, 40), 1);
+                map.allOverlays = true;
+            }
+            function overlayAnalystProcess() {
+                resultLayer.removeAllFeatures();
+                var overlayServiceByDatasets = new SuperMap.REST.OverlayAnalystService(url2),
+                        dsOverlayAnalystParameters = new SuperMap.REST.DatasetOverlayAnalystParameters({
+                            sourceDataset: "BaseMap_R@Jingjin",
+                            operateDataset: "Neighbor_R@Jingjin",
+                            tolerance: 0,
+                            operation: SuperMap.REST.OverlayOperationType.UNION
+                        });
+                overlayServiceByDatasets.events.on({"processCompleted": overlayAnalystCompleted, "processFailed": overlayAnalystFailed});
+                overlayServiceByDatasets.processAsync(dsOverlayAnalystParameters);
+            }
+
+            function overlayAnalystCompleted(args) {
+                var feature, features = [];
+                for(var i=0;i<args.result.recordset.features.length;i++){
+                    feature = args.result.recordset.features[i];
+                    feature.style = style;
+                    features.push(feature);
+                }
+                resultLayer.addFeatures(features);
+            }
+
+            function overlayAnalystFailed(args) {
+                alert(args.error.errorMsg);
+            }
+
+            function removeResult() {
+                resultLayer.removeAllFeatures();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="叠加分析" onclick="overlayAnalystProcess()" />
+            <input type="button" class="btn" value="移除结果" onclick="removeResult()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

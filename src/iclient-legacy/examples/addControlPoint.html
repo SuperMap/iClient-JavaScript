@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>添加编辑点</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+            left: 20%;
+            width: 79.8%;
+        }
+        #toolbar {
+            position: relative;
+            padding-top: 1px;
+            padding-bottom: 10px;
+        }
+        #plotPanel {
+            background: #ffffff;
+            position: absolute;
+            width: 19.8%;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+    </style>
+
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src="../libs/SuperMap.Include.js"></script>
+    <script src="./js/plottingPanel/PlottingPanel.Include.js"></script>
+
+
+    <script type="text/javascript">
+        var plottingLayer,plottingEdit, layer,drawGraphicObject,map,plotPanel;
+        var host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        var mapurl = host + "/iserver/services/map-world/rest/maps/World";
+        var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+
+        function init(){
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+            });
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {transparent: true, cacheEnabled: true},{maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+
+            plottingLayer = new SuperMap.Layer.PlottingLayer("标绘图层", serverUrl);
+            plottingLayer.style = {
+                fillColor: "#66cccc",
+                fillOpacity: 0.4,
+                strokeColor: "#66cccc",
+                strokeOpacity: 1,
+                strokeWidth: 3,
+                pointRadius:6
+            };
+
+            //态势标绘编辑
+            plottingEdit = new SuperMap.Control.PlottingEdit(plottingLayer);
+
+            // 绘制标号;
+            drawGraphicObject = new SuperMap.Control.DrawFeature(plottingLayer, SuperMap.Handler.GraphicObject);
+            //添加态势标绘控件
+            map.addControls([plottingEdit,drawGraphicObject]);
+        }
+
+        function addLayer() {
+            map.addLayers([layer, plottingLayer]);
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+
+            plotPanel = new SuperMap.Plotting.PlotPanel("plotPanel", serverUrl, window.map);
+            plotPanel.events.on({"initializeCompleted": initializeCompleted});
+            plotPanel.initializeAsync();
+            //createPlotPanel(serverUrl, map, "plotPanel");//创建标绘面板
+        }
+
+        function initializeCompleted(evt){
+            plotPanel.setDrawFeature(drawGraphicObject);
+        }
+
+        //取消标绘与编辑
+        function plottingAllDeactivate() {
+            plottingEdit.deactivate();
+            drawGraphicObject.deactivate();
+        }
+
+        //清空绘制
+        function PlottingClear(){
+            plottingAllDeactivate();
+            plottingLayer.removeAllFeatures();
+        }
+        //取消标绘，激活标绘编辑控件
+        function PlottingDrawCancel(){
+            plottingAllDeactivate();
+            plottingEdit.activate();
+        }
+		//添加点
+        function AddPoint(){
+		   plottingEdit.isAddPoint=true;
+		}
+		function CancelAddPoint(){
+			plottingEdit.isAddPoint=false;
+		}
+        document.oncontextmenu = function(evt){
+            //window.event.returnValue = false;
+            PlottingDrawCancel();
+            return false;
+        }
+    </script>
+</head>
+<body onLoad = "init()">
+<div id="toolbar">
+	<input type="button" class="btn" value="清空标绘" onclick="PlottingClear()" />
+    <input type="button" class="btn" value="取消标绘" onclick="PlottingDrawCancel()" />
+	<input type="button" class="btn" value="添加编辑点" onclick="AddPoint()" />
+	<input type="button" class="btn" value="取消添加编辑点" onclick="CancelAddPoint()" />
+</div>
+    <div id="plotPanel" title="标绘面板"></div>
+    <div id="map"></div>
+</body>
+</html>

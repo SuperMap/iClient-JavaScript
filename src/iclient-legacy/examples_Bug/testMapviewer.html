@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .mapcontainer{
+            height: 600px;
+        }
+    </style>
+    <script src = '../libs/SuperMap.Include.js'></script>
+</head>
+<body>
+<div id="map" class="mapcontainer"></div>
+<button onclick="selectMap(114)">挥洒过汗水的羽毛球馆</button>
+<button onclick="selectMap(251)">迁徙模拟</button>
+<button onclick="selectMap(263)">地铁修建模拟</button>
+<button onclick="selectMap(420)">WMTS</button>
+<button onclick="selectMap(419)">WMS</button>
+<button onclick="selectMap(75)">黄龙溪徒步30里</button>
+<script>
+    var url="http://www.isupermap.com",popup;
+    var viewer=new SuperMap.Cloud.MapViewer(url,"map");
+    selectMap(725,'bnCCS7N45UsDEgSN8CLuLfUp');
+    function selectMap(id,key){
+        viewer.previewMapById(id,key);
+    }
+    viewer.events.on({
+        "markerClicked":openInfoWin,
+        "scope": viewer
+    });
+
+    function openInfoWin(marker){
+        var lonlat = marker.getLonLat();
+        var attributes=marker.attributes;
+        var contentHTML = "<div style='font-size:.8em; opacity: 0.8; overflow-y:hidden;'>";
+        contentHTML += "<div>"+attributes.description+"</div></div>";
+        if(popup){
+            this.map.removePopup(popup);
+            popup.destroy();
+            popup=null;
+        }
+        popup = new SuperMap.Popup.FramedCloud(attributes.title,new SuperMap.LonLat(lonlat.lon,lonlat.lat),null,contentHTML,null,true);
+        this.map.addPopup(popup);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>鼠标样式</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 553px;
+            border:1px solid #3473b7;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src = '../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var map,layer,  vector ,
+        host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-world/rest/maps/World";
+
+        function init()
+        {
+            var broz = SuperMap.Util.getBrowser();
+            if (broz.device === 'android'|| broz.device === 'apple') {
+                alert('您的设备不支持，请使用pc或其他设备');
+                return;
+            }
+            map = new SuperMap.Map("map",{controls:[
+                new SuperMap.Control.Zoom() ,
+                new SuperMap.Control.Navigation() ,
+                new SuperMap.Control.LayerSwitcher()
+            ]});
+            layer= new SuperMap.Layer.TiledDynamicRESTLayer("World", url, null,{maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+            vector = new  SuperMap.Layer.Vector("vectorLayer");
+            addData();
+
+        }
+        function addLayer(){
+
+            map.addLayers([layer,vector]);
+            //显示地图范围
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+            openInfoWin();
+        }
+
+        function addData()
+        {
+            var point= new SuperMap.Geometry.Point(0,0);
+            var pointlayer = new SuperMap.Feature.Vector(point);
+            pointlayer.style={
+                fillColor:"#FF00FF",
+                strokeColor:"yellow",
+                pointRadius:28
+            };
+            var point1 = new SuperMap.Geometry.Point(100,39.3);
+            var pointlayer1 =new SuperMap.Feature.Vector(point1);
+             pointlayer1.style={
+                cursor:"auto",
+                 fillColor:"#FF00FF",
+                strokeColor:"yellow",
+                pointRadius:28
+             };
+
+            var point2 = new SuperMap.Geometry.Point(-100,-39.3);
+            var pointlayer2 =new SuperMap.Feature.Vector(point2);
+            pointlayer2.style={
+                cursor:"crosshair",
+                fillColor:"#FF00FF",
+                strokeColor:"yellow",
+                pointRadius:28
+            };
+            vector.addFeatures([pointlayer,pointlayer1,pointlayer2]);
+        }
+
+        function   openInfoWin()
+        {
+            var popup = new SuperMap.Popup.FramedCloud("popwin",
+                    new SuperMap.LonLat(0,0),
+                    null,
+                   "手势鼠标样式 ",
+                    null,
+                    false);
+            infowin = popup;
+            map.addPopup(popup);
+            var popup1 = new SuperMap.Popup.FramedCloud("popwin",
+                new SuperMap.LonLat(-100,-39.3),
+                null,
+                "十字型鼠标样式 ",
+                null,
+                false);
+            infowin1 = popup1;
+            map.addPopup(popup1);
+            var popup2 = new SuperMap.Popup.FramedCloud("popwin",
+                    new SuperMap.LonLat(100,39.3),
+                    null,
+                    "默认的鼠标样式 ",
+                    null,
+                  false);
+            infowin2 = popup2;
+            map.addPopup(popup2);
+
+        }
+    </script>
+</head>
+<body onload="init()" >
+<div id="map"></div>
+
+</body>
+</html>

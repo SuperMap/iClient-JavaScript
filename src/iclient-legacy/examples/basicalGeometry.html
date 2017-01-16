@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>基础矢量图形</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src = '../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var map,layer,pointVector,dataAdded=false,
+                host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-world/rest/maps/World";
+        function init()
+        {
+            map = new SuperMap.Map("map",{controls:[
+                new SuperMap.Control.Zoom() ,
+                new SuperMap.Control.Navigation() ,
+                new SuperMap.Control.LayerSwitcher()
+            ]});
+            layer= new SuperMap.Layer.TiledDynamicRESTLayer("World", url, null,{maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+            vector = new SuperMap.Layer.Vector("vector");
+            addData();
+        }
+
+        function addLayer(){
+
+            map.addLayers([layer,vector]);
+            //显示地图范围
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+        }
+
+        function addData()
+        {
+            if(!dataAdded)
+            {
+                vector.removeAllFeatures();
+                //点对象
+                var point= new SuperMap.Geometry.Point(0,0);
+                var pointVector = new SuperMap.Feature.Vector(point);
+                pointVector.style={
+                    fillColor:"red",
+                    strokeColor:"yellow",
+                    pointRadius:6
+                };
+
+                //线串几何对象
+                var points2=[
+                    new SuperMap.Geometry.Point(0,29.4),
+                    new SuperMap.Geometry.Point(-50,39.4),
+                    new SuperMap.Geometry.Point(-30,19.4),
+                    new SuperMap.Geometry.Point(100,49.4)
+                ];
+                var line1 =   new SuperMap.Geometry.LineString(points2);
+                var linecVector = new SuperMap.Feature.Vector(line1);
+                linecVector.style={
+                    strokeColor:"#7B68EE",
+                    strokeWidth:2
+                } ;
+                //几何对象线环类
+                var points1=[
+                    new SuperMap.Geometry.Point(0,19.4),
+                    new SuperMap.Geometry.Point(10,-20),
+                    new SuperMap.Geometry.Point(14,-22),
+                    new SuperMap.Geometry.Point(24,-5),
+                    new SuperMap.Geometry.Point(34,15),
+                    new SuperMap.Geometry.Point(45,25),
+                    new SuperMap.Geometry.Point(50,29.4)
+                ];
+                var line =  new SuperMap.Geometry.LinearRing(points1);
+                var lineVector = new SuperMap.Feature.Vector(line);
+                lineVector.style={
+                    strokeColor:"#C0FF3E",
+                   fill:false,
+                    strokeWidth:2
+                } ;
+                //创建多次贝塞尔曲线
+                var bezierPoint =[
+                new SuperMap.Geometry.Point(0,39.5),
+                new SuperMap.Geometry.Point(30,69.5),
+                new SuperMap.Geometry.Point(90,49.4),
+                new SuperMap.Geometry.Point(120,75.5),
+                new SuperMap.Geometry.Point(150,63.4),
+                new SuperMap.Geometry.Point(156,80.3)];
+                var  bezier5=  SuperMap.Geometry.LineString.createBezierN(bezierPoint,20) ;
+                var bezier5Vector = new   SuperMap.Feature.Vector(bezier5);
+                bezier5Vector.style={
+                    strokeWidth:3
+                };
+                //创建3次贝塞尔曲线
+                var points =[
+                    new SuperMap.Geometry.Point(80,19.4),
+                    new SuperMap.Geometry.Point(179,39.8),
+                    new SuperMap.Geometry.Point(164,40) ,
+                    new SuperMap.Geometry.Point(126,43.4)
+                ] ;
+                var bezier3=  SuperMap.Geometry.LineString.createBezier(points,5);
+                var bezier3Vector = new SuperMap.Feature.Vector(bezier3);
+                bezier3Vector.style={
+                    strokeColor:"#1E90FF",
+                    strokeWidth: 2
+                };
+                //创建2次贝塞尔曲线
+                var bezierpoints = [
+                    new SuperMap.Geometry.Point(-80,20),
+                    new SuperMap.Geometry.Point(-60,60),
+                    new SuperMap.Geometry.Point(0,60)
+                ];
+                var bezier2 = SuperMap.Geometry.LineString.createBezier2(bezierpoints, 20);
+                var bezierVector = new SuperMap.Feature.Vector(bezier2);
+                bezierVector.style={
+                    strokeColor:"#9AFF9A",
+                    strokeWidth: 3
+                };
+                //扇形
+                var  origion = new  SuperMap.Geometry.Point(20,-20);
+                var sides=30;
+                var cuvre=  SuperMap.Geometry.Polygon.createRegularPolygonCurve(origion,50,sides,80,220);
+                var cuvreVector= new SuperMap.Feature.Vector(cuvre);
+                cuvreVector.style={
+                    strokeColor:"#1E90FF",
+                    fillColor:"#C6E2FF",
+                    strokeWidth:2 ,
+                    fillOpacity:0.5
+                };
+
+                //椭圆
+                var points=createEllipse(100,-10,50,25);
+                linearRings = new SuperMap.Geometry.LinearRing(points),
+                        region = new SuperMap.Geometry.Polygon([linearRings]);
+                var ellipseVector= new SuperMap.Feature.Vector(region);
+                ellipseVector.style={
+                    fillColor:"#B0E2FF",
+                    strokeColor:"#C1FFC1",
+                    fillOpacity:0.5
+                };
+
+                //六边形
+                var points2=[
+                            new SuperMap.Geometry.Point(-120,54.142),
+                            new SuperMap.Geometry.Point(-110,40),
+                            new SuperMap.Geometry.Point(-120,25.857),
+                            new SuperMap.Geometry.Point(-140,25.857),
+                            new SuperMap.Geometry.Point(-150,40),
+                            new SuperMap.Geometry.Point(-140,54.142)
+
+                        ],
+                        linearRings = new SuperMap.Geometry.LinearRing(points2),
+                        region = new SuperMap.Geometry.Polygon([linearRings]);
+                var polygonVector = new SuperMap.Feature.Vector(region);
+                // 矩形
+                var x = -70;
+                var y = -30;
+                var w = 40;
+                var h = 30;
+                var rectangle = new SuperMap.Geometry.Rectangle(x, y, w, h);
+                var rectangleVector = new SuperMap.Feature.Vector(rectangle);
+                //圆
+                var centerPoint=new  SuperMap.Geometry.Point(-120,-50);
+                var circleP=createCircle(centerPoint,30,256,360,360);
+                var circleVector= new SuperMap.Feature.Vector(circleP);
+                circleVector.style={
+                    strokeColor:"#CAFF70",
+                    fillColor:"#C6E2FF",
+                    strokeWidth:2 ,
+                    fillOpacity:0.5
+                };
+                vector.addFeatures([pointVector,lineVector,bezier3Vector,bezierVector,bezier5Vector,cuvreVector,ellipseVector,polygonVector,rectangleVector,circleVector,linecVector]);
+                dataAdded=true;
+            } else{
+                alert("数据已加载。");
+            }
+        }
+        //函数的参数x,y为椭圆中心；a,b分别为椭圆横半轴
+        function createEllipse(x,y,a,b){
+            var step = (a > b) ? 1 / a : 1 / b,points=[];
+            //step是等于1除以长轴值a和b中的较大者
+            //i每次循环增加1/step，表示度数的增加
+            //这样可以使得每次循环所绘制的路径（弧线）接近1像素
+            for (var i = 0; i < 2 * Math.PI; i += step)
+            {
+                //参数方程为x = a * cos(i), y = b * sin(i)，
+                //参数为i，表示度数（弧度）
+                var point=new SuperMap.Geometry.Point(x+a*Math.cos(i),y+b*Math.sin(i));
+                points.push(point);
+            }
+            return points;
+        }
+        //圆
+        function createCircle(origin, radius, sides,r,angel){
+            var rR = r*Math.PI/(180*sides);
+            var rotatedAngle, x, y;
+            var points = [];
+            for(var i=0; i<sides; ++i) {
+                rotatedAngle = rR*i;
+                x = origin.x + (radius * Math.cos(rotatedAngle));
+                y = origin.y + (radius * Math.sin(rotatedAngle));
+                points.push(new SuperMap.Geometry.Point(x, y));
+            }
+            rotatedAngle = r*Math.PI/180;
+            x = origin.x + (radius * Math.cos(rotatedAngle));
+            y = origin.y + (radius * Math.sin(rotatedAngle));
+            points.push(new SuperMap.Geometry.Point(x, y));
+
+            var ring = new SuperMap.Geometry.LinearRing(points);
+            ring.rotate(parseFloat(angel),origin);
+            var geo = new SuperMap.Geometry.Collection([ring]);
+            geo.origin = origin;
+            geo.radius = radius;
+            geo.r = r;
+            geo.angel = angel;
+            geo.sides = sides;
+            geo.polygonType = "Curve";
+            return geo;
+        }
+
+
+        function removeData()
+        {        dataAdded =false;
+            vector.removeAllFeatures();
+            vector.refresh();
+        }
+    </script>
+</head>
+<body onload="init()" >
+<div id="toolbar">
+    <input type="button" class="btn"value ="加载数据"onclick="addData()"/>
+    <input type="button" class="btn"value ="移除数据"onclick="removeData()"/>
+</div>
+<div id="map"></div>
+
+</body>
+</html>

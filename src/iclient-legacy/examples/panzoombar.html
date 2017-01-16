@@ -1,0 +1,65 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>平移缩放控件</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 553px;
+                border:1px solid #3473b7;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, layerWorld;
+            var url=host+"/iserver/services/map-world/rest/maps/World";
+			
+			function init(){
+                map = new SuperMap.Map("map",{controls: [
+					new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+                });
+				
+				//初始化复杂缩放控件类
+				panzoombar=new SuperMap.Control.PanZoomBar();
+				// 是否固定缩放级别为[0,16]之间的整数，默认为false
+				panzoombar.forceFixedZoomLevel=true;
+				//是否显示滑动条，默认值为false
+				panzoombar.showSlider=true;
+				/*点击箭头移动地图时，所移动的距离占总距离（上下移动的总距离为高度，左右移动的总距离为宽度）
+				的百分比，默认为null。 例如：如果slideRatio 设为0.5, 则垂直上移地图半个地图高度.*/
+				panzoombar.slideRatio=0.5; 
+				//设置缩放条滑块的高度，默认为120
+				panzoombar.sliderBarHeight=180;
+				//设置缩放条滑块的宽度，默认为13
+				panzoombar.sliderBarWidth=17;
+                map.addControl(panzoombar);
+                layerWorld = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, { transparent: true, cacheEnabled: true }, { maxResolution: "auto" });    //获取图层服务地址
+				layerWorld.events.on({"layerInitialized": addLayer});
+            }
+			
+			//添加地图图层、控件PanZoomBar到map
+            function addLayer(){
+                map.addLayer(layerWorld);
+
+                map.setCenter(new SuperMap.LonLat(0, 0),0);
+            }
+			
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="map"></div>
+    </body>
+</html>

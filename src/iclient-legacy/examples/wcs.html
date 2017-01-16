@@ -1,0 +1,54 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>WCS</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 553px;
+                border:1px solid #3473b7;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var map, layer,layerWorld,
+            host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+            url1=host+"/iserver/services/map-world/rest/maps/World",
+            url2=host+"/iserver/services/data-world/wcs111";
+            function init(){
+                map = new SuperMap.Map("map", {controls: [
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })], units: "degrees", allOverlays: true
+                });
+
+                layerWorld = new SuperMap.Layer.TiledDynamicRESTLayer("World", url1,  {transparent: true, cacheEnabled: true});
+                layerWorld.events.on({"layerInitialized": addLayer1});
+            }
+            function addLayer1(){
+                //基于SuperMap对WCS地图图层进行了支持与扩展，需要额外引入WCSLayer.js脚本;
+                //脚本位于js/layer/WCSLayer.js;
+                //初始化WCS图层
+                layer = new SuperMap.Layer.WCS("wcsLayer", url2);
+                map.addLayers([layerWorld, layer]);
+                map.setCenter(new SuperMap.LonLat(0, 0), 2);
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="map"></div>
+    </body>
+</html>

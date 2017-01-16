@@ -1,0 +1,109 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>鼠标拖拽要素控件</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+        var map, layer, vectorLayer,dragFeature;
+        url=host+"/iserver/services/map-world/rest/maps/World";
+        function init(){
+            //新建矢量图层
+            vectorLayer = new SuperMap.Layer.Vector("vectorlayer");
+
+            addData();
+
+            dragFeature = new SuperMap.Control.DragFeature(vectorLayer);
+            //定义layer图层，TiledDynamicRESTLayer：分块动态 REST 图层
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, { transparent: true, cacheEnabled: true }, { maxResolution: "auto" });
+            //为图层初始化完毕添加addLayer()事件
+            layer.events.on({"layerInitialized":addLayer});
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }}),
+                dragFeature]
+            });
+        }
+
+        function addLayer() {
+            map.addLayers([layer,vectorLayer]);
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+        }
+
+        function addData(){
+            var point_data=[[-55,34],[-90,-45],[44,-50],[100,33],[94,57]];
+            var point_features=[];
+            for(var i= 0,len=point_data.length;i<len;i++){
+                var point = new SuperMap.Geometry.Point(point_data[i][0],point_data[i][1]);
+                var feature=new SuperMap.Feature.Vector(point);
+                point_features.push(feature);
+            }
+            vectorLayer.addFeatures(point_features);
+
+            var line_data=[[113,19],[107,-2],[92,13],[90,21],[82,12],[74,3],[64,22],[52,8],[71,0],[91,3]];
+            var points=[];
+            for(var i= 0,len=line_data.length;i<len;i++){
+                var point = new SuperMap.Geometry.Point(line_data[i][0],line_data[i][1]);
+                points.push(point);
+            }
+            var line=new SuperMap.Geometry.LineString(points);
+            var line_feature=new SuperMap.Feature.Vector(line);
+            vectorLayer.addFeatures([line_feature]);
+
+            var polygon_data=[[-16,30],[-16,0],[50,0],[50,30]];
+            var points=[];
+            for(var i= 0,len=polygon_data.length;i<len;i++){
+                var point = new SuperMap.Geometry.Point(polygon_data[i][0],polygon_data[i][1]);
+                points.push(point);
+            }
+            var linearRing=new SuperMap.Geometry.LinearRing(points);
+            var polygon=new SuperMap.Geometry.Polygon([linearRing]);
+            var polygon_feature=new SuperMap.Feature.Vector(polygon);
+            vectorLayer.addFeatures([polygon_feature]);
+        }
+
+        //激活拖拽要素控件
+        function activateDragFeature(){
+            dragFeature.activate();
+        }
+
+        //注销拖拽要素控件
+        function deactivateDragFeature(){
+            dragFeature.deactivate();
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="拖拽要素" onclick="activateDragFeature()" />
+    <input type="button" class="btn" value="取消拖拽" onclick="deactivateDragFeature()" />
+</div>
+<div id="map"></div>
+</body>
+</html>

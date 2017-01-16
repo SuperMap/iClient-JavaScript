@@ -1,0 +1,129 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>麻点图</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var map,datasetName,popup,myGOIs,control,
+                host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+                url=host+"/iserver/services/map-china400/rest/maps/China";
+        function init(){
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })],allOverlays: true,projection: "EPSG:3857"
+            });
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("china", url, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+        }
+        function addLayer() {
+            map.addLayers([layer]);
+            map.setCenter(new SuperMap.LonLat(11733502.481499, 4614406.969325), 4);
+        }
+
+        function createLayer(){
+            datasetName = "China_Rural_pt@China";
+
+            //创建一个麻点图对象
+            myGOIs = new SuperMap.GOIs({
+                "url":url,
+                "datasetName":datasetName,
+                "style":new SuperMap.REST.ServerStyle({
+                    "markerSymbolID":72,
+                    "markerSize":4
+                }),
+                "pixcell": 16
+            });
+
+            myGOIs.events.on({
+                "initialized":GOIsInitialized
+            });
+        }
+
+        function clearLayer(){
+            closeInfoWin();
+
+            var layers = myGOIs.getLayers();
+            for(var i=0;i<layers.length;i++){
+                map.removeLayer(layers[i]);
+            }
+            myGOIs.destroy();
+            myGOIs = null;
+
+            control.destroy();
+            control = null;
+        }
+
+        function GOIsInitialized(){
+            var layers = myGOIs.getLayers();
+            map.addLayers(layers);
+
+            control = new SuperMap.Control.GOIs(layers,{
+                onClick:function(evt){
+                    var lonlat = evt.loc;
+                    var name = evt.data.NAME;
+
+                    openInfoWin(lonlat,name);
+                },
+                highlightIcon:new SuperMap.Icon('images/circle.png',  new SuperMap.Size(16,16), new SuperMap.Pixel(-8, -8)),
+                isHighlight:true
+            });
+            map.addControl(control);
+        }
+
+        function openInfoWin(lonlat,name){
+            closeInfoWin();
+            var contentHTML = "<div style=\'font-size:.8em; opacity: 0.8; overflow-y:hidden;\'>";
+            contentHTML += "<div>"+name+"</div></div>";
+
+            popup = new SuperMap.Popup.FramedCloud("popwin",new SuperMap.LonLat(lonlat.lon,lonlat.lat),null,contentHTML,null,true,function(){
+                closeInfoWin();
+                control.removeClickedMarker();
+            });
+            map.addPopup(popup);
+        }
+
+        function closeInfoWin() {
+            if (popup) {
+                try {
+                    map.removePopup(popup);
+                }
+                catch (e) {
+                }
+            }
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="渲染麻点图" onclick="createLayer()" />
+    <input type="button" class="btn" value="清除" onclick="clearLayer()" />
+</div>
+<div id="map"></div>
+</body>
+</html>

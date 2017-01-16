@@ -1,0 +1,46 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Image图层</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 553px;
+                border:1px solid #3473b7;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var map, layer;
+            function init(){
+                map = new SuperMap.Map("map", { controls: [
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.Navigation()]
+                });
+                var options = {numZoomLevels: 12,useCanvas:false};
+                var bounds= new SuperMap.Bounds(-180, -90, 180, 90);
+                layer=new SuperMap.Layer.Image(
+                        'World_Day',
+                        'images/Day.jpg',
+                        bounds ,
+                        options
+                );
+                map.addLayer(layer);
+                map.zoomToMaxExtent();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="map"></div>
+    </body>
+</html>

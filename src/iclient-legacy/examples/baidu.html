@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+        body, html,#allmap {width: 100%;height: 95%;overflow: hidden;margin:0;}
+        #allmap{
+            height: 91%;
+
+        }
+        #l-map{height:100%;width:100%;float:left;border-right:2px solid #bcbcbc;}
+        #r-result{height:100%;width:20%;float:left;}
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.5&ak=95a21d20cfe4df8d03f267282e62d8ae"></script>
+    <script type="text/javascript" src="../libs/SuperMap.Include.js"></script>
+    <script type="text/javascript" src="js/iConnector/iConnectorBaidu.js"></script>
+    <title>百度地图叠加等级符号专题图</title>
+</head>
+<body>
+<div id ="toolbar">
+    <input type="button" class="btn" onclick="addThemeGraduatedSymbol()" value="添加等级符号专题图" />
+    <input type="button" class="btn" onclick="removeTheme()" value="移除等级符号专题图" />
+    </div>
+<div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript">
+    //初始化百度地图
+    var tileLayer;
+    var map = new BMap.Map('allmap');
+    var host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+    url = host + "/iserver/services/map-china400/rest/maps/China";
+    //添加比例尺控件
+    map.addControl(new BMap.ScaleControl());
+    //添加导航控件
+    map.addControl(new BMap.NavigationControl());
+    //设置鼠标滑轮放大缩小地图可用
+    map.enableScrollWheelZoom(true);
+    //初始化定位
+    map.centerAndZoom(new BMap.Point(105, 39), 5);
+    //添加等级符号专题图
+    function addThemeGraduatedSymbol() {
+        tileLayer&&map.removeTileLayer(tileLayer);
+        //初始化专题图制作请求服务类
+        var themeService = new SuperMap.REST.ThemeService(url,
+                        {eventListeners:{"processCompleted": themeCompleted, "processFailed": themeFailed}}),
+                graStyle = new SuperMap.REST.ThemeGraduatedSymbolStyle({
+                    positiveStyle: new SuperMap.REST.ServerStyle({
+                        markerSize: 50,
+                        markerSymbolID: 0,
+                        lineColor: new SuperMap.REST.ServerColor(255,165,0),
+                        fillBackColor: new SuperMap.REST.ServerColor(255,0,0)
+                    })
+                }),
+                themeGraduatedSymbol = new SuperMap.REST.ThemeGraduatedSymbol({
+                    expression: "SMAREA",
+                    baseValue: 3000000000000,
+                    graduatedMode: SuperMap.REST.GraduatedMode.CONSTANT,
+                    flow: new SuperMap.REST.ThemeFlow({
+                        flowEnabled: true
+                    }),
+                    style: graStyle
+                }),
+                themeParameters = new SuperMap.REST.ThemeParameters({
+                    themes: [themeGraduatedSymbol],
+                    datasetNames: ["China_Province_pg"],
+                    dataSourceNames: ["China"]
+                });
+        //向iserver发送请求
+        themeService.processAsync(themeParameters);
+    }
+    //生成专题图后将其叠加到 baidu 地图上面
+    function themeCompleted(themeEventArgs) {
+        if(themeEventArgs.result.resourceInfo.id) {
+            var id =  themeEventArgs.result.resourceInfo.id;
+             tileLayer = SuperMap.Web.iConnector.Baidu.getLayer(url,{layersID:id});
+            //添加专题图
+            map.addTileLayer(tileLayer);
+        }
+    }
+
+    function themeFailed(serviceFailedEventArgs) {
+        alert(serviceFailedEventArgs.error.errorMsg);
+    }
+    function removeTheme(){
+        map.removeTileLayer(tileLayer);
+    }
+</script>

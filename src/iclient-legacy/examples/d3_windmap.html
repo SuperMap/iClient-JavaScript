@@ -1,0 +1,100 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>D3风向图</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+                font: 10px sans-serif;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script src='js/d3.v3.min.js'></script>
+        <script src='js/D3WindMap.js'></script>
+        <script src='data/windData1.js'></script>
+        <script src='data/windData2.js'></script>
+        <script type="text/javascript">
+            var map, local, baseLayer,elementsLayer,windData,myD3WindMap,
+            host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+            url=host+"/iserver/services/map-world/rest/maps/World";
+            function init(){
+                if(!hasSVG()){
+                    alert('您的浏览器不支持 SVG，请升级');
+                    return;
+                }
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })],allOverlays:true
+                });
+                baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("China400", url, {transparent: true, cacheEnabled: true}, {maxResolution: "auto"});
+                baseLayer.events.on({"layerInitialized": addLayer});
+            }
+
+            function hasSVG(){
+                var doc = document;
+                var SVG_NS = 'http://www.w3.org/2000/svg';
+                return !!doc.createElementNS && !!doc.createElementNS(SVG_NS, 'svg').createSVGRect;
+            }
+
+            function addLayer() {
+                elementsLayer = new SuperMap.Layer.Elements("elementsLayer");
+                map.addLayers([baseLayer,elementsLayer]);
+                map.setCenter(new SuperMap.LonLat(0, 0), 0);
+
+                setData();
+                myD3WindMap = new D3WindMap({
+                    div:elementsLayer.getDiv(),
+                    map:map,
+                    d3Layer:elementsLayer
+                });
+            }
+
+            function addWindMap(){
+
+                myD3WindMap.addData(windData);
+            }
+
+            function setData(){
+                windData = xiamenWind1.concat(xiamenWind2) ;
+            }
+            function clear1(){
+                myD3WindMap.clear();
+            }
+            function stop(){
+                myD3WindMap.stop();
+            }
+            function run(){
+                myD3WindMap.run();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="创建风向图" onclick="addWindMap()" />
+            <input type="button" class="btn" value="暂停" onclick="stop()" />
+            <input type="button" class="btn" value="运行" onclick="run()" />
+            <input type="button" class="btn" value="删除" onclick="clear1()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

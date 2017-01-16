@@ -1,0 +1,149 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>缓冲区查询</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, local, layer, vectorLayer, drawPoint, drawLine, drawPolygon, markerLayer,
+            style = {
+                strokeColor: "#304DBE",
+                strokeWidth: 1,
+                pointerEvents: "visiblePainted",
+                fillColor: "#304DBE",
+                fillOpacity: 0.5,
+                pointRadius:2
+            },
+            url1=host+"/iserver/services/map-world/rest/maps/World",
+            url2=host+"/iserver/services/data-world/rest/data";
+            function init(){
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url1, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+                layer.events.on({"layerInitialized":addLayer});
+                vectorLayer = new SuperMap.Layer.Vector("Vector Layer");
+                markerLayer = new SuperMap.Layer.Markers("Markers");
+
+                drawPoint = new SuperMap.Control.DrawFeature(vectorLayer, SuperMap.Handler.Point);
+                drawPoint.events.on({"featureadded": drawCompleted});
+
+                drawLine = new SuperMap.Control.DrawFeature(vectorLayer, SuperMap.Handler.Path);
+                drawLine.events.on({"featureadded": drawCompleted})
+
+                drawPolygon = new SuperMap.Control.DrawFeature(vectorLayer, SuperMap.Handler.Polygon);
+                drawPolygon.events.on({"featureadded": drawCompleted});
+
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }}),
+                    drawPoint, drawLine, drawPolygon]
+                });
+            }
+
+            function addLayer() {
+                map.addLayers([layer, vectorLayer, markerLayer]);
+                map.setCenter(new SuperMap.LonLat(0, 0), 0);
+            }
+            function drawPointGeometry() {
+                //先清除上次的显示结果
+                vectorLayer.removeAllFeatures();
+                markerLayer.clearMarkers();
+
+                drawPoint.activate();
+            }
+            function drawLineGeometry() {
+                //先清除上次的显示结果
+                vectorLayer.removeAllFeatures();
+                markerLayer.clearMarkers();
+
+                drawLine.activate();
+            }
+            function drawPolygonGeometry() {
+                //先清除上次的显示结果
+                vectorLayer.removeAllFeatures();
+                markerLayer.clearMarkers();
+
+                drawPolygon.activate();
+            }
+            function drawCompleted(drawGeometryArgs) {
+                drawPoint.deactivate();
+                drawLine.deactivate();
+                drawPolygon.deactivate();
+                var feature = new SuperMap.Feature.Vector();
+                feature.geometry = drawGeometryArgs.feature.geometry,
+                        feature.style = style;
+                vectorLayer.addFeatures(feature);
+
+                var getFeatureParameter, getFeatureService;
+                getFeatureParameter = new SuperMap.REST.GetFeaturesByBufferParameters({
+                    bufferDistance: 30,
+                    //attributeFilter: "SMID > 0",
+                    datasetNames: ["World:Capitals"],
+                    returnContent:true,
+                    geometry: drawGeometryArgs.feature.geometry
+                });
+                getFeatureService = new SuperMap.REST.GetFeaturesByBufferService(url2, {
+                    eventListeners: {
+                        "processCompleted": processCompleted,
+                        "processFailed": processFailed
+                    }
+                });
+                getFeatureService.processAsync(getFeatureParameter);
+            }
+
+            function processCompleted(getFeaturesEventArgs) {
+                var i, len, features, result = getFeaturesEventArgs.result;
+                if (result && result.features) {
+                    features = result.features;
+                    for (i=0, len=features.length; i<len; i++) {
+                        var point = features[i].geometry,
+                                size = new SuperMap.Size(44, 33),
+                                offset = new SuperMap.Pixel(-(size.w/2), -size.h),
+                                icon = new SuperMap.Icon("../theme/images/marker.png", size, offset);
+                        markerLayer.addMarker(new SuperMap.Marker(new SuperMap.LonLat(point.x, point.y), icon));
+                    }
+                }
+            }
+
+            function processFailed(e) {
+                alert(e.error.errorMsg);
+            }
+            function clearFeatures() {
+                vectorLayer.removeAllFeatures();
+                markerLayer.clearMarkers();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="点" onclick="drawPointGeometry()" />
+            <input type="button" class="btn" value="线" onclick="drawLineGeometry()" />
+            <input type="button" class="btn" value="面" onclick="drawPolygonGeometry()" />
+            <input type="button" class="btn" value="清除" onclick="clearFeatures()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

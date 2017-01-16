@@ -1,0 +1,272 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>标号库加载</title>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <link href='./css/heatmap.css' rel='stylesheet' />
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+        .winContent{
+            padding:5px;
+            overflow-y:auto;
+            height:500px;
+        }
+
+        .popupWindow {
+            right:20px;
+            top:30px;
+            width: 250px;
+            position: absolute;
+            border: 2px solid #D6E3F1;
+            background: #FFF;
+            z-index: 9999;
+            top: 45px;
+            right: 0px;
+            border-top-width: 0px;
+            display: block;
+        }
+       .winTitle{
+           background: #1E90FF;
+       }
+
+    </style>
+
+    <script src="../libs/SuperMap.Include.js"></script>
+    <script type="text/javascript">
+        var plottingLayer,plottingEdit, layer;
+        var drawGraphicObject;
+        var map;
+        var host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        var mapurl = host + "/iserver/services/map-world/rest/maps/World";
+        var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+
+        var plotting;
+        var symbolLibManager;
+        function init(){
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+            });
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {transparent: true, cacheEnabled: true},{maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+
+            plottingLayer = new SuperMap.Layer.PlottingLayer("标绘图层", serverUrl);
+            plottingLayer.style = {
+                fillColor: "#66cccc",
+                fillOpacity: 0.4,
+                strokeColor: "#66cccc",
+                strokeOpacity: 1,
+                strokeWidth: 3,
+                pointRadius:6
+            };
+
+            // 绘制标号;
+            drawGraphicObject = new SuperMap.Control.DrawFeature(plottingLayer, SuperMap.Handler.GraphicObject);
+
+            //态势标绘编辑
+            plottingEdit = new SuperMap.Control.PlottingEdit(plottingLayer);
+
+            //添加态势标绘控件
+            map.addControls([plottingEdit,drawGraphicObject]);
+
+            plotting = SuperMap.Plotting.getInstance(map, serverUrl);
+
+            loadSymbolLib();
+        }
+
+        function addLayer() {
+            map.addLayers([layer, plottingLayer]);
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+
+            plottingEdit.activate();
+        }
+
+        function loadSymbolLib()
+        {
+            symbolLibManager = plotting.getSymbolLibManager();
+            symbolLibManager.events.on({"initializeCompleted":showSymbolLibInfo});
+            symbolLibManager.initializeAsync();
+        }
+
+        function showSymbolLibInfo(result)
+        {
+            document.all.symbolLibInfo.innerHTML = "";
+
+            if(0 === result.length)
+            {
+                return;
+            }
+
+            var symbolLib = symbolLibManager.getSymbolLibByIndex(0);
+
+
+            //获取选中的对象
+            var container = document.getElementById("symbolLibInfo");
+            var table = document.createElement("table");
+            var body = document.createElement("tbody");
+            table.setAttribute("border","1");
+            table.setAttribute("borderColor","black");
+            table.setAttribute("width","100%");
+
+            //标号库名称
+            var tr_SymbolLibName = document.createElement("tr");
+
+            var tdName_SymbolLibName = document.createElement("td");
+            var textName_SymbolLibName = document.createTextNode("标号库名称");
+            tdName_SymbolLibName.appendChild(textName_SymbolLibName);
+            tr_SymbolLibName.appendChild(tdName_SymbolLibName);
+
+            var tdValue_SymbolLibName = document.createElement("td");
+            var textValue_SymbolLibName = document.createTextNode(symbolLib.getSymbolLibName());
+            tdValue_SymbolLibName.appendChild(textValue_SymbolLibName);
+            tr_SymbolLibName.appendChild(tdValue_SymbolLibName);
+
+            body.appendChild(tr_SymbolLibName);
+
+            //标号库ID
+            var tr_SymbolLibID = document.createElement("tr");
+
+            var tdName_SymbolLibID = document.createElement("td");
+            var textName_SymbolLibID = document.createTextNode("标号库ID");
+            tdName_SymbolLibID.appendChild(textName_SymbolLibID);
+            tr_SymbolLibID.appendChild(tdName_SymbolLibID);
+
+            var tdValue_SymbolLibID = document.createElement("td");
+            var textValue_SymbolLibID = document.createTextNode(symbolLib.getSymbolLibID());
+            tdValue_SymbolLibID.appendChild(textValue_SymbolLibID);
+            tr_SymbolLibID.appendChild(tdValue_SymbolLibID);
+
+            body.appendChild(tr_SymbolLibID);
+
+            //标号库标号个数
+            var tr_SymbolCount = document.createElement("tr");
+
+            var tdName_SymbolCount = document.createElement("td");
+            var textName_SymbolCount = document.createTextNode("标号个数");
+            tdName_SymbolCount.appendChild(textName_SymbolCount);
+            tr_SymbolCount.appendChild(tdName_SymbolCount);
+
+            var tdValue_SymbolCount = document.createElement("td");
+            var textValue_SymbolCount = document.createTextNode(symbolLib.getSymbolCount());
+            tdValue_SymbolCount.appendChild(textValue_SymbolCount);
+            tr_SymbolCount.appendChild(tdValue_SymbolCount);
+
+            body.appendChild(tr_SymbolCount);
+
+
+            table.appendChild(body);
+            container.appendChild(table);
+        }
+
+        function plotSymbol()
+        {
+            var symbolLib = symbolLibManager.getSymbolLibByIndex(0);
+            if(null === symbolLib)
+            {
+                drawGraphicObject.deactivate();
+                return;
+            }
+
+            drawGraphicObject.handler.libID = symbolLib.getSymbolLibID();
+            drawGraphicObject.handler.symbolCode = getFirstSymbol();
+            drawGraphicObject.handler.serverUrl = serverUrl;
+
+            drawGraphicObject.deactivate();
+            drawGraphicObject.activate();
+        }
+
+        function getCode(symbolInfo)
+        {
+            var nCode = -1;
+            while(symbolInfo.symbolNodeType === "SYMBOL_GROUP")
+            {
+                symbolInfo = symbolInfo.childNodes[0];
+            }
+
+            nCode = symbolInfo.symbolCode;
+
+            return nCode;
+        }
+
+        function getFirstSymbol()
+        {
+            var nCode = -1;
+            var symbolLib = symbolLibManager.getSymbolLibByIndex(0);
+            if(null === symbolLib)
+            {
+                drawGraphicObject.deactivate();
+                return nCode;
+            }
+
+            var rootSymbolInfo = symbolLib.getRootSymbolInfo();
+
+            var i = 0;
+            nCode = getCode(rootSymbolInfo.childNodes[i]);
+            while(-1 === nCode)
+            {
+                i++;
+                nCode = getCode(rootSymbolInfo.childNodes[i]);
+            }
+
+            return nCode;
+        }
+
+        function PlottingDrawCancel(){
+            drawGraphicObject.deactivate();
+            plottingEdit.deactivate();
+
+            plottingEdit.activate();
+        }
+
+        //清空绘制
+        function PlottingClear(){
+            drawGraphicObject.deactivate();
+            plottingEdit.deactivate();
+
+            plottingLayer.removeAllFeatures();
+        }
+
+        document.oncontextmenu = function(evt){
+            PlottingDrawCancel();
+            return false;
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id = "toolbar">
+    <input type="button" class="btn" value="标绘" onclick="plotSymbol()" />
+    <input type="button" class="btn" value="取消标绘" onclick="PlottingDrawCancel()" />
+    <input type="button" class="btn" value="清空" onclick="PlottingClear()" />
+</div>
+ <div id="popupWin" class="popupWindow" style="display: block;top: 400px; height: 150px;">
+     <div  class="winTitle">
+        <span class="title_left">标号库信息</span>
+     </div>
+     <div id = "symbolLibInfo" class="winContent" style="overflow-y:auto;height:250px;">
+     </div>
+</div>
+<div id="map"></div>
+</body>
+</html>

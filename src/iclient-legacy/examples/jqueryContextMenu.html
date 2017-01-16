@@ -1,0 +1,80 @@
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>jquery右键菜单</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 553px;
+            border:1px solid #3473b7;
+        }
+    </style>
+    <!--<link href='./css/bootstrap.min.css' rel='stylesheet' />-->
+    <!--<link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />-->
+    <link href='./css/jquery.contextMenu.css'rel='stylesheet'>
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script src='./js/jquery.js'></script>
+    <script src='./js/jquery.contextMenu.js'></script>
+
+    <script type="text/javascript">
+        var map,layer,host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-world/rest/maps/World";
+        function init(){
+            var broz = SuperMap.Util.getBrowser();
+            if (broz.device === 'android'|| broz.device === 'apple') {
+                alert('您的设备不支持，请使用pc或其他设备');
+                return;
+            }
+            map = new SuperMap.Map("map");
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("world",url,{transparent: true, cacheEnabled:true}, {maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+
+        }
+        function addLayer(){
+            map.addLayers([layer]);
+            map.setCenter(new SuperMap.LonLat(4503.6240321526, -3861.911472192499), 1);
+        }
+        function zoomin()
+        {
+            map.zoomIn();
+        }
+        //缩小，在当前缩放级别的基础上缩小一级。
+        function zoomout()
+        {
+            map.zoomOut();
+        }
+        </script>
+    <script>
+        $(function(){
+            $.contextMenu({
+                selector:'#map',
+                autoHide:true,
+                delay:500,
+                items:{
+                    "large":{
+                        name:"放大" ,
+                        icon:"zoomin",
+                        callback:zoomin
+                    }  ,
+                    "reduce":{
+                        name:"缩小",
+                        icon:"zoomout ",
+                        callback:zoomout
+                    }
+
+                }
+            })
+        });
+
+    </script>
+</head>
+<body onload="init()">
+<div id ="map"></div>
+</body>
+</html>

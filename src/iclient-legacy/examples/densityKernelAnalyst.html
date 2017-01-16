@@ -1,0 +1,176 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>核密度分析</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var map, baseLayer, resultLayer,
+                host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+                url=host+"/iserver/services/map-changchun/rest/maps/长春市区图",
+                url2=host+"/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+        function init(){
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.PanZoomBar(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+            });
+
+            //将“长春市区图”置为底图
+            baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("长春市区图", url, {transparent: true, cacheEnabled: true}, {maxResolution: "auto"});
+            baseLayer.events.on({"layerInitialized": addBaseLayer});
+        }
+
+        function addBaseLayer() {
+            map.addLayer(baseLayer);
+            map.setCenter(new SuperMap.LonLat(5800, -3000), 2);
+            map.allOverlays = true;
+        }
+        function addResultLayer() {
+            //移除核密度分析的结果专题图层
+            removeTheme();
+
+            //创建一个核密度分析服务实例
+            var densityAnalystService = new SuperMap.REST.DensityAnalystService(url2, {
+                eventListeners:{
+                    "processCompleted": KernelAnalystCompleted,
+                    "processFailed": KernelAnalystFailed
+                }
+            });
+
+            //创建一个核密度分析参数示例
+            var densityKernelAnalystParameters = new SuperMap.REST.DensityKernelAnalystParameters({
+                //指定数据集
+                dataset: "Railway@Changchun",
+                //指定范围
+                bounds: new SuperMap.Bounds(3800, -3800, 8200, -2200),
+                //指定数据集中用于核密度分析的字段
+                fieldName: "SmLength",
+                searchRadius: 50,  //Railway@Changchun的单位是米
+                //结果数据集名称
+                resultGridName: "KernelDensity_Result",
+                deleteExistResultDataset: true
+            });
+
+            densityAnalystService.processAsync(densityKernelAnalystParameters);
+        }
+
+        //用栅格专题图展示分析结果
+        function KernelAnalystCompleted(densityKernelAnalysEventArgs) {
+            var color1 = new SuperMap.REST.ServerColor(255,212,170),
+                    color2 = new SuperMap.REST.ServerColor(255,127,0),
+                    color3 = new SuperMap.REST.ServerColor(191,95,0),
+                    color4 = new SuperMap.REST.ServerColor(255,0,0),
+                    color5 = new SuperMap.REST.ServerColor(191,0,0),
+
+                    themeGridRangeIteme1 = new SuperMap.REST.ThemeGridRangeItem({
+                        start:0,
+                        end: 0.05,
+                        color: color1
+                    }),
+                    themeGridRangeIteme2 = new SuperMap.REST.ThemeGridRangeItem({
+                        start: 0.05,
+                        end:  5,
+                        color: color2
+                    }),
+                    themeGridRangeIteme3 = new SuperMap.REST.ThemeGridRangeItem({
+                        start: 5,
+                        end:  10,
+                        color: color3
+                    }),
+                    themeGridRangeIteme4 = new SuperMap.REST.ThemeGridRangeItem({
+                        start: 10,
+                        end:  100,
+                        color: color4
+                    }),
+                    themeGridRangeIteme5 = new SuperMap.REST.ThemeGridRangeItem({
+                        start: 100,
+                        end:  360,
+                        color: color5
+                    }),
+
+                    themeGridRange = new SuperMap.REST.ThemeGridRange({
+                        reverseColor:false,
+                        rangeMode: SuperMap.REST.RangeMode.EQUALINTERVAL,
+                        //栅格分段专题图子项数组
+                        items: [themeGridRangeIteme1,
+                            themeGridRangeIteme2,
+                            themeGridRangeIteme3,
+                            themeGridRangeIteme4,
+                            themeGridRangeIteme5
+                        ]
+                    }),
+                    themeParameters = new SuperMap.REST.ThemeParameters({
+                        //制作专题图的数据集（核密度分析的结果数据集）
+                        datasetNames:[densityKernelAnalysEventArgs.result.dataset.split('@')[0]],
+                        dataSourceNames: ["Changchun"],
+                        joinItems: null,
+                        themes: [themeGridRange]
+                    });
+            var themeService = new SuperMap.REST.ThemeService(url, {
+                eventListeners:{
+                    "processCompleted": themeCompleted,
+                    "processFailed": themeFailed
+                }
+            });
+            themeService.processAsync(themeParameters);
+        }
+        function themeCompleted(themeEventArgs) {
+            if(themeEventArgs.result.resourceInfo.id) {
+                resultLayer = new SuperMap.Layer.TiledDynamicRESTLayer("核密度分析结果", url, {cacheEnabled:false, transparent: true, layersID: themeEventArgs.result.resourceInfo.id },{"maxResolution":"auto"});
+                resultLayer.events.on({"layerInitialized":addThemelayer});
+                resultLayer.setOpacity(0.8);
+            }
+        }
+        function addThemelayer() {
+            //将专题图添加到地图
+            map.addLayer(resultLayer);
+        }
+        function themeFailed(serviceFailedEventArgs) {
+            alert(serviceFailedEventArgs.error.errorMsg);
+        }
+        function KernelAnalystFailed(serviceFailedEventArgs) {
+            alert(serviceFailedEventArgs.error.errorMsg);
+        }
+
+        //移除专题图
+        function removeTheme() {
+            if (map.layers.length > 1) {
+                map.removeLayer(resultLayer, true);
+            }
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="核密度分析" onclick="addResultLayer()" />
+    <input type="button" class="btn" value="移除结果图层" onclick="removeTheme()" />
+</div>
+<div id="map"></div>
+</body>
+</html>

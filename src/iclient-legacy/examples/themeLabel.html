@@ -1,0 +1,173 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>标签专题图</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var map, local, baseLayer, layersID, themeLayer,
+            host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+            url=host+"/iserver/services/map-world/rest/maps/World";
+            function init(){
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+                });
+                baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+                baseLayer.events.on({"layerInitialized":addLayer});
+            }
+
+            function addLayer() {
+                map.addLayer(baseLayer);
+                map.setCenter(new SuperMap.LonLat(0, 0), 0);
+                map.allOverlays = true;
+            }
+            function addThemeLabel() {
+                removeTheme();
+                var themeService = new SuperMap.REST.ThemeService(url, {eventListeners:{"processCompleted": themeCompleted, "processFailed": themeFailed}}),
+                        style1 = new SuperMap.REST.ServerTextStyle({
+                            fontHeight: 4,
+                            foreColor: new SuperMap.REST.ServerColor(100,20,50),
+                            sizeFixed: true,
+                            bold:true
+
+                        }),
+                        style2 = new SuperMap.REST.ServerTextStyle({
+                            fontHeight: 4,
+                            foreColor: new SuperMap.REST.ServerColor(250,0,0),
+                            sizeFixed: true,
+                            bold:true
+                        }),
+                        style3 = new SuperMap.REST.ServerTextStyle({
+                            fontHeight: 4,
+                            foreColor: new SuperMap.REST.ServerColor(93,95,255),
+                            sizeFixed: true,
+                            bold:true
+                        }),
+                        themeLabelIteme1 = new SuperMap.REST.ThemeLabelItem({
+                            start: 0.0,
+                            end: 7800000,
+                            style: style1
+                        }),
+                        themeLabelIteme2 = new SuperMap.REST.ThemeLabelItem({
+                            start: 7800000,
+                            end: 15000000,
+                            style: style2
+                        }),
+                        themeLabelIteme3 = new SuperMap.REST.ThemeLabelItem({
+                            start: 15000000,
+                            end:   30000000,
+                            style: style3
+                        }),
+
+                        themeLabelIteme4 = new SuperMap.REST.ThemeLabelItem({
+                            start: 0.0,
+                            end: 55,
+                            style: style1
+                        }),
+                        themeLabelIteme5 = new SuperMap.REST.ThemeLabelItem({
+                            start: 55,
+                            end: 109,
+                            style: style2
+                        }),
+                        themeLabelIteme6 = new SuperMap.REST.ThemeLabelItem({
+                            start: 109,
+                            end:   300,
+                            style: style3
+                        }),
+                        themeLabelOne = new SuperMap.REST.ThemeLabel({
+                            labelExpression: "CAPITAL",
+                            rangeExpression: "SmID",
+                            numericPrecision: 0,
+                            items: [themeLabelIteme4, themeLabelIteme5, themeLabelIteme6]
+                        }),
+                        themeLabelTwo = new SuperMap.REST.ThemeLabel({
+                            labelExpression: "CAP_POP",
+                            rangeExpression: "CAP_POP",
+                            numericPrecision: 0,
+                            items: [themeLabelIteme1, themeLabelIteme2, themeLabelIteme3]
+                        }),
+                //创建矩阵标签元素
+                        LabelThemeCellOne=new SuperMap.REST.LabelThemeCell({
+                            themeLabel: themeLabelOne
+                        }),
+                        LabelThemeCellTwo=new SuperMap.REST.LabelThemeCell({
+                            themeLabel: themeLabelTwo
+                        }),
+
+                        backStyle=new SuperMap.REST.ServerStyle({
+                            fillForeColor: new SuperMap.REST.ServerColor(255,255,0),
+                            fillOpaqueRate: 60,
+                            lineWidth: 0.1
+                        }),
+                //创建矩阵标签专题图
+                        themeLabel = new SuperMap.REST.ThemeLabel({
+                            matrixCells: [[LabelThemeCellOne],[LabelThemeCellTwo]],
+                            background:new SuperMap.REST.ThemeLabelBackground({
+                                backStyle: backStyle,
+                                labelBackShape:"RECT"
+                            })
+                        }),
+                        themeParameters = new SuperMap.REST.ThemeParameters({
+                            themes: [themeLabel],
+                            datasetNames: ["Capitals"],
+                            dataSourceNames: ["World"]
+                        });
+                themeService.processAsync(themeParameters);
+            }
+            function themeCompleted(themeEventArgs) {
+                if(themeEventArgs.result.resourceInfo.id) {
+                    themeLayer = new SuperMap.Layer.TiledDynamicRESTLayer("各国首都矩阵标签专题图", url, {cacheEnabled:false,transparent: true,layersID: themeEventArgs.result.resourceInfo.id}, {"maxResolution":"auto"});
+                    themeLayer.events.on({"layerInitialized":addThemelayer});
+                }
+            }
+            function addThemelayer() {
+                map.addLayer(themeLayer);
+            }
+
+            function themeFailed(serviceFailedEventArgs) {
+                //doMapAlert("",serviceFailedEventArgs.error.errorMsg,true);
+                alert(serviceFailedEventArgs.error.errorMsg);
+            }
+
+            function removeTheme() {
+                if (map.layers.length > 1) {
+                    map.removeLayer(themeLayer, true);
+                }
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="创建专题图" onclick="addThemeLabel()" />
+            <input type="button" class="btn" value="移除专题图" onclick="removeTheme()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

@@ -1,0 +1,74 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>OverlayLayer</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 520px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                height: 33px;
+                padding-top: 5px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, layerWorld, layerJingjing;
+            var url=host+"/iserver/services/map-world/rest/maps/World";
+            var url2=host+"/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
+            function init(){
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.OverviewMap(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })], allOverlays: true
+                });
+                layerWorld = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {transparent: true, cacheEnabled: true});
+                layerWorld.events.on({"layerInitialized": addLayer1});
+            }
+            function setLayerOpacity(){
+                var numStr = document.getElementById('layerOpacity').value;
+                if(numStr && !isNaN(numStr)){
+                    if(Number(numStr) >= 0 && Number(numStr) <= 1){
+                        layerJingjing.setOpacity(Number(numStr));
+                    }
+                }
+            }
+
+            function addLayer1(){
+                layerJingjing = new SuperMap.Layer.TiledDynamicRESTLayer("京津地区地图", url2, {transparent: true, cacheEnabled: true});
+                layerJingjing.events.on({"layerInitialized": addLayer2});
+                layerJingjing.setOpacity(0.6);
+            }
+            function addLayer2(){
+                map.addLayers([layerWorld,layerJingjing]);
+                map.setCenter(new SuperMap.LonLat(118, 40), 6);
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <span>透明度：</span>
+            <input style='width:50px' id='layerOpacity' value='0.6'/>
+            <input id="btn" type="button" class="btn" value="设置透明度" onclick="setLayerOpacity()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

@@ -1,0 +1,84 @@
+module("RouteCalculateMeasureService");
+
+var routeCalculateMeasureEventArgsSystem = null,
+    serviceFailedEventArgsSystem = null;
+
+function routeCalculateMeasureCompleted(routeCalculateMeasureEventArgs) {
+    routeCalculateMeasureEventArgsSystem = routeCalculateMeasureEventArgs;
+}
+
+function routeCalculateMeasureFailed(serviceFailedEventArgs) {
+    serviceFailedEventArgsSystem = serviceFailedEventArgs;
+}
+
+function initCalculateMeasureService() {
+    var routeCalculateMeasureService = new SuperMap.REST.RouteCalculateMeasureService(GlobeParameter.spatialAnalystURL,
+        {
+            eventListeners:{
+                "processCompleted":routeCalculateMeasureCompleted,
+                'processFailed':routeCalculateMeasureFailed
+            }
+        }
+    );
+    return routeCalculateMeasureService;
+}
+
+asyncTest("PointEventCalulateMeasure", function () {
+    var parameters = new SuperMap.REST.RouteCalculateMeasureParameters({
+        "sourceRoute":{
+            "type":"LINEM",
+            "parts":[4],
+            "points":[
+                {
+                    "measure":0,
+                    "y":-6674.466867067764,
+                    "x":3817.3527876130133
+                },
+                {
+                    "measure":199.57954019411724,
+                    "y":-6670.830929417594,
+                    "x":3617.806369901496
+                },
+                {
+                    "measure":609.3656478634477,
+                    "y":-6877.837541432356,
+                    "x":3264.1498746678444
+                },
+                {
+                    "measure":936.0174126282958,
+                    "y":-7038.687780615184,
+                    "x":2979.846206068903
+                }
+            ]
+        },
+        "tolerance":1,
+        "point":{
+            "x":3330.7754269417,
+            "y":-6838.8394457216
+        },
+        "isIgnoreGap":false
+    });
+    var calculateMeasureService = initCalculateMeasureService();
+    calculateMeasureService.processAsync(parameters);
+
+    setTimeout(function() {
+        try{
+            var calculateMeasureResult = calculateMeasureService.lastResult;
+            ok(calculateMeasureResult != null, "calculateMeasureService.lastResult");
+            equal(calculateMeasureResult.measure, 532.1658053450747, "calculateMeasureResult.measure");
+            ok(calculateMeasureResult.succeed,"calculateMeasureResult.succeed");
+            calculateMeasureResult.destroy();
+            ok(calculateMeasureResult.measure == null, "calculateMeasureResult.measure");
+
+            calculateMeasureService.destroy();
+            ok(calculateMeasureService.EVENT_TYPES == null, "calculateMeasureService.EVENT_TYPES");
+            ok(calculateMeasureService.events == null, "calculateMeasureService.events");
+            ok(calculateMeasureService.lastResult == null, "calculateMeasureService.lastResult");
+            ok(calculateMeasureService.eventListeners == null, "calculateMeasureService.eventListeners");
+            start();
+        } catch (excepion) {
+            ok(false, "exception occcurs,message is:"+excepion.message)
+            start();
+        }
+    }, 10000);
+});

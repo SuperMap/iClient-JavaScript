@@ -1,0 +1,231 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>气象监测</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script src='./data/sampleData1.js'></script>
+        <script src='./data/sampleData2.js'></script>
+        <script src='./data/sampleData3.js'></script>
+        <script src='./data/sampleData4.js'></script>
+        <script src='./data/sampleData5.js'></script>
+        <script src='./data/sampleData6.js'></script>
+        <script src='./data/sampleData7.js'></script>
+        <script src='./data/sampleData8.js'></script>
+        <script type="text/javascript">
+        var map, layer, animatorVector, features, select, tempLayer ,
+                drag, delIndex = 0, editEnable = false, dataIndex = 0, timerID = null,
+                weatherDatas = [],
+        //设置图层样式
+                transformControl;
+            style = {
+                strokeColor: "#cccccc",
+                strokeWidth: 1,
+                fillColor: "#ccfffa",
+                fillOpacity: "0.5"
+            };
+            style2 = {
+                strokeColor: "#cccccc",
+                strokeWidth: 1,
+                fillColor: "#a3f8b4",
+                fillOpacity: "0.5"
+            };
+            style1 = {
+                strokeColor: "#cccccc",
+                strokeWidth: 1,
+                fillColor: "#79f26f",
+                fillOpacity: "0.5"
+            };
+            style3 = {
+                strokeColor: "#cccccc",
+                strokeWidth: 1,
+                fillColor: "#2dd90b",
+                fillOpacity: "0.5"
+            };
+            style4 = {
+                strokeColor: "#cccccc",
+                strokeWidth: 1,
+                fillColor: "#8aee1e",
+                fillOpacity: "0.5"
+            };
+            style6 = {
+                strokeColor: "#cccccc",
+                strokeWidth: 1,
+                fillColor: "#c5ef0f",
+                fillOpacity: "0.5"
+            };
+            style5 = {
+                strokeColor: "#cccccc",
+                strokeWidth: 1,
+                fillColor: "#fff100",
+                fillOpacity: "0.5"
+            };
+            style7 = {
+                strokeColor: "#cccccc",
+                strokeWidth: 1,
+                fillColor: "#fcbd10",
+                fillOpacity: "0.5"
+            };
+            style8 = {
+                strokeColor: "#cccccc",
+                strokeWidth: 1,
+                fillColor: "#fb8722",
+                fillOpacity: "0.5"
+            };
+            style9 = {
+                strokeColor: "#cccccc",
+                strokeWidth: 1,
+                fillColor: "#d53b3b",
+                fillOpacity: "1"
+            },
+            host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+            url1=host+"/iserver/services/map-world/rest/maps/World";
+            function init(){
+                /*
+                 * 不支持canvas的浏览器不能运行该范例
+                 * android 设备也不能运行该范例*/
+                var broz = SuperMap.Util.getBrowser();
+
+                if(!document.createElement('canvas').getContext) {
+                    alert('您的浏览器不支持 canvas，请升级');
+                    return;
+                } else if (broz.device === 'android') {
+                    alert('您的设备不支持高性能渲染，请使用pc或其他设备');
+                    return;
+                }
+
+                //加载map控件
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })], units: "m"
+                });
+                //初始化图层
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("China400", url1, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+                //初始化动画矢量图层
+                animatorVector = new SuperMap.Layer.AnimatorVector("Polygon", {smooth:false},{
+                    //设置速度为每帧播放1小时的数据
+                    speed:1,
+                    //开始时间为0点
+                    startTime:0,
+                    //每秒渲染1次
+                    frameRate:1,
+                    //结束时间为7点
+                    endTime:7
+                });
+                layer.events.on({"layerInitialized":addLayer});
+            }
+
+        //添加图层
+        function addLayer() {
+            map.addLayers([layer,animatorVector]);
+            map.setCenter(new SuperMap.LonLat(106, 34), 2);
+            map.addControl(new SuperMap.Control.MousePosition()) ;
+            monitor();
+        };
+
+
+        //添加数据
+        function monitor() {
+            //初始化数据
+            if(weatherDatas.length == 0) {
+                weatherDatas[0] = SuperMap.REST.Recordset.fromJson(sampleData1);
+                weatherDatas[1] = SuperMap.REST.Recordset.fromJson(sampleData2);
+                weatherDatas[2] = SuperMap.REST.Recordset.fromJson(sampleData3);
+                weatherDatas[3] = SuperMap.REST.Recordset.fromJson(sampleData4);
+                weatherDatas[4] = SuperMap.REST.Recordset.fromJson(sampleData5);
+                weatherDatas[5] = SuperMap.REST.Recordset.fromJson(sampleData6);
+                weatherDatas[6] = SuperMap.REST.Recordset.fromJson(sampleData7);
+                weatherDatas[7] = SuperMap.REST.Recordset.fromJson(sampleData8);
+            }
+            animatorVector.removeAllFeatures();
+            var features = [];
+            for(var index = 0;index<weatherDatas.length;index++)
+            {
+                var result = weatherDatas[index];
+                var len = result.features.length;
+                for (var i = 0; i < len; i++) {
+                    var feature = result.features[i];
+                    var data = feature.attributes;
+                    data['TIME'] = index;
+                    data['FEATUREID'] = index + "_" +i;
+                    var value = data['DMAXVALUE'];
+                    if( value < -24){
+                        feature.style = style;
+                    }
+                    else if( value < -18){
+                        feature.style = style1;
+                    }
+                    else if( value < -12){
+                        feature.style = style2;
+                    }
+                    else if( value < -6){
+                        feature.style = style3;
+                    }
+                    else if( value < 0){
+                        feature.style = style4;
+                    }
+                    else if( value < 6){
+                        feature.style = style5;
+                    }
+                    else if( value < 12){
+                        feature.style = style6;
+                    }
+                    else if( value < 18){
+                        feature.style = style7;
+                    }
+                    else if( value < 24){
+                        feature.style = style8;
+                    }
+                    else {
+                        features.style = style9;
+                    }
+                    features.push(feature);
+                }
+            }
+
+            animatorVector.addFeatures(features);
+        };
+
+        //开始播放动画
+        function startAnimator(){
+            animatorVector.animator.start();
+        }
+        //暂停播放动画
+        function pauseAnimator(){
+            animatorVector.animator.pause();
+        }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="播放" onclick="startAnimator()" />
+            <input type="button" class="btn" value="暂停" onclick="pauseAnimator()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

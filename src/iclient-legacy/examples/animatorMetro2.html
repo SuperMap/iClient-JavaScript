@@ -1,0 +1,404 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>地铁修建模拟2</title>
+<style type="text/css">
+    body{
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+    }
+    #map{
+        position: relative;
+        height: 510px;
+        border:1px solid #3473b7;
+    }
+    #toolbar{
+        position: relative;
+        padding-top:5px;
+        padding-bottom: 10px;
+    }
+</style>
+<link href='./css/bootstrap.min.css' rel='stylesheet' />
+<link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+<script src='../libs/SuperMap.Include.js'></script>
+<script type="text/javascript">
+var map, layer,animatorVector,labelLayer,pointLayer,popup,selectFeature,     host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+url = host + "/iserver/services/map-china400/rest/maps/China";
+url2 = host + "/iserver/services/data-DynamicData/rest/data";
+var features = {};
+var popups = {};
+var style = {
+    style1:{
+        fillColor: "#cc0000",
+        pointRadius: 3,
+        strokeColor: "#cc0000",
+        strokeWidth: 5
+    },
+    style2:{
+        fillColor: "#0066cc",
+        pointRadius: 3,
+        strokeColor: "#0066cc",
+        strokeWidth: 5
+    },
+    style4:{
+        fillColor: "#008d9e",
+        pointRadius: 3,
+        strokeColor: "#008d9e",
+        strokeWidth: 5
+    },
+    style5:{
+        fillColor: "#a71c81",
+        pointRadius: 3,
+        strokeColor: "#a71c81",
+        strokeWidth: 5
+    },
+    style6:{
+        fillColor: "#d19708",
+        pointRadius: 3,
+        strokeColor: "#d19708",
+        strokeWidth: 5
+    },
+    style8:{
+        fillColor: "#019a6b",
+        pointRadius: 3,
+        strokeColor: "#019a6b",
+        strokeWidth: 5
+    },
+    style9:{
+        fillColor: "#8cc31f",
+        pointRadius: 3,
+        strokeColor: "#8cc31f",
+        strokeWidth: 5
+    },
+    style10:{
+        fillColor: "#019bc1",
+        pointRadius: 3,
+        strokeColor: "#019bc1",
+        strokeWidth: 5
+    },
+    style13:{
+        fillColor: "#fad15c",
+        pointRadius: 3,
+        strokeColor: "#fad15c",
+        strokeWidth: 5
+    },
+    style14:{
+        fillColor: "#d6a6a2",
+        pointRadius: 3,
+        strokeColor: "#d6a6a2",
+        strokeWidth: 5
+    },
+    style15:{
+        fillColor: "#69347c",
+        pointRadius: 3,
+        strokeColor: "#69347c",
+        strokeWidth: 5
+    },
+    style16:{
+        fillColor: "#cc0000",
+        pointRadius: 3,
+        strokeColor: "#cc0000",
+        strokeWidth: 5
+    },
+    style17:{
+        fillColor: "#db83b3",
+        pointRadius: 3,
+        strokeColor: "#db83b3",
+        strokeWidth: 5
+    },
+    style18:{
+        fillColor: "#e50075",
+        pointRadius: 3,
+        strokeColor: "#e50075",
+        strokeWidth: 5
+    },
+    style19:{
+        fillColor: "#e46022",
+        pointRadius: 3,
+        strokeColor: "#e46022",
+        strokeWidth: 5
+    },
+    style20:{
+        fillColor: "#a49abc",
+        pointRadius: 3,
+        strokeColor: "#a49abc",
+        strokeWidth: 5
+    }
+};
+var styleM = {
+    fontColor:"#000000",
+    fill:true,
+    fillColor:"#ffffff",
+    fillOpacity:1,
+    stroke:true,
+    strokeColor:"#ff0000",
+    labelAlign:"lb",
+    labelXOffset:9,
+    labelYOffset:5,
+    fontSize:"12px"
+};
+
+
+function init() {
+    if(!document.createElement('canvas').getContext) {
+        alert('您的浏览器不支持 canvas，请升级');
+        return;
+    }
+    //初始化地图
+    map = new SuperMap.Map("map",{controls: [
+        new SuperMap.Control.ScaleLine(),
+        new SuperMap.Control.Zoom(),
+        new SuperMap.Control.MousePosition(),
+        new SuperMap.Control.Navigation({
+            dragPanOptions: {
+                enableKinetic: true
+            }
+        })],
+        projection: "EPSG:3857"
+    });
+    layer = new SuperMap.Layer.CloudLayer();
+    addLayer();
+    map.events.on({"zoomend": showLayer});
+}
+function showLayer(e){
+    var zoom = e.object.getZoom();
+    if(zoom<12)
+    {
+        pointLayer.setOpacity(0);
+    }
+    else
+    {
+        pointLayer.setOpacity(1);
+    }
+}
+function addLayer() {
+    //初始化动画矢量图层
+    animatorVector = new SuperMap.Layer.AnimatorVector("Metro", {rendererType:"StretchLine"},{
+        repeat:false,
+        //设置速度为每帧播放0.05的数据
+        speed:0.05,
+        //开始时间为0
+        startTime:0,
+        //每秒渲染12帧
+        frameRate:12,
+        //结束时间设置为10
+        endTime:10
+    });
+    animatorVector.events.on({"drawfeaturestart": drawfeaturestart});
+    animatorVector.animator.events.on({"firstframestart":framestart});
+    //新建一个策略
+    strategy = new SuperMap.Strategy.GeoText();
+    //新建一个标签专题图层
+    labelLayer = new SuperMap.Layer.Vector("Label",{strategies: [strategy]});
+    //创建地铁站点图层
+    pointLayer = new SuperMap.Layer.Vector("Point");
+    map.addLayers([layer,animatorVector,labelLayer,pointLayer]);
+    map.setCenter(new SuperMap.LonLat(12957247.22943,4853948.11812), 12);
+
+
+    //用于标签分组的属性字段名称
+    strategy.groupField = "LineID";
+    //标签分组数组
+    strategy.style = styleM;
+    addMetro();
+    var callbacks = {
+        over:overFunction,
+        out:outFunction
+    };
+    var selectFeature = new SuperMap.Control.SelectFeature(pointLayer, {
+        onSelect: onFeatureSelected,
+        callbacks: callbacks,
+        hover: false
+    });
+    //map上添加控件
+    map.addControl(selectFeature);
+    //激活控件
+    selectFeature.activate();
+
+}
+function overFunction(e)
+{
+    var feature = e;
+    var label = new SuperMap.Geometry.GeoText(feature.geometry.x,feature.geometry.y, feature.attributes.MetroName);
+
+    labelLayer.addFeatures([new SuperMap.Feature.Vector(label)]);
+}
+function outFunction(e)
+{
+    labelLayer.removeAllFeatures();
+}
+//选择具体地铁站
+function onFeatureSelected(e)
+{
+    if(popup)
+    {
+        map.removePopup(popup);
+    }
+    popup = new SuperMap.Popup.FramedCloud("click",
+            new SuperMap.LonLat(e.geometry.x,e.geometry.y),
+            null,
+            "地铁"+e.attributes["Metro"]+"</br>"+e.attributes["MetroName"]+"站",
+            null,
+            true);
+    map.addPopup(popup);
+}
+function framestart()
+{
+    if(!animatorVector.animator.getRunning())
+    {
+        return;
+    }
+
+    pointLayer.removeAllFeatures();
+    map.removeAllPopup();
+}
+function drawfeaturestart(feature)
+{
+    if(!animatorVector.animator.getRunning())
+    {
+        return;
+    }
+    var featureId = feature.attributes["FEATUREID"];
+
+    var arr = [];
+    var labelFeas = [];
+    var pointFeas = [];
+    for(var i = 0;i<feature.geometry.components.length;i++)
+    {
+        var ml = feature.geometry.components[i];
+        for(var j = 0;j<ml.components.length;j++)
+        {
+            var po = ml.components[j];
+
+
+            var point = new SuperMap.Geometry.Point(po.x,po.y);
+
+            pointFeas.push(new SuperMap.Feature.Vector(point, {
+                        MetroName: po.MetroName,
+                        Metro: po.Metro
+                    },
+                    {
+                        externalGraphic:"images/metro.png",
+                        graphicWidth:18,
+                        graphicHeight:18
+                    }
+            ));
+
+        }
+    }
+
+
+    pointLayer.addFeatures(pointFeas);
+}
+
+//添加数据
+function addMetro()
+{
+    var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+
+    getFeatureParam = new SuperMap.REST.FilterParameter({
+        name: "Metro@DynamicData",
+        attributeFilter: "SmID < 138"
+    });
+    getFeatureBySQLParams = new SuperMap.REST.GetFeaturesBySQLParameters({
+        queryParameter: getFeatureParam,
+        datasetNames:["DynamicData:Metro"]
+    });
+    getFeatureBySQLParams.toIndex  = 137;
+    getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url2, {
+        eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}});
+
+    getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+}
+function processCompleted(getFeaturesEventArgs){
+    var features,result = getFeaturesEventArgs.result;
+    if (result && result.features) {
+        features = result.features;
+    }
+    var lineFeatures = [];
+    //循环有几条地铁
+    for(var i = 0,len = features.length;i<len;i++)
+    {
+        //有几个部分的情况
+        var arrL = [];
+        if(features[i].geometry.CLASS_NAME == "SuperMap.Geometry.MultiLineString"){
+            var metro = features[i].geometry.components;
+            //循环每一条地铁分几部分修建
+            for(var j=0;j<metro.length;j++)
+            {
+                var part = metro[j];
+                var arrP = [];
+                var m = 0;
+                for(var k=0;k < part.components.length;k++)
+                {
+                    var pp = part.components[k];
+                    var point = new SuperMap.Geometry.Point(pp.x,pp.y);
+                    //名字
+                    var metroname = [];
+                    metroname =  features[i].attributes.ATTRIBUTION.split(",");
+                    point.MetroName = metroname[m];
+                    m = m + 1;
+                    point.Metro = features[i].attributes.LINENAME;
+                    arrP.push(point);
+                }
+                var lineString = new SuperMap.Geometry.LineString(arrP);
+                arrL.push(lineString);
+            }
+        }
+        else{
+            var metro1 = features[i].geometry.components;
+            var arrP1 = [];
+            for(var a=0;a<metro1.length;a++)
+            {
+                var point1 = metro1[a];
+                metroname1 = features[i].attributes.ATTRIBUTION.split(",");
+                point1.MetroName = metroname1[a];
+                point1.Metro = features[i].attributes.LINENAME;
+                arrP1.push(point1);
+            }
+            var lineString1 = new SuperMap.Geometry.LineString(arrP1);
+            arrL.push(lineString1);
+        }
+        var multiLineString = new SuperMap.Geometry.MultiLineString(arrL);
+
+        var mm = parseInt(features[i].attributes.LINENUMBER);
+        var sty = style["style"+mm];
+
+        var lineFeature = new SuperMap.Feature.Vector(multiLineString,{
+            FEATUREID:features[i].attributes.FEATUREID,
+            TIME:features[i].attributes.TIME
+        },sty);
+        lineFeatures.push(lineFeature);
+    }
+    animatorVector.addFeatures(lineFeatures);
+}
+function processFailed(e){
+    alert(e.error.errorMsg);
+}
+//开始播放动画
+function startAnimator(){
+    animatorVector.animator.start();
+}
+//暂停播放动画
+function pauseAnimator(){
+    animatorVector.animator.pause();
+}
+//切换底图的显示
+function show(){
+    layer.setVisibility(!layer.getVisibility());
+}
+
+</script>
+</head>
+
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="播放" onclick="startAnimator()" />
+    <input type="button" class="btn" value="暂停" onclick="pauseAnimator()" />
+    <input type="button" class="btn" value="显示/隐藏底图" onclick="show()"/>
+</div>
+<div id="map"></div>
+</body>
+</html>

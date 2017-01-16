@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>点线面绘制</title>
+        <style type="text/css">
+                body{
+                    margin: 0;
+                    overflow: hidden;
+                    background: #fff;
+                }
+                #map{
+                    position: relative;
+                    height: 520px;
+                    border:1px solid #3473b7;
+                }
+                #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <!--<script src = 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/libs/SuperMap.Include.js'></script>-->
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+                var map,layer,drawPoint, drawLine,drawPolygon,pointLayer,lineLayer,polygonLayer,modifyFeature,
+                        host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+                url = host+ "/iserver/services/map-world/rest/maps/World";
+                function init()
+                {
+                    //新建点矢量图层
+                    pointLayer = new SuperMap.Layer.Vector("pointLayer");
+                    //新建线矢量图层
+                    lineLayer = new SuperMap.Layer.Vector("lineLayer");
+                    //新建面矢量图层
+                    polygonLayer = new SuperMap.Layer.Vector("polygonLayer");
+                    drawPoint = new SuperMap.Control.DrawFeature(pointLayer, SuperMap.Handler.Point, { multi: true});
+                    drawLine = new SuperMap.Control.DrawFeature(lineLayer, SuperMap.Handler.Path, { multi: true});
+                    drawPolygon = new SuperMap.Control.DrawFeature(polygonLayer, SuperMap.Handler.Polygon);
+                    modifyFeature = new SuperMap.Control.ModifyFeature(polygonLayer);
+                    
+                    map = new SuperMap.Map("map",{controls:[
+                        new SuperMap.Control.Zoom() ,
+                        new SuperMap.Control.Navigation() ,
+                        new SuperMap.Control.LayerSwitcher()
+                    ,drawPoint,drawLine,drawPolygon,modifyFeature]});
+                    layer= new SuperMap.Layer.TiledDynamicRESTLayer("World", url, null,{maxResolution:"auto"});
+                    layer.events.on({"layerInitialized":addLayer});
+                }
+                function addLayer(){
+                    map.addLayers([layer,pointLayer,lineLayer,polygonLayer]);
+                    //显示地图范围
+                    map.setCenter(new SuperMap.LonLat(0, 0), 0);
+                }
+                function draw_point(){
+                    deactiveAll();
+                    drawPoint.activate();
+                }
+                function draw_line(){
+                    deactiveAll();
+                    drawLine.activate();
+                }
+                function draw_polygon(){
+                    deactiveAll();
+                    drawPolygon.activate();
+                }
+                function deactiveAll(){
+                    drawPoint.deactivate();
+                    drawLine.deactivate();
+                    drawPolygon.deactivate();
+                    modifyFeature.deactivate();
+                }
+                function clearFeatures(){
+                    deactiveAll();
+                    pointLayer.removeAllFeatures();
+                    lineLayer.removeAllFeatures();
+                    polygonLayer.removeAllFeatures();
+                }
+                function edit () {
+                deactiveAll();
+               
+                modifyFeature.events.on({"afterfeaturemodified":a1});
+                modifyFeature.events.on({"beforefeaturemodified":a2});
+                modifyFeature.events.on({"featuremodified":a3});
+				 modifyFeature.activate();
+                }
+				function a1(a){
+					 console.log("afterfeaturemodified333333333");
+				}
+				function a2(a){
+					 console.log("beforefeaturemodified111111111111111111111");
+				}
+				function a3(a){
+					 console.log("afterfeaturemodified222222222222222222222");
+				}
+        </script>
+    </head>
+    <body onload="init()" >
+        <div id="toolbar">
+            <input type="button" value="绘点" onclick="draw_point()" />
+            <input type="button" value="绘线" onclick="draw_line()" />
+            <input type="button" value="绘面" onclick="draw_polygon()" />
+            <input type="button" value="编辑" onclick="edit()" />
+            <input type="button" value="清除" onclick="clearFeatures()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

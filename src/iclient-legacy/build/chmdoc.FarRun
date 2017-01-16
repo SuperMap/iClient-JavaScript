@@ -1,0 +1,33 @@
+[default]
+;don't close FAR at end of search (optional)
+;/D:1
+; set the log file name (optional)
+/L:chmdocLogfile.txt,3
+; run to batch jobs
+
+HHP
+HHC
+HHK
+[HHP]
+;drop_options=SpecialFiler1
+dirscan=D:\agentJS\buildAgent\work\2_0_DistribuiltPackage_JavaScript\01_SourceCode\trunk\Transformers10\build\chmdoc
+MakeHHP='chmdoc.hhp' 
+
+[HHC]
+;drop_options=SpecialFiler1
+dirscan=D:\agentJS\buildAgent\work\2_0_DistribuiltPackage_JavaScript\01_SourceCode\trunk\Transformers10\build\chmdoc
+MakeHHC='chmdoc.hhc' 
+
+[HHK]
+;drop_options=SpecialFiler1
+dirscan=D:\agentJS\buildAgent\work\2_0_DistribuiltPackage_JavaScript\01_SourceCode\trunk\Transformers10\build\chmdoc
+MakeHHC='chmdoc.hhk' 
+
+[SpecialFiler1]
+_opSkipDirs=1
+_opSkipFiles=0
+_opIncFiles=1
+_opSkipDirsSL=_vti*|1|_private|0|_*|0|
+_opSkipFilesSL=.zip|1|.exe|1|.com|1|.dll|0|.bak|1|.~*|0|.toc|1|.hhp|0|.chm|0|.hhk|0|.hhc|0|
+_opIncFilesSL=.ht*|1|.jpg|0|.gif|0|.txt|0|.swf|0|.cab|0|
+

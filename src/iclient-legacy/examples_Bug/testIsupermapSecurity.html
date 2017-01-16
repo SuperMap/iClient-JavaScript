@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src = '../libs/SuperMap.Include.js'></script>
+</head>
+<body>
+<div id="container">
+    <p>登录</p>
+    <table>
+        <tbody>
+        <tr>
+            <td>cas客户端地址：</td>
+            <td><input id="casUrl" type="text" placeholder="http://www.isupermap.com/shiro-cas"></td>
+        </tr>
+        </tbody>
+    </table>
+    <input id="loginBtn" type="button" value="登录">
+    <p>注册用户</p>
+    <table>
+        <tbody>
+        <tr>
+            <td>注册完成跳转地址：</td>
+            <td><input id="redirectUrl" type="text" placeholder="http://www.isupermap.com"></td>
+        </tr>
+        </tbody>
+    </table>
+    <input id="registerBtn" type="button" value="注册">
+</div>
+<script>
+    var type=SuperMap.Cloud.Security.ISUPERMAP;
+    var security=new SuperMap.Cloud.Security(type);
+
+    //登录
+    var loginBtn=document.getElementById("loginBtn"),
+            casUrl=document.getElementById("casUrl");
+    loginBtn.onclick=function(){
+        var url=casUrl.value;
+        if(url===""){
+            url=casUrl.placeholder;
+        }
+        security.login(url);
+    }
+
+    //注册
+    var registerBtn=document.getElementById("registerBtn"),
+            redirectUrl=document.getElementById("redirectUrl"),
+    email=document.getElementById("email");
+    registerBtn.onclick=function(){
+        var url=redirectUrl.value;
+        if(url===""){
+            url=redirectUrl.placeholder;
+        }
+        security.registerUser(url);
+    }
+</script>
+</body>
+</html>

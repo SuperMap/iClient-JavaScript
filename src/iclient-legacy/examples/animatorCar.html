@@ -1,0 +1,181 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>车辆监控模拟</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar{
+                position: relative;
+                padding-top:5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+
+            var map, layer, vectorLayer, features, cars, animatorVector,
+            //定义公交线路的样式。
+            styleLine = {
+                strokeColor: "black",
+                strokeWidth: 1,
+                fill: false
+            },
+            styleCar1=
+            {
+                externalGraphic:"images/blueCar.png",
+                allowRotate:true,
+                graphicWidth:32,
+                graphicHeight:32
+            },
+            styleCar2=
+            {
+                externalGraphic:"images/redCar.png",
+                allowRotate:true,
+                graphicWidth:32,
+                graphicHeight:32
+            },
+            host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+            url1=host+"/iserver/services/map-changchun/rest/maps/长春市区图";
+            function init(){
+                /*
+                 * 不支持canvas的浏览器不能运行该范例
+                 * android 设备也不能运行该范例*/
+                var broz = SuperMap.Util.getBrowser();
+
+                if(!document.createElement('canvas').getContext) {
+                    alert('您的浏览器不支持 canvas，请升级');
+                    return;
+                } else if (broz.device === 'android') {
+                    alert('您的设备不支持高性能渲染，请使用pc或其他设备');
+                    return;
+                }
+
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })], units: "m"
+                });
+
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("changchun", url1, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+                layer.events.on({"layerInitialized":addLayer});
+                //初始化公交车路线图层。
+                vectorLayer = new SuperMap.Layer.Vector("Vector Layer", {
+                    styleMap: new SuperMap.StyleMap({
+                        "default": styleLine})});
+                //初始化汽车图层。
+                animatorVector = new SuperMap.Layer.AnimatorVector("Cars", {},{
+                    //设置速度为每帧播放0.05小时的数据
+                    speed:0.05,
+                    //开始时间为0晨
+                    startTime:0,
+                    //结束时间设置为最后运行结束的汽车结束时间
+                    endTime:55
+                });
+            }
+
+
+
+
+            function addLayer() {
+                map.addLayers([layer, vectorLayer, animatorVector]);
+                map.setCenter(new SuperMap.LonLat(5935, -3580), 1);
+                map.addControl(new SuperMap.Control.MousePosition()) ;
+            }
+
+            //定义查询汽车线路。
+            function queryBySQL() {
+
+                animatorVector.removeAllFeatures();
+                var queryParam, queryBySQLParams, queryBySQLService;
+                queryParam = new SuperMap.REST.FilterParameter({
+                    name: "BusLine@Changchun#1",
+                    attributeFilter: "SmID > 0"
+                }),
+                        queryBySQLParams = new SuperMap.REST.QueryBySQLParameters({
+                            queryParams: [queryParam]
+                        }),
+                        queryBySQLService = new SuperMap.REST.QueryBySQLService(url1, {
+                            eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}});
+                queryBySQLService.processAsync(queryBySQLParams);
+            }
+
+            function processCompleted(queryEventArgs) {
+                var i, j, feature,
+                        result = queryEventArgs.result;
+                features = [];
+                cars = [];
+                vectorLayer.removeAllFeatures();
+                animatorVector.removeAllFeatures();
+                var orientation = 1;
+                if (result && result.recordsets) {
+                    for (i=0; i<result.recordsets.length; i++) {
+                        if (result.recordsets[i].features) {
+                            for (j=0, len = result.recordsets[i].features.length; j < len; j++) {
+                                feature = result.recordsets[i].features[j];
+                                feature.style = null;
+                                features.push(feature);
+                                var style = j%2==0? styleCar1:styleCar2;
+                                var featureComps = feature.geometry.components;
+                                for(var k = 0, len = featureComps.length; k < len; k++) {
+                                    var car = new SuperMap.Feature.Vector(featureComps[k].clone(),
+                                            {
+                                                FEATUREID:feature.id,
+                                                //根据节点生成时间
+                                                TIME:k
+                                            },style
+                                    );
+                                    cars.push(car);
+                                }
+                            }
+                        }
+                    }
+                }
+                vectorLayer.addFeatures(features);
+                animatorVector.addFeatures(cars);
+            }
+
+            function processFailed(e) {
+                alert(e.error.errorMsg);
+            }
+
+            //开始播放动画
+            function startAnimator(){
+                animatorVector.animator.start();
+            }
+            //暂停播放动画
+            function pauseAnimator(){
+                animatorVector.animator.pause();
+            }
+            //停止播放动画
+            function stopAnimator(){
+                animatorVector.animator.stop();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="查询车辆" onclick="queryBySQL()" />
+            <input type="button" class="btn" value="开始监控" onclick="startAnimator()" />
+            <input type="button" class="btn" value="暂停监控" onclick="pauseAnimator()" />
+            <input type="button" class="btn" value="停止监控" onclick="stopAnimator()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

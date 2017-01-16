@@ -1,0 +1,145 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>多旅行商分析</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var local, map, layer, vectorLayer, markerLayer1,
+            markerLayer2, drawPoint, nodeArray = [],
+            centerArray = [new SuperMap.Geometry.Point(6000, -5500), new SuperMap.Geometry.Point(5500, -2500), new SuperMap.Geometry.Point(2500, -3500)],
+            style = {
+                strokeColor: "#304DBE",
+                strokeWidth: 3,
+                pointerEvents: "visiblePainted",
+                fill: false
+            },
+            url=host+"/iserver/services/map-changchun/rest/maps/长春市区图",
+            url2=host+"/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+            function init(){
+                vectorLayer = new SuperMap.Layer.Vector("Vector Layer");
+                drawPoint = new SuperMap.Control.DrawFeature(vectorLayer, SuperMap.Handler.Point);
+                drawPoint.events.on({ "featureadded": drawCompleted });
+                map = new SuperMap.Map("map", { controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    }),
+                    drawPoint], units: "m"
+                });
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("Changchun", url, {transparent: true, cacheEnabled: true}, { maxResolution: "auto" });
+                layer.events.on({ "layerInitialized": addLayer });
+                markerLayer1 = new SuperMap.Layer.Markers("Markers");
+                markerLayer2 = new SuperMap.Layer.Markers("Markers");
+
+                var size = new SuperMap.Size(44, 40),
+                        offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+                markerLayer1.addMarker(new SuperMap.Marker(new SuperMap.LonLat(6000, -5500), new SuperMap.Icon("../theme/images/marker-gold.png", size, offset)));
+                markerLayer1.addMarker(new SuperMap.Marker(new SuperMap.LonLat(5500, -2500), new SuperMap.Icon("../theme/images/marker-gold.png", size, offset)));
+                markerLayer1.addMarker(new SuperMap.Marker(new SuperMap.LonLat(2500, -3500), new SuperMap.Icon("../theme/images/marker-gold.png", size, offset)));
+
+                var size = new SuperMap.Size(44, 40),
+                        offset = new SuperMap.Pixel(-(size.w / 2), -size.h);
+                markerLayer1.addMarker(new SuperMap.Marker(new SuperMap.LonLat(6000, -5500), new SuperMap.Icon("../theme/images/marker-gold.png", size, offset)));
+                markerLayer1.addMarker(new SuperMap.Marker(new SuperMap.LonLat(5500, -2500), new SuperMap.Icon("../theme/images/marker-gold.png", size, offset)));
+                markerLayer1.addMarker(new SuperMap.Marker(new SuperMap.LonLat(2500, -3500), new SuperMap.Icon("../theme/images/marker-gold.png", size, offset)));
+            }
+
+            function addLayer() {
+                map.addLayers([layer, vectorLayer, markerLayer1, markerLayer2]);
+                map.setCenter(new SuperMap.LonLat(4503.6240321526, -3861.911472192499), 0);
+            }
+            function selectPoints() {
+                clearElements();
+                drawPoint.activate();
+            }
+            function drawCompleted(drawGeometryArgs) {
+                var point = drawGeometryArgs.feature.geometry,
+                        size = new SuperMap.Size(44, 33),
+                        offset = new SuperMap.Pixel(-(size.w / 2), -size.h),
+                        icon = new SuperMap.Icon("../theme/images/marker.png", size, offset);
+                markerLayer2.addMarker(new SuperMap.Marker(new SuperMap.LonLat(point.x, point.y), icon));
+                nodeArray.push(point);
+            }
+            function findMTSPPaths() {
+                drawPoint.deactivate();
+                var findMTSPPathsService, parameter, analystParameter, resultSetting;
+                resultSetting = new SuperMap.REST.TransportationAnalystResultSetting({
+                    returnEdgeFeatures: true,
+                    returnEdgeGeometry: true,
+                    returnEdgeIDs: true,
+                    returnNodeFeatures: true,
+                    returnNodeGeometry: true,
+                    returnNodeIDs: true,
+                    returnPathGuides: true,
+                    returnRoutes: true
+                });
+                analystParameter = new SuperMap.REST.TransportationAnalystParameter({
+                    resultSetting: resultSetting,
+                    weightFieldName: "length"
+                });
+                parameter = new SuperMap.REST.FindMTSPPathsParameters({
+                    centers: centerArray,
+                    isAnalyzeById: false,
+                    nodes: nodeArray,
+                    hasLeastTotalCost: true,
+                    parameter: analystParameter
+                });
+                findMTSPPathsService = new SuperMap.REST.FindMTSPPathsService(url2, {
+                    eventListeners: { "processCompleted": processCompleted }
+                });
+                findMTSPPathsService.processAsync(parameter);
+            }
+            function processCompleted(findMTSPPathsEventArgs) {
+                var result = findMTSPPathsEventArgs.result,
+                        features = [];
+                if (result.pathList) {
+                    for (var i = 0, pathList = result.pathList, len = pathList.length; i < len; i++) {
+                        var feature = new SuperMap.Feature.Vector();
+                        feature.geometry = pathList[i].route;
+                        feature.style = style;
+                        features.push(feature);
+                    }
+                }
+                vectorLayer.addFeatures(features);
+            }
+            function clearElements() {
+                nodeArray = [];
+                markerLayer2.clearMarkers();
+                vectorLayer.removeAllFeatures();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="配送目标" onclick="selectPoints()" />
+            <input type="button" class="btn" value="提交" onclick="findMTSPPaths()" />
+            <input type="button" class="btn" value="清除" onclick="clearElements()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

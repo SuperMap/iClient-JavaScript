@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>带标签的矢量图层</title>
+    <style type="text/css">
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src = '../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+	
+	var map,layer,pointVector,dataAdded=false,
+                host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-world/rest/maps/World";
+        function init()
+        {
+            map = new SuperMap.Map("map",{controls:[
+                new SuperMap.Control.Zoom() ,
+                new SuperMap.Control.Navigation() ,
+                new SuperMap.Control.LayerSwitcher()
+            ]});
+			map.addControl(new SuperMap.Control.MousePosition());
+            layer= new SuperMap.Layer.TiledDynamicRESTLayer("World", url, null,{maxResolution:"auto"});
+			 vector = new SuperMap.Layer.Vector("vector");
+            layer.events.on({"layerInitialized":addLayer});
+            addData();
+        }
+
+        function addLayer(){
+
+            map.addLayers([layer,vector]);
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+        }
+		function addData()
+        {
+            if(!dataAdded)
+            {
+                vector.removeAllFeatures();
+                //画两个圆
+                var centerPoint1=new  SuperMap.Geometry.Point(-98,41);
+                var circleP1=createCircle(centerPoint1,30,256,360,360);
+                var circleVector1= new SuperMap.Feature.Vector(circleP1);
+                circleVector1.style={
+                    strokeColor:"#CAFF70",
+                    fillColor:"#DC143C",
+                    strokeWidth:2 ,
+                    fillOpacity:0.8,
+					label:"西方\nWestern",
+					fontColor:"#FFF0F5"
+                };
+				var centerPoint2=new  SuperMap.Geometry.Point(103,38);
+                var circleP2=createCircle(centerPoint2,30,256,360,360);
+                var circleVector2= new SuperMap.Feature.Vector(circleP2);
+                circleVector2.style={
+                    strokeColor:"#CAFF70",
+                    fillColor:"#DC143C",
+                    strokeWidth:2 ,
+                    fillOpacity:0.8,
+					fontWeight:"bold",
+					label:"东方\n Eastern",
+					fontColor:"#FFF0F5"
+					
+                };
+                vector.addFeatures([circleVector1,circleVector2]);
+                dataAdded=true;
+            } else{
+                alert("数据已加载");
+            }
+        }
+	//Բ
+	 function createCircle(origin, radius, sides,r,angel){
+            var rR = r*Math.PI/(180*sides);
+            var rotatedAngle, x, y;
+            var points = [];
+            for(var i=0; i<sides; ++i) {
+                rotatedAngle = rR*i;
+                x = origin.x + (radius * Math.cos(rotatedAngle));
+                y = origin.y + (radius * Math.sin(rotatedAngle));
+                points.push(new SuperMap.Geometry.Point(x, y));
+            }
+            rotatedAngle = r*Math.PI/180;
+            x = origin.x + (radius * Math.cos(rotatedAngle));
+            y = origin.y + (radius * Math.sin(rotatedAngle));
+            points.push(new SuperMap.Geometry.Point(x, y));
+
+            var ring = new SuperMap.Geometry.LinearRing(points);
+            ring.rotate(parseFloat(angel),origin);
+            var geo = new SuperMap.Geometry.Collection([ring]);
+            geo.origin = origin;
+            geo.radius = radius;
+            geo.r = r;
+            geo.angel = angel;
+            geo.sides = sides;
+            geo.polygonType = "Curve";
+            return geo;
+        }
+	function removeData()
+        {        dataAdded =false;
+            vector.removeAllFeatures();
+            vector.refresh();
+        }
+	</script>
+</head>
+<body onload="init()" >
+<div id="toolbar">
+    <input type="button" class="btn" value ="加载数据"onclick="addData()"/>
+    <input type="button" class="btn" value ="移除数据"onclick="removeData()"/>
+</div>
+<div id="map"></div>
+
+</body>
+
+</html>

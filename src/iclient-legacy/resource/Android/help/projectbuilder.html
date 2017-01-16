@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <title>SuperMap iClient for Javascript Android App</title>
+        <link href='./css/style.css' rel='stylesheet' />
+    </head>
+    <body data-spy="scroll" data-target=".subnav" data-offset="50">
+        <div id='container' class='container'>
+            <div class='page-header'>
+                <h1>使用ProjectBuilder生成工程</h1>
+                <hr/>
+				<h3>一、系统要求</h3>
+                <p>
+                工具要求系统搭建了Java、Android和Ant环境，需要配置环境变量，详细内容请参考<a href="environment.html" target="new">系统环境搭建</a>。
+                </p>
+				<p>
+                还需要您搭建好了Android开发环境，<a href="http://developer.android.com/sdk/installing/installing-adt.html" target="new">Eclipse</a>和<a href="http://developer.android.com/sdk/installing/studio.html" target="new">Android Studio</a>均可。
+                </p>
+				
+				<h3>二、简介</h3>
+                <p>
+                使用这个工具可以生成安卓工程文件，在安卓开发工具中导入该工程，便可以开发安卓项目了，该工程中包含了phonegap相关代码，以及SuperMap iClient For JavaScript相关代码。
+                </p>
+				
+				<h3>三、使用说明</h3>
+				<p>
+                1.双击运行ProjectBuilder.bat，此时提示您输入命名空间的名称,输入并回车，如图：
+                </p>
+				<div class="pageImage"><img src="images/projectbuilder1.png"></div> 
+				
+				<p>
+                2.此时提示您输入工程名,输入并回车，如图：
+                </p>
+				<div class="pageImage"><img src="images/projectbuilder2.png"></div>	
+
+				<p>
+                3.此时开始创建工程，如图：
+                </p>
+				<div class="pageImage"><img src="images/projectbuilder3.png"></div>	
+
+				<p>
+                4.运行完成后会在当前目录下生成一个project文件夹，这就是工程文件，如图：
+                </p>
+				<div class="pageImage"><img src="images/projectbuilder4.png"></div>	
+
+				<p>
+                5.现在您可以在安卓开发工具中导入工程了，以eclipse为例，点击File-->new-->project,弹出new project窗口，选择android project from exsisting code，点击next
+                </p>
+				<div class="pageImage"><img src="images/projectbuilder5.png"></div>
+				
+				<p>
+                6.点击browse按钮，找到刚生成的project目录，点击确定，点击finish
+                </p>
+				<div class="pageImage"><img src="images/projectbuilder6.png"></div>
+				
+				<p>
+                7.此时您的工程已经创建好了。
+                </p>
+				<div class="pageImage"><img src="images/projectbuilder7.png"></div>
+				
+				<p>
+                8.您还需要将安卓sdk设置为你所安装的最新版本以防止工程报错，右键单击工程名，弹出的菜单中点击properties。
+                </p>
+				<div class="pageImage"><img src="images/projectbuilder8.png"></div>
+				<p>
+                弹出的窗口中勾选您安装的最高版本的android sdk，并确定
+                </p>
+				<div class="pageImage"><img src="images/projectbuilder9.png"></div>
+				<p>
+                点击project-->clean
+                </p>
+				<div class="pageImage"><img src="images/projectbuilder10.png"></div>
+				
+				<p>
+				弹出的窗口中，选择该项目，并确定，这样刚才的报错就不见了。
+                </p>
+				<div class="pageImage"><img src="images/projectbuilder11.png"></div>
+				
+				<p>
+                9.连接上您的设备，运行吧！
+                </p>
+				<p>
+                10.iClient类库，以及相关前端代码放在assets/www目录下，helloword.html是入口页面，详细示例说明，请参考<a href="examples.html" target="_blank">范例介绍</a>。
+                </p>
+				<div class="pageImage"><img src="images/projectbuilder12.png"></div>
+				<h3>四、可能出现的问题</h3>
+				<p>
+                1.如果运行projectbuilder中断，并提示：“输入错误: 没有文件扩展“.js”的脚本引擎。”。
+                </p>
+				<p>
+				在运行中输入“regedit”进入注册表，只需要把[HKEY_CLASSES_ROOT\.js] 项下的那个默认值改成 "JSFile" 就可以了。
+				</p>
+            </div>
+            <div class='footer'>
+                <p>版权所有&nbsp;&copy; 1997-2015. &nbsp;北京超图软件股份有限公司</p>
+            </div>
+        </div>
+        <script src='./js/jquery.js'></script>
+        <script src='./js/bootstrap.js'></script>        
+    </body>
+</html>

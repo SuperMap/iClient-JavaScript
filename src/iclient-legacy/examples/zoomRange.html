@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>设置缩放级别</title>
+    <style type="text/css">
+       body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 553px;
+            border:1px solid #3473b7;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var map ,layer,
+        host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+                url=host+"/iserver/services/map-world/rest/maps/World";
+
+        function init()
+        {
+            map = new SuperMap.Map("map",{controls:[
+            new SuperMap.Control.Navigation()]});
+            map.minScale = 1.3732579019271662e-8;//设置该值可以使地图在比例尺达到此值的时候无法再缩小
+            map.numZoomLevels=5;//设置地图缩放级别的数量
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {transparent: true, cacheEnabled: true},{maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+        }
+
+        function addLayer()
+        {
+            map.addLayer(layer);
+            map.setCenter(new SuperMap.LonLat(98.30769230769,28.903846153846), 0);
+
+        }
+
+    </script>
+</head>
+<body onload="init()">
+<div id="map"></div>
+</body>
+</html>

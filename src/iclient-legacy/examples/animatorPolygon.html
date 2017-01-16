@@ -1,0 +1,182 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>面渐变模拟</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        #map {
+            position: relative;
+            height: 510px;
+            border: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script src="data/animationPolygonData.js"></script>
+    <script type="text/javascript">
+        var map, layer, animatorVector, host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-china400/rest/maps/China";
+        var style1 = {
+            fillColor: "#b6fb7e",
+            fillOpacity: 0.2,
+            strokeOpacity: 0
+        };
+        var style2 =
+        {
+            fillColor: "#ffff00",
+            fillOpacity: 0.2,
+            strokeOpacity: 0
+        };
+        var style3 =
+        {
+            fillColor: "#efad3b",
+            fillOpacity: 0.2,
+            strokeOpacity: 0
+        };
+        var style4 =
+        {
+            fillColor: "#ef8425",
+            fillOpacity: 0.2,
+            strokeOpacity: 0
+        };
+        var style5 =
+        {
+            fillColor: "#ef255e",
+            fillOpacity: 0.2,
+            strokeOpacity: 0
+        };
+        var style6 =
+        {
+            fillColor: "#f80f1a",
+            fillOpacity: 0.2,
+            strokeOpacity: 0
+        };
+        var style7 =
+        {
+            fillColor: "#ff000",
+            fillOpacity: 0.2,
+            strokeOpacity: 0
+        };
+        function init() {
+            if (!document.createElement('canvas').getContext) {
+                alert('您的浏览器不支持 canvas，请升级');
+                return;
+            }
+            //初始化地图
+            map = new SuperMap.Map("map", {
+                controls: [
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })],
+                projection: "EPSG:3857"
+            });
+            //初始化图层
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, null,{maxResolution:"auto"});
+            //初始化动画矢量图层
+            animatorVector = new SuperMap.Layer.AnimatorVector("Polygon", {}, {
+                //设置速度为每帧播放0.01小时的数据
+                speed: 0.01,
+                //开始时间为12点
+                startTime: 12,
+                //每秒渲染12次
+                frameRate: 12,
+                //结束时间为15点
+                endTime: 15
+            });
+            //监听图层信息加载完成事件
+            layer.events.on({"layerInitialized":function(){
+                map.addLayers([layer, animatorVector]);
+                map.addControl(selectFeature);
+                selectFeature.activate();
+                map.setCenter(new SuperMap.LonLat(11586634.286396, 3588716.5813769), 12);
+                //增加数据
+                addPolygon();
+            }});
+
+            var selectFeature = new SuperMap.Control.SelectFeature(animatorVector, {
+                onSelect: function(fe){
+                    console.log(fe);
+                },
+                hover: false
+            });
+
+        }
+        //添加面数据
+        function addPolygon() {
+            var regionFeatures = [];
+            for (var i = 0, len = lines.length; i < len; i++) {
+                var arr = [];
+                for (var j = 0; j < lines[i][3].length; j++) {
+                    var point = new SuperMap.Geometry.Point(lines[i][3][j][0], lines[i][3][j][1]);
+                    arr.push(point);
+                }
+                var line = new SuperMap.Geometry.LinearRing(arr);
+                var region = new SuperMap.Geometry.Polygon([line]);
+                var style;
+                if (lines[i][2] == 31) {
+                    style = style1;
+                }
+                else if (lines[i][2] == 32) {
+                    style = style2;
+                }
+                else if (lines[i][2] == 33) {
+                    style = style3;
+                }
+                else if (lines[i][2] == 34) {
+                    style = style4;
+                }
+                else if (lines[i][2] == 35) {
+                    style = style5;
+                }
+                else if (lines[i][2] == 36) {
+                    style = style6;
+                }
+                else if (lines[i][2] == 37) {
+                    style = style7;
+                }
+                var regionFeature = new SuperMap.Feature.Vector(region, {
+                    FEATUREID: lines[i][0],
+                    TIME: lines[i][1],
+                    TEMPERATURE: lines[i][2]
+                }, style);
+                regionFeatures.push(regionFeature);
+            }
+            animatorVector.addFeatures(regionFeatures);
+        }
+        //开始播放动画
+        function startAnimator() {
+            animatorVector.animator.start();
+        }
+        //暂停播放动画
+        function pauseAnimator() {
+            animatorVector.animator.pause();
+        }
+
+    </script>
+</head>
+
+<body onload="init()">
+<div id="toolbar">
+    <input type="button"  class="btn" value="播放" onclick="startAnimator()"/>
+    <input type="button" class="btn" value="暂停" onclick="pauseAnimator()"/>
+</div>
+<div id="map"></div>
+</body>
+</html>

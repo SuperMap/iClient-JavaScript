@@ -1,0 +1,55 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>比例尺控件</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 553px;
+                border:1px solid #3473b7;
+            }
+
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, layerWorld;
+            var url=host+"/iserver/services/map-world/rest/maps/World";
+			
+			function init(){
+                map = new SuperMap.Map("map",{controls: [
+					new SuperMap.Control.Navigation({
+						dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+                });
+				//初始化比例尺控件类
+				scaleline = new SuperMap.Control.ScaleLine();
+				//是否使用依地量算，默认为false。推荐地图投影为EPSG:4326时设置为false；使用EPSG:900913时设置为true。为true时，比例值按照当前视图中心的水平线计算。
+				scaleline.geodesic = true;
+				
+				layerWorld = new SuperMap.Layer.TiledDynamicRESTLayer("World", url);    //获取图层服务地址
+				layerWorld.events.on({"layerInitialized": addLayer});
+			}
+			
+			//添加地图图层、比例尺控件到map
+			function addLayer(){
+                map.addLayers([layerWorld]);
+				map.addControl(scaleline);
+                map.setCenter(new SuperMap.LonLat(118, 40), 6);
+            }
+			</script>
+    </head>
+    <body onload="init()">
+        <div id="map"></div>
+    </body>
+</html>

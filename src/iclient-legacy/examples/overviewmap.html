@@ -1,0 +1,54 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>鹰眼控件</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 553px;
+                border:1px solid #3473b7;
+            }
+
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, layerWorld;
+            var url=host+"/iserver/services/map-world/rest/maps/World";
+			
+			function init(){
+                map = new SuperMap.Map("map",{controls: [
+					new SuperMap.Control.Navigation({
+						dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+                });
+				//初始化鹰眼控件类
+				overviewmap = new SuperMap.Control.OverviewMap();
+				//属性minRectSize：鹰眼范围矩形边框的最小的宽度和高度。默认为8pixels
+				overviewmap.minRectSize = 20;
+				layerWorld = new SuperMap.Layer.TiledDynamicRESTLayer("World", url);     //获取图层服务地址
+				layerWorld.events.on({"layerInitialized": addLayer});
+			}
+			
+			//添加地图图层、鹰眼控件到map
+			function addLayer(){
+                map.addLayers([layerWorld]);
+				map.addControl(overviewmap);
+                map.setCenter(new SuperMap.LonLat(118, 40), 6);
+            }
+			</script>
+    </head>
+    <body onload="init()">
+        <div id="map"></div>
+    </body>
+</html>

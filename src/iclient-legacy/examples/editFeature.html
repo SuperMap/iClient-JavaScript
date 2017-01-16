@@ -1,0 +1,287 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>地物编辑</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, local, layer, vectorLayer, drawPoint, drawPolygon, dataUrl, ids, modifyFeature,
+            style = {
+                strokeColor: "#304DBE",
+                strokeWidth: 1,
+                pointerEvents: "visiblePainted",
+                fillColor: "#304DBE",
+                fillOpacity: 0.8,
+                pointRadius:2
+            },
+            url1=host+"/iserver/services/map-jingjin/rest/maps/京津地区土地利用现状图",
+            url2=host+"/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R/",
+            url3=host+"/iserver/services/data-jingjin/rest/data/";
+            function init(){
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("京津", url1, {transparent: true, cacheEnabled: false}, {maxResolution:"auto",bufferImgCount:0}); //将bufferImgCount设置为0，不使用缓存，编辑后，刷新图层，永远请求最新的图片
+                layer.events.on({"layerInitialized":addLayer});
+                vectorLayer = new SuperMap.Layer.Vector("Vector Layer");
+                vectorLayer.events.on({"afterfeaturemodified": editFeatureCompleted});
+                modifyFeature = new SuperMap.Control.ModifyFeature(vectorLayer);
+
+                drawPoint = new SuperMap.Control.DrawFeature(vectorLayer, SuperMap.Handler.Point);
+                drawPoint.events.on({"featureadded": selectedFeatureCompleted});
+
+                drawPolygon = new SuperMap.Control.DrawFeature(vectorLayer, SuperMap.Handler.Polygon);
+                drawPolygon.events.on({"featureadded": addFeatureCompleted});
+
+                map = new SuperMap.Map("map", {controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }}),
+                    drawPoint, drawPolygon]
+                });
+                map.addControl(modifyFeature);
+            }
+
+            function addLayer() {
+                map.addLayers([layer, vectorLayer]);
+                map.setCenter(new SuperMap.LonLat(117,40), 0);
+            }
+            //激活添加地物
+            function activateAddFeature() {
+                //先清除上次的显示结果
+                vectorLayer.removeAllFeatures();
+                clearAllDeactivate();
+                drawPolygon.activate();
+            }
+            //执行添加地物
+            function addFeatureCompleted(drawGeometryArgs) {
+                drawPolygon.deactivate();
+                var geometry = drawGeometryArgs.feature.geometry,
+                        feature = new SuperMap.Feature.Vector();
+                feature.geometry = drawGeometryArgs.feature.geometry,
+                        feature.style = style;
+                vectorLayer.addFeatures(feature);
+
+                geometry.id = "100000";
+                var editFeatureParameter,
+                        editFeatureService,
+                        features = {
+                            fieldNames:[],
+                            fieldValues:[],
+                            geometry:geometry
+                        };
+                editFeatureParameter = new SuperMap.REST.EditFeaturesParameters({
+                    features: [features],
+                    editType: SuperMap.REST.EditType.ADD,
+                    returnContent:false
+                });
+                editFeatureService = new SuperMap.REST.EditFeaturesService(url2, {
+                    eventListeners: {
+                        "processCompleted": addFeaturesProcessCompleted,
+                        "processFailed": processFailed
+                    }
+                });
+                editFeatureService.processAsync(editFeatureParameter);
+            }
+            //添加地物成功
+            function addFeaturesProcessCompleted(editFeaturesEventArgs) {
+                var addResultIds = editFeaturesEventArgs.result.IDs,
+                        resourceInfo = editFeaturesEventArgs.result.resourceInfo;
+                if(addResultIds === null && resourceInfo === null) return;
+
+                if((addResultIds && addResultIds.length > 0) || (resourceInfo && resourceInfo.succeed)) {
+                    alert("新增地物成功");
+                    vectorLayer.removeAllFeatures();
+                    //重新加载图层
+                    layer.redraw();
+                }else {
+                    alert("新增地物失败");
+                }
+            }
+            function processFailed(e) {
+                alert(e.error.errorMsg);
+            }
+            //激活选择地物
+            function activateSelectedFeature() {
+                vectorLayer.removeAllFeatures();
+                clearAllDeactivate();
+                drawPoint.activate();
+            }
+            //执行选择地物
+            function selectedFeatureCompleted(drawGeometryArgs) {
+                drawPoint.deactivate();
+                var getFeaturesByGeometryParams,
+                        getFeaturesByGeometryService,
+                        geometry = drawGeometryArgs.feature.geometry;
+                getFeaturesByGeometryParams = new SuperMap.REST.GetFeaturesByGeometryParameters({
+                    datasetNames: ["Jingjin:Landuse_R"],
+                    spatialQueryMode: SuperMap.REST.SpatialQueryMode.INTERSECT,
+                    geometry: geometry
+                });
+                getFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByGeometryService(url3, {
+                    eventListeners: {
+                        "processCompleted": selectedFeatureProcessCompleted,
+                        "processFailed": processFailed
+                    }
+                });
+                getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParams);
+            }
+            //选择地物完成
+            function selectedFeatureProcessCompleted(getFeaturesEventArgs) {
+                var features,
+                        feature,
+                        i, len,
+                        originFeatures = getFeaturesEventArgs.originResult.features,
+                        result = getFeaturesEventArgs.result;
+                vectorLayer.removeAllFeatures();
+                if(originFeatures === null || originFeatures.length === 0) {
+                    alert("查询地物为空");
+                    return;
+                }
+                ids = new Array();
+                //将当前选择的地物的ID保存起来，以备删除地物使用,并在编辑地物中使之为null，以免编辑地物后在不选择地物时将所编辑的地物删除
+                for(i = 0, len = originFeatures.length; i < len; i++) {
+                    ids.push(originFeatures[i].ID);
+                }
+                if (result && result.features) {
+                    features = result.features;
+                    for (var j=0, len = features.length; j<len; j++) {
+                        feature = features[j];
+                        feature.style = style;
+                        vectorLayer.addFeatures(feature);
+                    }
+                }
+            }
+            //激活编辑地物
+            function editselectedFeature() {
+                clearAllDeactivate();
+                if(ids==null){
+                    alert("请先选择地物");
+                }
+                else{
+                    modifyFeature.activate();
+                }
+
+            }
+            //执行地物编辑
+            function editFeatureCompleted(event) {
+                modifyFeature.deactivate();
+                var editFeatureParameter,
+                        editFeatureService,
+                        features,
+                        attributes,
+                        feature = event.feature;
+
+                attributes = feature.attributes;
+                var attrNames = [];
+                var attrValues = [];
+                for(var attr in attributes) {
+                    attrNames.push(attr);
+                    attrValues.push(attributes[attr]);
+                }
+                features = {
+                    fieldNames:attrNames,
+                    fieldValues:attrValues,
+                    geometry:event.feature.geometry
+                };
+                features.geometry.id = feature.fid;
+                editFeatureParameter = new SuperMap.REST.EditFeaturesParameters({
+                    features: [features],
+                    editType: SuperMap.REST.EditType.UPDATE
+                });
+                editFeatureService = new SuperMap.REST.EditFeaturesService(url2, {
+                    eventListeners: {
+                        "processCompleted": updateFeaturesProcessCompleted,
+                        "processFailed": processFailed
+                    }
+                });
+                editFeatureService.processAsync(editFeatureParameter);
+            }
+            //更新地物完成
+            function updateFeaturesProcessCompleted(editFeaturesEventArgs) {
+                if(editFeaturesEventArgs.result.resourceInfo.succeed) {
+                    alert("更新地物成功");
+                    //重新加载图层
+                    vectorLayer.removeAllFeatures();
+                    layer.redraw();
+                    //使Ids为空，以免编辑地物后在不选择地物时将所编辑的地物删除
+                     ids=null;
+                }
+                else {
+                    alert("更新地物失败");
+                }
+            }
+            //删除选中地物
+            function deleteSelectedFeature() {
+                clearAllDeactivate();
+                if(ids==null)
+                {
+                    alert("请先选择地物");
+                }
+                else{
+                    var editFeatureParameter,
+                            editFeatureService;
+                    editFeatureParameter = new SuperMap.REST.EditFeaturesParameters({
+                        IDs: ids,
+                        editType: SuperMap.REST.EditType.DELETE
+                    });
+                    editFeatureService = new SuperMap.REST.EditFeaturesService(url2, {
+                        eventListeners: {
+                            "processCompleted": deleteFeaturesProcessCompleted,
+                            "processFailed": processFailed
+                        }
+                    });
+                    editFeatureService.processAsync(editFeatureParameter);
+                }
+
+            }
+            //删除地物完成
+            function deleteFeaturesProcessCompleted(editFeaturesEventArgs) {
+                if(editFeaturesEventArgs.result.resourceInfo.succeed) {
+                    alert("删除地物成功");
+                    //重新加载图层
+                    vectorLayer.removeAllFeatures();
+                    layer.redraw();
+                }
+                else {
+                    alert("删除地物失败");
+                }
+            }
+            function clearAllDeactivate() {
+                modifyFeature.deactivate();
+                drawPoint.deactivate();
+                drawPolygon.deactivate();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="新增地物" onclick="activateAddFeature()" />
+            <input type="button" class="btn" value="选择地物" onclick="activateSelectedFeature()" />
+            <input type="button" class="btn" value="编辑地物" onclick="editselectedFeature()" />
+            <input type="button" class="btn" value="删除地物" onclick="deleteSelectedFeature()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

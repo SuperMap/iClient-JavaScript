@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>缩放与平移</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src = '../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+           var map,layer,
+                   host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+                   url=host+"/iserver/services/map-world/rest/maps/World";
+           function init()
+           {
+               map = new SuperMap.Map("map",{controls:[]});
+               layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {transparent: true, cacheEnabled: true},{maxResolution:"auto"});
+               layer.events.on({"layerInitialized":addLayer});
+           }
+           function addLayer()
+           {
+               map.addLayer(layer);
+               map.setCenter(new SuperMap.LonLat(0,0), 0);
+           }
+           //放大 ，在当前缩放级别的基础上放大一级。
+        function   mapenlarge()
+        {
+            map.zoomIn();
+        }
+           //缩小，在当前缩放级别的基础上缩小一级。
+        function  mapreduce()
+        {
+            map.zoomOut();
+        }
+           //平移 ，根据指定的屏幕像素（-20，-8）值平移地图
+        function mapPan()
+        {
+            map.pan(-20,-8);
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="放大" onclick="mapenlarge()" />
+    <input type="button" class="btn" value="缩小" onclick=" mapreduce()" />
+    <input type="button" class="btn" value="平移" onclick="mapPan()" />
+</div>
+<div id="map"></div>
+</body>
+</html>

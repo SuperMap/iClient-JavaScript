@@ -1,0 +1,221 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>eChart柱状图</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            font: 12px sans-serif;
+        }
+        #map{
+            position: relative;
+            height: 553px;
+            border:1px solid #3473b7;
+        }
+        .arc path {
+            stroke: #fff;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script src="js/echarts-all.js"></script>
+    <script type="text/javascript">
+        var map, infowin, layer, utfgrid, control, chartLayer,
+                host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+                url=host+"/iserver/services/map-china400/rest/maps/China";
+        var pieChartDom;
+        var elementsDiv;
+        var isMapMoving = false;
+
+        function init(){
+            map = new SuperMap.Map("map", {controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })],
+                projection: "EPSG:3857"
+            });
+
+            //地图移动过程中不显示图表
+            map.events.on({"movestart": function(){
+                document.getElementById("piechart").innerHTML = "";
+                pieChartDom.style.display = "none";
+                isMapMoving = true;
+            }});
+            map.events.on({"moveend": function(){
+                isMapMoving = false;
+            }});
+
+            //基础图层
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {transparent: true}, {useCanvas: true, maxResolution: "auto"});
+
+            //创建 Elements 图层，用于显示饼图
+            chartLayer = new SuperMap.Layer.Elements("eCharts");
+
+            //获取 Elements 图层 div
+            elementsDiv =  chartLayer.getDiv();
+            //设置Elements实例的div为地图大小
+            var mapsize = map.getSize();
+            elementsDiv.style.width = mapsize.w;
+            elementsDiv.style.height = mapsize.h;
+
+            //创建图表 div, 设置其基本属性, 并添加到  Elements 图层
+            pieChartDom = document.createElement("div");
+            pieChartDom.id = "piechart";
+            pieChartDom.style.width = "400px";
+            pieChartDom.style.height = "240px";
+            pieChartDom.style.position = "absolute";
+            pieChartDom.style.opacity = 0.8;
+            elementsDiv.appendChild(pieChartDom);
+
+            //创建 UTFGrid 图层，用于获取饼图所需信息
+            utfgrid = new SuperMap.Layer.UTFGrid("UTFGridLayer", url,
+                    {
+                        layerName: "China_Province_pl@China",
+                        utfTileSize: 256,
+                        pixcell: 8,
+                        isUseCache: true
+                    },
+                    {
+                        utfgridResolution: 8
+                    });
+
+            layer.events.on({"layerInitialized": addLayer});
+            control = new SuperMap.Control.UTFGrid({
+                layers: [utfgrid],
+                callback: callback,
+                handlerMode: "move"
+            });
+            map.addControl(control);
+        }
+
+        // 鼠标移动中仍保持在同一个数据上
+        var isOneData = "";
+        var theDataCache;
+
+        // 相同数据检测
+        var callback = function (infoLookup, loc, pixel) {
+            if (infoLookup && isMapMoving === false) {
+                var info;
+                for (var idx in infoLookup) {
+                    info = infoLookup[idx];
+                    if (info && info.data) {
+                        document.getElementById("piechart").innerHTML = "";
+                        pieChartDom.style.display = "block";
+
+                        // 基于准备好的dom，初始化echarts图表
+                        var myChart = echarts.init(pieChartDom);
+
+                        var thedata;
+                        if(isOneData != info.data.SMID){
+                            // 数据（随机生成）
+                            thedata = [
+                                getRandomNumber(0, 1000, 0),
+                                getRandomNumber(0, 1000, 0),
+                                getRandomNumber(0, 1000, 0),
+                                getRandomNumber(0, 1000, 0),
+                                getRandomNumber(0, 1000, 0),
+                                getRandomNumber(0, 1000, 0)
+                            ];
+                            isOneData = info.data.SMID
+                        }
+                        else{
+                            thedata = theDataCache;
+                        }
+                        theDataCache = thedata;
+
+
+                        // echart 图表配置参数
+                        var option = {
+                            tooltip: {
+                                show: true
+                            },
+                            title : {
+                                x: "center",
+                                text: info.data.NAME + '地区产品销量统计'
+                            },
+                            xAxis : [
+                                {
+                                    type : 'category',
+                                    data : ["产品A","产品B","产品C","产品D","产品E","产品F"]
+                                }
+                            ],
+                            yAxis : [
+                                {
+                                    type : 'value'
+                                }
+                            ],
+                            series : [
+                                {
+                                    "name": "销量",
+                                    "type":"bar",
+                                    "data":thedata
+                                }
+                            ]
+                        };
+
+                        // 为echarts对象加载数据
+                        myChart.setOption(option);
+
+                        // 图表位置
+                        pieChartDom.style.left = (pixel.x + 20) + "px";
+                        pieChartDom.style.top = (pixel.y - 20) + "px";
+                        // 图表背景颜色
+                        pieChartDom.style.backgroundColor = "#F4F3F0";
+                    }
+                    else{
+                        //清除饼图
+                        document.getElementById("piechart").innerHTML = "";
+                        pieChartDom.style.display = "none";
+                    }
+                }
+            }
+        };
+
+        // 获取指定范围内的随机数
+        // min - 范围下限
+        // max - 范围上限
+        // decimalNum - 返回结果的小数位数。如果为 0，返回整数。
+        function getRandomNumber(min, max, decimalNum){
+            var rNum = min+Math.random()*(max-min);
+
+            if(decimalNum){
+                if(!isNaN(decimalNum)){
+                    return rNum;
+                }
+                else{
+                    decimalNum = parseInt(decimalNum);
+                }
+
+                if(decimalNum === 0){
+                    return Math.round(rNum);
+                }
+                else{
+                    return parseFloat(rNum).toFixed(decimalNum);
+                }
+            }
+            else{
+                return rNum;
+            }
+        }
+
+        //添加图层
+        function addLayer() {
+            var center = new SuperMap.LonLat(11733502.481499, 4614406.969325);
+            map.addLayers([layer, chartLayer, utfgrid]);
+            map.setCenter(center, 4);
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="map"></div>
+</body>
+</html>

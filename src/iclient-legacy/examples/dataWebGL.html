@@ -1,0 +1,97 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>WebGL Globe</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript" src="./js/third-party/Three/ThreeWebGL.js"></script>
+        <script type="text/javascript" src="./js/third-party/Three/ThreeExtras.js"></script>
+        <script type="text/javascript" src="./js/third-party/Three/RequestAnimationFrame.js"></script>
+        <script type="text/javascript" src="./js/third-party/Three/Detector.js"></script>
+        <script type="text/javascript" src="./js/third-party/globe.js"></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            /**
+             * 脚本引用说明：该三维球的效果使用的是第三方的脚本库，脚本位置在js/third-party
+             * ThreeWebGL.js、ThreeExtras.js、RequestAnimationFrame.js、Detector.js、globe.js
+             * 可以参考资源：https://github.com/climboid/webgl-globe
+             */
+
+            //定义全局globe变量
+            var globe = null,url=host+"/iserver/services/map-world/rest/maps/World";
+            function init(){
+                if(!document.createElement('canvas').getContext) {
+                    alert('您的浏览器不支持 canvas，请升级');
+                    return;
+                }
+
+                //使用globe.js文件创建三维球模型，并指定装载地球的div
+                globe = DAT.Globe(document.getElementById('map'));
+                globe.animate();
+            }
+
+            function loadData() {
+                //通过SQL查询返回需要的数据
+                var queryParam, queryBySQLParams, queryBySQLService;
+                queryParam = new SuperMap.REST.FilterParameter({
+                    name:"Capitals@World#1"
+                });
+                queryBySQLParams = new SuperMap.REST.QueryBySQLParameters({
+                    queryParams:[queryParam]
+                });
+                queryBySQLService = new SuperMap.REST.QueryBySQLService(url, {
+                    eventListeners:{
+                        "processCompleted":processCompleted,
+                        "processFailed":processFailed
+                    }
+                });
+                queryBySQLService.processAsync(queryBySQLParams);
+            }
+
+            function processCompleted(queryEventArgs) {
+                var result = queryEventArgs.result.recordsets[0].features;
+                //创建dataArr数组，用来组成WebGL Globe所需要的数据格式
+                var dataArr = [];
+                for (var item in result) {
+                    dataArr.push(result[item].geometry.y);
+                    dataArr.push(result[item].geometry.x);
+                    dataArr.push(result[item].data.CAP_POP / 100000000);
+                }
+                //为三维球装载数据并展示
+                globe.addData(dataArr, {format:'magnitude'});
+                globe.createPoints();
+            }
+
+            function processFailed() {
+                //查询失败后在控制台输出错误信息
+                console.log("SQL查询数据失败，请检查服务配置");
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="加载数据" onclick="loadData()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

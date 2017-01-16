@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>点线面绘制</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+        #toolbar {
+        position: relative;
+        padding-top: 5px;
+        padding-bottom: 10px;
+    }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src = '../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var map,layer,drawPoint, drawLine,drawPolygon,pointLayer,lineLayer,polygonLayer,
+                host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-world/rest/maps/World";
+        function init()
+        {
+            //新建点矢量图层
+            pointLayer = new SuperMap.Layer.Vector("pointLayer");
+
+            //新建线矢量图层
+            lineLayer = new SuperMap.Layer.Vector("lineLayer");
+
+            //新建面矢量图层
+            polygonLayer = new SuperMap.Layer.Vector("polygonLayer");
+            drawPoint = new SuperMap.Control.DrawFeature(pointLayer, SuperMap.Handler.Point, { multi: true});
+            drawLine = new SuperMap.Control.DrawFeature(lineLayer, SuperMap.Handler.Path, { multi: true});
+            drawPolygon = new SuperMap.Control.DrawFeature(polygonLayer, SuperMap.Handler.Polygon);
+            map = new SuperMap.Map("map",{controls:[
+                new SuperMap.Control.Zoom() ,
+                new SuperMap.Control.Navigation() ,
+                new SuperMap.Control.LayerSwitcher()
+            ,drawPoint,drawLine,drawPolygon]});
+            layer= new SuperMap.Layer.TiledDynamicRESTLayer("World", url, null,{maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+
+
+        }
+        function addLayer(){
+
+            map.addLayers([layer,pointLayer,lineLayer,polygonLayer]);
+            //显示地图范围
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+        }
+        function draw_point(){
+            deactiveAll();
+            drawPoint.activate();
+
+        }
+        function draw_line(){
+            deactiveAll();
+            drawLine.activate();
+        }
+
+        function draw_polygon(){
+            deactiveAll();
+            drawPolygon.activate();
+        }
+        function deactiveAll(){
+            drawPoint.deactivate();
+            drawLine.deactivate();
+            drawPolygon.deactivate();
+
+        }
+        function clearFeatures(){
+            deactiveAll();
+            pointLayer.removeAllFeatures();
+            lineLayer.removeAllFeatures();
+            polygonLayer.removeAllFeatures();
+        }
+
+
+    </script>
+</head>
+<body onload="init()" >
+<div id="toolbar">
+    <input type="button" class="btn" value="绘点" onclick="draw_point()" />
+    <input type="button" class="btn" value="绘线" onclick="draw_line()" />
+    <input type="button" class="btn" value="绘面" onclick="draw_polygon()" />
+    <input type="button" class="btn" value="清除" onclick="clearFeatures()" />
+</div>
+<div id="map"></div>
+
+</body>
+</html>

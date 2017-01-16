@@ -1,0 +1,170 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>基础渲染</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var map, layer,animatorVector;
+            var style=
+                {
+                    fillColor: "#339933",
+                    fillOpacity: 1,
+                    strokeOpacity: 0,
+                    pointRadius: 5
+                };
+            function init(){
+                if(!document.createElement('canvas').getContext) {
+                    alert('您的浏览器不支持 canvas，请升级');
+                    return;
+                }
+                map = new SuperMap.Map("map", { controls:[
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.MousePosition(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions:{
+                            enableKinetic:true
+                        }
+                    })]
+                });
+
+                layer = new SuperMap.Layer.CloudLayer();
+
+                map.addLayers([layer]);
+
+                map.setCenter(new SuperMap.LonLat(0, 0), 1);
+
+                animatorVector = new SuperMap.Layer.AnimatorVector("Vector Layer", {},{
+                    speed:0.2,
+                    startTime:0,
+                    endTime:100
+                });
+                map.addLayers([animatorVector]);
+                addPolygon();
+            }
+            function addPolygon()
+            {
+                //增加点的渐变渲染，点位置改变
+                animatorVector.addFeatures(
+                        [
+                            new SuperMap.Feature.Vector(
+                                    new SuperMap.Geometry.Point(0,0),
+                                    {
+                                        FEATUREID:0,
+                                        TIME:0
+                                    }
+                            ),
+                            new SuperMap.Feature.Vector(
+                                    new SuperMap.Geometry.Point(5000000,0),
+                                    {
+                                        FEATUREID:0,
+                                        TIME:100
+                                    }
+                            )
+                        ]
+                );
+                //增加线的渐变，节点数改变
+                animatorVector.addFeatures(
+                        [
+                            new SuperMap.Feature.Vector(
+                                    new SuperMap.Geometry.LineString([
+                                        new SuperMap.Geometry.Point(0, 5000000),
+                                        new SuperMap.Geometry.Point(-2500000, 7500000),
+                                        new SuperMap.Geometry.Point(0, 10000000)
+                                    ]),
+                                    {
+                                        FEATUREID:1,
+                                        TIME:0
+                                    }
+                            ),
+                            new SuperMap.Feature.Vector(
+                                    new SuperMap.Geometry.LineString([
+                                        new SuperMap.Geometry.Point(5000000, 5000000),
+                                        new SuperMap.Geometry.Point(2500000, 6250000),
+                                        new SuperMap.Geometry.Point(4000000, 7500000),
+                                        new SuperMap.Geometry.Point(2500000, 8750000),
+                                        new SuperMap.Geometry.Point(5000000, 10000000)
+                                    ]),
+                                    {
+                                        FEATUREID:1,
+                                        TIME:100
+                                    }
+                            )
+                        ]
+                )
+                //增加面的渐变，节点数改变
+                animatorVector.addFeatures(
+                        [
+                            new SuperMap.Feature.Vector(
+                                    new SuperMap.Geometry.Polygon([
+                                        new SuperMap.Geometry.LinearRing([
+                                            new SuperMap.Geometry.Point(0,0),
+                                            new SuperMap.Geometry.Point(5000000, 0),
+                                            new SuperMap.Geometry.Point(5000000, 5000000),
+                                            new SuperMap.Geometry.Point(0, 5000000),
+                                            new SuperMap.Geometry.Point(0,0)
+                                        ])
+                                    ]),
+                                    {
+                                        FEATUREID:2,
+                                        TIME:0
+                                    }
+                            ),
+
+                            new SuperMap.Feature.Vector(
+                                    new SuperMap.Geometry.Polygon([
+                                        new SuperMap.Geometry.LinearRing([
+                                            new SuperMap.Geometry.Point(0,0),
+                                            new SuperMap.Geometry.Point(5000000, 0),
+                                            new SuperMap.Geometry.Point(2500000, 5000000),
+                                            new SuperMap.Geometry.Point(0,0)
+                                        ])
+                                    ]),
+                                    {
+                                        FEATUREID:2,
+                                        TIME:100
+                                    }
+                            )
+                        ]
+                )
+
+
+            }
+            function startAnimator(){
+                animatorVector.animator.start();
+            }
+            function pauseAnimator(){
+                animatorVector.animator.pause();
+            }
+        </script>
+    </head>
+
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="开始" onclick="startAnimator()" />
+            <input type="button" class="btn" value="暂停" onclick="pauseAnimator()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

@@ -1,0 +1,121 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>点渐变</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var map, layer,animatorVector;
+            var style=
+                {
+                    fillColor: "#339933",
+                    fillOpacity: 1,
+                    strokeOpacity: 0,
+                    pointRadius: 5
+                };
+            function init(){
+                if(!document.createElement('canvas').getContext) {
+                    alert('您的浏览器不支持 canvas，请升级');
+                    return;
+                }
+                map = new SuperMap.Map("map", { controls:[
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.MousePosition(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions:{
+                            enableKinetic:true
+                        }
+                    })]
+                });
+
+                layer = new SuperMap.Layer.CloudLayer();
+
+                map.addLayers([layer]);
+
+                map.setCenter(new SuperMap.LonLat(0, 0), 1);
+
+                animatorVector = new SuperMap.Layer.AnimatorVector("Vector Layer", {needRecordDrawedFeature:true},{
+                    speed:0.05,
+                    startTime:0,
+                    endTime:100
+                });
+                map.addLayers([animatorVector]);
+                addPoint();
+            }
+            function addPoint()
+            {
+                var pointFeatures = [];
+                var features = [];
+                var ti = 100;
+                var num = 100;
+
+                for(var i = 0;i<ti;i++)
+                {
+                    for(var j = 0;j<num;j++)
+                    {
+                        if(features.length>=num)
+                        {
+                            var x = features[features.length-num].geometry.x;
+                            var y = features[features.length-num].geometry.y;
+                        }
+                        else
+                        {
+                            var x = Math.random()*20037508*2-20037508;
+                            var y = Math.random()*20037508*2-20037508;
+                        }
+
+                        var xd = Math.random()*1375080*2-1375080;
+                        var yd = Math.random()*1375080*2-1375080;
+                        var point = new SuperMap.Geometry.Point(x+xd,y+yd);
+                        var pointFeature = new SuperMap.Feature.Vector(point,{
+                            FEATUREID:j,
+                            TIME:0+i*1
+                        },style);
+                        features.push(pointFeature);
+                    }
+                }
+                animatorVector.addFeatures(features);
+            }
+            function startAnimator(){
+                animatorVector.animator.start();
+            }
+            function pauseAnimator(){
+                animatorVector.animator.pause();
+            }
+            function removeDrawedFeature(){
+                var features=animatorVector.getDrawedFeatures();
+                animatorVector.removeFeatures(features);
+            }
+        </script>
+    </head>
+
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="开始" onclick="startAnimator()" />
+            <input type="button" class="btn" value="暂停" onclick="pauseAnimator()" />
+            <input type="button" class="btn" value="移除历史点" title="移除掉运动过的点" onclick="removeDrawedFeature()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

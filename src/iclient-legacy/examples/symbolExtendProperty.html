@@ -1,0 +1,234 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>自定义属性</title>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <link href='./css/heatmap.css' rel='stylesheet' />
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+        .winContent{
+            padding:5px;
+            overflow-y:auto;
+            height:500px;
+
+        }
+
+        .popupWindow {
+            right:20px;
+            top:30px;
+            width: 250px;
+            position: absolute;
+            border: 2px solid #D6E3F1;
+            background: #FFF;
+            z-index: 9999;
+            top: 45px;
+            right: 0px;
+            border-top-width: 0px;
+            display: block;
+        }
+       .winTitle{
+           background: #1E90FF;
+       }
+
+    </style>
+
+    <script src="../libs/SuperMap.Include.js"></script>
+    <script type="text/javascript">
+        var plottingLayer,plottingEdit, layer, drawGraphicObject, map;
+        var host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        var mapurl = host + "/iserver/services/map-world/rest/maps/World";
+        var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+
+        function init(){
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+            });
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {transparent: true, cacheEnabled: true},{maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+
+            plottingLayer = new SuperMap.Layer.PlottingLayer("标绘图层", serverUrl);
+            plottingLayer.style = {
+                fillColor: "#66cccc",
+                fillOpacity: 0.4,
+                strokeColor: "#66cccc",
+                strokeOpacity: 1,
+                strokeWidth: 3,
+                pointRadius:6
+            };
+
+            //态势标绘编辑
+            plottingEdit = new SuperMap.Control.PlottingEdit(plottingLayer);
+
+            plottingLayer.events.on({"featureselected": showExtendProperty});
+            plottingLayer.events.on({"featuremodified": showExtendProperty});
+            plottingLayer.events.on({"afterfeaturemodified": showExtendProperty});
+            //添加态势标绘控件
+            map.addControls([plottingEdit]);
+        }
+
+        function addLayer() {
+            map.addLayers([layer, plottingLayer]);
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+
+            //标绘标号
+            plotSymbol();
+
+            plottingEdit.activate();
+        }
+
+        function plotSymbol(){
+
+            //标绘多边形
+            var polygonPoints = [];
+            polygonPoints.push(new SuperMap.Geometry.Point(-20, 0));
+            polygonPoints.push(new SuperMap.Geometry.Point(-10, 20));
+            polygonPoints.push(new SuperMap.Geometry.Point(-30, 40));
+            polygonPoints.push(new SuperMap.Geometry.Point(-60, 10));
+            plottingLayer.createSymbolWC(0,SuperMap.Plot.SymbolType.ARBITRARYPOLYGONSYMBOL,polygonPoints);
+
+            //标绘折线
+            var linePoints = [];
+            linePoints.push(new SuperMap.Geometry.Point(0, 0));
+            linePoints.push(new SuperMap.Geometry.Point(0, 20));
+            linePoints.push(new SuperMap.Geometry.Point(20, 10));
+            linePoints.push(new SuperMap.Geometry.Point(10, 30));
+            plottingLayer.createSymbolWC(0,SuperMap.Plot.SymbolType.POLYLINESYMBOL,linePoints);
+        }
+
+        function addExtendProperty(){
+
+            var key = document.getElementById("propertyName").value;
+            var value = document.getElementById("propertyValue").value;
+            if("" === key || "" === value)
+            {
+                return;
+            }
+
+            var features = plottingLayer.selectedFeatures;
+            if(0 === features.length)
+            {
+                alert("请选择您要编辑的标号");
+                return;
+            }
+
+            var geometry = features[0].geometry;
+            var extendProperty = geometry.getExtendProperty();
+            extendProperty.addProperty(key,value);
+
+            showExtendProperty();
+        }
+
+        function showExtendProperty()
+        {
+            document.all.extendProperty.innerHTML = "";
+
+            //获取选中的对象
+            var features = plottingLayer.selectedFeatures;
+            if(0 === features.length)
+            {
+                return;
+            }
+
+            var geometry = features[0].geometry;
+            var extendProperty = geometry.getExtendProperty();
+
+            var nPropertyCount = extendProperty.getPropertyCount();
+            if(0 === nPropertyCount)
+            {
+                return;
+            }
+
+            var container = document.getElementById("extendProperty");
+            var table = document.createElement("table");
+            var body = document.createElement("tbody");
+            table.setAttribute("border","1");
+            table.setAttribute("borderColor","black");
+            table.setAttribute("width","100%");
+
+            var tr = document.createElement("tr");
+
+            //添加属性名
+            var td_Name = document.createElement("th");
+            var text_Name = document.createTextNode("属性名");
+            td_Name.appendChild(text_Name);
+            tr.appendChild(td_Name);
+
+            //添加属性值
+            var td_Value = document.createElement("th");
+            var text_Value = document.createTextNode("属性值");
+            td_Value.appendChild(text_Value);
+            tr.appendChild(td_Value);
+            body.appendChild(tr);
+
+            for(var i = 0; i < nPropertyCount; i++)
+            {
+                var property = extendProperty.getPropertyByIndex(i);
+                if(null === property)
+                {
+                    continue;
+                }
+
+                var _tr = document.createElement("tr");
+
+                //添加属性名
+                var td_PropertyName = document.createElement("td");
+                var text_propertyName = document.createTextNode(property.getKey());
+                td_PropertyName.appendChild(text_propertyName);
+                _tr.appendChild(td_PropertyName);
+
+                //添加属性值
+                var td_PropertyValue = document.createElement("td");
+                var text_propertyValue = document.createTextNode(property.getValue());
+                td_PropertyValue.appendChild(text_propertyValue);
+                _tr.appendChild(td_PropertyValue);
+
+
+                body.appendChild(_tr);
+            }
+
+            table.appendChild(body);
+            container.appendChild(table);
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id = "toolbar">
+    <span>属性名：</span>
+    <input style='width:80px' id='propertyName' value=''/>
+    <span>属性值：</span>
+    <input style='width:80px' id='propertyValue' value=''/>
+    <input id="btn" type="button" class="btn" value="添加属性" onclick="addExtendProperty()" />
+</div>
+ <div id="popupWin" class="popupWindow" style="display: block;top: 278px; ">
+     <div  class="winTitle">
+        <span class="title_left">自定义属性</span>
+     </div>
+     <div id = "extendProperty" class="winContent" style="overflow-y:auto;height:250px;">
+     </div>
+</div>
+<div id="map"></div>
+</body>
+</html>

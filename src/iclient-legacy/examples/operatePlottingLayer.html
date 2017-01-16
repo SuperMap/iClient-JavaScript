@@ -1,0 +1,147 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>图层操作</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src = "../libs/SuperMap.Include.js"></script>
+    <script type="text/javascript">
+        var map, baseLayer, drawGraphicObject, plottingEdit, plottingLayers = [],
+                host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+                url = host + "/iserver/services/map-world/rest/maps/World";
+        var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+        function init() {
+            map = new SuperMap.Map("map", {
+                controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+            });
+            baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {
+                transparent: true,
+                cacheEnabled: true
+            }, {maxResolution: "auto"});
+            baseLayer.events.on({"layerInitialized": addLayer});
+
+            plotting = SuperMap.Plotting.getInstance(map, serverUrl);
+
+            symbolLibManager = plotting.getSymbolLibManager();
+            symbolLibManager.initializeAsync();
+        }
+
+        function addLayer(){
+            map.addLayers([baseLayer]);
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+        }
+
+        function createLayer(){
+            plottingDrawCancel();
+
+            var plottingLayerName = "plottingLayer_" + Math.ceil(Math.random() * 1000);
+            var plottingLayer = new SuperMap.Layer.PlottingLayer(plottingLayerName, serverUrl);
+            plottingLayer.events.on({"added" : layerAdded});
+            map.addLayers([plottingLayer]);
+        }
+
+        function layerAdded(addedEvt) {
+            plottingLayers.push(addedEvt.layer);
+            var successMessage = "图层 " + addedEvt.layer.name + " 创建成功";
+            alert(successMessage)
+
+            // 绘制标号;
+            drawGraphicObject = new SuperMap.Control.DrawFeature(addedEvt.layer, SuperMap.Handler.GraphicObject);
+            //态势标绘编辑
+            plottingEdit = new SuperMap.Control.PlottingEdit(addedEvt.layer);
+            //添加态势标绘控件
+            map.addControls([plottingEdit, drawGraphicObject]);
+        }
+
+        function removeLayer()
+        {
+            plottingDrawCancel();
+
+            if(plottingLayers.length !== 0){
+                var plottingLayer = plottingLayers[plottingLayers.length-1];
+                plottingLayer.events.on({"removed" : layerRemoved});
+                map.removeLayer(plottingLayer);
+                map.removeControl(plottingLayer.drawGraphicObject);
+                map.removeControl(plottingLayer.plottingEdit);
+            } else {
+                alert("当前地图无标绘图层")
+            }
+
+            if(plottingLayers.length !== 0){
+                drawGraphicObject.layer = plottingLayers[plottingLayers.length-1];
+                plottingEdit.layer = plottingLayers[plottingLayers.length-1];
+            } else {
+                drawGraphicObject = null;
+                plottingEdit = null;
+            }
+        }
+
+        function layerRemoved(removedEvt) {
+            plottingLayers.pop();
+            var successMessage = "图层 " + removedEvt.layer.name + " 删除成功";
+            alert(successMessage)
+        }
+
+        function plotSymbol() {
+            if(drawGraphicObject && drawGraphicObject !== null){
+                drawGraphicObject.activate();
+                drawGraphicObject.handler.libID = 421;
+                drawGraphicObject.handler.symbolCode = 10200;
+                drawGraphicObject.handler.serverUrl = serverUrl;
+            }
+        }
+
+        //取消绘制
+        function plottingDrawCancel() {
+            if(drawGraphicObject){
+                drawGraphicObject.deactivate();
+            }
+
+            if(plottingEdit){
+                plottingEdit.activate();
+            }
+        }
+
+        document.oncontextmenu = function(evt){
+            plottingDrawCancel();
+            return false;
+        }
+    </script>
+</head>
+<body onLoad = "init()">
+<div id="toolbar">
+    <input type="button" class="btn" value ="创建图层"onclick="createLayer()"/>
+    <input type="button" class="btn" value ="删除图层"onclick="removeLayer()"/>
+    <input type="button" class="btn" value="绘制标号" onclick="plotSymbol()"/>
+    <input type="button" class="btn" value="取消绘制" onclick="plottingDrawCancel()"/>
+</div>
+<div id = "map"></div>
+</body>
+</html>

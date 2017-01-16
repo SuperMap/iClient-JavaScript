@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>UTFGrid国旗版</title>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src="../libs/SuperMap.Include.js"></script>
+    <script  type="text/javascript">
+        var map,layer;
+        var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+        url=host+"/iserver/services/map-world/rest/maps/世界地图_Day";
+        var control,utfgrid,infowin,flagImg,flagName,flagContainer;
+
+        function init()
+        {
+            flagImg=document.getElementById("flag");
+            flagName=document.getElementById("flagName")
+            flagContainer=document.getElementById("flagContainer");
+            map = new SuperMap.Map("map", {controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })],
+                projection: "EPSG:4326"
+            });
+           layer = new SuperMap.Layer.TiledDynamicRESTLayer("世界地图", url, {transparent: true}, {useCanvas: true,maxResolution:"auto"});
+
+
+            utfgrid = new SuperMap.Layer.UTFGrid("UTFGridLayer", url,
+                    {
+                        layerName: "Countries@World",
+                        utfTileSize: 256,
+                        pixcell: 8,
+                        isUseCache: false
+                    },
+                    {
+                        utfgridResolution: 8
+                    });
+
+            control = new SuperMap.Control.UTFGrid({
+                layers: [utfgrid],
+                callback: function(infoLookup) {
+                    if(infoLookup)
+                    {
+                       for(var index in infoLookup)
+                       {
+                           var info=infoLookup[index];
+                           /*如果callback传回了数据，则利用数据中的国家名来设置img的src属性，并设置flagName的innerHTML属性*/
+                           if(info&&info.data)
+                           {
+                               var name = escape(info.data.COUNTRY).replace(/%u/g,"_u").replace(/%20/g,"");
+                               flagImg.src="images/flags/"+name+".png";     //假如在flags文件夹中没有找到对应的国旗图片，则将会触发img的onerror事
+                               flagName.innerHTML=info.data.COUNTRY;
+							   
+                               flagContainer.style.display = "block";
+                           }
+                           /*如果没传回数据，例如鼠标移到了对应海洋的地方时，将没有对应的数据，这时则把img和用来显示国家名div隐藏进来*/
+                           else
+                           {
+                               flagContainer.style.display = "none";
+                           }
+                       }
+                    }
+                },
+                /*注册utfgrid图层上的鼠标移动事件*/
+                handlerMode: "move"
+            });
+            map.addControl(control);
+
+
+            layer.events.on({"layerInitialized":addLayer});
+
+        }
+
+        function addLayer()
+        {
+            var center = new SuperMap.LonLat(0,0);
+            map.addLayers([layer, utfgrid]);
+            map.setCenter(center, 0);
+        }
+
+
+    </script>
+</head>
+<body onload="init()">
+
+<div id="map" style="position: relative;height: 553px"></div>
+<div id="flagContainer" style="position: absolute;width: 150px;height: 120px;top: 10px;left: 45px;text-align: center;display: none">
+    <img id="flag" style="position: relative;height: 100px;width: 150px" onerror="this.src='images/flags/noflag.png'"/>
+    <div id="flagName" style="position: relative;height: 20px;width: 150px;background-color: #e5f3ff"></div>
+</div>
+</body>
+</html>

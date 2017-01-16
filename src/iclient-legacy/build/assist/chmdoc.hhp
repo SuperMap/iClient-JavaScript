@@ -1,0 +1,24 @@
+[OPTIONS]
+Auto Index=Yes
+Binary TOC=No
+Binary Index=Yes
+Compatibility=1.1
+Compiled file=SuperMap iClient for JavaScript Help.chm
+Contents file=chmdoc.hhc
+Default topic=SuperMap iClient 8C for JavaScript\index.html
+Error log file=_errorlog.txt
+Index file=chmdoc.hhk
+Title=SuperMap iClient for JavaScript Help
+Full-text search=Yes
+Display compile progress=Yes
+Display compile notes=Yes
+Default window=main
+Default Font=
+Language=0x804 中文(简体/中国)
+Create CHI file=No
+Full text search stop list file=
+
+[WINDOWS]
+main=,"chmdoc.hhc","chmdoc.hhk","SuperMap iClient 8C for JavaScript\index.html","SuperMap iClient 8C for JavaScript\index.html",,,,,0x23520,222,0x1046,[10,10,780,560],0xB0000,,,,,,0
+
+[FILES]

@@ -1,0 +1,239 @@
+/* citySelector */
+.citySelector {
+    font: 12px/1.5 tahoma, arial, \5b8b\4f53;
+    background: #fff;
+    text-align: left;
+}
+.cityslide {
+    width: 250px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid #B3CDC0;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+    overflow: auto;
+    max-height: 300px;
+}
+.cityslide li {
+    list-style: none;
+    overflow: hidden;
+    height: 30px;
+    padding: 0px 10px;
+    line-height: 30px;
+}
+.cityslide li.on {
+    background: #00a346;
+    color: #fff;
+    cursor: pointer;
+}
+.cityslide li:hover {
+    background: #00a346;
+    color: #fff;
+    cursor: pointer;
+}
+.cityslide li b {
+    font-weight: normal;
+}
+.cityslide li.empty {
+    background: #fff2e8;
+    color: #666;
+}
+.cityslide li.empty em {
+    color: red;
+    font-style: normal;
+}
+.cityname {
+    float: left;
+}
+.cityspell {
+    float: right;
+}
+.cityBox {
+    width: 380px;
+    border: 1px solid #B3CDC0;
+    overflow: hidden;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3);
+}
+.cityBox .tip {
+    display: none;
+}
+.cityBox ul {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.cityBox ul li:first-child {
+    margin-left: 5px;
+}
+.cityBox ul li {
+    float: left;
+    list-style: none;
+    padding: 5px;
+    border-bottom: 1px solid #DDD;
+    cursor: pointer;
+    display: inline;
+    color: #00a346;
+}
+.cityBox ul li.on {
+    border-bottom-color: #00a346;
+    position: relative;
+}
+.hide {
+    display: none !important;
+}
+p.tip {
+    color: #999;
+    line-height: 20px;
+    padding: 5px;
+    margin: 0;
+    text-indent: 3px;
+}
+.hotCity {
+    border-top: 1px solid #DDD;
+    margin-top: -1px;
+    clear: left;
+    overflow: hidden;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    _margin-bottom: 8px;
+}
+.cityTab {
+    overflow: hidden;
+}
+.cityTab dl {
+    margin: 0;
+    padding: 0 0 0 10px;
+    overflow: hidden;
+}
+.cityTab dl dt {
+    float: left;
+    padding-left: 3px;
+    color: #00a346;
+    margin-top: 1px;
+    text-indent: 5px;
+    font-family: "Lucida console", "consolas", "courier new";
+    line-height: 25px;
+    font-size: 14px;
+    width: 20px;
+}
+.cityTab dl dd {
+    margin-left: 2px;
+    float: left;
+    width: 335px;
+}
+.cityTab dl dd a {
+    padding-left: 5px;
+    min-width: 66px;
+    line-height: 25px;
+    display: inline-block;
+    color: #333;
+    text-decoration: none;
+}
+.cityTab dl dd a:hover {
+    color: #00a346;
+}
+.smCityInput {
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-family: arial, verdana, sans-serif, '新宋体';
+    font-size: 14px;
+    text-decoration: none;
+    background-color: rgb(229, 229, 229);
+    border: 1px solid rgb(153, 153, 153);
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+    cursor: pointer;
+    outline: none;
+    vertical-align: middle;
+}
+.searchSite {
+    display: inline-block;
+    margin: 0;
+    width: 150px;
+    height: 26px;
+    line-height: 26px;
+    font-family: arial, verdana, sans-serif, '新宋体';
+    font-size: 14px;
+    text-decoration: none;
+    border: 0px solid transparent;
+    padding-left: 5px;
+    padding-right: 5px;
+    outline: none;
+    vertical-align: middle;
+}
+.searchSiteContainer {
+    display: inline-block;
+    border-right: 0px solid transparent;
+    border-left: 0px solid transparent;
+    border-top: 1px solid rgb(153, 153, 153);
+    border-bottom: 1px solid rgb(153, 153, 153);
+}
+.searchBtn {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    background: transparent url("../images/search.png") no-repeat scroll 7px 6px;
+    background-color: #FFF;
+    border-right: 1px solid rgb(153, 153, 153);
+    /*border-left: 1px solid rgb(220, 220, 220);*/
+    /*border-left: 1px solid transparent;*/
+    border-top: 1px solid rgb(153, 153, 153);
+    border-bottom: 1px solid rgb(153, 153, 153);
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+    outline: none;
+    vertical-align: middle;
+}
+.searchList {
+    position: absolute;
+    width: 382px;
+    border: 1px solid rgb(153, 153, 153);
+    border-radius: 4px;
+    border-color: rgb(186, 209, 197);
+    background-color: #FFF;
+    display: block;
+    font-size: 14px;
+    z-index: 9999;
+    overflow: hidden;
+}
+.searchList ul {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+.searchList ul li {
+    list-style: none;
+    overflow: hidden;
+    height: 25px;
+    padding: 0px 5px;
+    line-height: 25px;
+}
+.searchList ul li:hover {
+    cursor: pointer;
+    color: #00a346;
+}
+.searchSite::-ms-clear {
+    display: none;
+}
+.searchSite:valid + .clearInput {
+    display: inline;
+}
+.clearInput {
+    display: none;
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    margin: 6px 0 0 -15px;
+    background: url(../images/close.png) no-repeat;
+    outline: none;
+}
+.clearInput:hover {
+    cursor: pointer;
+}

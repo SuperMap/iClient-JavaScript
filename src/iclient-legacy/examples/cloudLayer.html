@@ -1,0 +1,46 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>CloudLayer</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 558px;
+                border:1px solid #3473b7;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var map, layer;
+            function init(){
+                map = new SuperMap.Map("map", { controls:[
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions:{
+                            enableKinetic:true
+                        }
+                    })]
+                });
+
+                layer = new SuperMap.Layer.CloudLayer();
+
+                map.addLayers([layer]);
+
+                map.setCenter(new SuperMap.LonLat(11339634.286396, 4588716.5813769), 4);
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="map"></div>
+    </body>
+</html>

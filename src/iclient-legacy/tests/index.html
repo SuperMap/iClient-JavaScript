@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Unit Test Suite</title>
+	<link rel="stylesheet" href="qunit.css" type="text/css" media="screen">
+	<script type="text/javascript" src="qunit.js"></script>
+	<script type="text/javascript" src="../libs/SuperMap.Include.js"></script>
+	<script type="text/javascript" src="TestCases.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">QUnit Test Suite</h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup</div>
+	<div id="map" style="width:500px;height:500px"></div>
+    <!--LevelRenderer测试-->
+    <div id="lRendertest" style="width:500px;height:500px"></div>
+    <!--CartoCSS样式表-->
+    <div id="cartoContainer">
+        <textarea id="cartocssStr" style="height: 350px;width: 300px">
+            /*此处定义一个变量并赋一个颜色值，在后面可以重复用这个颜色值*/
+
+            @color1:#FF0000;
+            @color2:rgb(220,20,60);
+            @color2:rgba(220,20,60,1);
+            @color2:hsl(1,1,1);
+            @color2:hsla(1,1,1,1);
+
+            /*各大洲txt*/
+            #World_Continent_txt___China400{
+            text-size:32;
+            text-face-name:黑体;
+            text-align:left;
+            text-vertical-alignment:top;
+            text-fill:#8DB6CD;
+            text-halo-radius:2;
+            text-opacity:0.5;
+            text-dx:5;
+            text-dy:-5;
+            text-comp-op:src-over;
+            }
+
+            /*各大洲的文本图层的hover高亮显示style*/
+
+            #China___China400::hover{
+            text-fill:@color1;
+            }
+
+            /*铁路线,先在底下铺一条大一点的黑色的线*/
+
+            #China_Railway_L___China400::one{
+            line-cap:butt;
+            line-join:miter;
+            line-color:#111;
+            line-width:2;
+            }
+
+            /*然后在上面加上面白色的一段一段的虚线，就形成了铁路线了*/
+
+            #China_Railway_L___China400::two{
+
+            /*每一段的长度为15px,间隔也是15px*/
+
+            line-dasharray:15,15;
+            line-color:#DDDDDD;
+            line-width:1.5;
+            }
+
+
+
+            /*底下的地图背景图层*/
+
+            #World_Division___China400{
+            polygon-fill:rgb(166,194,222);
+
+            /*背景图层的点击高亮显示符号风格*/
+
+            ::click{
+            polygon-fill:#123;
+            }
+            }
+
+            /*中国除外的其他国家的图层*/
+
+            #World_Continent___China400{
+            polygon-fill:rgb(245,243,240);
+            line-cap:square;
+            line-join:bevel;
+            line-dasharray:1,4;
+            line-miterlimit:50;
+            line-dash-offset:3;
+            line-width:4;
+            line-color:#27408B;
+            line-opacity:0.5;
+            line-offset:-50;
+            polygon-dx:2;
+            polygon-dy:2;
+            polygon-opacity:0.6;
+            polygon-comp-op:src-over;
+
+            /*featureID为73指的是南极洲，其hover时高亮颜色设置为#f00*/
+
+            ::hover[featureID=73]{
+            polygon-fill:rgb(152,251,152);
+            }
+            }
+
+            /*省会的图标，在zoom大于4时将省会图标设置为以下图标*/
+
+            #China_Capital_P___China400 [zoom&gt;2] {
+            point-file:url("../examples/images/marker2.png");
+            }
+
+            #China_PreCenCity_P___China400 [zoom&gt;2] {
+            point-file:url("");
+            point-fill:white;
+            point-radius:16;
+            point-halo-radius:2;
+            point-halo-color:#000;
+            point-dx:2;
+            point-dy:2;
+            point-opacity:0.5;
+            point-comp-op:src-over;
+            }
+
+            /*路*/
+
+            #China_Road_L___China400{
+            line-dasharray:1,10;
+            line-opacity:0.5;
+            line-dash-offset:5;
+            line-offset:-5;
+            line-color:#F08080;
+            line-width:6;
+            line-cap:round;
+            line-join:round;
+            line-miterlimit:100;
+            line-comp-op:src-over;
+            }
+        </textarea>
+    </div>
+</body>
+</html>

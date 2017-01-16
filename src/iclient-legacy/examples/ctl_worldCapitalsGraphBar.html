@@ -1,0 +1,175 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>世界首都人口统计</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script src='./js/graph/Bar3D.js'></script>
+    <script type="text/javascript">
+        var map, local, layer, themeLayer, infowin;
+                var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+                url=host+"/iserver/services/map-world/rest/maps/World";
+        function init(){
+
+            // 统计图模块要求浏览器支持 Canvas 渲染
+            if(!document.createElement('canvas').getContext){
+                alert("您的浏览器不支持 Canvas，请升级！");
+                return;
+            }
+
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+            });
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+
+            // 创建一个三维柱状统计专题图图层
+            themeLayer = new SuperMap.Layer.Graph("ThemeLayer", "Bar3D");
+
+            // 指定用于专题图制作的属性字段
+            themeLayer.themeFields = ["CAP_POP"];
+            // 压盖处理权重
+            themeLayer.overlayWeightField = "CAP_POP";
+
+            // 配置图表参数
+            themeLayer.chartsSetting = {
+                // width，height，codomain 分别表示图表宽、高、数据值域；此三项参数为必设参数
+                width: 30,
+                height: 100,
+                codomain: [0, 14000000],        // 允许图表展示的值域范围，此范围外的数据将不制作图表
+                xShapeBlank: [0, 0, 0],   // 水平方向上的空白间距参数
+                YOffset: -50,         // 向上偏移 50 像素
+                useAxis: false,       // 不显示坐标轴
+                useBackground: false       // 不显示背景框
+            };
+
+            // 注册 click 事件
+            themeLayer.on("click", moveToCapital)
+        }
+
+        function addLayer() {
+            map.addLayers([layer, themeLayer]);
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+        }
+
+        //获取 feature 数据, 专题图的数据必须是 SuperMap.Feature.Vector
+        function addThemeLayer() {
+            clearThemeLayer();
+            var queryParam, queryBySQLParams, queryBySQLService;
+            queryParam = new SuperMap.REST.FilterParameter({
+                name: "Capitals@World#1",
+                // 只统计人口 > 1000000 的首都城市
+                attributeFilter: "CAP_POP > 1000000"
+            });
+            queryBySQLParams = new SuperMap.REST.QueryBySQLParameters({
+                queryParams: [queryParam]
+            });
+            queryBySQLService = new SuperMap.REST.QueryBySQLService(url, {
+                eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}});
+            queryBySQLService.processAsync(queryBySQLParams);
+        }
+        function processCompleted(queryEventArgs) {
+            var i, result = queryEventArgs.result;
+            if (result && result.recordsets) {
+                for (i=0; i<result.recordsets.length; i++) {
+                    if (result.recordsets[i].features) {
+                        // 向专题图层添加用于制作专题图的feature数据
+                        themeLayer.addFeatures(result.recordsets[i].features);
+                    }
+                }
+            }
+        }
+
+        function processFailed(e) {
+            alert(e.error.errorMsg);
+        }
+
+        // 定位到首都城市
+        function moveToCapital(e){
+            if(e.target && e.target.refDataID){
+                closeInfoWin();
+
+                // 获取图形对应的 feature
+                var fea = themeLayer.getFeatureById(e.target.refDataID);
+                // feature 的 bounds 中心
+                var geoCenter = fea.geometry.getBounds().getCenterLonLat();
+                // 定位到 feature 的 bounds 中心
+                var lonLat = new SuperMap.LonLat(geoCenter.lon, geoCenter.lat);
+                map.setCenter(lonLat, 4);
+
+                // 弹窗内容
+                var contentHTML = "<div style='color: #000; background-color: #fff'>";
+                contentHTML += "<strong><i>" + fea.attributes.CAPITAL_CH + "</i></strong>";
+
+                contentHTML += "<hr style='margin: 3px'>";
+                contentHTML += "人口:<strong>" + fea.attributes.CAP_POP + "</strong>";
+                contentHTML += "</div>";
+
+                infowin = new SuperMap.Popup(
+                        "infowin",
+                        lonLat,
+                        new SuperMap.Size(150, 60),
+                        contentHTML,
+                        true,
+                        false,
+                        null);
+                infowin.setBackgroundColor("#fff");
+                infowin.setOpacity(0.8);
+                if(infowin) map.removePopup(infowin);
+                map.addPopup(infowin);
+            }
+        }
+
+        function clearThemeLayer() {
+            themeLayer.clear();
+            closeInfoWin();
+        }
+
+        // 移除地图弹窗
+        function closeInfoWin() {
+            if(infowin) {
+                try {
+                    map.removePopup(infowin);
+                }
+                catch(e) {
+                    alert(e.message);
+                }
+            }
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="添加专题图" onclick="addThemeLayer()" />
+    <input type="button" class="btn" value="清除" onclick="clearThemeLayer()" />
+</div>
+<div id="map"></div>
+</body>
+</html>

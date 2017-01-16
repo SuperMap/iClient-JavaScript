@@ -1,0 +1,50 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>百度地图</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 558px;
+                border:1px solid #3473b7;
+            }
+        </style>
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script src='./js/layer/Baidu.js'></script>
+        <script type="text/javascript">
+            var map, layer;
+            function init(){
+                map = new SuperMap.Map("map", { controls: [
+                    new SuperMap.Control.Attribution(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })], units: "m"
+                });
+
+                //基于SuperMap对百度地图进行了支持与扩展，需要额外引入Baidu.js脚本;
+                //脚本位于js/layer/Baidu.js;
+                layer = new SuperMap.Layer.Baidu();
+                map.addLayers([layer]);
+                map.setCenter(
+                        new SuperMap.LonLat(103.31, 36.03).transform(
+                                new SuperMap.Projection("EPSG:4326"),
+                                map.getProjectionObject()
+                        ),2
+                );
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="map"></div>
+    </body>
+</html>

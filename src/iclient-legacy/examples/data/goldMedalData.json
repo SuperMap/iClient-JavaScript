@@ -1,0 +1,607 @@
+﻿{
+    "name": "世界大洲",
+    "children": [
+        {
+            "name": "亚洲",
+            "children": [
+                {
+                    "name": "东亚",
+                    "children": [
+                        {
+                            "name": "中华人民共和国",
+                            "children": [
+                                {
+                                    "name": "中华人民共和国",
+                                    "size": 51
+                                }
+                            ]
+
+                        },
+                        {
+                            "name": "朝鲜",
+                            "children": [
+                                {
+                                    "name": "朝鲜",
+                                    "size": 2
+                                }
+                            ]
+                        },
+                        {
+                            "name": "韩国",
+                            "children": [
+                                {
+                                    "name": "韩国",
+                                    "size": 13
+                                }
+                            ]
+                        },
+                        {
+                            "name": "蒙古",
+                            "children": [
+                                {
+                                    "name": "蒙古",
+                                    "size": 2
+                                }
+                            ]
+                        },
+                        {
+                            "name": "日本",
+                            "children": [
+                                {
+                                    "name": "日本",
+                                    "size": 9
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "东南亚",
+                    "children": [
+                        {
+                            "name": "泰国",
+                            "children": [
+                                {
+                                    "name": "泰国",
+                                    "size": 2
+                                }
+                            ]
+                        },
+                        {
+                            "name": "印度尼西亚",
+                            "children": [
+                                {
+                                    "name": "印度尼西亚",
+                                    "size": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "南亚",
+                    "children": [
+                        {
+                            "name": "印度",
+                            "children": [
+                                {
+                                    "name": "印度",
+                                    "size": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "西亚",
+                    "children": [
+                        {
+                            "name": "伊朗",
+                            "children": [
+                                {
+                                    "name": "伊朗",
+                                    "size": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "格鲁吉亚",
+                            "children": [
+                                {
+                                    "name": "格鲁吉亚",
+                                    "size": 3
+                                }
+                            ]
+                        },
+                        {
+                            "name": "阿塞拜疆",
+                            "children": [
+                                {
+                                    "name": "阿塞拜疆",
+                                    "size": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "中亚",
+                    "children": [
+                        {
+                            "name": "哈萨克斯坦",
+                            "children": [
+                                {
+                                    "name": "哈萨克斯坦",
+                                    "size": 2
+                                }
+                            ]
+                        },
+                        {
+                            "name": "乌兹别克斯坦",
+                            "children": [
+                                {
+                                    "name": "乌兹别克斯坦",
+                                    "size": 1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "非洲",
+            "children": [
+                {
+                    "name": "北非",
+                    "children": [
+                        {
+                            "name": "突尼斯",
+                            "children": [
+                                {
+                                    "name": "突尼斯",
+                                    "size": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "东非",
+                    "children": [
+                        {
+                            "name": "埃塞俄比亚",
+                            "children": [
+                                {
+                                    "name": "埃塞俄比亚",
+                                    "size": 4
+                                }
+                            ]
+                        },
+                        {
+                            "name": "肯尼亚",
+                            "children": [
+                                {
+                                    "name": "肯尼亚",
+                                    "size": 6
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "中非",
+                    "children": [
+                        {
+                            "name": "喀麦隆",
+                            "children": [
+                                {
+                                    "name": "喀麦隆",
+                                    "size": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "南非",
+                    "children":[
+                        {
+                            "name": "津巴布韦",
+                            "children": [
+                                {
+                                    "name": "津巴布韦",
+                                    "size": 1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "北美洲",
+            "children": [
+                {
+                    "name": "北美地区",
+                    "children": [
+                        {
+                            "name": "美国",
+                            "children": [
+                                {
+                                    "name": "美国",
+                                    "size": 36
+                                }
+                            ]
+                        },
+                        {
+                            "name": "加拿大",
+                            "children": [
+                                {
+                                    "name": "加拿大",
+                                    "size": 3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "中美地区",
+                    "children": [
+                        {
+                            "name": "墨西哥",
+                            "children": [
+                                {
+                                    "name": "墨西哥",
+                                    "size": 2
+                                }
+                            ]
+                        },
+                        {
+                            "name": "巴拿马",
+                            "children": [
+                                {
+                                    "name": "巴拿马",
+                                    "size": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "加勒比群岛",
+                    "children": [
+                        {
+                            "name": "多米尼加",
+                            "children": [
+                                {
+                                    "name": "多米尼加",
+                                    "size": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "牙买加",
+                            "children": [
+                                {
+                                    "name": "牙买加",
+                                    "size": 6
+                                }
+                            ]
+                        },
+                        {
+                            "name": "古巴",
+                            "children": [
+                                {
+                                    "name": "古巴",
+                                    "size": 2
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "南美洲",
+            "children": [
+                {
+                    "name": "巴西",
+                    "children": [
+                        {
+                            "name": "巴西",
+                            "size": 3
+                        }
+                    ]
+                },
+                {
+                    "name": "阿根廷",
+                    "children": [
+                        {
+                            "name": "阿根廷",
+                            "size": 2
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "欧洲",
+            "children": [
+                {
+                    "name": "西欧",
+                    "children": [
+                        {
+                            "name": "荷兰",
+                            "children": [
+                                {
+                                    "name": "荷兰",
+                                    "size": 7
+                                }
+                            ]
+                        },
+                        {
+                            "name": "法国",
+                            "children": [
+                                {
+                                    "name": "法国",
+                                    "size": 7
+                                }
+                            ]
+                        },
+                        {
+                            "name": "英国",
+                            "children": [
+                                {
+                                    "name": "英国",
+                                    "size": 19
+                                }
+                            ]
+                        },
+                        {
+                            "name": "比利时",
+                            "children": [
+                                {
+                                    "name": "比利时",
+                                    "size": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "北欧",
+                    "children": [
+                        {
+                            "name": "挪威",
+                            "children": [
+                                {
+                                    "name": "挪威",
+                                    "size": 3
+                                }
+                            ]
+                        },
+                        {
+                            "name": "芬兰",
+                            "children": [
+                                {
+                                    "name": "芬兰",
+                                    "size": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "丹麦",
+                            "children": [
+                                {
+                                    "name": "丹麦",
+                                    "size": 2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "中欧",
+                    "children": [
+                        {
+                            "name": "瑞士",
+                            "children": [
+                                {
+                                    "name": "瑞士",
+                                    "size": 2
+                                }
+                            ]
+                        },
+                        {
+                            "name": "德国",
+                            "children": [
+                                {
+                                    "name": "德国",
+                                    "size": 16
+                                }
+                            ]
+                        },
+                        {
+                            "name": "斯洛伐克",
+                            "children": [
+                                {
+                                    "name": "斯洛伐克",
+                                    "size": 3
+                                }
+                            ]
+                        },
+                        {
+                            "name": "波兰",
+                            "children": [
+                                {
+                                    "name": "波兰",
+                                    "size": 3
+                                }
+                            ]
+                        },
+                        {
+                            "name": "捷克",
+                            "children": [
+                                {
+                                    "name": "捷克",
+                                    "size": 3
+                                }
+                            ]
+                        },
+                        {
+                            "name": "匈牙利",
+                            "children": [
+                                {
+                                    "name": "匈牙利",
+                                    "size": 3
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "南欧",
+                    "children": [
+                        {
+                            "name": "斯洛文尼亚",
+                            "children": [
+                                {
+                                    "name": "斯洛文尼亚",
+                                    "size": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "罗马尼亚",
+                            "children": [
+                                {
+                                    "name": "罗马尼亚",
+                                    "size": 4
+                                }
+                            ]
+                        },
+                        {
+                            "name": "保加利亚",
+                            "children": [
+                                {
+                                    "name": "保加利亚",
+                                    "size": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "葡萄牙",
+                            "children": [
+                                {
+                                    "name": "葡萄牙",
+                                    "size": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "土耳其",
+                            "children": [
+                                {
+                                    "name": "土耳其",
+                                    "size": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "西班牙",
+                            "children": [
+                                {
+                                    "name": "西班牙",
+                                    "size": 5
+                                }
+                            ]
+                        },
+                        {
+                            "name": "意大利",
+                            "children": [
+                                {
+                                    "name": "意大利",
+                                    "size": 8
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "东欧",
+                    "children":[
+                        {
+                            "name": "俄罗斯",
+                            "children": [
+                                {
+                                    "name": "俄罗斯",
+                                    "size": 23
+                                }
+                            ]
+                        },
+                        {
+                            "name": "白俄罗斯",
+                            "children": [
+                                {
+                                    "name": "白俄罗斯",
+                                    "size": 4
+                                }
+                            ]
+                        },
+                        {
+                            "name": "乌克兰",
+                            "children": [
+                                {
+                                    "name": "乌克兰",
+                                    "size": 7
+                                }
+                            ]
+                        },
+                        {
+                            "name": "爱沙尼亚",
+                            "children": [
+                                {
+                                    "name": "爱沙尼亚",
+                                    "size": 1
+                                }
+                            ]
+                        },
+                        {
+                            "name": "拉脱维亚",
+                            "children": [
+                                {
+                                    "name": "拉脱维亚",
+                                    "size": 1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "大洋洲",
+            "children": [
+                {
+                    "name": "澳大利亚",
+                    "children": [
+                        {
+                            "name": "澳大利亚",
+                            "size": 14
+                        }
+                    ]
+                },
+                {
+                    "name": "新西兰",
+                    "children": [
+                        {
+                            "name": "新西兰",
+                            "size": 3
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

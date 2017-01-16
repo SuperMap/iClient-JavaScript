@@ -1,0 +1,157 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>WFS 查询</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var map, layer, vectorLayer, vectorLayer, vector_style, vector_style_select, myFilter, drawings = null, draw = null,
+            host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+            url=host+"/iserver/services/map-world/rest/maps/World",
+            url2=host+"/iserver/services/data-world/wfs100";
+            function init(){
+                map = new SuperMap.Map("map", {controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+                });
+
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {transparent: true, cacheEnabled: true}, {maxResolution: "auto"});
+
+                vector_style = new SuperMap.Style({
+                    fillColor: '#669933',
+                    fillOpacity: 0.8,
+                    pointRadius: 8,
+                    strokeColor: '#aaee77',
+                    strokeWidth: 3
+                });
+
+                vector_style_select = new SuperMap.Style({
+                    fillColor: '#000',
+                    fillOpacity: 0.9,
+                    fontColor: '#232323',
+                    strokeColor: '#ffffff'
+                });
+
+                myFilter = new SuperMap.Filter.Comparison({
+                    type: SuperMap.Filter.Comparison.EQUAL_TO,
+                    property: "CAPITAL",
+                    value: ""
+                });
+
+                vectorLayer = new SuperMap.Layer.Vector("World Capitals", {
+                    strategies: [new SuperMap.Strategy.BBOX()],
+                    protocol: new SuperMap.Protocol.WFS({
+                        version: "1.0.0",
+                        url: url2,
+                        featureType: "Capitals",
+                        featureNS: "http://www.supermap.com/World",
+                        featurePrefix: "World",
+                        geometryName: "the_geom"
+
+                        //类似的ArcGIS请求参数设置（已验证返回数据）
+                        //version:"1.0.0",
+                        //url:"http://localhost:6080/arcgis/services/SampleWorldCities/MapServer/WFSServer",
+                        //featureType:"cities",
+                        //featureNS:"http://localhost:6080/arcgis/services/SampleWorldCities/MapServer/WFSServer",
+                        //featurePrefix:"SampleWorldCities",
+                        //geometryName:"shape"
+                    }),
+
+                    //filter使用方式一：
+                    //filter: new SuperMap.Filter.Logical({
+                    //    type: SuperMap.Filter.Logical.AND,
+                    //    filters: [
+                    //        new SuperMap.Filter.Comparison({
+                    //            type: SuperMap.Filter.Comparison.GREATER_THAN_OR_EQUAL_TO,
+                    //            property: "SMID",
+                    //            value: "50"
+                    //        }),
+                    //        new SuperMap.Filter.Comparison({
+                    //            type: SuperMap.Filter.Comparison.LESS_THAN_OR_EQUAL_TO,
+                    //            property: "SMID",
+                    //            value: "60"
+                    //        })
+                    //    ]
+                    //}),
+
+                    //filter使用方式二：
+                    filter: myFilter,
+
+                    styleMap: new SuperMap.StyleMap({
+                        'default': vector_style,
+                        'select': vector_style_select
+                    })
+                });
+
+                var select_feature_control = new SuperMap.Control.SelectFeature(vectorLayer);
+                map.addControl(select_feature_control);
+                select_feature_control.activate();
+                layer.events.on({"layerInitialized": addLayer});
+
+                //空间查询
+                drawings = new SuperMap.Layer.Vector("drawings");
+                map.addLayer(drawings);
+                draw = new SuperMap.Control.DrawFeature(drawings, SuperMap.Handler.Polygon);
+                map.addControl(draw);
+            }
+
+            function drawGeometry() {
+                clearFeatures();
+                draw.activate();
+                draw.events.on({featureadded: drawCompleted});
+            }
+
+            function clearFeatures() {
+                vectorLayer.removeAllFeatures();
+                drawings.removeAllFeatures();
+            }
+
+            function addLayer() {
+                map.addLayers([layer, vectorLayer]);
+                map.setCenter(new SuperMap.LonLat(0, 0), 0);
+            }
+
+            function drawCompleted(event) {
+                vectorLayer.filter = new SuperMap.Filter.Spatial({
+                    type: SuperMap.Filter.Spatial.INTERSECTS,
+                    value: event.feature.geometry
+                });
+                vectorLayer.refresh({force: true});
+                vectorLayer.filter = myFilter;
+                draw.deactivate();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="多边形" onclick="drawGeometry()" />
+            <input type="button" class="btn" value="清除" onclick="clearFeatures()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7,IE=9,IE=10,IE=11"/>
+<title>B样条曲线</title>
+<style type="text/css">
+    body{
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+    }
+    #map{
+        position: relative;
+        height: 510px;
+        border-top:1px solid #3473b7;
+        border-bottom:1px solid #3473b7;
+    }
+    #toolbar {
+        position: relative;
+        padding-top: 5px;
+        padding-bottom: 10px;
+    }
+</style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+<script src='../libs/SuperMap.Include.js'></script>
+<script src='js/MapToImg.js'></script>
+<script src='js/LargeFormatPrints.js'></script>
+<script type="text/javascript">
+var featuresOrigin = [];
+var map, local, layer,  pointLayer,drawPoint, lineLayer,markerLayer,vector, select;
+var pointArray=[];
+var styleDraw = {
+    strokeColor: "#304DBE",
+    strokeWidth: 2,
+    pointerEvents: "visiblePainted",
+    fillColor: "#304DBE",
+    fillOpacity: 0.8,
+    pointRadius:6
+};
+style = {
+    strokeColor: "#304DBE",
+    strokeWidth: 2,
+    pointerEvents: "visiblePainted",
+    fillColor: "#304DBE",
+    fillOpacity: 0.8
+};
+
+var style_green = {
+    strokeColor: "#FFF",
+    strokeOpacity: 1,
+    strokeWidth: 2,
+    pointRadius: 6,
+    pointerEvents: "visiblePainted",
+    fillColor: '#545BF4'
+};
+
+var style_green1 = {
+    strokeColor: "#FFF",
+    strokeOpacity: 1,
+    strokeWidth: 2,
+    pointRadius: 6,
+    pointerEvents: "visiblePainted",
+    fillColor: '#50E7F8'
+};
+
+var style_green2 = {
+    strokeColor: "#FFF",
+    strokeOpacity: 1,
+    strokeWidth: 2,
+    pointRadius: 6,
+    pointerEvents: "visiblePainted",
+    fillColor: '#0C9CFE'
+};
+var style1 = {
+    fillColor: '#F00',
+    fillOpacity: 0.6,
+    strokeWidth: 0
+};
+
+var style2 = {
+    fillColor: '#0F0',
+    fillOpacity: 0.6,
+    strokeWidth: 0
+};
+
+var style3 = {
+    fillColor: '#00F',
+    fillOpacity: 0.6,
+    strokeWidth: 0
+};
+var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+        url=host+"/iserver/services/map-china400/rest/maps/China";
+function init(){
+    //新建点矢量图层
+    pointLayer = new SuperMap.Layer.Vector("pointLayer");
+    //对点图层应用样式styleDraw（前面有定义）
+    pointLayer.style = styleDraw;
+    drawPoint=new SuperMap.Control.DrawFeature(pointLayer,SuperMap.Handler.Point);
+    drawPoint.events.on({"featureadded": drawCompleted});
+    //新建线矢量图层
+    lineLayer = new SuperMap.Layer.Vector("lineLayer");
+    //对线图层应用样式styleDraw（前面有定义）
+    lineLayer.style = styleDraw;
+
+
+    //定义layer图层，TiledDynamicRESTLayer：分块动态 REST 图层
+    layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, { transparent: true, cacheEnabled: true }, { maxResolution: "auto" , useCanvas:false});
+    //为图层初始化完毕添加addLayer()事件
+    layer.events.on({"layerInitialized":addLayer});
+    map = new SuperMap.Map("map",{controls: [
+        new SuperMap.Control.LayerSwitcher(),
+        new SuperMap.Control.OverviewMap(),
+        new SuperMap.Control.ScaleLine(),
+        new SuperMap.Control.Zoom(),
+        new SuperMap.Control.Navigation({
+            dragPanOptions: {
+                enableKinetic: true
+            }}) ,drawPoint
+        ]
+    });
+}
+
+function addLayer() {
+    map.addLayers([layer, pointLayer,lineLayer]);
+    map.setCenter(new SuperMap.LonLat(11733502.481499,4614406.969325), 4);
+}
+//绘制点
+function createPoint()
+{
+    drawPoint.activate();
+}
+//绘制B样条线
+function createBLine()
+{
+    if(pointArray.length<2)
+    {
+        alert("请绘制至少两个点！");
+        return;
+    }
+    drawPoint.deactivate()
+    var geo1=SuperMap.Geometry.LineString.createBspline(pointArray,10);
+    var vector1 = new SuperMap.Feature.Vector(
+            geo1,
+            {},
+            styleDraw
+    );
+    lineLayer.addFeatures([vector1]);
+}
+function drawCompleted(drawGeometryArgs)
+{
+    var feature= drawGeometryArgs.feature;
+    var geometry=feature.geometry;
+    //将每次绘制的点存起来
+    pointArray.push(geometry);
+
+    //停止画点面控制
+    //drawPoint.deactivate();
+}
+//移除整个图层要素
+function clearAllFeatures(){
+    pointArray=[];
+    pointLayer.removeAllFeatures();
+    lineLayer.removeAllFeatures();
+}
+
+</script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="绘制点集" onclick="createPoint()" />
+    <input type="button" class="btn" value="根据点集生成B样条曲线" onclick="createBLine()" />
+    <input type="button" class="btn" value="清除" onclick="clearAllFeatures()" />
+</div>
+<div id="map"></div>
+</body>
+</html>

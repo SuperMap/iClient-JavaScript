@@ -1,0 +1,63 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>OverlyingThemeDotDensityToOpenStreetMap</title>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css">
+    <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+    <script type="text/javascript" src="../libs/SuperMap.Include.js"></script>
+    <script type="text/javascript" src="js/iConnector/iConnectorLeaflet.js"></script>
+    <script type="text/javascript">
+        var map,host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-world/rest/maps/World";
+        function init()
+        {
+            map = L.map('map').setView([20, 0], 2);
+
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+                maxZoom: 18
+            }).addTo(map);
+
+        }
+        //生成点密度专题图
+        function addThemeDotDensity()
+        {
+            //创建制作点密度专题图服务类
+            var themeService = new SuperMap.REST.ThemeService(url, {eventListeners:{"processCompleted": themeCompleted, "processFailed": themeFailed}}),
+                    dotStyle = new SuperMap.REST.ServerStyle({
+                        markerSize: 3,
+                        markerSymbolID: 12
+                    }),
+                    themeDotDensity = new SuperMap.REST.ThemeDotDensity({
+                        dotExpression: "Pop_1994",
+                        value: 5000000,
+                        style: dotStyle
+                    }),
+                    themeParameters = new SuperMap.REST.ThemeParameters({
+                        themes: [themeDotDensity],
+                        datasetNames: ["Countries"],
+                        dataSourceNames: ["World"]
+                    });
+            //向iserver发送请求
+            themeService.processAsync(themeParameters);
+        }
+        //生成专题图后将其叠加到 openstreetmap 地图上面
+        function themeCompleted(themeEventArgs) {
+            if(themeEventArgs.result.resourceInfo.id) {
+                var canvasTiles =  SuperMap.Web.iConnector.Leaflet.getLayer(url,{layersID:themeEventArgs.result.resourceInfo.id});
+                canvasTiles.addTo(map);
+            }
+        }
+        function themeFailed(serviceFailedEventArgs) {
+            alert(serviceFailedEventArgs.error.errorMsg);
+        }
+    </script>
+</head>
+<body onload="init()" style="width: 100%; height: 100%">
+<input type="button" class="btn" value="创建点密度专题图" onclick="addThemeDotDensity()" />
+<div id="map"  style="width: 100%; height: 500px;"></div>
+</body>
+</html>

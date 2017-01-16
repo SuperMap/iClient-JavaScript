@@ -1,0 +1,170 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>最近设施分析</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 500px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var local, map, layer, vectorLayer, markerLayer1,
+            markerLayer2, drawPoint, eventPoint, n = 0,
+            facilityPoints = [
+                new SuperMap.Geometry.Point(6000, -5500),
+                new SuperMap.Geometry.Point(5500, -2500),
+                new SuperMap.Geometry.Point(2500, -3500)],
+            style = {
+                strokeColor: "#304DBE",
+                strokeWidth: 3,
+                pointerEvents: "visiblePainted",
+                fill: false
+            },
+            url1=host+"/iserver/services/map-changchun/rest/maps/长春市区图",
+            url2=host+"/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+            function init(){
+                vectorLayer = new SuperMap.Layer.Vector("Vector Layer");
+                drawPoint = new SuperMap.Control.DrawFeature(vectorLayer, SuperMap.Handler.Point);
+                drawPoint.events.on({ "featureadded": drawCompleted });
+                map = new SuperMap.Map("map", { controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    }),
+                    drawPoint], units: "m"
+                });
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("Changchun", url1, {transparent: true, cacheEnabled: true}, { maxResolution: "auto" });
+                layer.events.on({ "layerInitialized": addLayer });
+                markerLayer1 = new SuperMap.Layer.Markers("Markers");
+                markerLayer2 = new SuperMap.Layer.Markers("Markers");
+
+                var size = new SuperMap.Size(44, 40),
+                        offset = new SuperMap.Pixel(-(size.w / 2), -size.h),
+                        icon1 = new SuperMap.Icon("../theme/images/marker-gold.png", size, offset),
+                        icon2 = new SuperMap.Icon("../theme/images/marker-gold.png", size, offset),
+                        icon3 = new SuperMap.Icon("../theme/images/marker-gold.png", size, offset);
+                markerLayer1.addMarker(new SuperMap.Marker(new SuperMap.LonLat(6000, -5500), icon1));
+                markerLayer1.addMarker(new SuperMap.Marker(new SuperMap.LonLat(5500, -2500), icon2));
+                markerLayer1.addMarker(new SuperMap.Marker(new SuperMap.LonLat(2500, -3500), icon3));
+            }
+
+            function addLayer() {
+                map.addLayers([layer, vectorLayer, markerLayer1, markerLayer2]);
+                map.setCenter(new SuperMap.LonLat(4503.6240321526, -3861.911472192499), 1);
+            }
+            function selectEventPoint() {
+                clearElements();
+                drawPoint.activate();
+            }
+            function drawCompleted(drawGeometryArgs) {
+                var point = drawGeometryArgs.feature.geometry,
+                        size = new SuperMap.Size(44, 33),
+                        offset = new SuperMap.Pixel(-(size.w / 2), -size.h),
+                        icon = new SuperMap.Icon("../theme/images/marker.png", size, offset);
+                markerLayer2.addMarker(new SuperMap.Marker(new SuperMap.LonLat(point.x, point.y), icon));
+                eventPoint = point;
+                n++;
+                if (n >= 1) {
+                    drawPoint.deactivate();
+                }
+            }
+            function findClosestFacilities() {
+                drawPoint.deactivate();
+                if(!eventPoint){
+                    alert("请选择事件点！");
+                    return;
+                }
+                var findClosestFacilitiesService, parameter, analystParameter, resultSetting;
+                resultSetting = new SuperMap.REST.TransportationAnalystResultSetting({
+                    returnEdgeFeatures: true,
+                    returnEdgeGeometry: true,
+                    returnEdgeIDs: true,
+                    returnNodeFeatures: true,
+                    returnNodeGeometry: true,
+                    returnNodeIDs: true,
+                    returnPathGuides: true,
+                    returnRoutes: true
+                });
+                var edgeWeightNamesSelect = document.getElementById("edgeWeightNames");
+                var weightFieldName = edgeWeightNamesSelect.options[edgeWeightNamesSelect.selectedIndex].text;
+
+                var turnWeightFieldSelect = document.getElementById("turnNodeWeightNames");
+                var turnNodeWeightNames = turnWeightFieldSelect.options[turnWeightFieldSelect.selectedIndex].text;
+                analystParameter = new SuperMap.REST.TransportationAnalystParameter({
+                    resultSetting: resultSetting,
+                    turnWeightField : turnNodeWeightNames,
+                    weightFieldName : weightFieldName
+                });
+                parameter = new SuperMap.REST.FindClosestFacilitiesParameters({
+                    event: eventPoint,
+                    expectFacilityCount: 1,
+                    isAnalyzeById: false,
+                    facilities: facilityPoints,
+                    parameter: analystParameter
+                });
+                findClosestFacilitiesService = new SuperMap.REST.FindClosestFacilitiesService(url2, {
+                    eventListeners: { "processCompleted": processCompleted }
+                });
+                findClosestFacilitiesService.processAsync(parameter);
+            }
+            function processCompleted(findClosestFacilitiesEventArgs) {
+                var result = findClosestFacilitiesEventArgs.result,
+                        features = [];
+                if (result.facilityPathList) {
+                    for (var i = 0, facilityPathList = result.facilityPathList, len = facilityPathList.length; i < len; i++) {
+                        var feature = new SuperMap.Feature.Vector();
+                        feature.geometry = facilityPathList[i].route;
+                        feature.style = style;
+                        features.push(feature);
+                    }
+                }
+                vectorLayer.addFeatures(features);
+            }
+            function clearElements() {
+                eventPoint = null;
+                n = 0;
+                markerLayer2.clearMarkers();
+                vectorLayer.removeAllFeatures();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <span>权重字段：</span>
+            <select style='width:77px' id='edgeWeightNames'>
+                <option>length</option>
+                <option>time</option>
+            </select>
+            <span style='font-size: 1.2em;'>终止里程点：</span>
+            <span>转向字段：</span>
+            <select style='width:100px' id='turnNodeWeightNames'>
+                <option>TurnCost</option>
+            </select>
+            <input type="button" class="btn" value="事件点" style="margin-bottom: 10px" onclick="selectEventPoint()" />
+            <input type="button" class="btn" value="提交" style="margin-bottom: 10px" onclick="findClosestFacilities()" />
+            <input type="button" class="btn" value="清除" style="margin-bottom: 10px" onclick="clearElements()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

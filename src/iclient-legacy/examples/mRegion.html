@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>岛洞与多面</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src = '../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var map,layer,vectorLayer,dataAdded=false,
+                host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-world/rest/maps/World";
+        function init()
+        {
+            map = new SuperMap.Map("map",{controls:[
+                new SuperMap.Control.Zoom() ,
+                new SuperMap.Control.Navigation() ,
+                new SuperMap.Control.LayerSwitcher()
+            ]});
+            layer= new SuperMap.Layer.TiledDynamicRESTLayer("World", url, null,{maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+            vectorLayer = new SuperMap.Layer.Vector("vector",{renderers: ["Canvas"]});
+        }
+
+        function addLayer(){
+
+            map.addLayers([layer,vectorLayer]);
+            //显示地图范围
+            map.setCenter(new SuperMap.LonLat(20, 0), 0);
+        }
+        function addData()
+        {
+            if(!dataAdded)
+            {
+                vectorLayer.removeAllFeatures();
+
+
+                //导洞的创建方式
+                var points1=[
+                    new SuperMap.Geometry.Point(-20,-20),
+                    new SuperMap.Geometry.Point(20,-20),
+                    new SuperMap.Geometry.Point(20,20),
+                    new SuperMap.Geometry.Point(-20,20),
+                    new SuperMap.Geometry.Point(-20,-20)
+                ];
+                var line1 =  new SuperMap.Geometry.LinearRing(points1);
+                var points2=[
+                    new SuperMap.Geometry.Point(-10,-10),
+                    new SuperMap.Geometry.Point(10,-10),
+                    new SuperMap.Geometry.Point(10,10),
+                    new SuperMap.Geometry.Point(-10,10),
+                    new SuperMap.Geometry.Point(-10,-10)
+                ];
+                var line2 =  new SuperMap.Geometry.LinearRing(points2);
+                var regionDaodong = new SuperMap.Geometry.Polygon([line1,line2]);
+                var regionDaodongVector = new SuperMap.Feature.Vector(regionDaodong);
+
+                //多面的创建方式
+                var points3=[
+                    new SuperMap.Geometry.Point(30,-20),
+                    new SuperMap.Geometry.Point(70,-20),
+                    new SuperMap.Geometry.Point(70,20),
+                    new SuperMap.Geometry.Point(30,20),
+                    new SuperMap.Geometry.Point(30,-20)
+                ];
+                var line3 =  new SuperMap.Geometry.LinearRing(points3);
+                var points4=[
+                    new SuperMap.Geometry.Point(40,-10),
+                    new SuperMap.Geometry.Point(60,-10),
+                    new SuperMap.Geometry.Point(60,10),
+                    new SuperMap.Geometry.Point(40,10),
+                    new SuperMap.Geometry.Point(40,-10)
+                ];
+                var line4 =  new SuperMap.Geometry.LinearRing(points4);
+                var polygon1 = new SuperMap.Geometry.Polygon([line3]);
+                var polygon2 = new SuperMap.Geometry.Polygon([line4]);
+
+                var multiPolygon = new SuperMap.Geometry.MultiPolygon([polygon1,polygon2]);
+                var regionDduomianVector = new SuperMap.Feature.Vector(multiPolygon);
+
+
+                vectorLayer.addFeatures([regionDaodongVector,regionDduomianVector]);
+
+                dataAdded=true;
+            } else{
+                alert("数据已加载。");
+            }
+        }
+
+
+
+        function removeData()
+        {        dataAdded =false;
+            vectorLayer.removeAllFeatures();
+            vectorLayer.refresh();
+        }
+    </script>
+</head>
+<body onload="init()" >
+<div id="toolbar">
+    <input type="button" class="btn" value ="加载数据"onclick="addData()"/>
+    <input type="button" class="btn" value ="移除数据"onclick="removeData()"/>
+</div>
+<div id="map"></div>
+</body>
+</html>

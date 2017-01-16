@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>GeoJSON数据展示</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 520px;
+            border:1px solid #3473b7;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src = '../libs/SuperMap.Include.js'></script>
+    <script src="js/OSMBuildings-SuperMap.js"></script>
+    <script type="text/javascript">
+        var map, layer,osm,vLayer,
+                host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-world/rest/maps/World";
+
+        function init(){
+            //初始化地图
+            map = new SuperMap.Map("map",{controls:[
+                new SuperMap.Control.Navigation(),
+                new SuperMap.Control.MousePosition(),
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.Zoom()
+            ]});
+
+            //初始化图层
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, null,{maxResolution:"auto"});
+            vLayer=new SuperMap.Layer.Vector("vector");
+            //监听图层信息加载完成事件
+            layer.events.on({"layerInitialized":addLayer});
+        }
+        //异步加载图层
+        function addLayer(){
+            map.addLayers([layer,vLayer]);
+            map.setCenter(new SuperMap.LonLat(102.0, 0.5), 4);
+
+            //GeoJSON对象，也可以是一个字符串
+            var geojson={
+                "type": "FeatureCollection",
+                "features": [
+                    { "type": "Feature",
+                        "geometry": {"type": "Point", "coordinates": [102.0, 0.5]},
+                        "properties": {"prop0": "value0"}
+                    },
+                    { "type": "Feature",
+                        "geometry": {
+                            "type": "LineString",
+                            "coordinates": [
+                                [102.0, 0.0], [103.0, 1.0], [104.0, 0.0], [105.0, 1.0]
+                            ]
+                        },
+                        "properties": {
+                            "prop0": "value0",
+                            "prop1": 0.0
+                        }
+                    },
+                    { "type": "Feature",
+                        "geometry": {
+                            "type": "Polygon",
+                            "coordinates": [
+                                [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0],
+                                    [100.0, 1.0], [100.0, 0.0] ]
+                            ]
+                        },
+                        "properties": {
+                            "prop0": "value0",
+                            "prop1": {"this": "that"}
+                        }
+                    }
+                ]
+            };
+            //创建一个GeoJSON解析器
+            var geojsonParse=new SuperMap.Format.GeoJSON();
+            //将GeoJSON对象转化成要素数组
+            var features=geojsonParse.read(geojson);
+            //最后将要素数组加到矢量图层里面进行渲染
+            vLayer.addFeatures(features);
+        }
+    </script>
+</head>
+<body onLoad = "init()">
+<div id = "map"></div>
+</body>
+</html>

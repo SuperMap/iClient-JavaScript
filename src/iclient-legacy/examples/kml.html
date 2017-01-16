@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>kml</title>
+    <style type="text/css">
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src="../libs/SuperMap.Include.js"></script>
+    <script>
+        var map,layer,updateEdgeWeightService,loaded=false;
+                host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+                url=host+"/iserver/services/map-china400/rest/maps/China";
+
+        function init(){
+            map = new SuperMap.Map("map", {controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.MousePosition(),
+                new SuperMap.Control.OverviewMap(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })],
+                projection:new SuperMap.Projection("EPSG:3857")
+            });
+
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {transparent: true}, {useCanvas: true, maxResolution: "auto"});
+            layer.events.on({"layerInitialized": addLayer});
+        }
+
+
+        function addLayer() {
+            var center = new SuperMap.LonLat(0,0);
+            map.addLayer(layer);
+            map.setCenter(center,1);
+        }
+
+        function loadKml(){
+            if(!loaded){
+                layer01=new SuperMap.Layer.Vector("KML", {
+                    strategies: [new SuperMap.Strategy.Fixed()],
+                    protocol: new SuperMap.Protocol.HTTP({
+                        url:host+"/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/features.kml",   //"data/sichuang.kml",
+                        format: new SuperMap.Format.KML({
+                            extractStyles: true,
+                            extractAttributes: true,
+                            internalProjection:new SuperMap.Projection("EPSG:3857"),       //所在地图的坐标系
+                            maxDepth:2      //要解析外部链接文件时此值必须大于1
+                        })
+                    })
+                });
+                map.addLayer(layer01);
+                layer01.events.on({"featuresadded":featuresadd});
+                loaded=true;
+            }
+        }
+
+        function featuresadd(){
+            var center = new SuperMap.LonLat(5000000,8000000);
+            map.setCenter(center,1);
+        }
+
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar"><button id="loadBt" class="btn" onclick="loadKml()">加载</button></div>
+<div id="map"></div>
+</body>
+</html>

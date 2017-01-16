@@ -1,0 +1,201 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>标签专题图层</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var map, layer, vectorLayer, selectFeature, popup, strategy,
+                host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+                url=host+"/iserver/services/map-world/rest/maps/World";
+        function init(){
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+            });
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("世界地图", url, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+
+            //新建一个策略
+            strategy = new SuperMap.Strategy.GeoText();
+            //新建一个标签专题图层
+            vectorLayer = new SuperMap.Layer.Vector("Label",{strategies: [strategy]});
+
+            //设置标签的样式
+            strategy.style = {
+                fontColor:"#FF7F00",
+                fontWeight:"bolder",
+                fontSize:"14px",
+                fill: true,
+                fillColor: "#FFFFFF",
+                fillOpacity: 1,
+                stroke: true,
+                strokeColor:"#8B7B8B"
+            };
+
+            //用于标签分组的属性字段名称
+            strategy.groupField = "CAP_POP";
+            //标签分组数组
+            strategy.styleGroups = [
+                {
+                    start:200000,
+                    end:500000,
+                    style:{
+                        fontColor:"#FF4500",
+                        fontWeight:"bolder",
+                        fontSize:"18px"
+                    }
+                },
+                {
+                    start:500000,
+                    end:1000000,
+                    style:{
+                        fontColor:"#FF0000",
+                        fontWeight:"bolder",
+                        fontSize:"22px"
+                    }
+                },
+                {
+                    start:1000000,
+                    end:2000000,
+                    style:{
+                        fontColor:"#EE0000",
+                        fontWeight:"bolder",
+                        fontSize:"26px"
+                    }
+                },
+                {
+                    start:2000000,
+                    end:100000000,
+                    style:{
+                        fontColor:"#CD0000",
+                        fontWeight:"bolder",
+                        fontSize:"30px"
+                    }
+                }
+            ];
+        }
+
+        function addLayer() {
+            map.addLayers([layer, vectorLayer]);
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+
+            //通过selectFeature控件为标签添加点击事件
+            var callbacks = {
+                click: function(feature){
+                    closeInfoWin();
+
+                    //组织弹窗内容
+                    var contentHTML = "<div style=\'font-size:.8em; opacity: 0.8; overflow-y:hidden;\'>";
+                    contentHTML += "<div>所在国家："+feature.attributes.COUNTRY+"</div>";
+                    contentHTML +="<div>ID："+feature.attributes.SmID+"</div>";
+                    contentHTML +="<div>人口数量："+feature.attributes.CAP_POP+"</div>"+ "</div>";
+                    //新建一个弹窗并加入地图
+                    popup = new SuperMap.Popup.FramedCloud("popwin",new SuperMap.LonLat(feature.attributes.SmX, feature.attributes.SmY),null,contentHTML,null,true,function(){
+                        closeInfoWin();
+                    });
+                    map.addPopup(popup);
+                }
+            };
+
+            //实例化 selectFeature 控件
+            selectFeature = new SuperMap.Control.SelectFeature(vectorLayer,{callbacks:callbacks});
+            //map上添加控件
+            map.addControl(selectFeature);
+            //激活控件
+            selectFeature.activate();
+        }
+
+        //关闭弹窗
+        function closeInfoWin() {
+            if (popup) {
+                try {
+                    map.removePopup(popup);
+                }
+                catch (e) {
+                }
+            }
+        }
+
+        //使用SQL查询Capitals数据集
+        function addLabel() {
+            clearLabels();
+            var queryParam, queryBySQLParams, queryBySQLService;
+            queryParam = new SuperMap.REST.FilterParameter({
+                name: "Capitals@World.1"
+            });
+            queryBySQLParams = new SuperMap.REST.QueryBySQLParameters({
+                queryParams: [queryParam]
+            });
+            queryBySQLService = new SuperMap.REST.QueryBySQLService(url, {
+                eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}});
+            queryBySQLService.processAsync(queryBySQLParams);
+        }
+        function processCompleted(queryEventArgs) {
+            var i, j, labelFeas = [],  //文本标签要素数组
+                    label, //文本标签要素
+                    feature,
+                    result = queryEventArgs.result;
+            if (result && result.recordsets) {
+                for (i=0; i<result.recordsets.length; i++) {
+                    if (result.recordsets[i].features) {
+                        for (j=0; j < result.recordsets[i].features.length; j++) {
+                            feature = result.recordsets[i].features[j];
+                            if(feature.attributes.CAPITAL){
+                                //新建GeoText对象（文本标签）
+                                label = new SuperMap.Geometry.GeoText(feature.attributes.SmX, feature.attributes.SmY, feature.attributes.CAPITAL);
+                                //新建标签要素并添加到标签要素数组。注：标签要素是指 geometry 类型为 SuperMap.Geometry.GeoText 的矢量要素（SuperMap.Feature.Vector）。
+                                labelFeas.push(new SuperMap.Feature.Vector(label, feature.attributes));
+                            }
+                        }
+                    }
+                }
+            }
+            //将标签要素添加到标签专题图层中
+            vectorLayer.addFeatures(labelFeas);
+        }
+        function processFailed(e) {
+            alert(e.error.errorMsg);
+        }
+
+        //清楚标签专题图层
+        function clearLabels() {
+            closeInfoWin();
+            vectorLayer.removeAllFeatures();
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="添加标签" onclick="addLabel()" />
+    <input type="button" class="btn" value="清除" onclick="clearLabels()" />
+</div>
+<div id="map"></div>
+</body>
+</html>

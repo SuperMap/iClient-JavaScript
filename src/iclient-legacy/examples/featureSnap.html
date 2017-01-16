@@ -1,0 +1,152 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>要素编辑</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+        var map, local, layer,  vector,modifyFeature,modifyfeature,selectFeature,snapState=true,dataAdded=false,switchSnap,
+                snap01;
+        style = {
+            strokeColor: "#304DBE",
+            strokeWidth: 2,
+            pointerEvents: "visiblePainted",
+            fillColor: "#304DBE",
+            fillOpacity: 0.8
+        },
+                url=host+"/iserver/services/map-world/rest/maps/World";
+        function init(){
+            //新建矢量图层
+            vector = new SuperMap.Layer.Vector("vectorLayer");
+            //创建捕捉对象，第一个参数指的是需要进行捕捉的要素图层，后面两个参数分别是点要素和线要素的捕捉容限，第四个参数是附加参数
+
+            snap01=new SuperMap.Snap([vector],10,10,{actived:true});
+            //矢量要素编辑控件
+            modifyFeature=new SuperMap.Control.ModifyFeature(vector);
+            modifyFeature.snap=snap01;
+
+            //定义layer图层，TiledDynamicRESTLayer：分块动态 REST 图层
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, { transparent: true, cacheEnabled: true }, { maxResolution: "auto" });
+            switchSnap=document.getElementById("switchSnap");
+            //为图层初始化完毕添加addLayer()事件
+            layer.events.on({"layerInitialized":addLayer});
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }}),
+                modifyFeature]
+            });
+            addData();
+        }
+
+        function addLayer() {
+            map.addLayers([layer,vector]);
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+
+        }
+       function edit_feature(){
+            deactiveAll();
+            modifyFeature.activate();
+            snap01.on();
+            snapState=true;
+       }
+
+        function deactivate_snap_all(){
+            snapState=false;
+            snap01.off();
+        }
+        function activate_snap_all(){
+            snapState=true;
+            snap01.on();
+        }
+        function switch_snap(){
+            snapState?switchSnap.value="开启捕捉":switchSnap.value="关闭捕捉";
+            snapState?deactivate_snap_all():activate_snap_all();
+        }
+        function deactiveAll(){
+            modifyFeature.deactivate();
+            deactivate_snap_all();
+        }
+
+        //移除图层要素
+        function clearFeatures(){
+            deactiveAll();
+            dataAdded=false;
+           vector.removeAllFeatures();
+        }
+
+        function addData(){
+            if(!dataAdded){
+                //点数据
+                var point_data=[[-55,34],[-90,-45],[44,-50],[100,33],[94,57]];
+                var point_features=[];
+                for(var i= 0,len=point_data.length;i<len;i++){
+                    var point = new SuperMap.Geometry.Point(point_data[i][0],point_data[i][1]);
+                    var feature=new SuperMap.Feature.Vector(point);
+                    point_features.push(feature);
+                }
+                //线数据
+                var line_data=[[113,19],[107,-2],[92,13],[90,21],[82,12],[74,3],[64,22],[52,8],[71,0],[91,3]];
+                var points=[];
+                for(var i= 0,len=line_data.length;i<len;i++){
+                    var point = new SuperMap.Geometry.Point(line_data[i][0],line_data[i][1]);
+                    points.push(point);
+                }
+                var line=new SuperMap.Geometry.LineString(points);
+                var line_feature=new SuperMap.Feature.Vector(line);
+                //面数据
+                var polygon_data=[[-16,30],[-16,0],[50,0],[50,30]];
+                var points=[];
+                for(var i= 0,len=polygon_data.length;i<len;i++){
+                    var point = new SuperMap.Geometry.Point(polygon_data[i][0],polygon_data[i][1]);
+                    points.push(point);
+                }
+                var linearRing=new SuperMap.Geometry.LinearRing(points);
+                var polygon=new SuperMap.Geometry.Polygon([linearRing]);
+                var polygon_feature=new SuperMap.Feature.Vector(polygon);
+                point_features.push(line_feature);
+                point_features.push(polygon_feature);
+                vector.addFeatures(point_features);
+
+                dataAdded=true;
+            }else{
+                alert("数据已加载。");
+            }
+            edit_feature();
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input id="switchSnap" class="btn" type="button" value="关闭捕捉" onclick="switch_snap()" />
+    <input type="button" class="btn" value="加载数据" onclick="addData()" />
+    <input type="button" class="btn" value="清除" onclick="clearFeatures()" />
+</div>
+<div id="map"></div>
+</body>
+</html>

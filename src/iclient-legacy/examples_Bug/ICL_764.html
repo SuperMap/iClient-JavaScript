@@ -1,0 +1,142 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>SQL 查询</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 820px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var map, local, layer, vectorLayer,select,vectorLayer2,
+            host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+            url=host+"/iserver/services/map-changchun/rest/maps/长春市区图";
+            function init(){
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+                });
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("Changchun", url, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+                layer.events.on({"layerInitialized":addLayer});
+                vectorLayer = new SuperMap.Layer.Vector("Vector Layer");
+				vectorLayer2 = new SuperMap.Layer.Vector("Vector Layer");
+            }
+
+            function addLayer() {
+                map.addLayers([layer, vectorLayer,vectorLayer2]);
+                map.setCenter(new SuperMap.LonLat(4503.62 , -3861.91), 0);
+				select = new SuperMap.Control.SelectFeature([vectorLayer,vectorLayer2], {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect,repeat:true,hover:true});
+				map.addControl(select);
+            }
+			function onFeatureSelect(feature) {
+				var geometry = new SuperMap.Geometry.Point(feature.attributes["X"],feature.attributes["Y"]); 
+				var style = { 
+					strokeColor:"#339933", 
+					strokeOpacity:1, 
+					strokeWidth:3, 
+					pointRadius:6,
+					label:feature.attributes["name"],
+					fontSize:30,
+					labelXOffset:30,
+					fillColor: "#FF0000 "
+				};
+				var pointFeature = new SuperMap.Feature.Vector(geometry,null,style); 
+
+		
+				vectorLayer2.addFeatures(pointFeature);
+				
+				//console.log("onFeatureSelect" +  feature.attributes["name"]);
+			}
+			function onFeatureUnselect(feature) {
+				//console.log("onFeatureUnselect");
+				vectorLayer2.removeAllFeatures();
+			}
+			
+            function queryBySQL() {
+                vectorLayer.removeAllFeatures();
+
+                var queryParam, queryBySQLParams, queryBySQLService;
+                queryParam = new SuperMap.REST.FilterParameter({
+                    name: "School@Changchun",
+                    attributeFilter: "SMID>0"
+                });
+                queryBySQLParams = new SuperMap.REST.QueryBySQLParameters({
+                    queryParams: [queryParam]
+                });
+                queryBySQLService = new SuperMap.REST.QueryBySQLService(url, {
+                    eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}});
+                queryBySQLService.processAsync(queryBySQLParams);
+            }
+            function processCompleted(queryEventArgs) {
+                var i, j, feature,
+                        result = queryEventArgs.result;
+                if (result && result.recordsets) {
+                    for (i=0; i<result.recordsets.length; i++) {
+                        if (result.recordsets[i].features) {
+                            for (j=0; j<result.recordsets[i].features.length; j++) {
+                                feature = result.recordsets[i].features[j];
+								feature.style = {
+									strokeColor: "#304DBE",
+									strokeWidth: 1,
+									pointRadius: 15,
+									label:feature.attributes.name,
+									fontSize:10,
+									//labelXOffset:30,
+									labelSelect:"true", 
+									//backgroundGraphic:"./images/markerbig_select.png",
+									//backgroundHeight:30,
+									//backgroundWidth:40,
+									//backgroundXOffset:20,
+									externalGraphic: "./images/circle.png",
+									fillColor: "#304DBE",
+									//rotation:45,
+									labelSelect:true,
+									fillOpacity: "1"
+								};
+                                vectorLayer.addFeatures(feature);
+                            }
+                        }
+                    }
+                }
+				
+				//激活选择要素的控件
+				select.activate();
+            }
+            function processFailed(e) {
+                alert(e.error.errorMsg);
+            }
+            function clearFeatures() {
+                //先清除上次的显示结果
+                vectorLayer.removeAllFeatures();
+                vectorLayer.refresh();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" value="查询" onclick="queryBySQL()" />
+            <input type="button" value="清除" onclick="clearFeatures()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

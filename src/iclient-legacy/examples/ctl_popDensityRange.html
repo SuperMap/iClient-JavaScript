@@ -1,0 +1,324 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>分段专题图</title>
+<style type="text/css">
+    body{
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+    }
+    #map{
+        position: relative;
+        height: 510px;
+        border:1px solid #3473b7;
+    }
+
+    #toolbar {
+        position: relative;
+        padding-top: 5px;
+        padding-bottom: 10px;
+    }
+
+    /*图例 style*/
+    .legend {
+        position: absolute;
+        right: 10px;
+        top: 350px;
+        width: 250px;
+        text-align: center;
+        border: 2px solid #D6E3F1;
+        background: #FFF;
+        z-index: 1000;
+        display: none;
+    }
+    .legendTitle{
+        background: #1E90FF;
+    }
+    .legendContent{
+        padding-left: 15px;
+        padding-right: 15px;
+        height: 160px;
+        display: block;
+        overflow-y: auto;
+    }
+    .legendItemHeader{
+        top: 5px;
+        width: 100px;
+        height: 18px;
+        text-align: center;
+    }
+    .legendItemValue{
+        top: 5px;
+        width: 120px;
+        text-align: center;
+        height: 18px;
+    }
+
+     /*信息框 style*/
+    #infoBox{
+        border: 2px solid #D6E3F1;
+        position: absolute;
+        right: 10px;
+        top: 250px;
+        width: 250px;
+        z-index: 999;
+        display: none;
+    }
+
+</style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+<script src='../libs/SuperMap.Include.js'></script>
+<script type="text/javascript">
+    var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+            url1=host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+            url2=host + "/iserver/services/data-jingjin/rest/data";
+
+    var map, layer, themeLayer;
+
+    function init(){
+        // 检测是否支持 Canvas
+        if(!document.createElement('canvas').getContext){
+            alert("您的浏览器不支持 Canvas，请升级！");
+            return;
+        }
+
+        map = new SuperMap.Map("map",{controls: [
+            new SuperMap.Control.LayerSwitcher(),
+            new SuperMap.Control.ScaleLine(),
+            new SuperMap.Control.Zoom(),
+            new SuperMap.Control.Navigation({
+                dragPanOptions: {
+                    enableKinetic: true
+                }
+            })]
+        });
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("Jingjin", url1, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+        layer.events.on({"layerInitialized":addLayer});
+
+        // 定义 Range 分段专题图层
+        themeLayer = new SuperMap.Layer.Range("ThemeLayer");
+        themeLayer.setOpacity(0.8);
+
+        // 图层基础样式
+        themeLayer.style = {
+            shadowBlur: 16,
+            shadowColor: "#000000",
+            fillColor: "#FFFFFF"
+        };
+
+        // 开启 hover 高亮效果
+        themeLayer.isHoverAble = true;
+        // hover高亮样式
+        themeLayer.highlightStyle = {
+            stroke: true,
+            strokeWidth: 4,
+            strokeColor: 'blue',
+            fillColor: "#00EEEE",
+            //shadowBlur: 6,
+            //shadowColor: "#000000",
+            //shadowOffsetX: 6,
+            //shadowOffsetY: 6,
+            fillOpacity: 0.8
+        };
+
+        // 用于范围分段的属性字段名称
+        themeLayer.themeField = "POP_DENSITY99";
+        // 风格数组，设定分段范围对应的样式
+        themeLayer.styleGroups=[
+            {
+                start: 0,
+                end: 0.02,
+                style:{
+                    color: '#FDE2CA'
+                }
+            },
+            {
+                start: 0.02,
+                end: 0.04,
+                style:{
+                    color: '#FACE9C'
+                }
+            },
+            {
+                start: 0.04,
+                end: 0.06,
+                style:{
+                    color: '#F09C42'
+                }
+            },
+            {
+                start: 0.06,
+                end: 0.1,
+                style:{
+                    color: '#D0770B'
+                }
+            },
+            {
+                start: 0.1,
+                end: 0.2,
+                style:{
+                    color: '#945305'
+                }
+            }
+        ]
+
+        // 注册 mousemove 事件
+        themeLayer.on("mousemove", evn);
+    }
+
+    function addLayer() {
+        map.addLayers([layer, themeLayer]);
+        map.setCenter(new SuperMap.LonLat(117.2, 40.11), 0);
+    }
+
+    //获取 feature 数据, 专题图的数据必须是 SuperMap.Feature.Vector
+    function addThemeLayer() {
+        clearLayer();
+
+        var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+
+        getFeatureParam = new SuperMap.REST.FilterParameter({
+            name: "Jingjin",
+            attributeFilter: "SMID > -1"
+        });
+        getFeatureBySQLParams = new SuperMap.REST.GetFeaturesBySQLParameters({
+            queryParameter: getFeatureParam,
+            toIndex: 500,
+            datasetNames:["Jingjin:BaseMap_R"]
+        });
+        getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url2, {
+            eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}});
+
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+    }
+    function processCompleted(getFeaturesEventArgs) {
+        var result = getFeaturesEventArgs.result;
+        if (result && result.features) {
+            themeLayer.addFeatures(result.features);
+        }
+
+        //显示图例
+        document.getElementById("mapLegend").style.display = "block";
+    }
+    function processFailed(e) {
+        alert(e.error.errorMsg);
+    }
+    function clearLayer() {
+        document.getElementById("mapLegend").style.display = "none";
+        document.getElementById("infoBox").style.display = "none";
+        //先清除上次的显示结果
+        themeLayer.clear();
+    }
+
+    // 更新显示数据
+    function updateData(){
+        var feas = themeLayer.features;
+        for(var i = 0, len = feas.length; i < len; i++){
+            var fea = feas[i];
+            fea.attributes.POP_DENSITY99 = getRandomNumber(0, 0.2, 5);
+        }
+        themeLayer.redraw();
+    }
+
+    // 获取范围内的随机数
+    // min - 范围下限
+    // max - 范围上限
+    // decimalNum - 返回结果的小数位数。如果为 0，返回整数。
+    function getRandomNumber(min, max, decimalNum){
+        var rNum = min+Math.random()*(max-min);
+
+        if(decimalNum){
+            if(!isNaN(decimalNum))
+            {
+                return rNum;
+            }
+            else
+            {
+                decimalNum = parseInt(decimalNum);
+            }
+
+            if(decimalNum === 0){
+                return Math.round(rNum);
+            }
+            else
+            {
+                return parseFloat(rNum).toFixed(decimalNum);
+            }
+        }
+        else{
+            return rNum;
+        }
+    }
+
+    //事件处理，控制信息框数据显示
+    function evn(e){
+        if(e.target && e.target.refDataID){
+            document.getElementById("infoBox").style.display = "block";
+            var fid = e.target.refDataID;
+            var fea = themeLayer.getFeatureById(fid);
+            if(fea){
+                document.getElementById("infoContent").innerHTML = "";
+                document.getElementById("infoContent").innerHTML += "ID: " + fea.attributes.SMID + "<br/>";
+                document.getElementById("infoContent").innerHTML += "行政区名:" + fea.attributes.NAME + "<br/>";
+                document.getElementById("infoContent").innerHTML += "人口密度:" + parseFloat(fea.attributes.POP_DENSITY99).toFixed(5) + "<br/>";
+            }
+        }
+        else{
+            document.getElementById("infoContent").innerHTML = "";
+            document.getElementById("infoBox").style.display = "none";
+        }
+    }
+</script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="添加专题图层" onclick="addThemeLayer()" />
+    <input type="button" class="btn" value="更新数据" onclick="updateData()" />
+    <input type="button" class="btn" value="清除" onclick="clearLayer()" />
+</div>
+<div>
+    <div id="map"></div>
+    <div id="mapLegend" class="legend">
+        <div class="legendTitle">
+            <span>图例</span>
+        </div>
+        <div class="legendContent">
+            <table>
+                <tr>
+                    <td class="legendItemHeader">人口密度(1999年)</td>
+                    <td class="legendItemValue">颜色</td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0 - 0.02</td>
+                    <td class="legendItemValue" style="background: #FDE2CA"></td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0.02 - 0.04</td>
+                    <td class="legendItemValue" style="background: #FACE9C"></td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0.04 - 0.06</td>
+                    <td class="legendItemValue" style="background: #F09C42"></td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0.06 - 0.1</td>
+                    <td class="legendItemValue" style="background: #D0770B"></td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0.1 - 0.2</td>
+                    <td class="legendItemValue" style="background: #945305"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="infoBox">
+        <div style="text-align: center;background: #1E90FF"> 属性表 </div>
+        <div id="infoContent" style="overflow-y: auto; padding: 5px; background-color: #FFFFFF">
+        </div>
+    </div>
+</div>
+</body>
+</html>

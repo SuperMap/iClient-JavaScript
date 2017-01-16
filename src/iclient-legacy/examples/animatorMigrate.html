@@ -1,0 +1,392 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>春运模拟</title>
+<style type="text/css">
+    body{
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+    }
+    #map{
+        position: relative;
+        height: 520px;
+        border:1px solid #3473b7;
+    }
+    #toolbar{
+        position: relative;
+        padding-top:5px;
+        padding-bottom: 10px;
+    }
+</style>
+<link href='./css/bootstrap.min.css' rel='stylesheet' />
+<link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+<script src='../libs/SuperMap.Include.js'></script>
+<script type="text" id="cartocssStr">
+    @color:#111;
+    #World_Continent_txt___China::hover{
+    text-fill:#0f0;
+    }
+    #World_Division_pl___China{
+    polygon-fill:#123;
+    ::click{
+    polygon-fill:#123;
+    }
+    }
+    #World_Continent_pl___China{
+    polygon-fill:#000002;
+    line-width:1;
+    line-color:#888;
+    ::hover[featureID=73]{
+    polygon-fill:#f00;
+    }
+    }
+    #China_Capital_Pt___China [zoom>4] {
+    point-file:url("../examples/images/marker2.png");
+    }
+    #China_Province_pl___China{
+    polygon-fill:#555;
+    }
+    #China_Boundary_A___China{
+    line-color:#000000;
+    }
+</script>
+<script type="text/javascript">
+var map, layer,animatorVector,vectorLayer,url2,     host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+url = host + "/iserver/services/map-china400/rest/maps/China";
+url2 = host + "/iserver/services/data-DynamicData/rest/data";
+var items = [
+    {
+        start:0,
+        end:101,
+        length:55,
+        style:{
+            strokeOpacity: 1,
+            strokeColor: "#000000",
+            strokeWidth: 1
+        }
+    },
+    {
+        start:101,
+        end:201,
+        length:60,
+        style:{
+            strokeOpacity: 1,
+            strokeColor: "#0000FF",
+            strokeWidth: 1.5
+        }
+    },
+    {
+        start:201,
+        end:301,
+        length:65,
+        style:{
+            strokeOpacity: 1,
+            strokeColor: "#FF00FF",
+            strokeWidth: 2
+        }
+    },
+    {
+        start:301,
+        end:401,
+        length:70,
+        style:{
+            strokeOpacity: 1,
+            strokeColor: "#FF0000",
+            strokeWidth: 2.5
+        }
+    },
+    {
+        start:401,
+        end:501,
+        length:75,
+        style:{
+            strokeOpacity: 1,
+            strokeColor: "#FFCCFF",
+            strokeWidth: 3
+        }
+    },
+    {
+        start:501,
+        end:601,
+        length:80,
+        style:{
+            strokeOpacity: 1,
+            strokeColor: "#00FF00",
+            strokeWidth: 3.5
+        }
+    },
+    {
+        start:601,
+        end:701,
+        length:85,
+        style:{
+            strokeOpacity: 1,
+            strokeColor: "#00FFFF",
+            strokeWidth: 4
+        }
+    },
+    {
+        start:701,
+        end:801,
+        length:90,
+        style:{
+            strokeOpacity: 1,
+            strokeColor: "#FFFF00",
+            strokeWidth: 4.5
+        }
+    },
+    {
+        start:801,
+        end:901,
+        length:95,
+        style:{
+            strokeOpacity: 1,
+            strokeColor: "#66CCCC",
+            strokeWidth: 5
+        }
+    },
+    {
+        start:901,
+        end:1001,
+        length:100,
+        style:{
+            strokeOpacity: 1,
+            strokeColor: "#FF9999",
+            strokeWidth: 5.5
+        }
+    }
+
+];
+function init() {
+
+    if(!document.createElement('canvas').getContext) {
+        alert('您的浏览器不支持 canvas，请升级');
+        return;
+    }
+    //初始化地图
+    map = new SuperMap.Map("map",{controls: [
+        new SuperMap.Control.ScaleLine(),
+        new SuperMap.Control.Zoom(),
+        new SuperMap.Control.Navigation({
+            dragPanOptions: {
+                enableKinetic: true
+            }
+        })],
+        projection: "EPSG:3857"
+    });
+    //初始化图层
+    var cartoCssStr=document.getElementById("cartocssStr");
+    var cartoCss=cartoCssStr.text;
+    var layerNames=["World_Division_pl@China","World_Continent_pl@China",
+        "China_Province_pl@China","China_Island@China",
+        "China_Capital_Pt@China", "China_Boundary_A"].join(",");
+    layerNames="["+layerNames+"]";
+    layer = new SuperMap.Layer.TiledVectorLayer("China", url,{cacheEnabled:true, layerNames: layerNames},{useLocalStorage:true, cartoCSS: cartoCss});
+    layer.events.on({"layerInitialized": addLayer});
+
+}
+function addLayer() {
+    //初始化动画矢量图层
+    animatorVector = new SuperMap.Layer.AnimatorVector("春运", {rendererType:"RadiatePoint"},{
+        frameRate:20,
+        //设置速度为每帧播放0.01小时的数据
+        speed:0.01,
+        //开始时间为0晨
+        startTime:0,
+        //结束时间设置为第七天，也就是大年三十
+        endTime:7
+    });
+    animatorVector.renderer.items = items;
+    animatorVector.renderer.dataField = "POPULATION";
+    animatorVector.animator.events.on({"framestart":framestart});
+    vectorLayer = new SuperMap.Layer.Vector("point");
+    map.addLayers([layer,animatorVector,vectorLayer]);
+    map.setCenter(new SuperMap.LonLat(12009634.286396, 4208716.5813769), 5);
+    //增加数据
+    addMigrate();
+
+}
+function framestart(time)
+{
+    //从服务端获取数据
+    var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+
+    getFeatureParam = new SuperMap.REST.FilterParameter({
+        name: "Migrate@DynamicData",
+        attributeFilter: "SmID < 809"
+    });
+    getFeatureBySQLParams = new SuperMap.REST.GetFeaturesBySQLParameters({
+        queryParameter: getFeatureParam,
+        datasetNames:["DynamicData:Migrate"]
+    });
+    getFeatureBySQLParams.toIndex  = 808;
+    getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url2, {
+        eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}});
+    getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+
+    function processCompleted(getFeaturesEventArgs){
+        var features,result = getFeaturesEventArgs.result;
+        if (result && result.features) {
+            features = result.features;
+        }
+        //计算每个featureid相同的点个数
+        var court = [];
+        court[0] = 0;
+        var mm = 0;
+        var kk=0;
+        var arr = []; //用来存储ID相同的要素；
+        var featurearr = [];
+        for(var i = 0; i<features.length;i++){
+            if(features[i].data.AREA == mm){
+                court[kk] = court[kk] + 1;
+                arr.push(features[i]);
+            }
+            else{
+                featurearr.push(arr);
+                arr = [];
+                kk = kk + 1;
+                court[kk] = 1;
+                arr.push(features[i]);
+                mm = mm +1;
+            }
+            if(court[27] == 11){
+                featurearr.push(arr);
+            }
+        }
+        //遍历每个区域
+        changeTime(time);
+        vectorLayer.removeAllFeatures();
+        var pointFeatures = [];
+        //循环遍历区域
+        for(var j = 0;j < court.length;j++)
+        {
+            var area = featurearr[j];
+            var population = 0;
+            for(var z = 0;z < area.length;z++)
+            {
+                if((area[z].attributes.MIGRATION=="true" && area[z].attributes.TIME>=time) || (area[z].attributes.MIGRATION=="false" && area[z].attributes.TIME<=time))
+                {
+                    population+=Number(area[z].attributes.POPULATION);
+                }
+            }
+            var point = new SuperMap.Geometry.Point(area[0].geometry.x,area[0].geometry.y);
+            var pointFeature = new SuperMap.Feature.Vector(point,{},{
+                fillColor: "#ff8000",
+                fillOpacity: 0.8,
+                strokeOpacity: 0,
+                label:population+"",
+                fontColor:"#ffffff",
+                fontOpacity:"1",
+                fontFamily:"隶书",
+                fontSize:"1em",
+                pointRadius: Math.sqrt(population/50)
+            });
+            pointFeatures.push(pointFeature);
+        }
+        vectorLayer.addFeatures(pointFeatures);
+    }
+    function processFailed(getFeaturesEventArgs){
+        alert(getFeaturesEventArgs.error.errorMsg);
+    }
+}
+function changeTime(time)
+{
+    if(time>=0 && time<1)
+    {
+        document.getElementById("timeDate").innerHTML = "腊月二十四";
+    }
+    else if(time>=1 && time<2)
+    {
+        document.getElementById("timeDate").innerHTML = "腊月二十五";
+    }
+    else if(time>=1 && time<3)
+    {
+        document.getElementById("timeDate").innerHTML = "腊月二十六";
+    }
+    else if(time>=1 && time<4)
+    {
+        document.getElementById("timeDate").innerHTML = "腊月二十七";
+    }
+    else if(time>=1 && time<5)
+    {
+        document.getElementById("timeDate").innerHTML = "腊月二十八";
+    }
+    else if(time>=1 && time<6)
+    {
+        document.getElementById("timeDate").innerHTML = "腊月二十九";
+    }
+    else if(time>=1 && time<7)
+    {
+        document.getElementById("timeDate").innerHTML = "大年三十";
+    }
+    document.getElementById("timeHour").innerHTML=parseInt((time-parseInt(time))*24)+"点";
+}
+//添加迁徙数据
+function addMigrate()
+{
+    var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+
+    getFeatureParam = new SuperMap.REST.FilterParameter({
+        name: "Migrate@DynamicData",
+        attributeFilter: "SmID < 809"
+    });
+    getFeatureBySQLParams = new SuperMap.REST.GetFeaturesBySQLParameters({
+        queryParameter: getFeatureParam,
+        datasetNames:["DynamicData:Migrate"]
+    });
+    getFeatureBySQLParams.toIndex  = 808;
+    getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url2, {
+        eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}});
+
+    getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+}
+function processCompleted(getFeaturesEventArgs){
+    var features,result = getFeaturesEventArgs.result;
+    if (result && result.features) {
+        features = result.features;
+    }
+    var pointFeatures = [];
+    //循环遍历区域
+    for(var i = 0,len = features.length;i<len;i++)
+    {
+        var point = features[i].geometry;
+        var pointFeature = new SuperMap.Feature.Vector(point,{
+            FEATUREID:features[i].data.FEATUREID,
+            TIME:features[i].data.TIME,
+            POPULATION:features[i].data.POPULATION
+        });
+        pointFeatures.push(pointFeature);
+
+    }
+    animatorVector.addFeatures(pointFeatures);
+}
+function processFailed(getFeaturesEventArgs){
+    alert(getFeaturesEventArgs.error.errorMsg);
+}
+
+//开始播放动画
+function startAnimator(){
+    animatorVector.animator.start();
+}
+//暂停播放动画
+function pauseAnimator(){
+    animatorVector.animator.pause();
+}
+
+</script>
+</head>
+
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="播放" onclick="startAnimator()" />
+    <input type="button" class="btn" value="暂停" onclick="pauseAnimator()" />
+    <label style="display:inline">当前时间：</label>
+    <label style="display:inline" id="timeDate"></label>
+    <label style="display:inline" id="timeHour"></label>
+</div>
+<div id="map"></div>
+
+</body>
+</html>

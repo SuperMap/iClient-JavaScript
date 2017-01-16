@@ -1,0 +1,104 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>距离查询</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var local, map, layer, markerLayer1, markerLayer2,
+            centerPoint = new SuperMap.Geometry.Point(121, 31),//构造一个点的几何图形
+            host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+            url=host+"/iserver/services/map-world/rest/maps/World";
+            function init(){
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+                });
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+                layer.events.on({"layerInitialized":addLayer});
+                markerLayer1 = new SuperMap.Layer.Markers("Markers");
+                markerLayer2 = new SuperMap.Layer.Markers("Markers");
+
+                //在地图上具体位置上画一个图形
+                var point = centerPoint,
+                        size = new SuperMap.Size(44, 40),
+                        offset = new SuperMap.Pixel(-(size.w/2), -size.h),
+                        icon = new SuperMap.Icon("../theme/images/marker-gold.png", size, offset);
+                markerLayer1.addMarker(new SuperMap.Marker(new SuperMap.LonLat(point.x, point.y), icon));
+            }
+
+            function addLayer() {
+                map.addLayers([layer, markerLayer1, markerLayer2]);
+                map.setCenter(new SuperMap.LonLat(0, 0), 0);
+            }
+            function queryByDistance() {
+                markerLayer2.clearMarkers();
+
+                var queryByDistanceParams = new SuperMap.REST.QueryByDistanceParameters({
+                    queryParams: new Array(new SuperMap.REST.FilterParameter({name: "Capitals@World.1"})),
+                    returnContent: true,
+                    distance: 30,
+                    geometry: centerPoint
+                });
+
+                var queryByDistanceService = new SuperMap.REST.QueryByDistanceService(url);
+                queryByDistanceService.events.on({
+                    "processCompleted": processCompleted,
+                    "processFailed": processFailed
+                });
+                queryByDistanceService.processAsync(queryByDistanceParams);
+            }
+            function processCompleted(queryEventArgs) {
+                var i, j, result = queryEventArgs.result;
+                for(i = 0;i < result.recordsets.length; i++) {
+                    for(j = 0; j < result.recordsets[i].features.length; j++) {
+                        var point = result.recordsets[i].features[j].geometry,
+                                size = new SuperMap.Size(44, 33),
+                                offset = new SuperMap.Pixel(-(size.w/2), -size.h),
+                                icon = new SuperMap.Icon("../theme/images/marker.png", size, offset);
+                        markerLayer2.addMarker(new SuperMap.Marker(new SuperMap.LonLat(point.x, point.y), icon));
+                    }
+                }
+            }
+            function processFailed(e) {
+                alert(e.error.errorMsg);
+            }
+            function clearFeatures() {
+                //清除上次的显示结果
+                markerLayer2.clearMarkers();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="查询" onclick="queryByDistance()" />
+            <input type="button" class="btn" value="清除" onclick="clearFeatures()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>图层管理器</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 553px;
+            border:1px solid #3473b7;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+        var map, worldLayer,layer;
+        var url=host+"/iserver/services/map-world/rest/maps/World";
+        var url2=host+"/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
+
+        function init(){
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.Navigation({     //添加Navigation控件到map
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })  ,
+                new SuperMap.Control.LayerSwitcher()
+            ], allOverlays: true
+            });
+            var options = {numZoomLevels: 12,useCanvas:false};
+            var bounds= new SuperMap.Bounds(-180, -90, 180, 90);
+            layer=new SuperMap.Layer.Image(        //image图层
+                    'World_Day',
+                    'images/Day.jpg',
+                    bounds ,
+                    options
+            );
+            worldLayer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url,{transparent: true, cacheEnabled:true});   //获取World地图服务地址
+            worldLayer.events.on({"layerInitialized": addLayer});
+        }
+        function addLayer()
+        {
+            map.addLayers([worldLayer,layer]) ;
+            map.setCenter(new SuperMap.LonLat(0, 0), 2);
+        }
+
+    </script>
+</head>
+<body onload="init()">
+<div id="map"></div>
+</body>
+</html>

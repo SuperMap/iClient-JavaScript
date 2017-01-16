@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>图层编辑</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src = "../libs/SuperMap.Include.js"></script>
+    <script type="text/javascript">
+        var map, baseLayer, plottingLayer, plottingEdit, drawFeature;
+        var host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        var mapurl = host + "/iserver/services/map-world/rest/maps/World";
+        var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+
+        function init() {
+            map = new SuperMap.Map("map", {
+                controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+            });
+            baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {
+                transparent: true,
+                cacheEnabled: true
+            }, {maxResolution: "auto"});
+            baseLayer.events.on({"layerInitialized": addLayer});
+
+            plottingLayer = new SuperMap.Layer.PlottingLayer("PlottingLayer", serverUrl);
+            plottingEdit = new SuperMap.Control.PlottingEdit(plottingLayer);
+            drawFeature = new SuperMap.Control.DrawFeature(plottingLayer, SuperMap.Handler.GraphicObject);
+            drawFeature.events.on({"featureadded": drawCompleted});
+            map.addControls([plottingEdit, drawFeature]);
+        }
+
+        function addLayer(){
+            map.addLayers([baseLayer, plottingLayer]);
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+
+            if(plottingLayer.isEditable)
+                document.getElementById("editable").value = 1;
+            else
+                document.getElementById("editable").value = 0;
+
+            if(plottingLayer.isLocked)
+                document.getElementById("locked").value = 1;
+            else
+                document.getElementById("locked").value = 0;
+        }
+
+        function drawCompleted(){
+            drawFeature.deactivate();
+            plottingEdit.activate();
+        }
+
+        function editableChanges(){
+            plottingLayer.isEditable = document.getElementById("editable").selectedIndex;
+        }
+
+        function lockedChanges(){
+            plottingLayer.isLocked = document.getElementById("locked").selectedIndex;
+        }
+
+        function drawPolygon()
+        {
+            drawFeature.handler.serverUrl = serverUrl;
+            drawFeature.handler.libID = 0;
+            drawFeature.handler.symbolCode = 32;
+            drawFeature.deactivate();
+            drawFeature.activate();
+        }
+
+        document.oncontextmenu = function(evt){
+            drawFeature.deactivate();
+            return false;
+        }
+    </script>
+</head>
+<body onLoad = "init()">
+<div id="toolbar">
+    <span>标绘图层的可编辑：</span>
+    <select style='width:70px' id='editable' onchange="editableChanges()">
+        <option value='0'>false</option>
+        <option value ='1'>true</option>
+    </select>
+    <span>标绘图层的可锁定：</span>
+    <select style='width:70px' id='locked' onchange="lockedChanges()">
+        <option value='0'>false</option>
+        <option value ='1'>true</option>
+    </select>
+    <input type="button" class="btn" value="绘制标号" style="margin-bottom: 10px" onclick="drawPolygon()"/>
+</div>
+<div id = "map"></div>
+</body>
+</html>

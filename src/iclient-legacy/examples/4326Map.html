@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title> 经纬度地图</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 553px;
+            border:1px solid #3473b7;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src = '../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var map, layer,
+         host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-world/rest/maps/World";
+        function init(){
+            //初始化地图
+            map = new SuperMap.Map("map",{controls:[
+                new SuperMap.Control.Navigation() ,
+                new SuperMap.Control.Zoom()]});
+            map.addControl(new SuperMap.Control.MousePosition());
+            //初始化图层
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, null,{maxResolution:"auto"});
+            //监听图层信息加载完成事件
+            layer.events.on({"layerInitialized":addLayer});
+        }
+        //异步加载图层
+        function addLayer(){
+            map.addLayer(layer);
+            //显示地图范围
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+        }
+   </script>
+</head>
+<body onLoad = "init()">
+<div id = "map"></div>
+</body>
+</html>

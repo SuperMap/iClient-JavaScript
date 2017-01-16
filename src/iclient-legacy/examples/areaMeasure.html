@@ -1,0 +1,114 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>面积量算</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+        var map, local, layer, drawPolygon, polygonLayer;
+        style = {
+            strokeColor: "#304DBE",
+            strokeWidth: 2,
+            pointerEvents: "visiblePainted",
+            fillColor: "#304DBE",
+            fillOpacity: 0.8
+        },
+                url=host+"/iserver/services/map-world/rest/maps/World";
+        function init(){
+            //新建面矢量图层
+            polygonLayer = new SuperMap.Layer.Vector("polygonLayer");
+            //对面图层应用样式style（前面有定义）
+            polygonLayer.style = style;
+            /*
+             注册featureadded事件,触发drawCompleted()方法
+             例如注册"loadstart"事件的单独监听
+             events.on({ "loadstart": loadStartListener });
+             */
+            //创建画面控制，图层是polygonLayer
+            drawPolygon = new SuperMap.Control.DrawFeature(polygonLayer, SuperMap.Handler.Polygon);
+            drawPolygon.events.on({"featureadded": drawCompleted});
+            //定义layer图层，TiledDynamicRESTLayer：分块动态 REST 图层
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, { transparent: true, cacheEnabled: true }, { maxResolution: "auto" });
+            //为图层初始化完毕添加addLayer()事件
+            layer.events.on({"layerInitialized":addLayer});
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }}),
+                 drawPolygon]
+            });
+        }
+
+        function addLayer() {
+            map.addLayers([layer,  polygonLayer]);
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+        }
+
+        function areaMeasure(){
+            clearFeatures();
+            drawPolygon.activate();
+        }
+
+        //绘完触发事件
+        function drawCompleted(drawGeometryArgs) {
+            //停止画面控制
+
+            drawPolygon.deactivate();
+            //获得图层几何对象
+            var geometry = drawGeometryArgs.feature.geometry,
+                    measureParam = new SuperMap.REST.MeasureParameters(geometry), /* MeasureParameters：量算参数类。 客户端要量算的地物间的距离或某个区域的面积*/
+                    myMeasuerService = new SuperMap.REST.MeasureService(url); //量算服务类，该类负责将量算参数传递到服务端，并获取服务端返回的量算结果
+            myMeasuerService.events.on({ "processCompleted": measureCompleted });
+
+            //对MeasureService类型进行判断和赋值，当判断出是LineString时设置MeasureMode.DISTANCE，否则是MeasureMode.AREA
+
+            myMeasuerService.measureMode = SuperMap.REST.MeasureMode.AREA;
+
+            myMeasuerService.processAsync(measureParam); //processAsync负责将客户端的量算参数传递到服务端。
+        }
+
+        //测量结束调用事件
+        function measureCompleted(measureEventArgs) {
+            var   area = measureEventArgs.result.area,
+                    unit = measureEventArgs.result.unit;
+            alert("量算结果:"+ area + "平方米");
+        }
+        //移除图层要素
+        function clearFeatures(){
+            polygonLayer.removeAllFeatures();
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="面积量算" onclick="areaMeasure()" />
+    <input type="button" class="btn" value="清除" onclick="clearFeatures()" />
+</div>
+<div id="map"></div>
+</body>
+</html>

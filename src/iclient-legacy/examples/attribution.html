@@ -1,0 +1,53 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>版权控件</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 553px;
+                border:1px solid #3473b7;
+            }
+
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, layerWorld,layerWorldDay;
+            var url=host+"/iserver/services/map-world/rest/maps/World";
+			function init(){
+				map = new SuperMap.Map("map",{controls: [
+					new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }}),
+                    new SuperMap.Control.LayerSwitcher()
+                ]});
+				//初始化版权控件类
+				attribution = new SuperMap.Control.Attribution();
+
+				layerWorld = new SuperMap.Layer.TiledDynamicRESTLayer("World", url);   //获取World地图服务地址
+                layerWorld.events.on({"layerInitialized": addLayer});
+            }
+			
+			function addLayer(){
+                map.addLayers([layerWorld]);
+                layerWorld.attribution="powered by <a target='_blank' href='http://www.supermap.com/cn"+"'>SuperMap</a> |detail in <a style='white-space: nowrap' target='_blank' href='"+url+"'>World</a>";
+                map.addControl(attribution);
+                map.setCenter(new SuperMap.LonLat(118, 40), 6);
+            }
+			
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="map"></div>
+    </body>
+</html>

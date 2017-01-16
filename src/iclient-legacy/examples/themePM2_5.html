@@ -1,0 +1,315 @@
+
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>空气质量指数专题图</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 520px;
+            border:1px solid #3473b7;
+        }
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+        #popwin{
+            border-radius:10px;
+            max-width: 250px;
+
+        }
+        #popwin_contentDiv{
+            padding:0px;
+            overflow: hidden;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script src='data/themeLableData.js'></script>
+    <script type="text/javascript">
+        var map, layer, vectorLayer, selectFeature, popup, strategy, mouseposition,
+                host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+                url=host+"/iserver/services/map-china400/rest/maps/China_4326";
+        function init(){
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+            });
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("世界地图", url, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+            //新建一个策略
+            strategy = new SuperMap.Strategy.GeoText();
+            //新建一个标签专题图层
+            vectorLayer = new SuperMap.Layer.Vector("Label",{strategies: [strategy]});
+
+            //设置标签的样式
+            strategy.style = {
+                fontColor:"#FF7F00",
+                fontWeight:"bolder",
+                fontSize:"14px",
+                fill: true,
+                fillColor: "#FFFFFF",
+                fillOpacity: 1,
+                stroke: true,
+                strokeColor:"#8B7B8B"
+            };
+
+            //用于标签分组的属性字段名称
+            strategy.groupField="aqi";
+            //标签分组数组,根据每个城市的空气指数来设置分段。
+            strategy.styleGroups = [
+                {
+                    start:0,
+                    end:51,
+                    style:{
+                        fontColor:"#000",
+                        fillColor:"#6ACD06",
+                        fontWeight:"bolder",
+                        fontSize:"17px"
+                    }
+                },
+                {
+                    start:51,
+                    end:101,
+                    style:{
+                        fontColor:"#000",
+                        fillColor:"#FBD12A",
+                        fontWeight:"bolder",
+                        fontSize:"19px"
+                    }
+                },
+                {
+                    start:101,
+                    end:151,
+                    style:{
+                        fontColor:"#000",
+                        fillColor:"#FE8800",
+                        fontWeight:"bolder",
+                        fontSize:"22px"
+                    }
+                },
+                {
+                    start:151,
+                    end:201,
+                    style:{
+                        fontColor:"#000",
+                        fillColor:"#FF0000",
+                        fontWeight:"bolder",
+                        fontSize:"24px"
+                    }
+                } ,
+                {
+                    start:201,
+                    end:301,
+                    style:{
+                        fontColor:"#000",
+                        fillColor:"#CC0000",
+                        fontWeight:"bolder",
+                        fontSize:"26px"
+                    }
+                },
+                {
+                    start:301,
+                    end:601,
+                    style:{
+                        fontColor:"#000",
+                        fillColor:"#960453",
+                        fontWeight:"bolder",
+                        fontSize:"28px"
+                    }
+                }
+            ];
+        }
+
+        function addLayer() {
+            map.addLayers([layer, vectorLayer]);
+            map.setCenter(new SuperMap.LonLat(104.067923,34.679943),2);
+
+            //兼容PC与移动端
+            var broz = SuperMap.Util.getBrowser();
+            var callbacks={};
+            if (broz.device === 'android'||broz.device === 'apple' ) {
+                callbacks = {
+                    click: openInfoWin,
+                    clickout:  closeInfoWin
+                };
+            }
+            else{
+                callbacks = {
+                    over: openInfoWin,
+                    out:  closeInfoWin
+                };
+            }
+
+            //实例化 selectFeature 控件
+            // selectFeature = new SuperMap.Control.SelectFeature(vectorLayer,{callbacks:callbacks,hover:true});
+            selectFeature = new SuperMap.Control.SelectFeature(vectorLayer,{callbacks:callbacks,hover:false});
+            //map上添加控件
+            map.addControl(selectFeature);
+            //激活控件
+            selectFeature.activate();
+        }
+        //打弹窗，显示具体信息
+        function openInfoWin(feature){
+            closeInfoWin();
+            var pm25=[];
+            var pm10s=[];
+            var o3s=[];
+            var  so2s=[];
+            var no2s=[];
+            //遍历数组，获取单个属性。组成新的数组
+            for(var i=0;i<themeData.length;i++){
+                var pm2_5=themeData[i].pm2_5;
+                var pm10=themeData[i].pm10;
+                var o3=themeData[i].o3;
+                var so2=themeData[i].so2;
+                var no2=themeData[i].no2;
+                pm10s.push(pm10);
+                pm25.push(pm2_5);
+                o3s.push(o3);
+                so2s.push(so2);
+                no2s.push(no2);
+            }
+            //获取单个属性的最大最小值
+            var maxNum= Math.max.apply(Math,pm25);
+            var minNum=Math.min.apply(Math,pm25);
+            var maxpm10=Math.max.apply(Math,pm10s);
+            var minpm10= Math.min.apply(Math,pm10s);
+            var maxO3=Math.max.apply(Math,o3s);
+            var minO3 =Math.min.apply(Math,o3s);
+            var maxSO2=Math.max.apply(Math,so2s);
+            var minSO2 =Math.min.apply(Math,so2s);
+            var maxNO2=Math.max.apply(Math,no2s);
+            var minNO2 =Math.min.apply(Math,no2s);
+            //组织弹窗内容
+
+            var contentHTML="<table><tbody><tr>";
+            contentHTML+=" <td><div>";
+            contentHTML+="<table><tbody><tr><td>";
+            contentHTML+="<div  id='contentID'style=\'margin-top: 2px;margin-bottom: 2px;width:65px;text-align: center;font-size:35px;color: #ffffff;\'>"+feature.attributes.aqi+"</div> </td>";
+            contentHTML+="<td  style='padding-right: 1px;'></td>";
+            contentHTML+="<td> <div id='textID'style='text-align: left;font-size: 19px;text-shadow: 1px 1px 0 #ffffff;'>"+feature.attributes.quality+"</div>";
+            contentHTML+=" <div style='font-size:9px;width:200px;float:left;'>"+feature.attributes.time_point+"</div>";
+            contentHTML+="<div style=' font-weight:lighter; font-size:12px;'>当前城市："+feature.attributes.area+"</div>";
+            contentHTML+=" </td></tr> </tbody></table>";
+            contentHTML+=" <table style='font-size: 10px;border: 0px solid black;padding: 0px;margin: 0px;border-spacing: 0px;'>";
+            contentHTML+=" <tbody><tr> <td style='font-weight:bold;width:45px;'></td><td style='font-weight:bold;width:51px;' align='center' nowrap='true'>Current</td>";
+            contentHTML+=" <td  style=' font-weight:bold;width:49px;' align='center' nowrap='true'>Min</td><td style='font-weight:bold;width:49px;' align='center' nowrap='true'>Max</td> </tr>";
+            contentHTML+="<tr style='height: 23px;'><td style='padding-left: 0px;padding-right: 0px'><div style='width:46px;'><span style='font-weight:bold;'>PM2.5</span></div></td>";
+            contentHTML+=" <td  style='font-size:11px;'align='center'>"+feature.attributes.pm2_5+"</td>";
+            contentHTML+="  <td style='color:#0086c8;font-size:11px;' align='center'>"+minNum+"</td><td  style='color:#ce3c3a;font-size:11px;' align='center'>"+maxNum+"</td>";
+            contentHTML+="</tr><tr style='height: 23px;'><td style='padding-left: 0px;padding-right: 0px'><div style='width:46px;'>";
+            contentHTML+="<span style='font-weight:bold;'>PM10</span>";
+            contentHTML+="</div></td><td style='font-size:11px;'align='center'>"+feature.attributes.pm10+"</td><td style='color:#0086c8;font-size:11px;' align='center'>"+minpm10+"</td>";
+            contentHTML+="<td  style='color:#ce3c3a;font-size:11px;' align='center'>"+maxpm10+"</td>";
+            contentHTML+="</tr><tr style='height:23px;'><td style='padding-left: 0px;padding-right: 0px'><div style='width:46px;'><span style='font-weight:bold;'>O3</span></div></td><td style='font-size:11px;'align='center'>"+feature.attributes.o3+"</td>";
+            contentHTML+="<td style='color:#0086c8;font-size:11px;' align='center'>"+minO3+"</td><td  style='color:#ce3c3a;font-size:11px;' align='center'>"+maxO3+"</td></td></tr>";
+            contentHTML+="<tr style='height: 23px;'><td style='padding-left: 0px;padding-right: 0px'><div style='width:46px;'><span style='font-weight:bold;'>SO2</span></div></td>";
+            contentHTML+="<td style='font-size:11px;'align='center'>"+feature.attributes.so2+"</td><td style='color:#0086c8;font-size:11px;' align='center'>"+minSO2+"</td><td  style='color:#ce3c3a;font-size:11px;' align='center'>"+maxSO2+"</td></td></tr>";
+            contentHTML+="<tr style='height: 23px;'><td style='padding-left: 0px;padding-right: 0px'><div style='width:46px;'><span style='font-weight:bold;'>NO2</span></div></td>";
+            contentHTML+="<td style='font-size:11px;'align='center'>"+feature.attributes.no2+"</td><td style='color:#0086c8;font-size:11px;' align='center'>"+minNO2+"</td><td  style='color:#ce3c3a;font-size:11px;' align='center'>"+maxNO2+"</td></td></tr>";
+            contentHTML+="</tbody> </table></div></td></tr></tbody> </table>";
+            //新建一个弹窗并加入地图
+            var lonlat=feature.attributes.lonLat.split(",");
+            var x=parseFloat(lonlat[0]);
+            var y = parseFloat(lonlat[1]);
+            var xy=map.getPixelFromLonLat(new SuperMap.LonLat(x,y));
+            xy.x+=10;
+            var postion= map.getLonLatFromPixel(new SuperMap.Pixel(xy.x,xy.y));
+            //新建popup
+            popup = new SuperMap.Popup("popwin",new SuperMap.LonLat(postion.lon,postion.lat),null,contentHTML,null,true,function(){
+                closeInfoWin();
+            });
+            map.addPopup(popup);
+            //设置div的背景颜色
+            var groups=strategy.styleGroups;
+            for(var i=0;i< groups.length;i++){
+                if(feature.attributes.aqi>=groups[0].start&&feature.attributes.aqi<groups[0].end){
+                    popup.setBorder("2px solid #6ACD06");
+                    document.getElementById("contentID").style.backgroundColor="#6ACD06";
+                    document.getElementById("textID").style.color="#6ACD06";
+                }
+                else if(feature.attributes.aqi>=groups[1].start&&feature.attributes.aqi<groups[1].end){
+
+                    popup.setBorder("2px solid #FBD12A");
+                    document.getElementById("contentID").style.backgroundColor="#FBD12A";
+                    document.getElementById("textID").style.color="#FBD12A";
+                }
+                else  if(feature.attributes.aqi>=groups[2].start&&feature.attributes.aqi<groups[2].end){
+                    popup.setBorder("2px solid #FE8800");
+                    document.getElementById("contentID").style.backgroundColor="#FE8800";
+                    document.getElementById("textID").style.color="#FE8800";
+                }
+                else  if(feature.attributes.aqi>=groups[3].start&&feature.attributes.aqi<groups[3].end){
+                    popup.setBorder("2px solid #FF0000");
+                    document.getElementById("contentID").style.backgroundColor="#FF0000";
+                    document.getElementById("textID").style.color="#FF0000";
+                }
+                else  if(feature.attributes.aqi>=groups[4].start&&feature.attributes.aqi<groups[4].end){
+                    popup.setBorder("2px solid #CC0000");
+                    document.getElementById("contentID").style.backgroundColor="#CC0000";
+                    document.getElementById("textID").style.color="#CC0000";
+                }
+                else  if(feature.attributes.aqi>=groups[5].start&&feature.attributes.aqi<groups[5].end){
+
+                    popup.setBorder("2px solid #960453");
+                    document.getElementById("contentID").style.backgroundColor="#960453";
+                    document.getElementById("textID").style.color="#960453";
+                }
+            }
+        }
+        //关闭弹窗
+        function closeInfoWin() {
+            if (popup) {
+                try {
+                    map.removePopup(popup);
+                }
+                catch (e) {
+                }
+            }
+        }
+        function addLabel() {
+            clearLabels();
+            var labelFeas=[];
+            var label,labelVector;
+            for(var i=0;i<themeData.length;i++){
+                var lonlat=themeData[i].lonLat.split(",");
+                var x=parseFloat(lonlat[0]);
+                var y = parseFloat(lonlat[1]);
+                var text= themeData[i].aqi;
+                label=  new SuperMap.Geometry.GeoText(x,y,text);
+                labelVector=new SuperMap.Feature.Vector(label,themeData[i]);
+                labelFeas.push(labelVector);
+            }
+            vectorLayer.addFeatures(labelFeas);
+        }
+        //清楚标签专题图层
+        function clearLabels() {
+            closeInfoWin();
+            vectorLayer.removeAllFeatures();
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="添加标签" onclick="addLabel()" />
+    <input type="button" class="btn" value="清除" onclick="clearLabels()" />
+</div>
+
+<div id="map"></div>
+</body>
+</html>

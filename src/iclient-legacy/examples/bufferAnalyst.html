@@ -1,0 +1,122 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>缓冲区分析一</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, local, baseLayer, resultLayer, vectorLayer, spatialAnalystURL,
+            points = [new SuperMap.Geometry.Point(4933.319287022352, -3337.3849141502124),
+                new SuperMap.Geometry.Point(4960.9674060199022, -3349.3316322355736),
+                new SuperMap.Geometry.Point(5006.0235999418364, -3358.8890067038628),
+                new SuperMap.Geometry.Point(5075.3145648369318, -3378.0037556404409),
+                new SuperMap.Geometry.Point(5305.19551436013, -3376.9669111768926)],
+            roadLine = new SuperMap.Geometry.LineString(points),
+            styleLine = {
+                strokeColor: "blue",
+                strokeWidth: 3,
+                strokeLinecap: "round",
+                strokeDashstyle: "solid"
+            },
+            styleRegion = {
+                strokeColor: "#304DBE",
+                strokeWidth: 2,
+                pointerEvents: "visiblePainted",
+                fillColor: "#304DBE",
+                fillOpacity: 0.4
+            },
+            url1=host+"/iserver/services/map-changchun/rest/maps/长春市区图",
+            url2=host+"/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+            function init(){
+                map = new SuperMap.Map("map", { controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })], units: "m"
+                });
+                map.allOverlays = true;
+                baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("Changchun", url1, {transparent: true, cacheEnabled: true}, { maxResolution: "auto" });
+                baseLayer.events.on({ "layerInitialized": addLayer });
+                resultLayer = new SuperMap.Layer.Vector("缓冲区分析结果");
+                vectorLayer = new SuperMap.Layer.Vector("vectorLine");
+
+                var featureLine = new SuperMap.Feature.Vector();
+                featureLine.geometry = roadLine;
+                featureLine.style = styleLine;
+                vectorLayer.addFeatures(featureLine);
+            }
+
+            function addLayer() {
+                map.addLayers([baseLayer, resultLayer, vectorLayer]);
+                map.setCenter(new SuperMap.LonLat(5105, -3375), 4);
+            }
+            function bufferAnalystProcess() {
+                resultLayer.removeAllFeatures();
+                var bufferServiceByDatasets = new SuperMap.REST.BufferAnalystService(url2),
+                        bufferDistance = new SuperMap.REST.BufferDistance({
+                            value: 10
+                        }),
+                        bufferSetting = new SuperMap.REST.BufferSetting({
+                            endType: SuperMap.REST.BufferEndType.ROUND,
+                            leftDistance: bufferDistance,
+                            rightDistance: bufferDistance,
+                            semicircleLineSegment: 10
+                        }),
+                        filterParameter = new SuperMap.REST.FilterParameter({
+                            attributeFilter: "NAME='团结路'"
+                        }),
+                        dsBufferAnalystParameters = new SuperMap.REST.DatasetBufferAnalystParameters({
+                            dataset: "RoadLine2@Changchun",
+                            filterQueryParameter: filterParameter,
+                            bufferSetting: bufferSetting
+                        });
+                bufferServiceByDatasets.events.on({ "processCompleted": bufferAnalystCompleted, "processFailed": bufferAnalystFailed });
+                bufferServiceByDatasets.processAsync(dsBufferAnalystParameters);
+            }
+
+            function bufferAnalystCompleted(args) {
+                resultLayer.addFeatures(args.result.recordset.features);
+            }
+
+            function bufferAnalystFailed(args) {
+                alert(args.error.errorMsg);
+            }
+
+            function removeResult() {
+                resultLayer.removeAllFeatures();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input type="button" class="btn" value="缓冲区分析" onclick="bufferAnalystProcess()" />
+            <input type="button" class="btn" value="移除结果" onclick="removeResult()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

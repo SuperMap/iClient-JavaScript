@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Graphic图层三叶草绘制</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 500px;
+            border:1px solid #3473b7;
+        }
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src = '../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var map,layer,img,selectGraphic,vectorLayer,graphicLayer1,graphicLayer2,hitGraphicLayer,
+                host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-china400/rest/maps/China";
+        function init()
+        {
+            if(!document.createElement("canvas").getContext){
+                alert("您的浏览器不支持Canvas，请先升级");
+                return;
+            }
+            map = new SuperMap.Map("map",{controls:[
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation() ,
+                new SuperMap.Control.LayerSwitcher()
+            ]});
+            layer= new SuperMap.Layer.TiledDynamicRESTLayer("World", url, null,{maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+            graphicLayer1 = new SuperMap.Layer.Graphics("Graphic Layer"); //不可以选择，未开启事件
+            graphicLayer2 = new SuperMap.Layer.Graphics("Can Select Graphic Layer",null,{hitDetection: true});  //可以选择，开启事件
+            hitGraphicLayer = new SuperMap.Layer.Graphics("hit Graphic Layer");
+        }
+
+        function addLayer(){
+            map.addLayers([layer,graphicLayer1,graphicLayer2,hitGraphicLayer]);
+            //显示地图范围
+            map.setCenter(new SuperMap.LonLat(0, 0), 1);
+
+            //选择控件
+            selectGraphic = new SuperMap.Control.SelectGraphic(graphicLayer2, {
+                onSelect: onGraphicSelect,
+                onUnselect: onGraphicUnSelect
+                    });
+
+            map.addControl(selectGraphic);
+            selectGraphic.activate();
+        }
+
+
+        //选择graphic 高亮处理某个选择的扇叶
+        var hitClover = new SuperMap.Style.HitClover();
+        function onGraphicSelect(result,evt){
+            //console.log(result);
+            hitGraphicLayer.removeAllGraphics();
+            var image = result.style.image;
+
+            var pixel = map.getPixelFromLonLat(new SuperMap.LonLat(result.geometry.x, result.geometry.y));
+            var evtPixel = evt.xy;
+            //点击点与中心点的角度
+            var angle = (Math.atan2(evtPixel.y - pixel.y, evtPixel.x - pixel.x))/Math.PI*180;
+            angle = angle > 0 ? angle : 360+angle;
+            //确定扇叶
+            var index = Math.ceil(angle/(result.style.image.angle + result.style.image.spaceAngle));
+            //扇叶的起始角度
+            var sAngle = (index-1)*(image.angle + image.spaceAngle);
+            //渲染参数
+            var renderOpt = {
+                strokeStyle: new SuperMap.Style.Stroke({
+                    color: "#ff0000",
+                    width: 1
+                }),
+                fillStyle: new SuperMap.Style.Fill({
+                    color: "#0099ff"
+                }),
+                size: image.size,
+                radius: image.radius,
+                angle: image.angle,
+                eAngle: sAngle + image.angle,
+                sAngle: sAngle
+            };
+            hitClover.render(renderOpt);
+            var hitGraphic = new SuperMap.Graphic(result.geometry);
+            hitGraphic.style = {
+                image: hitClover
+            };
+            hitGraphicLayer.addGraphics([hitGraphic]);
+        }
+        //没有选中
+        function onGraphicUnSelect(){
+            // to do
+        }
+
+        //clover 符号
+        var radius = [10,14,18];
+        var styles = [{angle:60,count: 3},{angle:45,count:4},{angle:30,count:6}];
+        var sybolCount = radius.length * styles.length;
+        var clovers = [];
+        for(var i = 0; i<radius.length; i++){
+            for(var j =0; j<styles.length; j++){
+                clovers.push(new SuperMap.Style.Clover({
+                    radius: radius[i],
+                    angle: styles[j].angle,
+                    count: styles[j].count,
+                    fill: new SuperMap.Style.Fill({
+                        color: "rgba(0,200,0,0.6)"
+                    }),
+                    stroke: new SuperMap.Style.Stroke({
+                        color: "rgba(0,166,0,1)",
+                        width: 1
+                    })
+                }));
+            }
+        }
+
+        //消耗时间计算 t2-t1
+        var t1,t2;
+        var e = 10000000;
+        function drawClovers(graphicLayer)
+        {
+            graphicLayer.removeAllGraphics();
+            var total = document.getElementById("total").value;
+            t1 = new Date().getTime();
+
+            var points = [];
+            for(var i = 0; i<total; i++){
+                var point= new SuperMap.Geometry.Point(2 * e * Math.random() - e, 2 * e * Math.random() - e);
+                var pointVector = new SuperMap.Graphic(point);
+                pointVector.style={
+                    image: clovers[i % sybolCount]
+                };
+                points.push(pointVector)
+            }
+            graphicLayer.addGraphics(points);
+
+            t2 = new Date().getTime();
+            //console.info(total + "个总时间为：" + (t2-t1) + "ms");
+            alert(total + "个总时间为：" + (t2-t1) + "ms");
+        }
+
+        //绘制不可选中符号
+        function addData1(){
+            graphicLayer2.removeAllGraphics();
+            hitGraphicLayer.removeAllGraphics();
+            drawClovers(graphicLayer1);
+        }
+        //绘制可选中符号
+        function addData2(){
+            graphicLayer1.removeAllGraphics();
+            hitGraphicLayer.removeAllGraphics();
+            drawClovers(graphicLayer2);
+        }
+    </script>
+</head>
+<body onload="init()" >
+<div id="toolbar">
+    <input id="total" type="text" style="width: 100px" value="1000">
+    <input type="button" class="btn" style="margin-bottom: 10px" value="无事件绘制" onclick="addData1()">
+    <input type="button" class="btn" style="margin-bottom: 10px" value="开启事件绘制" onclick="addData2()">
+</div>
+<div id="map"></div>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>自定义右键菜单</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 553px;
+            border:1px solid #3473b7;
+        }
+        ul{
+            list-style-type:none;
+            width:112px;
+           }
+        #myMenu{
+            position: absolute;
+            visibility: hidden;
+            z-index: 9999;
+        }
+        #myMenu ul{
+            float:left;
+            border:1px solid #979797;
+            background:#f1f1f1 url(../examples/images/line.png) 36px 0 repeat-y;
+            padding:2px;
+            box-shadow:2px 2px 2px rgba(0,0,0,.6);}
+        #myMenu ul li{
+            width:112px;
+            float:left;
+            clear:both;
+            height:30px;
+            cursor:pointer;
+            line-height:30px;
+           }
+        #myMenu ul li:hover{
+            background-color: #CAE1FF;
+        }
+    </style>
+    <!--<link href='./css/bootstrap.min.css' rel='stylesheet' />-->
+    <!--<link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />-->
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var map,layer,menu,host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-world/rest/maps/World";
+        function init(){
+            var broz = SuperMap.Util.getBrowser();
+            if (broz.device === 'android'|| broz.device === 'apple') {
+                alert('您的设备不支持，请使用pc或其他设备');
+                return;
+            }
+            map = new SuperMap.Map("map",{
+                eventListeners:{"movestart":function(){
+                    menu.style.visibility="hidden";
+                },
+                "click":function(){
+                    menu.style.visibility="hidden";
+                }}
+            });
+           layer = new SuperMap.Layer.TiledDynamicRESTLayer("world",url,{transparent: true, cacheEnabled:true}, {maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+            map.events.register("mousedown");
+
+        }
+        function addLayer(){
+            map.addLayers([layer]);
+            map.setCenter(new SuperMap.LonLat(4503.6240321526, -3861.911472192499), 1);
+        }
+        //创建EventUtil对象
+        var EventUtil={
+            addHandler:function(element,type,handler){
+                if(element.addEventListener){
+                    element.addEventListener(type,handler,false);
+                }
+               else if(element.attachEvent){
+                    element.attachEvent("on"+type,handler);
+               }
+            },
+            getEvent:function(event){
+                return event?event:window.event;
+            },
+            //取消事件的默认行为
+            preventDefault:function(event){
+                if(event.preventDefault){
+                    event.preventDefault();
+                }else{
+                    event.returnValue= false;
+                }
+            },
+            stopPropagation:function(event){
+                if(event.stopPropagation){
+                    event.stopPropagation();
+                }else{
+                    event.cancelBubble=true;
+                }
+            }
+        };
+        EventUtil.addHandler(window,"load",function(event){
+              var mapDiv = document.getElementById("map");
+              menu= document.getElementById("myMenu");
+              EventUtil.addHandler(mapDiv,"contextmenu",function(event){
+                event= EventUtil.getEvent(event);
+                EventUtil.preventDefault(event);
+                menu.style.left=event.clientX+"px";
+                menu.style.top= event.clientY+"px";
+                menu.style.visibility="visible";
+              });
+             EventUtil.addHandler(myMenu,"contextmenu",function(event){
+                event= EventUtil.getEvent(event);
+                EventUtil.preventDefault(event);
+                menu.style.visibility="visible";
+            });
+        });
+        //放大 ，在当前缩放级别的基础上放大一级。
+        function zoomin()
+        {
+            menu.style.visibility="hidden";
+            map.zoomIn();
+        }
+        //缩小，在当前缩放级别的基础上缩小一级。
+        function zoomout()
+        {
+            menu.style.visibility="hidden";
+            map.zoomOut();
+        }
+    </script>
+</head>
+<body  onload="init()">
+    <div id ="map"></div>
+    <div id ="myMenu">
+        <ul style="margin-top: 0px; margin-bottom: 0px; margin-left:0px;" >
+            <li onclick="zoomin()">
+                     <div style="float:left;padding-right: 5px;width:30px;height:30px"><img src="../examples/images/plus.png" /></div>
+                    <div style="float:left;width:52px;height:30px;  text-align: center; font-size: 15px;">放大</div>
+            </li>
+            <li onclick="zoomout()">
+                <div style="float:left;padding-right: 5px;width:30px;height:30px"><img src="../examples/images/subtract.png" /></div>
+                <div style="float:left;width:52px;height:30px;  text-align: center; font-size: 15px;">缩小</div>
+        </ul>
+    </div>
+
+</body>
+</html>

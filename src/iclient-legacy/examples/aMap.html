@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>AMap叠加等级符号专题图 </title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #iCenter{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+        #toolbar{
+            position: relative;
+            padding-top:5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script language="javascript" src="http://webapi.amap.com/maps?v=1.3&key=168484ce0ca0e0fb381b1dd319ad121e"></script>
+    <script type="text/javascript" src="../libs/SuperMap.Include.js"></script>
+    <script type="text/javascript" src="js/iConnector/iConnectorAMap.js"></script>
+    <script type="text/javascript">
+          var mapObj, firstloaded=true,canvasTiles,
+          host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+                  url=host+"/iserver/services/map-world/rest/maps/World"  ;
+        function init(){
+           //创建AMap的地图
+            mapObj = new AMap.Map("iCenter",{
+                rotateEnable:true,
+                dragEnable:true,
+                zoomEnable:true,
+                //二维地图显示视口
+                view: new AMap.View2D({
+                    center:new AMap.LngLat(106.404, 37.915),//地图中心点
+                    zoom:4 ,//地图显示的缩放级别
+                    crs:"'EPSG4326"
+                })
+            });
+            //设置地图语言类型，设置后底图重新加载，形成中英文对照图
+            mapObj.setLang("zh_en");
+        }
+        //生成点密度专题图
+        function addThemeDotDensity()
+        {
+             //创建制作点密度专题图服务类
+             var themeService = new SuperMap.REST.ThemeService(url, {eventListeners:{"processCompleted": themeCompleted, "processFailed": themeFailed}}),
+                      dotStyle = new SuperMap.REST.ServerStyle({
+                          markerSize: 3,
+                          markerSymbolID: 12
+                      }),
+                      themeDotDensity = new SuperMap.REST.ThemeDotDensity({
+                          dotExpression: "Pop_1994",
+                          value: 5000000,
+                          style: dotStyle
+                      }),
+                      themeParameters = new SuperMap.REST.ThemeParameters({
+                          themes: [themeDotDensity],
+                          datasetNames: ["Countries"],
+                          dataSourceNames: ["World"]
+                      });
+              //向iserver发送请求
+             themeService.processAsync(themeParameters);
+        }
+        //生成专题图后将其叠加到高德地图上面
+       function themeCompleted(themeEventArgs) {
+           if(firstloaded){
+               if(themeEventArgs.result.resourceInfo.id) {
+                   canvasTiles =  SuperMap.Web.iConnector.AMap.getLayer(url,{layersID:themeEventArgs.result.resourceInfo.id,projection:"3857"});
+                   canvasTiles.setMap(mapObj);
+               }
+               firstloaded=  false;
+           }  else{
+               canvasTiles.reload();
+           }
+
+       }
+      function themeFailed(serviceFailedEventArgs) {
+              alert(serviceFailedEventArgs.error.errorMsg);
+      }
+        function removetile(){
+            mapObj.clearMap();
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="创建点密度专题图" onclick="addThemeDotDensity()" />
+</div>
+<div id="iCenter"></div>
+</body>
+</html>

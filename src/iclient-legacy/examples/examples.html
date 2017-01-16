@@ -1,0 +1,801 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>示范程序</title>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <link href='./css/sm-extend.css' rel='stylesheet' />
+    <link href='./css/sm-doc.css' rel='stylesheet' />
+	<style>
+	li.active,li.active a{
+	outline:none;
+	border:none
+	}
+	</style>
+</head>
+   <body data-spy="scroll" data-target=".subnav" data-offset="50">
+         <!--导航条-->
+         <div class="navbar navbar-fixed-top" id="navbar">
+
+         </div>
+         <!--功能区-->
+         <div id='container' class='container'>
+
+               <div class='page-header'>
+                    <h3>范例分类</h3>
+
+                    <ul class="nav nav-tabs" id='myTab'>
+                       <li class='active'><a href="#layer" data-toggle="tab">地图</a></li>
+                       <li><a href="#vector" data-toggle="tab">覆盖物</a></li>
+                       <li><a href="#control" data-toggle="tab">控件</a></li>
+                       <li><a href="#messageBox" data-toggle="tab">信息框</a></li>
+                       <li><a href="#query" data-toggle="tab">查询</a></li>
+                       <li><a href="#theme" data-toggle="tab">专题图</a></li>
+                       <li><a href="#analyst" data-toggle="tab">分析</a></li>
+                       <li><a href="#expert" data-toggle="tab">可视化</a></li>
+                       <li><a href="#ogc" data-toggle="tab">OGC</a></li>
+					   <li><a href="#plots" data-toggle="tab">动态标绘</a></li>
+                        <li><a href="#others" data-toggle="tab">其他</a></li>
+                   </ul>
+
+                   <div class='tab-content' id='myTabContent'>
+                       <div class='tab-pane fade active in' id='layer'>
+
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>SuperMap地图</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                         <ul class='nav nav-pills'>
+                                             <li class='active'><a href='javascript:void(0)' target='_self' data-name='3857Map'>墨卡托坐标系图层</a></li>
+                                             <li><a href='javascript:void(0)' target='_self' data-name='4326Map'>经纬度坐标系图层</a></li>
+                                             <li><a href='javascript:void(0)' target='_self' data-name='changchunMap'>平面坐标系图层</a></li>
+
+                                            <li><a href='javascript:void(0)' target='_self' data-name='cloudLayer'>SuperMap 云图层</a></li>
+
+                                            <li><a href='javascript:void(0)' target='_self' data-name='image'>Image图层</a></li>
+											<li><a href='javascript:void(0)' target='_self' data-name='overlayLayer'>图层叠加</a></li>
+											<li><a href='javascript:void(0)' target='_self' data-name='dynamiclayers'>动态图层</a></li>
+                                       </ul>
+                                  </div>
+                               </div>
+                          </div>
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>iConnector</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='tianditu'>天地图图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='google'>Google 图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='arcGIS93Rest'>ArcGIS图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='baidu'>百度图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='aMap'>高德图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='leaflet'>Leaflet图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='mapBox'>MapBox图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='cartoDB'>CartoDB图层</a></li>
+                                           <!--<li><a href='javascript:void(0)' target='_self' data-name='polymap'>Polymaps图层</a></li>-->
+                                           <li><a href='javascript:void(0)' target='_self' data-name='openLayers3'>OpenLayers3</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='bing'>bing地图图层</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                          </div>
+						  <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>第三方地图</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='3tianditu'>天地图图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='3baidu'>百度图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='3googlelayer'>Google图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='3osm'>OSM图层</a></li>
+                                           <!-- 四维目前不稳定 暂不对外提供
+                                           <li><a href='javascript:void(0)' target='_self' data-name='3Siweidg'>四维图新</a></li>
+                                           -->
+                                       </ul>
+                                   </div>
+                               </div>
+                          </div>
+                           <div class="container-fluid">
+                                  <div class="row-fluid">
+                                             <div class="span2">
+                                               <ul class='nav nav-pills'><span >></span><li>地图操作</li></ul>
+                                            </div>
+                                          <div class="span10">
+                                               <ul class='nav nav-pills'>
+                                                  <li><a href='javascript:void(0)' target='_self' data-name='translation'>缩放与平移</a></li>
+                                                   <li><a href='javascript:void(0)' target='_self' data-name='coordinate_transformation'>坐标转换</a></li>
+                                                   <li><a href='javascript:void(0)' target='_self' data-name='mapevent'>地图事件</a></li>
+                                                   <li><a href='javascript:void(0)' target='_self' data-name='zoomRange'>设置缩放级别</a></li>
+                                                   <li><a href='javascript:void(0)' target='_self' data-name='toggleMaps'>底图切换</a></li>
+                                               </ul>
+                                         </div>
+                               </div>
+                          </div>
+                      </div>
+
+                       <div class='tab-pane fade' id='vector'>
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>矢量图层</li>
+                                       </ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='basicalGeometry'>基础矢量图形</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='basicalGeometry_label'>带标签的矢量图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='geometryGradient'>渐变色样式的矢量图形</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='vectorEvent'>矢量图层选择事件</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='createBLine'>B样条曲线</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='chinaTelecomSymbol'>电信符号</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='mRegion'>岛洞与多面</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='Graphics_Symbols'>高性能矢量渲染</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='Graphics_Clover'>三叶草</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>标记图层</li>
+                                       </ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='marker'>标记图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='markerEvent'>标记图层选择事件</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+
+                       <div class='tab-pane fade' id='control'>
+                               <div class="container-fluid">
+                                        <div class="row-fluid">
+                                                <div class="span2">
+                                                       <ul class='nav nav-pills'><span >></span><li>地图类控件</li>
+                                                       </ul>
+                                                </div>
+                                                <div class="span10">
+                                                      <ul class='nav nav-pills'>
+                                                          <li><a href='javascript:void(0)' target='_self' data-name='zoom'>缩放控件</a></li>
+                                                          <li><a href='javascript:void(0)' target='_self' data-name='panzoombar'>平移缩放控件</a></li>
+                                                          <li><a href='javascript:void(0)' target='_self' data-name='zoomBox'>拉框缩放</a></li>
+                                                          <li><a href='javascript:void(0)' target='_self' data-name='navigation'>地图基础操作</a></li>
+                                                          <li><a href='javascript:void(0)' target='_self' data-name='layerswitcher'>图层管理器</a></li>
+                                                          <li><a href='javascript:void(0)' target='_self' data-name='overviewmap'>鹰眼</a></li>
+                                                          <li><a href='javascript:void(0)' target='_self' data-name='scaleline'>比例尺</a></li>
+                                                          <li><a href='javascript:void(0)' target='_self' data-name='attribution'>版权控件</a></li>
+                                                          <li><a href='javascript:void(0)' target='_self' data-name='dragpan'>地图拖拽</a></li>
+														  <li><a href='javascript:void(0)' target='_self' data-name='geolocate'>地理定位控件</a></li>
+														  <li><a href='javascript:void(0)' target='_self' data-name='changeControlsSkin'>控件皮肤切换</a></li>
+                                                      </ul>
+                                                </div>
+                                        </div>
+                               </div>
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>要素类控件</li>
+                                       </ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='drawGeometry'>点线面绘制</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='featureSnap'>要素编辑</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='distanceMeasure'>距离量算</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='areaMeasure'>面积量算</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='dragFeature'>要素拖拽</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+
+                      <div class='tab-pane fade' id='messageBox'>
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>信息框</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='simplePopup'>简易信息框</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='anchored'>自适应信息框</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='shadowPopup'>常用信息框</a>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='popup'>自定义信息框</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <div class='tab-pane fade' id='query'>
+
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>地图查询</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='queryByBounds'>范围查询</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='queryByDistance'>距离查询</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='queryByGeometry'>几何查询</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='queryBySQL'>SQL 查询</a></li>
+
+                                           <li><a href='javascript:void(0)' target='_self' data-name='vectorLayerRegionName'>查询交互</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>数据集查询</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='getFeatureByIDs'>ID 查询</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='getFeatureByBuffer'>缓冲区查询</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='getFeatureByGeometry'>几何查询</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='getFeatureBySQL'>SQL 查询</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='getFeatureByBounds'>范围查询</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='editFeature'>地物编辑</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='fieldStatistic'>字段查询统计</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='gridInfosQuery'>栅格查询</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                       <div class='tab-pane fade' id='theme'>
+
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>服务器专题图</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='themeDotDensity'>点密度专题图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='themeGraduatedSymbol'>等级符号专题图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='themeGraph'>统计专题图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='themeLabel'>矩阵标签专题图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='themeRange'>分段专题图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='themeUnique'>单值专题图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='themeGridRange'>栅格分段专题图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='themeGridUnique'>栅格单值专题图</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="container-fluid">
+                                 <div class="row-fluid">
+                                    <div class="span2">
+                                              <ul class='nav nav-pills'><span >></span><li>客户端专题图</li></ul>
+                                    </div>
+                                     <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='themeLabelLayer'>标签专题图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='ctl_landuseUnique'>土地利用类型（单值）</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='ctl_popDensityRange'>人口密度分段</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='themePM2_5'>空气质量指数(AQI)</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='ctl_worldCapitalsGraphBar'>世界首都人口统计</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='ctl_GraphBar'>柱状图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='ctl_GraphLine'>折线图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='ctl_GraphPie'>饼图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='ctl_GraphBar3D'>三维柱状图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='ctl_GraphPoint'>点状图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='ctl_GraphRing'>环状图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='ctl_jingjinPopGraph'>统计图表切换</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='ctl_RankSymbol'>等级符号专题图</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+
+
+
+                       <div class='tab-pane fade' id='analyst'>
+                            <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>空间分析</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='bufferAnalyst'>缓冲区分析一</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='bufferQuery'>缓冲区分析二</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='thiessenAnalyst'>泰森多边形</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='overlayAnalystService'>叠加分析</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='surfaceAnalyst'>表面分析</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='dynamicSegmentation'>动态分段</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='routeCalculateMeasure'>点定里程</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='routeLocatorPoint'>里程定点</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='routeLocatorLine'>里程定线</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='interpolationAnalystByDensity'>点密度插值分析</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='interpolationAnalystByIDW'>反距离加权插值分析</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='interpolationAnalystByKriging'>克吕金插值分析</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='interpolationAnalystByRBF'>径向基函数插值分析</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='interpolationAnalystByGeometry'>离散点插值分析</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='terrainCurvatureCalculation'>地形曲率计算</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='mathExpression'>栅格代数运算</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='densityKernelAnalyst'>核密度分析</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>网络分析</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='closestFacilities'>最近设施分析</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='findLocation'>选址分区分析</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='findMTSPPaths'>多旅行商分析</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='findMTSPPathsAndTSPPaths'>多旅行商分析（综合应用）</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='findPath'>最佳路径分析</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='findTSPPaths'>旅行商分析</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='serviceAreas'>服务区分析</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>交通换乘</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='trafficTransfer'>交通换乘</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+                      </div>
+
+                       <div class='tab-pane fade' id='expert'>
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>可视化图层</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='heatmapLayer'>热点图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='heatmapFastLayer'>高效热点图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='heatmapColorSection'>热点图颜色分段配置</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='heatmapColorManual'>热点图颜色手动配置</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='heatGridLayer'>热点网格图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='clusterLayer'>聚散点图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='utfGridLayer'>UTFGrid图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='utfGridLayerFlags'>UTFGrid国旗版</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='gois'>麻点图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='elements'>Elements Layer 扩展</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>时空数据</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='animatorBase'>基础渲染</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='animatorPoint'>点渐变</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='animatorLine'>线渐变</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='animatorPolygon'>面渐变</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='animatorTrain'>火车监控模拟</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='animatorCar'>汽车监控模拟</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='animatorMetro'>地铁修建模拟</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='animatorMetro2'>地铁修建模拟2</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='animatorWeatherMonitor'>气象监测模拟</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='animatorMigrate'>春运模拟</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>矢量分块</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='tiledVectorLayer'>矢量分块图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='cartoCSS_point'>点符号</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='cartoCSS_line'>线符号</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='cartoCSS_polygon'>面符号</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='cartoCSS_text'>文本符号</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='cartoCSS_hightlight'>高亮显示</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='cartoCSS_edit'>CartoCSS编辑</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='cartoCSS_boundryStyle'>强边界风格地图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='cartoCSS_darkblueStyle'>深夜蓝黑风格地图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='cartoCSS_naturalStyle'>淡雅绿风格地图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='cartoCSS_nightStyle'>月夜风格地图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='cartoCSS_helloKitty'>helloKitty风格地图</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+                      </div>
+
+                       <div class='tab-pane fade' id='ogc'>
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>地图服务</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='wmtsLayer'>WMTS 图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='wcs'>WCS 图层</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='wms'>WMS 图层</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>数据服务</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='kml'>KML</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='GeoJSON'>GeoJSON</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='queryByWFS'>WFS</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+
+
+                       </div>
+					   <div class='tab-pane fade' id='plots'>
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>标绘</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='plot'>动态标绘</a></li>
+									       <li><a href='javascript:void(0)' target='_self' data-name='operatePlottingLayer'>图层操作</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='editPlottingLayer'>图层编辑</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='plotSymbol'>鼠标标绘</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='drawGeoGraphicObject'>编程标绘</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='modifySymbolStyle'>属性修改</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='defaultStyle'>缺省属性</a></li>
+										   <li><a href='javascript:void(0)' target='_self' data-name='symbolExtendProperty'>自定义属性</a></li>
+										   <li><a href='javascript:void(0)' target='_self' data-name='querySymbolLib'>查询标号</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='symbolEditor'>编辑器</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='loadSymbolLib'>标号库加载</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>态势图</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='saveload'>保存和加载</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='addfile'>叠加态势图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='filetransfer'>上传和下载态势图文件</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+						   <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>查询</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='symbolGeometricQuery'>几何查询</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+
+                       </div>
+                       <div class='tab-pane fade' id='others'>
+                           <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>地图操作</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='mapPrint'>地图打印</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='printscreen'>地图截图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='a0mapPrint'>地图A0大幅打印</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='projection'>地图投影转换</a></li>
+										   <li><a href='javascript:void(0)' target='_self' data-name='setlayerstatus'>子图层控制</a></li>
+										   <li><a href='javascript:void(0)' target='_self' data-name='layerGroup'>图层组控制</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='mousestyle'>鼠标样式</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='contextMenu'>右键菜单</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='rightClick'>marker右键菜单</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='featureRightClick'>feature右键菜单</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='jqueryContextMenu'>jquery右键菜单</a></li>
+                                          
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div>
+						   <div class="container-fluid">
+                               <div class="row-fluid">
+                                   <div class="span2">
+                                       <ul class='nav nav-pills'><span >></span><li>其他</li></ul>
+                                   </div>
+                                   <div class="span10">
+                                       <ul class='nav nav-pills'>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='dataWebGL'>WebGL Globe数据展示</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='tokenCredential'>安全认证</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='d3_windmap'>风向图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='polling'>地图轮询</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='servicePolling'>服务轮询</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='proxyServicesPolling'>代理服务轮询</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='layerSwitch'>卷帘</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='d3_zoomablePacking'>D3拾取器</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='d3_dynamicPieChart'>动态饼图</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='echart_graphBar'>eChart柱状图</a></li>
+										   <li><a href='javascript:void(0)' target='_self' data-name='SM_OSMBuildings_addGeoJson'>OSMBuildings AddData</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='SM_OSMBuildings_DrawBuildings'>OSMBuildings 绘制</a></li>
+                                           <li><a href='javascript:void(0)' target='_self' data-name='SM_OSMBuildings_RestData'>OSMBuildings Rest</a></li>
+                                       </ul>
+                                   </div>
+                               </div>
+                           </div> 
+                       </div>
+                  </div>
+              </div>
+
+              <div class='page-header'>
+
+                  <h3><span id='demo-title'></span></h3>
+                 <span id="skip" onclick="window .open(this.href);" style ="cursor: pointer"><a  href='javascript:void(0)' >跳转</a></span>
+                 <span> <a id='sourceCode' href='javascript:void(0);' target='_self'>显示源码</a></span>
+
+                  <div id='func'></div>
+                      <div id='map'>
+                               <iframe id="examplesIframe" height="560px" frameBorder="0" marginheight="0" marginwidth="0" width="100%"></iframe>
+                     </div>
+                    <div id='result' class='container'></div>
+                    <div id='mousePositionDiv' class='smCustomControlMousePosition'></div>
+             </div>
+
+
+             <div class='page-header'>
+                   <h3>描述</h3>
+                   <p id='desc'>
+                       对本案例的描述
+                   </p>
+                   <h3>操作说明</h3>
+                   <p id='oper'>
+                       详细的操作说明
+                   </p>
+            </div>
+             <div class='footer'>
+                    <p>版权所有&nbsp;&copy; 2000-2016 &nbsp;北京超图软件股份有限公司</p>
+             </div>
+        </div>
+         <!--第三方的操作样式库-->
+         <script src='./js/jquery.js'></script>
+         <script src='./js/bootstrap.js'></script>
+         <!--引入范例使用URL，描述等信息-->
+         <script src='./js/description.js'></script>
+         <script>
+             var loadedScript, dataCount = 0;
+             $(document).ready(function() {
+                 var url=location.href;
+                 if(url.lastIndexOf("#")>-1){
+                     var exampleId=url.substring(url.lastIndexOf('#')+1,url.length);
+                     //判断url中是否带有锚点
+                     if(exampleId){
+                         //有锚点则打开相应的范例
+                         var a=$("a[data-name='"+exampleId+"']");
+                         var parentId= a.parents(".tab-pane").attr("id");
+                         setTimeout(function(){
+                             $("#myTab a[href='#"+parentId+"']").click();
+                             a.click();
+                         },0)
+                     }else{
+                         //无锚点则默认打开第一个范例
+                         openDefalutExam();
+                     }
+                 }else{
+                     openDefalutExam();
+                 }
+
+                 function openDefalutExam(){
+                     setTimeout(function(){
+                         $("#myTab li a").first().click();
+                     },0)
+                 }
+                 $('#sourceCode').click(function() {
+                     openSource($(this));
+                 });
+                 //添加单击事件
+                 $('#myTab').click(function(e) {
+                     e = e || window.event;
+                     var target= e.target|| e.srcElement;
+                     var eid=target.hash;
+                     $(eid +" .span10 li a").first().click();
+                 });
+                 //添加单击事件
+                 $('#myTabContent').click(function(e) {
+                     e = e || window.event;
+                     var target= e.target|| e.srcElement;
+                     addFunc(e);
+                     //阻止浏览器冒泡
+                     if(typeof e.preventDefault === 'function') {
+                         e.preventDefault();
+                         e.stopPropagation();
+                     } else {
+                         e.returnValue = false;
+                         e.cancleBubble = true;
+                     }
+
+
+                     //将选中地图属性名称添加到url上
+                     var urlName= $(target).data("name");
+                     if(location.href.lastIndexOf('#')>0){
+                         location.href=location.href.substring(0,location.href.lastIndexOf('#'))+'#'+urlName;
+                     }
+                     else
+                     {location.href=location.href+'#'+urlName;}
+                 });
+
+             });
+
+
+             //加载具体的案例。
+             function addFunc(e) {
+                 var srcEle = e.target || e.srcElement;
+                 if (srcEle && srcEle.nodeName === 'A') {
+                     activeExample(srcEle);
+                 }
+             }
+             function activeExample(srcEle) {
+                 updateClassName(srcEle);
+                 var $srcEle=$(srcEle);
+                 $('#sourceCode').prop('url', './' + $srcEle.data("name") + '.html');
+                 $('#skip').prop('href', './' + $srcEle.data("name") + '.html');
+                 runExample($srcEle);
+             }
+             function updateClassName(ele) {
+                 /*需要更精确的定位*/
+                 $('.tab-content').find('> .tab-pane  ul > .active').removeClass('active');
+                 $(ele).parent().addClass('active');
+             }
+
+             function attachScript(url, id) {
+                 $("#examplesIframe").attr("src",url);
+             }
+             function attachDetails(name) {
+                 var details = DemoDescription[name];
+                 if(!details.title){
+                     details.title = "案例名称";
+                 }
+                 if(!details.desc){
+                     details.desc = "对本案例的描述";
+                 }
+                 if(!details.oper){
+                     details.oper = "详细的操作说明";
+                 }
+                 $('h3 #demo-title').text(details.title);
+                 $('#desc').text(details.desc);
+                 $('#oper').text(details.oper);
+             }
+             function runExample(srcEle) {
+                 var url= './'+ srcEle.data("name")+ '.html';
+                 attachScript(url, srcEle.data("name") + "_script");
+                 attachDetails(srcEle.data("name"));
+             }
+
+
+             //查看源码
+             function openSource(ele) {
+                 var href = window.location.href;
+
+                 // 处理 “./”
+                 var subUrl = ele.prop('url');
+                 if(subUrl.substring(0,2) == "./"){
+                     subUrl = subUrl.substring(2);
+                 }
+
+                 // var sourceUrl = href.substr(0, href.lastIndexOf('/')+1) +  ele.prop('url');
+                 var sourceUrl = href.substr(0, href.lastIndexOf('/')+1) + subUrl;
+                 var broz = $.browser;
+                 var isFile = document.location.toString().match(/file:\/\//);
+                 var isChrome = navigator.userAgent.toLowerCase().match(/chrome/) != null;
+                 if (broz.mozilla) {
+                     if(isIE()){
+                         showSourceForIE_Safari_chrome(sourceUrl);
+                     }
+                     else{
+                         showSourceForFirefox(sourceUrl);
+                     }
+                 }
+                 else if(isChrome){
+                     if(isFile){
+                         showSourceForchrome_file(sourceUrl);
+                     }
+                     else{
+                         showSourceForIE_Safari_chrome(sourceUrl);
+                     }
+                 }
+                 else if (broz.safari||broz.msie) {
+                     showSourceForIE_Safari_chrome(sourceUrl);
+                 }
+                 else {
+                     alert("暂不支持此浏览器显示源码！请在下方地图区域点击右键——>查看源文件");
+                 }
+
+                 function isIE()
+                 {
+                     if(!!window.ActiveXObject || "ActiveXObject" in window)
+                         return true;
+                     else
+                         return false;
+                 }
+             }
+             //fireFox
+             function showSourceForFirefox(url) {
+                 window.open("view-source:" + url, "sourceInFirefox",'scrollbars=yes,toolbar=no,menubar=no,location=no,status=no');       //, 'toolbar=no,menubar=no,location=no,status=no'
+             }
+             //chrome file
+             function showSourceForchrome_file(url) {
+                 window.open("view-source:" + url, "sourceInFirefox",'scrollbars=yes,toolbar=no,menubar=no,location=no,status=no');       //, 'toolbar=no,menubar=no,location=no,status=no'
+             }
+             //IE、chrome与Safari显示源代码方法
+             function showSourceForIE_Safari_chrome(url) {
+                 //, "sourceInIE", 'toolbar=no,menubar=no,location=no,status=no'
+                 var html = $.ajax({ url: url, async: false }).responseText; //获取网页文本内容
+                 if(html&&html!=""){
+                     var newIEPage = window.open("","showSourceForIE_Safari_chrome",'scrollbars=yes,toolbar=no,menubar=no,location=no,status=no');//,"showSourceForIE_Safari_chrome",'scrollbars=yes,toolbar=no,menubar=no,location=no,status=no'
+                     newIEPage.document.write("<body></body>");
+                     newIEPage.document.body.innerText = html;
+                 }
+                 else{
+                     alert("暂不支持此浏览器显示源码！请在下方地图区域点击右键——>查看源文件");
+                 }
+             }
+         </script>
+
+
+         <script src="./js/navbar.js"></script>
+   <script>
+       $('.tab-pane').find('>div>div:last').css("border-bottom","0px");
+       $('.row-fluid').find('>div ul>li a:last').css("border-right","0px");
+   </script>
+  </body>
+</html>

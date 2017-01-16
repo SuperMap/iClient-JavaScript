@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src='../libs/SuperMap.Include.js'></script>
+</head>
+<body>
+<div id="slider"></div>
+<script>
+    var slider=new SuperMap.Tool.Slider({"container":"slider"});
+    slider.onChanging=function(value){
+        console.log(slider.getValue());
+    }
+    slider.setValue(0);
+</script>
+</body>
+</html>

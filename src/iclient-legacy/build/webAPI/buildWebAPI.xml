@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="BuildHelpFiles" default="buildWebAPI" basedir=".">
+<property name="js_path" value="D:\agentJS\BuildAgent\work\6_0_WebAPI_JavaScript\01_SourceCode\trunk\Transformers10"/>
+ <target name="00_buildCode">
+	<!--对cloud库文件进行合并、压缩、混淆-->
+		<exec executable="cmd.exe">
+            <arg line='/c ${js_path}\build\buildCode_cloud.bat'/>
+        </exec>  
+	<!--在webAPI下创建文件夹libs-->
+		<mkdir dir="${js_path}\webAPI\libs"/>
+	<!--复制生成的cloud库文件到webAPI下的libs文件夹-->
+		<copy file ="${js_path}\libs\SuperMap_Cloud.js" todir="${js_path}\webAPI\libs">
+        </copy>
+	<!--复制所依赖的 JS 库文件到webAPI下的libs文件夹-->
+	<unzip src="${js_path}\build\webAPI\libs.zip" dest="${js_path}\build\webAPI" encoding="native-encoding"/>
+		<copy todir="${js_path}\webAPI\libs">
+            <fileset dir="${js_path}\build\webAPI\libs\"/>
+        </copy>
+</target>		
+    <!--生成新文档-->
+    <target name="01_runDoc">    
+        <!--创建一个新的 apidoc 文件夹-->
+        <mkdir dir="${js_path}\apidoc"/>
+        <!--运行文档生成 bat-->
+        <!--拷贝css文件，保持 doc 样式与主界面一致。必须步骤-->
+        <copy todir='..\tools\apidoc_config'>
+            <fileset dir='..\examples\css'/>
+        </copy>	
+        <exec executable="cmd.exe">
+            <arg line='/c ..\tools\NaturalDocs-1.52\NaturalDocs 
+                       -i ..\libs   
+                       -o  HTML  ..\apidoc   
+                       -p  ..\tools\apidoc_config
+                       -xi ..\libs\SuperMap\Tile
+					   -xi ..\libs\Lang\
+                       -s 1 bootstrap.min bootstrap-responsive.min doc sm-doc sm-extend'/>
+        </exec>
+
+		<!--文档中属性和方法名称排序-->
+        <exec executable="cmd.exe">
+            <arg line='/c ${js_path}\build\sortDoc.bat'/>
+        </exec>
+        <!--复制我们的1.css到指定位置-->
+        <copy file="..\tools\apidoc_config\1.css" todir="..\apidoc\styles" />
+		<replace file="..\apidoc\index.html" token="BaseTypes-js" value="Map-js"></replace>
+    </target>
+	<!--云平台在线API-->
+	<target name="02_buildWebAPI"> 
+       
+        <!-- 在webAPI下创建一个新的js文件夹-->
+		<mkdir dir="${js_path}\webAPI\js"/>
+        <!--复制apidoc中html文件-->
+		<copy todir="${js_path}\build">
+            <fileset dir="${js_path}\apidoc\files"/>
+        </copy>	
+        <!--运行转换工具将html转换为js-->
+		<exec executable="cmd.exe">
+            <arg line="/c ${js_path}\build\buildWebAPI.bat"/>
+        </exec>
+        <!--复制生成的js文件夹和libs文件夹下文件到webAPI-->
+		<copy todir="${js_path}\webAPI\js">
+            <fileset dir="${js_path}\build\js"/>
+        </copy>
+        <!--复制云平台在线API所需文件到webAPI-->
+		<copy file="${js_path}\build\menu.json" todir="${js_path}\webAPI"/>
+		<copy file="${js_path}\build\test.html" todir="${js_path}\webAPI"/>
+		<copy file="..\examples\js\jquery.js" todir="${js_path}\webAPI"/>
+		<copy file="${js_path}\build\README.txt" todir="${js_path}\webAPI"/>
+		<copy file="${js_path}\build\anchorList.js" todir="${js_path}\webAPI"/>
+		<!--删除不需要的文件-->
+		<delete dir="${js_path}\build\SuperMap" quiet="true"/>
+		<delete dir="${js_path}\build\js" quiet="true"/>
+		<delete file="${js_path}\build\SuperMap2.txt" quiet="true"/>
+		<delete file="${js_path}\build\test.html" quiet="true"/>
+		<delete file="${js_path}\build\HtmlToJS.jar" quiet="true"/>
+		<delete file="${js_path}\build\menu.json" quiet="true"/>
+		<delete file="${js_path}\build\buildWebAPI.bat" quiet="true"/>
+		<delete file="${js_path}\build\copyWebAPI.bat" quiet="true"/>
+		<delete file="${js_path}\build\buildWebAPI.bat" quiet="true"/>
+		<delete file="${js_path}\build\README.txt" quiet="true"/>
+		<delete file="${js_path}\build\anchorList.js" quiet="true"/>
+		<delete dir="${js_path}\build\chmdoc" quiet="true"/>
+		<delete dir="${js_path}\build\libs.zip" quiet="true"/>
+    </target>
+    	<!--compile:编译执行所选择的target-->
+	<target name="buildWebAPI">
+	<!--将webAPI下的文件复制到根目录，以更改运行环境-->
+		<antcall target="00_buildCode"/>
+		<antcall target="01_runDoc"/>
+		<antcall target="02_buildWebAPI"/>
+	</target>
+</project>

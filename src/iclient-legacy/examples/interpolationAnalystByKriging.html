@@ -1,0 +1,358 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>克吕金插值分析</title>
+<style type="text/css">
+    body{
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+    }
+    #map{
+        position: relative;
+        height: 510px;
+        border:1px solid #3473b7;
+    }
+
+    #toolbar {
+        position: relative;
+        padding-top: 5px;
+        padding-bottom: 10px;
+    }
+</style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+<script src='../libs/SuperMap.Include.js'></script>
+<script type="text/javascript">
+var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+        url=host+"/iserver/services/map-temperature/rest/maps/全国温度变化图",
+        url2=host+"/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+var map,baseLayer,themeLayer;
+function init(){
+    map = new SuperMap.Map("map",{controls: [
+        new SuperMap.Control.LayerSwitcher(),
+        new SuperMap.Control.ScaleLine(),
+        new SuperMap.Control.Zoom(),
+        new SuperMap.Control.Navigation({
+            dragPanOptions: {
+                enableKinetic: true
+            }
+        })], units: "m"
+    });
+    map.allOverlays = true;
+    baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("全国温度变化图", url, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+    baseLayer.params.layersID="[0,1,2]";
+    baseLayer.events.on({"layerInitialized":addLayer});
+}
+function addLayer() {
+    map.addLayer(baseLayer);
+    map.setCenter(new SuperMap.LonLat(531762, 3895330), 0);
+}
+
+//简单克吕金插值法
+function interpolationSimpleKriging(){
+    removeInterpolation();
+    var interpolationParams=new SuperMap.REST.InterpolationKrigingAnalystParameters({
+        //用于做插值分析的数据源中数据集的名称
+        dataset: "SamplesP@Interpolation",
+        //插值分析结果数据集的名称
+        outputDatasetName: "SimpleKriging_Result",
+        //插值分析结果数据源的名称
+        outputDatasourceName: "Interpolation",
+        //结果栅格数据集存储的像素格式
+        pixelFormat: SuperMap.REST.PixelFormat.double,
+        // 属性过滤条件
+//            filterQueryParameter: {
+//                attributeFilter: ""
+//            },
+        //存储用于进行插值分析的字段名称
+        zValueFieldName: "AVG_TMP",
+        //克吕金插值的类型
+        type: "SimpleKriging",
+        //简单克吕金类型下，插值字段的平均值。
+        mean: 11.6005,
+        searchMode: "KDTREE_FIXED_COUNT",
+        bounds:new SuperMap.Bounds(-2640403.6321084504, 1873792.1034850003, 3247669.390292245, 5921501.395578556)
+    });
+    var interpolationService=new SuperMap.REST.InterpolationAnalystService(url2,{
+        eventListeners: {
+            "processCompleted": processCompleted,
+            "processFailed": processFailed
+        }});
+    interpolationService.processAsync(interpolationParams);
+}
+//普通克吕金插值法
+function interpolationKriging(){
+    removeInterpolation();
+    var interpolationParams=new SuperMap.REST.InterpolationKrigingAnalystParameters({
+        //用于做插值分析的数据源中数据集的名称
+        dataset: "SamplesP@Interpolation",
+        //插值分析结果数据集的名称
+        outputDatasetName: "Kriging_Result",
+        //插值分析结果数据源的名称
+        outputDatasourceName: "Interpolation",
+        //结果栅格数据集存储的像素格式
+        pixelFormat: SuperMap.REST.PixelFormat.double,
+        // 属性过滤条件
+        filterQueryParameter: {
+            attributeFilter: ""
+        },
+        //存储用于进行插值分析的字段名称
+        zValueFieldName: "AVG_TMP",
+        searchRadius: "0",
+        //克吕金插值的类型
+        type: "KRIGING",
+        searchMode: "KDTREE_FIXED_COUNT",
+        bounds:new SuperMap.Bounds(-2640403.6321084504, 1873792.1034850003, 3247669.390292245, 5921501.395578556)
+    });
+    var interpolationService=new SuperMap.REST.InterpolationAnalystService(url2,{
+        eventListeners: {
+            "processCompleted": processCompleted,
+            "processFailed": processFailed
+        }});
+    interpolationService.processAsync(interpolationParams);
+}
+// 泛克吕金插值法
+function interpolationUniversalKriging(){
+    removeInterpolation();
+    var interpolationParams=new SuperMap.REST.InterpolationKrigingAnalystParameters({
+        //用于做插值分析的数据源中数据集的名称
+        dataset: "SamplesP@Interpolation",
+        //插值分析结果数据集的名称
+        outputDatasetName: "UniversalKriging_Result",
+        //插值分析结果数据源的名称
+        outputDatasourceName: "Interpolation",
+        //结果栅格数据集存储的像素格式
+        pixelFormat: SuperMap.REST.PixelFormat.double,
+        // 属性过滤条件
+        filterQueryParameter: {
+            attributeFilter: ""
+        },
+        //存储用于进行插值分析的字段名称
+        zValueFieldName: "AVG_TMP",
+        searchRadius: "0",
+        //克吕金插值的类型
+        type: "UniversalKriging",
+        //克吕金类型中旋转角度值
+        angle: 0,
+        //克吕金类型中块金效应值
+        nugget: 0,
+        //克吕金类型中自相关阈值，单位与原数据集单位相同
+        range: 0,
+        //克吕金类型中基台值
+        sill: 0,
+        //克吕金插值时的半变函数类型
+        variogramMode: "SPHERICAL",
+        searchMode: "KDTREE_FIXED_COUNT",
+        bounds:new SuperMap.Bounds(-2640403.6321084504, 1873792.1034850003, 3247669.390292245, 5921501.395578556)
+    });
+    var interpolationService=new SuperMap.REST.InterpolationAnalystService(url2,{
+        eventListeners: {
+            "processCompleted": processCompleted,
+            "processFailed": processFailed
+        }});
+    interpolationService.processAsync(interpolationParams);
+}
+//插值分析成功后，使用栅格分段专题图展示
+function processCompleted(InterpolationAnalystEventArgs){
+    var color1 = new SuperMap.REST.ServerColor(170,240,233),
+            color2 = new SuperMap.REST.ServerColor(176,244,188),
+            color3 = new SuperMap.REST.ServerColor(218,251,178),
+            color4 = new SuperMap.REST.ServerColor(220,236,145),
+            color5 = new SuperMap.REST.ServerColor(96,198,66),
+            color6 = new SuperMap.REST.ServerColor(20,142,53),
+            color7 = new SuperMap.REST.ServerColor(85,144,55),
+            color8 = new SuperMap.REST.ServerColor(171,168,38),
+            color9 = new SuperMap.REST.ServerColor(235,165,9),
+            color10 = new SuperMap.REST.ServerColor(203,89,2),
+            color11= new SuperMap.REST.ServerColor(157,25,1),
+            color12= new SuperMap.REST.ServerColor(118,15,3),
+            color13= new SuperMap.REST.ServerColor(112,32,7),
+            color14= new SuperMap.REST.ServerColor(106,45,12),
+            color15= new SuperMap.REST.ServerColor(129,80,50),
+            color16= new SuperMap.REST.ServerColor(160,154,146),
+            color17= new SuperMap.REST.ServerColor(107,47,14),
+            color18= new SuperMap.REST.ServerColor(125,75,44),
+            color19= new SuperMap.REST.ServerColor(146,110,88),
+            color20= new SuperMap.REST.ServerColor(166,153,146),
+            themeGridRangeIteme1 = new SuperMap.REST.ThemeGridRangeItem({
+                start:-5,
+                end:-3.4,
+                color: color1
+            }),
+
+            themeGridRangeIteme2 = new SuperMap.REST.ThemeGridRangeItem({
+                start: -3.4,
+                end: -1.8,
+                color: color2
+            }),
+            themeGridRangeIteme3 = new SuperMap.REST.ThemeGridRangeItem({
+                start:-1.8,
+                end:-0.2,
+                color: color3
+            }),
+            themeGridRangeIteme4 = new SuperMap.REST.ThemeGridRangeItem({
+                start: -0.2,
+                end:  1.4,
+                color: color4
+            }),
+            themeGridRangeIteme5 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 1.4,
+                end:  3,
+                color: color5
+            }),
+            themeGridRangeIteme6 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 3,
+                end:  4.6,
+                color: color6
+            }),
+            themeGridRangeIteme7 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 4.6,
+                end: 6.2,
+                color: color7
+            }),
+
+            themeGridRangeIteme8 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 6.2,
+                end: 7.8,
+                color: color8
+            }),
+            themeGridRangeIteme9 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 7.8,
+                end:  9.4,
+                color: color9
+            }),
+            themeGridRangeIteme10 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 9.4,
+                end:  11,
+                color: color10
+            }),
+            themeGridRangeIteme11 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 11,
+                end:  12.6,
+                color: color11
+            }),
+            themeGridRangeIteme12 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 12.6,
+                end:  14.2,
+                color: color12
+            }),
+            themeGridRangeIteme13 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 14.2,
+                end: 15.8,
+                color: color13
+            }),
+
+            themeGridRangeIteme14 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 15.8,
+                end: 17.4,
+                color: color14
+            }),
+            themeGridRangeIteme15 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 17.4,
+                end:  19,
+                color: color15
+            }),
+            themeGridRangeIteme16 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 19,
+                end:  20.6,
+                color: color16
+            }),
+            themeGridRangeIteme17 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 20.6,
+                end:  22.2,
+                color: color17
+            }),
+            themeGridRangeIteme18 = new SuperMap.REST.ThemeGridRangeItem({
+                start:  22.2,
+                end:  23.8,
+                color: color18
+            }),
+            themeGridRangeIteme19 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 23.8,
+                end:  25.4,
+                color: color19
+            }),
+            themeGridRangeIteme20 = new SuperMap.REST.ThemeGridRangeItem({
+                start: 25.4,
+                end:  27,
+                color: color20
+            }),
+
+            themeGridRange = new SuperMap.REST.ThemeGridRange({
+                reverseColor:false,
+                rangeMode: SuperMap.REST.RangeMode.EQUALINTERVAL,
+                //栅格分段专题图子项数组
+                items: [themeGridRangeIteme1,
+                    themeGridRangeIteme2,
+                    themeGridRangeIteme3,
+                    themeGridRangeIteme4,
+                    themeGridRangeIteme5,
+                    themeGridRangeIteme6,
+                    themeGridRangeIteme7,
+                    themeGridRangeIteme8,
+                    themeGridRangeIteme9,
+                    themeGridRangeIteme10,
+                    themeGridRangeIteme11,
+                    themeGridRangeIteme12,
+                    themeGridRangeIteme13,
+                    themeGridRangeIteme14,
+                    themeGridRangeIteme15,
+                    themeGridRangeIteme16,
+                    themeGridRangeIteme17,
+                    themeGridRangeIteme18,
+                    themeGridRangeIteme19,
+                    themeGridRangeIteme20
+                ]
+            }),
+
+            themeParameters = new SuperMap.REST.ThemeParameters({
+                //制作专题图的数据集数组
+                datasetNames:[InterpolationAnalystEventArgs.result.dataset.split('@')[0]],
+                // 制作专题图的数据集所在的数据源数组
+                dataSourceNames: ["Interpolation"],
+                joinItems: null,
+                //专题图对象列表
+                themes: [themeGridRange]
+            });
+    var themeService = new SuperMap.REST.ThemeService(url, {eventListeners:{"processCompleted": themeCompleted, "processFailed": themeFailed}});
+    themeService.processAsync(themeParameters);
+}
+//服务端成功返回专题图结果时调用
+function themeCompleted(themeEventArgs) {
+    if(themeEventArgs.result.resourceInfo.id) {
+        themeLayer = new SuperMap.Layer.TiledDynamicRESTLayer("插值分析结果图", url, {cacheEnabled:true,transparent: true,layersID: themeEventArgs.result.resourceInfo.id}, {"maxResolution":"auto"});
+        themeLayer.events.on({"layerInitialized":addThemelayer});
+    }
+}
+//添加专题图至map
+function addThemelayer() {
+    map.addLayer(themeLayer);
+}
+//插值分析失败后调用
+function processFailed(ServiceFailedEventArgs){
+    alert(ServiceFailedEventArgs.error.errorMsg);
+}
+//服务端返回专题图结果失败时调用
+function themeFailed(serviceFailedEventArgs) {
+    alert(serviceFailedEventArgs.error.errorMsg);
+}
+//清除专题图图层
+function removeInterpolation(){
+    if (map.layers.length >1) {
+        map.removeLayer(themeLayer, true);
+    }
+}
+</script>
+</head>
+<body onload="init()">
+<div id="toolbar" >
+    <input type="button" class="btn" value="简单Kriging" onclick="interpolationSimpleKriging()" />
+    <input type="button" class="btn" value="普通Kriging" onclick="interpolationKriging()" />
+    <input type="button" class="btn" value="泛Kriging" onclick="interpolationUniversalKriging()" />
+    <input type="button" class="btn" value="清除" onclick="removeInterpolation()" >
+</div>
+<div id="map"></div>
+</body>
+</html>

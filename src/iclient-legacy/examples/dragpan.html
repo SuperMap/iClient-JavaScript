@@ -1,0 +1,74 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>地图拖拽控件</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 520px;
+                border:1px solid #3473b7;
+            }
+            #toolbar{
+                position: relative;
+                height: 33px;
+                padding-top:5px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, layerWorld;
+            var url=host+"/iserver/services/map-world/rest/maps/World";
+			 
+			function init(){
+				//初始化地图拖拽控件类
+				dragPan = new SuperMap.Control.DragPan(); 
+				//当该属性为true，拖拽地图时，鼠标移动到地图可视区域外依然有效。默认为false
+				dragPan.documentDrag=true;
+				//设置是否使用拖拽动画。默认为false，不使用动画
+				dragPan.enableKinetic=true;
+				//执行动画的间隔，默认为10，单位是毫秒
+				dragPan.kineticInterval=20;
+				//初始化地图类，添加地图拖拽控件到Map
+                map = new SuperMap.Map("map",{controls: [   
+					dragPan]
+                });
+				
+				layerWorld = new SuperMap.Layer.TiledDynamicRESTLayer("World", url);  //获取图层服务地址
+				layerWorld.events.on({"layerInitialized": addLayer});
+			}
+			
+			//添加地图图层到map
+			function addLayer(){
+                map.addLayers([layerWorld]);
+                map.setCenter(new SuperMap.LonLat(118, 40), 6);
+            }
+			
+			//激活控件 
+			function activated(){
+				dragPan.activate();
+			}
+			
+			//注销控件
+			function deactivated(){
+				dragPan.deactivate();
+			}
+			
+			</script>
+    </head>
+    <body onload="init()">
+		<div id="toolbar">
+			<input type="button" class="btn" value="拖拽地图" onclick="activated()" />
+			<input type="button" class="btn" value="取消拖拽" onclick="deactivated()" />
+		</div>
+        <div id="map"></div>
+    </body>
+</html>

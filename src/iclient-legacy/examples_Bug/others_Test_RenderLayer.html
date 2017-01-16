@@ -1,0 +1,196 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>renderLayer</title>
+        <style type="text/css">
+
+            .map{
+                height: 210px;
+                width: 450px;;
+            }
+
+        </style>
+        <!-- 由于要使用webgl渲染图层，所以需要先添加一个矩阵计算的第三方库 -->
+        <script type="text/javascript" src="js/glMatrix-0.9.5.min.js"></script>
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script src='js/layer/WebGLImage.js'></script>
+        <script src='js/layer/WebGLLayer.js'></script>
+        <script type="text/javascript">
+            var webglMap,canvasMap,domMap,vectorMap, webglLayer,canvasLayer,domLayer,vectorLayer, infowin,
+            host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+            url=host+"/iserver/services/map-china400/rest/maps/China";
+            function init(){
+                //初始化webgl渲染方式的地图
+                webglMap = new SuperMap.Map("webglMap",{controls: [
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })],
+                    projection: "EPSG:3857"
+                });
+                //初始化canvas渲染方式的地图
+                canvasMap = new SuperMap.Map("canvasMap",{controls: [
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })],
+                    projection: "EPSG:3857"
+                });
+                //初始化DOM渲染方式的地图
+                domMap = new SuperMap.Map("domMap",{controls: [
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })],
+                    projection: "EPSG:3857"
+                });
+                //初始化矢量渲染方式的地图
+                vectorMap = new SuperMap.Map("vectorMap",{controls: [
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })],
+                    projection: "EPSG:3857"
+                });
+                //初始化对应的三个图层
+                //WebGLLayer当前只用于演示，不建议用户使用
+                webglLayer = new SuperMap.Layer.WebGLLayer("China",url, {transparent: true, cacheEnabled: true, redirect: true});
+                canvasLayer = new SuperMap.Layer.TiledDynamicRESTLayer("China",url, {transparent: true, cacheEnabled: true, redirect: true});
+                domLayer = new SuperMap.Layer.TiledDynamicRESTLayer("China",url, {transparent: true, cacheEnabled: true, redirect: true}, {useCanvas:false});
+                vectorLayer = new SuperMap.Layer.TiledVectorLayer("China", url, {cacheEnabled: true},{useLocalStorage:true});
+                //注册图层初始化事件
+                webglLayer.events.on({"layerInitialized": addWebglLayer});
+                canvasLayer.events.on({"layerInitialized": addCanvasLayer});
+                domLayer.events.on({"layerInitialized": addDOMLayer});
+                vectorLayer.events.on({"layerInitialized": addVectorLayer});
+            }
+
+            function addWebglLayer() {
+                var center = new SuperMap.LonLat(0,0);
+                webglMap.addLayers([webglLayer]);
+                webglMap.setCenter(center, 0);
+                webglMap.events.on({"move":moveWebgl});
+            }
+            function addCanvasLayer() {
+                var center = new SuperMap.LonLat(0,0);
+                canvasMap.addLayers([canvasLayer]);
+                canvasMap.setCenter(center, 0);
+                canvasMap.events.on({"move":moveCanvas});
+            }
+            function addDOMLayer() {
+                var center = new SuperMap.LonLat(0,0);
+                domMap.addLayers([domLayer]);
+                domMap.setCenter(center, 0);
+                domMap.events.on({"move":moveDOM});
+            }
+            function addVectorLayer() {
+                var center = new SuperMap.LonLat(0,0);
+                vectorMap.addLayers([vectorLayer]);
+                vectorMap.setCenter(center, 0);
+                vectorMap.events.on({"move":moveVector});
+                vectorMap.events.on({"click":mouseClickHandler});
+            }
+            //放大移动webgl地图时同步其他地图
+            function moveWebgl(){
+                var lonLat = webglMap.getCenter();
+                var zoom = webglMap.getZoom();
+                canvasMap.setCenter(lonLat, zoom);
+                domMap.setCenter(lonLat, zoom);
+                vectorMap.setCenter(lonLat, zoom);
+            }
+            //放大移动canvas地图时同步其他地图
+            function moveCanvas(){
+                var lonLat = canvasMap.getCenter();
+                var zoom = canvasMap.getZoom();
+                webglMap.setCenter(lonLat, zoom);
+                domMap.setCenter(lonLat, zoom);
+                vectorMap.setCenter(lonLat, zoom);
+            }
+            //放大移动dom地图时同步其他地图
+            function moveDOM(){
+                var lonLat = domMap.getCenter();
+                var zoom = domMap.getZoom();
+                canvasMap.setCenter(lonLat, zoom);
+                webglMap.setCenter(lonLat, zoom);
+                vectorMap.setCenter(lonLat, zoom);
+            }
+            //放大移动vector地图时同步其他地图
+            function moveVector(){
+                var lonLat = vectorMap.getCenter();
+                var zoom = vectorMap.getZoom();
+                canvasMap.setCenter(lonLat, zoom);
+                webglMap.setCenter(lonLat, zoom);
+                domMap.setCenter(lonLat, zoom);
+            }
+            //点击矢量地图里面的元素进行高亮
+            function mouseClickHandler(event) {
+                if (!event.xy) {
+                    return;
+                }
+                if (!event.xy.x) {
+                    return;
+                }
+                var geometryInfo = vectorLayer.getGeometry(event.xy.x, event.xy.y);
+                if (!geometryInfo) {
+                    return;
+                }
+                //这是底图，将其屏蔽掉
+                if (geometryInfo.layer === "World_Division@China400") {
+                    return;
+                }
+                //高亮显示
+                vectorLayer.highlightGeometry(geometryInfo.layer, geometryInfo.geometry.id);
+
+
+                var lonLat = vectorMap.getLonLatFromPixel({"x": event.xy.x, "y": event.xy.y});
+                if(infowin){
+                    try{
+                        infowin.hide();
+                        infowin.destroy();
+                    }
+                    catch(e){}
+                }
+                var contentHTML = "<div style='font-size:.8em; opacity: 0.8; overflow-y:hidden;'>";
+                contentHTML += "<div>"+"矢量数据ID："+geometryInfo.geometry.id+"<br />"+"所在数据源："+geometryInfo.layer.split("@")[1]+"<br />所在数据集："+geometryInfo.layer.split("@")[0]+"</div></div>";
+
+                var popup = new SuperMap.Popup.FramedCloud("popwin",
+                        lonLat,
+                        null,
+                        contentHTML,
+                        null,
+                        true);
+
+                infowin = popup;
+                vectorMap.addPopup(popup);
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div style="display: inline-table;">
+            <h5>WebGL</h5>
+            <div id="webglMap" class="map"></div>
+        </div>
+        <div style="display: inline-table;">
+            <h5>Canvas</h5>
+            <div id="canvasMap" class="map"></div>
+        </div>
+        <div style="display: inline-table;">
+            <h5>DOM</h5>
+            <div id="domMap"  class="map"></div>
+        </div>
+        <div style="display: inline-table;">
+            <h5>Vector</h5>
+            <div id="vectorMap"  class="map"></div>
+        </div>
+
+    </body>
+</html>

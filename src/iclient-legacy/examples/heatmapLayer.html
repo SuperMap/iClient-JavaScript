@@ -1,0 +1,106 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>热点图</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 520px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, layer, heatMapLayer,
+            url="http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+            function init(){
+                if(!document.createElement('canvas').getContext) {
+                    alert('您的浏览器不支持 canvas，请升级');
+                    return;
+                }
+
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+                });
+                map.addControl(new SuperMap.Control.MousePosition());
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+                heatMapLayer = new SuperMap.Layer.HeatMapLayer(
+                        "heatMap",
+                        {
+                            "radius":45,
+                            "featureWeight":"value",
+                            "featureRadius":"geoRadius"
+                        }
+                );
+                layer.events.on({"layerInitialized": addLayer});
+            }
+
+            function addLayer() {
+                map.addLayers([layer,heatMapLayer]);
+                map.setCenter(new SuperMap.LonLat(0, 0), 0);
+            }
+            function createHeatPoints(){
+                clearHeatPoints();
+                var heatPoints = [];
+                var num = 1;
+                var radius = 20;
+                //var useGeoRadius = "checked" == $('#useGeoRadius').attr('checked');
+                var unit = document.getElementById("radiusUnit").value,
+                        useGeoRadius = false;
+                if("degree" == unit){
+                    useGeoRadius = true;
+                }
+                heatMapLayer.radius = radius
+                for(var i=0; i < num; i++){
+                    heatPoints[i] = new SuperMap.Feature.Vector(
+                            new SuperMap.Geometry.Point(
+                                   0,
+                                   0
+                            ),
+                            {
+                                "value":9,
+                                "geoRadius":useGeoRadius?radius:null
+                            }
+                    );
+                }
+                heatMapLayer.addFeatures(heatPoints);
+            }
+
+            function clearHeatPoints(){
+                heatMapLayer.removeAllFeatures();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <span>热点数量：</span>
+            <input type='text' style='width:50px;height: 30px' id='heatNums' value='200'/>
+            <span>热点半径：</span>
+            <input type='text'  style='width:30px;height: 30px' value='50' id='heatradius'/>
+            <select style='width:70px' id='radiusUnit'><option value='px'>px</option><option value ='degree'>degree</option></select>
+            <input type="button" class="btn" value="渲染热点" style="margin-bottom: 10px" onclick="createHeatPoints()" />
+            <input type="button" class="btn" value="清除" style="margin-bottom: 10px" onclick="clearHeatPoints()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="JSCover" default="jstest">
+
+	<target name="jstest-start" >
+		<java jar="tools/UnitTest/JSCover-all.jar" fork="true" spawn="true">
+			<arg value="-ws"/>
+			<arg value="--report-dir=jscover"/>
+			<arg value="--document-root=."/>
+			<arg value="--no-instrument=tests"/>
+			<arg value="--port=60080"/>
+			<jvmarg value="-Dfile.encoding=utf-8"/>
+		</java>
+	</target>
+	<target name="jstest-run">
+		<exec executable="cmd.exe">
+			<arg line="/c .\tools\UnitTest\TestCoverage\bin\Debug\TestCoverage.exe 30"/>
+		</exec>
+	</target>
+	<target name="jstest-stop">
+		<get src="http://localhost:60080/stop" dest="stop.txt" />
+	</target>
+	<target name="jstest">
+		<antcall target="jstest-start"/>
+		<antcall target="jstest-run"/>
+		<antcall target="jstest-stop"/>
+	</target>
+	
+</project>

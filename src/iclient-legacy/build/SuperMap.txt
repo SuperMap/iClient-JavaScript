@@ -1,0 +1,3 @@
+..\libs\SuperMap\NameSpace.js
+..\libs\SuperMap\BaseTypes\Class.js
+..\libs\SuperMap\Util.js

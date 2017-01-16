@@ -1,0 +1,187 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>缺省属性</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src = "../libs/SuperMap.Include.js"></script>
+    <script src='./js/jquery.js'></script>
+    <script src='./js/jquery.colorpicker.js'></script>
+    <script type="text/javascript">
+        var map, baseLayer, plottingLayer, drawFeature, plotting;
+        var host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        var mapurl = host + "/iserver/services/map-world/rest/maps/World";
+        var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+
+        function init() {
+            map = new SuperMap.Map("map", {
+                controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+            });
+            baseLayer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {
+                transparent: true,
+                cacheEnabled: true
+            }, {maxResolution: "auto"});
+            baseLayer.events.on({"layerInitialized": addLayer});
+
+            plottingLayer = new SuperMap.Layer.PlottingLayer("PlottingLayer", serverUrl);
+            drawFeature = new SuperMap.Control.DrawFeature(plottingLayer, SuperMap.Handler.GraphicObject);
+            map.addControls([drawFeature]);
+        }
+
+        function addLayer(){
+            map.addLayers([baseLayer, plottingLayer]);
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+
+            plotting = SuperMap.Plotting.getInstance(map, serverUrl);
+
+            var symbolLibManager = plotting.getSymbolLibManager();
+            if(symbolLibManager.isInitializeOK()){
+                initHtml();
+            } else {
+                function initializeCompleted(result){
+                    initHtml();
+                }
+
+                symbolLibManager.events.on({"initializeCompleted": initializeCompleted,
+                    scope: this});
+                symbolLibManager.initializeAsync();
+            }
+
+        }
+
+        function initHtml(){
+            document.getElementById("lineWidth").value = plotting.getDefaultStyle().lineWidth;
+            document.getElementById("lineStyle").value = plotting.getDefaultStyle().lineType;
+            document.getElementById("lineColor").value = plotting.getDefaultStyle().lineColor;
+            document.getElementById("symbolWidth").value = plotting.getDefaultStyle().dotSymbolSize;
+            document.getElementById("symbolHeight").value = plotting.getDefaultStyle().dotSymbolSize;
+            if(plotting.getDefaultStyle().defaultFlag)
+                document.getElementById("defaultStyleFlag").value = 1;
+            else
+                document.getElementById("defaultStyleFlag").value = 0;
+        }
+
+        function cancel(){
+            drawFeature.deactivate();
+        }
+
+        function lineWidthChanges(){
+            cancel();
+            plotting.getDefaultStyle().lineWidth = document.getElementById("lineWidth").value;
+        }
+
+        function lineStyleChanges(){
+            cancel();
+            plotting.getDefaultStyle().lineType = document.getElementById("lineStyle").value;
+        }
+
+        function symbolWidthChanges(){
+            cancel();
+            plotting.getDefaultStyle().dotSymbolSize = document.getElementById("symbolWidth").value;
+            document.getElementById("symbolHeight").value = plotting.getDefaultStyle().dotSymbolSize;
+        }
+
+        function symbolHeightChanges(){
+            cancel();
+            plotting.getDefaultStyle().dotSymbolSize = document.getElementById("symbolHeight").value;
+            document.getElementById("symbolWidth").value = plotting.getDefaultStyle().dotSymbolSize;
+        }
+
+        function defaultStyleFlagChanges(){
+            cancel();
+            plotting.getDefaultStyle().defaultFlag = document.getElementById("defaultStyleFlag").selectedIndex;
+        }
+
+        function drawPolygon()
+        {
+            drawFeature.handler.serverUrl = serverUrl;
+            drawFeature.handler.libID = 421;
+            drawFeature.handler.symbolCode = 20100;
+            drawFeature.deactivate();
+            drawFeature.activate();
+        }
+
+        $(document).ready(function() {
+            $("#cp1").colorpicker({
+                ishex:true,
+                fillcolor:true,
+                event:'mouseover',
+                target:$("#lineColor"),
+                success:lineColorChanges
+
+            });
+            $("#_creset").css("font-size","12px");
+            $("#_creset").css("padding-right","20px");
+            $("#colorpanel").css("left","533px");
+        });
+
+        function lineColorChanges() {
+            cancel();
+            plotting.getDefaultStyle().lineColor = document.getElementById("lineColor").value;
+        }
+
+        document.oncontextmenu = function(evt){
+            window.event.returnValue = false;
+            drawFeature.deactivate();
+            return false;
+        };
+    </script>
+</head>
+<body onLoad = "init()">
+<div id="toolbar">
+    <span>线宽：</span>
+    <input type='text' style='width:20px;' id='lineWidth' value='2' onchange="lineWidthChanges()"/>
+    <span>线型：</span>
+    <select style='width:70px' id='lineStyle' onchange="lineStyleChanges()">
+        <option value='solid'>solid</option>
+        <option value ='dot'>dot</option>
+        <option value ='dash'>dash</option>
+        <option value ='dashdot'>dashdot</option>
+        <option value ='longdash'>longdash</option>
+        <option value ='longdashdot'>longdashdot</option>
+    </select>
+    <span>线色：</span>
+    <input type="text" id="lineColor" value=""style=" width:70px;border-width:2px;padding-left: 1px; padding-right: 1px;"/>
+    <img src='images/colorpicker.png' id="cp1" style="cursor:pointer"/>
+    <span>标号宽度：</span>
+    <input type='text' style='width:20px;' id='symbolWidth' value='40' onchange="symbolWidthChanges()"/>
+    <span>标号高度：</span>
+    <input type='text' style='width:20px;' id='symbolHeight' value='40' onchange="symbolHeightChanges()"/>
+    <span>使用缺省属性：</span>
+    <select style='width:65px' id='defaultStyleFlag' onchange="defaultStyleFlagChanges()">
+        <option value='0'>false</option>
+        <option value ='1'>true</option>
+    </select>
+    <input type="button" class="btn" value="绘制标号" style="margin-bottom: 10px" onclick="drawPolygon()"/>
+    <input type="button" class="btn" value="取消标绘" style="margin-bottom: 10px" onclick="cancel()"/>
+</div>
+<div id = "map"></div>
+</body>
+</html>

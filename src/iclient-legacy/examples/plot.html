@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title> 动态标绘</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        #map {
+            position: relative;
+            height: 553px;
+            border: 1px solid #3473b7;
+            left: 20%;
+            width: 79.8%;
+        }
+
+        #menuPlotting {
+            position: absolute;
+            top: 40%;
+            z-index: 999999;
+            border-radius: 4px;
+            padding-top: 2px;
+        }
+
+        #menu {
+            background: #ffffff;
+            position: absolute;
+            width: 19.8%;
+            height: 553px;
+            border: 1px solid #3473b7;
+        }
+    </style>
+
+    <link href='./css/bootstrap.min.css' rel='stylesheet'/>
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet'/>
+    <link rel="stylesheet" type="text/css" media="screen,projection" href="css/jquery-sticklr.css"/>
+    <script src="js/bevInclude.js"></script>
+    <script src="../libs/SuperMap.Include.js"></script>
+    <script src="./js/plottingPanel/PlottingPanel.Include.js"></script>
+    <script type="text/javascript">
+        var map, plottingLayer, layer;
+        var plotPanel, stylePanel;
+        var host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        var mapurl = host + "/iserver/services/map-china400/rest/maps/China_4326";
+        var serverUrl = host + "/iserver/services/plot-jingyong/rest/plot/";
+        var plotting;
+        var sitDataLayers;
+        var plottingEdits = [];
+        var drawGraphicObjects = [];
+        function init() {
+            Bev.Theme.set("bev-base");
+
+            map = new SuperMap.Map("map", {
+                controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+            });
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", mapurl, {
+                transparent: true,
+                cacheEnabled: true
+            }, {maxResolution: "auto"});
+            layer.events.on({"layerInitialized": addLayer});
+
+            //总控类
+            plotting = SuperMap.Plotting.getInstance(map, serverUrl);
+            plotting.getSitDataManager().events.on({"openSmlFileCompleted": success});
+
+            plottingLayer = new SuperMap.Layer.PlottingLayer("标绘图层", serverUrl);
+            plottingLayer.style = {
+                fillColor: "#66cccc",
+                fillOpacity: 0.4,
+                strokeColor: "#66cccc",
+                strokeOpacity: 1,
+                strokeWidth: 3,
+                pointRadius: 6
+            };
+
+            //态势标绘编辑
+            var plottingEdit = new SuperMap.Control.PlottingEdit(plottingLayer);
+            plottingEdits.push(plottingEdit);
+
+            // 绘制标号;
+            var drawGraphicObject = new SuperMap.Control.DrawFeature(plottingLayer, SuperMap.Handler.GraphicObject);
+            drawGraphicObjects.push(drawGraphicObject);
+            //添加态势标绘控件
+            map.addControls([plottingEdit, drawGraphicObject]);
+        }
+
+        function addLayer() {
+            map.addLayers([layer, plottingLayer]);
+            map.setCenter(new SuperMap.LonLat(104, 35), 3);
+
+            //创建标绘面板
+            plotPanel = new SuperMap.Plotting.PlotPanel("plotPanel", serverUrl, map);
+            plotPanel.events.on({"initializeCompleted": initializeCompleted});
+            plotPanel.initializeAsync();
+
+            //创建属性面板
+            stylePanel = new SuperMap.Plotting.StylePanel("stylePanel");
+            stylePanel.addEditLayer(plottingLayer);
+        }
+
+        function initializeCompleted(evt) {
+            if (drawGraphicObjects.length > 0) {
+                plotPanel.setDrawFeature(drawGraphicObjects[0]);
+            }
+        }
+
+        //取消标绘与编辑
+        function plottingAllDeactivate() {
+            for (var i = 0; i < drawGraphicObjects.length; i++) {
+                drawGraphicObjects[i].deactivate();
+            }
+
+            for (var i = 0; i < plottingEdits.length; i++) {
+                plottingEdits[i].deactivate();
+            }
+        }
+
+        //清空绘制
+        function PlottingClear() {
+
+            plottingAllDeactivate();
+
+            for (var i = 0; i < map.layers.length; i++) {
+                if (map.layers[i].CLASS_NAME === "SuperMap.Layer.PlottingLayer") {
+                    map.layers[i].removeAllFeatures();
+                }
+            }
+        }
+
+        //删除选中标号
+        function deleteSymbol() {
+            for (var i = 0; i < plottingEdits.length; i++) {
+                plottingEdits[i].deleteSelectFeature();
+            }
+        }
+
+        //取消标绘，激活标绘编辑控件
+        function PlottingDrawCancel() {
+            plottingAllDeactivate();
+
+            for (var i = 0; i < plottingEdits.length; i++) {
+                plottingEdits[i].activate();
+            }
+        }
+
+        //复制
+        function copySymbol() {
+            plotting.getEditor().copy();
+        }
+
+        //剪切
+        function cutSymbol() {
+            plotting.getEditor().cut();
+        }
+
+        //粘贴
+        function pasteSymbol() {
+            plotting.getEditor().paste();
+        }
+
+        //添加图层
+        function addPlottingLayer() {
+            PlottingDrawCancel();
+            var newPlottingLayer = new SuperMap.Layer.PlottingLayer(getNewPlottingLayerName(), serverUrl);
+            newPlottingLayer.style = {
+                fillColor: "#66cccc",
+                fillOpacity: 0.4,
+                strokeColor: "#66cccc",
+                strokeOpacity: 1,
+                strokeWidth: 3,
+                pointRadius: 6
+            };
+            var newPlottingEdit = new SuperMap.Control.PlottingEdit(newPlottingLayer);
+            plottingEdits.push(newPlottingEdit);
+
+            var drawGraphicObject = new SuperMap.Control.DrawFeature(newPlottingLayer, SuperMap.Handler.GraphicObject);
+            drawGraphicObjects.push(drawGraphicObject);
+
+            //将新创建的图层添加到属性面板中
+            stylePanel.addEditLayer(newPlottingLayer);
+
+            //将标绘句柄赋给标绘面板
+            plotPanel.setDrawFeature(drawGraphicObject);
+
+            map.addControls([newPlottingEdit, drawGraphicObject]);
+            map.addLayers([newPlottingLayer]);
+        }
+
+        //保存态势图
+        function saveSimulationMap() {
+            plottingAllDeactivate();
+            plotting.getSitDataManager().saveAsSmlFile("situationMap");
+        }
+
+        function loadSimulationMap() {
+            {
+                plotting.getSitDataManager().openSmlFileOnServer("situationMap");
+            }
+
+        }
+
+        function success() {
+            var sitDataLayers = plotting.getSitDataManager().getSitDataLayers();
+            plottingEdits = [];
+            drawGraphicObjects = [];
+            for (var i = 0; i < sitDataLayers.length; i++) {
+                plottingEdits.push(sitDataLayers[i].plottingEdit);
+                drawGraphicObjects.push(sitDataLayers[i].drawGraphicObject);
+                stylePanel.addEditLayer(sitDataLayers[i]);
+            }
+            plotPanel.setDrawFeature(drawGraphicObjects[0]);
+        }
+
+        function getNewPlottingLayerName() {
+            var layerCount = map.layers.length;
+            var layerName = "新建标绘图层";
+
+            var bExist = true;
+            while (bExist) {
+                bExist = false;
+                var tempLayerName = layerName + layerCount;
+
+                for (var i = 0; i < map.layers.length; i++) {
+                    var layer = map.layers[i];
+                    if (null == layer) {
+                        continue;
+                    }
+
+                    if (tempLayerName === layer.name) {
+                        bExist = true;
+                    }
+                }
+
+                if (!bExist) {
+                    layerName = tempLayerName;
+                }
+                layerCount++;
+            }
+
+            return layerName;
+        }
+        function editSymbol()
+        {
+
+            plottingEdits[0].edit();
+        }
+        document.oncontextmenu = function (evt) {
+            PlottingDrawCancel();
+            return false;
+        }
+    </script>
+</head>
+<body onLoad="init()">
+
+<div id="menu">
+    <div class="easyui-panel" style="position:absolute;top:0px;bottom:0px;left:0px;right:0px;padding:5px; width: 100%;">
+        <div class="easyui-tabs" style="width: 100%;height: 100%">
+            <div id="plotPanel" title="标绘面板" style="overflow: hidden"></div>
+            <div id="stylePanel" title="属性面板"></div>
+        </div>
+    </div>
+</div>
+<div id="map">
+    <div id="menuPlotting" class="sticklr" style="left: 1%;color:rgb(0,0,0);background-color: #fff;">
+        <li>
+            <a class="glyphicon plotting-glyphicon-draw-deactivate notArrow" title="取消绘制"
+               onclick="PlottingDrawCancel()"></a>
+        </li>
+        <li>
+            <a class="glyphicon plotting-glyphicon-draw-removeAll notArrow" title="清除"></a>
+            <ul>
+                <li><input type="button" value="删除标号" onclick="deleteSymbol()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="清空图层" onclick="PlottingClear()"
+                           style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
+            </ul>
+        </li>
+        <li>
+            <a class="glyphicon glyphicon-pencil notArrow" title="编辑器"></a>
+            <ul>
+                <li><input type="button" value="复制" onclick="copySymbol()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="剪切" onclick="cutSymbol()"
+                           style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
+                <li><input type="button" value="粘贴" onclick="pasteSymbol()"
+                           style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
+            </ul>
+        </li>
+        <li>
+            <a class="glyphicon glyphicon-plus notArrow" title="添加图层" onclick="addPlottingLayer()"></a>
+        </li>
+        <li>
+            <a class="glyphicon plotting-lyphicon-save-simulationMap" title="态势图操作"></a>
+            <ul>
+                <li><input type="button" value="保存态势图" onclick="saveSimulationMap()"
+                           style="width:70px;height: 25px ;margin:0 auto;"> </input> </li>
+                <li><input type="button" value="加载态势图" onclick="loadSimulationMap()"
+                           style="width: 70px;height: 25px ;margin:0 auto;"> </input></li>
+            </ul>
+        </li>
+        <li>
+            <a  class="glyphicon glyphicon-plus Arrow" title="编辑标号" onclick="editSymbol()" ></a>
+        </li>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>点状图</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+        #toolbar{
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+        /*信息框 style*/
+        #infoPlane{
+            border: 2px solid #D6E3F1;
+            position: absolute;
+            right: 10px;
+            top: 200px;
+            width: 250px;
+            z-index: 999;
+            display: none;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script src='./js/graph/Point.js'></script>
+    <script src='./data/chinaConsumptionLevel.js'></script>
+    <script type="text/javascript">
+        var map, local, layer, themeLayer,infowin, infowinPosition;
+        var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+                url = host + "/iserver/services/map-china400/rest/maps/China_4326";
+
+        function init(){
+            // 统计图模块要求浏览器支持 Canvas 渲染
+            if(!document.createElement('canvas').getContext){
+                alert("您的浏览器不支持 Canvas，请升级！");
+                return;
+            }
+
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+            });
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+            layer.events.on({"layerInitialized":addLayer});
+
+            // 创建一个点状图（Point）统计专题图图层
+            themeLayer = new SuperMap.Layer.Graph("ThemeLayer", "Point");
+
+            // 指定用于专题图制作的属性字段
+            themeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
+
+            // 配置图表参数
+            themeLayer.chartsSetting = {
+                // width，height，codomain 分别表示图表宽、高、数据值域；此三项参数为必设参数
+                width: 220,
+                height: 100,
+                codomain: [0, 40000],  // 允许图表展示的值域范围，此范围外的数据将不制作图表
+                // 图形点（表示字段值的图形）样式
+                pointStyle: {
+                    pointRadius: 3,
+                    fillColor: "#D8361B",
+                    shadowBlur: 12,
+                    shadowColor: "#D8361B",
+                    fillOpacity: 0.8
+                },
+                //  图形点 hover 样式
+                pointHoverStyle: {
+                    stroke: true,
+                    strokeColor: "#D8361B",
+                    strokeWidth: 2,
+                    fillColor: "#ffffff",
+                    pointRadius: 4
+                },
+                xShapeBlank: [10, 10],       // 水平方向上的空白间距参数
+                axisYTick: 4,         // y 轴刻度数量
+                axisYLabels: ["4万", "3万", "2万", "1万", "0"],        // y 轴标签
+                axisXLabels: ["09年", "10年", "11年", "12年", "13年"],        // x 轴标签
+                useXReferenceLine: true,        // 使用水平参考线
+                backgroundStyle: {fillColor: "#EEEEE0"},        // 背景样式
+                backgroundRadius: [5, 5, 5, 5]        // 背景框圆角参数
+            };
+
+            themeLayer.setOpacity(0.9);
+
+            // 注册专题图 mousemove, mouseout事件(注意：专题图图层对象自带 on 函数，没有 events 对象)
+            themeLayer.on("mousemove", showInfoWin);
+            themeLayer.on("mouseout", closeInfoWin);
+
+            // 注册地图 mousemove，用于获取当前鼠标在地图中的像素位置
+            map.events.on({"mousemove":function(e){
+                infowinPosition = e.xy.clone();
+                // 偏移
+                infowinPosition.x += 40;
+                infowinPosition.y -= 25;
+            }});
+        }
+
+        function addLayer() {
+            map.addLayers([layer, themeLayer]);
+            map.setCenter(new SuperMap.LonLat(104.067923,34.679943), 2);
+        }
+
+        // 构建 feature 数据, 专题图的数据必须是 SuperMap.Feature.Vector
+        function addThemeLayer() {
+            clearThemeLayer();
+
+            var features = [];
+            for(var i = 0, len = chinaConsumptionLevel.length; i < len; i++){
+                // 省居民消费水平（单位：元）信息
+                var provinceInfo = chinaConsumptionLevel[i];
+                var geo = new SuperMap.Geometry.Point(provinceInfo[1], provinceInfo[2]);
+                var attrs = {};
+                attrs.NAME = provinceInfo[0];
+                attrs.CON2009 = provinceInfo[3];
+                attrs.CON2010 = provinceInfo[4];
+                attrs.CON2011 = provinceInfo[5];
+                attrs.CON2012 = provinceInfo[6];
+                attrs.CON2013 = provinceInfo[7];
+
+                var fea = new SuperMap.Feature.Vector(geo, attrs);
+                features.push(fea);
+            }
+            themeLayer.addFeatures(features);
+        }
+
+        // 清除专题图层中的内容
+        function clearThemeLayer() {
+            themeLayer.clear();
+            closeInfoWin();
+        }
+
+        // 显示地图弹窗
+        function showInfoWin(e){
+            // e.target 是图形对象，即数据的可视化对象，点状图中是图形点。
+            // 图形对象的 refDataID 属性是数据（feature）的 id 属性，它指明图形对象是由那个数据制作而来;
+            // 图形对象的 dataInfo 属性是图形对象表示的具体数据，他有两个属性，field 和 value;
+            if(e.target && e.target.refDataID && e.target.dataInfo){
+                closeInfoWin();
+                // 获取图形对应的数据 (feature)
+                var fea = themeLayer.getFeatureById(e.target.refDataID);
+
+                var info = e.target.dataInfo;
+
+                // 弹窗内容
+                var contentHTML = "<div style='color: #000; background-color: #fff'>";
+                contentHTML += "省级行政区名称: <br><strong>" + fea.attributes.NAME + "</strong>";
+
+                contentHTML += "<hr style='margin: 3px'>";
+                switch(info.field){
+                    case "CON2009":
+                        contentHTML += "年份: <strong>2009</strong><br/>消费水平: <strong>" + info.value + "</strong>（元）";
+                        break;
+                    case "CON2010":
+                        contentHTML += "年份: <strong>2010</strong><br/>消费水平: <strong>" + info.value + "</strong>（元）";
+                        break;
+                    case "CON2011":
+                        contentHTML += "年份: <strong>2011</strong><br/>消费水平: <strong>" + info.value + "</strong>（元）";
+                        break;
+                    case "CON2012":
+                        contentHTML += "年份: <strong>2012</strong><br/>消费水平: <strong>" + info.value + "</strong>（元）";
+                        break;
+                    case "CON2013":
+                        contentHTML += "年份: <strong>2013</strong><br/>消费水平: <strong>" + info.value + "</strong>（元）";
+                        break;
+                    default:
+                        contentHTML += "No Data";
+                }
+                contentHTML += "</div>";
+
+                // 弹出框大小
+                var infowinSize =  (SuperMap.Browser.name == "firefox")?  new SuperMap.Size(150, 95): new SuperMap.Size(150, 90);
+
+                // 弹出窗地理位置
+                var lonLat = map.getLonLatFromPixel(infowinPosition);
+                infowin = new SuperMap.Popup(
+                        "infowin",
+                        lonLat,
+                        infowinSize,
+                        contentHTML,
+                        false,
+                        false,
+                        null);
+                infowin.setBackgroundColor("#fff");
+                infowin.setOpacity(0.8);
+                if(infowin) map.removePopup(infowin);
+                map.addPopup(infowin);
+            }
+        }
+
+        // 移除和销毁地图弹窗
+        function closeInfoWin() {
+            if(infowin) {
+                try {
+                    map.removePopup(infowin);
+                }
+                catch(e) {
+                    alert(e.message);
+                }
+            }
+        }
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="添加专题图" onclick="addThemeLayer()" />
+    <input type="button" class="btn" value="清除" onclick="clearThemeLayer()" />
+</div>
+<div>
+    <div id="map"></div>
+</div>
+</body>
+</html>

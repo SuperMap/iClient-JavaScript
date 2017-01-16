@@ -1,0 +1,59 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>地图基础操作控件</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 553px;
+                border:1px solid #3473b7;
+            }
+
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, layerWorld;
+            var url=host+"/iserver/services/map-world/rest/maps/World";
+			
+			function init(){
+				map = new SuperMap.Map("map",{controls:[    //初始化Map类,添加控件到map
+					new SuperMap.Control.Navigation({
+						dragPanOptions:{          //传给 DragPan 控件的属性
+							enableKinetic:true    //设置使用拖拽动画，默认为false
+							},
+						autoActivate:true,        //添加到地图的控件是否自动生效，默认为true
+						documentDrag:true,        //允许拖拽地图，使地图能够平移到视图窗口外。默认为false
+						handleRightClicks:true,   //是否响应右键点击，默认为false
+						//zoomBoxEnabled:false,   //是否允许用户绘制缩放框，默认为true
+						zoomBoxKeyMask:4,         //同时按下Alt时绘制缩放框，默认为SuperMap.Handler.MOD_SHIFT,默认值为1
+						//zoomWheelEnabled:false, //是否允许用户滑动鼠标滚轴缩放地图，默认为true
+						pinchZoomOptions:{        //传给 PinchZoom 控件的属性
+							autoActivate:false    //将该类添加到地图上时，自动激活该控件，默认为true
+							}
+						})],allOverlays:true
+					});        
+				layerWorld = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, { transparent: true, cacheEnabled: true }, { maxResolution: "auto" });   //获取图层服务地址
+				layerWorld.events.on({"layerInitialized": addLayer});
+			}
+			
+			//将地图加入map
+			function addLayer(){
+                map.addLayer(layerWorld);
+                map.setCenter(new SuperMap.LonLat(0,0), 2);
+            }
+			
+			</script>
+    </head>
+    <body onload="init()">
+        <div id="map"></div>
+    </body>
+</html>

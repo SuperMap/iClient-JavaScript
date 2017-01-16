@@ -1,0 +1,76 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7,IE=9,IE=10,IE=11"/>
+<title>地图A0大幅打印</title>
+<style type="text/css">
+    body{
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+    }
+    #map{
+        position: relative;
+        height: 510px;
+        border-top:1px solid #3473b7;
+        border-bottom:1px solid #3473b7;
+    }
+    #toolbar{
+        position: relative;
+        padding-top:5px;
+        padding-bottom: 10px;
+    }
+</style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+<script src='../libs/SuperMap.Include.js'></script>
+<script src='js/LargeFormatPrints.js'></script>
+<script type="text/javascript">
+var map,layer;
+var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+        url=host+"/iserver/services/map-china400/rest/maps/China";
+function init(){
+    //定义layer图层，TiledDynamicRESTLayer：分块动态 REST 图层
+    layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, { transparent: true, cacheEnabled: true }, { maxResolution: "auto" , useCanvas:false});
+    //为图层初始化完毕添加addLayer()事件
+    layer.events.on({"layerInitialized":addLayer});
+    map = new SuperMap.Map("map",{controls: [
+        new SuperMap.Control.LayerSwitcher(),
+        new SuperMap.Control.OverviewMap(),
+        new SuperMap.Control.ScaleLine(),
+        new SuperMap.Control.Zoom(),
+        new SuperMap.Control.Navigation({
+            dragPanOptions: {
+                enableKinetic: true
+            }})
+        ]
+    });
+}
+
+function addLayer() {
+    map.addLayers([layer]);
+    map.setCenter(new SuperMap.LonLat(11733502.481499, 4614406.969325), 4);
+}
+//A0大幅打印
+function doLargeFormatPrint(){
+    var broz = SuperMap.Browser.name;
+    if(broz == 'msie' && parseInt(SuperMap.Browser.version) < 9){
+        alert("ie9版本以下部分打印功能不支持");
+        return;
+    }
+    //map.div.style.display = "none";
+    var center = map.getCenter();
+    var scale = map.getScale();
+    LargeFormatPrint&&LargeFormatPrint.excute(url,"3857",scale,center,"A0",map);
+}
+
+</script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button"  class="btn" value="A0大幅打印" onclick="doLargeFormatPrint()" />
+</div>
+<div id="map"></div>
+</body>
+</html>

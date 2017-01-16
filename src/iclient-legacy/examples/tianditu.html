@@ -1,0 +1,91 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>tianditu叠加点密度专题图</title>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script type="text/javascript" src="http://api.tianditu.com/js/maps.js"></script>
+    <script type="text/javascript" src="../libs/SuperMap.Include.js"></script>
+    <script type="text/javascript" src="js/iConnector/iConnectorTianditu.js"></script>
+    <style type="text/css">
+        #mapDiv img{
+            max-width:none;
+        }
+    </style>
+    <script type="text/javascript">
+        var map,layer,host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-world/rest/maps/World";
+        function init()
+        {
+            //初始化天地图的map
+            map = new TMap("mapDiv",{projection: "EPSG:4326"});
+            //定位
+            map.centerAndZoom(new TLngLat(70,30),3);
+            //增加鼠标对地图的控制
+            map.enableHandleMouseScroll();
+            map.enableDoubleClickZoom();
+            //增加切换叠图类型控件
+            map.addControl(new TMapTypeControl());
+        }
+        //生成点密度专题图
+        function addThemeDotDensity()
+        {    //如果layer不为空的时候，移除layer
+            layer&&map.removeLayer(layer);
+            //创建制作点密度专题图服务类
+            var themeService = new SuperMap.REST.ThemeService(url, {eventListeners:{"processCompleted": themeCompleted, "processFailed": themeFailed}}),
+                    dotStyle = new SuperMap.REST.ServerStyle({
+                        markerSize: 3,
+                        markerSymbolID: 12
+                    }),
+                    themeDotDensity = new SuperMap.REST.ThemeDotDensity({
+                        dotExpression: "Pop_1994",
+                        value: 5000000,
+                        style: dotStyle
+                    }),
+                    themeParameters = new SuperMap.REST.ThemeParameters({
+                        themes: [themeDotDensity],
+                        datasetNames: ["Countries"],
+                        dataSourceNames: ["World"]
+                    });
+            //向iserver发送请求
+            themeService.processAsync(themeParameters);
+        }
+        //生成专题图后将其叠加到天地图上面
+        function themeCompleted(themeEventArgs) {
+            if(themeEventArgs.result.resourceInfo.id) {
+                //通过iConnector生成可以在天地图上叠加的点密度专题图图层
+                 layer = SuperMap.Web.iConnector.Tianditu.getLayer(url,{layersID:themeEventArgs.result.resourceInfo.id});
+                map.addLayer(layer);
+            }
+        }
+        //生成专题图失败弹出错误信息
+        function themeFailed(serviceFailedEventArgs) {
+            alert(serviceFailedEventArgs.error.errorMsg);
+        }
+        function EPSG3857()
+        {
+            //转换地图投影系为3857
+            map.switchingMaps("EPSG:900913");
+        }
+        function EPSG4326()
+        {
+            //转换地图投影为4326
+            map.switchingMaps("EPSG:4326");
+        }
+        function removeTileLayer(){
+            map.removeLayer(layer);
+        }
+    </script>
+</head>
+<body onload="init()" style="width: 100%;height: 100%">
+<div>
+    <input type="button" class="btn" onclick="addThemeDotDensity()" value="创建点密度专题图" />
+    <input type="button" class="btn" onclick="removeTileLayer()" value="移除点密度专题图" />
+    <input type="button" class="btn" onclick="EPSG3857()" value="转换为EPSG：3857" />
+    <input type="button" class="btn" onclick="EPSG4326()" value="转换为EPSG：4326" />
+</div>
+<div id="mapDiv" style="width: 100%;height: 500px; top:10px;"></div>
+
+</body>
+</html>

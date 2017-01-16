@@ -1,0 +1,358 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>统计图表切换</title>
+<style type="text/css">
+    body{
+        margin: 0;
+        overflow: hidden;
+        background: #fff;
+    }
+    #map{
+        position: relative;
+        height: 510px;
+        border:1px solid #3473b7;
+    }
+    #toolbar {
+        position: relative;
+        padding-top: 5px;
+        padding-bottom: 10px;
+    }
+    /*地图弹出窗圆角*/
+    #infowin{
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px
+    }
+</style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+<script src='../libs/SuperMap.Include.js'></script>
+<script src='./js/graph/Bar.js'></script>
+<script src='./js/graph/Line.js'></script>
+<script src='./js/graph/Pie.js'></script>
+<script type="text/javascript">
+    var map, local, layer, themeLayer, infowin, infowinPosition;
+    var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+            url1 = host + "/iserver/services/map-jingjin/rest/maps/京津地区地图",
+            url2 = host + "/iserver/services/data-jingjin/rest/data";
+
+    // 柱状图表配置
+    var settingForBar = {
+        // width，height，codomain 分别表示图表宽、高、数据值域；此三项参数为必设参数
+        width: 180,
+        height: 100,
+        // 允许图表展示的值域范围，此范围外的数据将不制作图表
+        codomain: [0, 1000],
+        // 自动处理小数位
+        decimalNumber: 2,
+        barStyle: { fillOpacity: 0.7 },       // 柱状图中柱条的（表示字段值的图形）样式
+        // 按字段设置柱条样式 （与 themeLayer.themeFields 中的字段一一对应）    //   '#ff9277', ' #dddd00', ' #ffc877', ' #bbe3ff', ' #d5ffbb',
+        barStyleByFields: [{ fillColor: "#ff9277" }, { fillColor: "#dddd00" }, { fillColor: "#ffc877" }],
+        barHoverStyle: { fillOpacity: 1 },       //  柱条 hover 样式
+        xShapeBlank: [10, 10, 10],       // 水平方向上的空白间距参数
+        axisYTick: 4,         // y 轴刻度数量
+        // y 轴标签及其样式
+        axisYLabels: ["1000", "750", "500", "250", "0"],
+        axisYLabelsStyle: {  fillColor: "#008ACD"  },
+        // x 轴标签及其样式
+        axisXLabels: ["92年", "95年", "99年"],
+        axisXLabelsStyle: { fillColor: "#008ACD" },
+        backgroundRadius: [5, 5, 5, 5]      // 背景框圆角参数
+    };
+
+    // 折线图表配置
+    var settingForLine = {
+        width: 180,
+        height: 100,
+        codomain: [0, 1000],
+        decimalNumber: 2,
+        // 折线 style
+        lineStyle: { strokeColor: "#D8361B", strokeOpacity: 0.7},
+        // 折线节点（表示字段值的图形）样式
+        pointStyle: {
+            stroke: true,
+            strokeColor: "#D8361B",
+            pointRadius: 3,
+            strokeWidth: 1,
+            fillColor: "#F3F3F3",
+            fillOpacity: 1
+        },
+        // 折线节点 hover 样式
+        pointHoverStyle: {
+            fillColor: "#D8361B"
+        },
+        xShapeBlank: [10, 10],
+        axisYTick: 4,
+        axisYLabels: ["1000", "750", "500", "250", "0"],
+        axisXLabels: ["92年", "95年", "99年"],
+        backgroundRadius: [5, 5, 5, 5]
+    };
+
+    // 饼图配置
+    var settingForPie = {
+        width: 100,
+        height: 100,
+        codomain: [0, 1000],
+        decimalNumber: 2,
+        // 饼图扇形（表示字段值的图形）样式
+        sectorStyle: { fillOpacity: 0.8 },
+        // 按字段设置饼图扇形 (样式与 themeLayer.themeFields 数组中的字段名称一一对应)
+        sectorStyleByFields: [{ fillColor: "#ff9277" }, { fillColor: "#dddd00" }, { fillColor: "#ffc877" }],
+        //  饼图扇形 hover 样式
+        sectorHoverStyle: { fillOpacity: 1 }
+    }
+
+    function init(){
+        // 统计图模块要求浏览器支持 Canvas 渲染
+        if(!document.createElement('canvas').getContext){
+            alert("您的浏览器不支持 Canvas，请升级！");
+            return;
+        }
+
+        // 创建地图
+        map = new SuperMap.Map("map",{controls: [
+            new SuperMap.Control.LayerSwitcher(),
+            new SuperMap.Control.ScaleLine(),
+            new SuperMap.Control.Zoom(),
+            new SuperMap.Control.Navigation({
+                dragPanOptions: {
+                    enableKinetic: true
+                }
+            })]
+        });
+        layer = new SuperMap.Layer.TiledDynamicRESTLayer("Jingjin", url1, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+        layer.events.on({"layerInitialized":addLayer});
+
+        // 创建一个柱状（Bar）统计专题图
+        themeLayer = new SuperMap.Layer.Graph("ThemeLayer", "Bar");
+        // 配置图表参数
+        themeLayer.chartsSetting = settingForBar;
+
+        themeLayer.setOpacity(0.9);
+
+        // 注册专题图 mousemove, mouseout 事件 (注意：专题图图层对象自带 on 函数注册事件，专题图对象没有 events 属性)
+        themeLayer.on("mousemove", showInfoWin);
+        themeLayer.on("mouseout", closeInfoWin);
+
+        // 注册地图 mousemove，用于获取当前鼠标的地理位置
+        map.events.on({"mousemove":function(e){
+            infowinPosition = e.xy.clone();
+            // 偏移显示弹出窗
+            infowinPosition.x += 40;
+            infowinPosition.y -= 20;
+        }});
+    }
+
+    function addLayer() {
+        map.addLayers([layer, themeLayer]);
+        map.setCenter(new SuperMap.LonLat(117, 40.004), 0);
+    }
+
+    //获取 feature 数据, 专题图的数据必须是 SuperMap.Feature.Vector
+    function addThemeLayer() {
+        clearThemeLayer();
+
+        // 使用  GetFeaturesBySQLService 获取数据
+        var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+        getFeatureParam = new SuperMap.REST.FilterParameter({
+            name: "Jingjin",
+            attributeFilter: "SMID > -1"
+        });
+        getFeatureBySQLParams = new SuperMap.REST.GetFeaturesBySQLParameters({
+            queryParameter: getFeatureParam,
+            toIndex: 500,
+            datasetNames:["Jingjin:BaseMap_R"]
+        });
+        getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url2, {
+            eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}});
+
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+    }
+    function processCompleted(getFeaturesEventArgs) {
+
+        // 指定用于专题图制作的属性字段
+        themeLayer.themeFields = ["POP_1992", "POP_1995", "POP_1999"];
+        themeLayer.overlayWeightField = "POP_1999";
+        // 改变x轴上的标签
+        settingForBar.axisXLabels = settingForLine.axisXLabels = settingForPie.axisXLabels =  ["92年", "95年", "99年"];
+        // 图标宽度 180
+        settingForBar.width = settingForLine.width = 180;
+
+        var result = getFeaturesEventArgs.result;
+        if (result && result.features) {
+            // 向专题图层添加数据
+            themeLayer.addFeatures(result.features);
+        }
+    }
+    function processFailed(e) {
+        alert(e.error.errorMsg);
+    }
+
+    // 清除专题图层中的内容
+    function clearThemeLayer() {
+        themeLayer.clear();
+        closeInfoWin();
+    }
+
+    // 显示地图弹窗
+    function showInfoWin(e){
+        // e.target 是图形对象，即数据的可视化对象;
+        // 图形对象的 refDataID 属性是数据（feature）的 id 属性，它指明图形对象是由那个数据制作而来;
+        // 图形对象的 dataInfo 属性是图形对象表示的具体数据，他有两个属性，field 和 value;
+        if(e.target && e.target.refDataID && e.target.dataInfo){
+
+            closeInfoWin();
+            // 获取图形对应的数据 (feature)
+            var fea = themeLayer.getFeatureById(e.target.refDataID);
+
+            var info = e.target.dataInfo;
+
+            // 弹窗内容
+            var contentHTML = "<div style='color: yellow;'>";
+            contentHTML += "城市:" + fea.attributes.NAME;
+
+            contentHTML += "<hr style='margin: 3px'>";
+            switch(info.field){
+                case "POP_1992":
+                    contentHTML += "92年人口 <br/>" + info.value + "（万）";
+                    break;
+                case "POP_1995":
+                    contentHTML += "95年人口 <br/>" + info.value + "（万）";
+                    break;
+                case "POP_1999":
+                    contentHTML += "99年人口 <br/>" + info.value + "（万）";
+                    break;
+                case "POP_2003":
+                    contentHTML += "03年人口 <br/>" + info.value + "（万）";
+                    break;
+                case "POP_2008":
+                    contentHTML += "08年人口 <br/>" + info.value + "（万）";
+                    break;
+                default:
+                    contentHTML += "No Data";
+            }
+            contentHTML += "</div>";
+
+            // 弹出框大小
+            var infowinSize =  (SuperMap.Browser.name == "firefox")?  new SuperMap.Size(110, 85): new SuperMap.Size(100, 75);
+
+            // 弹出窗地理位置
+            var lonLat = map.getLonLatFromPixel(infowinPosition);
+            infowin = new SuperMap.Popup(
+                    "infowin",
+                    lonLat,
+                    infowinSize,
+                    contentHTML,
+                    false,
+                    false,
+                    null);
+            infowin.setBackgroundColor("#000000");
+            infowin.setOpacity(0.6);
+            if(infowin) map.removePopup(infowin);
+            map.addPopup(infowin);
+        }
+    }
+    // 移除和销毁地图弹窗
+    function closeInfoWin() {
+        if(infowin) {
+            try {
+                map.removePopup(infowin);
+            }
+            catch(e) {
+                alert(e.message);
+            }
+        }
+    }
+
+
+    // 更新数据
+    function updateData(){
+        var feas = themeLayer.features;
+        for(var i = 0, len = feas.length; i < len; i++){
+            var fea = feas[i];
+            fea.attributes.POP_1992 = getRandomNumber(50, 950, 2);
+            fea.attributes.POP_1995 = getRandomNumber(50, 950, 2);
+            fea.attributes.POP_1999 = getRandomNumber(50, 950, 2);
+            fea.attributes.POP_2003 = getRandomNumber(50, 950, 2);
+            fea.attributes.POP_2008 = getRandomNumber(50, 950, 2);
+        }
+        // 重新指定用于专题图制作的属性字段
+        themeLayer.themeFields = ["POP_1992", "POP_1995", "POP_1999", "POP_2003", "POP_2008"];
+        // 改变 x 轴上的标签
+        settingForBar.axisXLabels = settingForLine.axisXLabels = settingForPie.axisXLabels =  ["92年", "95年", "99年", "03年", "08年"];
+        // 图标宽度改为 220
+        settingForBar.width = settingForLine.width  = 220;
+
+        // 为 03、08年 数据增加 style
+        settingForBar.barStyleByFields.push({ fillColor: "#bbe3ff" });
+        settingForBar.barStyleByFields.push({ fillColor: "#d5ffbb" });
+        settingForPie.sectorStyleByFields.push({ fillColor: "#bbe3ff"});
+        settingForPie.sectorStyleByFields.push({ fillColor: "#d5ffbb"});
+
+        // 重绘图层（图表）
+        themeLayer.redraw();
+    }
+
+    // 获取指定范围内的随机数
+    // min - 范围下限
+    // max - 范围上限
+    // decimalNum - 返回结果的小数位数。如果为 0，返回整数。
+    function getRandomNumber(min, max, decimalNum){
+        var rNum = min+Math.random()*(max-min);
+
+        if(decimalNum){
+            if(!isNaN(decimalNum)){
+                return rNum;
+            }
+            else{
+                decimalNum = parseInt(decimalNum);
+            }
+
+            if(decimalNum === 0){
+                return Math.round(rNum);
+            }
+            else{
+                return parseFloat(rNum).toFixed(decimalNum);
+            }
+        }
+        else{
+            return rNum;
+        }
+    }
+
+    // 切换图表为柱状图
+    function toBar(){
+        themeLayer.chartsSetting = settingForBar;
+        themeLayer.setOpacity(0.9);
+        themeLayer.setChartsType("Bar");
+    }
+
+    // 切换图表为折线图
+    function toLine(){
+        themeLayer.chartsSetting = settingForLine;
+        themeLayer.setOpacity(0.9);
+        themeLayer.setChartsType("Line");
+    }
+
+    // 切换图表为饼图
+    function toPie(){
+        themeLayer.chartsSetting = settingForPie;
+        themeLayer.setOpacity(1);
+        themeLayer.setChartsType("Pie");
+    }
+
+</script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="添加专题图" onclick="addThemeLayer()" />
+    <input type="button" class="btn" value="切换为柱状图" onclick="toBar()" />
+    <input type="button" class="btn" value="切换为折线图" onclick="toLine()" />
+    <input type="button" class="btn" value="切换为饼图" onclick="toPie()" />
+    <input type="button" class="btn" value="更新数据" onclick="updateData()" />
+    <input type="button" class="btn" value="清除" onclick="clearThemeLayer()" />
+</div>
+<div id="map"></div>
+</body>
+</html>

@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<project name="BuildHelpFiles" default="runAjaxdoc" basedir=".">
+    <!--当前日期 -->
+    <tstamp>
+        <format property="TODAY_UK" pattern="yy_MM_dd" locale="en"/>
+    </tstamp>
+   
+   <!--定义变量 -->
+    <property name="bigVisionNum" value="811"/>
+    <property name="bigVisionNum_1" value="8.1.1"/>
+    <property name="packagename" value="supermap_iclient_for_JavaScript"/>
+   <!-- 当使用teamcity时，会得到${build.number}属性，-->
+    <property name="buildNumberedPath" value="${build.number}"/>
+    <!--需要在TeamCity中定义-->
+    <property name="msbuilddir" value="${msbuilddir}"/>
+    <property name="classes.dir" value="classes"/>
+    <property name="src.dir" value="..\tools\package"/>
+    <property name="username" value="upload"/>
+    <property name="password" value="uuuppp"/>
+
+    <!--获取版本号-->
+    <!--拷贝版本号生成工具-->
+    <!-- 使用自定义AntTask获取iClientR的版本号属性：${iClient6RVersionNum} -->
+    <target name="01_makeVersionTool">
+        <echo message="Delete all generated files"/>
+        <delete dir="${classes.dir}" failonerror="false"/>
+        <delete file="${ant.project.name}.jar"/>
+        <!-- 编译 -->
+        <echo message="Compiles the Task"/>
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
+        <!-- jar包 -->
+        <echo message="JARs the Task"/>
+        <jar destfile="${ant.project.name}.jar" basedir="${classes.dir}"/>
+    </target>
+    
+    <!-- 使用自定义AntTask，获取${iClient6RVersionNum},即iClient6R正确的版本号 -->
+    <target name="O2_useVersionTool" description="Use the VersionTool Task" depends="01_makeVersionTool">
+        <taskdef name="iClient6RVersion" classname="iClient6R.iClient6RVersion" classpath="${ant.project.name}.jar"/>
+        <iClient6RVersion />
+    </target>
+    
+    <!--生成新文档-->
+    <target name="03_runDoc">    
+        <!--再提文档之前删除不需要提文档的文件-->
+        <delete file="..\libs\SuperMap\Format.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Tile.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Animal.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Animal2.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Kinetic.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Tween.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Rule.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Layer\CanvasImage.js" quiet="true"/>
+
+        <delete dir="..\libs\SuperMap\Format\Filter" quiet="true"/>
+        <delete dir="..\libs\SuperMap\Carto" quiet="true"/>
+        <delete dir="..\libs\SuperMap\Format\GML" quiet="true"/>
+        <delete dir="..\libs\SuperMap\Format\OWSCommon" quiet="true"/>
+        <delete dir="..\libs\SuperMap\Format\WFST" quiet="true"/>
+        <delete dir="..\libs\SuperMap\Format\XML" quiet="true"/>
+        <delete file="..\libs\SuperMap\Format\CQL.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Format\Filter.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Format\GML.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Format\OGCExceptionReport.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Format\OWSCommon.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Format\WFST.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Format\WKT.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Format\XML.js" quiet="true"/>
+
+        <delete file="..\libs\SuperMap\Renderer\Canvas.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Renderer\Canvas2.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Renderer\Elements.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Renderer\SVG.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Renderer\VML.js" quiet="true"/>
+
+        <!--先关闭专题图相关接口-->
+        <delete dir="..\libs\SuperMap\LevelRenderer" quiet="true"/>
+        <delete file="..\libs\SuperMap\Layer\Theme\CustomVector.js" quiet="true"/>
+        <delete file="..\libs\SuperMap\Feature\Theme\Vector.js" quiet="true"/>
+
+        <delete dir="..\libs\Plugins\Plotting\AlgoSymbol" quiet="true"/>
+        <delete dir="..\libs\Plugins\Plotting\Renderer" quiet="true"/>
+		<delete file="..\libs\Plugins\Plotting\Geometry\Primitives.js" quiet="true"/>
+        <delete file="..\libs\Plugins\Plotting\Geometry\RouteNodePrimitives.js" quiet="true"/>
+        <delete file="..\libs\Plugins\Plotting\Geometry\GeoTooltipBox.js" quiet="true"/>
+		<delete file="..\libs\Plugins\Plotting\Plot\AnalysisSymbol.js" quiet="true"/>
+		<delete file="..\libs\Plugins\Plotting\Layer\GOAnimationLayer.js" quiet="true"/>
+		<delete file="..\libs\Plugins\Plotting\GOAnimation\GOAnimator.js" quiet="true"/>
+		
+        <!--创建一个新的 apidoc 文件夹-->
+        <mkdir dir="..\apidoc"/>
+        <!--运行文档生成 bat-->
+        <!--拷贝css文件，保持 doc 样式与主界面一致。必须步骤-->
+        <copy todir='../tools/apidoc_config'>
+            <fileset dir='../examples/css'/>
+        </copy>
+
+        <exec executable="cmd.exe">
+            <arg line='/c ..\tools\NaturalDocs-1.52\NaturalDocs 
+                       -i ..\libs   
+                       -o  HTML  ..\apidoc   
+                       -p  ..\tools\apidoc_config
+                       -xi ..\libs\SuperMap\Tile
+					   -xi ..\libs\Lang\
+                       -s 1 bootstrap.min bootstrap-responsive.min doc sm-doc sm-extend'/>
+        </exec>
+
+		<!--文档中属性和方法名称排序-->
+        <exec executable="cmd.exe">
+            <arg line='/c ..\build\sortDoc.bat'/>
+        </exec>
+		<!--生成CHM-->
+        <exec executable="cmd.exe">
+            <arg line='/c ..\build\jsCHMBuilds.bat'/>
+        </exec>
+        <!--复制我们的1.css到指定位置-->
+        <copy file="..\tools\apidoc_config\1.css" todir="..\apidoc\styles" />
+		<replace file="..\apidoc\index.html" token="BaseTypes-js" value="Map-js"></replace>
+    </target>
+
+    <!--制作JavaScript产品包 --> 
+    <target name="04_DistribuiltPackage" depends="O2_useVersionTool">        
+        <!--重命名压缩后的OpenLayers.js文件-->
+      <!--   <move file="..\libs\OpenLayersCompressed.js" tofile="..\libs\OpenLayers.js"/>  -->
+        <!--为SuperMap.js文件添加版本号-->
+        <move file="..\libs\SuperMap.js" tofile="..\libs\SuperMap-${bigVisionNum_1}-${iClient6RVersionNum}.js"/> 
+		<!--为SuperMap_Basic.js文件添加版本号-->
+        <move file="..\libs\SuperMap_Basic.js" tofile="..\libs\SuperMap_Basic-${bigVisionNum_1}-${iClient6RVersionNum}.js"/>
+        <!--为SuperMap_Cloud.js文件添加版本号-->
+        <move file="..\libs\SuperMap_Cloud.js" tofile="..\libs\SuperMap_Cloud-${bigVisionNum_1}-${iClient6RVersionNum}.js"/>
+		<!--为SuperMap_OGC.js文件添加版本号-->
+        <move file="..\libs\SuperMap_OGC.js" tofile="..\libs\SuperMap_OGC-${bigVisionNum_1}-${iClient6RVersionNum}.js"/>
+		<!--为SuperMap_IServer.js文件添加版本号-->
+        <move file="..\libs\SuperMap_IServer.js" tofile="..\libs\SuperMap_IServer-${bigVisionNum_1}-${iClient6RVersionNum}.js"/>
+		<!--为SuperMap_Visualization.js文件添加版本号-->
+        <move file="..\libs\SuperMap_Visualization.js" tofile="..\libs\SuperMap_Visualization-${bigVisionNum_1}-${iClient6RVersionNum}.js"/>
+		<!--为SuperMap_Plot.js文件添加版本号-->
+        <move file="..\libs\SuperMap_Plot.js" tofile="..\libs\SuperMap_Plot-${bigVisionNum_1}-${iClient6RVersionNum}.js"/>
+		
+        <!--替换SuperMap.Include中SuperMap文件的引用为混淆压缩后的类库-->
+        <replace  token="SuperMap.js" value="SuperMap-${bigVisionNum_1}-${iClient6RVersionNum}.js" file="..\libs\SuperMap.Include.js" encoding="UTF8">
+        </replace>
+		<replace  token="SuperMap_Basic.js" value="SuperMap_Basic-${bigVisionNum_1}-${iClient6RVersionNum}.js" file="..\libs\SuperMap.Include.js" encoding="UTF8">
+		</replace>
+        <replace  token="SuperMap_Cloud.js" value="SuperMap_Cloud-${bigVisionNum_1}-${iClient6RVersionNum}.js" file="..\libs\SuperMap.Include.js" encoding="UTF8">
+        </replace>
+		<replace  token="SuperMap_OGC.js" value="SuperMap_OGC-${bigVisionNum_1}-${iClient6RVersionNum}.js" file="..\libs\SuperMap.Include.js" encoding="UTF8">
+		</replace>	
+		<replace  token="SuperMap_IServer.js" value="SuperMap_IServer-${bigVisionNum_1}-${iClient6RVersionNum}.js" file="..\libs\SuperMap.Include.js" encoding="UTF8">
+		</replace>	
+		<replace  token="SuperMap_Visualization.js" value="SuperMap_Visualization-${bigVisionNum_1}-${iClient6RVersionNum}.js" file="..\libs\SuperMap.Include.js" encoding="UTF8">
+		</replace>
+		<replace  token="SuperMap_Plot.js" value="SuperMap_Plot-${bigVisionNum_1}-${iClient6RVersionNum}.js" file="..\libs\SuperMap.Include.js" encoding="UTF8">
+		</replace>		
+    </target>
+    
+   <!--zipPackage:压缩产品包并上传到指定目录-->    
+    <target name="05_zipPackageAndUpLoadZip" depends="04_DistribuiltPackage">
+        <!--clean:清理原有目录中的压缩包 -->
+        <delete includeemptydirs="true">
+            <fileset dir=".." includes="*.zip"/>    
+        </delete>
+        <!--删除不需要的文件夹-->
+        <delete dir="..\libs\SuperMap" includeemptydirs="true" quiet="true"/>
+		<delete dir="..\libs\Plugins" includeemptydirs="true" quiet="true"/>
+        <!-- <delete dir="..\libs\OpenLayers-2.11" includeemptydirs="true" quiet="true"/>
+        <delete dir="..\libs\OpenLayers" includeemptydirs="true" quiet="true"/> -->
+        <delete dir="..\tools" includeemptydirs="true" quiet="true"/>
+        <delete dir="..\tests" includeemptydirs="true" quiet="true"/>
+		<delete dir="..\libs\Rico" includeemptydirs="true" quiet="true"/>
+         <!--HACK-->
+        <replace file="..\libs\SuperMap.Include.js" token="loadSMLibs();" value="loadSMLibs();loadLocalization();" encoding="UTF8"></replace>
+        
+        <zip destfile="../${packagename}_${bigVisionNum}_${iClient6RVersionNum}_${buildNumberedPath}.zip" 
+             encoding="UTF8"
+             basedir=".."
+             includes="apidoc\**, examples\**, libs\**, resource\**, theme\**, index.html, *.pdf, *.chm"
+        />
+		 <zip destfile="../libs.zip" 
+             encoding="UTF8"
+             basedir=".."
+             includes="libs\**"
+        />
+		<ftp server="ftp.ispeco.com" remotedir="/iClient/CI_Package/iclient_js/" userid="${username}" password="${password}" binary="yes" passive="yes">
+			<fileset dir="D:\agentJS\buildAgent\work\2_0_DistribuiltPackage_JavaScript\01_SourceCode\trunk\Transformers10\" includes="${packagename}_${bigVisionNum}_${iClient6RVersionNum}_${buildNumberedPath}.zip">
+			</fileset>
+		</ftp>
+      
+    </target>
+        
+    <target name="runAjaxdoc" description="rundoc" >
+         <ant target="03_runDoc" /> 
+         <ant target="05_zipPackageAndUpLoadZip" />  
+    </target>
+
+    
+</project>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src = '../libs/SuperMap.Include.js'></script>
+</head>
+<body>
+    <div id="container">
+        <p>登录</p>
+            <table>
+                <tbody>
+                <tr>
+                    <td>帐号：</td>
+                    <td><input id="user" type="text"></td>
+                </tr>
+                <tr>
+                    <td>密码：</td>
+                    <td><input id="psw" type="password"></td>
+                </tr>
+                </tbody>
+            </table>
+            <input id="loginBtn" type="button" value="登录">
+        <p>获取用户信息</p>
+        <table>
+            <tbody>
+            <tr>
+                <td>帐号：</td>
+                <td><input id="user1" type="text"></td>
+            </tr>
+            </tbody>
+        </table>
+        <input id="getUserBtn" type="button" value="获取">
+        <p>注册用户</p>
+        <table>
+            <tbody>
+            <tr>
+                <td>帐号：</td>
+                <td><input id="user2" type="text"></td>
+            </tr>
+            <tr>
+                <td>昵称：</td>
+                <td><input id="nick" type="text"></td>
+            </tr>
+            <tr>
+                <td>密码：</td>
+                <td><input id="psw2" type="text"></td>
+            </tr>
+            <tr>
+                <td>email：</td>
+                <td><input id="email" type="text"></td>
+            </tr>
+            </tbody>
+        </table>
+        <input id="registerBtn" type="button" value="注册">
+    </div>
+    <script>
+        var url="http://localhost:8092/iportal";
+        var type=SuperMap.Cloud.Security.IPROTAL;
+        var security=new SuperMap.Cloud.Security(type,url);
+
+        //登录
+        var loginBtn=document.getElementById("loginBtn"),
+                user=document.getElementById("user"),
+                psw=document.getElementById("psw");
+        loginBtn.onclick=function(){
+            var username=user.value;
+            var password=psw.value;
+            security.login(username,password,function(){
+                console.log("succeed");
+            },function(){
+                console.log("failed");
+            });
+        }
+
+        //获取用户信息
+        var getUserBtn=document.getElementById("getUserBtn"),
+            name1=document.getElementById("user1");
+        getUserBtn.onclick=function(){
+            security.getUserInfo(name1.value,function(value){
+                console.log(value);
+            },function(){
+                console.log("failed");
+            });
+        }
+
+        //注册
+        var registerBtn=document.getElementById("registerBtn"),
+                name2=document.getElementById("user2"),
+                nick=document.getElementById("nick"),
+                psw2=document.getElementById("psw2");
+                email=document.getElementById("email");
+        registerBtn.onclick=function(){
+            security.registerUser(name2.value,nick.value,psw2.value,email.value,function(value){
+                console.log(value);
+            },function(){
+                console.log("failed");
+            });
+        }
+    </script>
+</body>
+</html>

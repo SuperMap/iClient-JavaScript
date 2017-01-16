@@ -1,0 +1,389 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7,IE=9,IE=10,IE=11"/>
+    <title>电信符号</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        #map {
+            position: relative;
+            height: 510px;
+            border-top: 1px solid #3473b7;
+            border-bottom: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script src='js/MapToImg.js'></script>
+    <script src='js/LargeFormatPrints.js'></script>
+    <script type="text/javascript">
+        var featuresOrigin = [];
+        var map, local, layer, vector, select;
+        var style = {
+            strokeColor: "#304DBE",
+            strokeWidth: 2,
+            pointerEvents: "visiblePainted",
+            fillColor: "#304DBE",
+            fillOpacity: 0.8
+        };
+
+        var style_green = {
+            strokeColor: "#FFF",
+            strokeOpacity: 1,
+            strokeWidth: 2,
+            pointRadius: 6,
+            pointerEvents: "visiblePainted",
+            fillColor: '#545BF4'
+        };
+
+        var style_green1 = {
+            strokeColor: "#FFF",
+            strokeOpacity: 1,
+            strokeWidth: 2,
+            pointRadius: 6,
+            pointerEvents: "visiblePainted",
+            fillColor: '#50E7F8'
+        };
+
+        var style_green2 = {
+            strokeColor: "#FFF",
+            strokeOpacity: 1,
+            strokeWidth: 2,
+            pointRadius: 6,
+            pointerEvents: "visiblePainted",
+            fillColor: '#0C9CFE'
+        };
+        var host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-china400/rest/maps/China";
+        function init() {
+            //定义layer图层，TiledDynamicRESTLayer：分块动态 REST 图层
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {
+                transparent: true,
+                cacheEnabled: true
+            }, {maxResolution: "auto", useCanvas: false});
+            //为图层初始化完毕添加addLayer()事件
+            layer.events.on({"layerInitialized": addLayer});
+            map = new SuperMap.Map("map", {
+                controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.OverviewMap(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })
+                ]
+            });
+            vector = new SuperMap.Layer.Vector("Vector Layer");
+        }
+
+        function addLayer() {
+            map.addLayers([layer, vector]);
+            select = new SuperMap.Control.SelectFeature(vector, {
+                onSelect: onFeatureSelect,
+                onUnselect: onFeatureUnselect
+            });
+            map.addControl(select);
+            map.setCenter(new SuperMap.LonLat(11733502.481499,4614406.969325), 4);
+        }
+
+        //移除整个图层要素
+        function clearAllFeatures() {
+            vector.removeAllFeatures();
+            if (map.popups.length != 0) {
+                var i = 0, lengthPopup = map.popups.length;
+                while (i < lengthPopup) {
+                    map.removePopup(map.popups[0]);
+                    i++;
+                }
+            }
+            map.events.un({"zoomend": featureEvent});
+        }
+
+        //添加标注
+        function createMarker() {
+            vector.removeAllFeatures();
+
+            var resolution = map.getResolutionForZoom(map.zoom);
+            var curve1 = SuperMap.Geometry.Polygon.createRegularPolygonCurve(
+                    new SuperMap.Geometry.Point(12085722.7315, 3942864.5449),
+                    21.7 * 2,
+                    20,
+                    20,
+                    90 - 10,
+                    resolution
+            );
+            var sector1 = new SuperMap.Feature.Vector(
+                    curve1,
+                    {},
+                    style_green2
+            );
+
+            var curve12 = SuperMap.Geometry.Polygon.createRegularPolygonCurve(
+                    new SuperMap.Geometry.Point(12085722.7315, 3942864.5449),
+                    21.7 * 2,
+                    20,
+                    20,
+                    210 - 10,
+                    resolution
+            );
+            var sector12 = new SuperMap.Feature.Vector(
+                    curve12,
+                    {},
+                    style_green2
+            );
+
+            var curve13 = SuperMap.Geometry.Polygon.createRegularPolygonCurve(
+                    new SuperMap.Geometry.Point(12085722.7315, 3942864.5449),
+                    21.7 * 2,
+                    20,
+                    20,
+                    330 - 10,
+                    resolution
+            );
+            var sector13 = new SuperMap.Feature.Vector(
+                    curve13,
+                    {},
+                    style_green2
+            );
+
+            var curve2 = SuperMap.Geometry.Polygon.createRegularPolygonCurve(
+                    new SuperMap.Geometry.Point(12085722.7315, 3942864.5449),
+                    18.3 * 2,
+                    20,
+                    30,
+                    90 - 15,
+                    resolution
+            );
+            var sector2 = new SuperMap.Feature.Vector(
+                    curve2,
+                    {},
+                    style_green
+            );
+
+            var curve22 = SuperMap.Geometry.Polygon.createRegularPolygonCurve(
+                    new SuperMap.Geometry.Point(12085722.7315, 3942864.5449),
+                    18.3 * 2,
+                    20,
+                    30,
+                    210 - 15,
+                    resolution
+            );
+            var sector22 = new SuperMap.Feature.Vector(
+                    curve22,
+                    {},
+                    style_green
+            );
+
+            var curve23 = SuperMap.Geometry.Polygon.createRegularPolygonCurve(
+                    new SuperMap.Geometry.Point(12085722.7315, 3942864.5449),
+                    18.3 * 2,
+                    20,
+                    30,
+                    330 - 15,
+                    resolution
+            );
+            var sector23 = new SuperMap.Feature.Vector(
+                    curve23,
+                    {},
+                    style_green
+            );
+
+            var origin = new SuperMap.Geometry.Point(11983722.7315, 3942864.5449);
+            var height = 13.8 * 2;
+            var width = 3.6 * 2;
+            var geo1 = SuperMap.Geometry.Polygon.createBsplinesurface(origin, height, width, 90, resolution);
+            var vector1 = new SuperMap.Feature.Vector(
+                    geo1,
+                    {},
+                    style_green1
+            );
+            var geo12 = SuperMap.Geometry.Polygon.createBsplinesurface(origin, height, width, 210, resolution);
+            var vector12 = new SuperMap.Feature.Vector(
+                    geo12,
+                    {},
+                    style_green1
+            );
+            var geo13 = SuperMap.Geometry.Polygon.createBsplinesurface(origin, height, width, 330, resolution);
+            var vector13 = new SuperMap.Feature.Vector(
+                    geo13,
+                    {},
+                    style_green1
+            );
+
+            var height = 11.2 * 2;
+            var width = 4.2 * 2;
+            var geo2 = SuperMap.Geometry.Polygon.createBsplinesurface(origin, height, width, 90, resolution);
+            var vector2 = new SuperMap.Feature.Vector(
+                    geo2,
+                    {},
+                    style_green2
+            );
+            var geo22 = SuperMap.Geometry.Polygon.createBsplinesurface(origin, height, width, 210, resolution);
+            var vector22 = new SuperMap.Feature.Vector(
+                    geo22,
+                    {},
+                    style_green2
+            );
+            var geo23 = SuperMap.Geometry.Polygon.createBsplinesurface(origin, height, width, 330, resolution);
+            var vector23 = new SuperMap.Feature.Vector(
+                    geo23,
+                    {},
+                    style_green2
+            );
+
+            var height = 8.8 * 2;
+            var width = 5.0 * 2;
+            var geo3 = SuperMap.Geometry.Polygon.createBsplinesurface(origin, height, width, 90, resolution);
+            var vector3 = new SuperMap.Feature.Vector(
+                    geo3,
+                    {},
+                    style_green
+            );
+            var geo32 = SuperMap.Geometry.Polygon.createBsplinesurface(origin, height, width, 210, resolution);
+            var vector32 = new SuperMap.Feature.Vector(
+                    geo32,
+                    {},
+                    style_green
+            );
+            var geo33 = SuperMap.Geometry.Polygon.createBsplinesurface(origin, height, width, 330, resolution);
+            var vector33 = new SuperMap.Feature.Vector(
+                    geo33,
+                    {},
+                    style_green
+            );
+
+            origin = new SuperMap.Geometry.Point(11883722.7315, 3942864.5449);
+            var geoTriangle = SuperMap.Geometry.Polygon.createRegularPolygonTriangle(origin, height * 2, width * 2, 12, 90, resolution);
+            var vectorTriangle = new SuperMap.Feature.Vector(
+                    geoTriangle,
+                    {},
+                    style
+            );
+
+            vector.addFeatures([
+                vector1, vector2, vector3,
+                vector12, vector22, vector32,
+                vector13, vector23, vector33,
+                sector1, sector2,
+                sector12, sector22,
+                sector13, sector23,
+                vectorTriangle
+            ]);
+
+            featuresOrigin = featuresOrigin.concat(vector1, vector2, vector3,
+                    vector12, vector22, vector32,
+                    vector13, vector23, vector33,
+                    sector1, sector2,
+                    sector12, sector22,
+                    sector13, sector23,
+                    vectorTriangle);
+
+            select.activate();
+
+            // 固定大小下触发此事件，按照设置的像素，和当前的分辨率，重新构造Geometry，从而达到固定大小的效果
+            map.events.on({
+                "zoomend": featureEvent
+            });
+        }
+
+        function featureEvent(event) {
+            var solution = map.getResolutionForZoom(map.zoom);
+            var features = [];
+
+            var length = featuresOrigin.length;
+            for (var i = 0; i < length; i++) {
+                var geo = featuresOrigin[i].geometry;
+                var vector1 = new SuperMap.Feature.Vector(
+                        geoFixed(geo, solution),
+                        {},
+                        featuresOrigin[i].style
+                );
+                features.push(vector1);
+            }
+            vector.removeAllFeatures();
+            vector.addFeatures(features);
+        }
+
+        function geoFixed(geo, resolution) {
+            if (geo != null && geo.polygonType != undefined) {
+                if (geo.polygonType == "Curve") {
+                    var origin = geo.origin;
+                    var radius = geo.radius;
+                    var sides = geo.sides;
+                    var r = geo.r;
+                    var angel = geo.angel;
+                    return SuperMap.Geometry.Polygon.createRegularPolygonCurve(origin, radius, sides, r, angel, resolution);
+                } else if (geo.polygonType == "Triangle") {
+                    var origin = geo.origin;
+                    var height = geo.height;
+                    var width = geo.width;
+                    var lineLength = geo.lineLength;
+                    var angel = geo.angel;
+                    return SuperMap.Geometry.Polygon.createRegularPolygonTriangle(origin, height, width, lineLength, angel, resolution);
+                } else if (geo.polygonType == "Bspline") {
+                    var origin = geo.origin;
+                    var height = geo.height;
+                    var width = geo.width;
+                    var lineLength = geo.lineLength;
+                    var angel = geo.angel;
+                    return SuperMap.Geometry.Polygon.createBsplinesurface(origin, height, width, angel, resolution);
+                }
+            }
+        }
+
+        //要素被选中时调用此函数
+        function onFeatureSelect(feature) {
+            {
+                selectedFeature = feature;
+
+                var i = SuperMap.Util.indexOf(vector.features, feature);
+                var j = ++i;
+                contentHTML = "<div style='font-size:.8em; opacity: 0.8; overflow-y:hidden;'>" +
+                        "<span style='font-weight: bold; font-size: 18px;'>设备</span>" + j + "<br>";
+                contentHTML += "</div>";
+                //初始化一个弹出窗口，当某个地图要素被选中时会弹出此窗口，用来显示选中地图要素的属性信息
+                popup = new SuperMap.Popup.FramedCloud("chicken",
+                        feature.geometry.getBounds().getCenterLonLat(),
+                        null,
+                        contentHTML,
+                        null,
+                        true);
+                popup.closeOnMove = true;
+                feature.popup = popup;
+                map.addPopup(popup);
+            }
+        }
+
+        //清除要素时调用此函数
+        function onFeatureUnselect(feature) {
+            map.removePopup(feature.popup);
+            feature.popup.destroy();
+            feature.popup = null;
+        }
+
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <input type="button" class="btn" value="标注专业符号" onclick="createMarker()"/>
+    <input type="button" class="btn" value="清除" onclick="clearAllFeatures()"/>
+</div>
+<div id="map"></div>
+</body>
+</html>

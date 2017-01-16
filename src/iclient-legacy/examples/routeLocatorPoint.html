@@ -1,0 +1,175 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>里程定点</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+            /*#locateMeasure{*/
+                /*height: 8px;*/
+                /*width: 5px;*/
+            /*}*/
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, layer, routeObj, pointLayer, vectorLayer
+            lineStyle = {
+                strokeColor:"red",
+                strokeWidth:2,
+                pointRadius:3,
+                pointerEvents:"visiblePainted",
+                fill:false
+            },
+            pointStyle = {
+                fillColor:'#669933',
+                fillOpacity:0.8,
+                pointRadius:5,
+                strokeColor:'#aaee77',
+                strokeWidth:3
+            },
+            url=host+"/iserver/services/map-changchun/rest/maps/长春市区图",
+            url2=host+"/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+
+            var feature;
+            function init(){
+                //初始化图层
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("changchun", url, { transparent:true, cacheEnabled:true }, { maxResolution:"auto" });
+                vectorLayer = new SuperMap.Layer.Vector("RouteLayer");
+                pointLayer = new SuperMap.Layer.Vector("pointLayer");
+
+                //图层初始化完毕调用添加图层函数
+                layer.events.on({"layerInitialized":addLayer});
+                map = new SuperMap.Map("map", {allOverlays:true, controls:[
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions:{
+                            enableKinetic:true
+                        }})]
+                });
+            }
+
+            //添加必要图层
+            function addLayer() {
+                map.addLayers([layer, vectorLayer, pointLayer]);
+                map.setCenter(new SuperMap.LonLat(4503.6240321526, -3861.911472192499), 1);
+            }
+
+            //通过SQL查询路由对象
+            function CreateRouteObj() {
+                var queryParam, queryBySQLParams, queryBySQLService;
+                queryParam = new SuperMap.REST.FilterParameter({
+                    name:"RouteDT_road@Changchun",
+                    attributeFilter:"RouteID=1690"
+                });
+                queryBySQLParams = new SuperMap.REST.QueryBySQLParameters({
+                    queryParams:[queryParam]
+                });
+                queryBySQLService = new SuperMap.REST.QueryBySQLService(url, {
+                    eventListeners:{
+                        "processCompleted":processCompleted,
+                        "processFailed":processFailed
+                    }
+                });
+                queryBySQLService.processAsync(queryBySQLParams);
+            }
+
+            //路由对象查询成功，初始化routeObj的值，同时将查询结果绘制在地图上
+            function processCompleted(queryEventArgs) {
+                routeObj = geo = queryEventArgs.result.recordsets[0].features[0].geometry;
+                var feature = new SuperMap.Feature();
+                feature.geometry = geo;
+                feature.style = lineStyle;
+                vectorLayer.addFeatures(feature);
+                alert("查询路由对象成功");
+            }
+
+            //路由对象查询失败，显示提示信息
+            function processFailed() {
+                alert("查询路由对象失败");
+            }
+
+            //"路由定点"操作，其中将routeObj和里程值作为参数传递到参数对象中
+            function RouteLocator() {
+                if(feature != null)
+                {
+                    pointLayer.removeFeatures(feature);
+                    feature = null;
+                }
+
+                if (!routeObj) {
+                    alert("请通过查询获取路由对象！");
+                    return;
+                }
+                var routeLocatorParameters_point = new SuperMap.REST.RouteLocatorParameters({
+                    "sourceRoute":routeObj,
+                    "type":"POINT",
+                    "measure":parseFloat(document.getElementById('locateMeasure').value),
+                    "offset":0,
+                    "isIgnoreGap":true
+                });
+                var routeLocatorService = new SuperMap.REST.RouteLocatorService(url2,
+                        {
+                            eventListeners:{
+                                "processCompleted":routeLocatorCompleted,
+                                'processFailed':routeLocatorFailed
+                            }
+                        }
+                )
+                routeLocatorService.processAsync(routeLocatorParameters_point);
+            }
+
+            //"里程定点"操作成功触发该函数，并显示提示信息
+            function routeLocatorCompleted(e) {
+                feature = new SuperMap.Feature.Vector();
+                var geometry = e.result.resultGeometry;
+                feature.geometry = geometry;
+                feature.style = pointStyle;
+                pointLayer.addFeatures(feature);
+                alert("里程定位点成功");
+            }
+
+            //"里程定点"操作失败触发该函数，并显示提示信息
+            function routeLocatorFailed(e) {
+                alert("里程定位点失败");
+            }
+
+            //移除要素，并重置里程值
+            function Remove() {
+                vectorLayer.removeAllFeatures();
+                pointLayer.removeAllFeatures();
+                //$('#locateMeasure').val('10');
+                document.getElementById("locateMeasure").value="10";
+                routeObj = null;
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <span style='font-size: 1.2em;'>指定里程点：</span>
+            <input type='number' style='width:50px;height:25px;' id='locateMeasure' value='10'/>
+            <input type="button" class="btn" value="查询路由对象" style="  margin-bottom: 10px;" onclick="CreateRouteObj()" />
+            <input type="button" class="btn" value="定位点" style="  margin-bottom: 10px;" onclick="RouteLocator()" />
+            <input type="button" class="btn" value="清除" style="  margin-bottom: 10px;" onclick="Remove()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

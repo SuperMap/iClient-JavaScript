@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>三叶草符号—图片</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <style type="text/css">
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+
+        #map {
+            height: 510px;
+            position: relative;
+            border-top: 1px solid #3473b7;
+            border-bottom: 1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <script type="text/javascript" src="../libs/SuperMap.Include.js"></script>
+    <script type="text/javascript">
+        var featuresOrigin = [];
+        var map, layer,vector,host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host,
+                url = host + "/iserver/services/map-china400/rest/maps/China", clickedPoint, selectedSector;
+
+        //使用这种方式浏览器执行速度对比中，IE完爆chrome
+
+        //创建一个canvas，用来生成扇叶图片
+        var cvs = document.createElement('canvas');
+        cvs.width = 100;
+        cvs.height = 100;
+        var ctx = cvs.getContext('2d');
+
+        //传入半径，角度及其他样式来生成图片
+        var imgInfo = createCloverImage({radius:15,angle:35,style:{lineWidth:1,fillStyle:'red',strokeStyle:'green'}});
+        //三叶草所使用的样式
+        var styleClover0 = {
+            strokeColor: "#000",
+            fillColor: '#545BF4',
+            strokeOpacity: 1,
+            strokeWidth: 0.5,
+            pointRadius: 15,
+            pointerEvents: "visiblePainted",
+            //外部图形为所生成的图片
+            externalGraphic:imgInfo.img,
+            graphicWidth:imgInfo.width,
+            graphicHeight:imgInfo.height,
+            graphicXOffset:0,
+            graphicYOffset: - imgInfo.offSetY,
+            //旋转30度
+            rotation:30
+        };
+        //传入半径，角度及其他样式来生成图片
+        var imgInfo = createCloverImage({radius:10,angle:30,style:{lineWidth:1,fillStyle:'red',strokeStyle:'green'}});
+        //三叶草所使用的样式
+        var styleClover1 = {
+            strokeColor: "#000",
+            fillColor: '#545BF4',
+            strokeOpacity: 1,
+            strokeWidth: 0.5,
+            pointRadius: 15,
+            pointerEvents: "visiblePainted",
+            //外部图形为所生成的图片
+            externalGraphic:imgInfo.img,
+            graphicWidth:imgInfo.width,
+            graphicHeight:imgInfo.height,
+            graphicXOffset:0,
+            graphicYOffset: - imgInfo.offSetY,
+            //旋转90度
+            rotation:90
+        };
+        var imgInfo = createCloverImage({radius:20,angle:50,style:{lineWidth:1,fillStyle:'red',strokeStyle:'green'}});
+        //三叶草所使用的样式
+        var styleClover2 = {
+            strokeColor: "#000",
+            fillColor: '#545BF4',
+            strokeOpacity: 1,
+            strokeWidth: 0.5,
+            pointRadius: 15,
+            pointerEvents: "visiblePainted",
+            //外部图形为所生成的图片
+            externalGraphic:imgInfo.img,
+            graphicWidth:imgInfo.width,
+            graphicHeight:imgInfo.height,
+            graphicXOffset:0,
+            graphicYOffset: - imgInfo.offSetY,
+            //旋转250度
+            rotation:250
+        };
+        function init(){
+            map = new SuperMap.Map("map", {controls:[
+                new SuperMap.Control.LayerSwitcher(),
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.PanZoomBar({showSlider:true}),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+            });
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("china",url, {transparent: true, cacheEnabled: true},{scales:[90000000,50000000,10000000,5000000,1000000,500000, 250000,100000, 50000, 25000,10000]});
+            layer.events.on({"layerInitialized": addLayer});
+            vector = new SuperMap.Layer.Vector("Vector Layer",{renderers:["Canvas2"]});
+        }
+        function addLayer() {
+            map.addLayers([layer, vector]);
+            select = new SuperMap.Control.SelectFeature(vector, {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
+            map.addControl(select);
+            map.setCenter(new SuperMap.LonLat(0,0),0);
+            select.activate();
+        }
+
+        //创建3000个三叶草符号
+        function addSectors(){
+            //计时
+            var dateTime0 = new Date().getTime();
+            var featuresSector=[];
+            for(var i =0;i < 3000; i++){
+                var p0_sign = Math.random()<= 0.5 ? true:false ,p1_sign = Math.random()<= 0.5 ? true:false;
+                var p0 = Math.random()*10000000, p1 = Math.random()*3000000;
+                p0 = p0_sign? p0:-p0;
+                p1 = p1_sign? p1:-p1;
+                //分别创建三种的三叶草形状
+                featuresSector.push(createSectorMarker([p0, p1],0));
+                featuresSector.push(createSectorMarker([p0, p1],1));
+                featuresSector.push(createSectorMarker([p0, p1],2));
+            }
+            vector.addFeatures(featuresSector);
+            var dateTime1 = new Date().getTime();
+            console.info("9000个扇叶的创建添加时间:"+(dateTime1-dateTime0)+"ms");
+            return featuresSector;
+        }
+
+        //绘制三叶草函数
+        function createSectorMarker(point,type){
+            var style;
+            //根据不同的类型来选择不同的样式
+            switch (type){
+                case 0:
+                    style=styleClover0;
+                    break;
+                case 1:
+                    style=styleClover1;
+                    break;
+                case 2:
+                    style=styleClover2;
+                    break;
+                default:
+                    style = {
+                        strokeColor: "#000",
+                        fillColor: '#545BF4',
+                        strokeOpacity: 1,
+                        strokeWidth: 0.5,
+                        pointRadius: 2,
+                        pointerEvents: "visiblePainted"
+                    };
+            }
+            var sector = new SuperMap.Feature.Vector(
+                    new SuperMap.Geometry.Point(point[0],point[1]),
+                    {},
+                    style
+            );
+            return sector;
+        }
+        //要素被选中时调用此函数
+        function onFeatureSelect(feature,evt) {
+            selectedFeature = feature;
+            var lonlat = map.getLonLatFromPixel(evt.xy);
+            var contentHTML = "<div style='font-size:.8em; opacity: 0.8; overflow-y:hidden;'>" +
+                    "<span style='font-weight: bold; font-size: 18px;'>详细信息</span><br>";
+            contentHTML +="</div>";
+            //初始化一个弹出窗口，当某个地图要素被选中时会弹出此窗口，用来显示选中地图要素的属性信息
+            popup = new SuperMap.Popup.FramedCloud("chicken",
+                    lonlat,
+                    null,
+                    contentHTML,
+                    null,
+                    true);
+            feature.popup = popup;
+            map.addPopup(popup);
+        }
+        //清除要素时调用此函数
+        function onFeatureUnselect(feature) {
+            map.removePopup(feature.popup);
+            feature.popup.destroy();
+            feature.popup = null;
+        }
+
+        function clearAllFeatures(){
+            vector.removeAllFeatures();
+        }
+        /**
+         * 根据半径，角度等参数，创建图片
+         * @param options 参数，包括radius,angle ration,style，其中style必须包括lineWidth，也可以用strokeStyle,fillStyle
+         */
+        function createCloverImage(options){
+            var r = options.radius;
+            var angle = Math.PI * options.angle / 180;
+            var style = options.style;
+
+            //把之前绘制过的图形清除
+            ctx.globalAlpha = 0;
+            ctx.lineWidth = 1;
+            ctx.fillRect(0,0,cvs.width,cvs.height);
+            var w = style.lineWidth;
+            var width = r + 2 * w, height = r * Math.sin(angle) + 2 * w;
+            //重新设置canvas的大小，及属性
+            cvs.width = width;
+            cvs.height = height;
+            for(var attr in style){
+                ctx[attr] = style[attr];
+            }
+            ctx.globalAlpha = 1;
+            ctx.save();
+            ctx.translate(0,w);
+            ctx.beginPath();
+            ctx.arc(0,0,r,0,angle);
+            ctx.lineTo(0,0);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+            //生成图片
+            var img = cvs.toDataURL();
+            //返回图片及相关信息
+            return {img:img,width:width,height:height,offSetY:w};
+        }
+
+    </script>
+</head>
+<body onload="init();">
+<div id="toolbar">
+    <input type="button" class="btn" value="标注三叶草符号" onclick="addSectors()"/>
+    <input type="button" class="btn" value="清除" onclick="clearAllFeatures()"/>
+</div>
+<div id="map"></div>
+</body>
+</html>

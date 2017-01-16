@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>cartoDB叠加点密度专题图</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+    </style>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.11/themes/css/cartodb.css" />
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.11/cartodb.js"></script>
+    <script type="text/javascript" src="../libs/SuperMap.Include.js"></script>
+    <script type="text/javascript" src="js/iConnector/iConnectorLeaflet.js"></script>
+    <script type="text/javascript">
+        var map,canvasTiles,host = document.location.toString().match(/file:\/\//) ? "http://localhost:8090" : 'http://' + document.location.host;
+        url = host + "/iserver/services/map-world/rest/maps/World";
+        function init(){
+            if(!document.createElement('canvas').getContext) {
+                alert('您的浏览器不支持 canvas，请升级');
+                return;
+            }
+            map = new L.Map('map', {
+                center: [0,0],
+                zoom: 1
+            });
+            L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', {
+                attribution: 'Stamen'
+            }).addTo(map);
+            cartodb.createLayer(map, 'http://documentation.cartodb.com/api/v2/viz/2b13c956-e7c1-11e2-806b-5404a6a683d5/viz.json')
+                    .addTo(map);
+        }
+        //生成点密度专题图
+        function addThemeDotDensity()
+        {
+            canvasTiles&& map.removeLayer(canvasTiles);
+            //创建制作点密度专题图服务类
+            var themeService = new SuperMap.REST.ThemeService(url, {eventListeners:{"processCompleted": themeCompleted, "processFailed": themeFailed}}),
+                    dotStyle = new SuperMap.REST.ServerStyle({
+                        markerSize: 3,
+                        markerSymbolID: 12
+                    }),
+                    themeDotDensity = new SuperMap.REST.ThemeDotDensity({
+                        dotExpression: "Pop_1994",
+                        value: 5000000,
+                        style: dotStyle
+                    }),
+                    themeParameters = new SuperMap.REST.ThemeParameters({
+                        themes: [themeDotDensity],
+                        datasetNames: ["Countries"],
+                        dataSourceNames: ["World"]
+                    });
+            //向iserver发送请求
+            themeService.processAsync(themeParameters);
+        }
+        //生成专题图后将其叠加到 openstreetmap 地图上面
+        function themeCompleted(themeEventArgs) {
+            if(themeEventArgs.result.resourceInfo.id) {
+                canvasTiles =  SuperMap.Web.iConnector.Leaflet.getLayer(url,{layersID:themeEventArgs.result.resourceInfo.id,projection:"3857"});
+                canvasTiles.addTo(map);
+            }
+        }
+        function themeFailed(serviceFailedEventArgs) {
+            alert(serviceFailedEventArgs.error.errorMsg);
+        }
+        function removeTheme(){
+            map.removeLayer(canvasTiles);
+        }
+
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+<input type="button" class="btn" value="创建点密度专题图" onclick="addThemeDotDensity()" />
+<input type="button" class="btn" value="移除点密度专题图" onclick="removeTheme()" />
+</div>
+<div id="map"></div>
+</body>
+</html>

@@ -1,0 +1,278 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>字段查询统计</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 520px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+            #trafficRes td{
+                text-align: left;
+                border-left: 1px solid #DDDDDD;
+                border-top: 1px solid #DDDDDD;
+                line-height: 20px;
+                padding: 8px;
+                border-collapse: separate;
+                border-spacing: 0;
+            }
+            #trafficRes{
+                border-right: 1px solid #DDDDDD;
+                border-bottom: 1px solid #DDDDDD;
+            }
+            #fieldResult{
+                background: #fff;
+                border:1px solid #DDDDDD;
+                padding: 5px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, layer, layersName = [], currentData, currentStatisticResult,
+            url1=host+"/iserver/services/map-world/rest/maps/World",
+            url2=host+"/iserver/services/data-world/rest/data";
+            function init(){
+                document.getElementById("layerSelect").onchange=function(){
+                    getFields();
+                };
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+                });
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url1,{
+                    transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+                layer.events.on({"layerInitialized":addLayer});
+            }
+
+            function addLayer() {
+                map.addLayers([layer]);
+                map.setCenter(new SuperMap.LonLat(0, 0), 0);
+                queryLayersInfo();
+            }
+            //查询图层信息
+            function queryLayersInfo() {
+                var getLayersInfoService = new SuperMap.REST.GetLayersInfoService(url1, {
+                    eventListeners: {"processCompleted": queryLayersInfoCompleted, "processFailed": processFailed}
+                });
+                getLayersInfoService.processAsync();
+            }
+
+            //显示子图层信息
+            function queryLayersInfoCompleted(queryEventArgs) {
+                var i, len, sublayer, layersInfo,layerName,
+                        result = queryEventArgs.result;
+                if(result && result.subLayers && result.subLayers.layers){
+                    layersInfo = result.subLayers.layers;
+                    layersName = [];
+                    for(i = 0, len = layersInfo.length; i < len; i++){
+                        subLayer = layersInfo[i];
+                        if("UGC" == subLayer.type){
+                            //记录数据源，数据集信息供字段查询统计使用
+                            if(subLayer.datasetInfo.name && subLayer.datasetInfo.dataSourceName){
+                                layersName[i] = {name: subLayer.datasetInfo.name,
+                                    dataSourceName:subLayer.datasetInfo.dataSourceName,
+									layerName:subLayer.name};
+                            }
+                        }
+                    }
+                }
+                //添加图层信息到选择列表
+                var layerSelect = document.getElementById("layerSelect");
+                layerSelect.innerHTML = "";
+                var innerHTML = "";
+               // var layerSelect = $("#layerSelect")[0];//document.getElementById("layerSelect");
+                if(!layerSelect){
+                    return;
+                }
+                var option;
+                for(i = 0; i < layersName.length; i++){
+                    layerSelect.options[i] = new Option(layersName[i].layerName);
+                }
+                getFields();
+            }
+
+
+            function getFields(){
+                var layerSelect = document.getElementById("layerSelect");
+                var name =  layerSelect.options[layerSelect.selectedIndex].innerHTML;//:selected").text();
+                var i, len, dataInfo, getFieldsService,layerName;
+                for(i = 0, len = layersName.length; i < len; i++ ){
+                    dataInfo = layersName[i];
+                    if(dataInfo.layerName == name){
+                        //设置数据集，数据源，查询fields信息
+                        currentData = dataInfo;
+                        getFieldsService = new SuperMap.REST.GetFieldsService( url2, {
+                            eventListeners: {"processCompleted": getFieldsCompleted, "processFailed": processFailed},
+                            datasource: dataInfo.dataSourceName,
+                            dataset: dataInfo.name
+                        });
+                        getFieldsService.processAsync();
+                        break;
+                    }
+                }
+            }
+
+            function getFieldsCompleted(getFieldsEventArgs){
+                var i, len, result = getFieldsEventArgs.result
+                fieldNames = result.fieldNames,
+                        innerHTML = "";
+                //注，因为iE8下动态更新option无效，所以这里先移除再整体添加
+//                var fieldSelect = document.getElementById("fieldSelect");
+//                if(fieldSelect){
+//                    var parentDIV =  fieldSelect.parentNode;
+//                    parentDIV.removeChild(fieldSelect)
+//                }
+//                for(i = 0, len = fieldNames.length; i < len; i++){
+//                    innerHTML += "<option>" + fieldNames[i] + "</option>";
+//                }
+//                var fieldSelect = document.createElement("select");
+//                fieldSelect.id="fieldSelect";
+//                fieldSelect.style.width="100px";
+//                fieldSelect.innerHTML = innerHTML;
+//                parentDIV.appendChild(fieldSelect);
+
+                var fieldSelect = document.getElementById("fieldSelect");
+                fieldSelect.innerHTML = "";
+                var innerHTML = "";
+                // var layerSelect = $("#layerSelect")[0];//document.getElementById("layerSelect");
+                if(!fieldSelect){
+                    return;
+                }
+                var option;
+                for(i = 0; i < fieldNames.length; i++){
+                    fieldSelect.options[i] = new Option(fieldNames[i], fieldNames[i]);
+                }
+            }
+
+            function fieldStatistic(fieldname){
+                var fieldSelect = document.getElementById("fieldSelect");
+                var fieldname = fieldSelect.options[fieldSelect.selectedIndex].innerHTML;
+                //var fieldname = $("#fieldSelect :selected").text();
+                currentStatisticResult = {fieldName: fieldname};
+                if(currentData){
+                    var keys = SuperMap.REST.StatisticMode;
+                    //针对六种统计方式分别进行请求
+                    for(var key in keys){
+                        currentStatisticResult[keys[key]] = null;
+
+                        var statisticService = new SuperMap.REST.FieldStatisticService( url2 ,{
+                            eventListeners: {"processCompleted": statisticComplete, "processFailed": processFailed},
+                            datasource: currentData.dataSourceName,
+                            dataset: currentData.name,
+                            field: fieldname,
+                            statisticMode: keys[key]
+                        })
+                        statisticService.processAsync();
+                    }
+                }
+            }
+
+            function statisticComplete(fieldStatisticEventArgs){
+                var getAll = true,
+                        result = fieldStatisticEventArgs.result;
+                if(currentStatisticResult){
+                    if(null == currentStatisticResult[result.mode]){
+                        currentStatisticResult[result.mode] = result.result;
+                    }
+                }
+                for(var key in currentStatisticResult){
+                    if(null == currentStatisticResult[key]){
+                        getAll = false;
+                        break;
+                    }
+                }
+                if(getAll){
+                    showResult(currentStatisticResult);
+                }
+            }
+
+            function showResult(){
+                //如果有，删除之前的结果
+                //$("#fieldResult").remove();
+                var fieldResult = document.getElementById("fieldResult");
+                if(fieldResult){
+                    var fieldResultParent = fieldResult.parentNode;
+                    fieldResultParent.removeChild(fieldResult);
+                }
+
+                fieldResult = document.createElement("div");
+                fieldResult.id="fieldResult";
+                fieldResult.className="alert alert-success fade in";
+                fieldResult.style.position = "absolute";
+                fieldResult.style.top = "350px";
+                fieldResult.style.left = "50px";
+                fieldResult.style.zIndex = 2000;
+                fieldResult.style.textAlign = "center";
+                var innerHTMLStr = '<div style="line-height: 35px;"><button id="closeTableBtn" class="close" data-dismiss="alert" style="float:right;right:10px;">&times;</button>'
+                        + '<strong>字段（' +  currentStatisticResult.fieldName + '）统计结果:</strong><div>';
+//                var fieldRestulHTML = '<div id="fieldResult" class="alert alert-success fade in" style="position:absolute; top: 350px; left: 50px; z-index: 2000; text-align: center;">'
+//                        + '<button class="close" data-dismiss="alert">&times;</button>'
+//                        + '<strong>字段（' +  currentStatisticResult.fieldName + '）统计结果:</strong>'
+//                        + '</div>';
+                //var fieldResult = $(fieldRestulHTML);
+                //这里因为想借用中文显示，所以使用定义的内部数组而不是SuperMap.REST.StatisticMode..
+                var keys = ["AVERAGE","MAX","MIN","STDDEVIATION","SUM","VARIANCE"];
+                var tableStr = "<table id='trafficRes' class='table table-bordered'><tr><td>平均值</td><td>最大值</td><td>最小值</td>"
+                                + "<td>标准差</td><td>和</td><td>方差</td></tr>";
+                var resultTR = "<tr>";
+                for(var i = 0; i < keys.length; i++){
+                    //$("<td>" + currentStatisticResult[keys[i]] + "</td>").appendTo(resultTR);
+                    resultTR+= "<td>" + currentStatisticResult[keys[i]] + "</td>";
+                }
+                resultTR+= "</tr>";
+                //table.append(resultTR);
+                tableStr += resultTR+ "</table>";
+                innerHTMLStr += tableStr;
+                //fieldResult.append(table);
+                fieldResult.innerHTML = innerHTMLStr;
+                //$('#map').append(fieldResult);
+                document.getElementById("map").appendChild(fieldResult);
+                document.getElementById("closeTableBtn").onclick = function(){
+                    if(fieldResult){
+                        var fieldResultParent = fieldResult.parentNode;
+                        fieldResultParent.removeChild(fieldResult);
+                    }
+                }
+            }
+
+            function processFailed(e) {
+                alert(e.error.errorMsg);
+            }
+            function clearFeatures() {
+                //先清除上次的显示结果
+                vectorLayer.removeAllFeatures();
+                vectorLayer.refresh();
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <span>图层：</span>
+            <select id='layerSelect' style='width:200px;margin-top:10px;'></select>
+            <span>字段：</span>
+            <span style="display: inline-block"><select id='fieldSelect' style='width:100px;margin-top:10px;'></select></span>
+            <input type="button" class="btn" value="统计" onclick="fieldStatistic()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

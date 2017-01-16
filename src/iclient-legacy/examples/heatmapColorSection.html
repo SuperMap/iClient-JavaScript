@@ -1,0 +1,241 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>热点图颜色分段配置</title>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <link href='./css/heatmap.css' rel='stylesheet' />
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+        }
+        #map{
+            position: relative;
+            height: 510px;
+            border:1px solid #3473b7;
+        }
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+        .winContent{
+            padding:5px;
+            overflow-y:auto;
+            height:500px;
+
+        }
+
+        .popupWindow {
+            right:20px;
+            top:30px;
+            width: 250px;
+            position: absolute;
+            border: 2px solid #D6E3F1;
+            background: #FFF;
+            z-index: 9999;
+            top: 45px;
+            right: 0px;
+            border-top-width: 0px;
+            display: block;
+        }
+       .winTitle{
+           background: #1E90FF;
+       }
+
+    </style>
+
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script type="text/javascript">
+        var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+        var map, layer, heatMapLayer,
+                url=host+"/iserver/services/map-world/rest/maps/World";
+        function init(){
+            if(!document.createElement('canvas').getContext) {
+                document.getElementById("popupWin").style.display="none" ;
+                alert('您的浏览器不支持 canvas，请升级');
+                return;
+            }
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+            });
+            map.addControl(new SuperMap.Control.MousePosition());
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+            heatMapLayer = new SuperMap.Layer.HeatMapWeight(
+                    "heatMap",
+                    {
+                        "radius":45,
+                        "featureWeight":"value",
+                        "featureRadius":"geoRadius"
+                    }
+            );
+            var items = [
+                {
+                    start:0,
+                    end:1,
+                    startColor:new  SuperMap.REST.ServerColor(170,240,233),
+                    endColor:new  SuperMap.REST.ServerColor(180,245,185)
+                },
+                {
+                    start:1,
+                    end:2,
+                    startColor:new  SuperMap.REST.ServerColor(180,245,185),
+                    endColor:new  SuperMap.REST.ServerColor(223,250,177)
+                },
+                {
+                    start:2,
+                    end:3,
+                    startColor:new  SuperMap.REST.ServerColor(223,250,177),
+                    endColor:new  SuperMap.REST.ServerColor(224,239,152)
+                },
+                {
+                    start:3,
+                    end:4,
+                    startColor:new  SuperMap.REST.ServerColor(224,239,152),
+                    endColor:new  SuperMap.REST.ServerColor(160,213,103)
+                },
+                {
+                    start:4,
+                    end:5,
+                    startColor:new  SuperMap.REST.ServerColor(160,213,103),
+                    endColor:new  SuperMap.REST.ServerColor(44,104,50)
+                },
+                {
+                    start:5,
+                    end:6,
+                    startColor:new  SuperMap.REST.ServerColor(44,104,50),
+                    endColor:new  SuperMap.REST.ServerColor(29,135,59)
+                },
+                {
+                    start:6,
+                    end:7,
+                    startColor:new  SuperMap.REST.ServerColor(29,135,59),
+                    endColor:new  SuperMap.REST.ServerColor(118,154,49)
+                },
+                {
+                    start:7,
+                    end:8,
+                    startColor:new  SuperMap.REST.ServerColor(118,154,49),
+                    endColor:new  SuperMap.REST.ServerColor(204,175,27)
+                },
+                {
+                    start:8,
+                    end:9,
+                    startColor:new  SuperMap.REST.ServerColor(204,175,27),
+                    endColor:new  SuperMap.REST.ServerColor(198,63,2)
+                }
+
+            ];
+            heatMapLayer.items = items;
+
+            layer.events.on({"layerInitialized": addLayer});
+        }
+
+        function addLayer() {
+            map.addLayers([layer,heatMapLayer]);
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+        }
+        function createHeatPoints(){
+            clearHeatPoints();
+            var heatPoints = [];
+            var num = parseInt(document.getElementById('heatNums').value);
+            var radius = parseInt(document.getElementById('heatradius').value);
+
+            var unit = document.getElementById("radiusUnit").value,
+                    useGeoRadius = false;
+            if("degree" == unit){
+                useGeoRadius = true;
+            }
+            heatMapLayer.radius = radius
+            for(var i=0; i < num; i++){
+                heatPoints[i] = new SuperMap.Feature.Vector(
+                        new SuperMap.Geometry.Point(
+                                Math.random()*360 - 180,
+                                Math.random()*180 - 90
+                        ),
+                        {
+                            "value":Math.random()*9,
+                            "geoRadius":useGeoRadius?radius:null
+                        }
+                );
+            }
+            heatMapLayer.addFeatures(heatPoints);
+        }
+
+        function clearHeatPoints(){
+            heatMapLayer.removeAllFeatures();
+        }
+
+    </script>
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <span>热点数量：</span>
+    <input type='text' style='width:50px;height: 30px' id='heatNums' value='200'/>
+    <span>热点半径：</span>
+    <input type='text'  style='width:30px;height: 30px' value='50' id='heatradius'/>
+    <select style='width:70px' id='radiusUnit'><option value='px'>px</option><option value ='degree'>degree</option></select>
+    <input type="button" class="btn" value="渲染热点" style="margin-bottom: 10px" onclick="createHeatPoints()" />
+    <input type="button" class="btn" value="清除" style="margin-bottom: 10px" onclick="clearHeatPoints()" />
+</div>
+ <div id="popupWin" class="popupWindow" style="display: block;top: 278px; ">
+         <div class="winTitle">
+              <span class="title_left">颜色分段配置</span>
+         </div>
+         <div class="winContent" style="overflow-y:auto;height:250px;">
+             <table>
+                   <tr>
+                      <td style="padding-right: 25px;">  温度范围  </td>
+                      <td style="padding-left: 25px;">  颜色渐变  </td>
+                   </tr>
+             </table>
+             <div style="height: 21px;">
+                 <label class="lab">17--18</label>
+                 <div class="ex"id="ex1" style="top: -23px;left: 86px;"> </div>
+             </div>
+             <div style="height: 21px;">
+                 <label class="lab">18--19</label>
+                 <div class="ex"id="ex2" style="top: -23px;left: 86px;"> </div>
+             </div>
+             <div style="height: 21px;">
+                 <label class="lab">19--20</label>
+                 <div class="ex"id="ex3" style="top: -23px;left: 86px;"> </div>
+             </div>
+             <div style="height: 21px;">
+                 <label class="lab">20--21</label>
+                 <div class="ex"id="ex4" style="top: -23px;left: 86px;"> </div>
+             </div>
+             <div style="height: 21px;">
+                 <label class="lab">21--22</label>
+                 <div class="ex"id="ex5" style="top: -23px;left: 86px;"> </div>
+             </div>
+             <div style="height: 21px;">
+                 <label class="lab">22--23</label>
+                 <div class="ex"id="ex6" style="top: -23px;left: 86px;"> </div>
+             </div>
+             <div style="height: 21px;">
+                 <label class="lab">23--24</label>
+                 <div class="ex"id="ex7" style="top: -23px;left: 86px;"> </div>
+             </div>
+             <div style="height: 21px;">
+                 <label class="lab">24--25</label>
+                 <div class="ex"id="ex8" style="top: -23px;left: 86px;"> </div>
+             </div>
+             <div style="height: 21px;">
+                 <label class="lab">25--26</label>
+                 <div class="ex"id="ex9" style="top: -23px;left: 86px;"> </div>
+             </div>
+     </div>
+</div>
+<div id="map"></div>
+</body>
+</html>

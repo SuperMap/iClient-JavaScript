@@ -1,0 +1,54 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>拉框缩放控件</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 553px;
+                border:1px solid #3473b7;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, layerWorld;
+            var url=host+"/iserver/services/map-world/rest/maps/World";
+			
+			function init(){
+                map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.Navigation()]
+				});
+				//初始化拉框缩放控件类
+				zoombox=new SuperMap.Control.ZoomBox({   
+					keyMask: SuperMap.Handler.MOD_SHIFT,"autoActivate":true    //设置keyMask属性，使同时按住Shift绘矩形框
+				});
+				//是否将该控件设置为拉框缩小，默认为false，拉框放大
+				zoombox.out=false;
+                map.addControl(zoombox);//添加控件
+                //获取图层服务地址
+                layerWorld = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, { transparent: true, cacheEnabled: true }, { maxResolution: "auto" });
+
+                layerWorld.events.on({"layerInitialized": addLayer});
+            }
+			
+			//添加地图图层、拉框缩放控件到map
+            function addLayer(){
+                map.addLayer(layerWorld);
+                map.setCenter(new SuperMap.LonLat(0, 0), 1);
+            }
+			
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="map"></div>
+    </body>
+</html>

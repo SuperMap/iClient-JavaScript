@@ -1,0 +1,254 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>子图层控制</title>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+            .win_bg{background:#CCC; opacity:0.2; filter:alpha(opacity=20); position:absolute; left:0px; top:0px; width:100%; height:100%; z-index:998;}
+            .winTitle{background:#4192c9; height:20px; line-height:20px}
+            .winTitle .title_left{font-weight:bold; color:#FFF; padding-left:5px; float:left}
+            .winTitle .title_right{float:right; padding-right:3px;}
+            .winTitle .title_right a{color:#FFF; text-decoration:none; padding-right:3px;}
+            .winTitle .title_right a:hover{text-decoration:underline; color:#FF0000; padding-right:3px;}
+            .transferPreference {
+                border: 1px solid #D6E3F1;
+                height: 20px;
+                margin: 1px 30%;
+                padding: 0 12px;
+            }
+            .winContent{padding:5px; overflow-y:auto; height:550px;}
+            .popupWindow {
+                right:20px;
+                top:100px;
+                position: absolute;
+                width: 400px;
+                height: 600px;
+                border: 2px solid #D6E3F1;
+                background: #FFF;
+                z-index: 9999;
+            }
+        </style>
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script src='./js/jquery.js'></script>
+        <script type="text/javascript">
+            var map = null;
+            var layer = null;
+            var url = null;
+            var tempLayerID = null,
+            host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+            url =host+"/iserver/services/map-world/rest/maps/World";
+            function init(){
+                getLayersInfo();
+            }
+
+            function show(){
+                $("#popupWin").css("display", "block");
+            }
+            function getLayersInfo() {
+                //获取地图状态参数必设：url
+                var getLayersInfoService = new SuperMap.REST.GetLayersInfoService(url);
+                getLayersInfoService.events.on({ "processCompleted": getLayersInfoCompleted});
+                getLayersInfoService.processAsync();
+            }
+
+            //与服务器交互成功，得到子图层信息
+            var subLayers = new Array();
+            function getLayersInfoCompleted(getLayersInfoEventArgs) {
+                if (getLayersInfoEventArgs.result) {
+                    {
+                        if (getLayersInfoEventArgs.result.subLayers) {
+                            for (var j = 0; j < getLayersInfoEventArgs.result.subLayers.layers.length; j++) {
+                                subLayers.push(getLayersInfoEventArgs.result.subLayers.layers[j]);
+                            }
+                        }
+                    }
+                }
+                installPanel(subLayers);
+            }
+
+            //组装操作面板，显示子图层列表，并初始化地图显示
+            function installPanel(subLayers) {
+                var layersList = "";
+                for (var i = 0; i < subLayers.length; i++) {
+                    if (eval(subLayers[i].visible) == true) {
+                        layersList += '<label class="checkbox" style="line-height: 28px; display: block"><input type="checkbox"  class = "checkboxSel" id="layersList' + i + '" name="layersList" value="' + subLayers[i].name + '" checked=true title="是否可见" />' + subLayers[i].name + '</label>';
+                    }
+                    else {
+                        layersList += '<label class="checkbox" style="line-height: 28px; display: block"><input type="checkbox" class = "checkboxSel" id="layersList' + i + '" name="layersList" value="' + subLayers[i].name + '" title="是否可见"  />' + subLayers[i].name + '</label>';
+                    }
+                }
+                showWindow(layersList);
+                $(".checkbox").click(setLayerStatus);
+
+                //样式为BootStrap框架设置
+                $(".checkbox").hover(function () {
+                    $(this).addClass("label-success");
+                }, function () {
+                    $(this).removeClass("label-success");
+                });
+                createTempLayer();
+            }
+
+            //创建临时图层来初始化当前地图显示
+            function createTempLayer() {
+                //子图层控制参数必设：url、mapName、SetLayerStatusParameters
+                var layerStatusParameters = new SuperMap.REST.SetLayerStatusParameters();
+                layerStatusParameters = getLayerStatusList(layerStatusParameters);
+
+                var setLayerStatusService = new SuperMap.REST.SetLayerStatusService(url);
+                setLayerStatusService.events.on({ "processCompleted": createTempLayerCompleted});
+                setLayerStatusService.processAsync(layerStatusParameters);
+            }
+
+            //获取当前地图子图层状态信息
+            function getLayerStatusList(parameters) {
+                var layersList = document.getElementsByName("layersList");
+                for (var i = 0; i < layersList.length; i++) {
+                    var layerStatus = new SuperMap.REST.LayerStatus();
+                    layerStatus.layerName = layersList[i].value;
+                    layerStatus.isVisible = eval(layersList[i].checked);
+                    parameters.layerStatusList.push(layerStatus);
+                }
+                //设置资源在服务端保存的时间，单位为分钟，默认为10
+                parameters.holdTime = 30;
+                return parameters;
+            }
+
+            //与服务器交互成功，创建临时图层
+            function createTempLayerCompleted(createTempLayerEventArgs) {
+                tempLayerID = createTempLayerEventArgs.result.newResourceID;
+
+                //创建地图控件
+                map = new SuperMap.Map("map", {controls: [
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })]
+                });
+
+                //创建 TiledDynamicRESTLayer
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {transparent: true, cacheEnabled: false, redirect: true, layersID: tempLayerID}, {maxResolution: "auto", bufferImgCount: 0});
+                layer.bufferImgCount = 0;
+                layer.events.on({"layerInitialized": addLayer});
+            }
+
+            function addLayer() {
+                var center = new SuperMap.LonLat(104.13461538461, 32.692307692308);
+                map.addLayers([layer]);
+                map.setCenter(center, 1);
+            }
+
+            //子图层可见性控制
+            function setLayerStatus() {
+                //方法一：使用发送子图层控制参数请求来控制子图层，不推荐使用
+                //子图层控制参数必设：url、mapName、SetLayerStatusParameters
+//        var layerStatusParameters = new SuperMap.REST.SetLayerStatusParameters();
+//        layerStatusParameters = getLayerStatusList(layerStatusParameters);
+//        layerStatusParameters.resourceID = tempLayerID;
+//        var setLayerStatusService = new SuperMap.REST.SetLayerStatusService(url);
+//        setLayerStatusService.events.on({ "processCompleted": setLayerStatusCompleted});
+//        setLayerStatusService.processAsync(layerStatusParameters);
+
+
+                //方法二：通过TiledDynamicRESTLayer的属性layersID来控制子图层的可见性，推荐使用此方法
+                var layersList = document.getElementsByName("layersList");
+                var str = "[0:";
+                for (var i = 0; i < layersList.length; i++){
+                    if(eval(layersList[i].checked) == true)
+                    {
+                        if(i<layersList.length)
+                        {
+                            str += i.toString();
+                        }
+                        if(i<layersList.length-1)
+                        {
+                            str += ",";
+                        }
+                    }
+                }
+                str += "]";
+                //当所有图层都不可见时
+                if(str.length<5)
+                {
+                    str = "[]";
+                }
+                layer.params.layersID = str;
+                layer.redraw();
+
+            }
+
+            //与服务器交互成功，修改临时图层的子图层可见性
+            function setLayerStatusCompleted(setLayerStatusEventArgs) {
+                //刷新显示临时图层
+                layer.redraw();
+            }
+
+            function showWindow(winMessage) {
+                if(document.getElementById("popupWin")) {
+                    $("#popupWin").css("display", "block");
+                } else {
+                    $("<div id='popupWin'></div>").addClass("popupWindow").appendTo($("#result"));
+                }
+                $("#popupWin").css("display", "none");
+                var str = "";
+                str += '<div class="winTitle" onMouseDown="startMove(this,event)" onMouseUp="stopMove(this,event)"><span class="title_left">World地图子图层</span><span class="title_right"><a href="javascript:closeWindow()" title="关闭窗口">关闭</a></span><br style="clear:right"/></div>';  //标题栏
+
+                str += '<div class="winContent" style="overflow-y:auto;height:400px;">';
+                str += winMessage;
+                str += '</div>';
+                $("#popupWin").html(str);
+                document.getElementById("popupWin").style.width = "250px";
+                document.getElementById("popupWin").style.height = "432px";
+            }
+            window.closeWindow = function(){
+                $("#popupWin").css("display", "none");
+            }
+            window.startMove = function(o,e){
+                var wb;
+                if(SuperMap.Browser.name === "msie" && e.button === 1) wb = true;
+                else if(e.button === 0) wb = true;
+                if(wb){
+                    var x_pos = parseInt(e.clientX-o.parentNode.offsetLeft);
+                    var y_pos = parseInt(e.clientY-o.parentNode.offsetTop);
+                    if(y_pos<= o.offsetHeight){
+                        document.documentElement.onmousemove = function(mEvent){
+                            var eEvent = (SuperMap.Browser.name === "msie")?event:mEvent;
+                            o.parentNode.style.left = eEvent.clientX-x_pos+"px";
+                            o.parentNode.style.top = eEvent.clientY-y_pos+"px";
+                        }
+                    }
+                }
+            }
+            window.stopMove = function(o,e){
+                document.documentElement.onmousemove = null;
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id='result' class='container'></div>
+        <div id="toolbar">
+            <input type="button" class="btn" value="子图层控制" onclick="show()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

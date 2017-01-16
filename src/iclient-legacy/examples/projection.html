@@ -1,0 +1,80 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>投影转换</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 558px;
+                border:1px solid #3473b7;
+            }
+            #mousePositionDiv{
+                position: absolute;
+                z-index: 99;
+                left:350px;
+                top:10px;
+                top:10px;
+                font-family: Arial;
+                font-size: smaller;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script src='./data/changchundata.js'></script>
+        <script type="text/javascript">
+            var map, local, layer,control,
+            host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host,
+            url=host+"/iserver/services/map-china400/rest/maps/China";
+            function init(){
+                map = new SuperMap.Map("map", {controls:[
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })],projection:"EPSG:3857"
+                });
+                control = new SuperMap.Control.MousePosition();
+
+                map.events.on({"mousemove":getMousePositionPx});
+
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, {
+                    transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+                layer.events.on({"layerInitialized": addLayer});
+            }
+
+            function addLayer() {
+                map.addLayer(layer);
+                map.setCenter(new SuperMap.LonLat(11733502.481499,4614406.969325), 4);
+            }
+
+            function getMousePositionPx(evt){
+                //获取鼠标坐标位置
+                var lonLat = map.getLonLatFromPixel(evt.xy);
+                if (!lonLat) {
+                    return;
+                }
+                //坐标转换
+                lonLat.transform("EPSG:3857", "EPSG:4326" );
+
+                var newHtml = "客户端地图坐标投影转换：<br> 地图投影：EPSG:3857 <br> 鼠标位置坐标投影：EPSG:4326 <br> 鼠标位置坐标:  " +
+                        lonLat.lon.toFixed(5) + " " +
+                        lonLat.lat.toFixed(5);
+                document.getElementById("mousePositionDiv").innerHTML=newHtml;
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id='mousePositionDiv' class='smCustomControlMousePosition'></div>
+        <div id="map"></div>
+    </body>
+</html>

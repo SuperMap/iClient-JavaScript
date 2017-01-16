@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>热点图颜色手动配置</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #FFFFFF;
+        }
+        #map{
+            position: relative;
+            height: 500px;
+            border:1px solid #3473b7;
+        }
+
+        #toolbar {
+            position: relative;
+            padding-top: 5px;
+            padding-bottom: 10px;
+        }
+        .row{
+            position: absolute;
+            border: 2px solid #D6E3F1;
+            background: #FFF;
+            z-index: 9999;
+            border-top-width: 0px;
+            width:155px;
+            left:604px;
+            top:26px;
+            display: none;
+        }
+        .winTitle{
+            background: #1E90FF;
+            font-size: 15px;
+        }
+
+    </style>
+    <link href='./css/bootstrap.min.css' rel='stylesheet' />
+    <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+    <script src='../libs/SuperMap.Include.js'></script>
+    <script src='./js/jquery.js'></script>
+    <script src='./js/jquery.colorpicker.js'></script>
+    <script>
+        var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+        var map, layer, heatMapLayer, color=[],
+                url=host+"/iserver/services/map-world/rest/maps/World";
+        function init(){
+            if(!document.createElement('canvas').getContext) {
+                alert('您的浏览器不支持 canvas，请升级');
+                return;
+            }
+
+            map = new SuperMap.Map("map",{controls: [
+                new SuperMap.Control.ScaleLine(),
+                new SuperMap.Control.Zoom(),
+                new SuperMap.Control.Navigation({
+                    dragPanOptions: {
+                        enableKinetic: true
+                    }
+                })]
+            });
+            map.addControl(new SuperMap.Control.MousePosition());
+            layer = new SuperMap.Layer.TiledDynamicRESTLayer("World", url, {transparent: true, cacheEnabled: true}, {maxResolution:"auto"});
+            heatMapLayer = new SuperMap.Layer.HeatMapLayer(
+                    "heatMap",
+                    {
+                        "radius":45,
+                        "featureWeight":"value",
+                        "featureRadius":"geoRadius"
+                    }
+            );
+            heatMapLayer.colors=[];
+            layer.events.on({"layerInitialized": addLayer});
+        }
+
+        function addLayer() {
+            map.addLayers([layer,heatMapLayer]);
+            map.setCenter(new SuperMap.LonLat(0, 0), 0);
+        }
+        function createHeatPoints(){
+              clearHeatPoints();
+              var heatPoints = [];
+              var num = parseInt(document.getElementById('heatNums').value);
+              var radius = parseInt(document.getElementById('heatradius').value);
+              var unit = document.getElementById("radiusUnit").value,
+              useGeoRadius = false;
+              if("degree" == unit){
+                        useGeoRadius = true;
+              }
+              heatMapLayer.radius = radius
+              for(var i=0; i < num; i++){
+                  heatPoints[i] = new SuperMap.Feature.Vector(
+                       new SuperMap.Geometry.Point(
+                                Math.random()*360 - 180,
+                                Math.random()*180 - 90
+                       ),
+                       {
+                            "value":Math.random()*9,
+                            "geoRadius":useGeoRadius?radius:null
+                       }
+                  );
+              }
+            heatMapLayer.addFeatures(heatPoints);
+        }
+
+        function clearHeatPoints(){
+            heatMapLayer.removeAllFeatures();
+        }
+        $(document).ready(function() {
+            $("#cp1").colorpicker({
+                ishex:false,
+                fillcolor:true,
+                event:'mouseover',
+                target:$("#cp1text") ,
+                success:addColor
+
+            });
+            $("#_creset").css("font-size","12px");
+            $("#_creset").css("padding-right","20px");
+            $("#colorpanel").css("left","533px");
+
+        });
+        //添加颜色
+        function addColor(){
+            var severColor=document.getElementById("cp1text");
+            if(severColor.value.match(/rgb()/))
+            {
+                for(var i=0;i<color.length;i++)
+                {
+                    if(severColor.value==color[i])
+                    {
+                        alert("重复添加！")
+                        return;
+                        $("#colorList").css("display", "block");
+                    }
+                }
+                initColorList(severColor.value);
+                color.push(severColor.value);
+                var cl_s="new  SuperMap.REST.ServerColor"+severColor.value.replace(/rgb/gi,"");
+                var cl=eval(cl_s);
+                heatMapLayer.colors.push(cl);
+                $("#colorList").css("display", "block");
+                $("#btn1").css("margin-left", "160px");
+            }
+            else
+            {
+                alert("请选颜色值");
+                severColor.value="";
+            }
+
+        }
+        function initColorList(value)
+        {
+            var colorList=$("#colorList");
+            colorList.append(
+                    '<div ><button style="border-width:0px;margin:0px 5px 0px 0px;padding:0px;width:14px;height:14px;line-height: 15px;"'+
+                            'class="btn btn-danger" onclick="deleteColor(event)">-</button>' +'<span style="color: '+value+'">'+value+'</span></div>'
+            );
+
+        }
+        /*在颜色值列表里删除一个颜色*/
+        function deleteColor(evt)
+        {
+            /*移除颜色*/
+            var parent=evt.target.parentNode;
+            parent.parentNode.removeChild(parent);
+
+            //移除颜色里与上面的颜色文本对应的成员
+            var len=color.length;
+            len<10;
+            for(var i=0;i<len;i++)
+            {
+                if(color[i]==parent.childNodes[1].innerHTML)
+                {
+                    color.splice(i,1);
+                    heatMapLayer.colors.splice(i,1);
+                }
+            }
+        }
+        function closeWindow(){
+            $("#colorList").css("display", "none");
+            $("#btn1").css("margin-left", "0px");
+        }
+ </script>
+
+</head>
+<body onload="init()">
+<div id="toolbar">
+    <span>热点数量：</span>
+    <input type='text' style='width:50px;' id='heatNums' value='200'/>
+    <span>热点半径：</span>
+    <input type='text'  style='width:30px' value='50' id='heatradius'/>
+    <select style='width:70px' id='radiusUnit'><option value='px'>px</option><option value ='degree'>degree</option></select>
+    <span style="width:112px;height: 16px;">请输入颜色值：</span>
+    <input type="text" id="cp1text" value=""style=" width:102px;border-width:2px;padding-left: 1px; padding-right: 1px;"/><img src='images/colorpicker.png' id="cp1" style="cursor:pointer"/>
+      <div class="row" id="colorList"style="top: 0px;margin-left: -37px;">
+          <div class="winTitle">
+            <span class="title_left">已添加颜色值：</span>
+            <span class="title_right"><a href="javascript:closeWindow()" title="关闭窗口">关闭</a></span>
+          </div>
+    </div>
+    <input type="button" class="btn" id="btn1"value="渲染热点" style="margin-bottom: 10px" onclick="createHeatPoints()"style="width:80px;border-width:2px;" />
+    <input type="button" class="btn" value="清除" style="margin-bottom: 10px" onclick="clearHeatPoints()" style="width:56px;border-width:2px;"/>
+</div>
+<div id="map"></div>
+</body>
+</html>

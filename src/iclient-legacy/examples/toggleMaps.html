@@ -1,0 +1,79 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>底图切换</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+        <link href='./css/bootstrap.min.css' rel='stylesheet' />
+        <link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+		  <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+		
+		    var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            var map, layerDay, layerNight,bt=false;
+            var url1=host+"/iserver/services/map-world/rest/maps/世界地图_Day";
+		    var url2 = host+"/iserver/services/map-world/rest/maps/世界地图_Night";
+            function init(){
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.OverviewMap(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }
+                    })], allOverlays: false
+                });
+				layerDay = new SuperMap.Layer.TiledDynamicRESTLayer("世界地图_Day", url1, {transparent: true, cacheEnabled: true});
+                layerDay.events.on({"layerInitialized":addLayer1});
+            }
+			function addLayer1()
+			  {
+			     layerNight = new SuperMap.Layer.TiledDynamicRESTLayer("世界地图_Night", url2, {transparent: true, cacheEnabled: true});
+                 layerNight.events.on({"layerInitialized":addLayer2});
+			   }
+			function addLayer2()
+			  {
+			     layerDay.isBaseLayer=true;
+				 layerNight.isBaseLayer=true;
+			     map.addLayers([layerDay,layerNight]);
+				 map.setCenter(new SuperMap.LonLat(130, 100), 2);
+			  }
+            function changeMap() {
+                if (bt == false) {
+                     layerDay.setVisibility(false);
+                     layerNight.setVisibility(true);
+					 map.setBaseLayer(layerNight);
+                     bt = true;
+				  } else if (bt == true) {
+                   layerDay.setVisibility(true);
+                   layerNight.setVisibility(false);
+				   map.setBaseLayer(layerDay);
+                   bt= false;
+               }
+            }
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+            <input id="btn" class="btn" type="button" value="底图切换" onclick="changeMap()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>

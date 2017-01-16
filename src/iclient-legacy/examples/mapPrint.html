@@ -1,0 +1,215 @@
+﻿<!DOCTYPE>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7,IE=9,IE=10,IE=11"/>
+        <title>地图打印</title>
+        <style type="text/css">
+            body{
+                margin: 0;
+                overflow: hidden;
+                background: #fff;
+            }
+            #map{
+                position: relative;
+                height: 510px;
+                border-top:1px solid #3473b7;
+                border-bottom:1px solid #3473b7;
+            }
+            #toolbar {
+                position: relative;
+                padding-top: 5px;
+                padding-bottom: 10px;
+            }
+        </style>
+		<link href='./css/bootstrap.min.css' rel='stylesheet' />
+		<link href='./css/bootstrap-responsive.min.css' rel='stylesheet' />
+        <script src='../libs/SuperMap.Include.js'></script>
+        <script type="text/javascript">
+            var map,layer,markerLayer;
+            var host = document.location.toString().match(/file:\/\//)?"http://localhost:8090":'http://' + document.location.host;
+            smCompanyArr = [
+                ["北京超图软件股份有限公司上海分公司",13522414.5106,3662690.3875,"上海市闸北虬江路1000号聚源大厦办公楼1505室"],
+                ["北京超图软件股份有限公司广州分公司",12608758.6677,2647887.5456,"广州市体育西路109号高盛大厦9楼G单元"],
+                ["北京超图软件股份有限公司成都分公司",11584664.2393,3588559.6862,"成都市高新区天府大道中段1268号天府软件园E区"],
+                ["北京超图软件股份有限公司杭州分公司",13375617.5430,3538667.9064,"杭州市天目山路159号现代国际大厦A座"],
+                ["北京超图软件股份有限公司西安分公司",12127616.0783,4064501.0071,"西安高新区丈八一路一号 汇鑫IBC（A座）"],
+                ["北京超图软件股份有限公司长沙分公司",12573006.2587,3277897.5105,"长沙市芙蓉中路二段359号佳天国际新城北栋8H"],
+                ["北京超图软件股份有限公司沈阳分公司",13740261.8165,5131821.5120,"沈阳市沈河区市府大路262甲号新华科技大厦"]
+            ],
+			url=host+"/iserver/services/map-china400/rest/maps/China";
+            function init(){
+                //定义layer图层，TiledDynamicRESTLayer：分块动态 REST 图层
+                layer = new SuperMap.Layer.TiledDynamicRESTLayer("China", url, { transparent: true, cacheEnabled: true }, { maxResolution: "auto" , useCanvas:false,useCORS:true});
+                //为图层初始化完毕添加addLayer()事件
+                layer.events.on({"layerInitialized":addLayer});
+                map = new SuperMap.Map("map",{controls: [
+                    new SuperMap.Control.LayerSwitcher(),
+                    new SuperMap.Control.OverviewMap(),
+                    new SuperMap.Control.ScaleLine(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.Navigation({
+                        dragPanOptions: {
+                            enableKinetic: true
+                        }})
+                    ]
+                });
+                markerLayer = new SuperMap.Layer.Markers("Markers");
+            }
+
+            function addLayer() {
+                map.addLayers([layer,markerLayer]);
+                map.setCenter(new SuperMap.LonLat(11733502.481499, 4614406.969325), 4);
+            }
+
+            //移除整个图层要素
+            function clearAllFeatures(){
+                markerLayer.clearMarkers();
+                if(map.popups.length != 0){
+                    var i = 0,lengthPopup = map.popups.length;
+                    while(i < lengthPopup){
+                        map.removePopup(map.popups[0]);
+                        i++;
+                    }
+                }
+            }
+
+            /**
+			*打印地图，支持ie9及以上，chrome，firefox等.
+			*请注意相关css,js文件是否存在.
+			*Parameters:
+			*id <String>  id 为map div的id
+			*/
+			function createPrintMap(id){
+				var broz = SuperMap.Browser.name;
+				if(broz == 'msie' && parseInt(SuperMap.Browser.version) < 9){
+					alert("ie9版本以下部分打印功能不支持");
+					return;
+				}
+				var printWindow = window.open("");
+				var strInnerHTML = document.getElementById(id).innerHTML;
+
+                var strHeader = "<!DOCTYPE html><html><head><META HTTP-EQUIV='pragma' CONTENT='no-cache'><META HTTP-EQUIV='Cache-Control' CONTENT='no-cache, must-revalidate'><META HTTP-EQUIV='expires' CONTENT='Wed, 26 Feb 1997 08:21:57 GMT'><meta http-equiv='Content-Type' content='text/html; charset=utf-8' /><meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' /><meta name='apple-mobile-web-app-capable' content='yes' /><title>地图打印</title>";
+                var strCSS = "<link href='./css/sm.css' rel='stylesheet' /><link href='./css/sm-responsive.css' rel='stylesheet' /><link href='../theme/default/style.css' rel='stylesheet'><link href='./css/sm-doc.css' rel='stylesheet' />";
+                var strScript = "<script src='./js/jquery.js'><\/script><script type = 'text/javascript'>" + "\n" + "function printDiv(){$('.newuiPrint').css({'display':'none'});window.print();$('.newuiPrint').css({'display':'block'});}<\/script>";
+                var strBody = "</head><body><div class='print-header'><div class='superD'><h3>地图</h3></div><div id='"+id+"' >" +strInnerHTML + "</div><div id='superft'><div class='printClose'>" + "<span class='newuiPrint' onclick = 'printDiv()'></span></div></div></div></body></html>";
+
+                var strHTML = strHeader + strCSS + strScript + strBody;
+				printWindow.document.write(strHTML);
+				printWindow.document.close();
+				function onloadHTML(){
+					var strDOM = printWindow.document.getElementById(id).children[0].children;
+					for(var i = 0, length = strDOM.length; i < length ; i++){
+						var idStr = strDOM[i].id;
+						if(idStr.indexOf("SuperMap.Control.ScaleLine") == -1 && idStr.indexOf("SuperMap.Map") == -1){
+							strCss = strDOM[i].style.cssText;
+							strCss = strCss + "display: none;";
+							strDOM[i].style.cssText = strCss;
+						}
+					}
+
+					var canvasPrint = printWindow.document.getElementsByTagName("canvas");
+					var canvasMap = document.getElementsByTagName("canvas");
+					for(var i = 0,length = canvasPrint.length;i< length;i++){
+						pasteCanvas(canvasMap[i],canvasPrint[i]);
+					}
+				}
+				if (broz == 'firefox') {
+					printWindow.onload = onloadHTML;
+				} else if (broz == 'safari'||broz == 'chrome'||broz == 'msie') {
+					window.setTimeout(onloadHTML,50);
+				}
+			}
+			//如果涉及到Canvas的图层打印，需要将范例发布出来运行，否则会产生跨域的问题
+			function pasteCanvas(sCanvas/*source*/,dCanvas/*destination*/){
+				var w=sCanvas.width,
+						h=sCanvas.height;
+				dCanvas.width=w;
+				dCanvas.height=h;
+				var viewerImageSrc=sCanvas.toDataURL("image/png");
+				var viewerImage=new Image();
+				viewerImage.src=viewerImageSrc;
+				var dContext=dCanvas.getContext("2d");
+				dContext.drawImage(viewerImage,0,0,w,h);
+			}
+
+			//添加标注
+			function createMarker(){
+				markerLayer.clearMarkers();
+				for(var i = 0,lengthCompany = smCompanyArr.length;i < lengthCompany ;i++){
+					var point = new SuperMap.Geometry.Point(parseFloat(smCompanyArr[i][1]),parseFloat(smCompanyArr[i][2])),
+						strContent = new Array(smCompanyArr[i][0],smCompanyArr[i][3]),
+						size = new SuperMap.Size(32, 32),
+						offset = new SuperMap.Pixel(-(size.w / 2), -size.h),
+						feature = new SuperMap.Feature(markerLayer, new SuperMap.LonLat(point.x, point.y));
+					feature.data.icon = new SuperMap.Icon("images/markerflag.png", size, offset);
+					var marker = feature.createMarker();
+					var markerClick = function (evt,feature,strContent) {
+						SuperMap.Event.stop(evt);
+						this.win.open(feature,{
+							"name":strContent[0],
+							"informition":strContent[1]
+						});
+					};
+					marker.events.register("click", feature, function(feature,strContent){
+						return function(evt){
+							markerClick(evt,feature,strContent);
+						}
+					}(feature,strContent));
+					markerLayer.addMarker(marker);
+				}
+			}
+
+			this.win = new InforWindow_z({"map":map});
+			function InforWindow_z(param){
+				var t = this;
+				t.infowin = null;
+				t.map = null;
+				t.init = function(param){
+					for(var key in param){
+						t[key] = param[key];
+					}
+				}
+				t.open = function(feature,data){
+					t.close();
+					t.create(feature,data);
+				}
+				t.create = function(feature,data){
+				   var contentHTML = "<div style='font-size:.8em; opacity: 0.8; overflow-y:hidden;'>" +
+								  "<span style='font-weight: bold; font-size: 18px;'>详细信息</span><br>";
+					contentHTML += "公司名称：" + data.name + "<br>";
+					contentHTML += "公司地址："  + data.informition + "</div>";
+					//初始化一个弹出窗口，当某个地图要素被选中时会弹出此窗口，用来显示选中地图要素的属性信息
+					var popup = new SuperMap.Popup.FramedCloud("chicken",
+									feature.marker.lonlat,
+									null,
+									contentHTML,
+									null,
+									true);
+					feature.popup = popup;
+					map.addPopup(popup);
+					t.infowin = popup;
+				}
+				t.close = function(){
+					if(t.infowin){
+						try{
+							t.infowin.hide();
+							t.infowin.destroy();
+						}
+						catch(e){}
+					}
+				}
+				t.init(param);
+			}
+
+        </script>
+    </head>
+    <body onload="init()">
+        <div id="toolbar">
+			<input type="button" class="btn" value="标注" onclick="createMarker()" />
+			<input type="button" class="btn" value="打印" onclick="createPrintMap('map')" />
+			<input type="button" class="btn" value="清除" onclick="clearAllFeatures()" />
+        </div>
+        <div id="map"></div>
+    </body>
+</html>
