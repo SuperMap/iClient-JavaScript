@@ -1,1 +1,0 @@
-.\SuperMap_compress_cloud.js

@@ -1,2 +1,0 @@
-.\SuperMap_compress.js
-.\SuperMap_compress2.js
