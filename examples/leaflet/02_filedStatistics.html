@@ -1,0 +1,155 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <title>数据集字段查询统计</title>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.2/leaflet.css"/>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet/v1.0.2/leaflet.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9.js"></script>
+    <style>
+        .resultInfo {
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+    </style>
+    <script type="text/javascript">
+        var map, currentData, layersName = [], info,
+                wms = "http://support.supermap.com.cn:8090/iserver/services/map-world/wms111/World",
+                mapURL = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
+                dataURL = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+
+        function init() {
+            map = L.map('map', {
+                preferCanvas: true,
+                crs: L.CRS.EPSG4326,
+                center: {lon: 0, lat: 0},
+                maxZoom: 18,
+                zoom: 2
+            });
+            L.tileLayer.wms(wms, {
+                noWrap: true,
+                layers: 'World',
+                format: 'image/png',
+                transparent: true
+            }).addTo(map);
+            initResultInfoWin();
+            showLayersInfo();
+            document.getElementById("layerSelect").onchange = function () {
+                getFields();
+            };
+        }
+
+        function initResultInfoWin() {
+            info = L.control({position: 'bottomleft'});
+            info.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'resultInfo');
+                info.update();
+                return this._div;
+            };
+
+            info.update = function (currentStatisticResult) {
+                if (!currentStatisticResult) {
+                    return;
+                }
+                var innerHTMLStr = '<div style="line-height: 35px;">'
+                        + '<strong>字段（' + currentStatisticResult.fieldName + '）统计结果:</strong><div>';
+                var keys = ["AVERAGE", "MAX", "MIN", "STDDEVIATION", "SUM", "VARIANCE"];
+                var tableStr = "<table id='trafficRes' class='table table-bordered'><tr><td>平均值</td><td>最大值</td><td>最小值</td>"
+                        + "<td>标准差</td><td>和</td><td>方差</td></tr>";
+                var resultTR = "<tr>";
+                for (var i = 0; i < keys.length; i++) {
+                    resultTR += "<td>" + currentStatisticResult[keys[i]] + "</td>";
+                }
+                resultTR += "</tr>";
+                tableStr += resultTR + "</table>";
+                innerHTMLStr += tableStr;
+                this._div.innerHTML = innerHTMLStr;
+            };
+            info.addTo(map);
+        }
+
+        //获取子图层信息
+        function showLayersInfo() {
+            var subLayer;
+            L.supermap.getLayersInfoService(mapURL).on("complete", function (result) {
+                var layers = result.data;
+                if (!layers) return;
+                for (var i = 0, len = layers.length; i < len; i++) {
+                    subLayer = layers[i];
+                    if ("UGC" == subLayer.type) {
+                        //记录数据源，数据集信息供字段查询统计使用
+                        if (subLayer.datasetInfo.name && subLayer.datasetInfo.dataSourceName) {
+                            layersName[i] = {
+                                dataSetName: subLayer.datasetInfo.name,
+                                dataSourceName: subLayer.datasetInfo.dataSourceName,
+                                layerName: subLayer.name
+                            };
+                        }
+                    }
+                }
+                //添加图层信息到选择列表
+                var layerSelect = document.getElementById("layerSelect");
+                layerSelect.innerHTML = "";
+                for (i = 0; i < layersName.length; i++) {
+                    layerSelect.options[i] = new Option(layersName[i].layerName);
+                }
+                getFields();
+            });
+        }
+
+        function getFields() {
+            var layerSelect = document.getElementById("layerSelect");
+            var name = layerSelect.options[layerSelect.selectedIndex].innerHTML;//:selected").text();
+            var dataInfo;
+            for (var i = 0; i < layersName.length; i++) {
+                dataInfo = layersName[i];
+                if (dataInfo.layerName == name) {
+                    //设置数据集，数据源，查询fields信息
+                    currentData = dataInfo;
+                    L.supermap.getFieldsService(dataURL, {
+                        dataSourceName: dataInfo.dataSourceName, dataSetName: dataInfo.dataSetName
+                    }).on("complete", function (result) {
+                        var fieldNames = result.data.fieldNames;
+                        var fieldSelect = document.getElementById("fieldSelect");
+                        fieldSelect.innerHTML = "";
+                        for (var j = 0; j < fieldNames.length; j++) {
+                            fieldSelect.options[j] = new Option(fieldNames[j], fieldNames[j]);
+                        }
+                    });
+                }
+            }
+        }
+
+        function fieldStatistic() {
+            var fieldSelect = document.getElementById("fieldSelect");
+            var fieldName = fieldSelect.options[fieldSelect.selectedIndex].innerHTML;
+            if (currentData) {
+
+                L.supermap.fieldStatisticService(dataURL, {
+                    dataSourceName: currentData.dataSourceName,
+                    dataSetName: currentData.dataSetName,
+                    fieldName: fieldName
+                }).on("complete", function (result) {
+                    info.update(result.data);
+                });
+            }
+        }
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <span>图层：</span>
+    <select id='layerSelect' class="form-control" style='width:200px;margin-top:10px;display: inline-block'></select>
+    <span>字段：</span>
+    <span style="display: inline-block">
+        <select id='fieldSelect' class="form-control" style='width:100px;margin-top:10px;'></select>
+    </span>
+    <input type="button" class="btn btn-primary" value="统计" onclick="fieldStatistic()"/>
+</div>
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>

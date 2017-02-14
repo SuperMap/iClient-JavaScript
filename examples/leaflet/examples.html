@@ -1,0 +1,313 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <title>Leaflet示范程序</title>
+    <link href='css/bootstrap.min.css' rel='stylesheet'/>
+    <link href='css/bootstrap-responsive.min.css' rel='stylesheet'/>
+    <link href='css/sm-extend.css' rel='stylesheet'/>
+    <link href='css/sm-doc.css' rel='stylesheet'/>
+    <style>
+        li.active, li.active a {
+            outline: none;
+            border: none
+        }
+
+        .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
+            width: 1500px;
+        }
+    </style>
+</head>
+<body data-spy="scroll" data-target=".subnav" data-offset="50">
+<!--导航条-->
+<div class="navbar navbar-fixed-top" id="navbar">
+
+</div>
+<!--功能区-->
+<div id='container' class='container'>
+
+    <div class='page-header'>
+        <h3>Leaflet范例分类</h3>
+
+        <ul class="nav nav-tabs" id='myTab'>
+            <li class='active'><a href="#maps" data-toggle="tab">地图</a></li>
+            <li><a href="#data" data-toggle="tab">数据</a></li>
+        </ul>
+
+        <div class='tab-content' id='myTabContent'>
+            <div class='tab-pane fade active in' id='maps'>
+
+                <div class="container-fluid">
+                    <div class="row-fluid">
+                        <div class="span2">
+                            <ul class='nav nav-pills'><span>></span>
+                                <li>底图</li>
+                            </ul>
+                        </div>
+                        <div class="span10">
+                            <ul class='nav nav-pills'>
+                                <li><a href='javascript:void(0)' target='_self' data-name='01_tiledMapLayer'>iServer4326地图</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="row-fluid">
+                        <div class="span2">
+                            <ul class='nav nav-pills'><span>></span>
+                                <li>地图服务</li>
+                            </ul>
+                        </div>
+                        <div class="span10">
+                            <ul class='nav nav-pills'>
+                                <li><a href='javascript:void(0)' target='_self' data-name='01_mapService'>地图信息</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='01_layerService'>图层信息</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="container-fluid">
+                    <div class="row-fluid">
+                        <div class="span2">
+                            <ul class='nav nav-pills'><span>></span>
+                                <li>地图查询</li>
+                            </ul>
+                        </div>
+                        <div class="span10">
+                            <ul class='nav nav-pills'>
+                                <li><a href='javascript:void(0)' target='_self' data-name='01_mapQueryByBounds'>范围查询</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class='tab-pane fade' id='data'>
+
+                <div class="container-fluid">
+                    <div class="row-fluid">
+                        <div class="span2">
+                            <ul class='nav nav-pills'><span>></span>
+                                <li>数据查询</li>
+                            </ul>
+                        </div>
+                        <div class="span10">
+                            <ul class='nav nav-pills'>
+                                <li><a href='javascript:void(0)' target='_self' data-name='02_getFeatureByIDs'>ID 查询</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='02_getFeatureBySQL'>SQL 查询</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='02_getFeatureByBounds'>范围查询</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='02_getFeatureByGeometry'>几何查询</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='02_getFeatureByBuffer'>缓冲区查询</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='02_filedsService'>字段信息</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='02_filedStatistics'>字段查询统计</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class='page-header'>
+
+        <h3><span id='demo-title'></span></h3>
+        <br>
+        <span id="skip" onclick="window .open(this.href);" style="cursor: pointer"><a href='javascript:void(0)'>跳转</a></span>
+        <span> <a id='sourceCode' href='javascript:void(0);' target='_self'>显示源码</a></span>
+        <div id='func'></div>
+        <div id='map'>
+            <iframe id="examplesIframe" height="560px" frameBorder="0" marginheight="0" marginwidth="0" width="100%"></iframe>
+        </div>
+        <div id='result' class='container'></div>
+        <div id='mousePositionDiv' class='smCustomControlMousePosition'></div>
+    </div>
+
+
+    <div class='footer'>
+        <p>版权所有&nbsp;&copy; 2000-2017 &nbsp;北京超图软件股份有限公司</p>
+    </div>
+</div>
+<!--第三方的操作样式库-->
+<script src='js/jquery.js'></script>
+<script src='js/bootstrap.js'></script>
+<script>
+    var loadedScript, dataCount = 0;
+    $(document).ready(function () {
+        var url = location.href;
+        if (url.lastIndexOf("#") > -1) {
+            var exampleId = url.substring(url.lastIndexOf('#') + 1, url.length);
+            //判断url中是否带有锚点
+            if (exampleId) {
+                //有锚点则打开相应的范例
+                var a = $("a[data-name='" + exampleId + "']");
+                var parentId = a.parents(".tab-pane").attr("id");
+                setTimeout(function () {
+                    $("#myTab a[href='#" + parentId + "']").click();
+                    a.click();
+                }, 0)
+            } else {
+                //无锚点则默认打开第一个范例
+                openDefalutExam();
+            }
+        } else {
+            openDefalutExam();
+        }
+
+        function openDefalutExam() {
+            setTimeout(function () {
+                $("#myTab li a").first().click();
+            }, 0)
+        }
+
+        $('#sourceCode').click(function () {
+            openSource($(this));
+        });
+        //添加单击事件
+        $('#myTab').click(function (e) {
+            e = e || window.event;
+            var target = e.target || e.srcElement;
+            var eid = target.hash;
+            $(eid + " .span10 li a").first().click();
+        });
+        //添加单击事件
+        $('#myTabContent').click(function (e) {
+            e = e || window.event;
+            var target = e.target || e.srcElement;
+            addFunc(e);
+            //阻止浏览器冒泡
+            if (typeof e.preventDefault === 'function') {
+                e.preventDefault();
+                e.stopPropagation();
+            } else {
+                e.returnValue = false;
+                e.cancleBubble = true;
+            }
+
+
+            //将选中地图属性名称添加到url上
+            var urlName = $(target).data("name");
+            if (location.href.lastIndexOf('#') > 0) {
+                location.href = location.href.substring(0, location.href.lastIndexOf('#')) + '#' + urlName;
+            }
+            else {
+                location.href = location.href + '#' + urlName;
+            }
+        });
+
+    });
+
+
+    //加载具体的案例。
+    function addFunc(e) {
+        var srcEle = e.target || e.srcElement;
+        if (srcEle && srcEle.nodeName === 'A') {
+            activeExample(srcEle);
+        }
+    }
+    function activeExample(srcEle) {
+        updateClassName(srcEle);
+        var $srcEle = $(srcEle);
+        $('#sourceCode').prop('url', './' + $srcEle.data("name") + '.html');
+        $('#skip').prop('href', './' + $srcEle.data("name") + '.html');
+        runExample($srcEle);
+    }
+    function updateClassName(ele) {
+        /*需要更精确的定位*/
+        $('.tab-content').find('> .tab-pane  ul > .active').removeClass('active');
+        $(ele).parent().addClass('active');
+    }
+
+    function attachScript(url, id) {
+        $("#examplesIframe").attr("src", url);
+    }
+    function runExample(srcEle) {
+        var url = './' + srcEle.data("name") + '.html';
+        attachScript(url, srcEle.data("name") + "_script");
+    }
+
+
+    //查看源码
+    function openSource(ele) {
+        var href = window.location.href;
+
+        // 处理 “./”
+        var subUrl = ele.prop('url');
+        if (subUrl.substring(0, 2) == "./") {
+            subUrl = subUrl.substring(2);
+        }
+
+        // var sourceUrl = href.substr(0, href.lastIndexOf('/')+1) +  ele.prop('url');
+        var sourceUrl = href.substr(0, href.lastIndexOf('/') + 1) + subUrl;
+        var broz = $.browser;
+        var isFile = document.location.toString().match(/file:\/\//);
+        var isChrome = navigator.userAgent.toLowerCase().match(/chrome/) != null;
+        if (broz.mozilla) {
+            if (isIE()) {
+                showSourceForIE_Safari_chrome(sourceUrl);
+            }
+            else {
+                showSourceForFirefox(sourceUrl);
+            }
+        }
+        else if (isChrome) {
+            if (isFile) {
+                showSourceForchrome_file(sourceUrl);
+            }
+            else {
+                showSourceForIE_Safari_chrome(sourceUrl);
+            }
+        }
+        else if (broz.safari || broz.msie) {
+            showSourceForIE_Safari_chrome(sourceUrl);
+        }
+        else {
+            alert("暂不支持此浏览器显示源码！请在下方地图区域点击右键——>查看源文件");
+        }
+
+        function isIE() {
+            if (!!window.ActiveXObject || "ActiveXObject" in window)
+                return true;
+            else
+                return false;
+        }
+    }
+    //fireFox
+    function showSourceForFirefox(url) {
+        window.open("view-source:" + url, "sourceInFirefox", 'scrollbars=yes,toolbar=no,menubar=no,location=no,status=no');       //, 'toolbar=no,menubar=no,location=no,status=no'
+    }
+    //chrome file
+    function showSourceForchrome_file(url) {
+        window.open("view-source:" + url, "sourceInFirefox", 'scrollbars=yes,toolbar=no,menubar=no,location=no,status=no');       //, 'toolbar=no,menubar=no,location=no,status=no'
+    }
+    //IE、chrome与Safari显示源代码方法
+    function showSourceForIE_Safari_chrome(url) {
+        //, "sourceInIE", 'toolbar=no,menubar=no,location=no,status=no'
+        var html = $.ajax({url: url, async: false}).responseText; //获取网页文本内容
+        if (html && html != "") {
+            var newIEPage = window.open("", "showSourceForIE_Safari_chrome", 'scrollbars=yes,toolbar=no,menubar=no,location=no,status=no');//,"showSourceForIE_Safari_chrome",'scrollbars=yes,toolbar=no,menubar=no,location=no,status=no'
+            newIEPage.document.write("<body></body>");
+            newIEPage.document.body.innerText = html;
+        }
+        else {
+            alert("暂不支持此浏览器显示源码！请在下方地图区域点击右键——>查看源文件");
+        }
+    }
+</script>
+
+<script>
+    $('.tab-pane').find('>div>div:last').css("border-bottom", "0px");
+    $('.row-fluid').find('>div ul>li a:last').css("border-right", "0px");
+</script>
+</body>
+</html>

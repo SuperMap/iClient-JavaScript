@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SuperMap REST 地图服务底图</title>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.2/leaflet.css"/>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet/v1.0.2/leaflet.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9.js"></script>
+    <script type="text/javascript">
+        var map,url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+        function init() {
+            map = L.map('map', {
+                crs: L.CRS.EPSG4326,
+                center: {lon: 0, lat: 0},
+                maxZoom: 18,
+                zoom: 1
+            });
+            L.supermap.tiledMapLayer(url).addTo(map);
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style="padding-top: 10px; padding-bottom: 10px;">
+    <div style="text-align: center">SuperMap REST 地图服务底图</div>
+</div>
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>

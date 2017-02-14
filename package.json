@@ -1,0 +1,32 @@
+{
+  "name": "SuperMapiClient9",
+  "description": "SuperMap iClient for JavaScript 是一套由 JavaScript 语言编写的 GIS 客户端应用开发包， 支持多源数据地图，支持多终端，跨浏览器， 通过本产品可快速实现浏览器上美观、流畅的地图呈现。",
+  "version": "0.0.1",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc",
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "deploy": "webpack",
+    "compress": "webpack -p",
+    "package": "node ./build/pack.js"
+  },
+  "keywords": [
+    "SuperMap",
+    "leaflet",
+	"Openlayers3"
+  ],
+  "author": "SuperMap",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "webpack": "^1.14.0",
+    "commander": "2.9.0",
+    "shelljs": "0.7.6"
+  },
+  "dependencies": {
+    "openlayers": "4.0.0",
+    "leaflet": "1.0.3"
+  }
+}

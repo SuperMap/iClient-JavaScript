@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>自定义打包</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+
+    <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        body {
+            font: 12px/1.4 Verdana, sans-serif;
+            font-family: Microsoft Yahei;
+            text-align: center;
+            padding: 0 0;
+        }
+
+        #container {
+            text-align: left;
+            margin: 0 auto;
+            width: 780px;
+        }
+
+        #container .sec {
+            margin-top: 20px;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        #container .commondSec {
+            border-bottom: 0px;
+        }
+
+        .description {
+            border-left: 5px solid #204d74;
+            border-radius: 1px;
+            padding: 5px;
+        }
+
+        .description div {
+            font-size: 18px;
+            margin-right: 12px;
+        }
+
+        .description a {
+            font-size: 16px;
+        }
+
+        #container .sec h4 {
+            color: #3c485c;
+            font-size: 26px;
+            font-weight: normal;
+        }
+
+        .deplist {
+            list-style: none;
+            min-height: 100px;
+            padding: 20px;
+        }
+
+        .deplist li {
+            cursor: pointer;
+            margin: 10px;
+            width: 120px;
+            height: 40px;
+            background: #eeeeee;
+            border: 1px solid #dddddd;
+            float: left;
+            position: relative;
+        }
+
+        .deplist li:hover,
+        .deplist li.active {
+            border: 2px solid #44b549;
+        }
+
+        .deplist li input {
+            display: none;
+        }
+
+        .deplist li label {
+            float: right;
+            width: 16px;
+            height: 16px;
+        }
+
+        .deplist li input[type=checkbox]:checked + label {
+            background: #44b549;
+        }
+
+        .deplist li input[type=checkbox]:checked + label:after {
+            opacity: 1;
+            content: "\2714";
+            margin: 0 3px;
+            color: #ffffff;
+        }
+
+        .deplist li .item {
+            float: left;
+            cursor: pointer;
+            width: 100%;
+            height: 30px;
+            font-weight: bold;
+            line-height: 30px;
+            text-align: center;
+            color: #666666;
+            position: absolute;
+            margin: auto;
+            bottom: 0;
+            left: 0;
+            top: 0;
+            right: 0;
+        }
+
+        #command2 {
+            width: 100%;
+            margin: 20px 30px;
+        }
+
+
+        #toolbar {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        h3 {
+            color: #aaaaaa;
+            font-size: 16px;
+            margin-left: 30px;
+        }
+
+        h3 span {
+            font-size: 14px;
+            margin-left: 5px;
+            width: 100%;
+        }
+
+        p {
+            height: 50px;
+        }
+
+        #client {
+            font-size: 16px;
+            margin-left: 30px;
+        }
+
+    </style>
+</head>
+
+<body onload="init()">
+<div id="container">
+    <h1>自定义打包</h1>
+    <p id="toolbar">
+        <a id="select-all" href="#all">全选</a> |
+        <a id="deselect-all" href="#none">取消全选</a>
+    </p>
+    <section class="sec">
+        <div class="description">
+            <div>Core<span style="font-size: 14px"> --SuperMap iClient9基础核心功能</span></div>
+        </div>
+        <div class="deplistContent active"><ul id="deplist" class="deplist"></ul></div>
+    </section>
+    <section class="sec">
+        <div class="description">
+            <div style="height: 35px;line-height: 35px;">客户端
+            </div>
+        </div>
+        <ul id = "client" class="nav nav-tabs clientTabs" style="display: inline-block">
+            <li role="presentation" class="active"><a href="#ol3select">OL3</a></li>
+            <li role="presentation"><a href="#leafletselect">Leaflet</a></li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane deplistContent active" id="ol3select"></div>
+            <div role="tabpanel" class="tab-pane deplistContent" id="leafletselect"></div>
+        </div>
+
+    </section>
+    <section class="sec commandSection">
+        <div class="description">
+            <div>自定义打包命令<span style="font-size: 14px;"> --复制命令,在源码根目录执行命令打包</span></div>
+        </div>
+        <input type="text" class="form-control" id="command2"/>
+    </section>
+</div>
+
+<script type="text/javascript" src="deps.js"></script>
+<script type="text/javascript" src="build.js"></script>
+</body>
+
+</html>

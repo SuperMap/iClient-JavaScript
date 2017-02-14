@@ -1,0 +1,58 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <title>数据集ID查询</title>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.2/leaflet.css"/>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet/v1.0.2/leaflet.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9.js"></script>
+    <script type="text/javascript">
+        var map, resultLayer,
+                wms = "http://support.supermap.com.cn:8090/iserver/services/map-world/wms111/World",
+                url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+        function init() {
+            map = L.map('map', {
+                preferCanvas: true,
+                crs: L.CRS.EPSG4326,
+                center: {lon: 0, lat: 0},
+                maxZoom: 18,
+                zoom: 1
+            });
+            L.tileLayer.wms(wms, {
+                noWrap: true,
+                layers: 'World',
+                format: 'image/png',
+                transparent: true
+            }).addTo(map);
+
+        }
+        function query() {
+            clearLayer();
+            L.supermap.getFeaturesByIDsService(url, {
+                IDs: [1, 247],
+                dataSetNames: ["World:Countries"]
+            }).on("complete", function (info) {
+                resultLayer = L.geoJSON(info.data, {
+                    onEachFeature: function (feature, layer) {
+                        layer.bindPopup("ID: " + feature.properties.SMID + "<br>" + "国家：" + feature.properties.COUNTRY);
+                    }
+                }).addTo(map);
+            });
+        }
+        function clearLayer() {
+            if (resultLayer) {
+                resultLayer.removeFrom(map);
+            }
+        }
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <input type="button" class="btn btn-primary" value="数据集ID查询" onclick="query()"/>
+    <input type="button" class="btn btn-primary" value="清除结果" onclick="clearLayer()"/>
+    <span class="alert alert-danger" role="alert">ID=[1, 247]</span>
+
+</div>
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>
