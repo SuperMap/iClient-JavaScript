@@ -27,6 +27,6 @@ module.exports = {
 
     //插件项
     plugins: [
-        new ExtractTextPlugin("leaflet.css")
+        new ExtractTextPlugin("SuperMapiClient9.css")
     ]
 };
