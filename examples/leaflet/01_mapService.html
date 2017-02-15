@@ -24,14 +24,14 @@
             closeInfoWin();
             L.supermap.mapService(url, {
                 projection: "4326"
-            }).on("complete", function (result) {
+            }).on("complete", function (serviceResult) {
                 if (!infowin) {
                     infowin = L.popup({maxWidth: 400});
                 }
                 var innerHTML = "(map信息太多，只打印一部分)" + "<br><br>";
-                innerHTML += "地图名：" + JSON.stringify(result.data.name, null, 2) + "<br>";
-                innerHTML += "中心点:" + JSON.stringify(result.data.center, null, 2) + "<br>";
-                innerHTML += "Bounds:" + JSON.stringify(result.data.bounds, null, 2) + "<br>";
+                innerHTML += "地图名：" + JSON.stringify(serviceResult.result.name, null, 2) + "<br>";
+                innerHTML += "中心点:" + JSON.stringify(serviceResult.result.center, null, 2) + "<br>";
+                innerHTML += "Bounds:" + JSON.stringify(serviceResult.result.bounds, null, 2) + "<br>";
 
                 infowin.setLatLng(map.getCenter()).setContent(innerHTML).openOn(map);
             });

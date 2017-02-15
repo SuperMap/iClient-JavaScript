@@ -22,12 +22,12 @@
 
         function layerService() {
             closeInfoWin();
-            L.supermap.getLayersInfoService(url).on("complete", function (result) {
+            L.supermap.getLayersInfoService(url).on("complete", function (serviceResult) {
                 if (!infowin) {
                     infowin = L.popup({maxWidth: 400});
                 }
                 var innerHtml = "";
-                result.data.map(function (layer) {
+                serviceResult.result.map(function (layer) {
                     innerHtml += layer.name + "<br>";
                 });
                 infowin.setLatLng(map.getCenter()).setContent(innerHtml).openOn(map);

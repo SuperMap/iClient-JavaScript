@@ -11,18 +11,17 @@
  *          //doSomething
  *      });
  */
-require('../../base');
+require('./ServiceBase');
 require('../../../Core/iServer/QueryByBoundsService');
 
-QueryByBoundsService = L.Evented.extend({
+QueryByBoundsService = ServiceBase.extend({
     options: {
-        url: null,
         name: null,//图层名称。格式：数据集名称@数据源别名）
         queryBounds: null
     },
 
     initialize: function (url, options) {
-        this.options.url = url;
+        ServiceBase.prototype.initialize.call(this, url, options);
         L.setOptions(this, options);
         this.options.name = options.name;
         var queryBounds = this.options.queryBounds = options.queryBounds;
@@ -51,14 +50,6 @@ QueryByBoundsService = L.Evented.extend({
             }
         });
         queryService.processAsync(queryByBoundsParams);
-    },
-
-    processCompleted: function (queryResult) {
-        this.fire("complete", {data: queryResult.result});
-    },
-
-    processFailed: function (e) {
-        this.fire("failed", e);
     }
 });
 

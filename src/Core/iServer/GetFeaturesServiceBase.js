@@ -186,7 +186,6 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
         if (params.returnCountOnly) me.url += "&returnCountOnly=" + params.returnContent;
         jsonParameters = me.getJsonParameters(params);
-        this.startTime=new Date().getTime();
         me.request({
             method: "POST",
             data: jsonParameters,
@@ -210,7 +209,6 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
             var geoJSONFormat = new SuperMap.Format.GeoJSON();
             results = JSON.parse(geoJSONFormat.write(result.features));
         }
-        console.log(new Date().getTime()-this.startTime);
         me.events.triggerEvent("processCompleted", {result: results});
     },
 
@@ -222,18 +220,8 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
      * result -  {Object} 服务器返回的结果对象。
      */
     getFeatureError: function (result) {
-        var me = this,
-            error = null,
-            serviceException = null,
-            qe = null;
         result = SuperMap.Util.transformResult(result);
-        error = result.error;
-        if (!error) {
-            return;
-        }
-        serviceException = SuperMap.ServiceException.fromJson(error);
-        qe = new SuperMap.ServiceFailedEventArgs(serviceException, result);
-        me.events.triggerEvent("processFailed", qe);
+        this.events.triggerEvent("processFailed", result);
     },
 
     CLASS_NAME: "SuperMap.REST.GetFeaturesServiceBase"

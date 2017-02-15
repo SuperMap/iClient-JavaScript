@@ -71,7 +71,7 @@ FieldStatisticService = FieldsServiceBase.extend({
             }
         }
         if (getAll) {
-            this.fire('complete', {data:this.currentStatisticResult});
+            this.fire('complete', {result:this.currentStatisticResult});
         }
     }
 });

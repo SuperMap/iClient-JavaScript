@@ -26,11 +26,11 @@
             L.supermap.getFieldsService(url, {
                 dataSourceName: "World",
                 dataSetName: "continent_T"
-            }).on("complete", function (result) {
+            }).on("complete", function (serviceResult) {
                 if (!infowin) {
                     infowin = L.popup({maxWidth: 420});
                 }
-                infowin.setLatLng(map.getCenter()).setContent(result.data.fieldNames.join(', ')).openOn(map);
+                infowin.setLatLng(map.getCenter()).setContent(serviceResult.result.fieldNames.join(', ')).openOn(map);
             });
         }
         function closeInfoWin() {

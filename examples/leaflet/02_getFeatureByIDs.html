@@ -25,8 +25,8 @@
             L.supermap.getFeaturesByIDsService(url, {
                 IDs: [1, 247],
                 dataSetNames: ["World:Countries"]
-            }).on("complete", function (info) {
-                resultLayer = L.geoJSON(info.data, {
+            }).on("complete", function (serviceResult) {
+                resultLayer = L.geoJSON(serviceResult.result, {
                     onEachFeature: function (feature, layer) {
                         layer.bindPopup("ID: " + feature.properties.SMID + "<br>" + "国家：" + feature.properties.COUNTRY);
                     }

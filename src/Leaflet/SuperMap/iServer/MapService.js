@@ -10,22 +10,22 @@
  *           //doSomething
  *      });
  */
-require('../../base');
+require('./ServiceBase');
 require('../../../Core/iServer/MapService');
 
-MapService = L.Evented.extend({
+MapService = ServiceBase.extend({
     options: {
-        url: null,
         projection: null
     },
     initialize: function (url, options) {
-        this.options.url = url;
+        ServiceBase.prototype.initialize.call(this, url, options);
+        L.setOptions(this, options);
         var projection = "3857";
         if (options && options.projection && options.projection === "4326") {
             projection = "4326";
         }
         this.options.projection = new SuperMap.Projection(projection);
-        L.setOptions(this, options);
+
         this._getMapStatus();
     },
 
@@ -39,13 +39,6 @@ MapService = L.Evented.extend({
             }, projection: me.options.projection
         });
         getMapStatusService.processAsync();
-    },
-    processCompleted: function (mapStatus) {
-        this.fire('complete', {data:mapStatus.result});
-
-    },
-    processFailed: function (failedMessage) {
-        this.fire('failed', failedMessage);
     }
 });
 

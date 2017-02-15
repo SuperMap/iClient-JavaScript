@@ -180,18 +180,8 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
      * result -  {Object} 服务器返回的结果对象。
      */
     fieldStatisticFailed: function (result) {
-        var me = this,
-            error = null,
-            serviceException = null,
-            qe = null;
         result = SuperMap.Util.transformResult(result);
-        error = result.error;
-        if (!error) {
-            return;
-        }
-        serviceException = SuperMap.ServiceException.fromJson(error);
-        qe = new SuperMap.ServiceFailedEventArgs(serviceException, result);
-        me.events.triggerEvent("processFailed", qe);
+        this.events.triggerEvent("processFailed", result);
     },
 
     CLASS_NAME: "SuperMap.REST.FieldStatisticService"
