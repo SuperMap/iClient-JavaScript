@@ -6,14 +6,12 @@
 /**
  * Class: SuperMap.REST.QueryService
  * 查询服务基类。
- * 查询结果通过该类支持的事件的监听函数参数获取，参数类型为 {<SuperMap.REST.QueryEventArgs>}; 获取的结果数据包括 result 、originResult 两种，
- * 其中，originResult 为服务端返回的用 JSON 对象表示的查询结果数据，result 为服务端返回的查询结果数据，保存在 {<SuperMap.REST.QueryResult>} 对象中 。
- *
+ * 结果保存在一个object对象中，对象包含一个属性result为iServer返回的json对象
  * Inherits from:
  *  - <SuperMap.ServiceBase>
  */
 require('../base');
-SuperMap.iServer.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Constant: EVENT_TYPES
@@ -31,14 +29,14 @@ SuperMap.iServer.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.iServer.QueryService(url);
+     * var myService = new SuperMap.REST.QueryService(url);
      * myService.events.on({
      *     "processCompleted": queryCompleted, 
      *	   "processFailed": queryError
      *	   }
      * );
-     * function queryCompleted(QueryEventArgs){//todo};
-     * function queryError(QueryEventArgs){//todo};
+     * function queryCompleted(object){//todo};
+     * function queryError(object){//todo};
      * (end)
      */
     events: null,
@@ -50,19 +48,13 @@ SuperMap.iServer.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
     eventListeners: null,
 
     /**
-     * Property: lastResult
-     * {<SuperMap.iServer.QueryResult>} 服务端返回的查询结果数据。
-     */
-    lastResult: null,
-
-    /**
      * Property: returnContent
      * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。
      */
     returnContent: false,
 
     /**
-     * Constructor: SuperMap.iServer.QueryService
+     * Constructor: SuperMap.REST.QueryService
      * 查询服务基类构造函数。
      *
      * 例如：
@@ -119,10 +111,6 @@ SuperMap.iServer.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
         if (me.eventListeners) {
             me.eventListeners = null;
         }
-        if (me.lastResult) {
-            me.lastResult.destroy();
-            me.lastResult = null;
-        }
         me.returnContent = null;
     },
 
@@ -168,22 +156,19 @@ SuperMap.iServer.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * result - {Object} 服务器返回的结果对象。
      */
     queryComplete: function (result) {
-        var me = this,
-            qe = null,
-            queryResult = null;
         result = SuperMap.Util.transformResult(result);
-        if (me.returnContent) {
-            queryResult = SuperMap.REST.QueryResult.fromJson(result);
-        } else {
-            queryResult = new SuperMap.REST.QueryResult();
-            if (result.customResult) {
-                queryResult.customResponse = new SuperMap.Bounds(result.customResult.left, result.customResult.bottom, result.customResult.right, result.customResult.top);
+        var queryResult;
+        if (result && result.recordsets) {
+            queryResult = [];
+            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
+                if (recordsets[i].features) {
+                    var geoJSONFormat = new SuperMap.Format.GeoJSON();
+                    var feature = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                    queryResult.push(feature);
+                }
             }
-            queryResult.resourceInfo = SuperMap.REST.ResourceInfo.fromJson(result);
         }
-        me.lastResult = queryResult;
-        qe = new SuperMap.REST.QueryEventArgs(queryResult, result);
-        me.events.triggerEvent("processCompleted", qe);
+        this.events.triggerEvent("processCompleted", {result: queryResult});
     },
 
     /**
@@ -231,9 +216,9 @@ SuperMap.iServer.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.iServer.QueryService"
+    CLASS_NAME: "SuperMap.REST.QueryService"
 });
 
 module.exports = function (url, options) {
-    return new SuperMap.iServer.QueryService(url, options);
+    return new SuperMap.REST.QueryService(url, options);
 };

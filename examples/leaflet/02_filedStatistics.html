@@ -2,9 +2,8 @@
 <html>
 <head>
     <title>数据集字段查询统计</title>
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.2/leaflet.css"/>
-    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet/v1.0.2/leaflet.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../dist/leaflet.css">
     <script type="text/javascript" src="../../dist/SuperMapiClient9.js"></script>
     <style>
         .resultInfo {
@@ -18,11 +17,11 @@
     </style>
     <script type="text/javascript">
         var map, currentData, layersName = [], info,
-                wms = "http://support.supermap.com.cn:8090/iserver/services/map-world/wms111/World",
                 mapURL = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
                 dataURL = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
 
         function init() {
+
             map = L.map('map', {
                 preferCanvas: true,
                 crs: L.CRS.EPSG4326,
@@ -30,12 +29,7 @@
                 maxZoom: 18,
                 zoom: 2
             });
-            L.tileLayer.wms(wms, {
-                noWrap: true,
-                layers: 'World',
-                format: 'image/png',
-                transparent: true
-            }).addTo(map);
+            L.supermap.tiledMapLayer(mapURL).addTo(map);
             initResultInfoWin();
             showLayersInfo();
             document.getElementById("layerSelect").onchange = function () {

@@ -11,7 +11,7 @@
  *      });
  */
 require('../../base');
-require('leaflet');
+
 FieldsServiceBase = L.Evented.extend({
     options: {
         url: null,
@@ -25,8 +25,8 @@ FieldsServiceBase = L.Evented.extend({
         L.setOptions(this, url, options);
     },
 
-    processCompleted: function (fieldsEventArgs) {
-        this.fire('complete', {data: fieldsEventArgs.result});
+    processCompleted: function (fieldsResult) {
+        this.fire('complete', {data: fieldsResult.result});
     },
 
     processFailed: function (failedMessage) {

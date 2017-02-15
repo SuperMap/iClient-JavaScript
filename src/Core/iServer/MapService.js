@@ -5,16 +5,14 @@
 /**
  * Class: SuperMap.REST.MapService
  * 地图信息服务类 。
- * 该类负责将从客户端指定的服务器上获取该服务器提供的地图信息,结果保存在 {<SuperMap.REST.MapServiceResult>} 对象中,结果包含了所请求的地图的显示比例尺、地图的全幅地理范围、地图窗口显示区域的范围和用户显示视窗。
- * 地图信息结果通过该类支持的事件的监听函数参数获取，参数类型为 {<SuperMap.REST.MapServiceEventArgs>}; 获取的结果数据包括 result 、originResult 两种，
- * 其中，originResult 为服务端返回的用 JSON 对象表示的地图信息结果数据，result 为服务端返回的地图信息结果数据，保存在 {<SuperMap.REST.MapServiceResult>} 对象中。
- *
+ * 该类负责将从客户端指定的服务器上获取该服务器提供的地图信息
+ * 结果保存在一个object对象中，对象包含一个属性result为iServer返回的json对象
  * Inherits from:
  *  - <SuperMap.ServiceBase>
  */
 require('../base');
 
-SuperMap.iServer.MapService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Constant: EVENT_TYPES
@@ -31,14 +29,14 @@ SuperMap.iServer.MapService = SuperMap.Class(SuperMap.ServiceBase, {
      *
      * 例如：
      * (start code)
-     * var myMapService = new SuperMap.iServer.MapService(url);
+     * var myMapService = new SuperMap.REST.MapService(url);
      * myMapService.events.on({
      *     "processCompleted": MapServiceCompleted,
      *     "processFailed": MapServiceFailed
      *       }
      * );
-     * function MapServiceCompleted(MapServiceEventArgs){//todo};
-     * function MapServiceFailed(MapServiceEventArgs){//todo};
+     * function MapServiceCompleted(object){//todo};
+     * function MapServiceFailed(object){//todo};
      * (end)
      */
     events: null,
@@ -57,19 +55,14 @@ SuperMap.iServer.MapService = SuperMap.Class(SuperMap.ServiceBase, {
      */
     projection: null,
 
-    /**
-     * Property: lastResult
-     * {<SuperMap.REST.MapServiceResult>} 服务端返回的地图信息结果数据 。
-     */
-    lastResult: null,
 
     /**
-     * Constructor: SuperMap.iServer.MapService
+     * Constructor: SuperMap.REST.MapService
      * 地图信息服务类构造函数 。
      *
      * 例如：
      * (start code)
-     * var myMapService = new SuperMap.iServer.MapService(url, {
+     * var myMapService = new SuperMap.REST.MapService(url, {
      * eventListeners:{
      *     "processCompleted": MapServiceCompleted, 
      *       "processFailed": MapServiceFailed
@@ -124,11 +117,6 @@ SuperMap.iServer.MapService = SuperMap.Class(SuperMap.ServiceBase, {
             me.events = null;
             me.eventListeners = null;
         }
-
-        if (me.lastResult) {
-            me.lastResult.destroy();
-            me.lastResult = null;
-        }
     },
 
     /**
@@ -173,16 +161,12 @@ SuperMap.iServer.MapService = SuperMap.Class(SuperMap.ServiceBase, {
      */
     getMapStatusCompleted: function (result) {
         var me = this,
-            ge = null,
             qe = null,
             error = null,
             serviceException = null;
         result = SuperMap.Util.transformResult(result);
         if (!result.code || (result.code && ((result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304))) {
-            var getMapStatusResult = SuperMap.REST.MapServiceResult.fromJson(result);
-            me.lastResult = getMapStatusResult;
-            ge = new SuperMap.REST.MapServiceEventArgs(getMapStatusResult, result);
-            me.events && me.events.triggerEvent("processCompleted", ge);
+            me.events && me.events.triggerEvent("processCompleted", {result: result});
         }
         //在没有tonken是返回的是200，但是其实是没有权限，所以这里也应该是触发失败事件
         else {
@@ -223,9 +207,9 @@ SuperMap.iServer.MapService = SuperMap.Class(SuperMap.ServiceBase, {
         me.events.triggerEvent("processFailed", qe);
     },
 
-    CLASS_NAME: "SuperMap.iServer.MapService"
+    CLASS_NAME: "SuperMap.REST.MapService"
 });
 
 module.exports = function (url, options) {
-    return new SuperMap.iServer.MapService(url, options);
+    return new SuperMap.REST.MapService(url, options);
 };

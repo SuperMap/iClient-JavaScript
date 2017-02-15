@@ -4,30 +4,30 @@
 
 
 /**
- * Class: SuperMap.iServer.GetFeaturesByBufferService
+ * Class:   SuperMap.REST.GetFeaturesByBufferService
  * 数据服务中数据集缓冲区查询服务类。
  * 
  * Inherits from:
- *  - <SuperMap.iServer.GetFeaturesServiceBase> 
+ *  - <SuperMap.REST.GetFeaturesServiceBase> 
  */
 require('./GetFeaturesServiceBase');
 
-SuperMap.iServer.GetFeaturesByBufferService = SuperMap.Class(SuperMap.iServer.GetFeaturesServiceBase, {
+  SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
     /**
-     * Constructor: SuperMap.iServer.GetFeaturesByBufferService
+     * Constructor:   SuperMap.REST.GetFeaturesByBufferService
      * 数据服务缓冲区查询服务类构造函数。
      *
      * 例如：
      * (start code)     
-     * var myGetFeaturesByBufferService = new SuperMap.iServer.GetFeaturesByBufferService(url, {
+     * var myGetFeaturesByBufferService = new   SuperMap.REST.GetFeaturesByBufferService(url, {
      *     eventListeners: {
      *           "processCompleted": GetFeaturesCompleted, 
      *           "processFailed": GetFeaturesError
      *           }
      * });
-     * function GetFeaturesCompleted(QueryEventArgs){//todo};
-     * function GetFeaturesError(QueryEventArgs){//todo};
+     * function GetFeaturesCompleted(object){//todo};
+     * function GetFeaturesError(object){//todo};
      * (end)
      *      
      * Parameters:
@@ -40,7 +40,7 @@ SuperMap.iServer.GetFeaturesByBufferService = SuperMap.Class(SuperMap.iServer.Ge
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function(url, options) {
-        SuperMap.iServer.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
     
     /**
@@ -48,7 +48,7 @@ SuperMap.iServer.GetFeaturesByBufferService = SuperMap.Class(SuperMap.iServer.Ge
      * 释放资源，将引用资源的属性置空。  
      */
     destroy: function() {
-        SuperMap.iServer.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments); 
+        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments); 
     },
     
     /**
@@ -66,9 +66,9 @@ SuperMap.iServer.GetFeaturesByBufferService = SuperMap.Class(SuperMap.iServer.Ge
         return  SuperMap.REST.GetFeaturesByBufferParameters.toJsonParameters(params);
     },
     
-    CLASS_NAME: "SuperMap.iServer.GetFeaturesByBufferService"
+    CLASS_NAME: "  SuperMap.REST.GetFeaturesByBufferService"
 });
 
 module.exports = function (url, options) {
-    return new SuperMap.iServer.GetFeaturesByBufferService(url, options);
+    return new   SuperMap.REST.GetFeaturesByBufferService(url, options);
 };

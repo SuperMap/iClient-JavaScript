@@ -21,7 +21,12 @@
   "devDependencies": {
     "webpack": "^1.14.0",
     "commander": "2.9.0",
-    "shelljs": "0.7.6"
+    "shelljs": "0.7.6",
+    "css-loader": "^0.23.1",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "file-loader":"0.10.0",
+    "extract-text-webpack-plugin": "^1.0.1"
   },
   "dependencies": {
     "openlayers": "4.0.0",

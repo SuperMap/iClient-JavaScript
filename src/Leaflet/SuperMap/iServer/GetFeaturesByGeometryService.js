@@ -4,7 +4,6 @@
  */
 require('./GetFeaturesServiceBase');
 require('../../../Core/iServer/GetFeaturesByGeometryService');
-require('leaflet');
 
 GetFeaturesByGeometryService = GetFeaturesServiceBase.extend({
 
@@ -33,7 +32,7 @@ GetFeaturesByGeometryService = GetFeaturesServiceBase.extend({
 
             returnContent: me.options.returnContent,
             fromIndex: me.options.fromIndex,
-            toIndex: me.options.toIndex,
+            toIndex: me.options.toIndex
         });
         getFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByGeometryService(me.options.url, {
             eventListeners: {

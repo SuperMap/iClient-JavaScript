@@ -3,7 +3,7 @@
  * 未经许可，不得以任何手段擅自使用或传播。*/
 
 /**
- * Class: SuperMap.iServer.GetLayersInfoService
+ * Class: SuperMap.REST.GetLayersInfoService
  * 获取图层信息服务类。
  * 该类负责将从客户端指定的服务器上获取该服务器提供的图层信息。
  *
@@ -11,7 +11,7 @@
  *  - <SuperMap.ServiceBase>
  */
 require('../base');
-SuperMap.iServer.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Constant: EVENT_TYPES
@@ -48,7 +48,7 @@ SuperMap.iServer.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
     isTempLayers: false,
 
     /**
-     * Constructor: SuperMap.iServer.GetLayersInfoService
+     * Constructor: SuperMap.REST.GetLayersInfoService
      * 获取图层信息服务类构造函数。
      *
      * Parameters:
@@ -63,7 +63,7 @@ SuperMap.iServer.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * eventListeners - {Object} 需要被注册的监听器对象。
      * isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。
      */
-    initialize: function(url, options) {
+    initialize: function (url, options) {
         SuperMap.ServiceBase.prototype.initialize.apply(this, [url]);
         if (options) {
             SuperMap.Util.extend(this, options);
@@ -81,7 +81,7 @@ SuperMap.iServer.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
-    destroy: function() {
+    destroy: function () {
         SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
         SuperMap.Util.reset(this);
     },
@@ -91,14 +91,14 @@ SuperMap.iServer.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * 负责将客户端的更新参数传递到服务端。
      *
      */
-    processAsync: function() {
+    processAsync: function () {
         var me = this,
             method = "GET",
             end = me.url.substr(me.url.length - 1, 1);
-        if(!me.isTempLayers){
+        if (!me.isTempLayers) {
             me.url += (end === "/") ? '' : '/';
             me.url += me.isInTheSameDomain ? "layers.json?" : "layers.jsonp?";
-        }else{
+        } else {
             me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
         }
         me.request({
@@ -117,19 +117,10 @@ SuperMap.iServer.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
-    getLayerComplted: function(result) {
-        var me = this, existRes, layerResult, layers, len = 0;
+    getLayerComplted: function (result) {
         result = SuperMap.Util.transformResult(result);
-        layerResult = SuperMap.Util.JSONClone({},result);
-
-        existRes = !!layerResult && layerResult.length > 0;
-        layers = existRes ? layerResult[0].subLayers.layers : null;
-        len = layers ? layers.length : 0;
-        this.handleLayers(len, layers);
-
-        me.lastResult = layerResult[0];
-        var getLayerInfoEvg = new SuperMap.REST.GetLayersInfoEventArgs(layerResult[0], result);
-        me.events.triggerEvent("processCompleted", getLayerInfoEvg);
+        result = (result && result.length > 0) ? result[0] : null;
+        this.events.triggerEvent("processCompleted", {result: result});
     },
 
     /**
@@ -140,16 +131,16 @@ SuperMap.iServer.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * len - {Number} subLayers.layers的长度
      * layers - {Array} subLayers.layers
      */
-    handleLayers: function(len, layers){
+    handleLayers: function (len, layers) {
         var me = this, tempLayer;
-        if(len) {
-            for(var i = 0; i< len; i++) {
-                if(layers[i].subLayers && layers[i].subLayers.layers && layers[i].subLayers.layers.length>0){
+        if (len) {
+            for (var i = 0; i < len; i++) {
+                if (layers[i].subLayers && layers[i].subLayers.layers && layers[i].subLayers.layers.length > 0) {
                     this.handleLayers(layers[i].subLayers.layers.length, layers[i].subLayers.layers);
                 }
-                else{
+                else {
                     var type = layers[i].ugcLayerType;
-                    switch(type) {
+                    switch (type) {
                         case 'THEME':
                             tempLayer = new SuperMap.REST.ServerTheme();
                             tempLayer.fromJson(layers[i]);
@@ -189,7 +180,7 @@ SuperMap.iServer.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * result -  {Object} 服务器返回的结果对象。
      */
-    getLayerFailed: function(result) {
+    getLayerFailed: function (result) {
         var me = this,
             error = null,
             serviceException = null,
@@ -204,9 +195,9 @@ SuperMap.iServer.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
         me.events.triggerEvent("processFailed", qe);
     },
 
-    CLASS_NAME: "SuperMap.iServer.GetLayersInfoService"
+    CLASS_NAME: "SuperMap.REST.GetLayersInfoService"
 });
 
 module.exports = function (url, options) {
-    return new SuperMap.iServer.GetLayersInfoService(url, options);
+    return new SuperMap.REST.GetLayersInfoService(url, options);
 };
