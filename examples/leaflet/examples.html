@@ -5,26 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <title>Leaflet示范程序</title>
-    <link href='css/bootstrap.min.css' rel='stylesheet'/>
-    <link href='css/bootstrap-responsive.min.css' rel='stylesheet'/>
-    <link href='css/sm-extend.css' rel='stylesheet'/>
-    <link href='css/sm-doc.css' rel='stylesheet'/>
+    <link href='../css/bootstrap.min.css' rel='stylesheet'/>
+    <link href='../css/bootstrap-responsive.min.css' rel='stylesheet'/>
+    <link href='../css/sm-extend.css' rel='stylesheet'/>
+    <link href='../css/sm-doc.css' rel='stylesheet'/>
     <style>
         li.active, li.active a {
             outline: none;
             border: none
         }
-
         .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
             width: 1500px;
         }
+
+        #myTabContent .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+            color: #08c;
+            background-color: #ffffff;
+        }
+
+
     </style>
 </head>
 <body data-spy="scroll" data-target=".subnav" data-offset="50">
 <!--导航条-->
-<div class="navbar navbar-fixed-top" id="navbar">
-
-</div>
+<!--<div class="navbar navbar-fixed-top" id="navbar"></div>-->
 <!--功能区-->
 <div id='container' class='container'>
 
@@ -49,7 +53,6 @@
                         <div class="span10">
                             <ul class='nav nav-pills'>
                                 <li><a href='javascript:void(0)' target='_self' data-name='01_tiledMapLayer'>iServer4326地图</a></li>
-
                             </ul>
                         </div>
                     </div>
@@ -65,6 +68,20 @@
                         <div class="span10">
                             <ul class='nav nav-pills'>
                                 <li><a href='javascript:void(0)' target='_self' data-name='01_mapService'>地图信息</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-fluid">
+                    <div class="row-fluid">
+                        <div class="span2">
+                            <ul class='nav nav-pills'><span>></span>
+                                <li>图层</li>
+                            </ul>
+                        </div>
+                        <div class="span10">
+                            <ul class='nav nav-pills'>
                                 <li><a href='javascript:void(0)' target='_self' data-name='01_layerService'>图层信息</a></li>
                             </ul>
                         </div>
@@ -139,8 +156,8 @@
     </div>
 </div>
 <!--第三方的操作样式库-->
-<script src='js/jquery.js'></script>
-<script src='js/bootstrap.js'></script>
+<script src='../js/jquery.js'></script>
+<script src='../js/bootstrap.js'></script>
 <script>
     var loadedScript, dataCount = 0;
     $(document).ready(function () {

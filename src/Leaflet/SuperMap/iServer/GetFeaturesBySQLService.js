@@ -4,7 +4,6 @@
  */
 require('./GetFeaturesServiceBase');
 require('../../../Core/iServer/GetFeaturesBySQLService');
-require('leaflet');
 
 GetFeaturesBySQLService = GetFeaturesServiceBase.extend({
 

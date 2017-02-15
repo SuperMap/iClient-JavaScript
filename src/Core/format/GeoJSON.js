@@ -2,17 +2,6 @@
  * 本程序只能在有效的授权许可下使用。
  * 未经许可，不得以任何手段擅自使用或传播。*/
 
-/**
- * @requires SuperMap/Format/JSON.js
- * @requires SuperMap/Feature/Vector.js
- * @requires SuperMap/Geometry/Point.js
- * @requires SuperMap/Geometry/MultiPoint.js
- * @requires SuperMap/Geometry/LineString.js
- * @requires SuperMap/Geometry/MultiLineString.js
- * @requires SuperMap/Geometry/Polygon.js
- * @requires SuperMap/Geometry/MultiPolygon.js
- * @requires SuperMap/Console.js
- */
 
 /**
  * Class: SuperMap.Format.GeoJSON
@@ -21,6 +10,7 @@
  * Inherits from:
  *  - <SuperMap.Format.JSON>
  */
+require('../base');
 require('./JSON');
 
 SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
@@ -52,7 +42,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
      *     如果type为"Feature"，输入的json对象也必须表示的一个要素，这样返回值才会是
      *      <SuperMap.Feature.Vector> 。
      */
-    read: function(json, type, filter) {
+    read: function (json, type, filter) {
         type = (type) ? type : "FeatureCollection";
         var results = null;
         var obj = null;
@@ -62,16 +52,16 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
         } else {
             obj = json;
         }
-        if(!obj) {
+        if (!obj) {
             //SuperMap.Console.error("Bad JSON: " + json);
-        } else if(typeof(obj.type) != "string") {
+        } else if (typeof(obj.type) != "string") {
             //SuperMap.Console.error("Bad GeoJSON - no type: " + json);
-        } else if(this.isValidType(obj, type)) {
-            switch(type) {
+        } else if (this.isValidType(obj, type)) {
+            switch (type) {
                 case "Geometry":
                     try {
                         results = this.parseGeometry(obj);
-                    } catch(err) {
+                    } catch (err) {
                         //SuperMap.Console.error(err);
                     }
                     break;
@@ -79,27 +69,27 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
                     try {
                         results = this.parseFeature(obj);
                         results.type = "Feature";
-                    } catch(err) {
+                    } catch (err) {
                         //SuperMap.Console.error(err);
                     }
                     break;
                 case "FeatureCollection":
                     // for type FeatureCollection, we allow input to be any type
                     results = [];
-                    switch(obj.type) {
+                    switch (obj.type) {
                         case "Feature":
                             try {
                                 results.push(this.parseFeature(obj));
-                            } catch(err) {
+                            } catch (err) {
                                 results = null;
                                 //SuperMap.Console.error(err);
                             }
                             break;
                         case "FeatureCollection":
-                            for(var i=0, len=obj.features.length; i<len; ++i) {
+                            for (var i = 0, len = obj.features.length; i < len; ++i) {
                                 try {
                                     results.push(this.parseFeature(obj.features[i]));
-                                } catch(err) {
+                                } catch (err) {
                                     results = null;
                                     // SuperMap.Console.error(err);
                                 }
@@ -109,7 +99,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
                             try {
                                 var geom = this.parseGeometry(obj);
                                 results.push(new SuperMap.Feature.Vector(geom));
-                            } catch(err) {
+                            } catch (err) {
                                 results = null;
                                 //SuperMap.Console.error(err);
                             }
@@ -127,11 +117,11 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
      * Returns:
      * {Boolean} GeoJSON是否是给定类型的合法对象。
      */
-    isValidType: function(obj, type) {
+    isValidType: function (obj, type) {
         var valid = false;
-        switch(type) {
+        switch (type) {
             case "Geometry":
-                if(SuperMap.Util.indexOf(
+                if (SuperMap.Util.indexOf(
                         ["Point", "MultiPoint", "LineString", "MultiLineString",
                             "Polygon", "MultiPolygon", "Box", "GeometryCollection"],
                         obj.type) == -1) {
@@ -148,7 +138,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
                 break;
             default:
                 // for Feature types must match
-                if(obj.type == type) {
+                if (obj.type == type) {
                     valid = true;
                 } else {
                     //SuperMap.Console.error("Cannot convert types from " +
@@ -168,21 +158,21 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
      * Returns:
      * {<SuperMap.Feature.Vector>} 一个要素。
      */
-    parseFeature: function(obj) {
+    parseFeature: function (obj) {
         var feature, geometry, attributes, bbox;
         attributes = (obj.properties) ? obj.properties : {};
         bbox = (obj.geometry && obj.geometry.bbox) || obj.bbox;
         try {
             geometry = this.parseGeometry(obj.geometry);
-        } catch(err) {
+        } catch (err) {
             // deal with bad geometries
             throw err;
         }
         feature = new SuperMap.Feature.Vector(geometry, attributes);
-        if(bbox) {
+        if (bbox) {
             feature.bounds = SuperMap.Bounds.fromArray(bbox);
         }
-        if(obj.id) {
+        if (obj.id) {
             feature.fid = obj.id;
         }
         return feature;
@@ -198,18 +188,18 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
      * Returns:
      * {<SuperMap.Geometry>} 一个几何要素。
      */
-    parseGeometry: function(obj) {
+    parseGeometry: function (obj) {
         if (obj == null) {
             return null;
         }
         var geometry, collection = false;
-        if(obj.type == "GeometryCollection") {
-            if(!(SuperMap.Util.isArray(obj.geometries))) {
+        if (obj.type == "GeometryCollection") {
+            if (!(SuperMap.Util.isArray(obj.geometries))) {
                 throw "GeometryCollection must have geometries array: " + obj;
             }
             var numGeom = obj.geometries.length;
             var components = new Array(numGeom);
-            for(var i=0; i<numGeom; ++i) {
+            for (var i = 0; i < numGeom; ++i) {
                 components[i] = this.parseGeometry.apply(
                     this, [obj.geometries[i]]
                 );
@@ -217,17 +207,17 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
             geometry = new SuperMap.Geometry.Collection(components);
             collection = true;
         } else {
-            if(!(SuperMap.Util.isArray(obj.coordinates))) {
+            if (!(SuperMap.Util.isArray(obj.coordinates))) {
                 throw "Geometry must have coordinates array: " + obj;
             }
-            if(!this.parseCoords[obj.type.toLowerCase()]) {
+            if (!this.parseCoords[obj.type.toLowerCase()]) {
                 throw "Unsupported geometry type: " + obj.type;
             }
             try {
                 geometry = this.parseCoords[obj.type.toLowerCase()].apply(
                     this, [obj.coordinates]
                 );
-            } catch(err) {
+            } catch (err) {
                 // deal with bad coordinates
                 throw err;
             }
@@ -256,7 +246,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * Returns:
          * {<SuperMap.Geometry>} 一个几何对象。
          */
-        "point": function(array) {
+        "point": function (array) {
             if (this.ignoreExtraDims == false &&
                 array.length != 2) {
                 throw "Only 2D points are supported: " + array;
@@ -274,13 +264,13 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * Returns:
          * {<SuperMap.Geometry>} 一个几何对象。
          */
-        "multipoint": function(array) {
+        "multipoint": function (array) {
             var points = [];
             var p = null;
-            for(var i=0, len=array.length; i<len; ++i) {
+            for (var i = 0, len = array.length; i < len; ++i) {
                 try {
                     p = this.parseCoords["point"].apply(this, [array[i]]);
-                } catch(err) {
+                } catch (err) {
                     throw err;
                 }
                 points.push(p);
@@ -298,13 +288,13 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * Returns:
          * {<SuperMap.Geometry>} 一个几何对象。
          */
-        "linestring": function(array) {
+        "linestring": function (array) {
             var points = [];
             var p = null;
-            for(var i=0, len=array.length; i<len; ++i) {
+            for (var i = 0, len = array.length; i < len; ++i) {
                 try {
                     p = this.parseCoords["point"].apply(this, [array[i]]);
-                } catch(err) {
+                } catch (err) {
                     throw err;
                 }
                 points.push(p);
@@ -322,13 +312,13 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * Returns:
          * {<SuperMap.Geometry>} 一个几何对象。
          */
-        "multilinestring": function(array) {
+        "multilinestring": function (array) {
             var lines = [];
             var l = null;
-            for(var i=0, len=array.length; i<len; ++i) {
+            for (var i = 0, len = array.length; i < len; ++i) {
                 try {
                     l = this.parseCoords["linestring"].apply(this, [array[i]]);
-                } catch(err) {
+                } catch (err) {
                     throw err;
                 }
                 lines.push(l);
@@ -343,13 +333,13 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * Returns:
          * {<SuperMap.Geometry>} 一个几何对象。
          */
-        "polygon": function(array) {
+        "polygon": function (array) {
             var rings = [];
             var r, l;
-            for(var i=0, len=array.length; i<len; ++i) {
+            for (var i = 0, len = array.length; i < len; ++i) {
                 try {
                     l = this.parseCoords["linestring"].apply(this, [array[i]]);
-                } catch(err) {
+                } catch (err) {
                     throw err;
                 }
                 r = new SuperMap.Geometry.LinearRing(l.components);
@@ -368,13 +358,13 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * Returns:
          * {<SuperMap.Geometry>} 一个几何对象。
          */
-        "multipolygon": function(array) {
+        "multipolygon": function (array) {
             var polys = [];
             var p = null;
-            for(var i=0, len=array.length; i<len; ++i) {
+            for (var i = 0, len = array.length; i < len; ++i) {
                 try {
                     p = this.parseCoords["polygon"].apply(this, [array[i]]);
-                } catch(err) {
+                } catch (err) {
                     throw err;
                 }
                 polys.push(p);
@@ -392,8 +382,8 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * Returns:
          * {<SuperMap.Geometry>} 一个几何对象。
          */
-        "box": function(array) {
-            if(array.length != 2) {
+        "box": function (array) {
+            if (array.length != 2) {
                 throw "GeoJSON box coordinates must have 2 elements";
             }
             return new SuperMap.Geometry.Polygon([
@@ -431,25 +421,22 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
             geojson.features = new Array(numFeatures);
             for (var i = 0; i < numFeatures; ++i) {
                 var element = obj[i];
-                if (!element instanceof SuperMap.Feature.Vector) {
-                    var msg = "FeatureCollection only supports collections " +
-                        "of features: " + element;
-                    throw msg;
-                }
                 geojson.features[i] = this.extract.feature.apply(
                     this, [element]
                 );
             }
-        } else if (obj.CLASS_NAME.indexOf("SuperMap.Geometry") == 0) {
+        }
+        //TODO以下分支为旧代码,待分支场景明确后修改
+        else if (obj.CLASS_NAME.indexOf("SuperMap.Geometry") == 0) {
             geojson = this.extract.geometry.apply(this, [obj]);
-        } else if (obj instanceof SuperMap.Feature.Vector) {
+        }
+        else if (obj instanceof SuperMap.Feature.Vector) {
             geojson = this.extract.feature.apply(this, [obj]);
             if (obj.layer && obj.layer.projection) {
                 geojson.crs = this.createCRSObject(obj);
             }
         }
-        return SuperMap.Format.JSON.prototype.write.apply(this,
-            [geojson, pretty]);
+        return SuperMap.Format.JSON.prototype.write.apply(this, [geojson, pretty]);
     },
 
     /**
@@ -496,7 +483,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * 返回一个表示单个要素对象的GeoJSON的一部分。
          *
          * Parameters:
-         * feature - {<SuperMap.Feature.Vector>} 要素对象
+         * feature - iServer要素对象
          *
          * Returns:
          * {Object} 一个表示点的对象。
@@ -505,7 +492,8 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
             var geom = this.extract.geometry.apply(this, [feature.geometry]);
             var json = {
                 "type": "Feature",
-                "properties": feature.attributes,
+                // "properties": feature.attributes,
+                "properties": this.createAttributes(feature),
                 "geometry": geom
             };
             if (feature.fid != null) {
@@ -519,7 +507,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * 返回一个表示单个几何对象的GeoJSON的一部分。
          *
          * Parameters:
-         * geometry - {<SuperMap.Geometry>} 几何对象
+         * geometry -iServer 几何对象
          *
          * Returns:
          * {Object} 一个表示几何体的对象。
@@ -528,15 +516,11 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
             if (geometry == null) {
                 return null;
             }
-            if (this.internalProjection && this.externalProjection) {
-                geometry = geometry.clone();
-                geometry.transform(this.internalProjection,
-                    this.externalProjection);
-            }
-            var geometryType = geometry.CLASS_NAME.split('.')[2];
-            var data = this.extract[geometryType.toLowerCase()].apply(this, [geometry]);
+            var geo = this.toGeometry(geometry);
+            var geometryType = geo.type;
+            var data = this.extract[geometryType.toLowerCase()].apply(this, [geo]);
             var json;
-            if (geometryType == "Collection") {
+            if (geometryType === "Collection") {
                 json = {
                     "type": "GeometryCollection",
                     "geometries": data
@@ -550,6 +534,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
 
             return json;
         },
+
 
         /**
          * Method: extract.point
@@ -614,7 +599,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
         'multilinestring': function (multilinestring) {
             var array = [];
             for (var i = 0, len = multilinestring.components.length; i < len; ++i) {
-                array.push(this.extract.linestring.apply(this, [multilinestring.components[i]]));
+                array.push(this.extract.linestring.apply(this, [{components: multilinestring.components[i]}]));
             }
             return array;
         },
@@ -625,14 +610,14 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          *
          * Parameters:
          * polygon - {<SuperMap.Geometry.Polygon> 面对象。
-         * 
+         *
          * Returns:
          * {Array} 一组表示面的线环。
          */
         'polygon': function (polygon) {
             var array = [];
             for (var i = 0, len = polygon.components.length; i < len; ++i) {
-                array.push(this.extract.linestring.apply(this, [polygon.components[i]]));
+                array.push(this.extract.linestring.apply(this, [{components: polygon.components[i]}]));
             }
             return array;
         },
@@ -650,7 +635,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
         'multipolygon': function (multipolygon) {
             var array = [];
             for (var i = 0, len = multipolygon.components.length; i < len; ++i) {
-                array.push(this.extract.polygon.apply(this, [multipolygon.components[i]]));
+                array.push(this.extract.polygon.apply(this, [{components: multipolygon.components[i]}]));
             }
             return array;
         },
@@ -669,14 +654,157 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
             var len = collection.components.length;
             var array = new Array(len);
             for (var i = 0; i < len; ++i) {
-                array[i] = this.extract.geometry.apply(
-                    this, [collection.components[i]]
-                );
+                array[i] = this.extract.geometry.apply(this, [{type: "Collection", components: collection.components[i]}]);
             }
             return array;
         }
+    },
 
+    createAttributes: function (feature) {
+        var attr = {},
+            names = feature.fieldNames,
+            values = feature.fieldValues;
+        for (var i in names) {
+            attr[names[i]] = values[i];
+        }
+        return attr;
+    },
 
+    toGeometry: function (geometry) {
+        var me = this,
+            geoType = geometry.type;
+        switch (geoType) {
+            case SuperMap.REST.GeometryType.POINT:
+                return me.toGeoPoint(geometry);
+            case SuperMap.REST.GeometryType.LINE:
+                return me.toGeoLine(geometry);
+            // case SuperMap.REST.GeometryType.LINEM:
+            //     return me.toGeoLinem();
+            case SuperMap.REST.GeometryType.REGION:
+                return me.toGeoRegion(geometry);
+            case SuperMap.REST.GeometryType.POINTEPS:
+                return me.toGeoPoint(geometry);
+            // case SuperMap.REST.GeometryType.LINEEPS:
+            //     return me.toGeoLineEPS();
+            // case SuperMap.REST.GeometryType.REGIONEPS:
+            //     return me.toGeoRegionEPS();
+        }
+    },
+    /**
+     * Method: toGeoPoint
+     * 将服务端的点几何对象转换为几何对象
+     */
+    toGeoPoint: function (geometry) {
+        var me = this,
+            geoParts = geometry.parts || [],
+            geoPoints = geometry.points || [],
+            len = geoParts.length;
+        if (len < 1) {
+            return null;
+        }
+        if (len === 1) {
+            return {type: "Point", x: geoPoints[0].x, y: geoPoints[0].y};
+        } else {
+            for (var i = 0, pointList = []; i < len; i++) {
+                pointList.push({x: geoPoints[i].x, y: geoPoints[i].y});
+            }
+            return {type: "MultiPoint", components: pointList};
+        }
+
+    },
+
+    /**
+     * Method: toGeoLine
+     * 将服务端的线几何对象转换为几何对象。
+     */
+    toGeoLine: function (geometry) {
+        var me = this,
+            geoParts = geometry.parts || [],
+            geoPoints = geometry.points || [],
+            len = geoParts.length;
+        if (len < 1) {
+            return null;
+        }
+        if (len === 1) {
+            for (var i = 0, pointList = []; i < geoParts[0]; i++) {
+                pointList.push({x: geoPoints[i].x, y: geoPoints[i].y});
+            }
+            //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
+            if (pointList[0].equals(pointList[geoParts[0] - 1])) {
+                pointList.pop();
+                pointList.push(pointList[0]);
+                return {type: "LinearRing", components: pointList};
+            } else {
+                return {type: "LineString", components: pointList};
+            }
+        } else {
+            for (var i = 0, lineList = []; i < len; i++) {
+                for (var j = 0, pointList = []; j < geoParts[i]; j++) {
+                    pointList.push({x: geoPoints[j].x, y: geoPoints[j].y});
+                }
+                lineList.push(pointList);
+                geoPoints.splice(0, geoParts[i]);
+            }
+            return {type: "LineString", components: lineList};
+        }
+
+    },
+
+    /**
+     * Method: toGeoRegion
+     * 将服务端的面几何对象转换为几何对象。
+     */
+    toGeoRegion: function (geometry) {
+        var CCWArray = [],
+            geoParts = geometry.parts || [],
+            geoPoints = geometry.points || [],
+            len = geoParts.length;
+        if (len < 1) {
+            return null;
+        }
+        var polygonArray = new Array();
+        for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
+            for (var j = 0; j < geoParts[i]; j++) {
+                pointList.push({x: geoPoints[pointIndex + j].x, y: geoPoints[pointIndex + j].y});
+            }
+
+            pointIndex += geoParts[i];
+            var linearRing = pointList.concat();
+            linearRing.pop();
+            linearRing.push(linearRing[0]);
+
+            if (this.isClockWise(linearRing) > 0) {
+                CCWArray.push(linearRing);
+            } else {
+                polygonArray.push([linearRing]);
+            }
+
+            if (i === len - 1) {
+                var polyLength = polygonArray.length;
+                if (!!polyLength) {
+                    polygonArray[polyLength - 1] = polygonArray[polyLength - 1].concat(CCWArray);
+                } else {
+                    for (var k = 0, length = CCWArray.length; k < length; k++) {
+                        polygonArray.push([CCWArray[k]].concat());
+                    }
+                }
+            }
+            pointList = [];
+        }
+        return {type: "MultiPolygon", components: polygonArray};
+    },
+
+    isClockWise: function (points) {
+        var length = points.length;
+        if (length < 3) {
+            return 0.0;
+        }
+        var s = points[0].y * (points[length - 1].x - points[1].x);
+        points.push(points[0]);
+        for (var i = 1; i < length; i++) {
+            s += points[i].y * (points[i - 1].x - points[i + 1].x);
+        }
+        return s * 0.5;
     },
     CLASS_NAME: "SuperMap.Format.GeoJSON"
 });

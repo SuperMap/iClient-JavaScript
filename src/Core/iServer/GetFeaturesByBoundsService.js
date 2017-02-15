@@ -3,24 +3,24 @@
  * 未经许可，不得以任何手段擅自使用或传播。*/
 
 /**
- * Class: SuperMap.iServer.GetFeaturesByBoundsService
+ * Class: SuperMap.REST.GetFeaturesByBoundsService
  * 数据集范围查询服务类
  * 查询与指定范围对象符合一定空间关系的矢量要素。
  *
  * Inherits from:
- *  - <SuperMap.iServer.GetFeaturesServiceBase>
+ *  - <SuperMap.REST.GetFeaturesServiceBase>
  */
 require('./GetFeaturesServiceBase');
 
-SuperMap.iServer.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.iServer.GetFeaturesServiceBase, {
+SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
     /**
-     * Constructor: SuperMap.iServer.GetFeaturesByBoundsService
+     * Constructor: SuperMap.REST.GetFeaturesByBoundsService
      * 数据集范围查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myGetFeaturesByBoundsService = new SuperMap.iServer.GetFeaturesByBoundsService(url, {
+     * var myGetFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(url, {
      *     eventListeners: {
      *           "processCompleted": getFeatureCompleted, 
      *           "processFailed": getFeatureError
@@ -40,7 +40,7 @@ SuperMap.iServer.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.iServer.Ge
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.iServer.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -48,7 +48,7 @@ SuperMap.iServer.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.iServer.Ge
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.iServer.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -66,9 +66,9 @@ SuperMap.iServer.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.iServer.Ge
         return SuperMap.REST.GetFeaturesByBoundsParameters.toJsonParameters(params);
     },
 
-    CLASS_NAME: "SuperMap.iServer.GetFeaturesByBoundsService"
+    CLASS_NAME: "SuperMap.REST.GetFeaturesByBoundsService"
 });
 
 module.exports = function (url, options) {
-    return new SuperMap.iServer.GetFeaturesByBoundsService(url, options);
+    return new SuperMap.REST.GetFeaturesByBoundsService(url, options);
 };

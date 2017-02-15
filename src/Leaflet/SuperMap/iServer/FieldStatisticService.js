@@ -12,7 +12,6 @@
  */
 require('./FieldsServiceBase');
 require('../../../Core/iServer/FieldStatisticService');
-require('leaflet');
 
 FieldStatisticService = FieldsServiceBase.extend({
     options: {
@@ -44,7 +43,7 @@ FieldStatisticService = FieldsServiceBase.extend({
     },
     _fieldStatisticRequest: function (statisticMode) {
         var me = this, statisticService;
-        statisticService = new SuperMap.iServer.FieldStatisticService(me.options.url, {
+        statisticService = new SuperMap.REST.FieldStatisticService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
@@ -57,9 +56,9 @@ FieldStatisticService = FieldsServiceBase.extend({
         });
         statisticService.processAsync();
     },
-    processCompleted: function (fieldStatisticEventArgs) {
+    processCompleted: function (fieldStatisticResult) {
         var getAll = true,
-            result = fieldStatisticEventArgs.result;
+            result = fieldStatisticResult.result;
         if (this.currentStatisticResult) {
             if (null == this.currentStatisticResult[result.mode]) {
                 this.currentStatisticResult[result.mode] = result.result;
@@ -74,7 +73,7 @@ FieldStatisticService = FieldsServiceBase.extend({
         if (getAll) {
             this.fire('complete', {data:this.currentStatisticResult});
         }
-    },
+    }
 });
 
 L.supermap.fieldStatisticService = function (url, options) {

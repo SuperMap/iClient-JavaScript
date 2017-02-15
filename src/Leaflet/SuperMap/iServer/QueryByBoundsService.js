@@ -13,8 +13,6 @@
  */
 require('../../base');
 require('../../../Core/iServer/QueryByBoundsService');
-require('leaflet');
-
 
 QueryByBoundsService = L.Evented.extend({
     options: {
@@ -45,7 +43,7 @@ QueryByBoundsService = L.Evented.extend({
         var queryParam, queryByBoundsParams, queryService;
         queryParam = new SuperMap.REST.FilterParameter({name: me.options.name});
         queryByBoundsParams = new SuperMap.REST.QueryByBoundsParameters({queryParams: [queryParam], bounds: me.options.queryBounds});
-        queryService = new SuperMap.iServer.QueryByBoundsService(me.options.url, {
+        queryService = new SuperMap.REST.QueryByBoundsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
@@ -55,17 +53,8 @@ QueryByBoundsService = L.Evented.extend({
         queryService.processAsync(queryByBoundsParams);
     },
 
-    processCompleted: function (queryEventArgs) {
-        var result = queryEventArgs.result;
-        if (result && result.recordsets) {
-            var features = [];
-            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
-                if (recordsets[i].features) {
-                    features.push(L.Util.toGeoJSON(recordsets[i].features));
-                }
-            }
-            this.fire("complete", {result:features});
-        }
+    processCompleted: function (queryResult) {
+        this.fire("complete", {data: queryResult.result});
     },
 
     processFailed: function (e) {

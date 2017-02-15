@@ -12,7 +12,6 @@
  */
 require('../../base');
 require('../../../Core/iServer/GetLayersInfoService');
-require('leaflet');
 
 GetLayersInfoService = L.Evented.extend({
     options: {
@@ -26,7 +25,7 @@ GetLayersInfoService = L.Evented.extend({
 
     _getLayersInfo: function () {
         var me = this;
-        var getLayersInfoService = new SuperMap.iServer.GetLayersInfoService(me.options.url, {
+        var getLayersInfoService = new SuperMap.REST.GetLayersInfoService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
@@ -35,9 +34,9 @@ GetLayersInfoService = L.Evented.extend({
         });
         getLayersInfoService.processAsync();
     },
-    processCompleted: function (queryEventArgs) {
+    processCompleted: function (layersInfoResult) {
         var layersInfo,
-            result = queryEventArgs.result;
+            result = layersInfoResult.result;
         if (result && result.subLayers && result.subLayers.layers) {
             layersInfo = result.subLayers.layers;
         }

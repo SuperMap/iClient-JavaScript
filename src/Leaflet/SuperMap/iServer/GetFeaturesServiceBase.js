@@ -3,7 +3,6 @@
  * 数据集查询基类。
  */
 require('../../base');
-require('leaflet');
 
 GetFeaturesServiceBase = L.Evented.extend({
 
@@ -11,7 +10,7 @@ GetFeaturesServiceBase = L.Evented.extend({
         url: null,
         dataSetNames: null,//格式： ["World:Countries"，"World:Cities"]
         fromIndex: null,
-        toIndex: null,
+        toIndex: null
     },
 
     initialize: function (url, options) {
@@ -23,15 +22,8 @@ GetFeaturesServiceBase = L.Evented.extend({
         this.options.toIndex = options.toIndex ? options.toIndex : -1;
     },
 
-    processCompleted: function (getFeaturesEventArgs) {
-        var result = getFeaturesEventArgs.result;
-        if (result && result.features) {
-            var geoJSONFeatures = [];
-            result.features.map(function (item) {
-                geoJSONFeatures.push(L.Util.toGeoJSON(item))
-            });
-            this.fire("complete", {data: geoJSONFeatures})
-        }
+    processCompleted: function (getFeaturesResult) {
+        this.fire("complete", {data: getFeaturesResult.result})
     },
 
     processFailed: function (e) {

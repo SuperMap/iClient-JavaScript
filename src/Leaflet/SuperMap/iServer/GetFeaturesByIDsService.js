@@ -4,7 +4,6 @@
  */
 require('./GetFeaturesServiceBase');
 require('../../../Core/iServer/GetFeaturesByIDsService');
-require('leaflet');
 
 
 GetFeaturesByIDsService = GetFeaturesServiceBase.extend({
@@ -29,7 +28,7 @@ GetFeaturesByIDsService = GetFeaturesServiceBase.extend({
             toIndex: me.options.toIndex,
             IDs: me.options.IDs
         });
-        getFeaturesByIDsService = new SuperMap.iServer.GetFeaturesByIDsService(me.options.url, {
+        getFeaturesByIDsService = new SuperMap.REST.GetFeaturesByIDsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
@@ -37,7 +36,7 @@ GetFeaturesByIDsService = GetFeaturesServiceBase.extend({
             }
         });
         getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
-    },
+    }
 
 });
 

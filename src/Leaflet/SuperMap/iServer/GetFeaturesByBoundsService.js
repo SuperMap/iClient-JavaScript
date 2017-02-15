@@ -3,14 +3,13 @@
  * 数据集Bounds查询服务类
  */
 require('./GetFeaturesServiceBase');
-require('../../../Core/iServer/GetFeaturesByBoundsService');
-require('leaflet');
+var GetFeaturesServiceBase=require('../../../Core/iServer/GetFeaturesByBoundsService');
 
 GetFeaturesByBoundsService = GetFeaturesServiceBase.extend({
 
     options: {
         bounds: null,
-        spatialQueryMode: SuperMap.REST.SpatialQueryMode.CONTAIN,
+        spatialQueryMode: SuperMap.REST.SpatialQueryMode.CONTAIN
     },
 
     initialize: function (url, options) {
@@ -39,7 +38,7 @@ GetFeaturesByBoundsService = GetFeaturesServiceBase.extend({
             toIndex: me.options.toIndex,
             bounds: me.options.bounds
         });
-        GetFeaturesByBoundsService = new SuperMap.iServer.GetFeaturesByBoundsService(me.options.url, {
+        GetFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,

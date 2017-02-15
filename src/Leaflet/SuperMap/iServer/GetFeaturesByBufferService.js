@@ -4,7 +4,6 @@
  */
 require('./GetFeaturesServiceBase');
 require('../../../Core/iServer/GetFeaturesByBufferService');
-require('leaflet');
 
 GetFeaturesByBufferService = GetFeaturesServiceBase.extend({
 
@@ -19,7 +18,7 @@ GetFeaturesByBufferService = GetFeaturesServiceBase.extend({
     initialize: function (url, options) {
         GetFeaturesServiceBase.prototype.initialize.call(this, url, options);
         L.setOptions(this, options);
-        if (options && options.geometry) {
+        if (options && options.geometry && options.geometry instanceof L.Path) {
             var geometry = L.Util.toSuperMapGeometry(options.geometry.toGeoJSON());
             this.options.geometry = geometry;
         }

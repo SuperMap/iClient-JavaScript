@@ -12,7 +12,6 @@
  */
 require('../../base');
 require('../../../Core/iServer/MapService');
-require('leaflet');
 
 MapService = L.Evented.extend({
     options: {
@@ -32,7 +31,7 @@ MapService = L.Evented.extend({
 
     _getMapStatus: function () {
         var me = this;
-        var getMapStatusService = new SuperMap.iServer.MapService(me.options.url, {
+        var getMapStatusService = new SuperMap.REST.MapService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
