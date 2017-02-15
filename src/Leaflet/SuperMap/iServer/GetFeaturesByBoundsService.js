@@ -3,7 +3,7 @@
  * 数据集Bounds查询服务类
  */
 require('./GetFeaturesServiceBase');
-var GetFeaturesServiceBase=require('../../../Core/iServer/GetFeaturesByBoundsService');
+require('../../../Core/iServer/GetFeaturesByBoundsService');
 
 GetFeaturesByBoundsService = GetFeaturesServiceBase.extend({
 
