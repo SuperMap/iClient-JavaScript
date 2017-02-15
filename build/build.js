@@ -14,10 +14,16 @@ function init() {
         for (var i = 0; i < lists.length; i++) {
             var checks = lists[i].getElementsByTagName('input');
             for (var j = 0; j < checks.length; j++) {
+                if (checks[j].id === 'Core') {
+                    continue;
+                }
                 checks[j].checked = selectAll;
             }
             var lis = lists[i].getElementsByTagName('li');
             for (var n = 0; n < checks.length; n++) {
+                if (checks[n].id === 'Core') {
+                    continue;
+                }
                 lis[n].className = (selectAll) ? 'active' : '';
             }
         }
