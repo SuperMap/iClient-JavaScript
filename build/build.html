@@ -113,7 +113,7 @@
 
         #command2 {
             width: 100%;
-            margin: 20px 30px;
+            margin: -10px 30px;
         }
 
         #toolbar {
@@ -140,6 +140,15 @@
         #client {
             font-size: 16px;
             margin-left: 30px;
+        }
+
+        #commandIntro {
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        #commandIntro li {
+            padding-bottom: 10px
         }
 
     </style>
@@ -177,8 +186,14 @@
     </section>
     <section class="sec commandSection">
         <div class="description">
-            <div>自定义打包命令<span style="font-size: 14px;"> --复制命令,在源码根目录执行命令打包</span></div>
+            <div>自定义打包命令</div>
         </div>
+        <br>
+        <ol id="commandIntro">
+            <li>安装Node</li>
+            <li>在源码根目录运行npm install下载依赖</li>
+            <li>在源码根目录执行以下命令打包</li>
+        </ol>
         <input type="text" class="form-control" id="command2"/>
     </section>
 </div>
