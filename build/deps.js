@@ -96,7 +96,16 @@ var deps = {
         },
         "SuperMap": {
             "title": "SuperMap",
-            "description": "--对接SuperMap服务"
+            "description": "--对接SuperMap服务",
+            "Map": {
+                "name": "Map服务",
+                "src": [
+                    "./src/OL3/SuperMap/iServer/TiledMapLayer.js",
+                    "./src/OL3/SuperMap/iServer/MapService.js",
+                    // "./src/OL3/SuperMap/iServer/QueryByBoundsService.js",
+                    // "./src/OL3/SuperMap/iServer/GetLayersInfoService.js"
+                ]
+            },
         },
         "Visual": {
             "title": "Visual",
