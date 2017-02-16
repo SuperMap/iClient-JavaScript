@@ -160,23 +160,14 @@ SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
      * result - {Object} 服务器返回的结果对象。
      */
     getMapStatusCompleted: function (result) {
-        var me = this,
-            qe = null,
-            error = null,
-            serviceException = null;
+        var me = this;
         result = SuperMap.Util.transformResult(result);
         if (!result.code || (result.code && ((result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304))) {
             me.events && me.events.triggerEvent("processCompleted", {result: result});
         }
         //在没有tonken是返回的是200，但是其实是没有权限，所以这里也应该是触发失败事件
         else {
-            error = result;
-            if (!error) {
-                return;
-            }
-            serviceException = SuperMap.ServiceException.fromJson(error);
-            qe = new SuperMap.ServiceFailedEventArgs(serviceException, result);
-            me.events.triggerEvent("processFailed", qe);
+            me.events.triggerEvent("processFailed", result);
         }
     },
 

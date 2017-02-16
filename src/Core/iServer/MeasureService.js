@@ -12,7 +12,7 @@
  */
 require('../base');
 
-SuperMap.REST.MeasureServices = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
     
     /**
      * Constant: EVENT_TYPES

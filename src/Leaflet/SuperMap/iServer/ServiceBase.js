@@ -14,15 +14,16 @@ ServiceBase = L.Evented.extend({
     },
 
     processCompleted: function (serverResult) {
-        this.fire('complete', {result:serverResult.result});
+        this.fire('complete', {result: serverResult.result});
 
     },
     processFailed: function (failedResult) {
-        this.fire('failed', {error: failedResult.error});
-        console.log(failedResult.error.errorMsg);
+        var error = failedResult.error ? failedResult.error : failedResult;
+        this.fire('failed', {error: error});
+        console.log(error.errorMsg);
     }
 });
 
-module.exports  = function (url, options) {
+module.exports = function (url, options) {
     return new ServiceBase(url, options);
 };
