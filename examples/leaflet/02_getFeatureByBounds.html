@@ -27,7 +27,7 @@
                 dataSetNames: ["World:Countries"],
                 bounds: polygon.getBounds(),
                 spatialQueryMode:"INTERSECT"
-            }).on("complete", function (serviceResult) {
+            }).getFeatures().on("complete", function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result, {
                     onEachFeature: function (feature, layer) {
                         layer.bindPopup("国家：" + feature.properties.COUNTRY);

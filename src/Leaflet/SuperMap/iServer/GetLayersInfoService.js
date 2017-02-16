@@ -19,10 +19,9 @@ GetLayersInfoService = ServiceBase.extend({
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
         L.setOptions(this, options);
-        this._getLayersInfo();
     },
 
-    _getLayersInfo: function () {
+    getLayersInfo: function () {
         var me = this;
         var getLayersInfoService = new SuperMap.REST.GetLayersInfoService(me.options.url, {
             eventListeners: {
@@ -32,6 +31,7 @@ GetLayersInfoService = ServiceBase.extend({
             }
         });
         getLayersInfoService.processAsync();
+        return me;
     },
     processCompleted: function (layersInfoResult) {
         var layersInfo,

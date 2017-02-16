@@ -26,8 +26,8 @@
             L.supermap.getFeaturesByGeometryService(url, {
                 dataSetNames: ["World:Countries"],
                 geometry: polygon,
-                spatialQueryMode:"INTERSECT"
-            }).on("complete", function (serviceResult) {
+                spatialQueryMode: "INTERSECT"
+            }).getFeatures().on("complete", function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result, {
                     onEachFeature: function (feature, layer) {
                         layer.bindPopup("国家：" + feature.properties.COUNTRY);

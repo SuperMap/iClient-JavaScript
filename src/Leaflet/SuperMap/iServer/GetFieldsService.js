@@ -17,10 +17,9 @@ GetFieldsService = FieldsServiceBase.extend({
 
     initialize: function (url, options) {
         FieldsServiceBase.prototype.initialize.call(this, url, options);
-        this._getFields();
     },
 
-    _getFields: function () {
+    getFields: function () {
         var me = this, getFieldsService;
         getFieldsService = new SuperMap.REST.GetFieldsService(me.options.url, {
             eventListeners: {
@@ -32,6 +31,7 @@ GetFieldsService = FieldsServiceBase.extend({
             dataset: me.options.dataSetName
         });
         getFieldsService.processAsync();
+        return me;
     }
 });
 

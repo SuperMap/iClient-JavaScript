@@ -10,37 +10,10 @@
  *      另一种是使用 AsyncResponder 类实现异步处理。
  *
  * Inherits from:
- *  - <SuperMap.ServiceBase>
+ *  - <SuperMap.CoreServiceBase>
  */
-require('../base');
-SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase, {
-
-    /**
-     * Constant: EVENT_TYPES
-     * {Array(String)}
-     *
-     * 此类支持的事件类型:
-     * - *processCompleted* 服务端返回查询结果触发该事件。
-     * - *processFailed* 服务端返回查询结果失败触发该事件。
-     */
-    EVENT_TYPES: ["processCompleted", "processFailed"],
-
-    /**
-     * APIProperty: events
-     * {<SuperMap.Events>} 在 ChartFeatureInfoSpecsService 类中处理所有事件的
-     *      对象，支持两种事件 processCompleted、processFailed ，服务端图层信息
-     *      设置成功并返回结果时触发 processCompleted 事件，服务端图层信息设置
-     *      失败时触发 processFailed 事件。
-     */
-    events: null,
-
-    /**
-     * APIProperty: eventListeners
-     * {Object} 监听器对象，在构造函数中设置此参数（可选），对 ChartFeatureInfoSpecsService
-     *      支持的两个事件processCompleted 、processFailed 进行监听，相当于调
-     *      用 SuperMap.Events.on(eventListeners)。
-     */
-    eventListeners: null,
+require('./CoreServiceBase');
+SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.ChartFeatureInfoSpecsService
@@ -56,15 +29,7 @@ SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, [url]);
-        if (options) {
-            SuperMap.Util.extend(this, options);
-        }
-        var me = this;
-        me.events = new SuperMap.Events(me, null, me.EVENT_TYPES, true);
-        if (me.eventListeners instanceof Object) {
-            me.events.on(me.eventListeners);
-        }
+        SuperMap.ServiceBase.prototype.initialize.apply(this,arguments);
     },
 
     /**
@@ -98,33 +63,9 @@ SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase
             method: method,
             params: null,
             scope: me,
-            success: me.getFeatureCompleted,
-            failure: me.getFeatureFailed
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
         });
-    },
-
-    /**
-     * Method: getFeatureCompleted
-     * 查询完成，执行此方法。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
-     */
-    getFeatureCompleted: function (result) {
-        result = SuperMap.Util.transformResult(result);
-        this.events.triggerEvent("processCompleted", {result: result});
-    },
-
-    /**
-     * Method: getFeatureFailed
-     * 查询失败，执行此方法。
-     *
-     * Parameters:
-     * result -  {Object} 服务器返回的结果对象。
-     */
-    getFeatureFailed: function (result) {
-        result = SuperMap.Util.transformResult(result);
-        this.events.triggerEvent("processFailed", result);
     },
 
     CLASS_NAME: "SuperMap.REST.ChartFeatureInfoSpecsService"

@@ -24,10 +24,9 @@ GetFeaturesByBoundsService = GetFeaturesServiceBase.extend({
                 bounds.getNorthEast().lat
             );
         }
-        this._getFeaturesByBounds();
     },
 
-    _getFeaturesByBounds: function () {
+    getFeatures: function () {
         var me = this,
             getFeaturesByBoundsParameters, GetFeaturesByBoundsService;
         getFeaturesByBoundsParameters = new SuperMap.REST.GetFeaturesByBoundsParameters({
@@ -46,6 +45,7 @@ GetFeaturesByBoundsService = GetFeaturesServiceBase.extend({
             }
         });
         GetFeaturesByBoundsService.processAsync(getFeaturesByBoundsParameters);
+        return me;
     }
 });
 

@@ -22,10 +22,9 @@ GetFeaturesByBufferService = GetFeaturesServiceBase.extend({
             var geometry = L.Util.toSuperMapGeometry(options.geometry.toGeoJSON());
             this.options.geometry = geometry;
         }
-        this._getFeaturesByBuffer();
     },
 
-    _getFeaturesByBuffer: function () {
+    getFeatures: function () {
         var me = this,
             getFeatureParameter, getFeatureService;
         getFeatureParameter = new SuperMap.REST.GetFeaturesByBufferParameters({
@@ -45,6 +44,7 @@ GetFeaturesByBufferService = GetFeaturesServiceBase.extend({
             }
         });
         getFeatureService.processAsync(getFeatureParameter);
+        return me;
     }
 });
 

@@ -25,7 +25,7 @@
                 name: "Countries@World",
                 attributeFilter: "SMID = 1",
                 dataSetNames: ["World:Countries"]
-            }).on("complete", function (serviceResult) {
+            }).getFeatures().on("complete", function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result).addTo(map);
             });
         }

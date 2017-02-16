@@ -22,7 +22,7 @@
 
         function layerService() {
             closeInfoWin();
-            L.supermap.getLayersInfoService(url).on("complete", function (serviceResult) {
+            L.supermap.getLayersInfoService(url).getLayersInfo().on("complete", function (serviceResult) {
                 if (!infowin) {
                     infowin = L.popup({maxWidth: 400});
                 }

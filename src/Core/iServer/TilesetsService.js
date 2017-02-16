@@ -8,35 +8,11 @@
  * 切片列表信息查询服务类;即查询切片地图服务的切片列表，返回切片集名称、地图切片元数据信息、切片版本集信息
  *
  * Inherits from:
- *  - <SuperMap.ServiceBase>
+ *  - <SuperMap.CoreServiceBase>
  */
-require('../base');
+require('./CoreServiceBase');
 
-SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
-
-    /**
-     * Constant: EVENT_TYPES
-     * {Array(String)}
-     * 此类支持的事件类型。
-     * - *processCompleted* 服务端返回分析结果触发该事件。
-     * - *processFailed* 服务端返回分析结果失败触发该事件。
-     */
-    EVENT_TYPES: [
-        "processCompleted", "processFailed"],
-
-    /**
-     * APIProperty: events
-     * {<SuperMap.Events>} 在 TilesetsService 类中处理所有事件的对象，支持两种事件 processCompleted 、processFailed
-     * 服务端成功返回最近设施分析结果时触发 processCompleted  事件，服务端返回最近设施分析结果失败触发 processFailed 事件。
-     *
-     */
-    events: null,
-
-    /**
-     * APIProperty: eventListeners
-     * {Object} 监听器对象，在构造函数中设置此参数（可选）
-     */
-    eventListeners: null,
+SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
 
     /**
@@ -54,17 +30,12 @@ SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
      */
 
     initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this,arguments);
         var me = this;
         if (options) {
             SuperMap.Util.extend(me, options);
         }
-        me.events = new SuperMap.Events(
-            me, null, me.EVENT_TYPES, true
-        );
-        if (me.eventListeners instanceof Object) {
-            me.events.on(me.eventListeners);
-        }
+
     },
 
     /**
@@ -72,11 +43,7 @@ SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
-        var me = this;
-        me.EVENT_TYPES = null;
-        me.events = null;
-        me.eventListeners = null;
+        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -95,33 +62,9 @@ SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
         me.request({
             method: "GET",
             scope: me,
-            success: me.findFacilityComplete,
-            failure: me.findFacilityError
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
         });
-    },
-
-    /**
-     * Method: findFacilityComplete
-     * 切片列表信息查询成功，执行此方法。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
-     */
-    findFacilityComplete: function (result) {
-        result = SuperMap.Util.transformResult(result);
-        this.events.triggerEvent("processCompleted", {result: result});
-    },
-
-    /**
-     * Method: findFacilityError
-     *  切片列表信息查询失败，执行此方法。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
-     */
-    findFacilityError: function (result) {
-        result = SuperMap.Util.transformResult(result);
-        this.events.triggerEvent("processFailed", result);
     },
 
     CLASS_NAME: "SuperMap.REST.TilesetsService"

@@ -33,11 +33,10 @@ QueryByBoundsService = ServiceBase.extend({
                 queryBounds.getNorthEast().lat
             );
         }
-        this._query();
     },
 
     //返回数据格式统一处理为geoJSON格式
-    _query: function () {
+    query: function () {
         var me = this;
         var queryParam, queryByBoundsParams, queryService;
         queryParam = new SuperMap.REST.FilterParameter({name: me.options.name});
@@ -50,6 +49,7 @@ QueryByBoundsService = ServiceBase.extend({
             }
         });
         queryService.processAsync(queryByBoundsParams);
+        return me;
     }
 });
 

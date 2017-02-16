@@ -10,32 +10,8 @@
  * 一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；
  * 一种是使用 AsyncResponder 类实现异步处理。
  */
-require('../base');
-SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
-    /**
-     * Constant: EVENT_TYPES
-     * {Array(String)}
-     *
-     * 此类支持的事件类型:
-     * - *processCompleted* 服务端返回图层信息设置成功的结果时触发该事件。
-     * - *processFailed* 服务端返回图层信息设置结果失败时触发该事件。
-     */
-    EVENT_TYPES: ["processCompleted", "processFailed"],
-
-    /**
-     * APIProperty: events
-     * {<SuperMap.Events>} 在 SetLayerStatusService 类中处理所有事件的对象，支持两种事件 processCompleted
-     * 、processFailed ，服务端图层信息设置成功并返回结果时触发 processCompleted 事件，
-     * 服务端图层信息设置失败时触发 processFailed 事件。
-     */
-    events: null,
-
-    /**
-     * APIProperty: eventListeners
-     * {Object} 监听器对象，在构造函数中设置此参数（可选），对 SetLayerStatusService 支持的两个事件
-     * processCompleted 、processFailed 进行监听，相当于调用 SuperMap.Events.on(eventListeners)。
-     */
-    eventListeners: null,
+require('./CoreServiceBase');
+SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     lastparams: null,
 
@@ -54,16 +30,9 @@ SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, [url]);
+        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);
-        }
-        var me = this;
-        me.events = new SuperMap.Events(
-            me, null, me.EVENT_TYPES, true
-        );
-        if (me.eventListeners instanceof Object) {
-            me.events.on(me.eventListeners);
         }
         me.mapUrl = url;
     },
@@ -73,7 +42,7 @@ SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
         SuperMap.Util.reset(this);
     },
 
@@ -106,7 +75,7 @@ SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
                 method: method,
                 scope: me,
                 success: me.createTempLayerComplete,
-                failure: me.setLayerFailed
+                failure: me.serviceProcessFailed
             });
         }
         else {
@@ -130,8 +99,8 @@ SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
                 method: "PUT",
                 data: jsonParameters,
                 scope: me,
-                success: me.setLayerCompleted,
-                failure: me.setLayerFailed
+                success: me.serviceProcessCompleted,
+                failure: me.serviceProcessFailed
             });
         }
     },
@@ -170,24 +139,12 @@ SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * result - {Object} 服务器返回的结果对象，记录设置操作是否成功。
      */
-    setLayerCompleted: function (result) {
+    serviceProcessCompleted: function (result) {
         result = SuperMap.Util.transformResult(result);
         if (result != null && me.lastparams != null) {
             result.newResourceID = me.lastparams.resourceID;
         }
         this.events.triggerEvent("processCompleted", {result: result});
-    },
-
-    /**
-     * Method: setLayerFailed
-     * 设置失败，执行此方法。
-     *
-     * Parameters:
-     * result -  {Object} 服务器返回的结果对象。
-     */
-    setLayerFailed: function (result) {
-        result = SuperMap.Util.transformResult(result);
-        this.events.triggerEvent("processFailed", result);
     },
 
     CLASS_NAME: "SuperMap.REST.SetLayerStatusService"

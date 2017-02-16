@@ -26,10 +26,9 @@ MapService = ServiceBase.extend({
         }
         this.options.projection = new SuperMap.Projection(projection);
 
-        this._getMapStatus();
     },
 
-    _getMapStatus: function () {
+    getMapStatus: function () {
         var me = this;
         var getMapStatusService = new SuperMap.REST.MapService(me.options.url, {
             eventListeners: {
@@ -39,6 +38,7 @@ MapService = ServiceBase.extend({
             }, projection: me.options.projection
         });
         getMapStatusService.processAsync();
+        return me;
     }
 });
 

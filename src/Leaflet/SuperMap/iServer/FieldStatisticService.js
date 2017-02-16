@@ -29,10 +29,9 @@ FieldStatisticService = FieldsServiceBase.extend({
         if (!options.statisticMode || (typeof options.statisticMode !== "Array")) {
             this.options.statisticMode = SuperMap.REST.StatisticMode;
         }
-        this._fieldStatistic();
     },
 
-    _fieldStatistic: function () {
+    getFieldStatisticInfo: function () {
         var me = this;
         var modes = me.options.statisticMode;
         //针对每种统计方式分别进行请求
@@ -40,6 +39,7 @@ FieldStatisticService = FieldsServiceBase.extend({
             this.currentStatisticResult[modes[mode]] = null;
             this._fieldStatisticRequest(modes[mode]);
         }
+        return me;
     },
     _fieldStatisticRequest: function (statisticMode) {
         var me = this, statisticService;
@@ -71,7 +71,7 @@ FieldStatisticService = FieldsServiceBase.extend({
             }
         }
         if (getAll) {
-            this.fire('complete', {result:this.currentStatisticResult});
+            this.fire('complete', {result: this.currentStatisticResult});
         }
     }
 });

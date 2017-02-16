@@ -18,10 +18,9 @@ GetFeaturesBySQLService = GetFeaturesServiceBase.extend({
     initialize: function (url, options) {
         GetFeaturesServiceBase.prototype.initialize.call(this, url, options);
         L.setOptions(this, options);
-        this._getFeaturesBySQL();
     },
 
-    _getFeaturesBySQL: function () {
+    getFeatures: function () {
         var me = this,
             getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
 
@@ -47,6 +46,7 @@ GetFeaturesBySQLService = GetFeaturesServiceBase.extend({
         });
 
         getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+        return me;
     }
 });
 

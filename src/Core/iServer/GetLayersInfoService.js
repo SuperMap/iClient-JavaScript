@@ -8,38 +8,10 @@
  * 该类负责将从客户端指定的服务器上获取该服务器提供的图层信息。
  *
  * Inherits from:
- *  - <SuperMap.ServiceBase>
+ *  - <SuperMap.CoreServiceBase>
  */
-require('../base');
-SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
-
-    /**
-     * Constant: EVENT_TYPES
-     * {Array(String)}
-     *
-     * 此类支持的事件类型:
-     * - *processCompleted* 服务端返回查询结果触发该事件。
-     * - *processFailed* 服务端返回查询结果失败触发该事件。
-     */
-    EVENT_TYPES: ["processCompleted", "processFailed"],
-
-    /**
-     * APIProperty: events
-     * {<SuperMap.Events>} 在 GetLayersInfoService 类中处理所有事件的对象，支持两种事件 processCompleted 、processFailed ，服务端成功返回查询结果时触发 processCompleted 事件，服务端返回查询结果失败时触发 processFailed 事件。
-     */
-    events: null,
-
-    /**
-     * APIProperty: eventListeners
-     * {Object} 监听器对象，在构造函数中设置此参数（可选），对 GetLayersInfoService 支持的两个事件 processCompleted 、processFailed 进行监听，相当于调用 SuperMap.Events.on(eventListeners)。
-     */
-    eventListeners: null,
-
-    /**
-     * Property: lastResult
-     * {<SuperMap.REST.TrafficTransferResult>} 服务端返回的结果数据。
-     */
-    lastResult: null,
+require('./CoreServiceBase');
+SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
      * Property: isTempLayers
@@ -64,16 +36,9 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。
      */
     initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, [url]);
+        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);
-        }
-        var me = this;
-        me.events = new SuperMap.Events(
-            me, null, me.EVENT_TYPES, true
-        );
-        if (me.eventListeners instanceof Object) {
-            me.events.on(me.eventListeners);
         }
     },
 
@@ -82,7 +47,7 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
         SuperMap.Util.reset(this);
     },
 
@@ -105,8 +70,8 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
             method: method,
             params: null,
             scope: me,
-            success: me.getLayerComplted,
-            failure: me.getLayerFailed
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
         });
     },
 
@@ -117,7 +82,7 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
-    getLayerComplted: function (result) {
+    serviceProcessCompleted: function (result) {
         result = SuperMap.Util.transformResult(result);
         result = (result && result.length > 0) ? result[0] : null;
         this.events.triggerEvent("processCompleted", {result: result});
@@ -172,17 +137,6 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
             }
         }
-    },
-    /**
-     * Method: getLayerFailed
-     * 编辑失败，执行此方法。
-     *
-     * Parameters:
-     * result -  {Object} 服务器返回的结果对象。
-     */
-    getLayerFailed: function (result) {
-        result = SuperMap.Util.transformResult(result);
-        this.events.triggerEvent("processFailed", result);
     },
 
     CLASS_NAME: "SuperMap.REST.GetLayersInfoService"

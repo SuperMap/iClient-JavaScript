@@ -8,45 +8,11 @@
  * 该类负责将从客户端指定的服务器上获取该服务器提供的地图信息
  * 结果保存在一个object对象中，对象包含一个属性result为iServer返回的json对象
  * Inherits from:
- *  - <SuperMap.ServiceBase>
+ *  - <SuperMap.CoreServiceBase>
  */
-require('../base');
+require('./CoreServiceBase');
 
-SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
-
-    /**
-     * Constant: EVENT_TYPES
-     * {Array(String)}
-     * 此类支持的事件类型
-     * - *processCompleted* 服务端返回地图信息成功触发该事件 。
-     * - *processFailed* 服务端返回地图信息失败触发该事件 。
-     */
-    EVENT_TYPES: ["processCompleted", "processFailed"],
-
-    /**
-     * APIProperty: events
-     * {<SuperMap.Events>} 在 MapService 类中处理所有事件的对象，支持 processCompleted 、processFailed 两种事件，服务端成功返回地图信息结果时触发 processCompleted 事件，服务端返回地图信息结果时触发 processFailed 事件。
-     *
-     * 例如：
-     * (start code)
-     * var myMapService = new SuperMap.REST.MapService(url);
-     * myMapService.events.on({
-     *     "processCompleted": MapServiceCompleted,
-     *     "processFailed": MapServiceFailed
-     *       }
-     * );
-     * function MapServiceCompleted(object){//todo};
-     * function MapServiceFailed(object){//todo};
-     * (end)
-     */
-    events: null,
-
-    /**
-     * APIProperty: eventListeners
-     * {Object} 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
-     * 相当于调用 SuperMap.Events.on(eventListeners)。
-     */
-    eventListeners: null,
+SuperMap.REST.MapService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
      * APIProperty: projection
@@ -78,16 +44,12 @@ SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
         var me = this;
-        me.events = new SuperMap.Events(
-            me, null, me.EVENT_TYPES, true
-        );
 
-        me.eventListeners && me.events.on(me.eventListeners);
         me.url += me.isInTheSameDomain ? ".json" : ".jsonp";
 
         if (me.projection) {
@@ -107,9 +69,8 @@ SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
         var me = this;
-        me.EVENT_TYPES = null;
         if (me.events) {
             me.events.un(me.eventListeners);
             me.events.listeners = null;
@@ -130,8 +91,8 @@ SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
             var option = {
                 method: "GET",
                 scope: me,
-                success: me.getMapStatusCompleted,
-                failure: me.getMapStatusError
+                success: me.serviceProcessCompleted,
+                failure: me.serviceProcessFailed
             };
             me.request(option);
         } else {
@@ -145,9 +106,9 @@ SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
                 url: urlWithToken,
                 type: "GET"
             }).then(function (result) {
-                me.getMapStatusCompleted(result);
+                me.serviceProcessCompleted(result);
             }, function (error) {
-                me.getMapStatusError(error);
+                me.serviceProcessFailed(error);
             });
         }
     },
@@ -159,7 +120,7 @@ SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
-    getMapStatusCompleted: function (result) {
+    serviceProcessCompleted: function (result) {
         var me = this;
         result = SuperMap.Util.transformResult(result);
         if (!result.code || (result.code && ((result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304))) {
@@ -169,18 +130,6 @@ SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
         else {
             me.events.triggerEvent("processFailed", result);
         }
-    },
-
-    /**
-     * Method: getMapStatusError
-     * 获取地图状态失败，执行此方法。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
-     */
-    getMapStatusError: function (result) {
-        result = SuperMap.Util.transformResult(result);
-        this.events.triggerEvent("processFailed", result);
     },
 
     CLASS_NAME: "SuperMap.REST.MapService"

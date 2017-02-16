@@ -25,7 +25,7 @@
             L.supermap.queryByBoundsService(url, {
                 name: "Capitals@World.1",
                 queryBounds: polygon.getBounds()
-            }).on("complete", function (serviceResult) {
+            }).query().on("complete", function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result).addTo(map);
             });
         }

@@ -26,7 +26,7 @@
             L.supermap.getFieldsService(url, {
                 dataSourceName: "World",
                 dataSetName: "continent_T"
-            }).on("complete", function (serviceResult) {
+            }).getFields().on("complete", function (serviceResult) {
                 if (!infowin) {
                     infowin = L.popup({maxWidth: 420});
                 }

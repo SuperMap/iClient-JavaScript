@@ -15,10 +15,9 @@ GetFeaturesByIDsService = GetFeaturesServiceBase.extend({
     initialize: function (url, options) {
         GetFeaturesServiceBase.prototype.initialize.call(this, url, options);
         L.setOptions(this, options);
-        this._getFeaturesByIDs();
     },
 
-    _getFeaturesByIDs: function () {
+    getFeatures: function () {
         var me = this;
         var getFeaturesByIDsParameters, getFeaturesByIDsService;
         getFeaturesByIDsParameters = new SuperMap.REST.GetFeaturesByIDsParameters({
@@ -36,6 +35,7 @@ GetFeaturesByIDsService = GetFeaturesServiceBase.extend({
             }
         });
         getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
+        return me;
     }
 
 });

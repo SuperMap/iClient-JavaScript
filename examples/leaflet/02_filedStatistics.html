@@ -69,7 +69,7 @@
         //获取子图层信息
         function showLayersInfo() {
             var subLayer;
-            L.supermap.getLayersInfoService(mapURL).on("complete", function (serviceResult) {
+            L.supermap.getLayersInfoService(mapURL).getLayersInfo().on("complete", function (serviceResult) {
                 var layers = serviceResult.result;
                 if (!layers) return;
                 for (var i = 0, len = layers.length; i < len; i++) {
@@ -106,7 +106,7 @@
                     currentData = dataInfo;
                     L.supermap.getFieldsService(dataURL, {
                         dataSourceName: dataInfo.dataSourceName, dataSetName: dataInfo.dataSetName
-                    }).on("complete", function (serviceResult) {
+                    }).getFields().on("complete", function (serviceResult) {
                         var fieldNames = serviceResult.result.fieldNames;
                         var fieldSelect = document.getElementById("fieldSelect");
                         fieldSelect.innerHTML = "";
@@ -127,7 +127,7 @@
                     dataSourceName: currentData.dataSourceName,
                     dataSetName: currentData.dataSetName,
                     fieldName: fieldName
-                }).on("complete", function (serviceResult) {
+                }).getFieldStatisticInfo().on("complete", function (serviceResult) {
                     info.update(serviceResult.result);
                 });
             }

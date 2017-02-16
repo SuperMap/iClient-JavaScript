@@ -24,7 +24,7 @@
             closeInfoWin();
             L.supermap.mapService(url, {
                 projection: "4326"
-            }).on("complete", function (serviceResult) {
+            }).getMapStatus().on("complete", function (serviceResult) {
                 if (!infowin) {
                     infowin = L.popup({maxWidth: 400});
                 }

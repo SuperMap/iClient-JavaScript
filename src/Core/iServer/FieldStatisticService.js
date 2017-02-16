@@ -8,46 +8,11 @@
  * 字段查询统计服务类。用来完成对指定数据集指定字段的查询统计分析，即求平均值，最大值等。
  *
  * Inherits from:
- *  - <SuperMap.ServiceBase>
+ *  - <SuperMap.CoreServiceBase>
  */
-require('../base');
+require('./CoreServiceBase');
 
-SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
-
-    /**
-     * Constant: EVENT_TYPES
-     * {Array(String)}
-     *
-     * 此类支持的事件类型:
-     * - *processCompleted* 服务端返回查询结果触发该事件。
-     * - *processFailed* 服务端返回查询结果失败触发该事件。
-     */
-    EVENT_TYPES: ["processCompleted", "processFailed"],
-
-    /**
-     * APIProperty: events
-     * {<SuperMap.Events>} 在 FieldStatisticService 类中处理所有事件的对象，支持两种事件 processCompleted 、processFailed ，服务端成功返回查询结果时触发 processCompleted 事件，服务端返回查询结果失败时触发 processFailed 事件。
-     *
-     * 例如：
-     *     (start code)
-     * var myService = new SuperMap.REST.FieldStatisticService(url);
-     * myService.events.on({
-     *     "processCompleted": fieldStatisticCompleted, 
-     *       "processFailed": fieldStatisticError
-     *       }
-     * );
-     * function fieldStatisticCompleted(object){//todo};
-     * function fieldStatisticError(object){//todo};
-     * (end)
-     */
-    events: null,
-
-    /**
-     * APIProperty: eventListeners
-     * {Object} 监听器对象，在构造函数中设置此参数（可选），对 FieldStatisticService 支持的
-     * 两个事件 processCompleted 、processFailed 进行监听，相当于调用 SuperMap.Events.on(eventListeners)。
-     */
-    eventListeners: null,
+SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
      * APIProperty: datasource
@@ -102,17 +67,9 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
      * statisticMode - {<SuperMap.REST.StatisticMode>} 字段查询统计的方法类型。
      */
     initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, [url]);
+        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);
-        }
-        var me = this,
-            end;
-        me.events = new SuperMap.Events(
-            me, null, me.EVENT_TYPES, true
-        );
-        if (me.eventListeners instanceof Object) {
-            me.events.on(me.eventListeners);
         }
     },
 
@@ -121,20 +78,12 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
         var me = this;
-        me.EVENT_TYPES = null;
         me.datasource = null;
         me.dataset = null;
         me.field = null;
         me.statisticMode = null;
-        if (me.events) {
-            me.events.destroy();
-            me.events = null;
-        }
-        if (me.eventListeners) {
-            me.eventListeners = null;
-        }
     },
 
     /**
@@ -155,33 +104,9 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
             method: "GET",
             data: null,
             scope: me,
-            success: me.fieldStatisticCompleted,
-            failure: me.fieldStatisticFailed
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
         });
-    },
-
-    /**
-     * Method: fieldStatisticCompleted
-     * 字段查询统计成功执行该函数。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
-     */
-    fieldStatisticCompleted: function (result) {
-        result = SuperMap.Util.transformResult(result);
-        this.events.triggerEvent("processCompleted", {result: result});
-    },
-
-    /**
-     * Method: fieldStatisticFailed
-     * 字段查询统计失败执行该函数。
-     *
-     * Parameters:
-     * result -  {Object} 服务器返回的结果对象。
-     */
-    fieldStatisticFailed: function (result) {
-        result = SuperMap.Util.transformResult(result);
-        this.events.triggerEvent("processFailed", result);
     },
 
     CLASS_NAME: "SuperMap.REST.FieldStatisticService"
