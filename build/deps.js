@@ -26,7 +26,11 @@ var deps = {
             "./src/Core/iServer/QueryByBoundsService.js",
             "./src/Core/iServer/QueryService.js",
             "./src/Core/iServer/TilesetsService.js",
-            "./src/Core/iServer/MeasureService.js"
+            "./src/Core/iServer/MeasureService.js",
+            "./src/Core/iServer/ChartFeatureInfoSpecsService.js",
+            "./src/Core/iServer/SetLayerInfoService.js",
+            "./src/Core/iServer/SetLayersInfoService.js",
+            "./src/Core/iServer/SetLayerStatusService.js",
         ],
         // "online" : []
     },

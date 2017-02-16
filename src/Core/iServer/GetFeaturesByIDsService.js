@@ -27,8 +27,8 @@ SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeatures
      *         "processFailed": getFeatureError
      *            }
      *     });
-     * function getFeatureCompleted(GetFeaturesEventArgs){//todo};
-     * function getFeatureError(GetFeaturesEventArgs){//todo}
+     * function getFeatureCompleted(object){//todo};
+     * function getFeatureError(object){//todo}
      * (end)     
      *
      * Parameters:

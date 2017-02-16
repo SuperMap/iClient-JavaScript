@@ -26,8 +26,8 @@ SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeatu
      *           "processFailed": getFeatureError
      *           }
      * });
-     * function getFeatureCompleted(GetFeaturesEventArgs){//todo};
-     * function getFeatureError(GetFeaturesEventArgs){//todo}
+     * function getFeatureCompleted(object){//todo};
+     * function getFeatureError(object){//todo}
      * (end)
      *
      * Parameters:

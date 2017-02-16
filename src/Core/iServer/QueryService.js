@@ -86,8 +86,7 @@ SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-        var me = this,
-            end;
+        var me = this, end;
         me.events = new SuperMap.Events(
             me, null, me.EVENT_TYPES, true
         );
@@ -100,7 +99,7 @@ SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
         }
 
         end = me.url.substr(me.url.length - 1, 1);
-        this.format = (options.format) ? options.format.toLowerCase() : this.format;
+        me.format = me.format.toLowerCase();
         // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
         // if (this.format==="geojson" && me.isInTheSameDomain) {
         //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
@@ -130,6 +129,7 @@ SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
             me.eventListeners = null;
         }
         me.returnContent = null;
+        me.format=null;
     },
 
     /**
