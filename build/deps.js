@@ -8,6 +8,7 @@ var deps = {
         // "iManager" : [],
         // "iPortal":[],
         "iServer": [
+            //Data
             "./src/Core/iServer/FieldStatisticService.js",
             "./src/Core/iServer/GetFeaturesByBoundsService.js",
             "./src/Core/iServer/GetFeaturesByBufferService.js",
@@ -17,6 +18,7 @@ var deps = {
             "./src/Core/iServer/GetFieldsService.js",
             "./src/Core/iServer/GetGridCellInfosService.js",
             "./src/Core/iServer/EditFeaturesService.js",
+            //Map
             "./src/Core/iServer/GetLayersInfoService.js",
             "./src/Core/iServer/MapService.js",
             "./src/Core/iServer/ChartQueryService.js",
@@ -31,6 +33,43 @@ var deps = {
             "./src/Core/iServer/SetLayerInfoService.js",
             "./src/Core/iServer/SetLayersInfoService.js",
             "./src/Core/iServer/SetLayerStatusService.js",
+            //NetworkAnalyst
+            "./src/Core/iServer/BurstPipelineAnalystService.js",
+            "./src/Core/iServer/ComputeWeightMatrixService.js",
+            "./src/Core/iServer/FacilityAnalystStreamService.js",
+            "./src/Core/iServer/FindClosestFacilitiesService.js",
+            "./src/Core/iServer/FindLocationService.js",
+            "./src/Core/iServer/FindMTSPPathsService.js",
+            "./src/Core/iServer/FindPathService.js",
+            "./src/Core/iServer/FindServiceAreasService.js",
+            "./src/Core/iServer/FindTSPPathsService.js",
+            "./src/Core/iServer/UpdateEdgeWeightService.js",
+            "./src/Core/iServer/UpdateTurnNodeWeightService.js",
+            //NetworkAnalyst3D
+            "./src/Core/iServer/FacilityAnalystSinks3DService.js",
+            "./src/Core/iServer/FacilityAnalystSources3DService.js",
+            "./src/Core/iServer/FacilityAnalystTracedown3DService.js",
+            "./src/Core/iServer/FacilityAnalystTraceup3DService.js",
+            "./src/Core/iServer/FacilityAnalystUpstream3DService.js",
+            //TrafficTransferAnalyst
+            "./src/Core/iServer/StopQueryService.js",
+            "./src/Core/iServer/TransferPathService.js",
+            "./src/Core/iServer/TransferSolutionService.js",
+            //SpatialAnalyst
+            "./src/Core/iServer/AreaSolarRadiationService.js",
+            "./src/Core/iServer/BufferAnalystService.js",
+            "./src/Core/iServer/DensityAnalystService.js",
+            "./src/Core/iServer/GenerateSpatialDataService.js",
+            "./src/Core/iServer/GeoRelationAnalystService.js",
+            "./src/Core/iServer/InterpolationAnalystService.js",
+            "./src/Core/iServer/MathExpressionAnalysisService.js",
+            "./src/Core/iServer/OverlayAnalystService.js",
+            "./src/Core/iServer/RouteCalculateMeasureService.js",
+            "./src/Core/iServer/RouteLocatorService.js",
+            "./src/Core/iServer/SurfaceAnalystService.js",
+            "./src/Core/iServer/TerrainCurvatureCalculationService.js",
+            "./src/Core/iServer/ThiessenAnalystService.js"
+
         ],
         // "online" : []
     },
