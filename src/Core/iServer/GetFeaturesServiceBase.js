@@ -113,8 +113,7 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-        var me = this,
-            end;
+        var me = this, end;
         me.events = new SuperMap.Events(
             me, null, me.EVENT_TYPES, true
         );
@@ -122,9 +121,9 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
             me.events.on(me.eventListeners);
         }
         end = me.url.substr(me.url.length - 1, 1);
-        this.format = (options.format) ? options.format.toLowerCase() : this.format;
+        me.format = me.format.toLowerCase();
         // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
-        // if (this.format==="geojson" && me.isInTheSameDomain) {
+        // if (me.format==="geojson" && me.isInTheSameDomain) {
         //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
         // } else {
         //     me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
@@ -148,6 +147,7 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
         me.fromIndex = null;
         me.toIndex = null;
         me.maxFeatures = null;
+        me.format = null;
         if (me.events) {
             me.events.destroy();
             me.events = null;
@@ -155,6 +155,7 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
         if (me.eventListeners) {
             me.eventListeners = null;
         }
+
     },
 
     /**

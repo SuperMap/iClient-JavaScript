@@ -61,6 +61,12 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
     returnContent: null,
 
     /**
+     *  Property: format
+     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+     *  参数格式为"iserver","geojson",默认为geojson
+     */
+    format: "geojson",
+    /**
      * Constructor: SuperMap.REST.ChartQueryService
      * 获取图层信息服务类构造函数。
      *
@@ -111,6 +117,13 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
             return;
         }
         end = me.url.substr(me.url.length - 1, 1);
+        me.format = me.format.toLowerCase();
+        // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
+        // if (me.format==="geojson" && me.isInTheSameDomain) {
+        //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
+        // } else {
+        //     me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
+        // }
         if (me.isInTheSameDomain) {
             me.url += (end === "/") ? "queryResults.json?" : "/queryResults.json?";
         } else {
@@ -135,6 +148,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
             me.eventListeners = null;
         }
         me.returnContent = null;
+        me.format = null;
     },
 
     /**
@@ -172,9 +186,9 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * result - {Object} 服务器返回的结果对象。
      */
     queryComplete: function (result) {
+        var me = this, queryResult;
         result = SuperMap.Util.transformResult(result);
-        var queryResult;
-        if (result && result.recordsets && this.format === "geojson") {
+        if (result && result.recordsets && me.format === "geojson") {
             queryResult = [];
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
@@ -187,7 +201,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
         } else {
             queryResult = result;
         }
-        this.events.triggerEvent("processCompleted", {result: queryResult});
+        me.events.triggerEvent("processCompleted", {result: queryResult});
     },
 
     /**
