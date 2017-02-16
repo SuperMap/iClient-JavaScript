@@ -10,6 +10,7 @@
  * Inherits from:
  *  - <SuperMap.CoreServiceBase>
  */
+require('../format/GeoJSON');
 require('./CoreServiceBase');
 SuperMap.REST.QueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
 

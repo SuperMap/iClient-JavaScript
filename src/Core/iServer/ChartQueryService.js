@@ -13,6 +13,7 @@
  * Inherits from:
  *  - <SuperMap.CoreServiceBase>
  */
+require('../format/GeoJSON');
 require('./CoreServiceBase');
 
 SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
