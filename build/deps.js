@@ -19,7 +19,9 @@ var deps = {
             "./src/Core/iServer/MapService.js",
             "./src/Core/iServer/QueryByBoundsService.js",
             "./src/Core/iServer/QueryService.js",
-            "./src/Core/iServer/GetGridCellInfosService.js"
+            "./src/Core/iServer/GetGridCellInfosService.js",
+            "./src/Core/iServer/EditFeaturesService.js",
+            "./src/Core/iServer/MeasureService.js"
         ],
         // "online" : []
     },
