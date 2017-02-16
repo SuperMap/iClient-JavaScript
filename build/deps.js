@@ -106,10 +106,22 @@ var deps = {
                 "src": [
                     "./src/OL3/SuperMap/iServer/TiledMapLayer.js",
                     "./src/OL3/SuperMap/iServer/MapService.js",
-                    // "./src/OL3/SuperMap/iServer/QueryByBoundsService.js",
-                    // "./src/OL3/SuperMap/iServer/GetLayersInfoService.js"
+                    "./src/OL3/SuperMap/iServer/QueryByBoundsService.js",
+                    "./src/OL3/SuperMap/iServer/GetLayersInfoService.js"
                 ]
             },
+            "Data": {
+                "name": "Data服务",
+                "src": [
+                    "./src/OL3/SuperMap/iServer/FieldStatisticService.js",
+                    "./src/OL3/SuperMap/iServer/GetFeaturesByBoundsService.js",
+                    "./src/OL3/SuperMap/iServer/GetFeaturesByBufferService.js",
+                    "./src/OL3/SuperMap/iServer/GetFeaturesByGeometryService.js",
+                    "./src/OL3/SuperMap/iServer/GetFeaturesByIDsService.js",
+                    "./src/OL3/SuperMap/iServer/GetFeaturesBySQLService.js",
+                    "./src/OL3/SuperMap/iServer/GetFieldsService.js"
+                ]
+            }
         },
         "Visual": {
             "title": "Visual",
