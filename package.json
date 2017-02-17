@@ -8,6 +8,7 @@
     "test": "test"
   },
   "scripts": {
+    "release":"npm run package - leaflet && npm run package - ol3 && npm run package - core",
     "deploy": "webpack",
     "deploy-leaflet": "webpack --config webpack.config.leaflet.js ",
     "deploy-ol3": "webpack --config webpack.config.ol3.js ",
