@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="../../dist/SuperMapiClient9.css">
     <script type="text/javascript" src="../../dist/SuperMapiClient9.js"></script>
     <script type="text/javascript">
-        var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+        var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
         function init() {
             var map = new ol.Map({
                 target: 'map',
                 view: new ol.View({
                     center: [0, 0],
-                    zoom: 1,
+                    zoom: 2,
                     projection: 'EPSG:3857'
                 })
             });

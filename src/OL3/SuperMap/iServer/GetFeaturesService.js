@@ -45,14 +45,12 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesByIDsService = function (par
  */
 ol.supermap.GetFeaturesService.prototype.getFeaturesByBoundsService = function (params) {
     var me = this, param = me._processParams(params), bounds = params.bounds, spatialQueryMode;
-    if (bounds instanceof L.LatLngBounds) {
-        bounds = new SuperMap.Bounds(
-            params.bounds.getSouthWest().lng,
-            params.bounds.getSouthWest().lat,
-            params.bounds.getNorthEast().lng,
-            params.bounds.getNorthEast().lat
-        );
-    }
+    bounds = new SuperMap.Bounds(
+        params.bounds[0],
+        params.bounds[1],
+        params.bounds[2],
+        params.bounds[3]
+    );
     spatialQueryMode = (param.spatialQueryMode) ? param.spatialQueryMode : SuperMap.REST.SpatialQueryMode.CONTAIN;
     var getFeaturesByBoundsParameters = new SuperMap.REST.GetFeaturesByBoundsParameters({
         bounds: bounds,
@@ -80,8 +78,8 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesByBoundsService = function (
  */
 ol.supermap.GetFeaturesService.prototype.getFeaturesByBufferService = function (params) {
     var me = this, geometry, param = me._processParams(params);
-    if (param && param.geometry && param.geometry instanceof L.Path) {
-        geometry = L.Util.toSuperMapGeometry(param.geometry.toGeoJSON());
+    if (param && param.geometry && param.geometry instanceof ol.geom.Geometry) {
+        geometry = ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(param.geometry)));
     }
     var getFeatureByBufferParameter = new SuperMap.REST.GetFeaturesByBufferParameters({
         geometry: geometry,
@@ -137,8 +135,8 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesBySQLService = function (par
  */
 ol.supermap.GetFeaturesService.prototype.getFeaturesByGeometryService = function (params) {
     var me = this, geometry, spatialQueryMode, param = me._processParams(params);
-    if (param && param.geometry && param.geometry instanceof L.Path) {
-        geometry = L.Util.toSuperMapGeometry(param.geometry.toGeoJSON());
+    if (param && param.geometry && param.geometry instanceof ol.geom.Geometry) {
+        geometry = ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(param.geometry)));
     }
     spatialQueryMode = (param.spatialQueryMode) ? param.spatialQueryMode : SuperMap.REST.SpatialQueryMode.CONTAIN;
     var getFeaturesByGeometryParameters = new SuperMap.REST.GetFeaturesByGeometryParameters({

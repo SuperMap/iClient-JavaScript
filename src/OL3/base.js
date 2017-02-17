@@ -20,7 +20,7 @@ ol.supermap.Util.toGeoJSON = function (smObj) {
 ol.supermap.Util.toSuperMapGeometry = function (geoJSON) {
     if (geoJSON && geoJSON.type) {
         var format = new SuperMap.Format.GeoJSON();
-        var result = format.read(geoJSON, "Feature");
-        return result.geometry;
+        var result = format.read(geoJSON, "FeatureCollection");
+        return result[0].geometry;
     }
 };

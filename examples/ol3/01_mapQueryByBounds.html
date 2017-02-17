@@ -1,0 +1,76 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <title>地图bounds查询</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../dist/SuperMapiClient9.css">
+    <script type="text/javascript" src="../../dist/SuperMapiClient9.js"></script>
+    <script type="text/javascript">
+        var map, polygon, vectorLayer, resultLayer,
+                url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+
+        function init() {
+            map = new ol.Map({
+                target: 'map',
+                view: new ol.View({
+                    center: [0, 0],
+                    zoom: 2,
+                    projection: 'EPSG:4326'
+                })
+            });
+            map.addLayer(new ol.supermap.TiledMapLayer(url, {"pro": "4326"}));
+        }
+
+        function query() {
+            clearLayer();
+            polygon = new ol.geom.Polygon([[[0, 0], [116, 0], [116, 39], [0, 39], [0, 0]]]);
+            var vectorSource = new ol.source.Vector({
+                features: [new ol.Feature(polygon)]
+            });
+            vectorLayer = new ol.layer.Vector({
+                source: vectorSource,
+                style: new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'blue',
+                        width: 3
+                    }),
+                    fill: new ol.style.Fill({
+                        color: 'rgba(0, 0, 255, 0.1)'
+                    })
+                })
+            });
+            map.addLayer(vectorLayer);
+
+            var queryByBoundsService = new ol.supermap.QueryByBoundsService(url, {
+                name: "Capitals@World.1",
+                queryBounds: polygon.getExtent()
+            });
+            queryByBoundsService.on("complete", function (serviceResult) {
+                var vectorSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result[0])
+                })
+                resultLayer = new ol.layer.Vector({
+                    source: vectorSource,
+                });
+                map.addLayer(resultLayer);
+            });
+            queryByBoundsService.query();
+        }
+        function clearLayer() {
+            if (vectorLayer) {
+                map.removeLayer(vectorLayer);
+            }
+            if (resultLayer) {
+                map.removeLayer(resultLayer);
+            }
+        }
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <input type="button" class="btn btn-primary" value="地图bounds查询" onclick="query()"/>
+    <input type="button" class="btn btn-primary" value="清除结果" onclick="clearLayer()"/>
+</div>
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>
