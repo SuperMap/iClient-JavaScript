@@ -21,11 +21,11 @@
         }
         function query() {
             clearLayer();
-            L.supermap.getFeaturesBySQLService(url, {
+            L.supermap.getFeaturesService(url).getFeaturesBySQLService({
                 name: "Countries@World",
                 attributeFilter: "SMID = 1",
                 dataSetNames: ["World:Countries"]
-            }).getFeatures().on("complete", function (serviceResult) {
+            }).on("complete", function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result).addTo(map);
             });
         }

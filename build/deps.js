@@ -94,11 +94,7 @@ var deps = {
                 "name": "Data服务",
                 "src": [
                     "./src/Leaflet/SuperMap/iServer/FieldStatisticService.js",
-                    "./src/Leaflet/SuperMap/iServer/GetFeaturesByBoundsService.js",
-                    "./src/Leaflet/SuperMap/iServer/GetFeaturesByBufferService.js",
-                    "./src/Leaflet/SuperMap/iServer/GetFeaturesByGeometryService.js",
-                    "./src/Leaflet/SuperMap/iServer/GetFeaturesByIDsService.js",
-                    "./src/Leaflet/SuperMap/iServer/GetFeaturesBySQLService.js",
+                    "./src/Leaflet/SuperMap/iServer/GetFeaturesService.js",
                     "./src/Leaflet/SuperMap/iServer/GetFieldsService.js"
                 ]
             }

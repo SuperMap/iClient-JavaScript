@@ -157,7 +157,7 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.CoreServiceBase, 
      */
     serviceProcessCompleted: function (result) {
         var me = this, results;
-        result = SuperMap.Util.transformResult(result);
+        results = result = SuperMap.Util.transformResult(result);
         if (me.format === "geojson" && result.features) {
             var geoJSONFormat = new SuperMap.Format.GeoJSON();
             results = JSON.parse(geoJSONFormat.write(result.features));
