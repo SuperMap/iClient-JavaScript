@@ -16,17 +16,30 @@
   "keywords": [
     "SuperMap",
     "leaflet",
-	"Openlayers3"
+    "Openlayers3"
   ],
   "author": "SuperMap",
   "license": "Apache-2.0",
   "devDependencies": {
-    "webpack": "^1.14.0",
     "commander": "2.9.0",
-    "shelljs": "0.7.6"
+    "commonjs": "0.0.1",
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.4.1",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-commonjs": "^1.0.0",
+    "karma-coverage": "^1.1.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "shelljs": "0.7.6",
+    "webpack": "^1.14.0"
   },
   "dependencies": {
     "openlayers": "4.0.0",
     "leaflet": "1.0.3"
+  }
+  "extract-text-webpack-plugin":{"^1.0.1",
+    "file-loader":"^0.10.0",
+    "style-loader":"0.13.1",
+    "css-loader":"0.26.1"
   }
 }
