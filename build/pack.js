@@ -60,7 +60,7 @@ program
                 }
             }
         });
-        shell.exec('npm run deploy ' + modulePaths);
+        shell.exec('npm run deploy-'+key+' ' + modulePaths);
     });
 
 program.parse(process.argv);

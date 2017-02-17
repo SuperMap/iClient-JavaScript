@@ -126,11 +126,7 @@ function updateCommand() {
     var commandInput = $('#command2')[0];
     var deplistItems = $('#deplist li input');
     var modulePaths = '';
-    for (var i = 0; i < deplistItems.length; i++) {
-        if (deplistItems[i].checked) {
-            modulePaths = "Core" + ','
-        }
-    }
+
     var deplistItems2 = $('.deplist li input');
     for (var i = 0; i < deplistItems2.length; i++) {
         if (deplistItems2[i].id === "Core") {
@@ -141,7 +137,7 @@ function updateCommand() {
         }
     }
     modulePaths = modulePaths.substring(0, modulePaths.length - 1);
-    commandInput.value = modulePaths === '' ? modulePaths : 'npm run package - ' + getKey() + " " + modulePaths;
+    commandInput.value = 'npm run package - ' + getKey() + " " + modulePaths;
 }
 
 function getKey() {

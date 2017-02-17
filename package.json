@@ -12,7 +12,8 @@
     "deploy-leaflet": "webpack --config webpack.config.leaflet.js ",
     "deploy-ol3": "webpack --config webpack.config.ol3.js ",
     "compress": "webpack -p",
-    "package": "node ./build/pack.js"
+    "package": "node ./build/pack.js",
+    "test":"karma start"
   },
   "keywords": [
     "SuperMap",
