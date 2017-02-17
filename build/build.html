@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>自定义打包</title>
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-
-    <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../examples/css/bootstrap.min.css">
     <style type="text/css">
         body {
             font: 12px/1.4 Verdana, sans-serif;
@@ -112,10 +109,9 @@
         }
 
         #command2 {
-            width: 100%;
-            margin: 20px 30px;
+            width: 90%;
+            margin: -10px 30px 30px;
         }
-
 
         #toolbar {
             padding-bottom: 10px;
@@ -143,6 +139,15 @@
             margin-left: 30px;
         }
 
+        #commandIntro {
+            font-size: 14px;
+            margin-left: 5px;
+        }
+
+        #commandIntro li {
+            padding-bottom: 10px
+        }
+
     </style>
 </head>
 
@@ -157,14 +162,16 @@
         <div class="description">
             <div>Core<span style="font-size: 14px"> --SuperMap iClient9基础核心功能</span></div>
         </div>
-        <div class="deplistContent active"><ul id="deplist" class="deplist"></ul></div>
+        <div class="deplistContent active">
+            <ul id="deplist" class="deplist"></ul>
+        </div>
     </section>
     <section class="sec">
         <div class="description">
-            <div style="height: 35px;line-height: 35px;">客户端
+            <div style="height: 30px;line-height: 35px;">客户端
             </div>
         </div>
-        <ul id = "client" class="nav nav-tabs clientTabs" style="display: inline-block">
+        <ul id="client" class="nav nav-tabs clientTabs" style="display: inline-block">
             <li role="presentation" class="active"><a href="#ol3select">OL3</a></li>
             <li role="presentation"><a href="#leafletselect">Leaflet</a></li>
         </ul>
@@ -176,12 +183,19 @@
     </section>
     <section class="sec commandSection">
         <div class="description">
-            <div>自定义打包命令<span style="font-size: 14px;"> --复制命令,在源码根目录执行命令打包</span></div>
+            <div>自定义打包命令</div>
         </div>
+        <br>
+        <ol id="commandIntro">
+            <li>安装Node</li>
+            <li>在源码根目录运行npm install下载依赖</li>
+            <li>在源码根目录执行以下命令打包</li>
+        </ol>
         <input type="text" class="form-control" id="command2"/>
     </section>
 </div>
-
+<script type="text/javascript" src="../examples/js/jquery.js"></script>
+<script type="text/javascript" src="../examples/js/bootstrap.js"></script>
 <script type="text/javascript" src="deps.js"></script>
 <script type="text/javascript" src="build.js"></script>
 </body>

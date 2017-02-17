@@ -1,0 +1,59 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <title>数据集ID查询</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../dist/SuperMapiClient9.css">
+    <script type="text/javascript" src="../../dist/SuperMapiClient9.js"></script>
+    <script type="text/javascript">
+        var map, resultLayer,
+                baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
+                url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+
+        function init() {
+            map = new ol.Map({
+                target: 'map',
+                view: new ol.View({
+                    center: [0, 0],
+                    zoom: 2,
+                    projection: 'EPSG:4326'
+                })
+            });
+            map.addLayer(new ol.supermap.TiledMapLayer(baseUrl, {"pro": "4326"}));
+        }
+
+        function query() {
+            clearLayer();
+            var getFeaturesService = new ol.supermap.GetFeaturesService(url);
+            getFeaturesService.getFeaturesByIDsService({
+                IDs: [1, 247],
+                dataSetNames: ["World:Countries"]
+            });
+            getFeaturesService.on("complete", function (serviceResult) {
+                var vectorSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)
+                })
+                resultLayer = new ol.layer.Vector({
+                    source: vectorSource,
+                });
+                map.addLayer(resultLayer);
+            });
+        }
+
+        function clearLayer() {
+            if (resultLayer) {
+                map.removeLayer(resultLayer);
+            }
+        }
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <input type="button" class="btn btn-primary" value="数据集ID查询" onclick="query()"/>
+    <input type="button" class="btn btn-primary" value="清除结果" onclick="clearLayer()"/>
+    <span class="alert alert-danger" role="alert">ID=[1, 247]</span>
+
+</div>
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>

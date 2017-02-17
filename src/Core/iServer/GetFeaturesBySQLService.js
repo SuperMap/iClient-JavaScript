@@ -3,31 +3,31 @@
  * 未经许可，不得以任何手段擅自使用或传播。*/
 
 /**
- * Class: SuperMap.iServer.GetFeaturesBySQLService
+ * Class: SuperMap.REST.GetFeaturesBySQLService
  * 数据服务中数据集 SQL 查询服务类。
  * 在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
  * 
  * Inherits from:
- *  - <SuperMap.iServer.GetFeaturesServiceBase> 
+ *  - <SuperMap.REST.GetFeaturesServiceBase>
  */
 require('./GetFeaturesServiceBase');
 
-SuperMap.iServer.GetFeaturesBySQLService = SuperMap.Class(SuperMap.iServer.GetFeaturesServiceBase, {
+SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
     /**
-     * Constructor: SuperMap.iServer.GetFeaturesBySQLService
+     * Constructor: SuperMap.REST.GetFeaturesBySQLService
      * SQL 查询服务类构造函数。
      *
      * 例如：
      * (start code)     
-     * var myGetFeaturesBySQLService = new SuperMap.iServer.GetFeaturesBySQLService(url, {
+     * var myGetFeaturesBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url, {
      *     eventListeners: {
      *         "processCompleted": GetFeaturesCompleted, 
      *         "processFailed": GetFeaturesError
      *         }
      * });
-     * function getFeaturesCompleted(QueryEventArgs){//todo};
-     * function getFeaturesError(QueryEventArgs){//todo};
+     * function getFeaturesCompleted(object){//todo};
+     * function getFeaturesError(object){//todo};
      * (end)
      *
      * Parameters:
@@ -40,7 +40,7 @@ SuperMap.iServer.GetFeaturesBySQLService = SuperMap.Class(SuperMap.iServer.GetFe
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function(url, options) {
-        SuperMap.iServer.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
     
     /**
@@ -48,7 +48,7 @@ SuperMap.iServer.GetFeaturesBySQLService = SuperMap.Class(SuperMap.iServer.GetFe
      * 释放资源，将引用资源的属性置空。  
      */
     destroy: function() {
-        SuperMap.iServer.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments); 
+        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
     
     /**
@@ -66,9 +66,9 @@ SuperMap.iServer.GetFeaturesBySQLService = SuperMap.Class(SuperMap.iServer.GetFe
         return  SuperMap.REST.GetFeaturesBySQLParameters.toJsonParameters(params);
     },
     
-    CLASS_NAME: "SuperMap.iServer.GetFeaturesBySQLService"
+    CLASS_NAME: "SuperMap.REST.GetFeaturesBySQLService"
 });
 
 module.exports = function (url, options) {
-    return new SuperMap.iServer.GetFeaturesBySQLService(url, options);
+    return new SuperMap.REST.GetFeaturesBySQLService(url, options);
 };

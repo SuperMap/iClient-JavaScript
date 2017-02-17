@@ -3,54 +3,19 @@
  * 未经许可，不得以任何手段擅自使用或传播。*/
 
 /**
- * Class: SuperMap.iServer.GetFeaturesServiceBase
+ * Class: SuperMap.REST.GetFeaturesServiceBase
  * 数据服务中数据集查询服务基类。
- * 查询结果通过该类支持的事件的监听函数参数获取，参数类型为 {<SuperMap.REST.GetFeaturesEventArgs>}; 获取的结果数据包括 result 、originResult 两种，
- * 其中，originResult 为服务端返回的用 JSON 对象表示的查询结果数据，result 为服务端返回的查询结果数据，保存在 {<SuperMap.REST.GetFeaturesResult>} 对象中。
+ * 获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON
  *
  * Inherits from:
- *  - <SuperMap.ServiceBase>
+ *  - <SuperMap.CoreServiceBase>
  */
-require('../base');
-SuperMap.iServer.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
-    /**
-     * Constant: EVENT_TYPES
-     * {Array(String)}
-     * 此类支持的事件类型。
-     * - *processCompleted* 服务端返回查询结果触发该事件。
-     * - *processFailed* 服务端返回查询结果失败触发该事件。
-     */
-    EVENT_TYPES: ["processCompleted", "processFailed"],
+// TODO 待iServer featureResult GeoJSON表述bug修复当修改此类中TODO注释说明的地方
+require('../format/GeoJSON');
+require('./CoreServiceBase');
 
-    /**
-     * APIProperty: events
-     * {<SuperMap.Events>} 在 GetFeaturesServiceBase 类中处理所有事件的对象，支持两种事件 processCompleted 、processFailed ，服务端成功返回查询结果时触发 processCompleted  事件，服务端返回查询结果失败时触发 processFailed 事件。
-     *
-     * 例如：
-     * (start code)
-     * var myService = new SuperMap.iServer.GetFeaturesServiceBase(url);
-     * myService.events.on({
-     *     "processCompleted": getFeatureCompleted, 
-     *      "processFailed": getFeatureError
-     * });
-     * function getFeatureCompleted(GetFeaturesEventArgs){//todo};
-     * function getFeatureError(GetFeaturesEventArgs){//todo};
-     * (end)
-     */
-    events: null,
-
-    /**
-     * APIProperty: eventListeners
-     * {Object} 监听器对象，在构造函数中设置此参数（可选），对 GetFeaturesServiceBase 支持的两个事件 processCompleted 、processFailed 进行监听，相当于调用 SuperMap.Events.on(eventListeners)。
-     */
-    eventListeners: null,
-
-    /**
-     * Property: lastResult
-     * {<SuperMap.REST.GetFeatureResult>} 服务端返回的查询结果数据。
-     */
-    lastResult: null,
+SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
      * Property: returnContent
@@ -81,12 +46,19 @@ SuperMap.iServer.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
     maxFeatures: null,
 
     /**
-     * Constructor: SuperMap.iServer.GetFeaturesServiceBase
+     *  Property: format
+     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+     *  参数格式为"iserver","geojson",默认为geojson
+     */
+    format: "geojson",
+
+    /**
+     * Constructor: SuperMap.REST.GetFeaturesServiceBase
      * 数据集查询服务基类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.iServer.GetFeaturesServiceBase(url, {
+     * var myService = new SuperMap.REST.GetFeaturesServiceBase(url, {
      *     eventListeners: {
      *         "processCompleted": getFeatureCompleted, 
      *         "processFailed": getFeatureError
@@ -104,19 +76,19 @@ SuperMap.iServer.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, [url]);
+        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-        var me = this,
-            end;
-        me.events = new SuperMap.Events(
-            me, null, me.EVENT_TYPES, true
-        );
-        if (me.eventListeners instanceof Object) {
-            me.events.on(me.eventListeners);
-        }
+        var me = this, end;
         end = me.url.substr(me.url.length - 1, 1);
+        me.format = me.format.toLowerCase();
+        // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
+        // if (me.format==="geojson" && me.isInTheSameDomain) {
+        //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
+        // } else {
+        //     me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
+        // }
         if (me.isInTheSameDomain) {
             me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
         } else {
@@ -129,24 +101,13 @@ SuperMap.iServer.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
         var me = this;
-        me.EVENT_TYPES = null;
         me.returnContent = null;
         me.fromIndex = null;
         me.toIndex = null;
         me.maxFeatures = null;
-        if (me.events) {
-            me.events.destroy();
-            me.events = null;
-        }
-        if (me.eventListeners) {
-            me.eventListeners = null;
-        }
-        if (me.lastResult) {
-            me.lastResult.destroy();
-            me.lastResult = null;
-        }
+        me.format = null;
     },
 
     /**
@@ -175,17 +136,15 @@ SuperMap.iServer.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
         if (me.fromIndex != null && me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex) && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
             me.url += "&fromIndex=" + me.fromIndex + "&toIndex=" + me.toIndex;
         }
-        /* if(me.fromIndex != null && me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex) && me.fromIndex >= 0 && me.toIndex >= 0 && firstPara) {
-         me.url += "fromIndex=" + me.fromIndex + "&toIndex=" + me.toIndex;
-         } */
+
         if (params.returnCountOnly) me.url += "&returnCountOnly=" + params.returnContent;
         jsonParameters = me.getJsonParameters(params);
         me.request({
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.getFeatureComplete,
-            failure: me.getFeatureError
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
         });
     },
 
@@ -196,48 +155,19 @@ SuperMap.iServer.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
-    getFeatureComplete: function (result) {
-        var me = this,
-            qe = null,
-            getFeatureResult = null;
-
-        result = SuperMap.Util.transformResult(result);
-        if (me.returnContent) {
-            getFeatureResult = SuperMap.REST.GetFeaturesResult.fromJson(result);
-        } else {
-            getFeatureResult = new SuperMap.REST.GetFeaturesResult();
-            getFeatureResult.resourceInfo = SuperMap.REST.ResourceInfo.fromJson(result);
+    serviceProcessCompleted: function (result) {
+        var me = this, results;
+        results = result = SuperMap.Util.transformResult(result);
+        if (me.format === "geojson" && result.features) {
+            var geoJSONFormat = new SuperMap.Format.GeoJSON();
+            results = JSON.parse(geoJSONFormat.write(result.features));
         }
-        me.lastResult = getFeatureResult;
-        qe = new SuperMap.REST.GetFeaturesEventArgs(getFeatureResult, result);
-        me.events.triggerEvent("processCompleted", qe);
+        me.events.triggerEvent("processCompleted", {result: results});
     },
 
-    /**
-     * Method: getFeatureError
-     * 查询失败，执行此方法。
-     *
-     * Parameters:
-     * result -  {Object} 服务器返回的结果对象。
-     */
-    getFeatureError: function (result) {
-        var me = this,
-            error = null,
-            serviceException = null,
-            qe = null;
-        result = SuperMap.Util.transformResult(result);
-        error = result.error;
-        if (!error) {
-            return;
-        }
-        serviceException = SuperMap.ServiceException.fromJson(error);
-        qe = new SuperMap.ServiceFailedEventArgs(serviceException, result);
-        me.events.triggerEvent("processFailed", qe);
-    },
-
-    CLASS_NAME: "SuperMap.iServer.GetFeaturesServiceBase"
+    CLASS_NAME: "SuperMap.REST.GetFeaturesServiceBase"
 });
 
 module.exports = function (url, options) {
-    return new SuperMap.iServer.GetFeaturesServiceBase(url, options);
+    return new SuperMap.REST.GetFeaturesServiceBase(url, options);
 };

@@ -5,14 +5,14 @@
 
 
 /**
- * Class: SuperMap.iServer.QueryByBoundsService
+ * Class: SuperMap.REST.QueryByBoundsService
  * Bounds 查询服务类。
  *
  * Inherits from:
- *  - <SuperMap.iServer.QueryService>
+ *  - <SuperMap.REST.QueryService>
  */
 require('./QueryService');
-SuperMap.iServer.QueryByBoundsService = SuperMap.Class(SuperMap.iServer.QueryService, {
+SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, {
 
     /**
      * Constructor: SuperMap.REST.QueryByBoundsService
@@ -20,14 +20,14 @@ SuperMap.iServer.QueryByBoundsService = SuperMap.Class(SuperMap.iServer.QuerySer
      *
      * 例如：
      * (start end)
-     * var myQueryByBoundsService = new SuperMap.iServer.QueryByBoundsService(url, {
+     * var myQueryByBoundsService = new SuperMap.REST.QueryByBoundsService(url, {
      *     eventListeners: {
      *         "processCompleted": queryCompleted,
      *		   "processFailed": queryError
      *		   }
      * });
-     * function queryCompleted(QueryEventArgs){//todo};
-     * function queryError(QueryEventArgs){//todo};
+     * function queryCompleted(object){//todo};
+     * function queryError(object){//todo};
      * (end)
      *
      * Parameters:
@@ -38,7 +38,7 @@ SuperMap.iServer.QueryByBoundsService = SuperMap.Class(SuperMap.iServer.QuerySer
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.iServer.QueryService.prototype.initialize.apply(this, arguments);
+        SuperMap.REST.QueryService.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -46,7 +46,7 @@ SuperMap.iServer.QueryByBoundsService = SuperMap.Class(SuperMap.iServer.QuerySer
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.iSErver.QueryService.prototype.destroy.apply(this, arguments);
+        SuperMap.REST.QueryService.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -73,9 +73,9 @@ SuperMap.iServer.QueryByBoundsService = SuperMap.Class(SuperMap.iServer.QuerySer
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.iServer.QueryByBoundsService"
+    CLASS_NAME: "SuperMap.REST.QueryByBoundsService"
 });
 
 module.exports = function (url, options) {
-    return new SuperMap.iServer.QueryByBoundsService(url, options);
+    return new SuperMap.REST.QueryByBoundsService(url, options);
 };

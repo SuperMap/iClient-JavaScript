@@ -11,20 +11,17 @@
  *          //doSomething
  *      });
  */
-require('../../base');
+require('./ServiceBase');
 require('../../../Core/iServer/QueryByBoundsService');
-require('leaflet');
 
-
-QueryByBoundsService = L.Evented.extend({
+QueryByBoundsService = ServiceBase.extend({
     options: {
-        url: null,
         name: null,//图层名称。格式：数据集名称@数据源别名）
         queryBounds: null
     },
 
     initialize: function (url, options) {
-        this.options.url = url;
+        ServiceBase.prototype.initialize.call(this, url, options);
         L.setOptions(this, options);
         this.options.name = options.name;
         var queryBounds = this.options.queryBounds = options.queryBounds;
@@ -36,16 +33,15 @@ QueryByBoundsService = L.Evented.extend({
                 queryBounds.getNorthEast().lat
             );
         }
-        this._query();
     },
 
     //返回数据格式统一处理为geoJSON格式
-    _query: function () {
+    query: function () {
         var me = this;
         var queryParam, queryByBoundsParams, queryService;
         queryParam = new SuperMap.REST.FilterParameter({name: me.options.name});
         queryByBoundsParams = new SuperMap.REST.QueryByBoundsParameters({queryParams: [queryParam], bounds: me.options.queryBounds});
-        queryService = new SuperMap.iServer.QueryByBoundsService(me.options.url, {
+        queryService = new SuperMap.REST.QueryByBoundsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
@@ -53,23 +49,7 @@ QueryByBoundsService = L.Evented.extend({
             }
         });
         queryService.processAsync(queryByBoundsParams);
-    },
-
-    processCompleted: function (queryEventArgs) {
-        var result = queryEventArgs.result;
-        if (result && result.recordsets) {
-            var features = [];
-            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
-                if (recordsets[i].features) {
-                    features.push(L.Util.toGeoJSON(recordsets[i].features));
-                }
-            }
-            this.fire("complete", {result:features});
-        }
-    },
-
-    processFailed: function (e) {
-        this.fire("failed", e);
+        return me;
     }
 });
 

@@ -2,7 +2,6 @@
   "name": "SuperMapiClient9",
   "description": "SuperMap iClient for JavaScript 是一套由 JavaScript 语言编写的 GIS 客户端应用开发包， 支持多源数据地图，支持多终端，跨浏览器， 通过本产品可快速实现浏览器上美观、流畅的地图呈现。",
   "version": "0.0.1",
-  "main": "index.js",
   "directories": {
     "doc": "doc",
     "example": "examples",
@@ -10,6 +9,8 @@
   },
   "scripts": {
     "deploy": "webpack",
+    "deploy-leaflet": "webpack --config webpack.config.leaflet.js ",
+    "deploy-ol3": "webpack --config webpack.config.ol3.js ",
     "compress": "webpack -p",
     "package": "node ./build/pack.js"
   },
@@ -26,20 +27,22 @@
     "jasmine-core": "^2.5.2",
     "karma": "^1.4.1",
     "karma-chrome-launcher": "^2.0.0",
+    "karma-cli": "^1.0.1",
     "karma-commonjs": "^1.0.0",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
-    "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-teamcity-reporter": "^1.0.0",
     "shelljs": "0.7.6",
-    "webpack": "^1.14.0"
+    "underscore": "^1.8.3",
+    "webpack": "^1.14.0",
+    "extract-text-webpack-plugin":"^1.0.1",
+    "file-loader":"^0.10.0",
+    "style-loader":"^0.13.1",
+    "css-loader":"^0.26.1",
+    "imports-loader":"^0.7.0"
   },
   "dependencies": {
     "openlayers": "4.0.0",
     "leaflet": "1.0.3"
-  }
-  "extract-text-webpack-plugin":{"^1.0.1",
-    "file-loader":"^0.10.0",
-    "style-loader":"0.13.1",
-    "css-loader":"0.26.1"
   }
 }

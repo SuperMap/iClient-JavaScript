@@ -6,54 +6,13 @@
 /**
  * Class: SuperMap.REST.QueryService
  * 查询服务基类。
- * 查询结果通过该类支持的事件的监听函数参数获取，参数类型为 {<SuperMap.REST.QueryEventArgs>}; 获取的结果数据包括 result 、originResult 两种，
- * 其中，originResult 为服务端返回的用 JSON 对象表示的查询结果数据，result 为服务端返回的查询结果数据，保存在 {<SuperMap.REST.QueryResult>} 对象中 。
- *
+ * 结果保存在一个object对象中，对象包含一个属性result为iServer返回的json对象
  * Inherits from:
- *  - <SuperMap.ServiceBase>
+ *  - <SuperMap.CoreServiceBase>
  */
-require('../base');
-SuperMap.iServer.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
-
-    /**
-     * Constant: EVENT_TYPES
-     * {Array(String)}
-     * 此类支持的事件类型。
-     * - *processCompleted* 服务端返回查询结果触发该事件。
-     * - *processFailed* 服务端返回查询结果失败触发该事件。
-     */
-    EVENT_TYPES: [
-        "processCompleted", "processFailed"],
-
-    /**
-     * APIProperty: events
-     * {<SuperMap.Events>} 在 QueryService 类中处理所有事件的对象，支持两种事件 processCompleted 、processFailed ，服务端成功返回查询结果时触发 processCompleted  事件，服务端返回查询结果失败时触发 processFailed 事件。
-     *
-     * 例如：
-     * (start code)
-     * var myService = new SuperMap.iServer.QueryService(url);
-     * myService.events.on({
-     *     "processCompleted": queryCompleted, 
-     *	   "processFailed": queryError
-     *	   }
-     * );
-     * function queryCompleted(QueryEventArgs){//todo};
-     * function queryError(QueryEventArgs){//todo};
-     * (end)
-     */
-    events: null,
-
-    /**
-     * APIProperty: eventListeners
-     * {Object} 监听器对象，在构造函数中设置此参数（可选），对 QueryService 支持的两个事件 processCompleted 、processFailed 进行监听，相当于调用 SuperMap.Events.on(eventListeners)。
-     */
-    eventListeners: null,
-
-    /**
-     * Property: lastResult
-     * {<SuperMap.iServer.QueryResult>} 服务端返回的查询结果数据。
-     */
-    lastResult: null,
+require('../format/GeoJSON');
+require('./CoreServiceBase');
+SuperMap.REST.QueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
      * Property: returnContent
@@ -62,7 +21,14 @@ SuperMap.iServer.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
     returnContent: false,
 
     /**
-     * Constructor: SuperMap.iServer.QueryService
+     *  Property: format
+     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+     *  参数格式为"iserver","geojson",默认为geojson
+     */
+    format: "geojson",
+
+    /**
+     * Constructor: SuperMap.REST.QueryService
      * 查询服务基类构造函数。
      *
      * 例如：
@@ -83,20 +49,24 @@ SuperMap.iServer.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, [url]);
+        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-        var me = this,
-            end;
-        me.events = new SuperMap.Events(
-            me, null, me.EVENT_TYPES, true
-        );
-        if (me.eventListeners instanceof Object) {
-            me.events.on(me.eventListeners);
+        var me = this, end;
+
+        if (!me.url) {
+            return;
         }
 
         end = me.url.substr(me.url.length - 1, 1);
+        me.format = me.format.toLowerCase();
+        // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
+        // if (this.format==="geojson" && me.isInTheSameDomain) {
+        //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
+        // } else {
+        //     me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
+        // }
         if (me.isInTheSameDomain) {
             me.url += (end === "/") ? "queryResults.json?" : "/queryResults.json?";
         } else {
@@ -109,21 +79,10 @@ SuperMap.iServer.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
         var me = this;
-        me.EVENT_TYPES = null;
-        if (me.events) {
-            me.events.destroy();
-            me.events = null;
-        }
-        if (me.eventListeners) {
-            me.eventListeners = null;
-        }
-        if (me.lastResult) {
-            me.lastResult.destroy();
-            me.lastResult = null;
-        }
         me.returnContent = null;
+        me.format = null;
     },
 
     /**
@@ -155,8 +114,8 @@ SuperMap.iServer.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
             method: "POST",
             data: jsonParameters,
             scope: me,
-            success: me.queryComplete,
-            failure: me.queryError
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
         });
     },
 
@@ -167,45 +126,23 @@ SuperMap.iServer.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
-    queryComplete: function (result) {
-        var me = this,
-            qe = null,
-            queryResult = null;
+    serviceProcessCompleted: function (result) {
+        var me = this, queryResult;
         result = SuperMap.Util.transformResult(result);
-        if (me.returnContent) {
-            queryResult = SuperMap.REST.QueryResult.fromJson(result);
-        } else {
-            queryResult = new SuperMap.REST.QueryResult();
-            if (result.customResult) {
-                queryResult.customResponse = new SuperMap.Bounds(result.customResult.left, result.customResult.bottom, result.customResult.right, result.customResult.top);
+        if (result && result.recordsets && me.format === "geojson") {
+            queryResult = [];
+            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
+                if (recordsets[i].features) {
+                    var geoJSONFormat = new SuperMap.Format.GeoJSON();
+                    var feature = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                    queryResult.push(feature);
+                }
             }
-            queryResult.resourceInfo = SuperMap.REST.ResourceInfo.fromJson(result);
-        }
-        me.lastResult = queryResult;
-        qe = new SuperMap.REST.QueryEventArgs(queryResult, result);
-        me.events.triggerEvent("processCompleted", qe);
-    },
 
-    /**
-     * Method: queryError
-     * 查询失败，执行此方法。
-     *
-     * Parameters:
-     * result -  {Object} 服务器返回的结果对象。
-     */
-    queryError: function (result) {
-        var me = this,
-            error = null,
-            serviceException = null,
-            qe = null;
-        result = SuperMap.Util.transformResult(result);
-        error = result.error;
-        if (!error) {
-            return;
+        } else {
+            queryResult = result;
         }
-        serviceException = SuperMap.ServiceException.fromJson(error);
-        qe = new SuperMap.ServiceFailedEventArgs(serviceException, result);
-        me.events.triggerEvent("processFailed", qe);
+        me.events.triggerEvent("processCompleted", {result: queryResult});
     },
 
     /**
@@ -231,9 +168,9 @@ SuperMap.iServer.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.iServer.QueryService"
+    CLASS_NAME: "SuperMap.REST.QueryService"
 });
 
 module.exports = function (url, options) {
-    return new SuperMap.iServer.QueryService(url, options);
+    return new SuperMap.REST.QueryService(url, options);
 };

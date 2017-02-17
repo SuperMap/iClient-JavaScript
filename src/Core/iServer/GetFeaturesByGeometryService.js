@@ -3,31 +3,31 @@
  * 未经许可，不得以任何手段擅自使用或传播。*/
 
 /**
- * Class: SuperMap.iServer.GetFeaturesByGeometryService  
+ * Class: SuperMap.REST.GetFeaturesByGeometryService  
  * 数据集几何查询服务类
  * 查询与指定几何对象符合一定空间关系的矢量要素。
  *  
  * Inherits from:
- *  - <SuperMap.iServer.GetFeaturesServiceBase> 
+ *  - <SuperMap.REST.GetFeaturesServiceBase>
  */
 require('./GetFeaturesServiceBase');
 
-SuperMap.iServer.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.iServer.GetFeaturesServiceBase,{
+SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase,{
     
     /**
-     * Constructor: SuperMap.iServer.GetFeaturesByGeometryService
+     * Constructor: SuperMap.REST.GetFeaturesByGeometryService
      * 数据集几何查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myGetFeaturesByGeometryService = new SuperMap.iServer.GetFeaturesByGeometryService(url, {
+     * var myGetFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByGeometryService(url, {
      *     eventListeners: {
      *           "processCompleted": getFeatureCompleted, 
      *           "processFailed": getFeatureError
      *           }
      * });
-     * function getFeatureCompleted(GetFeaturesEventArgs){//todo};
-     * function getFeatureError(GetFeaturesEventArgs){//todo}
+     * function getFeatureCompleted(object){//todo};
+     * function getFeatureError(object){//todo}
      * (end)
      *      
      * Parameters:
@@ -40,7 +40,7 @@ SuperMap.iServer.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.iServer.
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function(url, options) {
-        SuperMap.iServer.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
     
     /**
@@ -48,7 +48,7 @@ SuperMap.iServer.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.iServer.
      * 释放资源，将引用资源的属性置空。  
      */
     destroy:function(){
-        SuperMap.iServer.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
     
     /**
@@ -66,9 +66,9 @@ SuperMap.iServer.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.iServer.
         return  SuperMap.REST.GetFeaturesByGeometryParameters.toJsonParameters(params);
     },
     
-    CLASS_NAME: "SuperMap.iServer.GetFeaturesByGeometryService"
+    CLASS_NAME: "SuperMap.REST.GetFeaturesByGeometryService"
 });
 
 module.exports = function (url, options) {
-    return new SuperMap.iServer.GetFeaturesByGeometryService(url, options);
+    return new SuperMap.REST.GetFeaturesByGeometryService(url, options);
 };

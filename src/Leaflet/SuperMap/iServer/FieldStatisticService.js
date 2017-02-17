@@ -12,7 +12,6 @@
  */
 require('./FieldsServiceBase');
 require('../../../Core/iServer/FieldStatisticService');
-require('leaflet');
 
 FieldStatisticService = FieldsServiceBase.extend({
     options: {
@@ -30,10 +29,9 @@ FieldStatisticService = FieldsServiceBase.extend({
         if (!options.statisticMode || (typeof options.statisticMode !== "Array")) {
             this.options.statisticMode = SuperMap.REST.StatisticMode;
         }
-        this._fieldStatistic();
     },
 
-    _fieldStatistic: function () {
+    getFieldStatisticInfo: function () {
         var me = this;
         var modes = me.options.statisticMode;
         //针对每种统计方式分别进行请求
@@ -41,10 +39,11 @@ FieldStatisticService = FieldsServiceBase.extend({
             this.currentStatisticResult[modes[mode]] = null;
             this._fieldStatisticRequest(modes[mode]);
         }
+        return me;
     },
     _fieldStatisticRequest: function (statisticMode) {
         var me = this, statisticService;
-        statisticService = new SuperMap.iServer.FieldStatisticService(me.options.url, {
+        statisticService = new SuperMap.REST.FieldStatisticService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
@@ -57,9 +56,9 @@ FieldStatisticService = FieldsServiceBase.extend({
         });
         statisticService.processAsync();
     },
-    processCompleted: function (fieldStatisticEventArgs) {
+    processCompleted: function (fieldStatisticResult) {
         var getAll = true,
-            result = fieldStatisticEventArgs.result;
+            result = fieldStatisticResult.result;
         if (this.currentStatisticResult) {
             if (null == this.currentStatisticResult[result.mode]) {
                 this.currentStatisticResult[result.mode] = result.result;
@@ -72,9 +71,9 @@ FieldStatisticService = FieldsServiceBase.extend({
             }
         }
         if (getAll) {
-            this.fire('complete', {data:this.currentStatisticResult});
+            this.fire('complete', {result: this.currentStatisticResult});
         }
-    },
+    }
 });
 
 L.supermap.fieldStatisticService = function (url, options) {

@@ -12,18 +12,16 @@
  */
 require('./FieldsServiceBase');
 require('../../../Core/iServer/GetFieldsService');
-require('leaflet');
 
 GetFieldsService = FieldsServiceBase.extend({
 
     initialize: function (url, options) {
         FieldsServiceBase.prototype.initialize.call(this, url, options);
-        this._getFields();
     },
 
-    _getFields: function () {
+    getFields: function () {
         var me = this, getFieldsService;
-        getFieldsService = new SuperMap.iServer.GetFieldsService(me.options.url, {
+        getFieldsService = new SuperMap.REST.GetFieldsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
@@ -33,6 +31,7 @@ GetFieldsService = FieldsServiceBase.extend({
             dataset: me.options.dataSetName
         });
         getFieldsService.processAsync();
+        return me;
     }
 });
 

@@ -10,23 +10,20 @@
  *           //doSomething
  *      });
  */
-require('../../base');
+require('./ServiceBase');
 require('../../../Core/iServer/GetLayersInfoService');
-require('leaflet');
 
-GetLayersInfoService = L.Evented.extend({
+GetLayersInfoService = ServiceBase.extend({
     options: {
-        url: null,
     },
     initialize: function (url, options) {
-        this.options.url = url;
+        ServiceBase.prototype.initialize.call(this, url, options);
         L.setOptions(this, options);
-        this._getLayersInfo();
     },
 
-    _getLayersInfo: function () {
+    getLayersInfo: function () {
         var me = this;
-        var getLayersInfoService = new SuperMap.iServer.GetLayersInfoService(me.options.url, {
+        var getLayersInfoService = new SuperMap.REST.GetLayersInfoService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
@@ -34,18 +31,15 @@ GetLayersInfoService = L.Evented.extend({
             }
         });
         getLayersInfoService.processAsync();
+        return me;
     },
-    processCompleted: function (queryEventArgs) {
+    processCompleted: function (layersInfoResult) {
         var layersInfo,
-            result = queryEventArgs.result;
+            result = layersInfoResult.result;
         if (result && result.subLayers && result.subLayers.layers) {
             layersInfo = result.subLayers.layers;
         }
-        this.fire('complete', {data: layersInfo});
-
-    },
-    processFailed: function (failedMessage) {
-        this.fire('failed', failedMessage);
+        this.fire('complete', {result: layersInfo});
     }
 });
 

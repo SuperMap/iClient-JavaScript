@@ -6,7 +6,6 @@
  */
 require('../../base');
 require('../../../Core/base');
-require('leaflet');
 
 TiledMapLayer = L.TileLayer.extend({
 

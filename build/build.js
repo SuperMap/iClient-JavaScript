@@ -14,63 +14,68 @@ function init() {
         for (var i = 0; i < lists.length; i++) {
             var checks = lists[i].getElementsByTagName('input');
             for (var j = 0; j < checks.length; j++) {
+                if (checks[j].id === 'Core') {
+                    continue;
+                }
                 checks[j].checked = selectAll;
             }
             var lis = lists[i].getElementsByTagName('li');
             for (var n = 0; n < checks.length; n++) {
+                if (checks[n].id === 'Core') {
+                    continue;
+                }
                 lis[n].className = (selectAll) ? 'active' : '';
             }
         }
         updateCommand();
         return false;
     }
+
     addModule('Core', deplist, true);
     $('#deplist li')[0].className = 'active';
-    for(var ol3Module in ol3Modules){
+    for (var ol3Module in ol3Modules) {
         var title = ol3Modules[ol3Module].title;
         addGroup('ol3', title, ol3Modules[ol3Module].description, $('#ol3select')[0]);
-        for(var module in ol3Modules[ol3Module]){
-            if(module === 'title' || module === 'description'){
+        for (var module in ol3Modules[ol3Module]) {
+            if (module === 'title' || module === 'description') {
                 continue;
             }
-            addModule(module, $('#ol3_' + title)[0]);
+            addModule(module, $('#ol3_' + title)[0], false, ol3Modules[ol3Module][module].name);
         }
     }
     for (var leafletModule in leafletModules) {
         var title = leafletModules[leafletModule].title;
         addGroup('leaflet', title, leafletModules[leafletModule].description, $('#leafletselect')[0]);
-        for(var module in leafletModules[leafletModule]){
-            if(module === 'title' || module === 'description'){
+        for (var module in leafletModules[leafletModule]) {
+            if (module === 'title' || module === 'description') {
                 continue;
             }
-            addModule(module, $('#leaflet_' + title)[0]);
+            addModule(module, $('#leaflet_' + title)[0], false, leafletModules[leafletModule][module].name);
         }
     }
     updateCommand();
 
     $('.clientTabs li a').click(function (e) {
         e.preventDefault()
-        if(this.innerHTML === 'Leaflet'){
-            var checks = $('.deplist input');
-            for (var i = 0; i < checks.length; i++) {
-                if(checks[i].id.indexOf('ol3_') !== -1 && checks[i].checked){
-                    checks[i].checked = false;
-                    checks[i].parentNode.className =  '';
-                }
-            }
+        if (this.innerHTML === 'Leaflet') {
+            cancelChecked('ol3');
         }
-        if(this.innerHTML === 'OL3'){
-            var checks = $('.deplist input');
-            for (var i = 0; i < checks.length; i++) {
-                if(checks[i].id.indexOf('leaflet_') !== -1 && checks[i].checked){
-                    checks[i].checked = false;
-                    checks[i].parentNode.className =  '';
-                }
-            }
+        if (this.innerHTML === 'OL3') {
+            cancelChecked('leaflet');
         }
         updateCommand();
         $(this).tab('show');
     })
+}
+
+function cancelChecked(clientName) {
+    var checks = $('#' + clientName + 'select .deplist input');
+    for (var i = 0; i < checks.length; i++) {
+        if (checks[i].checked) {
+            checks[i].checked = false;
+            checks[i].parentNode.className = '';
+        }
+    }
 }
 
 function addGroup(client, title, description, div) {
@@ -86,22 +91,25 @@ function addGroup(client, title, description, div) {
     div.appendChild(ul);
 }
 
-function addModule(name, list, checked) {
+function addModule(title, list, checked, name) {
     var li = document.createElement('li');
     var content = document.createElement('div');
     var label = document.createElement('label');
     var check = document.createElement('input');
     check.type = 'checkbox';
-    check.id = name;
+    check.id = title;
     check.checked = (checked) ? 'checked' : '';
     check.onchange = onCheckboxChange;
     li.appendChild(check);
-    label.htmlFor = name;
+    label.htmlFor = title;
     li.appendChild(label);
     content.className = 'item';
-    content.appendChild(document.createTextNode(name.substring(name.indexOf('_') + 1)));
+    if (!name) {
+        name = title;
+    }
+    content.appendChild(document.createTextNode(name));
     li.appendChild(content);
-    if(!checked){
+    if (!checked) {
         li.onclick = onModuleClick;
     }
     list.appendChild(li);
@@ -120,27 +128,35 @@ function updateCommand() {
     var modulePaths = '';
     for (var i = 0; i < deplistItems.length; i++) {
         if (deplistItems[i].checked) {
-            for (var coreModule in coreModules) {
-                modulePaths += coreModule + ',';
-            }
+            modulePaths = "Core" + ','
         }
     }
     var deplistItems2 = $('.deplist li input');
     for (var i = 0; i < deplistItems2.length; i++) {
+        if (deplistItems2[i].id === "Core") {
+            continue;
+        }
         if (deplistItems2[i].checked) {
             modulePaths += deplistItems2[i].id + ',';
         }
     }
     modulePaths = modulePaths.substring(0, modulePaths.length - 1);
-    if (modulePaths.indexOf('Leaflet') !== -1) {
-        commandInput.value = modulePaths === '' ? modulePaths : 'npm run package - leaflet ' + modulePaths;
-        return;
+    commandInput.value = modulePaths === '' ? modulePaths : 'npm run package - ' + getKey() + " " + modulePaths;
+}
+
+function getKey() {
+    var key = "core";
+    for (var check in $('#ol3select .deplist li input')) {
+        if ($('#ol3select .deplist li input')[check].checked) {
+            key = "ol3";
+        }
     }
-    if (modulePaths.indexOf('OL3') !== -1) {
-        commandInput.value = modulePaths === '' ? modulePaths : 'npm run package - ol3 ' + modulePaths;
-        return;
+    for (var check in $('#leafletselect .deplist li input')) {
+        if ($('#leafletselect .deplist li input')[check].checked) {
+            key = "leaflet";
+        }
     }
-    commandInput.value = modulePaths === '' ? modulePaths : 'npm run package - core ' + modulePaths;
+    return key;
 }
 
 function onCheckboxChange() {

@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>SuperMap 地图信息</title>
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.2/leaflet.css"/>
-    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet/v1.0.2/leaflet.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../dist/SuperMapiClient9.css">
     <script type="text/javascript" src="../../dist/SuperMapiClient9.js"></script>
     <script type="text/javascript">
         var map, infowin,
-                wms = "http://support.supermap.com.cn:8090/iserver/services/map-world/wms111/World",
                 url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
         function init() {
             map = L.map('map', {
@@ -17,25 +15,25 @@
                 crs: L.CRS.EPSG4326,
                 center: {lon: 0, lat: 0},
                 maxZoom: 18,
-                zoom: 1
+                zoom: 2
             });
-            L.tileLayer.wms(wms, {
-                noWrap: true,
-                layers: 'World',
-                format: 'image/png',
-                transparent: true
-            }).addTo(map);
+            L.supermap.tiledMapLayer(url).addTo(map);
         }
 
         function mapService() {
             closeInfoWin();
             L.supermap.mapService(url, {
                 projection: "4326"
-            }).on("complete", function (result) {
+            }).getMapStatus().on("complete", function (serviceResult) {
                 if (!infowin) {
-                    infowin = L.popup({maxWidth:400});
+                    infowin = L.popup({maxWidth: 400});
                 }
-                infowin.setLatLng(map.getCenter()).setContent(JSON.stringify(result.data,null,2)).openOn(map);
+                var innerHTML = "(map信息太多，只打印一部分)" + "<br><br>";
+                innerHTML += "地图名：" + JSON.stringify(serviceResult.result.name, null, 2) + "<br>";
+                innerHTML += "中心点:" + JSON.stringify(serviceResult.result.center, null, 2) + "<br>";
+                innerHTML += "Bounds:" + JSON.stringify(serviceResult.result.bounds, null, 2) + "<br>";
+
+                infowin.setLatLng(map.getCenter()).setContent(innerHTML).openOn(map);
             });
         }
         function closeInfoWin() {
