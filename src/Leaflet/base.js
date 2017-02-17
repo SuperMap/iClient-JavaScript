@@ -15,10 +15,12 @@ require("leaflet/dist/images/marker-shadow.png");
 
 L.supermap = L.supermap || {};
 
-L.Util.toSuperMapGeometry = function (geoJSON) {
-    if (geoJSON && geoJSON.type) {
+L.Util.toSuperMapGeometry = function (geometry) {
+    if (geometry && geometry instanceof L.Path && typeof geometry.toGeoJSON === "function") {
         var format = new SuperMap.Format.GeoJSON();
-        var result = format.read(geoJSON, "Feature");
+        var result = format.read(geometry.toGeoJSON(), "Feature");
         return result.geometry;
     }
+    return geometry;
+
 };

@@ -2,6 +2,15 @@
  * Class: GetFeaturesService
  * 数据集查询类。
  * 提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询
+ * 用法：
+ *      L.superMap.getFeaturesService(url).getFeaturesByIDsService{
+ *           dataSetNames:name,
+ *           IDs:IDs
+ *      }.on("complete",function(result){
+ *          //doSomething like L.geoJSON(result.data[0]).addTo(map)
+ *      }).on("failed",function(result){
+ *          //doSomething
+ *      });
  */
 require('../../../Core/base');
 require('../../../Core/iServer/GetFeaturesByIDsService');
@@ -19,17 +28,13 @@ GetFeaturesService = ServiceBase.extend({
 
     /**
      * 数据集ID查询服务
-     * @param params
+     * @param params:
+     *      IDs,getFeatureMode,fields,
+     *      dataSetNames,returnContent,fromIndex,toIndex,returnCountOnly,maxFeatures
      */
     getFeaturesByIDsService: function (params) {
         var me = this, param = me._processParams(params);
-        var getFeaturesByIDsParameters = new SuperMap.REST.GetFeaturesByIDsParameters({
-            returnContent: param.returnContent,
-            datasetNames: param.dataSetNames,
-            fromIndex: param.fromIndex,
-            toIndex: param.toIndex,
-            IDs: param.IDs
-        });
+        var getFeaturesByIDsParameters = new SuperMap.REST.GetFeaturesByIDsParameters(param);
         var getFeaturesByIDsService = new SuperMap.REST.GetFeaturesByIDsService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -43,29 +48,13 @@ GetFeaturesService = ServiceBase.extend({
     },
     /**
      * 数据集Bounds查询服务
-     * @param params
+     * @param params:
+     *      bounds,spatialQueryMode ,attributeFilter,getFeatureMode,fields,
+     *      dataSetNames,returnContent,fromIndex,toIndex,returnCountOnly,maxFeatures
      */
     getFeaturesByBoundsService: function (params) {
-        var me = this, param = me._processParams(params), bounds = params.bounds, spatialQueryMode;
-        if (bounds instanceof L.LatLngBounds) {
-            bounds = new SuperMap.Bounds(
-                params.bounds.getSouthWest().lng,
-                params.bounds.getSouthWest().lat,
-                params.bounds.getNorthEast().lng,
-                params.bounds.getNorthEast().lat
-            );
-        }
-        spatialQueryMode = (param.spatialQueryMode) ? param.spatialQueryMode : SuperMap.REST.SpatialQueryMode.CONTAIN;
-        var getFeaturesByBoundsParameters = new SuperMap.REST.GetFeaturesByBoundsParameters({
-            bounds: bounds,
-            spatialQueryMode: spatialQueryMode,
-            datasetNames: param.dataSetNames,
-
-            returnContent: param.returnContent,
-            fromIndex: param.fromIndex,
-            toIndex: param.toIndex
-
-        });
+        var me = this, param = me._processParams(params);
+        var getFeaturesByBoundsParameters = new SuperMap.REST.GetFeaturesByBoundsParameters(param);
         var getFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -78,22 +67,13 @@ GetFeaturesService = ServiceBase.extend({
     },
     /**
      * 数据集Buffer查询服务
-     * @param params
+     * @param params:
+     *      bufferDistance,attributeFilter,geometry,fields,
+     *      dataSetNames,returnContent,fromIndex,toIndex,returnCountOnly,maxFeatures
      */
     getFeaturesByBufferService: function (params) {
-        var me = this, geometry, param = me._processParams(params);
-        if (param && param.geometry && param.geometry instanceof L.Path) {
-            geometry = L.Util.toSuperMapGeometry(param.geometry.toGeoJSON());
-        }
-        var getFeatureByBufferParameter = new SuperMap.REST.GetFeaturesByBufferParameters({
-            geometry: geometry,
-            bufferDistance: param.bufferDistance,
-            datasetNames: param.dataSetNames,
-
-            returnContent: param.returnContent,
-            fromIndex: param.fromIndex,
-            toIndex: param.toIndex
-        });
+        var me = this, param = me._processParams(params);
+        var getFeatureByBufferParameter = new SuperMap.REST.GetFeaturesByBufferParameters(param);
         var getFeatureService = new SuperMap.REST.GetFeaturesByBufferService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -106,22 +86,14 @@ GetFeaturesService = ServiceBase.extend({
     },
     /**
      * 数据集SQL查询服务
-     * @param params
+     * @param params:
+     *      getFeatureMode,queryParameter,
+     *      dataSetNames,returnContent,fromIndex,toIndex,returnCountOnly,maxFeatures
      */
     getFeaturesBySQLService: function (params) {
         var me = this, param = me._processParams(params);
-        var getFeatureParam = new SuperMap.REST.FilterParameter({
-            name: param.name,
-            attributeFilter: param.attributeFilter
-        });
-        var getFeatureBySQLParams = new SuperMap.REST.GetFeaturesBySQLParameters({
-            queryParameter: getFeatureParam,
-            datasetNames: param.dataSetNames,
-
-            returnContent: param.returnContent,
-            fromIndex: param.fromIndex,
-            toIndex: param.fromIndex
-        });
+        param.queryParameter = new SuperMap.REST.FilterParameter(param);
+        var getFeatureBySQLParams = new SuperMap.REST.GetFeaturesBySQLParameters(param);
         var getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -135,23 +107,13 @@ GetFeaturesService = ServiceBase.extend({
     },
     /**
      * 数据集几何查询服务类
-     * @param params
+     * @param params:
+     *      getFeatureMode,geometry,fields,attributeFilter,spatialQueryMode
+     *      dataSetNames,returnContent,fromIndex,toIndex,returnCountOnly,maxFeatures
      */
     getFeaturesByGeometryService: function (params) {
-        var me = this, geometry, spatialQueryMode, param = me._processParams(params);
-        if (param && param.geometry && param.geometry instanceof L.Path) {
-            geometry = L.Util.toSuperMapGeometry(param.geometry.toGeoJSON());
-        }
-        spatialQueryMode = (param.spatialQueryMode) ? param.spatialQueryMode : SuperMap.REST.SpatialQueryMode.CONTAIN;
-        var getFeaturesByGeometryParameters = new SuperMap.REST.GetFeaturesByGeometryParameters({
-            spatialQueryMode: spatialQueryMode,
-            geometry: geometry,
-            datasetNames: param.dataSetNames,
-
-            returnContent: param.returnContent,
-            fromIndex: param.fromIndex,
-            toIndex: param.toIndex
-        });
+        var me = this, param = me._processParams(params);
+        var getFeaturesByGeometryParameters = new SuperMap.REST.GetFeaturesByGeometryParameters(param);
         var getFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByGeometryService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -167,8 +129,21 @@ GetFeaturesService = ServiceBase.extend({
             return {};
         }
         params.returnContent = (params.returnContent == null) ? true : params.returnContent;
+        //datasetNames字段iclient遗留问题。对外接口统一要求为驼峰式写法
+        params.datasetNames = params.dataSetNames;
         params.fromIndex = params.fromIndex ? params.fromIndex : 0;
         params.toIndex = params.fromIndex ? params.fromIndex : -1;
+        if (params.bounds && params.bounds instanceof L.LatLngBounds) {
+            params.bounds = new SuperMap.Bounds(
+                params.bounds.getSouthWest().lng,
+                params.bounds.getSouthWest().lat,
+                params.bounds.getNorthEast().lng,
+                params.bounds.getNorthEast().lat
+            );
+        }
+        if (params.geometry) {
+            params.geometry = L.Util.toSuperMapGeometry(params.geometry);
+        }
         return params;
     }
 });

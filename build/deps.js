@@ -86,7 +86,7 @@ var deps = {
                 "src": [
                     "./src/Leaflet/SuperMap/iServer/TiledMapLayer.js",
                     "./src/Leaflet/SuperMap/iServer/MapService.js",
-                    "./src/Leaflet/SuperMap/iServer/QueryByBoundsService.js",
+                    "./src/Leaflet/SuperMap/iServer/QueryService.js",
                     "./src/Leaflet/SuperMap/iServer/GetLayersInfoService.js"
                 ]
             },
