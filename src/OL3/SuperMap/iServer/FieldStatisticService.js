@@ -59,7 +59,7 @@ ol.supermap.FieldStatisticService.prototype.processCompleted = function (fieldSt
         }
     }
     if (getAll) {
-        this.fire('complete', {result: this.currentStatisticResult});
+        this.dispatchEvent(new ol.Collection.Event('complete', {result: this.currentStatisticResult}))
     }
 }
 

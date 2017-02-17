@@ -2,11 +2,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>SuperMap 地图信息</title>
+    <title>SuperMap 图层信息</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../../dist/SuperMapiClient9.css">
     <script type="text/javascript" src="../../dist/SuperMapiClient9.js"></script>
-
     <style>
         .ol-popup {
             position: absolute;
@@ -76,20 +75,18 @@
             map.addLayer(new ol.supermap.TiledMapLayer(url, {"pro": "4326"}));
         }
 
-        function mapService() {
+        function layerService() {
             closeInfoWin();
-            var mapService = new ol.supermap.MapService(url, {
-                "projection": "4326"
-            });
-            mapService.on("complete", function (serviceResult) {
-                var innerHTML = "(map信息太多，只打印一部分)" + "<br><br>";
-                innerHTML += "地图名：" + JSON.stringify(serviceResult.element.result.name, null, 2) + "<br>";
-                innerHTML += "中心点:" + JSON.stringify(serviceResult.element.result.center, null, 2) + "<br>";
-                innerHTML += "Bounds:" + JSON.stringify(serviceResult.element.result.bounds, null, 2) + "<br>";
-                content.innerHTML = innerHTML;
+            var getLayersInfoService = new ol.supermap.GetLayersInfoService(url);
+            getLayersInfoService.on("complete", function (serviceResult) {
+                var innerHtml = "";
+                serviceResult.element.result.map(function (layer) {
+                    innerHtml += layer.name + "<br>";
+                });
+                content.innerHTML = innerHtml;
                 overlay.setPosition([0, 0]);
             });
-            mapService.getMapStatus();
+            getLayersInfoService.getLayersInfo();
         }
 
         function closeInfoWin() {
@@ -102,7 +99,7 @@
 </head>
 <body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
 <div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
-    <input type="button" class="btn btn-primary" value="获取地图信息" onclick="mapService()"/>
+    <input type="button" class="btn btn-primary" value="获取图层信息" onclick="layerService()"/>
     <input type="button" class="btn btn-primary" value="清除结果" onclick="closeInfoWin()"/>
 </div>
 <div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>

@@ -9,6 +9,7 @@ ol.supermap.GetLayersInfoService = function (url, options) {
     this.options = {};
     ol.supermap.ServiceBase.call(this, url, options);
 }
+ol.inherits(ol.supermap.GetLayersInfoService, ol.supermap.ServiceBase);
 
 ol.supermap.GetLayersInfoService.prototype.getLayersInfo = function () {
     var me = this;
@@ -31,7 +32,5 @@ ol.supermap.GetLayersInfoService.prototype.processCompleted = function (layersIn
     }
     this.dispatchEvent(new ol.Collection.Event('complete', {result: layersInfo}));
 }
-
-ol.inherits(ol.supermap.GetLayersInfoService, ol.supermap.ServiceBase);
 
 module.exports = ol.supermap.GetLayersInfoService;

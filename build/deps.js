@@ -149,11 +149,7 @@ var deps = {
                 "name": "Data服务",
                 "src": [
                     "./src/OL3/SuperMap/iServer/FieldStatisticService.js",
-                    "./src/OL3/SuperMap/iServer/GetFeaturesByBoundsService.js",
-                    "./src/OL3/SuperMap/iServer/GetFeaturesByBufferService.js",
-                    "./src/OL3/SuperMap/iServer/GetFeaturesByGeometryService.js",
-                    "./src/OL3/SuperMap/iServer/GetFeaturesByIDsService.js",
-                    "./src/OL3/SuperMap/iServer/GetFeaturesBySQLService.js",
+                    "./src/OL3/SuperMap/iServer/GetFeaturesService.js",
                     "./src/OL3/SuperMap/iServer/GetFieldsService.js"
                 ]
             }

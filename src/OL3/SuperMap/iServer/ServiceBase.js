@@ -6,7 +6,7 @@ require('../../base');
 
 ol.supermap.ServiceBase = function (url, options) {
     ol.Observable.call(this);
-    this.options = options;
+    this.options = options || {};
     this.options.url = url;
 };
 ol.inherits(ol.supermap.ServiceBase, ol.Observable);
