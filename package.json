@@ -9,24 +9,39 @@
   },
   "scripts": {
     "deploy": "webpack",
+    "deploy-leaflet": "webpack --config webpack.config.leaflet.js ",
+    "deploy-ol3": "webpack --config webpack.config.ol3.js ",
+    "compress": "webpack -p",
     "package": "node ./build/pack.js"
   },
   "keywords": [
     "SuperMap",
     "leaflet",
-    "Openlayers"
+    "Openlayers3"
   ],
   "author": "SuperMap",
   "license": "Apache-2.0",
   "devDependencies": {
-    "webpack": "^1.14.0",
     "commander": "2.9.0",
+    "commonjs": "0.0.1",
+    "jasmine-core": "^2.5.2",
+    "jquery": "^3.1.1",
+    "karma": "^1.4.1",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-cli": "^1.0.1",
+    "karma-commonjs": "^1.0.0",
+    "karma-coverage": "^1.1.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-teamcity-reporter": "^1.0.0",
     "shelljs": "0.7.6",
-    "css-loader": "^0.23.1",
-    "style-loader": "^0.13.1",
-    "url-loader": "^0.5.7",
-    "file-loader":"0.10.0",
-    "extract-text-webpack-plugin": "^1.0.1"
+    "underscore": "^1.8.3",
+    "webpack": "^1.14.0",
+    "extract-text-webpack-plugin":"^1.0.1",
+    "file-loader":"^0.10.0",
+    "style-loader":"^0.13.1",
+    "css-loader":"^0.26.1",
+    "imports-loader":"^0.7.0"
   },
   "dependencies": {
     "openlayers": "4.0.0",

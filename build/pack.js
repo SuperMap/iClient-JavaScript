@@ -13,8 +13,9 @@ program
             console.log(key + "值输入有误，可选值为leaflet或ol3");
             return;
         }
+
         var modulePaths = "";
-        if (key === "core" && modules === "Core") {
+        if (key === "core") {
             modulePaths = getCoreModulePaths();
             shell.exec('npm run deploy ' + modulePaths);
             return;
@@ -38,7 +39,7 @@ program
                     }
                 }
             }
-            shell.exec('npm run deploy ' + modulePaths);
+            shell.exec('npm run deploy-'+key+' '    + modulePaths);
             return;
         }
         if (modules.indexOf("Core") !== -1) {

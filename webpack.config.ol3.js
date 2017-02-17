@@ -8,7 +8,7 @@ module.exports = {
     //入口文件输出配置
     output: {
         path: './dist/',
-        filename: 'SuperMapiClient9.js'
+        filename: 'SuperMapiClient9 for OL3.js'
     },
 
     //其它解决方案配置
@@ -22,11 +22,12 @@ module.exports = {
             // {test: /\.css$/, loader: 'style-loader!css-loader'},
             {test: /\.css$/, loader:  ExtractTextPlugin.extract("style-loader", "css-loader")},
             {test: /\.(png|jpg)$/, loader: "file-loader?name=images/[name].[ext]"}
-        ]
+        ],
+        noParse: '/node_modules/openlayers/dist/ol.js'
     },
 
     //插件项
     plugins: [
-        new ExtractTextPlugin("SuperMapiClient9.css")
+        new ExtractTextPlugin("SuperMapiClient9 for OL3.css")
     ]
 };

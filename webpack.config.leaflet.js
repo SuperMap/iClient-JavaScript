@@ -8,7 +8,7 @@ module.exports = {
     //入口文件输出配置
     output: {
         path: './dist/',
-        filename: 'SuperMapiClient9.js'
+        filename: 'SuperMapiClient9 for Leaflet.js'
     },
 
     //其它解决方案配置
@@ -27,6 +27,6 @@ module.exports = {
 
     //插件项
     plugins: [
-        new ExtractTextPlugin("SuperMapiClient9.css")
+        new ExtractTextPlugin("SuperMapiClient9 for Leaflet.css")
     ]
 };
