@@ -17,14 +17,14 @@
                 maxZoom: 18,
                 zoom: 3
             });
-            L.supermap.tiledMapLayer(baseUrl).addTo(map);
+            L.supermap.tiledMapLayer(baseUrl,{projection:"4326"}).addTo(map);
             polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]], {color: 'red'});
         }
         function query() {
             clearLayer();
             polygon.addTo(map);
             L.supermap.getFeaturesService(url).getFeaturesByBounds({
-                dataSetNames: ["World:Countries"],
+                datasetNames: ["World:Countries"],
                 bounds: polygon.getBounds(),
                 spatialQueryMode: "INTERSECT"
             }).on("complete", function (serviceResult) {

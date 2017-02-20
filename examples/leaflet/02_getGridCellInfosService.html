@@ -2,13 +2,13 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>SuperMap 字段信息</title>
+    <title>数据集栅格查询</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../../dist/SuperMapiClient9 for Leaflet.css">
     <script type="text/javascript" src="../../dist/SuperMapiClient9 for Leaflet.js"></script>
     <script type="text/javascript">
-        var map, infowin,
-                baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
+        var map, marker,
+                baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/世界地图_Day",
                 url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
         function init() {
             map = L.map('map', {
@@ -19,23 +19,32 @@
                 zoom: 1
             });
             L.supermap.tiledMapLayer(baseUrl,{projection:"4326"}).addTo(map);
-        }
 
-        function mapService() {
-            closeInfoWin();
-            L.supermap.getFieldsService(url, {
-                dataSourceName: "World",
-                dataSetName: "continent_T"
-            }).getFields().on("complete", function (serviceResult) {
-                if (!infowin) {
-                    infowin = L.popup({maxWidth: 420});
-                }
-                infowin.setLatLng(map.getCenter()).setContent(serviceResult.result.fieldNames.join(', ')).openOn(map);
+            map.on("click", function (evt) {
+
+                L.supermap.getGridCellInfosService(url).getGridCellInfos({
+                    dataSourceName: "World",
+                    datasetName: "WorldEarth",
+                    X: evt.latlng.lng,
+                    Y: evt.latlng.lat
+                }).on("complete", function (serviceResult) {
+                    if (marker) {
+                        marker.setLatLng(evt.latlng);
+                    } else {
+                        marker = L.marker(evt.latlng).addTo(map);
+                    }
+                    var innerHTML = "栅格查询结果: " + "<br>" + "column: " + serviceResult.result.column +"<br>";
+                    innerHTML += "row: " + serviceResult.result.row + "<br>";
+                    innerHTML += "value: " + serviceResult.result.value + "<br>";
+                    marker.bindPopup(innerHTML).openPopup(marker.getLatLng());
+                });
             });
         }
+
         function closeInfoWin() {
-            if (infowin) {
-                infowin.removeFrom(map);
+            if (marker) {
+                marker.removeFrom(map);
+                marker=null;
             }
         }
 
@@ -43,7 +52,6 @@
 </head>
 <body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
 <div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
-    <input type="button" class="btn btn-primary" value="获取字段信息" onclick="mapService()"/>
     <input type="button" class="btn btn-primary" value="清除结果" onclick="closeInfoWin()"/>
 </div>
 <div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>

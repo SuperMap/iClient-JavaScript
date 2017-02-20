@@ -111,7 +111,7 @@ GetFeaturesService = ServiceBase.extend({
      *      getFeatureMode,geometry,fields,attributeFilter,spatialQueryMode
      *      dataSetNames,returnContent,fromIndex,toIndex,returnCountOnly,maxFeatures
      */
-    getFeaturesByGeometryService: function (params) {
+    getFeaturesByGeometry: function (params) {
         var me = this, param = me._processParams(params);
         var getFeaturesByGeometryParameters = new SuperMap.REST.GetFeaturesByGeometryParameters(param);
         var getFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByGeometryService(me.options.url, {
@@ -129,8 +129,6 @@ GetFeaturesService = ServiceBase.extend({
             return {};
         }
         params.returnContent = (params.returnContent == null) ? true : params.returnContent;
-        //datasetNames字段iclient遗留问题。对外接口统一要求为驼峰式写法
-        params.datasetNames = params.dataSetNames;
         params.fromIndex = params.fromIndex ? params.fromIndex : 0;
         params.toIndex = params.fromIndex ? params.fromIndex : -1;
         if (params.bounds && params.bounds instanceof L.LatLngBounds) {

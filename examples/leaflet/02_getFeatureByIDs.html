@@ -17,14 +17,14 @@
                 maxZoom: 18,
                 zoom: 1
             });
-            L.supermap.tiledMapLayer(baseUrl).addTo(map);
+            L.supermap.tiledMapLayer(baseUrl,{projection:"4326"}).addTo(map);
 
         }
         function query() {
             clearLayer();
             L.supermap.getFeaturesService(url).getFeaturesByIDs({
                 IDs: [1, 247],
-                dataSetNames: ["World:Countries"]
+                datasetNames: ["World:Countries"]
             }).on("complete", function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result, {
                     onEachFeature: function (feature, layer) {

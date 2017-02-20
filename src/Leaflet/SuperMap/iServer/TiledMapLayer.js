@@ -45,7 +45,7 @@ TiledMapLayer = L.TileLayer.extend({
 
         var tileUrl = this._layerUrl + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + left + ",\"y\":" + bottom + "},\"rightTop\" : {\"x\":" + right + ",\"y\":" + top + "}}";
         tileUrl += "&scale=" + this._scales[zoom];
-        var epsg = this.options.projection === "3857" ? 3857 : 4326;
+        var epsg = this.options.projection === "4326" ? 4326 : 3857;
         tileUrl += "&prjCoordSys={\"epsgCode\":" + epsg + "}";
         return tileUrl;
     },
@@ -56,7 +56,7 @@ TiledMapLayer = L.TileLayer.extend({
             return;
         }
         //如果有projection，并且只能是4326或者3857的地图。
-        options.projection = (options.projection && options.projection === "3857") ? "3857" : "4326";
+        options.projection = (options.projection && options.projection === "4326") ? "4326" : "3857";
         this._layerUrl = this._initLayerUrl(options);
         this._scales = this._initScales(options.projection);
     },

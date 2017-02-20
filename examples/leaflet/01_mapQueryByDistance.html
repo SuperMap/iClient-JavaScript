@@ -16,7 +16,7 @@
                 maxZoom: 18,
                 zoom: 2
             });
-            L.supermap.tiledMapLayer(url).addTo(map);
+            L.supermap.tiledMapLayer(url,{projection:"4326"}).addTo(map);
             circleMarker = L.circleMarker([30, 104]).addTo(map);
         }
         function query() {
