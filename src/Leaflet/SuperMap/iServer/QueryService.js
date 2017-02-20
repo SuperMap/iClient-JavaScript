@@ -3,7 +3,7 @@
  * 地图查询服务类
  * 提供：范围查询，SQL查询，几何查询，距离查询
  * 用法：
- *      L.superMap.QueryService(url).queryByBoundsService{
+ *      L.superMap.QueryService(url).queryByBounds{
  *           filter:{name:name},
  *           bounds:bounds
  *      }.on("complete",function(result){
@@ -31,7 +31,7 @@ QueryService = ServiceBase.extend({
      *      bounds,returnContent,filter
      *      customParams,prjCoordSys,expectCount,networkType,queryOption,,startRecord,holdTime,returnCustomResult
      */
-    queryByBoundsService: function (params) {
+    queryByBounds: function (params) {
         var me = this, param = me._processParams(params);
         var queryByBoundsParams = new SuperMap.REST.QueryByBoundsParameters(param);
         var queryService = new SuperMap.REST.QueryByBoundsService(me.options.url, {
@@ -52,7 +52,7 @@ QueryService = ServiceBase.extend({
      *      distance,geometry,isNearest,returnContent,filter
      *      customParams,prjCoordSys,expectCount,networkType,queryOption,,startRecord,holdTime,returnCustomResult
      */
-    queryByDistanceService: function (params) {
+    queryByDistance: function (params) {
         var me = this, param = me._processParams(params);
         var queryByDistanceParams = new SuperMap.REST.QueryByDistanceParameters(param);
         var queryByDistanceService = new SuperMap.REST.QueryByDistanceService(me.options.url, {
@@ -73,7 +73,7 @@ QueryService = ServiceBase.extend({
      *      returnContent,filter
      *      customParams,prjCoordSys,expectCount,networkType,queryOption,,startRecord,holdTime,returnCustomResult
      */
-    queryBySQLService: function (params) {
+    queryBySQL: function (params) {
         var me = this, param = me._processParams(params);
         var queryBySQLParams = new SuperMap.REST.QueryBySQLParameters(param);
         var queryBySQLService = new SuperMap.REST.QueryBySQLService(me.options.url, {
@@ -94,10 +94,10 @@ QueryService = ServiceBase.extend({
      *      geometry,returnContent,spatialQueryMode,filter
      *      customParams,prjCoordSys,expectCount,networkType,queryOption,,startRecord,holdTime,returnCustomResult
      */
-    queryByGeometryService: function (params) {
+    queryByGeometry: function (params) {
         var me = this, param = me._processParams(params);
         var queryByGeometryParameters = new SuperMap.REST.QueryByGeometryParameters(param);
-        var queryByGeometryService = new SuperMap.REST.QueryByGeometryService(url, {
+        var queryByGeometryService = new SuperMap.REST.QueryByGeometryService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
@@ -108,13 +108,17 @@ QueryService = ServiceBase.extend({
         queryByGeometryService.processAsync(queryByGeometryParameters);
         return me;
     },
+
     _processParams: function (params) {
         if (!params) {
             return {};
         }
         params.returnContent = (params.returnContent == null) ? true : params.returnContent;
         //对外接口调用使用filter,内部参数使用queryParams，跟iClient保持一致
-        params.queryParams = L.Util.isArray(params.filter) ? params.filter : [params.filter];
+        if (params.filter) {
+            params.queryParams = L.Util.isArray(params.filter) ? params.filter : [params.filter];
+        }
+
         if (params.bounds && params.bounds instanceof L.LatLngBounds) {
             params.bounds = new SuperMap.Bounds(
                 params.bounds.getSouthWest().lng,
@@ -123,6 +127,7 @@ QueryService = ServiceBase.extend({
                 params.bounds.getNorthEast().lat
             );
         }
+
         if (params.geometry) {
             if (params.geometry instanceof L.Point) {
                 params.geometry = new SuperMap.Geometry.Point(params.geometry.x, params.geometry.y);
