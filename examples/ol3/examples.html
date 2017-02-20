@@ -14,12 +14,11 @@
             outline: none;
             border: none
         }
-
         .container, .navbar-fixed-top .container, .navbar-fixed-bottom .container {
             width: 1500px;
         }
 
-        #myTabContent .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+        #myTabContent .nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
             color: #08c;
             background-color: #ffffff;
         }
@@ -53,8 +52,7 @@
                         </div>
                         <div class="span10">
                             <ul class='nav nav-pills'>
-                                <li><a href='javascript:void(0)' target='_self' data-name='01_tiledMapLayer'>iServer4326地图</a>
-                                </li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='01_tiledMapLayer'>iServer4326地图</a></li>
                             </ul>
                         </div>
                     </div>
@@ -84,12 +82,12 @@
                         </div>
                         <div class="span10">
                             <ul class='nav nav-pills'>
-                                <li><a href='javascript:void(0)' target='_self' data-name='01_layerService'>图层信息</a>
-                                </li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='01_layerService'>图层信息</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
+
 
 
                 <div class="container-fluid">
@@ -101,8 +99,10 @@
                         </div>
                         <div class="span10">
                             <ul class='nav nav-pills'>
-                                <li><a href='javascript:void(0)' target='_self' data-name='01_mapQueryByBounds'>范围查询</a>
-                                </li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='01_mapQueryByBounds'>范围查询</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='01_mapQueryByDistance'>距离查询</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='01_mapQueryByGeometry'>几何查询</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='01_mapQueryBySQL'>SQL查询</a></li>
                             </ul>
                         </div>
                     </div>
@@ -122,20 +122,13 @@
                         </div>
                         <div class="span10">
                             <ul class='nav nav-pills'>
-                                <li><a href='javascript:void(0)' target='_self' data-name='02_getFeatureByIDs'>ID 查询</a>
-                                </li>
-                                <li><a href='javascript:void(0)' target='_self' data-name='02_getFeatureBySQL'>SQL
-                                    查询</a></li>
-                                <li><a href='javascript:void(0)' target='_self'
-                                       data-name='02_getFeatureByBounds'>范围查询</a></li>
-                                <li><a href='javascript:void(0)' target='_self'
-                                       data-name='02_getFeatureByGeometry'>几何查询</a></li>
-                                <li><a href='javascript:void(0)' target='_self'
-                                       data-name='02_getFeatureByBuffer'>缓冲区查询</a></li>
-                                <li><a href='javascript:void(0)' target='_self' data-name='02_filedsService'>字段信息</a>
-                                </li>
-                                <li><a href='javascript:void(0)' target='_self'
-                                       data-name='02_filedStatistics'>字段查询统计</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='02_getFeatureByIDs'>ID 查询</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='02_getFeatureBySQL'>SQL 查询</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='02_getFeatureByBounds'>范围查询</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='02_getFeatureByGeometry'>几何查询</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='02_getFeatureByBuffer'>缓冲区查询</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='02_filedsService'>字段信息</a></li>
+                                <li><a href='javascript:void(0)' target='_self' data-name='02_filedStatistics'>字段查询统计</a></li>
 
                             </ul>
                         </div>
@@ -150,13 +143,11 @@
 
         <h3><span id='demo-title'></span></h3>
         <br>
-        <span id="skip" onclick="window .open(this.href);" style="cursor: pointer"><a
-                href='javascript:void(0)'>跳转</a></span>
+        <span id="skip" onclick="window .open(this.href);" style="cursor: pointer"><a href='javascript:void(0)'>跳转</a></span>
         <span> <a id='sourceCode' href='javascript:void(0);' target='_self'>显示源码</a></span>
         <div id='func'></div>
         <div id='map'>
-            <iframe id="examplesIframe" height="560px" frameBorder="0" marginheight="0" marginwidth="0"
-                    width="100%"></iframe>
+            <iframe id="examplesIframe" height="560px" frameBorder="0" marginheight="0" marginwidth="0" width="100%"></iframe>
         </div>
         <div id='result' class='container'></div>
         <div id='mousePositionDiv' class='smCustomControlMousePosition'></div>

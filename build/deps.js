@@ -143,7 +143,7 @@ var deps = {
                 "src": [
                     "./src/OL3/SuperMap/iServer/TiledMapLayer.js",
                     "./src/OL3/SuperMap/iServer/MapService.js",
-                    "./src/OL3/SuperMap/iServer/QueryByBoundsService.js",
+                    "./src/OL3/SuperMap/iServer/QueryService.js",
                     "./src/OL3/SuperMap/iServer/GetLayersInfoService.js"
                 ]
             },
