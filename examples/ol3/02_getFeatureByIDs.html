@@ -25,7 +25,7 @@
         function query() {
             clearLayer();
             var getFeaturesService = new ol.supermap.GetFeaturesService(url);
-            getFeaturesService.getFeaturesByIDsService({
+            getFeaturesService.getFeaturesByIDs({
                 IDs: [1, 247],
                 dataSetNames: ["World:Countries"]
             });

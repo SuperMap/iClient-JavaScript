@@ -19,15 +19,9 @@ ol.inherits(ol.supermap.GetFeaturesService, ol.supermap.ServiceBase);
  * 数据集ID查询服务
  * @param params
  */
-ol.supermap.GetFeaturesService.prototype.getFeaturesByIDsService = function (params) {
+ol.supermap.GetFeaturesService.prototype.getFeaturesByIDs = function (params) {
     var me = this, param = me._processParams(params);
-    var getFeaturesByIDsParameters = new SuperMap.REST.GetFeaturesByIDsParameters({
-        returnContent: param.returnContent,
-        datasetNames: param.dataSetNames,
-        fromIndex: param.fromIndex,
-        toIndex: param.toIndex,
-        IDs: param.IDs
-    });
+    var getFeaturesByIDsParameters = new SuperMap.REST.GetFeaturesByIDsParameters(param);
     var getFeaturesByIDsService = new SuperMap.REST.GetFeaturesByIDsService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -43,25 +37,9 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesByIDsService = function (par
  * 数据集Bounds查询服务
  * @param params
  */
-ol.supermap.GetFeaturesService.prototype.getFeaturesByBoundsService = function (params) {
-    var me = this, param = me._processParams(params), bounds = params.bounds, spatialQueryMode;
-    bounds = new SuperMap.Bounds(
-        params.bounds[0],
-        params.bounds[1],
-        params.bounds[2],
-        params.bounds[3]
-    );
-    spatialQueryMode = (param.spatialQueryMode) ? param.spatialQueryMode : SuperMap.REST.SpatialQueryMode.CONTAIN;
-    var getFeaturesByBoundsParameters = new SuperMap.REST.GetFeaturesByBoundsParameters({
-        bounds: bounds,
-        spatialQueryMode: spatialQueryMode,
-        datasetNames: param.dataSetNames,
-
-        returnContent: param.returnContent,
-        fromIndex: param.fromIndex,
-        toIndex: param.toIndex
-
-    });
+ol.supermap.GetFeaturesService.prototype.getFeaturesByBounds = function (params) {
+    var me = this, param = me._processParams(params);
+    var getFeaturesByBoundsParameters = new SuperMap.REST.GetFeaturesByBoundsParameters(param);
     var getFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -76,20 +54,9 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesByBoundsService = function (
  * 数据集Buffer查询服务
  * @param params
  */
-ol.supermap.GetFeaturesService.prototype.getFeaturesByBufferService = function (params) {
-    var me = this, geometry, param = me._processParams(params);
-    if (param && param.geometry && param.geometry instanceof ol.geom.Geometry) {
-        geometry = ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(param.geometry)));
-    }
-    var getFeatureByBufferParameter = new SuperMap.REST.GetFeaturesByBufferParameters({
-        geometry: geometry,
-        bufferDistance: param.bufferDistance,
-        datasetNames: param.dataSetNames,
-
-        returnContent: param.returnContent,
-        fromIndex: param.fromIndex,
-        toIndex: param.toIndex
-    });
+ol.supermap.GetFeaturesService.prototype.getFeaturesByBuffer = function (params) {
+    var me = this, param = me._processParams(params);
+    var getFeatureByBufferParameter = new SuperMap.REST.GetFeaturesByBufferParameters(param);
     var getFeatureService = new SuperMap.REST.GetFeaturesByBufferService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -104,20 +71,10 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesByBufferService = function (
  * 数据集SQL查询服务
  * @param params
  */
-ol.supermap.GetFeaturesService.prototype.getFeaturesBySQLService = function (params) {
+ol.supermap.GetFeaturesService.prototype.getFeaturesBySQL = function (params) {
     var me = this, param = me._processParams(params);
-    var getFeatureParam = new SuperMap.REST.FilterParameter({
-        name: param.name,
-        attributeFilter: param.attributeFilter
-    });
-    var getFeatureBySQLParams = new SuperMap.REST.GetFeaturesBySQLParameters({
-        queryParameter: getFeatureParam,
-        datasetNames: param.dataSetNames,
-
-        returnContent: param.returnContent,
-        fromIndex: param.fromIndex,
-        toIndex: param.fromIndex
-    });
+    param.queryParameter = new SuperMap.REST.FilterParameter(param);
+    var getFeatureBySQLParams = new SuperMap.REST.GetFeaturesBySQLParameters(param);
     var getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -133,21 +90,9 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesBySQLService = function (par
  * 数据集几何查询服务类
  * @param params
  */
-ol.supermap.GetFeaturesService.prototype.getFeaturesByGeometryService = function (params) {
-    var me = this, geometry, spatialQueryMode, param = me._processParams(params);
-    if (param && param.geometry && param.geometry instanceof ol.geom.Geometry) {
-        geometry = ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(param.geometry)));
-    }
-    spatialQueryMode = (param.spatialQueryMode) ? param.spatialQueryMode : SuperMap.REST.SpatialQueryMode.CONTAIN;
-    var getFeaturesByGeometryParameters = new SuperMap.REST.GetFeaturesByGeometryParameters({
-        spatialQueryMode: spatialQueryMode,
-        geometry: geometry,
-        datasetNames: param.dataSetNames,
-
-        returnContent: param.returnContent,
-        fromIndex: param.fromIndex,
-        toIndex: param.toIndex
-    });
+ol.supermap.GetFeaturesService.prototype.getFeaturesByGeometry = function (params) {
+    var me = this, param = me._processParams(params);
+    var getFeaturesByGeometryParameters = new SuperMap.REST.GetFeaturesByGeometryParameters(param);
     var getFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByGeometryService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -158,14 +103,27 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesByGeometryService = function
     getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
     return me;
 };
+
 ol.supermap.GetFeaturesService.prototype._processParams = function (params) {
     if (!params) {
         return {};
     }
     params.returnContent = (params.returnContent == null) ? true : params.returnContent;
+    params.datasetNames = params.dataSetNames;
     params.fromIndex = params.fromIndex ? params.fromIndex : 0;
     params.toIndex = params.fromIndex ? params.fromIndex : -1;
+    if (params.bounds) {
+        params.bounds = new SuperMap.Bounds(
+            params.bounds[0],
+            params.bounds[1],
+            params.bounds[2],
+            params.bounds[3]
+        );
+    }
+    if (params.geometry) {
+        params.geometry = ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
+    }
     return params;
-};
+}
 
 module.exports = ol.supermap.GetFeaturesService;

@@ -2,13 +2,13 @@
  * Class: GetFieldsService
  * 字段查询服务类
  */
-require('./FieldsServiceBase');
+require('./ServiceBase');
 require('../../../Core/iServer/GetFieldsService');
 
 ol.supermap.GetFieldsService = function (url, options) {
-    ol.supermap.FieldsServiceBase.call(this, url, options);
+    ol.supermap.ServiceBase.call(this, url, options);
 }
-ol.inherits(ol.supermap.GetFieldsService, ol.supermap.FieldsServiceBase);
+ol.inherits(ol.supermap.GetFieldsService, ol.supermap.ServiceBase);
 
 ol.supermap.GetFieldsService.prototype.getFields = function () {
     var me = this, getFieldsService;
