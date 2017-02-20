@@ -77,6 +77,7 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.CoreServiceBase, 
      */
     initialize: function (url, options) {
         SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        options = options || {};
         if (options) {
             SuperMap.Util.extend(this, options);
         }

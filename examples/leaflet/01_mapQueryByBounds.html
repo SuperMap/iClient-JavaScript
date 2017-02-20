@@ -16,7 +16,7 @@
                 maxZoom: 18,
                 zoom: 1
             });
-            L.supermap.tiledMapLayer(url).addTo(map);
+            L.supermap.tiledMapLayer(url,{projection:"4326"}).addTo(map);
             polygon = L.polygon([[0, 0], [39, 0], [39, 116], [0, 116], [0, 0]]);
         }
         function query() {

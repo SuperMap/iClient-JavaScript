@@ -97,7 +97,9 @@ var deps = {
                 "src": [
                     "./src/Leaflet/SuperMap/iServer/FieldStatisticService.js",
                     "./src/Leaflet/SuperMap/iServer/GetFeaturesService.js",
-                    "./src/Leaflet/SuperMap/iServer/GetFieldsService.js"
+                    "./src/Leaflet/SuperMap/iServer/GetFieldsService.js",
+                    "./src/Leaflet/SuperMap/iServer/EditFeaturesService.js",
+                    "./src/Leaflet/SuperMap/iServer/GetGridCellInfosService.js"
                 ]
             }
         },

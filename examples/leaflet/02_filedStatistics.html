@@ -29,7 +29,7 @@
                 maxZoom: 18,
                 zoom: 2
             });
-            L.supermap.tiledMapLayer(mapURL).addTo(map);
+            L.supermap.tiledMapLayer(mapURL,{projection:"4326"}).addTo(map);
             initResultInfoWin();
             showLayersInfo();
             document.getElementById("layerSelect").onchange = function () {

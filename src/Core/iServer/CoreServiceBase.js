@@ -37,6 +37,7 @@ SuperMap.CoreServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
     initialize: function (url, options) {
         SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+        options = options || {};
         if (options) {
             SuperMap.Util.extend(this, options);
         }

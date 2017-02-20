@@ -1,0 +1,96 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <title>地物编辑</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../dist/SuperMapiClient9 for Leaflet.css">
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for Leaflet.js"></script>
+    <script type="text/javascript">
+        var map, marker, featureGroup, is, resultLayer,
+                baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
+                urlCapital = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Capitals",
+                url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+        function init() {
+            map = L.map('map', {
+                preferCanvas: true,
+                crs: L.CRS.EPSG4326,
+                center: {lon: 110, lat: 30},
+                maxZoom: 18,
+                zoom: 3
+            });
+            L.supermap.tiledMapLayer(baseUrl,{projection:"4326"}).addTo(map);
+            featureGroup = L.featureGroup().addTo(map);
+            marker = L.circleMarker([34, 108], {color: "red"});
+            initFeature();
+        }
+        function initFeature() {
+            var polygon = L.polygon([[10, 100], [10, 124], [40, 124], [40, 100], [10, 100]]);
+            L.supermap.getFeaturesService(url).getFeaturesByGeometry({
+                datasetNames: ["World:Capitals"],
+                geometry: polygon,
+                spatialQueryMode: "INTERSECT"
+            }).on("complete", function (serviceResult) {
+                resultLayer = L.geoJSON(serviceResult.result, {
+                    onEachFeature: function (feature, layer) {
+                        layer.bindPopup("首都：" + feature.properties.CAPITAL);
+                    }
+                }).addTo(map);
+            });
+        }
+        function addMarker() {
+            if (!featureGroup.hasLayer(marker)) {
+                featureGroup.addLayer(marker);
+            } else {
+                alert("请先清除结果");
+            }
+        }
+        function commit() {
+            var me = this;
+            if (featureGroup.hasLayer(marker)) {
+                L.supermap.editFeaturesService(urlCapital).editFeatures({
+                    features: marker,
+                    editType: "add",
+                    returnContent: true
+                }).on("complete", function (serviceResult) {
+                    if (serviceResult.result.succeed) {
+                        id = serviceResult.result[0];
+                        featureGroup.removeFrom(map);
+                        resultLayer.removeFrom(map);
+                        me.initFeature();
+                    }
+                });
+            } else {
+                alert("请先添加地物");
+            }
+        }
+        function clearLayer() {
+            var me = this;
+            if (!featureGroup.hasLayer(marker)) {
+                return;
+            }
+            L.supermap.editFeaturesService(urlCapital).editFeatures({
+                IDs: [id],
+                editType: "delete"
+            }).on("complete", function (serviceResult) {
+                if (serviceResult.result.succeed) {
+                    resultLayer.removeFrom(map);
+                    me.initFeature();
+                } else {
+                    alert("删除失败")
+                }
+            });
+            if (featureGroup && featureGroup.hasLayer(marker)) {
+                featureGroup.removeLayer(marker);
+            }
+        }
+    </script>
+</head>
+<body onload="init()" onbeforeunload="closeLayer()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <input type="button" class="btn btn-primary" value="添加地物" onclick="addMarker()"/>
+    <input type="button" class="btn btn-primary" value="提交添加" onclick="commit()"/>
+    <input type="button" class="btn btn-primary" value="清除结果" onclick="clearLayer()"/>
+</div>
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>
