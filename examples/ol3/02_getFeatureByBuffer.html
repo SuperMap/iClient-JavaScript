@@ -42,7 +42,7 @@
             map.addLayer(vectorLayer);
 
             var getFeaturesService = new ol.supermap.GetFeaturesService(url);
-            getFeaturesService.getFeaturesByBufferService({
+            getFeaturesService.getFeaturesByBuffer({
                 dataSetNames: ["World:Capitals"],
                 bufferDistance: 10,
                 geometry: polygon

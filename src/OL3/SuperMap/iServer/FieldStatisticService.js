@@ -2,19 +2,17 @@
  * Class: FieldStatisticService
  * 字段查询服务类
  */
-require('./FieldsServiceBase');
+require('./ServiceBase');
 require('../../../Core/iServer/FieldStatisticService');
 
 ol.supermap.FieldStatisticService = function (url, options) {
-    ol.supermap.FieldsServiceBase.call(this, url, options);
-    this.options.fieldName = options.fieldName;
+    ol.supermap.ServiceBase.call(this, url, options);
     this.currentStatisticResult = {fieldName: options.fieldName};
-    this.options.statisticMode = options.statisticMode;
     if (!options.statisticMode || (typeof options.statisticMode !== "Array")) {
         this.options.statisticMode = SuperMap.REST.StatisticMode;
     }
 }
-ol.inherits(ol.supermap.FieldStatisticService, ol.supermap.FieldsServiceBase);
+ol.inherits(ol.supermap.FieldStatisticService, ol.supermap.ServiceBase);
 
 
 ol.supermap.FieldStatisticService.prototype.getFieldStatisticInfo = function () {
