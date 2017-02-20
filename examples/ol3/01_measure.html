@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>距离测量</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../dist/SuperMapiClient9 for OL3.css">
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for OL3.js"></script>
+
+    <script type="text/javascript">
+        var map, interaction, vectorLayer,
+                url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+
+        function init() {
+            map = new ol.Map({
+                target: 'map',
+                view: new ol.View({
+                    center: [0, 0],
+                    zoom: 3,
+                    projection: 'EPSG:4326'
+                })
+            });
+            map.addLayer(new ol.supermap.TiledMapLayer(url, {"pro": "4326"}));
+        }
+
+        function measureService(type) {
+            clearLayer();
+            var source = new ol.source.Vector({wrapX: false});
+            vectorLayer = new ol.layer.Vector({
+                source: source
+            });
+            map.addLayer(vectorLayer);
+            if (type === 'distance') {
+                interaction = new ol.interaction.Draw({
+                    source: source,
+                    type: "LineString",
+                    finishCondition: function (MapBrowserPointerEvent) {
+                        if (MapBrowserPointerEvent) {
+                            var measureService = new ol.supermap.MeasureService(url, {measureMode: ""});
+                            measureService.on("complete", function (serviceResult) {
+                                alert(serviceResult.element.result.distance);
+                            });
+                            var line = new ol.geom.LineString();
+                            var points = MapBrowserPointerEvent.frameState.pixelToCoordinateTransform;
+                            for (var i = 0; i < points.length; i = i + 2) {
+                                line.appendCoordinate([points[i], points[i + 1]]);
+                            }
+                            measureService.measureDistance(line);
+                        }
+                        return true;
+                    }
+                })
+            }
+            if (type === 'area') {
+                interaction = new ol.interaction.Draw({
+                    source: source,
+                    type: "Polygon",
+                    finishCondition: function (MapBrowserPointerEvent) {
+                        if (MapBrowserPointerEvent) {
+                            var measureService = new ol.supermap.MeasureService(url, {measureMode: ""});
+                            measureService.on("complete", function (serviceResult) {
+                                alert(serviceResult.element.result.area);
+                            });
+                            var points = MapBrowserPointerEvent.frameState.pixelToCoordinateTransform;
+                            var polygonCoords = [];
+                            for (var i = 0; i < points.length; i = i + 2) {
+                                polygonCoords.push([points[i], points[i + 1]]);
+                            }
+                            measureService.measureArea(new ol.geom.Polygon([polygonCoords]));
+                        }
+                        return true;
+                    }
+                })
+            }
+            map.addInteraction(interaction);
+        }
+
+        function clearLayer() {
+            map.removeInteraction(interaction);
+            if (vectorLayer) {
+                map.removeLayer(vectorLayer);
+            }
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <input type="button" class="btn btn-primary" value="测距离" onclick="measureService('distance')"/>
+    <input type="button" class="btn btn-primary" value="测面积" onclick="measureService('area')"/>
+    <input type="button" class="btn btn-primary" value="清除" onclick="clearLayer()"/>
+</div>
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>
