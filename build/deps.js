@@ -89,7 +89,10 @@ var deps = {
                     "./src/Leaflet/SuperMap/iServer/QueryService.js",
                     "./src/Leaflet/SuperMap/iServer/ChartQueryService.js",
                     "./src/Leaflet/SuperMap/iServer/TilesetsService.js",
-                    "./src/Leaflet/SuperMap/iServer/GetLayersInfoService.js"
+                    "./src/Leaflet/SuperMap/iServer/GetLayersInfoService.js",
+                    "./src/Leaflet/SuperMap/iServer/ChartFeatureInfoSpecsService.js",
+                    "./src/Leaflet/SuperMap/iServer/SetLayerService.js",
+                    "./src/Leaflet/SuperMap/iServer/MeasureService.js"
                 ]
             },
             "Data": {

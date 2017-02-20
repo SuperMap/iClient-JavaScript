@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>测量服务</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../dist/SuperMapiClient9 for Leaflet.css">
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for Leaflet.js"></script>
+    <script type="text/javascript">
+        var map, polyline, polygon, resultLayer,
+                url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+        function init() {
+            map = L.map('map', {
+                preferCanvas: true,
+                crs: L.CRS.EPSG4326,
+                center: [34, 108],
+                maxZoom: 18,
+                zoom: 3
+            });
+            L.supermap.tiledMapLayer(url, {projection: "4326"}).addTo(map);
+            resultLayer = L.featureGroup().addTo(map);
+        }
+
+        function measureService(type) {
+            if (type === "distance") {
+                clearLayer();
+                polyline = L.polyline([[25, 102], [40, 116]], {color: "red"});
+                var marker1 = L.marker([25, 102]), marker2 = L.marker([40, 116]);
+                resultLayer.addLayer(polyline);
+                resultLayer.addLayer(marker1);
+                resultLayer.addLayer(marker2);
+                L.supermap.measureService(url).measureDistance({
+                    geometry: polyline
+                }).on("complete", function (serviceResult) {
+                    var content = "距离： " + serviceResult.result.distance + "  米";
+                    marker1.bindPopup(content).openPopup(marker1.getLatLng());
+                });
+
+            } else {
+                clearLayer();
+                polygon = L.polygon([[24, 100], [40, 100], [40, 120], [24, 120], [24, 100]], {color: "red"});
+                resultLayer.addLayer(polygon);
+                L.supermap.measureService(url).measureArea({
+                    geometry: polygon
+                }).on("complete", function (serviceResult) {
+                    var content = "面积： " + serviceResult.result.area + "  平方米";
+                    polygon.bindPopup(content).openPopup(polygon.getCenter());
+                });
+            }
+        }
+        function clearLayer() {
+            if (resultLayer) {
+                resultLayer.clearLayers();
+            }
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <input type="button" class="btn btn-primary" value="测距离" onclick="measureService('distance')"/>
+    <input type="button" class="btn btn-primary" value="测面积" onclick="measureService('area')"/>
+    <input type="button" class="btn btn-primary" value="清除" onclick="clearLayer()"/>
+</div>
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>

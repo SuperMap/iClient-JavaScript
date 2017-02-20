@@ -37,6 +37,7 @@ SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.CoreServiceBase, {
         if (options) {
             SuperMap.Util.extend(this, options);
         }
+        this.resourceID = options.resourceID;
     },
 
     /**

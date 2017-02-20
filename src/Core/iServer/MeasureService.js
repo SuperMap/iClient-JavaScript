@@ -13,27 +13,27 @@
 require('./CoreServiceBase');
 
 SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.CoreServiceBase, {
-    
-    /** 
+
+    /**
      * APIProperty: measureMode
      * {<SuperMap.REST.MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。默认值为：SuperMap.REST.MeasureMode.DISTANCE 。
      */
     measureMode: SuperMap.REST.MeasureMode.DISTANCE,
-    
+
     /**
      * Constructor: SuperMap.REST.MeasureService
      * 量算服务类构造函数。
      *
      * 例如：
-     * (start code)     
+     * (start code)
      * var myMeasuerService = new SuperMap.REST.MeasureService(url, {
      *      measureMode: SuperMap.REST.MeasureMode.DISTANCE,
      *      eventListeners:{
      *          "processCompleted": measureCompleted
      *      }
      * });
-     * (end)     
-     *     
+     * (end)
+     *
      * Parameters:
      * url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
      * options - {Object} 参数。
@@ -42,23 +42,23 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * eventListeners - {Object} 需要被注册的监听器对象。
      * measureMode - {<SuperMap.REST.MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。
      */
-    initialize: function(url, options) {
+    initialize: function (url, options) {
         SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
     },
-    
+
     /**
      * APIMethod: destroy
-     * 释放资源，将引用的资源属性置空。  
+     * 释放资源，将引用的资源属性置空。
      */
-    destroy: function() {
+    destroy: function () {
         SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
         var me = this;
         me.measureMode = null;
     },
-    
+
     /**
      * APIMethod: processAsync
      * 负责将客户端的量算参数传递到服务端。
@@ -66,8 +66,8 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * Parameters:
      * params - {<SuperMap.REST.MeasureParameters>} 量算参数。
      */
-    processAsync: function(params) {
-        if(!params){
+    processAsync: function (params) {
+        if (!params) {
             return;
         }
         var me = this,
@@ -78,21 +78,21 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.CoreServiceBase, {
             end = null;
         if (!geometry) {
             return;
-        } 
+        }
         end = me.url.substr(me.url.length - 1, 1);
         if (me.measureMode === SuperMap.REST.MeasureMode.AREA) {
             if (me.isInTheSameDomain) {
-                me.url += ((end === "/") ? "area.json?": "/area.json?");
+                me.url += ((end === "/") ? "area.json?" : "/area.json?");
             }
             else {
-                me.url += ((end === "/") ? "area.jsonp?": "/area.jsonp?");
+                me.url += ((end === "/") ? "area.jsonp?" : "/area.jsonp?");
             }
         } else {
             if (me.isInTheSameDomain) {
-                me.url += ((end === "/") ? "distance.json?": "/distance.json?");
+                me.url += ((end === "/") ? "distance.json?" : "/distance.json?");
             }
             else {
-                me.url += ((end === "/") ? "distance.jsonp?": "/distance.jsonp?");
+                me.url += ((end === "/") ? "distance.jsonp?" : "/distance.jsonp?");
             }
         }
         var serverGeometry = SuperMap.REST.ServerGeometry.fromGeometry(geometry);
@@ -102,34 +102,31 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.CoreServiceBase, {
         pointsCount = serverGeometry.parts[0];
         point2ds = serverGeometry.points.splice(0, pointsCount);
 
-        var prjCoordSysTemp,prjCodeTemp,paramsTemp;
-        if(params.prjCoordSys){
-            if(typeof (params.prjCoordSys) === "object")
-            {
-                    prjCodeTemp = params.prjCoordSys.projCode;
-                    prjCoordSysTemp = '{"epsgCode"'+prjCodeTemp.substring(prjCodeTemp.indexOf(":"),prjCodeTemp.length) +"}";
+        var prjCoordSysTemp, prjCodeTemp, paramsTemp;
+        if (params.prjCoordSys) {
+            if (typeof (params.prjCoordSys) === "object") {
+                prjCodeTemp = params.prjCoordSys.projCode;
+                prjCoordSysTemp = '{"epsgCode"' + prjCodeTemp.substring(prjCodeTemp.indexOf(":"), prjCodeTemp.length) + "}";
             }
-            else if(typeof (params.prjCoordSys) === "string")
-            {
-                prjCoordSysTemp = '{"epsgCode"'+params.prjCoordSys.substring(params.prjCoordSys.indexOf(":"),params.prjCoordSys.length) +"}";
+            else if (typeof (params.prjCoordSys) === "string") {
+                prjCoordSysTemp = '{"epsgCode"' + params.prjCoordSys.substring(params.prjCoordSys.indexOf(":"), params.prjCoordSys.length) + "}";
             }
-            paramsTemp = {"point2Ds": SuperMap.Util.toJSON(point2ds), "unit": params.unit, "prjCoordSys":prjCoordSysTemp};
+            paramsTemp = {"point2Ds": SuperMap.Util.toJSON(point2ds), "unit": params.unit, "prjCoordSys": prjCoordSysTemp};
         }
-        else
-        {
+        else {
             paramsTemp = {"point2Ds": SuperMap.Util.toJSON(point2ds), "unit": params.unit};
         }
 
         me.request({
             method: "GET",
-            params:paramsTemp,
+            params: paramsTemp,
             scope: me,
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
 
     },
-    
+
     CLASS_NAME: "SuperMap.REST.MeasureService"
 });
 
