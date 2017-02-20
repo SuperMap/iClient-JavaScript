@@ -21,7 +21,7 @@
         }
         function query() {
             clearLayer();
-            L.supermap.queryService(url).queryByDistanceService({
+            L.supermap.queryService(url).queryByDistance({
                 filter: {name: "Capitals@World.1"},
                 distance: 30,
                 geometry: circleMarker

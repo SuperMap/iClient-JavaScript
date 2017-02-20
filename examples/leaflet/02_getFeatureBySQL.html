@@ -21,7 +21,7 @@
         }
         function query() {
             clearLayer();
-            L.supermap.getFeaturesService(url).getFeaturesBySQLService({
+            L.supermap.getFeaturesService(url).getFeaturesBySQL({
                 name: "Countries@World",
                 attributeFilter: "SMID = 1",
                 dataSetNames: ["World:Countries"]

@@ -23,7 +23,7 @@
         function query() {
             clearLayer();
             polygon.addTo(map);
-            L.supermap.getFeaturesService(url).getFeaturesByBufferService({
+            L.supermap.getFeaturesService(url).getFeaturesByBuffer({
                 dataSetNames: ["World:Capitals"],
                 bufferDistance: 10,
                 geometry: polygon

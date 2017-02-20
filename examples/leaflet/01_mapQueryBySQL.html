@@ -20,7 +20,7 @@
         }
         function query() {
             clearLayer();
-            L.supermap.queryService(url).queryBySQLService({
+            L.supermap.queryService(url).queryBySQL({
                 filter: {
                     name: "Capitals@World.1",
                     attributeFilter: "SMID < 10"

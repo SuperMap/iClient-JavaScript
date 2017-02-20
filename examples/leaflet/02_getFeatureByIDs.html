@@ -22,7 +22,7 @@
         }
         function query() {
             clearLayer();
-            L.supermap.getFeaturesService(url).getFeaturesByIDsService({
+            L.supermap.getFeaturesService(url).getFeaturesByIDs({
                 IDs: [1, 247],
                 dataSetNames: ["World:Countries"]
             }).on("complete", function (serviceResult) {

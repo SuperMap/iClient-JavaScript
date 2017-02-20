@@ -22,7 +22,7 @@
         function query() {
             clearLayer();
             polygon.addTo(map);
-            L.supermap.queryService(url).queryByBoundsService({
+            L.supermap.queryService(url).queryByBounds({
                 filter: {name: "Capitals@World.1"},
                 bounds: polygon.getBounds()
             }).on("complete", function (serviceResult) {

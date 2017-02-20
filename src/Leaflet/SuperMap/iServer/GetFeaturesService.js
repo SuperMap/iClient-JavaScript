@@ -3,7 +3,7 @@
  * 数据集查询类。
  * 提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询
  * 用法：
- *      L.superMap.getFeaturesService(url).getFeaturesByIDsService{
+ *      L.superMap.getFeaturesService(url).getFeaturesByIDs{
  *           dataSetNames:name,
  *           IDs:IDs
  *      }.on("complete",function(result){
@@ -32,7 +32,7 @@ GetFeaturesService = ServiceBase.extend({
      *      IDs,getFeatureMode,fields,
      *      dataSetNames,returnContent,fromIndex,toIndex,returnCountOnly,maxFeatures
      */
-    getFeaturesByIDsService: function (params) {
+    getFeaturesByIDs: function (params) {
         var me = this, param = me._processParams(params);
         var getFeaturesByIDsParameters = new SuperMap.REST.GetFeaturesByIDsParameters(param);
         var getFeaturesByIDsService = new SuperMap.REST.GetFeaturesByIDsService(me.options.url, {
@@ -52,7 +52,7 @@ GetFeaturesService = ServiceBase.extend({
      *      bounds,spatialQueryMode ,attributeFilter,getFeatureMode,fields,
      *      dataSetNames,returnContent,fromIndex,toIndex,returnCountOnly,maxFeatures
      */
-    getFeaturesByBoundsService: function (params) {
+    getFeaturesByBounds: function (params) {
         var me = this, param = me._processParams(params);
         var getFeaturesByBoundsParameters = new SuperMap.REST.GetFeaturesByBoundsParameters(param);
         var getFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(me.options.url, {
@@ -71,7 +71,7 @@ GetFeaturesService = ServiceBase.extend({
      *      bufferDistance,attributeFilter,geometry,fields,
      *      dataSetNames,returnContent,fromIndex,toIndex,returnCountOnly,maxFeatures
      */
-    getFeaturesByBufferService: function (params) {
+    getFeaturesByBuffer: function (params) {
         var me = this, param = me._processParams(params);
         var getFeatureByBufferParameter = new SuperMap.REST.GetFeaturesByBufferParameters(param);
         var getFeatureService = new SuperMap.REST.GetFeaturesByBufferService(me.options.url, {
@@ -90,7 +90,7 @@ GetFeaturesService = ServiceBase.extend({
      *      getFeatureMode,queryParameter,
      *      dataSetNames,returnContent,fromIndex,toIndex,returnCountOnly,maxFeatures
      */
-    getFeaturesBySQLService: function (params) {
+    getFeaturesBySQL: function (params) {
         var me = this, param = me._processParams(params);
         param.queryParameter = new SuperMap.REST.FilterParameter(param);
         var getFeatureBySQLParams = new SuperMap.REST.GetFeaturesBySQLParameters(param);

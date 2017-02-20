@@ -23,7 +23,7 @@
         function query() {
             clearLayer();
             polygon.addTo(map);
-            L.supermap.getFeaturesService(url).getFeaturesByGeometryService({
+            L.supermap.getFeaturesService(url).getFeaturesByGeometry({
                 dataSetNames: ["World:Countries"],
                 geometry: polygon,
                 spatialQueryMode: "INTERSECT"

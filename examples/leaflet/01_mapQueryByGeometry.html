@@ -22,7 +22,7 @@
         function query() {
             clearLayer();
             polygon.addTo(map);
-            L.supermap.queryService(url).queryByGeometryService({
+            L.supermap.queryService(url).queryByGeometry({
                 filter: {name: "Capitals@World.1"},
                 geometry: polygon
             }).on("complete", function (serviceResult) {
