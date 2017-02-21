@@ -6,7 +6,6 @@ require('./ServiceBase');
 require('../../../Core/iServer/GetLayersInfoService');
 
 ol.supermap.GetLayersInfoService = function (url, options) {
-    this.options = {};
     ol.supermap.ServiceBase.call(this, url, options);
 }
 ol.inherits(ol.supermap.GetLayersInfoService, ol.supermap.ServiceBase);

@@ -149,7 +149,11 @@ var deps = {
                     "./src/OL3/SuperMap/iServer/TiledMapLayer.js",
                     "./src/OL3/SuperMap/iServer/MapService.js",
                     "./src/OL3/SuperMap/iServer/QueryService.js",
+                    "./src/OL3/SuperMap/iServer/ChartQueryService.js",
+                    "./src/OL3/SuperMap/iServer/TilesetsService.js",
                     "./src/OL3/SuperMap/iServer/GetLayersInfoService.js",
+                    "./src/OL3/SuperMap/iServer/ChartFeatureInfoSpecsService.js",
+                    "./src/OL3/SuperMap/iServer/SetLayerService.js",
                     "./src/OL3/SuperMap/iServer/MeasureService.js"
                 ]
             },
@@ -158,7 +162,9 @@ var deps = {
                 "src": [
                     "./src/OL3/SuperMap/iServer/FieldStatisticService.js",
                     "./src/OL3/SuperMap/iServer/GetFeaturesService.js",
-                    "./src/OL3/SuperMap/iServer/GetFieldsService.js"
+                    "./src/OL3/SuperMap/iServer/GetFieldsService.js",
+                    // "./src/OL3/SuperMap/iServer/EditFeaturesService.js",
+                    // "./src/OL3/SuperMap/iServer/GetGridCellInfosService.js"
                 ]
             }
         },

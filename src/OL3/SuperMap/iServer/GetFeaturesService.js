@@ -109,7 +109,7 @@ ol.supermap.GetFeaturesService.prototype._processParams = function (params) {
         return {};
     }
     params.returnContent = (params.returnContent == null) ? true : params.returnContent;
-    params.datasetNames = params.dataSetNames;
+    params.datasetNames = params.datasetNames;
     params.fromIndex = params.fromIndex ? params.fromIndex : 0;
     params.toIndex = params.fromIndex ? params.fromIndex : -1;
     if (params.bounds) {
