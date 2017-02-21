@@ -166,6 +166,12 @@ var deps = {
                     "./src/OL3/SuperMap/iServer/EditFeaturesService.js",
                     "./src/OL3/SuperMap/iServer/GetGridCellInfosService.js"
                 ]
+            },
+            "SpatialAnalyst": {
+                "name": "空间分析服务",
+                "src": [
+                    "./src/OL3/SuperMap/iServer/SpatialAnalystService.js"
+                ]
             }
         },
         "Visual": {
