@@ -259,7 +259,7 @@ ol.supermap.SpatialAnalystService.prototype._processParams = function (params) {
     }
     if (params.inputPoints) {
         for (var i = 0; i < params.inputPoints.length; i++) {
-            params.inputPoints[i] = new SuperMap.Geometry.Point(inputPoints[i].flatCoordinates[0], inputPoints[i].flatCoordinates[1]);
+            params.inputPoints[i] = new SuperMap.Geometry.Point(params.inputPoints[i].flatCoordinates[0], params.inputPoints[i].flatCoordinates[1]);
         }
     }
     if (params.extractRegion) {
