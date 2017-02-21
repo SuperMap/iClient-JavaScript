@@ -42,7 +42,7 @@
 
             var getFeaturesService = new ol.supermap.GetFeaturesService(url);
             getFeaturesService.getFeaturesByBounds({
-                dataSetNames: ["World:Countries"],
+                datasetNames: ["World:Countries"],
                 bounds: polygon.getExtent(),
                 spatialQueryMode: "INTERSECT"
             });

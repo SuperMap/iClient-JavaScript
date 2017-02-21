@@ -43,7 +43,7 @@
 
             var getFeaturesService = new ol.supermap.GetFeaturesService(url);
             getFeaturesService.getFeaturesByBuffer({
-                dataSetNames: ["World:Capitals"],
+                datasetNames: ["World:Capitals"],
                 bufferDistance: 10,
                 geometry: polygon
             });

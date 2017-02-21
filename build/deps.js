@@ -163,8 +163,8 @@ var deps = {
                     "./src/OL3/SuperMap/iServer/FieldStatisticService.js",
                     "./src/OL3/SuperMap/iServer/GetFeaturesService.js",
                     "./src/OL3/SuperMap/iServer/GetFieldsService.js",
-                    // "./src/OL3/SuperMap/iServer/EditFeaturesService.js",
-                    // "./src/OL3/SuperMap/iServer/GetGridCellInfosService.js"
+                    "./src/OL3/SuperMap/iServer/EditFeaturesService.js",
+                    "./src/OL3/SuperMap/iServer/GetGridCellInfosService.js"
                 ]
             }
         },

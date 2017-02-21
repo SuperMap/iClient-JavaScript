@@ -52,7 +52,7 @@
                 map.addLayer(resultLayer);
             });
             getFeaturesService.getFeaturesByGeometry({
-                dataSetNames: ["World:Countries"],
+                datasetNames: ["World:Countries"],
                 geometry: polygon,
                 spatialQueryMode: "INTERSECT"
             });
