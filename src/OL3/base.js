@@ -4,8 +4,6 @@
  * 2、提供必要的转换工具
  */
 require('../Core/format/GeoJSON');
-require('openlayers/dist/ol-debug');
-require("openlayers/dist/ol.css");
 
 ol.supermap = ol.supermap || {};
 ol.supermap.Util = ol.supermap.Util || {};
