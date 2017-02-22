@@ -105,12 +105,25 @@ var deps = {
                     "./src/Leaflet/SuperMap/iServer/GetGridCellInfosService.js"
                 ]
             },
+            "NetworkAnalyst": {
+                "name": "网络分析服务",
+                "src": [
+                    "./src/Leaflet/SuperMap/iServer/NetworkAnalystService.js"
+                ]
+            },
+            "NetworkAnalyst3D": {
+                "name": "3D网络分析服务",
+                "src": [
+                    "./src/Leaflet/SuperMap/iServer/NetworkAnalyst3DService.js"
+                ]
+            },
             "TrafficTransferAnalyst": {
                 "name": "交通换乘分析服务",
                 "src": [
                     "./src/Leaflet/SuperMap/iServer/TrafficTransferAnalystService.js"
                 ]
             }
+
         },
         "Visual": {
             "title": "Visual",
