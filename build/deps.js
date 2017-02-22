@@ -117,6 +117,12 @@ var deps = {
                     "./src/Leaflet/SuperMap/iServer/NetworkAnalyst3DService.js"
                 ]
             },
+            "SpatialAnalyst": {
+                "name": "空间分析服务",
+                "src": [
+                    "./src/Leaflet/SuperMap/iServer/SpatialAnalystService.js"
+                ]
+            },
             "TrafficTransferAnalyst": {
                 "name": "交通换乘分析服务",
                 "src": [

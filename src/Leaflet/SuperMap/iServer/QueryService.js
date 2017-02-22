@@ -7,7 +7,7 @@
  *           filter:{name:name},
  *           bounds:bounds
  *      }.on("complete",function(result){
- *          //doSomething like L.geoJSON(result.data[0]).addTo(map)
+ *          //doSomething
  *      }).on("failed",function(result){
  *          //doSomething
  *      });
