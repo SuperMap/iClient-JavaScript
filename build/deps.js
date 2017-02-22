@@ -104,6 +104,12 @@ var deps = {
                     "./src/Leaflet/SuperMap/iServer/EditFeaturesService.js",
                     "./src/Leaflet/SuperMap/iServer/GetGridCellInfosService.js"
                 ]
+            },
+            "TrafficTransferAnalyst": {
+                "name": "交通换乘分析服务",
+                "src": [
+                    "./src/Leaflet/SuperMap/iServer/TrafficTransferAnalystService.js"
+                ]
             }
         },
         "Visual": {
