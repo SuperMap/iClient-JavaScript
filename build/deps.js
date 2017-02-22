@@ -192,10 +192,28 @@ var deps = {
                     "./src/OL3/SuperMap/iServer/GetGridCellInfosService.js"
                 ]
             },
+            "NetworkAnalyst": {
+                "name": "网络分析服务",
+                "src": [
+                    "./src/OL3/SuperMap/iServer/NetworkAnalystService.js"
+                ]
+            },
+            "NetworkAnalyst3D": {
+                "name": "3D网络分析服务",
+                "src": [
+                    "./src/OL3/SuperMap/iServer/NetworkAnalyst3DService.js"
+                ]
+            },
             "SpatialAnalyst": {
                 "name": "空间分析服务",
                 "src": [
                     "./src/OL3/SuperMap/iServer/SpatialAnalystService.js"
+                ]
+            },
+            "TrafficTransferAnalyst": {
+                "name": "交通换乘分析服务",
+                "src": [
+                    "./src/OL3/SuperMap/iServer/TrafficTransferAnalystService.js"
                 ]
             }
         },
