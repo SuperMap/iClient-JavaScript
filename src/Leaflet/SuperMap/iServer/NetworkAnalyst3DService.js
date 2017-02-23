@@ -35,14 +35,10 @@ NetworkAnalyst3DService = ServiceBase.extend({
     /**
      * 汇查找服务
      * @param params
-     * edgeID: {Number} 指定的弧段ID
-     * nodeID:  {Number}: 指定的结点ID
-     * weightName: {String}: 指定的权值字段信息对象的名称
-     * isUncertainDirectionValid: {Boolean}: 指定不确定流向是否有效。
+     *      <FacilityAnalystSinks3DParameters>
      */
     sinksFacilityAnalyst: function (params) {
         var me = this;
-        var facilityAnalystSinks3DParams = new SuperMap.REST.FacilityAnalystSinks3DParameters(param);
         var facilityAnalystSinks3DService = new SuperMap.REST.FacilityAnalystSinks3DService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -50,20 +46,16 @@ NetworkAnalyst3DService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        facilityAnalystSinks3DService.processAsync(facilityAnalystSinks3DParams);
+        facilityAnalystSinks3DService.processAsync(params);
         return me;
     },
     /**
      * 源查找服务
      * @param params
-     * edgeID: {Number} 指定的弧段ID
-     * nodeID:  {Number}: 指定的结点ID
-     * weightName: {String}: 指定的权值字段信息对象的名称
-     * isUncertainDirectionValid: {Boolean}: 指定不确定流向是否有效。
+     *      <FacilityAnalystSources3DParameters>
      */
     sourcesFacilityAnalyst: function (params) {
         var me = this;
-        var facilityAnalystSources3DParams = new SuperMap.REST.FacilityAnalystSources3DParameters(param);
         var facilityAnalystSources3DService = new SuperMap.REST.FacilityAnalystSources3DService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -71,20 +63,16 @@ NetworkAnalyst3DService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        facilityAnalystSources3DService.processAsync(facilityAnalystSources3DParams);
+        facilityAnalystSources3DService.processAsync(params);
         return me;
     },
     /**
      * 上游追踪资源服务
      * @param params
-     * edgeID: {Number} 指定的弧段ID
-     * nodeID:  {Number}: 指定的结点ID
-     * weightName: {String}: 指定的权值字段信息对象的名称
-     * isUncertainDirectionValid: {Boolean}: 指定不确定流向是否有效。
+     *      <FacilityAnalystTraceup3DParameters>
      */
     traceUpFacilityAnalyst: function (params) {
         var me = this;
-        var facilityAnalystTraceup3DParams = new SuperMap.REST.FacilityAnalystTraceup3DParameters(param);
         var facilityAnalystTraceup3DService = new SuperMap.REST.FacilityAnalystTraceup3DService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -92,20 +80,16 @@ NetworkAnalyst3DService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        facilityAnalystTraceup3DService.processAsync(facilityAnalystTraceup3DParams);
+        facilityAnalystTraceup3DService.processAsync(params);
         return me;
     },
     /**
      * 下游追踪资源服务
      * @param params
-     * edgeID: {Number} 指定的弧段ID
-     * nodeID:  {Number}: 指定的结点ID
-     * weightName: {String}: 指定的权值字段信息对象的名称
-     * isUncertainDirectionValid: {Boolean}: 指定不确定流向是否有效。
+     *      <FacilityAnalystTracedown3DParameters>
      */
     traceDownFacilityAnalyst: function (params) {
         var me = this;
-        var facilityAnalystTracedown3DParames = new SuperMap.REST.FacilityAnalystTracedown3DParameters(param);
         var facilityAnalystTracedown3DService = new SuperMap.REST.FacilityAnalystTracedown3DService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -113,22 +97,17 @@ NetworkAnalyst3DService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        facilityAnalystTracedown3DService.processAsync(facilityAnalystTracedown3DParames);
+        facilityAnalystTracedown3DService.processAsync(params);
         return me;
     },
 
     /**
      * 上游关键设施查找服务
      * @param params
-     * sourceNodeIDs:{Array<Number>} 指定的设施点ID数组
-     * edgeID: {Number} 指定的弧段ID
-     * nodeID:  {Number}: 指定的结点ID
-     * weightName: {String}: 指定的权值字段信息对象的名称
-     * isUncertainDirectionValid: {Boolean}: 指定不确定流向是否有效。
+     *      <FacilityAnalystUpstream3DParameters>
      */
     upstreamFacilityAnalyst: function (params) {
         var me = this;
-        var facilityAnalystUpstream3DParams = new SuperMap.REST.FacilityAnalystUpstream3DParameters(param);
         var facilityAnalystUpstream3DService = new SuperMap.REST.FacilityAnalystUpstream3DService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -136,7 +115,7 @@ NetworkAnalyst3DService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        facilityAnalystUpstream3DService.processAsync(facilityAnalystUpstream3DParams);
+        facilityAnalystUpstream3DService.processAsync(params);
         return me;
     }
 });
