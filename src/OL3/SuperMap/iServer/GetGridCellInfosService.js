@@ -10,12 +10,14 @@ ol.supermap.GetGridCellInfosService = function (url, options) {
 };
 ol.inherits(ol.supermap.GetGridCellInfosService, ol.supermap.ServiceBase);
 
+/**
+ * @param params <GetGridCellInfosParameter>
+ */
 ol.supermap.GetGridCellInfosService.prototype.getGridCellInfos = function (params) {
     if (!params) {
         return null;
     }
     var me = this;
-    var gridCellQueryParam = new SuperMap.REST.GetGridCellInfosParameter(params);
     var gridCellQueryService = new SuperMap.REST.GetGridCellInfosService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -23,7 +25,7 @@ ol.supermap.GetGridCellInfosService.prototype.getGridCellInfos = function (param
             processFailed: me.processFailed
         }
     });
-    gridCellQueryService.processAsync(gridCellQueryParam);
+    gridCellQueryService.processAsync(params);
     return me;
 };
 

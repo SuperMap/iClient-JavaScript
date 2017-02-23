@@ -34,11 +34,14 @@
                 });
                 map.addLayer(resultLayer);
             });
-            getFeaturesService.getFeaturesBySQL({
-                name: "Countries@World",
-                attributeFilter: "SMID = 1",
+            var sqlParam = new GetFeaturesBySQLParameters({
+                queryParameter: {
+                    name: "Countries@World",
+                    attributeFilter: "SMID = 247"
+                },
                 datasetNames: ["World:Countries"]
             });
+            getFeaturesService.getFeaturesBySQL(sqlParam);
         }
 
         function clearLayer() {

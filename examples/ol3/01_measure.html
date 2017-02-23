@@ -46,7 +46,8 @@
                             for (var i = 0; i < points.length; i = i + 2) {
                                 line.appendCoordinate([points[i], points[i + 1]]);
                             }
-                            measureService.measureDistance(line);
+                            var distanceMeasureParam = new MeasureParameters(line);
+                            measureService.measureDistance(distanceMeasureParam);
                         }
                         return true;
                     }
@@ -67,7 +68,8 @@
                             for (var i = 0; i < points.length; i = i + 2) {
                                 polygonCoords.push([points[i], points[i + 1]]);
                             }
-                            measureService.measureArea(new ol.geom.Polygon([polygonCoords]));
+                            var areaMeasureParam = new MeasureParameters(new ol.geom.Polygon([polygonCoords]));
+                            measureService.measureArea(areaMeasureParam);
                         }
                         return true;
                     }

@@ -15,6 +15,10 @@ ol.supermap.SetLayerService = function (url, options) {
 }
 ol.inherits(ol.supermap.SetLayerService, ol.supermap.ServiceBase);
 
+/**
+ * @param params:
+ *       tempLayerID,layerPath,resourceID
+ */
 ol.supermap.SetLayerService.prototype.setLayerInfo = function (params) {
     if (!params) {
         return;
@@ -43,6 +47,11 @@ ol.supermap.SetLayerService.prototype.setLayerInfo = function (params) {
     return me;
 };
 
+/**
+ * @param params:
+ *       layersInfo(iServer图层信息，可以从GetLayersInfoService得到)
+ *       tempLayerID,isTempLayers
+ */
 ol.supermap.SetLayerService.prototype.setLayersInfo = function (params) {
     if (!params) {
         return;
@@ -70,23 +79,15 @@ ol.supermap.SetLayerService.prototype.setLayersInfo = function (params) {
     return me;
 };
 
+/**
+ * @param params:
+ *     <SetLayerStatusParameters>
+ */
 ol.supermap.SetLayerService.prototype.setLayerStatus = function (params) {
     if (!params) {
         return;
     }
-    var me = this,
-        layersList = params.layersStatus,
-        resourceID = params.resourceID,
-        holdTime = params.holdTime ? params.holdTime : 15;
-    var layerStatusParameters = new SuperMap.REST.SetLayerStatusParameters();
-    layerStatusParameters.resourceID = resourceID;
-    layerStatusParameters.holdTime = holdTime;
-
-    for (var i = 0; i < layersList.length; i++) {
-        layersList[i].isVisible = layersList[i].isVisible ? layersList[i].isVisible : true;
-        layerStatusParameters.layerStatusList.push(layersList[i]);
-    }
-
+    var me = this;
     var setLayerStatusService = new SuperMap.REST.SetLayerStatusService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -95,8 +96,7 @@ ol.supermap.SetLayerService.prototype.setLayerStatus = function (params) {
         }
 
     });
-
-    setLayerStatusService.processAsync(layerStatusParameters);
+    setLayerStatusService.processAsync(params);
     return me;
 }
 

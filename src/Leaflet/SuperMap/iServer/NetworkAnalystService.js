@@ -234,23 +234,23 @@ NetworkAnalystService = ServiceBase.extend({
 
         if (params.centers && L.Util.isArray(params.centers)) {
             params.centers.map(function (point, key) {
-                params.centers[key] = (point instanceof L.LatLng) ? {x: point.lng, y: params.lat} : point;
+                params.centers[key] = (point instanceof L.LatLng) ? {x: point.lng, y: point.lat} : point;
             });
         }
 
         if (params.nodes && L.Util.isArray(params.nodes)) {
             params.nodes.map(function (point, key) {
-                params.nodes[key] = (point instanceof L.LatLng) ? {x: point.lng, y: params.lat} : point;
+                params.nodes[key] = (point instanceof L.LatLng) ? {x: point.lng, y: point.lat} : point;
             });
         }
 
         if (params.event && params.event instanceof L.LatLng) {
-            params.event = {x: point.lng, y: params.lat};
+            params.event = {x: point.lng, y: point.lat};
         }
 
         if (params.facilities && L.Util.isArray(params.facilities)) {
             params.facilities.map(function (point, key) {
-                params.facilities[key] = (point instanceof L.LatLng) ? {x: point.lng, y: params.lat} : point;
+                params.facilities[key] = (point instanceof L.LatLng) ? {x: point.lng, y: point.lat} : point;
             });
         }
 
@@ -258,7 +258,7 @@ NetworkAnalystService = ServiceBase.extend({
             var barrierPoints = params.parameter.barrierPoints;
             if (L.Util.isArray(barrierPoints)) {
                 barrierPoints.map(function (point, key) {
-                    params.parameter.barrierPoints[key] = (point instanceof L.LatLng) ? {x: point.lng, y: params.lat} : point;
+                    params.parameter.barrierPoints[key] = (point instanceof L.LatLng) ? {x: point.lng, y: point.lat} : point;
                 });
             } else {
                 params.parameter.barrierPoints = [(barrierPoints instanceof L.LatLng) ? {x: barrierPoints.lng, y: barrierPoints.lat} : barrierPoints];

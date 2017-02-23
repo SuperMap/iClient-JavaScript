@@ -10,16 +10,16 @@ ol.supermap.MeasureService = function (url, options) {
 }
 ol.inherits(ol.supermap.MeasureService, ol.supermap.ServiceBase);
 
-ol.supermap.MeasureService.prototype.measureDistance = function (measureGeo) {
-    this.measure(measureGeo, 'DISTANCE');
+ol.supermap.MeasureService.prototype.measureDistance = function (params) {
+    this.measure(params, 'DISTANCE');
 };
 
-ol.supermap.MeasureService.prototype.measureArea = function (measureGeo) {
-    this.measure(measureGeo, 'AREA');
+ol.supermap.MeasureService.prototype.measureArea = function (params) {
+    this.measure(params, 'AREA');
 };
 
-ol.supermap.MeasureService.prototype.measure = function (measureGeo, type) {
-    var me = this, geometry = me._processGeometry(measureGeo);
+ol.supermap.MeasureService.prototype.measure = function (params, type) {
+    var me = this;
     var measureService = new SuperMap.REST.MeasureService(me.options.url, {
         measureMode: type,
         eventListeners: {
@@ -28,14 +28,14 @@ ol.supermap.MeasureService.prototype.measure = function (measureGeo, type) {
             processFailed: me.processFailed
         }
     });
-    measureService.processAsync(new SuperMap.REST.MeasureParameters(geometry));
+    measureService.processAsync(me._processParam(params));
     return me;
 };
 
-ol.supermap.MeasureService.prototype._processGeometry = function (measureGeo) {
-    if (measureGeo) {
-        measureGeo = ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(measureGeo)));
+ol.supermap.MeasureService.prototype._processParam = function (params) {
+    if (params && params.geometry) {
+        params.geometry = ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
     }
-    return measureGeo;
+    return params;
 };
 module.exports = ol.supermap.MeasureService;

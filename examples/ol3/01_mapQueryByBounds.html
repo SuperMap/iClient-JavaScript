@@ -52,10 +52,11 @@
                 });
                 map.addLayer(resultLayer);
             });
-            queryService.queryByBounds({
-                filter: {name: "Capitals@World.1"},
+            var param = new QueryByBoundsParameters({
+                queryParams: {name: "Capitals@World.1"},
                 bounds: polygon.getExtent()
             });
+            queryService.queryByBounds(param);
         }
         function clearLayer() {
             if (vectorLayer) {

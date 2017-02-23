@@ -17,11 +17,10 @@ ol.inherits(ol.supermap.GetFeaturesService, ol.supermap.ServiceBase);
 
 /**
  * 数据集ID查询服务
- * @param params
+ * @param params <GetFeaturesByIDsParameters>
  */
 ol.supermap.GetFeaturesService.prototype.getFeaturesByIDs = function (params) {
-    var me = this, param = me._processParams(params);
-    var getFeaturesByIDsParameters = new SuperMap.REST.GetFeaturesByIDsParameters(param);
+    var me = this;
     var getFeaturesByIDsService = new SuperMap.REST.GetFeaturesByIDsService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -29,17 +28,16 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesByIDs = function (params) {
             processFailed: me.processFailed
         }
     });
-    getFeaturesByIDsService.processAsync(getFeaturesByIDsParameters);
+    getFeaturesByIDsService.processAsync(me._processParams(params));
     return me;
 
 };
 /**
  * 数据集Bounds查询服务
- * @param params
+ * @param params <GetFeaturesByBoundsParameters>
  */
 ol.supermap.GetFeaturesService.prototype.getFeaturesByBounds = function (params) {
-    var me = this, param = me._processParams(params);
-    var getFeaturesByBoundsParameters = new SuperMap.REST.GetFeaturesByBoundsParameters(param);
+    var me = this;
     var getFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -47,16 +45,15 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesByBounds = function (params)
             processFailed: me.processFailed
         }
     });
-    getFeaturesByBoundsService.processAsync(getFeaturesByBoundsParameters);
+    getFeaturesByBoundsService.processAsync(me._processParams(params));
     return me;
 };
 /**
  * 数据集Buffer查询服务
- * @param params
+ * @param params <GetFeaturesByBufferParameters>
  */
 ol.supermap.GetFeaturesService.prototype.getFeaturesByBuffer = function (params) {
-    var me = this, param = me._processParams(params);
-    var getFeatureByBufferParameter = new SuperMap.REST.GetFeaturesByBufferParameters(param);
+    var me = this;
     var getFeatureService = new SuperMap.REST.GetFeaturesByBufferService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -64,17 +61,15 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesByBuffer = function (params)
             processFailed: me.processFailed
         }
     });
-    getFeatureService.processAsync(getFeatureByBufferParameter);
+    getFeatureService.processAsync(me._processParams(params));
     return me;
 };
 /**
  * 数据集SQL查询服务
- * @param params
+ * @param params <GetFeaturesBySQLParameters>
  */
 ol.supermap.GetFeaturesService.prototype.getFeaturesBySQL = function (params) {
-    var me = this, param = me._processParams(params);
-    param.queryParameter = new SuperMap.REST.FilterParameter(param);
-    var getFeatureBySQLParams = new SuperMap.REST.GetFeaturesBySQLParameters(param);
+    var me = this;
     var getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -83,16 +78,15 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesBySQL = function (params) {
         }
     });
 
-    getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+    getFeatureBySQLService.processAsync(me._processParams(params));
     return me;
 };
 /**
  * 数据集几何查询服务类
- * @param params
+ * @param params <GetFeaturesByGeometryParameters>
  */
 ol.supermap.GetFeaturesService.prototype.getFeaturesByGeometry = function (params) {
-    var me = this, param = me._processParams(params);
-    var getFeaturesByGeometryParameters = new SuperMap.REST.GetFeaturesByGeometryParameters(param);
+    var me = this;
     var getFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByGeometryService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -100,7 +94,7 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesByGeometry = function (param
             processFailed: me.processFailed
         }
     });
-    getFeaturesByGeometryService.processAsync(getFeaturesByGeometryParameters);
+    getFeaturesByGeometryService.processAsync(me._processParams(params));
     return me;
 };
 

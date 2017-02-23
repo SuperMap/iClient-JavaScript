@@ -16,8 +16,7 @@ ol.inherits(ol.supermap.EditFeaturesService, ol.supermap.ServiceBase);
  * editType，IDs，returnContent，isUseBatch
  */
 ol.supermap.EditFeaturesService.prototype.editFeatures = function (params) {
-    var me = this, param = me._processParams(params);
-    var editFeatureParameter = new SuperMap.REST.EditFeaturesParameters(param);
+    var me = this;
     editFeatureService = new SuperMap.REST.EditFeaturesService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -25,7 +24,7 @@ ol.supermap.EditFeaturesService.prototype.editFeatures = function (params) {
             processFailed: me.processFailed
         }
     });
-    editFeatureService.processAsync(editFeatureParameter);
+    editFeatureService.processAsync(me._processParams(params));
     return me;
 };
 

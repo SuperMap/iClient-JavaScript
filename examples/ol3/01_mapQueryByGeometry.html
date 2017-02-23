@@ -42,10 +42,11 @@
             map.addLayer(vectorLayer);
 
             var queryService = new ol.supermap.QueryService(url);
-            queryService.queryByGeometry({
-                filter: {name: "Capitals@World.1"},
+            var param = new QueryByGeometryParameters({
+                queryParams: {name: "Capitals@World.1"},
                 geometry: polygon
             });
+            queryService.queryByGeometry(param);
             queryService.on("complete", function (serviceResult) {
                 var vectorSource = new ol.source.Vector({
                     features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result[0])

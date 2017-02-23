@@ -43,11 +43,12 @@
             map.addLayer(vectorLayer);
 
             var getFeaturesService = new ol.supermap.GetFeaturesService(url);
-            getFeaturesService.getFeaturesByBuffer({
+            var bufferParam = new GetFeaturesByBufferParameters({
                 datasetNames: ["World:Capitals"],
                 bufferDistance: 10,
                 geometry: polygon
             });
+            getFeaturesService.getFeaturesByBuffer(bufferParam);
             getFeaturesService.on("complete", function (serviceResult) {
                 var vectorSource = new ol.source.Vector({
                     features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)

@@ -77,12 +77,13 @@
 
             map.on("click", function (evt) {
                 var getGridCellInfosService = new ol.supermap.GetGridCellInfosService(url);
-                getGridCellInfosService.getGridCellInfos({
+                var getGridCellInfosParam = new GetGridCellInfosParameter({
                     dataSourceName: "World",
                     datasetName: "WorldEarth",
                     X: evt.coordinate[0],
                     Y: evt.coordinate[1]
                 });
+                getGridCellInfosService.getGridCellInfos(getGridCellInfosParam);
                 getGridCellInfosService.on("complete", function (serviceResult) {
                     var result = serviceResult.element.result;
                     var innerHTML = "栅格查询结果: " + "<br>" + "column: " + result.column + "<br>";

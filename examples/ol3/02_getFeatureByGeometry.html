@@ -52,11 +52,12 @@
                 });
                 map.addLayer(resultLayer);
             });
-            getFeaturesService.getFeaturesByGeometry({
+            var geometryParam = new GetFeaturesByGeometryParameters({
                 datasetNames: ["World:Countries"],
                 geometry: polygon,
                 spatialQueryMode: "INTERSECT"
             });
+            getFeaturesService.getFeaturesByGeometry(geometryParam);
         }
         function clearLayer() {
             if (vectorLayer) {

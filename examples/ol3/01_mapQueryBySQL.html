@@ -24,12 +24,13 @@
         function query() {
             clearLayer();
             var queryService = new ol.supermap.QueryService(url);
-            queryService.queryBySQL({
-                filter: {
+            var param = new QueryBySQLParameters({
+                queryParams: {
                     name: "Capitals@World.1",
                     attributeFilter: "SMID < 10"
                 }
             });
+            queryService.queryBySQL(param);
             queryService.on("complete", function (serviceResult) {
                 var vectorSource = new ol.source.Vector({
                     features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result[0])

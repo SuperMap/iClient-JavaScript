@@ -47,11 +47,12 @@
                 });
                 map.addLayer(resultLayer);
             });
-            queryService.queryByDistance({
-                filter: {name: "Capitals@World.1"},
+            var param = new QueryByDistanceParameters({
+                queryParams: {name: "Capitals@World.1"},
                 distance: 30,
                 geometry: point
             });
+            queryService.queryByDistance(param);
         }
 
         function clearLayer() {
