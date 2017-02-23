@@ -30,7 +30,7 @@ ol.supermap.ChartQueryService.prototype._processParams = function (params) {
     }
     params.returnContent = (params.returnContent == null) ? true : params.returnContent;
     if (params.filter) {
-        params.chartQueryFilterParameters = Object.prototype.toString.call(params.filter) === '[object Array]' ? params.filter : [params.filter];
+        params.chartQueryFilterParameters = ol.supermap.Util.isArray(params.filter) ? params.filter : [params.filter];
     }
     if (params.bounds) {
         params.bounds = new SuperMap.Bounds(

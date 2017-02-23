@@ -76,7 +76,7 @@ ol.supermap.QueryService.prototype._processParams = function (params) {
         return {};
     }
     params.returnContent = (params.returnContent == null) ? true : params.returnContent;
-    params.queryParams = Object.prototype.toString.call(params.filter) == '[object Array]' ? params.filter : [params.filter];
+    params.queryParams = ol.supermap.Util.isArray(params.filter) ? params.filter : [params.filter];
     if (params.bounds) {
         params.bounds = new SuperMap.Bounds(
             params.bounds[0],

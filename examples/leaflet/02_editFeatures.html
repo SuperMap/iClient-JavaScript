@@ -7,7 +7,7 @@
     <script type="text/javascript" src="http://cdn.leafletjs.com/leaflet/v1.0.2/leaflet.js"></script>
     <script type="text/javascript" src="../../dist/SuperMapiClient9 for Leaflet.js"></script>
     <script type="text/javascript">
-        var map, marker, featureGroup, is, resultLayer,
+        var map, marker, featureGroup, id, resultLayer,
                 baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
                 urlCapital = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Capitals",
                 url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
@@ -19,9 +19,8 @@
                 maxZoom: 18,
                 zoom: 3
             });
-            L.supermap.tiledMapLayer(baseUrl,{projection:"4326"}).addTo(map);
+            L.supermap.tiledMapLayer(baseUrl).addTo(map);
             featureGroup = L.featureGroup().addTo(map);
-            marker = L.circleMarker([34, 108], {color: "red"});
             initFeature();
         }
         function initFeature() {
@@ -40,7 +39,13 @@
         }
         function addMarker() {
             if (!featureGroup.hasLayer(marker)) {
+                var xmax = 120, xmin = 100, ymax = 50, ymin = 20;
+                marker = L.circleMarker([
+                    Math.floor(Math.random() * (ymax - ymin + 1) + ymin),
+                    Math.floor(Math.random() * (xmax - xmin + 1) + xmin)
+                ], {color: "red"});
                 featureGroup.addLayer(marker);
+                map.setView(marker.getLatLng());
             } else {
                 alert("请先清除结果");
             }
@@ -69,19 +74,22 @@
             if (!featureGroup.hasLayer(marker)) {
                 return;
             }
-            L.supermap.editFeaturesService(urlCapital).editFeatures({
-                IDs: [id],
-                editType: "delete"
-            }).on("complete", function (serviceResult) {
-                if (serviceResult.result.succeed) {
-                    resultLayer.removeFrom(map);
-                    me.initFeature();
-                } else {
-                    alert("删除失败")
-                }
-            });
+            if (id) {
+                L.supermap.editFeaturesService(urlCapital).editFeatures({
+                    IDs: [id],
+                    editType: "delete"
+                }).on("complete", function (serviceResult) {
+                    if (serviceResult.result.succeed) {
+                        resultLayer.removeFrom(map);
+                        me.initFeature();
+                    } else {
+                        alert("删除失败")
+                    }
+                });
+            }
             if (featureGroup && featureGroup.hasLayer(marker)) {
                 featureGroup.removeLayer(marker);
+                marker=null;
             }
         }
     </script>

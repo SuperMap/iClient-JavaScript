@@ -426,10 +426,11 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
                 );
             }
         }
-        //TODO以下分支为旧代码,待分支场景明确后修改
-        else if (obj.CLASS_NAME.indexOf("SuperMap.Geometry") == 0) {
+
+        else if (obj.hasOwnProperty("parts") && obj.hasOwnProperty("points")) {
             geojson = this.extract.geometry.apply(this, [obj]);
         }
+        //TODO以下分支为旧代码,待分支场景明确后修改
         else if (obj instanceof SuperMap.Feature.Vector) {
             geojson = this.extract.feature.apply(this, [obj]);
             if (obj.layer && obj.layer.projection) {
@@ -678,8 +679,8 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
                 return me.toGeoPoint(geometry);
             case SuperMap.REST.GeometryType.LINE:
                 return me.toGeoLine(geometry);
-            // case SuperMap.REST.GeometryType.LINEM:
-            //     return me.toGeoLinem();
+            case SuperMap.REST.GeometryType.LINEM:
+                return me.toGeoLinem(geometry);
             case SuperMap.REST.GeometryType.REGION:
                 return me.toGeoRegion(geometry);
             case SuperMap.REST.GeometryType.POINTEPS:
@@ -730,7 +731,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
                 pointList.push({x: geoPoints[i].x, y: geoPoints[i].y});
             }
             //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
-            if (pointList[0].equals(pointList[geoParts[0] - 1])) {
+            if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
                 pointList.pop();
                 pointList.push(pointList[0]);
                 return {type: "LinearRing", components: pointList};
@@ -748,6 +749,36 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
             return {type: "LineString", components: lineList};
         }
 
+    },
+
+    /**
+     * Method: toGeoLinem
+     * 将服务端的路由线几何对象转换为几何对象。
+     */
+    toGeoLinem: function (geometry) {
+        var me = this,
+            geoParts = geometry.parts || [],
+            geoPoints = geometry.points || [],
+            len = geoParts.length,
+            lineList = [],
+            type;
+        if (len < 1) {
+            return null;
+        }
+        for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
+            for (var j = 0; j < geoParts[i]; j++) {
+                pointList.push({x: geoPoints[pointIndex + j].x, y: geoPoints[pointIndex + j].y});
+            }
+            pointIndex += geoParts[i];
+            //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
+            if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
+                pointList.pop();
+                pointList.push(pointList[0]);
+            }
+            lineList.push(pointList);
+            pointList = [];
+        }
+        return {type: "MultiLineString", components: lineList};
     },
 
     /**
@@ -805,6 +836,9 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
             s += points[i].y * (points[i - 1].x - points[i + 1].x);
         }
         return s * 0.5;
+    },
+    isPointsEquals: function (point1, point2) {
+        return (point1.x === point2.x && point1.y === point2.y);
     },
     CLASS_NAME: "SuperMap.Format.GeoJSON"
 });

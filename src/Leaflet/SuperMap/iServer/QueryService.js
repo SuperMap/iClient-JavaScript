@@ -7,7 +7,7 @@
  *           filter:{name:name},
  *           bounds:bounds
  *      }.on("complete",function(result){
- *          //doSomething like L.geoJSON(result.data[0]).addTo(map)
+ *          //doSomething
  *      }).on("failed",function(result){
  *          //doSomething
  *      });
@@ -116,7 +116,15 @@ QueryService = ServiceBase.extend({
         params.returnContent = (params.returnContent == null) ? true : params.returnContent;
         //对外接口调用使用filter,内部参数使用queryParams，跟iClient保持一致
         if (params.filter) {
-            params.queryParams = L.Util.isArray(params.filter) ? params.filter : [params.filter];
+            var filters = [];
+            if (L.Util.isArray(params.filter)) {
+                params.filter.map(function (filter) {
+                    filters.push(new SuperMap.REST.FilterParameter(filter));
+                });
+            } else {
+                filters = [new SuperMap.REST.FilterParameter(params.filter)];
+            }
+            params.queryParams = filters;
         }
 
         if (params.bounds && params.bounds instanceof L.LatLngBounds) {

@@ -3,11 +3,11 @@
  * 数据集查询类。
  * 提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询
  * 用法：
- *      L.superMap.getFeaturesService(url).getFeaturesByIDs{
+ *      L.superMap.getFeaturesService(url).getFeaturesByIDs({
  *           dataSetNames:name,
  *           IDs:IDs
- *      }.on("complete",function(result){
- *          //doSomething like L.geoJSON(result.data[0]).addTo(map)
+ *      }).on("complete",function(result){
+ *          //doSomething
  *      }).on("failed",function(result){
  *          //doSomething
  *      });

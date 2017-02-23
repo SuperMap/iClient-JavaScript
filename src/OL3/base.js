@@ -22,3 +22,6 @@ ol.supermap.Util.toSuperMapGeometry = function (geoJSON) {
         return result[0].geometry;
     }
 };
+ol.supermap.Util.isArray = function (obj) {
+    return Object.prototype.toString.call(obj) == '[object Array]'
+};

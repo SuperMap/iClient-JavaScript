@@ -42,7 +42,7 @@ ol.supermap.EditFeaturesService.prototype._processParams = function (params) {
     }
     if (params.features) {
         var features = [];
-        if ((Object.prototype.toString.call(params.features) === '[object Array]')) {
+        if (ol.supermap.Util.isArray(params.features)) {
             params.features.map(function (feature) {
                 features.push(me._createServerFeature(feature));
             });
