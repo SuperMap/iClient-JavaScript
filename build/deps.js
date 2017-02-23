@@ -26,7 +26,6 @@ var deps = {
             "./src/Core/iServer/QueryByGeometryService.js",
             "./src/Core/iServer/QueryBySQLService.js",
             "./src/Core/iServer/QueryByBoundsService.js",
-            "./src/Core/iServer/QueryService.js",
             "./src/Core/iServer/TilesetsService.js",
             "./src/Core/iServer/MeasureService.js",
             "./src/Core/iServer/ChartFeatureInfoSpecsService.js",

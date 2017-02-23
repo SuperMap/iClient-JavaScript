@@ -63,7 +63,7 @@ SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * APIMethod: processAsync
      * 负责将客户端的更新参数传递到服务端。
      * Parameters:
-     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务 <SuperMap.REST.getLayersInfoService>
+     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务<SuperMap.REST.GetLayerInfoService>.result.subLayers.layers
      * 返回图层信息，然后对其属性进行修改来获取。
      */
     processAsync: function (params) {

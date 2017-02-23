@@ -28,12 +28,10 @@ QueryService = ServiceBase.extend({
     /**
      * 地图bounds查询服务
      * @param params:
-     *      bounds,returnContent,filter
-     *      customParams,prjCoordSys,expectCount,networkType,queryOption,,startRecord,holdTime,returnCustomResult
+     *     <QueryByBoundsParameters>
      */
     queryByBounds: function (params) {
         var me = this, param = me._processParams(params);
-        var queryByBoundsParams = new SuperMap.REST.QueryByBoundsParameters(param);
         var queryService = new SuperMap.REST.QueryByBoundsService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -42,19 +40,17 @@ QueryService = ServiceBase.extend({
             }
         });
 
-        queryService.processAsync(queryByBoundsParams);
+        queryService.processAsync(param);
         return me;
     },
 
     /**
      * 地图距离查询服务
      * @param params:
-     *      distance,geometry,isNearest,returnContent,filter
-     *      customParams,prjCoordSys,expectCount,networkType,queryOption,,startRecord,holdTime,returnCustomResult
+     *     <QueryByDistanceParameters>
      */
     queryByDistance: function (params) {
         var me = this, param = me._processParams(params);
-        var queryByDistanceParams = new SuperMap.REST.QueryByDistanceParameters(param);
         var queryByDistanceService = new SuperMap.REST.QueryByDistanceService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -63,19 +59,17 @@ QueryService = ServiceBase.extend({
             }
         });
 
-        queryByDistanceService.processAsync(queryByDistanceParams);
+        queryByDistanceService.processAsync(param);
         return me;
     },
 
     /**
      * 地图SQL查询服务
      * @param params:
-     *      returnContent,filter
-     *      customParams,prjCoordSys,expectCount,networkType,queryOption,,startRecord,holdTime,returnCustomResult
+     *     <QueryBySQLParameters>
      */
     queryBySQL: function (params) {
         var me = this, param = me._processParams(params);
-        var queryBySQLParams = new SuperMap.REST.QueryBySQLParameters(param);
         var queryBySQLService = new SuperMap.REST.QueryBySQLService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -84,19 +78,17 @@ QueryService = ServiceBase.extend({
             }
         });
 
-        queryBySQLService.processAsync(queryBySQLParams);
+        queryBySQLService.processAsync(param);
         return me;
     },
 
     /**
      * 地图几何查询服务
      * @param params:
-     *      geometry,returnContent,spatialQueryMode,filter
-     *      customParams,prjCoordSys,expectCount,networkType,queryOption,,startRecord,holdTime,returnCustomResult
+     *     <QueryByGeometryParameters>
      */
     queryByGeometry: function (params) {
         var me = this, param = me._processParams(params);
-        var queryByGeometryParameters = new SuperMap.REST.QueryByGeometryParameters(param);
         var queryByGeometryService = new SuperMap.REST.QueryByGeometryService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -105,7 +97,7 @@ QueryService = ServiceBase.extend({
             }
         });
 
-        queryByGeometryService.processAsync(queryByGeometryParameters);
+        queryByGeometryService.processAsync(param);
         return me;
     },
 
@@ -114,17 +106,8 @@ QueryService = ServiceBase.extend({
             return {};
         }
         params.returnContent = (params.returnContent == null) ? true : params.returnContent;
-        //对外接口调用使用filter,内部参数使用queryParams，跟iClient保持一致
-        if (params.filter) {
-            var filters = [];
-            if (L.Util.isArray(params.filter)) {
-                params.filter.map(function (filter) {
-                    filters.push(new SuperMap.REST.FilterParameter(filter));
-                });
-            } else {
-                filters = [new SuperMap.REST.FilterParameter(params.filter)];
-            }
-            params.queryParams = filters;
+        if (params.queryParams && !L.Util.isArray(params.queryParams)) {
+            params.queryParams = [params.queryParams];
         }
 
         if (params.bounds && params.bounds instanceof L.LatLngBounds) {
@@ -146,8 +129,6 @@ QueryService = ServiceBase.extend({
 
         return params;
     }
-
-
 });
 
 L.supermap.queryService = function (url, options) {

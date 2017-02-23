@@ -117,7 +117,7 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.CoreServiceBase, 
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.GetFeaturesParametersBase>} 查询参数。
+     * params - {<GetFeaturesParametersBase>} 查询参数。
      */
     processAsync: function (params) {
         if (!params) {

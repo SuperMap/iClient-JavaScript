@@ -7,10 +7,10 @@
  * Distance查询服务类。
  * 
  * Inherits from:
- *  - <SuperMap.REST.QueryService> 
+ *  - <SuperMap.REST.QueryService>
  */
 require('./QueryService');
-
+require('./QueryByDistanceParameters');
 SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService, {
 
     /**
@@ -45,7 +45,7 @@ SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function() {
-        SuperMap.REST.QueryService.prototype.destroy.apply(this, arguments); 
+        SuperMap.REST.QueryService.prototype.destroy.apply(this, arguments);
     },
     
     /**
@@ -54,7 +54,7 @@ SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService
      * 在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
      *
      * Parameters:
-     * params - {<SuperMap.REST.QueryByDistanceParameters>} 
+     * params - {<QueryByDistanceParameters>} 
      *
      * Returns:
      * {Object} 转化后的 JSON 字符串。

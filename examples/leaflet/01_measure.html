@@ -30,9 +30,8 @@
                 resultLayer.addLayer(polyline);
                 resultLayer.addLayer(marker1);
                 resultLayer.addLayer(marker2);
-                L.supermap.measureService(url).measureDistance({
-                    geometry: polyline
-                }).on("complete", function (serviceResult) {
+                var distanceMeasureParam = new MeasureParameters(polyline);
+                L.supermap.measureService(url).measureDistance(distanceMeasureParam).on("complete", function (serviceResult) {
                     var content = "距离： " + serviceResult.result.distance + "  米";
                     marker1.bindPopup(content).openPopup(marker1.getLatLng());
                 });
@@ -41,9 +40,8 @@
                 clearLayer();
                 polygon = L.polygon([[24, 100], [40, 100], [40, 120], [24, 120], [24, 100]], {color: "red"});
                 resultLayer.addLayer(polygon);
-                L.supermap.measureService(url).measureArea({
-                    geometry: polygon
-                }).on("complete", function (serviceResult) {
+                var areaMeasureParam = new MeasureParameters(polygon);
+                L.supermap.measureService(url).measureArea(areaMeasureParam).on("complete", function (serviceResult) {
                     var content = "面积： " + serviceResult.result.area + "  平方米";
                     polygon.bindPopup(content).openPopup(polygon.getCenter());
                 });

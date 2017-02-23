@@ -3,7 +3,6 @@
  * 未经许可，不得以任何手段擅自使用或传播。
  */
 
-
 /**
  * Class: SuperMap.REST.QueryByBoundsService
  * Bounds 查询服务类。
@@ -12,6 +11,7 @@
  *  - <SuperMap.REST.QueryService>
  */
 require('./QueryService');
+require('./QueryByBoundsParameters');
 SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, {
 
     /**
@@ -55,7 +55,7 @@ SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, 
      * 在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds 等）。
      *
      * Parameters:
-     * params - {<SuperMap.REST.QueryByBoundsParameters>} Bounds 查询参数。
+     * params - {<QueryByBoundsParameters>} Bounds 查询参数。
      *
      * Returns:
      * {Object} 转化后的 JSON 字符串。

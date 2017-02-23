@@ -3,9 +3,9 @@
  * 1、定义命名空间
  * 2、提供必要的转换工具
  */
+L.supermap = L.supermap || {};
 require('../Core/format/GeoJSON');
 require('./NonEarthCRS');
-L.supermap = L.supermap || {};
 L.Util.toSuperMapGeometry = function (geometry) {
     if (!geometry) {
         return geometry;

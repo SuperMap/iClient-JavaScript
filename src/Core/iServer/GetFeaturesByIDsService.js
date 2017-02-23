@@ -10,9 +10,8 @@
  * Inherits from:
  *  - <SuperMap.REST.GetFeaturesServiceBase>
  */
-require('../base');
 require('./GetFeaturesServiceBase');
-
+require('./GetFeaturesByIDsParameters');
 SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
     /**
@@ -58,13 +57,13 @@ SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeatures
      * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
      *
      * Parameters:
-     * params - {<SuperMap.REST.GetFeaturesByIDsParameters>}
+     * params - {<GetFeaturesByIDsParameters>}
      *
      * Returns:
      * {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters: function(params) {
-        return  SuperMap.REST.GetFeaturesByIDsParameters.toJsonParameters(params);
+        return  GetFeaturesByIDsParameters.toJsonParameters(params);
     },
     
     CLASS_NAME: "SuperMap.REST.GetFeaturesByIDsService"

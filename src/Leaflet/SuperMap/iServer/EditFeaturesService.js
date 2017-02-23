@@ -1,6 +1,6 @@
 ﻿/**
  * Class: EditFeaturesService
- * 地图信息服务类
+ * 地物编辑服务类
  * 用法：
  *      L.superMap.editFeaturesService(url).editFeatures({
  *          features:{},
@@ -23,12 +23,10 @@ EditFeaturesService = ServiceBase.extend({
 
     /**
      * @param params:
-     *      features(目前只支持GeoJSON格式的features)
-     *      editType，IDs，returnContent，isUseBatch
+     *  <EditFeaturesParameters>
      */
     editFeatures: function (params) {
         var me = this, param = me._processParams(params);
-        var editFeatureParameter = new SuperMap.REST.EditFeaturesParameters(param);
         editFeatureService = new SuperMap.REST.EditFeaturesService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -36,7 +34,7 @@ EditFeaturesService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        editFeatureService.processAsync(editFeatureParameter);
+        editFeatureService.processAsync(param);
         return me;
     },
 

@@ -10,7 +10,7 @@
  *  - <SuperMap.CoreServiceBase>
  */
 require('./CoreServiceBase');
-
+require('./EditFeaturesParameters');
 SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -82,7 +82,7 @@ SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 负责将客户端的更新参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.EditFeaturesParameters>} 编辑要素参数。
+     * params - {<EditFeaturesParameters>} 编辑要素参数。
      */
     processAsync: function (params) {
         if (!params) {
@@ -96,13 +96,13 @@ SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
         me.returnContent = params.returnContent;
         me.isUseBatch = params.isUseBatch;
-        jsonParameters = SuperMap.REST.EditFeaturesParameters.toJsonParameters(params);
-        if (editType === SuperMap.REST.EditType.DELETE) {
+        jsonParameters = EditFeaturesParameters.toJsonParameters(params);
+        if (editType === EditType.DELETE) {
             ids = SuperMap.Util.toJSON(params.IDs);
             me.url += "ids=" + ids;
             method = "DELETE";
             jsonParameters = ids;
-        } else if (editType === SuperMap.REST.EditType.UPDATE) {
+        } else if (editType === EditType.UPDATE) {
             method = "PUT";
         } else {
             if (me.isUseBatch) {

@@ -94,25 +94,13 @@ SetLayerService = ServiceBase.extend({
 
     /**
      * @param params:
-     *      layersStatus(数组，包含layerStatus对象，layerStatus属性包括：layerName，isVisible，displayFilter，fieldValuesDisplayFilter)
-     *      resourceID，holdTime
+     *     <SetLayerStatusParameters>
      */
     setLayerStatus: function (params) {
         if (!params) {
             return;
         }
-        var me = this,
-            layersList = params.layersStatus,
-            resourceID = params.resourceID,
-            holdTime = params.holdTime ? params.holdTime : 15;
-        var layerStatusParameters = new SuperMap.REST.SetLayerStatusParameters();
-        layerStatusParameters.resourceID = resourceID;
-        layerStatusParameters.holdTime = holdTime;
-
-        for (var i = 0; i < layersList.length; i++) {
-            layersList[i].isVisible = layersList[i].isVisible ? layersList[i].isVisible : true;
-            layerStatusParameters.layerStatusList.push(layersList[i]);
-        }
+        var me = this;
 
         var setLayerStatusService = new SuperMap.REST.SetLayerStatusService(me.options.url, {
             eventListeners: {
@@ -123,7 +111,7 @@ SetLayerService = ServiceBase.extend({
 
         });
 
-        setLayerStatusService.processAsync(layerStatusParameters);
+        setLayerStatusService.processAsync(params);
         return me;
     }
 });

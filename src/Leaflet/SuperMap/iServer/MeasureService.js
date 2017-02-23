@@ -22,7 +22,7 @@ MeasureService = ServiceBase.extend({
 
     /**
      * @param params:
-     *      geometry,unit,prjCoordSys,distanceMode
+     *      <MeasureParameters>
      */
     measureDistance: function (params) {
         this.measure(params, 'DISTANCE');
@@ -31,13 +31,18 @@ MeasureService = ServiceBase.extend({
 
     /**
      * @param params:
-     *      geometry,unit,prjCoordSys,distanceMode
+     *       <MeasureParameters>
      */
     measureArea: function (params) {
         this.measure(params, 'AREA');
         return this;
     },
 
+    /**
+     *
+     * @param params:<MeasureParameters>
+     * @param type:'DISTANCE'或'AREA'
+     */
     measure: function (params, type) {
         if (!params) {
             return;
@@ -46,7 +51,6 @@ MeasureService = ServiceBase.extend({
         if (params.geometry) {
             params.geometry = L.Util.toSuperMapGeometry(params.geometry);
         }
-        var measureParam = new SuperMap.REST.MeasureParameters(params.geometry, params);
         var measureService = new SuperMap.REST.MeasureService(me.options.url, {
             measureMode: type,
             eventListeners: {
@@ -55,7 +59,7 @@ MeasureService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        measureService.processAsync(measureParam);
+        measureService.processAsync(params);
         return me;
     }
 });

@@ -10,7 +10,7 @@
  *  - <SuperMap.REST.QueryService> 
  */
 require('./QueryService');
-
+require('./QueryBySQLParameters');
 SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
 
     /**

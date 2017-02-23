@@ -21,12 +21,13 @@
         }
         function query() {
             clearLayer();
-            L.supermap.queryService(url).queryBySQL({
-                filter: {
+            var param = new QueryBySQLParameters({
+                queryParams: {
                     name: "Capitals@World.1",
                     attributeFilter: "SMID < 10"
                 }
-            }).on("complete", function (serviceResult) {
+            });
+            L.supermap.queryService(url).queryBySQL(param).on("complete", function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result).addTo(map);
             });
         }

@@ -22,19 +22,19 @@
             L.supermap.tiledMapLayer(baseUrl).addTo(map);
 
             map.on("click", function (evt) {
-
-                L.supermap.getGridCellInfosService(url).getGridCellInfos({
+                var getGridCellInfosParam = new GetGridCellInfosParameter({
                     dataSourceName: "World",
                     datasetName: "WorldEarth",
                     X: evt.latlng.lng,
                     Y: evt.latlng.lat
-                }).on("complete", function (serviceResult) {
+                });
+                L.supermap.getGridCellInfosService(url).getGridCellInfos(getGridCellInfosParam).on("complete", function (serviceResult) {
                     if (marker) {
                         marker.setLatLng(evt.latlng);
                     } else {
                         marker = L.marker(evt.latlng).addTo(map);
                     }
-                    var innerHTML = "栅格查询结果: " + "<br>" + "column: " + serviceResult.result.column +"<br>";
+                    var innerHTML = "栅格查询结果: " + "<br>" + "column: " + serviceResult.result.column + "<br>";
                     innerHTML += "row: " + serviceResult.result.row + "<br>";
                     innerHTML += "value: " + serviceResult.result.value + "<br>";
                     marker.bindPopup(innerHTML).openPopup(marker.getLatLng());
@@ -45,7 +45,7 @@
         function closeInfoWin() {
             if (marker) {
                 marker.removeFrom(map);
-                marker=null;
+                marker = null;
             }
         }
 

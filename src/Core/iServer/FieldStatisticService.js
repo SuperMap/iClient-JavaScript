@@ -34,7 +34,7 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
      * APIProperty: statisticMode
-     * {<SuperMap.REST.StatisticMode>} 字段查询统计的方法类型。
+     * {<StatisticMode>} 字段查询统计的方法类型。
      */
     statisticMode: null,
 
@@ -51,7 +51,7 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.CoreServiceBase, {
      *     datasource: "World",
      *     dataset: "Countries",
      *     field: "SmID",
-     *     statisticMode: SuperMap.REST.StatisticMode.AVERAGE
+     *     statisticMode: StatisticMode.AVERAGE
      * };
      * (end)
      *
@@ -64,7 +64,7 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * datasource - {String} 数据集所在的数据源名称。
      * dataset - {String} 数据集名称。
      * field - {String} 查询统计的目标字段名称。
-     * statisticMode - {<SuperMap.REST.StatisticMode>} 字段查询统计的方法类型。
+     * statisticMode - {<StatisticMode>} 字段查询统计的方法类型。
      */
     initialize: function (url, options) {
         SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
@@ -113,5 +113,5 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.CoreServiceBase, {
 });
 
 module.exports = function (url, options) {
-    return new SuperMap.iServer.GetFieldsService(url, options);
+    return new SuperMap.REST.FieldStatisticService(url, options);
 };

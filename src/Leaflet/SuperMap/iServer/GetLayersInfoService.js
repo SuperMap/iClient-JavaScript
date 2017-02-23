@@ -2,9 +2,8 @@
  * Class: GetLayersInfoService
  * 地图信息服务类
  * 用法：
- *      L.superMap.getLayersInfoService(url,{
- *
- *      }).on("complete",function(result){
+ *      L.superMap.getLayersInfoService(url).getLayersInfo()
+ *        .on("complete",function(result){
  *           //doSomething
  *      }).on("failed",function(result){
  *           //doSomething
@@ -14,11 +13,9 @@ require('./ServiceBase');
 require('../../../Core/iServer/GetLayersInfoService');
 
 GetLayersInfoService = ServiceBase.extend({
-    options: {
-    },
+
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
-        L.setOptions(this, options);
     },
 
     getLayersInfo: function () {

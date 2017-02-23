@@ -2,7 +2,6 @@
  * 本程序只能在有效的授权许可下使用。
  * 未经许可，不得以任何手段擅自使用或传播。*/
 
-
 /**
  * Class: SuperMap.REST.ChartQueryService
  *      海图查询服务类。该类负责将海图查询所需参数（ChartQueryParameters）传递至服务端，并获取服务端的返回结果。
@@ -15,7 +14,7 @@
  */
 require('../format/GeoJSON');
 require('./CoreServiceBase');
-
+require('./ChartQueryParameters');
 SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -42,7 +41,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 下面示例显示了如何进行海图属性查询：
      * (start code)
      * var nameArray = ["GB4X0000_52000"];
-     * var chartQueryFilterParameter = new SuperMap.REST.ChartQueryFilterParameter({
+     * var chartQueryFilterParameter = new ChartQueryFilterParameter({
      *       isQueryPoint:true,
      *        isQueryLine:true,
      *        isQueryRegion:true,
@@ -50,7 +49,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
      *        chartFeatureInfoSpecCode:1
      *    });
      *
-     * var chartQueryParameters = new SuperMap.REST.ChartQueryParameters({
+     * var chartQueryParameters = new ChartQueryParameters({
      *        queryMode:"ChartAttributeQuery",
      *        chartLayerNames:nameArray,
      *        returnContent:true,
@@ -108,7 +107,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 使用服务地址 URL 实例化 ChartQueryService 对象。
      *
      * Parameters:
-     * params - {<SuperMap.REST.ChartQueryParameters>} 查询参数。
+     * params - {<ChartQueryParameters>} 查询参数。
      */
     processAsync: function (params) {
         //todo重点需要添加代码的地方
@@ -164,10 +163,10 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * params - {Object} JSON 字符串表示的查询参数。
      *
      * Returns:
-     * {<SuperMap.REST.chartQueryFilterParameters>}
+     * {<chartQueryFilterParameters>}
      */
     getQueryParameters: function (params) {
-        return new SuperMap.REST.QueryParameters({
+        return new QueryParameters({
             queryMode: params.queryMode,
             bounds: params.bounds,
             chartLayerNames: params.chartLayerNames,

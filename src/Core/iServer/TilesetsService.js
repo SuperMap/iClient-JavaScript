@@ -30,12 +30,7 @@ SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.CoreServiceBase, {
      */
 
     initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this,arguments);
-        var me = this;
-        if (options) {
-            SuperMap.Util.extend(me, options);
-        }
-
+        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**

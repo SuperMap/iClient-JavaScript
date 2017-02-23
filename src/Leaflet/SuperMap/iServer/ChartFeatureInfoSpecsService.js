@@ -21,7 +21,7 @@ ChartFeatureInfoSpecsService = ServiceBase.extend({
 
     getChartFeatureInfo: function () {
         var me = this;
-        var chartFeatureInfoSpecsService = SuperMap.REST.ChartFeatureInfoSpecsService(me.options.url, {
+        var chartFeatureInfoSpecsService = new SuperMap.REST.ChartFeatureInfoSpecsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,

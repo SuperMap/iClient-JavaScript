@@ -10,7 +10,7 @@
  *  - <SuperMap.REST.QueryService>
  */
 require('./QueryService');
-
+require('./QueryByGeometryParameters');
 SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService, {
 
     /**
@@ -54,7 +54,7 @@ SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService
      * 在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
      *
      * Parameters:
-     * params - {<SuperMap.REST.QueryByGeometryParameters>}
+     * params - {<QueryByGeometryParameters>}
      *
      * Returns:
      * {Object} 转化后的 JSON 字符串。

@@ -17,7 +17,7 @@ FieldStatisticService = FieldsServiceBase.extend({
     options: {
         fieldName: null,
         /**
-         * 数组形式，形如["AVERAGE","MAX","MIN"]
+         * <Array<StatisticMode>>
          */
         statisticMode: null
     },
@@ -41,6 +41,7 @@ FieldStatisticService = FieldsServiceBase.extend({
         }
         return me;
     },
+
     _fieldStatisticRequest: function (statisticMode) {
         var me = this, statisticService;
         statisticService = new SuperMap.REST.FieldStatisticService(me.options.url, {
@@ -56,6 +57,7 @@ FieldStatisticService = FieldsServiceBase.extend({
         });
         statisticService.processAsync();
     },
+
     processCompleted: function (fieldStatisticResult) {
         var getAll = true,
             result = fieldStatisticResult.result;

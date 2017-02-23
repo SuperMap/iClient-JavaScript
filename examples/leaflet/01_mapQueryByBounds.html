@@ -8,7 +8,7 @@
     <script type="text/javascript" src="../../dist/SuperMapiClient9 for Leaflet.js"></script>
     <script type="text/javascript">
         var map, polygon, resultLayer,
-                url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+        url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
         function init() {
             map = L.map('map', {
                 preferCanvas: true,
@@ -23,10 +23,11 @@
         function query() {
             clearLayer();
             polygon.addTo(map);
-            L.supermap.queryService(url).queryByBounds({
-                filter: {name: "Capitals@World.1"},
+            var param = new QueryByBoundsParameters({
+                queryParams: {name: "Capitals@World.1"},
                 bounds: polygon.getBounds()
-            }).on("complete", function (serviceResult) {
+            });
+            L.supermap.queryService(url).queryByBounds(param).on("complete", function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result).addTo(map);
             });
         }

@@ -89,6 +89,7 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.CoreServiceBase, {
     },
 
     /**
+     * TODO 专题图时候可能会用到，先放在这
      * Method: handleLayers
      * 处理iserver 新增图层组数据 (subLayers.layers 中可能还会含有 subLayers.layers)
      *
@@ -107,30 +108,24 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.CoreServiceBase, {
                     var type = layers[i].ugcLayerType;
                     switch (type) {
                         case 'THEME':
-                            tempLayer = new SuperMap.REST.ServerTheme();
+                            tempLayer = new ServerTheme();
                             tempLayer.fromJson(layers[i]);
                             layers[i] = tempLayer;
                             break;
                         case 'GRID':
-                            tempLayer = new SuperMap.REST.Grid();
+                            tempLayer = new Grid();
                             tempLayer.fromJson(layers[i]);
                             layers[i] = tempLayer;
                             break;
                         case 'IMAGE':
-                            tempLayer = new SuperMap.REST.Image();
+                            tempLayer = new Image();
                             tempLayer.fromJson(layers[i]);
                             layers[i] = tempLayer;
                             break;
                         case 'VECTOR':
-                            tempLayer = new SuperMap.REST.Vector();
+                            tempLayer = new Vector();
                             tempLayer.fromJson(layers[i]);
                             layers[i] = tempLayer;
-                            break;
-                        case 'WFS':
-                            //layers[i] = SuperMap.REST.WFS.fromobj(layers[i]);
-                            break;
-                        case 'WMS':
-                            //layers[i] = SuperMap.REST.WMS.fromobj(layers[i]);
                             break;
                     }
                 }

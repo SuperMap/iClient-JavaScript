@@ -13,7 +13,7 @@
             map = L.map('map', {
                 preferCanvas: true,
                 crs: L.CRS.EPSG4326,
-                center: [-10,40],
+                center: [-10, 40],
                 maxZoom: 18,
                 zoom: 3
             });
@@ -23,10 +23,11 @@
         function query() {
             clearLayer();
             polygon.addTo(map);
-            L.supermap.queryService(url).queryByGeometry({
-                filter: {name: "Capitals@World.1"},
+            var param = new QueryByGeometryParameters({
+                queryParams: {name: "Capitals@World.1"},
                 geometry: polygon
-            }).on("complete", function (serviceResult) {
+            });
+            L.supermap.queryService(url).queryByGeometry(param).on("complete", function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result).addTo(map);
             });
         }

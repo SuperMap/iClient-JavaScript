@@ -12,7 +12,7 @@
  */
 
 require('./CoreServiceBase');
-
+require('./GetGridCellInfosParameter');
 SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -89,10 +89,12 @@ SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.CoreServiceBase,
     /**
      * APIMethod: processAsync
      * 执行服务，查询数据集信息。
+     * Parameters:
+     * params - {<GetGridCellInfosParameter>} 查询参数。
      */
-    processAsync: function (options) {
-        if (options) {
-            SuperMap.Util.extend(this, options);
+    processAsync: function (params) {
+        if (params) {
+            SuperMap.Util.extend(this, params);
         }
         var me = this;
         var end = me.url.substr(me.url.length - 1, 1);

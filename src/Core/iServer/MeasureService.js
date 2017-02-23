@@ -11,14 +11,14 @@
  *  - <SuperMap.CoreServiceBase>
  */
 require('./CoreServiceBase');
-
+require('./MeasureParameters');
 SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
      * APIProperty: measureMode
-     * {<SuperMap.REST.MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。默认值为：SuperMap.REST.MeasureMode.DISTANCE 。
+     * {<MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。默认值为：MeasureMode.DISTANCE 。
      */
-    measureMode: SuperMap.REST.MeasureMode.DISTANCE,
+    measureMode: MeasureMode.DISTANCE,
 
     /**
      * Constructor: SuperMap.REST.MeasureService
@@ -27,7 +27,7 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 例如：
      * (start code)
      * var myMeasuerService = new SuperMap.REST.MeasureService(url, {
-     *      measureMode: SuperMap.REST.MeasureMode.DISTANCE,
+     *      measureMode: MeasureMode.DISTANCE,
      *      eventListeners:{
      *          "processCompleted": measureCompleted
      *      }
@@ -40,7 +40,7 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.CoreServiceBase, {
      *
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
-     * measureMode - {<SuperMap.REST.MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。
+     * measureMode - {<MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。
      */
     initialize: function (url, options) {
         SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
@@ -64,7 +64,7 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 负责将客户端的量算参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.MeasureParameters>} 量算参数。
+     * params - {<MeasureParameters>} 量算参数。
      */
     processAsync: function (params) {
         if (!params) {
@@ -80,7 +80,7 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.CoreServiceBase, {
             return;
         }
         end = me.url.substr(me.url.length - 1, 1);
-        if (me.measureMode === SuperMap.REST.MeasureMode.AREA) {
+        if (me.measureMode === MeasureMode.AREA) {
             if (me.isInTheSameDomain) {
                 me.url += ((end === "/") ? "area.json?" : "/area.json?");
             }

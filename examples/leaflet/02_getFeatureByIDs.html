@@ -23,10 +23,11 @@
         }
         function query() {
             clearLayer();
-            L.supermap.getFeaturesService(url).getFeaturesByIDs({
-                IDs: [1, 247],
+            var idsParam = new GetFeaturesByIDsParameters({
+                IDs: [246, 247],
                 datasetNames: ["World:Countries"]
-            }).on("complete", function (serviceResult) {
+            });
+            L.supermap.getFeaturesService(url).getFeaturesByIDs(idsParam).on("complete", function (serviceResult) {
                 resultLayer = L.geoJSON(serviceResult.result, {
                     onEachFeature: function (feature, layer) {
                         layer.bindPopup("ID: " + feature.properties.SMID + "<br>" + "国家：" + feature.properties.COUNTRY);

@@ -11,7 +11,7 @@
  *  - <SuperMap.REST.GetFeaturesServiceBase>
  */
 require('./GetFeaturesServiceBase');
-
+require('./GetFeaturesBySQLParameters');
 SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
     /**
@@ -57,13 +57,13 @@ SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeatures
      * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
      *
      * Parameters:
-     * params - {<SuperMap.REST.GetFeaturesBySQLParameters>} 
+     * params - {<GetFeaturesBySQLParameters>} 
      *
      * Returns:
      * {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters: function(params) {
-        return  SuperMap.REST.GetFeaturesBySQLParameters.toJsonParameters(params);
+        return  GetFeaturesBySQLParameters.toJsonParameters(params);
     },
     
     CLASS_NAME: "SuperMap.REST.GetFeaturesBySQLService"

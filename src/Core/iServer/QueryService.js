@@ -12,6 +12,7 @@
  */
 require('../format/GeoJSON');
 require('./CoreServiceBase');
+require('./QueryParameters');
 SuperMap.REST.QueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -90,7 +91,7 @@ SuperMap.REST.QueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.iServer.QueryParameters>} 查询参数。
+     * params - {<QueryParameters>} 查询参数。
      */
     processAsync: function (params) {
         if (!params) {
@@ -153,10 +154,10 @@ SuperMap.REST.QueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * params - {Object} JSON 字符串表示的查询参数。
      *
      * Returns:
-     * {<SuperMap.REST.QueryParameters>} 返回转化后的 QueryParameters 对象。
+     * {<QueryParameters>} 返回转化后的 QueryParameters 对象。
      */
     getQueryParameters: function (params) {
-        return new SuperMap.REST.QueryParameters({
+        return new QueryParameters({
             customParams: params.customParams,
             expectCount: params.expectCount,
             networkType: params.networkType,

@@ -20,7 +20,7 @@ GetGridCellInfosService = ServiceBase.extend({
     },
     /**
      * @param params:
-     *      datasetName,dataSourceName,X,Y
+     *    <GetGridCellInfosParameter>
      */
 
     getGridCellInfos: function (params) {
@@ -28,7 +28,6 @@ GetGridCellInfosService = ServiceBase.extend({
             return null;
         }
         var me = this;
-        var gridCellQueryParam = new SuperMap.REST.GetGridCellInfosParameter(params);
         var gridCellQueryService = new SuperMap.REST.GetGridCellInfosService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -36,7 +35,7 @@ GetGridCellInfosService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        gridCellQueryService.processAsync(gridCellQueryParam);
+        gridCellQueryService.processAsync(params);
         return me;
     }
 });
