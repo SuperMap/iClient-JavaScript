@@ -19,6 +19,20 @@ require('../../../Core/iServer/SurfaceAnalystService');
 require('../../../Core/iServer/TerrainCurvatureCalculationService');
 require('../../../Core/iServer/ThiessenAnalystService');
 
+require('../../../Core/iServer/AreaSolarRadiationParameters');
+require('../../../Core/iServer/DatasetBufferAnalystParameters');
+require('../../../Core/iServer/DensityKernelAnalystParameters');
+require('../../../Core/iServer/GenerateSpatialDataParameters');
+require('../../../Core/iServer/GeoRelationAnalystParameters');
+require('../../../Core/iServer/InterpolationRBFAnalystParameters');
+require('../../../Core/iServer/MathExpressionAnalysisParameters');
+require('../../../Core/iServer/DatasetOverlayAnalystParameters');
+require('../../../Core/iServer/RouteCalculateMeasureParameters');
+require('../../../Core/iServer/RouteLocatorParameters');
+require('../../../Core/iServer/DatasetSurfaceAnalystParameters');
+require('../../../Core/iServer/TerrainCurvatureCalculationParameters');
+require('../../../Core/iServer/DatasetThiessenAnalystParameters');
+
 ol.supermap.SpatialAnalystService = function (url, options) {
     ol.supermap.ServiceBase.call(this, url, options);
 }
@@ -26,10 +40,10 @@ ol.inherits(ol.supermap.SpatialAnalystService, ol.supermap.ServiceBase);
 
 /**
  * 地区太阳辐射
+ * @param params {AreaSolarRadiationParameters}
  */
-ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult = function () {
+ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult = function (params) {
     var me = this;
-    var areaSolarRadiationParameters = new SuperMap.REST.AreaSolarRadiationParameters(params);
     var areaSolarRadiationService = new SuperMap.REST.AreaSolarRadiationService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -37,16 +51,16 @@ ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult = functi
             processFailed: me.processFailed
         }
     });
-    areaSolarRadiationService.processAsync(areaSolarRadiationParameters);
+    areaSolarRadiationService.processAsync(me._processParams(params));
     return me;
 };
 
 /**
  * 缓冲区分析
+ * @param params {DatasetBufferAnalystParameters}
  */
 ol.supermap.SpatialAnalystService.prototype.bufferAnalysis = function (params) {
     var me = this;
-    var bufferAnalystParameters = new SuperMap.REST.DatasetBufferAnalystParameters(params);
     var bufferAnalystService = new SuperMap.REST.BufferAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -54,16 +68,16 @@ ol.supermap.SpatialAnalystService.prototype.bufferAnalysis = function (params) {
             processFailed: me.processFailed
         }
     });
-    bufferAnalystService.processAsync(bufferAnalystParameters);
+    bufferAnalystService.processAsync(me._processParams(params));
     return me;
 };
 
 /**
  * 点密度分析
+ * @param params {DensityKernelAnalystParameters}
  */
 ol.supermap.SpatialAnalystService.prototype.densityAnalysis = function (params) {
-    var me = this, param = me._processParams(params);
-    var densityKernelAnalystParameters = new SuperMap.REST.DensityKernelAnalystParameters(param);
+    var me = this;
     var densityAnalystService = new SuperMap.REST.DensityAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -71,16 +85,16 @@ ol.supermap.SpatialAnalystService.prototype.densityAnalysis = function (params) 
             processFailed: me.processFailed
         }
     });
-    densityAnalystService.processAsync(densityKernelAnalystParameters);
+    densityAnalystService.processAsync(me._processParams(params));
     return me;
 };
 
 /**
  * 动态分段分析
+ * @param params {GenerateSpatialDataParameters}
  */
 ol.supermap.SpatialAnalystService.prototype.generateSpatialData = function (params) {
     var me = this;
-    var generateSpatialDataParameters = new SuperMap.REST.GenerateSpatialDataParameters(params);
     var generateSpatialDataService = new SuperMap.REST.GenerateSpatialDataService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -88,16 +102,16 @@ ol.supermap.SpatialAnalystService.prototype.generateSpatialData = function (para
             processFailed: me.processFailed
         }
     });
-    generateSpatialDataService.processAsync(generateSpatialDataParameters);
+    generateSpatialDataService.processAsync(me._processParams(params));
     return me;
 };
 
 /**
  * 空间关系分析
+ * @param params {GeoRelationAnalystParameters}
  */
 ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis = function (params) {
     var me = this;
-    var geoRelationAnalystParameters = new SuperMap.REST.GeoRelationAnalystParameters(params);
     var geoRelationAnalystService = new SuperMap.REST.GeoRelationAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -105,16 +119,16 @@ ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis = function (para
             processFailed: me.processFailed
         }
     });
-    geoRelationAnalystService.processAsync(geoRelationAnalystParameters);
+    geoRelationAnalystService.processAsync(me._processParams(params));
     return me;
 };
 
 /**
  * 插值分析
+ * @param params {InterpolationRBFAnalystParameters}
  */
 ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis = function (params) {
-    var me = this, param = me._processParams(params);
-    var interpolationRBFAnalystParameters = new SuperMap.REST.InterpolationRBFAnalystParameters(param);
+    var me = this;
     var interpolationAnalystService = new SuperMap.REST.InterpolationAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -122,16 +136,16 @@ ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis = function (pa
             processFailed: me.processFailed
         }
     });
-    interpolationAnalystService.processAsync(interpolationRBFAnalystParameters);
+    interpolationAnalystService.processAsync(me._processParams(params));
     return me;
 };
 
 /**
  * 栅格代数运算
+ * @param params {MathExpressionAnalysisParameters}
  */
 ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis = function (params) {
-    var me = this, param = me._processParams(params);
-    var mathExpressionAnalysisParameters = new SuperMap.REST.MathExpressionAnalysisParameters(param);
+    var me = this;
     var mathExpressionAnalysisService = new SuperMap.REST.MathExpressionAnalysisService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -139,16 +153,16 @@ ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis = function (p
             processFailed: me.processFailed
         }
     });
-    mathExpressionAnalysisService.processAsync(mathExpressionAnalysisParameters);
+    mathExpressionAnalysisService.processAsync(me._processParams(params));
     return me;
 };
 
 /**
  * 叠加分析
+ * @param params {DatasetOverlayAnalystParameters}
  */
 ol.supermap.SpatialAnalystService.prototype.overlayAnalysis = function (params) {
-    var me = this, param = me._processParams(params);
-    var datasetOverlayAnalystParameters = new SuperMap.REST.DatasetOverlayAnalystParameters(param);
+    var me = this;
     var overlayAnalystService = new SuperMap.REST.OverlayAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -156,16 +170,16 @@ ol.supermap.SpatialAnalystService.prototype.overlayAnalysis = function (params) 
             processFailed: me.processFailed
         }
     });
-    overlayAnalystService.processAsync(datasetOverlayAnalystParameters);
+    overlayAnalystService.processAsync(me._processParams(params));
     return me;
 };
 
 /**
  * 路由测量计算
+ * @param params {RouteCalculateMeasureParameters}
  */
 ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure = function (params) {
-    var me = this, param = me._processParams(params);
-    var routeCalculateMeasureParameters = new SuperMap.REST.RouteCalculateMeasureParameters(param);
+    var me = this;
     var routeCalculateMeasureService = new SuperMap.REST.RouteCalculateMeasureService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -173,16 +187,16 @@ ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure = function (pa
             processFailed: me.processFailed
         }
     });
-    routeCalculateMeasureService.processAsync(routeCalculateMeasureParameters);
+    routeCalculateMeasureService.processAsync(me._processParams(params));
     return me;
 };
 
 /**
  * 路由定位
+ * @param params {RouteLocatorParameters}
  */
 ol.supermap.SpatialAnalystService.prototype.routeLocate = function (params) {
-    var me = this, param = me._processParams(params);
-    var routeLocatorParameters = new SuperMap.REST.RouteLocatorParameters(param);
+    var me = this;
     var routeLocatorService = new SuperMap.REST.RouteLocatorService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -190,16 +204,16 @@ ol.supermap.SpatialAnalystService.prototype.routeLocate = function (params) {
             processFailed: me.processFailed
         }
     });
-    routeLocatorService.processAsync(routeLocatorParameters);
+    routeLocatorService.processAsync(me._processParams(params));
     return me;
 };
 
 /**
  * 表面分析
+ * @param params {DatasetSurfaceAnalystParameters}
  */
 ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis = function (params) {
-    var me = this, param = me._processParams(params);
-    var datasetSurfaceAnalystParameters = new SuperMap.REST.DatasetSurfaceAnalystParameters(param);
+    var me = this;
     var surfaceAnalystService = new SuperMap.REST.SurfaceAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -207,16 +221,16 @@ ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis = function (params) 
             processFailed: me.processFailed
         }
     });
-    surfaceAnalystService.processAsync(datasetSurfaceAnalystParameters);
+    surfaceAnalystService.processAsync(me._processParams(params));
     return me;
 };
 
 /**
  * 地形曲率计算
+ * @param params {TerrainCurvatureCalculationParameters}
  */
 ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate = function (params) {
     var me = this;
-    var terrainCurvatureCalculationParameters = new SuperMap.REST.TerrainCurvatureCalculationParameters(params);
     var terrainCurvatureCalculationService = new SuperMap.REST.TerrainCurvatureCalculationService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -224,16 +238,16 @@ ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate = function
             processFailed: me.processFailed
         }
     });
-    terrainCurvatureCalculationService.processAsync(terrainCurvatureCalculationParameters);
+    terrainCurvatureCalculationService.processAsync(me._processParams(params));
     return me;
 };
 
 /**
  * 泰森多边形分析
+ * @param params {DatasetThiessenAnalystParameters}
  */
 ol.supermap.SpatialAnalystService.prototype.thiessenAnalysis = function (params) {
     var me = this;
-    var datasetThiessenAnalystParameters = new SuperMap.REST.DatasetThiessenAnalystParameters(params);
     var thiessenAnalystService = new SuperMap.REST.ThiessenAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -241,7 +255,7 @@ ol.supermap.SpatialAnalystService.prototype.thiessenAnalysis = function (params)
             processFailed: me.processFailed
         }
     });
-    thiessenAnalystService.processAsync(datasetThiessenAnalystParameters);
+    thiessenAnalystService.processAsync(me._processParams(params));
     return me;
 };
 
@@ -265,14 +279,21 @@ ol.supermap.SpatialAnalystService.prototype._processParams = function (params) {
     if (params.extractRegion) {
         params.extractRegion = this.convertGeometry(params.extractRegion);
     }
-    if (params.extractParameter && params.extractParameter.clipRegion) {
-        params.extractParameter.clipRegion = this.convertGeometry(params.extractParameter.clipRegion);
+    if (params.clipRegion) {
+        params.clipRegion = this.convertGeometry(params.clipRegion);
     }
-    if (params.operateRegions) {
-        params.operateRegions = this.convertGeometry(params.operateRegions);
+    if (params.sourceRoute && params.sourceRoute.points) {
+        params.sourceRoute.points = this.convertGeometry(params.sourceRoute.points);
     }
-    if (params.sourceRoute) {
-        params.sourceRoute = this.convertGeometry(params.sourceRoute);
+    if (params.operateRegions && ol.supermap.isArray(params.operateRegions)) {
+        params.operateRegions.map(function (geometry, key) {
+            params.operateRegions[key] = this.convertGeometry(geometry);
+        });
+    }
+    if (params.sourceRoute && params.sourceRoute.components && ol.supermap.isArray(params.sourceRoute.components)) {
+        params.sourceRoute.components.map(function (geometry, key) {
+            params.sourceRoute.components[key] = this.convertGeometry(geometry);
+        });
     }
     return params;
 }

@@ -5,6 +5,10 @@
 require('../../../Core/iServer/StopQueryService');
 require('../../../Core/iServer/TransferPathService');
 require('../../../Core/iServer/TransferSolutionService');
+
+require('../../../Core/iServer/StopQueryParameters');
+require('../../../Core/iServer/TransferPathParameters');
+require('../../../Core/iServer/TransferSolutionParameters');
 require('./ServiceBase');
 
 ol.supermap.TrafficTransferAnalystService = function (url, options) {
@@ -12,9 +16,11 @@ ol.supermap.TrafficTransferAnalystService = function (url, options) {
 }
 ol.inherits(ol.supermap.TrafficTransferAnalystService, ol.supermap.ServiceBase);
 
+/**
+ * @param params {StopQueryParameters}
+ */
 ol.supermap.TrafficTransferAnalystService.prototype.queryStop = function (params) {
     var me = this;
-    var stopQueryParams = new SuperMap.REST.StopQueryParameters(params);
     var stopQueryService = new SuperMap.REST.StopQueryService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -22,14 +28,15 @@ ol.supermap.TrafficTransferAnalystService.prototype.queryStop = function (params
             processFailed: me.processFailed
         }
     });
-    stopQueryService.processAsync(stopQueryParams);
+    stopQueryService.processAsync(me._processParams(params));
     return me;
 };
 
+/**
+ * @param params {TransferPathParameters}
+ */
 ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath = function (params) {
-    var me = this, param = me._processParams(params);
-
-    var transferPathParams = new SuperMap.REST.TransferPathParameters(param);
+    var me = this;
     var transferPathService = new SuperMap.REST.TransferPathService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -37,13 +44,15 @@ ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath = funct
             processFailed: me.processFailed
         }
     });
-    transferPathService.processAsync(transferPathParams);
+    transferPathService.processAsync(me._processParams(params));
     return me;
 };
 
+/**
+ * @param params {TransferSolutionParameters}
+ */
 ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution = function (params) {
-    var me = this, param = me._processParams(params);
-    var transferSolutionParams = new SuperMap.REST.TransferSolutionParameters(param);
+    var me = this;
     var transferSolutionService = new SuperMap.REST.TransferSolutionService(me.options.url, {
         eventListeners: {
             scope: me,
@@ -51,7 +60,7 @@ ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution = f
             processFailed: me.processFailed
         }
     });
-    transferSolutionService.processAsync(transferSolutionParams);
+    transferSolutionService.processAsync(me._processParams(params));
     return me;
 };
 
@@ -65,9 +74,9 @@ ol.supermap.TrafficTransferAnalystService.prototype._processParams = function (p
     if (params.points && ol.supermap.Util.isArray(params.points)) {
         params.points.map(function (point, key) {
             params.points[key] = (point instanceof ol.geom.Point) ? {
-                    x: point.flatCoordinates[0],
-                    y: point.flatCoordinates[1]
-                } : point;
+                x: point.flatCoordinates[0],
+                y: point.flatCoordinates[1]
+            } : point;
         });
     }
     return params;
