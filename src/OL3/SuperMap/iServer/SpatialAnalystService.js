@@ -19,20 +19,6 @@ require('../../../Core/iServer/SurfaceAnalystService');
 require('../../../Core/iServer/TerrainCurvatureCalculationService');
 require('../../../Core/iServer/ThiessenAnalystService');
 
-require('../../../Core/iServer/AreaSolarRadiationParameters');
-require('../../../Core/iServer/DatasetBufferAnalystParameters');
-require('../../../Core/iServer/DensityKernelAnalystParameters');
-require('../../../Core/iServer/GenerateSpatialDataParameters');
-require('../../../Core/iServer/GeoRelationAnalystParameters');
-require('../../../Core/iServer/InterpolationRBFAnalystParameters');
-require('../../../Core/iServer/MathExpressionAnalysisParameters');
-require('../../../Core/iServer/DatasetOverlayAnalystParameters');
-require('../../../Core/iServer/RouteCalculateMeasureParameters');
-require('../../../Core/iServer/RouteLocatorParameters');
-require('../../../Core/iServer/DatasetSurfaceAnalystParameters');
-require('../../../Core/iServer/TerrainCurvatureCalculationParameters');
-require('../../../Core/iServer/DatasetThiessenAnalystParameters');
-
 ol.supermap.SpatialAnalystService = function (url, options) {
     ol.supermap.ServiceBase.call(this, url, options);
 }

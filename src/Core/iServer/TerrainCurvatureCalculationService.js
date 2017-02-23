@@ -10,6 +10,7 @@
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
+require('./TerrainCurvatureCalculationParameters');
 SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -33,7 +34,7 @@ SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function(url, options) {
+    initialize: function (url, options) {
         SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
@@ -50,7 +51,7 @@ SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.TerrainCurvatureCalculationParameters>}
+     * params - {<TerrainCurvatureCalculationParameters>}
      */
     processAsync: function (parameter) {
         var me = this;
@@ -64,11 +65,11 @@ SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.
 
         var parameterObject = new Object();
 
-        if (parameter instanceof SuperMap.REST.TerrainCurvatureCalculationParameters) {
-            me.url += 'datasets/' + parameter.dataset +'/terraincalculation/curvature';
+        if (parameter instanceof TerrainCurvatureCalculationParameters) {
+            me.url += 'datasets/' + parameter.dataset + '/terraincalculation/curvature';
         }
 
-        SuperMap.REST.TerrainCurvatureCalculationParameters.toObject(parameter, parameterObject);
+        TerrainCurvatureCalculationParameters.toObject(parameter, parameterObject);
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
 
         if (me.isInTheSameDomain) {

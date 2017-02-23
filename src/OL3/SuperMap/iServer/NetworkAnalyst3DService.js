@@ -7,12 +7,6 @@ require('../../../Core/iServer/FacilityAnalystSources3DService');
 require('../../../Core/iServer/FacilityAnalystTraceup3DService');
 require('../../../Core/iServer/FacilityAnalystTracedown3DService');
 require('../../../Core/iServer/FacilityAnalystUpstream3DService');
-
-require('../../../Core/iServer/FacilityAnalystSinks3DParameters');
-require('../../../Core/iServer/FacilityAnalystSources3DParameters');
-require('../../../Core/iServer/FacilityAnalystTraceup3DParameters');
-require('../../../Core/iServer/FacilityAnalystTracedown3DParameters');
-require('../../../Core/iServer/FacilityAnalystUpstream3DParameters');
 require('./ServiceBase');
 
 ol.supermap.NetworkAnalyst3DService = function (url, options) {

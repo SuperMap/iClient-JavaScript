@@ -12,6 +12,7 @@
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
+require('./DatasetBufferAnalystParameters');
 SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -25,23 +26,23 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
      * 缓冲区分析服务类构造函数。
      *
      * 例如：
-     * (start code)     
+     * (start code)
      * var myBufferAnalystService = new SuperMap.REST.BufferAnalystService(url, {
      *     eventListeners: {
      *           "processCompleted": bufferCompleted, 
      *           "processFailed": bufferFailed
      *           }
-     *    }); 
-     * (end)     
-     *     
+     *    });
+     * (end)
+     *
      * Parameters:
      * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * options - {Object} 参数。     
+     * options - {Object} 参数。
      *
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function(url, options) {
+    initialize: function (url, options) {
         SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
         var me = this;
         if (options) {
@@ -51,7 +52,7 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
 
     /**
      * APIMethod: destroy
-     * 释放资源,将引用资源的属性置空。  
+     * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
         SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
@@ -63,7 +64,7 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.BufferAnalystParameters>} 
+     * params - {<BufferAnalystParameters>}
      */
     processAsync: function (parameter) {
         var parameterObject = new Object();
@@ -76,10 +77,10 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
             me.url += "/";
         }
 
-        if (parameter instanceof SuperMap.REST.DatasetBufferAnalystParameters) {
+        if (parameter instanceof DatasetBufferAnalystParameters) {
             me.mode = "datasets";
             me.url += 'datasets/' + parameter.dataset + '/buffer';
-            SuperMap.REST.DatasetBufferAnalystParameters.toObject(parameter, parameterObject);
+            DatasetBufferAnalystParameters.toObject(parameter, parameterObject);
         }
         else if (parameter instanceof SuperMap.REST.GeometryBufferAnalystParameters) {
             me.mode = "geometry";

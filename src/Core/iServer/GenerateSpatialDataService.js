@@ -6,16 +6,17 @@
  * Class: SuperMap.REST.GenerateSpatialDataService
  * 动态分段分析服务类。
  * 该类负责将客户设置的动态分段分析服务参数传递给服务端，并接收服务端返回的动态分段分析结果数据。
- * 动态分段分析结果通过该类支持的事件的监听函数参数获取，参数类型为 {<SuperMap.REST.GenerateSpatialDataEventArgs>};  
+ * 动态分段分析结果通过该类支持的事件的监听函数参数获取，参数类型为 {<SuperMap.REST.GenerateSpatialDataEventArgs>};
  * 获取的结果数据包括 originResult 、result 两种，
  * 其中，originResult 为服务端返回的用 JSON 对象表示的动态分段分析结果数据，
  * result 为服务端返回的动态分段分析结果数据，
  * 保存在 {<SuperMap.REST.GenerateSpatialDataResult>} 对象中。
- * 
+ *
  * Inherits from:
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
+require('./GenerateSpatialDataParameters');
 SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -34,7 +35,7 @@ SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialA
      *      dataReturnMode: SuperMap.REST.DataReturnMode.DATASET_ONLY
      *  }),
      *  //配置动态分段参数(Parameters)
-     *  parameters = new SuperMap.REST.GenerateSpatialDataParameters({
+     *  parameters = new GenerateSpatialDataParameters({
      *      routeTable: "RouteDT_road@Changchun",
      *      routeIDField: "RouteID",
      *      eventTable: "LinearEventTabDT@Changchun",
@@ -67,15 +68,15 @@ SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialA
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function(url, options) {
+    initialize: function (url, options) {
         SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
      * APIMethod: destroy
-     * 释放资源,将引用的资源属性置空。  
+     * 释放资源,将引用的资源属性置空。
      */
-    destroy: function() {
+    destroy: function () {
         SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
@@ -84,15 +85,15 @@ SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialA
      * 负责将客户端的动态分段服务参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.GenerateSpatialDataParameters>} 
+     * params - {<GenerateSpatialDataParameters>}
      */
-    processAsync: function(params) {
+    processAsync: function (params) {
         if (!params) {
             return;
         }
         var me = this,
             jsonParameters;
-        
+
         jsonParameters = me.getJsonParameters(params);
 
         me.request({
@@ -106,27 +107,27 @@ SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialA
 
     /**
      * Method: getJsonParameters
-     * 将参数转化为 JSON 字符串。 
+     * 将参数转化为 JSON 字符串。
      *
      * Parameters:
-     * params - {<SuperMap.REST.GenerateSpatialDataParameters>}
+     * params - {<GenerateSpatialDataParameters>}
      *
      * Returns:
      * {Object} 转化后的JSON字符串。
      */
-    getJsonParameters: function(params) {
+    getJsonParameters: function (params) {
         var jsonParameters = "",
             jsonStr = "datasets/" + params.routeTable + "/linearreferencing/generatespatialdata",
             me = this,
-            end;   
-        
+            end;
+
         end = me.url.substr(me.url.length - 1, 1);
         if (me.isInTheSameDomain) {
             me.url += (end === "/") ? jsonStr + ".json" : "/" + jsonStr + ".json";
         } else {
             me.url += (end === "/") ? jsonStr + ".jsonp" : "/" + jsonStr + ".jsonp";
         }
-        
+
         me.url += "?returnContent=true";
         jsonParameters = SuperMap.Util.toJSON(params);
         return jsonParameters;

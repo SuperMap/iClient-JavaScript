@@ -11,6 +11,7 @@
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
+require('./RouteLocatorParameters');
 SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -19,7 +20,7 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
      *
      * 实例化该类如下例所示：
      * (start code)
-     * var routeLocatorParameters_point = new SuperMap.REST.RouteLocatorParameters({
+     * var routeLocatorParameters_point = new RouteLocatorParameters({
      *   "sourceRoute":{
      *       "type":"LINEM",
      *       "parts":[4],
@@ -72,15 +73,15 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
      * eventListeners - {Object} 需要被注册的监听器对象。
      *
      */
-    initialize:function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this,arguments);
+    initialize: function (url, options) {
+        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
      * APIMethod: destroy
      * 释放资源,将引用的资源属性置空。
      */
-    destroy:function () {
+    destroy: function () {
         SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
@@ -89,9 +90,9 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
      * 负责将客户端的基于路由对象计算指定点M值操作的参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.RouteLocatorParameters>}
+     * params - {<RouteLocatorParameters>}
      */
-    processAsync:function (params) {
+    processAsync: function (params) {
         if (!params) {
             return;
         }
@@ -100,11 +101,11 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
         jsonParameters = me.getJsonParameters(params);
 
         me.request({
-            method:"POST",
-            data:jsonParameters,
-            scope:me,
-            success:me.serviceProcessCompleted,
-            failure:me.serviceProcessFailed
+            method: "POST",
+            data: jsonParameters,
+            scope: me,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
         });
     },
 
@@ -113,18 +114,17 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
      * 将参数转化为 JSON 字符串。
      *
      * Parameters:
-     * params - {<SuperMap.REST.RouteLocatorParameters>}
+     * params - {<RouteLocatorParameters>}
      *
      * Returns:
      * {Object} 转化后的JSON字符串。
      */
-    getJsonParameters:function (params) {
+    getJsonParameters: function (params) {
         var jsonParameters, jsonStr = "geometry/routelocator", me = this, end;
         end = me.url.substr(me.url.length - 1, 1);
 
-        if(params.dataset)
-        {
-            jsonStr = "datasets/"+ params.dataset + "/linearreferencing/routelocator";
+        if (params.dataset) {
+            jsonStr = "datasets/" + params.dataset + "/linearreferencing/routelocator";
             params.sourceRoute = null;
         }
         if (me.isInTheSameDomain) {
@@ -138,7 +138,7 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
         return jsonParameters;
     },
 
-    CLASS_NAME:"SuperMap.REST.RouteLocatorService"
+    CLASS_NAME: "SuperMap.REST.RouteLocatorService"
 });
 
 module.exports = function (url, options) {

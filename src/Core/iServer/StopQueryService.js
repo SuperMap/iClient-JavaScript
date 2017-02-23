@@ -12,6 +12,7 @@
  *  - <SuperMap.CoreServiceBase>
  */
 require('./CoreServiceBase');
+require('./StopQueryParameters');
 SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -55,7 +56,7 @@ SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 负责将客户端的更新参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.StopQueryParameters>} 交通换乘参数。
+     * params - {<StopQueryParameters>} 交通换乘参数。
      */
     processAsync: function (params) {
         if (!params) {

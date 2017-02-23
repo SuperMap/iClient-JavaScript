@@ -12,6 +12,8 @@
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
+require('./DatasetSurfaceAnalystParameters');
+require('./GeometrySurfaceAnalystParameters');
 SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -19,15 +21,15 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * 表面分析服务类构造函数。
      *
      * 例如：
-     * (start code)     
+     * (start code)
      * var mySurfaceAnalystService = new SuperMap.REST.SurfaceAnalystService(url, {
      *      eventListeners: {
      *	       "processCompleted": surfaceAnalysCompleted, 
      *		   "processFailed": surfaceAnalysFailed
      *		   }
-     * });  
-     * (end)     
-     *          
+     * });
+     * (end)
+     *
      * Parameters:
      * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
      * options - {Object} 参数。
@@ -35,15 +37,15 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function(url, options) {
+    initialize: function (url, options) {
         SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
      * APIMethod: destroy
-     * 释放资源,将引用的资源属性置空。  
+     * 释放资源,将引用的资源属性置空。
      */
-    destroy: function() {
+    destroy: function () {
         SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
@@ -52,9 +54,9 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * 负责将客户端的表面分析服务参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.SurfaceAnalystParameters>} 
+     * params - {<SuperMap.REST.SurfaceAnalystParameters>}
      */
-    processAsync: function(params) {
+    processAsync: function (params) {
         if (!params) {
             return;
         }
@@ -71,7 +73,7 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
 
     /**
      * Method: getJsonParameters
-     * 将参数转化为 JSON 字符串。 
+     * 将参数转化为 JSON 字符串。
      *
      * Parameters:
      * params - {<SuperMap.REST.SurfaceAnalystParameters>}
@@ -79,30 +81,30 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * Returns:
      * {Object} 转化后的JSON字符串。
      */
-    getJsonParameters: function(params) {
+    getJsonParameters: function (params) {
         var jsonParameters = "";
         var me = this, end;
-        if (params instanceof SuperMap.REST.DatasetSurfaceAnalystParameters) {
+        if (params instanceof DatasetSurfaceAnalystParameters) {
             var end = me.url.substr(me.url.length - 1, 1);
-            
+
             if (me.isInTheSameDomain) {
                 me.url += (end === "/") ? "datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() +
-                ".json?returnContent=true" : "/datasets/" + params.dataset + "/" + 
+                ".json?returnContent=true" : "/datasets/" + params.dataset + "/" +
                 params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
             } else {
                 me.url += (end === "/") ? "datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() +
-                ".jsonp?returnContent=true" : "/datasets/" + params.dataset + "/" + 
+                ".jsonp?returnContent=true" : "/datasets/" + params.dataset + "/" +
                 params.surfaceAnalystMethod.toLowerCase() + ".jsonp?returnContent=true";
             }
-        } else if (params instanceof SuperMap.REST.GeometrySurfaceAnalystParameters) {
+        } else if (params instanceof GeometrySurfaceAnalystParameters) {
             end = me.url.substr(me.url.length - 1, 1);
             if (me.isInTheSameDomain) {
                 me.url += (end === "/") ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() +
-                ".json?returnContent=true": "/geometry/" + params.surfaceAnalystMethod.toLowerCase() + 
+                ".json?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
                 ".json?returnContent=true";
             } else {
                 me.url += (end === "/") ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() +
-                ".jsonp?returnContent=true": "/geometry/" + params.surfaceAnalystMethod.toLowerCase() + 
+                ".jsonp?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
                 ".jsonp?returnContent=true";
             }
         } else {

@@ -8,8 +8,9 @@
  * 该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
  */
 require('./SpatialAnalystBase');
-SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase,{
-    
+require('./GeoRelationAnalystParameters');
+SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+
     /**
      * Constructor: SuperMap.REST.GenerateSpatialDataService
      * 空间关系分析服务类构造函数。
@@ -26,7 +27,7 @@ SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAn
      *      var datasetGeoRelationService = new SuperMap.REST.GeoRelationAnalystService(
      *          "http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst/"),
      *      //构建参数类
-     *      datasetGeoRelationParameters = new SuperMap.REST.GeoRelationAnalystParameters({
+     *      datasetGeoRelationParameters = new GeoRelationAnalystParameters({
      *          dataset: "Park@Changchun",
      *          startRecord: 0,
      *          expectCount: 20,
@@ -45,8 +46,8 @@ SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAn
      *  }
      *  function Completed(datasetGeoRelationAnalystCompleted){//todo};
      *  function Error(datasetGeoRelationAnalystFailed){//todo};
-     * (end)   
-     *          
+     * (end)
+     *
      * Parameters:
      * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
      * options - {Object} 可选参数。
@@ -54,26 +55,26 @@ SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAn
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function(url, options) {
+    initialize: function (url, options) {
         SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
-    
+
     /**
      * APIMethod: destroy
-     * 释放资源,将引用的资源属性置空。  
+     * 释放资源,将引用的资源属性置空。
      */
-    destroy: function() {
+    destroy: function () {
         SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
-    
+
     /**
      * APIMethod: processAsync
      * 负责将客户端的空间关系分析参数传递到服务端
      *
      * Parameters:
-     * params - {<SuperMap.REST.GeoRelationAnalystParameters>} 空间关系分析所需的参数信息。
+     * params - {<GeoRelationAnalystParameters>} 空间关系分析所需的参数信息。
      */
-    processAsync: function(parameter) { 
+    processAsync: function (parameter) {
         var me = this;
         var end = me.url.substr(me.url.length - 1, 1);
         if (end === '/') {
@@ -98,7 +99,7 @@ SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAn
             failure: me.serviceProcessFailed
         });
     },
-    
+
     CLASS_NAME: "SuperMap.REST.GeoRelationAnalystService"
 });
 

@@ -5,10 +5,6 @@
 require('../../../Core/iServer/StopQueryService');
 require('../../../Core/iServer/TransferPathService');
 require('../../../Core/iServer/TransferSolutionService');
-
-require('../../../Core/iServer/StopQueryParameters');
-require('../../../Core/iServer/TransferPathParameters');
-require('../../../Core/iServer/TransferSolutionParameters');
 require('./ServiceBase');
 
 ol.supermap.TrafficTransferAnalystService = function (url, options) {

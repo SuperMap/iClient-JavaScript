@@ -16,6 +16,11 @@
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
+require('./InterpolationRBFAnalystParameters');
+require('./InterpolationDensityAnalystParameters');
+require('./InterpolationIDWAnalystParameters');
+require('./InterpolationKrigingAnalystParameters');
+require('./InterpolationAnalystParameters');
 SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -67,8 +72,8 @@ SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.Spatial
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.InterpolationAnalystParameters>}/
-     * {<SuperMap.REST.InterpolationAnalystParameters>}
+     * params - {<InterpolationAnalystParameters>}/
+     * {<InterpolationAnalystParameters>}
      */
     processAsync: function (parameter) {
         var parameterObject = new Object();
@@ -81,7 +86,7 @@ SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.Spatial
             me.url += "/";
         }
 
-        if (parameter instanceof SuperMap.REST.InterpolationDensityAnalystParameters) {
+        if (parameter instanceof InterpolationDensityAnalystParameters) {
             me.mode = "Density";
             if (parameter.InterpolationAnalystType === "geometry") {
                 me.url += 'geometry/interpolation/density';
@@ -89,7 +94,7 @@ SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.Spatial
                 me.url += 'datasets/' + parameter.dataset + '/interpolation/density';
             }
         }
-        else if (parameter instanceof SuperMap.REST.InterpolationIDWAnalystParameters) {
+        else if (parameter instanceof InterpolationIDWAnalystParameters) {
             me.mode = "IDW";
             if (parameter.InterpolationAnalystType === "geometry") {
                 me.url += 'geometry/interpolation/idw';
@@ -97,7 +102,7 @@ SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.Spatial
                 me.url += 'datasets/' + parameter.dataset + '/interpolation/idw';
             }
         }
-        else if (parameter instanceof SuperMap.REST.InterpolationRBFAnalystParameters) {
+        else if (parameter instanceof InterpolationRBFAnalystParameters) {
             me.mode = "RBF";
             if (parameter.InterpolationAnalystType === "geometry") {
                 me.url += 'geometry/interpolation/rbf';
@@ -105,7 +110,7 @@ SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.Spatial
                 me.url += 'datasets/' + parameter.dataset + '/interpolation/rbf';
             }
         }
-        else if (parameter instanceof SuperMap.REST.InterpolationKrigingAnalystParameters) {
+        else if (parameter instanceof InterpolationKrigingAnalystParameters) {
             me.mode = "Kriging";
             if (parameter.InterpolationAnalystType === "geometry") {
                 me.url += 'geometry/interpolation/kriging';
@@ -113,7 +118,7 @@ SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.Spatial
                 me.url += 'datasets/' + parameter.dataset + '/interpolation/kriging';
             }
         }
-        SuperMap.REST.InterpolationAnalystParameters.toObject(parameter, parameterObject);
+        InterpolationAnalystParameters.toObject(parameter, parameterObject);
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
 
 
