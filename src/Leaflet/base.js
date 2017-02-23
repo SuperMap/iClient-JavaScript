@@ -4,8 +4,8 @@
  * 2、提供必要的转换工具
  */
 require('../Core/format/GeoJSON');
+require('./NonEarthCRS');
 L.supermap = L.supermap || {};
-
 L.Util.toSuperMapGeometry = function (geometry) {
     if (!geometry) {
         return geometry;
