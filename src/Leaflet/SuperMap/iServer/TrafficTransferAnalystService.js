@@ -23,12 +23,12 @@ TrafficTransferAnalystService = ServiceBase.extend({
     },
 
     /**
+     * 站点查询服务
      * @param params
-     *    keyWord , returnPosition
+     * {StopQueryParameters}
      */
     queryStop: function (params) {
         var me = this;
-        var stopQueryParams = new SuperMap.REST.StopQueryParameters(params);
         var stopQueryService = new SuperMap.REST.StopQueryService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -36,19 +36,16 @@ TrafficTransferAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        stopQueryService.processAsync(stopQueryParams);
+        stopQueryService.processAsync(params);
         return me;
     },
     /**
+     * 交通换乘线路查询服务
      * @param params
-     *    transferLines(array):本换乘分段内可乘车的路线集合,TransferLine参数包括lineID，lineName，lineAliasName，startStopIndex，
-     *                         startStopName，startStopAliasName，endStopIndex，endStopName，endStopAliasName
-     *    points(array)： 1. 按照公交站点的起止ID进行查询,[起点ID、终点ID] 2. 按照起止点的坐标进行查询,[{"x":44,"y":39},{"x":45,"y":40}]
+     *    {TransferPathParameters}
      */
     analysisTransferPath: function (params) {
         var me = this, param = me._processParams(params);
-
-        var transferPathParams = new SuperMap.REST.TransferPathParameters(param);
         var transferPathService = new SuperMap.REST.TransferPathService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -56,21 +53,16 @@ TrafficTransferAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        transferPathService.processAsync(transferPathParams);
+        transferPathService.processAsync(param);
         return me;
     },
     /**
+     * 交通换乘方案查询服务
      * @param params
-     *    solutionCount
-     *    transferPreference:地铁优先、公交优先、不乘地铁、无偏好
-     *    transferTactic:时间最短、距离最短、最少换乘、最少步行
-     *    walkingRatio：步行与公交的消耗权重比，默认值为 10。此值越大，则步行因素对于方案选择的影响越大
-     *    points(array)： 1. 按照公交站点的起止ID进行查询,[起点ID、终点ID] 2. 按照起止点的坐标进行查询,[{"x":44,"y":39},{"x":45,"y":40}]
-     *    evadeLines(IDs),evadeStops(IDs),priorLines(IDs),priorStops(IDs),travelTime(08:30)
+     *    {TransferSolutionParameters}
      */
     analysisTransferSolution: function (params) {
         var me = this, param = me._processParams(params);
-        var transferSolutionParams = new SuperMap.REST.TransferSolutionParameters(param);
         var transferSolutionService = new SuperMap.REST.TransferSolutionService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -78,7 +70,7 @@ TrafficTransferAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        transferSolutionService.processAsync(transferSolutionParams);
+        transferSolutionService.processAsync(param);
         return me;
     },
 

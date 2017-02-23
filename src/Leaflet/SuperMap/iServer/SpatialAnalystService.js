@@ -41,10 +41,11 @@ SpatialAnalystService = ServiceBase.extend({
     },
     /**
      * 地区太阳辐射
+     * @param params
+     * {AreaSolarRadiationParameters}
      */
-    getAreaSolarRadiationResult: function () {
+    getAreaSolarRadiationResult: function (params) {
         var me = this;
-        var areaSolarRadiationParameters = new SuperMap.REST.AreaSolarRadiationParameters(params);
         var areaSolarRadiationService = new SuperMap.REST.AreaSolarRadiationService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -52,16 +53,17 @@ SpatialAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        areaSolarRadiationService.processAsync(areaSolarRadiationParameters);
+        areaSolarRadiationService.processAsync(params);
         return me;
     },
 
     /**
      * 缓冲区分析
+     * @param params
+     * {DatasetBufferAnalystParameters}
      */
     bufferAnalysis: function (params) {
         var me = this;
-        var bufferAnalystParameters = new SuperMap.REST.DatasetBufferAnalystParameters(params);
         var bufferAnalystService = new SuperMap.REST.BufferAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -69,16 +71,17 @@ SpatialAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        bufferAnalystService.processAsync(bufferAnalystParameters);
+        bufferAnalystService.processAsync(params);
         return me;
     },
 
     /**
      * 点密度分析
+     * @param params
+     * {DensityKernelAnalystParameters}
      */
     densityAnalysis: function (params) {
         var me = this, param = me._processParams(params);
-        var densityKernelAnalystParameters = new SuperMap.REST.DensityKernelAnalystParameters(param);
         var densityAnalystService = new SuperMap.REST.DensityAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -86,16 +89,17 @@ SpatialAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        densityAnalystService.processAsync(densityKernelAnalystParameters);
+        densityAnalystService.processAsync(param);
         return me;
     },
 
     /**
      * 动态分段分析
+     * @param params
+     * {GenerateSpatialDataParameters}
      */
     generateSpatialData: function (params) {
         var me = this;
-        var generateSpatialDataParameters = new SuperMap.REST.GenerateSpatialDataParameters(params);
         var generateSpatialDataService = new SuperMap.REST.GenerateSpatialDataService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -103,16 +107,17 @@ SpatialAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        generateSpatialDataService.processAsync(generateSpatialDataParameters);
+        generateSpatialDataService.processAsync(params);
         return me;
     },
 
     /**
      * 空间关系分析
+     * @param params
+     * {GeoRelationAnalystParameters}
      */
     geoRelationAnalysis: function (params) {
         var me = this;
-        var geoRelationAnalystParameters = new SuperMap.REST.GeoRelationAnalystParameters(params);
         var geoRelationAnalystService = new SuperMap.REST.GeoRelationAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -120,16 +125,17 @@ SpatialAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        geoRelationAnalystService.processAsync(geoRelationAnalystParameters);
+        geoRelationAnalystService.processAsync(params);
         return me;
     },
 
     /**
      * 插值分析
+     * @param params
+     * {InterpolationRBFAnalystParameters}
      */
     interpolationAnalysis: function (params) {
         var me = this, param = me._processParams(params);
-        var interpolationRBFAnalystParameters = new SuperMap.REST.InterpolationRBFAnalystParameters(param);
         var interpolationAnalystService = new SuperMap.REST.InterpolationAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -137,16 +143,17 @@ SpatialAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        interpolationAnalystService.processAsync(interpolationRBFAnalystParameters);
+        interpolationAnalystService.processAsync(param);
         return me;
     },
 
     /**
      * 栅格代数运算
+     * @param params
+     * {MathExpressionAnalysisParameters}
      */
     mathExpressionAnalysis: function (params) {
         var me = this, param = me._processParams(params);
-        var mathExpressionAnalysisParameters = new SuperMap.REST.MathExpressionAnalysisParameters(param);
         var mathExpressionAnalysisService = new SuperMap.REST.MathExpressionAnalysisService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -154,16 +161,17 @@ SpatialAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        mathExpressionAnalysisService.processAsync(mathExpressionAnalysisParameters);
+        mathExpressionAnalysisService.processAsync(param);
         return me;
     },
 
     /**
      * 叠加分析
+     * @param params
+     * {DatasetOverlayAnalystParameters}
      */
     overlayAnalysis: function (params) {
         var me = this, param = me._processParams(params);
-        var datasetOverlayAnalystParameters = new SuperMap.REST.DatasetOverlayAnalystParameters(param);
         var overlayAnalystService = new SuperMap.REST.OverlayAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -171,16 +179,17 @@ SpatialAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        overlayAnalystService.processAsync(datasetOverlayAnalystParameters);
+        overlayAnalystService.processAsync(param);
         return me;
     },
 
     /**
      * 路由测量计算
+     * @param params
+     * {RouteCalculateMeasureParameters}
      */
     routeCalculateMeasure: function (params) {
         var me = this, param = me._processParams(params);
-        var routeCalculateMeasureParameters = new SuperMap.REST.RouteCalculateMeasureParameters(param);
         var routeCalculateMeasureService = new SuperMap.REST.RouteCalculateMeasureService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -188,16 +197,17 @@ SpatialAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        routeCalculateMeasureService.processAsync(routeCalculateMeasureParameters);
+        routeCalculateMeasureService.processAsync(param);
         return me;
     },
 
     /**
      * 路由定位
+     * @param params
+     * {RouteLocatorParameters}
      */
     routeLocate: function (params) {
         var me = this, param = me._processParams(params);
-        var routeLocatorParameters = new SuperMap.REST.RouteLocatorParameters(param);
         var routeLocatorService = new SuperMap.REST.RouteLocatorService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -205,16 +215,17 @@ SpatialAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        routeLocatorService.processAsync(routeLocatorParameters);
+        routeLocatorService.processAsync(param);
         return me;
     },
 
     /**
      * 表面分析
+     * @param params
+     * {DatasetSurfaceAnalystParameters}
      */
     surfaceAnalysis: function (params) {
         var me = this, param = me._processParams(params);
-        var datasetSurfaceAnalystParameters = new SuperMap.REST.DatasetSurfaceAnalystParameters(param);
         var surfaceAnalystService = new SuperMap.REST.SurfaceAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -222,16 +233,17 @@ SpatialAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        surfaceAnalystService.processAsync(datasetSurfaceAnalystParameters);
+        surfaceAnalystService.processAsync(param);
         return me;
     },
 
     /**
      * 地形曲率计算
+     * @param params
+     * {TerrainCurvatureCalculationParameters}
      */
     terrainCurvatureCalculate: function (params) {
         var me = this;
-        var terrainCurvatureCalculationParameters = new SuperMap.REST.TerrainCurvatureCalculationParameters(params);
         var terrainCurvatureCalculationService = new SuperMap.REST.TerrainCurvatureCalculationService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -239,16 +251,17 @@ SpatialAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        terrainCurvatureCalculationService.processAsync(terrainCurvatureCalculationParameters);
+        terrainCurvatureCalculationService.processAsync(params);
         return me;
     },
 
     /**
      * 泰森多边形分析
+     * @param params
+     * {DatasetThiessenAnalystParameters}
      */
     thiessenAnalysis: function (params) {
         var me = this;
-        var datasetThiessenAnalystParameters = new SuperMap.REST.DatasetThiessenAnalystParameters(params);
         var thiessenAnalystService = new SuperMap.REST.ThiessenAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -256,7 +269,7 @@ SpatialAnalystService = ServiceBase.extend({
                 processFailed: me.processFailed
             }
         });
-        thiessenAnalystService.processAsync(datasetThiessenAnalystParameters);
+        thiessenAnalystService.processAsync(params);
         return me;
     },
 
@@ -280,15 +293,23 @@ SpatialAnalystService = ServiceBase.extend({
         if (params.extractRegion) {
             params.extractRegion = L.Util.toSuperMapGeometry(params.extractRegion);
         }
-        if (params.extractParameter && params.extractParameter.clipRegion) {
-            params.extractParameter.clipRegion = L.Util.toSuperMapGeometry(params.extractParameter.clipRegion);
+        if (params.clipRegion) {
+            params.clipRegion = L.Util.toSuperMapGeometry(params.clipRegion);
         }
-        if (params.operateRegions) {
-            params.operateRegions = L.Util.toSuperMapGeometry(params.operateRegions);
+        if (params.sourceRoute && params.sourceRoute.points) {
+            params.sourceRoute.points = L.Util.toSuperMapGeometry(params.sourceRoute.points);
         }
-        if (params.sourceRoute) {
-            params.sourceRoute = L.Util.toSuperMapGeometry(params.sourceRoute);
+        if (params.operateRegions && ol.supermap.isArray(params.operateRegions)) {
+            params.operateRegions.map(function (geometry, key) {
+                params.operateRegions[key] = L.Util.toSuperMapGeometry(geometry);
+            });
         }
+        if (params.sourceRoute && params.sourceRoute.components && ol.supermap.isArray(params.sourceRoute.components)) {
+            params.sourceRoute.components.map(function (geometry, key) {
+                params.sourceRoute.components[key] = L.Util.toSuperMapGeometry(geometry);
+            });
+        }
+        
         return params;
     }
 });
