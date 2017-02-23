@@ -11,7 +11,7 @@
  *  - <SuperMap.CoreServiceBase>
  */
 require('./CoreServiceBase');
-
+require('./BurstPipelineAnalystParameters');
 SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -28,7 +28,7 @@ SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.CoreServiceB
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
 
-    initialize: function(url, options) {
+    initialize: function (url, options) {
         SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
     },
 
@@ -36,7 +36,7 @@ SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.CoreServiceB
      * APIMethod: destroy
      * 释放资源，将引用的资源属性置空。
      */
-    destroy: function() {
+    destroy: function () {
         SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
     },
 
@@ -45,9 +45,9 @@ SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.CoreServiceB
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.BurstPipelineAnalystParameters>}
+     * params - {<BurstPipelineAnalystParameters>}
      */
-    processAsync: function(params) {
+    processAsync: function (params) {
         if (!params) {
             return;
         }
@@ -61,9 +61,9 @@ SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.CoreServiceB
         };
 
         //必传参数不正确，就终止
-        if(params.edgeID !== null && params.nodeID !== null ) return;
-        if(params.edgeID === null && params.nodeID === null ) return;
-        if(params.edgeID !== null)
+        if (params.edgeID !== null && params.nodeID !== null) return;
+        if (params.edgeID === null && params.nodeID === null) return;
+        if (params.edgeID !== null)
             jsonObject.edgeID = params.edgeID;
         else
             jsonObject.nodeID = params.nodeID;

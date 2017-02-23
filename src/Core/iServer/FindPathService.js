@@ -14,6 +14,7 @@
  *  - <SuperMap.CoreServiceBase>
  */
 require('./CoreServiceBase');
+require('./FindPathParameters');
 SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -56,7 +57,7 @@ SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.FindPathParameters>} 
+     * params - {<FindPathParameters>} 
      */
     processAsync: function(params) {
         if (!params) {

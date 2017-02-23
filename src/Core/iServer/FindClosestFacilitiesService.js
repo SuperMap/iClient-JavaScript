@@ -14,7 +14,7 @@
  *  - <SuperMap.CoreServiceBase>
  */
 require('./CoreServiceBase');
-
+require('./FindClosestFacilitiesParameters');
 SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -58,7 +58,7 @@ SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.CoreService
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.FindClosestFacilitiesParameters>} 
+     * params - {<FindClosestFacilitiesParameters>} 
      */
     processAsync: function(params) {
         if (!params) {

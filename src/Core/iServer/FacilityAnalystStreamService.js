@@ -11,7 +11,7 @@
  *  - <SuperMap.CoreServiceBase>
  */
 require('./CoreServiceBase');
-
+require('./FacilityAnalystStreamParameters');
 SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -45,7 +45,7 @@ SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.CoreService
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.FacilityAnalystStreamParameters>}
+     * params - {<FacilityAnalystStreamParameters>}
      */
     processAsync: function (params) {
         if (!params) {

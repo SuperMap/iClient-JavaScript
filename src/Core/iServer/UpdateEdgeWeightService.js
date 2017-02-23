@@ -3,6 +3,7 @@
  * 未经许可，不得以任何手段擅自使用或传播。*/
 
 require('./CoreServiceBase');
+require('./UpdateEdgeWeightParameters');
  SuperMap.REST.UpdateEdgeWeightService=SuperMap.Class(SuperMap.CoreServiceBase,{
 
     /**
@@ -43,11 +44,11 @@ require('./CoreServiceBase');
       * APIMethod: processAsync
       * 开始异步执行边的边的耗费权重的更新
       * Parameters:
-      * params - {SuperMap.REST.UpdateEdgeWeightParameters} 更新服务参数
+      * params - {UpdateEdgeWeightParameters} 更新服务参数
       *
       * 例如:
       * (code)
-      *  var updateEdgeWeightParam=new SuperMap.REST.UpdateEdgeWeightParameters({
+      *  var updateEdgeWeightParam=new UpdateEdgeWeightParameters({
       *          edgeId:"20",
       *          fromNodeId:"26",
       *          toNodeId:"109",

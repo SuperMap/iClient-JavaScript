@@ -14,7 +14,7 @@
  *  - <SuperMap.CoreServiceBase>
  */
 require('./CoreServiceBase');
-
+require('./FindMTSPPathsParameters');
 SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -57,7 +57,7 @@ SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.FindMTSPPathsParameters>} 
+     * params - {<FindMTSPPathsParameters>} 
      */
     processAsync: function (params) {
         if (!params) {

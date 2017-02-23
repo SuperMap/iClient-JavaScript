@@ -13,6 +13,7 @@
  *  - <SuperMap.CoreServiceBase>
  */
 require('./CoreServiceBase');
+require('./FindLocationParameters');
 SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -53,7 +54,7 @@ SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.FindLocationParameters>} 
+     * params - {<FindLocationParameters>} 
      */
     processAsync: function(params) {
         if (!params) {

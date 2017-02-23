@@ -3,6 +3,7 @@
  * 未经许可，不得以任何手段擅自使用或传播。*/
 
 require('./CoreServiceBase');
+require('./UpdateTurnNodeWeightParameters');
 SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -42,11 +43,11 @@ SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.CoreServiceB
      * APIMethod: processAsync
      * 开始异步执行转向耗费权重的更新
      * Parameters:
-     * params - {SuperMap.REST.UpdateTurnNodeWeightParameters} 更新服务参数
+     * params - {UpdateTurnNodeWeightParameters} 更新服务参数
      *
      * 例如:
      * (code)
-     *  var updateTurnNodeWeightParam=new SuperMap.REST.UpdateTurnNodeWeightParameters({
+     *  var updateTurnNodeWeightParam=new UpdateTurnNodeWeightParameters({
      *           nodeId:"106",
      *           fromEdgeId:"6508",
      *           toEdgeId:"6504",

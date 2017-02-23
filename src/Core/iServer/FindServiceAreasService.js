@@ -14,6 +14,7 @@
  *  - <SuperMap.ServiceBase> 
  */
 require('./CoreServiceBase');
+require('./FindServiceAreasParameters');
 SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -51,7 +52,7 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.CoreServiceBase,
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.FindServiceAreasParameters>} 
+     * params - {<FindServiceAreasParameters>} 
      */
     processAsync: function(params) {
         if (!params) {

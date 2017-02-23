@@ -14,6 +14,7 @@
  *  - <SuperMap.CoreServiceBase>
  */
 require('./CoreServiceBase');
+require('./FindTSPPathsParameters');
 SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -56,7 +57,7 @@ SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.FindTSPPathsParameters>} 
+     * params - {<FindTSPPathsParameters>} 
      */
     processAsync: function (params) {
         if (!params) {
@@ -84,7 +85,7 @@ SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 将节点对象转化为JSON字符串。
      *
      * Parameters:
-     * params - {<SuperMap.REST.FindTSPPathsParameters>} 
+     * params - {<FindTSPPathsParameters>} 
      *
      * Returns:
      * {Object} 转化后的JSON字符串。
