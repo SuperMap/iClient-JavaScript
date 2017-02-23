@@ -10,6 +10,7 @@
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
+require('./MathExpressionAnalysisParameters');
 SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -33,7 +34,7 @@ SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.Spati
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function(url, options) {
+    initialize: function (url, options) {
         SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
@@ -50,7 +51,7 @@ SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.Spati
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.MathExpressionAnalysisParameters>}
+     * params - {<MathExpressionAnalysisParameters>}
      */
     processAsync: function (parameter) {
         var me = this;
@@ -64,11 +65,11 @@ SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.Spati
 
         var parameterObject = new Object();
 
-        if (parameter instanceof SuperMap.REST.MathExpressionAnalysisParameters) {
-            me.url += 'datasets/' + parameter.dataset +'/mathanalyst';
+        if (parameter instanceof MathExpressionAnalysisParameters) {
+            me.url += 'datasets/' + parameter.dataset + '/mathanalyst';
         }
 
-        SuperMap.REST.MathExpressionAnalysisParameters.toObject(parameter, parameterObject);
+        MathExpressionAnalysisParameters.toObject(parameter, parameterObject);
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
 
         if (me.isInTheSameDomain) {

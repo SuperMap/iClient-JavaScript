@@ -6,19 +6,20 @@
  * Class: SuperMap.REST.TransferPathService
  * 交通换乘线路查询服务类，根据交通换乘分析结果(TransferSolutionResult)，获取某一条乘车路线的详细信息。
  * 返回结果通过该类支持的事件的监听函数参数获取
- * 
+ *
  * Inherits from:
  *  - <SuperMap.CoreServiceBase>
  */
 require('./CoreServiceBase');
+require('./TransferPathParameters');
 SuperMap.REST.TransferPathService = SuperMap.Class(SuperMap.CoreServiceBase, {
-    
+
     /**
      * Constructor: SuperMap.REST.TransferPathService
-     * 交通换乘线路服务类构造函数。     
-     * 
+     * 交通换乘线路服务类构造函数。
+     *
      * 例如：
-     * (start code)     
+     * (start code)
      * var myService = new SuperMap.REST.TransferPathService(url, {eventListeners: {
      *     "processCompleted": TrafficTransferCompleted, 
      *     "processFailed": TrafficTransferError
@@ -34,17 +35,17 @@ SuperMap.REST.TransferPathService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function(url, options) {
+    initialize: function (url, options) {
         SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
         options = options || {};
         SuperMap.Util.extend(this, options);
     },
-    
+
     /**
      * APIMethod: destroy
-     * 释放资源,将引用资源的属性置空。  
+     * 释放资源,将引用资源的属性置空。
      */
-    destroy: function() {
+    destroy: function () {
         SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
         SuperMap.Util.reset(this);
     },
@@ -54,26 +55,26 @@ SuperMap.REST.TransferPathService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 负责将客户端的更新参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.TransferPathParameters>} 交通换乘参数。
+     * params - {<TransferPathParameters>} 交通换乘参数。
      */
-    processAsync: function(params) {
-        if(!params){
+    processAsync: function (params) {
+        if (!params) {
             return;
         }
         var me = this,
             method = "GET",
             jsonParameters,
             end;
-            
+
         end = me.url.substr(me.url.length - 1, 1);
         me.url += (end === "/") ? '' : '/';
         me.url += me.isInTheSameDomain ? "path.json?" : "path.jsonp";
-        
+
         jsonParameters = {
             points: SuperMap.Util.toJSON(params.points),
             transferLines: params['transferLines']
         };
-        
+
         me.request({
             method: method,
             params: jsonParameters,
@@ -82,7 +83,7 @@ SuperMap.REST.TransferPathService = SuperMap.Class(SuperMap.CoreServiceBase, {
             failure: me.serviceProcessFailed
         });
     },
-    
+
     CLASS_NAME: "SuperMap.REST.TransferPathService"
 });
 

@@ -7,11 +7,13 @@
  * 叠加分析服务类
  * 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
  * 叠加分析结果通过该类支持的事件的监听函数参数获取
- * 
+ *
  * Inherits from:
  *  - <SuperMap.CoreServiceBase>
  */
 require('./CoreServiceBase');
+require('./DatasetOverlayAnalystParameters');
+require('./GeometryOverlayAnalystParameters');
 SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -19,25 +21,25 @@ SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * {<String>} 叠加分析类型
      */
     mode: null,
-    
+
     /**
      * Constructor: SuperMap.REST.OverlayAnalystService
      * 查询叠加分析服务基类构造函数。
-     *     
+     *
      * 例如：
-     * (start code)     
+     * (start code)
      * var myOverlayAnalystService = new SuperMap.REST.OverlayAnalystService(url, {
      *     eventListeners: {
      *	       "processCompleted": OverlayCompleted, 
      *		   "processFailed": OverlayFailed
      *		   }
-     * }); 
-     * (end)     
+     * });
+     * (end)
      *
      * Parameters:
      * url - {String} 服务的访问地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * options - {Object} 参数。     
-     * 
+     * options - {Object} 参数。
+     *
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
@@ -63,8 +65,8 @@ SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.OverlayAnalystParameters>} 
-    */
+     * params - {<SuperMap.REST.OverlayAnalystParameters>}
+     */
     processAsync: function (parameter) {
         var parameterObject = new Object();
         var me = this;
@@ -76,15 +78,15 @@ SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
             me.url += "/";
         }
 
-        if (parameter instanceof SuperMap.REST.DatasetOverlayAnalystParameters) {
+        if (parameter instanceof DatasetOverlayAnalystParameters) {
             me.mode = "datasets";
             me.url += 'datasets/' + parameter.sourceDataset + '/overlay';
-            SuperMap.REST.DatasetOverlayAnalystParameters.toObject(parameter, parameterObject);
+            DatasetOverlayAnalystParameters.toObject(parameter, parameterObject);
         }
-        else if (parameter instanceof SuperMap.REST.GeometryOverlayAnalystParameters) {
+        else if (parameter instanceof GeometryOverlayAnalystParameters) {
             me.mode = "geometry";
             me.url += 'geometry/overlay';
-            SuperMap.REST.GeometryOverlayAnalystParameters.toObject(parameter, parameterObject);
+            GeometryOverlayAnalystParameters.toObject(parameter, parameterObject);
         }
 
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);

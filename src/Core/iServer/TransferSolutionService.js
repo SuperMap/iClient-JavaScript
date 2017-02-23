@@ -11,7 +11,7 @@
  *  - <SuperMap.CoreServiceBase>
  */
 require('./CoreServiceBase');
-
+require('./TransferSolutionParameters');
 SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
@@ -55,7 +55,7 @@ SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.CoreServiceBase,
      * 负责将客户端的更新参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.TransferSolutionParameters>} 交通换乘参数。
+     * params - {<TransferSolutionParameters>} 交通换乘参数。
      */
     processAsync: function (params) {
         if (!params) {

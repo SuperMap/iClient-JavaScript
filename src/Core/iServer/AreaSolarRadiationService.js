@@ -10,6 +10,7 @@
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
+require('./AreaSolarRadiationParameters');
 SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -33,7 +34,7 @@ SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAn
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function(url, options) {
+    initialize: function (url, options) {
         SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
@@ -50,7 +51,7 @@ SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAn
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.AreaSolarRadiationParameters>}
+     * params - {<AreaSolarRadiationService>}
      */
     processAsync: function (parameter) {
         var me = this;
@@ -64,11 +65,11 @@ SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAn
 
         var parameterObject = new Object();
 
-        if (parameter instanceof SuperMap.REST.AreaSolarRadiationParameters) {
-            me.url += 'datasets/' + parameter.dataset +'/solarradiation';
+        if (parameter instanceof AreaSolarRadiationService) {
+            me.url += 'datasets/' + parameter.dataset + '/solarradiation';
         }
 
-        SuperMap.REST.AreaSolarRadiationParameters.toObject(parameter, parameterObject);
+        AreaSolarRadiationService.toObject(parameter, parameterObject);
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
 
         if (me.isInTheSameDomain) {

@@ -3,7 +3,7 @@
  * 未经许可，不得以任何手段擅自使用或传播。*/
 
 /**
- * Class: SuperMap.REST.FacilityAnalystSources3DService 
+ * Class: SuperMap.REST.FacilityAnalystSources3DService
  * 最近设施分析服务类(源查找资源)
  * 最近设施分析是指在网络上给定一个事件点和一组设施点，
  * 查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
@@ -14,42 +14,43 @@
  *  - <SuperMap.CoreServiceBase>
  */
 require('./CoreServiceBase');
+require('./FacilityAnalystSources3DParameters');
 SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FacilityAnalystSources3DService 
-     * 最近设施分析服务类构造函数。        
-     * 
+     * Constructor: SuperMap.REST.FacilityAnalystSources3DService
+     * 最近设施分析服务类构造函数。
+     *
      * Parameters:
      * url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
      * http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
      * 例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
-     * options - {Object} 参数。     
+     * options - {Object} 参数。
      *
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-     
-    initialize: function(url, options) {
+
+    initialize: function (url, options) {
         SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
     },
-    
+
     /**
      * APIMethod: destroy
-     * 释放资源，将引用的资源属性置空。  
+     * 释放资源，将引用的资源属性置空。
      */
-    destroy: function() { 
+    destroy: function () {
         SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
     },
-    
+
     /**
      * APIMethod: processAsync
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.FacilityAnalystSources3DParameters>} 
+     * params - {<FacilityAnalystSources3DParameters>}
      */
-    processAsync: function(params) {
+    processAsync: function (params) {
         if (!params) {
             return;
         }
@@ -60,8 +61,8 @@ SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.CoreServ
             edgeID: params.edgeID,
             nodeID: params.nodeID,
             weightName: params.weightName,
-			isUncertainDirectionValid: params.isUncertainDirectionValid
-        };    
+            isUncertainDirectionValid: params.isUncertainDirectionValid
+        };
         me.request({
             method: "GET",
             params: jsonObject,
@@ -70,7 +71,7 @@ SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.CoreServ
             failure: me.serviceProcessFailed
         });
     },
-    
+
     CLASS_NAME: "SuperMap.REST.FacilityAnalystSources3DService"
 });
 

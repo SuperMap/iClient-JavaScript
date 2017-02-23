@@ -11,6 +11,7 @@
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
+require('./RouteCalculateMeasureParameters');
 SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -19,7 +20,7 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
      *
      * 实例化该类如下例所示：
      * (start code)
-     * var parameters = new SuperMap.REST.RouteCalculateMeasureParameters({
+     * var parameters = new RouteCalculateMeasureParameters({
      *     "sourceRoute":{
      *         "type":"LINEM",
      *        "parts":[4],
@@ -74,7 +75,7 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize:function (url, options) {
+    initialize: function (url, options) {
         SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
@@ -82,7 +83,7 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
      * APIMethod: destroy
      * 释放资源,将引用的资源属性置空。
      */
-    destroy:function () {
+    destroy: function () {
         SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
@@ -91,9 +92,9 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
      * 负责将客户端的基于路由对象计算指定点M值操作的参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.RouteCalculateMeasureParameters>}
+     * params - {<RouteCalculateMeasureParameters>}
      */
-    processAsync:function (params) {
+    processAsync: function (params) {
         if (!params) {
             return;
         }
@@ -102,11 +103,11 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
         jsonParameters = me.getJsonParameters(params);
 
         me.request({
-            method:"POST",
-            data:jsonParameters,
-            scope:me,
-            success:me.serviceProcessCompleted,
-            failure:me.serviceProcessFailed
+            method: "POST",
+            data: jsonParameters,
+            scope: me,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
         });
     },
 
@@ -115,12 +116,12 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
      * 将参数转化为 JSON 字符串。
      *
      * Parameters:
-     * params - {<SuperMap.REST.RouteCalculateMeasureParameters>}
+     * params - {<RouteCalculateMeasureParameters>}
      *
      * Returns:
      * {Object} 转化后的JSON字符串。
      */
-    getJsonParameters:function (params) {
+    getJsonParameters: function (params) {
         var jsonParameters, jsonStr = "geometry/calculatemeasure", me = this, end;
         end = me.url.substr(me.url.length - 1, 1);
         if (me.isInTheSameDomain) {
@@ -134,7 +135,7 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
         return jsonParameters;
     },
 
-    CLASS_NAME:"SuperMap.REST.RouteCalculateMeasureService"
+    CLASS_NAME: "SuperMap.REST.RouteCalculateMeasureService"
 });
 
 module.exports = function (url, options) {

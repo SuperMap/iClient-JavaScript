@@ -15,6 +15,7 @@
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
+require('./DensityKernelAnalystParameters');
 SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -66,7 +67,7 @@ SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.DensityKernelAnalystParameters>}
+     * params - {<DensityKernelAnalystParameters>}
      */
     processAsync: function (parameter) {
         var me = this;
@@ -80,12 +81,12 @@ SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
 
         var parameterObject = new Object();
 
-        if (parameter instanceof SuperMap.REST.DensityKernelAnalystParameters) {
+        if (parameter instanceof DensityKernelAnalystParameters) {
             me.url += 'datasets/' + parameter.dataset + '/densityanalyst/kernel';
             me.mode = "kernel";
         }
 
-        SuperMap.REST.DensityKernelAnalystParameters.toObject(parameter, parameterObject);
+        DensityKernelAnalystParameters.toObject(parameter, parameterObject);
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
 
         if (me.isInTheSameDomain) {
