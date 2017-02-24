@@ -78,9 +78,7 @@ TrafficTransferAnalystService = ServiceBase.extend({
         if (!params) {
             return {};
         }
-        if (params.transferLines && !L.Util.isArray(params.transferLines)) {
-            params.transferLines = [params.transferLines];
-        }
+
         if (params.points && L.Util.isArray(params.points)) {
             params.points.map(function (point, key) {
                 params.points[key] = (point instanceof L.LatLng) ? {x: point.lng, y: point.lat} : point;

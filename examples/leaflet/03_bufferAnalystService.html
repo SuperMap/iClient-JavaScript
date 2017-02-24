@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析服务-缓冲区分析</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for Leaflet.js"></script>
+
+    <script type="text/javascript">
+        var map, roadLine, resultLayer, service, dsBufferAnalystParameters,
+                baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+                serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+        function init() {
+            map = L.map('map', {
+                crs: L.supermap.NonEarthCRS({
+                    bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+                    origin: L.point(48.4, -55.58)
+                }),
+                center: [-3375, 5105],
+                maxZoom: 18,
+                zoom: 6
+            });
+            L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+            roadLine = L.polyline([
+                [-3337.3849141502124, 4933.319287022352],
+                [-3349.3316322355736, 4960.9674060199022],
+                [-3358.8890067038628, 5006.0235999418364],
+                [-3378.0037556404409, 5075.3145648369318],
+                [-3376.9669111768926, 5305.19551436013]
+            ]).addTo(map);
+            service = L.supermap.spatialAnalystService(serviceUrl);
+            dsBufferAnalystParameters = new DatasetBufferAnalystParameters({
+                dataset: "RoadLine2@Changchun",
+                filterQueryParameter: new FilterParameter({
+                    attributeFilter: "NAME='团结路'"
+                }),
+                bufferSetting: new BufferSetting({
+                    endType: SuperMap.REST.BufferEndType.ROUND,
+                    leftDistance: {value: 10},
+                    rightDistance: {value: 10},
+                    semicircleLineSegment: 10
+                })
+            });
+        }
+
+        function bufferAnalystProcess() {
+            clearLayer();
+            service.bufferAnalysis(dsBufferAnalystParameters).on('complete', function (serviceResult) {
+                resultLayer = L.geoJSON(serviceResult.result, {color: "red"}).addTo(map);
+            });
+        }
+
+        function clearLayer() {
+            if (resultLayer) {
+                resultLayer.remove();
+            }
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <input type="button" class="btn btn-primary" value="缓冲区分析" onclick="bufferAnalystProcess()"/>
+    <input type="button" class="btn btn-primary" value="清除" onclick="clearLayer()"/>
+</div>
+
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>

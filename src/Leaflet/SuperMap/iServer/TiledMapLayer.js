@@ -59,10 +59,10 @@ TiledMapLayer = L.TileLayer.extend({
             layerUrl += "&" + SuperMap.Credential.CREDENTIAL.getUrlParameters();
         }
 
-        var transparent = (options.transparent !== undefined) ? options.transparent : true;
+        var transparent = (options.transparent) ? options.transparent : true;
         layerUrl += "&transparent=" + transparent;
 
-        var cacheEnabled = (options.cacheEnabled !== undefined) ? options.cacheEnabled : false;
+        var cacheEnabled = (options.cacheEnabled) ? options.cacheEnabled : false;
         layerUrl += "&cacheEnabled=" + cacheEnabled;
 
         if (!options.layersID) {

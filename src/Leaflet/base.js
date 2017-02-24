@@ -6,6 +6,20 @@
 L.supermap = L.supermap || {};
 require('../Core/format/GeoJSON');
 require('./NonEarthCRS');
+
+L.Util.toGeoJSON = function (feature) {
+    if (!feature) {
+        return feature;
+    }
+    var result, format = new SuperMap.Format.GeoJSON();
+    if (feature.geometry) {
+        result = JSON.parse(format.write(feature.geometry));
+    } else {
+        result = JSON.parse(format.write(feature));
+    }
+    return result;
+};
+
 L.Util.toSuperMapGeometry = function (geometry) {
     if (!geometry) {
         return geometry;

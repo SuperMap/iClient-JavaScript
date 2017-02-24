@@ -13,16 +13,16 @@ TransferSolutionParameters = SuperMap.Class({
 
     /**
      * APIProperty: transferPreference
-     * {<SuperMap.REST.TransferPreference>} 乘车偏好枚举。默认为SuperMap.REST.TransferPreference.NONE
+     * {<TransferPreference>} 乘车偏好枚举。默认为SuperMap.REST.TransferPreference.NONE
      */
-    transferPreference: SuperMap.REST.TransferPreference.NONE,
+    transferPreference: TransferPreference.NONE,
 
     /**
      * APIProperty: transferTactic
-     * {<SuperMap.REST.TransferTactic>} 交通换乘策略类型，包括时间最短、距离最短、最少换乘、
+     * {<TransferTactic>} 交通换乘策略类型，包括时间最短、距离最短、最少换乘、
      * 最少步行四种选择。默认为SuperMap.REST.TransferTactic.LESS_TIME
      */
-    transferTactic: SuperMap.REST.TransferTactic.LESS_TIME,
+    transferTactic: TransferTactic.LESS_TIME,
 
     /**
      * APIProperty: walkingRatio
@@ -89,9 +89,9 @@ TransferSolutionParameters = SuperMap.Class({
      *
      * Allowed options properties:
      * solutionCount - {Boolean} 乘车方案的数量。默认为6。
-     * transferTactic - {<SuperMap.REST.TransferTactic>} 交通换乘策略类型，
+     * transferTactic - {<TransferTactic>} 交通换乘策略类型，
      * 包括时间最短、距离最短、最少换乘、最少步行四种选择。
-     * transferPreference - {<SuperMap.REST.TransferPreference>} 乘车偏好枚举。
+     * transferPreference - {<TransferPreference>} 乘车偏好枚举。
      * walkingRatio - {Array(Number)} 步行与公交的消耗权重比，默认值为 10。
      * points - {Array(Number)} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。
      * evadeLines - {Array(Number)} 避让路线的ID，默认为null。

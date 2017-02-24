@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>交通换乘分析服务</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for Leaflet.js"></script>
+    <style>
+        #startInput, #endInput, .strategy {
+            width: 100px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .transferSolution {
+            cursor: pointer;
+            margin: 10px 10px;
+        }
+
+        .transferInfo a {
+            cursor: pointer;
+        }
+
+        table {
+            width: 90%;
+        }
+
+        #trafficRes {
+            margin: 5px;
+        }
+    </style>
+    <script type="text/javascript">
+        var map, startMarker, endMarker, popwin, tempRedLayer, tempMarker,
+                routeFeatureGroup, paths = {transSolutions: null, solutions: null}, info,
+                baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+                serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun";
+        function init() {
+            map = L.map('map', {
+                crs: L.supermap.NonEarthCRS({
+                    bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+                    origin: L.point(48.4, -55.58)
+                }),
+                center: [-3861.91, 4503.62],
+                maxZoom: 18,
+                zoom: 1
+            });
+            L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+
+            startMarker = L.marker([-5527.73795456, 3111.42533851]).addTo(map).bindTooltip("起点", {
+                offset: L.point([0, -10]), direction: "top", permanent: true
+            }).openTooltip();
+
+            endMarker = L.marker([-4270.0725196, 6055.3431955]).addTo(map).bindTooltip("终点", {
+                offset: L.point([0, -10]), direction: "top", permanent: true
+            }).openTooltip();
+            routeFeatureGroup = L.featureGroup().addTo(map);
+            tempRedLayer = L.featureGroup().addTo(map);
+            initResultInfoWin();
+        }
+
+        function execTransSolutionsQuery(tactic) {
+            info.remove();
+            paths.points = [26, 180];
+            var params = new TransferSolutionParameters({
+                solutionCount: 6,//最大换乘导引数量
+                transferTactic: tactic,//公交换乘策略类型
+                walkingRatio: 10,//步行与公交的消耗权重比
+                points: paths.points //起始点坐标
+            });
+            L.supermap.trafficTransferAnalystService(serviceUrl).analysisTransferSolution(params)
+                    .on('complete', function (serviceResult) {
+                        transferSolutionsSucceed(serviceResult.result);
+                    })
+                    .on('failed', function (result) {
+                        alert("错误提示:" + result.errorMsg);
+                    });
+        }
+
+        function transferSolutionsSucceed(result) {
+            clearLayer();
+            info.addTo(map);
+            //在地图上叠加符号信息
+            var transGuide = result.defaultGuide,
+                    transSolutions = result.solutionItems,
+                    solutions = [];
+
+            for (var j = 0; j < transSolutions.length; j++) {
+                var linesItems = transSolutions[j].linesItems, transSolution = [];
+                for (var jj = 0; jj < linesItems.length; jj++) {
+                    var lineItems = linesItems[jj].lineItems, items = [];
+                    for (var jjj = 0; jjj < lineItems.length; jjj++) {
+                        var lineItem = lineItems[jjj];
+                        items.push("{'lineID':" + lineItem.lineID + ",'startStopIndex':" + lineItem.startStopIndex + ",'endStopIndex':" + lineItem.endStopIndex + "}");
+                    }
+                    transSolution.push(items);
+                }
+                solutions.push(transSolution);
+            }
+            paths["transSolutions"] = transSolutions;
+            paths["solutions"] = solutions;
+            if (!transGuide || !transSolutions) return;
+            info.update(transSolutions, transGuide);
+        }
+        function initResultInfoWin() {
+            info = L.control({position: 'topright'});
+            info.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'panel panel-primary');
+                info.update();
+                return this._div;
+            };
+
+            info.update = function (transSolutions, transGuide) {
+                if (!transSolutions) {
+                    return;
+                }
+                var solution, lines, line, dispStatus = "block";
+                $("<div class='panel-heading'>乘车方案</div>").appendTo(this._div);
+                for (var i = 0, iLen = transSolutions.length; i < iLen; i++) {
+                    solution = transSolutions[i];
+                    var title = "";
+                    for (var ii = 0, iiLen = solution.linesItems.length; ii < iiLen; ii++) {
+                        lines = solution.linesItems[ii];
+                        for (var iii = 0, iiiLen = lines.lineItems.length; iii < iiiLen; iii++) {
+                            line = lines.lineItems[iii];
+                            if (iii !== iiiLen - 1) {
+                                title += line.lineName + "/";
+                            } else {
+                                title += line.lineName;
+                            }
+                        }
+                        if (ii !== iiLen - 1) {
+                            title += " → ";
+                        }
+                    }
+                    //存放默认路径,默认取数组的第一个元素
+                    var path = "[", pLine;
+                    var pathLines = solution.linesItems;
+                    for (var pi = 0, pLen = pathLines.length; pi < pLen; pi++) {
+                        pLine = pathLines[pi].lineItems[0];
+                        path += "{'lineID':" + pLine.lineID + ",'startStopIndex':" + pLine.startStopIndex + ",'endStopIndex':" + pLine.endStopIndex + "}";
+                        if (pi !== pLen - 1) path += ",";
+                    }
+                    path += "]";
+                    var index = "solutions_" + i;
+                    paths[index] = path;
+                    $("<div class='transferSolution' id='transferSolution-" + i + "'><span class='transferIndex'>方案" + (i + 1) + "：</span>" + title + "</div>").appendTo(this._div);
+                    if (i !== 0) {
+                        dispStatus = "none";
+                    }
+
+                    var list = $("<div class='transferInfo' id='transferInfo-" + i + "' style='display:" + dispStatus + "'></div>");
+                    list.appendTo(this._div);
+                    if (i === 0) {
+                        fillTransferInfo(transGuide, transSolutions, 0, 0).appendTo(list);
+                        setPopup();
+                    }
+                }
+                bindSolutionsClickEvent();
+            };
+            info.addTo(map);
+        }
+        function fillTransferInfo(transGuide, transSolutions, indexX) {
+            clearLayer();
+            if (transGuide && transGuide.items.length) {
+                var items = transGuide.items;
+                for (var itemIndex = 0, itemLen = items.length; itemIndex < itemLen; itemIndex++) {
+                    var geometry = items[itemIndex].route;
+                    routeFeatureGroup.addLayer(L.geoJSON(L.Util.toGeoJSON(geometry)).addTo(map));
+                }
+            }
+            var table = $("<table id='trafficRes' border='1'></table>");
+            var startStop = $("<tr></tr>");
+            $("<td class='start_transfer' width='10px'></td>").appendTo(startStop);
+            $("<td colspan='2'><span class='busLink bgSpan'><span style='display:none'>" + transGuide.items[0].startPosition.x + "," + transGuide.items[0].startPosition.y + "</span>" + transGuide.items[0].startStopName + "</span></td>").appendTo(startStop);
+            startStop.appendTo(table);
+            var indexY = 0;
+            for (var iiii = 0, iiiiLen = transGuide.items.length; iiii < iiiiLen; iiii++) {
+                var item = transGuide.items[iiii];
+                var tr2 = $("<tr></tr>");
+                if (item.isWalking) {
+                    $("<td class='step_transfer' ></td>").appendTo(tr2);
+                    $("<td>步行至:<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a></td>").appendTo(tr2);
+                    $("<td>" + parseInt(item.distance) + "米</td>").appendTo(tr2);
+                } else {
+                    var otherLines = transSolutions[indexX].linesItems[indexY],
+                            links = "";
+                    if (otherLines && otherLines.lineItems.length > 1) {
+                        links = "</br>还可乘坐:"
+                        for (var oti = 0, otLen = otherLines.lineItems.length; oti < otLen; oti++) {
+                            var line = otherLines.lineItems[oti];
+                            if (item.lineName !== line.lineName) {
+                                var other = indexX + "," + indexY + "," + oti + ",0";
+                                links += "<a class='busLink'><span style='display:none'>" + other + "</span>" + line.lineName + "</a>";
+                            }
+                        }
+                    }
+                    $("<td class='bus_transfer'></td>").appendTo(tr2);
+                    var points = item.route.points, pointStr = "";
+                    for (var i = 0; i < points.length; i++) {
+                        pointStr += points[i].x + " " + points[i].y;
+                        if (i != points.length - 1) {
+                            pointStr += ",";
+                        }
+                    }
+                    $("<td>乘坐<a class='busLink'>" + item.lineName + "<span style='display:none'>" + pointStr + "</span></a>, 在<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a>下车" + links + "</td>").appendTo(tr2);
+                    $("<td>" + item.passStopCount + "站</td>").appendTo(tr2);
+                    indexY++;
+                }
+                tr2.appendTo(table);
+            }
+            var endStop = $("<tr></tr>");
+            endStop.appendTo(table);
+            $("<td class='end_transfer' width='10px'></td>").appendTo(endStop);
+            $("<td colspan='2'><span class='busLink bgSpan'><span style='display:none'>" + transGuide.items[transGuide.items.length - 1].endPosition.x + "," + transGuide.items[transGuide.items.length - 1].endPosition.y + "</span>" + transGuide.items[transGuide.items.length - 1].endStopName + "</span></td>").appendTo(endStop);
+            return table;
+        }
+        function bindSolutionsClickEvent() {
+            for (var i = 0; i < 6; i++) {
+                $("#transferSolution-" + i).click(toggleGuideItems);
+            }
+            function toggleGuideItems(e) {
+                for (var i = 0; i < 6; i++) {
+                    $("#transferInfo-" + i).hide(500);
+                }
+                var id = parseInt(e.currentTarget.id.split("-")[1]);
+                $("#transferInfo-" + id).show(500);
+                var transLines = paths["solutions_" + id];
+                execTransPathQuery(id, transLines);
+            }
+        }
+        function setPopup() {
+            $(".busLink").click(function () {
+                tempRedLayer.clearLayers();
+                if (tempMarker) tempMarker.remove();
+                var points = this.children[0].innerText.split(","), lonLat;
+                if (points.length === 2) {
+                    lonLat = L.latLng(points[1], points[0]);
+                    tempMarker = L.marker(lonLat).addTo(map);
+                    map.setView(lonLat);
+                } else if (points.length === 4 && points[3] === "0") {
+                    var linesItems = paths["solutions"][points[0]], lineStr = "[";
+                    for (var i = 0; i < linesItems.length; i++) {
+                        var lineItem = linesItems[i][0], j = parseInt(points[1]);
+                        if (i !== j) {
+                            lineStr += lineItem;
+                        } else if (i === j) {
+                            lineItem = linesItems[points[1]][points[2]];
+                            lineStr += lineItem;
+                        }
+                        if (i !== linesItems.length - 1) {
+                            lineStr += ",";
+                        }
+                    }
+                    lineStr += "]";
+                    $("#transferInfo-" + points[0]).hide(500);
+                    execTransPathQuery(points[0], lineStr);
+                    $("#transferInfo-" + points[0]).show(500);
+                } else {
+                    var linePoints = [];
+                    for (var i = 0; i < points.length; i++) {
+                        var arr = points[i].split(" ");
+                        var point = [arr[1], arr[0]];
+                        linePoints.push(point);
+                    }
+                    var lineString = L.polyline(linePoints, {color: "red"}).addTo(map);
+                    tempRedLayer.addLayer(lineString);
+                    map.setView(lineString.getBounds().getCenter(), 3);
+                }
+            });
+        }
+
+        function execTransPathQuery(id, transLines) {
+            var params = new TransferPathParameters({
+                points: paths["points"],
+                transferLines: transLines
+            });
+            L.supermap.trafficTransferAnalystService(serviceUrl).analysisTransferPath(params)
+                    .on('complete', function (serviceResult) {
+                        $("#transferInfo-" + id).empty();
+                        var transGuide = serviceResult.result;
+                        transSolutions = paths["transSolutions"];
+                        map.setView([-3861.911472192499, 4503.6240321526], 1);
+                        fillTransferInfo(transGuide, transSolutions, id).appendTo($("#transferInfo-" + id));
+                        setPopup();
+                    });
+        }
+        function clearLayer() {
+            if (routeFeatureGroup) {
+                routeFeatureGroup.clearLayers();
+
+            }
+            if (popwin) {
+                map.remove(popwin)
+            }
+            if (tempRedLayer) {
+                tempRedLayer.clearLayers();
+            }
+            if (tempMarker) {
+                tempMarker.remove();
+            }
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <span>起点：</span>
+    <input type='text' class="form-control" disabled="disabled" id='startInput' value='省汽修'/>
+    <span>终点：</span>
+    <span style="display: inline-block">
+        <input type='text' class="form-control" disabled="disabled" id='endInput' value='中安大厦'/>
+    </span>
+    <input type="button" class="btn btn-primary" value="最少时间" onclick="execTransSolutionsQuery('LESS_TIME')"/>
+    <input type="button" class="btn btn-primary" value="最短距离" onclick="execTransSolutionsQuery('MIN_DISTANCE')"/>
+    <input type="button" class="btn btn-primary" value="少步行" onclick="execTransSolutionsQuery('LESS_WALK')"/>
+    <input type="button" class="btn btn-primary" value="少换乘" onclick="execTransSolutionsQuery('LESS_TRANSFER')"/>
+    <input type="button" class="btn btn-primary" value="清除" onclick="clearLayer()"/>
+</div>
+
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>

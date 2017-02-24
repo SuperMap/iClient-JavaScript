@@ -13,9 +13,18 @@ require('../format/GeoJSON');
 require('./CoreServiceBase');
 SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.CoreServiceBase, {
 
+    /**
+     *  Property: format
+     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+     *  参数格式为"iserver","geojson",默认为geojson
+     */
+    format: "geojson",
 
     initialize: function (url, options) {
         SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        var me = this;
+        me.format = (options.format) ? options.format : "geojson";
+        me.format = me.format.toLowerCase();
     },
 
     /**
@@ -24,6 +33,7 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.CoreServiceBase, {
      */
     destroy: function () {
         SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        this.format = null;
     },
 
     /**
@@ -36,14 +46,18 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.CoreServiceBase, {
     serviceProcessCompleted: function (result) {
         var me = this, analystResult;
         result = SuperMap.Util.transformResult(result);
-        if (result && result.recordsets && me.format === "geojson") {
-            analystResult = [];
-            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
-                if (recordsets[i].features) {
-                    var geoJSONFormat = new SuperMap.Format.GeoJSON();
-                    var feature = JSON.parse(geoJSONFormat.write(recordsets[i].features));
-                    analystResult.push(feature);
+        if (result && me.format === "geojson") {
+            var geoJSONFormat = new SuperMap.Format.GeoJSON();
+            if (result.recordsets) {
+                analystResult = [];
+                for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
+                    if (recordsets[i].features) {
+                        var feature = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+                        analystResult.push(feature);
+                    }
                 }
+            } else if (result.recordset && result.recordset.features) {
+                analystResult = JSON.parse(geoJSONFormat.write(result.recordset.features));
             }
 
         } else {

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>网络分析服务-服务区分析</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for Leaflet.js"></script>
+
+    <script type="text/javascript">
+        var map, resultLayer, service, parameter, marker,
+                baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+                serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+        function init() {
+            map = L.map('map', {
+                crs: L.supermap.NonEarthCRS({
+                    bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+                    origin: L.point(48.4, -55.58)
+                }),
+                center: [-3375, 5605],
+                maxZoom: 18,
+                zoom: 4
+            });
+            L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+            marker = L.marker([-3375, 5605]).addTo(map);
+            var resultSetting = new TransportationAnalystResultSetting({
+                returnEdgeFeatures: true,
+                returnEdgeGeometry: true,
+                returnEdgeIDs: true,
+                returnNodeFeatures: true,
+                returnNodeGeometry: true,
+                returnNodeIDs: true,
+                returnPathGuides: true,
+                returnRoutes: true
+            });
+            var analystParameter = new TransportationAnalystParameter({
+                resultSetting: resultSetting,
+                weightFieldName: "length"
+            });
+            parameter = new FindServiceAreasParameters({
+                centers: [marker.getLatLng()],
+                isAnalyzeById: false,
+                parameter: analystParameter
+            });
+            service = L.supermap.networkAnalystService(serviceUrl);
+            resultLayer = L.featureGroup().addTo(map);
+        }
+
+        function findServiceAreas() {
+            clearLayer();
+            parameter.weights = [400 + Math.random() * 100];
+            service.findServiceAreas(parameter).on('complete', function (serviceResult) {
+                var result = serviceResult.result;
+                resultLayer.addLayer(L.geoJSON(result));
+            });
+        }
+
+        function clearLayer() {
+            if (resultLayer) {
+                resultLayer.clearLayers();
+            }
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <input type="button" class="btn btn-primary" value="服务区分析" onclick="findServiceAreas()"/>
+    <input type="button" class="btn btn-primary" value="清除" onclick="clearLayer()"/>
+</div>
+
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>
