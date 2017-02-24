@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SuperMap REST 地图服务底图</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
+    <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for OL3.js"></script>
+    <script type="text/javascript">
+        var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+        function init() {
+            var map = new ol.Map({
+                target: 'map',
+                view: new ol.View({
+                    center: [0, 0],
+                    zoom: 2,
+                    projection: 'EPSG:4326'
+                })
+            });
+            map.addLayer(new ol.supermap.TiledMapLayer(url, {"pro": "4326"}));
+        }
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>

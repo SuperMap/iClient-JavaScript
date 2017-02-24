@@ -81,7 +81,7 @@ var deps = {
             "title": "SuperMap",
             "description": "--对接SuperMap服务",
             "Map": {
-                "name": "Map服务",
+                "name": "地图服务",
                 "src": [
                     "./src/Leaflet/SuperMap/iServer/TiledMapLayer.js",
                     "./src/Leaflet/SuperMap/iServer/MapService.js",
@@ -95,7 +95,7 @@ var deps = {
                 ]
             },
             "Data": {
-                "name": "Data服务",
+                "name": "数据服务",
                 "src": [
                     "./src/Leaflet/SuperMap/iServer/FieldStatisticService.js",
                     "./src/Leaflet/SuperMap/iServer/GetFeaturesService.js",
@@ -168,7 +168,7 @@ var deps = {
             "title": "SuperMap",
             "description": "--对接SuperMap服务",
             "Map": {
-                "name": "Map服务",
+                "name": "地图服务",
                 "src": [
                     "./src/OL3/SuperMap/iServer/TiledMapLayer.js",
                     "./src/OL3/SuperMap/iServer/MapService.js",
@@ -182,7 +182,7 @@ var deps = {
                 ]
             },
             "Data": {
-                "name": "Data服务",
+                "name": "数据服务",
                 "src": [
                     "./src/OL3/SuperMap/iServer/FieldStatisticService.js",
                     "./src/OL3/SuperMap/iServer/GetFeaturesService.js",

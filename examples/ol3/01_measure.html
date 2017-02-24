@@ -39,7 +39,7 @@
                         if (MapBrowserPointerEvent) {
                             var measureService = new ol.supermap.MeasureService(url, {measureMode: ""});
                             measureService.on("complete", function (serviceResult) {
-                                alert(serviceResult.element.result.distance);
+                                alert(serviceResult.element.result.distance + "米");
                             });
                             var line = new ol.geom.LineString();
                             var points = MapBrowserPointerEvent.frameState.pixelToCoordinateTransform;
@@ -61,7 +61,7 @@
                         if (MapBrowserPointerEvent) {
                             var measureService = new ol.supermap.MeasureService(url, {measureMode: ""});
                             measureService.on("complete", function (serviceResult) {
-                                alert(serviceResult.element.result.area);
+                                alert(serviceResult.element.result.area + "平方米");
                             });
                             var points = MapBrowserPointerEvent.frameState.pixelToCoordinateTransform;
                             var polygonCoords = [];
