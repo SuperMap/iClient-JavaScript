@@ -54,6 +54,20 @@
     <script type="text/javascript">
         var container = document.getElementById('popup');
         var content = document.getElementById('popup-content');
+        var extent = [-180.0, -90.0, 180, 90];
+        var dpi = 96;
+        var resolutions = [
+            ol.supermap.Util.scaleToResolution(1.6901635716026555E-9, dpi, Unit.DEGREE),
+            ol.supermap.Util.scaleToResolution(3.375595414562003E-9, dpi, Unit.DEGREE),
+            ol.supermap.Util.scaleToResolution(6.751190829124006E-9, dpi, Unit.DEGREE),
+            ol.supermap.Util.scaleToResolution(1.3502381658248012E-8, dpi, Unit.DEGREE),
+            ol.supermap.Util.scaleToResolution(2.7004763316496024E-8, dpi, Unit.DEGREE),
+            ol.supermap.Util.scaleToResolution(5.400952663299205E-8, dpi, Unit.DEGREE),
+            ol.supermap.Util.scaleToResolution(1.080190532659841E-7, dpi, Unit.DEGREE),
+            ol.supermap.Util.scaleToResolution(2.1603810653196843E-7, dpi, Unit.DEGREE),
+            ol.supermap.Util.scaleToResolution(4.320762130639359E-7, dpi, Unit.DEGREE),
+            ol.supermap.Util.scaleToResolution(8.641524261278681E-7, dpi, Unit.DEGREE),
+        ];
         var overlay = new ol.Overlay(({
             element: container,
             autoPan: true,
@@ -73,7 +87,17 @@
                 }),
                 overlays: [overlay],
             });
-            map.addLayer(new ol.supermap.TiledMapLayer(url, {"pro": "4326"}));
+            var layer = new ol.layer.Tile({
+                source: new ol.supermap.TiledMap({
+                    url: url,
+                    tileGrid: new ol.tilegrid.TileGrid({
+                        extent: extent,
+                        resolutions: resolutions,
+                    })
+                }),
+                projection: 'EPSG:4326'
+            })
+            map.addLayer(layer);
         }
 
         function layerService() {

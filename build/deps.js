@@ -170,7 +170,7 @@ var deps = {
             "Map": {
                 "name": "地图服务",
                 "src": [
-                    "./src/OL3/SuperMap/iServer/TiledMapLayer.js",
+                    "./src/OL3/SuperMap/iServer/TiledMap.js",
                     "./src/OL3/SuperMap/iServer/MapService.js",
                     "./src/OL3/SuperMap/iServer/QueryService.js",
                     "./src/OL3/SuperMap/iServer/ChartQueryService.js",

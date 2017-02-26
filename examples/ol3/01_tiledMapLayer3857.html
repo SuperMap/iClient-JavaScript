@@ -9,16 +9,43 @@
     <script type="text/javascript" src="../../dist/SuperMapiClient9 for OL3.js"></script>
     <script type="text/javascript">
         var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+        var dpi = 96;
+        var extent = [-20037508.34, -20037508.34, 20037508.34, 20037508.34];
+        var resolutions = [
+            ol.supermap.Util.scaleToResolution(1.6901635716026555E-9, dpi, Unit.METER),
+            ol.supermap.Util.scaleToResolution(3.3803271432053056E-9, dpi, Unit.METER),
+            ol.supermap.Util.scaleToResolution(6.760654286410611E-9, dpi, Unit.METER),
+            ol.supermap.Util.scaleToResolution(1.3521308572821242E-8, dpi, Unit.METER),
+            ol.supermap.Util.scaleToResolution(2.7042617145642484E-8, dpi, Unit.METER),
+            ol.supermap.Util.scaleToResolution(5.408523429128511E-8, dpi, Unit.METER),
+            ol.supermap.Util.scaleToResolution(1.0817046858256998E-7, dpi, Unit.METER),
+            ol.supermap.Util.scaleToResolution(2.1634093716513974E-7, dpi, Unit.METER),
+            ol.supermap.Util.scaleToResolution(4.3268187433028044E-7, dpi, Unit.METER),
+            ol.supermap.Util.scaleToResolution(8.653637486605571E-7, dpi, Unit.METER),
+            ol.supermap.Util.scaleToResolution(1.7307274973211203E-6, dpi, Unit.METER),
+            ol.supermap.Util.scaleToResolution(3.4614549946422405E-6, dpi, Unit.METER),
+            ol.supermap.Util.scaleToResolution(6.9229099892844565E-6, dpi, Unit.METER),
+        ];
         function init() {
             var map = new ol.Map({
                 target: 'map',
                 view: new ol.View({
                     center: [0, 0],
-                    zoom: 2,
+                    zoom: 0,
                     projection: 'EPSG:3857'
                 })
             });
-            map.addLayer(new ol.supermap.TiledMapLayer(url, {"pro": "3857"}));
+            var layer = new ol.layer.Tile({
+                source: new ol.supermap.TiledMap({
+                    url: url,
+                    tileGrid: new ol.tilegrid.TileGrid({
+                        extent: extent,
+                        resolutions: resolutions,
+                    })
+                }),
+                projection: 'EPSG:3857'
+            })
+            map.addLayer(layer);
         }
     </script>
 </head>
