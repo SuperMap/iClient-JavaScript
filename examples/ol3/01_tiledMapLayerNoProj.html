@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SuperMap REST 地图服务底图</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
+    <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for OL3.js"></script>
+    <script type="text/javascript">
+        var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图";
+        var extent = [48.4, -7668.25, 8958.85, -55.58];
+        var projection = new ol.proj.Projection({
+            extent: extent,
+            units: 'm'
+        });
+        function init() {
+            var mapService = new ol.supermap.MapService(url);
+            mapService.on("complete", function (serviceResult) {
+                var mapJSONObj = serviceResult.element.result;
+                var map = new ol.Map({
+                    target: 'map',
+                    view: new ol.View({
+                        center: [mapJSONObj.center.x, mapJSONObj.center.y],
+                        zoom: 0,
+                        projection: projection
+                    })
+                });
+                var layer = new ol.layer.Tile({
+                    source: new ol.supermap.Tile(ol.supermap.Tile.optionsFromMapJSON(url, mapJSONObj))
+                });
+                map.addLayer(layer);
+            });
+            mapService.getMapStatus();
+        }
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>
