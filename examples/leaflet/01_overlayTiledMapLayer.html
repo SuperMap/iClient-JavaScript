@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SuperMap REST 地图叠加</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for Leaflet.js"></script>
+    <script type="text/javascript">
+        var map,
+                urlWorld = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
+                urlJinjing = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
+        function init() {
+            map = L.map('map', {
+                crs: L.CRS.EPSG4326,
+                center: [40, 118],
+                maxZoom: 18,
+                zoom: 6
+            });
+            L.supermap.tiledMapLayer(urlWorld).addTo(map);
+            L.supermap.tiledMapLayer(urlJinjing, {transparent: true,opacity:0.6}).addTo(map);
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>

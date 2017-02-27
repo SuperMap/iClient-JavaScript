@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SuperMap REST 平面坐标系底图</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for Leaflet.js"></script>
+    <script type="text/javascript">
+        var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图";
+        function init() {
+            map = L.map('map', {
+                crs: L.supermap.NonEarthCRS({
+                    bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+                    origin: L.point(48.4, -55.58)
+                }),
+                center: [-3375, 5605],
+                maxZoom: 18,
+                zoom: 1
+            });
+            L.supermap.tiledMapLayer(url, {noWrap: true}).addTo(map);
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>

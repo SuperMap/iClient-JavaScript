@@ -52,22 +52,25 @@ TiledMapLayer = L.TileLayer.extend({
 
     _initLayerUrl: function (options) {
 
-        var layerUrl = options.url + "/image.png?redirect=false&width=256&height=256";
+        var layerUrl = options.url + "/image.png?redirect=false";
 
         //为url添加安全认证信息片段
         if (SuperMap.Credential && SuperMap.Credential.CREDENTIAL) {
             layerUrl += "&" + SuperMap.Credential.CREDENTIAL.getUrlParameters();
         }
 
-        var transparent = (options.transparent) ? options.transparent : true;
-        layerUrl += "&transparent=" + transparent;
-
-        var cacheEnabled = (options.cacheEnabled) ? options.cacheEnabled : false;
-        layerUrl += "&cacheEnabled=" + cacheEnabled;
-
         if (!options.layersID) {
             layerUrl += "&layersID=" + options.layersID;
         }
+
+        var transparent = (options.transparent) ? options.transparent : false;
+        layerUrl += "&transparent=" + transparent;
+
+        var cacheEnabled = (options.cacheEnabled) ? options.cacheEnabled : true;
+        layerUrl += "&cacheEnabled=" + cacheEnabled;
+
+        var tileSize = this.options.tileSize;
+        layerUrl += "&width=" + tileSize + "&height=" + tileSize;
 
         return layerUrl;
     }
