@@ -15,10 +15,11 @@
             padding: 15px;
             border-radius: 10px;
             border: 1px solid #cccccc;
-            bottom: 12px;
-            left: -50px;
+            bottom: 30px;
+            left: 50px;
             min-width: 280px;
         }
+
     </style>
 
     <div id="popup" class="ol-popup">
@@ -44,6 +45,7 @@
     var content = document.getElementById('popup-content');
     var extent = [-180.0, -90.0, 180, 90];
     var dpi = 96;
+    var myControl = new ol.control.Control({element: container});
     var resolutions = [
         ol.supermap.Util.scaleToResolution(1.6901635716026555E-9, dpi, Unit.DEGREE),
         ol.supermap.Util.scaleToResolution(3.375595414562003E-9, dpi, Unit.DEGREE),
@@ -56,16 +58,9 @@
         ol.supermap.Util.scaleToResolution(4.320762130639359E-7, dpi, Unit.DEGREE),
         ol.supermap.Util.scaleToResolution(8.641524261278681E-7, dpi, Unit.DEGREE),
     ];
-    var overlay = new ol.Overlay(({
-        element: container,
-        autoPan: true,
-        autoPanAnimation: {
-            duration: 250
-        }
-    }));
     var map, currentData, layersName = [],
-        mapURL = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
-        dataURL = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+            mapURL = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
+            dataURL = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
 
     function init() {
         map = new ol.Map({
@@ -74,8 +69,7 @@
                 center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
-            }),
-            overlays: [overlay],
+            })
         });
         var layer = new ol.layer.Tile({
             source: new ol.supermap.Tile({
@@ -171,10 +165,10 @@
             return;
         }
         var innerHTMLStr = '<div style="line-height: 35px;">'
-            + '<strong>字段（' + serviceResult.fieldName + '）统计结果:</strong><div>';
+                + '<strong>字段（' + serviceResult.fieldName + '）统计结果:</strong><div>';
         var keys = ["AVERAGE", "MAX", "MIN", "STDDEVIATION", "SUM", "VARIANCE"];
         var tableStr = "<table id='trafficRes' class='table table-bordered'><tr><td>平均值</td><td>最大值</td><td>最小值</td>"
-            + "<td>标准差</td><td>和</td><td>方差</td></tr>";
+                + "<td>标准差</td><td>和</td><td>方差</td></tr>";
         var resultTR = "<tr>";
         for (var i = 0; i < keys.length; i++) {
             resultTR += "<td>" + serviceResult[keys[i]] + "</td>";
@@ -183,11 +177,11 @@
         tableStr += resultTR + "</table>";
         innerHTMLStr += tableStr;
         content.innerHTML = innerHTMLStr;
-        overlay.setPosition([0, 0]);
+        map.addControl(myControl);
     }
 
     function clearfieldStatistic() {
-        overlay.setPosition(undefined);
+        map.removeControl(myControl);
     }
 </script>
 
