@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>等级符号专题图</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for Leaflet.js"></script>
+    <script type="text/javascript">
+        var map, themeService, themeLayer,
+                url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+        function init() {
+            map = L.map('map', {
+                center: [39, 116],
+                maxZoom: 18,
+                zoom: 4
+            });
+            L.supermap.tiledMapLayer(url).addTo(map);
+            themeService = L.supermap.themeService(url);
+
+        }
+        function createTheme() {
+            var graStyle = new ThemeGraduatedSymbolStyle({
+                positiveStyle: new ServerStyle({
+                    markerSize: 50,
+                    markerSymbolID: 0,
+                    lineColor: new ServerColor(255, 165, 0),
+                    fillBackColor: new ServerColor(255, 0, 0)
+                })
+            });
+            var themeGraduatedSymbol = new ThemeGraduatedSymbol({
+                expression: "SMAREA",
+                baseValue: 3000000000000,
+                graduatedMode: GraduatedMode.CONSTANT,
+                flow: new ThemeFlow({
+                    flowEnabled: true
+                }),
+                style: graStyle
+            });
+            var themeParameters = new ThemeParameters({
+                themes: [themeGraduatedSymbol],
+                datasetNames: ["China_Province_pg"],
+                dataSourceNames: ["China"]
+            });
+            themeService.getThemeStatus(themeParameters).on('complete', function (serviceResult) {
+                console.log(serviceResult.result);
+                var result = serviceResult.result;
+                if (result && result.newResourceID) {
+                    themeLayer = L.supermap.tiledMapLayer(url, {
+                        cacheEnabled: false,
+                        transparent: true,
+                        layersID: result.newResourceID
+                    }).addTo(map);
+                }
+            }).on('failed', function (error) {
+                alert(error.errorMsg);
+            });
+        }
+
+        function clearLayer() {
+            if (themeLayer) {
+                map.removeLayer(themeLayer);
+            }
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <input type="button" class="btn btn-primary" value="创建专题图" onclick="createTheme()"/>
+    <input type="button" class="btn btn-primary" value="清除结果" onclick="clearLayer()"/>
+</div>
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>

@@ -59,7 +59,7 @@ TiledMapLayer = L.TileLayer.extend({
             layerUrl += "&" + SuperMap.Credential.CREDENTIAL.getUrlParameters();
         }
 
-        if (!options.layersID) {
+        if (options.layersID) {
             layerUrl += "&layersID=" + options.layersID;
         }
 

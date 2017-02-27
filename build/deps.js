@@ -32,6 +32,8 @@ var deps = {
             "./src/Core/iServer/SetLayerInfoService.js",
             "./src/Core/iServer/SetLayersInfoService.js",
             "./src/Core/iServer/SetLayerStatusService.js",
+            //ThemeService
+            "./src/Core/iServer/ThemeService.js",
             //NetworkAnalyst
             "./src/Core/iServer/BurstPipelineAnalystService.js",
             "./src/Core/iServer/ComputeWeightMatrixService.js",
@@ -104,6 +106,12 @@ var deps = {
                     "./src/Leaflet/SuperMap/iServer/GetGridCellInfosService.js"
                 ]
             },
+            "Theme": {
+                "name": "服务器专题图服务",
+                "src": [
+                    "./src/Leaflet/SuperMap/iServer/ThemeService.js"
+                ]
+            },
             "NetworkAnalyst": {
                 "name": "网络分析服务",
                 "src": [
@@ -128,7 +136,6 @@ var deps = {
                     "./src/Leaflet/SuperMap/iServer/TrafficTransferAnalystService.js"
                 ]
             }
-
         },
         "Visual": {
             "title": "Visual",
