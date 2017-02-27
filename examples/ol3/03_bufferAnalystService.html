@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析服务-缓冲区分析</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
+    <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for OL3.js"></script>
+
+    <script type="text/javascript">
+        var map, roadLine, resultLayer, service, dsBufferAnalystParameters,
+                baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+                serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+        var extent = [48.4, -7668.25, 8958.85, -55.58];
+        var projection = new ol.proj.Projection({
+            extent: extent,
+            units: 'm'
+        });
+        function init() {
+            var mapService = new ol.supermap.MapService(baseUrl);
+            mapService.on("complete", function (serviceResult) {
+                var mapJSONObj = serviceResult.element.result;
+                map = new ol.Map({
+                    target: 'map',
+                    view: new ol.View({
+                        center: [5105, -3375],
+                        zoom: 6,
+                        projection: projection
+                    })
+                });
+                var layer = new ol.layer.Tile({
+                    source: new ol.supermap.Tile(ol.supermap.Tile.optionsFromMapJSON(baseUrl, mapJSONObj))
+                });
+                map.addLayer(layer);
+
+                roadLine = new ol.geom.LineString([
+                    [5305.19551436013, -3376.9669111768926],
+                    [5075.3145648369318, -3378.0037556404409],
+                    [5006.0235999418364, -3358.8890067038628],
+                    [4960.9674060199022, -3349.3316322355736],
+                    [4933.319287022352, -3337.3849141502124]
+                ]);
+
+                var vectorSource = new ol.source.Vector({
+                    features: [new ol.Feature(roadLine)]
+                });
+                var vectorLayer = new ol.layer.Vector({
+                    source: vectorSource,
+                    style: new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'blue',
+                            width: 3
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 0, 255, 0.1)'
+                        })
+                    })
+                });
+                map.addLayer(vectorLayer);
+
+                service = new ol.supermap.SpatialAnalystService(serviceUrl);
+                dsBufferAnalystParameters = new DatasetBufferAnalystParameters({
+                    dataset: "RoadLine2@Changchun",
+                    filterQueryParameter: new FilterParameter({
+                        attributeFilter: "NAME='团结路'"
+                    }),
+                    bufferSetting: new BufferSetting({
+                        endType: SuperMap.REST.BufferEndType.ROUND,
+                        leftDistance: {value: 10},
+                        rightDistance: {value: 10},
+                        semicircleLineSegment: 10
+                    })
+                });
+                service.on('complete', function (serviceResult) {
+                    var vectorSource = new ol.source.Vector({
+                        features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)
+                    })
+                    resultLayer = new ol.layer.Vector({
+                        source: vectorSource,
+                        style: new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                                color: 'red',
+                                width: 1
+                            }),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 0, 0, 0.1)'
+                            })
+                        })
+                    });
+                    map.addLayer(resultLayer);
+                });
+            });
+            mapService.getMapStatus();
+        }
+
+        function bufferAnalystProcess() {
+            clearLayer();
+            service.bufferAnalysis(dsBufferAnalystParameters);
+        }
+
+        function clearLayer() {
+            if (resultLayer) {
+                map.removeLayer(resultLayer);
+            }
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <input type="button" class="btn btn-primary" value="缓冲区分析" onclick="bufferAnalystProcess()"/>
+    <input type="button" class="btn btn-primary" value="清除" onclick="clearLayer()"/>
+</div>
+
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>
