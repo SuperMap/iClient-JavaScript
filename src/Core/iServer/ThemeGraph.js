@@ -348,9 +348,9 @@ ThemeGraph = SuperMap.Class(Theme, {
         obj.startAngle = this.startAngle;
         return obj;
     },
-
     CLASS_NAME: "ThemeGraph"
 });
+
 ThemeGraph.fromObj = function (obj) {
     var res = new ThemeGraph();
     var itemsG = obj.items;

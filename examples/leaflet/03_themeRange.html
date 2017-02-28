@@ -2,13 +2,14 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>等级符号专题图</title>
+    <title>范围分段专题图</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
     <script type="text/javascript" src="../../dist/SuperMapiClient9 for Leaflet.js"></script>
     <script type="text/javascript">
-        var map, themeService, themeLayer, themeGraduatedSymbol, themeParameters,
+        var map, themeService, themeLayer,themeRangeItem1,themeRangeItem2,
+                themeRangeItem3, themeRange, themeParameters,
                 url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
         function init() {
             map = L.map('map', {
@@ -16,28 +17,45 @@
                 maxZoom: 18,
                 zoom: 4
             });
-            L.supermap.tiledMapLayer(url).addTo(map);
+            L.supermap.tiledMapLayer(url, {noWrap: true, transparent: true}).addTo(map);
             themeService = L.supermap.themeService(url);
-            themeGraduatedSymbol = new ThemeGraduatedSymbol({
-                expression: "SMAREA",
-                baseValue: 3000000000000,
-                graduatedMode: GraduatedMode.CONSTANT,
-                flow: new ThemeFlow({
-                    flowEnabled: true
-                }),
-                style: new ThemeGraduatedSymbolStyle({
-                    positiveStyle: new ServerStyle({
-                        markerSize: 50,
-                        markerSymbolID: 0,
-                        lineColor: new ServerColor(255, 165, 0),
-                        fillBackColor: new ServerColor(255, 0, 0)
-                    })
+            themeRangeItem1 = new ThemeRangeItem({
+                start: 0,
+                end: 500000000000,
+                style: new ServerStyle({
+                    fillForeColor: new ServerColor(137, 203, 187),
+                    lineColor: new ServerColor(0, 0, 0),
+                    lineWidth: 0.1
                 })
             });
+            themeRangeItem2 = new ThemeRangeItem({
+                start: 500000000000,
+                end: 1000000000000,
+                style: new ServerStyle({
+                    fillForeColor: new ServerColor(233, 235, 171),
+                    lineColor: new ServerColor(0, 0, 0),
+                    lineWidth: 0.1
+                })
+            });
+            themeRangeItem3 = new ThemeRangeItem({
+                start: 1000000000000,
+                end: 3000000000000,
+                style: new ServerStyle({
+                    fillForeColor: new ServerColor(135, 157, 157),
+                    lineColor: new ServerColor(0, 0, 0),
+                    lineWidth: 0.1
+                })
+            });
+            themeRange = new ThemeRange({
+                rangeExpression: "SMAREA",
+                rangeMode: RangeMode.EQUALINTERVAL,
+                items: [themeRangeItem1, themeRangeItem2, themeRangeItem3]
+            });
             themeParameters = new ThemeParameters({
-                themes: [themeGraduatedSymbol],
                 datasetNames: ["China_Province_pg"],
-                dataSourceNames: ["China"]
+                dataSourceNames: ["China"],
+                joinItems: null,
+                themes: [themeRange]
             });
         }
         function createTheme() {
@@ -46,6 +64,7 @@
                 var result = serviceResult.result;
                 if (result && result.newResourceID) {
                     themeLayer = L.supermap.tiledMapLayer(url, {
+                        noWrap: true,
                         cacheEnabled: false,
                         transparent: true,
                         layersID: result.newResourceID

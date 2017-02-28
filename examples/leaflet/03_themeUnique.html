@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>单值专题图</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for Leaflet.js"></script>
+    <script type="text/javascript">
+        var map, themeService, themeLayer, themeUnique, themeParameters,
+                url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+        function init() {
+            map = L.map('map', {
+                center: [39, 116],
+                maxZoom: 18,
+                zoom: 4
+            });
+            L.supermap.tiledMapLayer(url, {noWrap: true, transparent: true}).addTo(map);
+            themeService = L.supermap.themeService(url);
+            var style1, style2, style3, style4, style5, style6;
+            style1 = new ServerStyle({
+                fillForeColor: new ServerColor(248, 203, 249),
+                lineColor: new ServerColor(0, 0, 0),
+                lineWidth: 0.1
+            });
+            style2 = new ServerStyle({
+                fillForeColor: new ServerColor(196, 255, 189),
+                lineColor: new ServerColor(0, 0, 0),
+                lineWidth: 0.1
+            });
+            style3 = new ServerStyle({
+                fillForeColor: new ServerColor(255, 173, 173),
+                lineColor: new ServerColor(0, 0, 0),
+                lineWidth: 0.1
+            });
+            style4 = new ServerStyle({
+                fillForeColor: new ServerColor(255, 239, 168),
+                lineColor: new ServerColor(0, 0, 0),
+                lineWidth: 0.1
+            });
+            style5 = new ServerStyle({
+                fillForeColor: new ServerColor(173, 209, 255),
+                lineColor: new ServerColor(0, 0, 0),
+                lineWidth: 0.1
+            });
+            style6 = new ServerStyle({
+                fillForeColor: new ServerColor(132, 164, 232),
+                lineColor: new ServerColor(0, 0, 0),
+                lineWidth: 0.1
+            });
+
+            var themeUniqueIteme1 = new ThemeUniqueItem({
+                        unique: "黑龙江省",
+                        style: style1
+                    }),
+                    themeUniqueIteme2 = new ThemeUniqueItem({
+                        unique: "湖北省",
+                        style: style2
+                    }),
+                    themeUniqueIteme3 = new ThemeUniqueItem({
+                        unique: "吉林省",
+                        style: style3
+                    }),
+                    themeUniqueIteme4 = new ThemeUniqueItem({
+                        unique: "内蒙古自治区",
+                        style: style4
+                    }),
+                    themeUniqueIteme5 = new ThemeUniqueItem({
+                        unique: "青海省",
+                        style: style5
+                    }),
+                    themeUniqueIteme6 = new ThemeUniqueItem({
+                        unique: "新疆维吾尔自治区",
+                        style: style6
+                    }),
+                    themeUniqueIteme7 = new ThemeUniqueItem({
+                        unique: "云南省",
+                        style: style1
+                    }),
+                    themeUniqueIteme8 = new ThemeUniqueItem({
+                        unique: "四川省",
+                        style: style4
+                    }),
+                    themeUniqueIteme9 = new ThemeUniqueItem({
+                        unique: "贵州省",
+                        style: style3
+                    }),
+                    themeUniqueIteme10 = new ThemeUniqueItem({
+                        unique: "甘肃省",
+                        style: style3
+                    }),
+                    themeUniqueIteme11 = new ThemeUniqueItem({
+                        unique: "宁夏回族自治区",
+                        style: style5
+                    }),
+                    themeUniqueIteme12 = new ThemeUniqueItem({
+                        unique: "重庆市",
+                        style: style6
+                    }),
+                    themeUniqueIteme13 = new ThemeUniqueItem({
+                        unique: "山东省",
+                        style: style1
+                    }),
+                    themeUniqueIteme14 = new ThemeUniqueItem({
+                        unique: "安徽省",
+                        style: style2
+                    }),
+                    themeUniqueIteme15 = new ThemeUniqueItem({
+                        unique: "江西省",
+                        style: style3
+                    }),
+                    themeUniqueIteme16 = new ThemeUniqueItem({
+                        unique: "浙江省",
+                        style: style4
+                    }),
+                    themeUniqueIteme17 = new ThemeUniqueItem({
+                        unique: "台湾省",
+                        style: style2
+                    }),
+                    themeUniqueIteme18 = new ThemeUniqueItem({
+                        unique: "江苏省",
+                        style: style6
+                    }),
+                    themeUniqueIteme19 = new ThemeUniqueItem({
+                        unique: "湖南省",
+                        style: style5
+                    }),
+                    themeUniqueIteme20 = new ThemeUniqueItem({
+                        unique: "河南省",
+                        style: style4
+                    }),
+                    themeUniqueIteme21 = new ThemeUniqueItem({
+                        unique: "河北省",
+                        style: style3
+                    }),
+                    themeUniqueIteme22 = new ThemeUniqueItem({
+                        unique: "福建省",
+                        style: style5
+                    }),
+                    themeUniqueIteme23 = new ThemeUniqueItem({
+                        unique: "广西壮族自治区",
+                        style: style6
+                    }),
+                    themeUniqueIteme24 = new ThemeUniqueItem({
+                        unique: "西藏自治区",
+                        style: style2
+                    }),
+                    themeUniqueIteme25 = new ThemeUniqueItem({
+                        unique: "广东省",
+                        style: style4
+                    }),
+                    themeUniqueIteme26 = new ThemeUniqueItem({
+                        unique: "山西省",
+                        style: style2
+                    }),
+                    themeUniqueIteme27 = new ThemeUniqueItem({
+                        unique: "陕西省",
+                        style: style1
+                    }),
+                    themeUniqueIteme28 = new ThemeUniqueItem({
+                        unique: "天津市",
+                        style: style5
+                    }),
+                    themeUniqueIteme29 = new ThemeUniqueItem({
+                        unique: "北京市",
+                        style: style2
+                    }),
+
+                    themeUniqueIteme30 = new ThemeUniqueItem({
+                        unique: "辽宁省",
+                        style: style1
+                    });
+
+            var themeUniqueItemes = [
+                themeUniqueIteme1, themeUniqueIteme2, themeUniqueIteme3, themeUniqueIteme4, themeUniqueIteme5,
+                themeUniqueIteme6, themeUniqueIteme7, themeUniqueIteme8, themeUniqueIteme9, themeUniqueIteme10,
+                themeUniqueIteme11, themeUniqueIteme12, themeUniqueIteme13, themeUniqueIteme14, themeUniqueIteme15,
+                themeUniqueIteme16, themeUniqueIteme17, themeUniqueIteme18, themeUniqueIteme19, themeUniqueIteme20,
+                themeUniqueIteme21, themeUniqueIteme22, themeUniqueIteme23, themeUniqueIteme24, themeUniqueIteme25,
+                themeUniqueIteme26, themeUniqueIteme27, themeUniqueIteme28, themeUniqueIteme29, themeUniqueIteme30
+            ];
+
+            themeUnique = new ThemeUnique({
+                uniqueExpression: "Name",
+                items: themeUniqueItemes,
+                defaultStyle: style1
+            });
+            themeParameters = new ThemeParameters({
+                datasetNames: ["China_Province_pg"],
+                dataSourceNames: ["China"],
+                themes: [themeUnique]
+            });
+        }
+        function createTheme() {
+            themeService.getThemeStatus(themeParameters).on('complete', function (serviceResult) {
+                console.log(serviceResult.result);
+                var result = serviceResult.result;
+                if (result && result.newResourceID) {
+                    themeLayer = L.supermap.tiledMapLayer(url, {
+                        noWrap: true,
+                        cacheEnabled: false,
+                        transparent: true,
+                        layersID: result.newResourceID
+                    }).addTo(map);
+                }
+            }).on('failed', function (error) {
+                alert(error.errorMsg);
+            });
+        }
+
+        function clearLayer() {
+            if (themeLayer) {
+                map.removeLayer(themeLayer);
+            }
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <input type="button" class="btn btn-primary" value="创建专题图" onclick="createTheme()"/>
+    <input type="button" class="btn btn-primary" value="清除结果" onclick="clearLayer()"/>
+</div>
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>

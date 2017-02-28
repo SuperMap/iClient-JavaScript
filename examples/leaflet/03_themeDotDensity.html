@@ -2,42 +2,35 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>等级符号专题图</title>
+    <title>点密度专题图</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
     <script type="text/javascript" src="../../dist/SuperMapiClient9 for Leaflet.js"></script>
     <script type="text/javascript">
-        var map, themeService, themeLayer, themeGraduatedSymbol, themeParameters,
-                url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+        var map, themeService, themeLayer, themeDotDensity, themeParameters,
+                url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
         function init() {
             map = L.map('map', {
-                center: [39, 116],
+                crs: L.CRS.EPSG4326,
+                center: [0, 0],
                 maxZoom: 18,
-                zoom: 4
+                zoom: 1
             });
-            L.supermap.tiledMapLayer(url).addTo(map);
+            L.supermap.tiledMapLayer(url, {noWrap: true, transparent: true}).addTo(map);
             themeService = L.supermap.themeService(url);
-            themeGraduatedSymbol = new ThemeGraduatedSymbol({
-                expression: "SMAREA",
-                baseValue: 3000000000000,
-                graduatedMode: GraduatedMode.CONSTANT,
-                flow: new ThemeFlow({
-                    flowEnabled: true
-                }),
-                style: new ThemeGraduatedSymbolStyle({
-                    positiveStyle: new ServerStyle({
-                        markerSize: 50,
-                        markerSymbolID: 0,
-                        lineColor: new ServerColor(255, 165, 0),
-                        fillBackColor: new ServerColor(255, 0, 0)
-                    })
+            themeDotDensity = new ThemeDotDensity({
+                dotExpression: "Pop_1994",
+                value: 5000000,
+                style: new ServerStyle({
+                    markerSize: 3,
+                    markerSymbolID: 12
                 })
             });
             themeParameters = new ThemeParameters({
-                themes: [themeGraduatedSymbol],
-                datasetNames: ["China_Province_pg"],
-                dataSourceNames: ["China"]
+                themes: [themeDotDensity],
+                datasetNames: ["Countries"],
+                dataSourceNames: ["World"]
             });
         }
         function createTheme() {
@@ -46,6 +39,7 @@
                 var result = serviceResult.result;
                 if (result && result.newResourceID) {
                     themeLayer = L.supermap.tiledMapLayer(url, {
+                        noWrap: true,
                         cacheEnabled: false,
                         transparent: true,
                         layersID: result.newResourceID
