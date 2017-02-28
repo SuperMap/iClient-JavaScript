@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>点密度专题图</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
+    <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for OL3.js"></script>
+    <script type="text/javascript">
+        var map, themeService, themeLayer, themeDotDensity, themeParameters,
+                url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+        function init() {
+            var mapService = new ol.supermap.MapService(url);
+            mapService.on("complete", function (serviceResult) {
+                var mapJSONObj = serviceResult.element.result;
+                map = new ol.Map({
+                    target: 'map',
+                    view: new ol.View({
+                        center: [0, 0],
+                        zoom: 2,
+                        projection: "EPSG:4326"
+                    })
+                });
+                var options = ol.supermap.Tile.optionsFromMapJSON(url, mapJSONObj);
+                var layer = new ol.layer.Tile({
+                    source: new ol.supermap.Tile(options)
+                });
+                map.addLayer(layer);
+
+                themeService = new ol.supermap.ThemeService(url);
+                themeDotDensity = new ThemeDotDensity({
+                    dotExpression: "Pop_1994",
+                    value: 5000000,
+                    style: new ServerStyle({
+                        markerSize: 3,
+                        markerSymbolID: 12
+                    })
+                });
+                themeParameters = new ThemeParameters({
+                    themes: [themeDotDensity],
+                    datasetNames: ["Countries"],
+                    dataSourceNames: ["World"]
+                });
+                themeService.on('complete', function (serviceResult) {
+                    var result = serviceResult.element.result;
+                    if (result && result.newResourceID) {
+                        themeLayer = new ol.layer.Tile({
+                            source: new ol.supermap.Tile({
+                                url: url,
+                                noWrap: true,
+                                cacheEnabled: false,
+                                transparent: true,
+                                layersID: result.newResourceID,
+                                tileGrid: new ol.tilegrid.TileGrid({
+                                    extent: options.tileGrid.extent_,
+                                    resolutions: options.tileGrid.resolutions_
+                                })
+                            })
+                        });
+                        map.addLayer(themeLayer);
+                    }
+                });
+                themeService.on('failed', function (error) {
+                    alert(error.errorMsg);
+                });
+            });
+            mapService.getMapStatus();
+        }
+
+        function createTheme() {
+            themeService.getThemeStatus(themeParameters)
+        }
+
+        function clearLayer() {
+            if (themeLayer) {
+                map.removeLayer(themeLayer);
+            }
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <input type="button" class="btn btn-primary" value="创建专题图" onclick="createTheme()"/>
+    <input type="button" class="btn btn-primary" value="清除结果" onclick="clearLayer()"/>
+</div>
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>

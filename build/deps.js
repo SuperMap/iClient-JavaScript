@@ -198,6 +198,12 @@ var deps = {
                     "./src/OL3/SuperMap/iServer/GetGridCellInfosService.js"
                 ]
             },
+            "Theme": {
+                "name": "服务器专题图服务",
+                "src": [
+                    "./src/OL3/SuperMap/iServer/ThemeService.js"
+                ]
+            },
             "NetworkAnalyst": {
                 "name": "网络分析服务",
                 "src": [

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>标签专题图</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
+    <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for OL3.js"></script>
+    <script type="text/javascript">
+        var map, themeService, themeLayer, style1, style2, style3,
+                themeLabelItem1, themeLabelItem2, themeLabelItem3, themeLabelItem4,
+                themeLabelItem5, themeLabelItem6, themeLabel, themeParameters,
+                url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+        function init() {
+            var mapService = new ol.supermap.MapService(url);
+            mapService.on("complete", function (serviceResult) {
+                var mapJSONObj = serviceResult.element.result;
+                map = new ol.Map({
+                    target: 'map',
+                    view: new ol.View({
+                        center: [0, 0],
+                        zoom: 2,
+                        projection: "EPSG:4326"
+                    })
+                });
+                var options = ol.supermap.Tile.optionsFromMapJSON(url, mapJSONObj);
+                var layer = new ol.layer.Tile({
+                    source: new ol.supermap.Tile(options)
+                });
+                map.addLayer(layer);
+                themeService = new ol.supermap.ThemeService(url);
+
+                style1 = new ServerTextStyle({
+                    fontHeight: 4,
+                    foreColor: new ServerColor(100, 20, 50),
+                    sizeFixed: true,
+                    bold: true
+
+                });
+                style2 = new ServerTextStyle({
+                    fontHeight: 4,
+                    foreColor: new ServerColor(250, 0, 0),
+                    sizeFixed: true,
+                    bold: true
+                });
+                style3 = new ServerTextStyle({
+                    fontHeight: 4,
+                    foreColor: new ServerColor(93, 95, 255),
+                    sizeFixed: true,
+                    bold: true
+                });
+                themeLabelItem1 = new ThemeLabelItem({
+                    start: 0.0,
+                    end: 7800000,
+                    style: style1
+                });
+                themeLabelItem2 = new ThemeLabelItem({
+                    start: 7800000,
+                    end: 15000000,
+                    style: style2
+                });
+                themeLabelItem3 = new ThemeLabelItem({
+                    start: 15000000,
+                    end: 30000000,
+                    style: style3
+                });
+                themeLabelItem4 = new ThemeLabelItem({
+                    start: 0.0,
+                    end: 55,
+                    style: style1
+                });
+                themeLabelItem5 = new ThemeLabelItem({
+                    start: 55,
+                    end: 109,
+                    style: style2
+                });
+                themeLabelItem6 = new ThemeLabelItem({
+                    start: 109,
+                    end: 300,
+                    style: style3
+                });
+
+                themeLabel = new ThemeLabel({
+                    matrixCells: [
+                        [new LabelThemeCell({
+                            themeLabel: new ThemeLabel({
+                                labelExpression: "CAPITAL",
+                                rangeExpression: "SmID",
+                                numericPrecision: 0,
+                                items: [themeLabelItem4, themeLabelItem5, themeLabelItem6]
+                            })
+                        })],
+                        [new LabelThemeCell({
+                            themeLabel: new ThemeLabel({
+                                labelExpression: "CAP_POP",
+                                rangeExpression: "CAP_POP",
+                                numericPrecision: 0,
+                                items: [themeLabelItem1, themeLabelItem2, themeLabelItem3]
+                            })
+                        })]
+                    ],
+                    background: new ThemeLabelBackground({
+                        backStyle: new ServerStyle({
+                            fillForeColor: new ServerColor(255, 255, 0),
+                            fillOpaqueRate: 60,
+                            lineWidth: 0.1
+                        }),
+                        labelBackShape: "RECT"
+                    })
+                });
+                themeParameters = new ThemeParameters({
+                    themes: [themeLabel],
+                    datasetNames: ["Capitals"],
+                    dataSourceNames: ["World"]
+                });
+
+                themeService.on('complete', function (serviceResult) {
+                    var result = serviceResult.element.result;
+                    if (result && result.newResourceID) {
+                        themeLayer = new ol.layer.Tile({
+                            source: new ol.supermap.Tile({
+                                url: url,
+                                noWrap: true,
+                                cacheEnabled: false,
+                                transparent: true,
+                                layersID: result.newResourceID,
+                                tileGrid: new ol.tilegrid.TileGrid({
+                                    extent: options.tileGrid.extent_,
+                                    resolutions: options.tileGrid.resolutions_
+                                })
+                            })
+                        });
+                        map.addLayer(themeLayer);
+                    }
+                });
+                themeService.on('failed', function (error) {
+                    alert(error.errorMsg);
+                });
+            })
+            mapService.getMapStatus();
+        }
+        function createTheme() {
+            themeService.getThemeStatus(themeParameters);
+        }
+
+        function clearLayer() {
+            if (themeLayer) {
+                map.removeLayer(themeLayer);
+            }
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <input type="button" class="btn btn-primary" value="创建专题图" onclick="createTheme()"/>
+    <input type="button" class="btn btn-primary" value="清除结果" onclick="clearLayer()"/>
+</div>
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>

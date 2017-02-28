@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>栅格分段专题图</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
+    <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
+    <script type="text/javascript" src="../../dist/SuperMapiClient9 for OL3.js"></script>
+    <script type="text/javascript">
+        var map, themeService, themeLayer, themeGridRange, themeParameters,
+                url = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
+        function init() {
+            var mapService = new ol.supermap.MapService(url);
+            mapService.on("complete", function (serviceResult) {
+                var mapJSONObj = serviceResult.element.result;
+                map = new ol.Map({
+                    target: 'map',
+                    view: new ol.View({
+                        center: [118, 40],
+                        zoom: 7,
+                        projection: "EPSG:4326"
+                    })
+                });
+                var options = ol.supermap.Tile.optionsFromMapJSON(url, mapJSONObj);
+                var layer = new ol.layer.Tile({
+                    source: new ol.supermap.Tile(options)
+                });
+                map.addLayer(layer);
+                themeService = new ol.supermap.ThemeService(url);
+                var themeGridRangeItem1 = new ThemeGridRangeItem({
+                            start: -4,
+                            end: 120,
+                            color: new ServerColor(198, 244, 240)
+                        }),
+
+                        themeGridRangeItem2 = new ThemeGridRangeItem({
+                            start: 120,
+                            end: 240,
+                            color: new ServerColor(176, 244, 188)
+                        }),
+                        themeGridRangeItem3 = new ThemeGridRangeItem({
+                            start: 240,
+                            end: 360,
+                            color: new ServerColor(218, 251, 178)
+                        }),
+                        themeGridRangeItem4 = new ThemeGridRangeItem({
+                            start: 360,
+                            end: 480,
+                            color: new ServerColor(220, 236, 145)
+                        }),
+                        themeGridRangeItem5 = new ThemeGridRangeItem({
+                            start: 480,
+                            end: 600,
+                            color: new ServerColor(96, 198, 66)
+                        }),
+                        themeGridRangeItem6 = new ThemeGridRangeItem({
+                            start: 600,
+                            end: 720,
+                            color: new ServerColor(20, 142, 53)
+                        }),
+                        themeGridRangeItem7 = new ThemeGridRangeItem({
+                            start: 720,
+                            end: 840,
+                            color: new ServerColor(85, 144, 55)
+                        }),
+
+                        themeGridRangeItem8 = new ThemeGridRangeItem({
+                            start: 840,
+                            end: 960,
+                            color: new ServerColor(171, 168, 38)
+                        }),
+                        themeGridRangeItem9 = new ThemeGridRangeItem({
+                            start: 960,
+                            end: 1100,
+                            color: new ServerColor(235, 165, 9)
+                        }),
+                        themeGridRangeItem10 = new ThemeGridRangeItem({
+                            start: 1100,
+                            end: 1220,
+                            color: new ServerColor(203, 89, 2)
+                        }),
+                        themeGridRangeItem11 = new ThemeGridRangeItem({
+                            start: 1220,
+                            end: 1340,
+                            color: new ServerColor(157, 25, 1)
+                        }),
+                        themeGridRangeItem12 = new ThemeGridRangeItem({
+                            start: 1340,
+                            end: 1460,
+                            color: new ServerColor(118, 15, 3)
+                        }),
+                        themeGridRangeItem13 = new ThemeGridRangeItem({
+                            start: 1460,
+                            end: 1600,
+                            color: new ServerColor(112, 32, 7)
+                        }),
+
+                        themeGridRangeItem14 = new ThemeGridRangeItem({
+                            start: 1600,
+                            end: 1800,
+                            color: new ServerColor(106, 45, 12)
+                        }),
+                        themeGridRangeItem15 = new ThemeGridRangeItem({
+                            start: 1800,
+                            end: 2000,
+                            color: new ServerColor(129, 80, 50)
+                        }),
+                        themeGridRangeItem16 = new ThemeGridRangeItem({
+                            start: 2000,
+                            end: 2167,
+                            color: new ServerColor(160, 154, 146)
+                        });
+                themeGridRange = new ThemeGridRange({
+                    reverseColor: false,
+                    rangeMode: RangeMode.EQUALINTERVAL,
+                    items: [
+                        themeGridRangeItem1, themeGridRangeItem2,
+                        themeGridRangeItem3, themeGridRangeItem4,
+                        themeGridRangeItem5, themeGridRangeItem6,
+                        themeGridRangeItem7, themeGridRangeItem8,
+                        themeGridRangeItem9, themeGridRangeItem10,
+                        themeGridRangeItem11, themeGridRangeItem12,
+                        themeGridRangeItem13, themeGridRangeItem14,
+                        themeGridRangeItem15, themeGridRangeItem16
+                    ]
+                });
+                themeParameters = new ThemeParameters({
+                    datasetNames: ["JingjinTerrain"],
+                    dataSourceNames: ["Jingjin"],
+                    joinItems: null,
+                    themes: [themeGridRange]
+                });
+
+                themeService.on('complete', function (serviceResult) {
+                    var result = serviceResult.element.result;
+                    if (result && result.newResourceID) {
+                        themeLayer = new ol.layer.Tile({
+                            source: new ol.supermap.Tile({
+                                url: url,
+                                noWrap: true,
+                                cacheEnabled: false,
+                                transparent: true,
+                                layersID: result.newResourceID,
+                                tileGrid: new ol.tilegrid.TileGrid({
+                                    extent: options.tileGrid.extent_,
+                                    resolutions: options.tileGrid.resolutions_
+                                })
+                            })
+                        });
+                        map.addLayer(themeLayer);
+                    }
+                });
+                themeService.on('failed', function (error) {
+                    alert(error.errorMsg);
+                });
+            })
+            mapService.getMapStatus();
+        }
+        function createTheme() {
+            themeService.getThemeStatus(themeParameters);
+        }
+
+        function clearLayer() {
+            if (themeLayer) {
+                map.removeLayer(themeLayer);
+            }
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+    <input type="button" class="btn btn-primary" value="创建专题图" onclick="createTheme()"/>
+    <input type="button" class="btn btn-primary" value="清除结果" onclick="clearLayer()"/>
+</div>
+<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+</body>
+</html>
