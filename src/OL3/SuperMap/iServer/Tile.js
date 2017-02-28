@@ -37,26 +37,23 @@ ol.supermap.Tile = function (options) {
 
     var tileUrlFunction = function (tileCoord, pixelRatio, projection) {
         var z = tileCoord[0], x = tileCoord[1], y = tileCoord[2], left, bottom, right, top;
+        var tileOrigin = getTileOrigin(z);
+        left = tileOrigin[0] + (x * width * resolutions[z]);
+        bottom = tileOrigin[1] + (y * height * resolutions[z]);
+        right = tileOrigin[0] + ((x + 1) * width * resolutions[z]);
+        top = tileOrigin[1] + ((y + 1) * height * resolutions[z]);
+        return layerUrl + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + left + ",\"y\":" + bottom + "},\"rightTop\" : {\"x\":" + right + ",\"y\":" + top + "}}";
+    }
+
+    function getTileOrigin(z) {
         if (extent) {
-            left = extent[0] + (x * width * resolutions[z]);
-            bottom = extent[3] + (y * height * resolutions[z]);
-            right = extent[0] + ((x + 1) * width * resolutions[z]);
-            top = extent[3] + ((y + 1) * height * resolutions[z]);
-            return layerUrl + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + left + ",\"y\":" + bottom + "},\"rightTop\" : {\"x\":" + right + ",\"y\":" + top + "}}";
+            return [extent[0], extent[3]];
         }
         if (origin) {
-            left = origin[0] + (x * width * resolutions[z]);
-            bottom = origin[1] + (y * height * resolutions[z]);
-            right = origin[0] + ((x + 1) * width * resolutions[z]);
-            top = origin[1] + ((y + 1) * height * resolutions[z]);
-            return layerUrl + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + left + ",\"y\":" + bottom + "},\"rightTop\" : {\"x\":" + right + ",\"y\":" + top + "}}";
+            return origin;
         }
-        if (origins) {
-            left = origins[z][0] + (x * width * resolutions[z]);
-            bottom = origins[z][1] + (y * height * resolutions[z]);
-            right = origins[z][0] + ((x + 1) * width * resolutions[z]);
-            top = origins[z][1] + ((y + 1) * height * resolutions[z]);
-            return layerUrl + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + left + ",\"y\":" + bottom + "},\"rightTop\" : {\"x\":" + right + ",\"y\":" + top + "}}";
+        if (origins && z) {
+            return origins[z];
         }
     }
 
