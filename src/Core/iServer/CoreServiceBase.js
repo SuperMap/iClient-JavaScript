@@ -54,6 +54,7 @@ SuperMap.CoreServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
      */
     destroy: function () {
         SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+		var me = this;
         me.EVENT_TYPES = null;
         if (me.events) {
             me.events.destroy();
