@@ -8,7 +8,7 @@ module.exports = {
     //入口文件输出配置
     output: {
         path: './dist/',
-        filename: 'SuperMapiClient9.js'
+        filename: 'iclient9.js'
     },
 
     //其它解决方案配置

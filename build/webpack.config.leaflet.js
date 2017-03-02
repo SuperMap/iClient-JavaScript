@@ -5,7 +5,7 @@ module.exports = {
     //入口文件输出配置
     output: {
         path: './dist/',
-        filename: 'SuperMapiClient9 for Leaflet.js'
+        filename: 'iclient9-leaflet.js'
     },
 
     //其它解决方案配置

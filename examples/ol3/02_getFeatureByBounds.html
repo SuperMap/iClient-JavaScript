@@ -5,11 +5,11 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
     <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
-    <script type="text/javascript" src="../../dist/SuperMapiClient9 for OL3.js"></script>
+    <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
     <script type="text/javascript">
         var map, polygon, vectorLayer, resultLayer,
                 baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
-                url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+                url = "http://192.168.12.85:8090/iserver/services/data-world/rest/data";
         var extent = [-180.0, -90.0, 180, 90];
         var dpi = 96;
         var resolutions = [
@@ -68,8 +68,7 @@
             var getFeaturesService = new ol.supermap.GetFeaturesService(url);
             var boundsParam = new GetFeaturesByBoundsParameters({
                 datasetNames: ["World:Countries"],
-                bounds: polygon.getExtent(),
-                spatialQueryMode: "INTERSECT"
+                bounds: polygon.getExtent()
             });
             getFeaturesService.getFeaturesByBounds(boundsParam);
             getFeaturesService.on("complete", function (serviceResult) {
