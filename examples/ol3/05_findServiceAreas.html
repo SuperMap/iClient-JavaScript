@@ -30,7 +30,7 @@
                     })
                 });
                 var layer = new ol.layer.Tile({
-                    source: new ol.supermap.Tile(ol.supermap.Tile.optionsFromMapJSON(baseUrl, mapJSONObj))
+                    source: new ol.supermap.TileSuperMapRest(ol.supermap.Tile.optionsFromMapJSON(baseUrl, mapJSONObj))
                 });
                 map.addLayer(layer);
 

@@ -1,13 +1,10 @@
 require('../../base')
 
-ol.supermap.Tile = function (options) {
+ol.supermap.TileSuperMapRest = function (options) {
     if (options.url === undefined) {
         return;
     }
-    var tileGrid = options.tileGrid;
-    var height = tileGrid.tileSize === undefined ? 256 : tileGrid.tileSize[0];
-    var width = tileGrid.tileSize === undefined ? 256 : tileGrid.tileSize[1];
-    var layerUrl = options.url + "/image.png?redirect=false&width=" + width + "&height=" + height;
+    var layerUrl = options.url + "/image.png?redirect=false";
     //为url添加安全认证信息片段
     if (SuperMap.Credential && SuperMap.Credential.CREDENTIAL) {
         layerUrl += "&" + SuperMap.Credential.CREDENTIAL.getUrlParameters();
@@ -30,31 +27,15 @@ ol.supermap.Tile = function (options) {
     if (options.layersID !== undefined) {
         layerUrl += "&layersID=" + options.layersID;
     }
-    var extent = tileGrid.extent_;
-    var origin = tileGrid.origin_;
-    var origins = tileGrid.origins_;
-    var resolutions = tileGrid.resolutions_;
-
-    var tileUrlFunction = function (tileCoord, pixelRatio, projection) {
-        var z = tileCoord[0], x = tileCoord[1], y = tileCoord[2], left, bottom, right, top;
-        var tileOrigin = getTileOrigin(z);
-        left = tileOrigin[0] + (x * width * resolutions[z]);
-        bottom = tileOrigin[1] + (y * height * resolutions[z]);
-        right = tileOrigin[0] + ((x + 1) * width * resolutions[z]);
-        top = tileOrigin[1] + ((y + 1) * height * resolutions[z]);
-        return layerUrl + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + left + ",\"y\":" + bottom + "},\"rightTop\" : {\"x\":" + right + ",\"y\":" + top + "}}";
-    }
-
-    function getTileOrigin(z) {
-        if (extent) {
-            return [extent[0], extent[3]];
+    function tileUrlFunction(tileCoord, pixelRatio, projection) {
+        if (!this.tileGrid) {
+            this.tileGrid = this.getTileGridForProjection(projection);
         }
-        if (origin) {
-            return origin;
-        }
-        if (origins && z) {
-            return origins[z];
-        }
+        var tileExtent = this.tileGrid.getTileCoordExtent(
+            tileCoord, this.tmpExtent_);
+        var tileSize = ol.size.toSize(
+            this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
+        return layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}";
     }
 
     ol.source.TileImage.call(this, {
@@ -79,9 +60,8 @@ ol.supermap.Tile = function (options) {
 
     });
 };
-ol.inherits(ol.supermap.Tile, ol.source.TileImage);
-
-ol.supermap.Tile.optionsFromMapJSON = function (url, mapJSONObj) {
+ol.inherits(ol.supermap.TileSuperMapRest, ol.source.TileImage);
+ol.supermap.TileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
     var options = {};
     options.url = url;
     var extent = [mapJSONObj.bounds.left, mapJSONObj.bounds.bottom, mapJSONObj.bounds.right, mapJSONObj.bounds.top];
@@ -123,4 +103,4 @@ ol.supermap.Tile.optionsFromMapJSON = function (url, mapJSONObj) {
     return options;
 }
 
-module.exports = ol.supermap.Tile;
+module.exports = ol.supermap.TileSuperMapRest;

@@ -10,20 +10,12 @@
     <script type="text/javascript">
         var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
         var url2 = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图";
-        var extent = [-180.0, -90.0, 180, 90];
-        var extentjj = [114.59, 37.76, 119.51, 42.31];
-        var dpi = 96;
+        var extent = [-180, -90, 180, 90];
+        var extentJJ = [114.59, 37.76, 119.51, 42.31];
         var resolutions = [
-            ol.supermap.Util.scaleToResolution(1.6901635716026555E-9, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(3.375595414562003E-9, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(6.751190829124006E-9, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(1.3502381658248012E-8, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(2.7004763316496024E-8, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(5.400952663299205E-8, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(1.080190532659841E-7, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(2.1603810653196843E-7, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(4.320762130639359E-7, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(8.641524261278681E-7, dpi, Unit.DEGREE),
+            ol.supermap.Util.scaleToResolution(2.1603810653196843E-7, 96, Unit.DEGREE),
+            ol.supermap.Util.scaleToResolution(4.320762130639359E-7, 96, Unit.DEGREE),
+            ol.supermap.Util.scaleToResolution(8.641524261278681E-7, 96, Unit.DEGREE),
         ];
 
         function init() {
@@ -31,12 +23,13 @@
                 target: 'map',
                 view: new ol.View({
                     center: [116.85, 39.79],
-                    zoom: 6,
+                    zoom: 0,
+                    resolutions: resolutions,
                     projection: 'EPSG:4326'
                 })
             });
             var layer = new ol.layer.Tile({
-                source: new ol.supermap.Tile({
+                source: new ol.supermap.TileSuperMapRest({
                     url: url,
                     tileGrid: new ol.tilegrid.TileGrid({
                         extent: extent,
@@ -47,10 +40,10 @@
             })
             map.addLayer(layer);
             var jjLayer = new ol.layer.Tile({
-                source: new ol.supermap.Tile({
+                source: new ol.supermap.TileSuperMapRest({
                     url: url2,
                     tileGrid: new ol.tilegrid.TileGrid({
-                        extent: extentjj,
+                        extent: extentJJ,
                         resolutions: resolutions,
                     })
                 }),

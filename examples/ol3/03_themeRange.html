@@ -25,7 +25,7 @@
                 });
                 var options = ol.supermap.Tile.optionsFromMapJSON(url, mapJSONObj);
                 var layer = new ol.layer.Tile({
-                    source: new ol.supermap.Tile(options)
+                    source: new ol.supermap.TileSuperMapRest(options)
                 });
                 map.addLayer(layer);
                 themeService = new ol.supermap.ThemeService(url);
@@ -73,7 +73,7 @@
                     var result = serviceResult.element.result;
                     if (result && result.newResourceID) {
                         themeLayer = new ol.layer.Tile({
-                            source: new ol.supermap.Tile({
+                            source: new ol.supermap.TileSuperMapRest({
                                 url: url,
                                 noWrap: true,
                                 cacheEnabled: false,

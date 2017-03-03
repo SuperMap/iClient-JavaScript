@@ -72,7 +72,7 @@
             })
         });
         var layer = new ol.layer.Tile({
-            source: new ol.supermap.Tile({
+            source: new ol.supermap.TileSuperMapRest({
                 url: mapURL,
                 tileGrid: new ol.tilegrid.TileGrid({
                     extent: extent,

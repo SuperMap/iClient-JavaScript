@@ -8,8 +8,7 @@
     <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
     <script type="text/javascript">
-        var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图";
-        var extent = [48.4, -7668.25, 8958.85, -55.58];
+        var url = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图";
         var projection = new ol.proj.Projection({
             extent: extent,
             units: 'm'
@@ -27,7 +26,7 @@
                     })
                 });
                 var layer = new ol.layer.Tile({
-                    source: new ol.supermap.Tile(ol.supermap.Tile.optionsFromMapJSON(url, mapJSONObj))
+                    source: new ol.supermap.TileSuperMapRest(ol.supermap.Tile.optionsFromMapJSON(url, mapJSONObj))
                 });
                 map.addLayer(layer);
             });
