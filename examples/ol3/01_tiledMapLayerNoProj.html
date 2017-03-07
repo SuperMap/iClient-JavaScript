@@ -7,26 +7,29 @@
     <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
     <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+    <script type="text/javascript" src="../js/resize.js"></script>
     <script type="text/javascript">
-        var url = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图";
+        var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图";
+        var extent = [48.4, -7668.25, 8958.85, -55.58];
         var projection = new ol.proj.Projection({
             extent: extent,
             units: 'm'
         });
         function init() {
+            mapHeight();
             var mapService = new ol.supermap.MapService(url);
             mapService.on("complete", function (serviceResult) {
                 var mapJSONObj = serviceResult.element.result;
                 var map = new ol.Map({
                     target: 'map',
                     view: new ol.View({
-                        center: [5105,-3375],
+                        center: [5105, -3375],
                         zoom: 1,
                         projection: projection
                     })
                 });
                 var layer = new ol.layer.Tile({
-                    source: new ol.supermap.TileSuperMapRest(ol.supermap.Tile.optionsFromMapJSON(url, mapJSONObj))
+                    source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj))
                 });
                 map.addLayer(layer);
             });
@@ -35,6 +38,7 @@
     </script>
 </head>
 <body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
-<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right "></div>
+<div id="map" style="margin:0 auto;"></div>
 </body>
 </html>

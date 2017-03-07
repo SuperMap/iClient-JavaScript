@@ -60,7 +60,7 @@ SuperMap.REST.QueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
         }
 
         end = me.url.substr(me.url.length - 1, 1);
-        me.format = (options.format) ? options.format : "geojson";
+        me.format = (options && options.format) ? options.format : "geojson";
         me.format = me.format.toLowerCase();
         // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
         // if (this.format==="geojson" && me.isInTheSameDomain) {

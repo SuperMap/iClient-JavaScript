@@ -7,10 +7,12 @@
     <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
     <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+    <script type="text/javascript" src="../js/resize.js"></script>
     <script type="text/javascript">
         var map, themeService, themeLayer, themeGraph, themeParameters,
                 url = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
         function init() {
+            mapHeight();
             var mapService = new ol.supermap.MapService(url);
             mapService.on("complete", function (serviceResult) {
                 var mapJSONObj = serviceResult.element.result;
@@ -22,7 +24,7 @@
                         projection: "EPSG:4326"
                     })
                 });
-                var options = ol.supermap.Tile.optionsFromMapJSON(url, mapJSONObj);
+                var options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
                 var layer = new ol.layer.Tile({
                     source: new ol.supermap.TileSuperMapRest(options)
                 });
@@ -113,10 +115,10 @@
     </script>
 </head>
 <body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
-<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
-    <input type="button" class="btn btn-primary" value="创建专题图" onclick="createTheme()"/>
-    <input type="button" class="btn btn-primary" value="清除结果" onclick="clearLayer()"/>
+<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
+    <input type="button" class="btn btn-default" value="创建专题图" onclick="createTheme()"/>
+    <input type="button" class="btn btn-default" value="清除结果" onclick="clearLayer()"/>
 </div>
-<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+<div id="map" style="margin:0 auto;"></div>
 </body>
 </html>

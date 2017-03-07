@@ -1,4 +1,4 @@
-﻿<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 <head>
     <title>数据集字段查询统计</title>
@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
     <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+    <script type="text/javascript" src="../js/resize.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -22,22 +23,22 @@
 
     </style>
 
-    <div id="popup" class="ol-popup">
-        <div id="popup-content"></div>
-    </div>
 </head>
 <body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
-<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+<div id="popup" class="ol-popup">
+    <div id="popup-content"></div>
+</div>
+<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
     <span>图层：</span>
-    <select id='layerSelect' class="form-control" style='width:200px;margin-top:10px;display: inline-block'></select>
+    <select id='layerSelect' class="form-control" style='width:200px;display: inline-block'></select>
     <span>字段：</span>
     <span style="display: inline-block">
-        <select id='fieldSelect' class="form-control" style='width:100px;margin-top:10px;'></select>
+        <select id='fieldSelect' class="form-control" style='width:100px;'></select>
     </span>
-    <input type="button" class="btn btn-primary" value="统计" onclick="fieldStatistic()"/>
-    <input type="button" class="btn btn-primary" value="清除" onclick="clearfieldStatistic()"/>
+    <input type="button" class="btn btn-default" value="统计" onclick="fieldStatistic()"/>
+    <input type="button" class="btn btn-default" value="清除" onclick="clearfieldStatistic()"/>
 </div>
-<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+<div id="map" style="margin:0 auto;"></div>
 </body>
 
 <script type="text/javascript">
@@ -63,6 +64,7 @@
             dataURL = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
 
     function init() {
+        mapHeight();
         map = new ol.Map({
             target: 'map',
             view: new ol.View({

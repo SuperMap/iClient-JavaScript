@@ -1,4 +1,4 @@
-﻿<!DOCTYPE>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title>地物编辑</title>
@@ -6,12 +6,14 @@
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+    <script type="text/javascript" src="../js/resize.js"></script>
     <script type="text/javascript">
         var map, marker, featureGroup, id, resultLayer,
                 baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
                 urlCapital = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Capitals",
                 url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
         function init() {
+            mapHeight();
             map = L.map('map', {
                 preferCanvas: true,
                 crs: L.CRS.EPSG4326,
@@ -98,11 +100,11 @@
     </script>
 </head>
 <body onload="init()" onbeforeunload="closeLayer()" style=" margin: 0;overflow: hidden;background: #fff;">
-<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
-    <input type="button" class="btn btn-primary" value="添加地物" onclick="addMarker()"/>
-    <input type="button" class="btn btn-primary" value="提交添加" onclick="commit()"/>
-    <input type="button" class="btn btn-primary" value="清除结果" onclick="clearLayer()"/>
+<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
+    <input type="button" class="btn btn-default" value="添加地物" onclick="addMarker()"/>
+    <input type="button" class="btn btn-default" value="提交添加" onclick="commit()"/>
+    <input type="button" class="btn btn-default" value="清除结果" onclick="clearLayer()"/>
 </div>
-<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+<div id="map" style="margin:0 auto;"></div>
 </body>
 </html>

@@ -23,7 +23,7 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.CoreServiceBase, {
     initialize: function (url, options) {
         SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
         var me = this;
-        me.format = (options.format) ? options.format : "geojson";
+        me.format = (options && options.format) ? options.format : "geojson";
         me.format = me.format.toLowerCase();
     },
 

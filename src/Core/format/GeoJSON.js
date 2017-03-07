@@ -689,6 +689,8 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
             //     return me.toGeoLineEPS();
             // case SuperMap.REST.GeometryType.REGIONEPS:
             //     return me.toGeoRegionEPS();
+            default:
+                return geometry;
         }
     },
     /**

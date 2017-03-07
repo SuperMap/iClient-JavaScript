@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
     <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+    <script type="text/javascript" src="../js/resize.js"></script>
     <script type="text/javascript">
         var map, themeService, themeLayer, themeRangeItem1, themeRangeItem2,
                 themeRangeItem3, themeRange, themeParameters,
                 url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
         function init() {
+            mapHeight();
             var mapService = new ol.supermap.MapService(url);
             mapService.on("complete", function (serviceResult) {
                 var mapJSONObj = serviceResult.element.result;
@@ -23,7 +25,7 @@
                         projection: "EPSG:3857"
                     })
                 });
-                var options = ol.supermap.Tile.optionsFromMapJSON(url, mapJSONObj);
+                var options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
                 var layer = new ol.layer.Tile({
                     source: new ol.supermap.TileSuperMapRest(options)
                 });
@@ -34,8 +36,8 @@
                     start: 0,
                     end: 500000000000,
                     style: new ServerStyle({
-                        fillForeColor: new ServerColor(137, 203, 187),
-                        lineColor: new ServerColor(0, 0, 0),
+                        fillForeColor: new ServerColor(211, 255, 250),
+                        lineColor: new ServerColor(179, 209, 193),
                         lineWidth: 0.1
                     })
                 });
@@ -43,8 +45,8 @@
                     start: 500000000000,
                     end: 1000000000000,
                     style: new ServerStyle({
-                        fillForeColor: new ServerColor(233, 235, 171),
-                        lineColor: new ServerColor(0, 0, 0),
+                        fillForeColor: new ServerColor(178, 218, 199),
+                        lineColor: new ServerColor(179, 209, 193),
                         lineWidth: 0.1
                     })
                 });
@@ -52,8 +54,8 @@
                     start: 1000000000000,
                     end: 3000000000000,
                     style: new ServerStyle({
-                        fillForeColor: new ServerColor(135, 157, 157),
-                        lineColor: new ServerColor(0, 0, 0),
+                        fillForeColor: new ServerColor(58, 178, 166),
+                        lineColor: new ServerColor(179, 209, 193),
                         lineWidth: 0.1
                     })
                 });
@@ -107,10 +109,10 @@
     </script>
 </head>
 <body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
-<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
-    <input type="button" class="btn btn-primary" value="创建专题图" onclick="createTheme()"/>
-    <input type="button" class="btn btn-primary" value="清除结果" onclick="clearLayer()"/>
+<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
+    <input type="button" class="btn btn-default" value="创建专题图" onclick="createTheme()"/>
+    <input type="button" class="btn btn-default" value="清除结果" onclick="clearLayer()"/>
 </div>
-<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+<div id="map" style="margin:0 auto;"></div>
 </body>
 </html>

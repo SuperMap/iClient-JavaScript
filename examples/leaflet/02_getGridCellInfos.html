@@ -7,11 +7,13 @@
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+    <script type="text/javascript" src="../js/resize.js"></script>
     <script type="text/javascript">
         var map, marker,
                 baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/世界地图_Day",
                 url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
         function init() {
+            mapHeight();
             map = L.map('map', {
                 preferCanvas: true,
                 crs: L.CRS.EPSG4326,
@@ -52,9 +54,9 @@
     </script>
 </head>
 <body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
-<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
-    <input type="button" class="btn btn-primary" value="清除结果" onclick="closeInfoWin()"/>
+<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
+    <input type="button" class="btn btn-default" value="清除结果" onclick="closeInfoWin()"/>
 </div>
-<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+<div id="map" style="margin:0 auto;"></div>
 </body>
 </html>

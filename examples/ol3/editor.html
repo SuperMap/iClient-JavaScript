@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<head>
+    <title>OpenLayers示例代码</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/sideBar.css">
+    <link rel="stylesheet" href="../css/editor.css">
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/ace.js"></script>
+    <script type="text/javascript" src="./config.js"></script>
+</head>
+<body>
+<div class="main">
+    <div class="header">
+
+    </div>
+
+    <div class="content">
+        <div id="sidebar">
+            <ul class="menu"></ul>
+        </div>
+
+        <div id="codePane" unselectable="on">
+            <div class="contentTool">
+                <span style="padding-left: 20px;">源代码编辑器</span>
+                <div class="editorBtn" id="runBtn" onclick="run()"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>&nbsp;运行</div>
+                <div class="editorBtn" id="resetBtn" onclick="refresh()"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>&nbsp;重置</div>
+            </div>
+
+            <div id="editor">
+
+            </div>
+        </div>
+        <div id="preview">
+            <iframe id='innerPage' name='innerPage'></iframe>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="../js/sidebar.js"></script>
+<script type="text/javascript" src="../js/editor.js"></script>
+<script>
+
+    $(document).ready(function () {
+        initPage();
+        bindEvents();
+    });
+    function bindEvents() {
+        $("#sidebar ul.thirdMenu a").click(function (evt) {
+            window.location.hash = "#" + evt.target.id;
+            initEditor();
+        });
+        window.addEventListener("hashchange", function () {
+            var hash = window.location.hash;
+            if (hash.indexOf("#") !== -1) {
+                var id = hash.split("#")[1];
+                selectMenu(id);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

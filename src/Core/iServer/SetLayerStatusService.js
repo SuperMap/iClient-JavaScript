@@ -35,7 +35,7 @@ SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.CoreServiceBase, {
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-        me.mapUrl = url;
+        this.mapUrl = url;
     },
 
     /**

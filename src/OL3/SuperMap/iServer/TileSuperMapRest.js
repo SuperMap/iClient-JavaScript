@@ -1,4 +1,4 @@
-require('../../base')
+require('../../base');
 
 ol.supermap.TileSuperMapRest = function (options) {
     if (options.url === undefined) {
@@ -101,6 +101,6 @@ ol.supermap.TileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
         resolutions: resolutions
     });
     return options;
-}
+};
 
 module.exports = ol.supermap.TileSuperMapRest;

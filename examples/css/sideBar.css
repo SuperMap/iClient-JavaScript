@@ -1,0 +1,38 @@
+#sidebar {
+    width: 200px;
+    border-right: 1px solid #e9e9e9;
+    overflow-y: auto;
+    float: left;
+    position: fixed;
+    top: 60px;
+    padding-bottom: 60px;
+    height: 100%;
+}
+
+#sidebar ul {
+    padding-left: 20px;
+}
+#sidebar ul li{
+    cursor: pointer;
+}
+#sidebar ul.menu ul.secondMenu, #sidebar ul.menu ul.thirdMenu{
+    list-style: none;
+    padding-left: 20px;
+}
+
+
+#sidebar ul.menu .title {
+    height: 30px;
+    line-height: 30px;
+}
+
+#sidebar ul.menu  a:hover,#sidebar ul.menu a.active{
+    color:#0083CB;
+    text-decoration:none;
+}
+
+#sidebar ul.menu  li  span,#sidebar ul.menu  li  a{
+    line-height: 40px;
+    color:#000000;
+}
+

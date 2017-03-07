@@ -1,0 +1,34 @@
+body {
+    font-family: "Microsoft YaHei";
+    margin: 0;
+    padding: 0;
+}
+
+.main {
+    height: 100%;
+}
+
+div {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.header {
+    height: 60px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    background-color: #0083CB;
+    z-index: 100;
+}
+
+.content {
+    position: absolute;
+    top: 60px;
+    bottom: 0;
+    width: 100%;
+    z-index: 99;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

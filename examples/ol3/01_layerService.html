@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
     <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+    <script type="text/javascript" src="../js/resize.js"></script>
     <style>
         .ol-popup {
             position: absolute;
@@ -78,6 +79,7 @@
         var map,
                 url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
         function init() {
+            mapHeight();
             map = new ol.Map({
                 target: 'map',
                 view: new ol.View({
@@ -96,7 +98,7 @@
                     })
                 }),
                 projection: 'EPSG:4326'
-            })
+            });
             map.addLayer(layer);
         }
 
@@ -123,10 +125,10 @@
     </script>
 </head>
 <body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
-<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
-    <input type="button" class="btn btn-primary" value="获取图层信息" onclick="layerService()"/>
-    <input type="button" class="btn btn-primary" value="清除结果" onclick="closeInfoWin()"/>
+<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
+    <input type="button" class="btn btn-default" value="获取图层信息" onclick="layerService()"/>
+    <input type="button" class="btn btn-default" value="清除结果" onclick="closeInfoWin()"/>
 </div>
-<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+<div id="map" style="margin:0 auto;"></div>
 </body>
 </html>

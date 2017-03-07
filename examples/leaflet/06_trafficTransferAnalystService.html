@@ -6,12 +6,12 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+    <script type="text/javascript" src="../js/resize.js"></script>
     <style>
         #startInput, #endInput, .strategy {
             width: 100px;
-            margin-top: 10px;
             display: inline-block;
         }
 
@@ -38,6 +38,7 @@
                 baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
                 serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun";
         function init() {
+            mapHeight();
             map = L.map('map', {
                 crs: L.supermap.NonEarthCRS({
                     bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
@@ -306,20 +307,20 @@
     </script>
 </head>
 <body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
-<div id="toolbar" style=" position: relative;padding-top: 10px; padding-bottom: 10px;">
+<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
     <span>起点：</span>
     <input type='text' class="form-control" disabled="disabled" id='startInput' value='省汽修'/>
     <span>终点：</span>
     <span style="display: inline-block">
         <input type='text' class="form-control" disabled="disabled" id='endInput' value='中安大厦'/>
     </span>
-    <input type="button" class="btn btn-primary" value="最少时间" onclick="execTransSolutionsQuery('LESS_TIME')"/>
-    <input type="button" class="btn btn-primary" value="最短距离" onclick="execTransSolutionsQuery('MIN_DISTANCE')"/>
-    <input type="button" class="btn btn-primary" value="少步行" onclick="execTransSolutionsQuery('LESS_WALK')"/>
-    <input type="button" class="btn btn-primary" value="少换乘" onclick="execTransSolutionsQuery('LESS_TRANSFER')"/>
-    <input type="button" class="btn btn-primary" value="清除" onclick="clearLayer()"/>
+    <input type="button" class="btn btn-default" value="最少时间" onclick="execTransSolutionsQuery('LESS_TIME')"/>
+    <input type="button" class="btn btn-default" value="最短距离" onclick="execTransSolutionsQuery('MIN_DISTANCE')"/>
+    <input type="button" class="btn btn-default" value="少步行" onclick="execTransSolutionsQuery('LESS_WALK')"/>
+    <input type="button" class="btn btn-default" value="少换乘" onclick="execTransSolutionsQuery('LESS_TRANSFER')"/>
+    <input type="button" class="btn btn-default" value="清除" onclick="clearLayer()"/>
 </div>
 
-<div id="map" style="margin:0 auto;position: relative; height: 510px;border: 1px solid #3473b7;"></div>
+<div id="map" style="margin:0 auto;"></div>
 </body>
 </html>
