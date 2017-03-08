@@ -56,7 +56,7 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
      */
     destroy: function () {
         SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
-        me.mode = null;
+        this.mode = null;
     },
 
     /**

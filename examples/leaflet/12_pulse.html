@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>闪烁点</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+    <link rel="stylesheet" href="https://rawgit.com/mapshakers/leaflet-icon-pulse/master/src/L.Icon.Pulse.css"/>
+    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/mapshakers/leaflet-icon-pulse/master/src/L.Icon.Pulse.js"></script>
+    <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+    <script type="text/javascript" src="../js/resize.js"></script>
+    <script type="text/javascript" src="../js/resize.js"></script>
+    <script type="text/javascript">
+        var map, resultLayer, markers = [], pulseIcon,
+                dataUrl = "http://support.supermap.com.cn:8090/iserver/services/data-DynamicData/rest/data",
+                url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+        function init() {
+            mapHeight();
+            map = L.map('map', {
+                preferCanvas: true,
+                center: [32, 104],
+                maxZoom: 18,
+                zoom: 4
+            });
+            L.supermap.tiledMapLayer(url).addTo(map);
+            pulseIcon = L.icon.pulse({
+                iconSize: [12, 12],
+                color: '#2f8'
+            });
+
+        }
+
+        function loadPulse() {
+            clearLayers();
+            var point1 = L.CRS.EPSG3857.project(L.latLng(22, 96));
+            var point2 = L.CRS.EPSG3857.project(L.latLng(42, 124));
+            var bounds = L.latLngBounds(L.latLng(point1.y, point1.x), L.latLng(point2.y, point2.x));
+            var boundsParam = new GetFeaturesByBoundsParameters({
+                datasetNames: ["DynamicData:Point"],
+                bounds: bounds
+            });
+            L.supermap.getFeaturesService(dataUrl).getFeaturesByBounds(boundsParam)
+                    .on("complete", function (serviceResult) {
+                        createLayers(serviceResult.result);
+                    });
+        }
+        function createLayers(result) {
+            if (!result || !result.features || result.features.length < 1) {
+                return;
+            }
+            result.features.map(function (feature) {
+                var latLng = L.CRS.EPSG3857.unproject(L.point(feature.geometry.coordinates));
+                markers.push(L.marker(latLng, {icon: pulseIcon}));
+            });
+            resultLayer = L.featureGroup(markers).addTo(map);
+        }
+
+        function clearLayers() {
+            if (resultLayer) {
+                resultLayer.removeFrom(map);
+            }
+        }
+
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
+    <input type="button" class="btn btn-default" value="加载闪烁点" onclick="loadPulse()"/>
+    <input type="button" class="btn btn-default" value="清除结果" onclick="clearLayers()"/>
+</div>
+<div id="map" style="margin:0 auto;"></div>
+</body>
+</html>

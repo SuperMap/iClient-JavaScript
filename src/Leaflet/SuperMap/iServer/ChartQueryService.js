@@ -22,15 +22,17 @@ ChartQueryService = ServiceBase.extend({
     /**
      * @param params
      * <ChartQueryParameters>
+     * @param resultFormat
      */
-    queryChart: function (params) {
-        var me = this, param = me._processParams(params);
+    queryChart: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var chartQueryService = new SuperMap.REST.ChartQueryService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
 
         chartQueryService.processAsync(param);
@@ -53,6 +55,9 @@ ChartQueryService = ServiceBase.extend({
                 params.bounds.getNorthEast().lat
             );
         }
+    },
+    _processFormat: function (resultFormat) {
+        return (resultFormat) ? resultFormat : Format.GEOJSON;
     }
 });
 

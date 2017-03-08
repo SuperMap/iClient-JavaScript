@@ -888,6 +888,8 @@
 	            //     return me.toGeoLineEPS();
 	            // case SuperMap.REST.GeometryType.REGIONEPS:
 	            //     return me.toGeoRegionEPS();
+	            default:
+	                return geometry;
 	        }
 	    },
 	    /**
@@ -1076,6 +1078,16 @@
 	 */
 
 	/**
+	 *服务请求返回结果数据类型
+	 *  GEOJSON: "GEOJSON",
+	 *  ISERVER: "ISERVER"
+	 */
+	Format = {
+	    GEOJSON: "GEOJSON",
+	    ISERVER: "ISERVER"
+	};
+
+	/**
 	 * Constant: GeometryType
 	 * {Object} 几何对象枚举类。
 	 * 该类定义了一系列几何对象类型。
@@ -1140,7 +1152,7 @@
 
 
 	/**
-	 * Constant: SpatialQueryMode 
+	 * Constant: SpatialQueryMode
 	 * {Object} 空间查询模式枚举类。
 	 * 该类定义了空间查询操作模式常量。
 	 *
@@ -1151,7 +1163,7 @@
 	 * DISJOINT: "DISJOINT",
 	 *
 	 * IDENTITY: "IDENTITY",
-	 * 
+	 *
 	 * INTERSECT: "INTERSECT",
 	 *
 	 * NONE: "NONE",
@@ -1175,7 +1187,7 @@
 	};
 
 	/**
-	 * Constant: SpatialRelationType 
+	 * Constant: SpatialRelationType
 	 * {Object} 数据集对象间的空间关系枚举类。
 	 * 该类定义了数据集对象间的空间关系类型常量。
 	 *
@@ -1195,7 +1207,7 @@
 	};
 
 	/**
-	 * Constant: MeasureMode 
+	 * Constant: MeasureMode
 	 * {Object} 量算模式枚举类。
 	 * 该类定义了两种测量模式：距离测量和面积测量。
 	 *
@@ -1224,7 +1236,7 @@
 	 * DEGREE: "DEGREE",
 	 *
 	 * MILLIMETER: "MILLIMETER",
-	 * 
+	 *
 	 * CENTIMETER: "CENTIMETER",
 	 *
 	 * INCH: "INCH",
@@ -1256,7 +1268,7 @@
 	};
 
 	/**
-	 * Constant: EngineType 
+	 * Constant: EngineType
 	 * {Object} 数据源引擎类型枚举类。
 	 *
 	 * IMAGEPLUGINS: "IMAGEPLUGINS",
@@ -1281,7 +1293,7 @@
 	};
 
 	/**
-	 * Constant: ThemeGraphTextFormat 
+	 * Constant: ThemeGraphTextFormat
 	 * {Object } 统计专题图文本显示格式枚举类。
 	 *
 	 * CAPTION: "CAPTION",
@@ -1488,7 +1500,7 @@
 	ColorGradientType = {
 	    BLACK_WHITE: "BLACKWHITE",
 	    BLUE_BLACK: "BLUEBLACK",
-	    BLUE_RED : "BLUERED",
+	    BLUE_RED: "BLUERED",
 	    BLUE_WHITE: "BLUEWHITE",
 	    CYAN_BLACK: "CYANBLACK",
 	    CYAN_BLUE: "CYANBLUE",
@@ -1577,7 +1589,7 @@
 	    LINEAR: "LINEAR",
 	    RADIAL: "RADIAL",
 	    CONICAL: "CONICAL",
-	    SQUARE: "SQUARE"    
+	    SQUARE: "SQUARE"
 	};
 
 	/**
@@ -1712,7 +1724,7 @@
 	 * Constant: TurnType
 	 * {Object} 转弯方向枚举类。
 	 * 用在行驶引导子项类中，表示转弯的方向。
-	 * 
+	 *
 	 * AHEAD: "AHEAD",
 	 *
 	 * BACK: "BACK",
@@ -1739,7 +1751,7 @@
 	 * {Object} 缓冲区分析BufferEnd类型。
 	 *
 	 * FLAT: "FLAT",
-	 * 
+	 *
 	 * ROUND: "ROUND".
 	 */
 	BufferEndType = {
@@ -1806,9 +1818,9 @@
 	 * Constant: DataReturnMode
 	 * {Object} 数据返回模式枚举类。
 	 * 该枚举类用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
-	 * 
+	 *
 	 * DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
-	 * 
+	 *
 	 * DATASET_ONLY: "DATASET_ONLY",
 	 *
 	 * RECORDSET_ONLY: "RECORDSET_ONLY".
@@ -1823,9 +1835,9 @@
 	 * Constant: EditType
 	 * {Object} 要素集更新模式枚举类。
 	 * 该枚举类用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
-	 * 
+	 *
 	 * ADD: "add",
-	 * 
+	 *
 	 * UPDATE: "update",
 	 *
 	 * DELETE: "delete".
@@ -1840,14 +1852,14 @@
 	 * Constant: TransferTactic
 	 * {Object} 公交换乘策略枚举类。
 	 * 该枚举类用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
-	 * 
+	 *
 	 * LESS_TIME: "LESS_TIME",
-	 * 
+	 *
 	 * LESS_TRANSFER: "LESS_TRANSFER",
 	 *
 	 * LESS_WALK: "LESS_WALK",
 	 *
-	 * MIN_DISTANCE: "MIN_DISTANCE" 
+	 * MIN_DISTANCE: "MIN_DISTANCE"
 	 */
 	TransferTactic = {
 	    LESS_TIME: "LESS_TIME",
@@ -1860,14 +1872,14 @@
 	 * Constant: TransferPreference
 	 * {Object} 公交换乘策略枚举类。
 	 * 该枚举类用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
-	 * 
+	 *
 	 * BUS: "BUS",
-	 * 
+	 *
 	 * SUBWAY: "SUBWAY",
 	 *
 	 * NO_SUBWAY: "NO_SUBWAY",
 	 *
-	 * NONE: "NONE" 
+	 * NONE: "NONE"
 	 */
 	TransferPreference = {
 	    BUS: "BUS",
@@ -1879,9 +1891,9 @@
 	/**
 	 * Constant: GridType
 	 * {Object} 地图背景格网类型枚举类。
-	 * 
+	 *
 	 * CROSS: "CROSS",
-	 * 
+	 *
 	 * GRID: "GRID",
 	 *
 	 * POINT: "POINT"
@@ -1901,7 +1913,7 @@
 	 * 分别为 RGB 和 CMYK。RGB 主要用于显示系统中，CMYK 主要用于印刷系统中。
 	 *
 	 * CMYK: "CMYK",
-	 * 
+	 *
 	 * RGB: "RGB"
 	 */
 	ColorSpaceType = {
@@ -1914,11 +1926,11 @@
 	 * {Object} 图层类型。
 	 *
 	 * UGC: "UGC",
-	 * 
+	 *
 	 * WMS: "WMS"
 	 *
 	 * WFS: "WFS",
-	 * 
+	 *
 	 * CUSTOM: "CUSTOM"
 	 */
 	LayerType = {
@@ -1926,7 +1938,7 @@
 	    WMS: "WMS",
 	    WFS: "WFS",
 	    CUSTOM: "CUSTOM"
-	    
+
 	};
 
 	/**
@@ -2989,7 +3001,7 @@
 	 * 地图查询服务类
 	 * 提供：范围查询，SQL查询，几何查询，距离查询
 	 * 用法：
-	 *      L.superMap.QueryService(url).queryByBounds{
+	 *      L.superMap.queryService(url).queryByBounds{
 	 *           filter:{name:name},
 	 *           bounds:bounds
 	 *      }.on("complete",function(result){
@@ -3015,15 +3027,17 @@
 	     * 地图bounds查询服务
 	     * @param params:
 	     *     <QueryByBoundsParameters>
+	     * @param resultFormat
 	     */
-	    queryByBounds: function (params) {
-	        var me = this, param = me._processParams(params);
+	    queryByBounds: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var queryService = new SuperMap.REST.QueryByBoundsService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 
 	        queryService.processAsync(param);
@@ -3034,15 +3048,17 @@
 	     * 地图距离查询服务
 	     * @param params:
 	     *     <QueryByDistanceParameters>
+	     * @param resultFormat
 	     */
-	    queryByDistance: function (params) {
-	        var me = this, param = me._processParams(params);
+	    queryByDistance: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var queryByDistanceService = new SuperMap.REST.QueryByDistanceService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 
 	        queryByDistanceService.processAsync(param);
@@ -3053,15 +3069,17 @@
 	     * 地图SQL查询服务
 	     * @param params:
 	     *     <QueryBySQLParameters>
+	     * @param resultFormat
 	     */
-	    queryBySQL: function (params) {
-	        var me = this, param = me._processParams(params);
+	    queryBySQL: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var queryBySQLService = new SuperMap.REST.QueryBySQLService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 
 	        queryBySQLService.processAsync(param);
@@ -3072,15 +3090,17 @@
 	     * 地图几何查询服务
 	     * @param params:
 	     *     <QueryByGeometryParameters>
+	     * @param resultFormat
 	     */
-	    queryByGeometry: function (params) {
-	        var me = this, param = me._processParams(params);
+	    queryByGeometry: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var queryByGeometryService = new SuperMap.REST.QueryByGeometryService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 
 	        queryByGeometryService.processAsync(param);
@@ -3114,6 +3134,9 @@
 	        }
 
 	        return params;
+	    },
+	    _processFormat: function (resultFormat) {
+	        return (resultFormat) ? resultFormat : Format.GEOJSON;
 	    }
 	});
 
@@ -3241,9 +3264,9 @@
 	    /**
 	     *  Property: format
 	     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-	     *  参数格式为"iserver","geojson",默认为geojson
+	     *  参数格式为"ISERVER","GEOJSON",GEOJSON
 	     */
-	    format: "geojson",
+	    format: Format.GEOJSON,
 
 	    /**
 	     * Constructor: SuperMap.REST.QueryService
@@ -3275,10 +3298,12 @@
 	        if (!me.url) {
 	            return;
 	        }
+	        if (options && options.format) {
+	            me.format = options.format.toUpperCase();
+	        }
 
 	        end = me.url.substr(me.url.length - 1, 1);
-	        me.format = (options.format) ? options.format : "geojson";
-	        me.format = me.format.toLowerCase();
+
 	        // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
 	        // if (this.format==="geojson" && me.isInTheSameDomain) {
 	        //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
@@ -3347,7 +3372,7 @@
 	    serviceProcessCompleted: function (result) {
 	        var me = this, queryResult;
 	        result = SuperMap.Util.transformResult(result);
-	        if (result && result.recordsets && me.format === "geojson") {
+	        if (result && result.recordsets && me.format === Format.GEOJSON) {
 	            queryResult = [];
 	            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
 	                if (recordsets[i].features) {
@@ -4280,15 +4305,17 @@
 	    /**
 	     * @param params
 	     * <ChartQueryParameters>
+	     * @param resultFormat
 	     */
-	    queryChart: function (params) {
-	        var me = this, param = me._processParams(params);
+	    queryChart: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var chartQueryService = new SuperMap.REST.ChartQueryService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 
 	        chartQueryService.processAsync(param);
@@ -4311,6 +4338,9 @@
 	                params.bounds.getNorthEast().lat
 	            );
 	        }
+	    },
+	    _processFormat: function (resultFormat) {
+	        return (resultFormat) ? resultFormat : Format.GEOJSON;
 	    }
 	});
 
@@ -4353,9 +4383,9 @@
 	    /**
 	     *  Property: format
 	     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-	     *  参数格式为"iserver","geojson",默认为geojson
+	     *  参数格式为"ISERVER","GEOJSON",GEOJSON
 	     */
-	    format: "geojson",
+	    format: Format.GEOJSON,
 	    /**
 	     * Constructor: SuperMap.REST.ChartQueryService
 	     * 获取图层信息服务类构造函数。
@@ -4399,12 +4429,15 @@
 	            SuperMap.Util.extend(this, options);
 	        }
 	        var me = this, end;
+	        if (options && options.format) {
+	            me.format = options.format.toUpperCase();
+	        }
+
 	        if (!me.url) {
 	            return;
 	        }
 	        end = me.url.substr(me.url.length - 1, 1);
-	        me.format = (options.format) ? options.format : "geojson";
-	        me.format = me.format.toLowerCase();
+
 	        // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
 	        // if (me.format==="geojson" && me.isInTheSameDomain) {
 	        //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
@@ -4466,7 +4499,7 @@
 	    serviceProcessCompleted: function (result) {
 	        var me = this, queryResult;
 	        result = SuperMap.Util.transformResult(result);
-	        if (result && result.recordsets && me.format === "geojson") {
+	        if (result && result.recordsets && me.format === Format.GEOJSON) {
 	            queryResult = [];
 	            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
 	                if (recordsets[i].features) {
@@ -5638,7 +5671,7 @@
 	        if (options) {
 	            SuperMap.Util.extend(this, options);
 	        }
-	        me.mapUrl = url;
+	        this.mapUrl = url;
 	    },
 
 	    /**
@@ -6550,15 +6583,17 @@
 	     * 数据集ID查询服务
 	     * @param params:
 	     *    <GetFeaturesByIDsParameters>
+	     * @param resultFormat
 	     */
-	    getFeaturesByIDs: function (params) {
-	        var me = this, param = me._processParams(params);
+	    getFeaturesByIDs: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var getFeaturesByIDsService = new SuperMap.REST.GetFeaturesByIDsService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        getFeaturesByIDsService.processAsync(param);
 	        return me;
@@ -6568,15 +6603,17 @@
 	     * 数据集Bounds查询服务
 	     * @param params:
 	     *    <GetFeaturesByBoundsParameters>
+	     * @param resultFormat
 	     */
-	    getFeaturesByBounds: function (params) {
-	        var me = this, param = me._processParams(params);
+	    getFeaturesByBounds: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var getFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        getFeaturesByBoundsService.processAsync(param);
 	        return me;
@@ -6585,15 +6622,17 @@
 	     * 数据集Buffer查询服务
 	     * @param params:
 	     *    <GetFeaturesByBufferParameters>
+	     * @param resultFormat
 	     */
-	    getFeaturesByBuffer: function (params) {
-	        var me = this, param = me._processParams(params);
+	    getFeaturesByBuffer: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var getFeatureService = new SuperMap.REST.GetFeaturesByBufferService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        getFeatureService.processAsync(param);
 	        return me;
@@ -6602,15 +6641,17 @@
 	     * 数据集SQL查询服务
 	     * @param params:
 	     *     <GetFeaturesBySQLParameters>
+	     * @param resultFormat
 	     */
-	    getFeaturesBySQL: function (params) {
-	        var me = this, param = me._processParams(params);
+	    getFeaturesBySQL: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 
 	        getFeatureBySQLService.processAsync(param);
@@ -6620,19 +6661,22 @@
 	     * 数据集几何查询服务类
 	     * @param params:
 	     *   <GetFeaturesByGeometryParameters>
+	     * @param resultFormat
 	     */
-	    getFeaturesByGeometry: function (params) {
-	        var me = this, param = me._processParams(params);
+	    getFeaturesByGeometry: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var getFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByGeometryService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        getFeaturesByGeometryService.processAsync(param);
 	        return me;
 	    },
+
 	    _processParams: function (params) {
 	        if (!params) {
 	            return {};
@@ -6652,6 +6696,9 @@
 	            params.geometry = L.Util.toSuperMapGeometry(params.geometry);
 	        }
 	        return params;
+	    },
+	    _processFormat: function (resultFormat) {
+	        return (resultFormat) ? resultFormat : Format.GEOJSON;
 	    }
 	});
 
@@ -6795,9 +6842,9 @@
 	    /**
 	     *  Property: format
 	     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-	     *  参数格式为"iserver","geojson",默认为geojson
+	     *  参数格式为"ISERVER","GEOJSON",GEOJSON
 	     */
-	    format: "geojson",
+	    format: Format.GEOJSON,
 
 	    /**
 	     * Constructor: SuperMap.REST.GetFeaturesServiceBase
@@ -6829,9 +6876,11 @@
 	            SuperMap.Util.extend(this, options);
 	        }
 	        var me = this, end;
+	        if (options && options.format) {
+	            me.format = options.format.toUpperCase();
+	        }
+
 	        end = me.url.substr(me.url.length - 1, 1);
-	        me.format = (options.format) ? options.format : "geojson";
-	        me.format = me.format.toLowerCase();
 	        // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
 	        // if (me.format==="geojson" && me.isInTheSameDomain) {
 	        //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
@@ -6907,7 +6956,7 @@
 	    serviceProcessCompleted: function (result) {
 	        var me = this, results;
 	        results = result = SuperMap.Util.transformResult(result);
-	        if (me.format === "geojson" && result.features) {
+	        if (me.format === Format.GEOJSON && result.features) {
 	            var geoJSONFormat = new SuperMap.Format.GeoJSON();
 	            results = JSON.parse(geoJSONFormat.write(result.features));
 	        }
@@ -17049,15 +17098,17 @@
 	     * 地区太阳辐射
 	     * @param params
 	     * {AreaSolarRadiationParameters}
+	     * @param resultFormat
 	     */
-	    getAreaSolarRadiationResult: function (params) {
-	        var me = this;
+	    getAreaSolarRadiationResult: function (params, resultFormat) {
+	        var me = this, format = me._processFormat(resultFormat);
 	        var areaSolarRadiationService = new SuperMap.REST.AreaSolarRadiationService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        areaSolarRadiationService.processAsync(params);
 	        return me;
@@ -17067,15 +17118,17 @@
 	     * 缓冲区分析
 	     * @param params
 	     * {DatasetBufferAnalystParameters}
+	     * @param resultFormat
 	     */
-	    bufferAnalysis: function (params) {
-	        var me = this;
+	    bufferAnalysis: function (params, resultFormat) {
+	        var me = this, format = me._processFormat(resultFormat);
 	        var bufferAnalystService = new SuperMap.REST.BufferAnalystService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        bufferAnalystService.processAsync(params);
 	        return me;
@@ -17085,15 +17138,17 @@
 	     * 点密度分析
 	     * @param params
 	     * {DensityKernelAnalystParameters}
+	     * @param resultFormat
 	     */
-	    densityAnalysis: function (params) {
-	        var me = this, param = me._processParams(params);
+	    densityAnalysis: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var densityAnalystService = new SuperMap.REST.DensityAnalystService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        densityAnalystService.processAsync(param);
 	        return me;
@@ -17103,15 +17158,17 @@
 	     * 动态分段分析
 	     * @param params
 	     * {GenerateSpatialDataParameters}
+	     * @param resultFormat
 	     */
-	    generateSpatialData: function (params) {
-	        var me = this;
+	    generateSpatialData: function (params, resultFormat) {
+	        var me = this, format = me._processFormat(resultFormat);
 	        var generateSpatialDataService = new SuperMap.REST.GenerateSpatialDataService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        generateSpatialDataService.processAsync(params);
 	        return me;
@@ -17121,15 +17178,17 @@
 	     * 空间关系分析
 	     * @param params
 	     * {GeoRelationAnalystParameters}
+	     * @param resultFormat
 	     */
-	    geoRelationAnalysis: function (params) {
-	        var me = this;
+	    geoRelationAnalysis: function (params, resultFormat) {
+	        var me = this, format = me._processFormat(resultFormat);
 	        var geoRelationAnalystService = new SuperMap.REST.GeoRelationAnalystService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        geoRelationAnalystService.processAsync(params);
 	        return me;
@@ -17139,15 +17198,17 @@
 	     * 插值分析
 	     * @param params
 	     * {InterpolationRBFAnalystParameters}
+	     * @param resultFormat
 	     */
-	    interpolationAnalysis: function (params) {
-	        var me = this, param = me._processParams(params);
+	    interpolationAnalysis: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var interpolationAnalystService = new SuperMap.REST.InterpolationAnalystService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        interpolationAnalystService.processAsync(param);
 	        return me;
@@ -17157,15 +17218,17 @@
 	     * 栅格代数运算
 	     * @param params
 	     * {MathExpressionAnalysisParameters}
+	     * @param resultFormat
 	     */
-	    mathExpressionAnalysis: function (params) {
-	        var me = this, param = me._processParams(params);
+	    mathExpressionAnalysis: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var mathExpressionAnalysisService = new SuperMap.REST.MathExpressionAnalysisService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        mathExpressionAnalysisService.processAsync(param);
 	        return me;
@@ -17175,15 +17238,17 @@
 	     * 叠加分析
 	     * @param params
 	     * {DatasetOverlayAnalystParameters}
+	     * @param resultFormat
 	     */
-	    overlayAnalysis: function (params) {
-	        var me = this, param = me._processParams(params);
+	    overlayAnalysis: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var overlayAnalystService = new SuperMap.REST.OverlayAnalystService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        overlayAnalystService.processAsync(param);
 	        return me;
@@ -17193,15 +17258,17 @@
 	     * 路由测量计算
 	     * @param params
 	     * {RouteCalculateMeasureParameters}
+	     * @param resultFormat
 	     */
-	    routeCalculateMeasure: function (params) {
-	        var me = this, param = me._processParams(params);
+	    routeCalculateMeasure: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var routeCalculateMeasureService = new SuperMap.REST.RouteCalculateMeasureService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        routeCalculateMeasureService.processAsync(param);
 	        return me;
@@ -17211,15 +17278,17 @@
 	     * 路由定位
 	     * @param params
 	     * {RouteLocatorParameters}
+	     * @param resultFormat
 	     */
-	    routeLocate: function (params) {
-	        var me = this, param = me._processParams(params);
+	    routeLocate: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var routeLocatorService = new SuperMap.REST.RouteLocatorService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        routeLocatorService.processAsync(param);
 	        return me;
@@ -17229,15 +17298,17 @@
 	     * 表面分析
 	     * @param params
 	     * {DatasetSurfaceAnalystParameters}
+	     * @param resultFormat
 	     */
-	    surfaceAnalysis: function (params) {
-	        var me = this, param = me._processParams(params);
+	    surfaceAnalysis: function (params, resultFormat) {
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var surfaceAnalystService = new SuperMap.REST.SurfaceAnalystService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        surfaceAnalystService.processAsync(param);
 	        return me;
@@ -17247,15 +17318,17 @@
 	     * 地形曲率计算
 	     * @param params
 	     * {TerrainCurvatureCalculationParameters}
+	     * @param resultFormat
 	     */
-	    terrainCurvatureCalculate: function (params) {
-	        var me = this;
+	    terrainCurvatureCalculate: function (params, resultFormat) {
+	        var me = this, format = me._processFormat(resultFormat);
 	        var terrainCurvatureCalculationService = new SuperMap.REST.TerrainCurvatureCalculationService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        terrainCurvatureCalculationService.processAsync(params);
 	        return me;
@@ -17265,15 +17338,17 @@
 	     * 泰森多边形分析
 	     * @param params
 	     * {DatasetThiessenAnalystParameters}
+	     * @param resultFormat
 	     */
-	    thiessenAnalysis: function (params) {
-	        var me = this;
+	    thiessenAnalysis: function (params, resultFormat) {
+	        var me = this, format = me._processFormat(resultFormat);
 	        var thiessenAnalystService = new SuperMap.REST.ThiessenAnalystService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: me.processCompleted,
 	                processFailed: me.processFailed
-	            }
+	            },
+	            format: format
 	        });
 	        thiessenAnalystService.processAsync(params);
 	        return me;
@@ -17315,8 +17390,11 @@
 	                params.sourceRoute.components[key] = L.Util.toSuperMapGeometry(geometry);
 	            });
 	        }
-	        
+
 	        return params;
+	    },
+	    _processFormat: function (resultFormat) {
+	        return (resultFormat) ? resultFormat : Format.GEOJSON;
 	    }
 	});
 	L.supermap.spatialAnalystService = function (url, options) {
@@ -17446,15 +17524,15 @@
 	    /**
 	     *  Property: format
 	     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-	     *  参数格式为"iserver","geojson",默认为geojson
+	     *  参数格式为"ISERVER","GEOJSON",GEOJSON
 	     */
-	    format: "geojson",
+	    format: Format.GEOJSON,
 
 	    initialize: function (url, options) {
 	        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
-	        var me = this;
-	        me.format = (options.format) ? options.format : "geojson";
-	        me.format = me.format.toLowerCase();
+	        if (options && options.format) {
+	            this.format = options.format.toUpperCase();
+	        }
 	    },
 
 	    /**
@@ -17476,7 +17554,7 @@
 	    serviceProcessCompleted: function (result) {
 	        var me = this, analystResult;
 	        result = SuperMap.Util.transformResult(result);
-	        if (result && me.format === "geojson") {
+	        if (result && me.format === Format.GEOJSON) {
 	            var geoJSONFormat = new SuperMap.Format.GeoJSON();
 	            if (result.recordsets) {
 	                analystResult = [];
@@ -17746,7 +17824,7 @@
 	     */
 	    destroy: function () {
 	        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
-	        me.mode = null;
+	        this.mode = null;
 	    },
 
 	    /**

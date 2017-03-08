@@ -30,15 +30,17 @@ GetFeaturesService = ServiceBase.extend({
      * 数据集ID查询服务
      * @param params:
      *    <GetFeaturesByIDsParameters>
+     * @param resultFormat
      */
-    getFeaturesByIDs: function (params) {
-        var me = this, param = me._processParams(params);
+    getFeaturesByIDs: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var getFeaturesByIDsService = new SuperMap.REST.GetFeaturesByIDsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
         getFeaturesByIDsService.processAsync(param);
         return me;
@@ -48,15 +50,17 @@ GetFeaturesService = ServiceBase.extend({
      * 数据集Bounds查询服务
      * @param params:
      *    <GetFeaturesByBoundsParameters>
+     * @param resultFormat
      */
-    getFeaturesByBounds: function (params) {
-        var me = this, param = me._processParams(params);
+    getFeaturesByBounds: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var getFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
         getFeaturesByBoundsService.processAsync(param);
         return me;
@@ -65,15 +69,17 @@ GetFeaturesService = ServiceBase.extend({
      * 数据集Buffer查询服务
      * @param params:
      *    <GetFeaturesByBufferParameters>
+     * @param resultFormat
      */
-    getFeaturesByBuffer: function (params) {
-        var me = this, param = me._processParams(params);
+    getFeaturesByBuffer: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var getFeatureService = new SuperMap.REST.GetFeaturesByBufferService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
         getFeatureService.processAsync(param);
         return me;
@@ -82,15 +88,17 @@ GetFeaturesService = ServiceBase.extend({
      * 数据集SQL查询服务
      * @param params:
      *     <GetFeaturesBySQLParameters>
+     * @param resultFormat
      */
-    getFeaturesBySQL: function (params) {
-        var me = this, param = me._processParams(params);
+    getFeaturesBySQL: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
 
         getFeatureBySQLService.processAsync(param);
@@ -100,19 +108,22 @@ GetFeaturesService = ServiceBase.extend({
      * 数据集几何查询服务类
      * @param params:
      *   <GetFeaturesByGeometryParameters>
+     * @param resultFormat
      */
-    getFeaturesByGeometry: function (params) {
-        var me = this, param = me._processParams(params);
+    getFeaturesByGeometry: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var getFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByGeometryService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
         getFeaturesByGeometryService.processAsync(param);
         return me;
     },
+
     _processParams: function (params) {
         if (!params) {
             return {};
@@ -132,6 +143,9 @@ GetFeaturesService = ServiceBase.extend({
             params.geometry = L.Util.toSuperMapGeometry(params.geometry);
         }
         return params;
+    },
+    _processFormat: function (resultFormat) {
+        return (resultFormat) ? resultFormat : Format.GEOJSON;
     }
 });
 

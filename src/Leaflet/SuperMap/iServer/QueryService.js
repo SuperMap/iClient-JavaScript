@@ -3,7 +3,7 @@
  * 地图查询服务类
  * 提供：范围查询，SQL查询，几何查询，距离查询
  * 用法：
- *      L.superMap.QueryService(url).queryByBounds{
+ *      L.superMap.queryService(url).queryByBounds{
  *           filter:{name:name},
  *           bounds:bounds
  *      }.on("complete",function(result){
@@ -29,15 +29,17 @@ QueryService = ServiceBase.extend({
      * 地图bounds查询服务
      * @param params:
      *     <QueryByBoundsParameters>
+     * @param resultFormat
      */
-    queryByBounds: function (params) {
-        var me = this, param = me._processParams(params);
+    queryByBounds: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var queryService = new SuperMap.REST.QueryByBoundsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
 
         queryService.processAsync(param);
@@ -48,15 +50,17 @@ QueryService = ServiceBase.extend({
      * 地图距离查询服务
      * @param params:
      *     <QueryByDistanceParameters>
+     * @param resultFormat
      */
-    queryByDistance: function (params) {
-        var me = this, param = me._processParams(params);
+    queryByDistance: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var queryByDistanceService = new SuperMap.REST.QueryByDistanceService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
 
         queryByDistanceService.processAsync(param);
@@ -67,15 +71,17 @@ QueryService = ServiceBase.extend({
      * 地图SQL查询服务
      * @param params:
      *     <QueryBySQLParameters>
+     * @param resultFormat
      */
-    queryBySQL: function (params) {
-        var me = this, param = me._processParams(params);
+    queryBySQL: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var queryBySQLService = new SuperMap.REST.QueryBySQLService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
 
         queryBySQLService.processAsync(param);
@@ -86,15 +92,17 @@ QueryService = ServiceBase.extend({
      * 地图几何查询服务
      * @param params:
      *     <QueryByGeometryParameters>
+     * @param resultFormat
      */
-    queryByGeometry: function (params) {
-        var me = this, param = me._processParams(params);
+    queryByGeometry: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var queryByGeometryService = new SuperMap.REST.QueryByGeometryService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
 
         queryByGeometryService.processAsync(param);
@@ -128,6 +136,9 @@ QueryService = ServiceBase.extend({
         }
 
         return params;
+    },
+    _processFormat: function (resultFormat) {
+        return (resultFormat) ? resultFormat : Format.GEOJSON;
     }
 });
 

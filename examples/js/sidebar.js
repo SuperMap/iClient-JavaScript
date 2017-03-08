@@ -30,12 +30,12 @@ function createSideBarSecondMenu(config) {
     var ul = $("<ul class='secondMenu'></ul>");
     for (var key in config) {
         var li = $("<li id='" + key + "' ></li>");
+        li.appendTo(ul);
         var configItem = config[key];
         createSideBarMenuTitle("title secondMenuTitle", key, configItem.name).appendTo(li);
         if (containExample && configItem.content) {
             createSideBarThirdMenu(configItem.content).appendTo(li);
         }
-        li.appendTo(ul);
     }
     return ul;
 }
@@ -47,14 +47,14 @@ function createSideBarThirdMenu(examples) {
     for (var i = 0; i < len; i++) {
         var example = examples[i];
         if (example.fileName && example.name) {
-            createEndMenuItem( example.fileName,example.name).appendTo(ul);
+            createEndMenuItem(example.fileName, example.name).appendTo(ul);
         }
     }
     return ul;
 }
 
 //创建叶节点菜单item项
-function createEndMenuItem(id,title) {
+function createEndMenuItem(id, title) {
     var li = $("<li></li>");
     var a = $("<a class='link' id='" + id + "'>" + title + "</a>");
     li.append(a);

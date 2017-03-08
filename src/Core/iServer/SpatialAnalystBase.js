@@ -16,15 +16,15 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.CoreServiceBase, {
     /**
      *  Property: format
      *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-     *  参数格式为"iserver","geojson",默认为geojson
+     *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
-    format: "geojson",
+    format: Format.GEOJSON,
 
     initialize: function (url, options) {
         SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
-        var me = this;
-        me.format = (options && options.format) ? options.format : "geojson";
-        me.format = me.format.toLowerCase();
+        if (options && options.format) {
+            this.format = options.format.toUpperCase();
+        }
     },
 
     /**
@@ -46,7 +46,7 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.CoreServiceBase, {
     serviceProcessCompleted: function (result) {
         var me = this, analystResult;
         result = SuperMap.Util.transformResult(result);
-        if (result && me.format === "geojson") {
+        if (result && me.format === Format.GEOJSON) {
             var geoJSONFormat = new SuperMap.Format.GeoJSON();
             if (result.recordsets) {
                 analystResult = [];

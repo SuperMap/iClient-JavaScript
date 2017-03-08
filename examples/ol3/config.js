@@ -166,7 +166,7 @@ var exampleConfig = {
         content: null
     },
     "plot": {
-        name: "plot",
+        name: "标绘",
         content: {
             "draw": {
                 name: "点线面绘制",

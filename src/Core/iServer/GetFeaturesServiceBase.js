@@ -48,9 +48,9 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.CoreServiceBase, 
     /**
      *  Property: format
      *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-     *  参数格式为"iserver","geojson",默认为geojson
+     *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
-    format: "geojson",
+    format: Format.GEOJSON,
 
     /**
      * Constructor: SuperMap.REST.GetFeaturesServiceBase
@@ -82,9 +82,11 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.CoreServiceBase, 
             SuperMap.Util.extend(this, options);
         }
         var me = this, end;
+        if (options && options.format) {
+            me.format = options.format.toUpperCase();
+        }
+
         end = me.url.substr(me.url.length - 1, 1);
-        me.format = (options && options.format) ? options.format : "geojson";
-        me.format = me.format.toLowerCase();
         // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
         // if (me.format==="geojson" && me.isInTheSameDomain) {
         //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
@@ -160,7 +162,7 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.CoreServiceBase, 
     serviceProcessCompleted: function (result) {
         var me = this, results;
         results = result = SuperMap.Util.transformResult(result);
-        if (me.format === "geojson" && result.features) {
+        if (me.format === Format.GEOJSON && result.features) {
             var geoJSONFormat = new SuperMap.Format.GeoJSON();
             results = JSON.parse(geoJSONFormat.write(result.features));
         }

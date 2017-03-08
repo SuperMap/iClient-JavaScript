@@ -7,6 +7,16 @@
  */
 
 /**
+ *服务请求返回结果数据类型
+ *  GEOJSON: "GEOJSON",
+ *  ISERVER: "ISERVER"
+ */
+Format = {
+    GEOJSON: "GEOJSON",
+    ISERVER: "ISERVER"
+};
+
+/**
  * Constant: GeometryType
  * {Object} 几何对象枚举类。
  * 该类定义了一系列几何对象类型。
@@ -71,7 +81,7 @@ JoinType = {
 
 
 /**
- * Constant: SpatialQueryMode 
+ * Constant: SpatialQueryMode
  * {Object} 空间查询模式枚举类。
  * 该类定义了空间查询操作模式常量。
  *
@@ -82,7 +92,7 @@ JoinType = {
  * DISJOINT: "DISJOINT",
  *
  * IDENTITY: "IDENTITY",
- * 
+ *
  * INTERSECT: "INTERSECT",
  *
  * NONE: "NONE",
@@ -106,7 +116,7 @@ SpatialQueryMode = {
 };
 
 /**
- * Constant: SpatialRelationType 
+ * Constant: SpatialRelationType
  * {Object} 数据集对象间的空间关系枚举类。
  * 该类定义了数据集对象间的空间关系类型常量。
  *
@@ -126,7 +136,7 @@ SpatialRelationType = {
 };
 
 /**
- * Constant: MeasureMode 
+ * Constant: MeasureMode
  * {Object} 量算模式枚举类。
  * 该类定义了两种测量模式：距离测量和面积测量。
  *
@@ -155,7 +165,7 @@ MeasureMode = {
  * DEGREE: "DEGREE",
  *
  * MILLIMETER: "MILLIMETER",
- * 
+ *
  * CENTIMETER: "CENTIMETER",
  *
  * INCH: "INCH",
@@ -187,7 +197,7 @@ Unit = {
 };
 
 /**
- * Constant: EngineType 
+ * Constant: EngineType
  * {Object} 数据源引擎类型枚举类。
  *
  * IMAGEPLUGINS: "IMAGEPLUGINS",
@@ -212,7 +222,7 @@ EngineType = {
 };
 
 /**
- * Constant: ThemeGraphTextFormat 
+ * Constant: ThemeGraphTextFormat
  * {Object } 统计专题图文本显示格式枚举类。
  *
  * CAPTION: "CAPTION",
@@ -419,7 +429,7 @@ ThemeType = {
 ColorGradientType = {
     BLACK_WHITE: "BLACKWHITE",
     BLUE_BLACK: "BLUEBLACK",
-    BLUE_RED : "BLUERED",
+    BLUE_RED: "BLUERED",
     BLUE_WHITE: "BLUEWHITE",
     CYAN_BLACK: "CYANBLACK",
     CYAN_BLUE: "CYANBLUE",
@@ -508,7 +518,7 @@ FillGradientMode = {
     LINEAR: "LINEAR",
     RADIAL: "RADIAL",
     CONICAL: "CONICAL",
-    SQUARE: "SQUARE"    
+    SQUARE: "SQUARE"
 };
 
 /**
@@ -643,7 +653,7 @@ SupplyCenterType = {
  * Constant: TurnType
  * {Object} 转弯方向枚举类。
  * 用在行驶引导子项类中，表示转弯的方向。
- * 
+ *
  * AHEAD: "AHEAD",
  *
  * BACK: "BACK",
@@ -670,7 +680,7 @@ TurnType = {
  * {Object} 缓冲区分析BufferEnd类型。
  *
  * FLAT: "FLAT",
- * 
+ *
  * ROUND: "ROUND".
  */
 BufferEndType = {
@@ -737,9 +747,9 @@ SurfaceAnalystMethod = {
  * Constant: DataReturnMode
  * {Object} 数据返回模式枚举类。
  * 该枚举类用于指定空间分析返回结果模式,包含返回数据集标识和记录集、只返回数据集标识(数据集名称@数据源名称)及只返回记录集三种模式。
- * 
+ *
  * DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
- * 
+ *
  * DATASET_ONLY: "DATASET_ONLY",
  *
  * RECORDSET_ONLY: "RECORDSET_ONLY".
@@ -754,9 +764,9 @@ DataReturnMode = {
  * Constant: EditType
  * {Object} 要素集更新模式枚举类。
  * 该枚举类用于指定数据服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
- * 
+ *
  * ADD: "add",
- * 
+ *
  * UPDATE: "update",
  *
  * DELETE: "delete".
@@ -771,14 +781,14 @@ EditType = {
  * Constant: TransferTactic
  * {Object} 公交换乘策略枚举类。
  * 该枚举类用于指定公交服务中要素集更新模式,包含添加要素集、更新要素集和删除要素集。
- * 
+ *
  * LESS_TIME: "LESS_TIME",
- * 
+ *
  * LESS_TRANSFER: "LESS_TRANSFER",
  *
  * LESS_WALK: "LESS_WALK",
  *
- * MIN_DISTANCE: "MIN_DISTANCE" 
+ * MIN_DISTANCE: "MIN_DISTANCE"
  */
 TransferTactic = {
     LESS_TIME: "LESS_TIME",
@@ -791,14 +801,14 @@ TransferTactic = {
  * Constant: TransferPreference
  * {Object} 公交换乘策略枚举类。
  * 该枚举类用于指定交通换乘服务中设置地铁优先、公交优先、不乘地铁、无偏好等偏好设置。
- * 
+ *
  * BUS: "BUS",
- * 
+ *
  * SUBWAY: "SUBWAY",
  *
  * NO_SUBWAY: "NO_SUBWAY",
  *
- * NONE: "NONE" 
+ * NONE: "NONE"
  */
 TransferPreference = {
     BUS: "BUS",
@@ -810,9 +820,9 @@ TransferPreference = {
 /**
  * Constant: GridType
  * {Object} 地图背景格网类型枚举类。
- * 
+ *
  * CROSS: "CROSS",
- * 
+ *
  * GRID: "GRID",
  *
  * POINT: "POINT"
@@ -832,7 +842,7 @@ GridType = {
  * 分别为 RGB 和 CMYK。RGB 主要用于显示系统中，CMYK 主要用于印刷系统中。
  *
  * CMYK: "CMYK",
- * 
+ *
  * RGB: "RGB"
  */
 ColorSpaceType = {
@@ -845,11 +855,11 @@ ColorSpaceType = {
  * {Object} 图层类型。
  *
  * UGC: "UGC",
- * 
+ *
  * WMS: "WMS"
  *
  * WFS: "WFS",
- * 
+ *
  * CUSTOM: "CUSTOM"
  */
 LayerType = {
@@ -857,7 +867,7 @@ LayerType = {
     WMS: "WMS",
     WFS: "WFS",
     CUSTOM: "CUSTOM"
-    
+
 };
 
 /**

@@ -12,22 +12,24 @@ require('./ServiceBase');
 
 ol.supermap.QueryService = function (url, options) {
     ol.supermap.ServiceBase.call(this, url, options);
-}
+};
 ol.inherits(ol.supermap.QueryService, ol.supermap.ServiceBase);
 
 /**
  * 地图bounds查询服务
  * @param params:
  *     <QueryByBoundsParameters>
+ * @param resultFormat
  */
-ol.supermap.QueryService.prototype.queryByBounds = function (params) {
+ol.supermap.QueryService.prototype.queryByBounds = function (params, resultFormat) {
     var me = this;
     var queryService = new SuperMap.REST.QueryByBoundsService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: me.processCompleted,
             processFailed: me.processFailed
-        }
+        },
+        format:me._processFormat(resultFormat)
     });
     queryService.processAsync(me._processParams(params));
     return me;
@@ -37,15 +39,17 @@ ol.supermap.QueryService.prototype.queryByBounds = function (params) {
  * 地图距离查询服务
  * @param params:
  *     <QueryByDistanceParameters>
+ * @param resultFormat
  */
-ol.supermap.QueryService.prototype.queryByDistance = function (params) {
+ol.supermap.QueryService.prototype.queryByDistance = function (params, resultFormat) {
     var me = this;
     var queryByDistanceService = new SuperMap.REST.QueryByDistanceService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: me.processCompleted,
             processFailed: me.processFailed
-        }
+        },
+        format:me._processFormat(resultFormat)
     });
     queryByDistanceService.processAsync(me._processParams(params));
     return me;
@@ -55,15 +59,17 @@ ol.supermap.QueryService.prototype.queryByDistance = function (params) {
  * 地图SQL查询服务
  * @param params:
  *     <QueryBySQLParameters>
+ * @param resultFormat
  */
-ol.supermap.QueryService.prototype.queryBySQL = function (params) {
+ol.supermap.QueryService.prototype.queryBySQL = function (params, resultFormat) {
     var me = this;
     var queryBySQLService = new SuperMap.REST.QueryBySQLService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: me.processCompleted,
             processFailed: me.processFailed
-        }
+        },
+        format:me._processFormat(resultFormat)
     });
     queryBySQLService.processAsync(me._processParams(params));
     return me;
@@ -73,15 +79,17 @@ ol.supermap.QueryService.prototype.queryBySQL = function (params) {
  * 地图几何查询服务
  * @param params:
  *     <QueryByGeometryParameters>
+ * @param resultFormat
  */
-ol.supermap.QueryService.prototype.queryByGeometry = function (params) {
+ol.supermap.QueryService.prototype.queryByGeometry = function (params, resultFormat) {
     var me = this;
     var queryByGeometryService = new SuperMap.REST.QueryByGeometryService(url, {
         eventListeners: {
             scope: me,
             processCompleted: me.processCompleted,
             processFailed: me.processFailed
-        }
+        },
+        format:me._processFormat(resultFormat)
     });
     queryByGeometryService.processAsync(me._processParams(params));
     return me;
@@ -111,6 +119,9 @@ ol.supermap.QueryService.prototype._processParams = function (params) {
         }
     }
     return params;
+};
+ol.supermap.QueryService.prototype._processFormat = function (resultFormat) {
+    return (resultFormat) ? resultFormat : Format.GEOJSON;
 };
 
 module.exports = ol.supermap.QueryService;
