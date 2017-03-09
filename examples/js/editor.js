@@ -9,9 +9,9 @@ function initPage() {
         menu.append(createSideBarMenuItem(key, config[key], containExamples));
     }
     initSelect();
-    dragCode();
     initEditor();
     screenResize();
+    dragCode();
 }
 
 function screenResize() {
@@ -32,7 +32,8 @@ function screenResize() {
             myWidth = document.documentElement.clientWidth;
             myHeight = document.documentElement.clientHeight;
         }
-    }
+        mapHeight();
+    };
 }
 //初始化编辑器
 function initCodeEditor() {
@@ -45,6 +46,7 @@ function initCodeEditor() {
     }
     aceEditor.setValue($('#editor').val());
     aceEditor.clearSelection();
+    aceEditor.moveCursorTo(0,0);
 }
 
 //初始化编辑器以及预览内容
@@ -100,6 +102,10 @@ function loadPreview(content) {
     iFrame.document.open();
     iFrame.document.write(content);
     iFrame.document.close();
+    iFrame.onload = function () {
+        mapHeight();
+    };
+
 }
 
 /**设置显示源码的拖拽效果**/
@@ -118,7 +124,7 @@ function dragCode() {
             }
             $("#codePane").width(bottomX);
             $("#editor").width(bottomX);
-            $(".ace_content").width(bottomX * 0.8);
+            aceEditor.resize();
             $("#preview").css({'left:': (myWidth - bottomX - 202) + "px"});
             $("#innerPage").width(myWidth - bottomX - 202);
             aceEditor.resize();
@@ -145,5 +151,9 @@ function initSelect() {
         id = hash.split("#")[1];
     }
     selectMenu(id);
+}
+
+function mapHeight() {
+    $("#innerPage").contents().find("body").height($("#innerPage").height());
 }
 

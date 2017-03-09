@@ -7,14 +7,12 @@
     <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
     <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
-    <script type="text/javascript" src="../js/resize.js"></script>
     <script type="text/javascript">
         var map, themeService, themeLayer, style1, style2, style3,
                 themeLabelItem1, themeLabelItem2, themeLabelItem3, themeLabelItem4,
                 themeLabelItem5, themeLabelItem6, themeLabel, themeParameters,
                 url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
         function init() {
-            mapHeight();
             var mapService = new ol.supermap.MapService(url);
             mapService.on("complete", function (serviceResult) {
                 var mapJSONObj = serviceResult.element.result;
@@ -154,11 +152,11 @@
 
     </script>
 </head>
-<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
 <div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
     <input type="button" class="btn btn-default" value="创建专题图" onclick="createTheme()"/>
     <input type="button" class="btn btn-default" value="清除结果" onclick="clearLayer()"/>
 </div>
-<div id="map" style="margin:0 auto;"></div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
 </body>
 </html>

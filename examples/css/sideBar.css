@@ -1,6 +1,6 @@
 #sidebar {
     width: 200px;
-    border-right: 1px solid #e9e9e9;
+    border-right: 1px solid #e0e0e0;
     overflow-y: auto;
     float: left;
     position: fixed;
@@ -24,6 +24,7 @@
 #sidebar ul.menu .title {
     height: 30px;
     line-height: 30px;
+    font-size: 16px;
 }
 
 #sidebar ul.menu  a:hover,#sidebar ul.menu a.active{

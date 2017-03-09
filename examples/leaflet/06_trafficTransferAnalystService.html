@@ -8,7 +8,6 @@
     <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
     <script type="text/javascript" src="../js/jquery.min.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
-    <script type="text/javascript" src="../js/resize.js"></script>
     <style>
         #startInput, #endInput, .strategy {
             width: 100px;
@@ -38,7 +37,6 @@
                 baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
                 serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun";
         function init() {
-            mapHeight();
             map = L.map('map', {
                 crs: L.supermap.NonEarthCRS({
                     bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
@@ -50,13 +48,20 @@
             });
             L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
 
-            startMarker = L.marker([-5527.73795456, 3111.42533851]).addTo(map).bindTooltip("起点", {
-                offset: L.point([0, -10]), direction: "top", permanent: true
-            }).openTooltip();
+            startMarker = L.marker([-5527.73795456, 3111.42533851])
+                    .addTo(map).bindTooltip("起点", {
+                        offset: L.point([0, -10]),
+                        direction: "top",
+                        permanent: true
+                    }).openTooltip();
 
-            endMarker = L.marker([-4270.0725196, 6055.3431955]).addTo(map).bindTooltip("终点", {
-                offset: L.point([0, -10]), direction: "top", permanent: true
-            }).openTooltip();
+            endMarker = L.marker([-4270.0725196, 6055.3431955])
+                    .addTo(map)
+                    .bindTooltip("终点", {
+                        offset: L.point([0, -10]),
+                        direction: "top",
+                        permanent: true
+                    }).openTooltip();
             routeFeatureGroup = L.featureGroup().addTo(map);
             tempRedLayer = L.featureGroup().addTo(map);
             initResultInfoWin();
@@ -71,7 +76,8 @@
                 walkingRatio: 10,//步行与公交的消耗权重比
                 points: paths.points //起始点坐标
             });
-            L.supermap.trafficTransferAnalystService(serviceUrl).analysisTransferSolution(params)
+            L.supermap.trafficTransferAnalystService(serviceUrl)
+                    .analysisTransferSolution(params)
                     .on('complete', function (serviceResult) {
                         transferSolutionsSucceed(serviceResult.result);
                     })
@@ -94,7 +100,10 @@
                     var lineItems = linesItems[jj].lineItems, items = [];
                     for (var jjj = 0; jjj < lineItems.length; jjj++) {
                         var lineItem = lineItems[jjj];
-                        items.push("{'lineID':" + lineItem.lineID + ",'startStopIndex':" + lineItem.startStopIndex + ",'endStopIndex':" + lineItem.endStopIndex + "}");
+                        items.push("{'lineID':" + lineItem.lineID +
+                                ",'startStopIndex':" + lineItem.startStopIndex +
+                                ",'endStopIndex':" + lineItem.endStopIndex + "}"
+                        );
                     }
                     transSolution.push(items);
                 }
@@ -141,7 +150,8 @@
                     var pathLines = solution.linesItems;
                     for (var pi = 0, pLen = pathLines.length; pi < pLen; pi++) {
                         pLine = pathLines[pi].lineItems[0];
-                        path += "{'lineID':" + pLine.lineID + ",'startStopIndex':" + pLine.startStopIndex + ",'endStopIndex':" + pLine.endStopIndex + "}";
+                        path += "{'lineID':" + pLine.lineID + ",'startStopIndex':" + pLine.startStopIndex +
+                                ",'endStopIndex':" + pLine.endStopIndex + "}";
                         if (pi !== pLen - 1) path += ",";
                     }
                     path += "]";
@@ -306,7 +316,7 @@
 
     </script>
 </head>
-<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
 <div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
     <span>起点：</span>
     <input type='text' class="form-control" disabled="disabled" id='startInput' value='省汽修'/>
@@ -321,6 +331,6 @@
     <input type="button" class="btn btn-default" value="清除" onclick="clearLayer()"/>
 </div>
 
-<div id="map" style="margin:0 auto;"></div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
 </body>
 </html>

@@ -7,13 +7,11 @@
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.2/leaflet.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.2/leaflet.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
-    <script type="text/javascript" src="../js/resize.js"></script>
     <script type="text/javascript">
         var map,
                 urlWorld = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
                 urlJinjing = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
         function init() {
-            mapHeight();
             map = L.map('map', {
                 crs: L.CRS.EPSG4326,
                 center: [40, 118],
@@ -26,8 +24,8 @@
 
     </script>
 </head>
-<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
 <div id="toolbar" style="height:44px; padding-top: 6px; text-align: right "></div>
-<div id="map" style="margin:0 auto;"></div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
 </body>
 </html>

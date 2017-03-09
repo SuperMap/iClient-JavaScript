@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
     <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
-    <script type="text/javascript" src="../js/resize.js"></script>
     <script type="text/javascript">
         var map, resultLayer, service, parameter, point,
                 baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
@@ -18,7 +17,6 @@
             units: 'm'
         });
         function init() {
-            mapHeight();
             var mapService = new ol.supermap.MapService(baseUrl);
             mapService.on("complete", function (serviceResult) {
                 var mapJSONObj = serviceResult.element.result;
@@ -98,12 +96,12 @@
 
     </script>
 </head>
-<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
 <div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
     <input type="button" class="btn btn-default" value="服务区分析" onclick="findServiceAreas()"/>
     <input type="button" class="btn btn-default" value="清除" onclick="clearLayer()"/>
 </div>
 
-<div id="map" style="margin:0 auto;"></div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
 </body>
 </html>
