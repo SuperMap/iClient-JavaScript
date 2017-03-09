@@ -59,11 +59,12 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.CoreServiceBase, {
             } else if (result.recordset && result.recordset.features) {
                 analystResult = JSON.parse(geoJSONFormat.write(result.recordset.features));
             }
-
-        } else {
+        }
+        if (!analystResult) {
             analystResult = result;
         }
-        me.events.triggerEvent("processCompleted", {result: analystResult});
+
+        me.events.triggerEvent("processCompleted", {result: analystResult, originalResult: result});
     },
 
     CLASS_NAME: "SuperMap.REST.SpatialAnalystBase"
