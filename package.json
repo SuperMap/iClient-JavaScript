@@ -15,7 +15,7 @@
     "compress": "webpack -p",
     "package": "node ./build/pack.js",
     "test":"karma start",
-    "citest":"karma start  --single-run"
+    "citest":"karma start --single-run"
   },
   "keywords": [
     "SuperMap",

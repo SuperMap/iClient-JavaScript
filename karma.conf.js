@@ -35,7 +35,7 @@ module.exports = function(config) {
     'test/Tool/GlobeParameter.js',
     /**Core --iServer**/
     //'test/Core/iServer/AreaSolarRadiationServiceSpec.js',     //iclient8注释掉
-    'test/Core/iServer/BufferAnalystServiceSpec.js',
+    //'test/Core/iServer/BufferAnalystServiceSpec.js',
     'test/Core/iServer/BufferDistanceSpec.js',
     'test/Core/iServer/BufferSettingSpec.js',
     'test/Core/iServer/BurstPipelineAnalystServiceSpec.js',
@@ -108,14 +108,14 @@ module.exports = function(config) {
 		'src/Legacy/libs/SuperMap_Basic-8.1.1-14426.js':['commonjs'],
 		'src/Legacy/libs/SuperMap_IServer-8.1.1-14426.js':['commonjs'],
 	    'src/Legacy/libs/Lang/*.js':['commonjs'],
-		'src/Core/**/*.js':['commonjs'/*,'coverage'*/],
+		'src/Core/**/*.js':['commonjs','coverage'],
         'test/Core/**/*Spec.js': ['commonjs']
     },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'/*,'coverage'*/],
+    reporters: ['progress','coverage'],
 
     //最大超时时间
     captureTimeout: 120000,
