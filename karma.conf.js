@@ -118,8 +118,8 @@ module.exports = function(config) {
     reporters: ['progress'/*,'coverage'*/],
 
     //最大超时时间
-    captureTimeout: maxExecuteTime,
-    browserNoActivityTimeout: maxExecuteTime,
+    captureTimeout: 120000,
+    browserNoActivityTimeout: 120000,
 
 	coverageReporter: {
        type:'html',

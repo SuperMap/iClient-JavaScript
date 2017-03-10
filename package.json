@@ -14,7 +14,8 @@
     "deploy-ol3": "webpack --config ./build/webpack.config.ol3.js ",
     "compress": "webpack -p",
     "package": "node ./build/pack.js",
-    "test":"karma start"
+    "test":"karma start",
+    "citest":"karma start  --single-run"
   },
   "keywords": [
     "SuperMap",
