@@ -2,7 +2,7 @@
 
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
-var url = GlobeParameter.spatialAnalystURL;
+var url = GlobeParameter.networkAnalystURL;
 var options = {
     eventListeners:{"processCompleted": analyzeCompleted,'processFailed': analyzeFailed}
 };
