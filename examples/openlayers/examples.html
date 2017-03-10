@@ -5,21 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <title>Openlayers3示范程序</title>
-    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/sideBar.css">
     <link rel="stylesheet" href="../css/examples.css">
-    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <link rel="stylesheet" href="../../web/css/header.css">
+    <script type="text/javascript" src="../../web/libs/js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="../js/scrollTo.min.js"></script>
+    <script src="../../web/libs/js/bootstrap.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="./config.js"></script>
+    <style>
+        .container {
+            width: 100% ;
+        }
+        .navbar #headerMenu > li > a {
+
+            font-weight: inherit;
+        }
+    </style>
 </head>
 
 <body>
+<header class="navbar iC-header iC-theme">
+</header>
+<script>
+    $('.iC-header').load('../../web/header.html');
+</script>
 <div class="main">
-    <div class="header">
-
-    </div>
-
     <div class="content" data-spy="scroll" data-target="#sidebar .menu">
         <div id="sidebar">
             <ul class="menu"></ul>

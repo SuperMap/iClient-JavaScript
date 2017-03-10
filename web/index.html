@@ -1,0 +1,201 @@
+<html>
+<head>
+    <title>SuperMap iClient for JavaScript 9D</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" href="libs/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
+    <link rel="stylesheet" href="libs/css/default.css">
+    <script src="libs/js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <style>
+
+
+        .api_banner {
+            background: url(./img/banner.png) no-repeat center bottom #2DAECE;
+            height: 370px;
+        }
+
+        .pt50.tc {
+            padding-top: 50px;
+            text-align: center;
+            font-size: 40px;
+            color: #ffffff;
+            font-family: Arial;
+        }
+
+        .ip-copyRight {
+            color: #7d7d7d;
+            font-size: 13px !important;
+            text-align: center;
+            height: 54px;
+            line-height: 54px;
+        }
+
+        .ip-footer {
+            /* background-color: #f3f3f3; */
+            border-top: 1px solid #ddd;
+        }
+
+        .column {
+            margin-left: auto;
+            margin-right: auto;
+            width: 800px;
+            position: relative;
+            margin-top: 50px;
+        }
+
+        p {
+            display: block;
+            -webkit-margin-before: 1em;
+            -webkit-margin-after: 1em;
+            -webkit-margin-start: 0px;
+            -webkit-margin-end: 0px;
+            font-size: 16px;
+        }
+
+        .html .tag, .css .tag, .javascript .keyword {
+            color: #3182bd;
+        }
+
+        .html .attr, .css .attr, .javascript .class, .javascript .special {
+            color: #e6550d;
+        }
+    </style>
+</head>
+<body>
+<header class="navbar iC-header iC-theme">
+</header>
+<script src="libs/js/jquery-3.1.1.min.js" type="text/javascript"></script>
+<script>
+    $('.iC-header').load('./header.html');
+</script>
+<div>
+    <!--banner-->
+    <div class="api_banner position_r">
+        <div class="tc pt50">
+            <p style="padding-top: 50px;font-size: 28px;"> 开放式 GIS 客户端开发包</p>
+        </div>
+    </div>
+    <div class="column">
+        <p style="font-size: 18px;">SuperMap iClient for JavaScript 9D
+            是空间信息和服务的可视化交互开发平台，是SuperMap服务器和在线GIS平台系列产品的统一JS客户端。支持多源数据地图，支持多终端，跨浏览器，
+            通过本产品可快速实现浏览器上美观、流畅的地图呈现。
+        </p>
+        <ul>
+            <li style="font-size: 16px;margin-top: 5px"><a href="downloads/iclient9.zip">iclient9.zip</a>
+            </li>
+            <li style="font-size: 16px;margin-top: 5px"><a href="https://git.oschina.net/isupermap/iClient9"
+                                                           target="_blank">source code</a>
+            </li>
+        </ul>
+        <h2 id="quick-start">快速入门</h2>
+        <h3 style="margin-top: 20px;margin-left: 5px;color: #9d9d9d">OpenLayers</h3>
+        <p>引入 iclient9-openlayers.js </p>
+        <pre><code
+                class="html">&lt;script src=&quot;../dist/iclient9-openlayers.js&quot;&gt;&lt;/script&gt;</code></pre>
+        <p>将 iSevrer 发布的地图加载至 OpenLayers 的 map 中 </p>
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;UTF-8&quot;&gt;
+        &lt;title&gt;SuperMap REST 地图服务底图&lt;/title&gt;
+        &lt;link rel=&quot;stylesheet&quot; href=&quot;https://openlayers.org/en/v4.0.1/css/ol.css&quot;&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;https://openlayers.org/en/v4.0.1/build/ol-debug.js&quot;&gt;&lt;/script&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;../../dist/iclient9-openlayers.js&quot;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id=&quot;map&quot;&gt;&lt;/div&gt;
+        &lt;script type=&quot;text/javascript&quot;&gt;
+            var map = new ol.Map({
+                target: &#39;map&#39;,
+                view: new ol.View({
+                    center: [100.94238281254322,35.496456056550095],
+                    zoom: 4,
+                    projection:&quot;EPSG:4326&quot;
+                }),
+                layers: [new ol.layer.Tile({
+                    source: new ol.supermap.TileSuperMapRest({
+                        url: &quot;http://support.supermap.com:8090/iserver/services/map-world/rest/maps/World&quot;,
+                        projection:&quot;EPSG:4326&quot;
+                    }),
+                })]
+            });
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <div id="map"
+             style="height:300px;position: relative;margin-top: 20px;background-color: #f5f5f5;border: 1px solid #ccc;border-radius: 4px;"></div>
+
+        <h3 style="margin-top: 20px;margin-left: 5px;color: #9d9d9d">Leaflet</h3>
+        <p>引入 iclient9-leaflet.js </p>
+        <pre><code class="html">&lt;script type=&quot;text/javascript&quot; src=&quot;../../dist/iclient9-leaflet.js&quot;&gt;&lt;/script&gt;</code></pre>
+        <p>将 iSevrer 发布的地图加载至 Leaflet 的 map 中 </p>
+        <pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;UTF-8&quot;&gt;
+        &lt;title&gt;SuperMap REST 地图服务底图&lt;/title&gt;
+        &lt;link rel=&quot;stylesheet&quot; href=&quot;http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css&quot;&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js&quot;&gt;&lt;/script&gt;
+        &lt;script type=&quot;text/javascript&quot; src=&quot;../dist/iclient9-leaflet.js&quot;&gt;&lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id=&quot;mapLeaflet&quot;&gt;&lt;/div&gt;
+        &lt;script type=&quot;text/javascript&quot;&gt;
+            var map = L.map(&#39;mapLeaflet&#39;, {
+                center: L.CRS.EPSG3857.projection.unproject(L.point(12956184.324539, 4850540.9409086)),
+                maxZoom: 18,
+                zoom: 10
+            });
+            L.supermap.tiledMapLayer(&quot;http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China&quot;).addTo(map);
+        &lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <div id="mapLeaflet"
+             style="height:300px;position: relative;margin-top: 20px;background-color: #f5f5f5;border: 1px solid #ccc;border-radius: 4px;"></div>
+    </div>
+
+
+</div>
+<div class="ip-footer">
+    <div class="container">
+        <div class="ip-copyRight iportalfooterDiv" id="iportalfooter">版权所有 © 2000-2017 北京超图软件股份有限公司 京ICP备11032883号-8
+            京公网安备11010502008721 甲测资字11002074
+        </div>
+    </div>
+</div>
+
+<script src="libs/js/bootstrap.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
+<script type="text/javascript" src="../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map = new ol.Map({
+        target: 'map',
+        view: new ol.View({
+            center: [100.94238281254322,35.496456056550095],
+            zoom: 4,
+            projection:"EPSG:4326"
+        }),
+        layers: [new ol.layer.Tile({
+            source: new ol.supermap.TileSuperMapRest({
+                url: "http://support.supermap.com:8090/iserver/services/map-world/rest/maps/World",
+                projection:"EPSG:4326"
+            }),
+        })]
+    });
+
+    var map = L.map('mapLeaflet', {
+        center: [39.89393354258348, 116.38738402603143],
+        maxZoom: 18,
+        zoom: 10
+    });
+    L.supermap.tiledMapLayer("http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China").addTo(map);
+</script>
+</body>
+</html>
