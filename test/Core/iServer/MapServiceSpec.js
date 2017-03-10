@@ -2,7 +2,7 @@
 
 var getMapStatusEventArgsSystem=null;
 var serviceFailedEventArgsSystem=null;
-var worldMapURL =  "http://localhost:8090/iserver/services/map-world/rest/maps/世界地图";
+var worldMapURL =  GlobeParameter.worldMapURL;
 
 function initMapService() {
     getMapStatusEventArgsSystem=null;
@@ -77,7 +77,7 @@ describe('testMapService_processAsync',function(){
     });
 
     it('fail',function(done){
-        var mapServiceURL = "http://localhost:8090/iserver/services/map-world/rest/maps/";
+        var mapServiceURL = GlobeParameter.mapServiceURL;
         var getMapService = new SuperMap.REST.MapService(mapServiceURL + "MapNameError");
         getMapService.events.on({'processFailed':GetMapStatusFailed});
         getMapService.processAsync();

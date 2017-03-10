@@ -2,7 +2,7 @@
 
 var serviceFailedEventArgsSystem = null;
 var editFeaturesEventArgsSystem = null;
-var editServiceURL = "http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R";
+var editServiceURL = GlobeParameter.editServiceURL;
 var options = {
 	eventListeners:{
 		'processCompleted': editFeaturesServiceCompleted,

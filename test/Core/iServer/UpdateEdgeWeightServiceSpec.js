@@ -4,7 +4,7 @@ var serviceFailedEventArgsSystem = null;
 var serviceCompletedEventArgsSystem = null;
 
 //服务初始化时注册事件监听函数
-var networkAnalystURL = "http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+var networkAnalystURL = GlobeParameter.networkAnalystURL;
 function initUpdateEdgeWeightService_RegisterListener() {
     return new SuperMap.REST.UpdateEdgeWeightService(networkAnalystURL,
         {eventListeners:{

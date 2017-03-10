@@ -1,6 +1,6 @@
 require('../../../src/Core/iServer/QueryService');
 
-var url = "http://localhost:8090/iserver/services/map-world/rest/maps/World Map";
+var url = GlobeParameter.mapServiceURL + "World Map";
 function initQueryService() {
     return new SuperMap.REST.QueryService(url);
 }

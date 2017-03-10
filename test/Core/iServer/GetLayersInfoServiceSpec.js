@@ -20,7 +20,7 @@ function getLayersInfoServiceFailed(result) {
 
 describe("testGetLayersInfoService_constructor", function() {
     it('constructor and destroy',function(){
-        var vectorURL = "http://localhost:8090/iserver/services/map-world/rest/maps/World/";
+        var vectorURL = GlobeParameter.vectorURL;
         var getLayersInfoService = initGetLayersInfoService(vectorURL);
         expect(getLayersInfoService).not.toBeNull();
         getLayersInfoService.destroy();
@@ -40,7 +40,7 @@ describe('testGetLayersInfoService_processAsync',function(){
     });
 
     it('Vector',function(done){
-        var vectorURL = "http://localhost:8090/iserver/services/map-world/rest/maps/World/";
+        var vectorURL = GlobeParameter.vectorURL;
         var getLayersInfoService = initGetLayersInfoService(vectorURL);
         getLayersInfoService.processAsync();
 
@@ -61,7 +61,7 @@ describe('testGetLayersInfoService_processAsync',function(){
     });
 
     it('image',function(done){
-        var imageURL = "http://localhost:8090/iserver/services/map-world/rest/maps/世界地图_Day";
+        var imageURL = GlobeParameter.imageURL;
         var getLayersInfoService = initGetLayersInfoService(imageURL);
         getLayersInfoService.processAsync();
 
@@ -82,7 +82,7 @@ describe('testGetLayersInfoService_processAsync',function(){
     });
 
     it('grid',function(done){
-        var gridURL = "http://localhost:8090/iserver/services/map-jingjin/rest/maps/京津地区土地利用现状图";
+        var gridURL = GlobeParameter.gridURL;
         var getLayersInfoService = initGetLayersInfoService(gridURL);
         getLayersInfoService.processAsync();
 

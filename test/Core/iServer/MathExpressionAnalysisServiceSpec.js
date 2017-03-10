@@ -2,7 +2,7 @@ require('../../../src/Core/iServer/MathExpressionAnalysisService');
 
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
-var spatialAnalystURL = "http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 var options =  {
     eventListeners: {
         'processFailed':MathExpressionAnalysisServiceFailed,

@@ -20,7 +20,7 @@ function setLayerStatusFailed(result) {
 
 describe('testSetLayerStatusService_constructor',function(){
     it('constructor and destroy',function(){
-        var url="http://localhost:8090/iserver/services/map-world/rest/maps/World";
+        var url= GlobeParameter.WorldURL;
         var setLayerStatusService = new SuperMap.REST.SetLayerStatusService(url,
             {eventListeners:{
                 "processCompleted":this.setLayerComplted
@@ -38,7 +38,7 @@ describe('testSetLayerStatusService_constructor',function(){
 
 describe('testSetLayerStatusService_getMapName',function(){
     it('getMapName',function(){
-        var url ="http://localhost:8090/iserver/services/map-world/rest/maps/World";
+        var url = GlobeParameter.WorldURL;
         var setLayerStatusService = new SuperMap.REST.SetLayerStatusService(url);
         var name = setLayerStatusService.getMapName(url);
         expect(name).toEqual("World");
@@ -61,7 +61,7 @@ describe('testSetLayerStatusService_processAsync',function(){
 
     //processAsync没有参数的时候
     it('noParams',function(done){
-        var worldURL="http://localhost:8090/iserver/services/map-world/rest/maps/World";
+        var worldURL= GlobeParameter.WorldURL;
         var setLayerStatusService = new SuperMap.REST.SetLayerStatusService(worldURL);
         setLayerStatusService.processAsync();
 
@@ -81,7 +81,7 @@ describe('testSetLayerStatusService_processAsync',function(){
 
     //processAsyn有参数，没有resourceID属性
     it('resourceID_null',function(done){
-        var url="http://localhost:8090/iserver/services/map-world/rest/maps/World";
+        var url= GlobeParameter.WorldURL;
         var setLayerStatusService = initSetLayerStatusService(url);
         var setLayerStatusParams = new SetLayerStatusParameters();
         var layerStatus = new LayerStatus();

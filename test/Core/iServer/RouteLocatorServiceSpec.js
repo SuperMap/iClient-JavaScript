@@ -2,7 +2,7 @@ require('../../../src/Core/iServer/RouteLocatorService');
 
 var routeLocatorEventArgsSystem = null,
     serviceFailedEventArgsSystem = null;
-var spatialAnalystURL = "http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 function routeLocatorCompleted(routeLocatorEventArgs) {
     routeLocatorEventArgsSystem = routeLocatorEventArgs;
 }

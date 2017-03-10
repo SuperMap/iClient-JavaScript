@@ -3,7 +3,7 @@ require('../../../src/Core/iServer/GetFeaturesByBoundsService');
 var serviceFailedEventArgsSystem = null;
 var serviceSucceedEventArgsSystem = null;
 //服务初始化时注册事件监听函数
-var url = "http://localhost:8090/iserver/services/data-world/rest/data";
+var url = GlobeParameter.dataServiceURL;
 var options = {
     eventListeners: {
         'processFailed': serviceFailed,

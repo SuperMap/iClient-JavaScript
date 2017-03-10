@@ -2,7 +2,7 @@
 
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
-var url = "http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+var url = GlobeParameter.spatialAnalystURL;
 var options = {
     eventListeners:{"processCompleted": analyzeCompleted,'processFailed': analyzeFailed}
 };
@@ -67,65 +67,59 @@ describe('testBufferAnalystService_processAsync', function(){
         },6000)
     });
 
-});
+    it('byGeometry_NotReturnContent',function(done){
 
-
-//GeometryBufferAnalyst在iclient9中暂未添加
-/*    it('BufferAnalyzeByGeometry_NotReturnContent',function(done){
-
-     var bfServiceByGeometry = initBufferAnalystService();
-     expect(bfServiceByGeometry).not.toBeNull();
-     expect(bfServiceByGeometry.url).toEqual(url);
-
-     var sourceGeometry = new SuperMap.Geometry.Point(7884.79277012316, 5072.18865322196);
-     var bufferSetting = new SuperMap.REST.BufferSetting();
-     bufferSetting.endType = SuperMap.REST.BufferEndType.ROUND;
-     bufferSetting.leftDistance.value = 300;
-     bufferSetting.semicircleLineSegment = 5;
-     var resultSetting = new DataReturnOption({
-     expectCount: 1000,
-     dataset: "Landuse_R@Jingjin",
-     dataReturnMode: DataReturnMode.DATASET_ONLY,
-     deleteExistResultDataset: false
-     });
-     var geometryBufferAnalystParameters = new GeometryBufferAnalystParameters();
-     geometryBufferAnalystParameters.sourceGeometry = sourceGeometry;
-     geometryBufferAnalystParameters.bufferSetting = bufferSetting;
-     geometryBufferAnalystParameters.resultSetting = resultSetting;
-     bfServiceByGeometry.processAsync(geometryBufferAnalystParameters);
-     done();
-
-     setTimeout(function () {
-     try {
-       var bfMode = bfServiceByGeometry.mode;
-       expect(bfMode).toEqual("geometry");
-
-       bfServiceByGeometry.destroy();
-       expect(bfServiceByGeometry.events).toBeNull();
-       expect(bfServiceByGeometry.eventListeners).toBeNull();
-       expect(bfServiceByGeometry.mode).toBeNull();
-
-       analystEventArgsSystem.destroy();
-       expect(analystEventArgsSystem).not.toBeNull();
-       expect(analystEventArgsSystem.result).toBeNull();
-       done();
-     } catch (exception) {
-       done();
-     }
-     }, 10000)
-     })*/
-
-/*
-//测试失败事件
-describe('processAsync_FailedEvent',function(){
-    it('BufferAnalyzeByGeometry_NotReturnContent',function(done){
         var bfServiceByGeometry = initBufferAnalystService();
         expect(bfServiceByGeometry).not.toBeNull();
         expect(bfServiceByGeometry.url).toEqual(url);
 
         var sourceGeometry = new SuperMap.Geometry.Point(7884.79277012316, 5072.18865322196);
-        var bufferSetting = new SuperMap.REST.BufferSetting();
-        bufferSetting.endType = SuperMap.REST.BufferEndType.ROUND;
+        var bufferSetting = new BufferSetting();
+        bufferSetting.endType = BufferEndType.ROUND;
+        bufferSetting.leftDistance.value = 300;
+        bufferSetting.semicircleLineSegment = 5;
+        var resultSetting = new DataReturnOption({
+            expectCount: 1000,
+            dataset: "Landuse_R@Jingjin",
+            dataReturnMode: DataReturnMode.DATASET_ONLY,
+            deleteExistResultDataset: false
+        });
+        var geometryBufferAnalystParameters = new GeometryBufferAnalystParameters();
+        geometryBufferAnalystParameters.sourceGeometry = sourceGeometry;
+        geometryBufferAnalystParameters.bufferSetting = bufferSetting;
+        geometryBufferAnalystParameters.resultSetting = resultSetting;
+        bfServiceByGeometry.processAsync(geometryBufferAnalystParameters);
+
+        setTimeout(function () {
+            try {
+                var bfMode = analystEventArgsSystem.result;
+                expect(bfMode.resultGeometry).not.toBeNull();
+                expect(bfMode.resultGeometry.type).toEqual("REGION");
+                bfServiceByGeometry.destroy();
+                expect(bfServiceByGeometry.events).toBeNull();
+                expect(bfServiceByGeometry.eventListeners).toBeNull();
+                expect(bfServiceByGeometry.mode).toBeNull();
+                geometryBufferAnalystParameters.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                bfServiceByDatasets.destroy();
+                dsBufferAnalystParameters.destroy();
+                done();
+            }
+        }, 6000)
+    });
+
+    //测试失败事件
+    it('byGeometry_NotReturnContent',function(done){
+        var bfServiceByGeometry = initBufferAnalystService();
+        expect(bfServiceByGeometry).not.toBeNull();
+        expect(bfServiceByGeometry.url).toEqual(url);
+
+        var sourceGeometry = new SuperMap.Geometry.Point(7884.79277012316, 5072.18865322196);
+        var bufferSetting = new BufferSetting();
+        bufferSetting.endType = BufferEndType.ROUND;
         bufferSetting.leftDistance.value = -1;
         bufferSetting.semicircleLineSegment = 5;
         var resultSetting = new DataReturnOption({
@@ -143,22 +137,27 @@ describe('processAsync_FailedEvent',function(){
 
         setTimeout(function () {
             try {
-                var bfMode = bfServiceByGeometry.mode;
-                expect(bfMode).not.toBeNull();
-                expect(serviceFailedEventArgsSystem).not.toBeNull();
 
+                expect(serviceFailedEventArgsSystem).not.toBeNull();
+                expect(serviceFailedEventArgsSystem.error).not.toBeNull();
+                expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
+                expect(serviceFailedEventArgsSystem.error.errorMsg).toContain("左缓冲距离不能小于等于0");
+                expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
                 bfServiceByGeometry.destroy();
                 expect(bfServiceByGeometry.events).toBeNull();
                 expect(bfServiceByGeometry.eventListeners).toBeNull();
                 expect(bfServiceByGeometry.mode).toBeNull();
-
-                expect(analystEventArgsSystem).not.toBeNull();
+                geometryBufferAnalystParameters.destroy();
                 done();
             } catch (exception) {
-                expect(false).toBe(true).toThrow("exception occcurs,message is:" + exception.message);
+                expect(false).toBeTruthy();
+                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                bfServiceByDatasets.destroy();
+                dsBufferAnalystParameters.destroy();
                 done();
             }
-        }, 10000)
+        }, 6000)
     });
-});*/
+});
+
 

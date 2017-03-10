@@ -2,7 +2,7 @@
 
 var serviceFailedEventArgsSystem = null;
 var serviceCompletedEventArgsSystem = null;
-var worldMapURL = "http://localhost:8090/iserver/services/map-world/rest/maps/World Map";
+var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 
 //跨域下的测试
 function initQueryByGeometryService() {

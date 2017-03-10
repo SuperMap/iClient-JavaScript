@@ -2,7 +2,7 @@
 
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
-var spatialAnalystURL_Changchun = "http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+var spatialAnalystURL_Changchun = GlobeParameter.spatialAnalystURL_Changchun;
 function initThiessenAnalystService() {
     return new SuperMap.REST.ThiessenAnalystService(spatialAnalystURL_Changchun,
         {eventListeners:{

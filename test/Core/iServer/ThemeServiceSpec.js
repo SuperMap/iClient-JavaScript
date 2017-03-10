@@ -2,7 +2,7 @@
 
 var themeEventArgsSystem = null,
     serviceFailedEventArgsSystem = null;
-var mapServiceURL= "http://localhost:8090/iserver/services/map-world/rest/maps/",
+var mapServiceURL= GlobeParameter.mapServiceURL,
     themeURL = mapServiceURL + "World Map";
 
 function themeCompleted(themeEventArgs){

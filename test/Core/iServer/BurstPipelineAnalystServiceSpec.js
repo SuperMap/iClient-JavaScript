@@ -2,7 +2,7 @@ require('../../../src/Core/iServer/BurstPipelineAnalystService');
 
 var serviceFailedEventArgsSystem = null,
     serviceCompletedEventArgsSystem = null;
-var url = "http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+var url = GlobeParameter.networkAnalystURL;
 var options = {
     eventListeners:{
         "processCompleted": analyzeCompleted,

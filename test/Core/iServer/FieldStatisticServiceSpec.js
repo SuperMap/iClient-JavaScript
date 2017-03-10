@@ -2,7 +2,7 @@
 
 var serviceFailedEventArgsSystem = null;
 var fieldStatisticEventArgsSystem = null;
-var dataServiceURL = "http://localhost:8090/iserver/services/data-world/rest/data";
+var dataServiceURL = GlobeParameter.dataServiceURL;
 var options = {
     eventListeners:{
         'processCompleted': fieldStatisticCompleted,

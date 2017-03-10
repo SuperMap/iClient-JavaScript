@@ -4,7 +4,7 @@ var serviceFailedEventArgsSystem = null;
 var serviceSucceedEventArgsSystem = null;
 
 //服务初始化时注册事件监听函数
-var url = "http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+var url = GlobeParameter.networkAnalystURL;
 var options = {
     eventListeners: {
         'processFailed': findTSPPathServiceFailed,

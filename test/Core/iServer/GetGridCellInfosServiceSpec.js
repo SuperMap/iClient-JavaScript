@@ -2,7 +2,7 @@ require('../../../src/Core/iServer/GetGridCellInfosService');
 
 var eventCompleted ,
     eventFailed ;
-var dataServiceURL = "http://localhost:8090/iserver/services/data-world/rest/data";
+var dataServiceURL = GlobeParameter.dataServiceURL;
 function initGetGridCellInfosService(url){
     return new SuperMap.REST.GetGridCellInfosService(url, {
         eventListeners: {

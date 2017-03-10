@@ -2,7 +2,7 @@ require('../../../src/Core/iServer/RouteCalculateMeasureService');
 
 var routeCalculateMeasureEventArgsSystem = null,
     serviceFailedEventArgsSystem = null;
-var spatialAnalystURL = "http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 function routeCalculateMeasureCompleted(routeCalculateMeasureEventArgs) {
     routeCalculateMeasureEventArgsSystem = routeCalculateMeasureEventArgs;
 }

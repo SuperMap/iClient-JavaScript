@@ -2,7 +2,7 @@
 
 var completedEventArgsSystem, failedEventArgsSystem;
 
-var url = "http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+var url = GlobeParameter.spatialAnalystURL_Changchun;
 var options = {
     eventListeners: {
         processCompleted: generateSpatialDataCompleted,

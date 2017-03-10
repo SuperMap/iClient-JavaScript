@@ -32,7 +32,7 @@ module.exports = function(config) {
     /***OL3文件夹下的源码添加至此，暂未添加***/
 
 	/***以下全是测试文件***/
-
+    'test/Tool/GlobeParameter.js',
     /**Core --iServer**/
     //'test/Core/iServer/AreaSolarRadiationServiceSpec.js',     //iclient8注释掉
     'test/Core/iServer/BufferAnalystServiceSpec.js',
@@ -89,7 +89,7 @@ module.exports = function(config) {
     'test/Core/iServer/ThemeServiceSpec.js',
     'test/Core/iServer/ThiessenAnalystServiceSpec.js',
     //'test/Core/iServer/TilesetsServiceSpec.js',               //iClient8中无此测试,示例服务中的map服务下的tilesets为空
-    //'test/Core/iServer/TransferPathServiceSpec.js',                 //有问题,超时,待继续调试
+    //'test/Core/iServer/TransferPathServiceSpec.js',           /有问题,超时,待继续调试
     'test/Core/iServer/TransferSolutionServiceSpec.js',
     'test/Core/iServer/UpdateEdgeWeightServiceSpec.js',
     'test/Core/iServer/UpdateTurnNodeWeightServiceSpec.js'
@@ -108,14 +108,14 @@ module.exports = function(config) {
 		'src/Legacy/libs/SuperMap_Basic-8.1.1-14426.js':['commonjs'],
 		'src/Legacy/libs/SuperMap_IServer-8.1.1-14426.js':['commonjs'],
 	    'src/Legacy/libs/Lang/*.js':['commonjs'],
-		'src/Core/**/*.js':['commonjs','coverage'],
+		'src/Core/**/*.js':['commonjs'/*,'coverage'*/],
         'test/Core/**/*Spec.js': ['commonjs']
     },
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress','coverage'],
+    reporters: ['progress'/*,'coverage'*/],
 
     //最大超时时间
     captureTimeout: maxExecuteTime,

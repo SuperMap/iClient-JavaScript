@@ -2,7 +2,7 @@
 
 var serviceFailedEventArgsSystem = null;
 var serviceCompletedEventArgsSystem = null;
-var worldMapURL = "http://localhost:8090/iserver/services/map-world/rest/maps/World Map";
+var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 
 function initQueryByDistanceService() {
     return new SuperMap.REST.QueryByDistanceService(worldMapURL);

@@ -9,7 +9,7 @@ function surfaceAnalystCompleted(surfaceAnalystEventArgs){
 function surfaceAnalystFailed(serviceFailedEventArgs){
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
-var spatialAnalystURL = "http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 function initSurfaceService() {
     return new SuperMap.REST.SurfaceAnalystService(spatialAnalystURL, {
         eventListeners:{"processCompleted": surfaceAnalystCompleted,

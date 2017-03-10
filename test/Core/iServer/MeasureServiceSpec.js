@@ -2,7 +2,7 @@
 
 var measureEventArgsSystem =null,
     serviceFailedEventArgsSystem =null;
-var mapServiceURL = "http://localhost:8090/iserver/services/map-world/rest/maps/";
+var mapServiceURL = GlobeParameter.mapServiceURL;
 var worldMapURL = mapServiceURL + "World Map";
 
 //跨域下的测试

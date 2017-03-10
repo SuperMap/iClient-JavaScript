@@ -4,7 +4,7 @@ var serviceFailedEventArgsSystem = null;
 var serviceCompletedEventArgsSystem = null;
 
 //服务初始化时注册事件监听函数
-var trafficTransferURL = "http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun";
+var trafficTransferURL = GlobeParameter.trafficTransferURL;
 function initTransferSolutionService() {
     return new SuperMap.REST.TransferSolutionService(trafficTransferURL, {
         eventListeners: {

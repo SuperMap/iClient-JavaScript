@@ -2,7 +2,7 @@
 
 var stopQueryServiceEventArgsSystem = null,
     serviceFailedEventArgsSystem = null;
-var trafficTransferURL = "http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun";
+var trafficTransferURL = GlobeParameter.trafficTransferURL;
 function initStopQueryService() {
     return new SuperMap.REST.StopQueryService(trafficTransferURL, {
         eventListeners: {
