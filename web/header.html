@@ -27,13 +27,13 @@
 </div>
 <script>
     $('.dropdown-menu li').on('click', function () {
-        var port = window.location.host;
+        var port = window.location.port;
         var host = window.location.protocol + "//" + port + port ? "/iClient9" : "";
 
         window.location.href = host + "/examples/" + this.innerText.toLowerCase() + "/examples.html";
     })
     $('#headerMenu #headerIndex').on('click', function () {
-        var port = window.location.host;
+        var port = window.location.port;
         window.location.href = window.location.protocol + "//" + port + port ? "/iClient9/web/index.html" : "";
     })
 
