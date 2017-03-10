@@ -294,17 +294,22 @@ ol.supermap.SpatialAnalystService.prototype._processParams = function (params) {
     if (params.clipRegion) {
         params.clipRegion = this.convertGeometry(params.clipRegion);
     }
+    if (params.sourceGeometry) {
+        params.sourceGeometry = this.convertGeometry(params.sourceGeometry);
+    }
     if (params.sourceRoute && params.sourceRoute.points) {
         params.sourceRoute.points = this.convertGeometry(params.sourceRoute.points);
     }
     if (params.operateRegions && ol.supermap.isArray(params.operateRegions)) {
+        var me = this;
         params.operateRegions.map(function (geometry, key) {
-            params.operateRegions[key] = this.convertGeometry(geometry);
+            params.operateRegions[key] = me.convertGeometry(geometry);
         });
     }
     if (params.sourceRoute && params.sourceRoute.components && ol.supermap.isArray(params.sourceRoute.components)) {
+        var me = this;
         params.sourceRoute.components.map(function (geometry, key) {
-            params.sourceRoute.components[key] = this.convertGeometry(geometry);
+            params.sourceRoute.components[key] = me.convertGeometry(geometry);
         });
     }
     return params;

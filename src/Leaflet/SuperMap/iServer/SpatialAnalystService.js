@@ -322,15 +322,18 @@ SpatialAnalystService = ServiceBase.extend({
         if (params.clipRegion) {
             params.clipRegion = L.Util.toSuperMapGeometry(params.clipRegion);
         }
+        if (params.sourceGeometry) {
+            params.sourceGeometry = L.Util.toSuperMapGeometry(params.sourceGeometry);
+        }
         if (params.sourceRoute && params.sourceRoute.points) {
             params.sourceRoute.points = L.Util.toSuperMapGeometry(params.sourceRoute.points);
         }
-        if (params.operateRegions && ol.supermap.isArray(params.operateRegions)) {
+        if (params.operateRegions && L.Util.isArray(params.operateRegions)) {
             params.operateRegions.map(function (geometry, key) {
                 params.operateRegions[key] = L.Util.toSuperMapGeometry(geometry);
             });
         }
-        if (params.sourceRoute && params.sourceRoute.components && ol.supermap.isArray(params.sourceRoute.components)) {
+        if (params.sourceRoute && params.sourceRoute.components && L.Util.isArray(params.sourceRoute.components)) {
             params.sourceRoute.components.map(function (geometry, key) {
                 params.sourceRoute.components[key] = L.Util.toSuperMapGeometry(geometry);
             });

@@ -13,6 +13,7 @@
  */
 require('./SpatialAnalystBase');
 require('./DatasetBufferAnalystParameters');
+require('./GeometryBufferAnalystParameters');
 SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -29,7 +30,7 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
      * (start code)
      * var myBufferAnalystService = new SuperMap.REST.BufferAnalystService(url, {
      *     eventListeners: {
-     *           "processCompleted": bufferCompleted, 
+     *           "processCompleted": bufferCompleted,
      *           "processFailed": bufferFailed
      *           }
      *    });
@@ -82,10 +83,10 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
             me.url += 'datasets/' + parameter.dataset + '/buffer';
             DatasetBufferAnalystParameters.toObject(parameter, parameterObject);
         }
-        else if (parameter instanceof SuperMap.REST.GeometryBufferAnalystParameters) {
+        else if (parameter instanceof GeometryBufferAnalystParameters) {
             me.mode = "geometry";
             me.url += 'geometry/buffer';
-            SuperMap.REST.GeometryBufferAnalystParameters.toObject(parameter, parameterObject);
+            GeometryBufferAnalystParameters.toObject(parameter, parameterObject);
         }
 
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
