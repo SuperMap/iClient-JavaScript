@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>动态要素</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
+    <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
+    <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+    <script type="text/javascript">
+        var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326";
+        function init() {
+            var mapService = new ol.supermap.MapService(url);
+            mapService.on("complete", function (serviceResult) {
+                var mapJSONObj = serviceResult.element.result;
+                var map = new ol.Map({
+                    target: 'map',
+                    view: new ol.View({
+                        center: [103, 30],
+                        zoom: 4,
+                        projection: 'EPSG:4326'
+                    })
+                });
+                var layer = new ol.layer.Tile({
+                    source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj))
+                });
+                map.addLayer(layer);
+
+                function addRandomFeature() {
+                    var xmax = 130, xmin = 80, ymax = 50, ymin = 20;
+                    var feature = new ol.Feature(new ol.geom.Point([Math.floor(Math.random() * (xmax - xmin + 1) + xmin), Math.floor(Math.random() * (ymax - ymin + 1) + ymin)]));
+                    source.addFeature(feature);
+                }
+
+                function flash(feature) {
+                    var start = new Date().getTime();
+                    var listenerKey;
+
+                    function animate(event) {
+                        var duration = 3000;
+                        var vectorContext = event.vectorContext;
+                        var frameState = event.frameState;
+                        var flashGeom = feature.getGeometry().clone();
+                        var elapsed = frameState.time - start;
+                        var elapsedRatio = elapsed / duration;
+                        var radius = ol.easing.easeOut(elapsedRatio) * 25 + 5;
+                        var opacity = ol.easing.easeOut(1 - elapsedRatio);
+                        var style = new ol.style.Style({
+                            image: new ol.style.Circle({
+                                radius: radius,
+                                snapToPixel: false,
+                                stroke: new ol.style.Stroke({
+                                    color: 'rgba(255, 0, 0, ' + opacity + ')',
+                                    width: 0.25 + opacity
+                                })
+                            })
+                        });
+                        vectorContext.setStyle(style);
+                        vectorContext.drawGeometry(flashGeom);
+                        if (elapsed > duration) {
+                            ol.Observable.unByKey(listenerKey);
+                            return;
+                        }
+                        map.render();
+                    }
+
+                    listenerKey = map.on('postcompose', animate);
+                }
+
+                var source = new ol.source.Vector({
+                    wrapX: false
+                });
+                source.on('addfeature', function (e) {
+                    flash(e.feature);
+                });
+                var vector = new ol.layer.Vector({
+                    source: source
+                });
+                map.addLayer(vector);
+                window.setInterval(addRandomFeature, 1000);
+            });
+            mapService.getMapStatus();
+        }
+    </script>
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
+<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right "></div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+</body>
+</html>

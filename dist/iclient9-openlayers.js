@@ -5525,11 +5525,12 @@
 	     * eventListeners - {Object} 需要被注册的监听器对象。
 	     */
 	    initialize: function (url, options) {
-	        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+	        var me = this;
+	        SuperMap.CoreServiceBase.prototype.initialize.apply(me, arguments);
 	        if (options) {
-	            SuperMap.Util.extend(this, options);
+	            SuperMap.Util.extend(me, options);
 	        }
-	        this.mapUrl = url;
+	        me.mapUrl = url;
 	    },
 
 	    /**
@@ -5572,8 +5573,7 @@
 	                success: me.createTempLayerComplete,
 	                failure: me.serviceProcessFailed
 	            });
-	        }
-	        else {
+	        } else {
 	            me.url += "tempLayersSet/" + params.resourceID;
 	            me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
 
@@ -5635,11 +5635,12 @@
 	     * result - {Object} 服务器返回的结果对象，记录设置操作是否成功。
 	     */
 	    serviceProcessCompleted: function (result) {
+	        var me = this;
 	        result = SuperMap.Util.transformResult(result);
 	        if (result != null && me.lastparams != null) {
 	            result.newResourceID = me.lastparams.resourceID;
 	        }
-	        this.events.triggerEvent("processCompleted", {result: result});
+	        me.events.triggerEvent("processCompleted", {result: result});
 	    },
 
 	    CLASS_NAME: "SuperMap.REST.SetLayerStatusService"
@@ -17201,11 +17202,12 @@
 	            } else if (result.recordset && result.recordset.features) {
 	                analystResult = JSON.parse(geoJSONFormat.write(result.recordset.features));
 	            }
-
-	        } else {
+	        }
+	        if (!analystResult) {
 	            analystResult = result;
 	        }
-	        me.events.triggerEvent("processCompleted", {result: analystResult});
+
+	        me.events.triggerEvent("processCompleted", {result: analystResult, originalResult: result});
 	    },
 
 	    CLASS_NAME: "SuperMap.REST.SpatialAnalystBase"

@@ -183,22 +183,46 @@ var exampleConfig = {
         content: {
             "heat": {
                 name: "热力图",
-                content: null
+                content: [{
+                    name: "随机点",
+                    thumbnail: "ol_heatmap.png",
+                    fileName: "07_HeatMap"
+                }]
             },
-            "D3Theme": {
+            "cluster": {
+                name: "聚点图",
+                content: [{
+                    name: "点聚合",
+                    thumbnail: "ol_cluster.png",
+                    fileName: "07_Cluster"
+                }]
+            },
+            "animationFeature": {
+                name: "动画要素图",
+                content: [{
+                    name: "动画点",
+                    thumbnail: "ol_animationFeature.png",
+                    fileName: "07_AnimationFeature"
+                }]
+            },
+            "D3": {
                 name: "D3-单值专题图",
-                content: null
+                content: [{
+                    name: "D3-单值专题图",
+                    content: null
+                }]
             },
-            "ECharts-Bar": {
+            "ECharts": {
                 name: "ECharts-柱状图",
-                content: null
+                content: [{
+                    name: "ECharts-柱状图",
+                    content: null
+                }]
             }
-
         }
     },
     "OGC": {
         name: "OGC",
         content: null
     }
-
-};
+}
