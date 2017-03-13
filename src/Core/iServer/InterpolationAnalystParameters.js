@@ -2,7 +2,7 @@
 
 /**
  * Class: InterpolationAnalystParameters
- * 差值分析参数类
+ * 插值分析参数类
  *
  */
 InterpolationAnalystParameters = SuperMap.Class({

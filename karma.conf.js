@@ -39,18 +39,18 @@ module.exports = function(config) {
     'test/Core/iServer/BufferDistanceSpec.js',
     'test/Core/iServer/BufferSettingSpec.js',
     'test/Core/iServer/BurstPipelineAnalystServiceSpec.js',
-    //'test/Core/iServer/ChartFeatureInfoSpecsServiceSpec.js',  //iclient8注释掉
+    //'test/Core/iServer/ChartFeatureInfoSpecsServiceSpec.js',  //iclient8注释掉,海图测试LayerServices相关的类，等待服务端支持后添加
     //'test/Core/iServer/ChartQueryServiceSpec.js',             //iclient8注释掉
     'test/Core/iServer/ComputeWeightMatrixServiceSpec.js',
-    //'test/Core/iServer/DensityAnalystServiceSpec.js',         //iclient8注释掉
-    'test/Core/iServer/EditFeaturesServiceSpec.js',              //delete方法有问题，暂时将delete方法注释掉
-    //Facility系列的测试全部被iClient8注释掉
+    //'test/Core/iServer/DensityAnalystServiceSpec.js',         //iclient8注释掉,fieldName
+    'test/Core/iServer/EditFeaturesServiceSpec.js',             //delete方法有问题，暂时将delete方法注释掉
+    //三维网络分析Facility系列的测试全部被iClient8注释掉
     //'test/Core/iServer/FacilityAnalystSinks3DServiceSpec.js',
     //'test/Core/iServer/FacilityAnalystSources3DServiceSpec.js',
     //'test/Core/iServer/FacilityAnalystStreamServiceSpec.js',
-    //'test/Core/iServer/FacilityAnalystTracedown3DService.js',
-    //'test/Core/iServer/FacilityAnalystTraceup3DService.js',
-    //'test/Core/iServer/FacilityAnalystUpstream3DService.js',
+    //'test/Core/iServer/FacilityAnalystTracedown3DServiceSpec.js',
+    //'test/Core/iServer/FacilityAnalystTraceup3DServiceSpec.js',
+    //'test/Core/iServer/FacilityAnalystUpstream3DServiceSpec.js',
     'test/Core/iServer/FieldStatisticServiceSpec.js',
     'test/Core/iServer/FindClosestFacilitiesServiceSpec.js',
     'test/Core/iServer/FindLocationServiceSpec.js',
@@ -72,7 +72,7 @@ module.exports = function(config) {
     'test/Core/iServer/MapServiceSpec.js',
     'test/Core/iServer/MathExpressionAnalysisServiceSpec.js',
     'test/Core/iServer/MeasureServiceSpec.js',
-     'test/Core/iServer/OverlayAnalystServiceSpec.js',
+    'test/Core/iServer/OverlayAnalystServiceSpec.js',
     'test/Core/iServer/QueryByBoundsServiceSpec.js',
     'test/Core/iServer/QueryByDistanceServiceSpec.js',
     'test/Core/iServer/QueryByGeometryServiceSpec.js',
@@ -85,11 +85,11 @@ module.exports = function(config) {
     'test/Core/iServer/SetLayerStatusServiceSpec.js',
     'test/Core/iServer/StopQueryServiceSpec.js',
     'test/Core/iServer/SurfaceAnalystServiceSpec.js',          //待开发将等值线LinearRing添加到GeoJason后再补充对应测试
-    //'test/Core/iServer/TerrainCurvatureCalculationServiceSpec.js',  //有问题,超时,待继续调试
+    'test/Core/iServer/TerrainCurvatureCalculationServiceSpec.js',
     'test/Core/iServer/ThemeServiceSpec.js',
     'test/Core/iServer/ThiessenAnalystServiceSpec.js',
-    //'test/Core/iServer/TilesetsServiceSpec.js',               //iClient8中无此测试,示例服务中的map服务下的tilesets为空
-    //'test/Core/iServer/TransferPathServiceSpec.js',           /有问题,超时,待继续调试
+    'test/Core/iServer/TilesetsServiceSpec.js',
+    'test/Core/iServer/TransferPathServiceSpec.js',
     'test/Core/iServer/TransferSolutionServiceSpec.js',
     'test/Core/iServer/UpdateEdgeWeightServiceSpec.js',
     'test/Core/iServer/UpdateTurnNodeWeightServiceSpec.js'
@@ -120,6 +120,7 @@ module.exports = function(config) {
     //最大超时时间
     captureTimeout: 120000,
     browserNoActivityTimeout: 120000,
+    browserDisconnectTimeout:20000,
 
 	coverageReporter: {
       dir: 'testcoverage/',

@@ -1,4 +1,4 @@
-﻿//CI测试机的地址为：http://192.168.112.222:8090
+﻿//CI测试机的IP为：192.168.112.222
 GlobeParameter = {
     rootURL: "http://192.168.112.222:8090/iserver/services",
     mapServiceURL: "http://192.168.112.222:8090/iserver/services/map-world/rest/maps/",
@@ -16,5 +16,6 @@ GlobeParameter = {
     ChinaURL:"http://192.168.112.222:8090/iserver/services/map-china400/rest/maps/China",
     WMTSURL:"http://192.168.112.222:8090/iserver/services/map-world/wmts100",
 	WCSURL:  "http://192.168.112.222:8090/iserver/services/data-world/wcs111",
-    plotUrl:  "http://192.168.112.222:8090/iserver/services/plot-jingyong/rest/plot"
+    plotUrl:  "http://192.168.112.222:8090/iserver/services/plot-jingyong/rest/plot",
+    tileSetsURL: "http://192.168.112.222:8090/iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces"
 };
