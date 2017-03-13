@@ -2,7 +2,7 @@
 
 var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
-var url = GlobeParameter.networkAnalystURL;
+var url = GlobeParameter.spatialAnalystURL;
 var options = {
     eventListeners:{"processCompleted": analyzeCompleted,'processFailed': analyzeFailed}
 };
@@ -104,7 +104,7 @@ describe('testBufferAnalystService_processAsync', function(){
             } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
-                bfServiceByDatasets.destroy();
+                bfServiceByGeometry.destroy();
                 dsBufferAnalystParameters.destroy();
                 done();
             }
@@ -152,7 +152,7 @@ describe('testBufferAnalystService_processAsync', function(){
             } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
-                bfServiceByDatasets.destroy();
+                bfServiceByGeometry.destroy();
                 dsBufferAnalystParameters.destroy();
                 done();
             }

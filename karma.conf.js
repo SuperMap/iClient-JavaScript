@@ -3,7 +3,7 @@
 
 module.exports = function(config) {
   // 设置测试的超时时间
-  var maxExecuteTime = 20000;
+
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -35,7 +35,7 @@ module.exports = function(config) {
     'test/Tool/GlobeParameter.js',
     /**Core --iServer**/
     //'test/Core/iServer/AreaSolarRadiationServiceSpec.js',     //iclient8注释掉
-    //'test/Core/iServer/BufferAnalystServiceSpec.js',
+    'test/Core/iServer/BufferAnalystServiceSpec.js',
     'test/Core/iServer/BufferDistanceSpec.js',
     'test/Core/iServer/BufferSettingSpec.js',
     'test/Core/iServer/BurstPipelineAnalystServiceSpec.js',
@@ -115,15 +115,17 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress','coverage'],
+    reporters: ['progress','coverage','teamcity'],
 
     //最大超时时间
     captureTimeout: 120000,
     browserNoActivityTimeout: 120000,
 
 	coverageReporter: {
-       type:'html',
-       dir: 'testCoverage/'
+      dir: 'testcoverage/',
+      reporters: [
+        { type: 'lcov',subdir: '.'}
+      ]
     },
 
 
