@@ -79,7 +79,7 @@ function createGalleryChart(example) {
 
     var chartDiv = $("<div class='col-lg-2 col-md-4 col-sm-6'></div>");
     var chart = $("<div class='chart'></div>");
-    var link = $("<a class='chart-link' target='_new' href='" + target + "#" + href + "'></a>");
+    var link = $("<a class='chart-link' target='_blank' href='" + target + "#" + href + "'></a>");
     var chartTitle = $("<h5 class='chart-title'>" + title + "</h5>");
     var thumb = $("<img class='chart-area' src='" + thumbnail + "' style='display: inline;'>");
 

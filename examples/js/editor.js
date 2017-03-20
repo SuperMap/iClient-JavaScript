@@ -46,7 +46,7 @@ function initCodeEditor() {
     }
     aceEditor.setValue($('#editor').val());
     aceEditor.clearSelection();
-    aceEditor.moveCursorTo(0,0);
+    aceEditor.moveCursorTo(0, 0);
 }
 
 //初始化编辑器以及预览内容
@@ -100,12 +100,9 @@ function run() {
 function loadPreview(content) {
     var iFrame = document.getElementById("innerPage").contentWindow;
     iFrame.document.open();
+    iFrame.addEventListener("load",mapHeight);
     iFrame.document.write(content);
     iFrame.document.close();
-    iFrame.onload = function () {
-        mapHeight();
-    };
-
 }
 
 /**设置显示源码的拖拽效果**/
