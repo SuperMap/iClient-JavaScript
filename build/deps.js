@@ -256,6 +256,13 @@ var deps = {
             //         "./src/OL3/Visual/VectorLayer.js"
             //     ]
             // }
+            "GraphicLayer": {
+                "name": "高效率点图层",
+                "src": [
+                    "./src/OL3/Visual/Graphic/graphic.js",
+                    "./src/OL3/Visual/Graphic/source/graphic.js"
+                ]
+            }
         }
     }
 }

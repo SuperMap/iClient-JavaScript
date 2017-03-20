@@ -62,7 +62,9 @@
 	__webpack_require__(108);
 	__webpack_require__(134);
 	__webpack_require__(146);
-	module.exports = __webpack_require__(189);
+	__webpack_require__(190);
+	__webpack_require__(198);
+	module.exports = __webpack_require__(199);
 
 
 /***/ },
@@ -16726,17 +16728,17 @@
 	__webpack_require__(10);
 	__webpack_require__(147);
 	__webpack_require__(150);
-	__webpack_require__(156);
-	__webpack_require__(158);
-	__webpack_require__(160);
-	__webpack_require__(162);
-	__webpack_require__(169);
-	__webpack_require__(171);
-	__webpack_require__(175);
-	__webpack_require__(177);
-	__webpack_require__(179);
-	__webpack_require__(184);
-	__webpack_require__(186);
+	__webpack_require__(157);
+	__webpack_require__(159);
+	__webpack_require__(161);
+	__webpack_require__(163);
+	__webpack_require__(170);
+	__webpack_require__(172);
+	__webpack_require__(176);
+	__webpack_require__(178);
+	__webpack_require__(180);
+	__webpack_require__(185);
+	__webpack_require__(187);
 
 	ol.supermap.SpatialAnalystService = function (url, options) {
 	    ol.supermap.ServiceBase.call(this, url, options);
@@ -17013,17 +17015,22 @@
 	    if (params.clipRegion) {
 	        params.clipRegion = this.convertGeometry(params.clipRegion);
 	    }
+	    if (params.sourceGeometry) {
+	        params.sourceGeometry = this.convertGeometry(params.sourceGeometry);
+	    }
 	    if (params.sourceRoute && params.sourceRoute.points) {
 	        params.sourceRoute.points = this.convertGeometry(params.sourceRoute.points);
 	    }
 	    if (params.operateRegions && ol.supermap.isArray(params.operateRegions)) {
+	        var me = this;
 	        params.operateRegions.map(function (geometry, key) {
-	            params.operateRegions[key] = this.convertGeometry(geometry);
+	            params.operateRegions[key] = me.convertGeometry(geometry);
 	        });
 	    }
 	    if (params.sourceRoute && params.sourceRoute.components && ol.supermap.isArray(params.sourceRoute.components)) {
+	        var me = this;
 	        params.sourceRoute.components.map(function (geometry, key) {
-	            params.sourceRoute.components[key] = this.convertGeometry(geometry);
+	            params.sourceRoute.components[key] = me.convertGeometry(geometry);
 	        });
 	    }
 	    return params;
@@ -17417,6 +17424,7 @@
 	 */
 	__webpack_require__(148);
 	__webpack_require__(151);
+	__webpack_require__(156);
 	SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -17433,7 +17441,7 @@
 	     * (start code)
 	     * var myBufferAnalystService = new SuperMap.REST.BufferAnalystService(url, {
 	     *     eventListeners: {
-	     *           "processCompleted": bufferCompleted, 
+	     *           "processCompleted": bufferCompleted,
 	     *           "processFailed": bufferFailed
 	     *           }
 	     *    });
@@ -17486,10 +17494,10 @@
 	            me.url += 'datasets/' + parameter.dataset + '/buffer';
 	            DatasetBufferAnalystParameters.toObject(parameter, parameterObject);
 	        }
-	        else if (parameter instanceof SuperMap.REST.GeometryBufferAnalystParameters) {
+	        else if (parameter instanceof GeometryBufferAnalystParameters) {
 	            me.mode = "geometry";
 	            me.url += 'geometry/buffer';
-	            SuperMap.REST.GeometryBufferAnalystParameters.toObject(parameter, parameterObject);
+	            GeometryBufferAnalystParameters.toObject(parameter, parameterObject);
 	        }
 
 	        var jsonParameters = SuperMap.Util.toJSON(parameterObject);
@@ -17929,6 +17937,86 @@
 /* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
+	__webpack_require__(4);
+	__webpack_require__(153);
+
+	/**
+	 * Class: GeometryBufferAnalystParameters
+	 * 几何对象缓冲区分析参数类
+	 * 对指定的某个几何对象做缓冲区分析。通过该类可以指定要做缓冲区分析的几何对象、缓冲区参数等。
+	 *
+	 * Inherits from:
+	 *  - <BufferAnalystParameters>
+	 */
+	GeometryBufferAnalystParameters = SuperMap.Class(BufferAnalystParameters, {
+
+	    /**
+	     * Property: sourceGeometry
+	     * {<Object>} 要做缓冲区分析的几何对象(支持Point、LineString、LinearRing、Polygon)。必设字段。
+	     */
+	    sourceGeometry: null,
+
+	    /**
+	     * Constructor: GeometryBufferAnalystParameters
+	     * 几何对象缓冲区分析参数类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * sourceGeometry - {<Object>} 要做缓冲区分析的几何对象。必设字段。
+	     * bufferSetting - {<BufferSetting>} 设置缓冲区通用参数。
+	     */
+	    initialize: function (options) {
+	        BufferAnalystParameters.prototype.initialize.apply(this, arguments);
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        BufferAnalystParameters.prototype.destroy.apply(this, arguments);
+	        var me = this;
+	        if (me.sourceGeometry) {
+	            me.sourceGeometry.destroy();
+	            me.sourceGeometry = null;
+	        }
+	    },
+
+	    CLASS_NAME: "GeometryBufferAnalystParameters"
+	});
+
+	GeometryBufferAnalystParameters.toObject = function (geometryBufferAnalystParameters, tempObj) {
+	    for (var name in geometryBufferAnalystParameters) {
+	        if (name === "bufferSetting") {
+	            var tempBufferSetting = {};
+	            for (var key in geometryBufferAnalystParameters.bufferSetting) {
+	                tempBufferSetting[key] = geometryBufferAnalystParameters.bufferSetting[key];
+	            }
+	            delete tempBufferSetting.radiusUnit;
+	            tempObj.analystParameter = tempBufferSetting;
+	        }
+	        else if (name === "sourceGeometry") {
+	            tempObj.sourceGeometry = SuperMap.REST.ServerGeometry.fromGeometry(geometryBufferAnalystParameters.sourceGeometry);
+	        }
+	        else {
+	            tempObj[name] = geometryBufferAnalystParameters[name];
+	        }
+	    }
+	};
+
+	module.exports = function (options) {
+	    return new GeometryBufferAnalystParameters(options);
+	};
+
+/***/ },
+/* 157 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/* COPYRIGHT 2017 SUPERMAP
 	 * 本程序只能在有效的授权许可下使用。
 	 * 未经许可，不得以任何手段擅自使用或传播。*/
@@ -17946,7 +18034,7 @@
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
 	__webpack_require__(148);
-	__webpack_require__(157);
+	__webpack_require__(158);
 	SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -18042,7 +18130,7 @@
 	};
 
 /***/ },
-/* 157 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
@@ -18182,7 +18270,7 @@
 	};
 
 /***/ },
-/* 158 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -18203,7 +18291,7 @@
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
 	__webpack_require__(148);
-	__webpack_require__(159);
+	__webpack_require__(160);
 	SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -18328,7 +18416,7 @@
 	};
 
 /***/ },
-/* 159 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
@@ -18466,7 +18554,7 @@
 	};
 
 /***/ },
-/* 160 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -18479,7 +18567,7 @@
 	 * 该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
 	 */
 	__webpack_require__(148);
-	__webpack_require__(161);
+	__webpack_require__(162);
 	SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -18579,7 +18667,7 @@
 	};
 
 /***/ },
-/* 161 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
@@ -18704,7 +18792,7 @@
 	};
 
 /***/ },
-/* 162 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -18725,11 +18813,11 @@
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
 	__webpack_require__(148);
-	__webpack_require__(163);
-	__webpack_require__(165);
-	__webpack_require__(167);
-	__webpack_require__(168);
 	__webpack_require__(164);
+	__webpack_require__(166);
+	__webpack_require__(168);
+	__webpack_require__(169);
+	__webpack_require__(165);
 	SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -18854,11 +18942,11 @@
 	};
 
 /***/ },
-/* 163 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
-	__webpack_require__(164);
+	__webpack_require__(165);
 
 	/**
 	 * Class: SuperMap.REST.InterpolationRBFAnalystParameter
@@ -19126,14 +19214,14 @@
 	};
 
 /***/ },
-/* 164 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
 
 	/**
 	 * Class: InterpolationAnalystParameters
-	 * 差值分析参数类
+	 * 插值分析参数类
 	 *
 	 */
 	InterpolationAnalystParameters = SuperMap.Class({
@@ -19306,12 +19394,12 @@
 	};
 
 /***/ },
-/* 165 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
-	__webpack_require__(164);
-	__webpack_require__(166);
+	__webpack_require__(165);
+	__webpack_require__(167);
 	/**
 	 * Class: InterpolationDensityAnalystParameters
 	 * 点密度差值分析参数类
@@ -19379,7 +19467,7 @@
 	};
 
 /***/ },
-/* 166 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
@@ -19466,12 +19554,12 @@
 	};
 
 /***/ },
-/* 167 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
-	__webpack_require__(164);
-	__webpack_require__(166);
+	__webpack_require__(165);
+	__webpack_require__(167);
 	/**
 	 * Class: SuperMap.REST.InterpolationIDWAnalystParameter
 	 * 反距离加权插值（IDW）分析参数类
@@ -19576,7 +19664,7 @@
 
 
 /***/ },
-/* 168 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19618,8 +19706,8 @@
 	 *  - <InterpolationAnalystParameters>
 	 */
 	__webpack_require__(4);
-	__webpack_require__(164);
-	__webpack_require__(166);
+	__webpack_require__(165);
+	__webpack_require__(167);
 
 	InterpolationKrigingAnalystParameters = SuperMap.Class(InterpolationAnalystParameters, {
 	    /**
@@ -19818,7 +19906,7 @@
 	};
 
 /***/ },
-/* 169 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -19833,7 +19921,7 @@
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
 	__webpack_require__(148);
-	__webpack_require__(170);
+	__webpack_require__(171);
 	SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -19918,7 +20006,7 @@
 	};
 
 /***/ },
-/* 170 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
@@ -20060,7 +20148,7 @@
 	};
 
 /***/ },
-/* 171 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -20077,8 +20165,8 @@
 	 *  - <SuperMap.CoreServiceBase>
 	 */
 	__webpack_require__(12);
-	__webpack_require__(172);
-	__webpack_require__(174);
+	__webpack_require__(173);
+	__webpack_require__(175);
 	SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -20179,12 +20267,12 @@
 	};
 
 /***/ },
-/* 172 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
 	__webpack_require__(152);
-	__webpack_require__(173);
+	__webpack_require__(174);
 
 	/**
 	 * Class: DatasetOverlayAnalystParameters
@@ -20352,7 +20440,7 @@
 	};
 
 /***/ },
-/* 173 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
@@ -20403,11 +20491,11 @@
 	};
 
 /***/ },
-/* 174 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
-	__webpack_require__(173);
+	__webpack_require__(174);
 	/**
 	 * Class: GeometryOverlayAnalystParameters
 	 * 几何对象叠加分析参数类
@@ -20490,7 +20578,7 @@
 	};
 
 /***/ },
-/* 175 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -20506,7 +20594,7 @@
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
 	__webpack_require__(148);
-	__webpack_require__(176);
+	__webpack_require__(177);
 	SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -20638,7 +20726,7 @@
 	};
 
 /***/ },
-/* 176 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
@@ -20735,7 +20823,7 @@
 	};
 
 /***/ },
-/* 177 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -20751,7 +20839,7 @@
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
 	__webpack_require__(148);
-	__webpack_require__(178);
+	__webpack_require__(179);
 	SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -20886,7 +20974,7 @@
 	};
 
 /***/ },
-/* 178 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
@@ -21028,7 +21116,7 @@
 	};
 
 /***/ },
-/* 179 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21045,8 +21133,8 @@
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
 	__webpack_require__(148);
-	__webpack_require__(180);
-	__webpack_require__(183);
+	__webpack_require__(181);
+	__webpack_require__(184);
 	SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -21155,12 +21243,12 @@
 	};
 
 /***/ },
-/* 180 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
 	__webpack_require__(152);
-	__webpack_require__(181);
+	__webpack_require__(182);
 
 	/**
 	 * Class: DatasetSurfaceAnalystParameters
@@ -21258,11 +21346,11 @@
 	};
 
 /***/ },
-/* 181 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
-	__webpack_require__(182);
+	__webpack_require__(183);
 	__webpack_require__(152);
 
 	/**
@@ -21346,7 +21434,7 @@
 	};
 
 /***/ },
-/* 182 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
@@ -21467,11 +21555,11 @@
 	};
 
 /***/ },
-/* 183 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
-	__webpack_require__(181);
+	__webpack_require__(182);
 	/**
 	 * Class: GeometrySurfaceAnalystParameters
 	 * 几何对象表面分析参数类。
@@ -21541,7 +21629,7 @@
 	};
 
 /***/ },
-/* 184 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21556,7 +21644,7 @@
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
 	__webpack_require__(148);
-	__webpack_require__(185);
+	__webpack_require__(186);
 	SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -21641,7 +21729,7 @@
 
 
 /***/ },
-/* 185 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
@@ -21747,7 +21835,7 @@
 	};
 
 /***/ },
-/* 186 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21767,8 +21855,8 @@
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
 	__webpack_require__(148);
-	__webpack_require__(187);
 	__webpack_require__(188);
+	__webpack_require__(189);
 	SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -21871,11 +21959,11 @@
 	};
 
 /***/ },
-/* 187 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
-	__webpack_require__(166);
+	__webpack_require__(167);
 
 	/**
 	 * Class: DatasetThiessenAnalystParameters
@@ -21956,11 +22044,11 @@
 	};
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
-	__webpack_require__(166);
+	__webpack_require__(167);
 	/**
 	 * Class: GeometryThiessenAnalystParameters
 	 * 几何对象泰森多边形分析参数类
@@ -22029,16 +22117,16 @@
 	};
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Class: TrafficTransferAnalystService
 	 * 交通换乘分析服务类
 	 */
-	__webpack_require__(190);
-	__webpack_require__(192);
-	__webpack_require__(195);
+	__webpack_require__(191);
+	__webpack_require__(193);
+	__webpack_require__(196);
 	__webpack_require__(10);
 
 	ol.supermap.TrafficTransferAnalystService = function (url, options) {
@@ -22115,7 +22203,7 @@
 	module.exports = ol.supermap.TrafficTransferAnalystService;
 
 /***/ },
-/* 190 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -22132,7 +22220,7 @@
 	 *  - <SuperMap.CoreServiceBase>
 	 */
 	__webpack_require__(12);
-	__webpack_require__(191);
+	__webpack_require__(192);
 	SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
 	    /**
@@ -22206,7 +22294,7 @@
 	};
 
 /***/ },
-/* 191 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
@@ -22260,7 +22348,7 @@
 	};
 
 /***/ },
-/* 192 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -22276,7 +22364,7 @@
 	 *  - <SuperMap.CoreServiceBase>
 	 */
 	__webpack_require__(12);
-	__webpack_require__(193);
+	__webpack_require__(194);
 	SuperMap.REST.TransferPathService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
 	    /**
@@ -22358,11 +22446,11 @@
 
 
 /***/ },
-/* 193 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
-	__webpack_require__(194);
+	__webpack_require__(195);
 
 	/**
 	 * Class: TransferPathParameters
@@ -22431,7 +22519,7 @@
 	};
 
 /***/ },
-/* 194 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
@@ -22561,7 +22649,7 @@
 	};
 
 /***/ },
-/* 195 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -22577,7 +22665,7 @@
 	 *  - <SuperMap.CoreServiceBase>
 	 */
 	__webpack_require__(12);
-	__webpack_require__(196);
+	__webpack_require__(197);
 	SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.CoreServiceBase, {
 
 	    /**
@@ -22667,7 +22755,7 @@
 
 
 /***/ },
-/* 196 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(4);
@@ -22807,6 +22895,170 @@
 	    return new TransferSolutionParameters(options);
 	};
 
+
+/***/ },
+/* 198 */
+/***/ function(module, exports) {
+
+	ol.Graphic = function (geometry) {
+	    ol.Object.call(this);
+	    if (geometry instanceof ol.geom.Geometry) {
+	        this.geometry_ = geometry;
+	    }
+	};
+	ol.inherits(ol.Graphic, ol.Object);
+
+	ol.Graphic.prototype.clone = function () {
+	    var clone = new ol.supermap.Graphic();
+	    clone.setId(this.id_);
+	    clone.setGeometry(this.geometry_);
+	    clone.setStyle(this.style_);
+	    return clone;
+	};
+
+	ol.Graphic.prototype.getId = function () {
+	    return this.id_;
+	};
+
+	ol.Graphic.prototype.setId = function (id) {
+	    this.id_ = id;
+	};
+
+	ol.Graphic.prototype.getGeometry = function () {
+	    return this.geometry_;
+	};
+
+	ol.Graphic.prototype.setGeometry = function (geometry) {
+	    this.geometry_ = geometry;
+	};
+
+	ol.Graphic.prototype.getStyle = function () {
+	    return this.style_;
+	};
+
+	ol.Graphic.prototype.setStyle = function (style) {
+	    this.style_ = style;
+	    this.styleFunction_ = !style ?
+	        undefined : ol.Graphic.createStyleFunction(style);
+	    this.changed();
+	};
+
+	ol.Graphic.prototype.getStyleFunction = function () {
+	    return this.styleFunction_;
+	};
+
+	ol.Graphic.createStyleFunction = function (obj) {
+	    var styleFunction;
+
+	    if (typeof obj === 'function') {
+	        if (obj.length == 2) {
+	            styleFunction = function (resolution) {
+	                return (obj)(this, resolution);
+	            };
+	        } else {
+	            styleFunction = obj;
+	        }
+	    } else {
+	        var styles;
+	        if (Array.isArray(obj)) {
+	            styles = obj;
+	        } else {
+	            ol.asserts.assert(obj instanceof ol.style.Style,
+	                41);
+	            styles = [obj];
+	        }
+	        styleFunction = function () {
+	            return styles;
+	        };
+	    }
+	    return styleFunction;
+	};
+
+	ol.Graphic.prototype.destroy = function () {
+	    this.id_ = null;
+	    this.geometry_ = null;
+	    this.style_ = null;
+	};
+
+	module.exports = ol.Graphic;
+
+/***/ },
+/* 199 */
+/***/ function(module, exports) {
+
+	ol.source.Graphic = function (options) {
+	    this.canvasContext_ = ol.dom.createCanvasContext2D();
+	    this.imageTransform = ol.transform.create();
+	    this.graphics_ = options.graphics;
+	    ol.source.ImageCanvas.call(this, {
+	        attributions: options.attributions,
+	        canvasFunction: this.canvasFunctionInternal_.bind(this),
+	        logo: options.logo,
+	        projection: options.projection,
+	        ratio: options.ratio,
+	        resolutions: options.resolutions,
+	        state: options.state
+	    });
+	};
+	ol.inherits(ol.source.Graphic, ol.source.ImageCanvas);
+
+	ol.source.Graphic.prototype.canvasFunctionInternal_ = function (extent, resolution, pixelRatio, size, projection) {
+	    var width = Math.round(ol.extent.getWidth(extent) / resolution);
+	    var height = Math.round(ol.extent.getHeight(extent) / resolution);
+	    this.canvasContext_.canvas.width = width;
+	    this.canvasContext_.canvas.height = height;
+	    this.imageTransform = this.getTransform_(ol.extent.getCenter(extent), resolution, pixelRatio, size);
+	    var vectorContext = new ol.render.canvas.Immediate(this.canvasContext_, pixelRatio, extent, this.imageTransform, 0);
+	    var graphics = this.getGraphicsInExtent(extent);
+	    graphics.map(function (graphic) {
+	        vectorContext.drawFeature(graphic, graphic.getStyle());
+	    });
+	    return this.canvasContext_.canvas;
+	};
+
+	ol.source.Graphic.prototype.forEachFeatureAtCoordinate = function (coordinate, resolution, rotation, hitTolerance, skippedFeatureUids, callback) {
+	    var graphics = this.getGraphicsInExtent();
+	    for (var i = 0; i < graphics.length; i++) {
+	        var center = graphics[i].getGeometry().flatCoordinates;
+	        var image = graphics[i].getStyle().getImage();
+	        var extent = [];
+	        extent[0] = center[0] - image.getAnchor()[0] * resolution;
+	        extent[2] = center[0] + image.getAnchor()[0] * resolution;
+	        extent[1] = center[1] - image.getAnchor()[1] * resolution;
+	        extent[3] = center[1] + image.getAnchor()[1] * resolution;
+	        if (ol.extent.containsCoordinate(extent, coordinate)) {
+	            return callback.call(this, graphics[i]);
+	        }
+	    }
+	};
+
+	ol.source.Graphic.prototype.getTransform_ = function (center, resolution, pixelRatio, size) {
+	    var dx1 = size[0] / 2;
+	    var dy1 = size[1] / 2;
+	    var sx = pixelRatio / resolution;
+	    var sy = -sx;
+	    var dx2 = -center[0];
+	    var dy2 = -center[1];
+	    return ol.transform.compose(this.imageTransform, dx1, dy1, sx, sy, 0, dx2, dy2);
+	};
+
+	ol.source.Graphic.prototype.getGraphicsInExtent = function (extent) {
+	    var graphics = [];
+	    if (!extent) {
+	        this.graphics_.map(function (graphic) {
+	            graphics.push(graphic);
+	        })
+	        return graphics;
+	    }
+	    this.graphics_.map(function (graphic) {
+	        if (ol.extent.containsExtent(extent, graphic.getGeometry().getExtent())) {
+	            graphics.push(graphic);
+	        }
+	    })
+	    return graphics;
+	};
+
+	module.exports = ol.source.Graphic;
 
 /***/ }
 /******/ ]);

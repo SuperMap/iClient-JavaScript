@@ -205,6 +205,19 @@ var exampleConfig = {
                     fileName: "07_AnimationFeature"
                 }]
             },
+            "graphiclayer": {
+                name: "高效率点图层",
+                content: [{
+                    name: "canvas渲染",
+                    thumbnail: "graphiclayer_canvas.png",
+                    fileName: "07_graphiclayer_canvas"
+                }, {
+                    name: "webgl渲染",
+                    thumbnail: "graphiclayer_webgl.png",
+                    fileName: "07_graphiclayer_webgl"
+                }
+                ]
+            },
             "D3": {
                 name: "D3-单值专题图",
                 content: [{
