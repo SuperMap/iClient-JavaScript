@@ -64,6 +64,7 @@ ol.inherits(ol.supermap.TileSuperMapRest, ol.source.TileImage);
 ol.supermap.TileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
     var options = {};
     options.url = url;
+    options.crossOrigin = 'anonymous';
     var extent = [mapJSONObj.bounds.left, mapJSONObj.bounds.bottom, mapJSONObj.bounds.right, mapJSONObj.bounds.top];
     var resolutions = getResolutions();
 
