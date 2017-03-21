@@ -47,84 +47,86 @@
 
     </style>
 </head>
-<body>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
 <div id="popup" class="ol-popup">
     <div id="popup-content"></div>
 </div>
 <div id="toolbar" style="height:44px; padding-top: 6px; text-align: right "></div>
-<div id="map" style="margin:0 auto;width: 100%;height: 60%;border: 1px solid #dddddd"></div>
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
 <script type="text/javascript" src="https://openlayers.org/en/v4.0.1/build/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 
 <script type="text/javascript">
-    var url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326";
-    var mapService = new ol.supermap.MapService(url);
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
-        var container = document.getElementById('popup');
-        var content = document.getElementById('popup-content');
-        var overlay = new ol.Overlay(({
-            element: container,
-            autoPan: true,
-            autoPanAnimation: {
-                duration: 250
-            }
-        }));
-        var map = new ol.Map({
-            target: 'map',
-            view: new ol.View({
-                center: [0, 0],
-                zoom: 2,
-                projection: 'EPSG:4326'
-            }),
-            overlays: [overlay],
-            renderer: ['canvas']
-        });
-        var layer = new ol.layer.Tile({
-            source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj))
-        });
-        map.addLayer(layer);
-
-        var fillColors = 'rgba(255,153,0, 1)';
-        var strokeColors = 'rgba(255,204,0,1)';
-        var radius = 7.5;
-        var symbolinfo = new ol.style.Circle({
-            radius: radius,
-            fill: new ol.style.Fill({
-                color: fillColors
-            }),
-            stroke: new ol.style.Stroke({
-                color: strokeColors
-            })
-        });
-        var count = 100000;
-        var graphics = new Array(count);
-        var e = 45;
-        for (var i = 0; i < count; ++i) {
-            var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
-            graphics[i] = new ol.Graphic(new ol.geom.Point(coordinates));
-            graphics[i].setStyle(new ol.style.Style({
-                image: symbolinfo
+    function init() {
+        var url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326";
+        var mapService = new ol.supermap.MapService(url);
+        mapService.on("complete", function (serviceResult) {
+            var mapJSONObj = serviceResult.element.result;
+            var container = document.getElementById('popup');
+            var content = document.getElementById('popup-content');
+            var overlay = new ol.Overlay(({
+                element: container,
+                autoPan: true,
+                autoPanAnimation: {
+                    duration: 250
+                }
             }));
-        }
-        var graphicLayer = new ol.layer.Image({
-            source: new ol.source.Graphic({
-                graphics: graphics,
-            }),
-        });
-        var select = new ol.interaction.Select();
-        map.addInteraction(select);
-        select.on('select', function (e) {
-            if (e.selected.length > 0) {
-                content.innerHTML = "id:" + e.selected[0].ol_uid;
-                overlay.setPosition(e.selected[0].getGeometry().flatCoordinates);
-            } else if (overlay) {
-                overlay.setPosition(undefined);
+            var map = new ol.Map({
+                target: 'map',
+                view: new ol.View({
+                    center: [0, 0],
+                    zoom: 2,
+                    projection: 'EPSG:4326'
+                }),
+                overlays: [overlay],
+                renderer: ['canvas']
+            });
+            var layer = new ol.layer.Tile({
+                source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj))
+            });
+            map.addLayer(layer);
+
+            var fillColors = 'rgba(255,153,0, 1)';
+            var strokeColors = 'rgba(255,204,0,1)';
+            var radius = 7.5;
+            var symbolinfo = new ol.style.Circle({
+                radius: radius,
+                fill: new ol.style.Fill({
+                    color: fillColors
+                }),
+                stroke: new ol.style.Stroke({
+                    color: strokeColors
+                })
+            });
+            var count = 100000;
+            var graphics = new Array(count);
+            var e = 45;
+            for (var i = 0; i < count; ++i) {
+                var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+                graphics[i] = new ol.Graphic(new ol.geom.Point(coordinates));
+                graphics[i].setStyle(new ol.style.Style({
+                    image: symbolinfo
+                }));
             }
+            var graphicLayer = new ol.layer.Image({
+                source: new ol.source.Graphic({
+                    graphics: graphics,
+                }),
+            });
+            var select = new ol.interaction.Select();
+            map.addInteraction(select);
+            select.on('select', function (e) {
+                if (e.selected.length > 0) {
+                    content.innerHTML = "id:" + e.selected[0].ol_uid;
+                    overlay.setPosition(e.selected[0].getGeometry().flatCoordinates);
+                } else if (overlay) {
+                    overlay.setPosition(undefined);
+                }
+            });
+            map.addLayer(graphicLayer);
         });
-        map.addLayer(graphicLayer);
-    });
-    mapService.getMapStatus();
+        mapService.getMapStatus();
+    }
 </script>
 </body>
 
