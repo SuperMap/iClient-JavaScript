@@ -247,6 +247,11 @@ var exampleConfig = {
                         fileName: "echartsLineMarker"
                     },
                     {
+                        name: "柱状图",
+                        thumbnail: "l_echartsBar.png",
+                        fileName: "echartsBar"
+                    },
+                    {
                         name: "散点图",
                         thumbnail: "l_echartsScatter.png",
                         fileName: "echartsScatter"

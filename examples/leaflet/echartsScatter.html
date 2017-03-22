@@ -14,8 +14,6 @@
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
 <script>
-
-
     var map,resultLayer, url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE_Gray";
     var url2 = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
     map = L.map('map', {
@@ -226,16 +224,16 @@
         visualMap: [
             {
                 left: 'right',
-                top: '10%',
+                top: '5%',
                 dimension: 2,
                 min: 0,
                 max: 250,
-                itemWidth: 30,
-                itemHeight: 120,
+                itemWidth: 20,
+                itemHeight: 80,
                 calculable: true,
                 precision: 0.1,
                 text: ['圆形大小：PM2.5'],
-                textGap: 30,
+                textGap: 20,
                 textStyle: {
                     color: '#fff'
                 },
@@ -261,11 +259,12 @@
                 dimension: 6,
                 min: 0,
                 max: 50,
-                itemHeight: 120,
+                itemHeight: 80,
+                itemWidth: 20,
                 calculable: true,
                 precision: 0.1,
                 text: ['明暗：二氧化硫'],
-                textGap: 30,
+                textGap: 20,
                 textStyle: {
                     color: '#fff'
                 },
@@ -296,8 +295,8 @@
     };
     var div = L.DomUtil.create('div');
     var chart = echarts.init(div,'',{
-        width:800,
-        height:500
+        width:450,
+        height:350
     });
     chart.setOption(option);
     var control = L.control({position: 'topright'});
