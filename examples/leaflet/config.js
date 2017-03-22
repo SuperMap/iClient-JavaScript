@@ -193,31 +193,72 @@ var exampleConfig = {
                     fileName: "12_heatMap"
                 }]
             },
-            "animate":{
-                name:"动画",
+            "animate": {
+                name: "动画",
                 content: [{
                     name: "闪烁点",
                     thumbnail: "l_pulse.png",
                     fileName: "12_pulse"
                 }]
             },
-            "cluster":{
-                name:"聚合",
+            "cluster": {
+                name: "聚合",
                 content: [{
                     name: "点聚合",
                     thumbnail: "l_markerCluster.png",
                     fileName: "12_markerCluster"
                 }]
             },
-            "D3Theme": {
-                name: "D3-单值专题图",
-                content: null
-            },
-            "ECharts-Bar": {
-                name: "ECharts-柱状图",
-                content: null
-            }
+            // "D3Theme": {
+            //     name: "D3-单值专题图",
+            //     content: null
+            // },
+            "ECharts": {
+                name: "ECharts",
+                content: [
+                    {
+                        name: "散点地图",
+                        thumbnail: "l_echartsEffectScatter.png",
+                        fileName: "echartsEffectScatter"
+                    },
+                    {
+                        name: "迁徙图",
+                        thumbnail: "l_echartsGeoLines.png",
+                        fileName: "echartsGeoLines"
+                    },
+                    {
+                        name: "热力图",
+                        thumbnail: "l_echartsHeatmap.png",
+                        fileName: "echartsHeatmap"
+                    },
+                    {
+                        name: "线路图",
+                        thumbnail: "l_echartsLinesBus.png",
+                        fileName: "echartsLinesBus"
+                    },
+                    {
+                        name: "线特效",
+                        thumbnail: "l_echartsLinesEffect.png",
+                        fileName: "echartsLinesEffect"
+                    },
+                    {
+                        name: "折线图",
+                        thumbnail: "l_echartsLineMarker.png",
+                        fileName: "echartsLineMarker"
+                    },
+                    {
+                        name: "散点图",
+                        thumbnail: "l_echartsScatter.png",
+                        fileName: "echartsScatter"
+                    },
+                    {
+                        name: "饼图",
+                        thumbnail: "l_echartsPie.png",
+                        fileName: "echartsPie"
+                    }
+                ]
 
+            }
         }
     },
     "OGC": {

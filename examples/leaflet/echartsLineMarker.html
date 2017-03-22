@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ECharts Line-Marker with Leaflet</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+</body>
+<script type="text/javascript"  src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript"  src="http://cdn.bootcss.com/echarts/3.4.0/echarts.min.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script>
+    var map, resultLayer, url = "http://support.supermap.com:8090/iserver/services/map-world/rest/maps/%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE_Gray";
+    var url2 = "http://support.supermap.com:8090/iserver/services/map-china400/rest/maps/China";
+    map = L.map('map', {
+        crs: L.CRS.EPSG4326,
+        center: [31.6, 105.2],
+        maxZoom: 18,
+        zoomControl:false,
+        zoom: 5
+    });
+    L.supermap.tiledMapLayer(url,{zoomControl:false}).addTo(map);
+    var option = {
+        title: {
+            subtext: '纯属虚构'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: ['最高气温', '最低气温']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                magicType: {type: ['line', 'bar']},
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} °C'
+            }
+        },
+        series: [
+            {
+                name: '最高气温',
+                type: 'line',
+                data: [11, 11, 15, 13, 12, 13, 10],
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'},
+                        [{
+                            symbol: 'none',
+                            x: '90%',
+                            yAxis: 'max'
+                        }, {
+                            symbol: 'circle',
+                            label: {
+                                normal: {
+                                    position: 'start',
+                                    formatter: '最大值'
+                                }
+                            },
+                            type: 'max',
+                            name: '最高点'
+                        }]
+                    ]
+                }
+            },
+            {
+                name: '最低气温',
+                type: 'line',
+                data: [1, -2, 2, 5, 3, 2, 0],
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                },
+                markLine: {
+                    data: [
+                        {type: 'average', name: '平均值'},
+                        [{
+                            symbol: 'none',
+                            x: '90%',
+                            yAxis: 'min'
+                        }, {
+                            symbol: 'circle',
+                            label: {
+                                normal: {
+                                    position: 'start',
+                                    formatter: '最小值'
+                                }
+                            },
+                            type: 'min',
+                            name: '最低点'
+                        }]
+                    ]
+                }
+            }
+        ]
+    };
+    var div = L.DomUtil.create('div');
+    var chart = echarts.init(div,'',{
+        width:600,
+        height:400
+    });
+    chart.setOption(option);
+    query();
+
+    function query() {
+        clearLayer();
+        var param = new QueryBySQLParameters({
+            queryParams: [{
+                name: "China_ProCenCity_pt@China",
+                attributeFilter: "1 = 1"
+            }, {
+                name: "China_Capital_pt@China",
+                attributeFilter: "1 = 1"
+            }]
+        });
+
+        L.supermap.queryService(url2).queryBySQL(param).on("complete", function (serviceResult) {
+            resultLayer = L.geoJSON(serviceResult.result, {
+                coordsToLatLng: function (coords) {
+                    var latlng = L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
+                    latlng.alt = coords[2];
+                    return latlng;
+                },
+            }).bindPopup(function (layer) {
+                var city = layer.feature.properties.NAME;
+                chart.setOption({
+                    title: {
+                        text: city + '未来一周气温变化',
+                    },
+                    series: [
+                        {
+                            name: '最高气温',
+                            data: [10+Math.ceil(Math.random()*10), 10+Math.ceil(Math.random()*10), 10+Math.ceil(Math.random()*10), 10+Math.ceil(Math.random()*10), 10+Math.ceil(Math.random()*10), 10+Math.ceil(Math.random()*10), 10+Math.ceil(Math.random()*10)],
+                        },
+                        {
+                            name: '最低气温',
+                            data: [8-Math.ceil(Math.random()*10), 8-Math.ceil(Math.random()*10), 8-Math.ceil(Math.random()*10), 8-Math.ceil(Math.random()*10), 8-Math.ceil(Math.random()*10), 8-Math.ceil(Math.random()*10), 8-Math.ceil(Math.random()*10)],
+
+                        }
+                    ]
+                });
+                return chart.getDom();
+            }, {maxWidth: 700}).addTo(map);
+        });
+    }
+    function clearLayer() {
+        if (resultLayer) {
+            resultLayer.removeFrom(map);
+        }
+    }
+</script>
+</html>

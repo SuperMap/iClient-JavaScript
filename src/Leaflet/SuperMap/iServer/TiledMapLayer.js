@@ -14,7 +14,9 @@ TiledMapLayer = L.TileLayer.extend({
         transparent: null,
         cacheEnabled: null,
         layersID: null, //如果有layersID，则是在使用专题图
-        crs: null
+        crs: null,
+        attribution:' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+
     },
 
     initialize: function (url, options) {
