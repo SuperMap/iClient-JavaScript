@@ -14,7 +14,8 @@
 
 .container.bc.clearfix{
     margin: 5px auto;
-    height: 42px
+    height: 42px;
+    width: 100%;
 }
 .navbar {
     font-size: 14px;

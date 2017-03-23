@@ -100,9 +100,10 @@ function run() {
 function loadPreview(content) {
     var iFrame = document.getElementById("innerPage").contentWindow;
     iFrame.document.open();
-    iFrame.addEventListener("load",mapHeight);
+    iFrame.addEventListener('load',mapHeight);
     iFrame.document.write(content);
     iFrame.document.close();
+    mapHeight();
 }
 
 /**设置显示源码的拖拽效果**/
@@ -151,6 +152,7 @@ function initSelect() {
 }
 
 function mapHeight() {
-    $("#innerPage").contents().find("body").height($("#innerPage").height());
+    $("#innerPage").contents().find("html").height("100%");
+    $("#innerPage").contents().find("body").height("100%");
 }
 
