@@ -190,9 +190,23 @@
 	    if (["FeatureCollection", "Feature", "Geometry"].indexOf(geometry.type) != -1) {
 	        result = format.read(geometry, geometry.type);
 	    } else if (typeof geometry.toGeoJSON === "function") {
-	        result = format.read(geometry.toGeoJSON(), "Feature");
+	        var geojson = geometry.toGeoJSON();
+	        result = (geojson) ? format.read(geojson, geojson.type) : geometry;
 	    }
-	    return result.geometry;
+
+	    var serverResult = result;
+	    if (L.Util.isArray(result)) {
+	        if (result.length === 1) {
+	            serverResult = result[0];
+	        } else if (result.length > 1) {
+	            serverResult = [];
+	            result.map(function (item) {
+	                serverResult.push(item.geometry);
+	            });
+	        }
+	    }
+
+	    return (serverResult && serverResult.geometry) ? serverResult.geometry : serverResult;
 
 	};
 
@@ -857,7 +871,10 @@
 	            var len = collection.components.length;
 	            var array = new Array(len);
 	            for (var i = 0; i < len; ++i) {
-	                array[i] = this.extract.geometry.apply(this, [{type: "Collection", components: collection.components[i]}]);
+	                array[i] = this.extract.geometry.apply(this, [{
+	                    type: "Collection",
+	                    components: collection.components[i]
+	                }]);
 	            }
 	            return array;
 	        }
@@ -938,10 +955,8 @@
 	            if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
 	                pointList.pop();
 	                pointList.push(pointList[0]);
-	                return {type: "LinearRing", components: pointList};
-	            } else {
-	                return {type: "LineString", components: pointList};
 	            }
+	            return {type: "LineString", components: pointList};
 	        } else {
 	            for (var i = 0, lineList = []; i < len; i++) {
 	                for (var j = 0, pointList = []; j < geoParts[i]; j++) {
@@ -13675,7 +13690,7 @@
 	        }
 
 	        if (params.event && params.event instanceof L.LatLng) {
-	            params.event = {x: point.lng, y: point.lat};
+	            params.event = {x: params.event.lng, y: params.event.lat};
 	        }
 
 	        if (params.facilities && L.Util.isArray(params.facilities)) {
@@ -17125,7 +17140,7 @@
 	     * @param resultFormat
 	     */
 	    bufferAnalysis: function (params, resultFormat) {
-	        var me = this, format = me._processFormat(resultFormat);
+	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
 	        var bufferAnalystService = new SuperMap.REST.BufferAnalystService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
@@ -17134,7 +17149,7 @@
 	            },
 	            format: format
 	        });
-	        bufferAnalystService.processAsync(params);
+	        bufferAnalystService.processAsync(param);
 	        return me;
 	    },
 
@@ -17372,9 +17387,22 @@
 	        }
 	        if (params.inputPoints) {
 	            for (var i = 0; i < params.inputPoints.length; i++) {
-	                params.inputPoints[i] = {x: arams.inputPoints[i].flatCoordinates[0], y: params.inputPoints[i].flatCoordinates[1]};
+	                var inputPoint = params.inputPoints[i];
+	                if (L.Util.isArray(inputPoint)) {
+	                    params.inputPoints[i] = {x: inputPoint[0], y: inputPoint[1]};
+	                }
 	            }
 	        }
+
+	        if (params.points) {
+	            for (var i = 0; i < params.points.length; i++) {
+	                var point = params.points[i];
+	                if (L.Util.isArray(point)) {
+	                    params.points[i] = {x: point[0], y: point[1]};
+	                }
+	            }
+	        }
+
 	        if (params.extractRegion) {
 	            params.extractRegion = L.Util.toSuperMapGeometry(params.extractRegion);
 	        }
@@ -17561,27 +17589,42 @@
 	    serviceProcessCompleted: function (result) {
 	        var me = this, analystResult;
 	        result = SuperMap.Util.transformResult(result);
-	        if (result && me.format === Format.GEOJSON) {
-	            var geoJSONFormat = new SuperMap.Format.GeoJSON();
-	            if (result.recordsets) {
-	                analystResult = [];
-	                for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
-	                    if (recordsets[i].features) {
-	                        var feature = JSON.parse(geoJSONFormat.write(recordsets[i].features));
-	                        analystResult.push(feature);
-	                    }
-	                }
-	            } else if (result.recordset && result.recordset.features) {
-	                analystResult = JSON.parse(geoJSONFormat.write(result.recordset.features));
-	            }
+	        if (result && me.format === Format.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+	            analystResult = me.toGeoJSONResult(result);
 	        }
 	        if (!analystResult) {
 	            analystResult = result;
 	        }
-
 	        me.events.triggerEvent("processCompleted", {result: analystResult, originalResult: result});
 	    },
 
+	    /**
+	     * Method: toGeoJSONResult
+	     * 将含有geometry的数据转换为geojson格式。
+	     *
+	     * Parameters:
+	     * result - {Object} 服务器返回的结果对象。
+	     */
+	    toGeoJSONResult: function (result) {
+	        if (!result) {
+	            return result;
+	        }
+	        var geoJSONResult;
+	        var geoJSONFormat = new SuperMap.Format.GeoJSON();
+	        if (result.recordsets) {
+	            geoJSONResult = [];
+	            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
+	                if (recordsets[i].features) {
+	                    var feature = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+	                    analystResult.push(feature);
+	                }
+	            }
+	        } else if (result.recordset && result.recordset.features) {
+	            geoJSONResult = JSON.parse(geoJSONFormat.write(result.recordset.features));
+	        }
+	        return geoJSONResult;
+	    },
+	    
 	    CLASS_NAME: "SuperMap.REST.SpatialAnalystBase"
 	});
 
@@ -17882,6 +17925,27 @@
 	            failure: me.serviceProcessFailed
 	        });
 	    },
+
+	    /**
+	     * Method: toGeoJSONResult
+	     * 将含有geometry的数据转换为geojson格式。
+	     *
+	     * Parameters:
+	     * result - {Object} 服务器返回的结果对象。
+	     */
+	    toGeoJSONResult: function (result) {
+	        if (!result) {
+	            return result;
+	        }
+
+	        var analystResult = SuperMap.REST.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
+	        if (!analystResult && result.resultGeometry) {
+	            var geoJSONFormat = new SuperMap.Format.GeoJSON();
+	            analystResult = JSON.parse(geoJSONFormat.write(result.resultGeometry));
+	        }
+	        return analystResult;
+	    },
+
 	    CLASS_NAME: "SuperMap.REST.BufferAnalystService"
 	});
 

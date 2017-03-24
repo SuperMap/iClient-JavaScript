@@ -916,7 +916,10 @@
 	            var len = collection.components.length;
 	            var array = new Array(len);
 	            for (var i = 0; i < len; ++i) {
-	                array[i] = this.extract.geometry.apply(this, [{type: "Collection", components: collection.components[i]}]);
+	                array[i] = this.extract.geometry.apply(this, [{
+	                    type: "Collection",
+	                    components: collection.components[i]
+	                }]);
 	            }
 	            return array;
 	        }
@@ -997,10 +1000,8 @@
 	            if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
 	                pointList.pop();
 	                pointList.push(pointList[0]);
-	                return {type: "LinearRing", components: pointList};
-	            } else {
-	                return {type: "LineString", components: pointList};
 	            }
+	            return {type: "LineString", components: pointList};
 	        } else {
 	            for (var i = 0, lineList = []; i < len; i++) {
 	                for (var j = 0, pointList = []; j < geoParts[i]; j++) {
@@ -13365,7 +13366,7 @@
 	    }
 
 	    if (params.event && params.event instanceof ol.geom.Point) {
-	        params.event = {x: point.flatCoordinates[0], y: params.flatCoordinates[1]};
+	        params.event = {x: params.event.flatCoordinates[0], y: params.event.flatCoordinates[1]};
 	    }
 
 	    if (params.facilities && ol.supermap.Util.isArray(params.facilities)) {
@@ -17016,6 +17017,11 @@
 	            params.inputPoints[i] = new SuperMap.Geometry.Point(params.inputPoints[i].flatCoordinates[0], params.inputPoints[i].flatCoordinates[1]);
 	        }
 	    }
+	    if (params.points) {
+	        for (var i = 0; i < params.points.length; i++) {
+	            params.points[i] = new SuperMap.Geometry.Point(params.points[i].flatCoordinates[0], params.points[i].flatCoordinates[1]);
+	        }
+	    }
 	    if (params.extractRegion) {
 	        params.extractRegion = this.convertGeometry(params.extractRegion);
 	    }
@@ -17028,13 +17034,13 @@
 	    if (params.sourceRoute && params.sourceRoute.points) {
 	        params.sourceRoute.points = this.convertGeometry(params.sourceRoute.points);
 	    }
-	    if (params.operateRegions && ol.supermap.isArray(params.operateRegions)) {
+	    if (params.operateRegions && ol.supermap.Util.isArray(params.operateRegions)) {
 	        var me = this;
 	        params.operateRegions.map(function (geometry, key) {
 	            params.operateRegions[key] = me.convertGeometry(geometry);
 	        });
 	    }
-	    if (params.sourceRoute && params.sourceRoute.components && ol.supermap.isArray(params.sourceRoute.components)) {
+	    if (params.sourceRoute && params.sourceRoute.components && ol.supermap.Util.isArray(params.sourceRoute.components)) {
 	        var me = this;
 	        params.sourceRoute.components.map(function (geometry, key) {
 	            params.sourceRoute.components[key] = me.convertGeometry(geometry);
@@ -17203,27 +17209,42 @@
 	    serviceProcessCompleted: function (result) {
 	        var me = this, analystResult;
 	        result = SuperMap.Util.transformResult(result);
-	        if (result && me.format === Format.GEOJSON) {
-	            var geoJSONFormat = new SuperMap.Format.GeoJSON();
-	            if (result.recordsets) {
-	                analystResult = [];
-	                for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
-	                    if (recordsets[i].features) {
-	                        var feature = JSON.parse(geoJSONFormat.write(recordsets[i].features));
-	                        analystResult.push(feature);
-	                    }
-	                }
-	            } else if (result.recordset && result.recordset.features) {
-	                analystResult = JSON.parse(geoJSONFormat.write(result.recordset.features));
-	            }
+	        if (result && me.format === Format.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+	            analystResult = me.toGeoJSONResult(result);
 	        }
 	        if (!analystResult) {
 	            analystResult = result;
 	        }
-
 	        me.events.triggerEvent("processCompleted", {result: analystResult, originalResult: result});
 	    },
 
+	    /**
+	     * Method: toGeoJSONResult
+	     * 将含有geometry的数据转换为geojson格式。
+	     *
+	     * Parameters:
+	     * result - {Object} 服务器返回的结果对象。
+	     */
+	    toGeoJSONResult: function (result) {
+	        if (!result) {
+	            return result;
+	        }
+	        var geoJSONResult;
+	        var geoJSONFormat = new SuperMap.Format.GeoJSON();
+	        if (result.recordsets) {
+	            geoJSONResult = [];
+	            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
+	                if (recordsets[i].features) {
+	                    var feature = JSON.parse(geoJSONFormat.write(recordsets[i].features));
+	                    analystResult.push(feature);
+	                }
+	            }
+	        } else if (result.recordset && result.recordset.features) {
+	            geoJSONResult = JSON.parse(geoJSONFormat.write(result.recordset.features));
+	        }
+	        return geoJSONResult;
+	    },
+	    
 	    CLASS_NAME: "SuperMap.REST.SpatialAnalystBase"
 	});
 
@@ -17524,6 +17545,27 @@
 	            failure: me.serviceProcessFailed
 	        });
 	    },
+
+	    /**
+	     * Method: toGeoJSONResult
+	     * 将含有geometry的数据转换为geojson格式。
+	     *
+	     * Parameters:
+	     * result - {Object} 服务器返回的结果对象。
+	     */
+	    toGeoJSONResult: function (result) {
+	        if (!result) {
+	            return result;
+	        }
+
+	        var analystResult = SuperMap.REST.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
+	        if (!analystResult && result.resultGeometry) {
+	            var geoJSONFormat = new SuperMap.Format.GeoJSON();
+	            analystResult = JSON.parse(geoJSONFormat.write(result.resultGeometry));
+	        }
+	        return analystResult;
+	    },
+
 	    CLASS_NAME: "SuperMap.REST.BufferAnalystService"
 	});
 
