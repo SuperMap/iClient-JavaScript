@@ -140,6 +140,12 @@ var deps = {
         "Visual": {
             "title": "Visual",
             "description": "--可视化",
+            "EChartMapLayer":{
+                "name": "ECharts地图图层",
+                "src": [
+                    "./src/Leaflet/Visual/EChartMapLayer.js"
+                ]
+            }
             // "AnimatorVector": {
             //     "name": "时空数据图层",
             //     "src": [

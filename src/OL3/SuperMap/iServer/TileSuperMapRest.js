@@ -4,6 +4,12 @@ ol.supermap.TileSuperMapRest = function (options) {
     if (options.url === undefined) {
         return;
     }
+    if (!options.attributions) {
+        options.attributions =[
+            new ol.Attribution({
+                html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+            })]
+    }
     var layerUrl = options.url + "/image.png?redirect=false";
     //为url添加安全认证信息片段
     if (SuperMap.Credential && SuperMap.Credential.CREDENTIAL) {

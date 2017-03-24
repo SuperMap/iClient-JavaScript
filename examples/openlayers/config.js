@@ -218,19 +218,38 @@ var exampleConfig = {
                 }
                 ]
             },
-            "D3": {
-                name: "D3-单值专题图",
-                content: [{
-                    name: "D3-单值专题图",
-                    content: null
-                }]
-            },
+            // "D3": {
+            //     name: "D3-单值专题图",
+            //     content: [{
+            //         name: "D3-单值专题图",
+            //         content: null
+            //     }]
+            // },
             "ECharts": {
-                name: "ECharts-柱状图",
-                content: [{
-                    name: "ECharts-柱状图",
-                    content: null
-                }]
+                name: "ECharts",
+                content: [
+                    {
+                        name: "折线图",
+                        thumbnail: "ol_echartsLineMarker.png",
+                        fileName: "echartsLineMarker"
+                    },
+                    {
+                        name: "柱状图",
+                        thumbnail: "ol_echartsBar.png",
+                        fileName: "echartsBar"
+                    },
+                    {
+                        name: "散点图",
+                        thumbnail: "ol_echartsScatter.png",
+                        fileName: "echartsScatter"
+                    },
+                    {
+                        name: "饼图",
+                        thumbnail: "ol_echartsPie.png",
+                        fileName: "echartsPie"
+                    }
+                ]
+
             }
         }
     },

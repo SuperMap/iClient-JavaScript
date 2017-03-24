@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ECharts Pie with OpenLayers</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" class='map' style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<div id="popup"></div>
+</body>
+<script type="text/javascript" src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/echarts/3.4.0/echarts.min.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var resultLayer;
+    var map = new ol.Map({
+        target: 'map',
+        view: new ol.View({
+            center: [105.2, 31.6],
+            zoom: 5,
+            projection: 'EPSG:4326'
+        }),
+        layers: [new ol.layer.Tile({
+            source: new ol.supermap.TileSuperMapRest({
+                url: "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/%E4%B8%96%E7%95%8C%E5%9C%B0%E5%9B%BE_Gray",
+            }),
+            projection: 'EPSG:4326'
+        })]
+    });
+    var popup = new ol.Overlay({
+        element: document.getElementById('popup'),
+        offset: [5, 5]
+    });
+    map.addOverlay(popup);
+    var categoryDataMap={"北京市":[
+        {value:335, name:'类目A'},
+        {value:679, name:'类目B'},
+        {value:1299, name:'类目C'}
+    ],
+        "广州市":[
+            {value:117, name:'类目A'},
+            {value:1267, name:'类目B'},
+            {value:1048, name:'类目C'}
+        ],"上海市":[
+            {value:475, name:'类目A'},
+            {value:1450, name:'类目B'},
+            {value:875, name:'类目C'}
+        ]}
+    var dataMap={"北京市":[
+        {value:335, name:'商品A'},
+        {value:310, name:'商品B'},
+        {value:234, name:'商品C'},
+        {value:135, name:'商品D'},
+        {value:1048, name:'商品E'},
+        {value:251, name:'商品F'}
+    ],
+        "广州市":[
+            {value:117, name:'商品A'},
+            {value:284, name:'商品B'},
+            {value:768, name:'商品C'},
+            {value:215, name:'商品D'},
+            {value:901, name:'商品E'},
+            {value:148, name:'商品F'}
+        ],"上海市":[
+            {value:475, name:'商品A'},
+            {value:29, name:'商品B'},
+            {value:430, name:'商品C'},
+            {value:981, name:'商品D'},
+            {value:732, name:'商品E'},
+            {value:143, name:'商品F'}
+        ]}
+    var option = {
+        title: {
+            text: '北京市商品销量',
+            subtext: '纯属虚构',
+            textStyle: {
+                color: '#fff',
+                fontSize: 16
+            }
+        },
+        backgroundColor: '#404a59',
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            x: 'right',
+            y: 'bottom',
+            textStyle: {
+                color: '#fff',
+                fontSize: 12
+            },
+            data:['商品A','商品B','商品C','商品D','商品E','商品F']
+        },
+        series: [
+            {
+                name:'商品类目',
+                type:'pie',
+                selectedMode: 'single',
+                radius: [0, '30%'],
+
+                label: {
+                    normal: {
+                        position: 'inner'
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        show: false
+                    }
+                },
+                data:categoryDataMap['北京市']
+            },
+            {
+                name:'商品',
+                type:'pie',
+                radius: ['40%', '55%'],
+                data:dataMap['北京市']
+            }
+        ]
+    };
+    var chart = echarts.init(document.createElement('div'), '', {
+        width: 500,
+        height: 300
+    });
+    chart.setOption(option);
+    query();
+    function query() {
+        clearLayer();
+        var queryService = new ol.supermap.QueryService("http://support.supermap.com:8090/iserver/services/map-china400/rest/maps/China");
+        var param = new QueryBySQLParameters({
+            queryParams: [{
+                name: "China_ProCenCity_pt@China",
+                attributeFilter: "NAME = '广州市' or NAME = '上海市'"
+            }, {
+                name: "China_Capital_pt@China",
+                attributeFilter: "NAME = '北京市'"
+            }]
+        });
+        queryService.queryBySQL(param);
+        queryService.on("complete", function (serviceResult) {
+            var features = [];
+            for (var i = 0; i < serviceResult.element.result.length; i++) {
+                var temp = (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result[i], {
+                    dataProjection: 'EPSG:3857',
+                    featureProjection: 'EPSG:4326'
+                });
+                features = features.concat(temp);
+            }
+            resultLayer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    wrapX: false,
+                    features: features
+                })
+            });
+            map.addLayer(resultLayer);
+            var select = new ol.interaction.Select();
+            map.addInteraction(select);
+            select.on('select', function (e) {
+                if (this.getFeatures().getLength() > 0) {
+                    var city = this.getFeatures().item(0).getProperties().NAME;
+                    var data1 = [];
+                    var data2 = [];
+                    for (var i = 0; i < 7; i++) {
+                        var data = Math.random().toFixed(2);
+                        data1.push(data);
+                        data2.push(data * (Math.random() + 1.5));
+
+                    }
+                    chart.setOption({
+                        title: {
+                            text: city + '商品销量',
+                        },
+                        series: [
+                            {
+                                name:'商品类目',
+                                data: categoryDataMap[city]
+                            },
+                            {
+                                name:'商品',
+                                data: dataMap[city]
+                            }
+                        ]
+                    });
+                    popup.setElement(chart.getDom());
+                    var coordinate = e.mapBrowserEvent.coordinate;
+                    popup.setPosition(coordinate);
+                } else {
+                    popup.setPosition(undefined);
+                }
+                map.getView().setCenter(e.mapBrowserEvent.coordinate);
+            });
+        });
+    }
+    function clearLayer() {
+        if (resultLayer) {
+            map.removeLayer(resultLayer);
+        }
+    }
+</script>
+</html>
