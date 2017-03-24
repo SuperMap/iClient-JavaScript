@@ -655,7 +655,10 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
             var len = collection.components.length;
             var array = new Array(len);
             for (var i = 0; i < len; ++i) {
-                array[i] = this.extract.geometry.apply(this, [{type: "Collection", components: collection.components[i]}]);
+                array[i] = this.extract.geometry.apply(this, [{
+                    type: "Collection",
+                    components: collection.components[i]
+                }]);
             }
             return array;
         }
@@ -736,10 +739,8 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
             if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
                 pointList.pop();
                 pointList.push(pointList[0]);
-                return {type: "LinearRing", components: pointList};
-            } else {
-                return {type: "LineString", components: pointList};
             }
+            return {type: "LineString", components: pointList};
         } else {
             for (var i = 0, lineList = []; i < len; i++) {
                 for (var j = 0, pointList = []; j < geoParts[i]; j++) {

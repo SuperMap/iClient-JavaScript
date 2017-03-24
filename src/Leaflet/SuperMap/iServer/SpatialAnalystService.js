@@ -66,7 +66,7 @@ SpatialAnalystService = ServiceBase.extend({
      * @param resultFormat
      */
     bufferAnalysis: function (params, resultFormat) {
-        var me = this, format = me._processFormat(resultFormat);
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var bufferAnalystService = new SuperMap.REST.BufferAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -75,7 +75,7 @@ SpatialAnalystService = ServiceBase.extend({
             },
             format: format
         });
-        bufferAnalystService.processAsync(params);
+        bufferAnalystService.processAsync(param);
         return me;
     },
 
@@ -313,9 +313,22 @@ SpatialAnalystService = ServiceBase.extend({
         }
         if (params.inputPoints) {
             for (var i = 0; i < params.inputPoints.length; i++) {
-                params.inputPoints[i] = {x: arams.inputPoints[i].flatCoordinates[0], y: params.inputPoints[i].flatCoordinates[1]};
+                var inputPoint = params.inputPoints[i];
+                if (L.Util.isArray(inputPoint)) {
+                    params.inputPoints[i] = {x: inputPoint[0], y: inputPoint[1]};
+                }
             }
         }
+
+        if (params.points) {
+            for (var i = 0; i < params.points.length; i++) {
+                var point = params.points[i];
+                if (L.Util.isArray(point)) {
+                    params.points[i] = {x: point[0], y: point[1]};
+                }
+            }
+        }
+
         if (params.extractRegion) {
             params.extractRegion = L.Util.toSuperMapGeometry(params.extractRegion);
         }

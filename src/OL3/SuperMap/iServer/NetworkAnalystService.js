@@ -241,7 +241,7 @@ ol.supermap.NetworkAnalystService.prototype._processParams = function (params) {
     }
 
     if (params.event && params.event instanceof ol.geom.Point) {
-        params.event = {x: point.flatCoordinates[0], y: params.flatCoordinates[1]};
+        params.event = {x: params.event.flatCoordinates[0], y: params.event.flatCoordinates[1]};
     }
 
     if (params.facilities && ol.supermap.Util.isArray(params.facilities)) {

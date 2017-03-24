@@ -288,6 +288,11 @@ ol.supermap.SpatialAnalystService.prototype._processParams = function (params) {
             params.inputPoints[i] = new SuperMap.Geometry.Point(params.inputPoints[i].flatCoordinates[0], params.inputPoints[i].flatCoordinates[1]);
         }
     }
+    if (params.points) {
+        for (var i = 0; i < params.points.length; i++) {
+            params.points[i] = new SuperMap.Geometry.Point(params.points[i].flatCoordinates[0], params.points[i].flatCoordinates[1]);
+        }
+    }
     if (params.extractRegion) {
         params.extractRegion = this.convertGeometry(params.extractRegion);
     }
@@ -300,13 +305,13 @@ ol.supermap.SpatialAnalystService.prototype._processParams = function (params) {
     if (params.sourceRoute && params.sourceRoute.points) {
         params.sourceRoute.points = this.convertGeometry(params.sourceRoute.points);
     }
-    if (params.operateRegions && ol.supermap.isArray(params.operateRegions)) {
+    if (params.operateRegions && ol.supermap.Util.isArray(params.operateRegions)) {
         var me = this;
         params.operateRegions.map(function (geometry, key) {
             params.operateRegions[key] = me.convertGeometry(geometry);
         });
     }
-    if (params.sourceRoute && params.sourceRoute.components && ol.supermap.isArray(params.sourceRoute.components)) {
+    if (params.sourceRoute && params.sourceRoute.components && ol.supermap.Util.isArray(params.sourceRoute.components)) {
         var me = this;
         params.sourceRoute.components.map(function (geometry, key) {
             params.sourceRoute.components[key] = me.convertGeometry(geometry);

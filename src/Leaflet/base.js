@@ -28,8 +28,22 @@ L.Util.toSuperMapGeometry = function (geometry) {
     if (["FeatureCollection", "Feature", "Geometry"].indexOf(geometry.type) != -1) {
         result = format.read(geometry, geometry.type);
     } else if (typeof geometry.toGeoJSON === "function") {
-        result = format.read(geometry.toGeoJSON(), "Feature");
+        var geojson = geometry.toGeoJSON();
+        result = (geojson) ? format.read(geojson, geojson.type) : geometry;
     }
-    return result.geometry;
+
+    var serverResult = result;
+    if (L.Util.isArray(result)) {
+        if (result.length === 1) {
+            serverResult = result[0];
+        } else if (result.length > 1) {
+            serverResult = [];
+            result.map(function (item) {
+                serverResult.push(item.geometry);
+            });
+        }
+    }
+
+    return (serverResult && serverResult.geometry) ? serverResult.geometry : serverResult;
 
 };

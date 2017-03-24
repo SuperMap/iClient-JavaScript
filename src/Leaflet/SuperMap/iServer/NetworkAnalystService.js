@@ -245,7 +245,7 @@ NetworkAnalystService = ServiceBase.extend({
         }
 
         if (params.event && params.event instanceof L.LatLng) {
-            params.event = {x: point.lng, y: point.lat};
+            params.event = {x: params.event.lng, y: params.event.lat};
         }
 
         if (params.facilities && L.Util.isArray(params.facilities)) {
