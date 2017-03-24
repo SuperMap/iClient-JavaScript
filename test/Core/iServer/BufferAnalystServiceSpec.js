@@ -4,7 +4,7 @@ var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
 var url = GlobeParameter.spatialAnalystURL;
 var options = {
-    eventListeners:{"processCompleted": analyzeCompleted,'processFailed': analyzeFailed}
+    eventListeners: {"processCompleted": analyzeCompleted, 'processFailed': analyzeFailed}
 };
 function initBufferAnalystService() {
     return new SuperMap.REST.BufferAnalystService(url, options);
@@ -17,20 +17,20 @@ function analyzeCompleted(analyseEventArgs) {
 }
 
 
-describe('testBufferAnalystService_processAsync', function(){
+describe('testBufferAnalystService_processAsync', function () {
     var originalTimeout;
-    beforeEach(function() {
+    beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
         serviceFailedEventArgsSystem = null;
         analystEventArgsSystem = null;
     });
-    afterEach(function() {
+    afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     //测试成功事件
-    it('SuccessEvent:byDatasets_NotReturnContent',function(done){
+    it('SuccessEvent:byDatasets_NotReturnContent', function (done) {
         var bfServiceByDatasets = initBufferAnalystService();
         var resultSetting = new DataReturnOption({
             expectCount: 1000,
@@ -47,7 +47,7 @@ describe('testBufferAnalystService_processAsync', function(){
         dsBufferAnalystParameters.resultSetting = resultSetting;
         bfServiceByDatasets.processAsync(dsBufferAnalystParameters);
 
-        setTimeout(function(){
+        setTimeout(function () {
             try {
                 expect(bfServiceByDatasets.mode).toEqual("datasets");
                 expect(analystEventArgsSystem).not.toBeNull();
@@ -64,10 +64,10 @@ describe('testBufferAnalystService_processAsync', function(){
                 dsBufferAnalystParameters.destroy();
                 done();
             }
-        },6000)
+        }, 6000)
     });
 
-    it('byGeometry_NotReturnContent',function(done){
+    it('byGeometry_NotReturnContent', function (done) {
 
         var bfServiceByGeometry = initBufferAnalystService();
         expect(bfServiceByGeometry).not.toBeNull();
@@ -93,8 +93,8 @@ describe('testBufferAnalystService_processAsync', function(){
         setTimeout(function () {
             try {
                 var bfMode = analystEventArgsSystem.result;
-                expect(bfMode.resultGeometry).not.toBeNull();
-                expect(bfMode.resultGeometry.type).toEqual("REGION");
+                expect(bfMode).not.toBeNull();
+                expect(bfMode.type).toEqual("MultiPolygon");
                 bfServiceByGeometry.destroy();
                 expect(bfServiceByGeometry.events).toBeNull();
                 expect(bfServiceByGeometry.eventListeners).toBeNull();
@@ -105,14 +105,14 @@ describe('testBufferAnalystService_processAsync', function(){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 bfServiceByGeometry.destroy();
-                dsBufferAnalystParameters.destroy();
+                geometryBufferAnalystParameters.destroy();
                 done();
             }
         }, 6000)
     });
 
     //测试失败事件
-    it('byGeometry_NotReturnContent',function(done){
+    it('byGeometry_NotReturnContent', function (done) {
         var bfServiceByGeometry = initBufferAnalystService();
         expect(bfServiceByGeometry).not.toBeNull();
         expect(bfServiceByGeometry.url).toEqual(url);
