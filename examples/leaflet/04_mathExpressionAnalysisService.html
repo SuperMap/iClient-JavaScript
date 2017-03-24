@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析服务-栅格代数运算</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, mathExpressionAnalysisService, mathExpressionAnalysisParameters, mathExpressionAnalysisResult,
+            themeService, themeGridRange, themeParameters, themeLayer,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+
+    init();
+
+    function init() {
+        map = L.map('map', {
+            crs: L.supermap.NonEarthCRS({
+                bounds: L.bounds([114.59, 37.76], [119.51, 42.31]),
+                origin: L.point(114.59, 42.31)
+            }),
+            center: [39.79, 116.85],
+            maxZoom: 18,
+            zoom: 1
+        });
+        L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+        mathExpressionAnalysisProcess();
+    }
+
+    function mathExpressionAnalysisProcess() {
+        //创建栅格代数运算服务实例
+        mathExpressionAnalysisService = L.supermap.spatialAnalystService(serviceUrl);
+        //创建栅格代数运算参数实例
+        mathExpressionAnalysisParameters = new MathExpressionAnalysisParameters({
+            //指定数据集,必设
+            dataset: "JingjinTerrain@Jingjin",
+            //要执行的栅格运算代数表达式,必设
+            expression: "[Jingjin.JingjinTerrain] + 600",
+            //存储结果数据集的数据源,必设
+            targetDatasource: "Jingjin",
+            //结果数据集名称,必设
+            resultGridName: "MathExpressionAnalysis_Result",
+            deleteExistResultDataset: true,
+            /*//指定数据集中参与栅格代数运算的区域
+            extractRegion: L.polygon([
+                [38, 116],
+                [38, 117],
+                [42, 117],
+                [42, 116]
+            ])*/
+        });
+        //向iServer发起栅格代数运算请求
+        mathExpressionAnalysisService.mathExpressionAnalysis(mathExpressionAnalysisParameters)
+                .on('complete', function (serviceResult) {
+                    mathExpressionAnalysisResult = serviceResult.result;
+                    //用栅格专题图展示分析结果
+                    showAnalysisResult_ThemeGridRange();
+                });
+
+        //构造栅格专题图
+        function showAnalysisResult_ThemeGridRange() {
+            themeService = L.supermap.themeService(baseUrl);
+            var themeGridRangeIteme1 = new ThemeGridRangeItem({
+                        start: 0,
+                        end: 650,
+                        color: new ServerColor(40, 140, 40)
+                    }),
+                    themeGridRangeIteme2 = new ThemeGridRangeItem({
+                        start: 650,
+                        end: 750,
+                        color: new ServerColor(170, 198, 40)
+                    }),
+                    themeGridRangeIteme3 = new ThemeGridRangeItem({
+                        start: 750,
+                        end: 900,
+                        color: new ServerColor(191, 191, 0)
+                    }),
+                    themeGridRangeIteme4 = new ThemeGridRangeItem({
+                        start: 900,
+                        end: 1350,
+                        color: new ServerColor(191, 95, 0)
+                    }),
+                    themeGridRangeIteme5 = new ThemeGridRangeItem({
+                        start: 1350,
+                        end: 3600,
+                        color: new ServerColor(127, 0, 0)
+                    });
+
+            themeGridRange = new ThemeGridRange({
+                reverseColor: false,
+                rangeMode: RangeMode.EQUALINTERVAL,
+                //栅格分段专题图子项数组
+                items: [themeGridRangeIteme1,
+                    themeGridRangeIteme2,
+                    themeGridRangeIteme3,
+                    themeGridRangeIteme4,
+                    themeGridRangeIteme5
+                ]
+            });
+
+            themeParameters = new ThemeParameters({
+                //制作专题图的数据集
+                datasetNames: [mathExpressionAnalysisResult.dataset.split('@')[0]],
+                dataSourceNames: ["Jingjin"],
+                joinItems: null,
+                themes: [themeGridRange]
+            });
+
+            themeService.getThemeStatus(themeParameters)
+                    .on('complete', function (serviceResult1) {
+                        var result = serviceResult1.result;
+                        if (result && result.newResourceID) {
+                            themeLayer = L.supermap.tiledMapLayer(baseUrl, {
+                                noWrap: true,
+                                cacheEnabled: false,
+                                transparent: true,
+                                layersID: result.newResourceID,
+                                opacity:0.8
+                            }).addTo(map);
+                        }
+                    }).on('failed', function (error) {
+                alert(error.errorMsg);
+            });
+        }
+    }
+</script>
+</body>
+</html>

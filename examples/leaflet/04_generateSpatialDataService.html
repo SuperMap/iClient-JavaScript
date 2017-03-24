@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析服务-动态分段</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, generateSpatialDataService, generateSpatialDataParameters, resultLayer,
+            themeService, themeParameters, themeLayer,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+
+    init();
+
+    function init() {
+        map = L.map('map', {
+            crs: L.supermap.NonEarthCRS({
+                bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+                origin: L.point(48.4, -55.58)
+            }),
+            center: [-3861.91, 4503.62],
+            maxZoom: 18,
+            zoom: 1
+        });
+        L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+        generateSpatialDataAnalystProcess();
+    }
+
+    function generateSpatialDataAnalystProcess() {
+        generateSpatialDataService = L.supermap.spatialAnalystService(serviceUrl);
+        //配置动态分段Parameters
+        generateSpatialDataParameters = new GenerateSpatialDataParameters({
+            routeTable: "RouteDT_road@Changchun",
+            routeIDField: "RouteID",
+            eventTable: "LinearEventTabDT@Changchun",
+            eventRouteIDField: "RouteID",
+            measureField: "",
+            measureStartField: "LineMeasureFrom",
+            measureEndField: "LineMeasureTo",
+            measureOffsetField: "",
+            errorInfoField: "",
+            dataReturnOption: new DataReturnOption({
+                expectCount: 1000,
+                dataset: "generateSpatialData@Changchun",
+                deleteExistResultDataset: true,
+                dataReturnMode: DataReturnMode.DATASET_ONLY
+            })
+        });
+        generateSpatialDataService.generateSpatialData(generateSpatialDataParameters)
+                .on('complete', function (serviceResult) {
+                    var a = serviceResult.result;
+                    //用专题图展示分析结果
+                    showAnalysisResult_ThemeGridUnique();
+                });
+        //构造专题图
+        function showAnalysisResult_ThemeGridUnique() {
+            //创建专题图服务实例
+            themeService = L.supermap.themeService(baseUrl);
+            //配置专题样式
+            var style1, style2, style3;
+            style1 = new ServerStyle({
+                fillForeColor: new ServerColor(242, 48, 48),
+                lineColor: new ServerColor(242, 48, 48),
+                lineWidth: 1
+            });
+            style2 = new ServerStyle({
+                fillForeColor: new ServerColor(255, 159, 25),
+                lineColor: new ServerColor(255, 159, 25),
+                lineWidth: 1
+            });
+            style3 = new ServerStyle({
+                fillForeColor: new ServerColor(91, 195, 69),
+                lineColor: new ServerColor(91, 195, 69),
+                lineWidth: 1
+            });
+            //配置专题项
+            var themeUniqueIteme1, themeUniqueIteme2, themeUniqueIteme3;
+            themeUniqueIteme1 = new ThemeUniqueItem({
+                unique: "拥挤",
+                style: style1
+            });
+            themeUniqueIteme2 = new ThemeUniqueItem({
+                unique: "缓行",
+                style: style2
+            });
+            themeUniqueIteme3 = new ThemeUniqueItem({
+                unique: "畅通",
+                style: style3
+            });
+            var themeUnique = new ThemeUnique({
+                uniqueExpression: "TrafficStatus",
+                defaultStyle: new ServerStyle({
+                    fillForeColor: new ServerColor(48, 89, 14),
+                    lineColor: new ServerColor(48, 89, 14)
+                }),
+                items: [themeUniqueIteme1, themeUniqueIteme2, themeUniqueIteme3]
+            });
+            themeParameters = new ThemeParameters({
+                themes: [themeUnique],
+                datasetNames: ["generateSpatialData"],
+                dataSourceNames: ["Changchun"]
+            });
+            themeService.getThemeStatus(themeParameters)
+                    .on('complete', function (serviceResult1) {
+                        var result = serviceResult1.result;
+                        if (result && result.newResourceID) {
+                            themeLayer = L.supermap.tiledMapLayer(baseUrl, {
+                                noWrap: true,
+                                cacheEnabled: false,
+                                transparent: true,
+                                layersID: result.newResourceID
+                                //opacity: 0.8
+                            }).addTo(map);
+                        }
+                    }).on('failed', function (error) {
+                alert(error.errorMsg);
+            });
+
+        }
+    }
+</script>
+</body>
+</html>

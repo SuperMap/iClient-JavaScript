@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析服务-叠加分析</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:560px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var map, options, overlayAnalystService, datasetOverlayAnalystParameters,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+
+    init();
+
+    function init() {
+
+        var mapService = new ol.supermap.MapService(baseUrl);
+        var extent = [114.59, 37.76, 119.51, 42.31];
+        var projection = new ol.proj.Projection({
+            extent: extent,
+            units: 'm'
+        });
+        mapService.on("complete", function (serviceResult) {
+            var mapJSONObj = serviceResult.element.result;
+            map = new ol.Map({
+                target: 'map',
+                view: new ol.View({
+                    center: [116.77, 40.04],
+                    zoom: 1,
+                    projection: projection
+                })
+            });
+            options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+            var layer = new ol.layer.Tile({
+                source: new ol.supermap.TileSuperMapRest(options)
+            });
+            map.addLayer(layer);
+            overlayAnalystProcess();
+        });
+        mapService.getMapStatus();
+    }
+
+    function overlayAnalystProcess() {
+        overlayAnalystService = new ol.supermap.SpatialAnalystService(serviceUrl);
+        datasetOverlayAnalystParameters = new DatasetOverlayAnalystParameters({
+            sourceDataset: "BaseMap_R@Jingjin",
+            operateDataset: "Neighbor_R@Jingjin",
+            tolerance: 0,
+            operation: OverlayOperationType.UNION
+        });
+        overlayAnalystService.overlayAnalysis(datasetOverlayAnalystParameters)
+                .on('complete', function (serviceResult) {
+                    var resultLayer = new ol.layer.Vector({
+                        source: new ol.source.Vector({
+                            features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)
+                        }),
+                        style: new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                                color: 'rgba(100, 100, 225, 10)',
+                                width: 3
+                            }),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(0, 0, 255, 0.1)'
+                            })
+                        })
+                    });
+                    map.addLayer(resultLayer);
+                });
+    }
+</script>
+</body>
+</html>

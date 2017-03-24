@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>网络分析服务-选址分区分析</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, findLocationService, findLocationParameter,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+
+    init();
+
+    function init() {
+        map = L.map('map', {
+            crs: L.supermap.NonEarthCRS({
+                bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+                origin: L.point(48.4, -55.58)
+            }),
+            center: [-3375, 5605],
+            maxZoom: 18,
+            zoom: 1
+        });
+        L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+        findLocationProcess();
+    }
+    function findLocationProcess() {
+        //添加设施点
+        var marker1 = L.marker([-593.56822512495194, 1675.9256791377206]).addTo(map);
+        var marker2 = L.marker([-2358.0414663985171, 2820.35101097629]).addTo(map);
+        var marker3 = L.marker([-3647.0074300836109, 2909.4396668115278]).addTo(map);
+        var marker4 = L.marker([-5616.5950974905827, 1544.5037476378677]).addTo(map);
+        var marker5 = L.marker([-2130.4887600981415, 6623.5972101719526]).addTo(map);
+        var marker6 = L.marker([-4504.2328567816048, 5482.4979617984973]).addTo(map);
+        var marker7 = L.marker([-1627.6012900626256, 6940.6579024271468]).addTo(map);
+        var marker8 = L.marker([-5747.5063918659716, 8215.9188781715948]).addTo(map);
+        /* //为设施点添加弹窗
+         marker1.bindPopup("设施点一");
+         marker2.bindPopup("设施点二");
+         marker3.bindPopup("设施点三");
+         marker4.bindPopup("设施点四");
+         marker5.bindPopup("设施点五");
+         marker6.bindPopup("设施点六");
+         marker7.bindPopup("设施点七");
+         marker8.bindPopup("设施点八");*/
+
+        // 设置设施点的资源供给中心
+        var supplyCenterType_FIXEDCENTER = SupplyCenterType.FIXEDCENTER,
+                supplyCenterType_NULL = SupplyCenterType.NULL;
+        var supplyCenterType_OPTIONALCENTER = SupplyCenterType.OPTIONALCENTER,
+                supplyCenters = [new SupplyCenter({
+                    maxWeight: 500,             // 资源供给中心的最大耗费值,必设参数
+                    nodeID: 139,                // 资源供给中心点的结点 ID 号,必设参数
+                    resourceValue: 100,         // 资源供给中心能提供的最大服务量或商品数量,必设参数
+                    type: supplyCenterType_OPTIONALCENTER      //选址分区中资源中心的类型包括固定中心和可选中心两种
+
+                }),
+                    new SupplyCenter({
+                        maxWeight: 500,
+                        nodeID: 1358,
+                        resourceValue: 100,
+                        type: supplyCenterType_OPTIONALCENTER
+
+                    }),
+                    new SupplyCenter({
+                        maxWeight: 500,
+                        nodeID: 2972,
+                        resourceValue: 100,
+                        type: supplyCenterType_OPTIONALCENTER
+
+                    }),
+                    new SupplyCenter({
+                        maxWeight: 500,
+                        nodeID: 5523,
+                        resourceValue: 100,
+                        type: supplyCenterType_OPTIONALCENTER
+
+                    }),
+                    new SupplyCenter({
+                        maxWeight: 500,
+                        nodeID: 1161,
+                        resourceValue: 100,
+                        type: supplyCenterType_OPTIONALCENTER
+                    }),
+                    new SupplyCenter({
+                        maxWeight: 500,
+                        nodeID: 4337,
+                        resourceValue: 100,
+                        type: supplyCenterType_OPTIONALCENTER
+
+                    }),
+                    new SupplyCenter({
+                        maxWeight: 500,
+                        nodeID: 5732,
+                        resourceValue: 100,
+                        type: supplyCenterType_NULL
+
+                    }),
+                    new SupplyCenter({
+                        maxWeight: 500,
+                        nodeID: 663,
+                        resourceValue: 100,
+                        type: supplyCenterType_FIXEDCENTER
+
+                    })
+                ];
+
+        //创建选址分区分析服务实例
+        findLocationService = L.supermap.networkAnalystService(serviceUrl);
+        //创建选址分区分析参数实例
+        findLocationParameter = new FindLocationParameters({
+            // 期望用于最终设施选址的资源供给中心数量,必设字段
+            expectedSupplyCenterCount: 8,
+            // 是否从中心点开始分配资源。默认为 false
+            isFromCenter: false,
+            nodeDemandField: "Demand",
+            // 转向权值字段的名称
+            turnWeightField: "TurnCost",
+            // 阻力字段的名称, 必设
+            weightName: "length",
+            // 资源供给中心集合,必设字段
+            supplyCenters: supplyCenters
+        });
+        //进行查找
+        findLocationService.findLocation(findLocationParameter)
+                .on('complete', function (serviceResult) {
+                    //L.geoJSON(serviceResult.result, {color: "red"}).addTo(map);
+                    var result = serviceResult.result;
+                    var features = [];
+                    if (result.demandResults) {
+                        for (var i = 0, demandResults = result.demandResults, len = demandResults.length; i < len; i++) {
+                            for (j = 0; j < demandResults[i].geometry.points.length; j++) {
+                                features.push([demandResults[i].geometry.points[j].y, demandResults[i].geometry.points[j].x]);
+                            }
+
+                        }
+                    }
+                    for (k = 0; k < features.length; k++) {
+                        L.circleMarker(features[k], {color: 'green', radius: 1}).addTo(map)
+                    }
+                });
+    }
+</script>
+</body>
+</html>

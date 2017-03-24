@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>网络分析服务-多旅行商分析(质检巡查)</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, findTSPPathsService, findTSPPathsParameter, result,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+
+    init();
+
+    function init() {
+        map = L.map('map', {
+            crs: L.supermap.NonEarthCRS({
+                bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+                origin: L.point(48.4, -55.58)
+            }),
+            center: [-3375, 5605],
+            maxZoom: 18,
+            zoom: 1
+        });
+        L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+        findTSPPathsProcess();
+    }
+    function findTSPPathsProcess() {
+        //添加站点
+        var myIcon = L.icon({
+            iconUrl: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker.png',
+            iconSize: [44, 30]
+        });
+        var marker4 = L.marker([-1000, 3000], {icon: myIcon}).addTo(map);
+        var marker5 = L.marker([-4850, 3760], {icon: myIcon}).addTo(map);
+        var marker6 = L.marker([-2700, 8000], {icon: myIcon}).addTo(map);
+        //为配送点添加弹窗
+        marker4.bindPopup("零售站一");
+        marker5.bindPopup("零售站二");
+        marker6.bindPopup("零售站三");
+
+        //创建多旅行商分析服务实例
+        findTSPPathsService = L.supermap.networkAnalystService(serviceUrl);
+
+        //创建多旅行商分析参数实例
+        var resultSetting = new TransportationAnalystResultSetting({
+            returnEdgeFeatures: true,
+            returnEdgeGeometry: true,
+            returnEdgeIDs: true,
+            returnNodeFeatures: true,
+            returnNodeGeometry: true,
+            returnNodeIDs: true,
+            returnPathGuides: true,
+            returnRoutes: true
+        });
+        var analystParameter = new TransportationAnalystParameter({
+            resultSetting: resultSetting,
+            weightFieldName: "length"
+        });
+        findTSPPathsParameter = new FindTSPPathsParameters({
+            //是否指定终止点,
+            endNodeAssigned: false,
+            isAnalyzeById: false,
+            //旅行商分析途经点数组，必设字段
+            nodes: [L.latLng(-1000, 3000), L.latLng(-4850, 3760), L.latLng(-2700, 8000)],
+            parameter: analystParameter
+        });
+        //进行查找
+        findTSPPathsService.findTSPPaths(findTSPPathsParameter)
+                .on('complete', function (serviceResult) {
+                    //L.geoJSON(serviceResult.result, {color: "red"}).addTo(map);
+                    result = serviceResult.result;
+                    addPath(result);
+                });
+
+        function addPath(result) {
+            var features = [];
+            if (result.tspPathList) {
+                for (var j = 0; j < result.tspPathList[0].route.points.length; j++) {
+                    features.push([result.tspPathList[0].route.points[j].y, result.tspPathList[0].route.points[j].x])
+                }
+                L.polyline(features).addTo(map);
+               /* for (i = 0; i < features.length - 1; i++) {
+                    L.polyline([features[i], features[i + 1]], {color: 'green'}).addTo(map);
+                }*/
+            }
+        }
+    }
+</script>
+</body>
+</html>

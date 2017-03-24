@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>网络分析服务-多旅行商分析(物流配送)</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var map, options, findMTSPPathsService, findMTSPPathsParameter,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+
+    init();
+
+    function init() {
+        var mapService = new ol.supermap.MapService(baseUrl);
+        var extent = [48.4, -7668.25, 8958.85, -55.58];
+        var projection = new ol.proj.Projection({
+            extent: extent,
+            units: 'm'
+        });
+        mapService.on("complete", function (serviceResult) {
+            var mapJSONObj = serviceResult.element.result;
+            map = new ol.Map({
+                target: 'map',
+                view: new ol.View({
+                    center: [5605, -3375],
+                    zoom: 1,
+                    projection: projection
+                })
+            });
+            options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+            var layer = new ol.layer.Tile({
+                source: new ol.supermap.TileSuperMapRest(options)
+            });
+            map.addLayer(layer);
+            findMTSPPathsProcess();
+        });
+        mapService.getMapStatus();
+    }
+
+    function findMTSPPathsProcess() {
+        //添加配送点
+        var facilityPoint1 = new ol.geom.Point([6000, -5500]);
+        var facilityPoint2 = new ol.geom.Point([5500, -2500]);
+        var facilityPoint3 = new ol.geom.Point([2500, -3500]);
+        var facilityFeature1 = new ol.Feature(facilityPoint1);
+        var facilityFeature2 = new ol.Feature(facilityPoint2);
+        var facilityFeature3 = new ol.Feature(facilityPoint3);
+        var iconStyle_facility = new ol.style.Style({
+            image: new ol.style.Icon(({
+                src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker-gold.png'
+            }))
+        });
+        facilityFeature1.setStyle(iconStyle_facility);
+        facilityFeature2.setStyle(iconStyle_facility);
+        facilityFeature3.setStyle(iconStyle_facility);
+        var facilitySource = new ol.source.Vector({
+            features: [facilityFeature1, facilityFeature2, facilityFeature3]
+        });
+        var facilityLayer = new ol.layer.Vector({
+            source: facilitySource
+        });
+
+        //添加配送目的地
+        var destPoint1 = new ol.geom.Point([5000, -5000]);
+        var destPoint2 = new ol.geom.Point([8000, -2000]);
+        var destFeature1 = new ol.Feature(destPoint1);
+        var destFeature2 = new ol.Feature(destPoint2);
+        var iconStyle_dest = new ol.style.Style({
+            image: new ol.style.Icon(({
+                src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker.png'
+            }))
+        });
+        destFeature1.setStyle(iconStyle_dest);
+        destFeature2.setStyle(iconStyle_dest);
+        var destSource = new ol.source.Vector({
+            features: [destFeature1, destFeature2]
+        });
+        var destLayer = new ol.layer.Vector({
+            source: destSource
+        });
+
+        //创建多旅行商分析服务实例
+        findMTSPPathsService = new ol.supermap.NetworkAnalystService(serviceUrl);
+        //创建多旅行商分析参数实例
+        var resultSetting = new TransportationAnalystResultSetting({
+            returnEdgeFeatures: true,
+            returnEdgeGeometry: true,
+            returnEdgeIDs: true,
+            returnNodeFeatures: true,
+            returnNodeGeometry: true,
+            returnNodeIDs: true,
+            returnPathGuides: true,
+            returnRoutes: true
+        });
+        var analystParameter = new TransportationAnalystParameter({
+            resultSetting: resultSetting,
+            weightFieldName: "length"
+        });
+        findMTSPPathsParameter = new FindMTSPPathsParameters({
+            centers: [new ol.geom.Point([6000, -5500]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([2500, -3500])],
+            isAnalyzeById: false,
+            nodes: [new ol.geom.Point([5000, -5000]), new ol.geom.Point([8000, -2000])],
+            hasLeastTotalCost: true,
+            parameter: analystParameter
+        });
+        //进行查找
+        findMTSPPathsService.findMTSPPaths(findMTSPPathsParameter)
+                .on('complete', function (serviceResult) {
+                    //L.geoJSON(serviceResult.result, {color: "red"}).addTo(map);
+                    var result = serviceResult.element.result;
+                    var points = [];
+                    if (result.pathList) {
+                        for (var i = 0; i < result.pathList.length; i++) {
+                            for (var j = 0; j < result.pathList[0].route.points.length; j++) {
+                                var point = [result.pathList[i].route.points[j].x, result.pathList[i].route.points[j].y];
+                                points.push(point);
+                            }
+
+                            var pathLayer = new ol.layer.Vector({
+                                source: new ol.source.Vector({
+                                    features: [new ol.Feature(
+                                            new ol.geom.LineString(points)
+                                    )]
+                                    //(new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)
+                                }),
+                                style: new ol.style.Style({
+                                    stroke: new ol.style.Stroke({
+                                        color: 'rgba(100, 100, 225, 10)',
+                                        width: 3
+                                    }),
+                                    fill: new ol.style.Fill({
+                                        color: 'rgba(0, 0, 255, 0.1)'
+                                    })
+                                })
+                            });
+                            map.addLayer(pathLayer);
+                            points = [];
+                        }
+                    }
+                    map.addLayer(facilityLayer);
+                    map.addLayer(destLayer);
+                });
+    }
+</script>
+</body>
+</html>

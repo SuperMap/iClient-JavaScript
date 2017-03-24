@@ -137,6 +137,34 @@ var exampleConfig = {
                     name: "缓冲区分析",
                     thumbnail: "l_bufferAnalystService.png",
                     fileName: "04_bufferAnalystService"
+                }, {
+                    name: "缓冲区分析二",
+                    thumbnail: "l_bufferAnalystService-geometry.png",
+                    fileName: "04_bufferAnalystService_geometry"
+                }, {
+                    name: "数据集泰森多边形",
+                    thumbnail: "l_thiessenAnalystService-datasets.png",
+                    fileName: "04_thiessenAnalystService_datasets"
+                }, {
+                    name: "几何泰森多边形",
+                    thumbnail: "l_thiessenAnalystService-geometry.png",
+                    fileName: "04_thiessenAnalystService_geometry"
+                }, {
+                    name: "叠加分析",
+                    thumbnail: "l_overlayAnalystService.png",
+                    fileName: "04_overlayAnalystService"
+                }, {
+                    name: "动态分段",
+                    thumbnail: "l_generateSpatialDataService.png",
+                    fileName: "04_generateSpatialDataService"
+                }, {
+                    name: "地形曲率计算",
+                    thumbnail: "l_terrainCurvatureCalculationService.png",
+                    fileName: "04_terrainCurvatureCalculationService"
+                }, {
+                    name: "栅格代数运算",
+                    thumbnail: "l_mathExpressionAnalysisService.png",
+                    fileName: "04_mathExpressionAnalysisService"
                 }]
             },
             "networkAnalyst": {
@@ -145,6 +173,26 @@ var exampleConfig = {
                     name: "服务区分析",
                     thumbnail: "l_findServiceAreas.png",
                     fileName: "05_findServiceAreas"
+                }, {
+                    name: "最近设施分析",
+                    thumbnail: "l_findClosetFacilitiesService.png",
+                    fileName: "05_findClosestFacilitiesService"
+                }, {
+                    name: "选址分区分析",
+                    thumbnail: "l_findLocationService.png",
+                    fileName: "05_findLocationService"
+                }, {
+                    name: "多旅行商分析-物流配送",
+                    thumbnail: "l_findMTSPPathsService.png",
+                    fileName: "05_findMTSPPathsService"
+                }, {
+                    name: "旅行商分析-质检巡查",
+                    thumbnail: "l_findTSPPathsService.png",
+                    fileName: "05_findTSPPathsService"
+                }, {
+                    name: "最佳路径分析",
+                    thumbnail: "l_findPathService.png",
+                    fileName: "05_findPathService"
                 }]
             },
             "trafficTransferAnalyst": {

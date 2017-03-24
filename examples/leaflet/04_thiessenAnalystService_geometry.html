@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析-几何泰森多边形</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, pointsList, points, resultLayer, thiessenAnalystService, gThiessenAnalystParameters,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+
+    init();
+
+    function init() {
+        map = L.map('map', {
+            crs: L.supermap.NonEarthCRS({
+                bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+                origin: L.point(48.4, -55.58)
+            }),
+            center: [-2959.65, 5102.23],
+            maxZoom: 18,
+            zoom: 1
+        });
+        L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+        thiessenAnalystProcess();
+    }
+
+    function thiessenAnalystProcess() {
+        /*var pointsList1 = [
+         [-1724.229865, 5238.998556],
+         [-2118.538477, 4996.270055],
+         [-2070.794081, 5450.34263],
+         [-2521.162355, 5317.70775],
+         [-1970.130198, 5741.149405],
+         [-1575.858795, 4716.133098],
+         [-2255.928819, 5447.671615],
+         [-1135.598744, 4783.423507],
+         [-2189.15344, 5472.712382],
+         [-2425.40363, 5752.716961]
+         ];*/
+        pointsList = [
+            //L.point中x,y的顺序与SuperMap.Geometry.Point中的顺序一样
+            L.point(5238.998556, -1724.229865),
+            L.point(4996.270055, -2118.538477),
+            L.point(5450.34263, -2070.794081),
+            L.point(5317.70775, -2521.162355),
+            L.point(5741.149405, -1970.130198),
+            L.point(4716.133098, -1575.858795),
+            L.point(5447.671615, -2255.928819),
+            L.point(4783.423507, -1135.598744),
+            L.point(5472.712382, -2189.15344),
+            L.point(5752.716961, -2425.40363)
+        ];
+        gThiessenAnalystParameters = new GeometryThiessenAnalystParameters({
+            points: pointsList
+        });
+        thiessenAnalystService = L.supermap.spatialAnalystService(serviceUrl);
+        thiessenAnalystService.thiessenAnalysis(gThiessenAnalystParameters)
+                .on('complete', function (serviceResult) {
+                    //resultLayer = L.geoJSON(serviceResult.result, {color: "blue"}).addTo(map);
+                    points = [];
+                    var i, j;
+                    for (i = 0; i < serviceResult.result.regions.length; i++) {
+                        for (j = 0; j < serviceResult.result.regions[i].points.length; j++) {
+                            var point = [serviceResult.result.regions[i].points[j].y, serviceResult.result.regions[i].points[j].x];
+                            points.push(point);
+                        }
+                        L.polygon([points]).addTo(map);
+                        points = [];
+                    }
+                })
+    }
+</script>
+</body>
+</html>

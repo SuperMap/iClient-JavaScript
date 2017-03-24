@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>网络分析服务-多旅行商分析(质检巡查)</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var map, findTSPPathsService, findTSPPathsParameter, findTSPPathsResult,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+    //多旅行商分析是无序的路径分析
+    init();
+
+    function init() {
+        var mapService = new ol.supermap.MapService(baseUrl);
+        var extent = [48.4, -7668.25, 8958.85, -55.58];
+        var projection = new ol.proj.Projection({
+            extent: extent,
+            units: 'm'
+        });
+        mapService.on("complete", function (serviceResult) {
+            var mapJSONObj = serviceResult.element.result;
+            map = new ol.Map({
+                target: 'map',
+                view: new ol.View({
+                    center: [5605, -3375],
+                    zoom: 1,
+                    projection: projection
+                })
+            });
+            options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+            var layer = new ol.layer.Tile({
+                source: new ol.supermap.TileSuperMapRest(options)
+            });
+            map.addLayer(layer);
+            findTSPPathsProcess()();
+        });
+        mapService.getMapStatus();
+    }
+
+    function findTSPPathsProcess() {
+        //添加站点
+        var stopPoint1 = new ol.geom.Point([3000, -1000]);
+        var stopPoint2 = new ol.geom.Point([3760, -4850]);
+        var stopPoint3 = new ol.geom.Point([8000, -2700]);
+        var stopFeature1 = new ol.Feature(stopPoint1);
+        var stopFeature2 = new ol.Feature(stopPoint2);
+        var stopFeature3 = new ol.Feature(stopPoint3);
+        var iconStyle = new ol.style.Style({
+            image: new ol.style.Icon(({
+                src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker.png'
+            }))
+        });
+        stopFeature1.setStyle(iconStyle);
+        stopFeature2.setStyle(iconStyle);
+        stopFeature3.setStyle(iconStyle);
+        var stopSource = new ol.source.Vector({
+            features: [stopFeature1, stopFeature2, stopFeature3]
+        });
+        var stopLayer = new ol.layer.Vector({
+            source: stopSource
+        });
+
+        //创建多旅行商分析服务实例
+        findTSPPathsService = new ol.supermap.NetworkAnalystService(serviceUrl);
+        //创建多旅行商分析参数实例
+        var resultSetting = new TransportationAnalystResultSetting({
+            returnEdgeFeatures: true,
+            returnEdgeGeometry: true,
+            returnEdgeIDs: true,
+            returnNodeFeatures: true,
+            returnNodeGeometry: true,
+            returnNodeIDs: true,
+            returnPathGuides: true,
+            returnRoutes: true
+        });
+        var analystParameter = new TransportationAnalystParameter({
+            resultSetting: resultSetting,
+            weightFieldName: "length"
+        });
+        findTSPPathsParameter = new FindTSPPathsParameters({
+            //是否指定终止点,
+            endNodeAssigned: false,
+            isAnalyzeById: false,
+            //旅行商分析途经点数组，必设字段
+            nodes: [new ol.geom.Point([3000, -1000]), new ol.geom.Point([3760, -4850]), new ol.geom.Point([8000, -2700])],
+            parameter: analystParameter
+        });
+        //进行查找
+        findTSPPathsService.findTSPPaths(findTSPPathsParameter)
+                .on('complete', function (serviceResult) {
+                    findTSPPathsResult = serviceResult.element.result;
+                    //添加路径
+                    addPath(findTSPPathsResult);
+                    map.addLayer(stopLayer)
+                });
+
+        function addPath(result) {
+            var points = [];
+            if (result.tspPathList) {
+                for (var j = 0; j < result.tspPathList[0].route.points.length; j++) {
+                    points.push([result.tspPathList[0].route.points[j].x, result.tspPathList[0].route.points[j].y])
+                }
+                var pathLayer = new ol.layer.Vector({
+                    source: new ol.source.Vector({
+                        features: [new ol.Feature(
+                                new ol.geom.LineString(points)
+                        )]
+                        //(new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)
+                    }),
+                    style: new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(100, 100, 225, 10)',
+                            width: 3
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 0, 255, 0.1)'
+                        })
+                    })
+                });
+                map.addLayer(pathLayer);
+            }
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>网络分析服务-多旅行商分析(物流配送)</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, findMTSPPathsService, resultSetting, analystParameter, findMTSPPathsParameter,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+
+    init();
+
+    function init() {
+        map = L.map('map', {
+            crs: L.supermap.NonEarthCRS({
+                bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+                origin: L.point(48.4, -55.58)
+            }),
+            center: [-3375, 5605],
+            maxZoom: 18,
+            zoom: 1
+        });
+        L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+        findMTSPPathsProcess();
+    }
+    function findMTSPPathsProcess() {
+        //添加配送点
+        var marker1 = L.marker([-5500, 6000]).addTo(map);
+        var marker2 = L.marker([-2500, 5500]).addTo(map);
+        var marker3 = L.marker([-3500, 2500]).addTo(map);
+        //为配送点添加弹窗
+        marker1.bindPopup("配送中心点一");
+        marker2.bindPopup("配送中心点二");
+        marker3.bindPopup("配送中心点三");
+
+        //添加配送目的地
+        var myIcon = L.icon({
+            iconUrl: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker.png',
+            iconSize: [44, 30]
+            //shadowUrl:
+        });
+        var marker4 = L.marker([-5000, 5000], {icon: myIcon}).addTo(map);
+        var marker5 = L.marker([-2800, 8000], {icon: myIcon}).addTo(map);
+        //为配送点添加弹窗
+        marker4.bindPopup("配送目的地一");
+        marker5.bindPopup("配送目的地二");
+
+        //创建多旅行商分析服务实例
+        findMTSPPathsService = L.supermap.networkAnalystService(serviceUrl);
+
+        //创建多旅行商分析参数实例
+        resultSetting = new TransportationAnalystResultSetting({
+            returnEdgeFeatures: true,
+            returnEdgeGeometry: true,
+            returnEdgeIDs: true,
+            returnNodeFeatures: true,
+            returnNodeGeometry: true,
+            returnNodeIDs: true,
+            returnPathGuides: true,
+            returnRoutes: true
+        });
+        analystParameter = new TransportationAnalystParameter({
+            resultSetting: resultSetting,
+            weightFieldName: "length"
+        });
+        findMTSPPathsParameter = new FindMTSPPathsParameters({
+            centers: [L.latLng(-5500, 6000), L.latLng(-2500, 5500), L.latLng(-3500, 2500)],
+            isAnalyzeById: false,
+            nodes: [L.latLng(-5000, 5000), L.latLng(-2800, 8000)],
+            hasLeastTotalCost: true,
+            parameter: analystParameter
+        });
+        //进行查找
+        findMTSPPathsService.findMTSPPaths(findMTSPPathsParameter)
+                .on('complete', function (serviceResult) {
+                    //L.geoJSON(serviceResult.result, {color: "red"}).addTo(map);
+                    var result = serviceResult.result;
+                    var points = [];
+                    if (result.pathList) {
+                        for (var i = 0; i < result.pathList.length; i++) {
+                            for (var j = 0; j < result.pathList[0].route.points.length; j++) {
+                                var point = [result.pathList[i].route.points[j].y, result.pathList[i].route.points[j].x];
+                                points.push(point);
+                            }
+                            L.polyline(points, {color: 'green'}).addTo(map);
+                            points = [];
+                        }
+                    }
+                });
+    }
+</script>
+</body>
+</html>

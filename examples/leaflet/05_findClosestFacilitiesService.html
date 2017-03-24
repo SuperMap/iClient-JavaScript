@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>网络分析服务-最近设施分析</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, findClosetFacilitiesService, findClosetFacilitiesParameter,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+
+    init();
+
+    function init() {
+        map = L.map('map', {
+            crs: L.supermap.NonEarthCRS({
+                bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+                origin: L.point(48.4, -55.58)
+            }),
+            center: [-3375, 5605],
+            maxZoom: 18,
+            zoom: 3
+        });
+        L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+        findClosetFacilitiesProcess();
+    }
+    function findClosetFacilitiesProcess() {
+        //添加设施点
+        var marker1 = L.marker([-3500, 2500]).addTo(map);
+        marker1.bindPopup("设施点一");
+        var marker2 = L.marker([-2500, 5500]).addTo(map);
+        marker2.bindPopup("设施点二");
+        var marker3 =L.marker([-4000, 7000]).addTo(map);
+        marker3.bindPopup("设施点三");
+        //添加事件点
+        var myIcon = L.icon({
+            iconUrl: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker.png',
+            iconSize: [44, 30]
+            //shadowUrl:
+        });
+        var marker4 = L.marker([-3700, 5000], {icon: myIcon/*,zIndexOffset:-2*/}).addTo(map);
+        marker4.bindPopup("事件点");
+        //创建最近设施分析服务实例
+        findClosetFacilitiesService = L.supermap.networkAnalystService(serviceUrl);
+        //创建最近设施分析参数实例
+        var resultSetting = new TransportationAnalystResultSetting({
+            returnEdgeFeatures: true,
+            returnEdgeGeometry: true,
+            returnEdgeIDs: true,
+            returnNodeFeatures: true,
+            returnNodeGeometry: true,
+            returnNodeIDs: true,
+            returnPathGuides: true,
+            returnRoutes: true
+        });
+        var analystParameter = new TransportationAnalystParameter({
+            resultSetting: resultSetting,
+            turnWeightField: "TurnCost",
+            weightFieldName: "length"  //length,time
+        });
+        findClosetFacilitiesParameter = new FindClosestFacilitiesParameters({
+            //事件点,必设参数
+            event: L.latLng(-3700, 5000),
+            //要查找的设施点数量。默认值为1
+            expectFacilityCount: 1,
+            //设施点集合,必设
+            facilities: [L.latLng(-3500, 2500), L.latLng(-2500, 5500), L.latLng(-4000, 7000)],
+            isAnalyzeById: false,
+            parameter: analystParameter
+        });
+        //进行查找
+        findClosetFacilitiesService.findClosestFacilities(findClosetFacilitiesParameter)
+                .on('complete', function (serviceResult) {
+                    var result = serviceResult.result;
+                    //L.geoJSON(serviceResult.result, {color: "red"}).addTo(map);
+                    var features = [];
+                    if (result.facilityPathList) {
+                        for (var i = 0, facilityPathList = result.facilityPathList, len = facilityPathList.length; i < len; i++) {
+                            for (var j = 0; j < facilityPathList[i].route.points.length; j++) {
+                                features.push([facilityPathList[i].route.points[j].y, facilityPathList[i].route.points[j].x]);
+                            }
+                        }
+                    }
+                    setTimeout(function(){
+                        L.polyline(features).addTo(map)
+                    },1000)
+
+                });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>网络分析服务-最佳路径分析</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, findPathService, findPathParameter,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+    //最佳路径分析必须按照指定顺序对站点进行访问
+    init();
+
+    function init() {
+        map = L.map('map', {
+            crs: L.supermap.NonEarthCRS({
+                bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+                origin: L.point(48.4, -55.58)
+            }),
+            center: [-3375, 5605],
+            maxZoom: 18,
+            zoom: 3
+        });
+        L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+        findPathProcess();
+    }
+    function findPathProcess() {
+        //添加站点
+        var marker1 = L.marker([-3000, 4000]).addTo(map);
+        marker1.bindPopup("站点一");
+        var marker2 = L.marker([-2500, 5500]).addTo(map);
+        marker2.bindPopup("站点二");
+        var marker3 = L.marker([-4000, 6900]).addTo(map);
+        marker3.bindPopup("站点三");
+
+        //创建最佳路径分析服务实例
+        findPathService = L.supermap.networkAnalystService(serviceUrl);
+        //创建最佳路径分析参数实例
+        var resultSetting = new TransportationAnalystResultSetting({
+            returnEdgeFeatures: true,
+            returnEdgeGeometry: true,
+            returnEdgeIDs: true,
+            returnNodeFeatures: true,
+            returnNodeGeometry: true,
+            returnNodeIDs: true,
+            returnPathGuides: true,
+            returnRoutes: true
+        });
+        var analystParameter = new TransportationAnalystParameter({
+            resultSetting: resultSetting,
+            weightFieldName: "length"
+        });
+        findPathParameter = new FindPathParameters({
+            isAnalyzeById: false,
+            nodes: [L.latLng(-3000, 4000), L.latLng(-2500, 5500), L.latLng(-4000, 6900)],
+            hasLeastEdgeCount: false,
+            parameter: analystParameter
+        });
+        //进行查找
+        findPathService.findPath(findPathParameter)
+                .on('complete', function (serviceResult) {
+                    // L.geoJSON(serviceResult.result, {color: "red"}).addTo(map);
+                    var result = serviceResult.result;
+                    var features = [];
+                    var guideFeatures = [];      //显示每个pathGuideItem和对应的描述信息
+                    if (result.pathList) {
+                        for (var i = 0, pathList = result.pathList, len = pathList.length; i < len; i++) {
+                            for (var j = 0; j < pathList[i].route.points.length; j++) {
+                                features.push([pathList[i].route.points[j].y, pathList[i].route.points[j].x]);
+                            }
+                        }
+                        for (var k = 0; k < result.pathList[0].pathGuideItems.length; k++) {
+                            guideFeatures.push([result.pathList[0].pathGuideItems[k].geometry.points[0].y, result.pathList[0].pathGuideItems[k].geometry.points[0].x]);
+                        }
+                    }
+                    L.polyline(features).addTo(map);
+
+                    var myIcon = L.icon({
+                        iconUrl: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/walk.png',
+                        iconSize:[20, 20]
+                    });
+                    for (var l = 0; l < guideFeatures.length; l++) {
+                        L.marker(guideFeatures[l], {icon: myIcon}).addTo(map);
+                    }
+                });
+    }
+
+</script>
+</body>
+</html>

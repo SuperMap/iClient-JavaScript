@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析-反距离加权插值分析</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var map, options, interpolationAnalystService, interpolationAnalystParameters, interpolationAnalystResult,
+            themeService, themeGridRange, themeParameters,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-temperature/rest/maps/全国温度变化图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+
+    init();
+
+    function init() {
+
+        var mapService = new ol.supermap.MapService(baseUrl);
+        var extent = [-2640403.63, 1873792.1, 3247669.39, 5921501.4];
+        var projection = new ol.proj.Projection({
+            extent: extent,
+            units: 'm'
+        });
+        mapService.on("complete", function (serviceResult) {
+            var mapJSONObj = serviceResult.element.result;
+            map = new ol.Map({
+                target: 'map',
+                view: new ol.View({
+                    center: [531762, 3580330],
+                    zoom: 1,
+                    projection: projection
+                })
+            });
+            options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+            options.layersID = "[0,1,2]";
+            var layer = new ol.layer.Tile({
+                source: new ol.supermap.TileSuperMapRest(options)
+            });
+            map.addLayer(layer);
+            interpolationAnalystProcess();
+        });
+        mapService.getMapStatus();
+    }
+
+    function interpolationAnalystProcess() {
+        //创建反距离加权插值分析服务实例
+        interpolationAnalystService = new ol.supermap.SpatialAnalystService(serviceUrl);
+        //创建反距离加权插值分析参数实例
+        interpolationAnalystParameters = new InterpolationIDWAnalystParameters({
+            //用于做插值分析的数据源中数据集的名称
+            dataset: "SamplesP@Interpolation",
+            //插值分析结果数据集的名称
+            outputDatasetName: "IDW_result",
+            //插值分析结果数据源的名称
+            outputDatasourceName: "Interpolation",
+            //结果栅格数据集存储的像素格式
+            pixelFormat: PixelFormat.double,
+            // 属性过滤条件
+            //            filterQueryParameter: {
+            //                attributeFilter: ""
+            //            },
+            //存储用于进行插值分析的字段名称
+            zValueFieldName: "AVG_TMP",
+            resolution: 7923.84989108,
+            //采取固定点数查找参与运算点的方式
+            searchMode: "KDTREE_FIXED_COUNT",
+            //固定点数查找方式下,参与差值运算的点数默认为12。
+            expectedCount: 12,
+            bounds: [-2640403.63, 1873792.1, 3247669.39, 5921501.4]
+        });
+        interpolationAnalystService.interpolationAnalysis(interpolationAnalystParameters)
+                .on('complete', function (serviceResult) {
+                    interpolationAnalystResult = serviceResult.element.result;
+                    //用栅格专题图展示分析结果
+                    showAnalysisResult_ThemeGridRange();
+                });
+
+        //构造栅格专题图
+        function showAnalysisResult_ThemeGridRange() {
+            //创建专题图服务实例
+            themeService = new ol.supermap.ThemeService(baseUrl);
+            var color1 = new ServerColor(170, 240, 233),
+                    color2 = new ServerColor(176, 244, 188),
+                    color3 = new ServerColor(218, 251, 178),
+                    color4 = new ServerColor(220, 236, 145),
+                    color5 = new ServerColor(96, 198, 66),
+                    color6 = new ServerColor(20, 142, 53),
+                    color7 = new ServerColor(85, 144, 55),
+                    color8 = new ServerColor(171, 168, 38),
+                    color9 = new ServerColor(235, 165, 9),
+                    color10 = new ServerColor(203, 89, 2),
+                    color11 = new ServerColor(157, 25, 1),
+                    color12 = new ServerColor(118, 15, 3),
+                    color13 = new ServerColor(112, 32, 7),
+                    color14 = new ServerColor(106, 45, 12),
+                    color15 = new ServerColor(129, 80, 50),
+                    color16 = new ServerColor(160, 154, 146),
+                    color17 = new ServerColor(107, 47, 14),
+                    color18 = new ServerColor(125, 75, 44),
+                    color19 = new ServerColor(146, 110, 88),
+                    color20 = new ServerColor(166, 153, 146);
+
+            var themeGridRangeIteme1 = new ThemeGridRangeItem({
+                        start: -5,
+                        end: -3.4,
+                        color: color1
+                    }),
+                    themeGridRangeIteme2 = new ThemeGridRangeItem({
+                        start: -3.4,
+                        end: -1.8,
+                        color: color2
+                    }),
+                    themeGridRangeIteme3 = new ThemeGridRangeItem({
+                        start: -1.8,
+                        end: -0.2,
+                        color: color3
+                    }),
+                    themeGridRangeIteme4 = new ThemeGridRangeItem({
+                        start: -0.2,
+                        end: 1.4,
+                        color: color4
+                    }),
+                    themeGridRangeIteme5 = new ThemeGridRangeItem({
+                        start: 1.4,
+                        end: 3,
+                        color: color5
+                    }),
+                    themeGridRangeIteme6 = new ThemeGridRangeItem({
+                        start: 3,
+                        end: 4.6,
+                        color: color6
+                    }),
+                    themeGridRangeIteme7 = new ThemeGridRangeItem({
+                        start: 4.6,
+                        end: 6.2,
+                        color: color7
+                    }),
+                    themeGridRangeIteme8 = new ThemeGridRangeItem({
+                        start: 6.2,
+                        end: 7.8,
+                        color: color8
+                    }),
+                    themeGridRangeIteme9 = new ThemeGridRangeItem({
+                        start: 7.8,
+                        end: 9.4,
+                        color: color9
+                    }),
+                    themeGridRangeIteme10 = new ThemeGridRangeItem({
+                        start: 9.4,
+                        end: 11,
+                        color: color10
+                    }),
+                    themeGridRangeIteme11 = new ThemeGridRangeItem({
+                        start: 11,
+                        end: 12.6,
+                        color: color11
+                    }),
+                    themeGridRangeIteme12 = new ThemeGridRangeItem({
+                        start: 12.6,
+                        end: 14.2,
+                        color: color12
+                    }),
+                    themeGridRangeIteme13 = new ThemeGridRangeItem({
+                        start: 14.2,
+                        end: 15.8,
+                        color: color13
+                    }),
+                    themeGridRangeIteme14 = new ThemeGridRangeItem({
+                        start: 15.8,
+                        end: 17.4,
+                        color: color14
+                    }),
+                    themeGridRangeIteme15 = new ThemeGridRangeItem({
+                        start: 17.4,
+                        end: 19,
+                        color: color15
+                    }),
+                    themeGridRangeIteme16 = new ThemeGridRangeItem({
+                        start: 19,
+                        end: 20.6,
+                        color: color16
+                    }),
+                    themeGridRangeIteme17 = new ThemeGridRangeItem({
+                        start: 20.6,
+                        end: 22.2,
+                        color: color17
+                    }),
+                    themeGridRangeIteme18 = new ThemeGridRangeItem({
+                        start: 22.2,
+                        end: 23.8,
+                        color: color18
+                    }),
+                    themeGridRangeIteme19 = new ThemeGridRangeItem({
+                        start: 23.8,
+                        end: 25.4,
+                        color: color19
+                    }),
+                    themeGridRangeIteme20 = new ThemeGridRangeItem({
+                        start: 25.4,
+                        end: 27,
+                        color: color20
+                    });
+
+            themeGridRange = new ThemeGridRange({
+                reverseColor: false,
+                rangeMode: RangeMode.EQUALINTERVAL,
+                //栅格分段专题图子项数组
+                items: [themeGridRangeIteme1, themeGridRangeIteme2,
+                    themeGridRangeIteme3, themeGridRangeIteme4,
+                    themeGridRangeIteme5, themeGridRangeIteme6,
+                    themeGridRangeIteme7, themeGridRangeIteme8,
+                    themeGridRangeIteme9, themeGridRangeIteme10,
+                    themeGridRangeIteme11, themeGridRangeIteme12,
+                    themeGridRangeIteme13, themeGridRangeIteme14,
+                    themeGridRangeIteme15, themeGridRangeIteme16,
+                    themeGridRangeIteme17, themeGridRangeIteme18,
+                    themeGridRangeIteme19, themeGridRangeIteme20
+                ]
+            });
+
+            themeParameters = new ThemeParameters({
+                //制作专题图的数据集
+                datasetNames: [interpolationAnalystResult.dataset.split('@')[0]],
+                dataSourceNames: ["Interpolation"],
+                joinItems: null,
+                themes: [themeGridRange]
+            });
+
+            themeService.getThemeStatus(themeParameters)
+                    .on('complete', function (serviceResult) {
+                        var result = serviceResult.element.result;
+                        if (result && result.newResourceID) {
+                            var themeLayer = new ol.layer.Tile({
+                                source: new ol.supermap.TileSuperMapRest({
+                                    url: baseUrl,
+                                    noWrap: true,
+                                    cacheEnabled: false,
+                                    transparent: true,
+                                    layersID: result.newResourceID,
+                                    tileGrid: new ol.tilegrid.TileGrid({
+                                        extent: options.tileGrid.extent_,
+                                        resolutions: options.tileGrid.resolutions_
+                                    })
+                                })
+                            });
+                            map.addLayer(themeLayer);
+                        }
+                    });
+        }
+    }
+</script>
+</body>
+</html>

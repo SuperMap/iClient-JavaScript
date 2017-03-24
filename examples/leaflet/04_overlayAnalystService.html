@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析服务-叠加分析</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, overlayAnalystService, datasetOverlayAnalystParameters, resultLayer,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+
+    init();
+
+    function init() {
+        map = L.map('map', {
+            crs: L.supermap.NonEarthCRS({
+                bounds: L.bounds([114.59, 37.76], [119.51, 42.31]),
+                origin: L.point(114.59, 42.31)
+            }),
+            center: [40.04, 116.77],
+            maxZoom: 18,
+            zoom: 1
+        });
+        L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+        overlayAnalystProcess();
+    }
+
+    function overlayAnalystProcess() {
+        overlayAnalystService = L.supermap.spatialAnalystService(serviceUrl);
+        datasetOverlayAnalystParameters = new DatasetOverlayAnalystParameters({
+            sourceDataset: "BaseMap_R@Jingjin",
+            operateDataset: "Neighbor_R@Jingjin",
+            tolerance: 0,
+            operation: OverlayOperationType.UNION
+        });
+        overlayAnalystService.overlayAnalysis(datasetOverlayAnalystParameters)
+                .on('complete', function (serviceResult) {
+                    resultLayer = L.geoJSON(serviceResult.result).addTo(map);
+                });
+    }
+</script>
+</body>
+</html>
