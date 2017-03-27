@@ -63,7 +63,10 @@
 	__webpack_require__(136);
 	__webpack_require__(148);
 	__webpack_require__(192);
-	module.exports = __webpack_require__(200);
+	__webpack_require__(200);
+	__webpack_require__(201);
+	__webpack_require__(202);
+	module.exports = __webpack_require__(203);
 
 
 /***/ },
@@ -208,6 +211,75 @@
 
 	    return (serverResult && serverResult.geometry) ? serverResult.geometry : serverResult;
 
+	};
+
+	L.Util.Csv2GeoJSON = function (csv, options) {
+	    var defaultOptions = {
+	        titles: ['lon', 'lat'],
+	        latitudeTitle: 'lat',
+	        longitudeTitle: 'lon',
+	        fieldSeparator: ',',
+	        lineSeparator: '\n',
+	        deleteDoubleQuotes: true,
+	        firstLineTitles: false
+	    };
+	    options = options || defaultOptions;
+	    var _propertiesNames = []
+	    if (typeof csv === 'string') {
+	        var titulos = options.titles;
+	        if (options.firstLineTitles) {
+	            csv = csv.split(options.lineSeparator);
+	            if (csv.length < 2) return;
+	            titulos = csv[0];
+	            csv.splice(0, 1);
+	            csv = csv.join(options.lineSeparator);
+	            titulos = titulos.trim().split(options.fieldSeparator);
+	            for (var i = 0; i < titulos.length; i++) {
+	                titulos[i] = _deleteDoubleQuotes(titulos[i]);
+	            }
+	            options.titles = titulos;
+	        }
+	        for (var i = 0; i < titulos.length; i++) {
+	            var prop = titulos[i].toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '_');
+	            if (prop == '' || prop == '_') prop = 'prop-' + i;
+	            _propertiesNames[i] = prop;
+	        }
+	        csv = _csv2json(csv);
+	    }
+	    return csv;
+
+	    function _deleteDoubleQuotes(cadena) {
+	        if (options.deleteDoubleQuotes) cadena = cadena.trim().replace(/^"/, "").replace(/"$/, "");
+	        return cadena;
+	    };
+
+	    function _csv2json(csv) {
+	        var json = {};
+	        json["type"] = "FeatureCollection";
+	        json["features"] = [];
+	        var titulos = options.titles;
+	        csv = csv.split(options.lineSeparator);
+	        for (var num_linea = 0; num_linea < csv.length; num_linea++) {
+	            var campos = csv[num_linea].trim().split(options.fieldSeparator)
+	                , lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)])
+	                , lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
+	            if (campos.length == titulos.length && lng < 180 && lng > -180 && lat < 90 && lat > -90) {
+	                var feature = {};
+	                feature["type"] = "Feature";
+	                feature["geometry"] = {};
+	                feature["properties"] = {};
+	                feature["geometry"]["type"] = "Point";
+	                feature["geometry"]["coordinates"] = [lng, lat];
+	                for (var i = 0; i < titulos.length; i++) {
+	                    if (titulos[i] != options.latitudeTitle && titulos[i] != options.longitudeTitle) {
+	                        feature["properties"][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
+	                    }
+	                }
+	                json["features"].push(feature);
+	            }
+	        }
+	        return json;
+	    };
 	};
 
 /***/ },
@@ -23514,6 +23586,213 @@
 	};
 	module.exports = L.echartsMapLayer;
 
+
+
+/***/ },
+/* 201 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+
+	L.supermap.Graphic = L.Class.extend({
+
+	    initialize: function (options) {
+	        options = options || {};
+	        this._latlng = L.latLng(options._latlng.lat, options._latlng.lng);
+	        this._canvas = options._canvas;
+	    },
+
+	    setLatlng: function (latlng) {
+	        this._latlng = latlng;
+	    },
+
+	    setCanvas: function (canvas) {
+	        this._canvas = canvas;
+	    },
+
+	    getLatLng: function () {
+	        return this._latlng;
+	    },
+
+	    getCanvas: function () {
+	        return this._canvas;
+	    }
+
+	});
+
+	L.supermap.graphic = function (options) {
+	    return new L.supermap.Graphic(options);
+	};
+
+
+/***/ },
+/* 202 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+
+	L.supermap.GraphicGroup = L.Path.extend({
+
+	        initialize: function (graphics, options) {
+	            options = options || {};
+	            L.setOptions(this, options);
+	            this.graphics = graphics;
+	        },
+
+	        getEvents: function () {
+	            var events = {
+	                click: this._handleClick
+	            }
+	            return events;
+	        },
+
+	        onAdd: function () {
+	            this._canvas = document.createElement('canvas');
+	            var width = this._map.getPixelBounds().getSize().x;
+	            var height = this._map.getPixelBounds().getSize().y;
+	            this._canvas.width = width;
+	            this._canvas.height = height;
+	            this._ctx = this._canvas.getContext('2d');
+	            L.Path.prototype.onAdd.call(this);
+	        },
+
+	        _update: function () {
+	            if (this._map) {
+	                this._updatePath();
+	            }
+	        },
+
+	        _updatePath: function () {
+	            this._renderer._drawGraphics(this._getGraphicsInBounds());
+	        },
+
+	        _project: function () {
+	            var me = this;
+	            me._getGraphicsInBounds().map(function (graphic) {
+	                var point = me._map.latLngToLayerPoint(graphic.getLatLng());
+	                var w = me._clickTolerance();
+	                var p = [graphic._anchor + w, graphic._anchor + w];
+	                graphic._pxBounds = new L.Bounds(point.subtract(p), point.add(p));
+	            })
+	            me._pxBounds = L.bounds(L.point(0, 0), L.point(this._canvas.width, this._canvas.height));
+	        },
+
+	        _getGraphicsInBounds: function () {
+	            var me = this;
+	            var graphicsInBounds = [];
+	            var viewBounds = me._map.getBounds();
+	            this.graphics.map(function (graphic) {
+	                if (viewBounds.contains(graphic.getLatLng())) {
+	                    graphicsInBounds.push(graphic);
+	                }
+	            });
+	            return graphicsInBounds;
+	        },
+
+	        _containsPoint: function (p) {
+	            return false;
+	        },
+
+	        _handleClick: function (evt) {
+	            var me = this;
+	            var graphics = me._getGraphicsInBounds();
+	            for (var i = 0; i < graphics.length; i++) {
+	                var center = me._map.latLngToLayerPoint(graphics[i].getLatLng());
+	                var canvas = graphics[i].getCanvas();
+	                var p1 = L.point(center.x - canvas.width / 2, center.y - canvas.height / 2),
+	                    p2 = L.point(center.x + canvas.width / 2, center.y + canvas.height / 2),
+	                    bounds = L.bounds(p1, p2);
+	                if (bounds.contains(me._map.latLngToLayerPoint(evt.latlng))) {
+	                    return me.options.handleClick.call(me, graphics[i]);
+	                }
+	            }
+	        }
+	    }
+	);
+
+	L.Canvas.include({
+	    _drawGraphics: function (graphics) {
+	        var me = this;
+	        me._ctx.clearRect(0, 0, me._ctx.canvas.width, me._ctx.canvas.height);
+	        graphics.map(function (graphic) {
+	            var canvas = graphic.getCanvas();
+	            var pt = me._map.latLngToLayerPoint(graphic.getLatLng());
+	            var p0 = pt.x - canvas.width / 2;
+	            var p1 = pt.y - canvas.height / 2;
+	            me._ctx.drawImage(canvas, p0, p1);
+	        })
+	    }
+	});
+
+	L.supermap.graphicGroup = function (graphics, options) {
+	    return new L.supermap.GraphicGroup(graphics, options);
+	};
+
+
+/***/ },
+/* 203 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(2);
+
+	L.supermap.CircleStyle = L.Class.extend({
+
+	    options: {
+	        stroke: true,
+	        color: '#3388ff',
+	        weight: 1,
+	        opacity: 1,
+	        lineCap: 'round',
+	        lineJoin: 'round',
+	        fill: false,
+	        fillColor: null,
+	        fillOpacity: 0.2,
+	        fillRule: 'evenodd',
+	        radius: 3
+	    },
+
+	    initialize: function (options) {
+	        options = options || {};
+	        L.Util.setOptions(this, options);
+	        this._canvas = document.createElement('canvas');
+	        this._canvas.width = 2 * (this.options.radius + this.options.weight);
+	        this._canvas.height = 2 * (this.options.radius + this.options.weight);
+	        this._ctx = this._canvas.getContext('2d');
+	        this._initStyle();
+	    },
+
+	    getCanvas: function () {
+	        return this._canvas;
+	    },
+
+	    _initStyle: function () {
+	        this._ctx.beginPath();
+	        this._ctx.arc(this._canvas.width / 2, this._canvas.height / 2, this.options.radius, 0, Math.PI * 2);
+	        this._fillStroke();
+	    },
+
+	    _fillStroke: function () {
+	        var options = this.options;
+	        if (options.fill) {
+	            this._ctx.globalAlpha = options.fillOpacity;
+	            this._ctx.fillStyle = options.fillColor || options.color;
+	            this._ctx.fill(options.fillRule || 'evenodd');
+	        }
+	        if (options.stroke && options.weight !== 0) {
+	            this._ctx.globalAlpha = options.opacity;
+	            this._ctx.lineWidth = options.weight;
+	            this._ctx.strokeStyle = options.color;
+	            this._ctx.lineCap = options.lineCap;
+	            this._ctx.lineJoin = options.lineJoin;
+	            this._ctx.stroke();
+	        }
+	    }
+
+	});
+
+	L.supermap.circleStyle = function (options) {
+	    return new L.supermap.CircleStyle(options);
+	};
 
 
 /***/ }

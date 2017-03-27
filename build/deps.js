@@ -140,10 +140,18 @@ var deps = {
         "Visual": {
             "title": "Visual",
             "description": "--可视化",
-            "EChartMapLayer":{
+            "EChartMapLayer": {
                 "name": "ECharts地图图层",
                 "src": [
                     "./src/Leaflet/Visual/EChartMapLayer.js"
+                ]
+            },
+            "GraphicLayer": {
+                "name": "高效率点图层",
+                "src": [
+                    "./src/Leaflet/Visual/Graphic/Graphic.js",
+                    "./src/Leaflet/Visual/Graphic/GraphicGroup.js",
+                    "./src/Leaflet/Visual/Graphic/CircleStyle.js"
                 ]
             }
             // "AnimatorVector": {

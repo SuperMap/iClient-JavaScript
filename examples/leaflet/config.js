@@ -257,6 +257,14 @@ var exampleConfig = {
                     fileName: "12_markerCluster"
                 }]
             },
+            "graphicLayer": {
+                name: "高效率点图层",
+                content: [{
+                    name: "随机点",
+                    thumbnail: "l_graphicLayer.png",
+                    fileName: "12_graphicLayer"
+                }]
+            },
             // "D3Theme": {
             //     name: "D3-单值专题图",
             //     content: null
