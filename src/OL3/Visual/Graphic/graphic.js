@@ -3,6 +3,7 @@ ol.Graphic = function (geometry) {
     if (geometry instanceof ol.geom.Geometry) {
         this.geometry_ = geometry;
     }
+    this.setStyle();
 };
 ol.inherits(ol.Graphic, ol.Object);
 

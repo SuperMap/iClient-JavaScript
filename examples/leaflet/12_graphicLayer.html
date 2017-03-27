@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>高效率点图层</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map;
+    function init() {
+        map = L.map('map', {
+            preferCanvas: true,
+            crs: L.CRS.EPSG4326,
+            center: {lon: 0, lat: 0},
+            maxZoom: 18,
+            zoom: 1,
+        });
+        var url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+        L.supermap.tiledMapLayer(url).addTo(map);
+        addGraphicGroup();
+    }
+
+    function addGraphicGroup() {
+        var circleStyle = L.supermap.circleStyle({
+            color: 'rgba(255,204,0,1)',
+            radius: 7.5,
+            fill: true,
+            fillColor: 'rgba(255,153,0, 1)',
+            fillOpacity: 1
+        });
+        var count = 100000;
+        var graphics = [];
+        var e = 45;
+        for (var i = 0; i < count; ++i) {
+            var coordinates = [2 * e * Math.random() - e, 2 * e * Math.random() - e];
+            graphics[i] = L.supermap.graphic({
+                _latlng: L.latLng(coordinates[0], coordinates[1]),
+                _canvas: circleStyle.getCanvas()
+            });
+        }
+        L.supermap.graphicGroup(graphics, {
+            handleClick: function (graphic) {
+                L.popup().setLatLng(graphic.getLatLng())
+                        .setContent('<p>经纬度是：<br>' + graphic.getLatLng().lng + ',<br>' + graphic.getLatLng().lat + '</p>')
+                        .openOn(map);
+            }
+        }).addTo(map);
+    }
+</script>
+</body>
+</html>
