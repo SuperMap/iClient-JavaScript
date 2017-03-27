@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析服务-缓冲区分析二</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var map, options, roadLine, bufferAnalystService, geoBufferAnalystParams, resultLayer,
+            queryService, queryByGeometryParameters, resultLayer1,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+
+    init();
+
+    function init() {
+        var mapService = new ol.supermap.MapService(baseUrl);
+        var extent = [48.4, -7668.25, 8958.85, -55.58];
+        var projection = new ol.proj.Projection({
+            extent: extent,
+            units: 'm'
+        });
+        mapService.on("complete", function (serviceResult) {
+            var mapJSONObj = serviceResult.element.result;
+            map = new ol.Map({
+                target: 'map',
+                view: new ol.View({
+                    center: [4503.6240321526, -3861.911472192499],
+                    zoom: 2,
+                    projection: projection
+                })
+            });
+            options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+            var layer = new ol.layer.Tile({
+                source: new ol.supermap.TileSuperMapRest(options)
+            });
+            map.addLayer(layer);
+            geoBufferAnalystProcess();
+        });
+        mapService.getMapStatus();
+    }
+
+    function geoBufferAnalystProcess() {
+        var pointsList = [
+            [2823.940, -4690.000],
+            [3448.940, -4690.301],
+            [3816.561, -3810.125],
+            [3917.383, -3609.158],
+            [3976.983, -3490.291],
+            [4020.004, -4377.027],
+            [4076.265, -4382.939],
+            [4215.049, -4382.333],
+            [4428.156, -4382.285],
+            [4647.579, -4383.017],
+            [4679.707, -4382.898],
+            [4917.462, -4382.635],
+            [5074.019, -4381.833],
+            [5257.042, -4381.031],
+            [5363.785, -4380.717],
+            [5671.717, -4378.794],
+            [5847.521, -4377.970],
+            [5990.637, -4303.528],
+            [6055.343, -4270.072],
+            [6168.913, -4382.389],
+            [6214.183, -4209.927],
+            [6377.789, -4209.142],
+            [6393.692, -4210.142],
+            [6693.989, -4207.450],
+            [6788.392, -4208.450],
+            [6984.304, -4207.210],
+            [7189.183, -4208.296],
+            [7300.505, -4208.296],
+            [7573.056, -4208.803],
+            [7680.977, -4208.804],
+            [7850.593, -4208.393],
+            [8182.656, -4210.533],
+            [8554.893, -4261.485]
+        ];
+        //在所有离散gps信号点添加到地图上
+        for (i = 0; i < pointsList.length; i++) {
+            var point = new ol.Feature({
+                geometry: new ol.geom.Point(pointsList[i])
+            });
+            var pointLayer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: [point]
+                }),
+                style: new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: 4,
+                        fill: new ol.style.Fill({
+                            color: 'black'
+                        })
+                    })
+                })
+            });
+            map.addLayer(pointLayer);
+        }
+        //将由离散gps信号点生成的线路添加到地图上
+        var roadLine = new ol.geom.LineString(pointsList);
+        var roadLineSource = new ol.source.Vector({
+            features: [new ol.Feature(roadLine)]
+        });
+        var roadLineLayer = new ol.layer.Vector({
+            source: roadLineSource,
+            style: new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'red',
+                    width: 3
+                })
+            })
+        });
+        map.addLayer(roadLineLayer);
+        //生成缓冲区
+        //创建缓冲区分析服务
+        bufferAnalystService = new ol.supermap.SpatialAnalystService(serviceUrl);
+        //创建缓冲区分析服务参数
+        geoBufferAnalystParams = new GeometryBufferAnalystParameters({
+            sourceGeometry: roadLine,
+            bufferSetting: new BufferSetting({
+                endType: BufferEndType.ROUND,
+                leftDistance: new BufferDistance({value: 250}),
+                rightDistance: new BufferDistance({value: 250}),
+                semicircleLineSegment: 10
+            })
+        });
+        //向iServer发送请求并返回结果
+        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams)
+                .on('complete', function (serviceResult) {
+                    var bufferSource = new ol.source.Vector({
+                        features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)
+                    });
+                    resultLayer = new ol.layer.Vector({
+                        source: bufferSource,
+                        style: new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                                color: 'blue',
+                                width: 1
+                            }),
+                            fill: new ol.style.Fill({
+                                color: 'rgba(255, 0, 0, 0.1)'
+                            })
+                        })
+                    });
+                    map.addLayer(resultLayer);
+
+                    //查询出缓冲区内信号影响范围内的工厂
+                    queryService = new ol.supermap.QueryService(baseUrl);
+                    //将组成缓冲区的边界点提出来，为了构造下面查询服务的geometry
+                    var bufferPoints = [];
+                    var coordinate = serviceResult.element.result.coordinates[0][0];
+                    for (var i = 0; i < coordinate.length; i++) {
+                        bufferPoints.push([coordinate[i][0], coordinate[i][1]]);
+                    }
+                    var geometry = new ol.geom.Polygon([bufferPoints]);
+                    queryByGeometryParameters = new QueryByGeometryParameters({
+                        queryParams: [new FilterParameter({name: "Company@Changchun.2"})],
+                        geometry: geometry,
+                        spatialQueryMode: SpatialQueryMode.INTERSECT
+                    });
+                    queryService.queryByGeometry(queryByGeometryParameters)
+                            .on('complete', function (serviceResult) {
+                                var features = (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result[0]);
+                                var iconStyle = new ol.style.Style({
+                                    image: new ol.style.Icon(({
+                                        anchor: [0.5, 1],
+                                        src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker-gold.png'
+                                    }))
+                                });
+                                for (var i = 0; i < features.length; i++) {
+                                    features[i].setStyle(iconStyle);
+                                }
+                                var vectorSource = new ol.source.Vector({
+                                    features: features
+                                });
+                                resultLayer1 = new ol.layer.Vector({
+                                    source: vectorSource
+                                });
+                                map.addLayer(resultLayer1);
+                            });
+
+                });
+    }
+</script>
+</body>
+</html>

@@ -138,6 +138,10 @@ var exampleConfig = {
                     thumbnail: "ol_bufferAnalystService.png",
                     fileName: "04_bufferAnalystService"
                 }, {
+                    name: "缓冲区分析二",
+                    thumbnail: "ol_bufferAnalystService_geometry.png",
+                    fileName: "04_bufferAnalystService_geometry"
+                }, {
                     name: "数据集泰森多边形",
                     thumbnail: "ol_thiessenAnalystService-datasets.png",
                     fileName: "04_thiessenAnalystService_datasets"

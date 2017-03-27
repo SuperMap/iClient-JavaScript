@@ -3048,7 +3048,7 @@
 	 */
 	ol.supermap.QueryService.prototype.queryByGeometry = function (params, resultFormat) {
 	    var me = this;
-	    var queryByGeometryService = new SuperMap.REST.QueryByGeometryService(url, {
+	    var queryByGeometryService = new SuperMap.REST.QueryByGeometryService(me.options.url, {
 	        eventListeners: {
 	            scope: me,
 	            processCompleted: me.processCompleted,
