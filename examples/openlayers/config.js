@@ -83,12 +83,12 @@ var exampleConfig = {
                     fileName: "02_getGridCellInfos"
                 }, {
                     name: "字段信息",
-                    thumbnail: "ol_fieldsService.png",
-                    fileName: "02_fieldsService"
-                }, {
-                    name: "字段查询统计",
                     thumbnail: "ol_fieldStatistics.png",
                     fileName: "02_fieldStatistics"
+                }, {
+                    name: "字段查询统计",
+                    thumbnail: "ol_fieldsService.png",
+                    fileName: "02_fieldsService"
                 }, {
                     name: "地物编辑",
                     thumbnail: "ol_editFeatures.png",
