@@ -421,22 +421,20 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
             geojson.features = new Array(numFeatures);
             for (var i = 0; i < numFeatures; ++i) {
                 var element = obj[i];
-                geojson.features[i] = this.extract.feature.apply(
-                    this, [element]
-                );
+                if (isGeometry(element)) {
+                    geojson.features[i] = this.extract.geometry.apply(this, [element]);
+                } else {
+                    geojson.features[i] = this.extract.feature.apply(this, [element]);
+                }
             }
-        }
-
-        else if (obj.hasOwnProperty("parts") && obj.hasOwnProperty("points")) {
+        } else if (isGeometry(obj)) {
             geojson = this.extract.geometry.apply(this, [obj]);
         }
-        //TODO以下分支为旧代码,待分支场景明确后修改
-        else if (obj instanceof SuperMap.Feature.Vector) {
-            geojson = this.extract.feature.apply(this, [obj]);
-            if (obj.layer && obj.layer.projection) {
-                geojson.crs = this.createCRSObject(obj);
-            }
+
+        function isGeometry(input) {
+            return input.hasOwnProperty("parts") && input.hasOwnProperty("points");
         }
+
         return SuperMap.Format.JSON.prototype.write.apply(this, [geojson, pretty]);
     },
 
@@ -665,14 +663,34 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
     },
 
     createAttributes: function (feature) {
-        var attr = {},
-            names = feature.fieldNames,
-            values = feature.fieldValues;
-        for (var i in names) {
-            attr[names[i]] = values[i];
+        if (!feature) {
+            return null;
         }
+        var attr = {};
+        processFieldsAttributes(feature, attr);
+        var exceptKeys = ["fieldNames", "fieldValues", "geometry"];
+        for (var key in feature) {
+            if (exceptKeys.indexOf(key) > -1) {
+                continue;
+            }
+            attr[key] = feature[key];
+        }
+
+        function processFieldsAttributes(feature, attributes) {
+            if (!(feature.hasOwnProperty("fieldNames") && feature.hasOwnProperty("fieldValues"))) {
+                return;
+            }
+            var names = feature.fieldNames,
+                values = feature.fieldValues;
+            for (var i in names) {
+                attributes[names[i]] = values[i];
+            }
+        }
+
+
         return attr;
     },
+
 
     toGeometry: function (geometry) {
         var me = this,

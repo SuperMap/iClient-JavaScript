@@ -8,12 +8,12 @@
  * 数据栅格查询服务，支持查询指定地理位置的栅格信息
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
 
-require('./CoreServiceBase');
+require('./ServiceBase');
 require('./GetGridCellInfosParameter');
-SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: datasetName
@@ -66,7 +66,7 @@ SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.CoreServiceBase,
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
         if (!!options) {
             SuperMap.Util.extend(this, options);
         }
@@ -78,7 +78,7 @@ SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.CoreServiceBase,
      */
     destroy: function () {
         var me = this;
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
         me.X = null;
         me.Y = null;
         me.datasetName = null;

@@ -10,9 +10,9 @@
  * 一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；
  * 一种是使用 AsyncResponder 类实现异步处理。
  */
-require('./CoreServiceBase');
+require('./ServiceBase');
 require('./SetLayerStatusParameters');
-SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
 
     lastparams: null,
 
@@ -32,7 +32,7 @@ SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.CoreServiceBase, {
      */
     initialize: function (url, options) {
         var me = this;
-        SuperMap.CoreServiceBase.prototype.initialize.apply(me, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(me, arguments);
         if (options) {
             SuperMap.Util.extend(me, options);
         }
@@ -44,7 +44,7 @@ SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
         SuperMap.Util.reset(this);
     },
 

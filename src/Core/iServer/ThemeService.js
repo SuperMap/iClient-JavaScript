@@ -7,11 +7,11 @@
  * 专题图服务类。
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
+require('./ServiceBase');
 require('./ThemeParameters');
-SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.ThemeService
@@ -35,7 +35,7 @@ SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -54,7 +54,7 @@ SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**

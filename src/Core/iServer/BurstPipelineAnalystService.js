@@ -8,11 +8,11 @@
  * 爆管分析服务类;即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
-require('./CoreServiceBase');
+require('./NetworkAnalystServiceBase');
 require('./BurstPipelineAnalystParameters');
-SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.BurstPipelineAnalystService
@@ -29,7 +29,7 @@ SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.CoreServiceB
      */
 
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -37,7 +37,7 @@ SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.CoreServiceB
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**

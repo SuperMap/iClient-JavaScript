@@ -13,7 +13,8 @@
 <script type="text/javascript">
     var map, findPathService, findPathParameter,
             baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
-            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun",
+            iconUrl = "http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/walk.png";
     //最佳路径分析必须按照指定顺序对站点进行访问
     init();
 
@@ -27,8 +28,12 @@
             maxZoom: 18,
             zoom: 3
         });
-        L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
-        findPathProcess();
+        L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
+                .addTo(map)
+                .on("load", function () {
+                    findPathProcess();
+                });
+
     }
     function findPathProcess() {
         //添加站点
@@ -62,32 +67,21 @@
             hasLeastEdgeCount: false,
             parameter: analystParameter
         });
+        var myIcon = L.icon({
+            iconUrl: iconUrl,
+            iconSize: [20, 20]
+        });
         //进行查找
         findPathService.findPath(findPathParameter)
                 .on('complete', function (serviceResult) {
-                    // L.geoJSON(serviceResult.result, {color: "red"}).addTo(map);
-                    var result = serviceResult.result;
-                    var features = [];
-                    var guideFeatures = [];      //显示每个pathGuideItem和对应的描述信息
-                    if (result.pathList) {
-                        for (var i = 0, pathList = result.pathList, len = pathList.length; i < len; i++) {
-                            for (var j = 0; j < pathList[i].route.points.length; j++) {
-                                features.push([pathList[i].route.points[j].y, pathList[i].route.points[j].x]);
+                    serviceResult.result.map(function (result) {
+                        L.polyline(result.route).addTo(map);
+                        L.geoJSON(result.pathGuideItems, {
+                            pointToLayer: function (geoPoints, latlng) {
+                                L.marker(latlng, {icon: myIcon}).addTo(map);
                             }
-                        }
-                        for (var k = 0; k < result.pathList[0].pathGuideItems.length; k++) {
-                            guideFeatures.push([result.pathList[0].pathGuideItems[k].geometry.points[0].y, result.pathList[0].pathGuideItems[k].geometry.points[0].x]);
-                        }
-                    }
-                    L.polyline(features).addTo(map);
-
-                    var myIcon = L.icon({
-                        iconUrl: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/walk.png',
-                        iconSize:[20, 20]
-                    });
-                    for (var l = 0; l < guideFeatures.length; l++) {
-                        L.marker(guideFeatures[l], {icon: myIcon}).addTo(map);
-                    }
+                        }).addTo(map);
+                    })
                 });
     }
 

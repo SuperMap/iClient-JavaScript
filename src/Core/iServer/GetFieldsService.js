@@ -7,11 +7,11 @@
  * 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
+require('./ServiceBase');
 
-SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: datasource
@@ -50,7 +50,7 @@ SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * dataset - {String}
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -58,7 +58,7 @@ SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
         var me = this;
         me.datasource = null;
         me.dataset = null;

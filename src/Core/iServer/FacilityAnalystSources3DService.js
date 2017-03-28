@@ -11,11 +11,11 @@
  * 最近设施分析结果通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
+require('./ServiceBase');
 require('./FacilityAnalystSources3DParameters');
-SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.FacilityAnalystSources3DService
@@ -32,7 +32,7 @@ SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.CoreServ
      */
 
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -40,7 +40,7 @@ SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.CoreServ
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**

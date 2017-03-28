@@ -10,10 +10,10 @@
  *      另一种是使用 AsyncResponder 类实现异步处理。
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
-SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.CoreServiceBase, {
+require('./ServiceBase');
+SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.ChartFeatureInfoSpecsService
@@ -29,7 +29,7 @@ SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.CoreService
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this,arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this,arguments);
     },
 
     /**
@@ -37,7 +37,7 @@ SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.CoreService
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
         SuperMap.Util.reset(this);
     },
 

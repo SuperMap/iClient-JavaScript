@@ -10,53 +10,53 @@
  * 选址分区分析结果通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
-require('./CoreServiceBase');
+require('./NetworkAnalystServiceBase');
 require('./FindLocationParameters');
-SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.FindLocationService
      * 选址分区分析服务类构造函数。
      *
      * 例如：
-     * (start code)     
+     * (start code)
      * var findLocationService = new SuperMap.REST.FindLocationService(url, {
      *     eventListeners: {
      *         "processCompleted": findLocationCompleted, 
      *		   "processFailed": findLocationError
      *		   }
      * });
-     * (end)     
+     * (end)
      *
      * Parameters:
      * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
-     * options - {Object} 参数。     
+     * options - {Object} 参数。
      *
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function(url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+    initialize: function (url, options) {
+        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
-    
+
     /**
      * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。  
+     * 释放资源，将引用资源的属性置空。
      */
-    destroy: function() { 
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+    destroy: function () {
+        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
-    
+
     /**
      * APIMethod: processAsync
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<FindLocationParameters>} 
+     * params - {<FindLocationParameters>}
      */
-    processAsync: function(params) {
+    processAsync: function (params) {
         if (!params) {
             return;
         }
@@ -82,28 +82,49 @@ SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.CoreServiceBase, {
             failure: me.serviceProcessFailed
         });
     },
-    
+
     /**
      * Method: getCentersJson
      * 将数组对象转化为JSON字符串。
      *
      * Parameters:
-     * params - {Array} 
+     * params - {Array}
      *
      * Returns:
      * {Object} 转化后的JSON字符串。
      */
-    getCentersJson: function(params) {
+    getCentersJson: function (params) {
         var json = "[",
             len = params ? params.length : 0;
-        for (var i=0; i<len; i++) {
-            if(i >0) json += ",";
+        for (var i = 0; i < len; i++) {
+            if (i > 0) json += ",";
             json += SuperMap.Util.toJSON(params[i]);
         }
         json += "]";
         return json;
     },
-    
+    /**
+     * Method: toGeoJSONResult
+     * 将含有geometry的数据转换为geojson格式。
+     *
+     * Parameters:
+     * result - {Object} 服务器返回的结果对象。
+     */
+    toGeoJSONResult: function (result) {
+        if (!result) {
+            return null;
+        }
+        var analystResult = {};
+        var geoJSONFormat = new SuperMap.Format.GeoJSON();
+        if (result.demandResults) {
+            analystResult.demandResults = JSON.parse(geoJSONFormat.write(result.demandResults));
+        }
+        if (result.supplyResults) {
+            analystResult.supplyResults = JSON.parse(geoJSONFormat.write(result.supplyResults)); }
+
+        return analystResult;
+    },
+
     CLASS_NAME: "SuperMap.REST.FindLocationService"
 });
 

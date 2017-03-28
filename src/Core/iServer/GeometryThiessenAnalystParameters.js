@@ -12,7 +12,7 @@ GeometryThiessenAnalystParameters = SuperMap.Class(ThiessenAnalystParameters, {
 
     /**
      * Property: points
-     * {Array(<SuperMap.Geometry.Point>)}
+     * {Array(<Point||Array>)}
      * 使用点数组进行分析时使用的几何对象。
      */
     points: null,
@@ -25,7 +25,7 @@ GeometryThiessenAnalystParameters = SuperMap.Class(ThiessenAnalystParameters, {
      * options - {Object} 参数。
      *
      * Allowed options properties:
-     * points - {Array(<SuperMap.Geometry.Point>)} 使用点数组进行分析时使用的几何对象。
+     * points - {Array(<Point||Array>)} 使用点数组进行分析时使用的几何对象。
      */
     initialize: function (options) {
         ThiessenAnalystParameters.prototype.initialize.apply(this, arguments);

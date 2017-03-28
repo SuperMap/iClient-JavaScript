@@ -9,11 +9,11 @@
  * 用来存储指定的任意两点间的资源消耗。
  * 耗费矩阵分析结果通过该类支持的事件的监听函数参数获取
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
-require('./CoreServiceBase');
+require('./NetworkAnalystServiceBase');
 require('./ComputeWeightMatrixParameters');
-SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.ComputeWeightMatrixService
@@ -40,7 +40,7 @@ SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.CoreServiceBa
      */
 
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -48,7 +48,7 @@ SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.CoreServiceBa
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**

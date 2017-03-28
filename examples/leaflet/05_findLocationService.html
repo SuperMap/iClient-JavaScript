@@ -27,28 +27,23 @@
             maxZoom: 18,
             zoom: 1
         });
-        L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
-        findLocationProcess();
+        L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
+                .addTo(map)
+                .on("load", function () {
+                    findLocationProcess();
+                });
+
     }
     function findLocationProcess() {
         //添加设施点
-        var marker1 = L.marker([-593.56822512495194, 1675.9256791377206]).addTo(map);
-        var marker2 = L.marker([-2358.0414663985171, 2820.35101097629]).addTo(map);
-        var marker3 = L.marker([-3647.0074300836109, 2909.4396668115278]).addTo(map);
-        var marker4 = L.marker([-5616.5950974905827, 1544.5037476378677]).addTo(map);
-        var marker5 = L.marker([-2130.4887600981415, 6623.5972101719526]).addTo(map);
-        var marker6 = L.marker([-4504.2328567816048, 5482.4979617984973]).addTo(map);
-        var marker7 = L.marker([-1627.6012900626256, 6940.6579024271468]).addTo(map);
-        var marker8 = L.marker([-5747.5063918659716, 8215.9188781715948]).addTo(map);
-        /* //为设施点添加弹窗
-         marker1.bindPopup("设施点一");
-         marker2.bindPopup("设施点二");
-         marker3.bindPopup("设施点三");
-         marker4.bindPopup("设施点四");
-         marker5.bindPopup("设施点五");
-         marker6.bindPopup("设施点六");
-         marker7.bindPopup("设施点七");
-         marker8.bindPopup("设施点八");*/
+        L.marker([-593.56822512495194, 1675.9256791377206]).addTo(map);
+        L.marker([-2358.0414663985171, 2820.35101097629]).addTo(map);
+        L.marker([-3647.0074300836109, 2909.4396668115278]).addTo(map);
+        L.marker([-5616.5950974905827, 1544.5037476378677]).addTo(map);
+        L.marker([-2130.4887600981415, 6623.5972101719526]).addTo(map);
+        L.marker([-4504.2328567816048, 5482.4979617984973]).addTo(map);
+        L.marker([-1627.6012900626256, 6940.6579024271468]).addTo(map);
+        L.marker([-5747.5063918659716, 8215.9188781715948]).addTo(map);
 
         // 设置设施点的资源供给中心
         var supplyCenterType_FIXEDCENTER = SupplyCenterType.FIXEDCENTER,
@@ -130,20 +125,11 @@
         //进行查找
         findLocationService.findLocation(findLocationParameter)
                 .on('complete', function (serviceResult) {
-                    //L.geoJSON(serviceResult.result, {color: "red"}).addTo(map);
-                    var result = serviceResult.result;
-                    var features = [];
-                    if (result.demandResults) {
-                        for (var i = 0, demandResults = result.demandResults, len = demandResults.length; i < len; i++) {
-                            for (j = 0; j < demandResults[i].geometry.points.length; j++) {
-                                features.push([demandResults[i].geometry.points[j].y, demandResults[i].geometry.points[j].x]);
-                            }
-
+                    L.geoJSON(serviceResult.result.demandResults, {
+                        pointToLayer: function (geoJsonPoint, latlng) {
+                            return L.circleMarker(latlng, {radius: 1, color: "green"});
                         }
-                    }
-                    for (k = 0; k < features.length; k++) {
-                        L.circleMarker(features[k], {color: 'green', radius: 1}).addTo(map)
-                    }
+                    }).addTo(map);
                 });
     }
 </script>

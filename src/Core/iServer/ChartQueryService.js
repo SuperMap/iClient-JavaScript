@@ -10,12 +10,12 @@
  *      2.通过监听 QueryEvent.PROCESS_COMPLETE 事件获取。
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
 require('../format/GeoJSON');
-require('./CoreServiceBase');
+require('./ServiceBase');
 require('./ChartQueryParameters');
-SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Property: returnContent
@@ -66,7 +66,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * (end)
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
         options = options || {};
         if (options) {
             SuperMap.Util.extend(this, options);
@@ -100,7 +100,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.CoreServiceBase, {
      *
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
         me.returnContent = null;
         me.format = null;
     },

@@ -82,7 +82,7 @@ InterpolationAnalystParameters = SuperMap.Class({
 
     /**
      * APIProperty: inputPoints
-     * {Array <SuperMap.Geometry.Point>} 用于做插值分析的离散点（离散点包括Z值）集合。
+     * {Array <Point||Array>} 用于做插值分析的离散点（离散点包括Z值）集合。
      * 当插值分析类型（InterpolationAnalystType）为 geometry 时，此参数为必设参数。
      * 通过离散点直接进行插值分析不需要指定输入数据集inputDatasourceName，inputDatasetName以及zValueFieldName。
      */
@@ -120,7 +120,7 @@ InterpolationAnalystParameters = SuperMap.Class({
      * outputDatasourceName - {String} 插值分析结果数据源的名称。
      * pixelFormat - {<SuperMap.REST.PixelFormat>} 指定结果栅格数据集存储的像素格式。
      * dataset - {String} 用于做插值分析的数据源中数据集的名称。
-     * inputPoints - {Array <SuperMap.Geometry.Point>} 用于做插值分析的离散点集合。
+     * inputPoints - {Array <Point||Array>} 用于做插值分析的离散点集合。
      * InterpolationAnalystType - {String} 插值分析类型（dataset或geometry），默认为dataset 。
      */
     initialize: function (options) {

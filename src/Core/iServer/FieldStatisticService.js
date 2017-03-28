@@ -8,11 +8,11 @@
  * 字段查询统计服务类。用来完成对指定数据集指定字段的查询统计分析，即求平均值，最大值等。
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
+require('./ServiceBase');
 
-SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: datasource
@@ -67,7 +67,7 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * statisticMode - {<StatisticMode>} 字段查询统计的方法类型。
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -78,7 +78,7 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
         var me = this;
         me.datasource = null;
         me.dataset = null;

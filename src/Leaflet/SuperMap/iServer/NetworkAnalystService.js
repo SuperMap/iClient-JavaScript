@@ -77,15 +77,17 @@ NetworkAnalystService = ServiceBase.extend({
      * 最近设施分析服务:指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
      * @param params
      *      <FindClosestFacilitiesParameters>
+     * @param resultFormat
      */
-    findClosestFacilities: function (params) {
-        var me = this, param = me._processParams(params);
+    findClosestFacilities: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var findClosestFacilitiesService = new SuperMap.REST.FindClosestFacilitiesService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
         findClosestFacilitiesService.processAsync(param);
         return me;
@@ -94,15 +96,17 @@ NetworkAnalystService = ServiceBase.extend({
      *上游/下游 关键设施查找资源服务:查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
      * @param params
      *      <FacilityAnalystStreamParameters>
+     * @param resultFormat
      */
-    streamFacilityAnalyst: function (params) {
-        var me = this, param = me._processParams(params);
+    streamFacilityAnalyst: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var facilityAnalystStreamService = new SuperMap.REST.FacilityAnalystStreamService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
         facilityAnalystStreamService.processAsync(param);
         return me;
@@ -111,15 +115,17 @@ NetworkAnalystService = ServiceBase.extend({
      * 选址分区分析服务：确定一个或多个待建设施的最佳或最优位置
      * @param params
      *      <FindLocationParameters>
+     * @param resultFormat
      */
-    findLocation: function (params) {
-        var me = this, param = me._processParams(params);
+    findLocation: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var findLocationService = new SuperMap.REST.FindLocationService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
         findLocationService.processAsync(param);
         return me;
@@ -128,15 +134,17 @@ NetworkAnalystService = ServiceBase.extend({
      * 最佳路径分析服务:在网络数据集中指定一些节点，按照节点的选择顺序，顺序访问这些节点从而求解起止点之间阻抗最小的路经。
      * @param params
      *      <FindPathParameters>
+     * @param resultFormat
      */
-    findPath: function (params) {
-        var me = this, param = me._processParams(params);
+    findPath: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var findPathService = new SuperMap.REST.FindPathService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
         findPathService.processAsync(param);
         return me;
@@ -144,16 +152,18 @@ NetworkAnalystService = ServiceBase.extend({
     /**
      * 旅行商分析服务:路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
      * @param params
-     *      <FindTSPPathsParameters>
+     * <FindTSPPathsParameters>
+     * @param resultFormat
      */
-    findTSPPaths: function (params) {
-        var me = this, param = me._processParams(params);
+    findTSPPaths: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var findTSPPathsService = new SuperMap.REST.FindTSPPathsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
         findTSPPathsService.processAsync(param);
         return me;
@@ -162,15 +172,17 @@ NetworkAnalystService = ServiceBase.extend({
      * 多旅行商分析服务:也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。查找经济有效的配送路径，并给出相应的行走路线。
      * @param params
      *      <FindMTSPPathsParameters>
+     * @param resultFormat
      */
-    findMTSPPaths: function (params) {
-        var me = this, param = me._processParams(params);
+    findMTSPPaths: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var findMTSPPathsService = new SuperMap.REST.FindMTSPPathsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
         findMTSPPathsService.processAsync(param);
         return me;
@@ -179,15 +191,17 @@ NetworkAnalystService = ServiceBase.extend({
      * 服务区分析服务：以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
      * @param params
      *      <FindServiceAreasParameters>
+     * @param resultFormat
      */
-    findServiceAreas: function (params) {
-        var me = this, param = me._processParams(params);
+    findServiceAreas: function (params, resultFormat) {
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var findServiceAreasService = new SuperMap.REST.FindServiceAreasService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me.processCompleted,
                 processFailed: me.processFailed
-            }
+            },
+            format: format
         });
         findServiceAreasService.processAsync(param);
         return me;
@@ -225,6 +239,10 @@ NetworkAnalystService = ServiceBase.extend({
         });
         updateTurnNodeWeightService.processAsync(params);
         return me;
+    },
+
+    processCompleted: function (serverResult) {
+        this.fire('complete', {result: serverResult.result, originalResult: serverResult.originalResult});
     },
 
     _processParams: function (params) {
@@ -265,8 +283,11 @@ NetworkAnalystService = ServiceBase.extend({
             }
         }
         return params;
-
+    },
+    _processFormat: function (resultFormat) {
+        return (resultFormat) ? resultFormat : Format.GEOJSON;
     }
+
 });
 
 L.supermap.networkAnalystService = function (url, options) {

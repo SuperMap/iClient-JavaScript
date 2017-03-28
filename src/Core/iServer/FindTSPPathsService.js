@@ -11,45 +11,45 @@
  * 该类负责将客户端指定的旅行商分析参数传递给服务端，并接收服务端返回的结果数据。
  * 旅行商分析结果通过该类支持的事件的监听函数参数获取
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
-require('./CoreServiceBase');
+require('./NetworkAnalystServiceBase');
 require('./FindTSPPathsParameters');
-SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.FindTSPPathsService
      * 最佳路径分析服务类构造函数。
      *
-     * 例如： 
-     * (start code)    
+     * 例如：
+     * (start code)
      * var myFindTSPPathsService = new SuperMap.REST.FindTSPPathsService(url, {
      *     eventListeners: {
      *	      "processCompleted": findTSPPathsCompleted, 
      *		  "processFailed": findTSPPathsError
      *		  }
      *  });
-     * (end)    
+     * (end)
      *
      * Parameters:
      * url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
      * http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
      * 例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
-     * options - {Object} 参数。     
+     * options - {Object} 参数。
      *
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
      * APIMethod: destroy
-     * 释放资源,将引用的资源属性置空。  
+     * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -57,7 +57,7 @@ SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 负责将客户端的查询参数传递到服务端。
      *
      * Parameters:
-     * params - {<FindTSPPathsParameters>} 
+     * params - {<FindTSPPathsParameters>}
      */
     processAsync: function (params) {
         if (!params) {
@@ -85,7 +85,7 @@ SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 将节点对象转化为JSON字符串。
      *
      * Parameters:
-     * params - {<FindTSPPathsParameters>} 
+     * params - {<FindTSPPathsParameters>}
      *
      * Returns:
      * {Object} 转化后的JSON字符串。
@@ -109,7 +109,39 @@ SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.CoreServiceBase, {
         }
         return jsonParameters;
     },
+    /**
+     * Method: toGeoJSONResult
+     * 将含有geometry的数据转换为geojson格式。
+     *
+     * Parameters:
+     * result - {Object} 服务器返回的结果对象。
+     */
+    toGeoJSONResult: function (result) {
+        if (!result || !result.tspPathList) {
+            return null;
+        }
+        //只处理route ,pathGuide,edgeFeatures,nodeFeatures
+        var analystResults = [];
+        var geoJSONFormat = new SuperMap.Format.GeoJSON();
+        result.tspPathList.forEach(function (path) {
+            var analystResult = {};
+            if (path.route) {
+                analystResult.route = JSON.parse(geoJSONFormat.write(path.route));
+            }
+            if (path.pathGuideItems) {
+                analystResult.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
 
+            }
+            if (path.edgeFeatures) {
+                analystResult.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
+            }
+            if (path.nodeFeatures) {
+                analystResult.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
+            }
+            analystResults.push(analystResult);
+        });
+        return analystResults;
+    },
     CLASS_NAME: "SuperMap.REST.FindTSPPathsService"
 });
 

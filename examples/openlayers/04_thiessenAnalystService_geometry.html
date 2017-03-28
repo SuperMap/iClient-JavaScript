@@ -47,7 +47,7 @@
     function thiessenAnalystProcess() {
 
         //创建几何泰森多边形参数
-        pointsList = [
+        var pointsList = [
             new ol.geom.Point([5238.998556, -1724.229865]),
             new ol.geom.Point([4996.270055, -2118.538477]),
             new ol.geom.Point([5450.34263, -2070.794081]),
@@ -67,33 +67,22 @@
         thiessenAnalystService = new ol.supermap.SpatialAnalystService(serviceUrl);
         thiessenAnalystService.thiessenAnalysis(gThiessenAnalystParameters)
                 .on('complete', function (serviceResult) {
-                    points = [];
-                    var i, j;
-                    for (i = 0; i < serviceResult.element.result.regions.length; i++) {
-                        var c = serviceResult.element.result.regions[i];
-                        for (j = 0; j < c.points.length; j++) {
-                            var point = [serviceResult.element.result.regions[i].points[j].x, serviceResult.element.result.regions[i].points[j].y];
-                            points.push(point);
-                        }
-                        var polygon = new ol.geom.Polygon([points]);
-                        var polygonLayer = new ol.layer.Vector({
-                            source: new ol.source.Vector({
-                                features: [new ol.Feature(polygon)]
-                                //(new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)
+                    var vectorSource = new ol.source.Vector({
+                        features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)
+                    });
+                    var polygonLayer = new ol.layer.Vector({
+                        source: vectorSource,
+                        style: new ol.style.Style({
+                            stroke: new ol.style.Stroke({
+                                color: 'rgba(100, 100, 225, 10)',
+                                width: 2
                             }),
-                            style: new ol.style.Style({
-                                stroke: new ol.style.Stroke({
-                                    color: 'rgba(100, 100, 225, 10)',
-                                    width: 3
-                                }),
-                                fill: new ol.style.Fill({
-                                    color: 'rgba(0, 0, 255, 0.1)'
-                                })
+                            fill: new ol.style.Fill({
+                                color: 'rgba(0, 0, 255, 0.1)'
                             })
-                        });
-                        map.addLayer(polygonLayer);
-                        points = [];
-                    }
+                        })
+                    });
+                    map.addLayer(polygonLayer);
                 })
     }
 </script>

@@ -96,37 +96,26 @@
         findTSPPathsService.findTSPPaths(findTSPPathsParameter)
                 .on('complete', function (serviceResult) {
                     findTSPPathsResult = serviceResult.element.result;
-                    //添加路径
-                    addPath(findTSPPathsResult);
+                    serviceResult.element.result.map(function (result) {
+                        var vectorSource = new ol.source.Vector({
+                            features: (new ol.format.GeoJSON()).readFeatures(result.route)
+                        });
+                        var pathLayer = new ol.layer.Vector({
+                            source: vectorSource,
+                            style: new ol.style.Style({
+                                stroke: new ol.style.Stroke({
+                                    color: 'rgba(100, 100, 225, 10)',
+                                    width: 3
+                                }),
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(0, 0, 255, 0.1)'
+                                })
+                            })
+                        });
+                        map.addLayer(pathLayer);
+                    });
                     map.addLayer(stopLayer)
                 });
-
-        function addPath(result) {
-            var points = [];
-            if (result.tspPathList) {
-                for (var j = 0; j < result.tspPathList[0].route.points.length; j++) {
-                    points.push([result.tspPathList[0].route.points[j].x, result.tspPathList[0].route.points[j].y])
-                }
-                var pathLayer = new ol.layer.Vector({
-                    source: new ol.source.Vector({
-                        features: [new ol.Feature(
-                                new ol.geom.LineString(points)
-                        )]
-                        //(new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)
-                    }),
-                    style: new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: 'rgba(100, 100, 225, 10)',
-                            width: 3
-                        }),
-                        fill: new ol.style.Fill({
-                            color: 'rgba(0, 0, 255, 0.1)'
-                        })
-                    })
-                });
-                map.addLayer(pathLayer);
-            }
-        }
     }
 </script>
 </body>

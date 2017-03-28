@@ -90,62 +90,41 @@
             hasLeastEdgeCount: false,
             parameter: analystParameter
         });
+
         //进行查找
         findPathService.findPath(findPathParameter)
                 .on('complete', function (serviceResult) {
-                    var result = serviceResult.element.result;
-                    var features = [];
-                    var guideFeatures = [];      //存储pathGuideItems
-                    var pathLayer, guideLayer;
-                    if (result.pathList) {
-                        for (var i = 0, pathList = result.pathList, len = pathList.length; i < len; i++) {
-                            for (var j = 0; j < pathList[i].route.points.length; j++) {
-                                features.push([pathList[i].route.points[j].x, pathList[i].route.points[j].y]);
-                            }
-                        }
-                        for (var k = 0; k < result.pathList[0].pathGuideItems.length; k++) {
-                            guideFeatures.push([result.pathList[0].pathGuideItems[k].geometry.points[0].x, result.pathList[0].pathGuideItems[k].geometry.points[0].y]);
-                        }
-                    }
-                    //显示路径
-                    pathLayer = new ol.layer.Vector({
-                        source: new ol.source.Vector({
-                            features: [new ol.Feature(
-                                    new ol.geom.LineString(features)
-                            )]
-                        }),
-                        style: new ol.style.Style({
-                            stroke: new ol.style.Stroke({
-                                color: 'rgba(100, 100, 225, 10)',
-                                width: 3
-                            }),
-                            fill: new ol.style.Fill({
-                                color: 'rgba(0, 0, 255, 0.1)'
-                            })
-                        })
-                    });
-
-                    //显示路径上的pathGuideItems
-                    var iconStyle_guide = new ol.style.Style({
+                    var pathLayerStyle = new ol.style.Style({
                         image: new ol.style.Icon(({
                             src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/walk.png',
                             size: [20, 20]
                         }))
                     });
-                    for (var l = 0; l < guideFeatures.length; l++) {
-                        var guidePoint = new ol.geom.Point(guideFeatures[l]);
-                        var guideFeature = new ol.Feature(guidePoint);
-                        guideFeature.setStyle(iconStyle_guide);
-                        var guideSource = new ol.source.Vector({
-                            features: [guideFeature]
+                    var guideLayerStyle = new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(100, 100, 225, 10)',
+                            width: 3
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 0, 255, 0.1)'
+                        })
+                    });
+                    serviceResult.element.result.map(function (result) {
+                        var vectorSource = new ol.source.Vector({
+                            features: (new ol.format.GeoJSON()).readFeatures(result.route)
                         });
-                        guideLayer = new ol.layer.Vector({
-                            source: guideSource
+                        var pathLayer = new ol.layer.Vector({
+                            source: vectorSource,
+                            style: pathLayerStyle
+                        });
+                        map.addLayer(pathLayer);
+                        var guideLayer = new ol.layer.Vector({
+                            source: vectorSource,
+                            style: guideLayerStyle
                         });
                         map.addLayer(guideLayer);
-                    }
-                    map.addLayer(pathLayer);
-                    map.addLayer(stopLayer);
+                        map.addLayer(stopLayer);
+                    });
                 });
     }
 

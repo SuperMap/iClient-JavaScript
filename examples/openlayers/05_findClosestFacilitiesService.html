@@ -114,34 +114,24 @@
         //进行查找
         findClosetFacilitiesService.findClosestFacilities(findClosetFacilitiesParameter)
                 .on('complete', function (serviceResult) {
-                    var result = serviceResult.element.result;
-                    //提取出路径点
-                    var points = [];
-                    if (result.facilityPathList) {
-                        for (var i = 0, facilityPathList = result.facilityPathList, len = facilityPathList.length; i < len; i++) {
-                            for (var j = 0; j < facilityPathList[i].route.points.length; j++) {
-                                points.push([facilityPathList[i].route.points[j].x, facilityPathList[i].route.points[j].y]);
-                            }
-                        }
-                    }
-                    //将路径显示在地图上
-                    var path = new ol.geom.LineString(points);
-                    var pathLayer = new ol.layer.Vector({
-                        source: new ol.source.Vector({
-                            features: [new ol.Feature(path)]
-                            //(new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)
-                        }),
-                        style: new ol.style.Style({
-                            stroke: new ol.style.Stroke({
-                                color: 'rgba(100, 100, 225, 10)',
-                                width: 3
-                            }),
-                            fill: new ol.style.Fill({
-                                color: 'rgba(0, 0, 255, 0.1)'
+                    serviceResult.element.result.map(function (result) {
+                        var vectorSource = new ol.source.Vector({
+                            features: (new ol.format.GeoJSON()).readFeatures(result.route)
+                        });
+                        var pathLayer = new ol.layer.Vector({
+                            source: vectorSource,
+                            style: new ol.style.Style({
+                                stroke: new ol.style.Stroke({
+                                    color: 'rgba(100, 100, 225, 10)',
+                                    width: 3
+                                }),
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(0, 0, 255, 0.1)'
+                                })
                             })
-                        })
+                        });
+                        map.addLayer(pathLayer);
                     });
-                    map.addLayer(pathLayer);
                     map.addLayer(facilityLayer);
                     map.addLayer(eventLayer);
                 });

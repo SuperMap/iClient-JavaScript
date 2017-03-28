@@ -8,11 +8,11 @@
  * 该类负责将从客户端指定的服务器上获取该服务器提供的地图信息
  * 结果保存在一个object对象中，对象包含一个属性result为iServer返回的json对象
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
+require('./ServiceBase');
 
-SuperMap.REST.MapService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: projection
@@ -44,7 +44,7 @@ SuperMap.REST.MapService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -69,7 +69,7 @@ SuperMap.REST.MapService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
         var me = this;
         if (me.events) {
             me.events.un(me.eventListeners);

@@ -9,9 +9,9 @@
  * 叠加分析结果通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
+require('./ServiceBase');
 require('./DatasetOverlayAnalystParameters');
 require('./GeometryOverlayAnalystParameters');
 SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
