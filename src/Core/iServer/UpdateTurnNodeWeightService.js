@@ -2,9 +2,9 @@
  * 本程序只能在有效的授权许可下使用。
  * 未经许可，不得以任何手段擅自使用或传播。*/
 
-require('./CoreServiceBase');
+require('./NetworkAnalystServiceBase');
 require('./UpdateTurnNodeWeightParameters');
-SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.UpdateTurnNodeWeightService
@@ -28,7 +28,7 @@ SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.CoreServiceB
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -36,7 +36,7 @@ SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.CoreServiceB
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**

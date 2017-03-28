@@ -8,11 +8,11 @@
  * 切片列表信息查询服务类;即查询切片地图服务的切片列表，返回切片集名称、地图切片元数据信息、切片版本集信息
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
+require('./ServiceBase');
 
-SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
 
 
     /**
@@ -30,7 +30,7 @@ SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.CoreServiceBase, {
      */
 
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -38,7 +38,7 @@ SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**

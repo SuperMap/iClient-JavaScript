@@ -10,11 +10,11 @@
  * 该类负责将客户端指定的最近设施分析参数传递给服务端，并接收服务端返回的结果数据。
  * 最近设施分析结果通过该类支持的事件的监听函数参数获取
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
+require('./ServiceBase');
 require('./FacilityAnalystSinks3DParameters');
-SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.FacilityAnalystSinks3DService
@@ -41,7 +41,7 @@ SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.CoreServic
      */
 
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -49,7 +49,7 @@ SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.CoreServic
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**

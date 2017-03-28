@@ -113,37 +113,24 @@
         //进行查找
         findMTSPPathsService.findMTSPPaths(findMTSPPathsParameter)
                 .on('complete', function (serviceResult) {
-                    //L.geoJSON(serviceResult.result, {color: "red"}).addTo(map);
-                    var result = serviceResult.element.result;
-                    var points = [];
-                    if (result.pathList) {
-                        for (var i = 0; i < result.pathList.length; i++) {
-                            for (var j = 0; j < result.pathList[0].route.points.length; j++) {
-                                var point = [result.pathList[i].route.points[j].x, result.pathList[i].route.points[j].y];
-                                points.push(point);
-                            }
-
-                            var pathLayer = new ol.layer.Vector({
-                                source: new ol.source.Vector({
-                                    features: [new ol.Feature(
-                                            new ol.geom.LineString(points)
-                                    )]
-                                    //(new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)
+                    serviceResult.element.result.map(function (result) {
+                        var vectorSource = new ol.source.Vector({
+                            features: (new ol.format.GeoJSON()).readFeatures(result.route)
+                        });
+                        var pathLayer = new ol.layer.Vector({
+                            source: vectorSource,
+                            style: new ol.style.Style({
+                                stroke: new ol.style.Stroke({
+                                    color: 'rgba(100, 100, 225, 10)',
+                                    width: 3
                                 }),
-                                style: new ol.style.Style({
-                                    stroke: new ol.style.Stroke({
-                                        color: 'rgba(100, 100, 225, 10)',
-                                        width: 3
-                                    }),
-                                    fill: new ol.style.Fill({
-                                        color: 'rgba(0, 0, 255, 0.1)'
-                                    })
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(0, 0, 255, 0.1)'
                                 })
-                            });
-                            map.addLayer(pathLayer);
-                            points = [];
-                        }
-                    }
+                            })
+                        });
+                        map.addLayer(pathLayer);
+                    });
                     map.addLayer(facilityLayer);
                     map.addLayer(destLayer);
                 });

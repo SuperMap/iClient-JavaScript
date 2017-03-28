@@ -8,14 +8,14 @@
  * 获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
 
 // TODO 待iServer featureResult GeoJSON表述bug修复当修改此类中TODO注释说明的地方
 require('../format/GeoJSON');
-require('./CoreServiceBase');
+require('./ServiceBase');
 
-SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Property: returnContent
@@ -76,7 +76,7 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.CoreServiceBase, 
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
         options = options || {};
         if (options) {
             SuperMap.Util.extend(this, options);
@@ -105,7 +105,7 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.CoreServiceBase, 
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
         var me = this;
         me.returnContent = null;
         me.fromIndex = null;

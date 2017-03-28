@@ -27,8 +27,12 @@
             maxZoom: 18,
             zoom: 1
         });
-        L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
-        thiessenAnalystProcess();
+        L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
+                .addTo(map)
+                .on("load", function () {
+                    thiessenAnalystProcess();
+                });
+
     }
 
     function thiessenAnalystProcess() {
@@ -38,18 +42,7 @@
         });
         thiessenAnalystService.thiessenAnalysis(dThiessenAnalystParameters)
                 .on('complete', function (serviceResult) {
-                    //resultLayer = L.geoJSON(serviceResult.result, {color: "blue"}).addTo(map);
-                    points = [];
-                    var i,j;
-                    for(i = 0; i<serviceResult.result.regions.length; i++){
-                        var c = serviceResult.result.regions[i];
-                        for(j=0; j<c.points.length; j++){
-                            var point = [serviceResult.result.regions[i].points[j].y,serviceResult.result.regions[i].points[j].x];
-                            points.push(point);
-                        }
-                        L.polygon([points]).addTo(map);
-                        points = [];
-                    }
+                    resultLayer = L.geoJSON(serviceResult.result, {weight: 2}).addTo(map);
                 });
     }
 </script>

@@ -286,7 +286,7 @@ SpatialAnalystService = ServiceBase.extend({
      * @param resultFormat
      */
     thiessenAnalysis: function (params, resultFormat) {
-        var me = this, format = me._processFormat(resultFormat);
+        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
         var thiessenAnalystService = new SuperMap.REST.ThiessenAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
@@ -295,8 +295,12 @@ SpatialAnalystService = ServiceBase.extend({
             },
             format: format
         });
-        thiessenAnalystService.processAsync(params);
+        thiessenAnalystService.processAsync(param);
         return me;
+    },
+
+    processCompleted: function (serverResult) {
+        this.fire('complete', {result: serverResult.result, originalResult: serverResult.originalResult});
     },
 
     _processParams: function (params) {

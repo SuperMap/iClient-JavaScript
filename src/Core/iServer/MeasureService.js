@@ -8,11 +8,11 @@
  * 该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
+require('./ServiceBase');
 require('./MeasureParameters');
-SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: measureMode
@@ -43,7 +43,7 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * measureMode - {<MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -54,7 +54,7 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
         var me = this;
         me.measureMode = null;
     },

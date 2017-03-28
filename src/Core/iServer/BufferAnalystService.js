@@ -126,7 +126,6 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
         }
         return analystResult;
     },
-
     CLASS_NAME: "SuperMap.REST.BufferAnalystService"
 });
 

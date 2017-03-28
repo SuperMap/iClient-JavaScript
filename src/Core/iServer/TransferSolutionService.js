@@ -8,11 +8,11 @@
  * 返回结果通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
+require('./ServiceBase');
 require('./TransferSolutionParameters');
-SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.TransferSolutionService
@@ -36,9 +36,7 @@ SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.CoreServiceBase,
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
-        options = options || {};
-        SuperMap.Util.extend(this, options);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -46,8 +44,7 @@ SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.CoreServiceBase,
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
-        SuperMap.Util.reset(this);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -91,7 +88,6 @@ SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.CoreServiceBase,
             failure: me.serviceProcessFailed
         });
     },
-
     CLASS_NAME: "SuperMap.REST.TransferSolutionService"
 });
 

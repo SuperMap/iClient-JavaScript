@@ -3,14 +3,14 @@
  * 未经许可，不得以任何手段擅自使用或传播。*/
 
 /**
- * Class: SuperMap.REST.SpatialAnalystBase
- * 空间分析服务基类。
+ * Class: SuperMap.REST.NetworkAnalystServiceBase
+ * 网络分析服务基类。
  * Inherits from:
  *  - <SuperMap.ServiceBase>
  */
 require('../format/GeoJSON');
 require('./ServiceBase');
-SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.REST.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      *  Property: format
@@ -53,36 +53,21 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
         }
         me.events.triggerEvent("processCompleted", {result: analystResult, originalResult: result});
     },
+
     /**
      * Method: toGeoJSONResult
-     * 将含有geometry的数据转换为geojson格式。
+     * 将含有geometry的数据转换为geojson格式。只处理结果中的路由，由子类实现
      *
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
     toGeoJSONResult: function (result) {
-        if (!result) {
-            return null;
-        }
-        var geoJSONResult;
-        var geoJSONFormat = new SuperMap.Format.GeoJSON();
-        if (result.recordsets) {
-            geoJSONResult = [];
-            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
-                if (recordsets[i].features) {
-                    var feature = JSON.parse(geoJSONFormat.write(recordsets[i].features));
-                    geoJSONResult.push(feature);
-                }
-            }
-        } else if (result.recordset && result.recordset.features) {
-            geoJSONResult = JSON.parse(geoJSONFormat.write(result.recordset.features));
-        }
-        
-        return geoJSONResult;
+        return null;
     },
-    CLASS_NAME: "SuperMap.REST.SpatialAnalystBase"
+
+    CLASS_NAME: "SuperMap.REST.NetworkAnalystServiceBase"
 });
 
 module.exports = function (url, options) {
-    return new SuperMap.REST.SpatialAnalystBase(url, options);
+    return new SuperMap.REST.NetworkAnalystServiceBase(url, options);
 };

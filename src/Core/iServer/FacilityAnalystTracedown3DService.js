@@ -7,11 +7,11 @@
  * Class: SuperMap.REST.FacilityAnalystTracedown3DService
  * 下游追踪资源服务类
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
+require('./ServiceBase');
 require('./FacilityAnalystTracedown3DParameters');
-SuperMap.REST.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.FacilityAnalystTracedown3DService
@@ -28,7 +28,7 @@ SuperMap.REST.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.CoreSe
      */
 
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -36,7 +36,7 @@ SuperMap.REST.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.CoreSe
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**

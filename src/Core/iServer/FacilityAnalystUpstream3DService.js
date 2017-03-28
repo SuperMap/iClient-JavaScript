@@ -7,11 +7,11 @@
  * Class: SuperMap.REST.FacilityAnalystUpstream3DService
  * 上游关键设施查找资源服务类
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
+require('./ServiceBase');
 require('./FacilityAnalystUpstream3DParameters');
-SuperMap.REST.FacilityAnalystUpstream3DService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.FacilityAnalystUpstream3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.FacilityAnalystUpstream3DService
@@ -28,7 +28,7 @@ SuperMap.REST.FacilityAnalystUpstream3DService = SuperMap.Class(SuperMap.CoreSer
      */
 
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -36,7 +36,7 @@ SuperMap.REST.FacilityAnalystUpstream3DService = SuperMap.Class(SuperMap.CoreSer
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**

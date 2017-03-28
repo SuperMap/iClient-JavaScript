@@ -110,6 +110,25 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
             failure: me.serviceProcessFailed
         });
     },
+    /**
+     * Method: toGeoJSONResult
+     * 将含有geometry的数据转换为geojson格式。
+     *
+     * Parameters:
+     * result - {Object} 服务器返回的结果对象。
+     */
+    toGeoJSONResult: function (result) {
+        if (!result) {
+            return result;
+        }
+
+        var analystResult = SuperMap.REST.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
+        if (!analystResult && result.regions) {
+            var geoJSONFormat = new SuperMap.Format.GeoJSON();
+            analystResult = JSON.parse(geoJSONFormat.write(result.regions));
+        }
+        return analystResult;
+    },
 
     CLASS_NAME: "SuperMap.REST.ThiessenAnalystService"
 });

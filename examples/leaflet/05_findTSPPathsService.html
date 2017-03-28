@@ -27,8 +27,11 @@
             maxZoom: 18,
             zoom: 1
         });
-        L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
-        findTSPPathsProcess();
+        L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
+                .addTo(map)
+                .on("load", function () {
+                    findTSPPathsProcess();
+                });
     }
     function findTSPPathsProcess() {
         //添加站点
@@ -73,23 +76,11 @@
         //进行查找
         findTSPPathsService.findTSPPaths(findTSPPathsParameter)
                 .on('complete', function (serviceResult) {
-                    //L.geoJSON(serviceResult.result, {color: "red"}).addTo(map);
-                    result = serviceResult.result;
-                    addPath(result);
+                    serviceResult.result.map(function (result) {
+                        L.geoJSON(result.route).addTo(map);
+                    });
                 });
 
-        function addPath(result) {
-            var features = [];
-            if (result.tspPathList) {
-                for (var j = 0; j < result.tspPathList[0].route.points.length; j++) {
-                    features.push([result.tspPathList[0].route.points[j].y, result.tspPathList[0].route.points[j].x])
-                }
-                L.polyline(features).addTo(map);
-               /* for (i = 0; i < features.length - 1; i++) {
-                    L.polyline([features[i], features[i + 1]], {color: 'green'}).addTo(map);
-                }*/
-            }
-        }
     }
 </script>
 </body>

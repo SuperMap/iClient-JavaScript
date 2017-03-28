@@ -89,6 +89,7 @@
             source: facilitySource
         });
 
+
         // 设置设施点的资源供给中心
         var supplyCenterType_FIXEDCENTER = SupplyCenterType.FIXEDCENTER,
                 supplyCenterType_NULL = SupplyCenterType.NULL;
@@ -159,39 +160,27 @@
             // 资源供给中心集合,必设字段
             supplyCenters: supplyCenters
         });
+
         //进行查找
         findLocationService.findLocation(findLocationParameter)
                 .on('complete', function (serviceResult) {
-                    //L.geoJSON(serviceResult.result, {color: "red"}).addTo(map);
-                    var result = serviceResult.element.result;
-                    var points = [];
-                    if (result.demandResults) {
-                        for (var i = 0, demandResults = result.demandResults, len = demandResults.length; i < len; i++) {
-                            for (var j = 0; j < demandResults[i].geometry.points.length; j++) {
-                                points.push([demandResults[i].geometry.points[j].x, demandResults[i].geometry.points[j].y]);
-                            }
-                        }
-                    }
-                    for (var k = 0; k < points.length; k++) {
-                        var point = new ol.Feature({
-                            geometry: new ol.geom.Point(points[k])
-                        });
-                        var pointLayer = new ol.layer.Vector({
-                            source: new ol.source.Vector({
-                                features: [point]
-                            }),
-                            style: new ol.style.Style({
-                                image: new ol.style.Circle({
-                                    radius: 2.5,
-                                    fill: new ol.style.Fill({
-                                        color: 'rgba(100, 20, 225, 20)'
-                                    })
+
+                    var vectorSource = new ol.source.Vector({
+                        features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result.demandResults)
+                    });
+                    var polygonLayer = new ol.layer.Vector({
+                        source: vectorSource,
+                        style: new ol.style.Style({
+                            image: new ol.style.Circle({
+                                radius: 2.5,
+                                fill: new ol.style.Fill({
+                                    color: 'rgba(100, 20, 225, 20)'
                                 })
                             })
-                        });
-                        map.addLayer(pointLayer);
-                        map.addLayer(facilityLayer);
-                    }
+                        })
+                    });
+                    map.addLayer(polygonLayer);
+                    map.addLayer(facilityLayer);
                 });
     }
 </script>

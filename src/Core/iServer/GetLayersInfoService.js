@@ -8,10 +8,10 @@
  * 该类负责将从客户端指定的服务器上获取该服务器提供的图层信息。
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
-SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.CoreServiceBase, {
+require('./ServiceBase');
+SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Property: isTempLayers
@@ -36,7 +36,7 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -47,7 +47,7 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
         SuperMap.Util.reset(this);
     },
 

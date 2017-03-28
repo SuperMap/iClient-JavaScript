@@ -27,8 +27,12 @@
             maxZoom: 18,
             zoom: 3
         });
-        L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
-        findClosetFacilitiesProcess();
+        L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
+                .addTo(map)
+                .on('load', function () {
+                    findClosetFacilitiesProcess();
+                });
+
     }
     function findClosetFacilitiesProcess() {
         //添加设施点
@@ -36,7 +40,7 @@
         marker1.bindPopup("设施点一");
         var marker2 = L.marker([-2500, 5500]).addTo(map);
         marker2.bindPopup("设施点二");
-        var marker3 =L.marker([-4000, 7000]).addTo(map);
+        var marker3 = L.marker([-4000, 7000]).addTo(map);
         marker3.bindPopup("设施点三");
         //添加事件点
         var myIcon = L.icon({
@@ -77,20 +81,9 @@
         //进行查找
         findClosetFacilitiesService.findClosestFacilities(findClosetFacilitiesParameter)
                 .on('complete', function (serviceResult) {
-                    var result = serviceResult.result;
-                    //L.geoJSON(serviceResult.result, {color: "red"}).addTo(map);
-                    var features = [];
-                    if (result.facilityPathList) {
-                        for (var i = 0, facilityPathList = result.facilityPathList, len = facilityPathList.length; i < len; i++) {
-                            for (var j = 0; j < facilityPathList[i].route.points.length; j++) {
-                                features.push([facilityPathList[i].route.points[j].y, facilityPathList[i].route.points[j].x]);
-                            }
-                        }
-                    }
-                    setTimeout(function(){
-                        L.polyline(features).addTo(map)
-                    },1000)
-
+                    serviceResult.result.map(function (result) {
+                        L.geoJSON(result.route, {color: "red"}).addTo(map);
+                    });
                 });
     }
 </script>

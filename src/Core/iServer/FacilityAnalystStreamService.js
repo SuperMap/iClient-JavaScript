@@ -8,11 +8,11 @@
  * 上游/下游 关键设施查找资源服务类;即查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
-require('./CoreServiceBase');
+require('./NetworkAnalystServiceBase');
 require('./FacilityAnalystStreamParameters');
-SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.FacilityAnalystStreamService
@@ -29,7 +29,7 @@ SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.CoreService
      */
 
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -37,7 +37,7 @@ SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.CoreService
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**

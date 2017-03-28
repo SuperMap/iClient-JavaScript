@@ -7,11 +7,11 @@
  * 数据服务中数据集添加、更新、删除服务类。
  *
  * Inherits from:
- *  - <SuperMap.CoreServiceBase>
+ *  - <SuperMap.ServiceBase>
  */
-require('./CoreServiceBase');
+require('./ServiceBase');
 require('./EditFeaturesParameters');
-SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Property: returnContent
@@ -51,7 +51,7 @@ SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -69,7 +69,7 @@ SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.CoreServiceBase, {
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
         var me = this;
         me.returnContent = null;
         me.isUseBatch = null;

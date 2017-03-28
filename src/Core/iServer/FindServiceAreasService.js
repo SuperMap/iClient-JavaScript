@@ -11,11 +11,11 @@
  * 该类负责将客户端指定的服务区分析参数传递给服务端，并接收服务端返回的结果数据。
  * 服务区分析结果通过该类支持的事件的监听函数参数获取
  * Inherits from:
- *  - <SuperMap.ServiceBase>
+ *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
-require('./CoreServiceBase');
+require('./NetworkAnalystServiceBase');
 require('./FindServiceAreasParameters');
-SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.CoreServiceBase, {
+SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
      * Constructor: SuperMap.REST.FindServiceAreasService
@@ -36,7 +36,7 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.CoreServiceBase,
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.CoreServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -44,7 +44,7 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.CoreServiceBase,
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.CoreServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -77,20 +77,6 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.CoreServiceBase,
         });
     },
 
-    serviceProcessCompleted: function (result) {
-        var results = [];
-        result = SuperMap.Util.transformResult(result);
-        if (result && result.serviceAreaList) {
-            var geoJSONFormat = new SuperMap.Format.GeoJSON();
-            result.serviceAreaList.map(function (serviceArea) {
-                if (serviceArea.serviceRegion) {
-                    results.push(JSON.parse(geoJSONFormat.write(serviceArea.serviceRegion)));
-                }
-            });
-        }
-        this.events.triggerEvent("processCompleted", {result: results, originalResult: result});
-    },
-
     /**
      * Method: getJson
      * 将对象转化为JSON字符串。
@@ -119,6 +105,28 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.CoreServiceBase,
         }
         jsonString += ']';
         return jsonString;
+    },
+
+    /**
+     * Method: toGeoJSONResult
+     * 将含有geometry的数据转换为geojson格式。
+     *
+     * Parameters:
+     * result - {Object} 服务器返回的结果对象。
+     */
+    toGeoJSONResult: function (result) {
+        if (!result || !result.serviceAreaList) {
+            return result;
+        }
+        var analystResult = [];
+        var geoJSONFormat = new SuperMap.Format.GeoJSON();
+        result.serviceAreaList.map(function (serviceArea) {
+            if (serviceArea.serviceRegion) {
+                analystResult.push(JSON.parse(geoJSONFormat.write(serviceArea.serviceRegion)));
+            }
+        });
+
+        return analystResult;
     },
 
     CLASS_NAME: "SuperMap.REST.FindServiceAreasService"

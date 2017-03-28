@@ -271,6 +271,10 @@ ol.supermap.SpatialAnalystService.prototype.thiessenAnalysis = function (params,
     return me;
 };
 
+ol.supermap.SpatialAnalystService.prototype.processCompleted = function (serverResult) {
+    this.dispatchEvent(new ol.Collection.Event('complete', {result: serverResult.result, originalResult: serverResult.originalResult}));
+};
+
 ol.supermap.SpatialAnalystService.prototype._processParams = function (params) {
     if (!params) {
         return {};
@@ -285,14 +289,23 @@ ol.supermap.SpatialAnalystService.prototype._processParams = function (params) {
     }
     if (params.inputPoints) {
         for (var i = 0; i < params.inputPoints.length; i++) {
-            params.inputPoints[i] = new SuperMap.Geometry.Point(params.inputPoints[i].flatCoordinates[0], params.inputPoints[i].flatCoordinates[1]);
+            var inputPoint = params.points[i];
+            if (ol.supermap.Util.isArray(inputPoint)) {
+                inputPoint.flatCoordinates = inputPoint;
+            }
+            params.inputPoints[i] = new SuperMap.Geometry.Point(inputPoint.flatCoordinates[0], inputPoint.flatCoordinates[1]);
         }
     }
     if (params.points) {
         for (var i = 0; i < params.points.length; i++) {
-            params.points[i] = new SuperMap.Geometry.Point(params.points[i].flatCoordinates[0], params.points[i].flatCoordinates[1]);
+            var point = params.points[i];
+            if (ol.supermap.Util.isArray(point)) {
+                point.flatCoordinates = point;
+            }
+            params.points[i] = new SuperMap.Geometry.Point(point.flatCoordinates[0], point.flatCoordinates[1]);
         }
     }
+
     if (params.extractRegion) {
         params.extractRegion = this.convertGeometry(params.extractRegion);
     }
