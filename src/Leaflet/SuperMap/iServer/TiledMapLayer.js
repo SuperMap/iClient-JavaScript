@@ -1,8 +1,8 @@
 /**
- * Class: TileLayer
+ * Class: TiledMapLayer
  * SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)
  * 用法：
- *      L.superMap.TileLayer(url,{CRS:L.CRS.EPSG4326}).addTo(map);
+ *      L.superMap.tiledMapLayer(url,{CRS:L.CRS.EPSG4326}).addTo(map);
  */
 require('../../base');
 require('../../../Core/base');
@@ -11,12 +11,12 @@ TiledMapLayer = L.TileLayer.extend({
 
     options: {
         url: null,
+        token: null,
         transparent: null,
         cacheEnabled: null,
         layersID: null, //如果有layersID，则是在使用专题图
         crs: null,
-        attribution:' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
-
+        attribution: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
     },
 
     initialize: function (url, options) {
@@ -57,8 +57,8 @@ TiledMapLayer = L.TileLayer.extend({
         var layerUrl = options.url + "/image.png?redirect=false";
 
         //为url添加安全认证信息片段
-        if (SuperMap.Credential && SuperMap.Credential.CREDENTIAL) {
-            layerUrl += "&" + SuperMap.Credential.CREDENTIAL.getUrlParameters();
+        if (options.token) {
+            layerUrl += "&token=" + options.token;
         }
 
         if (options.layersID) {
