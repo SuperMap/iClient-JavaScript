@@ -1,31 +1,36 @@
 .iC-theme {
-    background-color: #2DAECE;
+    background-color: #49A6E5;
 }
 
 .iC-header {
-    min-height: 62px;
-    margin-bottom: 0;
-    width: 100%;
-    min-width: 1145px;
+    width: auto;
+    height: 54px;
+    margin-left: auto;
+    margin-right: auto;
     z-index: 999;
-    border-radius: 0;
+    margin-bottom: 0;
 }
 
 
 .container.bc.clearfix{
     margin: 5px auto;
+    width:100%;
+    max-width: 1440px;
+    background-color: #49A6E5;
     height: 42px;
-    width: 100%;
 }
 .navbar {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .navbar .project-title {
-    font-size: 30px;
-    color: #fff;
+    margin-left: 40px;
     text-decoration: none;
     vertical-align: middle;
+    font-family: HiraginoSansGB-W6;
+    font-size: 24px;
+    color: #FFFFFF;
+    letter-spacing: -0.16px;
 }
 
 .navbar #headerMenu {
@@ -34,15 +39,16 @@
 }
 
 .navbar #headerMenu > li > a {
-    color: #fff;
-    font-size: 15px;
+    font-family: HiraginoSansGB-W6;
+    font-size: 16px;
+    color: #FFFFFF;
+    letter-spacing: -0.1px;
     text-decoration: none;
     padding: 4px 9px;
     border: solid 2px transparent;
     border-radius: 4px;
     margin-right: 8px;
     line-height: 20px;
-    font-weight: bold;
 }
 
 .navbar #headerMenu > li > a:hover {
