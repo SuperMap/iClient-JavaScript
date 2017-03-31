@@ -776,13 +776,16 @@
 	         * {Object} 一个表示点的对象。
 	         */
 	        'feature': function (feature) {
-	            var geom = this.extract.geometry.apply(this, [feature.geometry]);
+	            var geo = feature.geometry ? this.toGeometry(feature.geometry) : undefined;
+	            var geom = geo ? this.extract.geometry.apply(this, [geo]) : null;
 	            var json = {
 	                "type": "Feature",
-	                // "properties": feature.attributes,
 	                "properties": this.createAttributes(feature),
 	                "geometry": geom
 	            };
+	            if (geo.type === 'TEXT') {
+	                json.properties.texts = feature.geometry.texts;
+	            }
 	            if (feature.fid != null) {
 	                json.id = feature.fid;
 	            }
@@ -799,13 +802,10 @@
 	         * Returns:
 	         * {Object} 一个表示几何体的对象。
 	         */
-	        'geometry': function (geometry) {
-	            if (geometry == null) {
-	                return null;
-	            }
-	            var geo = this.toGeometry(geometry);
+	        'geometry': function (geo) {
 	            var geometryType = geo.type;
 	            var data = this.extract[geometryType.toLowerCase()].apply(this, [geo]);
+	            geometryType = geometryType === 'TEXT' ? 'Point' : geometryType;
 	            var json;
 	            if (geometryType === "Collection") {
 	                json = {
@@ -818,7 +818,6 @@
 	                    "coordinates": data
 	                };
 	            }
-
 	            return json;
 	        },
 
@@ -835,6 +834,20 @@
 	         */
 	        'point': function (point) {
 	            return [point.x, point.y];
+	        },
+
+	        /**
+	         * Method: extract.text
+	         * 从一个文本对象中返回一个坐标组。
+	         *
+	         * Parameters:
+	         * geo 一个文本对象。
+	         *
+	         * Returns:
+	         * {Array} 一个表示一个点的坐标组。
+	         */
+	        'text': function (geo) {
+	            return [geo.points[0].x, geo.points[0].y];
 	        },
 
 	        /**
