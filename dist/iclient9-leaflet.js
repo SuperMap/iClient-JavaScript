@@ -710,13 +710,17 @@
 	            for (var i = 0; i < numFeatures; ++i) {
 	                var element = obj[i];
 	                if (isGeometry(element)) {
-	                    geojson.features[i] = this.extract.geometry.apply(this, [element]);
+	                    var feature = {};
+	                    feature.geometry = element;
+	                    geojson.features[i] = this.extract.feature.apply(this, [feature]);
 	                } else {
 	                    geojson.features[i] = this.extract.feature.apply(this, [element]);
 	                }
 	            }
 	        } else if (isGeometry(obj)) {
-	            geojson = this.extract.geometry.apply(this, [obj]);
+	            var feature = {};
+	            feature.geometry = obj;
+	            geojson = this.extract.feature.apply(this, [feature]);
 	        }
 
 	        function isGeometry(input) {
@@ -776,14 +780,13 @@
 	         * {Object} 一个表示点的对象。
 	         */
 	        'feature': function (feature) {
-	            var geo = feature.geometry ? this.toGeometry(feature.geometry) : undefined;
-	            var geom = geo ? this.extract.geometry.apply(this, [geo]) : null;
+	            var geom = this.extract.geometry.apply(this, [feature.geometry]);
 	            var json = {
 	                "type": "Feature",
 	                "properties": this.createAttributes(feature),
 	                "geometry": geom
 	            };
-	            if (geo.type === 'TEXT') {
+	            if (feature.geometry && feature.geometry.type === 'TEXT') {
 	                json.properties.texts = feature.geometry.texts;
 	            }
 	            if (feature.fid != null) {
@@ -802,7 +805,11 @@
 	         * Returns:
 	         * {Object} 一个表示几何体的对象。
 	         */
-	        'geometry': function (geo) {
+	        'geometry': function (geometry) {
+	            if (geometry == null) {
+	                return null;
+	            }
+	            var geo = this.toGeometry(geometry);
 	            var geometryType = geo.type;
 	            var data = this.extract[geometryType.toLowerCase()].apply(this, [geo]);
 	            geometryType = geometryType === 'TEXT' ? 'Point' : geometryType;
