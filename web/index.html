@@ -11,18 +11,45 @@
     <script>hljs.initHighlightingOnLoad();</script>
     <style>
 
+        .banner_div {
+            background: #49A6E5;
+            width: 100%;
+        }
 
         .api_banner {
-            background: url(./img/banner.png) no-repeat center bottom #2DAECE;
-            height: 370px;
+            background: url(./img/banner.png) no-repeat bottom #49A6E5;
+            background-position: 350px;
+            height: 378px;
+            max-width: 1440px;
+            margin: auto;
+        }
+
+        .api_banner a {
+            font-family: HiraginoSansGB-W6;
+            font-size: 18px;
+            color: #FFFFFF;
+            letter-spacing: -0.12px;
+            padding-top: 15px;
+            width: 119px;
+            line-height:50px;
         }
 
         .pt50.tc {
-            padding-top: 50px;
-            text-align: center;
+            padding-top: 114px;
+            margin-left: 771px;
+            font-family: HiraginoSansGB-W6;
             font-size: 40px;
-            color: #ffffff;
-            font-family: Arial;
+            color: #FFFFFF;
+            letter-spacing: -0.26px;
+        }
+
+        .iconGrop.tc {
+            padding-top: 29px;
+            margin-left: 771px;
+            font-family: HiraginoSansGB-W6;
+            color: #FFFFFF;
+            letter-spacing: -0.26px;
+            width:429px
         }
 
         .ip-copyRight {
@@ -33,6 +60,22 @@
             line-height: 54px;
         }
 
+        .package-icon {
+            background: url(./img/packageIcon.png);
+            height: 50px;
+            width: 51px;
+            float: left;
+            margin-right: 20px;
+        }
+
+        .sourcecode-icon {
+            background: url(./img/sourcecodeIcon.png);
+            height: 50px;
+            width: 50px;
+            float: left;
+            margin-right: 20px;
+        }
+
         .ip-footer {
             /* background-color: #f3f3f3; */
             border-top: 1px solid #ddd;
@@ -41,7 +84,7 @@
         .column {
             margin-left: auto;
             margin-right: auto;
-            width: 800px;
+            width: 970px;
             position: relative;
             margin-top: 50px;
         }
@@ -73,23 +116,30 @@
 </script>
 <div>
     <!--banner-->
-    <div class="api_banner position_r">
-        <div class="tc pt50">
-            <p style="padding-top: 50px;font-size: 28px;"> 开放式 GIS 客户端开发包</p>
+    <div class="banner_div">
+        <div class="api_banner">
+            <div class="tc pt50">
+                开放式 GIS 客户端开发包
+            </div>
+            <div class="tc iconGrop">
+                <div style="float: left;">
+                    <span class="package-icon"></span>
+                    <a href="downloads/iclient9.zip">iclient9.zip</a>
+                </div>
+                <div style="float: right;">
+                    <span class="sourcecode-icon"></span>
+                    <a href="https://git.oschina.net/isupermap/iClient9"
+                       target="_blank">source code</a>
+                </div>
+            </div>
         </div>
     </div>
     <div class="column">
-        <p style="font-size: 18px;">SuperMap iClient for JavaScript 9D
+        <p style="font-size: 24px;text-align: center;font-family: MicrosoftYaHei;color:#505666 ">SuperMap iClient for
+            JavaScript 9D
             是空间信息和服务的可视化交互开发平台，是SuperMap服务器和在线GIS平台系列产品的统一JS客户端。支持多源数据地图，支持多终端，跨浏览器，
             通过本产品可快速实现浏览器上美观、流畅的地图呈现。
         </p>
-        <ul>
-            <li style="font-size: 16px;margin-top: 5px"><a href="downloads/iclient9.zip">iclient9.zip</a>
-            </li>
-            <li style="font-size: 16px;margin-top: 5px"><a href="https://git.oschina.net/isupermap/iClient9"
-                                                           target="_blank">source code</a>
-            </li>
-        </ul>
         <h2 id="quick-start">快速入门</h2>
         <h3 style="margin-top: 20px;margin-left: 5px;color: #9d9d9d">OpenLayers</h3>
         <p>引入 iclient9-openlayers.js </p>
@@ -170,7 +220,7 @@
 </div>
 
 <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script  src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../dist/iclient9-leaflet.js"></script>
@@ -178,14 +228,14 @@
     var map = new ol.Map({
         target: 'map',
         view: new ol.View({
-            center: [100.94238281254322,35.496456056550095],
+            center: [100.94238281254322, 35.496456056550095],
             zoom: 4,
-            projection:"EPSG:4326"
+            projection: "EPSG:4326"
         }),
         layers: [new ol.layer.Tile({
             source: new ol.supermap.TileSuperMapRest({
                 url: "http://support.supermap.com:8090/iserver/services/map-world/rest/maps/World",
-                projection:"EPSG:4326"
+                projection: "EPSG:4326"
             }),
         })]
     });

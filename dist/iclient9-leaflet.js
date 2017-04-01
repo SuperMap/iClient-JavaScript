@@ -74,10 +74,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Class: TileLayer
+	 * Class: TiledMapLayer
 	 * SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)
 	 * 用法：
-	 *      L.superMap.TileLayer(url,{CRS:L.CRS.EPSG4326}).addTo(map);
+	 *      L.superMap.tiledMapLayer(url,{CRS:L.CRS.EPSG4326}).addTo(map);
 	 */
 	__webpack_require__(2);
 	__webpack_require__(4);
@@ -86,12 +86,12 @@
 
 	    options: {
 	        url: null,
+	        token: null,
 	        transparent: null,
 	        cacheEnabled: null,
 	        layersID: null, //如果有layersID，则是在使用专题图
 	        crs: null,
-	        attribution:' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
-
+	        attribution: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
 	    },
 
 	    initialize: function (url, options) {
@@ -132,8 +132,8 @@
 	        var layerUrl = options.url + "/image.png?redirect=false";
 
 	        //为url添加安全认证信息片段
-	        if (SuperMap.Credential && SuperMap.Credential.CREDENTIAL) {
-	            layerUrl += "&" + SuperMap.Credential.CREDENTIAL.getUrlParameters();
+	        if (options.token) {
+	            layerUrl += "&token=" + options.token;
 	        }
 
 	        if (options.layersID) {
@@ -776,13 +776,16 @@
 	         * {Object} 一个表示点的对象。
 	         */
 	        'feature': function (feature) {
-	            var geom = this.extract.geometry.apply(this, [feature.geometry]);
+	            var geo = feature.geometry ? this.toGeometry(feature.geometry) : undefined;
+	            var geom = geo ? this.extract.geometry.apply(this, [geo]) : null;
 	            var json = {
 	                "type": "Feature",
-	                // "properties": feature.attributes,
 	                "properties": this.createAttributes(feature),
 	                "geometry": geom
 	            };
+	            if (geo.type === 'TEXT') {
+	                json.properties.texts = feature.geometry.texts;
+	            }
 	            if (feature.fid != null) {
 	                json.id = feature.fid;
 	            }
@@ -799,13 +802,10 @@
 	         * Returns:
 	         * {Object} 一个表示几何体的对象。
 	         */
-	        'geometry': function (geometry) {
-	            if (geometry == null) {
-	                return null;
-	            }
-	            var geo = this.toGeometry(geometry);
+	        'geometry': function (geo) {
 	            var geometryType = geo.type;
 	            var data = this.extract[geometryType.toLowerCase()].apply(this, [geo]);
+	            geometryType = geometryType === 'TEXT' ? 'Point' : geometryType;
 	            var json;
 	            if (geometryType === "Collection") {
 	                json = {
@@ -818,7 +818,6 @@
 	                    "coordinates": data
 	                };
 	            }
-
 	            return json;
 	        },
 
@@ -835,6 +834,20 @@
 	         */
 	        'point': function (point) {
 	            return [point.x, point.y];
+	        },
+
+	        /**
+	         * Method: extract.text
+	         * 从一个文本对象中返回一个坐标组。
+	         *
+	         * Parameters:
+	         * geo 一个文本对象。
+	         *
+	         * Returns:
+	         * {Array} 一个表示一个点的坐标组。
+	         */
+	        'text': function (geo) {
+	            return [geo.points[0].x, geo.points[0].y];
 	        },
 
 	        /**
@@ -3128,18 +3141,19 @@
 	            me.totalTimes = 1;
 	            me.url = url;
 	        }
-	        if (options.token) {
-	            me.token = options.token;
-	        }
+
 	        if (SuperMap.Util.isArray(url) && !me.isServiceSupportPolling()) {
 	            me.url = url[0];
 	            me.totalTimes = 1;
 	        }
-	        me.isInTheSameDomain = SuperMap.Util.isInTheSameDomain(me.url);
+
 	        options = options || {};
+
 	        if (options) {
 	            SuperMap.Util.extend(this, options);
 	        }
+
+	        me.isInTheSameDomain = SuperMap.Util.isInTheSameDomain(me.url);
 
 	        me.events = new SuperMap.Events(me, null, me.EVENT_TYPES, true);
 	        if (me.eventListeners instanceof Object) {
@@ -23255,6 +23269,7 @@
 	        transferSolutionService.processAsync(param);
 	        return me;
 	    },
+
 	    _processParams: function (params) {
 	        if (!params) {
 	            return {};

@@ -127,18 +127,19 @@ SuperMap.ServiceBase = SuperMap.Class({
             me.totalTimes = 1;
             me.url = url;
         }
-        if (options.token) {
-            me.token = options.token;
-        }
+
         if (SuperMap.Util.isArray(url) && !me.isServiceSupportPolling()) {
             me.url = url[0];
             me.totalTimes = 1;
         }
-        me.isInTheSameDomain = SuperMap.Util.isInTheSameDomain(me.url);
+
         options = options || {};
+
         if (options) {
             SuperMap.Util.extend(this, options);
         }
+
+        me.isInTheSameDomain = SuperMap.Util.isInTheSameDomain(me.url);
 
         me.events = new SuperMap.Events(me, null, me.EVENT_TYPES, true);
         if (me.eventListeners instanceof Object) {
