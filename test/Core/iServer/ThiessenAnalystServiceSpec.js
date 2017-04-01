@@ -43,8 +43,13 @@ describe('testThiessenAnalystService_processAsync',function(){
             try {
                 var tsResult = analystEventArgsSystem.result;
                 expect(tsResult).not.toBeNull();
-                expect(tsResult.succeed).toBeTruthy();
-                expect(tsResult.regions.length).toEqual(4);
+                expect(tsResult.type).toEqual("FeatureCollection");
+                expect(tsResult.features.length).toEqual(4);
+                expect(tsResult.features[0].type).toEqual("Feature");
+                expect(tsResult.features[0].geometry).not.toBeNull();
+                expect(tsResult.features[0].geometry.coordinates).not.toBeNull();
+                expect(tsResult.features[0].geometry.type).toEqual("MultiPolygon");
+
                 tsServiceByDatasets.destroy();
                 expect(tsServiceByDatasets.events).toBeNull();
                 expect(tsServiceByDatasets.eventListeners).toBeNull();
@@ -52,7 +57,7 @@ describe('testThiessenAnalystService_processAsync',function(){
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("ThiessenAnalystService_" + exception.name + ":" + exception.message);
                 tsServiceByDatasets.destroy();
                 dsThiessenAnalystParameters.destroy();
                 done();
@@ -78,8 +83,13 @@ describe('testThiessenAnalystService_processAsync',function(){
             try {
                 var tsResult = analystEventArgsSystem.result;
                 expect(tsResult).not.toBeNull();
-                expect(tsResult.succeed).toBeTruthy();
-                expect(tsResult.regions.length).toEqual(6);
+                expect(tsResult.type).toEqual("FeatureCollection");
+                expect(tsResult.features.length).toEqual(6);
+                expect(tsResult.features[0].type).toEqual("Feature");
+                expect(tsResult.features[0].geometry).not.toBeNull();
+                expect(tsResult.features[0].geometry.coordinates).not.toBeNull();
+                expect(tsResult.features[0].geometry.type).toEqual("MultiPolygon");
+
                 tsServiceByGeometry.destroy();
                 expect(tsServiceByGeometry.events).toBeNull();
                 expect(tsServiceByGeometry.eventListeners).toBeNull();
@@ -87,7 +97,7 @@ describe('testThiessenAnalystService_processAsync',function(){
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("ThiessenAnalystService_" + exception.name + ":" + exception.message);
                 tsServiceByGeometry.destroy();
                 geoThiessenAnalystParameters.destroy();
                 done();
@@ -113,7 +123,7 @@ describe('testThiessenAnalystService_processAsync',function(){
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("ThiessenAnalystService_" + exception.name + ":" + exception.message);
                 tsServiceByGeometry.destroy();
                 geoThiessenAnalystParameters.destroy();
                 done();
@@ -141,7 +151,7 @@ describe('testThiessenAnalystService_processAsync',function(){
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("ThiessenAnalystService_" + exception.name + ":" + exception.message);
                 tsServiceByDataset.destroy();
                 dsThiessenAnalystParameters.destroy();
                 done();

@@ -64,16 +64,18 @@ describe('testFindTSPPathsService_processAsync',function(){
         setTimeout(function(){
             try{
                 var analystResult = serviceSucceedEventArgsSystem.result;
-                expect(analystResult.tspPathList != null).toBeTruthy();
-                expect(analystResult.tspPathList[0].edgeFeatures != null).toBeTruthy();
-                expect(analystResult.tspPathList[0].edgeIDs[0]).toEqual(2886);
-                expect(analystResult.tspPathList[0].nodeFeatures != null).toBeTruthy();
-                expect(analystResult.tspPathList[0].nodeIDs[0]).toEqual(3030);
-                expect(analystResult.tspPathList[0].pathGuideItems != null).toBeTruthy();
-                expect(analystResult.tspPathList[0].route != null).toBeTruthy();
-                expect(analystResult.tspPathList[0].stopWeights[0]).toEqual(1204.9373071047896);
-                expect(analystResult.tspPathList[0].stopIndexes[0]).toEqual(0);
-                expect(analystResult.tspPathList[0].weight).toEqual(2606.134686918408);
+                expect(analystResult).not.toBeNull();
+                expect(analystResult[0].edgeFeatures).not.toBeNull();
+                expect(analystResult[0].edgeFeatures.type).toEqual("FeatureCollection");
+                expect(analystResult[0].edgeFeatures.features).not.toBeNull();
+                expect(analystResult[0].edgeFeatures.features[0].type).toEqual("Feature");
+                expect(analystResult[0].edgeFeatures.features[0].geometry).not.toBeNull();
+                expect(analystResult[0].edgeFeatures.features[0].properties.ID).toEqual(2886);
+                expect(analystResult[0].nodeFeatures).not.toBeNull();
+                expect(analystResult[0].nodeFeatures.features[0].properties.ID).toEqual(3030);
+                expect(analystResult[0].pathGuideItems).not.toBeNull();
+                expect(analystResult[0].route).not.toBeNull();
+
                 findTSPPathsService.destroy();
                 expect(findTSPPathsService.EVENT_TYPES).toBeNull();
                 expect(findTSPPathsService.events).toBeNull();

@@ -94,7 +94,7 @@ describe('testBufferAnalystService_processAsync', function () {
             try {
                 var bfMode = analystEventArgsSystem.result;
                 expect(bfMode).not.toBeNull();
-                expect(bfMode.type).toEqual("MultiPolygon");
+                expect(bfMode.type).toEqual("Feature");
                 bfServiceByGeometry.destroy();
                 expect(bfServiceByGeometry.events).toBeNull();
                 expect(bfServiceByGeometry.eventListeners).toBeNull();
