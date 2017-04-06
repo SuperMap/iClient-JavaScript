@@ -24,13 +24,13 @@
     });
     L.supermap.tiledMapLayer(url).addTo(map);
     circleMarker = L.circleMarker([30, 104], {color: 'red'}).addTo(map);
-    circleMarker.bindPopup('distance = 30').openPopup();
+    circleMarker.bindPopup('distance = 10').openPopup();
     query();
 
     function query() {
         var param = new QueryByDistanceParameters({
             queryParams: {name: "Capitals@World.1"},
-            distance: 30,
+            distance: 10,
             geometry: circleMarker
         });
         L.supermap.queryService(url).queryByDistance(param).on("complete", function (serviceResult) {

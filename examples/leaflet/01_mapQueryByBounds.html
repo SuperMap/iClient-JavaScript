@@ -18,7 +18,7 @@
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG4326,
-        center: {lon: 60, lat: 0},
+        center: {lon: 0, lat: 0},
         maxZoom: 18,
         zoom: 2
     });
@@ -26,7 +26,7 @@
     query();
 
     function query() {
-        var polygon = L.polygon([[0, 0], [39, 0], [39, 116], [0, 116], [0, 0]]);
+        var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
         polygon.addTo(map);
         var param = new QueryByBoundsParameters({
             queryParams: {name: "Capitals@World.1"},
