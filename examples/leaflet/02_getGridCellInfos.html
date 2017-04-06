@@ -3,58 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>数据集栅格查询</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
-    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-    <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
-    <script type="text/javascript">
-        var map, marker,
-                baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/世界地图_Day",
-                url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
-        function init() {
-            map = L.map('map', {
-                preferCanvas: true,
-                crs: L.CRS.EPSG4326,
-                center: {lon: 0, lat: 0},
-                maxZoom: 18,
-                zoom: 1
-            });
-            L.supermap.tiledMapLayer(baseUrl).addTo(map);
-
-            map.on("click", function (evt) {
-                var getGridCellInfosParam = new GetGridCellInfosParameter({
-                    dataSourceName: "World",
-                    datasetName: "WorldEarth",
-                    X: evt.latlng.lng,
-                    Y: evt.latlng.lat
-                });
-                L.supermap.getGridCellInfosService(url).getGridCellInfos(getGridCellInfosParam).on("complete", function (serviceResult) {
-                    if (marker) {
-                        marker.setLatLng(evt.latlng);
-                    } else {
-                        marker = L.marker(evt.latlng).addTo(map);
-                    }
-                    var innerHTML = "栅格查询结果: " + "<br>" + "column: " + serviceResult.result.column + "<br>";
-                    innerHTML += "row: " + serviceResult.result.row + "<br>";
-                    innerHTML += "value: " + serviceResult.result.value + "<br>";
-                    marker.bindPopup(innerHTML).openPopup(marker.getLatLng());
-                });
-            });
-        }
-
-        function closeInfoWin() {
-            if (marker) {
-                marker.removeFrom(map);
-                marker = null;
-            }
-        }
-
-    </script>
 </head>
-<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
-<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
-    <input type="button" class="btn btn-default" value="清除结果" onclick="closeInfoWin()"/>
-</div>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
 </body>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, marker,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/世界地图_Day",
+            url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: {lon: 0, lat: 0},
+        maxZoom: 18,
+        zoom: 2
+    });
+    L.supermap.tiledMapLayer(baseUrl).addTo(map);
+
+    map.on("click", function (evt) {
+        var getGridCellInfosParam = new GetGridCellInfosParameter({
+            dataSourceName: "World",
+            datasetName: "WorldEarth",
+            X: evt.latlng.lng,
+            Y: evt.latlng.lat
+        });
+        L.supermap.getGridCellInfosService(url).getGridCellInfos(getGridCellInfosParam).on("complete", function (serviceResult) {
+            if (marker) {
+                marker.setLatLng(evt.latlng);
+            } else {
+                marker = L.marker(evt.latlng).addTo(map);
+            }
+            var innerHTML = "栅格查询结果: " + "<br>" + "column: " + serviceResult.result.column + "<br>";
+            innerHTML += "row: " + serviceResult.result.row + "<br>";
+            innerHTML += "value: " + serviceResult.result.value + "<br>";
+            marker.bindPopup(innerHTML).openPopup(marker.getLatLng());
+        });
+    });
+</script>
 </html>

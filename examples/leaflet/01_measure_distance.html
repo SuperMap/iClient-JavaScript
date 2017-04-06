@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>测量服务</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+</body>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, resultLayer, url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: [34, 108],
+        maxZoom: 18,
+        zoom: 3
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    resultLayer = L.featureGroup().addTo(map);
+    measureService('distance');
+
+    function measureService(type) {
+        if (type === "distance") {
+            var polyLine = L.polyline([[25, 102], [40, 116]], {color: "red"});
+            var marker1 = L.marker([25, 102]), marker2 = L.marker([40, 116]);
+            resultLayer.addLayer(polyLine);
+            resultLayer.addLayer(marker1);
+            resultLayer.addLayer(marker2);
+            var distanceMeasureParam = new MeasureParameters(polyLine);
+            L.supermap.measureService(url).measureDistance(distanceMeasureParam).on("complete", function (serviceResult) {
+                var content = "距离： " + serviceResult.result.distance + "  米";
+                marker1.bindPopup(content).openPopup(marker1.getLatLng());
+            });
+
+        } else {
+            alert('类型错误');
+        }
+    }
+</script>
+</html>

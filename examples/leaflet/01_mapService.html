@@ -3,53 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>SuperMap 地图信息</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
-    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-    <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
-    <script type="text/javascript">
-        var map, infowin,
-                url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
-        function init() {
-            map = L.map('map', {
-                preferCanvas: true,
-                crs: L.CRS.EPSG4326,
-                center: {lon: 0, lat: 0},
-                maxZoom: 18,
-                zoom: 2
-            });
-            L.supermap.tiledMapLayer(url).addTo(map);
-        }
-
-        function mapService() {
-            closeInfoWin();
-            L.supermap.mapService(url, {
-                projection: "4326"
-            }).getMapStatus().on("complete", function (serviceResult) {
-                if (!infowin) {
-                    infowin = L.popup({maxWidth: 400});
-                }
-                var innerHTML = "(map信息太多，只打印一部分)" + "<br><br>";
-                innerHTML += "地图名：" + JSON.stringify(serviceResult.result.name, null, 2) + "<br>";
-                innerHTML += "中心点:" + JSON.stringify(serviceResult.result.center, null, 2) + "<br>";
-                innerHTML += "Bounds:" + JSON.stringify(serviceResult.result.bounds, null, 2) + "<br>";
-
-                infowin.setLatLng(map.getCenter()).setContent(innerHTML).openOn(map);
-            });
-        }
-        function closeInfoWin() {
-            if (infowin) {
-                infowin.removeFrom(map);
-            }
-        }
-
-    </script>
 </head>
-<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
-<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
-    <input type="button" class="btn btn-default" value="获取地图信息" onclick="mapService()"/>
-    <input type="button" class="btn btn-default" value="清除结果" onclick="closeInfoWin()"/>
-</div>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
 </body>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, infoWin, url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+    map = L.map('map', {
+        preferCanvas: true,
+        crs: L.CRS.EPSG4326,
+        center: {lon: 0, lat: 0},
+        maxZoom: 18,
+        zoom: 2
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    mapService();
+
+    function mapService() {
+        L.supermap.mapService(url, {
+            projection: "4326"
+        }).getMapStatus().on("complete", function (serviceResult) {
+            if (!infoWin) {
+                infoWin = L.popup({maxWidth: 400});
+            }
+            var innerHTML = "(map信息太多，只打印一部分)" + "<br><br>";
+            innerHTML += "地图名：" + JSON.stringify(serviceResult.result.name, null, 2) + "<br>";
+            innerHTML += "中心点:" + JSON.stringify(serviceResult.result.center, null, 2) + "<br>";
+            innerHTML += "Bounds:" + JSON.stringify(serviceResult.result.bounds, null, 2) + "<br>";
+            infoWin.setLatLng(map.getCenter()).setContent(innerHTML).openOn(map);
+        });
+    }
+</script>
 </html>

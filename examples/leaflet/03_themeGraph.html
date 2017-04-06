@@ -3,96 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <title>统计专题图</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
-    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-    <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
-    <script type="text/javascript">
-        var map, themeService, themeLayer, themeGraph, themeParameters,
-                url = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
-        function init() {
-            map = L.map('map', {
-                crs: L.CRS.EPSG4326,
-                center: [40, 118],
-                maxZoom: 18,
-                zoom: 6
-            });
-            L.supermap.tiledMapLayer(url, {noWrap: true}).addTo(map);
-            themeService = L.supermap.themeService(url);
-            themeGraph = new ThemeGraph({
-                items: [
-                    new ThemeGraphItem({
-                        caption: "1992-1995人口增长率",
-                        graphExpression: "Pop_Rate95",
-                        uniformStyle: new ServerStyle({
-                            fillForeColor: new ServerColor(92, 73, 234),
-                            lineWidth: 0.1
-                        })
-                    }),
-                    new ThemeGraphItem({
-                        caption: "1995-1999人口增长率",
-                        graphExpression: "Pop_Rate99",
-                        uniformStyle: new ServerStyle({
-                            fillForeColor: new ServerColor(211, 111, 240),
-                            lineWidth: 0.1
-                        })
-                    })
-                ],
-                barWidth: 0.03,
-                graduatedMode: GraduatedMode.SQUAREROOT,
-                graphAxes: new ThemeGraphAxes({
-                    axesDisplayed: true
-                }),
-                graphSize: new ThemeGraphSize({
-                    maxGraphSize: 1,
-                    minGraphSize: 0.35
-                }),
-                graphText: new ThemeGraphText({
-                    graphTextDisplayed: true,
-                    graphTextFormat: ThemeGraphTextFormat.VALUE,
-                    graphTextStyle: new ServerTextStyle({
-                        sizeFixed: true,
-                        fontHeight: 9,
-                        fontWidth: 5
-                    })
-                }),
-                graphType: ThemeGraphType.BAR3D
-            });
-            themeParameters = new ThemeParameters({
-                themes: [themeGraph],
-                dataSourceNames: ["Jingjin"],
-                datasetNames: ["BaseMap_R"]
-            });
-        }
-        function createTheme() {
-            themeService.getThemeStatus(themeParameters).on('complete', function (serviceResult) {
-                var result = serviceResult.result;
-                if (result && result.newResourceID) {
-                    themeLayer = L.supermap.tiledMapLayer(url, {
-                        noWrap: true,
-                        cacheEnabled: false,
-                        transparent: true,
-                        layersID: result.newResourceID
-                    }).addTo(map);
-                }
-            }).on('failed', function (error) {
-                alert(error.errorMsg);
-            });
-        }
-
-        function clearLayer() {
-            if (themeLayer) {
-                map.removeLayer(themeLayer);
-            }
-        }
-
-    </script>
 </head>
-<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
-<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
-    <input type="button" class="btn btn-default" value="创建专题图" onclick="createTheme()"/>
-    <input type="button" class="btn btn-default" value="清除结果" onclick="clearLayer()"/>
-</div>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
 </body>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, themeService, themeGraph, themeParameters, themeLayer,
+            url = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
+    map = L.map('map', {
+        crs: L.CRS.EPSG4326,
+        center: [40, 117],
+        maxZoom: 18,
+        zoom: 6
+    });
+    L.supermap.tiledMapLayer(url, {noWrap: true}).addTo(map);
+    createTheme();
+
+    function createTheme() {
+        themeService = L.supermap.themeService(url);
+        themeGraph = new ThemeGraph({
+            items: [
+                new ThemeGraphItem({
+                    caption: "1992-1995人口增长率",
+                    graphExpression: "Pop_Rate95",
+                    uniformStyle: new ServerStyle({
+                        fillForeColor: new ServerColor(92, 73, 234),
+                        lineWidth: 0.1
+                    })
+                }),
+                new ThemeGraphItem({
+                    caption: "1995-1999人口增长率",
+                    graphExpression: "Pop_Rate99",
+                    uniformStyle: new ServerStyle({
+                        fillForeColor: new ServerColor(211, 111, 240),
+                        lineWidth: 0.1
+                    })
+                })
+            ],
+            barWidth: 0.03,
+            graduatedMode: GraduatedMode.SQUAREROOT,
+            graphAxes: new ThemeGraphAxes({
+                axesDisplayed: true
+            }),
+            graphSize: new ThemeGraphSize({
+                maxGraphSize: 1,
+                minGraphSize: 0.35
+            }),
+            graphText: new ThemeGraphText({
+                graphTextDisplayed: true,
+                graphTextFormat: ThemeGraphTextFormat.VALUE,
+                graphTextStyle: new ServerTextStyle({
+                    sizeFixed: true,
+                    fontHeight: 9,
+                    fontWidth: 5
+                })
+            }),
+            graphType: ThemeGraphType.BAR3D
+        });
+        themeParameters = new ThemeParameters({
+            themes: [themeGraph],
+            dataSourceNames: ["Jingjin"],
+            datasetNames: ["BaseMap_R"]
+        });
+        themeService.getThemeStatus(themeParameters).on('complete', function (serviceResult) {
+            var result = serviceResult.result;
+            if (result && result.newResourceID) {
+                themeLayer = L.supermap.tiledMapLayer(url, {
+                    noWrap: true,
+                    cacheEnabled: false,
+                    transparent: true,
+                    layersID: result.newResourceID
+                }).addTo(map);
+            }
+        }).on('failed', function (error) {
+            alert(error.errorMsg);
+        });
+    }
+</script>
 </html>

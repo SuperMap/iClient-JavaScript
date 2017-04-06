@@ -30,9 +30,13 @@ var exampleConfig = {
                     fileName: "01_mapService"
 
                 }, {
-                    name: "测量",
-                    thumbnail: "l_measure.png",
-                    fileName: "01_measure"
+                    name: "距离测量",
+                    thumbnail: "l_measure-distance.png",
+                    fileName: "01_measure_distance"
+                }, {
+                    name: "面积测量",
+                    thumbnail: "l_measure-area.png",
+                    fileName: "01_measure_area"
                 }, {
                     name: "图层信息",
                     thumbnail: "l_layerService.png",

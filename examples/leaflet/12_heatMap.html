@@ -3,61 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>热力图</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
-    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet.heat/0.2.0/leaflet-heat.js"></script>
-    <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
     <style>
         #heatNumbers, #heatRadius {
             width: 50px;
             display: inline-block;
         }
     </style>
-    <script type="text/javascript">
-        var map, resultLayer,
-                url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
-        function init() {
-            map = L.map('map', {
-                preferCanvas: true,
-                center: [39.89, 116.43],
-                maxZoom: 18,
-                zoom: 11
-            });
-            L.supermap.tiledMapLayer(url).addTo(map);
-        }
-
-        function loadHeatMap() {
-            clearLayers();
-            var num = parseInt(document.getElementById('heatNumbers').value);
-            num = (num > 0) ? num : 0;
-            var radius = parseInt(document.getElementById('heatRadius').value);
-            radius = (radius > 0) ? radius : 0;
-            var heatPoints = [];
-            for (var i = 0; i < num; i++) {
-                heatPoints[i] = [Math.random() * 0.28 + 39.78, Math.random() * 0.5 + 116.12, Math.random() * 80];
-            }
-            resultLayer = L.heatLayer(heatPoints, {radius: radius, minOpacity: 0.5}).addTo(map);
-        }
-
-        function clearLayers() {
-            if (resultLayer) {
-                resultLayer.removeFrom(map);
-                resultLayer = null;
-            }
-        }
-
-    </script>
 </head>
-<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
-<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
-    <span>热点数量:</span>
-    <input type='text' class="form-control" style='width:50px;height: 30px' id='heatNumbers' value='150'/>
-    <span>热点半径:</span>
-    <input type='text' class="form-control" style='width:50px;height: 30px' id='heatRadius' value='30'/>
-    <input type="button" class="btn btn-default" value="渲染热力图" onclick="loadHeatMap()"/>
-    <input type="button" class="btn btn-default" value="清除结果" onclick="clearLayers()"/>
-</div>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
 </body>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, resultLayer,
+            url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+    map = L.map('map', {
+        preferCanvas: true,
+        center: [39.89, 116.35],
+        maxZoom: 18,
+        zoom: 11
+    });
+    L.supermap.tiledMapLayer(url).addTo(map)
+            .on("load", function () {
+                loadHeatMap();
+            });
+
+    function loadHeatMap() {
+        var heatNumbers = 150, heatRadius = 30;
+        var num = parseInt(heatNumbers);
+        num = (num > 0) ? num : 0;
+        var radius = parseInt(heatRadius);
+        radius = (radius > 0) ? radius : 0;
+        var heatPoints = [];
+        for (var i = 0; i < num; i++) {
+            heatPoints[i] = [Math.random() * 0.28 + 39.78, Math.random() * 0.5 + 116.12, Math.random() * 80];
+        }
+        resultLayer = L.heatLayer(heatPoints, {
+            radius: radius,
+            minOpacity: 0.5
+        }).addTo(map);
+    }
+</script>
 </html>

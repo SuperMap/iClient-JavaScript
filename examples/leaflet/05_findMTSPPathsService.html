@@ -3,36 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>网络分析服务-多旅行商分析(物流配送)</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
 </head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+</body>
+
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
 <script type="text/javascript">
     var map, findMTSPPathsService, resultSetting, analystParameter, findMTSPPathsParameter,
             baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
             serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+    map = L.map('map', {
+        crs: L.supermap.NonEarthCRS({
+            bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+            origin: L.point(48.4, -55.58)
+        }),
+        center: [-3600, 4700],
+        maxZoom: 18,
+        zoom: 2
+    });
+    L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
+            .addTo(map)
+            .on("load", function () {
+                findMTSPPathsProcess();
+            });
 
-    init();
-
-    function init() {
-        map = L.map('map', {
-            crs: L.supermap.NonEarthCRS({
-                bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
-                origin: L.point(48.4, -55.58)
-            }),
-            center: [-3375, 5605],
-            maxZoom: 18,
-            zoom: 1
-        });
-        L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
-                .addTo(map)
-                .on("load", function () {
-                    findMTSPPathsProcess();
-                });
-    }
     function findMTSPPathsProcess() {
         //添加配送点
         var marker1 = L.marker([-5500, 6000]).addTo(map);
@@ -47,7 +45,6 @@
         var myIcon = L.icon({
             iconUrl: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker.png',
             iconSize: [44, 30]
-            //shadowUrl:
         });
         var marker4 = L.marker([-5000, 5000], {icon: myIcon}).addTo(map);
         var marker5 = L.marker([-2800, 8000], {icon: myIcon}).addTo(map);
@@ -57,7 +54,6 @@
 
         //创建多旅行商分析服务实例
         findMTSPPathsService = L.supermap.networkAnalystService(serviceUrl);
-
         //创建多旅行商分析参数实例
         resultSetting = new TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -84,11 +80,9 @@
         findMTSPPathsService.findMTSPPaths(findMTSPPathsParameter)
                 .on('complete', function (serviceResult) {
                     serviceResult.result.map(function (result) {
-                        L.geoJSON(result.route, {color: "red"}).addTo(map);
+                        L.geoJSON(result.route, {color: "green"}).addTo(map);
                     });
-
                 });
     }
 </script>
-</body>
 </html>

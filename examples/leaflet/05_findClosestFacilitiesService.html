@@ -3,37 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>网络分析服务-最近设施分析</title>
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
 </head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+</body>
+
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
 <script type="text/javascript">
-    var map, findClosetFacilitiesService, findClosetFacilitiesParameter,
+    var map, findClosetFacilitiesService, findClosetFacilitiesParameter, resultLayer,
             baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
             serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+    map = L.map('map', {
+        crs: L.supermap.NonEarthCRS({
+            bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+            origin: L.point(48.4, -55.58)
+        }),
+        center: [-3600, 4700],
+        maxZoom: 18,
+        zoom: 2
+    });
+    L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
+            .addTo(map)
+            .on('load', function () {
+                findClosetFacilitiesProcess();
+            });
 
-    init();
-
-    function init() {
-        map = L.map('map', {
-            crs: L.supermap.NonEarthCRS({
-                bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
-                origin: L.point(48.4, -55.58)
-            }),
-            center: [-3375, 5605],
-            maxZoom: 18,
-            zoom: 3
-        });
-        L.supermap.tiledMapLayer(baseUrl, {noWrap: true})
-                .addTo(map)
-                .on('load', function () {
-                    findClosetFacilitiesProcess();
-                });
-
-    }
     function findClosetFacilitiesProcess() {
         //添加设施点
         var marker1 = L.marker([-3500, 2500]).addTo(map);
@@ -48,7 +45,7 @@
             iconSize: [44, 30]
             //shadowUrl:
         });
-        var marker4 = L.marker([-3700, 5000], {icon: myIcon/*,zIndexOffset:-2*/}).addTo(map);
+        var marker4 = L.marker([-3700, 5000], {icon: myIcon}).addTo(map);
         marker4.bindPopup("事件点");
         //创建最近设施分析服务实例
         findClosetFacilitiesService = L.supermap.networkAnalystService(serviceUrl);
@@ -82,10 +79,9 @@
         findClosetFacilitiesService.findClosestFacilities(findClosetFacilitiesParameter)
                 .on('complete', function (serviceResult) {
                     serviceResult.result.map(function (result) {
-                        L.geoJSON(result.route, {color: "red"}).addTo(map);
+                        resultLayer = L.geoJSON(result.route).addTo(map);
                     });
                 });
     }
 </script>
-</body>
 </html>
