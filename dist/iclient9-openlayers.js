@@ -23131,7 +23131,7 @@
 
 	        jsonParameters = {
 	            points: SuperMap.Util.toJSON(params.points),
-	            transferLines: params['transferLines']
+	            transferLines: SuperMap.Util.toJSON(params['transferLines'])
 	        };
 
 	        me.request({
