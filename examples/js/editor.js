@@ -40,7 +40,7 @@ function initCodeEditor() {
     if (!aceEditor) {
         aceEditor = ace.edit("editor");
         aceEditor.setTheme("ace/theme/textmate");
-        aceEditor.getSession().setMode("ace/mode-javascript/html");
+        aceEditor.getSession().setMode("ace/mode/javascript");
         aceEditor.getSession().setUseWrapMode(true);
         aceEditor.setShowPrintMargin(false);
     }
