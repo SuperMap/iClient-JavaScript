@@ -2,128 +2,145 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>SuperMap 字段信息</title>
+    <title>数据集字段查询统计</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
-    <script  src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
-    <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
     <style>
         .ol-popup {
             position: absolute;
             background-color: white;
-            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
             filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-            padding: 15px;
-            border-radius: 10px;
+            padding: 10px;
+            border-radius: 5px;
             border: 1px solid #cccccc;
-            bottom: 12px;
-            left: -50px;
+            bottom: 10px;
+            left: 10px;
             min-width: 280px;
         }
 
-        .ol-popup:after, .ol-popup:before {
-            top: 100%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-        }
-
-        .ol-popup:after {
-            border-top-color: white;
-            border-width: 10px;
-            left: 48px;
-            margin-left: -10px;
-        }
-
-        .ol-popup:before {
-            border-top-color: #cccccc;
-            border-width: 11px;
-            left: 48px;
-            margin-left: -11px;
-        }
-
     </style>
-    <div id="popup" class="ol-popup">
-        <div id="popup-content"></div>
-    </div>
-    <script type="text/javascript">
-        var container = document.getElementById('popup');
-        var content = document.getElementById('popup-content');
-        var extent = [-180.0, -90.0, 180, 90];
-        var dpi = 96;
-        var resolutions = [
-            ol.supermap.Util.scaleToResolution(1.6901635716026555E-9, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(3.375595414562003E-9, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(6.751190829124006E-9, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(1.3502381658248012E-8, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(2.7004763316496024E-8, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(5.400952663299205E-8, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(1.080190532659841E-7, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(2.1603810653196843E-7, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(4.320762130639359E-7, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(8.641524261278681E-7, dpi, Unit.DEGREE),
-        ];
-        var overlay = new ol.Overlay(({
-            element: container,
-            autoPan: true,
-            autoPanAnimation: {
-                duration: 250
-            }
-        }));
-        var map, baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
-                url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
-        function init() {
-            map = new ol.Map({
-                target: 'map',
-                view: new ol.View({
-                    center: [0, 0],
-                    zoom: 2,
-                    projection: 'EPSG:4326'
-                }),
-                overlays: [overlay],
-            });
-            var layer = new ol.layer.Tile({
-                source: new ol.supermap.TileSuperMapRest({
-                    url: baseUrl,
-                    tileGrid: new ol.tilegrid.TileGrid({
-                        extent: extent,
-                        resolutions: resolutions,
-                    })
-                }),
-                projection: 'EPSG:4326'
-            })
-            map.addLayer(layer);
-        }
-
-        function mapService() {
-            closeInfoWin();
-            var getFieldsService = new ol.supermap.GetFieldsService(url, {
-                dataSourceName: "World",
-                dataSetName: "continent_T"
-            });
-            getFieldsService.on("complete", function (serviceResult) {
-                content.innerHTML = serviceResult.element.result.fieldNames.join(', ');
-                overlay.setPosition([0, 0]);
-            });
-            getFieldsService.getFields();
-        }
-
-        function closeInfoWin() {
-            if (overlay) {
-                overlay.setPosition(undefined);
-            }
-        }
-    </script>
 </head>
-<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
-
-<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
-    <input type="button" class="btn btn-default" value="获取字段信息" onclick="mapService()"/>
-    <input type="button" class="btn btn-default" value="清除结果" onclick="closeInfoWin()"/>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
+<div id="popup" class="ol-popup">
+    <div id="popup-content"></div>
 </div>
-<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
 </body>
+
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var container, content, info;
+    var map, currentData, layersName = [],
+            mapURL = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
+            dataURL = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+
+    map = new ol.Map({
+        target: 'map',
+        view: new ol.View({
+            center: [0, 0],
+            zoom: 3,
+            projection: 'EPSG:4326'
+        })
+    });
+    var layer = new ol.layer.Tile({
+        source: new ol.supermap.TileSuperMapRest({
+            url: mapURL
+        }),
+        projection: 'EPSG:4326'
+    });
+    map.addLayer(layer);
+    initResultInfoWin();
+    showLayersInfo();
+
+    function initResultInfoWin() {
+        container = document.getElementById('popup');
+        content = document.getElementById('popup-content');
+        info = new ol.control.Control({element: container});
+        info.setMap(map);
+        map.addControl(info);
+    }
+
+    //获取子图层信息
+    function showLayersInfo() {
+        var subLayer;
+        var getLayersInfoService = new ol.supermap.GetLayersInfoService(mapURL);
+        getLayersInfoService.on("complete", function (serviceResult) {
+            var layers = serviceResult.element.result;
+            if (!layers) return;
+            for (var i = 0, len = layers.length; i < len; i++) {
+                subLayer = layers[i];
+                if ("UGC" == subLayer.type) {
+                    //记录数据源，数据集信息供字段查询统计使用
+                    if (subLayer.datasetInfo.name && subLayer.datasetInfo.dataSourceName) {
+                        layersName[i] = {
+                            dataSetName: subLayer.datasetInfo.name,
+                            dataSourceName: subLayer.datasetInfo.dataSourceName,
+                            layerName: subLayer.name
+                        };
+                    }
+                }
+            }
+            getFields();
+        });
+        getLayersInfoService.getLayersInfo();
+    }
+
+    function getFields() {
+        var name = 'continent_T@World';
+        var dataInfo;
+        for (var i = 0; i < layersName.length; i++) {
+            dataInfo = layersName[i];
+            if (dataInfo.layerName == name) {
+                //设置数据集，数据源，查询fields信息
+                currentData = dataInfo;
+                var getFieldsService = new ol.supermap.GetFieldsService(dataURL, {
+                    dataSourceName: dataInfo.dataSourceName, dataSetName: dataInfo.dataSetName
+                });
+                getFieldsService.on("complete", function (serviceResult) {
+                    fieldStatistic();
+                });
+                getFieldsService.getFields();
+            }
+        }
+    }
+
+    function fieldStatistic() {
+        var fieldName = 'SmID';
+        if (currentData) {
+            var fieldStatisticService = new ol.supermap.FieldStatisticService(dataURL, {
+                dataSourceName: currentData.dataSourceName,
+                dataSetName: currentData.dataSetName,
+                fieldName: fieldName
+            });
+            fieldStatisticService.on("complete", function (serviceResult) {
+                showResult(serviceResult.element.result);
+            });
+            fieldStatisticService.getFieldStatisticInfo();
+        }
+    }
+
+    function showResult(serviceResult) {
+        if (!serviceResult) {
+            return;
+        }
+        var innerHTMLStr = '<div style="line-height: 35px;">'
+                + '<strong>图层</strong>（continent_T@World）&nbsp;&nbsp;&nbsp;<strong>字段</strong>（' + serviceResult.fieldName + '）<div>';
+        innerHTMLStr += '<div style="line-height: 35px;">'
+                + '<strong>统计结果：</strong><div>';
+        var keys = ["AVERAGE", "MAX", "MIN", "STDDEVIATION", "SUM", "VARIANCE"];
+        var tableStr = "<table id='trafficRes' class='table table-bordered'><tr><td>平均值</td><td>最大值</td><td>最小值</td>"
+                + "<td>标准差</td><td>和</td><td>方差</td></tr>";
+        var resultTR = "<tr>";
+        for (var i = 0; i < keys.length; i++) {
+            resultTR += "<td>" + serviceResult[keys[i]] + "</td>";
+        }
+        resultTR += "</tr>";
+        tableStr += resultTR + "</table>";
+        innerHTMLStr += tableStr;
+        content.innerHTML = innerHTMLStr;
+        map.addControl(info);
+    }
+</script>
+
 </html>

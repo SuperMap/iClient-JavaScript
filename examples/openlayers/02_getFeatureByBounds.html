@@ -5,99 +5,71 @@
     <title>数据集Bounds查询</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
-    <script  src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
-    <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
-    <script type="text/javascript">
-        var map, polygon, vectorLayer, resultLayer,
-                baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
-                url = "http://192.168.12.85:8090/iserver/services/data-world/rest/data";
-        var extent = [-180.0, -90.0, 180, 90];
-        var dpi = 96;
-        var resolutions = [
-            ol.supermap.Util.scaleToResolution(1.6901635716026555E-9, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(3.375595414562003E-9, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(6.751190829124006E-9, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(1.3502381658248012E-8, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(2.7004763316496024E-8, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(5.400952663299205E-8, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(1.080190532659841E-7, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(2.1603810653196843E-7, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(4.320762130639359E-7, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(8.641524261278681E-7, dpi, Unit.DEGREE),
-        ];
-        function init() {
-            map = new ol.Map({
-                target: 'map',
-                view: new ol.View({
-                    center: [-10, 20],
-                    zoom: 3,
-                    projection: 'EPSG:4326'
-                })
-            });
-            var layer = new ol.layer.Tile({
-                source: new ol.supermap.TileSuperMapRest({
-                    url: baseUrl,
-                    tileGrid: new ol.tilegrid.TileGrid({
-                        extent: extent,
-                        resolutions: resolutions,
-                    })
-                }),
-                projection: 'EPSG:4326'
-            })
-            map.addLayer(layer);
-        }
-        function query() {
-            clearLayer();
-            polygon = new ol.geom.Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
-            var vectorSource = new ol.source.Vector({
-                features: [new ol.Feature(polygon)]
-            });
-            vectorLayer = new ol.layer.Vector({
-                source: vectorSource,
-                style: new ol.style.Style({
-                    stroke: new ol.style.Stroke({
-                        color: 'red',
-                        width: 3
-                    }),
-                    fill: new ol.style.Fill({
-                        color: 'rgba(0, 0, 255, 0.1)'
-                    })
-                })
-            });
-            map.addLayer(vectorLayer);
-
-            var getFeaturesService = new ol.supermap.GetFeaturesService(url);
-            var boundsParam = new GetFeaturesByBoundsParameters({
-                datasetNames: ["World:Countries"],
-                bounds: polygon.getExtent()
-            });
-            getFeaturesService.getFeaturesByBounds(boundsParam);
-            getFeaturesService.on("complete", function (serviceResult) {
-                var vectorSource = new ol.source.Vector({
-                    features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)
-                })
-                resultLayer = new ol.layer.Vector({
-                    source: vectorSource,
-                });
-                map.addLayer(resultLayer);
-            });
-        }
-
-        function clearLayer() {
-            if (vectorLayer) {
-                map.removeLayer(vectorLayer);
-            }
-            if (resultLayer) {
-                map.removeLayer(resultLayer);
-            }
-        }
-    </script>
 </head>
-<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
-<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
-    <input type="button" class="btn btn-default" value="数据集Bounds查询" onclick="query()"/>
-    <input type="button" class="btn btn-default" value="清除结果" onclick="clearLayer()"/>
-</div>
-<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
 </body>
+
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var map, vectorLayer, resultLayer,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
+            url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+    map = new ol.Map({
+        target: 'map',
+        view: new ol.View({
+            center: [-10, 15],
+            zoom: 3,
+            projection: 'EPSG:4326'
+        })
+    });
+    var layer = new ol.layer.Tile({
+        source: new ol.supermap.TileSuperMapRest({
+            url: baseUrl
+        }),
+        projection: 'EPSG:4326'
+    });
+    map.addLayer(layer);
+    query();
+
+    function query() {
+        //添加查询区域
+        var polygon = new ol.geom.Polygon([[[-20, 20], [-20, -20], [20, -20], [20, 20], [-20, 20]]]);
+        var polygonSource = new ol.source.Vector({
+            features: [new ol.Feature(polygon)],
+            wrapX: false
+        });
+        vectorLayer = new ol.layer.Vector({
+            source: polygonSource,
+            style: new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'red',
+                    width: 3
+                }),
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 0, 255, 0.1)'
+                })
+            })
+        });
+        map.addLayer(vectorLayer);
+        //创建集Bounds查询服务
+        var getFeaturesService = new ol.supermap.GetFeaturesService(url);
+        var boundsParam = new GetFeaturesByBoundsParameters({
+            datasetNames: ["World:Capitals"],
+            bounds: polygon.getExtent()
+        });
+        getFeaturesService.getFeaturesByBounds(boundsParam);
+        getFeaturesService.on("complete", function (serviceResult) {
+            var vectorSource = new ol.source.Vector({
+                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result),
+                wrapX: false
+            });
+            resultLayer = new ol.layer.Vector({
+                source: vectorSource
+            });
+            map.addLayer(resultLayer);
+        });
+    }
+</script>
 </html>

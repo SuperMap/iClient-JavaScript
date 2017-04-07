@@ -6,8 +6,10 @@
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
 </head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
+</body>
+
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
@@ -15,37 +17,31 @@
             themeService, themeGridRange, themeParameters,
             baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-temperature/rest/maps/全国温度变化图",
             serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
-
-    init();
-
-    function init() {
-
-        var mapService = new ol.supermap.MapService(baseUrl);
-        var extent = [-2640403.63, 1873792.1, 3247669.39, 5921501.4];
-        var projection = new ol.proj.Projection({
-            extent: extent,
-            units: 'm'
+    var mapService = new ol.supermap.MapService(baseUrl);
+    var extent = [-2640403.63, 1873792.1, 3247669.39, 5921501.4];
+    var projection = new ol.proj.Projection({
+        extent: extent,
+        units: 'm'
+    });
+    mapService.on("complete", function (serviceResult) {
+        var mapJSONObj = serviceResult.element.result;
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [531762, 3580330],
+                zoom: 1,
+                projection: projection
+            })
         });
-        mapService.on("complete", function (serviceResult) {
-            var mapJSONObj = serviceResult.element.result;
-            map = new ol.Map({
-                target: 'map',
-                view: new ol.View({
-                    center: [531762, 3580330],
-                    zoom: 1,
-                    projection: projection
-                })
-            });
-            options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
-            options.layersID = "[0,1,2]";
-            var layer = new ol.layer.Tile({
-                source: new ol.supermap.TileSuperMapRest(options)
-            });
-            map.addLayer(layer);
-            interpolationAnalystProcess();
+        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        options.layersID = "[0,1,2]";
+        var layer = new ol.layer.Tile({
+            source: new ol.supermap.TileSuperMapRest(options)
         });
-        mapService.getMapStatus();
-    }
+        map.addLayer(layer);
+        interpolationAnalystProcess();
+    });
+    mapService.getMapStatus();
 
     function interpolationAnalystProcess() {
         //创建点密度插值分析服务实例
@@ -251,5 +247,4 @@
         }
     }
 </script>
-</body>
 </html>

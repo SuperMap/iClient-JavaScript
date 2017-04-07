@@ -5,103 +5,91 @@
     <title>网络分析服务-服务区分析</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
-    <script  src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
-    <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
-    <script type="text/javascript">
-        var map, resultLayer, service, parameter, point,
-                baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
-                serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
-        var extent = [48.4, -7668.25, 8958.85, -55.58];
-        var projection = new ol.proj.Projection({
-            extent: extent,
-            units: 'm'
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
+</body>
+
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var map, resultLayer, service, parameter,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+    var extent = [48.4, -7668.25, 8958.85, -55.58];
+    var projection = new ol.proj.Projection({
+        extent: extent,
+        units: 'm'
+    });
+    var mapService = new ol.supermap.MapService(baseUrl);
+    mapService.on("complete", function (serviceResult) {
+        var mapJSONObj = serviceResult.element.result;
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [5105, -3375],
+                zoom: 3,
+                projection: projection
+            })
         });
-        function init() {
-            var mapService = new ol.supermap.MapService(baseUrl);
-            mapService.on("complete", function (serviceResult) {
-                var mapJSONObj = serviceResult.element.result;
-                map = new ol.Map({
-                    target: 'map',
-                    view: new ol.View({
-                        center: [5105, -3375],
-                        zoom: 4,
-                        projection: projection
-                    })
-                });
-                var layer = new ol.layer.Tile({
-                    source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj))
-                });
-                map.addLayer(layer);
+        var layer = new ol.layer.Tile({
+            source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj))
+        });
+        map.addLayer(layer);
+        findServiceAreas();
+    });
+    mapService.getMapStatus();
 
-                point = new ol.geom.Point([5605, -3375]);
-                var iconStyle = new ol.style.Style({
-                    image: new ol.style.Icon(({
-                        src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/markerbig_select.png'
-                    }))
-                });
-                var feature = new ol.Feature(point);
-                feature.setStyle(iconStyle);
-                var vectorSource = new ol.source.Vector({
-                    features: [feature]
-                });
-                vectorLayer = new ol.layer.Vector({
-                    source: vectorSource,
-                });
-                map.addLayer(vectorLayer);
+    function findServiceAreas() {
+        //添加待分析的中心点
+        var point = new ol.geom.Point([5605, -3375]);
+        var iconStyle = new ol.style.Style({
+            image: new ol.style.Icon(({
+                src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/markerbig_select.png'
+            }))
+        });
+        var feature = new ol.Feature(point);
+        feature.setStyle(iconStyle);
+        var pointSource = new ol.source.Vector({
+            features: [feature]
+        });
+        vectorLayer = new ol.layer.Vector({
+            source: pointSource
+        });
+        map.addLayer(vectorLayer);
 
-                service = new ol.supermap.NetworkAnalystService(serviceUrl);
-                service.on('complete', function (serviceResult) {
+        service = new ol.supermap.NetworkAnalystService(serviceUrl);
+        var resultSetting = new TransportationAnalystResultSetting({
+            returnEdgeFeatures: true,
+            returnEdgeGeometry: true,
+            returnEdgeIDs: true,
+            returnNodeFeatures: true,
+            returnNodeGeometry: true,
+            returnNodeIDs: true,
+            returnPathGuides: true,
+            returnRoutes: true
+        });
+        var analystParameter = new TransportationAnalystParameter({
+            resultSetting: resultSetting,
+            weightFieldName: "length"
+        });
+        parameter = new FindServiceAreasParameters({
+            centers: [point],
+            isAnalyzeById: false,
+            parameter: analystParameter
+        });
+        parameter.weights = [400 + Math.random() * 100];
+
+        service.findServiceAreas(parameter)
+                .on('complete', function (serviceResult) {
                     var vectorSource = new ol.source.Vector({
                         features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result[0])
                     });
                     resultLayer = new ol.layer.Vector({
-                        source: vectorSource,
+                        source: vectorSource
                     });
                     map.addLayer(resultLayer);
                 });
-            });
-            mapService.getMapStatus();
-        }
-
-        function findServiceAreas() {
-            clearLayer();
-            var resultSetting = new TransportationAnalystResultSetting({
-                returnEdgeFeatures: true,
-                returnEdgeGeometry: true,
-                returnEdgeIDs: true,
-                returnNodeFeatures: true,
-                returnNodeGeometry: true,
-                returnNodeIDs: true,
-                returnPathGuides: true,
-                returnRoutes: true
-            });
-            var analystParameter = new TransportationAnalystParameter({
-                resultSetting: resultSetting,
-                weightFieldName: "length"
-            });
-            parameter = new FindServiceAreasParameters({
-                centers: [point],
-                isAnalyzeById: false,
-                parameter: analystParameter
-            });
-            parameter.weights = [400 + Math.random() * 100];
-            service.findServiceAreas(parameter);
-        }
-
-        function clearLayer() {
-            if (resultLayer) {
-                map.removeLayer(resultLayer);
-            }
-        }
-
-    </script>
-</head>
-<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
-<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
-    <input type="button" class="btn btn-default" value="服务区分析" onclick="findServiceAreas()"/>
-    <input type="button" class="btn btn-default" value="清除" onclick="clearLayer()"/>
-</div>
-
-<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-</body>
+    }
+</script>
 </html>

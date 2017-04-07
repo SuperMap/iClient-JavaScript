@@ -6,8 +6,10 @@
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
 </head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
+</body>
+
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
@@ -15,36 +17,30 @@
             themeService, themeGridRange, themeParameters,
             baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图",
             serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
-
-    init();
-
-    function init() {
-
-        var mapService = new ol.supermap.MapService(baseUrl);
-        var extent = [114.59, 37.76, 119.51, 42.31];
-        var projection = new ol.proj.Projection({
-            extent: extent,
-            units: 'm'
+    var mapService = new ol.supermap.MapService(baseUrl);
+    var extent = [114.59, 37.76, 119.51, 42.31];
+    var projection = new ol.proj.Projection({
+        extent: extent,
+        units: 'm'
+    });
+    mapService.on("complete", function (serviceResult) {
+        var mapJSONObj = serviceResult.element.result;
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [116.85, 39.79],
+                zoom: 1,
+                projection: projection
+            })
         });
-        mapService.on("complete", function (serviceResult) {
-            var mapJSONObj = serviceResult.element.result;
-            map = new ol.Map({
-                target: 'map',
-                view: new ol.View({
-                    center: [116.85, 39.79],
-                    zoom: 1,
-                    projection: projection
-                })
-            });
-            options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
-            var layer = new ol.layer.Tile({
-                source: new ol.supermap.TileSuperMapRest(options)
-            });
-            map.addLayer(layer);
-            mathExpressionAnalysisProcess();
+        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        var layer = new ol.layer.Tile({
+            source: new ol.supermap.TileSuperMapRest(options)
         });
-        mapService.getMapStatus();
-    }
+        map.addLayer(layer);
+        mathExpressionAnalysisProcess();
+    });
+    mapService.getMapStatus();
 
     function mathExpressionAnalysisProcess() {
         //创建栅格代数运算服务实例
@@ -130,7 +126,7 @@
                         var result = serviceResult.element.result;
                         if (result && result.newResourceID) {
                             var themeLayer = new ol.layer.Tile({
-                                opacity:0.8,
+                                opacity: 0.8,
                                 source: new ol.supermap.TileSuperMapRest({
                                     url: baseUrl,
                                     noWrap: true,
@@ -149,5 +145,4 @@
         }
     }
 </script>
-</body>
 </html>

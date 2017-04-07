@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>交通换乘分析服务</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+    <style>
+        .transferSolution {
+            cursor: pointer;
+            margin: 10px 10px;
+        }
+
+        .transferInfo a {
+            cursor: pointer;
+        }
+
+        table {
+            width: 90%;
+        }
+
+        #trafficRes {
+            margin: 5px;
+        }
+
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            top: 0;
+            right: 0;
+            min-width: 280px;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
+<div id="startMarker">
+    <img src="http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/start_trans.png"/>
+</div>
+<div id="endMarker">
+    <img src="http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/end_trans.png"/>
+</div>
+<div id="popup" class="ol-popup">
+    <div id="popup-content"></div>
+</div>
+</body>
+
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var map, startMarker, endMarker, container, content, tempMarker, solution, line,
+            stopSourceLayer, roadSourceLayer, tempMarkerSourceLayer, tempRedSourceLayer,
+            info, paths = {transSolutions: null, solutions: null},
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun";
+    var mapService = new ol.supermap.MapService(baseUrl);
+    var extent = [48.4, -7668.25, 8958.85, -55.58];
+    var projection = new ol.proj.Projection({
+        extent: extent,
+        units: 'm'
+    });
+    mapService.on("complete", function (serviceResult) {
+        var mapJSONObj = serviceResult.element.result;
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [4700, -3600],
+                zoom: 2,
+                projection: projection
+            })
+        });
+        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        var layer = new ol.layer.Tile({
+            source: new ol.supermap.TileSuperMapRest(options)
+        });
+        stopSourceLayer = new ol.source.Vector();
+        roadSourceLayer = new ol.source.Vector();
+        tempRedSourceLayer = new ol.source.Vector();
+        tempMarkerSourceLayer = new ol.source.Vector();
+        map.addLayer(layer);
+
+        //设置起始、终止点并添加到地图上
+        startMarker = new ol.Overlay({
+            element: document.getElementById('startMarker'),
+            positioning: 'center-center',
+            position: [3111.42533851, -5527.73795456]
+        });
+        endMarker = new ol.Overlay({
+            element: document.getElementById('endMarker'),
+            positioning: 'center-center',
+            position: [6055.3431955, -4270.0725196]
+        });
+        map.addOverlay(startMarker);
+        map.addOverlay(endMarker);
+        initResultInfoWin();
+        execTransSolutionsQuery('LESS_TIME');  //交通换乘的有4种方式:'LESS_TIME','MIN_DISTANCE','LESS_WALK','LESS_TRANSFER'
+    });
+    mapService.getMapStatus();
+
+    function initResultInfoWin() {
+        container = document.getElementById('popup');
+        content = document.getElementById('popup-content');
+        info = new ol.control.Control({element: container});
+        info.setMap(map);
+        info.update = function (transSolutions, transGuide) {
+            if (!transSolutions) {
+                return;
+            }
+            var solution, lines, line, dispStatus = "block";
+            $("<div class='panel-heading' style='background:steelblue;color: honeydew'>起点：省汽修&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;终点：中安大厦<br/>乘车方案（最少时间）</div>").appendTo(content);
+            for (var i = 0, iLen = transSolutions.length; i < iLen; i++) {
+                solution = transSolutions[i];
+                //显示方案头
+                var title = "";
+                for (var ii = 0, iiLen = solution.linesItems.length; ii < iiLen; ii++) {
+                    lines = solution.linesItems[ii];
+                    for (var iii = 0, iiiLen = lines.lineItems.length; iii < iiiLen; iii++) {
+                        line = lines.lineItems[iii];
+                        if (iii !== iiiLen - 1) {
+                            title += line.lineName + "/";
+                        } else {
+                            title += line.lineName;
+                        }
+                    }
+                    if (ii !== iiLen - 1) {
+                        title += " → ";
+                    }
+                }
+                $("<div class='transferSolution' id='transferSolution-" + i + "'><span class='transferIndex'>方案" + (i + 1) + "：</span>" + title + "</div>").appendTo(content);
+                if (i !== 0) {
+                    dispStatus = "none";
+                }
+                var list = $("<div class='transferInfo' id='transferInfo-" + i + "' style='display:" + dispStatus + "'></div>");
+                list.appendTo(content);
+                //默认显示方案1下的table
+                if (i === 0) {
+                    fillTransferInfo(transGuide, transSolutions, 0).appendTo(list);
+                    setPopup();
+                }
+            }
+            //点击方案时显示对应的table
+            bindSolutionsClickEvent();
+        };
+        map.addControl(info);
+    }
+
+    function execTransSolutionsQuery(tactic) {
+        paths.points = [26, 180];
+        var params = new TransferSolutionParameters({
+            solutionCount: 6,        //最大换乘导引数量
+            transferTactic: tactic,  //公交换乘策略类型
+            walkingRatio: 10,        //步行与公交的消耗权重比
+            points: paths.points     //起始点坐标
+        });
+        new ol.supermap.TrafficTransferAnalystService(serviceUrl)
+                .analysisTransferSolution(params)
+                .on('complete', function (serviceResult) {
+                    transferSolutionsSucceed(serviceResult.element.result);
+                });
+    }
+
+    function transferSolutionsSucceed(result) {
+        clearLayer();
+        //在地图上叠加符号信息
+        var transGuide = result.defaultGuide,
+                transSolutions = result.solutionItems,
+                solutions = [];
+        for (var j = 0; j < transSolutions.length; j++) {
+            var linesItems = transSolutions[j].linesItems, transSolution = [];
+            for (var jj = 0; jj < linesItems.length; jj++) {
+                var lineItems = linesItems[jj].lineItems, items = [];
+                for (var jjj = 0; jjj < lineItems.length; jjj++) {
+                    var lineItem = lineItems[jjj];
+                    items.push(lineItem
+                    );
+                }
+                transSolution.push(items);
+            }
+            solutions.push(transSolution);
+        }
+        paths["transSolutions"] = transSolutions;
+        paths["solutions"] = solutions;
+        if (!transGuide || !transSolutions) return;
+        info.update(transSolutions, transGuide);
+    }
+
+    function fillTransferInfo(transGuide, transSolutions, indexX) {
+        clearLayer();
+        //在地图上显示路线
+        if (transGuide && transGuide.items.length) {
+            var items = transGuide.items;
+            for (var itemIndex = 0, itemLen = items.length; itemIndex < itemLen; itemIndex++) {
+                var geometry = items[itemIndex].route;
+                var pointsList = [];
+                for (var k = 0; k < geometry.points.length; k++) {
+                    pointsList.push([geometry.points[k].x, geometry.points[k].y]);
+                }
+                var roadLine = new ol.geom.LineString(pointsList);
+                roadSourceLayer.addFeatures([new ol.Feature(roadLine)]);
+                var roadResultLayer = new ol.layer.Vector({
+                    source: roadSourceLayer,
+                    style: new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'dodgerblue',
+                            width: 3
+                        })
+                    })
+                });
+                map.addLayer(roadResultLayer);
+            }
+        }
+        var table = $("<table id='trafficRes' border='1'></table>");
+        var startStop = $("<tr></tr>");
+        $("<td class='start_transfer' width='10px'></td>").appendTo(startStop);
+        $("<td colspan='2'><span class='busLink bgSpan'><span style='display:none'>" + transGuide.items[0].startPosition.x + "," + transGuide.items[0].startPosition.y + "</span>" + transGuide.items[0].startStopName + "</span></td>").appendTo(startStop);
+        startStop.appendTo(table);
+        var indexY = 0;
+        for (var m = 0, mLen = transGuide.items.length; m < mLen; m++) {
+            var item = transGuide.items[m];
+            var tr2 = $("<tr></tr>");
+            if (item.isWalking) {
+                $("<td class='step_transfer' ></td>").appendTo(tr2);
+                $("<td>步行至:<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a></td>").appendTo(tr2);
+                $("<td>" + parseInt(item.distance) + "米</td>").appendTo(tr2);
+            } else {
+                var otherLines = transSolutions[indexX].linesItems[indexY],
+                        links = "";
+                if (otherLines && otherLines.lineItems.length > 1) {
+                    links = "</br>还可乘坐:"
+                    for (var oti = 0, otLen = otherLines.lineItems.length; oti < otLen; oti++) {
+                        var line = otherLines.lineItems[oti];
+                        if (item.lineName !== line.lineName) {
+                            var other = indexX + "," + indexY + "," + oti + ",0";
+                            links += "<a class='busLink'><span style='display:none'>" + other + "</span>" + line.lineName + "</a>";
+                        }
+                    }
+                }
+                $("<td class='bus_transfer'></td>").appendTo(tr2);
+                var points = item.route.points, pointStr = "";
+                for (var i = 0; i < points.length; i++) {
+                    pointStr += points[i].x + " " + points[i].y;
+                    if (i != points.length - 1) {
+                        pointStr += ",";
+                    }
+                }
+                $("<td>乘坐<a class='busLink'>" + item.lineName + "<span style='display:none'>" + pointStr + "</span></a>, 在<a class='busLink'><span style='display:none'>" + item.endPosition.x + "," + item.endPosition.y + "</span>" + item.endStopName + "</a>下车" + links + "</td>").appendTo(tr2);
+                $("<td>" + item.passStopCount + "站</td>").appendTo(tr2);
+                indexY++;
+            }
+            tr2.appendTo(table);
+        }
+        var endStop = $("<tr></tr>");
+        endStop.appendTo(table);
+        $("<td class='end_transfer' width='10px'></td>").appendTo(endStop);
+        $("<td colspan='2'><span class='busLink bgSpan'><span style='display:none'>" + transGuide.items[transGuide.items.length - 1].endPosition.x + "," + transGuide.items[transGuide.items.length - 1].endPosition.y + "</span>" + transGuide.items[transGuide.items.length - 1].endStopName + "</span></td>").appendTo(endStop);
+        return table;
+    }
+
+    function bindSolutionsClickEvent() {
+        for (var i = 0; i < 6; i++) {
+            $("#transferSolution-" + i).click(toggleGuideItems);
+        }
+        function toggleGuideItems(e) {
+            for (var j = 0; j < 6; j++) {
+                $("#transferInfo-" + j).hide(500);
+            }
+            var id = parseInt(e.currentTarget.id.split("-")[1]);
+            $("#transferInfo-" + id).show(500);
+            //构造传入iServer服务器的transferLines
+            var transLines = [];
+            for (var i = 0; i < paths.solutions[id].length; i++) {
+                var trans = paths.solutions[id][i][0];
+                transLines.push(trans);
+            }
+            execTransPathQuery(id, transLines);
+        }
+    }
+
+    //在popup里点击每个站点、交通路线时，在地图上对应显示并进行强调
+    function setPopup() {
+        $(".busLink").click(function () {
+            if (tempMarkerSourceLayer) {
+                tempMarkerSourceLayer.clear();
+            }
+            if (tempRedSourceLayer) {
+                tempRedSourceLayer.clear();
+            }
+            var points = this.children[0].innerText.split(",");
+            //添加换乘点的marker
+            if (points.length === 2) {
+                tempMarker = new ol.geom.Point([points[0], points[1]]);
+                var iconStyle_marker = new ol.style.Style({
+                    image: new ol.style.Icon(({
+                        src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker.png',
+                        anchor: [0.5, 1]
+                    }))
+                });
+                var tempMarkerFeature = new ol.Feature(tempMarker);
+                tempMarkerFeature.setStyle(iconStyle_marker);
+                tempMarkerSourceLayer.addFeatures([tempMarkerFeature]);
+                var markerLayer = new ol.layer.Vector({
+                    source: tempMarkerSourceLayer
+                });
+                map.addLayer(markerLayer);
+                var coords = tempMarker.getCoordinates();
+                map.getView().setCenter([parseInt(coords[0]), parseInt(coords[1])]);
+                map.getView().setZoom(3)
+            } else if (points.length === 4 && points[3] === "0") {
+                var linesItems = paths["solutions"][points[0]], lineStr = "[";
+                for (var i = 0; i < linesItems.length; i++) {
+                    var lineItem = linesItems[i][0], j = parseInt(points[1]);
+                    if (i !== j) {
+                        lineStr += lineItem;
+                    } else if (i === j) {
+                        lineItem = linesItems[points[1]][points[2]];
+                        lineStr += lineItem;
+                    }
+                    if (i !== linesItems.length - 1) {
+                        lineStr += ",";
+                    }
+                }
+                lineStr += "]";
+                $("#transferInfo-" + points[0]).hide(500);
+                execTransPathQuery(points[0], lineStr);
+                $("#transferInfo-" + points[0]).show(500);
+            } else {
+                var linePoints = [];
+                for (var i = 0; i < points.length; i++) {
+                    var arr = points[i].split(" ");
+                    var point = [parseInt(arr[0]), parseInt(arr[1])];
+                    linePoints.push(point);
+                }
+                var lineString = new ol.geom.LineString(linePoints);
+                tempRedSourceLayer.addFeatures([new ol.Feature(lineString)]);
+                var tempRedLayer = new ol.layer.Vector({
+                    source: tempRedSourceLayer,
+                    style: new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'red',
+                            width: 6
+                        })
+                    })
+                });
+                map.addLayer(tempRedLayer);
+                //设置线路中心
+                var lineCenter = [];
+                if ((linePoints.length) % 2 == 0) {
+                    lineCenter = [linePoints[linePoints.length / 2][0], linePoints[linePoints.length / 2][1]];
+                    map.getView().setCenter([parseInt(lineCenter[0]), parseInt(lineCenter[1])]);
+                } else {
+                    lineCenter = [linePoints[(linePoints.length + 1) / 2][0], linePoints[(linePoints.length + 1) / 2][1]];
+                    map.getView().setCenter([parseInt(lineCenter[0]), parseInt(lineCenter[1])]);
+                }
+                map.getView().setZoom(3);
+            }
+        });
+    }
+
+    function execTransPathQuery(id, transLines) {
+        var params = new TransferPathParameters({
+            points: paths["points"],
+            transferLines: transLines
+        });
+        new ol.supermap.TrafficTransferAnalystService(serviceUrl).analysisTransferPath(params)
+                .on('complete', function (serviceResult) {
+                    $("#transferInfo-" + id).empty();
+                    var transGuide = serviceResult.element.result;
+                    transSolutions = paths["transSolutions"];
+                    map.getView().setCenter([4700, -3600]);
+                    map.getView().setZoom(2);
+                    fillTransferInfo(transGuide, transSolutions, id).appendTo($("#transferInfo-" + id));
+                    setPopup();
+                });
+    }
+
+    function clearLayer() {
+        if (roadSourceLayer) {
+            roadSourceLayer.clear();
+        }
+        if (tempMarkerSourceLayer) {
+            tempMarkerSourceLayer.clear();
+        }
+        if (tempRedSourceLayer) {
+            tempRedSourceLayer.clear();
+        }
+    }
+</script>
+</html>

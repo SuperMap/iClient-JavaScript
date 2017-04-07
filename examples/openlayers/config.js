@@ -30,9 +30,13 @@ var exampleConfig = {
                     fileName: "01_mapService"
 
                 }, {
-                    name: "测量",
-                    thumbnail: "ol_measure.png",
-                    fileName: "01_measure"
+                    name: "距离测量",
+                    thumbnail: "ol_measure-distance.png",
+                    fileName: "01_measure_distance"
+                }, {
+                    name: "面积测量",
+                    thumbnail: "ol_measure-area.png",
+                    fileName: "01_measure_area"
                 }, {
                     name: "图层信息",
                     thumbnail: "ol_layerService.png",
@@ -83,12 +87,12 @@ var exampleConfig = {
                     fileName: "02_getGridCellInfos"
                 }, {
                     name: "字段信息",
-                    thumbnail: "ol_fieldStatistics.png",
-                    fileName: "02_fieldStatistics"
-                }, {
-                    name: "字段查询统计",
                     thumbnail: "ol_fieldsService.png",
                     fileName: "02_fieldsService"
+                }, {
+                    name: "字段查询统计",
+                    thumbnail: "ol_fieldStatistics.png",
+                    fileName: "02_fieldStatistics"
                 }, {
                     name: "地物编辑",
                     thumbnail: "ol_editFeatures.png",
@@ -221,7 +225,11 @@ var exampleConfig = {
             },
             "trafficTransferAnalyst": {
                 name: "交通换乘",
-                content: null
+                content: [{
+                    name: "交通换乘",
+                    thumbnail: "ol_trafficTransferAnalystService.png",
+                    fileName: "06_trafficTransferAnalystService"
+                }]
             }
         }
     },

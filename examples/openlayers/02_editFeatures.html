@@ -5,134 +5,119 @@
     <title>地物编辑</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
-    <script  src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
-    <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
-    <script type="text/javascript">
-        var map, id, pointFeature, vectorSource, resultLayer,
-                baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
-                urlCapital = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Capitals",
-                url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
-        var extent = [-180.0, -90.0, 180, 90];
-        var dpi = 96;
-        var resolutions = [
-            ol.supermap.Util.scaleToResolution(1.6901635716026555E-9, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(3.375595414562003E-9, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(6.751190829124006E-9, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(1.3502381658248012E-8, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(2.7004763316496024E-8, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(5.400952663299205E-8, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(1.080190532659841E-7, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(2.1603810653196843E-7, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(4.320762130639359E-7, dpi, Unit.DEGREE),
-            ol.supermap.Util.scaleToResolution(8.641524261278681E-7, dpi, Unit.DEGREE),
-        ];
-        function init() {
-            map = new ol.Map({
-                target: 'map',
-                view: new ol.View({
-                    center: [110, 30],
-                    zoom: 3,
-                    projection: 'EPSG:4326'
-                })
-            });
-            var layer = new ol.layer.Tile({
-                source: new ol.supermap.TileSuperMapRest({
-                    url: baseUrl,
-                    tileGrid: new ol.tilegrid.TileGrid({
-                        extent: extent,
-                        resolutions: resolutions,
-                    })
-                }),
-                projection: 'EPSG:4326'
-            })
-            map.addLayer(layer);
-            initFeature();
-        }
-
-        function initFeature() {
-            var polygon = new ol.geom.Polygon([[[118, 20], [120, 20], [120, 50], [-120, 50], [118, 20]]]);
-            var getFeaturesService = new ol.supermap.GetFeaturesService(url);
-            getFeaturesService.on("complete", function (serviceResult) {
-                var features = (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result);
-                for (var i = 0; i < features.length; i++) {
-                    features[i].setStyle(new ol.style.Style({
-                        image: new ol.style.Icon(({
-                            src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/markerbig_select.png'
-                        }))
-                    }));
-                }
-                vectorSource = new ol.source.Vector({
-                    features: features
-                })
-                resultLayer = new ol.layer.Vector({
-                    source: vectorSource,
-                });
-                map.addLayer(resultLayer);
-            });
-            var getFeatureParams = new GetFeaturesByGeometryParameters({
-                datasetNames: ["World:Capitals"],
-                geometry: polygon,
-                spatialQueryMode: "INTERSECT"
-            });
-            getFeaturesService.getFeaturesByGeometry(getFeatureParams);
-        }
-
-        function addMarker() {
-            if (pointFeature) {
-                vectorSource.removeFeature(pointFeature);
-            }
-            var xmax = 120, xmin = 100, ymax = 50, ymin = 20;
-            pointFeature = new ol.Feature(new ol.geom.Point([Math.floor(Math.random() * (xmax - xmin + 1) + xmin), Math.floor(Math.random() * (ymax - ymin + 1) + ymin)]));
-            pointFeature.setStyle(new ol.style.Style({
-                image: new ol.style.Icon(({
-                    src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/markerbig.png'
-                }))
-            }));
-            vectorSource.addFeature(pointFeature);
-        }
-
-        function commit() {
-            var me = this;
-            var editFeaturesService = new ol.supermap.EditFeaturesService(urlCapital);
-            var addFeatureParams = new EditFeaturesParameters({
-                features: pointFeature.getGeometry(),
-                editType: "add",
-                returnContent: true
-            });
-            editFeaturesService.editFeatures(addFeatureParams);
-            editFeaturesService.on("complete", function (serviceResult) {
-                if (serviceResult.element.result.succeed) {
-                    id = serviceResult.element.result[0];
-                    map.removeLayer(resultLayer);
-                    me.initFeature();
-                }
-            });
-        }
-        function clearLayer() {
-            var me = this;
-            var editFeaturesService = new ol.supermap.EditFeaturesService(urlCapital);
-            editFeaturesService.editFeatures({
-                IDs: [id],
-                editType: "delete"
-            });
-            editFeaturesService.on("complete", function (serviceResult) {
-                if (serviceResult.element.result.succeed) {
-                    map.removeLayer(resultLayer);
-                    pointFeature = null;
-                    me.initFeature();
-                } else {
-                    alert("删除失败")
-                }
-            });
-        }
-    </script>
 </head>
-<body onload="init()" onbeforeunload="closeLayer()" style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<body onload="init()" onbeforeunload="closeLayer()"
+      style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
     <input type="button" class="btn btn-default" value="添加地物" onclick="addMarker()"/>
     <input type="button" class="btn btn-default" value="提交添加" onclick="commit()"/>
     <input type="button" class="btn btn-default" value="清除结果" onclick="clearLayer()"/>
 </div>
-<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
 </body>
+
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var map, id, pointFeature, vectorSource, resultLayer,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
+            urlCapital = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Capitals",
+            url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+    function init() {
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [50, 0],
+                zoom: 3,
+                projection: 'EPSG:4326'
+            })
+        });
+        var layer = new ol.layer.Tile({
+            source: new ol.supermap.TileSuperMapRest({
+                url: baseUrl
+            }),
+            projection: 'EPSG:4326'
+        });
+        map.addLayer(layer);
+        initFeature();
+    }
+
+    function initFeature() {
+        var polygon = new ol.geom.Polygon([[[118, 20], [120, 20], [120, 50], [-120, 50], [118, 20]]]);
+        var getFeaturesService = new ol.supermap.GetFeaturesService(url);
+        getFeaturesService.on("complete", function (serviceResult) {
+            var features = (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result);
+            for (var i = 0; i < features.length; i++) {
+                features[i].setStyle(new ol.style.Style({
+                    image: new ol.style.Icon(({
+                        src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/markerbig_select.png'
+                    }))
+                }));
+            }
+            vectorSource = new ol.source.Vector({
+                features: features,
+                wrapX:false
+            });
+            resultLayer = new ol.layer.Vector({
+                source: vectorSource,
+            });
+            map.addLayer(resultLayer);
+        });
+        var getFeatureParams = new GetFeaturesByGeometryParameters({
+            datasetNames: ["World:Capitals"],
+            geometry: polygon,
+            spatialQueryMode: "INTERSECT"
+        });
+        getFeaturesService.getFeaturesByGeometry(getFeatureParams);
+    }
+
+    function addMarker() {
+        if (pointFeature) {
+            vectorSource.removeFeature(pointFeature);
+        }
+        var xmax = 120, xmin = 100, ymax = 50, ymin = 20;
+        pointFeature = new ol.Feature(new ol.geom.Point([Math.floor(Math.random() * (xmax - xmin + 1) + xmin), Math.floor(Math.random() * (ymax - ymin + 1) + ymin)]));
+        pointFeature.setStyle(new ol.style.Style({
+            image: new ol.style.Icon(({
+                src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/markerbig.png'
+            }))
+        }));
+        vectorSource.addFeature(pointFeature);
+    }
+
+    function commit() {
+        var me = this;
+        var editFeaturesService = new ol.supermap.EditFeaturesService(urlCapital);
+        var addFeatureParams = new EditFeaturesParameters({
+            features: pointFeature.getGeometry(),
+            editType: "add",
+            returnContent: true
+        });
+        editFeaturesService.editFeatures(addFeatureParams);
+        editFeaturesService.on("complete", function (serviceResult) {
+            if (serviceResult.element.result.succeed) {
+                id = serviceResult.element.result[0];
+                map.removeLayer(resultLayer);
+                me.initFeature();
+            }
+        });
+    }
+    function clearLayer() {
+        var me = this;
+        var editFeaturesService = new ol.supermap.EditFeaturesService(urlCapital);
+        editFeaturesService.editFeatures({
+            IDs: [id],
+            editType: "delete"
+        });
+        editFeaturesService.on("complete", function (serviceResult) {
+            if (serviceResult.element.result.succeed) {
+                map.removeLayer(resultLayer);
+                pointFeature = null;
+                me.initFeature();
+            } else {
+                alert("删除失败")
+            }
+        });
+    }
+</script>
 </html>

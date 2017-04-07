@@ -6,8 +6,10 @@
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
 </head>
-<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
-<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
+</body>
+
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
@@ -15,36 +17,30 @@
             themeService, themeGridRange, themeParameters,
             baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
             serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
-
-    init();
-
-    function init() {
-
-        var mapService = new ol.supermap.MapService(baseUrl);
-        var extent = [48.4, -7668.25, 8958.85, -55.58];
-        var projection = new ol.proj.Projection({
-            extent: extent,
-            units: 'm'
+    var mapService = new ol.supermap.MapService(baseUrl);
+    var extent = [48.4, -7668.25, 8958.85, -55.58];
+    var projection = new ol.proj.Projection({
+        extent: extent,
+        units: 'm'
+    });
+    mapService.on("complete", function (serviceResult) {
+        var mapJSONObj = serviceResult.element.result;
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [5000, -3700],
+                zoom: 2,
+                projection: projection
+            })
         });
-        mapService.on("complete", function (serviceResult) {
-            var mapJSONObj = serviceResult.element.result;
-            map = new ol.Map({
-                target: 'map',
-                view: new ol.View({
-                    center: [5800, -3000],
-                    zoom: 2,
-                    projection: projection
-                })
-            });
-            options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
-            var layer = new ol.layer.Tile({
-                source: new ol.supermap.TileSuperMapRest(options)
-            });
-            map.addLayer(layer);
-            densityAnalystProcess();
+        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        var layer = new ol.layer.Tile({
+            source: new ol.supermap.TileSuperMapRest(options)
         });
-        mapService.getMapStatus();
-    }
+        map.addLayer(layer);
+        densityAnalystProcess();
+    });
+    mapService.getMapStatus();
 
     function densityAnalystProcess() {
         //创建一个核密度分析服务实例
@@ -146,5 +142,4 @@
         }
     }
 </script>
-</body>
 </html>

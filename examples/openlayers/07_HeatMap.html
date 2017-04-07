@@ -4,48 +4,48 @@
     <meta charset="UTF-8">
     <title>热力图</title>
     <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
-    <script  src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
-    <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
-    <script type="text/javascript">
-        var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326";
-        function init() {
-            var mapService = new ol.supermap.MapService(url);
-            mapService.on("complete", function (serviceResult) {
-                var mapJSONObj = serviceResult.element.result;
-                var map = new ol.Map({
-                    target: 'map',
-                    view: new ol.View({
-                        center: [112, 35],
-                        zoom: 5,
-                        projection: 'EPSG:4326'
-                    })
-                });
-                var heatPoints = [];
-                var radius = 25;
-                var blur = 40;
-                var xmax = 130, xmin = 80, ymax = 50, ymin = 20;
-                for (var i = 0; i < 100; i++) {
-                    heatPoints[i] = new ol.Feature(new ol.geom.Point([Math.floor(Math.random() * (xmax - xmin + 1) + xmin), Math.floor(Math.random() * (ymax - ymin + 1) + ymin)]));
-                }
-                var heatMap = new ol.layer.Heatmap({
-                    source: new ol.source.Vector({
-                        features: heatPoints
-                    }),
-                    blur: blur,
-                    radius: radius
-                });
-                var layer = new ol.layer.Tile({
-                    source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj))
-                });
-                map.addLayer(layer);
-                map.addLayer(heatMap);
-            });
-            mapService.getMapStatus();
-        }
-    </script>
 </head>
-<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;">
-<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right "></div>
-<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
 </body>
+
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326";
+    var mapService = new ol.supermap.MapService(url);
+    mapService.on("complete", function (serviceResult) {
+        var mapJSONObj = serviceResult.element.result;
+        var map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [112, 35],
+                zoom: 5,
+                projection: 'EPSG:4326'
+            })
+        });
+        var layer = new ol.layer.Tile({
+            source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj))
+        });
+        map.addLayer(layer);
+        //创建热力图
+        var heatPoints = [];
+        var radius = 25;
+        var blur = 40;
+        var xmax = 130, xmin = 80, ymax = 50, ymin = 20;
+        for (var i = 0; i < 100; i++) {
+            heatPoints[i] = new ol.Feature(new ol.geom.Point([Math.floor(Math.random() * (xmax - xmin + 1) + xmin), Math.floor(Math.random() * (ymax - ymin + 1) + ymin)]));
+        }
+        var heatMap = new ol.layer.Heatmap({
+            source: new ol.source.Vector({
+                features: heatPoints,
+                wrapX: false
+            }),
+            blur: blur,
+            radius: radius
+        });
+        map.addLayer(heatMap);
+    });
+    mapService.getMapStatus();
+</script>
 </html>

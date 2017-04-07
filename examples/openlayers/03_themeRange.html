@@ -5,112 +5,102 @@
     <title>范围分段专题图</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
-    <script  src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
-    <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
-    <script type="text/javascript">
-        var map, themeService, themeLayer, themeRangeItem1, themeRangeItem2,
-                themeRangeItem3, themeRange, themeParameters,
-                url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
-        function init() {
-            var mapService = new ol.supermap.MapService(url);
-            mapService.on("complete", function (serviceResult) {
-                var mapJSONObj = serviceResult.element.result;
-                map = new ol.Map({
-                    target: 'map',
-                    view: new ol.View({
-                        center: [12406035, 4304933],
-                        zoom: 4,
-                        projection: "EPSG:3857"
-                    })
-                });
-                var options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
-                var layer = new ol.layer.Tile({
-                    source: new ol.supermap.TileSuperMapRest(options)
-                });
-                map.addLayer(layer);
-                themeService = new ol.supermap.ThemeService(url);
-
-                themeRangeItem1 = new ThemeRangeItem({
-                    start: 0,
-                    end: 500000000000,
-                    style: new ServerStyle({
-                        fillForeColor: new ServerColor(211, 255, 250),
-                        lineColor: new ServerColor(179, 209, 193),
-                        lineWidth: 0.1
-                    })
-                });
-                themeRangeItem2 = new ThemeRangeItem({
-                    start: 500000000000,
-                    end: 1000000000000,
-                    style: new ServerStyle({
-                        fillForeColor: new ServerColor(178, 218, 199),
-                        lineColor: new ServerColor(179, 209, 193),
-                        lineWidth: 0.1
-                    })
-                });
-                themeRangeItem3 = new ThemeRangeItem({
-                    start: 1000000000000,
-                    end: 3000000000000,
-                    style: new ServerStyle({
-                        fillForeColor: new ServerColor(58, 178, 166),
-                        lineColor: new ServerColor(179, 209, 193),
-                        lineWidth: 0.1
-                    })
-                });
-                themeRange = new ThemeRange({
-                    rangeExpression: "SMAREA",
-                    rangeMode: RangeMode.EQUALINTERVAL,
-                    items: [themeRangeItem1, themeRangeItem2, themeRangeItem3]
-                });
-                themeParameters = new ThemeParameters({
-                    datasetNames: ["China_Province_pg"],
-                    dataSourceNames: ["China"],
-                    joinItems: null,
-                    themes: [themeRange]
-                });
-
-                themeService.on('complete', function (serviceResult) {
-                    var result = serviceResult.element.result;
-                    if (result && result.newResourceID) {
-                        themeLayer = new ol.layer.Tile({
-                            source: new ol.supermap.TileSuperMapRest({
-                                url: url,
-                                noWrap: true,
-                                cacheEnabled: false,
-                                transparent: true,
-                                layersID: result.newResourceID,
-                                tileGrid: new ol.tilegrid.TileGrid({
-                                    extent: options.tileGrid.extent_,
-                                    resolutions: options.tileGrid.resolutions_
-                                })
-                            })
-                        });
-                        map.addLayer(themeLayer);
-                    }
-                });
-                themeService.on('failed', function (error) {
-                    alert(error.errorMsg);
-                });
-            })
-            mapService.getMapStatus();
-        }
-        function createTheme() {
-            themeService.getThemeStatus(themeParameters);
-        }
-
-        function clearLayer() {
-            if (themeLayer) {
-                map.removeLayer(themeLayer);
-            }
-        }
-
-    </script>
 </head>
-<body onload="init()" style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
-<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
-    <input type="button" class="btn btn-default" value="创建专题图" onclick="createTheme()"/>
-    <input type="button" class="btn btn-default" value="清除结果" onclick="clearLayer()"/>
-</div>
-<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
 </body>
+
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var map, themeService, themeLayer, themeParameters,
+            url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+    var mapService = new ol.supermap.MapService(url);
+    mapService.on("complete", function (serviceResult) {
+        var mapJSONObj = serviceResult.element.result;
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [12406035, 4304933],
+                zoom: 4,
+                projection: "EPSG:3857"
+            })
+        });
+        var options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
+        var layer = new ol.layer.Tile({
+            source: new ol.supermap.TileSuperMapRest(options)
+        });
+        map.addLayer(layer);
+        themeService = new ol.supermap.ThemeService(url);
+        var themeRangeItem1, themeRangeItem2,
+                themeRangeItem3, themeRange;
+        themeRangeItem1 = new ThemeRangeItem({
+            start: 0,
+            end: 500000000000,
+            style: new ServerStyle({
+                fillForeColor: new ServerColor(211, 255, 250),
+                lineColor: new ServerColor(179, 209, 193),
+                lineWidth: 0.1
+            })
+        });
+        themeRangeItem2 = new ThemeRangeItem({
+            start: 500000000000,
+            end: 1000000000000,
+            style: new ServerStyle({
+                fillForeColor: new ServerColor(178, 218, 199),
+                lineColor: new ServerColor(179, 209, 193),
+                lineWidth: 0.1
+            })
+        });
+        themeRangeItem3 = new ThemeRangeItem({
+            start: 1000000000000,
+            end: 3000000000000,
+            style: new ServerStyle({
+                fillForeColor: new ServerColor(58, 178, 166),
+                lineColor: new ServerColor(179, 209, 193),
+                lineWidth: 0.1
+            })
+        });
+        themeRange = new ThemeRange({
+            rangeExpression: "SMAREA",
+            rangeMode: RangeMode.EQUALINTERVAL,
+            items: [themeRangeItem1, themeRangeItem2, themeRangeItem3]
+        });
+        themeParameters = new ThemeParameters({
+            datasetNames: ["China_Province_pg"],
+            dataSourceNames: ["China"],
+            joinItems: null,
+            themes: [themeRange]
+        });
+
+        themeService.on('complete', function (serviceResult) {
+            var result = serviceResult.element.result;
+            if (result && result.newResourceID) {
+                themeLayer = new ol.layer.Tile({
+                    source: new ol.supermap.TileSuperMapRest({
+                        url: url,
+                        noWrap: true,
+                        cacheEnabled: false,
+                        transparent: true,
+                        layersID: result.newResourceID,
+                        tileGrid: new ol.tilegrid.TileGrid({
+                            extent: options.tileGrid.extent_,
+                            resolutions: options.tileGrid.resolutions_
+                        })
+                    })
+                });
+                map.addLayer(themeLayer);
+            }
+        });
+        themeService.on('failed', function (error) {
+            alert(error.errorMsg);
+        });
+        createTheme();
+    });
+    mapService.getMapStatus();
+
+    function createTheme() {
+        themeService.getThemeStatus(themeParameters);
+    }
+</script>
 </html>
