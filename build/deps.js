@@ -79,6 +79,15 @@ var deps = {
             "title": "OGC",
             "description": "--对接OGC标准服务"
         },
+        "mapping": {
+            "title": "互联网地图",
+            "description": "--对接互联网地图",
+            "Baidu": {
+                "name": "百度图层",
+                "src": ['./src/Leaflet/mapping/BaiduTileLayer.js']
+            }
+
+        },
         "SuperMap": {
             "title": "SuperMap",
             "description": "--对接SuperMap服务",

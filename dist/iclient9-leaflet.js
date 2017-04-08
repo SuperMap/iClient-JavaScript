@@ -45,32 +45,68 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	__webpack_require__(10);
+	__webpack_require__(2);
 	__webpack_require__(14);
-	__webpack_require__(29);
+	__webpack_require__(18);
 	__webpack_require__(33);
-	__webpack_require__(35);
 	__webpack_require__(37);
 	__webpack_require__(39);
-	__webpack_require__(45);
-	__webpack_require__(48);
-	__webpack_require__(51);
-	__webpack_require__(65);
-	__webpack_require__(67);
-	__webpack_require__(70);
-	__webpack_require__(73);
-	__webpack_require__(110);
-	__webpack_require__(137);
-	__webpack_require__(149);
-	__webpack_require__(193);
-	__webpack_require__(201);
-	__webpack_require__(202);
-	__webpack_require__(203);
-	module.exports = __webpack_require__(204);
+	__webpack_require__(41);
+	__webpack_require__(43);
+	__webpack_require__(49);
+	__webpack_require__(52);
+	__webpack_require__(55);
+	__webpack_require__(69);
+	__webpack_require__(71);
+	__webpack_require__(74);
+	__webpack_require__(77);
+	__webpack_require__(114);
+	__webpack_require__(141);
+	__webpack_require__(153);
+	__webpack_require__(197);
+	__webpack_require__(205);
+	__webpack_require__(206);
+	__webpack_require__(207);
+	module.exports = __webpack_require__(208);
 
 
 /***/ },
 /* 1 */
+/***/ function(module, exports) {
+
+	BaiduTileLayer = L.TileLayer.extend({
+	    url: "http://online{num}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20150815&scaler=1",
+	    options: {
+	        minZoom: 3,
+	        maxZoom: 19,
+	        bounds: L.latLngBounds(L.latLng(-85.0511287798, -180), L.latLng(85.0511287798, 180))
+	    },
+	    initialize: function (url, options) {
+	        if (url) {
+	            this.url = url;
+	        }
+	        L.setOptions(this, options);
+	        L.stamp(this);
+	    },
+	    getTileUrl: function (coords) {
+	        return L.Util.template(this.url, {
+	            num: Math.abs((coords.x + coords.y) % 8) + 1,
+	            x: coords.x,
+	            y: -coords.y - 1,
+	            z: this._getZoomForUrl()
+	        })
+	    }
+	})
+	L.supermap = L.supermap || {};
+	L.supermap.baiduTileLayer = function (url, options) {
+	    return new BaiduTileLayer(url, options);
+	};
+
+	module.exports = L.supermap.baiduTileLayer;
+
+
+/***/ },
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -79,8 +115,8 @@
 	 * 用法：
 	 *      L.superMap.tiledMapLayer(url,{CRS:L.CRS.EPSG4326}).addTo(map);
 	 */
-	__webpack_require__(2);
-	__webpack_require__(4);
+	__webpack_require__(3);
+	__webpack_require__(5);
 
 	TiledMapLayer = L.TileLayer.extend({
 
@@ -160,7 +196,7 @@
 	module.exports = L.supermap.tiledMapLayer;
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -169,22 +205,17 @@
 	 * 2、提供必要的转换工具
 	 */
 	L.supermap = L.supermap || {};
-	__webpack_require__(3);
-	__webpack_require__(9);
-
+	__webpack_require__(4);
+	__webpack_require__(10);
+	__webpack_require__(11);
+	__webpack_require__(13);
 	L.Util.toGeoJSON = function (feature) {
 	    if (!feature) {
 	        return feature;
 	    }
-	    var result, format = new SuperMap.Format.GeoJSON();
-	    if (feature.geometry) {
-	        result = JSON.parse(format.write(feature.geometry));
-	    } else {
-	        result = JSON.parse(format.write(feature));
-	    }
-	    return result;
+	    return JSON.parse(new SuperMap.Format.GeoJSON().write(feature));
 	};
-
+	L.Util.supermap_callbacks = {};
 	L.Util.toSuperMapGeometry = function (geometry) {
 	    if (!geometry) {
 	        return geometry;
@@ -212,7 +243,30 @@
 	    return (serverResult && serverResult.geometry) ? serverResult.geometry : serverResult;
 
 	};
-
+	L.Util.GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
+	    var resolution = null,
+	        ratio = 10000;
+	    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
+	    datumAxis = datumAxis || 6378137;
+	    coordUnit = coordUnit || "";
+	    if (scale > 0 && dpi > 0) {
+	        scale = L.Util.NormalizeScale (scale);
+	        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
+	            //scale = SuperMap.Util.normalizeScale(scale);
+	            resolution = 0.0254 * ratio / dpi / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
+	            return resolution;
+	        } else {
+	            resolution = 0.0254 * ratio / dpi / scale / ratio;
+	            return resolution;
+	        }
+	    }
+	    return -1;
+	};
+	L.Util.NormalizeScale = function (scale) {
+	    var normScale = (scale > 1.0) ? (1.0 / scale)
+	        : scale;
+	    return normScale;
+	};
 	L.Util.Csv2GeoJSON = function (csv, options) {
 	    var defaultOptions = {
 	        titles: ['lon', 'lat'],
@@ -283,7 +337,7 @@
 	};
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -298,8 +352,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.Format.JSON>
 	 */
-	__webpack_require__(4);
-	__webpack_require__(7);
+	__webpack_require__(5);
+	__webpack_require__(8);
 
 	SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
 
@@ -1177,14 +1231,14 @@
 	};
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(5);
 	__webpack_require__(6);
+	__webpack_require__(7);
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)d[e(c)]=k[c]||e(c);k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('1G.A={aU:"aT 7.1.0",5H:(U(){B f=18 aS("(^|(.*?\\\\/))(A.aR.aQ)(\\\\?|$)"),e=1d.aP("4D"),g,b,c="";13(B d=0,a=e.V;d<a;d++){g=e[d].aO("1F");C(g){B b=g.1V(f);C(b){c=b[1];1r}}}T(U(){T c})})()};A.68=A.68||{};A.L=A.L||{};A.67=A.67||{};A.65=A.65||{};A.64=A.64||{};A.63=A.63||{};A.62=A.62||{};A.61=A.61||{};A.aN=U(){B a=1x.V;B d=1x[0];B c=1x[a-1];B e=1h c.4j==="U"?c.4j:U(){d.1O.4j.5Z(1b,1x)};C(a>1){B b=[e,d].4q(1A.1O.3H.5X(1x).3H(1,a-1),c);A.5Y.5Z(Z,b)}X{e.1O=c}T e};A.5Y=U(f,d){B c=U(){};c.1O=d.1O;f.1O=18 c;B b,a,e;13(b=2,a=1x.V;b<a;b++){e=1x[b];C(1h e==="U"){e=e.1O}A.L.3w(f.1O,e)}};A.L=A.L||{};A.L.3w=U(a,e){a=a||{};C(e){13(B d 1i e){B c=e[d];C(c!==1j){a[d]=c}}B b=1h 1G.2t==="U"&&e 1K 1G.2t;C(!b&&e.1E&&e.1E("1B")){a.1B=e.1B}}T a};A.L.4u=U(c,b){c=c||{};B a;C(b){13(B d 1i c){a=b[d];C(1h a!=="1j"){c[d]=a}}}};A.L.aM=U(c){c=c||{};13(B b 1i c){C(c.1E(b)){C(1h c[b]==="21"&&c[b]1K 1A){13(B a 1i c[b]){C(c[b][a].3z){c[b][a].3z()}}c[b].V=0}X{C(1h c[b]==="21"&&c[b]1K 3G){C(c[b].3z){c[b].3z()}}}c[b]=Z}}};A.L.aL=U(){B d=[];13(B c=0,a=1x.V;c<a;c++){B b=1x[c];C(1h b==="3L"){b=1d.aK(b)}C(1x.V===1){T b}d.1a(b)}T d};A.L.aJ=U(a){T!!(a&&a.aI===1)};A.L.5Q=U(b){T(3G.1O.1B.5X(b)==="[21 1A]")};A.L.aH=U(c,b){13(B a=c.V-1;a>=0;a--){C(c[a]===b){c.aG(a,1)}}T c};A.L.1c=U(d,c){C(d==Z){T-1}X{C(1h d.1c==="U"){T d.1c(c)}X{13(B b=0,a=d.V;b<a;b++){C(d[b]===c){T b}}T-1}}};A.L.2V=U(e,h,d,f,a,c,g,b){C(h){e.1o=h}C(d){e.15.1n=d.x+"2a";e.15.1m=d.y+"2a"}C(f){e.15.2K=f.w+"2a";e.15.3q=f.h+"2a"}C(a){e.15.2q=a}C(c){e.15.aF=c}C(g){e.15.2J=g}C(1z(b)>=0&&1z(b)<1){e.15.2U="4h(1Y="+(b*2o)+")";e.15.1Y=b}X{C(1z(b)===1){e.15.2U="";e.15.1Y=""}}};A.L.5M=U(a,i,h,f,e,c,b,g){B d=1d.1N("2L");C(f){d.15.aE="1l("+f+")"}C(!a){a=A.L.4b("5W")}C(!e){e="2p"}A.L.2V(d,a,i,h,e,c,b,g);T d};A.L.5L=U(a,h,g,e,d,c,f,i){B b=1d.1N("aD");C(!a){a=A.L.4b("5W")}C(!d){d="aC"}A.L.2V(b,a,h,g,d,c,Z,f);C(i){b.15.2u="5N";A.2t.5V(b,"aB",A.2k.2j(A.L.5U,b));A.2t.5V(b,"aA",A.2k.2j(A.L.5S,b))}b.15.az=a;b.ay="ax";C(e){b.1F=e}T b};A.L.5U=U(){C(!1b.4i||(1b.5T&&1b.4i===1b.5T.4i)){1b.15.2u=""}A.2N.aw(1b,"5P")};A.5R=0;A.L.5S=U(){1b.3y=(1b.3y)?(1b.3y+1):1;C(1b.3y<=A.5R){B d=1b.av;C(d&&A.L.5Q(d)&&d.V>1){B e=1b.1F.1B();B c,a;13(a=0;c=d[a];a++){C(e.1c(c)!==-1){1r}}B f=11.2B(d.V*11.3O());B b=d[f];a=0;1L(b===c&&a++<4){f=11.2B(d.V*11.3O());b=d[f]}1b.1F=e.1H(c,b)}X{1b.1F=1b.1F}}X{A.2N.au(1b,"5P")}1b.15.2u=""};A.L.3x=Z;A.L.5O=U(){C(A.L.3x==Z){B d=31.at.1W("as");B a=1z(d[1]);B b=1f;2z{b=!!(1d.1y.ar)}2y(c){}A.L.3x=(b&&(a>=5.5)&&(a<7))}T A.L.3x};A.L.5K=U(a,b,k,j,g,f,c,d,h,i){A.L.2V(a,b,k,j,f,Z,Z,h);B e=a.2M[0];C(g){e.1F=g}C(!!i){e.15.2u=i}A.L.2V(e,a.1o+"aq",Z,j,f,c);C(A.L.5O()){C(a.15.2u!=="5N"){a.15.2u="ap-5J"}C(d==Z){d="ao"}a.15.2U="an:am.al.ak(1F=\'"+e.1F+"\', aj=\'"+d+"\')";C(1z(a.15.1Y)>=0&&1z(a.15.1Y)<1){a.15.2U+=" 4h(1Y="+a.15.1Y*2o+")"}e.15.2U="4h(1Y=0)"}};A.L.ai=U(b,j,i,g,f,c,d,h,k){B a=A.L.5M();B e=A.L.5L(Z,Z,Z,Z,f,Z,Z,k);e.4S="ah";a.24(e);A.L.5K(a,b,j,i,g,f,c,d,h,"5J");T a};A.L.ag=U(b){B a={};13(B c 1i b){a[c.af()]=b[c]}T a};A.L.57=U(d,c){d=d||{};B b=1h 1G.2t==="U"&&c 1K 1G.2t;13(B a 1i c){C(d[a]===1j||(!b&&c.1E&&c.1E(a)&&!d.1E(a))){d[a]=c[a]}}C(!b&&c&&c.1E&&c.1E("1B")&&!d.1E("1B")){d.1B=c.1B}T d};A.L.4I=U(c){B b=[];13(B h 1i c){B g=c[h];C((g!=Z)&&(1h g!=="U")){B d;C(1h g==="21"&&g.4J===1A){B e=[];B i;13(B a=0,f=g.V;a<f;a++){i=g[a];e.1a(2E((i===Z||i===1j)?"":i))}d=e.2n(",")}X{d=2E(g)}b.1a(2E(h)+"="+d)}}T b.2n("&")};A.L.ae=U(a,b){B d=a;C(b){B c=(a+" ").1W(/[?&]/);d+=(c.56()===" "?b:c.V?"&"+b:"?"+b)}T d};A.5I="";A.L.ad=U(){T A.5I||(A.5H()+"../ac/ab/")};A.L.5G=U(){B d=Z;13(B c=0,a=1x.V;c<a;c++){B b=1x[c];2z{d=b();1r}2y(f){}}T d};A.L.aa=U(a){B b=Z;A.L.5G(U(){b=a.4B;C(!b){b=a.5F}C(!b){b=a.a9.a8}},U(){b=a.5F});T b};A.L.a7=U(a,c){B b=(a.5E)?a.5E:a.a6;1L(b!==c&&b!=Z){b=b.30}T(b!==c)};A.L.5D=14;A.L.a5=U(b,a){C(a==Z){a=A.L.5D}C(1h b!=="a4"){b=1z(b)}T a===0?b:1z(b.a3(a))};A.L.2s=U(a){T a*11.28/3X};A.L.4c=U(a){T a*3X/11.28};A.L.4g={a:3j,b:a2.a1,f:1/a0.9Z};A.L.9Y=U(g,e){B k=A.L.4g;B M=k.a,K=k.b,G=k.f;B n=A.L.2s(e.3p-g.3p);B J=11.5C((1-G)*11.4e(A.L.2s(g.4f)));B I=11.5C((1-G)*11.4e(A.L.2s(e.4f)));B m=11.2r(J),i=11.1X(J);B l=11.2r(I),h=11.1X(I);B r=n,o=2*11.28;B q=20;1L(11.3W(r-o)>1e-12&&--q>0){B z=11.2r(r),c=11.1X(r);B N=11.4d((h*z)*(h*z)+(i*l-m*h*c)*(i*l-m*h*c));C(N==0){T 0}B E=m*l+i*h*c;B y=11.2T(N,E);B j=11.9X(i*h*z/N);B F=11.1X(j)*11.1X(j);B p=E-2*m*l/F;B v=G/16*F*(4+G*(4-3*F));o=r;r=n+(1-v)*G*11.2r(j)*(y+v*N*(p+v*E*(-1+2*p*p)))}C(q==0){T 9W}B u=F*(M*M-K*K)/(K*K);B x=1+u/5B*(5A+u*(-5z+u*(5y-5x*u)));B w=u/5w*(5v+u*(-3R+u*(74-47*u)));B D=w*N*(p+w/4*(E*(-1+2*p*p)-w/6*p*(-3+4*N*N)*(-3+4*p*p)));B t=K*x*(y-D);B H=t.9V(3)/2A;T H};A.L.9U=U(l,P,E){B o=A.L;B i=o.4g;B Q=i.a,O=i.b,J=i.f;B N=l.3p;B g=l.4f;B q=E;B D=o.2s(P);B G=11.2r(D);B h=11.1X(D);B F=(1-J)*11.4e(o.2s(g));B c=1/11.4d((1+F*F)),j=F*c;B p=11.2T(F,h);B y=c*G;B I=1-y*y;B t=I*(Q*Q-O*O)/(O*O);B x=1+t/5B*(5A+t*(-5z+t*(5y-5x*t)));B v=t/5w*(5v+t*(-3R+t*(74-47*t)));B w=q/(O*x),K=2*11.28;1L(11.3W(w-K)>1e-12){B m=11.1X(2*p+w);B R=11.2r(w);B H=11.1X(w);B z=v*R*(m+v/4*(H*(-1+2*m*m)-v/6*m*(-3+4*R*R)*(-3+4*m*m)));K=w;w=q/(O*x)+z}B M=j*R-c*H*h;B d=11.2T(j*H+c*R*h,(1-J)*11.4d(y*y+M*M));B n=11.2T(R*G,c*H-j*R*h);B r=J/16*I*(4+J*(4-3*I));B k=n-(1-r)*J*y*(w+r*R*(m+r*H*(-1+2*m*m)));B e=11.2T(y,-M);T 18 A.9T(N+o.4c(k),o.4c(d))};A.L.50=U(b){b=(b===Z||b===1j)?1G.3l.54:b;B a="";C(A.2H.2d(b,"?")){B c=b.1c("?")+1;B f=A.2H.2d(b,"#")?b.1c("#"):b.V;a=b.1v(c,f)}B m={};B d=a.1W(/[&;]/);13(B h=0,j=d.V;h<j;++h){B g=d[h].1W("=");C(g[0]){B l=g[0];2z{l=5u(l)}2y(e){l=5t(l)}B k=(g[1]||"").1H(/\\+/g," ");2z{k=5u(k)}2y(e){k=5t(k)}k=k.1W(",");C(k.V==1){k=k[0]}m[l]=k}}T m};A.L.4a=0;A.L.4b=U(a){C(a==Z){a="9S"}A.L.4a+=1;T a+A.L.4a};A.17={2I:1,3n:12,3V:9R,m:39.9Q,3U:9P.1,2m:9O,3m:36};A.17["1i"]=A.17.2I;A.17.29=A.17.2m;A.17.5o=5r*A.17.m;A.Y=0.9N;A.L.3w(A.17,{9M:A.17.2I,2S:1/A.Y,5k:0.9L/A.Y,9K:0.9J/A.Y,9I:0.9H/A.Y,9G:0.9F/A.Y,9E:0.9D/A.Y,9C:0.27/A.Y,9B:0.9A/A.Y,9z:2.9y-8/A.Y,9x:0.9w/A.Y,9v:2A/A.Y,5j:0.9u/A.Y,9t:0.9s/A.Y,9r:0.9q/A.Y,5g:0.9p/A.Y,9o:0.9n/A.Y,9m:0.9l/A.Y,9k:0.9j/A.Y,5f:0.9i/A.Y,9h:0.9g/A.Y,9f:0.9e/A.Y,5h:5s.9d/A.Y,9c:0.9b/A.Y,9a:5s.99/A.Y,5p:5r/A.Y,"5q-66":98.97/A.Y,"5q-83":95.94/A.Y,93:0.1/A.Y,92:0.91/A.Y,90:10/A.Y,8Z:10/A.Y,8Y:2o/A.Y,8X:1.8W/A.Y,8V:0.8U/A.Y,8T:20.8S/A.Y,5i:20.8R/A.Y,8Q:20.8P/A.Y,8O:20.8N/A.Y,8M:0.8L/A.Y,8K:0.8J/A.Y,8I:0.8H/A.Y,8G:0.8F/A.Y,8E:5.49/A.Y,5m:20.8D/A.Y,5l:0.8C/A.Y,8B:5.49/A.Y,8A:5.49/A.Y,8z:8y.8x/A.Y,8w:3.8v/A.Y,8u:0.8t/A.Y,8s:8r/A.Y,8q:0.8p/A.Y,5n:1.8o/A.Y,"5p-8n":8m.8l/A.Y,"8k":8j/A.Y,"8i":8h/A.Y});A.L.3w(A.17,{8g:A.17.2S/2A,8f:A.17.2S/2o,4L:A.17.2S*2o,3U:A.17.2S*2A,8e:A.17.5o,8d:A.17.5n,46:A.17.5m,8c:A.17.5l,"2R-1i":A.17.2I,"2R-3n":A.17.5k,"2R-3m":A.17.5j,"2R-46":A.17.5i,"2R-3V":A.17.5h,"48-3m":A.17.5g,"48-3n":A.17.5f,"48-46":20.8b/A.Y});A.45=96;A.L.3T=U(b){B a=(b>1)?(1/b):b;T a};A.L.8a=U(d,a){B b;C(d){C(a==Z){a="29"}B c=A.L.3T(d);b=1/(c*A.17[a]*A.45)}T b};A.L.89=U(b,a){C(a==Z){a="29"}B c=b*A.17[a]*A.45;T c};A.L.88=U(d){B i=[0,0];B h=A.L.58();C(!d||d===1G||d===h){T i}B f=A.4Z&&1d.3v&&A.2N.3Z(d,"2q")==="2p"&&(d.15.1m==""||d.15.1n=="");B j=Z;B g;C(d.5e){g=d.5e();B b=h.59;B c=h.5a;i[0]=g.1n+c;i[1]=g.1m+b}X{C(1d.3v&&!f){g=1d.3v(d);B a=1d.3v(h);i[0]=g.5d-a.5d;i[1]=g.5c-a.5c}X{i[0]=d.5b;i[1]=d.44;j=d.3u;C(j!==d){1L(j){i[0]+=j.5b;i[1]+=j.44;j=j.3u}}B e=A.3t.2b;C(e==="2P"||(e==="3r"&&A.2N.3Z(d,"2q")==="2p")){i[1]-=1d.1y.44}j=d.3u;1L(j&&j!==1d.1y){i[0]-=j.5a;C(e!=="2P"||j.4T!=="87"){i[1]-=j.59}j=j.3u}}}T i};A.L.58=U(){B a=1x.86.85;C(a==1j){a=(A.3t.2b==="2O"&&1d.84!=="82")?1d.1y:1d.81}T a};A.L.7Z=U(f,e,c){c=c||{};A.L.57(c,{55:1g,52:1g,51:1g});B b=A.L.43(f,c);B a=A.L.43(e,c);13(B d 1i b){C(d!=="2c"){C(b[d]!==a[d]){T 1f}}}13(B d 1i b.2c){C(b.2c[d]!==a.2c[d]){T 1f}2Z a.2c[d]}13(B d 1i a.2c){T 1f}T 1g};A.L.43=U(c,k){k=k||{};C(!(/^\\w+:\\/\\//).7Y(c)){B g=1G.3l;B e=g.1I?":"+g.1I:"";B h=g.3k+"//"+g.42.1W(":").53()+e;C(c.1c("/")===0){c=h+c}X{B f=g.2Q.1W("/");f.56();c=h+f.2n("/")+"/"+c}}C(k.55){c=c.1q()}B i=1d.1N("a");i.54=c;B d={};d.42=i.42.1W(":").53();d.3k=i.3k;C(k.52){d.1I=(i.1I==="80"||i.1I=="0")?"":i.1I}X{d.1I=(i.1I==""||i.1I=="0")?"80":i.1I}d.41=(k.51||i.41==="#")?"":i.41;B b=i.7X;C(!b){B j=c.1c("?");b=(j!==-1)?c.2G(j):""}d.2c=A.L.50(b);d.2Q=(i.2Q.7W(0)==="/")?i.2Q:"/"+i.2Q;T d};A.L.7V=U(b){B c=Z;B a=b.1c("?");B d=b.1c("#");C(a==-1){c=(d!==-1)?b.2G(0,d):b}X{c=(d!==-1)?b.2G(0,11.3E(a,d)):b.2G(0,a)}T c};A.4Z=(U(){B a=31.3N.1q();T a.1c("7U")===-1&&a.1c("7T")!==-1})();A.3t=(U(){B c="",a="",e="7S",b;B d=31.3N.1q();C(d.1c("2O")>-1||(d.1c("7R")>-1&&d.1c("4Y")>-1)){c="2O";b=d.1V(/2O ([\\d.]+)/)||d.1V(/4Y:([\\d.]+)/)}X{C(d.1c("40")>-1){c="40";b=d.1V(/40\\/([\\d.]+)/)}X{C(d.1c("3s")>-1){c="3s";b=d.1V(/3s\\/([\\d.]+)/)}X{C(d.1c("2P")>-1){c="2P";b=d.1V(/1U\\/([\\d.]+)/)}X{C(d.1c("3r")>-1){c="3r";b=d.1V(/1U\\/([\\d.]+)/)}}}}}a=b?b[1]:"";C(d.1c("7Q")>-1||d.1c("7P")>-1||d.1c("7O")>-1){e="7N"}X{C(d.1c("4X")>-1){b=d.1V(/1U\\/([\\d.]+)/);a=b?b[1]:"";e="4X"}}T{2b:c,1U:a,7M:e}})();A.L.4W=U(){T A.3t};A.L.4V=(U(){B a=1g,b=A.L.4W();C(1d.1N("7L").7K){C(b.2b==="3s"&&1z(b.1U)<5){a=1f}C(b.2b==="3r"&&1z(b.1U)<4){a=1f}C(b.2b==="2P"&&1z(b.1U)<10){a=1f}C(b.2b==="2O"&&1z(b.1U)<9){a=1f}}X{a=1f}T a})();A.L.7J=U(){T A.L.4V};A.L.7I=U(b,o,p){B m,e;B a=1d.1N("2L");a.15.7H="4N";B n=(p&&p.4U)?p.4U:1d.1y;B q=1f;B g=Z;B k=n;1L(k&&k.4T.1q()!=="1y"){B j=A.2N.3Z(k,"2q");C(j==="2p"){q=1g;1r}X{C(j&&j!=="7G"){1r}}k=k.30}C(!q){a.15.2q="2p"}C(o){C(o.w){m=o.w;a.15.2K=m+"2a"}X{C(o.h){e=o.h;a.15.3q=e+"2a"}}}C(p&&p.4R){a.4S=p.4R}B f=1d.1N("2L");f.7F=b;f.15.2J="4Q";C(f.2M){13(B d=0,c=f.2M.V;d<c;d++){C(!f.2M[d].15){2X}f.2M[d].15.2J="4Q"}}a.24(f);n.24(a);n.24(a);C(!m){m=4P(f.7E);a.15.2K=m+"2a"}C(!e){e=4P(f.7D)}a.2h(f);n.2h(a);T 18 A.7C(m,e)};A.L.7B=U(){B c=A.L.3Y;C(c==Z){B e=Z;B d=Z;B a=0;B b=0;e=1d.1N("2L");e.15.2q="2p";e.15.1m="-4O";e.15.1n="-4O";e.15.2K="7A";e.15.3q="7z";e.15.2J="4N";d=1d.1N("2L");d.15.2K="2o%";d.15.3q="7y";e.24(d);1d.1y.24(e);a=d.4M;e.15.2J="7x";b=d.4M;1d.1y.2h(1d.1y.7w);A.L.3Y=(a-b);c=A.L.3Y}T c};A.L.7v=U(h,b,e){C(!e){e="4K"}h=(h+7u)%3h-3X;B d=11.3W(h);B i=11.2B(d);B a=(d-i)/(1/60);B c=a;a=11.2B(a);B g=(c-a)/(1/60);g=11.7t(g*10);g/=10;C(g>=60){g-=60;a+=1;C(a>=60){a-=60;i+=1}}C(i<10){i="0"+i}B f=i+"\\7s";C(e.1c("4L")>=0){C(a<10){a="0"+a}f+=a+"\'";C(e.1c("4K")>=0){C(g<10){g="0"+g}f+=g+\'"\'}}C(b==="3p"){f+=h<0?A.3o("W"):A.3o("E")}X{f+=h<0?A.3o("S"):A.3o("N")}T f};A.17.3i=A.17.2m;A.17.7r=A.17.m;A.17.7q=A.17.3n;A.17.7p=A.17.2I;A.17.7o=A.17.3V;A.17.7n=A.17.3U;A.17.7m=A.17.3m;A.L.2F=U(a){C(!a){T 1g}B g=a.1c("//");B j=1d.3l.1B();B b=j.1c("//");C(g===-1){T 1g}X{B f=a.1v(0,g);B h=j.1v(b+2);b=h.1c("/");B k=h.1v(0,b);B l=1d.3l.3k;C(l.1q()!==f.1q()){T 1f}f=a.1v(g+2);B c=f.1c(":");g=f.1c("/");B d=f.1v(0,c);B i=f.1v(0,g);B e=1d.7l;C(d===e&&i===k){T 1g}}T 1f};A.L.7k=U(e,f,c,k,n){C(!e||!f||!c){T}B j=3S,g=e.7j(),d=e.7i(),m=f.w,i=f.h;n=n||3j;k=k||"29";C(k.1q()==="3i"||k.1q()==="29"||k.1q()==="2m"){B l=g/m,h=d/i,b=l>h?l:h,a=0.27*j/b/c/((11.28*2*n)/3h)/j;T a}X{B b=g/m,a=0.27*j/b/c/j;T a}};A.L.1T=U(g){B d=g;C(d==Z){T Z}3Q(d.4J){1w 2H:d=\'"\'+d.1H(/(["\\\\])/g,"\\\\$1")+\'"\';d=d.1H(/\\n/g,"\\\\n");d=d.1H(/\\r/g,"\\\\r");d=d.1H("<","&7h;");d=d.1H(">","&7g;");d=d.1H(/%/g,"%25");d=d.1H(/&/g,"%26");T d;1w 1A:B c=[];13(B f=0,b=d.V;f<b;f++){c.1a(A.L.1T(d[f]))}T"["+c.2n(",")+"]";1w 7f:T 7e(d)?2H(d):Z;1w 7d:T 2H(d);1w 2w:B e="{\'7c\':\\"7b.7a\\",\'79\':"+d.78()+",\'77\':"+(d.76()+1)+",\'75\':"+d.73()+",\'72\':"+d.71()+",\'70\':"+d.6Z()+",\'6Y\':"+d.6X()+",\'6W\':"+d.6V()+",\'6U\':"+d.6T()+"}";T e;6S:C(d.1T!=Z&&1h d.1T==="U"){T d.1T()}C(1h d==="21"){C(d.V){B c=[];13(B f=0,b=d.V;f<b;f++){c.1a(A.L.1T(d[f]))}T"["+c.2n(",")+"]"}B c=[];13(B a 1i d){C(1h d[a]!=="U"&&a!=="1J"&&a!=="6R"){c.1a("\'"+a+"\':"+A.L.1T(d[a]))}}C(c.V>0){T"{"+c.2n(",")+"}"}X{T"{}"}}T d.1B()}};A.L.6Q=U(f,c,b,e){B a=Z,d=3S;e=e||3j;b=b||"";C(f>0&&c>0){f=A.L.3T(f);C(b.1q()==="3i"||b.1q()==="29"||b.1q()==="2m"){a=0.27*d/c/f/((11.28*2*e)/3h)/d;T a}X{a=0.27*d/c/f/d;T a}}T-1};A.L.6P=U(b,c,a,e){B f=Z,d=3S;e=e||3j;a=a||"";C(b>0&&c>0){C(a.1q()==="3i"||a.1q()==="29"||a.1q()==="2m"){f=0.27*d/c/b/((11.28*2*e)/3h)/d;T f}X{f=0.27*d/c/b/d;T f}}T-1};A.L.4H=U(c){B e=0,b=Z;13(B d=0,a=c.V;d<a;d++){b=c.6O(d);C(b<6N){e++}X{C((3R<=b)&&(b<=6M)){e+=2}X{C((6L<=b)&&(b<=6K)){e+=3}}}}T(e<6J)?1f:1g};A.L.6I=U(k){C(!k){T}B a=k.1l,h=a.1c("?")>-1?"&":"?",f=a.2G(a.V-1,1);C(1h 6H==="1j"){k.1l=1G.4G(k.1l);k.2F=k.2F||A.L.2F(k.1l);C(k.2F){C(k.2l==="1R"&&k.1Q){B e=k.1Q,d=A.L.4I(e);C(A.L.4H(d)){B g=k.22;k.2l="23";k.1l+=h+"3f=1R";g="{";13(B i 1i e){g+="\'"+i+"\':"+2E(e[i])+","}g+="}";k.22=g}X{C(d.V>0){a+=h+d}k.1l=a}2Z k.1Q}B c=k.3P||{};k.3P=c;3Q(k.2l){1w"1R":A.3g.1R(k);1r;1w"23":c["3e-3d"]="3c/x-3b-3a-38;37=35-8";A.3g.23(k);1r;1w"2g":c["3e-3d"]="3c/x-3b-3a-38;37=35-8";A.3g.2g(k);1r;1w"2f":c["3e-3d"]="3c/x-3b-3a-38;37=35-8";A.3g.2f(k);1r}}X{3Q(k.2l){1w"1R":A.L.2i.1R(k);1r;1w"23":k.1l+=h+"3f=23";A.L.2i.23(k);1r;1w"2g":k.1l+=h+"3f=2g";A.L.2i.2g(k);1r;1w"2f":k.1l+=h+"3f=2f";A.L.2i.2f(k);1r}}}X{B b="",j=1g;C(k.1Q&&k.2l==="1R"){13(B i 1i k.1Q){C(!j){b+="&"+i+"="+k.1Q[i]}X{j=1f;b+=i+"="+k.1Q[i]}}}k.1l=k.1l.1H(/6G/,"6F");C(b){k.1l+=h+b}k.1l=1G.4G(k.1l);6E.6D({1l:k.1l,3F:k.2l,22:k.22,3P:{"3e-3d":"3c/x-3b-3a-38;37=35-8"}}).6C(U(l){B m=(k.1S)?A.2k.2j(k.2D,k.1S):k.2D;m(l)},U(m){B l=(k.1S)?A.2k.2j(k.2C,k.1S):k.2C;l(m)})}};A.L.2i={32:6B,1s:[],1M:[],33:{},2e:U(a){B d=1b;13(B b 1i a){d.1s.1a(b);C(1h a[b]!=="3L"){a[b]=A.L.1T(a[b])}B c=2E(a[b]);d.1M.1a(c)}},2x:U(e){B m=1b,k=m.4F(),b=e.1l,p=Z,d=Z,n=[];C(e.2D){p=(e.1S)?A.2k.2j(e.2D,e.1S):e.2D}C(e.2C){d=(e.1S)?A.2k.2j(e.2C,e.1S):e.2C}m.33[k]=U(q){B i=A.L.4x(q);i.34=i.34==1j?1g:i.34;C(i.34&&p){p(q)}X{C(d){d(q)}}2Z m.33[k]};m.2e({6A:"A.L.2i.33["+k+"]"});B j=m.1s,l=b,g=0;B c=m.1s?m.1s.V:0;13(B f=0;f<c;f++){C(l.V+m.1s[f].V+2>=m.32){C(g==0){T 1f}C(n==Z){n=18 1A()}n.1a(l);l=b;g=0;f--}X{C(l.V+m.1s[f].V+2+m.1M[f].V>m.32){B a=m.1M[f];1L(a.V>0){B o=m.32-l.V-m.1s[f].V-2;C(l.1c("?")>-1){l+="&"}X{l+="?"}B h=a.1v(0,o);C(h.1v(o-1,o)==="%"){o-=1;h=a.1v(0,o)}X{C(h.1v(o-2,o-1)==="%"){o-=2;h=a.1v(0,o)}}l+=m.1s[f]+"="+h;a=a.1v(o);C(h.V>0){C(n==Z){n=18 1A()}n.1a(l);l=b;g=0}}}X{g++;C(l.1c("?")>-1){l+="&"}X{l+="?"}B h=m.1M[f];l+=m.1s[f]+"="+h}}}C(n==Z){n=18 1A()}l!==b&&n.1a(l);m.4E(n)},4F:U(){B a=18 2w().3I(),b=11.2B(11.3O()*6z);T a*2A+b},4E:U(e){B a=e.V;C(a>0){B f=18 2w().3I();13(B d=0;d<a;d++){B b=1d.1N("4D");B c=e[d];C(c.1c("?")>-1){c+="&"}X{c+="?"}c+="6y="+a;c+="&6x="+d;c+="&6w="+f;b.4C("1F",c);b.4C("3F","4B/6v");C(31.3N.1c("6u")>=0){b.4z=U(){C(1b&&("6t"===1b.4A||"6s"===1b.4A)){1b.4z=Z;2z{1d.1y.2h(1b)}2y(g){C(1b.30){1b.30.2h(1b)}2Z 1b}}}}X{b.4y=U(){1b.4y=Z;1d.1y.2h(1b)}}1d.1y.24(b)}}},1R:U(a){B b=1b;b.1s.V=0;b.1M.V=0;b.2e(a.1Q);b.2x(a)},23:U(a){B b=1b;b.1s.V=0;b.1M.V=0;b.2e({3M:a.22});b.2x(a)},2g:U(a){B b=1b;b.1s.V=0;b.1M.V=0;b.2e({3M:a.22});b.2x(a)},2f:U(a){B b=1b;b.1s.V=0;b.1M.V=0;b.2e({3M:a.22});b.2x(a)}};A.L.4x=U(1P){C(1P.2Y&&1h 1P.2Y==="3L"){C(1h 3K!="1j"&&3K.4w){1P=3K.4w(1P.2Y)}X{1P=6r("("+1P.2Y+")")}}T 1P};A.L.6q=U(a,d){a=a||{};C(d){13(B c 1i d){B b=d[c];C(b!==1j&&c!=="1J"&&1h b!=="U"){a[c]=b}}}T a};A.L.6p=U(b,h,d){b=b||{};C(h){13(B g 1i h){B f=1f;C(d&&d.V){13(B c=0,a=d.V;c<a;c++){C(g===d[c]){f=1g;1r}}}C(f===1g){2X}B e=h[g];C(e!==1j&&g!=="1J"&&1h e!=="U"){b[g]=e}}}T b};A.L.3J=U(b,h){b=b||{};C(h){C(h 1K 1A){b=[];13(B e=0,a=h.V;e<a;e++){B d=h[e];b.1a(A.L.3J({},d))}}X{13(B g 1i h){B f=h[g];C(1h f==="21"){B c={};b[g]=A.L.3J(c,f)}b[g]=f}}}T b};A.L.6o=U(a){A.6n=!!a};A.L.4v=U(b){C(Z===b||"21"!==1h b){T b}C(b 1K 2w){B c=18 2w();c.6m(b.3I());T c}C(b 1K 1A){B c=b.3H(0);T c}C(b 1K 3G){B c={};13(B a 1i b){C(b.1E(a)){c[a]=A.L.4v(b[a])}}T c}6l 18 6k("6j 6i 4u 6h! 6g 3F 6f\'t 6e.")};A.L.1Z=U(d,c,l,i){B o=Z;B g;B e;B j=(i.x-l.x)*(d.y-l.y)-(i.y-l.y)*(d.x-l.x);B k=(c.x-d.x)*(d.y-l.y)-(c.y-d.y)*(d.x-l.x);B p=(i.y-l.y)*(c.x-d.x)-(i.x-l.x)*(c.y-d.y);C(p!=0){g=j/p;e=k/p;C(g>=0&&e<=1&&g<=1&&e>=0){o=18 A.19.1p(d.x+g*(c.x-d.x),d.y+g*(c.y-d.y))}X{o="6d 6c"}}X{C(j==0&&k==0){B f=11.4t(d.y,c.y);B m=11.3E(d.y,c.y);B h=11.4t(d.x,c.x);B n=11.3E(d.x,c.x);C(((l.y>=m&&l.y<=f)||(i.y>=m&&i.y<=f))&&(l.x>=n&&l.x<=h)||(i.x>=n&&i.x<=h)){o="6b"}X{o="4s"}}X{o="4s"}}T o};A.L.4r=U(d,e,h){B c=[];B b=18 A.19.1p(h.1n,h.1t);B k=18 A.19.1p(h.1u,h.1m);B g=18 A.19.1p(h.1u,h.1t);B j=18 A.19.1p(h.1n,h.1m);B a=[];a.1a(A.L.1Z(b,g,d,e));a.1a(A.L.1Z(g,k,d,e));a.1a(A.L.1Z(k,j,d,e));a.1a(A.L.1Z(j,b,d,e));B f=0;1L(f<a.V){C(a[f].1J==="A.19.1p"){c.1a(a[f])}f++}T c};A.L.3C=U(l,j,b,c){b=b!=1j?b:1g;c=c!=1j?c:1f;C(!j.2W(l.1D())){T Z}C(j.2v(l.1D())){T[l]}B n=l.1k;B g=[];13(B e=0;e<n.V-1;e++){B k=18 A.19.1p(n[e].x,n[e].y);B h=18 A.19.1p(n[e+1].x,n[e+1].y);B f=A.L.4r(k,h,j);B o;C(f.V===2){C(((f[0].x-k.x)*(f[0].x-k.x)+(f[0].y-k.y)*(f[0].y-k.y))>((f[1].x-k.x)*(f[1].x-k.x)+(f[1].y-k.y)*(f[1].y-k.y))){B m=f[0];f[0]=f[1];f[1]=m}C(b){o=18 A.19.1C(f);g.1a(o)}X{g.1a(f[0],f[1])}}X{C(f.V===1){C(j.2d(k.x,k.y,1f)){C(b){o=18 A.19.1C([k,f[0]]);g.1a(o)}X{g.1a(k,f[0])}}X{C(j.2d(h.x,h.y,1f)){C(b){o=18 A.19.1C([f[0],h]);g.1a(o)}X{g.1a(f[0],h)}}X{}}}X{C(f.V==0){C(j.2d(k.x,k.y)&&j.2d(h.x,h.y)){C(b){o=18 A.19.1C([k,h]);g.1a(o)}X{g.1a(k,h)}}X{}}}}}C(g.V>0){C(!b){B d=18 A.19.1C(g);C(c){d.1o=l.1o}T d}X{C(c){g[0].1o=l.1o;C(g.V>1){13(B e=1;e<g.V;e++){g[e].1o=l.1o+"6a"+e}}}}T g}};A.L.4n=U(g,f,a,b){a=a!=1j?a:1g;b=b!=1j?b:1f;C(!f.2W(g.1D())){T Z}C(f.2v(g.1D())){T g}B c=g.1k;B j=[];13(B d=0;d<c.V;d++){B e=A.L.3C(c[d],f,a,b);C(!e){2X}C(e 1K 1A){j=j.4q(e)}X{j.1a(e)}}C(j.V>0){B h=18 A.19.3B(j);C(b){h.1o=g.1o;T h}T h}};A.L.4p=U(k,i){B f=18 A.19.1p(k.1n,k.1t<i.1t?k.1t:i.1t);B b=18 A.19.1p(k.1n,k.1m>i.1m?k.1m:i.1m);B l=18 A.19.1C([f,b]);B m=18 A.19.1p(k.1n<i.1n?k.1n:i.1n,k.1m);B a=18 A.19.1p(k.1u>i.1u?k.1u:i.1u,k.1m);B g=18 A.19.1C([m,a]);B n=18 A.19.1p(k.1u,k.1m>i.1m?k.1m:i.1m);B j=18 A.19.1p(k.1u,k.1t<i.1t?k.1t:i.1t);B e=18 A.19.1C([n,j]);B c=18 A.19.1p(k.1u>i.1u?k.1u:i.1u,k.1t);B h=18 A.19.1p(k.1n<i.1n?k.1n:i.1n,k.1t);B d=18 A.19.1C([c,h]);T[l,g,e,d]};A.L.3D=U(a,c,b){C((b==0)&&a.x>=c.1n){T 1g}X{C((b===1)&&a.y<=c.1m){T 1g}X{C((b===2)&&a.x<=c.1u){T 1g}X{C((b===3)&&a.y>=c.1t){T 1g}}}}T 1f};A.L.3A=U(m,a,t){C(!a.2W(m.1D())){T Z}C(a.2v(m.1D())){T m}t=t!=1j?t:1f;B y=[];B z=m.1k;13(B s=0;s<z.V;s++){C(a.2v(z[s].1D())){y.1a(z[s]);2X}B b=A.L.4p(a,z[s].1D());B w=z[s].1k;B c=[],h=[],g=[];B x=4,f=w.V;B d=w[f-1];13(B q=0;q<f;q++){h.1a(w[q])}B r;13(B q=0;q<x;q++){C(A.L.3D(d,a,q)){r=1f}X{r=1g}B p=h.V;13(B o=0;o<p;o++){C(A.L.3D(h[o],a,q)){C(r){r=1f;c.1a(A.L.1Z(d,h[o],b[q].1k[0],b[q].1k[1]))}c.1a(h[o])}X{C(!r){r=1g;c.1a(A.L.1Z(d,h[o],b[q].1k[0],b[q].1k[1]))}}d=h[o]}B u=c.V;h.V=0;13(B n=0;n<u;n++){h.1a(c[n])}c.V=0}13(B q=0;q<h.V;q++){g.1a(h[q])}C(g.V>2){B v=18 A.19.4o(g);C(t){v.1o=z[s].1o}y.1a(v)}}C(y.V>0){B e=18 A.19.4m(y);C(t){e.1o=m.1o;T e}T e}};A.L.4k=U(g,f,a){C(!f.2W(g.1D())){T Z}C(f.2v(g.1D())){T g}a=a!=1j?a:1f;B d=[];13(B c=0;c<g.1k.V;c++){B b=A.L.3A(g.1k[c],f,a);C(b){d.1a(b)}}C(d.V>0){B e=18 A.19.4l(d);C(a){e.1o=g.1o}T e}};A.L.69=U(e,c,d,b){C(e){d=d!=1j?d:1g;b=b!=1j?b:1f;C(((e.1J==="A.19.1C")||(e.1J==="A.19.4o"))&&(e.1k.V>1)){B a=A.L.3C(e,c,d,b);C(a){C(a.V===1){T a[0]}X{T 18 A.19.3B(a)}}}X{C((e.1J==="A.19.3B")&&(e.1k.V>0)&&(e.1k[0].1k.V>1)){T A.L.4n(e,c,d,b)}X{C((e.1J==="A.19.4m")&&(e.1k.V>0)&&(e.1k[0].1k.V>2)){T A.L.3A(e,c,b)}X{C((e.1J==="A.19.4l")&&(e.1k.V>0)){T A.L.4k(e,c,1g)}X{T e}}}}}};',62,677,'||||||||||||||||||||||||||||||||||||SuperMap|var|if|||||||||Util||||||||return|function|length||else|METERS_PER_INCH|null||Math||for||style||INCHES_PER_UNIT|new|Geometry|push|this|indexOf|document||false|true|typeof|in|undefined|components|url|top|left|id|Point|toLowerCase|break|queryKeys|bottom|right|substring|case|arguments|body|parseFloat|Array|toString|LineString|getBounds|hasOwnProperty|src|window|replace|port|CLASS_NAME|instanceof|while|queryValues|createElement|prototype|result|params|GET|scope|toJSON|version|match|split|cos|opacity|lineIntersection||object|data|POST|appendChild|||0254|PI|degrees|px|name|args|contains|addQueryStrings|DELETE|PUT|removeChild|RequestJSONP|bind|Function|method|dd|join|100|absolute|position|sin|rad|Event|display|containsBounds|Date|issue|catch|try|1000|floor|failure|success|encodeURIComponent|isInTheSameDomain|substr|String|inches|overflow|width|div|childNodes|Element|msie|opera|pathname|us|Meter|atan2|filter|modifyDOMElement|intersectsBounds|continue|responseText|delete|parentNode|navigator|limitLength|supermap_callbacks|succeed|UTF||charset|urlencoded||form|www|application|Type|Content|_method|Request|360|degree|6378137|protocol|location|yd|ft|i18n|lon|height|safari|firefox|Browser|offsetParent|getBoxObjectFor|extend|alphaHackNeeded|_attempts|destroy|clipPolygonRect|MultiLineString|clipLineStringRect|isInside|min|type|Object|slice|getTime|JSONClone|JSON|string|requestEntity|userAgent|random|headers|switch|128|10000|normalizeScale|km|mi|abs|180|_scrollbarWidth|getStyle|chrome|hash|host|createUrlObject|offsetTop|DOTS_PER_INCH|ch||ind|02921005842012|lastSeqID|createUniqueID|deg|sqrt|tan|lat|VincentyConstants|alpha|viewRequestID|initialize|clipMultiPolygonRect|MultiPolygon|Polygon|clipMultiLineStringRect|LinearRing|getIntersectLineArray|concat|clipLineRect|Parallel|max|copy|cloneObject|parse|transformResult|onload|onreadystatechange|readyState|text|setAttribute|script|send|getUid|encodeURI|urlIsLong|getParameterString|constructor|dms|dm|offsetWidth|hidden|1000px|parseInt|visible|displayClass|className|tagName|containerElement|isSupportCanvas|getBrowser|android|rv|IS_GECKO|getParameters|ignoreHash|ignorePort80|shift|href|ignoreCase|pop|applyDefaults|getViewportElement|scrollTop|scrollLeft|offsetLeft|screenY|screenX|getBoundingClientRect|IndianFt37|IndianYd37|Mile|GunterChain|Yard|Foot|IntnlLink|IntnlChain|Fathom|nmi|NautM|Lat|1852|1609|unescape|decodeURIComponent|256|1024|175|320|768|4096|16384|atan|DEFAULT_PRECISION|relatedTarget|textContent|Try|_getScriptLocation|ImgPath|block|modifyAlphaImageDiv|createImage|createDiv|none|alphaHack|smImageLoadError|isArray|IMAGE_RELOAD_ATTEMPTS|onImageLoadError|map|onImageLoad|observe|SuperMapDiv|call|inherit|apply||Plot|Tool|Scheme|Tile|Layer||REST|Control|clipGeometryRect|_clip_|Coincident|Intersection|No|supported|isn|Its|obj|to|Unable|Error|throw|setTime|isApp|setApp|copyAttributesWithClip|copyAttributes|eval|complete|loaded|IE|javascript|jsonpUserID|sectionIndex|sectionCount|100000000000000000|callback|1500|then|xhr|WinJS|json|jsonp|Windows|committer|2000|65535|2048|2047|127|charCodeAt|getScaleFromResolutionDpi|getResolutionFromScaleDpi|parent|default|getTimezoneOffset|TimezoneOffset|getMilliseconds|Millisecond|getSeconds|Second|getMinutes|Minute|getHours|Hour|getDate||Day|getMonth|Month|getFullYear|Year|DateTime|System|__type|Boolean|isFinite|Number|gt|lt|getHeight|getWidth|calculateDpi|domain|yard|kilometer|mile|inch|foot|meter|u00B0|round|540|getFormattedLonLat|lastChild|scroll|200px|50px|100px|getScrollbarWidth|Size|scrollHeight|scrollWidth|innerHTML|static|visibility|getRenderedDimensions|supportCanvas|getContext|canvas|device|apple|iphone|ipod|ipad|trident|pc|gecko|webkit|removeTail|charAt|search|test|isEquivalentUrl||documentElement|CSS1Compat||compatMode|viewportElement|callee|TR|pagePosition|getScaleFromResolution|getResolutionFromScale|11669506|link|fath|kmi|cm|mm|150000|150kilometers|50000|50kilometers|184|1853|UK|8288|304812252984506|ModAmFt|375|Brealey|3047972615|CapeFoot|778266898|Rood|1684023368046|201|Furlong|Pole|Perch|201168|1168|Rod|2011676512155|SearsLink|20116782494375873|BenoitLink|2011684023368047|GunterLink|201166194976|ClarkeLink|11676512155|SearsChain|116782494375872|BenoitChain|11684023368047|1166194976|ClarkeChain|999738|CaGrid|0000135965|GermanMeter|Hectometer|Decameter|Dekameter|001|Millimeter|Decimeter|25736872235|110946||31648893273|110943|344|IMile|9144|IYard|3472186944373|3047995|IndianFt75|3047996|IndianFt62|30479841|30479951|IndianFoot|9143985|IndianYd75|9143988|IndianYd62|91439523|9143985307444408|IndianYard|914398414616029|SearsYard|9144018288036576|Kilometer|01|Centimeter|54e|Mil|0000254|MicroInch|IInch|3047997101815088|GoldCoastFoot|30479947153867626|SearsFoot|3047972651151|ClarkeFoot|3048|IFoot|3048006096012192|Inch|0254000508001016|4374754|39370|3701|63360|id_|LonLat|destinationVincenty|toFixed|NaN|asin|distVincenty|257223563|298|3142|6356752|toPrecision|number|toFloat|toElement|mouseLeft|nodeValue|firstChild|getXmlNodeValue|images|theme|getImagesLocation|urlAppend|toUpperCase|upperCaseObject|olAlphaImg|createAlphaImageDiv|sizingMethod|AlphaImageLoader|Microsoft|DXImageTransform|progid|scale|inline|_innerImage|filters|MSIE|appVersion|addClass|urls|removeClass|no|galleryImg|alt|error|load|relative|img|backgroundImage|border|splice|removeItem|nodeType|isElement|getElementById|getElement|reset|Class|getAttribute|getElementsByTagName|js|Include|RegExp|Release|VERSION_NUMBER'.split('|'),0,{}))
@@ -1194,7 +1248,7 @@
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -2197,7 +2251,7 @@
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -2211,7 +2265,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.Format>
 	 */
-	__webpack_require__(8);
+	__webpack_require__(9);
 
 	SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
 
@@ -2587,7 +2641,7 @@
 	};
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -2598,7 +2652,7 @@
 	 * Class: SuperMap.Format
 	 * 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	SuperMap.Format = SuperMap.Class({
 
@@ -2705,7 +2759,7 @@
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports) {
 
 	L.Projection = {};
@@ -2782,7 +2836,6218 @@
 	module.exports = L.supermap.NonEarthCRS;
 
 /***/ },
-/* 10 */
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var proj4 = __webpack_require__(12);
+	L.Proj = {};
+
+	L.Proj._isProj4Obj = function (a) {
+	    return (typeof a.inverse !== 'undefined' &&
+	    typeof a.forward !== 'undefined');
+	};
+
+	L.Proj.Projection = L.Class.extend({
+	    initialize: function (code, def, bounds) {
+	        var isP4 = L.Proj._isProj4Obj(code);
+	        this._proj = isP4 ? code : this._projFromCodeDef(code, def);
+	        this.bounds = isP4 ? def : bounds;
+	    },
+
+	    project: function (latlng) {
+	        var point = this._proj.forward([latlng.lng, latlng.lat]);
+	        return new L.Point(point[0], point[1]);
+	    },
+
+	    unproject: function (point, unbounded) {
+	        var point2 = this._proj.inverse([point.x, point.y]);
+	        return new L.LatLng(point2[1], point2[0], unbounded);
+	    },
+
+	    _projFromCodeDef: function (code, def) {
+	        if (def) {
+	            proj4.defs(code, def);
+	        } else if (proj4.defs[code] === undefined) {
+	            var urn = code.split(':');
+	            if (urn.length > 3) {
+	                code = urn[urn.length - 3] + ':' + urn[urn.length - 1];
+	            }
+	            if (proj4.defs[code] === undefined) {
+	                throw 'No projection definition for code ' + code;
+	            }
+	        }
+
+	        return proj4(code);
+	    }
+	});
+
+	L.Proj.CRS = L.Class.extend({
+	    includes: L.CRS,
+
+	    options: {
+	        transformation: new L.Transformation(1, 0, -1, 0)
+	    },
+
+	    initialize: function (a, b, c) {
+	        var code,
+	            proj,
+	            def,
+	            options;
+
+	        if (L.Proj._isProj4Obj(a)) {
+	            proj = a;
+	            code = proj.srsCode;
+	            options = b || {};
+
+	            this.projection = new L.Proj.Projection(proj, options.bounds);
+	        } else {
+	            code = a;
+	            def = b;
+	            options = c || {};
+	            this.projection = new L.Proj.Projection(code, def, options.bounds);
+	        }
+
+	        L.Util.setOptions(this, options);
+	        this.code = code;
+	        this.transformation = this.options.transformation;
+
+	        if (this.options.origin) {
+	            this.transformation =
+	                new L.Transformation(1, -this.options.origin[0],
+	                    -1, this.options.origin[1]);
+	        }
+
+	        if (this.options.scales) {
+	            this._scales = this.options.scales;
+	        } else if (this.options.resolutions) {
+	            this._scales = [];
+	            for (var i = this.options.resolutions.length - 1; i >= 0; i--) {
+	                if (this.options.resolutions[i]) {
+	                    this._scales[i] = 1 / this.options.resolutions[i];
+	                }
+	            }
+	        }
+
+	        this.infinite = !this.options.bounds;
+
+	    },
+
+	    scale: function (zoom) {
+	        var iZoom = Math.floor(zoom),
+	            baseScale,
+	            nextScale,
+	            scaleDiff,
+	            zDiff;
+	        if (zoom === iZoom) {
+	            return this._scales[zoom];
+	        } else {
+	            // Non-integer zoom, interpolate
+	            baseScale = this._scales[iZoom];
+	            nextScale = this._scales[iZoom + 1];
+	            scaleDiff = nextScale - baseScale;
+	            zDiff = (zoom - iZoom);
+	            return baseScale + scaleDiff * zDiff;
+	        }
+	    },
+
+	    zoom: function (scale) {
+	        // Find closest number in this._scales, down
+	        var downScale = this._closestElement(this._scales, scale),
+	            downZoom = this._scales.indexOf(downScale),
+	            nextScale,
+	            nextZoom,
+	            scaleDiff;
+	        // Check if scale is downScale => return array index
+	        if (scale === downScale) {
+	            return downZoom;
+	        }
+	        // Interpolate
+	        nextZoom = downZoom + 1;
+	        nextScale = this._scales[nextZoom];
+	        if (nextScale === undefined) {
+	            return Infinity;
+	        }
+	        scaleDiff = nextScale - downScale;
+	        return (scale - downScale) / scaleDiff + downZoom;
+	    },
+
+	    distance: L.CRS.Earth.distance,
+
+	    R: L.CRS.Earth.R,
+
+	    /* Get the closest lowest element in an array */
+	    _closestElement: function (array, element) {
+	        var low;
+	        for (var i = array.length; i--;) {
+	            if (array[i] <= element && (low === undefined || low < array[i])) {
+	                low = array[i];
+	            }
+	        }
+	        return low;
+	    }
+	});
+
+	L.Proj.GeoJSON = L.GeoJSON.extend({
+	    initialize: function (geojson, options) {
+	        this._callLevel = 0;
+	        L.GeoJSON.prototype.initialize.call(this, geojson, options);
+	    },
+
+	    addData: function (geojson) {
+	        var crs;
+
+	        if (geojson) {
+	            if (geojson.crs && geojson.crs.type === 'name') {
+	                crs = new L.Proj.CRS(geojson.crs.properties.name);
+	            } else if (geojson.crs && geojson.crs.type) {
+	                crs = new L.Proj.CRS(geojson.crs.type + ':' + geojson.crs.properties.code);
+	            }
+
+	            if (crs !== undefined) {
+	                this.options.coordsToLatLng = function (coords) {
+	                    var point = L.point(coords[0], coords[1]);
+	                    return crs.projection.unproject(point);
+	                };
+	            }
+	        }
+
+	        // Base class' addData might call us recursively, but
+	        // CRS shouldn't be cleared in that case, since CRS applies
+	        // to the whole GeoJSON, inluding sub-features.
+	        this._callLevel++;
+	        try {
+	            L.GeoJSON.prototype.addData.call(this, geojson);
+	        } finally {
+	            this._callLevel--;
+	            if (this._callLevel === 0) {
+	                delete this.options.coordsToLatLng;
+	            }
+	        }
+	    }
+	});
+
+	L.Proj.geoJson = function (geojson, options) {
+	    return new L.Proj.GeoJSON(geojson, options);
+	};
+
+	L.Proj.ImageOverlay = L.ImageOverlay.extend({
+	    initialize: function (url, bounds, options) {
+	        L.ImageOverlay.prototype.initialize.call(this, url, null, options);
+	        this._projectedBounds = bounds;
+	    },
+
+	    // Danger ahead: Overriding internal methods in Leaflet.
+	    // Decided to do this rather than making a copy of L.ImageOverlay
+	    // and doing very tiny modifications to it.
+	    // Future will tell if this was wise or not.
+	    _animateZoom: function (event) {
+	        var scale = this._map.getZoomScale(event.zoom);
+	        var northWest = L.point(this._projectedBounds.min.x, this._projectedBounds.max.y);
+	        var offset = this._projectedToNewLayerPoint(northWest, event.zoom, event.center);
+
+	        L.DomUtil.setTransform(this._image, offset, scale);
+	    },
+
+	    _reset: function () {
+	        var zoom = this._map.getZoom();
+	        var pixelOrigin = this._map.getPixelOrigin();
+	        var bounds = L.bounds(
+	            this._transform(this._projectedBounds.min, zoom)._subtract(pixelOrigin),
+	            this._transform(this._projectedBounds.max, zoom)._subtract(pixelOrigin)
+	        );
+	        var size = bounds.getSize();
+
+	        L.DomUtil.setPosition(this._image, bounds.min);
+	        this._image.style.width = size.x + 'px';
+	        this._image.style.height = size.y + 'px';
+	    },
+
+	    _projectedToNewLayerPoint: function (point, zoom, center) {
+	        var viewHalf = this._map.getSize()._divideBy(2);
+	        var newTopLeft = this._map.project(center, zoom)._subtract(viewHalf)._round();
+	        var topLeft = newTopLeft.add(this._map._getMapPanePos());
+
+	        return this._transform(point, zoom)._subtract(topLeft);
+	    },
+
+	    _transform: function (point, zoom) {
+	        var crs = this._map.options.crs;
+	        var transformation = crs.transformation;
+	        var scale = crs.scale(zoom);
+
+	        return transformation.transform(point, scale);
+	    }
+	});
+
+	L.Proj.imageOverlay = function (url, bounds, options) {
+	    return new L.Proj.ImageOverlay(url, bounds, options);
+	};
+
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	(function (global, factory) {
+		 true ? module.exports = factory() :
+		typeof define === 'function' && define.amd ? define(factory) :
+		(global.proj4 = factory());
+	}(this, (function () { 'use strict';
+
+		var globals = function(defs) {
+		  defs('EPSG:4326', "+title=WGS 84 (long/lat) +proj=longlat +ellps=WGS84 +datum=WGS84 +units=degrees");
+		  defs('EPSG:4269', "+title=NAD83 (long/lat) +proj=longlat +a=6378137.0 +b=6356752.31414036 +ellps=GRS80 +datum=NAD83 +units=degrees");
+		  defs('EPSG:3857', "+title=WGS 84 / Pseudo-Mercator +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs");
+
+		  defs.WGS84 = defs['EPSG:4326'];
+		  defs['EPSG:3785'] = defs['EPSG:3857']; // maintain backward compat, official code is 3857
+		  defs.GOOGLE = defs['EPSG:3857'];
+		  defs['EPSG:900913'] = defs['EPSG:3857'];
+		  defs['EPSG:102113'] = defs['EPSG:3857'];
+		};
+
+		var PJD_3PARAM = 1;
+		var PJD_7PARAM = 2;
+		var PJD_WGS84 = 4; // WGS84 or equivalent
+		var PJD_NODATUM = 5; // WGS84 or equivalent
+		var SEC_TO_RAD = 4.84813681109535993589914102357e-6;
+		var HALF_PI = Math.PI/2;
+		// ellipoid pj_set_ell.c
+		var SIXTH = 0.1666666666666666667;
+		/* 1/6 */
+		var RA4 = 0.04722222222222222222;
+		/* 17/360 */
+		var RA6 = 0.02215608465608465608;
+		var EPSLN = (typeof Number.EPSILON === 'undefined') ? 1.0e-10 : Number.EPSILON;
+		var D2R = 0.01745329251994329577;
+		var R2D = 57.29577951308232088;
+		var FORTPI = Math.PI/4;
+		var TWO_PI = Math.PI * 2;
+		// SPI is slightly greater than Math.PI, so values that exceed the -180..180
+		// degree range by a tiny amount don't get wrapped. This prevents points that
+		// have drifted from their original location along the 180th meridian (due to
+		// floating point error) from changing their sign.
+		var SPI = 3.14159265359;
+
+		var exports$1 = {};
+		exports$1.greenwich = 0.0; //"0dE",
+		exports$1.lisbon = -9.131906111111; //"9d07'54.862\"W",
+		exports$1.paris = 2.337229166667; //"2d20'14.025\"E",
+		exports$1.bogota = -74.080916666667; //"74d04'51.3\"W",
+		exports$1.madrid = -3.687938888889; //"3d41'16.58\"W",
+		exports$1.rome = 12.452333333333; //"12d27'8.4\"E",
+		exports$1.bern = 7.439583333333; //"7d26'22.5\"E",
+		exports$1.jakarta = 106.807719444444; //"106d48'27.79\"E",
+		exports$1.ferro = -17.666666666667; //"17d40'W",
+		exports$1.brussels = 4.367975; //"4d22'4.71\"E",
+		exports$1.stockholm = 18.058277777778; //"18d3'29.8\"E",
+		exports$1.athens = 23.7163375; //"23d42'58.815\"E",
+		exports$1.oslo = 10.722916666667; //"10d43'22.5\"E"
+
+		var units = {
+		  ft: {to_meter: 0.3048},
+		  'us-ft': {to_meter: 1200 / 3937}
+		};
+
+		var ignoredChar = /[\s_\-\/\(\)]/g;
+		function match(obj, key) {
+		  if (obj[key]) {
+		    return obj[key];
+		  }
+		  var keys = Object.keys(obj);
+		  var lkey = key.toLowerCase().replace(ignoredChar, '');
+		  var i = -1;
+		  var testkey, processedKey;
+		  while (++i < keys.length) {
+		    testkey = keys[i];
+		    processedKey = testkey.toLowerCase().replace(ignoredChar, '');
+		    if (processedKey === lkey) {
+		      return obj[testkey];
+		    }
+		  }
+		}
+
+		var parseProj = function(defData) {
+		  var self = {};
+		  var paramObj = defData.split('+').map(function(v) {
+		    return v.trim();
+		  }).filter(function(a) {
+		    return a;
+		  }).reduce(function(p, a) {
+		    var split = a.split('=');
+		    split.push(true);
+		    p[split[0].toLowerCase()] = split[1];
+		    return p;
+		  }, {});
+		  var paramName, paramVal, paramOutname;
+		  var params = {
+		    proj: 'projName',
+		    datum: 'datumCode',
+		    rf: function(v) {
+		      self.rf = parseFloat(v);
+		    },
+		    lat_0: function(v) {
+		      self.lat0 = v * D2R;
+		    },
+		    lat_1: function(v) {
+		      self.lat1 = v * D2R;
+		    },
+		    lat_2: function(v) {
+		      self.lat2 = v * D2R;
+		    },
+		    lat_ts: function(v) {
+		      self.lat_ts = v * D2R;
+		    },
+		    lon_0: function(v) {
+		      self.long0 = v * D2R;
+		    },
+		    lon_1: function(v) {
+		      self.long1 = v * D2R;
+		    },
+		    lon_2: function(v) {
+		      self.long2 = v * D2R;
+		    },
+		    alpha: function(v) {
+		      self.alpha = parseFloat(v) * D2R;
+		    },
+		    lonc: function(v) {
+		      self.longc = v * D2R;
+		    },
+		    x_0: function(v) {
+		      self.x0 = parseFloat(v);
+		    },
+		    y_0: function(v) {
+		      self.y0 = parseFloat(v);
+		    },
+		    k_0: function(v) {
+		      self.k0 = parseFloat(v);
+		    },
+		    k: function(v) {
+		      self.k0 = parseFloat(v);
+		    },
+		    a: function(v) {
+		      self.a = parseFloat(v);
+		    },
+		    b: function(v) {
+		      self.b = parseFloat(v);
+		    },
+		    r_a: function() {
+		      self.R_A = true;
+		    },
+		    zone: function(v) {
+		      self.zone = parseInt(v, 10);
+		    },
+		    south: function() {
+		      self.utmSouth = true;
+		    },
+		    towgs84: function(v) {
+		      self.datum_params = v.split(",").map(function(a) {
+		        return parseFloat(a);
+		      });
+		    },
+		    to_meter: function(v) {
+		      self.to_meter = parseFloat(v);
+		    },
+		    units: function(v) {
+		      self.units = v;
+		      var unit = match(units, v);
+		      if (unit) {
+		        self.to_meter = unit.to_meter;
+		      }
+		    },
+		    from_greenwich: function(v) {
+		      self.from_greenwich = v * D2R;
+		    },
+		    pm: function(v) {
+		      var pm = match(exports$1, v);
+		      self.from_greenwich = (pm ? pm : parseFloat(v)) * D2R;
+		    },
+		    nadgrids: function(v) {
+		      if (v === '@null') {
+		        self.datumCode = 'none';
+		      }
+		      else {
+		        self.nadgrids = v;
+		      }
+		    },
+		    axis: function(v) {
+		      var legalAxis = "ewnsud";
+		      if (v.length === 3 && legalAxis.indexOf(v.substr(0, 1)) !== -1 && legalAxis.indexOf(v.substr(1, 1)) !== -1 && legalAxis.indexOf(v.substr(2, 1)) !== -1) {
+		        self.axis = v;
+		      }
+		    }
+		  };
+		  for (paramName in paramObj) {
+		    paramVal = paramObj[paramName];
+		    if (paramName in params) {
+		      paramOutname = params[paramName];
+		      if (typeof paramOutname === 'function') {
+		        paramOutname(paramVal);
+		      }
+		      else {
+		        self[paramOutname] = paramVal;
+		      }
+		    }
+		    else {
+		      self[paramName] = paramVal;
+		    }
+		  }
+		  if(typeof self.datumCode === 'string' && self.datumCode !== "WGS84"){
+		    self.datumCode = self.datumCode.toLowerCase();
+		  }
+		  return self;
+		};
+
+		var NEUTRAL = 1;
+		var KEYWORD = 2;
+		var NUMBER = 3;
+		var QUOTED = 4;
+		var AFTERQUOTE = 5;
+		var ENDED = -1;
+		var whitespace = /\s/;
+		var latin = /[A-Za-z]/;
+		var keyword = /[A-Za-z84]/;
+		var endThings = /[,\]]/;
+		var digets = /[\d\.E\-\+]/;
+		// const ignoredChar = /[\s_\-\/\(\)]/g;
+		function Parser(text) {
+		  if (typeof text !== 'string') {
+		    throw new Error('not a string');
+		  }
+		  this.text = text.trim();
+		  this.level = 0;
+		  this.place = 0;
+		  this.root = null;
+		  this.stack = [];
+		  this.currentObject = null;
+		  this.state = NEUTRAL;
+		}
+		Parser.prototype.readCharicter = function() {
+		  var char = this.text[this.place++];
+		  if (this.state !== QUOTED) {
+		    while (whitespace.test(char)) {
+		      if (this.place >= this.text.length) {
+		        return;
+		      }
+		      char = this.text[this.place++];
+		    }
+		  }
+		  switch (this.state) {
+		    case NEUTRAL:
+		      return this.neutral(char);
+		    case KEYWORD:
+		      return this.keyword(char)
+		    case QUOTED:
+		      return this.quoted(char);
+		    case AFTERQUOTE:
+		      return this.afterquote(char);
+		    case NUMBER:
+		      return this.number(char);
+		    case ENDED:
+		      return;
+		  }
+		};
+		Parser.prototype.afterquote = function(char) {
+		  if (char === '"') {
+		    this.word += '"';
+		    this.state = QUOTED;
+		    return;
+		  }
+		  if (endThings.test(char)) {
+		    this.word = this.word.trim();
+		    this.afterItem(char);
+		    return;
+		  }
+		  throw new Error('havn\'t handled "' +char + '" in afterquote yet, index ' + this.place);
+		};
+		Parser.prototype.afterItem = function(char) {
+		  if (char === ',') {
+		    if (this.word !== null) {
+		      this.currentObject.push(this.word);
+		    }
+		    this.word = null;
+		    this.state = NEUTRAL;
+		    return;
+		  }
+		  if (char === ']') {
+		    this.level--;
+		    if (this.word !== null) {
+		      this.currentObject.push(this.word);
+		      this.word = null;
+		    }
+		    this.state = NEUTRAL;
+		    this.currentObject = this.stack.pop();
+		    if (!this.currentObject) {
+		      this.state = ENDED;
+		    }
+
+		    return;
+		  }
+		};
+		Parser.prototype.number = function(char) {
+		  if (digets.test(char)) {
+		    this.word += char;
+		    return;
+		  }
+		  if (endThings.test(char)) {
+		    this.word = parseFloat(this.word);
+		    this.afterItem(char);
+		    return;
+		  }
+		  throw new Error('havn\'t handled "' +char + '" in number yet, index ' + this.place);
+		};
+		Parser.prototype.quoted = function(char) {
+		  if (char === '"') {
+		    this.state = AFTERQUOTE;
+		    return;
+		  }
+		  this.word += char;
+		  return;
+		};
+		Parser.prototype.keyword = function(char) {
+		  if (keyword.test(char)) {
+		    this.word += char;
+		    return;
+		  }
+		  if (char === '[') {
+		    var newObjects = [];
+		    newObjects.push(this.word);
+		    this.level++;
+		    if (this.root === null) {
+		      this.root = newObjects;
+		    } else {
+		      this.currentObject.push(newObjects);
+		    }
+		    this.stack.push(this.currentObject);
+		    this.currentObject = newObjects;
+		    this.state = NEUTRAL;
+		    return;
+		  }
+		  if (endThings.test(char)) {
+		    this.afterItem(char);
+		    return;
+		  }
+		  throw new Error('havn\'t handled "' +char + '" in keyword yet, index ' + this.place);
+		};
+		Parser.prototype.neutral = function(char) {
+		  if (latin.test(char)) {
+		    this.word = char;
+		    this.state = KEYWORD;
+		    return;
+		  }
+		  if (char === '"') {
+		    this.word = '';
+		    this.state = QUOTED;
+		    return;
+		  }
+		  if (digets.test(char)) {
+		    this.word = char;
+		    this.state = NUMBER;
+		    return;
+		  }
+		  if (endThings.test(char)) {
+		    this.afterItem(char);
+		    return;
+		  }
+		  throw new Error('havn\'t handled "' +char + '" in neutral yet, index ' + this.place);
+		};
+		Parser.prototype.output = function() {
+		  while (this.place < this.text.length) {
+		    this.readCharicter();
+		  }
+		  if (this.state === ENDED) {
+		    return this.root;
+		  }
+		  throw new Error('unable to parse string "' +this.text + '". State is ' + this.state);
+		};
+
+		function parseString(txt) {
+		  var parser = new Parser(txt);
+		  return parser.output();
+		}
+
+		function mapit(obj, key, value) {
+		  if (Array.isArray(key)) {
+		    value.unshift(key);
+		    key = null;
+		  }
+		  var thing = key ? {} : obj;
+
+		  var out = value.reduce(function(newObj, item) {
+		    sExpr(item, newObj);
+		    return newObj
+		  }, thing);
+		  if (key) {
+		    obj[key] = out;
+		  }
+		}
+
+		function sExpr(v, obj) {
+		  if (!Array.isArray(v)) {
+		    obj[v] = true;
+		    return;
+		  }
+		  var key = v.shift();
+		  if (key === 'PARAMETER') {
+		    key = v.shift();
+		  }
+		  if (v.length === 1) {
+		    if (Array.isArray(v[0])) {
+		      obj[key] = {};
+		      sExpr(v[0], obj[key]);
+		      return;
+		    }
+		    obj[key] = v[0];
+		    return;
+		  }
+		  if (!v.length) {
+		    obj[key] = true;
+		    return;
+		  }
+		  if (key === 'TOWGS84') {
+		    obj[key] = v;
+		    return;
+		  }
+		  if (!Array.isArray(key)) {
+		    obj[key] = {};
+		  }
+
+		  var i;
+		  switch (key) {
+		    case 'UNIT':
+		    case 'PRIMEM':
+		    case 'VERT_DATUM':
+		      obj[key] = {
+		        name: v[0].toLowerCase(),
+		        convert: v[1]
+		      };
+		      if (v.length === 3) {
+		        sExpr(v[2], obj[key]);
+		      }
+		      return;
+		    case 'SPHEROID':
+		    case 'ELLIPSOID':
+		      obj[key] = {
+		        name: v[0],
+		        a: v[1],
+		        rf: v[2]
+		      };
+		      if (v.length === 4) {
+		        sExpr(v[3], obj[key]);
+		      }
+		      return;
+		    case 'PROJECTEDCRS':
+		    case 'PROJCRS':
+		    case 'GEOGCS':
+		    case 'GEOCCS':
+		    case 'PROJCS':
+		    case 'LOCAL_CS':
+		    case 'GEODCRS':
+		    case 'GEODETICCRS':
+		    case 'GEODETICDATUM':
+		    case 'EDATUM':
+		    case 'ENGINEERINGDATUM':
+		    case 'VERT_CS':
+		    case 'VERTCRS':
+		    case 'VERTICALCRS':
+		    case 'COMPD_CS':
+		    case 'COMPOUNDCRS':
+		    case 'ENGINEERINGCRS':
+		    case 'ENGCRS':
+		    case 'FITTED_CS':
+		    case 'LOCAL_DATUM':
+		    case 'DATUM':
+		      v[0] = ['name', v[0]];
+		      mapit(obj, key, v);
+		      return;
+		    default:
+		      i = -1;
+		      while (++i < v.length) {
+		        if (!Array.isArray(v[i])) {
+		          return sExpr(v, obj[key]);
+		        }
+		      }
+		      return mapit(obj, key, v);
+		  }
+		}
+
+		var D2R$1 = 0.01745329251994329577;
+		function rename(obj, params) {
+		  var outName = params[0];
+		  var inName = params[1];
+		  if (!(outName in obj) && (inName in obj)) {
+		    obj[outName] = obj[inName];
+		    if (params.length === 3) {
+		      obj[outName] = params[2](obj[outName]);
+		    }
+		  }
+		}
+
+		function d2r(input) {
+		  return input * D2R$1;
+		}
+
+		function cleanWKT(wkt) {
+		  if (wkt.type === 'GEOGCS') {
+		    wkt.projName = 'longlat';
+		  } else if (wkt.type === 'LOCAL_CS') {
+		    wkt.projName = 'identity';
+		    wkt.local = true;
+		  } else {
+		    if (typeof wkt.PROJECTION === 'object') {
+		      wkt.projName = Object.keys(wkt.PROJECTION)[0];
+		    } else {
+		      wkt.projName = wkt.PROJECTION;
+		    }
+		  }
+		  if (wkt.UNIT) {
+		    wkt.units = wkt.UNIT.name.toLowerCase();
+		    if (wkt.units === 'metre') {
+		      wkt.units = 'meter';
+		    }
+		    if (wkt.UNIT.convert) {
+		      if (wkt.type === 'GEOGCS') {
+		        if (wkt.DATUM && wkt.DATUM.SPHEROID) {
+		          wkt.to_meter = wkt.UNIT.convert*wkt.DATUM.SPHEROID.a;
+		        }
+		      } else {
+		        wkt.to_meter = wkt.UNIT.convert, 10;
+		      }
+		    }
+		  }
+		  var geogcs = wkt.GEOGCS;
+		  if (wkt.type === 'GEOGCS') {
+		    geogcs = wkt;
+		  }
+		  if (geogcs) {
+		    //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
+		    //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
+		    //}
+		    if (geogcs.DATUM) {
+		      wkt.datumCode = geogcs.DATUM.name.toLowerCase();
+		    } else {
+		      wkt.datumCode = geogcs.name.toLowerCase();
+		    }
+		    if (wkt.datumCode.slice(0, 2) === 'd_') {
+		      wkt.datumCode = wkt.datumCode.slice(2);
+		    }
+		    if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
+		      wkt.datumCode = 'nzgd49';
+		    }
+		    if (wkt.datumCode === 'wgs_1984') {
+		      if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
+		        wkt.sphere = true;
+		      }
+		      wkt.datumCode = 'wgs84';
+		    }
+		    if (wkt.datumCode.slice(-6) === '_ferro') {
+		      wkt.datumCode = wkt.datumCode.slice(0, - 6);
+		    }
+		    if (wkt.datumCode.slice(-8) === '_jakarta') {
+		      wkt.datumCode = wkt.datumCode.slice(0, - 8);
+		    }
+		    if (~wkt.datumCode.indexOf('belge')) {
+		      wkt.datumCode = 'rnb72';
+		    }
+		    if (geogcs.DATUM && geogcs.DATUM.SPHEROID) {
+		      wkt.ellps = geogcs.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
+		      if (wkt.ellps.toLowerCase().slice(0, 13) === 'international') {
+		        wkt.ellps = 'intl';
+		      }
+
+		      wkt.a = geogcs.DATUM.SPHEROID.a;
+		      wkt.rf = parseFloat(geogcs.DATUM.SPHEROID.rf, 10);
+		    }
+		    if (~wkt.datumCode.indexOf('osgb_1936')) {
+		      wkt.datumCode = 'osgb36';
+		    }
+		  }
+		  if (wkt.b && !isFinite(wkt.b)) {
+		    wkt.b = wkt.a;
+		  }
+
+		  function toMeter(input) {
+		    var ratio = wkt.to_meter || 1;
+		    return input * ratio;
+		  }
+		  var renamer = function(a) {
+		    return rename(wkt, a);
+		  };
+		  var list = [
+		    ['standard_parallel_1', 'Standard_Parallel_1'],
+		    ['standard_parallel_2', 'Standard_Parallel_2'],
+		    ['false_easting', 'False_Easting'],
+		    ['false_northing', 'False_Northing'],
+		    ['central_meridian', 'Central_Meridian'],
+		    ['latitude_of_origin', 'Latitude_Of_Origin'],
+		    ['latitude_of_origin', 'Central_Parallel'],
+		    ['scale_factor', 'Scale_Factor'],
+		    ['k0', 'scale_factor'],
+		    ['latitude_of_center', 'Latitude_of_center'],
+		    ['lat0', 'latitude_of_center', d2r],
+		    ['longitude_of_center', 'Longitude_Of_Center'],
+		    ['longc', 'longitude_of_center', d2r],
+		    ['x0', 'false_easting', toMeter],
+		    ['y0', 'false_northing', toMeter],
+		    ['long0', 'central_meridian', d2r],
+		    ['lat0', 'latitude_of_origin', d2r],
+		    ['lat0', 'standard_parallel_1', d2r],
+		    ['lat1', 'standard_parallel_1', d2r],
+		    ['lat2', 'standard_parallel_2', d2r],
+		    ['alpha', 'azimuth', d2r],
+		    ['srsCode', 'name']
+		  ];
+		  list.forEach(renamer);
+		  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === 'Lambert_Azimuthal_Equal_Area')) {
+		    wkt.long0 = wkt.longc;
+		  }
+		  if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
+		    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
+		    wkt.lat_ts = wkt.lat1;
+		  }
+		}
+		var wkt = function(wkt) {
+		  var lisp = parseString(wkt);
+		  var type = lisp.shift();
+		  var name = lisp.shift();
+		  lisp.unshift(['name', name]);
+		  lisp.unshift(['type', type]);
+		  var obj = {};
+		  sExpr(lisp, obj);
+		  cleanWKT(obj);
+		  return obj;
+		};
+
+		function defs(name) {
+		  /*global console*/
+		  var that = this;
+		  if (arguments.length === 2) {
+		    var def = arguments[1];
+		    if (typeof def === 'string') {
+		      if (def.charAt(0) === '+') {
+		        defs[name] = parseProj(arguments[1]);
+		      }
+		      else {
+		        defs[name] = wkt(arguments[1]);
+		      }
+		    } else {
+		      defs[name] = def;
+		    }
+		  }
+		  else if (arguments.length === 1) {
+		    if (Array.isArray(name)) {
+		      return name.map(function(v) {
+		        if (Array.isArray(v)) {
+		          defs.apply(that, v);
+		        }
+		        else {
+		          defs(v);
+		        }
+		      });
+		    }
+		    else if (typeof name === 'string') {
+		      if (name in defs) {
+		        return defs[name];
+		      }
+		    }
+		    else if ('EPSG' in name) {
+		      defs['EPSG:' + name.EPSG] = name;
+		    }
+		    else if ('ESRI' in name) {
+		      defs['ESRI:' + name.ESRI] = name;
+		    }
+		    else if ('IAU2000' in name) {
+		      defs['IAU2000:' + name.IAU2000] = name;
+		    }
+		    else {
+		      console.log(name);
+		    }
+		    return;
+		  }
+
+
+		}
+		globals(defs);
+
+		function testObj(code){
+		  return typeof code === 'string';
+		}
+		function testDef(code){
+		  return code in defs;
+		}
+		 var codeWords = ['PROJECTEDCRS', 'PROJCRS', 'GEOGCS','GEOCCS','PROJCS','LOCAL_CS', 'GEODCRS', 'GEODETICCRS', 'GEODETICDATUM', 'ENGCRS', 'ENGINEERINGCRS']; 
+		function testWKT(code){
+		  return codeWords.some(function (word) {
+		    return code.indexOf(word) > -1;
+		  });
+		}
+		function testProj(code){
+		  return code[0] === '+';
+		}
+		function parse(code){
+		  if (testObj(code)) {
+		    //check to see if this is a WKT string
+		    if (testDef(code)) {
+		      return defs[code];
+		    }
+		    if (testWKT(code)) {
+		      return wkt(code);
+		    }
+		    if (testProj(code)) {
+		      return parseProj(code);
+		    }
+		  }else{
+		    return code;
+		  }
+		}
+
+		var extend = function(destination, source) {
+		  destination = destination || {};
+		  var value, property;
+		  if (!source) {
+		    return destination;
+		  }
+		  for (property in source) {
+		    value = source[property];
+		    if (value !== undefined) {
+		      destination[property] = value;
+		    }
+		  }
+		  return destination;
+		};
+
+		var msfnz = function(eccent, sinphi, cosphi) {
+		  var con = eccent * sinphi;
+		  return cosphi / (Math.sqrt(1 - con * con));
+		};
+
+		var sign = function(x) {
+		  return x<0 ? -1 : 1;
+		};
+
+		var adjust_lon = function(x) {
+		  return (Math.abs(x) <= SPI) ? x : (x - (sign(x) * TWO_PI));
+		};
+
+		var tsfnz = function(eccent, phi, sinphi) {
+		  var con = eccent * sinphi;
+		  var com = 0.5 * eccent;
+		  con = Math.pow(((1 - con) / (1 + con)), com);
+		  return (Math.tan(0.5 * (HALF_PI - phi)) / con);
+		};
+
+		var phi2z = function(eccent, ts) {
+		  var eccnth = 0.5 * eccent;
+		  var con, dphi;
+		  var phi = HALF_PI - 2 * Math.atan(ts);
+		  for (var i = 0; i <= 15; i++) {
+		    con = eccent * Math.sin(phi);
+		    dphi = HALF_PI - 2 * Math.atan(ts * (Math.pow(((1 - con) / (1 + con)), eccnth))) - phi;
+		    phi += dphi;
+		    if (Math.abs(dphi) <= 0.0000000001) {
+		      return phi;
+		    }
+		  }
+		  //console.log("phi2z has NoConvergence");
+		  return -9999;
+		};
+
+		function init() {
+		  var con = this.b / this.a;
+		  this.es = 1 - con * con;
+		  if(!('x0' in this)){
+		    this.x0 = 0;
+		  }
+		  if(!('y0' in this)){
+		    this.y0 = 0;
+		  }
+		  this.e = Math.sqrt(this.es);
+		  if (this.lat_ts) {
+		    if (this.sphere) {
+		      this.k0 = Math.cos(this.lat_ts);
+		    }
+		    else {
+		      this.k0 = msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts));
+		    }
+		  }
+		  else {
+		    if (!this.k0) {
+		      if (this.k) {
+		        this.k0 = this.k;
+		      }
+		      else {
+		        this.k0 = 1;
+		      }
+		    }
+		  }
+		}
+
+		/* Mercator forward equations--mapping lat,long to x,y
+		  --------------------------------------------------*/
+
+		function forward(p) {
+		  var lon = p.x;
+		  var lat = p.y;
+		  // convert to radians
+		  if (lat * R2D > 90 && lat * R2D < -90 && lon * R2D > 180 && lon * R2D < -180) {
+		    return null;
+		  }
+
+		  var x, y;
+		  if (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN) {
+		    return null;
+		  }
+		  else {
+		    if (this.sphere) {
+		      x = this.x0 + this.a * this.k0 * adjust_lon(lon - this.long0);
+		      y = this.y0 + this.a * this.k0 * Math.log(Math.tan(FORTPI + 0.5 * lat));
+		    }
+		    else {
+		      var sinphi = Math.sin(lat);
+		      var ts = tsfnz(this.e, lat, sinphi);
+		      x = this.x0 + this.a * this.k0 * adjust_lon(lon - this.long0);
+		      y = this.y0 - this.a * this.k0 * Math.log(ts);
+		    }
+		    p.x = x;
+		    p.y = y;
+		    return p;
+		  }
+		}
+
+		/* Mercator inverse equations--mapping x,y to lat/long
+		  --------------------------------------------------*/
+		function inverse(p) {
+
+		  var x = p.x - this.x0;
+		  var y = p.y - this.y0;
+		  var lon, lat;
+
+		  if (this.sphere) {
+		    lat = HALF_PI - 2 * Math.atan(Math.exp(-y / (this.a * this.k0)));
+		  }
+		  else {
+		    var ts = Math.exp(-y / (this.a * this.k0));
+		    lat = phi2z(this.e, ts);
+		    if (lat === -9999) {
+		      return null;
+		    }
+		  }
+		  lon = adjust_lon(this.long0 + x / (this.a * this.k0));
+
+		  p.x = lon;
+		  p.y = lat;
+		  return p;
+		}
+
+		var names$1 = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP", "Mercator_Auxiliary_Sphere", "merc"];
+		var merc = {
+		  init: init,
+		  forward: forward,
+		  inverse: inverse,
+		  names: names$1
+		};
+
+		function init$1() {
+		  //no-op for longlat
+		}
+
+		function identity(pt) {
+		  return pt;
+		}
+		var names$2 = ["longlat", "identity"];
+		var longlat = {
+		  init: init$1,
+		  forward: identity,
+		  inverse: identity,
+		  names: names$2
+		};
+
+		var projs = [merc, longlat];
+		var names$$1 = {};
+		var projStore = [];
+
+		function add(proj, i) {
+		  var len = projStore.length;
+		  if (!proj.names) {
+		    console.log(i);
+		    return true;
+		  }
+		  projStore[len] = proj;
+		  proj.names.forEach(function(n) {
+		    names$$1[n.toLowerCase()] = len;
+		  });
+		  return this;
+		}
+
+		function get(name) {
+		  if (!name) {
+		    return false;
+		  }
+		  var n = name.toLowerCase();
+		  if (typeof names$$1[n] !== 'undefined' && projStore[names$$1[n]]) {
+		    return projStore[names$$1[n]];
+		  }
+		}
+
+		function start() {
+		  projs.forEach(add);
+		}
+		var projections = {
+		  start: start,
+		  add: add,
+		  get: get
+		};
+
+		var exports$2 = {};
+		exports$2.MERIT = {
+		  a: 6378137.0,
+		  rf: 298.257,
+		  ellipseName: "MERIT 1983"
+		};
+
+		exports$2.SGS85 = {
+		  a: 6378136.0,
+		  rf: 298.257,
+		  ellipseName: "Soviet Geodetic System 85"
+		};
+
+		exports$2.GRS80 = {
+		  a: 6378137.0,
+		  rf: 298.257222101,
+		  ellipseName: "GRS 1980(IUGG, 1980)"
+		};
+
+		exports$2.IAU76 = {
+		  a: 6378140.0,
+		  rf: 298.257,
+		  ellipseName: "IAU 1976"
+		};
+
+		exports$2.airy = {
+		  a: 6377563.396,
+		  b: 6356256.910,
+		  ellipseName: "Airy 1830"
+		};
+
+		exports$2.APL4 = {
+		  a: 6378137,
+		  rf: 298.25,
+		  ellipseName: "Appl. Physics. 1965"
+		};
+
+		exports$2.NWL9D = {
+		  a: 6378145.0,
+		  rf: 298.25,
+		  ellipseName: "Naval Weapons Lab., 1965"
+		};
+
+		exports$2.mod_airy = {
+		  a: 6377340.189,
+		  b: 6356034.446,
+		  ellipseName: "Modified Airy"
+		};
+
+		exports$2.andrae = {
+		  a: 6377104.43,
+		  rf: 300.0,
+		  ellipseName: "Andrae 1876 (Den., Iclnd.)"
+		};
+
+		exports$2.aust_SA = {
+		  a: 6378160.0,
+		  rf: 298.25,
+		  ellipseName: "Australian Natl & S. Amer. 1969"
+		};
+
+		exports$2.GRS67 = {
+		  a: 6378160.0,
+		  rf: 298.2471674270,
+		  ellipseName: "GRS 67(IUGG 1967)"
+		};
+
+		exports$2.bessel = {
+		  a: 6377397.155,
+		  rf: 299.1528128,
+		  ellipseName: "Bessel 1841"
+		};
+
+		exports$2.bess_nam = {
+		  a: 6377483.865,
+		  rf: 299.1528128,
+		  ellipseName: "Bessel 1841 (Namibia)"
+		};
+
+		exports$2.clrk66 = {
+		  a: 6378206.4,
+		  b: 6356583.8,
+		  ellipseName: "Clarke 1866"
+		};
+
+		exports$2.clrk80 = {
+		  a: 6378249.145,
+		  rf: 293.4663,
+		  ellipseName: "Clarke 1880 mod."
+		};
+
+		exports$2.clrk58 = {
+		  a: 6378293.645208759,
+		  rf: 294.2606763692654,
+		  ellipseName: "Clarke 1858"
+		};
+
+		exports$2.CPM = {
+		  a: 6375738.7,
+		  rf: 334.29,
+		  ellipseName: "Comm. des Poids et Mesures 1799"
+		};
+
+		exports$2.delmbr = {
+		  a: 6376428.0,
+		  rf: 311.5,
+		  ellipseName: "Delambre 1810 (Belgium)"
+		};
+
+		exports$2.engelis = {
+		  a: 6378136.05,
+		  rf: 298.2566,
+		  ellipseName: "Engelis 1985"
+		};
+
+		exports$2.evrst30 = {
+		  a: 6377276.345,
+		  rf: 300.8017,
+		  ellipseName: "Everest 1830"
+		};
+
+		exports$2.evrst48 = {
+		  a: 6377304.063,
+		  rf: 300.8017,
+		  ellipseName: "Everest 1948"
+		};
+
+		exports$2.evrst56 = {
+		  a: 6377301.243,
+		  rf: 300.8017,
+		  ellipseName: "Everest 1956"
+		};
+
+		exports$2.evrst69 = {
+		  a: 6377295.664,
+		  rf: 300.8017,
+		  ellipseName: "Everest 1969"
+		};
+
+		exports$2.evrstSS = {
+		  a: 6377298.556,
+		  rf: 300.8017,
+		  ellipseName: "Everest (Sabah & Sarawak)"
+		};
+
+		exports$2.fschr60 = {
+		  a: 6378166.0,
+		  rf: 298.3,
+		  ellipseName: "Fischer (Mercury Datum) 1960"
+		};
+
+		exports$2.fschr60m = {
+		  a: 6378155.0,
+		  rf: 298.3,
+		  ellipseName: "Fischer 1960"
+		};
+
+		exports$2.fschr68 = {
+		  a: 6378150.0,
+		  rf: 298.3,
+		  ellipseName: "Fischer 1968"
+		};
+
+		exports$2.helmert = {
+		  a: 6378200.0,
+		  rf: 298.3,
+		  ellipseName: "Helmert 1906"
+		};
+
+		exports$2.hough = {
+		  a: 6378270.0,
+		  rf: 297.0,
+		  ellipseName: "Hough"
+		};
+
+		exports$2.intl = {
+		  a: 6378388.0,
+		  rf: 297.0,
+		  ellipseName: "International 1909 (Hayford)"
+		};
+
+		exports$2.kaula = {
+		  a: 6378163.0,
+		  rf: 298.24,
+		  ellipseName: "Kaula 1961"
+		};
+
+		exports$2.lerch = {
+		  a: 6378139.0,
+		  rf: 298.257,
+		  ellipseName: "Lerch 1979"
+		};
+
+		exports$2.mprts = {
+		  a: 6397300.0,
+		  rf: 191.0,
+		  ellipseName: "Maupertius 1738"
+		};
+
+		exports$2.new_intl = {
+		  a: 6378157.5,
+		  b: 6356772.2,
+		  ellipseName: "New International 1967"
+		};
+
+		exports$2.plessis = {
+		  a: 6376523.0,
+		  rf: 6355863.0,
+		  ellipseName: "Plessis 1817 (France)"
+		};
+
+		exports$2.krass = {
+		  a: 6378245.0,
+		  rf: 298.3,
+		  ellipseName: "Krassovsky, 1942"
+		};
+
+		exports$2.SEasia = {
+		  a: 6378155.0,
+		  b: 6356773.3205,
+		  ellipseName: "Southeast Asia"
+		};
+
+		exports$2.walbeck = {
+		  a: 6376896.0,
+		  b: 6355834.8467,
+		  ellipseName: "Walbeck"
+		};
+
+		exports$2.WGS60 = {
+		  a: 6378165.0,
+		  rf: 298.3,
+		  ellipseName: "WGS 60"
+		};
+
+		exports$2.WGS66 = {
+		  a: 6378145.0,
+		  rf: 298.25,
+		  ellipseName: "WGS 66"
+		};
+
+		exports$2.WGS7 = {
+		  a: 6378135.0,
+		  rf: 298.26,
+		  ellipseName: "WGS 72"
+		};
+
+		var WGS84 = exports$2.WGS84 = {
+		  a: 6378137.0,
+		  rf: 298.257223563,
+		  ellipseName: "WGS 84"
+		};
+
+		exports$2.sphere = {
+		  a: 6370997.0,
+		  b: 6370997.0,
+		  ellipseName: "Normal Sphere (r=6370997)"
+		};
+
+		function eccentricity(a, b, rf, R_A) {
+		  var a2 = a * a; // used in geocentric
+		  var b2 = b * b; // used in geocentric
+		  var es = (a2 - b2) / a2; // e ^ 2
+		  var e = 0;
+		  if (R_A) {
+		    a *= 1 - es * (SIXTH + es * (RA4 + es * RA6));
+		    a2 = a * a;
+		    es = 0;
+		  } else {
+		    e = Math.sqrt(es); // eccentricity
+		  }
+		  var ep2 = (a2 - b2) / b2; // used in geocentric
+		  return {
+		    es: es,
+		    e: e,
+		    ep2: ep2
+		  };
+		}
+		function sphere(a, b, rf, ellps, sphere) {
+		  if (!a) { // do we have an ellipsoid?
+		    var ellipse = match(exports$2, ellps);
+		    if (!ellipse) {
+		      ellipse = WGS84;
+		    }
+		    a = ellipse.a;
+		    b = ellipse.b;
+		    rf = ellipse.rf;
+		  }
+
+		  if (rf && !b) {
+		    b = (1.0 - 1.0 / rf) * a;
+		  }
+		  if (rf === 0 || Math.abs(a - b) < EPSLN) {
+		    sphere = true;
+		    b = a;
+		  }
+		  return {
+		    a: a,
+		    b: b,
+		    rf: rf,
+		    sphere: sphere
+		  };
+		}
+
+		var exports$3 = {};
+		exports$3.wgs84 = {
+		  towgs84: "0,0,0",
+		  ellipse: "WGS84",
+		  datumName: "WGS84"
+		};
+
+		exports$3.ch1903 = {
+		  towgs84: "674.374,15.056,405.346",
+		  ellipse: "bessel",
+		  datumName: "swiss"
+		};
+
+		exports$3.ggrs87 = {
+		  towgs84: "-199.87,74.79,246.62",
+		  ellipse: "GRS80",
+		  datumName: "Greek_Geodetic_Reference_System_1987"
+		};
+
+		exports$3.nad83 = {
+		  towgs84: "0,0,0",
+		  ellipse: "GRS80",
+		  datumName: "North_American_Datum_1983"
+		};
+
+		exports$3.nad27 = {
+		  nadgrids: "@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat",
+		  ellipse: "clrk66",
+		  datumName: "North_American_Datum_1927"
+		};
+
+		exports$3.potsdam = {
+		  towgs84: "606.0,23.0,413.0",
+		  ellipse: "bessel",
+		  datumName: "Potsdam Rauenberg 1950 DHDN"
+		};
+
+		exports$3.carthage = {
+		  towgs84: "-263.0,6.0,431.0",
+		  ellipse: "clark80",
+		  datumName: "Carthage 1934 Tunisia"
+		};
+
+		exports$3.hermannskogel = {
+		  towgs84: "653.0,-212.0,449.0",
+		  ellipse: "bessel",
+		  datumName: "Hermannskogel"
+		};
+
+		exports$3.ire65 = {
+		  towgs84: "482.530,-130.596,564.557,-1.042,-0.214,-0.631,8.15",
+		  ellipse: "mod_airy",
+		  datumName: "Ireland 1965"
+		};
+
+		exports$3.rassadiran = {
+		  towgs84: "-133.63,-157.5,-158.62",
+		  ellipse: "intl",
+		  datumName: "Rassadiran"
+		};
+
+		exports$3.nzgd49 = {
+		  towgs84: "59.47,-5.04,187.44,0.47,-0.1,1.024,-4.5993",
+		  ellipse: "intl",
+		  datumName: "New Zealand Geodetic Datum 1949"
+		};
+
+		exports$3.osgb36 = {
+		  towgs84: "446.448,-125.157,542.060,0.1502,0.2470,0.8421,-20.4894",
+		  ellipse: "airy",
+		  datumName: "Airy 1830"
+		};
+
+		exports$3.s_jtsk = {
+		  towgs84: "589,76,480",
+		  ellipse: 'bessel',
+		  datumName: 'S-JTSK (Ferro)'
+		};
+
+		exports$3.beduaram = {
+		  towgs84: '-106,-87,188',
+		  ellipse: 'clrk80',
+		  datumName: 'Beduaram'
+		};
+
+		exports$3.gunung_segara = {
+		  towgs84: '-403,684,41',
+		  ellipse: 'bessel',
+		  datumName: 'Gunung Segara Jakarta'
+		};
+
+		exports$3.rnb72 = {
+		  towgs84: "106.869,-52.2978,103.724,-0.33657,0.456955,-1.84218,1",
+		  ellipse: "intl",
+		  datumName: "Reseau National Belge 1972"
+		};
+
+		function datum(datumCode, datum_params, a, b, es, ep2) {
+		  var out = {};
+
+		  if (datumCode === undefined || datumCode === 'none') {
+		    out.datum_type = PJD_NODATUM;
+		  } else {
+		    out.datum_type = PJD_WGS84;
+		  }
+
+		  if (datum_params) {
+		    out.datum_params = datum_params.map(parseFloat);
+		    if (out.datum_params[0] !== 0 || out.datum_params[1] !== 0 || out.datum_params[2] !== 0) {
+		      out.datum_type = PJD_3PARAM;
+		    }
+		    if (out.datum_params.length > 3) {
+		      if (out.datum_params[3] !== 0 || out.datum_params[4] !== 0 || out.datum_params[5] !== 0 || out.datum_params[6] !== 0) {
+		        out.datum_type = PJD_7PARAM;
+		        out.datum_params[3] *= SEC_TO_RAD;
+		        out.datum_params[4] *= SEC_TO_RAD;
+		        out.datum_params[5] *= SEC_TO_RAD;
+		        out.datum_params[6] = (out.datum_params[6] / 1000000.0) + 1.0;
+		      }
+		    }
+		  }
+
+		  out.a = a; //datum object also uses these values
+		  out.b = b;
+		  out.es = es;
+		  out.ep2 = ep2;
+		  return out;
+		}
+
+		function Projection$1(srsCode,callback) {
+		  if (!(this instanceof Projection$1)) {
+		    return new Projection$1(srsCode);
+		  }
+		  callback = callback || function(error){
+		    if(error){
+		      throw error;
+		    }
+		  };
+		  var json = parse(srsCode);
+		  if(typeof json !== 'object'){
+		    callback(srsCode);
+		    return;
+		  }
+		  var ourProj = Projection$1.projections.get(json.projName);
+		  if(!ourProj){
+		    callback(srsCode);
+		    return;
+		  }
+		  if (json.datumCode && json.datumCode !== 'none') {
+		    var datumDef = match(exports$3, json.datumCode);
+		    if (datumDef) {
+		      json.datum_params = datumDef.towgs84 ? datumDef.towgs84.split(',') : null;
+		      json.ellps = datumDef.ellipse;
+		      json.datumName = datumDef.datumName ? datumDef.datumName : json.datumCode;
+		    }
+		  }
+		  json.k0 = json.k0 || 1.0;
+		  json.axis = json.axis || 'enu';
+		  json.ellps = json.ellps || 'wgs84';
+		  var sphere_ = sphere(json.a, json.b, json.rf, json.ellps, json.sphere);
+		  var ecc = eccentricity(sphere_.a, sphere_.b, sphere_.rf, json.R_A);
+		  var datumObj = json.datum || datum(json.datumCode, json.datum_params, sphere_.a, sphere_.b, ecc.es, ecc.ep2);
+
+		  extend(this, json); // transfer everything over from the projection because we don't know what we'll need
+		  extend(this, ourProj); // transfer all the methods from the projection
+
+		  // copy the 4 things over we calulated in deriveConstants.sphere
+		  this.a = sphere_.a;
+		  this.b = sphere_.b;
+		  this.rf = sphere_.rf;
+		  this.sphere = sphere_.sphere;
+
+		  // copy the 3 things we calculated in deriveConstants.eccentricity
+		  this.es = ecc.es;
+		  this.e = ecc.e;
+		  this.ep2 = ecc.ep2;
+
+		  // add in the datum object
+		  this.datum = datumObj;
+
+		  // init the projection
+		  this.init();
+
+		  // legecy callback from back in the day when it went to spatialreference.org
+		  callback(null, this);
+
+		}
+		Projection$1.projections = projections;
+		Projection$1.projections.start();
+
+		function compareDatums(source, dest) {
+		  if (source.datum_type !== dest.datum_type) {
+		    return false; // false, datums are not equal
+		  } else if (source.a !== dest.a || Math.abs(source.es - dest.es) > 0.000000000050) {
+		    // the tolerance for es is to ensure that GRS80 and WGS84
+		    // are considered identical
+		    return false;
+		  } else if (source.datum_type === PJD_3PARAM) {
+		    return (source.datum_params[0] === dest.datum_params[0] && source.datum_params[1] === dest.datum_params[1] && source.datum_params[2] === dest.datum_params[2]);
+		  } else if (source.datum_type === PJD_7PARAM) {
+		    return (source.datum_params[0] === dest.datum_params[0] && source.datum_params[1] === dest.datum_params[1] && source.datum_params[2] === dest.datum_params[2] && source.datum_params[3] === dest.datum_params[3] && source.datum_params[4] === dest.datum_params[4] && source.datum_params[5] === dest.datum_params[5] && source.datum_params[6] === dest.datum_params[6]);
+		  } else {
+		    return true; // datums are equal
+		  }
+		} // cs_compare_datums()
+
+		/*
+		 * The function Convert_Geodetic_To_Geocentric converts geodetic coordinates
+		 * (latitude, longitude, and height) to geocentric coordinates (X, Y, Z),
+		 * according to the current ellipsoid parameters.
+		 *
+		 *    Latitude  : Geodetic latitude in radians                     (input)
+		 *    Longitude : Geodetic longitude in radians                    (input)
+		 *    Height    : Geodetic height, in meters                       (input)
+		 *    X         : Calculated Geocentric X coordinate, in meters    (output)
+		 *    Y         : Calculated Geocentric Y coordinate, in meters    (output)
+		 *    Z         : Calculated Geocentric Z coordinate, in meters    (output)
+		 *
+		 */
+		function geodeticToGeocentric(p, es, a) {
+		  var Longitude = p.x;
+		  var Latitude = p.y;
+		  var Height = p.z ? p.z : 0; //Z value not always supplied
+
+		  var Rn; /*  Earth radius at location  */
+		  var Sin_Lat; /*  Math.sin(Latitude)  */
+		  var Sin2_Lat; /*  Square of Math.sin(Latitude)  */
+		  var Cos_Lat; /*  Math.cos(Latitude)  */
+
+		  /*
+		   ** Don't blow up if Latitude is just a little out of the value
+		   ** range as it may just be a rounding issue.  Also removed longitude
+		   ** test, it should be wrapped by Math.cos() and Math.sin().  NFW for PROJ.4, Sep/2001.
+		   */
+		  if (Latitude < -HALF_PI && Latitude > -1.001 * HALF_PI) {
+		    Latitude = -HALF_PI;
+		  } else if (Latitude > HALF_PI && Latitude < 1.001 * HALF_PI) {
+		    Latitude = HALF_PI;
+		  } else if ((Latitude < -HALF_PI) || (Latitude > HALF_PI)) {
+		    /* Latitude out of range */
+		    //..reportError('geocent:lat out of range:' + Latitude);
+		    return null;
+		  }
+
+		  if (Longitude > Math.PI) {
+		    Longitude -= (2 * Math.PI);
+		  }
+		  Sin_Lat = Math.sin(Latitude);
+		  Cos_Lat = Math.cos(Latitude);
+		  Sin2_Lat = Sin_Lat * Sin_Lat;
+		  Rn = a / (Math.sqrt(1.0e0 - es * Sin2_Lat));
+		  return {
+		    x: (Rn + Height) * Cos_Lat * Math.cos(Longitude),
+		    y: (Rn + Height) * Cos_Lat * Math.sin(Longitude),
+		    z: ((Rn * (1 - es)) + Height) * Sin_Lat
+		  };
+		} // cs_geodetic_to_geocentric()
+
+		function geocentricToGeodetic(p, es, a, b) {
+		  /* local defintions and variables */
+		  /* end-criterium of loop, accuracy of sin(Latitude) */
+		  var genau = 1e-12;
+		  var genau2 = (genau * genau);
+		  var maxiter = 30;
+
+		  var P; /* distance between semi-minor axis and location */
+		  var RR; /* distance between center and location */
+		  var CT; /* sin of geocentric latitude */
+		  var ST; /* cos of geocentric latitude */
+		  var RX;
+		  var RK;
+		  var RN; /* Earth radius at location */
+		  var CPHI0; /* cos of start or old geodetic latitude in iterations */
+		  var SPHI0; /* sin of start or old geodetic latitude in iterations */
+		  var CPHI; /* cos of searched geodetic latitude */
+		  var SPHI; /* sin of searched geodetic latitude */
+		  var SDPHI; /* end-criterium: addition-theorem of sin(Latitude(iter)-Latitude(iter-1)) */
+		  var iter; /* # of continous iteration, max. 30 is always enough (s.a.) */
+
+		  var X = p.x;
+		  var Y = p.y;
+		  var Z = p.z ? p.z : 0.0; //Z value not always supplied
+		  var Longitude;
+		  var Latitude;
+		  var Height;
+
+		  P = Math.sqrt(X * X + Y * Y);
+		  RR = Math.sqrt(X * X + Y * Y + Z * Z);
+
+		  /*      special cases for latitude and longitude */
+		  if (P / a < genau) {
+
+		    /*  special case, if P=0. (X=0., Y=0.) */
+		    Longitude = 0.0;
+
+		    /*  if (X,Y,Z)=(0.,0.,0.) then Height becomes semi-minor axis
+		     *  of ellipsoid (=center of mass), Latitude becomes PI/2 */
+		    if (RR / a < genau) {
+		      Latitude = HALF_PI;
+		      Height = -b;
+		      return {
+		        x: p.x,
+		        y: p.y,
+		        z: p.z
+		      };
+		    }
+		  } else {
+		    /*  ellipsoidal (geodetic) longitude
+		     *  interval: -PI < Longitude <= +PI */
+		    Longitude = Math.atan2(Y, X);
+		  }
+
+		  /* --------------------------------------------------------------
+		   * Following iterative algorithm was developped by
+		   * "Institut for Erdmessung", University of Hannover, July 1988.
+		   * Internet: www.ife.uni-hannover.de
+		   * Iterative computation of CPHI,SPHI and Height.
+		   * Iteration of CPHI and SPHI to 10**-12 radian resp.
+		   * 2*10**-7 arcsec.
+		   * --------------------------------------------------------------
+		   */
+		  CT = Z / RR;
+		  ST = P / RR;
+		  RX = 1.0 / Math.sqrt(1.0 - es * (2.0 - es) * ST * ST);
+		  CPHI0 = ST * (1.0 - es) * RX;
+		  SPHI0 = CT * RX;
+		  iter = 0;
+
+		  /* loop to find sin(Latitude) resp. Latitude
+		   * until |sin(Latitude(iter)-Latitude(iter-1))| < genau */
+		  do {
+		    iter++;
+		    RN = a / Math.sqrt(1.0 - es * SPHI0 * SPHI0);
+
+		    /*  ellipsoidal (geodetic) height */
+		    Height = P * CPHI0 + Z * SPHI0 - RN * (1.0 - es * SPHI0 * SPHI0);
+
+		    RK = es * RN / (RN + Height);
+		    RX = 1.0 / Math.sqrt(1.0 - RK * (2.0 - RK) * ST * ST);
+		    CPHI = ST * (1.0 - RK) * RX;
+		    SPHI = CT * RX;
+		    SDPHI = SPHI * CPHI0 - CPHI * SPHI0;
+		    CPHI0 = CPHI;
+		    SPHI0 = SPHI;
+		  }
+		  while (SDPHI * SDPHI > genau2 && iter < maxiter);
+
+		  /*      ellipsoidal (geodetic) latitude */
+		  Latitude = Math.atan(SPHI / Math.abs(CPHI));
+		  return {
+		    x: Longitude,
+		    y: Latitude,
+		    z: Height
+		  };
+		} // cs_geocentric_to_geodetic()
+
+		/****************************************************************/
+		// pj_geocentic_to_wgs84( p )
+		//  p = point to transform in geocentric coordinates (x,y,z)
+
+
+		/** point object, nothing fancy, just allows values to be
+		    passed back and forth by reference rather than by value.
+		    Other point classes may be used as long as they have
+		    x and y properties, which will get modified in the transform method.
+		*/
+		function geocentricToWgs84(p, datum_type, datum_params) {
+
+		  if (datum_type === PJD_3PARAM) {
+		    // if( x[io] === HUGE_VAL )
+		    //    continue;
+		    return {
+		      x: p.x + datum_params[0],
+		      y: p.y + datum_params[1],
+		      z: p.z + datum_params[2],
+		    };
+		  } else if (datum_type === PJD_7PARAM) {
+		    var Dx_BF = datum_params[0];
+		    var Dy_BF = datum_params[1];
+		    var Dz_BF = datum_params[2];
+		    var Rx_BF = datum_params[3];
+		    var Ry_BF = datum_params[4];
+		    var Rz_BF = datum_params[5];
+		    var M_BF = datum_params[6];
+		    // if( x[io] === HUGE_VAL )
+		    //    continue;
+		    return {
+		      x: M_BF * (p.x - Rz_BF * p.y + Ry_BF * p.z) + Dx_BF,
+		      y: M_BF * (Rz_BF * p.x + p.y - Rx_BF * p.z) + Dy_BF,
+		      z: M_BF * (-Ry_BF * p.x + Rx_BF * p.y + p.z) + Dz_BF
+		    };
+		  }
+		} // cs_geocentric_to_wgs84
+
+		/****************************************************************/
+		// pj_geocentic_from_wgs84()
+		//  coordinate system definition,
+		//  point to transform in geocentric coordinates (x,y,z)
+		function geocentricFromWgs84(p, datum_type, datum_params) {
+
+		  if (datum_type === PJD_3PARAM) {
+		    //if( x[io] === HUGE_VAL )
+		    //    continue;
+		    return {
+		      x: p.x - datum_params[0],
+		      y: p.y - datum_params[1],
+		      z: p.z - datum_params[2],
+		    };
+
+		  } else if (datum_type === PJD_7PARAM) {
+		    var Dx_BF = datum_params[0];
+		    var Dy_BF = datum_params[1];
+		    var Dz_BF = datum_params[2];
+		    var Rx_BF = datum_params[3];
+		    var Ry_BF = datum_params[4];
+		    var Rz_BF = datum_params[5];
+		    var M_BF = datum_params[6];
+		    var x_tmp = (p.x - Dx_BF) / M_BF;
+		    var y_tmp = (p.y - Dy_BF) / M_BF;
+		    var z_tmp = (p.z - Dz_BF) / M_BF;
+		    //if( x[io] === HUGE_VAL )
+		    //    continue;
+
+		    return {
+		      x: x_tmp + Rz_BF * y_tmp - Ry_BF * z_tmp,
+		      y: -Rz_BF * x_tmp + y_tmp + Rx_BF * z_tmp,
+		      z: Ry_BF * x_tmp - Rx_BF * y_tmp + z_tmp
+		    };
+		  } //cs_geocentric_from_wgs84()
+		}
+
+		function checkParams(type) {
+		  return (type === PJD_3PARAM || type === PJD_7PARAM);
+		}
+
+		var datum_transform = function(source, dest, point) {
+		  // Short cut if the datums are identical.
+		  if (compareDatums(source, dest)) {
+		    return point; // in this case, zero is sucess,
+		    // whereas cs_compare_datums returns 1 to indicate TRUE
+		    // confusing, should fix this
+		  }
+
+		  // Explicitly skip datum transform by setting 'datum=none' as parameter for either source or dest
+		  if (source.datum_type === PJD_NODATUM || dest.datum_type === PJD_NODATUM) {
+		    return point;
+		  }
+
+		  // If this datum requires grid shifts, then apply it to geodetic coordinates.
+
+		  // Do we need to go through geocentric coordinates?
+		  if (source.es === dest.es && source.a === dest.a && !checkParams(source.datum_type) &&  !checkParams(dest.datum_type)) {
+		    return point;
+		  }
+
+		  // Convert to geocentric coordinates.
+		  point = geodeticToGeocentric(point, source.es, source.a);
+		  // Convert between datums
+		  if (checkParams(source.datum_type)) {
+		    point = geocentricToWgs84(point, source.datum_type, source.datum_params);
+		  }
+		  if (checkParams(dest.datum_type)) {
+		    point = geocentricFromWgs84(point, dest.datum_type, dest.datum_params);
+		  }
+		  return geocentricToGeodetic(point, dest.es, dest.a, dest.b);
+
+		};
+
+		var adjust_axis = function(crs, denorm, point) {
+		  var xin = point.x,
+		    yin = point.y,
+		    zin = point.z || 0.0;
+		  var v, t, i;
+		  var out = {};
+		  for (i = 0; i < 3; i++) {
+		    if (denorm && i === 2 && point.z === undefined) {
+		      continue;
+		    }
+		    if (i === 0) {
+		      v = xin;
+		      t = 'x';
+		    }
+		    else if (i === 1) {
+		      v = yin;
+		      t = 'y';
+		    }
+		    else {
+		      v = zin;
+		      t = 'z';
+		    }
+		    switch (crs.axis[i]) {
+		    case 'e':
+		      out[t] = v;
+		      break;
+		    case 'w':
+		      out[t] = -v;
+		      break;
+		    case 'n':
+		      out[t] = v;
+		      break;
+		    case 's':
+		      out[t] = -v;
+		      break;
+		    case 'u':
+		      if (point[t] !== undefined) {
+		        out.z = v;
+		      }
+		      break;
+		    case 'd':
+		      if (point[t] !== undefined) {
+		        out.z = -v;
+		      }
+		      break;
+		    default:
+		      //console.log("ERROR: unknow axis ("+crs.axis[i]+") - check definition of "+crs.projName);
+		      return null;
+		    }
+		  }
+		  return out;
+		};
+
+		var toPoint = function (array){
+		  var out = {
+		    x: array[0],
+		    y: array[1]
+		  };
+		  if (array.length>2) {
+		    out.z = array[2];
+		  }
+		  if (array.length>3) {
+		    out.m = array[3];
+		  }
+		  return out;
+		};
+
+		function checkNotWGS(source, dest) {
+		  return ((source.datum.datum_type === PJD_3PARAM || source.datum.datum_type === PJD_7PARAM) && dest.datumCode !== 'WGS84') || ((dest.datum.datum_type === PJD_3PARAM || dest.datum.datum_type === PJD_7PARAM) && source.datumCode !== 'WGS84');
+		}
+
+		function transform(source, dest, point) {
+		  var wgs84;
+		  if (Array.isArray(point)) {
+		    point = toPoint(point);
+		  }
+
+		  // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
+		  if (source.datum && dest.datum && checkNotWGS(source, dest)) {
+		    wgs84 = new Projection$1('WGS84');
+		    point = transform(source, wgs84, point);
+		    source = wgs84;
+		  }
+		  // DGR, 2010/11/12
+		  if (source.axis !== 'enu') {
+		    point = adjust_axis(source, false, point);
+		  }
+		  // Transform source points to long/lat, if they aren't already.
+		  if (source.projName === 'longlat') {
+		    point = {
+		      x: point.x * D2R,
+		      y: point.y * D2R
+		    };
+		  }
+		  else {
+		    if (source.to_meter) {
+		      point = {
+		        x: point.x * source.to_meter,
+		        y: point.y * source.to_meter
+		      };
+		    }
+		    point = source.inverse(point); // Convert Cartesian to longlat
+		  }
+		  // Adjust for the prime meridian if necessary
+		  if (source.from_greenwich) {
+		    point.x += source.from_greenwich;
+		  }
+
+		  // Convert datums if needed, and if possible.
+		  point = datum_transform(source.datum, dest.datum, point);
+
+		  // Adjust for the prime meridian if necessary
+		  if (dest.from_greenwich) {
+		    point = {
+		      x: point.x - dest.from_greenwich,
+		      y: point.y
+		    };
+		  }
+
+		  if (dest.projName === 'longlat') {
+		    // convert radians to decimal degrees
+		    point = {
+		      x: point.x * R2D,
+		      y: point.y * R2D
+		    };
+		  } else { // else project
+		    point = dest.forward(point);
+		    if (dest.to_meter) {
+		      point = {
+		        x: point.x / dest.to_meter,
+		        y: point.y / dest.to_meter
+		      };
+		    }
+		  }
+
+		  // DGR, 2010/11/12
+		  if (dest.axis !== 'enu') {
+		    return adjust_axis(dest, true, point);
+		  }
+
+		  return point;
+		}
+
+		var wgs84 = Projection$1('WGS84');
+
+		function transformer(from, to, coords) {
+		  var transformedArray;
+		  if (Array.isArray(coords)) {
+		    transformedArray = transform(from, to, coords);
+		    if (coords.length === 3) {
+		      return [transformedArray.x, transformedArray.y, transformedArray.z];
+		    }
+		    else {
+		      return [transformedArray.x, transformedArray.y];
+		    }
+		  }
+		  else {
+		    return transform(from, to, coords);
+		  }
+		}
+
+		function checkProj(item) {
+		  if (item instanceof Projection$1) {
+		    return item;
+		  }
+		  if (item.oProj) {
+		    return item.oProj;
+		  }
+		  return Projection$1(item);
+		}
+		function proj4$1(fromProj, toProj, coord) {
+		  fromProj = checkProj(fromProj);
+		  var single = false;
+		  var obj;
+		  if (typeof toProj === 'undefined') {
+		    toProj = fromProj;
+		    fromProj = wgs84;
+		    single = true;
+		  }
+		  else if (typeof toProj.x !== 'undefined' || Array.isArray(toProj)) {
+		    coord = toProj;
+		    toProj = fromProj;
+		    fromProj = wgs84;
+		    single = true;
+		  }
+		  toProj = checkProj(toProj);
+		  if (coord) {
+		    return transformer(fromProj, toProj, coord);
+		  }
+		  else {
+		    obj = {
+		      forward: function(coords) {
+		        return transformer(fromProj, toProj, coords);
+		      },
+		      inverse: function(coords) {
+		        return transformer(toProj, fromProj, coords);
+		      }
+		    };
+		    if (single) {
+		      obj.oProj = toProj;
+		    }
+		    return obj;
+		  }
+		}
+
+		/**
+		 * UTM zones are grouped, and assigned to one of a group of 6
+		 * sets.
+		 *
+		 * {int} @private
+		 */
+		var NUM_100K_SETS = 6;
+
+		/**
+		 * The column letters (for easting) of the lower left value, per
+		 * set.
+		 *
+		 * {string} @private
+		 */
+		var SET_ORIGIN_COLUMN_LETTERS = 'AJSAJS';
+
+		/**
+		 * The row letters (for northing) of the lower left value, per
+		 * set.
+		 *
+		 * {string} @private
+		 */
+		var SET_ORIGIN_ROW_LETTERS = 'AFAFAF';
+
+		var A = 65; // A
+		var I = 73; // I
+		var O = 79; // O
+		var V = 86; // V
+		var Z = 90; // Z
+		var mgrs = {
+		  forward: forward$1,
+		  inverse: inverse$1,
+		  toPoint: toPoint$1
+		};
+		/**
+		 * Conversion of lat/lon to MGRS.
+		 *
+		 * @param {object} ll Object literal with lat and lon properties on a
+		 *     WGS84 ellipsoid.
+		 * @param {int} accuracy Accuracy in digits (5 for 1 m, 4 for 10 m, 3 for
+		 *      100 m, 2 for 1000 m or 1 for 10000 m). Optional, default is 5.
+		 * @return {string} the MGRS string for the given location and accuracy.
+		 */
+		function forward$1(ll, accuracy) {
+		  accuracy = accuracy || 5; // default accuracy 1m
+		  return encode(LLtoUTM({
+		    lat: ll[1],
+		    lon: ll[0]
+		  }), accuracy);
+		}
+
+		/**
+		 * Conversion of MGRS to lat/lon.
+		 *
+		 * @param {string} mgrs MGRS string.
+		 * @return {array} An array with left (longitude), bottom (latitude), right
+		 *     (longitude) and top (latitude) values in WGS84, representing the
+		 *     bounding box for the provided MGRS reference.
+		 */
+		function inverse$1(mgrs) {
+		  var bbox = UTMtoLL(decode(mgrs.toUpperCase()));
+		  if (bbox.lat && bbox.lon) {
+		    return [bbox.lon, bbox.lat, bbox.lon, bbox.lat];
+		  }
+		  return [bbox.left, bbox.bottom, bbox.right, bbox.top];
+		}
+
+		function toPoint$1(mgrs) {
+		  var bbox = UTMtoLL(decode(mgrs.toUpperCase()));
+		  if (bbox.lat && bbox.lon) {
+		    return [bbox.lon, bbox.lat];
+		  }
+		  return [(bbox.left + bbox.right) / 2, (bbox.top + bbox.bottom) / 2];
+		}
+		/**
+		 * Conversion from degrees to radians.
+		 *
+		 * @private
+		 * @param {number} deg the angle in degrees.
+		 * @return {number} the angle in radians.
+		 */
+		function degToRad(deg) {
+		  return (deg * (Math.PI / 180.0));
+		}
+
+		/**
+		 * Conversion from radians to degrees.
+		 *
+		 * @private
+		 * @param {number} rad the angle in radians.
+		 * @return {number} the angle in degrees.
+		 */
+		function radToDeg(rad) {
+		  return (180.0 * (rad / Math.PI));
+		}
+
+		/**
+		 * Converts a set of Longitude and Latitude co-ordinates to UTM
+		 * using the WGS84 ellipsoid.
+		 *
+		 * @private
+		 * @param {object} ll Object literal with lat and lon properties
+		 *     representing the WGS84 coordinate to be converted.
+		 * @return {object} Object literal containing the UTM value with easting,
+		 *     northing, zoneNumber and zoneLetter properties, and an optional
+		 *     accuracy property in digits. Returns null if the conversion failed.
+		 */
+		function LLtoUTM(ll) {
+		  var Lat = ll.lat;
+		  var Long = ll.lon;
+		  var a = 6378137.0; //ellip.radius;
+		  var eccSquared = 0.00669438; //ellip.eccsq;
+		  var k0 = 0.9996;
+		  var LongOrigin;
+		  var eccPrimeSquared;
+		  var N, T, C, A, M;
+		  var LatRad = degToRad(Lat);
+		  var LongRad = degToRad(Long);
+		  var LongOriginRad;
+		  var ZoneNumber;
+		  // (int)
+		  ZoneNumber = Math.floor((Long + 180) / 6) + 1;
+
+		  //Make sure the longitude 180.00 is in Zone 60
+		  if (Long === 180) {
+		    ZoneNumber = 60;
+		  }
+
+		  // Special zone for Norway
+		  if (Lat >= 56.0 && Lat < 64.0 && Long >= 3.0 && Long < 12.0) {
+		    ZoneNumber = 32;
+		  }
+
+		  // Special zones for Svalbard
+		  if (Lat >= 72.0 && Lat < 84.0) {
+		    if (Long >= 0.0 && Long < 9.0) {
+		      ZoneNumber = 31;
+		    }
+		    else if (Long >= 9.0 && Long < 21.0) {
+		      ZoneNumber = 33;
+		    }
+		    else if (Long >= 21.0 && Long < 33.0) {
+		      ZoneNumber = 35;
+		    }
+		    else if (Long >= 33.0 && Long < 42.0) {
+		      ZoneNumber = 37;
+		    }
+		  }
+
+		  LongOrigin = (ZoneNumber - 1) * 6 - 180 + 3; //+3 puts origin
+		  // in middle of
+		  // zone
+		  LongOriginRad = degToRad(LongOrigin);
+
+		  eccPrimeSquared = (eccSquared) / (1 - eccSquared);
+
+		  N = a / Math.sqrt(1 - eccSquared * Math.sin(LatRad) * Math.sin(LatRad));
+		  T = Math.tan(LatRad) * Math.tan(LatRad);
+		  C = eccPrimeSquared * Math.cos(LatRad) * Math.cos(LatRad);
+		  A = Math.cos(LatRad) * (LongRad - LongOriginRad);
+
+		  M = a * ((1 - eccSquared / 4 - 3 * eccSquared * eccSquared / 64 - 5 * eccSquared * eccSquared * eccSquared / 256) * LatRad - (3 * eccSquared / 8 + 3 * eccSquared * eccSquared / 32 + 45 * eccSquared * eccSquared * eccSquared / 1024) * Math.sin(2 * LatRad) + (15 * eccSquared * eccSquared / 256 + 45 * eccSquared * eccSquared * eccSquared / 1024) * Math.sin(4 * LatRad) - (35 * eccSquared * eccSquared * eccSquared / 3072) * Math.sin(6 * LatRad));
+
+		  var UTMEasting = (k0 * N * (A + (1 - T + C) * A * A * A / 6.0 + (5 - 18 * T + T * T + 72 * C - 58 * eccPrimeSquared) * A * A * A * A * A / 120.0) + 500000.0);
+
+		  var UTMNorthing = (k0 * (M + N * Math.tan(LatRad) * (A * A / 2 + (5 - T + 9 * C + 4 * C * C) * A * A * A * A / 24.0 + (61 - 58 * T + T * T + 600 * C - 330 * eccPrimeSquared) * A * A * A * A * A * A / 720.0)));
+		  if (Lat < 0.0) {
+		    UTMNorthing += 10000000.0; //10000000 meter offset for
+		    // southern hemisphere
+		  }
+
+		  return {
+		    northing: Math.round(UTMNorthing),
+		    easting: Math.round(UTMEasting),
+		    zoneNumber: ZoneNumber,
+		    zoneLetter: getLetterDesignator(Lat)
+		  };
+		}
+
+		/**
+		 * Converts UTM coords to lat/long, using the WGS84 ellipsoid. This is a convenience
+		 * class where the Zone can be specified as a single string eg."60N" which
+		 * is then broken down into the ZoneNumber and ZoneLetter.
+		 *
+		 * @private
+		 * @param {object} utm An object literal with northing, easting, zoneNumber
+		 *     and zoneLetter properties. If an optional accuracy property is
+		 *     provided (in meters), a bounding box will be returned instead of
+		 *     latitude and longitude.
+		 * @return {object} An object literal containing either lat and lon values
+		 *     (if no accuracy was provided), or top, right, bottom and left values
+		 *     for the bounding box calculated according to the provided accuracy.
+		 *     Returns null if the conversion failed.
+		 */
+		function UTMtoLL(utm) {
+
+		  var UTMNorthing = utm.northing;
+		  var UTMEasting = utm.easting;
+		  var zoneLetter = utm.zoneLetter;
+		  var zoneNumber = utm.zoneNumber;
+		  // check the ZoneNummber is valid
+		  if (zoneNumber < 0 || zoneNumber > 60) {
+		    return null;
+		  }
+
+		  var k0 = 0.9996;
+		  var a = 6378137.0; //ellip.radius;
+		  var eccSquared = 0.00669438; //ellip.eccsq;
+		  var eccPrimeSquared;
+		  var e1 = (1 - Math.sqrt(1 - eccSquared)) / (1 + Math.sqrt(1 - eccSquared));
+		  var N1, T1, C1, R1, D, M;
+		  var LongOrigin;
+		  var mu, phi1Rad;
+
+		  // remove 500,000 meter offset for longitude
+		  var x = UTMEasting - 500000.0;
+		  var y = UTMNorthing;
+
+		  // We must know somehow if we are in the Northern or Southern
+		  // hemisphere, this is the only time we use the letter So even
+		  // if the Zone letter isn't exactly correct it should indicate
+		  // the hemisphere correctly
+		  if (zoneLetter < 'N') {
+		    y -= 10000000.0; // remove 10,000,000 meter offset used
+		    // for southern hemisphere
+		  }
+
+		  // There are 60 zones with zone 1 being at West -180 to -174
+		  LongOrigin = (zoneNumber - 1) * 6 - 180 + 3; // +3 puts origin
+		  // in middle of
+		  // zone
+
+		  eccPrimeSquared = (eccSquared) / (1 - eccSquared);
+
+		  M = y / k0;
+		  mu = M / (a * (1 - eccSquared / 4 - 3 * eccSquared * eccSquared / 64 - 5 * eccSquared * eccSquared * eccSquared / 256));
+
+		  phi1Rad = mu + (3 * e1 / 2 - 27 * e1 * e1 * e1 / 32) * Math.sin(2 * mu) + (21 * e1 * e1 / 16 - 55 * e1 * e1 * e1 * e1 / 32) * Math.sin(4 * mu) + (151 * e1 * e1 * e1 / 96) * Math.sin(6 * mu);
+		  // double phi1 = ProjMath.radToDeg(phi1Rad);
+
+		  N1 = a / Math.sqrt(1 - eccSquared * Math.sin(phi1Rad) * Math.sin(phi1Rad));
+		  T1 = Math.tan(phi1Rad) * Math.tan(phi1Rad);
+		  C1 = eccPrimeSquared * Math.cos(phi1Rad) * Math.cos(phi1Rad);
+		  R1 = a * (1 - eccSquared) / Math.pow(1 - eccSquared * Math.sin(phi1Rad) * Math.sin(phi1Rad), 1.5);
+		  D = x / (N1 * k0);
+
+		  var lat = phi1Rad - (N1 * Math.tan(phi1Rad) / R1) * (D * D / 2 - (5 + 3 * T1 + 10 * C1 - 4 * C1 * C1 - 9 * eccPrimeSquared) * D * D * D * D / 24 + (61 + 90 * T1 + 298 * C1 + 45 * T1 * T1 - 252 * eccPrimeSquared - 3 * C1 * C1) * D * D * D * D * D * D / 720);
+		  lat = radToDeg(lat);
+
+		  var lon = (D - (1 + 2 * T1 + C1) * D * D * D / 6 + (5 - 2 * C1 + 28 * T1 - 3 * C1 * C1 + 8 * eccPrimeSquared + 24 * T1 * T1) * D * D * D * D * D / 120) / Math.cos(phi1Rad);
+		  lon = LongOrigin + radToDeg(lon);
+
+		  var result;
+		  if (utm.accuracy) {
+		    var topRight = UTMtoLL({
+		      northing: utm.northing + utm.accuracy,
+		      easting: utm.easting + utm.accuracy,
+		      zoneLetter: utm.zoneLetter,
+		      zoneNumber: utm.zoneNumber
+		    });
+		    result = {
+		      top: topRight.lat,
+		      right: topRight.lon,
+		      bottom: lat,
+		      left: lon
+		    };
+		  }
+		  else {
+		    result = {
+		      lat: lat,
+		      lon: lon
+		    };
+		  }
+		  return result;
+		}
+
+		/**
+		 * Calculates the MGRS letter designator for the given latitude.
+		 *
+		 * @private
+		 * @param {number} lat The latitude in WGS84 to get the letter designator
+		 *     for.
+		 * @return {char} The letter designator.
+		 */
+		function getLetterDesignator(lat) {
+		  //This is here as an error flag to show that the Latitude is
+		  //outside MGRS limits
+		  var LetterDesignator = 'Z';
+
+		  if ((84 >= lat) && (lat >= 72)) {
+		    LetterDesignator = 'X';
+		  }
+		  else if ((72 > lat) && (lat >= 64)) {
+		    LetterDesignator = 'W';
+		  }
+		  else if ((64 > lat) && (lat >= 56)) {
+		    LetterDesignator = 'V';
+		  }
+		  else if ((56 > lat) && (lat >= 48)) {
+		    LetterDesignator = 'U';
+		  }
+		  else if ((48 > lat) && (lat >= 40)) {
+		    LetterDesignator = 'T';
+		  }
+		  else if ((40 > lat) && (lat >= 32)) {
+		    LetterDesignator = 'S';
+		  }
+		  else if ((32 > lat) && (lat >= 24)) {
+		    LetterDesignator = 'R';
+		  }
+		  else if ((24 > lat) && (lat >= 16)) {
+		    LetterDesignator = 'Q';
+		  }
+		  else if ((16 > lat) && (lat >= 8)) {
+		    LetterDesignator = 'P';
+		  }
+		  else if ((8 > lat) && (lat >= 0)) {
+		    LetterDesignator = 'N';
+		  }
+		  else if ((0 > lat) && (lat >= -8)) {
+		    LetterDesignator = 'M';
+		  }
+		  else if ((-8 > lat) && (lat >= -16)) {
+		    LetterDesignator = 'L';
+		  }
+		  else if ((-16 > lat) && (lat >= -24)) {
+		    LetterDesignator = 'K';
+		  }
+		  else if ((-24 > lat) && (lat >= -32)) {
+		    LetterDesignator = 'J';
+		  }
+		  else if ((-32 > lat) && (lat >= -40)) {
+		    LetterDesignator = 'H';
+		  }
+		  else if ((-40 > lat) && (lat >= -48)) {
+		    LetterDesignator = 'G';
+		  }
+		  else if ((-48 > lat) && (lat >= -56)) {
+		    LetterDesignator = 'F';
+		  }
+		  else if ((-56 > lat) && (lat >= -64)) {
+		    LetterDesignator = 'E';
+		  }
+		  else if ((-64 > lat) && (lat >= -72)) {
+		    LetterDesignator = 'D';
+		  }
+		  else if ((-72 > lat) && (lat >= -80)) {
+		    LetterDesignator = 'C';
+		  }
+		  return LetterDesignator;
+		}
+
+		/**
+		 * Encodes a UTM location as MGRS string.
+		 *
+		 * @private
+		 * @param {object} utm An object literal with easting, northing,
+		 *     zoneLetter, zoneNumber
+		 * @param {number} accuracy Accuracy in digits (1-5).
+		 * @return {string} MGRS string for the given UTM location.
+		 */
+		function encode(utm, accuracy) {
+		  // prepend with leading zeroes
+		  var seasting = "00000" + utm.easting,
+		    snorthing = "00000" + utm.northing;
+
+		  return utm.zoneNumber + utm.zoneLetter + get100kID(utm.easting, utm.northing, utm.zoneNumber) + seasting.substr(seasting.length - 5, accuracy) + snorthing.substr(snorthing.length - 5, accuracy);
+		}
+
+		/**
+		 * Get the two letter 100k designator for a given UTM easting,
+		 * northing and zone number value.
+		 *
+		 * @private
+		 * @param {number} easting
+		 * @param {number} northing
+		 * @param {number} zoneNumber
+		 * @return the two letter 100k designator for the given UTM location.
+		 */
+		function get100kID(easting, northing, zoneNumber) {
+		  var setParm = get100kSetForZone(zoneNumber);
+		  var setColumn = Math.floor(easting / 100000);
+		  var setRow = Math.floor(northing / 100000) % 20;
+		  return getLetter100kID(setColumn, setRow, setParm);
+		}
+
+		/**
+		 * Given a UTM zone number, figure out the MGRS 100K set it is in.
+		 *
+		 * @private
+		 * @param {number} i An UTM zone number.
+		 * @return {number} the 100k set the UTM zone is in.
+		 */
+		function get100kSetForZone(i) {
+		  var setParm = i % NUM_100K_SETS;
+		  if (setParm === 0) {
+		    setParm = NUM_100K_SETS;
+		  }
+
+		  return setParm;
+		}
+
+		/**
+		 * Get the two-letter MGRS 100k designator given information
+		 * translated from the UTM northing, easting and zone number.
+		 *
+		 * @private
+		 * @param {number} column the column index as it relates to the MGRS
+		 *        100k set spreadsheet, created from the UTM easting.
+		 *        Values are 1-8.
+		 * @param {number} row the row index as it relates to the MGRS 100k set
+		 *        spreadsheet, created from the UTM northing value. Values
+		 *        are from 0-19.
+		 * @param {number} parm the set block, as it relates to the MGRS 100k set
+		 *        spreadsheet, created from the UTM zone. Values are from
+		 *        1-60.
+		 * @return two letter MGRS 100k code.
+		 */
+		function getLetter100kID(column, row, parm) {
+		  // colOrigin and rowOrigin are the letters at the origin of the set
+		  var index = parm - 1;
+		  var colOrigin = SET_ORIGIN_COLUMN_LETTERS.charCodeAt(index);
+		  var rowOrigin = SET_ORIGIN_ROW_LETTERS.charCodeAt(index);
+
+		  // colInt and rowInt are the letters to build to return
+		  var colInt = colOrigin + column - 1;
+		  var rowInt = rowOrigin + row;
+		  var rollover = false;
+
+		  if (colInt > Z) {
+		    colInt = colInt - Z + A - 1;
+		    rollover = true;
+		  }
+
+		  if (colInt === I || (colOrigin < I && colInt > I) || ((colInt > I || colOrigin < I) && rollover)) {
+		    colInt++;
+		  }
+
+		  if (colInt === O || (colOrigin < O && colInt > O) || ((colInt > O || colOrigin < O) && rollover)) {
+		    colInt++;
+
+		    if (colInt === I) {
+		      colInt++;
+		    }
+		  }
+
+		  if (colInt > Z) {
+		    colInt = colInt - Z + A - 1;
+		  }
+
+		  if (rowInt > V) {
+		    rowInt = rowInt - V + A - 1;
+		    rollover = true;
+		  }
+		  else {
+		    rollover = false;
+		  }
+
+		  if (((rowInt === I) || ((rowOrigin < I) && (rowInt > I))) || (((rowInt > I) || (rowOrigin < I)) && rollover)) {
+		    rowInt++;
+		  }
+
+		  if (((rowInt === O) || ((rowOrigin < O) && (rowInt > O))) || (((rowInt > O) || (rowOrigin < O)) && rollover)) {
+		    rowInt++;
+
+		    if (rowInt === I) {
+		      rowInt++;
+		    }
+		  }
+
+		  if (rowInt > V) {
+		    rowInt = rowInt - V + A - 1;
+		  }
+
+		  var twoLetter = String.fromCharCode(colInt) + String.fromCharCode(rowInt);
+		  return twoLetter;
+		}
+
+		/**
+		 * Decode the UTM parameters from a MGRS string.
+		 *
+		 * @private
+		 * @param {string} mgrsString an UPPERCASE coordinate string is expected.
+		 * @return {object} An object literal with easting, northing, zoneLetter,
+		 *     zoneNumber and accuracy (in meters) properties.
+		 */
+		function decode(mgrsString) {
+
+		  if (mgrsString && mgrsString.length === 0) {
+		    throw ("MGRSPoint coverting from nothing");
+		  }
+
+		  var length = mgrsString.length;
+
+		  var hunK = null;
+		  var sb = "";
+		  var testChar;
+		  var i = 0;
+
+		  // get Zone number
+		  while (!(/[A-Z]/).test(testChar = mgrsString.charAt(i))) {
+		    if (i >= 2) {
+		      throw ("MGRSPoint bad conversion from: " + mgrsString);
+		    }
+		    sb += testChar;
+		    i++;
+		  }
+
+		  var zoneNumber = parseInt(sb, 10);
+
+		  if (i === 0 || i + 3 > length) {
+		    // A good MGRS string has to be 4-5 digits long,
+		    // ##AAA/#AAA at least.
+		    throw ("MGRSPoint bad conversion from: " + mgrsString);
+		  }
+
+		  var zoneLetter = mgrsString.charAt(i++);
+
+		  // Should we check the zone letter here? Why not.
+		  if (zoneLetter <= 'A' || zoneLetter === 'B' || zoneLetter === 'Y' || zoneLetter >= 'Z' || zoneLetter === 'I' || zoneLetter === 'O') {
+		    throw ("MGRSPoint zone letter " + zoneLetter + " not handled: " + mgrsString);
+		  }
+
+		  hunK = mgrsString.substring(i, i += 2);
+
+		  var set = get100kSetForZone(zoneNumber);
+
+		  var east100k = getEastingFromChar(hunK.charAt(0), set);
+		  var north100k = getNorthingFromChar(hunK.charAt(1), set);
+
+		  // We have a bug where the northing may be 2000000 too low.
+		  // How
+		  // do we know when to roll over?
+
+		  while (north100k < getMinNorthing(zoneLetter)) {
+		    north100k += 2000000;
+		  }
+
+		  // calculate the char index for easting/northing separator
+		  var remainder = length - i;
+
+		  if (remainder % 2 !== 0) {
+		    throw ("MGRSPoint has to have an even number \nof digits after the zone letter and two 100km letters - front \nhalf for easting meters, second half for \nnorthing meters" + mgrsString);
+		  }
+
+		  var sep = remainder / 2;
+
+		  var sepEasting = 0.0;
+		  var sepNorthing = 0.0;
+		  var accuracyBonus, sepEastingString, sepNorthingString, easting, northing;
+		  if (sep > 0) {
+		    accuracyBonus = 100000.0 / Math.pow(10, sep);
+		    sepEastingString = mgrsString.substring(i, i + sep);
+		    sepEasting = parseFloat(sepEastingString) * accuracyBonus;
+		    sepNorthingString = mgrsString.substring(i + sep);
+		    sepNorthing = parseFloat(sepNorthingString) * accuracyBonus;
+		  }
+
+		  easting = sepEasting + east100k;
+		  northing = sepNorthing + north100k;
+
+		  return {
+		    easting: easting,
+		    northing: northing,
+		    zoneLetter: zoneLetter,
+		    zoneNumber: zoneNumber,
+		    accuracy: accuracyBonus
+		  };
+		}
+
+		/**
+		 * Given the first letter from a two-letter MGRS 100k zone, and given the
+		 * MGRS table set for the zone number, figure out the easting value that
+		 * should be added to the other, secondary easting value.
+		 *
+		 * @private
+		 * @param {char} e The first letter from a two-letter MGRS 100´k zone.
+		 * @param {number} set The MGRS table set for the zone number.
+		 * @return {number} The easting value for the given letter and set.
+		 */
+		function getEastingFromChar(e, set) {
+		  // colOrigin is the letter at the origin of the set for the
+		  // column
+		  var curCol = SET_ORIGIN_COLUMN_LETTERS.charCodeAt(set - 1);
+		  var eastingValue = 100000.0;
+		  var rewindMarker = false;
+
+		  while (curCol !== e.charCodeAt(0)) {
+		    curCol++;
+		    if (curCol === I) {
+		      curCol++;
+		    }
+		    if (curCol === O) {
+		      curCol++;
+		    }
+		    if (curCol > Z) {
+		      if (rewindMarker) {
+		        throw ("Bad character: " + e);
+		      }
+		      curCol = A;
+		      rewindMarker = true;
+		    }
+		    eastingValue += 100000.0;
+		  }
+
+		  return eastingValue;
+		}
+
+		/**
+		 * Given the second letter from a two-letter MGRS 100k zone, and given the
+		 * MGRS table set for the zone number, figure out the northing value that
+		 * should be added to the other, secondary northing value. You have to
+		 * remember that Northings are determined from the equator, and the vertical
+		 * cycle of letters mean a 2000000 additional northing meters. This happens
+		 * approx. every 18 degrees of latitude. This method does *NOT* count any
+		 * additional northings. You have to figure out how many 2000000 meters need
+		 * to be added for the zone letter of the MGRS coordinate.
+		 *
+		 * @private
+		 * @param {char} n Second letter of the MGRS 100k zone
+		 * @param {number} set The MGRS table set number, which is dependent on the
+		 *     UTM zone number.
+		 * @return {number} The northing value for the given letter and set.
+		 */
+		function getNorthingFromChar(n, set) {
+
+		  if (n > 'V') {
+		    throw ("MGRSPoint given invalid Northing " + n);
+		  }
+
+		  // rowOrigin is the letter at the origin of the set for the
+		  // column
+		  var curRow = SET_ORIGIN_ROW_LETTERS.charCodeAt(set - 1);
+		  var northingValue = 0.0;
+		  var rewindMarker = false;
+
+		  while (curRow !== n.charCodeAt(0)) {
+		    curRow++;
+		    if (curRow === I) {
+		      curRow++;
+		    }
+		    if (curRow === O) {
+		      curRow++;
+		    }
+		    // fixing a bug making whole application hang in this loop
+		    // when 'n' is a wrong character
+		    if (curRow > V) {
+		      if (rewindMarker) { // making sure that this loop ends
+		        throw ("Bad character: " + n);
+		      }
+		      curRow = A;
+		      rewindMarker = true;
+		    }
+		    northingValue += 100000.0;
+		  }
+
+		  return northingValue;
+		}
+
+		/**
+		 * The function getMinNorthing returns the minimum northing value of a MGRS
+		 * zone.
+		 *
+		 * Ported from Geotrans' c Lattitude_Band_Value structure table.
+		 *
+		 * @private
+		 * @param {char} zoneLetter The MGRS zone to get the min northing for.
+		 * @return {number}
+		 */
+		function getMinNorthing(zoneLetter) {
+		  var northing;
+		  switch (zoneLetter) {
+		  case 'C':
+		    northing = 1100000.0;
+		    break;
+		  case 'D':
+		    northing = 2000000.0;
+		    break;
+		  case 'E':
+		    northing = 2800000.0;
+		    break;
+		  case 'F':
+		    northing = 3700000.0;
+		    break;
+		  case 'G':
+		    northing = 4600000.0;
+		    break;
+		  case 'H':
+		    northing = 5500000.0;
+		    break;
+		  case 'J':
+		    northing = 6400000.0;
+		    break;
+		  case 'K':
+		    northing = 7300000.0;
+		    break;
+		  case 'L':
+		    northing = 8200000.0;
+		    break;
+		  case 'M':
+		    northing = 9100000.0;
+		    break;
+		  case 'N':
+		    northing = 0.0;
+		    break;
+		  case 'P':
+		    northing = 800000.0;
+		    break;
+		  case 'Q':
+		    northing = 1700000.0;
+		    break;
+		  case 'R':
+		    northing = 2600000.0;
+		    break;
+		  case 'S':
+		    northing = 3500000.0;
+		    break;
+		  case 'T':
+		    northing = 4400000.0;
+		    break;
+		  case 'U':
+		    northing = 5300000.0;
+		    break;
+		  case 'V':
+		    northing = 6200000.0;
+		    break;
+		  case 'W':
+		    northing = 7000000.0;
+		    break;
+		  case 'X':
+		    northing = 7900000.0;
+		    break;
+		  default:
+		    northing = -1.0;
+		  }
+		  if (northing >= 0.0) {
+		    return northing;
+		  }
+		  else {
+		    throw ("Invalid zone letter: " + zoneLetter);
+		  }
+
+		}
+
+		function Point(x, y, z) {
+		  if (!(this instanceof Point)) {
+		    return new Point(x, y, z);
+		  }
+		  if (Array.isArray(x)) {
+		    this.x = x[0];
+		    this.y = x[1];
+		    this.z = x[2] || 0.0;
+		  } else if(typeof x === 'object') {
+		    this.x = x.x;
+		    this.y = x.y;
+		    this.z = x.z || 0.0;
+		  } else if (typeof x === 'string' && typeof y === 'undefined') {
+		    var coords = x.split(',');
+		    this.x = parseFloat(coords[0], 10);
+		    this.y = parseFloat(coords[1], 10);
+		    this.z = parseFloat(coords[2], 10) || 0.0;
+		  } else {
+		    this.x = x;
+		    this.y = y;
+		    this.z = z || 0.0;
+		  }
+		  console.warn('proj4.Point will be removed in version 3, use proj4.toPoint');
+		}
+
+		Point.fromMGRS = function(mgrsStr) {
+		  return new Point(toPoint$1(mgrsStr));
+		};
+		Point.prototype.toMGRS = function(accuracy) {
+		  return forward$1([this.x, this.y], accuracy);
+		};
+
+		var version = "2.4.3";
+
+		var C00 = 1;
+		var C02 = 0.25;
+		var C04 = 0.046875;
+		var C06 = 0.01953125;
+		var C08 = 0.01068115234375;
+		var C22 = 0.75;
+		var C44 = 0.46875;
+		var C46 = 0.01302083333333333333;
+		var C48 = 0.00712076822916666666;
+		var C66 = 0.36458333333333333333;
+		var C68 = 0.00569661458333333333;
+		var C88 = 0.3076171875;
+
+		var pj_enfn = function(es) {
+		  var en = [];
+		  en[0] = C00 - es * (C02 + es * (C04 + es * (C06 + es * C08)));
+		  en[1] = es * (C22 - es * (C04 + es * (C06 + es * C08)));
+		  var t = es * es;
+		  en[2] = t * (C44 - es * (C46 + es * C48));
+		  t *= es;
+		  en[3] = t * (C66 - es * C68);
+		  en[4] = t * es * C88;
+		  return en;
+		};
+
+		var pj_mlfn = function(phi, sphi, cphi, en) {
+		  cphi *= sphi;
+		  sphi *= sphi;
+		  return (en[0] * phi - cphi * (en[1] + sphi * (en[2] + sphi * (en[3] + sphi * en[4]))));
+		};
+
+		var MAX_ITER = 20;
+
+		var pj_inv_mlfn = function(arg, es, en) {
+		  var k = 1 / (1 - es);
+		  var phi = arg;
+		  for (var i = MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
+		    var s = Math.sin(phi);
+		    var t = 1 - es * s * s;
+		    //t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
+		    //phi -= t * (t * Math.sqrt(t)) * k;
+		    t = (pj_mlfn(phi, s, Math.cos(phi), en) - arg) * (t * Math.sqrt(t)) * k;
+		    phi -= t;
+		    if (Math.abs(t) < EPSLN) {
+		      return phi;
+		    }
+		  }
+		  //..reportError("cass:pj_inv_mlfn: Convergence error");
+		  return phi;
+		};
+
+		// Heavily based on this tmerc projection implementation
+		// https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/tmerc.js
+
+		function init$2() {
+		  this.x0 = this.x0 !== undefined ? this.x0 : 0;
+		  this.y0 = this.y0 !== undefined ? this.y0 : 0;
+		  this.long0 = this.long0 !== undefined ? this.long0 : 0;
+		  this.lat0 = this.lat0 !== undefined ? this.lat0 : 0;
+
+		  if (this.es) {
+		    this.en = pj_enfn(this.es);
+		    this.ml0 = pj_mlfn(this.lat0, Math.sin(this.lat0), Math.cos(this.lat0), this.en);
+		  }
+		}
+
+		/**
+		    Transverse Mercator Forward  - long/lat to x/y
+		    long/lat in radians
+		  */
+		function forward$2(p) {
+		  var lon = p.x;
+		  var lat = p.y;
+
+		  var delta_lon = adjust_lon(lon - this.long0);
+		  var con;
+		  var x, y;
+		  var sin_phi = Math.sin(lat);
+		  var cos_phi = Math.cos(lat);
+
+		  if (!this.es) {
+		    var b = cos_phi * Math.sin(delta_lon);
+
+		    if ((Math.abs(Math.abs(b) - 1)) < EPSLN) {
+		      return (93);
+		    }
+		    else {
+		      x = 0.5 * this.a * this.k0 * Math.log((1 + b) / (1 - b)) + this.x0;
+		      y = cos_phi * Math.cos(delta_lon) / Math.sqrt(1 - Math.pow(b, 2));
+		      b = Math.abs(y);
+
+		      if (b >= 1) {
+		        if ((b - 1) > EPSLN) {
+		          return (93);
+		        }
+		        else {
+		          y = 0;
+		        }
+		      }
+		      else {
+		        y = Math.acos(y);
+		      }
+
+		      if (lat < 0) {
+		        y = -y;
+		      }
+
+		      y = this.a * this.k0 * (y - this.lat0) + this.y0;
+		    }
+		  }
+		  else {
+		    var al = cos_phi * delta_lon;
+		    var als = Math.pow(al, 2);
+		    var c = this.ep2 * Math.pow(cos_phi, 2);
+		    var cs = Math.pow(c, 2);
+		    var tq = Math.abs(cos_phi) > EPSLN ? Math.tan(lat) : 0;
+		    var t = Math.pow(tq, 2);
+		    var ts = Math.pow(t, 2);
+		    con = 1 - this.es * Math.pow(sin_phi, 2);
+		    al = al / Math.sqrt(con);
+		    var ml = pj_mlfn(lat, sin_phi, cos_phi, this.en);
+
+		    x = this.a * (this.k0 * al * (1 +
+		      als / 6 * (1 - t + c +
+		      als / 20 * (5 - 18 * t + ts + 14 * c - 58 * t * c +
+		      als / 42 * (61 + 179 * ts - ts * t - 479 * t))))) +
+		      this.x0;
+
+		    y = this.a * (this.k0 * (ml - this.ml0 +
+		      sin_phi * delta_lon * al / 2 * (1 +
+		      als / 12 * (5 - t + 9 * c + 4 * cs +
+		      als / 30 * (61 + ts - 58 * t + 270 * c - 330 * t * c +
+		      als / 56 * (1385 + 543 * ts - ts * t - 3111 * t)))))) +
+		      this.y0;
+		  }
+
+		  p.x = x;
+		  p.y = y;
+
+		  return p;
+		}
+
+		/**
+		    Transverse Mercator Inverse  -  x/y to long/lat
+		  */
+		function inverse$2(p) {
+		  var con, phi;
+		  var lat, lon;
+		  var x = (p.x - this.x0) * (1 / this.a);
+		  var y = (p.y - this.y0) * (1 / this.a);
+
+		  if (!this.es) {
+		    var f = Math.exp(x / this.k0);
+		    var g = 0.5 * (f - 1 / f);
+		    var temp = this.lat0 + y / this.k0;
+		    var h = Math.cos(temp);
+		    con = Math.sqrt((1 - Math.pow(h, 2)) / (1 + Math.pow(g, 2)));
+		    lat = Math.asin(con);
+
+		    if (y < 0) {
+		      lat = -lat;
+		    }
+
+		    if ((g === 0) && (h === 0)) {
+		      lon = 0;
+		    }
+		    else {
+		      lon = adjust_lon(Math.atan2(g, h) + this.long0);
+		    }
+		  }
+		  else { // ellipsoidal form
+		    con = this.ml0 + y / this.k0;
+		    phi = pj_inv_mlfn(con, this.es, this.en);
+
+		    if (Math.abs(phi) < HALF_PI) {
+		      var sin_phi = Math.sin(phi);
+		      var cos_phi = Math.cos(phi);
+		      var tan_phi = Math.abs(cos_phi) > EPSLN ? Math.tan(phi) : 0;
+		      var c = this.ep2 * Math.pow(cos_phi, 2);
+		      var cs = Math.pow(c, 2);
+		      var t = Math.pow(tan_phi, 2);
+		      var ts = Math.pow(t, 2);
+		      con = 1 - this.es * Math.pow(sin_phi, 2);
+		      var d = x * Math.sqrt(con) / this.k0;
+		      var ds = Math.pow(d, 2);
+		      con = con * tan_phi;
+
+		      lat = phi - (con * ds / (1 - this.es)) * 0.5 * (1 -
+		        ds / 12 * (5 + 3 * t - 9 * c * t + c - 4 * cs -
+		        ds / 30 * (61 + 90 * t - 252 * c * t + 45 * ts + 46 * c -
+		        ds / 56 * (1385 + 3633 * t + 4095 * ts + 1574 * ts * t))));
+
+		      lon = adjust_lon(this.long0 + (d * (1 -
+		        ds / 6 * (1 + 2 * t + c -
+		        ds / 20 * (5 + 28 * t + 24 * ts + 8 * c * t + 6 * c -
+		        ds / 42 * (61 + 662 * t + 1320 * ts + 720 * ts * t)))) / cos_phi));
+		    }
+		    else {
+		      lat = HALF_PI * sign(y);
+		      lon = 0;
+		    }
+		  }
+
+		  p.x = lon;
+		  p.y = lat;
+
+		  return p;
+		}
+
+		var names$3 = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
+		var tmerc = {
+		  init: init$2,
+		  forward: forward$2,
+		  inverse: inverse$2,
+		  names: names$3
+		};
+
+		var sinh = function(x) {
+		  var r = Math.exp(x);
+		  r = (r - 1 / r) / 2;
+		  return r;
+		};
+
+		var hypot = function(x, y) {
+		  x = Math.abs(x);
+		  y = Math.abs(y);
+		  var a = Math.max(x, y);
+		  var b = Math.min(x, y) / (a ? a : 1);
+
+		  return a * Math.sqrt(1 + Math.pow(b, 2));
+		};
+
+		var log1py = function(x) {
+		  var y = 1 + x;
+		  var z = y - 1;
+
+		  return z === 0 ? x : x * Math.log(y) / z;
+		};
+
+		var asinhy = function(x) {
+		  var y = Math.abs(x);
+		  y = log1py(y * (1 + y / (hypot(1, y) + 1)));
+
+		  return x < 0 ? -y : y;
+		};
+
+		var gatg = function(pp, B) {
+		  var cos_2B = 2 * Math.cos(2 * B);
+		  var i = pp.length - 1;
+		  var h1 = pp[i];
+		  var h2 = 0;
+		  var h;
+
+		  while (--i >= 0) {
+		    h = -h2 + cos_2B * h1 + pp[i];
+		    h2 = h1;
+		    h1 = h;
+		  }
+
+		  return (B + h * Math.sin(2 * B));
+		};
+
+		var clens = function(pp, arg_r) {
+		  var r = 2 * Math.cos(arg_r);
+		  var i = pp.length - 1;
+		  var hr1 = pp[i];
+		  var hr2 = 0;
+		  var hr;
+
+		  while (--i >= 0) {
+		    hr = -hr2 + r * hr1 + pp[i];
+		    hr2 = hr1;
+		    hr1 = hr;
+		  }
+
+		  return Math.sin(arg_r) * hr;
+		};
+
+		var cosh = function(x) {
+		  var r = Math.exp(x);
+		  r = (r + 1 / r) / 2;
+		  return r;
+		};
+
+		var clens_cmplx = function(pp, arg_r, arg_i) {
+		  var sin_arg_r = Math.sin(arg_r);
+		  var cos_arg_r = Math.cos(arg_r);
+		  var sinh_arg_i = sinh(arg_i);
+		  var cosh_arg_i = cosh(arg_i);
+		  var r = 2 * cos_arg_r * cosh_arg_i;
+		  var i = -2 * sin_arg_r * sinh_arg_i;
+		  var j = pp.length - 1;
+		  var hr = pp[j];
+		  var hi1 = 0;
+		  var hr1 = 0;
+		  var hi = 0;
+		  var hr2;
+		  var hi2;
+
+		  while (--j >= 0) {
+		    hr2 = hr1;
+		    hi2 = hi1;
+		    hr1 = hr;
+		    hi1 = hi;
+		    hr = -hr2 + r * hr1 - i * hi1 + pp[j];
+		    hi = -hi2 + i * hr1 + r * hi1;
+		  }
+
+		  r = sin_arg_r * cosh_arg_i;
+		  i = cos_arg_r * sinh_arg_i;
+
+		  return [r * hr - i * hi, r * hi + i * hr];
+		};
+
+		// Heavily based on this etmerc projection implementation
+		// https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/etmerc.js
+
+		function init$3() {
+		  if (this.es === undefined || this.es <= 0) {
+		    throw new Error('incorrect elliptical usage');
+		  }
+
+		  this.x0 = this.x0 !== undefined ? this.x0 : 0;
+		  this.y0 = this.y0 !== undefined ? this.y0 : 0;
+		  this.long0 = this.long0 !== undefined ? this.long0 : 0;
+		  this.lat0 = this.lat0 !== undefined ? this.lat0 : 0;
+
+		  this.cgb = [];
+		  this.cbg = [];
+		  this.utg = [];
+		  this.gtu = [];
+
+		  var f = this.es / (1 + Math.sqrt(1 - this.es));
+		  var n = f / (2 - f);
+		  var np = n;
+
+		  this.cgb[0] = n * (2 + n * (-2 / 3 + n * (-2 + n * (116 / 45 + n * (26 / 45 + n * (-2854 / 675 ))))));
+		  this.cbg[0] = n * (-2 + n * ( 2 / 3 + n * ( 4 / 3 + n * (-82 / 45 + n * (32 / 45 + n * (4642 / 4725))))));
+
+		  np = np * n;
+		  this.cgb[1] = np * (7 / 3 + n * (-8 / 5 + n * (-227 / 45 + n * (2704 / 315 + n * (2323 / 945)))));
+		  this.cbg[1] = np * (5 / 3 + n * (-16 / 15 + n * ( -13 / 9 + n * (904 / 315 + n * (-1522 / 945)))));
+
+		  np = np * n;
+		  this.cgb[2] = np * (56 / 15 + n * (-136 / 35 + n * (-1262 / 105 + n * (73814 / 2835))));
+		  this.cbg[2] = np * (-26 / 15 + n * (34 / 21 + n * (8 / 5 + n * (-12686 / 2835))));
+
+		  np = np * n;
+		  this.cgb[3] = np * (4279 / 630 + n * (-332 / 35 + n * (-399572 / 14175)));
+		  this.cbg[3] = np * (1237 / 630 + n * (-12 / 5 + n * ( -24832 / 14175)));
+
+		  np = np * n;
+		  this.cgb[4] = np * (4174 / 315 + n * (-144838 / 6237));
+		  this.cbg[4] = np * (-734 / 315 + n * (109598 / 31185));
+
+		  np = np * n;
+		  this.cgb[5] = np * (601676 / 22275);
+		  this.cbg[5] = np * (444337 / 155925);
+
+		  np = Math.pow(n, 2);
+		  this.Qn = this.k0 / (1 + n) * (1 + np * (1 / 4 + np * (1 / 64 + np / 256)));
+
+		  this.utg[0] = n * (-0.5 + n * ( 2 / 3 + n * (-37 / 96 + n * ( 1 / 360 + n * (81 / 512 + n * (-96199 / 604800))))));
+		  this.gtu[0] = n * (0.5 + n * (-2 / 3 + n * (5 / 16 + n * (41 / 180 + n * (-127 / 288 + n * (7891 / 37800))))));
+
+		  this.utg[1] = np * (-1 / 48 + n * (-1 / 15 + n * (437 / 1440 + n * (-46 / 105 + n * (1118711 / 3870720)))));
+		  this.gtu[1] = np * (13 / 48 + n * (-3 / 5 + n * (557 / 1440 + n * (281 / 630 + n * (-1983433 / 1935360)))));
+
+		  np = np * n;
+		  this.utg[2] = np * (-17 / 480 + n * (37 / 840 + n * (209 / 4480 + n * (-5569 / 90720 ))));
+		  this.gtu[2] = np * (61 / 240 + n * (-103 / 140 + n * (15061 / 26880 + n * (167603 / 181440))));
+
+		  np = np * n;
+		  this.utg[3] = np * (-4397 / 161280 + n * (11 / 504 + n * (830251 / 7257600)));
+		  this.gtu[3] = np * (49561 / 161280 + n * (-179 / 168 + n * (6601661 / 7257600)));
+
+		  np = np * n;
+		  this.utg[4] = np * (-4583 / 161280 + n * (108847 / 3991680));
+		  this.gtu[4] = np * (34729 / 80640 + n * (-3418889 / 1995840));
+
+		  np = np * n;
+		  this.utg[5] = np * (-20648693 / 638668800);
+		  this.gtu[5] = np * (212378941 / 319334400);
+
+		  var Z = gatg(this.cbg, this.lat0);
+		  this.Zb = -this.Qn * (Z + clens(this.gtu, 2 * Z));
+		}
+
+		function forward$3(p) {
+		  var Ce = adjust_lon(p.x - this.long0);
+		  var Cn = p.y;
+
+		  Cn = gatg(this.cbg, Cn);
+		  var sin_Cn = Math.sin(Cn);
+		  var cos_Cn = Math.cos(Cn);
+		  var sin_Ce = Math.sin(Ce);
+		  var cos_Ce = Math.cos(Ce);
+
+		  Cn = Math.atan2(sin_Cn, cos_Ce * cos_Cn);
+		  Ce = Math.atan2(sin_Ce * cos_Cn, hypot(sin_Cn, cos_Cn * cos_Ce));
+		  Ce = asinhy(Math.tan(Ce));
+
+		  var tmp = clens_cmplx(this.gtu, 2 * Cn, 2 * Ce);
+
+		  Cn = Cn + tmp[0];
+		  Ce = Ce + tmp[1];
+
+		  var x;
+		  var y;
+
+		  if (Math.abs(Ce) <= 2.623395162778) {
+		    x = this.a * (this.Qn * Ce) + this.x0;
+		    y = this.a * (this.Qn * Cn + this.Zb) + this.y0;
+		  }
+		  else {
+		    x = Infinity;
+		    y = Infinity;
+		  }
+
+		  p.x = x;
+		  p.y = y;
+
+		  return p;
+		}
+
+		function inverse$3(p) {
+		  var Ce = (p.x - this.x0) * (1 / this.a);
+		  var Cn = (p.y - this.y0) * (1 / this.a);
+
+		  Cn = (Cn - this.Zb) / this.Qn;
+		  Ce = Ce / this.Qn;
+
+		  var lon;
+		  var lat;
+
+		  if (Math.abs(Ce) <= 2.623395162778) {
+		    var tmp = clens_cmplx(this.utg, 2 * Cn, 2 * Ce);
+
+		    Cn = Cn + tmp[0];
+		    Ce = Ce + tmp[1];
+		    Ce = Math.atan(sinh(Ce));
+
+		    var sin_Cn = Math.sin(Cn);
+		    var cos_Cn = Math.cos(Cn);
+		    var sin_Ce = Math.sin(Ce);
+		    var cos_Ce = Math.cos(Ce);
+
+		    Cn = Math.atan2(sin_Cn * cos_Ce, hypot(sin_Ce, cos_Ce * cos_Cn));
+		    Ce = Math.atan2(sin_Ce, cos_Ce * cos_Cn);
+
+		    lon = adjust_lon(Ce + this.long0);
+		    lat = gatg(this.cgb, Cn);
+		  }
+		  else {
+		    lon = Infinity;
+		    lat = Infinity;
+		  }
+
+		  p.x = lon;
+		  p.y = lat;
+
+		  return p;
+		}
+
+		var names$4 = ["Extended_Transverse_Mercator", "Extended Transverse Mercator", "etmerc"];
+		var etmerc = {
+		  init: init$3,
+		  forward: forward$3,
+		  inverse: inverse$3,
+		  names: names$4
+		};
+
+		var adjust_zone = function(zone, lon) {
+		  if (zone === undefined) {
+		    zone = Math.floor((adjust_lon(lon) + Math.PI) * 30 / Math.PI) + 1;
+
+		    if (zone < 0) {
+		      return 0;
+		    } else if (zone > 60) {
+		      return 60;
+		    }
+		  }
+		  return zone;
+		};
+
+		var dependsOn = 'etmerc';
+		function init$4() {
+		  var zone = adjust_zone(this.zone, this.long0);
+		  if (zone === undefined) {
+		    throw new Error('unknown utm zone');
+		  }
+		  this.lat0 = 0;
+		  this.long0 =  ((6 * Math.abs(zone)) - 183) * D2R;
+		  this.x0 = 500000;
+		  this.y0 = this.utmSouth ? 10000000 : 0;
+		  this.k0 = 0.9996;
+
+		  etmerc.init.apply(this);
+		  this.forward = etmerc.forward;
+		  this.inverse = etmerc.inverse;
+		}
+
+		var names$5 = ["Universal Transverse Mercator System", "utm"];
+		var utm = {
+		  init: init$4,
+		  names: names$5,
+		  dependsOn: dependsOn
+		};
+
+		var srat = function(esinp, exp) {
+		  return (Math.pow((1 - esinp) / (1 + esinp), exp));
+		};
+
+		var MAX_ITER$1 = 20;
+		function init$6() {
+		  var sphi = Math.sin(this.lat0);
+		  var cphi = Math.cos(this.lat0);
+		  cphi *= cphi;
+		  this.rc = Math.sqrt(1 - this.es) / (1 - this.es * sphi * sphi);
+		  this.C = Math.sqrt(1 + this.es * cphi * cphi / (1 - this.es));
+		  this.phic0 = Math.asin(sphi / this.C);
+		  this.ratexp = 0.5 * this.C * this.e;
+		  this.K = Math.tan(0.5 * this.phic0 + FORTPI) / (Math.pow(Math.tan(0.5 * this.lat0 + FORTPI), this.C) * srat(this.e * sphi, this.ratexp));
+		}
+
+		function forward$5(p) {
+		  var lon = p.x;
+		  var lat = p.y;
+
+		  p.y = 2 * Math.atan(this.K * Math.pow(Math.tan(0.5 * lat + FORTPI), this.C) * srat(this.e * Math.sin(lat), this.ratexp)) - HALF_PI;
+		  p.x = this.C * lon;
+		  return p;
+		}
+
+		function inverse$5(p) {
+		  var DEL_TOL = 1e-14;
+		  var lon = p.x / this.C;
+		  var lat = p.y;
+		  var num = Math.pow(Math.tan(0.5 * lat + FORTPI) / this.K, 1 / this.C);
+		  for (var i = MAX_ITER$1; i > 0; --i) {
+		    lat = 2 * Math.atan(num * srat(this.e * Math.sin(p.y), - 0.5 * this.e)) - HALF_PI;
+		    if (Math.abs(lat - p.y) < DEL_TOL) {
+		      break;
+		    }
+		    p.y = lat;
+		  }
+		  /* convergence failed */
+		  if (!i) {
+		    return null;
+		  }
+		  p.x = lon;
+		  p.y = lat;
+		  return p;
+		}
+
+		var names$7 = ["gauss"];
+		var gauss = {
+		  init: init$6,
+		  forward: forward$5,
+		  inverse: inverse$5,
+		  names: names$7
+		};
+
+		function init$5() {
+		  gauss.init.apply(this);
+		  if (!this.rc) {
+		    return;
+		  }
+		  this.sinc0 = Math.sin(this.phic0);
+		  this.cosc0 = Math.cos(this.phic0);
+		  this.R2 = 2 * this.rc;
+		  if (!this.title) {
+		    this.title = "Oblique Stereographic Alternative";
+		  }
+		}
+
+		function forward$4(p) {
+		  var sinc, cosc, cosl, k;
+		  p.x = adjust_lon(p.x - this.long0);
+		  gauss.forward.apply(this, [p]);
+		  sinc = Math.sin(p.y);
+		  cosc = Math.cos(p.y);
+		  cosl = Math.cos(p.x);
+		  k = this.k0 * this.R2 / (1 + this.sinc0 * sinc + this.cosc0 * cosc * cosl);
+		  p.x = k * cosc * Math.sin(p.x);
+		  p.y = k * (this.cosc0 * sinc - this.sinc0 * cosc * cosl);
+		  p.x = this.a * p.x + this.x0;
+		  p.y = this.a * p.y + this.y0;
+		  return p;
+		}
+
+		function inverse$4(p) {
+		  var sinc, cosc, lon, lat, rho;
+		  p.x = (p.x - this.x0) / this.a;
+		  p.y = (p.y - this.y0) / this.a;
+
+		  p.x /= this.k0;
+		  p.y /= this.k0;
+		  if ((rho = Math.sqrt(p.x * p.x + p.y * p.y))) {
+		    var c = 2 * Math.atan2(rho, this.R2);
+		    sinc = Math.sin(c);
+		    cosc = Math.cos(c);
+		    lat = Math.asin(cosc * this.sinc0 + p.y * sinc * this.cosc0 / rho);
+		    lon = Math.atan2(p.x * sinc, rho * this.cosc0 * cosc - p.y * this.sinc0 * sinc);
+		  }
+		  else {
+		    lat = this.phic0;
+		    lon = 0;
+		  }
+
+		  p.x = lon;
+		  p.y = lat;
+		  gauss.inverse.apply(this, [p]);
+		  p.x = adjust_lon(p.x + this.long0);
+		  return p;
+		}
+
+		var names$6 = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereographic", "sterea","Oblique Stereographic Alternative"];
+		var sterea = {
+		  init: init$5,
+		  forward: forward$4,
+		  inverse: inverse$4,
+		  names: names$6
+		};
+
+		function ssfn_(phit, sinphi, eccen) {
+		  sinphi *= eccen;
+		  return (Math.tan(0.5 * (HALF_PI + phit)) * Math.pow((1 - sinphi) / (1 + sinphi), 0.5 * eccen));
+		}
+
+		function init$7() {
+		  this.coslat0 = Math.cos(this.lat0);
+		  this.sinlat0 = Math.sin(this.lat0);
+		  if (this.sphere) {
+		    if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= EPSLN) {
+		      this.k0 = 0.5 * (1 + sign(this.lat0) * Math.sin(this.lat_ts));
+		    }
+		  }
+		  else {
+		    if (Math.abs(this.coslat0) <= EPSLN) {
+		      if (this.lat0 > 0) {
+		        //North pole
+		        //trace('stere:north pole');
+		        this.con = 1;
+		      }
+		      else {
+		        //South pole
+		        //trace('stere:south pole');
+		        this.con = -1;
+		      }
+		    }
+		    this.cons = Math.sqrt(Math.pow(1 + this.e, 1 + this.e) * Math.pow(1 - this.e, 1 - this.e));
+		    if (this.k0 === 1 && !isNaN(this.lat_ts) && Math.abs(this.coslat0) <= EPSLN) {
+		      this.k0 = 0.5 * this.cons * msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts)) / tsfnz(this.e, this.con * this.lat_ts, this.con * Math.sin(this.lat_ts));
+		    }
+		    this.ms1 = msfnz(this.e, this.sinlat0, this.coslat0);
+		    this.X0 = 2 * Math.atan(this.ssfn_(this.lat0, this.sinlat0, this.e)) - HALF_PI;
+		    this.cosX0 = Math.cos(this.X0);
+		    this.sinX0 = Math.sin(this.X0);
+		  }
+		}
+
+		// Stereographic forward equations--mapping lat,long to x,y
+		function forward$6(p) {
+		  var lon = p.x;
+		  var lat = p.y;
+		  var sinlat = Math.sin(lat);
+		  var coslat = Math.cos(lat);
+		  var A, X, sinX, cosX, ts, rh;
+		  var dlon = adjust_lon(lon - this.long0);
+
+		  if (Math.abs(Math.abs(lon - this.long0) - Math.PI) <= EPSLN && Math.abs(lat + this.lat0) <= EPSLN) {
+		    //case of the origine point
+		    //trace('stere:this is the origin point');
+		    p.x = NaN;
+		    p.y = NaN;
+		    return p;
+		  }
+		  if (this.sphere) {
+		    //trace('stere:sphere case');
+		    A = 2 * this.k0 / (1 + this.sinlat0 * sinlat + this.coslat0 * coslat * Math.cos(dlon));
+		    p.x = this.a * A * coslat * Math.sin(dlon) + this.x0;
+		    p.y = this.a * A * (this.coslat0 * sinlat - this.sinlat0 * coslat * Math.cos(dlon)) + this.y0;
+		    return p;
+		  }
+		  else {
+		    X = 2 * Math.atan(this.ssfn_(lat, sinlat, this.e)) - HALF_PI;
+		    cosX = Math.cos(X);
+		    sinX = Math.sin(X);
+		    if (Math.abs(this.coslat0) <= EPSLN) {
+		      ts = tsfnz(this.e, lat * this.con, this.con * sinlat);
+		      rh = 2 * this.a * this.k0 * ts / this.cons;
+		      p.x = this.x0 + rh * Math.sin(lon - this.long0);
+		      p.y = this.y0 - this.con * rh * Math.cos(lon - this.long0);
+		      //trace(p.toString());
+		      return p;
+		    }
+		    else if (Math.abs(this.sinlat0) < EPSLN) {
+		      //Eq
+		      //trace('stere:equateur');
+		      A = 2 * this.a * this.k0 / (1 + cosX * Math.cos(dlon));
+		      p.y = A * sinX;
+		    }
+		    else {
+		      //other case
+		      //trace('stere:normal case');
+		      A = 2 * this.a * this.k0 * this.ms1 / (this.cosX0 * (1 + this.sinX0 * sinX + this.cosX0 * cosX * Math.cos(dlon)));
+		      p.y = A * (this.cosX0 * sinX - this.sinX0 * cosX * Math.cos(dlon)) + this.y0;
+		    }
+		    p.x = A * cosX * Math.sin(dlon) + this.x0;
+		  }
+		  //trace(p.toString());
+		  return p;
+		}
+
+		//* Stereographic inverse equations--mapping x,y to lat/long
+		function inverse$6(p) {
+		  p.x -= this.x0;
+		  p.y -= this.y0;
+		  var lon, lat, ts, ce, Chi;
+		  var rh = Math.sqrt(p.x * p.x + p.y * p.y);
+		  if (this.sphere) {
+		    var c = 2 * Math.atan(rh / (0.5 * this.a * this.k0));
+		    lon = this.long0;
+		    lat = this.lat0;
+		    if (rh <= EPSLN) {
+		      p.x = lon;
+		      p.y = lat;
+		      return p;
+		    }
+		    lat = Math.asin(Math.cos(c) * this.sinlat0 + p.y * Math.sin(c) * this.coslat0 / rh);
+		    if (Math.abs(this.coslat0) < EPSLN) {
+		      if (this.lat0 > 0) {
+		        lon = adjust_lon(this.long0 + Math.atan2(p.x, - 1 * p.y));
+		      }
+		      else {
+		        lon = adjust_lon(this.long0 + Math.atan2(p.x, p.y));
+		      }
+		    }
+		    else {
+		      lon = adjust_lon(this.long0 + Math.atan2(p.x * Math.sin(c), rh * this.coslat0 * Math.cos(c) - p.y * this.sinlat0 * Math.sin(c)));
+		    }
+		    p.x = lon;
+		    p.y = lat;
+		    return p;
+		  }
+		  else {
+		    if (Math.abs(this.coslat0) <= EPSLN) {
+		      if (rh <= EPSLN) {
+		        lat = this.lat0;
+		        lon = this.long0;
+		        p.x = lon;
+		        p.y = lat;
+		        //trace(p.toString());
+		        return p;
+		      }
+		      p.x *= this.con;
+		      p.y *= this.con;
+		      ts = rh * this.cons / (2 * this.a * this.k0);
+		      lat = this.con * phi2z(this.e, ts);
+		      lon = this.con * adjust_lon(this.con * this.long0 + Math.atan2(p.x, - 1 * p.y));
+		    }
+		    else {
+		      ce = 2 * Math.atan(rh * this.cosX0 / (2 * this.a * this.k0 * this.ms1));
+		      lon = this.long0;
+		      if (rh <= EPSLN) {
+		        Chi = this.X0;
+		      }
+		      else {
+		        Chi = Math.asin(Math.cos(ce) * this.sinX0 + p.y * Math.sin(ce) * this.cosX0 / rh);
+		        lon = adjust_lon(this.long0 + Math.atan2(p.x * Math.sin(ce), rh * this.cosX0 * Math.cos(ce) - p.y * this.sinX0 * Math.sin(ce)));
+		      }
+		      lat = -1 * phi2z(this.e, Math.tan(0.5 * (HALF_PI + Chi)));
+		    }
+		  }
+		  p.x = lon;
+		  p.y = lat;
+
+		  //trace(p.toString());
+		  return p;
+
+		}
+
+		var names$8 = ["stere", "Stereographic_South_Pole", "Polar Stereographic (variant B)"];
+		var stere = {
+		  init: init$7,
+		  forward: forward$6,
+		  inverse: inverse$6,
+		  names: names$8,
+		  ssfn_: ssfn_
+		};
+
+		/*
+		  references:
+		    Formules et constantes pour le Calcul pour la
+		    projection cylindrique conforme à axe oblique et pour la transformation entre
+		    des systèmes de référence.
+		    http://www.swisstopo.admin.ch/internet/swisstopo/fr/home/topics/survey/sys/refsys/switzerland.parsysrelated1.31216.downloadList.77004.DownloadFile.tmp/swissprojectionfr.pdf
+		  */
+
+		function init$8() {
+		  var phy0 = this.lat0;
+		  this.lambda0 = this.long0;
+		  var sinPhy0 = Math.sin(phy0);
+		  var semiMajorAxis = this.a;
+		  var invF = this.rf;
+		  var flattening = 1 / invF;
+		  var e2 = 2 * flattening - Math.pow(flattening, 2);
+		  var e = this.e = Math.sqrt(e2);
+		  this.R = this.k0 * semiMajorAxis * Math.sqrt(1 - e2) / (1 - e2 * Math.pow(sinPhy0, 2));
+		  this.alpha = Math.sqrt(1 + e2 / (1 - e2) * Math.pow(Math.cos(phy0), 4));
+		  this.b0 = Math.asin(sinPhy0 / this.alpha);
+		  var k1 = Math.log(Math.tan(Math.PI / 4 + this.b0 / 2));
+		  var k2 = Math.log(Math.tan(Math.PI / 4 + phy0 / 2));
+		  var k3 = Math.log((1 + e * sinPhy0) / (1 - e * sinPhy0));
+		  this.K = k1 - this.alpha * k2 + this.alpha * e / 2 * k3;
+		}
+
+		function forward$7(p) {
+		  var Sa1 = Math.log(Math.tan(Math.PI / 4 - p.y / 2));
+		  var Sa2 = this.e / 2 * Math.log((1 + this.e * Math.sin(p.y)) / (1 - this.e * Math.sin(p.y)));
+		  var S = -this.alpha * (Sa1 + Sa2) + this.K;
+
+		  // spheric latitude
+		  var b = 2 * (Math.atan(Math.exp(S)) - Math.PI / 4);
+
+		  // spheric longitude
+		  var I = this.alpha * (p.x - this.lambda0);
+
+		  // psoeudo equatorial rotation
+		  var rotI = Math.atan(Math.sin(I) / (Math.sin(this.b0) * Math.tan(b) + Math.cos(this.b0) * Math.cos(I)));
+
+		  var rotB = Math.asin(Math.cos(this.b0) * Math.sin(b) - Math.sin(this.b0) * Math.cos(b) * Math.cos(I));
+
+		  p.y = this.R / 2 * Math.log((1 + Math.sin(rotB)) / (1 - Math.sin(rotB))) + this.y0;
+		  p.x = this.R * rotI + this.x0;
+		  return p;
+		}
+
+		function inverse$7(p) {
+		  var Y = p.x - this.x0;
+		  var X = p.y - this.y0;
+
+		  var rotI = Y / this.R;
+		  var rotB = 2 * (Math.atan(Math.exp(X / this.R)) - Math.PI / 4);
+
+		  var b = Math.asin(Math.cos(this.b0) * Math.sin(rotB) + Math.sin(this.b0) * Math.cos(rotB) * Math.cos(rotI));
+		  var I = Math.atan(Math.sin(rotI) / (Math.cos(this.b0) * Math.cos(rotI) - Math.sin(this.b0) * Math.tan(rotB)));
+
+		  var lambda = this.lambda0 + I / this.alpha;
+
+		  var S = 0;
+		  var phy = b;
+		  var prevPhy = -1000;
+		  var iteration = 0;
+		  while (Math.abs(phy - prevPhy) > 0.0000001) {
+		    if (++iteration > 20) {
+		      //...reportError("omercFwdInfinity");
+		      return;
+		    }
+		    //S = Math.log(Math.tan(Math.PI / 4 + phy / 2));
+		    S = 1 / this.alpha * (Math.log(Math.tan(Math.PI / 4 + b / 2)) - this.K) + this.e * Math.log(Math.tan(Math.PI / 4 + Math.asin(this.e * Math.sin(phy)) / 2));
+		    prevPhy = phy;
+		    phy = 2 * Math.atan(Math.exp(S)) - Math.PI / 2;
+		  }
+
+		  p.x = lambda;
+		  p.y = phy;
+		  return p;
+		}
+
+		var names$9 = ["somerc"];
+		var somerc = {
+		  init: init$8,
+		  forward: forward$7,
+		  inverse: inverse$7,
+		  names: names$9
+		};
+
+		/* Initialize the Oblique Mercator  projection
+		    ------------------------------------------*/
+		function init$9() {
+		  this.no_off = this.no_off || false;
+		  this.no_rot = this.no_rot || false;
+
+		  if (isNaN(this.k0)) {
+		    this.k0 = 1;
+		  }
+		  var sinlat = Math.sin(this.lat0);
+		  var coslat = Math.cos(this.lat0);
+		  var con = this.e * sinlat;
+
+		  this.bl = Math.sqrt(1 + this.es / (1 - this.es) * Math.pow(coslat, 4));
+		  this.al = this.a * this.bl * this.k0 * Math.sqrt(1 - this.es) / (1 - con * con);
+		  var t0 = tsfnz(this.e, this.lat0, sinlat);
+		  var dl = this.bl / coslat * Math.sqrt((1 - this.es) / (1 - con * con));
+		  if (dl * dl < 1) {
+		    dl = 1;
+		  }
+		  var fl;
+		  var gl;
+		  if (!isNaN(this.longc)) {
+		    //Central point and azimuth method
+
+		    if (this.lat0 >= 0) {
+		      fl = dl + Math.sqrt(dl * dl - 1);
+		    }
+		    else {
+		      fl = dl - Math.sqrt(dl * dl - 1);
+		    }
+		    this.el = fl * Math.pow(t0, this.bl);
+		    gl = 0.5 * (fl - 1 / fl);
+		    this.gamma0 = Math.asin(Math.sin(this.alpha) / dl);
+		    this.long0 = this.longc - Math.asin(gl * Math.tan(this.gamma0)) / this.bl;
+
+		  }
+		  else {
+		    //2 points method
+		    var t1 = tsfnz(this.e, this.lat1, Math.sin(this.lat1));
+		    var t2 = tsfnz(this.e, this.lat2, Math.sin(this.lat2));
+		    if (this.lat0 >= 0) {
+		      this.el = (dl + Math.sqrt(dl * dl - 1)) * Math.pow(t0, this.bl);
+		    }
+		    else {
+		      this.el = (dl - Math.sqrt(dl * dl - 1)) * Math.pow(t0, this.bl);
+		    }
+		    var hl = Math.pow(t1, this.bl);
+		    var ll = Math.pow(t2, this.bl);
+		    fl = this.el / hl;
+		    gl = 0.5 * (fl - 1 / fl);
+		    var jl = (this.el * this.el - ll * hl) / (this.el * this.el + ll * hl);
+		    var pl = (ll - hl) / (ll + hl);
+		    var dlon12 = adjust_lon(this.long1 - this.long2);
+		    this.long0 = 0.5 * (this.long1 + this.long2) - Math.atan(jl * Math.tan(0.5 * this.bl * (dlon12)) / pl) / this.bl;
+		    this.long0 = adjust_lon(this.long0);
+		    var dlon10 = adjust_lon(this.long1 - this.long0);
+		    this.gamma0 = Math.atan(Math.sin(this.bl * (dlon10)) / gl);
+		    this.alpha = Math.asin(dl * Math.sin(this.gamma0));
+		  }
+
+		  if (this.no_off) {
+		    this.uc = 0;
+		  }
+		  else {
+		    if (this.lat0 >= 0) {
+		      this.uc = this.al / this.bl * Math.atan2(Math.sqrt(dl * dl - 1), Math.cos(this.alpha));
+		    }
+		    else {
+		      this.uc = -1 * this.al / this.bl * Math.atan2(Math.sqrt(dl * dl - 1), Math.cos(this.alpha));
+		    }
+		  }
+
+		}
+
+		/* Oblique Mercator forward equations--mapping lat,long to x,y
+		    ----------------------------------------------------------*/
+		function forward$8(p) {
+		  var lon = p.x;
+		  var lat = p.y;
+		  var dlon = adjust_lon(lon - this.long0);
+		  var us, vs;
+		  var con;
+		  if (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN) {
+		    if (lat > 0) {
+		      con = -1;
+		    }
+		    else {
+		      con = 1;
+		    }
+		    vs = this.al / this.bl * Math.log(Math.tan(FORTPI + con * this.gamma0 * 0.5));
+		    us = -1 * con * HALF_PI * this.al / this.bl;
+		  }
+		  else {
+		    var t = tsfnz(this.e, lat, Math.sin(lat));
+		    var ql = this.el / Math.pow(t, this.bl);
+		    var sl = 0.5 * (ql - 1 / ql);
+		    var tl = 0.5 * (ql + 1 / ql);
+		    var vl = Math.sin(this.bl * (dlon));
+		    var ul = (sl * Math.sin(this.gamma0) - vl * Math.cos(this.gamma0)) / tl;
+		    if (Math.abs(Math.abs(ul) - 1) <= EPSLN) {
+		      vs = Number.POSITIVE_INFINITY;
+		    }
+		    else {
+		      vs = 0.5 * this.al * Math.log((1 - ul) / (1 + ul)) / this.bl;
+		    }
+		    if (Math.abs(Math.cos(this.bl * (dlon))) <= EPSLN) {
+		      us = this.al * this.bl * (dlon);
+		    }
+		    else {
+		      us = this.al * Math.atan2(sl * Math.cos(this.gamma0) + vl * Math.sin(this.gamma0), Math.cos(this.bl * dlon)) / this.bl;
+		    }
+		  }
+
+		  if (this.no_rot) {
+		    p.x = this.x0 + us;
+		    p.y = this.y0 + vs;
+		  }
+		  else {
+
+		    us -= this.uc;
+		    p.x = this.x0 + vs * Math.cos(this.alpha) + us * Math.sin(this.alpha);
+		    p.y = this.y0 + us * Math.cos(this.alpha) - vs * Math.sin(this.alpha);
+		  }
+		  return p;
+		}
+
+		function inverse$8(p) {
+		  var us, vs;
+		  if (this.no_rot) {
+		    vs = p.y - this.y0;
+		    us = p.x - this.x0;
+		  }
+		  else {
+		    vs = (p.x - this.x0) * Math.cos(this.alpha) - (p.y - this.y0) * Math.sin(this.alpha);
+		    us = (p.y - this.y0) * Math.cos(this.alpha) + (p.x - this.x0) * Math.sin(this.alpha);
+		    us += this.uc;
+		  }
+		  var qp = Math.exp(-1 * this.bl * vs / this.al);
+		  var sp = 0.5 * (qp - 1 / qp);
+		  var tp = 0.5 * (qp + 1 / qp);
+		  var vp = Math.sin(this.bl * us / this.al);
+		  var up = (vp * Math.cos(this.gamma0) + sp * Math.sin(this.gamma0)) / tp;
+		  var ts = Math.pow(this.el / Math.sqrt((1 + up) / (1 - up)), 1 / this.bl);
+		  if (Math.abs(up - 1) < EPSLN) {
+		    p.x = this.long0;
+		    p.y = HALF_PI;
+		  }
+		  else if (Math.abs(up + 1) < EPSLN) {
+		    p.x = this.long0;
+		    p.y = -1 * HALF_PI;
+		  }
+		  else {
+		    p.y = phi2z(this.e, ts);
+		    p.x = adjust_lon(this.long0 - Math.atan2(sp * Math.cos(this.gamma0) - vp * Math.sin(this.gamma0), Math.cos(this.bl * us / this.al)) / this.bl);
+		  }
+		  return p;
+		}
+
+		var names$10 = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Oblique_Mercator_Azimuth_Natural_Origin", "Hotine_Oblique_Mercator_Azimuth_Center", "omerc"];
+		var omerc = {
+		  init: init$9,
+		  forward: forward$8,
+		  inverse: inverse$8,
+		  names: names$10
+		};
+
+		function init$10() {
+
+		  // array of:  r_maj,r_min,lat1,lat2,c_lon,c_lat,false_east,false_north
+		  //double c_lat;                   /* center latitude                      */
+		  //double c_lon;                   /* center longitude                     */
+		  //double lat1;                    /* first standard parallel              */
+		  //double lat2;                    /* second standard parallel             */
+		  //double r_maj;                   /* major axis                           */
+		  //double r_min;                   /* minor axis                           */
+		  //double false_east;              /* x offset in meters                   */
+		  //double false_north;             /* y offset in meters                   */
+
+		  if (!this.lat2) {
+		    this.lat2 = this.lat1;
+		  } //if lat2 is not defined
+		  if (!this.k0) {
+		    this.k0 = 1;
+		  }
+		  this.x0 = this.x0 || 0;
+		  this.y0 = this.y0 || 0;
+		  // Standard Parallels cannot be equal and on opposite sides of the equator
+		  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
+		    return;
+		  }
+
+		  var temp = this.b / this.a;
+		  this.e = Math.sqrt(1 - temp * temp);
+
+		  var sin1 = Math.sin(this.lat1);
+		  var cos1 = Math.cos(this.lat1);
+		  var ms1 = msfnz(this.e, sin1, cos1);
+		  var ts1 = tsfnz(this.e, this.lat1, sin1);
+
+		  var sin2 = Math.sin(this.lat2);
+		  var cos2 = Math.cos(this.lat2);
+		  var ms2 = msfnz(this.e, sin2, cos2);
+		  var ts2 = tsfnz(this.e, this.lat2, sin2);
+
+		  var ts0 = tsfnz(this.e, this.lat0, Math.sin(this.lat0));
+
+		  if (Math.abs(this.lat1 - this.lat2) > EPSLN) {
+		    this.ns = Math.log(ms1 / ms2) / Math.log(ts1 / ts2);
+		  }
+		  else {
+		    this.ns = sin1;
+		  }
+		  if (isNaN(this.ns)) {
+		    this.ns = sin1;
+		  }
+		  this.f0 = ms1 / (this.ns * Math.pow(ts1, this.ns));
+		  this.rh = this.a * this.f0 * Math.pow(ts0, this.ns);
+		  if (!this.title) {
+		    this.title = "Lambert Conformal Conic";
+		  }
+		}
+
+		// Lambert Conformal conic forward equations--mapping lat,long to x,y
+		// -----------------------------------------------------------------
+		function forward$9(p) {
+
+		  var lon = p.x;
+		  var lat = p.y;
+
+		  // singular cases :
+		  if (Math.abs(2 * Math.abs(lat) - Math.PI) <= EPSLN) {
+		    lat = sign(lat) * (HALF_PI - 2 * EPSLN);
+		  }
+
+		  var con = Math.abs(Math.abs(lat) - HALF_PI);
+		  var ts, rh1;
+		  if (con > EPSLN) {
+		    ts = tsfnz(this.e, lat, Math.sin(lat));
+		    rh1 = this.a * this.f0 * Math.pow(ts, this.ns);
+		  }
+		  else {
+		    con = lat * this.ns;
+		    if (con <= 0) {
+		      return null;
+		    }
+		    rh1 = 0;
+		  }
+		  var theta = this.ns * adjust_lon(lon - this.long0);
+		  p.x = this.k0 * (rh1 * Math.sin(theta)) + this.x0;
+		  p.y = this.k0 * (this.rh - rh1 * Math.cos(theta)) + this.y0;
+
+		  return p;
+		}
+
+		// Lambert Conformal Conic inverse equations--mapping x,y to lat/long
+		// -----------------------------------------------------------------
+		function inverse$9(p) {
+
+		  var rh1, con, ts;
+		  var lat, lon;
+		  var x = (p.x - this.x0) / this.k0;
+		  var y = (this.rh - (p.y - this.y0) / this.k0);
+		  if (this.ns > 0) {
+		    rh1 = Math.sqrt(x * x + y * y);
+		    con = 1;
+		  }
+		  else {
+		    rh1 = -Math.sqrt(x * x + y * y);
+		    con = -1;
+		  }
+		  var theta = 0;
+		  if (rh1 !== 0) {
+		    theta = Math.atan2((con * x), (con * y));
+		  }
+		  if ((rh1 !== 0) || (this.ns > 0)) {
+		    con = 1 / this.ns;
+		    ts = Math.pow((rh1 / (this.a * this.f0)), con);
+		    lat = phi2z(this.e, ts);
+		    if (lat === -9999) {
+		      return null;
+		    }
+		  }
+		  else {
+		    lat = -HALF_PI;
+		  }
+		  lon = adjust_lon(theta / this.ns + this.long0);
+
+		  p.x = lon;
+		  p.y = lat;
+		  return p;
+		}
+
+		var names$11 = ["Lambert Tangential Conformal Conic Projection", "Lambert_Conformal_Conic", "Lambert_Conformal_Conic_2SP", "lcc"];
+		var lcc = {
+		  init: init$10,
+		  forward: forward$9,
+		  inverse: inverse$9,
+		  names: names$11
+		};
+
+		function init$11() {
+		  this.a = 6377397.155;
+		  this.es = 0.006674372230614;
+		  this.e = Math.sqrt(this.es);
+		  if (!this.lat0) {
+		    this.lat0 = 0.863937979737193;
+		  }
+		  if (!this.long0) {
+		    this.long0 = 0.7417649320975901 - 0.308341501185665;
+		  }
+		  /* if scale not set default to 0.9999 */
+		  if (!this.k0) {
+		    this.k0 = 0.9999;
+		  }
+		  this.s45 = 0.785398163397448; /* 45 */
+		  this.s90 = 2 * this.s45;
+		  this.fi0 = this.lat0;
+		  this.e2 = this.es;
+		  this.e = Math.sqrt(this.e2);
+		  this.alfa = Math.sqrt(1 + (this.e2 * Math.pow(Math.cos(this.fi0), 4)) / (1 - this.e2));
+		  this.uq = 1.04216856380474;
+		  this.u0 = Math.asin(Math.sin(this.fi0) / this.alfa);
+		  this.g = Math.pow((1 + this.e * Math.sin(this.fi0)) / (1 - this.e * Math.sin(this.fi0)), this.alfa * this.e / 2);
+		  this.k = Math.tan(this.u0 / 2 + this.s45) / Math.pow(Math.tan(this.fi0 / 2 + this.s45), this.alfa) * this.g;
+		  this.k1 = this.k0;
+		  this.n0 = this.a * Math.sqrt(1 - this.e2) / (1 - this.e2 * Math.pow(Math.sin(this.fi0), 2));
+		  this.s0 = 1.37008346281555;
+		  this.n = Math.sin(this.s0);
+		  this.ro0 = this.k1 * this.n0 / Math.tan(this.s0);
+		  this.ad = this.s90 - this.uq;
+		}
+
+		/* ellipsoid */
+		/* calculate xy from lat/lon */
+		/* Constants, identical to inverse transform function */
+		function forward$10(p) {
+		  var gfi, u, deltav, s, d, eps, ro;
+		  var lon = p.x;
+		  var lat = p.y;
+		  var delta_lon = adjust_lon(lon - this.long0);
+		  /* Transformation */
+		  gfi = Math.pow(((1 + this.e * Math.sin(lat)) / (1 - this.e * Math.sin(lat))), (this.alfa * this.e / 2));
+		  u = 2 * (Math.atan(this.k * Math.pow(Math.tan(lat / 2 + this.s45), this.alfa) / gfi) - this.s45);
+		  deltav = -delta_lon * this.alfa;
+		  s = Math.asin(Math.cos(this.ad) * Math.sin(u) + Math.sin(this.ad) * Math.cos(u) * Math.cos(deltav));
+		  d = Math.asin(Math.cos(u) * Math.sin(deltav) / Math.cos(s));
+		  eps = this.n * d;
+		  ro = this.ro0 * Math.pow(Math.tan(this.s0 / 2 + this.s45), this.n) / Math.pow(Math.tan(s / 2 + this.s45), this.n);
+		  p.y = ro * Math.cos(eps) / 1;
+		  p.x = ro * Math.sin(eps) / 1;
+
+		  if (!this.czech) {
+		    p.y *= -1;
+		    p.x *= -1;
+		  }
+		  return (p);
+		}
+
+		/* calculate lat/lon from xy */
+		function inverse$10(p) {
+		  var u, deltav, s, d, eps, ro, fi1;
+		  var ok;
+
+		  /* Transformation */
+		  /* revert y, x*/
+		  var tmp = p.x;
+		  p.x = p.y;
+		  p.y = tmp;
+		  if (!this.czech) {
+		    p.y *= -1;
+		    p.x *= -1;
+		  }
+		  ro = Math.sqrt(p.x * p.x + p.y * p.y);
+		  eps = Math.atan2(p.y, p.x);
+		  d = eps / Math.sin(this.s0);
+		  s = 2 * (Math.atan(Math.pow(this.ro0 / ro, 1 / this.n) * Math.tan(this.s0 / 2 + this.s45)) - this.s45);
+		  u = Math.asin(Math.cos(this.ad) * Math.sin(s) - Math.sin(this.ad) * Math.cos(s) * Math.cos(d));
+		  deltav = Math.asin(Math.cos(s) * Math.sin(d) / Math.cos(u));
+		  p.x = this.long0 - deltav / this.alfa;
+		  fi1 = u;
+		  ok = 0;
+		  var iter = 0;
+		  do {
+		    p.y = 2 * (Math.atan(Math.pow(this.k, - 1 / this.alfa) * Math.pow(Math.tan(u / 2 + this.s45), 1 / this.alfa) * Math.pow((1 + this.e * Math.sin(fi1)) / (1 - this.e * Math.sin(fi1)), this.e / 2)) - this.s45);
+		    if (Math.abs(fi1 - p.y) < 0.0000000001) {
+		      ok = 1;
+		    }
+		    fi1 = p.y;
+		    iter += 1;
+		  } while (ok === 0 && iter < 15);
+		  if (iter >= 15) {
+		    return null;
+		  }
+
+		  return (p);
+		}
+
+		var names$12 = ["Krovak", "krovak"];
+		var krovak = {
+		  init: init$11,
+		  forward: forward$10,
+		  inverse: inverse$10,
+		  names: names$12
+		};
+
+		var mlfn = function(e0, e1, e2, e3, phi) {
+		  return (e0 * phi - e1 * Math.sin(2 * phi) + e2 * Math.sin(4 * phi) - e3 * Math.sin(6 * phi));
+		};
+
+		var e0fn = function(x) {
+		  return (1 - 0.25 * x * (1 + x / 16 * (3 + 1.25 * x)));
+		};
+
+		var e1fn = function(x) {
+		  return (0.375 * x * (1 + 0.25 * x * (1 + 0.46875 * x)));
+		};
+
+		var e2fn = function(x) {
+		  return (0.05859375 * x * x * (1 + 0.75 * x));
+		};
+
+		var e3fn = function(x) {
+		  return (x * x * x * (35 / 3072));
+		};
+
+		var gN = function(a, e, sinphi) {
+		  var temp = e * sinphi;
+		  return a / Math.sqrt(1 - temp * temp);
+		};
+
+		var adjust_lat = function(x) {
+		  return (Math.abs(x) < HALF_PI) ? x : (x - (sign(x) * Math.PI));
+		};
+
+		var imlfn = function(ml, e0, e1, e2, e3) {
+		  var phi;
+		  var dphi;
+
+		  phi = ml / e0;
+		  for (var i = 0; i < 15; i++) {
+		    dphi = (ml - (e0 * phi - e1 * Math.sin(2 * phi) + e2 * Math.sin(4 * phi) - e3 * Math.sin(6 * phi))) / (e0 - 2 * e1 * Math.cos(2 * phi) + 4 * e2 * Math.cos(4 * phi) - 6 * e3 * Math.cos(6 * phi));
+		    phi += dphi;
+		    if (Math.abs(dphi) <= 0.0000000001) {
+		      return phi;
+		    }
+		  }
+
+		  //..reportError("IMLFN-CONV:Latitude failed to converge after 15 iterations");
+		  return NaN;
+		};
+
+		function init$12() {
+		  if (!this.sphere) {
+		    this.e0 = e0fn(this.es);
+		    this.e1 = e1fn(this.es);
+		    this.e2 = e2fn(this.es);
+		    this.e3 = e3fn(this.es);
+		    this.ml0 = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0);
+		  }
+		}
+
+		/* Cassini forward equations--mapping lat,long to x,y
+		  -----------------------------------------------------------------------*/
+		function forward$11(p) {
+
+		  /* Forward equations
+		      -----------------*/
+		  var x, y;
+		  var lam = p.x;
+		  var phi = p.y;
+		  lam = adjust_lon(lam - this.long0);
+
+		  if (this.sphere) {
+		    x = this.a * Math.asin(Math.cos(phi) * Math.sin(lam));
+		    y = this.a * (Math.atan2(Math.tan(phi), Math.cos(lam)) - this.lat0);
+		  }
+		  else {
+		    //ellipsoid
+		    var sinphi = Math.sin(phi);
+		    var cosphi = Math.cos(phi);
+		    var nl = gN(this.a, this.e, sinphi);
+		    var tl = Math.tan(phi) * Math.tan(phi);
+		    var al = lam * Math.cos(phi);
+		    var asq = al * al;
+		    var cl = this.es * cosphi * cosphi / (1 - this.es);
+		    var ml = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, phi);
+
+		    x = nl * al * (1 - asq * tl * (1 / 6 - (8 - tl + 8 * cl) * asq / 120));
+		    y = ml - this.ml0 + nl * sinphi / cosphi * asq * (0.5 + (5 - tl + 6 * cl) * asq / 24);
+
+
+		  }
+
+		  p.x = x + this.x0;
+		  p.y = y + this.y0;
+		  return p;
+		}
+
+		/* Inverse equations
+		  -----------------*/
+		function inverse$11(p) {
+		  p.x -= this.x0;
+		  p.y -= this.y0;
+		  var x = p.x / this.a;
+		  var y = p.y / this.a;
+		  var phi, lam;
+
+		  if (this.sphere) {
+		    var dd = y + this.lat0;
+		    phi = Math.asin(Math.sin(dd) * Math.cos(x));
+		    lam = Math.atan2(Math.tan(x), Math.cos(dd));
+		  }
+		  else {
+		    /* ellipsoid */
+		    var ml1 = this.ml0 / this.a + y;
+		    var phi1 = imlfn(ml1, this.e0, this.e1, this.e2, this.e3);
+		    if (Math.abs(Math.abs(phi1) - HALF_PI) <= EPSLN) {
+		      p.x = this.long0;
+		      p.y = HALF_PI;
+		      if (y < 0) {
+		        p.y *= -1;
+		      }
+		      return p;
+		    }
+		    var nl1 = gN(this.a, this.e, Math.sin(phi1));
+
+		    var rl1 = nl1 * nl1 * nl1 / this.a / this.a * (1 - this.es);
+		    var tl1 = Math.pow(Math.tan(phi1), 2);
+		    var dl = x * this.a / nl1;
+		    var dsq = dl * dl;
+		    phi = phi1 - nl1 * Math.tan(phi1) / rl1 * dl * dl * (0.5 - (1 + 3 * tl1) * dl * dl / 24);
+		    lam = dl * (1 - dsq * (tl1 / 3 + (1 + 3 * tl1) * tl1 * dsq / 15)) / Math.cos(phi1);
+
+		  }
+
+		  p.x = adjust_lon(lam + this.long0);
+		  p.y = adjust_lat(phi);
+		  return p;
+
+		}
+
+		var names$13 = ["Cassini", "Cassini_Soldner", "cass"];
+		var cass = {
+		  init: init$12,
+		  forward: forward$11,
+		  inverse: inverse$11,
+		  names: names$13
+		};
+
+		var qsfnz = function(eccent, sinphi) {
+		  var con;
+		  if (eccent > 1.0e-7) {
+		    con = eccent * sinphi;
+		    return ((1 - eccent * eccent) * (sinphi / (1 - con * con) - (0.5 / eccent) * Math.log((1 - con) / (1 + con))));
+		  }
+		  else {
+		    return (2 * sinphi);
+		  }
+		};
+
+		/*
+		  reference
+		    "New Equal-Area Map Projections for Noncircular Regions", John P. Snyder,
+		    The American Cartographer, Vol 15, No. 4, October 1988, pp. 341-355.
+		  */
+
+		var S_POLE = 1;
+
+		var N_POLE = 2;
+		var EQUIT = 3;
+		var OBLIQ = 4;
+
+		/* Initialize the Lambert Azimuthal Equal Area projection
+		  ------------------------------------------------------*/
+		function init$13() {
+		  var t = Math.abs(this.lat0);
+		  if (Math.abs(t - HALF_PI) < EPSLN) {
+		    this.mode = this.lat0 < 0 ? this.S_POLE : this.N_POLE;
+		  }
+		  else if (Math.abs(t) < EPSLN) {
+		    this.mode = this.EQUIT;
+		  }
+		  else {
+		    this.mode = this.OBLIQ;
+		  }
+		  if (this.es > 0) {
+		    var sinphi;
+
+		    this.qp = qsfnz(this.e, 1);
+		    this.mmf = 0.5 / (1 - this.es);
+		    this.apa = authset(this.es);
+		    switch (this.mode) {
+		    case this.N_POLE:
+		      this.dd = 1;
+		      break;
+		    case this.S_POLE:
+		      this.dd = 1;
+		      break;
+		    case this.EQUIT:
+		      this.rq = Math.sqrt(0.5 * this.qp);
+		      this.dd = 1 / this.rq;
+		      this.xmf = 1;
+		      this.ymf = 0.5 * this.qp;
+		      break;
+		    case this.OBLIQ:
+		      this.rq = Math.sqrt(0.5 * this.qp);
+		      sinphi = Math.sin(this.lat0);
+		      this.sinb1 = qsfnz(this.e, sinphi) / this.qp;
+		      this.cosb1 = Math.sqrt(1 - this.sinb1 * this.sinb1);
+		      this.dd = Math.cos(this.lat0) / (Math.sqrt(1 - this.es * sinphi * sinphi) * this.rq * this.cosb1);
+		      this.ymf = (this.xmf = this.rq) / this.dd;
+		      this.xmf *= this.dd;
+		      break;
+		    }
+		  }
+		  else {
+		    if (this.mode === this.OBLIQ) {
+		      this.sinph0 = Math.sin(this.lat0);
+		      this.cosph0 = Math.cos(this.lat0);
+		    }
+		  }
+		}
+
+		/* Lambert Azimuthal Equal Area forward equations--mapping lat,long to x,y
+		  -----------------------------------------------------------------------*/
+		function forward$12(p) {
+
+		  /* Forward equations
+		      -----------------*/
+		  var x, y, coslam, sinlam, sinphi, q, sinb, cosb, b, cosphi;
+		  var lam = p.x;
+		  var phi = p.y;
+
+		  lam = adjust_lon(lam - this.long0);
+		  if (this.sphere) {
+		    sinphi = Math.sin(phi);
+		    cosphi = Math.cos(phi);
+		    coslam = Math.cos(lam);
+		    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
+		      y = (this.mode === this.EQUIT) ? 1 + cosphi * coslam : 1 + this.sinph0 * sinphi + this.cosph0 * cosphi * coslam;
+		      if (y <= EPSLN) {
+		        return null;
+		      }
+		      y = Math.sqrt(2 / y);
+		      x = y * cosphi * Math.sin(lam);
+		      y *= (this.mode === this.EQUIT) ? sinphi : this.cosph0 * sinphi - this.sinph0 * cosphi * coslam;
+		    }
+		    else if (this.mode === this.N_POLE || this.mode === this.S_POLE) {
+		      if (this.mode === this.N_POLE) {
+		        coslam = -coslam;
+		      }
+		      if (Math.abs(phi + this.phi0) < EPSLN) {
+		        return null;
+		      }
+		      y = FORTPI - phi * 0.5;
+		      y = 2 * ((this.mode === this.S_POLE) ? Math.cos(y) : Math.sin(y));
+		      x = y * Math.sin(lam);
+		      y *= coslam;
+		    }
+		  }
+		  else {
+		    sinb = 0;
+		    cosb = 0;
+		    b = 0;
+		    coslam = Math.cos(lam);
+		    sinlam = Math.sin(lam);
+		    sinphi = Math.sin(phi);
+		    q = qsfnz(this.e, sinphi);
+		    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
+		      sinb = q / this.qp;
+		      cosb = Math.sqrt(1 - sinb * sinb);
+		    }
+		    switch (this.mode) {
+		    case this.OBLIQ:
+		      b = 1 + this.sinb1 * sinb + this.cosb1 * cosb * coslam;
+		      break;
+		    case this.EQUIT:
+		      b = 1 + cosb * coslam;
+		      break;
+		    case this.N_POLE:
+		      b = HALF_PI + phi;
+		      q = this.qp - q;
+		      break;
+		    case this.S_POLE:
+		      b = phi - HALF_PI;
+		      q = this.qp + q;
+		      break;
+		    }
+		    if (Math.abs(b) < EPSLN) {
+		      return null;
+		    }
+		    switch (this.mode) {
+		    case this.OBLIQ:
+		    case this.EQUIT:
+		      b = Math.sqrt(2 / b);
+		      if (this.mode === this.OBLIQ) {
+		        y = this.ymf * b * (this.cosb1 * sinb - this.sinb1 * cosb * coslam);
+		      }
+		      else {
+		        y = (b = Math.sqrt(2 / (1 + cosb * coslam))) * sinb * this.ymf;
+		      }
+		      x = this.xmf * b * cosb * sinlam;
+		      break;
+		    case this.N_POLE:
+		    case this.S_POLE:
+		      if (q >= 0) {
+		        x = (b = Math.sqrt(q)) * sinlam;
+		        y = coslam * ((this.mode === this.S_POLE) ? b : -b);
+		      }
+		      else {
+		        x = y = 0;
+		      }
+		      break;
+		    }
+		  }
+
+		  p.x = this.a * x + this.x0;
+		  p.y = this.a * y + this.y0;
+		  return p;
+		}
+
+		/* Inverse equations
+		  -----------------*/
+		function inverse$12(p) {
+		  p.x -= this.x0;
+		  p.y -= this.y0;
+		  var x = p.x / this.a;
+		  var y = p.y / this.a;
+		  var lam, phi, cCe, sCe, q, rho, ab;
+		  if (this.sphere) {
+		    var cosz = 0,
+		      rh, sinz = 0;
+
+		    rh = Math.sqrt(x * x + y * y);
+		    phi = rh * 0.5;
+		    if (phi > 1) {
+		      return null;
+		    }
+		    phi = 2 * Math.asin(phi);
+		    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
+		      sinz = Math.sin(phi);
+		      cosz = Math.cos(phi);
+		    }
+		    switch (this.mode) {
+		    case this.EQUIT:
+		      phi = (Math.abs(rh) <= EPSLN) ? 0 : Math.asin(y * sinz / rh);
+		      x *= sinz;
+		      y = cosz * rh;
+		      break;
+		    case this.OBLIQ:
+		      phi = (Math.abs(rh) <= EPSLN) ? this.phi0 : Math.asin(cosz * this.sinph0 + y * sinz * this.cosph0 / rh);
+		      x *= sinz * this.cosph0;
+		      y = (cosz - Math.sin(phi) * this.sinph0) * rh;
+		      break;
+		    case this.N_POLE:
+		      y = -y;
+		      phi = HALF_PI - phi;
+		      break;
+		    case this.S_POLE:
+		      phi -= HALF_PI;
+		      break;
+		    }
+		    lam = (y === 0 && (this.mode === this.EQUIT || this.mode === this.OBLIQ)) ? 0 : Math.atan2(x, y);
+		  }
+		  else {
+		    ab = 0;
+		    if (this.mode === this.OBLIQ || this.mode === this.EQUIT) {
+		      x /= this.dd;
+		      y *= this.dd;
+		      rho = Math.sqrt(x * x + y * y);
+		      if (rho < EPSLN) {
+		        p.x = 0;
+		        p.y = this.phi0;
+		        return p;
+		      }
+		      sCe = 2 * Math.asin(0.5 * rho / this.rq);
+		      cCe = Math.cos(sCe);
+		      x *= (sCe = Math.sin(sCe));
+		      if (this.mode === this.OBLIQ) {
+		        ab = cCe * this.sinb1 + y * sCe * this.cosb1 / rho;
+		        q = this.qp * ab;
+		        y = rho * this.cosb1 * cCe - y * this.sinb1 * sCe;
+		      }
+		      else {
+		        ab = y * sCe / rho;
+		        q = this.qp * ab;
+		        y = rho * cCe;
+		      }
+		    }
+		    else if (this.mode === this.N_POLE || this.mode === this.S_POLE) {
+		      if (this.mode === this.N_POLE) {
+		        y = -y;
+		      }
+		      q = (x * x + y * y);
+		      if (!q) {
+		        p.x = 0;
+		        p.y = this.phi0;
+		        return p;
+		      }
+		      ab = 1 - q / this.qp;
+		      if (this.mode === this.S_POLE) {
+		        ab = -ab;
+		      }
+		    }
+		    lam = Math.atan2(x, y);
+		    phi = authlat(Math.asin(ab), this.apa);
+		  }
+
+		  p.x = adjust_lon(this.long0 + lam);
+		  p.y = phi;
+		  return p;
+		}
+
+		/* determine latitude from authalic latitude */
+		var P00 = 0.33333333333333333333;
+
+		var P01 = 0.17222222222222222222;
+		var P02 = 0.10257936507936507936;
+		var P10 = 0.06388888888888888888;
+		var P11 = 0.06640211640211640211;
+		var P20 = 0.01641501294219154443;
+
+		function authset(es) {
+		  var t;
+		  var APA = [];
+		  APA[0] = es * P00;
+		  t = es * es;
+		  APA[0] += t * P01;
+		  APA[1] = t * P10;
+		  t *= es;
+		  APA[0] += t * P02;
+		  APA[1] += t * P11;
+		  APA[2] = t * P20;
+		  return APA;
+		}
+
+		function authlat(beta, APA) {
+		  var t = beta + beta;
+		  return (beta + APA[0] * Math.sin(t) + APA[1] * Math.sin(t + t) + APA[2] * Math.sin(t + t + t));
+		}
+
+		var names$14 = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area", "laea"];
+		var laea = {
+		  init: init$13,
+		  forward: forward$12,
+		  inverse: inverse$12,
+		  names: names$14,
+		  S_POLE: S_POLE,
+		  N_POLE: N_POLE,
+		  EQUIT: EQUIT,
+		  OBLIQ: OBLIQ
+		};
+
+		var asinz = function(x) {
+		  if (Math.abs(x) > 1) {
+		    x = (x > 1) ? 1 : -1;
+		  }
+		  return Math.asin(x);
+		};
+
+		function init$14() {
+
+		  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
+		    return;
+		  }
+		  this.temp = this.b / this.a;
+		  this.es = 1 - Math.pow(this.temp, 2);
+		  this.e3 = Math.sqrt(this.es);
+
+		  this.sin_po = Math.sin(this.lat1);
+		  this.cos_po = Math.cos(this.lat1);
+		  this.t1 = this.sin_po;
+		  this.con = this.sin_po;
+		  this.ms1 = msfnz(this.e3, this.sin_po, this.cos_po);
+		  this.qs1 = qsfnz(this.e3, this.sin_po, this.cos_po);
+
+		  this.sin_po = Math.sin(this.lat2);
+		  this.cos_po = Math.cos(this.lat2);
+		  this.t2 = this.sin_po;
+		  this.ms2 = msfnz(this.e3, this.sin_po, this.cos_po);
+		  this.qs2 = qsfnz(this.e3, this.sin_po, this.cos_po);
+
+		  this.sin_po = Math.sin(this.lat0);
+		  this.cos_po = Math.cos(this.lat0);
+		  this.t3 = this.sin_po;
+		  this.qs0 = qsfnz(this.e3, this.sin_po, this.cos_po);
+
+		  if (Math.abs(this.lat1 - this.lat2) > EPSLN) {
+		    this.ns0 = (this.ms1 * this.ms1 - this.ms2 * this.ms2) / (this.qs2 - this.qs1);
+		  }
+		  else {
+		    this.ns0 = this.con;
+		  }
+		  this.c = this.ms1 * this.ms1 + this.ns0 * this.qs1;
+		  this.rh = this.a * Math.sqrt(this.c - this.ns0 * this.qs0) / this.ns0;
+		}
+
+		/* Albers Conical Equal Area forward equations--mapping lat,long to x,y
+		  -------------------------------------------------------------------*/
+		function forward$13(p) {
+
+		  var lon = p.x;
+		  var lat = p.y;
+
+		  this.sin_phi = Math.sin(lat);
+		  this.cos_phi = Math.cos(lat);
+
+		  var qs = qsfnz(this.e3, this.sin_phi, this.cos_phi);
+		  var rh1 = this.a * Math.sqrt(this.c - this.ns0 * qs) / this.ns0;
+		  var theta = this.ns0 * adjust_lon(lon - this.long0);
+		  var x = rh1 * Math.sin(theta) + this.x0;
+		  var y = this.rh - rh1 * Math.cos(theta) + this.y0;
+
+		  p.x = x;
+		  p.y = y;
+		  return p;
+		}
+
+		function inverse$13(p) {
+		  var rh1, qs, con, theta, lon, lat;
+
+		  p.x -= this.x0;
+		  p.y = this.rh - p.y + this.y0;
+		  if (this.ns0 >= 0) {
+		    rh1 = Math.sqrt(p.x * p.x + p.y * p.y);
+		    con = 1;
+		  }
+		  else {
+		    rh1 = -Math.sqrt(p.x * p.x + p.y * p.y);
+		    con = -1;
+		  }
+		  theta = 0;
+		  if (rh1 !== 0) {
+		    theta = Math.atan2(con * p.x, con * p.y);
+		  }
+		  con = rh1 * this.ns0 / this.a;
+		  if (this.sphere) {
+		    lat = Math.asin((this.c - con * con) / (2 * this.ns0));
+		  }
+		  else {
+		    qs = (this.c - con * con) / this.ns0;
+		    lat = this.phi1z(this.e3, qs);
+		  }
+
+		  lon = adjust_lon(theta / this.ns0 + this.long0);
+		  p.x = lon;
+		  p.y = lat;
+		  return p;
+		}
+
+		/* Function to compute phi1, the latitude for the inverse of the
+		   Albers Conical Equal-Area projection.
+		-------------------------------------------*/
+		function phi1z(eccent, qs) {
+		  var sinphi, cosphi, con, com, dphi;
+		  var phi = asinz(0.5 * qs);
+		  if (eccent < EPSLN) {
+		    return phi;
+		  }
+
+		  var eccnts = eccent * eccent;
+		  for (var i = 1; i <= 25; i++) {
+		    sinphi = Math.sin(phi);
+		    cosphi = Math.cos(phi);
+		    con = eccent * sinphi;
+		    com = 1 - con * con;
+		    dphi = 0.5 * com * com / cosphi * (qs / (1 - eccnts) - sinphi / com + 0.5 / eccent * Math.log((1 - con) / (1 + con)));
+		    phi = phi + dphi;
+		    if (Math.abs(dphi) <= 1e-7) {
+		      return phi;
+		    }
+		  }
+		  return null;
+		}
+
+		var names$15 = ["Albers_Conic_Equal_Area", "Albers", "aea"];
+		var aea = {
+		  init: init$14,
+		  forward: forward$13,
+		  inverse: inverse$13,
+		  names: names$15,
+		  phi1z: phi1z
+		};
+
+		/*
+		  reference:
+		    Wolfram Mathworld "Gnomonic Projection"
+		    http://mathworld.wolfram.com/GnomonicProjection.html
+		    Accessed: 12th November 2009
+		  */
+		function init$15() {
+
+		  /* Place parameters in static storage for common use
+		      -------------------------------------------------*/
+		  this.sin_p14 = Math.sin(this.lat0);
+		  this.cos_p14 = Math.cos(this.lat0);
+		  // Approximation for projecting points to the horizon (infinity)
+		  this.infinity_dist = 1000 * this.a;
+		  this.rc = 1;
+		}
+
+		/* Gnomonic forward equations--mapping lat,long to x,y
+		    ---------------------------------------------------*/
+		function forward$14(p) {
+		  var sinphi, cosphi; /* sin and cos value        */
+		  var dlon; /* delta longitude value      */
+		  var coslon; /* cos of longitude        */
+		  var ksp; /* scale factor          */
+		  var g;
+		  var x, y;
+		  var lon = p.x;
+		  var lat = p.y;
+		  /* Forward equations
+		      -----------------*/
+		  dlon = adjust_lon(lon - this.long0);
+
+		  sinphi = Math.sin(lat);
+		  cosphi = Math.cos(lat);
+
+		  coslon = Math.cos(dlon);
+		  g = this.sin_p14 * sinphi + this.cos_p14 * cosphi * coslon;
+		  ksp = 1;
+		  if ((g > 0) || (Math.abs(g) <= EPSLN)) {
+		    x = this.x0 + this.a * ksp * cosphi * Math.sin(dlon) / g;
+		    y = this.y0 + this.a * ksp * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon) / g;
+		  }
+		  else {
+
+		    // Point is in the opposing hemisphere and is unprojectable
+		    // We still need to return a reasonable point, so we project
+		    // to infinity, on a bearing
+		    // equivalent to the northern hemisphere equivalent
+		    // This is a reasonable approximation for short shapes and lines that
+		    // straddle the horizon.
+
+		    x = this.x0 + this.infinity_dist * cosphi * Math.sin(dlon);
+		    y = this.y0 + this.infinity_dist * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon);
+
+		  }
+		  p.x = x;
+		  p.y = y;
+		  return p;
+		}
+
+		function inverse$14(p) {
+		  var rh; /* Rho */
+		  var sinc, cosc;
+		  var c;
+		  var lon, lat;
+
+		  /* Inverse equations
+		      -----------------*/
+		  p.x = (p.x - this.x0) / this.a;
+		  p.y = (p.y - this.y0) / this.a;
+
+		  p.x /= this.k0;
+		  p.y /= this.k0;
+
+		  if ((rh = Math.sqrt(p.x * p.x + p.y * p.y))) {
+		    c = Math.atan2(rh, this.rc);
+		    sinc = Math.sin(c);
+		    cosc = Math.cos(c);
+
+		    lat = asinz(cosc * this.sin_p14 + (p.y * sinc * this.cos_p14) / rh);
+		    lon = Math.atan2(p.x * sinc, rh * this.cos_p14 * cosc - p.y * this.sin_p14 * sinc);
+		    lon = adjust_lon(this.long0 + lon);
+		  }
+		  else {
+		    lat = this.phic0;
+		    lon = 0;
+		  }
+
+		  p.x = lon;
+		  p.y = lat;
+		  return p;
+		}
+
+		var names$16 = ["gnom"];
+		var gnom = {
+		  init: init$15,
+		  forward: forward$14,
+		  inverse: inverse$14,
+		  names: names$16
+		};
+
+		var iqsfnz = function(eccent, q) {
+		  var temp = 1 - (1 - eccent * eccent) / (2 * eccent) * Math.log((1 - eccent) / (1 + eccent));
+		  if (Math.abs(Math.abs(q) - temp) < 1.0E-6) {
+		    if (q < 0) {
+		      return (-1 * HALF_PI);
+		    }
+		    else {
+		      return HALF_PI;
+		    }
+		  }
+		  //var phi = 0.5* q/(1-eccent*eccent);
+		  var phi = Math.asin(0.5 * q);
+		  var dphi;
+		  var sin_phi;
+		  var cos_phi;
+		  var con;
+		  for (var i = 0; i < 30; i++) {
+		    sin_phi = Math.sin(phi);
+		    cos_phi = Math.cos(phi);
+		    con = eccent * sin_phi;
+		    dphi = Math.pow(1 - con * con, 2) / (2 * cos_phi) * (q / (1 - eccent * eccent) - sin_phi / (1 - con * con) + 0.5 / eccent * Math.log((1 - con) / (1 + con)));
+		    phi += dphi;
+		    if (Math.abs(dphi) <= 0.0000000001) {
+		      return phi;
+		    }
+		  }
+
+		  //console.log("IQSFN-CONV:Latitude failed to converge after 30 iterations");
+		  return NaN;
+		};
+
+		/*
+		  reference:
+		    "Cartographic Projection Procedures for the UNIX Environment-
+		    A User's Manual" by Gerald I. Evenden,
+		    USGS Open File Report 90-284and Release 4 Interim Reports (2003)
+		*/
+		function init$16() {
+		  //no-op
+		  if (!this.sphere) {
+		    this.k0 = msfnz(this.e, Math.sin(this.lat_ts), Math.cos(this.lat_ts));
+		  }
+		}
+
+		/* Cylindrical Equal Area forward equations--mapping lat,long to x,y
+		    ------------------------------------------------------------*/
+		function forward$15(p) {
+		  var lon = p.x;
+		  var lat = p.y;
+		  var x, y;
+		  /* Forward equations
+		      -----------------*/
+		  var dlon = adjust_lon(lon - this.long0);
+		  if (this.sphere) {
+		    x = this.x0 + this.a * dlon * Math.cos(this.lat_ts);
+		    y = this.y0 + this.a * Math.sin(lat) / Math.cos(this.lat_ts);
+		  }
+		  else {
+		    var qs = qsfnz(this.e, Math.sin(lat));
+		    x = this.x0 + this.a * this.k0 * dlon;
+		    y = this.y0 + this.a * qs * 0.5 / this.k0;
+		  }
+
+		  p.x = x;
+		  p.y = y;
+		  return p;
+		}
+
+		/* Cylindrical Equal Area inverse equations--mapping x,y to lat/long
+		    ------------------------------------------------------------*/
+		function inverse$15(p) {
+		  p.x -= this.x0;
+		  p.y -= this.y0;
+		  var lon, lat;
+
+		  if (this.sphere) {
+		    lon = adjust_lon(this.long0 + (p.x / this.a) / Math.cos(this.lat_ts));
+		    lat = Math.asin((p.y / this.a) * Math.cos(this.lat_ts));
+		  }
+		  else {
+		    lat = iqsfnz(this.e, 2 * p.y * this.k0 / this.a);
+		    lon = adjust_lon(this.long0 + p.x / (this.a * this.k0));
+		  }
+
+		  p.x = lon;
+		  p.y = lat;
+		  return p;
+		}
+
+		var names$17 = ["cea"];
+		var cea = {
+		  init: init$16,
+		  forward: forward$15,
+		  inverse: inverse$15,
+		  names: names$17
+		};
+
+		function init$17() {
+
+		  this.x0 = this.x0 || 0;
+		  this.y0 = this.y0 || 0;
+		  this.lat0 = this.lat0 || 0;
+		  this.long0 = this.long0 || 0;
+		  this.lat_ts = this.lat_ts || 0;
+		  this.title = this.title || "Equidistant Cylindrical (Plate Carre)";
+
+		  this.rc = Math.cos(this.lat_ts);
+		}
+
+		// forward equations--mapping lat,long to x,y
+		// -----------------------------------------------------------------
+		function forward$16(p) {
+
+		  var lon = p.x;
+		  var lat = p.y;
+
+		  var dlon = adjust_lon(lon - this.long0);
+		  var dlat = adjust_lat(lat - this.lat0);
+		  p.x = this.x0 + (this.a * dlon * this.rc);
+		  p.y = this.y0 + (this.a * dlat);
+		  return p;
+		}
+
+		// inverse equations--mapping x,y to lat/long
+		// -----------------------------------------------------------------
+		function inverse$16(p) {
+
+		  var x = p.x;
+		  var y = p.y;
+
+		  p.x = adjust_lon(this.long0 + ((x - this.x0) / (this.a * this.rc)));
+		  p.y = adjust_lat(this.lat0 + ((y - this.y0) / (this.a)));
+		  return p;
+		}
+
+		var names$18 = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
+		var eqc = {
+		  init: init$17,
+		  forward: forward$16,
+		  inverse: inverse$16,
+		  names: names$18
+		};
+
+		var MAX_ITER$2 = 20;
+
+		function init$18() {
+		  /* Place parameters in static storage for common use
+		      -------------------------------------------------*/
+		  this.temp = this.b / this.a;
+		  this.es = 1 - Math.pow(this.temp, 2); // devait etre dans tmerc.js mais n y est pas donc je commente sinon retour de valeurs nulles
+		  this.e = Math.sqrt(this.es);
+		  this.e0 = e0fn(this.es);
+		  this.e1 = e1fn(this.es);
+		  this.e2 = e2fn(this.es);
+		  this.e3 = e3fn(this.es);
+		  this.ml0 = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0); //si que des zeros le calcul ne se fait pas
+		}
+
+		/* Polyconic forward equations--mapping lat,long to x,y
+		    ---------------------------------------------------*/
+		function forward$17(p) {
+		  var lon = p.x;
+		  var lat = p.y;
+		  var x, y, el;
+		  var dlon = adjust_lon(lon - this.long0);
+		  el = dlon * Math.sin(lat);
+		  if (this.sphere) {
+		    if (Math.abs(lat) <= EPSLN) {
+		      x = this.a * dlon;
+		      y = -1 * this.a * this.lat0;
+		    }
+		    else {
+		      x = this.a * Math.sin(el) / Math.tan(lat);
+		      y = this.a * (adjust_lat(lat - this.lat0) + (1 - Math.cos(el)) / Math.tan(lat));
+		    }
+		  }
+		  else {
+		    if (Math.abs(lat) <= EPSLN) {
+		      x = this.a * dlon;
+		      y = -1 * this.ml0;
+		    }
+		    else {
+		      var nl = gN(this.a, this.e, Math.sin(lat)) / Math.tan(lat);
+		      x = nl * Math.sin(el);
+		      y = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, lat) - this.ml0 + nl * (1 - Math.cos(el));
+		    }
+
+		  }
+		  p.x = x + this.x0;
+		  p.y = y + this.y0;
+		  return p;
+		}
+
+		/* Inverse equations
+		  -----------------*/
+		function inverse$17(p) {
+		  var lon, lat, x, y, i;
+		  var al, bl;
+		  var phi, dphi;
+		  x = p.x - this.x0;
+		  y = p.y - this.y0;
+
+		  if (this.sphere) {
+		    if (Math.abs(y + this.a * this.lat0) <= EPSLN) {
+		      lon = adjust_lon(x / this.a + this.long0);
+		      lat = 0;
+		    }
+		    else {
+		      al = this.lat0 + y / this.a;
+		      bl = x * x / this.a / this.a + al * al;
+		      phi = al;
+		      var tanphi;
+		      for (i = MAX_ITER$2; i; --i) {
+		        tanphi = Math.tan(phi);
+		        dphi = -1 * (al * (phi * tanphi + 1) - phi - 0.5 * (phi * phi + bl) * tanphi) / ((phi - al) / tanphi - 1);
+		        phi += dphi;
+		        if (Math.abs(dphi) <= EPSLN) {
+		          lat = phi;
+		          break;
+		        }
+		      }
+		      lon = adjust_lon(this.long0 + (Math.asin(x * Math.tan(phi) / this.a)) / Math.sin(lat));
+		    }
+		  }
+		  else {
+		    if (Math.abs(y + this.ml0) <= EPSLN) {
+		      lat = 0;
+		      lon = adjust_lon(this.long0 + x / this.a);
+		    }
+		    else {
+
+		      al = (this.ml0 + y) / this.a;
+		      bl = x * x / this.a / this.a + al * al;
+		      phi = al;
+		      var cl, mln, mlnp, ma;
+		      var con;
+		      for (i = MAX_ITER$2; i; --i) {
+		        con = this.e * Math.sin(phi);
+		        cl = Math.sqrt(1 - con * con) * Math.tan(phi);
+		        mln = this.a * mlfn(this.e0, this.e1, this.e2, this.e3, phi);
+		        mlnp = this.e0 - 2 * this.e1 * Math.cos(2 * phi) + 4 * this.e2 * Math.cos(4 * phi) - 6 * this.e3 * Math.cos(6 * phi);
+		        ma = mln / this.a;
+		        dphi = (al * (cl * ma + 1) - ma - 0.5 * cl * (ma * ma + bl)) / (this.es * Math.sin(2 * phi) * (ma * ma + bl - 2 * al * ma) / (4 * cl) + (al - ma) * (cl * mlnp - 2 / Math.sin(2 * phi)) - mlnp);
+		        phi -= dphi;
+		        if (Math.abs(dphi) <= EPSLN) {
+		          lat = phi;
+		          break;
+		        }
+		      }
+
+		      //lat=phi4z(this.e,this.e0,this.e1,this.e2,this.e3,al,bl,0,0);
+		      cl = Math.sqrt(1 - this.es * Math.pow(Math.sin(lat), 2)) * Math.tan(lat);
+		      lon = adjust_lon(this.long0 + Math.asin(x * cl / this.a) / Math.sin(lat));
+		    }
+		  }
+
+		  p.x = lon;
+		  p.y = lat;
+		  return p;
+		}
+
+		var names$19 = ["Polyconic", "poly"];
+		var poly = {
+		  init: init$18,
+		  forward: forward$17,
+		  inverse: inverse$17,
+		  names: names$19
+		};
+
+		/*
+		  reference
+		    Department of Land and Survey Technical Circular 1973/32
+		      http://www.linz.govt.nz/docs/miscellaneous/nz-map-definition.pdf
+		    OSG Technical Report 4.1
+		      http://www.linz.govt.nz/docs/miscellaneous/nzmg.pdf
+		  */
+
+		/**
+		 * iterations: Number of iterations to refine inverse transform.
+		 *     0 -> km accuracy
+		 *     1 -> m accuracy -- suitable for most mapping applications
+		 *     2 -> mm accuracy
+		 */
+
+
+		function init$19() {
+		  this.A = [];
+		  this.A[1] = 0.6399175073;
+		  this.A[2] = -0.1358797613;
+		  this.A[3] = 0.063294409;
+		  this.A[4] = -0.02526853;
+		  this.A[5] = 0.0117879;
+		  this.A[6] = -0.0055161;
+		  this.A[7] = 0.0026906;
+		  this.A[8] = -0.001333;
+		  this.A[9] = 0.00067;
+		  this.A[10] = -0.00034;
+
+		  this.B_re = [];
+		  this.B_im = [];
+		  this.B_re[1] = 0.7557853228;
+		  this.B_im[1] = 0;
+		  this.B_re[2] = 0.249204646;
+		  this.B_im[2] = 0.003371507;
+		  this.B_re[3] = -0.001541739;
+		  this.B_im[3] = 0.041058560;
+		  this.B_re[4] = -0.10162907;
+		  this.B_im[4] = 0.01727609;
+		  this.B_re[5] = -0.26623489;
+		  this.B_im[5] = -0.36249218;
+		  this.B_re[6] = -0.6870983;
+		  this.B_im[6] = -1.1651967;
+
+		  this.C_re = [];
+		  this.C_im = [];
+		  this.C_re[1] = 1.3231270439;
+		  this.C_im[1] = 0;
+		  this.C_re[2] = -0.577245789;
+		  this.C_im[2] = -0.007809598;
+		  this.C_re[3] = 0.508307513;
+		  this.C_im[3] = -0.112208952;
+		  this.C_re[4] = -0.15094762;
+		  this.C_im[4] = 0.18200602;
+		  this.C_re[5] = 1.01418179;
+		  this.C_im[5] = 1.64497696;
+		  this.C_re[6] = 1.9660549;
+		  this.C_im[6] = 2.5127645;
+
+		  this.D = [];
+		  this.D[1] = 1.5627014243;
+		  this.D[2] = 0.5185406398;
+		  this.D[3] = -0.03333098;
+		  this.D[4] = -0.1052906;
+		  this.D[5] = -0.0368594;
+		  this.D[6] = 0.007317;
+		  this.D[7] = 0.01220;
+		  this.D[8] = 0.00394;
+		  this.D[9] = -0.0013;
+		}
+
+		/**
+		    New Zealand Map Grid Forward  - long/lat to x/y
+		    long/lat in radians
+		  */
+		function forward$18(p) {
+		  var n;
+		  var lon = p.x;
+		  var lat = p.y;
+
+		  var delta_lat = lat - this.lat0;
+		  var delta_lon = lon - this.long0;
+
+		  // 1. Calculate d_phi and d_psi    ...                          // and d_lambda
+		  // For this algorithm, delta_latitude is in seconds of arc x 10-5, so we need to scale to those units. Longitude is radians.
+		  var d_phi = delta_lat / SEC_TO_RAD * 1E-5;
+		  var d_lambda = delta_lon;
+		  var d_phi_n = 1; // d_phi^0
+
+		  var d_psi = 0;
+		  for (n = 1; n <= 10; n++) {
+		    d_phi_n = d_phi_n * d_phi;
+		    d_psi = d_psi + this.A[n] * d_phi_n;
+		  }
+
+		  // 2. Calculate theta
+		  var th_re = d_psi;
+		  var th_im = d_lambda;
+
+		  // 3. Calculate z
+		  var th_n_re = 1;
+		  var th_n_im = 0; // theta^0
+		  var th_n_re1;
+		  var th_n_im1;
+
+		  var z_re = 0;
+		  var z_im = 0;
+		  for (n = 1; n <= 6; n++) {
+		    th_n_re1 = th_n_re * th_re - th_n_im * th_im;
+		    th_n_im1 = th_n_im * th_re + th_n_re * th_im;
+		    th_n_re = th_n_re1;
+		    th_n_im = th_n_im1;
+		    z_re = z_re + this.B_re[n] * th_n_re - this.B_im[n] * th_n_im;
+		    z_im = z_im + this.B_im[n] * th_n_re + this.B_re[n] * th_n_im;
+		  }
+
+		  // 4. Calculate easting and northing
+		  p.x = (z_im * this.a) + this.x0;
+		  p.y = (z_re * this.a) + this.y0;
+
+		  return p;
+		}
+
+		/**
+		    New Zealand Map Grid Inverse  -  x/y to long/lat
+		  */
+		function inverse$18(p) {
+		  var n;
+		  var x = p.x;
+		  var y = p.y;
+
+		  var delta_x = x - this.x0;
+		  var delta_y = y - this.y0;
+
+		  // 1. Calculate z
+		  var z_re = delta_y / this.a;
+		  var z_im = delta_x / this.a;
+
+		  // 2a. Calculate theta - first approximation gives km accuracy
+		  var z_n_re = 1;
+		  var z_n_im = 0; // z^0
+		  var z_n_re1;
+		  var z_n_im1;
+
+		  var th_re = 0;
+		  var th_im = 0;
+		  for (n = 1; n <= 6; n++) {
+		    z_n_re1 = z_n_re * z_re - z_n_im * z_im;
+		    z_n_im1 = z_n_im * z_re + z_n_re * z_im;
+		    z_n_re = z_n_re1;
+		    z_n_im = z_n_im1;
+		    th_re = th_re + this.C_re[n] * z_n_re - this.C_im[n] * z_n_im;
+		    th_im = th_im + this.C_im[n] * z_n_re + this.C_re[n] * z_n_im;
+		  }
+
+		  // 2b. Iterate to refine the accuracy of the calculation
+		  //        0 iterations gives km accuracy
+		  //        1 iteration gives m accuracy -- good enough for most mapping applications
+		  //        2 iterations bives mm accuracy
+		  for (var i = 0; i < this.iterations; i++) {
+		    var th_n_re = th_re;
+		    var th_n_im = th_im;
+		    var th_n_re1;
+		    var th_n_im1;
+
+		    var num_re = z_re;
+		    var num_im = z_im;
+		    for (n = 2; n <= 6; n++) {
+		      th_n_re1 = th_n_re * th_re - th_n_im * th_im;
+		      th_n_im1 = th_n_im * th_re + th_n_re * th_im;
+		      th_n_re = th_n_re1;
+		      th_n_im = th_n_im1;
+		      num_re = num_re + (n - 1) * (this.B_re[n] * th_n_re - this.B_im[n] * th_n_im);
+		      num_im = num_im + (n - 1) * (this.B_im[n] * th_n_re + this.B_re[n] * th_n_im);
+		    }
+
+		    th_n_re = 1;
+		    th_n_im = 0;
+		    var den_re = this.B_re[1];
+		    var den_im = this.B_im[1];
+		    for (n = 2; n <= 6; n++) {
+		      th_n_re1 = th_n_re * th_re - th_n_im * th_im;
+		      th_n_im1 = th_n_im * th_re + th_n_re * th_im;
+		      th_n_re = th_n_re1;
+		      th_n_im = th_n_im1;
+		      den_re = den_re + n * (this.B_re[n] * th_n_re - this.B_im[n] * th_n_im);
+		      den_im = den_im + n * (this.B_im[n] * th_n_re + this.B_re[n] * th_n_im);
+		    }
+
+		    // Complex division
+		    var den2 = den_re * den_re + den_im * den_im;
+		    th_re = (num_re * den_re + num_im * den_im) / den2;
+		    th_im = (num_im * den_re - num_re * den_im) / den2;
+		  }
+
+		  // 3. Calculate d_phi              ...                                    // and d_lambda
+		  var d_psi = th_re;
+		  var d_lambda = th_im;
+		  var d_psi_n = 1; // d_psi^0
+
+		  var d_phi = 0;
+		  for (n = 1; n <= 9; n++) {
+		    d_psi_n = d_psi_n * d_psi;
+		    d_phi = d_phi + this.D[n] * d_psi_n;
+		  }
+
+		  // 4. Calculate latitude and longitude
+		  // d_phi is calcuated in second of arc * 10^-5, so we need to scale back to radians. d_lambda is in radians.
+		  var lat = this.lat0 + (d_phi * SEC_TO_RAD * 1E5);
+		  var lon = this.long0 + d_lambda;
+
+		  p.x = lon;
+		  p.y = lat;
+
+		  return p;
+		}
+
+		var names$20 = ["New_Zealand_Map_Grid", "nzmg"];
+		var nzmg = {
+		  init: init$19,
+		  forward: forward$18,
+		  inverse: inverse$18,
+		  names: names$20
+		};
+
+		/*
+		  reference
+		    "New Equal-Area Map Projections for Noncircular Regions", John P. Snyder,
+		    The American Cartographer, Vol 15, No. 4, October 1988, pp. 341-355.
+		  */
+
+
+		/* Initialize the Miller Cylindrical projection
+		  -------------------------------------------*/
+		function init$20() {
+		  //no-op
+		}
+
+		/* Miller Cylindrical forward equations--mapping lat,long to x,y
+		    ------------------------------------------------------------*/
+		function forward$19(p) {
+		  var lon = p.x;
+		  var lat = p.y;
+		  /* Forward equations
+		      -----------------*/
+		  var dlon = adjust_lon(lon - this.long0);
+		  var x = this.x0 + this.a * dlon;
+		  var y = this.y0 + this.a * Math.log(Math.tan((Math.PI / 4) + (lat / 2.5))) * 1.25;
+
+		  p.x = x;
+		  p.y = y;
+		  return p;
+		}
+
+		/* Miller Cylindrical inverse equations--mapping x,y to lat/long
+		    ------------------------------------------------------------*/
+		function inverse$19(p) {
+		  p.x -= this.x0;
+		  p.y -= this.y0;
+
+		  var lon = adjust_lon(this.long0 + p.x / this.a);
+		  var lat = 2.5 * (Math.atan(Math.exp(0.8 * p.y / this.a)) - Math.PI / 4);
+
+		  p.x = lon;
+		  p.y = lat;
+		  return p;
+		}
+
+		var names$21 = ["Miller_Cylindrical", "mill"];
+		var mill = {
+		  init: init$20,
+		  forward: forward$19,
+		  inverse: inverse$19,
+		  names: names$21
+		};
+
+		var MAX_ITER$3 = 20;
+		function init$21() {
+		  /* Place parameters in static storage for common use
+		    -------------------------------------------------*/
+
+
+		  if (!this.sphere) {
+		    this.en = pj_enfn(this.es);
+		  }
+		  else {
+		    this.n = 1;
+		    this.m = 0;
+		    this.es = 0;
+		    this.C_y = Math.sqrt((this.m + 1) / this.n);
+		    this.C_x = this.C_y / (this.m + 1);
+		  }
+
+		}
+
+		/* Sinusoidal forward equations--mapping lat,long to x,y
+		  -----------------------------------------------------*/
+		function forward$20(p) {
+		  var x, y;
+		  var lon = p.x;
+		  var lat = p.y;
+		  /* Forward equations
+		    -----------------*/
+		  lon = adjust_lon(lon - this.long0);
+
+		  if (this.sphere) {
+		    if (!this.m) {
+		      lat = this.n !== 1 ? Math.asin(this.n * Math.sin(lat)) : lat;
+		    }
+		    else {
+		      var k = this.n * Math.sin(lat);
+		      for (var i = MAX_ITER$3; i; --i) {
+		        var V = (this.m * lat + Math.sin(lat) - k) / (this.m + Math.cos(lat));
+		        lat -= V;
+		        if (Math.abs(V) < EPSLN) {
+		          break;
+		        }
+		      }
+		    }
+		    x = this.a * this.C_x * lon * (this.m + Math.cos(lat));
+		    y = this.a * this.C_y * lat;
+
+		  }
+		  else {
+
+		    var s = Math.sin(lat);
+		    var c = Math.cos(lat);
+		    y = this.a * pj_mlfn(lat, s, c, this.en);
+		    x = this.a * lon * c / Math.sqrt(1 - this.es * s * s);
+		  }
+
+		  p.x = x;
+		  p.y = y;
+		  return p;
+		}
+
+		function inverse$20(p) {
+		  var lat, temp, lon, s;
+
+		  p.x -= this.x0;
+		  lon = p.x / this.a;
+		  p.y -= this.y0;
+		  lat = p.y / this.a;
+
+		  if (this.sphere) {
+		    lat /= this.C_y;
+		    lon = lon / (this.C_x * (this.m + Math.cos(lat)));
+		    if (this.m) {
+		      lat = asinz((this.m * lat + Math.sin(lat)) / this.n);
+		    }
+		    else if (this.n !== 1) {
+		      lat = asinz(Math.sin(lat) / this.n);
+		    }
+		    lon = adjust_lon(lon + this.long0);
+		    lat = adjust_lat(lat);
+		  }
+		  else {
+		    lat = pj_inv_mlfn(p.y / this.a, this.es, this.en);
+		    s = Math.abs(lat);
+		    if (s < HALF_PI) {
+		      s = Math.sin(lat);
+		      temp = this.long0 + p.x * Math.sqrt(1 - this.es * s * s) / (this.a * Math.cos(lat));
+		      //temp = this.long0 + p.x / (this.a * Math.cos(lat));
+		      lon = adjust_lon(temp);
+		    }
+		    else if ((s - EPSLN) < HALF_PI) {
+		      lon = this.long0;
+		    }
+		  }
+		  p.x = lon;
+		  p.y = lat;
+		  return p;
+		}
+
+		var names$22 = ["Sinusoidal", "sinu"];
+		var sinu = {
+		  init: init$21,
+		  forward: forward$20,
+		  inverse: inverse$20,
+		  names: names$22
+		};
+
+		function init$22() {}
+		/* Mollweide forward equations--mapping lat,long to x,y
+		    ----------------------------------------------------*/
+		function forward$21(p) {
+
+		  /* Forward equations
+		      -----------------*/
+		  var lon = p.x;
+		  var lat = p.y;
+
+		  var delta_lon = adjust_lon(lon - this.long0);
+		  var theta = lat;
+		  var con = Math.PI * Math.sin(lat);
+
+		  /* Iterate using the Newton-Raphson method to find theta
+		      -----------------------------------------------------*/
+		  for (var i = 0; true; i++) {
+		    var delta_theta = -(theta + Math.sin(theta) - con) / (1 + Math.cos(theta));
+		    theta += delta_theta;
+		    if (Math.abs(delta_theta) < EPSLN) {
+		      break;
+		    }
+		  }
+		  theta /= 2;
+
+		  /* If the latitude is 90 deg, force the x coordinate to be "0 + false easting"
+		       this is done here because of precision problems with "cos(theta)"
+		       --------------------------------------------------------------------------*/
+		  if (Math.PI / 2 - Math.abs(lat) < EPSLN) {
+		    delta_lon = 0;
+		  }
+		  var x = 0.900316316158 * this.a * delta_lon * Math.cos(theta) + this.x0;
+		  var y = 1.4142135623731 * this.a * Math.sin(theta) + this.y0;
+
+		  p.x = x;
+		  p.y = y;
+		  return p;
+		}
+
+		function inverse$21(p) {
+		  var theta;
+		  var arg;
+
+		  /* Inverse equations
+		      -----------------*/
+		  p.x -= this.x0;
+		  p.y -= this.y0;
+		  arg = p.y / (1.4142135623731 * this.a);
+
+		  /* Because of division by zero problems, 'arg' can not be 1.  Therefore
+		       a number very close to one is used instead.
+		       -------------------------------------------------------------------*/
+		  if (Math.abs(arg) > 0.999999999999) {
+		    arg = 0.999999999999;
+		  }
+		  theta = Math.asin(arg);
+		  var lon = adjust_lon(this.long0 + (p.x / (0.900316316158 * this.a * Math.cos(theta))));
+		  if (lon < (-Math.PI)) {
+		    lon = -Math.PI;
+		  }
+		  if (lon > Math.PI) {
+		    lon = Math.PI;
+		  }
+		  arg = (2 * theta + Math.sin(2 * theta)) / Math.PI;
+		  if (Math.abs(arg) > 1) {
+		    arg = 1;
+		  }
+		  var lat = Math.asin(arg);
+
+		  p.x = lon;
+		  p.y = lat;
+		  return p;
+		}
+
+		var names$23 = ["Mollweide", "moll"];
+		var moll = {
+		  init: init$22,
+		  forward: forward$21,
+		  inverse: inverse$21,
+		  names: names$23
+		};
+
+		function init$23() {
+
+		  /* Place parameters in static storage for common use
+		      -------------------------------------------------*/
+		  // Standard Parallels cannot be equal and on opposite sides of the equator
+		  if (Math.abs(this.lat1 + this.lat2) < EPSLN) {
+		    return;
+		  }
+		  this.lat2 = this.lat2 || this.lat1;
+		  this.temp = this.b / this.a;
+		  this.es = 1 - Math.pow(this.temp, 2);
+		  this.e = Math.sqrt(this.es);
+		  this.e0 = e0fn(this.es);
+		  this.e1 = e1fn(this.es);
+		  this.e2 = e2fn(this.es);
+		  this.e3 = e3fn(this.es);
+
+		  this.sinphi = Math.sin(this.lat1);
+		  this.cosphi = Math.cos(this.lat1);
+
+		  this.ms1 = msfnz(this.e, this.sinphi, this.cosphi);
+		  this.ml1 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat1);
+
+		  if (Math.abs(this.lat1 - this.lat2) < EPSLN) {
+		    this.ns = this.sinphi;
+		  }
+		  else {
+		    this.sinphi = Math.sin(this.lat2);
+		    this.cosphi = Math.cos(this.lat2);
+		    this.ms2 = msfnz(this.e, this.sinphi, this.cosphi);
+		    this.ml2 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat2);
+		    this.ns = (this.ms1 - this.ms2) / (this.ml2 - this.ml1);
+		  }
+		  this.g = this.ml1 + this.ms1 / this.ns;
+		  this.ml0 = mlfn(this.e0, this.e1, this.e2, this.e3, this.lat0);
+		  this.rh = this.a * (this.g - this.ml0);
+		}
+
+		/* Equidistant Conic forward equations--mapping lat,long to x,y
+		  -----------------------------------------------------------*/
+		function forward$22(p) {
+		  var lon = p.x;
+		  var lat = p.y;
+		  var rh1;
+
+		  /* Forward equations
+		      -----------------*/
+		  if (this.sphere) {
+		    rh1 = this.a * (this.g - lat);
+		  }
+		  else {
+		    var ml = mlfn(this.e0, this.e1, this.e2, this.e3, lat);
+		    rh1 = this.a * (this.g - ml);
+		  }
+		  var theta = this.ns * adjust_lon(lon - this.long0);
+		  var x = this.x0 + rh1 * Math.sin(theta);
+		  var y = this.y0 + this.rh - rh1 * Math.cos(theta);
+		  p.x = x;
+		  p.y = y;
+		  return p;
+		}
+
+		/* Inverse equations
+		  -----------------*/
+		function inverse$22(p) {
+		  p.x -= this.x0;
+		  p.y = this.rh - p.y + this.y0;
+		  var con, rh1, lat, lon;
+		  if (this.ns >= 0) {
+		    rh1 = Math.sqrt(p.x * p.x + p.y * p.y);
+		    con = 1;
+		  }
+		  else {
+		    rh1 = -Math.sqrt(p.x * p.x + p.y * p.y);
+		    con = -1;
+		  }
+		  var theta = 0;
+		  if (rh1 !== 0) {
+		    theta = Math.atan2(con * p.x, con * p.y);
+		  }
+
+		  if (this.sphere) {
+		    lon = adjust_lon(this.long0 + theta / this.ns);
+		    lat = adjust_lat(this.g - rh1 / this.a);
+		    p.x = lon;
+		    p.y = lat;
+		    return p;
+		  }
+		  else {
+		    var ml = this.g - rh1 / this.a;
+		    lat = imlfn(ml, this.e0, this.e1, this.e2, this.e3);
+		    lon = adjust_lon(this.long0 + theta / this.ns);
+		    p.x = lon;
+		    p.y = lat;
+		    return p;
+		  }
+
+		}
+
+		var names$24 = ["Equidistant_Conic", "eqdc"];
+		var eqdc = {
+		  init: init$23,
+		  forward: forward$22,
+		  inverse: inverse$22,
+		  names: names$24
+		};
+
+		/* Initialize the Van Der Grinten projection
+		  ----------------------------------------*/
+		function init$24() {
+		  //this.R = 6370997; //Radius of earth
+		  this.R = this.a;
+		}
+
+		function forward$23(p) {
+
+		  var lon = p.x;
+		  var lat = p.y;
+
+		  /* Forward equations
+		    -----------------*/
+		  var dlon = adjust_lon(lon - this.long0);
+		  var x, y;
+
+		  if (Math.abs(lat) <= EPSLN) {
+		    x = this.x0 + this.R * dlon;
+		    y = this.y0;
+		  }
+		  var theta = asinz(2 * Math.abs(lat / Math.PI));
+		  if ((Math.abs(dlon) <= EPSLN) || (Math.abs(Math.abs(lat) - HALF_PI) <= EPSLN)) {
+		    x = this.x0;
+		    if (lat >= 0) {
+		      y = this.y0 + Math.PI * this.R * Math.tan(0.5 * theta);
+		    }
+		    else {
+		      y = this.y0 + Math.PI * this.R * -Math.tan(0.5 * theta);
+		    }
+		    //  return(OK);
+		  }
+		  var al = 0.5 * Math.abs((Math.PI / dlon) - (dlon / Math.PI));
+		  var asq = al * al;
+		  var sinth = Math.sin(theta);
+		  var costh = Math.cos(theta);
+
+		  var g = costh / (sinth + costh - 1);
+		  var gsq = g * g;
+		  var m = g * (2 / sinth - 1);
+		  var msq = m * m;
+		  var con = Math.PI * this.R * (al * (g - msq) + Math.sqrt(asq * (g - msq) * (g - msq) - (msq + asq) * (gsq - msq))) / (msq + asq);
+		  if (dlon < 0) {
+		    con = -con;
+		  }
+		  x = this.x0 + con;
+		  //con = Math.abs(con / (Math.PI * this.R));
+		  var q = asq + g;
+		  con = Math.PI * this.R * (m * q - al * Math.sqrt((msq + asq) * (asq + 1) - q * q)) / (msq + asq);
+		  if (lat >= 0) {
+		    //y = this.y0 + Math.PI * this.R * Math.sqrt(1 - con * con - 2 * al * con);
+		    y = this.y0 + con;
+		  }
+		  else {
+		    //y = this.y0 - Math.PI * this.R * Math.sqrt(1 - con * con - 2 * al * con);
+		    y = this.y0 - con;
+		  }
+		  p.x = x;
+		  p.y = y;
+		  return p;
+		}
+
+		/* Van Der Grinten inverse equations--mapping x,y to lat/long
+		  ---------------------------------------------------------*/
+		function inverse$23(p) {
+		  var lon, lat;
+		  var xx, yy, xys, c1, c2, c3;
+		  var a1;
+		  var m1;
+		  var con;
+		  var th1;
+		  var d;
+
+		  /* inverse equations
+		    -----------------*/
+		  p.x -= this.x0;
+		  p.y -= this.y0;
+		  con = Math.PI * this.R;
+		  xx = p.x / con;
+		  yy = p.y / con;
+		  xys = xx * xx + yy * yy;
+		  c1 = -Math.abs(yy) * (1 + xys);
+		  c2 = c1 - 2 * yy * yy + xx * xx;
+		  c3 = -2 * c1 + 1 + 2 * yy * yy + xys * xys;
+		  d = yy * yy / c3 + (2 * c2 * c2 * c2 / c3 / c3 / c3 - 9 * c1 * c2 / c3 / c3) / 27;
+		  a1 = (c1 - c2 * c2 / 3 / c3) / c3;
+		  m1 = 2 * Math.sqrt(-a1 / 3);
+		  con = ((3 * d) / a1) / m1;
+		  if (Math.abs(con) > 1) {
+		    if (con >= 0) {
+		      con = 1;
+		    }
+		    else {
+		      con = -1;
+		    }
+		  }
+		  th1 = Math.acos(con) / 3;
+		  if (p.y >= 0) {
+		    lat = (-m1 * Math.cos(th1 + Math.PI / 3) - c2 / 3 / c3) * Math.PI;
+		  }
+		  else {
+		    lat = -(-m1 * Math.cos(th1 + Math.PI / 3) - c2 / 3 / c3) * Math.PI;
+		  }
+
+		  if (Math.abs(xx) < EPSLN) {
+		    lon = this.long0;
+		  }
+		  else {
+		    lon = adjust_lon(this.long0 + Math.PI * (xys - 1 + Math.sqrt(1 + 2 * (xx * xx - yy * yy) + xys * xys)) / 2 / xx);
+		  }
+
+		  p.x = lon;
+		  p.y = lat;
+		  return p;
+		}
+
+		var names$25 = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
+		var vandg = {
+		  init: init$24,
+		  forward: forward$23,
+		  inverse: inverse$23,
+		  names: names$25
+		};
+
+		function init$25() {
+		  this.sin_p12 = Math.sin(this.lat0);
+		  this.cos_p12 = Math.cos(this.lat0);
+		}
+
+		function forward$24(p) {
+		  var lon = p.x;
+		  var lat = p.y;
+		  var sinphi = Math.sin(p.y);
+		  var cosphi = Math.cos(p.y);
+		  var dlon = adjust_lon(lon - this.long0);
+		  var e0, e1, e2, e3, Mlp, Ml, tanphi, Nl1, Nl, psi, Az, G, H, GH, Hs, c, kp, cos_c, s, s2, s3, s4, s5;
+		  if (this.sphere) {
+		    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
+		      //North Pole case
+		      p.x = this.x0 + this.a * (HALF_PI - lat) * Math.sin(dlon);
+		      p.y = this.y0 - this.a * (HALF_PI - lat) * Math.cos(dlon);
+		      return p;
+		    }
+		    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
+		      //South Pole case
+		      p.x = this.x0 + this.a * (HALF_PI + lat) * Math.sin(dlon);
+		      p.y = this.y0 + this.a * (HALF_PI + lat) * Math.cos(dlon);
+		      return p;
+		    }
+		    else {
+		      //default case
+		      cos_c = this.sin_p12 * sinphi + this.cos_p12 * cosphi * Math.cos(dlon);
+		      c = Math.acos(cos_c);
+		      kp = c / Math.sin(c);
+		      p.x = this.x0 + this.a * kp * cosphi * Math.sin(dlon);
+		      p.y = this.y0 + this.a * kp * (this.cos_p12 * sinphi - this.sin_p12 * cosphi * Math.cos(dlon));
+		      return p;
+		    }
+		  }
+		  else {
+		    e0 = e0fn(this.es);
+		    e1 = e1fn(this.es);
+		    e2 = e2fn(this.es);
+		    e3 = e3fn(this.es);
+		    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
+		      //North Pole case
+		      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
+		      Ml = this.a * mlfn(e0, e1, e2, e3, lat);
+		      p.x = this.x0 + (Mlp - Ml) * Math.sin(dlon);
+		      p.y = this.y0 - (Mlp - Ml) * Math.cos(dlon);
+		      return p;
+		    }
+		    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
+		      //South Pole case
+		      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
+		      Ml = this.a * mlfn(e0, e1, e2, e3, lat);
+		      p.x = this.x0 + (Mlp + Ml) * Math.sin(dlon);
+		      p.y = this.y0 + (Mlp + Ml) * Math.cos(dlon);
+		      return p;
+		    }
+		    else {
+		      //Default case
+		      tanphi = sinphi / cosphi;
+		      Nl1 = gN(this.a, this.e, this.sin_p12);
+		      Nl = gN(this.a, this.e, sinphi);
+		      psi = Math.atan((1 - this.es) * tanphi + this.es * Nl1 * this.sin_p12 / (Nl * cosphi));
+		      Az = Math.atan2(Math.sin(dlon), this.cos_p12 * Math.tan(psi) - this.sin_p12 * Math.cos(dlon));
+		      if (Az === 0) {
+		        s = Math.asin(this.cos_p12 * Math.sin(psi) - this.sin_p12 * Math.cos(psi));
+		      }
+		      else if (Math.abs(Math.abs(Az) - Math.PI) <= EPSLN) {
+		        s = -Math.asin(this.cos_p12 * Math.sin(psi) - this.sin_p12 * Math.cos(psi));
+		      }
+		      else {
+		        s = Math.asin(Math.sin(dlon) * Math.cos(psi) / Math.sin(Az));
+		      }
+		      G = this.e * this.sin_p12 / Math.sqrt(1 - this.es);
+		      H = this.e * this.cos_p12 * Math.cos(Az) / Math.sqrt(1 - this.es);
+		      GH = G * H;
+		      Hs = H * H;
+		      s2 = s * s;
+		      s3 = s2 * s;
+		      s4 = s3 * s;
+		      s5 = s4 * s;
+		      c = Nl1 * s * (1 - s2 * Hs * (1 - Hs) / 6 + s3 / 8 * GH * (1 - 2 * Hs) + s4 / 120 * (Hs * (4 - 7 * Hs) - 3 * G * G * (1 - 7 * Hs)) - s5 / 48 * GH);
+		      p.x = this.x0 + c * Math.sin(Az);
+		      p.y = this.y0 + c * Math.cos(Az);
+		      return p;
+		    }
+		  }
+
+
+		}
+
+		function inverse$24(p) {
+		  p.x -= this.x0;
+		  p.y -= this.y0;
+		  var rh, z, sinz, cosz, lon, lat, con, e0, e1, e2, e3, Mlp, M, N1, psi, Az, cosAz, tmp, A, B, D, Ee, F;
+		  if (this.sphere) {
+		    rh = Math.sqrt(p.x * p.x + p.y * p.y);
+		    if (rh > (2 * HALF_PI * this.a)) {
+		      return;
+		    }
+		    z = rh / this.a;
+
+		    sinz = Math.sin(z);
+		    cosz = Math.cos(z);
+
+		    lon = this.long0;
+		    if (Math.abs(rh) <= EPSLN) {
+		      lat = this.lat0;
+		    }
+		    else {
+		      lat = asinz(cosz * this.sin_p12 + (p.y * sinz * this.cos_p12) / rh);
+		      con = Math.abs(this.lat0) - HALF_PI;
+		      if (Math.abs(con) <= EPSLN) {
+		        if (this.lat0 >= 0) {
+		          lon = adjust_lon(this.long0 + Math.atan2(p.x, - p.y));
+		        }
+		        else {
+		          lon = adjust_lon(this.long0 - Math.atan2(-p.x, p.y));
+		        }
+		      }
+		      else {
+		        /*con = cosz - this.sin_p12 * Math.sin(lat);
+		        if ((Math.abs(con) < EPSLN) && (Math.abs(p.x) < EPSLN)) {
+		          //no-op, just keep the lon value as is
+		        } else {
+		          var temp = Math.atan2((p.x * sinz * this.cos_p12), (con * rh));
+		          lon = adjust_lon(this.long0 + Math.atan2((p.x * sinz * this.cos_p12), (con * rh)));
+		        }*/
+		        lon = adjust_lon(this.long0 + Math.atan2(p.x * sinz, rh * this.cos_p12 * cosz - p.y * this.sin_p12 * sinz));
+		      }
+		    }
+
+		    p.x = lon;
+		    p.y = lat;
+		    return p;
+		  }
+		  else {
+		    e0 = e0fn(this.es);
+		    e1 = e1fn(this.es);
+		    e2 = e2fn(this.es);
+		    e3 = e3fn(this.es);
+		    if (Math.abs(this.sin_p12 - 1) <= EPSLN) {
+		      //North pole case
+		      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
+		      rh = Math.sqrt(p.x * p.x + p.y * p.y);
+		      M = Mlp - rh;
+		      lat = imlfn(M / this.a, e0, e1, e2, e3);
+		      lon = adjust_lon(this.long0 + Math.atan2(p.x, - 1 * p.y));
+		      p.x = lon;
+		      p.y = lat;
+		      return p;
+		    }
+		    else if (Math.abs(this.sin_p12 + 1) <= EPSLN) {
+		      //South pole case
+		      Mlp = this.a * mlfn(e0, e1, e2, e3, HALF_PI);
+		      rh = Math.sqrt(p.x * p.x + p.y * p.y);
+		      M = rh - Mlp;
+
+		      lat = imlfn(M / this.a, e0, e1, e2, e3);
+		      lon = adjust_lon(this.long0 + Math.atan2(p.x, p.y));
+		      p.x = lon;
+		      p.y = lat;
+		      return p;
+		    }
+		    else {
+		      //default case
+		      rh = Math.sqrt(p.x * p.x + p.y * p.y);
+		      Az = Math.atan2(p.x, p.y);
+		      N1 = gN(this.a, this.e, this.sin_p12);
+		      cosAz = Math.cos(Az);
+		      tmp = this.e * this.cos_p12 * cosAz;
+		      A = -tmp * tmp / (1 - this.es);
+		      B = 3 * this.es * (1 - A) * this.sin_p12 * this.cos_p12 * cosAz / (1 - this.es);
+		      D = rh / N1;
+		      Ee = D - A * (1 + A) * Math.pow(D, 3) / 6 - B * (1 + 3 * A) * Math.pow(D, 4) / 24;
+		      F = 1 - A * Ee * Ee / 2 - D * Ee * Ee * Ee / 6;
+		      psi = Math.asin(this.sin_p12 * Math.cos(Ee) + this.cos_p12 * Math.sin(Ee) * cosAz);
+		      lon = adjust_lon(this.long0 + Math.asin(Math.sin(Az) * Math.sin(Ee) / Math.cos(psi)));
+		      lat = Math.atan((1 - this.es * F * this.sin_p12 / Math.sin(psi)) * Math.tan(psi) / (1 - this.es));
+		      p.x = lon;
+		      p.y = lat;
+		      return p;
+		    }
+		  }
+
+		}
+
+		var names$26 = ["Azimuthal_Equidistant", "aeqd"];
+		var aeqd = {
+		  init: init$25,
+		  forward: forward$24,
+		  inverse: inverse$24,
+		  names: names$26
+		};
+
+		function init$26() {
+		  //double temp;      /* temporary variable    */
+
+		  /* Place parameters in static storage for common use
+		      -------------------------------------------------*/
+		  this.sin_p14 = Math.sin(this.lat0);
+		  this.cos_p14 = Math.cos(this.lat0);
+		}
+
+		/* Orthographic forward equations--mapping lat,long to x,y
+		    ---------------------------------------------------*/
+		function forward$25(p) {
+		  var sinphi, cosphi; /* sin and cos value        */
+		  var dlon; /* delta longitude value      */
+		  var coslon; /* cos of longitude        */
+		  var ksp; /* scale factor          */
+		  var g, x, y;
+		  var lon = p.x;
+		  var lat = p.y;
+		  /* Forward equations
+		      -----------------*/
+		  dlon = adjust_lon(lon - this.long0);
+
+		  sinphi = Math.sin(lat);
+		  cosphi = Math.cos(lat);
+
+		  coslon = Math.cos(dlon);
+		  g = this.sin_p14 * sinphi + this.cos_p14 * cosphi * coslon;
+		  ksp = 1;
+		  if ((g > 0) || (Math.abs(g) <= EPSLN)) {
+		    x = this.a * ksp * cosphi * Math.sin(dlon);
+		    y = this.y0 + this.a * ksp * (this.cos_p14 * sinphi - this.sin_p14 * cosphi * coslon);
+		  }
+		  p.x = x;
+		  p.y = y;
+		  return p;
+		}
+
+		function inverse$25(p) {
+		  var rh; /* height above ellipsoid      */
+		  var z; /* angle          */
+		  var sinz, cosz; /* sin of z and cos of z      */
+		  var con;
+		  var lon, lat;
+		  /* Inverse equations
+		      -----------------*/
+		  p.x -= this.x0;
+		  p.y -= this.y0;
+		  rh = Math.sqrt(p.x * p.x + p.y * p.y);
+		  z = asinz(rh / this.a);
+
+		  sinz = Math.sin(z);
+		  cosz = Math.cos(z);
+
+		  lon = this.long0;
+		  if (Math.abs(rh) <= EPSLN) {
+		    lat = this.lat0;
+		    p.x = lon;
+		    p.y = lat;
+		    return p;
+		  }
+		  lat = asinz(cosz * this.sin_p14 + (p.y * sinz * this.cos_p14) / rh);
+		  con = Math.abs(this.lat0) - HALF_PI;
+		  if (Math.abs(con) <= EPSLN) {
+		    if (this.lat0 >= 0) {
+		      lon = adjust_lon(this.long0 + Math.atan2(p.x, - p.y));
+		    }
+		    else {
+		      lon = adjust_lon(this.long0 - Math.atan2(-p.x, p.y));
+		    }
+		    p.x = lon;
+		    p.y = lat;
+		    return p;
+		  }
+		  lon = adjust_lon(this.long0 + Math.atan2((p.x * sinz), rh * this.cos_p14 * cosz - p.y * this.sin_p14 * sinz));
+		  p.x = lon;
+		  p.y = lat;
+		  return p;
+		}
+
+		var names$27 = ["ortho"];
+		var ortho = {
+		  init: init$26,
+		  forward: forward$25,
+		  inverse: inverse$25,
+		  names: names$27
+		};
+
+		var includedProjections = function(proj4){
+		  proj4.Proj.projections.add(tmerc);
+		  proj4.Proj.projections.add(etmerc);
+		  proj4.Proj.projections.add(utm);
+		  proj4.Proj.projections.add(sterea);
+		  proj4.Proj.projections.add(stere);
+		  proj4.Proj.projections.add(somerc);
+		  proj4.Proj.projections.add(omerc);
+		  proj4.Proj.projections.add(lcc);
+		  proj4.Proj.projections.add(krovak);
+		  proj4.Proj.projections.add(cass);
+		  proj4.Proj.projections.add(laea);
+		  proj4.Proj.projections.add(aea);
+		  proj4.Proj.projections.add(gnom);
+		  proj4.Proj.projections.add(cea);
+		  proj4.Proj.projections.add(eqc);
+		  proj4.Proj.projections.add(poly);
+		  proj4.Proj.projections.add(nzmg);
+		  proj4.Proj.projections.add(mill);
+		  proj4.Proj.projections.add(sinu);
+		  proj4.Proj.projections.add(moll);
+		  proj4.Proj.projections.add(eqdc);
+		  proj4.Proj.projections.add(vandg);
+		  proj4.Proj.projections.add(aeqd);
+		  proj4.Proj.projections.add(ortho);
+		};
+
+		proj4$1.defaultDatum = 'WGS84'; //default datum
+		proj4$1.Proj = Projection$1;
+		proj4$1.WGS84 = new proj4$1.Proj('WGS84');
+		proj4$1.Point = Point;
+		proj4$1.toPoint = toPoint;
+		proj4$1.defs = defs;
+		proj4$1.transform = transform;
+		proj4$1.mgrs = mgrs;
+		proj4$1.version = version;
+		includedProjections(proj4$1);
+
+		return proj4$1;
+
+	})));
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	L.CRS.BaiduCRS = L.extend({}, L.CRS.EPSG3857, {
+
+	    code: 'BaiduCRS',
+	    scale: function (zoom) {
+	        return (6378137 * Math.PI * 2) / Math.pow(2, 18 - zoom)
+	    },
+
+	    transformation: (function () {
+	        var scale = 0.5 / (Math.PI * 6378137);
+	        return new L.Transformation(scale, 0, -scale, 0);
+	    }())
+	});
+	var tdt_WGS84_resolutions = [];
+	for (var i = 0; i < 20; i++) {
+	    tdt_WGS84_resolutions.push(0.703125 * 2 / (Math.pow(2, i)));
+	}
+	L.CRS.TianDiTu_WGS84 = new L.Proj.CRS("EPSG:4326", '',
+	    {
+	        origin: [-180, 90],
+	        resolutions: tdt_WGS84_resolutions,
+	        bounds: L.bounds([-180, -90], [180, 90])
+	    })
+
+	var tdt_Mercator_resolutions = [];
+	for (var i = 0; i < 20; i++) {
+
+	    tdt_Mercator_resolutions.push(78271.5169640203125 * 2 / (Math.pow(2, i)));
+	}
+	L.CRS.TianDiTu_Mercator = new L.Proj.CRS("EPSG:3857", '',
+	    {
+	        origin: [-20037508.3427892, 20037508.3427892],
+	        resolutions: tdt_Mercator_resolutions,
+	        bounds: L.bounds([-20037508.3427892, -20037508.3427892], [20037508.3427892, 20037508.3427892])
+	    })
+
+/***/ },
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -2797,8 +9062,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(11);
-	__webpack_require__(12);
+	__webpack_require__(15);
+	__webpack_require__(16);
 
 	MapService = ServiceBase.extend({
 	    options: {
@@ -2836,14 +9101,14 @@
 	module.exports = L.supermap.mapService;
 
 /***/ },
-/* 11 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Class: ServiceBase
 	 * 服务基类
 	 */
-	__webpack_require__(2);
+	__webpack_require__(3);
 
 	ServiceBase = L.Evented.extend({
 	    options: {
@@ -2870,7 +9135,7 @@
 	};
 
 /***/ },
-/* 12 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -2885,7 +9150,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
+	__webpack_require__(17);
 
 	SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -3016,7 +9281,7 @@
 
 
 /***/ },
-/* 13 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -3027,7 +9292,7 @@
 	 * Class: SuperMap.ServiceBase
 	 * Core服务基类
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	SuperMap.ServiceBase = SuperMap.Class({
 
 	    /**
@@ -3382,7 +9647,7 @@
 
 
 /***/ },
-/* 14 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -3399,12 +9664,12 @@
 	 *          //doSomething
 	 *      });
 	 */
-	__webpack_require__(4);
-	__webpack_require__(15);
-	__webpack_require__(23);
-	__webpack_require__(25);
+	__webpack_require__(5);
+	__webpack_require__(19);
 	__webpack_require__(27);
-	__webpack_require__(11);
+	__webpack_require__(29);
+	__webpack_require__(31);
+	__webpack_require__(15);
 
 	QueryService = ServiceBase.extend({
 
@@ -3537,7 +9802,7 @@
 
 
 /***/ },
-/* 15 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -3552,8 +9817,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.QueryService>
 	 */
-	__webpack_require__(16);
-	__webpack_require__(22);
+	__webpack_require__(20);
+	__webpack_require__(26);
 	SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, {
 
 	    /**
@@ -3624,7 +9889,7 @@
 
 
 /***/ },
-/* 16 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -3639,9 +9904,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(3);
-	__webpack_require__(13);
+	__webpack_require__(4);
 	__webpack_require__(17);
+	__webpack_require__(21);
 	SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -3808,7 +10073,7 @@
 	};
 
 /***/ },
-/* 17 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -3820,8 +10085,8 @@
 	 * 查询参数基类。
 	 * 距离查询、SQL 查询、几何地物查询等各自的参数均继承此类。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(18);
+	__webpack_require__(5);
+	__webpack_require__(22);
 	QueryParameters = SuperMap.Class({
 
 	    /**
@@ -3935,13 +10200,13 @@
 	};
 
 /***/ },
-/* 18 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: FilterParameter * 查询过滤条件参数类。 * 该类用于设置查询数据集的查询过滤参数。 */__webpack_require__(4);__webpack_require__(19);__webpack_require__(20);FilterParameter = SuperMap.Class({        /**      * APIProperty: attributeFilter     * {String} 属性过滤条件。     * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，     * attributeFilter 就是其中的“条件表达式”。     * 该字段的用法为 attributeFilter = "过滤条件"。     * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；     * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。      */    attributeFilter: null,    /**      * APIProperty: name     * {String} 查询数据集名称或者图层名称，根据实际的查询对象而定，必设属性。     * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，     * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。     * 因为一个地图的图层可能是来自于不同数据源的数据集，     * 而不同的数据源中可能存在同名的数据集，     * 使用数据集名称不能唯一的确定数据集，     * 所以在进行与地图相关功能的操作时，该值需要设置为图层名称。      */    name: null,        /**      * APIProperty: joinItems     * {Array(<JoinItem>)} 与外部表的连接信息 JoinItem 数组。      */    joinItems: null,        /**      * APIProperty: linkItems     * {Array(<LinkItem>)} 与外部表的关联信息 LinkItem 数组。      */    linkItems: null,        /**      * APIProperty: ids     * {Array(String)} 查询 id 数组，即属性表中的 SmID 值。       */    ids: null,        /**      * APIProperty: orderBy     * {String} 查询排序的字段,orderBy的字段须为数值型的。     * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；     * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。     * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，     * 分别表示国家的面积和1994年的各国人口数量。      * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；          * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。      */    orderBy: null,        /**      * APIProperty: groupBy     * {String} 查询分组条件的字段。     * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段分组时，该字段的用法为 groupBy = "字段名"；     * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。     * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，     * 分别表示某个城市所属的洲和国家。     * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；     * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。      */    groupBy: null,    /**      * APIProperty: fields     * {Array(String)} 查询字段数组，如果不设置则使用系统返回的所有字段。     */    fields: null,        /**     * Constructor: FilterParameter     * 查询过滤条件参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * attributeFilter - {String} 属性过滤条件。     * name - {String} 查询数据集名称或者图层名称。     * joinItems - {Array(<JoinItem>)} 与外部表的连接信息 JoinItem 数组。     * linkItems - {Array(<LinkItem>)} 与外部表的关联信息 LinkItem 数组。      * ids - {Array(String)} 查询 id 数组，即属性表中的 SmID 值。         * orderBy - {String} 查询排序的字段, orderBy 的字段须为数值型的。     * groupBy - {String} 查询分组条件的字段。     * fields - {Array(String)} 查询字段数组。     */    initialize: function(options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。       */    destroy: function() {        var me = this;        me.attributeFilter = null;        me.name = null;        if (me.joinItems) {            for (var i = 0,joinItems = me.joinItems,len = joinItems.length; i < len; i++) {                joinItems[i].destroy();            }            me.joinItems = null;        }        if (me.linkItems) {            for (var i = 0,linkItems = me.linkItems,len = linkItems.length; i < len; i++) {                linkItems[i].destroy();            }            me.linkItems = null;        }        me.ids = null;        me.orderBy = null;        me.groupBy = null;        me.fields = null;    },        CLASS_NAME: "FilterParameter"});module.exports = function (options) {    return new FilterParameter(options);};
+	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: FilterParameter * 查询过滤条件参数类。 * 该类用于设置查询数据集的查询过滤参数。 */__webpack_require__(5);__webpack_require__(23);__webpack_require__(24);FilterParameter = SuperMap.Class({        /**      * APIProperty: attributeFilter     * {String} 属性过滤条件。     * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，     * attributeFilter 就是其中的“条件表达式”。     * 该字段的用法为 attributeFilter = "过滤条件"。     * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；     * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。      */    attributeFilter: null,    /**      * APIProperty: name     * {String} 查询数据集名称或者图层名称，根据实际的查询对象而定，必设属性。     * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，     * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。     * 因为一个地图的图层可能是来自于不同数据源的数据集，     * 而不同的数据源中可能存在同名的数据集，     * 使用数据集名称不能唯一的确定数据集，     * 所以在进行与地图相关功能的操作时，该值需要设置为图层名称。      */    name: null,        /**      * APIProperty: joinItems     * {Array(<JoinItem>)} 与外部表的连接信息 JoinItem 数组。      */    joinItems: null,        /**      * APIProperty: linkItems     * {Array(<LinkItem>)} 与外部表的关联信息 LinkItem 数组。      */    linkItems: null,        /**      * APIProperty: ids     * {Array(String)} 查询 id 数组，即属性表中的 SmID 值。       */    ids: null,        /**      * APIProperty: orderBy     * {String} 查询排序的字段,orderBy的字段须为数值型的。     * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；     * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。     * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，     * 分别表示国家的面积和1994年的各国人口数量。      * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；          * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。      */    orderBy: null,        /**      * APIProperty: groupBy     * {String} 查询分组条件的字段。     * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段分组时，该字段的用法为 groupBy = "字段名"；     * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。     * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，     * 分别表示某个城市所属的洲和国家。     * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；     * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。      */    groupBy: null,    /**      * APIProperty: fields     * {Array(String)} 查询字段数组，如果不设置则使用系统返回的所有字段。     */    fields: null,        /**     * Constructor: FilterParameter     * 查询过滤条件参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * attributeFilter - {String} 属性过滤条件。     * name - {String} 查询数据集名称或者图层名称。     * joinItems - {Array(<JoinItem>)} 与外部表的连接信息 JoinItem 数组。     * linkItems - {Array(<LinkItem>)} 与外部表的关联信息 LinkItem 数组。      * ids - {Array(String)} 查询 id 数组，即属性表中的 SmID 值。         * orderBy - {String} 查询排序的字段, orderBy 的字段须为数值型的。     * groupBy - {String} 查询分组条件的字段。     * fields - {Array(String)} 查询字段数组。     */    initialize: function(options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。       */    destroy: function() {        var me = this;        me.attributeFilter = null;        me.name = null;        if (me.joinItems) {            for (var i = 0,joinItems = me.joinItems,len = joinItems.length; i < len; i++) {                joinItems[i].destroy();            }            me.joinItems = null;        }        if (me.linkItems) {            for (var i = 0,linkItems = me.linkItems,len = linkItems.length; i < len; i++) {                linkItems[i].destroy();            }            me.linkItems = null;        }        me.ids = null;        me.orderBy = null;        me.groupBy = null;        me.fields = null;    },        CLASS_NAME: "FilterParameter"});module.exports = function (options) {    return new FilterParameter(options);};
 
 /***/ },
-/* 19 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -3965,7 +10230,7 @@
 	 * 并且用于建立连接的两个表必须在同一个数据源下。
 	 * )
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	JoinItem = SuperMap.Class({
 	    
 	    /** 
@@ -4071,13 +10336,13 @@
 	};
 
 /***/ },
-/* 20 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: LinkItem * 关联信息类。 * 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表， * 矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。 使用LinkItem时， * 空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。 * LinkItem 只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 LinkItem; * 另外，用于建立关联关系的两个表可以不在同一个数据源下。 * * (注意： * 1. 使用 LinkItem 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段； * 2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。) * */__webpack_require__(4);__webpack_require__(21);LinkItem = SuperMap.Class({        /**      * APIProperty: datasourceConnectionInfo     * {<DatasourceConnectionInfo>} 关联的外部数据源信息 。      */    datasourceConnectionInfo: null,        /**      * APIProperty: foreignKeys     * {Array(String)} 主空间数据集的外键。      */    foreignKeys: null,        /**      * APIProperty: foreignTable     * {String} 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。     */    foreignTable: null,        /**      * APIProperty: linkFields     * {Array(String)} 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返     * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。     */    linkFields: null,        /**      * APIProperty: linkFilter     * {String} 与外部属性表的连接条件。       */    linkFilter: null,        /**      * APIProperty: name     * {String} 此关联信息对象的名称。        */    name: null,        /**      * APIProperty: primaryKeys     * {Array(String)} 需要关联的外部属性表的主键。        */    primaryKeys: null,        /**     * Constructor: LinkItem     * 关联信息类构造函数。     *     * 设置将TableB关联到TableA的关联信息，即建立LinkItem类并设置其属性，     * TableA与TableB是通过主表（TableA）的外键（LinkItem类的 ForeignKey 属性）      * 和副表（TableB）的主键（LinkItem类的 PrimaryKey 属性）实现关联的，     * 当执行TableA的查询操作时，系统将根据关联信息中的过滤条件及查询条件，分别查询TableA      * 与TableB中满足条件的内容，TableA的查询结果与TableB的查询结果分别作为      * 独立的两个结果表保存在内存中，当需要获取结果时，SuperMap将对两个结果进行拼接并返回，     * 因此，进行关联查询时，查询参数中的返回字段一定要有关联条件中的外键，     * 否则无法根据外键的值获取副表中的关联字段值，副表中的字段值将返回 null。     * 在应用层看来，连接和关联操作很相似。     *       * 下面以SQL查询说明linkitem的使用方法：     * (start code)     *  function queryBySQL() {     *      // 设置关联的外部数据库信息,alias表示数据库别名     *      var dc = new DatasourceConnectionInfo({     *          dataBase: "RelQuery",     *          server: "192.168.168.39",     *          user: "sa",     *          password: "map",     *          driver: "SQL Server",     *          connect: true,     *          OpenLinkTable: false,     *          alias: "RelQuery",     *          engineType: EngineType.SQLPLUS,     *          readOnly: false,     *          exclusive: false     *      });     *     // 设置关联信息     *      var linkItem = new LinkItem({     *          datasourceConnectionInfo: dc,     *          foreignKeys: ["name"],     *          foreignTable: "Pop_2011",     *          linkFields: ["SmID as Pid","pop"],     *          name: "link",     *          primatryKeys: ["name"],     *      });     *      // 设置查询参数，在查询参数中添加linkItem关联条件信息     *      var queryParam, queryBySQLParams, queryBySQLService;     *      queryParam = new FilterParameter({     *          name: "Province@RelQuery",     *          fields: ["SmID","name"],     *          attributeFilter: "SmID<7",     *          linkItems: [linkItem]     *       }),      *      queryBySQLParams = new QueryBySQLParameters({     *           queryParams: [queryParam]     *              }),      *      queryBySQLService = new QueryBySQLService(url, {     *          eventListeners: {     *              "processCompleted": processCompleted,     *              "processFailed": processFailed     *              }     *      });     *      queryBySQLService.processAsync(queryBySQLParams);     *  }     *  function processCompleted(queryEventArgs) {//todo}     *  function processFailed(e) {//todo}     * (end)     *      * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * datasourceConnectionInfo - {<DatasourceConnectionInfo>} 关联的外部数据源信息。      * foreignKeys - {Array(String)} 主空间数据集的外键。     * foreignTable - {String} 关联的外部属性表的名称。     * linkFields - {Array(String)} 欲保留的外部属性表的字段。     * linkFilter - {String} 与外部属性表的连接条件。       * name - {String} 此关联信息对象的名称。     * primaryKeys - {Array(String)} 需要关联的外部属性表的主键。     */    initialize: function(options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。      */    destroy: function() {        var me = this;        if (me.datasourceConnectionInfo) {            me.datasourceConnectionInfo.destroy();            me.datasourceConnectionInfo = null;        }        me.foreignKeys = null;        me.foreignTable = null;        me.linkFields = null;        me.linkFilter = null;        me.name = null;        me.primaryKeys = null;    },        CLASS_NAME: "LinkItem"});module.exports = function (options) {    return new LinkItem(options);};
+	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: LinkItem * 关联信息类。 * 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表， * 矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。 使用LinkItem时， * 空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。 * LinkItem 只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 LinkItem; * 另外，用于建立关联关系的两个表可以不在同一个数据源下。 * * (注意： * 1. 使用 LinkItem 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段； * 2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。) * */__webpack_require__(5);__webpack_require__(25);LinkItem = SuperMap.Class({        /**      * APIProperty: datasourceConnectionInfo     * {<DatasourceConnectionInfo>} 关联的外部数据源信息 。      */    datasourceConnectionInfo: null,        /**      * APIProperty: foreignKeys     * {Array(String)} 主空间数据集的外键。      */    foreignKeys: null,        /**      * APIProperty: foreignTable     * {String} 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。     */    foreignTable: null,        /**      * APIProperty: linkFields     * {Array(String)} 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返     * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。     */    linkFields: null,        /**      * APIProperty: linkFilter     * {String} 与外部属性表的连接条件。       */    linkFilter: null,        /**      * APIProperty: name     * {String} 此关联信息对象的名称。        */    name: null,        /**      * APIProperty: primaryKeys     * {Array(String)} 需要关联的外部属性表的主键。        */    primaryKeys: null,        /**     * Constructor: LinkItem     * 关联信息类构造函数。     *     * 设置将TableB关联到TableA的关联信息，即建立LinkItem类并设置其属性，     * TableA与TableB是通过主表（TableA）的外键（LinkItem类的 ForeignKey 属性）      * 和副表（TableB）的主键（LinkItem类的 PrimaryKey 属性）实现关联的，     * 当执行TableA的查询操作时，系统将根据关联信息中的过滤条件及查询条件，分别查询TableA      * 与TableB中满足条件的内容，TableA的查询结果与TableB的查询结果分别作为      * 独立的两个结果表保存在内存中，当需要获取结果时，SuperMap将对两个结果进行拼接并返回，     * 因此，进行关联查询时，查询参数中的返回字段一定要有关联条件中的外键，     * 否则无法根据外键的值获取副表中的关联字段值，副表中的字段值将返回 null。     * 在应用层看来，连接和关联操作很相似。     *       * 下面以SQL查询说明linkitem的使用方法：     * (start code)     *  function queryBySQL() {     *      // 设置关联的外部数据库信息,alias表示数据库别名     *      var dc = new DatasourceConnectionInfo({     *          dataBase: "RelQuery",     *          server: "192.168.168.39",     *          user: "sa",     *          password: "map",     *          driver: "SQL Server",     *          connect: true,     *          OpenLinkTable: false,     *          alias: "RelQuery",     *          engineType: EngineType.SQLPLUS,     *          readOnly: false,     *          exclusive: false     *      });     *     // 设置关联信息     *      var linkItem = new LinkItem({     *          datasourceConnectionInfo: dc,     *          foreignKeys: ["name"],     *          foreignTable: "Pop_2011",     *          linkFields: ["SmID as Pid","pop"],     *          name: "link",     *          primatryKeys: ["name"],     *      });     *      // 设置查询参数，在查询参数中添加linkItem关联条件信息     *      var queryParam, queryBySQLParams, queryBySQLService;     *      queryParam = new FilterParameter({     *          name: "Province@RelQuery",     *          fields: ["SmID","name"],     *          attributeFilter: "SmID<7",     *          linkItems: [linkItem]     *       }),      *      queryBySQLParams = new QueryBySQLParameters({     *           queryParams: [queryParam]     *              }),      *      queryBySQLService = new QueryBySQLService(url, {     *          eventListeners: {     *              "processCompleted": processCompleted,     *              "processFailed": processFailed     *              }     *      });     *      queryBySQLService.processAsync(queryBySQLParams);     *  }     *  function processCompleted(queryEventArgs) {//todo}     *  function processFailed(e) {//todo}     * (end)     *      * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * datasourceConnectionInfo - {<DatasourceConnectionInfo>} 关联的外部数据源信息。      * foreignKeys - {Array(String)} 主空间数据集的外键。     * foreignTable - {String} 关联的外部属性表的名称。     * linkFields - {Array(String)} 欲保留的外部属性表的字段。     * linkFilter - {String} 与外部属性表的连接条件。       * name - {String} 此关联信息对象的名称。     * primaryKeys - {Array(String)} 需要关联的外部属性表的主键。     */    initialize: function(options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。      */    destroy: function() {        var me = this;        if (me.datasourceConnectionInfo) {            me.datasourceConnectionInfo.destroy();            me.datasourceConnectionInfo = null;        }        me.foreignKeys = null;        me.foreignTable = null;        me.linkFields = null;        me.linkFilter = null;        me.name = null;        me.primaryKeys = null;    },        CLASS_NAME: "LinkItem"});module.exports = function (options) {    return new LinkItem(options);};
 
 /***/ },
-/* 21 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -4093,7 +10358,7 @@
 	 * 对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，其 他内容是不可以被修改的。
 	 * 对于用户创建的数据源连接信息对象，其内容都可以修改。
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	DatasourceConnectionInfo = SuperMap.Class({
 
 	    /**
@@ -4227,7 +10492,7 @@
 	};
 
 /***/ },
-/* 22 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -4242,9 +10507,9 @@
 	 * Inherits from:
 	 *  - <QueryParameters>
 	 */
-	__webpack_require__(4);
-	__webpack_require__(17);
-	__webpack_require__(18);
+	__webpack_require__(5);
+	__webpack_require__(21);
+	__webpack_require__(22);
 	QueryByBoundsParameters = SuperMap.Class(QueryParameters, {
 
 	    /**
@@ -4308,7 +10573,7 @@
 	};
 
 /***/ },
-/* 23 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -4322,8 +10587,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.QueryService>
 	 */
-	__webpack_require__(16);
-	__webpack_require__(24);
+	__webpack_require__(20);
+	__webpack_require__(28);
 	SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService, {
 
 	    /**
@@ -4394,13 +10659,13 @@
 	};
 
 /***/ },
-/* 24 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*/ /** * Class: QueryByDistanceParameters * Distance 查询参数类。 * 该类用于设置 Distance 查询的相关参数。 * * Inherits from: *  - <QueryParameters>  */__webpack_require__(4);__webpack_require__(17);QueryByDistanceParameters = SuperMap.Class(QueryParameters, {    /**     * APIProperty: distance     * {Number} 查询距离，默认为0，单位与所查询图层对应的数据集单位相同。     * 当查找最近地物时，该属性无效。     */    distance: 0,    /**     * APIProperty: geometry     * {<Object>} 用于查询的地理对象，必设属性。     */    geometry: null,    /**     * APIProperty: isNearest     * {Boolean} 是否为最近距离查询。     * 建议该属性与 expectCount （继承自 QueryParameters）属性联合使用。     * 当该属性为 true 时，即表示查找最近地物，如果查询结果数大于期望返回的结果记录数（expectCount），     * 则查找结果为查询总记录中距离中心最近的expectCount个地物。     * 当该属性为不为 true 时，如果查询结果数大于期望返回的结果记录数（expectCount），     * 则查找结果为从查询总记录中随机抽取的expectCount个地物。     * 目前查询结果不支持按远近距离排序。     */    isNearest: null,    /**      * APIProperty: returnContent     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     * 如果为 true，则直接返回新创建资源，即查询结果的表述。     * 为 false，则返回的是查询结果资源的 URI。默认为 true。       */    returnContent: true,        /**     * Constructor: QueryByDistanceParameters     * Distance 查询参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * customParams - {String} 自定义参数，供扩展使用。       * distance - {Number} 查询距离。     * expectCount - {Integer} 期望返回结果记录个数。     * geometry - {<Object>} 用于查询的几何对象。     * holdTime - {Integer} 资源在服务端保存的时间。     * isNearest - {Boolean} 是否为最近距离查询。     * networkType - {<GeometryType>} 网络数据集对应的查询类型。     * queryOption - {<QueryOption>} 查询结果类型枚举类。     * queryParams -  {Array(<FilterParameter>)} 查询过滤条件参数数组。     * startRecord - {Integer} 查询起始记录号。     * returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     */    initialize: function(options) {        QueryParameters.prototype.initialize.apply(this, arguments);        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },        /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function() {        QueryParameters.prototype.destroy.apply(this, arguments);         var me = this;        me.returnContent = null;        me.distance = null;        me.isNearest = null;        if (me.geometry) {            me.geometry.destroy();            me.geometry = null;        }    },        CLASS_NAME: "QueryByDistanceParameters"});module.exports = function (options) {    return new QueryByDistanceParameters(options);};
+	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*/ /** * Class: QueryByDistanceParameters * Distance 查询参数类。 * 该类用于设置 Distance 查询的相关参数。 * * Inherits from: *  - <QueryParameters>  */__webpack_require__(5);__webpack_require__(21);QueryByDistanceParameters = SuperMap.Class(QueryParameters, {    /**     * APIProperty: distance     * {Number} 查询距离，默认为0，单位与所查询图层对应的数据集单位相同。     * 当查找最近地物时，该属性无效。     */    distance: 0,    /**     * APIProperty: geometry     * {<Object>} 用于查询的地理对象，必设属性。     */    geometry: null,    /**     * APIProperty: isNearest     * {Boolean} 是否为最近距离查询。     * 建议该属性与 expectCount （继承自 QueryParameters）属性联合使用。     * 当该属性为 true 时，即表示查找最近地物，如果查询结果数大于期望返回的结果记录数（expectCount），     * 则查找结果为查询总记录中距离中心最近的expectCount个地物。     * 当该属性为不为 true 时，如果查询结果数大于期望返回的结果记录数（expectCount），     * 则查找结果为从查询总记录中随机抽取的expectCount个地物。     * 目前查询结果不支持按远近距离排序。     */    isNearest: null,    /**      * APIProperty: returnContent     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     * 如果为 true，则直接返回新创建资源，即查询结果的表述。     * 为 false，则返回的是查询结果资源的 URI。默认为 true。       */    returnContent: true,        /**     * Constructor: QueryByDistanceParameters     * Distance 查询参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * customParams - {String} 自定义参数，供扩展使用。       * distance - {Number} 查询距离。     * expectCount - {Integer} 期望返回结果记录个数。     * geometry - {<Object>} 用于查询的几何对象。     * holdTime - {Integer} 资源在服务端保存的时间。     * isNearest - {Boolean} 是否为最近距离查询。     * networkType - {<GeometryType>} 网络数据集对应的查询类型。     * queryOption - {<QueryOption>} 查询结果类型枚举类。     * queryParams -  {Array(<FilterParameter>)} 查询过滤条件参数数组。     * startRecord - {Integer} 查询起始记录号。     * returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     */    initialize: function(options) {        QueryParameters.prototype.initialize.apply(this, arguments);        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },        /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function() {        QueryParameters.prototype.destroy.apply(this, arguments);         var me = this;        me.returnContent = null;        me.distance = null;        me.isNearest = null;        if (me.geometry) {            me.geometry.destroy();            me.geometry = null;        }    },        CLASS_NAME: "QueryByDistanceParameters"});module.exports = function (options) {    return new QueryByDistanceParameters(options);};
 
 /***/ },
-/* 25 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -4414,8 +10679,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.QueryService> 
 	 */
-	__webpack_require__(16);
-	__webpack_require__(26);
+	__webpack_require__(20);
+	__webpack_require__(30);
 	SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
 
 	    /**
@@ -4491,13 +10756,13 @@
 
 
 /***/ },
-/* 26 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: QueryBySQLParameters * SQL 查询参数类。 * 该类用于设置 SQL 查询的相关参数。 * * Inherits from: *  - <QueryParameters> */__webpack_require__(4);__webpack_require__(17);QueryBySQLParameters = SuperMap.Class(QueryParameters, {    /**     * APIProperty: returnContent     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     * 如果为 true，则直接返回新创建资源，即查询结果的表述。     * 为 false，则返回的是查询结果资源的 URI。默认为 true。     */    returnContent: true,    /**     * Constructor: QueryBySQLParameters     * SQL 查询参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * customParams - {String} 自定义参数，供扩展使用。     * expectCount - {Integer} 期望返回结果记录个数。     * networkType - {<GeometryType>} 网络数据集对应的查询类型。     * queryOption - {<QueryOption>} 查询结果类型枚举类。     * queryParams -  {Array(<FilterParameter>)} 查询过滤条件参数数组。     * startRecord - {Integer} 查询起始记录号。     * holdTime - {Integer} 资源在服务端保存的时间。     * returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     */    initialize: function (options) {        QueryParameters.prototype.initialize.apply(this, arguments);        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        QueryParameters.prototype.destroy.apply(this, arguments);        var me = this;        me.returnContent = null;    },    CLASS_NAME: "QueryBySQLParameters"});module.exports = function (options) {    return new QueryBySQLParameters(options);};
+	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: QueryBySQLParameters * SQL 查询参数类。 * 该类用于设置 SQL 查询的相关参数。 * * Inherits from: *  - <QueryParameters> */__webpack_require__(5);__webpack_require__(21);QueryBySQLParameters = SuperMap.Class(QueryParameters, {    /**     * APIProperty: returnContent     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     * 如果为 true，则直接返回新创建资源，即查询结果的表述。     * 为 false，则返回的是查询结果资源的 URI。默认为 true。     */    returnContent: true,    /**     * Constructor: QueryBySQLParameters     * SQL 查询参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * customParams - {String} 自定义参数，供扩展使用。     * expectCount - {Integer} 期望返回结果记录个数。     * networkType - {<GeometryType>} 网络数据集对应的查询类型。     * queryOption - {<QueryOption>} 查询结果类型枚举类。     * queryParams -  {Array(<FilterParameter>)} 查询过滤条件参数数组。     * startRecord - {Integer} 查询起始记录号。     * holdTime - {Integer} 资源在服务端保存的时间。     * returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     */    initialize: function (options) {        QueryParameters.prototype.initialize.apply(this, arguments);        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        QueryParameters.prototype.destroy.apply(this, arguments);        var me = this;        me.returnContent = null;    },    CLASS_NAME: "QueryBySQLParameters"});module.exports = function (options) {    return new QueryBySQLParameters(options);};
 
 /***/ },
-/* 27 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -4511,8 +10776,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.QueryService>
 	 */
-	__webpack_require__(16);
-	__webpack_require__(28);
+	__webpack_require__(20);
+	__webpack_require__(32);
 	SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService, {
 
 	    /**
@@ -4582,7 +10847,7 @@
 	};
 
 /***/ },
-/* 28 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -4597,8 +10862,8 @@
 	 * Inherits from:
 	 *  - <QueryParameters> 
 	 */
-	__webpack_require__(4);
-	__webpack_require__(17);
+	__webpack_require__(5);
+	__webpack_require__(21);
 	QueryByGeometryParameters = SuperMap.Class(QueryParameters, {
 
 	    /** 
@@ -4667,7 +10932,7 @@
 	};
 
 /***/ },
-/* 29 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -4681,9 +10946,9 @@
 	 *          //doSomething
 	 *      });
 	 */
-	__webpack_require__(4);
-	__webpack_require__(30);
-	__webpack_require__(11);
+	__webpack_require__(5);
+	__webpack_require__(34);
+	__webpack_require__(15);
 
 	ChartQueryService = ServiceBase.extend({
 
@@ -4741,7 +11006,7 @@
 
 
 /***/ },
-/* 30 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -4758,9 +11023,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(3);
-	__webpack_require__(13);
-	__webpack_require__(31);
+	__webpack_require__(4);
+	__webpack_require__(17);
+	__webpack_require__(35);
 	SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -4932,7 +11197,7 @@
 	};
 
 /***/ },
-/* 31 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -4945,8 +11210,8 @@
 	 *     查询和海图范围查询两类，通过属性queryMode指定查询模式。必设属性有：
 	 *     queryMode、chartLayerNames、chartQueryFilterParameters。当进行海图范围查询时，必设属性还包括bounds。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(32);
+	__webpack_require__(5);
+	__webpack_require__(36);
 	ChartQueryParameters = SuperMap.Class({
 
 	    /**
@@ -5118,7 +11383,7 @@
 	};
 
 /***/ },
-/* 32 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -5129,7 +11394,7 @@
 	 * Class: ChartQueryFilterParameter
 	 *      海图查询过滤参数类，用于设置海图查询的过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	ChartQueryFilterParameter = SuperMap.Class({
 
 	    /**
@@ -5222,7 +11487,7 @@
 	};
 
 /***/ },
-/* 33 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5236,8 +11501,8 @@
 	 *          //doSomething
 	 *      });
 	 */
-	__webpack_require__(34);
-	__webpack_require__(11);
+	__webpack_require__(38);
+	__webpack_require__(15);
 
 	TilesetsService = ServiceBase.extend({
 
@@ -5268,7 +11533,7 @@
 
 
 /***/ },
-/* 34 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -5283,7 +11548,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
+	__webpack_require__(17);
 
 	SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -5343,7 +11608,7 @@
 	};
 
 /***/ },
-/* 35 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5357,8 +11622,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(11);
-	__webpack_require__(36);
+	__webpack_require__(15);
+	__webpack_require__(40);
 
 	GetLayersInfoService = ServiceBase.extend({
 
@@ -5395,7 +11660,7 @@
 	module.exports = L.supermap.getLayersInfoService;
 
 /***/ },
-/* 36 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -5410,7 +11675,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
+	__webpack_require__(17);
 	SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -5542,7 +11807,7 @@
 	};
 
 /***/ },
-/* 37 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5557,8 +11822,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(11);
-	__webpack_require__(38);
+	__webpack_require__(15);
+	__webpack_require__(42);
 
 	ChartFeatureInfoSpecsService = ServiceBase.extend({
 
@@ -5587,7 +11852,7 @@
 	module.exports = L.supermap.chartFeatureInfoSpecsService;
 
 /***/ },
-/* 38 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -5604,7 +11869,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
+	__webpack_require__(17);
 	SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -5669,7 +11934,7 @@
 
 
 /***/ },
-/* 39 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -5687,10 +11952,10 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(11);
-	__webpack_require__(40);
-	__webpack_require__(41);
-	__webpack_require__(42);
+	__webpack_require__(15);
+	__webpack_require__(44);
+	__webpack_require__(45);
+	__webpack_require__(46);
 
 	SetLayerService = ServiceBase.extend({
 
@@ -5797,7 +12062,7 @@
 	module.exports = L.supermap.setLayerService;
 
 /***/ },
-/* 40 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -5812,7 +12077,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
+	__webpack_require__(17);
 	SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -5884,7 +12149,7 @@
 
 
 /***/ },
-/* 41 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -5901,7 +12166,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
+	__webpack_require__(17);
 	SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -6020,7 +12285,7 @@
 
 
 /***/ },
-/* 42 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -6035,8 +12300,8 @@
 	 * 一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；
 	 * 一种是使用 AsyncResponder 类实现异步处理。
 	 */
-	__webpack_require__(13);
-	__webpack_require__(43);
+	__webpack_require__(17);
+	__webpack_require__(47);
 	SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    lastparams: null,
@@ -6183,7 +12448,7 @@
 
 
 /***/ },
-/* 43 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -6196,8 +12461,8 @@
 	 * 该类存储了各子图层是否可见的状态。子图层显示控制功能只针对 TiledDynamicIServerLayer 和 DynamicIServerLayer 图层。
 	 * 注意在 SuperMap iClient 系列产品中所说的图层与 SuperMap Deskpro 的地图对应，子图层与 SuperMap Deskpro 的图层对应。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(44);
+	__webpack_require__(5);
+	__webpack_require__(48);
 	SetLayerStatusParameters = SuperMap.Class({
 
 	    /**
@@ -6275,7 +12540,7 @@
 	};
 
 /***/ },
-/* 44 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -6288,7 +12553,7 @@
 	 * 该类存储了各个子图层的名字和是否可见的状态。
 	 *
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	LayerStatus = SuperMap.Class({
 
 	    /**
@@ -6389,7 +12654,7 @@
 	};
 
 /***/ },
-/* 45 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6404,8 +12669,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(11);
-	__webpack_require__(46);
+	__webpack_require__(15);
+	__webpack_require__(50);
 
 	MeasureService = ServiceBase.extend({
 
@@ -6465,7 +12730,7 @@
 	module.exports = L.supermap.measureService;
 
 /***/ },
-/* 46 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -6480,8 +12745,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
-	__webpack_require__(47);
+	__webpack_require__(17);
+	__webpack_require__(51);
 	SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -6605,7 +12870,7 @@
 	};
 
 /***/ },
-/* 47 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -6618,7 +12883,7 @@
 	 * 客户端要量算的地物间的距离或某个区域的面积是一个 {<Object>}  类型的几何对象（{<Line>} 或 {<Polygon>}），
 	 * 它将与指定的量算单位一起作为量算参数传到服务端。最终服务端将以指定单位返回得到的距离或面积。 
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	MeasureParameters = SuperMap.Class({
 
 	    /** 
@@ -6689,7 +12954,7 @@
 	};
 
 /***/ },
-/* 48 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6704,8 +12969,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(49);
-	__webpack_require__(50);
+	__webpack_require__(53);
+	__webpack_require__(54);
 
 	FieldStatisticService = FieldsServiceBase.extend({
 	    options: {
@@ -6779,7 +13044,7 @@
 	module.exports = L.supermap.fieldStatisticService;
 
 /***/ },
-/* 49 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6794,7 +13059,7 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(11);
+	__webpack_require__(15);
 
 	FieldsServiceBase = ServiceBase.extend({
 	    options: {
@@ -6816,7 +13081,7 @@
 
 
 /***/ },
-/* 50 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -6831,7 +13096,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
+	__webpack_require__(17);
 
 	SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -6938,7 +13203,7 @@
 	};
 
 /***/ },
-/* 51 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -6955,13 +13220,13 @@
 	 *          //doSomething
 	 *      });
 	 */
-	__webpack_require__(4);
-	__webpack_require__(52);
-	__webpack_require__(57);
-	__webpack_require__(59);
+	__webpack_require__(5);
+	__webpack_require__(56);
 	__webpack_require__(61);
 	__webpack_require__(63);
-	__webpack_require__(11);
+	__webpack_require__(65);
+	__webpack_require__(67);
+	__webpack_require__(15);
 
 	GetFeaturesService = ServiceBase.extend({
 
@@ -7100,7 +13365,7 @@
 
 
 /***/ },
-/* 52 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -7115,8 +13380,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(53);
-	__webpack_require__(54);
+	__webpack_require__(57);
+	__webpack_require__(58);
 	SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
 	    /**
@@ -7179,7 +13444,7 @@
 	};
 
 /***/ },
-/* 53 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -7196,8 +13461,8 @@
 	 */
 
 	// TODO 待iServer featureResult GeoJSON表述bug修复当修改此类中TODO注释说明的地方
-	__webpack_require__(3);
-	__webpack_require__(13);
+	__webpack_require__(4);
+	__webpack_require__(17);
 
 	SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -7361,7 +13626,7 @@
 	};
 
 /***/ },
-/* 54 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -7375,7 +13640,7 @@
 	 * Inherits from:
 	 *  - <GetFeaturesParametersBase>
 	 */
-	__webpack_require__(55);
+	__webpack_require__(59);
 	GetFeaturesByIDsParameters = SuperMap.Class(GetFeaturesParametersBase, {
 
 	    /**
@@ -7471,7 +13736,7 @@
 	};
 
 /***/ },
-/* 55 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* COPYRIGHT 2017 SUPERMAP
@@ -7482,7 +13747,7 @@
 	 * Class: GetFeaturesParametersBase
 	 * 数据服务中数据集查询参数基类。
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	GetFeaturesParametersBase = SuperMap.Class({
 	    /**
@@ -7563,10 +13828,10 @@
 	module.export = function (options) {
 	    return new GetFeaturesParametersBase(options);
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(56)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(60)(module)))
 
 /***/ },
-/* 56 */
+/* 60 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -7582,7 +13847,7 @@
 
 
 /***/ },
-/* 57 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -7597,8 +13862,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(53);
-	__webpack_require__(58);
+	__webpack_require__(57);
+	__webpack_require__(62);
 	SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
 	    /**
@@ -7661,7 +13926,7 @@
 	};
 
 /***/ },
-/* 58 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -7676,8 +13941,8 @@
 	 * Inherits from:
 	 *  - <GetFeaturesParametersBase> 
 	 */
-	__webpack_require__(55);
-	__webpack_require__(18);
+	__webpack_require__(59);
+	__webpack_require__(22);
 	GetFeaturesBySQLParameters = SuperMap.Class(GetFeaturesParametersBase, {
 	    /** 
 	     * Property: getFeatureMode
@@ -7751,7 +14016,7 @@
 	};
 
 /***/ },
-/* 59 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -7766,8 +14031,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(53);
-	__webpack_require__(60);
+	__webpack_require__(57);
+	__webpack_require__(64);
 
 	SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
@@ -7831,7 +14096,7 @@
 	};
 
 /***/ },
-/* 60 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -7846,7 +14111,7 @@
 	 * Inherits from:
 	 *  - <GetFeaturesParametersBase>
 	 */
-	__webpack_require__(55);
+	__webpack_require__(59);
 
 	GetFeaturesByBoundsParameters = SuperMap.Class(GetFeaturesParametersBase, {
 
@@ -7983,7 +14248,7 @@
 	};
 
 /***/ },
-/* 61 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -7998,8 +14263,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(53);
-	__webpack_require__(62);
+	__webpack_require__(57);
+	__webpack_require__(66);
 	SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
 	    /**
@@ -8062,7 +14327,7 @@
 	};
 
 /***/ },
-/* 62 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -8076,7 +14341,7 @@
 	 * Inherits from:
 	 *  - <GetFeaturesParametersBase> 
 	 */
-	__webpack_require__(55);
+	__webpack_require__(59);
 	GetFeaturesByBufferParameters = SuperMap.Class(GetFeaturesParametersBase, {  
 	    /** 
 	     * APIProperty: bufferDistance
@@ -8190,7 +14455,7 @@
 	};
 
 /***/ },
-/* 63 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -8205,8 +14470,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(53);
-	__webpack_require__(64);
+	__webpack_require__(57);
+	__webpack_require__(68);
 
 	SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
@@ -8270,7 +14535,7 @@
 	};
 
 /***/ },
-/* 64 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -8285,7 +14550,7 @@
 	 * Inherits from:
 	 *  - <GetFeaturesParametersBase>
 	 */
-	__webpack_require__(55);
+	__webpack_require__(59);
 	GetFeaturesByGeometryParameters = SuperMap.Class(GetFeaturesParametersBase, {
 
 	    /**
@@ -8411,7 +14676,7 @@
 	};
 
 /***/ },
-/* 65 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8426,8 +14691,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(49);
-	__webpack_require__(66);
+	__webpack_require__(53);
+	__webpack_require__(70);
 
 	GetFieldsService = FieldsServiceBase.extend({
 
@@ -8458,7 +14723,7 @@
 	module.exports = L.supermap.getFieldsService;
 
 /***/ },
-/* 66 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -8472,7 +14737,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
+	__webpack_require__(17);
 
 	SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -8558,7 +14823,7 @@
 	};
 
 /***/ },
-/* 67 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8575,8 +14840,8 @@
 	 *      });
 	 */
 
-	__webpack_require__(68);
-	__webpack_require__(11);
+	__webpack_require__(72);
+	__webpack_require__(15);
 
 	EditFeaturesService = ServiceBase.extend({
 
@@ -8648,7 +14913,7 @@
 	module.exports = L.supermap.editFeaturesService;
 
 /***/ },
-/* 68 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -8662,8 +14927,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
-	__webpack_require__(69);
+	__webpack_require__(17);
+	__webpack_require__(73);
 	SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -8785,7 +15050,7 @@
 	};
 
 /***/ },
-/* 69 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* COPYRIGHT 2017 SUPERMAP
@@ -8796,7 +15061,7 @@
 	 * Class: EditFeaturesParameters
 	 * 数据服务中数据集添加、修改、删除参数类。 
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	EditFeaturesParameters = SuperMap.Class({
 	    /** 
 	     * APIProperty: features
@@ -8903,10 +15168,10 @@
 	module.export = function (options) {
 	    return new EditFeaturesParameters(options);
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(56)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(60)(module)))
 
 /***/ },
-/* 70 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -8921,8 +15186,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(11);
-	__webpack_require__(71);
+	__webpack_require__(15);
+	__webpack_require__(75);
 
 	GetGridCellInfosService = ServiceBase.extend({
 
@@ -8958,7 +15223,7 @@
 	module.exports = L.supermap.getGridCellInfosService;
 
 /***/ },
-/* 71 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -8974,8 +15239,8 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 
-	__webpack_require__(13);
-	__webpack_require__(72);
+	__webpack_require__(17);
+	__webpack_require__(76);
 	SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -9143,7 +15408,7 @@
 	};
 
 /***/ },
-/* 72 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* COPYRIGHT 2017 SUPERMAP
@@ -9154,7 +15419,7 @@
 	 * Class: GetGridCellInfosParameters
 	 * 数据服务栅格查询参数类。
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	GetGridCellInfosParameter = SuperMap.Class({
 	    /**
 	     * APIProperty: datasetName
@@ -9218,10 +15483,10 @@
 	    return new GetGridCellInfosParameter(options);
 	};
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(56)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(60)(module)))
 
 /***/ },
-/* 73 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9236,8 +15501,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(11);
-	__webpack_require__(74);
+	__webpack_require__(15);
+	__webpack_require__(78);
 	ThemeService = ServiceBase.extend({
 
 	    initialize: function (url, options) {
@@ -9266,7 +15531,7 @@
 	module.exports = L.supermap.ThemeService;
 
 /***/ },
-/* 74 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -9280,8 +15545,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
-	__webpack_require__(75);
+	__webpack_require__(17);
+	__webpack_require__(79);
 	SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -9428,7 +15693,7 @@
 	};
 
 /***/ },
-/* 75 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -9440,16 +15705,16 @@
 	 * 专题图参数类
 	 * 该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(19);
-	__webpack_require__(76);
-	__webpack_require__(81);
+	__webpack_require__(5);
+	__webpack_require__(23);
+	__webpack_require__(80);
 	__webpack_require__(85);
-	__webpack_require__(91);
-	__webpack_require__(102);
-	__webpack_require__(104);
+	__webpack_require__(89);
+	__webpack_require__(95);
 	__webpack_require__(106);
 	__webpack_require__(108);
+	__webpack_require__(110);
+	__webpack_require__(112);
 
 	ThemeParameters = SuperMap.Class({
 
@@ -9549,7 +15814,7 @@
 	};
 
 /***/ },
-/* 76 */
+/* 80 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -9570,9 +15835,9 @@
 	 * Inherits from:
 	 *  - <Theme>
 	 */
-	__webpack_require__(4);
-	__webpack_require__(77);
-	__webpack_require__(79);
+	__webpack_require__(5);
+	__webpack_require__(81);
+	__webpack_require__(83);
 	ThemeDotDensity = SuperMap.Class(Theme, {
 
 	    /**
@@ -9664,7 +15929,7 @@
 
 
 /***/ },
-/* 77 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -9676,8 +15941,8 @@
 	 * 服务端矢量要素风格类
 	 * 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(78);
+	__webpack_require__(5);
+	__webpack_require__(82);
 	ServerStyle = SuperMap.Class({
 
 	    /**
@@ -9904,7 +16169,7 @@
 
 
 /***/ },
-/* 78 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -9916,7 +16181,7 @@
 	 * 颜色类
 	 * 该类使用三原色（ RGB ）来表达颜色。
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	ServerColor = SuperMap.Class({
 
 	    /**
@@ -10024,7 +16289,7 @@
 
 
 /***/ },
-/* 79 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10035,8 +16300,8 @@
 	 * Class: Theme
 	 * 专题图基类。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(80);
+	__webpack_require__(5);
+	__webpack_require__(84);
 	Theme = SuperMap.Class({
 
 	    /**
@@ -10103,7 +16368,7 @@
 	};
 
 /***/ },
-/* 80 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10114,7 +16379,7 @@
 	 * Class: ThemeMemoryData
 	 * 专题图内存数据类。
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	ThemeMemoryData = SuperMap.Class({
 
 	    /**
@@ -10187,7 +16452,7 @@
 	};
 
 /***/ },
-/* 81 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10204,11 +16469,11 @@
 	 * Inherits from:
 	 * -<Theme>
 	 */
-	__webpack_require__(4);
-	__webpack_require__(79);
-	__webpack_require__(82);
+	__webpack_require__(5);
 	__webpack_require__(83);
-	__webpack_require__(84);
+	__webpack_require__(86);
+	__webpack_require__(87);
+	__webpack_require__(88);
 	ThemeGraduatedSymbol = SuperMap.Class(Theme, {
 
 	    /**
@@ -10363,7 +16628,7 @@
 
 
 /***/ },
-/* 82 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10375,8 +16640,8 @@
 	 * 标签或符号流动显示和牵引线风格设置类。
 	 * 通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(77);
+	__webpack_require__(5);
+	__webpack_require__(81);
 	ThemeFlow = SuperMap.Class({
 
 	    /**
@@ -10453,7 +16718,7 @@
 
 
 /***/ },
-/* 83 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10465,7 +16730,7 @@
 	 * 专题图中文本或符号相对于要素内点的偏移量设置类。
 	 * 通过该类可以设置专题图中标记文本或符号的偏移量以及偏移量是否随地图缩放而改变。
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	ThemeOffset = SuperMap.Class({
 
 	    /**
@@ -10530,7 +16795,7 @@
 
 
 /***/ },
-/* 84 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10542,8 +16807,8 @@
 	 * 等级符号专题图正负零值显示风格类。
 	 * 通过该类可以设置正值的显示风格，零值和或负值的显示风格以及是否显示零值和或负值对应的等级符号。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(77);
+	__webpack_require__(5);
+	__webpack_require__(81);
 	ThemeGraduatedSymbolStyle = SuperMap.Class({
 	    
 	    /**
@@ -10630,7 +16895,7 @@
 
 
 /***/ },
-/* 85 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10648,14 +16913,14 @@
 	 * Inherits from:
 	 *  - <Theme>
 	 */
-	__webpack_require__(4);
-	__webpack_require__(79);
-	__webpack_require__(82);
+	__webpack_require__(5);
 	__webpack_require__(83);
 	__webpack_require__(86);
-	__webpack_require__(88);
-	__webpack_require__(89);
+	__webpack_require__(87);
 	__webpack_require__(90);
+	__webpack_require__(92);
+	__webpack_require__(93);
+	__webpack_require__(94);
 	ThemeGraph = SuperMap.Class(Theme, {
 
 	    /**
@@ -11007,7 +17272,7 @@
 	};
 
 /***/ },
-/* 86 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -11019,9 +17284,9 @@
 	 * 统计专题图坐标轴样式类。
 	 * 该类用于设置统计图中坐标轴样式相关信息，如坐标轴颜色、是否显示、坐标文本样式等。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(78);
-	__webpack_require__(87);
+	__webpack_require__(5);
+	__webpack_require__(82);
+	__webpack_require__(91);
 	ThemeGraphAxes = SuperMap.Class({
 
 	    /**
@@ -11113,7 +17378,7 @@
 
 
 /***/ },
-/* 87 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -11125,8 +17390,8 @@
 	 * 服务端文本风格类
 	 * 该类用于定义文本风格的相关属性。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(78);
+	__webpack_require__(5);
+	__webpack_require__(82);
 	ServerTextStyle = SuperMap.Class({
 
 	    /**
@@ -11342,7 +17607,7 @@
 
 
 /***/ },
-/* 88 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -11355,7 +17620,7 @@
 	 * 通过该类可以设置统计专题图符号最小和最大的基准尺寸。专题图表的尺寸大小与基准值、分级方式及专题字段值的大小都有着紧密联系。
 	 * 它是利用指定的分级方式，最大基准值、最小基准值以及字段的最大值和最小值计算统计图中各个值对应的图表尺寸的大小。
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	ThemeGraphSize = SuperMap.Class({
 
 	    /**
@@ -11410,7 +17675,7 @@
 
 
 /***/ },
-/* 89 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -11422,8 +17687,8 @@
 	 * 统计图文字标注风格类。
 	 * 通过该类可以设置统计图表中文字可见性以及标注风格。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(87);
+	__webpack_require__(5);
+	__webpack_require__(91);
 	ThemeGraphText = SuperMap.Class({
 
 	    /**
@@ -11493,7 +17758,7 @@
 
 
 /***/ },
-/* 90 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -11506,8 +17771,8 @@
 	 * 统计专题图可以基于多个变量，反映多种属性，即可以将多个专题变量的值绘制在一个统计图上。每一个专题变量对应的统计图即为一个专题图子项。
 	 * 该类用来设置每个统计专题图子项的名称，专题变量，显示风格，甚至可以将该子项再制作成范围分段专题图。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(77);
+	__webpack_require__(5);
+	__webpack_require__(81);
 	ThemeGraphItem = SuperMap.Class({
 
 	    /**
@@ -11586,7 +17851,7 @@
 
 
 /***/ },
-/* 91 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -11605,18 +17870,18 @@
 	 * Inherits from:
 	 *  - <Theme>
 	 */
-	__webpack_require__(4);
-	__webpack_require__(79);
-	__webpack_require__(82);
+	__webpack_require__(5);
 	__webpack_require__(83);
-	__webpack_require__(92);
-	__webpack_require__(93);
-	__webpack_require__(94);
+	__webpack_require__(86);
+	__webpack_require__(87);
 	__webpack_require__(96);
+	__webpack_require__(97);
 	__webpack_require__(98);
-	__webpack_require__(99);
 	__webpack_require__(100);
-	__webpack_require__(101);
+	__webpack_require__(102);
+	__webpack_require__(103);
+	__webpack_require__(104);
+	__webpack_require__(105);
 
 	ThemeLabel = SuperMap.Class(Theme, {
 
@@ -11917,7 +18182,7 @@
 
 
 /***/ },
-/* 92 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -11933,8 +18198,8 @@
 	 * 他们所代表的分段区间分别为[0,5)，[5,10)。那么需要分别设置 ThemeLabelItem[0].start=0，
 	 * ThemeLabelItem[0].end=5，ThemeLabelItem[1].start=5，ThemeLabelItem[1].end=10。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(87);
+	__webpack_require__(5);
+	__webpack_require__(91);
 	ThemeLabelItem = SuperMap.Class({
 
 	    /**
@@ -12022,7 +18287,7 @@
 
 
 /***/ },
-/* 93 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12036,8 +18301,8 @@
 	 * 字段指定用于单值的字段，同一值的标签具有相同的显示风格，其中每一个值就是一个专题图子项，
 	 * 每一个子项都具有其名称、风格、指定的单值、X方向偏移量和Y方向偏移量。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(87);
+	__webpack_require__(5);
+	__webpack_require__(91);
 	ThemeLabelUniqueItem = SuperMap.Class({
 
 	    /**
@@ -12129,7 +18394,7 @@
 
 
 /***/ },
-/* 94 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12141,9 +18406,9 @@
 	 * 标签中文本风格类。
 	 * 通过该类可以设置标签中的文本字体大小和显示风格。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(87);
-	__webpack_require__(95);
+	__webpack_require__(5);
+	__webpack_require__(91);
+	__webpack_require__(99);
 	ThemeLabelText = SuperMap.Class({
 
 	    /**
@@ -12249,7 +18514,7 @@
 
 
 /***/ },
-/* 95 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12270,8 +18535,8 @@
 	 * 字符分段范围相应的就是(-∞，1)，[1，3)，[3，4)，[4，9)，[9，+∞)，可以看出索引号为0的字符（即“珠” ）在第一个分段内，
 	 * 索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(87);
+	__webpack_require__(5);
+	__webpack_require__(91);
 	LabelMixedTextStyle = SuperMap.Class({
 
 	    /**
@@ -12379,7 +18644,7 @@
 
 
 /***/ },
-/* 96 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12399,8 +18664,8 @@
 	 * Inherits from:
 	 *  - <LabelMatrixCell>
 	 */
-	__webpack_require__(4);
-	__webpack_require__(97);
+	__webpack_require__(5);
+	__webpack_require__(101);
 	LabelImageCell = SuperMap.Class(LabelMatrixCell, {
 
 	    /**
@@ -12479,7 +18744,7 @@
 	};
 
 /***/ },
-/* 97 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12492,13 +18757,13 @@
 	 * 该类可以包含 n*n 个矩阵标签元素，矩阵标签元素的类型可以是图片，符号，标签专题图等。
 	 * 符号类型的矩阵标签元素类、图片类型的矩阵标签元素类和专题图类型的矩阵标签元素类均继承自该类。
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	LabelMatrixCell = SuperMap.Class({
 	    CLASS_NAME: "LabelMatrixCell"
 	});
 
 /***/ },
-/* 98 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12518,9 +18783,9 @@
 	 * Inherits from:
 	 *  - <LabelMatrixCell>
 	 */
-	__webpack_require__(4);
-	__webpack_require__(77);
-	__webpack_require__(97);
+	__webpack_require__(5);
+	__webpack_require__(81);
+	__webpack_require__(101);
 	LabelSymbolCell = SuperMap.Class(LabelMatrixCell, {
 
 	    /**
@@ -12581,7 +18846,7 @@
 	};
 
 /***/ },
-/* 99 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12601,9 +18866,9 @@
 	 * Inherits from:
 	 *  - <LabelMatrixCell>
 	 */
-	__webpack_require__(4);
-	__webpack_require__(91);
-	__webpack_require__(97);
+	__webpack_require__(5);
+	__webpack_require__(95);
+	__webpack_require__(101);
 	LabelThemeCell = SuperMap.Class(LabelMatrixCell, {
 
 	    /**
@@ -12655,7 +18920,7 @@
 	};
 
 /***/ },
-/* 100 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12667,7 +18932,7 @@
 	 * 标签沿线标注样式类。
 	 * 通过该类可以设置是否标签沿线标注以及沿线标注的多种样式。沿线标注属性只适用于线数据集专题图。
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	ThemeLabelAlongLine = SuperMap.Class({
 
 	    /**
@@ -12759,7 +19024,7 @@
 
 
 /***/ },
-/* 101 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12771,8 +19036,8 @@
 	 * 标签背景风格类。
 	 * 通过该类可以设置标签的背景形状和风格。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(77);
+	__webpack_require__(5);
+	__webpack_require__(81);
 	ThemeLabelBackground = SuperMap.Class({
 
 	    /**
@@ -12838,7 +19103,7 @@
 
 
 /***/ },
-/* 102 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12855,9 +19120,9 @@
 	 * Inherits from:
 	 *  - <Theme>
 	 */
-	__webpack_require__(4);
-	__webpack_require__(79);
-	__webpack_require__(103);
+	__webpack_require__(5);
+	__webpack_require__(83);
+	__webpack_require__(107);
 	ThemeRange = SuperMap.Class(Theme, {
 	    /**
 	     * Property: precision
@@ -12970,7 +19235,7 @@
 
 
 /***/ },
-/* 103 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12983,8 +19248,8 @@
 	 * 在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。
 	 * 每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(77);
+	__webpack_require__(5);
+	__webpack_require__(81);
 	ThemeRangeItem = SuperMap.Class({
 
 	    /**
@@ -13092,7 +19357,7 @@
 
 
 /***/ },
-/* 104 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -13108,10 +19373,10 @@
 	 * Inherits from:
 	 *  - <Theme>
 	 */
-	__webpack_require__(4);
-	__webpack_require__(77);
-	__webpack_require__(79);
-	__webpack_require__(105);
+	__webpack_require__(5);
+	__webpack_require__(81);
+	__webpack_require__(83);
+	__webpack_require__(109);
 	ThemeUnique = SuperMap.Class(Theme, {
 
 	    /**
@@ -13236,7 +19501,7 @@
 
 
 /***/ },
-/* 105 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -13249,8 +19514,8 @@
 	 * 单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，Name 字段代表
 	 * 省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(77);
+	__webpack_require__(5);
+	__webpack_require__(81);
 	ThemeUniqueItem = SuperMap.Class({
 
 	    /**
@@ -13345,7 +19610,7 @@
 
 
 /***/ },
-/* 106 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -13361,9 +19626,9 @@
 	 * Inherits from:
 	 *  - <Theme>
 	 */
-	__webpack_require__(4);
-	__webpack_require__(79);
-	__webpack_require__(107);
+	__webpack_require__(5);
+	__webpack_require__(83);
+	__webpack_require__(111);
 	ThemeGridRange = SuperMap.Class(Theme, {
 
 	    /**
@@ -13466,7 +19731,7 @@
 
 
 /***/ },
-/* 107 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -13479,8 +19744,8 @@
 	 * 在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。
 	 * 本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(78);
+	__webpack_require__(5);
+	__webpack_require__(82);
 	ThemeGridRangeItem = SuperMap.Class({
 
 	    /**
@@ -13582,7 +19847,7 @@
 
 
 /***/ },
-/* 108 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -13598,10 +19863,10 @@
 	 * Inherits from:
 	 *  - <Theme>
 	 */
-	__webpack_require__(4);
-	__webpack_require__(78);
-	__webpack_require__(79);
-	__webpack_require__(109);
+	__webpack_require__(5);
+	__webpack_require__(82);
+	__webpack_require__(83);
+	__webpack_require__(113);
 	ThemeGridUnique = SuperMap.Class(Theme, {
 
 	    /**
@@ -13704,7 +19969,7 @@
 
 
 /***/ },
-/* 109 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -13716,8 +19981,8 @@
 	 * 栅格单值专题图子项类。
 	 * 栅格单值专题图是将值相同的单元格归为一类，每一类是一个专题图子项。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(78);
+	__webpack_require__(5);
+	__webpack_require__(82);
 	ThemeGridUniqueItem = SuperMap.Class({
 
 	    /**
@@ -13811,7 +20076,7 @@
 
 
 /***/ },
-/* 110 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13827,19 +20092,19 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(4);
-	__webpack_require__(111);
-	__webpack_require__(114);
+	__webpack_require__(5);
+	__webpack_require__(115);
 	__webpack_require__(118);
-	__webpack_require__(120);
 	__webpack_require__(122);
-	__webpack_require__(125);
-	__webpack_require__(127);
+	__webpack_require__(124);
+	__webpack_require__(126);
 	__webpack_require__(129);
 	__webpack_require__(131);
 	__webpack_require__(133);
 	__webpack_require__(135);
-	__webpack_require__(11);
+	__webpack_require__(137);
+	__webpack_require__(139);
+	__webpack_require__(15);
 
 	NetworkAnalystService = ServiceBase.extend({
 
@@ -14113,7 +20378,7 @@
 	module.exports = L.supermap.networkAnalystService;
 
 /***/ },
-/* 111 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14128,8 +20393,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(112);
-	__webpack_require__(113);
+	__webpack_require__(116);
+	__webpack_require__(117);
 	SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -14203,7 +20468,7 @@
 	};
 
 /***/ },
-/* 112 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14216,8 +20481,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(3);
-	__webpack_require__(13);
+	__webpack_require__(4);
+	__webpack_require__(17);
 	SuperMap.REST.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -14282,7 +20547,7 @@
 
 
 /***/ },
-/* 113 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14293,7 +20558,7 @@
 	 * Class: BurstPipelineAnalystParameters
 	 * 爆管分析参数类。
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	BurstPipelineAnalystParameters = SuperMap.Class({
 
 	    /**
@@ -14360,7 +20625,7 @@
 	};
 
 /***/ },
-/* 114 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14376,8 +20641,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(112);
-	__webpack_require__(115);
+	__webpack_require__(116);
+	__webpack_require__(119);
 	SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -14481,7 +20746,7 @@
 	};
 
 /***/ },
-/* 115 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14493,8 +20758,8 @@
 	 * 耗费矩阵分析参数类。
 	 * 根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(116);
+	__webpack_require__(5);
+	__webpack_require__(120);
 	ComputeWeightMatrixParameters = SuperMap.Class({
 
 	    /**
@@ -14559,19 +20824,19 @@
 	};
 
 /***/ },
-/* 116 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: TransportationAnalystParameter * 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 */__webpack_require__(4);__webpack_require__(117);TransportationAnalystParameter = SuperMap.Class({    /**     * APIProperty: barrierEdgeIDs     * {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。     */    barrierEdgeIDs: null,    /**     * APIProperty: barrierNodeIDs     * {Array(<Number>)} 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。     */    barrierNodeIDs: null,    /**     * APIProperty: barrierPoints     * {Array(<Point>)}网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */    barrierPoints: null,    /**     * APIProperty: weightFieldName     * {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */    weightFieldName: null,    /**     * APIProperty: turnWeightField     * {String} 转向权重字段的名称。     */    turnWeightField: null,    /**     * APIProperty: resultSetting     * {<TransportationAnalystResultSetting>} 分析结果返回内容。     */    resultSetting: null,    /**     * Constructor: TransportationAnalystParameter     * 交通网络分析通用参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * barrierEdgeIDs - {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。     * barrierNodeIDs - {Array(<Number>)} 网络分析中障碍点的 ID 数组。     * barrierPoints - {Array(<Point>)}     * weightFieldName - {String} 阻力字段的名称。     * turnWeightField - {String} 转向权重字段的名称。     * resultSetting - {<TransportationAnalystResultSetting>} 分析结果返回内容。     */    initialize: function (options) {        var me = this;        me.resultSetting = new TransportationAnalystResultSetting();        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.barrierEdgeIDs = null;        me.barrierNodeIDs = null;        me.weightFieldName = null;        me.turnWeightField = null;        if (me.resultSetting) {            me.resultSetting.destroy();            me.resultSetting = null;        }        if (me.barrierPoints && me.barrierPoints.length) {            for (var i in me.barrierPoints) {                me.barrierPoints.destroy();            }        }        me.barrierPoints = null;    },    CLASS_NAME: "TransportationAnalystParameter"});module.exports = function (options) {    return new TransportationAnalystParameter(options);};
+	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: TransportationAnalystParameter * 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 */__webpack_require__(5);__webpack_require__(121);TransportationAnalystParameter = SuperMap.Class({    /**     * APIProperty: barrierEdgeIDs     * {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。     */    barrierEdgeIDs: null,    /**     * APIProperty: barrierNodeIDs     * {Array(<Number>)} 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。     */    barrierNodeIDs: null,    /**     * APIProperty: barrierPoints     * {Array(<Point>)}网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */    barrierPoints: null,    /**     * APIProperty: weightFieldName     * {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */    weightFieldName: null,    /**     * APIProperty: turnWeightField     * {String} 转向权重字段的名称。     */    turnWeightField: null,    /**     * APIProperty: resultSetting     * {<TransportationAnalystResultSetting>} 分析结果返回内容。     */    resultSetting: null,    /**     * Constructor: TransportationAnalystParameter     * 交通网络分析通用参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * barrierEdgeIDs - {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。     * barrierNodeIDs - {Array(<Number>)} 网络分析中障碍点的 ID 数组。     * barrierPoints - {Array(<Point>)}     * weightFieldName - {String} 阻力字段的名称。     * turnWeightField - {String} 转向权重字段的名称。     * resultSetting - {<TransportationAnalystResultSetting>} 分析结果返回内容。     */    initialize: function (options) {        var me = this;        me.resultSetting = new TransportationAnalystResultSetting();        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.barrierEdgeIDs = null;        me.barrierNodeIDs = null;        me.weightFieldName = null;        me.turnWeightField = null;        if (me.resultSetting) {            me.resultSetting.destroy();            me.resultSetting = null;        }        if (me.barrierPoints && me.barrierPoints.length) {            for (var i in me.barrierPoints) {                me.barrierPoints.destroy();            }        }        me.barrierPoints = null;    },    CLASS_NAME: "TransportationAnalystParameter"});module.exports = function (options) {    return new TransportationAnalystParameter(options);};
 
 /***/ },
-/* 117 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: TransportationAnalystResultSetting * 交通网络分析结果参数类。 * 通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。 */__webpack_require__(4);TransportationAnalystResultSetting = SuperMap.Class({    /**     * APIProperty: returnEdgeFeatures     * {Boolean} 是否在分析结果中包含弧段要素集合。弧段要素包括弧段的空间信息和属性信息。     */    returnEdgeFeatures: false,    /**     * APIProperty: returnEdgeGeometry     * {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     */    returnEdgeGeometry: false,    /**     * APIProperty: returnEdgeIDs     * {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。     */    returnEdgeIDs: false,    /**     * APIProperty: returnNodeFeatures     * {Boolean} 是否在分析结果中包含结点要素集合。     * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。默认为 false。     */    returnNodeFeatures: false,    /**     * APIProperty: returnNodeGeometry     * {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。     */    returnNodeGeometry: false,    /**     * APIProperty: returnNodeIDs     * {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。     */    returnNodeIDs: false,    /**     * APIProperty: returnPathGuides     * {Boolean} 返回分析结果中是否包含行驶导引集合。     */    returnPathGuides: false,    /**     * APIProperty: returnRoutes     * {Boolean} 返回分析结果中是否包含路由对象的集合。     */    returnRoutes: false,    /**     * Constructor: TransportationAnalystResultSetting     * 交通网络分析结果参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * returnEdgeFeatures - {Boolean} 是否在分析结果中包含弧段要素集合。     * returnEdgeGeometry - {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     * returnEdgeIDs - {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。     * returnNodeFeatures - {Boolean} 是否在分析结果中包含结点要素集合。     * returnNodeGeometry - {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。     * returnNodeIDs - {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。     * returnPathGuides - {Boolean} 返回分析结果中是否包含行驶导引集合。     * returnRoutes - {Boolean} 返回分析结果中是否包含路由对象的集合。     */    initialize: function (options) {        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.returnEdgeFeatures = null;        me.returnEdgeGeometry = null;        me.returnEdgeIDs = null;        me.returnNodeFeatures = null;        me.returnNodeGeometry = null;        me.returnNodeIDs = null;        me.returnPathGuides = null;        me.returnRoutes = null;    },    CLASS_NAME: "TransportationAnalystResultSetting"});module.exports = function (options) {    return new TransportationAnalystResultSetting(options);};
+	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: TransportationAnalystResultSetting * 交通网络分析结果参数类。 * 通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。 */__webpack_require__(5);TransportationAnalystResultSetting = SuperMap.Class({    /**     * APIProperty: returnEdgeFeatures     * {Boolean} 是否在分析结果中包含弧段要素集合。弧段要素包括弧段的空间信息和属性信息。     */    returnEdgeFeatures: false,    /**     * APIProperty: returnEdgeGeometry     * {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     */    returnEdgeGeometry: false,    /**     * APIProperty: returnEdgeIDs     * {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。     */    returnEdgeIDs: false,    /**     * APIProperty: returnNodeFeatures     * {Boolean} 是否在分析结果中包含结点要素集合。     * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。默认为 false。     */    returnNodeFeatures: false,    /**     * APIProperty: returnNodeGeometry     * {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。     */    returnNodeGeometry: false,    /**     * APIProperty: returnNodeIDs     * {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。     */    returnNodeIDs: false,    /**     * APIProperty: returnPathGuides     * {Boolean} 返回分析结果中是否包含行驶导引集合。     */    returnPathGuides: false,    /**     * APIProperty: returnRoutes     * {Boolean} 返回分析结果中是否包含路由对象的集合。     */    returnRoutes: false,    /**     * Constructor: TransportationAnalystResultSetting     * 交通网络分析结果参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * returnEdgeFeatures - {Boolean} 是否在分析结果中包含弧段要素集合。     * returnEdgeGeometry - {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     * returnEdgeIDs - {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。     * returnNodeFeatures - {Boolean} 是否在分析结果中包含结点要素集合。     * returnNodeGeometry - {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。     * returnNodeIDs - {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。     * returnPathGuides - {Boolean} 返回分析结果中是否包含行驶导引集合。     * returnRoutes - {Boolean} 返回分析结果中是否包含路由对象的集合。     */    initialize: function (options) {        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.returnEdgeFeatures = null;        me.returnEdgeGeometry = null;        me.returnEdgeIDs = null;        me.returnNodeFeatures = null;        me.returnNodeGeometry = null;        me.returnNodeIDs = null;        me.returnPathGuides = null;        me.returnRoutes = null;    },    CLASS_NAME: "TransportationAnalystResultSetting"});module.exports = function (options) {    return new TransportationAnalystResultSetting(options);};
 
 /***/ },
-/* 118 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14586,8 +20851,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(112);
-	__webpack_require__(119);
+	__webpack_require__(116);
+	__webpack_require__(123);
 	SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -14668,7 +20933,7 @@
 	};
 
 /***/ },
-/* 119 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14679,7 +20944,7 @@
 	 * Class: FacilityAnalystStreamParameters
 	 * 上游/下游关键设施查找资源参数类。
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	FacilityAnalystStreamParameters = SuperMap.Class({
 
 	    /**
@@ -14754,7 +21019,7 @@
 	};
 
 /***/ },
-/* 120 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14772,8 +21037,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(112);
-	__webpack_require__(121);
+	__webpack_require__(116);
+	__webpack_require__(125);
 	SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -14913,7 +21178,7 @@
 	};
 
 /***/ },
-/* 121 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14928,8 +21193,8 @@
 	 * 例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。
 	 * 最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(116);
+	__webpack_require__(5);
+	__webpack_require__(120);
 	FindClosestFacilitiesParameters = SuperMap.Class({
 
 	    /**
@@ -15034,7 +21299,7 @@
 	};
 
 /***/ },
-/* 122 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -15051,8 +21316,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(112);
-	__webpack_require__(123);
+	__webpack_require__(116);
+	__webpack_require__(127);
 	SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -15172,7 +21437,7 @@
 	};
 
 /***/ },
-/* 123 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -15187,8 +21452,8 @@
 	 *  分析过程中使用的需求点都为网络结点，即除了各种类型的中心点所对应的网络结点以外，
 	 * 所有网络结点都作为资源需求点参与选址分区分析，如果要排除某部分结点不分析，可以将其设置为障碍点。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(124);
+	__webpack_require__(5);
+	__webpack_require__(128);
 	FindLocationParameters = SuperMap.Class({
 
 	    /**
@@ -15273,7 +21538,7 @@
 	};
 
 /***/ },
-/* 124 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -15285,7 +21550,7 @@
 	 * 资源供给中心类
 	 * 资源供给中心类，在资源分配和选址分区分析两个功能中使用。
 	 */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	SupplyCenter = SuperMap.Class({
 	    /**
 	     * APIProperty: maxWeight
@@ -15368,7 +21633,7 @@
 
 
 /***/ },
-/* 125 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -15386,8 +21651,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(112);
-	__webpack_require__(126);
+	__webpack_require__(116);
+	__webpack_require__(130);
 	SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -15527,7 +21792,7 @@
 	};
 
 /***/ },
-/* 126 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -15541,8 +21806,8 @@
 	 * 物流配送功能就是解决如何合理分配配送次序和送货路线，使配送总花费达到最小或每个配送中心的花费达到最小。
 	 * 例如：现在有50个报刊零售地（配送目的地），和4个报刊供应地（配送中心），现寻求这4个供应地向报刊零售地发送报纸的最优路线，属物流配送问题。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(116);
+	__webpack_require__(5);
+	__webpack_require__(120);
 	FindMTSPPathsParameters = SuperMap.Class({
 
 	    /**
@@ -15628,7 +21893,7 @@
 	};
 
 /***/ },
-/* 127 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -15646,8 +21911,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(112);
-	__webpack_require__(128);
+	__webpack_require__(116);
+	__webpack_require__(132);
 	SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -15785,7 +22050,7 @@
 	};
 
 /***/ },
-/* 128 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -15802,8 +22067,8 @@
 	 * 阻抗值通过 TransportationAnalystParameter.weightFieldName 设置。
 	 * 计算最佳路径除了受阻抗影响外，还受转向字段的影响。转向值通过 TransportationAnalystParameter.turnWeightField 设置。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(116);
+	__webpack_require__(5);
+	__webpack_require__(120);
 	FindPathParameters = SuperMap.Class({
 
 	    /**
@@ -15881,7 +22146,7 @@
 	};
 
 /***/ },
-/* 129 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -15899,8 +22164,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(112);
-	__webpack_require__(130);
+	__webpack_require__(116);
+	__webpack_require__(134);
 	SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -16023,7 +22288,7 @@
 	};
 
 /***/ },
-/* 130 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -16036,8 +22301,8 @@
 	 * 服务区分析是以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
 	 * 例如：计算某快餐店能够在30分钟内送达快餐的区域。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(116);
+	__webpack_require__(5);
+	__webpack_require__(120);
 	FindServiceAreasParameters = SuperMap.Class({
 
 	    /**
@@ -16134,7 +22399,7 @@
 	};
 
 /***/ },
-/* 131 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -16152,8 +22417,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(112);
-	__webpack_require__(132);
+	__webpack_require__(116);
+	__webpack_require__(136);
 	SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -16289,7 +22554,7 @@
 	};
 
 /***/ },
-/* 132 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -16304,8 +22569,8 @@
 	 * 旅行商分析和最佳路径分析都是在网络中寻找遍历所有站点的最经济的路径，区别是在遍历网络所有站点的过程中对结点访问顺序不同
 	 * 最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。
 	 */
-	__webpack_require__(4);
-	__webpack_require__(116);
+	__webpack_require__(5);
+	__webpack_require__(120);
 	FindTSPPathsParameters = SuperMap.Class({
 	    /**
 	     * APIProperty: endNodeAssigned
@@ -16384,15 +22649,15 @@
 	};
 
 /***/ },
-/* 133 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
 	 * 本程序只能在有效的授权许可下使用。
 	 * 未经许可，不得以任何手段擅自使用或传播。*/
 
-	__webpack_require__(112);
-	__webpack_require__(134);
+	__webpack_require__(116);
+	__webpack_require__(138);
 	 SuperMap.REST.UpdateEdgeWeightService=SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase,{
 
 	    /**
@@ -16507,7 +22772,7 @@
 	};
 
 /***/ },
-/* 134 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -16518,7 +22783,7 @@
 	 * Class:UpdateEdgeWeightParameters
 	 * 边的耗费权重更新服务参数类
 	 * */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	UpdateEdgeWeightParameters = SuperMap.Class({
 	    /**
 	     * APIProperty: edgeId
@@ -16593,15 +22858,15 @@
 	};
 
 /***/ },
-/* 135 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
 	 * 本程序只能在有效的授权许可下使用。
 	 * 未经许可，不得以任何手段擅自使用或传播。*/
 
-	__webpack_require__(112);
-	__webpack_require__(136);
+	__webpack_require__(116);
+	__webpack_require__(140);
 	SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -16716,7 +22981,7 @@
 	};
 
 /***/ },
-/* 136 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -16727,7 +22992,7 @@
 	 * Class:UpdateTurnNodeWeightParameters
 	 * 转向耗费权重更新服务参数类
 	 * */
-	__webpack_require__(4);
+	__webpack_require__(5);
 	UpdateTurnNodeWeightParameters = SuperMap.Class({
 	    /**
 	     * APIProperty:  nodeId
@@ -16803,7 +23068,7 @@
 	};
 
 /***/ },
-/* 137 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16819,13 +23084,13 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(4);
-	__webpack_require__(138);
-	__webpack_require__(141);
-	__webpack_require__(143);
+	__webpack_require__(5);
+	__webpack_require__(142);
 	__webpack_require__(145);
 	__webpack_require__(147);
-	__webpack_require__(11);
+	__webpack_require__(149);
+	__webpack_require__(151);
+	__webpack_require__(15);
 
 	NetworkAnalyst3DService = ServiceBase.extend({
 
@@ -16935,7 +23200,7 @@
 	module.exports = L.supermap.networkAnalyst3DService;
 
 /***/ },
-/* 138 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -16952,8 +23217,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
-	__webpack_require__(139);
+	__webpack_require__(17);
+	__webpack_require__(143);
 	SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -17029,11 +23294,11 @@
 	};
 
 /***/ },
-/* 139 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(140);
+	__webpack_require__(5);
+	__webpack_require__(144);
 
 	/**
 	 * Class: FacilityAnalystSinks3DParameters
@@ -17089,10 +23354,10 @@
 	};
 
 /***/ },
-/* 140 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: FacilityAnalyst3DParameters
@@ -17172,7 +23437,7 @@
 	};
 
 /***/ },
-/* 141 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -17190,8 +23455,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
-	__webpack_require__(142);
+	__webpack_require__(17);
+	__webpack_require__(146);
 	SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -17257,11 +23522,11 @@
 	};
 
 /***/ },
-/* 142 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(140);
+	__webpack_require__(5);
+	__webpack_require__(144);
 
 	/**
 	 * Class: FacilityAnalystSources3DParameters
@@ -17310,7 +23575,7 @@
 	};
 
 /***/ },
-/* 143 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -17324,8 +23589,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
-	__webpack_require__(144);
+	__webpack_require__(17);
+	__webpack_require__(148);
 	SuperMap.REST.FacilityAnalystTraceup3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -17391,11 +23656,11 @@
 	};
 
 /***/ },
-/* 144 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(140);
+	__webpack_require__(5);
+	__webpack_require__(144);
 
 	/**
 	 * Class: FacilityAnalystTraceup3DParameters
@@ -17438,7 +23703,7 @@
 	};
 
 /***/ },
-/* 145 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -17452,8 +23717,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
-	__webpack_require__(146);
+	__webpack_require__(17);
+	__webpack_require__(150);
 	SuperMap.REST.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -17519,11 +23784,11 @@
 	};
 
 /***/ },
-/* 146 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(140);
+	__webpack_require__(5);
+	__webpack_require__(144);
 
 	/**
 	 * Class: FacilityAnalystTracedown3DParameters
@@ -17567,7 +23832,7 @@
 	};
 
 /***/ },
-/* 147 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -17581,8 +23846,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
-	__webpack_require__(148);
+	__webpack_require__(17);
+	__webpack_require__(152);
 	SuperMap.REST.FacilityAnalystUpstream3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -17648,11 +23913,11 @@
 	};
 
 /***/ },
-/* 148 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(140);
+	__webpack_require__(5);
+	__webpack_require__(144);
 
 	/**
 	 * Class: FacilityAnalystUpstream3DParameters
@@ -17701,7 +23966,7 @@
 	};
 
 /***/ },
-/* 149 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17718,21 +23983,21 @@
 	 *      });
 	 */
 
-	__webpack_require__(4);
-	__webpack_require__(150);
-	__webpack_require__(153);
-	__webpack_require__(160);
-	__webpack_require__(162);
+	__webpack_require__(5);
+	__webpack_require__(154);
+	__webpack_require__(157);
 	__webpack_require__(164);
 	__webpack_require__(166);
-	__webpack_require__(173);
-	__webpack_require__(175);
+	__webpack_require__(168);
+	__webpack_require__(170);
+	__webpack_require__(177);
 	__webpack_require__(179);
-	__webpack_require__(181);
 	__webpack_require__(183);
-	__webpack_require__(188);
-	__webpack_require__(190);
-	__webpack_require__(11);
+	__webpack_require__(185);
+	__webpack_require__(187);
+	__webpack_require__(192);
+	__webpack_require__(194);
+	__webpack_require__(15);
 
 	SpatialAnalystService = ServiceBase.extend({
 
@@ -18074,7 +24339,7 @@
 	module.exports = L.supermap.spatialAnalystService;
 
 /***/ },
-/* 150 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -18088,8 +24353,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(151);
-	__webpack_require__(152);
+	__webpack_require__(155);
+	__webpack_require__(156);
 	SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -18174,7 +24439,7 @@
 	};
 
 /***/ },
-/* 151 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -18187,8 +24452,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(3);
-	__webpack_require__(13);
+	__webpack_require__(4);
+	__webpack_require__(17);
 	SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -18268,10 +24533,10 @@
 
 
 /***/ },
-/* 152 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: AreaSolarRadiationParameters
@@ -18448,7 +24713,7 @@
 	};
 
 /***/ },
-/* 153 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -18464,9 +24729,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(151);
-	__webpack_require__(154);
-	__webpack_require__(159);
+	__webpack_require__(155);
+	__webpack_require__(158);
+	__webpack_require__(163);
 	SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -18587,12 +24852,12 @@
 	};
 
 /***/ },
-/* 154 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(155);
-	__webpack_require__(156);
+	__webpack_require__(5);
+	__webpack_require__(159);
+	__webpack_require__(160);
 	/**
 	 * Class: DatasetBufferAnalystParameters
 	 * 数据集缓冲区分析参数类
@@ -18704,10 +24969,10 @@
 	};
 
 /***/ },
-/* 155 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: DataReturnOption
@@ -18781,11 +25046,11 @@
 	};
 
 /***/ },
-/* 156 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(157);
+	__webpack_require__(5);
+	__webpack_require__(161);
 
 	/**
 	 * Class: BufferAnalystParameters
@@ -18839,11 +25104,11 @@
 	};
 
 /***/ },
-/* 157 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(158);
+	__webpack_require__(5);
+	__webpack_require__(162);
 
 	/**
 	 * Class: BufferSetting
@@ -18936,10 +25201,10 @@
 	};
 
 /***/ },
-/* 158 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: BufferDistance
@@ -18996,11 +25261,11 @@
 	};
 
 /***/ },
-/* 159 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(156);
+	__webpack_require__(5);
+	__webpack_require__(160);
 
 	/**
 	 * Class: GeometryBufferAnalystParameters
@@ -19076,7 +25341,7 @@
 	};
 
 /***/ },
-/* 160 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -19095,8 +25360,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(151);
-	__webpack_require__(161);
+	__webpack_require__(155);
+	__webpack_require__(165);
 	SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -19192,10 +25457,10 @@
 	};
 
 /***/ },
-/* 161 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: DensityKernelAnalystParameters
@@ -19332,7 +25597,7 @@
 	};
 
 /***/ },
-/* 162 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -19352,8 +25617,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(151);
-	__webpack_require__(163);
+	__webpack_require__(155);
+	__webpack_require__(167);
 	SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -19478,11 +25743,11 @@
 	};
 
 /***/ },
-/* 163 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(155);
+	__webpack_require__(5);
+	__webpack_require__(159);
 
 	/**
 	 * Class: GenerateSpatialDataParameters
@@ -19616,7 +25881,7 @@
 	};
 
 /***/ },
-/* 164 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -19628,8 +25893,8 @@
 	 * 空间关系分析服务类。
 	 * 该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
 	 */
-	__webpack_require__(151);
-	__webpack_require__(165);
+	__webpack_require__(155);
+	__webpack_require__(169);
 	SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -19729,10 +25994,10 @@
 	};
 
 /***/ },
-/* 165 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: GeoRelationAnalystParameters
@@ -19854,7 +26119,7 @@
 	};
 
 /***/ },
-/* 166 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -19874,12 +26139,12 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(151);
-	__webpack_require__(167);
-	__webpack_require__(169);
+	__webpack_require__(155);
 	__webpack_require__(171);
+	__webpack_require__(173);
+	__webpack_require__(175);
+	__webpack_require__(176);
 	__webpack_require__(172);
-	__webpack_require__(168);
 	SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -20004,11 +26269,11 @@
 	};
 
 /***/ },
-/* 167 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(168);
+	__webpack_require__(5);
+	__webpack_require__(172);
 
 	/**
 	 * Class: SuperMap.REST.InterpolationRBFAnalystParameter
@@ -20276,10 +26541,10 @@
 	};
 
 /***/ },
-/* 168 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: InterpolationAnalystParameters
@@ -20456,12 +26721,12 @@
 	};
 
 /***/ },
-/* 169 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(168);
-	__webpack_require__(170);
+	__webpack_require__(5);
+	__webpack_require__(172);
+	__webpack_require__(174);
 	/**
 	 * Class: InterpolationDensityAnalystParameters
 	 * 点密度差值分析参数类
@@ -20529,10 +26794,10 @@
 	};
 
 /***/ },
-/* 170 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: ThiessenAnalystParameters
@@ -20616,12 +26881,12 @@
 	};
 
 /***/ },
-/* 171 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(168);
-	__webpack_require__(170);
+	__webpack_require__(5);
+	__webpack_require__(172);
+	__webpack_require__(174);
 	/**
 	 * Class: SuperMap.REST.InterpolationIDWAnalystParameter
 	 * 反距离加权插值（IDW）分析参数类
@@ -20726,7 +26991,7 @@
 
 
 /***/ },
-/* 172 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20767,9 +27032,9 @@
 	 * Inherits from:
 	 *  - <InterpolationAnalystParameters>
 	 */
-	__webpack_require__(4);
-	__webpack_require__(168);
-	__webpack_require__(170);
+	__webpack_require__(5);
+	__webpack_require__(172);
+	__webpack_require__(174);
 
 	InterpolationKrigingAnalystParameters = SuperMap.Class(InterpolationAnalystParameters, {
 	    /**
@@ -20968,7 +27233,7 @@
 	};
 
 /***/ },
-/* 173 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -20982,8 +27247,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(151);
-	__webpack_require__(174);
+	__webpack_require__(155);
+	__webpack_require__(178);
 	SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -21068,10 +27333,10 @@
 	};
 
 /***/ },
-/* 174 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: MathExpressionAnalysisParameters
@@ -21210,7 +27475,7 @@
 	};
 
 /***/ },
-/* 175 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21226,9 +27491,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
-	__webpack_require__(176);
-	__webpack_require__(178);
+	__webpack_require__(17);
+	__webpack_require__(180);
+	__webpack_require__(182);
 	SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -21329,12 +27594,12 @@
 	};
 
 /***/ },
-/* 176 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(155);
-	__webpack_require__(177);
+	__webpack_require__(5);
+	__webpack_require__(159);
+	__webpack_require__(181);
 
 	/**
 	 * Class: DatasetOverlayAnalystParameters
@@ -21502,10 +27767,10 @@
 	};
 
 /***/ },
-/* 177 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: OverlayAnalystParameters
@@ -21553,11 +27818,11 @@
 	};
 
 /***/ },
-/* 178 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(177);
+	__webpack_require__(5);
+	__webpack_require__(181);
 	/**
 	 * Class: GeometryOverlayAnalystParameters
 	 * 几何对象叠加分析参数类
@@ -21640,7 +27905,7 @@
 	};
 
 /***/ },
-/* 179 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21655,8 +27920,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(151);
-	__webpack_require__(180);
+	__webpack_require__(155);
+	__webpack_require__(184);
 	SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -21788,10 +28053,10 @@
 	};
 
 /***/ },
-/* 180 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: RouteCalculateMeasureParameters
@@ -21885,7 +28150,7 @@
 	};
 
 /***/ },
-/* 181 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21900,8 +28165,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(151);
-	__webpack_require__(182);
+	__webpack_require__(155);
+	__webpack_require__(186);
 	SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -22036,10 +28301,10 @@
 	};
 
 /***/ },
-/* 182 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: RouteLocatorParameters
@@ -22178,7 +28443,7 @@
 	};
 
 /***/ },
-/* 183 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -22194,9 +28459,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(151);
-	__webpack_require__(184);
-	__webpack_require__(187);
+	__webpack_require__(155);
+	__webpack_require__(188);
+	__webpack_require__(191);
 	SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -22305,12 +28570,12 @@
 	};
 
 /***/ },
-/* 184 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(155);
-	__webpack_require__(185);
+	__webpack_require__(5);
+	__webpack_require__(159);
+	__webpack_require__(189);
 
 	/**
 	 * Class: DatasetSurfaceAnalystParameters
@@ -22408,12 +28673,12 @@
 	};
 
 /***/ },
-/* 185 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(186);
-	__webpack_require__(155);
+	__webpack_require__(5);
+	__webpack_require__(190);
+	__webpack_require__(159);
 
 	/**
 	 * Class: SurfaceAnalystParameters
@@ -22496,10 +28761,10 @@
 	};
 
 /***/ },
-/* 186 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: SurfaceAnalystParametersSetting
@@ -22617,11 +28882,11 @@
 	};
 
 /***/ },
-/* 187 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(185);
+	__webpack_require__(5);
+	__webpack_require__(189);
 	/**
 	 * Class: GeometrySurfaceAnalystParameters
 	 * 几何对象表面分析参数类。
@@ -22691,7 +28956,7 @@
 	};
 
 /***/ },
-/* 188 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -22705,8 +28970,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(151);
-	__webpack_require__(189);
+	__webpack_require__(155);
+	__webpack_require__(193);
 	SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -22791,10 +29056,10 @@
 
 
 /***/ },
-/* 189 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: TerrainCurvatureCalculationParameters
@@ -22897,7 +29162,7 @@
 	};
 
 /***/ },
-/* 190 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -22916,9 +29181,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(151);
-	__webpack_require__(191);
-	__webpack_require__(192);
+	__webpack_require__(155);
+	__webpack_require__(195);
+	__webpack_require__(196);
 	SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -23040,11 +29305,11 @@
 	};
 
 /***/ },
-/* 191 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(170);
+	__webpack_require__(5);
+	__webpack_require__(174);
 
 	/**
 	 * Class: DatasetThiessenAnalystParameters
@@ -23125,11 +29390,11 @@
 	};
 
 /***/ },
-/* 192 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(170);
+	__webpack_require__(5);
+	__webpack_require__(174);
 	/**
 	 * Class: GeometryThiessenAnalystParameters
 	 * 几何对象泰森多边形分析参数类
@@ -23198,7 +29463,7 @@
 	};
 
 /***/ },
-/* 193 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23213,11 +29478,11 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(4);
-	__webpack_require__(194);
-	__webpack_require__(196);
-	__webpack_require__(199);
-	__webpack_require__(11);
+	__webpack_require__(5);
+	__webpack_require__(198);
+	__webpack_require__(200);
+	__webpack_require__(203);
+	__webpack_require__(15);
 
 	TrafficTransferAnalystService = ServiceBase.extend({
 
@@ -23298,7 +29563,7 @@
 	module.exports = L.supermap.trafficTransferAnalystService;
 
 /***/ },
-/* 194 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -23314,8 +29579,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
-	__webpack_require__(195);
+	__webpack_require__(17);
+	__webpack_require__(199);
 	SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -23389,10 +29654,10 @@
 	};
 
 /***/ },
-/* 195 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: StopQueryParameters
@@ -23443,7 +29708,7 @@
 	};
 
 /***/ },
-/* 196 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -23458,8 +29723,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
-	__webpack_require__(197);
+	__webpack_require__(17);
+	__webpack_require__(201);
 	SuperMap.REST.TransferPathService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -23538,11 +29803,11 @@
 
 
 /***/ },
-/* 197 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
-	__webpack_require__(198);
+	__webpack_require__(5);
+	__webpack_require__(202);
 
 	/**
 	 * Class: TransferPathParameters
@@ -23611,10 +29876,10 @@
 	};
 
 /***/ },
-/* 198 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: TransferLine
@@ -23741,7 +30006,7 @@
 	};
 
 /***/ },
-/* 199 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -23756,8 +30021,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(13);
-	__webpack_require__(200);
+	__webpack_require__(17);
+	__webpack_require__(204);
 	SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -23843,10 +30108,10 @@
 
 
 /***/ },
-/* 200 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(4);
+	__webpack_require__(5);
 
 	/**
 	 * Class: TransferSolutionParameters
@@ -23985,7 +30250,7 @@
 
 
 /***/ },
-/* 201 */
+/* 205 */
 /***/ function(module, exports) {
 
 	EchartsMapLayer = L.Layer.extend({
@@ -24162,10 +30427,10 @@
 
 
 /***/ },
-/* 202 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(2);
+	__webpack_require__(3);
 
 	L.supermap.Graphic = L.Class.extend({
 
@@ -24199,10 +30464,10 @@
 
 
 /***/ },
-/* 203 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(2);
+	__webpack_require__(3);
 
 	L.supermap.GraphicGroup = L.Path.extend({
 
@@ -24303,10 +30568,10 @@
 
 
 /***/ },
-/* 204 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(2);
+	__webpack_require__(3);
 
 	L.supermap.CircleStyle = L.Class.extend({
 

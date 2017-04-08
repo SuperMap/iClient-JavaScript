@@ -6,20 +6,15 @@
 L.supermap = L.supermap || {};
 require('../Core/format/GeoJSON');
 require('./NonEarthCRS');
-
+require('./proj4leaflet');
+require('./ExtendsCRS');
 L.Util.toGeoJSON = function (feature) {
     if (!feature) {
         return feature;
     }
-    var result, format = new SuperMap.Format.GeoJSON();
-    if (feature.geometry) {
-        result = JSON.parse(format.write(feature.geometry));
-    } else {
-        result = JSON.parse(format.write(feature));
-    }
-    return result;
+    return JSON.parse(new SuperMap.Format.GeoJSON().write(feature));
 };
-
+L.Util.supermap_callbacks = {};
 L.Util.toSuperMapGeometry = function (geometry) {
     if (!geometry) {
         return geometry;
@@ -47,7 +42,30 @@ L.Util.toSuperMapGeometry = function (geometry) {
     return (serverResult && serverResult.geometry) ? serverResult.geometry : serverResult;
 
 };
-
+L.Util.GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
+    var resolution = null,
+        ratio = 10000;
+    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
+    datumAxis = datumAxis || 6378137;
+    coordUnit = coordUnit || "";
+    if (scale > 0 && dpi > 0) {
+        scale = L.Util.NormalizeScale (scale);
+        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
+            //scale = SuperMap.Util.normalizeScale(scale);
+            resolution = 0.0254 * ratio / dpi / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
+            return resolution;
+        } else {
+            resolution = 0.0254 * ratio / dpi / scale / ratio;
+            return resolution;
+        }
+    }
+    return -1;
+};
+L.Util.NormalizeScale = function (scale) {
+    var normScale = (scale > 1.0) ? (1.0 / scale)
+        : scale;
+    return normScale;
+};
 L.Util.Csv2GeoJSON = function (csv, options) {
     var defaultOptions = {
         titles: ['lon', 'lat'],

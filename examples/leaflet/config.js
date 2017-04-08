@@ -329,6 +329,18 @@ var exampleConfig = {
     "OGC": {
         name: "OGC",
         content: null
+    },
+    "mapping": {
+        name: "互联网地图",
+        content: {
+            "Baidu": {
+                name: "",
+                content: [{
+                    name: "百度地图",
+                    thumbnail: "l_baiduLayer.png",
+                    fileName: "baiduLayer"
+                }]
+            }
+        }
     }
-
-};
+}
