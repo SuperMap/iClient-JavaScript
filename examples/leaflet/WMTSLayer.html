@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WMTS 服务</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+</body>
+<script type="text/javascript" src="../../node_modules/leaflet/dist/leaflet-src.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var res = [];
+    for (var i = 0; i < 22; i++) {
+        res.push(165664.43905455674 / (Math.pow(2, i)));
+    }
+    var map = L.map('map', {
+        center: [0, 0],
+        maxZoom: 18,
+        zoom: 0,
+        crs: new L.Proj.CRS("EPSG:3857", '',
+                {
+                    origin: [-2.0037508342789244E7, 2.0037508342789244E7],
+                    resolutions: res,
+                    bounds: L.bounds([-2.0037508342789244E7, -2.0037508342789244E7], [2.0037508342789244E7, 2.0037508342789244E7])
+                })
+    });
+    L.tileLayer.wmts("http://support.supermap.com.cn:8090/iserver/services/map-china400/wmts100",
+            {
+                layer: "China",
+                style: "default",
+                tilematrixSet: "Custom_China",
+                format: "image/png",
+            }
+    ).addTo(map);
+</script>
+</html>

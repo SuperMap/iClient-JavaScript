@@ -77,7 +77,15 @@ var deps = {
     "Leaflet": {
         "OGC": {
             "title": "OGC",
-            "description": "--对接OGC标准服务"
+            "description": "--对接OGC标准服务",
+            "WMTS": {
+                "name": "WMTS服务",
+                "src": ["./src/Leaflet/OGC/TileLayer.WMTS.js"]
+            },
+            "WMS": {
+                "name": "WMS服务",
+                "src": []
+            },
         },
         "mapping": {
             "title": "互联网地图",

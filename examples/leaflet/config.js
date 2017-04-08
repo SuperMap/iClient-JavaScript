@@ -328,7 +328,24 @@ var exampleConfig = {
     },
     "OGC": {
         name: "OGC",
-        content: null
+        content: {
+            "WMTS": {
+                name: "",
+                content: [{
+                    name: "WMTS图层",
+                    thumbnail: "l_WMTSLayer.png",
+                    fileName: "WMTSLayer"
+                }]
+            },
+            "WMS": {
+                name: "",
+                content: [{
+                    name: "WMS图层",
+                    thumbnail: "l_WMSLayer.png",
+                    fileName: "WMSLayer"
+                }]
+            }
+        }
     },
     "mapping": {
         name: "互联网地图",
