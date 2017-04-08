@@ -357,6 +357,22 @@ var exampleConfig = {
                     thumbnail: "l_baiduLayer.png",
                     fileName: "baiduLayer"
                 }]
+            },
+            "Tianditu": {
+                name: "",
+                content: [{
+                    name: "天地图",
+                    thumbnail: "l_tiandituLayer.png",
+                    fileName: "tiandituLayer"
+                }]
+            },
+            "cloud": {
+                name: "",
+                content: [{
+                    name: "超图云地图",
+                    thumbnail: "l_cloudLayer.png",
+                    fileName: "cloudLayer"
+                }]
             }
         }
     }

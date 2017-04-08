@@ -93,8 +93,11 @@ var deps = {
             "Baidu": {
                 "name": "百度图层",
                 "src": ['./src/Leaflet/mapping/BaiduTileLayer.js']
+            },
+            "Cloud": {
+                "name": "SuperMap 云图层",
+                "src": ['./src/Leaflet/mapping/CloudTileLayer.js']
             }
-
         },
         "SuperMap": {
             "title": "SuperMap",
