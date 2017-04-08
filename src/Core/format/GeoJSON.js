@@ -715,7 +715,10 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
     toGeometry: function (geometry) {
         var me = this,
             geoType = geometry.type;
-        switch (geoType) {
+        if(geoType==='polygon'){
+            geoType=SuperMap.REST.GeometryType.REGION;
+        }
+        switch (geoType.toUpperCase()) {
             case SuperMap.REST.GeometryType.POINT:
                 return me.toGeoPoint(geometry);
             case SuperMap.REST.GeometryType.LINE:
@@ -740,8 +743,8 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
      */
     toGeoPoint: function (geometry) {
         var me = this,
-            geoParts = geometry.parts || [],
             geoPoints = geometry.points || [],
+            geoParts = geometry.parts || [geoPoints.length],
             len = geoParts.length;
         if (len < 1) {
             return null;
@@ -763,8 +766,8 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
      */
     toGeoLine: function (geometry) {
         var me = this,
-            geoParts = geometry.parts || [],
             geoPoints = geometry.points || [],
+            geoParts = geometry.parts ||[geoPoints.length],
             len = geoParts.length;
         if (len < 1) {
             return null;
@@ -798,8 +801,8 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
      */
     toGeoLinem: function (geometry) {
         var me = this,
-            geoParts = geometry.parts || [],
             geoPoints = geometry.points || [],
+            geoParts = geometry.parts ||[geoPoints.length],
             len = geoParts.length,
             lineList = [],
             type;
@@ -828,8 +831,8 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
      */
     toGeoRegion: function (geometry) {
         var CCWArray = [],
-            geoParts = geometry.parts || [],
             geoPoints = geometry.points || [],
+            geoParts = geometry.parts ||[geoPoints.length],
             len = geoParts.length;
         if (len < 1) {
             return null;

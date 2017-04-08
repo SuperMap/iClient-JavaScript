@@ -155,7 +155,13 @@ var deps = {
                 "src": [
                     "./src/Leaflet/SuperMap/iServer/TrafficTransferAnalystService.js"
                 ]
-            }
+            },
+            "iPortal": {
+                "name": "webmap",
+                "src": [
+                    "./src/Leaflet/SuperMap/iPortal/WebMap.js"
+                ]
+            },
         },
         "Visual": {
             "title": "Visual",

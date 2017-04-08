@@ -211,11 +211,29 @@ var exampleConfig = {
     },
     "iPortal": {
         name: "iPortal",
-        content: null
+        content: {
+            "ip_map":{
+                name: "地图",
+                content: [{
+                    name: "举办过奥运会的城市",
+                    thumbnail: "l_iPortalWebmap.png",
+                    fileName: "iPortalWebmap"
+                }]
+            }
+        }
     },
     "online": {
         name: "online",
-        content: null
+        content: {
+            "ol_map":{
+                name: "地图",
+                content: [{
+                    name: "黄龙溪徒步",
+                    thumbnail: "l_onlineWebmap.png",
+                    fileName: "onlineWebmap"
+                }]
+            }
+        }
     },
     "iManager": {
         name: "iManager",
