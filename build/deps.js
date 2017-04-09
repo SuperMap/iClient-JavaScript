@@ -209,7 +209,24 @@ var deps = {
     "OL3": {
         "OGC": {
             "title": "OGC",
-            "description": "--对接OGC标准服务"
+            "description": "--对接OGC标准服务",
+            "WMTS": {
+                "name": "WMTS服务",
+                "src": []
+            },
+            "WMS": {
+                "name": "WMS服务",
+                "src": []
+            },
+        },
+        "mapping": {
+            "title": "互联网地图",
+            "description": "--对接互联网地图",
+            "Baidu": {
+                "name": "百度图层",
+                "src": ['./src/OL3/mapping/baidu.js']
+            },
+
         },
         "SuperMap": {
             "title": "SuperMap",

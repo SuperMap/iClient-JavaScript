@@ -335,6 +335,36 @@ var exampleConfig = {
     },
     "OGC": {
         name: "OGC",
-        content: null
+        content: {
+            "WMTS": {
+                name: "",
+                content: [{
+                    name: "WMTS图层",
+                    thumbnail: "ol_WMTSLayer.png",
+                    fileName: "WMTSLayer"
+                }]
+            },
+            "WMS": {
+                name: "",
+                content: [{
+                    name: "WMS图层",
+                    thumbnail: "ol_WMSLayer.png",
+                    fileName: "WMSLayer"
+                }]
+            }
+        }
+    },
+    "mapping": {
+        name: "互联网地图",
+        content: {
+            "Baidu": {
+                name: "",
+                content: [{
+                    name: "百度地图",
+                    thumbnail: "ol_baiduLayer.png",
+                    fileName: "baiduLayer"
+                }]
+            }
+        }
     }
 }
