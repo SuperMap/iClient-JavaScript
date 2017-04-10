@@ -790,7 +790,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
                 lineList.push(pointList);
                 geoPoints.splice(0, geoParts[i]);
             }
-            return {type: "LineString", components: lineList};
+            return {type: "MultiLineString", components: lineList};
         }
 
     },
