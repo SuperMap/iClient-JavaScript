@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>月夜风格</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text" id="cartoCssStr">
+        /*此处定义不同的颜色变量，在后面可以重复用这些颜色值*/
+
+        @waterColor:rgb(24,24,24);
+        @roadColora:rgb(109,102,91);
+        @roadColorb:rgb(109,102,91);
+        @railwayColora:rgb(80,80,80);
+        @railwayColorb:rgb(137,137,137);
+        @vegetationColor:rgb(27,27,27);
+        @continentColor:rgb(34,34,34);
+        @provinceLineColor:rgb(100,100,100);
+
+
+         /*中国除外的其他国家的图层*/
+
+        #World_Continent_pl___China{
+        polygon-fill:@continentColor;
+        line-width:1;
+        line-color:@continentColor;
+        }
+        #China_Province_pl___China{
+        polygon-fill:@continentColor;
+        line-color:rgba(0,0,0,0);
+        }
+
+        #Arterial_Road_ln___China::one{
+        line-color:@roadColora;
+        line-width:2;}
+        #Arterial_Road_ln___China::two{
+        line-color:@roadColorb;
+        line-width:1;}
+
+        #Arterial_Road_ln___China___1::one{
+        line-color:@roadColora;
+        line-width:2;}
+        #Arterial_Road_ln___China___1::two{
+        line-color:@roadColorb;
+        line-width:1;}
+
+        #Arterial_Road_ln___China___1___1::one{
+        line-color:@roadColora;
+        line-width:2;}
+        #Arterial_Road_ln___China___1___1::two{
+        line-color:@roadColorb;
+        line-width:1;}
+
+        #Main_Road_L___China::one{
+        line-color:@roadColora;
+        line-width:2;}
+        #Main_Road_L___China::two{
+        line-color:@roadColorb;
+        line-width:1;}
+
+        #Main_Road_L___China___1::one{
+        line-color:@roadColora;
+        line-width:2;}
+        #Main_Road_L___China___1::two{
+        line-color:@roadColorb;
+        line-width:1;}
+
+        #Main_Road_L___China___1___1::a{
+        line-color:@roadColora;
+        line-width:2;}
+        #Main_Road_L___China___1___1::b{
+        line-color:@roadColorb;
+        line-width:1;}
+
+        #Hydside_Area_pl___Hydside{
+        polygon-fill:@waterColor;
+        line-color:@waterColor;
+        }
+
+        #China_Provinces_L___China400{
+        line-dasharray:10,10;
+        line-color:@provinceLineColor;
+        line-width:1;
+        }
+
+
+
+
+</script>
+
+<script type="text/javascript">
+    var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+    var map = new ol.Map({
+        target: 'map',
+        view: new ol.View({
+            center: [12957388, 4853991],
+            zoom: 11,
+        })
+    });
+    var options = {};
+    options.url = url;
+    options.view = map.getView();
+    options.cartoCss = document.getElementById("cartoCssStr").text;
+    options.selectdStyle = new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'blue',
+            width: 3
+        })
+    });
+    var vectorTileStyles = new ol.supermap.VectorTileStyles(options);
+    var vectorLayer = new ol.layer.VectorTile({
+        source: new ol.supermap.VectorTileSuperMapRest({
+            url: url
+        }),
+        style: vectorTileStyles.getFeatureStyle
+    });
+    map.addLayer(vectorLayer);
+    map.on('click', function (e) {
+        map.forEachFeatureAtPixel(e.pixel, function (feature) {
+            vectorTileStyles.dispatchEvent(new ol.Collection.Event('featureSelected', {
+                selectedId: feature.getProperties().id,
+                layerName: feature.getProperties().layerName
+            }));
+            return true;
+        });
+        vectorLayer.changed();
+    })
+</script>
+</body>
+</html>

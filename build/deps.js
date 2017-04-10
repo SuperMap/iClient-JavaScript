@@ -72,6 +72,9 @@ var deps = {
             "./src/Core/iServer/ThiessenAnalystService.js"
 
         ],
+        "visual": [
+            "./src/Core/visual/CartoCSS.js"
+        ],
         // "online" : []
     },
     "Leaflet": {
@@ -242,7 +245,9 @@ var deps = {
                     "./src/OL3/SuperMap/iServer/GetLayersInfoService.js",
                     "./src/OL3/SuperMap/iServer/ChartFeatureInfoSpecsService.js",
                     "./src/OL3/SuperMap/iServer/SetLayerService.js",
-                    "./src/OL3/SuperMap/iServer/MeasureService.js"
+                    "./src/OL3/SuperMap/iServer/MeasureService.js",
+                    "./src/OL3/SuperMap/iServer/VectorTileSuperMapRest.js",
+                    "./src/OL3/SuperMap/iServer/VectorTileStyles.js"
                 ]
             },
             "Data": {
@@ -318,6 +323,13 @@ var deps = {
                 "src": [
                     "./src/OL3/Visual/Graphic/graphic.js",
                     "./src/OL3/Visual/Graphic/source/graphic.js"
+                ]
+            },
+            "CartoCSS": {
+                "name": "CartoCSS",
+                "src": [
+                    "./src/OL3/Visual/CartoCSS/StyleMap.js",
+                    "./src/OL3/Visual/CartoCSS/DeafultCanvasStyle.js",
                 ]
             }
         }
