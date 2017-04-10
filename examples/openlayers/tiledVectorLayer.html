@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>矢量瓦片</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:600px;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+
+<script type="text/javascript">
+    var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+    var map = new ol.Map({
+        target: 'map',
+        view: new ol.View({
+            center: [12957388, 4853991],
+            zoom: 11,
+        })
+    });
+    var options = {};
+    options.url = url;
+    options.view = map.getView();
+    options.selectdStyle = new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'blue',
+            width: 3
+        })
+    });
+    var vectorTileStyles = new ol.supermap.VectorTileStyles(options);
+    var vectorLayer = new ol.layer.VectorTile({
+        source: new ol.supermap.VectorTileSuperMapRest({
+            url: url
+        }),
+        style: vectorTileStyles.getFeatureStyle
+    });
+    map.addLayer(vectorLayer);
+    map.on('click', function (e) {
+        map.forEachFeatureAtPixel(e.pixel, function (feature) {
+            vectorTileStyles.dispatchEvent(new ol.Collection.Event('featureSelected', {
+                selectedId: feature.getProperties().id,
+                layerName: feature.getProperties().layerName
+            }));
+            return true;
+        });
+        vectorLayer.changed();
+    })
+</script>
+</body>
+</html>

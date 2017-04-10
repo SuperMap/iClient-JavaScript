@@ -330,6 +330,21 @@ var exampleConfig = {
                     }
                 ]
 
+            },
+            "VectorTileLayer": {
+                name: "矢量瓦片",
+                content: [
+                    {
+                        name: "矢量瓦片",
+                        thumbnail: "tiledVectorLayer.png",
+                        fileName: "tiledVectorLayer"
+                    },
+                    {
+                        name: "月夜风格",
+                        thumbnail: "cartoCSS_nightStyle.png",
+                        fileName: "cartoCSS_nightStyle"
+                    }
+                ]
             }
         }
     },
