@@ -26,14 +26,14 @@
 
     function layerService() {
         L.supermap.getLayersInfoService(url).getLayersInfo().on("complete", function (serviceResult) {
-            if (!infowin) {
-                infowin = L.popup({maxWidth: 400});
-            }
-            var innerHtml = "";
+            var innerHTML = "";
             serviceResult.result.map(function (layer) {
-                innerHtml += layer.name + "<br>";
+                innerHTML += layer.name + "<br>";
             });
-            infowin.setLatLng(map.getCenter()).setContent(innerHtml).openOn(map);
+            infowin = L.popup({maxWidth: 400})
+                    .setLatLng(map.getCenter())
+                    .setContent(innerHTML)
+                    .openOn(map);
         });
     }
 </script>

@@ -31,10 +31,11 @@
             dataSourceName: "World",
             dataSetName: "continent_T"
         }).getFields().on("complete", function (serviceResult) {
-            if (!infoWin) {
-                infoWin = L.popup({maxWidth: 420});
-            }
-            infoWin.setLatLng(map.getCenter()).setContent(serviceResult.result.fieldNames.join(', ')).openOn(map);
+            var innerHTML = serviceResult.result.fieldNames.join(', ');
+            infoWin = L.popup({maxWidth: 420})
+                    .setLatLng(map.getCenter())
+                    .setContent(innerHTML)
+                    .openOn(map);
         });
     }
 </script>
