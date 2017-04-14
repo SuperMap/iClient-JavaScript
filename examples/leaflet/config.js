@@ -212,7 +212,7 @@ var exampleConfig = {
     "iPortal": {
         name: "iPortal",
         content: {
-            "ip_map":{
+            "ip_map": {
                 name: "地图",
                 content: [{
                     name: "举办过奥运会的城市",
@@ -225,7 +225,7 @@ var exampleConfig = {
     "online": {
         name: "online",
         content: {
-            "ol_map":{
+            "ol_map": {
                 name: "地图",
                 content: [{
                     name: "黄龙溪徒步",
@@ -341,22 +341,33 @@ var exampleConfig = {
                     }
                 ]
 
-            }
-        }
-    },
-    "overlay": {
-        name: "数据可视化",
-        content: {
+            },
             "tileVectorLayer": {
                 name: "矢量地图",
                 content: [{
-                    name: "矢量地图(normal)",
+                    name: "矢量地图",
                     thumbnail: "l_tileVectorLayer_normal.png",
                     fileName: "vectorTileLayerNormal"
                 }, {
-                    name: "矢量地图(night)",
+                    name: "月夜风格",
                     thumbnail: "l_tileVectorLayer_night.png",
                     fileName: "vectorTileLayerNight"
+                }, {
+                    name: "强边界风格",
+                    thumbnail: "l_tileVectorLayer_boundray.png",
+                    fileName: "vectorTileLayerBoundary"
+                }, {
+                    name: "深夜蓝黑风格",
+                    thumbnail: "l_tileVectorLayer_darkBlue.png",
+                    fileName: "vectorTileLayerDarkBlue"
+                }, {
+                    name: "HelloKitty风格",
+                    thumbnail: "l_tileVectorLayer_helloKitty.png",
+                    fileName: "vectorTileLayerHelloKitty"
+                }, {
+                    name: "淡雅绿风格",
+                    thumbnail: "l_tileVectorLayer_natural.png",
+                    fileName: "vectorTileLayerNatural"
                 }]
             }
         }
@@ -412,4 +423,4 @@ var exampleConfig = {
         }
     }
 
-}
+};

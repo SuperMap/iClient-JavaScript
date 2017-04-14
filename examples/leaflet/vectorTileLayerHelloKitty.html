@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SuperMap REST HelloKitty风格矢量底图</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+</body>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text" id="cartoCssStr">
+        /*此处定义不同的颜色变量，在后面可以重复用这些颜色值*/
+
+        @waterColor:rgb(245,169,193);
+        @roadColora:rgb(244,73,116);
+        @roadColorb:rgb(244,73,116);
+        @railwayColora:rgb(50,50,50);
+        @railwayColorb:rgb(255,255,255);
+        @vegetationColor:rgb(239,169,193);
+        @continentColor:rgb(250,250,250);
+        @provinceLineColor:rgb(226,195,19);
+
+
+        #Railway_A___Road::a{
+
+        /*每一段的长度为15px,间隔也是15px*/
+        line-color:@railwayColora;
+        line-width:2.5;
+        }
+        #Railway_A___Road::b{
+
+        /*每一段的长度为15px,间隔也是15px*/
+        line-dasharray:18,18;
+        line-color:@railwayColorb;
+        line-width:1.5;
+        }
+        /*底下的地图背景图层*/
+
+        #World_Division_pl___China{
+        polygon-fill:@waterColor;
+        }
+
+        /*中国除外的其他国家的图层*/
+
+        #World_Continent_pl___China{
+        polygon-fill:@continentColor;
+        line-width:1;
+        line-color:@continentColor;
+        }
+        #China_Province_pl___China{
+        polygon-fill:@continentColor;
+        line-color:rgba(0,0,0,0);
+        }
+
+        #Arterial_Road_ln___China::one{
+        line-color:@roadColora;
+        line-width:2;}
+        #Arterial_Road_ln___China::two{
+        line-color:@roadColorb;
+        line-width:1;}
+
+        #Arterial_Road_ln___China___1::one{
+        line-color:@roadColora;
+        line-width:2;}
+        #Arterial_Road_ln___China___1::two{
+        line-color:@roadColorb;
+        line-width:1;}
+
+        #Arterial_Road_ln___China___1___1::one{
+        line-color:@roadColora;
+        line-width:2;}
+        #Arterial_Road_ln___China___1___1::two{
+        line-color:@roadColorb;
+        line-width:1;}
+
+        #Main_Road_L___China::one{
+        line-color:@roadColora;
+        line-width:2;}
+        #Main_Road_L___China::two{
+        line-color:@roadColorb;
+        line-width:1;}
+
+        #Main_Road_L___China___1::one{
+        line-color:@roadColora;
+        line-width:2;}
+        #Main_Road_L___China___1::two{
+        line-color:@roadColorb;
+        line-width:1;}
+
+        #Main_Road_L___China___1___1::a{
+        line-color:@roadColora;
+        line-width:2;}
+        #Main_Road_L___China___1___1::b{
+        line-color:@roadColorb;
+        line-width:1;}
+
+        #Hydside_Area_pl___Hydside{
+        polygon-fill:@waterColor;
+        line-color:@waterColor;
+        }
+
+        #China_Provinces_L___China400{
+        line-dasharray:10,10;
+        line-color:@provinceLineColor;
+        line-width:1;
+        }
+    </script>
+<script type="text/javascript">
+    var map, layer,
+            url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+    map = L.map('map', {
+        center: [39.89, 116.43],
+        maxZoom: 12,
+        zoom: 11
+    });
+    var cartoCSS = document.getElementById("cartoCssStr").text;
+    layer = L.supermap.tiledVectorLayer(url, {
+        cartoCSS: cartoCSS,
+        serverCartoCSSStyle: false,
+    }).addTo(map);
+
+</script>
+</html>

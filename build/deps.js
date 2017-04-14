@@ -102,15 +102,7 @@ var deps = {
                 "src": ['./src/Leaflet/mapping/CloudTileLayer.js']
             }
         },
-        "overlay": {
-            "title": "数据可视化",
-            "description": "--对接数据可视化",
-            "TileVectorLayer": {
-                "name": "矢量地图",
-                "src": ['./src/Leaflet/overlay/vectorTile/TileVectorLayer.js']
-            },
 
-        },
         "SuperMap": {
             "title": "SuperMap",
             "description": "--对接SuperMap服务",
@@ -175,23 +167,29 @@ var deps = {
                 ]
             },
         },
+
         "Visual": {
-            "title": "Visual",
-            "description": "--可视化",
+            "title": "可视化",
+            "description": "--对接可视化",
             "EChartMapLayer": {
                 "name": "ECharts地图图层",
                 "src": [
-                    "./src/Leaflet/Visual/EChartMapLayer.js"
+                    "./src/Leaflet/overlay/EChartMapLayer.js"
                 ]
             },
             "GraphicLayer": {
                 "name": "高效率点图层",
                 "src": [
-                    "./src/Leaflet/Visual/Graphic/Graphic.js",
-                    "./src/Leaflet/Visual/Graphic/GraphicGroup.js",
-                    "./src/Leaflet/Visual/Graphic/CircleStyle.js"
+                    "./src/Leaflet/overlay/graphic/Graphic.js",
+                    "./src/Leaflet/overlay/graphic/GraphicGroup.js",
+                    "./src/Leaflet/overlay/graphic/CircleStyle.js"
                 ]
-            }
+            },
+
+            "TileVectorLayer": {
+                "name": "矢量地图",
+                "src": ['./src/Leaflet/overlay/vectorTile/TileVectorLayer.js']
+            },
             // "AnimatorVector": {
             //     "name": "时空数据图层",
             //     "src": [
@@ -210,12 +208,6 @@ var deps = {
             //         "./src/Leaflet/Visual/HeatMapLayer.js"
             //     ]
             // },
-            // "VectorLayer": {
-            //     "name": "矢量图层",
-            //     "src": [
-            //         "./src/Leaflet/Visual/VectorLayer.js"
-            //     ]
-            // }
         }
     },
     "OL3": {
@@ -299,8 +291,8 @@ var deps = {
             }
         },
         "Visual": {
-            "title": "Visual",
-            "description": "--可视化",
+            "title": "可视化",
+            "description": "--对接可视化",
             // "AnimatorVector": {
             //     "name": "时空数据图层",
             //     "src": [
@@ -343,5 +335,5 @@ var deps = {
             }
         }
     }
-}
+};
 module.exports = deps;
