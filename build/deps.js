@@ -102,6 +102,15 @@ var deps = {
                 "src": ['./src/Leaflet/mapping/CloudTileLayer.js']
             }
         },
+        "overlay": {
+            "title": "数据可视化",
+            "description": "--对接数据可视化",
+            "TileVectorLayer": {
+                "name": "矢量地图",
+                "src": ['./src/Leaflet/overlay/vectorTile/TileVectorLayer.js']
+            },
+
+        },
         "SuperMap": {
             "title": "SuperMap",
             "description": "--对接SuperMap服务",

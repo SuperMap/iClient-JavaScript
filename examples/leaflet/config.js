@@ -344,6 +344,23 @@ var exampleConfig = {
             }
         }
     },
+    "overlay": {
+        name: "数据可视化",
+        content: {
+            "tileVectorLayer": {
+                name: "矢量地图",
+                content: [{
+                    name: "矢量地图(normal)",
+                    thumbnail: "l_tileVectorLayer_normal.png",
+                    fileName: "vectorTileLayerNormal"
+                }, {
+                    name: "矢量地图(night)",
+                    thumbnail: "l_tileVectorLayer_night.png",
+                    fileName: "vectorTileLayerNight"
+                }]
+            }
+        }
+    },
     "OGC": {
         name: "OGC",
         content: {
@@ -394,4 +411,5 @@ var exampleConfig = {
             }
         }
     }
+
 }

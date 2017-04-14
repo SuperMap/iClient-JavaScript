@@ -48,29 +48,30 @@
 	__webpack_require__(2);
 	__webpack_require__(3);
 	__webpack_require__(4);
-	__webpack_require__(16);
-	__webpack_require__(20);
-	__webpack_require__(35);
-	__webpack_require__(39);
-	__webpack_require__(41);
-	__webpack_require__(43);
-	__webpack_require__(45);
-	__webpack_require__(51);
-	__webpack_require__(54);
+	__webpack_require__(33);
+	__webpack_require__(34);
+	__webpack_require__(38);
+	__webpack_require__(53);
 	__webpack_require__(57);
-	__webpack_require__(71);
-	__webpack_require__(73);
-	__webpack_require__(76);
-	__webpack_require__(79);
-	__webpack_require__(116);
-	__webpack_require__(143);
-	__webpack_require__(155);
-	__webpack_require__(199);
-	__webpack_require__(207);
-	__webpack_require__(209);
-	__webpack_require__(210);
-	__webpack_require__(211);
-	module.exports = __webpack_require__(212);
+	__webpack_require__(59);
+	__webpack_require__(61);
+	__webpack_require__(63);
+	__webpack_require__(69);
+	__webpack_require__(72);
+	__webpack_require__(75);
+	__webpack_require__(89);
+	__webpack_require__(91);
+	__webpack_require__(94);
+	__webpack_require__(97);
+	__webpack_require__(134);
+	__webpack_require__(161);
+	__webpack_require__(173);
+	__webpack_require__(217);
+	__webpack_require__(225);
+	__webpack_require__(226);
+	__webpack_require__(227);
+	__webpack_require__(228);
+	module.exports = __webpack_require__(229);
 
 
 /***/ },
@@ -195,1138 +196,371 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Class: TiledMapLayer
-	 * SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)
+	 * Class: TiledVectorLayer
+	 * SuperMap iServer的矢量瓦片图层
 	 * 用法：
-	 *      L.superMap.tiledMapLayer(url,{CRS:L.CRS.EPSG4326}).addTo(map);
+	 *      L.superMap.tiledVectorLayer(url).addTo(map);
 	 */
 	__webpack_require__(5);
-	__webpack_require__(7);
+	__webpack_require__(8);
+	__webpack_require__(11);
+	__webpack_require__(20);
+	var fetchJsonp = __webpack_require__(32);
 
-	TiledMapLayer = L.TileLayer.extend({
+	TileVectorLayer = L.VectorGrid.extend({
 
 	    options: {
 	        url: null,
 	        token: null,
-	        transparent: null,
-	        cacheEnabled: null,
-	        layersID: null, //如果有layersID，则是在使用专题图
+	        cartoCSS: null,
+	        // 指定图层的名称列表。支持的类型为矢量图层
+	        layerNames: null,
+	        //获取进行切片的地图图层 ID
+	        layersID: null,
+
+	        //是否服务端CartoCSS样式，默认使用
+	        serverCartoCSSStyle: true,
+
+	        returnAttributes: false,
+	        cacheEnabled: false,
+
 	        crs: null,
+	        timeout: 10000,
 	        attribution: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
 	    },
 
 	    initialize: function (url, options) {
-	        this.options.url = url;
-	        L.setOptions(this, options);
-	        this._initParams();
-	        L.stamp(this);
+	        options = options || {};
+	        options.noWrap = true;
+	        L.VectorGrid.prototype.initialize.call(this, options);
+	        L.Util.setOptions(this, options);
+	        var me = this;
+	        L.stamp(me);
+
+	        me.options.url = url;
+	        if (url && url.indexOf("/") === (url.length - 1)) {
+	            url = url.substr(0, str.length - 1);
+	            me.options.url = url;
+	        }
+	        me._initLayerUrl();
+	        me.initMapScales();
+	        me.initLayersInfo();
+	        CartoCSSToLeaflet.mapUrl = me.options.url;
+	        if (!me.options.serverCartoCSSStyle && me.options) {
+	            me.setClientCartoCSS(me.options.cartoCSS);
+	        }
 	    },
 
+	    //如果不设置获取服务器的cartoCSS情况下，则直接初始化瓦片网格
+	    //如果设置了需获取服务器的cartoCSS情况下，待服务器返回cartocss之后再初始化瓦片网格
 	    onAdd: function (map) {
 	        this._crs = this.options.crs || map.options.crs;
-	        L.TileLayer.prototype.onAdd.call(this, map);
+	        this._map = map;
+	        if (!this.options.serverCartoCSSStyle) {
+	            this._initGrid();
+	        }
 	    },
 
-	    getTileUrl: function (coords) {
-	        var x = coords.x, y = coords.y, zoom = coords.z;
-	        //使用ViewBounds出图
-	        var tileBounds = this._tileCoordsToBounds(coords),
-	            nw = this._crs.project(tileBounds.getNorthWest()),
-	            se = this._crs.project(tileBounds.getSouthEast());
-	        var tileUrl = this._layerUrl + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + nw.x + ",\"y\":" + se.y + "},\"rightTop\" : {\"x\":" + se.x + ",\"y\":" + nw.y + "}}";
+	    //主要设置scales
+	    initMapScales: function () {
+	        var me = this;
+	        var mapUrl = me.options.url + ".jsonp";
+	        fetchJsonp(mapUrl, {
+	            timeout: me.options.timeout
+	        }).then(function (response) {
+	            return response.json();
+	        }).then(function (json) {
+	            me._initScales(json);
+	        }).catch(function (ex) {
+	            console.error('error', ex)
+	        });
+	    },
 
-	        var crs = this._crs, scale = crs.scale(zoom);
+	    //获取服务器layers资源下的风格信息(当CartoCSS中不存在相应图层渲染信息时使用)
+	    initLayersInfo: function () {
+	        var me = this;
+	        var layersUrl = me.options.url + "/layers.jsonp";
+	        fetchJsonp(layersUrl, {
+	            timeout: me.options.timeout
+	        }).then(function (response) {
+	            return response.json();
+	        }).then(function (json) {
+	            me.layersInfoInitialized = true;
+	            me.layersInfo = json;
+	            if (!me.layersInfo) {
+	                return;
+	            }
+	            var layersInfo = {};
+	            for (var i = 0, len = me.layersInfo.length; i < len; i++) {
+	                var layers = me.layersInfo[i].subLayers.layers;
+	                for (var j = 0, len1 = layers.length; j < len1; j++) {
+	                    layers[j].layerIndex = len1 - j;
+	                    layersInfo[layers[j].name] = layers[j];
+	                }
+	            }
+	            me.layersInfo = layersInfo;
+	            if (me.options.serverCartoCSSStyle) {
+	                me.getVectorStylesFromServer();
+	            }
+	        }).catch(function (ex) {
+	            console.error('error', ex)
+	        });
+	    },
+
+	    getLayerStyleInfo: function (layerName) {
+	        var me = this, layerInfo_simple;
+	        me.layersStyles = me.layersStyles || {};
+
+	        layerInfo_simple = me.layersStyles[layerName];
+	        if (layerInfo_simple) {
+	            return layerInfo_simple;
+	        }
+
+	        if (!me.layersInfo) {
+	            return null;
+	        }
+	        var layerInfo = me.layersInfo[layerName];
+	        if (!layerInfo)return null;
+	        layerInfo_simple = {layerIndex: layerInfo.layerIndex, ugcLayerType: layerInfo.ugcLayerType};
+	        switch (layerInfo.ugcLayerType) {
+	            case "VECTOR":
+	                layerInfo_simple.layerStyle = layerInfo.style ? layerInfo.style : null;
+	                break;
+	            case "THEME":
+	                var theme = layerInfo.theme;
+	                //标注图层特别标明
+	                layerInfo_simple.layerStyle = theme ? theme.defaultStyle : null;
+	                if (theme && theme.type === "LABEL") {
+	                    layerInfo_simple.type = theme.type;
+	                    layerInfo_simple.textField = theme.labelExpression;
+	                }
+	                break;
+	            default :
+	                //SVTile发布出来的地图没有ugcLayerType属性
+	                if (layerInfo.style) {
+	                    layerInfo_simple.layerStyle = layerInfo.style;
+	                }
+	                break;
+	        }
+	        me.layersStyles[layerName] = layerInfo_simple;
+	        return layerInfo_simple;
+	    },
+
+	    //等待服务器的carto返回之后拼接本地配置的cartoCSS,并调用onAdd出图
+	    getVectorStylesFromServer: function () {
+	        var me = this;
+	        var vectorStyleUrl = me.options.url + "/tileFeature/vectorstyles.jsonp";
+	        fetchJsonp(vectorStyleUrl, {
+	            timeout: me.options.timeout
+	        }).then(function (response) {
+	            return response.json()
+	        }).then(function (styles) {
+	            if (!styles || !styles.style) {
+	                return null;
+	            }
+	            if (styles.style && styles.type === 'cartoCSS') {
+	                me.setServerCartoCSS(styles.style);
+	            }
+	            if (me.options) {
+	                me.setClientCartoCSS(me.options.cartoCSS);
+	            }
+	            me._initGrid();
+	        }).catch(function (ex) {
+	            console.error('error', ex)
+	        });
+	    },
+
+	    setServerCartoCSS: function (cartoCSSStr) {
+	        CartoCSSToLeaflet.pretreatedCartoCSS(cartoCSSStr, true);
+	    },
+	    setClientCartoCSS: function (cartoCSSStr) {
+	        CartoCSSToLeaflet.pretreatedCartoCSS(cartoCSSStr, false);
+	    },
+
+	    //获取图层风格信息，当CartoCSS中包含有对该图层的渲染信息时，优先获取
+	    //否则获取layers资源下layerSytle的渲染信息
+	    getVectorTileLayerStyle: function (coords, feature) {
+	        if (!feature) {
+	            return null;
+	        }
+	        var me = this,
+	            layerName = feature.layerName,
+	            layerStyleInfo = me.getLayerStyleInfo(layerName);
+
+	        //处理标签图层
+	        if (layerStyleInfo.textField) {
+	            feature.properties.textField = layerStyleInfo.textField;
+	        }
+
+	        me.vectorTileLayerStyles = me.vectorTileLayerStyles || {};
+
+	        var style = me.vectorTileLayerStyles[layerName];
+	        if (style) {
+	            return style;
+	        }
+
+	        // CartoCSSToLeaflet内部做了客户端配置的cartoCSS和服务端cartoCSS的拼接处理
+	        // 客户端配置的cartoCSS会覆盖相应图层的服务端cartoCSS
+	        if (!style && feature.type !== "TEXT") {
+	            var scale = this.getScale(coords);
+	            var shaders = CartoCSSToLeaflet.pickShader(layerName) || [];
+	            style = [];
+	            for (var itemKey in shaders) {
+	                var shader = shaders[itemKey];
+	                for (var j = 0; j < shader.length; j++) {
+	                    var serverStyle = CartoCSSToLeaflet.getValidStyleFromCarto(coords.z, scale, shader[j], feature);
+	                    if (serverStyle) {
+	                        style.push(serverStyle);
+	                    }
+	                }
+	            }
+	        }
+
+	        //次优先级是layers资源的默认的样式，最低优先级是CartoDefaultStyle的样式
+	        if (!style || style.length < 1) {
+	            style = CartoCSSToLeaflet.getValidStyleFromLayerInfo(feature, layerStyleInfo);
+	        }
+
+	        me.vectorTileLayerStyles[layerName] = style;
+	        return style;
+	    },
+
+
+	    setScales: function (scales) {
+	        this.scales = scales || this.scales;
+	    },
+
+	    getScale: function (coords) {
+	        var me = this, scale;
+	        if (me.scales && me.scales[coords.z]) {
+	            return me.scales[coords.z];
+	        }
+	        me.scales = me.scales || {};
+	        scale = me.getDefaultScale(coords);
+	        me.scales[coords.z] = scale;
+	        return scale;
+	    },
+
+	    getDefaultScale: function (coords) {
+	        var me = this, crs = me._crs;
+	        var tileBounds = me._tileCoordsToBounds(coords);
+	        var ne = crs.project(tileBounds.getNorthEast());
+	        var sw = crs.project(tileBounds.getSouthWest());
+	        var tileSize = me.options.tileSize;
+	        var resolution = Math.max(
+	            Math.abs(ne.x - sw.x) / tileSize,
+	            Math.abs(ne.y - sw.y) / tileSize
+	        );
+	        return 0.0254 / (96 * resolution);
+	    },
+
+	    _initGrid: function () {
+	        L.VectorGrid.prototype.onAdd.call(this, this._map);
+	    },
+
+	    _initScales: function (mapInfo) {
+	        var me = this;
+	        me.scales = mapInfo.visibleScales;
+	        if (!me.scales) {
+	            return null;
+	        }
+	        var viewBounds = mapInfo.viewBounds,
+	            coordUnit = mapInfo.coordUnit,
+	            viewer = mapInfo.viewer,
+	            scale = mapInfo.scale,
+	            datumAxis = mapInfo.datumAxis;
+	        //将jsonObject转化为SuperMap.Bounds，用于计算dpi。
+	        viewBounds = new SuperMap.Bounds(viewBounds.left, viewBounds.bottom, viewBounds.right, viewBounds.top);
+
+	        viewer = new SuperMap.Size(viewer.rightBottom.x, viewer.rightBottom.y);
+
+	        coordUnit = coordUnit.toLowerCase();
+	        me.units = me.units || coordUnit;
+	        me.datumAxis = datumAxis || 6378137;
+
+	        me.dpi = SuperMap.Util.calculateDpi(viewBounds, viewer, scale, me.units, datumAxis);
+	        me.resolutions = me._resolutionsFromScales(me.scales);
+	        var len = me.resolutions.length;
+	        me.scales = [len];
+	        for (i = 0; i < len; i++) {
+	            me.scales[i] = SuperMap.Util.getScaleFromResolutionDpi(
+	                me.resolutions[i], me.dpi, me.units, me.datumAxis
+	            );
+	        }
+	    },
+
+	    _resolutionsFromScales: function (scales) {
+	        if (scales == null) {
+	            return;
+	        }
+	        var me = this,
+	            resolutions, len;
+	        len = scales.length;
+	        resolutions = [len];
+	        for (var i = 0; i < len; i++) {
+	            resolutions[i] = SuperMap.Util.getResolutionFromScaleDpi(
+	                scales[i], me.dpi, me.units, me.datumAxis);
+	        }
+	        return resolutions;
+	    },
+
+	    _getTileUrl: function (coords) {
+	        var x = coords.x, y = coords.y;
+	        var tileUrl = this._tileUrl + "&x=" + x + "&y=" + y;
+	        var scale = this.getScale(coords);
 	        tileUrl += "&scale=" + scale;
 	        return tileUrl;
 	    },
 
-	    _initParams: function () {
+	    _initLayerUrl: function () {
 	        var options = this.options;
 	        if (!options.url) {
 	            return;
 	        }
-	        this._layerUrl = this._initLayerUrl(options);
+	        this._tileUrl = options.url + "/tileFeature.jsonp?";
+	        this._tileUrl += this._createURLParam(options);
 	    },
 
-	    _initLayerUrl: function (options) {
-
-	        var layerUrl = options.url + "/image.png?redirect=false";
+	    _createURLParam: function (options) {
+	        var params = [];
 
 	        //为url添加安全认证信息片段
 	        if (options.token) {
-	            layerUrl += "&token=" + options.token;
+	            params.push("token=" + options.token);
 	        }
-
 	        if (options.layersID) {
-	            layerUrl += "&layersID=" + options.layersID;
+	            params.push("layersID=" + options.layersID);
+	        }
+	        if (options.layerNames) {
+	            params.push("layerNames=" + options.layerNames);
 	        }
 
-	        var transparent = (options.transparent) ? options.transparent : false;
-	        layerUrl += "&transparent=" + transparent;
+	        params.push("returnAttributes=" + options.returnAttributes);
 
-	        var cacheEnabled = (options.cacheEnabled) ? options.cacheEnabled : true;
-	        layerUrl += "&cacheEnabled=" + cacheEnabled;
+	        params.push("cacheEnabled=" + options.cacheEnabled);
 
 	        var tileSize = this.options.tileSize;
-	        layerUrl += "&width=" + tileSize + "&height=" + tileSize;
-
-	        return layerUrl;
+	        params.push("width=" + tileSize);
+	        params.push("height=" + tileSize);
+	        return params.join("&");
 	    }
 	});
 
-	L.supermap.tiledMapLayer = function (url, options) {
-	    return new TiledMapLayer(url, options);
+	L.supermap.tiledVectorLayer = function (url, options) {
+	    return new TileVectorLayer(url, options);
 	};
 
-	module.exports = L.supermap.tiledMapLayer;
+	module.exports = L.supermap.tiledVectorLayer;
 
 /***/ },
 /* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 *SuperMapLeaflet基础模块
-	 * 1、定义命名空间
-	 * 2、提供必要的转换工具
-	 */
-	L.supermap = L.supermap || {};
 	__webpack_require__(6);
-	__webpack_require__(12);
-	__webpack_require__(13);
-	__webpack_require__(15);
-	L.Util.toGeoJSON = function (feature) {
-	    if (!feature) {
-	        return feature;
-	    }
-	    return JSON.parse(new SuperMap.Format.GeoJSON().write(feature));
-	};
-	L.Util.supermap_callbacks = {};
-	L.Util.toSuperMapGeometry = function (geometry) {
-	    if (!geometry) {
-	        return geometry;
-	    }
-	    var result, format = new SuperMap.Format.GeoJSON();
-	    if (["FeatureCollection", "Feature", "Geometry"].indexOf(geometry.type) != -1) {
-	        result = format.read(geometry, geometry.type);
-	    } else if (typeof geometry.toGeoJSON === "function") {
-	        var geojson = geometry.toGeoJSON();
-	        result = (geojson) ? format.read(geojson, geojson.type) : geometry;
-	    }
-
-	    var serverResult = result;
-	    if (L.Util.isArray(result)) {
-	        if (result.length === 1) {
-	            serverResult = result[0];
-	        } else if (result.length > 1) {
-	            serverResult = [];
-	            result.map(function (item) {
-	                serverResult.push(item.geometry);
-	            });
-	        }
-	    }
-
-	    return (serverResult && serverResult.geometry) ? serverResult.geometry : serverResult;
-
-	};
-	L.Util.GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
-	    var resolution = null,
-	        ratio = 10000;
-	    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
-	    datumAxis = datumAxis || 6378137;
-	    coordUnit = coordUnit || "";
-	    if (scale > 0 && dpi > 0) {
-	        scale = L.Util.NormalizeScale (scale);
-	        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
-	            //scale = SuperMap.Util.normalizeScale(scale);
-	            resolution = 0.0254 * ratio / dpi / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
-	            return resolution;
-	        } else {
-	            resolution = 0.0254 * ratio / dpi / scale / ratio;
-	            return resolution;
-	        }
-	    }
-	    return -1;
-	};
-	L.Util.NormalizeScale = function (scale) {
-	    var normScale = (scale > 1.0) ? (1.0 / scale)
-	        : scale;
-	    return normScale;
-	};
-	L.Util.Csv2GeoJSON = function (csv, options) {
-	    var defaultOptions = {
-	        titles: ['lon', 'lat'],
-	        latitudeTitle: 'lat',
-	        longitudeTitle: 'lon',
-	        fieldSeparator: ',',
-	        lineSeparator: '\n',
-	        deleteDoubleQuotes: true,
-	        firstLineTitles: false
-	    };
-	    options = options || defaultOptions;
-	    var _propertiesNames = []
-	    if (typeof csv === 'string') {
-	        var titulos = options.titles;
-	        if (options.firstLineTitles) {
-	            csv = csv.split(options.lineSeparator);
-	            if (csv.length < 2) return;
-	            titulos = csv[0];
-	            csv.splice(0, 1);
-	            csv = csv.join(options.lineSeparator);
-	            titulos = titulos.trim().split(options.fieldSeparator);
-	            for (var i = 0; i < titulos.length; i++) {
-	                titulos[i] = _deleteDoubleQuotes(titulos[i]);
-	            }
-	            options.titles = titulos;
-	        }
-	        for (var i = 0; i < titulos.length; i++) {
-	            var prop = titulos[i].toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '_');
-	            if (prop == '' || prop == '_') prop = 'prop-' + i;
-	            _propertiesNames[i] = prop;
-	        }
-	        csv = _csv2json(csv);
-	    }
-	    return csv;
-
-	    function _deleteDoubleQuotes(cadena) {
-	        if (options.deleteDoubleQuotes) cadena = cadena.trim().replace(/^"/, "").replace(/"$/, "");
-	        return cadena;
-	    };
-
-	    function _csv2json(csv) {
-	        var json = {};
-	        json["type"] = "FeatureCollection";
-	        json["features"] = [];
-	        var titulos = options.titles;
-	        csv = csv.split(options.lineSeparator);
-	        for (var num_linea = 0; num_linea < csv.length; num_linea++) {
-	            var campos = csv[num_linea].trim().split(options.fieldSeparator)
-	                , lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)])
-	                , lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
-	            if (campos.length == titulos.length && lng < 180 && lng > -180 && lat < 90 && lat > -90) {
-	                var feature = {};
-	                feature["type"] = "Feature";
-	                feature["geometry"] = {};
-	                feature["properties"] = {};
-	                feature["geometry"]["type"] = "Point";
-	                feature["geometry"]["coordinates"] = [lng, lat];
-	                for (var i = 0; i < titulos.length; i++) {
-	                    if (titulos[i] != options.latitudeTitle && titulos[i] != options.longitudeTitle) {
-	                        feature["properties"][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
-	                    }
-	                }
-	                json["features"].push(feature);
-	            }
-	        }
-	        return json;
-	    };
-	};
+	__webpack_require__(7);
 
 /***/ },
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* COPYRIGHT 2017 SUPERMAP
-	 * 本程序只能在有效的授权许可下使用。
-	 * 未经许可，不得以任何手段擅自使用或传播。*/
-
-
-	/**
-	 * Class: SuperMap.Format.GeoJSON
-	 * GeoJSON 的读和写。使用 <SuperMap.Format.GeoJSON> 构造器创建一个GeoJSON解析器.
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.Format.JSON>
-	 */
-	__webpack_require__(7);
-	__webpack_require__(10);
-
-	SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
-
-	    /**
-	     * APIProperty: ignoreExtraDims
-	     * {Boolean} 忽略维度超过2的几何要素
-	     */
-	    ignoreExtraDims: false,
-
-
-	    /**
-	     * APIMethod: read
-	     * 反序列化一个 GeoJSON 字符串.
-	     *
-	     * Parameters:
-	     * json - {String}  GeoJSON 字符串
-	     * type - {String} 可选的字符串，它决定了输出的格式。
-	     *     支持的值有："Geometry","Feature",和"FeatureCollection",
-	     *     如果此值为null，则会使用默认值"FeaureCollection"。
-	     * filter - {Function} 对象中每个层次每个键值对都会调用此函数得出一个结果。
-	     *     每个值都会被filter函数的结果所替换掉。这个函数可被用来将某些对象转化成
-	     *     某个类相应的对象，或者将日期字符串转化成Date对象。
-	     *
-	     * Returns:
-	     * {Object} 返回值依赖于type参数的值。如果type等于"FeatureCollection"（默认值），
-	     *     返回值将会是 <SuperMap.Feature.Vector> 数组。如果type为"Geometry",
-	     *     输入的json对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>
-	     *     如果type为"Feature"，输入的json对象也必须表示的一个要素，这样返回值才会是
-	     *      <SuperMap.Feature.Vector> 。
-	     */
-	    read: function (json, type, filter) {
-	        type = (type) ? type : "FeatureCollection";
-	        var results = null;
-	        var obj = null;
-	        if (typeof json == "string") {
-	            obj = SuperMap.Format.JSON.prototype.read.apply(this,
-	                [json, filter]);
-	        } else {
-	            obj = json;
-	        }
-	        if (!obj) {
-	            //SuperMap.Console.error("Bad JSON: " + json);
-	        } else if (typeof(obj.type) != "string") {
-	            //SuperMap.Console.error("Bad GeoJSON - no type: " + json);
-	        } else if (this.isValidType(obj, type)) {
-	            switch (type) {
-	                case "Geometry":
-	                    try {
-	                        results = this.parseGeometry(obj);
-	                    } catch (err) {
-	                        //SuperMap.Console.error(err);
-	                    }
-	                    break;
-	                case "Feature":
-	                    try {
-	                        results = this.parseFeature(obj);
-	                        results.type = "Feature";
-	                    } catch (err) {
-	                        //SuperMap.Console.error(err);
-	                    }
-	                    break;
-	                case "FeatureCollection":
-	                    // for type FeatureCollection, we allow input to be any type
-	                    results = [];
-	                    switch (obj.type) {
-	                        case "Feature":
-	                            try {
-	                                results.push(this.parseFeature(obj));
-	                            } catch (err) {
-	                                results = null;
-	                                //SuperMap.Console.error(err);
-	                            }
-	                            break;
-	                        case "FeatureCollection":
-	                            for (var i = 0, len = obj.features.length; i < len; ++i) {
-	                                try {
-	                                    results.push(this.parseFeature(obj.features[i]));
-	                                } catch (err) {
-	                                    results = null;
-	                                    // SuperMap.Console.error(err);
-	                                }
-	                            }
-	                            break;
-	                        default:
-	                            try {
-	                                var geom = this.parseGeometry(obj);
-	                                results.push(new SuperMap.Feature.Vector(geom));
-	                            } catch (err) {
-	                                results = null;
-	                                //SuperMap.Console.error(err);
-	                            }
-	                    }
-	                    break;
-	            }
-	        }
-	        return results;
-	    },
-
-	    /**
-	     * Method: isValidType
-	     * 检查一个GeoJSON对象是否和给定的类型相符的合法的对象。
-	     *
-	     * Returns:
-	     * {Boolean} GeoJSON是否是给定类型的合法对象。
-	     */
-	    isValidType: function (obj, type) {
-	        var valid = false;
-	        switch (type) {
-	            case "Geometry":
-	                if (SuperMap.Util.indexOf(
-	                        ["Point", "MultiPoint", "LineString", "MultiLineString",
-	                            "Polygon", "MultiPolygon", "Box", "GeometryCollection"],
-	                        obj.type) == -1) {
-	                    // unsupported geometry type
-	                    //SuperMap.Console.error("Unsupported geometry type: " +
-	                    // obj.type);
-	                } else {
-	                    valid = true;
-	                }
-	                break;
-	            case "FeatureCollection":
-	                // allow for any type to be converted to a feature collection
-	                valid = true;
-	                break;
-	            default:
-	                // for Feature types must match
-	                if (obj.type == type) {
-	                    valid = true;
-	                } else {
-	                    //SuperMap.Console.error("Cannot convert types from " +
-	                    //obj.type + " to " + type);
-	                }
-	        }
-	        return valid;
-	    },
-
-	    /**
-	     * Method: parseFeature
-	     * 将一个GeoJSON中的feature转化成<SuperMap.Feature.Vector>对象。
-	     *
-	     * Parameters:
-	     * obj - {Object} 从GeoJSON对象中创建一个对象。
-	     *
-	     * Returns:
-	     * {<SuperMap.Feature.Vector>} 一个要素。
-	     */
-	    parseFeature: function (obj) {
-	        var feature, geometry, attributes, bbox;
-	        attributes = (obj.properties) ? obj.properties : {};
-	        bbox = (obj.geometry && obj.geometry.bbox) || obj.bbox;
-	        try {
-	            geometry = this.parseGeometry(obj.geometry);
-	        } catch (err) {
-	            // deal with bad geometries
-	            throw err;
-	        }
-	        feature = new SuperMap.Feature.Vector(geometry, attributes);
-	        if (bbox) {
-	            feature.bounds = SuperMap.Bounds.fromArray(bbox);
-	        }
-	        if (obj.id) {
-	            feature.fid = obj.id;
-	        }
-	        return feature;
-	    },
-
-	    /**
-	     * Method: parseGeometry
-	     * 将一个GeoJSON中的几何要素转化成<SuperMap.Geometry>对象。
-	     *
-	     * Parameters:
-	     * obj - {Object} 从GeoJSON对象中创建一个对象。
-	     *
-	     * Returns:
-	     * {<SuperMap.Geometry>} 一个几何要素。
-	     */
-	    parseGeometry: function (obj) {
-	        if (obj == null) {
-	            return null;
-	        }
-	        var geometry, collection = false;
-	        if (obj.type == "GeometryCollection") {
-	            if (!(SuperMap.Util.isArray(obj.geometries))) {
-	                throw "GeometryCollection must have geometries array: " + obj;
-	            }
-	            var numGeom = obj.geometries.length;
-	            var components = new Array(numGeom);
-	            for (var i = 0; i < numGeom; ++i) {
-	                components[i] = this.parseGeometry.apply(
-	                    this, [obj.geometries[i]]
-	                );
-	            }
-	            geometry = new SuperMap.Geometry.Collection(components);
-	            collection = true;
-	        } else {
-	            if (!(SuperMap.Util.isArray(obj.coordinates))) {
-	                throw "Geometry must have coordinates array: " + obj;
-	            }
-	            if (!this.parseCoords[obj.type.toLowerCase()]) {
-	                throw "Unsupported geometry type: " + obj.type;
-	            }
-	            try {
-	                geometry = this.parseCoords[obj.type.toLowerCase()].apply(
-	                    this, [obj.coordinates]
-	                );
-	            } catch (err) {
-	                // deal with bad coordinates
-	                throw err;
-	            }
-	        }
-	        // We don't reproject collections because the children are reprojected
-	        // for us when they are created.
-	        if (this.internalProjection && this.externalProjection && !collection) {
-	            geometry.transform(this.externalProjection,
-	                this.internalProjection);
-	        }
-	        return geometry;
-	    },
-
-	    /**
-	     * Property: parseCoords
-	     * 一个属性名对应着GeoJSON对象的几何类型的对象。每个属性其实都是一个实际上做解析用的方法。
-	     */
-	    parseCoords: {
-	        /**
-	         * Method: parseCoords.point
-	         * 将一组坐标成一个<SuperMap.Geometry>对象。
-	         *
-	         * Parameters:
-	         * array - {Object} GeoJSON片段中的一组坐标。
-	         *
-	         * Returns:
-	         * {<SuperMap.Geometry>} 一个几何对象。
-	         */
-	        "point": function (array) {
-	            if (this.ignoreExtraDims == false &&
-	                array.length != 2) {
-	                throw "Only 2D points are supported: " + array;
-	            }
-	            return new SuperMap.Geometry.Point(array[0], array[1]);
-	        },
-
-	        /**
-	         * Method: parseCoords.multipoint
-	         * 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-	         *
-	         * Parameters:
-	         * array - {Object} GeoJSON片段中的坐标组数组。
-	         *
-	         * Returns:
-	         * {<SuperMap.Geometry>} 一个几何对象。
-	         */
-	        "multipoint": function (array) {
-	            var points = [];
-	            var p = null;
-	            for (var i = 0, len = array.length; i < len; ++i) {
-	                try {
-	                    p = this.parseCoords["point"].apply(this, [array[i]]);
-	                } catch (err) {
-	                    throw err;
-	                }
-	                points.push(p);
-	            }
-	            return new SuperMap.Geometry.MultiPoint(points);
-	        },
-
-	        /**
-	         * Method: parseCoords.linestring
-	         * 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-	         *
-	         * Parameters:
-	         * array - {Object} GeoJSON片段中的坐标组数组。
-	         *
-	         * Returns:
-	         * {<SuperMap.Geometry>} 一个几何对象。
-	         */
-	        "linestring": function (array) {
-	            var points = [];
-	            var p = null;
-	            for (var i = 0, len = array.length; i < len; ++i) {
-	                try {
-	                    p = this.parseCoords["point"].apply(this, [array[i]]);
-	                } catch (err) {
-	                    throw err;
-	                }
-	                points.push(p);
-	            }
-	            return new SuperMap.Geometry.LineString(points);
-	        },
-
-	        /**
-	         * Method: parseCoords.multilinestring
-	         * 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-	         *
-	         * Parameters:
-	         * array - {Object} GeoJSON片段中的坐标组数组。
-	         *
-	         * Returns:
-	         * {<SuperMap.Geometry>} 一个几何对象。
-	         */
-	        "multilinestring": function (array) {
-	            var lines = [];
-	            var l = null;
-	            for (var i = 0, len = array.length; i < len; ++i) {
-	                try {
-	                    l = this.parseCoords["linestring"].apply(this, [array[i]]);
-	                } catch (err) {
-	                    throw err;
-	                }
-	                lines.push(l);
-	            }
-	            return new SuperMap.Geometry.MultiLineString(lines);
-	        },
-
-	        /**
-	         * Method: parseCoords.polygon
-	         * 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-	         *
-	         * Returns:
-	         * {<SuperMap.Geometry>} 一个几何对象。
-	         */
-	        "polygon": function (array) {
-	            var rings = [];
-	            var r, l;
-	            for (var i = 0, len = array.length; i < len; ++i) {
-	                try {
-	                    l = this.parseCoords["linestring"].apply(this, [array[i]]);
-	                } catch (err) {
-	                    throw err;
-	                }
-	                r = new SuperMap.Geometry.LinearRing(l.components);
-	                rings.push(r);
-	            }
-	            return new SuperMap.Geometry.Polygon(rings);
-	        },
-
-	        /**
-	         * Method: parseCoords.multipolygon
-	         * 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-	         *
-	         * Parameters:
-	         * array - {Object} GeoJSON片段中的坐标组数组。
-	         *
-	         * Returns:
-	         * {<SuperMap.Geometry>} 一个几何对象。
-	         */
-	        "multipolygon": function (array) {
-	            var polys = [];
-	            var p = null;
-	            for (var i = 0, len = array.length; i < len; ++i) {
-	                try {
-	                    p = this.parseCoords["polygon"].apply(this, [array[i]]);
-	                } catch (err) {
-	                    throw err;
-	                }
-	                polys.push(p);
-	            }
-	            return new SuperMap.Geometry.MultiPolygon(polys);
-	        },
-
-	        /**
-	         * Method: parseCoords.box
-	         * 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
-	         *
-	         * Parameters:
-	         * array - {Object} GeoJSON片段中的坐标组数组。
-	         *
-	         * Returns:
-	         * {<SuperMap.Geometry>} 一个几何对象。
-	         */
-	        "box": function (array) {
-	            if (array.length != 2) {
-	                throw "GeoJSON box coordinates must have 2 elements";
-	            }
-	            return new SuperMap.Geometry.Polygon([
-	                new SuperMap.Geometry.LinearRing([
-	                    new SuperMap.Geometry.Point(array[0][0], array[0][1]),
-	                    new SuperMap.Geometry.Point(array[1][0], array[0][1]),
-	                    new SuperMap.Geometry.Point(array[1][0], array[1][1]),
-	                    new SuperMap.Geometry.Point(array[0][0], array[1][1]),
-	                    new SuperMap.Geometry.Point(array[0][0], array[0][1])
-	                ])
-	            ]);
-	        }
-
-	    },
-
-	    /**
-	     * APIMethod: write
-	     * 序列化一个要素对象，几何对象，要素对象数组为一个GeoJSON字符串。
-	     *
-	     * Parameters:
-	     * obj - {Object} 一个 <SuperMap.Feature.Vector> 对象，一个 <SuperMap.Geometry> 对象，
-	     *     或者一个要素对象数组。
-	     * pretty - {Boolean} 是否使用换行和缩进来控制输出。默认值为false。
-	     *
-	     * Returns:
-	     * {String} 一个GeoJSON字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
-	     */
-	    write: function (obj, pretty) {
-	        var geojson = {
-	            "type": null
-	        };
-	        if (SuperMap.Util.isArray(obj)) {
-	            geojson.type = "FeatureCollection";
-	            var numFeatures = obj.length;
-	            geojson.features = new Array(numFeatures);
-	            for (var i = 0; i < numFeatures; ++i) {
-	                var element = obj[i];
-	                if (isGeometry(element)) {
-	                    var feature = {};
-	                    feature.geometry = element;
-	                    geojson.features[i] = this.extract.feature.apply(this, [feature]);
-	                } else {
-	                    geojson.features[i] = this.extract.feature.apply(this, [element]);
-	                }
-	            }
-	        } else if (isGeometry(obj)) {
-	            var feature = {};
-	            feature.geometry = obj;
-	            geojson = this.extract.feature.apply(this, [feature]);
-	        }
-
-	        function isGeometry(input) {
-	            return input.hasOwnProperty("parts") && input.hasOwnProperty("points");
-	        }
-
-	        return SuperMap.Format.JSON.prototype.write.apply(this, [geojson, pretty]);
-	    },
-
-	    /**
-	     * Method: createCRSObject
-	     * 从一个要素对象中创建一个坐标参考系对象。
-	     *
-	     * Parameters:
-	     * object - {<SuperMap.Feature.Vector>} 要素对象
-	     *
-	     * Returns:
-	     * {Object} 一个可作为GeoJSON对象的crs属性使用的对象。
-	     */
-	    createCRSObject: function (object) {
-	        var proj = object.layer.projection.toString();
-	        var crs = {};
-	        if (proj.match(/epsg:/i)) {
-	            var code = parseInt(proj.substring(proj.indexOf(":") + 1));
-	            if (code == 4326) {
-	                crs = {
-	                    "type": "name",
-	                    "properties": {
-	                        "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
-	                    }
-	                };
-	            } else {
-	                crs = {
-	                    "type": "name",
-	                    "properties": {
-	                        "name": "EPSG:" + code
-	                    }
-	                };
-	            }
-	        }
-	        return crs;
-	    },
-
-	    /**
-	     * Property: extract
-	     * 一个属性名对应着GeoJSON类型的对象。其值为相应的实际的解析方法。
-	     */
-	    extract: {
-	        /**
-	         * Method: extract.feature
-	         * 返回一个表示单个要素对象的GeoJSON的一部分。
-	         *
-	         * Parameters:
-	         * feature - iServer要素对象
-	         *
-	         * Returns:
-	         * {Object} 一个表示点的对象。
-	         */
-	        'feature': function (feature) {
-	            var geom = this.extract.geometry.apply(this, [feature.geometry]);
-	            var json = {
-	                "type": "Feature",
-	                "properties": this.createAttributes(feature),
-	                "geometry": geom
-	            };
-	            if (feature.geometry && feature.geometry.type === 'TEXT') {
-	                json.properties.texts = feature.geometry.texts;
-	            }
-	            if (feature.fid != null) {
-	                json.id = feature.fid;
-	            }
-	            return json;
-	        },
-
-	        /**
-	         * Method: extract.geometry
-	         * 返回一个表示单个几何对象的GeoJSON的一部分。
-	         *
-	         * Parameters:
-	         * geometry -iServer 几何对象
-	         *
-	         * Returns:
-	         * {Object} 一个表示几何体的对象。
-	         */
-	        'geometry': function (geometry) {
-	            if (geometry == null) {
-	                return null;
-	            }
-	            var geo = this.toGeometry(geometry);
-	            var geometryType = geo.type;
-	            var data = this.extract[geometryType.toLowerCase()].apply(this, [geo]);
-	            geometryType = geometryType === 'TEXT' ? 'Point' : geometryType;
-	            var json;
-	            if (geometryType === "Collection") {
-	                json = {
-	                    "type": "GeometryCollection",
-	                    "geometries": data
-	                };
-	            } else {
-	                json = {
-	                    "type": geometryType,
-	                    "coordinates": data
-	                };
-	            }
-	            return json;
-	        },
-
-
-	        /**
-	         * Method: extract.point
-	         * 从一个点对象中返回一个坐标组。
-	         *
-	         * Parameters:
-	         * point - {<SuperMap.Geometry.Point>} 一个点对象。
-	         *
-	         * Returns:
-	         * {Array} 一个表示一个点的坐标组。
-	         */
-	        'point': function (point) {
-	            return [point.x, point.y];
-	        },
-
-	        /**
-	         * Method: extract.text
-	         * 从一个文本对象中返回一个坐标组。
-	         *
-	         * Parameters:
-	         * geo 一个文本对象。
-	         *
-	         * Returns:
-	         * {Array} 一个表示一个点的坐标组。
-	         */
-	        'text': function (geo) {
-	            return [geo.points[0].x, geo.points[0].y];
-	        },
-
-	        /**
-	         * Method: extract.multipoint
-	         * 从一个多点对象中返一个坐标组数组。
-	         *
-	         * Parameters:
-	         * multipoint - {<SuperMap.Geometry.MultiPoint>} 多点对象。
-	         *
-	         * Returns:
-	         * {Array} 一个表示多点的坐标组数组。
-	         */
-	        'multipoint': function (multipoint) {
-	            var array = [];
-	            for (var i = 0, len = multipoint.components.length; i < len; ++i) {
-	                array.push(this.extract.point.apply(this, [multipoint.components[i]]));
-	            }
-	            return array;
-	        },
-
-	        /**
-	         * Method: extract.linestring
-	         * 从一个线对象中返回一个坐标组数组。
-	         *
-	         * Parameters:
-	         * linestring - {<SuperMap.Geometry.LineString>} 线对象。
-	         *
-	         * Returns:
-	         * {Array} 一个表示线对象的坐标组数组。
-	         */
-	        'linestring': function (linestring) {
-	            var array = [];
-	            for (var i = 0, len = linestring.components.length; i < len; ++i) {
-	                array.push(this.extract.point.apply(this, [linestring.components[i]]));
-	            }
-	            return array;
-	        },
-
-	        /**
-	         * Method: extract.multilinestring
-	         * 从一个多线对象中返回一个线数组。
-	         *
-	         * Parameters:
-	         * multilinestring - {<SuperMap.Geometry.MultiLineString>} 多线对象
-	         *
-	         * Returns:
-	         * {Array} 一个表示多线的线数组。
-	         */
-	        'multilinestring': function (multilinestring) {
-	            var array = [];
-	            for (var i = 0, len = multilinestring.components.length; i < len; ++i) {
-	                array.push(this.extract.linestring.apply(this, [{components: multilinestring.components[i]}]));
-	            }
-	            return array;
-	        },
-
-	        /**
-	         * Method: extract.polygon
-	         * 从一个面对象中返回一组线环。
-	         *
-	         * Parameters:
-	         * polygon - {<SuperMap.Geometry.Polygon> 面对象。
-	         *
-	         * Returns:
-	         * {Array} 一组表示面的线环。
-	         */
-	        'polygon': function (polygon) {
-	            var array = [];
-	            for (var i = 0, len = polygon.components.length; i < len; ++i) {
-	                array.push(this.extract.linestring.apply(this, [{components: polygon.components[i]}]));
-	            }
-	            return array;
-	        },
-
-	        /**
-	         * Method: extract.multipolygon
-	         * 从一个多面对象中返回一组面。
-	         *
-	         * Parameters:
-	         * multipolygon - {<SuperMap.Geometry.MultiPolygon>} 多面对象。
-	         *
-	         * Returns:
-	         * {Array} 一组表示多面的面。
-	         */
-	        'multipolygon': function (multipolygon) {
-	            var array = [];
-	            for (var i = 0, len = multipolygon.components.length; i < len; ++i) {
-	                array.push(this.extract.polygon.apply(this, [{components: multipolygon.components[i]}]));
-	            }
-	            return array;
-	        },
-
-	        /**
-	         * Method: extract.collection
-	         * 从一个几何要素集合中一组几何要素数组。
-	         *
-	         * Parameters:
-	         * collection - {<SuperMap.Geometry.Collection>} 几何要素集合。
-	         *
-	         * Returns:
-	         * {Array} 一组表示几何要素集合的几何要素数组。
-	         */
-	        'collection': function (collection) {
-	            var len = collection.components.length;
-	            var array = new Array(len);
-	            for (var i = 0; i < len; ++i) {
-	                array[i] = this.extract.geometry.apply(this, [{
-	                    type: "Collection",
-	                    components: collection.components[i]
-	                }]);
-	            }
-	            return array;
-	        }
-	    },
-
-	    createAttributes: function (feature) {
-	        if (!feature) {
-	            return null;
-	        }
-	        var attr = {};
-	        processFieldsAttributes(feature, attr);
-	        var exceptKeys = ["fieldNames", "fieldValues", "geometry"];
-	        for (var key in feature) {
-	            if (exceptKeys.indexOf(key) > -1) {
-	                continue;
-	            }
-	            attr[key] = feature[key];
-	        }
-
-	        function processFieldsAttributes(feature, attributes) {
-	            if (!(feature.hasOwnProperty("fieldNames") && feature.hasOwnProperty("fieldValues"))) {
-	                return;
-	            }
-	            var names = feature.fieldNames,
-	                values = feature.fieldValues;
-	            for (var i in names) {
-	                attributes[names[i]] = values[i];
-	            }
-	        }
-
-
-	        return attr;
-	    },
-
-
-	    toGeometry: function (geometry) {
-	        var me = this,
-	            geoType = geometry.type;
-	        if(geoType==='polygon'){
-	            geoType=SuperMap.REST.GeometryType.REGION;
-	        }
-	        switch (geoType.toUpperCase()) {
-	            case SuperMap.REST.GeometryType.POINT:
-	                return me.toGeoPoint(geometry);
-	            case SuperMap.REST.GeometryType.LINE:
-	                return me.toGeoLine(geometry);
-	            case SuperMap.REST.GeometryType.LINEM:
-	                return me.toGeoLinem(geometry);
-	            case SuperMap.REST.GeometryType.REGION:
-	                return me.toGeoRegion(geometry);
-	            case SuperMap.REST.GeometryType.POINTEPS:
-	                return me.toGeoPoint(geometry);
-	            // case SuperMap.REST.GeometryType.LINEEPS:
-	            //     return me.toGeoLineEPS();
-	            // case SuperMap.REST.GeometryType.REGIONEPS:
-	            //     return me.toGeoRegionEPS();
-	            default:
-	                return geometry;
-	        }
-	    },
-	    /**
-	     * Method: toGeoPoint
-	     * 将服务端的点几何对象转换为几何对象
-	     */
-	    toGeoPoint: function (geometry) {
-	        var me = this,
-	            geoPoints = geometry.points || [],
-	            geoParts = geometry.parts || [geoPoints.length],
-	            len = geoParts.length;
-	        if (len < 1) {
-	            return null;
-	        }
-	        if (len === 1) {
-	            return {type: "Point", x: geoPoints[0].x, y: geoPoints[0].y};
-	        } else {
-	            for (var i = 0, pointList = []; i < len; i++) {
-	                pointList.push({x: geoPoints[i].x, y: geoPoints[i].y});
-	            }
-	            return {type: "MultiPoint", components: pointList};
-	        }
-
-	    },
-
-	    /**
-	     * Method: toGeoLine
-	     * 将服务端的线几何对象转换为几何对象。
-	     */
-	    toGeoLine: function (geometry) {
-	        var me = this,
-	            geoPoints = geometry.points || [],
-	            geoParts = geometry.parts ||[geoPoints.length],
-	            len = geoParts.length;
-	        if (len < 1) {
-	            return null;
-	        }
-	        if (len === 1) {
-	            for (var i = 0, pointList = []; i < geoParts[0]; i++) {
-	                pointList.push({x: geoPoints[i].x, y: geoPoints[i].y});
-	            }
-	            //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
-	            if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
-	                pointList.pop();
-	                pointList.push(pointList[0]);
-	            }
-	            return {type: "LineString", components: pointList};
-	        } else {
-	            for (var i = 0, lineList = []; i < len; i++) {
-	                for (var j = 0, pointList = []; j < geoParts[i]; j++) {
-	                    pointList.push({x: geoPoints[j].x, y: geoPoints[j].y});
-	                }
-	                lineList.push(pointList);
-	                geoPoints.splice(0, geoParts[i]);
-	            }
-	            return {type: "MultiLineString", components: lineList};
-	        }
-
-	    },
-
-	    /**
-	     * Method: toGeoLinem
-	     * 将服务端的路由线几何对象转换为几何对象。
-	     */
-	    toGeoLinem: function (geometry) {
-	        var me = this,
-	            geoPoints = geometry.points || [],
-	            geoParts = geometry.parts ||[geoPoints.length],
-	            len = geoParts.length,
-	            lineList = [],
-	            type;
-	        if (len < 1) {
-	            return null;
-	        }
-	        for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
-	            for (var j = 0; j < geoParts[i]; j++) {
-	                pointList.push({x: geoPoints[pointIndex + j].x, y: geoPoints[pointIndex + j].y});
-	            }
-	            pointIndex += geoParts[i];
-	            //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
-	            if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
-	                pointList.pop();
-	                pointList.push(pointList[0]);
-	            }
-	            lineList.push(pointList);
-	            pointList = [];
-	        }
-	        return {type: "MultiLineString", components: lineList};
-	    },
-
-	    /**
-	     * Method: toGeoRegion
-	     * 将服务端的面几何对象转换为几何对象。
-	     */
-	    toGeoRegion: function (geometry) {
-	        var CCWArray = [],
-	            geoPoints = geometry.points || [],
-	            geoParts = geometry.parts ||[geoPoints.length],
-	            len = geoParts.length;
-	        if (len < 1) {
-	            return null;
-	        }
-	        var polygonArray = new Array();
-	        for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
-	            for (var j = 0; j < geoParts[i]; j++) {
-	                pointList.push({x: geoPoints[pointIndex + j].x, y: geoPoints[pointIndex + j].y});
-	            }
-
-	            pointIndex += geoParts[i];
-	            var linearRing = pointList.concat();
-	            linearRing.pop();
-	            linearRing.push(linearRing[0]);
-
-	            if (this.isClockWise(linearRing) > 0) {
-	                CCWArray.push(linearRing);
-	            } else {
-	                polygonArray.push([linearRing]);
-	            }
-
-	            if (i === len - 1) {
-	                var polyLength = polygonArray.length;
-	                if (!!polyLength) {
-	                    polygonArray[polyLength - 1] = polygonArray[polyLength - 1].concat(CCWArray);
-	                } else {
-	                    for (var k = 0, length = CCWArray.length; k < length; k++) {
-	                        polygonArray.push([CCWArray[k]].concat());
-	                    }
-	                }
-	            }
-	            pointList = [];
-	        }
-	        return {type: "MultiPolygon", components: polygonArray};
-	    },
-
-	    isClockWise: function (points) {
-	        var length = points.length;
-	        if (length < 3) {
-	            return 0.0;
-	        }
-	        var s = points[0].y * (points[length - 1].x - points[1].x);
-	        points.push(points[0]);
-	        for (var i = 1; i < length; i++) {
-	            s += points[i].y * (points[i - 1].x - points[i + 1].x);
-	        }
-	        return s * 0.5;
-	    },
-	    isPointsEquals: function (point1, point2) {
-	        return (point1.x === point2.x && point1.y === point2.y);
-	    },
-	    CLASS_NAME: "SuperMap.Format.GeoJSON"
-	});
-
-	module.exports = function (options) {
-	    return new SuperMap.Format.GeoJSON(options);
-	};
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	__webpack_require__(8);
-	__webpack_require__(9);
-
-/***/ },
-/* 8 */
 /***/ function(module, exports) {
 
 	eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)d[e(c)]=k[c]||e(c);k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('1G.A={aU:"aT 7.1.0",5H:(U(){B f=18 aS("(^|(.*?\\\\/))(A.aR.aQ)(\\\\?|$)"),e=1d.aP("4D"),g,b,c="";13(B d=0,a=e.V;d<a;d++){g=e[d].aO("1F");C(g){B b=g.1V(f);C(b){c=b[1];1r}}}T(U(){T c})})()};A.68=A.68||{};A.L=A.L||{};A.67=A.67||{};A.65=A.65||{};A.64=A.64||{};A.63=A.63||{};A.62=A.62||{};A.61=A.61||{};A.aN=U(){B a=1x.V;B d=1x[0];B c=1x[a-1];B e=1h c.4j==="U"?c.4j:U(){d.1O.4j.5Z(1b,1x)};C(a>1){B b=[e,d].4q(1A.1O.3H.5X(1x).3H(1,a-1),c);A.5Y.5Z(Z,b)}X{e.1O=c}T e};A.5Y=U(f,d){B c=U(){};c.1O=d.1O;f.1O=18 c;B b,a,e;13(b=2,a=1x.V;b<a;b++){e=1x[b];C(1h e==="U"){e=e.1O}A.L.3w(f.1O,e)}};A.L=A.L||{};A.L.3w=U(a,e){a=a||{};C(e){13(B d 1i e){B c=e[d];C(c!==1j){a[d]=c}}B b=1h 1G.2t==="U"&&e 1K 1G.2t;C(!b&&e.1E&&e.1E("1B")){a.1B=e.1B}}T a};A.L.4u=U(c,b){c=c||{};B a;C(b){13(B d 1i c){a=b[d];C(1h a!=="1j"){c[d]=a}}}};A.L.aM=U(c){c=c||{};13(B b 1i c){C(c.1E(b)){C(1h c[b]==="21"&&c[b]1K 1A){13(B a 1i c[b]){C(c[b][a].3z){c[b][a].3z()}}c[b].V=0}X{C(1h c[b]==="21"&&c[b]1K 3G){C(c[b].3z){c[b].3z()}}}c[b]=Z}}};A.L.aL=U(){B d=[];13(B c=0,a=1x.V;c<a;c++){B b=1x[c];C(1h b==="3L"){b=1d.aK(b)}C(1x.V===1){T b}d.1a(b)}T d};A.L.aJ=U(a){T!!(a&&a.aI===1)};A.L.5Q=U(b){T(3G.1O.1B.5X(b)==="[21 1A]")};A.L.aH=U(c,b){13(B a=c.V-1;a>=0;a--){C(c[a]===b){c.aG(a,1)}}T c};A.L.1c=U(d,c){C(d==Z){T-1}X{C(1h d.1c==="U"){T d.1c(c)}X{13(B b=0,a=d.V;b<a;b++){C(d[b]===c){T b}}T-1}}};A.L.2V=U(e,h,d,f,a,c,g,b){C(h){e.1o=h}C(d){e.15.1n=d.x+"2a";e.15.1m=d.y+"2a"}C(f){e.15.2K=f.w+"2a";e.15.3q=f.h+"2a"}C(a){e.15.2q=a}C(c){e.15.aF=c}C(g){e.15.2J=g}C(1z(b)>=0&&1z(b)<1){e.15.2U="4h(1Y="+(b*2o)+")";e.15.1Y=b}X{C(1z(b)===1){e.15.2U="";e.15.1Y=""}}};A.L.5M=U(a,i,h,f,e,c,b,g){B d=1d.1N("2L");C(f){d.15.aE="1l("+f+")"}C(!a){a=A.L.4b("5W")}C(!e){e="2p"}A.L.2V(d,a,i,h,e,c,b,g);T d};A.L.5L=U(a,h,g,e,d,c,f,i){B b=1d.1N("aD");C(!a){a=A.L.4b("5W")}C(!d){d="aC"}A.L.2V(b,a,h,g,d,c,Z,f);C(i){b.15.2u="5N";A.2t.5V(b,"aB",A.2k.2j(A.L.5U,b));A.2t.5V(b,"aA",A.2k.2j(A.L.5S,b))}b.15.az=a;b.ay="ax";C(e){b.1F=e}T b};A.L.5U=U(){C(!1b.4i||(1b.5T&&1b.4i===1b.5T.4i)){1b.15.2u=""}A.2N.aw(1b,"5P")};A.5R=0;A.L.5S=U(){1b.3y=(1b.3y)?(1b.3y+1):1;C(1b.3y<=A.5R){B d=1b.av;C(d&&A.L.5Q(d)&&d.V>1){B e=1b.1F.1B();B c,a;13(a=0;c=d[a];a++){C(e.1c(c)!==-1){1r}}B f=11.2B(d.V*11.3O());B b=d[f];a=0;1L(b===c&&a++<4){f=11.2B(d.V*11.3O());b=d[f]}1b.1F=e.1H(c,b)}X{1b.1F=1b.1F}}X{A.2N.au(1b,"5P")}1b.15.2u=""};A.L.3x=Z;A.L.5O=U(){C(A.L.3x==Z){B d=31.at.1W("as");B a=1z(d[1]);B b=1f;2z{b=!!(1d.1y.ar)}2y(c){}A.L.3x=(b&&(a>=5.5)&&(a<7))}T A.L.3x};A.L.5K=U(a,b,k,j,g,f,c,d,h,i){A.L.2V(a,b,k,j,f,Z,Z,h);B e=a.2M[0];C(g){e.1F=g}C(!!i){e.15.2u=i}A.L.2V(e,a.1o+"aq",Z,j,f,c);C(A.L.5O()){C(a.15.2u!=="5N"){a.15.2u="ap-5J"}C(d==Z){d="ao"}a.15.2U="an:am.al.ak(1F=\'"+e.1F+"\', aj=\'"+d+"\')";C(1z(a.15.1Y)>=0&&1z(a.15.1Y)<1){a.15.2U+=" 4h(1Y="+a.15.1Y*2o+")"}e.15.2U="4h(1Y=0)"}};A.L.ai=U(b,j,i,g,f,c,d,h,k){B a=A.L.5M();B e=A.L.5L(Z,Z,Z,Z,f,Z,Z,k);e.4S="ah";a.24(e);A.L.5K(a,b,j,i,g,f,c,d,h,"5J");T a};A.L.ag=U(b){B a={};13(B c 1i b){a[c.af()]=b[c]}T a};A.L.57=U(d,c){d=d||{};B b=1h 1G.2t==="U"&&c 1K 1G.2t;13(B a 1i c){C(d[a]===1j||(!b&&c.1E&&c.1E(a)&&!d.1E(a))){d[a]=c[a]}}C(!b&&c&&c.1E&&c.1E("1B")&&!d.1E("1B")){d.1B=c.1B}T d};A.L.4I=U(c){B b=[];13(B h 1i c){B g=c[h];C((g!=Z)&&(1h g!=="U")){B d;C(1h g==="21"&&g.4J===1A){B e=[];B i;13(B a=0,f=g.V;a<f;a++){i=g[a];e.1a(2E((i===Z||i===1j)?"":i))}d=e.2n(",")}X{d=2E(g)}b.1a(2E(h)+"="+d)}}T b.2n("&")};A.L.ae=U(a,b){B d=a;C(b){B c=(a+" ").1W(/[?&]/);d+=(c.56()===" "?b:c.V?"&"+b:"?"+b)}T d};A.5I="";A.L.ad=U(){T A.5I||(A.5H()+"../ac/ab/")};A.L.5G=U(){B d=Z;13(B c=0,a=1x.V;c<a;c++){B b=1x[c];2z{d=b();1r}2y(f){}}T d};A.L.aa=U(a){B b=Z;A.L.5G(U(){b=a.4B;C(!b){b=a.5F}C(!b){b=a.a9.a8}},U(){b=a.5F});T b};A.L.a7=U(a,c){B b=(a.5E)?a.5E:a.a6;1L(b!==c&&b!=Z){b=b.30}T(b!==c)};A.L.5D=14;A.L.a5=U(b,a){C(a==Z){a=A.L.5D}C(1h b!=="a4"){b=1z(b)}T a===0?b:1z(b.a3(a))};A.L.2s=U(a){T a*11.28/3X};A.L.4c=U(a){T a*3X/11.28};A.L.4g={a:3j,b:a2.a1,f:1/a0.9Z};A.L.9Y=U(g,e){B k=A.L.4g;B M=k.a,K=k.b,G=k.f;B n=A.L.2s(e.3p-g.3p);B J=11.5C((1-G)*11.4e(A.L.2s(g.4f)));B I=11.5C((1-G)*11.4e(A.L.2s(e.4f)));B m=11.2r(J),i=11.1X(J);B l=11.2r(I),h=11.1X(I);B r=n,o=2*11.28;B q=20;1L(11.3W(r-o)>1e-12&&--q>0){B z=11.2r(r),c=11.1X(r);B N=11.4d((h*z)*(h*z)+(i*l-m*h*c)*(i*l-m*h*c));C(N==0){T 0}B E=m*l+i*h*c;B y=11.2T(N,E);B j=11.9X(i*h*z/N);B F=11.1X(j)*11.1X(j);B p=E-2*m*l/F;B v=G/16*F*(4+G*(4-3*F));o=r;r=n+(1-v)*G*11.2r(j)*(y+v*N*(p+v*E*(-1+2*p*p)))}C(q==0){T 9W}B u=F*(M*M-K*K)/(K*K);B x=1+u/5B*(5A+u*(-5z+u*(5y-5x*u)));B w=u/5w*(5v+u*(-3R+u*(74-47*u)));B D=w*N*(p+w/4*(E*(-1+2*p*p)-w/6*p*(-3+4*N*N)*(-3+4*p*p)));B t=K*x*(y-D);B H=t.9V(3)/2A;T H};A.L.9U=U(l,P,E){B o=A.L;B i=o.4g;B Q=i.a,O=i.b,J=i.f;B N=l.3p;B g=l.4f;B q=E;B D=o.2s(P);B G=11.2r(D);B h=11.1X(D);B F=(1-J)*11.4e(o.2s(g));B c=1/11.4d((1+F*F)),j=F*c;B p=11.2T(F,h);B y=c*G;B I=1-y*y;B t=I*(Q*Q-O*O)/(O*O);B x=1+t/5B*(5A+t*(-5z+t*(5y-5x*t)));B v=t/5w*(5v+t*(-3R+t*(74-47*t)));B w=q/(O*x),K=2*11.28;1L(11.3W(w-K)>1e-12){B m=11.1X(2*p+w);B R=11.2r(w);B H=11.1X(w);B z=v*R*(m+v/4*(H*(-1+2*m*m)-v/6*m*(-3+4*R*R)*(-3+4*m*m)));K=w;w=q/(O*x)+z}B M=j*R-c*H*h;B d=11.2T(j*H+c*R*h,(1-J)*11.4d(y*y+M*M));B n=11.2T(R*G,c*H-j*R*h);B r=J/16*I*(4+J*(4-3*I));B k=n-(1-r)*J*y*(w+r*R*(m+r*H*(-1+2*m*m)));B e=11.2T(y,-M);T 18 A.9T(N+o.4c(k),o.4c(d))};A.L.50=U(b){b=(b===Z||b===1j)?1G.3l.54:b;B a="";C(A.2H.2d(b,"?")){B c=b.1c("?")+1;B f=A.2H.2d(b,"#")?b.1c("#"):b.V;a=b.1v(c,f)}B m={};B d=a.1W(/[&;]/);13(B h=0,j=d.V;h<j;++h){B g=d[h].1W("=");C(g[0]){B l=g[0];2z{l=5u(l)}2y(e){l=5t(l)}B k=(g[1]||"").1H(/\\+/g," ");2z{k=5u(k)}2y(e){k=5t(k)}k=k.1W(",");C(k.V==1){k=k[0]}m[l]=k}}T m};A.L.4a=0;A.L.4b=U(a){C(a==Z){a="9S"}A.L.4a+=1;T a+A.L.4a};A.17={2I:1,3n:12,3V:9R,m:39.9Q,3U:9P.1,2m:9O,3m:36};A.17["1i"]=A.17.2I;A.17.29=A.17.2m;A.17.5o=5r*A.17.m;A.Y=0.9N;A.L.3w(A.17,{9M:A.17.2I,2S:1/A.Y,5k:0.9L/A.Y,9K:0.9J/A.Y,9I:0.9H/A.Y,9G:0.9F/A.Y,9E:0.9D/A.Y,9C:0.27/A.Y,9B:0.9A/A.Y,9z:2.9y-8/A.Y,9x:0.9w/A.Y,9v:2A/A.Y,5j:0.9u/A.Y,9t:0.9s/A.Y,9r:0.9q/A.Y,5g:0.9p/A.Y,9o:0.9n/A.Y,9m:0.9l/A.Y,9k:0.9j/A.Y,5f:0.9i/A.Y,9h:0.9g/A.Y,9f:0.9e/A.Y,5h:5s.9d/A.Y,9c:0.9b/A.Y,9a:5s.99/A.Y,5p:5r/A.Y,"5q-66":98.97/A.Y,"5q-83":95.94/A.Y,93:0.1/A.Y,92:0.91/A.Y,90:10/A.Y,8Z:10/A.Y,8Y:2o/A.Y,8X:1.8W/A.Y,8V:0.8U/A.Y,8T:20.8S/A.Y,5i:20.8R/A.Y,8Q:20.8P/A.Y,8O:20.8N/A.Y,8M:0.8L/A.Y,8K:0.8J/A.Y,8I:0.8H/A.Y,8G:0.8F/A.Y,8E:5.49/A.Y,5m:20.8D/A.Y,5l:0.8C/A.Y,8B:5.49/A.Y,8A:5.49/A.Y,8z:8y.8x/A.Y,8w:3.8v/A.Y,8u:0.8t/A.Y,8s:8r/A.Y,8q:0.8p/A.Y,5n:1.8o/A.Y,"5p-8n":8m.8l/A.Y,"8k":8j/A.Y,"8i":8h/A.Y});A.L.3w(A.17,{8g:A.17.2S/2A,8f:A.17.2S/2o,4L:A.17.2S*2o,3U:A.17.2S*2A,8e:A.17.5o,8d:A.17.5n,46:A.17.5m,8c:A.17.5l,"2R-1i":A.17.2I,"2R-3n":A.17.5k,"2R-3m":A.17.5j,"2R-46":A.17.5i,"2R-3V":A.17.5h,"48-3m":A.17.5g,"48-3n":A.17.5f,"48-46":20.8b/A.Y});A.45=96;A.L.3T=U(b){B a=(b>1)?(1/b):b;T a};A.L.8a=U(d,a){B b;C(d){C(a==Z){a="29"}B c=A.L.3T(d);b=1/(c*A.17[a]*A.45)}T b};A.L.89=U(b,a){C(a==Z){a="29"}B c=b*A.17[a]*A.45;T c};A.L.88=U(d){B i=[0,0];B h=A.L.58();C(!d||d===1G||d===h){T i}B f=A.4Z&&1d.3v&&A.2N.3Z(d,"2q")==="2p"&&(d.15.1m==""||d.15.1n=="");B j=Z;B g;C(d.5e){g=d.5e();B b=h.59;B c=h.5a;i[0]=g.1n+c;i[1]=g.1m+b}X{C(1d.3v&&!f){g=1d.3v(d);B a=1d.3v(h);i[0]=g.5d-a.5d;i[1]=g.5c-a.5c}X{i[0]=d.5b;i[1]=d.44;j=d.3u;C(j!==d){1L(j){i[0]+=j.5b;i[1]+=j.44;j=j.3u}}B e=A.3t.2b;C(e==="2P"||(e==="3r"&&A.2N.3Z(d,"2q")==="2p")){i[1]-=1d.1y.44}j=d.3u;1L(j&&j!==1d.1y){i[0]-=j.5a;C(e!=="2P"||j.4T!=="87"){i[1]-=j.59}j=j.3u}}}T i};A.L.58=U(){B a=1x.86.85;C(a==1j){a=(A.3t.2b==="2O"&&1d.84!=="82")?1d.1y:1d.81}T a};A.L.7Z=U(f,e,c){c=c||{};A.L.57(c,{55:1g,52:1g,51:1g});B b=A.L.43(f,c);B a=A.L.43(e,c);13(B d 1i b){C(d!=="2c"){C(b[d]!==a[d]){T 1f}}}13(B d 1i b.2c){C(b.2c[d]!==a.2c[d]){T 1f}2Z a.2c[d]}13(B d 1i a.2c){T 1f}T 1g};A.L.43=U(c,k){k=k||{};C(!(/^\\w+:\\/\\//).7Y(c)){B g=1G.3l;B e=g.1I?":"+g.1I:"";B h=g.3k+"//"+g.42.1W(":").53()+e;C(c.1c("/")===0){c=h+c}X{B f=g.2Q.1W("/");f.56();c=h+f.2n("/")+"/"+c}}C(k.55){c=c.1q()}B i=1d.1N("a");i.54=c;B d={};d.42=i.42.1W(":").53();d.3k=i.3k;C(k.52){d.1I=(i.1I==="80"||i.1I=="0")?"":i.1I}X{d.1I=(i.1I==""||i.1I=="0")?"80":i.1I}d.41=(k.51||i.41==="#")?"":i.41;B b=i.7X;C(!b){B j=c.1c("?");b=(j!==-1)?c.2G(j):""}d.2c=A.L.50(b);d.2Q=(i.2Q.7W(0)==="/")?i.2Q:"/"+i.2Q;T d};A.L.7V=U(b){B c=Z;B a=b.1c("?");B d=b.1c("#");C(a==-1){c=(d!==-1)?b.2G(0,d):b}X{c=(d!==-1)?b.2G(0,11.3E(a,d)):b.2G(0,a)}T c};A.4Z=(U(){B a=31.3N.1q();T a.1c("7U")===-1&&a.1c("7T")!==-1})();A.3t=(U(){B c="",a="",e="7S",b;B d=31.3N.1q();C(d.1c("2O")>-1||(d.1c("7R")>-1&&d.1c("4Y")>-1)){c="2O";b=d.1V(/2O ([\\d.]+)/)||d.1V(/4Y:([\\d.]+)/)}X{C(d.1c("40")>-1){c="40";b=d.1V(/40\\/([\\d.]+)/)}X{C(d.1c("3s")>-1){c="3s";b=d.1V(/3s\\/([\\d.]+)/)}X{C(d.1c("2P")>-1){c="2P";b=d.1V(/1U\\/([\\d.]+)/)}X{C(d.1c("3r")>-1){c="3r";b=d.1V(/1U\\/([\\d.]+)/)}}}}}a=b?b[1]:"";C(d.1c("7Q")>-1||d.1c("7P")>-1||d.1c("7O")>-1){e="7N"}X{C(d.1c("4X")>-1){b=d.1V(/1U\\/([\\d.]+)/);a=b?b[1]:"";e="4X"}}T{2b:c,1U:a,7M:e}})();A.L.4W=U(){T A.3t};A.L.4V=(U(){B a=1g,b=A.L.4W();C(1d.1N("7L").7K){C(b.2b==="3s"&&1z(b.1U)<5){a=1f}C(b.2b==="3r"&&1z(b.1U)<4){a=1f}C(b.2b==="2P"&&1z(b.1U)<10){a=1f}C(b.2b==="2O"&&1z(b.1U)<9){a=1f}}X{a=1f}T a})();A.L.7J=U(){T A.L.4V};A.L.7I=U(b,o,p){B m,e;B a=1d.1N("2L");a.15.7H="4N";B n=(p&&p.4U)?p.4U:1d.1y;B q=1f;B g=Z;B k=n;1L(k&&k.4T.1q()!=="1y"){B j=A.2N.3Z(k,"2q");C(j==="2p"){q=1g;1r}X{C(j&&j!=="7G"){1r}}k=k.30}C(!q){a.15.2q="2p"}C(o){C(o.w){m=o.w;a.15.2K=m+"2a"}X{C(o.h){e=o.h;a.15.3q=e+"2a"}}}C(p&&p.4R){a.4S=p.4R}B f=1d.1N("2L");f.7F=b;f.15.2J="4Q";C(f.2M){13(B d=0,c=f.2M.V;d<c;d++){C(!f.2M[d].15){2X}f.2M[d].15.2J="4Q"}}a.24(f);n.24(a);n.24(a);C(!m){m=4P(f.7E);a.15.2K=m+"2a"}C(!e){e=4P(f.7D)}a.2h(f);n.2h(a);T 18 A.7C(m,e)};A.L.7B=U(){B c=A.L.3Y;C(c==Z){B e=Z;B d=Z;B a=0;B b=0;e=1d.1N("2L");e.15.2q="2p";e.15.1m="-4O";e.15.1n="-4O";e.15.2K="7A";e.15.3q="7z";e.15.2J="4N";d=1d.1N("2L");d.15.2K="2o%";d.15.3q="7y";e.24(d);1d.1y.24(e);a=d.4M;e.15.2J="7x";b=d.4M;1d.1y.2h(1d.1y.7w);A.L.3Y=(a-b);c=A.L.3Y}T c};A.L.7v=U(h,b,e){C(!e){e="4K"}h=(h+7u)%3h-3X;B d=11.3W(h);B i=11.2B(d);B a=(d-i)/(1/60);B c=a;a=11.2B(a);B g=(c-a)/(1/60);g=11.7t(g*10);g/=10;C(g>=60){g-=60;a+=1;C(a>=60){a-=60;i+=1}}C(i<10){i="0"+i}B f=i+"\\7s";C(e.1c("4L")>=0){C(a<10){a="0"+a}f+=a+"\'";C(e.1c("4K")>=0){C(g<10){g="0"+g}f+=g+\'"\'}}C(b==="3p"){f+=h<0?A.3o("W"):A.3o("E")}X{f+=h<0?A.3o("S"):A.3o("N")}T f};A.17.3i=A.17.2m;A.17.7r=A.17.m;A.17.7q=A.17.3n;A.17.7p=A.17.2I;A.17.7o=A.17.3V;A.17.7n=A.17.3U;A.17.7m=A.17.3m;A.L.2F=U(a){C(!a){T 1g}B g=a.1c("//");B j=1d.3l.1B();B b=j.1c("//");C(g===-1){T 1g}X{B f=a.1v(0,g);B h=j.1v(b+2);b=h.1c("/");B k=h.1v(0,b);B l=1d.3l.3k;C(l.1q()!==f.1q()){T 1f}f=a.1v(g+2);B c=f.1c(":");g=f.1c("/");B d=f.1v(0,c);B i=f.1v(0,g);B e=1d.7l;C(d===e&&i===k){T 1g}}T 1f};A.L.7k=U(e,f,c,k,n){C(!e||!f||!c){T}B j=3S,g=e.7j(),d=e.7i(),m=f.w,i=f.h;n=n||3j;k=k||"29";C(k.1q()==="3i"||k.1q()==="29"||k.1q()==="2m"){B l=g/m,h=d/i,b=l>h?l:h,a=0.27*j/b/c/((11.28*2*n)/3h)/j;T a}X{B b=g/m,a=0.27*j/b/c/j;T a}};A.L.1T=U(g){B d=g;C(d==Z){T Z}3Q(d.4J){1w 2H:d=\'"\'+d.1H(/(["\\\\])/g,"\\\\$1")+\'"\';d=d.1H(/\\n/g,"\\\\n");d=d.1H(/\\r/g,"\\\\r");d=d.1H("<","&7h;");d=d.1H(">","&7g;");d=d.1H(/%/g,"%25");d=d.1H(/&/g,"%26");T d;1w 1A:B c=[];13(B f=0,b=d.V;f<b;f++){c.1a(A.L.1T(d[f]))}T"["+c.2n(",")+"]";1w 7f:T 7e(d)?2H(d):Z;1w 7d:T 2H(d);1w 2w:B e="{\'7c\':\\"7b.7a\\",\'79\':"+d.78()+",\'77\':"+(d.76()+1)+",\'75\':"+d.73()+",\'72\':"+d.71()+",\'70\':"+d.6Z()+",\'6Y\':"+d.6X()+",\'6W\':"+d.6V()+",\'6U\':"+d.6T()+"}";T e;6S:C(d.1T!=Z&&1h d.1T==="U"){T d.1T()}C(1h d==="21"){C(d.V){B c=[];13(B f=0,b=d.V;f<b;f++){c.1a(A.L.1T(d[f]))}T"["+c.2n(",")+"]"}B c=[];13(B a 1i d){C(1h d[a]!=="U"&&a!=="1J"&&a!=="6R"){c.1a("\'"+a+"\':"+A.L.1T(d[a]))}}C(c.V>0){T"{"+c.2n(",")+"}"}X{T"{}"}}T d.1B()}};A.L.6Q=U(f,c,b,e){B a=Z,d=3S;e=e||3j;b=b||"";C(f>0&&c>0){f=A.L.3T(f);C(b.1q()==="3i"||b.1q()==="29"||b.1q()==="2m"){a=0.27*d/c/f/((11.28*2*e)/3h)/d;T a}X{a=0.27*d/c/f/d;T a}}T-1};A.L.6P=U(b,c,a,e){B f=Z,d=3S;e=e||3j;a=a||"";C(b>0&&c>0){C(a.1q()==="3i"||a.1q()==="29"||a.1q()==="2m"){f=0.27*d/c/b/((11.28*2*e)/3h)/d;T f}X{f=0.27*d/c/b/d;T f}}T-1};A.L.4H=U(c){B e=0,b=Z;13(B d=0,a=c.V;d<a;d++){b=c.6O(d);C(b<6N){e++}X{C((3R<=b)&&(b<=6M)){e+=2}X{C((6L<=b)&&(b<=6K)){e+=3}}}}T(e<6J)?1f:1g};A.L.6I=U(k){C(!k){T}B a=k.1l,h=a.1c("?")>-1?"&":"?",f=a.2G(a.V-1,1);C(1h 6H==="1j"){k.1l=1G.4G(k.1l);k.2F=k.2F||A.L.2F(k.1l);C(k.2F){C(k.2l==="1R"&&k.1Q){B e=k.1Q,d=A.L.4I(e);C(A.L.4H(d)){B g=k.22;k.2l="23";k.1l+=h+"3f=1R";g="{";13(B i 1i e){g+="\'"+i+"\':"+2E(e[i])+","}g+="}";k.22=g}X{C(d.V>0){a+=h+d}k.1l=a}2Z k.1Q}B c=k.3P||{};k.3P=c;3Q(k.2l){1w"1R":A.3g.1R(k);1r;1w"23":c["3e-3d"]="3c/x-3b-3a-38;37=35-8";A.3g.23(k);1r;1w"2g":c["3e-3d"]="3c/x-3b-3a-38;37=35-8";A.3g.2g(k);1r;1w"2f":c["3e-3d"]="3c/x-3b-3a-38;37=35-8";A.3g.2f(k);1r}}X{3Q(k.2l){1w"1R":A.L.2i.1R(k);1r;1w"23":k.1l+=h+"3f=23";A.L.2i.23(k);1r;1w"2g":k.1l+=h+"3f=2g";A.L.2i.2g(k);1r;1w"2f":k.1l+=h+"3f=2f";A.L.2i.2f(k);1r}}}X{B b="",j=1g;C(k.1Q&&k.2l==="1R"){13(B i 1i k.1Q){C(!j){b+="&"+i+"="+k.1Q[i]}X{j=1f;b+=i+"="+k.1Q[i]}}}k.1l=k.1l.1H(/6G/,"6F");C(b){k.1l+=h+b}k.1l=1G.4G(k.1l);6E.6D({1l:k.1l,3F:k.2l,22:k.22,3P:{"3e-3d":"3c/x-3b-3a-38;37=35-8"}}).6C(U(l){B m=(k.1S)?A.2k.2j(k.2D,k.1S):k.2D;m(l)},U(m){B l=(k.1S)?A.2k.2j(k.2C,k.1S):k.2C;l(m)})}};A.L.2i={32:6B,1s:[],1M:[],33:{},2e:U(a){B d=1b;13(B b 1i a){d.1s.1a(b);C(1h a[b]!=="3L"){a[b]=A.L.1T(a[b])}B c=2E(a[b]);d.1M.1a(c)}},2x:U(e){B m=1b,k=m.4F(),b=e.1l,p=Z,d=Z,n=[];C(e.2D){p=(e.1S)?A.2k.2j(e.2D,e.1S):e.2D}C(e.2C){d=(e.1S)?A.2k.2j(e.2C,e.1S):e.2C}m.33[k]=U(q){B i=A.L.4x(q);i.34=i.34==1j?1g:i.34;C(i.34&&p){p(q)}X{C(d){d(q)}}2Z m.33[k]};m.2e({6A:"A.L.2i.33["+k+"]"});B j=m.1s,l=b,g=0;B c=m.1s?m.1s.V:0;13(B f=0;f<c;f++){C(l.V+m.1s[f].V+2>=m.32){C(g==0){T 1f}C(n==Z){n=18 1A()}n.1a(l);l=b;g=0;f--}X{C(l.V+m.1s[f].V+2+m.1M[f].V>m.32){B a=m.1M[f];1L(a.V>0){B o=m.32-l.V-m.1s[f].V-2;C(l.1c("?")>-1){l+="&"}X{l+="?"}B h=a.1v(0,o);C(h.1v(o-1,o)==="%"){o-=1;h=a.1v(0,o)}X{C(h.1v(o-2,o-1)==="%"){o-=2;h=a.1v(0,o)}}l+=m.1s[f]+"="+h;a=a.1v(o);C(h.V>0){C(n==Z){n=18 1A()}n.1a(l);l=b;g=0}}}X{g++;C(l.1c("?")>-1){l+="&"}X{l+="?"}B h=m.1M[f];l+=m.1s[f]+"="+h}}}C(n==Z){n=18 1A()}l!==b&&n.1a(l);m.4E(n)},4F:U(){B a=18 2w().3I(),b=11.2B(11.3O()*6z);T a*2A+b},4E:U(e){B a=e.V;C(a>0){B f=18 2w().3I();13(B d=0;d<a;d++){B b=1d.1N("4D");B c=e[d];C(c.1c("?")>-1){c+="&"}X{c+="?"}c+="6y="+a;c+="&6x="+d;c+="&6w="+f;b.4C("1F",c);b.4C("3F","4B/6v");C(31.3N.1c("6u")>=0){b.4z=U(){C(1b&&("6t"===1b.4A||"6s"===1b.4A)){1b.4z=Z;2z{1d.1y.2h(1b)}2y(g){C(1b.30){1b.30.2h(1b)}2Z 1b}}}}X{b.4y=U(){1b.4y=Z;1d.1y.2h(1b)}}1d.1y.24(b)}}},1R:U(a){B b=1b;b.1s.V=0;b.1M.V=0;b.2e(a.1Q);b.2x(a)},23:U(a){B b=1b;b.1s.V=0;b.1M.V=0;b.2e({3M:a.22});b.2x(a)},2g:U(a){B b=1b;b.1s.V=0;b.1M.V=0;b.2e({3M:a.22});b.2x(a)},2f:U(a){B b=1b;b.1s.V=0;b.1M.V=0;b.2e({3M:a.22});b.2x(a)}};A.L.4x=U(1P){C(1P.2Y&&1h 1P.2Y==="3L"){C(1h 3K!="1j"&&3K.4w){1P=3K.4w(1P.2Y)}X{1P=6r("("+1P.2Y+")")}}T 1P};A.L.6q=U(a,d){a=a||{};C(d){13(B c 1i d){B b=d[c];C(b!==1j&&c!=="1J"&&1h b!=="U"){a[c]=b}}}T a};A.L.6p=U(b,h,d){b=b||{};C(h){13(B g 1i h){B f=1f;C(d&&d.V){13(B c=0,a=d.V;c<a;c++){C(g===d[c]){f=1g;1r}}}C(f===1g){2X}B e=h[g];C(e!==1j&&g!=="1J"&&1h e!=="U"){b[g]=e}}}T b};A.L.3J=U(b,h){b=b||{};C(h){C(h 1K 1A){b=[];13(B e=0,a=h.V;e<a;e++){B d=h[e];b.1a(A.L.3J({},d))}}X{13(B g 1i h){B f=h[g];C(1h f==="21"){B c={};b[g]=A.L.3J(c,f)}b[g]=f}}}T b};A.L.6o=U(a){A.6n=!!a};A.L.4v=U(b){C(Z===b||"21"!==1h b){T b}C(b 1K 2w){B c=18 2w();c.6m(b.3I());T c}C(b 1K 1A){B c=b.3H(0);T c}C(b 1K 3G){B c={};13(B a 1i b){C(b.1E(a)){c[a]=A.L.4v(b[a])}}T c}6l 18 6k("6j 6i 4u 6h! 6g 3F 6f\'t 6e.")};A.L.1Z=U(d,c,l,i){B o=Z;B g;B e;B j=(i.x-l.x)*(d.y-l.y)-(i.y-l.y)*(d.x-l.x);B k=(c.x-d.x)*(d.y-l.y)-(c.y-d.y)*(d.x-l.x);B p=(i.y-l.y)*(c.x-d.x)-(i.x-l.x)*(c.y-d.y);C(p!=0){g=j/p;e=k/p;C(g>=0&&e<=1&&g<=1&&e>=0){o=18 A.19.1p(d.x+g*(c.x-d.x),d.y+g*(c.y-d.y))}X{o="6d 6c"}}X{C(j==0&&k==0){B f=11.4t(d.y,c.y);B m=11.3E(d.y,c.y);B h=11.4t(d.x,c.x);B n=11.3E(d.x,c.x);C(((l.y>=m&&l.y<=f)||(i.y>=m&&i.y<=f))&&(l.x>=n&&l.x<=h)||(i.x>=n&&i.x<=h)){o="6b"}X{o="4s"}}X{o="4s"}}T o};A.L.4r=U(d,e,h){B c=[];B b=18 A.19.1p(h.1n,h.1t);B k=18 A.19.1p(h.1u,h.1m);B g=18 A.19.1p(h.1u,h.1t);B j=18 A.19.1p(h.1n,h.1m);B a=[];a.1a(A.L.1Z(b,g,d,e));a.1a(A.L.1Z(g,k,d,e));a.1a(A.L.1Z(k,j,d,e));a.1a(A.L.1Z(j,b,d,e));B f=0;1L(f<a.V){C(a[f].1J==="A.19.1p"){c.1a(a[f])}f++}T c};A.L.3C=U(l,j,b,c){b=b!=1j?b:1g;c=c!=1j?c:1f;C(!j.2W(l.1D())){T Z}C(j.2v(l.1D())){T[l]}B n=l.1k;B g=[];13(B e=0;e<n.V-1;e++){B k=18 A.19.1p(n[e].x,n[e].y);B h=18 A.19.1p(n[e+1].x,n[e+1].y);B f=A.L.4r(k,h,j);B o;C(f.V===2){C(((f[0].x-k.x)*(f[0].x-k.x)+(f[0].y-k.y)*(f[0].y-k.y))>((f[1].x-k.x)*(f[1].x-k.x)+(f[1].y-k.y)*(f[1].y-k.y))){B m=f[0];f[0]=f[1];f[1]=m}C(b){o=18 A.19.1C(f);g.1a(o)}X{g.1a(f[0],f[1])}}X{C(f.V===1){C(j.2d(k.x,k.y,1f)){C(b){o=18 A.19.1C([k,f[0]]);g.1a(o)}X{g.1a(k,f[0])}}X{C(j.2d(h.x,h.y,1f)){C(b){o=18 A.19.1C([f[0],h]);g.1a(o)}X{g.1a(f[0],h)}}X{}}}X{C(f.V==0){C(j.2d(k.x,k.y)&&j.2d(h.x,h.y)){C(b){o=18 A.19.1C([k,h]);g.1a(o)}X{g.1a(k,h)}}X{}}}}}C(g.V>0){C(!b){B d=18 A.19.1C(g);C(c){d.1o=l.1o}T d}X{C(c){g[0].1o=l.1o;C(g.V>1){13(B e=1;e<g.V;e++){g[e].1o=l.1o+"6a"+e}}}}T g}};A.L.4n=U(g,f,a,b){a=a!=1j?a:1g;b=b!=1j?b:1f;C(!f.2W(g.1D())){T Z}C(f.2v(g.1D())){T g}B c=g.1k;B j=[];13(B d=0;d<c.V;d++){B e=A.L.3C(c[d],f,a,b);C(!e){2X}C(e 1K 1A){j=j.4q(e)}X{j.1a(e)}}C(j.V>0){B h=18 A.19.3B(j);C(b){h.1o=g.1o;T h}T h}};A.L.4p=U(k,i){B f=18 A.19.1p(k.1n,k.1t<i.1t?k.1t:i.1t);B b=18 A.19.1p(k.1n,k.1m>i.1m?k.1m:i.1m);B l=18 A.19.1C([f,b]);B m=18 A.19.1p(k.1n<i.1n?k.1n:i.1n,k.1m);B a=18 A.19.1p(k.1u>i.1u?k.1u:i.1u,k.1m);B g=18 A.19.1C([m,a]);B n=18 A.19.1p(k.1u,k.1m>i.1m?k.1m:i.1m);B j=18 A.19.1p(k.1u,k.1t<i.1t?k.1t:i.1t);B e=18 A.19.1C([n,j]);B c=18 A.19.1p(k.1u>i.1u?k.1u:i.1u,k.1t);B h=18 A.19.1p(k.1n<i.1n?k.1n:i.1n,k.1t);B d=18 A.19.1C([c,h]);T[l,g,e,d]};A.L.3D=U(a,c,b){C((b==0)&&a.x>=c.1n){T 1g}X{C((b===1)&&a.y<=c.1m){T 1g}X{C((b===2)&&a.x<=c.1u){T 1g}X{C((b===3)&&a.y>=c.1t){T 1g}}}}T 1f};A.L.3A=U(m,a,t){C(!a.2W(m.1D())){T Z}C(a.2v(m.1D())){T m}t=t!=1j?t:1f;B y=[];B z=m.1k;13(B s=0;s<z.V;s++){C(a.2v(z[s].1D())){y.1a(z[s]);2X}B b=A.L.4p(a,z[s].1D());B w=z[s].1k;B c=[],h=[],g=[];B x=4,f=w.V;B d=w[f-1];13(B q=0;q<f;q++){h.1a(w[q])}B r;13(B q=0;q<x;q++){C(A.L.3D(d,a,q)){r=1f}X{r=1g}B p=h.V;13(B o=0;o<p;o++){C(A.L.3D(h[o],a,q)){C(r){r=1f;c.1a(A.L.1Z(d,h[o],b[q].1k[0],b[q].1k[1]))}c.1a(h[o])}X{C(!r){r=1g;c.1a(A.L.1Z(d,h[o],b[q].1k[0],b[q].1k[1]))}}d=h[o]}B u=c.V;h.V=0;13(B n=0;n<u;n++){h.1a(c[n])}c.V=0}13(B q=0;q<h.V;q++){g.1a(h[q])}C(g.V>2){B v=18 A.19.4o(g);C(t){v.1o=z[s].1o}y.1a(v)}}C(y.V>0){B e=18 A.19.4m(y);C(t){e.1o=m.1o;T e}T e}};A.L.4k=U(g,f,a){C(!f.2W(g.1D())){T Z}C(f.2v(g.1D())){T g}a=a!=1j?a:1f;B d=[];13(B c=0;c<g.1k.V;c++){B b=A.L.3A(g.1k[c],f,a);C(b){d.1a(b)}}C(d.V>0){B e=18 A.19.4l(d);C(a){e.1o=g.1o}T e}};A.L.69=U(e,c,d,b){C(e){d=d!=1j?d:1g;b=b!=1j?b:1f;C(((e.1J==="A.19.1C")||(e.1J==="A.19.4o"))&&(e.1k.V>1)){B a=A.L.3C(e,c,d,b);C(a){C(a.V===1){T a[0]}X{T 18 A.19.3B(a)}}}X{C((e.1J==="A.19.3B")&&(e.1k.V>0)&&(e.1k[0].1k.V>1)){T A.L.4n(e,c,d,b)}X{C((e.1J==="A.19.4m")&&(e.1k.V>0)&&(e.1k[0].1k.V>2)){T A.L.3A(e,c,b)}X{C((e.1J==="A.19.4l")&&(e.1k.V>0)){T A.L.4k(e,c,1g)}X{T e}}}}}};',62,677,'||||||||||||||||||||||||||||||||||||SuperMap|var|if|||||||||Util||||||||return|function|length||else|METERS_PER_INCH|null||Math||for||style||INCHES_PER_UNIT|new|Geometry|push|this|indexOf|document||false|true|typeof|in|undefined|components|url|top|left|id|Point|toLowerCase|break|queryKeys|bottom|right|substring|case|arguments|body|parseFloat|Array|toString|LineString|getBounds|hasOwnProperty|src|window|replace|port|CLASS_NAME|instanceof|while|queryValues|createElement|prototype|result|params|GET|scope|toJSON|version|match|split|cos|opacity|lineIntersection||object|data|POST|appendChild|||0254|PI|degrees|px|name|args|contains|addQueryStrings|DELETE|PUT|removeChild|RequestJSONP|bind|Function|method|dd|join|100|absolute|position|sin|rad|Event|display|containsBounds|Date|issue|catch|try|1000|floor|failure|success|encodeURIComponent|isInTheSameDomain|substr|String|inches|overflow|width|div|childNodes|Element|msie|opera|pathname|us|Meter|atan2|filter|modifyDOMElement|intersectsBounds|continue|responseText|delete|parentNode|navigator|limitLength|supermap_callbacks|succeed|UTF||charset|urlencoded||form|www|application|Type|Content|_method|Request|360|degree|6378137|protocol|location|yd|ft|i18n|lon|height|safari|firefox|Browser|offsetParent|getBoxObjectFor|extend|alphaHackNeeded|_attempts|destroy|clipPolygonRect|MultiLineString|clipLineStringRect|isInside|min|type|Object|slice|getTime|JSONClone|JSON|string|requestEntity|userAgent|random|headers|switch|128|10000|normalizeScale|km|mi|abs|180|_scrollbarWidth|getStyle|chrome|hash|host|createUrlObject|offsetTop|DOTS_PER_INCH|ch||ind|02921005842012|lastSeqID|createUniqueID|deg|sqrt|tan|lat|VincentyConstants|alpha|viewRequestID|initialize|clipMultiPolygonRect|MultiPolygon|Polygon|clipMultiLineStringRect|LinearRing|getIntersectLineArray|concat|clipLineRect|Parallel|max|copy|cloneObject|parse|transformResult|onload|onreadystatechange|readyState|text|setAttribute|script|send|getUid|encodeURI|urlIsLong|getParameterString|constructor|dms|dm|offsetWidth|hidden|1000px|parseInt|visible|displayClass|className|tagName|containerElement|isSupportCanvas|getBrowser|android|rv|IS_GECKO|getParameters|ignoreHash|ignorePort80|shift|href|ignoreCase|pop|applyDefaults|getViewportElement|scrollTop|scrollLeft|offsetLeft|screenY|screenX|getBoundingClientRect|IndianFt37|IndianYd37|Mile|GunterChain|Yard|Foot|IntnlLink|IntnlChain|Fathom|nmi|NautM|Lat|1852|1609|unescape|decodeURIComponent|256|1024|175|320|768|4096|16384|atan|DEFAULT_PRECISION|relatedTarget|textContent|Try|_getScriptLocation|ImgPath|block|modifyAlphaImageDiv|createImage|createDiv|none|alphaHack|smImageLoadError|isArray|IMAGE_RELOAD_ATTEMPTS|onImageLoadError|map|onImageLoad|observe|SuperMapDiv|call|inherit|apply||Plot|Tool|Scheme|Tile|Layer||REST|Control|clipGeometryRect|_clip_|Coincident|Intersection|No|supported|isn|Its|obj|to|Unable|Error|throw|setTime|isApp|setApp|copyAttributesWithClip|copyAttributes|eval|complete|loaded|IE|javascript|jsonpUserID|sectionIndex|sectionCount|100000000000000000|callback|1500|then|xhr|WinJS|json|jsonp|Windows|committer|2000|65535|2048|2047|127|charCodeAt|getScaleFromResolutionDpi|getResolutionFromScaleDpi|parent|default|getTimezoneOffset|TimezoneOffset|getMilliseconds|Millisecond|getSeconds|Second|getMinutes|Minute|getHours|Hour|getDate||Day|getMonth|Month|getFullYear|Year|DateTime|System|__type|Boolean|isFinite|Number|gt|lt|getHeight|getWidth|calculateDpi|domain|yard|kilometer|mile|inch|foot|meter|u00B0|round|540|getFormattedLonLat|lastChild|scroll|200px|50px|100px|getScrollbarWidth|Size|scrollHeight|scrollWidth|innerHTML|static|visibility|getRenderedDimensions|supportCanvas|getContext|canvas|device|apple|iphone|ipod|ipad|trident|pc|gecko|webkit|removeTail|charAt|search|test|isEquivalentUrl||documentElement|CSS1Compat||compatMode|viewportElement|callee|TR|pagePosition|getScaleFromResolution|getResolutionFromScale|11669506|link|fath|kmi|cm|mm|150000|150kilometers|50000|50kilometers|184|1853|UK|8288|304812252984506|ModAmFt|375|Brealey|3047972615|CapeFoot|778266898|Rood|1684023368046|201|Furlong|Pole|Perch|201168|1168|Rod|2011676512155|SearsLink|20116782494375873|BenoitLink|2011684023368047|GunterLink|201166194976|ClarkeLink|11676512155|SearsChain|116782494375872|BenoitChain|11684023368047|1166194976|ClarkeChain|999738|CaGrid|0000135965|GermanMeter|Hectometer|Decameter|Dekameter|001|Millimeter|Decimeter|25736872235|110946||31648893273|110943|344|IMile|9144|IYard|3472186944373|3047995|IndianFt75|3047996|IndianFt62|30479841|30479951|IndianFoot|9143985|IndianYd75|9143988|IndianYd62|91439523|9143985307444408|IndianYard|914398414616029|SearsYard|9144018288036576|Kilometer|01|Centimeter|54e|Mil|0000254|MicroInch|IInch|3047997101815088|GoldCoastFoot|30479947153867626|SearsFoot|3047972651151|ClarkeFoot|3048|IFoot|3048006096012192|Inch|0254000508001016|4374754|39370|3701|63360|id_|LonLat|destinationVincenty|toFixed|NaN|asin|distVincenty|257223563|298|3142|6356752|toPrecision|number|toFloat|toElement|mouseLeft|nodeValue|firstChild|getXmlNodeValue|images|theme|getImagesLocation|urlAppend|toUpperCase|upperCaseObject|olAlphaImg|createAlphaImageDiv|sizingMethod|AlphaImageLoader|Microsoft|DXImageTransform|progid|scale|inline|_innerImage|filters|MSIE|appVersion|addClass|urls|removeClass|no|galleryImg|alt|error|load|relative|img|backgroundImage|border|splice|removeItem|nodeType|isElement|getElementById|getElement|reset|Class|getAttribute|getElementsByTagName|js|Include|RegExp|Release|VERSION_NUMBER'.split('|'),0,{}))
@@ -1336,7 +570,7 @@
 
 
 /***/ },
-/* 9 */
+/* 7 */
 /***/ function(module, exports) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -2339,7 +1573,6309 @@
 
 
 /***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 *CartoCSS样式转Leaflet样式
+	 */
+	__webpack_require__(9);
+	__webpack_require__(10);
+	__webpack_require__(19);
+
+	CartoCSSToLeaflet = {
+
+	    cartoCSS: null,
+	    mapUrl: null,
+
+	    pretreatedCartoCSS: function (cartoStr, processCharacters) {
+	        if (processCharacters) {
+	            cartoStr = this.processCharacters(cartoStr);
+	        }
+	        this.cartoCSS = this.cartoCSS || {};
+	        var shaders = new SuperMap.CartoCSS(cartoStr).getShaders();
+	        if (!shaders) {
+	            return;
+	        }
+	        for (var i = 0; i < shaders.length; i++) {
+	            var element = shaders[i].elements[0];
+	            var attachment = shaders[i].attachment;
+	            this.cartoCSS[element.clean] = this.cartoCSS[element.clean] || {};
+	            this.cartoCSS[element.clean][attachment] = this.cartoCSS[element.clean][attachment] || [];
+	            this.cartoCSS[element.clean][attachment].push(shaders[i]);
+	        }
+	    },
+
+	    //替换一些关键符号
+	    processCharacters: function (cartoCSSStr) {
+	        var style = cartoCSSStr;
+	        if (!style) {
+	            return;
+	        }
+	        var me = this;
+	        style = style.replace(/[@]/gi, "___");
+	        style = style.replace(/\\#/gi, "___");
+	        for (var attr in me.layersInfo) {
+	            var newAttr = attr.replace(/[@#\s]/gi, "___");
+	            style = style.replace(attr.replace(/[#]/gi, "\\#"), newAttr);
+	        }
+	        style = style.replace(/[#]/gi, "\n#");
+	        //将zoom转化为scale，以免引起混淆
+	        style = style.replace(/\[zoom/gi, "[scale");
+	        return style;
+	    },
+
+
+	    pickShader: function (layerName) {
+	        if (!this.cartoCSS) {
+	            return null;
+	        }
+	        var name = layerName.replace(/[@#\s]/gi, "___");
+	        return this.cartoCSS[name];
+	    },
+
+
+	    getDefaultStyle: function (type) {
+	        var style = {};
+	        //设置默认值
+	        var expandStyle = L.supermap.DefaultStyle[type];
+	        for (var prop in expandStyle) {
+	            var val = expandStyle[prop];
+	            style[prop] = val;
+	        }
+	        return style;
+	    },
+
+	    getValidStyleFromCarto: function (zoom, scale, shader, feature, fromServer) {
+	        if (!shader) {
+	            return null;
+	        }
+	        var type = feature.type,
+	            attributes = feature.properties.attributes || {},
+	            style = this.getDefaultStyle(type);
+	        fromServer = (fromServer === undefined) ? true : fromServer;
+
+	        attributes.FEATUREID = feature.properties.id;
+	        attributes.SCALE = scale;
+
+	        var cartoStyleMap = L.supermap.CartoStyleMap[type];
+
+	        var fontSize, fontName;
+	        for (var i = 0, len = shader.length; i < len; i++) {
+	            var _shader = shader[i];
+	            var prop = cartoStyleMap[_shader.property];
+	            var value = _shader.getValue(attributes, zoom, true);
+	            if ((value !== null) && prop) {
+	                if (prop === "fontSize") {
+	                    value = fromServer ? value *= 0.8 : value;
+	                    fontSize = value + "px";
+	                    style.fontSize = fontSize;
+	                } else if (prop === "fontName") {
+	                    fontName = value;
+	                } else {
+	                    if (prop === "globalCompositeOperation") {
+	                        value = L.supermap.CompOpMap[value];
+	                        if (!value || value === "")continue;
+	                    } else if (fromServer && prop === 'iconUrl') {
+	                        value = this.mapUrl + '/tileFeature/symbols/' + value.replace(/(___)/gi, '@');
+	                        style["iconUrl"] = value;
+	                        continue;
+	                    }
+	                    if (prop === 'weight' && value < 1) {
+	                        value = Math.ceil(value);
+	                    }
+	                    style[prop] = value;
+	                }
+	            }
+	        }
+	        return style;
+	    },
+
+
+	    getValidStyleFromLayerInfo: function (feature, layerInfo) {
+	        var type = feature.type,
+	            style = this.getDefaultStyle(type),
+	            shader = layerInfo && layerInfo.layerStyle;
+	        if (!shader) {
+	            return style;
+	        }
+	        if (type === "POINT") {
+	            size = Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]) || 8;
+	            var symbolParameters = {
+	                "transparent": true,
+	                "resourceType": "SYMBOLMARKER",
+	                "picWidth": size,
+	                "picHeight": size,
+	                "style": JSON.stringify(shader)
+	            };
+	            style.iconUrl = SuperMap.Util.urlAppend(this.mapUrl + "/symbol.png", SuperMap.Util.getParameterString(symbolParameters));
+	            style.iconSize = [size, size];
+	            return style;
+	        }
+	        if (type === "TEXT") {
+	            shader = feature.properties.textStyle || layerStyle;
+	            //设置文本是否使用粗体
+	            style.fontWeight = shader.bold ? shader.fontWeight : "normal";
+	            //设置文本的尺寸（对应fontHeight属性）和行高，行高iserver不支持，默认5像素
+	            //固定大小的时候单位是毫米
+	            if (shader.fontHeight) {
+	                var text_h = shader.fontHeight * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"] * 0.85;    //毫米转像素,服务端的字体貌似要稍微小一点
+	                style.fontSize = text_h + "px";
+	                style.textHeight = text_h;
+	            }
+
+	            //设置文本字体类型
+	            //在桌面字体钱加@时为了解决对联那种形式，但是在canvas不支持，并且添加了@会导致
+	            //字体大小被固定，这里需要去掉
+	            if (shader.fontName) {
+	                style.fontFamily = (shader.fontName.indexOf("@")) ?
+	                    shader.fontName.replace(/@/g, "") : shader.fontName;
+	            }
+
+	            //设置对齐方式
+	            if (shader.align) {
+	                var alignStr = shader.align.replace(/TOP|MIDDLE|BASELINE|BOTTOM/, "");
+	                style.textAlign = alignStr.toLowerCase();
+	            }
+	            style.weight = shader.outline ? shader.outlineWidth : 0;
+	            if (shader.backColor) {
+	                style.color = "rgba(" + shader.backColor.red + ","
+	                    + shader.backColor.green + ","
+	                    + shader.backColor.blue
+	                    + ",1)";
+	            }
+	            if (shader.foreColor) {
+	                style.fillColor = "rgba(" + shader.foreColor.red + ","
+	                    + shader.foreColor.green + ","
+	                    + shader.foreColor.blue
+	                    + ",1)";
+	            }
+	            style.rotation = shader.rotation || 0;
+	            return style;
+	        }
+	        //目前只实现桌面系统默认的几种symbolID，非系统默认的面用颜色填充替代，线则用实线来替代
+	        var fillSymbolID = shader["fillSymbolID"] > 7 ? 0 : shader["fillSymbolID"];
+	        var lineSymbolID = shader["lineSymbolID"] > 5 ? 0 : shader["lineSymbolID"];
+	        for (var attr in shader) {
+	            var obj = L.supermap.ServerStyleMap[attr];
+	            if (!obj) {
+	                continue;
+	            }
+	            var leafletStyle = obj.leafletStyle;
+	            switch (obj.type) {
+	                case "number":
+	                    var value = shader[attr];
+	                    if (obj.unit) {
+	                        value = value * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT[obj.unit] * 2.5;
+	                    }
+	                    style[leafletStyle] = value;
+	                    break;
+
+	                case "color":
+	                    var color = shader[attr];
+	                    var value, alpha = 1;
+	                    if (leafletStyle === "fillColor") {
+	                        if (fillSymbolID === 0 || fillSymbolID === 1) {
+	                            //当fillSymbolID为0时，用颜色填充，为1是无填充，即为透明填充，alpha通道为0
+	                            alpha = 1 - fillSymbolID;
+	                            value = "rgba(" + color.red + "," + color.green + "," + color.blue + "," + alpha + ")";
+	                        }
+	                    } else if (leafletStyle === "color") {
+	                        if (lineSymbolID === 0 || lineSymbolID === 5) {
+	                            //对于lineSymbolID为0时，线为实线，为lineSymbolID为5时，为无线模式，即线为透明，即alpha通道为0
+	                            alpha = lineSymbolID === 0 ? 1 : 0;
+	                        } else {
+	                            //以下几种linePattern分别模拟了桌面的SymbolID为1~4几种符号的linePattern
+	                            var linePattern = [1, 0];
+	                            switch (lineSymbolID) {
+	                                case 1:
+	                                    linePattern = [9.7, 3.7];
+	                                    break;
+	                                case 2:
+	                                    linePattern = [3.7, 3.7];
+	                                    break;
+	                                case 3:
+	                                    linePattern = [9.7, 3.7, 2.3, 3.7];
+	                                    break;
+	                                case 4:
+	                                    linePattern = [9.7, 3.7, 2.3, 3.7, 2.3, 3.7];
+	                                    break;
+	                                default:
+	                                    break
+	                            }
+	                            style.lineDasharray = linePattern;
+	                        }
+	                        value = "rgba(" + color.red + "," + color.green + "," + color.blue + "," + alpha + ")";
+	                    }
+	                    style[leafletStyle] = value;
+	                    break;
+	                default:
+	                    break;
+	            }
+	        }
+
+	        //处理标签文本的情况
+	        if (layerInfo && layerInfo.textField) {
+	            style.textAlign = "LEFT";
+	        }
+	        return style;
+	    },
+
+	};
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(5);
+
+	/**
+	 * @requires SuperMap/BaseTypes/Class.js
+	 */
+
+	/**
+	 * Class: SuperMap.CartoCSS
+	 * CartoCSS解析类，其主要功能为将CartoCSS字符串解析为CartoCSS的shader属性风格对象
+	 */
+	SuperMap.CartoCSS = SuperMap.Class({
+	    env: null,
+
+	    /**
+	     * APIProperty: parser
+	     * 解析器
+	     * */
+	    parser: null,
+
+	    /**
+	     * Property: ruleSet
+	     * CartoCSS规则对象
+	     * */
+	    ruleSet: null,
+
+	    /**
+	     * Property: cartoStr
+	     * CartoCSS样式表字符串
+	     * */
+	    cartoStr: "",
+
+	    /**
+	     * Property: shaders
+	     * Carto着色器集
+	     * */
+	    shaders: null,
+
+	    /**
+	     * Constructor: SuperMap.CartoCSS
+	     * 此类用于将CartoCSS样式表解析为Carto规则对象，然后可以将Carto规则集转化为Carto图层的渲染信息shader
+	     *
+	     * Parameters：
+	     * cartoStr - {String} CartoCSS样式表字符串
+	     *
+	     * Examples:
+	     * (code)
+	     * var cartocss=[
+	     * "@color:#111;",
+	     * "#China_Railway_L__China400::two{",
+	     * "line-color:@color;",
+	     * "line-width:2",
+	     * "}"
+	     * ].join("/n");
+	     * var carto=new SuperMap.CartoCSS(cartocss);
+	     * me.cartoShaders=carto.getShaders();
+	     * (end)
+	     *
+	     * */
+	    initialize: function (cartoStr) {
+	        if (typeof cartoStr === "string") {
+	            this.cartoStr = cartoStr;
+	            this.env = {
+	                frames: [],
+	                errors: [],
+	                error: function (obj) {
+	                    this.errors.push(obj);
+	                }
+	            };
+	            this.parser = this.getParser(this.env);
+	            this.parse(cartoStr);
+	            this.shaders = this.toShaders();
+	        }
+	    },
+
+	    /**
+	     * Method: getParser
+	     * 获取CartoCSS解析器
+	     * */
+	    getParser: function (env) {
+	        var input,       // LeSS input string
+	            i,           // current index in `input`
+	            j,           // current chunk
+	            temp,        // temporarily holds a chunk's state, for backtracking
+	            memo,        // temporarily holds `i`, when backtracking
+	            furthest,    // furthest index the parser has gone to
+	            chunks,      // chunkified input
+	            current,     // index of current chunk, in `input`
+	            parser;
+
+	        var that = this;
+
+	        // This function is called after all files
+	        // have been imported through `@import`.
+	        var finish = function () {
+	        };
+
+	        function save() {
+	            temp = chunks[j];
+	            memo = i;
+	            current = i;
+	        }
+
+	        function restore() {
+	            chunks[j] = temp;
+	            i = memo;
+	            current = i;
+	        }
+
+	        function sync() {
+	            if (i > current) {
+	                chunks[j] = chunks[j].slice(i - current);
+	                current = i;
+	            }
+	        }
+
+	        //
+	        // Parse from a token, regexp or string, and move forward if match
+	        //
+	        function $(tok) {
+	            var match, args, length, c, index, endIndex, k;
+
+	            // Non-terminal
+	            if (tok instanceof Function) {
+	                return tok.call(parser.parsers);
+	                // Terminal
+	                // Either match a single character in the input,
+	                // or match a regexp in the current chunk (chunk[j]).
+	            } else if (typeof(tok) === 'string') {
+	                match = input.charAt(i) === tok ? tok : null;
+	                length = 1;
+	                sync();
+	            } else {
+	                sync();
+
+	                match = tok.exec(chunks[j]);
+	                if (match) {
+	                    length = match[0].length;
+	                } else {
+	                    return null;
+	                }
+	            }
+
+	            // The match is confirmed, add the match length to `i`,
+	            // and consume any extra white-space characters (' ' || '\n')
+	            // which come after that. The reason for this is that LeSS's
+	            // grammar is mostly white-space insensitive.
+	            if (match) {
+	                var mem = i += length;
+	                endIndex = i + chunks[j].length - length;
+
+	                while (i < endIndex) {
+	                    c = input.charCodeAt(i);
+	                    if (!(c === 32 || c === 10 || c === 9)) {
+	                        break;
+	                    }
+	                    i++;
+	                }
+	                chunks[j] = chunks[j].slice(length + (i - mem));
+	                current = i;
+
+	                if (chunks[j].length === 0 && j < chunks.length - 1) {
+	                    j++;
+	                }
+
+	                if (typeof(match) === 'string') {
+	                    return match;
+	                } else {
+	                    return match.length === 1 ? match[0] : match;
+	                }
+	            }
+	        }
+
+	        // Same as $(), but don't change the state of the parser,
+	        // just return the match.
+	        function peek(tok) {
+	            if (typeof(tok) === 'string') {
+	                return input.charAt(i) === tok;
+	            } else {
+	                return !!tok.test(chunks[j]);
+	            }
+	        }
+
+	        // Make an error object from a passed set of properties.
+	        // Accepted properties:
+	        // - `message`: Text of the error message.
+	        // - `filename`: Filename where the error occurred.
+	        // - `index`: Char. index where the error occurred.
+	        function makeError(err) {
+	            var einput;
+
+	            var defautls = {
+	                index: furthest,
+	                filename: env.filename,
+	                message: 'Parse error.',
+	                line: 0,
+	                column: -1
+	            };
+	            if (defautls) {
+	                for (var prop in defautls) {
+	                    if (err[prop] === void 0) err[prop] = defautls[prop];
+	                }
+	            }
+
+	            if (err.filename && that.env.inputs && that.env.inputs[err.filename]) {
+	                einput = that.env.inputs[err.filename];
+	            } else {
+	                einput = input;
+	            }
+
+	            err.line = (einput.slice(0, err.index).match(/\n/g) || '').length + 1;
+	            for (var n = err.index; n >= 0 && einput.charAt(n) !== '\n'; n--) {
+	                err.column++;
+	            }
+	            return new Error([err.filename, err.line, err.column, err.message].join(";"));
+	        }
+
+	        this.env = env = env || {};
+	        this.env.filename = this.env.filename || null;
+	        this.env.inputs = this.env.inputs || {};
+
+	        // The Parser
+	        parser = {
+
+	            // Parse an input string into an abstract syntax tree.
+	            // Throws an error on parse errors.
+	            parse: function (str) {
+	                var root, start, end, zone, line, lines, buff = [], c, error = null;
+
+	                i = j = current = furthest = 0;
+	                chunks = [];
+	                input = str.replace(/\r\n/g, '\n');
+	                if (env.filename) {
+	                    that.env.inputs[env.filename] = input;
+	                }
+
+	                var early_exit = false;
+
+	                // Split the input into chunks.
+	                chunks = (function (chunks) {
+	                    var j = 0,
+	                        skip = /(?:@\{[\w-]+\}|[^"'`\{\}\/\(\)\\])+/g,
+	                        comment = /\/\*(?:[^*]|\*+[^\/*])*\*+\/|\/\/.*/g,
+	                        string = /"((?:[^"\\\r\n]|\\.)*)"|'((?:[^'\\\r\n]|\\.)*)'|`((?:[^`]|\\.)*)`/g,
+	                        level = 0,
+	                        match,
+	                        chunk = chunks[0],
+	                        inParam;
+
+	                    for (var i = 0, c, cc; i < input.length;) {
+	                        skip.lastIndex = i;
+	                        if (match = skip.exec(input)) {
+	                            if (match.index === i) {
+	                                i += match[0].length;
+	                                chunk.push(match[0]);
+	                            }
+	                        }
+	                        c = input.charAt(i);
+	                        comment.lastIndex = string.lastIndex = i;
+
+	                        if (match = string.exec(input)) {
+	                            if (match.index === i) {
+	                                i += match[0].length;
+	                                chunk.push(match[0]);
+	                                continue;
+	                            }
+	                        }
+
+	                        if (!inParam && c === '/') {
+	                            cc = input.charAt(i + 1);
+	                            if (cc === '/' || cc === '*') {
+	                                if (match = comment.exec(input)) {
+	                                    if (match.index === i) {
+	                                        i += match[0].length;
+	                                        chunk.push(match[0]);
+	                                        continue;
+	                                    }
+	                                }
+	                            }
+	                        }
+
+	                        switch (c) {
+	                            case '{':
+	                                if (!inParam) {
+	                                    level++;
+	                                    chunk.push(c);
+	                                    break;
+	                                }
+	                            case '}':
+	                                if (!inParam) {
+	                                    level--;
+	                                    chunk.push(c);
+	                                    chunks[++j] = chunk = [];
+	                                    break;
+	                                }
+	                            case '(':
+	                                if (!inParam) {
+	                                    inParam = true;
+	                                    chunk.push(c);
+	                                    break;
+	                                }
+	                            case ')':
+	                                if (inParam) {
+	                                    inParam = false;
+	                                    chunk.push(c);
+	                                    break;
+	                                }
+	                            default:
+	                                chunk.push(c);
+	                                break;
+	                        }
+
+	                        i++;
+	                    }
+	                    if (level !== 0) {
+	                        error = {
+	                            index: i - 1,
+	                            type: 'Parse',
+	                            message: (level > 0) ? "missing closing `}`" : "missing opening `{`"
+	                        };
+	                    }
+
+	                    return chunks.map(function (c) {
+	                        return c.join('');
+	                    });
+	                })([[]]);
+
+	                if (error) {
+	                    throw makeError(error);
+	                }
+
+	                // Sort rules by specificity: this function expects selectors to be
+	                // split already.
+	                //
+	                // Written to be used as a .sort(Function);
+	                // argument.
+	                //
+	                // [1, 0, 0, 467] > [0, 0, 1, 520]
+	                var specificitySort = function (a, b) {
+	                    var as = a.specificity;
+	                    var bs = b.specificity;
+
+	                    if (as[0] != bs[0]) return bs[0] - as[0];
+	                    if (as[1] != bs[1]) return bs[1] - as[1];
+	                    if (as[2] != bs[2]) return bs[2] - as[2];
+	                    return bs[3] - as[3];
+	                };
+
+	                // Start with the primary rule.
+	                // The whole syntax tree is held under a Ruleset node,
+	                // with the `root` property set to true, so no `{}` are
+	                // output.
+	                root = new SuperMap.CartoCSS.Tree.Ruleset([], $(this.parsers.primary));
+	                root.root = true;
+
+	                // Get an array of Ruleset objects, flattened
+	                // and sorted according to specificitySort
+	                root.toList = (function () {
+	                    return function (env) {
+	                        env.error = function (e) {
+	                            if (!env.errors) env.errors = new Error('');
+	                            if (env.errors.message) {
+	                                env.errors.message += '\n' + makeError(e).message;
+	                            } else {
+	                                env.errors.message = makeError(e).message;
+	                            }
+	                        };
+	                        env.frames = env.frames || [];
+
+
+	                        // call populates Invalid-caused errors
+	                        var definitions = this.flatten([], [], env);
+	                        definitions.sort(specificitySort);
+	                        return definitions;
+	                    };
+	                })();
+
+	                return root;
+	            },
+
+	            // Here in, the parsing rules/functions
+	            //
+	            // The basic structure of the syntax tree generated is as follows:
+	            //
+	            //   Ruleset ->  Rule -> Value -> Expression -> Entity
+	            //
+	            //  In general, most rules will try to parse a token with the `$()` function, and if the return
+	            //  value is truly, will return a new node, of the relevant type. Sometimes, we need to check
+	            //  first, before parsing, that's when we use `peek()`.
+	            parsers: {
+	                // The `primary` rule is the *entry* and *exit* point of the parser.
+	                // The rules here can appear at any level of the parse tree.
+	                //
+	                // The recursive nature of the grammar is an interplay between the `block`
+	                // rule, which represents `{ ... }`, the `ruleset` rule, and this `primary` rule,
+	                // as represented by this simplified grammar:
+	                //
+	                //     primary  →  (ruleset | rule)+
+	                //     ruleset  →  selector+ block
+	                //     block    →  '{' primary '}'
+	                //
+	                // Only at one point is the primary rule not called from the
+	                // block rule: at the root level.
+	                primary: function () {
+	                    var node, root = [];
+
+	                    while ((node = $(this.rule) || $(this.ruleset) ||
+	                        $(this.comment)) ||
+	                    $(/^[\s\n]+/) || (node = $(this.invalid))) {
+	                        if (node) root.push(node);
+	                    }
+	                    return root;
+	                },
+
+	                invalid: function () {
+	                    var chunk = $(/^[^;\n]*[;\n]/);
+
+	                    // To fail gracefully, match everything until a semicolon or linebreak.
+	                    if (chunk) {
+	                        return new SuperMap.CartoCSS.Tree.Invalid(chunk, memo);
+	                    }
+	                },
+
+	                // We create a Comment node for CSS comments `/* */`,
+	                // but keep the LeSS comments `//` silent, by just skipping
+	                // over them.
+	                comment: function () {
+	                    var comment;
+
+	                    if (input.charAt(i) !== '/') return;
+
+	                    if (input.charAt(i + 1) === '/') {
+	                        return new SuperMap.CartoCSS.Tree.Comment($(/^\/\/.*/), true);
+	                    } else if (comment = $(/^\/\*(?:[^*]|\*+[^\/*])*\*+\/\n?/)) {
+	                        return new SuperMap.CartoCSS.Tree.Comment(comment);
+	                    }
+	                },
+
+	                // Entities are tokens which can be found inside an Expression
+	                entities: {
+
+	                    // A string, which supports escaping " and ' "milky way" 'he\'s the one!'
+	                    quoted: function () {
+	                        if (input.charAt(i) !== '"' && input.charAt(i) !== "'") return;
+	                        var str = $(/^"((?:[^"\\\r\n]|\\.)*)"|'((?:[^'\\\r\n]|\\.)*)'/);
+	                        if (str) {
+	                            return new SuperMap.CartoCSS.Tree.Quoted(str[1] || str[2]);
+	                        }
+	                    },
+
+	                    // A reference to a Mapnik field, like [NAME]
+	                    // Behind the scenes, this has the same representation, but Carto
+	                    // needs to be careful to warn when unsupported operations are used.
+	                    field: function () {
+	                        var l = '[', r = ']';
+	                        if (!$(l)) return;
+	                        var field_name = $(/(^[^\]]+)/);
+	                        if (!$(r)) return;
+	                        if (field_name) return new SuperMap.CartoCSS.Tree.Field(field_name[1]);
+	                    },
+
+	                    // This is a comparison operator
+	                    comparison: function () {
+	                        var str = $(/^=~|=|!=|<=|>=|<|>/);
+	                        if (str) {
+	                            return str;
+	                        }
+	                    },
+
+	                    // A catch-all word, such as: hard-light
+	                    // These can start with either a letter or a dash (-),
+	                    // and then contain numbers, underscores, and letters.
+	                    keyword: function () {
+	                        var k = $(/^[A-Za-z\u4e00-\u9fa5-]+[A-Za-z-0-9\u4e00-\u9fa5_]*/);
+	                        if (k) {
+	                            return new SuperMap.CartoCSS.Tree.Keyword(k);
+	                        }
+	                    },
+
+	                    // A function call like rgb(255, 0, 255)
+	                    // The arguments are parsed with the `entities.arguments` parser.
+	                    call: function () {
+	                        var name, args;
+
+	                        if (!(name = /^([\w\-]+|%)\(/.exec(chunks[j]))) return;
+
+	                        name = name[1];
+
+	                        if (name === 'url') {
+	                            // url() is handled by the url parser instead
+	                            return null;
+	                        } else {
+	                            i += name.length;
+	                        }
+
+	                        var l = '(', r = ')';
+	                        $(l); // Parse the '(' and consume whitespace.
+
+	                        args = $(this.entities['arguments']);
+
+	                        if (!$(r)) return;
+
+	                        if (name) {
+	                            return new SuperMap.CartoCSS.Tree.Call(name, args, i);
+	                        }
+	                    },
+	                    // Arguments are comma-separated expressions
+	                    'arguments': function () {
+	                        var args = [], arg;
+
+	                        while (arg = $(this.expression)) {
+	                            args.push(arg);
+	                            var q = ',';
+	                            if (!$(q)) {
+	                                break;
+	                            }
+	                        }
+
+	                        return args;
+	                    },
+	                    literal: function () {
+	                        return $(this.entities.dimension) ||
+	                            $(this.entities.keywordcolor) ||
+	                            $(this.entities.hexcolor) ||
+	                            $(this.entities.quoted);
+	                    },
+
+	                    // Parse url() tokens
+	                    //
+	                    // We use a specific rule for urls, because they don't really behave like
+	                    // standard function calls. The difference is that the argument doesn't have
+	                    // to be enclosed within a string, so it can't be parsed as an Expression.
+	                    url: function () {
+	                        var value;
+
+	                        if (input.charAt(i) !== 'u' || !$(/^url\(/)) return;
+	                        value = $(this.entities.quoted) || $(this.entities.variable) ||
+	                            $(/^[\-\w%@$\/.&=:;#+?~]+/) || '';
+	                        var r = ')';
+	                        if (!$(r)) {
+	                            return new SuperMap.CartoCSS.Tree.Invalid(value, memo, 'Missing closing ) in URL.');
+	                        } else {
+	                            return new SuperMap.CartoCSS.Tree.URL((typeof value.value !== 'undefined' ||
+	                            value instanceof SuperMap.CartoCSS.Tree.Variable) ?
+	                                value : new SuperMap.CartoCSS.Tree.Quoted(value));
+	                        }
+	                    },
+
+	                    // A Variable entity, such as `@fink`, in
+	                    //
+	                    //     width: @fink + 2px
+	                    //
+	                    // We use a different parser for variable definitions,
+	                    // see `parsers.variable`.
+	                    variable: function () {
+	                        var name, index = i;
+
+	                        if (input.charAt(i) === '@' && (name = $(/^@[\w-]+/))) {
+	                            return new SuperMap.CartoCSS.Tree.Variable(name, index, env.filename);
+	                        }
+	                    },
+
+	                    hexcolor: function () {
+	                        var rgb;
+	                        if (input.charAt(i) === '#' && (rgb = $(/^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})/))) {
+	                            return new SuperMap.CartoCSS.Tree.Color(rgb[1]);
+	                        }
+	                    },
+
+	                    keywordcolor: function () {
+	                        var rgb = chunks[j].match(/^[a-z]+/);
+	                        if (rgb && rgb[0] in SuperMap.CartoCSS.Tree.Reference.data.colors) {
+	                            return new SuperMap.CartoCSS.Tree.Color(SuperMap.CartoCSS.Tree.Reference.data.colors[$(/^[a-z]+/)]);
+	                        }
+	                    },
+
+	                    // A Dimension, that is, a number and a unit. The only
+	                    // unit that has an effect is %
+	                    dimension: function () {
+	                        var c = input.charCodeAt(i);
+	                        if ((c > 57 || c < 45) || c === 47) return;
+	                        var value = $(/^(-?\d*\.?\d+(?:[eE][-+]?\d+)?)(\%|\w+)?/);
+	                        if (value) {
+	                            return new SuperMap.CartoCSS.Tree.Dimension(value[1], value[2], memo);
+	                        }
+	                    }
+	                },
+
+	                // The variable part of a variable definition.
+	                // Used in the `rule` parser. Like @fink:
+	                variable: function () {
+	                    var name;
+
+	                    if (input.charAt(i) === '@' && (name = $(/^(@[\w-]+)\s*:/))) {
+	                        return name[1];
+	                    }
+	                },
+
+	                // Entities are the smallest recognized token,
+	                // and can be found inside a rule's value.
+	                entity: function () {
+	                    return $(this.entities.call) ||
+	                        $(this.entities.literal) ||
+	                        $(this.entities.field) ||
+	                        $(this.entities.variable) ||
+	                        $(this.entities.url) ||
+	                        $(this.entities.keyword);
+	                },
+
+	                // A Rule terminator. Note that we use `peek()` to check for '}',
+	                // because the `block` rule will be expecting it, but we still need to make sure
+	                // it's there, if ';' was ommitted.
+	                end: function () {
+	                    var q = ';';
+	                    return $(q) || peek('}');
+	                },
+
+	                // Elements are the building blocks for Selectors. They consist of
+	                // an element name, such as a tag a class, or `*`.
+	                //增加对中文的支持，[\u4e00-\u9fa5]
+	                element: function () {
+	                    var e = $(/^(?:[.#][\w\u4e00-\u9fa5\-]+|\*|Map)/);
+	                    if (e) return new SuperMap.CartoCSS.Tree.Element(e);
+	                },
+
+	                // Attachments allow adding multiple lines, polygons etc. to an
+	                // object. There can only be one attachment per selector.
+	                attachment: function () {
+	                    var s = $(/^::([\w\-]+(?:\/[\w\-]+)*)/);
+	                    if (s) return s[1];
+	                },
+
+	                // Selectors are made out of one or more Elements, see above.
+	                selector: function () {
+	                    var a, attachment,
+	                        e, elements = [],
+	                        f, filters = new SuperMap.CartoCSS.Tree.Filterset(),
+	                        z, zooms = [],
+	                        segments = 0, conditions = 0;
+
+	                    while (
+	                    (e = $(this.element)) ||
+	                    (z = $(this.zoom)) ||
+	                    (f = $(this.filter)) ||
+	                    (a = $(this.attachment))
+	                        ) {
+	                        segments++;
+	                        if (e) {
+	                            elements.push(e);
+	                        } else if (z) {
+	                            zooms.push(z);
+	                            conditions++;
+	                        } else if (f) {
+	                            var err = filters.add(f);
+	                            if (err) {
+	                                throw makeError({
+	                                    message: err,
+	                                    index: i - 1
+	                                });
+	                            }
+	                            conditions++;
+	                        } else if (attachment) {
+	                            throw makeError({
+	                                message: 'Encountered second attachment name.',
+	                                index: i - 1
+	                            });
+	                        } else {
+	                            attachment = a;
+	                        }
+
+	                        var c = input.charAt(i);
+	                        if (c === '{' || c === '}' || c === ';' || c === ',') {
+	                            break;
+	                        }
+	                    }
+
+	                    if (segments) {
+	                        return new SuperMap.CartoCSS.Tree.Selector(filters, zooms, elements, attachment, conditions, memo);
+	                    }
+	                },
+
+	                filter: function () {
+	                    save();
+	                    var key, op, val, l = '[', r = ']';
+	                    if (!$(l)) return;
+	                    if (key = $(/^[a-zA-Z0-9\-_]+/) ||
+	                            $(this.entities.quoted) ||
+	                            $(this.entities.variable) ||
+	                            $(this.entities.keyword) ||
+	                            $(this.entities.field)) {
+	                        if (key instanceof SuperMap.CartoCSS.Tree.Quoted) {
+	                            key = new SuperMap.CartoCSS.Tree.Field(key.toString());
+	                        }
+	                        if ((op = $(this.entities.comparison)) &&
+	                            (val = $(this.entities.quoted) ||
+	                                $(this.entities.variable) ||
+	                                $(this.entities.dimension) ||
+	                                $(this.entities.keyword) ||
+	                                $(this.entities.field))) {
+	                            if (!$(r)) {
+	                                throw makeError({
+	                                    message: 'Missing closing ] of filter.',
+	                                    index: memo - 1
+	                                });
+	                            }
+	                            if (!key.is) key = new SuperMap.CartoCSS.Tree.Field(key);
+	                            return new SuperMap.CartoCSS.Tree.Filter(key, op, val, memo, env.filename);
+	                        }
+	                    }
+	                },
+
+	                zoom: function () {
+	                    save();
+	                    var op, val, r = ']';
+	                    if ($(/^\[\s*zoom/g) &&
+	                        (op = $(this.entities.comparison)) &&
+	                        (val = $(this.entities.variable) || $(this.entities.dimension)) && $(r)) {
+	                        return new SuperMap.CartoCSS.Tree.Zoom(op, val, memo);
+	                    } else {
+	                        // backtrack
+	                        restore();
+	                    }
+	                },
+
+	                // The `block` rule is used by `ruleset`
+	                // It's a wrapper around the `primary` rule, with added `{}`.
+	                block: function () {
+	                    var content, l = '{', r = '}';
+
+	                    if ($(l) && (content = $(this.primary)) && $(r)) {
+	                        return content;
+	                    }
+	                },
+
+	                // div, .class, body > p {...}
+	                ruleset: function () {
+	                    var selectors = [], s, f, l, rules, filters = [], q = ',';
+	                    save();
+
+	                    while (s = $(this.selector)) {
+	                        selectors.push(s);
+	                        while ($(this.comment)) {
+	                        }
+	                        if (!$(q)) {
+	                            break;
+	                        }
+	                        while ($(this.comment)) {
+	                        }
+	                    }
+	                    if (s) {
+	                        while ($(this.comment)) {
+	                        }
+	                    }
+
+	                    if (selectors.length > 0 && (rules = $(this.block))) {
+	                        if (selectors.length === 1 &&
+	                            selectors[0].elements.length &&
+	                            selectors[0].elements[0].value === 'Map') {
+	                            var rs = new SuperMap.CartoCSS.Tree.Ruleset(selectors, rules);
+	                            rs.isMap = true;
+	                            return rs;
+	                        }
+	                        return new SuperMap.CartoCSS.Tree.Ruleset(selectors, rules);
+	                    } else {
+	                        // Backtrack
+	                        restore();
+	                    }
+	                },
+
+	                rule: function () {
+	                    var name, value, c = input.charAt(i);
+	                    save();
+
+	                    if (c === '.' || c === '#') {
+	                        return;
+	                    }
+
+	                    if (name = $(this.variable) || $(this.property)) {
+	                        value = $(this.value);
+
+	                        if (value && $(this.end)) {
+	                            return new SuperMap.CartoCSS.Tree.Rule(name, value, memo, env.filename);
+	                        } else {
+	                            furthest = i;
+	                            restore();
+	                        }
+	                    }
+	                },
+
+	                font: function () {
+	                    var value = [], expression = [], weight, font, e, q = ',';
+
+	                    while (e = $(this.entity)) {
+	                        expression.push(e);
+	                    }
+
+	                    value.push(new SuperMap.CartoCSS.Tree.Expression(expression));
+
+	                    if ($(q)) {
+	                        while (e = $(this.expression)) {
+	                            value.push(e);
+	                            if (!$(q)) {
+	                                break;
+	                            }
+	                        }
+	                    }
+	                    return new SuperMap.CartoCSS.Tree.Value(value);
+	                },
+
+	                // A Value is a comma-delimited list of Expressions
+	                // In a Rule, a Value represents everything after the `:`,
+	                // and before the `;`.
+	                value: function () {
+	                    var e, expressions = [], q = ',';
+
+	                    while (e = $(this.expression)) {
+	                        expressions.push(e);
+	                        if (!$(q)) {
+	                            break;
+	                        }
+	                    }
+
+	                    if (expressions.length > 1) {
+	                        return new SuperMap.CartoCSS.Tree.Value(expressions.map(function (e) {
+	                            return e.value[0];
+	                        }));
+	                    } else if (expressions.length === 1) {
+	                        return new SuperMap.CartoCSS.Tree.Value(expressions);
+	                    }
+	                },
+	                // A sub-expression, contained by parenthensis
+	                sub: function () {
+	                    var e, l = '(', r = ")";
+	                    if ($(l) && (e = $(this.expression)) && $(r)) {
+	                        return e;
+	                    }
+	                },
+	                // This is a misnomer because it actually handles multiplication
+	                // and division.
+	                multiplication: function () {
+	                    var m, a, op, operation, q = '/';
+	                    if (m = $(this.operand)) {
+	                        while ((op = ($(q) || $('*') || $('%'))) && (a = $(this.operand))) {
+	                            operation = new SuperMap.CartoCSS.Tree.Operation(op, [operation || m, a], memo);
+	                        }
+	                        return operation || m;
+	                    }
+	                },
+	                addition: function () {
+	                    var m, a, op, operation, plus = '+';
+	                    if (m = $(this.multiplication)) {
+	                        while ((op = $(/^[-+]\s+/) || (input.charAt(i - 1) != ' ' && ($(plus) || $('-')))) &&
+	                        (a = $(this.multiplication))) {
+	                            operation = new SuperMap.CartoCSS.Tree.Operation(op, [operation || m, a], memo);
+	                        }
+	                        return operation || m;
+	                    }
+	                },
+
+	                // An operand is anything that can be part of an operation,
+	                // such as a Color, or a Variable
+	                operand: function () {
+	                    return $(this.sub) || $(this.entity);
+	                },
+
+	                // Expressions either represent mathematical operations,
+	                // or white-space delimited Entities.  @var * 2
+	                expression: function () {
+	                    var e, delim, entities = [], d;
+
+	                    while (e = $(this.addition) || $(this.entity)) {
+	                        entities.push(e);
+	                    }
+
+	                    if (entities.length > 0) {
+	                        return new SuperMap.CartoCSS.Tree.Expression(entities);
+	                    }
+	                },
+	                property: function () {
+	                    var name = $(/^(([a-z][-a-z_0-9]*\/)?\*?-?[-a-z_0-9]+)\s*:/);
+	                    if (name) return name[1];
+	                }
+	            }
+	        };
+	        return parser;
+	    },
+
+	    /**
+	     * Method: parse
+	     * 利用CartoCSS解析器里面的parse方法，将CartoCSS样式表字符串转化为CartoCSS规则集
+	     *
+	     * Returns:
+	     * {Object} CartoCSS规则集
+	     * */
+	    parse: function (str) {
+	        var parser = this.parser;
+	        var ruleSet = this.ruleSet = parser.parse(str);
+	        return ruleSet;
+	    },
+
+	    /**
+	     * Method: toShaders
+	     * 将CartoCSS规则集转化为着色器
+	     *
+	     * Returns:
+	     * {Array} CartoCSS着色器集
+	     * */
+	    toShaders: function () {
+	        if (this.ruleSet) {
+	            var ruleset = this.ruleSet;
+	            if (ruleset) {
+	                var defs = ruleset.toList(this.env);
+	                defs.reverse();
+
+	                var shaders = {};
+	                var keys = [];
+	                for (var i = 0, len0 = defs.length; i < len0; ++i) {
+	                    var def = defs[i];
+	                    var element_str = [];
+	                    for (var j = 0, len1 = def.elements.length; j < len1; j++) {
+	                        element_str.push(def.elements[j]);
+	                    }
+	                    var filters = def.filters.filters;
+	                    var filterStr = [];
+	                    for (var attr in filters) {
+	                        filterStr.push(filters[attr].id);
+	                    }
+	                    var key = element_str.join("/") + "::" + def.attachment + "_" + filterStr.join("_");
+	                    keys.push(key);
+	                    var shader = shaders[key] = (shaders[key] || {});
+	                    //shader.frames = [];
+	                    shader.zoom = SuperMap.CartoCSS.Tree.Zoom.all;
+	                    var props = def.toJS(this.env);
+	                    for (var v in props) {
+	                        (shader[v] = (shader[v] || [])).push(props[v].join('\n'))
+	                    }
+	                }
+
+	                var ordered_shaders = [];
+
+	                var done = {};
+	                for (var i = 0, len0 = defs.length; i < len0; ++i) {
+	                    var def = defs[i];
+	                    var k = def.attachment;
+	                    var shader = shaders[keys[i]];
+	                    var shaderArray = [];
+	                    if (!done[k]) {
+	                        var j = 0;
+	                        for (var prop in shader) {
+	                            if (prop !== 'zoom' && prop !== 'frames' && prop !== "attachment" && prop != "elements") {
+	                                //对layer-index作特殊处理以实现图层的控制
+	                                if (prop === "layer-index") {
+	                                    var getLayerIndex = Function("attributes", "zoom", "var _value = null;" + shader[prop].join('\n') + "; return _value; ");
+	                                    var layerIndex = getLayerIndex();
+	                                    Object.defineProperty(shaderArray, "layerIndex", {
+	                                        configurable: true,
+	                                        enumerable: false,
+	                                        value: layerIndex
+	                                    });
+	                                } else {
+	                                    shaderArray[j++] = function (ops, shaderArray) {
+	                                        if (!Array.isArray(ops)) {
+	                                            return ops;
+	                                        }
+	                                        var body = ops.join('\n');
+	                                        var myKeyword = 'attributes["FEATUREID"]&&attributes["FEATUREID"]';
+	                                        var index = body.indexOf(myKeyword);
+	                                        if (index >= 0) {
+	                                            //对featureID作一些特殊处理，以将featureID提取出来
+	                                            if (!shaderArray.featureFilter) {
+	                                                var featureFilterStart = index + myKeyword.length;
+	                                                var featureFilterEnd = body.indexOf(")", featureFilterStart + 1);
+	                                                var featureFilterStr = "featureId&&(featureId" + body.substring(featureFilterStart, featureFilterEnd) + ")";
+	                                                var featureFilter = Function("featureId", "if(" + featureFilterStr + "){return true;}return false;");
+	                                                Object.defineProperty(shaderArray, "featureFilter", {
+	                                                    configurable: true,
+	                                                    enumerable: false,
+	                                                    value: featureFilter
+	                                                });
+	                                            }
+	                                            return {
+	                                                "property": prop,
+	                                                "getValue": Function("attributes", "zoom", "seftFilter", "var _value = null; var isExcute=typeof seftFilter=='function'?sefgFilter():seftFilter;if(isExcute){" + body + ";} return _value; ")
+	                                            };
+	                                        } else {
+	                                            return {
+	                                                "property": prop,
+	                                                "getValue": Function("attributes", "zoom", "var _value = null;" + body + "; return _value; ")
+	                                            };
+	                                        }
+	                                    }(shader[prop], shaderArray);
+	                                }
+	                            }
+	                        }
+	                        Object.defineProperty(shaderArray, "attachment", {
+	                            configurable: true,
+	                            enumerable: false,
+	                            value: k
+	                        });
+	                        Object.defineProperty(shaderArray, "elements", {
+	                            configurable: true,
+	                            enumerable: false,
+	                            value: def.elements
+	                        });
+	                        ordered_shaders.push(shaderArray);
+	                        done[keys[i]] = true;
+	                    }
+	                    Object.defineProperty(shaderArray, "zoom", {
+	                        configurable: true,
+	                        enumerable: false,
+	                        value: def.zoom
+	                    });
+	                    //shader.frames.push(def.frame_offset);
+	                }
+	                return ordered_shaders;
+	            }
+	        }
+	        return null;
+	    },
+
+	    /**
+	     * APIMethod: getShaders
+	     * 获取CartoCSS着色器
+	     *
+	     * Returns:
+	     * {Array} 着色器集
+	     *
+	     * Examples:
+	     * (code)
+	     *   //shaders的结构大概如下：
+	     *   var shaders=[
+	     *   {
+	     *       attachment:"one",
+	     *       elements:[],
+	     *       zoom:23,
+	     *       length:2,
+	     *       0:{property:"line-color",value:function(attribute,zoom){var _value=null;if(zoom){_value="#123456"}return _vlaue;}},
+	     *       1:{preoperty:"line-width",value:function(attribute,zoom){var _value=null;if(zoom){_value=3}return _vlaue;}}
+	     *   },
+	     *   {
+	     *       attachment:"two",
+	     *       elements:[],
+	     *       zoom:23,
+	     *       length:2,
+	     *       0:{property:"polygon-color",value:function(attribute,zoom){var _value=null;if(zoom){_value="#123456"}return _vlaue;}},
+	     *       1:{property:"line-width",value:function(attribute,zoom){var _value=null;if(zoom){_value=3}return _vlaue;}}
+	     *   }
+	     *   ];
+	     * (end)
+	     * */
+	    getShaders: function () {
+	        return this.shaders;
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * CartoCSS解析对象的析构函数，用于销毁CartoCSS解析对象
+	     * */
+	    destroy: function () {
+	        this.cartoStr = null;
+	        this.env = null;
+	        this.ruleSet = null;
+	        this.parser = null;
+	        this.shaders = null;
+	    },
+
+	    CLASS_NAME: "SuperMap.CartoCSS"
+	});
+
+	SuperMap._mapnik_reference_latest = {
+	    "version": "2.1.1",
+	    "style": {
+	        "filter-mode": {
+	            "type": [
+	                "all",
+	                "first"
+	            ],
+	            "doc": "Control the processing behavior of Rule filters within a Style. If 'all' is used then all Rules are processed sequentially independent of whether any previous filters matched. If 'first' is used then it means processing ends after the first match (a positive filter evaluation) and no further Rules in the Style are processed ('first' is usually the default for CSS implementations on top of Mapnik to simplify translation from CSS to Mapnik XML)",
+	            "default-value": "all",
+	            "default-meaning": "All Rules in a Style are processed whether they have filters or not and whether or not the filter conditions evaluate to true."
+	        },
+	        "image-filters": {
+	            "css": "image-filters",
+	            "default-value": "none",
+	            "default-meaning": "no filters",
+	            "type": "functions",
+	            "functions": [
+	                ["agg-stack-blur", 2],
+	                ["emboss", 0],
+	                ["blur", 0],
+	                ["gray", 0],
+	                ["sobel", 0],
+	                ["edge-detect", 0],
+	                ["x-gradient", 0],
+	                ["y-gradient", 0],
+	                ["invert", 0],
+	                ["sharpen", 0]
+	            ],
+	            "doc": "A list of image filters."
+	        },
+	        "comp-op": {
+	            "css": "comp-op",
+	            "default-value": "src-over",
+	            "default-meaning": "add the current layer on top of other layers",
+	            "doc": "Composite operation. This defines how this layer should behave relative to layers atop or below it.",
+	            "type": ["clear",
+	                "src",
+	                "dst",
+	                "src-over",
+	                "dst-over",
+	                "src-in",
+	                "dst-in",
+	                "src-out",
+	                "dst-out",
+	                "src-atop",
+	                "dst-atop",
+	                "xor",
+	                "plus",
+	                "minus",
+	                "multiply",
+	                "screen",
+	                "overlay",
+	                "darken",
+	                "lighten",
+	                "color-dodge",
+	                "color-burn",
+	                "hard-light",
+	                "soft-light",
+	                "difference",
+	                "exclusion",
+	                "contrast",
+	                "invert",
+	                "invert-rgb",
+	                "grain-merge",
+	                "grain-extract",
+	                "hue",
+	                "saturation",
+	                "color",
+	                "value"
+	            ]
+	        },
+	        "opacity": {
+	            "css": "opacity",
+	            "type": "float",
+	            "doc": "An alpha value for the style (which means an alpha applied to all features in separate buffer and then composited back to main buffer)",
+	            "default-value": 1,
+	            "default-meaning": "no separate buffer will be used and no alpha will be applied to the style after rendering"
+	        }
+	    },
+	    "layer": {
+	        "name": {
+	            "default-value": "",
+	            "type": "string",
+	            "required": true,
+	            "default-meaning": "No layer name has been provided",
+	            "doc": "The name of a layer. Can be anything you wish and is not strictly validated, but ideally unique  in the map"
+	        },
+	        "srs": {
+	            "default-value": "",
+	            "type": "string",
+	            "default-meaning": "No srs value is provided and the value will be inherited from the Map's srs",
+	            "doc": "The spatial reference system definition for the layer, aka the projection. Can either be a proj4 literal string like '+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs' or, if the proper proj4 epsg/nad/etc identifier files are installed, a string that uses an id like: '+init=epsg:4326'"
+	        },
+	        "status": {
+	            "default-value": true,
+	            "type": "boolean",
+	            "default-meaning": "This layer will be marked as active and available for processing",
+	            "doc": "A property that can be set to false to disable this layer from being processed"
+	        },
+	        "minzoom": {
+	            "default-value": "0",
+	            "type": "float",
+	            "default-meaning": "The layer will be visible at the minimum possible scale",
+	            "doc": "The minimum scale denominator that this layer will be visible at. A layer's visibility is determined by whether its status is true and if the Map scale >= minzoom - 1e-6 and scale < maxzoom + 1e-6"
+	        },
+	        "maxzoom": {
+	            "default-value": "1.79769e+308",
+	            "type": "float",
+	            "default-meaning": "The layer will be visible at the maximum possible scale",
+	            "doc": "The maximum scale denominator that this layer will be visible at. The default is the numeric limit of the C++ double type, which may vary slightly by system, but is likely a massive number like 1.79769e+308 and ensures that this layer will always be visible unless the value is reduced. A layer's visibility is determined by whether its status is true and if the Map scale >= minzoom - 1e-6 and scale < maxzoom + 1e-6"
+	        },
+	        "queryable": {
+	            "default-value": false,
+	            "type": "boolean",
+	            "default-meaning": "The layer will not be available for the direct querying of data values",
+	            "doc": "This property was added for GetFeatureInfo/WMS compatibility and is rarely used. It is off by default meaning that in a WMS context the layer will not be able to be queried unless the property is explicitly set to true"
+	        },
+	        "clear-label-cache": {
+	            "default-value": false,
+	            "type": "boolean",
+	            "default-meaning": "The renderer's collision detector cache (used for avoiding duplicate labels and overlapping markers) will not be cleared immediately before processing this layer",
+	            "doc": "This property, by default off, can be enabled to allow a user to clear the collision detector cache before a given layer is processed. This may be desirable to ensure that a given layers data shows up on the map even if it normally would not because of collisions with previously rendered labels or markers"
+	        },
+	        "group-by": {
+	            "default-value": "",
+	            "type": "string",
+	            "default-meaning": "No special layer grouping will be used during rendering",
+	            "doc": "https://github.com/mapnik/mapnik/wiki/Grouped-rendering"
+	        },
+	        "buffer-size": {
+	            "default-value": "0",
+	            "type": "float",
+	            "default-meaning": "No buffer will be used",
+	            "doc": "Extra tolerance around the Layer extent (in pixels) used to when querying and (potentially) clipping the layer data during rendering"
+	        },
+	        "maximum-extent": {
+	            "default-value": "none",
+	            "type": "bbox",
+	            "default-meaning": "No clipping extent will be used",
+	            "doc": "An extent to be used to limit the bounds used to query this specific layer data during rendering. Should be minx, miny, maxx, maxy in the coordinates of the Layer."
+	        }
+	    },
+	    "symbolizers": {
+	        "*": {
+	            "image-filters": {
+	                "css": "image-filters",
+	                "default-value": "none",
+	                "default-meaning": "no filters",
+	                "type": "functions",
+	                "functions": [
+	                    ["agg-stack-blur", 2],
+	                    ["emboss", 0],
+	                    ["blur", 0],
+	                    ["gray", 0],
+	                    ["sobel", 0],
+	                    ["edge-detect", 0],
+	                    ["x-gradient", 0],
+	                    ["y-gradient", 0],
+	                    ["invert", 0],
+	                    ["sharpen", 0]
+	                ],
+	                "doc": "A list of image filters."
+	            },
+	            "comp-op": {
+	                "css": "comp-op",
+	                "default-value": "src-over",
+	                "default-meaning": "add the current layer on top of other layers",
+	                "doc": "Composite operation. This defines how this layer should behave relative to layers atop or below it.",
+	                "type": ["clear",
+	                    "src",
+	                    "dst",
+	                    "src-over",
+	                    "dst-over",
+	                    "src-in",
+	                    "dst-in",
+	                    "src-out",
+	                    "dst-out",
+	                    "src-atop",
+	                    "dst-atop",
+	                    "xor",
+	                    "plus",
+	                    "minus",
+	                    "multiply",
+	                    "screen",
+	                    "overlay",
+	                    "darken",
+	                    "lighten",
+	                    "color-dodge",
+	                    "color-burn",
+	                    "hard-light",
+	                    "soft-light",
+	                    "difference",
+	                    "exclusion",
+	                    "contrast",
+	                    "invert",
+	                    "invert-rgb",
+	                    "grain-merge",
+	                    "grain-extract",
+	                    "hue",
+	                    "saturation",
+	                    "color",
+	                    "value"
+	                ]
+	            },
+	            "opacity": {
+	                "css": "opacity",
+	                "type": "float",
+	                "doc": "An alpha value for the style (which means an alpha applied to all features in separate buffer and then composited back to main buffer)",
+	                "default-value": 1,
+	                "default-meaning": "no separate buffer will be used and no alpha will be applied to the style after rendering"
+	            }
+	        },
+	        "map": {
+	            "background-color": {
+	                "css": "background-color",
+	                "default-value": "none",
+	                "default-meaning": "transparent",
+	                "type": "color",
+	                "doc": "Map Background color"
+	            },
+	            "background-image": {
+	                "css": "background-image",
+	                "type": "uri",
+	                "default-value": "",
+	                "default-meaning": "transparent",
+	                "doc": "An image that is repeated below all features on a map as a background.",
+	                "description": "Map Background image"
+	            },
+	            "srs": {
+	                "css": "srs",
+	                "type": "string",
+	                "default-value": "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs",
+	                "default-meaning": "The proj4 literal of EPSG:4326 is assumed to be the Map's spatial reference and all data from layers within this map will be plotted using this coordinate system. If any layers do not declare an srs value then they will be assumed to be in the same srs as the Map and not transformations will be needed to plot them in the Map's coordinate space",
+	                "doc": "Map spatial reference (proj4 string)"
+	            },
+	            "buffer-size": {
+	                "css": "buffer-size",
+	                "default-value": "0",
+	                "type": "float",
+	                "default-meaning": "No buffer will be used",
+	                "doc": "Extra tolerance around the map (in pixels) used to ensure labels crossing tile boundaries are equally rendered in each tile (e.g. cut in each tile). Not intended to be used in combination with \"avoid-edges\"."
+	            },
+	            "maximum-extent": {
+	                "css": "",
+	                "default-value": "none",
+	                "type": "bbox",
+	                "default-meaning": "No clipping extent will be used",
+	                "doc": "An extent to be used to limit the bounds used to query all layers during rendering. Should be minx, miny, maxx, maxy in the coordinates of the Map."
+	            },
+	            "base": {
+	                "css": "base",
+	                "default-value": "",
+	                "default-meaning": "This base path defaults to an empty string meaning that any relative paths to files referenced in styles or layers will be interpreted relative to the application process.",
+	                "type": "string",
+	                "doc": "Any relative paths used to reference files will be understood as relative to this directory path if the map is loaded from an in memory object rather than from the filesystem. If the map is loaded from the filesystem and this option is not provided it will be set to the directory of the stylesheet."
+	            },
+	            "paths-from-xml": {
+	                "css": "",
+	                "default-value": true,
+	                "default-meaning": "Paths read from XML will be interpreted from the location of the XML",
+	                "type": "boolean",
+	                "doc": "value to control whether paths in the XML will be interpreted from the location of the XML or from the working directory of the program that calls load_map()"
+	            },
+	            "minimum-version": {
+	                "css": "",
+	                "default-value": "none",
+	                "default-meaning": "Mapnik version will not be detected and no error will be thrown about compatibility",
+	                "type": "string",
+	                "doc": "The minumum Mapnik version (e.g. 0.7.2) needed to use certain functionality in the stylesheet"
+	            },
+	            "font-directory": {
+	                "css": "font-directory",
+	                "type": "uri",
+	                "default-value": "none",
+	                "default-meaning": "No map-specific fonts will be registered",
+	                "doc": "Path to a directory which holds fonts which should be registered when the Map is loaded (in addition to any fonts that may be automatically registered)."
+	            }
+	        },
+	        "polygon": {
+	            "fill": {
+	                "css": "polygon-fill",
+	                "type": "color",
+	                "default-value": "rgba(128,128,128,1)",
+	                "default-meaning": "gray and fully opaque (alpha = 1), same as rgb(128,128,128)",
+	                "doc": "Fill color to assign to a polygon"
+	            },
+	            "fill-opacity": {
+	                "css": "polygon-opacity",
+	                "type": "float",
+	                "doc": "The opacity of the polygon",
+	                "default-value": 1,
+	                "default-meaning": "opaque"
+	            },
+	            "gamma": {
+	                "css": "polygon-gamma",
+	                "type": "float",
+	                "default-value": 1,
+	                "default-meaning": "fully antialiased",
+	                "range": "0-1",
+	                "doc": "Level of antialiasing of polygon edges"
+	            },
+	            "gamma-method": {
+	                "css": "polygon-gamma-method",
+	                "type": [
+	                    "power",
+	                    "linear",
+	                    "none",
+	                    "threshold",
+	                    "multiply"
+	                ],
+	                "default-value": "power",
+	                "default-meaning": "pow(x,gamma) is used to calculate pixel gamma, which produces slightly smoother line and polygon antialiasing than the 'linear' method, while other methods are usually only used to disable AA",
+	                "doc": "An Antigrain Geometry specific rendering hint to control the quality of antialiasing. Under the hood in Mapnik this method is used in combination with the 'gamma' value (which defaults to 1). The methods are in the AGG source at https://github.com/mapnik/mapnik/blob/master/deps/agg/include/agg_gamma_functions.h"
+	            },
+	            "clip": {
+	                "css": "polygon-clip",
+	                "type": "boolean",
+	                "default-value": true,
+	                "default-meaning": "geometry will be clipped to map bounds before rendering",
+	                "doc": "geometries are clipped to map bounds by default for best rendering performance. In some cases users may wish to disable this to avoid rendering artifacts."
+	            },
+	            "smooth": {
+	                "css": "polygon-smooth",
+	                "type": "float",
+	                "default-value": 0,
+	                "default-meaning": "no smoothing",
+	                "range": "0-1",
+	                "doc": "Smooths out geometry angles. 0 is no smoothing, 1 is fully smoothed. Values greater than 1 will produce wild, looping geometries."
+	            },
+	            "geometry-transform": {
+	                "css": "polygon-geometry-transform",
+	                "type": "functions",
+	                "default-value": "none",
+	                "default-meaning": "geometry will not be transformed",
+	                "doc": "Allows transformation functions to be applied to the geometry.",
+	                "functions": [
+	                    ["matrix", 6],
+	                    ["translate", 2],
+	                    ["scale", 2],
+	                    ["rotate", 3],
+	                    ["skewX", 1],
+	                    ["skewY", 1]
+	                ]
+	            },
+	            "comp-op": {
+	                "css": "polygon-comp-op",
+	                "default-value": "src-over",
+	                "default-meaning": "add the current symbolizer on top of other symbolizer",
+	                "doc": "Composite operation. This defines how this symbolizer should behave relative to symbolizers atop or below it.",
+	                "type": ["clear",
+	                    "src",
+	                    "dst",
+	                    "src-over",
+	                    "dst-over",
+	                    "src-in",
+	                    "dst-in",
+	                    "src-out",
+	                    "dst-out",
+	                    "src-atop",
+	                    "dst-atop",
+	                    "xor",
+	                    "plus",
+	                    "minus",
+	                    "multiply",
+	                    "screen",
+	                    "overlay",
+	                    "darken",
+	                    "lighten",
+	                    "color-dodge",
+	                    "color-burn",
+	                    "hard-light",
+	                    "soft-light",
+	                    "difference",
+	                    "exclusion",
+	                    "contrast",
+	                    "invert",
+	                    "invert-rgb",
+	                    "grain-merge",
+	                    "grain-extract",
+	                    "hue",
+	                    "saturation",
+	                    "color",
+	                    "value"
+	                ]
+	            }
+	        },
+	        "line": {
+	            "stroke": {
+	                "css": "line-color",
+	                "default-value": "rgba(0,0,0,1)",
+	                "type": "color",
+	                "default-meaning": "black and fully opaque (alpha = 1), same as rgb(0,0,0)",
+	                "doc": "The color of a drawn line"
+	            },
+	            "stroke-width": {
+	                "css": "line-width",
+	                "default-value": 1,
+	                "type": "float",
+	                "doc": "The width of a line in pixels"
+	            },
+	            "stroke-opacity": {
+	                "css": "line-opacity",
+	                "default-value": 1,
+	                "type": "float",
+	                "default-meaning": "opaque",
+	                "doc": "The opacity of a line"
+	            },
+	            "stroke-linejoin": {
+	                "css": "line-join",
+	                "default-value": "miter",
+	                "type": [
+	                    "miter",
+	                    "round",
+	                    "bevel"
+	                ],
+	                "doc": "The behavior of lines when joining"
+	            },
+	            "stroke-linecap": {
+	                "css": "line-cap",
+	                "default-value": "butt",
+	                "type": [
+	                    "butt",
+	                    "round",
+	                    "square"
+	                ],
+	                "doc": "The display of line endings"
+	            },
+	            "stroke-gamma": {
+	                "css": "line-gamma",
+	                "type": "float",
+	                "default-value": 1,
+	                "default-meaning": "fully antialiased",
+	                "range": "0-1",
+	                "doc": "Level of antialiasing of stroke line"
+	            },
+	            "stroke-gamma-method": {
+	                "css": "line-gamma-method",
+	                "type": [
+	                    "power",
+	                    "linear",
+	                    "none",
+	                    "threshold",
+	                    "multiply"
+	                ],
+	                "default-value": "power",
+	                "default-meaning": "pow(x,gamma) is used to calculate pixel gamma, which produces slightly smoother line and polygon antialiasing than the 'linear' method, while other methods are usually only used to disable AA",
+	                "doc": "An Antigrain Geometry specific rendering hint to control the quality of antialiasing. Under the hood in Mapnik this method is used in combination with the 'gamma' value (which defaults to 1). The methods are in the AGG source at https://github.com/mapnik/mapnik/blob/master/deps/agg/include/agg_gamma_functions.h"
+	            },
+	            "stroke-dasharray": {
+	                "css": "line-dasharray",
+	                "type": "numbers",
+	                "doc": "A pair of length values [a,b], where (a) is the dash length and (b) is the gap length respectively. More than two values are supported for more complex patterns.",
+	                "default-value": "none",
+	                "default-meaning": "solid line"
+	            },
+	            "stroke-dashoffset": {
+	                "css": "line-dash-offset",
+	                "type": "numbers",
+	                "doc": "valid parameter but not currently used in renderers (only exists for experimental svg support in Mapnik which is not yet enabled)",
+	                "default-value": "none",
+	                "default-meaning": "solid line"
+	            },
+	            "stroke-miterlimit": {
+	                "css": "line-miterlimit",
+	                "type": "float",
+	                "doc": "The limit on the ratio of the miter length to the stroke-width. Used to automatically convert miter joins to bevel joins for sharp angles to avoid the miter extending beyond the thickness of the stroking path. Normally will not need to be set, but a larger value can sometimes help avoid jaggy artifacts.",
+	                "default-value": 4.0,
+	                "default-meaning": "Will auto-convert miters to bevel line joins when theta is less than 29 degrees as per the SVG spec: 'miterLength / stroke-width = 1 / sin ( theta / 2 )'"
+	            },
+	            "clip": {
+	                "css": "line-clip",
+	                "type": "boolean",
+	                "default-value": true,
+	                "default-meaning": "geometry will be clipped to map bounds before rendering",
+	                "doc": "geometries are clipped to map bounds by default for best rendering performance. In some cases users may wish to disable this to avoid rendering artifacts."
+	            },
+	            "smooth": {
+	                "css": "line-smooth",
+	                "type": "float",
+	                "default-value": 0,
+	                "default-meaning": "no smoothing",
+	                "range": "0-1",
+	                "doc": "Smooths out geometry angles. 0 is no smoothing, 1 is fully smoothed. Values greater than 1 will produce wild, looping geometries."
+	            },
+	            "offset": {
+	                "css": "line-offset",
+	                "type": "float",
+	                "default-value": 0,
+	                "default-meaning": "no offset",
+	                "doc": "Offsets a line a number of pixels parallel to its actual path. Postive values move the line left, negative values move it right (relative to the directionality of the line)."
+	            },
+	            "rasterizer": {
+	                "css": "line-rasterizer",
+	                "type": [
+	                    "full",
+	                    "fast"
+	                ],
+	                "default-value": "full",
+	                "doc": "Exposes an alternate AGG rendering method that sacrifices some accuracy for speed."
+	            },
+	            "geometry-transform": {
+	                "css": "line-geometry-transform",
+	                "type": "functions",
+	                "default-value": "none",
+	                "default-meaning": "geometry will not be transformed",
+	                "doc": "Allows transformation functions to be applied to the geometry.",
+	                "functions": [
+	                    ["matrix", 6],
+	                    ["translate", 2],
+	                    ["scale", 2],
+	                    ["rotate", 3],
+	                    ["skewX", 1],
+	                    ["skewY", 1]
+	                ]
+	            },
+	            "comp-op": {
+	                "css": "line-comp-op",
+	                "default-value": "src-over",
+	                "default-meaning": "add the current symbolizer on top of other symbolizer",
+	                "doc": "Composite operation. This defines how this symbolizer should behave relative to symbolizers atop or below it.",
+	                "type": ["clear",
+	                    "src",
+	                    "dst",
+	                    "src-over",
+	                    "dst-over",
+	                    "src-in",
+	                    "dst-in",
+	                    "src-out",
+	                    "dst-out",
+	                    "src-atop",
+	                    "dst-atop",
+	                    "xor",
+	                    "plus",
+	                    "minus",
+	                    "multiply",
+	                    "screen",
+	                    "overlay",
+	                    "darken",
+	                    "lighten",
+	                    "color-dodge",
+	                    "color-burn",
+	                    "hard-light",
+	                    "soft-light",
+	                    "difference",
+	                    "exclusion",
+	                    "contrast",
+	                    "invert",
+	                    "invert-rgb",
+	                    "grain-merge",
+	                    "grain-extract",
+	                    "hue",
+	                    "saturation",
+	                    "color",
+	                    "value"
+	                ]
+	            }
+	        },
+	        "markers": {
+	            "file": {
+	                "css": "marker-file",
+	                "doc": "An SVG file that this marker shows at each placement. If no file is given, the marker will show an ellipse.",
+	                "default-value": "",
+	                "default-meaning": "An ellipse or circle, if width equals height",
+	                "type": "uri"
+	            },
+	            "opacity": {
+	                "css": "marker-opacity",
+	                "doc": "The overall opacity of the marker, if set, overrides both the opacity of both the fill and stroke",
+	                "default-value": 1,
+	                "default-meaning": "The stroke-opacity and fill-opacity will be used",
+	                "type": "float"
+	            },
+	            "fill-opacity": {
+	                "css": "marker-fill-opacity",
+	                "doc": "The fill opacity of the marker",
+	                "default-value": 1,
+	                "default-meaning": "opaque",
+	                "type": "float"
+	            },
+	            "stroke": {
+	                "css": "marker-line-color",
+	                "doc": "The color of the stroke around a marker shape.",
+	                "default-value": "black",
+	                "type": "color"
+	            },
+	            "stroke-width": {
+	                "css": "marker-line-width",
+	                "doc": "The width of the stroke around a marker shape, in pixels. This is positioned on the boundary, so high values can cover the area itself.",
+	                "type": "float"
+	            },
+	            "stroke-opacity": {
+	                "css": "marker-line-opacity",
+	                "default-value": 1,
+	                "default-meaning": "opaque",
+	                "doc": "The opacity of a line",
+	                "type": "float"
+	            },
+	            "placement": {
+	                "css": "marker-placement",
+	                "type": [
+	                    "point",
+	                    "line",
+	                    "interior"
+	                ],
+	                "default-value": "point",
+	                "default-meaning": "Place markers at the center point (centroid) of the geometry",
+	                "doc": "Attempt to place markers on a point, in the center of a polygon, or if markers-placement:line, then multiple times along a line. 'interior' placement can be used to ensure that points placed on polygons are forced to be inside the polygon interior"
+	            },
+	            "multi-policy": {
+	                "css": "marker-multi-policy",
+	                "type": [
+	                    "each",
+	                    "whole",
+	                    "largest"
+	                ],
+	                "default-value": "each",
+	                "default-meaning": "If a feature contains multiple geometries and the placement type is either point or interior then a marker will be rendered for each",
+	                "doc": "A special setting to allow the user to control rendering behavior for 'multi-geometries' (when a feature contains multiple geometries). This setting does not apply to markers placed along lines. The 'each' policy is default and means all geometries will get a marker. The 'whole' policy means that the aggregate centroid between all geometries will be used. The 'largest' policy means that only the largest (by bounding box areas) feature will get a rendered marker (this is how text labeling behaves by default)."
+	            },
+	            "marker-type": {
+	                "css": "marker-type",
+	                "type": [
+	                    "arrow",
+	                    "ellipse"
+	                ],
+	                "default-value": "ellipse",
+	                "doc": "The default marker-type. If a SVG file is not given as the marker-file parameter, the renderer provides either an arrow or an ellipse (a circle if height is equal to width)"
+	            },
+	            "width": {
+	                "css": "marker-width",
+	                "default-value": 10,
+	                "doc": "The width of the marker, if using one of the default types.",
+	                "type": "expression"
+	            },
+	            "height": {
+	                "css": "marker-height",
+	                "default-value": 10,
+	                "doc": "The height of the marker, if using one of the default types.",
+	                "type": "expression"
+	            },
+	            "fill": {
+	                "css": "marker-fill",
+	                "default-value": "blue",
+	                "doc": "The color of the area of the marker.",
+	                "type": "color"
+	            },
+	            "allow-overlap": {
+	                "css": "marker-allow-overlap",
+	                "type": "boolean",
+	                "default-value": false,
+	                "doc": "Control whether overlapping markers are shown or hidden.",
+	                "default-meaning": "Do not allow makers to overlap with each other - overlapping markers will not be shown."
+	            },
+	            "ignore-placement": {
+	                "css": "marker-ignore-placement",
+	                "type": "boolean",
+	                "default-value": false,
+	                "default-meaning": "do not store the bbox of this geometry in the collision detector cache",
+	                "doc": "value to control whether the placement of the feature will prevent the placement of other features"
+	            },
+	            "spacing": {
+	                "css": "marker-spacing",
+	                "doc": "Space between repeated labels",
+	                "default-value": 100,
+	                "type": "float"
+	            },
+	            "max-error": {
+	                "css": "marker-max-error",
+	                "type": "float",
+	                "default-value": 0.2,
+	                "doc": "The maximum difference between actual marker placement and the marker-spacing parameter. Setting a high value can allow the renderer to try to resolve placement conflicts with other symbolizers."
+	            },
+	            "transform": {
+	                "css": "marker-transform",
+	                "type": "functions",
+	                "functions": [
+	                    ["matrix", 6],
+	                    ["translate", 2],
+	                    ["scale", 2],
+	                    ["rotate", 3],
+	                    ["skewX", 1],
+	                    ["skewY", 1]
+	                ],
+	                "default-value": "",
+	                "default-meaning": "No transformation",
+	                "doc": "SVG transformation definition"
+	            },
+	            "clip": {
+	                "css": "marker-clip",
+	                "type": "boolean",
+	                "default-value": true,
+	                "default-meaning": "geometry will be clipped to map bounds before rendering",
+	                "doc": "geometries are clipped to map bounds by default for best rendering performance. In some cases users may wish to disable this to avoid rendering artifacts."
+	            },
+	            "smooth": {
+	                "css": "marker-smooth",
+	                "type": "float",
+	                "default-value": 0,
+	                "default-meaning": "no smoothing",
+	                "range": "0-1",
+	                "doc": "Smooths out geometry angles. 0 is no smoothing, 1 is fully smoothed. Values greater than 1 will produce wild, looping geometries."
+	            },
+	            "geometry-transform": {
+	                "css": "marker-geometry-transform",
+	                "type": "functions",
+	                "default-value": "none",
+	                "default-meaning": "geometry will not be transformed",
+	                "doc": "Allows transformation functions to be applied to the geometry.",
+	                "functions": [
+	                    ["matrix", 6],
+	                    ["translate", 2],
+	                    ["scale", 2],
+	                    ["rotate", 3],
+	                    ["skewX", 1],
+	                    ["skewY", 1]
+	                ]
+	            },
+	            "comp-op": {
+	                "css": "marker-comp-op",
+	                "default-value": "src-over",
+	                "default-meaning": "add the current symbolizer on top of other symbolizer",
+	                "doc": "Composite operation. This defines how this symbolizer should behave relative to symbolizers atop or below it.",
+	                "type": ["clear",
+	                    "src",
+	                    "dst",
+	                    "src-over",
+	                    "dst-over",
+	                    "src-in",
+	                    "dst-in",
+	                    "src-out",
+	                    "dst-out",
+	                    "src-atop",
+	                    "dst-atop",
+	                    "xor",
+	                    "plus",
+	                    "minus",
+	                    "multiply",
+	                    "screen",
+	                    "overlay",
+	                    "darken",
+	                    "lighten",
+	                    "color-dodge",
+	                    "color-burn",
+	                    "hard-light",
+	                    "soft-light",
+	                    "difference",
+	                    "exclusion",
+	                    "contrast",
+	                    "invert",
+	                    "invert-rgb",
+	                    "grain-merge",
+	                    "grain-extract",
+	                    "hue",
+	                    "saturation",
+	                    "color",
+	                    "value"
+	                ]
+	            }
+	        },
+	        "shield": {
+	            "name": {
+	                "css": "shield-name",
+	                "type": "expression",
+	                "serialization": "content",
+	                "doc": "Value to use for a shield\"s text label. Data columns are specified using brackets like [column_name]"
+	            },
+	            "file": {
+	                "css": "shield-file",
+	                "required": true,
+	                "type": "uri",
+	                "default-value": "none",
+	                "doc": "Image file to render behind the shield text"
+	            },
+	            "face-name": {
+	                "css": "shield-face-name",
+	                "type": "string",
+	                "validate": "font",
+	                "doc": "Font name and style to use for the shield text",
+	                "default-value": "",
+	                "required": true
+	            },
+	            "unlock-image": {
+	                "css": "shield-unlock-image",
+	                "type": "boolean",
+	                "doc": "This parameter should be set to true if you are trying to position text beside rather than on top of the shield image",
+	                "default-value": false,
+	                "default-meaning": "text alignment relative to the shield image uses the center of the image as the anchor for text positioning."
+	            },
+	            "size": {
+	                "css": "shield-size",
+	                "type": "float",
+	                "doc": "The size of the shield text in pixels"
+	            },
+	            "fill": {
+	                "css": "shield-fill",
+	                "type": "color",
+	                "doc": "The color of the shield text"
+	            },
+	            "placement": {
+	                "css": "shield-placement",
+	                "type": [
+	                    "point",
+	                    "line",
+	                    "vertex",
+	                    "interior"
+	                ],
+	                "default-value": "point",
+	                "doc": "How this shield should be placed. Point placement attempts to place it on top of points, line places along lines multiple times per feature, vertex places on the vertexes of polygons, and interior attempts to place inside of polygons."
+	            },
+	            "avoid-edges": {
+	                "css": "shield-avoid-edges",
+	                "doc": "Tell positioning algorithm to avoid labeling near intersection edges.",
+	                "type": "boolean",
+	                "default-value": false
+	            },
+	            "allow-overlap": {
+	                "css": "shield-allow-overlap",
+	                "type": "boolean",
+	                "default-value": false,
+	                "doc": "Control whether overlapping shields are shown or hidden.",
+	                "default-meaning": "Do not allow shields to overlap with other map elements already placed."
+	            },
+	            "minimum-distance": {
+	                "css": "shield-min-distance",
+	                "type": "float",
+	                "default-value": 0,
+	                "doc": "Minimum distance to the next shield symbol, not necessarily the same shield."
+	            },
+	            "spacing": {
+	                "css": "shield-spacing",
+	                "type": "float",
+	                "default-value": 0,
+	                "doc": "The spacing between repeated occurrences of the same shield on a line"
+	            },
+	            "minimum-padding": {
+	                "css": "shield-min-padding",
+	                "default-value": 0,
+	                "doc": "Determines the minimum amount of padding that a shield gets relative to other shields",
+	                "type": "float"
+	            },
+	            "wrap-width": {
+	                "css": "shield-wrap-width",
+	                "type": "unsigned",
+	                "default-value": 0,
+	                "doc": "Length of a chunk of text in characters before wrapping text"
+	            },
+	            "wrap-before": {
+	                "css": "shield-wrap-before",
+	                "type": "boolean",
+	                "default-value": false,
+	                "doc": "Wrap text before wrap-width is reached. If false, wrapped lines will be a bit longer than wrap-width."
+	            },
+	            "wrap-character": {
+	                "css": "shield-wrap-character",
+	                "type": "string",
+	                "default-value": " ",
+	                "doc": "Use this character instead of a space to wrap long names."
+	            },
+	            "halo-fill": {
+	                "css": "shield-halo-fill",
+	                "type": "color",
+	                "default-value": "#FFFFFF",
+	                "default-meaning": "white",
+	                "doc": "Specifies the color of the halo around the text."
+	            },
+	            "halo-radius": {
+	                "css": "shield-halo-radius",
+	                "doc": "Specify the radius of the halo in pixels",
+	                "default-value": 0,
+	                "default-meaning": "no halo",
+	                "type": "float"
+	            },
+	            "character-spacing": {
+	                "css": "shield-character-spacing",
+	                "type": "unsigned",
+	                "default-value": 0,
+	                "doc": "Horizontal spacing between characters (in pixels). Currently works for point placement only, not line placement."
+	            },
+	            "line-spacing": {
+	                "css": "shield-line-spacing",
+	                "doc": "Vertical spacing between lines of multiline labels (in pixels)",
+	                "type": "unsigned"
+	            },
+	            "dx": {
+	                "css": "shield-text-dx",
+	                "type": "float",
+	                "doc": "Displace text within shield by fixed amount, in pixels, +/- along the X axis.  A positive value will shift the text right",
+	                "default-value": 0
+	            },
+	            "dy": {
+	                "css": "shield-text-dy",
+	                "type": "float",
+	                "doc": "Displace text within shield by fixed amount, in pixels, +/- along the Y axis.  A positive value will shift the text down",
+	                "default-value": 0
+	            },
+	            "shield-dx": {
+	                "css": "shield-dx",
+	                "type": "float",
+	                "doc": "Displace shield by fixed amount, in pixels, +/- along the X axis.  A positive value will shift the text right",
+	                "default-value": 0
+	            },
+	            "shield-dy": {
+	                "css": "shield-dy",
+	                "type": "float",
+	                "doc": "Displace shield by fixed amount, in pixels, +/- along the Y axis.  A positive value will shift the text down",
+	                "default-value": 0
+	            },
+	            "opacity": {
+	                "css": "shield-opacity",
+	                "type": "float",
+	                "doc": "(Default 1.0) - opacity of the image used for the shield",
+	                "default-value": 1
+	            },
+	            "text-opacity": {
+	                "css": "shield-text-opacity",
+	                "type": "float",
+	                "doc": "(Default 1.0) - opacity of the text placed on top of the shield",
+	                "default-value": 1
+	            },
+	            "horizontal-alignment": {
+	                "css": "shield-horizontal-alignment",
+	                "type": [
+	                    "left",
+	                    "middle",
+	                    "right",
+	                    "auto"
+	                ],
+	                "doc": "The shield's horizontal alignment from its centerpoint",
+	                "default-value": "auto"
+	            },
+	            "vertical-alignment": {
+	                "css": "shield-vertical-alignment",
+	                "type": [
+	                    "top",
+	                    "middle",
+	                    "bottom",
+	                    "auto"
+	                ],
+	                "doc": "The shield's vertical alignment from its centerpoint",
+	                "default-value": "middle"
+	            },
+	            "text-transform": {
+	                "css": "shield-text-transform",
+	                "type": [
+	                    "none",
+	                    "uppercase",
+	                    "lowercase",
+	                    "capitalize"
+	                ],
+	                "doc": "Transform the case of the characters",
+	                "default-value": "none"
+	            },
+	            "justify-alignment": {
+	                "css": "shield-justify-alignment",
+	                "type": [
+	                    "left",
+	                    "center",
+	                    "right",
+	                    "auto"
+	                ],
+	                "doc": "Define how text in a shield's label is justified",
+	                "default-value": "auto"
+	            },
+	            "clip": {
+	                "css": "shield-clip",
+	                "type": "boolean",
+	                "default-value": true,
+	                "default-meaning": "geometry will be clipped to map bounds before rendering",
+	                "doc": "geometries are clipped to map bounds by default for best rendering performance. In some cases users may wish to disable this to avoid rendering artifacts."
+	            },
+	            "comp-op": {
+	                "css": "shield-comp-op",
+	                "default-value": "src-over",
+	                "default-meaning": "add the current symbolizer on top of other symbolizer",
+	                "doc": "Composite operation. This defines how this symbolizer should behave relative to symbolizers atop or below it.",
+	                "type": ["clear",
+	                    "src",
+	                    "dst",
+	                    "src-over",
+	                    "dst-over",
+	                    "src-in",
+	                    "dst-in",
+	                    "src-out",
+	                    "dst-out",
+	                    "src-atop",
+	                    "dst-atop",
+	                    "xor",
+	                    "plus",
+	                    "minus",
+	                    "multiply",
+	                    "screen",
+	                    "overlay",
+	                    "darken",
+	                    "lighten",
+	                    "color-dodge",
+	                    "color-burn",
+	                    "hard-light",
+	                    "soft-light",
+	                    "difference",
+	                    "exclusion",
+	                    "contrast",
+	                    "invert",
+	                    "invert-rgb",
+	                    "grain-merge",
+	                    "grain-extract",
+	                    "hue",
+	                    "saturation",
+	                    "color",
+	                    "value"
+	                ]
+	            }
+	        },
+	        "line-pattern": {
+	            "file": {
+	                "css": "line-pattern-file",
+	                "type": "uri",
+	                "default-value": "none",
+	                "required": true,
+	                "doc": "An image file to be repeated and warped along a line"
+	            },
+	            "clip": {
+	                "css": "line-pattern-clip",
+	                "type": "boolean",
+	                "default-value": true,
+	                "default-meaning": "geometry will be clipped to map bounds before rendering",
+	                "doc": "geometries are clipped to map bounds by default for best rendering performance. In some cases users may wish to disable this to avoid rendering artifacts."
+	            },
+	            "smooth": {
+	                "css": "line-pattern-smooth",
+	                "type": "float",
+	                "default-value": 0,
+	                "default-meaning": "no smoothing",
+	                "range": "0-1",
+	                "doc": "Smooths out geometry angles. 0 is no smoothing, 1 is fully smoothed. Values greater than 1 will produce wild, looping geometries."
+	            },
+	            "geometry-transform": {
+	                "css": "line-pattern-geometry-transform",
+	                "type": "functions",
+	                "default-value": "none",
+	                "default-meaning": "geometry will not be transformed",
+	                "doc": "Allows transformation functions to be applied to the geometry.",
+	                "functions": [
+	                    ["matrix", 6],
+	                    ["translate", 2],
+	                    ["scale", 2],
+	                    ["rotate", 3],
+	                    ["skewX", 1],
+	                    ["skewY", 1]
+	                ]
+	            },
+	            "comp-op": {
+	                "css": "line-pattern-comp-op",
+	                "default-value": "src-over",
+	                "default-meaning": "add the current symbolizer on top of other symbolizer",
+	                "doc": "Composite operation. This defines how this symbolizer should behave relative to symbolizers atop or below it.",
+	                "type": ["clear",
+	                    "src",
+	                    "dst",
+	                    "src-over",
+	                    "dst-over",
+	                    "src-in",
+	                    "dst-in",
+	                    "src-out",
+	                    "dst-out",
+	                    "src-atop",
+	                    "dst-atop",
+	                    "xor",
+	                    "plus",
+	                    "minus",
+	                    "multiply",
+	                    "screen",
+	                    "overlay",
+	                    "darken",
+	                    "lighten",
+	                    "color-dodge",
+	                    "color-burn",
+	                    "hard-light",
+	                    "soft-light",
+	                    "difference",
+	                    "exclusion",
+	                    "contrast",
+	                    "invert",
+	                    "invert-rgb",
+	                    "grain-merge",
+	                    "grain-extract",
+	                    "hue",
+	                    "saturation",
+	                    "color",
+	                    "value"
+	                ]
+	            }
+	        },
+	        "polygon-pattern": {
+	            "file": {
+	                "css": "polygon-pattern-file",
+	                "type": "uri",
+	                "default-value": "none",
+	                "required": true,
+	                "doc": "Image to use as a repeated pattern fill within a polygon"
+	            },
+	            "alignment": {
+	                "css": "polygon-pattern-alignment",
+	                "type": [
+	                    "local",
+	                    "global"
+	                ],
+	                "default-value": "local",
+	                "doc": "Specify whether to align pattern fills to the layer or to the map."
+	            },
+	            "gamma": {
+	                "css": "polygon-pattern-gamma",
+	                "type": "float",
+	                "default-value": 1,
+	                "default-meaning": "fully antialiased",
+	                "range": "0-1",
+	                "doc": "Level of antialiasing of polygon pattern edges"
+	            },
+	            "opacity": {
+	                "css": "polygon-pattern-opacity",
+	                "type": "float",
+	                "doc": "(Default 1.0) - Apply an opacity level to the image used for the pattern",
+	                "default-value": 1,
+	                "default-meaning": "The image is rendered without modifications"
+	            },
+	            "clip": {
+	                "css": "polygon-pattern-clip",
+	                "type": "boolean",
+	                "default-value": true,
+	                "default-meaning": "geometry will be clipped to map bounds before rendering",
+	                "doc": "geometries are clipped to map bounds by default for best rendering performance. In some cases users may wish to disable this to avoid rendering artifacts."
+	            },
+	            "smooth": {
+	                "css": "polygon-pattern-smooth",
+	                "type": "float",
+	                "default-value": 0,
+	                "default-meaning": "no smoothing",
+	                "range": "0-1",
+	                "doc": "Smooths out geometry angles. 0 is no smoothing, 1 is fully smoothed. Values greater than 1 will produce wild, looping geometries."
+	            },
+	            "geometry-transform": {
+	                "css": "polygon-pattern-geometry-transform",
+	                "type": "functions",
+	                "default-value": "none",
+	                "default-meaning": "geometry will not be transformed",
+	                "doc": "Allows transformation functions to be applied to the geometry.",
+	                "functions": [
+	                    ["matrix", 6],
+	                    ["translate", 2],
+	                    ["scale", 2],
+	                    ["rotate", 3],
+	                    ["skewX", 1],
+	                    ["skewY", 1]
+	                ]
+	            },
+	            "comp-op": {
+	                "css": "polygon-pattern-comp-op",
+	                "default-value": "src-over",
+	                "default-meaning": "add the current symbolizer on top of other symbolizer",
+	                "doc": "Composite operation. This defines how this symbolizer should behave relative to symbolizers atop or below it.",
+	                "type": ["clear",
+	                    "src",
+	                    "dst",
+	                    "src-over",
+	                    "dst-over",
+	                    "src-in",
+	                    "dst-in",
+	                    "src-out",
+	                    "dst-out",
+	                    "src-atop",
+	                    "dst-atop",
+	                    "xor",
+	                    "plus",
+	                    "minus",
+	                    "multiply",
+	                    "screen",
+	                    "overlay",
+	                    "darken",
+	                    "lighten",
+	                    "color-dodge",
+	                    "color-burn",
+	                    "hard-light",
+	                    "soft-light",
+	                    "difference",
+	                    "exclusion",
+	                    "contrast",
+	                    "invert",
+	                    "invert-rgb",
+	                    "grain-merge",
+	                    "grain-extract",
+	                    "hue",
+	                    "saturation",
+	                    "color",
+	                    "value"
+	                ]
+	            }
+	        },
+	        "raster": {
+	            "opacity": {
+	                "css": "raster-opacity",
+	                "default-value": 1,
+	                "default-meaning": "opaque",
+	                "type": "float",
+	                "doc": "The opacity of the raster symbolizer on top of other symbolizers."
+	            },
+	            "filter-factor": {
+	                "css": "raster-filter-factor",
+	                "default-value": -1,
+	                "default-meaning": "Allow the datasource to choose appropriate downscaling.",
+	                "type": "float",
+	                "doc": "This is used by the Raster or Gdal datasources to pre-downscale images using overviews. Higher numbers can sometimes cause much better scaled image output, at the cost of speed."
+	            },
+	            "scaling": {
+	                "css": "raster-scaling",
+	                "type": [
+	                    "near",
+	                    "fast",
+	                    "bilinear",
+	                    "bilinear8",
+	                    "bicubic",
+	                    "spline16",
+	                    "spline36",
+	                    "hanning",
+	                    "hamming",
+	                    "hermite",
+	                    "kaiser",
+	                    "quadric",
+	                    "catrom",
+	                    "gaussian",
+	                    "bessel",
+	                    "mitchell",
+	                    "sinc",
+	                    "lanczos",
+	                    "blackman"
+	                ],
+	                "default-value": "near",
+	                "doc": "The scaling algorithm used to making different resolution versions of this raster layer. Bilinear is a good compromise between speed and accuracy, while lanczos gives the highest quality."
+	            },
+	            "mesh-size": {
+	                "css": "raster-mesh-size",
+	                "default-value": 16,
+	                "default-meaning": "Reprojection mesh will be 1/16 of the resolution of the source image",
+	                "type": "unsigned",
+	                "doc": "A reduced resolution mesh is used for raster reprojection, and the total image size is divided by the mesh-size to determine the quality of that mesh. Values for mesh-size larger than the default will result in faster reprojection but might lead to distortion."
+	            },
+	            "comp-op": {
+	                "css": "raster-comp-op",
+	                "default-value": "src-over",
+	                "default-meaning": "add the current symbolizer on top of other symbolizer",
+	                "doc": "Composite operation. This defines how this symbolizer should behave relative to symbolizers atop or below it.",
+	                "type": ["clear",
+	                    "src",
+	                    "dst",
+	                    "src-over",
+	                    "dst-over",
+	                    "src-in",
+	                    "dst-in",
+	                    "src-out",
+	                    "dst-out",
+	                    "src-atop",
+	                    "dst-atop",
+	                    "xor",
+	                    "plus",
+	                    "minus",
+	                    "multiply",
+	                    "screen",
+	                    "overlay",
+	                    "darken",
+	                    "lighten",
+	                    "color-dodge",
+	                    "color-burn",
+	                    "hard-light",
+	                    "soft-light",
+	                    "difference",
+	                    "exclusion",
+	                    "contrast",
+	                    "invert",
+	                    "invert-rgb",
+	                    "grain-merge",
+	                    "grain-extract",
+	                    "hue",
+	                    "saturation",
+	                    "color",
+	                    "value"
+	                ]
+	            }
+	        },
+	        "point": {
+	            "file": {
+	                "css": "point-file",
+	                "type": "uri",
+	                "required": false,
+	                "default-value": "none",
+	                "doc": "Image file to represent a point"
+	            },
+	            "allow-overlap": {
+	                "css": "point-allow-overlap",
+	                "type": "boolean",
+	                "default-value": false,
+	                "doc": "Control whether overlapping points are shown or hidden.",
+	                "default-meaning": "Do not allow points to overlap with each other - overlapping markers will not be shown."
+	            },
+	            "ignore-placement": {
+	                "css": "point-ignore-placement",
+	                "type": "boolean",
+	                "default-value": false,
+	                "default-meaning": "do not store the bbox of this geometry in the collision detector cache",
+	                "doc": "value to control whether the placement of the feature will prevent the placement of other features"
+	            },
+	            "opacity": {
+	                "css": "point-opacity",
+	                "type": "float",
+	                "default-value": 1.0,
+	                "default-meaning": "Fully opaque",
+	                "doc": "A value from 0 to 1 to control the opacity of the point"
+	            },
+	            "placement": {
+	                "css": "point-placement",
+	                "type": [
+	                    "centroid",
+	                    "interior"
+	                ],
+	                "doc": "How this point should be placed. Centroid calculates the geometric center of a polygon, which can be outside of it, while interior always places inside of a polygon.",
+	                "default-value": "centroid"
+	            },
+	            "transform": {
+	                "css": "point-transform",
+	                "type": "functions",
+	                "functions": [
+	                    ["matrix", 6],
+	                    ["translate", 2],
+	                    ["scale", 2],
+	                    ["rotate", 3],
+	                    ["skewX", 1],
+	                    ["skewY", 1]
+	                ],
+	                "default-value": "",
+	                "default-meaning": "No transformation",
+	                "doc": "SVG transformation definition"
+	            },
+	            "comp-op": {
+	                "css": "point-comp-op",
+	                "default-value": "src-over",
+	                "default-meaning": "add the current symbolizer on top of other symbolizer",
+	                "doc": "Composite operation. This defines how this symbolizer should behave relative to symbolizers atop or below it.",
+	                "type": ["clear",
+	                    "src",
+	                    "dst",
+	                    "src-over",
+	                    "dst-over",
+	                    "src-in",
+	                    "dst-in",
+	                    "src-out",
+	                    "dst-out",
+	                    "src-atop",
+	                    "dst-atop",
+	                    "xor",
+	                    "plus",
+	                    "minus",
+	                    "multiply",
+	                    "screen",
+	                    "overlay",
+	                    "darken",
+	                    "lighten",
+	                    "color-dodge",
+	                    "color-burn",
+	                    "hard-light",
+	                    "soft-light",
+	                    "difference",
+	                    "exclusion",
+	                    "contrast",
+	                    "invert",
+	                    "invert-rgb",
+	                    "grain-merge",
+	                    "grain-extract",
+	                    "hue",
+	                    "saturation",
+	                    "color",
+	                    "value"
+	                ]
+	            }
+	        },
+	        "text": {
+	            "name": {
+	                "css": "text-name",
+	                "type": "expression",
+	                "required": true,
+	                "default-value": "",
+	                "serialization": "content",
+	                "doc": "Value to use for a text label. Data columns are specified using brackets like [column_name]"
+	            },
+	            "face-name": {
+	                "css": "text-face-name",
+	                "type": "string",
+	                "validate": "font",
+	                "doc": "Font name and style to render a label in",
+	                "required": true
+	            },
+	            "size": {
+	                "css": "text-size",
+	                "type": "float",
+	                "default-value": 10,
+	                "doc": "Text size in pixels"
+	            },
+	            "text-ratio": {
+	                "css": "text-ratio",
+	                "doc": "Define the amount of text (of the total) present on successive lines when wrapping occurs",
+	                "default-value": 0,
+	                "type": "unsigned"
+	            },
+	            "wrap-width": {
+	                "css": "text-wrap-width",
+	                "doc": "Length of a chunk of text in characters before wrapping text",
+	                "default-value": 0,
+	                "type": "unsigned"
+	            },
+	            "wrap-before": {
+	                "css": "text-wrap-before",
+	                "type": "boolean",
+	                "default-value": false,
+	                "doc": "Wrap text before wrap-width is reached. If false, wrapped lines will be a bit longer than wrap-width."
+	            },
+	            "wrap-character": {
+	                "css": "text-wrap-character",
+	                "type": "string",
+	                "default-value": " ",
+	                "doc": "Use this character instead of a space to wrap long text."
+	            },
+	            "spacing": {
+	                "css": "text-spacing",
+	                "type": "unsigned",
+	                "doc": "Distance between repeated text labels on a line (aka. label-spacing)"
+	            },
+	            "character-spacing": {
+	                "css": "text-character-spacing",
+	                "type": "float",
+	                "default-value": 0,
+	                "doc": "Horizontal spacing adjustment between characters in pixels"
+	            },
+	            "line-spacing": {
+	                "css": "text-line-spacing",
+	                "default-value": 0,
+	                "type": "unsigned",
+	                "doc": "Vertical spacing adjustment between lines in pixels"
+	            },
+	            "label-position-tolerance": {
+	                "css": "text-label-position-tolerance",
+	                "default-value": 0,
+	                "type": "unsigned",
+	                "doc": "Allows the label to be displaced from its ideal position by a number of pixels (only works with placement:line)"
+	            },
+	            "max-char-angle-delta": {
+	                "css": "text-max-char-angle-delta",
+	                "type": "float",
+	                "default-value": "22.5",
+	                "doc": "The maximum angle change, in degrees, allowed between adjacent characters in a label. This value internally is converted to radians to the default is 22.5*math.pi/180.0. The higher the value the fewer labels will be placed around around sharp corners."
+	            },
+	            "fill": {
+	                "css": "text-fill",
+	                "doc": "Specifies the color for the text",
+	                "default-value": "#000000",
+	                "type": "color"
+	            },
+	            "opacity": {
+	                "css": "text-opacity",
+	                "doc": "A number from 0 to 1 specifying the opacity for the text",
+	                "default-value": 1.0,
+	                "default-meaning": "Fully opaque",
+	                "type": "float"
+	            },
+	            "halo-fill": {
+	                "css": "text-halo-fill",
+	                "type": "color",
+	                "default-value": "#FFFFFF",
+	                "default-meaning": "white",
+	                "doc": "Specifies the color of the halo around the text."
+	            },
+	            "halo-radius": {
+	                "css": "text-halo-radius",
+	                "doc": "Specify the radius of the halo in pixels",
+	                "default-value": 0,
+	                "default-meaning": "no halo",
+	                "type": "float"
+	            },
+	            "dx": {
+	                "css": "text-dx",
+	                "type": "float",
+	                "doc": "Displace text by fixed amount, in pixels, +/- along the X axis.  A positive value will shift the text right",
+	                "default-value": 0
+	            },
+	            "dy": {
+	                "css": "text-dy",
+	                "type": "float",
+	                "doc": "Displace text by fixed amount, in pixels, +/- along the Y axis.  A positive value will shift the text down",
+	                "default-value": 0
+	            },
+	            "vertical-alignment": {
+	                "css": "text-vertical-alignment",
+	                "type": [
+	                    "top",
+	                    "middle",
+	                    "bottom",
+	                    "auto"
+	                ],
+	                "doc": "Position of label relative to point position.",
+	                "default-value": "auto",
+	                "default-meaning": "Default affected by value of dy; \"bottom\" for dy>0, \"top\" for dy<0."
+	            },
+	            "avoid-edges": {
+	                "css": "text-avoid-edges",
+	                "doc": "Tell positioning algorithm to avoid labeling near intersection edges.",
+	                "default-value": false,
+	                "type": "boolean"
+	            },
+	            "minimum-distance": {
+	                "css": "text-min-distance",
+	                "doc": "Minimum permitted distance to the next text symbolizer.",
+	                "type": "float"
+	            },
+	            "minimum-padding": {
+	                "css": "text-min-padding",
+	                "doc": "Determines the minimum amount of padding that a text symbolizer gets relative to other text",
+	                "type": "float"
+	            },
+	            "minimum-path-length": {
+	                "css": "text-min-path-length",
+	                "type": "float",
+	                "default-value": 0,
+	                "default-meaning": "place labels on all paths",
+	                "doc": "Place labels only on paths longer than this value."
+	            },
+	            "allow-overlap": {
+	                "css": "text-allow-overlap",
+	                "type": "boolean",
+	                "default-value": false,
+	                "doc": "Control whether overlapping text is shown or hidden.",
+	                "default-meaning": "Do not allow text to overlap with other text - overlapping markers will not be shown."
+	            },
+	            "orientation": {
+	                "css": "text-orientation",
+	                "type": "expression",
+	                "doc": "Rotate the text."
+	            },
+	            "placement": {
+	                "css": "text-placement",
+	                "type": [
+	                    "point",
+	                    "line",
+	                    "vertex",
+	                    "interior"
+	                ],
+	                "default-value": "point",
+	                "doc": "Control the style of placement of a point versus the geometry it is attached to."
+	            },
+	            "placement-type": {
+	                "css": "text-placement-type",
+	                "doc": "Re-position and/or re-size text to avoid overlaps. \"simple\" for basic algorithm (using text-placements string,) \"dummy\" to turn this feature off.",
+	                "type": [
+	                    "dummy",
+	                    "simple"
+	                ],
+	                "default-value": "dummy"
+	            },
+	            "placements": {
+	                "css": "text-placements",
+	                "type": "string",
+	                "default-value": "",
+	                "doc": "If \"placement-type\" is set to \"simple\", use this \"POSITIONS,[SIZES]\" string. An example is `text-placements: \"E,NE,SE,W,NW,SW\";` "
+	            },
+	            "text-transform": {
+	                "css": "text-transform",
+	                "type": [
+	                    "none",
+	                    "uppercase",
+	                    "lowercase",
+	                    "capitalize"
+	                ],
+	                "doc": "Transform the case of the characters",
+	                "default-value": "none"
+	            },
+	            "horizontal-alignment": {
+	                "css": "text-horizontal-alignment",
+	                "type": [
+	                    "left",
+	                    "middle",
+	                    "right",
+	                    "auto"
+	                ],
+	                "doc": "The text's horizontal alignment from its centerpoint",
+	                "default-value": "auto"
+	            },
+	            "justify-alignment": {
+	                "css": "text-align",
+	                "type": [
+	                    "left",
+	                    "right",
+	                    "center",
+	                    "auto"
+	                ],
+	                "doc": "Define how text is justified",
+	                "default-value": "auto",
+	                "default-meaning": "Auto alignment means that text will be centered by default except when using the `placement-type` parameter - in that case either right or left justification will be used automatically depending on where the text could be fit given the `text-placements` directives"
+	            },
+	            "clip": {
+	                "css": "text-clip",
+	                "type": "boolean",
+	                "default-value": true,
+	                "default-meaning": "geometry will be clipped to map bounds before rendering",
+	                "doc": "geometries are clipped to map bounds by default for best rendering performance. In some cases users may wish to disable this to avoid rendering artifacts."
+	            },
+	            "comp-op": {
+	                "css": "text-comp-op",
+	                "default-value": "src-over",
+	                "default-meaning": "add the current symbolizer on top of other symbolizer",
+	                "doc": "Composite operation. This defines how this symbolizer should behave relative to symbolizers atop or below it.",
+	                "type": ["clear",
+	                    "src",
+	                    "dst",
+	                    "src-over",
+	                    "dst-over",
+	                    "src-in",
+	                    "dst-in",
+	                    "src-out",
+	                    "dst-out",
+	                    "src-atop",
+	                    "dst-atop",
+	                    "xor",
+	                    "plus",
+	                    "minus",
+	                    "multiply",
+	                    "screen",
+	                    "overlay",
+	                    "darken",
+	                    "lighten",
+	                    "color-dodge",
+	                    "color-burn",
+	                    "hard-light",
+	                    "soft-light",
+	                    "difference",
+	                    "exclusion",
+	                    "contrast",
+	                    "invert",
+	                    "invert-rgb",
+	                    "grain-merge",
+	                    "grain-extract",
+	                    "hue",
+	                    "saturation",
+	                    "color",
+	                    "value"
+	                ]
+	            }
+	        },
+	        "building": {
+	            "fill": {
+	                "css": "building-fill",
+	                "default-value": "#FFFFFF",
+	                "doc": "The color of the buildings walls.",
+	                "type": "color"
+	            },
+	            "fill-opacity": {
+	                "css": "building-fill-opacity",
+	                "type": "float",
+	                "doc": "The opacity of the building as a whole, including all walls.",
+	                "default-value": 1
+	            },
+	            "height": {
+	                "css": "building-height",
+	                "doc": "The height of the building in pixels.",
+	                "type": "expression",
+	                "default-value": "0"
+	            }
+	        }
+	    },
+	    "colors": {
+	        "aliceblue": [240, 248, 255],
+	        "antiquewhite": [250, 235, 215],
+	        "aqua": [0, 255, 255],
+	        "aquamarine": [127, 255, 212],
+	        "azure": [240, 255, 255],
+	        "beige": [245, 245, 220],
+	        "bisque": [255, 228, 196],
+	        "black": [0, 0, 0],
+	        "blanchedalmond": [255, 235, 205],
+	        "blue": [0, 0, 255],
+	        "blueviolet": [138, 43, 226],
+	        "brown": [165, 42, 42],
+	        "burlywood": [222, 184, 135],
+	        "cadetblue": [95, 158, 160],
+	        "chartreuse": [127, 255, 0],
+	        "chocolate": [210, 105, 30],
+	        "coral": [255, 127, 80],
+	        "cornflowerblue": [100, 149, 237],
+	        "cornsilk": [255, 248, 220],
+	        "crimson": [220, 20, 60],
+	        "cyan": [0, 255, 255],
+	        "darkblue": [0, 0, 139],
+	        "darkcyan": [0, 139, 139],
+	        "darkgoldenrod": [184, 134, 11],
+	        "darkgray": [169, 169, 169],
+	        "darkgreen": [0, 100, 0],
+	        "darkgrey": [169, 169, 169],
+	        "darkkhaki": [189, 183, 107],
+	        "darkmagenta": [139, 0, 139],
+	        "darkolivegreen": [85, 107, 47],
+	        "darkorange": [255, 140, 0],
+	        "darkorchid": [153, 50, 204],
+	        "darkred": [139, 0, 0],
+	        "darksalmon": [233, 150, 122],
+	        "darkseagreen": [143, 188, 143],
+	        "darkslateblue": [72, 61, 139],
+	        "darkslategrey": [47, 79, 79],
+	        "darkturquoise": [0, 206, 209],
+	        "darkviolet": [148, 0, 211],
+	        "deeppink": [255, 20, 147],
+	        "deepskyblue": [0, 191, 255],
+	        "dimgray": [105, 105, 105],
+	        "dimgrey": [105, 105, 105],
+	        "dodgerblue": [30, 144, 255],
+	        "firebrick": [178, 34, 34],
+	        "floralwhite": [255, 250, 240],
+	        "forestgreen": [34, 139, 34],
+	        "fuchsia": [255, 0, 255],
+	        "gainsboro": [220, 220, 220],
+	        "ghostwhite": [248, 248, 255],
+	        "gold": [255, 215, 0],
+	        "goldenrod": [218, 165, 32],
+	        "gray": [128, 128, 128],
+	        "grey": [128, 128, 128],
+	        "green": [0, 128, 0],
+	        "greenyellow": [173, 255, 47],
+	        "honeydew": [240, 255, 240],
+	        "hotpink": [255, 105, 180],
+	        "indianred": [205, 92, 92],
+	        "indigo": [75, 0, 130],
+	        "ivory": [255, 255, 240],
+	        "khaki": [240, 230, 140],
+	        "lavender": [230, 230, 250],
+	        "lavenderblush": [255, 240, 245],
+	        "lawngreen": [124, 252, 0],
+	        "lemonchiffon": [255, 250, 205],
+	        "lightblue": [173, 216, 230],
+	        "lightcoral": [240, 128, 128],
+	        "lightcyan": [224, 255, 255],
+	        "lightgoldenrodyellow": [250, 250, 210],
+	        "lightgray": [211, 211, 211],
+	        "lightgreen": [144, 238, 144],
+	        "lightgrey": [211, 211, 211],
+	        "lightpink": [255, 182, 193],
+	        "lightsalmon": [255, 160, 122],
+	        "lightseagreen": [32, 178, 170],
+	        "lightskyblue": [135, 206, 250],
+	        "lightslategray": [119, 136, 153],
+	        "lightslategrey": [119, 136, 153],
+	        "lightsteelblue": [176, 196, 222],
+	        "lightyellow": [255, 255, 224],
+	        "lime": [0, 255, 0],
+	        "limegreen": [50, 205, 50],
+	        "linen": [250, 240, 230],
+	        "magenta": [255, 0, 255],
+	        "maroon": [128, 0, 0],
+	        "mediumaquamarine": [102, 205, 170],
+	        "mediumblue": [0, 0, 205],
+	        "mediumorchid": [186, 85, 211],
+	        "mediumpurple": [147, 112, 219],
+	        "mediumseagreen": [60, 179, 113],
+	        "mediumslateblue": [123, 104, 238],
+	        "mediumspringgreen": [0, 250, 154],
+	        "mediumturquoise": [72, 209, 204],
+	        "mediumvioletred": [199, 21, 133],
+	        "midnightblue": [25, 25, 112],
+	        "mintcream": [245, 255, 250],
+	        "mistyrose": [255, 228, 225],
+	        "moccasin": [255, 228, 181],
+	        "navajowhite": [255, 222, 173],
+	        "navy": [0, 0, 128],
+	        "oldlace": [253, 245, 230],
+	        "olive": [128, 128, 0],
+	        "olivedrab": [107, 142, 35],
+	        "orange": [255, 165, 0],
+	        "orangered": [255, 69, 0],
+	        "orchid": [218, 112, 214],
+	        "palegoldenrod": [238, 232, 170],
+	        "palegreen": [152, 251, 152],
+	        "paleturquoise": [175, 238, 238],
+	        "palevioletred": [219, 112, 147],
+	        "papayawhip": [255, 239, 213],
+	        "peachpuff": [255, 218, 185],
+	        "peru": [205, 133, 63],
+	        "pink": [255, 192, 203],
+	        "plum": [221, 160, 221],
+	        "powderblue": [176, 224, 230],
+	        "purple": [128, 0, 128],
+	        "red": [255, 0, 0],
+	        "rosybrown": [188, 143, 143],
+	        "royalblue": [65, 105, 225],
+	        "saddlebrown": [139, 69, 19],
+	        "salmon": [250, 128, 114],
+	        "sandybrown": [244, 164, 96],
+	        "seagreen": [46, 139, 87],
+	        "seashell": [255, 245, 238],
+	        "sienna": [160, 82, 45],
+	        "silver": [192, 192, 192],
+	        "skyblue": [135, 206, 235],
+	        "slateblue": [106, 90, 205],
+	        "slategray": [112, 128, 144],
+	        "slategrey": [112, 128, 144],
+	        "snow": [255, 250, 250],
+	        "springgreen": [0, 255, 127],
+	        "steelblue": [70, 130, 180],
+	        "tan": [210, 180, 140],
+	        "teal": [0, 128, 128],
+	        "thistle": [216, 191, 216],
+	        "tomato": [255, 99, 71],
+	        "turquoise": [64, 224, 208],
+	        "violet": [238, 130, 238],
+	        "wheat": [245, 222, 179],
+	        "white": [255, 255, 255],
+	        "whitesmoke": [245, 245, 245],
+	        "yellow": [255, 255, 0],
+	        "yellowgreen": [154, 205, 50],
+	        "transparent": [0, 0, 0, 0]
+	    },
+	    "filter": {
+	        "value": [
+	            "true",
+	            "false",
+	            "null",
+	            "point",
+	            "linestring",
+	            "polygon",
+	            "collection"
+	        ]
+	    }
+	};
+
+	SuperMap.CartoCSS['mapnik_reference'] = {
+	    version: {
+	        latest: SuperMap._mapnik_reference_latest,
+	        '2.1.1': SuperMap._mapnik_reference_latest
+	    }
+	};
+
+	SuperMap.CartoCSS.Tree = {};
+
+	SuperMap.CartoCSS.Tree.functions = {
+	    rgb: function (r, g, b) {
+	        return this.rgba(r, g, b, 1.0);
+	    },
+	    rgba: function (r, g, b, a) {
+	        var me = this;
+	        var rgb = [r, g, b].map(function (c) {
+	            return me.number(c);
+	        });
+	        a = me.number(a);
+	        if (rgb.some(isNaN) || isNaN(a)) return null;
+	        return new SuperMap.CartoCSS.Tree.Color(rgb, a);
+	    },
+	    // Only require val
+	    stop: function (val) {
+	        var color, mode;
+	        if (arguments.length > 1) color = arguments[1];
+	        if (arguments.length > 2) mode = arguments[2];
+
+	        return {
+	            is: 'tag',
+	            val: val,
+	            color: color,
+	            mode: mode,
+	            toString: function (env) {
+	                return '\n\t<stop value="' + val.ev(env) + '"' +
+	                    (color ? ' color="' + color.ev(env) + '" ' : '') +
+	                    (mode ? ' mode="' + mode.ev(env) + '" ' : '') +
+	                    '/>';
+	            }
+	        };
+	    },
+	    hsl: function (h, s, l) {
+	        return this.hsla(h, s, l, 1.0);
+	    },
+	    hsla: function (h, s, l, a) {
+	        h = (this.number(h) % 360) / 360;
+	        s = this.number(s);
+	        l = this.number(l);
+	        a = this.number(a);
+	        if ([h, s, l, a].some(isNaN)) return null;
+
+	        var m2 = l <= 0.5 ? l * (s + 1) : l + s - l * s,
+	            m1 = l * 2 - m2;
+
+	        return this.rgba(hue(h + 1 / 3) * 255,
+	            hue(h) * 255,
+	            hue(h - 1 / 3) * 255,
+	            a);
+
+	        function hue(h) {
+	            h = h < 0 ? h + 1 : (h > 1 ? h - 1 : h);
+	            if (h * 6 < 1) return m1 + (m2 - m1) * h * 6;
+	            else if (h * 2 < 1) return m2;
+	            else if (h * 3 < 2) return m1 + (m2 - m1) * (2 / 3 - h) * 6;
+	            else                return m1;
+	        }
+	    },
+	    hue: function (color) {
+	        if (!('toHSL' in color)) return null;
+	        return new SuperMap.CartoCSS.Tree.Dimension(Math.round(color.toHSL().h));
+	    },
+	    saturation: function (color) {
+	        if (!('toHSL' in color)) return null;
+	        return new SuperMap.CartoCSS.Tree.Dimension(Math.round(color.toHSL().s * 100), '%');
+	    },
+	    lightness: function (color) {
+	        if (!('toHSL' in color)) return null;
+	        return new SuperMap.CartoCSS.Tree.Dimension(Math.round(color.toHSL().l * 100), '%');
+	    },
+	    alpha: function (color) {
+	        if (!('toHSL' in color)) return null;
+	        return new SuperMap.CartoCSS.Tree.Dimension(color.toHSL().a);
+	    },
+	    saturate: function (color, amount) {
+	        if (!('toHSL' in color)) return null;
+	        var hsl = color.toHSL();
+
+	        hsl.s += amount.value / 100;
+	        hsl.s = this.clamp(hsl.s);
+	        return this.hsla_simple(hsl);
+	    },
+	    desaturate: function (color, amount) {
+	        if (!('toHSL' in color)) return null;
+	        var hsl = color.toHSL();
+
+	        hsl.s -= amount.value / 100;
+	        hsl.s = this.clamp(hsl.s);
+	        return this.hsla_simple(hsl);
+	    },
+	    lighten: function (color, amount) {
+	        if (!('toHSL' in color)) return null;
+	        var hsl = color.toHSL();
+
+	        hsl.l += amount.value / 100;
+	        hsl.l = this.clamp(hsl.l);
+	        return this.hsla_simple(hsl);
+	    },
+	    darken: function (color, amount) {
+	        if (!('toHSL' in color)) return null;
+	        var hsl = color.toHSL();
+
+	        hsl.l -= amount.value / 100;
+	        hsl.l = this.clamp(hsl.l);
+	        return this.hsla_simple(hsl);
+	    },
+	    fadein: function (color, amount) {
+	        if (!('toHSL' in color)) return null;
+	        var hsl = color.toHSL();
+
+	        hsl.a += amount.value / 100;
+	        hsl.a = this.clamp(hsl.a);
+	        return this.hsla_simple(hsl);
+	    },
+	    fadeout: function (color, amount) {
+	        if (!('toHSL' in color)) return null;
+	        var hsl = color.toHSL();
+
+	        hsl.a -= amount.value / 100;
+	        hsl.a = this.clamp(hsl.a);
+	        return this.hsla_simple(hsl);
+	    },
+	    spin: function (color, amount) {
+	        if (!('toHSL' in color)) return null;
+	        var hsl = color.toHSL();
+	        var hue = (hsl.h + amount.value) % 360;
+
+	        hsl.h = hue < 0 ? 360 + hue : hue;
+
+	        return this.hsla_simple(hsl);
+	    },
+	    replace: function (entity, a, b) {
+	        if (entity.is === 'field') {
+	            return entity.toString + '.replace(' + a.toString() + ', ' + b.toString() + ')';
+	        } else {
+	            return entity.replace(a, b);
+	        }
+	    },
+	    //
+	    // Copyright (c) 2006-2009 Hampton Catlin, Nathan Weizenbaum, and Chris Eppstein
+	    // http://sass-lang.com
+	    //
+	    mix: function (color1, color2, weight) {
+	        var p = weight.value / 100.0;
+	        var w = p * 2 - 1;
+	        var a = color1.toHSL().a - color2.toHSL().a;
+
+	        var w1 = (((w * a == -1) ? w : (w + a) / (1 + w * a)) + 1) / 2.0;
+	        var w2 = 1 - w1;
+
+	        var rgb = [color1.rgb[0] * w1 + color2.rgb[0] * w2,
+	            color1.rgb[1] * w1 + color2.rgb[1] * w2,
+	            color1.rgb[2] * w1 + color2.rgb[2] * w2];
+
+	        var alpha = color1.alpha * p + color2.alpha * (1 - p);
+
+	        return new SuperMap.CartoCSS.Tree.Color(rgb, alpha);
+	    },
+	    greyscale: function (color) {
+	        return this.desaturate(color, new SuperMap.CartoCSS.Tree.Dimension(100));
+	    },
+	    '%': function (quoted /* arg, arg, ...*/) {
+	        var args = Array.prototype.slice.call(arguments, 1),
+	            str = quoted.value;
+
+	        for (var i = 0; i < args.length; i++) {
+	            str = str.replace(/%s/, args[i].value)
+	                .replace(/%[da]/, args[i].toString());
+	        }
+	        str = str.replace(/%%/g, '%');
+	        return new SuperMap.CartoCSS.Tree.Quoted(str);
+	    },
+
+	    hsla_simple: function (h) {
+	        return this.hsla(h.h, h.s, h.l, h.a);
+	    },
+
+	    number: function (n) {
+	        if (n instanceof SuperMap.CartoCSS.Tree.Dimension) {
+	            return parseFloat(n.unit === '%' ? n.value / 100 : n.value);
+	        } else if (typeof(n) === 'number') {
+	            return n;
+	        } else {
+	            return NaN;
+	        }
+	    },
+
+	    clamp: function (val) {
+	        return Math.min(1, Math.max(0, val));
+	    }
+	};
+
+	SuperMap.CartoCSS.Tree.Call = SuperMap.Class({
+	    is: 'call',
+
+	    initialize: function (name, args, index) {
+	        this.name = name;
+	        this.args = args;
+	        this.index = index;
+	    },
+	    // When evuating a function call,
+	    // we either find the function in `tree.functions` [1],
+	    // in which case we call it, passing the  evaluated arguments,
+	    // or we simply print it out as it appeared originally [2].
+	    // The *functions.js* file contains the built-in functions.
+	    // The reason why we evaluate the arguments, is in the case where
+	    // we try to pass a variable to a function, like: `saturate(@color)`.
+	    // The function should receive the value, not the variable.
+	    'ev': function (env) {
+	        var args = this.args.map(function (a) {
+	            return a.ev(env);
+	        });
+
+	        for (var i = 0; i < args.length; i++) {
+	            if (args[i].is === 'undefined') {
+	                return {
+	                    is: 'undefined',
+	                    value: 'undefined'
+	                };
+	            }
+	        }
+
+	        if (this.name in SuperMap.CartoCSS.Tree.functions) {
+	            if (SuperMap.CartoCSS.Tree.functions[this.name].length <= args.length) {
+	                var val = SuperMap.CartoCSS.Tree.functions[this.name].apply(SuperMap.CartoCSS.Tree.functions, args);
+	                if (val === null) {
+	                    env.error({
+	                        message: 'incorrect arguments given to ' + this.name + '()',
+	                        index: this.index,
+	                        type: 'runtime',
+	                        filename: this.filename
+	                    });
+	                    return {is: 'undefined', value: 'undefined'};
+	                }
+	                return val;
+	            } else {
+	                env.error({
+	                    message: 'incorrect number of arguments for ' + this.name +
+	                    '(). ' + SuperMap.CartoCSS.Tree.functions[this.name].length + ' expected.',
+	                    index: this.index,
+	                    type: 'runtime',
+	                    filename: this.filename
+	                });
+	                return {
+	                    is: 'undefined',
+	                    value: 'undefined'
+	                };
+	            }
+	        } else {
+	            var fn = SuperMap.CartoCSS.Tree.Reference.mapnikFunctions[this.name];
+	            if (fn === undefined) {
+	                var functions = _.pairs(SuperMap.CartoCSS.Tree.Reference.mapnikFunctions);
+	                // cheap closest, needs improvement.
+	                var name = this.name;
+	                var mean = functions.map(function (f) {
+	                    return [f[0], SuperMap.CartoCSS.Tree.Reference.editDistance(name, f[0]), f[1]];
+	                }).sort(function (a, b) {
+	                    return a[1] - b[1];
+	                });
+	                env.error({
+	                    message: 'unknown function ' + this.name + '(), did you mean ' +
+	                    mean[0][0] + '(' + mean[0][2] + ')',
+	                    index: this.index,
+	                    type: 'runtime',
+	                    filename: this.filename
+	                });
+	                return {
+	                    is: 'undefined',
+	                    value: 'undefined'
+	                };
+	            }
+	            if (fn !== args.length &&
+	                // support variable-arg functions like `colorize-alpha`
+	                fn !== -1) {
+	                env.error({
+	                    message: 'function ' + this.name + '() takes ' +
+	                    fn + ' arguments and was given ' + args.length,
+	                    index: this.index,
+	                    type: 'runtime',
+	                    filename: this.filename
+	                });
+	                return {
+	                    is: 'undefined',
+	                    value: 'undefined'
+	                };
+	            } else {
+	                // Save the evaluated versions of arguments
+	                this.args = args;
+	                return this;
+	            }
+	        }
+	    },
+
+	    toString: function (env, format) {
+	        if (this.args.length) {
+	            return this.name + '(' + this.args.join(',') + ')';
+	        } else {
+	            return this.name;
+	        }
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Color = SuperMap.Class({
+	    is: 'color',
+	    initialize: function (rgb, a) {
+	        // The end goal here, is to parse the arguments
+	        // into an integer triplet, such as `128, 255, 0`
+	        //
+	        // This facilitates operations and conversions.
+	        if (Array.isArray(rgb)) {
+	            this.rgb = rgb.slice(0, 3);
+	        } else if (rgb.length == 6) {
+	            this.rgb = rgb.match(/.{2}/g).map(function (c) {
+	                return parseInt(c, 16);
+	            });
+	        } else {
+	            this.rgb = rgb.split('').map(function (c) {
+	                return parseInt(c + c, 16);
+	            });
+	        }
+
+	        if (typeof(a) === 'number') {
+	            this.alpha = a;
+	        } else if (rgb.length === 4) {
+	            this.alpha = rgb[3];
+	        } else {
+	            this.alpha = 1;
+	        }
+	    },
+	    'ev': function () {
+	        return this;
+	    },
+
+	    // If we have some transparency, the only way to represent it
+	    // is via `rgba`. Otherwise, we use the hex representation,
+	    // which has better compatibility with older browsers.
+	    // Values are capped between `0` and `255`, rounded and zero-padded.
+	    toString: function () {
+	        /* if (this.alpha < 1.0) {*/
+	        return 'rgba(' + this.rgb.map(function (c) {
+	                return Math.round(c);
+	            }).concat(this.alpha).join(', ') + ')';
+	        /*} else {
+	         return '#' + this.rgb.map(function(i) {
+	         i = Math.round(i);
+	         i = (i > 255 ? 255 : (i < 0 ? 0 : i)).toString(16);
+	         return i.length === 1 ? '0' + i : i;
+	         }).join('');
+	         }*/
+	    },
+
+	    // Operations have to be done per-channel, if not,
+	    // channels will spill onto each other. Once we have
+	    // our result, in the form of an integer triplet,
+	    // we create a new Color node to hold the result.
+	    operate: function (env, op, other) {
+	        var result = [];
+
+	        if (!(other instanceof SuperMap.CartoCSS.Tree.Color)) {
+	            other = other.toColor();
+	        }
+
+	        for (var c = 0; c < 3; c++) {
+	            result[c] = SuperMap.CartoCSS.Tree.operate(op, this.rgb[c], other.rgb[c]);
+	        }
+	        return new SuperMap.CartoCSS.Tree.Color(result);
+	    },
+
+	    toHSL: function () {
+	        var r = this.rgb[0] / 255,
+	            g = this.rgb[1] / 255,
+	            b = this.rgb[2] / 255,
+	            a = this.alpha;
+
+	        var max = Math.max(r, g, b), min = Math.min(r, g, b);
+	        var h, s, l = (max + min) / 2, d = max - min;
+
+	        if (max === min) {
+	            h = s = 0;
+	        } else {
+	            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+	            switch (max) {
+	                case r:
+	                    h = (g - b) / d + (g < b ? 6 : 0);
+	                    break;
+	                case g:
+	                    h = (b - r) / d + 2;
+	                    break;
+	                case b:
+	                    h = (r - g) / d + 4;
+	                    break;
+	            }
+	            h /= 6;
+	        }
+	        return {h: h * 360, s: s, l: l, a: a};
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Comment = SuperMap.Class({
+	    initialize: function (value, silent) {
+	        this.value = value;
+	        this.silent = !!silent;
+	    },
+	    toString: function (env) {
+	        return '<!--' + this.value + '-->';
+	    },
+	    'ev': function () {
+	        return this;
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
+	    initialize: function (selector, rules) {
+	        this.elements = selector.elements;
+	        //assert.ok(selector.filters instanceof SuperMap.CartoCSS.Tree.Filterset);
+	        this.rules = rules;
+	        this.ruleIndex = {};
+	        for (var i = 0; i < this.rules.length; i++) {
+	            if ('zoom' in this.rules[i]) this.rules[i] = this.rules[i].clone();
+	            this.rules[i].zoom = selector.zoom;
+	            this.ruleIndex[this.rules[i].updateID()] = true;
+	        }
+	        this.filters = selector.filters;
+	        this.zoom = selector.zoom;
+	        this.attachment = selector.attachment || '__default__';
+	        this.specificity = selector.specificity();
+	    },
+	    toString: function () {
+	        var str = this.filters.toString();
+	        for (var i = 0; i < this.rules.length; i++) {
+	            str += '\n    ' + this.rules[i];
+	        }
+	        return str;
+	    },
+	    toJS: function (env) {
+	        var shaderAttrs = {};
+
+	        // merge conditions from filters with zoom condition of the
+	        // definition
+	        var zoom = this.zoom;
+	        var frame_offset = this.frame_offset;
+	        var _if = this.filters.toJS(env);
+	        var filters = [zoom];
+	        if (_if) filters.push(_if);
+	        //if(frame_offset) filters.push('ctx["frame-offset"] === ' + frame_offset);
+	        _if = filters.join(" && ");
+	        function eachRule(rule) {
+	            if (rule instanceof SuperMap.CartoCSS.Tree.Rule) {
+	                shaderAttrs[rule.name] = shaderAttrs[rule.name] || [];
+	                if (_if) {
+	                    shaderAttrs[rule.name].push(
+	                        "if(" + _if + "){" + rule.value.toJS(env) + "}"
+	                    );
+	                } else {
+	                    shaderAttrs[rule.name].push(rule.value.toJS(env));
+	                }
+	            } else {
+	                if (rule instanceof SuperMap.CartoCSS.Tree.Ruleset) {
+	                    var sh = rule.toJS(env);
+	                    for (var v in sh) {
+	                        shaderAttrs[v] = shaderAttrs[v] || [];
+	                        for (var attr in sh[v]) {
+	                            shaderAttrs[v].push(sh[v][attr]);
+	                        }
+	                    }
+	                }
+	            }
+	        };
+	        for (var id in this.rules) {
+	            eachRule(this.rules[id]);
+	        }
+	        return shaderAttrs;
+	    },
+	    clone: function (filters) {
+	        if (filters) assert.ok(filters instanceof SuperMap.CartoCSS.Tree.Filterset);
+	        var clone = Object.create(SuperMap.CartoCSS.Tree.Definition.prototype);
+	        clone.rules = this.rules.slice();
+	        clone.ruleIndex = _.clone(this.ruleIndex);
+	        clone.filters = filters ? filters : this.filters.clone();
+	        clone.attachment = this.attachment;
+	        return clone;
+	    },
+
+	    addRules: function (rules) {
+	        var added = 0;
+
+	        // Add only unique rules.
+	        for (var i = 0; i < rules.length; i++) {
+	            if (!this.ruleIndex[rules[i].id]) {
+	                this.rules.push(rules[i]);
+	                this.ruleIndex[rules[i].id] = true;
+	                added++;
+	            }
+	        }
+
+	        return added;
+	    },
+	    appliesTo: function (id, classes) {
+	        for (var i = 0, l = this.elements.length; i < l; i++) {
+	            var elem = this.elements[i];
+	            if (!(elem.wildcard ||
+	                (elem.type === 'class' && classes[elem.clean]) ||
+	                (elem.type === 'id' && id === elem.clean))) return false;
+	        }
+	        return true;
+	    },
+	    symbolizersToXML: function (env, symbolizers, zoom) {
+	        var xml = zoom.toXML(env).join('') + this.filters.toXML(env);
+
+	        // Sort symbolizers by the index of their first property definition
+	        var sym_order = [], indexes = [];
+	        for (var key in symbolizers) {
+	            indexes = [];
+	            for (var prop in symbolizers[key]) {
+	                indexes.push(symbolizers[key][prop].index);
+	            }
+	            var min_idx = Math.min.apply(Math, indexes);
+	            sym_order.push([key, min_idx]);
+	        }
+
+	        // Get a simple list of the symbolizers, in order
+	        function symbolizerList(sym_order) {
+	            return sym_order.sort(function (a, b) {
+	                return a[1] - b[1];
+	            })
+	                .map(function (v) {
+	                    return v[0];
+	                });
+	        }
+
+	        sym_order = symbolizerList(sym_order);
+	        var sym_count = 0;
+
+	        for (var i = 0; i < sym_order.length; i++) {
+	            var attributes = symbolizers[sym_order[i]];
+	            var symbolizer = sym_order[i].split('/').pop();
+
+	            // Skip the magical * symbolizer which is used for universal properties
+	            // which are bubbled up to Style elements intead of Symbolizer elements.
+	            if (symbolizer === '*') continue;
+	            sym_count++;
+
+	            var fail = SuperMap.CartoCSS.Tree.Reference.requiredProperties(symbolizer, attributes);
+	            if (fail) {
+	                var rule = attributes[Object.keys(attributes).shift()];
+	                env.error({
+	                    message: fail,
+	                    index: rule.index,
+	                    filename: rule.filename
+	                });
+	            }
+	            function symbolizerName(symbolizer) {
+	                function capitalize(str) {
+	                    return str[1].toUpperCase();
+	                }
+
+	                return symbolizer.charAt(0).toUpperCase() +
+	                    symbolizer.slice(1).replace(/\-./, capitalize) + 'Symbolizer';
+	            }
+
+	            var name = symbolizerName(symbolizer);
+
+	            var selfclosing = true, tagcontent;
+	            xml += '    <' + name + ' ';
+	            for (var j in attributes) {
+	                if (symbolizer === 'map') env.error({
+	                    message: 'Map properties are not permitted in other rules',
+	                    index: attributes[j].index,
+	                    filename: attributes[j].filename
+	                });
+	                var x = SuperMap.CartoCSS.Tree.Reference.selector(attributes[j].name);
+	                if (x && x.serialization && x.serialization === 'content') {
+	                    selfclosing = false;
+	                    tagcontent = attributes[j].ev(env).toXML(env, true);
+	                } else if (x && x.serialization && x.serialization === 'tag') {
+	                    selfclosing = false;
+	                    tagcontent = attributes[j].ev(env).toXML(env, true);
+	                } else {
+	                    xml += attributes[j].ev(env).toXML(env) + ' ';
+	                }
+	            }
+	            if (selfclosing) {
+	                xml += '/>\n';
+	            } else if (typeof tagcontent !== "undefined") {
+	                if (tagcontent.indexOf('<') != -1) {
+	                    xml += '>' + tagcontent + '</' + name + '>\n';
+	                } else {
+	                    xml += '><![CDATA[' + tagcontent + ']]></' + name + '>\n';
+	                }
+	            }
+	        }
+	        if (!sym_count || !xml) return '';
+	        return '  <Rule>\n' + xml + '  </Rule>\n';
+	    },
+	    collectSymbolizers: function (zooms, i) {
+	        var symbolizers = {}, child;
+
+	        for (var j = i; j < this.rules.length; j++) {
+	            child = this.rules[j];
+	            var key = child.instance + '/' + child.symbolizer;
+	            if (zooms.current & child.zoom &&
+	                (!(key in symbolizers) ||
+	                (!(child.name in symbolizers[key])))) {
+	                zooms.current &= child.zoom;
+	                if (!(key in symbolizers)) {
+	                    symbolizers[key] = {};
+	                }
+	                symbolizers[key][child.name] = child;
+	            }
+	        }
+
+	        if (Object.keys(symbolizers).length) {
+	            zooms.rule &= (zooms.available &= ~zooms.current);
+	            return symbolizers;
+	        }
+	    },
+	    toXML: function (env, existing) {
+	        var filter = this.filters.toString();
+	        if (!(filter in existing)) existing[filter] = SuperMap.CartoCSS.Tree.Zoom.all;
+
+	        var available = SuperMap.CartoCSS.Tree.Zoom.all, xml = '', zoom, symbolizers,
+	            zooms = {available: SuperMap.CartoCSS.Tree.Zoom.all};
+	        for (var i = 0; i < this.rules.length && available; i++) {
+	            zooms.rule = this.rules[i].zoom;
+	            if (!(existing[filter] & zooms.rule)) continue;
+
+	            while (zooms.current = zooms.rule & available) {
+	                if (symbolizers = this.collectSymbolizers(zooms, i)) {
+	                    if (!(existing[filter] & zooms.current)) continue;
+	                    xml += this.symbolizersToXML(env, symbolizers,
+	                        (new SuperMap.CartoCSS.Tree.Zoom()).setZoom(existing[filter] & zooms.current));
+	                    existing[filter] &= ~zooms.current;
+	                }
+	            }
+	        }
+
+	        return xml;
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Dimension = SuperMap.Class({
+	    is: 'float',
+	    physical_units: ['m', 'cm', 'in', 'mm', 'pt', 'pc'],
+	    screen_units: ['px', '%'],
+	    all_units: ['m', 'cm', 'in', 'mm', 'pt', 'pc', 'px', '%'],
+	    densities: {
+	        m: 0.0254,
+	        mm: 25.4,
+	        cm: 2.54,
+	        pt: 72,
+	        pc: 6
+	    },
+
+	    initialize: function (value, unit, index) {
+	        this.value = parseFloat(value);
+	        this.unit = unit || null;
+	        this.index = index;
+	    },
+
+	    ev: function (env) {
+	        if (this.unit && !_.contains(this.all_units, this.unit)) {
+	            env.error({
+	                message: "Invalid unit: '" + this.unit + "'",
+	                index: this.index
+	            });
+	            return {is: 'undefined', value: 'undefined'};
+	        }
+
+	        // normalize units which are not px or %
+	        if (this.unit && _.contains(this.physical_units, this.unit)) {
+	            if (!env.ppi) {
+	                env.error({
+	                    message: "ppi is not set, so metric units can't be used",
+	                    index: this.index
+	                });
+	                return {is: 'undefined', value: 'undefined'};
+	            }
+	            // convert all units to inch
+	            // convert inch to px using ppi
+	            this.value = (this.value / this.densities[this.unit]) * env.ppi;
+	            this.unit = 'px';
+	        }
+
+	        return this;
+	    },
+	    toColor: function () {
+	        return new SuperMap.CartoCSS.Tree.Color([this.value, this.value, this.value]);
+	    },
+	    round: function () {
+	        this.value = Math.round(this.value);
+	        return this;
+	    },
+	    toString: function () {
+	        return this.value.toString();
+	    },
+	    operate: function (env, op, other) {
+	        if (this.unit === '%' && other.unit !== '%') {
+	            env.error({
+	                message: 'If two operands differ, the first must not be %',
+	                index: this.index
+	            });
+	            return {
+	                is: 'undefined',
+	                value: 'undefined'
+	            };
+	        }
+
+	        if (this.unit !== '%' && other.unit === '%') {
+	            if (op === '*' || op === '/' || op === '%') {
+	                env.error({
+	                    message: 'Percent values can only be added or subtracted from other values',
+	                    index: this.index
+	                });
+	                return {
+	                    is: 'undefined',
+	                    value: 'undefined'
+	                };
+	            }
+
+	            return new SuperMap.CartoCSS.Tree.Dimension(SuperMap.CartoCSS.Tree.operate(op,
+	                this.value, this.value * other.value * 0.01),
+	                this.unit);
+	        }
+
+	        //here the operands are either the same (% or undefined or px), or one is undefined and the other is px
+	        return new SuperMap.CartoCSS.Tree.Dimension(SuperMap.CartoCSS.Tree.operate(op, this.value, other.value),
+	            this.unit || other.unit);
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Element = SuperMap.Class({
+	    initialize: function (value) {
+	        this.value = value.trim();
+	        if (this.value[0] === '#') {
+	            this.type = 'id';
+	            this.clean = this.value.replace(/^#/, '');
+	        }
+	        if (this.value[0] === '.') {
+	            this.type = 'class';
+	            this.clean = this.value.replace(/^\./, '');
+	        }
+	        if (this.value.indexOf('*') !== -1) {
+	            this.type = 'wildcard';
+	        }
+	    },
+
+	    specificity: function () {
+	        return [
+	            (this.type === 'id') ? 1 : 0, // a
+	            (this.type === 'class') ? 1 : 0  // b
+	        ];
+	    },
+
+	    toString: function () {
+	        return this.value;
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Expression = SuperMap.Class({
+	    is: 'expression',
+	    initialize: function (value) {
+	        this.value = value;
+	    },
+	    ev: function (env) {
+	        if (this.value.length > 1) {
+	            return new SuperMap.CartoCSS.Tree.Expression(this.value.map(function (e) {
+	                return e.ev(env);
+	            }));
+	        } else {
+	            return this.value[0].ev(env);
+	        }
+	    },
+
+	    toString: function (env) {
+	        return this.value.map(function (e) {
+	            return e.toString(env);
+	        }).join(' ');
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Field = SuperMap.Class({
+	    is: 'field',
+	    initialize: function (content) {
+	        this.value = content || '';
+	    },
+	    toString: function () {
+	        return '["' + this.value.toUpperCase() + '"]';
+	    },
+	    'ev': function () {
+	        return this;
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Filter = SuperMap.Class({
+	    initialize: function (key, op, val, index, filename) {
+	        this.key = key;
+	        this.op = op;
+	        this.val = val;
+	        this.index = index;
+	        this.filename = filename;
+
+	        this.id = this.key + this.op + this.val;
+	    },
+
+	    ops: {
+	        '<': [' &lt; ', 'numeric'],
+	        '>': [' &gt; ', 'numeric'],
+	        '=': [' = ', 'both'],
+	        '!=': [' != ', 'both'],
+	        '<=': [' &lt;= ', 'numeric'],
+	        '>=': [' &gt;= ', 'numeric'],
+	        '=~': ['.match(', 'string', ')']
+	    },
+
+	    ev: function (env) {
+	        this.key = this.key.ev(env);
+	        this.val = this.val.ev(env);
+	        return this;
+	    },
+
+	    toXML: function (env) {
+	        if (SuperMap.CartoCSS.Tree.Reference.data.filter) {
+	            if (this.key.is === 'keyword' && -1 === SuperMap.CartoCSS.Tree.Reference.data.filter.value.indexOf(this.key.toString())) {
+	                env.error({
+	                    message: this.key.toString() + ' is not a valid keyword in a filter expression',
+	                    index: this.index,
+	                    filename: this.filename
+	                });
+	            }
+	            if (this.val.is === 'keyword' && -1 === SuperMap.CartoCSS.Tree.Reference.data.filter.value.indexOf(this.val.toString())) {
+	                env.error({
+	                    message: this.val.toString() + ' is not a valid keyword in a filter expression',
+	                    index: this.index,
+	                    filename: this.filename
+	                });
+	            }
+	        }
+	        var key = this.key.toString(false);
+	        var val = this.val.toString(this.val.is == 'string');
+
+	        if (
+	            (this.ops[this.op][1] === 'numeric' && isNaN(val) && this.val.is !== 'field') ||
+	            (this.ops[this.op][1] === 'string' && (val)[0] != "'")
+	        ) {
+	            env.error({
+	                message: 'Cannot use operator "' + this.op + '" with value ' + this.val,
+	                index: this.index,
+	                filename: this.filename
+	            });
+	        }
+
+	        return key + this.ops[this.op][0] + val + (this.ops[this.op][2] || '');
+	    },
+
+	    toString: function () {
+	        return '[' + this.id + ']';
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Filterset = SuperMap.Class({
+	    initialize: function () {
+	        this.filters = {};
+	    },
+
+	    toXML: function (env) {
+	        var filters = [];
+	        for (var id in this.filters) {
+	            filters.push('(' + this.filters[id].toXML(env).trim() + ')');
+	        }
+	        if (filters.length) {
+	            return '    <Filter>' + filters.join(' and ') + '</Filter>\n';
+	        } else {
+	            return '';
+	        }
+	    },
+
+	    toJS: function (env) {
+	        function eachFilter(filter) {
+	            var op = filter.op;
+	            if (op === "=") {
+	                op = "==";
+	            }
+	            var val = filter.val;
+	            if (filter._val !== undefined) {
+	                val = filter._val.toString(true);
+	            }
+
+	            //对scale进行特殊处理，将值转换成数值
+	            if (filter.key && filter.key.value === 'scale') {
+	                val = +val;
+	            } else if (typeof val === 'string' || typeof val === 'object') {
+	                val = "'" + val + "'";
+	            }
+	            var attrs = "attributes";
+	            return attrs + "&&" + attrs + filter.key + "&&" + attrs + filter.key + " " + op + val;
+	        };
+	        var results = [];
+	        for (var id in this.filters) {
+	            results.push(eachFilter(this.filters[id]));
+	        }
+	        return results.join(' && ');
+	    },
+
+	    toString: function () {
+	        var arr = [];
+	        for (var id in this.filters) arr.push(this.filters[id].id);
+	        return arr.sort().join('\t');
+	    },
+
+	    ev: function (env) {
+	        for (var i in this.filters) {
+	            this.filters[i].ev(env);
+	        }
+	        return this;
+	    },
+
+	    clone: function () {
+	        var clone = new SuperMap.CartoCSS.Tree.Filterset();
+	        for (var id in this.filters) {
+	            clone.filters[id] = this.filters[id];
+	        }
+	        return clone;
+	    },
+
+	    cloneWith: function (other) {
+	        var additions = [];
+	        for (var id in other.filters) {
+	            var status = this.addable(other.filters[id]);
+	            // status is true, false or null. if it's null we don't fail this
+	            // clone nor do we add the filter.
+	            if (status === false) {
+	                return false;
+	            }
+	            if (status === true) {
+	                // Adding the filter will override another value.
+	                additions.push(other.filters[id]);
+	            }
+	        }
+
+	        // Adding the other filters doesn't make this filterset invalid, but it
+	        // doesn't add anything to it either.
+	        if (!additions.length) {
+	            return null;
+	        }
+
+	        // We can successfully add all filters. Now clone the filterset and add the
+	        // new rules.
+	        var clone = new SuperMap.CartoCSS.Tree.Filterset();
+
+	        // We can add the rules that are already present without going through the
+	        // add function as a Filterset is always in it's simplest canonical form.
+	        for (id in this.filters) {
+	            clone.filters[id] = this.filters[id];
+	        }
+
+	        // Only add new filters that actually change the filter.
+	        while (id = additions.shift()) {
+	            clone.add(id);
+	        }
+
+	        return clone;
+	    },
+
+	    addable: function (filter) {
+	        var key = filter.key.toString(),
+	            value = filter.val.toString();
+
+	        if (value.match(/^[0-9]+(\.[0-9]*)?$/)) value = parseFloat(value);
+
+	        switch (filter.op) {
+	            case '=':
+	                // if there is already foo= and we're adding foo=
+	                if (this.filters[key + '='] !== undefined) {
+	                    if (this.filters[key + '='].val.toString() != value) {
+	                        return false;
+	                    } else {
+	                        return null;
+	                    }
+	                }
+	                if (this.filters[key + '!=' + value] !== undefined) return false;
+	                if (this.filters[key + '>'] !== undefined && this.filters[key + '>'].val >= value) return false;
+	                if (this.filters[key + '<'] !== undefined && this.filters[key + '<'].val <= value) return false;
+	                if (this.filters[key + '>='] !== undefined && this.filters[key + '>='].val > value) return false;
+	                if (this.filters[key + '<='] !== undefined && this.filters[key + '<='].val < value) return false;
+	                return true;
+
+	            case '=~':
+	                return true;
+
+	            case '!=':
+	                if (this.filters[key + '='] !== undefined) return (this.filters[key + '='].val === value) ? false : null;
+	                if (this.filters[key + '!=' + value] !== undefined) return null;
+	                if (this.filters[key + '>'] !== undefined && this.filters[key + '>'].val >= value) return null;
+	                if (this.filters[key + '<'] !== undefined && this.filters[key + '<'].val <= value) return null;
+	                if (this.filters[key + '>='] !== undefined && this.filters[key + '>='].val > value) return null;
+	                if (this.filters[key + '<='] !== undefined && this.filters[key + '<='].val < value) return null;
+	                return true;
+
+	            case '>':
+	                if (key + '=' in this.filters) {
+	                    if (this.filters[key + '='].val <= value) {
+	                        return false;
+	                    } else {
+	                        return null;
+	                    }
+	                }
+	                if (this.filters[key + '<'] !== undefined && this.filters[key + '<'].val <= value) return false;
+	                if (this.filters[key + '<='] !== undefined && this.filters[key + '<='].val <= value) return false;
+	                if (this.filters[key + '>'] !== undefined && this.filters[key + '>'].val >= value) return null;
+	                if (this.filters[key + '>='] !== undefined && this.filters[key + '>='].val > value) return null;
+	                return true;
+
+	            case '>=':
+	                if (this.filters[key + '='] !== undefined) return (this.filters[key + '='].val < value) ? false : null;
+	                if (this.filters[key + '<'] !== undefined && this.filters[key + '<'].val <= value) return false;
+	                if (this.filters[key + '<='] !== undefined && this.filters[key + '<='].val < value) return false;
+	                if (this.filters[key + '>'] !== undefined && this.filters[key + '>'].val >= value) return null;
+	                if (this.filters[key + '>='] !== undefined && this.filters[key + '>='].val >= value) return null;
+	                return true;
+
+	            case '<':
+	                if (this.filters[key + '='] !== undefined) return (this.filters[key + '='].val >= value) ? false : null;
+	                if (this.filters[key + '>'] !== undefined && this.filters[key + '>'].val >= value) return false;
+	                if (this.filters[key + '>='] !== undefined && this.filters[key + '>='].val >= value) return false;
+	                if (this.filters[key + '<'] !== undefined && this.filters[key + '<'].val <= value) return null;
+	                if (this.filters[key + '<='] !== undefined && this.filters[key + '<='].val < value) return null;
+	                return true;
+
+	            case '<=':
+	                if (this.filters[key + '='] !== undefined) return (this.filters[key + '='].val > value) ? false : null;
+	                if (this.filters[key + '>'] !== undefined && this.filters[key + '>'].val >= value) return false;
+	                if (this.filters[key + '>='] !== undefined && this.filters[key + '>='].val > value) return false;
+	                if (this.filters[key + '<'] !== undefined && this.filters[key + '<'].val <= value) return null;
+	                if (this.filters[key + '<='] !== undefined && this.filters[key + '<='].val <= value) return null;
+	                return true;
+	        }
+	    },
+
+	    conflict: function (filter) {
+	        var key = filter.key.toString(),
+	            value = filter.val.toString();
+
+	        if (!isNaN(parseFloat(value))) value = parseFloat(value);
+
+	        // if (a=b) && (a=c)
+	        // if (a=b) && (a!=b)
+	        // or (a!=b) && (a=b)
+	        if ((filter.op === '=' && this.filters[key + '='] !== undefined &&
+	            value != this.filters[key + '='].val.toString()) ||
+	            (filter.op === '!=' && this.filters[key + '='] !== undefined &&
+	            value == this.filters[key + '='].val.toString()) ||
+	            (filter.op === '=' && this.filters[key + '!='] !== undefined &&
+	            value === this.filters[key + '!='].val.toString())) {
+	            return filter.toString() + ' added to ' + this.toString() + ' produces an invalid filter';
+	        }
+
+	        return false;
+	    },
+
+	    add: function (filter, env) {
+	        var key = filter.key.toString(),
+	            id,
+	            op = filter.op,
+	            conflict = this.conflict(filter),
+	            numval;
+
+	        if (conflict) return conflict;
+
+	        if (op === '=') {
+	            for (var i in this.filters) {
+	                if (this.filters[i].key === key) delete this.filters[i];
+	            }
+	            this.filters[key + '='] = filter;
+	        } else if (op === '!=') {
+	            this.filters[key + '!=' + filter.val] = filter;
+	        } else if (op === '=~') {
+	            this.filters[key + '=~' + filter.val] = filter;
+	        } else if (op === '>') {
+	            // If there are other filters that are also >
+	            // but are less than this one, they don't matter, so
+	            // remove them.
+	            for (var j in this.filters) {
+	                if (this.filters[j].key === key && this.filters[j].val <= filter.val) {
+	                    delete this.filters[j];
+	                }
+	            }
+	            this.filters[key + '>'] = filter;
+	        } else if (op === '>=') {
+	            for (var k in this.filters) {
+	                numval = (+this.filters[k].val.toString());
+	                if (this.filters[k].key === key && numval < filter.val) {
+	                    delete this.filters[k];
+	                }
+	            }
+	            if (this.filters[key + '!=' + filter.val] !== undefined) {
+	                delete this.filters[key + '!=' + filter.val];
+	                filter.op = '>';
+	                this.filters[key + '>'] = filter;
+	            }
+	            else {
+	                this.filters[key + '>='] = filter;
+	            }
+	        } else if (op === '<') {
+	            for (var l in this.filters) {
+	                numval = (+this.filters[l].val.toString());
+	                if (this.filters[l].key === key && numval >= filter.val) {
+	                    delete this.filters[l];
+	                }
+	            }
+	            this.filters[key + '<'] = filter;
+	        } else if (op === '<=') {
+	            for (var m in this.filters) {
+	                numval = (+this.filters[m].val.toString());
+	                if (this.filters[m].key === key && numval > filter.val) {
+	                    delete this.filters[m];
+	                }
+	            }
+	            if (this.filters[key + '!=' + filter.val] !== undefined) {
+	                delete this.filters[key + '!=' + filter.val];
+	                filter.op = '<';
+	                this.filters[key + '<'] = filter;
+	            }
+	            else {
+	                this.filters[key + '<='] = filter;
+	            }
+	        }
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Fontset = SuperMap.Class({
+	    initialize: function (env, fonts) {
+	        this.fonts = fonts;
+	        this.name = 'fontset-' + env.effects.length;
+	    },
+	    toXML: function (env) {
+	        return '<FontSet name="' +
+	            this.name +
+	            '">\n' +
+	            this.fonts.map(function (f) {
+	                return '  <Font face-name="' + f + '"/>';
+	            }).join('\n') +
+	            '\n</FontSet>';
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Imagefilter = SuperMap.Class({
+	    is: 'imagefilter',
+	    initialize: function (filter, args) {
+	        this.filter = filter;
+	        this.args = args || null;
+	    },
+
+	    ev: function () {
+	        return this;
+	    },
+
+	    toString: function () {
+	        if (this.args) {
+	            return this.filter + '(' + this.args.join(',') + ')';
+	        } else {
+	            return this.filter;
+	        }
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Invalid = SuperMap.Class({
+	    is: 'invalid',
+	    initialize: function (chunk, index, message) {
+	        this.chunk = chunk;
+	        this.index = index;
+	        this.type = 'syntax';
+	        this.message = message || "Invalid code: " + this.chunk;
+	    },
+	    ev: function (env) {
+	        env.error({
+	            chunk: this.chunk,
+	            index: this.index,
+	            type: 'syntax',
+	            message: this.message || "Invalid code: " + this.chunk
+	        });
+	        return {
+	            is: 'undefined'
+	        };
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Keyword = SuperMap.Class({
+	    ev: function () {
+	        return this;
+	    },
+	    initialize: function (value) {
+	        this.value = value;
+	        var special = {
+	            'transparent': 'color',
+	            'true': 'boolean',
+	            'false': 'boolean'
+	        };
+	        this.is = special[value] ? special[value] : 'keyword';
+	    },
+	    toString: function () {
+	        return this.value;
+	    }
+	});
+
+	/*Layer:SuperMap.Class(),*/
+
+	SuperMap.CartoCSS.Tree.Literal = SuperMap.Class({
+	    initialize: function (content) {
+	        this.value = content || '';
+	        this.is = 'field';
+	    },
+	    toString: function () {
+	        return this.value;
+	    },
+	    'ev': function () {
+	        return this;
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Operation = SuperMap.Class({
+	    is: 'operation',
+	    initialize: function (op, operands, index) {
+	        this.op = op.trim();
+	        this.operands = operands;
+	        this.index = index;
+	    },
+	    ev: function (env) {
+	        var a = this.operands[0].ev(env),
+	            b = this.operands[1].ev(env),
+	            temp;
+
+	        if (a.is === 'undefined' || b.is === 'undefined') {
+	            return {
+	                is: 'undefined',
+	                value: 'undefined'
+	            };
+	        }
+
+	        if (a instanceof SuperMap.CartoCSS.Tree.Dimension && b instanceof SuperMap.CartoCSS.Tree.Color) {
+	            if (this.op === '*' || this.op === '+') {
+	                temp = b, b = a, a = temp;
+	            } else {
+	                env.error({
+	                    name: "OperationError",
+	                    message: "Can't substract or divide a color from a number",
+	                    index: this.index
+	                });
+	            }
+	        }
+
+	        // Only concatenate plain strings, because this is easily
+	        // pre-processed
+	        if (a instanceof SuperMap.CartoCSS.Tree.Quoted && b instanceof SuperMap.CartoCSS.Tree.Quoted && this.op !== '+') {
+	            env.error({
+	                message: "Can't subtract, divide, or multiply strings.",
+	                index: this.index,
+	                type: 'runtime',
+	                filename: this.filename
+	            });
+	            return {
+	                is: 'undefined',
+	                value: 'undefined'
+	            };
+	        }
+
+	        // Fields, literals, dimensions, and quoted strings can be combined.
+	        if (a instanceof SuperMap.CartoCSS.Tree.Field || b instanceof SuperMap.CartoCSS.Tree.Field ||
+	            a instanceof SuperMap.CartoCSS.Tree.Literal || b instanceof SuperMap.CartoCSS.Tree.Literal) {
+	            if (a.is === 'color' || b.is === 'color') {
+	                env.error({
+	                    message: "Can't subtract, divide, or multiply colors in expressions.",
+	                    index: this.index,
+	                    type: 'runtime',
+	                    filename: this.filename
+	                });
+	                return {
+	                    is: 'undefined',
+	                    value: 'undefined'
+	                };
+	            } else {
+	                return new SuperMap.CartoCSS.Tree.Literal(a.ev(env).toString(true) + this.op + b.ev(env).toString(true));
+	            }
+	        }
+
+	        if (a.operate === undefined) {
+	            env.error({
+	                message: 'Cannot do math with type ' + a.is + '.',
+	                index: this.index,
+	                type: 'runtime',
+	                filename: this.filename
+	            });
+	            return {
+	                is: 'undefined',
+	                value: 'undefined'
+	            };
+	        }
+
+	        return a.operate(env, this.op, b);
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Quoted = SuperMap.Class({
+	    is: 'string',
+	    initialize: function (content) {
+	        this.value = content || '';
+	    },
+	    toString: function (quotes) {
+	        var escapedValue = this.value
+	            .replace(/&/g, '&amp;')
+	        var xmlvalue = escapedValue
+	            .replace(/\'/g, '\\\'')
+	            .replace(/\"/g, '&quot;')
+	            .replace(/</g, '&lt;')
+	            .replace(/\>/g, '&gt;');
+	        return (quotes === true) ? "'" + xmlvalue + "'" : escapedValue;
+	    },
+
+	    'ev': function () {
+	        return this;
+	    },
+
+	    operate: function (env, op, other) {
+	        return new SuperMap.CartoCSS.Tree.Quoted(SuperMap.CartoCSS.Tree.operate(op, this.toString(), other.toString(this.contains_field)));
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Reference = {
+	    _validateValue: {
+	        'font': function (env, value) {
+	            if (env.validation_data && env.validation_data.fonts) {
+	                return env.validation_data.fonts.indexOf(value) != -1;
+	            } else {
+	                return true;
+	            }
+	        }
+	    },
+	    setData: function (data) {
+	        this.data = data;
+	        this.selector_cache = generateSelectorCache(data);
+	        this.mapnikFunctions = generateMapnikFunctions(data);
+	        this.required_cache = generateRequiredProperties(data);
+
+	        function generateSelectorCache(data) {
+	            var index = {};
+	            for (var i in data.symbolizers) {
+	                for (var j in data.symbolizers[i]) {
+	                    if (data.symbolizers[i][j].hasOwnProperty('css')) {
+	                        index[data.symbolizers[i][j].css] = [data.symbolizers[i][j], i, j];
+	                    }
+	                }
+	            }
+	            return index;
+	        }
+
+	        function generateMapnikFunctions(data) {
+	            var functions = {};
+	            for (var i in data.symbolizers) {
+	                for (var j in data.symbolizers[i]) {
+	                    if (data.symbolizers[i][j].type === 'functions') {
+	                        for (var k = 0; k < data.symbolizers[i][j].functions.length; k++) {
+	                            var fn = data.symbolizers[i][j].functions[k];
+	                            functions[fn[0]] = fn[1];
+	                        }
+	                    }
+	                }
+	            }
+	            return functions;
+	        }
+
+	        function generateRequiredProperties(data) {
+	            var cache = {};
+	            for (var symbolizer_name in data.symbolizers) {
+	                cache[symbolizer_name] = [];
+	                for (var j in data.symbolizers[symbolizer_name]) {
+	                    if (data.symbolizers[symbolizer_name][j].required) {
+	                        cache[symbolizer_name].push(data.symbolizers[symbolizer_name][j].css);
+	                    }
+	                }
+	            }
+	            return cache;
+	        }
+	    },
+	    setVersion: function (version) {
+	        if (SuperMap.CartoCSS.mapnik_reference.version.hasOwnProperty(version)) {
+	            this.setData(SuperMap.CartoCSS.mapnik_reference.version[version]);
+	            return true;
+	        } else {
+	            return false;
+	        }
+	        return false;
+	    },
+	    selectorData: function (selector, i) {
+	        if (this.selector_cache && this.selector_cache[selector]) return this.selector_cache[selector][i];
+	    },
+	    validSelector: function (selector) {
+	        return !!this.selector_cache[selector];
+	    },
+	    selectorName: function (selector) {
+	        return this.selectorData(selector, 2);
+	    },
+	    selector: function (selector) {
+	        return this.selectorData(selector, 0);
+	    },
+	    symbolizer: function (selector) {
+	        return this.selectorData(selector, 1);
+	    },
+	    requiredProperties: function (symbolizer_name, rules) {
+	        var req = this.required_cache[symbolizer_name];
+	        for (var i in req) {
+	            if (!(req[i] in rules)) {
+	                return 'Property ' + req[i] + ' required for defining ' +
+	                    symbolizer_name + ' styles.';
+	            }
+	        }
+	    },
+	    isFont: function (selector) {
+	        return this.selector(selector).validate === 'font';
+	    },
+	    editDistance: function (a, b) {
+	        if (a.length === 0) return b.length;
+	        if (b.length === 0) return a.length;
+	        var matrix = [];
+	        for (var i = 0; i <= b.length; i++) {
+	            matrix[i] = [i];
+	        }
+	        for (var j = 0; j <= a.length; j++) {
+	            matrix[0][j] = j;
+	        }
+	        for (i = 1; i <= b.length; i++) {
+	            for (j = 1; j <= a.length; j++) {
+	                if (b.charAt(i - 1) === a.charAt(j - 1)) {
+	                    matrix[i][j] = matrix[i - 1][j - 1];
+	                } else {
+	                    matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, // substitution
+	                        Math.min(matrix[i][j - 1] + 1, // insertion
+	                            matrix[i - 1][j] + 1)); // deletion
+	                }
+	            }
+	        }
+	        return matrix[b.length][a.length];
+	    },
+	    validValue: function (env, selector, value) {
+	        function validateFunctions(value, selector) {
+	            if (value.value[0].is === 'string') return true;
+	            for (var i in value.value) {
+	                for (var j in value.value[i].value) {
+	                    if (value.value[i].value[j].is !== 'call') return false;
+	                    var f = _.find(this.selector(selector).functions, function (x) {
+	                        return x[0] === value.value[i].value[j].name;
+	                    });
+	                    if (!(f && f[1] === -1)) {
+	                        // This filter is unknown or given an incorrect number of arguments
+	                        if (!f || f[1] !== value.value[i].value[j].args.length) return false;
+	                    }
+	                }
+	            }
+	            return true;
+	        }
+
+	        function validateKeyword(value, selector) {
+	            if (typeof this.selector(selector).type === 'object') {
+	                return this.selector(selector).type
+	                        .indexOf(value.value[0].value) !== -1;
+	            } else {
+	                // allow unquoted keywords as strings
+	                return this.selector(selector).type === 'string';
+	            }
+	        }
+
+	        var i, j;
+	        if (!this.selector(selector)) {
+	            return false;
+	        } else if (value.value[0].is === 'keyword') {
+	            return validateKeyword(value, selector);
+	        } else if (value.value[0].is === 'undefined') {
+	            // caught earlier in the chain - ignore here so that
+	            // error is not overridden
+	            return true;
+	        } else if (this.selector(selector).type === 'numbers') {
+	            for (i in value.value) {
+	                if (value.value[i].is !== 'float') {
+	                    return false;
+	                }
+	            }
+	            return true;
+	        } else if (this.selector(selector).type === 'tags') {
+	            if (!value.value) return false;
+	            if (!value.value[0].value) {
+	                return value.value[0].is === 'tag';
+	            }
+	            for (i = 0; i < value.value[0].value.length; i++) {
+	                if (value.value[0].value[i].is !== 'tag') return false;
+	            }
+	            return true;
+	        } else if (this.selector(selector).type == 'functions') {
+	            // For backwards compatibility, you can specify a string for `functions`-compatible
+	            // values, though they will not be validated.
+	            return validateFunctions(value, selector);
+	        } else if (this.selector(selector).type === 'expression') {
+	            return true;
+	        } else if (this.selector(selector).type === 'unsigned') {
+	            if (value.value[0].is === 'float') {
+	                value.value[0].round();
+	                return true;
+	            } else {
+	                return false;
+	            }
+	        } else {
+	            if (this.selector(selector).validate) {
+	                var valid = false;
+	                for (i = 0; i < value.value.length; i++) {
+	                    if (this.selector(selector).type === value.value[i].is &&
+	                        this._validateValue[this.selector(selector).validate](env, value.value[i].value)) {
+	                        return true;
+	                    }
+	                }
+	                return valid;
+	            } else {
+	                return this.selector(selector).type === value.value[0].is;
+	            }
+	        }
+	    }
+	};
+	SuperMap.CartoCSS.Tree.Reference.setVersion("latest");
+
+	SuperMap.CartoCSS.Tree.Rule = SuperMap.Class({
+	    is: 'rule',
+	    initialize: function (name, value, index, filename) {
+	        var parts = name.split('/');
+	        this.name = parts.pop();
+	        this.instance = parts.length ? parts[0] : '__default__';
+	        this.value = (value instanceof SuperMap.CartoCSS.Tree.Value) ?
+	            value : new SuperMap.CartoCSS.Tree.Value([value]);
+	        this.index = index;
+	        this.symbolizer = SuperMap.CartoCSS.Tree.Reference.symbolizer(this.name);
+	        this.filename = filename;
+	        this.variable = (name.charAt(0) === '@');
+	    },
+	    clone: function () {
+	        var clone = Object.create(SuperMap.CartoCSS.Tree.Rule.prototype);
+	        clone.name = this.name;
+	        clone.value = this.value;
+	        clone.index = this.index;
+	        clone.instance = this.instance;
+	        clone.symbolizer = this.symbolizer;
+	        clone.filename = this.filename;
+	        clone.variable = this.variable;
+	        return clone;
+	    },
+	    updateID: function () {
+	        return this.id = this.zoom + '#' + this.instance + '#' + this.name;
+	    },
+	    toString: function () {
+	        return '[' + SuperMap.CartoCSS.Tree.Zoom.toString(this.zoom) + '] ' + this.name + ': ' + this.value;
+	    },
+	    toXML: function (env, content, sep, format) {
+	        if (!SuperMap.CartoCSS.Tree.Reference.validSelector(this.name)) {
+	            function getMean(name) {
+	                return Object.keys(SuperMap.CartoCSS.Tree.Reference.selector_cache).map(function (f) {
+	                    return [f, SuperMap.CartoCSS.Tree.Reference.editDistance(name, f)];
+	                }).sort(function (a, b) {
+	                    return a[1] - b[1];
+	                });
+	            }
+
+	            var mean = getMean(this.name);
+	            var mean_message = '';
+	            if (mean[0][1] < 3) {
+	                mean_message = '. Did you mean ' + mean[0][0] + '?';
+	            }
+	            return env.error({
+	                message: "Unrecognized rule: " + this.name + mean_message,
+	                index: this.index,
+	                type: 'syntax',
+	                filename: this.filename
+	            });
+	        }
+
+	        if ((this.value instanceof SuperMap.CartoCSS.Tree.Value) && !SuperMap.CartoCSS.Tree.Reference.validValue(env, this.name, this.value)) {
+	            if (!SuperMap.CartoCSS.Tree.Reference.selector(this.name)) {
+	                return env.error({
+	                    message: 'Unrecognized property: ' +
+	                    this.name,
+	                    index: this.index,
+	                    type: 'syntax',
+	                    filename: this.filename
+	                });
+	            } else {
+	                var typename;
+	                if (SuperMap.CartoCSS.Tree.Reference.selector(this.name).validate) {
+	                    typename = SuperMap.CartoCSS.Tree.Reference.selector(this.name).validate;
+	                } else if (typeof SuperMap.CartoCSS.Tree.Reference.selector(this.name).type === 'object') {
+	                    typename = 'keyword (options: ' + SuperMap.CartoCSS.Tree.Reference.selector(this.name).type.join(', ') + ')';
+	                } else {
+	                    typename = SuperMap.CartoCSS.Tree.Reference.selector(this.name).type;
+	                }
+	                return env.error({
+	                    message: 'Invalid value for ' +
+	                    this.name +
+	                    ', the type ' + typename +
+	                    ' is expected. ' + this.value +
+	                    ' (of type ' + this.value.value[0].is + ') ' +
+	                    ' was given.',
+	                    index: this.index,
+	                    type: 'syntax',
+	                    filename: this.filename
+	                });
+	            }
+	        }
+
+	        if (this.variable) {
+	            return '';
+	        } else if (SuperMap.CartoCSS.Tree.Reference.isFont(this.name) && this.value.value.length > 1) {
+	            var f = SuperMap.CartoCSS.Tree._getFontSet(env, this.value.value);
+	            return 'fontset-name="' + f.name + '"';
+	        } else if (content) {
+	            return this.value.toString(env, this.name, sep);
+	        } else {
+	            return SuperMap.CartoCSS.Tree.Reference.selectorName(this.name) +
+	                '="' +
+	                this.value.toString(env, this.name) +
+	                '"';
+	        }
+	    },
+	    ev: function (context) {
+	        return new SuperMap.CartoCSS.Tree.Rule(this.name,
+	            this.value.ev(context),
+	            this.index,
+	            this.filename);
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Ruleset = SuperMap.Class({
+	    is: 'ruleset',
+	    initialize: function (selectors, rules) {
+	        this.selectors = selectors;
+	        this.rules = rules;
+	        // static cache of find() function
+	        this._lookups = {};
+	    },
+	    'ev': function (env) {
+	        var i,
+	            rule,
+	            ruleset = new SuperMap.CartoCSS.Tree.Ruleset(this.selectors, this.rules.slice(0));
+	        ruleset.root = this.root;
+
+	        // push the current ruleset to the frames stack
+	        env.frames.unshift(ruleset);
+
+	        // Evaluate everything else
+	        for (i = 0, rule; i < ruleset.rules.length; i++) {
+	            rule = ruleset.rules[i];
+	            ruleset.rules[i] = rule.ev ? rule.ev(env) : rule;
+	        }
+
+	        // Pop the stack
+	        env.frames.shift();
+
+	        return ruleset;
+	    },
+	    match: function (args) {
+	        return !args || args.length === 0;
+	    },
+	    variables: function () {
+	        if (this._variables) {
+	            return this._variables;
+	        }
+	        else {
+	            return this._variables = this.rules.reduce(function (hash, r) {
+	                if (r instanceof SuperMap.CartoCSS.Tree.Rule && r.variable === true) {
+	                    hash[r.name] = r;
+	                }
+	                return hash;
+	            }, {});
+	        }
+	    },
+	    variable: function (name) {
+	        return this.variables()[name];
+	    },
+	    rulesets: function () {
+	        if (this._rulesets) {
+	            return this._rulesets;
+	        }
+	        else {
+	            return this._rulesets = this.rules.filter(function (r) {
+	                return (r instanceof SuperMap.CartoCSS.Tree.Ruleset);
+	            });
+	        }
+	    },
+	    find: function (selector, self) {
+	        self = self || this;
+	        var rules = [], rule, match,
+	            key = selector.toString();
+
+	        if (key in this._lookups) {
+	            return this._lookups[key];
+	        }
+
+	        this.rulesets().forEach(function (rule) {
+	            if (rule !== self) {
+	                for (var j = 0; j < rule.selectors.length; j++) {
+	                    match = selector.match(rule.selectors[j]);
+	                    if (match) {
+	                        if (selector.elements.length > 1) {
+	                            Array.prototype.push.apply(rules, rule.find(
+	                                new SuperMap.CartoCSS.Tree.Selector(null, null, selector.elements.slice(1)), self));
+	                        } else {
+	                            rules.push(rule);
+	                        }
+	                        break;
+	                    }
+	                }
+	            }
+	        });
+	        return this._lookups[key] = rules;
+	    },
+	    // Zooms can use variables. This replaces SuperMap.CartoCSS.Tree.Zoom objects on selectors
+	    // with simple bit-arrays that we can compare easily.
+	    evZooms: function (env) {
+	        for (var i = 0; i < this.selectors.length; i++) {
+	            var zval = SuperMap.CartoCSS.Tree.Zoom.all;
+	            for (var z = 0; z < this.selectors[i].zoom.length; z++) {
+	                zval = this.selectors[i].zoom[z].ev(env).zoom;
+	            }
+	            this.selectors[i].zoom = zval;
+	        }
+	    },
+	    flatten: function (result, parents, env) {
+	        var selectors = [], i, j;
+	        if (this.selectors.length === 0) {
+	            env.frames = env.frames.concat(this.rules);
+	        }
+	        // evaluate zoom variables on this object.
+	        this.evZooms(env);
+	        for (i = 0; i < this.selectors.length; i++) {
+	            var child = this.selectors[i];
+
+	            if (!child.filters) {
+	                // This is an invalid filterset.
+	                continue;
+	            }
+
+	            if (parents.length) {
+	                for (j = 0; j < parents.length; j++) {
+	                    var parent = parents[j];
+
+	                    var mergedFilters = parent.filters.cloneWith(child.filters);
+	                    if (mergedFilters === null) {
+	                        // Filters could be added, but they didn't change the
+	                        // filters. This means that we only have to clone when
+	                        // the zoom levels or the attachment is different too.
+	                        if (parent.zoom === child.zoom &&
+	                            parent.attachment === child.attachment &&
+	                            parent.elements.join() === child.elements.join()) {
+	                            selectors.push(parent);
+	                            continue;
+	                        } else {
+	                            mergedFilters = parent.filters;
+	                        }
+	                    } else if (!mergedFilters) {
+	                        // The merged filters are invalid, that means we don't
+	                        // have to clone.
+	                        continue;
+	                    }
+
+	                    var clone = Object.create(SuperMap.CartoCSS.Tree.Selector.prototype);
+	                    clone.filters = mergedFilters;
+	                    clone.zoom = child.zoom;
+	                    clone.elements = parent.elements.concat(child.elements);
+	                    if (parent.attachment && child.attachment) {
+	                        clone.attachment = parent.attachment + '/' + child.attachment;
+	                    }
+	                    else clone.attachment = child.attachment || parent.attachment;
+	                    clone.conditions = parent.conditions + child.conditions;
+	                    clone.index = child.index;
+	                    selectors.push(clone);
+	                }
+	            } else {
+	                selectors.push(child);
+	            }
+	        }
+
+	        var rules = [];
+	        for (i = 0; i < this.rules.length; i++) {
+	            var rule = this.rules[i];
+
+	            // Recursively flatten any nested rulesets
+	            if (rule instanceof SuperMap.CartoCSS.Tree.Ruleset) {
+	                rule.flatten(result, selectors, env);
+	            } else if (rule instanceof SuperMap.CartoCSS.Tree.Rule) {
+	                rules.push(rule);
+	            } else if (rule instanceof SuperMap.CartoCSS.Tree.Invalid) {
+	                env.error(rule);
+	            }
+	        }
+
+	        var index = rules.length ? rules[0].index : false;
+	        for (i = 0; i < selectors.length; i++) {
+	            // For specificity sort, use the position of the first rule to allow
+	            // defining attachments that are under current element as a descendant
+	            // selector.
+	            if (index !== false) {
+	                selectors[i].index = index;
+	            }
+	            result.push(new SuperMap.CartoCSS.Tree.Definition(selectors[i], rules.slice()));
+	        }
+
+	        return result;
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Selector = SuperMap.Class({
+	    initialize: function (filters, zoom, elements, attachment, conditions, index) {
+	        this.elements = elements || [];
+	        this.attachment = attachment;
+	        this.filters = filters || {};
+	        this.zoom = typeof zoom !== 'undefined' ? zoom : SuperMap.CartoCSS.Tree.Zoom.all;
+	        this.conditions = conditions;
+	        this.index = index;
+	    },
+	    specificity: function () {
+	        return this.elements.reduce(function (memo, e) {
+	            var spec = e.specificity();
+	            memo[0] += spec[0];
+	            memo[1] += spec[1];
+	            return memo;
+	        }, [0, 0, this.conditions, this.index]);
+	    }
+	});
+
+	/*style:SuperMap.Class(),*/
+
+	SuperMap.CartoCSS.Tree.URL = SuperMap.Class({
+	    is: 'uri',
+	    initialize: function (val, paths) {
+	        this.value = val;
+	        this.paths = paths;
+	    },
+	    toString: function () {
+	        return this.value.toString();
+	    },
+	    ev: function (ctx) {
+	        return new SuperMap.CartoCSS.Tree.URL(this.value.ev(ctx), this.paths);
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Value = SuperMap.Class({
+	    is: 'value',
+	    initialize: function (value) {
+	        this.value = value;
+	    },
+	    ev: function (env) {
+	        if (this.value.length === 1) {
+	            return this.value[0].ev(env);
+	        } else {
+	            return new SuperMap.CartoCSS.Tree.Value(this.value.map(function (v) {
+	                return v.ev(env);
+	            }));
+	        }
+	    },
+	    toJS: function (env) {
+	        //var v = this.value[0].value[0];
+	        var val = this.ev(env);
+	        var v = val.toString();
+	        if (val.is === "color" || val.is === 'uri' || val.is === 'string' || val.is === 'keyword') {
+	            v = "'" + v + "'";
+	        } else if (val.is === 'field') {
+	            // replace [varuable] by ctx['variable']
+	            v = v.replace(/\[(.*)\]/g, "attributes['\$1']")
+	        }
+	        else if (val.value && typeof val.value === "object") {
+	            v = "[" + v + "]";
+	        }
+
+	        return "_value = " + v + ";";
+	    },
+	    toString: function (env, selector, sep, format) {
+	        return this.value.map(function (e) {
+	            return e.toString(env, format);
+	        }).join(sep || ', ');
+	    },
+	    clone: function () {
+	        var obj = Object.create(SuperMap.CartoCSS.Tree.Value.prototype);
+	        if (Array.isArray(obj)) obj.value = this.value.slice();
+	        else obj.value = this.value;
+	        obj.is = this.is;
+	        return obj;
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Variable = SuperMap.Class({
+	    is: 'variable',
+	    initialize: function (name, index, filename) {
+	        this.name = name;
+	        this.index = index;
+	        this.filename = filename;
+	    },
+	    toString: function () {
+	        return this.name;
+	    },
+	    ev: function (env) {
+	        var variable,
+	            v,
+	            name = this.name;
+
+	        if (this._css) return this._css;
+
+	        var thisframe = env.frames.filter(function (f) {
+	            return f.name === this.name;
+	        }.bind(this));
+	        if (thisframe.length) {
+	            return thisframe[0].value.ev(env);
+	        } else {
+	            env.error({
+	                message: 'variable ' + this.name + ' is undefined',
+	                index: this.index,
+	                type: 'runtime',
+	                filename: this.filename
+	            });
+	            return {
+	                is: 'undefined',
+	                value: 'undefined'
+	            };
+	        }
+	    }
+	});
+
+	SuperMap.CartoCSS.Tree.Zoom = SuperMap.Class({
+	    initialize: function (op, value, index) {
+	        this.op = op;
+	        this.value = value;
+	        this.index = index;
+	    },
+	    setZoom: function (zoom) {
+	        this.zoom = zoom;
+	        return this;
+	    },
+	    ev: function (env) {
+	        var start = 0,
+	            end = Infinity,
+	            value = parseInt(this.value.ev(env).toString(), 10),
+	            zoom = 0;
+
+	        if (value > SuperMap.CartoCSS.Tree.Zoom.maxZoom || value < 0) {
+	            env.error({
+	                message: 'Only zoom levels between 0 and ' +
+	                SuperMap.CartoCSS.Tree.Zoom.maxZoom + ' supported.',
+	                index: this.index
+	            });
+	        }
+
+	        switch (this.op) {
+	            case '=':
+	                this.zoom = "zoom && zoom === " + value;
+	                return this;
+	            case '>':
+	                this.zoom = "zoom && zoom > " + value;
+	                break;
+	            case '>=':
+	                this.zoom = "zoom && zoom >= " + value;
+	                break;
+	            case '<':
+	                this.zoom = "zoom && zoom < " + value;
+	                break;
+	            case '<=':
+	                this.zoom = "zoom && zoom <= " + value;
+	                break;
+	        }
+	        /*
+	         for (var i = 0; i <= SuperMap.CartoCSS.Tree.Zoom.maxZoom; i++) {
+	         if (i >= start && i <= end) {
+	         zoom |= (1 << i);
+	         }
+	         }
+	         this.zoom = zoom;
+	         this.zoom=value+this.op+"zoom";*/
+	        return this;
+	    },
+	    toString: function () {
+	        var str = '';
+	        for (var i = 0; i <= SuperMap.CartoCSS.Tree.Zoom.maxZoom; i++) {
+	            str += (this.zoom & (1 << i)) ? 'X' : '.';
+	        }
+	        return str;
+	    },
+	    toXML: function () {
+	        var conditions = [];
+	        if (this.zoom != SuperMap.CartoCSS.Tree.Zoom.all) {
+	            var start = null, end = null;
+	            for (var i = 0; i <= SuperMap.CartoCSS.Tree.Zoom.maxZoom; i++) {
+	                if (this.zoom & (1 << i)) {
+	                    if (start === null) start = i;
+	                    end = i;
+	                }
+	            }
+	            if (start > 0) conditions.push('    <MaxScaleDenominator>' +
+	                SuperMap.CartoCSS.Tree.Zoom.ranges[start] + '</MaxScaleDenominator>\n');
+	            if (end < 22) conditions.push('    <MinScaleDenominator>' +
+	                SuperMap.CartoCSS.Tree.Zoom.ranges[end + 1] + '</MinScaleDenominator>\n');
+	        }
+	        return conditions;
+	    }
+
+	});
+
+	// Covers all zoomlevels from 0 to 22
+	SuperMap.CartoCSS.Tree.Zoom.all = 23;
+
+	SuperMap.CartoCSS.Tree.Zoom.maxZoom = 22;
+
+	SuperMap.CartoCSS.Tree.Zoom.ranges = {
+	    0: 1000000000,
+	    1: 500000000,
+	    2: 200000000,
+	    3: 100000000,
+	    4: 50000000,
+	    5: 25000000,
+	    6: 12500000,
+	    7: 6500000,
+	    8: 3000000,
+	    9: 1500000,
+	    10: 750000,
+	    11: 400000,
+	    12: 200000,
+	    13: 100000,
+	    14: 50000,
+	    15: 25000,
+	    16: 12500,
+	    17: 5000,
+	    18: 2500,
+	    19: 1500,
+	    20: 750,
+	    21: 500,
+	    22: 250,
+	    23: 100
+	};
+
+	module.exports = function (cartoStr) {
+	    return new SuperMap.CartoCSS(cartoStr);
+	};
+
+/***/ },
 /* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Constant: L.supermap.DefaultStyle
+	 * {Object} 这个style对应的是默认设置
+	 */
+	__webpack_require__(11);
+	L.supermap.DefaultStyle = {
+	    "TEXT": {
+	        fontSize: "14px",
+	        fontFamily: "sans-serif",
+	        textAlign: "left",
+
+	        color: "rgba(255,255,255,0)",
+	        fillColor: "rgba(0,0,0,1)",
+	        weight:1,
+	        globalAlpha: 1,
+	    },
+
+	    "POINT": {
+	        fillColor: "#ffcc00",
+	        color: "#cc3333",
+	        weight: 1,
+	        radius: 3,
+	        opacity: 1,
+	    },
+
+	    "LINE": {
+	        color: "rgba(0,0,0,0)",
+	        weight: 1,
+	        lineCap: "butt",
+	        lineJoin: "round",
+
+	        dashOffset: 0,
+	        dashArray: [],
+	        opacity: 1,
+
+	    },
+	    "REGION": {
+	        color: "rgba(0,0,0,0)",
+	        fillColor: "rgba(0,0,0,0)",
+	        weight: 1,
+	        lineCap: "butt",
+	        lineJoin: "round",
+	        dashOffset: 0,
+	        opacity: 1,
+	        fillOpacity: 1,
+	        dashArray: [],
+	    }
+	};
+
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 *SuperMapLeaflet基础模块
+	 * 1、定义命名空间
+	 * 2、提供必要的转换工具
+	 */
+	L.supermap = L.supermap || {};
+	__webpack_require__(12);
+	__webpack_require__(15);
+	__webpack_require__(16);
+	__webpack_require__(18);
+	L.Util.toGeoJSON = function (feature) {
+	    if (!feature) {
+	        return feature;
+	    }
+	    return JSON.parse(new SuperMap.Format.GeoJSON().write(feature));
+	};
+	L.Util.supermap_callbacks = {};
+	L.Util.toSuperMapGeometry = function (geometry) {
+	    if (!geometry) {
+	        return geometry;
+	    }
+	    var result, format = new SuperMap.Format.GeoJSON();
+	    if (["FeatureCollection", "Feature", "Geometry"].indexOf(geometry.type) != -1) {
+	        result = format.read(geometry, geometry.type);
+	    } else if (typeof geometry.toGeoJSON === "function") {
+	        var geojson = geometry.toGeoJSON();
+	        result = (geojson) ? format.read(geojson, geojson.type) : geometry;
+	    }
+
+	    var serverResult = result;
+	    if (L.Util.isArray(result)) {
+	        if (result.length === 1) {
+	            serverResult = result[0];
+	        } else if (result.length > 1) {
+	            serverResult = [];
+	            result.map(function (item) {
+	                serverResult.push(item.geometry);
+	            });
+	        }
+	    }
+
+	    return (serverResult && serverResult.geometry) ? serverResult.geometry : serverResult;
+
+	};
+	L.Util.GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
+	    var resolution = null,
+	        ratio = 10000;
+	    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
+	    datumAxis = datumAxis || 6378137;
+	    coordUnit = coordUnit || "";
+	    if (scale > 0 && dpi > 0) {
+	        scale = L.Util.NormalizeScale (scale);
+	        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
+	            //scale = SuperMap.Util.normalizeScale(scale);
+	            resolution = 0.0254 * ratio / dpi / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
+	            return resolution;
+	        } else {
+	            resolution = 0.0254 * ratio / dpi / scale / ratio;
+	            return resolution;
+	        }
+	    }
+	    return -1;
+	};
+	L.Util.NormalizeScale = function (scale) {
+	    var normScale = (scale > 1.0) ? (1.0 / scale)
+	        : scale;
+	    return normScale;
+	};
+	L.Util.Csv2GeoJSON = function (csv, options) {
+	    var defaultOptions = {
+	        titles: ['lon', 'lat'],
+	        latitudeTitle: 'lat',
+	        longitudeTitle: 'lon',
+	        fieldSeparator: ',',
+	        lineSeparator: '\n',
+	        deleteDoubleQuotes: true,
+	        firstLineTitles: false
+	    };
+	    options = options || defaultOptions;
+	    var _propertiesNames = []
+	    if (typeof csv === 'string') {
+	        var titulos = options.titles;
+	        if (options.firstLineTitles) {
+	            csv = csv.split(options.lineSeparator);
+	            if (csv.length < 2) return;
+	            titulos = csv[0];
+	            csv.splice(0, 1);
+	            csv = csv.join(options.lineSeparator);
+	            titulos = titulos.trim().split(options.fieldSeparator);
+	            for (var i = 0; i < titulos.length; i++) {
+	                titulos[i] = _deleteDoubleQuotes(titulos[i]);
+	            }
+	            options.titles = titulos;
+	        }
+	        for (var i = 0; i < titulos.length; i++) {
+	            var prop = titulos[i].toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '_');
+	            if (prop == '' || prop == '_') prop = 'prop-' + i;
+	            _propertiesNames[i] = prop;
+	        }
+	        csv = _csv2json(csv);
+	    }
+	    return csv;
+
+	    function _deleteDoubleQuotes(cadena) {
+	        if (options.deleteDoubleQuotes) cadena = cadena.trim().replace(/^"/, "").replace(/"$/, "");
+	        return cadena;
+	    };
+
+	    function _csv2json(csv) {
+	        var json = {};
+	        json["type"] = "FeatureCollection";
+	        json["features"] = [];
+	        var titulos = options.titles;
+	        csv = csv.split(options.lineSeparator);
+	        for (var num_linea = 0; num_linea < csv.length; num_linea++) {
+	            var campos = csv[num_linea].trim().split(options.fieldSeparator)
+	                , lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)])
+	                , lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
+	            if (campos.length == titulos.length && lng < 180 && lng > -180 && lat < 90 && lat > -90) {
+	                var feature = {};
+	                feature["type"] = "Feature";
+	                feature["geometry"] = {};
+	                feature["properties"] = {};
+	                feature["geometry"]["type"] = "Point";
+	                feature["geometry"]["coordinates"] = [lng, lat];
+	                for (var i = 0; i < titulos.length; i++) {
+	                    if (titulos[i] != options.latitudeTitle && titulos[i] != options.longitudeTitle) {
+	                        feature["properties"][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
+	                    }
+	                }
+	                json["features"].push(feature);
+	            }
+	        }
+	        return json;
+	    };
+	};
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* COPYRIGHT 2017 SUPERMAP
+	 * 本程序只能在有效的授权许可下使用。
+	 * 未经许可，不得以任何手段擅自使用或传播。*/
+
+
+	/**
+	 * Class: SuperMap.Format.GeoJSON
+	 * GeoJSON 的读和写。使用 <SuperMap.Format.GeoJSON> 构造器创建一个GeoJSON解析器.
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.Format.JSON>
+	 */
+	__webpack_require__(5);
+	__webpack_require__(13);
+
+	SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
+
+	    /**
+	     * APIProperty: ignoreExtraDims
+	     * {Boolean} 忽略维度超过2的几何要素
+	     */
+	    ignoreExtraDims: false,
+
+
+	    /**
+	     * APIMethod: read
+	     * 反序列化一个 GeoJSON 字符串.
+	     *
+	     * Parameters:
+	     * json - {String}  GeoJSON 字符串
+	     * type - {String} 可选的字符串，它决定了输出的格式。
+	     *     支持的值有："Geometry","Feature",和"FeatureCollection",
+	     *     如果此值为null，则会使用默认值"FeaureCollection"。
+	     * filter - {Function} 对象中每个层次每个键值对都会调用此函数得出一个结果。
+	     *     每个值都会被filter函数的结果所替换掉。这个函数可被用来将某些对象转化成
+	     *     某个类相应的对象，或者将日期字符串转化成Date对象。
+	     *
+	     * Returns:
+	     * {Object} 返回值依赖于type参数的值。如果type等于"FeatureCollection"（默认值），
+	     *     返回值将会是 <SuperMap.Feature.Vector> 数组。如果type为"Geometry",
+	     *     输入的json对象必须表示一个唯一的几何体，然后返回值就会是 <SuperMap.Feature.Geometry>
+	     *     如果type为"Feature"，输入的json对象也必须表示的一个要素，这样返回值才会是
+	     *      <SuperMap.Feature.Vector> 。
+	     */
+	    read: function (json, type, filter) {
+	        type = (type) ? type : "FeatureCollection";
+	        var results = null;
+	        var obj = null;
+	        if (typeof json == "string") {
+	            obj = SuperMap.Format.JSON.prototype.read.apply(this,
+	                [json, filter]);
+	        } else {
+	            obj = json;
+	        }
+	        if (!obj) {
+	            //SuperMap.Console.error("Bad JSON: " + json);
+	        } else if (typeof(obj.type) != "string") {
+	            //SuperMap.Console.error("Bad GeoJSON - no type: " + json);
+	        } else if (this.isValidType(obj, type)) {
+	            switch (type) {
+	                case "Geometry":
+	                    try {
+	                        results = this.parseGeometry(obj);
+	                    } catch (err) {
+	                        //SuperMap.Console.error(err);
+	                    }
+	                    break;
+	                case "Feature":
+	                    try {
+	                        results = this.parseFeature(obj);
+	                        results.type = "Feature";
+	                    } catch (err) {
+	                        //SuperMap.Console.error(err);
+	                    }
+	                    break;
+	                case "FeatureCollection":
+	                    // for type FeatureCollection, we allow input to be any type
+	                    results = [];
+	                    switch (obj.type) {
+	                        case "Feature":
+	                            try {
+	                                results.push(this.parseFeature(obj));
+	                            } catch (err) {
+	                                results = null;
+	                                //SuperMap.Console.error(err);
+	                            }
+	                            break;
+	                        case "FeatureCollection":
+	                            for (var i = 0, len = obj.features.length; i < len; ++i) {
+	                                try {
+	                                    results.push(this.parseFeature(obj.features[i]));
+	                                } catch (err) {
+	                                    results = null;
+	                                    // SuperMap.Console.error(err);
+	                                }
+	                            }
+	                            break;
+	                        default:
+	                            try {
+	                                var geom = this.parseGeometry(obj);
+	                                results.push(new SuperMap.Feature.Vector(geom));
+	                            } catch (err) {
+	                                results = null;
+	                                //SuperMap.Console.error(err);
+	                            }
+	                    }
+	                    break;
+	            }
+	        }
+	        return results;
+	    },
+
+	    /**
+	     * Method: isValidType
+	     * 检查一个GeoJSON对象是否和给定的类型相符的合法的对象。
+	     *
+	     * Returns:
+	     * {Boolean} GeoJSON是否是给定类型的合法对象。
+	     */
+	    isValidType: function (obj, type) {
+	        var valid = false;
+	        switch (type) {
+	            case "Geometry":
+	                if (SuperMap.Util.indexOf(
+	                        ["Point", "MultiPoint", "LineString", "MultiLineString",
+	                            "Polygon", "MultiPolygon", "Box", "GeometryCollection"],
+	                        obj.type) == -1) {
+	                    // unsupported geometry type
+	                    //SuperMap.Console.error("Unsupported geometry type: " +
+	                    // obj.type);
+	                } else {
+	                    valid = true;
+	                }
+	                break;
+	            case "FeatureCollection":
+	                // allow for any type to be converted to a feature collection
+	                valid = true;
+	                break;
+	            default:
+	                // for Feature types must match
+	                if (obj.type == type) {
+	                    valid = true;
+	                } else {
+	                    //SuperMap.Console.error("Cannot convert types from " +
+	                    //obj.type + " to " + type);
+	                }
+	        }
+	        return valid;
+	    },
+
+	    /**
+	     * Method: parseFeature
+	     * 将一个GeoJSON中的feature转化成<SuperMap.Feature.Vector>对象。
+	     *
+	     * Parameters:
+	     * obj - {Object} 从GeoJSON对象中创建一个对象。
+	     *
+	     * Returns:
+	     * {<SuperMap.Feature.Vector>} 一个要素。
+	     */
+	    parseFeature: function (obj) {
+	        var feature, geometry, attributes, bbox;
+	        attributes = (obj.properties) ? obj.properties : {};
+	        bbox = (obj.geometry && obj.geometry.bbox) || obj.bbox;
+	        try {
+	            geometry = this.parseGeometry(obj.geometry);
+	        } catch (err) {
+	            // deal with bad geometries
+	            throw err;
+	        }
+	        feature = new SuperMap.Feature.Vector(geometry, attributes);
+	        if (bbox) {
+	            feature.bounds = SuperMap.Bounds.fromArray(bbox);
+	        }
+	        if (obj.id) {
+	            feature.fid = obj.id;
+	        }
+	        return feature;
+	    },
+
+	    /**
+	     * Method: parseGeometry
+	     * 将一个GeoJSON中的几何要素转化成<SuperMap.Geometry>对象。
+	     *
+	     * Parameters:
+	     * obj - {Object} 从GeoJSON对象中创建一个对象。
+	     *
+	     * Returns:
+	     * {<SuperMap.Geometry>} 一个几何要素。
+	     */
+	    parseGeometry: function (obj) {
+	        if (obj == null) {
+	            return null;
+	        }
+	        var geometry, collection = false;
+	        if (obj.type == "GeometryCollection") {
+	            if (!(SuperMap.Util.isArray(obj.geometries))) {
+	                throw "GeometryCollection must have geometries array: " + obj;
+	            }
+	            var numGeom = obj.geometries.length;
+	            var components = new Array(numGeom);
+	            for (var i = 0; i < numGeom; ++i) {
+	                components[i] = this.parseGeometry.apply(
+	                    this, [obj.geometries[i]]
+	                );
+	            }
+	            geometry = new SuperMap.Geometry.Collection(components);
+	            collection = true;
+	        } else {
+	            if (!(SuperMap.Util.isArray(obj.coordinates))) {
+	                throw "Geometry must have coordinates array: " + obj;
+	            }
+	            if (!this.parseCoords[obj.type.toLowerCase()]) {
+	                throw "Unsupported geometry type: " + obj.type;
+	            }
+	            try {
+	                geometry = this.parseCoords[obj.type.toLowerCase()].apply(
+	                    this, [obj.coordinates]
+	                );
+	            } catch (err) {
+	                // deal with bad coordinates
+	                throw err;
+	            }
+	        }
+	        // We don't reproject collections because the children are reprojected
+	        // for us when they are created.
+	        if (this.internalProjection && this.externalProjection && !collection) {
+	            geometry.transform(this.externalProjection,
+	                this.internalProjection);
+	        }
+	        return geometry;
+	    },
+
+	    /**
+	     * Property: parseCoords
+	     * 一个属性名对应着GeoJSON对象的几何类型的对象。每个属性其实都是一个实际上做解析用的方法。
+	     */
+	    parseCoords: {
+	        /**
+	         * Method: parseCoords.point
+	         * 将一组坐标成一个<SuperMap.Geometry>对象。
+	         *
+	         * Parameters:
+	         * array - {Object} GeoJSON片段中的一组坐标。
+	         *
+	         * Returns:
+	         * {<SuperMap.Geometry>} 一个几何对象。
+	         */
+	        "point": function (array) {
+	            if (this.ignoreExtraDims == false &&
+	                array.length != 2) {
+	                throw "Only 2D points are supported: " + array;
+	            }
+	            return new SuperMap.Geometry.Point(array[0], array[1]);
+	        },
+
+	        /**
+	         * Method: parseCoords.multipoint
+	         * 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+	         *
+	         * Parameters:
+	         * array - {Object} GeoJSON片段中的坐标组数组。
+	         *
+	         * Returns:
+	         * {<SuperMap.Geometry>} 一个几何对象。
+	         */
+	        "multipoint": function (array) {
+	            var points = [];
+	            var p = null;
+	            for (var i = 0, len = array.length; i < len; ++i) {
+	                try {
+	                    p = this.parseCoords["point"].apply(this, [array[i]]);
+	                } catch (err) {
+	                    throw err;
+	                }
+	                points.push(p);
+	            }
+	            return new SuperMap.Geometry.MultiPoint(points);
+	        },
+
+	        /**
+	         * Method: parseCoords.linestring
+	         * 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+	         *
+	         * Parameters:
+	         * array - {Object} GeoJSON片段中的坐标组数组。
+	         *
+	         * Returns:
+	         * {<SuperMap.Geometry>} 一个几何对象。
+	         */
+	        "linestring": function (array) {
+	            var points = [];
+	            var p = null;
+	            for (var i = 0, len = array.length; i < len; ++i) {
+	                try {
+	                    p = this.parseCoords["point"].apply(this, [array[i]]);
+	                } catch (err) {
+	                    throw err;
+	                }
+	                points.push(p);
+	            }
+	            return new SuperMap.Geometry.LineString(points);
+	        },
+
+	        /**
+	         * Method: parseCoords.multilinestring
+	         * 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+	         *
+	         * Parameters:
+	         * array - {Object} GeoJSON片段中的坐标组数组。
+	         *
+	         * Returns:
+	         * {<SuperMap.Geometry>} 一个几何对象。
+	         */
+	        "multilinestring": function (array) {
+	            var lines = [];
+	            var l = null;
+	            for (var i = 0, len = array.length; i < len; ++i) {
+	                try {
+	                    l = this.parseCoords["linestring"].apply(this, [array[i]]);
+	                } catch (err) {
+	                    throw err;
+	                }
+	                lines.push(l);
+	            }
+	            return new SuperMap.Geometry.MultiLineString(lines);
+	        },
+
+	        /**
+	         * Method: parseCoords.polygon
+	         * 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+	         *
+	         * Returns:
+	         * {<SuperMap.Geometry>} 一个几何对象。
+	         */
+	        "polygon": function (array) {
+	            var rings = [];
+	            var r, l;
+	            for (var i = 0, len = array.length; i < len; ++i) {
+	                try {
+	                    l = this.parseCoords["linestring"].apply(this, [array[i]]);
+	                } catch (err) {
+	                    throw err;
+	                }
+	                r = new SuperMap.Geometry.LinearRing(l.components);
+	                rings.push(r);
+	            }
+	            return new SuperMap.Geometry.Polygon(rings);
+	        },
+
+	        /**
+	         * Method: parseCoords.multipolygon
+	         * 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+	         *
+	         * Parameters:
+	         * array - {Object} GeoJSON片段中的坐标组数组。
+	         *
+	         * Returns:
+	         * {<SuperMap.Geometry>} 一个几何对象。
+	         */
+	        "multipolygon": function (array) {
+	            var polys = [];
+	            var p = null;
+	            for (var i = 0, len = array.length; i < len; ++i) {
+	                try {
+	                    p = this.parseCoords["polygon"].apply(this, [array[i]]);
+	                } catch (err) {
+	                    throw err;
+	                }
+	                polys.push(p);
+	            }
+	            return new SuperMap.Geometry.MultiPolygon(polys);
+	        },
+
+	        /**
+	         * Method: parseCoords.box
+	         * 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
+	         *
+	         * Parameters:
+	         * array - {Object} GeoJSON片段中的坐标组数组。
+	         *
+	         * Returns:
+	         * {<SuperMap.Geometry>} 一个几何对象。
+	         */
+	        "box": function (array) {
+	            if (array.length != 2) {
+	                throw "GeoJSON box coordinates must have 2 elements";
+	            }
+	            return new SuperMap.Geometry.Polygon([
+	                new SuperMap.Geometry.LinearRing([
+	                    new SuperMap.Geometry.Point(array[0][0], array[0][1]),
+	                    new SuperMap.Geometry.Point(array[1][0], array[0][1]),
+	                    new SuperMap.Geometry.Point(array[1][0], array[1][1]),
+	                    new SuperMap.Geometry.Point(array[0][0], array[1][1]),
+	                    new SuperMap.Geometry.Point(array[0][0], array[0][1])
+	                ])
+	            ]);
+	        }
+
+	    },
+
+	    /**
+	     * APIMethod: write
+	     * 序列化一个要素对象，几何对象，要素对象数组为一个GeoJSON字符串。
+	     *
+	     * Parameters:
+	     * obj - {Object} 一个 <SuperMap.Feature.Vector> 对象，一个 <SuperMap.Geometry> 对象，
+	     *     或者一个要素对象数组。
+	     * pretty - {Boolean} 是否使用换行和缩进来控制输出。默认值为false。
+	     *
+	     * Returns:
+	     * {String} 一个GeoJSON字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
+	     */
+	    write: function (obj, pretty) {
+	        var geojson = {
+	            "type": null
+	        };
+	        if (SuperMap.Util.isArray(obj)) {
+	            geojson.type = "FeatureCollection";
+	            var numFeatures = obj.length;
+	            geojson.features = new Array(numFeatures);
+	            for (var i = 0; i < numFeatures; ++i) {
+	                var element = obj[i];
+	                if (isGeometry(element)) {
+	                    var feature = {};
+	                    feature.geometry = element;
+	                    geojson.features[i] = this.extract.feature.apply(this, [feature]);
+	                } else {
+	                    geojson.features[i] = this.extract.feature.apply(this, [element]);
+	                }
+	            }
+	        } else if (isGeometry(obj)) {
+	            var feature = {};
+	            feature.geometry = obj;
+	            geojson = this.extract.feature.apply(this, [feature]);
+	        }
+
+	        function isGeometry(input) {
+	            return input.hasOwnProperty("parts") && input.hasOwnProperty("points");
+	        }
+
+	        return SuperMap.Format.JSON.prototype.write.apply(this, [geojson, pretty]);
+	    },
+
+	    /**
+	     * Method: createCRSObject
+	     * 从一个要素对象中创建一个坐标参考系对象。
+	     *
+	     * Parameters:
+	     * object - {<SuperMap.Feature.Vector>} 要素对象
+	     *
+	     * Returns:
+	     * {Object} 一个可作为GeoJSON对象的crs属性使用的对象。
+	     */
+	    createCRSObject: function (object) {
+	        var proj = object.layer.projection.toString();
+	        var crs = {};
+	        if (proj.match(/epsg:/i)) {
+	            var code = parseInt(proj.substring(proj.indexOf(":") + 1));
+	            if (code == 4326) {
+	                crs = {
+	                    "type": "name",
+	                    "properties": {
+	                        "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+	                    }
+	                };
+	            } else {
+	                crs = {
+	                    "type": "name",
+	                    "properties": {
+	                        "name": "EPSG:" + code
+	                    }
+	                };
+	            }
+	        }
+	        return crs;
+	    },
+
+	    /**
+	     * Property: extract
+	     * 一个属性名对应着GeoJSON类型的对象。其值为相应的实际的解析方法。
+	     */
+	    extract: {
+	        /**
+	         * Method: extract.feature
+	         * 返回一个表示单个要素对象的GeoJSON的一部分。
+	         *
+	         * Parameters:
+	         * feature - iServer要素对象
+	         *
+	         * Returns:
+	         * {Object} 一个表示点的对象。
+	         */
+	        'feature': function (feature) {
+	            var geom = this.extract.geometry.apply(this, [feature.geometry]);
+	            var json = {
+	                "type": "Feature",
+	                "properties": this.createAttributes(feature),
+	                "geometry": geom
+	            };
+	            if (feature.geometry && feature.geometry.type === 'TEXT') {
+	                json.properties.texts = feature.geometry.texts;
+	                json.properties.textStyle = feature.geometry.textStyle;
+	            }
+	            if (feature.fid !== null) {
+	                json.id = feature.fid;
+	            }
+	            return json;
+	        },
+
+	        /**
+	         * Method: extract.geometry
+	         * 返回一个表示单个几何对象的GeoJSON的一部分。
+	         *
+	         * Parameters:
+	         * geometry -iServer 几何对象
+	         *
+	         * Returns:
+	         * {Object} 一个表示几何体的对象。
+	         */
+	        'geometry': function (geometry) {
+	            if (geometry == null) {
+	                return null;
+	            }
+	            var geo = this.toGeometry(geometry);
+	            var geometryType = geo.type;
+	            var data = this.extract[geometryType.toLowerCase()].apply(this, [geo]);
+	            geometryType = geometryType === 'TEXT' ? 'Point' : geometryType;
+	            var json;
+	            if (geometryType === "Collection") {
+	                json = {
+	                    "type": "GeometryCollection",
+	                    "geometries": data
+	                };
+	            } else {
+	                json = {
+	                    "type": geometryType,
+	                    "coordinates": data
+	                };
+	            }
+	            return json;
+	        },
+
+
+	        /**
+	         * Method: extract.point
+	         * 从一个点对象中返回一个坐标组。
+	         *
+	         * Parameters:
+	         * point - {<SuperMap.Geometry.Point>} 一个点对象。
+	         *
+	         * Returns:
+	         * {Array} 一个表示一个点的坐标组。
+	         */
+	        'point': function (point) {
+	            return [point.x, point.y];
+	        },
+
+	        /**
+	         * Method: extract.text
+	         * 从一个文本对象中返回一个坐标组。
+	         *
+	         * Parameters:
+	         * geo 一个文本对象。
+	         *
+	         * Returns:
+	         * {Array} 一个表示一个点的坐标组。
+	         */
+	        'text': function (geo) {
+	            return [geo.points[0].x, geo.points[0].y];
+	        },
+
+	        /**
+	         * Method: extract.multipoint
+	         * 从一个多点对象中返一个坐标组数组。
+	         *
+	         * Parameters:
+	         * multipoint - {<SuperMap.Geometry.MultiPoint>} 多点对象。
+	         *
+	         * Returns:
+	         * {Array} 一个表示多点的坐标组数组。
+	         */
+	        'multipoint': function (multipoint) {
+	            var array = [];
+	            for (var i = 0, len = multipoint.components.length; i < len; ++i) {
+	                array.push(this.extract.point.apply(this, [multipoint.components[i]]));
+	            }
+	            return array;
+	        },
+
+	        /**
+	         * Method: extract.linestring
+	         * 从一个线对象中返回一个坐标组数组。
+	         *
+	         * Parameters:
+	         * linestring - {<SuperMap.Geometry.LineString>} 线对象。
+	         *
+	         * Returns:
+	         * {Array} 一个表示线对象的坐标组数组。
+	         */
+	        'linestring': function (linestring) {
+	            var array = [];
+	            for (var i = 0, len = linestring.components.length; i < len; ++i) {
+	                array.push(this.extract.point.apply(this, [linestring.components[i]]));
+	            }
+	            return array;
+	        },
+
+	        /**
+	         * Method: extract.multilinestring
+	         * 从一个多线对象中返回一个线数组。
+	         *
+	         * Parameters:
+	         * multilinestring - {<SuperMap.Geometry.MultiLineString>} 多线对象
+	         *
+	         * Returns:
+	         * {Array} 一个表示多线的线数组。
+	         */
+	        'multilinestring': function (multilinestring) {
+	            var array = [];
+	            for (var i = 0, len = multilinestring.components.length; i < len; ++i) {
+	                array.push(this.extract.linestring.apply(this, [{components: multilinestring.components[i]}]));
+	            }
+	            return array;
+	        },
+
+	        /**
+	         * Method: extract.polygon
+	         * 从一个面对象中返回一组线环。
+	         *
+	         * Parameters:
+	         * polygon - {<SuperMap.Geometry.Polygon> 面对象。
+	         *
+	         * Returns:
+	         * {Array} 一组表示面的线环。
+	         */
+	        'polygon': function (polygon) {
+	            var array = [];
+	            for (var i = 0, len = polygon.components.length; i < len; ++i) {
+	                array.push(this.extract.linestring.apply(this, [{components: polygon.components[i]}]));
+	            }
+	            return array;
+	        },
+
+	        /**
+	         * Method: extract.multipolygon
+	         * 从一个多面对象中返回一组面。
+	         *
+	         * Parameters:
+	         * multipolygon - {<SuperMap.Geometry.MultiPolygon>} 多面对象。
+	         *
+	         * Returns:
+	         * {Array} 一组表示多面的面。
+	         */
+	        'multipolygon': function (multipolygon) {
+	            var array = [];
+	            for (var i = 0, len = multipolygon.components.length; i < len; ++i) {
+	                array.push(this.extract.polygon.apply(this, [{components: multipolygon.components[i]}]));
+	            }
+	            return array;
+	        },
+
+	        /**
+	         * Method: extract.collection
+	         * 从一个几何要素集合中一组几何要素数组。
+	         *
+	         * Parameters:
+	         * collection - {<SuperMap.Geometry.Collection>} 几何要素集合。
+	         *
+	         * Returns:
+	         * {Array} 一组表示几何要素集合的几何要素数组。
+	         */
+	        'collection': function (collection) {
+	            var len = collection.components.length;
+	            var array = new Array(len);
+	            for (var i = 0; i < len; ++i) {
+	                array[i] = this.extract.geometry.apply(this, [{
+	                    type: "Collection",
+	                    components: collection.components[i]
+	                }]);
+	            }
+	            return array;
+	        }
+	    },
+
+	    createAttributes: function (feature) {
+	        if (!feature) {
+	            return null;
+	        }
+	        var attr = {};
+	        processFieldsAttributes(feature, attr);
+	        var exceptKeys = ["fieldNames", "fieldValues", "geometry"];
+	        for (var key in feature) {
+	            if (exceptKeys.indexOf(key) > -1) {
+	                continue;
+	            }
+	            attr[key] = feature[key];
+	        }
+
+	        function processFieldsAttributes(feature, attributes) {
+	            if (!(feature.hasOwnProperty("fieldNames") && feature.hasOwnProperty("fieldValues"))) {
+	                return;
+	            }
+	            var names = feature.fieldNames,
+	                values = feature.fieldValues;
+	            for (var i in names) {
+	                attributes[names[i]] = values[i];
+	            }
+	        }
+
+
+	        return attr;
+	    },
+
+
+	    toGeometry: function (geometry) {
+	        var me = this,
+	            geoType = geometry.type;
+	        if (geoType === 'polygon') {
+	            geoType = SuperMap.REST.GeometryType.REGION;
+	        }
+	        switch (geoType.toUpperCase()) {
+	            case SuperMap.REST.GeometryType.POINT:
+	                return me.toGeoPoint(geometry);
+	            case SuperMap.REST.GeometryType.LINE:
+	                return me.toGeoLine(geometry);
+	            case SuperMap.REST.GeometryType.LINEM:
+	                return me.toGeoLinem(geometry);
+	            case SuperMap.REST.GeometryType.REGION:
+	                return me.toGeoRegion(geometry);
+	            case SuperMap.REST.GeometryType.POINTEPS:
+	                return me.toGeoPoint(geometry);
+	            // case SuperMap.REST.GeometryType.LINEEPS:
+	            //     return me.toGeoLineEPS();
+	            // case SuperMap.REST.GeometryType.REGIONEPS:
+	            //     return me.toGeoRegionEPS();
+	            default:
+	                return geometry;
+	        }
+	    },
+	    /**
+	     * Method: toGeoPoint
+	     * 将服务端的点几何对象转换为几何对象
+	     */
+	    toGeoPoint: function (geometry) {
+	        var me = this,
+	            geoPoints = geometry.points || [],
+	            geoParts = geometry.parts || [geoPoints.length],
+	            len = geoParts.length;
+	        if (len < 1) {
+	            return null;
+	        }
+	        if (len === 1) {
+	            return {type: "Point", x: geoPoints[0].x, y: geoPoints[0].y};
+	        } else {
+	            for (var i = 0, pointList = []; i < len; i++) {
+	                pointList.push({x: geoPoints[i].x, y: geoPoints[i].y});
+	            }
+	            return {type: "MultiPoint", components: pointList};
+	        }
+
+	    },
+
+	    /**
+	     * Method: toGeoLine
+	     * 将服务端的线几何对象转换为几何对象。
+	     */
+	    toGeoLine: function (geometry) {
+	        var me = this,
+	            geoPoints = geometry.points || [],
+	            geoParts = geometry.parts || [geoPoints.length],
+	            len = geoParts.length;
+	        if (len < 1) {
+	            return null;
+	        }
+	        if (len === 1) {
+	            for (var i = 0, pointList = []; i < geoParts[0]; i++) {
+	                pointList.push({x: geoPoints[i].x, y: geoPoints[i].y});
+	            }
+	            //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
+	            if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
+	                pointList.pop();
+	                pointList.push(pointList[0]);
+	            }
+	            return {type: "LineString", components: pointList};
+	        } else {
+	            for (var i = 0, lineList = []; i < len; i++) {
+	                for (var j = 0, pointList = []; j < geoParts[i]; j++) {
+	                    pointList.push({x: geoPoints[j].x, y: geoPoints[j].y});
+	                }
+	                lineList.push(pointList);
+	                geoPoints.splice(0, geoParts[i]);
+	            }
+	            return {type: "MultiLineString", components: lineList};
+	        }
+
+	    },
+
+	    /**
+	     * Method: toGeoLinem
+	     * 将服务端的路由线几何对象转换为几何对象。
+	     */
+	    toGeoLinem: function (geometry) {
+	        var me = this,
+	            geoPoints = geometry.points || [],
+	            geoParts = geometry.parts || [geoPoints.length],
+	            len = geoParts.length,
+	            lineList = [],
+	            type;
+	        if (len < 1) {
+	            return null;
+	        }
+	        for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
+	            for (var j = 0; j < geoParts[i]; j++) {
+	                pointList.push({x: geoPoints[pointIndex + j].x, y: geoPoints[pointIndex + j].y});
+	            }
+	            pointIndex += geoParts[i];
+	            //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
+	            if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
+	                pointList.pop();
+	                pointList.push(pointList[0]);
+	            }
+	            lineList.push(pointList);
+	            pointList = [];
+	        }
+	        return {type: "MultiLineString", components: lineList};
+	    },
+
+	    /**
+	     * Method: toGeoRegion
+	     * 将服务端的面几何对象转换为几何对象。
+	     */
+	    toGeoRegion: function (geometry) {
+	        var CCWArray = [],
+	            geoPoints = geometry.points || [],
+	            geoParts = geometry.parts || [geoPoints.length],
+	            len = geoParts.length;
+	        if (len < 1) {
+	            return null;
+	        }
+	        var polygonArray = new Array();
+	        for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
+	            for (var j = 0; j < geoParts[i]; j++) {
+	                pointList.push({x: geoPoints[pointIndex + j].x, y: geoPoints[pointIndex + j].y});
+	            }
+
+	            pointIndex += geoParts[i];
+	            var linearRing = pointList.concat();
+	            linearRing.pop();
+	            linearRing.push(linearRing[0]);
+
+	            if (this.isClockWise(linearRing) > 0) {
+	                CCWArray.push(linearRing);
+	            } else {
+	                polygonArray.push([linearRing]);
+	            }
+
+	            if (i === len - 1) {
+	                var polyLength = polygonArray.length;
+	                if (!!polyLength) {
+	                    polygonArray[polyLength - 1] = polygonArray[polyLength - 1].concat(CCWArray);
+	                } else {
+	                    for (var k = 0, length = CCWArray.length; k < length; k++) {
+	                        polygonArray.push([CCWArray[k]].concat());
+	                    }
+	                }
+	            }
+	            pointList = [];
+	        }
+	        return {type: "MultiPolygon", components: polygonArray};
+	    },
+
+	    isClockWise: function (points) {
+	        var length = points.length;
+	        if (length < 3) {
+	            return 0.0;
+	        }
+	        var s = points[0].y * (points[length - 1].x - points[1].x);
+	        points.push(points[0]);
+	        for (var i = 1; i < length; i++) {
+	            s += points[i].y * (points[i - 1].x - points[i + 1].x);
+	        }
+	        return s * 0.5;
+	    },
+	    isPointsEquals: function (point1, point2) {
+	        return (point1.x === point2.x && point1.y === point2.y);
+	    },
+	    CLASS_NAME: "SuperMap.Format.GeoJSON"
+	});
+
+	module.exports = function (options) {
+	    return new SuperMap.Format.GeoJSON(options);
+	};
+
+/***/ },
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -2353,7 +7889,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.Format>
 	 */
-	__webpack_require__(11);
+	__webpack_require__(14);
 
 	SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
 
@@ -2729,7 +8265,7 @@
 	};
 
 /***/ },
-/* 11 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -2740,7 +8276,7 @@
 	 * Class: SuperMap.Format
 	 * 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	SuperMap.Format = SuperMap.Class({
 
@@ -2847,7 +8383,7 @@
 
 
 /***/ },
-/* 12 */
+/* 15 */
 /***/ function(module, exports) {
 
 	L.Projection = {};
@@ -2924,10 +8460,10 @@
 	module.exports = L.supermap.NonEarthCRS;
 
 /***/ },
-/* 13 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var proj4 = __webpack_require__(14);
+	var proj4 = __webpack_require__(17);
 	L.Proj = {};
 
 	L.Proj._isProj4Obj = function (a) {
@@ -3173,7 +8709,7 @@
 
 
 /***/ },
-/* 14 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	(function (global, factory) {
@@ -9096,7 +14632,7 @@
 
 
 /***/ },
-/* 15 */
+/* 18 */
 /***/ function(module, exports) {
 
 	L.CRS.BaiduCRS = L.extend({}, L.CRS.EPSG3857, {
@@ -9135,7 +14671,1444 @@
 	    })
 
 /***/ },
-/* 16 */
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * CartoCSS中的style属性名与leaflet的style属性名的对应表
+	 * */
+	__webpack_require__(11);
+	L.supermap.CartoStyleMap = {
+	    "TEXT": {
+	        "text-size": "fontSize",
+	        "text-face-name": "fontFamily",
+
+	        "text-align": "textAlign",
+	        'text-weight': 'fontWeight',
+	        "text-halo-color": "color",
+	        "text-fill": "fillColor",
+	        "text-comp-op": "globalCompositeOperation"
+	    },
+
+	    "POINT": {
+	        "point-file": "iconUrl",
+	        "point-fill": "fillColor",
+	        "point-radius": "radius",
+	        "point-halo-color": "color",
+	        "point-comp-op": "globalCompositeOperation"
+	    },
+	    "LINE": {
+	        "line-color": "color",
+	        "line-width": "weight",
+	        "line-cap": "lineCap",
+	        "line-join": "lineJoin",
+	        "line-dash-offset": "dashOffset",
+	        "line-opacity": "opacity",
+	        "line-dasharray": "dashArray",
+	        "line-comp-op": "globalCompositeOperation"
+	    },
+	    "REGION": {
+	        "line-color": "color",
+	        "line-width": "weight",
+	        "line-cap": "lineCap",
+	        "line-join": "lineJoin",
+	        "line-dash-offset": "dashOffset",
+	        "line-opacity": "opacity",
+	        "line-dasharray": "dashArray",
+
+	        "polygon-fill": "fillColor",
+	        "polygon-opacity": "fillOpacity",
+	        "polygon-comp-op": "globalCompositeOperation"
+	    }
+	};
+
+	/**
+	 * 服务端传过来的style属性名与leaflet的style属性名的对应表
+	 * */
+	L.supermap.ServerStyleMap = {
+	    lineWidth: {
+	        leafletStyle: "weight",
+	        type: "number",
+	        unit: "mm",
+	        defaultValue: 0.1
+	    },
+
+	    fillForeColor: {
+	        leafletStyle: "fillColor",
+	        type: "color",
+	        defaultValue: "rgba(0,0,0,0)"
+	    },
+
+	    foreColor: {
+	        leafletStyle: "color",
+	        type: "color",
+	        defaultValue: "rgba(0,0,0,0)"
+	    },
+
+	    markerSize: {
+	        leafletStyle: "markerSize",
+	        type:"number",
+	        unit:"mm",
+	        defaultValue:2.4,
+	    },
+
+	    lineColor: {
+	        leafletStyle: "color",
+	        type: "color",
+	        defaultValue: "#000000"
+	    },
+
+	};
+
+	/**
+	 * Canvas中的globalCompositeOperation属性值与CartoCSS中的CompOp属性值对照表
+	 * */
+	L.supermap.CompOpMap = {
+	    "clear": "",
+	    "src": "",
+	    "dst": "",
+	    "src-over": "source-over",
+	    "dst-over": "destination-over",
+	    "src-in": "source-in",
+	    "dst-in": "destination-in",
+	    "src-out": "source-out",
+	    "dst-out": "destination-out",
+	    "src-atop": "source-atop",
+	    "dst-atop": "destination-atop",
+	    "xor": "xor",
+	    "plus": "lighter",
+	    "minus": "",
+	    "multiply": "",
+	    "screen": "",
+	    "overlay": "",
+	    "darken": "",
+	    "lighten": "lighter",
+	    "color-dodge": "",
+	    "color-burn": "",
+	    "hard-light": "",
+	    "soft-light": "",
+	    "difference": "",
+	    "exclusion": "",
+	    "contrast": "",
+	    "invert": "",
+	    "invert-rgb": "",
+	    "grain-merge": "",
+	    "grain-extract": "",
+	    "hue": "",
+	    "saturation": "",
+	    "color": "",
+	    "value": ""
+	};
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(21);
+	__webpack_require__(22);
+	__webpack_require__(23);
+
+	L.VectorGrid = L.GridLayer.extend({
+	    options: {
+	        renderer: L.svg.renderer,
+	        vectorTileLayerStyles: {},
+	        interactive: true,
+	    },
+
+	    initialize: function (options) {
+	        L.Util.setOptions(this, options);
+	        L.GridLayer.prototype.initialize.apply(this, arguments);
+	        this._vectorTiles = {};
+	        //交互事件使用,键值为id_layerName
+	        this._overriddenStyles = {};
+	        this.on('tileunload', function (e) {
+	            var key = this._tileCoordsToKey(e.coords),
+	                tile = this._vectorTiles[key];
+
+	            if (tile && this._map) {
+	                tile.removeFrom(this._map);
+	            }
+	            delete this._vectorTiles[key];
+	        }, this);
+
+	        this._dataLayerNames = {};
+	    },
+
+	    createTile: function (coords, done) {
+	        var me = this;
+
+	        var tileSize = me.getTileSize();
+	        var renderer = me.options.renderer(coords, tileSize, me.options);
+
+	        me._vectorTiles[me._tileCoordsToKey(coords)] = renderer;
+	        renderer._features = {};
+
+	        L.supermap.vectorTile({
+	            layer: this,
+	            coords: coords,
+	            renderer: renderer,
+	        }, done).renderTile();
+
+	        return renderer.getContainer();
+	    },
+
+	    //需要id和layerName才能确定一个要素
+	    setFeatureStyle: function (id, layerName, layerStyle) {
+	        var featureKey = this._getFeatureKey(id, layerName);
+	        this._overriddenStyles[featureKey] = layerStyle;
+
+	        for (var tileKey in this._vectorTiles) {
+	            var tile = this._vectorTiles[tileKey];
+	            var features = tile._features;
+	            var data = features[featureKey];
+	            if (data) {
+	                var feat = data.feature;
+	                this._updateStyles(feat, tile, layerStyle);
+	            }
+	        }
+	        return this;
+	    },
+
+	    //需要id和layerName才能确定一个要素
+	    resetFeatureStyle: function (id, layerName) {
+	        var featureKey = this._getFeatureKey(id, layerName);
+	        delete  this._overriddenStyles[featureKey];
+
+	        for (var tileKey in this._vectorTiles) {
+	            var tile = this._vectorTiles[tileKey];
+	            var data = tile._features[featureKey];
+	            if (data) {
+	                var feat = data.feature;
+	                var styleOptions = this.vectorTileLayerStyles[data.layerName];
+	                this._updateStyles(feat, tile, styleOptions);
+	            }
+	        }
+	        return this;
+	    },
+
+	    getDataLayerNames: function () {
+	        return Object.keys(this._dataLayerNames);
+	    },
+
+	    _getFeatureKey: function (id, layerName) {
+	        id = id || 0;
+	        layerName = layerName || "null";
+	        return id + "_" + layerName;
+	    },
+
+	    _updateStyles: function (feat, renderer, styleOptions) {
+	        styleOptions = (styleOptions instanceof Function) ?
+	            styleOptions(feat.properties, renderer.getCoord().z) :
+	            styleOptions;
+
+	        if (!(styleOptions instanceof Array)) {
+	            styleOptions = [styleOptions];
+	        }
+
+	        for (var j = 0; j < styleOptions.length; j++) {
+	            var style = this._extendStyle(styleOptions[j], feat.type);
+	            feat.updateStyle(renderer, style);
+	        }
+	    },
+
+	    //矫正一些参数
+	    _extendStyle: function (style, type) {
+	        switch (type) {
+	            case L.supermap.VectorFeatureType.POINT:
+	                return L.extend({}, L.CircleMarker.prototype.options, style);
+	            case L.supermap.VectorFeatureType.LINE:
+	                return L.extend({}, L.Polyline.prototype.options, style);
+	            case L.supermap.VectorFeatureType.REGION:
+	                return L.extend({}, L.Polygon.prototype.options, style);
+	            case L.supermap.VectorFeatureType.TEXT:
+	                return L.extend({}, L.TextSymbolizer.prototype.options, style);
+	        }
+	    },
+
+	});
+
+	L.vectorGrid = function (options) {
+	    return new L.VectorGrid(options);
+	};
+
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports) {
+
+	L.SVG.Renderer = L.SVG.extend({
+
+	    initialize: function (tileCoord, tileSize, options) {
+	        L.SVG.prototype.initialize.call(this, options);
+	        this._tileCoord = tileCoord;
+	        this._size = tileSize;
+
+	        this._initContainer();
+	        this._container.setAttribute('width', this._size.x);
+	        this._container.setAttribute('height', this._size.y);
+	        this._container.setAttribute('viewBox', [0, 0, this._size.x, this._size.y].join(' '));
+
+	        this._layers = {};
+	    },
+
+	    getCoord: function () {
+	        return this._tileCoord;
+	    },
+
+	    getContainer: function () {
+	        return this._container;
+	    },
+
+	    onAdd: L.Util.falseFn,
+
+	    addTo: function (map) {
+	        this._map = map;
+	        if (this.options.interactive) {
+	            for (var i in this._layers) {
+	                var layer = this._layers[i];
+	                layer._path.style.pointerEvents = 'auto';
+	                this._map._targets[L.stamp(layer._path)] = layer;
+	            }
+	        }
+	    },
+
+	    removeFrom: function (map) {
+	        var map = map || this._map;
+	        if (this.options.interactive) {
+	            for (var i in this._layers) {
+	                var layer = this._layers[i];
+	                delete map._targets[L.stamp(layer._path)];
+	            }
+	        }
+	        delete this._map;
+	    },
+
+	    _initContainer: function () {
+	        L.SVG.prototype._initContainer.call(this);
+	        var rect = L.SVG.create('rect');
+	    },
+
+	    _addPath: function (layer) {
+	        this._rootGroup.appendChild(layer._path);
+	        this._layers[L.stamp(layer)] = layer;
+	    },
+
+	    _updateIcon: function (layer) {
+	        var path = layer._path = L.SVG.create('image'),
+	            options = layer.options,
+	            iconUrl = options.iconUrl;
+	        if (options.iconSize) {
+	            var size = L.point(options.iconSize),
+	                anchor = size && size.divideBy(2, true),
+	                p = layer._point.subtract(anchor);
+	            path.setAttribute('x', p.x);
+	            path.setAttribute('y', p.y);
+	            path.setAttribute('width', size.x + 'px');
+	            path.setAttribute('height', size.y + 'px');
+	        } else {
+	            var img =new Image();
+	            img.src=iconUrl;
+	            L.DomEvent.on(img, 'load', function (evt) {
+	                var size = L.point([img.width, img.height]),
+	                    anchor = size && size.divideBy(2, true),
+	                    p = layer._point.subtract(anchor);
+	                path.setAttribute('x', p.x);
+	                path.setAttribute('y', p.y);
+	                path.setAttribute('width', size.x + 'px');
+	                path.setAttribute('height', size.y + 'px');
+	            });
+	        }
+	        path.setAttribute('href', iconUrl);
+	    }
+	});
+
+	L.svg.renderer = function (tileCoord, tileSize, opts) {
+	    return new L.SVG.Renderer(tileCoord, tileSize, opts);
+	};
+
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports) {
+
+	L.Canvas.Renderer = L.Canvas.extend({
+
+	    initialize: function (tileCoord, tileSize, options) {
+	        L.Canvas.prototype.initialize.call(this, options);
+	        this._tileCoord = tileCoord;
+	        this._size = tileSize;
+
+	        this._initContainer();
+	        this._container.setAttribute('width', this._size.x);
+	        this._container.setAttribute('height', this._size.y);
+	        this._layers = {};
+	        this._drawnLayers = {};
+	        this._drawing = true;
+
+	        if (options.interactive) {
+	            this._container.style.pointerEvents = 'auto';
+	        }
+	    },
+
+	    getCoord: function () {
+	        return this._tileCoord;
+	    },
+
+	    getContainer: function () {
+	        return this._container;
+	    },
+
+	    getOffset: function () {
+	        return this._tileCoord.scaleBy(this._size).subtract(this._map.getPixelOrigin());
+	    },
+
+	    onAdd: L.Util.falseFn,
+
+	    addTo: function (map) {
+	        this._map = map;
+	    },
+
+	    removeFrom: function (map) {
+	        delete this._map;
+	    },
+
+	    _updateDashArray: function (layer) {
+	        var array = layer.options.dashArray;
+	        if (array && typeof array === "String") {
+	            var parts = array.split(','),
+	                dashArray = [],
+	                i;
+	            for (i = 0; i < parts.length; i++) {
+	                dashArray.push(Number(parts[i]));
+	            }
+	            layer.options._dashArray = dashArray;
+	        } else {
+	            layer.options._dashArray = array;
+	        }
+	    },
+
+	    _onClick: function (e) {
+	        var point = this._map.mouseEventToLayerPoint(e).subtract(this.getOffset()), layer, clickedLayer;
+
+	        for (var id in this._layers) {
+	            layer = this._layers[id];
+	            if (layer.options.interactive && layer._containsPoint(point) && !this._map._draggableMoved(layer)) {
+	                clickedLayer = layer;
+	            }
+	        }
+	        if (clickedLayer) {
+	            L.DomEvent.stop(e);
+	            this._fireEvent([clickedLayer], e);
+	        }
+	    },
+
+	    _onMouseMove: function (e) {
+	        if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) {
+	            return;
+	        }
+
+	        var point = this._map.mouseEventToLayerPoint(e).subtract(this.getOffset());
+	        this._handleMouseHover(e, point);
+	    },
+
+	    _updateIcon: function (layer) {
+	        if (!this._drawing) {
+	            return;
+	        }
+
+	        var options = layer.options,
+	            ctx = this._ctx,
+	            img = layer._getImage();
+	        if (options.iconSize && img.complete) {
+	            var size = L.point(options.iconSize),
+	                anchor = size && size.divideBy(2, true),
+	                p = layer._point.subtract(anchor);
+	            ctx.drawImage(img, p.x, p.y, size.x, size.y);
+	        } else {
+	            L.DomEvent.on(img, 'load', function (evt) {
+	                var size = L.point([img.width, img.height]),
+	                    anchor = size && size.divideBy(2, true),
+	                    p = layer._point.subtract(anchor);
+	                ctx.drawImage(img, p.x, p.y, size.x, size.y);
+	            });
+	        }
+
+	        this._drawnLayers[layer._leaflet_id] = layer;
+	    }
+	});
+
+
+	L.canvas.renderer = function (tileCoord, tileSize, opts) {
+	    return new L.Canvas.Renderer(tileCoord, tileSize, opts);
+	};
+
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(11);
+	__webpack_require__(24);
+	__webpack_require__(25);
+	__webpack_require__(27);
+	__webpack_require__(29);
+	__webpack_require__(30);
+	var tileFeatureProcessor = __webpack_require__(31);
+	var fetchJsonp = __webpack_require__(32);
+	VectorTile = L.Class.extend({
+
+	    initialize: function (options, done) {
+	        this.layer = options.layer;
+	        this.tileSize = options.layer.getTileSize();
+	        this.coords = options.coords;
+	        this.renderer = options.renderer;
+	        this.done = done;
+	    },
+
+	    renderTile: function () {
+	        var me = this, layer = me.layer, coords = me.coords;
+	        var tileFeatureUrl = layer._getTileUrl(coords);
+	        fetchJsonp(tileFeatureUrl, {
+	            timeout: 10000,
+	        }).then(function (response) {
+	            return response.json()
+	        }).then(function (json) {
+	            if (!json) {
+	                return null;
+	            }
+	            var tileFeature = tileFeatureProcessor.processTileFeature(json.recordsets);
+	            me.render(tileFeature, coords);
+
+	        }).catch(function (ex) {
+	            console.error('error', ex)
+	        });
+	    },
+
+	    render: function (tileFeature, coords) {
+	        if (!tileFeature) {
+	            return;
+	        }
+	        var me = this,
+	            renderer = me.renderer,
+	            tileLayer = me.layer;
+
+	        for (var k = 0; k < tileFeature.length; k++) {
+	            var layer = tileFeature[k], layerName = layer.layerName;
+	            tileLayer._dataLayerNames[layerName] = true;
+
+	            var pxPerExtent = me.tileSize.divideBy(layer.extent);
+
+	            var type = (layer.features[0]) ? layer.features[0].type : 1;
+
+	            var layerStyleInfo = tileLayer.getLayerStyleInfo(layer.layerName);
+	            for (var i = 0; i < layer.features.length; i++) {
+	                var feat = layer.features[i];
+	                if (!feat) {
+	                    continue;
+	                }
+
+	                //标签图层处理为文本
+	                if (layerStyleInfo.type === L.supermap.VectorFeatureType.LABEL
+	                    && feat.type === L.supermap.VectorFeatureType.POINT
+	                    && feat.properties.attributes) {
+	                    feat.type = L.supermap.VectorFeatureType.TEXT;
+	                }
+
+	                var styleOptions = tileLayer.getVectorTileLayerStyle(coords, feat)
+	                    || me._defaultStyle(type);
+
+	                //根据id和layerName识别唯一要素
+	                var id = feat.properties.id,
+	                    styleKey = tileLayer._getFeatureKey(id, layerName),
+	                    styleOverride = tileLayer._overriddenStyles[styleKey];
+
+	                styleOptions = styleOverride ? styleOverride : styleOptions;
+	                styleOptions = (styleOptions instanceof Function) ? styleOptions(feat.properties, coords.z) : styleOptions;
+	                styleOptions = !(styleOptions instanceof Array) ? [styleOptions] : styleOptions;
+
+	                if (!styleOptions.length) {
+	                    continue;
+	                }
+
+	                var featureLayer = me._createFeatureLayer(feat, pxPerExtent);
+
+	                if (!featureLayer) {
+	                    continue;
+	                }
+
+	                for (var j = 0; j < styleOptions.length; j++) {
+	                    var style = me._validateStyle(styleOptions[j], feat.type);
+	                    featureLayer.render(renderer, style);
+	                    renderer._addPath(featureLayer);
+	                }
+
+	                if (tileLayer.options.interactive) {
+	                    featureLayer.makeInteractive();
+	                }
+	                var featureKey = tileLayer._getFeatureKey(id, layerName);
+	                renderer._features[featureKey] = {
+	                    layerName: layerName,
+	                    feature: featureLayer
+	                };
+	            }
+	        }
+
+	        if (tileLayer._map) {
+	            renderer.addTo(tileLayer._map);
+	        }
+
+	        L.Util.requestAnimFrame(me.done.bind(coords, null, null));
+	    },
+
+	    _createFeatureLayer: function (feat, pxPerExtent) {
+	        var layer;
+	        switch (feat.type) {
+	            case L.supermap.VectorFeatureType.POINT:
+	                layer = new L.PointSymbolizer(feat, pxPerExtent);
+	                break;
+	            case L.supermap.VectorFeatureType.LINE:
+	                layer = new L.LineSymbolizer(feat, pxPerExtent);
+	                break;
+	            case L.supermap.VectorFeatureType.REGION:
+	                layer = new L.RegionSymbolizer(feat, pxPerExtent);
+	                break;
+	            case L.supermap.VectorFeatureType.TEXT:
+	                layer = new L.TextSymbolizer(feat, pxPerExtent);
+	                break;
+	        }
+	        var vectorLayer = this.layer;
+
+	        if (vectorLayer.options.interactive) {
+	            layer.addEventParent(vectorLayer);
+	        }
+
+	        return layer;
+	    },
+
+	    //矫正一些参数
+	    _validateStyle: function (style, type) {
+	        //默认leaflet path的边宽为3，矩形颜色填充透明度为0.2，跟iClient不一样，故作调整
+	        L.Path.prototype.options.weight = 1;
+	        L.Path.prototype.options.fillOpacity = 1;
+	        switch (type) {
+	            case L.supermap.VectorFeatureType.POINT:
+	                return L.extend({}, L.CircleMarker.prototype.options, style);
+	            case L.supermap.VectorFeatureType.LINE:
+	                return L.extend({}, L.Polyline.prototype.options, style);
+	            case L.supermap.VectorFeatureType.REGION:
+	                return L.extend({}, L.Polygon.prototype.options, style);
+	            case L.supermap.VectorFeatureType.TEXT:
+	                return L.extend({}, L.TextSymbolizer.prototype.options, style);
+	        }
+	    },
+
+	    //如果cartoCSS和layerInfo都没有得到样式，则使用该默认样式
+	    _defaultStyle: function (type) {
+	        var defaultOptions = L.Path.prototype.options;
+	        defaultOptions.weight = 1;
+	        defaultOptions.fillOpacity = 1;
+	        defaultOptions.radius = 3;
+	        switch (type) {
+	            case L.supermap.VectorFeatureType.POINT:
+	                return L.extend({}, defaultOptions, L.CircleMarker.prototype.options);
+	            case L.supermap.VectorFeatureType.LINE:
+	                return L.extend({}, defaultOptions, L.Polyline.prototype.options);
+	            case L.supermap.VectorFeatureType.REGION:
+	                return L.extend({}, defaultOptions, L.Polygon.prototype.options);
+	            case L.supermap.VectorFeatureType.TEXT:
+	                return L.extend({}, defaultOptions, L.TextSymbolizer.prototype.options);
+	        }
+	    }
+
+	});
+	L.supermap.vectorTile = function (options, done) {
+	    return new VectorTile(options, done);
+	};
+	module.exports = L.vectorTile;
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 *矢量图层要素类型,和SuperMap.CartoStyleMap中的类型相对应
+	 */
+	__webpack_require__(11);
+	L.supermap.VectorFeatureType = {
+	    LABEL: "LABEL",//label实际处理成TEXT
+	    TEXT: "TEXT",
+	    POINT: "POINT",
+	    LINE: "LINE",
+	    REGION: "REGION",
+	};
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(26);
+	L.TextSymbolizer = L.Path.extend({
+	    includes: L.Symbolizer.prototype,
+
+	    options: {
+	        color: 'black',
+	        fillColor: 'black',
+	        fill: true,
+	        fillOpacity: 1.0,
+	        weight: 0.2,
+	        rotation: 0.0,
+	        stroke: true,
+	        fontFamily: 'sans-serif',
+	        fontSize: 12,
+	        fontWeight: 'normal',
+	        textAlign: 'center'
+	    },
+
+	    initialize: function (feature, pxPerExtent) {
+	        L.Symbolizer.prototype.initialize.call(this, feature);
+	        this._makeFeatureParts(feature, pxPerExtent);
+	    },
+
+	    render: function (renderer, style) {
+	        //原本类型就是text的情况
+	        if (this.properties.texts) {
+	            this._text = this.properties.texts[0];
+	        }
+	        //类型是label的情况
+	        if (!this._text) {
+	            var attributes = this.properties.attributes;
+	            this._text = (attributes && this.properties.textField) ?
+	            attributes[this.properties.textField] || "" : "";
+	        }
+	        L.Symbolizer.prototype.render.call(this, renderer, style);
+	        L.Util.setOptions(this, style);
+	        this._updatePath();
+	    },
+
+	    _makeFeatureParts: function (feat, pxPerExtent) {
+	        pxPerExtent = pxPerExtent || {x: 1, y: 1};
+	        var coord = feat.geometry[0];
+	        if (typeof coord[0] === 'object' && 'x' in coord[0]) {
+	            this._point = L.point(coord[0]).scaleBy(pxPerExtent);
+	            this._empty = L.Util.falseFn;
+	        } else {
+	            this._point = L.point(coord).scaleBy(pxPerExtent);
+	            this._empty = L.Util.falseFn;
+	        }
+	    },
+
+	    makeInteractive: function () {
+	        this._updateBounds();
+	    },
+
+	    updateStyle: function (renderer, style) {
+	        this._updateBounds();
+	        return L.Symbolizer.prototype.updateStyle.call(this, renderer, style);
+	    },
+
+
+	    _updateBounds: function () {
+	        var w = this._renderer._getTextWidth(this);
+	        var p = [w / 2, w / 2];
+	        this._pxBounds = L.bounds(this._point.subtract(p), this._point.add(p));
+	    },
+
+	    _updatePath: function () {
+	        this._renderer._updateText(this);
+	    },
+	    _containsPoint: function (point) {
+	        return false;
+	    }
+	});
+	L.Canvas.Renderer.include({
+	    _getTextWidth: function (layer) {
+	        return this._ctx.measureText(layer._text).width;
+	    },
+
+	    _updateText: function (layer) {
+	        if (!this._drawing || layer._empty()) {
+	            return;
+	        }
+
+	        var ctx = this._ctx,
+	            options = layer.options,
+	            offsetX = options.offsetX || 0,
+	            offsetY = options.offsetY || 0,
+	            p = layer._point.subtract(L.point(offsetX, offsetY));
+	        if (!options.fill) {
+	            return;
+	        }
+
+	        this._drawnLayers[layer._leaflet_id] = layer;
+
+	        ctx.translate(p.x, p.y);
+	        ctx.rotate(options.rotation);
+	        ctx.fillStyle = options.fillColor;
+	        ctx.font = [
+	            "normal",
+	            "normal",
+	            options.fontWeight ? options.fontWeight : "normal",
+	            options.fontSize ? options.fontSize : "1em",
+	            options.fontFamily ? options.fontFamily : "sans-serif"
+	        ].join(" ");
+	        ctx.textAlign = options.textAlign;
+	        ctx.lineWidth = options.weight / 10;
+	        ctx.fillText(layer._text, 0, 0);
+	        ctx.strokeStyle = options.color;
+	        ctx.strokeText(layer._text, 0, 0);
+	        ctx.rotate(-options.rotation);
+	        ctx.translate(-p.x, -p.y);
+	    }
+	});
+	L.SVG.Renderer.include({
+	    _getTextWidth: function (layer) {
+	        return layer._path.getComputedTextLength();
+	    },
+
+	    _initPath: function (layer) {
+	        var path;
+
+	        if (L.TextSymbolizer && layer instanceof L.TextSymbolizer) {
+	            path = layer._path = L.SVG.create("text");
+	            path.textContent = layer._text;
+	        } else {
+	            path = layer._path = L.SVG.create("path");
+	        }
+
+	        if (layer.options.className) {
+	            L.DomUtil.addClass(path, layer.options.className);
+	        }
+
+	        if (layer.options.interactive) {
+	            L.DomUtil.addClass(path, 'leaflet-interactive');
+	        }
+
+	        this._updateStyle(layer);
+	        this._layers[L.stamp(layer)] = layer;
+	    },
+
+
+	    _updateText: function (layer) {
+	        var path = layer._path,
+	            options = layer.options,
+	            offsetX = options.offsetX || 0,
+	            offsetY = options.offsetY || 0,
+	            p = layer._point.subtract(L.point(offsetX, offsetY));
+	        path.setAttribute('x', p.x);
+	        path.setAttribute('y', p.y);
+	        options.rotation = options.rotation || 0;
+	        path.setAttribute('transform', 'rotate(' + options.rotation / Math.PI * 180 + ' ' + p.x + ' ' + p.y + ')');
+	        path.setAttribute('text-anchor', options.textAlign === 'center' ? 'middle' : options.textAlign);
+	        path.style.fontSize = options.fontSize;
+	        path.style.fontFamily = options.fontFamily;
+	        path.style.glyphOrientationVertical = options.rotation;
+	        if (options.stroke) {
+	            path.setAttribute('stroke', options.color);
+	            path.setAttribute('stroke-opacity', options.opacity);
+	            path.setAttribute('stroke-width', options.weight / 10);
+	        } else {
+	            path.setAttribute('stroke', 'none');
+	        }
+	        if (options.fill) {
+	            path.setAttribute('fill', options.fillColor || options.color);
+	            path.setAttribute('fill-opacity', options.fillOpacity);
+	        } else {
+	            path.setAttribute('fill', 'none');
+	        }
+	    }
+	});
+
+/***/ },
+/* 26 */
+/***/ function(module, exports) {
+
+	L.Symbolizer = L.Class.extend({
+
+	    initialize: function (feature) {
+	        this.properties = feature.properties;
+	        this.type = feature.type;
+	        this.layerName = feature.layerName;
+	    },
+
+	    render: function (renderer, style) {
+	        this._renderer = renderer;
+	        this.options = style;
+	        renderer._initPath(this);
+	        renderer._updateStyle(this);
+	        var elem = this.getElement();
+	        if (elem) {
+	            L.DomUtil.addClass(elem, this.layerName);
+	        }
+	    },
+
+	    updateStyle: function (renderer, style) {
+	        this.options = style;
+	        renderer._updateStyle(this);
+	    },
+
+	    getElement: function () {
+	        return this._path || this._renderer._container;
+	    },
+
+	    _getPixelBounds: function () {
+	        var parts = this._parts;
+	        var bounds = L.bounds([]);
+	        for (var i = 0; i < parts.length; i++) {
+	            var part = parts[i];
+	            for (var j = 0; j < part.length; j++) {
+	                bounds.extend(part[j]);
+	            }
+	        }
+
+	        var w = this._clickTolerance(),
+	            p = new L.Point(w, w);
+
+	        bounds.min._subtract(p);
+	        bounds.max._add(p);
+
+	        return bounds;
+	    },
+	    _clickTolerance: L.Path.prototype._clickTolerance,
+	});
+
+
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(26);
+	__webpack_require__(28);
+
+	L.PointSymbolizer = L.CircleMarker.extend({
+	    includes: L.Symbolizer.prototype,
+
+	    statics: {
+	        iconCache: {}
+	    },
+
+	    initialize: function (feature, pxPerExtent) {
+	        L.Symbolizer.prototype.initialize.call(this, feature);
+	        this._makeFeatureParts(feature, pxPerExtent);
+	    },
+
+	    render: function (renderer, style) {
+	        L.Symbolizer.prototype.render.call(this, renderer, style);
+	        this._radius = style.radius || L.CircleMarker.prototype.options.radius;
+	        this._updatePath();
+	    },
+
+	    _makeFeatureParts: function (feat, pxPerExtent) {
+	        pxPerExtent = pxPerExtent || {x: 1, y: 1};
+	        var coord = feat.geometry[0];
+	        if (typeof coord[0] === 'object' && 'x' in coord[0]) {
+	            this._point = L.point(coord[0]).scaleBy(pxPerExtent);
+	            this._empty = L.Util.falseFn;
+	        } else {
+	            this._point = L.point(coord).scaleBy(pxPerExtent);
+	            this._empty = L.Util.falseFn;
+	        }
+	    },
+
+	    makeInteractive: function () {
+	        this._updateBounds();
+	    },
+
+	    updateStyle: function (renderer, style) {
+	        this._radius = style.radius || this._radius;
+	        this._updateBounds();
+	        return L.Symbolizer.prototype.updateStyle.call(this, renderer, style);
+	    },
+
+	    _updateBounds: function () {
+	        var icon = this.options.iconUrl;
+	        if (icon && this.options.iconSize) {
+	            var size = L.point(this.options.iconSize),
+	                anchor = size && size.divideBy(2, true),
+	                p = this._point.subtract(anchor);
+	            this._pxBounds = new L.Bounds(p, p.add(size));
+	        } else {
+	            L.CircleMarker.prototype._updateBounds.call(this);
+	        }
+	    },
+
+	    _updatePath: function () {
+	        if (this.options.iconUrl) {
+	            this._renderer._updateIcon(this)
+	        } else {
+	            L.CircleMarker.prototype._updatePath.call(this);
+	        }
+	    },
+
+	    _getImage: function () {
+	        if (!this.options.iconUrl) {
+	            return null;
+	        }
+	        var url = this.options.iconUrl,
+	            img = L.PointSymbolizer.iconCache[url];
+	        if (!img) {
+	            var iconSize = this.options.iconSize || [50, 50];
+	            img = L.PointSymbolizer.iconCache[url] = this._createIcon(url, iconSize);
+	        }
+	        return img;
+	    },
+
+	    _createIcon: function (url, iconSize) {
+	        var src = url;
+
+	        if (!src) {
+	            throw new Error('iconUrl not set in Icon options (see the docs).');
+	        }
+
+	        var img = document.createElement('img'), name = "icon";
+	        img.src = src;
+	        img.className = 'leaflet-marker-' + name + ' ' + (this.layerName || '');
+
+	        var options = this.options;
+	        var sizeOption = iconSize;
+
+	        if (typeof sizeOption === 'number') {
+	            sizeOption = [sizeOption, sizeOption];
+	        }
+	        if (sizeOption) {
+	            var size = L.point(sizeOption),
+	                anchor = L.point(size && size.divideBy(2, true));
+
+	            if (size) {
+	                img.style.width = size.x + 'px';
+	                img.style.height = size.y + 'px';
+	            }
+	            if (anchor) {
+	                img.style.marginLeft = (-anchor.x) + 'px';
+	                img.style.marginTop = (-anchor.y) + 'px';
+	            }
+	        }
+
+	        img.onload = function (evt) {
+	            if (!sizeOption) {
+	                img.style.width = this.width + 'px';
+	                img.style.height = this.height + 'px';
+	            }
+	        };
+
+	        return img;
+	    },
+
+	    _containsPoint: function (p) {
+	        var icon = this.options.iconUrl;
+	        if (icon) {
+	            return this._pxBounds.contains(p);
+	        } else {
+	            return L.CircleMarker.prototype._containsPoint.call(this, p);
+	        }
+	    }
+	});
+
+
+
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
+
+	var PolyBase = {
+	    _makeFeatureParts: function (feat, pxPerExtent) {
+	        pxPerExtent = pxPerExtent || {x: 1, y: 1};
+	        var rings = feat.geometry;
+	        var coord;
+
+	        this._parts = [];
+	        for (var i = 0; i < rings.length; i++) {
+	            var ring = rings[i];
+	            var part = [];
+	            for (var j = 0; j < ring.length; j++) {
+	                coord = ring[j];
+	                part.push(L.point(coord).scaleBy(pxPerExtent));
+	            }
+	            this._parts.push(part);
+	        }
+	    },
+
+	    makeInteractive: function () {
+	        this._pxBounds = this._getPixelBounds();
+	    }
+	};
+
+	module.exports = PolyBase;
+
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(26);
+	var PolyBase = __webpack_require__(28);
+
+	L.LineSymbolizer = L.Polyline.extend({
+	    includes: [L.Symbolizer.prototype, PolyBase],
+
+	    initialize: function (feature, pxPerExtent) {
+	        L.Symbolizer.prototype.initialize.call(this, feature);
+	        this._makeFeatureParts(feature, pxPerExtent);
+	    },
+
+	    render: function (renderer, style) {
+	        style.fill = false;
+	        L.Symbolizer.prototype.render.call(this, renderer, style);
+	        this._updatePath();
+	    },
+
+	    updateStyle: function (renderer, style) {
+	        style.fill = false;
+	        L.Symbolizer.prototype.updateStyle.call(this, renderer, style);
+	    },
+	});
+
+
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(26);
+	var PolyBase = __webpack_require__(28);
+
+	L.RegionSymbolizer = L.Polygon.extend({
+	    includes: [L.Symbolizer.prototype, PolyBase],
+
+	    initialize: function (feature, pxPerExtent) {
+	        L.Symbolizer.prototype.initialize.call(this, feature);
+	        this._makeFeatureParts(feature, pxPerExtent);
+	    },
+
+	    render: function (renderer, style) {
+	        L.Symbolizer.prototype.render.call(this, renderer, style);
+	        this._updatePath();
+	    }
+	});
+
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 *将iServer tileFeature转换为类似VT标准的格式
+	 */
+	__webpack_require__(11);
+	__webpack_require__(24);
+	L.supermap.TileFeatureProcessor = {
+	    processTileFeature: function (recordSets) {
+	        if (!recordSets || recordSets.length < 1) {
+	            return null;
+	        }
+	        //如果iServer支持了tileFeature geojson表述则不需要此步骤
+	        recordSets = this.convertToGeoJSON(recordSets);
+	        //类似VT标准的数据格式,并为每个要素添加一个layerName字段
+	        for (var i = 0; i < recordSets.length; i++) {
+	            var recordset = recordSets[i];
+	            for (var j = 0; j < recordset.features.length; j++) {
+	                var feature = recordset.features[j];
+	                feature = this.convertToVectorLayerFeature(feature);
+	                feature.layerName = recordset.layerName;
+	                recordset.features[j] = feature;
+	            }
+	            recordset.extent = 256;
+	            delete recordset.fieldTypes;
+	            delete recordset.fields;
+	        }
+	        return recordSets;
+	    },
+
+	    convertToVectorLayerFeature: function (feature) {
+	        if (!feature.geometry) {
+	            return;
+	        }
+	        var newFeature = {};
+
+	        var geom = feature.geometry,
+	            type = geom.type,
+	            coords = geom.coordinates,
+	            tags = feature.properties,
+	            i, j, rings, projectedRing;
+
+
+	        if (type === 'Point') {
+	            newFeature = (tags && tags.texts) ?
+	                this.createFeature(tags, L.supermap.VectorFeatureType.TEXT, [coords]) :
+	                this.createFeature(tags, L.supermap.VectorFeatureType.POINT, [coords]);
+	        } else if (type === 'MultiPoint') {
+	            newFeature = this.createFeature(tags, L.supermap.VectorFeatureType.POINT, coords);
+	        } else if (type === 'LineString') {
+	            newFeature = this.createFeature(tags, L.supermap.VectorFeatureType.LINE, [coords]);
+	        } else if (type === 'MultiLineString' || type === 'Polygon') {
+	            rings = [];
+	            for (i = 0; i < coords.length; i++) {
+	                projectedRing = coords[i];
+	                if (type === 'Polygon') projectedRing.outer = (i === 0);
+	                rings.push(projectedRing);
+	            }
+	            var featureType = (type === 'Polygon') ? L.supermap.VectorFeatureType.REGION : L.supermap.VectorFeatureType.LINE;
+	            newFeature = this.createFeature(tags, featureType, rings);
+	        } else if (type === 'MultiPolygon') {
+	            rings = [];
+	            for (i = 0; i < coords.length; i++) {
+	                for (j = 0; j < coords[i].length; j++) {
+	                    projectedRing = coords[i][j];
+	                    projectedRing.outer = (j === 0);
+	                    rings.push(projectedRing);
+	                }
+	            }
+	            newFeature = this.createFeature(tags, L.supermap.VectorFeatureType.REGION, rings);
+	        } else {
+	            throw new Error('不合法的GeoJSON对象');
+	        }
+	        return newFeature;
+	    },
+
+
+	    createFeature: function (properties, type, geometry) {
+	        return {
+	            type: type,
+	            geometry: geometry,
+	            properties: properties
+	        }
+	    },
+
+	    convertToGeoJSON: function (recordsets) {
+	        for (var i = 0; i < recordsets.length; i++) {
+	            var recordset = recordsets[i];
+	            for (var j = 0; j < recordset.features.length; j++) {
+	                var feature = recordset.features[j];
+	                var points = [];
+	                var startIndex = 0;
+
+	                for (var k = 0; k < feature.geometry.parts.length; k++) {
+	                    var partPointsLength = feature.geometry.parts[k] * 2;
+	                    for (var l = 0, index = startIndex; l < partPointsLength; l += 2, index += 2) {
+	                        var x = feature.geometry.points[index];
+	                        var y = feature.geometry.points[index + 1];
+	                        points.push({x: x, y: y});
+	                    }
+	                    startIndex += partPointsLength;
+	                }
+	                feature.geometry.points = points;
+	            }
+	            recordset.features = L.Util.toGeoJSON(recordset.features).features;
+	        }
+	        return recordsets;
+	    }
+	};
+
+	module.exports = L.supermap.TileFeatureProcessor;
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports !== 'undefined' && typeof module !== 'undefined') {
+	    factory(exports, module);
+	  } else {
+	    var mod = {
+	      exports: {}
+	    };
+	    factory(mod.exports, mod);
+	    global.fetchJsonp = mod.exports;
+	  }
+	})(this, function (exports, module) {
+	  'use strict';
+
+	  var defaultOptions = {
+	    timeout: 5000,
+	    jsonpCallback: 'callback',
+	    jsonpCallbackFunction: null
+	  };
+
+	  function generateCallbackFunction() {
+	    return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
+	  }
+
+	  // Known issue: Will throw 'Uncaught ReferenceError: callback_*** is not defined'
+	  // error if request timeout
+	  function clearFunction(functionName) {
+	    // IE8 throws an exception when you try to delete a property on window
+	    // http://stackoverflow.com/a/1824228/751089
+	    try {
+	      delete window[functionName];
+	    } catch (e) {
+	      window[functionName] = undefined;
+	    }
+	  }
+
+	  function removeScript(scriptId) {
+	    var script = document.getElementById(scriptId);
+	    document.getElementsByTagName('head')[0].removeChild(script);
+	  }
+
+	  function fetchJsonp(_url) {
+	    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+	    // to avoid param reassign
+	    var url = _url;
+	    var timeout = options.timeout || defaultOptions.timeout;
+	    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
+
+	    var timeoutId = undefined;
+
+	    return new Promise(function (resolve, reject) {
+	      var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
+	      var scriptId = jsonpCallback + '_' + callbackFunction;
+
+	      window[callbackFunction] = function (response) {
+	        resolve({
+	          ok: true,
+	          // keep consistent with fetch API
+	          json: function json() {
+	            return Promise.resolve(response);
+	          }
+	        });
+
+	        if (timeoutId) clearTimeout(timeoutId);
+
+	        removeScript(scriptId);
+
+	        clearFunction(callbackFunction);
+	      };
+
+	      // Check if the user set their own params, and if not add a ? to start a list of params
+	      url += url.indexOf('?') === -1 ? '?' : '&';
+
+	      var jsonpScript = document.createElement('script');
+	      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
+	      jsonpScript.id = scriptId;
+	      document.getElementsByTagName('head')[0].appendChild(jsonpScript);
+
+	      timeoutId = setTimeout(function () {
+	        reject(new Error('JSONP request to ' + _url + ' timed out'));
+
+	        clearFunction(callbackFunction);
+	        removeScript(scriptId);
+	      }, timeout);
+	    });
+	  }
+
+	  // export as global function
+	  /*
+	  let local;
+	  if (typeof global !== 'undefined') {
+	    local = global;
+	  } else if (typeof self !== 'undefined') {
+	    local = self;
+	  } else {
+	    try {
+	      local = Function('return this')();
+	    } catch (e) {
+	      throw new Error('polyfill failed because global object is unavailable in this environment');
+	    }
+	  }
+	  local.fetchJsonp = fetchJsonp;
+	  */
+
+	  module.exports = fetchJsonp;
+	});
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: TiledMapLayer
+	 * SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)
+	 * 用法：
+	 *      L.superMap.tiledMapLayer(url,{CRS:L.CRS.EPSG4326}).addTo(map);
+	 */
+	__webpack_require__(11);
+	__webpack_require__(5);
+
+	TiledMapLayer = L.TileLayer.extend({
+
+	    options: {
+	        url: null,
+	        token: null,
+	        transparent: null,
+	        cacheEnabled: null,
+	        layersID: null, //如果有layersID，则是在使用专题图
+	        crs: null,
+	        attribution: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+	    },
+
+	    initialize: function (url, options) {
+	        this.options.url = url;
+	        L.setOptions(this, options);
+	        this._initParams();
+	        L.stamp(this);
+	    },
+
+	    onAdd: function (map) {
+	        this._crs = this.options.crs || map.options.crs;
+	        L.TileLayer.prototype.onAdd.call(this, map);
+	    },
+
+	    getTileUrl: function (coords) {
+	        var x = coords.x, y = coords.y, zoom = coords.z;
+	        //使用ViewBounds出图
+	        var tileBounds = this._tileCoordsToBounds(coords),
+	            nw = this._crs.project(tileBounds.getNorthWest()),
+	            se = this._crs.project(tileBounds.getSouthEast());
+	        var tileUrl = this._layerUrl + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + nw.x + ",\"y\":" + se.y + "},\"rightTop\" : {\"x\":" + se.x + ",\"y\":" + nw.y + "}}";
+
+	        var crs = this._crs, scale = crs.scale(zoom);
+	        tileUrl += "&scale=" + scale;
+	        return tileUrl;
+	    },
+
+	    _initParams: function () {
+	        var options = this.options;
+	        if (!options.url) {
+	            return;
+	        }
+	        this._layerUrl = this._initLayerUrl(options);
+	    },
+
+	    _initLayerUrl: function (options) {
+
+	        var layerUrl = options.url + "/image.png?redirect=false";
+
+	        //为url添加安全认证信息片段
+	        if (options.token) {
+	            layerUrl += "&token=" + options.token;
+	        }
+
+	        if (options.layersID) {
+	            layerUrl += "&layersID=" + options.layersID;
+	        }
+
+	        var transparent = (options.transparent) ? options.transparent : false;
+	        layerUrl += "&transparent=" + transparent;
+
+	        var cacheEnabled = (options.cacheEnabled) ? options.cacheEnabled : true;
+	        layerUrl += "&cacheEnabled=" + cacheEnabled;
+
+	        var tileSize = this.options.tileSize;
+	        layerUrl += "&width=" + tileSize + "&height=" + tileSize;
+
+	        return layerUrl;
+	    }
+	});
+
+	L.supermap.tiledMapLayer = function (url, options) {
+	    return new TiledMapLayer(url, options);
+	};
+
+	module.exports = L.supermap.tiledMapLayer;
+
+/***/ },
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9150,8 +16123,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(17);
-	__webpack_require__(18);
+	__webpack_require__(35);
+	__webpack_require__(36);
 
 	MapService = ServiceBase.extend({
 	    options: {
@@ -9189,14 +16162,14 @@
 	module.exports = L.supermap.mapService;
 
 /***/ },
-/* 17 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Class: ServiceBase
 	 * 服务基类
 	 */
-	__webpack_require__(5);
+	__webpack_require__(11);
 
 	ServiceBase = L.Evented.extend({
 	    options: {
@@ -9223,7 +16196,7 @@
 	};
 
 /***/ },
-/* 18 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -9238,7 +16211,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
+	__webpack_require__(37);
 
 	SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -9369,7 +16342,7 @@
 
 
 /***/ },
-/* 19 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -9380,7 +16353,7 @@
 	 * Class: SuperMap.ServiceBase
 	 * Core服务基类
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	SuperMap.ServiceBase = SuperMap.Class({
 
 	    /**
@@ -9735,7 +16708,7 @@
 
 
 /***/ },
-/* 20 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -9752,12 +16725,12 @@
 	 *          //doSomething
 	 *      });
 	 */
-	__webpack_require__(7);
-	__webpack_require__(21);
-	__webpack_require__(29);
-	__webpack_require__(31);
-	__webpack_require__(33);
-	__webpack_require__(17);
+	__webpack_require__(5);
+	__webpack_require__(39);
+	__webpack_require__(47);
+	__webpack_require__(49);
+	__webpack_require__(51);
+	__webpack_require__(35);
 
 	QueryService = ServiceBase.extend({
 
@@ -9890,7 +16863,7 @@
 
 
 /***/ },
-/* 21 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -9905,8 +16878,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.QueryService>
 	 */
-	__webpack_require__(22);
-	__webpack_require__(28);
+	__webpack_require__(40);
+	__webpack_require__(46);
 	SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, {
 
 	    /**
@@ -9977,7 +16950,7 @@
 
 
 /***/ },
-/* 22 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -9992,9 +16965,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(6);
-	__webpack_require__(19);
-	__webpack_require__(23);
+	__webpack_require__(12);
+	__webpack_require__(37);
+	__webpack_require__(41);
 	SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -10161,7 +17134,7 @@
 	};
 
 /***/ },
-/* 23 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10173,8 +17146,8 @@
 	 * 查询参数基类。
 	 * 距离查询、SQL 查询、几何地物查询等各自的参数均继承此类。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(24);
+	__webpack_require__(5);
+	__webpack_require__(42);
 	QueryParameters = SuperMap.Class({
 
 	    /**
@@ -10288,13 +17261,13 @@
 	};
 
 /***/ },
-/* 24 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: FilterParameter * 查询过滤条件参数类。 * 该类用于设置查询数据集的查询过滤参数。 */__webpack_require__(7);__webpack_require__(25);__webpack_require__(26);FilterParameter = SuperMap.Class({        /**      * APIProperty: attributeFilter     * {String} 属性过滤条件。     * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，     * attributeFilter 就是其中的“条件表达式”。     * 该字段的用法为 attributeFilter = "过滤条件"。     * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；     * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。      */    attributeFilter: null,    /**      * APIProperty: name     * {String} 查询数据集名称或者图层名称，根据实际的查询对象而定，必设属性。     * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，     * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。     * 因为一个地图的图层可能是来自于不同数据源的数据集，     * 而不同的数据源中可能存在同名的数据集，     * 使用数据集名称不能唯一的确定数据集，     * 所以在进行与地图相关功能的操作时，该值需要设置为图层名称。      */    name: null,        /**      * APIProperty: joinItems     * {Array(<JoinItem>)} 与外部表的连接信息 JoinItem 数组。      */    joinItems: null,        /**      * APIProperty: linkItems     * {Array(<LinkItem>)} 与外部表的关联信息 LinkItem 数组。      */    linkItems: null,        /**      * APIProperty: ids     * {Array(String)} 查询 id 数组，即属性表中的 SmID 值。       */    ids: null,        /**      * APIProperty: orderBy     * {String} 查询排序的字段,orderBy的字段须为数值型的。     * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；     * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。     * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，     * 分别表示国家的面积和1994年的各国人口数量。      * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；          * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。      */    orderBy: null,        /**      * APIProperty: groupBy     * {String} 查询分组条件的字段。     * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段分组时，该字段的用法为 groupBy = "字段名"；     * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。     * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，     * 分别表示某个城市所属的洲和国家。     * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；     * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。      */    groupBy: null,    /**      * APIProperty: fields     * {Array(String)} 查询字段数组，如果不设置则使用系统返回的所有字段。     */    fields: null,        /**     * Constructor: FilterParameter     * 查询过滤条件参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * attributeFilter - {String} 属性过滤条件。     * name - {String} 查询数据集名称或者图层名称。     * joinItems - {Array(<JoinItem>)} 与外部表的连接信息 JoinItem 数组。     * linkItems - {Array(<LinkItem>)} 与外部表的关联信息 LinkItem 数组。      * ids - {Array(String)} 查询 id 数组，即属性表中的 SmID 值。         * orderBy - {String} 查询排序的字段, orderBy 的字段须为数值型的。     * groupBy - {String} 查询分组条件的字段。     * fields - {Array(String)} 查询字段数组。     */    initialize: function(options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。       */    destroy: function() {        var me = this;        me.attributeFilter = null;        me.name = null;        if (me.joinItems) {            for (var i = 0,joinItems = me.joinItems,len = joinItems.length; i < len; i++) {                joinItems[i].destroy();            }            me.joinItems = null;        }        if (me.linkItems) {            for (var i = 0,linkItems = me.linkItems,len = linkItems.length; i < len; i++) {                linkItems[i].destroy();            }            me.linkItems = null;        }        me.ids = null;        me.orderBy = null;        me.groupBy = null;        me.fields = null;    },        CLASS_NAME: "FilterParameter"});module.exports = function (options) {    return new FilterParameter(options);};
+	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: FilterParameter * 查询过滤条件参数类。 * 该类用于设置查询数据集的查询过滤参数。 */__webpack_require__(5);__webpack_require__(43);__webpack_require__(44);FilterParameter = SuperMap.Class({        /**      * APIProperty: attributeFilter     * {String} 属性过滤条件。     * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，     * attributeFilter 就是其中的“条件表达式”。     * 该字段的用法为 attributeFilter = "过滤条件"。     * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；     * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。      */    attributeFilter: null,    /**      * APIProperty: name     * {String} 查询数据集名称或者图层名称，根据实际的查询对象而定，必设属性。     * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，     * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。     * 因为一个地图的图层可能是来自于不同数据源的数据集，     * 而不同的数据源中可能存在同名的数据集，     * 使用数据集名称不能唯一的确定数据集，     * 所以在进行与地图相关功能的操作时，该值需要设置为图层名称。      */    name: null,        /**      * APIProperty: joinItems     * {Array(<JoinItem>)} 与外部表的连接信息 JoinItem 数组。      */    joinItems: null,        /**      * APIProperty: linkItems     * {Array(<LinkItem>)} 与外部表的关联信息 LinkItem 数组。      */    linkItems: null,        /**      * APIProperty: ids     * {Array(String)} 查询 id 数组，即属性表中的 SmID 值。       */    ids: null,        /**      * APIProperty: orderBy     * {String} 查询排序的字段,orderBy的字段须为数值型的。     * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；     * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。     * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，     * 分别表示国家的面积和1994年的各国人口数量。      * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；          * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。      */    orderBy: null,        /**      * APIProperty: groupBy     * {String} 查询分组条件的字段。     * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段分组时，该字段的用法为 groupBy = "字段名"；     * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。     * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，     * 分别表示某个城市所属的洲和国家。     * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；     * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。      */    groupBy: null,    /**      * APIProperty: fields     * {Array(String)} 查询字段数组，如果不设置则使用系统返回的所有字段。     */    fields: null,        /**     * Constructor: FilterParameter     * 查询过滤条件参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * attributeFilter - {String} 属性过滤条件。     * name - {String} 查询数据集名称或者图层名称。     * joinItems - {Array(<JoinItem>)} 与外部表的连接信息 JoinItem 数组。     * linkItems - {Array(<LinkItem>)} 与外部表的关联信息 LinkItem 数组。      * ids - {Array(String)} 查询 id 数组，即属性表中的 SmID 值。         * orderBy - {String} 查询排序的字段, orderBy 的字段须为数值型的。     * groupBy - {String} 查询分组条件的字段。     * fields - {Array(String)} 查询字段数组。     */    initialize: function(options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。       */    destroy: function() {        var me = this;        me.attributeFilter = null;        me.name = null;        if (me.joinItems) {            for (var i = 0,joinItems = me.joinItems,len = joinItems.length; i < len; i++) {                joinItems[i].destroy();            }            me.joinItems = null;        }        if (me.linkItems) {            for (var i = 0,linkItems = me.linkItems,len = linkItems.length; i < len; i++) {                linkItems[i].destroy();            }            me.linkItems = null;        }        me.ids = null;        me.orderBy = null;        me.groupBy = null;        me.fields = null;    },        CLASS_NAME: "FilterParameter"});module.exports = function (options) {    return new FilterParameter(options);};
 
 /***/ },
-/* 25 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10318,7 +17291,7 @@
 	 * 并且用于建立连接的两个表必须在同一个数据源下。
 	 * )
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	JoinItem = SuperMap.Class({
 	    
 	    /** 
@@ -10424,13 +17397,13 @@
 	};
 
 /***/ },
-/* 26 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: LinkItem * 关联信息类。 * 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表， * 矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。 使用LinkItem时， * 空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。 * LinkItem 只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 LinkItem; * 另外，用于建立关联关系的两个表可以不在同一个数据源下。 * * (注意： * 1. 使用 LinkItem 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段； * 2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。) * */__webpack_require__(7);__webpack_require__(27);LinkItem = SuperMap.Class({        /**      * APIProperty: datasourceConnectionInfo     * {<DatasourceConnectionInfo>} 关联的外部数据源信息 。      */    datasourceConnectionInfo: null,        /**      * APIProperty: foreignKeys     * {Array(String)} 主空间数据集的外键。      */    foreignKeys: null,        /**      * APIProperty: foreignTable     * {String} 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。     */    foreignTable: null,        /**      * APIProperty: linkFields     * {Array(String)} 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返     * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。     */    linkFields: null,        /**      * APIProperty: linkFilter     * {String} 与外部属性表的连接条件。       */    linkFilter: null,        /**      * APIProperty: name     * {String} 此关联信息对象的名称。        */    name: null,        /**      * APIProperty: primaryKeys     * {Array(String)} 需要关联的外部属性表的主键。        */    primaryKeys: null,        /**     * Constructor: LinkItem     * 关联信息类构造函数。     *     * 设置将TableB关联到TableA的关联信息，即建立LinkItem类并设置其属性，     * TableA与TableB是通过主表（TableA）的外键（LinkItem类的 ForeignKey 属性）      * 和副表（TableB）的主键（LinkItem类的 PrimaryKey 属性）实现关联的，     * 当执行TableA的查询操作时，系统将根据关联信息中的过滤条件及查询条件，分别查询TableA      * 与TableB中满足条件的内容，TableA的查询结果与TableB的查询结果分别作为      * 独立的两个结果表保存在内存中，当需要获取结果时，SuperMap将对两个结果进行拼接并返回，     * 因此，进行关联查询时，查询参数中的返回字段一定要有关联条件中的外键，     * 否则无法根据外键的值获取副表中的关联字段值，副表中的字段值将返回 null。     * 在应用层看来，连接和关联操作很相似。     *       * 下面以SQL查询说明linkitem的使用方法：     * (start code)     *  function queryBySQL() {     *      // 设置关联的外部数据库信息,alias表示数据库别名     *      var dc = new DatasourceConnectionInfo({     *          dataBase: "RelQuery",     *          server: "192.168.168.39",     *          user: "sa",     *          password: "map",     *          driver: "SQL Server",     *          connect: true,     *          OpenLinkTable: false,     *          alias: "RelQuery",     *          engineType: EngineType.SQLPLUS,     *          readOnly: false,     *          exclusive: false     *      });     *     // 设置关联信息     *      var linkItem = new LinkItem({     *          datasourceConnectionInfo: dc,     *          foreignKeys: ["name"],     *          foreignTable: "Pop_2011",     *          linkFields: ["SmID as Pid","pop"],     *          name: "link",     *          primatryKeys: ["name"],     *      });     *      // 设置查询参数，在查询参数中添加linkItem关联条件信息     *      var queryParam, queryBySQLParams, queryBySQLService;     *      queryParam = new FilterParameter({     *          name: "Province@RelQuery",     *          fields: ["SmID","name"],     *          attributeFilter: "SmID<7",     *          linkItems: [linkItem]     *       }),      *      queryBySQLParams = new QueryBySQLParameters({     *           queryParams: [queryParam]     *              }),      *      queryBySQLService = new QueryBySQLService(url, {     *          eventListeners: {     *              "processCompleted": processCompleted,     *              "processFailed": processFailed     *              }     *      });     *      queryBySQLService.processAsync(queryBySQLParams);     *  }     *  function processCompleted(queryEventArgs) {//todo}     *  function processFailed(e) {//todo}     * (end)     *      * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * datasourceConnectionInfo - {<DatasourceConnectionInfo>} 关联的外部数据源信息。      * foreignKeys - {Array(String)} 主空间数据集的外键。     * foreignTable - {String} 关联的外部属性表的名称。     * linkFields - {Array(String)} 欲保留的外部属性表的字段。     * linkFilter - {String} 与外部属性表的连接条件。       * name - {String} 此关联信息对象的名称。     * primaryKeys - {Array(String)} 需要关联的外部属性表的主键。     */    initialize: function(options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。      */    destroy: function() {        var me = this;        if (me.datasourceConnectionInfo) {            me.datasourceConnectionInfo.destroy();            me.datasourceConnectionInfo = null;        }        me.foreignKeys = null;        me.foreignTable = null;        me.linkFields = null;        me.linkFilter = null;        me.name = null;        me.primaryKeys = null;    },        CLASS_NAME: "LinkItem"});module.exports = function (options) {    return new LinkItem(options);};
+	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: LinkItem * 关联信息类。 * 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表， * 矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。 使用LinkItem时， * 空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。 * LinkItem 只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 LinkItem; * 另外，用于建立关联关系的两个表可以不在同一个数据源下。 * * (注意： * 1. 使用 LinkItem 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段； * 2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。) * */__webpack_require__(5);__webpack_require__(45);LinkItem = SuperMap.Class({        /**      * APIProperty: datasourceConnectionInfo     * {<DatasourceConnectionInfo>} 关联的外部数据源信息 。      */    datasourceConnectionInfo: null,        /**      * APIProperty: foreignKeys     * {Array(String)} 主空间数据集的外键。      */    foreignKeys: null,        /**      * APIProperty: foreignTable     * {String} 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。     */    foreignTable: null,        /**      * APIProperty: linkFields     * {Array(String)} 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返     * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。     */    linkFields: null,        /**      * APIProperty: linkFilter     * {String} 与外部属性表的连接条件。       */    linkFilter: null,        /**      * APIProperty: name     * {String} 此关联信息对象的名称。        */    name: null,        /**      * APIProperty: primaryKeys     * {Array(String)} 需要关联的外部属性表的主键。        */    primaryKeys: null,        /**     * Constructor: LinkItem     * 关联信息类构造函数。     *     * 设置将TableB关联到TableA的关联信息，即建立LinkItem类并设置其属性，     * TableA与TableB是通过主表（TableA）的外键（LinkItem类的 ForeignKey 属性）      * 和副表（TableB）的主键（LinkItem类的 PrimaryKey 属性）实现关联的，     * 当执行TableA的查询操作时，系统将根据关联信息中的过滤条件及查询条件，分别查询TableA      * 与TableB中满足条件的内容，TableA的查询结果与TableB的查询结果分别作为      * 独立的两个结果表保存在内存中，当需要获取结果时，SuperMap将对两个结果进行拼接并返回，     * 因此，进行关联查询时，查询参数中的返回字段一定要有关联条件中的外键，     * 否则无法根据外键的值获取副表中的关联字段值，副表中的字段值将返回 null。     * 在应用层看来，连接和关联操作很相似。     *       * 下面以SQL查询说明linkitem的使用方法：     * (start code)     *  function queryBySQL() {     *      // 设置关联的外部数据库信息,alias表示数据库别名     *      var dc = new DatasourceConnectionInfo({     *          dataBase: "RelQuery",     *          server: "192.168.168.39",     *          user: "sa",     *          password: "map",     *          driver: "SQL Server",     *          connect: true,     *          OpenLinkTable: false,     *          alias: "RelQuery",     *          engineType: EngineType.SQLPLUS,     *          readOnly: false,     *          exclusive: false     *      });     *     // 设置关联信息     *      var linkItem = new LinkItem({     *          datasourceConnectionInfo: dc,     *          foreignKeys: ["name"],     *          foreignTable: "Pop_2011",     *          linkFields: ["SmID as Pid","pop"],     *          name: "link",     *          primatryKeys: ["name"],     *      });     *      // 设置查询参数，在查询参数中添加linkItem关联条件信息     *      var queryParam, queryBySQLParams, queryBySQLService;     *      queryParam = new FilterParameter({     *          name: "Province@RelQuery",     *          fields: ["SmID","name"],     *          attributeFilter: "SmID<7",     *          linkItems: [linkItem]     *       }),      *      queryBySQLParams = new QueryBySQLParameters({     *           queryParams: [queryParam]     *              }),      *      queryBySQLService = new QueryBySQLService(url, {     *          eventListeners: {     *              "processCompleted": processCompleted,     *              "processFailed": processFailed     *              }     *      });     *      queryBySQLService.processAsync(queryBySQLParams);     *  }     *  function processCompleted(queryEventArgs) {//todo}     *  function processFailed(e) {//todo}     * (end)     *      * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * datasourceConnectionInfo - {<DatasourceConnectionInfo>} 关联的外部数据源信息。      * foreignKeys - {Array(String)} 主空间数据集的外键。     * foreignTable - {String} 关联的外部属性表的名称。     * linkFields - {Array(String)} 欲保留的外部属性表的字段。     * linkFilter - {String} 与外部属性表的连接条件。       * name - {String} 此关联信息对象的名称。     * primaryKeys - {Array(String)} 需要关联的外部属性表的主键。     */    initialize: function(options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。      */    destroy: function() {        var me = this;        if (me.datasourceConnectionInfo) {            me.datasourceConnectionInfo.destroy();            me.datasourceConnectionInfo = null;        }        me.foreignKeys = null;        me.foreignTable = null;        me.linkFields = null;        me.linkFilter = null;        me.name = null;        me.primaryKeys = null;    },        CLASS_NAME: "LinkItem"});module.exports = function (options) {    return new LinkItem(options);};
 
 /***/ },
-/* 27 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10446,7 +17419,7 @@
 	 * 对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，其 他内容是不可以被修改的。
 	 * 对于用户创建的数据源连接信息对象，其内容都可以修改。
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	DatasourceConnectionInfo = SuperMap.Class({
 
 	    /**
@@ -10580,7 +17553,7 @@
 	};
 
 /***/ },
-/* 28 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10595,9 +17568,9 @@
 	 * Inherits from:
 	 *  - <QueryParameters>
 	 */
-	__webpack_require__(7);
-	__webpack_require__(23);
-	__webpack_require__(24);
+	__webpack_require__(5);
+	__webpack_require__(41);
+	__webpack_require__(42);
 	QueryByBoundsParameters = SuperMap.Class(QueryParameters, {
 
 	    /**
@@ -10661,7 +17634,7 @@
 	};
 
 /***/ },
-/* 29 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10675,8 +17648,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.QueryService>
 	 */
-	__webpack_require__(22);
-	__webpack_require__(30);
+	__webpack_require__(40);
+	__webpack_require__(48);
 	SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService, {
 
 	    /**
@@ -10747,13 +17720,13 @@
 	};
 
 /***/ },
-/* 30 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*/ /** * Class: QueryByDistanceParameters * Distance 查询参数类。 * 该类用于设置 Distance 查询的相关参数。 * * Inherits from: *  - <QueryParameters>  */__webpack_require__(7);__webpack_require__(23);QueryByDistanceParameters = SuperMap.Class(QueryParameters, {    /**     * APIProperty: distance     * {Number} 查询距离，默认为0，单位与所查询图层对应的数据集单位相同。     * 当查找最近地物时，该属性无效。     */    distance: 0,    /**     * APIProperty: geometry     * {<Object>} 用于查询的地理对象，必设属性。     */    geometry: null,    /**     * APIProperty: isNearest     * {Boolean} 是否为最近距离查询。     * 建议该属性与 expectCount （继承自 QueryParameters）属性联合使用。     * 当该属性为 true 时，即表示查找最近地物，如果查询结果数大于期望返回的结果记录数（expectCount），     * 则查找结果为查询总记录中距离中心最近的expectCount个地物。     * 当该属性为不为 true 时，如果查询结果数大于期望返回的结果记录数（expectCount），     * 则查找结果为从查询总记录中随机抽取的expectCount个地物。     * 目前查询结果不支持按远近距离排序。     */    isNearest: null,    /**      * APIProperty: returnContent     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     * 如果为 true，则直接返回新创建资源，即查询结果的表述。     * 为 false，则返回的是查询结果资源的 URI。默认为 true。       */    returnContent: true,        /**     * Constructor: QueryByDistanceParameters     * Distance 查询参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * customParams - {String} 自定义参数，供扩展使用。       * distance - {Number} 查询距离。     * expectCount - {Integer} 期望返回结果记录个数。     * geometry - {<Object>} 用于查询的几何对象。     * holdTime - {Integer} 资源在服务端保存的时间。     * isNearest - {Boolean} 是否为最近距离查询。     * networkType - {<GeometryType>} 网络数据集对应的查询类型。     * queryOption - {<QueryOption>} 查询结果类型枚举类。     * queryParams -  {Array(<FilterParameter>)} 查询过滤条件参数数组。     * startRecord - {Integer} 查询起始记录号。     * returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     */    initialize: function(options) {        QueryParameters.prototype.initialize.apply(this, arguments);        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },        /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function() {        QueryParameters.prototype.destroy.apply(this, arguments);         var me = this;        me.returnContent = null;        me.distance = null;        me.isNearest = null;        if (me.geometry) {            me.geometry.destroy();            me.geometry = null;        }    },        CLASS_NAME: "QueryByDistanceParameters"});module.exports = function (options) {    return new QueryByDistanceParameters(options);};
+	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*/ /** * Class: QueryByDistanceParameters * Distance 查询参数类。 * 该类用于设置 Distance 查询的相关参数。 * * Inherits from: *  - <QueryParameters>  */__webpack_require__(5);__webpack_require__(41);QueryByDistanceParameters = SuperMap.Class(QueryParameters, {    /**     * APIProperty: distance     * {Number} 查询距离，默认为0，单位与所查询图层对应的数据集单位相同。     * 当查找最近地物时，该属性无效。     */    distance: 0,    /**     * APIProperty: geometry     * {<Object>} 用于查询的地理对象，必设属性。     */    geometry: null,    /**     * APIProperty: isNearest     * {Boolean} 是否为最近距离查询。     * 建议该属性与 expectCount （继承自 QueryParameters）属性联合使用。     * 当该属性为 true 时，即表示查找最近地物，如果查询结果数大于期望返回的结果记录数（expectCount），     * 则查找结果为查询总记录中距离中心最近的expectCount个地物。     * 当该属性为不为 true 时，如果查询结果数大于期望返回的结果记录数（expectCount），     * 则查找结果为从查询总记录中随机抽取的expectCount个地物。     * 目前查询结果不支持按远近距离排序。     */    isNearest: null,    /**      * APIProperty: returnContent     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     * 如果为 true，则直接返回新创建资源，即查询结果的表述。     * 为 false，则返回的是查询结果资源的 URI。默认为 true。       */    returnContent: true,        /**     * Constructor: QueryByDistanceParameters     * Distance 查询参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * customParams - {String} 自定义参数，供扩展使用。       * distance - {Number} 查询距离。     * expectCount - {Integer} 期望返回结果记录个数。     * geometry - {<Object>} 用于查询的几何对象。     * holdTime - {Integer} 资源在服务端保存的时间。     * isNearest - {Boolean} 是否为最近距离查询。     * networkType - {<GeometryType>} 网络数据集对应的查询类型。     * queryOption - {<QueryOption>} 查询结果类型枚举类。     * queryParams -  {Array(<FilterParameter>)} 查询过滤条件参数数组。     * startRecord - {Integer} 查询起始记录号。     * returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     */    initialize: function(options) {        QueryParameters.prototype.initialize.apply(this, arguments);        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },        /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function() {        QueryParameters.prototype.destroy.apply(this, arguments);         var me = this;        me.returnContent = null;        me.distance = null;        me.isNearest = null;        if (me.geometry) {            me.geometry.destroy();            me.geometry = null;        }    },        CLASS_NAME: "QueryByDistanceParameters"});module.exports = function (options) {    return new QueryByDistanceParameters(options);};
 
 /***/ },
-/* 31 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10767,8 +17740,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.QueryService> 
 	 */
-	__webpack_require__(22);
-	__webpack_require__(32);
+	__webpack_require__(40);
+	__webpack_require__(50);
 	SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
 
 	    /**
@@ -10844,13 +17817,13 @@
 
 
 /***/ },
-/* 32 */
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: QueryBySQLParameters * SQL 查询参数类。 * 该类用于设置 SQL 查询的相关参数。 * * Inherits from: *  - <QueryParameters> */__webpack_require__(7);__webpack_require__(23);QueryBySQLParameters = SuperMap.Class(QueryParameters, {    /**     * APIProperty: returnContent     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     * 如果为 true，则直接返回新创建资源，即查询结果的表述。     * 为 false，则返回的是查询结果资源的 URI。默认为 true。     */    returnContent: true,    /**     * Constructor: QueryBySQLParameters     * SQL 查询参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * customParams - {String} 自定义参数，供扩展使用。     * expectCount - {Integer} 期望返回结果记录个数。     * networkType - {<GeometryType>} 网络数据集对应的查询类型。     * queryOption - {<QueryOption>} 查询结果类型枚举类。     * queryParams -  {Array(<FilterParameter>)} 查询过滤条件参数数组。     * startRecord - {Integer} 查询起始记录号。     * holdTime - {Integer} 资源在服务端保存的时间。     * returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     */    initialize: function (options) {        QueryParameters.prototype.initialize.apply(this, arguments);        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        QueryParameters.prototype.destroy.apply(this, arguments);        var me = this;        me.returnContent = null;    },    CLASS_NAME: "QueryBySQLParameters"});module.exports = function (options) {    return new QueryBySQLParameters(options);};
+	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: QueryBySQLParameters * SQL 查询参数类。 * 该类用于设置 SQL 查询的相关参数。 * * Inherits from: *  - <QueryParameters> */__webpack_require__(5);__webpack_require__(41);QueryBySQLParameters = SuperMap.Class(QueryParameters, {    /**     * APIProperty: returnContent     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     * 如果为 true，则直接返回新创建资源，即查询结果的表述。     * 为 false，则返回的是查询结果资源的 URI。默认为 true。     */    returnContent: true,    /**     * Constructor: QueryBySQLParameters     * SQL 查询参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * customParams - {String} 自定义参数，供扩展使用。     * expectCount - {Integer} 期望返回结果记录个数。     * networkType - {<GeometryType>} 网络数据集对应的查询类型。     * queryOption - {<QueryOption>} 查询结果类型枚举类。     * queryParams -  {Array(<FilterParameter>)} 查询过滤条件参数数组。     * startRecord - {Integer} 查询起始记录号。     * holdTime - {Integer} 资源在服务端保存的时间。     * returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     */    initialize: function (options) {        QueryParameters.prototype.initialize.apply(this, arguments);        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        QueryParameters.prototype.destroy.apply(this, arguments);        var me = this;        me.returnContent = null;    },    CLASS_NAME: "QueryBySQLParameters"});module.exports = function (options) {    return new QueryBySQLParameters(options);};
 
 /***/ },
-/* 33 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10864,8 +17837,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.QueryService>
 	 */
-	__webpack_require__(22);
-	__webpack_require__(34);
+	__webpack_require__(40);
+	__webpack_require__(52);
 	SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService, {
 
 	    /**
@@ -10935,7 +17908,7 @@
 	};
 
 /***/ },
-/* 34 */
+/* 52 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -10950,8 +17923,8 @@
 	 * Inherits from:
 	 *  - <QueryParameters> 
 	 */
-	__webpack_require__(7);
-	__webpack_require__(23);
+	__webpack_require__(5);
+	__webpack_require__(41);
 	QueryByGeometryParameters = SuperMap.Class(QueryParameters, {
 
 	    /** 
@@ -11020,7 +17993,7 @@
 	};
 
 /***/ },
-/* 35 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11034,9 +18007,9 @@
 	 *          //doSomething
 	 *      });
 	 */
-	__webpack_require__(7);
-	__webpack_require__(36);
-	__webpack_require__(17);
+	__webpack_require__(5);
+	__webpack_require__(54);
+	__webpack_require__(35);
 
 	ChartQueryService = ServiceBase.extend({
 
@@ -11094,7 +18067,7 @@
 
 
 /***/ },
-/* 36 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -11111,9 +18084,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(6);
-	__webpack_require__(19);
+	__webpack_require__(12);
 	__webpack_require__(37);
+	__webpack_require__(55);
 	SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -11285,7 +18258,7 @@
 	};
 
 /***/ },
-/* 37 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -11298,8 +18271,8 @@
 	 *     查询和海图范围查询两类，通过属性queryMode指定查询模式。必设属性有：
 	 *     queryMode、chartLayerNames、chartQueryFilterParameters。当进行海图范围查询时，必设属性还包括bounds。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(38);
+	__webpack_require__(5);
+	__webpack_require__(56);
 	ChartQueryParameters = SuperMap.Class({
 
 	    /**
@@ -11471,7 +18444,7 @@
 	};
 
 /***/ },
-/* 38 */
+/* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -11482,7 +18455,7 @@
 	 * Class: ChartQueryFilterParameter
 	 *      海图查询过滤参数类，用于设置海图查询的过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	ChartQueryFilterParameter = SuperMap.Class({
 
 	    /**
@@ -11575,7 +18548,7 @@
 	};
 
 /***/ },
-/* 39 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11589,8 +18562,8 @@
 	 *          //doSomething
 	 *      });
 	 */
-	__webpack_require__(40);
-	__webpack_require__(17);
+	__webpack_require__(58);
+	__webpack_require__(35);
 
 	TilesetsService = ServiceBase.extend({
 
@@ -11621,7 +18594,7 @@
 
 
 /***/ },
-/* 40 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -11636,7 +18609,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
+	__webpack_require__(37);
 
 	SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -11696,7 +18669,7 @@
 	};
 
 /***/ },
-/* 41 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11710,8 +18683,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(17);
-	__webpack_require__(42);
+	__webpack_require__(35);
+	__webpack_require__(60);
 
 	GetLayersInfoService = ServiceBase.extend({
 
@@ -11748,7 +18721,7 @@
 	module.exports = L.supermap.getLayersInfoService;
 
 /***/ },
-/* 42 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -11763,7 +18736,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
+	__webpack_require__(37);
 	SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -11895,7 +18868,7 @@
 	};
 
 /***/ },
-/* 43 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11910,8 +18883,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(17);
-	__webpack_require__(44);
+	__webpack_require__(35);
+	__webpack_require__(62);
 
 	ChartFeatureInfoSpecsService = ServiceBase.extend({
 
@@ -11940,7 +18913,7 @@
 	module.exports = L.supermap.chartFeatureInfoSpecsService;
 
 /***/ },
-/* 44 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -11957,7 +18930,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
+	__webpack_require__(37);
 	SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -12022,7 +18995,7 @@
 
 
 /***/ },
-/* 45 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12040,10 +19013,10 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(17);
-	__webpack_require__(46);
-	__webpack_require__(47);
-	__webpack_require__(48);
+	__webpack_require__(35);
+	__webpack_require__(64);
+	__webpack_require__(65);
+	__webpack_require__(66);
 
 	SetLayerService = ServiceBase.extend({
 
@@ -12150,7 +19123,7 @@
 	module.exports = L.supermap.setLayerService;
 
 /***/ },
-/* 46 */
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12165,7 +19138,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
+	__webpack_require__(37);
 	SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -12237,7 +19210,7 @@
 
 
 /***/ },
-/* 47 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12254,7 +19227,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
+	__webpack_require__(37);
 	SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -12373,7 +19346,7 @@
 
 
 /***/ },
-/* 48 */
+/* 66 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12388,8 +19361,8 @@
 	 * 一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；
 	 * 一种是使用 AsyncResponder 类实现异步处理。
 	 */
-	__webpack_require__(19);
-	__webpack_require__(49);
+	__webpack_require__(37);
+	__webpack_require__(67);
 	SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    lastparams: null,
@@ -12536,7 +19509,7 @@
 
 
 /***/ },
-/* 49 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12549,8 +19522,8 @@
 	 * 该类存储了各子图层是否可见的状态。子图层显示控制功能只针对 TiledDynamicIServerLayer 和 DynamicIServerLayer 图层。
 	 * 注意在 SuperMap iClient 系列产品中所说的图层与 SuperMap Deskpro 的地图对应，子图层与 SuperMap Deskpro 的图层对应。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(50);
+	__webpack_require__(5);
+	__webpack_require__(68);
 	SetLayerStatusParameters = SuperMap.Class({
 
 	    /**
@@ -12628,7 +19601,7 @@
 	};
 
 /***/ },
-/* 50 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12641,7 +19614,7 @@
 	 * 该类存储了各个子图层的名字和是否可见的状态。
 	 *
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	LayerStatus = SuperMap.Class({
 
 	    /**
@@ -12742,7 +19715,7 @@
 	};
 
 /***/ },
-/* 51 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12757,8 +19730,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(17);
-	__webpack_require__(52);
+	__webpack_require__(35);
+	__webpack_require__(70);
 
 	MeasureService = ServiceBase.extend({
 
@@ -12818,7 +19791,7 @@
 	module.exports = L.supermap.measureService;
 
 /***/ },
-/* 52 */
+/* 70 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12833,8 +19806,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
-	__webpack_require__(53);
+	__webpack_require__(37);
+	__webpack_require__(71);
 	SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -12958,7 +19931,7 @@
 	};
 
 /***/ },
-/* 53 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -12971,7 +19944,7 @@
 	 * 客户端要量算的地物间的距离或某个区域的面积是一个 {<Object>}  类型的几何对象（{<Line>} 或 {<Polygon>}），
 	 * 它将与指定的量算单位一起作为量算参数传到服务端。最终服务端将以指定单位返回得到的距离或面积。 
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	MeasureParameters = SuperMap.Class({
 
 	    /** 
@@ -13042,7 +20015,7 @@
 	};
 
 /***/ },
-/* 54 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13057,8 +20030,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(55);
-	__webpack_require__(56);
+	__webpack_require__(73);
+	__webpack_require__(74);
 
 	FieldStatisticService = FieldsServiceBase.extend({
 	    options: {
@@ -13132,7 +20105,7 @@
 	module.exports = L.supermap.fieldStatisticService;
 
 /***/ },
-/* 55 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13147,7 +20120,7 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(17);
+	__webpack_require__(35);
 
 	FieldsServiceBase = ServiceBase.extend({
 	    options: {
@@ -13169,7 +20142,7 @@
 
 
 /***/ },
-/* 56 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -13184,7 +20157,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
+	__webpack_require__(37);
 
 	SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -13291,7 +20264,7 @@
 	};
 
 /***/ },
-/* 57 */
+/* 75 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13308,13 +20281,13 @@
 	 *          //doSomething
 	 *      });
 	 */
-	__webpack_require__(7);
-	__webpack_require__(58);
-	__webpack_require__(63);
-	__webpack_require__(65);
-	__webpack_require__(67);
-	__webpack_require__(69);
-	__webpack_require__(17);
+	__webpack_require__(5);
+	__webpack_require__(76);
+	__webpack_require__(81);
+	__webpack_require__(83);
+	__webpack_require__(85);
+	__webpack_require__(87);
+	__webpack_require__(35);
 
 	GetFeaturesService = ServiceBase.extend({
 
@@ -13453,7 +20426,7 @@
 
 
 /***/ },
-/* 58 */
+/* 76 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -13468,8 +20441,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(59);
-	__webpack_require__(60);
+	__webpack_require__(77);
+	__webpack_require__(78);
 	SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
 	    /**
@@ -13532,7 +20505,7 @@
 	};
 
 /***/ },
-/* 59 */
+/* 77 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -13549,8 +20522,8 @@
 	 */
 
 	// TODO 待iServer featureResult GeoJSON表述bug修复当修改此类中TODO注释说明的地方
-	__webpack_require__(6);
-	__webpack_require__(19);
+	__webpack_require__(12);
+	__webpack_require__(37);
 
 	SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -13714,7 +20687,7 @@
 	};
 
 /***/ },
-/* 60 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -13728,7 +20701,7 @@
 	 * Inherits from:
 	 *  - <GetFeaturesParametersBase>
 	 */
-	__webpack_require__(61);
+	__webpack_require__(79);
 	GetFeaturesByIDsParameters = SuperMap.Class(GetFeaturesParametersBase, {
 
 	    /**
@@ -13824,7 +20797,7 @@
 	};
 
 /***/ },
-/* 61 */
+/* 79 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* COPYRIGHT 2017 SUPERMAP
@@ -13835,7 +20808,7 @@
 	 * Class: GetFeaturesParametersBase
 	 * 数据服务中数据集查询参数基类。
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	GetFeaturesParametersBase = SuperMap.Class({
 	    /**
@@ -13916,10 +20889,10 @@
 	module.export = function (options) {
 	    return new GetFeaturesParametersBase(options);
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(62)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(80)(module)))
 
 /***/ },
-/* 62 */
+/* 80 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -13935,7 +20908,7 @@
 
 
 /***/ },
-/* 63 */
+/* 81 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -13950,8 +20923,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(59);
-	__webpack_require__(64);
+	__webpack_require__(77);
+	__webpack_require__(82);
 	SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
 	    /**
@@ -14014,7 +20987,7 @@
 	};
 
 /***/ },
-/* 64 */
+/* 82 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14029,8 +21002,8 @@
 	 * Inherits from:
 	 *  - <GetFeaturesParametersBase> 
 	 */
-	__webpack_require__(61);
-	__webpack_require__(24);
+	__webpack_require__(79);
+	__webpack_require__(42);
 	GetFeaturesBySQLParameters = SuperMap.Class(GetFeaturesParametersBase, {
 	    /** 
 	     * Property: getFeatureMode
@@ -14104,7 +21077,7 @@
 	};
 
 /***/ },
-/* 65 */
+/* 83 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14119,8 +21092,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(59);
-	__webpack_require__(66);
+	__webpack_require__(77);
+	__webpack_require__(84);
 
 	SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
@@ -14184,7 +21157,7 @@
 	};
 
 /***/ },
-/* 66 */
+/* 84 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14199,7 +21172,7 @@
 	 * Inherits from:
 	 *  - <GetFeaturesParametersBase>
 	 */
-	__webpack_require__(61);
+	__webpack_require__(79);
 
 	GetFeaturesByBoundsParameters = SuperMap.Class(GetFeaturesParametersBase, {
 
@@ -14336,7 +21309,7 @@
 	};
 
 /***/ },
-/* 67 */
+/* 85 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14351,8 +21324,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(59);
-	__webpack_require__(68);
+	__webpack_require__(77);
+	__webpack_require__(86);
 	SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
 	    /**
@@ -14415,7 +21388,7 @@
 	};
 
 /***/ },
-/* 68 */
+/* 86 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14429,7 +21402,7 @@
 	 * Inherits from:
 	 *  - <GetFeaturesParametersBase> 
 	 */
-	__webpack_require__(61);
+	__webpack_require__(79);
 	GetFeaturesByBufferParameters = SuperMap.Class(GetFeaturesParametersBase, {  
 	    /** 
 	     * APIProperty: bufferDistance
@@ -14543,7 +21516,7 @@
 	};
 
 /***/ },
-/* 69 */
+/* 87 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14558,8 +21531,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(59);
-	__webpack_require__(70);
+	__webpack_require__(77);
+	__webpack_require__(88);
 
 	SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
@@ -14623,7 +21596,7 @@
 	};
 
 /***/ },
-/* 70 */
+/* 88 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14638,7 +21611,7 @@
 	 * Inherits from:
 	 *  - <GetFeaturesParametersBase>
 	 */
-	__webpack_require__(61);
+	__webpack_require__(79);
 	GetFeaturesByGeometryParameters = SuperMap.Class(GetFeaturesParametersBase, {
 
 	    /**
@@ -14764,7 +21737,7 @@
 	};
 
 /***/ },
-/* 71 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14779,8 +21752,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(55);
-	__webpack_require__(72);
+	__webpack_require__(73);
+	__webpack_require__(90);
 
 	GetFieldsService = FieldsServiceBase.extend({
 
@@ -14811,7 +21784,7 @@
 	module.exports = L.supermap.getFieldsService;
 
 /***/ },
-/* 72 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -14825,7 +21798,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
+	__webpack_require__(37);
 
 	SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -14911,7 +21884,7 @@
 	};
 
 /***/ },
-/* 73 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14928,8 +21901,8 @@
 	 *      });
 	 */
 
-	__webpack_require__(74);
-	__webpack_require__(17);
+	__webpack_require__(92);
+	__webpack_require__(35);
 
 	EditFeaturesService = ServiceBase.extend({
 
@@ -15001,7 +21974,7 @@
 	module.exports = L.supermap.editFeaturesService;
 
 /***/ },
-/* 74 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -15015,8 +21988,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
-	__webpack_require__(75);
+	__webpack_require__(37);
+	__webpack_require__(93);
 	SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -15138,7 +22111,7 @@
 	};
 
 /***/ },
-/* 75 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* COPYRIGHT 2017 SUPERMAP
@@ -15149,7 +22122,7 @@
 	 * Class: EditFeaturesParameters
 	 * 数据服务中数据集添加、修改、删除参数类。 
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	EditFeaturesParameters = SuperMap.Class({
 	    /** 
 	     * APIProperty: features
@@ -15256,10 +22229,10 @@
 	module.export = function (options) {
 	    return new EditFeaturesParameters(options);
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(62)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(80)(module)))
 
 /***/ },
-/* 76 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15274,8 +22247,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(17);
-	__webpack_require__(77);
+	__webpack_require__(35);
+	__webpack_require__(95);
 
 	GetGridCellInfosService = ServiceBase.extend({
 
@@ -15311,7 +22284,7 @@
 	module.exports = L.supermap.getGridCellInfosService;
 
 /***/ },
-/* 77 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -15327,8 +22300,8 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 
-	__webpack_require__(19);
-	__webpack_require__(78);
+	__webpack_require__(37);
+	__webpack_require__(96);
 	SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -15496,7 +22469,7 @@
 	};
 
 /***/ },
-/* 78 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/* COPYRIGHT 2017 SUPERMAP
@@ -15507,7 +22480,7 @@
 	 * Class: GetGridCellInfosParameters
 	 * 数据服务栅格查询参数类。
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	GetGridCellInfosParameter = SuperMap.Class({
 	    /**
 	     * APIProperty: datasetName
@@ -15571,10 +22544,10 @@
 	    return new GetGridCellInfosParameter(options);
 	};
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(62)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(80)(module)))
 
 /***/ },
-/* 79 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15589,8 +22562,8 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(17);
-	__webpack_require__(80);
+	__webpack_require__(35);
+	__webpack_require__(98);
 	ThemeService = ServiceBase.extend({
 
 	    initialize: function (url, options) {
@@ -15619,7 +22592,7 @@
 	module.exports = L.supermap.ThemeService;
 
 /***/ },
-/* 80 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -15633,8 +22606,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
-	__webpack_require__(81);
+	__webpack_require__(37);
+	__webpack_require__(99);
 	SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -15781,7 +22754,7 @@
 	};
 
 /***/ },
-/* 81 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -15793,16 +22766,16 @@
 	 * 专题图参数类
 	 * 该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(25);
-	__webpack_require__(82);
-	__webpack_require__(87);
-	__webpack_require__(91);
-	__webpack_require__(97);
-	__webpack_require__(108);
-	__webpack_require__(110);
-	__webpack_require__(112);
-	__webpack_require__(114);
+	__webpack_require__(5);
+	__webpack_require__(43);
+	__webpack_require__(100);
+	__webpack_require__(105);
+	__webpack_require__(109);
+	__webpack_require__(115);
+	__webpack_require__(126);
+	__webpack_require__(128);
+	__webpack_require__(130);
+	__webpack_require__(132);
 
 	ThemeParameters = SuperMap.Class({
 
@@ -15902,7 +22875,7 @@
 	};
 
 /***/ },
-/* 82 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -15923,9 +22896,9 @@
 	 * Inherits from:
 	 *  - <Theme>
 	 */
-	__webpack_require__(7);
-	__webpack_require__(83);
-	__webpack_require__(85);
+	__webpack_require__(5);
+	__webpack_require__(101);
+	__webpack_require__(103);
 	ThemeDotDensity = SuperMap.Class(Theme, {
 
 	    /**
@@ -16017,7 +22990,7 @@
 
 
 /***/ },
-/* 83 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -16029,8 +23002,8 @@
 	 * 服务端矢量要素风格类
 	 * 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(84);
+	__webpack_require__(5);
+	__webpack_require__(102);
 	ServerStyle = SuperMap.Class({
 
 	    /**
@@ -16257,7 +23230,7 @@
 
 
 /***/ },
-/* 84 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -16269,7 +23242,7 @@
 	 * 颜色类
 	 * 该类使用三原色（ RGB ）来表达颜色。
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	ServerColor = SuperMap.Class({
 
 	    /**
@@ -16377,7 +23350,7 @@
 
 
 /***/ },
-/* 85 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -16388,8 +23361,8 @@
 	 * Class: Theme
 	 * 专题图基类。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(86);
+	__webpack_require__(5);
+	__webpack_require__(104);
 	Theme = SuperMap.Class({
 
 	    /**
@@ -16456,7 +23429,7 @@
 	};
 
 /***/ },
-/* 86 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -16467,7 +23440,7 @@
 	 * Class: ThemeMemoryData
 	 * 专题图内存数据类。
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	ThemeMemoryData = SuperMap.Class({
 
 	    /**
@@ -16540,7 +23513,7 @@
 	};
 
 /***/ },
-/* 87 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -16557,11 +23530,11 @@
 	 * Inherits from:
 	 * -<Theme>
 	 */
-	__webpack_require__(7);
-	__webpack_require__(85);
-	__webpack_require__(88);
-	__webpack_require__(89);
-	__webpack_require__(90);
+	__webpack_require__(5);
+	__webpack_require__(103);
+	__webpack_require__(106);
+	__webpack_require__(107);
+	__webpack_require__(108);
 	ThemeGraduatedSymbol = SuperMap.Class(Theme, {
 
 	    /**
@@ -16716,7 +23689,7 @@
 
 
 /***/ },
-/* 88 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -16728,8 +23701,8 @@
 	 * 标签或符号流动显示和牵引线风格设置类。
 	 * 通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(83);
+	__webpack_require__(5);
+	__webpack_require__(101);
 	ThemeFlow = SuperMap.Class({
 
 	    /**
@@ -16806,7 +23779,7 @@
 
 
 /***/ },
-/* 89 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -16818,7 +23791,7 @@
 	 * 专题图中文本或符号相对于要素内点的偏移量设置类。
 	 * 通过该类可以设置专题图中标记文本或符号的偏移量以及偏移量是否随地图缩放而改变。
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	ThemeOffset = SuperMap.Class({
 
 	    /**
@@ -16883,7 +23856,7 @@
 
 
 /***/ },
-/* 90 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -16895,8 +23868,8 @@
 	 * 等级符号专题图正负零值显示风格类。
 	 * 通过该类可以设置正值的显示风格，零值和或负值的显示风格以及是否显示零值和或负值对应的等级符号。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(83);
+	__webpack_require__(5);
+	__webpack_require__(101);
 	ThemeGraduatedSymbolStyle = SuperMap.Class({
 	    
 	    /**
@@ -16983,7 +23956,7 @@
 
 
 /***/ },
-/* 91 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -17001,14 +23974,14 @@
 	 * Inherits from:
 	 *  - <Theme>
 	 */
-	__webpack_require__(7);
-	__webpack_require__(85);
-	__webpack_require__(88);
-	__webpack_require__(89);
-	__webpack_require__(92);
-	__webpack_require__(94);
-	__webpack_require__(95);
-	__webpack_require__(96);
+	__webpack_require__(5);
+	__webpack_require__(103);
+	__webpack_require__(106);
+	__webpack_require__(107);
+	__webpack_require__(110);
+	__webpack_require__(112);
+	__webpack_require__(113);
+	__webpack_require__(114);
 	ThemeGraph = SuperMap.Class(Theme, {
 
 	    /**
@@ -17360,7 +24333,7 @@
 	};
 
 /***/ },
-/* 92 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -17372,9 +24345,9 @@
 	 * 统计专题图坐标轴样式类。
 	 * 该类用于设置统计图中坐标轴样式相关信息，如坐标轴颜色、是否显示、坐标文本样式等。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(84);
-	__webpack_require__(93);
+	__webpack_require__(5);
+	__webpack_require__(102);
+	__webpack_require__(111);
 	ThemeGraphAxes = SuperMap.Class({
 
 	    /**
@@ -17466,7 +24439,7 @@
 
 
 /***/ },
-/* 93 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -17478,8 +24451,8 @@
 	 * 服务端文本风格类
 	 * 该类用于定义文本风格的相关属性。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(84);
+	__webpack_require__(5);
+	__webpack_require__(102);
 	ServerTextStyle = SuperMap.Class({
 
 	    /**
@@ -17695,7 +24668,7 @@
 
 
 /***/ },
-/* 94 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -17708,7 +24681,7 @@
 	 * 通过该类可以设置统计专题图符号最小和最大的基准尺寸。专题图表的尺寸大小与基准值、分级方式及专题字段值的大小都有着紧密联系。
 	 * 它是利用指定的分级方式，最大基准值、最小基准值以及字段的最大值和最小值计算统计图中各个值对应的图表尺寸的大小。
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	ThemeGraphSize = SuperMap.Class({
 
 	    /**
@@ -17763,7 +24736,7 @@
 
 
 /***/ },
-/* 95 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -17775,8 +24748,8 @@
 	 * 统计图文字标注风格类。
 	 * 通过该类可以设置统计图表中文字可见性以及标注风格。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(93);
+	__webpack_require__(5);
+	__webpack_require__(111);
 	ThemeGraphText = SuperMap.Class({
 
 	    /**
@@ -17846,7 +24819,7 @@
 
 
 /***/ },
-/* 96 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -17859,8 +24832,8 @@
 	 * 统计专题图可以基于多个变量，反映多种属性，即可以将多个专题变量的值绘制在一个统计图上。每一个专题变量对应的统计图即为一个专题图子项。
 	 * 该类用来设置每个统计专题图子项的名称，专题变量，显示风格，甚至可以将该子项再制作成范围分段专题图。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(83);
+	__webpack_require__(5);
+	__webpack_require__(101);
 	ThemeGraphItem = SuperMap.Class({
 
 	    /**
@@ -17939,7 +24912,7 @@
 
 
 /***/ },
-/* 97 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -17958,18 +24931,18 @@
 	 * Inherits from:
 	 *  - <Theme>
 	 */
-	__webpack_require__(7);
-	__webpack_require__(85);
-	__webpack_require__(88);
-	__webpack_require__(89);
-	__webpack_require__(98);
-	__webpack_require__(99);
-	__webpack_require__(100);
-	__webpack_require__(102);
-	__webpack_require__(104);
-	__webpack_require__(105);
+	__webpack_require__(5);
+	__webpack_require__(103);
 	__webpack_require__(106);
 	__webpack_require__(107);
+	__webpack_require__(116);
+	__webpack_require__(117);
+	__webpack_require__(118);
+	__webpack_require__(120);
+	__webpack_require__(122);
+	__webpack_require__(123);
+	__webpack_require__(124);
+	__webpack_require__(125);
 
 	ThemeLabel = SuperMap.Class(Theme, {
 
@@ -18270,7 +25243,7 @@
 
 
 /***/ },
-/* 98 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -18286,8 +25259,8 @@
 	 * 他们所代表的分段区间分别为[0,5)，[5,10)。那么需要分别设置 ThemeLabelItem[0].start=0，
 	 * ThemeLabelItem[0].end=5，ThemeLabelItem[1].start=5，ThemeLabelItem[1].end=10。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(93);
+	__webpack_require__(5);
+	__webpack_require__(111);
 	ThemeLabelItem = SuperMap.Class({
 
 	    /**
@@ -18375,7 +25348,7 @@
 
 
 /***/ },
-/* 99 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -18389,8 +25362,8 @@
 	 * 字段指定用于单值的字段，同一值的标签具有相同的显示风格，其中每一个值就是一个专题图子项，
 	 * 每一个子项都具有其名称、风格、指定的单值、X方向偏移量和Y方向偏移量。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(93);
+	__webpack_require__(5);
+	__webpack_require__(111);
 	ThemeLabelUniqueItem = SuperMap.Class({
 
 	    /**
@@ -18482,7 +25455,7 @@
 
 
 /***/ },
-/* 100 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -18494,9 +25467,9 @@
 	 * 标签中文本风格类。
 	 * 通过该类可以设置标签中的文本字体大小和显示风格。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(93);
-	__webpack_require__(101);
+	__webpack_require__(5);
+	__webpack_require__(111);
+	__webpack_require__(119);
 	ThemeLabelText = SuperMap.Class({
 
 	    /**
@@ -18602,7 +25575,7 @@
 
 
 /***/ },
-/* 101 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -18623,8 +25596,8 @@
 	 * 字符分段范围相应的就是(-∞，1)，[1，3)，[3，4)，[4，9)，[9，+∞)，可以看出索引号为0的字符（即“珠” ）在第一个分段内，
 	 * 索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(93);
+	__webpack_require__(5);
+	__webpack_require__(111);
 	LabelMixedTextStyle = SuperMap.Class({
 
 	    /**
@@ -18732,7 +25705,7 @@
 
 
 /***/ },
-/* 102 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -18752,8 +25725,8 @@
 	 * Inherits from:
 	 *  - <LabelMatrixCell>
 	 */
-	__webpack_require__(7);
-	__webpack_require__(103);
+	__webpack_require__(5);
+	__webpack_require__(121);
 	LabelImageCell = SuperMap.Class(LabelMatrixCell, {
 
 	    /**
@@ -18832,7 +25805,7 @@
 	};
 
 /***/ },
-/* 103 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -18845,13 +25818,13 @@
 	 * 该类可以包含 n*n 个矩阵标签元素，矩阵标签元素的类型可以是图片，符号，标签专题图等。
 	 * 符号类型的矩阵标签元素类、图片类型的矩阵标签元素类和专题图类型的矩阵标签元素类均继承自该类。
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	LabelMatrixCell = SuperMap.Class({
 	    CLASS_NAME: "LabelMatrixCell"
 	});
 
 /***/ },
-/* 104 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -18871,9 +25844,9 @@
 	 * Inherits from:
 	 *  - <LabelMatrixCell>
 	 */
-	__webpack_require__(7);
-	__webpack_require__(83);
-	__webpack_require__(103);
+	__webpack_require__(5);
+	__webpack_require__(101);
+	__webpack_require__(121);
 	LabelSymbolCell = SuperMap.Class(LabelMatrixCell, {
 
 	    /**
@@ -18934,7 +25907,7 @@
 	};
 
 /***/ },
-/* 105 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -18954,9 +25927,9 @@
 	 * Inherits from:
 	 *  - <LabelMatrixCell>
 	 */
-	__webpack_require__(7);
-	__webpack_require__(97);
-	__webpack_require__(103);
+	__webpack_require__(5);
+	__webpack_require__(115);
+	__webpack_require__(121);
 	LabelThemeCell = SuperMap.Class(LabelMatrixCell, {
 
 	    /**
@@ -19008,7 +25981,7 @@
 	};
 
 /***/ },
-/* 106 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -19020,7 +25993,7 @@
 	 * 标签沿线标注样式类。
 	 * 通过该类可以设置是否标签沿线标注以及沿线标注的多种样式。沿线标注属性只适用于线数据集专题图。
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	ThemeLabelAlongLine = SuperMap.Class({
 
 	    /**
@@ -19112,7 +26085,7 @@
 
 
 /***/ },
-/* 107 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -19124,8 +26097,8 @@
 	 * 标签背景风格类。
 	 * 通过该类可以设置标签的背景形状和风格。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(83);
+	__webpack_require__(5);
+	__webpack_require__(101);
 	ThemeLabelBackground = SuperMap.Class({
 
 	    /**
@@ -19191,7 +26164,7 @@
 
 
 /***/ },
-/* 108 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -19208,9 +26181,9 @@
 	 * Inherits from:
 	 *  - <Theme>
 	 */
-	__webpack_require__(7);
-	__webpack_require__(85);
-	__webpack_require__(109);
+	__webpack_require__(5);
+	__webpack_require__(103);
+	__webpack_require__(127);
 	ThemeRange = SuperMap.Class(Theme, {
 	    /**
 	     * Property: precision
@@ -19323,7 +26296,7 @@
 
 
 /***/ },
-/* 109 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -19336,8 +26309,8 @@
 	 * 在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。
 	 * 每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(83);
+	__webpack_require__(5);
+	__webpack_require__(101);
 	ThemeRangeItem = SuperMap.Class({
 
 	    /**
@@ -19445,7 +26418,7 @@
 
 
 /***/ },
-/* 110 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -19461,10 +26434,10 @@
 	 * Inherits from:
 	 *  - <Theme>
 	 */
-	__webpack_require__(7);
-	__webpack_require__(83);
-	__webpack_require__(85);
-	__webpack_require__(111);
+	__webpack_require__(5);
+	__webpack_require__(101);
+	__webpack_require__(103);
+	__webpack_require__(129);
 	ThemeUnique = SuperMap.Class(Theme, {
 
 	    /**
@@ -19589,7 +26562,7 @@
 
 
 /***/ },
-/* 111 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -19602,8 +26575,8 @@
 	 * 单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，Name 字段代表
 	 * 省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(83);
+	__webpack_require__(5);
+	__webpack_require__(101);
 	ThemeUniqueItem = SuperMap.Class({
 
 	    /**
@@ -19698,7 +26671,7 @@
 
 
 /***/ },
-/* 112 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -19714,9 +26687,9 @@
 	 * Inherits from:
 	 *  - <Theme>
 	 */
-	__webpack_require__(7);
-	__webpack_require__(85);
-	__webpack_require__(113);
+	__webpack_require__(5);
+	__webpack_require__(103);
+	__webpack_require__(131);
 	ThemeGridRange = SuperMap.Class(Theme, {
 
 	    /**
@@ -19819,7 +26792,7 @@
 
 
 /***/ },
-/* 113 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -19832,8 +26805,8 @@
 	 * 在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。
 	 * 本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(84);
+	__webpack_require__(5);
+	__webpack_require__(102);
 	ThemeGridRangeItem = SuperMap.Class({
 
 	    /**
@@ -19935,7 +26908,7 @@
 
 
 /***/ },
-/* 114 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -19951,10 +26924,10 @@
 	 * Inherits from:
 	 *  - <Theme>
 	 */
-	__webpack_require__(7);
-	__webpack_require__(84);
-	__webpack_require__(85);
-	__webpack_require__(115);
+	__webpack_require__(5);
+	__webpack_require__(102);
+	__webpack_require__(103);
+	__webpack_require__(133);
 	ThemeGridUnique = SuperMap.Class(Theme, {
 
 	    /**
@@ -20057,7 +27030,7 @@
 
 
 /***/ },
-/* 115 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -20069,8 +27042,8 @@
 	 * 栅格单值专题图子项类。
 	 * 栅格单值专题图是将值相同的单元格归为一类，每一类是一个专题图子项。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(84);
+	__webpack_require__(5);
+	__webpack_require__(102);
 	ThemeGridUniqueItem = SuperMap.Class({
 
 	    /**
@@ -20164,7 +27137,7 @@
 
 
 /***/ },
-/* 116 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20180,19 +27153,19 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(7);
-	__webpack_require__(117);
-	__webpack_require__(120);
-	__webpack_require__(124);
-	__webpack_require__(126);
-	__webpack_require__(128);
-	__webpack_require__(131);
-	__webpack_require__(133);
+	__webpack_require__(5);
 	__webpack_require__(135);
-	__webpack_require__(137);
-	__webpack_require__(139);
-	__webpack_require__(141);
-	__webpack_require__(17);
+	__webpack_require__(138);
+	__webpack_require__(142);
+	__webpack_require__(144);
+	__webpack_require__(146);
+	__webpack_require__(149);
+	__webpack_require__(151);
+	__webpack_require__(153);
+	__webpack_require__(155);
+	__webpack_require__(157);
+	__webpack_require__(159);
+	__webpack_require__(35);
 
 	NetworkAnalystService = ServiceBase.extend({
 
@@ -20466,7 +27439,7 @@
 	module.exports = L.supermap.networkAnalystService;
 
 /***/ },
-/* 117 */
+/* 135 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -20481,8 +27454,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(118);
-	__webpack_require__(119);
+	__webpack_require__(136);
+	__webpack_require__(137);
 	SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -20556,7 +27529,7 @@
 	};
 
 /***/ },
-/* 118 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -20569,8 +27542,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(6);
-	__webpack_require__(19);
+	__webpack_require__(12);
+	__webpack_require__(37);
 	SuperMap.REST.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -20635,7 +27608,7 @@
 
 
 /***/ },
-/* 119 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -20646,7 +27619,7 @@
 	 * Class: BurstPipelineAnalystParameters
 	 * 爆管分析参数类。
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	BurstPipelineAnalystParameters = SuperMap.Class({
 
 	    /**
@@ -20713,7 +27686,7 @@
 	};
 
 /***/ },
-/* 120 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -20729,8 +27702,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(118);
-	__webpack_require__(121);
+	__webpack_require__(136);
+	__webpack_require__(139);
 	SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -20834,7 +27807,7 @@
 	};
 
 /***/ },
-/* 121 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -20846,8 +27819,8 @@
 	 * 耗费矩阵分析参数类。
 	 * 根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(122);
+	__webpack_require__(5);
+	__webpack_require__(140);
 	ComputeWeightMatrixParameters = SuperMap.Class({
 
 	    /**
@@ -20912,19 +27885,19 @@
 	};
 
 /***/ },
-/* 122 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: TransportationAnalystParameter * 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 */__webpack_require__(7);__webpack_require__(123);TransportationAnalystParameter = SuperMap.Class({    /**     * APIProperty: barrierEdgeIDs     * {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。     */    barrierEdgeIDs: null,    /**     * APIProperty: barrierNodeIDs     * {Array(<Number>)} 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。     */    barrierNodeIDs: null,    /**     * APIProperty: barrierPoints     * {Array(<Point>)}网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */    barrierPoints: null,    /**     * APIProperty: weightFieldName     * {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */    weightFieldName: null,    /**     * APIProperty: turnWeightField     * {String} 转向权重字段的名称。     */    turnWeightField: null,    /**     * APIProperty: resultSetting     * {<TransportationAnalystResultSetting>} 分析结果返回内容。     */    resultSetting: null,    /**     * Constructor: TransportationAnalystParameter     * 交通网络分析通用参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * barrierEdgeIDs - {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。     * barrierNodeIDs - {Array(<Number>)} 网络分析中障碍点的 ID 数组。     * barrierPoints - {Array(<Point>)}     * weightFieldName - {String} 阻力字段的名称。     * turnWeightField - {String} 转向权重字段的名称。     * resultSetting - {<TransportationAnalystResultSetting>} 分析结果返回内容。     */    initialize: function (options) {        var me = this;        me.resultSetting = new TransportationAnalystResultSetting();        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.barrierEdgeIDs = null;        me.barrierNodeIDs = null;        me.weightFieldName = null;        me.turnWeightField = null;        if (me.resultSetting) {            me.resultSetting.destroy();            me.resultSetting = null;        }        if (me.barrierPoints && me.barrierPoints.length) {            for (var i in me.barrierPoints) {                me.barrierPoints.destroy();            }        }        me.barrierPoints = null;    },    CLASS_NAME: "TransportationAnalystParameter"});module.exports = function (options) {    return new TransportationAnalystParameter(options);};
+	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: TransportationAnalystParameter * 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 */__webpack_require__(5);__webpack_require__(141);TransportationAnalystParameter = SuperMap.Class({    /**     * APIProperty: barrierEdgeIDs     * {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。     */    barrierEdgeIDs: null,    /**     * APIProperty: barrierNodeIDs     * {Array(<Number>)} 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。     */    barrierNodeIDs: null,    /**     * APIProperty: barrierPoints     * {Array(<Point>)}网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */    barrierPoints: null,    /**     * APIProperty: weightFieldName     * {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */    weightFieldName: null,    /**     * APIProperty: turnWeightField     * {String} 转向权重字段的名称。     */    turnWeightField: null,    /**     * APIProperty: resultSetting     * {<TransportationAnalystResultSetting>} 分析结果返回内容。     */    resultSetting: null,    /**     * Constructor: TransportationAnalystParameter     * 交通网络分析通用参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * barrierEdgeIDs - {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。     * barrierNodeIDs - {Array(<Number>)} 网络分析中障碍点的 ID 数组。     * barrierPoints - {Array(<Point>)}     * weightFieldName - {String} 阻力字段的名称。     * turnWeightField - {String} 转向权重字段的名称。     * resultSetting - {<TransportationAnalystResultSetting>} 分析结果返回内容。     */    initialize: function (options) {        var me = this;        me.resultSetting = new TransportationAnalystResultSetting();        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.barrierEdgeIDs = null;        me.barrierNodeIDs = null;        me.weightFieldName = null;        me.turnWeightField = null;        if (me.resultSetting) {            me.resultSetting.destroy();            me.resultSetting = null;        }        if (me.barrierPoints && me.barrierPoints.length) {            for (var i in me.barrierPoints) {                me.barrierPoints.destroy();            }        }        me.barrierPoints = null;    },    CLASS_NAME: "TransportationAnalystParameter"});module.exports = function (options) {    return new TransportationAnalystParameter(options);};
 
 /***/ },
-/* 123 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: TransportationAnalystResultSetting * 交通网络分析结果参数类。 * 通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。 */__webpack_require__(7);TransportationAnalystResultSetting = SuperMap.Class({    /**     * APIProperty: returnEdgeFeatures     * {Boolean} 是否在分析结果中包含弧段要素集合。弧段要素包括弧段的空间信息和属性信息。     */    returnEdgeFeatures: false,    /**     * APIProperty: returnEdgeGeometry     * {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     */    returnEdgeGeometry: false,    /**     * APIProperty: returnEdgeIDs     * {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。     */    returnEdgeIDs: false,    /**     * APIProperty: returnNodeFeatures     * {Boolean} 是否在分析结果中包含结点要素集合。     * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。默认为 false。     */    returnNodeFeatures: false,    /**     * APIProperty: returnNodeGeometry     * {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。     */    returnNodeGeometry: false,    /**     * APIProperty: returnNodeIDs     * {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。     */    returnNodeIDs: false,    /**     * APIProperty: returnPathGuides     * {Boolean} 返回分析结果中是否包含行驶导引集合。     */    returnPathGuides: false,    /**     * APIProperty: returnRoutes     * {Boolean} 返回分析结果中是否包含路由对象的集合。     */    returnRoutes: false,    /**     * Constructor: TransportationAnalystResultSetting     * 交通网络分析结果参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * returnEdgeFeatures - {Boolean} 是否在分析结果中包含弧段要素集合。     * returnEdgeGeometry - {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     * returnEdgeIDs - {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。     * returnNodeFeatures - {Boolean} 是否在分析结果中包含结点要素集合。     * returnNodeGeometry - {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。     * returnNodeIDs - {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。     * returnPathGuides - {Boolean} 返回分析结果中是否包含行驶导引集合。     * returnRoutes - {Boolean} 返回分析结果中是否包含路由对象的集合。     */    initialize: function (options) {        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.returnEdgeFeatures = null;        me.returnEdgeGeometry = null;        me.returnEdgeIDs = null;        me.returnNodeFeatures = null;        me.returnNodeGeometry = null;        me.returnNodeIDs = null;        me.returnPathGuides = null;        me.returnRoutes = null;    },    CLASS_NAME: "TransportationAnalystResultSetting"});module.exports = function (options) {    return new TransportationAnalystResultSetting(options);};
+	/* COPYRIGHT 2017 SUPERMAP * 本程序只能在有效的授权许可下使用。 * 未经许可，不得以任何手段擅自使用或传播。*//** * Class: TransportationAnalystResultSetting * 交通网络分析结果参数类。 * 通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。 */__webpack_require__(5);TransportationAnalystResultSetting = SuperMap.Class({    /**     * APIProperty: returnEdgeFeatures     * {Boolean} 是否在分析结果中包含弧段要素集合。弧段要素包括弧段的空间信息和属性信息。     */    returnEdgeFeatures: false,    /**     * APIProperty: returnEdgeGeometry     * {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     */    returnEdgeGeometry: false,    /**     * APIProperty: returnEdgeIDs     * {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。     */    returnEdgeIDs: false,    /**     * APIProperty: returnNodeFeatures     * {Boolean} 是否在分析结果中包含结点要素集合。     * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。默认为 false。     */    returnNodeFeatures: false,    /**     * APIProperty: returnNodeGeometry     * {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。     */    returnNodeGeometry: false,    /**     * APIProperty: returnNodeIDs     * {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。     */    returnNodeIDs: false,    /**     * APIProperty: returnPathGuides     * {Boolean} 返回分析结果中是否包含行驶导引集合。     */    returnPathGuides: false,    /**     * APIProperty: returnRoutes     * {Boolean} 返回分析结果中是否包含路由对象的集合。     */    returnRoutes: false,    /**     * Constructor: TransportationAnalystResultSetting     * 交通网络分析结果参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * returnEdgeFeatures - {Boolean} 是否在分析结果中包含弧段要素集合。     * returnEdgeGeometry - {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     * returnEdgeIDs - {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。     * returnNodeFeatures - {Boolean} 是否在分析结果中包含结点要素集合。     * returnNodeGeometry - {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。     * returnNodeIDs - {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。     * returnPathGuides - {Boolean} 返回分析结果中是否包含行驶导引集合。     * returnRoutes - {Boolean} 返回分析结果中是否包含路由对象的集合。     */    initialize: function (options) {        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.returnEdgeFeatures = null;        me.returnEdgeGeometry = null;        me.returnEdgeIDs = null;        me.returnNodeFeatures = null;        me.returnNodeGeometry = null;        me.returnNodeIDs = null;        me.returnPathGuides = null;        me.returnRoutes = null;    },    CLASS_NAME: "TransportationAnalystResultSetting"});module.exports = function (options) {    return new TransportationAnalystResultSetting(options);};
 
 /***/ },
-/* 124 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -20939,8 +27912,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(118);
-	__webpack_require__(125);
+	__webpack_require__(136);
+	__webpack_require__(143);
 	SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -21021,7 +27994,7 @@
 	};
 
 /***/ },
-/* 125 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21032,7 +28005,7 @@
 	 * Class: FacilityAnalystStreamParameters
 	 * 上游/下游关键设施查找资源参数类。
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	FacilityAnalystStreamParameters = SuperMap.Class({
 
 	    /**
@@ -21107,7 +28080,7 @@
 	};
 
 /***/ },
-/* 126 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21125,8 +28098,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(118);
-	__webpack_require__(127);
+	__webpack_require__(136);
+	__webpack_require__(145);
 	SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -21266,7 +28239,7 @@
 	};
 
 /***/ },
-/* 127 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21281,8 +28254,8 @@
 	 * 例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。
 	 * 最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(122);
+	__webpack_require__(5);
+	__webpack_require__(140);
 	FindClosestFacilitiesParameters = SuperMap.Class({
 
 	    /**
@@ -21387,7 +28360,7 @@
 	};
 
 /***/ },
-/* 128 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21404,8 +28377,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(118);
-	__webpack_require__(129);
+	__webpack_require__(136);
+	__webpack_require__(147);
 	SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -21525,7 +28498,7 @@
 	};
 
 /***/ },
-/* 129 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21540,8 +28513,8 @@
 	 *  分析过程中使用的需求点都为网络结点，即除了各种类型的中心点所对应的网络结点以外，
 	 * 所有网络结点都作为资源需求点参与选址分区分析，如果要排除某部分结点不分析，可以将其设置为障碍点。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(130);
+	__webpack_require__(5);
+	__webpack_require__(148);
 	FindLocationParameters = SuperMap.Class({
 
 	    /**
@@ -21626,7 +28599,7 @@
 	};
 
 /***/ },
-/* 130 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21638,7 +28611,7 @@
 	 * 资源供给中心类
 	 * 资源供给中心类，在资源分配和选址分区分析两个功能中使用。
 	 */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	SupplyCenter = SuperMap.Class({
 	    /**
 	     * APIProperty: maxWeight
@@ -21721,7 +28694,7 @@
 
 
 /***/ },
-/* 131 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21739,8 +28712,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(118);
-	__webpack_require__(132);
+	__webpack_require__(136);
+	__webpack_require__(150);
 	SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -21880,7 +28853,7 @@
 	};
 
 /***/ },
-/* 132 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21894,8 +28867,8 @@
 	 * 物流配送功能就是解决如何合理分配配送次序和送货路线，使配送总花费达到最小或每个配送中心的花费达到最小。
 	 * 例如：现在有50个报刊零售地（配送目的地），和4个报刊供应地（配送中心），现寻求这4个供应地向报刊零售地发送报纸的最优路线，属物流配送问题。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(122);
+	__webpack_require__(5);
+	__webpack_require__(140);
 	FindMTSPPathsParameters = SuperMap.Class({
 
 	    /**
@@ -21981,7 +28954,7 @@
 	};
 
 /***/ },
-/* 133 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -21999,8 +28972,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(118);
-	__webpack_require__(134);
+	__webpack_require__(136);
+	__webpack_require__(152);
 	SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -22138,7 +29111,7 @@
 	};
 
 /***/ },
-/* 134 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -22155,8 +29128,8 @@
 	 * 阻抗值通过 TransportationAnalystParameter.weightFieldName 设置。
 	 * 计算最佳路径除了受阻抗影响外，还受转向字段的影响。转向值通过 TransportationAnalystParameter.turnWeightField 设置。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(122);
+	__webpack_require__(5);
+	__webpack_require__(140);
 	FindPathParameters = SuperMap.Class({
 
 	    /**
@@ -22234,7 +29207,7 @@
 	};
 
 /***/ },
-/* 135 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -22252,8 +29225,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(118);
 	__webpack_require__(136);
+	__webpack_require__(154);
 	SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -22376,7 +29349,7 @@
 	};
 
 /***/ },
-/* 136 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -22389,8 +29362,8 @@
 	 * 服务区分析是以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
 	 * 例如：计算某快餐店能够在30分钟内送达快餐的区域。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(122);
+	__webpack_require__(5);
+	__webpack_require__(140);
 	FindServiceAreasParameters = SuperMap.Class({
 
 	    /**
@@ -22487,7 +29460,7 @@
 	};
 
 /***/ },
-/* 137 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -22505,8 +29478,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(118);
-	__webpack_require__(138);
+	__webpack_require__(136);
+	__webpack_require__(156);
 	SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -22642,7 +29615,7 @@
 	};
 
 /***/ },
-/* 138 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -22657,8 +29630,8 @@
 	 * 旅行商分析和最佳路径分析都是在网络中寻找遍历所有站点的最经济的路径，区别是在遍历网络所有站点的过程中对结点访问顺序不同
 	 * 最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。
 	 */
-	__webpack_require__(7);
-	__webpack_require__(122);
+	__webpack_require__(5);
+	__webpack_require__(140);
 	FindTSPPathsParameters = SuperMap.Class({
 	    /**
 	     * APIProperty: endNodeAssigned
@@ -22737,15 +29710,15 @@
 	};
 
 /***/ },
-/* 139 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
 	 * 本程序只能在有效的授权许可下使用。
 	 * 未经许可，不得以任何手段擅自使用或传播。*/
 
-	__webpack_require__(118);
-	__webpack_require__(140);
+	__webpack_require__(136);
+	__webpack_require__(158);
 	 SuperMap.REST.UpdateEdgeWeightService=SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase,{
 
 	    /**
@@ -22860,7 +29833,7 @@
 	};
 
 /***/ },
-/* 140 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -22871,7 +29844,7 @@
 	 * Class:UpdateEdgeWeightParameters
 	 * 边的耗费权重更新服务参数类
 	 * */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	UpdateEdgeWeightParameters = SuperMap.Class({
 	    /**
 	     * APIProperty: edgeId
@@ -22946,15 +29919,15 @@
 	};
 
 /***/ },
-/* 141 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
 	 * 本程序只能在有效的授权许可下使用。
 	 * 未经许可，不得以任何手段擅自使用或传播。*/
 
-	__webpack_require__(118);
-	__webpack_require__(142);
+	__webpack_require__(136);
+	__webpack_require__(160);
 	SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -23069,7 +30042,7 @@
 	};
 
 /***/ },
-/* 142 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -23080,7 +30053,7 @@
 	 * Class:UpdateTurnNodeWeightParameters
 	 * 转向耗费权重更新服务参数类
 	 * */
-	__webpack_require__(7);
+	__webpack_require__(5);
 	UpdateTurnNodeWeightParameters = SuperMap.Class({
 	    /**
 	     * APIProperty:  nodeId
@@ -23156,7 +30129,7 @@
 	};
 
 /***/ },
-/* 143 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23172,13 +30145,13 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(7);
-	__webpack_require__(144);
-	__webpack_require__(147);
-	__webpack_require__(149);
-	__webpack_require__(151);
-	__webpack_require__(153);
-	__webpack_require__(17);
+	__webpack_require__(5);
+	__webpack_require__(162);
+	__webpack_require__(165);
+	__webpack_require__(167);
+	__webpack_require__(169);
+	__webpack_require__(171);
+	__webpack_require__(35);
 
 	NetworkAnalyst3DService = ServiceBase.extend({
 
@@ -23288,7 +30261,7 @@
 	module.exports = L.supermap.networkAnalyst3DService;
 
 /***/ },
-/* 144 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -23305,8 +30278,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
-	__webpack_require__(145);
+	__webpack_require__(37);
+	__webpack_require__(163);
 	SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -23382,11 +30355,11 @@
 	};
 
 /***/ },
-/* 145 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(146);
+	__webpack_require__(5);
+	__webpack_require__(164);
 
 	/**
 	 * Class: FacilityAnalystSinks3DParameters
@@ -23442,10 +30415,10 @@
 	};
 
 /***/ },
-/* 146 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: FacilityAnalyst3DParameters
@@ -23525,7 +30498,7 @@
 	};
 
 /***/ },
-/* 147 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -23543,8 +30516,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
-	__webpack_require__(148);
+	__webpack_require__(37);
+	__webpack_require__(166);
 	SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -23610,11 +30583,11 @@
 	};
 
 /***/ },
-/* 148 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(146);
+	__webpack_require__(5);
+	__webpack_require__(164);
 
 	/**
 	 * Class: FacilityAnalystSources3DParameters
@@ -23663,7 +30636,7 @@
 	};
 
 /***/ },
-/* 149 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -23677,8 +30650,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
-	__webpack_require__(150);
+	__webpack_require__(37);
+	__webpack_require__(168);
 	SuperMap.REST.FacilityAnalystTraceup3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -23744,11 +30717,11 @@
 	};
 
 /***/ },
-/* 150 */
+/* 168 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(146);
+	__webpack_require__(5);
+	__webpack_require__(164);
 
 	/**
 	 * Class: FacilityAnalystTraceup3DParameters
@@ -23791,7 +30764,7 @@
 	};
 
 /***/ },
-/* 151 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -23805,8 +30778,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
-	__webpack_require__(152);
+	__webpack_require__(37);
+	__webpack_require__(170);
 	SuperMap.REST.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -23872,11 +30845,11 @@
 	};
 
 /***/ },
-/* 152 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(146);
+	__webpack_require__(5);
+	__webpack_require__(164);
 
 	/**
 	 * Class: FacilityAnalystTracedown3DParameters
@@ -23920,7 +30893,7 @@
 	};
 
 /***/ },
-/* 153 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -23934,8 +30907,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
-	__webpack_require__(154);
+	__webpack_require__(37);
+	__webpack_require__(172);
 	SuperMap.REST.FacilityAnalystUpstream3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -24001,11 +30974,11 @@
 	};
 
 /***/ },
-/* 154 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(146);
+	__webpack_require__(5);
+	__webpack_require__(164);
 
 	/**
 	 * Class: FacilityAnalystUpstream3DParameters
@@ -24054,7 +31027,7 @@
 	};
 
 /***/ },
-/* 155 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24071,21 +31044,21 @@
 	 *      });
 	 */
 
-	__webpack_require__(7);
-	__webpack_require__(156);
-	__webpack_require__(159);
-	__webpack_require__(166);
-	__webpack_require__(168);
-	__webpack_require__(170);
-	__webpack_require__(172);
-	__webpack_require__(179);
-	__webpack_require__(181);
-	__webpack_require__(185);
-	__webpack_require__(187);
-	__webpack_require__(189);
-	__webpack_require__(194);
-	__webpack_require__(196);
-	__webpack_require__(17);
+	__webpack_require__(5);
+	__webpack_require__(174);
+	__webpack_require__(177);
+	__webpack_require__(184);
+	__webpack_require__(186);
+	__webpack_require__(188);
+	__webpack_require__(190);
+	__webpack_require__(197);
+	__webpack_require__(199);
+	__webpack_require__(203);
+	__webpack_require__(205);
+	__webpack_require__(207);
+	__webpack_require__(212);
+	__webpack_require__(214);
+	__webpack_require__(35);
 
 	SpatialAnalystService = ServiceBase.extend({
 
@@ -24427,7 +31400,7 @@
 	module.exports = L.supermap.spatialAnalystService;
 
 /***/ },
-/* 156 */
+/* 174 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -24441,8 +31414,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(157);
-	__webpack_require__(158);
+	__webpack_require__(175);
+	__webpack_require__(176);
 	SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -24527,7 +31500,7 @@
 	};
 
 /***/ },
-/* 157 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -24540,8 +31513,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(6);
-	__webpack_require__(19);
+	__webpack_require__(12);
+	__webpack_require__(37);
 	SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -24621,10 +31594,10 @@
 
 
 /***/ },
-/* 158 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: AreaSolarRadiationParameters
@@ -24801,7 +31774,7 @@
 	};
 
 /***/ },
-/* 159 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -24817,9 +31790,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(157);
-	__webpack_require__(160);
-	__webpack_require__(165);
+	__webpack_require__(175);
+	__webpack_require__(178);
+	__webpack_require__(183);
 	SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -24940,12 +31913,12 @@
 	};
 
 /***/ },
-/* 160 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(161);
-	__webpack_require__(162);
+	__webpack_require__(5);
+	__webpack_require__(179);
+	__webpack_require__(180);
 	/**
 	 * Class: DatasetBufferAnalystParameters
 	 * 数据集缓冲区分析参数类
@@ -25057,10 +32030,10 @@
 	};
 
 /***/ },
-/* 161 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: DataReturnOption
@@ -25134,11 +32107,11 @@
 	};
 
 /***/ },
-/* 162 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(163);
+	__webpack_require__(5);
+	__webpack_require__(181);
 
 	/**
 	 * Class: BufferAnalystParameters
@@ -25192,11 +32165,11 @@
 	};
 
 /***/ },
-/* 163 */
+/* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(164);
+	__webpack_require__(5);
+	__webpack_require__(182);
 
 	/**
 	 * Class: BufferSetting
@@ -25289,10 +32262,10 @@
 	};
 
 /***/ },
-/* 164 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: BufferDistance
@@ -25349,11 +32322,11 @@
 	};
 
 /***/ },
-/* 165 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(162);
+	__webpack_require__(5);
+	__webpack_require__(180);
 
 	/**
 	 * Class: GeometryBufferAnalystParameters
@@ -25429,7 +32402,7 @@
 	};
 
 /***/ },
-/* 166 */
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -25448,8 +32421,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(157);
-	__webpack_require__(167);
+	__webpack_require__(175);
+	__webpack_require__(185);
 	SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -25545,10 +32518,10 @@
 	};
 
 /***/ },
-/* 167 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: DensityKernelAnalystParameters
@@ -25685,7 +32658,7 @@
 	};
 
 /***/ },
-/* 168 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -25705,8 +32678,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(157);
-	__webpack_require__(169);
+	__webpack_require__(175);
+	__webpack_require__(187);
 	SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -25831,11 +32804,11 @@
 	};
 
 /***/ },
-/* 169 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(161);
+	__webpack_require__(5);
+	__webpack_require__(179);
 
 	/**
 	 * Class: GenerateSpatialDataParameters
@@ -25969,7 +32942,7 @@
 	};
 
 /***/ },
-/* 170 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -25981,8 +32954,8 @@
 	 * 空间关系分析服务类。
 	 * 该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
 	 */
-	__webpack_require__(157);
-	__webpack_require__(171);
+	__webpack_require__(175);
+	__webpack_require__(189);
 	SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -26082,10 +33055,10 @@
 	};
 
 /***/ },
-/* 171 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: GeoRelationAnalystParameters
@@ -26207,7 +33180,7 @@
 	};
 
 /***/ },
-/* 172 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -26227,12 +33200,12 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(157);
-	__webpack_require__(173);
 	__webpack_require__(175);
-	__webpack_require__(177);
-	__webpack_require__(178);
-	__webpack_require__(174);
+	__webpack_require__(191);
+	__webpack_require__(193);
+	__webpack_require__(195);
+	__webpack_require__(196);
+	__webpack_require__(192);
 	SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -26357,11 +33330,11 @@
 	};
 
 /***/ },
-/* 173 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(174);
+	__webpack_require__(5);
+	__webpack_require__(192);
 
 	/**
 	 * Class: SuperMap.REST.InterpolationRBFAnalystParameter
@@ -26629,10 +33602,10 @@
 	};
 
 /***/ },
-/* 174 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: InterpolationAnalystParameters
@@ -26809,12 +33782,12 @@
 	};
 
 /***/ },
-/* 175 */
+/* 193 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(174);
-	__webpack_require__(176);
+	__webpack_require__(5);
+	__webpack_require__(192);
+	__webpack_require__(194);
 	/**
 	 * Class: InterpolationDensityAnalystParameters
 	 * 点密度差值分析参数类
@@ -26882,10 +33855,10 @@
 	};
 
 /***/ },
-/* 176 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: ThiessenAnalystParameters
@@ -26969,12 +33942,12 @@
 	};
 
 /***/ },
-/* 177 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(174);
-	__webpack_require__(176);
+	__webpack_require__(5);
+	__webpack_require__(192);
+	__webpack_require__(194);
 	/**
 	 * Class: SuperMap.REST.InterpolationIDWAnalystParameter
 	 * 反距离加权插值（IDW）分析参数类
@@ -27079,7 +34052,7 @@
 
 
 /***/ },
-/* 178 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -27120,9 +34093,9 @@
 	 * Inherits from:
 	 *  - <InterpolationAnalystParameters>
 	 */
-	__webpack_require__(7);
-	__webpack_require__(174);
-	__webpack_require__(176);
+	__webpack_require__(5);
+	__webpack_require__(192);
+	__webpack_require__(194);
 
 	InterpolationKrigingAnalystParameters = SuperMap.Class(InterpolationAnalystParameters, {
 	    /**
@@ -27321,7 +34294,7 @@
 	};
 
 /***/ },
-/* 179 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -27335,8 +34308,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(157);
-	__webpack_require__(180);
+	__webpack_require__(175);
+	__webpack_require__(198);
 	SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -27421,10 +34394,10 @@
 	};
 
 /***/ },
-/* 180 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: MathExpressionAnalysisParameters
@@ -27563,7 +34536,7 @@
 	};
 
 /***/ },
-/* 181 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -27579,9 +34552,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
-	__webpack_require__(182);
-	__webpack_require__(184);
+	__webpack_require__(37);
+	__webpack_require__(200);
+	__webpack_require__(202);
 	SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -27682,12 +34655,12 @@
 	};
 
 /***/ },
-/* 182 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(161);
-	__webpack_require__(183);
+	__webpack_require__(5);
+	__webpack_require__(179);
+	__webpack_require__(201);
 
 	/**
 	 * Class: DatasetOverlayAnalystParameters
@@ -27855,10 +34828,10 @@
 	};
 
 /***/ },
-/* 183 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: OverlayAnalystParameters
@@ -27906,11 +34879,11 @@
 	};
 
 /***/ },
-/* 184 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(183);
+	__webpack_require__(5);
+	__webpack_require__(201);
 	/**
 	 * Class: GeometryOverlayAnalystParameters
 	 * 几何对象叠加分析参数类
@@ -27993,7 +34966,7 @@
 	};
 
 /***/ },
-/* 185 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -28008,8 +34981,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(157);
-	__webpack_require__(186);
+	__webpack_require__(175);
+	__webpack_require__(204);
 	SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -28141,10 +35114,10 @@
 	};
 
 /***/ },
-/* 186 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: RouteCalculateMeasureParameters
@@ -28238,7 +35211,7 @@
 	};
 
 /***/ },
-/* 187 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -28253,8 +35226,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(157);
-	__webpack_require__(188);
+	__webpack_require__(175);
+	__webpack_require__(206);
 	SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -28389,10 +35362,10 @@
 	};
 
 /***/ },
-/* 188 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: RouteLocatorParameters
@@ -28531,7 +35504,7 @@
 	};
 
 /***/ },
-/* 189 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -28547,9 +35520,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(157);
-	__webpack_require__(190);
-	__webpack_require__(193);
+	__webpack_require__(175);
+	__webpack_require__(208);
+	__webpack_require__(211);
 	SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -28658,12 +35631,12 @@
 	};
 
 /***/ },
-/* 190 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(161);
-	__webpack_require__(191);
+	__webpack_require__(5);
+	__webpack_require__(179);
+	__webpack_require__(209);
 
 	/**
 	 * Class: DatasetSurfaceAnalystParameters
@@ -28761,12 +35734,12 @@
 	};
 
 /***/ },
-/* 191 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(192);
-	__webpack_require__(161);
+	__webpack_require__(5);
+	__webpack_require__(210);
+	__webpack_require__(179);
 
 	/**
 	 * Class: SurfaceAnalystParameters
@@ -28849,10 +35822,10 @@
 	};
 
 /***/ },
-/* 192 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: SurfaceAnalystParametersSetting
@@ -28970,11 +35943,11 @@
 	};
 
 /***/ },
-/* 193 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(191);
+	__webpack_require__(5);
+	__webpack_require__(209);
 	/**
 	 * Class: GeometrySurfaceAnalystParameters
 	 * 几何对象表面分析参数类。
@@ -29044,7 +36017,7 @@
 	};
 
 /***/ },
-/* 194 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -29058,8 +36031,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(157);
-	__webpack_require__(195);
+	__webpack_require__(175);
+	__webpack_require__(213);
 	SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -29144,10 +36117,10 @@
 
 
 /***/ },
-/* 195 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: TerrainCurvatureCalculationParameters
@@ -29250,7 +36223,7 @@
 	};
 
 /***/ },
-/* 196 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -29269,9 +36242,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(157);
-	__webpack_require__(197);
-	__webpack_require__(198);
+	__webpack_require__(175);
+	__webpack_require__(215);
+	__webpack_require__(216);
 	SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -29393,11 +36366,11 @@
 	};
 
 /***/ },
-/* 197 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(176);
+	__webpack_require__(5);
+	__webpack_require__(194);
 
 	/**
 	 * Class: DatasetThiessenAnalystParameters
@@ -29478,11 +36451,11 @@
 	};
 
 /***/ },
-/* 198 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(176);
+	__webpack_require__(5);
+	__webpack_require__(194);
 	/**
 	 * Class: GeometryThiessenAnalystParameters
 	 * 几何对象泰森多边形分析参数类
@@ -29551,7 +36524,7 @@
 	};
 
 /***/ },
-/* 199 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -29566,11 +36539,11 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(7);
-	__webpack_require__(200);
-	__webpack_require__(202);
-	__webpack_require__(205);
-	__webpack_require__(17);
+	__webpack_require__(5);
+	__webpack_require__(218);
+	__webpack_require__(220);
+	__webpack_require__(223);
+	__webpack_require__(35);
 
 	TrafficTransferAnalystService = ServiceBase.extend({
 
@@ -29651,7 +36624,7 @@
 	module.exports = L.supermap.trafficTransferAnalystService;
 
 /***/ },
-/* 200 */
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -29667,8 +36640,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
-	__webpack_require__(201);
+	__webpack_require__(37);
+	__webpack_require__(219);
 	SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -29742,10 +36715,10 @@
 	};
 
 /***/ },
-/* 201 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: StopQueryParameters
@@ -29796,7 +36769,7 @@
 	};
 
 /***/ },
-/* 202 */
+/* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -29811,8 +36784,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
-	__webpack_require__(203);
+	__webpack_require__(37);
+	__webpack_require__(221);
 	SuperMap.REST.TransferPathService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -29891,11 +36864,11 @@
 
 
 /***/ },
-/* 203 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
-	__webpack_require__(204);
+	__webpack_require__(5);
+	__webpack_require__(222);
 
 	/**
 	 * Class: TransferPathParameters
@@ -29964,10 +36937,10 @@
 	};
 
 /***/ },
-/* 204 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: TransferLine
@@ -30094,7 +37067,7 @@
 	};
 
 /***/ },
-/* 205 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -30109,8 +37082,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(19);
-	__webpack_require__(206);
+	__webpack_require__(37);
+	__webpack_require__(224);
 	SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -30196,10 +37169,10 @@
 
 
 /***/ },
-/* 206 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(7);
+	__webpack_require__(5);
 
 	/**
 	 * Class: TransferSolutionParameters
@@ -30338,10 +37311,10 @@
 
 
 /***/ },
-/* 207 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var fetchJsonp = __webpack_require__(208);
+	var fetchJsonp = __webpack_require__(32);
 	WebMap = L.LayerGroup.extend({
 	    options: {
 	        map: 'map',
@@ -30651,120 +37624,7 @@
 	};
 
 /***/ },
-/* 208 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports !== 'undefined' && typeof module !== 'undefined') {
-	    factory(exports, module);
-	  } else {
-	    var mod = {
-	      exports: {}
-	    };
-	    factory(mod.exports, mod);
-	    global.fetchJsonp = mod.exports;
-	  }
-	})(this, function (exports, module) {
-	  'use strict';
-
-	  var defaultOptions = {
-	    timeout: 5000,
-	    jsonpCallback: 'callback',
-	    jsonpCallbackFunction: null
-	  };
-
-	  function generateCallbackFunction() {
-	    return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
-	  }
-
-	  // Known issue: Will throw 'Uncaught ReferenceError: callback_*** is not defined'
-	  // error if request timeout
-	  function clearFunction(functionName) {
-	    // IE8 throws an exception when you try to delete a property on window
-	    // http://stackoverflow.com/a/1824228/751089
-	    try {
-	      delete window[functionName];
-	    } catch (e) {
-	      window[functionName] = undefined;
-	    }
-	  }
-
-	  function removeScript(scriptId) {
-	    var script = document.getElementById(scriptId);
-	    document.getElementsByTagName('head')[0].removeChild(script);
-	  }
-
-	  function fetchJsonp(_url) {
-	    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-	    // to avoid param reassign
-	    var url = _url;
-	    var timeout = options.timeout || defaultOptions.timeout;
-	    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
-
-	    var timeoutId = undefined;
-
-	    return new Promise(function (resolve, reject) {
-	      var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
-	      var scriptId = jsonpCallback + '_' + callbackFunction;
-
-	      window[callbackFunction] = function (response) {
-	        resolve({
-	          ok: true,
-	          // keep consistent with fetch API
-	          json: function json() {
-	            return Promise.resolve(response);
-	          }
-	        });
-
-	        if (timeoutId) clearTimeout(timeoutId);
-
-	        removeScript(scriptId);
-
-	        clearFunction(callbackFunction);
-	      };
-
-	      // Check if the user set their own params, and if not add a ? to start a list of params
-	      url += url.indexOf('?') === -1 ? '?' : '&';
-
-	      var jsonpScript = document.createElement('script');
-	      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
-	      jsonpScript.id = scriptId;
-	      document.getElementsByTagName('head')[0].appendChild(jsonpScript);
-
-	      timeoutId = setTimeout(function () {
-	        reject(new Error('JSONP request to ' + _url + ' timed out'));
-
-	        clearFunction(callbackFunction);
-	        removeScript(scriptId);
-	      }, timeout);
-	    });
-	  }
-
-	  // export as global function
-	  /*
-	  let local;
-	  if (typeof global !== 'undefined') {
-	    local = global;
-	  } else if (typeof self !== 'undefined') {
-	    local = self;
-	  } else {
-	    try {
-	      local = Function('return this')();
-	    } catch (e) {
-	      throw new Error('polyfill failed because global object is unavailable in this environment');
-	    }
-	  }
-	  local.fetchJsonp = fetchJsonp;
-	  */
-
-	  module.exports = fetchJsonp;
-	});
-
-/***/ },
-/* 209 */
+/* 226 */
 /***/ function(module, exports) {
 
 	EchartsMapLayer = L.Layer.extend({
@@ -30941,10 +37801,10 @@
 
 
 /***/ },
-/* 210 */
+/* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(5);
+	__webpack_require__(11);
 
 	L.supermap.Graphic = L.Class.extend({
 
@@ -30978,10 +37838,10 @@
 
 
 /***/ },
-/* 211 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(5);
+	__webpack_require__(11);
 
 	L.supermap.GraphicGroup = L.Path.extend({
 
@@ -31082,10 +37942,10 @@
 
 
 /***/ },
-/* 212 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(5);
+	__webpack_require__(11);
 
 	L.supermap.CircleStyle = L.Class.extend({
 
