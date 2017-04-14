@@ -1,4 +1,4 @@
-require('../../base');
+require('../../../base');
 
 ol.supermap.DeafultCanvasStyle = {
     "TEXT": {
@@ -10,7 +10,8 @@ ol.supermap.DeafultCanvasStyle = {
         bold: false,
         haloRadius: 0,
         backColor: "rgba(255,255,255,1)",
-        foreColor: "rgba(0,0,0,0)",
+        foreColor: "rgba(0,0,0,1)",
+        // foreColor: "rgba(0,0,0,0)",
         offsetX: 0,
         offsetY: 0,
         textHeight: 0,

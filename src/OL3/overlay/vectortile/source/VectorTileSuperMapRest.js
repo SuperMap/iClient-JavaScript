@@ -1,4 +1,5 @@
-require('../../base');
+require('../../../base');
+var fetchJsonp = require('fetch-jsonp');
 
 ol.supermap.VectorTileSuperMapRest = function (options) {
     if (options.url === undefined) {
@@ -11,11 +12,16 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
                 html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
             })]
     }
-    var layerUrl = options.url + '/tileFeature.json?';
+    var layerUrl = options.url + '/tileFeature.jsonp?';
     //为url添加安全认证信息片段
     if (SuperMap.Credential && SuperMap.Credential.CREDENTIAL) {
         layerUrl += "&" + SuperMap.Credential.CREDENTIAL.getUrlParameters();
     }
+    var returnAttributes = true;
+    if (options.returnAttributes !== undefined) {
+        returnAttributes = options.returnAttributes
+    }
+    layerUrl += "&returnAttributes=" + returnAttributes;
     if (options._cache !== undefined) {
         layerUrl += "&_cache=" + options._cache;
     }
@@ -24,6 +30,7 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
     }
     if (options.layerNames !== undefined) {
         layerUrl += "&layerNames=" + options.layerNames;
+        // layerUrl += "&layerNames=%5B'China_Boundary_A%40China%231'%5D";
     }
     if (options.expands !== undefined) {
         layerUrl += "&expands=" + options.expands;
@@ -62,7 +69,7 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
 
     function tileLoadFunction(tile, tileUrl) {
         tile.setLoader(function () {
-            fetch(tileUrl).then(function (response) {
+            fetchJsonp(tileUrl).then(function (response) {
                 return response.json();
             }).then(function (tileFeatureJson) {
                 tileFeatureJson.recordsets.map(function (recordset) {
@@ -84,9 +91,6 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
                     recordset.features.map(function (feature) {
                         feature.layerName = recordset.layerName;
                         feature.type = feature.geometry.type;
-                        if (feature.type === 'TEXT') {
-                            feature.textStyle = feature.geometry.textStyle;
-                        }
                         features.push(feature);
                     })
                 });
@@ -145,8 +149,9 @@ ol.supermap.VectorTileSuperMapRest.optionsFromMapJSON = function (url, mapJSONOb
             unit = Unit.DEGREE;
         }
         if (mapJSONObj.visibleScales.length > 0) {
-            for (var i = 0; i < mapJSONObj.visibleScales.length; i++) {
-                resolutions.push(ol.supermap.Util.scaleToResolution(mapJSONObj.visibleScales[i], dpi, unit));
+            var scales = initScales(mapJSONObj);
+            for (var i = 0; i < scales.length; i++) {
+                resolutions.push(ol.supermap.Util.scaleToResolution(scales[i], dpi, unit));
             }
         } else {
             for (var i = 0; i < level; i++) {
@@ -155,6 +160,48 @@ ol.supermap.VectorTileSuperMapRest.optionsFromMapJSON = function (url, mapJSONOb
         }
         return resolutions;
     }
+
+    function initScales(mapJSONObj) {
+        var scales = mapJSONObj.visibleScales;
+        if (!scales) {
+            return null;
+        }
+        var viewBounds = mapJSONObj.viewBounds,
+            coordUnit = mapJSONObj.coordUnit,
+            viewer = mapJSONObj.viewer,
+            scale = mapJSONObj.scale,
+            datumAxis = mapJSONObj.datumAxis;
+        //将jsonObject转化为SuperMap.Bounds，用于计算dpi。
+        viewBounds = new SuperMap.Bounds(viewBounds.left, viewBounds.bottom, viewBounds.right, viewBounds.top);
+        viewer = new SuperMap.Size(viewer.rightBottom.x, viewer.rightBottom.y);
+        coordUnit = coordUnit.toLowerCase();
+        var units = coordUnit;
+        var datumAxis = datumAxis || 6378137;
+        var dpi = SuperMap.Util.calculateDpi(viewBounds, viewer, scale, units, datumAxis);
+        var resolutions = _resolutionsFromScales(scales);
+        var len = resolutions.length;
+        scales = [len];
+        for (var i = 0; i < len; i++) {
+            scales[i] = SuperMap.Util.getScaleFromResolutionDpi(
+                resolutions[i], dpi, units, datumAxis
+            );
+        }
+
+        function _resolutionsFromScales(scales) {
+            if (scales === null) {
+                return;
+            }
+            var resolutions, len;
+            len = scales.length;
+            resolutions = [len];
+            for (var i = 0; i < len; i++) {
+                resolutions[i] = SuperMap.Util.getResolutionFromScaleDpi(
+                    scales[i], dpi, units, datumAxis);
+            }
+            return resolutions;
+        };
+        return scales;
+    };
 
     options.tileGrid = new ol.tilegrid.TileGrid({
         extent: extent,

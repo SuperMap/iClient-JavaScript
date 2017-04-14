@@ -245,9 +245,7 @@ var deps = {
                     "./src/OL3/SuperMap/iServer/GetLayersInfoService.js",
                     "./src/OL3/SuperMap/iServer/ChartFeatureInfoSpecsService.js",
                     "./src/OL3/SuperMap/iServer/SetLayerService.js",
-                    "./src/OL3/SuperMap/iServer/MeasureService.js",
-                    "./src/OL3/SuperMap/iServer/VectorTileSuperMapRest.js",
-                    "./src/OL3/SuperMap/iServer/VectorTileStyles.js"
+                    "./src/OL3/SuperMap/iServer/MeasureService.js"
                 ]
             },
             "Data": {
@@ -321,15 +319,17 @@ var deps = {
             "GraphicLayer": {
                 "name": "高效率点图层",
                 "src": [
-                    "./src/OL3/Visual/Graphic/graphic.js",
-                    "./src/OL3/Visual/Graphic/source/graphic.js"
+                    "./src/OL3/overlay/Graphic/graphic.js",
+                    "./src/OL3/overlay/Graphic/source/graphic.js"
                 ]
             },
-            "CartoCSS": {
-                "name": "CartoCSS",
+            "VectorTile": {
+                "name": "矢量瓦片",
                 "src": [
-                    "./src/OL3/Visual/CartoCSS/StyleMap.js",
-                    "./src/OL3/Visual/CartoCSS/DeafultCanvasStyle.js",
+                    "./src/OL3/overlay/vectortile/source/VectorTileSuperMapRest.js",
+                    "./src/OL3/overlay/vectortile/style/VectorTileStyles.js",
+                    "./src/OL3/overlay/vectortile/style/StyleMap.js",
+                    "./src/OL3/overlay/vectortile/style/DeafultCanvasStyle.js",
                 ]
             }
         }

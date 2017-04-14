@@ -343,7 +343,27 @@ var exampleConfig = {
                         name: "月夜风格",
                         thumbnail: "cartoCSS_nightStyle.png",
                         fileName: "cartoCSS_nightStyle"
-                    }
+                    },
+                    {
+                        name: "强边界风格",
+                        thumbnail: "cartoCSS_boundryStyle.png",
+                        fileName: "cartoCSS_boundryStyle"
+                    },
+                    {
+                        name: "深夜蓝黑风格",
+                        thumbnail: "cartoCSS_darkBlue.png",
+                        fileName: "cartoCSS_darkBlue"
+                    },
+                    {
+                        name: "HelloKitty风格",
+                        thumbnail: "cartoCSS_helloKitty.png",
+                        fileName: "cartoCSS_helloKitty"
+                    },
+                    {
+                        name: "淡雅绿风格",
+                        thumbnail: "cartoCSS_naturalStyle.png",
+                        fileName: "cartoCSS_naturalStyle"
+                    },
                 ]
             }
         }

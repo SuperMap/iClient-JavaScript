@@ -1,4 +1,4 @@
-require('../../base');
+require('../../../base');
 
 ol.supermap.StyleMap = {
     /**
