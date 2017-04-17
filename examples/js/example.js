@@ -99,6 +99,7 @@ function getThumbLocation() {
 //chart宽高自适应
 function resizeCharts() {
     var charts = $("#charts-list .chart .chart-area");
+    charts.height(charts[0].offsetWidth * 0.8);
     window.onresize = function () {
         charts.height(charts[0].offsetWidth * 0.8);
     }
