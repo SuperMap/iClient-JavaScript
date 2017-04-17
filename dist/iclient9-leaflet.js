@@ -130,11 +130,17 @@
 	        minZoom: 3,
 	        maxZoom: 19,
 	        bounds: L.latLngBounds(L.latLng(-85.0511287798, -180), L.latLng(85.0511287798, 180)),
-	        detectRetina: L.Browser.retina
+	        retina: L.Browser.retina,
 	    },
 	    initialize: function (url, options) {
+	        if (url) {
+	            this.url = url;
+	        }
 	        L.setOptions(this, options);
-	        L.TileLayer.prototype.initialize.call(this, url, options)
+	        if (this.options.retina) {
+	            this.options.maxZoom = 18;
+	        }
+	        L.stamp(this);
 	    },
 	    getTileUrl: function (coords) {
 	        return L.Util.template(this.url, {
