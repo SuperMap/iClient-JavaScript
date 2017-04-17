@@ -43,7 +43,7 @@ h3.category-title {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 10px 10px 2px 0px;
+    padding: 10px 10px 8px 0px;
     margin: 0;
     font-weight: normal;
 }

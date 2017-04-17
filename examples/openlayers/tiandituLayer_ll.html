@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>天地图-经纬度</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
+</body>
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var resolutions = [];
+    for (var i = 6; i < 10; i++) {
+        resolutions.push(0.703125 / (Math.pow(2, i)));
+    }
+    var map = new ol.Map({
+        target: 'map',
+        view: new ol.View({
+            center: [116.402, 39.905],
+            zoom: 0,
+            projection: "EPSG:4326",
+            resolutions: resolutions
+        }),
+
+        layers: [new ol.layer.Tile({
+            source: new ol.source.Tianditu({
+                url: "http://t0.tianditu.com/vec_c/wmts",
+                matrixSet: 'c',
+                layer: 'vec',
+                projection: "EPSG:4326"
+            })
+        }), new ol.layer.Tile({
+            source: new ol.source.Tianditu({
+                url: " http://t0.tianditu.com/cva_c/wmts",
+                matrixSet: 'c',
+                layer: 'cva',
+                projection: "EPSG:4326",
+                tileGrid: new ol.tilegrid.WMTS({
+                    extent: [-180, -90, 180, 90],
+                    resolutions: resolutions,
+                    origin: [-180, 90],
+                    matrixIds: [7, 8, 9, 10],
+                })
+            })
+        })]
+    });
+</script>
+</html>

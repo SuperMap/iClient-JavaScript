@@ -230,6 +230,14 @@ var deps = {
                 "name": "百度图层",
                 "src": ['./src/OL3/mapping/baidu.js']
             },
+            "Tianditu": {
+                "name": "天地图图层",
+                "src": ['./src/OL3/mapping/tianditu.js']
+            },
+            "SuperMapCloud": {
+                "name": "超图云图层",
+                "src": ['./src/OL3/mapping/supermapcloud.js']
+            },
 
         },
         "SuperMap": {

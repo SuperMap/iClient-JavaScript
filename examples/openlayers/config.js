@@ -399,6 +399,26 @@ var exampleConfig = {
                     thumbnail: "ol_baiduLayer.png",
                     fileName: "baiduLayer"
                 }]
+            },
+            "Tianditu": {
+                name: "",
+                content: [{
+                    name: "天地图-经纬度",
+                    thumbnail: "ol_tianditu_ll.png",
+                    fileName: "tiandituLayer_ll"
+                }, {
+                    name: "天地图-墨卡托",
+                    thumbnail: "ol_tianditu_mercator.png",
+                    fileName: "tiandituLayer_mecartor"
+                }]
+            },
+            "SuperMapCloud": {
+                name: "",
+                content: [{
+                    name: "超图云地图",
+                    thumbnail: "ol_cloud.png",
+                    fileName: "superMapCloudLayer"
+                }]
             }
         }
     }
