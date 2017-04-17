@@ -10,13 +10,13 @@ ol.source.Baidu = function (opt_options) {
             html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
         });
     }
-    this.tileGrid = ol.source.Baidu.defaultTileGrid();
+    var tileGrid = ol.source.Baidu.defaultTileGrid();
     var crossOrigin = options.crossOrigin !== undefined ?
         options.crossOrigin : 'anonymous';
 
     var url = options.url !== undefined ?
-        options.url : "http://online{1-8}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles=pl&udt=20170408&scaler=1";
-
+        options.url : "http://online{1-8}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408";
+    var hidpi = options.hidpi || (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1
     ol.source.TileImage.call(this, {
         attributions: attributions,
         cacheSize: options.cacheSize,
@@ -27,7 +27,9 @@ ol.source.Baidu = function (opt_options) {
         tileLoadFunction: options.tileLoadFunction,
         url: url,
         projection: 'EPSG:3857',
-        wrapX: options.wrapX
+        wrapX: options.wrapX,
+        tilePixelRatio: hidpi ? 2 : 1,
+        tileUrlFunction: ol.TileUrlFunction.createFromTemplates(ol.TileUrlFunction.expandUrl(url.replace('{styles}', hidpi ? 'ph' : 'pl')), ol.source.Baidu.defaultTileGrid())
     });
     ol.source.Baidu.prototype.getTileCoordForTileUrlFunction = function (tileCoord, opt_projection) {
         var temp = [tileCoord[0], tileCoord[1], -tileCoord[2] - 1];
@@ -37,11 +39,12 @@ ol.source.Baidu = function (opt_options) {
         return ol.source.Baidu.defaultTileGrid();
     }
 
-};
+}
+;
 ol.inherits(ol.source.Baidu, ol.source.TileImage);
 ol.source.Baidu.defaultTileGrid = function () {
     var tileGird = new ol.tilegrid.TileGrid({
-        extent: ol.tilegrid.extentFromProjection("EPSG:3857"),
+        extent: [-33554432, -33554432, 33554432, 33554432],
         resolutions: [131072 * 2, 131072, 65536, 32768, 16284, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5],
         origin: [0, 0],
         minZoom: 3,
