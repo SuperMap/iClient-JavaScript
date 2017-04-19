@@ -343,9 +343,9 @@ var exampleConfig = {
 
             },
             "tileVectorLayer": {
-                name: "矢量地图",
+                name: "矢量瓦片",
                 content: [{
-                    name: "矢量地图",
+                    name: "矢量瓦片",
                     thumbnail: "l_tileVectorLayer_normal.png",
                     fileName: "vectorTileLayerNormal"
                 }, {

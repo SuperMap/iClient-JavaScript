@@ -7,6 +7,9 @@ var deps = {
         ],
         // "iManager" : [],
         // "iPortal":[],
+        "online": [
+            "./src/Core/online/Online.js",
+        ],
         "iServer": [
             //Data
             "./src/Core/iServer/FieldStatisticService.js",
@@ -75,7 +78,7 @@ var deps = {
         "visual": [
             "./src/Core/visual/CartoCSS.js"
         ],
-        // "online" : []
+
     },
     "Leaflet": {
         "OGC": {
@@ -187,7 +190,7 @@ var deps = {
             },
 
             "TileVectorLayer": {
-                "name": "矢量地图",
+                "name": "矢量瓦片",
                 "src": ['./src/Leaflet/overlay/vectorTile/TileVectorLayer.js']
             },
             // "AnimatorVector": {
