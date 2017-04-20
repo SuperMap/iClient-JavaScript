@@ -85,7 +85,7 @@
 
     map.on("click", function (evt) {
         var getGridCellInfosService = new ol.supermap.GetGridCellInfosService(url);
-        var getGridCellInfosParam = new GetGridCellInfosParameter({
+        var getGridCellInfosParam = new SuperMap.GetGridCellInfosParameters({
             dataSourceName: "World",
             datasetName: "WorldEarth",
             X: evt.coordinate[0],

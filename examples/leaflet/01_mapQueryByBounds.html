@@ -28,7 +28,7 @@
     function query() {
         var polygon = L.polygon([[0, 0], [39, 0], [39, 60], [0, 60], [0, 0]]);
         polygon.addTo(map);
-        var param = new QueryByBoundsParameters({
+        var param = new SuperMap.QueryByBoundsParameters({
             queryParams: {name: "Capitals@World.1"},
             bounds: polygon.getBounds()
         });

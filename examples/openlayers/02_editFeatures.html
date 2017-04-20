@@ -61,7 +61,7 @@
             });
             map.addLayer(resultLayer);
         });
-        var getFeatureParams = new GetFeaturesByGeometryParameters({
+        var getFeatureParams = new SuperMap.GetFeaturesByGeometryParameters({
             datasetNames: ["World:Capitals"],
             geometry: polygon,
             spatialQueryMode: "INTERSECT"
@@ -86,7 +86,7 @@
     function commit() {
         var me = this;
         var editFeaturesService = new ol.supermap.EditFeaturesService(urlCapital);
-        var addFeatureParams = new EditFeaturesParameters({
+        var addFeatureParams = new SuperMap.EditFeaturesParameters({
             features: pointFeature.getGeometry(),
             editType: "add",
             returnContent: true

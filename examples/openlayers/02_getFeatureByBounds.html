@@ -55,7 +55,7 @@
         map.addLayer(vectorLayer);
         //创建集Bounds查询服务
         var getFeaturesService = new ol.supermap.GetFeaturesService(url);
-        var boundsParam = new GetFeaturesByBoundsParameters({
+        var boundsParam = new SuperMap.GetFeaturesByBoundsParameters({
             datasetNames: ["World:Capitals"],
             bounds: polygon.getExtent()
         });

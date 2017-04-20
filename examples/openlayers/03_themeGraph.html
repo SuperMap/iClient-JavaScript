@@ -33,46 +33,46 @@
         map.addLayer(layer);
 
         themeService = new ol.supermap.ThemeService(url);
-        themeGraph = new ThemeGraph({
+        themeGraph = new SuperMap.ThemeGraph({
             items: [
-                new ThemeGraphItem({
+                new SuperMap.ThemeGraphItem({
                     caption: "1992-1995人口增长率",
                     graphExpression: "Pop_Rate95",
-                    uniformStyle: new ServerStyle({
-                        fillForeColor: new ServerColor(92, 73, 234),
+                    uniformStyle: new SuperMap.ServerStyle({
+                        fillForeColor: new SuperMap.ServerColor(92, 73, 234),
                         lineWidth: 0.1
                     })
                 }),
-                new ThemeGraphItem({
+                new SuperMap.ThemeGraphItem({
                     caption: "1995-1999人口增长率",
                     graphExpression: "Pop_Rate99",
-                    uniformStyle: new ServerStyle({
-                        fillForeColor: new ServerColor(211, 111, 240),
+                    uniformStyle: new SuperMap.ServerStyle({
+                        fillForeColor: new SuperMap.ServerColor(211, 111, 240),
                         lineWidth: 0.1
                     })
                 })
             ],
             barWidth: 0.03,
-            graduatedMode: GraduatedMode.SQUAREROOT,
-            graphAxes: new ThemeGraphAxes({
+            graduatedMode: SuperMap.GraduatedMode.SQUAREROOT,
+            graphAxes: new SuperMap.ThemeGraphAxes({
                 axesDisplayed: true
             }),
-            graphSize: new ThemeGraphSize({
+            graphSize: new SuperMap.ThemeGraphSize({
                 maxGraphSize: 1,
                 minGraphSize: 0.35
             }),
-            graphText: new ThemeGraphText({
+            graphText: new SuperMap.ThemeGraphText({
                 graphTextDisplayed: true,
-                graphTextFormat: ThemeGraphTextFormat.VALUE,
-                graphTextStyle: new ServerTextStyle({
+                graphTextFormat: SuperMap.ThemeGraphTextFormat.VALUE,
+                graphTextStyle: new SuperMap.ServerTextStyle({
                     sizeFixed: true,
                     fontHeight: 9,
                     fontWidth: 5
                 })
             }),
-            graphType: ThemeGraphType.BAR3D
+            graphType: SuperMap.ThemeGraphType.BAR3D
         });
-        themeParameters = new ThemeParameters({
+        themeParameters = new SuperMap.ThemeParameters({
             themes: [themeGraph],
             dataSourceNames: ["Jingjin"],
             datasetNames: ["BaseMap_R"]

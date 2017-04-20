@@ -81,7 +81,7 @@
         //创建最近设施分析服务实例
         findClosetFacilitiesService = new ol.supermap.NetworkAnalystService(serviceUrl);
         //创建最近设施分析参数实例
-        var resultSetting = new TransportationAnalystResultSetting({
+        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -91,12 +91,12 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new TransportationAnalystParameter({
+        var analystParameter = new SuperMap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             turnWeightField: "TurnCost",
             weightFieldName: "length"  //length,time
         });
-        findClosetFacilitiesParameter = new FindClosestFacilitiesParameters({
+        findClosetFacilitiesParameter = new SuperMap.FindClosestFacilitiesParameters({
             //事件点,必设参数
             event: new ol.geom.Point([5000, -3700]),
             //要查找的设施点数量。默认值为1

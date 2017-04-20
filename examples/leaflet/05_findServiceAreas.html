@@ -31,7 +31,7 @@
     function findServiceAreas() {
         //添加中心点
         marker = L.marker([-3375, 5605]).addTo(map);
-        var resultSetting = new TransportationAnalystResultSetting({
+        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -41,11 +41,11 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new TransportationAnalystParameter({
+        var analystParameter = new SuperMap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        parameter = new FindServiceAreasParameters({
+        parameter = new SuperMap.FindServiceAreasParameters({
             centers: [marker.getLatLng()],
             isAnalyzeById: false,
             parameter: analystParameter

@@ -38,13 +38,13 @@
             [-3376.9669111768926, 5305.19551436013]
         ]).addTo(map);
         dsBufferAnalystService = L.supermap.spatialAnalystService(serviceUrl);
-        dsBufferAnalystParameters = new DatasetBufferAnalystParameters({
+        dsBufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
             dataset: "RoadLine2@Changchun",
-            filterQueryParameter: new FilterParameter({
+            filterQueryParameter: new SuperMap.FilterParameter({
                 attributeFilter: "NAME='团结路'"
             }),
-            bufferSetting: new BufferSetting({
-                endType: SuperMap.REST.BufferEndType.ROUND,
+            bufferSetting: new SuperMap.BufferSetting({
+                endType: SuperMap.BufferEndType.ROUND,
                 leftDistance: {value: 10},
                 rightDistance: {value: 10},
                 semicircleLineSegment: 10

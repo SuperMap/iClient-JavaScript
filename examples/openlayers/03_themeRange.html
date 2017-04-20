@@ -34,39 +34,39 @@
         themeService = new ol.supermap.ThemeService(url);
         var themeRangeItem1, themeRangeItem2,
                 themeRangeItem3, themeRange;
-        themeRangeItem1 = new ThemeRangeItem({
+        themeRangeItem1 = new SuperMap.ThemeRangeItem({
             start: 0,
             end: 500000000000,
-            style: new ServerStyle({
-                fillForeColor: new ServerColor(211, 255, 250),
-                lineColor: new ServerColor(179, 209, 193),
+            style: new SuperMap.ServerStyle({
+                fillForeColor: new SuperMap.ServerColor(211, 255, 250),
+                lineColor: new SuperMap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        themeRangeItem2 = new ThemeRangeItem({
+        themeRangeItem2 = new SuperMap.ThemeRangeItem({
             start: 500000000000,
             end: 1000000000000,
-            style: new ServerStyle({
-                fillForeColor: new ServerColor(178, 218, 199),
-                lineColor: new ServerColor(179, 209, 193),
+            style: new SuperMap.ServerStyle({
+                fillForeColor: new SuperMap.ServerColor(178, 218, 199),
+                lineColor: new SuperMap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        themeRangeItem3 = new ThemeRangeItem({
+        themeRangeItem3 = new SuperMap.ThemeRangeItem({
             start: 1000000000000,
             end: 3000000000000,
-            style: new ServerStyle({
-                fillForeColor: new ServerColor(58, 178, 166),
-                lineColor: new ServerColor(179, 209, 193),
+            style: new SuperMap.ServerStyle({
+                fillForeColor: new SuperMap.ServerColor(58, 178, 166),
+                lineColor: new SuperMap.ServerColor(179, 209, 193),
                 lineWidth: 0.1
             })
         });
-        themeRange = new ThemeRange({
+        themeRange = new SuperMap.ThemeRange({
             rangeExpression: "SMAREA",
-            rangeMode: RangeMode.EQUALINTERVAL,
+            rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
             items: [themeRangeItem1, themeRangeItem2, themeRangeItem3]
         });
-        themeParameters = new ThemeParameters({
+        themeParameters = new SuperMap.ThemeParameters({
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"],
             joinItems: null,

@@ -28,10 +28,8 @@
         maxZoom: 18,
         zoom: 11
     });
-    L.supermap.tiledMapLayer(url).addTo(map)
-            .on("load", function () {
-                loadHeatMap();
-            });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    loadHeatMap();
 
     function loadHeatMap() {
         var heatNumbers = 150, heatRadius = 30;

@@ -30,7 +30,7 @@
         var polygon = L.polygon([[-20, 20], [0, 20], [0, 40], [-20, 40], [-20, 20]], {color: 'red'});
         var popup = L.popup().setContent('缓冲距离 = 10');
         var polygonLayer = polygon.addTo(map).bindPopup(popup).openPopup();
-        var bufferParam = new GetFeaturesByBufferParameters({
+        var bufferParam = new SuperMap.GetFeaturesByBufferParameters({
             datasetNames: ["World:Capitals"],
             bufferDistance: 10,
             geometry: polygon

@@ -30,7 +30,7 @@
         if (type === "area") {
             var polygon = L.polygon([[24, 100], [40, 100], [40, 120], [24, 120], [24, 100]], {color: "red"});
             resultLayer.addLayer(polygon);
-            var areaMeasureParam = new MeasureParameters(polygon);
+            var areaMeasureParam = new SuperMap.MeasureParameters(polygon);
             L.supermap.measureService(url).measureArea(areaMeasureParam).on("complete", function (serviceResult) {
                 var content = "面积： " + serviceResult.result.area + "  平方米";
                 polygon.bindPopup(content).openPopup(polygon.getCenter());

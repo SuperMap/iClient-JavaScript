@@ -43,58 +43,58 @@
         L.marker([-5747.5063918659716, 8215.9188781715948]).addTo(map);
 
         // 设置设施点的资源供给中心
-        var supplyCenterType_FIXEDCENTER = SupplyCenterType.FIXEDCENTER,
-                supplyCenterType_NULL = SupplyCenterType.NULL;
-        var supplyCenterType_OPTIONALCENTER = SupplyCenterType.OPTIONALCENTER,
-                supplyCenters = [new SupplyCenter({
+        var supplyCenterType_FIXEDCENTER = SuperMap.SupplyCenterType.FIXEDCENTER,
+                supplyCenterType_NULL = SuperMap.SupplyCenterType.NULL;
+        var supplyCenterType_OPTIONALCENTER = SuperMap.SupplyCenterType.OPTIONALCENTER,
+                supplyCenters = [new SuperMap.SupplyCenter({
                     maxWeight: 500,             // 资源供给中心的最大耗费值,必设参数
                     nodeID: 139,                // 资源供给中心点的结点 ID 号,必设参数
                     resourceValue: 100,         // 资源供给中心能提供的最大服务量或商品数量,必设参数
                     type: supplyCenterType_OPTIONALCENTER      //选址分区中资源中心的类型包括固定中心和可选中心两种
 
                 }),
-                    new SupplyCenter({
+                    new SuperMap.SupplyCenter({
                         maxWeight: 500,
                         nodeID: 1358,
                         resourceValue: 100,
                         type: supplyCenterType_OPTIONALCENTER
 
                     }),
-                    new SupplyCenter({
+                    new SuperMap.SupplyCenter({
                         maxWeight: 500,
                         nodeID: 2972,
                         resourceValue: 100,
                         type: supplyCenterType_OPTIONALCENTER
 
                     }),
-                    new SupplyCenter({
+                    new SuperMap.SupplyCenter({
                         maxWeight: 500,
                         nodeID: 5523,
                         resourceValue: 100,
                         type: supplyCenterType_OPTIONALCENTER
 
                     }),
-                    new SupplyCenter({
+                    new SuperMap.SupplyCenter({
                         maxWeight: 500,
                         nodeID: 1161,
                         resourceValue: 100,
                         type: supplyCenterType_OPTIONALCENTER
                     }),
-                    new SupplyCenter({
+                    new SuperMap.SupplyCenter({
                         maxWeight: 500,
                         nodeID: 4337,
                         resourceValue: 100,
                         type: supplyCenterType_OPTIONALCENTER
 
                     }),
-                    new SupplyCenter({
+                    new SuperMap.SupplyCenter({
                         maxWeight: 500,
                         nodeID: 5732,
                         resourceValue: 100,
                         type: supplyCenterType_NULL
 
                     }),
-                    new SupplyCenter({
+                    new SuperMap.SupplyCenter({
                         maxWeight: 500,
                         nodeID: 663,
                         resourceValue: 100,
@@ -106,7 +106,7 @@
         //创建选址分区分析服务实例
         findLocationService = L.supermap.networkAnalystService(serviceUrl);
         //创建选址分区分析参数实例
-        findLocationParameter = new FindLocationParameters({
+        findLocationParameter = new SuperMap.FindLocationParameters({
             // 期望用于最终设施选址的资源供给中心数量,必设字段
             expectedSupplyCenterCount: 8,
             // 是否从中心点开始分配资源。默认为 false

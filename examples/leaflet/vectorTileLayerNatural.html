@@ -99,8 +99,9 @@
     });
     var cartoCSS = document.getElementById("cartoCssStr").text;
     layer = L.supermap.tiledVectorLayer(url, {
+        cacheEnabled: true,
         cartoCSS: cartoCSS,
-        serverCartoCSSStyle: false,
+        serverCartoCSSStyle: false
     }).addTo(map);
 
 </script>

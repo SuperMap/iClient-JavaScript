@@ -26,15 +26,15 @@
 
     function createTheme() {
         themeService = L.supermap.themeService(url);
-        themeDotDensity = new ThemeDotDensity({
+        themeDotDensity = new SuperMap.ThemeDotDensity({
             dotExpression: "Pop_1994",
             value: 5000000,
-            style: new ServerStyle({
+            style: new SuperMap.ServerStyle({
                 markerSize: 3,
                 markerSymbolID: 12
             })
         });
-        themeParameters = new ThemeParameters({
+        themeParameters = new SuperMap.ThemeParameters({
             themes: [themeDotDensity],
             datasetNames: ["Countries"],
             dataSourceNames: ["World"]

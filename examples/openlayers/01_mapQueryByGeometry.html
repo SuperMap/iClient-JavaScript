@@ -53,7 +53,7 @@
         map.addLayer(vectorLayer);
 
         var queryService = new ol.supermap.QueryService(url);
-        var param = new QueryByGeometryParameters({
+        var param = new SuperMap.QueryByGeometryParameters({
             queryParams: {name: "Capitals@World.1"},
             geometry: polygon
         });

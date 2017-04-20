@@ -64,7 +64,7 @@
             });
             map.addLayer(resultLayer);
         });
-        var geometryParam = new GetFeaturesByGeometryParameters({
+        var geometryParam = new SuperMap.GetFeaturesByGeometryParameters({
             datasetNames: ["World:Countries"],
             geometry: polygon,
             spatialQueryMode: "INTERSECT"

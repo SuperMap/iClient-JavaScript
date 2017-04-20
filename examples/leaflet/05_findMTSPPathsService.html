@@ -55,7 +55,7 @@
         //创建多旅行商分析服务实例
         findMTSPPathsService = L.supermap.networkAnalystService(serviceUrl);
         //创建多旅行商分析参数实例
-        resultSetting = new TransportationAnalystResultSetting({
+        resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -65,11 +65,11 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        analystParameter = new TransportationAnalystParameter({
+        analystParameter = new SuperMap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        findMTSPPathsParameter = new FindMTSPPathsParameters({
+        findMTSPPathsParameter = new SuperMap.FindMTSPPathsParameters({
             centers: [L.latLng(-5500, 6000), L.latLng(-2500, 5500), L.latLng(-3500, 2500)],
             isAnalyzeById: false,
             nodes: [L.latLng(-5000, 5000), L.latLng(-2800, 8000)],

@@ -63,7 +63,7 @@
             });
             map.addLayer(resultLayer);
         });
-        var param = new QueryByBoundsParameters({
+        var param = new SuperMap.QueryByBoundsParameters({
             queryParams: {name: "Capitals@World.1"},
             bounds: polygon.getExtent()
         });

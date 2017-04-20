@@ -26,7 +26,7 @@
     L.supermap.tiledMapLayer(baseUrl).addTo(map);
 
     map.on("click", function (evt) {
-        var getGridCellInfosParam = new GetGridCellInfosParameter({
+        var getGridCellInfosParam = new SuperMap.GetGridCellInfosParameters({
             dataSourceName: "World",
             datasetName: "WorldEarth",
             X: evt.latlng.lng,

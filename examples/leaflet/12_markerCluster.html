@@ -31,8 +31,8 @@
         showCoverageOnHover: false,
         zoomToBoundsOnClick: false
     });
-    getFeatureBySQLParams = new GetFeaturesBySQLParameters({
-        queryParameter: new FilterParameter({
+    getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+        queryParameter: new SuperMap.FilterParameter({
             name: "Train@DynamicData",
             attributeFilter: "SmID>100 and SmID < 800"
         }),

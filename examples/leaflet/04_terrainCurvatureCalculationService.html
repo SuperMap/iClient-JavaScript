@@ -34,7 +34,7 @@
         //创建地形曲率计算服务实例
         terrainCurvatureCalculationService = L.supermap.spatialAnalystService(serviceUrl);
         //创建地形曲率计算参数实例
-        terrainCurvatureCalculationParameters = new TerrainCurvatureCalculationParameters({
+        terrainCurvatureCalculationParameters = new SuperMap.TerrainCurvatureCalculationParameters({
             dataset: "JingjinTerrain@Jingjin",
             zFactor: 1.0,
             averageCurvatureName: "CurvatureA",
@@ -51,34 +51,34 @@
 
     function showAnalysisResult_ThemeGridRange() {
         themeService = L.supermap.themeService(baseUrl);
-        var themeGridRangeIteme1 = new ThemeGridRangeItem({
+        var themeGridRangeIteme1 = new SuperMap.ThemeGridRangeItem({
                     start: -9000000,
                     end: -1000,
-                    color: new ServerColor(0, 0, 255)
+                    color: new SuperMap.ServerColor(0, 0, 255)
                 }),
-                themeGridRangeIteme2 = new ThemeGridRangeItem({
+                themeGridRangeIteme2 = new SuperMap.ThemeGridRangeItem({
                     start: -1000,
                     end: -1,
-                    color: new ServerColor(0, 0, 125)
+                    color: new SuperMap.ServerColor(0, 0, 125)
                 }),
-                themeGridRangeIteme3 = new ThemeGridRangeItem({
+                themeGridRangeIteme3 = new SuperMap.ThemeGridRangeItem({
                     start: -1,
                     end: 1,
-                    color: new ServerColor(0, 125, 125)
+                    color: new SuperMap.ServerColor(0, 125, 125)
                 }),
-                themeGridRangeIteme4 = new ThemeGridRangeItem({
+                themeGridRangeIteme4 = new SuperMap.ThemeGridRangeItem({
                     start: 1,
                     end: 1000,
-                    color: new ServerColor(0, 125, 0)
+                    color: new SuperMap.ServerColor(0, 125, 0)
                 }),
-                themeGridRangeIteme5 = new ThemeGridRangeItem({
+                themeGridRangeIteme5 = new SuperMap.ThemeGridRangeItem({
                     start: 1000,
                     end: 20000000,
-                    color: new ServerColor(0, 255, 0)
+                    color: new SuperMap.ServerColor(0, 255, 0)
                 });
-        themeGridRange = new ThemeGridRange({
+        themeGridRange = new SuperMap.ThemeGridRange({
             reverseColor: false,
-            rangeMode: RangeMode.EQUALINTERVAL,
+            rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
             //栅格分段专题图子项数组
             items: [themeGridRangeIteme1,
                 themeGridRangeIteme2,
@@ -87,7 +87,7 @@
                 themeGridRangeIteme5
             ]
         });
-        themeParameters = new ThemeParameters({
+        themeParameters = new SuperMap.ThemeParameters({
             //制作专题图的数据集（地形曲率计算的结果数据集）
             datasetNames: [terrainCurvatureCalculationResult.averageCurvatureResult.dataset.split('@')[0]],
             dataSourceNames: ["Jingjin"],

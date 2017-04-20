@@ -43,11 +43,11 @@
 
     function overlayAnalystProcess() {
         overlayAnalystService = new ol.supermap.SpatialAnalystService(serviceUrl);
-        datasetOverlayAnalystParameters = new DatasetOverlayAnalystParameters({
+        datasetOverlayAnalystParameters = new SuperMap.DatasetOverlayAnalystParameters({
             sourceDataset: "BaseMap_R@Jingjin",
             operateDataset: "Neighbor_R@Jingjin",
             tolerance: 0,
-            operation: OverlayOperationType.UNION
+            operation: SuperMap.OverlayOperationType.UNION
         });
         overlayAnalystService.overlayAnalysis(datasetOverlayAnalystParameters)
                 .on('complete', function (serviceResult) {

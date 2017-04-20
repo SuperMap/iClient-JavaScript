@@ -44,7 +44,7 @@
         //创建最佳路径分析服务实例
         findPathService = L.supermap.networkAnalystService(serviceUrl);
         //创建最佳路径分析参数实例
-        var resultSetting = new TransportationAnalystResultSetting({
+        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -54,11 +54,11 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new TransportationAnalystParameter({
+        var analystParameter = new SuperMap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        findPathParameter = new FindPathParameters({
+        findPathParameter = new SuperMap.FindPathParameters({
             isAnalyzeById: false,
             nodes: [L.latLng(-3000, 4000), L.latLng(-2500, 5500), L.latLng(-4000, 6900)],
             hasLeastEdgeCount: false,

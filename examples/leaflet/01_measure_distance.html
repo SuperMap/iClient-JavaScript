@@ -32,7 +32,7 @@
             resultLayer.addLayer(polyLine);
             resultLayer.addLayer(marker1);
             resultLayer.addLayer(marker2);
-            var distanceMeasureParam = new MeasureParameters(polyLine);
+            var distanceMeasureParam = new SuperMap.MeasureParameters(polyLine);
             L.supermap.measureService(url).measureDistance(distanceMeasureParam).on("complete", function (serviceResult) {
                 var content = "距离： " + serviceResult.result.distance + "  米";
                 marker1.bindPopup(content).openPopup(marker1.getLatLng());

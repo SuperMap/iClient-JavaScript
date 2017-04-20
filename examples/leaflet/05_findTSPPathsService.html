@@ -48,7 +48,7 @@
         //创建多旅行商分析服务实例
         findTSPPathsService = L.supermap.networkAnalystService(serviceUrl);
         //创建多旅行商分析参数实例
-        var resultSetting = new TransportationAnalystResultSetting({
+        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -58,11 +58,11 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new TransportationAnalystParameter({
+        var analystParameter = new SuperMap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        findTSPPathsParameter = new FindTSPPathsParameters({
+        findTSPPathsParameter = new SuperMap.FindTSPPathsParameters({
             //是否指定终止点,
             endNodeAssigned: false,
             isAnalyzeById: false,

@@ -45,7 +45,7 @@
     function generateSpatialDataAnalystProcess() {
         generateSpatialDataService = new ol.supermap.SpatialAnalystService(serviceUrl);
         //配置动态分段Parameters
-        generateSpatialDataParameters = new GenerateSpatialDataParameters({
+        generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
             routeIDField: "RouteID",
             eventTable: "LinearEventTabDT@Changchun",
@@ -55,11 +55,11 @@
             measureEndField: "LineMeasureTo",
             measureOffsetField: "",
             errorInfoField: "",
-            dataReturnOption: new DataReturnOption({
+            dataReturnOption: new SuperMap.DataReturnOption({
                 expectCount: 1000,
                 dataset: "generateSpatialData@Changchun",
                 deleteExistResultDataset: true,
-                dataReturnMode: DataReturnMode.DATASET_ONLY
+                dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
             })
         });
         generateSpatialDataService.generateSpatialData(generateSpatialDataParameters)
@@ -74,44 +74,44 @@
             themeService = new ol.supermap.ThemeService(baseUrl);
             //配置专题样式
             var style1, style2, style3;
-            style1 = new ServerStyle({
-                fillForeColor: new ServerColor(242, 48, 48),
-                lineColor: new ServerColor(242, 48, 48),
+            style1 = new SuperMap.ServerStyle({
+                fillForeColor: new SuperMap.ServerColor(242, 48, 48),
+                lineColor: new SuperMap.ServerColor(242, 48, 48),
                 lineWidth: 1
             });
-            style2 = new ServerStyle({
-                fillForeColor: new ServerColor(255, 159, 25),
-                lineColor: new ServerColor(255, 159, 25),
+            style2 = new SuperMap.ServerStyle({
+                fillForeColor: new SuperMap.ServerColor(255, 159, 25),
+                lineColor: new SuperMap.ServerColor(255, 159, 25),
                 lineWidth: 1
             });
-            style3 = new ServerStyle({
-                fillForeColor: new ServerColor(91, 195, 69),
-                lineColor: new ServerColor(91, 195, 69),
+            style3 = new SuperMap.ServerStyle({
+                fillForeColor: new SuperMap.ServerColor(91, 195, 69),
+                lineColor: new SuperMap.ServerColor(91, 195, 69),
                 lineWidth: 1
             });
             //配置专题项
             var themeUniqueIteme1, themeUniqueIteme2, themeUniqueIteme3;
-            themeUniqueIteme1 = new ThemeUniqueItem({
+            themeUniqueIteme1 = new SuperMap.ThemeUniqueItem({
                 unique: "拥挤",
                 style: style1
             });
-            themeUniqueIteme2 = new ThemeUniqueItem({
+            themeUniqueIteme2 = new SuperMap.ThemeUniqueItem({
                 unique: "缓行",
                 style: style2
             });
-            themeUniqueIteme3 = new ThemeUniqueItem({
+            themeUniqueIteme3 = new SuperMap.ThemeUniqueItem({
                 unique: "畅通",
                 style: style3
             });
-            var themeUnique = new ThemeUnique({
+            var themeUnique = new SuperMap.ThemeUnique({
                 uniqueExpression: "TrafficStatus",
-                defaultStyle: new ServerStyle({
-                    fillForeColor: new ServerColor(48, 89, 14),
-                    lineColor: new ServerColor(48, 89, 14)
+                defaultStyle: new SuperMap.ServerStyle({
+                    fillForeColor: new SuperMap.ServerColor(48, 89, 14),
+                    lineColor: new SuperMap.ServerColor(48, 89, 14)
                 }),
                 items: [themeUniqueIteme1, themeUniqueIteme2, themeUniqueIteme3]
             });
-            themeParameters = new ThemeParameters({
+            themeParameters = new SuperMap.ThemeParameters({
                 themes: [themeUnique],
                 datasetNames: ["generateSpatialData"],
                 dataSourceNames: ["Changchun"]

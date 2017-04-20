@@ -46,7 +46,7 @@
         //创建栅格代数运算服务实例
         mathExpressionAnalysisService = new ol.supermap.SpatialAnalystService(serviceUrl);
         //创建栅格代数运算参数实例
-        mathExpressionAnalysisParameters = new MathExpressionAnalysisParameters({
+        mathExpressionAnalysisParameters = new SuperMap.MathExpressionAnalysisParameters({
             //指定数据集,必设
             dataset: "JingjinTerrain@Jingjin",
             //要执行的栅格运算代数表达式,必设
@@ -75,35 +75,35 @@
         //构造栅格专题图
         function showAnalysisResult_ThemeGridRange() {
             themeService = new ol.supermap.ThemeService(baseUrl);
-            var themeGridRangeIteme1 = new ThemeGridRangeItem({
+            var themeGridRangeIteme1 = new SuperMap.ThemeGridRangeItem({
                         start: 0,
                         end: 650,
-                        color: new ServerColor(40, 140, 40)
+                        color: new SuperMap.ServerColor(40, 140, 40)
                     }),
-                    themeGridRangeIteme2 = new ThemeGridRangeItem({
+                    themeGridRangeIteme2 = new SuperMap.ThemeGridRangeItem({
                         start: 650,
                         end: 750,
-                        color: new ServerColor(170, 198, 40)
+                        color: new SuperMap.ServerColor(170, 198, 40)
                     }),
-                    themeGridRangeIteme3 = new ThemeGridRangeItem({
+                    themeGridRangeIteme3 = new SuperMap.ThemeGridRangeItem({
                         start: 750,
                         end: 900,
-                        color: new ServerColor(191, 191, 0)
+                        color: new SuperMap.ServerColor(191, 191, 0)
                     }),
-                    themeGridRangeIteme4 = new ThemeGridRangeItem({
+                    themeGridRangeIteme4 = new SuperMap.ThemeGridRangeItem({
                         start: 900,
                         end: 1350,
-                        color: new ServerColor(191, 95, 0)
+                        color: new SuperMap.ServerColor(191, 95, 0)
                     }),
-                    themeGridRangeIteme5 = new ThemeGridRangeItem({
+                    themeGridRangeIteme5 = new SuperMap.ThemeGridRangeItem({
                         start: 1350,
                         end: 3600,
-                        color: new ServerColor(127, 0, 0)
+                        color: new SuperMap.ServerColor(127, 0, 0)
                     });
 
-            themeGridRange = new ThemeGridRange({
+            themeGridRange = new SuperMap.ThemeGridRange({
                 reverseColor: false,
-                rangeMode: RangeMode.EQUALINTERVAL,
+                rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
                 //栅格分段专题图子项数组
                 items: [themeGridRangeIteme1,
                     themeGridRangeIteme2,
@@ -113,7 +113,7 @@
                 ]
             });
 
-            themeParameters = new ThemeParameters({
+            themeParameters = new SuperMap.ThemeParameters({
                 //制作专题图的数据集
                 datasetNames: [mathExpressionAnalysisResult.dataset.split('@')[0]],
                 dataSourceNames: ["Jingjin"],

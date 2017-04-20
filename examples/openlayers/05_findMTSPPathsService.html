@@ -86,7 +86,7 @@
         //创建多旅行商分析服务实例
         findMTSPPathsService = new ol.supermap.NetworkAnalystService(serviceUrl);
         //创建多旅行商分析参数实例
-        var resultSetting = new TransportationAnalystResultSetting({
+        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -96,11 +96,11 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new TransportationAnalystParameter({
+        var analystParameter = new SuperMap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"  //"length"或者"time"
         });
-        findMTSPPathsParameter = new FindMTSPPathsParameters({
+        findMTSPPathsParameter = new SuperMap.FindMTSPPathsParameters({
             centers: [new ol.geom.Point([6000, -5500]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([2500, -3500])],
             isAnalyzeById: false,
             nodes: [new ol.geom.Point([5000, -5000]), new ol.geom.Point([6500, -3200])],

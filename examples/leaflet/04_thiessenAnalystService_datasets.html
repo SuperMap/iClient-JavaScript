@@ -33,7 +33,7 @@
 
     function thiessenAnalystProcess() {
         thiessenAnalystService = L.supermap.spatialAnalystService(serviceUrl);
-        dsThiessenAnalystParameters = new DatasetThiessenAnalystParameters({
+        dsThiessenAnalystParameters = new SuperMap.DatasetThiessenAnalystParameters({
             dataset: "Factory@Changchun"
         });
         thiessenAnalystService.thiessenAnalysis(dsThiessenAnalystParameters)

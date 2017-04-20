@@ -33,69 +33,69 @@
         map.addLayer(layer);
         themeService = new ol.supermap.ThemeService(url);
         var style1, style2, style3;
-        style1 = new ServerTextStyle({
+        style1 = new SuperMap.ServerTextStyle({
             fontHeight: 4,
-            foreColor: new ServerColor(100, 20, 50),
+            foreColor: new SuperMap.ServerColor(100, 20, 50),
             sizeFixed: true,
             bold: true
 
         });
-        style2 = new ServerTextStyle({
+        style2 = new SuperMap.ServerTextStyle({
             fontHeight: 4,
-            foreColor: new ServerColor(250, 0, 0),
+            foreColor: new SuperMap.ServerColor(250, 0, 0),
             sizeFixed: true,
             bold: true
         });
-        style3 = new ServerTextStyle({
+        style3 = new SuperMap.ServerTextStyle({
             fontHeight: 4,
-            foreColor: new ServerColor(93, 95, 255),
+            foreColor: new SuperMap.ServerColor(93, 95, 255),
             sizeFixed: true,
             bold: true
         });
         var themeLabelItem1, themeLabelItem2, themeLabelItem3, themeLabelItem4, themeLabelItem5, themeLabelItem6;
-        themeLabelItem1 = new ThemeLabelItem({
+        themeLabelItem1 = new SuperMap.ThemeLabelItem({
             start: 0.0,
             end: 7800000,
             style: style1
         });
-        themeLabelItem2 = new ThemeLabelItem({
+        themeLabelItem2 = new SuperMap.ThemeLabelItem({
             start: 7800000,
             end: 15000000,
             style: style2
         });
-        themeLabelItem3 = new ThemeLabelItem({
+        themeLabelItem3 = new SuperMap.ThemeLabelItem({
             start: 15000000,
             end: 30000000,
             style: style3
         });
-        themeLabelItem4 = new ThemeLabelItem({
+        themeLabelItem4 = new SuperMap.ThemeLabelItem({
             start: 0.0,
             end: 55,
             style: style1
         });
-        themeLabelItem5 = new ThemeLabelItem({
+        themeLabelItem5 = new SuperMap.ThemeLabelItem({
             start: 55,
             end: 109,
             style: style2
         });
-        themeLabelItem6 = new ThemeLabelItem({
+        themeLabelItem6 = new SuperMap.ThemeLabelItem({
             start: 109,
             end: 300,
             style: style3
         });
 
-        themeLabel = new ThemeLabel({
+        themeLabel = new SuperMap.ThemeLabel({
             matrixCells: [
-                [new LabelThemeCell({
-                    themeLabel: new ThemeLabel({
+                [new SuperMap.LabelThemeCell({
+                    themeLabel: new SuperMap.ThemeLabel({
                         labelExpression: "CAPITAL",
                         rangeExpression: "SmID",
                         numericPrecision: 0,
                         items: [themeLabelItem4, themeLabelItem5, themeLabelItem6]
                     })
                 })],
-                [new LabelThemeCell({
-                    themeLabel: new ThemeLabel({
+                [new SuperMap.LabelThemeCell({
+                    themeLabel: new SuperMap.ThemeLabel({
                         labelExpression: "CAP_POP",
                         rangeExpression: "CAP_POP",
                         numericPrecision: 0,
@@ -103,16 +103,16 @@
                     })
                 })]
             ],
-            background: new ThemeLabelBackground({
-                backStyle: new ServerStyle({
-                    fillForeColor: new ServerColor(179, 209, 193),
+            background: new SuperMap.ThemeLabelBackground({
+                backStyle: new SuperMap.ServerStyle({
+                    fillForeColor: new SuperMap.ServerColor(179, 209, 193),
                     fillOpaqueRate: 60,
                     lineWidth: 0.1
                 }),
                 labelBackShape: "RECT"
             })
         });
-        themeParameters = new ThemeParameters({
+        themeParameters = new SuperMap.ThemeParameters({
             themes: [themeLabel],
             datasetNames: ["Capitals"],
             dataSourceNames: ["World"]

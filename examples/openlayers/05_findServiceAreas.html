@@ -59,7 +59,7 @@
         map.addLayer(vectorLayer);
 
         service = new ol.supermap.NetworkAnalystService(serviceUrl);
-        var resultSetting = new TransportationAnalystResultSetting({
+        var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
             returnEdgeIDs: true,
@@ -69,11 +69,11 @@
             returnPathGuides: true,
             returnRoutes: true
         });
-        var analystParameter = new TransportationAnalystParameter({
+        var analystParameter = new SuperMap.TransportationAnalystParameter({
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        parameter = new FindServiceAreasParameters({
+        parameter = new SuperMap.FindServiceAreasParameters({
             centers: [point],
             isAnalyzeById: false,
             parameter: analystParameter

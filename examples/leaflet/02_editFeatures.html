@@ -35,7 +35,7 @@
 
     function initFeature() {
         var polygon = L.polygon([[10, 100], [10, 124], [40, 124], [40, 100], [10, 100]]);
-        var getFeatureParams = new GetFeaturesByGeometryParameters({
+        var getFeatureParams = new SuperMap.GetFeaturesByGeometryParameters({
             datasetNames: ["World:Capitals"],
             geometry: polygon,
             spatialQueryMode: "INTERSECT"
@@ -67,7 +67,7 @@
     function commit() {
         var me = this;
         if (featureGroup.hasLayer(marker)) {
-            var addFeatureParams = new EditFeaturesParameters({
+            var addFeatureParams = new SuperMap.EditFeaturesParameters({
                 features: marker,
                 editType: "add",
                 returnContent: true
@@ -90,7 +90,7 @@
             return;
         }
         if (id) {
-            var deleteParams = new EditFeaturesParameters({
+            var deleteParams = new SuperMap.EditFeaturesParameters({
                 IDs: [id],
                 editType: "delete"
             });

@@ -88,7 +88,7 @@
         line-color:@provinceLineColor;
         line-width:1;
         }
-    </script>
+</script>
 <script type="text/javascript">
     var map, layer,
             url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
@@ -99,8 +99,9 @@
     });
     var cartoCSS = document.getElementById("cartoCssStr").text;
     layer = L.supermap.tiledVectorLayer(url, {
+        cacheEnabled: true,
         cartoCSS: cartoCSS,
-        serverCartoCSSStyle: false,
+        serverCartoCSSStyle: false
     }).addTo(map);
 
 </script>

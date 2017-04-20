@@ -150,7 +150,7 @@
 
     function execTransSolutionsQuery(tactic) {
         paths.points = [26, 180];
-        var params = new TransferSolutionParameters({
+        var params = new SuperMap.TransferSolutionParameters({
             solutionCount: 6,        //最大换乘导引数量
             transferTactic: tactic,  //公交换乘策略类型
             walkingRatio: 10,        //步行与公交的消耗权重比

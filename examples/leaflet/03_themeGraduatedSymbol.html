@@ -25,23 +25,23 @@
 
     function createTheme() {
         themeService = L.supermap.themeService(url);
-        themeGraduatedSymbol = new ThemeGraduatedSymbol({
+        themeGraduatedSymbol = new SuperMap.ThemeGraduatedSymbol({
             expression: "SMAREA",
             baseValue: 3000000000000,
-            graduatedMode: GraduatedMode.CONSTANT,
-            flow: new ThemeFlow({
+            graduatedMode: SuperMap.GraduatedMode.CONSTANT,
+            flow: new SuperMap.ThemeFlow({
                 flowEnabled: true
             }),
-            style: new ThemeGraduatedSymbolStyle({
-                positiveStyle: new ServerStyle({
+            style: new SuperMap.ThemeGraduatedSymbolStyle({
+                positiveStyle: new SuperMap.ServerStyle({
                     markerSize: 50,
                     markerSymbolID: 0,
-                    lineColor: new ServerColor(255, 165, 0),
-                    fillBackColor: new ServerColor(255, 0, 0)
+                    lineColor: new SuperMap.ServerColor(255, 165, 0),
+                    fillBackColor: new SuperMap.ServerColor(255, 0, 0)
                 })
             })
         });
-        themeParameters = new ThemeParameters({
+        themeParameters = new SuperMap.ThemeParameters({
             themes: [themeGraduatedSymbol],
             datasetNames: ["China_Province_pg"],
             dataSourceNames: ["China"]

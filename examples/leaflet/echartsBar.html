@@ -32,7 +32,7 @@
         toolbox: {
             feature: {
                 magicType: {
-                    type: [ 'stack', 'tiled']
+                    type: ['stack', 'tiled']
                 },
                 saveAsImage: {
                     pixelRatio: 2
@@ -76,7 +76,7 @@
 
     function query() {
         clearLayer();
-        var param = new QueryBySQLParameters({
+        var param = new SuperMap.QueryBySQLParameters({
             queryParams: [{
                 name: "China_ProCenCity_pt@China",
                 attributeFilter: "1 = 1"
@@ -92,15 +92,15 @@
                     var latlng = L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
                     latlng.alt = coords[2];
                     return latlng;
-                },
+                }
             }).bindPopup(function (layer) {
                 var city = layer.feature.properties.NAME;
                 var data1 = [];
                 var data2 = [];
                 for (var i = 0; i < 7; i++) {
-                    var data=Math.random().toFixed(2);
+                    var data = Math.random().toFixed(2);
                     data1.push(data);
-                    data2.push(data*(Math.random()+1.5));
+                    data2.push(data * (Math.random() + 1.5));
 
                 }
                 chart.setOption({
@@ -111,13 +111,13 @@
                     series: [
                         {
                             name: '降雨量',
-                            data: data1,
+                            data: data1
                         },
                         {
                             name: '径流量',
-                            data: data2,
+                            data: data2
                         }
-                    ],
+                    ]
                 });
                 return chart.getDom();
             }, {maxWidth: 600}).addTo(map);

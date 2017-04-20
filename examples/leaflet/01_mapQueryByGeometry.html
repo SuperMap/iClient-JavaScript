@@ -28,7 +28,7 @@
     function query() {
         var polygon = L.polygon([[0, 20], [-30, 20], [-10, 50], [0, 20]], {color: 'red'});
         polygon.addTo(map);
-        var param = new QueryByGeometryParameters({
+        var param = new SuperMap.QueryByGeometryParameters({
             queryParams: {name: "Capitals@World.1"},
             geometry: polygon
         });
