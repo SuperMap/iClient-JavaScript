@@ -8,19 +8,19 @@
     "test": "test"
   },
   "scripts": {
-    "release":"npm run package - leaflet && npm run package - ol3",
+    "release": "npm run package - leaflet && npm run package - openlayers",
     "deploy": "webpack",
     "deploy-leaflet": "webpack --config ./build/webpack.config.leaflet.js ",
-    "deploy-ol3": "webpack --config ./build/webpack.config.ol3.js ",
+    "deploy-openlayers": "webpack --config ./build/webpack.config.openlayers.js ",
     "compress": "webpack -p",
     "package": "node ./build/pack.js",
-    "test":"karma start",
-    "citest":"karma start --single-run"
+    "test": "karma start",
+    "citest": "karma start --single-run"
   },
   "keywords": [
     "SuperMap",
-    "leaflet",
-    "Openlayers3"
+    "Leaflet",
+    "OpenLayers3"
   ],
   "author": "SuperMap",
   "license": "Apache-2.0",
@@ -40,15 +40,15 @@
     "shelljs": "0.7.6",
     "underscore": "^1.8.3",
     "webpack": "^1.14.0",
-    "extract-text-webpack-plugin":"^1.0.1",
-    "file-loader":"^0.10.0",
-    "style-loader":"^0.13.1",
-    "css-loader":"^0.26.1",
-    "imports-loader":"^0.7.0"
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.10.0",
+    "style-loader": "^0.13.1",
+    "css-loader": "^0.26.1",
+    "imports-loader": "^0.7.0"
   },
   "dependencies": {
     "proj4": "^2.4.3",
-    "fetch-jsonp":"^1.0.6",
-    "whatwg-fetch":"^2.0.3"
+    "fetch-jsonp": "^1.0.6",
+    "whatwg-fetch": "^2.0.3"
   }
 }

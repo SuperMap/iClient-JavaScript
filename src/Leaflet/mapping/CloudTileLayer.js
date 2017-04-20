@@ -18,10 +18,10 @@ CloudTileLayer = L.TileLayer.extend({
     initialize: function (url, options) {
         L.setOptions(this, options);
         var cloudURL = url || this.defaultURL;
-        this._url = cloudURL + "?map=" + this.options.mapName + "&type=" +  this.options.type + "&x={x}&y={y}&z={z}";
+        this._url = cloudURL + "?map=" + this.options.mapName + "&type=" + this.options.type + "&x={x}&y={y}&z={z}";
         L.stamp(this);
     }
-})
+});
 L.supermap = L.supermap || {};
 L.supermap.cloudTileLayer = function (url, options) {
     return new CloudTileLayer(url, options);

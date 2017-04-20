@@ -25,7 +25,7 @@ BaiduTileLayer = L.TileLayer.extend({
             styles: this.options.retina ? 'ph' : 'pl'
         })
     }
-})
+});
 L.supermap = L.supermap || {};
 L.supermap.baiduTileLayer = function (url, options) {
     return new BaiduTileLayer(url, options);

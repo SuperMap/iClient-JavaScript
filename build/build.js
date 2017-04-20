@@ -1,6 +1,6 @@
-var coreModules = deps.Core;
-var leafletModules = deps.Leaflet;
-var ol3Modules = deps.OL3;
+var commonModules = deps.common;
+var leafletModules = deps.leaflet;
+var openlayersModules = deps.openlayers;
 
 function init() {
     document.getElementById('select-all').onclick = function () {
@@ -14,14 +14,14 @@ function init() {
         for (var i = 0; i < lists.length; i++) {
             var checks = lists[i].getElementsByTagName('input');
             for (var j = 0; j < checks.length; j++) {
-                if (checks[j].id === 'Core') {
+                if (checks[j].id === 'common') {
                     continue;
                 }
                 checks[j].checked = selectAll;
             }
             var lis = lists[i].getElementsByTagName('li');
             for (var n = 0; n < checks.length; n++) {
-                if (checks[n].id === 'Core') {
+                if (checks[n].id === 'common') {
                     continue;
                 }
                 lis[n].className = (selectAll) ? 'active' : '';
@@ -31,16 +31,16 @@ function init() {
         return false;
     }
 
-    addModule('Core', deplist, true);
+    addModule('common', deplist, true);
     $('#deplist li')[0].className = 'active';
-    for (var ol3Module in ol3Modules) {
-        var title = ol3Modules[ol3Module].title;
-        addGroup('ol3', title, ol3Modules[ol3Module].description, $('#ol3select')[0]);
-        for (var module in ol3Modules[ol3Module]) {
+    for (var openlayersModule in openlayersModules) {
+        var title = openlayersModules[openlayersModule].title;
+        addGroup('openlayers', title, openlayersModules[openlayersModule].description, $('#openlayersselect')[0]);
+        for (var module in openlayersModules[openlayersModule]) {
             if (module === 'title' || module === 'description') {
                 continue;
             }
-            addModule(module, $('#ol3_' + title)[0], false, ol3Modules[ol3Module][module].name);
+            addModule(module, $('#openlayers_' + title)[0], false, openlayersModules[openlayersModule][module].name);
         }
     }
     for (var leafletModule in leafletModules) {
@@ -56,11 +56,11 @@ function init() {
     updateCommand();
 
     $('.clientTabs li a').click(function (e) {
-        e.preventDefault()
+        e.preventDefault();
         if (this.innerHTML === 'Leaflet') {
-            cancelChecked('ol3');
+            cancelChecked('openlayers');
         }
-        if (this.innerHTML === 'OL3') {
+        if (this.innerHTML === 'OpenLayers') {
             cancelChecked('leaflet');
         }
         updateCommand();
@@ -129,7 +129,7 @@ function updateCommand() {
 
     var deplistItems2 = $('.deplist li input');
     for (var i = 0; i < deplistItems2.length; i++) {
-        if (deplistItems2[i].id === "Core") {
+        if (deplistItems2[i].id === "common") {
             continue;
         }
         if (deplistItems2[i].checked) {
@@ -141,10 +141,10 @@ function updateCommand() {
 }
 
 function getKey() {
-    var key = "core";
-    for (var check in $('#ol3select .deplist li input')) {
-        if ($('#ol3select .deplist li input')[check].checked) {
-            key = "ol3";
+    var key = "common";
+    for (var check in $('#openlayersselect .deplist li input')) {
+        if ($('#openlayersselect .deplist li input')[check].checked) {
+            key = "openlayers";
         }
     }
     for (var check in $('#leafletselect .deplist li input')) {

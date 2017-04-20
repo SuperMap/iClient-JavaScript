@@ -94,13 +94,13 @@ EchartsMapLayer = L.Layer.extend({
                         var view = me._ec._componentsViews[i];
                         if (view.__model && view.__model.mainType === 'visualMap') {
                             view.__model.eachTargetSeries(function (targetSeries) {
-                                var viewRect=view.group.getBoundingRect();
-                                viewRect.width=parseInt(me._echartsContainer.style.width);
-                                viewRect.height=parseInt(me._echartsContainer.style.height);
+                                var viewRect = view.group.getBoundingRect();
+                                viewRect.width = parseInt(me._echartsContainer.style.width);
+                                viewRect.height = parseInt(me._echartsContainer.style.height);
                                 targetSeries.coordinateSystem.setViewRect(viewRect);
                             });
                         }
-                        if (view.__model && view.__model.mainType === 'visualMap'&& view._shapes&& view._shapes.barGroup) {
+                        if (view.__model && view.__model.mainType === 'visualMap' && view._shapes && view._shapes.barGroup) {
                             view._shapes.barGroup.on('mouseover', function () {
                                 me._map.dragging.disable();
                                 me._map.scrollWheelZoom.disable();
@@ -143,8 +143,8 @@ Geo.prototype = {
     getViewRect: function () {
         return this.viewRect;
     },
-    getRoamTransform:function(){
-        var roamTransform={};
+    getRoamTransform: function () {
+        var roamTransform = {};
         roamTransform.transform;
         return roamTransform;
     },
@@ -159,10 +159,7 @@ Geo.prototype = {
         return data;
 
     }
-
-
-}
-
+};
 
 L.echartsMapLayer = function (options, echartsOptions) {
     return new EchartsMapLayer(options, echartsOptions);
