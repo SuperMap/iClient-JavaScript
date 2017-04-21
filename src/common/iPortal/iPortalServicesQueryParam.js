@@ -1,5 +1,4 @@
-
-SuperMap.ServicesQueryParam = SuperMap.Class({
+SuperMap.iPortalServicesQueryParam = SuperMap.Class({
 
     tags: [],
     userNames: '',
@@ -25,6 +24,6 @@ SuperMap.ServicesQueryParam = SuperMap.Class({
 });
 
 module.exports = function (params) {
-    return new SuperMap.ServicesQueryParam(params);
+    return new SuperMap.iPortalServicesQueryParam(params);
 };
 

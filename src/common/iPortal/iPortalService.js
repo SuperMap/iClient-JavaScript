@@ -1,6 +1,6 @@
 require('../util/Request');
 
-SuperMap.Service = SuperMap.Class({
+SuperMap.iPortalService = SuperMap.Class({
 
     addedMapNames: null,
     addedSceneNames: null,
@@ -59,6 +59,6 @@ SuperMap.Service = SuperMap.Class({
 });
 
 module.exports = function (serviceUrl, params) {
-    return new SuperMap.Service(serviceUrl, params);
+    return new SuperMap.iPortalService(serviceUrl, params);
 };
 

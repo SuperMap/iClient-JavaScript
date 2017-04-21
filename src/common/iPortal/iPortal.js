@@ -1,5 +1,5 @@
-require('./Service');
-require('./ServicesQueryParam');
+require('./iPortalService');
+require('./iPortalServicesQueryParam');
 require('../util/Request');
 
 SuperMap.iPortal = SuperMap.Class({
@@ -24,7 +24,7 @@ SuperMap.iPortal = SuperMap.Class({
         return this.request.get(serviceUrl, queryParams).then(function (result) {
             var services = [];
             result.content.map(function (serviceJsonObj) {
-                services.push(new SuperMap.Service(serviceUrl, serviceJsonObj));
+                services.push(new SuperMap.iPortalService(serviceUrl, serviceJsonObj));
             });
             return services;
         });
