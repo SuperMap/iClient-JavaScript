@@ -16,16 +16,18 @@ module.exports = function (config) {
         // list of files  patterns to load in the browser
         // include:false表示不包含这些文件到浏览器中,注意添加顺序
         files: [
-
+            {pattern: 'src/legacy/libs/SuperMap_Basic-8.1.1-14426.js', include: false},
             /***legacy文件夹下的源码添加至此***/
             {pattern: 'src/legacy/libs/SuperMap_Basic-8.1.1-14426.js', include: false},
             {pattern: 'src/legacy/libs/Lang/*.js', include: false},
             {pattern: 'src/legacy/theme/default/*.css', include: false},
-
+            './node_modules/whatwg-fetch/fetch.js',
+            './node_modules/fetch-jsonp/build/fetch-jsonp.js',
             /***common文件夹下的源码添加至此***/
             'src/common/Base.js',
             'src/common/REST.js',
             'src/common/style/CartoCSS.js',
+
             'src/common/**/*.js',
 
             /***Leaflet文件夹下的源码添加至此，暂未添加***/
@@ -102,8 +104,7 @@ module.exports = function (config) {
         // list of files to exclude 测试时排除的文件
         exclude: [
             //暂时先排除(因为Request引用了node_modules中的库，但在karma下识别不到路径，暂时找不到解决办法)
-            'src/common/util/Request.js',
-            'src/common/online/*.js'
+
         ],
 
 
@@ -111,6 +112,8 @@ module.exports = function (config) {
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
             'src/legacy/libs/SuperMap_Basic-8.1.1-14426.js': ['commonjs'],
+            './node_modules/whatwg-fetch/fetch.js': ['commonjs'],
+            './node_modules/fetch-jsonp/build/fetch-jsonp.js': ['commonjs'],
             'src/legacy/libs/Lang/*.js': ['commonjs'],
             'src/common/**/*.js': ['commonjs', 'coverage'],
             'test/common/**/*Spec.js': ['commonjs']
