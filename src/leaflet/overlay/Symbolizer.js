@@ -12,7 +12,7 @@ L.Symbolizer = L.Class.extend({
         renderer._initPath(this);
         renderer._updateStyle(this);
         var elem = this.getElement();
-        if (elem) {
+        if (elem && this.layerName) {
             L.DomUtil.addClass(elem, this.layerName);
         }
     },

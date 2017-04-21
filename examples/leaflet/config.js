@@ -344,31 +344,37 @@ var exampleConfig = {
             },
             "tileVectorLayer": {
                 name: "矢量瓦片",
-                content: [{
-                    name: "矢量瓦片",
-                    thumbnail: "l_tileVectorLayer_normal.png",
-                    fileName: "vectorTileLayerNormal"
-                }, {
-                    name: "月夜风格",
-                    thumbnail: "l_tileVectorLayer_night.png",
-                    fileName: "vectorTileLayerNight"
-                }, {
-                    name: "强边界风格",
-                    thumbnail: "l_tileVectorLayer_boundray.png",
-                    fileName: "vectorTileLayerBoundary"
-                }, {
-                    name: "深夜蓝黑风格",
-                    thumbnail: "l_tileVectorLayer_darkBlue.png",
-                    fileName: "vectorTileLayerDarkBlue"
-                }, {
-                    name: "HelloKitty风格",
-                    thumbnail: "l_tileVectorLayer_helloKitty.png",
-                    fileName: "vectorTileLayerHelloKitty"
-                }, {
-                    name: "淡雅绿风格",
-                    thumbnail: "l_tileVectorLayer_natural.png",
-                    fileName: "vectorTileLayerNatural"
-                }]
+                content: [
+                    {
+                        name: "矢量瓦片",
+                        thumbnail: "l_tileVectorLayer_normal.png",
+                        fileName: "vectorTileLayerNormal"
+                    }, {
+                        name: "月夜风格",
+                        thumbnail: "l_tileVectorLayer_night.png",
+                        fileName: "vectorTileLayerNight"
+                    }, {
+                        name: "强边界风格",
+                        thumbnail: "l_tileVectorLayer_boundray.png",
+                        fileName: "vectorTileLayerBoundary"
+                    }, {
+                        name: "深夜蓝黑风格",
+                        thumbnail: "l_tileVectorLayer_darkBlue.png",
+                        fileName: "vectorTileLayerDarkBlue"
+                    }, {
+                        name: "HelloKitty风格",
+                        thumbnail: "l_tileVectorLayer_helloKitty.png",
+                        fileName: "vectorTileLayerHelloKitty"
+                    }, {
+                        name: "淡雅绿风格",
+                        thumbnail: "l_tileVectorLayer_natural.png",
+                        fileName: "vectorTileLayerNatural"
+                    }, {
+                        name: "MapBox 矢量瓦片",
+                        thumbnail: "l_mapboxVectorTile.png",
+                        fileName: "mapboxVectorTile"
+                    }
+                ]
             }
         }
     },

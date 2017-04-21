@@ -190,7 +190,10 @@ var deps = {
 
             "TileVectorLayer": {
                 "name": "矢量瓦片",
-                "src": ['./src/leaflet/overlay/TileVectorLayer.js']
+                "src": [
+                    './src/leaflet/overlay/TileVectorLayer.js',
+                    './src/leaflet/overlay/PBFTileVectorLayer.js'
+                ]
             }
         }
     },
