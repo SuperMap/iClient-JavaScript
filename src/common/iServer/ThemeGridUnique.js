@@ -7,7 +7,7 @@
  * Inherits from:
  *  - <SuperMap.Theme>
  */
-require('../Base');
+
 require('./ServerColor');
 require('./Theme');
 require('./ThemeGridUniqueItem');

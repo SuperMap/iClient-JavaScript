@@ -1,4 +1,3 @@
-require('../Base');
 
 SuperMap.ServicesQueryParam = SuperMap.Class({
 

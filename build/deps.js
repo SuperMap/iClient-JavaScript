@@ -1,15 +1,21 @@
 var deps = {
     "common": {
+        "core": [
+            "./src/common/Base.js",
+            "./src/common/REST.js"
+        ],
         "format": [
             "./src/common/format/GeoJSON.js"
         ],
+        "style": [
+            "./src/common/style/CartoCSS.js"
+        ],
         // "iManager" : [],
-        // "iPortal":[],
         "online": [
             "./src/common/online/Online.js"
         ],
-		"iPortal": [
-            "./src/common/iPortal/Portal.js",
+        "iPortal": [
+            "./src/common/iPortal/Portal.js"
         ],
         "iServer": [
             //Data
@@ -75,9 +81,6 @@ var deps = {
             "./src/common/iServer/TerrainCurvatureCalculationService.js",
             "./src/common/iServer/ThiessenAnalystService.js"
 
-        ],
-        "visual": [
-            "./src/common/CartoCSS.js"
         ]
     },
 

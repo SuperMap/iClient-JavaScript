@@ -2,7 +2,6 @@
  * Class: SuperMap.GetFeaturesParametersBase
  * 数据服务中数据集查询参数基类。
  */
-require('../Base');
 
 SuperMap.GetFeaturesParametersBase = SuperMap.Class({
     /**

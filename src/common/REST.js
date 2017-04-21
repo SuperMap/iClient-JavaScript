@@ -1,5 +1,4 @@
-﻿require('./Base');
-/**
+﻿/**
  *服务请求返回结果数据类型
  *  GEOJSON: "GEOJSON",
  *  ISERVER: "ISERVER"

@@ -1,4 +1,4 @@
-require('../../common/CartoCSS');
+require('../../common/style/CartoCSS');
 require('../core/StyleUtils');
 
 ol.supermap.VectorTileStyles = function (options) {

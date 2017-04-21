@@ -1,8 +1,7 @@
 /**
  * Online myData服务
  */
-require('../Base');
-require('../Request');
+require('../util/Request');
 require('./DataInfo');
 SuperMap.DataService = SuperMap.Class({
     //MD5

@@ -1,4 +1,4 @@
-﻿require('../Base');
+﻿
 require('./InterpolationAnalystParameters');
 require('./ThiessenAnalystParameters');
 /**

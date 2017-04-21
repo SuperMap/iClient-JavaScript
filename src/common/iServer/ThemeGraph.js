@@ -9,7 +9,7 @@
  * Inherits from:
  *  - <SuperMap.Theme>
  */
-require('../Base');
+
 require('./Theme');
 require('./ThemeFlow');
 require('./ThemeOffset');

@@ -5,7 +5,7 @@
  * 物流配送功能就是解决如何合理分配配送次序和送货路线，使配送总花费达到最小或每个配送中心的花费达到最小。
  * 例如：现在有50个报刊零售地（配送目的地），和4个报刊供应地（配送中心），现寻求这4个供应地向报刊零售地发送报纸的最优路线，属物流配送问题。
  */
-require('../Base');
+
 require('./TransportationAnalystParameter');
 SuperMap.FindMTSPPathsParameters = SuperMap.Class({
 

@@ -3,7 +3,7 @@
  * 等级符号专题图正负零值显示风格类。
  * 通过该类可以设置正值的显示风格，零值和或负值的显示风格以及是否显示零值和或负值对应的等级符号。
  */
-require('../Base');
+
 require('./ServerStyle');
 SuperMap.ThemeGraduatedSymbolStyle = SuperMap.Class({
 

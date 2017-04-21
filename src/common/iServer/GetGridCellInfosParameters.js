@@ -2,7 +2,7 @@
  * Class: SuperMap.GetGridCellInfosParameters
  * 数据服务栅格查询参数类。
  */
-require('../Base');
+
 SuperMap.GetGridCellInfosParameters = SuperMap.Class({
     /**
      * APIProperty: datasetName

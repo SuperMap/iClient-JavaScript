@@ -6,7 +6,7 @@
  * Inherits from:
  *  - <SuperMap.OverlayAnalystParameters>
  */
-require('../Base');
+
 require('./OverlayAnalystParameters');
 SuperMap.GeometryOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalystParameters, {
 

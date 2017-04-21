@@ -1,7 +1,7 @@
-require('../Base');
 require('./Service');
 require('./ServicesDeleteParam');
 require('./ServicesQueryParam');
+require('../util/Request');
 
 SuperMap.Portal = SuperMap.Class({
 

@@ -3,7 +3,7 @@
  * 栅格单值专题图子项类。
  * 栅格单值专题图是将值相同的单元格归为一类，每一类是一个专题图子项。
  */
-require('../Base');
+
 require('./ServerColor');
 SuperMap.ThemeGridUniqueItem = SuperMap.Class({
 

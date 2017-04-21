@@ -12,7 +12,7 @@
  * Inherits from:
  *  - <SuperMap.Theme>
  */
-require('../Base');
+
 require('./ServerStyle');
 require('./Theme');
 SuperMap.ThemeDotDensity = SuperMap.Class(SuperMap.Theme, {

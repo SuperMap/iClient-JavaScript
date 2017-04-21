@@ -3,7 +3,7 @@
  * 动态分段操作参数类。
  * 通过该类可以为动态分段提供参数信息。
  */
-require('../Base');
+
 require('./DataReturnOption');
 SuperMap.GenerateSpatialDataParameters = SuperMap.Class({
 

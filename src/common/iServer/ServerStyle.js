@@ -3,7 +3,7 @@
  * 服务端矢量要素风格类
  * 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
  */
-require('../Base');
+
 require('./ServerColor');
 SuperMap.ServerStyle = SuperMap.Class({
 

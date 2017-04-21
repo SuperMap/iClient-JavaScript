@@ -2,7 +2,7 @@
  * Class:SuperMap.UpdateEdgeWeightParameters
  * 边的耗费权重更新服务参数类
  * */
-require('../Base');
+
 SuperMap.UpdateEdgeWeightParameters = SuperMap.Class({
     /**
      * APIProperty: edgeId

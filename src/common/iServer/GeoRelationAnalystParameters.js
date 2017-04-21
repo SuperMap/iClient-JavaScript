@@ -3,7 +3,7 @@
  * 空间关系分析服务参数类。
  * 使用该类可以为空间关系分析服务提供所需的参数信息。
  */
-require('../Base');
+
 SuperMap.GeoRelationAnalystParameters = SuperMap.Class({
 
     /**

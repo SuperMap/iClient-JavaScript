@@ -11,7 +11,7 @@
  * Inherits from:
  *  - <SuperMap.LabelMatrixCell>
  */
-require('../Base');
+
 require('./ThemeLabel');
 require('./LabelMatrixCell');
 SuperMap.LabelThemeCell = SuperMap.Class(SuperMap.LabelMatrixCell, {

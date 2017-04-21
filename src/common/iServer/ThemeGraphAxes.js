@@ -3,7 +3,7 @@
  * 统计专题图坐标轴样式类。
  * 该类用于设置统计图中坐标轴样式相关信息，如坐标轴颜色、是否显示、坐标文本样式等。
  */
-require('../Base');
+
 require('./ServerColor');
 require('./ServerTextStyle');
 SuperMap.ThemeGraphAxes = SuperMap.Class({

@@ -2,7 +2,7 @@
  * Class: SuperMap.RouteCalculateMeasureParameters
  * 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
  */
-require('../Base');
+
 require('./Route');
 SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
 

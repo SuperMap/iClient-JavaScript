@@ -1,4 +1,3 @@
-require('./Base');
 require("whatwg-fetch");
 var fetchJsonp = require('fetch-jsonp');
 

@@ -6,7 +6,7 @@
  * 旅行商分析和最佳路径分析都是在网络中寻找遍历所有站点的最经济的路径，区别是在遍历网络所有站点的过程中对结点访问顺序不同
  * 最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。
  */
-require('../Base');
+
 require('./TransportationAnalystParameter');
 SuperMap.FindTSPPathsParameters = SuperMap.Class({
     /**

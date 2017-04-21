@@ -5,7 +5,7 @@
  * Inherits from:
  *  - <SuperMap.InterpolationAnalystParameters>
  */
-require('../Base');
+
 require('./InterpolationAnalystParameters');
 SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
     /**

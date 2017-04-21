@@ -4,6 +4,8 @@
  * 2、提供必要的转换工具
  */
 L.supermap = L.supermap || {};
+require('../../common/Base');
+require('../../common/REST');
 require('../../common/format/GeoJSON');
 require('./NonEarthCRS');
 require('./Proj4Leaflet');

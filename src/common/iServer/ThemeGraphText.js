@@ -3,7 +3,7 @@
  * 统计图文字标注风格类。
  * 通过该类可以设置统计图表中文字可见性以及标注风格。
  */
-require('../Base');
+
 require('./ServerTextStyle');
 SuperMap.ThemeGraphText = SuperMap.Class({
 

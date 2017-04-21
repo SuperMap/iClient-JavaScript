@@ -4,7 +4,7 @@
  * 该类存储了各子图层是否可见的状态。
  * 注意在 SuperMap iClient 系列产品中所说的图层与 SuperMap Deskpro 的地图对应，子图层与 SuperMap Deskpro 的图层对应。
  */
-require('../Base');
+
 require('./LayerStatus');
 SuperMap.SetLayerStatusParameters = SuperMap.Class({
 

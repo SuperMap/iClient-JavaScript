@@ -3,7 +3,7 @@
  * 标签背景风格类。
  * 通过该类可以设置标签的背景形状和风格。
  */
-require('../Base');
+
 require('./ServerStyle');
 SuperMap.ThemeLabelBackground = SuperMap.Class({
 

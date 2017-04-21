@@ -6,7 +6,7 @@
  * Inherits from:
  *  - <SuperMap.QueryParameters>
  */
-require('../Base');
+
 require('./QueryParameters');
 require('./FilterParameter');
 SuperMap.QueryByBoundsParameters = SuperMap.Class(SuperMap.QueryParameters, {

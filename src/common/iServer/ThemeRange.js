@@ -8,7 +8,7 @@
  * Inherits from:
  *  - <SuperMap.Theme>
  */
-require('../Base');
+
 require('./Theme');
 require('./ThemeRangeItem');
 SuperMap.ThemeRange = SuperMap.Class(SuperMap.Theme, {

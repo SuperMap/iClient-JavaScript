@@ -9,7 +9,7 @@
  * 阻抗值通过 SuperMap.TransportationAnalystParameter.weightFieldName 设置。
  * 计算最佳路径除了受阻抗影响外，还受转向字段的影响。转向值通过 SuperMap.TransportationAnalystParameter.turnWeightField 设置。
  */
-require('../Base');
+
 require('./TransportationAnalystParameter');
 SuperMap.FindPathParameters = SuperMap.Class({
 

@@ -3,7 +3,7 @@
  * 地区太阳辐射参数类。
  *
  */
-require('../Base');
+
 SuperMap.AreaSolarRadiationParameters = SuperMap.Class({
 
     /**

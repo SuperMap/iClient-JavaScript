@@ -6,7 +6,7 @@
  * Inherits from:
  *  - <SuperMap.ThiessenAnalystParameters>
  */
-require('../Base');
+
 require('./ThiessenAnalystParameters');
 SuperMap.GeometryThiessenAnalystParameters = SuperMap.Class(SuperMap.ThiessenAnalystParameters, {
 

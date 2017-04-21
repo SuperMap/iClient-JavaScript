@@ -2,7 +2,7 @@
  * Class: SuperMap.StopQueryParameters
  * 站点查询参数类。
  */
-require('../Base');
+
 SuperMap.StopQueryParameters = SuperMap.Class({
     /**
      * APIProperty: keyWord

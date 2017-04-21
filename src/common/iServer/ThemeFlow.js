@@ -3,7 +3,7 @@
  * 标签或符号流动显示和牵引线风格设置类。
  * 通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
  */
-require('../Base');
+
 require('./ServerStyle');
 SuperMap.ThemeFlow = SuperMap.Class({
 

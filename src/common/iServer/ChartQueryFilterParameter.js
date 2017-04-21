@@ -2,7 +2,7 @@
  * Class: SuperMap.ChartQueryFilterParameter
  *      海图查询过滤参数类，用于设置海图查询的过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
  */
-require('../Base');
+
 SuperMap.ChartQueryFilterParameter = SuperMap.Class({
 
     /**

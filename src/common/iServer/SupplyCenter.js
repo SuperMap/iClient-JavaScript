@@ -3,7 +3,7 @@
  * 资源供给中心类
  * 资源供给中心类，在资源分配和选址分区分析两个功能中使用。
  */
-require('../Base');
+
 SuperMap.SupplyCenter = SuperMap.Class({
     /**
      * APIProperty: maxWeight

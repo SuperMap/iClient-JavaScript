@@ -2,7 +2,7 @@
  * Class: SuperMap.Theme
  * 专题图基类。
  */
-require('../Base');
+
 require('./ThemeMemoryData');
 SuperMap.Theme = SuperMap.Class({
 

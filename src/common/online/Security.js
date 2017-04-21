@@ -2,7 +2,6 @@
  * Class:SuperMap.Security
  * Online SSO 安全管理类
  */
-require('../Base');
 SuperMap.Security = SuperMap.Class({
     /**
      * @param url：online地址

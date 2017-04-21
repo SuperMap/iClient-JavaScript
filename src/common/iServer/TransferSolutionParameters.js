@@ -2,7 +2,7 @@
  * Class: SuperMap.TransferSolutionParameters
  * 交通换乘方案查询参数类。
  */
-require('../Base');
+
 SuperMap.TransferSolutionParameters = SuperMap.Class({
     /**
      * APIProperty: solutionCount

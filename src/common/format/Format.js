@@ -2,7 +2,7 @@
  * Class: SuperMap.Format
  * 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
  */
-require('../Base');
+
 SuperMap.Format = SuperMap.Class({
 
     /**

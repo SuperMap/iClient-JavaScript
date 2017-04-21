@@ -2,7 +2,6 @@
  * Class:SuperMap.QueryDatasParameter
  *  myDatas服务资源查询参数
  */
-require('../Base');
 require('./Resources');
 SuperMap.QueryDatasParameter = SuperMap.Class({
 

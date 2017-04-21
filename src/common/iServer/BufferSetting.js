@@ -2,7 +2,7 @@
  * Class: BufferSetting
  * 缓冲区分析通用设置类
  */
-require('../Base');
+
 require('./BufferDistance');
 SuperMap.BufferSetting = SuperMap.Class({
 

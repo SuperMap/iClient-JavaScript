@@ -3,7 +3,7 @@
  * 查询参数基类。
  * 距离查询、SQL 查询、几何地物查询等各自的参数均继承此类。
  */
-require('../Base');
+
 require('./FilterParameter');
 SuperMap.QueryParameters = SuperMap.Class({
 

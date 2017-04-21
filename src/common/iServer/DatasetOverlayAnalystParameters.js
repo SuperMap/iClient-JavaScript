@@ -5,7 +5,7 @@
  * Inherits from:
  *  - <SuperMap.OverlayAnalystParameters>
  */
-require('../Base');
+
 require('./DataReturnOption');
 require('./OverlayAnalystParameters');
 SuperMap.DatasetOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalystParameters, {

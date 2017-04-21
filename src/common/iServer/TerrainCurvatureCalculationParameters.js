@@ -2,7 +2,7 @@
  * Class: SuperMap.TerrainCurvatureCalculationParameters
  * 地形曲率计算参数类。
  */
-require('../Base');
+
 SuperMap.TerrainCurvatureCalculationParameters = SuperMap.Class({
 
     /**

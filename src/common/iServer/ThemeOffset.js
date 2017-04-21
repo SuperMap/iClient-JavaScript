@@ -3,7 +3,7 @@
  * 专题图中文本或符号相对于要素内点的偏移量设置类。
  * 通过该类可以设置专题图中标记文本或符号的偏移量以及偏移量是否随地图缩放而改变。
  */
-require('../Base');
+
 SuperMap.ThemeOffset = SuperMap.Class({
 
     /**

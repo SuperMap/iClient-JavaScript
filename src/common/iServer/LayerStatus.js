@@ -4,7 +4,7 @@
  * 该类存储了各个子图层的名字和是否可见的状态。
  *
  */
-require('../Base');
+
 SuperMap.LayerStatus = SuperMap.Class({
 
     /**

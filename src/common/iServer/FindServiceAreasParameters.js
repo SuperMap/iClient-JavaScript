@@ -4,7 +4,7 @@
  * 服务区分析是以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
  * 例如：计算某快餐店能够在30分钟内送达快餐的区域。
  */
-require('../Base');
+
 require('./TransportationAnalystParameter');
 SuperMap.FindServiceAreasParameters = SuperMap.Class({
 

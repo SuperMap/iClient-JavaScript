@@ -6,7 +6,7 @@
  * Inherits from:
  *  - <SuperMap.BufferAnalystParameters>
  */
-require('../Base');
+
 require('./BufferAnalystParameters');
  SuperMap.GeometryBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystParameters, {
 

@@ -7,7 +7,7 @@
  * 他们所代表的分段区间分别为[0,5)，[5,10)。那么需要分别设置 SuperMap.ThemeLabelItem[0].start=0，
  * SuperMap.ThemeLabelItem[0].end=5，SuperMap.ThemeLabelItem[1].start=5，SuperMap.ThemeLabelItem[1].end=10。
  */
-require('../Base');
+
 require('./ServerTextStyle');
 SuperMap.ThemeLabelItem = SuperMap.Class({
 

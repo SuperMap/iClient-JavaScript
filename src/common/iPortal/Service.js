@@ -1,4 +1,4 @@
-require('../Request');
+require('../util/Request');
 require('./ServiceUpdateParam');
 
 SuperMap.Service = SuperMap.Class({

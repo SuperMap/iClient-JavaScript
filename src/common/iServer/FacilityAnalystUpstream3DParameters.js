@@ -2,7 +2,7 @@
  * Class: SuperMap.FacilityAnalystUpstream3DParameters
  * 上游关键设施查找资源参数类
  */
-require('../Base');
+
 require('./FacilityAnalyst3DParameters');
 SuperMap.FacilityAnalystUpstream3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
 

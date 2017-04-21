@@ -6,7 +6,7 @@
  * Inherits from:
  *  - <SurfaceAnalystParameters>
  */
-require('../Base');
+
 require('./SurfaceAnalystParameters');
 SuperMap.GeometrySurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnalystParameters, {
 

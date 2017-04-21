@@ -1,4 +1,3 @@
-require('../Base');
 
 SuperMap.ServicesDeleteParam = SuperMap.Class({
 

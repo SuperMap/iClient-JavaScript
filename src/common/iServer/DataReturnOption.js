@@ -2,7 +2,7 @@
  * Class: SuperMap.DataReturnOption
  * 数据返回设置类
  */
-require('../Base');
+
 SuperMap.DataReturnOption = SuperMap.Class({
 
     /**

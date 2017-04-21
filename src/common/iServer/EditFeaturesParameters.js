@@ -2,7 +2,7 @@
  * Class: SuperMap.EditFeaturesParameters
  * 数据服务中数据集添加、修改、删除参数类。 
  */
-require('../Base');
+
 SuperMap.EditFeaturesParameters = SuperMap.Class({
     /** 
      * APIProperty: features

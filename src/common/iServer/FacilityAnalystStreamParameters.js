@@ -2,7 +2,7 @@
  * Class: SuperMap.FacilityAnalystStreamParameters
  * 上游/下游关键设施查找资源参数类。
  */
-require('../Base');
+
 SuperMap.FacilityAnalystStreamParameters = SuperMap.Class({
 
     /**

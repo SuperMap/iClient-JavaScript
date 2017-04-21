@@ -2,7 +2,7 @@
  * Class: SuperMap.FacilityAnalystTracedown3DParameters
  * 下游追踪资源参数类
  */
-require('../Base');
+
 require('./FacilityAnalyst3DParameters');
 SuperMap.FacilityAnalystTracedown3DParameters = SuperMap.Class( SuperMap.FacilityAnalyst3DParameters, {
 

@@ -2,8 +2,7 @@
  * Class: SuperMap.Online
  * 对接SuperMap Online 所有基础服务
  */
-require('../Base');
-require('../Request');
+require('../util/Request');
 require('./Security');
 require('./DataService');
 require('./QueryDatasParameter');
@@ -28,6 +27,7 @@ SuperMap.Online = SuperMap.Class({
         this.mDatasUrl = mContentUrl + "/datas";
 
         this.security = new SuperMap.Security();
+        this.request = new SuperMap.Request();
     },
 
     load: function () {
@@ -50,7 +50,7 @@ SuperMap.Online = SuperMap.Class({
         if (parameter) {
             parameter = parameter.toJSON();
         }
-        return new SuperMap.Request().get(url, parameter).then(function (json) {
+        return this.request.get(url, parameter).then(function (json) {
             if (!json || !json.content || json.content.length < 1) {
                 return;
             }

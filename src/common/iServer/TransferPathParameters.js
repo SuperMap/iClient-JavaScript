@@ -2,7 +2,7 @@
  * Class: SuperMap.TransferPathParameters
  * 交通换乘线路查询参数类。
  */
-require('../Base');
+
 require('./TransferLine');
 SuperMap.TransferPathParameters = SuperMap.Class({
     /**

@@ -3,7 +3,7 @@
  * 服务端文本风格类
  * 该类用于定义文本风格的相关属性。
  */
-require('../Base');
+
 require('./ServerColor');
 SuperMap.ServerTextStyle = SuperMap.Class({
 

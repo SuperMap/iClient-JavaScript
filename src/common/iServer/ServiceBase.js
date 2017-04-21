@@ -2,7 +2,7 @@
  * Class: SuperMap.ServiceBase
  * Core服务基类
  */
-require('../Base');
+
 SuperMap.ServiceBase = SuperMap.Class({
 
     /**

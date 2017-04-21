@@ -2,7 +2,6 @@
  * Class: SuperMap.CartoCSS
  * CartoCSS解析类，其主要功能为将CartoCSS字符串解析为CartoCSS的shader属性风格对象
  */
-require('./Base');
 SuperMap.CartoCSS = SuperMap.Class({
     env: null,
 

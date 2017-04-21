@@ -4,7 +4,7 @@
  * 参数有两种方式，分别为Geometry和Dataset两种，前者需要指定sourceRoute对象作为参数，后者需要dataset，routeIDField，routeID三个参数
  * 如果用户两种参数均设置，优先选择Dataset方式
  */
-require('../Base');
+
 require('./Route');
 SuperMap.RouteLocatorParameters = SuperMap.Class({
 

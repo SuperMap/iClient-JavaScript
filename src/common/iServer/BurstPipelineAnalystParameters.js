@@ -2,7 +2,7 @@
  * Class: SuperMap.BurstPipelineAnalystParameters
  * 爆管分析参数类。
  */
-require('../Base');
+
 
 SuperMap.BurstPipelineAnalystParameters = SuperMap.Class({
 

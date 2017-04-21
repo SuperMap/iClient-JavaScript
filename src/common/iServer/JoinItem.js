@@ -15,7 +15,7 @@
  * 并且用于建立连接的两个表必须在同一个数据源下。
  * )
  */
-require('../Base');
+
 SuperMap.JoinItem = SuperMap.Class({
     
     /** 

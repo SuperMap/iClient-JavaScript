@@ -1,4 +1,3 @@
-require('../Base');
 
 SuperMap.ServiceUpdateParam = SuperMap.Class({
 

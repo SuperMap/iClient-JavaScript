@@ -5,7 +5,7 @@
  * Inherits from:
  *  - <SuperMap.ThiessenAnalystParameters>
  */
-require('../Base');
+
 require('./ThiessenAnalystParameters');
 SuperMap.DatasetThiessenAnalystParameters = SuperMap.Class(SuperMap.ThiessenAnalystParameters, {
 

@@ -6,7 +6,7 @@
  * Inherits from:
  *  - <SuperMap.Geometry.Point>
  */
-require('../Base');
+
 SuperMap.PointWithMeasure = SuperMap.Class(SuperMap.Geometry.Point, {
 
     /**

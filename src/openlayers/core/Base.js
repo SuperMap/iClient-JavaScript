@@ -3,6 +3,8 @@
  * 1、定义命名空间
  * 2、提供必要的转换工具
  */
+require('../../common/Base');
+require('../../common/REST');
 require('../../common/format/GeoJSON');
 
 ol.supermap = ol.supermap || {};

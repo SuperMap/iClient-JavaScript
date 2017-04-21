@@ -6,7 +6,7 @@
  * Inherits from:
  *  - <SurfaceAnalystParameters>
  */
-require('../Base');
+
 require('./DataReturnOption');
 require('./SurfaceAnalystParameters');
 SuperMap.DatasetSurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnalystParameters, {

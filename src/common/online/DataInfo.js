@@ -2,7 +2,6 @@
  * Class:SuperMap.DataInfo
  * Online下myData资源Put参数
  */
-require('../Base');
 require('./Resources');
 SuperMap.DataInfo = SuperMap.Class({
     //String	文件名。

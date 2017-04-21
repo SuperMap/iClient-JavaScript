@@ -25,7 +25,7 @@ module.exports = function (config) {
             /***common文件夹下的源码添加至此***/
             'src/common/Base.js',
             'src/common/REST.js',
-            'src/common/CartoCSS.js',
+            'src/common/style/CartoCSS.js',
             'src/common/**/*.js',
 
             /***Leaflet文件夹下的源码添加至此，暂未添加***/
@@ -102,7 +102,7 @@ module.exports = function (config) {
         // list of files to exclude 测试时排除的文件
         exclude: [
             //暂时先排除(因为Request引用了node_modules中的库，但在karma下识别不到路径，暂时找不到解决办法)
-            'src/common/Request.js',
+            'src/common/util/Request.js',
             'src/common/online/*.js'
         ],
 

@@ -3,7 +3,7 @@
  * 颜色类
  * 该类使用三原色（ RGB ）来表达颜色。
  */
-require('../Base');
+
 SuperMap.ServerColor = SuperMap.Class({
 
     /**

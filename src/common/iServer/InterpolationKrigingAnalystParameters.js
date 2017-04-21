@@ -45,7 +45,7 @@
  * Inherits from:
  *  - <SuperMap.InterpolationAnalystParameters>
  */
-require('../Base');
+
 require('./InterpolationAnalystParameters');
 require('./ThiessenAnalystParameters');
 

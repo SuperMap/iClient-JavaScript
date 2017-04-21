@@ -5,7 +5,7 @@
  * Inherits from:
  *  - <SuperMap.BufferAnalystParameters>
  */
-require('../Base');
+
 require('./DataReturnOption');
 require('./BufferAnalystParameters');
 SuperMap.DatasetBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystParameters, {

@@ -7,7 +7,7 @@
  * Inherits from:
  *  - <SuperMap.Theme>
  */
-require('../Base');
+
 require('./Theme');
 require('./ThemeGridRangeItem');
 SuperMap.ThemeGridRange = SuperMap.Class(SuperMap.Theme, {

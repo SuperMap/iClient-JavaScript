@@ -4,7 +4,7 @@
  *     查询和海图范围查询两类，通过属性queryMode指定查询模式。必设属性有：
  *     queryMode、chartLayerNames、chartQueryFilterParameters。当进行海图范围查询时，必设属性还包括bounds。
  */
-require('../Base');
+
 require('./ChartQueryFilterParameter');
 SuperMap.ChartQueryParameters = SuperMap.Class({
 

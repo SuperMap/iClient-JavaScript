@@ -2,7 +2,7 @@
  * Class: SuperMap.ThiessenAnalystParameters
  * 泰森多边形分析参数基类。
  */
-require('../Base');
+
 SuperMap.ThiessenAnalystParameters = SuperMap.Class({
 
     /**

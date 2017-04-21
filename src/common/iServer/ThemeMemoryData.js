@@ -2,7 +2,7 @@
  * Class: SuperMap.ThemeMemoryData
  * 专题图内存数据类。
  */
-require('../Base');
+
 SuperMap.ThemeMemoryData = SuperMap.Class({
 
     /**

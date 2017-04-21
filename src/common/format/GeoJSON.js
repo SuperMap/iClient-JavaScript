@@ -5,7 +5,7 @@
  * Inherits from:
  *  - <SuperMap.Format.JSON>
  */
-require('../Base');
+
 require('./JSON');
 
 SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {

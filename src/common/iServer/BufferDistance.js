@@ -3,7 +3,7 @@
  * 缓冲区分析的缓冲距离类
  * 通过该类可以设置缓冲区分析的缓冲距离，距离可以是数值也可以是数值型的字段表达式。
  */
-require('../Base');
+
 SuperMap.BufferDistance = SuperMap.Class({
 
     /**

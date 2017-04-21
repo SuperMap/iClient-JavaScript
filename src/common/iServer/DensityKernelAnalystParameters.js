@@ -3,7 +3,7 @@
  * 核密度分析参数类
  *
  */
-require('../Base');
+
 SuperMap.DensityKernelAnalystParameters = SuperMap.Class({
 
     /**

@@ -5,7 +5,7 @@
  * 字段指定用于单值的字段，同一值的标签具有相同的显示风格，其中每一个值就是一个专题图子项，
  * 每一个子项都具有其名称、风格、指定的单值、X方向偏移量和Y方向偏移量。
  */
-require('../Base');
+
 require('./ServerTextStyle');
 SuperMap.ThemeLabelUniqueItem = SuperMap.Class({
 

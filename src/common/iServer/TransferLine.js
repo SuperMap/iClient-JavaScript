@@ -2,7 +2,7 @@
  * Class: SuperMap.TransferLine
  * 换乘路线信息类。
  */
-require('../Base');
+
 SuperMap.TransferLine = SuperMap.Class({
     /**
      * APIProperty: lineID

@@ -2,7 +2,7 @@
  * Class: SuperMap.MathExpressionAnalysisParameters
  * 栅格代数运算参数类
  */
-require('../Base');
+
 SuperMap.MathExpressionAnalysisParameters = SuperMap.Class({
 
     /**

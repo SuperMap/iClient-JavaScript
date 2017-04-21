@@ -2,7 +2,7 @@
  * Class: SuperMap.BufferAnalystParameters
  * 缓冲区分析参数基类。
  */
-require('../Base');
+
 require('./BufferSetting');
 SuperMap.BufferAnalystParameters = SuperMap.Class({
 

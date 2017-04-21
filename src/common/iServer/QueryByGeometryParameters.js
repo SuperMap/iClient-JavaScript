@@ -6,7 +6,7 @@
  * Inherits from:
  *  - <SuperMap.QueryParameters>
  */
-require('../Base');
+
 require('./QueryParameters');
 SuperMap.QueryByGeometryParameters = SuperMap.Class(SuperMap.QueryParameters, {
 

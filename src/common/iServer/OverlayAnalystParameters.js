@@ -2,7 +2,7 @@
  * Class: SuperMap.OverlayAnalystParameters
  * 叠加分析参数基类，数据集叠加分析参数和几何对象叠加分析参数均继承此基类
  */
-require('../Base');
+
 SuperMap.OverlayAnalystParameters = SuperMap.Class({
 
     /**

@@ -2,7 +2,6 @@
  * Class:SuperMap.UpdateTurnNodeWeightParameters
  * 转向耗费权重更新服务参数类
  * */
-require('../Base');
 SuperMap.UpdateTurnNodeWeightParameters = SuperMap.Class({
     /**
      * APIProperty:  nodeId

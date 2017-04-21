@@ -3,7 +3,7 @@
  * 标签中文本风格类。
  * 通过该类可以设置标签中的文本字体大小和显示风格。
  */
-require('../Base');
+
 require('./ServerTextStyle');
 require('./LabelMixedTextStyle');
 SuperMap.ThemeLabelText = SuperMap.Class({

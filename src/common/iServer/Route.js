@@ -6,7 +6,7 @@
  *  Inherits from:
  *  - <SuperMap.Geometry.Collection>
  */
-require('../Base');
+
 require('./PointWithMeasure');
 SuperMap.Route = SuperMap.Class(SuperMap.Geometry.Collection, {
 

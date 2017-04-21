@@ -2,7 +2,7 @@
  * Class: SuperMap.InterpolationAnalystParameters
  * 插值分析参数类
  */
-require('../Base');
+
 SuperMap.InterpolationAnalystParameters = SuperMap.Class({
 
     /**
