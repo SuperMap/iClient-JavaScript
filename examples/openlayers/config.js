@@ -364,6 +364,11 @@ var exampleConfig = {
                         thumbnail: "cartoCSS_naturalStyle.png",
                         fileName: "cartoCSS_naturalStyle"
                     },
+                    {
+                        name: "MapBox矢量瓦片",
+                        thumbnail: "mapboxVectorLayer.png",
+                        fileName: "mapboxVectorLayer"
+                    }
                 ]
             }
         }
