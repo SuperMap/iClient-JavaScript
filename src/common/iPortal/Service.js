@@ -1,5 +1,4 @@
 require('../util/Request');
-require('./ServiceUpdateParam');
 
 SuperMap.Service = SuperMap.Class({
 
@@ -48,10 +47,12 @@ SuperMap.Service = SuperMap.Class({
     },
 
     update: function () {
-        var serviceUpdateParam = new SuperMap.ServiceUpdateParam();
-        for (var key in serviceUpdateParam) {
-            serviceUpdateParam[key] = this[key];
-        }
+        var serviceUpdateParam = {
+            authorizeSetting: this.authorizeSetting,
+            metadata: this.metadata,
+            tags: this.tags,
+            thumbnail: this.thumbnail
+        };
         return this.request.put(this.serviceUrl, serviceUpdateParam);
     }
 

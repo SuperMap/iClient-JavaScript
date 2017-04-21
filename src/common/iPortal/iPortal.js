@@ -1,5 +1,4 @@
 require('./Service');
-require('./ServicesDeleteParam');
 require('./ServicesQueryParam');
 require('../util/Request');
 
@@ -31,9 +30,9 @@ SuperMap.Portal = SuperMap.Class({
         });
     },
 
-    deleteServices: function (params) {
+    deleteServices: function (ids) {
         var serviceUrl = this.iportalUrl + "/web/services";
-        return this.request.delete(serviceUrl, params);
+        return this.request.delete(serviceUrl, {ids: ids});
     }
 
 })
