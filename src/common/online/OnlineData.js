@@ -3,7 +3,7 @@
  */
 require('../util/Request');
 require('./DataInfo');
-SuperMap.DataService = SuperMap.Class({
+SuperMap.OnlineData = SuperMap.Class({
     //MD5
     MD5: null,
     //文件类型。
@@ -94,10 +94,10 @@ SuperMap.DataService = SuperMap.Class({
     },
 
 
-    CLASS_NAME: "SuperMap.DataService"
+    CLASS_NAME: "SuperMap.OnlineData"
 
 })
 ;
 module.exports = function (serviceRootUrl, options) {
-    return new SuperMap.DataService(serviceRootUrl, options);
+    return new SuperMap.OnlineData(serviceRootUrl, options);
 };

@@ -1,9 +1,9 @@
 /**
- * Class:SuperMap.QueryDatasParameter
+ * Class:SuperMap.OnlineQueryDatasParameter
  *  myDatas服务资源查询参数
  */
-require('./Resources');
-SuperMap.QueryDatasParameter = SuperMap.Class({
+require('./OnlineResources');
+SuperMap.OnlineQueryDatasParameter = SuperMap.Class({
 
     //String[]    数据作者名。可以根据数据作者名查询，默认查询全部。
     userNames: null,
@@ -52,9 +52,9 @@ SuperMap.QueryDatasParameter = SuperMap.Class({
         return jsonObj;
     },
 
-    CLASS_NAME: "SuperMap.QueryDatasParameter"
+    CLASS_NAME: "SuperMap.OnlineQueryDatasParameter"
 });
 
 module.exports = function (options) {
-    return new SuperMap.QueryDatasParameter(options);
+    return new SuperMap.OnlineQueryDatasParameter(options);
 };

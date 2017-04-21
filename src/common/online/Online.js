@@ -3,9 +3,9 @@
  * 对接SuperMap Online 所有基础服务
  */
 require('../util/Request');
-require('./Security');
-require('./DataService');
-require('./QueryDatasParameter');
+require('./OnlineSecurity');
+require('./OnlineData');
+require('./OnlineQueryDatasParameter');
 SuperMap.Online = SuperMap.Class({
 
     /**
@@ -26,7 +26,7 @@ SuperMap.Online = SuperMap.Class({
         var mContentUrl = this.webUrl + "/mycontent";
         this.mDatasUrl = mContentUrl + "/datas";
 
-        this.security = new SuperMap.Security();
+        this.security = new SuperMap.OnlineSecurity();
         this.request = new SuperMap.Request();
     },
 
@@ -43,7 +43,7 @@ SuperMap.Online = SuperMap.Class({
 
     /**
      * 查询Online “我的内容”下“我的数据”服务(需要登录状态获取),并返回可操作的服务对象
-     * @param parameter   <QueryDatasParameter>
+     * @param parameter   <OnlineQueryDatasParameter>
      */
     queryDatas: function (parameter) {
         var me = this, url = me.mDatasUrl;
@@ -57,7 +57,7 @@ SuperMap.Online = SuperMap.Class({
             var services = [], contents = json.content, len = contents.length;
             for (var i = 0; i < len; i++) {
                 var content = contents[i];
-                var service = new SuperMap.DataService(me.mDatasUrl, content);
+                var service = new SuperMap.OnlineData(me.mDatasUrl, content);
                 services.push(service);
             }
             return services;
