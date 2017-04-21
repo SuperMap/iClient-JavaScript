@@ -106,7 +106,7 @@ var deps = {
                 "name": "WMTS服务",
                 "src": ["./src/leaflet/mapping/TileLayer.WMTS.js"]
             },
-            "Portal": {
+            "iPortal": {
                 "name": "iPortal webmap",
                 "src": ["./src/leaflet/mapping/WebMap.js"]
             }
@@ -216,6 +216,10 @@ var deps = {
             "SuperMapCloud": {
                 "name": "超图云图层",
                 "src": ['./src/openlayers/mapping/SuperMapCloud.js']
+            },
+            "iPortal": {
+                "name": "iPortal webmap",
+                "src": ["./src/openlayers/mapping/WebMap.js"]
             }
         },
         "services": {

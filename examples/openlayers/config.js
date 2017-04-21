@@ -235,11 +235,29 @@ var exampleConfig = {
     },
     "iPortal": {
         name: "iPortal",
-        content: null
+        content: {
+            "ip_map": {
+                name: "地图",
+                content: [{
+                    name: "举办过奥运会的城市",
+                    thumbnail: "ol_iPortalWebmap.png",
+                    fileName: "iPortalWebmap"
+                }]
+            }
+        }
     },
     "online": {
         name: "online",
-        content: null
+        content: {
+            "ol_map": {
+                name: "地图",
+                content: [{
+                    name: "我的大学路线图",
+                    thumbnail: "ol_onlineWebmap.png",
+                    fileName: "onlineWebmap"
+                }]
+            }
+        }
     },
     "iManager": {
         name: "iManager",

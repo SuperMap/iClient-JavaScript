@@ -1,3 +1,8 @@
+/* COPYRIGHT 2017 SUPERMAP
+ * 本程序只能在有效的授权许可下使用。
+ * 未经许可，不得以任何手段擅自使用或传播。*/
+
+
 /**
  * Class: SuperMap.Format.GeoJSON
  * GeoJSON 的读和写。使用 <SuperMap.Format.GeoJSON> 构造器创建一个GeoJSON解析器.
@@ -5,7 +10,6 @@
  * Inherits from:
  *  - <SuperMap.Format.JSON>
  */
-
 require('./JSON');
 
 SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
@@ -746,10 +750,10 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
             return null;
         }
         if (len === 1) {
-            return {type: "Point", x: geoPoints[0].x, y: geoPoints[0].y};
+            return {type: "Point", x: parseFloat(geoPoints[0].x), y: parseFloat(geoPoints[0].y)};
         } else {
             for (var i = 0, pointList = []; i < len; i++) {
-                pointList.push({x: geoPoints[i].x, y: geoPoints[i].y});
+                pointList.push({x: parseFloat(geoPoints[i].x), y: parseFloat(geoPoints[i].y)});
             }
             return {type: "MultiPoint", components: pointList};
         }
@@ -770,7 +774,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
         }
         if (len === 1) {
             for (var i = 0, pointList = []; i < geoParts[0]; i++) {
-                pointList.push({x: geoPoints[i].x, y: geoPoints[i].y});
+                pointList.push({x: parseFloat(geoPoints[i].x), y: parseFloat(geoPoints[i].y)});
             }
             //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
             if (me.isPointsEquals(pointList[0], pointList[geoParts[0] - 1])) {
@@ -781,7 +785,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
         } else {
             for (var i = 0, lineList = []; i < len; i++) {
                 for (var j = 0, pointList = []; j < geoParts[i]; j++) {
-                    pointList.push({x: geoPoints[j].x, y: geoPoints[j].y});
+                    pointList.push({x: parseFloat(geoPoints[j].x), y: parseFloat(geoPoints[j].y)});
                 }
                 lineList.push(pointList);
                 geoPoints.splice(0, geoParts[i]);
@@ -807,7 +811,10 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
         }
         for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
             for (var j = 0; j < geoParts[i]; j++) {
-                pointList.push({x: geoPoints[pointIndex + j].x, y: geoPoints[pointIndex + j].y});
+                pointList.push({
+                    x: parseFloat(geoPoints[pointIndex + j].x),
+                    y: parseFloat(geoPoints[pointIndex + j].y)
+                });
             }
             pointIndex += geoParts[i];
             //判断线是否闭合，如果闭合，则返回LinearRing，否则返回LineString
@@ -836,7 +843,10 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
         var polygonArray = new Array();
         for (var i = 0, pointIndex = 0, pointList = []; i < len; i++) {
             for (var j = 0; j < geoParts[i]; j++) {
-                pointList.push({x: geoPoints[pointIndex + j].x, y: geoPoints[pointIndex + j].y});
+                pointList.push({
+                    x: parseFloat(geoPoints[pointIndex + j].x),
+                    y: parseFloat(geoPoints[pointIndex + j].y)
+                });
             }
 
             pointIndex += geoParts[i];
