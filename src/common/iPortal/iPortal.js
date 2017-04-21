@@ -2,7 +2,7 @@ require('./Service');
 require('./ServicesQueryParam');
 require('../util/Request');
 
-SuperMap.Portal = SuperMap.Class({
+SuperMap.iPortal = SuperMap.Class({
 
     initialize: function (iportalUrl, token) {
         this.iportalUrl = iportalUrl;
@@ -38,6 +38,6 @@ SuperMap.Portal = SuperMap.Class({
 })
 
 module.exports = function (url) {
-    return new SuperMap.Portal(url);
+    return new SuperMap.iPortal(url);
 };
 
