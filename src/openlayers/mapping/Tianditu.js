@@ -4,7 +4,6 @@ ol.source.Tianditu = function (opt_options) {
             html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
         });
 
-    var crossOrigin = options.crossOrigin || 'anonymous';
     if (!options.url && !options.urls) {
         options.url = "http://t{0-7}.tianditu.com/img_w/wmts"
     }
@@ -18,7 +17,7 @@ ol.source.Tianditu = function (opt_options) {
         style: options.style || 'default',
         attributions: attributions,
         cacheSize: options.cacheSize,
-        crossOrigin: crossOrigin,
+        crossOrigin: options.crossOrigin,
         opaque: options.opaque || true,
         maxZoom: options.maxZoom || 19,
         reprojectionErrorThreshold: options.reprojectionErrorThreshold,

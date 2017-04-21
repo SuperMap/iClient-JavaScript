@@ -240,8 +240,8 @@ var exampleConfig = {
                 name: "地图",
                 content: [{
                     name: "举办过奥运会的城市",
-                    thumbnail: "ol_iPortalWebmap.png",
-                    fileName: "iPortalWebmap"
+                    thumbnail: "ol_iPortalWebMap.png",
+                    fileName: "iportalWebMap"
                 }]
             }
         }
@@ -253,8 +253,8 @@ var exampleConfig = {
                 name: "地图",
                 content: [{
                     name: "我的大学路线图",
-                    thumbnail: "ol_onlineWebmap.png",
-                    fileName: "onlineWebmap"
+                    thumbnail: "ol_onlineWebMap.png",
+                    fileName: "onlineWebMap"
                 }]
             }
         }
