@@ -20,14 +20,13 @@
         zoom: 1,
         crs: L.CRS.TianDiTu_WGS84
     });
-    L.tileLayer.wmts("http://t{s}.tianditu.com/img_c/wmts?",
-            {
-                layer: "img",
-                style: "default",
-                tilematrixSet: "c",
-                format: "tiles",
-                subdomains:[0,1,2,3,4,5,6,7]
-            }
-    ).addTo(map);
+    L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
+        layer: "vec",
+        tilematrixSet: "c"
+    }).addTo(map);
+    L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/cva_c/wmts", {
+        layer: "cva",
+        tilematrixSet: "c"
+    }).addTo(map);
 </script>
 </html>

@@ -413,9 +413,13 @@ var exampleConfig = {
             "Tianditu": {
                 name: "",
                 content: [{
-                    name: "天地图",
-                    thumbnail: "l_tiandituLayer.png",
-                    fileName: "tiandituLayer"
+                    name: "天地图-墨卡托",
+                    thumbnail: "l_tiandituLayer_mercator.png",
+                    fileName: "tiandituLayer_mercator"
+                },{
+                    name: "天地图-经纬度",
+                    thumbnail: "l_tiandituLayer_ll.png",
+                    fileName: "tiandituLayer_ll"
                 }]
             },
             "cloud": {
