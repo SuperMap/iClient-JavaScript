@@ -15,7 +15,7 @@ var deps = {
             "./src/common/online/Online.js"
         ],
         "iPortal": [
-            "./src/common/iPortal/Portal.js"
+            "./src/common/iPortal/iPortal.js"
         ],
         "iServer": [
             //Data

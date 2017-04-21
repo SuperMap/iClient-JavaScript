@@ -1,9 +1,8 @@
 require('./Service');
-require('./ServicesDeleteParam');
 require('./ServicesQueryParam');
 require('../util/Request');
 
-SuperMap.Portal = SuperMap.Class({
+SuperMap.iPortal = SuperMap.Class({
 
     initialize: function (iportalUrl, token) {
         this.iportalUrl = iportalUrl;
@@ -31,14 +30,14 @@ SuperMap.Portal = SuperMap.Class({
         });
     },
 
-    deleteServices: function (params) {
+    deleteServices: function (ids) {
         var serviceUrl = this.iportalUrl + "/web/services";
-        return this.request.delete(serviceUrl, params);
+        return this.request.delete(serviceUrl, {ids: ids});
     }
 
 })
 
 module.exports = function (url) {
-    return new SuperMap.Portal(url);
+    return new SuperMap.iPortal(url);
 };
 
