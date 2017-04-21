@@ -1,9 +1,5 @@
-/**
- * Class:SuperMap.Request
- * 通用请求类
- */
 require('./Base');
-require('whatwg-fetch');
+require("whatwg-fetch");
 var fetchJsonp = require('fetch-jsonp');
 
 SuperMap.Request = SuperMap.Class({
@@ -12,31 +8,33 @@ SuperMap.Request = SuperMap.Class({
     },
 
     get: function (url, params) {
-        return this._processAsyn(this.parseUrl(url, params), 'GET');
+        var type = 'GET';
+        return this._processAsyn(this.parseUrl(url, params, type), type);
     },
 
     delete: function (url, params) {
-        return this._processAsyn(this.parseUrl(url, params), 'DELETE');
+        var type = 'DELETE';
+        return this._processAsyn(this.parseUrl(url, params, type), type);
     },
 
     post: function (url, params) {
-        return this._processAsyn(this.parseUrl(url), 'POST', params);
+        var type = 'POST';
+        return this._processAsyn(this.parseUrl(url, params, type), type, params);
     },
 
     put: function (url, params) {
-        return this._processAsyn(this.parseUrl(url), 'PUT', params);
+        var type = 'PUT';
+        return this._processAsyn(this.parseUrl(url, params, type), type, params);
     },
 
-    parseUrl: function (url, param) {
+    parseUrl: function (url, params, type) {
         url = url + '.json';
-        var separator = "";
         if (SuperMap.Credential.CREDENTIAL) {
-            separator = "?";
-            url += separator + SuperMap.Credential.CREDENTIAL.getUrlParameters();
+            url += '?' + SuperMap.Credential.CREDENTIAL.getUrlParameters();
         }
-        if (param) {
-            separator = (separator === "") ? "?" : "&";
-            url += separator + this._parseParamsToString(param);
+        if (type !== 'POST' && type !== 'PUT' && params && this._parseParamsToString(params) !== '') {
+            params = this.toJSON(params);
+            url += '&' + this._parseParamsToString(params);
         }
         return url;
     },

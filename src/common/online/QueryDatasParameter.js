@@ -3,7 +3,7 @@
  *  myDatas服务资源查询参数
  */
 require('../Base');
-require('../Resources');
+require('./Resources');
 SuperMap.QueryDatasParameter = SuperMap.Class({
 
     //String[]    数据作者名。可以根据数据作者名查询，默认查询全部。

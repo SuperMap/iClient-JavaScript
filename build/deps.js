@@ -8,6 +8,9 @@ var deps = {
         "online": [
             "./src/common/online/Online.js"
         ],
+		"iPortal": [
+            "./src/common/iPortal/Portal.js",
+        ],
         "iServer": [
             //Data
             "./src/common/iServer/FieldStatisticService.js",
