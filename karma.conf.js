@@ -11,8 +11,10 @@ module.exports = function (config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine', 'commonjs'],
-
+        frameworks: ['jasmine', 'browserify'],
+        browserify: {
+            debug: true
+        },
         // list of files  patterns to load in the browser
         // include:false表示不包含这些文件到浏览器中,注意添加顺序
         files: [
@@ -111,12 +113,12 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            'src/legacy/libs/SuperMap_Basic-8.1.1-14426.js': ['commonjs'],
-            './node_modules/whatwg-fetch/fetch.js': ['commonjs'],
-            './node_modules/fetch-jsonp/build/fetch-jsonp.js': ['commonjs'],
-            'src/legacy/libs/Lang/*.js': ['commonjs'],
-            'src/common/**/*.js': ['commonjs', 'coverage'],
-            'test/common/**/*Spec.js': ['commonjs']
+            'src/legacy/libs/SuperMap_Basic-8.1.1-14426.js': ['browserify'],
+            './node_modules/whatwg-fetch/fetch.js': ['browserify'],
+            './node_modules/fetch-jsonp/build/fetch-jsonp.js': ['browserify'],
+            'src/legacy/libs/Lang/*.js': ['browserify'],
+            'src/common/**/*.js': ['browserify', 'coverage'],
+            'test/common/**/*Spec.js': ['browserify']
         },
 
         // test results reporter to use

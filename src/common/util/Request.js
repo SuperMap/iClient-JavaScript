@@ -1,5 +1,5 @@
-require("whatwg-fetch/fetch");
-var fetchJsonp = require('fetch-jsonp/build/fetch-jsonp');
+require("whatwg-fetch");
+var fetchJsonp = require('fetch-jsonp');
 
 SuperMap.Support = {
     cors: ((window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()))
