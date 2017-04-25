@@ -1,68 +1,112 @@
 require("whatwg-fetch/fetch");
 var fetchJsonp = require('fetch-jsonp/build/fetch-jsonp');
 
+SuperMap.Support = {
+    cors: ((window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()))
+};
+
 SuperMap.Request = SuperMap.Class({
 
     initialize: function () {
     },
 
-    get: function (url, params) {
+    get: function (url, params, options) {
+        options = options || {};
         var type = 'GET';
-        return this._processAsyn(this.parseUrl(url, params, type), type);
+        url = url.endWith('.json') ? url : url + '.json';
+        url = params ? SuperMap.Util.urlAppend(url, this.getParameterString(params || {})) : url;
+        var tokenParam = '';
+        var separator = url.indexOf("?") > -1 ? "&" : "?";
+        if (SuperMap.Credential.CREDENTIAL && SuperMap.Credential.CREDENTIAL.getUrlParameters()) {
+            tokenParam = SuperMap.Credential.CREDENTIAL.getUrlParameters();
+        }
+        var requestLength = url.length;
+        if (requestLength <= 2000) {
+            url = tokenParam !== '' ? url + separator + tokenParam : url;
+            if (SuperMap.Support.cors) {
+                return this._fetch(url, params, options, type);
+            }
+            if (!SuperMap.Util.isInTheSameDomain(url)) {
+                url = url.replace('.json', '.jsonp');
+                return this._fetchJsonp(url, options);
+            }
+        }
+        url = url.substring(0, url.indexOf('?')) + '_method= GET';
+        url = tokenParam !== '' ? url + '&' + tokenParam : url;
+        return this.post(url, params, options);
     },
 
-    delete: function (url, params) {
+    delete: function (url, params, options) {
+        options = options || {};
+        url = url.endWith('.json') ? url : url + '.json';
         var type = 'DELETE';
-        return this._processAsyn(this.parseUrl(url, params, type), type);
+        var requestLength = url.length;
+        url = params ? SuperMap.Util.urlAppend(url, this.getParameterString(params || {})) : url;
+        var tokenParam = '';
+        var separator = url.indexOf("?") > -1 ? "&" : "?";
+        if (SuperMap.Credential.CREDENTIAL && SuperMap.Credential.CREDENTIAL.getUrlParameters()) {
+            tokenParam = SuperMap.Credential.CREDENTIAL.getUrlParameters();
+        }
+        if (requestLength <= 2000) {
+            if (SuperMap.Support.cors) {
+                url = tokenParam !== '' ? url + separator + tokenParam : url;
+                return this._fetch(url, params, options, type);
+            }
+        }
+        url = url.substring(0, url.indexOf('?')) + '_method= DELETE';
+        url = tokenParam !== '' ? url + '&' + tokenParam : url;
+        return this.post(url, params, options);
     },
 
-    post: function (url, params) {
+    post: function (url, params, options) {
+        options = options || {};
         var type = 'POST';
-        return this._processAsyn(this.parseUrl(url, params, type), type, params);
+        url = url.endWith('.json') ? url : url + '.json';
+        var separator = url.indexOf("?") > -1 ? "&" : "?";
+        if (SuperMap.Credential.CREDENTIAL && SuperMap.Credential.CREDENTIAL.getUrlParameters()) {
+            url += separator + SuperMap.Credential.CREDENTIAL.getUrlParameters();
+        }
+        return this._fetch(url, params, options, type);
     },
 
-    put: function (url, params) {
+    put: function (url, params, options) {
+        options = options || {};
         var type = 'PUT';
-        return this._processAsyn(this.parseUrl(url, params, type), type, params);
+        url = url.endWith('.json') ? url : url + '.json';
+        var separator = url.indexOf("?") > -1 ? "&" : "?";
+        if (SuperMap.Credential.CREDENTIAL && SuperMap.Credential.CREDENTIAL.getUrlParameters()) {
+            url += separator + SuperMap.Credential.CREDENTIAL.getUrlParameters();
+        }
+        return this._fetch(url, params, options, type);
     },
 
-    parseUrl: function (url, params, type) {
-        url = url + '.json';
-        if (SuperMap.Credential.CREDENTIAL) {
-            url += '?' + SuperMap.Credential.CREDENTIAL.getUrlParameters();
-        }
-        if (type !== 'POST' && type !== 'PUT' && params && this._parseParamsToString(params) !== '') {
-            params = this.toJSON(params);
-            url += '&' + this._parseParamsToString(params);
-        }
-        return url;
-    },
-
-    _processAsyn: function (url, type, params) {
-        if (!SuperMap.Util.isInTheSameDomain(url) && type === 'GET') {
-            url = url.replace('.json', '.jsonp');
-            return fetchJsonp(url, {method: type})
-                .then(function (response) {
-                    return response.json();
-                }).then(function (json) {
-                    return json;
-                });
-        }
-        if (type === 'GET' || type === 'DELETE') {
-            return fetch(url, {method: type})
-                .then(function (response) {
-                    return response.json();
-                }).then(function (json) {
-                    return json;
-                });
+    _fetch: function (url, params, options, type) {
+        if (options.timeout) {
+            return this.timeout(options.timeout, fetch(url, {
+                method: type,
+                headers: options.headers,
+                body: type === 'PUT' || type === 'POST' ? params : undefined,
+                credentials: options.withCredentials ? 'include' : 'omit',
+                mode: 'cors'
+            }).then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                return json;
+            }));
         }
         return fetch(url, {
             method: type,
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: JSON.stringify(params)
+            body: type === 'PUT' || type === 'POST' ? params : undefined,
+            headers: options.headers
+        }).then(function (response) {
+            return response.json();
+        }).then(function (json) {
+            return json;
         })
+    },
+
+    _fetchJsonp: function (url, options) {
+        return fetchJsonp(url, {method: 'GET', timeout: options.timeout})
             .then(function (response) {
                 return response.json();
             }).then(function (json) {
@@ -70,56 +114,52 @@ SuperMap.Request = SuperMap.Class({
             });
     },
 
-    _parseParamsToString: function (queryParams) {
-        var params = '';
-        if (!queryParams) {
-            return params;
-        }
-        var queryMap = {};
-        for (key in queryParams) {
-            if (queryParams[key] instanceof Array) {
-                queryMap[key] = this._ArrayToString(queryParams[key]);
-                continue;
-            }
-            queryMap[key] = queryParams[key];
-        }
-        for (var i in queryMap) {
-            params += i + '=' + queryMap[i] + '&';
-        }
-        return params.substring(0, params.length - 1);
+    timeout: function (seconds, promise) {
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                reject(new Error("timeout"))
+            }, seconds)
+            promise.then(resolve, reject)
+        })
     },
 
-    _ArrayToString: function (array) {
-        if (!(array instanceof Array)) {
-            return array;
-        }
-        var arrayStr = '[';
-        for (var i = 0; i < array.length; i++) {
-            if (typeof array[i] !== 'string') {
-                return "[" + array.toString() + "]";
+    getParameterString: function (params) {
+        var paramsArray = [];
+        for (var key in params) {
+            var value = params[key];
+            if ((value != null) && (typeof value !== 'function')) {
+                var encodedValue;
+                if (typeof value === 'object' && value.constructor === Array) {
+                    var encodedItemArray = [];
+                    var item;
+                    for (var itemIndex = 0, len = value.length; itemIndex < len; itemIndex++) {
+                        item = value[itemIndex];
+                        encodedItemArray.push(encodeURIComponent(
+                            (item === null || item === undefined) ? "" : item)
+                        );
+                    }
+                    encodedValue = '[' + encodedItemArray.join(",") + ']';
+                }
+                else {
+                    encodedValue = encodeURIComponent(value);
+                }
+                paramsArray.push(encodeURIComponent(key) + "=" + encodedValue);
             }
-            arrayStr += "\"" + array[i] + "\"";
-            if (i !== array.length - 1) {
-                arrayStr += ',';
-                continue;
-            }
-            arrayStr += ']';
         }
-        return arrayStr;
-    },
-
-    toJSON: function (object) {
-        var json = {};
-        for (var key in object) {
-            if (typeof object[key] === 'function') {
-                continue;
-            }
-            json[key] = object[key];
-        }
-        return json;
+        return paramsArray.join("&");
     }
 
 });
+
+String.prototype.endWith = function (s) {
+    if (s === null || s === "" || this.length === 0 || s.length > this.length)
+        return false;
+    if (this.substring(this.length - s.length) == s)
+        return true;
+    else
+        return false;
+    return true;
+}
 
 module.exports = function () {
     return new SuperMap.Request();

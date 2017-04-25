@@ -3,6 +3,7 @@
  * 服务基类
  */
 require('../core/Base');
+require('../../common/util/Request');
 
 ServiceBase = L.Evented.extend({
     options: {

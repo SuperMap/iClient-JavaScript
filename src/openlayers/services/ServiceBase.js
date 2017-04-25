@@ -3,6 +3,7 @@
  * 服务基类
  */
 require('../core/Base');
+require('../../common/util/Request');
 
 ol.supermap.ServiceBase = function (url, options) {
     ol.Observable.call(this);

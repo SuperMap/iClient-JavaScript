@@ -2,7 +2,6 @@
  * Online myData服务
  */
 require('../util/Request');
-require('./DataInfo');
 SuperMap.OnlineData = SuperMap.Class({
     //MD5
     MD5: null,

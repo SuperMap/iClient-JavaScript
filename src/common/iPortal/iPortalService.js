@@ -53,7 +53,10 @@ SuperMap.iPortalService = SuperMap.Class({
             tags: this.tags,
             thumbnail: this.thumbnail
         };
-        return this.request.put(this.serviceUrl, serviceUpdateParam);
+        var options = {
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        };
+        return this.request.put(this.serviceUrl, JSON.stringify(serviceUpdateParam), options);
     }
 
 });

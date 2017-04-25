@@ -4,6 +4,9 @@ var deps = {
             "./src/common/Base.js",
             "./src/common/REST.js"
         ],
+        "util":[
+            "./src/common/util/Request.js",
+        ],
         "format": [
             "./src/common/format/GeoJSON.js"
         ],
