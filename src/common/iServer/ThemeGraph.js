@@ -359,7 +359,7 @@ SuperMap.ThemeGraph.fromObj = function (obj) {
     res.graphText = SuperMap.ThemeGraphText.fromObj(obj);
     res.offset = SuperMap.ThemeOffset.fromObj(obj);
     for (var i = 0; i < len; i++) {
-        res.items.push(ThemeGraphItem.fromObj(itemsG[i]));
+        res.items.push(SuperMap.ThemeGraphItem.fromObj(itemsG[i]));
     }
     return res;
 };

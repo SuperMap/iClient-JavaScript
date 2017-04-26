@@ -40,7 +40,7 @@ TileVectorLayer = L.VectorGrid.extend({
 
         me.options.url = url;
         if (url && url.indexOf("/") === (url.length - 1)) {
-            url = url.substr(0, str.length - 1);
+            url = url.substr(0, url.length - 1);
             me.options.url = url;
         }
         me._initLayerUrl();
@@ -283,7 +283,7 @@ TileVectorLayer = L.VectorGrid.extend({
         me.resolutions = me._resolutionsFromScales(me.scales);
         var len = me.resolutions.length;
         me.scales = [len];
-        for (i = 0; i < len; i++) {
+        for (var i = 0; i < len; i++) {
             me.scales[i] = SuperMap.Util.getScaleFromResolutionDpi(
                 me.resolutions[i], me.dpi, me.units, me.datumAxis
             );

@@ -96,6 +96,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
      *
      */
     destroy: function () {
+        var me = this;
         SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
         me.returnContent = null;
         me.format = null;

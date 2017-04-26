@@ -95,7 +95,7 @@ ol.supermap.WebMap.prototype.createMap = function (options) {
 ol.supermap.WebMap.prototype.getResolutionsFromScales = function (scales, dpi, units, datum) {
     var resolutions = [];
     for (var i = 0; i < scales.length; i++) {
-        resolutions.push(L.Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
+        resolutions.push(SuperMap.Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
     }
     return resolutions;
 };
@@ -238,7 +238,7 @@ ol.supermap.WebMap.prototype.createTiandituLayer = function (layerInfo, epsgCode
         if (type == "ter")type = "cta"
     }
     tdtURL = tdtURL.replace("{type}", type).replace("{proj}", proj);
-    layer = new ol.layer.Tile({
+    var layer = new ol.layer.Tile({
         source: new ol.source.Tianditu({
             url: tdtURL,
             matrixSet: proj,
@@ -290,7 +290,7 @@ ol.supermap.WebMap.prototype.createVectorLayer = function (layerInfo) {
         for (var setNameIndex = 0; setNameIndex < datasets.length; setNameIndex++) {
             var dataset = datasets[setNameIndex];
             if (dataset.visible) {
-                var sqlParam = new GetFeaturesBySQLParameters({
+                var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
                     queryParameter: {
                         name: dataset.name + "@" + datasourceName,
                         attributeFilter: "SMID >0"

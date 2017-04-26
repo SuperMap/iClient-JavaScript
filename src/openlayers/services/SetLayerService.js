@@ -9,7 +9,7 @@ require('../../common/iServer/SetLayerStatusService');
 
 ol.supermap.SetLayerService = function (url, options) {
     ol.supermap.ServiceBase.call(this, url, options);
-    var end = this.options.url.substr(me.options.url.length - 1, 1);
+    var end = this.options.url.substr(this.options.url.length - 1, 1);
     this.options.url += (end === "/") ? '' : '/';
 
 };

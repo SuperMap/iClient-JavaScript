@@ -123,7 +123,7 @@ L.supermap.CartoCSSToLeaflet = {
             return style;
         }
         if (type === "POINT") {
-            size = Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]) || 8;
+            var size = Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]) || 8;
             var symbolParameters = {
                 "transparent": true,
                 "resourceType": "SYMBOLMARKER",
@@ -136,7 +136,7 @@ L.supermap.CartoCSSToLeaflet = {
             return style;
         }
         if (type === "TEXT") {
-            shader = feature.properties.textStyle || layerStyle;
+            shader = feature.properties.textStyle || layerInfo.layerStyle;
             //设置文本是否使用粗体
             style.fontWeight = shader.bold ? shader.fontWeight : "normal";
             //设置文本的尺寸（对应fontHeight属性）和行高，行高iserver不支持，默认5像素

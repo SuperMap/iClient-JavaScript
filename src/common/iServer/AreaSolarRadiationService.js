@@ -61,7 +61,7 @@ SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAn
 
         var parameterObject = new Object();
 
-        if (parameter instanceof AreaSolarRadiationService) {
+        if (parameter instanceof SuperMap.AreaSolarRadiationParameter) {
             me.url += 'datasets/' + parameter.dataset + '/solarradiation';
         }
 
