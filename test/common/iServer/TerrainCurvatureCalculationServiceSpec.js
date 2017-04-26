@@ -44,7 +44,7 @@ describe('testTerrainCurvatureCalculationService_processAsync',function(){
 
         setTimeout(function(){
             try{
-                var terrainCurvatureCalculationResult = analystEventArgsSystem.originalResult;
+                var terrainCurvatureCalculationResult = analystEventArgsSystem.result;
                 expect(terrainCurvatureCalculationResult).not.toBeNull();
                 expect(terrainCurvatureCalculationResult.succeed).toBeTruthy();
                 expect(terrainCurvatureCalculationResult.averageCurvatureResult.dataset).toBe("CurvatureA_Test@Jingjin");

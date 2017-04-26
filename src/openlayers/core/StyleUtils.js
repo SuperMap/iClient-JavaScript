@@ -1,6 +1,6 @@
 require('./Base');
-require('../overlay/DeafultCanvasStyle');
-require('../overlay/StyleMap');
+require('../overlay/vectortile/DeafultCanvasStyle');
+require('../overlay/vectortile/StyleMap');
 
 ol.supermap.StyleUtils = {
     getValidStyleFromLayerInfo: function (layerInfo, feature, url) {

@@ -7,7 +7,6 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-</body>
 
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/echarts/3.4.0/echarts.min.js"></script>
@@ -317,34 +316,38 @@
             }]
         });
 
-        L.supermap.queryService(url2).queryBySQL(param).on("complete", function (serviceResult) {
-            resultLayer = L.geoJSON(serviceResult.result, {
-                coordsToLatLng: function (coords) {
-                    var latlng = L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
-                    latlng.alt = coords[2];
-                    return latlng;
-                },
-            }).on('click', function (e) {
-                var city = e.layer.feature.properties.NAME;
-                chart.setOption({
-                    color: [
-                        colorMap[city]
-                    ],
-                    legend: {
-                        data: [city]
-                    },
-                    series: [
-                        {
-                            name: city,
-                            type: 'scatter',
-                            itemStyle: itemStyle,
-                            data: dataMap[city]
-                        }
-                    ]
+        L.supermap
+                .queryService(url2)
+                .queryBySQL(param, function (serviceResult) {
+                    serviceResult.result.recordsets.map(function (record) {
+                        resultLayer = L.geoJSON(record.features, {
+                            coordsToLatLng: function (coords) {
+                                var latlng = L.CRS.EPSG3857.unproject(L.point(coords[0], coords[1]));
+                                latlng.alt = coords[2];
+                                return latlng;
+                            },
+                        }).on('click', function (e) {
+                            var city = e.layer.feature.properties.NAME;
+                            chart.setOption({
+                                color: [
+                                    colorMap[city]
+                                ],
+                                legend: {
+                                    data: [city]
+                                },
+                                series: [
+                                    {
+                                        name: city,
+                                        type: 'scatter',
+                                        itemStyle: itemStyle,
+                                        data: dataMap[city]
+                                    }
+                                ]
+                            });
+                            map.panTo(e.latlng);
+                        }, {maxWidth: 700}).addTo(map);
+                    });
                 });
-                map.panTo(e.latlng);
-            }, {maxWidth: 700}).addTo(map);
-        });
     }
     function clearLayer() {
         if (resultLayer) {
@@ -363,4 +366,5 @@
                 map.doubleClickZoom.enable();
             })
 </script>
+</body>
 </html>

@@ -7,6 +7,10 @@
  *  - <SuperMap.ServiceBase>
  */
 require('./ServiceBase');
+require('./ServerTheme');
+require('./Grid');
+require('./Image');
+require('./Vector');
 SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -79,13 +83,18 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * result - {Object} 服务器返回的结果对象。
      */
     serviceProcessCompleted: function (result) {
+        var me = this, existRes, layers, len;
         result = SuperMap.Util.transformResult(result);
-        result = (result && result.length > 0) ? result[0] : null;
-        this.events.triggerEvent("processCompleted", {result: result});
+
+        existRes = !!result && result.length > 0;
+        layers = existRes ? result[0].subLayers.layers : null;
+        len = layers ? layers.length : 0;
+        me.handleLayers(len, layers);
+        me.events.triggerEvent("processCompleted", {result:result[0]});
     },
 
     /**
-     * TODO 专题图时候可能会用到，先放在这
+     * TODO 专题图时候可能会用到
      * Method: handleLayers
      * 处理iserver 新增图层组数据 (subLayers.layers 中可能还会含有 subLayers.layers)
      *
@@ -98,28 +107,28 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
         if (len) {
             for (var i = 0; i < len; i++) {
                 if (layers[i].subLayers && layers[i].subLayers.layers && layers[i].subLayers.layers.length > 0) {
-                    this.handleLayers(layers[i].subLayers.layers.length, layers[i].subLayers.layers);
+                    me.handleLayers(layers[i].subLayers.layers.length, layers[i].subLayers.layers);
                 }
                 else {
                     var type = layers[i].ugcLayerType;
                     switch (type) {
                         case 'THEME':
-                            tempLayer = new ServerTheme();
+                            tempLayer = new SuperMap.ServerTheme();
                             tempLayer.fromJson(layers[i]);
                             layers[i] = tempLayer;
                             break;
                         case 'GRID':
-                            tempLayer = new Grid();
+                            tempLayer = new SuperMap.Grid();
                             tempLayer.fromJson(layers[i]);
                             layers[i] = tempLayer;
                             break;
                         case 'IMAGE':
-                            tempLayer = new Image();
+                            tempLayer = new SuperMap.Image();
                             tempLayer.fromJson(layers[i]);
                             layers[i] = tempLayer;
                             break;
                         case 'VECTOR':
-                            tempLayer = new Vector();
+                            tempLayer = new SuperMap.Vector();
                             tempLayer.fromJson(layers[i]);
                             layers[i] = tempLayer;
                             break;

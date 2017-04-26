@@ -116,11 +116,11 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
         }
 
         var analystResult = SuperMap.REST.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
-        if (!analystResult && result.resultGeometry) {
+        if (analystResult.resultGeometry) {
             var geoJSONFormat = new SuperMap.Format.GeoJSON();
-            analystResult = JSON.parse(geoJSONFormat.write(result.resultGeometry));
+            result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
         }
-        return analystResult;
+        return result;
     },
     CLASS_NAME: "SuperMap.REST.BufferAnalystService"
 });

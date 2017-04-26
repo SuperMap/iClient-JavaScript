@@ -1,5 +1,6 @@
 require('../core/Base');
-
+require('./graphic/CircleStyle');
+require('./graphic/Graphic');
 L.supermap.GraphicGroup = L.Path.extend({
 
         initialize: function (graphics, options) {

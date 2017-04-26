@@ -9,20 +9,27 @@ ServiceBase = L.Evented.extend({
     options: {
         url: null
     },
-    initialize: function (url, options) {
+    initialize: function (url,options) {
+        if (url) {
+            url = (url.indexOf("/") !== url.length - 1) ?
+                url : url.substr(0, url.length - 1);
+        }
         this.options.url = url;
         L.setOptions(this, options);
+        this.fire("initialized", this);
+    },
+    processCompleted: function (servicesResult) {
+       this.callback(servicesResult.result);
     },
 
-    processCompleted: function (serverResult) {
-        this.fire('complete', {result: serverResult.result});
+    processFailed: function () {
 
     },
-    processFailed: function (failedResult) {
-        var error = failedResult.error ? failedResult.error : failedResult;
-        this.fire('failed', {error: error});
-        console.log(error.errorMsg);
+
+    destroy: function () {
+        this.fire("destroy", this);
     }
+
 });
 
 module.exports = function (url, options) {

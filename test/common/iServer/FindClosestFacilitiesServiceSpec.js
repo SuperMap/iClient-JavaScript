@@ -56,7 +56,7 @@ describe('testFindClosestFacilitiesService_processAsync', function () {
 
         setTimeout(function () {
             try {
-                var analystResult = serviceSucceedEventArgsSystem.result;
+                var analystResult = serviceSucceedEventArgsSystem.result.facilityPathList;
                 expect(closestFacilitiesService).not.toBeNull();
                 expect(serviceSucceedEventArgsSystem).not.toBeNull();
                 expect(analystResult[0].edgeFeatures).not.toBeNull();

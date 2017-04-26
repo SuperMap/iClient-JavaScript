@@ -8,7 +8,6 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-</body>
 
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
@@ -82,21 +81,21 @@
                 semicircleLineSegment: 10
             })
         });
-        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams)
-                .on('complete', function (serviceResult) {
-                    resultLayer = L.geoJSON(serviceResult.result).addTo(map);
-                    //查询出缓冲区内信号影响范围内的工厂
-                    queryService = L.supermap.queryService(baseUrl);
-                    queryByGeometryParameters = new SuperMap.QueryByGeometryParameters({
-                        queryParams: [new SuperMap.FilterParameter({name: "Company@Changchun.2"})],
-                        geometry: resultLayer,
-                        spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT
-                    });
-                    queryService.queryByGeometry(queryByGeometryParameters)
-                            .on('complete', function (serviceResult) {
-                                resultLayer1 = L.geoJSON(serviceResult.result, {color: "yellow"}).addTo(map);
-                            });
-                });
+        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams, function (serviceResult) {
+            resultLayer = L.geoJSON(serviceResult.result).addTo(map);
+            //查询出缓冲区内信号影响范围内的工厂
+            queryService = L.supermap.queryService(baseUrl);
+            queryByGeometryParameters = new SuperMap.QueryByGeometryParameters({
+                queryParams: [new SuperMap.FilterParameter({name: "Company@Changchun.2"})],
+                geometry: resultLayer,
+                spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT
+            });
+            queryService.queryByGeometry(queryByGeometryParameters, function (serviceResult) {
+                var result = serviceResult.result;
+                resultLayer1 = L.geoJSON(result.recordsets[0].features).addTo(map);
+            });
+        });
     }
 </script>
+</body>
 </html>

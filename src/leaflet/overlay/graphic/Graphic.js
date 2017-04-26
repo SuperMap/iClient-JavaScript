@@ -1,4 +1,4 @@
-require('../core/Base');
+require('../../core/Base');
 
 L.supermap.Graphic = L.Class.extend({
 

@@ -8,7 +8,6 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-</body>
 
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
@@ -41,12 +40,11 @@
             deleteExistResultDataset: true
         });
         //向iServer发起地形曲率计算请求
-        terrainCurvatureCalculationService.terrainCurvatureCalculate(terrainCurvatureCalculationParameters)
-                .on('complete', function (serviceResult) {
-                    terrainCurvatureCalculationResult = serviceResult.result;
-                    //用栅格专题图展示分析结果
-                    showAnalysisResult_ThemeGridRange();
-                });
+        terrainCurvatureCalculationService.terrainCurvatureCalculate(terrainCurvatureCalculationParameters, function (serviceResult) {
+            terrainCurvatureCalculationResult = serviceResult.result;
+            //用栅格专题图展示分析结果
+            showAnalysisResult_ThemeGridRange();
+        });
     }
 
     function showAnalysisResult_ThemeGridRange() {
@@ -94,20 +92,18 @@
             joinItems: null,
             themes: [themeGridRange]
         });
-        themeService.getThemeStatus(themeParameters)
-                .on('complete', function (serviceResult1) {
-                    var result = serviceResult1.result;
-                    if (result && result.newResourceID) {
-                        themeLayer = L.supermap.tiledMapLayer(baseUrl, {
-                            noWrap: true,
-                            cacheEnabled: false,
-                            transparent: true,
-                            layersID: result.newResourceID
-                        }).addTo(map);
-                    }
-                }).on('failed', function (error) {
-            alert(error.errorMsg);
-        });
+        themeService.getThemeInfo(themeParameters, function (serviceResult1) {
+            var result = serviceResult1.result;
+            if (result && result.newResourceID) {
+                themeLayer = L.supermap.tiledMapLayer(baseUrl, {
+                    noWrap: true,
+                    cacheEnabled: false,
+                    transparent: true,
+                    layersID: result.newResourceID
+                }).addTo(map);
+            }
+        })
     }
 </script>
+</body>
 </html>

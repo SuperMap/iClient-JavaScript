@@ -13,7 +13,7 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
      *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
-    format: SuperMap.Format.GEOJSON,
+    format: SuperMap.DataFormat.GEOJSON,
 
     initialize: function (url, options) {
         SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
@@ -32,7 +32,7 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
     },
 
     /**
-     * Method: getMapStatusCompleted
+     * Method: serviceProcessCompleted
      * 分析完成，执行此方法。
      *
      * Parameters:
@@ -41,13 +41,13 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
     serviceProcessCompleted: function (result) {
         var me = this, analystResult;
         result = SuperMap.Util.transformResult(result);
-        if (result && me.format === SuperMap.Format.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+        if (result && me.format === SuperMap.DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
             analystResult = me.toGeoJSONResult(result);
         }
         if (!analystResult) {
             analystResult = result;
         }
-        me.events.triggerEvent("processCompleted", {result: analystResult, originalResult: result});
+        me.events.triggerEvent("processCompleted", {result: analystResult});
     },
     /**
      * Method: toGeoJSONResult
@@ -60,21 +60,18 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
         if (!result) {
             return null;
         }
-        var geoJSONResult;
         var geoJSONFormat = new SuperMap.Format.GeoJSON();
         if (result.recordsets) {
-            geoJSONResult = [];
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
-                    var feature = JSON.parse(geoJSONFormat.write(recordsets[i].features));
-                    geoJSONResult.push(feature);
+                    recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
                 }
             }
         } else if (result.recordset && result.recordset.features) {
-            geoJSONResult = JSON.parse(geoJSONFormat.write(result.recordset.features));
+            result.recordset.features = JSON.parse(geoJSONFormat.write(result.recordset.features));
         }
-        
-        return geoJSONResult;
+
+        return result;
     },
     CLASS_NAME: "SuperMap.REST.SpatialAnalystBase"
 });

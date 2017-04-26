@@ -5,8 +5,8 @@
  *      L.superMap.tiledVectorLayer(url).addTo(map);
  */
 require('../core/Base');
-require('./VectorGrid');
-var CartoCSSToLeaflet = require('./CartoCSSToLeaflet');
+require('./vectortile/VectorGrid');
+var CartoCSSToLeaflet = require('./carto/CartoCSSToLeaflet');
 var fetchJsonp = require('fetch-jsonp');
 
 TileVectorLayer = L.VectorGrid.extend({

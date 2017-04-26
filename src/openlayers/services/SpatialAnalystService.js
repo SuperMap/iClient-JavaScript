@@ -28,6 +28,7 @@ ol.inherits(ol.supermap.SpatialAnalystService, ol.supermap.ServiceBase);
  * 地区太阳辐射
  * @param params {AreaSolarRadiationParameters}
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult = function (params, resultFormat) {
     var me = this;
@@ -47,6 +48,7 @@ ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult = functi
  * 缓冲区分析
  * @param params {DatasetBufferAnalystParameters}
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.SpatialAnalystService.prototype.bufferAnalysis = function (params, resultFormat) {
     var me = this;
@@ -66,6 +68,7 @@ ol.supermap.SpatialAnalystService.prototype.bufferAnalysis = function (params, r
  * 点密度分析
  * @param params {DensityKernelAnalystParameters}
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.SpatialAnalystService.prototype.densityAnalysis = function (params, resultFormat) {
     var me = this;
@@ -85,6 +88,7 @@ ol.supermap.SpatialAnalystService.prototype.densityAnalysis = function (params, 
  * 动态分段分析
  * @param params {GenerateSpatialDataParameters}
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.SpatialAnalystService.prototype.generateSpatialData = function (params, resultFormat) {
     var me = this;
@@ -104,6 +108,7 @@ ol.supermap.SpatialAnalystService.prototype.generateSpatialData = function (para
  * 空间关系分析
  * @param params {GeoRelationAnalystParameters}
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis = function (params, resultFormat) {
     var me = this;
@@ -123,6 +128,7 @@ ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis = function (para
  * 插值分析
  * @param params {InterpolationRBFAnalystParameters}
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis = function (params, resultFormat) {
     var me = this;
@@ -142,6 +148,7 @@ ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis = function (pa
  * 栅格代数运算
  * @param params {MathExpressionAnalysisParameters}
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis = function (params, resultFormat) {
     var me = this;
@@ -161,6 +168,7 @@ ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis = function (p
  * 叠加分析
  * @param params {DatasetOverlayAnalystParameters}
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.SpatialAnalystService.prototype.overlayAnalysis = function (params, resultFormat) {
     var me = this;
@@ -180,6 +188,7 @@ ol.supermap.SpatialAnalystService.prototype.overlayAnalysis = function (params, 
  * 路由测量计算
  * @param params {RouteCalculateMeasureParameters}
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure = function (params, resultFormat) {
     var me = this;
@@ -199,6 +208,7 @@ ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure = function (pa
  * 路由定位
  * @param params {RouteLocatorParameters}
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.SpatialAnalystService.prototype.routeLocate = function (params, resultFormat) {
     var me = this;
@@ -218,6 +228,7 @@ ol.supermap.SpatialAnalystService.prototype.routeLocate = function (params, resu
  * 表面分析
  * @param params {DatasetSurfaceAnalystParameters}
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis = function (params, resultFormat) {
     var me = this;
@@ -237,6 +248,7 @@ ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis = function (params, 
  * 地形曲率计算
  * @param params {TerrainCurvatureCalculationParameters}
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate = function (params, resultFormat) {
     var me = this;
@@ -256,6 +268,7 @@ ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate = function
  * 泰森多边形分析
  * @param params {DatasetThiessenAnalystParameters}
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.SpatialAnalystService.prototype.thiessenAnalysis = function (params, resultFormat) {
     var me = this;
@@ -333,7 +346,7 @@ ol.supermap.SpatialAnalystService.prototype._processParams = function (params) {
     return params;
 };
 ol.supermap.SpatialAnalystService.prototype._processFormat = function (resultFormat) {
-    return (resultFormat) ? resultFormat : SuperMap.Format.GEOJSON;
+    return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
 };
 ol.supermap.SpatialAnalystService.prototype.convertGeometry = function (ol3Geometry) {
     return ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(ol3Geometry)));

@@ -3,14 +3,10 @@
  * 地图查询服务类
  * 提供：范围查询，SQL查询，几何查询，距离查询
  * 用法：
- *      L.superMap.queryService(url).queryByBounds{
- *           filter:{name:name},
- *           bounds:bounds
- *      }.on("complete",function(result){
+ *      L.superMap.queryService(url)
+ *      .queryByBounds(param,function(result){
  *          //doSomething
- *      }).on("failed",function(result){
- *          //doSomething
- *      });
+ *      })
  */
 require('./ServiceBase');
 require('../../common/iServer/QueryByBoundsService');
@@ -27,84 +23,93 @@ QueryService = ServiceBase.extend({
     /**
      * 地图bounds查询服务
      * @param params:
-     *     <QueryByBoundsParameters>
+     * <SuperMap.QueryByBoundsParameters>
+     * @param callback
      * @param resultFormat
+     * <SuperMap.DataFormat>
+     *
      */
-    queryByBounds: function (params, resultFormat) {
-        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
+    queryByBounds: function (params, callback, resultFormat) {
+        var me = this;
         var queryService = new SuperMap.REST.QueryByBoundsService(me.options.url, {
             eventListeners: {
                 scope: me,
-                processCompleted: me.processCompleted,
-                processFailed: me.processFailed
+                processCompleted: callback,
+                processFailed: callback
             },
-            format: format
+            format: me._processFormat(resultFormat)
         });
 
-        queryService.processAsync(param);
+        queryService.processAsync(me._processParams(params));
         return me;
     },
 
     /**
      * 地图距离查询服务
      * @param params:
-     *     <QueryByDistanceParameters>
+     * <QueryByDistanceParameters>
+     * @param callback
      * @param resultFormat
+     * <SuperMap.DataFormat>
      */
-    queryByDistance: function (params, resultFormat) {
-        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
+    queryByDistance: function (params, callback, resultFormat) {
+        var me = this;
         var queryByDistanceService = new SuperMap.REST.QueryByDistanceService(me.options.url, {
             eventListeners: {
                 scope: me,
-                processCompleted: me.processCompleted,
-                processFailed: me.processFailed
+                processCompleted: callback,
+                processFailed: callback
             },
-            format: format
+            format: me._processFormat(resultFormat)
         });
 
-        queryByDistanceService.processAsync(param);
+        queryByDistanceService.processAsync(me._processParams(params));
         return me;
     },
 
     /**
      * 地图SQL查询服务
      * @param params:
-     *     <QueryBySQLParameters>
+     * <SuperMap.QueryBySQLParameters>
+     * @param callback
      * @param resultFormat
+     * <SuperMap.DataFormat>
      */
-    queryBySQL: function (params, resultFormat) {
-        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
+    queryBySQL: function (params, callback, resultFormat) {
+        var me = this;
         var queryBySQLService = new SuperMap.REST.QueryBySQLService(me.options.url, {
             eventListeners: {
                 scope: me,
-                processCompleted: me.processCompleted,
-                processFailed: me.processFailed
+                processCompleted: callback,
+                processFailed: callback
             },
-            format: format
+            format: me._processFormat(resultFormat)
         });
 
-        queryBySQLService.processAsync(param);
+        queryBySQLService.processAsync(me._processParams(params));
         return me;
     },
 
     /**
      * 地图几何查询服务
      * @param params:
-     *     <QueryByGeometryParameters>
+     * <SuperMap.QueryByGeometryParameters>
+     * @param callback
      * @param resultFormat
+     * <SuperMap.DataFormat>
      */
-    queryByGeometry: function (params, resultFormat) {
-        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
+    queryByGeometry: function (params, callback, resultFormat) {
+        var me = this;
         var queryByGeometryService = new SuperMap.REST.QueryByGeometryService(me.options.url, {
             eventListeners: {
                 scope: me,
-                processCompleted: me.processCompleted,
-                processFailed: me.processFailed
+                processCompleted: callback,
+                processFailed: callback
             },
-            format: format
+            format: me._processFormat(resultFormat)
         });
 
-        queryByGeometryService.processAsync(param);
+        queryByGeometryService.processAsync(me._processParams(params));
         return me;
     },
 
@@ -136,8 +141,9 @@ QueryService = ServiceBase.extend({
 
         return params;
     },
+
     _processFormat: function (resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.Format.GEOJSON;
+        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
     }
 });
 

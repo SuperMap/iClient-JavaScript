@@ -69,10 +69,10 @@ describe('testQueryByBoundsService_processAsync',function(){
 
         setTimeout(function() {
             try{
-                var queryResult = serviceCompletedEventArgsSystem.result;
+                var queryResult = serviceCompletedEventArgsSystem.result.recordsets[0].features;
                 expect(queryResult).not.toBeNull();
-                expect(serviceCompletedEventArgsSystem.result[0].type).toBe("FeatureCollection");
-                expect(serviceCompletedEventArgsSystem.result[0].features.length).toEqual(15);
+                expect(queryResult.type).toBe("FeatureCollection");
+                expect(queryResult.features.length).toEqual(15);
                 queryByBoundsService.destroy();
                 expect(queryByBoundsService.EVENT_TYPES).toBeNull();
                 expect(queryByBoundsService.events).toBeNull();

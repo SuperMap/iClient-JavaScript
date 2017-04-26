@@ -8,8 +8,6 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-</body>
-
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
 <script type="text/javascript">
@@ -24,20 +22,20 @@
     });
     L.supermap.tiledMapLayer(url).addTo(map);
     resultLayer = L.featureGroup().addTo(map);
-    measureService('area');
+    measureArea();
 
-    function measureService(type) {
-        if (type === "area") {
-            var polygon = L.polygon([[24, 100], [40, 100], [40, 120], [24, 120], [24, 100]], {color: "red"});
-            resultLayer.addLayer(polygon);
-            var areaMeasureParam = new SuperMap.MeasureParameters(polygon);
-            L.supermap.measureService(url).measureArea(areaMeasureParam).on("complete", function (serviceResult) {
-                var content = "面积： " + serviceResult.result.area + "  平方米";
-                polygon.bindPopup(content).openPopup(polygon.getCenter());
-            });
-        } else {
-            alert('类型错误');
-        }
+    function measureArea() {
+        var polygon = L.polygon([[24, 100], [40, 100], [40, 120], [24, 120], [24, 100]], {color: "red"});
+        resultLayer.addLayer(polygon);
+        var areaMeasureParam = new SuperMap.MeasureParameters(polygon);
+        L.supermap
+                .measureService(url)
+                .measureArea(areaMeasureParam, function (serviceResult) {
+                    var content = "面积： " + serviceResult.result.area + "  平方米";
+                    polygon.bindPopup(content).openPopup(polygon.getCenter());
+                });
+
     }
 </script>
+</body>
 </html>

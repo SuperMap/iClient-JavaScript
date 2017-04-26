@@ -122,9 +122,9 @@ SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
         if (!result.code || (result.code && ((result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304))) {
             me.events && me.events.triggerEvent("processCompleted", {result: result});
         }
-        //在没有tonken是返回的是200，但是其实是没有权限，所以这里也应该是触发失败事件
+        //在没有token是返回的是200，但是其实是没有权限，所以这里也应该是触发失败事件
         else {
-            me.events.triggerEvent("processFailed", result);
+            me.events.triggerEvent("processFailed", {error: result});
         }
     },
 

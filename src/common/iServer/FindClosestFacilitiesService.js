@@ -120,27 +120,24 @@ SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.Networ
         if (!result || !result.facilityPathList) {
             return result;
         }
-        //只处理route ,pathGuide,edgeFeatures,nodeFeatures
-        var analystResults = [];
+
         var geoJSONFormat = new SuperMap.Format.GeoJSON();
-        result.facilityPathList.forEach(function (path) {
-            var analystResult = {};
+        result.facilityPathList.map(function (path) {
             if (path.route) {
-                analystResult.route = JSON.parse(geoJSONFormat.write(path.route));
+                path.route = JSON.parse(geoJSONFormat.write(path.route));
             }
             if (path.pathGuideItems) {
-                analystResult.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
+                path.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
 
             }
             if (path.edgeFeatures) {
-                analystResult.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
+                path.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
             }
             if (path.nodeFeatures) {
-                analystResult.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
+                path.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
             }
-            analystResults.push(analystResult);
         });
-        return analystResults;
+        return result;
     },
 
     CLASS_NAME: "SuperMap.REST.FindClosestFacilitiesService"

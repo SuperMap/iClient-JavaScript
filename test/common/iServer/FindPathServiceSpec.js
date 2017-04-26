@@ -62,7 +62,7 @@ describe('testFindPathService_processAsync', function () {
 
         setTimeout(function () {
             try {
-                var analystResult = serviceSucceedEventArgsSystem.result;
+                var analystResult = serviceSucceedEventArgsSystem.result.pathList;
                 expect(analystResult).not.toBeNull();
                 expect(analystResult[0].edgeFeatures).not.toBeNull();
                 expect(analystResult[0].edgeFeatures.type).toEqual("FeatureCollection");
@@ -120,7 +120,7 @@ describe('testFindPathService_processAsync', function () {
 
         setTimeout(function () {
             try {
-                var analystResult = serviceSucceedEventArgsSystem.result;
+                var analystResult = serviceSucceedEventArgsSystem.result.pathList;
                 expect(analystResult!= null).toBeTruthy();
                 expect(analystResult[0].edgeFeatures == null).toBeTruthy();
                 expect(analystResult[0].nodeFeatures == null).toBeTruthy();

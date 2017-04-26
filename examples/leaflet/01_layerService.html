@@ -8,8 +8,6 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-</body>
-
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
 <script type="text/javascript">
@@ -25,18 +23,22 @@
     layerService();
 
     function layerService() {
-        L.supermap.getLayersInfoService(url).getLayersInfo().on("complete", function (serviceResult) {
-            var innerHTML = "";
-            serviceResult.result.map(function (layer) {
-                innerHTML += layer.name + "<br>";
-            });
-            infowin = L.popup({maxWidth: 400})
-                    .setLatLng(map.getCenter())
-                    .setContent(innerHTML)
-                    .openOn(map);
-        });
+        L.supermap
+                .layerInfoService(url)
+                .getLayersInfo(function (serviceResult) {
+                    var result = serviceResult.result;
+                    var innerHTML = "";
+                    result.subLayers.layers.map(function (layer) {
+                        innerHTML += layer.name + "<br>";
+                    });
+                    infowin = L.popup({maxWidth: 400})
+                            .setLatLng(map.getCenter())
+                            .setContent(innerHTML)
+                            .openOn(map);
+                });
     }
 </script>
+</body>
 </html>
 
 

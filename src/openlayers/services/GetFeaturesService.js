@@ -20,6 +20,7 @@ ol.inherits(ol.supermap.GetFeaturesService, ol.supermap.ServiceBase);
  * 数据集ID查询服务
  * @param params <GetFeaturesByIDsParameters>
  * @param resultFormat
+ *	<SuperMap.DataFormat>
  */
 ol.supermap.GetFeaturesService.prototype.getFeaturesByIDs = function (params, resultFormat) {
     var me = this;
@@ -39,6 +40,7 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesByIDs = function (params, re
  * 数据集Bounds查询服务
  * @param params <GetFeaturesByBoundsParameters>
  * @param resultFormat
+ *	<SuperMap.DataFormat>
  */
 ol.supermap.GetFeaturesService.prototype.getFeaturesByBounds = function (params, resultFormat) {
     var me = this;
@@ -57,6 +59,7 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesByBounds = function (params,
  * 数据集Buffer查询服务
  * @param params <GetFeaturesByBufferParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.GetFeaturesService.prototype.getFeaturesByBuffer = function (params, resultFormat) {
     var me = this;
@@ -75,6 +78,7 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesByBuffer = function (params,
  * 数据集SQL查询服务
  * @param params <GetFeaturesBySQLParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.GetFeaturesService.prototype.getFeaturesBySQL = function (params, resultFormat) {
     var me = this;
@@ -94,6 +98,7 @@ ol.supermap.GetFeaturesService.prototype.getFeaturesBySQL = function (params, re
  * 数据集几何查询服务类
  * @param params <GetFeaturesByGeometryParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.GetFeaturesService.prototype.getFeaturesByGeometry = function (params, resultFormat) {
     var me = this;
@@ -131,7 +136,7 @@ ol.supermap.GetFeaturesService.prototype._processParams = function (params) {
 };
 
 ol.supermap.GetFeaturesService.prototype._processFormat = function (resultFormat) {
-    return (resultFormat) ? resultFormat : SuperMap.Format.GEOJSON;
+    return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
 };
 
 module.exports = ol.supermap.GetFeaturesService;

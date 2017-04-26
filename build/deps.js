@@ -4,7 +4,7 @@ var deps = {
             "./src/common/Base.js",
             "./src/common/REST.js"
         ],
-        "util":[
+        "util": [
             "./src/common/util/Request.js",
         ],
         "format": [
@@ -127,22 +127,17 @@ var deps = {
                 "src": [
                     "./src/leaflet/services/MapService.js",
                     "./src/leaflet/services/QueryService.js",
-                    "./src/leaflet/services/ChartQueryService.js",
-                    "./src/leaflet/services/TilesetsService.js",
-                    "./src/leaflet/services/GetLayersInfoService.js",
-                    "./src/leaflet/services/ChartFeatureInfoSpecsService.js",
-                    "./src/leaflet/services/SetLayerService.js",
-                    "./src/leaflet/services/MeasureService.js"
+                    "./src/leaflet/services/LayerInfoService.js",
+                    "./src/leaflet/services/MeasureService.js",
+                    "./src/leaflet/services/ChartService.js"
                 ]
             },
             "Data": {
                 "name": "数据服务",
                 "src": [
-                    "./src/leaflet/services/FieldStatisticService.js",
-                    "./src/leaflet/services/GetFeaturesService.js",
-                    "./src/leaflet/services/GetFieldsService.js",
-                    "./src/leaflet/services/EditFeaturesService.js",
-                    "./src/leaflet/services/GetGridCellInfosService.js"
+                    "./src/leaflet/services/FeatureService.js",
+                    "./src/leaflet/services/FieldService.js",
+                    "./src/leaflet/services/GridCellInfosService.js"
                 ]
             },
             "Theme": {
@@ -189,9 +184,7 @@ var deps = {
             "GraphicLayer": {
                 "name": "高效率点图层",
                 "src": [
-                    "./src/leaflet/overlay/Graphic.js",
-                    "./src/leaflet/overlay/GraphicGroup.js",
-                    "./src/leaflet/overlay/CircleStyle.js"
+                    "./src/leaflet/overlay/GraphicGroup.js"
                 ]
             },
 
@@ -295,17 +288,13 @@ var deps = {
             "GraphicLayer": {
                 "name": "高效率点图层",
                 "src": [
-                    "./src/openlayers/overlay/Graphic.js",
-                    "./src/openlayers/overlay/GraphicSource.js"
+                    "./src/openlayers/overlay/Graphic.js"
                 ]
             },
             "VectorTile": {
                 "name": "矢量瓦片",
                 "src": [
-                    "./src/openlayers/overlay/VectorTileSuperMapRest.js",
-                    "./src/openlayers/overlay/VectorTileStyles.js",
-                    "./src/openlayers/overlay/StyleMap.js",
-                    "./src/openlayers/overlay/DeafultCanvasStyle.js"
+                    "./src/openlayers/overlay/VectorTileSuperMapRest.js"
                 ]
             }
         }

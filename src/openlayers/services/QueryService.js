@@ -19,6 +19,7 @@ ol.inherits(ol.supermap.QueryService, ol.supermap.ServiceBase);
  * @param params:
  *     <QueryByBoundsParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.QueryService.prototype.queryByBounds = function (params, resultFormat) {
     var me = this;
@@ -39,6 +40,7 @@ ol.supermap.QueryService.prototype.queryByBounds = function (params, resultForma
  * @param params:
  *     <QueryByDistanceParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.QueryService.prototype.queryByDistance = function (params, resultFormat) {
     var me = this;
@@ -59,6 +61,7 @@ ol.supermap.QueryService.prototype.queryByDistance = function (params, resultFor
  * @param params:
  *     <QueryBySQLParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.QueryService.prototype.queryBySQL = function (params, resultFormat) {
     var me = this;
@@ -79,6 +82,7 @@ ol.supermap.QueryService.prototype.queryBySQL = function (params, resultFormat) 
  * @param params:
  *     <QueryByGeometryParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.QueryService.prototype.queryByGeometry = function (params, resultFormat) {
     var me = this;
@@ -120,7 +124,7 @@ ol.supermap.QueryService.prototype._processParams = function (params) {
     return params;
 };
 ol.supermap.QueryService.prototype._processFormat = function (resultFormat) {
-    return (resultFormat) ? resultFormat : SuperMap.Format.GEOJSON;
+    return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
 };
 
 module.exports = ol.supermap.QueryService;

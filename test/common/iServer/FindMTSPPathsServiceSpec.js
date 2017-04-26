@@ -67,7 +67,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
 
         setTimeout(function () {
             try {
-                var analystResult = serviceSucceedEventArgsSystem.result;
+                var analystResult = serviceSucceedEventArgsSystem.result.pathList;
                 expect(analystResult).not.toBeNull();
                 expect(analystResult[0].edgeFeatures).not.toBeNull();
                 expect(analystResult[0].edgeFeatures.type).toEqual("FeatureCollection");
@@ -128,7 +128,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
 
         setTimeout(function () {
             try {
-                var analystResult = serviceSucceedEventArgsSystem.result;
+                var analystResult = serviceSucceedEventArgsSystem.result.pathList;
                 expect(analystResult).not.toBeNull();
                 expect(analystResult[0].edgeFeatures).not.toBeNull();
                 expect(analystResult[0].edgeFeatures.type).toEqual("FeatureCollection");
@@ -186,7 +186,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
 
         setTimeout(function () {
             try {
-                var analystResult = serviceSucceedEventArgsSystem.result;
+                var analystResult = serviceSucceedEventArgsSystem.result.pathList;
 
                 expect(analystResult).not.toBeNull();
                 expect(analystResult[0].edgeFeatures).not.toBeNull();

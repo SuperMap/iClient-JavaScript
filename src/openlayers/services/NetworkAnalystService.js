@@ -61,6 +61,7 @@ ol.supermap.NetworkAnalystService.prototype.computeWeightMatrix = function (para
  * @param params
  *      <FindClosestFacilitiesParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.NetworkAnalystService.prototype.findClosestFacilities = function (params, resultFormat) {
     var me = this;
@@ -81,6 +82,7 @@ ol.supermap.NetworkAnalystService.prototype.findClosestFacilities = function (pa
  * @param params
  *      <FacilityAnalystStreamParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.NetworkAnalystService.prototype.streamFacilityAnalyst = function (params, resultFormat) {
     var me = this;
@@ -101,6 +103,7 @@ ol.supermap.NetworkAnalystService.prototype.streamFacilityAnalyst = function (pa
  * @param params
  *      <FindLocationParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.NetworkAnalystService.prototype.findLocation = function (params, resultFormat) {
     var me = this;
@@ -121,6 +124,7 @@ ol.supermap.NetworkAnalystService.prototype.findLocation = function (params, res
  * @param params
  *      <FindPathParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 
 ol.supermap.NetworkAnalystService.prototype.findPath = function (params, resultFormat) {
@@ -142,6 +146,7 @@ ol.supermap.NetworkAnalystService.prototype.findPath = function (params, resultF
  * @param params
  *      <SuperMap.FindTSPPathsParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.NetworkAnalystService.prototype.findTSPPaths = function (params, resultFormat) {
     var me = this;
@@ -162,6 +167,7 @@ ol.supermap.NetworkAnalystService.prototype.findTSPPaths = function (params, res
  * @param params
  *      <FindMTSPPathsParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.NetworkAnalystService.prototype.findMTSPPaths = function (params, resultFormat) {
     var me = this;
@@ -182,6 +188,7 @@ ol.supermap.NetworkAnalystService.prototype.findMTSPPaths = function (params, re
  * @param params
  *      <FindServiceAreasParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.NetworkAnalystService.prototype.findServiceAreas = function (params, resultFormat) {
     var me = this;
@@ -238,7 +245,7 @@ ol.supermap.NetworkAnalystService.prototype.processCompleted = function (serverR
 };
 
 ol.supermap.NetworkAnalystService.prototype._processFormat = function (resultFormat) {
-    return (resultFormat) ? resultFormat : SuperMap.Format.GEOJSON;
+    return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
 };
 
 ol.supermap.NetworkAnalystService.prototype._processParams = function (params) {

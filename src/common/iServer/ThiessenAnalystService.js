@@ -118,12 +118,12 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
             return result;
         }
 
-        var analystResult = SuperMap.REST.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
-        if (!analystResult && result.regions) {
+        result = SuperMap.REST.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
+        if (result.regions) {
             var geoJSONFormat = new SuperMap.Format.GeoJSON();
-            analystResult = JSON.parse(geoJSONFormat.write(result.regions));
+            result.regions = JSON.parse(geoJSONFormat.write(result.regions));
         }
-        return analystResult;
+        return result;
     },
 
     CLASS_NAME: "SuperMap.REST.ThiessenAnalystService"

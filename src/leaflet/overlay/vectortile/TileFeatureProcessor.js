@@ -1,7 +1,7 @@
 /**
  *将iServer tileFeature转换为类似VT标准的格式
  */
-require("../core/Base");
+require("../../core/Base");
 require("./VectorFeatureType");
 L.supermap.TileFeatureProcessor = {
     processTileFeature: function (recordSets) {

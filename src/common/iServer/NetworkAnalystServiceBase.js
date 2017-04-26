@@ -13,7 +13,7 @@ SuperMap.REST.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
      *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
-    format: SuperMap.Format.GEOJSON,
+    format: SuperMap.DataFormat.GEOJSON,
 
     initialize: function (url, options) {
         SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
@@ -32,7 +32,7 @@ SuperMap.REST.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
     },
 
     /**
-     * Method: getMapStatusCompleted
+     * Method: serviceProcessCompleted
      * 分析完成，执行此方法。
      *
      * Parameters:
@@ -41,13 +41,13 @@ SuperMap.REST.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
     serviceProcessCompleted: function (result) {
         var me = this, analystResult;
         result = SuperMap.Util.transformResult(result);
-        if (result && me.format === SuperMap.Format.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+        if (result && me.format === SuperMap.DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
             analystResult = me.toGeoJSONResult(result);
         }
         if (!analystResult) {
             analystResult = result;
         }
-        me.events.triggerEvent("processCompleted", {result: analystResult, originalResult: result});
+        me.events.triggerEvent("processCompleted", {result: analystResult});
     },
 
     /**

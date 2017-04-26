@@ -41,7 +41,7 @@ describe('testThiessenAnalystService_processAsync',function(){
 
         setTimeout(function () {
             try {
-                var tsResult = analystEventArgsSystem.result;
+                var tsResult = analystEventArgsSystem.result.regions;
                 expect(tsResult).not.toBeNull();
                 expect(tsResult.type).toEqual("FeatureCollection");
                 expect(tsResult.features.length).toEqual(4);
@@ -81,7 +81,7 @@ describe('testThiessenAnalystService_processAsync',function(){
 
         setTimeout(function () {
             try {
-                var tsResult = analystEventArgsSystem.result;
+                var tsResult = analystEventArgsSystem.result.regions;
                 expect(tsResult).not.toBeNull();
                 expect(tsResult.type).toEqual("FeatureCollection");
                 expect(tsResult.features.length).toEqual(6);

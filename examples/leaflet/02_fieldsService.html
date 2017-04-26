@@ -8,8 +8,6 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-</body>
-
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
 <script type="text/javascript">
@@ -27,10 +25,10 @@
     fieldsService();
 
     function fieldsService() {
-        L.supermap.getFieldsService(url, {
+        L.supermap.fieldService(url, {
             dataSourceName: "World",
             dataSetName: "continent_T"
-        }).getFields().on("complete", function (serviceResult) {
+        }).getFields(function (serviceResult) {
             var innerHTML = serviceResult.result.fieldNames.join(', ');
             infoWin = L.popup({maxWidth: 420})
                     .setLatLng(map.getCenter())
@@ -39,4 +37,5 @@
         });
     }
 </script>
+</body>
 </html>

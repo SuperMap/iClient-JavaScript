@@ -87,7 +87,7 @@ describe('testGetFeaturesBySQLService_processAsync',function(){
 
         setTimeout(function() {
             try{
-                var getFeaturesResult = getFeaturesEventArgsSystem.result;
+                var getFeaturesResult = getFeaturesEventArgsSystem.result.features;
                 expect(getFeaturesBySQLService).not.toBeNull();
                 expect(getFeaturesResult).not.toBeNull();
                 expect(getFeaturesResult.type).toBe("FeatureCollection");

@@ -2,14 +2,11 @@
  * Class: NetworkAnalyst3DService
  * 3D网络分析服务类
  * 用法：
- *      L.superMap.networkAnalyst3DService(url).sinksFacilityAnalyst({
- *          nodeID:xxx,
- *          weightName:xxx
- *      }).on("complete",function(result){
+ *      L.superMap
+ *      .networkAnalyst3DService(url)
+ *      .sinksFacilityAnalyst(params,function(result){
  *           //doSomething
- *      }).on("failed",function(result){
- *           //doSomething
- *      });
+ *      })
  */
 require('./ServiceBase');
 require('../../common/iServer/FacilityAnalystSinks3DService');
@@ -34,15 +31,16 @@ NetworkAnalyst3DService = ServiceBase.extend({
     /**
      * 汇查找服务
      * @param params
-     *      <FacilityAnalystSinks3DParameters>
+     * <FacilityAnalystSinks3DParameters>
+     * @param callback
      */
-    sinksFacilityAnalyst: function (params) {
+    sinksFacilityAnalyst: function (params, callback) {
         var me = this;
         var facilityAnalystSinks3DService = new SuperMap.REST.FacilityAnalystSinks3DService(me.options.url, {
             eventListeners: {
                 scope: me,
-                processCompleted: me.processCompleted,
-                processFailed: me.processFailed
+                processCompleted: callback,
+                processFailed: callback
             }
         });
         facilityAnalystSinks3DService.processAsync(params);
@@ -51,15 +49,16 @@ NetworkAnalyst3DService = ServiceBase.extend({
     /**
      * 源查找服务
      * @param params
-     *      <FacilityAnalystSources3DParameters>
+     * <FacilityAnalystSources3DParameters>
+     * @param callback
      */
-    sourcesFacilityAnalyst: function (params) {
+    sourcesFacilityAnalyst: function (params, callback) {
         var me = this;
         var facilityAnalystSources3DService = new SuperMap.REST.FacilityAnalystSources3DService(me.options.url, {
             eventListeners: {
                 scope: me,
-                processCompleted: me.processCompleted,
-                processFailed: me.processFailed
+                processCompleted: callback,
+                processFailed: callback
             }
         });
         facilityAnalystSources3DService.processAsync(params);
@@ -68,15 +67,16 @@ NetworkAnalyst3DService = ServiceBase.extend({
     /**
      * 上游追踪资源服务
      * @param params
-     *      <FacilityAnalystTraceup3DParameters>
+     * <FacilityAnalystTraceup3DParameters>
+     * @param callback
      */
-    traceUpFacilityAnalyst: function (params) {
+    traceUpFacilityAnalyst: function (params, callback) {
         var me = this;
         var facilityAnalystTraceup3DService = new SuperMap.REST.FacilityAnalystTraceup3DService(me.options.url, {
             eventListeners: {
                 scope: me,
-                processCompleted: me.processCompleted,
-                processFailed: me.processFailed
+                processCompleted: callback,
+                processFailed: callback
             }
         });
         facilityAnalystTraceup3DService.processAsync(params);
@@ -85,15 +85,16 @@ NetworkAnalyst3DService = ServiceBase.extend({
     /**
      * 下游追踪资源服务
      * @param params
-     *      <FacilityAnalystTracedown3DParameters>
+     *  <FacilityAnalystTracedown3DParameters>
+     * @param callback
      */
-    traceDownFacilityAnalyst: function (params) {
+    traceDownFacilityAnalyst: function (params, callback) {
         var me = this;
         var facilityAnalystTracedown3DService = new SuperMap.REST.FacilityAnalystTracedown3DService(me.options.url, {
             eventListeners: {
                 scope: me,
-                processCompleted: me.processCompleted,
-                processFailed: me.processFailed
+                processCompleted: callback,
+                processFailed: callback
             }
         });
         facilityAnalystTracedown3DService.processAsync(params);
@@ -103,15 +104,16 @@ NetworkAnalyst3DService = ServiceBase.extend({
     /**
      * 上游关键设施查找服务
      * @param params
-     *      <FacilityAnalystUpstream3DParameters>
+     * <FacilityAnalystUpstream3DParameters>
+     * @param callback
      */
-    upstreamFacilityAnalyst: function (params) {
+    upstreamFacilityAnalyst: function (params, callback) {
         var me = this;
         var facilityAnalystUpstream3DService = new SuperMap.REST.FacilityAnalystUpstream3DService(me.options.url, {
             eventListeners: {
                 scope: me,
-                processCompleted: me.processCompleted,
-                processFailed: me.processFailed
+                processCompleted: callback,
+                processFailed: callback
             }
         });
         facilityAnalystUpstream3DService.processAsync(params);

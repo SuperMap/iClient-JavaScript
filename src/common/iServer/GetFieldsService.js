@@ -70,7 +70,7 @@ SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
         if (me.isInTheSameDomain) {
             me.url += (end == "/") ? datasetURL + "/fields.json?" : "/" + datasetURL + "/fields.json?";
         } else {
-            me.url += (end == "/") ? datasetURL + "fields.jsonp?" : "/" + datasetURL + "/fields.jsonp?";
+            me.url += (end == "/") ? datasetURL + "/fields.jsonp?" : "/" + datasetURL + "/fields.jsonp?";
         }
 
         me.request({

@@ -118,15 +118,23 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnal
         if (!result || !result.serviceAreaList) {
             return result;
         }
-        var analystResult = [];
         var geoJSONFormat = new SuperMap.Format.GeoJSON();
         result.serviceAreaList.map(function (serviceArea) {
             if (serviceArea.serviceRegion) {
-                analystResult.push(JSON.parse(geoJSONFormat.write(serviceArea.serviceRegion)));
+                serviceArea.serviceRegion = JSON.parse(geoJSONFormat.write(serviceArea.serviceRegion));
+            }
+            if (serviceArea.edgeFeatures) {
+                serviceArea.edgeFeatures = JSON.parse(geoJSONFormat.write(serviceArea.edgeFeatures));
+            }
+            if (serviceArea.nodeFeatures) {
+                serviceArea.nodeFeatures = JSON.parse(geoJSONFormat.write(serviceArea.nodeFeatures));
+            }
+            if (serviceArea.routes) {
+                serviceArea.routes = JSON.parse(geoJSONFormat.write(serviceArea.routes));
             }
         });
 
-        return analystResult;
+        return result;
     },
 
     CLASS_NAME: "SuperMap.REST.FindServiceAreasService"

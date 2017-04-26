@@ -55,7 +55,7 @@ describe('testGetFeaturesByBoundsService_processAsync',function(){
 
         setTimeout(function(){
             try{
-                var analystResult = serviceSucceedEventArgsSystem.result;
+                var analystResult = serviceSucceedEventArgsSystem.result.features;
                 expect(analystResult).not.toBeNull();
                 expect(analystResult.type).toEqual("FeatureCollection");
                 expect(analystResult.features).not.toBeNull();

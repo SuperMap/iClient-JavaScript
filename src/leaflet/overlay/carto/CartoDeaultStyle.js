@@ -2,7 +2,7 @@
  * Constant: L.supermap.DefaultStyle
  * {Object} 这个style对应的是默认设置
  */
-require('../core/Base');
+require('../../core/Base');
 L.supermap.DefaultStyle = {
     "TEXT": {
         fontSize: "14px",

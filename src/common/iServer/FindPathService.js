@@ -117,27 +117,23 @@ SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServi
         if (!result || !result.pathList || result.pathList.length < 1) {
             return null;
         }
-        //只处理route ,pathGuide,edgeFeatures,nodeFeatures
-        var analystResults = [];
         var geoJSONFormat = new SuperMap.Format.GeoJSON();
         result.pathList.forEach(function (path) {
-            var analystResult = {};
             if (path.route) {
-                analystResult.route = JSON.parse(geoJSONFormat.write(path.route));
+                path.route = JSON.parse(geoJSONFormat.write(path.route));
             }
             if (path.pathGuideItems) {
-                analystResult.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
+                path.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
 
             }
             if (path.edgeFeatures) {
-                analystResult.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
+                path.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
             }
             if (path.nodeFeatures) {
-                analystResult.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
+                path.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
             }
-            analystResults.push(analystResult);
         });
-        return analystResults;
+        return result;
     },
 
     CLASS_NAME: "SuperMap.REST.FindPathService"

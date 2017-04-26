@@ -8,7 +8,6 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-</body>
 
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
@@ -32,17 +31,20 @@
             X: evt.latlng.lng,
             Y: evt.latlng.lat
         });
-        L.supermap.getGridCellInfosService(url).getGridCellInfos(getGridCellInfosParam).on("complete", function (serviceResult) {
-            if (marker) {
-                marker.setLatLng(evt.latlng);
-            } else {
-                marker = L.marker(evt.latlng).addTo(map);
-            }
-            var innerHTML = "栅格查询结果: " + "<br>" + "column: " + serviceResult.result.column + "<br>";
-            innerHTML += "row: " + serviceResult.result.row + "<br>";
-            innerHTML += "value: " + serviceResult.result.value + "<br>";
-            marker.bindPopup(innerHTML).openPopup(marker.getLatLng());
-        });
+        L.supermap
+                .gridCellInfosService(url)
+                .getGridCellInfos(getGridCellInfosParam, function (serviceResult) {
+                    if (marker) {
+                        marker.setLatLng(evt.latlng);
+                    } else {
+                        marker = L.marker(evt.latlng).addTo(map);
+                    }
+                    var innerHTML = "栅格查询结果: " + "<br>" + "column: " + serviceResult.result.column + "<br>";
+                    innerHTML += "row: " + serviceResult.result.row + "<br>";
+                    innerHTML += "value: " + serviceResult.result.value + "<br>";
+                    marker.bindPopup(innerHTML).openPopup(marker.getLatLng());
+                });
     });
 </script>
+</body>
 </html>

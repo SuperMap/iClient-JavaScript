@@ -1,4 +1,4 @@
-require('../core/Base');
+require('../../core/Base');
 
 ol.supermap.DeafultCanvasStyle = {
     "TEXT": {

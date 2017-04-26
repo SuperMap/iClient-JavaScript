@@ -57,7 +57,7 @@ describe('testGenerateSpatialDataService_processAsync',function(){
         setTimeout(function(){
             try{
                 expect(generateSpatialDataService).not.toBeNull();
-                var generateSpatialDataResult = completedEventArgsSystem.result;
+                var generateSpatialDataResult = completedEventArgsSystem.result.recordset.features;
                 expect(generateSpatialDataResult).not.toBeNull();
                 expect(generateSpatialDataResult.type).toBe("FeatureCollection");
                 expect(generateSpatialDataResult.features.length).toEqual(2);
@@ -145,7 +145,7 @@ describe('testGenerateSpatialDataService_processAsync',function(){
 
         setTimeout(function(){
             try{
-                var generateSpatialDataResult = completedEventArgsSystem.result;
+                var generateSpatialDataResult = completedEventArgsSystem.result.recordset.features;
                 expect(generateSpatialDataService).not.toBeNull();
                 expect(generateSpatialDataResult).not.toBeNull();
                 expect(generateSpatialDataResult.type).toBe("FeatureCollection");

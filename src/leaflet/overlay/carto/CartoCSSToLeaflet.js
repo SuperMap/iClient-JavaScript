@@ -1,8 +1,8 @@
 /**
  *CartoCSS样式转Leaflet样式
  */
-require('../../common/style/CartoCSS');
-require('../core/Base');
+require('../../../common/style/CartoCSS');
+require('../../core/Base');
 require('./CartoDeaultStyle');
 require('./CartoStyleMap');
 

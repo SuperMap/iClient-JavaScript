@@ -2,13 +2,11 @@
  * Class: TrafficTransferAnalystService
  * 交通换乘分析服务类
  * 用法：
- *      L.superMap.trafficTransferAnalystService(url).queryStop({
- *           keyWord:xxx
- *      }).on("complete",function(result){
+ *      L.superMap
+ *      .trafficTransferAnalystService(url)
+ *      .queryStop(params,function(result){
  *           //doSomething
- *      }).on("failed",function(result){
- *           //doSomething
- *      });
+ *      })
  */
 require('./ServiceBase');
 require('../../common/iServer/StopQueryService');
@@ -25,14 +23,15 @@ TrafficTransferAnalystService = ServiceBase.extend({
      * 站点查询服务
      * @param params
      * {StopQueryParameters}
+     * @param callback
      */
-    queryStop: function (params) {
+    queryStop: function (params, callback) {
         var me = this;
         var stopQueryService = new SuperMap.REST.StopQueryService(me.options.url, {
             eventListeners: {
                 scope: me,
-                processCompleted: me.processCompleted,
-                processFailed: me.processFailed
+                processCompleted: callback,
+                processFailed: callback
             }
         });
         stopQueryService.processAsync(params);
@@ -41,35 +40,37 @@ TrafficTransferAnalystService = ServiceBase.extend({
     /**
      * 交通换乘线路查询服务
      * @param params
-     *    {TransferPathParameters}
+     * {TransferPathParameters}
+     * @param callback
      */
-    analysisTransferPath: function (params) {
-        var me = this, param = me._processParams(params);
+    analysisTransferPath: function (params, callback) {
+        var me = this;
         var transferPathService = new SuperMap.REST.TransferPathService(me.options.url, {
             eventListeners: {
                 scope: me,
-                processCompleted: me.processCompleted,
-                processFailed: me.processFailed
+                processCompleted: callback,
+                processFailed: callback
             }
         });
-        transferPathService.processAsync(param);
+        transferPathService.processAsync(me._processParams(params));
         return me;
     },
     /**
      * 交通换乘方案查询服务
      * @param params
-     *    {TransferSolutionParameters}
+     *{TransferSolutionParameters}
+     * @param callback
      */
-    analysisTransferSolution: function (params) {
-        var me = this, param = me._processParams(params);
+    analysisTransferSolution: function (params, callback) {
+        var me = this;
         var transferSolutionService = new SuperMap.REST.TransferSolutionService(me.options.url, {
             eventListeners: {
                 scope: me,
-                processCompleted: me.processCompleted,
-                processFailed: me.processFailed
+                processCompleted: callback,
+                processFailed: callback
             }
         });
-        transferSolutionService.processAsync(param);
+        transferSolutionService.processAsync(me._processParams(params));
         return me;
     },
 

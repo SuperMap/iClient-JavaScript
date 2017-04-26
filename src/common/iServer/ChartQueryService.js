@@ -24,7 +24,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
      *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
-    format: SuperMap.Format.GEOJSON,
+    format: SuperMap.DataFormat.GEOJSON,
     /**
      * Constructor: SuperMap.REST.ChartQueryService
      * 获取图层信息服务类构造函数。
@@ -136,22 +136,18 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * result - {Object} 服务器返回的结果对象。
      */
     serviceProcessCompleted: function (result) {
-        var me = this, queryResult;
+        var me = this;
         result = SuperMap.Util.transformResult(result);
         if (result && result.recordsets && me.format === Format.GEOJSON) {
-            queryResult = [];
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
                     var geoJSONFormat = new SuperMap.Format.GeoJSON();
-                    var feature = JSON.parse(geoJSONFormat.write(recordsets[i].features));
-                    queryResult.push(feature);
+                    recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
                 }
             }
 
-        } else {
-            queryResult = result;
         }
-        me.events.triggerEvent("processCompleted", {result: queryResult});
+        me.events.triggerEvent("processCompleted", {result: result});
     },
 
     /**

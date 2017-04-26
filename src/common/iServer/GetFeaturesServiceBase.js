@@ -46,7 +46,7 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
      *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
-    format: SuperMap.Format.GEOJSON,
+    format: SuperMap.DataFormat.GEOJSON,
 
     /**
      * Constructor: SuperMap.REST.GetFeaturesServiceBase
@@ -157,13 +157,13 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
      * result - {Object} 服务器返回的结果对象。
      */
     serviceProcessCompleted: function (result) {
-        var me = this, results;
-        results = result = SuperMap.Util.transformResult(result);
-        if (me.format === SuperMap.Format.GEOJSON && result.features) {
+        var me = this;
+        result = SuperMap.Util.transformResult(result);
+        if (me.format === SuperMap.DataFormat.GEOJSON && result.features) {
             var geoJSONFormat = new SuperMap.Format.GeoJSON();
-            results = JSON.parse(geoJSONFormat.write(result.features));
+            result.features = JSON.parse(geoJSONFormat.write(result.features));
         }
-        me.events.triggerEvent("processCompleted", {result: results});
+        me.events.triggerEvent("processCompleted", {result: result});
     },
 
     CLASS_NAME: "SuperMap.REST.GetFeaturesServiceBase"

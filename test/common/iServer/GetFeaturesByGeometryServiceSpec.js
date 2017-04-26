@@ -82,7 +82,7 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
 
         setTimeout(function(){
             try{
-                var getFeaturesResult = getFeatureEventArgsSystem.result;
+                var getFeaturesResult = getFeatureEventArgsSystem.result.features;
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(getFeaturesResult).not.toBeNull();
                 expect(getFeaturesResult.type).toBe("FeatureCollection");
@@ -116,7 +116,7 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
 
         setTimeout(function(){
             try{
-                var getFeaturesResult = getFeatureEventArgsSystem.result;
+                var getFeaturesResult = getFeatureEventArgsSystem.result.features;
                 expect(getFeaturesByGeometryService).not.toBeNull();
                 expect(getFeaturesResult).not.toBeNull();
                 expect(getFeaturesResult.type).toBe("FeatureCollection");

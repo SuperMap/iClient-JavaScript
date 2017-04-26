@@ -1,4 +1,4 @@
-require('../core/Base');
+require('../../core/Base');
 
 L.supermap.CircleStyle = L.Class.extend({
 

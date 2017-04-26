@@ -6,6 +6,7 @@
  *  - <SuperMap.ServiceBase>
  */
 require('./ServiceBase');
+require('./FieldStatisticsParameters');
 SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**

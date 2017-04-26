@@ -18,12 +18,10 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-</body>
-
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
 <script type="text/javascript">
-    var map, currentData, layersName = [], info,
+    var map, currentData, layersName = [], info, fieldService,
             mapURL = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
             dataURL = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
     map = L.map('map', {
@@ -71,24 +69,27 @@
     //获取子图层信息
     function showLayersInfo() {
         var subLayer;
-        L.supermap.getLayersInfoService(mapURL).getLayersInfo().on("complete", function (serviceResult) {
-            var layers = serviceResult.result;
-            if (!layers) return;
-            for (var i = 0, len = layers.length; i < len; i++) {
-                subLayer = layers[i];
-                if ("UGC" == subLayer.type) {
-                    //记录数据源，数据集信息供字段查询统计使用
-                    if (subLayer.datasetInfo.name && subLayer.datasetInfo.dataSourceName) {
-                        layersName[i] = {
-                            dataSetName: subLayer.datasetInfo.name,
-                            dataSourceName: subLayer.datasetInfo.dataSourceName,
-                            layerName: subLayer.name
-                        };
+        L.supermap
+                .layerInfoService(mapURL)
+                .getLayersInfo(function (serviceResult) {
+                    var result = serviceResult.result;
+                    var layers = result.subLayers.layers;
+                    if (!layers) return;
+                    for (var i = 0, len = layers.length; i < len; i++) {
+                        subLayer = layers[i];
+                        if ("UGC" == subLayer.type) {
+                            //记录数据源，数据集信息供字段查询统计使用
+                            if (subLayer.datasetInfo.name && subLayer.datasetInfo.dataSourceName) {
+                                layersName[i] = {
+                                    dataSetName: subLayer.datasetInfo.name,
+                                    dataSourceName: subLayer.datasetInfo.dataSourceName,
+                                    layerName: subLayer.name
+                                };
+                            }
+                        }
                     }
-                }
-            }
-            getFields();
-        });
+                    getFields();
+                });
     }
 
     //获取字段
@@ -100,27 +101,34 @@
             if (dataInfo.layerName == name) {
                 //设置数据集，数据源，查询fields信息
                 currentData = dataInfo;
-                L.supermap.getFieldsService(dataURL, {
-                    dataSourceName: dataInfo.dataSourceName, dataSetName: dataInfo.dataSetName
-                }).getFields().on("complete", function (serviceResult) {
-                    fieldStatistic();
+                L.supermap.fieldService(dataURL, {
+                    dataSourceName: dataInfo.dataSourceName,
+                    dataSetName: dataInfo.dataSetName
+                }).getFields(function (serviceResult) {
+                    if (serviceResult.result && serviceResult.result.fieldNames) {
+                        fieldStatistic(serviceResult.result.fieldNames[0]);
+                    }
                 });
             }
         }
     }
 
     //统计结果
-    function fieldStatistic() {
-        var fieldName = 'SmID';
+    function fieldStatistic(fieldName) {
+        var param = new SuperMap.FieldStatisticsParameters({
+            fieldName: fieldName,
+            statisticMode: SuperMap.StatisticMode
+        });
         if (currentData) {
-            L.supermap.fieldStatisticService(dataURL, {
+            L.supermap.fieldService(dataURL, {
                 dataSourceName: currentData.dataSourceName,
                 dataSetName: currentData.dataSetName,
                 fieldName: fieldName
-            }).getFieldStatisticInfo().on("complete", function (serviceResult) {
+            }).getFieldStatisticsInfo(param, function (serviceResult) {
                 info.update(serviceResult.result);
             });
         }
     }
 </script>
+</body>
 </html>

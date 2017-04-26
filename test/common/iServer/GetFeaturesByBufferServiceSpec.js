@@ -86,7 +86,7 @@ describe('testGetFeaturesByBufferService_processAsync',function(){
 
         setTimeout(function(){
             try{
-                var getFeaturesResult = getFeaturesEventArgsSystem.result;
+                var getFeaturesResult = getFeaturesEventArgsSystem.result.features;
                 expect(getFeaturesByBufferService).not.toBeNull();
                 expect(getFeaturesResult).not.toBeNull();
                 //返回结果中featureCount一直表示总的结果数，实际返回数目通过features数据个数来判断

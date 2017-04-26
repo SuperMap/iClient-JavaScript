@@ -8,7 +8,6 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-</body>
 
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
@@ -34,9 +33,12 @@
             },
             datasetNames: ["World:Countries"]
         });
-        L.supermap.getFeaturesService(url).getFeaturesBySQL(sqlParam).on("complete", function (serviceResult) {
-            resultLayer = L.geoJSON(serviceResult.result).addTo(map).bindPopup('SMID = 247');
-        });
+        L.supermap
+                .featureService(url)
+                .getFeaturesBySQL(sqlParam, function (serviceResult) {
+                    resultLayer = L.geoJSON(serviceResult.result.features).addTo(map).bindPopup('SMID = 247');
+                });
     }
 </script>
+</body>
 </html>

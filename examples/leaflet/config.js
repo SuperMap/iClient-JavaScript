@@ -346,7 +346,7 @@ var exampleConfig = {
                 name: "矢量瓦片",
                 content: [
                     {
-                        name: "矢量瓦片",
+                        name: "默认风格",
                         thumbnail: "l_tileVectorLayer_normal.png",
                         fileName: "vectorTileLayerNormal"
                     }, {

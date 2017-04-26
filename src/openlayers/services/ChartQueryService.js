@@ -14,6 +14,7 @@ ol.inherits(ol.supermap.ChartQueryService, ol.supermap.ServiceBase);
  * @param params
  * <ChartQueryParameters>
  * @param resultFormat
+		 *		<SuperMap.DataFormat>
  */
 ol.supermap.ChartQueryService.prototype.queryChart = function (params, resultFormat) {
     var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
@@ -48,6 +49,6 @@ ol.supermap.ChartQueryService.prototype._processParams = function (params) {
     }
 };
 ol.supermap.ChartQueryService.prototype._processFormat = function (resultFormat) {
-    return (resultFormat) ? resultFormat : SuperMap.Format.GEOJSON;
+    return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
 };
 module.exports = ol.supermap.ChartQueryService;

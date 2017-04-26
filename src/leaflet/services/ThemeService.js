@@ -16,16 +16,15 @@ ThemeService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
-        L.setOptions(this, options);
     },
 
-    getThemeStatus: function (params) {
+    getThemeInfo: function (params, callback) {
         var me = this;
         var themeService = new SuperMap.REST.ThemeService(me.options.url, {
             eventListeners: {
                 scope: me,
-                processCompleted: me.processCompleted,
-                processFailed: me.processFailed
+                processCompleted: callback,
+                processFailed: callback
             }
         });
         themeService.processAsync(params);

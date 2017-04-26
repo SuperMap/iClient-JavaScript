@@ -3,7 +3,7 @@
  *  GEOJSON: "GEOJSON",
  *  ISERVER: "ISERVER"
  */
-SuperMap.Format = {
+SuperMap.DataFormat = {
     GEOJSON: "GEOJSON",
     ISERVER: "ISERVER"
 };

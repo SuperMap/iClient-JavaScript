@@ -63,7 +63,7 @@ describe('testFindTSPPathsService_processAsync',function(){
 
         setTimeout(function(){
             try{
-                var analystResult = serviceSucceedEventArgsSystem.result;
+                var analystResult = serviceSucceedEventArgsSystem.result.tspPathList;
                 expect(analystResult).not.toBeNull();
                 expect(analystResult[0].edgeFeatures).not.toBeNull();
                 expect(analystResult[0].edgeFeatures.type).toEqual("FeatureCollection");
@@ -238,7 +238,7 @@ describe('testFindTSPPathsService_processAsync',function(){
 
         setTimeout(function(){
             try{
-                expect(serviceFailedEventArgsSystem).toEqual("tsppath");
+                expect(serviceFailedEventArgsSystem.error).toEqual("tsppath");
                 findTSPPathsService.destroy();
                 expect(findTSPPathsService.EVENT_TYPES).toBeNull();
                 expect(findTSPPathsService.events).toBeNull();

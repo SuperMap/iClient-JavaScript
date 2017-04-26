@@ -325,7 +325,7 @@ SuperMap.ServiceBase = SuperMap.Class({
     },
 
     /**
-     * Method: processCompleted
+     * Method: serviceProcessCompleted
      * 状态完成，执行此方法。
      *
      * Parameters:
@@ -337,7 +337,7 @@ SuperMap.ServiceBase = SuperMap.Class({
     },
 
     /**
-     * Method: getMapStatusError
+     * Method: serviceProcessFailed
      * 状态失败，执行此方法。
      *
      * Parameters:
@@ -345,7 +345,8 @@ SuperMap.ServiceBase = SuperMap.Class({
      */
     serviceProcessFailed: function (result) {
         result = SuperMap.Util.transformResult(result);
-        this.events.triggerEvent("processFailed", result);
+        var error=result.error||result;
+        this.events.triggerEvent("processFailed", {error: error});
     },
     CLASS_NAME: "SuperMap.ServiceBase"
 })

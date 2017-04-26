@@ -110,15 +110,14 @@ SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
         if (!result) {
             return null;
         }
-        var analystResult = {};
         var geoJSONFormat = new SuperMap.Format.GeoJSON();
         if (result.demandResults) {
-            analystResult.demandResults = JSON.parse(geoJSONFormat.write(result.demandResults));
+            result.demandResults = JSON.parse(geoJSONFormat.write(result.demandResults));
         }
         if (result.supplyResults) {
-            analystResult.supplyResults = JSON.parse(geoJSONFormat.write(result.supplyResults)); }
+            result.supplyResults = JSON.parse(geoJSONFormat.write(result.supplyResults)); }
 
-        return analystResult;
+        return result;
     },
 
     CLASS_NAME: "SuperMap.REST.FindLocationService"

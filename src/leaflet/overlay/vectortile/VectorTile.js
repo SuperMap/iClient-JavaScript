@@ -1,4 +1,4 @@
-require('../core/Base');
+require('../../core/Base');
 require('./VectorFeatureType');
 require('./TextSymbolizer');
 require('./PointSymbolizer');

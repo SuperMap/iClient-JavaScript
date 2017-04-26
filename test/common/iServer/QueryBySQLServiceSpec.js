@@ -95,7 +95,7 @@ describe('testQueryBySQLService_processAsync',function(){
             expectCount:100,
             networkType: SuperMap.GeometryType.POINT,
             queryOption: SuperMap.QueryOption.ATTRIBUTEANDGEOMETRY,
-            queryParams:new Array(
+            queryParams:[
                /* new SuperMap.FilterParameter({
                     attributeFilter:"SmID<3",
                     name:"CountryLabel@World"
@@ -108,7 +108,7 @@ describe('testQueryBySQLService_processAsync',function(){
                     attributeFilter:"SmID<3",
                     name:"Countries@World",
                     fields:new Array("COLOR_MAP","CAPITAL")
-                })),
+                })],
             returnContent:true
         });
         queryBySQLParameters.startRecord=0;
@@ -120,10 +120,10 @@ describe('testQueryBySQLService_processAsync',function(){
 
         setTimeout(function() {
             try{
-                var queryResult=  queryEventArgsSystem.result;
+                var queryResult=  queryEventArgsSystem.result.recordsets[0].features;
                 expect(queryResult).not.toBeNull();
-                expect(queryEventArgsSystem.result[0].type).toBe("FeatureCollection");
-                expect(queryEventArgsSystem.result[0].features).not.toBeNull();
+                expect(queryResult.type).toBe("FeatureCollection");
+                expect(queryResult.features).not.toBeNull();
                 queryBySQLService.destroy();
                 queryBySQLParameters.destroy();
                 done();

@@ -79,7 +79,7 @@ describe('testGetFeaturesByIDsService_processAsync',function(){
 
         setTimeout(function() {
             try{
-                var getFeaturesResult = getFeatureEventArgsSystem.result;
+                var getFeaturesResult = getFeatureEventArgsSystem.result.features;
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(getFeaturesResult).not.toBeNull();
                 expect(getFeaturesResult.type).toBe("FeatureCollection");

@@ -8,7 +8,6 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-</body>
 
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
@@ -27,11 +26,12 @@
     function mapService() {
         L.supermap.mapService(url, {
             projection: "4326"
-        }).getMapStatus().on("complete", function (serviceResult) {
+        }).getMapInfo(function (serviceResult) {
+            var result = serviceResult.result;
             var innerHTML = "(map信息太多，只打印一部分)" + "<br><br>";
-            innerHTML += "地图名：" + JSON.stringify(serviceResult.result.name, null, 2) + "<br>";
-            innerHTML += "中心点:" + JSON.stringify(serviceResult.result.center, null, 2) + "<br>";
-            innerHTML += "Bounds:" + JSON.stringify(serviceResult.result.bounds, null, 2) + "<br>";
+            innerHTML += "地图名：" + JSON.stringify(result.name, null, 2) + "<br>";
+            innerHTML += "中心点:" + JSON.stringify(result.center, null, 2) + "<br>";
+            innerHTML += "Bounds:" + JSON.stringify(result.bounds, null, 2) + "<br>";
             infoWin = L.popup({maxWidth: 400})
                     .setLatLng(map.getCenter())
                     .setContent(innerHTML)
@@ -39,4 +39,5 @@
         });
     }
 </script>
+</body>
 </html>

@@ -38,15 +38,19 @@ function screenResize() {
 //初始化编辑器
 function initCodeEditor() {
     if (!aceEditor) {
+        var editorElem = document.getElementById("editor");
+        editorElem.style.fontSize = "13px";
+        editorElem.style.lineHeight = "18px";
         aceEditor = ace.edit("editor");
         aceEditor.setTheme("ace/theme/textmate");
-        aceEditor.getSession().setMode("ace/mode/javascript");
+        aceEditor.getSession().setMode("ace/mode/html");
         aceEditor.getSession().setUseWrapMode(true);
         aceEditor.setShowPrintMargin(false);
     }
     aceEditor.setValue($('#editor').val());
     aceEditor.clearSelection();
     aceEditor.moveCursorTo(0, 0);
+
 }
 
 //初始化编辑器以及预览内容
@@ -100,7 +104,7 @@ function run() {
 function loadPreview(content) {
     var iFrame = document.getElementById("innerPage").contentWindow;
     iFrame.document.open();
-    iFrame.addEventListener('load',mapHeight);
+    iFrame.addEventListener('load', mapHeight);
     iFrame.document.write(content);
     iFrame.document.close();
     mapHeight();

@@ -4,11 +4,9 @@
  * 用法：
  *      L.superMap.measureService(url).measureDistance({
  *          geometry:xxx
- *      }).on("complete",function(result){
+ *      },function(result){
  *           //doSomething
- *      }).on("failed",function(result){
- *           //doSomething
- *      });
+ *      })
  */
 require('./ServiceBase');
 require('../../common/iServer/MeasureService');
@@ -17,33 +15,39 @@ MeasureService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
-
     },
 
     /**
-     * @param params:
-     *      <MeasureParameters>
+     *测距
+     * @param params
+     *  <MeasureParameters>
+     * @param callback
      */
-    measureDistance: function (params) {
-        this.measure(params, 'DISTANCE');
+    measureDistance: function (params, callback) {
+        this.measure(SuperMap.MeasureMode.DISTANCE, params, callback);
         return this;
     },
 
     /**
-     * @param params:
-     *       <MeasureParameters>
+     * 测面积
+     * @param params
+     * <MeasureParameters>
+     * @param callback
      */
-    measureArea: function (params) {
-        this.measure(params, 'AREA');
+    measureArea: function (params, callback) {
+        this.measure(SuperMap.MeasureMode.AREA, params, callback);
         return this;
     },
 
     /**
      *
-     * @param params:<MeasureParameters>
-     * @param type:'DISTANCE'或'AREA'
+     * @param type
+     * <SuperMap.MeasureMode>
+     * @param params
+     * <SuperMap.MeasureParameters>
+     * @param callback
      */
-    measure: function (params, type) {
+    measure: function (type, params, callback) {
         if (!params) {
             return;
         }
@@ -55,8 +59,8 @@ MeasureService = ServiceBase.extend({
             measureMode: type,
             eventListeners: {
                 scope: me,
-                processCompleted: me.processCompleted,
-                processFailed: me.processFailed
+                processCompleted: callback,
+                processFailed: callback
             }
         });
         measureService.processAsync(params);

@@ -9,6 +9,7 @@
  *  - <SuperMap.ServiceBase>
  */
 require('./ServiceBase');
+require('./SetLayersInfoParameters');
 SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**

@@ -65,7 +65,7 @@ describe('testFindServiceAreasService_processAsync',function(){
 
         setTimeout(function(){
             try{
-                var analystResult = serviceSucceedEventArgsSystem.originalResult;
+                var analystResult = serviceSucceedEventArgsSystem.result;
                 expect(analystResult.serviceAreaList != null).toBeTruthy();
                 expect(analystResult.serviceAreaList[0].edgeFeatures != null).toBeTruthy();
                 expect(analystResult.serviceAreaList[0].edgeIDs[0]).toEqual(8366);
@@ -118,7 +118,7 @@ describe('testFindServiceAreasService_processAsync',function(){
 
         setTimeout(function(){
             try{
-                var analystResult = serviceSucceedEventArgsSystem.originalResult;
+                var analystResult = serviceSucceedEventArgsSystem.result;
                 expect(analystResult.serviceAreaList).not.toBeNull();
                 expect(analystResult.serviceAreaList[0].edgeFeatures).toBeNull();
                 expect(analystResult.serviceAreaList[0].edgeIDs.length).toEqual(0);

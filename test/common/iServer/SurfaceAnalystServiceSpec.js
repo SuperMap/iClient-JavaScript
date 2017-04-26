@@ -99,7 +99,7 @@ describe('testSurfaceAnalystService_processAsync',function(){
 
         setTimeout(function() {
             try{
-                var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result;
+                var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result.recordset.features;
                 expect(surfaceAnalystResult).not.toBeNull();
                 expect(surfaceAnalystResult.features).not.toBeNull();
                 expect(surfaceAnalystResult.type).toBe("FeatureCollection");
@@ -151,7 +151,7 @@ describe('testSurfaceAnalystService_processAsync',function(){
 
         setTimeout(function() {
             try{
-                var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result;
+                var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result.recordset.features;
                 expect(surfaceAnalystResult).not.toBeNull();
                 expect(surfaceAnalystResult.features).not.toBeNull();
                 expect(surfaceAnalystResult.type).toBe("FeatureCollection");
@@ -203,7 +203,7 @@ describe('testSurfaceAnalystService_processAsync',function(){
 
         setTimeout(function() {
             try{
-                var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result;
+                var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result.recordset.features;
                 expect(surfaceAnalystResult).not.toBeNull();
                 expect(surfaceAnalystResult.features).not.toBeNull();
                 expect(surfaceAnalystResult.type).toBe("FeatureCollection");

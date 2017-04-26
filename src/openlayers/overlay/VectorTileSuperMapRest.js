@@ -1,4 +1,8 @@
 require('../core/Base');
+require('./vectortile/VectorTileStyles');
+require('./vectortile/StyleMap');
+require('./vectortile/DeafultCanvasStyle');
+
 var fetchJsonp = require('fetch-jsonp');
 
 ol.supermap.VectorTileSuperMapRest = function (options) {

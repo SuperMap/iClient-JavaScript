@@ -26,7 +26,6 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
-</body>
 
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
@@ -126,12 +125,11 @@
             points: paths.points //起始点坐标
         });
         L.supermap.trafficTransferAnalystService(serviceUrl)
-                .analysisTransferSolution(params)
-                .on('complete', function (serviceResult) {
+                .analysisTransferSolution(params, function (serviceResult) {
+                    if (serviceResult.error) {
+                        alert("错误提示:" + serviceResult.error.errorMsg);
+                    }
                     transferSolutionsSucceed(serviceResult.result);
-                })
-                .on('failed', function (result) {
-                    alert("错误提示:" + result.errorMsg);
                 });
     }
 
@@ -282,12 +280,13 @@
     }
 
     function execTransPathQuery(id, transLines) {
-        var params = new TransferPathParameters({
+        var params = new SuperMap.TransferPathParameters({
             points: paths["points"],
             transferLines: transLines
         });
-        L.supermap.trafficTransferAnalystService(serviceUrl).analysisTransferPath(params)
-                .on('complete', function (serviceResult) {
+        L.supermap
+                .trafficTransferAnalystService(serviceUrl)
+                .analysisTransferPath(params, function (serviceResult) {
                     $("#transferInfo-" + id).empty();
                     var transGuide = serviceResult.result;
                     transSolutions = paths["transSolutions"];
@@ -310,4 +309,5 @@
     }
 
 </script>
+</body>
 </html>
