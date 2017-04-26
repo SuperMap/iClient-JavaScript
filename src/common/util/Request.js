@@ -43,7 +43,7 @@ SuperMap.Request = {
 
     _postSimulatie: function (type, url, params, options) {
         var separator = url.indexOf("?") > -1 ? "&" : "?";
-        url += separator + '_method= ' + type + this._appendUrlTokenParameter(url);
+        url += separator + '_method= ' + type;
         return this.post(url, params, options);
     },
 
