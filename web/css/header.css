@@ -1,26 +1,9 @@
-.iC-theme {
-    background-color: #49A6E5;
-}
-
-.iC-header {
-    width: auto;
-    height: 54px;
-    margin-left: auto;
-    margin-right: auto;
-    z-index: 999;
-    margin-bottom: 0;
-}
-
-
-.container.bc.clearfix{
-    margin: 5px auto;
-    width:100%;
-    max-width: 1440px;
-    background-color: #49A6E5;
-    height: 42px;
-}
-.navbar {
-    font-size: 16px;
+/*此处的position: relative;margin-bottom: 0可以使出现折叠菜单时下面的头部往后顺延相应的位置  #337ab7;*/
+.navbar-fixed-top{
+    background: #49A6E5;
+    border:0;
+    position: relative;
+    margin-bottom: 0
 }
 
 .navbar .project-title {
@@ -34,12 +17,12 @@
 }
 
 .navbar #headerMenu {
-    float: right;
+    text-align: center;
     margin: 7.5px -15px;
 }
 
 .navbar #headerMenu > li > a {
-    font-family: HiraginoSansGB-W6;
+    font-family: 'HiraginoSansGB-W6';
     font-size: 16px;
     color: #FFFFFF;
     letter-spacing: -0.1px;
@@ -61,7 +44,6 @@
 .nav_apis_box_li > li:hover {
     color: #ffffff;
     background-color: #0099cc;
-
 }
 
 .nav_apis_box_li > li {
@@ -73,4 +55,32 @@
     line-height: 30px;
     cursor: pointer;
     font-weight: bold;
+}
+
+#title {
+    font-family: 'HiraginoSansGB-W6';
+    font-size: 24px;
+    color: #FFFFFF;
+    letter-spacing: -0.1px;
+}
+
+@media screen and (max-width:1200px)
+{
+    #title{
+        font-size:20px;
+    }
+}
+
+@media screen and (max-width:992px)
+{
+    #title{
+        font-size:16px;
+    }
+}
+
+@media screen and (max-width:768px)
+{
+    #title{
+        font-size:12px;
+    }
 }

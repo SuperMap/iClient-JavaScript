@@ -1,37 +1,42 @@
-<div class="container bc clearfix">
-    <div class="navbar-header mt6">
-        <a style="text-decoration:none;" href="#">
-            <span class="dinlineblock width55 mr10"></span>
-            <span class="project-title vm">SuperMap iClient for JavaScript 9D</span>
+<div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#navbar-collapse" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+            <div id="title">SuperMap iClient for JavaScript 9D</div>
         </a>
     </div>
-    <ul id="headerMenu" class="nav navbar-nav headerMenu">
-        <li id="headerIndex"><a href="#">首页</a></li>
-        <li id="headerMaps"><a href="#">开发指南</a></li>
-        <li class="active"><a href="#" data-toggle="dropdown" class="dropdown-toggle">示例<b
-                class="caret"></b></a>
-            <ul class="dropdown-menu nav_apis_box_li">
-                <li>Leaflet</li>
-                <li>OpenLayers</li>
-                <li>MapBoxGL</li>
-            </ul>
-        </li>
-        <li id="headerPricing"><a href="#">API</a></li>
-        <li class="active"><a href="#" data-toggle="dropdown" class="dropdown-toggle">下载<b
-                class="caret"></b></a>
-            <ul class="dropdown-menu  nav_apis_box_li">
-                <li>在线构建</li>
-            </ul>
-        </li>
-    </ul>
+    <div class="collapse navbar-collapse" id="navbar-collapse" style="border:0;background-color: transparent">
+        <ul class="nav navbar-nav navbar-right" id="headerMenu" style="margin-right: 0">
+            <li class="hidden active">
+                <a href="#page-top"></a>
+            </li>
+            <li id="headerIndex">
+                <a href="#">首页</a>
+            </li>
+            <li id="headerMaps">
+                <a href="#">开发指南</a>
+            </li>
+            <li><a href="#" data-toggle="dropdown" class="dropdown-toggle">示例<b class="caret"></b></a>
+                <ul class="dropdown-menu nav_apis_box_li">
+                    <li>Leaflet</li>
+                    <li>OpenLayers</li>
+                    <li>WebGL</li>
+                </ul>
+            </li>
+            <li id="headerPricing">
+                <a href="#">API</a>
+            </li>
+            <li><a href="#" data-toggle="dropdown" class="dropdown-toggle">下载<b class="caret"></b></a>
+                <ul class="dropdown-menu  nav_apis_box_li">
+                    <li>在线构建</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 </div>
-<script>
-    $('.dropdown-menu li').on('click', function () {
-        var host = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9" : "");
-        window.location.href = host + "/examples/" + this.innerText.toLowerCase() + "/examples.html";
-    })
-    $('#headerMenu #headerIndex').on('click', function () {
-        window.location.href = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9/web/index.html" : "");
-    })
-
-</script>
