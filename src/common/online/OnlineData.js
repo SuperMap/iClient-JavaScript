@@ -77,7 +77,7 @@ SuperMap.OnlineData = SuperMap.Class({
             return;
         }
         var me = this;
-        return new new SuperMap.Request().get(this.serviceUrl).then(function (result) {
+        return SuperMap.Request.get(this.serviceUrl).then(function (result) {
             SuperMap.Util.extend(me, result);
         });
     },

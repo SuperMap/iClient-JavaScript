@@ -54,25 +54,21 @@
 	__webpack_require__(35);
 	__webpack_require__(39);
 	__webpack_require__(41);
-	__webpack_require__(43);
-	__webpack_require__(45);
-	__webpack_require__(51);
-	__webpack_require__(54);
-	__webpack_require__(56);
-	__webpack_require__(69);
-	__webpack_require__(71);
-	__webpack_require__(74);
-	__webpack_require__(77);
-	__webpack_require__(114);
-	__webpack_require__(141);
+	__webpack_require__(82);
+	__webpack_require__(84);
+	__webpack_require__(92);
+	__webpack_require__(95);
+	__webpack_require__(98);
+	__webpack_require__(111);
+	__webpack_require__(113);
+	__webpack_require__(116);
+	__webpack_require__(119);
+	__webpack_require__(126);
 	__webpack_require__(153);
-	__webpack_require__(199);
-	__webpack_require__(207);
-	__webpack_require__(208);
-	__webpack_require__(209);
-	__webpack_require__(210);
-	__webpack_require__(214);
-	module.exports = __webpack_require__(213);
+	__webpack_require__(165);
+	__webpack_require__(211);
+	__webpack_require__(219);
+	module.exports = __webpack_require__(221);
 
 
 /***/ },
@@ -359,7 +355,7 @@
 	 *  GEOJSON: "GEOJSON",
 	 *  ISERVER: "ISERVER"
 	 */
-	SuperMap.Format = {
+	SuperMap.DataFormat = {
 	    GEOJSON: "GEOJSON",
 	    ISERVER: "ISERVER"
 	};
@@ -3464,24 +3460,13 @@
 	    cors: ((window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()))
 	};
 
-	SuperMap.Request = SuperMap.Class({
-
-	    initialize: function () {
-	    },
+	SuperMap.Request = {
 
 	    get: function (url, params, options) {
-	        options = options || {};
 	        var type = 'GET';
-	        url = url.endWith('.json') ? url : url + '.json';
-	        url = params ? SuperMap.Util.urlAppend(url, this.getParameterString(params || {})) : url;
-	        var tokenParam = '';
-	        var separator = url.indexOf("?") > -1 ? "&" : "?";
-	        if (SuperMap.Credential.CREDENTIAL && SuperMap.Credential.CREDENTIAL.getUrlParameters()) {
-	            tokenParam = SuperMap.Credential.CREDENTIAL.getUrlParameters();
-	        }
-	        var requestLength = url.length;
-	        if (requestLength <= 2000) {
-	            url = tokenParam !== '' ? url + separator + tokenParam : url;
+	        url = this._appendUrlTokenParameter(url);
+	        url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
+	        if (url.length <= 2000) {
 	            if (SuperMap.Support.cors) {
 	                return this._fetch(url, params, options, type);
 	            }
@@ -3490,67 +3475,53 @@
 	                return this._fetchJsonp(url, options);
 	            }
 	        }
-	        url = url.substring(0, url.indexOf('?')) + '_method= GET';
-	        url = tokenParam !== '' ? url + '&' + tokenParam : url;
-	        return this.post(url, params, options);
+	        return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
 	    },
 
 	    delete: function (url, params, options) {
-	        options = options || {};
-	        url = url.endWith('.json') ? url : url + '.json';
 	        var type = 'DELETE';
-	        var requestLength = url.length;
-	        url = params ? SuperMap.Util.urlAppend(url, this.getParameterString(params || {})) : url;
-	        var tokenParam = '';
-	        var separator = url.indexOf("?") > -1 ? "&" : "?";
-	        if (SuperMap.Credential.CREDENTIAL && SuperMap.Credential.CREDENTIAL.getUrlParameters()) {
-	            tokenParam = SuperMap.Credential.CREDENTIAL.getUrlParameters();
+	        url = this._appendUrlTokenParameter(url);
+	        url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
+	        if (url.length <= 2000 && SuperMap.Support.cors) {
+	            return this._fetch(url, params, options, type);
 	        }
-	        if (requestLength <= 2000) {
-	            if (SuperMap.Support.cors) {
-	                url = tokenParam !== '' ? url + separator + tokenParam : url;
-	                return this._fetch(url, params, options, type);
-	            }
-	        }
-	        url = url.substring(0, url.indexOf('?')) + '_method= DELETE';
-	        url = tokenParam !== '' ? url + '&' + tokenParam : url;
-	        return this.post(url, params, options);
+	        return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
 	    },
 
 	    post: function (url, params, options) {
-	        options = options || {};
-	        var type = 'POST';
-	        url = url.endWith('.json') ? url : url + '.json';
-	        var separator = url.indexOf("?") > -1 ? "&" : "?";
-	        if (SuperMap.Credential.CREDENTIAL && SuperMap.Credential.CREDENTIAL.getUrlParameters()) {
-	            url += separator + SuperMap.Credential.CREDENTIAL.getUrlParameters();
-	        }
-	        return this._fetch(url, params, options, type);
+	        return this._fetch(this._appendUrlTokenParameter(url), params, options, 'POST');
 	    },
 
 	    put: function (url, params, options) {
-	        options = options || {};
-	        var type = 'PUT';
-	        url = url.endWith('.json') ? url : url + '.json';
+	        return this._fetch(this._appendUrlTokenParameter(url), params, options, 'PUT');
+	    },
+
+	    _postSimulatie: function (type, url, params, options) {
 	        var separator = url.indexOf("?") > -1 ? "&" : "?";
+	        url += separator + '_method= ' + type + this._appendUrlTokenParameter(url);
+	        return this.post(url, params, options);
+	    },
+
+	    _appendUrlTokenParameter: function (url) {
+	        url = url.indexOf('.json') !== -1 ? url : url + '.json';
 	        if (SuperMap.Credential.CREDENTIAL && SuperMap.Credential.CREDENTIAL.getUrlParameters()) {
+	            var separator = url.indexOf("?") > -1 ? "&" : "?";
 	            url += separator + SuperMap.Credential.CREDENTIAL.getUrlParameters();
 	        }
-	        return this._fetch(url, params, options, type);
+	        return url;
 	    },
 
 	    _fetch: function (url, params, options, type) {
+	        options = options || {};
 	        if (options.timeout) {
-	            return this.timeout(options.timeout, fetch(url, {
+	            return this._timeout(options.timeout, fetch(url, {
 	                method: type,
 	                headers: options.headers,
 	                body: type === 'PUT' || type === 'POST' ? params : undefined,
 	                credentials: options.withCredentials ? 'include' : 'omit',
 	                mode: 'cors'
 	            }).then(function (response) {
-	                return response.json();
-	            }).then(function (json) {
-	                return json;
+	                return response;
 	            }));
 	        }
 	        return fetch(url, {
@@ -3558,22 +3529,19 @@
 	            body: type === 'PUT' || type === 'POST' ? params : undefined,
 	            headers: options.headers
 	        }).then(function (response) {
-	            return response.json();
-	        }).then(function (json) {
-	            return json;
-	        })
+	            return response;
+	        });
 	    },
 
 	    _fetchJsonp: function (url, options) {
+	        options = options || {};
 	        return fetchJsonp(url, {method: 'GET', timeout: options.timeout})
 	            .then(function (response) {
-	                return response.json();
-	            }).then(function (json) {
-	                return json;
+	                return response;
 	            });
 	    },
 
-	    timeout: function (seconds, promise) {
+	    _timeout: function (seconds, promise) {
 	        return new Promise(function (resolve, reject) {
 	            setTimeout(function () {
 	                reject(new Error("timeout"))
@@ -3582,7 +3550,7 @@
 	        })
 	    },
 
-	    getParameterString: function (params) {
+	    _getParameterString: function (params) {
 	        var paramsArray = [];
 	        for (var key in params) {
 	            var value = params[key];
@@ -3598,8 +3566,7 @@
 	                        );
 	                    }
 	                    encodedValue = '[' + encodedItemArray.join(",") + ']';
-	                }
-	                else {
+	                } else {
 	                    encodedValue = encodeURIComponent(value);
 	                }
 	                paramsArray.push(encodeURIComponent(key) + "=" + encodedValue);
@@ -3608,21 +3575,7 @@
 	        return paramsArray.join("&");
 	    }
 
-	});
-
-	String.prototype.endWith = function (s) {
-	    if (s === null || s === "" || this.length === 0 || s.length > this.length)
-	        return false;
-	    if (this.substring(this.length - s.length) == s)
-	        return true;
-	    else
-	        return false;
-	    return true;
 	}
-
-	module.exports = function () {
-	    return new SuperMap.Request();
-	};
 
 /***/ },
 /* 17 */
@@ -4219,9 +4172,9 @@
 	        if (!result.code || (result.code && ((result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304))) {
 	            me.events && me.events.triggerEvent("processCompleted", {result: result});
 	        }
-	        //在没有tonken是返回的是200，但是其实是没有权限，所以这里也应该是触发失败事件
+	        //在没有token是返回的是200，但是其实是没有权限，所以这里也应该是触发失败事件
 	        else {
-	            me.events.triggerEvent("processFailed", result);
+	            me.events.triggerEvent("processFailed", {error: result});
 	        }
 	    },
 
@@ -4564,7 +4517,7 @@
 	    },
 
 	    /**
-	     * Method: processCompleted
+	     * Method: serviceProcessCompleted
 	     * 状态完成，执行此方法。
 	     *
 	     * Parameters:
@@ -4576,7 +4529,7 @@
 	    },
 
 	    /**
-	     * Method: getMapStatusError
+	     * Method: serviceProcessFailed
 	     * 状态失败，执行此方法。
 	     *
 	     * Parameters:
@@ -4584,7 +4537,8 @@
 	     */
 	    serviceProcessFailed: function (result) {
 	        result = SuperMap.Util.transformResult(result);
-	        this.events.triggerEvent("processFailed", result);
+	        var error=result.error||result;
+	        this.events.triggerEvent("processFailed", {error: error});
 	    },
 	    CLASS_NAME: "SuperMap.ServiceBase"
 	})
@@ -4620,6 +4574,7 @@
 	 * @param params:
 	 *     <QueryByBoundsParameters>
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.QueryService.prototype.queryByBounds = function (params, resultFormat) {
 	    var me = this;
@@ -4640,6 +4595,7 @@
 	 * @param params:
 	 *     <QueryByDistanceParameters>
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.QueryService.prototype.queryByDistance = function (params, resultFormat) {
 	    var me = this;
@@ -4660,6 +4616,7 @@
 	 * @param params:
 	 *     <QueryBySQLParameters>
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.QueryService.prototype.queryBySQL = function (params, resultFormat) {
 	    var me = this;
@@ -4680,6 +4637,7 @@
 	 * @param params:
 	 *     <QueryByGeometryParameters>
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.QueryService.prototype.queryByGeometry = function (params, resultFormat) {
 	    var me = this;
@@ -4721,7 +4679,7 @@
 	    return params;
 	};
 	ol.supermap.QueryService.prototype._processFormat = function (resultFormat) {
-	    return (resultFormat) ? resultFormat : SuperMap.Format.GEOJSON;
+	    return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
 	};
 
 	module.exports = ol.supermap.QueryService;
@@ -4816,7 +4774,8 @@
 	/* COPYRIGHT 2017 SUPERMAP
 	 * 本程序只能在有效的授权许可下使用。
 	 * 未经许可，不得以任何手段擅自使用或传播。
-	 *//**
+	 */
+	/**
 	 * Class: SuperMap.REST.QueryService
 	 * 查询服务基类。
 	 * 结果保存在一个object对象中，对象包含一个属性result为iServer返回的json对象
@@ -4839,7 +4798,7 @@
 	     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
 	     *  参数格式为"ISERVER","GEOJSON",GEOJSON
 	     */
-	    format: SuperMap.Format.GEOJSON,
+	    format: SuperMap.DataFormat.GEOJSON,
 
 	    /**
 	     * Constructor: SuperMap.REST.QueryService
@@ -4943,22 +4902,18 @@
 	     * result - {Object} 服务器返回的结果对象。
 	     */
 	    serviceProcessCompleted: function (result) {
-	        var me = this, queryResult;
+	        var me = this;
 	        result = SuperMap.Util.transformResult(result);
-	        if (result && result.recordsets && me.format === SuperMap.Format.GEOJSON) {
-	            queryResult = [];
+	        if (result && result.recordsets && me.format === SuperMap.DataFormat.GEOJSON) {
 	            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
 	                if (recordsets[i].features) {
 	                    var geoJSONFormat = new SuperMap.Format.GeoJSON();
-	                    var feature = JSON.parse(geoJSONFormat.write(recordsets[i].features));
-	                    queryResult.push(feature);
+	                    recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
 	                }
 	            }
 
-	        } else {
-	            queryResult = result;
 	        }
-	        me.events.triggerEvent("processCompleted", {result: queryResult});
+	        me.events.triggerEvent("processCompleted", {result: result});
 	    },
 
 	    /**
@@ -5837,6 +5792,7 @@
 	 * @param params
 	 * <ChartQueryParameters>
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.ChartQueryService.prototype.queryChart = function (params, resultFormat) {
 	    var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
@@ -5871,7 +5827,7 @@
 	    }
 	};
 	ol.supermap.ChartQueryService.prototype._processFormat = function (resultFormat) {
-	    return (resultFormat) ? resultFormat : SuperMap.Format.GEOJSON;
+	    return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
 	};
 	module.exports = ol.supermap.ChartQueryService;
 
@@ -5905,7 +5861,7 @@
 	     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
 	     *  参数格式为"ISERVER","GEOJSON",GEOJSON
 	     */
-	    format: SuperMap.Format.GEOJSON,
+	    format: SuperMap.DataFormat.GEOJSON,
 	    /**
 	     * Constructor: SuperMap.REST.ChartQueryService
 	     * 获取图层信息服务类构造函数。
@@ -6017,22 +5973,18 @@
 	     * result - {Object} 服务器返回的结果对象。
 	     */
 	    serviceProcessCompleted: function (result) {
-	        var me = this, queryResult;
+	        var me = this;
 	        result = SuperMap.Util.transformResult(result);
 	        if (result && result.recordsets && me.format === Format.GEOJSON) {
-	            queryResult = [];
 	            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
 	                if (recordsets[i].features) {
 	                    var geoJSONFormat = new SuperMap.Format.GeoJSON();
-	                    var feature = JSON.parse(geoJSONFormat.write(recordsets[i].features));
-	                    queryResult.push(feature);
+	                    recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
 	                }
 	            }
 
-	        } else {
-	            queryResult = result;
 	        }
-	        me.events.triggerEvent("processCompleted", {result: queryResult});
+	        me.events.triggerEvent("processCompleted", {result: result});
 	    },
 
 	    /**
@@ -6499,6 +6451,10 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(19);
+	__webpack_require__(43);
+	__webpack_require__(78);
+	__webpack_require__(80);
+	__webpack_require__(81);
 	SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -6571,13 +6527,18 @@
 	     * result - {Object} 服务器返回的结果对象。
 	     */
 	    serviceProcessCompleted: function (result) {
+	        var me = this, existRes, layers, len;
 	        result = SuperMap.Util.transformResult(result);
-	        result = (result && result.length > 0) ? result[0] : null;
-	        this.events.triggerEvent("processCompleted", {result: result});
+
+	        existRes = !!result && result.length > 0;
+	        layers = existRes ? result[0].subLayers.layers : null;
+	        len = layers ? layers.length : 0;
+	        me.handleLayers(len, layers);
+	        me.events.triggerEvent("processCompleted", {result:result[0]});
 	    },
 
 	    /**
-	     * TODO 专题图时候可能会用到，先放在这
+	     * TODO 专题图时候可能会用到
 	     * Method: handleLayers
 	     * 处理iserver 新增图层组数据 (subLayers.layers 中可能还会含有 subLayers.layers)
 	     *
@@ -6590,28 +6551,28 @@
 	        if (len) {
 	            for (var i = 0; i < len; i++) {
 	                if (layers[i].subLayers && layers[i].subLayers.layers && layers[i].subLayers.layers.length > 0) {
-	                    this.handleLayers(layers[i].subLayers.layers.length, layers[i].subLayers.layers);
+	                    me.handleLayers(layers[i].subLayers.layers.length, layers[i].subLayers.layers);
 	                }
 	                else {
 	                    var type = layers[i].ugcLayerType;
 	                    switch (type) {
 	                        case 'THEME':
-	                            tempLayer = new ServerTheme();
+	                            tempLayer = new SuperMap.ServerTheme();
 	                            tempLayer.fromJson(layers[i]);
 	                            layers[i] = tempLayer;
 	                            break;
 	                        case 'GRID':
-	                            tempLayer = new Grid();
+	                            tempLayer = new SuperMap.Grid();
 	                            tempLayer.fromJson(layers[i]);
 	                            layers[i] = tempLayer;
 	                            break;
 	                        case 'IMAGE':
-	                            tempLayer = new Image();
+	                            tempLayer = new SuperMap.Image();
 	                            tempLayer.fromJson(layers[i]);
 	                            layers[i] = tempLayer;
 	                            break;
 	                        case 'VECTOR':
-	                            tempLayer = new Vector();
+	                            tempLayer = new SuperMap.Vector();
 	                            tempLayer.fromJson(layers[i]);
 	                            layers[i] = tempLayer;
 	                            break;
@@ -6634,108 +6595,439 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Class: ChartFeatureInfoSpecsService
-	 * 海图物标信息服务类，通过该服务类可以查询到服务端支持的所有海图物标信息。
+	 * Class: SuperMap.ServerTheme
+	 * UGC 专题图图层类。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.UGCSubLayer>
 	 */
-	__webpack_require__(15);
 	__webpack_require__(44);
+	__webpack_require__(62);
+	__webpack_require__(64);
+	__webpack_require__(69);
+	__webpack_require__(70);
+	__webpack_require__(72);
+	__webpack_require__(74);
+	SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
 
-	ol.supermap.ChartFeatureInfoSpecsService = function (url, options) {
-	    ol.supermap.ServiceBase.call(this, url, options);
-	};
+	    /**
+	     * APIProperty: theme
+	     * {<SuperMap.Theme>} 专题图对象。
+	     */
+	    theme: null,
 
-	ol.inherits(ol.supermap.ChartFeatureInfoSpecsService, ol.supermap.ServiceBase);
+	    /**
+	     * APIProperty: themeElementPosition
+	     * {<SuperMap.LonLat>} 专题图元素位置。
+	     */
+	    themeElementPosition: null,
 
-	ol.supermap.ChartFeatureInfoSpecsService.prototype.getChartFeatureInfoSpecs = function () {
-	    var me = this;
-	    var ChartFeatureInfoSpecsService = new SuperMap.REST.ChartFeatureInfoSpecsService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
+	    /**
+	     * Constructor: SuperMap.ServerTheme
+	     * UGC 专题图图层类类构造函数。
+	     *
+	     * Parameters:
+	     * theme - {<SuperMap.Theme>} 专题图对象。
+	     * themeElementPosition - {<SuperMap.LonLat>} 专题图元素位置。
+	     */
+	    initialize: function (options) {
+	        options = options || {};
+	        SuperMap.UGCSubLayer.prototype.initialize.apply(this, [options]);
+	    },
+
+	    destroy: function () {
+	        SuperMap.UGCSubLayer.prototype.destroy.apply(this, arguments);
+	        SuperMap.Util.reset(this);
+	    },
+
+	    /**
+	     * Method: fromJson
+	     * 将服务端JSON对象转换成当前客户端对象
+	     * Parameters:
+	     * jsonObject - {Object} 要转换的 JSON 对象。
+	     */
+	    fromJson: function (jsonObject) {
+	        SuperMap.UGCSubLayer.prototype.fromJson.apply(this, [jsonObject]);
+	        var themeObj = this.theme;
+	        var themeT = themeObj && themeObj.type;
+	        switch (themeT) {
+	            case 'LABEL':
+	                this.theme = SuperMap.ThemeLabel.fromObj(themeObj);
+	                break;
+	            case 'UNIQUE':
+	                this.theme = SuperMap.ThemeUnique.fromObj(themeObj);
+	                break;
+	            case 'GRAPH':
+	                this.theme = SuperMap.ThemeGraph.fromObj(themeObj);
+	                break;
+	            case 'DOTDENSITY':
+	                this.theme = SuperMap.ThemeDotDensity.fromObj(themeObj);
+	                break;
+	            case 'GRADUATEDSYMBOL':
+	                this.theme = SuperMap.ThemeGraduatedSymbol.fromObj(themeObj);
+	                break;
+	            case 'RANGE':
+	                this.theme = SuperMap.ThemeRange.fromObj(themeObj);
+	                break;
 	        }
-	    });
-	    ChartFeatureInfoSpecsService.processAsync();
-	    return me;
+	        if (this.themeElementPosition) {
+	            //待测试
+	            this.themeElementPosition = new SuperMap.LonLat(this.themeElementPosition.x, this.themeElementPosition.y);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: toServerJSONObject
+	     * 转换成对应的 JSON 格式对象。
+	     */
+	    toServerJSONObject: function () {
+	        //普通属性直接赋值
+	        var jsonObject = SuperMap.UGCSubLayer.prototype.toServerJSONObject.apply(this, arguments);
+
+	        if (jsonObject.themeElementPosition) {
+	            if (jsonObject.themeElementPosition.toServerJSONObject) {
+	                jsonObject.themeElementPosition = jsonObject.themeElementPosition.toServerJSONObject();
+	            }
+	        }
+	        if (jsonObject.theme) {
+	            if (jsonObject.theme.toServerJSONObject) {
+	                jsonObject.theme = jsonObject.theme.toServerJSONObject();
+	            }
+	        }
+	        return jsonObject;
+	    },
+
+	    CLASS_NAME: "SuperMap.ServerTheme"
+	});
+	module.exports = function (options) {
+	    return new SuperMap.ServerTheme(options);
 	};
 
-	module.exports = ol.supermap.ChartFeatureInfoSpecsService;
 
 /***/ },
 /* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Class: SuperMap.REST.ChartFeatureInfoSpecsService
-	 *      海图物标信息服务类，通过该服务类可以查询到服务端支持的所有海图物标信息。
-	 *      用户可以通过两种方式获取查询结果：
-	 *      一种是通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件；
-	 *      另一种是使用 AsyncResponder 类实现异步处理。
+	 * Class: SuperMap.ThemeLabel
+	 * 标签专题图。
+	 * 标签专题图是用文本的形式在图层中显示点、线、面等对象的属性信息，一般将文本型或数值型字段标注于图层中，如地名、道路名称、河流等级、宽度等信息。
+	 * 这里需要注意的是地图上一般还会出现图例说明，图名，比例尺等等，这些都是制图元素，不属于标签专题图标注的范畴。标签专题图有两种表现形式:
+	 * 第一种 统一标签专题图，即将指定图层的表达式的所有值使用统一的风格输出，labelExpression 用于设定标签专题图所使用的字段。
+	 * 第二种 为分段标签专题图。它仍然使用 labelExpression 设定标签专题图显示的字段值，通过 rangeExpression 指定数字型的字段作为分段数据，items 中的每
+	 * 个子对象的 [start，end) 分段值必须来源于属性 rangeExpression 的字段值，并在 items 中为每个或部分分段子项自定义特殊的风格。
 	 *
 	 * Inherits from:
-	 *  - <SuperMap.ServiceBase>
+	 *  - <SuperMap.Theme>
 	 */
-	__webpack_require__(19);
-	SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase, {
+
+	__webpack_require__(45);
+	__webpack_require__(47);
+	__webpack_require__(50);
+	__webpack_require__(51);
+	__webpack_require__(53);
+	__webpack_require__(54);
+	__webpack_require__(56);
+	__webpack_require__(58);
+	__webpack_require__(59);
+	__webpack_require__(60);
+	__webpack_require__(61);
+
+	SuperMap.ThemeLabel = SuperMap.Class(SuperMap.Theme, {
 
 	    /**
-	     * Constructor: SuperMap.REST.ChartFeatureInfoSpecsService
-	     *     使用地图（特指海图）服务地址 URL 初始化 ChartFeatureInfoSpecsService
-	     *     类的新实例。
+	     * APIProperty: alongLine
+	     * {<SuperMap.ThemeLabelAlongLine>} 标签沿线标注方向样式类。
+	     * 在该类中可以设置标签是否沿线标注以及沿线标注的多种方式。沿线标注属性只适用于线数据集专题图。
+	     */
+	    alongLine: null,
+
+	    /**
+	     * APIProperty: background
+	     * {<SuperMap.ThemeLabelBackground>} 标签专题图中标签的背景风格类。通过该字段可以设置标签的背景形状和风格。
+	     */
+	    background: null,
+
+	    /**
+	     * APIProperty: flow
+	     * {<SuperMap.ThemeFlow>} 标签专题图标签流动显示与牵引线设置类。通过该字段可以设置标签是否流动显示和牵引线风格。
+	     */
+	    flow: null,
+
+	    /**
+	     * APIProperty: items
+	     * {Array(<SuperMap.ThemeUniqueItem>)} 分段标签专题图的子项数组。分段标签专题图使用 rangeExpression
+	     * 指定数字型的字段作为分段数据，items 中的每个子对象的 [start，end) 分段值必须来源于属性 rangeExpression 的字段值。每个子项拥有自己的风格。
+	     */
+	    items: null,
+
+	    /**
+	     * APIProperty: uniqueItems
+	     * {Array(<SuperMap.ThemeLabelUniqueItem>)} 单值标签专题图子项数组。单值标签专题图使用 uniqueExpression
+	     * 单值标签专题图子项集合
+	     */
+	    uniqueItems: null,
+
+	    /**
+	     * APIProperty: labelExpression
+	     * {String} 标注字段表达式。系统将 labelExpression 对应的字段或字段表达式的值以标签的形式显示在图层中。必设字段。
+	     */
+	    labelExpression: null,
+
+	    /**
+	     * APIProperty: labelOverLengthMode
+	     * {<SuperMap.LabelOverLengthMode>} 标签专题图中超长标签的处理模式枚举类。
+	     * 对于标签的长度超过设置的标签最大长度 maxLabelLength 时称为超长标签。默认为 SuperMap.LabelOverLengthMode.NONE。
+	     */
+	    labelOverLengthMode: SuperMap.LabelOverLengthMode.NONE,
+
+	    /**
+	     * APIProperty: matrixCells
+	     * {Array(<SuperMap.LabelMatrixCell>)} 矩阵标签元素数组，用于制作矩阵标签专题图。
+	     * 数组中可以放置符号类型的矩阵标签元素和图片类型的矩阵标签元素。
+	     */
+	    matrixCells: null,
+
+	    /**
+	     * APIProperty: maxLabelLength
+	     * {Number} 标签在每一行显示的最大长度，一个中文为两个字符。
+	     * 如果超过最大长度，可以采用两种方式来处理，一种是换行的模式进行显示，另一种是以省略号方式显示。默认最大长度为256个字符。
+	     */
+	    maxLabelLength: 256,
+
+	    /**
+	     * APIProperty: numericPrecision
+	     * {Number} 如果显示的标签内容为数字，通过该字段设置其显示的精度。例如标签对应的数字是8071.64529347，
+	     * 如果该属性为0时，显示8071；为1时，显示8071.6；为3时，则是8071.645。
+	     */
+	    numericPrecision: 0,
+
+	    /**
+	     * APIProperty: offset
+	     * {<SuperMap.ThemeOffset>} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。
+	     */
+	    offset: null,
+
+	    /**
+	     * APIProperty: overlapAvoided
+	     * {Boolean} 是否允许以文本避让方式显示文本。默认值为 true， 即自动避免文本叠盖。只针对该标签专题图层中的文本数据。
+	     * 在标签重叠度很大的情况下，即使使用自动避让功能，可能也无法完全避免标签重叠现象。
+	     */
+	    overlapAvoided: true,
+
+	    /**
+	     * APIProperty: rangeExpression
+	     * {String} 制作分段标签专题的分段字段或字段表达式。该表达式对应的字段（或者字段表达式）的值应该为数值型。
+	     * 该字段与 items 分段子项联合使用，每个子项的起始值 [start，end)来源于 rangeExpression 字段值。
+	     * 最后 labelExpression 指定的标签字段（标签专题图要显示的具体内容）会根据分段子项的风格进行分段显示。
+	     */
+	    rangeExpression: null,
+
+	    /**
+	     * APIProperty: uniqueExpression
+	     * {String} 用于制作单值专题图的字段或字段表达式。
+	     * 该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段,必须与labelExpression一起使用
+	     */
+	    uniqueExpression: null,
+
+	    /**
+	     * APIProperty: smallGeometryLabeled
+	     * {Boolean} 是否显示长度大于被标注对象本身长度的标签，默认为 false。在标签的长度大于线或者面对象本身的长度时，
+	     * 如果该值为 true，则标签文字会叠加在一起显示，为了清楚完整的显示该标签，
+	     * 可以采用换行模式来显示标签，但必须保证每行的长度小于对象本身的长度。
+	     */
+	    smallGeometryLabeled: false,
+
+	    /**
+	     * APIProperty: text
+	     * {<ThemeLabelText>} 标签中文本风格。
+	     */
+	    text: null,
+
+	    /**
+	     * Constructor: SuperMap.ThemeLabel
+	     * 标签专题图构造函数，用于创建 SuperMap.ThemeLabel 类的新实例。
 	     *
 	     * Parameters:
-	     * url - {String} 地图（特指海图）服务地址。
-	     *     如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。
-	     *     发送请求格式类似于："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图/chartFeatureInfoSpecs.json"
+	     * options - {Object} 参数。
 	     *
 	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     * alongLine - {<SuperMap.ThemeLabelAlongLine>} 标签沿线标注方向样式类。
+	     * background - {<SuperMap.ThemeLabelBackground>} 标签专题图中标签的背景风格类。
+	     * flow - {<SuperMap.ThemeFlow>} 标签专题图标签流动显示与牵引线设置类。
+	     * items - {Array(<SuperMap.ThemeUniqueItem>)} 分段标签专题图的子项数组。
+	     * labelExpression - {String} 标注字段表达式。
+	     * labelOverLengthMode - {<SuperMap.LabelOverLengthMode>} 标签专题图中超长标签的处理模式枚举类。
+	     * matrixCells - {Array(<SuperMap.LabelMatrixCell>)} 矩阵标签元素数组。
+	     * maxLabelLength - {Number>} 标签在每一行显示的最大长度。
+	     * numericPrecision - {Number} 通过该字段设置其显示的精度。
+	     * offset - {<SuperMap.ThemeOffset>} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。
+	     * overlapAvoided - {Boolean} 是否允许以文本避让方式显示文本。
+	     * rangeExpression - {String} 制作分段标签专题的分段字段或字段表达式。
+	     * smallGeometryLabeled - {Boolean} 是否显示长度大于被标注对象本身长度的标签。
+	     * text - {<SuperMap.ThemeLabelText>} 标签中文本风格。
+	     * memoryData - {<SuperMap.ThemeMemoryData>} 专题图内存数据。
 	     */
-	    initialize: function (url, options) {
-	        SuperMap.ServiceBase.prototype.initialize.apply(this,arguments);
+	    initialize: function (options) {
+	        var me = this;
+	        me.alongLine = new SuperMap.ThemeLabelAlongLine();
+	        me.background = new SuperMap.ThemeLabelBackground();
+	        me.flow = new SuperMap.ThemeFlow();
+	        me.offset = new SuperMap.ThemeOffset();
+	        me.text = new SuperMap.ThemeLabelText();
+	        SuperMap.Theme.prototype.initialize.apply(this, ["LABEL", options]);
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
 	    },
 
 	    /**
 	     * APIMethod: destroy
-	     * 释放资源,将引用资源的属性置空。
+	     * 释放资源，将引用资源的属性置空。
 	     */
 	    destroy: function () {
-	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
-	        SuperMap.Util.reset(this);
+	        SuperMap.Theme.prototype.destroy.apply(this, arguments);
+	        var me = this;
+	        me.alongLine = null;
+	        if (me.background) {
+	            me.background.destroy();
+	            me.background = null;
+	        }
+	        me.flow = null;
+	        if (me.items) {
+	            for (var i = 0, items = me.items, len = items.length; i < len; i++) {
+	                items[i].destroy();
+	            }
+	            me.items = null;
+	        }
+	        if (me.uniqueItems) {
+	            for (var j = 0, uniqueItems = me.uniqueItems, uniqueLen = uniqueItems.length; j < uniqueLen; j++) {
+	                uniqueItems[j].destory();
+	            }
+	            me.uniqueItems = null;
+	        }
+	        me.labelExpression = null;
+	        me.labelOverLengthMode = null;
+	        me.matrixCells = null;
+	        me.maxLabelLength = null;
+	        me.numericPrecision = null;
+	        me.overlapAvoided = null;
+	        me.rangeExpression = null;
+	        me.uniqueExpression = null;
+	        if (me.offset) {
+	            me.offset.destroy();
+	            me.offset = null;
+	        }
+	        me.overlapAvoided = null;
+	        me.smallGeometryLabeled = null;
+	        if (me.text) {
+	            me.text.destroy();
+	            me.text = null;
+	        }
+	    },
+
+
+	    /**
+	     * Method: toJSON
+	     * 将themeLabel对象转化为json字符串。
+	     *
+	     * Returns:
+	     * {String} 返回转换后的 JSON 字符串。
+	     */
+	    toJSON: function () {
+	        return SuperMap.Util.toJSON(this.toServerJSONObject());
 	    },
 
 	    /**
-	     * APIMethod: processAsync
-	     *     根据地图（特指海图）服务地址与服务端完成异步通讯，获取物标信息。
-	     *
-	     * Note: 当查询物标信息成功时，将触发 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE
-	     *     事件。用可以通过户两种方式获取图层信息:
-	     *     1. 通过 AsyncResponder 类获取（推荐使用）；
-	     *     2. 通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件获取。
+	     * Method: toServerJSONObject
+	     * 转换成对应的 JSON 格式对象。
 	     */
-	    processAsync: function () {
-	        var me = this, method = "GET",
-	            end = me.url.substr(me.url.length - 1, 1);
-	        if (!me.isTempLayers) {
-	            me.url += (end === "/") ? '' : '/';
-	            me.url += me.isInTheSameDomain ? "chartFeatureInfoSpecs.json?" : "chartFeatureInfoSpecs.jsonp?";
-	        } else {
-	            me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+	    toServerJSONObject: function () {
+	        var obj = new Object();
+	        obj.type = this.type;
+	        obj.memoryData = this.memoryData;
+	        if (this.alongLine) {
+	            obj.alongLine = this.alongLine.isAlongLine;
+	            obj.alongLineDirection = this.alongLine.alongLineDirection;
+	            obj.angleFixed = this.alongLine.angleFixed;
+	            obj.isLabelRepeated = this.alongLine.isLabelRepeated;
+	            obj.labelRepeatInterval = this.alongLine.labelRepeatInterval;
+	            obj.repeatedLabelAvoided = this.alongLine.repeatedLabelAvoided;
+	            obj.repeatIntervalFixed = this.alongLine.repeatIntervalFixed;
 	        }
-	        me.request({
-	            method: method,
-	            params: null,
-	            scope: me,
-	            success: me.serviceProcessCompleted,
-	            failure: me.serviceProcessFailed
-	        });
+	        if (this.offset) {
+	            obj.offsetFixed = this.offset.offsetFixed;
+	            obj.offsetX = this.offset.offsetX;
+	            obj.offsetY = this.offset.offsetY;
+	        }
+
+	        if (this.flow) {
+	            obj.flowEnabled = this.flow.flowEnabled;
+	            obj.leaderLineDisplayed = this.flow.leaderLineDisplayed;
+	            obj.leaderLineStyle = this.flow.leaderLineStyle;
+	        }
+	        if (this.text) {
+	            obj.maxTextHeight = this.text.maxTextHeight;
+	            obj.maxTextWidth = this.text.maxTextWidth;
+	            obj.minTextHeight = this.text.minTextHeight;
+	            obj.minTextWidth = this.text.minTextWidth;
+	            obj.uniformStyle = this.text.uniformStyle;
+	            obj.uniformMixedStyle = this.text.uniformMixedStyle;
+	        }
+	        if (this.background) {
+	            obj.labelBackShape = this.background.labelBackShape;
+	            obj.backStyle = this.background.backStyle;
+	        }
+	        obj.labelOverLengthMode = this.labelOverLengthMode;
+	        obj.maxLabelLength = this.maxLabelLength;
+	        obj.smallGeometryLabeled = this.smallGeometryLabeled;
+	        obj.rangeExpression = this.rangeExpression;
+	        obj.uniqueExpression = this.uniqueExpression;
+	        obj.numericPrecision = this.numericPrecision;
+	        obj.items = this.items;
+	        obj.uniqueItems = this.uniqueItems;
+	        obj.labelExpression = this.labelExpression;
+	        obj.overlapAvoided = this.overlapAvoided;
+	        obj.matrixCells = this.matrixCells;
+	        return obj;
 	    },
 
-	    CLASS_NAME: "SuperMap.REST.ChartFeatureInfoSpecsService"
+	    CLASS_NAME: "SuperMap.ThemeLabel"
 	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.ChartFeatureInfoSpecsService(url, options);
+	SuperMap.ThemeLabel.fromObj = function (obj) {
+	    if (!obj) return;
+	    var lab = new SuperMap.ThemeLabel();
+	    var itemsL = obj.items, itemsU = obj.uniqueItems, cells = obj.matrixCells;
+	    obj.matrixCells = null;
+	    SuperMap.Util.copy(lab, obj);
+	    lab.alongLine = SuperMap.ThemeLabelAlongLine.fromObj(obj);
+	    lab.background = SuperMap.ThemeLabelBackground.fromObj(obj);
+	    lab.flow = new SuperMap.ThemeFlow({flowEnabled: obj.flowEnabled, leaderLineDisplayed: obj.leaderLineDisplayed, leaderLineStyle: obj.leaderLineStyle});
+	    if (itemsL) {
+	        lab.items = [];
+	        for (var i = 0, len = itemsL.length; i < len; i++) {
+	            lab.items.push(SuperMap.ThemeLabelItem.fromObj(itemsL[i]));
+	        }
+	    }
+	    if (itemsU) {
+	        lab.uniqueItems = [];
+	        for (var j = 0, uniqueLen = itemsU.length; j < uniqueLen; j++) {
+	            lab.uniqueItems.push(SuperMap.ThemeUniqueItem.fromObj(itemsU[j]));
+	        }
+	    }
+	    if (cells) {
+	        lab.matrixCells = [];
+	        for (var i = 0, len = cells.length; i < len; i++) {
+	            //TODO
+	            //lab.matrixCells.push(SuperMap.LabelMatrixCell.fromObj(cells[i]));
+	        }
+	    }
+	    lab.offset = SuperMap.ThemeOffset.fromObj(obj);
+	    lab.text = SuperMap.ThemeLabelText.fromObj(obj);
+	    return lab;
+	};
+	module.exports = function (options) {
+	    return new SuperMap.ThemeLabel(options);
 	};
 
 
@@ -6744,322 +7036,239 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Class: SetLayersService
-	 * 设置图层信息服服务类
+	 * Class: SuperMap.Theme
+	 * 专题图基类。
 	 */
-	__webpack_require__(15);
+
 	__webpack_require__(46);
-	__webpack_require__(47);
-	__webpack_require__(48);
-
-	ol.supermap.SetLayerService = function (url, options) {
-	    ol.supermap.ServiceBase.call(this, url, options);
-	    var end = this.options.url.substr(me.options.url.length - 1, 1);
-	    this.options.url += (end === "/") ? '' : '/';
-
-	};
-
-	ol.inherits(ol.supermap.SetLayerService, ol.supermap.ServiceBase);
-
-	/**
-	 * @param params:
-	 *       tempLayerID,layerPath,resourceID
-	 */
-	ol.supermap.SetLayerService.prototype.setLayerInfo = function (params) {
-	    if (!params) {
-	        return;
-	    }
-	    var me = this,
-	        tempLayerID = params.tempLayerID,
-	        layerPath = params.layerPath,
-	        resourceID = params.resourceID,
-	        layerInfoParams = params.layerInfo;
-	    if (!tempLayerID || !layerPath || !resourceID) {
-	        return;
-	    }
-	    var url = me.options.url.concat();
-	    url += "tempLayersSet/" + tempLayerID + "/" + layerPath;
-
-	    var setLayerInfoService = new SuperMap.REST.SetLayerInfoService(url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
-	        },
-	        resourceID: resourceID
-	    });
-
-	    setLayerInfoService.processAsync(layerInfoParams);
-	    return me;
-	};
-
-	/**
-	 * @param params:
-	 *       layersInfo(iServer图层信息，可以从GetLayersInfoService得到)
-	 *       tempLayerID,isTempLayers
-	 */
-	ol.supermap.SetLayerService.prototype.setLayersInfo = function (params) {
-	    if (!params) {
-	        return;
-	    }
-	    var me = this, layersInfoParam,
-	        resourceID = params.resourceID,
-	        isTempLayers = params.isTempLayers ? params.isTempLayers : false,
-	        layersInfo = params.layersInfo;
-	    if (!resourceID || !layersInfo) {
-	        return;
-	    }
-	    layersInfoParam.subLayers = {};
-	    layersInfoParam.subLayers.layers = layersInfo;
-	    var setLayersInfoService = new SuperMap.REST.SetLayersInfoService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
-	        },
-	        resourceID: resourceID,
-	        isTempLayers: isTempLayers
-	    });
-
-	    setLayersInfoService.processAsync(layersInfoParam);
-	    return me;
-	};
-
-	/**
-	 * @param params:
-	 *     <SetLayerStatusParameters>
-	 */
-	ol.supermap.SetLayerService.prototype.setLayerStatus = function (params) {
-	    if (!params) {
-	        return;
-	    }
-	    var me = this;
-	    var setLayerStatusService = new SuperMap.REST.SetLayerStatusService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
-	        }
-
-	    });
-	    setLayerStatusService.processAsync(params);
-	    return me;
-	}
-
-	module.exports = ol.supermap.SetLayerService;
-
-/***/ },
-/* 46 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.REST.SetLayerInfoService
-	 * 设置图层信息服务类。可以实现临时图层中子图层的修改
-	 * 该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.ServiceBase>
-	 */
-	__webpack_require__(19);
-	SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
+	SuperMap.Theme = SuperMap.Class({
 
 	    /**
-	     * APIProperty: resourceID
-	     * {String} 图层资源ID，临时图层的资源ID标记。
+	     * Property: memoryData
+	     * {<SuperMap.ThemeMemoryData>} 专题图内存数据。
+	     * 用内存数据制作专题图的方式与表达式制作专题图的方式互斥，前者优先级较高。
+	     * 第一个参数代表专题值，即数据集中用来做专题图的字段或表达式的值；第二个参数代表外部值。在制作专题图时，会用外部值代替专题值来制作相应的专题图。
 	     */
-	    resourceID: null,
-
+	    memoryData: null,
 
 	    /**
-	     * Constructor: SuperMap.REST.SetLayerInfoService
-	     * 设置图层信息服务类构造函数。可以实现临时图层中子图层的修改。
+	     * Property: type
+	     * {String} 专题图类型。
+	     */
+	    type: null,
+
+	    /**
+	     * Constructor: SuperMap.Theme
+	     * 专题图基类构造函数。
 	     *
 	     * Parameters:
-	     * url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：
-	     * http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
+	     * type - {String} 专题图类型。
 	     * options - {Object} 参数。
 	     *
 	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     * memoryData - {<SuperMap.ThemeMemoryData>} 专题图内存数据。
 	     */
-	    initialize: function (url, options) {
-	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	    initialize: function (type, options) {
+	        if (!type) {
+	            return false;
+	        }
+	        this.type = type;
 	        if (options) {
 	            SuperMap.Util.extend(this, options);
 	        }
-	        this.resourceID = options.resourceID;
 	    },
 
 	    /**
 	     * APIMethod: destroy
-	     * 释放资源,将引用资源的属性置空。
+	     * 释放资源，将引用资源的属性置空。
 	     */
 	    destroy: function () {
-	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
-	        SuperMap.Util.reset(this);
+	        var me = this;
+	        if (me.memoryData) {
+	            me.memoryData.destroy();
+	            me.memoryData = null;
+	        }
+	        me.type = null;
 	    },
 
 	    /**
-	     * APIMethod: processAsync
-	     * 负责将客户端的更新参数传递到服务端。
-	     * Parameters:
-	     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务 <SuperMap.REST.GetLayerInfoService>.result.subLayers.layers[i]
-	     * 返回图层信息，然后对其属性进行修改来获取。
+	     * Method: toServerJSONObject
+	     * 转换成对应的 JSON 格式对象。
 	     */
-	    processAsync: function (params) {
-	        var me = this;
-
-	        if (!params) {
-	            return;
-	        }
-	        me.url += me.isInTheSameDomain ? ".json" : ".jsonp";
-	        var jsonParamsStr = SuperMap.Util.toJSON(params);
-	        me.request({
-	            method: "PUT",
-	            data: jsonParamsStr,
-	            scope: me,
-	            success: me.serviceProcessCompleted,
-	            failure: me.serviceProcessFailed
-	        });
+	    toServerJSONObject: function () {
+	        //return 子类实现
+	        return;
 	    },
 
-	    CLASS_NAME: "SuperMap.REST.SetLayerInfoService"
+	    CLASS_NAME: "SuperMap.Theme"
 	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.SetLayerInfoService(url, options);
+	module.exports = function (type, options) {
+	    return new SuperMap.Theme(type, options);
 	};
 
+/***/ },
+/* 46 */
+/***/ function(module, exports) {
+
+	/**
+	 * Class: SuperMap.ThemeMemoryData
+	 * 专题图内存数据类。
+	 */
+
+	SuperMap.ThemeMemoryData = SuperMap.Class({
+
+	    /**
+	     * Property: srcData
+	     * {Array()} 原始值数组，该属性值将被 targetData 属性所指定的值替换掉，然后制作专题图，但数据库中的值并不会改变。
+	     */
+	    srcData: null,
+
+	    /**
+	     * Property: targetData
+	     * {Array()} 外部值数组，即用于制作专题图的内存数据，设定该属性值后，会将 srcData 属性所指定的原始值替换掉制作专题图，但数据库中的值并不会改变。
+	     */
+	    targetData: null,
+
+	    /**
+	     * Constructor: SuperMap.ThemeMemoryData
+	     * 专题图内存数据类构造函数。
+	     *
+	     * Parameters:
+	     * srcData - {Array()} 原始值数组。
+	     * targetData - {Array()} 外部值数组。
+	     */
+	    initialize: function (srcData, targetData) {
+	        if (srcData) {
+	            this.srcData = srcData;
+	        }
+	        if (targetData) {
+	            this.targetData = targetData;
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        me.srcData = null;
+	        me.targetData = null;
+	    },
+
+	    /**
+	     * Method: toJSON
+	     * 将 SuperMap.ThemeMemoryData 对象转化为json字符串。
+	     *
+	     * Returns:
+	     * {String} 返回转换后的 JSON 字符串。
+	     */
+	    toJSON: function () {
+	        if (this.srcData && this.targetData) {
+	            var memoryDataStr = "";
+	            var count = Math.min(this.srcData.length, this.targetData.length);
+	            for (var i = 0; i < count; i++) {
+	                memoryDataStr += "\'" + this.srcData[i] + "\':\'" + this.targetData[i] + "\',";
+	            }
+	            //去除多余的逗号
+	            if (i > 0) {
+	                memoryDataStr = memoryDataStr.substring(0, memoryDataStr.length - 1);
+	            }
+	            return "{" + memoryDataStr + "}";
+	        } else {
+	            return null;
+	        }
+	    },
+
+	    CLASS_NAME: "SuperMap.ThemeMemoryData"
+	});
+	module.exports = function (srcData, targetData) {
+	    return new SuperMap.ThemeMemoryData(srcData, targetData);
+	};
 
 /***/ },
 /* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Class: SuperMap.REST.SetLayersInfoService
-	 * 设置图层信息服务类。可以实现创建新的临时图层和对现有临时图层的修改，当 isTempLayers 为 false
-	 * 的时候执行创建临时图层。当 isTempLayers 为 ture 并且临时图层资源 resourceID 被设置有效时执行
-	 * 对临时图层的编辑。
-	 * 该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.ServiceBase>
+	 * Class: SuperMap.ThemeFlow
+	 * 标签或符号流动显示和牵引线风格设置类。
+	 * 通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
 	 */
-	__webpack_require__(19);
-	SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
+
+	__webpack_require__(48);
+	SuperMap.ThemeFlow = SuperMap.Class({
 
 	    /**
-	     * APIProperty: resourceID
-	     * {String} 图层资源ID，临时图层的资源ID标记。
+	     * APIProperty: flowEnabled
+	     * {Boolean} 是否流动显示标签或符号。
+	     * 对于标签专题图而言，对于跨越比较大的区域和线条状的几何对象，在一个地图窗口中不能完全显示的情况下，如果其标签位置比较固定，
+	     * 在当前地图窗口中该对象的标签不可见，则需要通过平移地图来查看对象的标签信息。如果采用了流动显示的效果，在当前地图窗口中，对象即使是部分显示，
+	     * 其标签也会显示在当前地图窗口中。当平移地图时，对象的标签会随之移动，以保证在当前地图窗口中部分或全部显示的对象其标签都可见，从而可以方便地查看各要素的标签信息。
 	     */
-	    resourceID: null,
+	    flowEnabled: false,
 
 	    /**
-	     * APIProperty: isTempLayers
-	     * {Boolean>} 当前url对应的图层是否是临时图层。
+	     * APIProperty: leaderLineDisplayed
+	     * {Boolean} 是否显示标签或符号和它标注的对象之间的牵引线。默认值为 false，即不显示标签或符号和它标注的对象之间的牵引线。
+	     * 只有当 flowEnabled 为 true 时，牵引线才起作用。在当标签流动显示时，其位置不固定，由于牵引线始终指向要素的内点，
+	     * 因而通过牵引线显示功能可以找到流动的标签或符号实际对应的要素。或者渲染符号偏移它所指向的对象时，图与对象之间可以采用牵引线进行连接。
 	     */
-	    isTempLayers: false,
+	    leaderLineDisplayed: false,
 
 	    /**
-	     * Constructor: SuperMap.REST.SetLayersInfoService
-	     * 设置图层信息服务类构造函数。可以实现创建新的临时图层和对现有临时图层的修改。
+	     * APIProperty: leaderLineStyle
+	     * {<SuperMap.ServerStyle>} 标签或符号与其标注对象之间牵引线的风格。
+	     */
+
+	    leaderLineStyle: null,
+	    /**
+	     * Constructor: SuperMap.ThemeFlow
+	     * 标签或符号流动显示和牵引线风格设置类构造函数。
 	     *
 	     * Parameters:
-	     * url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：
-	     * http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
-	     * options - {Object} 参数。
+	     * options - {Object} 可选参数。
 	     *
 	     * Allowed options properties:
-	     * resourceID - {String} 图层资源ID，临时图层的资源ID标记。
-	     * isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。
-	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     * flowEnabled - {Boolean} 是否流动显示标签或符号。
+	     * leaderLineDisplayed - {Boolean} 是否显示标签或符号和它标注的对象之间的牵引线。
+	     * leaderLineStyle - {<SuperMap.ServerStyle>} 标签或符号与其标注对象之间牵引线的风格。
 	     */
-	    initialize: function (url, options) {
-	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	    initialize: function (options) {
+	        var me = this;
+	        me.leaderLineStyle = new SuperMap.ServerStyle();
 	        if (options) {
 	            SuperMap.Util.extend(this, options);
 	        }
-	        this.resourceID = options.resourceID;
-	        this.isTempLayers = options.isTempLayers;
 	    },
 
 	    /**
 	     * APIMethod: destroy
-	     * 释放资源,将引用资源的属性置空。
+	     * 释放资源，将引用资源的属性置空。
 	     */
 	    destroy: function () {
-	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
-	        SuperMap.Util.reset(this);
+	        var me = this;
+	        me.flowEnabled = null;
+	        me.leaderLineDisplayed = null;
+	        if (me.leaderLineStyle) {
+	            me.leaderLineStyle.destroy();
+	            me.leaderLineStyle = null;
+	        }
 	    },
 
-	    /**
-	     * APIMethod: processAsync
-	     * 负责将客户端的更新参数传递到服务端。
-	     * Parameters:
-	     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务<SuperMap.REST.GetLayerInfoService>.result.subLayers.layers
-	     * 返回图层信息，然后对其属性进行修改来获取。
-	     */
-	    processAsync: function (params) {
-	        var jsonParams,
-	            subLayers = [],
-	            me = this,
-	            method = "",
-	            end;
-	        if (!params) {
-	            return;
-	        }
-	        end = me.url.substr(me.url.length - 1, 1);
-	        me.url += (end === "/") ? '' : '/';
-	        //创建临时图层和设置修改临时图层信息对应不同的资源URL
-	        if (me.isTempLayers) {
-	            me.url += "tempLayersSet/" + me.resourceID;
-	            method = "PUT";
-	        } else {
-	            me.url += "tempLayersSet";
-	            method = "POST";
-	        }
-	        me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
-	        var layers = params.subLayers.layers,
-	            len = layers.length;
-	        for (var i in layers) {
-	            if (layers[i].ugcLayerType === "GRID") {
-	                var colorDictionary = {};
-	                var colorDics = layers[i].colorDictionarys;
-	                for (var j in colorDics) {
-	                    var key = colorDics[j].elevation;
-	                    colorDictionary[key] = colorDics[j].color;
-	                }
-	            }
-	            layers[i].colorDictionary = colorDictionary;
-	            delete layers[i].colorDictionarys;
-	        }
-
-	        for (var i = 0; i < len; i++) {
-	            if (layers[i].toJsonObject) {
-	                //将图层信息转换成服务端能识别的简单json对象
-	                subLayers.push(layers[i].toJsonObject());
-	            } else {
-	                subLayers.push(layers[i]);
-	            }
-	        }
-	        jsonParams = SuperMap.Util.extend(jsonParams, params);
-	        jsonParams.subLayers = {"layers": subLayers};
-	        jsonParams.object = null;
-	        var jsonParamsStr = SuperMap.Util.toJSON([jsonParams]);
-	        me.request({
-	            method: method,
-	            data: jsonParamsStr,
-	            scope: me,
-	            success: me.serviceProcessCompleted,
-	            failure: me.serviceProcessFailed
-	        });
-	    },
-
-	    CLASS_NAME: "SuperMap.REST.SetLayersInfoService"
+	    CLASS_NAME: "SuperMap.ThemeFlow"
 	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.SetLayersInfoService(url, options);
+	SuperMap.ThemeFlow.fromObj = function (obj) {
+	    if (!obj) {
+	        return;
+	    }
+	    var res = new SuperMap.ThemeFlow();
+	    SuperMap.Util.copy(res, obj);
+	    res.leaderLineStyle = SuperMap.ServerStyle.fromJson(obj.leaderLineStyle);
+	    return res;
+	};
+	module.exports = function (options) {
+	    return new SuperMap.ThemeFlow(options);
 	};
 
 
@@ -7068,3359 +7277,12 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Class: SuperMap.REST.SetLayerStatusService
-	 * 子图层显示控制服务类。
-	 * 该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
-	 * 用户获取服务端返回的各子图层显示状态有两种方式：
-	 * 一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；
-	 * 一种是使用 AsyncResponder 类实现异步处理。
-	 */
-	__webpack_require__(19);
-	__webpack_require__(49);
-	SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
-
-	    lastparams: null,
-
-	    mapUrl: null,
-
-	    /**
-	     * Constructor: SuperMap.REST.SetLayerStatusService
-	     * 子图层显示控制服务类构造函数。
-	     *
-	     * Parameters:
-	     * url - {String} 地图服务访问地址。请求地图服务,URL 应为：
-	     * http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
-	     */
-	    initialize: function (url, options) {
-	        var me = this;
-	        SuperMap.ServiceBase.prototype.initialize.apply(me, arguments);
-	        if (options) {
-	            SuperMap.Util.extend(me, options);
-	        }
-	        me.mapUrl = url;
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源,将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
-	        SuperMap.Util.reset(this);
-	    },
-
-	    /**
-	     * APIMethod: processAsync
-	     * 负责将客户端的更新参数传递到服务端。
-	     * Parameters:
-	     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务 <SuperMap.SetLayerStatusParameters>
-	     * 返回图层信息，然后对其属性进行修改来获取。
-	     */
-	    processAsync: function (params) {
-	        var subLayers = [],
-	            me = this,
-	            method = "POST";
-	        if (!params) {
-	            return;
-	        }
-
-	        me.url = me.mapUrl;
-	        var end = me.url.substr(me.url.length - 1, 1);
-	        me.url += (end === "/") ? '' : '/';
-
-	        if (params.resourceID == null) {
-	            me.url += "tempLayersSet";
-	            me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
-
-	            me.lastparams = params;
-
-	            me.request({
-	                method: method,
-	                scope: me,
-	                success: me.createTempLayerComplete,
-	                failure: me.serviceProcessFailed
-	            });
-	        } else {
-	            me.url += "tempLayersSet/" + params.resourceID;
-	            me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
-
-	            me.url += "elementRemain=true&reference=" + params.resourceID + "&holdTime=" + params.holdTime.toString();
-
-	            var jsonParameters = '[{';
-
-	            jsonParameters += '"type":"UGC",';
-	            if (params.layerStatusList != null && params.layerStatusList.length > 0) {
-	                jsonParameters += '"subLayers":' + params.toJSON();
-	            }
-	            jsonParameters += ',"visible":' + true + ',';
-	            jsonParameters += '"name":"' + this.getMapName(this.mapUrl) + '"';
-
-	            jsonParameters += '}]';
-
-	            me.request({
-	                method: "PUT",
-	                data: jsonParameters,
-	                scope: me,
-	                success: me.serviceProcessCompleted,
-	                failure: me.serviceProcessFailed
-	            });
-	        }
-	    },
-
-	    /**
-	     * Method: createTempLayerComplete
-	     * 设置完成，执行此方法。
-	     *
-	     * Parameters:
-	     * result - {Object} 服务器返回的结果对象，记录设置操作是否成功。
-	     */
-	    createTempLayerComplete: function (result) {
-	        var me = this;
-	        result = SuperMap.Util.transformResult(result);
-	        if (result.succeed) {
-	            me.lastparams.resourceID = result.newResourceID;
-	        }
-
-	        me.processAsync(me.lastparams);
-	    },
-
-	    getMapName: function (url) {
-	        var mapUrl = url;
-	        if (mapUrl.charAt(mapUrl.length - 1) === "/") {
-	            mapUrl = mapUrl.substr(0, mapUrl.length - 1);
-	        }
-	        var index = mapUrl.lastIndexOf("/");
-	        var mapName = mapUrl.substring(index + 1, mapUrl.length);
-	        return mapName;
-	    },
-
-	    /**
-	     * Method: setLayerCompleted
-	     * 设置完成，执行此方法。
-	     *
-	     * Parameters:
-	     * result - {Object} 服务器返回的结果对象，记录设置操作是否成功。
-	     */
-	    serviceProcessCompleted: function (result) {
-	        var me = this;
-	        result = SuperMap.Util.transformResult(result);
-	        if (result != null && me.lastparams != null) {
-	            result.newResourceID = me.lastparams.resourceID;
-	        }
-	        me.events.triggerEvent("processCompleted", {result: result});
-	    },
-
-	    CLASS_NAME: "SuperMap.REST.SetLayerStatusService"
-	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.SetLayerStatusService(url, options);
-	};
-
-
-/***/ },
-/* 49 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.SetLayerStatusParameters
-	 * 子图层显示控制参数类。
-	 * 该类存储了各子图层是否可见的状态。
-	 * 注意在 SuperMap iClient 系列产品中所说的图层与 SuperMap Deskpro 的地图对应，子图层与 SuperMap Deskpro 的图层对应。
-	 */
-
-	__webpack_require__(50);
-	SuperMap.SetLayerStatusParameters = SuperMap.Class({
-
-	    /**
-	     * APIProperty: layerStatusList
-	     * {Array<SuperMap.LayerStatus>} 获取或设置图层可见状态（SuperMap.LayerStatus）集合，必设属性。
-	     * 集合中的每个 SuperMap.LayerStatus 对象代表一个子图层的可视状态。
-	     */
-	    layerStatusList: null,
-
-	    /**
-	     * APIProperty: holdTime
-	     * {Number} 获取或设置资源在服务端保存的时间。 默认为 15 分钟。
-	     */
-	    holdTime: 15,
-
-	    /**
-	     * APIProperty: resourceID
-	     * {String} 获取或设置资源服务 ID 。非必设参数，如果设置该参数则会在指定的 TempLayer 进行图层的显示控制；
-	     * 如果不设置该参数，则会首先创建一个 TempLayer ，然后在新创建的 TempLayer 进行图层的显示控制。
-	     */
-	    resourceID: null,
-
-	    /**
-	     * Constructor: SuperMap.SetLayerStatusParameters
-	     *
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * layerStatusList - {Array<SuperMap.LayerStatus>} 获取或设置图层可见状态（SuperMap.LayerStatus）集合，必设属性。
-	     * 集合中的每个 SuperMap.LayerStatus 对象代表一个子图层的可视状态。
-	     * holdTime - {String} 获取或设置资源在服务端保存的时间。
-	     * resourceID - {String} 获取或设置资源服务 ID。
-	     */
-	    initialize: function (options) {
-	        var me = this;
-	        me.layerStatusList = [];
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        me.layerStatusList = null;
-	        me.holdTime = null;
-	        me.resourceID = null;
-	    },
-
-	    /**
-	     * Method: toJSON
-	     * 生成json。
-	     */
-	    toJSON: function () {
-	        var json = '{';
-	        json += '"layers":[';
-	        var v = [];
-	        for (var i = 0, len = this.layerStatusList.length; i < len; i++) {
-	            v.push(this.layerStatusList[i].toJSON());
-	        }
-
-	        json += v;
-	        json += ']';
-	        json += '}';
-
-	        return json;
-	    },
-
-	    CLASS_NAME: "SuperMap.SetLayerStatusParameters"
-	});
-	module.exports = function (options) {
-	    return new SuperMap.SetLayerStatusParameters(options);
-	};
-
-/***/ },
-/* 50 */
-/***/ function(module, exports) {
-
-	/**
-	 * Class: SuperMap.LayerStatus
-	 * 子图层显示参数类.。
-	 * 该类存储了各个子图层的名字和是否可见的状态。
-	 *
-	 */
-
-	SuperMap.LayerStatus = SuperMap.Class({
-
-	    /**
-	     * APIProperty: layerName
-	     * {String} 获取或设置图层名称。必设属性。。
-	     */
-	    layerName: null,
-
-	    /**
-	     * APIProperty: isVisible
-	     * {Boolean} 获取或设置图层是否可见，true 表示可见。必设属性。
-	     */
-	    isVisible: null,
-
-	    /**
-	     * APIProperty: displayFilter
-	     * {String} 图层显示 SQL 过滤条件，如 layerStatus.displayFilter = "smid < 10"，表示仅显示 smid 值小于 10 的对象。
-	     */
-	    displayFilter: null,
-
-	    /**
-	     * APIProperty: fieldValuesDisplayFilter
-	     * {Object} 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode,他们的作用如下：
-	     * values：{Array<Number>} - 就是要过滤的值；
-	     * fieldName：{String} - 要过滤的字段名称 只支持数字类型的字段；
-	     * fieldValuesDisplayMode：{String} 目前有两个DISPLAY/DISABLE。当为DISPLAY时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素
-	     * */
-	    fieldValuesDisplayFilter: null,
-
-	    /**
-	     * Constructor: SuperMap.LayerStatus
-	     *
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * layerName - {String} 获取或设置图层名称。
-	     * isVisible - {Boolean} 获取或设置图层是否可见，true 表示可见。
-	     * displayFilter - {String} 图层显示 SQL 过滤条件。
-	     */
-	    initialize: function (options) {
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        me.layerName = null;
-	        me.isVisible = null;
-	        me.displayFilter = null;
-	    },
-
-	    /**
-	     * Method: toJSON
-	     * 生成对应的json。
-	     */
-	    toJSON: function () {
-	        var json = '{';
-	        json += '"type":"UGC",';
-	        var v = [];
-	        if (this.layerName) {
-	            v.push('"name":"' + this.layerName + '"');
-	            v.push('"visible":' + this.isVisible);
-	        }
-
-	        if (this.displayFilter) {
-	            v.push('"displayFilter":"' + this.displayFilter + '"');
-	        }
-
-	        if (this.minScale || this.minScale == 0) {
-	            v.push('"minScale":' + this.minScale);
-	        }
-
-	        if (this.maxScale || this.maxScale == 0) {
-	            v.push('"maxScale":' + this.maxScale);
-	        }
-
-	        if (this.fieldValuesDisplayFilter) {
-	            v.push('"fieldValuesDisplayFilter":' + SuperMap.Util.toJSON(this.fieldValuesDisplayFilter));
-	        }
-
-	        json += v;
-	        json += '}';
-
-	        return json;
-	    },
-
-	    CLASS_NAME: "SuperMap.LayerStatus"
-	});
-	module.exports = function (options) {
-	    return new SuperMap.LayerStatus(options);
-	};
-
-/***/ },
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class:MeasureService
-	 * 距离测量服务
-	 */
-	__webpack_require__(15);
-	__webpack_require__(52);
-
-	ol.supermap.MeasureService = function (url, options) {
-	    ol.supermap.ServiceBase.call(this, url, options);
-	}
-	ol.inherits(ol.supermap.MeasureService, ol.supermap.ServiceBase);
-
-	ol.supermap.MeasureService.prototype.measureDistance = function (params) {
-	    this.measure(params, 'DISTANCE');
-	};
-
-	ol.supermap.MeasureService.prototype.measureArea = function (params) {
-	    this.measure(params, 'AREA');
-	};
-
-	ol.supermap.MeasureService.prototype.measure = function (params, type) {
-	    var me = this;
-	    var measureService = new SuperMap.REST.MeasureService(me.options.url, {
-	        measureMode: type,
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
-	        }
-	    });
-	    measureService.processAsync(me._processParam(params));
-	    return me;
-	};
-
-	ol.supermap.MeasureService.prototype._processParam = function (params) {
-	    if (params && params.geometry) {
-	        params.geometry = ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
-	    }
-	    return params;
-	};
-	module.exports = ol.supermap.MeasureService;
-
-/***/ },
-/* 52 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.REST.MeasureService
-	 * 量算服务类。
-	 * 该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.ServiceBase>
-	 */
-	__webpack_require__(19);
-	__webpack_require__(53);
-	SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
-
-	    /**
-	     * APIProperty: measureMode
-	     * {<SuperMap.MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。默认值为：MeasureMode.DISTANCE 。
-	     */
-	    measureMode: SuperMap.MeasureMode.DISTANCE,
-
-	    /**
-	     * Constructor: SuperMap.REST.MeasureService
-	     * 量算服务类构造函数。
-	     *
-	     * 例如：
-	     * (start code)
-	     * var myMeasuerService = new SuperMap.REST.MeasureService(url, {
-	     *      measureMode: SuperMap.MeasureMode.DISTANCE,
-	     *      eventListeners:{
-	     *          "processCompleted": measureCompleted
-	     *      }
-	     * });
-	     * (end)
-	     *
-	     * Parameters:
-	     * url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
-	     * measureMode - {<MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。
-	     */
-	    initialize: function (url, options) {
-	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用的资源属性置空。
-	     */
-	    destroy: function () {
-	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
-	        var me = this;
-	        me.measureMode = null;
-	    },
-
-	    /**
-	     * APIMethod: processAsync
-	     * 负责将客户端的量算参数传递到服务端。
-	     *
-	     * Parameters:
-	     * params - {<SuperMap.MeasureParameters>} 量算参数。
-	     */
-	    processAsync: function (params) {
-	        if (!params) {
-	            return;
-	        }
-	        var me = this,
-	            geometry = params.geometry,
-	            pointsCount = 0,
-	            point2ds = null,
-	            urlParameters = null,
-	            end = null;
-	        if (!geometry) {
-	            return;
-	        }
-	        end = me.url.substr(me.url.length - 1, 1);
-	        if (me.measureMode === SuperMap.MeasureMode.AREA) {
-	            if (me.isInTheSameDomain) {
-	                me.url += ((end === "/") ? "area.json?" : "/area.json?");
-	            }
-	            else {
-	                me.url += ((end === "/") ? "area.jsonp?" : "/area.jsonp?");
-	            }
-	        } else {
-	            if (me.isInTheSameDomain) {
-	                me.url += ((end === "/") ? "distance.json?" : "/distance.json?");
-	            }
-	            else {
-	                me.url += ((end === "/") ? "distance.jsonp?" : "/distance.jsonp?");
-	            }
-	        }
-	        var serverGeometry = SuperMap.REST.ServerGeometry.fromGeometry(geometry);
-	        if (!serverGeometry) {
-	            return;
-	        }
-	        pointsCount = serverGeometry.parts[0];
-	        point2ds = serverGeometry.points.splice(0, pointsCount);
-
-	        var prjCoordSysTemp, prjCodeTemp, paramsTemp;
-	        if (params.prjCoordSys) {
-	            if (typeof (params.prjCoordSys) === "object") {
-	                prjCodeTemp = params.prjCoordSys.projCode;
-	                prjCoordSysTemp = '{"epsgCode"' + prjCodeTemp.substring(prjCodeTemp.indexOf(":"), prjCodeTemp.length) + "}";
-	            }
-	            else if (typeof (params.prjCoordSys) === "string") {
-	                prjCoordSysTemp = '{"epsgCode"' + params.prjCoordSys.substring(params.prjCoordSys.indexOf(":"), params.prjCoordSys.length) + "}";
-	            }
-	            paramsTemp = {"point2Ds": SuperMap.Util.toJSON(point2ds), "unit": params.unit, "prjCoordSys": prjCoordSysTemp};
-	        }
-	        else {
-	            paramsTemp = {"point2Ds": SuperMap.Util.toJSON(point2ds), "unit": params.unit};
-	        }
-
-	        me.request({
-	            method: "GET",
-	            params: paramsTemp,
-	            scope: me,
-	            success: me.serviceProcessCompleted,
-	            failure: me.serviceProcessFailed
-	        });
-
-	    },
-
-	    CLASS_NAME: "SuperMap.REST.MeasureService"
-	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.MeasureService(url, options);
-	};
-
-/***/ },
-/* 53 */
-/***/ function(module, exports) {
-
-	/**
-	 * Class: SuperMap.MeasureParameters
-	 * 量算参数类。
-	 * 客户端要量算的地物间的距离或某个区域的面积是一个 {<Object>}  类型的几何对象（{<Line>} 或 {<Polygon>}），
-	 * 它将与指定的量算单位一起作为量算参数传到服务端。最终服务端将以指定单位返回得到的距离或面积。 
-	 */
-
-	SuperMap.MeasureParameters = SuperMap.Class({
-
-	    /** 
-	     * APIProperty: geometry
-	     * {<Object>} 要量算的几何对象（{<Line>} 或 {<Polygon>}），必设属性。
-	     */
-	    geometry: null,
-	    
-	    /** 
-	     * APIProperty: unit
-	     * {<Unit>}  量算单位。默认单位：米，即量算结果以米为单位。
-	     */
-	    unit: SuperMap.Unit.METER,
-
-	    /**
-	     * APIProperty: projection
-	     * {String} 在 SuperMap.MeasureParameters 的 options 中被设置，用来指定该量算操作所使用的投影。该项默认值为空。
-	    */
-	    prjCoordSys: null,
-
-	    /**
-	     * APIProperty: distanceMode
-	     * {String} 在SuperMap.MeasureParameters的options中设置，用来指定量算的方式为按球面长度'Geodesic'或者平面长度'Planar'来计算，默认为'Geodesic'
-	     * 
-	     * Exampels:
-	     * (start code)
-	     * var param = new SuperMap.MeasureParameters(getmetry,{distanceMode:'Planar'});
-	     * (end)
-	     */
-	     distanceMode: null,
-
-	    /**
-	     * Constructor: SuperMap.MeasureParameters
-	     * 量算参数类构造函数。
-	     *
-	     * Parameters:
-	     * geometry - {<Object>} 要量算的几何对象。
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * unit - {<Unit>} 量算单位。  
-	     */
-	    initialize: function(geometry, options) {
-	        if (!geometry) {
-	            return;
-	        }
-	        this.geometry = geometry;
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-	    
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。 
-	     */
-	    destroy: function() {
-	        var me = this;
-	        me.geometry = null;
-	        me.unit = null;
-	        me.prjCoordSys = null;
-	    },
-	    
-	    CLASS_NAME: "SuperMap.MeasureParameters"
-	});
-	module.exports = function (geometry, options) {
-	    return new SuperMap.MeasureParameters(geometry, options);
-	};
-
-/***/ },
-/* 54 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: FieldStatisticService
-	 * 字段查询服务类
-	 */
-	__webpack_require__(15);
-	__webpack_require__(55);
-
-	ol.supermap.FieldStatisticService = function (url, options) {
-	    ol.supermap.ServiceBase.call(this, url, options);
-	    this.currentStatisticResult = {fieldName: options.fieldName};
-	    if (!options.statisticMode || (typeof options.statisticMode !== "Array")) {
-	        this.options.statisticMode = SuperMap.REST.StatisticMode;
-	    }
-	}
-	ol.inherits(ol.supermap.FieldStatisticService, ol.supermap.ServiceBase);
-
-
-	ol.supermap.FieldStatisticService.prototype.getFieldStatisticInfo = function () {
-	    var me = this;
-	    var modes = me.options.statisticMode;
-	    //针对每种统计方式分别进行请求
-	    for (var mode in modes) {
-	        this.currentStatisticResult[modes[mode]] = null;
-	        this._fieldStatisticRequest(modes[mode]);
-	    }
-	    return me;
-	}
-
-	ol.supermap.FieldStatisticService.prototype._fieldStatisticRequest = function (statisticMode) {
-	    var me = this, statisticService;
-	    statisticService = new SuperMap.REST.FieldStatisticService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
-	        },
-	        datasource: me.options.dataSourceName,
-	        dataset: me.options.dataSetName,
-	        field: me.options.fieldName,
-	        statisticMode: statisticMode
-	    });
-	    statisticService.processAsync();
-	}
-
-	ol.supermap.FieldStatisticService.prototype.processCompleted = function (fieldStatisticResult) {
-	    var getAll = true,
-	        result = fieldStatisticResult.result;
-	    if (this.currentStatisticResult) {
-	        if (null == this.currentStatisticResult[result.mode]) {
-	            this.currentStatisticResult[result.mode] = result.result;
-	        }
-	    }
-	    for (var mode in this.currentStatisticResult) {
-	        if (null == this.currentStatisticResult[mode]) {
-	            getAll = false;
-	            break;
-	        }
-	    }
-	    if (getAll) {
-	        this.dispatchEvent(new ol.Collection.Event('complete', {result: this.currentStatisticResult}))
-	    }
-	}
-
-	module.exports = ol.supermap.FieldStatisticService;
-
-/***/ },
-/* 55 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.REST.FieldStatisticService
-	 * 字段查询统计服务类。用来完成对指定数据集指定字段的查询统计分析，即求平均值，最大值等。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.ServiceBase>
-	 */
-	__webpack_require__(19);
-	SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
-
-	    /**
-	     * APIProperty: datasource
-	     * {String} 数据集所在的数据源名称。
-	     */
-	    datasource: null,
-
-	    /**
-	     * APIProperty: dataset
-	     * {String} 数据集名称。
-	     */
-	    dataset: null,
-
-	    /**
-	     * APIProperty: field
-	     * {String} 查询统计的目标字段名称。
-	     */
-	    field: null,
-
-	    /**
-	     * APIProperty: statisticMode
-	     * {<StatisticMode>} 字段查询统计的方法类型。
-	     */
-	    statisticMode: null,
-
-	    /**
-	     * Constructor: SuperMap.REST.FieldStatisticService
-	     * 字段查询统计服务类构造函数。
-	     *
-	     * 例如：
-	     * (start code)
-	     * var myService = new SuperMap.REST.FieldStatisticService(url, {eventListeners: {
-	     *     "processCompleted": fieldStatisticCompleted, 
-	     *     "processFailed": fieldStatisticError
-	     *     }，
-	     *     datasource: "World",
-	     *     dataset: "Countries",
-	     *     field: "SmID",
-	     *     statisticMode: StatisticMode.AVERAGE
-	     * };
-	     * (end)
-	     *
-	     * Parameters:
-	     * url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/data-world/rest/data 即可。
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
-	     * datasource - {String} 数据集所在的数据源名称。
-	     * dataset - {String} 数据集名称。
-	     * field - {String} 查询统计的目标字段名称。
-	     * statisticMode - {<StatisticMode>} 字段查询统计的方法类型。
-	     */
-	    initialize: function (url, options) {
-	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源,将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
-	        var me = this;
-	        me.datasource = null;
-	        me.dataset = null;
-	        me.field = null;
-	        me.statisticMode = null;
-	    },
-
-	    /**
-	     * APIMethod: processAsync
-	     * 执行服务，进行指定字段的查询统计。
-	     */
-	    processAsync: function () {
-	        var me = this,
-	            end = me.url.substr(me.url.length - 1, 1),
-	            fieldStatisticURL = "datasources/" + me.datasource + "/datasets/" + me.dataset + "/fields/" + me.field + "/" + me.statisticMode;
-	        if (me.isInTheSameDomain) {
-	            me.url += (end == "/") ? fieldStatisticURL + ".json?" : "/" + fieldStatisticURL + ".json?";
-	        } else {
-	            me.url += (end == "/") ? fieldStatisticURL + ".jsonp?" : "/" + fieldStatisticURL + ".jsonp?";
-	        }
-
-	        me.request({
-	            method: "GET",
-	            data: null,
-	            scope: me,
-	            success: me.serviceProcessCompleted,
-	            failure: me.serviceProcessFailed
-	        });
-	    },
-
-	    CLASS_NAME: "SuperMap.REST.FieldStatisticService"
-	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.FieldStatisticService(url, options);
-	};
-
-/***/ },
-/* 56 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: GetFeaturesService
-	 * 数据集查询类。
-	 * 提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询
-	 */
-	__webpack_require__(15);
-	__webpack_require__(57);
-	__webpack_require__(61);
-	__webpack_require__(63);
-	__webpack_require__(65);
-	__webpack_require__(67);
-
-
-	ol.supermap.GetFeaturesService = function (url, options) {
-	    ol.supermap.ServiceBase.call(this, url, options);
-	};
-	ol.inherits(ol.supermap.GetFeaturesService, ol.supermap.ServiceBase);
-
-	/**
-	 * 数据集ID查询服务
-	 * @param params <GetFeaturesByIDsParameters>
-	 * @param resultFormat
-	 */
-	ol.supermap.GetFeaturesService.prototype.getFeaturesByIDs = function (params, resultFormat) {
-	    var me = this;
-	    var getFeaturesByIDsService = new SuperMap.REST.GetFeaturesByIDsService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
-	        },
-	        format: me._processFormat(resultFormat)
-	    });
-	    getFeaturesByIDsService.processAsync(me._processParams(params));
-	    return me;
-
-	};
-	/**
-	 * 数据集Bounds查询服务
-	 * @param params <GetFeaturesByBoundsParameters>
-	 * @param resultFormat
-	 */
-	ol.supermap.GetFeaturesService.prototype.getFeaturesByBounds = function (params, resultFormat) {
-	    var me = this;
-	    var getFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
-	        },
-	        format: me._processFormat(resultFormat)
-	    });
-	    getFeaturesByBoundsService.processAsync(me._processParams(params));
-	    return me;
-	};
-	/**
-	 * 数据集Buffer查询服务
-	 * @param params <GetFeaturesByBufferParameters>
-	 * @param resultFormat
-	 */
-	ol.supermap.GetFeaturesService.prototype.getFeaturesByBuffer = function (params, resultFormat) {
-	    var me = this;
-	    var getFeatureService = new SuperMap.REST.GetFeaturesByBufferService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
-	        },
-	        format: me._processFormat(resultFormat)
-	    });
-	    getFeatureService.processAsync(me._processParams(params));
-	    return me;
-	};
-	/**
-	 * 数据集SQL查询服务
-	 * @param params <GetFeaturesBySQLParameters>
-	 * @param resultFormat
-	 */
-	ol.supermap.GetFeaturesService.prototype.getFeaturesBySQL = function (params, resultFormat) {
-	    var me = this;
-	    var getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
-	        },
-	        format: me._processFormat(resultFormat)
-	    });
-
-	    getFeatureBySQLService.processAsync(me._processParams(params));
-	    return me;
-	};
-	/**
-	 * 数据集几何查询服务类
-	 * @param params <GetFeaturesByGeometryParameters>
-	 * @param resultFormat
-	 */
-	ol.supermap.GetFeaturesService.prototype.getFeaturesByGeometry = function (params, resultFormat) {
-	    var me = this;
-	    var getFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByGeometryService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
-	        },
-	        format: me._processFormat(resultFormat)
-	    });
-	    getFeaturesByGeometryService.processAsync(me._processParams(params));
-	    return me;
-	};
-
-	ol.supermap.GetFeaturesService.prototype._processParams = function (params) {
-	    if (!params) {
-	        return {};
-	    }
-	    params.returnContent = (params.returnContent == null) ? true : params.returnContent;
-	    params.fromIndex = params.fromIndex ? params.fromIndex : 0;
-	    params.toIndex = params.fromIndex ? params.fromIndex : -1;
-	    if (params.bounds) {
-	        params.bounds = new SuperMap.Bounds(
-	            params.bounds[0],
-	            params.bounds[1],
-	            params.bounds[2],
-	            params.bounds[3]
-	        );
-	    }
-	    if (params.geometry) {
-	        params.geometry = ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
-	    }
-	    return params;
-	};
-
-	ol.supermap.GetFeaturesService.prototype._processFormat = function (resultFormat) {
-	    return (resultFormat) ? resultFormat : SuperMap.Format.GEOJSON;
-	};
-
-	module.exports = ol.supermap.GetFeaturesService;
-
-/***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.REST.GetFeaturesByIDsService
-	 * 数据集ID查询服务类。
-	 * 在数据集集合中查找指定 ID 号对应的空间地物要素。
-	 *  
-	 * Inherits from:
-	 *  - <SuperMap.REST.GetFeaturesServiceBase>
-	 */
-	__webpack_require__(58);
-	__webpack_require__(59);
-	SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
-
-	    /**
-	     * Constructor: SuperMap.REST.GetFeaturesByIDsService
-	     * 数据集ID查询服务类构造函数。
-	     *
-	     * 例如：
-	     * (start code)
-	     * var myGetFeaturesByIDsService = new SuperMap.REST.GetFeaturesByIDsService(url, {
-	     *     eventListeners: {
-	     *         "processCompleted": getFeatureCompleted, 
-	     *         "processFailed": getFeatureError
-	     *            }
-	     *     });
-	     * function getFeatureCompleted(object){//todo};
-	     * function getFeatureError(object){//todo}
-	     * (end)     
-	     *
-	     * Parameters:
-	     * url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
-	     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
-	     * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
-	     */
-	    initialize: function(url, options) {
-	        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
-	    },
-	    
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。  
-	     */
-	    destroy: function() {
-	        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
-	    },
-	    
-	    /**
-	     * Method: getJsonParameters
-	     * 将查询参数转化为 JSON 字符串。
-	     * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
-	     *
-	     * Parameters:
-	     * params - {<SuperMap.GetFeaturesByIDsParameters>}
-	     *
-	     * Returns:
-	     * {Object} 转化后的 JSON 字符串。
-	     */
-	    getJsonParameters: function(params) {
-	        return  SuperMap.GetFeaturesByIDsParameters.toJsonParameters(params);
-	    },
-	    
-	    CLASS_NAME: "SuperMap.REST.GetFeaturesByIDsService"
-	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.GetFeaturesByIDsService(url, options);
-	};
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.REST.GetFeaturesServiceBase
-	 * 数据服务中数据集查询服务基类。
-	 * 获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.ServiceBase>
-	 */
-
-	// TODO 待iServer featureResult GeoJSON表述bug修复当修改此类中TODO注释说明的地方
-	__webpack_require__(6);
-	__webpack_require__(19);
-
-	SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
-
-	    /**
-	     * Property: returnContent
-	     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。
-	     *           如果为 true，则直接返回新创建资源，即查询结果的表述。
-	     *           如果为 false，则返回的是查询结果资源的 URI。默认为 false。
-	     */
-	    returnContent: true,
-
-	    /**
-	     * Property: fromIndex
-	     * {Integer} 查询结果的最小索引号。
-	     *         默认值是0，如果该值大于查询结果的最大索引号，则查询结果为空。
-	     */
-	    fromIndex: 0,
-
-	    /**
-	     * Property: toIndex
-	     * {Integer} 查询结果的最大索引号。
-	     *         如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
-	     */
-	    toIndex: 19,
-
-	    /**
-	     * APIProperty: maxFeatures
-	     * {Integer} 进行SQL查询时，用于设置服务端返回查询结果条目数量，默认为1000。
-	     */
-	    maxFeatures: null,
-
-	    /**
-	     *  Property: format
-	     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-	     *  参数格式为"ISERVER","GEOJSON",GEOJSON
-	     */
-	    format: SuperMap.Format.GEOJSON,
-
-	    /**
-	     * Constructor: SuperMap.REST.GetFeaturesServiceBase
-	     * 数据集查询服务基类构造函数。
-	     *
-	     * 例如：
-	     * (start code)
-	     * var myService = new SuperMap.REST.GetFeaturesServiceBase(url, {
-	     *     eventListeners: {
-	     *         "processCompleted": getFeatureCompleted, 
-	     *         "processFailed": getFeatureError
-	     *     }
-	     * });
-	     * (end)
-	     *
-	     * Parameters:
-	     * url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
-	     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
-	     * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
-	     */
-	    initialize: function (url, options) {
-	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
-	        options = options || {};
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	        var me = this, end;
-	        if (options && options.format) {
-	            me.format = options.format.toUpperCase();
-	        }
-
-	        end = me.url.substr(me.url.length - 1, 1);
-	        // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
-	        // if (me.format==="geojson" && me.isInTheSameDomain) {
-	        //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
-	        // } else {
-	        //     me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
-	        // }
-	        if (me.isInTheSameDomain) {
-	            me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
-	        } else {
-	            me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源,将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
-	        var me = this;
-	        me.returnContent = null;
-	        me.fromIndex = null;
-	        me.toIndex = null;
-	        me.maxFeatures = null;
-	        me.format = null;
-	    },
-
-	    /**
-	     * APIMethod: processAsync
-	     * 负责将客户端的查询参数传递到服务端。
-	     *
-	     * Parameters:
-	     * params - {<GetFeaturesParametersBase>} 查询参数。
-	     */
-	    processAsync: function (params) {
-	        if (!params) {
-	            return;
-	        }
-	        var me = this,
-	            jsonParameters = null,
-	            firstPara = true;
-
-	        me.returnContent = params.returnContent;
-	        me.fromIndex = params.fromIndex;
-	        me.toIndex = params.toIndex;
-	        me.maxFeatures = params.maxFeatures;
-	        if (me.returnContent) {
-	            me.url += "returnContent=" + me.returnContent;
-	            firstPara = false;
-	        }
-	        if (me.fromIndex != null &&
-	            me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex) && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
-	            me.url += "&fromIndex=" + me.fromIndex + "&toIndex=" + me.toIndex;
-	        }
-
-	        if (params.returnCountOnly) me.url += "&returnCountOnly=" + params.returnContent;
-	        jsonParameters = me.getJsonParameters(params);
-	        me.request({
-	            method: "POST",
-	            data: jsonParameters,
-	            scope: me,
-	            success: me.serviceProcessCompleted,
-	            failure: me.serviceProcessFailed
-	        });
-	    },
-
-	    /**
-	     * Method: getFeatureComplete
-	     * 查询完成，执行此方法。
-	     *
-	     * Parameters:
-	     * result - {Object} 服务器返回的结果对象。
-	     */
-	    serviceProcessCompleted: function (result) {
-	        var me = this, results;
-	        results = result = SuperMap.Util.transformResult(result);
-	        if (me.format === SuperMap.Format.GEOJSON && result.features) {
-	            var geoJSONFormat = new SuperMap.Format.GeoJSON();
-	            results = JSON.parse(geoJSONFormat.write(result.features));
-	        }
-	        me.events.triggerEvent("processCompleted", {result: results});
-	    },
-
-	    CLASS_NAME: "SuperMap.REST.GetFeaturesServiceBase"
-	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.GetFeaturesServiceBase(url, options);
-	};
-
-/***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.GetFeaturesByIDsParameters
-	 * ID 查询参数类。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.GetFeaturesParametersBase>
-	 */
-	__webpack_require__(60);
-	SuperMap.GetFeaturesByIDsParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
-
-	    /**
-	     * Property: getFeatureMode
-	     * {String} 数据集查询模式。
-	     */
-	    getFeatureMode: "ID",
-
-	    /**
-	     * APIProperty: IDs
-	     * {Array(Integer)} 所要查询指定的元素ID信息。
-	     */
-	    IDs: null,
-
-	    /**
-	     * APIProperty: fields
-	     * {Array(String)} 设置查询结果返回字段。
-	     *                 当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。
-	     *                 不设置即返回全部字段。
-	     */
-	    fields: null,
-
-	    /**
-	     * Constructor: GetFeaturesBySQLParameters
-	     * SQL 查询参数类构造函数。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * IDs - {Array(Integer)} 所要查询指定的元素ID信息。
-	     * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。
-	     * dataSetNames - {Array(String)} 数据集集合中的数据集名称列表。
-	     * returnContent - {Boolean} 是否直接返回查询结果。
-	     * fromIndex - {Integer} 查询结果的最小索引号。
-	     * toIndex - {Integer} 查询结果的最大索引号。
-	     */
-	    initialize: function (options) {
-	        SuperMap.GetFeaturesParametersBase.prototype.initialize.apply(this, arguments);
-	        if (!options) {
-	            return;
-	        }
-	        SuperMap.Util.extend(this, options);
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        SuperMap.GetFeaturesParametersBase.prototype.destroy.apply(me, arguments);
-	        me.IDs = null;
-	        me.getFeatureMode = null;
-	        if (me.fields) {
-	            while (me.fields.length > 0) {
-	                me.fields.pop();
-	            }
-	            me.fields = null;
-	        }
-	    },
-	    CLASS_NAME: "SuperMap.GetFeaturesByIDsParameters"
-	});
-
-	/**
-	 * Function: SuperMap.GetFeaturesByIDsParameters.toJsonParameters
-	 * 将<SuperMap.GetFeaturesByIDsParameters>对象参数转换为json字符串。
-	 *
-	 * Parameters:
-	 * params - {<SuperMap.GetFeaturesByIDsParameters>} IDs查询参数。
-	 *
-	 * Returns:
-	 * {String} 转化后的 json字符串。
-	 */
-	SuperMap.GetFeaturesByIDsParameters.toJsonParameters = function (params) {
-	    var parasByIDs, filterParameter;
-
-	    parasByIDs = {
-	        datasetNames: params.datasetNames,
-	        getFeatureMode: "ID",
-	        ids: params.IDs
-	    };
-	    if (params.fields) {
-	        filterParameter = new SuperMap.FilterParameter();
-	        filterParameter.name = params.datasetNames;
-	        filterParameter.fields = params.fields;
-	        parasByIDs.queryParameter = filterParameter;
-	    }
-	    return SuperMap.Util.toJSON(parasByIDs);
-	};
-	module.exports = function (options) {
-	    return new SuperMap.GetFeaturesByIDsParameters(options);
-	};
-
-/***/ },
-/* 60 */
-/***/ function(module, exports) {
-
-	/**
-	 * Class: SuperMap.GetFeaturesParametersBase
-	 * 数据服务中数据集查询参数基类。
-	 */
-
-	SuperMap.GetFeaturesParametersBase = SuperMap.Class({
-	    /**
-	     * APIProperty: datasetNames
-	     * {Array(String)} 数据集集合中的数据集名称列表。
-	     */
-	    datasetNames: null,
-
-	    /**
-	     * APIProperty: returnContent
-	     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。
-	     *           如果为 true，则直接返回新创建资源，即查询结果的表述。
-	     *           如果为 false，则返回的是查询结果资源的 URI。默认为 true。
-	     */
-	    returnContent: true,
-
-	    /**
-	     * APIProperty: fromIndex
-	     * {Integer} 查询结果的最小索引号。
-	     *           默认值是0，如果该值大于查询结果的最大索引号，则查询结果为空。
-	     */
-	    fromIndex: 0,
-
-	    /**
-	     * APIProperty: toIndex
-	     * {Integer} 查询结果的最大索引号。
-	     *           默认值是19，如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
-	     */
-	    toIndex: 19,
-
-	    /**
-	     * APIProperty: returnCountOnly
-	     * {Boolean} 只返回查询结果的总数，默认为false。
-	     */
-	    returnCountOnly: false,
-
-	    /**
-	     * APIProperty: maxFeatures
-	     * {Integer} 进行SQL查询时，用于设置服务端返回查询结果条目数量，默认为1000。
-	     */
-	    maxFeatures: null,
-
-	    /**
-	     * Constructor: SuperMap.GetFeaturesParametersBase
-	     * SQL 查询参数类构造函数。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。
-	     * returnContent - {<SuperMap.FilterParameter>} 是否直接返回查询结果。
-	     * fromIndex - {Integer} 查询结果的最小索引号。
-	     * toIndex - {Integer} 查询结果的最大索引号。
-	     */
-	    initialize: function (options) {
-	        if (!options) {
-	            return;
-	        }
-	        SuperMap.Util.extend(this, options);
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        me.datasetNames = null;
-	        me.returnContent = null;
-	        me.fromIndex = null;
-	        me.toIndex = null;
-	        me.maxFeatures = null;
-	    },
-
-	    CLASS_NAME: "SuperMap.GetFeaturesParametersBase"
-	});
-	module.exports = function (options) {
-	    return new SuperMap.GetFeaturesParametersBase(options);
-	};
-
-/***/ },
-/* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.REST.GetFeaturesBySQLService
-	 * 数据服务中数据集 SQL 查询服务类。
-	 * 在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
-	 * 
-	 * Inherits from:
-	 *  - <SuperMap.REST.GetFeaturesServiceBase>
-	 */
-	__webpack_require__(58);
-	__webpack_require__(62);
-	SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
-
-	    /**
-	     * Constructor: SuperMap.REST.GetFeaturesBySQLService
-	     * SQL 查询服务类构造函数。
-	     *
-	     * 例如：
-	     * (start code)     
-	     * var myGetFeaturesBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url, {
-	     *     eventListeners: {
-	     *         "processCompleted": GetFeaturesCompleted, 
-	     *         "processFailed": GetFeaturesError
-	     *         }
-	     * });
-	     * function getFeaturesCompleted(object){//todo};
-	     * function getFeaturesError(object){//todo};
-	     * (end)
-	     *
-	     * Parameters:
-	     * url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
-	     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
-	     * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
-	     */
-	    initialize: function(url, options) {
-	        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
-	    },
-	    
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。  
-	     */
-	    destroy: function() {
-	        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
-	    },
-	    
-	    /**
-	     * Method: getJsonParameters
-	     * 将查询参数转化为 JSON 字符串。
-	     * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
-	     *
-	     * Parameters:
-	     * params - {<SuperMap.GetFeaturesBySQLParameters>}
-	     *
-	     * Returns:
-	     * {Object} 转化后的 JSON 字符串。
-	     */
-	    getJsonParameters: function(params) {
-	        return  SuperMap.GetFeaturesBySQLParameters.toJsonParameters(params);
-	    },
-	    
-	    CLASS_NAME: "SuperMap.REST.GetFeaturesBySQLService"
-	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.GetFeaturesBySQLService(url, options);
-	};
-
-/***/ },
-/* 62 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.GetFeaturesBySQLParameters
-	 * 数据服务中数据集SQL查询参数类。 
-	 * 
-	 * Inherits from:
-	 *  - <SuperMap.GetFeaturesParametersBase>
-	 */
-	__webpack_require__(60);
-	__webpack_require__(24);
-	SuperMap.GetFeaturesBySQLParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
-	    /** 
-	     * Property: getFeatureMode
-	     * {String} 数据集查询模式。
-	     */
-	    getFeatureMode: "SQL",
-	    /** 
-	     * APIProperty: queryParameter
-	     * {<SuperMap.FilterParameter>} 查询过滤条件参数类。
-	     */
-	    queryParameter: null,
-	        
-	    /**
-	     * Constructor: SuperMap.GetFeaturesBySQLParameters
-	     * SQL 查询参数类构造函数。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * queryParameter - {<SuperMap.FilterParameter>} 查询过滤条件参数。
-	     * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。  
-	     * returnContent - {Boolean} 是否直接返回查询结果。
-	     * fromIndex - {Integer} 查询结果的最小索引号。
-	     * toIndex - {Integer} 查询结果的最大索引号。
-	     */
-	    initialize: function(options) {
-	        SuperMap.GetFeaturesParametersBase.prototype.initialize.apply(this,arguments);
-	        if (!options) {
-	            return;
-	        }
-	        SuperMap.Util.extend(this, options);
-	    },
-	    
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        SuperMap.GetFeaturesParametersBase.prototype.destroy.apply(this,arguments);
-	        var me = this;
-	        me.getFeatureMode = null;
-	        if(me.queryParameter) {
-	            me.queryParameter.destroy();
-	            me.queryParameter = null;
-	        }
-	    },
-	    
-	    CLASS_NAME:"SuperMap.GetFeaturesBySQLParameters"
-	 });
-	 /**
-	 * Function: SuperMap.GetFeaturesBySQLParameters.toJsonParameters
-	 * 将<SuperMap.GetFeaturesBySQLParameters>对象参数转换为json字符串。
-	 *
-	 * Parameters:
-	 * params - {<SuperMap.GetFeaturesBySQLParameters>} SQL查询参数。
-	 *
-	 * Returns:
-	 * {String} 转化后的 json字符串。
-	 */
-	 SuperMap.GetFeaturesBySQLParameters.toJsonParameters = function(params) {
-	    var paramsBySql = {
-	        datasetNames: params.datasetNames,
-	        getFeatureMode:"SQL",
-	        queryParameter:params.queryParameter
-	    };
-	    return SuperMap.Util.toJSON(paramsBySql);
-	};
-	module.exports = function (options) {
-	    return new SuperMap.GetFeaturesBySQLParameters(options);
-	};
-
-/***/ },
-/* 63 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.REST.GetFeaturesByBoundsService
-	 * 数据集范围查询服务类
-	 * 查询与指定范围对象符合一定空间关系的矢量要素。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.REST.GetFeaturesServiceBase>
-	 */
-	__webpack_require__(58);
-	__webpack_require__(64);
-	SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
-
-	    /**
-	     * Constructor: SuperMap.REST.GetFeaturesByBoundsService
-	     * 数据集范围查询服务类构造函数。
-	     *
-	     * 例如：
-	     * (start code)
-	     * var myGetFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(url, {
-	     *     eventListeners: {
-	     *           "processCompleted": getFeatureCompleted, 
-	     *           "processFailed": getFeatureError
-	     *           }
-	     * });
-	     * function getFeatureCompleted(object){//todo};
-	     * function getFeatureError(object){//todo}
-	     * (end)
-	     *
-	     * Parameters:
-	     * url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
-	     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
-	     * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
-	     */
-	    initialize: function (url, options) {
-	        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
-	    },
-
-	    /**
-	     * Method: getJsonParameters
-	     * 将查询参数转化为 JSON 字符串。
-	     * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry,Bounds等）。
-	     *
-	     * Parameters:
-	     * params - {<SuperMap.GetFeaturesByBoundsParameters>}
-	     *
-	     * Returns:
-	     * {Object} 转化后的 JSON 字符串。
-	     */
-	    getJsonParameters: function (params) {
-	        return SuperMap.GetFeaturesByBoundsParameters.toJsonParameters(params);
-	    },
-
-	    CLASS_NAME: "SuperMap.REST.GetFeaturesByBoundsService"
-	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.GetFeaturesByBoundsService(url, options);
-	};
-
-/***/ },
-/* 64 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.GetFeaturesByBoundsParameters
-	 * 数据集范围查询参数类。
-	 * 该类用于设置数据集范围查询的相关参数。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.GetFeaturesParametersBase>
-	 */
-	__webpack_require__(60);
-
-	SuperMap.GetFeaturesByBoundsParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
-
-	    /**
-	     * Property: getFeatureMode
-	     * {String} 数据集查询模式。
-	     * 范围查询有"BOUNDS"，"BOUNDS_ATTRIBUTEFILTER"两种,当用户设置attributeFilter时会自动切换到BOUNDS_ATTRIBUTEFILTER访问服务。
-	     */
-	    getFeatureMode: null,
-
-	    /**
-	     * APIProperty: bounds
-	     * {<SuperMap.Bounds>} 用于查询的范围对象。
-	     */
-	    bounds: null,
-
-	    /**
-	     * APIProperty: fields
-	     * {Array(String)} 设置查询结果返回字段。
-	     *                 当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。
-	     *                 不设置即返回全部字段。
-	     */
-	    fields: null,
-
-	    /**
-	     * APIProperty: attributeFilter
-	     * {String} 范围查询属性过滤条件。
-	     */
-	    attributeFilter: null,
-
-	    /**
-	     * APIProperty: spatialQueryMode
-	     * {<SuperMap.SpatialQueryMode>} 空间查询模式常量，必设参数，默认为CONTAIN。
-	     */
-	    spatialQueryMode: SuperMap.SpatialQueryMode.CONTAIN,
-
-	    /**
-	     * Constructor: SuperMap.GetFeaturesByBoundsParameters
-	     * 范围空间查询参数类构造函数。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * bounds - {<SuperMap.Bounds>} 用于查询的范围对象。
-	     * attributeFilter - {String} 范围查询属性过滤条件。
-	     * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。
-	     * spatialQueryMode - {<SuperMap.SpatialQueryMode>} 空间查询模式常量,必设参数。
-	     * queryParameter - {<SuperMap.FilterParameter>} 查询过滤条件参数。
-	     * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。
-	     * returnContent - {Boolean} 是否直接返回查询结果。
-	     * fromIndex - {Integer} 查询结果的最小索引号。
-	     * toIndex - {Integer} 查询结果的最大索引号。
-	     */
-	    initialize: function (options) {
-	        this.getFeatureMode = SuperMap.GetFeaturesByBoundsParameters.getFeatureMode.BOUNDS;
-	        SuperMap.GetFeaturesParametersBase.prototype.initialize.apply(this, arguments);
-	        if (!options) {
-	            return;
-	        }
-	        SuperMap.Util.extend(this, options);
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        SuperMap.GetFeaturesParametersBase.prototype.destroy.apply(me, arguments);
-	        if (me.bounds) {
-	            me.bounds.destroy();
-	            me.bounds = null;
-	        }
-	        if (me.fields) {
-	            while (me.fields.length > 0) {
-	                me.fields.pop();
-	            }
-	            me.fields = null;
-	        }
-	        me.attributeFilter = null;
-	        me.spatialQueryMode = null;
-	        me.getFeatureMode = null;
-	    },
-	    CLASS_NAME: "SuperMap.GetFeaturesByBoundsParameters"
-	});
-
-	/**
-	 * Function: SuperMap.GetFeaturesByBoundsParameters.toJsonParameters
-	 * 将<SuperMap.GetFeaturesByBoundsParameters>对象参数转换为json字符串。
-	 *
-	 * Parameters:
-	 * params - {<SuperMap.GetFeaturesByBoundsParameters>} 范围查询参数。
-	 *
-	 * Returns:
-	 * {String} 转化后的 json字符串。
-	 */
-	SuperMap.GetFeaturesByBoundsParameters.toJsonParameters = function (params) {
-	    var filterParameter,
-	        bounds,
-	        parasByBounds;
-
-	    bounds = {
-	        "leftBottom": {"x": params.bounds.left, "y": params.bounds.bottom},
-	        "rightTop": {"x": params.bounds.right, "y": params.bounds.top}
-	    };
-	    parasByBounds = {
-	        datasetNames: params.datasetNames,
-	        getFeatureMode: SuperMap.GetFeaturesByBoundsParameters.getFeatureMode.BOUNDS,
-	        bounds: bounds,
-	        spatialQueryMode: params.spatialQueryMode
-	    };
-	    if (params.fields) {
-	        filterParameter = new SuperMap.FilterParameter();
-	        filterParameter.name = params.datasetNames;
-	        filterParameter.fields = params.fields;
-	        parasByBounds.queryParameter = filterParameter;
-	    }
-	    if (params.attributeFilter) {
-	        parasByBounds.attributeFilter = params.attributeFilter;
-	        parasByBounds.getFeatureMode = SuperMap.GetFeaturesByBoundsParameters.getFeatureMode.BOUNDS_ATTRIBUTEFILTER;
-	    }
-
-	    return SuperMap.Util.toJSON(parasByBounds);
-	};
-
-	SuperMap.GetFeaturesByBoundsParameters.getFeatureMode = {
-	    "BOUNDS": "BOUNDS",
-	    "BOUNDS_ATTRIBUTEFILTER": "BOUNDS_ATTRIBUTEFILTER"
-	};
-
-	module.exports = function (options) {
-	    return new SuperMap.GetFeaturesByBoundsParameters(options);
-	};
-
-/***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class:   SuperMap.REST.GetFeaturesByBufferService
-	 * 数据服务中数据集缓冲区查询服务类。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.REST.GetFeaturesServiceBase>
-	 */
-	__webpack_require__(58);
-	__webpack_require__(66);
-	SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
-
-	    /**
-	     * Constructor:   SuperMap.REST.GetFeaturesByBufferService
-	     * 数据服务缓冲区查询服务类构造函数。
-	     *
-	     * 例如：
-	     * (start code)
-	     * var myGetFeaturesByBufferService = new   SuperMap.REST.GetFeaturesByBufferService(url, {
-	     *     eventListeners: {
-	     *           "processCompleted": GetFeaturesCompleted, 
-	     *           "processFailed": GetFeaturesError
-	     *           }
-	     * });
-	     * function GetFeaturesCompleted(object){//todo};
-	     * function GetFeaturesError(object){//todo};
-	     * (end)
-	     *
-	     * Parameters:
-	     * url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
-	     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
-	     * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
-	     */
-	    initialize: function (url, options) {
-	        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
-	    },
-
-	    /**
-	     * Method: getJsonParameters
-	     * 将查询参数转化为 JSON 字符串。
-	     * 在本类中重写此方法，可以实现不同种类的查询（IDs, SQL, Buffer, Geometry等）。
-	     *
-	     * Parameters:
-	     * params - {<SuperMap.GetFeaturesByBufferParameters>}
-	     *
-	     * Returns:
-	     * {Object} 转化后的 JSON 字符串。
-	     */
-	    getJsonParameters: function (params) {
-	        return SuperMap.GetFeaturesByBufferParameters.toJsonParameters(params);
-	    },
-
-	    CLASS_NAME: "SuperMap.REST.GetFeaturesByBufferService"
-	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.GetFeaturesByBufferService(url, options);
-	};
-
-/***/ },
-/* 66 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.GetFeaturesByBufferParameters
-	 * 数据服务中数据集缓冲区查询参数类。 
-	 * 
-	 * Inherits from:
-	 *  - < SuperMap.GetFeaturesParametersBase>
-	 */
-	__webpack_require__(60);
-	SuperMap.GetFeaturesByBufferParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
-	    /** 
-	     * APIProperty: bufferDistance
-	     * {Number} buffer距离,单位与所查询图层对应的数据集单位相同。
-	     */
-	    bufferDistance: null,
-	    
-	    /** 
-	     * APIProperty: queryParameter
-	     * {String} 属性查询条件。
-	     */
-	    attributeFilter:null,
-	    
-	    /** 
-	     * APIProperty: geometry
-	     * {<Object>} 空间查询条件。
-	     */
-	    geometry:null,
-	    
-	    /** 
-	     * APIProperty: fields
-	     * {Array(String)} 设置查询结果返回字段。
-	     *                 当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。
-	     *                 不设置即返回全部字段。
-	     */
-	    fields:null,
-	    
-	    /**
-	     * Constructor: SuperMap.GetFeaturesByBufferParameters
-	     * 缓冲区查询参数类构造函数。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * bufferDistance - {Number} buffer 距离，单位与所查询图层对应的数据集单位相同。
-	     * attributeFilter - {String} 属性查询条件
-	     * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。
-	     * geometry - {<Object>} 空间查询条件
-	     * dataSetNames - {Array(String)} 数据集集合中的数据集名称列表。  
-	     * returnContent - {Boolean} 是否直接返回查询结果。
-	     * fromIndex - {Integer} 查询结果的最小索引号。
-	     * toIndex - {Integer} 查询结果的最大索引号。
-	     */
-	    initialize: function(options) {
-	        SuperMap.GetFeaturesParametersBase.prototype.initialize.apply(this,arguments);
-	        if (!options) {
-	            return;
-	        }
-	        SuperMap.Util.extend(this, options);
-	    },
-	    
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy:function () {
-	        SuperMap.GetFeaturesParametersBase.prototype.destroy.apply(this,arguments);
-	        var me = this;
-	        me.bufferDistance = null;
-	        me.attributeFilter = null;
-	        if(me.fields) {
-	            while(me.fields.length > 0) {            
-	                me.fields.pop();
-	            }
-	            me.fields = null;
-	        }
-	        if(me.geometry) {
-	            me.geometry.destroy();
-	            me.geometry = null;
-	        }
-	    },
-	    CLASS_NAME:"SuperMap.GetFeaturesByBufferParameters"
-	});
-	 /**
-	 * 将<SuperMap.GetFeaturesByBufferParameters>对象参数转换为json字符串。
-	 *
-	 * Parameters:
-	 * params - {<SuperMap.GetFeaturesByBufferParameters>} SQL查询参数。
-	 *
-	 * Returns:
-	 * {String} 转化后的 json字符串。
-	 */
-	SuperMap.GetFeaturesByBufferParameters.toJsonParameters = function(params) {
-	    var filterParameter,
-	        paramsBySql,
-	        geometry;
-	        
-	    geometry = SuperMap.REST.ServerGeometry.fromGeometry(params.geometry);
-	    paramsBySql = {
-	        datasetNames: params.datasetNames,
-	        getFeatureMode: "BUFFER",
-	        bufferDistance: params.bufferDistance,
-	        geometry: geometry
-	    };
-	    if(params.fields) {
-	        filterParameter = new SuperMap.FilterParameter();
-	        filterParameter.name = params.datasetNames;
-	        filterParameter.fields = params.fields;
-	        paramsBySql.queryParameter = filterParameter;
-	    }
-	    if(params.attributeFilter) {
-	        paramsBySql.attributeFilter = params.attributeFilter;
-	        paramsBySql.getFeatureMode = "BUFFER_ATTRIBUTEFILTER";
-	    }
-	    return SuperMap.Util.toJSON(paramsBySql);
-	};
-	module.exports = function (options) {
-	    return new SuperMap.GetFeaturesByBufferParameters(options);
-	};
-
-/***/ },
-/* 67 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.REST.GetFeaturesByGeometryService
-	 * 数据集几何查询服务类
-	 * 查询与指定几何对象符合一定空间关系的矢量要素。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.REST.GetFeaturesServiceBase>
-	 */
-	__webpack_require__(58);
-	__webpack_require__(68);
-	SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
-
-	    /**
-	     * Constructor: SuperMap.REST.GetFeaturesByGeometryService
-	     * 数据集几何查询服务类构造函数。
-	     *
-	     * 例如：
-	     * (start code)
-	     * var myService = new SuperMap.REST.GetFeaturesByGeometryService(url, {
-	     *     eventListeners: {
-	     *           "processCompleted": getFeatureCompleted, 
-	     *           "processFailed": getFeatureError
-	     *           }
-	     * });
-	     * function getFeatureCompleted(object){//todo};
-	     * function getFeatureError(object){//todo}
-	     * (end)
-	     *
-	     * Parameters:
-	     * url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
-	     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data；
-	     * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data"
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
-	     */
-	    initialize: function (url, options) {
-	        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
-	    },
-
-	    /**
-	     * Method: getJsonParameters
-	     * 将查询参数转化为 JSON 字符串。
-	     * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
-	     *
-	     * Parameters:
-	     * params - {<SuperMap.GetFeaturesByGeometryParameters>}
-	     *
-	     * Returns:
-	     * {Object} 转化后的 JSON 字符串。
-	     */
-	    getJsonParameters: function (params) {
-	        return SuperMap.GetFeaturesByGeometryParameters.toJsonParameters(params);
-	    },
-
-	    CLASS_NAME: "SuperMap.REST.GetFeaturesByGeometryService"
-	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.GetFeaturesByGeometryService(url, options);
-	};
-
-/***/ },
-/* 68 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.GetFeaturesByGeometryParameters
-	 * 数据集几何查询参数类。
-	 * 该类用于设置数据集几何查询的相关参数。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.GetFeaturesParametersBase>
-	 */
-	__webpack_require__(60);
-	SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
-
-	    /**
-	     * Property: getFeatureMode
-	     * {String} 数据集查询模式。
-	     * 几何查询有"SPATIAL"，"SPATIAL_ATTRIBUTEFILTER"两种,当用户设置attributeFilter时会自动切换到SPATIAL_ATTRIBUTEFILTER访问服务。
-	     */
-	    getFeatureMode: "SPATIAL",
-
-	    /**
-	     * APIProperty: geometry
-	     * {<Object>} 用于查询的几何对象。
-	     */
-	    geometry: null,
-
-	    /**
-	     * APIProperty: fields
-	     * {Array(String)} 设置查询结果返回字段。
-	     *                 当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。
-	     *                 不设置即返回全部字段。
-	     */
-	    fields: null,
-
-	    /**
-	     * APIProperty: attributeFilter
-	     * {String} 几何查询属性过滤条件。
-	     */
-	    attributeFilter: null,
-
-	    /**
-	     * APIProperty: spatialQueryMode
-	     * {<SuperMap.SpatialQueryMode>} 空间查询模式常量，必设参数，默认为CONTAIN。
-	     */
-	    spatialQueryMode: SuperMap.SpatialQueryMode.CONTAIN,
-
-	    /**
-	     * Constructor: SuperMap.SuperMap.GetFeaturesByGeometryParameters
-	     * 几何空间查询参数类构造函数。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * geometry - {<Object>} 用于查询的几何对象。
-	     * attributeFilter - {String} 几何查询属性过滤条件。
-	     * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。
-	     * spatialQueryMode - {<SuperMap.SpatialQueryMode>} 空间查询模式常量,必设参数。
-	     * queryParameter - {<SuperMap.FilterParameter>} 查询过滤条件参数。
-	     * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。
-	     * returnContent - {Boolean} 是否直接返回查询结果。
-	     * fromIndex - {Integer} 查询结果的最小索引号。
-	     * toIndex - {Integer} 查询结果的最大索引号。
-	     */
-	    initialize: function (options) {
-	        SuperMap.GetFeaturesParametersBase.prototype.initialize.apply(this, arguments);
-	        if (!options) {
-	            return;
-	        }
-	        SuperMap.Util.extend(this, options);
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        SuperMap.GetFeaturesParametersBase.prototype.destroy.apply(me, arguments);
-	        if (me.geometry) {
-	            me.geometry.destroy();
-	            me.geometry = null;
-	        }
-	        if (me.fields) {
-	            while (me.fields.length > 0) {
-	                me.fields.pop();
-	            }
-	            me.fields = null;
-	        }
-	        me.attributeFilter = null;
-	        me.spatialQueryMode = null;
-	        me.getFeatureMode = null;
-	    },
-	    CLASS_NAME: "SuperMap.GetFeaturesByGeometryParameters"
-	});
-
-	/**
-	 * Function: SuperMap.GetFeaturesByGeometryParameters.toJsonParameters
-	 * 将<SuperMap.GetFeaturesByGeometryParameters>对象参数转换为json字符串。
-	 *
-	 * Parameters:
-	 * params - {<SuperMap.GetFeaturesByGeometryParameters>} 几何查询参数。
-	 *
-	 * Returns:
-	 * {String} 转化后的 json字符串。
-	 */
-	SuperMap.GetFeaturesByGeometryParameters.toJsonParameters = function (params) {
-	    var filterParameter,
-	        geometry,
-	        parasByGeometry;
-
-	    geometry = SuperMap.REST.ServerGeometry.fromGeometry(params.geometry);
-	    parasByGeometry = {
-	        datasetNames: params.datasetNames,
-	        getFeatureMode: "SPATIAL",
-	        geometry: geometry,
-	        spatialQueryMode: params.spatialQueryMode
-	    };
-	    if (params.fields) {
-	        filterParameter = new SuperMap.FilterParameter();
-	        filterParameter.name = params.datasetNames;
-	        filterParameter.fields = params.fields;
-	        parasByGeometry.queryParameter = filterParameter;
-	    }
-	    if (params.attributeFilter) {
-	        parasByGeometry.attributeFilter = params.attributeFilter;
-	        parasByGeometry.getFeatureMode = "SPATIAL_ATTRIBUTEFILTER";
-	    }
-
-	    return SuperMap.Util.toJSON(parasByGeometry);
-	};
-	module.exports = function (options) {
-	    return new SuperMap.GetFeaturesByGeometryParameters(options);
-	};
-
-/***/ },
-/* 69 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: GetFieldsService
-	 * 字段查询服务类
-	 */
-	__webpack_require__(15);
-	__webpack_require__(70);
-
-	ol.supermap.GetFieldsService = function (url, options) {
-	    ol.supermap.ServiceBase.call(this, url, options);
-	}
-	ol.inherits(ol.supermap.GetFieldsService, ol.supermap.ServiceBase);
-
-	ol.supermap.GetFieldsService.prototype.getFields = function () {
-	    var me = this, getFieldsService;
-	    getFieldsService = new SuperMap.REST.GetFieldsService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
-	        },
-	        datasource: me.options.dataSourceName,
-	        dataset: me.options.dataSetName
-	    });
-	    getFieldsService.processAsync();
-	    return me;
-	}
-	module.exports = ol.supermap.GetFieldsService;
-
-/***/ },
-/* 70 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.REST.GetFieldsService
-	 * 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.ServiceBase>
-	 */
-	__webpack_require__(19);
-	SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
-
-	    /**
-	     * APIProperty: datasource
-	     * {String} 要查询的数据集所在的数据源名称。
-	     */
-	    datasource: null,
-
-	    /**
-	     * APIProperty: dataset
-	     * {String} 要查询的数据集名称。
-	     */
-	    dataset: null,
-
-	    /**
-	     * Constructor: SuperMap.REST.GetFieldsService
-	     * 字段查询服务构造函数。
-	     *
-	     * 例如：
-	     * (start code)
-	     * var myService = new SuperMap.REST.GetFieldsService(url, {eventListeners: {
-	     *     "processCompleted": getFieldsCompleted, 
-	     *     "processFailed": getFieldsError
-	     *     },
-	     *     datasource: "World",
-	     *     dataset: "Countries"
-	     * };
-	     * (end)
-	     *
-	     * Parameters:
-	     * url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/data-world/rest/data 即可。
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
-	     * datasource - {String}
-	     * dataset - {String}
-	     */
-	    initialize: function (url, options) {
-	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源,将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
-	        var me = this;
-	        me.datasource = null;
-	        me.dataset = null;
-	    },
-
-	    /**
-	     * APIMethod: processAsync
-	     * 执行服务，查询指定数据集的字段信息。
-	     */
-	    processAsync: function () {
-	        var me = this,
-	            end = me.url.substr(me.url.length - 1, 1),
-	            datasetURL = "datasources/" + me.datasource + "/datasets/" + me.dataset;
-	        if (me.isInTheSameDomain) {
-	            me.url += (end == "/") ? datasetURL + "/fields.json?" : "/" + datasetURL + "/fields.json?";
-	        } else {
-	            me.url += (end == "/") ? datasetURL + "fields.jsonp?" : "/" + datasetURL + "/fields.jsonp?";
-	        }
-
-	        me.request({
-	            method: "GET",
-	            data: null,
-	            scope: me,
-	            success: me.serviceProcessCompleted,
-	            failure: me.serviceProcessFailed
-	        });
-	    },
-
-	    CLASS_NAME: "SuperMap.REST.GetFieldsService"
-	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.GetFieldsService(url, options);
-	};
-
-/***/ },
-/* 71 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: EditFeaturesService
-	 * 数据服务中数据集添加、更新、删除服务类
-	 */
-	__webpack_require__(15);
-	__webpack_require__(72);
-
-	ol.supermap.EditFeaturesService = function (url, options) {
-	    ol.supermap.ServiceBase.call(this, url, options);
-	}
-	ol.inherits(ol.supermap.EditFeaturesService, ol.supermap.ServiceBase);
-
-	/**
-	 * @param params:
-	 * features(目前只支持GeoJSON格式的features)
-	 * editType，IDs，returnContent，isUseBatch
-	 */
-	ol.supermap.EditFeaturesService.prototype.editFeatures = function (params) {
-	    var me = this;
-	    editFeatureService = new SuperMap.REST.EditFeaturesService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
-	        }
-	    });
-	    editFeatureService.processAsync(me._processParams(params));
-	    return me;
-	};
-
-	ol.supermap.EditFeaturesService.prototype._processParams = function (params) {
-	    if (!params) {
-	        return {};
-	    }
-	    var me = this;
-	    params.returnContent = (params.returnContent == null) ? false : params.returnContent;
-	    params.isUseBatch = (params.isUseBatch == null) ? false : params.isUseBatch;
-
-	    if (params.editType) {
-	        params.editType = params.editType.toLowerCase();
-	    }
-	    if (params.features) {
-	        var features = [];
-	        if (ol.supermap.Util.isArray(params.features)) {
-	            params.features.map(function (feature) {
-	                features.push(me._createServerFeature(feature));
-	            });
-	        } else {
-	            features.push(me._createServerFeature(params.features));
-	        }
-	        params.features = features;
-	    }
-	    return params;
-	};
-
-	ol.supermap.EditFeaturesService.prototype._createServerFeature = function (geoFeature) {
-	    var geoJSONFeature, feature = {}, fieldNames = [], fieldValues = [];
-	    geoJSONFeature = JSON.parse((new ol.format.GeoJSON()).writeGeometry(geoFeature));
-	    for (var key in geoJSONFeature) {
-	        fieldNames.push(key);
-	        fieldValues.push(geoJSONFeature[key]);
-	    }
-	    feature.fieldNames = fieldNames;
-	    feature.fieldValues = fieldValues;
-	    feature.geometry = ol.supermap.Util.toSuperMapGeometry(geoJSONFeature);
-	    return feature;
-	};
-
-	module.exports = ol.supermap.EditFeaturesService;
-
-/***/ },
-/* 72 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.REST.EditFeaturesService
-	 * 数据服务中数据集添加、更新、删除服务类。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.ServiceBase>
-	 */
-	__webpack_require__(19);
-	__webpack_require__(73);
-	SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
-
-	    /**
-	     * Property: returnContent
-	     * {Boolean} 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
-	     *           true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
-	     */
-	    returnContent: false,
-
-	    /**
-	     * Property: isUseBatch
-	     * {Boolean} 是否使用批量添加要素功能，要素添加时有效。
-	     *           批量添加能够提高要素编辑效率。
-	     *           true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
-	     */
-	    isUseBatch: false,
-
-	    /**
-	     * Constructor: SuperMap.REST.EditFeaturesService
-	     * 数据集编辑服务基类构造函数。
-	     *
-	     * 例如：
-	     * (start code)
-	     * var myService = new SuperMap.REST.EditFeaturesService(url, {eventListeners: {
-	     *     "processCompleted": editFeatureCompleted, 
-	     *     "processFailed": editFeatureError
-	     *       }
-	     * };
-	     * (end)
-	     *
-	     * Parameters:
-	     * url - {String} 服务端的数据服务资源地址。请求数据服务中数据集编辑服务，URL 应为：
-	     * http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/datasources/name/{数据源名}/datasets/name/{数据集名} 。
-	     * 例如：http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
-	     */
-	    initialize: function (url, options) {
-	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	        var me = this, end;
-	        end = me.url.substr(me.url.length - 1, 1);
-	        if (me.isInTheSameDomain) {
-	            me.url += (end == "/") ? "features.json?" : "/features.json?";
-	        } else {
-	            me.url += (end == "/") ? "features.jsonp?" : "/features.jsonp?";
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源,将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
-	        var me = this;
-	        me.returnContent = null;
-	        me.isUseBatch = null;
-	        me.fromIndex = null;
-	        me.toIndex = null;
-	    },
-
-	    /**
-	     * APIMethod: processAsync
-	     * 负责将客户端的更新参数传递到服务端。
-	     *
-	     * Parameters:
-	     * params - {<SuperMap.EditFeaturesParameters>} 编辑要素参数。
-	     */
-	    processAsync: function (params) {
-	        if (!params) {
-	            return;
-	        }
-	        var me = this,
-	            method = "POST",
-	            ids = "",
-	            editType = params.editType,
-	            jsonParameters = null;
-
-	        me.returnContent = params.returnContent;
-	        me.isUseBatch = params.isUseBatch;
-	        jsonParameters = SuperMap.EditFeaturesParameters.toJsonParameters(params);
-	        if (editType === SuperMap.EditType.DELETE) {
-	            ids = SuperMap.Util.toJSON(params.IDs);
-	            me.url += "ids=" + ids;
-	            method = "DELETE";
-	            jsonParameters = ids;
-	        } else if (editType === SuperMap.EditType.UPDATE) {
-	            method = "PUT";
-	        } else {
-	            if (me.isUseBatch) {
-	                me.url += "isUseBatch=" + me.isUseBatch;
-	                me.returnContent = false;
-	            }
-	            if (me.returnContent) {
-	                me.url += "returnContent=" + me.returnContent;
-	                method = "POST";
-	            }
-	        }
-
-	        me.request({
-	            method: method,
-	            data: jsonParameters,
-	            scope: me,
-	            success: me.serviceProcessCompleted,
-	            failure: me.serviceProcessFailed
-	        });
-	    },
-
-	    CLASS_NAME: "SuperMap.REST.EditFeaturesService"
-	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.EditFeaturesService(url, options);
-	};
-
-/***/ },
-/* 73 */
-/***/ function(module, exports) {
-
-	/**
-	 * Class: SuperMap.EditFeaturesParameters
-	 * 数据服务中数据集添加、修改、删除参数类。 
-	 */
-
-	SuperMap.EditFeaturesParameters = SuperMap.Class({
-	    /** 
-	     * APIProperty: features
-	     * {Array(Object)} 当前需要创建或者是修改的要素集。
-	     */
-	    features: null,
-	    
-	    /** 
-	     * APIProperty: editType
-	     * {<EditType>} 要素集更新类型(add、update、delete)，默认为 SuperMap.EditType.ADD.
-	     */
-	    editType: SuperMap.EditType.ADD,
-	    
-	    /** 
-	     * APIProperty: IDs
-	     * {Array(String) 或 Array(Integer)} 执行删除时要素集ID集合。
-	     */
-	    IDs: null,
-	    
-	    /** 
-	     * APIProperty: returnContent
-	     * {Boolean} 要素添加时，isUseBatch 不传或传为 false 的情况下有效。 
-	     *           true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
-	     */
-	    returnContent: false,
-	    
-	    /** 
-	     * APIProperty: isUseBatch
-	     * {Boolean} 是否使用批量添加要素功能，要素添加时有效。 
-	     *           批量添加能够提高要素编辑效率。 
-	     *           true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
-	     */
-	    isUseBatch: false,
-	    
-	    /**
-	     * Constructor: EditFeaturesParameters
-	     * 数据服务中数据集添加、修改、删除参数类构造函数。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * features - {Array(Object)} 当前需要创建或者是修改的要素集。  
-	     * returnContent - {Boolean} 是返回创建要素的ID数组还是返回featureResult资源的URI。
-	     * editType - {<SuperMap.EditType>} POST动作类型(ADD、UPDATE、DELETE)，默认为 SuperMap.EditType.ADD。
-	     * IDs - {Array(String) 或 Array(Integer)} 删除要素时的要素的ID数组。
-	     */
-	    initialize: function(options) {
-	        if (!options) {
-	            return;
-	        }
-	        SuperMap.Util.extend(this, options);
-	    },
-	    
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy:function () {
-	        var me = this;
-	        me.features = null;
-	        me.editType = null;
-	        me.IDs = null;
-	        me.returnContent = null;
-	    },
-	    
-	    CLASS_NAME:"SuperMap.EditFeaturesParameters"
-	});
-	/**
-	 * Function: SuperMap.EditFeaturesParameters.toJsonParameters
-	 * 将 <EditFeaturesParameters> 对象参数转换为 json 字符串。 
-	 *
-	 * Parameters:
-	 * params - {<SuperMap.EditFeaturesParameters>} 地物编辑参数。
-	 *
-	 * Returns:
-	 * {String} 转化后的 json字符串。
-	 */
-	SuperMap.EditFeaturesParameters.toJsonParameters = function(params) {
-	    var geometry,
-	        feature,
-	        len,
-	        features,
-	        editType = params.editType;
-
-	    if(editType === SuperMap.EditType.DELETE) {
-	        if(params.IDs === null) return;
-	        
-	        features = {ids:params.IDs};
-	    }else {
-	        if(params.features === null) return; 
-	        
-	        len = params.features.length;
-	        features = [];
-	        for(var i = 0; i < len; i++) {
-	            feature = params.features[i];
-	            feature.geometry = SuperMap.REST.ServerGeometry.fromGeometry(feature.geometry);
-	            features.push(feature);
-	        }
-	    }
-	    
-	    return SuperMap.Util.toJSON(features);
-	};
-	module.exports = function (options) {
-	    return new SuperMap.EditFeaturesParameters(options);
-	};
-
-/***/ },
-/* 74 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: GetGridCellInfosService
-	 * 数据栅格查询服务
-	 */
-	__webpack_require__(15);
-	__webpack_require__(75);
-
-	ol.supermap.GetGridCellInfosService = function (url, options) {
-	    ol.supermap.ServiceBase.call(this, url, options);
-	};
-	ol.inherits(ol.supermap.GetGridCellInfosService, ol.supermap.ServiceBase);
-
-	/**
-	 * @param params <GetGridCellInfosParameters>
-	 */
-	ol.supermap.GetGridCellInfosService.prototype.getGridCellInfos = function (params) {
-	    if (!params) {
-	        return null;
-	    }
-	    var me = this;
-	    var gridCellQueryService = new SuperMap.REST.GetGridCellInfosService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
-	        }
-	    });
-	    gridCellQueryService.processAsync(params);
-	    return me;
-	};
-
-	module.exports = ol.supermap.GetGridCellInfosService;
-
-/***/ },
-/* 75 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.REST.GetGridCellInfosService
-	 * 数据栅格查询服务，支持查询指定地理位置的栅格信息
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.ServiceBase>
-	 */
-
-	__webpack_require__(19);
-	__webpack_require__(76);
-	SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
-
-	    /**
-	     * APIProperty: datasetName
-	     * {String} 数据集名称。
-	     */
-	    datasetName: null,
-
-	    /**
-	     * APIProperty: dataSourceName
-	     * {String} 数据源名称。
-	     */
-	    dataSourceName: null,
-
-	    /**
-	     * Property: dataSourceName
-	     * {String} 数据集类型。
-	     */
-	    datasetType: null,
-
-	    /**
-	     * APIProperty: X
-	     * {Number} 要查询的地理位置X轴
-	     */
-	    X: null,
-
-	    /**
-	     * APIProperty: X
-	     * {Number} 要查询的地理位置Y轴
-	     */
-	    Y: null,
-
-	    /**
-	     * Constructor: SuperMap.REST.GetGridCellInfosService
-	     * 字段查询服务构造函数。
-	     *
-	     * 例如：
-	     * (start code)
-	     * var myService = new SuperMap.REST.GetGridCellInfosService(url, {eventListeners: {
-	     *     "processCompleted": queryCompleted,
-	     *     "processFailed": queryError
-	     *     }
-	     * });
-	     * (end)
-	     *
-	     * Parameters:
-	     * url - {String} 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
-	     */
-	    initialize: function (url, options) {
-	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
-	        if (!!options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源,将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
-	        me.X = null;
-	        me.Y = null;
-	        me.datasetName = null;
-	        me.dataSourceName = null;
-	        me.datasetType = null;
-	    },
-
-	    /**
-	     * APIMethod: processAsync
-	     * 执行服务，查询数据集信息。
-	     * Parameters:
-	     * params - {<SuperMap.GetGridCellInfosParameters>} 查询参数。
-	     */
-	    processAsync: function (params) {
-	        if (params) {
-	            SuperMap.Util.extend(this, params);
-	        }
-	        var me = this;
-	        var end = me.url.substr(me.url.length - 1, 1);
-	        if (me.isInTheSameDomain) {
-	            me.url += (end == "/") ? ("datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json") :
-	                ("/datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json");
-	        } else {
-	            me.url += (end == "/") ? ("datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".jsonp") :
-	                ("/datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".jsonp");
-	        }
-
-	        me.queryRequest(me.getDatasetInfoCompleted, me.getDatasetInfoFailed);
-	    },
-
-	    /**
-	     * Method: queryRequest
-	     * 执行服务，查询。
-	     */
-	    queryRequest: function (successFun, failedFunc) {
-	        var me = this;
-	        me.request({
-	            method: "GET",
-	            data: null,
-	            scope: me,
-	            success: successFun,
-	            failure: failedFunc
-	        });
-	    },
-
-	    /**
-	     * Method: getDatasetInfoCompleted
-	     * 数据集查询完成，执行此方法。
-	     *
-	     * Parameters:
-	     * result - {Object} 服务器返回的结果对象。
-	     */
-	    getDatasetInfoCompleted: function (result) {
-	        var me = this;
-	        result = SuperMap.Util.transformResult(result);
-	        me.datasetType = result.datasetInfo.type;
-	        me.queryGridInfos();
-	    },
-
-	    /**
-	     * Method: queryGridInfos
-	     * 执行服务，查询数据集栅格信息信息。
-	     */
-	    queryGridInfos: function () {
-	        var me = this,
-	            re = /\.json/,
-	            index = re.exec(me.url).index,
-	            urlBack = me.url.substring(index),
-	            urlFront = me.url.substring(0, me.url.length - urlBack.length);
-	        if (me.datasetType == "GRID") {
-	            me.url = urlFront + "/gridValue" + urlBack;
-	        } else {
-	            me.url = urlFront + "/imageValue" + urlBack;
-	        }
-
-	        if (me.X != null && me.Y != null) {
-	            me.url += '?x=' + me.X + '&y=' + me.Y;
-	        }
-	        me.queryRequest(me.serviceProcessCompleted, me.serviceProcessFailed);
-	    },
-
-	    /**
-	     * Method: getDatasetInfoFailed
-	     * 数据集查询失败，执行此方法。
-	     *
-	     * Parameters:
-	     * result -  {Object} 服务器返回的结果对象。
-	     */
-	    getDatasetInfoFailed: function (result) {
-	        var me = this;
-	        me.serviceProcessFailed(result);
-	    },
-
-	    CLASS_NAME: "SuperMap.REST.GetGridCellInfosService"
-	});
-
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.GetGridCellInfosService(url, options);
-	};
-
-/***/ },
-/* 76 */
-/***/ function(module, exports) {
-
-	/**
-	 * Class: SuperMap.GetGridCellInfosParameters
-	 * 数据服务栅格查询参数类。
-	 */
-
-	SuperMap.GetGridCellInfosParameters = SuperMap.Class({
-	    /**
-	     * APIProperty: datasetName
-	     * {String} 数据集名称。
-	     */
-	    datasetName: null,
-
-	    /**
-	     * APIProperty: dataSourceName
-	     * {String} 数据源名称。
-	     */
-	    dataSourceName: null,
-
-	    /**
-	     * APIProperty: X
-	     * {Number} 要查询的地理位置X轴
-	     */
-	    X: null,
-
-	    /**
-	     * APIProperty: X
-	     * {Number} 要查询的地理位置Y轴
-	     */
-	    Y: null,
-
-	    /**
-	     * Constructor: SuperMap.GetGridCellInfosParameters
-	     * SQL 查询参数类构造函数。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * datasetName - {String} 数据集名称。
-	     * dataSourceName - {String} 数据源名称
-	     * X - {Integer} 要查询的地理位置X轴。
-	     * Y - {Integer} 要查询的地理位置Y轴。
-	     */
-	    initialize: function(options) {
-	        if (!options) {
-	            return;
-	        }
-	        SuperMap.Util.extend(this, options);
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy:function () {
-	        var me = this;
-	        me.datasetName = null;
-	        me.dataSourceName = null;
-	        me.X = null;
-	        me.Y = null;
-	    },
-
-	    CLASS_NAME:"SuperMap.GetGridCellInfosParameters"
-	});
-	module.exports = function (options) {
-	    return new SuperMap.GetGridCellInfosParameters(options);
-	};
-
-
-/***/ },
-/* 77 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: ThemeService
-	 */
-	__webpack_require__(15);
-	__webpack_require__(78);
-
-	ol.supermap.ThemeService = function (url, options) {
-	    ol.supermap.ServiceBase.call(this, url, options);
-	};
-
-	ol.inherits(ol.supermap.ThemeService, ol.supermap.ServiceBase);
-
-	ol.supermap.ThemeService.prototype.getThemeStatus = function (params) {
-	    var me = this;
-	    var themeService = new SuperMap.REST.ThemeService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: me.processCompleted,
-	            processFailed: me.processFailed
-	        }
-	    });
-	    themeService.processAsync(params);
-	    return me;
-	};
-
-	module.exports = ol.supermap.ThemeService;
-
-/***/ },
-/* 78 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.REST.ThemeService
-	 * 专题图服务类。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.ServiceBase>
-	 */
-	__webpack_require__(19);
-	__webpack_require__(79);
-	SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
-
-	    /**
-	     * Constructor: SuperMap.REST.ThemeService
-	     * 专题图服务类构造函数。
-	     *
-	     * 例如：
-	     * (start code)
-	     * var myThemeService = new SuperMap.REST.ThemeService(url, {
-	     *     eventListeners: {
-	     *           "processCompleted": themeCompleted,
-	     *           "processFailed": themeFailed
-	     *           }
-	     * });
-	     * (end)
-	     *
-	     * Parameters:
-	     * url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * eventListeners - {Object} 需要被注册的监听器对象。
-	     */
-	    initialize: function (url, options) {
-	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	        var end,
-	            me = this;
-	        end = me.url.substr(me.url.length - 1, 1);
-	        if (me.isInTheSameDomain) {
-	            me.url += (end === "/") ? "tempLayersSet.json?" : "/tempLayersSet.json?";
-	        } else {
-	            me.url += (end === "/") ? "tempLayersSet.jsonp?" : "/tempLayersSet.jsonp?";
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
-	    },
-
-	    /**
-	     * APIMethod: processAsync
-	     * 负责将客户端的专题图参数传递到服务端。
-	     *
-	     * Parameters:
-	     * params - {<SuperMap.ThemeParameters>}
-	     */
-	    processAsync: function (params) {
-	        if (!params) {
-	            return;
-	        }
-	        var me = this,
-	            jsonParameters = null;
-	        jsonParameters = me.getJsonParameters(params);
-	        me.request({
-	            method: "POST",
-	            data: jsonParameters,
-	            scope: me,
-	            success: me.serviceProcessCompleted,
-	            failure: me.serviceProcessFailed
-	        });
-	    },
-
-	    /**
-	     * Method: getJsonParameters
-	     * 将专题图参数参数转化为 JSON 字符串。
-	     *
-	     * Parameters:
-	     * params - {<SuperMap.ThemeParameters>}
-	     *
-	     * Returns:
-	     * {Object} 转化后的JSON字符串。
-	     */
-	    getJsonParameters: function (parameter) {
-	        var jsonParameters = "",
-	            themeType = "",
-	            themeObj = null,
-	            filters = null,
-	            orderBys = null,
-	            fieldValuesDisplayFilter;
-	        jsonParameters += "[{'type': 'UGC','subLayers': {'layers': [";
-	        for (var themeID in parameter.themes) {
-	            themeObj = parameter.themes[themeID];
-	            var jsonTheme = SuperMap.Util.toJSON(themeObj);
-	            jsonTheme = jsonTheme.slice(0, -1);
-
-	            jsonParameters += "{'theme': " + jsonTheme + "},'type': 'UGC','ugcLayerType': 'THEME',";
-	            filters = parameter.displayFilters;
-	            if (filters && filters.length > 0) {
-	                if (filters.length === 1) {
-	                    jsonParameters += "'displayFilter':\"" + filters[0] + "\",";
-	                } else {
-	                    jsonParameters += "'displayFilter':\"" + filters[themeID] + "\",";
-	                }
-	            }
-	            orderBys = parameter.displayOrderBy;
-	            if (orderBys && orderBys.length > 0) {
-	                if (orderBys.length === 1) {
-	                    jsonParameters += "'displayOrderBy':'" + orderBys[0] + "',";
-	                } else {
-	                    jsonParameters += "'displayOrderBy':'" + orderBys[themeID] + "',";
-	                }
-	            }
-
-	            fieldValuesDisplayFilter = parameter.fieldValuesDisplayFilter;
-	            if (fieldValuesDisplayFilter) {
-	                jsonParameters += "'fieldValuesDisplayFilter':" + SuperMap.Util.toJSON(fieldValuesDisplayFilter) + ",";
-	            }
-
-	            if (parameter.joinItems && parameter.joinItems.length > 0 && parameter.joinItems[themeID]) {
-	                jsonParameters += "'joinItems':[" + SuperMap.Util.toJSON(parameter.joinItems[themeID]) + "],";
-	            }
-	            if (parameter.datasetNames && parameter.dataSourceNames) {
-	                var datasetID = parameter.datasetNames[themeID] ? themeID : (parameter.datasetNames.length - 1);
-	                var dataSourceID = parameter.dataSourceNames[themeID] ? themeID : (parameter.dataSourceNames.length - 1);
-	                jsonParameters += "'datasetInfo': {'name': '" + parameter.datasetNames[datasetID] +
-	                    "','dataSourceName': '" + parameter.dataSourceNames[dataSourceID] + "'}},";
-	            } else {
-	                jsonParameters += "},";
-	            }
-	        }
-	        //去除多余的逗号
-	        if (parameter.themes && parameter.themes.length > 0) {
-	            jsonParameters = jsonParameters.substring(0, jsonParameters.length - 1);
-	        }
-	        jsonParameters += "]},";
-	        var urlArray = this.url.split("/");
-	        var jsonMapName = urlArray[urlArray.length - 2];
-
-	        jsonParameters += "'name': '" + jsonMapName + "'}]";
-	        return jsonParameters;
-	    },
-
-	    CLASS_NAME: "SuperMap.REST.ThemeService"
-	});
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.ThemeService(url, options);
-	};
-
-/***/ },
-/* 79 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.ThemeParameters
-	 * 专题图参数类
-	 * 该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
-	 */
-
-	__webpack_require__(25);
-	__webpack_require__(80);
-	__webpack_require__(85);
-	__webpack_require__(89);
-	__webpack_require__(95);
-	__webpack_require__(106);
-	__webpack_require__(108);
-	__webpack_require__(110);
-	__webpack_require__(112);
-
-	SuperMap.ThemeParameters = SuperMap.Class({
-
-	    /**
-	     * APIProperty: datasetNames
-	     * {Array(String)} 要制作专题图的数据集数组，必设。
-	     */
-	    datasetNames: null,
-
-	    /**
-	     * APIProperty: dataSourceNames
-	     * {Array(String)} 要制作专题图的数据集所在的数据源数组，必设。
-	     */
-	    dataSourceNames: null,
-
-	    /**
-	     * APIProperty: joinItems
-	     * {Array(<SuperMap.JoinItem>)} 设置与外部表的连接信息 JoinItem 数组。
-	     * 使用此属性可以制作与外部表连接的专题图。
-	     */
-	    joinItems: null,
-
-	    /**
-	     * APIProperty: themes
-	     * {Array(<SuperMap.Theme>)} 专题图对象列表。
-	     * 该参数为实例化的各类专题图对象的集合。
-	     */
-	    themes: null,
-
-	    /**
-	     * APIProperty: displayFilters
-	     * {Array(String)} 专题图属性过滤条件。
-	     */
-	    displayFilters: null,
-
-	    /**
-	     * APIProperty: displayOrderBy
-	     * {Array(String)} 专题图对象生成符号叠加次序排序字段
-	     */
-	    displayOrderBys: null,
-
-	    /**
-	     * APIProperty: fieldValuesDisplayFilter
-	     * {Object} 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode,他们的作用如下：
-	     * values：{Array<Number>} - 就是要过滤的值；
-	     * fieldName：{String} - 要过滤的字段名称 只支持数字类型的字段；
-	     * fieldValuesDisplayMode：{String} 目前有两个DISPLAY/DISABLE。当为DISPLAY时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素
-	     * */
-	    fieldValuesDisplayFilter: null,
-
-	    /**
-	     * Constructor: SuperMap.ThemeParameters
-	     * 专题图参数类构造函数。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * datasetNames - {Array(String)} 要制作专题图的数据集数组。
-	     * dataSourceNames - {Array(String)} 要制作专题图的数据集所在的数据源数组。
-	     * joinItems - {Array(<SuperMap.JoinItem>)} 专题图外部表的连接信息 JoinItem 数组。
-	     * themes - {Array(<SuperMap.Theme>)} 专题图对象列表。
-	     */
-	    initialize: function (options) {
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        me.datasetNames = null;
-	        me.dataSourceNames = null;
-	        if (me.joinItems) {
-	            for (var i = 0, joinItems = me.joinItems, len = joinItems.length; i < len; i++) {
-	                joinItems[i].destroy();
-	            }
-	            me.joinItems = null;
-	        }
-	        if (me.themes) {
-	            for (var i = 0, themes = me.themes, len = themes.length; i < len; i++) {
-	                themes[i].destroy();
-	            }
-	            me.themes = null;
-	        }
-	    },
-
-	    CLASS_NAME: "SuperMap.ThemeParameters"
-	});
-
-	module.exports = function (options) {
-	    return new SuperMap.ThemeParameters(options);
-	};
-
-/***/ },
-/* 80 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.ThemeDotDensity
-	 * 点密度专题图。
-	 * 点密度专题图用一定大小、形状相同的点表示现象分布范围、数量特征和分布密度。点的多少和所代表的意义由地图的内容确定。
-	 * 点密度专题图利用图层的某一数值属性信息（专题值）映射为不同等级，每一级别使用不同数量或表现为密度的点符号来表示
-	 * 该专题值在各个分区内的分布情况，体现不同区域的相对数量差异。多用于具有数量特征的地图上，
-	 * 比如表示不同地区的粮食产量、GDP、人口等的分级，主要针对区域或面状的要素，因而，点密度专题图适用于面数据集。
-	 *
-	 * 注意：点密度专题图中点的分布是随机的，并不代表实际的分布位置。即使在相关设置完全相同的情况下，
-	 * 每次制作出的专题图，点的数量相同，但点的位置都有差异。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.Theme>
-	 */
-
-	__webpack_require__(81);
-	__webpack_require__(83);
-	SuperMap.ThemeDotDensity = SuperMap.Class(SuperMap.Theme, {
-
-	    /**
-	     * APIProperty: dotExpression
-	     * {String} 创建点密度专题图的字段或字段表达式。点的数目或密集程度的来源。
-	     */
-	    dotExpression: null,
-
-	    /**
-	     * APIProperty: style
-	     * {<SuperMap.ServerStyle>} 点密度专题图中点的风格。
-	     */
-	    style: null,
-
-	    /**
-	     * APIProperty: value
-	     * {Number} 专题图中每一个点所代表的数值。
-	     * 点值的确定与地图比例尺以及点的大小有关。地图比例尺越大，相应的图面范围也越大，
-	     * 点相应就可以越多，此时点值就可以设置相对小一些。点形状越大，
-	     * 点值相应就应该设置的小一些。点值过大或过小都是不合适的。
-	     */
-	    value: null,
-
-	    /**
-	     * Constructor: SuperMap.ThemeDotDensity
-	     * 点密度专题图构造函数。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * dotExpression - {String} 创建点密度专题图的字段或字段表达式。
-	     * style - {<SuperMap.ServerStyle>} 点密度专题图中点的风格。
-	     * value - {String} 专题图中每一个点所代表的数值。
-	     * memoryData - {<SuperMap.REST.ThemeMemoryData>} 专题图内存数据。
-	     */
-	    initialize: function (options) {
-	        var me = this;
-	        me.style = new SuperMap.ServerStyle();
-	        SuperMap.Theme.prototype.initialize.apply(this, ["DOTDENSITY", options]);
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        me.dotExpression = null;
-	        me.value = null;
-
-	        if (me.style) {
-	            me.style.destroy();
-	            me.style = null;
-	        }
-	    },
-
-	    /**
-	     * Method: toServerJSONObject
-	     * 转换成对应的 JSON 格式对象。
-	     */
-	    toServerJSONObject: function () {
-	        var obj = {};
-	        obj = SuperMap.Util.copyAttributes(obj, this);
-	        if (obj.style) {
-	            if (obj.style.toServerJSONObject) {
-	                obj.style = obj.style.toServerJSONObject();
-	            }
-	        }
-	        return obj;
-	    },
-
-	    CLASS_NAME: "SuperMap.ThemeDotDensity"
-	});
-	SuperMap.ThemeDotDensity.fromObj = function (obj) {
-	    if (!obj) return;
-	    var res = new SuperMap.ThemeDotDensity();
-	    SuperMap.Util.copy(res, obj);
-	    res.style = SuperMap.ServerStyle.fromJson(obj.style);
-	    return res;
-	};
-
-	module.exports = function (options) {
-	    return new SuperMap.ThemeDotDensity(options);
-	};
-
-
-/***/ },
-/* 81 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
 	 * Class: SuperMap.ServerStyle
 	 * 服务端矢量要素风格类
 	 * 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
 	 */
 
-	__webpack_require__(82);
+	__webpack_require__(49);
 	SuperMap.ServerStyle = SuperMap.Class({
 
 	    /**
@@ -10647,7 +7509,7 @@
 
 
 /***/ },
-/* 82 */
+/* 49 */
 /***/ function(module, exports) {
 
 	/**
@@ -10763,422 +7625,7 @@
 
 
 /***/ },
-/* 83 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.Theme
-	 * 专题图基类。
-	 */
-
-	__webpack_require__(84);
-	SuperMap.Theme = SuperMap.Class({
-
-	    /**
-	     * Property: memoryData
-	     * {<SuperMap.ThemeMemoryData>} 专题图内存数据。
-	     * 用内存数据制作专题图的方式与表达式制作专题图的方式互斥，前者优先级较高。
-	     * 第一个参数代表专题值，即数据集中用来做专题图的字段或表达式的值；第二个参数代表外部值。在制作专题图时，会用外部值代替专题值来制作相应的专题图。
-	     */
-	    memoryData: null,
-
-	    /**
-	     * Property: type
-	     * {String} 专题图类型。
-	     */
-	    type: null,
-
-	    /**
-	     * Constructor: SuperMap.Theme
-	     * 专题图基类构造函数。
-	     *
-	     * Parameters:
-	     * type - {String} 专题图类型。
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * memoryData - {<SuperMap.ThemeMemoryData>} 专题图内存数据。
-	     */
-	    initialize: function (type, options) {
-	        if (!type) {
-	            return false;
-	        }
-	        this.type = type;
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        if (me.memoryData) {
-	            me.memoryData.destroy();
-	            me.memoryData = null;
-	        }
-	        me.type = null;
-	    },
-
-	    /**
-	     * Method: toServerJSONObject
-	     * 转换成对应的 JSON 格式对象。
-	     */
-	    toServerJSONObject: function () {
-	        //return 子类实现
-	        return;
-	    },
-
-	    CLASS_NAME: "SuperMap.Theme"
-	});
-	module.exports = function (type, options) {
-	    return new SuperMap.Theme(type, options);
-	};
-
-/***/ },
-/* 84 */
-/***/ function(module, exports) {
-
-	/**
-	 * Class: SuperMap.ThemeMemoryData
-	 * 专题图内存数据类。
-	 */
-
-	SuperMap.ThemeMemoryData = SuperMap.Class({
-
-	    /**
-	     * Property: srcData
-	     * {Array()} 原始值数组，该属性值将被 targetData 属性所指定的值替换掉，然后制作专题图，但数据库中的值并不会改变。
-	     */
-	    srcData: null,
-
-	    /**
-	     * Property: targetData
-	     * {Array()} 外部值数组，即用于制作专题图的内存数据，设定该属性值后，会将 srcData 属性所指定的原始值替换掉制作专题图，但数据库中的值并不会改变。
-	     */
-	    targetData: null,
-
-	    /**
-	     * Constructor: SuperMap.ThemeMemoryData
-	     * 专题图内存数据类构造函数。
-	     *
-	     * Parameters:
-	     * srcData - {Array()} 原始值数组。
-	     * targetData - {Array()} 外部值数组。
-	     */
-	    initialize: function (srcData, targetData) {
-	        if (srcData) {
-	            this.srcData = srcData;
-	        }
-	        if (targetData) {
-	            this.targetData = targetData;
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        me.srcData = null;
-	        me.targetData = null;
-	    },
-
-	    /**
-	     * Method: toJSON
-	     * 将 SuperMap.ThemeMemoryData 对象转化为json字符串。
-	     *
-	     * Returns:
-	     * {String} 返回转换后的 JSON 字符串。
-	     */
-	    toJSON: function () {
-	        if (this.srcData && this.targetData) {
-	            var memoryDataStr = "";
-	            var count = Math.min(this.srcData.length, this.targetData.length);
-	            for (var i = 0; i < count; i++) {
-	                memoryDataStr += "\'" + this.srcData[i] + "\':\'" + this.targetData[i] + "\',";
-	            }
-	            //去除多余的逗号
-	            if (i > 0) {
-	                memoryDataStr = memoryDataStr.substring(0, memoryDataStr.length - 1);
-	            }
-	            return "{" + memoryDataStr + "}";
-	        } else {
-	            return null;
-	        }
-	    },
-
-	    CLASS_NAME: "SuperMap.ThemeMemoryData"
-	});
-	module.exports = function (srcData, targetData) {
-	    return new SuperMap.ThemeMemoryData(srcData, targetData);
-	};
-
-/***/ },
-/* 85 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.ThemeGraduatedSymbol
-	 * 等级符号专题图。
-	 * 等级符号专题图是采用不同的形状、颜色和大小的符号，表示各自独立的、以整体概念显示的各个物体的数量与质量特征。通常，以符号的形状、
-	 * 颜色和大小反映物体的特定属性；符号的形状与颜色表示质量特征，符号的大小表示数量特征。等级符号专题图多用于具有数量特征的地图上，
-	 * 比如表示不同地区的粮食产量、GDP、人口等的分级，也就是说，用于制作等级符号专题图的专题变量类型为数值型。
-	 *
-	 * Inherits from:
-	 * -<SuperMap.Theme>
-	 */
-
-	__webpack_require__(83);
-	__webpack_require__(86);
-	__webpack_require__(87);
-	__webpack_require__(88);
-	SuperMap.ThemeGraduatedSymbol = SuperMap.Class(SuperMap.Theme, {
-
-	    /**
-	     * APIProperty: baseValue
-	     * { Number} 等级符号专题图的基准值，单位同专题变量的单位。
-	     * 依据此值系统会自动根据分级方式计算其余值对应的符号大小，每个符号的显示大小等于
-	     *      ThemeValueSection.positiveStyle（或 zeroStyle，negativeStyle）.markerSize * value / basevalue，
-	     * 其中 value 是 expression 所指定字段对应的值经过分级计算之后的值。默认值为0，建议通过多次尝试设置该值才能达到较好的显示效果。
-	     */
-	    baseValue: 0,
-
-	    /**
-	     * APIProperty: expression
-	     * {String} 用于创建等级符号专题图的字段或字段表达式，字段或字段表达式应为数值型。必设字段。
-	     */
-	    expression: null,
-
-	    /**
-	     * APIProperty: flow
-	     * {<SuperMap.ThemeFlow>} 等级符号专题图符号流动显示与牵引线设置类。
-	     * 通过该字段可以设置等级符号是否流动显示和牵引线风格。
-	     */
-	    flow: null,
-
-	    /**
-	     * APIProperty: graduatedMode
-	     * {<SuperMap.GraduatedMode>} 等级符号专题图分级模式。
-	     * 分级主要是为了减少制作等级符号专题图中数据大小之间的差异。如果数据之间差距较大，则可以采用对数或者平方根的分级方式来进行，
-	     * 这样就减少了数据之间的绝对大小的差异，使得等级符号图的视觉效果比较好，同时不同类别之间的比较也是有意义的。
-	     * 有三种分级模式：常数、对数和平方根，对于有值为负数的字段，在用对数或平方根方式分级时，默认对负数取正。
-	     * 不同的分级模式用于确定符号大小的数值是不相同的：常数按照字段的原始数据进行；对数则是对每条记录对应的专题变量取自然对数；
-	     * 平方根则是对其取平方根，然后用最终得到的结果来确定其等级符号的大小。
-	     * 默认值为 SuperMap.GraduatedMode.CONSTANT。
-	     */
-	    graduatedMode: SuperMap.GraduatedMode.CONSTANT,
-
-	    /**
-	     * APIProperty: offset
-	     * {<SuperMap.ThemeOffset>} 用于设置等级符号图相对于要素内点的偏移量。
-	     */
-	    offset: null,
-
-	    /**
-	     * APIProperty: style
-	     * {<SuperMap.ThemeGraduatedSymbolStyle>} 用于设置等级符号图正负和零值显示风格。
-	     */
-	    style: null,
-
-	    /**
-	     * Constructor: SuperMap.ThemeGraduatedSymbol
-	     * 等级符号专题图构造函数，用于创建 SuperMap.ThemeGraduatedSymbol类的新实例。
-	     *
-	     * Parameters:
-	     * options - {Object} 可选参数。
-	     *
-	     * Allowed options properties:
-	     * baseValue - {Number} 等级符号专题图的基准值，单位同专题变量的单位。
-	     * expression - {String} 等级符号专题图的字段或字段表达式。
-	     * flow - {<SuperMap.ThemeFlow>} 等级符号专题图符号流动显示与牵引线设置类。
-	     * graduatedMode - {<SuperMap.GraduatedMode>} 等级符号专题图分级模式。
-	     * offset - {<SuperMap.ThemeOffset>} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。
-	     * style - {<SuperMap.ThemeGraduatedSymbolStyle>} 用于设置等级符号图正负和零值显示风格。
-	     * memoryData - {<SuperMap.ThemeMemoryData>} 专题图内存数据。
-	     */
-	    initialize: function (options) {
-	        SuperMap.Theme.prototype.initialize.apply(this, ["GRADUATEDSYMBOL", options]);
-	        var me = this;
-	        me.flow = new SuperMap.ThemeFlow();
-	        me.offset = new SuperMap.ThemeOffset();
-	        me.style = new SuperMap.ThemeGraduatedSymbolStyle();
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        SuperMap.Theme.prototype.destroy.apply(this, arguments);
-	        var me = this;
-	        me.expression = null;
-	        if (me.flow) {
-	            me.flow.destroy();
-	            me.flow = null;
-	        }
-	        me.graduatedMode = SuperMap.GraduatedMode.CONSTANT;
-	        if (me.offset) {
-	            me.offset.destroy();
-	            me.offset = null;
-	        }
-	        if (me.style) {
-	            me.style.destroy();
-	            me.style = null;
-	        }
-	    },
-
-	    /**
-	     * Method: toJSON
-	     * 将themeLabel对象转化为json字符串。
-	     *
-	     * Returns:
-	     * {String} 返回转换后的 JSON 字符串。
-	     */
-	    toJSON: function () {
-	        return SuperMap.Util.toJSON(this.toServerJSONObject());
-	    },
-
-	    /**
-	     * Method: toServerJSONObject
-	     * 转换成对应的 JSON 格式对象。
-	     */
-	    toServerJSONObject: function () {
-	        var obj = new Object();
-	        obj.type = this.type;
-	        obj.memoryData = this.memoryData;
-	        obj.baseValue = this.baseValue;
-	        obj.expression = this.expression;
-	        obj.graduatedMode = this.graduatedMode;
-	        if (this.flow) {
-	            obj.flowEnabled = this.flow.flowEnabled;
-	            obj.leaderLineDisplayed = this.flow.leaderLineDisplayed;
-	            obj.leaderLineStyle = this.flow.leaderLineStyle;
-	        }
-	        if (this.offset) {
-	            obj.offsetFixed = this.offset.offsetFixed;
-	            obj.offsetX = this.offset.offsetX;
-	            obj.offsetY = this.offset.offsetY;
-	        }
-	        if (this.style) {
-	            obj.negativeStyle = this.style.negativeStyle;
-	            obj.negativeDisplayed = this.style.negativeDisplayed;
-	            obj.positiveStyle = this.style.positiveStyle;
-	            obj.zeroDisplayed = this.style.zeroDisplayed;
-	            obj.zeroStyle = this.style.zeroStyle;
-	        }
-	        return obj;
-	    },
-
-	    CLASS_NAME: "SuperMap.ThemeGraduatedSymbol"
-	});
-	SuperMap.ThemeGraduatedSymbol.fromObj = function (obj) {
-	    if (!obj) return;
-	    var res = new SuperMap.ThemeGraduatedSymbol();
-	    SuperMap.Util.copy(res, obj);
-	    res.flow = SuperMap.ThemeFlow.fromObj(obj);
-	    res.offset = SuperMap.ThemeOffset.fromObj(obj);
-	    res.style = SuperMap.ThemeGraduatedSymbolStyle.fromObj(obj);
-	    return res;
-	};
-	module.exports = function (options) {
-	    return new SuperMap.ThemeGraduatedSymbol(options);
-	};
-
-
-/***/ },
-/* 86 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.ThemeFlow
-	 * 标签或符号流动显示和牵引线风格设置类。
-	 * 通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
-	 */
-
-	__webpack_require__(81);
-	SuperMap.ThemeFlow = SuperMap.Class({
-
-	    /**
-	     * APIProperty: flowEnabled
-	     * {Boolean} 是否流动显示标签或符号。
-	     * 对于标签专题图而言，对于跨越比较大的区域和线条状的几何对象，在一个地图窗口中不能完全显示的情况下，如果其标签位置比较固定，
-	     * 在当前地图窗口中该对象的标签不可见，则需要通过平移地图来查看对象的标签信息。如果采用了流动显示的效果，在当前地图窗口中，对象即使是部分显示，
-	     * 其标签也会显示在当前地图窗口中。当平移地图时，对象的标签会随之移动，以保证在当前地图窗口中部分或全部显示的对象其标签都可见，从而可以方便地查看各要素的标签信息。
-	     */
-	    flowEnabled: false,
-
-	    /**
-	     * APIProperty: leaderLineDisplayed
-	     * {Boolean} 是否显示标签或符号和它标注的对象之间的牵引线。默认值为 false，即不显示标签或符号和它标注的对象之间的牵引线。
-	     * 只有当 flowEnabled 为 true 时，牵引线才起作用。在当标签流动显示时，其位置不固定，由于牵引线始终指向要素的内点，
-	     * 因而通过牵引线显示功能可以找到流动的标签或符号实际对应的要素。或者渲染符号偏移它所指向的对象时，图与对象之间可以采用牵引线进行连接。
-	     */
-	    leaderLineDisplayed: false,
-
-	    /**
-	     * APIProperty: leaderLineStyle
-	     * {<SuperMap.ServerStyle>} 标签或符号与其标注对象之间牵引线的风格。
-	     */
-
-	    leaderLineStyle: null,
-	    /**
-	     * Constructor: SuperMap.ThemeFlow
-	     * 标签或符号流动显示和牵引线风格设置类构造函数。
-	     *
-	     * Parameters:
-	     * options - {Object} 可选参数。
-	     *
-	     * Allowed options properties:
-	     * flowEnabled - {Boolean} 是否流动显示标签或符号。
-	     * leaderLineDisplayed - {Boolean} 是否显示标签或符号和它标注的对象之间的牵引线。
-	     * leaderLineStyle - {<SuperMap.ServerStyle>} 标签或符号与其标注对象之间牵引线的风格。
-	     */
-	    initialize: function (options) {
-	        var me = this;
-	        me.leaderLineStyle = new SuperMap.ServerStyle();
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        me.flowEnabled = null;
-	        me.leaderLineDisplayed = null;
-	        if (me.leaderLineStyle) {
-	            me.leaderLineStyle.destroy();
-	            me.leaderLineStyle = null;
-	        }
-	    },
-
-	    CLASS_NAME: "SuperMap.ThemeFlow"
-	});
-	SuperMap.ThemeFlow.fromObj = function (obj) {
-	    if (!obj) {
-	        return;
-	    }
-	    var res = new SuperMap.ThemeFlow();
-	    SuperMap.Util.copy(res, obj);
-	    res.leaderLineStyle = SuperMap.ServerStyle.fromJson(obj.leaderLineStyle);
-	    return res;
-	};
-	module.exports = function (options) {
-	    return new SuperMap.ThemeFlow(options);
-	};
-
-
-/***/ },
-/* 87 */
+/* 50 */
 /***/ function(module, exports) {
 
 	/**
@@ -11251,67 +7698,72 @@
 
 
 /***/ },
-/* 88 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Class: SuperMap.ThemeGraduatedSymbolStyle
-	 * 等级符号专题图正负零值显示风格类。
-	 * 通过该类可以设置正值的显示风格，零值和或负值的显示风格以及是否显示零值和或负值对应的等级符号。
+	 * Class: SuperMap.ThemeLabelItem
+	 * 分段标签专题图的子项。
+	 * 标签专题图用专题值对点、线、面等对象做标注，值得注意的是，分段标签专题图允许用户通过 rangeExpression
+	 * 字段指定用于分段的数值型字段，同一范围段内的标签具有相同的显示风格，其中每一个范围段就是一个专题图子项，
+	 * 每一个子项都具有其名称、风格、起始值和终止值。注意：每个分段所表示的范围为 [Start, End)。例如：标签专题图的分段点有两个子项，
+	 * 他们所代表的分段区间分别为[0,5)，[5,10)。那么需要分别设置 SuperMap.ThemeLabelItem[0].start=0，
+	 * SuperMap.ThemeLabelItem[0].end=5，SuperMap.ThemeLabelItem[1].start=5，SuperMap.ThemeLabelItem[1].end=10。
 	 */
 
-	__webpack_require__(81);
-	SuperMap.ThemeGraduatedSymbolStyle = SuperMap.Class({
+	__webpack_require__(52);
+	SuperMap.ThemeLabelItem = SuperMap.Class({
 
 	    /**
-	     * APIProperty: negativeDisplayed
-	     * {Boolean} 是否显示负值。默认为 false。
+	     * APIProperty: caption
+	     * {String} 标签专题子项的标题。
 	     */
-	    negativeDisplayed: false,
+	    caption: null,
 
 	    /**
-	     * APIProperty: negativeStyle
-	     * {<SuperMap.ServerStyle>} 负值的等级符号风格。
+	     * APIProperty: end
+	     * {Number} 标签专题图子项的终止值。如果该子项是分段中最后一个子项，那么该终止值就是分段的最大值；
+	     * 如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常。默认为0。
 	     */
-	    negativeStyle: null,
+	    end: 0,
 
 	    /**
-	     * APIProperty: positiveStyle
-	     * {<SuperMap.ServerStyle>}正值的等级符号风格。
+	     * APIProperty: start
+	     * {Number} 标签专题图子项的分段起始值。如果该子项是分段中第一项，那么该起始值就是分段的最小值；
+	     * 如果该子项的序号大于等于 1 的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。默认为0。
 	     */
-	    positiveStyle: null,
+	    start: 0,
 
 	    /**
-	     * APIProperty: zeroDisplayed
-	     * {Boolean}  是否显示0值。默认为 false。
+	     * APIProperty: visible
+	     * {Boolean} 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
 	     */
-	    zeroDisplayed: false,
+	    visible: true,
 
 	    /**
-	     * APIProperty: zeroStyle
-	     * {<SuperMap.ServerStyle>} 0值的等级符号风格。
+	     * APIProperty: style
+	     * {<SuperMap.ServerTextStyle>} 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：
+	     * uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
 	     */
-	    zeroStyle: null,
+	    style: null,
 
 	    /**
-	     * Constructor: SuperMap.ThemeGraduatedSymbolStyle
-	     * 等级符号专题图正负零值显示风格类构造函数，用于创建 SuperMap.ThemeGraduatedSymbolStyle 类的新实例。
+	     * Constructor: SuperMap.ThemeLabelItem
+	     * 分段标签专题图的子项类构造函数，用于创建 SuperMap.ThemeLabelItem 类的新实例。
 	     *
 	     * Parameters:
 	     * options - {Object} 参数。
 	     *
 	     * Allowed options properties:
-	     * negativeDisplayed - {Boolean} 是否显示负值。默认为 false。
-	     * negativeStyle - {<SuperMap.ServerStyle>} 负值的等级符号风格。
-	     * positiveStyle - {<SuperMap.ServerStyle>}  正值的等级符号风格。
-	     * zeroDisplayed - {Boolean} 是否显示0值。默认为 false。
-	     * zeroStyle - {<SuperMap.ServerStyle>} 0值的等级符号风格。
+	     * caption - {String} 专题图子项的名称。
+	     * end - {Number} 标签专题图子项的终止值。
+	     * start - {Number} 标签专题图子项的分段起始值。
+	     * visible - {Boolean} 标签专题图子项是否可见。
+	     * style - {<SuperMap.ServerTextStyle>} 标签专题图子项文本的显示风格。
 	     */
 	    initialize: function (options) {
 	        var me = this;
-	        me.negativeStyle = new SuperMap.ServerStyle();
-	        me.positiveStyle = new SuperMap.ServerStyle();
-	        me.zeroStyle = new SuperMap.ServerStyle();
+	        me.style = new SuperMap.ServerTextStyle();
 	        if (options) {
 	            SuperMap.Util.extend(this, options);
 	        }
@@ -11323,31 +7775,1283 @@
 	     */
 	    destroy: function () {
 	        var me = this;
-	        me.negativeDisplayed = null;
-	        me.negativeStyle = null;
-	        me.positiveStyle = null;
-	        me.zeroDisplayed = null;
-	        me.zeroStyle = null;
+	        me.caption = null;
+	        me.end = null;
+	        me.start = null;
+	        if (me.style) {
+	            me.style.destroy();
+	            me.style = null;
+	        }
+	        me.visible = null;
 	    },
 
-	    CLASS_NAME: "SuperMap.ThemeGraduatedSymbolStyle"
+	    CLASS_NAME: "SuperMap.ThemeLabelItem"
 	});
-	SuperMap.ThemeGraduatedSymbolStyle.fromObj = function (obj) {
+	SuperMap.ThemeLabelItem.fromObj = function (obj) {
 	    if (!obj) return;
-	    var res = new SuperMap.ThemeGraduatedSymbolStyle();
-	    SuperMap.Util.copy(res, obj);
-	    res.negativeStyle = SuperMap.ServerStyle.fromJson(obj.negativeStyle);
-	    res.positiveStyle = SuperMap.ServerStyle.fromJson(obj.positiveStyle);
-	    res.zeroStyle = SuperMap.ServerStyle.fromJson(obj.zeroStyle);
-	    return res;
+	    var t = new SuperMap.ThemeLabelItem();
+	    SuperMap.Util.copy(t, obj);
+	    return t;
 	};
 	module.exports = function (options) {
-	    return new SuperMap.ThemeGraduatedSymbolStyle(options);
+	    return new SuperMap.ThemeLabelItem(options);
 	};
 
 
 /***/ },
-/* 89 */
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.ServerTextStyle
+	 * 服务端文本风格类
+	 * 该类用于定义文本风格的相关属性。
+	 */
+
+	__webpack_require__(49);
+	SuperMap.ServerTextStyle = SuperMap.Class({
+
+	    /**
+	     * APIProperty: align
+	     * {<TextAlignment>} 文本的对齐方式。
+	     * 默认为 SuperMap.TextAlignment.BASELINECENTER（基准线居中对齐）。
+	     */
+	    align: SuperMap.TextAlignment.BASELINECENTER,
+
+	    /**
+	     * APIProperty: backColor
+	     * {<SuperMap.ServerColor>} 文本的背景色。
+	     * 默认为白色。
+	     */
+	    backColor: null,
+
+	    /**
+	     * APIProperty: foreColor
+	     * {<SuperMap.ServerColor>} 文本的前景色。
+	     * 默认为黑色。
+	     */
+	    foreColor: null,
+
+	    /**
+	     * APIProperty: backOpaque
+	     * {Boolean} 文本背景是否不透明。
+	     * true 表示文本背景不透明。
+	     */
+	    backOpaque: false,
+
+	    /**
+	     * APIProperty: sizeFixed
+	     * {Boolean} 文本大小是否固定。
+	     * 默认为 true，表示图片为固定像素大小，具体大小请参考 fontHeight 。
+	     * 当设为 false 时，图片会随着地图缩放而缩放。
+	     */
+	    sizeFixed: true,
+
+	    /**
+	     * APIProperty: fontHeight
+	     * {Number} 文本字体的高度，默认为6，
+	     * 单位与 sizeFixed 有关，当 sizeFixed 为 False 时，即非固定文本大小时使用地图坐标单位，
+	     * 如地理坐标系下的地图中单位为度；当 sizeFixed 为 True 时，单位为毫米（mm）。
+	     */
+	    fontHeight: 6,
+
+	    /**
+	     * APIProperty: fontWidth
+	     * {Number} 文本字体的宽度。
+	     * 字体的宽度以英文字符为标准，由于一个中文字符相当于两个英文字符，默认为0地图坐标单位。
+	     */
+	    fontWidth: 0,
+
+	    /**
+	     * APIProperty: fontWeight
+	     * {Integer} 文本字体的磅数。
+	     * 表示粗体的具体数值。取值范围为从0－900之间的整百数，默认值为400。
+	     */
+	    fontWeight: 400,
+
+	    /**
+	     * APIProperty: fontName
+	     * {String} 文本字体的名称。
+	     * 默认值为 Times New Roman。
+	     */
+	    fontName: "Times New Roman",
+
+	    /**
+	     * APIProperty: bold
+	     * {Boolean} 文本是否为粗体字。
+	     * true 表示为粗体。默认值为 false，即文本不是粗体字。
+	     */
+	    bold: false,
+
+	    /**
+	     * APIProperty: italic
+	     * {Boolean}文本是否采用斜体。
+	     * true 表示采用斜体。默认为 false。
+	     */
+	    italic: false,
+
+	    /**
+	     * APIProperty: italicAngle
+	     * {Number} 字体倾斜角度。
+	     * 正负度之间，以度为单位，精确到0.1度，默认为0度。当倾斜角度为0度，为系统默认的字体倾斜样式。正负度是指以纵轴为起始零度线，
+	     * 其纵轴左侧为正，右侧为负。允许的最大角度为60，最小-60。大于60按照60处理，小于-60按照-60处理。目前只对标签专题图有效。
+	     */
+	    italicAngle: 0,
+
+	    /**
+	     * APIProperty: shadow
+	     * {Boolean} 文本是否有阴影。
+	     * true 表示给文本增加阴影。默认值为 false，即文本没有阴影。
+	     */
+	    shadow: false,
+
+	    /**
+	     * APIProperty: strikeout
+	     * {Boolean} 文本字体是否加删除线。
+	     * true 表示加删除线。默认值为 false，即文本字体不加删除线。
+	     */
+	    strikeout: false,
+
+	    /**
+	     * APIProperty: outline
+	     * {Boolean} 是否以轮廓的方式来显示文本的背景。
+	     * true 表示以轮廓的方式来显示文本的背景。默认值为 false，表示不以轮廓的方式来显示文本的背景。
+	     */
+	    outline: false,
+
+	    /**
+	     * APIProperty: opaqueRate
+	     * {Number} 注记文字的不透明度。
+	     * 不透明度的范围为0-100。默认为0，表示透明。
+	     */
+	    opaqueRate: 0,
+
+	    /**
+	     * APIProperty: underline
+	     * {Boolean} 文本字体是否加下划线。
+	     * true 表示加下划线。默认为 false。
+	     */
+	    underline: false,
+
+	    /**
+	     * APIProperty: rotation
+	     * {Number} 文本旋转的角度。
+	     * 逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。
+	     */
+	    rotation: 0.0,
+
+	    /**
+	     * Constructor: SuperMap.ServerTextStyle
+	     * 服务端文本风格类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * align - {<TextAlignment>} 文本的对齐方式。
+	     * backColor - {<SuperMap.ServerColor>} 文本的背景色。
+	     * foreColor - {<SuperMap.ServerColor>} 文本的前景色。
+	     * backOpaque - {Boolean} 文本背景是否不透明。
+	     * sizeFixed - {Boolean} 文本大小是否固定。
+	     * fontHeight - {Number} 文本字体的高度。
+	     * fontWidth - {Number} 文本字体的宽度。
+	     * fontWeight - {Integer} 文本字体的磅数。
+	     * fontName - {String} 文本字体的名称。
+	     * bold - {Boolean} 文本是否为粗体字。
+	     * italic - {Boolean}文本是否采用斜体。
+	     * italicAngle - {Number} 字体倾斜角度。
+	     * shadow - {Boolean} 文本是否有阴影。
+	     * strikeout - {Boolean} 文本字体是否加删除线。
+	     * outline - {Boolean} 是否以轮廓的方式来显示文本的背景。
+	     * opaqueRate - {Number} 注记文字的不透明度。
+	     * underline - {Boolean} 文本字体是否加下划线。
+	     * rotation -  {Number} 文本旋转的角度。
+	     */
+	    initialize: function (options) {
+	        var me = this;
+	        me.backColor = new SuperMap.ServerColor(255, 255, 255);
+	        me.foreColor = new SuperMap.ServerColor(0, 0, 0);
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        me.align = null;
+	        if (me.backColor) {
+	            me.backColor.destroy();
+	            me.backColor = null;
+	        }
+	        if (me.foreColor) {
+	            me.foreColor.destroy();
+	            me.foreColor = null;
+	        }
+	        me.backOpaque = null;
+	        me.sizeFixed = null;
+	        me.fontHeight = null;
+	        me.fontWidth = null;
+	        me.fontWeight = null;
+	        me.fontName = null;
+	        me.bold = null;
+	        me.italic = null;
+	        me.italicAngle = null;
+	        me.shadow = null;
+	        me.strikeout = null;
+	        me.outline = null;
+	        me.opaqueRate = null;
+	        me.underline = null;
+	        me.rotation = null;
+	    },
+
+	    CLASS_NAME: "SuperMap.ServerTextStyle"
+	});
+
+	SuperMap.ServerTextStyle.fromObj = function (obj) {
+	    var res = new SuperMap.ServerTextStyle(obj);
+	    SuperMap.Util.copy(res, obj);
+	    res.backColor = SuperMap.ServerColor.fromJson(obj.backColor);
+	    res.foreColor = SuperMap.ServerColor.fromJson(obj.foreColor);
+	    return res;
+	};
+	module.exports = function (options) {
+	    return new SuperMap.ServerTextStyle(options);
+	};
+
+
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.ThemeLabelUniqueItem
+	 * 单值标签专题图的子项。
+	 * 标签专题图用专题值对点、线、面等对象做标注，值得注意的是，单值标签专题图允许用户通过 uniqueExpression
+	 * 字段指定用于单值的字段，同一值的标签具有相同的显示风格，其中每一个值就是一个专题图子项，
+	 * 每一个子项都具有其名称、风格、指定的单值、X方向偏移量和Y方向偏移量。
+	 */
+
+	__webpack_require__(52);
+	SuperMap.ThemeLabelUniqueItem = SuperMap.Class({
+
+	    /**
+	     * APIProperty: caption
+	     * {String} 标签专题子项的标题。
+	     */
+	    caption: null,
+	    /**
+	     * APIProperty: unique
+	     * {String} 单值专题图子项的值，可以为数字、字符串等。
+	     */
+	    unique: null,
+	    /**
+	     * APIProperty: offsetX
+	     * {Number} 标签在X方向偏移量。
+	     */
+	    offsetX: 0,
+
+	    /**
+	     * APIProperty: offsetY
+	     * {Number} 标签在Y方向偏移量。
+	     */
+	    offsetY: 0,
+
+	    /**
+	     * APIProperty: visible
+	     * {Boolean} 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
+	     */
+	    visible: true,
+
+	    /**
+	     * APIProperty: style
+	     * {<SuperMap.ServerTextStyle>} 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：
+	     * uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelUniqueItem.style（单值子项的文本风格），uniformStyle（统一文本风格）。
+	     */
+	    style: null,
+
+	    /**
+	     * Constructor: SuperMap.ThemeLabelUniqueItem
+	     * 单值标签专题图的子项类构造函数，用于创建 SuperMap.ThemeLabelUniqueItem 类的新实例。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * caption - {String} 专题图子项的名称。
+	     * unique - {String} 单值专题图子项的值，可以为数字、字符串等。
+	     * offsetX - {Number} 标签在X方向偏移量。
+	     * offsetY - {Number} 标签在Y方向偏移量。
+	     * visible - {Boolean} 标签专题图子项是否可见。
+	     * style - {<SuperMap.ServerTextStyle>} 标签专题图子项文本的显示风格。
+	     */
+	    initialize: function (options) {
+	        var me = this;
+	        me.style = new SuperMap.ServerTextStyle();
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        me.unique = null;
+	        me.caption = null;
+	        me.offsetX = null;
+	        me.offsetY = null;
+	        if (me.style) {
+	            me.style.destroy();
+	            me.style = null;
+	        }
+	        me.visible = null;
+	    },
+
+	    CLASS_NAME: "SuperMap.ThemeLabelUniqueItem"
+	});
+	SuperMap.ThemeLabelUniqueItem.fromObj = function (obj) {
+	    if (!obj) return;
+	    var t = new SuperMap.ThemeLabelUniqueItem();
+	    SuperMap.Util.copy(t, obj);
+	    return t;
+	};
+	module.exports = function (options) {
+	    return new SuperMap.ThemeLabelUniqueItem(options);
+	};
+
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.ThemeLabelText
+	 * 标签中文本风格类。
+	 * 通过该类可以设置标签中的文本字体大小和显示风格。
+	 */
+
+	__webpack_require__(52);
+	__webpack_require__(55);
+	SuperMap.ThemeLabelText = SuperMap.Class({
+
+	    /**
+	     * APIProperty: maxTextHeight
+	     * {Number} 标签中文本的最大高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
+	     * 当放大后的文本高度超过最大高度之后就不再放大。高度单位为0.1毫米。高度单位为0.1毫米。默认为 0 毫米。
+	     */
+	    maxTextHeight: 0,
+
+	    /**
+	     * APIProperty: maxTextWidth
+	     * {Number} 标签中文本的最大宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
+	     * 当放大后的文本宽度超过最大高度之后就不再放大。宽度单位为0.1毫米。默认为0毫米。
+	     */
+	    maxTextWidth: 0,
+
+	    /**
+	     * APIProperty: minTextHeight
+	     * {Number} 标签中文本的最小高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
+	     * 当缩小后的文本高度小于最小高度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
+	     */
+	    minTextHeight: 0,
+
+	    /**
+	     * APIProperty: minTextWidth
+	     * {Number} 标签中文本的最小宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
+	     * 当缩小后的文本宽度小于最小宽度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
+	     */
+	    minTextWidth: 0,
+
+	    /**
+	     * APIProperty: uniformStyle
+	     * {<SuperMap.ServerTextStyle>} 统一文本风格。当标签专题图子项的个数大于等于1时，
+	     * uniformStyle 不起作用，各标签的风格使用子项中设置的风格。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
+	     * SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
+	     */
+	    uniformStyle: null,
+
+	    /**
+	     * APIProperty: uniformMixedStyle
+	     * {<SuperMap.LabelMixedTextStyle>} 标签专题图统一的文本复合风格。通过该类可以使同一个标
+	     * 签中的文字使用多种风格显示。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
+	     * SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
+	     */
+	    uniformMixedStyle: null,
+
+	    /**
+	     * Constructor: SuperMap.ThemeLabelText
+	     * 标签中文本风格类构造函数，用于创建 SuperMap.ThemeLabelText 类的新实例。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * maxTextHeight - {Number} 标签中文本的最大高度。
+	     * maxTextWidth - {Number} 标签中文本的最大宽度。
+	     * minTextHeight - {Number} 标签中文本的最小高度。
+	     * minTextWidth - {Number} 标签中文本的最小宽度。
+	     * uniformStyle - {<SuperMap.ServerTextStyle>} 统一文本风格。
+	     * uniformMixedStyle - {<SuperMap.LabelMixedTextStyle>} 标签专题图统一的文本复合风格。
+	     */
+	    initialize: function (options) {
+	        var me = this;
+	        me.uniformStyle = new SuperMap.ServerTextStyle();
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        me.maxTextHeight = null;
+	        me.maxTextWidth = null;
+	        me.minTextHeight = null;
+	        me.minTextWidth = null;
+	        if (me.uniformStyle) {
+	            me.uniformStyle.destroy();
+	            me.uniformStyle = null;
+	        }
+	        if (me.uniformMixedStyle) {
+	            me.uniformMixedStyle.destroy();
+	            me.uniformMixedStyle = null;
+	        }
+	    },
+
+	    CLASS_NAME: "SuperMap.ThemeLabelText"
+	});
+	SuperMap.ThemeLabelText.fromObj = function (obj) {
+	    if (!obj) return;
+	    var res = new SuperMap.ThemeLabelText();
+	    SuperMap.Util.copy(res, obj);
+	    res.uniformStyle = SuperMap.ServerTextStyle.fromObj(obj.uniformStyle);
+	    res.uniformMixedStyle = SuperMap.LabelMixedTextStyle.fromObj(obj.uniformMixedStyle);
+	    return res;
+	};
+	module.exports = function (options) {
+	    return new SuperMap.ThemeLabelText(options);
+	};
+
+
+/***/ },
+/* 55 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.LabelMixedTextStyle
+	 * 标签文本复合风格类。
+	 * 该类主要用于对标签专题图中标签的文本内容进行风格设置。通过该类用户可以使标签的文字显示不同的风格，
+	 * 比如文本 “喜马拉雅山”，通过本类可以将前三个字用红色显示，后两个字用蓝色显示。
+	 * 对同一文本设置不同的风格实质上是对文本的字符进行分段，同一分段内的字符具有相同的显示风格。
+	 * 对字符分段有两种方式，一种是利用分隔符对文本进行分段；另一种是根据分段索引值进行分段。
+	 * 1. 利用分隔符对文本进行分段: 比如文本 “5&109” 被分隔符 “&” 分为“5”和“109”两部分，
+	 * 在显示时，“5” 和分隔符 “&” 使用同一个风格，字符串 “109” 使用相同的风格。
+	 * 2. 利用分段索引值进行分段: 文本中字符的索引值是以0开始的整数，比如文本“珠穆朗玛峰”，
+	 * 第一个字符（“珠”）的索引值为0，第二个字符（“穆”）的索引值为1，以此类推；当设置分段索引值为1，3，4，9时，
+	 * 字符分段范围相应的就是(-∞，1)，[1，3)，[3，4)，[4，9)，[9，+∞)，可以看出索引号为0的字符（即“珠” ）在第一个分段内，
+	 * 索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
+	 */
+
+	__webpack_require__(52);
+	SuperMap.LabelMixedTextStyle = SuperMap.Class({
+
+	    /**
+	     * APIProperty: defaultStyle
+	     * {<SuperMap.ServerTextStyle>} 默认的文本复合风格，即 SuperMap.ServerTextStyle 各字段的默认值。
+	     */
+	    defaultStyle: null,
+
+	    /**
+	     * APIProperty: separator
+	     * {String} 文本的分隔符，分隔符的风格与前一个字符的风格一样。文本的分隔符是一个将文本分割开的符号，
+	     * 比如文本 “5_109” 被 “_” 隔符为 “5” 和 “109” 两部分，假设有风格数组：style1、style2。
+	     * 在显示时，“5” 和分隔符 “_” 使用 Style1 风格渲染，字符串 “109” 使用 Style2 的风格。
+	     */
+	    separator: null,
+
+	    /**
+	     * APIProperty: separatorEnabled
+	     * {Boolean} 文本的分隔符是否有效。分隔符有效时利用分隔符对文本进行分段；无效时根据文本中字符的位置进行分段。
+	     * 分段后，同一分段内的字符具有相同的显示风格。默认为 false。
+	     */
+	    separatorEnabled: false,
+
+	    /**
+	     * APIProperty: splitIndexes
+	     * {Array(Number)} 分段索引值，分段索引值用来对文本中的字符进行分段。
+	     * 文本中字符的索引值是以0开始的整数，比如文本“珠穆朗玛峰”，第一个字符（“珠”）的索引值为0，第二个字符（“穆”）的索引值为1，
+	     * 以此类推；当设置分段索引值数组为[1，3，4，9]时，字符分段范围相应的就是(-∞，1)，[1，3)，[3，4)，[4，9)，[9，+∞)，
+	     * 可以看出索引号为0的字符（即“珠” ）在第一个分段内，索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，
+	     * 索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
+	     */
+	    splitIndexes: null,
+
+	    /**
+	     * APIProperty: styles
+	     * {Array(<SuperMap.ServerTextStyle>)} 文本样式集合。文本样式集合中的样式根据索引与不同分段一一对应，
+	     * 如果有分段没有风格对应则使用 defaultStyle。
+	     */
+	    styles: null,
+	    /**
+	     * Constructor: SuperMap.LabelMixedTextStyle
+	     * 标签文本复合风格类构造函数，用于创建 SuperMap.LabelMixedTextStyle 类的新实例。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * defaultStyle - {<SuperMap.ServerTextStyle>} 默认的文本复合风格。
+	     * separator - {String} 文本的分隔符。
+	     * separatorEnabled - Boolean} 文本的分隔符是否有效。
+	     * splitIndexes - {Array(Number)} 分段索引值，分段索引值用来对文本中的字符进行分段。
+	     * styles - {Array(<SuperMap.ServerTextStyle>)} 文本样式集合。
+	     */
+	    initialize: function (options) {
+	        var me = this;
+	        me.defaultStyle = new SuperMap.ServerTextStyle();
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        if (me.defaultStyle) {
+	            me.defaultStyle.destroy();
+	            me.defaultStyle = null;
+	        }
+	        me.separator = null;
+	        me.separatorEnabled = null;
+	        if (me.splitIndexes) {
+	            me.splitIndexes = null;
+	        }
+	        if (me.styles) {
+	            for (var i = 0, styles = me.styles, len = styles.length; i < len; i++) {
+	                styles[i].destroy();
+	            }
+	            me.styles = null;
+	        }
+	    },
+
+	    CLASS_NAME: "SuperMap.LabelMixedTextStyle"
+	});
+	SuperMap.LabelMixedTextStyle.fromObj = function (obj) {
+	    if (!obj) return;
+	    var res = new SuperMap.LabelMixedTextStyle();
+	    var stys = obj.styles;
+	    SuperMap.Util.copy(res, obj);
+	    res.defaultStyle = new SuperMap.ServerTextStyle(obj.defaultStyle);
+	    if (stys) {
+	        res.styles = [];
+	        for (var i = 0, len = stys.length; i < len; i++) {
+	            res.styles.push(new SuperMap.ServerTextStyle(stys[i]));
+	        }
+	    }
+	    return res;
+	};
+	module.exports = function (options) {
+	    return new SuperMap.LabelMixedTextStyle(options);
+	};
+
+
+
+/***/ },
+/* 56 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.LabelImageCell
+	 * 图片类型的矩阵标签元素类。
+	 * 该类继承自 SuperMap.LabelMatrixCell类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
+	 * 矩阵标签专题图是标签专题图（ThemeLabel）的一种，其中矩阵标签中的填充元素又可分为图片类型（SuperMap.LabelImageCell）、
+	 * 符号类型（SuperMap.LabelSymbolCell）、专题图类型（SuperMap.LabelThemeCell）三种，该类是这三种类型的矩阵标签元素其中的一种，
+	 * 用于定义符号类型的矩阵标签，如符号 ID 字段名称（符号 ID 与 SuperMap 桌面产品中点、线、面符号的 ID 对应） 、大小等。
+	 * 用户在实现矩阵标签专题图时只需将定义好的矩阵标签元素赋值予 SuperMap.ThemeLabel.matrixCells 属性即可。matrixCells 属是一个二维数组，
+	 * 每一维可以是任意类型的矩阵标签元素组成的数组（也可是单个标签元素组成的数组，即数组中只有一个元素）。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.LabelMatrixCell>
+	 */
+
+	__webpack_require__(57);
+	SuperMap.LabelImageCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
+
+	    /**
+	     * APIProperty: height
+	     * {Number} 设置图片的高度，单位为毫米。
+	     */
+	    height: 0,
+
+	    /**
+	     * APIProperty: pathField
+	     * {String} 设置矩阵标签元素所使用的图片路径对应的字段名。
+	     */
+	    pathField: null,
+
+	    /**
+	     * APIProperty: rotation
+	     * {Number} 图片的旋转角度。逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。
+	     */
+	    rotation: 0.0,
+
+	    /**
+	     * APIProperty: width
+	     * {Number} 设置图片的宽度，单位为毫米。
+	     */
+	    width: 0,
+
+	    /**
+	     * APIProperty: sizeFixed
+	     * {Boolean} 是否固定图片的大小。默认值为 false，即图片将随地图缩放。
+	     */
+	    sizeFixed: false,
+
+	    /**
+	     * Property: type
+	     * {Boolean} 制作矩阵专题图时是必须的。
+	     */
+	    type: "IMAGE",
+
+	    /**
+	     * Constructor: SuperMap.LabelImageCell
+	     * 图片类型的矩阵标签元素类构造函数，用于创建 SuperMap.LabelImageCell 类的新实例。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * height - {Number} 设置图片的高度，单位为毫米。
+	     * pathField - {String} 设置矩阵标签元素所使用图片的路径。
+	     * rotation - {Number} 图片的旋转角度。逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。
+	     * width - {Number} 设置图片的宽度，单位为毫米。
+	     * sizeFixed - {Boolean} 是否固定图片的大小。默认值为 false，即图片将随地图缩放。
+	     */
+	    initialize: function (options) {
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        me.height = null;
+	        me.pathField = null;
+	        me.rotation = null;
+	        me.width = null;
+	        me.sizeFixed = null;
+	    },
+
+	    CLASS_NAME: "SuperMap.LabelImageCell"
+	});
+	module.exports = function (options) {
+	    return new SuperMap.LabelImageCell(options);
+	};
+
+/***/ },
+/* 57 */
+/***/ function(module, exports) {
+
+	/**
+	 * Class: SuperMap.LabelMatrixCell
+	 * 矩阵标签元素抽象类。
+	 * 该类可以包含 n*n 个矩阵标签元素，矩阵标签元素的类型可以是图片，符号，标签专题图等。
+	 * 符号类型的矩阵标签元素类、图片类型的矩阵标签元素类和专题图类型的矩阵标签元素类均继承自该类。
+	 */
+
+	SuperMap.LabelMatrixCell = SuperMap.Class({
+	    CLASS_NAME: "LabelMatrixCell"
+	});
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.LabelSymbolCell
+	 * 符号类型的矩阵标签元素类。
+	 * 该类继承自 SuperMap.LabelMatrixCell类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
+	 * 矩阵标签专题图是标签专题图（SuperMap.ThemeLabel）的一种，其中矩阵标签中的填充元素又可分为图片类型（SuperMap.LabelImageCell）、
+	 * 符号类型（SuperMap.LabelSymbolCell）、专题图类型（SuperMap.LabelThemeCell）三种，该类是这三种类型的矩阵标签元素其中的一种，
+	 * 用于定义符号类型的矩阵标签，如符号 ID 字段名称（符号 ID 与 SuperMap 桌面产品中点、线、面符号的 ID 对应） 、大小等。
+	 * 用户在实现矩阵标签专题图时只需将定义好的矩阵标签元素赋值予 SuperMap.ThemeLabel.matrixCells 属性即可。matrixCells 属是一个二维数组，
+	 * 每一维可以是任意类型的矩阵标签元素组成的数组（也可是单个标签元素组成的数组，即数组中只有一个元素）。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.LabelMatrixCell>
+	 */
+
+	__webpack_require__(48);
+	__webpack_require__(57);
+	SuperMap.LabelSymbolCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
+
+	    /**
+	     * APIProperty: style
+	     * {<SuperMap.ServerStyle>} 获取或设置符号样式—— SuperMap.ServerStyle 对象，包括符号大小（SuperMap.ServerStyle.markerSize）
+	     * 和符号旋转（SuperMap.ServerStyle.markerAngle）角度，其中用于设置符号 ID 的属性（SuperMap.ServerStyle.markerSymbolID）在此处不起作用。
+	     */
+	    style: null,
+
+	    /**
+	     * APIProperty: symbolIDField
+	     * {String} 获取或设置符号 ID 或符号 ID 所对应的字段名称，必设属性。
+	     */
+	    symbolIDField: null,
+
+	    /**
+	     * Property: type
+	     * {String} 制作矩阵专题图时是必须的。
+	     */
+	    type: "SYMBOL",
+
+	    /**
+	     * Constructor: SuperMap.LabelSymbolCell
+	     * 符号类型的矩阵标签元素类构造函数，用于创建 SuperMap.LabelSymbolCell 类的新实例。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * style - {<SuperMap.ServerStyle>} 获取或设置符号样式—— SuperMap.ServerStyle 对象。
+	     * symbolIDField - {String} 符号 ID 或符号 ID 所对应的字段名称。
+	     */
+	    initialize: function (options) {
+	        var me = this;
+	        me.style = new SuperMap.ServerStyle();
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        if (me.style) {
+	            me.style.destroy();
+	            me.style = null;
+	        }
+	        me.symbolIDField = null;
+	    },
+
+	    CLASS_NAME: "SuperMap.LabelSymbolCell"
+	});
+	module.exports = function (options) {
+	    return new SuperMap.LabelSymbolCell(options);
+	};
+
+/***/ },
+/* 59 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class:  SuperMap.LabelThemeCell
+	 * 专题图类型的矩阵标签元素类。
+	 * 该类继承自 SuperMap.LabelMatrixCell类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
+	 * 矩阵标签专题图是标签专题图（SuperMap.ThemeLabel）的一种，其中矩阵标签中的填充元素又可分为图片类型（SuperMap.LabelImageCell）、
+	 * 符号类型（SuperMap.LabelSymbolCell）、专题图类型（SuperMap.LabelThemeCell）三种，该类是这三种类型的矩阵标签元素其中的一种，
+	 * 用于定义符号类型的矩阵标签，如符号 ID 字段名称（符号 ID 与 SuperMap 桌面产品中点、线、面符号的 ID 对应） 、大小等。
+	 * 用户在实现矩阵标签专题图时只需将定义好的矩阵标签元素赋值予 SuperMap.ThemeLabel.matrixCells 属性即可。matrixCells 属是一个二维数组，
+	 * 每一维可以是任意类型的矩阵标签元素组成的数组（也可是单个标签元素组成的数组，即数组中只有一个元素）。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.LabelMatrixCell>
+	 */
+
+	__webpack_require__(44);
+	__webpack_require__(57);
+	SuperMap.LabelThemeCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
+
+	    /**
+	     * APIProperty: themeLabel
+	     * {<SuperMap.ThemeLabel>} 使用专题图对象作为矩阵标签的一个元素。
+	     */
+	    themeLabel: null,
+
+	    /**
+	     * Property: type
+	     * {String} 制作矩阵专题图时是必须的。
+	     */
+	    type: "THEME",
+
+	    /**
+	     * Constructor:  SuperMap.LabelThemeCell
+	     * 专题图类型的矩阵标签元素类构造函数，用于创建  SuperMap.LabelThemeCell 类的新实例。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * themeLabel - {<SuperMap.ThemeLabel>} 使用专题图对象作为矩阵标签的一个元素。
+	     */
+	    initialize: function (options) {
+	        var me = this;
+	        me.themeLabel = new SuperMap.ThemeLabel();
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        if (me.themeLabel) {
+	            me.themeLabel.destroy();
+	            me.themeLabel = null;
+	        }
+	    },
+
+	    CLASS_NAME: " SuperMap.LabelThemeCell"
+	});
+	module.exports = function (options) {
+	    return new SuperMap.LabelThemeCell(options);
+	};
+
+/***/ },
+/* 60 */
+/***/ function(module, exports) {
+
+	/**
+	 * Class: SuperMap.ThemeLabelAlongLine
+	 * 标签沿线标注样式类。
+	 * 通过该类可以设置是否标签沿线标注以及沿线标注的多种样式。沿线标注属性只适用于线数据集专题图。
+	 */
+
+	SuperMap.ThemeLabelAlongLine = SuperMap.Class({
+
+	    /**
+	     * APIProperty: isAlongLine
+	     * {Boolean} 是否沿线显示文本。true 表示沿线显示文本，false 表示正常显示文本，默认为 true。
+	     */
+	    isAlongLine: true,
+
+	    /**
+	     * APIProperty: alongLineDirection
+	     * {<SuperMap.AlongLineDirection>} 标签沿线标注方向。默认为 SuperMap.AlongLineDirection.LB_TO_RT（从上到下，从左到右放置）。
+	     */
+	    alongLineDirection: SuperMap.AlongLineDirection.LB_TO_RT,
+
+	    /**
+	     * APIProperty: angleFixed
+	     * {Boonlean} 当沿线显示文本时，是否将文本角度固定。true 表示按固定文本角度显示文本，false 表示按照沿线角度显示文本。
+	     * 默认值为 false。如果固定角度，则所有标签均按所设置的文本风格中字体的旋转角度来显示，不考虑沿线标注的方向；
+	     * 如果不固定角度，在显示标签时会同时考虑字体的旋转角度和沿线标注的方向。
+	     */
+	    angleFixed: false,
+
+	    /**
+	     * APIProperty: repeatedLabelAvoided
+	     * {Boonlean} 沿线循环标注时是否避免标签重复标注。
+	     */
+	    repeatedLabelAvoided: false,
+
+	    /**
+	     * APIProperty: repeatIntervalFixed
+	     * {Boonlean} 循环标注间隔是否固定。true 表示使用固定循环标注间隔，即使用逻辑坐标来显示循环标注间隔；
+	     * false 表示循环标注间隔随地图的缩放而变化，即使用地理坐标来显示循环标注间隔。默认值为 false。
+	     */
+	    repeatIntervalFixed: false,
+
+	    /**
+	     * APIProperty: labelRepeatInterval
+	     * {Number} 沿线且循环标注时循环标注的间隔。长度的单位与地图的地理单位一致。只有设定 RepeatedLabelAvoided 为 true
+	     * 的时候，labelRepeatInterval 属性才有效。默认为0地图单位。
+	     */
+	    labelRepeatInterval: 0,
+
+	    /**
+	     * Constructor: SuperMap.ThemeLabelAlongLine
+	     * 标签沿线标注样式类构造函数，用于创建 SuperMap.ThemeLabelAlongLine 类的新实例。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * isAlongLine - {Boolean} 是否沿线显示文本。
+	     * alongLineDirection - {<SuperMap.AlongLineDirection>} 标签沿线标注方向。
+	     * angleFixed - {Boonlean} 当沿线显示文本时，是否将文本角度固定。
+	     * repeatedLabelAvoided - {Boonlean} 沿线循环标注时是否避免标签重复标注。
+	     * repeatIntervalFixed - {Boonlean} 循环标注间隔是否固定。
+	     * labelRepeatInterval - {Number} 沿线且循环标注时循环标注的间隔。
+	     */
+	    initialize: function (options) {
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        me.isAlongLine = null;
+	        me.alongLineDirection = null;
+	        me.angleFixed = null;
+	        me.repeatedLabelAvoided = null;
+	        me.repeatIntervalFixed = null;
+	        me.labelRepeatInterval = null;
+	    },
+
+	    CLASS_NAME: "SuperMap.ThemeLabelAlongLine"
+	});
+	SuperMap.ThemeLabelAlongLine.fromObj = function (obj) {
+	    if (!obj) return;
+	    var t = new SuperMap.ThemeLabelAlongLine();
+	    SuperMap.Util.copy(t, obj);
+	    return t;
+	};
+	module.exports = function (options) {
+	    return new SuperMap.ThemeLabelAlongLine(options);
+	};
+
+
+/***/ },
+/* 61 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.ThemeLabelBackground
+	 * 标签背景风格类。
+	 * 通过该类可以设置标签的背景形状和风格。
+	 */
+
+	__webpack_require__(48);
+	SuperMap.ThemeLabelBackground = SuperMap.Class({
+
+	    /**
+	     * APIProperty: labelBackShape
+	     * {<SuperMap.LabelBackShape>} 标签专题图中标签背景风格。当背景形状
+	     * labelBackShape 属性设为 NONE（即无背景形状） 时，backStyle 属性无效。
+	     */
+	    labelBackShape: SuperMap.LabelBackShape.NONE,
+
+	    /**
+	     * APIProperty: backStyle
+	     * {<SuperMap.ServerStyle>} 标签专题图中标签背景的形状枚举类。背景类型可
+	     * 以是矩形、圆角矩形、菱形、椭圆形、三角形和符号等，默认为 SuperMap.LabelBackShape.NONE，
+	     * 即不使用任何的形状作为标签的背景。
+	     */
+	    backStyle: null,
+
+	    /**
+	     * Constructor: SuperMap.ThemeLabelBackground
+	     * 标签背景风格类构造函数，用于创建 ThemeLabelBackGround 类的新实例。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * labelBackShape - {<SuperMap.LabelBackShape>} 标签专题图中标签背景风格。
+	     * backStyle - {<SuperMap.ServerStyle>} 标签专题图中标签背景的形状枚举类。
+	     */
+	    initialize: function (options) {
+	        var me = this;
+	        me.backStyle = new SuperMap.ServerStyle();
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        me.labelBackShape = null;
+	        if (me.backStyle) {
+	            me.backStyle.destroy();
+	            me.backStyle = null;
+	        }
+	    },
+
+	    CLASS_NAME: "SuperMap.ThemeLabelBackground"
+	});
+	SuperMap.ThemeLabelBackground.fromObj = function (obj) {
+	    if (!obj) return;
+	    var t = new SuperMap.ThemeLabelBackground();
+	    t.labelBackShape = obj.labelBackShape;
+	    t.backStyle = SuperMap.ServerStyle.fromJson(obj.backStyle);
+
+	    return t;
+	};
+	module.exports = function (options) {
+	    return new SuperMap.ThemeLabelBackground(options);
+	};
+
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.ThemeUnique
+	 * 单值专题图。
+	 * 单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格。单值专题图多用于具有分类属性的地图上，
+	 * 比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。尤其是有交叉或重叠现象时，此类不推荐使用，例如：民族分布区等。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.Theme>
+	 */
+
+	__webpack_require__(48);
+	__webpack_require__(45);
+	__webpack_require__(63);
+	SuperMap.ThemeUnique = SuperMap.Class(SuperMap.Theme, {
+
+	    /**
+	     * APIProperty: defaultStyle
+	     * {<SuperMap.ServerStyle>} 未参与单值专题图制作的对象的显示风格。
+	     * 通过单值专题图子项数组 （items）可以指定某些要素参与单值专题图制作，对于那些没有被包含的要素，即不参加单值专题表达的要素，使用该风格显示。
+	     */
+	    defaultStyle: null,
+
+	    /**
+	     * APIProperty: items
+	     * {Array(<SuperMap.ThemeUniqueItem>)} 单值专题图子项类数组。
+	     * 单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，
+	     * Name 字段代表省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
+	     */
+	    items: null,
+
+	    /**
+	     * APIProperty: uniqueExpression
+	     * {String} 用于制作单值专题图的字段或字段表达式。
+	     * 该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段。
+	     */
+	    uniqueExpression: null,
+
+	    /**
+	     * APIProperty: colorGradientType
+	     * {<SuperMap.ColorGradientType>} 渐变颜色枚举类
+	     * 渐变色是由起始色根据一定算法逐渐过渡到终止色的一种混合型颜色。
+	     * 该类作为单值专题图参数类、分段专题图参数类的属性，负责设置单值专题图、分段专题图的配色方案，在默认情况下专题图所有子项会根据这个配色方案完成填充。
+	     * 但如果为某几个子项的风格进行单独设置后（设置了 ThemeUniqueItem 或 ThemeRangeItem 类中Style属性），
+	     * 该配色方案对于这几个子项将不起作用。
+	     */
+	    colorGradientType: SuperMap.ColorGradientType.YELLOW_RED,
+
+	    /**
+	     * Constructor: SuperMap.ThemeUnique
+	     * 单值专题图构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * items - {Array(<SuperMap.ThemeUniqueItem>)} 单值专题图子项类数组。
+	     * uniqueExpression - {String} 用于制作单值专题图的字段或字段表达式。
+	     * defaultStyle - {<SuperMap.ServerStyle>} 未参与单值专题图制作的对象的显示风格。
+	     * colorGradientType - {<SuperMap.ColorGradientType>} 渐变颜色枚举类。
+	     * memoryData - {<SuperMap.ThemeMemoryData>} 专题图内存数据。
+	     */
+	    initialize: function (options) {
+	        var me = this;
+	        me.defaultStyle = new SuperMap.ServerStyle();
+	        SuperMap.Theme.prototype.initialize.apply(this, ["UNIQUE", options]);
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.Theme.prototype.destroy.apply(this, arguments);
+	        var me = this;
+	        me.uniqueExpression = null;
+	        me.colorGradientType = null;
+	        if (me.items) {
+	            if (me.items.length > 0) {
+	                for (var item in me.items) {
+	                    me.items[item].destroy();
+	                    me.items[item] = null;
+	                }
+	            }
+	            me.items = null;
+	        }
+
+	        if (me.defaultStyle) {
+	            me.defaultStyle.destroy();
+	            me.defaultStyle = null;
+	        }
+	    },
+
+	    /**
+	     * Method: toServerJSONObject
+	     * 转换成对应的 JSON 格式对象。
+	     */
+	    toServerJSONObject: function () {
+	        var obj = {};
+	        obj = SuperMap.Util.copyAttributes(obj, this);
+	        if (obj.defaultStyle) {
+	            if (obj.defaultStyle.toServerJSONObject) {
+	                obj.defaultStyle = obj.defaultStyle.toServerJSONObject();
+	            }
+	        }
+	        if (obj.items) {
+	            var items = [],
+	                len = obj.items.length;
+	            for (var i = 0; i < len; i++) {
+	                items.push(obj.items[i].toServerJSONObject());
+	            }
+	            obj.items = items;
+	        }
+	        return obj;
+	    },
+
+	    CLASS_NAME: "SuperMap.ThemeUnique"
+	});
+	SuperMap.ThemeUnique.fromObj = function (obj) {
+	    var res = new SuperMap.ThemeUnique();
+	    var uItems = obj.items;
+	    var len = uItems ? uItems.length : 0;
+	    SuperMap.Util.extend(res, obj);
+	    res.items = [];
+	    res.defaultStyle = new SuperMap.ServerStyle.fromJson(obj.defaultStyle);
+	    for (var i = 0; i < len; i++) {
+	        res.items.push(new SuperMap.ThemeUniqueItem.fromObj(uItems[i]));
+	    }
+	    return res;
+	};
+	module.exports = function (options) {
+	    return new SuperMap.ThemeUnique(options);
+	};
+
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.ThemeUniqueItem
+	 * 单值专题图子项类。
+	 * 单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，Name 字段代表
+	 * 省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
+	 */
+
+	__webpack_require__(48);
+	SuperMap.ThemeUniqueItem = SuperMap.Class({
+
+	    /**
+	     * APIProperty: caption
+	     * {String} 单值专题图子项的标题。
+	     */
+	    caption: null,
+
+	    /**
+	     * APIProperty: style
+	     * {<SuperMap.ServerStyle>} 单值专题图子项的显示风格。
+	     */
+	    style: null,
+
+	    /**
+	     * APIProperty: unique
+	     * {String} 单值专题图子项的值，可以为数字、字符串等。
+	     */
+	    unique: null,
+
+	    /**
+	     * APIProperty: visible
+	     * {Boolean} 单值专题图子项的可见性。默认为 true，表示可见。
+	     */
+	    visible: true,
+
+	    /**
+	     * Constructor: SuperMap.ThemeUniqueItem
+	     * 单值专题图子项类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * caption - {String} 单值专题图子项的标题。
+	     * style - {<SuperMap.ServerStyle>} 单值专题图子项的风格。
+	     * unique - {String} 单值专题图子项的单值。
+	     * visible - {Boolean} 单值专题图子项是否可见。
+	     */
+	    initialize: function (options) {
+	        var me = this;
+	        me.style = new SuperMap.ServerStyle();
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        me.caption = null;
+	        me.unique = null;
+
+	        if (me.style) {
+	            me.style.destroy();
+	            me.style = null;
+	        }
+	        me.visible = null;
+	    },
+
+	    /**
+	     * Method: toServerJSONObject
+	     * 转换成对应的 JSON 格式对象。
+	     */
+	    toServerJSONObject: function () {
+	        var obj = {};
+	        obj = SuperMap.Util.copyAttributes(obj, this);
+	        if (obj.style) {
+	            if (obj.style.toServerJSONObject) {
+	                obj.style = obj.style.toServerJSONObject();
+	            }
+	        }
+	        return obj;
+	    },
+
+	    CLASS_NAME: "SuperMap.ThemeUniqueItem"
+	});
+	SuperMap.ThemeUniqueItem.fromObj = function (obj) {
+	    var res = new SuperMap.ThemeUniqueItem();
+	    SuperMap.Util.copy(res, obj);
+	    res.style = SuperMap.ServerStyle.fromJson(obj.style);
+	    return res;
+
+	};
+	module.exports = function (options) {
+	    return new SuperMap.ThemeUniqueItem(options);
+	};
+
+
+
+/***/ },
+/* 64 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11362,13 +9066,13 @@
 	 *  - <SuperMap.Theme>
 	 */
 
-	__webpack_require__(83);
-	__webpack_require__(86);
-	__webpack_require__(87);
-	__webpack_require__(90);
-	__webpack_require__(92);
-	__webpack_require__(93);
-	__webpack_require__(94);
+	__webpack_require__(45);
+	__webpack_require__(47);
+	__webpack_require__(50);
+	__webpack_require__(65);
+	__webpack_require__(66);
+	__webpack_require__(67);
+	__webpack_require__(68);
 	SuperMap.ThemeGraph = SuperMap.Class(SuperMap.Theme, {
 
 	    /**
@@ -11720,7 +9424,7 @@
 	};
 
 /***/ },
-/* 90 */
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -11729,8 +9433,8 @@
 	 * 该类用于设置统计图中坐标轴样式相关信息，如坐标轴颜色、是否显示、坐标文本样式等。
 	 */
 
-	__webpack_require__(82);
-	__webpack_require__(91);
+	__webpack_require__(49);
+	__webpack_require__(52);
 	SuperMap.ThemeGraphAxes = SuperMap.Class({
 
 	    /**
@@ -11822,233 +9526,7 @@
 
 
 /***/ },
-/* 91 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.ServerTextStyle
-	 * 服务端文本风格类
-	 * 该类用于定义文本风格的相关属性。
-	 */
-
-	__webpack_require__(82);
-	SuperMap.ServerTextStyle = SuperMap.Class({
-
-	    /**
-	     * APIProperty: align
-	     * {<TextAlignment>} 文本的对齐方式。
-	     * 默认为 SuperMap.TextAlignment.BASELINECENTER（基准线居中对齐）。
-	     */
-	    align: SuperMap.TextAlignment.BASELINECENTER,
-
-	    /**
-	     * APIProperty: backColor
-	     * {<SuperMap.ServerColor>} 文本的背景色。
-	     * 默认为白色。
-	     */
-	    backColor: null,
-
-	    /**
-	     * APIProperty: foreColor
-	     * {<SuperMap.ServerColor>} 文本的前景色。
-	     * 默认为黑色。
-	     */
-	    foreColor: null,
-
-	    /**
-	     * APIProperty: backOpaque
-	     * {Boolean} 文本背景是否不透明。
-	     * true 表示文本背景不透明。
-	     */
-	    backOpaque: false,
-
-	    /**
-	     * APIProperty: sizeFixed
-	     * {Boolean} 文本大小是否固定。
-	     * 默认为 true，表示图片为固定像素大小，具体大小请参考 fontHeight 。
-	     * 当设为 false 时，图片会随着地图缩放而缩放。
-	     */
-	    sizeFixed: true,
-
-	    /**
-	     * APIProperty: fontHeight
-	     * {Number} 文本字体的高度，默认为6，
-	     * 单位与 sizeFixed 有关，当 sizeFixed 为 False 时，即非固定文本大小时使用地图坐标单位，
-	     * 如地理坐标系下的地图中单位为度；当 sizeFixed 为 True 时，单位为毫米（mm）。
-	     */
-	    fontHeight: 6,
-
-	    /**
-	     * APIProperty: fontWidth
-	     * {Number} 文本字体的宽度。
-	     * 字体的宽度以英文字符为标准，由于一个中文字符相当于两个英文字符，默认为0地图坐标单位。
-	     */
-	    fontWidth: 0,
-
-	    /**
-	     * APIProperty: fontWeight
-	     * {Integer} 文本字体的磅数。
-	     * 表示粗体的具体数值。取值范围为从0－900之间的整百数，默认值为400。
-	     */
-	    fontWeight: 400,
-
-	    /**
-	     * APIProperty: fontName
-	     * {String} 文本字体的名称。
-	     * 默认值为 Times New Roman。
-	     */
-	    fontName: "Times New Roman",
-
-	    /**
-	     * APIProperty: bold
-	     * {Boolean} 文本是否为粗体字。
-	     * true 表示为粗体。默认值为 false，即文本不是粗体字。
-	     */
-	    bold: false,
-
-	    /**
-	     * APIProperty: italic
-	     * {Boolean}文本是否采用斜体。
-	     * true 表示采用斜体。默认为 false。
-	     */
-	    italic: false,
-
-	    /**
-	     * APIProperty: italicAngle
-	     * {Number} 字体倾斜角度。
-	     * 正负度之间，以度为单位，精确到0.1度，默认为0度。当倾斜角度为0度，为系统默认的字体倾斜样式。正负度是指以纵轴为起始零度线，
-	     * 其纵轴左侧为正，右侧为负。允许的最大角度为60，最小-60。大于60按照60处理，小于-60按照-60处理。目前只对标签专题图有效。
-	     */
-	    italicAngle: 0,
-
-	    /**
-	     * APIProperty: shadow
-	     * {Boolean} 文本是否有阴影。
-	     * true 表示给文本增加阴影。默认值为 false，即文本没有阴影。
-	     */
-	    shadow: false,
-
-	    /**
-	     * APIProperty: strikeout
-	     * {Boolean} 文本字体是否加删除线。
-	     * true 表示加删除线。默认值为 false，即文本字体不加删除线。
-	     */
-	    strikeout: false,
-
-	    /**
-	     * APIProperty: outline
-	     * {Boolean} 是否以轮廓的方式来显示文本的背景。
-	     * true 表示以轮廓的方式来显示文本的背景。默认值为 false，表示不以轮廓的方式来显示文本的背景。
-	     */
-	    outline: false,
-
-	    /**
-	     * APIProperty: opaqueRate
-	     * {Number} 注记文字的不透明度。
-	     * 不透明度的范围为0-100。默认为0，表示透明。
-	     */
-	    opaqueRate: 0,
-
-	    /**
-	     * APIProperty: underline
-	     * {Boolean} 文本字体是否加下划线。
-	     * true 表示加下划线。默认为 false。
-	     */
-	    underline: false,
-
-	    /**
-	     * APIProperty: rotation
-	     * {Number} 文本旋转的角度。
-	     * 逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。
-	     */
-	    rotation: 0.0,
-
-	    /**
-	     * Constructor: SuperMap.ServerTextStyle
-	     * 服务端文本风格类构造函数。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * align - {<TextAlignment>} 文本的对齐方式。
-	     * backColor - {<SuperMap.ServerColor>} 文本的背景色。
-	     * foreColor - {<SuperMap.ServerColor>} 文本的前景色。
-	     * backOpaque - {Boolean} 文本背景是否不透明。
-	     * sizeFixed - {Boolean} 文本大小是否固定。
-	     * fontHeight - {Number} 文本字体的高度。
-	     * fontWidth - {Number} 文本字体的宽度。
-	     * fontWeight - {Integer} 文本字体的磅数。
-	     * fontName - {String} 文本字体的名称。
-	     * bold - {Boolean} 文本是否为粗体字。
-	     * italic - {Boolean}文本是否采用斜体。
-	     * italicAngle - {Number} 字体倾斜角度。
-	     * shadow - {Boolean} 文本是否有阴影。
-	     * strikeout - {Boolean} 文本字体是否加删除线。
-	     * outline - {Boolean} 是否以轮廓的方式来显示文本的背景。
-	     * opaqueRate - {Number} 注记文字的不透明度。
-	     * underline - {Boolean} 文本字体是否加下划线。
-	     * rotation -  {Number} 文本旋转的角度。
-	     */
-	    initialize: function (options) {
-	        var me = this;
-	        me.backColor = new SuperMap.ServerColor(255, 255, 255);
-	        me.foreColor = new SuperMap.ServerColor(0, 0, 0);
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        me.align = null;
-	        if (me.backColor) {
-	            me.backColor.destroy();
-	            me.backColor = null;
-	        }
-	        if (me.foreColor) {
-	            me.foreColor.destroy();
-	            me.foreColor = null;
-	        }
-	        me.backOpaque = null;
-	        me.sizeFixed = null;
-	        me.fontHeight = null;
-	        me.fontWidth = null;
-	        me.fontWeight = null;
-	        me.fontName = null;
-	        me.bold = null;
-	        me.italic = null;
-	        me.italicAngle = null;
-	        me.shadow = null;
-	        me.strikeout = null;
-	        me.outline = null;
-	        me.opaqueRate = null;
-	        me.underline = null;
-	        me.rotation = null;
-	    },
-
-	    CLASS_NAME: "SuperMap.ServerTextStyle"
-	});
-
-	SuperMap.ServerTextStyle.fromObj = function (obj) {
-	    var res = new SuperMap.ServerTextStyle(obj);
-	    SuperMap.Util.copy(res, obj);
-	    res.backColor = SuperMap.ServerColor.fromJson(obj.backColor);
-	    res.foreColor = SuperMap.ServerColor.fromJson(obj.foreColor);
-	    return res;
-	};
-	module.exports = function (options) {
-	    return new SuperMap.ServerTextStyle(options);
-	};
-
-
-
-/***/ },
-/* 92 */
+/* 66 */
 /***/ function(module, exports) {
 
 	/**
@@ -12112,7 +9590,7 @@
 
 
 /***/ },
-/* 93 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12121,7 +9599,7 @@
 	 * 通过该类可以设置统计图表中文字可见性以及标注风格。
 	 */
 
-	__webpack_require__(91);
+	__webpack_require__(52);
 	SuperMap.ThemeGraphText = SuperMap.Class({
 
 	    /**
@@ -12191,7 +9669,7 @@
 
 
 /***/ },
-/* 94 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -12201,7 +9679,7 @@
 	 * 该类用来设置每个统计专题图子项的名称，专题变量，显示风格，甚至可以将该子项再制作成范围分段专题图。
 	 */
 
-	__webpack_require__(81);
+	__webpack_require__(48);
 	SuperMap.ThemeGraphItem = SuperMap.Class({
 
 	    /**
@@ -12280,177 +9758,66 @@
 
 
 /***/ },
-/* 95 */
+/* 69 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Class: SuperMap.ThemeLabel
-	 * 标签专题图。
-	 * 标签专题图是用文本的形式在图层中显示点、线、面等对象的属性信息，一般将文本型或数值型字段标注于图层中，如地名、道路名称、河流等级、宽度等信息。
-	 * 这里需要注意的是地图上一般还会出现图例说明，图名，比例尺等等，这些都是制图元素，不属于标签专题图标注的范畴。标签专题图有两种表现形式:
-	 * 第一种 统一标签专题图，即将指定图层的表达式的所有值使用统一的风格输出，labelExpression 用于设定标签专题图所使用的字段。
-	 * 第二种 为分段标签专题图。它仍然使用 labelExpression 设定标签专题图显示的字段值，通过 rangeExpression 指定数字型的字段作为分段数据，items 中的每
-	 * 个子对象的 [start，end) 分段值必须来源于属性 rangeExpression 的字段值，并在 items 中为每个或部分分段子项自定义特殊的风格。
+	 * Class: SuperMap.ThemeDotDensity
+	 * 点密度专题图。
+	 * 点密度专题图用一定大小、形状相同的点表示现象分布范围、数量特征和分布密度。点的多少和所代表的意义由地图的内容确定。
+	 * 点密度专题图利用图层的某一数值属性信息（专题值）映射为不同等级，每一级别使用不同数量或表现为密度的点符号来表示
+	 * 该专题值在各个分区内的分布情况，体现不同区域的相对数量差异。多用于具有数量特征的地图上，
+	 * 比如表示不同地区的粮食产量、GDP、人口等的分级，主要针对区域或面状的要素，因而，点密度专题图适用于面数据集。
+	 *
+	 * 注意：点密度专题图中点的分布是随机的，并不代表实际的分布位置。即使在相关设置完全相同的情况下，
+	 * 每次制作出的专题图，点的数量相同，但点的位置都有差异。
 	 *
 	 * Inherits from:
 	 *  - <SuperMap.Theme>
 	 */
 
-	__webpack_require__(83);
-	__webpack_require__(86);
-	__webpack_require__(87);
-	__webpack_require__(96);
-	__webpack_require__(97);
-	__webpack_require__(98);
-	__webpack_require__(100);
-	__webpack_require__(102);
-	__webpack_require__(103);
-	__webpack_require__(104);
-	__webpack_require__(105);
-
-	SuperMap.ThemeLabel = SuperMap.Class(SuperMap.Theme, {
+	__webpack_require__(48);
+	__webpack_require__(45);
+	SuperMap.ThemeDotDensity = SuperMap.Class(SuperMap.Theme, {
 
 	    /**
-	     * APIProperty: alongLine
-	     * {<SuperMap.ThemeLabelAlongLine>} 标签沿线标注方向样式类。
-	     * 在该类中可以设置标签是否沿线标注以及沿线标注的多种方式。沿线标注属性只适用于线数据集专题图。
+	     * APIProperty: dotExpression
+	     * {String} 创建点密度专题图的字段或字段表达式。点的数目或密集程度的来源。
 	     */
-	    alongLine: null,
+	    dotExpression: null,
 
 	    /**
-	     * APIProperty: background
-	     * {<SuperMap.ThemeLabelBackground>} 标签专题图中标签的背景风格类。通过该字段可以设置标签的背景形状和风格。
+	     * APIProperty: style
+	     * {<SuperMap.ServerStyle>} 点密度专题图中点的风格。
 	     */
-	    background: null,
+	    style: null,
 
 	    /**
-	     * APIProperty: flow
-	     * {<SuperMap.ThemeFlow>} 标签专题图标签流动显示与牵引线设置类。通过该字段可以设置标签是否流动显示和牵引线风格。
+	     * APIProperty: value
+	     * {Number} 专题图中每一个点所代表的数值。
+	     * 点值的确定与地图比例尺以及点的大小有关。地图比例尺越大，相应的图面范围也越大，
+	     * 点相应就可以越多，此时点值就可以设置相对小一些。点形状越大，
+	     * 点值相应就应该设置的小一些。点值过大或过小都是不合适的。
 	     */
-	    flow: null,
+	    value: null,
 
 	    /**
-	     * APIProperty: items
-	     * {Array(<SuperMap.ThemeUniqueItem>)} 分段标签专题图的子项数组。分段标签专题图使用 rangeExpression
-	     * 指定数字型的字段作为分段数据，items 中的每个子对象的 [start，end) 分段值必须来源于属性 rangeExpression 的字段值。每个子项拥有自己的风格。
-	     */
-	    items: null,
-
-	    /**
-	     * APIProperty: uniqueItems
-	     * {Array(<SuperMap.ThemeLabelUniqueItem>)} 单值标签专题图子项数组。单值标签专题图使用 uniqueExpression
-	     * 单值标签专题图子项集合
-	     */
-	    uniqueItems: null,
-
-	    /**
-	     * APIProperty: labelExpression
-	     * {String} 标注字段表达式。系统将 labelExpression 对应的字段或字段表达式的值以标签的形式显示在图层中。必设字段。
-	     */
-	    labelExpression: null,
-
-	    /**
-	     * APIProperty: labelOverLengthMode
-	     * {<SuperMap.LabelOverLengthMode>} 标签专题图中超长标签的处理模式枚举类。
-	     * 对于标签的长度超过设置的标签最大长度 maxLabelLength 时称为超长标签。默认为 SuperMap.LabelOverLengthMode.NONE。
-	     */
-	    labelOverLengthMode: SuperMap.LabelOverLengthMode.NONE,
-
-	    /**
-	     * APIProperty: matrixCells
-	     * {Array(<SuperMap.LabelMatrixCell>)} 矩阵标签元素数组，用于制作矩阵标签专题图。
-	     * 数组中可以放置符号类型的矩阵标签元素和图片类型的矩阵标签元素。
-	     */
-	    matrixCells: null,
-
-	    /**
-	     * APIProperty: maxLabelLength
-	     * {Number} 标签在每一行显示的最大长度，一个中文为两个字符。
-	     * 如果超过最大长度，可以采用两种方式来处理，一种是换行的模式进行显示，另一种是以省略号方式显示。默认最大长度为256个字符。
-	     */
-	    maxLabelLength: 256,
-
-	    /**
-	     * APIProperty: numericPrecision
-	     * {Number} 如果显示的标签内容为数字，通过该字段设置其显示的精度。例如标签对应的数字是8071.64529347，
-	     * 如果该属性为0时，显示8071；为1时，显示8071.6；为3时，则是8071.645。
-	     */
-	    numericPrecision: 0,
-
-	    /**
-	     * APIProperty: offset
-	     * {<SuperMap.ThemeOffset>} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。
-	     */
-	    offset: null,
-
-	    /**
-	     * APIProperty: overlapAvoided
-	     * {Boolean} 是否允许以文本避让方式显示文本。默认值为 true， 即自动避免文本叠盖。只针对该标签专题图层中的文本数据。
-	     * 在标签重叠度很大的情况下，即使使用自动避让功能，可能也无法完全避免标签重叠现象。
-	     */
-	    overlapAvoided: true,
-
-	    /**
-	     * APIProperty: rangeExpression
-	     * {String} 制作分段标签专题的分段字段或字段表达式。该表达式对应的字段（或者字段表达式）的值应该为数值型。
-	     * 该字段与 items 分段子项联合使用，每个子项的起始值 [start，end)来源于 rangeExpression 字段值。
-	     * 最后 labelExpression 指定的标签字段（标签专题图要显示的具体内容）会根据分段子项的风格进行分段显示。
-	     */
-	    rangeExpression: null,
-
-	    /**
-	     * APIProperty: uniqueExpression
-	     * {String} 用于制作单值专题图的字段或字段表达式。
-	     * 该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段,必须与labelExpression一起使用
-	     */
-	    uniqueExpression: null,
-
-	    /**
-	     * APIProperty: smallGeometryLabeled
-	     * {Boolean} 是否显示长度大于被标注对象本身长度的标签，默认为 false。在标签的长度大于线或者面对象本身的长度时，
-	     * 如果该值为 true，则标签文字会叠加在一起显示，为了清楚完整的显示该标签，
-	     * 可以采用换行模式来显示标签，但必须保证每行的长度小于对象本身的长度。
-	     */
-	    smallGeometryLabeled: false,
-
-	    /**
-	     * APIProperty: text
-	     * {<ThemeLabelText>} 标签中文本风格。
-	     */
-	    text: null,
-
-	    /**
-	     * Constructor: SuperMap.ThemeLabel
-	     * 标签专题图构造函数，用于创建 SuperMap.ThemeLabel 类的新实例。
+	     * Constructor: SuperMap.ThemeDotDensity
+	     * 点密度专题图构造函数。
 	     *
 	     * Parameters:
 	     * options - {Object} 参数。
 	     *
 	     * Allowed options properties:
-	     * alongLine - {<SuperMap.ThemeLabelAlongLine>} 标签沿线标注方向样式类。
-	     * background - {<SuperMap.ThemeLabelBackground>} 标签专题图中标签的背景风格类。
-	     * flow - {<SuperMap.ThemeFlow>} 标签专题图标签流动显示与牵引线设置类。
-	     * items - {Array(<SuperMap.ThemeUniqueItem>)} 分段标签专题图的子项数组。
-	     * labelExpression - {String} 标注字段表达式。
-	     * labelOverLengthMode - {<SuperMap.LabelOverLengthMode>} 标签专题图中超长标签的处理模式枚举类。
-	     * matrixCells - {Array(<SuperMap.LabelMatrixCell>)} 矩阵标签元素数组。
-	     * maxLabelLength - {Number>} 标签在每一行显示的最大长度。
-	     * numericPrecision - {Number} 通过该字段设置其显示的精度。
-	     * offset - {<SuperMap.ThemeOffset>} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。
-	     * overlapAvoided - {Boolean} 是否允许以文本避让方式显示文本。
-	     * rangeExpression - {String} 制作分段标签专题的分段字段或字段表达式。
-	     * smallGeometryLabeled - {Boolean} 是否显示长度大于被标注对象本身长度的标签。
-	     * text - {<SuperMap.ThemeLabelText>} 标签中文本风格。
-	     * memoryData - {<SuperMap.ThemeMemoryData>} 专题图内存数据。
+	     * dotExpression - {String} 创建点密度专题图的字段或字段表达式。
+	     * style - {<SuperMap.ServerStyle>} 点密度专题图中点的风格。
+	     * value - {String} 专题图中每一个点所代表的数值。
+	     * memoryData - {<SuperMap.REST.ThemeMemoryData>} 专题图内存数据。
 	     */
 	    initialize: function (options) {
 	        var me = this;
-	        me.alongLine = new SuperMap.ThemeLabelAlongLine();
-	        me.background = new SuperMap.ThemeLabelBackground();
-	        me.flow = new SuperMap.ThemeFlow();
-	        me.offset = new SuperMap.ThemeOffset();
-	        me.text = new SuperMap.ThemeLabelText();
-	        SuperMap.Theme.prototype.initialize.apply(this, ["LABEL", options]);
+	        me.style = new SuperMap.ServerStyle();
+	        SuperMap.Theme.prototype.initialize.apply(this, ["DOTDENSITY", options]);
 	        if (options) {
 	            SuperMap.Util.extend(this, options);
 	        }
@@ -12461,46 +9828,161 @@
 	     * 释放资源，将引用资源的属性置空。
 	     */
 	    destroy: function () {
+	        var me = this;
+	        me.dotExpression = null;
+	        me.value = null;
+
+	        if (me.style) {
+	            me.style.destroy();
+	            me.style = null;
+	        }
+	    },
+
+	    /**
+	     * Method: toServerJSONObject
+	     * 转换成对应的 JSON 格式对象。
+	     */
+	    toServerJSONObject: function () {
+	        var obj = {};
+	        obj = SuperMap.Util.copyAttributes(obj, this);
+	        if (obj.style) {
+	            if (obj.style.toServerJSONObject) {
+	                obj.style = obj.style.toServerJSONObject();
+	            }
+	        }
+	        return obj;
+	    },
+
+	    CLASS_NAME: "SuperMap.ThemeDotDensity"
+	});
+	SuperMap.ThemeDotDensity.fromObj = function (obj) {
+	    if (!obj) return;
+	    var res = new SuperMap.ThemeDotDensity();
+	    SuperMap.Util.copy(res, obj);
+	    res.style = SuperMap.ServerStyle.fromJson(obj.style);
+	    return res;
+	};
+
+	module.exports = function (options) {
+	    return new SuperMap.ThemeDotDensity(options);
+	};
+
+
+/***/ },
+/* 70 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.ThemeGraduatedSymbol
+	 * 等级符号专题图。
+	 * 等级符号专题图是采用不同的形状、颜色和大小的符号，表示各自独立的、以整体概念显示的各个物体的数量与质量特征。通常，以符号的形状、
+	 * 颜色和大小反映物体的特定属性；符号的形状与颜色表示质量特征，符号的大小表示数量特征。等级符号专题图多用于具有数量特征的地图上，
+	 * 比如表示不同地区的粮食产量、GDP、人口等的分级，也就是说，用于制作等级符号专题图的专题变量类型为数值型。
+	 *
+	 * Inherits from:
+	 * -<SuperMap.Theme>
+	 */
+
+	__webpack_require__(45);
+	__webpack_require__(47);
+	__webpack_require__(50);
+	__webpack_require__(71);
+	SuperMap.ThemeGraduatedSymbol = SuperMap.Class(SuperMap.Theme, {
+
+	    /**
+	     * APIProperty: baseValue
+	     * { Number} 等级符号专题图的基准值，单位同专题变量的单位。
+	     * 依据此值系统会自动根据分级方式计算其余值对应的符号大小，每个符号的显示大小等于
+	     *      ThemeValueSection.positiveStyle（或 zeroStyle，negativeStyle）.markerSize * value / basevalue，
+	     * 其中 value 是 expression 所指定字段对应的值经过分级计算之后的值。默认值为0，建议通过多次尝试设置该值才能达到较好的显示效果。
+	     */
+	    baseValue: 0,
+
+	    /**
+	     * APIProperty: expression
+	     * {String} 用于创建等级符号专题图的字段或字段表达式，字段或字段表达式应为数值型。必设字段。
+	     */
+	    expression: null,
+
+	    /**
+	     * APIProperty: flow
+	     * {<SuperMap.ThemeFlow>} 等级符号专题图符号流动显示与牵引线设置类。
+	     * 通过该字段可以设置等级符号是否流动显示和牵引线风格。
+	     */
+	    flow: null,
+
+	    /**
+	     * APIProperty: graduatedMode
+	     * {<SuperMap.GraduatedMode>} 等级符号专题图分级模式。
+	     * 分级主要是为了减少制作等级符号专题图中数据大小之间的差异。如果数据之间差距较大，则可以采用对数或者平方根的分级方式来进行，
+	     * 这样就减少了数据之间的绝对大小的差异，使得等级符号图的视觉效果比较好，同时不同类别之间的比较也是有意义的。
+	     * 有三种分级模式：常数、对数和平方根，对于有值为负数的字段，在用对数或平方根方式分级时，默认对负数取正。
+	     * 不同的分级模式用于确定符号大小的数值是不相同的：常数按照字段的原始数据进行；对数则是对每条记录对应的专题变量取自然对数；
+	     * 平方根则是对其取平方根，然后用最终得到的结果来确定其等级符号的大小。
+	     * 默认值为 SuperMap.GraduatedMode.CONSTANT。
+	     */
+	    graduatedMode: SuperMap.GraduatedMode.CONSTANT,
+
+	    /**
+	     * APIProperty: offset
+	     * {<SuperMap.ThemeOffset>} 用于设置等级符号图相对于要素内点的偏移量。
+	     */
+	    offset: null,
+
+	    /**
+	     * APIProperty: style
+	     * {<SuperMap.ThemeGraduatedSymbolStyle>} 用于设置等级符号图正负和零值显示风格。
+	     */
+	    style: null,
+
+	    /**
+	     * Constructor: SuperMap.ThemeGraduatedSymbol
+	     * 等级符号专题图构造函数，用于创建 SuperMap.ThemeGraduatedSymbol类的新实例。
+	     *
+	     * Parameters:
+	     * options - {Object} 可选参数。
+	     *
+	     * Allowed options properties:
+	     * baseValue - {Number} 等级符号专题图的基准值，单位同专题变量的单位。
+	     * expression - {String} 等级符号专题图的字段或字段表达式。
+	     * flow - {<SuperMap.ThemeFlow>} 等级符号专题图符号流动显示与牵引线设置类。
+	     * graduatedMode - {<SuperMap.GraduatedMode>} 等级符号专题图分级模式。
+	     * offset - {<SuperMap.ThemeOffset>} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。
+	     * style - {<SuperMap.ThemeGraduatedSymbolStyle>} 用于设置等级符号图正负和零值显示风格。
+	     * memoryData - {<SuperMap.ThemeMemoryData>} 专题图内存数据。
+	     */
+	    initialize: function (options) {
+	        SuperMap.Theme.prototype.initialize.apply(this, ["GRADUATEDSYMBOL", options]);
+	        var me = this;
+	        me.flow = new SuperMap.ThemeFlow();
+	        me.offset = new SuperMap.ThemeOffset();
+	        me.style = new SuperMap.ThemeGraduatedSymbolStyle();
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
 	        SuperMap.Theme.prototype.destroy.apply(this, arguments);
 	        var me = this;
-	        me.alongLine = null;
-	        if (me.background) {
-	            me.background.destroy();
-	            me.background = null;
+	        me.expression = null;
+	        if (me.flow) {
+	            me.flow.destroy();
+	            me.flow = null;
 	        }
-	        me.flow = null;
-	        if (me.items) {
-	            for (var i = 0, items = me.items, len = items.length; i < len; i++) {
-	                items[i].destroy();
-	            }
-	            me.items = null;
-	        }
-	        if (me.uniqueItems) {
-	            for (var j = 0, uniqueItems = me.uniqueItems, uniqueLen = uniqueItems.length; j < uniqueLen; j++) {
-	                uniqueItems[j].destory();
-	            }
-	            me.uniqueItems = null;
-	        }
-	        me.labelExpression = null;
-	        me.labelOverLengthMode = null;
-	        me.matrixCells = null;
-	        me.maxLabelLength = null;
-	        me.numericPrecision = null;
-	        me.overlapAvoided = null;
-	        me.rangeExpression = null;
-	        me.uniqueExpression = null;
+	        me.graduatedMode = SuperMap.GraduatedMode.CONSTANT;
 	        if (me.offset) {
 	            me.offset.destroy();
 	            me.offset = null;
 	        }
-	        me.overlapAvoided = null;
-	        me.smallGeometryLabeled = null;
-	        if (me.text) {
-	            me.text.destroy();
-	            me.text = null;
+	        if (me.style) {
+	            me.style.destroy();
+	            me.style = null;
 	        }
 	    },
-
 
 	    /**
 	     * Method: toJSON
@@ -12521,487 +10003,107 @@
 	        var obj = new Object();
 	        obj.type = this.type;
 	        obj.memoryData = this.memoryData;
-	        if (this.alongLine) {
-	            obj.alongLine = this.alongLine.isAlongLine;
-	            obj.alongLineDirection = this.alongLine.alongLineDirection;
-	            obj.angleFixed = this.alongLine.angleFixed;
-	            obj.isLabelRepeated = this.alongLine.isLabelRepeated;
-	            obj.labelRepeatInterval = this.alongLine.labelRepeatInterval;
-	            obj.repeatedLabelAvoided = this.alongLine.repeatedLabelAvoided;
-	            obj.repeatIntervalFixed = this.alongLine.repeatIntervalFixed;
+	        obj.baseValue = this.baseValue;
+	        obj.expression = this.expression;
+	        obj.graduatedMode = this.graduatedMode;
+	        if (this.flow) {
+	            obj.flowEnabled = this.flow.flowEnabled;
+	            obj.leaderLineDisplayed = this.flow.leaderLineDisplayed;
+	            obj.leaderLineStyle = this.flow.leaderLineStyle;
 	        }
 	        if (this.offset) {
 	            obj.offsetFixed = this.offset.offsetFixed;
 	            obj.offsetX = this.offset.offsetX;
 	            obj.offsetY = this.offset.offsetY;
 	        }
-
-	        if (this.flow) {
-	            obj.flowEnabled = this.flow.flowEnabled;
-	            obj.leaderLineDisplayed = this.flow.leaderLineDisplayed;
-	            obj.leaderLineStyle = this.flow.leaderLineStyle;
+	        if (this.style) {
+	            obj.negativeStyle = this.style.negativeStyle;
+	            obj.negativeDisplayed = this.style.negativeDisplayed;
+	            obj.positiveStyle = this.style.positiveStyle;
+	            obj.zeroDisplayed = this.style.zeroDisplayed;
+	            obj.zeroStyle = this.style.zeroStyle;
 	        }
-	        if (this.text) {
-	            obj.maxTextHeight = this.text.maxTextHeight;
-	            obj.maxTextWidth = this.text.maxTextWidth;
-	            obj.minTextHeight = this.text.minTextHeight;
-	            obj.minTextWidth = this.text.minTextWidth;
-	            obj.uniformStyle = this.text.uniformStyle;
-	            obj.uniformMixedStyle = this.text.uniformMixedStyle;
-	        }
-	        if (this.background) {
-	            obj.labelBackShape = this.background.labelBackShape;
-	            obj.backStyle = this.background.backStyle;
-	        }
-	        obj.labelOverLengthMode = this.labelOverLengthMode;
-	        obj.maxLabelLength = this.maxLabelLength;
-	        obj.smallGeometryLabeled = this.smallGeometryLabeled;
-	        obj.rangeExpression = this.rangeExpression;
-	        obj.uniqueExpression = this.uniqueExpression;
-	        obj.numericPrecision = this.numericPrecision;
-	        obj.items = this.items;
-	        obj.uniqueItems = this.uniqueItems;
-	        obj.labelExpression = this.labelExpression;
-	        obj.overlapAvoided = this.overlapAvoided;
-	        obj.matrixCells = this.matrixCells;
 	        return obj;
 	    },
 
-	    CLASS_NAME: "SuperMap.ThemeLabel"
+	    CLASS_NAME: "SuperMap.ThemeGraduatedSymbol"
 	});
-	SuperMap.ThemeLabel.fromObj = function (obj) {
+	SuperMap.ThemeGraduatedSymbol.fromObj = function (obj) {
 	    if (!obj) return;
-	    var lab = new SuperMap.ThemeLabel();
-	    var itemsL = obj.items, itemsU = obj.uniqueItems, cells = obj.matrixCells;
-	    obj.matrixCells = null;
-	    SuperMap.Util.copy(lab, obj);
-	    lab.alongLine = SuperMap.ThemeLabelAlongLine.fromObj(obj);
-	    lab.background = SuperMap.ThemeLabelBackground.fromObj(obj);
-	    lab.flow = new SuperMap.ThemeFlow({flowEnabled: obj.flowEnabled, leaderLineDisplayed: obj.leaderLineDisplayed, leaderLineStyle: obj.leaderLineStyle});
-	    if (itemsL) {
-	        lab.items = [];
-	        for (var i = 0, len = itemsL.length; i < len; i++) {
-	            lab.items.push(SuperMap.ThemeLabelItem.fromObj(itemsL[i]));
-	        }
-	    }
-	    if (itemsU) {
-	        lab.uniqueItems = [];
-	        for (var j = 0, uniqueLen = itemsU.length; j < uniqueLen; j++) {
-	            lab.uniqueItems.push(SuperMap.ThemeUniqueItem.fromObj(itemsU[j]));
-	        }
-	    }
-	    if (cells) {
-	        lab.matrixCells = [];
-	        for (var i = 0, len = cells.length; i < len; i++) {
-	            //TODO
-	            //lab.matrixCells.push(SuperMap.LabelMatrixCell.fromObj(cells[i]));
-	        }
-	    }
-	    lab.offset = SuperMap.ThemeOffset.fromObj(obj);
-	    lab.text = SuperMap.ThemeLabelText.fromObj(obj);
-	    return lab;
-	};
-	module.exports = function (options) {
-	    return new SuperMap.ThemeLabel(options);
-	};
-
-
-/***/ },
-/* 96 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.ThemeLabelItem
-	 * 分段标签专题图的子项。
-	 * 标签专题图用专题值对点、线、面等对象做标注，值得注意的是，分段标签专题图允许用户通过 rangeExpression
-	 * 字段指定用于分段的数值型字段，同一范围段内的标签具有相同的显示风格，其中每一个范围段就是一个专题图子项，
-	 * 每一个子项都具有其名称、风格、起始值和终止值。注意：每个分段所表示的范围为 [Start, End)。例如：标签专题图的分段点有两个子项，
-	 * 他们所代表的分段区间分别为[0,5)，[5,10)。那么需要分别设置 SuperMap.ThemeLabelItem[0].start=0，
-	 * SuperMap.ThemeLabelItem[0].end=5，SuperMap.ThemeLabelItem[1].start=5，SuperMap.ThemeLabelItem[1].end=10。
-	 */
-
-	__webpack_require__(91);
-	SuperMap.ThemeLabelItem = SuperMap.Class({
-
-	    /**
-	     * APIProperty: caption
-	     * {String} 标签专题子项的标题。
-	     */
-	    caption: null,
-
-	    /**
-	     * APIProperty: end
-	     * {Number} 标签专题图子项的终止值。如果该子项是分段中最后一个子项，那么该终止值就是分段的最大值；
-	     * 如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常。默认为0。
-	     */
-	    end: 0,
-
-	    /**
-	     * APIProperty: start
-	     * {Number} 标签专题图子项的分段起始值。如果该子项是分段中第一项，那么该起始值就是分段的最小值；
-	     * 如果该子项的序号大于等于 1 的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。默认为0。
-	     */
-	    start: 0,
-
-	    /**
-	     * APIProperty: visible
-	     * {Boolean} 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
-	     */
-	    visible: true,
-
-	    /**
-	     * APIProperty: style
-	     * {<SuperMap.ServerTextStyle>} 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：
-	     * uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
-	     */
-	    style: null,
-
-	    /**
-	     * Constructor: SuperMap.ThemeLabelItem
-	     * 分段标签专题图的子项类构造函数，用于创建 SuperMap.ThemeLabelItem 类的新实例。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * caption - {String} 专题图子项的名称。
-	     * end - {Number} 标签专题图子项的终止值。
-	     * start - {Number} 标签专题图子项的分段起始值。
-	     * visible - {Boolean} 标签专题图子项是否可见。
-	     * style - {<SuperMap.ServerTextStyle>} 标签专题图子项文本的显示风格。
-	     */
-	    initialize: function (options) {
-	        var me = this;
-	        me.style = new SuperMap.ServerTextStyle();
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        me.caption = null;
-	        me.end = null;
-	        me.start = null;
-	        if (me.style) {
-	            me.style.destroy();
-	            me.style = null;
-	        }
-	        me.visible = null;
-	    },
-
-	    CLASS_NAME: "SuperMap.ThemeLabelItem"
-	});
-	SuperMap.ThemeLabelItem.fromObj = function (obj) {
-	    if (!obj) return;
-	    var t = new SuperMap.ThemeLabelItem();
-	    SuperMap.Util.copy(t, obj);
-	    return t;
-	};
-	module.exports = function (options) {
-	    return new SuperMap.ThemeLabelItem(options);
-	};
-
-
-/***/ },
-/* 97 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.ThemeLabelUniqueItem
-	 * 单值标签专题图的子项。
-	 * 标签专题图用专题值对点、线、面等对象做标注，值得注意的是，单值标签专题图允许用户通过 uniqueExpression
-	 * 字段指定用于单值的字段，同一值的标签具有相同的显示风格，其中每一个值就是一个专题图子项，
-	 * 每一个子项都具有其名称、风格、指定的单值、X方向偏移量和Y方向偏移量。
-	 */
-
-	__webpack_require__(91);
-	SuperMap.ThemeLabelUniqueItem = SuperMap.Class({
-
-	    /**
-	     * APIProperty: caption
-	     * {String} 标签专题子项的标题。
-	     */
-	    caption: null,
-	    /**
-	     * APIProperty: unique
-	     * {String} 单值专题图子项的值，可以为数字、字符串等。
-	     */
-	    unique: null,
-	    /**
-	     * APIProperty: offsetX
-	     * {Number} 标签在X方向偏移量。
-	     */
-	    offsetX: 0,
-
-	    /**
-	     * APIProperty: offsetY
-	     * {Number} 标签在Y方向偏移量。
-	     */
-	    offsetY: 0,
-
-	    /**
-	     * APIProperty: visible
-	     * {Boolean} 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
-	     */
-	    visible: true,
-
-	    /**
-	     * APIProperty: style
-	     * {<SuperMap.ServerTextStyle>} 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：
-	     * uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelUniqueItem.style（单值子项的文本风格），uniformStyle（统一文本风格）。
-	     */
-	    style: null,
-
-	    /**
-	     * Constructor: SuperMap.ThemeLabelUniqueItem
-	     * 单值标签专题图的子项类构造函数，用于创建 SuperMap.ThemeLabelUniqueItem 类的新实例。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * caption - {String} 专题图子项的名称。
-	     * unique - {String} 单值专题图子项的值，可以为数字、字符串等。
-	     * offsetX - {Number} 标签在X方向偏移量。
-	     * offsetY - {Number} 标签在Y方向偏移量。
-	     * visible - {Boolean} 标签专题图子项是否可见。
-	     * style - {<SuperMap.ServerTextStyle>} 标签专题图子项文本的显示风格。
-	     */
-	    initialize: function (options) {
-	        var me = this;
-	        me.style = new SuperMap.ServerTextStyle();
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        me.unique = null;
-	        me.caption = null;
-	        me.offsetX = null;
-	        me.offsetY = null;
-	        if (me.style) {
-	            me.style.destroy();
-	            me.style = null;
-	        }
-	        me.visible = null;
-	    },
-
-	    CLASS_NAME: "SuperMap.ThemeLabelUniqueItem"
-	});
-	SuperMap.ThemeLabelUniqueItem.fromObj = function (obj) {
-	    if (!obj) return;
-	    var t = new SuperMap.ThemeLabelUniqueItem();
-	    SuperMap.Util.copy(t, obj);
-	    return t;
-	};
-	module.exports = function (options) {
-	    return new SuperMap.ThemeLabelUniqueItem(options);
-	};
-
-
-/***/ },
-/* 98 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.ThemeLabelText
-	 * 标签中文本风格类。
-	 * 通过该类可以设置标签中的文本字体大小和显示风格。
-	 */
-
-	__webpack_require__(91);
-	__webpack_require__(99);
-	SuperMap.ThemeLabelText = SuperMap.Class({
-
-	    /**
-	     * APIProperty: maxTextHeight
-	     * {Number} 标签中文本的最大高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-	     * 当放大后的文本高度超过最大高度之后就不再放大。高度单位为0.1毫米。高度单位为0.1毫米。默认为 0 毫米。
-	     */
-	    maxTextHeight: 0,
-
-	    /**
-	     * APIProperty: maxTextWidth
-	     * {Number} 标签中文本的最大宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-	     * 当放大后的文本宽度超过最大高度之后就不再放大。宽度单位为0.1毫米。默认为0毫米。
-	     */
-	    maxTextWidth: 0,
-
-	    /**
-	     * APIProperty: minTextHeight
-	     * {Number} 标签中文本的最小高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-	     * 当缩小后的文本高度小于最小高度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
-	     */
-	    minTextHeight: 0,
-
-	    /**
-	     * APIProperty: minTextWidth
-	     * {Number} 标签中文本的最小宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
-	     * 当缩小后的文本宽度小于最小宽度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
-	     */
-	    minTextWidth: 0,
-
-	    /**
-	     * APIProperty: uniformStyle
-	     * {<SuperMap.ServerTextStyle>} 统一文本风格。当标签专题图子项的个数大于等于1时，
-	     * uniformStyle 不起作用，各标签的风格使用子项中设置的风格。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
-	     * SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
-	     */
-	    uniformStyle: null,
-
-	    /**
-	     * APIProperty: uniformMixedStyle
-	     * {<SuperMap.LabelMixedTextStyle>} 标签专题图统一的文本复合风格。通过该类可以使同一个标
-	     * 签中的文字使用多种风格显示。各种风格的优先级从高到低为：uniformMixedStyle（标签文本的复合风格），
-	     * SuperMap.ThemeLabelItem.style（分段子项的文本风格），uniformStyle（统一文本风格）。
-	     */
-	    uniformMixedStyle: null,
-
-	    /**
-	     * Constructor: SuperMap.ThemeLabelText
-	     * 标签中文本风格类构造函数，用于创建 SuperMap.ThemeLabelText 类的新实例。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * maxTextHeight - {Number} 标签中文本的最大高度。
-	     * maxTextWidth - {Number} 标签中文本的最大宽度。
-	     * minTextHeight - {Number} 标签中文本的最小高度。
-	     * minTextWidth - {Number} 标签中文本的最小宽度。
-	     * uniformStyle - {<SuperMap.ServerTextStyle>} 统一文本风格。
-	     * uniformMixedStyle - {<SuperMap.LabelMixedTextStyle>} 标签专题图统一的文本复合风格。
-	     */
-	    initialize: function (options) {
-	        var me = this;
-	        me.uniformStyle = new SuperMap.ServerTextStyle();
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        me.maxTextHeight = null;
-	        me.maxTextWidth = null;
-	        me.minTextHeight = null;
-	        me.minTextWidth = null;
-	        if (me.uniformStyle) {
-	            me.uniformStyle.destroy();
-	            me.uniformStyle = null;
-	        }
-	        if (me.uniformMixedStyle) {
-	            me.uniformMixedStyle.destroy();
-	            me.uniformMixedStyle = null;
-	        }
-	    },
-
-	    CLASS_NAME: "SuperMap.ThemeLabelText"
-	});
-	SuperMap.ThemeLabelText.fromObj = function (obj) {
-	    if (!obj) return;
-	    var res = new SuperMap.ThemeLabelText();
+	    var res = new SuperMap.ThemeGraduatedSymbol();
 	    SuperMap.Util.copy(res, obj);
-	    res.uniformStyle = SuperMap.ServerTextStyle.fromObj(obj.uniformStyle);
-	    res.uniformMixedStyle = SuperMap.LabelMixedTextStyle.fromObj(obj.uniformMixedStyle);
+	    res.flow = SuperMap.ThemeFlow.fromObj(obj);
+	    res.offset = SuperMap.ThemeOffset.fromObj(obj);
+	    res.style = SuperMap.ThemeGraduatedSymbolStyle.fromObj(obj);
 	    return res;
 	};
 	module.exports = function (options) {
-	    return new SuperMap.ThemeLabelText(options);
+	    return new SuperMap.ThemeGraduatedSymbol(options);
 	};
 
 
 /***/ },
-/* 99 */
+/* 71 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Class: SuperMap.LabelMixedTextStyle
-	 * 标签文本复合风格类。
-	 * 该类主要用于对标签专题图中标签的文本内容进行风格设置。通过该类用户可以使标签的文字显示不同的风格，
-	 * 比如文本 “喜马拉雅山”，通过本类可以将前三个字用红色显示，后两个字用蓝色显示。
-	 * 对同一文本设置不同的风格实质上是对文本的字符进行分段，同一分段内的字符具有相同的显示风格。
-	 * 对字符分段有两种方式，一种是利用分隔符对文本进行分段；另一种是根据分段索引值进行分段。
-	 * 1. 利用分隔符对文本进行分段: 比如文本 “5&109” 被分隔符 “&” 分为“5”和“109”两部分，
-	 * 在显示时，“5” 和分隔符 “&” 使用同一个风格，字符串 “109” 使用相同的风格。
-	 * 2. 利用分段索引值进行分段: 文本中字符的索引值是以0开始的整数，比如文本“珠穆朗玛峰”，
-	 * 第一个字符（“珠”）的索引值为0，第二个字符（“穆”）的索引值为1，以此类推；当设置分段索引值为1，3，4，9时，
-	 * 字符分段范围相应的就是(-∞，1)，[1，3)，[3，4)，[4，9)，[9，+∞)，可以看出索引号为0的字符（即“珠” ）在第一个分段内，
-	 * 索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
+	 * Class: SuperMap.ThemeGraduatedSymbolStyle
+	 * 等级符号专题图正负零值显示风格类。
+	 * 通过该类可以设置正值的显示风格，零值和或负值的显示风格以及是否显示零值和或负值对应的等级符号。
 	 */
 
-	__webpack_require__(91);
-	SuperMap.LabelMixedTextStyle = SuperMap.Class({
+	__webpack_require__(48);
+	SuperMap.ThemeGraduatedSymbolStyle = SuperMap.Class({
 
 	    /**
-	     * APIProperty: defaultStyle
-	     * {<SuperMap.ServerTextStyle>} 默认的文本复合风格，即 SuperMap.ServerTextStyle 各字段的默认值。
+	     * APIProperty: negativeDisplayed
+	     * {Boolean} 是否显示负值。默认为 false。
 	     */
-	    defaultStyle: null,
+	    negativeDisplayed: false,
 
 	    /**
-	     * APIProperty: separator
-	     * {String} 文本的分隔符，分隔符的风格与前一个字符的风格一样。文本的分隔符是一个将文本分割开的符号，
-	     * 比如文本 “5_109” 被 “_” 隔符为 “5” 和 “109” 两部分，假设有风格数组：style1、style2。
-	     * 在显示时，“5” 和分隔符 “_” 使用 Style1 风格渲染，字符串 “109” 使用 Style2 的风格。
+	     * APIProperty: negativeStyle
+	     * {<SuperMap.ServerStyle>} 负值的等级符号风格。
 	     */
-	    separator: null,
+	    negativeStyle: null,
 
 	    /**
-	     * APIProperty: separatorEnabled
-	     * {Boolean} 文本的分隔符是否有效。分隔符有效时利用分隔符对文本进行分段；无效时根据文本中字符的位置进行分段。
-	     * 分段后，同一分段内的字符具有相同的显示风格。默认为 false。
+	     * APIProperty: positiveStyle
+	     * {<SuperMap.ServerStyle>}正值的等级符号风格。
 	     */
-	    separatorEnabled: false,
+	    positiveStyle: null,
 
 	    /**
-	     * APIProperty: splitIndexes
-	     * {Array(Number)} 分段索引值，分段索引值用来对文本中的字符进行分段。
-	     * 文本中字符的索引值是以0开始的整数，比如文本“珠穆朗玛峰”，第一个字符（“珠”）的索引值为0，第二个字符（“穆”）的索引值为1，
-	     * 以此类推；当设置分段索引值数组为[1，3，4，9]时，字符分段范围相应的就是(-∞，1)，[1，3)，[3，4)，[4，9)，[9，+∞)，
-	     * 可以看出索引号为0的字符（即“珠” ）在第一个分段内，索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，
-	     * 索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
+	     * APIProperty: zeroDisplayed
+	     * {Boolean}  是否显示0值。默认为 false。
 	     */
-	    splitIndexes: null,
+	    zeroDisplayed: false,
 
 	    /**
-	     * APIProperty: styles
-	     * {Array(<SuperMap.ServerTextStyle>)} 文本样式集合。文本样式集合中的样式根据索引与不同分段一一对应，
-	     * 如果有分段没有风格对应则使用 defaultStyle。
+	     * APIProperty: zeroStyle
+	     * {<SuperMap.ServerStyle>} 0值的等级符号风格。
 	     */
-	    styles: null,
+	    zeroStyle: null,
+
 	    /**
-	     * Constructor: SuperMap.LabelMixedTextStyle
-	     * 标签文本复合风格类构造函数，用于创建 SuperMap.LabelMixedTextStyle 类的新实例。
+	     * Constructor: SuperMap.ThemeGraduatedSymbolStyle
+	     * 等级符号专题图正负零值显示风格类构造函数，用于创建 SuperMap.ThemeGraduatedSymbolStyle 类的新实例。
 	     *
 	     * Parameters:
 	     * options - {Object} 参数。
 	     *
 	     * Allowed options properties:
-	     * defaultStyle - {<SuperMap.ServerTextStyle>} 默认的文本复合风格。
-	     * separator - {String} 文本的分隔符。
-	     * separatorEnabled - Boolean} 文本的分隔符是否有效。
-	     * splitIndexes - {Array(Number)} 分段索引值，分段索引值用来对文本中的字符进行分段。
-	     * styles - {Array(<SuperMap.ServerTextStyle>)} 文本样式集合。
+	     * negativeDisplayed - {Boolean} 是否显示负值。默认为 false。
+	     * negativeStyle - {<SuperMap.ServerStyle>} 负值的等级符号风格。
+	     * positiveStyle - {<SuperMap.ServerStyle>}  正值的等级符号风格。
+	     * zeroDisplayed - {Boolean} 是否显示0值。默认为 false。
+	     * zeroStyle - {<SuperMap.ServerStyle>} 0值的等级符号风格。
 	     */
 	    initialize: function (options) {
 	        var me = this;
-	        me.defaultStyle = new SuperMap.ServerTextStyle();
+	        me.negativeStyle = new SuperMap.ServerStyle();
+	        me.positiveStyle = new SuperMap.ServerStyle();
+	        me.zeroStyle = new SuperMap.ServerStyle();
 	        if (options) {
 	            SuperMap.Util.extend(this, options);
 	        }
@@ -13013,482 +10115,31 @@
 	     */
 	    destroy: function () {
 	        var me = this;
-	        if (me.defaultStyle) {
-	            me.defaultStyle.destroy();
-	            me.defaultStyle = null;
-	        }
-	        me.separator = null;
-	        me.separatorEnabled = null;
-	        if (me.splitIndexes) {
-	            me.splitIndexes = null;
-	        }
-	        if (me.styles) {
-	            for (var i = 0, styles = me.styles, len = styles.length; i < len; i++) {
-	                styles[i].destroy();
-	            }
-	            me.styles = null;
-	        }
+	        me.negativeDisplayed = null;
+	        me.negativeStyle = null;
+	        me.positiveStyle = null;
+	        me.zeroDisplayed = null;
+	        me.zeroStyle = null;
 	    },
 
-	    CLASS_NAME: "SuperMap.LabelMixedTextStyle"
+	    CLASS_NAME: "SuperMap.ThemeGraduatedSymbolStyle"
 	});
-	SuperMap.LabelMixedTextStyle.fromObj = function (obj) {
+	SuperMap.ThemeGraduatedSymbolStyle.fromObj = function (obj) {
 	    if (!obj) return;
-	    var res = new SuperMap.LabelMixedTextStyle();
-	    var stys = obj.styles;
+	    var res = new SuperMap.ThemeGraduatedSymbolStyle();
 	    SuperMap.Util.copy(res, obj);
-	    res.defaultStyle = new SuperMap.ServerTextStyle(obj.defaultStyle);
-	    if (stys) {
-	        res.styles = [];
-	        for (var i = 0, len = stys.length; i < len; i++) {
-	            res.styles.push(new SuperMap.ServerTextStyle(stys[i]));
-	        }
-	    }
+	    res.negativeStyle = SuperMap.ServerStyle.fromJson(obj.negativeStyle);
+	    res.positiveStyle = SuperMap.ServerStyle.fromJson(obj.positiveStyle);
+	    res.zeroStyle = SuperMap.ServerStyle.fromJson(obj.zeroStyle);
 	    return res;
 	};
 	module.exports = function (options) {
-	    return new SuperMap.LabelMixedTextStyle(options);
-	};
-
-
-
-/***/ },
-/* 100 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.LabelImageCell
-	 * 图片类型的矩阵标签元素类。
-	 * 该类继承自 SuperMap.LabelMatrixCell类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
-	 * 矩阵标签专题图是标签专题图（ThemeLabel）的一种，其中矩阵标签中的填充元素又可分为图片类型（SuperMap.LabelImageCell）、
-	 * 符号类型（SuperMap.LabelSymbolCell）、专题图类型（SuperMap.LabelThemeCell）三种，该类是这三种类型的矩阵标签元素其中的一种，
-	 * 用于定义符号类型的矩阵标签，如符号 ID 字段名称（符号 ID 与 SuperMap 桌面产品中点、线、面符号的 ID 对应） 、大小等。
-	 * 用户在实现矩阵标签专题图时只需将定义好的矩阵标签元素赋值予 SuperMap.ThemeLabel.matrixCells 属性即可。matrixCells 属是一个二维数组，
-	 * 每一维可以是任意类型的矩阵标签元素组成的数组（也可是单个标签元素组成的数组，即数组中只有一个元素）。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.LabelMatrixCell>
-	 */
-
-	__webpack_require__(101);
-	SuperMap.LabelImageCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
-
-	    /**
-	     * APIProperty: height
-	     * {Number} 设置图片的高度，单位为毫米。
-	     */
-	    height: 0,
-
-	    /**
-	     * APIProperty: pathField
-	     * {String} 设置矩阵标签元素所使用的图片路径对应的字段名。
-	     */
-	    pathField: null,
-
-	    /**
-	     * APIProperty: rotation
-	     * {Number} 图片的旋转角度。逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。
-	     */
-	    rotation: 0.0,
-
-	    /**
-	     * APIProperty: width
-	     * {Number} 设置图片的宽度，单位为毫米。
-	     */
-	    width: 0,
-
-	    /**
-	     * APIProperty: sizeFixed
-	     * {Boolean} 是否固定图片的大小。默认值为 false，即图片将随地图缩放。
-	     */
-	    sizeFixed: false,
-
-	    /**
-	     * Property: type
-	     * {Boolean} 制作矩阵专题图时是必须的。
-	     */
-	    type: "IMAGE",
-
-	    /**
-	     * Constructor: SuperMap.LabelImageCell
-	     * 图片类型的矩阵标签元素类构造函数，用于创建 SuperMap.LabelImageCell 类的新实例。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * height - {Number} 设置图片的高度，单位为毫米。
-	     * pathField - {String} 设置矩阵标签元素所使用图片的路径。
-	     * rotation - {Number} 图片的旋转角度。逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。
-	     * width - {Number} 设置图片的宽度，单位为毫米。
-	     * sizeFixed - {Boolean} 是否固定图片的大小。默认值为 false，即图片将随地图缩放。
-	     */
-	    initialize: function (options) {
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        me.height = null;
-	        me.pathField = null;
-	        me.rotation = null;
-	        me.width = null;
-	        me.sizeFixed = null;
-	    },
-
-	    CLASS_NAME: "SuperMap.LabelImageCell"
-	});
-	module.exports = function (options) {
-	    return new SuperMap.LabelImageCell(options);
-	};
-
-/***/ },
-/* 101 */
-/***/ function(module, exports) {
-
-	/**
-	 * Class: SuperMap.LabelMatrixCell
-	 * 矩阵标签元素抽象类。
-	 * 该类可以包含 n*n 个矩阵标签元素，矩阵标签元素的类型可以是图片，符号，标签专题图等。
-	 * 符号类型的矩阵标签元素类、图片类型的矩阵标签元素类和专题图类型的矩阵标签元素类均继承自该类。
-	 */
-
-	SuperMap.LabelMatrixCell = SuperMap.Class({
-	    CLASS_NAME: "LabelMatrixCell"
-	});
-
-/***/ },
-/* 102 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.LabelSymbolCell
-	 * 符号类型的矩阵标签元素类。
-	 * 该类继承自 SuperMap.LabelMatrixCell类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
-	 * 矩阵标签专题图是标签专题图（SuperMap.ThemeLabel）的一种，其中矩阵标签中的填充元素又可分为图片类型（SuperMap.LabelImageCell）、
-	 * 符号类型（SuperMap.LabelSymbolCell）、专题图类型（SuperMap.LabelThemeCell）三种，该类是这三种类型的矩阵标签元素其中的一种，
-	 * 用于定义符号类型的矩阵标签，如符号 ID 字段名称（符号 ID 与 SuperMap 桌面产品中点、线、面符号的 ID 对应） 、大小等。
-	 * 用户在实现矩阵标签专题图时只需将定义好的矩阵标签元素赋值予 SuperMap.ThemeLabel.matrixCells 属性即可。matrixCells 属是一个二维数组，
-	 * 每一维可以是任意类型的矩阵标签元素组成的数组（也可是单个标签元素组成的数组，即数组中只有一个元素）。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.LabelMatrixCell>
-	 */
-
-	__webpack_require__(81);
-	__webpack_require__(101);
-	SuperMap.LabelSymbolCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
-
-	    /**
-	     * APIProperty: style
-	     * {<SuperMap.ServerStyle>} 获取或设置符号样式—— SuperMap.ServerStyle 对象，包括符号大小（SuperMap.ServerStyle.markerSize）
-	     * 和符号旋转（SuperMap.ServerStyle.markerAngle）角度，其中用于设置符号 ID 的属性（SuperMap.ServerStyle.markerSymbolID）在此处不起作用。
-	     */
-	    style: null,
-
-	    /**
-	     * APIProperty: symbolIDField
-	     * {String} 获取或设置符号 ID 或符号 ID 所对应的字段名称，必设属性。
-	     */
-	    symbolIDField: null,
-
-	    /**
-	     * Property: type
-	     * {String} 制作矩阵专题图时是必须的。
-	     */
-	    type: "SYMBOL",
-
-	    /**
-	     * Constructor: SuperMap.LabelSymbolCell
-	     * 符号类型的矩阵标签元素类构造函数，用于创建 SuperMap.LabelSymbolCell 类的新实例。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * style - {<SuperMap.ServerStyle>} 获取或设置符号样式—— SuperMap.ServerStyle 对象。
-	     * symbolIDField - {String} 符号 ID 或符号 ID 所对应的字段名称。
-	     */
-	    initialize: function (options) {
-	        var me = this;
-	        me.style = new SuperMap.ServerStyle();
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        if (me.style) {
-	            me.style.destroy();
-	            me.style = null;
-	        }
-	        me.symbolIDField = null;
-	    },
-
-	    CLASS_NAME: "SuperMap.LabelSymbolCell"
-	});
-	module.exports = function (options) {
-	    return new SuperMap.LabelSymbolCell(options);
-	};
-
-/***/ },
-/* 103 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class:  SuperMap.LabelThemeCell
-	 * 专题图类型的矩阵标签元素类。
-	 * 该类继承自 SuperMap.LabelMatrixCell类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
-	 * 矩阵标签专题图是标签专题图（SuperMap.ThemeLabel）的一种，其中矩阵标签中的填充元素又可分为图片类型（SuperMap.LabelImageCell）、
-	 * 符号类型（SuperMap.LabelSymbolCell）、专题图类型（SuperMap.LabelThemeCell）三种，该类是这三种类型的矩阵标签元素其中的一种，
-	 * 用于定义符号类型的矩阵标签，如符号 ID 字段名称（符号 ID 与 SuperMap 桌面产品中点、线、面符号的 ID 对应） 、大小等。
-	 * 用户在实现矩阵标签专题图时只需将定义好的矩阵标签元素赋值予 SuperMap.ThemeLabel.matrixCells 属性即可。matrixCells 属是一个二维数组，
-	 * 每一维可以是任意类型的矩阵标签元素组成的数组（也可是单个标签元素组成的数组，即数组中只有一个元素）。
-	 *
-	 * Inherits from:
-	 *  - <SuperMap.LabelMatrixCell>
-	 */
-
-	__webpack_require__(95);
-	__webpack_require__(101);
-	SuperMap.LabelThemeCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
-
-	    /**
-	     * APIProperty: themeLabel
-	     * {<SuperMap.ThemeLabel>} 使用专题图对象作为矩阵标签的一个元素。
-	     */
-	    themeLabel: null,
-
-	    /**
-	     * Property: type
-	     * {String} 制作矩阵专题图时是必须的。
-	     */
-	    type: "THEME",
-
-	    /**
-	     * Constructor:  SuperMap.LabelThemeCell
-	     * 专题图类型的矩阵标签元素类构造函数，用于创建  SuperMap.LabelThemeCell 类的新实例。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * themeLabel - {<SuperMap.ThemeLabel>} 使用专题图对象作为矩阵标签的一个元素。
-	     */
-	    initialize: function (options) {
-	        var me = this;
-	        me.themeLabel = new SuperMap.ThemeLabel();
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        if (me.themeLabel) {
-	            me.themeLabel.destroy();
-	            me.themeLabel = null;
-	        }
-	    },
-
-	    CLASS_NAME: " SuperMap.LabelThemeCell"
-	});
-	module.exports = function (options) {
-	    return new SuperMap.LabelThemeCell(options);
-	};
-
-/***/ },
-/* 104 */
-/***/ function(module, exports) {
-
-	/**
-	 * Class: SuperMap.ThemeLabelAlongLine
-	 * 标签沿线标注样式类。
-	 * 通过该类可以设置是否标签沿线标注以及沿线标注的多种样式。沿线标注属性只适用于线数据集专题图。
-	 */
-
-	SuperMap.ThemeLabelAlongLine = SuperMap.Class({
-
-	    /**
-	     * APIProperty: isAlongLine
-	     * {Boolean} 是否沿线显示文本。true 表示沿线显示文本，false 表示正常显示文本，默认为 true。
-	     */
-	    isAlongLine: true,
-
-	    /**
-	     * APIProperty: alongLineDirection
-	     * {<SuperMap.AlongLineDirection>} 标签沿线标注方向。默认为 SuperMap.AlongLineDirection.LB_TO_RT（从上到下，从左到右放置）。
-	     */
-	    alongLineDirection: SuperMap.AlongLineDirection.LB_TO_RT,
-
-	    /**
-	     * APIProperty: angleFixed
-	     * {Boonlean} 当沿线显示文本时，是否将文本角度固定。true 表示按固定文本角度显示文本，false 表示按照沿线角度显示文本。
-	     * 默认值为 false。如果固定角度，则所有标签均按所设置的文本风格中字体的旋转角度来显示，不考虑沿线标注的方向；
-	     * 如果不固定角度，在显示标签时会同时考虑字体的旋转角度和沿线标注的方向。
-	     */
-	    angleFixed: false,
-
-	    /**
-	     * APIProperty: repeatedLabelAvoided
-	     * {Boonlean} 沿线循环标注时是否避免标签重复标注。
-	     */
-	    repeatedLabelAvoided: false,
-
-	    /**
-	     * APIProperty: repeatIntervalFixed
-	     * {Boonlean} 循环标注间隔是否固定。true 表示使用固定循环标注间隔，即使用逻辑坐标来显示循环标注间隔；
-	     * false 表示循环标注间隔随地图的缩放而变化，即使用地理坐标来显示循环标注间隔。默认值为 false。
-	     */
-	    repeatIntervalFixed: false,
-
-	    /**
-	     * APIProperty: labelRepeatInterval
-	     * {Number} 沿线且循环标注时循环标注的间隔。长度的单位与地图的地理单位一致。只有设定 RepeatedLabelAvoided 为 true
-	     * 的时候，labelRepeatInterval 属性才有效。默认为0地图单位。
-	     */
-	    labelRepeatInterval: 0,
-
-	    /**
-	     * Constructor: SuperMap.ThemeLabelAlongLine
-	     * 标签沿线标注样式类构造函数，用于创建 SuperMap.ThemeLabelAlongLine 类的新实例。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * isAlongLine - {Boolean} 是否沿线显示文本。
-	     * alongLineDirection - {<SuperMap.AlongLineDirection>} 标签沿线标注方向。
-	     * angleFixed - {Boonlean} 当沿线显示文本时，是否将文本角度固定。
-	     * repeatedLabelAvoided - {Boonlean} 沿线循环标注时是否避免标签重复标注。
-	     * repeatIntervalFixed - {Boonlean} 循环标注间隔是否固定。
-	     * labelRepeatInterval - {Number} 沿线且循环标注时循环标注的间隔。
-	     */
-	    initialize: function (options) {
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        me.isAlongLine = null;
-	        me.alongLineDirection = null;
-	        me.angleFixed = null;
-	        me.repeatedLabelAvoided = null;
-	        me.repeatIntervalFixed = null;
-	        me.labelRepeatInterval = null;
-	    },
-
-	    CLASS_NAME: "SuperMap.ThemeLabelAlongLine"
-	});
-	SuperMap.ThemeLabelAlongLine.fromObj = function (obj) {
-	    if (!obj) return;
-	    var t = new SuperMap.ThemeLabelAlongLine();
-	    SuperMap.Util.copy(t, obj);
-	    return t;
-	};
-	module.exports = function (options) {
-	    return new SuperMap.ThemeLabelAlongLine(options);
+	    return new SuperMap.ThemeGraduatedSymbolStyle(options);
 	};
 
 
 /***/ },
-/* 105 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: SuperMap.ThemeLabelBackground
-	 * 标签背景风格类。
-	 * 通过该类可以设置标签的背景形状和风格。
-	 */
-
-	__webpack_require__(81);
-	SuperMap.ThemeLabelBackground = SuperMap.Class({
-
-	    /**
-	     * APIProperty: labelBackShape
-	     * {<SuperMap.LabelBackShape>} 标签专题图中标签背景风格。当背景形状
-	     * labelBackShape 属性设为 NONE（即无背景形状） 时，backStyle 属性无效。
-	     */
-	    labelBackShape: SuperMap.LabelBackShape.NONE,
-
-	    /**
-	     * APIProperty: backStyle
-	     * {<SuperMap.ServerStyle>} 标签专题图中标签背景的形状枚举类。背景类型可
-	     * 以是矩形、圆角矩形、菱形、椭圆形、三角形和符号等，默认为 SuperMap.LabelBackShape.NONE，
-	     * 即不使用任何的形状作为标签的背景。
-	     */
-	    backStyle: null,
-
-	    /**
-	     * Constructor: SuperMap.ThemeLabelBackground
-	     * 标签背景风格类构造函数，用于创建 ThemeLabelBackGround 类的新实例。
-	     *
-	     * Parameters:
-	     * options - {Object} 参数。
-	     *
-	     * Allowed options properties:
-	     * labelBackShape - {<SuperMap.LabelBackShape>} 标签专题图中标签背景风格。
-	     * backStyle - {<SuperMap.ServerStyle>} 标签专题图中标签背景的形状枚举类。
-	     */
-	    initialize: function (options) {
-	        var me = this;
-	        me.backStyle = new SuperMap.ServerStyle();
-	        if (options) {
-	            SuperMap.Util.extend(this, options);
-	        }
-	    },
-
-	    /**
-	     * APIMethod: destroy
-	     * 释放资源，将引用资源的属性置空。
-	     */
-	    destroy: function () {
-	        var me = this;
-	        me.labelBackShape = null;
-	        if (me.backStyle) {
-	            me.backStyle.destroy();
-	            me.backStyle = null;
-	        }
-	    },
-
-	    CLASS_NAME: "SuperMap.ThemeLabelBackground"
-	});
-	SuperMap.ThemeLabelBackground.fromObj = function (obj) {
-	    if (!obj) return;
-	    var t = new SuperMap.ThemeLabelBackground();
-	    t.labelBackShape = obj.labelBackShape;
-	    t.backStyle = SuperMap.ServerStyle.fromJson(obj.backStyle);
-
-	    return t;
-	};
-	module.exports = function (options) {
-	    return new SuperMap.ThemeLabelBackground(options);
-	};
-
-
-/***/ },
-/* 106 */
+/* 72 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13502,8 +10153,8 @@
 	 *  - <SuperMap.Theme>
 	 */
 
-	__webpack_require__(83);
-	__webpack_require__(107);
+	__webpack_require__(45);
+	__webpack_require__(73);
 	SuperMap.ThemeRange = SuperMap.Class(SuperMap.Theme, {
 	    /**
 	     * Property: precision
@@ -13618,7 +10269,7 @@
 
 
 /***/ },
-/* 107 */
+/* 73 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13628,7 +10279,7 @@
 	 * 每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。
 	 */
 
-	__webpack_require__(81);
+	__webpack_require__(48);
 	SuperMap.ThemeRangeItem = SuperMap.Class({
 
 	    /**
@@ -13737,74 +10388,1716 @@
 
 
 /***/ },
-/* 108 */
+/* 74 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Class: SuperMap.ThemeUnique
-	 * 单值专题图。
-	 * 单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格。单值专题图多用于具有分类属性的地图上，
-	 * 比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。尤其是有交叉或重叠现象时，此类不推荐使用，例如：民族分布区等。
-	 *
+	 * Class: SuperMap.UGCSubLayer
+	 * 地图服务图层属性信息类，影像图层(Image)、专题图层(ServerTheme)、栅格图层(Grid)、矢量图层(Vector)等图层均继承该类。
+	 * 
 	 * Inherits from:
-	 *  - <SuperMap.Theme>
+	 *  - <SuperMap.UGCMapLayer> 
 	 */
-
-	__webpack_require__(81);
-	__webpack_require__(83);
-	__webpack_require__(109);
-	SuperMap.ThemeUnique = SuperMap.Class(SuperMap.Theme, {
-
-	    /**
-	     * APIProperty: defaultStyle
-	     * {<SuperMap.ServerStyle>} 未参与单值专题图制作的对象的显示风格。
-	     * 通过单值专题图子项数组 （items）可以指定某些要素参与单值专题图制作，对于那些没有被包含的要素，即不参加单值专题表达的要素，使用该风格显示。
+	__webpack_require__(25);
+	__webpack_require__(75);
+	__webpack_require__(76);
+	SuperMap.UGCSubLayer = SuperMap.Class(SuperMap.UGCMapLayer, {
+	       
+	    /** 
+	     * APIProperty: datasetInfo
+	     * {<SuperMap.DatasetInfo>} 数据集信息。  
+	     */ 
+	    datasetInfo: null,  
+	        
+	    /** 
+	     * APIProperty: displayFilter
+	     * {String} 图层显示过滤条件。  
 	     */
-	    defaultStyle: null,
-
-	    /**
-	     * APIProperty: items
-	     * {Array(<SuperMap.ThemeUniqueItem>)} 单值专题图子项类数组。
-	     * 单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，
-	     * Name 字段代表省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
+	    displayFilter: null,  
+	        
+	    /** 
+	     * APIProperty: joinItems
+	     * {<SuperMap.JoinItem>} 连接信息类。  
 	     */
-	    items: null,
-
-	    /**
-	     * APIProperty: uniqueExpression
-	     * {String} 用于制作单值专题图的字段或字段表达式。
-	     * 该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段。
+	    joinItems: null,  
+	        
+	    /** 
+	     * APIProperty: representationField
+	     * {String} 存储制图表达信息的字段。  
 	     */
-	    uniqueExpression: null,
-
-	    /**
-	     * APIProperty: colorGradientType
-	     * {<SuperMap.ColorGradientType>} 渐变颜色枚举类
-	     * 渐变色是由起始色根据一定算法逐渐过渡到终止色的一种混合型颜色。
-	     * 该类作为单值专题图参数类、分段专题图参数类的属性，负责设置单值专题图、分段专题图的配色方案，在默认情况下专题图所有子项会根据这个配色方案完成填充。
-	     * 但如果为某几个子项的风格进行单独设置后（设置了 ThemeUniqueItem 或 ThemeRangeItem 类中Style属性），
-	     * 该配色方案对于这几个子项将不起作用。
+	    representationField: null,  
+	        
+	    /** 
+	     * APIProperty: ugcLayerType
+	     * {<SuperMap.LayerType>} 图层类型。  
 	     */
-	    colorGradientType: SuperMap.ColorGradientType.YELLOW_RED,
+	    ugcLayerType: null,  
 
 	    /**
-	     * Constructor: SuperMap.ThemeUnique
-	     * 单值专题图构造函数。
+	     * Constructor: SuperMap.UGCSubLayer
+	     * 地图服务图层属性信息类构造函数。
 	     *
 	     * Parameters:
 	     * options - {Object} 参数。
 	     *
 	     * Allowed options properties:
-	     * items - {Array(<SuperMap.ThemeUniqueItem>)} 单值专题图子项类数组。
-	     * uniqueExpression - {String} 用于制作单值专题图的字段或字段表达式。
-	     * defaultStyle - {<SuperMap.ServerStyle>} 未参与单值专题图制作的对象的显示风格。
-	     * colorGradientType - {<SuperMap.ColorGradientType>} 渐变颜色枚举类。
-	     * memoryData - {<SuperMap.ThemeMemoryData>} 专题图内存数据。
+	     * datasetInfo - {<SuperMap.DatasetInfo>} 数据集信息。 
+	     * displayFilter - {String} 图层显示过滤条件。 
+	     * joinItems - {<SuperMap.JoinItem>} 连接信息类。 
+	     * representationField - {String} 存储制图表达信息的字段。 
+	     * ugcLayerType - {<SuperMap.LayerType>} 图层类型。
+	     */     
+	    initialize: function(options) {
+	        options = options || {};
+	        SuperMap.UGCMapLayer.prototype.initialize.apply(this, [options]);
+	    },
+	    
+
+	    /**
+	     * Method: fromJson
+	     * 将服务端JSON对象转换成当前客户端对象
+	     * Parameters:
+	     * jsonObject - {Object} 要转换的 JSON 对象。
+	     */
+	    fromJson: function(jsonObject){
+	        SuperMap.UGCMapLayer.prototype.fromJson.apply(this, [jsonObject]);
+	        if(this.datasetInfo) {
+	            this.datasetInfo = new SuperMap.DatasetInfo(this.datasetInfo);
+	        }
+	        if(this.joinItems && this.joinItems.length){
+	            var newJoinItems = [];
+	            for(var i = 0; i < this.joinItems.length; i++){
+	                newJoinItems[i] = new SuperMap.JoinItem(this.joinItems[i]);
+	            }
+	            this.joinItems = newJoinItems;
+	        }
+	    },
+	    
+	    destroy: function() {
+	        SuperMap.UGCMapLayer.prototype.destroy.apply(this, arguments);
+	        SuperMap.Util.reset(this);
+	    },
+	    
+	    /**
+	     * Method: toServerJSONObject
+	     * 转换成对应的 JSON 格式对象。
+	     */
+	    toServerJSONObject: function(){
+	        var jsonObject = SuperMap.UGCMapLayer.prototype.toServerJSONObject.apply(this, arguments);
+	        if(jsonObject.joinItems){
+	            var joinItems = [];
+	            for(var i = 0; i < jsonObject.joinItems.length; i++){
+	                if(jsonObject.joinItems[i].toServerJSONObject){
+	                    joinItems[i] = jsonObject.joinItems[i].toServerJSONObject();
+	                }
+	                
+	            }
+	            jsonObject.joinItems = joinItems;
+	        }
+	        if(jsonObject.datasetInfo){
+	            if(jsonObject.datasetInfo.toServerJSONObject){
+	                jsonObject.datasetInfo = jsonObject.datasetInfo.toServerJSONObject();
+	            }
+	        }
+	        return jsonObject;
+	    },
+	    
+	    CLASS_NAME: "SuperMap.UGCSubLayer"
+	});
+	module.exports = function (options) {
+	    return new SuperMap.UGCSubLayer(options);
+	};
+
+
+/***/ },
+/* 75 */
+/***/ function(module, exports) {
+
+	/**
+	 * Class: SuperMap.DatasetInfo
+	 * 数据集信息类。
+	 * 数据集一般为存储在一起的相关数据的集合；根据数据类型的不同，分为矢量数据集、栅格数据集(grid
+	 * dataset)和影像数据集(image dataset)，以及为了处理特定问题而设计的数据集，如拓扑数据集，网络数据集等。
+	 *
+	 * 数据集是 GIS 数据组织的最小单位。其中矢量数据集是由同种类型空间要素组成的集合，
+	 * 所以也可以称为要素集。根据要素的空间特征的不同，矢量数据集又分为点数据集，
+	 * 线数据集，面数据集等，各矢量数据集是空间特征和性质相同的数据组织起来的集合。
+	 *
+	 * 目前版本支持的数据集主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD
+	 * 数据集）、网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
+	 */
+	SuperMap.DatasetInfo = SuperMap.Class({
+
+	    /**
+	     * APIProperty: bounds
+	     * {<SuperMap.Bounds>} 数据集范围，该字段只读。
+	     */
+	    bounds: null,
+
+	    /**
+	     * APIProperty: dataSourceName
+	     * {String} 数据源名称，该字段只读。
+	     */
+	    dataSourceName: null,
+
+	    /**
+	     * APIProperty: description
+	     * {String} 数据集的描述信息。
+	     */
+	    description: null,
+
+	    /**
+	     * APIProperty: encodeType
+	     * {String} 数据集存储时的压缩编码方式，该字段只读。
+	     */
+	    encodeType: null,
+
+	    /**
+	     * APIProperty: isReadOnly
+	     * {Boolean} 数据集是否为只读。
+	     */
+	    isReadOnly: null,
+
+	    /**
+	     * APIProperty: name
+	     * {String} 数据集名称，该字段必须且只读。
+	     */
+	    name: null,
+
+	    /**
+	     * APIProperty: prjCoordSys
+	     * {<SuperMap.Projection>} 数据集的投影信息。
+	     */
+	    prjCoordSys: null,
+
+	    /**
+	     * APIProperty: tableName
+	     * {String} 表名，该字段只读。
+	     */
+	    tableName: null,
+
+	    /**
+	     * APIProperty: type
+	     * {String} 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD
+	     * 数据集）、网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
+	     */
+	    type: null,
+
+	    /**
+	     * Constructor: SuperMap.DatasetInfo
+	     * 数据集信息类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * bounds - {<SuperMap.Bounds>} 数据集范围，该字段只读。
+	     * dataSourceName - {String} 数据源名称，该字段只读。
+	     * description - {String} 数据集的描述信息。
+	     * encodeType - {String} 数据集存储时的压缩编码方式，该字段只读。
+	     * isReadOnly - {Boolean} 数据集是否为只读。
+	     * name - {String} 数据集名称，该字段必须且只读。
+	     * prjCoordSys - {<SuperMap.Projection>} 数据集的投影信息。
+	     * tableName - {String} 表名，该字段只读。
+	     * type - {String} 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD
+	     * 数据集）、网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
+	     */
+	    initialize: function (options) {
+	        options = options || {};
+	        SuperMap.Util.extend(this, options);
+	        var b = this.bounds;
+	        if (b) {
+	            this.bounds = new SuperMap.Bounds(b.leftBottom.x, b.leftBottom.y, b.rightTop.x, b.rightTop.y);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.Util.reset(this);
+	    },
+
+	    /**
+	     * Method: toServerJSONObject
+	     * 转换成对应的 JSON 格式对象。
+	     */
+	    toServerJSONObject: function () {
+	        var dataObj = {};
+	        dataObj = SuperMap.Util.copyAttributes(dataObj, this);
+	        if (dataObj.bounds) {
+	            if (dataObj.bounds.toServerJSONObject) {
+	                dataObj.bounds = dataObj.bounds.toServerJSONObject();
+	            }
+	        }
+	        return dataObj;
+	    },
+
+	    CLASS_NAME: "SuperMap.DatasetInfo"
+	});
+	module.exports = function (options) {
+	    return new SuperMap.DatasetInfo(options);
+	};
+
+
+/***/ },
+/* 76 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.UGCMapLayer
+	 * UGC 地图图层类。
+	 * 
+	 * Inherits from:
+	 *  - <SuperMap.UGCLayer> 
+	 */
+	__webpack_require__(77);
+	SuperMap.UGCMapLayer = SuperMap.Class(SuperMap.UGCLayer, {
+	     
+	    /** 
+	     * APIProperty: completeLineSymbolDisplayed
+	     * {Boolean} 是否显示完整线型。 
+	     */
+	    completeLineSymbolDisplayed: null,  
+	     
+	    /** 
+	     * APIProperty: maxScale
+	     * {Number} 地图最大比例尺。  
+	     */
+	    maxScale: null, 
+	     
+	    /** 
+	     * APIProperty: minScale
+	     * {Number} 地图最小比例尺。  
+	     */
+	    minScale: null,  
+	     
+	    /** 
+	     * APIProperty: minVisibleGeometrySize
+	     * {Number} 几何对象的最小可见大小，以像素为单位。 
+	     */
+	    minVisibleGeometrySize: null, 
+	     
+	    /** 
+	     * APIProperty: opaqueRate
+	     * {Integer} 图层的不透明度。 
+	     */
+	    opaqueRate: null, 
+	    /** 
+	     * APIProperty: symbolScalable
+	     * {Boolean} 是否允许图层的符号大小随图缩放。
+	     */
+	    symbolScalable: null, 
+	    /** 
+	     * APIProperty: symbolScale
+	     * {Number} 图层的符号缩放基准比例尺。  
+	     */
+	    symbolScale: null, 
+		
+		/** 
+	     * APIProperty: overlapDisplayed
+	     * {Boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。  
+	     */
+	    overlapDisplayed: null,
+		
+		/** 
+	     * APIProperty: overlapDisplayedOptions
+	     * {<SuperMap.OverlapDisplayedOptions>} 地图的压盖过滤显示选项，当 overlapDisplayed 为 false 时有效。  
+	     */
+	    overlapDisplayedOptions: null,
+
+	    /**
+	     * Constructor: SuperMap.UGCMapLayer
+	     * UGC 地图图层类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * completeLineSymbolDisplayed - {Boolean} 是否显示完整线型。 
+	     * maxScale - {Number} 地图最大比例尺。 
+	     * minScale - {Number} 地图最小比例尺。
+	     * minVisibleGeometrySize - {Number} 几何对象的最小可见大小，以像素为单位。
+	     * opaqueRate - {Integer} 图层的不透明度。
+	     * symbolScalable - {Boolean} 是否允许图层的符号大小随图缩放。 
+	     * symbolScale - {Number} 图层的符号缩放基准比例尺。 
+	     * overlapDisplayed - {Boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。
+	     * overlapDisplayedOptions - {<SuperMap.OverlapDisplayedOptions>} 地图的压盖过滤显示选项，当
+	     * overlapDisplayed 为 false 时有效。  
+	     */
+	    initialize: function(options) {
+	        options = options || {};
+	        SuperMap.UGCLayer.prototype.initialize.apply(this, [options]);
+	    },
+	    
+	    destroy: function() {
+	        SuperMap.UGCLayer.prototype.destroy.apply(this, arguments);
+	        SuperMap.Util.reset(this);
+	    },
+	    
+	    /**
+	     * Method: fromJson
+	     * 将服务端JSON对象转换成当前客户端对象
+	     * Parameters:
+	     * jsonObject - {Object} 要转换的 JSON 对象。
+	     */
+	    fromJson: function(jsonObject){
+	        SuperMap.UGCLayer.prototype.fromJson.apply(this, [jsonObject]);
+	    },
+	    
+	    /**
+	     * Method: toServerJSONObject
+	     * 转换成对应的 JSON 格式对象。
+	     */
+	    toServerJSONObject: function(){
+	        var jsonObject = SuperMap.UGCLayer.prototype.toServerJSONObject.apply(this, arguments);;
+	        return jsonObject;
+	    },
+	    
+	    CLASS_NAME: "SuperMap.UGCMapLayer"
+	});
+	module.exports = function (options) {
+	    return new SuperMap.UGCMapLayer(options);
+	};
+
+
+/***/ },
+/* 77 */
+/***/ function(module, exports) {
+
+	/**
+	 * Class: SuperMap.UGCLayer
+	 * UGC 图层类。
+	 */
+	SuperMap.UGCLayer = SuperMap.Class({
+
+	    /**
+	     * APIProperty: bounds
+	     * {<SuperMap.Bounds>} 图层范围。
+	     */
+	    bounds: null,
+
+	    /**
+	     * APIProperty: caption
+	     * {String} 图层的标题。
+	     */
+	    caption: null,
+
+	    /**
+	     * APIProperty: description
+	     * {String} 图层的描述信息。
+	     */
+	    description: null,
+
+	    /**
+	     * APIProperty: name
+	     * {String} 图层的名称。
+	     */
+	    name: null,
+
+	    /**
+	     * APIProperty: queryable
+	     * {Boolean} 图层中的对象是否可以查询。
+	     */
+	    queryable: null,
+
+	    /**
+	     * APIProperty: subUGCLayers
+	     * {Array} 子图层集。
+	     */
+	    subLayers: null,
+
+	    /**
+	     * APIProperty: type
+	     * {<SuperMap.UGCLayerType>} 图层类型。
+	     */
+	    type: null,
+
+	    /**
+	     * APIProperty: visible
+	     * {Boolean} 图层是否可视。
+	     */
+	    visible: null,
+	    /**
+	     * Constructor: SuperMap.UGCMapLayer
+	     * UGC 图层类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * bounds - {<SuperMap.Bounds>} 图层范围。
+	     * caption - {String} 图层的标题。
+	     * description - {String} 图层的描述信息。
+	     * name - {String} 图层的名称。
+	     * queryable - {Boolean} 图层中的对象是否可以查询。
+	     * subUGCLayers - {Boolean} 是否允许图层的符号大小随图缩放。
+	     * type - {<SuperMap.UGCLayerType>} 图层类型。
+	     * visible - {Boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。
+	     */
+	    initialize: function (options) {
+	        options = options ? options : {};
+	        SuperMap.Util.extend(this, options);
+	    },
+
+	    destroy: function () {
+	        var me = this;
+	        SuperMap.Util.reset(me);
+	    },
+
+	    /**
+	     * Method: fromJson
+	     * 将服务端JSON对象转换成当前客户端对象
+	     * Parameters:
+	     * jsonObject - {Object} 要转换的 JSON 对象。
+	     */
+	    fromJson: function (jsonObject) {
+	        jsonObject = jsonObject ? jsonObject : {};
+	        SuperMap.Util.extend(this, jsonObject);
+	        var b = this.bounds;
+	        if (b) {
+	            this.bounds = new SuperMap.Bounds(b.leftBottom.x, b.leftBottom.y, b.rightTop.x, b.rightTop.y);
+	        }
+	    },
+
+	    /**
+	     * Method: toServerJSONObject
+	     * 转换成对应的 JSON 格式对象。
+	     */
+	    toServerJSONObject: function () {
+	        var jsonObject = {};
+	        jsonObject = SuperMap.Util.copyAttributes(jsonObject, this);
+	        if (jsonObject.bounds) {
+	            if (jsonObject.bounds.toServerJSONObject) {
+	                jsonObject.bounds = jsonObject.bounds.toServerJSONObject();
+	            }
+	        }
+	        return jsonObject;
+	    },
+
+	    CLASS_NAME: "SuperMap.UGCLayer"
+	});
+	module.exports = function (options) {
+	    return new SuperMap.UGCLayer(options);
+	};
+
+/***/ },
+/* 78 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.Grid
+	 * UGC 栅格图层类。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.UGCSubLayer>
+	 */
+	__webpack_require__(49);
+	__webpack_require__(48);
+	__webpack_require__(79);
+	__webpack_require__(74);
+	SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
+	    /**
+	     * APIProperty: colorDictionarys
+	     * {Array(<SuperMap.ColorDictionary>)} 颜色对照表对象。
+	     */
+	    colorDictionarys: null,
+
+	    /**
+	     * APIProperty: brightness
+	     * {Integer} Grid 图层的亮度。
+	     */
+	    brightness: null,
+
+	    /**
+	     * APIProperty: colorGradientType
+	     * {<SuperMap.ColorGradientType>}
+	     */
+	    colorGradientType: null,
+
+	    /**
+	     * APIProperty: colors
+	     * {<SuperMap.ServerColor>} 颜色表对象。
+	     */
+	    colors: null,
+
+	    /**
+	     * APIProperty: contrast
+	     * {Integer} Grid 图层的对比度。
+	     */
+	    contrast: null,
+
+	    /**
+	     * APIProperty: dashStyle
+	     * {<SuperMap.ServerStyle>} 栅格数据集特殊值数据的颜色。
+	     */
+	    dashStyle: null,
+
+	    /**
+	     * APIProperty: gridType
+	     * {<SuperMap.GridType>} 格网类型。
+	     */
+	    gridType: null,
+
+	    /**
+	     * APIProperty: horizontalSpacing
+	     * {Number} 格网水平间隔大小。
+	     */
+	    horizontalSpacing: null,
+
+	    /**
+	     * APIProperty: sizeFixed
+	     * {Boolean} 格网是否固定大小，如果不固定大小，则格网随着地图缩放。
+	     */
+	    sizeFixed: null,
+
+	    /**
+	     * APIProperty: solidStyle
+	     * {<SuperMap.ServerStyle>} 格网实线的样式。
+	     */
+	    solidStyle: null,
+
+	    /**
+	     * APIProperty: specialColor
+	     * {<SuperMap.ServerColor>} 栅格数据集无值数据的颜色。
+	     */
+	    specialColor: null,
+
+	    /**
+	     * APIProperty: specialValue
+	     * {Number} 图层的特殊值。
+	     */
+	    specialValue: null,
+
+	    /**
+	     * APIProperty: specialValueTransparent
+	     * {Boolean} 图层的特殊值（specialValue）所处区域是否透明。
+	     */
+	    specialValueTransparent: null,
+
+	    /**
+	     * APIProperty: verticalSpacing
+	     * {Number} 格网垂直间隔大小。
+	     */
+	    verticalSpacing: null,
+
+	    /**
+	     * Constructor: SuperMap.Grid
+	     * UGC 栅格图层类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * colorDictionary - {Array(Object)} 颜色对照表对象。
+	     * brightness - {Integer} Grid 图层的亮度。
+	     * colorGradientType - {Boolean} 文本压盖时是否显示压盖的文本对象。
+	     * colors - {<SuperMap.ServerColor>} 颜色表对象。
+	     * contrast - {Integer} Grid 图层的对比度。
+	     * gridType - {<SuperMap.GridType>} 格网类型。
+	     * horizontalSpacing - {Number} 格网水平间隔大小。
+	     * sizeFixed - {Boolean} 格网是否固定大小，如果不固定大小，则格网随着地图缩放。
+	     * solidStyle - {<SuperMap.ServerStyle>} 格网实线的样式。
+	     * specialColor - {<SuperMap.ServerColor>} 栅格数据集无值数据的颜色。
+	     * specialValue - {Number} 图层的特殊值。
+	     * specialValueTransparent - {Boolean} 图层的特殊值（specialValue）所处区域是否透明。
+	     * verticalSpacing - {Number} 格网垂直间隔大小。
+	     */
+
+	    initialize: function (options) {
+	        options = options || {};
+	        SuperMap.UGCSubLayer.prototype.initialize.apply(this, [options]);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.UGCSubLayer.prototype.destroy.apply(this, arguments);
+	        SuperMap.Util.reset(this);
+	    },
+
+	    /**
+	     * Method: fromJson
+	     * 将服务端JSON对象转换成当前客户端对象
+	     * Parameters:
+	     * jsonObject - {Object} 要转换的 JSON 对象。
+	     */
+	    fromJson: function (jsonObject) {
+	        SuperMap.UGCSubLayer.prototype.fromJson.apply(this, [jsonObject]);
+	        if (this.specialColor) {
+	            this.specialColor = new SuperMap.ServerColor(this.specialColor.red,
+	                this.specialColor.green,
+	                this.specialColor.blue);
+	        }
+	        if (this.colors) {
+	            var colors = [],
+	                color;
+	            for (var i in this.colors) {
+	                color = this.colors[i];
+	                colors.push(new SuperMap.ServerColor(color.red, color.green, color.blue));
+	            }
+	            this.colors = colors;
+	        }
+	        if (this.dashStyle) {
+	            this.dashStyle = new SuperMap.ServerStyle(this.dashStyle);
+	        }
+	        if (this.solidStyle) {
+	            this.solidStyle = new SuperMap.ServerStyle(this.solidStyle);
+	        }
+	        if (this.colorDictionary) {
+	            var colorDics = [],
+	                colorDic;
+	            for (var key in this.colorDictionary) {
+	                colorDic = this.colorDictionary[key];
+	                colorDics.push(new SuperMap.ColorDictionary({elevation: key, color: colorDic}));
+	            }
+	            this.colorDictionarys = colorDics;
+	        }
+	        delete this.colorDictionary;
+	    },
+
+	    /**
+	     * APIMethod: toServerJSONObject
+	     * 转换成对应的 JSON 格式对象。
+	     */
+	    toServerJSONObject: function () {
+	        var jsonObject = SuperMap.UGCSubLayer.prototype.toServerJSONObject.apply(this, arguments);
+
+	        if (jsonObject.dashStyle) {
+	            if (jsonObject.dashStyle.toServerJSONObject) {
+	                jsonObject.dashStyle = jsonObject.dashStyle.toServerJSONObject();
+	            }
+	        }
+	        if (jsonObject.solidStyle) {
+	            if (jsonObject.solidStyle.toServerJSONObject) {
+	                jsonObject.solidStyle = jsonObject.solidStyle.toServerJSONObject();
+	            }
+	        }
+	        return jsonObject;
+	    },
+
+	    CLASS_NAME: "SuperMap.Grid"
+	});
+	module.exports = function (options) {
+	    return new SuperMap.Grid(options);
+	};
+
+
+/***/ },
+/* 79 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.ColorDictionary
+	 * 颜色对照表类。
+	 *
+	 * 颜色对照表中的键名为具体的高程值，键值表示该高程值要显示的颜色。
+	 * 对于栅格图层中高程值小于颜色对照表中高程最小值的点使用颜色对照表中高程最小值对应的颜色，
+	 * 对于栅格图层中高程值大于颜色对照表中高程最大值的点使用颜色对照表中高程最大值对应的颜色，
+	 * 对于栅格图层中高程值在颜色对照表中没有对应颜色的点，则查找颜色对照表中与当前高程值相邻的两个高程对应的颜色，
+	 * 然后通过渐变运算要显示的颜色。如果设置了颜色对照表的话，则颜色表设置无效。
+	 */
+	__webpack_require__(49);
+	SuperMap.ColorDictionary = SuperMap.Class({
+
+	    /**
+	     * APIProperty: elevation
+	     * {Number} 高程值。
+	     */
+	    elevation: null,
+
+	    /**
+	     * APIProperty: color
+	     * {<SuperMap.ServerColor>} 服务端颜色类。
+	     */
+	    color: null,
+
+	    initialize: function (options) {
+	        options = options || {};
+	        SuperMap.Util.extend(this, options);
+
+	        var me = this,
+	            c = me.color;
+	        if (c) {
+	            me.color = new SuperMap.ServerColor(c.red, c.green, c.blue);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.Util.reset(this);
+	    },
+
+	    /**
+	     * Method: toServerJSONObject
+	     * 转换成对应的 JSON 格式对象。
+	     */
+	    toServerJSONObject: function () {
+	        var dataObj = {};
+	        dataObj = SuperMap.Util.copyAttributes(dataObj, this);
+	        return dataObj;
+	    },
+
+	    CLASS_NAME: "SuperMap.ColorDictionary"
+	});
+
+	module.exports = function (options) {
+	    return new SuperMap.ColorDictionary(options);
+	};
+
+
+/***/ },
+/* 80 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.Image
+	 * UGC 影像图层类。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.UGCSubLayer>
+	 */
+	__webpack_require__(49);
+	__webpack_require__(74);
+	SuperMap.Image = SuperMap.Class(SuperMap.UGCSubLayer, {
+
+	    /**
+	     * APIProperty: brightness
+	     * {Integer} 影像图层的亮度。
+	     */
+	    brightness: null,
+
+	    /**
+	     * APIProperty: colorSpaceType
+	     * {<SuperMap.ColorSpaceType>} 返回影像图层的色彩显示模式。
+	     */
+	    colorSpaceType: null,
+
+	    /**
+	     * APIProperty: contrast
+	     * {Integer} 影像图层的对比度。
+	     */
+	    contrast: null,
+
+	    /**
+	     * APIProperty: displayBandIndexes
+	     * {Array(Integer)} 返回当前影像图层显示的波段索引。
+	     */
+	    displayBandIndexes: null,
+
+	    /**
+	     * APIProperty: transparent
+	     * {Boolean} 是否背景透明。
+	     */
+	    transparent: null,
+
+	    /**
+	     * APIProperty: transparentColor
+	     * {<SuperMap.ServerColor>} 返回背景透明色。
+	     */
+	    transparentColor: null,
+
+	    /**
+	     * APIProperty: transparentColorTolerance
+	     * {Integer} 背景透明色容限。
+	     */
+	    transparentColorTolerance: null,
+
+	    /**
+	     * Constructor: SuperMap.Image
+	     * UGC 影像图层类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * colorSpaceType - {<SuperMap.ColorSpaceType>} 返回影像图层的色彩显示模式。
+	     * brightness - {Integer} 影像图层的亮度。
+	     * displayBandIndexes - {Array(Integer)} 返回当前影像图层显示的波段索引。
+	     * contrast - {Integer} 影像图层的对比度。
+	     * transparent - {Boolean} 是否背景透明。
+	     * transparentColor - {<SuperMap.ServerColor>} 返回背景透明色。
+	     * transparentColorTolerance - {Integer} 背景透明色容限。
+	     */
+
+	    initialize: function (options) {
+	        options = options || {};
+	        SuperMap.UGCSubLayer.prototype.initialize.apply(this, [options]);
+	    },
+
+	    destroy: function () {
+	        SuperMap.UGCSubLayer.prototype.destroy.apply(this, arguments);
+	        SuperMap.Util.reset(this);
+	    },
+
+	    /**
+	     * Method: fromJson
+	     * 将服务端JSON对象转换成当前客户端对象
+	     * Parameters:
+	     * jsonObject - {Object} 要转换的 JSON 对象。
+	     */
+	    fromJson: function (jsonObject) {
+	        SuperMap.UGCSubLayer.prototype.fromJson.apply(this, [jsonObject]);
+	        if (this.transparentColor) {
+	            this.transparentColor = new SuperMap.ServerColor(this.transparentColor.red,
+	                this.transparentColor.green,
+	                this.transparentColor.blue);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: toServerJSONObject
+	     * 转换成对应的 JSON 格式对象。
+	     */
+	    toServerJSONObject: function () {
+	        var jsonObject = SuperMap.UGCSubLayer.prototype.toServerJSONObject.apply(this, arguments);
+	        return jsonObject;
+	    },
+
+	    CLASS_NAME: "SuperMap.Image"
+	});
+	module.exports = function (options) {
+	    return new SuperMap.Image(options);
+	};
+
+
+/***/ },
+/* 81 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.Vector
+	 * UGC 矢量图层类。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.UGCSubLayer>
+	 */
+	__webpack_require__(48);
+	__webpack_require__(74);
+	SuperMap.Vector = SuperMap.Class(SuperMap.UGCSubLayer, {
+
+	    /**
+	     * APIProperty: style
+	     * {<SuperMap.ServerStyle>} 矢量图层的风格。
+	     */
+	    style: null,
+
+	    /**
+	     * Constructor: SuperMap.Vector
+	     * UGC 矢量图层类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * style - {<SuperMap.ServerStyle>} 矢量图层的风格。
+	     */
+	    initialize: function (options) {
+	        options = options || {};
+	        SuperMap.UGCSubLayer.prototype.initialize.apply(this, [options]);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.UGCSubLayer.prototype.destroy.apply(this, arguments);
+	        SuperMap.Util.reset(this);
+	    },
+
+	    /**
+	     * Method: fromJson
+	     * 将服务端JSON对象转换成当前客户端对象
+	     * Parameters:
+	     * jsonObject - {Object} 要转换的 JSON 对象。
+	     */
+	    fromJson: function (jsonObject) {
+	        SuperMap.UGCSubLayer.prototype.fromJson.apply(this, [jsonObject]);
+	        var sty = this.style;
+	        if (sty) {
+	            this.style = new SuperMap.ServerStyle(sty);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: toServerJSONObject
+	     * 转换成对应的 JSON 格式对象。
+	     */
+	    toServerJSONObject: function () {
+	        var jsonObject = SuperMap.UGCSubLayer.prototype.toServerJSONObject.apply(this, arguments);
+	        if (jsonObject.style) {
+	            if (jsonObject.style.toServerJSONObject) {
+	                jsonObject.style = jsonObject.style.toServerJSONObject();
+	            }
+	        }
+	        return jsonObject;
+	    },
+	    CLASS_NAME: "SuperMap.Vector"
+	});
+	module.exports = function (options) {
+	    return new SuperMap.Vector(options);
+	};
+
+
+/***/ },
+/* 82 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: ChartFeatureInfoSpecsService
+	 * 海图物标信息服务类，通过该服务类可以查询到服务端支持的所有海图物标信息。
+	 */
+	__webpack_require__(15);
+	__webpack_require__(83);
+
+	ol.supermap.ChartFeatureInfoSpecsService = function (url, options) {
+	    ol.supermap.ServiceBase.call(this, url, options);
+	};
+
+	ol.inherits(ol.supermap.ChartFeatureInfoSpecsService, ol.supermap.ServiceBase);
+
+	ol.supermap.ChartFeatureInfoSpecsService.prototype.getChartFeatureInfoSpecs = function () {
+	    var me = this;
+	    var ChartFeatureInfoSpecsService = new SuperMap.REST.ChartFeatureInfoSpecsService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        }
+	    });
+	    ChartFeatureInfoSpecsService.processAsync();
+	    return me;
+	};
+
+	module.exports = ol.supermap.ChartFeatureInfoSpecsService;
+
+/***/ },
+/* 83 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.REST.ChartFeatureInfoSpecsService
+	 *      海图物标信息服务类，通过该服务类可以查询到服务端支持的所有海图物标信息。
+	 *      用户可以通过两种方式获取查询结果：
+	 *      一种是通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件；
+	 *      另一种是使用 AsyncResponder 类实现异步处理。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.ServiceBase>
+	 */
+	__webpack_require__(19);
+	SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase, {
+
+	    /**
+	     * Constructor: SuperMap.REST.ChartFeatureInfoSpecsService
+	     *     使用地图（特指海图）服务地址 URL 初始化 ChartFeatureInfoSpecsService
+	     *     类的新实例。
+	     *
+	     * Parameters:
+	     * url - {String} 地图（特指海图）服务地址。
+	     *     如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。
+	     *     发送请求格式类似于："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图/chartFeatureInfoSpecs.json"
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     */
+	    initialize: function (url, options) {
+	        SuperMap.ServiceBase.prototype.initialize.apply(this,arguments);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	        SuperMap.Util.reset(this);
+	    },
+
+	    /**
+	     * APIMethod: processAsync
+	     *     根据地图（特指海图）服务地址与服务端完成异步通讯，获取物标信息。
+	     *
+	     * Note: 当查询物标信息成功时，将触发 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE
+	     *     事件。用可以通过户两种方式获取图层信息:
+	     *     1. 通过 AsyncResponder 类获取（推荐使用）；
+	     *     2. 通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件获取。
+	     */
+	    processAsync: function () {
+	        var me = this, method = "GET",
+	            end = me.url.substr(me.url.length - 1, 1);
+	        if (!me.isTempLayers) {
+	            me.url += (end === "/") ? '' : '/';
+	            me.url += me.isInTheSameDomain ? "chartFeatureInfoSpecs.json?" : "chartFeatureInfoSpecs.jsonp?";
+	        } else {
+	            me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+	        }
+	        me.request({
+	            method: method,
+	            params: null,
+	            scope: me,
+	            success: me.serviceProcessCompleted,
+	            failure: me.serviceProcessFailed
+	        });
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.ChartFeatureInfoSpecsService"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.ChartFeatureInfoSpecsService(url, options);
+	};
+
+
+/***/ },
+/* 84 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SetLayersService
+	 * 设置图层信息服服务类
+	 */
+	__webpack_require__(15);
+	__webpack_require__(85);
+	__webpack_require__(87);
+	__webpack_require__(89);
+
+	ol.supermap.SetLayerService = function (url, options) {
+	    ol.supermap.ServiceBase.call(this, url, options);
+	    var end = this.options.url.substr(me.options.url.length - 1, 1);
+	    this.options.url += (end === "/") ? '' : '/';
+
+	};
+
+	ol.inherits(ol.supermap.SetLayerService, ol.supermap.ServiceBase);
+
+	/**
+	 * @param params:
+	 *       tempLayerID,layerPath,resourceID
+	 */
+	ol.supermap.SetLayerService.prototype.setLayerInfo = function (params) {
+	    if (!params) {
+	        return;
+	    }
+	    var me = this,
+	        tempLayerID = params.tempLayerID,
+	        layerPath = params.layerPath,
+	        resourceID = params.resourceID,
+	        layerInfoParams = params.layerInfo;
+	    if (!tempLayerID || !layerPath || !resourceID) {
+	        return;
+	    }
+	    var url = me.options.url.concat();
+	    url += "tempLayersSet/" + tempLayerID + "/" + layerPath;
+
+	    var setLayerInfoService = new SuperMap.REST.SetLayerInfoService(url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        },
+	        resourceID: resourceID
+	    });
+
+	    setLayerInfoService.processAsync(layerInfoParams);
+	    return me;
+	};
+
+	/**
+	 * @param params:
+	 *       layersInfo(iServer图层信息，可以从GetLayersInfoService得到)
+	 *       tempLayerID,isTempLayers
+	 */
+	ol.supermap.SetLayerService.prototype.setLayersInfo = function (params) {
+	    if (!params) {
+	        return;
+	    }
+	    var me = this, layersInfoParam,
+	        resourceID = params.resourceID,
+	        isTempLayers = params.isTempLayers ? params.isTempLayers : false,
+	        layersInfo = params.layersInfo;
+	    if (!resourceID || !layersInfo) {
+	        return;
+	    }
+	    layersInfoParam.subLayers = {};
+	    layersInfoParam.subLayers.layers = layersInfo;
+	    var setLayersInfoService = new SuperMap.REST.SetLayersInfoService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        },
+	        resourceID: resourceID,
+	        isTempLayers: isTempLayers
+	    });
+
+	    setLayersInfoService.processAsync(layersInfoParam);
+	    return me;
+	};
+
+	/**
+	 * @param params:
+	 *     <SetLayerStatusParameters>
+	 */
+	ol.supermap.SetLayerService.prototype.setLayerStatus = function (params) {
+	    if (!params) {
+	        return;
+	    }
+	    var me = this;
+	    var setLayerStatusService = new SuperMap.REST.SetLayerStatusService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        }
+
+	    });
+	    setLayerStatusService.processAsync(params);
+	    return me;
+	}
+
+	module.exports = ol.supermap.SetLayerService;
+
+/***/ },
+/* 85 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.REST.SetLayerInfoService
+	 * 设置图层信息服务类。可以实现临时图层中子图层的修改
+	 * 该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.ServiceBase>
+	 */
+	__webpack_require__(19);
+	__webpack_require__(86);
+	SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
+
+	    /**
+	     * APIProperty: resourceID
+	     * {String} 图层资源ID，临时图层的资源ID标记。
+	     */
+	    resourceID: null,
+
+
+	    /**
+	     * Constructor: SuperMap.REST.SetLayerInfoService
+	     * 设置图层信息服务类构造函数。可以实现临时图层中子图层的修改。
+	     *
+	     * Parameters:
+	     * url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：
+	     * http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     */
+	    initialize: function (url, options) {
+	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	        this.resourceID = options.resourceID;
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	        SuperMap.Util.reset(this);
+	    },
+
+	    /**
+	     * APIMethod: processAsync
+	     * 负责将客户端的更新参数传递到服务端。
+	     * Parameters:
+	     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务 <SuperMap.REST.GetLayerInfoService>.result.subLayers.layers[i]
+	     * 返回图层信息，然后对其属性进行修改来获取。
+	     */
+	    processAsync: function (params) {
+	        var me = this;
+
+	        if (!params) {
+	            return;
+	        }
+	        me.url += me.isInTheSameDomain ? ".json" : ".jsonp";
+	        var jsonParamsStr = SuperMap.Util.toJSON(params);
+	        me.request({
+	            method: "PUT",
+	            data: jsonParamsStr,
+	            scope: me,
+	            success: me.serviceProcessCompleted,
+	            failure: me.serviceProcessFailed
+	        });
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.SetLayerInfoService"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.SetLayerInfoService(url, options);
+	};
+
+
+/***/ },
+/* 86 */
+/***/ function(module, exports) {
+
+	/**
+	 * Class: SuperMap.SetLayerInfoParameters
+	 * 设置图层信息参数类
+	 */
+	SuperMap.SetLayerInfoParameters = SuperMap.Class({
+	    /**
+	     * APIProperty: tempLayerID
+	     * {String}临时图层的资源ID
+	     */
+	    tempLayerID: null,
+	    /**
+	     * APIProperty: layerName
+	     * {String}图层资源名
+	     */
+	    layerName: null,
+	    /**
+	     * APIProperty: resourceID
+	     * {String} 资源ID，
+	     */
+	    resourceID: null,
+
+	    /**
+	     * APIProperty: layerInfo
+	     * {String}要更新的图层信息
+	     */
+	    layerInfo: null,
+
+	    initialize: function (options) {
+	        options = options || {};
+	        SuperMap.Util.extend(this, options);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        me.tempLayerID = null;
+	        me.layerName = null;
+	        me.resourceID = null;
+	        me.layerInfo = null;
+	    },
+
+	    CLASS_NAME: "SuperMap.SetLayerInfoParameters"
+	});
+
+	module.exports = function (options) {
+	    return new SuperMap.SetLayerInfoParameters(options);
+	};
+
+
+/***/ },
+/* 87 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.REST.SetLayersInfoService
+	 * 设置图层信息服务类。可以实现创建新的临时图层和对现有临时图层的修改，当 isTempLayers 为 false
+	 * 的时候执行创建临时图层。当 isTempLayers 为 ture 并且临时图层资源 resourceID 被设置有效时执行
+	 * 对临时图层的编辑。
+	 * 该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.ServiceBase>
+	 */
+	__webpack_require__(19);
+	__webpack_require__(88);
+	SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
+
+	    /**
+	     * APIProperty: resourceID
+	     * {String} 图层资源ID，临时图层的资源ID标记。
+	     */
+	    resourceID: null,
+
+	    /**
+	     * APIProperty: isTempLayers
+	     * {Boolean>} 当前url对应的图层是否是临时图层。
+	     */
+	    isTempLayers: false,
+
+	    /**
+	     * Constructor: SuperMap.REST.SetLayersInfoService
+	     * 设置图层信息服务类构造函数。可以实现创建新的临时图层和对现有临时图层的修改。
+	     *
+	     * Parameters:
+	     * url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：
+	     * http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * resourceID - {String} 图层资源ID，临时图层的资源ID标记。
+	     * isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     */
+	    initialize: function (url, options) {
+	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	        this.resourceID = options.resourceID;
+	        this.isTempLayers = options.isTempLayers;
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	        SuperMap.Util.reset(this);
+	    },
+
+	    /**
+	     * APIMethod: processAsync
+	     * 负责将客户端的更新参数传递到服务端。
+	     * Parameters:
+	     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务<SuperMap.REST.GetLayerInfoService>.result.subLayers.layers
+	     * 返回图层信息，然后对其属性进行修改来获取。
+	     */
+	    processAsync: function (params) {
+	        var jsonParams,
+	            subLayers = [],
+	            me = this,
+	            method = "",
+	            end;
+	        if (!params) {
+	            return;
+	        }
+	        end = me.url.substr(me.url.length - 1, 1);
+	        me.url += (end === "/") ? '' : '/';
+	        //创建临时图层和设置修改临时图层信息对应不同的资源URL
+	        if (me.isTempLayers) {
+	            me.url += "tempLayersSet/" + me.resourceID;
+	            method = "PUT";
+	        } else {
+	            me.url += "tempLayersSet";
+	            method = "POST";
+	        }
+	        me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+	        var layers = params.subLayers.layers,
+	            len = layers.length;
+	        for (var i in layers) {
+	            if (layers[i].ugcLayerType === "GRID") {
+	                var colorDictionary = {};
+	                var colorDics = layers[i].colorDictionarys;
+	                for (var j in colorDics) {
+	                    var key = colorDics[j].elevation;
+	                    colorDictionary[key] = colorDics[j].color;
+	                }
+	            }
+	            layers[i].colorDictionary = colorDictionary;
+	            delete layers[i].colorDictionarys;
+	        }
+
+	        for (var i = 0; i < len; i++) {
+	            if (layers[i].toJsonObject) {
+	                //将图层信息转换成服务端能识别的简单json对象
+	                subLayers.push(layers[i].toJsonObject());
+	            } else {
+	                subLayers.push(layers[i]);
+	            }
+	        }
+	        jsonParams = SuperMap.Util.extend(jsonParams, params);
+	        jsonParams.subLayers = {"layers": subLayers};
+	        jsonParams.object = null;
+	        var jsonParamsStr = SuperMap.Util.toJSON([jsonParams]);
+	        me.request({
+	            method: method,
+	            data: jsonParamsStr,
+	            scope: me,
+	            success: me.serviceProcessCompleted,
+	            failure: me.serviceProcessFailed
+	        });
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.SetLayersInfoService"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.SetLayersInfoService(url, options);
+	};
+
+
+/***/ },
+/* 88 */
+/***/ function(module, exports) {
+
+	/**
+	 * Class: SuperMap.SetLayersInfoParameters
+	 * 设置图层信息参数类
+	 */
+	SuperMap.SetLayersInfoParameters = SuperMap.Class({
+
+	    /**
+	     * APIProperty: isTempLayers
+	     * {Boolean}是否是临时图层
+	     */
+	    isTempLayers: null,
+	    /**
+	     * APIProperty: resourceID
+	     * {String} 资源ID，
+	     */
+	    resourceID: null,
+
+	    /**
+	     * APIProperty: layerInfo
+	     * {String}要更新的图层信息
+	     */
+	    layerInfo: null,
+
+	    initialize: function (options) {
+	        options = options || {};
+	        SuperMap.Util.extend(this, options);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        me.isTempLayers = null;
+	        me.resourceID = null;
+	        me.layerInfo = null;
+	    },
+
+	    CLASS_NAME: "SuperMap.SetLayersInfoParameters"
+	});
+
+	module.exports = function (options) {
+	    return new SuperMap.SetLayersInfoParameters(options);
+	};
+
+
+/***/ },
+/* 89 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.REST.SetLayerStatusService
+	 * 子图层显示控制服务类。
+	 * 该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
+	 * 用户获取服务端返回的各子图层显示状态有两种方式：
+	 * 一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；
+	 * 一种是使用 AsyncResponder 类实现异步处理。
+	 */
+	__webpack_require__(19);
+	__webpack_require__(90);
+	SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
+
+	    lastparams: null,
+
+	    mapUrl: null,
+
+	    /**
+	     * Constructor: SuperMap.REST.SetLayerStatusService
+	     * 子图层显示控制服务类构造函数。
+	     *
+	     * Parameters:
+	     * url - {String} 地图服务访问地址。请求地图服务,URL 应为：
+	     * http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     */
+	    initialize: function (url, options) {
+	        var me = this;
+	        SuperMap.ServiceBase.prototype.initialize.apply(me, arguments);
+	        if (options) {
+	            SuperMap.Util.extend(me, options);
+	        }
+	        me.mapUrl = url;
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	        SuperMap.Util.reset(this);
+	    },
+
+	    /**
+	     * APIMethod: processAsync
+	     * 负责将客户端的更新参数传递到服务端。
+	     * Parameters:
+	     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务 <SuperMap.SetLayerStatusParameters>
+	     * 返回图层信息，然后对其属性进行修改来获取。
+	     */
+	    processAsync: function (params) {
+	        var subLayers = [],
+	            me = this,
+	            method = "POST";
+	        if (!params) {
+	            return;
+	        }
+
+	        me.url = me.mapUrl;
+	        var end = me.url.substr(me.url.length - 1, 1);
+	        me.url += (end === "/") ? '' : '/';
+
+	        if (params.resourceID == null) {
+	            me.url += "tempLayersSet";
+	            me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+
+	            me.lastparams = params;
+
+	            me.request({
+	                method: method,
+	                scope: me,
+	                success: me.createTempLayerComplete,
+	                failure: me.serviceProcessFailed
+	            });
+	        } else {
+	            me.url += "tempLayersSet/" + params.resourceID;
+	            me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+
+	            me.url += "elementRemain=true&reference=" + params.resourceID + "&holdTime=" + params.holdTime.toString();
+
+	            var jsonParameters = '[{';
+
+	            jsonParameters += '"type":"UGC",';
+	            if (params.layerStatusList != null && params.layerStatusList.length > 0) {
+	                jsonParameters += '"subLayers":' + params.toJSON();
+	            }
+	            jsonParameters += ',"visible":' + true + ',';
+	            jsonParameters += '"name":"' + this.getMapName(this.mapUrl) + '"';
+
+	            jsonParameters += '}]';
+
+	            me.request({
+	                method: "PUT",
+	                data: jsonParameters,
+	                scope: me,
+	                success: me.serviceProcessCompleted,
+	                failure: me.serviceProcessFailed
+	            });
+	        }
+	    },
+
+	    /**
+	     * Method: createTempLayerComplete
+	     * 设置完成，执行此方法。
+	     *
+	     * Parameters:
+	     * result - {Object} 服务器返回的结果对象，记录设置操作是否成功。
+	     */
+	    createTempLayerComplete: function (result) {
+	        var me = this;
+	        result = SuperMap.Util.transformResult(result);
+	        if (result.succeed) {
+	            me.lastparams.resourceID = result.newResourceID;
+	        }
+
+	        me.processAsync(me.lastparams);
+	    },
+
+	    getMapName: function (url) {
+	        var mapUrl = url;
+	        if (mapUrl.charAt(mapUrl.length - 1) === "/") {
+	            mapUrl = mapUrl.substr(0, mapUrl.length - 1);
+	        }
+	        var index = mapUrl.lastIndexOf("/");
+	        var mapName = mapUrl.substring(index + 1, mapUrl.length);
+	        return mapName;
+	    },
+
+	    /**
+	     * Method: setLayerCompleted
+	     * 设置完成，执行此方法。
+	     *
+	     * Parameters:
+	     * result - {Object} 服务器返回的结果对象，记录设置操作是否成功。
+	     */
+	    serviceProcessCompleted: function (result) {
+	        var me = this;
+	        result = SuperMap.Util.transformResult(result);
+	        if (result != null && me.lastparams != null) {
+	            result.newResourceID = me.lastparams.resourceID;
+	        }
+	        me.events.triggerEvent("processCompleted", {result: result});
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.SetLayerStatusService"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.SetLayerStatusService(url, options);
+	};
+
+
+/***/ },
+/* 90 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.SetLayerStatusParameters
+	 * 子图层显示控制参数类。
+	 * 该类存储了各子图层是否可见的状态。
+	 * 注意在 SuperMap iClient 系列产品中所说的图层与 SuperMap Deskpro 的地图对应，子图层与 SuperMap Deskpro 的图层对应。
+	 */
+
+	__webpack_require__(91);
+	SuperMap.SetLayerStatusParameters = SuperMap.Class({
+
+	    /**
+	     * APIProperty: layerStatusList
+	     * {Array<SuperMap.LayerStatus>} 获取或设置图层可见状态（SuperMap.LayerStatus）集合，必设属性。
+	     * 集合中的每个 SuperMap.LayerStatus 对象代表一个子图层的可视状态。
+	     */
+	    layerStatusList: null,
+
+	    /**
+	     * APIProperty: holdTime
+	     * {Number} 获取或设置资源在服务端保存的时间。 默认为 15 分钟。
+	     */
+	    holdTime: 15,
+
+	    /**
+	     * APIProperty: resourceID
+	     * {String} 获取或设置资源服务 ID 。非必设参数，如果设置该参数则会在指定的 TempLayer 进行图层的显示控制；
+	     * 如果不设置该参数，则会首先创建一个 TempLayer ，然后在新创建的 TempLayer 进行图层的显示控制。
+	     */
+	    resourceID: null,
+
+	    /**
+	     * Constructor: SuperMap.SetLayerStatusParameters
+	     *
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * layerStatusList - {Array<SuperMap.LayerStatus>} 获取或设置图层可见状态（SuperMap.LayerStatus）集合，必设属性。
+	     * 集合中的每个 SuperMap.LayerStatus 对象代表一个子图层的可视状态。
+	     * holdTime - {String} 获取或设置资源在服务端保存的时间。
+	     * resourceID - {String} 获取或设置资源服务 ID。
 	     */
 	    initialize: function (options) {
 	        var me = this;
-	        me.defaultStyle = new SuperMap.ServerStyle();
-	        SuperMap.Theme.prototype.initialize.apply(this, ["UNIQUE", options]);
+	        me.layerStatusList = [];
 	        if (options) {
 	            SuperMap.Util.extend(this, options);
 	        }
@@ -13815,122 +12108,3051 @@
 	     * 释放资源，将引用资源的属性置空。
 	     */
 	    destroy: function () {
-	        SuperMap.Theme.prototype.destroy.apply(this, arguments);
 	        var me = this;
-	        me.uniqueExpression = null;
-	        me.colorGradientType = null;
-	        if (me.items) {
-	            if (me.items.length > 0) {
-	                for (var item in me.items) {
-	                    me.items[item].destroy();
-	                    me.items[item] = null;
-	                }
-	            }
-	            me.items = null;
+	        me.layerStatusList = null;
+	        me.holdTime = null;
+	        me.resourceID = null;
+	    },
+
+	    /**
+	     * Method: toJSON
+	     * 生成json。
+	     */
+	    toJSON: function () {
+	        var json = '{';
+	        json += '"layers":[';
+	        var v = [];
+	        for (var i = 0, len = this.layerStatusList.length; i < len; i++) {
+	            v.push(this.layerStatusList[i].toJSON());
 	        }
 
-	        if (me.defaultStyle) {
-	            me.defaultStyle.destroy();
-	            me.defaultStyle = null;
+	        json += v;
+	        json += ']';
+	        json += '}';
+
+	        return json;
+	    },
+
+	    CLASS_NAME: "SuperMap.SetLayerStatusParameters"
+	});
+	module.exports = function (options) {
+	    return new SuperMap.SetLayerStatusParameters(options);
+	};
+
+/***/ },
+/* 91 */
+/***/ function(module, exports) {
+
+	/**
+	 * Class: SuperMap.LayerStatus
+	 * 子图层显示参数类.。
+	 * 该类存储了各个子图层的名字和是否可见的状态。
+	 *
+	 */
+
+	SuperMap.LayerStatus = SuperMap.Class({
+
+	    /**
+	     * APIProperty: layerName
+	     * {String} 获取或设置图层名称。必设属性。。
+	     */
+	    layerName: null,
+
+	    /**
+	     * APIProperty: isVisible
+	     * {Boolean} 获取或设置图层是否可见，true 表示可见。必设属性。
+	     */
+	    isVisible: null,
+
+	    /**
+	     * APIProperty: displayFilter
+	     * {String} 图层显示 SQL 过滤条件，如 layerStatus.displayFilter = "smid < 10"，表示仅显示 smid 值小于 10 的对象。
+	     */
+	    displayFilter: null,
+
+	    /**
+	     * APIProperty: fieldValuesDisplayFilter
+	     * {Object} 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode,他们的作用如下：
+	     * values：{Array<Number>} - 就是要过滤的值；
+	     * fieldName：{String} - 要过滤的字段名称 只支持数字类型的字段；
+	     * fieldValuesDisplayMode：{String} 目前有两个DISPLAY/DISABLE。当为DISPLAY时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素
+	     * */
+	    fieldValuesDisplayFilter: null,
+
+	    /**
+	     * Constructor: SuperMap.LayerStatus
+	     *
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * layerName - {String} 获取或设置图层名称。
+	     * isVisible - {Boolean} 获取或设置图层是否可见，true 表示可见。
+	     * displayFilter - {String} 图层显示 SQL 过滤条件。
+	     */
+	    initialize: function (options) {
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
 	        }
 	    },
 
 	    /**
-	     * Method: toServerJSONObject
-	     * 转换成对应的 JSON 格式对象。
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
 	     */
-	    toServerJSONObject: function () {
-	        var obj = {};
-	        obj = SuperMap.Util.copyAttributes(obj, this);
-	        if (obj.defaultStyle) {
-	            if (obj.defaultStyle.toServerJSONObject) {
-	                obj.defaultStyle = obj.defaultStyle.toServerJSONObject();
-	            }
-	        }
-	        if (obj.items) {
-	            var items = [],
-	                len = obj.items.length;
-	            for (var i = 0; i < len; i++) {
-	                items.push(obj.items[i].toServerJSONObject());
-	            }
-	            obj.items = items;
-	        }
-	        return obj;
+	    destroy: function () {
+	        var me = this;
+	        me.layerName = null;
+	        me.isVisible = null;
+	        me.displayFilter = null;
 	    },
 
-	    CLASS_NAME: "SuperMap.ThemeUnique"
+	    /**
+	     * Method: toJSON
+	     * 生成对应的json。
+	     */
+	    toJSON: function () {
+	        var json = '{';
+	        json += '"type":"UGC",';
+	        var v = [];
+	        if (this.layerName) {
+	            v.push('"name":"' + this.layerName + '"');
+	            v.push('"visible":' + this.isVisible);
+	        }
+
+	        if (this.displayFilter) {
+	            v.push('"displayFilter":"' + this.displayFilter + '"');
+	        }
+
+	        if (this.minScale || this.minScale == 0) {
+	            v.push('"minScale":' + this.minScale);
+	        }
+
+	        if (this.maxScale || this.maxScale == 0) {
+	            v.push('"maxScale":' + this.maxScale);
+	        }
+
+	        if (this.fieldValuesDisplayFilter) {
+	            v.push('"fieldValuesDisplayFilter":' + SuperMap.Util.toJSON(this.fieldValuesDisplayFilter));
+	        }
+
+	        json += v;
+	        json += '}';
+
+	        return json;
+	    },
+
+	    CLASS_NAME: "SuperMap.LayerStatus"
 	});
-	SuperMap.ThemeUnique.fromObj = function (obj) {
-	    var res = new SuperMap.ThemeUnique();
-	    var uItems = obj.items;
-	    var len = uItems ? uItems.length : 0;
-	    SuperMap.Util.extend(res, obj);
-	    res.items = [];
-	    res.defaultStyle = new SuperMap.ServerStyle.fromJson(obj.defaultStyle);
-	    for (var i = 0; i < len; i++) {
-	        res.items.push(new SuperMap.ThemeUniqueItem.fromObj(uItems[i]));
-	    }
-	    return res;
-	};
 	module.exports = function (options) {
-	    return new SuperMap.ThemeUnique(options);
+	    return new SuperMap.LayerStatus(options);
 	};
 
+/***/ },
+/* 92 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class:MeasureService
+	 * 距离测量服务
+	 */
+	__webpack_require__(15);
+	__webpack_require__(93);
+
+	ol.supermap.MeasureService = function (url, options) {
+	    ol.supermap.ServiceBase.call(this, url, options);
+	}
+	ol.inherits(ol.supermap.MeasureService, ol.supermap.ServiceBase);
+
+	ol.supermap.MeasureService.prototype.measureDistance = function (params) {
+	    this.measure(params, 'DISTANCE');
+	};
+
+	ol.supermap.MeasureService.prototype.measureArea = function (params) {
+	    this.measure(params, 'AREA');
+	};
+
+	ol.supermap.MeasureService.prototype.measure = function (params, type) {
+	    var me = this;
+	    var measureService = new SuperMap.REST.MeasureService(me.options.url, {
+	        measureMode: type,
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        }
+	    });
+	    measureService.processAsync(me._processParam(params));
+	    return me;
+	};
+
+	ol.supermap.MeasureService.prototype._processParam = function (params) {
+	    if (params && params.geometry) {
+	        params.geometry = ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
+	    }
+	    return params;
+	};
+	module.exports = ol.supermap.MeasureService;
+
+/***/ },
+/* 93 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.REST.MeasureService
+	 * 量算服务类。
+	 * 该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.ServiceBase>
+	 */
+	__webpack_require__(19);
+	__webpack_require__(94);
+	SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
+
+	    /**
+	     * APIProperty: measureMode
+	     * {<SuperMap.MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。默认值为：MeasureMode.DISTANCE 。
+	     */
+	    measureMode: SuperMap.MeasureMode.DISTANCE,
+
+	    /**
+	     * Constructor: SuperMap.REST.MeasureService
+	     * 量算服务类构造函数。
+	     *
+	     * 例如：
+	     * (start code)
+	     * var myMeasuerService = new SuperMap.REST.MeasureService(url, {
+	     *      measureMode: SuperMap.MeasureMode.DISTANCE,
+	     *      eventListeners:{
+	     *          "processCompleted": measureCompleted
+	     *      }
+	     * });
+	     * (end)
+	     *
+	     * Parameters:
+	     * url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     * measureMode - {<MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。
+	     */
+	    initialize: function (url, options) {
+	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用的资源属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	        var me = this;
+	        me.measureMode = null;
+	    },
+
+	    /**
+	     * APIMethod: processAsync
+	     * 负责将客户端的量算参数传递到服务端。
+	     *
+	     * Parameters:
+	     * params - {<SuperMap.MeasureParameters>} 量算参数。
+	     */
+	    processAsync: function (params) {
+	        if (!params) {
+	            return;
+	        }
+	        var me = this,
+	            geometry = params.geometry,
+	            pointsCount = 0,
+	            point2ds = null,
+	            urlParameters = null,
+	            end = null;
+	        if (!geometry) {
+	            return;
+	        }
+	        end = me.url.substr(me.url.length - 1, 1);
+	        if (me.measureMode === SuperMap.MeasureMode.AREA) {
+	            if (me.isInTheSameDomain) {
+	                me.url += ((end === "/") ? "area.json?" : "/area.json?");
+	            }
+	            else {
+	                me.url += ((end === "/") ? "area.jsonp?" : "/area.jsonp?");
+	            }
+	        } else {
+	            if (me.isInTheSameDomain) {
+	                me.url += ((end === "/") ? "distance.json?" : "/distance.json?");
+	            }
+	            else {
+	                me.url += ((end === "/") ? "distance.jsonp?" : "/distance.jsonp?");
+	            }
+	        }
+	        var serverGeometry = SuperMap.REST.ServerGeometry.fromGeometry(geometry);
+	        if (!serverGeometry) {
+	            return;
+	        }
+	        pointsCount = serverGeometry.parts[0];
+	        point2ds = serverGeometry.points.splice(0, pointsCount);
+
+	        var prjCoordSysTemp, prjCodeTemp, paramsTemp;
+	        if (params.prjCoordSys) {
+	            if (typeof (params.prjCoordSys) === "object") {
+	                prjCodeTemp = params.prjCoordSys.projCode;
+	                prjCoordSysTemp = '{"epsgCode"' + prjCodeTemp.substring(prjCodeTemp.indexOf(":"), prjCodeTemp.length) + "}";
+	            }
+	            else if (typeof (params.prjCoordSys) === "string") {
+	                prjCoordSysTemp = '{"epsgCode"' + params.prjCoordSys.substring(params.prjCoordSys.indexOf(":"), params.prjCoordSys.length) + "}";
+	            }
+	            paramsTemp = {"point2Ds": SuperMap.Util.toJSON(point2ds), "unit": params.unit, "prjCoordSys": prjCoordSysTemp};
+	        }
+	        else {
+	            paramsTemp = {"point2Ds": SuperMap.Util.toJSON(point2ds), "unit": params.unit};
+	        }
+
+	        me.request({
+	            method: "GET",
+	            params: paramsTemp,
+	            scope: me,
+	            success: me.serviceProcessCompleted,
+	            failure: me.serviceProcessFailed
+	        });
+
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.MeasureService"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.MeasureService(url, options);
+	};
+
+/***/ },
+/* 94 */
+/***/ function(module, exports) {
+
+	/**
+	 * Class: SuperMap.MeasureParameters
+	 * 量算参数类。
+	 * 客户端要量算的地物间的距离或某个区域的面积是一个 {<Object>}  类型的几何对象（{<Line>} 或 {<Polygon>}），
+	 * 它将与指定的量算单位一起作为量算参数传到服务端。最终服务端将以指定单位返回得到的距离或面积。 
+	 */
+
+	SuperMap.MeasureParameters = SuperMap.Class({
+
+	    /** 
+	     * APIProperty: geometry
+	     * {<Object>} 要量算的几何对象（{<Line>} 或 {<Polygon>}），必设属性。
+	     */
+	    geometry: null,
+	    
+	    /** 
+	     * APIProperty: unit
+	     * {<Unit>}  量算单位。默认单位：米，即量算结果以米为单位。
+	     */
+	    unit: SuperMap.Unit.METER,
+
+	    /**
+	     * APIProperty: projection
+	     * {String} 在 SuperMap.MeasureParameters 的 options 中被设置，用来指定该量算操作所使用的投影。该项默认值为空。
+	    */
+	    prjCoordSys: null,
+
+	    /**
+	     * APIProperty: distanceMode
+	     * {String} 在SuperMap.MeasureParameters的options中设置，用来指定量算的方式为按球面长度'Geodesic'或者平面长度'Planar'来计算，默认为'Geodesic'
+	     * 
+	     * Exampels:
+	     * (start code)
+	     * var param = new SuperMap.MeasureParameters(getmetry,{distanceMode:'Planar'});
+	     * (end)
+	     */
+	     distanceMode: null,
+
+	    /**
+	     * Constructor: SuperMap.MeasureParameters
+	     * 量算参数类构造函数。
+	     *
+	     * Parameters:
+	     * geometry - {<Object>} 要量算的几何对象。
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * unit - {<Unit>} 量算单位。  
+	     */
+	    initialize: function(geometry, options) {
+	        if (!geometry) {
+	            return;
+	        }
+	        this.geometry = geometry;
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+	    
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。 
+	     */
+	    destroy: function() {
+	        var me = this;
+	        me.geometry = null;
+	        me.unit = null;
+	        me.prjCoordSys = null;
+	    },
+	    
+	    CLASS_NAME: "SuperMap.MeasureParameters"
+	});
+	module.exports = function (geometry, options) {
+	    return new SuperMap.MeasureParameters(geometry, options);
+	};
+
+/***/ },
+/* 95 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: FieldStatisticService
+	 * 字段查询服务类
+	 */
+	__webpack_require__(15);
+	__webpack_require__(96);
+
+	ol.supermap.FieldStatisticService = function (url, options) {
+	    ol.supermap.ServiceBase.call(this, url, options);
+	    this.currentStatisticResult = {fieldName: options.fieldName};
+	    if (!options.statisticMode || (typeof options.statisticMode !== "Array")) {
+	        this.options.statisticMode = SuperMap.REST.StatisticMode;
+	    }
+	}
+	ol.inherits(ol.supermap.FieldStatisticService, ol.supermap.ServiceBase);
+
+
+	ol.supermap.FieldStatisticService.prototype.getFieldStatisticInfo = function () {
+	    var me = this;
+	    var modes = me.options.statisticMode;
+	    //针对每种统计方式分别进行请求
+	    for (var mode in modes) {
+	        this.currentStatisticResult[modes[mode]] = null;
+	        this._fieldStatisticRequest(modes[mode]);
+	    }
+	    return me;
+	}
+
+	ol.supermap.FieldStatisticService.prototype._fieldStatisticRequest = function (statisticMode) {
+	    var me = this, statisticService;
+	    statisticService = new SuperMap.REST.FieldStatisticService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        },
+	        datasource: me.options.dataSourceName,
+	        dataset: me.options.dataSetName,
+	        field: me.options.fieldName,
+	        statisticMode: statisticMode
+	    });
+	    statisticService.processAsync();
+	}
+
+	ol.supermap.FieldStatisticService.prototype.processCompleted = function (fieldStatisticResult) {
+	    var getAll = true,
+	        result = fieldStatisticResult.result;
+	    if (this.currentStatisticResult) {
+	        if (null == this.currentStatisticResult[result.mode]) {
+	            this.currentStatisticResult[result.mode] = result.result;
+	        }
+	    }
+	    for (var mode in this.currentStatisticResult) {
+	        if (null == this.currentStatisticResult[mode]) {
+	            getAll = false;
+	            break;
+	        }
+	    }
+	    if (getAll) {
+	        this.dispatchEvent(new ol.Collection.Event('complete', {result: this.currentStatisticResult}))
+	    }
+	}
+
+	module.exports = ol.supermap.FieldStatisticService;
+
+/***/ },
+/* 96 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.REST.FieldStatisticService
+	 * 字段查询统计服务类。用来完成对指定数据集指定字段的查询统计分析，即求平均值，最大值等。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.ServiceBase>
+	 */
+	__webpack_require__(19);
+	__webpack_require__(97);
+	SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
+
+	    /**
+	     * APIProperty: datasource
+	     * {String} 数据集所在的数据源名称。
+	     */
+	    datasource: null,
+
+	    /**
+	     * APIProperty: dataset
+	     * {String} 数据集名称。
+	     */
+	    dataset: null,
+
+	    /**
+	     * APIProperty: field
+	     * {String} 查询统计的目标字段名称。
+	     */
+	    field: null,
+
+	    /**
+	     * APIProperty: statisticMode
+	     * {<StatisticMode>} 字段查询统计的方法类型。
+	     */
+	    statisticMode: null,
+
+	    /**
+	     * Constructor: SuperMap.REST.FieldStatisticService
+	     * 字段查询统计服务类构造函数。
+	     *
+	     * 例如：
+	     * (start code)
+	     * var myService = new SuperMap.REST.FieldStatisticService(url, {eventListeners: {
+	     *     "processCompleted": fieldStatisticCompleted, 
+	     *     "processFailed": fieldStatisticError
+	     *     }，
+	     *     datasource: "World",
+	     *     dataset: "Countries",
+	     *     field: "SmID",
+	     *     statisticMode: StatisticMode.AVERAGE
+	     * };
+	     * (end)
+	     *
+	     * Parameters:
+	     * url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/data-world/rest/data 即可。
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     * datasource - {String} 数据集所在的数据源名称。
+	     * dataset - {String} 数据集名称。
+	     * field - {String} 查询统计的目标字段名称。
+	     * statisticMode - {<StatisticMode>} 字段查询统计的方法类型。
+	     */
+	    initialize: function (url, options) {
+	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	        var me = this;
+	        me.datasource = null;
+	        me.dataset = null;
+	        me.field = null;
+	        me.statisticMode = null;
+	    },
+
+	    /**
+	     * APIMethod: processAsync
+	     * 执行服务，进行指定字段的查询统计。
+	     */
+	    processAsync: function () {
+	        var me = this,
+	            end = me.url.substr(me.url.length - 1, 1),
+	            fieldStatisticURL = "datasources/" + me.datasource + "/datasets/" + me.dataset + "/fields/" + me.field + "/" + me.statisticMode;
+	        if (me.isInTheSameDomain) {
+	            me.url += (end == "/") ? fieldStatisticURL + ".json?" : "/" + fieldStatisticURL + ".json?";
+	        } else {
+	            me.url += (end == "/") ? fieldStatisticURL + ".jsonp?" : "/" + fieldStatisticURL + ".jsonp?";
+	        }
+
+	        me.request({
+	            method: "GET",
+	            data: null,
+	            scope: me,
+	            success: me.serviceProcessCompleted,
+	            failure: me.serviceProcessFailed
+	        });
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.FieldStatisticService"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.FieldStatisticService(url, options);
+	};
+
+/***/ },
+/* 97 */
+/***/ function(module, exports) {
+
+	/**
+	 * Class: SuperMap.FieldStatisticsParameters
+	 * 字段统计信息查询参数类
+	 */
+	SuperMap.FieldStatisticsParameters = SuperMap.Class({
+	    /**
+	     * APIProperty: fieldName
+	     * {String}字段名
+	     */
+	    fieldName: null,
+	    /**
+	     * APIProperty: statisticMode
+	     * {SuperMap.StatisticMode}字段统计方法类型
+	     */
+	    statisticMode: null,
+
+	    initialize: function (options) {
+	        options = options || {};
+	        SuperMap.Util.extend(this, options);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        me.fieldName = null;
+	        me.statisticMode = null;
+	    },
+
+	    CLASS_NAME: "SuperMap.FieldStatisticsParameters"
+	});
+
+	module.exports = function (options) {
+	    return new SuperMap.FieldStatisticsParameters(options);
+	};
+
+
+/***/ },
+/* 98 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: GetFeaturesService
+	 * 数据集查询类。
+	 * 提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询
+	 */
+	__webpack_require__(15);
+	__webpack_require__(99);
+	__webpack_require__(103);
+	__webpack_require__(105);
+	__webpack_require__(107);
+	__webpack_require__(109);
+
+
+	ol.supermap.GetFeaturesService = function (url, options) {
+	    ol.supermap.ServiceBase.call(this, url, options);
+	};
+	ol.inherits(ol.supermap.GetFeaturesService, ol.supermap.ServiceBase);
+
+	/**
+	 * 数据集ID查询服务
+	 * @param params <GetFeaturesByIDsParameters>
+	 * @param resultFormat
+	 *	<SuperMap.DataFormat>
+	 */
+	ol.supermap.GetFeaturesService.prototype.getFeaturesByIDs = function (params, resultFormat) {
+	    var me = this;
+	    var getFeaturesByIDsService = new SuperMap.REST.GetFeaturesByIDsService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        },
+	        format: me._processFormat(resultFormat)
+	    });
+	    getFeaturesByIDsService.processAsync(me._processParams(params));
+	    return me;
+
+	};
+	/**
+	 * 数据集Bounds查询服务
+	 * @param params <GetFeaturesByBoundsParameters>
+	 * @param resultFormat
+	 *	<SuperMap.DataFormat>
+	 */
+	ol.supermap.GetFeaturesService.prototype.getFeaturesByBounds = function (params, resultFormat) {
+	    var me = this;
+	    var getFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        },
+	        format: me._processFormat(resultFormat)
+	    });
+	    getFeaturesByBoundsService.processAsync(me._processParams(params));
+	    return me;
+	};
+	/**
+	 * 数据集Buffer查询服务
+	 * @param params <GetFeaturesByBufferParameters>
+	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
+	 */
+	ol.supermap.GetFeaturesService.prototype.getFeaturesByBuffer = function (params, resultFormat) {
+	    var me = this;
+	    var getFeatureService = new SuperMap.REST.GetFeaturesByBufferService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        },
+	        format: me._processFormat(resultFormat)
+	    });
+	    getFeatureService.processAsync(me._processParams(params));
+	    return me;
+	};
+	/**
+	 * 数据集SQL查询服务
+	 * @param params <GetFeaturesBySQLParameters>
+	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
+	 */
+	ol.supermap.GetFeaturesService.prototype.getFeaturesBySQL = function (params, resultFormat) {
+	    var me = this;
+	    var getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        },
+	        format: me._processFormat(resultFormat)
+	    });
+
+	    getFeatureBySQLService.processAsync(me._processParams(params));
+	    return me;
+	};
+	/**
+	 * 数据集几何查询服务类
+	 * @param params <GetFeaturesByGeometryParameters>
+	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
+	 */
+	ol.supermap.GetFeaturesService.prototype.getFeaturesByGeometry = function (params, resultFormat) {
+	    var me = this;
+	    var getFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByGeometryService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        },
+	        format: me._processFormat(resultFormat)
+	    });
+	    getFeaturesByGeometryService.processAsync(me._processParams(params));
+	    return me;
+	};
+
+	ol.supermap.GetFeaturesService.prototype._processParams = function (params) {
+	    if (!params) {
+	        return {};
+	    }
+	    params.returnContent = (params.returnContent == null) ? true : params.returnContent;
+	    params.fromIndex = params.fromIndex ? params.fromIndex : 0;
+	    params.toIndex = params.fromIndex ? params.fromIndex : -1;
+	    if (params.bounds) {
+	        params.bounds = new SuperMap.Bounds(
+	            params.bounds[0],
+	            params.bounds[1],
+	            params.bounds[2],
+	            params.bounds[3]
+	        );
+	    }
+	    if (params.geometry) {
+	        params.geometry = ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
+	    }
+	    return params;
+	};
+
+	ol.supermap.GetFeaturesService.prototype._processFormat = function (resultFormat) {
+	    return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+	};
+
+	module.exports = ol.supermap.GetFeaturesService;
+
+/***/ },
+/* 99 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.REST.GetFeaturesByIDsService
+	 * 数据集ID查询服务类。
+	 * 在数据集集合中查找指定 ID 号对应的空间地物要素。
+	 *  
+	 * Inherits from:
+	 *  - <SuperMap.REST.GetFeaturesServiceBase>
+	 */
+	__webpack_require__(100);
+	__webpack_require__(101);
+	SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
+
+	    /**
+	     * Constructor: SuperMap.REST.GetFeaturesByIDsService
+	     * 数据集ID查询服务类构造函数。
+	     *
+	     * 例如：
+	     * (start code)
+	     * var myGetFeaturesByIDsService = new SuperMap.REST.GetFeaturesByIDsService(url, {
+	     *     eventListeners: {
+	     *         "processCompleted": getFeatureCompleted, 
+	     *         "processFailed": getFeatureError
+	     *            }
+	     *     });
+	     * function getFeatureCompleted(object){//todo};
+	     * function getFeatureError(object){//todo}
+	     * (end)     
+	     *
+	     * Parameters:
+	     * url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
+	     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
+	     * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     */
+	    initialize: function(url, options) {
+	        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+	    },
+	    
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。  
+	     */
+	    destroy: function() {
+	        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+	    },
+	    
+	    /**
+	     * Method: getJsonParameters
+	     * 将查询参数转化为 JSON 字符串。
+	     * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
+	     *
+	     * Parameters:
+	     * params - {<SuperMap.GetFeaturesByIDsParameters>}
+	     *
+	     * Returns:
+	     * {Object} 转化后的 JSON 字符串。
+	     */
+	    getJsonParameters: function(params) {
+	        return  SuperMap.GetFeaturesByIDsParameters.toJsonParameters(params);
+	    },
+	    
+	    CLASS_NAME: "SuperMap.REST.GetFeaturesByIDsService"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.GetFeaturesByIDsService(url, options);
+	};
+
+/***/ },
+/* 100 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.REST.GetFeaturesServiceBase
+	 * 数据服务中数据集查询服务基类。
+	 * 获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.ServiceBase>
+	 */
+
+	// TODO 待iServer featureResult GeoJSON表述bug修复当修改此类中TODO注释说明的地方
+	__webpack_require__(6);
+	__webpack_require__(19);
+
+	SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
+
+	    /**
+	     * Property: returnContent
+	     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。
+	     *           如果为 true，则直接返回新创建资源，即查询结果的表述。
+	     *           如果为 false，则返回的是查询结果资源的 URI。默认为 false。
+	     */
+	    returnContent: true,
+
+	    /**
+	     * Property: fromIndex
+	     * {Integer} 查询结果的最小索引号。
+	     *         默认值是0，如果该值大于查询结果的最大索引号，则查询结果为空。
+	     */
+	    fromIndex: 0,
+
+	    /**
+	     * Property: toIndex
+	     * {Integer} 查询结果的最大索引号。
+	     *         如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
+	     */
+	    toIndex: 19,
+
+	    /**
+	     * APIProperty: maxFeatures
+	     * {Integer} 进行SQL查询时，用于设置服务端返回查询结果条目数量，默认为1000。
+	     */
+	    maxFeatures: null,
+
+	    /**
+	     *  Property: format
+	     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+	     *  参数格式为"ISERVER","GEOJSON",GEOJSON
+	     */
+	    format: SuperMap.DataFormat.GEOJSON,
+
+	    /**
+	     * Constructor: SuperMap.REST.GetFeaturesServiceBase
+	     * 数据集查询服务基类构造函数。
+	     *
+	     * 例如：
+	     * (start code)
+	     * var myService = new SuperMap.REST.GetFeaturesServiceBase(url, {
+	     *     eventListeners: {
+	     *         "processCompleted": getFeatureCompleted, 
+	     *         "processFailed": getFeatureError
+	     *     }
+	     * });
+	     * (end)
+	     *
+	     * Parameters:
+	     * url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
+	     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
+	     * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     */
+	    initialize: function (url, options) {
+	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	        options = options || {};
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	        var me = this, end;
+	        if (options && options.format) {
+	            me.format = options.format.toUpperCase();
+	        }
+
+	        end = me.url.substr(me.url.length - 1, 1);
+	        // TODO 待iServer featureResul资源GeoJSON表述bug修复当使用以下注释掉的逻辑
+	        // if (me.format==="geojson" && me.isInTheSameDomain) {
+	        //     me.url += (end == "/") ? "featureResults.geojson?" : "/featureResults.geojson?";
+	        // } else {
+	        //     me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
+	        // }
+	        if (me.isInTheSameDomain) {
+	            me.url += (end == "/") ? "featureResults.json?" : "/featureResults.json?";
+	        } else {
+	            me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	        var me = this;
+	        me.returnContent = null;
+	        me.fromIndex = null;
+	        me.toIndex = null;
+	        me.maxFeatures = null;
+	        me.format = null;
+	    },
+
+	    /**
+	     * APIMethod: processAsync
+	     * 负责将客户端的查询参数传递到服务端。
+	     *
+	     * Parameters:
+	     * params - {<GetFeaturesParametersBase>} 查询参数。
+	     */
+	    processAsync: function (params) {
+	        if (!params) {
+	            return;
+	        }
+	        var me = this,
+	            jsonParameters = null,
+	            firstPara = true;
+
+	        me.returnContent = params.returnContent;
+	        me.fromIndex = params.fromIndex;
+	        me.toIndex = params.toIndex;
+	        me.maxFeatures = params.maxFeatures;
+	        if (me.returnContent) {
+	            me.url += "returnContent=" + me.returnContent;
+	            firstPara = false;
+	        }
+	        if (me.fromIndex != null &&
+	            me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex) && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
+	            me.url += "&fromIndex=" + me.fromIndex + "&toIndex=" + me.toIndex;
+	        }
+
+	        if (params.returnCountOnly) me.url += "&returnCountOnly=" + params.returnContent;
+	        jsonParameters = me.getJsonParameters(params);
+	        me.request({
+	            method: "POST",
+	            data: jsonParameters,
+	            scope: me,
+	            success: me.serviceProcessCompleted,
+	            failure: me.serviceProcessFailed
+	        });
+	    },
+
+	    /**
+	     * Method: getFeatureComplete
+	     * 查询完成，执行此方法。
+	     *
+	     * Parameters:
+	     * result - {Object} 服务器返回的结果对象。
+	     */
+	    serviceProcessCompleted: function (result) {
+	        var me = this;
+	        result = SuperMap.Util.transformResult(result);
+	        if (me.format === SuperMap.DataFormat.GEOJSON && result.features) {
+	            var geoJSONFormat = new SuperMap.Format.GeoJSON();
+	            result.features = JSON.parse(geoJSONFormat.write(result.features));
+	        }
+	        me.events.triggerEvent("processCompleted", {result: result});
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.GetFeaturesServiceBase"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.GetFeaturesServiceBase(url, options);
+	};
+
+/***/ },
+/* 101 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.GetFeaturesByIDsParameters
+	 * ID 查询参数类。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.GetFeaturesParametersBase>
+	 */
+	__webpack_require__(102);
+	SuperMap.GetFeaturesByIDsParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
+
+	    /**
+	     * Property: getFeatureMode
+	     * {String} 数据集查询模式。
+	     */
+	    getFeatureMode: "ID",
+
+	    /**
+	     * APIProperty: IDs
+	     * {Array(Integer)} 所要查询指定的元素ID信息。
+	     */
+	    IDs: null,
+
+	    /**
+	     * APIProperty: fields
+	     * {Array(String)} 设置查询结果返回字段。
+	     *                 当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。
+	     *                 不设置即返回全部字段。
+	     */
+	    fields: null,
+
+	    /**
+	     * Constructor: GetFeaturesBySQLParameters
+	     * SQL 查询参数类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * IDs - {Array(Integer)} 所要查询指定的元素ID信息。
+	     * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。
+	     * dataSetNames - {Array(String)} 数据集集合中的数据集名称列表。
+	     * returnContent - {Boolean} 是否直接返回查询结果。
+	     * fromIndex - {Integer} 查询结果的最小索引号。
+	     * toIndex - {Integer} 查询结果的最大索引号。
+	     */
+	    initialize: function (options) {
+	        SuperMap.GetFeaturesParametersBase.prototype.initialize.apply(this, arguments);
+	        if (!options) {
+	            return;
+	        }
+	        SuperMap.Util.extend(this, options);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        SuperMap.GetFeaturesParametersBase.prototype.destroy.apply(me, arguments);
+	        me.IDs = null;
+	        me.getFeatureMode = null;
+	        if (me.fields) {
+	            while (me.fields.length > 0) {
+	                me.fields.pop();
+	            }
+	            me.fields = null;
+	        }
+	    },
+	    CLASS_NAME: "SuperMap.GetFeaturesByIDsParameters"
+	});
+
+	/**
+	 * Function: SuperMap.GetFeaturesByIDsParameters.toJsonParameters
+	 * 将<SuperMap.GetFeaturesByIDsParameters>对象参数转换为json字符串。
+	 *
+	 * Parameters:
+	 * params - {<SuperMap.GetFeaturesByIDsParameters>} IDs查询参数。
+	 *
+	 * Returns:
+	 * {String} 转化后的 json字符串。
+	 */
+	SuperMap.GetFeaturesByIDsParameters.toJsonParameters = function (params) {
+	    var parasByIDs, filterParameter;
+
+	    parasByIDs = {
+	        datasetNames: params.datasetNames,
+	        getFeatureMode: "ID",
+	        ids: params.IDs
+	    };
+	    if (params.fields) {
+	        filterParameter = new SuperMap.FilterParameter();
+	        filterParameter.name = params.datasetNames;
+	        filterParameter.fields = params.fields;
+	        parasByIDs.queryParameter = filterParameter;
+	    }
+	    return SuperMap.Util.toJSON(parasByIDs);
+	};
+	module.exports = function (options) {
+	    return new SuperMap.GetFeaturesByIDsParameters(options);
+	};
+
+/***/ },
+/* 102 */
+/***/ function(module, exports) {
+
+	/**
+	 * Class: SuperMap.GetFeaturesParametersBase
+	 * 数据服务中数据集查询参数基类。
+	 */
+
+	SuperMap.GetFeaturesParametersBase = SuperMap.Class({
+	    /**
+	     * APIProperty: datasetNames
+	     * {Array(String)} 数据集集合中的数据集名称列表。
+	     */
+	    datasetNames: null,
+
+	    /**
+	     * APIProperty: returnContent
+	     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。
+	     *           如果为 true，则直接返回新创建资源，即查询结果的表述。
+	     *           如果为 false，则返回的是查询结果资源的 URI。默认为 true。
+	     */
+	    returnContent: true,
+
+	    /**
+	     * APIProperty: fromIndex
+	     * {Integer} 查询结果的最小索引号。
+	     *           默认值是0，如果该值大于查询结果的最大索引号，则查询结果为空。
+	     */
+	    fromIndex: 0,
+
+	    /**
+	     * APIProperty: toIndex
+	     * {Integer} 查询结果的最大索引号。
+	     *           默认值是19，如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
+	     */
+	    toIndex: 19,
+
+	    /**
+	     * APIProperty: returnCountOnly
+	     * {Boolean} 只返回查询结果的总数，默认为false。
+	     */
+	    returnCountOnly: false,
+
+	    /**
+	     * APIProperty: maxFeatures
+	     * {Integer} 进行SQL查询时，用于设置服务端返回查询结果条目数量，默认为1000。
+	     */
+	    maxFeatures: null,
+
+	    /**
+	     * Constructor: SuperMap.GetFeaturesParametersBase
+	     * SQL 查询参数类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。
+	     * returnContent - {<SuperMap.FilterParameter>} 是否直接返回查询结果。
+	     * fromIndex - {Integer} 查询结果的最小索引号。
+	     * toIndex - {Integer} 查询结果的最大索引号。
+	     */
+	    initialize: function (options) {
+	        if (!options) {
+	            return;
+	        }
+	        SuperMap.Util.extend(this, options);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        me.datasetNames = null;
+	        me.returnContent = null;
+	        me.fromIndex = null;
+	        me.toIndex = null;
+	        me.maxFeatures = null;
+	    },
+
+	    CLASS_NAME: "SuperMap.GetFeaturesParametersBase"
+	});
+	module.exports = function (options) {
+	    return new SuperMap.GetFeaturesParametersBase(options);
+	};
+
+/***/ },
+/* 103 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.REST.GetFeaturesBySQLService
+	 * 数据服务中数据集 SQL 查询服务类。
+	 * 在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
+	 * 
+	 * Inherits from:
+	 *  - <SuperMap.REST.GetFeaturesServiceBase>
+	 */
+	__webpack_require__(100);
+	__webpack_require__(104);
+	SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
+
+	    /**
+	     * Constructor: SuperMap.REST.GetFeaturesBySQLService
+	     * SQL 查询服务类构造函数。
+	     *
+	     * 例如：
+	     * (start code)     
+	     * var myGetFeaturesBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url, {
+	     *     eventListeners: {
+	     *         "processCompleted": GetFeaturesCompleted, 
+	     *         "processFailed": GetFeaturesError
+	     *         }
+	     * });
+	     * function getFeaturesCompleted(object){//todo};
+	     * function getFeaturesError(object){//todo};
+	     * (end)
+	     *
+	     * Parameters:
+	     * url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
+	     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
+	     * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     */
+	    initialize: function(url, options) {
+	        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+	    },
+	    
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。  
+	     */
+	    destroy: function() {
+	        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+	    },
+	    
+	    /**
+	     * Method: getJsonParameters
+	     * 将查询参数转化为 JSON 字符串。
+	     * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
+	     *
+	     * Parameters:
+	     * params - {<SuperMap.GetFeaturesBySQLParameters>}
+	     *
+	     * Returns:
+	     * {Object} 转化后的 JSON 字符串。
+	     */
+	    getJsonParameters: function(params) {
+	        return  SuperMap.GetFeaturesBySQLParameters.toJsonParameters(params);
+	    },
+	    
+	    CLASS_NAME: "SuperMap.REST.GetFeaturesBySQLService"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.GetFeaturesBySQLService(url, options);
+	};
+
+/***/ },
+/* 104 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.GetFeaturesBySQLParameters
+	 * 数据服务中数据集SQL查询参数类。 
+	 * 
+	 * Inherits from:
+	 *  - <SuperMap.GetFeaturesParametersBase>
+	 */
+	__webpack_require__(102);
+	__webpack_require__(24);
+	SuperMap.GetFeaturesBySQLParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
+	    /** 
+	     * Property: getFeatureMode
+	     * {String} 数据集查询模式。
+	     */
+	    getFeatureMode: "SQL",
+	    /** 
+	     * APIProperty: queryParameter
+	     * {<SuperMap.FilterParameter>} 查询过滤条件参数类。
+	     */
+	    queryParameter: null,
+	        
+	    /**
+	     * Constructor: SuperMap.GetFeaturesBySQLParameters
+	     * SQL 查询参数类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * queryParameter - {<SuperMap.FilterParameter>} 查询过滤条件参数。
+	     * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。  
+	     * returnContent - {Boolean} 是否直接返回查询结果。
+	     * fromIndex - {Integer} 查询结果的最小索引号。
+	     * toIndex - {Integer} 查询结果的最大索引号。
+	     */
+	    initialize: function(options) {
+	        SuperMap.GetFeaturesParametersBase.prototype.initialize.apply(this,arguments);
+	        if (!options) {
+	            return;
+	        }
+	        SuperMap.Util.extend(this, options);
+	    },
+	    
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.GetFeaturesParametersBase.prototype.destroy.apply(this,arguments);
+	        var me = this;
+	        me.getFeatureMode = null;
+	        if(me.queryParameter) {
+	            me.queryParameter.destroy();
+	            me.queryParameter = null;
+	        }
+	    },
+	    
+	    CLASS_NAME:"SuperMap.GetFeaturesBySQLParameters"
+	 });
+	 /**
+	 * Function: SuperMap.GetFeaturesBySQLParameters.toJsonParameters
+	 * 将<SuperMap.GetFeaturesBySQLParameters>对象参数转换为json字符串。
+	 *
+	 * Parameters:
+	 * params - {<SuperMap.GetFeaturesBySQLParameters>} SQL查询参数。
+	 *
+	 * Returns:
+	 * {String} 转化后的 json字符串。
+	 */
+	 SuperMap.GetFeaturesBySQLParameters.toJsonParameters = function(params) {
+	    var paramsBySql = {
+	        datasetNames: params.datasetNames,
+	        getFeatureMode:"SQL",
+	        queryParameter:params.queryParameter
+	    };
+	    return SuperMap.Util.toJSON(paramsBySql);
+	};
+	module.exports = function (options) {
+	    return new SuperMap.GetFeaturesBySQLParameters(options);
+	};
+
+/***/ },
+/* 105 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.REST.GetFeaturesByBoundsService
+	 * 数据集范围查询服务类
+	 * 查询与指定范围对象符合一定空间关系的矢量要素。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.REST.GetFeaturesServiceBase>
+	 */
+	__webpack_require__(100);
+	__webpack_require__(106);
+	SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
+
+	    /**
+	     * Constructor: SuperMap.REST.GetFeaturesByBoundsService
+	     * 数据集范围查询服务类构造函数。
+	     *
+	     * 例如：
+	     * (start code)
+	     * var myGetFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(url, {
+	     *     eventListeners: {
+	     *           "processCompleted": getFeatureCompleted, 
+	     *           "processFailed": getFeatureError
+	     *           }
+	     * });
+	     * function getFeatureCompleted(object){//todo};
+	     * function getFeatureError(object){//todo}
+	     * (end)
+	     *
+	     * Parameters:
+	     * url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
+	     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
+	     * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     */
+	    initialize: function (url, options) {
+	        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+	    },
+
+	    /**
+	     * Method: getJsonParameters
+	     * 将查询参数转化为 JSON 字符串。
+	     * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry,Bounds等）。
+	     *
+	     * Parameters:
+	     * params - {<SuperMap.GetFeaturesByBoundsParameters>}
+	     *
+	     * Returns:
+	     * {Object} 转化后的 JSON 字符串。
+	     */
+	    getJsonParameters: function (params) {
+	        return SuperMap.GetFeaturesByBoundsParameters.toJsonParameters(params);
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.GetFeaturesByBoundsService"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.GetFeaturesByBoundsService(url, options);
+	};
+
+/***/ },
+/* 106 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.GetFeaturesByBoundsParameters
+	 * 数据集范围查询参数类。
+	 * 该类用于设置数据集范围查询的相关参数。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.GetFeaturesParametersBase>
+	 */
+	__webpack_require__(102);
+
+	SuperMap.GetFeaturesByBoundsParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
+
+	    /**
+	     * Property: getFeatureMode
+	     * {String} 数据集查询模式。
+	     * 范围查询有"BOUNDS"，"BOUNDS_ATTRIBUTEFILTER"两种,当用户设置attributeFilter时会自动切换到BOUNDS_ATTRIBUTEFILTER访问服务。
+	     */
+	    getFeatureMode: null,
+
+	    /**
+	     * APIProperty: bounds
+	     * {<SuperMap.Bounds>} 用于查询的范围对象。
+	     */
+	    bounds: null,
+
+	    /**
+	     * APIProperty: fields
+	     * {Array(String)} 设置查询结果返回字段。
+	     *                 当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。
+	     *                 不设置即返回全部字段。
+	     */
+	    fields: null,
+
+	    /**
+	     * APIProperty: attributeFilter
+	     * {String} 范围查询属性过滤条件。
+	     */
+	    attributeFilter: null,
+
+	    /**
+	     * APIProperty: spatialQueryMode
+	     * {<SuperMap.SpatialQueryMode>} 空间查询模式常量，必设参数，默认为CONTAIN。
+	     */
+	    spatialQueryMode: SuperMap.SpatialQueryMode.CONTAIN,
+
+	    /**
+	     * Constructor: SuperMap.GetFeaturesByBoundsParameters
+	     * 范围空间查询参数类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * bounds - {<SuperMap.Bounds>} 用于查询的范围对象。
+	     * attributeFilter - {String} 范围查询属性过滤条件。
+	     * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。
+	     * spatialQueryMode - {<SuperMap.SpatialQueryMode>} 空间查询模式常量,必设参数。
+	     * queryParameter - {<SuperMap.FilterParameter>} 查询过滤条件参数。
+	     * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。
+	     * returnContent - {Boolean} 是否直接返回查询结果。
+	     * fromIndex - {Integer} 查询结果的最小索引号。
+	     * toIndex - {Integer} 查询结果的最大索引号。
+	     */
+	    initialize: function (options) {
+	        this.getFeatureMode = SuperMap.GetFeaturesByBoundsParameters.getFeatureMode.BOUNDS;
+	        SuperMap.GetFeaturesParametersBase.prototype.initialize.apply(this, arguments);
+	        if (!options) {
+	            return;
+	        }
+	        SuperMap.Util.extend(this, options);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        SuperMap.GetFeaturesParametersBase.prototype.destroy.apply(me, arguments);
+	        if (me.bounds) {
+	            me.bounds.destroy();
+	            me.bounds = null;
+	        }
+	        if (me.fields) {
+	            while (me.fields.length > 0) {
+	                me.fields.pop();
+	            }
+	            me.fields = null;
+	        }
+	        me.attributeFilter = null;
+	        me.spatialQueryMode = null;
+	        me.getFeatureMode = null;
+	    },
+	    CLASS_NAME: "SuperMap.GetFeaturesByBoundsParameters"
+	});
+
+	/**
+	 * Function: SuperMap.GetFeaturesByBoundsParameters.toJsonParameters
+	 * 将<SuperMap.GetFeaturesByBoundsParameters>对象参数转换为json字符串。
+	 *
+	 * Parameters:
+	 * params - {<SuperMap.GetFeaturesByBoundsParameters>} 范围查询参数。
+	 *
+	 * Returns:
+	 * {String} 转化后的 json字符串。
+	 */
+	SuperMap.GetFeaturesByBoundsParameters.toJsonParameters = function (params) {
+	    var filterParameter,
+	        bounds,
+	        parasByBounds;
+
+	    bounds = {
+	        "leftBottom": {"x": params.bounds.left, "y": params.bounds.bottom},
+	        "rightTop": {"x": params.bounds.right, "y": params.bounds.top}
+	    };
+	    parasByBounds = {
+	        datasetNames: params.datasetNames,
+	        getFeatureMode: SuperMap.GetFeaturesByBoundsParameters.getFeatureMode.BOUNDS,
+	        bounds: bounds,
+	        spatialQueryMode: params.spatialQueryMode
+	    };
+	    if (params.fields) {
+	        filterParameter = new SuperMap.FilterParameter();
+	        filterParameter.name = params.datasetNames;
+	        filterParameter.fields = params.fields;
+	        parasByBounds.queryParameter = filterParameter;
+	    }
+	    if (params.attributeFilter) {
+	        parasByBounds.attributeFilter = params.attributeFilter;
+	        parasByBounds.getFeatureMode = SuperMap.GetFeaturesByBoundsParameters.getFeatureMode.BOUNDS_ATTRIBUTEFILTER;
+	    }
+
+	    return SuperMap.Util.toJSON(parasByBounds);
+	};
+
+	SuperMap.GetFeaturesByBoundsParameters.getFeatureMode = {
+	    "BOUNDS": "BOUNDS",
+	    "BOUNDS_ATTRIBUTEFILTER": "BOUNDS_ATTRIBUTEFILTER"
+	};
+
+	module.exports = function (options) {
+	    return new SuperMap.GetFeaturesByBoundsParameters(options);
+	};
+
+/***/ },
+/* 107 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class:   SuperMap.REST.GetFeaturesByBufferService
+	 * 数据服务中数据集缓冲区查询服务类。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.REST.GetFeaturesServiceBase>
+	 */
+	__webpack_require__(100);
+	__webpack_require__(108);
+	SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
+
+	    /**
+	     * Constructor:   SuperMap.REST.GetFeaturesByBufferService
+	     * 数据服务缓冲区查询服务类构造函数。
+	     *
+	     * 例如：
+	     * (start code)
+	     * var myGetFeaturesByBufferService = new   SuperMap.REST.GetFeaturesByBufferService(url, {
+	     *     eventListeners: {
+	     *           "processCompleted": GetFeaturesCompleted, 
+	     *           "processFailed": GetFeaturesError
+	     *           }
+	     * });
+	     * function GetFeaturesCompleted(object){//todo};
+	     * function GetFeaturesError(object){//todo};
+	     * (end)
+	     *
+	     * Parameters:
+	     * url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
+	     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
+	     * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     */
+	    initialize: function (url, options) {
+	        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+	    },
+
+	    /**
+	     * Method: getJsonParameters
+	     * 将查询参数转化为 JSON 字符串。
+	     * 在本类中重写此方法，可以实现不同种类的查询（IDs, SQL, Buffer, Geometry等）。
+	     *
+	     * Parameters:
+	     * params - {<SuperMap.GetFeaturesByBufferParameters>}
+	     *
+	     * Returns:
+	     * {Object} 转化后的 JSON 字符串。
+	     */
+	    getJsonParameters: function (params) {
+	        return SuperMap.GetFeaturesByBufferParameters.toJsonParameters(params);
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.GetFeaturesByBufferService"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.GetFeaturesByBufferService(url, options);
+	};
+
+/***/ },
+/* 108 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.GetFeaturesByBufferParameters
+	 * 数据服务中数据集缓冲区查询参数类。 
+	 * 
+	 * Inherits from:
+	 *  - < SuperMap.GetFeaturesParametersBase>
+	 */
+	__webpack_require__(102);
+	SuperMap.GetFeaturesByBufferParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
+	    /** 
+	     * APIProperty: bufferDistance
+	     * {Number} buffer距离,单位与所查询图层对应的数据集单位相同。
+	     */
+	    bufferDistance: null,
+	    
+	    /** 
+	     * APIProperty: queryParameter
+	     * {String} 属性查询条件。
+	     */
+	    attributeFilter:null,
+	    
+	    /** 
+	     * APIProperty: geometry
+	     * {<Object>} 空间查询条件。
+	     */
+	    geometry:null,
+	    
+	    /** 
+	     * APIProperty: fields
+	     * {Array(String)} 设置查询结果返回字段。
+	     *                 当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。
+	     *                 不设置即返回全部字段。
+	     */
+	    fields:null,
+	    
+	    /**
+	     * Constructor: SuperMap.GetFeaturesByBufferParameters
+	     * 缓冲区查询参数类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * bufferDistance - {Number} buffer 距离，单位与所查询图层对应的数据集单位相同。
+	     * attributeFilter - {String} 属性查询条件
+	     * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。
+	     * geometry - {<Object>} 空间查询条件
+	     * dataSetNames - {Array(String)} 数据集集合中的数据集名称列表。  
+	     * returnContent - {Boolean} 是否直接返回查询结果。
+	     * fromIndex - {Integer} 查询结果的最小索引号。
+	     * toIndex - {Integer} 查询结果的最大索引号。
+	     */
+	    initialize: function(options) {
+	        SuperMap.GetFeaturesParametersBase.prototype.initialize.apply(this,arguments);
+	        if (!options) {
+	            return;
+	        }
+	        SuperMap.Util.extend(this, options);
+	    },
+	    
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy:function () {
+	        SuperMap.GetFeaturesParametersBase.prototype.destroy.apply(this,arguments);
+	        var me = this;
+	        me.bufferDistance = null;
+	        me.attributeFilter = null;
+	        if(me.fields) {
+	            while(me.fields.length > 0) {            
+	                me.fields.pop();
+	            }
+	            me.fields = null;
+	        }
+	        if(me.geometry) {
+	            me.geometry.destroy();
+	            me.geometry = null;
+	        }
+	    },
+	    CLASS_NAME:"SuperMap.GetFeaturesByBufferParameters"
+	});
+	 /**
+	 * 将<SuperMap.GetFeaturesByBufferParameters>对象参数转换为json字符串。
+	 *
+	 * Parameters:
+	 * params - {<SuperMap.GetFeaturesByBufferParameters>} SQL查询参数。
+	 *
+	 * Returns:
+	 * {String} 转化后的 json字符串。
+	 */
+	SuperMap.GetFeaturesByBufferParameters.toJsonParameters = function(params) {
+	    var filterParameter,
+	        paramsBySql,
+	        geometry;
+	        
+	    geometry = SuperMap.REST.ServerGeometry.fromGeometry(params.geometry);
+	    paramsBySql = {
+	        datasetNames: params.datasetNames,
+	        getFeatureMode: "BUFFER",
+	        bufferDistance: params.bufferDistance,
+	        geometry: geometry
+	    };
+	    if(params.fields) {
+	        filterParameter = new SuperMap.FilterParameter();
+	        filterParameter.name = params.datasetNames;
+	        filterParameter.fields = params.fields;
+	        paramsBySql.queryParameter = filterParameter;
+	    }
+	    if(params.attributeFilter) {
+	        paramsBySql.attributeFilter = params.attributeFilter;
+	        paramsBySql.getFeatureMode = "BUFFER_ATTRIBUTEFILTER";
+	    }
+	    return SuperMap.Util.toJSON(paramsBySql);
+	};
+	module.exports = function (options) {
+	    return new SuperMap.GetFeaturesByBufferParameters(options);
+	};
 
 /***/ },
 /* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
-	 * Class: SuperMap.ThemeUniqueItem
-	 * 单值专题图子项类。
-	 * 单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，Name 字段代表
-	 * 省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
+	 * Class: SuperMap.REST.GetFeaturesByGeometryService
+	 * 数据集几何查询服务类
+	 * 查询与指定几何对象符合一定空间关系的矢量要素。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-
-	__webpack_require__(81);
-	SuperMap.ThemeUniqueItem = SuperMap.Class({
+	__webpack_require__(100);
+	__webpack_require__(110);
+	SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
 	    /**
-	     * APIProperty: caption
-	     * {String} 单值专题图子项的标题。
+	     * Constructor: SuperMap.REST.GetFeaturesByGeometryService
+	     * 数据集几何查询服务类构造函数。
+	     *
+	     * 例如：
+	     * (start code)
+	     * var myService = new SuperMap.REST.GetFeaturesByGeometryService(url, {
+	     *     eventListeners: {
+	     *           "processCompleted": getFeatureCompleted, 
+	     *           "processFailed": getFeatureError
+	     *           }
+	     * });
+	     * function getFeatureCompleted(object){//todo};
+	     * function getFeatureError(object){//todo}
+	     * (end)
+	     *
+	     * Parameters:
+	     * url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
+	     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data；
+	     * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data"
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
 	     */
-	    caption: null,
+	    initialize: function (url, options) {
+	        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+	    },
 
 	    /**
-	     * APIProperty: style
-	     * {<SuperMap.ServerStyle>} 单值专题图子项的显示风格。
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
 	     */
-	    style: null,
+	    destroy: function () {
+	        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+	    },
 
 	    /**
-	     * APIProperty: unique
-	     * {String} 单值专题图子项的值，可以为数字、字符串等。
+	     * Method: getJsonParameters
+	     * 将查询参数转化为 JSON 字符串。
+	     * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
+	     *
+	     * Parameters:
+	     * params - {<SuperMap.GetFeaturesByGeometryParameters>}
+	     *
+	     * Returns:
+	     * {Object} 转化后的 JSON 字符串。
 	     */
-	    unique: null,
+	    getJsonParameters: function (params) {
+	        return SuperMap.GetFeaturesByGeometryParameters.toJsonParameters(params);
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.GetFeaturesByGeometryService"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.GetFeaturesByGeometryService(url, options);
+	};
+
+/***/ },
+/* 110 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.GetFeaturesByGeometryParameters
+	 * 数据集几何查询参数类。
+	 * 该类用于设置数据集几何查询的相关参数。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.GetFeaturesParametersBase>
+	 */
+	__webpack_require__(102);
+	SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
 
 	    /**
-	     * APIProperty: visible
-	     * {Boolean} 单值专题图子项的可见性。默认为 true，表示可见。
+	     * Property: getFeatureMode
+	     * {String} 数据集查询模式。
+	     * 几何查询有"SPATIAL"，"SPATIAL_ATTRIBUTEFILTER"两种,当用户设置attributeFilter时会自动切换到SPATIAL_ATTRIBUTEFILTER访问服务。
 	     */
-	    visible: true,
+	    getFeatureMode: "SPATIAL",
 
 	    /**
-	     * Constructor: SuperMap.ThemeUniqueItem
-	     * 单值专题图子项类构造函数。
+	     * APIProperty: geometry
+	     * {<Object>} 用于查询的几何对象。
+	     */
+	    geometry: null,
+
+	    /**
+	     * APIProperty: fields
+	     * {Array(String)} 设置查询结果返回字段。
+	     *                 当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。
+	     *                 不设置即返回全部字段。
+	     */
+	    fields: null,
+
+	    /**
+	     * APIProperty: attributeFilter
+	     * {String} 几何查询属性过滤条件。
+	     */
+	    attributeFilter: null,
+
+	    /**
+	     * APIProperty: spatialQueryMode
+	     * {<SuperMap.SpatialQueryMode>} 空间查询模式常量，必设参数，默认为CONTAIN。
+	     */
+	    spatialQueryMode: SuperMap.SpatialQueryMode.CONTAIN,
+
+	    /**
+	     * Constructor: SuperMap.SuperMap.GetFeaturesByGeometryParameters
+	     * 几何空间查询参数类构造函数。
 	     *
 	     * Parameters:
 	     * options - {Object} 参数。
 	     *
 	     * Allowed options properties:
-	     * caption - {String} 单值专题图子项的标题。
-	     * style - {<SuperMap.ServerStyle>} 单值专题图子项的风格。
-	     * unique - {String} 单值专题图子项的单值。
-	     * visible - {Boolean} 单值专题图子项是否可见。
+	     * geometry - {<Object>} 用于查询的几何对象。
+	     * attributeFilter - {String} 几何查询属性过滤条件。
+	     * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。
+	     * spatialQueryMode - {<SuperMap.SpatialQueryMode>} 空间查询模式常量,必设参数。
+	     * queryParameter - {<SuperMap.FilterParameter>} 查询过滤条件参数。
+	     * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。
+	     * returnContent - {Boolean} 是否直接返回查询结果。
+	     * fromIndex - {Integer} 查询结果的最小索引号。
+	     * toIndex - {Integer} 查询结果的最大索引号。
 	     */
 	    initialize: function (options) {
+	        SuperMap.GetFeaturesParametersBase.prototype.initialize.apply(this, arguments);
+	        if (!options) {
+	            return;
+	        }
+	        SuperMap.Util.extend(this, options);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
 	        var me = this;
-	        me.style = new SuperMap.ServerStyle();
+	        SuperMap.GetFeaturesParametersBase.prototype.destroy.apply(me, arguments);
+	        if (me.geometry) {
+	            me.geometry.destroy();
+	            me.geometry = null;
+	        }
+	        if (me.fields) {
+	            while (me.fields.length > 0) {
+	                me.fields.pop();
+	            }
+	            me.fields = null;
+	        }
+	        me.attributeFilter = null;
+	        me.spatialQueryMode = null;
+	        me.getFeatureMode = null;
+	    },
+	    CLASS_NAME: "SuperMap.GetFeaturesByGeometryParameters"
+	});
+
+	/**
+	 * Function: SuperMap.GetFeaturesByGeometryParameters.toJsonParameters
+	 * 将<SuperMap.GetFeaturesByGeometryParameters>对象参数转换为json字符串。
+	 *
+	 * Parameters:
+	 * params - {<SuperMap.GetFeaturesByGeometryParameters>} 几何查询参数。
+	 *
+	 * Returns:
+	 * {String} 转化后的 json字符串。
+	 */
+	SuperMap.GetFeaturesByGeometryParameters.toJsonParameters = function (params) {
+	    var filterParameter,
+	        geometry,
+	        parasByGeometry;
+
+	    geometry = SuperMap.REST.ServerGeometry.fromGeometry(params.geometry);
+	    parasByGeometry = {
+	        datasetNames: params.datasetNames,
+	        getFeatureMode: "SPATIAL",
+	        geometry: geometry,
+	        spatialQueryMode: params.spatialQueryMode
+	    };
+	    if (params.fields) {
+	        filterParameter = new SuperMap.FilterParameter();
+	        filterParameter.name = params.datasetNames;
+	        filterParameter.fields = params.fields;
+	        parasByGeometry.queryParameter = filterParameter;
+	    }
+	    if (params.attributeFilter) {
+	        parasByGeometry.attributeFilter = params.attributeFilter;
+	        parasByGeometry.getFeatureMode = "SPATIAL_ATTRIBUTEFILTER";
+	    }
+
+	    return SuperMap.Util.toJSON(parasByGeometry);
+	};
+	module.exports = function (options) {
+	    return new SuperMap.GetFeaturesByGeometryParameters(options);
+	};
+
+/***/ },
+/* 111 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: GetFieldsService
+	 * 字段查询服务类
+	 */
+	__webpack_require__(15);
+	__webpack_require__(112);
+
+	ol.supermap.GetFieldsService = function (url, options) {
+	    ol.supermap.ServiceBase.call(this, url, options);
+	}
+	ol.inherits(ol.supermap.GetFieldsService, ol.supermap.ServiceBase);
+
+	ol.supermap.GetFieldsService.prototype.getFields = function () {
+	    var me = this, getFieldsService;
+	    getFieldsService = new SuperMap.REST.GetFieldsService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        },
+	        datasource: me.options.dataSourceName,
+	        dataset: me.options.dataSetName
+	    });
+	    getFieldsService.processAsync();
+	    return me;
+	}
+	module.exports = ol.supermap.GetFieldsService;
+
+/***/ },
+/* 112 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.REST.GetFieldsService
+	 * 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.ServiceBase>
+	 */
+	__webpack_require__(19);
+	SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
+
+	    /**
+	     * APIProperty: datasource
+	     * {String} 要查询的数据集所在的数据源名称。
+	     */
+	    datasource: null,
+
+	    /**
+	     * APIProperty: dataset
+	     * {String} 要查询的数据集名称。
+	     */
+	    dataset: null,
+
+	    /**
+	     * Constructor: SuperMap.REST.GetFieldsService
+	     * 字段查询服务构造函数。
+	     *
+	     * 例如：
+	     * (start code)
+	     * var myService = new SuperMap.REST.GetFieldsService(url, {eventListeners: {
+	     *     "processCompleted": getFieldsCompleted, 
+	     *     "processFailed": getFieldsError
+	     *     },
+	     *     datasource: "World",
+	     *     dataset: "Countries"
+	     * };
+	     * (end)
+	     *
+	     * Parameters:
+	     * url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/data-world/rest/data 即可。
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     * datasource - {String}
+	     * dataset - {String}
+	     */
+	    initialize: function (url, options) {
+	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	        var me = this;
+	        me.datasource = null;
+	        me.dataset = null;
+	    },
+
+	    /**
+	     * APIMethod: processAsync
+	     * 执行服务，查询指定数据集的字段信息。
+	     */
+	    processAsync: function () {
+	        var me = this,
+	            end = me.url.substr(me.url.length - 1, 1),
+	            datasetURL = "datasources/" + me.datasource + "/datasets/" + me.dataset;
+	        if (me.isInTheSameDomain) {
+	            me.url += (end == "/") ? datasetURL + "/fields.json?" : "/" + datasetURL + "/fields.json?";
+	        } else {
+	            me.url += (end == "/") ? datasetURL + "/fields.jsonp?" : "/" + datasetURL + "/fields.jsonp?";
+	        }
+
+	        me.request({
+	            method: "GET",
+	            data: null,
+	            scope: me,
+	            success: me.serviceProcessCompleted,
+	            failure: me.serviceProcessFailed
+	        });
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.GetFieldsService"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.GetFieldsService(url, options);
+	};
+
+/***/ },
+/* 113 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: EditFeaturesService
+	 * 数据服务中数据集添加、更新、删除服务类
+	 */
+	__webpack_require__(15);
+	__webpack_require__(114);
+
+	ol.supermap.EditFeaturesService = function (url, options) {
+	    ol.supermap.ServiceBase.call(this, url, options);
+	}
+	ol.inherits(ol.supermap.EditFeaturesService, ol.supermap.ServiceBase);
+
+	/**
+	 * @param params:
+	 * features(目前只支持GeoJSON格式的features)
+	 * editType，IDs，returnContent，isUseBatch
+	 */
+	ol.supermap.EditFeaturesService.prototype.editFeatures = function (params) {
+	    var me = this;
+	    editFeatureService = new SuperMap.REST.EditFeaturesService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        }
+	    });
+	    editFeatureService.processAsync(me._processParams(params));
+	    return me;
+	};
+
+	ol.supermap.EditFeaturesService.prototype._processParams = function (params) {
+	    if (!params) {
+	        return {};
+	    }
+	    var me = this;
+	    params.returnContent = (params.returnContent == null) ? false : params.returnContent;
+	    params.isUseBatch = (params.isUseBatch == null) ? false : params.isUseBatch;
+
+	    if (params.editType) {
+	        params.editType = params.editType.toLowerCase();
+	    }
+	    if (params.features) {
+	        var features = [];
+	        if (ol.supermap.Util.isArray(params.features)) {
+	            params.features.map(function (feature) {
+	                features.push(me._createServerFeature(feature));
+	            });
+	        } else {
+	            features.push(me._createServerFeature(params.features));
+	        }
+	        params.features = features;
+	    }
+	    return params;
+	};
+
+	ol.supermap.EditFeaturesService.prototype._createServerFeature = function (geoFeature) {
+	    var geoJSONFeature, feature = {}, fieldNames = [], fieldValues = [];
+	    geoJSONFeature = JSON.parse((new ol.format.GeoJSON()).writeGeometry(geoFeature));
+	    for (var key in geoJSONFeature) {
+	        fieldNames.push(key);
+	        fieldValues.push(geoJSONFeature[key]);
+	    }
+	    feature.fieldNames = fieldNames;
+	    feature.fieldValues = fieldValues;
+	    feature.geometry = ol.supermap.Util.toSuperMapGeometry(geoJSONFeature);
+	    return feature;
+	};
+
+	module.exports = ol.supermap.EditFeaturesService;
+
+/***/ },
+/* 114 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.REST.EditFeaturesService
+	 * 数据服务中数据集添加、更新、删除服务类。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.ServiceBase>
+	 */
+	__webpack_require__(19);
+	__webpack_require__(115);
+	SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
+
+	    /**
+	     * Property: returnContent
+	     * {Boolean} 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
+	     *           true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
+	     */
+	    returnContent: false,
+
+	    /**
+	     * Property: isUseBatch
+	     * {Boolean} 是否使用批量添加要素功能，要素添加时有效。
+	     *           批量添加能够提高要素编辑效率。
+	     *           true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
+	     */
+	    isUseBatch: false,
+
+	    /**
+	     * Constructor: SuperMap.REST.EditFeaturesService
+	     * 数据集编辑服务基类构造函数。
+	     *
+	     * 例如：
+	     * (start code)
+	     * var myService = new SuperMap.REST.EditFeaturesService(url, {eventListeners: {
+	     *     "processCompleted": editFeatureCompleted, 
+	     *     "processFailed": editFeatureError
+	     *       }
+	     * };
+	     * (end)
+	     *
+	     * Parameters:
+	     * url - {String} 服务端的数据服务资源地址。请求数据服务中数据集编辑服务，URL 应为：
+	     * http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/datasources/name/{数据源名}/datasets/name/{数据集名} 。
+	     * 例如：http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     */
+	    initialize: function (url, options) {
+	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	        var me = this, end;
+	        end = me.url.substr(me.url.length - 1, 1);
+	        if (me.isInTheSameDomain) {
+	            me.url += (end == "/") ? "features.json?" : "/features.json?";
+	        } else {
+	            me.url += (end == "/") ? "features.jsonp?" : "/features.jsonp?";
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	        var me = this;
+	        me.returnContent = null;
+	        me.isUseBatch = null;
+	        me.fromIndex = null;
+	        me.toIndex = null;
+	    },
+
+	    /**
+	     * APIMethod: processAsync
+	     * 负责将客户端的更新参数传递到服务端。
+	     *
+	     * Parameters:
+	     * params - {<SuperMap.EditFeaturesParameters>} 编辑要素参数。
+	     */
+	    processAsync: function (params) {
+	        if (!params) {
+	            return;
+	        }
+	        var me = this,
+	            method = "POST",
+	            ids = "",
+	            editType = params.editType,
+	            jsonParameters = null;
+
+	        me.returnContent = params.returnContent;
+	        me.isUseBatch = params.isUseBatch;
+	        jsonParameters = SuperMap.EditFeaturesParameters.toJsonParameters(params);
+	        if (editType === SuperMap.EditType.DELETE) {
+	            ids = SuperMap.Util.toJSON(params.IDs);
+	            me.url += "ids=" + ids;
+	            method = "DELETE";
+	            jsonParameters = ids;
+	        } else if (editType === SuperMap.EditType.UPDATE) {
+	            method = "PUT";
+	        } else {
+	            if (me.isUseBatch) {
+	                me.url += "isUseBatch=" + me.isUseBatch;
+	                me.returnContent = false;
+	            }
+	            if (me.returnContent) {
+	                me.url += "returnContent=" + me.returnContent;
+	                method = "POST";
+	            }
+	        }
+
+	        me.request({
+	            method: method,
+	            data: jsonParameters,
+	            scope: me,
+	            success: me.serviceProcessCompleted,
+	            failure: me.serviceProcessFailed
+	        });
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.EditFeaturesService"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.EditFeaturesService(url, options);
+	};
+
+/***/ },
+/* 115 */
+/***/ function(module, exports) {
+
+	/**
+	 * Class: SuperMap.EditFeaturesParameters
+	 * 数据服务中数据集添加、修改、删除参数类。
+	 */
+
+	SuperMap.EditFeaturesParameters = SuperMap.Class({
+
+	    /**
+	     * APIProperty: dataSourceName
+	     * {String} 当前需要创建或者是修改的要素的数据源
+	     */
+	    dataSourceName: null,
+	    /**
+	     * APIProperty: dataSetName
+	     * {String} 当前需要创建或者是修改的要素的数据集。
+	     */
+	    dataSetName: null,
+	    /**
+	     * APIProperty: features
+	     * {Array(Object)} 当前需要创建或者是修改的要素集。
+	     */
+	    features: null,
+
+	    /**
+	     * APIProperty: editType
+	     * {<EditType>} 要素集更新类型(add、update、delete)，默认为 SuperMap.EditType.ADD.
+	     */
+	    editType: SuperMap.EditType.ADD,
+
+	    /**
+	     * APIProperty: IDs
+	     * {Array(String) 或 Array(Integer)} 执行删除时要素集ID集合。
+	     */
+	    IDs: null,
+
+	    /**
+	     * APIProperty: returnContent
+	     * {Boolean} 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
+	     *           true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
+	     */
+	    returnContent: false,
+
+	    /**
+	     * APIProperty: isUseBatch
+	     * {Boolean} 是否使用批量添加要素功能，要素添加时有效。
+	     *           批量添加能够提高要素编辑效率。
+	     *           true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
+	     */
+	    isUseBatch: false,
+
+	    /**
+	     * Constructor: EditFeaturesParameters
+	     * 数据服务中数据集添加、修改、删除参数类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * features - {Array(Object)} 当前需要创建或者是修改的要素集。
+	     * returnContent - {Boolean} 是返回创建要素的ID数组还是返回featureResult资源的URI。
+	     * editType - {<SuperMap.EditType>} POST动作类型(ADD、UPDATE、DELETE)，默认为 SuperMap.EditType.ADD。
+	     * IDs - {Array(String) 或 Array(Integer)} 删除要素时的要素的ID数组。
+	     */
+	    initialize: function (options) {
+	        if (!options) {
+	            return;
+	        }
+	        SuperMap.Util.extend(this, options);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        me.dataSourceName = null;
+	        me.dataSetName = null;
+	        me.features = null;
+	        me.editType = null;
+	        me.IDs = null;
+	        me.returnContent = null;
+	    },
+
+	    CLASS_NAME: "SuperMap.EditFeaturesParameters"
+	});
+	/**
+	 * Function: SuperMap.EditFeaturesParameters.toJsonParameters
+	 * 将 <EditFeaturesParameters> 对象参数转换为 json 字符串。
+	 *
+	 * Parameters:
+	 * params - {<SuperMap.EditFeaturesParameters>} 地物编辑参数。
+	 *
+	 * Returns:
+	 * {String} 转化后的 json字符串。
+	 */
+	SuperMap.EditFeaturesParameters.toJsonParameters = function (params) {
+	    var geometry,
+	        feature,
+	        len,
+	        features,
+	        editType = params.editType;
+
+	    if (editType === SuperMap.EditType.DELETE) {
+	        if (params.IDs === null) return;
+
+	        features = {ids: params.IDs};
+	    } else {
+	        if (params.features === null) return;
+
+	        len = params.features.length;
+	        features = [];
+	        for (var i = 0; i < len; i++) {
+	            feature = params.features[i];
+	            feature.geometry = SuperMap.REST.ServerGeometry.fromGeometry(feature.geometry);
+	            features.push(feature);
+	        }
+	    }
+
+	    return SuperMap.Util.toJSON(features);
+	};
+	module.exports = function (options) {
+	    return new SuperMap.EditFeaturesParameters(options);
+	};
+
+/***/ },
+/* 116 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: GetGridCellInfosService
+	 * 数据栅格查询服务
+	 */
+	__webpack_require__(15);
+	__webpack_require__(117);
+
+	ol.supermap.GetGridCellInfosService = function (url, options) {
+	    ol.supermap.ServiceBase.call(this, url, options);
+	};
+	ol.inherits(ol.supermap.GetGridCellInfosService, ol.supermap.ServiceBase);
+
+	/**
+	 * @param params <GetGridCellInfosParameters>
+	 */
+	ol.supermap.GetGridCellInfosService.prototype.getGridCellInfos = function (params) {
+	    if (!params) {
+	        return null;
+	    }
+	    var me = this;
+	    var gridCellQueryService = new SuperMap.REST.GetGridCellInfosService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        }
+	    });
+	    gridCellQueryService.processAsync(params);
+	    return me;
+	};
+
+	module.exports = ol.supermap.GetGridCellInfosService;
+
+/***/ },
+/* 117 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.REST.GetGridCellInfosService
+	 * 数据栅格查询服务，支持查询指定地理位置的栅格信息
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.ServiceBase>
+	 */
+
+	__webpack_require__(19);
+	__webpack_require__(118);
+	SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
+
+	    /**
+	     * APIProperty: datasetName
+	     * {String} 数据集名称。
+	     */
+	    datasetName: null,
+
+	    /**
+	     * APIProperty: dataSourceName
+	     * {String} 数据源名称。
+	     */
+	    dataSourceName: null,
+
+	    /**
+	     * Property: dataSourceName
+	     * {String} 数据集类型。
+	     */
+	    datasetType: null,
+
+	    /**
+	     * APIProperty: X
+	     * {Number} 要查询的地理位置X轴
+	     */
+	    X: null,
+
+	    /**
+	     * APIProperty: X
+	     * {Number} 要查询的地理位置Y轴
+	     */
+	    Y: null,
+
+	    /**
+	     * Constructor: SuperMap.REST.GetGridCellInfosService
+	     * 字段查询服务构造函数。
+	     *
+	     * 例如：
+	     * (start code)
+	     * var myService = new SuperMap.REST.GetGridCellInfosService(url, {eventListeners: {
+	     *     "processCompleted": queryCompleted,
+	     *     "processFailed": queryError
+	     *     }
+	     * });
+	     * (end)
+	     *
+	     * Parameters:
+	     * url - {String} 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     */
+	    initialize: function (url, options) {
+	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	        if (!!options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        var me = this;
+	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	        me.X = null;
+	        me.Y = null;
+	        me.datasetName = null;
+	        me.dataSourceName = null;
+	        me.datasetType = null;
+	    },
+
+	    /**
+	     * APIMethod: processAsync
+	     * 执行服务，查询数据集信息。
+	     * Parameters:
+	     * params - {<SuperMap.GetGridCellInfosParameters>} 查询参数。
+	     */
+	    processAsync: function (params) {
+	        if (params) {
+	            SuperMap.Util.extend(this, params);
+	        }
+	        var me = this;
+	        var end = me.url.substr(me.url.length - 1, 1);
+	        if (me.isInTheSameDomain) {
+	            me.url += (end == "/") ? ("datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json") :
+	                ("/datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".json");
+	        } else {
+	            me.url += (end == "/") ? ("datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".jsonp") :
+	                ("/datasources/" + me.dataSourceName + "/datasets/" + me.datasetName + ".jsonp");
+	        }
+
+	        me.queryRequest(me.getDatasetInfoCompleted, me.getDatasetInfoFailed);
+	    },
+
+	    /**
+	     * Method: queryRequest
+	     * 执行服务，查询。
+	     */
+	    queryRequest: function (successFun, failedFunc) {
+	        var me = this;
+	        me.request({
+	            method: "GET",
+	            data: null,
+	            scope: me,
+	            success: successFun,
+	            failure: failedFunc
+	        });
+	    },
+
+	    /**
+	     * Method: getDatasetInfoCompleted
+	     * 数据集查询完成，执行此方法。
+	     *
+	     * Parameters:
+	     * result - {Object} 服务器返回的结果对象。
+	     */
+	    getDatasetInfoCompleted: function (result) {
+	        var me = this;
+	        result = SuperMap.Util.transformResult(result);
+	        me.datasetType = result.datasetInfo.type;
+	        me.queryGridInfos();
+	    },
+
+	    /**
+	     * Method: queryGridInfos
+	     * 执行服务，查询数据集栅格信息信息。
+	     */
+	    queryGridInfos: function () {
+	        var me = this,
+	            re = /\.json/,
+	            index = re.exec(me.url).index,
+	            urlBack = me.url.substring(index),
+	            urlFront = me.url.substring(0, me.url.length - urlBack.length);
+	        if (me.datasetType == "GRID") {
+	            me.url = urlFront + "/gridValue" + urlBack;
+	        } else {
+	            me.url = urlFront + "/imageValue" + urlBack;
+	        }
+
+	        if (me.X != null && me.Y != null) {
+	            me.url += '?x=' + me.X + '&y=' + me.Y;
+	        }
+	        me.queryRequest(me.serviceProcessCompleted, me.serviceProcessFailed);
+	    },
+
+	    /**
+	     * Method: getDatasetInfoFailed
+	     * 数据集查询失败，执行此方法。
+	     *
+	     * Parameters:
+	     * result -  {Object} 服务器返回的结果对象。
+	     */
+	    getDatasetInfoFailed: function (result) {
+	        var me = this;
+	        me.serviceProcessFailed(result);
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.GetGridCellInfosService"
+	});
+
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.GetGridCellInfosService(url, options);
+	};
+
+/***/ },
+/* 118 */
+/***/ function(module, exports) {
+
+	/**
+	 * Class: SuperMap.GetGridCellInfosParameters
+	 * 数据服务栅格查询参数类。
+	 */
+
+	SuperMap.GetGridCellInfosParameters = SuperMap.Class({
+	    /**
+	     * APIProperty: datasetName
+	     * {String} 数据集名称。
+	     */
+	    datasetName: null,
+
+	    /**
+	     * APIProperty: dataSourceName
+	     * {String} 数据源名称。
+	     */
+	    dataSourceName: null,
+
+	    /**
+	     * APIProperty: X
+	     * {Number} 要查询的地理位置X轴
+	     */
+	    X: null,
+
+	    /**
+	     * APIProperty: X
+	     * {Number} 要查询的地理位置Y轴
+	     */
+	    Y: null,
+
+	    /**
+	     * Constructor: SuperMap.GetGridCellInfosParameters
+	     * SQL 查询参数类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * datasetName - {String} 数据集名称。
+	     * dataSourceName - {String} 数据源名称
+	     * X - {Integer} 要查询的地理位置X轴。
+	     * Y - {Integer} 要查询的地理位置Y轴。
+	     */
+	    initialize: function(options) {
+	        if (!options) {
+	            return;
+	        }
+	        SuperMap.Util.extend(this, options);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy:function () {
+	        var me = this;
+	        me.datasetName = null;
+	        me.dataSourceName = null;
+	        me.X = null;
+	        me.Y = null;
+	    },
+
+	    CLASS_NAME:"SuperMap.GetGridCellInfosParameters"
+	});
+	module.exports = function (options) {
+	    return new SuperMap.GetGridCellInfosParameters(options);
+	};
+
+
+/***/ },
+/* 119 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: ThemeService
+	 */
+	__webpack_require__(15);
+	__webpack_require__(120);
+
+	ol.supermap.ThemeService = function (url, options) {
+	    ol.supermap.ServiceBase.call(this, url, options);
+	};
+
+	ol.inherits(ol.supermap.ThemeService, ol.supermap.ServiceBase);
+
+	ol.supermap.ThemeService.prototype.getThemeStatus = function (params) {
+	    var me = this;
+	    var themeService = new SuperMap.REST.ThemeService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: me.processCompleted,
+	            processFailed: me.processFailed
+	        }
+	    });
+	    themeService.processAsync(params);
+	    return me;
+	};
+
+	module.exports = ol.supermap.ThemeService;
+
+/***/ },
+/* 120 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.REST.ThemeService
+	 * 专题图服务类。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.ServiceBase>
+	 */
+	__webpack_require__(19);
+	__webpack_require__(121);
+	SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
+
+	    /**
+	     * Constructor: SuperMap.REST.ThemeService
+	     * 专题图服务类构造函数。
+	     *
+	     * 例如：
+	     * (start code)
+	     * var myThemeService = new SuperMap.REST.ThemeService(url, {
+	     *     eventListeners: {
+	     *           "processCompleted": themeCompleted,
+	     *           "processFailed": themeFailed
+	     *           }
+	     * });
+	     * (end)
+	     *
+	     * Parameters:
+	     * url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     */
+	    initialize: function (url, options) {
+	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	        if (options) {
+	            SuperMap.Util.extend(this, options);
+	        }
+	        var end,
+	            me = this;
+	        end = me.url.substr(me.url.length - 1, 1);
+	        if (me.isInTheSameDomain) {
+	            me.url += (end === "/") ? "tempLayersSet.json?" : "/tempLayersSet.json?";
+	        } else {
+	            me.url += (end === "/") ? "tempLayersSet.jsonp?" : "/tempLayersSet.jsonp?";
+	        }
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	    },
+
+	    /**
+	     * APIMethod: processAsync
+	     * 负责将客户端的专题图参数传递到服务端。
+	     *
+	     * Parameters:
+	     * params - {<SuperMap.ThemeParameters>}
+	     */
+	    processAsync: function (params) {
+	        if (!params) {
+	            return;
+	        }
+	        var me = this,
+	            jsonParameters = null;
+	        jsonParameters = me.getJsonParameters(params);
+	        me.request({
+	            method: "POST",
+	            data: jsonParameters,
+	            scope: me,
+	            success: me.serviceProcessCompleted,
+	            failure: me.serviceProcessFailed
+	        });
+	    },
+
+	    /**
+	     * Method: getJsonParameters
+	     * 将专题图参数参数转化为 JSON 字符串。
+	     *
+	     * Parameters:
+	     * params - {<SuperMap.ThemeParameters>}
+	     *
+	     * Returns:
+	     * {Object} 转化后的JSON字符串。
+	     */
+	    getJsonParameters: function (parameter) {
+	        var jsonParameters = "",
+	            themeType = "",
+	            themeObj = null,
+	            filters = null,
+	            orderBys = null,
+	            fieldValuesDisplayFilter;
+	        jsonParameters += "[{'type': 'UGC','subLayers': {'layers': [";
+	        for (var themeID in parameter.themes) {
+	            themeObj = parameter.themes[themeID];
+	            var jsonTheme = SuperMap.Util.toJSON(themeObj);
+	            jsonTheme = jsonTheme.slice(0, -1);
+
+	            jsonParameters += "{'theme': " + jsonTheme + "},'type': 'UGC','ugcLayerType': 'THEME',";
+	            filters = parameter.displayFilters;
+	            if (filters && filters.length > 0) {
+	                if (filters.length === 1) {
+	                    jsonParameters += "'displayFilter':\"" + filters[0] + "\",";
+	                } else {
+	                    jsonParameters += "'displayFilter':\"" + filters[themeID] + "\",";
+	                }
+	            }
+	            orderBys = parameter.displayOrderBy;
+	            if (orderBys && orderBys.length > 0) {
+	                if (orderBys.length === 1) {
+	                    jsonParameters += "'displayOrderBy':'" + orderBys[0] + "',";
+	                } else {
+	                    jsonParameters += "'displayOrderBy':'" + orderBys[themeID] + "',";
+	                }
+	            }
+
+	            fieldValuesDisplayFilter = parameter.fieldValuesDisplayFilter;
+	            if (fieldValuesDisplayFilter) {
+	                jsonParameters += "'fieldValuesDisplayFilter':" + SuperMap.Util.toJSON(fieldValuesDisplayFilter) + ",";
+	            }
+
+	            if (parameter.joinItems && parameter.joinItems.length > 0 && parameter.joinItems[themeID]) {
+	                jsonParameters += "'joinItems':[" + SuperMap.Util.toJSON(parameter.joinItems[themeID]) + "],";
+	            }
+	            if (parameter.datasetNames && parameter.dataSourceNames) {
+	                var datasetID = parameter.datasetNames[themeID] ? themeID : (parameter.datasetNames.length - 1);
+	                var dataSourceID = parameter.dataSourceNames[themeID] ? themeID : (parameter.dataSourceNames.length - 1);
+	                jsonParameters += "'datasetInfo': {'name': '" + parameter.datasetNames[datasetID] +
+	                    "','dataSourceName': '" + parameter.dataSourceNames[dataSourceID] + "'}},";
+	            } else {
+	                jsonParameters += "},";
+	            }
+	        }
+	        //去除多余的逗号
+	        if (parameter.themes && parameter.themes.length > 0) {
+	            jsonParameters = jsonParameters.substring(0, jsonParameters.length - 1);
+	        }
+	        jsonParameters += "]},";
+	        var urlArray = this.url.split("/");
+	        var jsonMapName = urlArray[urlArray.length - 2];
+
+	        jsonParameters += "'name': '" + jsonMapName + "'}]";
+	        return jsonParameters;
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.ThemeService"
+	});
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.ThemeService(url, options);
+	};
+
+/***/ },
+/* 121 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: SuperMap.ThemeParameters
+	 * 专题图参数类
+	 * 该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
+	 */
+
+	__webpack_require__(25);
+	__webpack_require__(69);
+	__webpack_require__(70);
+	__webpack_require__(64);
+	__webpack_require__(44);
+	__webpack_require__(72);
+	__webpack_require__(62);
+	__webpack_require__(122);
+	__webpack_require__(124);
+
+	SuperMap.ThemeParameters = SuperMap.Class({
+
+	    /**
+	     * APIProperty: datasetNames
+	     * {Array(String)} 要制作专题图的数据集数组，必设。
+	     */
+	    datasetNames: null,
+
+	    /**
+	     * APIProperty: dataSourceNames
+	     * {Array(String)} 要制作专题图的数据集所在的数据源数组，必设。
+	     */
+	    dataSourceNames: null,
+
+	    /**
+	     * APIProperty: joinItems
+	     * {Array(<SuperMap.JoinItem>)} 设置与外部表的连接信息 JoinItem 数组。
+	     * 使用此属性可以制作与外部表连接的专题图。
+	     */
+	    joinItems: null,
+
+	    /**
+	     * APIProperty: themes
+	     * {Array(<SuperMap.Theme>)} 专题图对象列表。
+	     * 该参数为实例化的各类专题图对象的集合。
+	     */
+	    themes: null,
+
+	    /**
+	     * APIProperty: displayFilters
+	     * {Array(String)} 专题图属性过滤条件。
+	     */
+	    displayFilters: null,
+
+	    /**
+	     * APIProperty: displayOrderBy
+	     * {Array(String)} 专题图对象生成符号叠加次序排序字段
+	     */
+	    displayOrderBys: null,
+
+	    /**
+	     * APIProperty: fieldValuesDisplayFilter
+	     * {Object} 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode,他们的作用如下：
+	     * values：{Array<Number>} - 就是要过滤的值；
+	     * fieldName：{String} - 要过滤的字段名称 只支持数字类型的字段；
+	     * fieldValuesDisplayMode：{String} 目前有两个DISPLAY/DISABLE。当为DISPLAY时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素
+	     * */
+	    fieldValuesDisplayFilter: null,
+
+	    /**
+	     * Constructor: SuperMap.ThemeParameters
+	     * 专题图参数类构造函数。
+	     *
+	     * Parameters:
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * datasetNames - {Array(String)} 要制作专题图的数据集数组。
+	     * dataSourceNames - {Array(String)} 要制作专题图的数据集所在的数据源数组。
+	     * joinItems - {Array(<SuperMap.JoinItem>)} 专题图外部表的连接信息 JoinItem 数组。
+	     * themes - {Array(<SuperMap.Theme>)} 专题图对象列表。
+	     */
+	    initialize: function (options) {
 	        if (options) {
 	            SuperMap.Util.extend(this, options);
 	        }
@@ -13942,48 +15164,31 @@
 	     */
 	    destroy: function () {
 	        var me = this;
-	        me.caption = null;
-	        me.unique = null;
-
-	        if (me.style) {
-	            me.style.destroy();
-	            me.style = null;
-	        }
-	        me.visible = null;
-	    },
-
-	    /**
-	     * Method: toServerJSONObject
-	     * 转换成对应的 JSON 格式对象。
-	     */
-	    toServerJSONObject: function () {
-	        var obj = {};
-	        obj = SuperMap.Util.copyAttributes(obj, this);
-	        if (obj.style) {
-	            if (obj.style.toServerJSONObject) {
-	                obj.style = obj.style.toServerJSONObject();
+	        me.datasetNames = null;
+	        me.dataSourceNames = null;
+	        if (me.joinItems) {
+	            for (var i = 0, joinItems = me.joinItems, len = joinItems.length; i < len; i++) {
+	                joinItems[i].destroy();
 	            }
+	            me.joinItems = null;
 	        }
-	        return obj;
+	        if (me.themes) {
+	            for (var i = 0, themes = me.themes, len = themes.length; i < len; i++) {
+	                themes[i].destroy();
+	            }
+	            me.themes = null;
+	        }
 	    },
 
-	    CLASS_NAME: "SuperMap.ThemeUniqueItem"
+	    CLASS_NAME: "SuperMap.ThemeParameters"
 	});
-	SuperMap.ThemeUniqueItem.fromObj = function (obj) {
-	    var res = new SuperMap.ThemeUniqueItem();
-	    SuperMap.Util.copy(res, obj);
-	    res.style = SuperMap.ServerStyle.fromJson(obj.style);
-	    return res;
 
-	};
 	module.exports = function (options) {
-	    return new SuperMap.ThemeUniqueItem(options);
+	    return new SuperMap.ThemeParameters(options);
 	};
-
-
 
 /***/ },
-/* 110 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -13996,8 +15201,8 @@
 	 *  - <SuperMap.Theme>
 	 */
 
-	__webpack_require__(83);
-	__webpack_require__(111);
+	__webpack_require__(45);
+	__webpack_require__(123);
 	SuperMap.ThemeGridRange = SuperMap.Class(SuperMap.Theme, {
 
 	    /**
@@ -14102,7 +15307,7 @@
 
 
 /***/ },
-/* 111 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14112,7 +15317,7 @@
 	 * 本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。
 	 */
 
-	__webpack_require__(82);
+	__webpack_require__(49);
 	SuperMap.ThemeGridRangeItem = SuperMap.Class({
 
 	    /**
@@ -14214,7 +15419,7 @@
 
 
 /***/ },
-/* 112 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14227,9 +15432,9 @@
 	 *  - <SuperMap.Theme>
 	 */
 
-	__webpack_require__(82);
-	__webpack_require__(83);
-	__webpack_require__(113);
+	__webpack_require__(49);
+	__webpack_require__(45);
+	__webpack_require__(125);
 	SuperMap.ThemeGridUnique = SuperMap.Class(SuperMap.Theme, {
 
 	    /**
@@ -14332,7 +15537,7 @@
 
 
 /***/ },
-/* 113 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14341,7 +15546,7 @@
 	 * 栅格单值专题图是将值相同的单元格归为一类，每一类是一个专题图子项。
 	 */
 
-	__webpack_require__(82);
+	__webpack_require__(49);
 	SuperMap.ThemeGridUniqueItem = SuperMap.Class({
 
 	    /**
@@ -14435,7 +15640,7 @@
 
 
 /***/ },
-/* 114 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14443,17 +15648,17 @@
 	 * 网络分析服务类
 	 */
 	__webpack_require__(15);
-	__webpack_require__(115);
-	__webpack_require__(118);
-	__webpack_require__(122);
-	__webpack_require__(124);
-	__webpack_require__(126);
-	__webpack_require__(129);
-	__webpack_require__(131);
-	__webpack_require__(133);
-	__webpack_require__(135);
-	__webpack_require__(137);
-	__webpack_require__(139);
+	__webpack_require__(127);
+	__webpack_require__(130);
+	__webpack_require__(134);
+	__webpack_require__(136);
+	__webpack_require__(138);
+	__webpack_require__(141);
+	__webpack_require__(143);
+	__webpack_require__(145);
+	__webpack_require__(147);
+	__webpack_require__(149);
+	__webpack_require__(151);
 
 	ol.supermap.NetworkAnalystService = function (url, options) {
 	    ol.supermap.ServiceBase.call(this, url, options);
@@ -14501,6 +15706,7 @@
 	 * @param params
 	 *      <FindClosestFacilitiesParameters>
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.NetworkAnalystService.prototype.findClosestFacilities = function (params, resultFormat) {
 	    var me = this;
@@ -14521,6 +15727,7 @@
 	 * @param params
 	 *      <FacilityAnalystStreamParameters>
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.NetworkAnalystService.prototype.streamFacilityAnalyst = function (params, resultFormat) {
 	    var me = this;
@@ -14541,6 +15748,7 @@
 	 * @param params
 	 *      <FindLocationParameters>
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.NetworkAnalystService.prototype.findLocation = function (params, resultFormat) {
 	    var me = this;
@@ -14561,6 +15769,7 @@
 	 * @param params
 	 *      <FindPathParameters>
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 
 	ol.supermap.NetworkAnalystService.prototype.findPath = function (params, resultFormat) {
@@ -14582,6 +15791,7 @@
 	 * @param params
 	 *      <SuperMap.FindTSPPathsParameters>
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.NetworkAnalystService.prototype.findTSPPaths = function (params, resultFormat) {
 	    var me = this;
@@ -14602,6 +15812,7 @@
 	 * @param params
 	 *      <FindMTSPPathsParameters>
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.NetworkAnalystService.prototype.findMTSPPaths = function (params, resultFormat) {
 	    var me = this;
@@ -14622,6 +15833,7 @@
 	 * @param params
 	 *      <FindServiceAreasParameters>
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.NetworkAnalystService.prototype.findServiceAreas = function (params, resultFormat) {
 	    var me = this;
@@ -14678,7 +15890,7 @@
 	};
 
 	ol.supermap.NetworkAnalystService.prototype._processFormat = function (resultFormat) {
-	    return (resultFormat) ? resultFormat : SuperMap.Format.GEOJSON;
+	    return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
 	};
 
 	ol.supermap.NetworkAnalystService.prototype._processParams = function (params) {
@@ -14739,7 +15951,7 @@
 	module.exports = ol.supermap.NetworkAnalystService;
 
 /***/ },
-/* 115 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14749,8 +15961,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(116);
-	__webpack_require__(117);
+	__webpack_require__(128);
+	__webpack_require__(129);
 	SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -14824,7 +16036,7 @@
 	};
 
 /***/ },
-/* 116 */
+/* 128 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14842,7 +16054,7 @@
 	     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
 	     *  参数格式为"ISERVER","GEOJSON",GEOJSON
 	     */
-	    format: SuperMap.Format.GEOJSON,
+	    format: SuperMap.DataFormat.GEOJSON,
 
 	    initialize: function (url, options) {
 	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
@@ -14861,7 +16073,7 @@
 	    },
 
 	    /**
-	     * Method: getMapStatusCompleted
+	     * Method: serviceProcessCompleted
 	     * 分析完成，执行此方法。
 	     *
 	     * Parameters:
@@ -14870,13 +16082,13 @@
 	    serviceProcessCompleted: function (result) {
 	        var me = this, analystResult;
 	        result = SuperMap.Util.transformResult(result);
-	        if (result && me.format === SuperMap.Format.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+	        if (result && me.format === SuperMap.DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
 	            analystResult = me.toGeoJSONResult(result);
 	        }
 	        if (!analystResult) {
 	            analystResult = result;
 	        }
-	        me.events.triggerEvent("processCompleted", {result: analystResult, originalResult: result});
+	        me.events.triggerEvent("processCompleted", {result: analystResult});
 	    },
 
 	    /**
@@ -14899,7 +16111,7 @@
 
 
 /***/ },
-/* 117 */
+/* 129 */
 /***/ function(module, exports) {
 
 	/**
@@ -14975,7 +16187,7 @@
 	};
 
 /***/ },
-/* 118 */
+/* 130 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -14987,8 +16199,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(116);
-	__webpack_require__(119);
+	__webpack_require__(128);
+	__webpack_require__(131);
 	SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -15092,7 +16304,7 @@
 	};
 
 /***/ },
-/* 119 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15101,7 +16313,7 @@
 	 * 根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
 	 */
 
-	__webpack_require__(120);
+	__webpack_require__(132);
 	SuperMap.ComputeWeightMatrixParameters = SuperMap.Class({
 
 	    /**
@@ -15166,19 +16378,19 @@
 	};
 
 /***/ },
-/* 120 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/** * Class: SuperMap.TransportationAnalystParameter * 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 */__webpack_require__(121);SuperMap.TransportationAnalystParameter = SuperMap.Class({    /**     * APIProperty: barrierEdgeIDs     * {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。     */    barrierEdgeIDs: null,    /**     * APIProperty: barrierNodeIDs     * {Array(<Number>)} 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。     */    barrierNodeIDs: null,    /**     * APIProperty: barrierPoints     * {Array(<Point>)}网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */    barrierPoints: null,    /**     * APIProperty: weightFieldName     * {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */    weightFieldName: null,    /**     * APIProperty: turnWeightField     * {String} 转向权重字段的名称。     */    turnWeightField: null,    /**     * APIProperty: resultSetting     * {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    resultSetting: null,    /**     * Constructor: SuperMap.TransportationAnalystParameter     * 交通网络分析通用参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * barrierEdgeIDs - {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。     * barrierNodeIDs - {Array(<Number>)} 网络分析中障碍点的 ID 数组。     * barrierPoints - {Array(<Point>)}     * weightFieldName - {String} 阻力字段的名称。     * turnWeightField - {String} 转向权重字段的名称。     * resultSetting - {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    initialize: function (options) {        var me = this;        me.resultSetting = new SuperMap.TransportationAnalystResultSetting();        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.barrierEdgeIDs = null;        me.barrierNodeIDs = null;        me.weightFieldName = null;        me.turnWeightField = null;        if (me.resultSetting) {            me.resultSetting.destroy();            me.resultSetting = null;        }        if (me.barrierPoints && me.barrierPoints.length) {            for (var i in me.barrierPoints) {                me.barrierPoints.destroy();            }        }        me.barrierPoints = null;    },    CLASS_NAME: "SuperMap.TransportationAnalystParameter"});module.exports = function (options) {    return new SuperMap.TransportationAnalystParameter(options);};
+	/** * Class: SuperMap.TransportationAnalystParameter * 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 */__webpack_require__(133);SuperMap.TransportationAnalystParameter = SuperMap.Class({    /**     * APIProperty: barrierEdgeIDs     * {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。     */    barrierEdgeIDs: null,    /**     * APIProperty: barrierNodeIDs     * {Array(<Number>)} 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。     */    barrierNodeIDs: null,    /**     * APIProperty: barrierPoints     * {Array(<Point>)}网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */    barrierPoints: null,    /**     * APIProperty: weightFieldName     * {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */    weightFieldName: null,    /**     * APIProperty: turnWeightField     * {String} 转向权重字段的名称。     */    turnWeightField: null,    /**     * APIProperty: resultSetting     * {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    resultSetting: null,    /**     * Constructor: SuperMap.TransportationAnalystParameter     * 交通网络分析通用参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * barrierEdgeIDs - {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。     * barrierNodeIDs - {Array(<Number>)} 网络分析中障碍点的 ID 数组。     * barrierPoints - {Array(<Point>)}     * weightFieldName - {String} 阻力字段的名称。     * turnWeightField - {String} 转向权重字段的名称。     * resultSetting - {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    initialize: function (options) {        var me = this;        me.resultSetting = new SuperMap.TransportationAnalystResultSetting();        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.barrierEdgeIDs = null;        me.barrierNodeIDs = null;        me.weightFieldName = null;        me.turnWeightField = null;        if (me.resultSetting) {            me.resultSetting.destroy();            me.resultSetting = null;        }        if (me.barrierPoints && me.barrierPoints.length) {            for (var i in me.barrierPoints) {                me.barrierPoints.destroy();            }        }        me.barrierPoints = null;    },    CLASS_NAME: "SuperMap.TransportationAnalystParameter"});module.exports = function (options) {    return new SuperMap.TransportationAnalystParameter(options);};
 
 /***/ },
-/* 121 */
+/* 133 */
 /***/ function(module, exports) {
 
 	/** * Class: SuperMap.TransportationAnalystResultSetting * 交通网络分析结果参数类。 * 通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。 */SuperMap.TransportationAnalystResultSetting = SuperMap.Class({    /**     * APIProperty: returnEdgeFeatures     * {Boolean} 是否在分析结果中包含弧段要素集合。弧段要素包括弧段的空间信息和属性信息。     */    returnEdgeFeatures: false,    /**     * APIProperty: returnEdgeGeometry     * {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     */    returnEdgeGeometry: false,    /**     * APIProperty: returnEdgeIDs     * {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。     */    returnEdgeIDs: false,    /**     * APIProperty: returnNodeFeatures     * {Boolean} 是否在分析结果中包含结点要素集合。     * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。默认为 false。     */    returnNodeFeatures: false,    /**     * APIProperty: returnNodeGeometry     * {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。     */    returnNodeGeometry: false,    /**     * APIProperty: returnNodeIDs     * {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。     */    returnNodeIDs: false,    /**     * APIProperty: returnPathGuides     * {Boolean} 返回分析结果中是否包含行驶导引集合。     */    returnPathGuides: false,    /**     * APIProperty: returnRoutes     * {Boolean} 返回分析结果中是否包含路由对象的集合。     */    returnRoutes: false,    /**     * Constructor: SuperMap.TransportationAnalystResultSetting     * 交通网络分析结果参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * returnEdgeFeatures - {Boolean} 是否在分析结果中包含弧段要素集合。     * returnEdgeGeometry - {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     * returnEdgeIDs - {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。     * returnNodeFeatures - {Boolean} 是否在分析结果中包含结点要素集合。     * returnNodeGeometry - {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。     * returnNodeIDs - {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。     * returnPathGuides - {Boolean} 返回分析结果中是否包含行驶导引集合。     * returnRoutes - {Boolean} 返回分析结果中是否包含路由对象的集合。     */    initialize: function (options) {        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.returnEdgeFeatures = null;        me.returnEdgeGeometry = null;        me.returnEdgeIDs = null;        me.returnNodeFeatures = null;        me.returnNodeGeometry = null;        me.returnNodeIDs = null;        me.returnPathGuides = null;        me.returnRoutes = null;    },    CLASS_NAME: "SuperMap.TransportationAnalystResultSetting"});module.exports = function (options) {    return new SuperMap.TransportationAnalystResultSetting(options);};
 
 /***/ },
-/* 122 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15188,8 +16400,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(116);
-	__webpack_require__(123);
+	__webpack_require__(128);
+	__webpack_require__(135);
 	SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -15272,7 +16484,7 @@
 	};
 
 /***/ },
-/* 123 */
+/* 135 */
 /***/ function(module, exports) {
 
 	/**
@@ -15355,7 +16567,7 @@
 	};
 
 /***/ },
-/* 124 */
+/* 136 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15369,8 +16581,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(116);
-	__webpack_require__(125);
+	__webpack_require__(128);
+	__webpack_require__(137);
 	SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -15480,27 +16692,24 @@
 	        if (!result || !result.facilityPathList) {
 	            return result;
 	        }
-	        //只处理route ,pathGuide,edgeFeatures,nodeFeatures
-	        var analystResults = [];
+
 	        var geoJSONFormat = new SuperMap.Format.GeoJSON();
-	        result.facilityPathList.forEach(function (path) {
-	            var analystResult = {};
+	        result.facilityPathList.map(function (path) {
 	            if (path.route) {
-	                analystResult.route = JSON.parse(geoJSONFormat.write(path.route));
+	                path.route = JSON.parse(geoJSONFormat.write(path.route));
 	            }
 	            if (path.pathGuideItems) {
-	                analystResult.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
+	                path.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
 
 	            }
 	            if (path.edgeFeatures) {
-	                analystResult.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
+	                path.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
 	            }
 	            if (path.nodeFeatures) {
-	                analystResult.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
+	                path.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
 	            }
-	            analystResults.push(analystResult);
 	        });
-	        return analystResults;
+	        return result;
 	    },
 
 	    CLASS_NAME: "SuperMap.REST.FindClosestFacilitiesService"
@@ -15510,7 +16719,7 @@
 	};
 
 /***/ },
-/* 125 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15522,7 +16731,7 @@
 	 * 最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
 	 */
 
-	__webpack_require__(120);
+	__webpack_require__(132);
 	SuperMap.FindClosestFacilitiesParameters = SuperMap.Class({
 
 	    /**
@@ -15628,7 +16837,7 @@
 	};
 
 /***/ },
-/* 126 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15641,8 +16850,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(116);
-	__webpack_require__(127);
+	__webpack_require__(128);
+	__webpack_require__(139);
 	SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -15743,15 +16952,14 @@
 	        if (!result) {
 	            return null;
 	        }
-	        var analystResult = {};
 	        var geoJSONFormat = new SuperMap.Format.GeoJSON();
 	        if (result.demandResults) {
-	            analystResult.demandResults = JSON.parse(geoJSONFormat.write(result.demandResults));
+	            result.demandResults = JSON.parse(geoJSONFormat.write(result.demandResults));
 	        }
 	        if (result.supplyResults) {
-	            analystResult.supplyResults = JSON.parse(geoJSONFormat.write(result.supplyResults)); }
+	            result.supplyResults = JSON.parse(geoJSONFormat.write(result.supplyResults)); }
 
-	        return analystResult;
+	        return result;
 	    },
 
 	    CLASS_NAME: "SuperMap.REST.FindLocationService"
@@ -15762,7 +16970,7 @@
 	};
 
 /***/ },
-/* 127 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15774,7 +16982,7 @@
 	 * 所有网络结点都作为资源需求点参与选址分区分析，如果要排除某部分结点不分析，可以将其设置为障碍点。
 	 */
 
-	__webpack_require__(128);
+	__webpack_require__(140);
 	SuperMap.FindLocationParameters = SuperMap.Class({
 
 	    /**
@@ -15859,7 +17067,7 @@
 	};
 
 /***/ },
-/* 128 */
+/* 140 */
 /***/ function(module, exports) {
 
 	/**
@@ -15949,7 +17157,7 @@
 
 
 /***/ },
-/* 129 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -15963,8 +17171,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(116);
-	__webpack_require__(130);
+	__webpack_require__(128);
+	__webpack_require__(142);
 	SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -16073,27 +17281,22 @@
 	        if (!result || !result.pathList) {
 	            return null;
 	        }
-	        //只处理route ,pathGuide,edgeFeatures,nodeFeatures
-	        var analystResults = [];
 	        var geoJSONFormat = new SuperMap.Format.GeoJSON();
-	        result.pathList.forEach(function (path) {
-	            var analystResult = {};
+	        result.pathList.map(function (path) {
 	            if (path.route) {
-	                analystResult.route = JSON.parse(geoJSONFormat.write(path.route));
+	                path.route = JSON.parse(geoJSONFormat.write(path.route));
 	            }
 	            if (path.pathGuideItems) {
-	                analystResult.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
-
+	                path.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
 	            }
 	            if (path.edgeFeatures) {
-	                analystResult.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
+	                path.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
 	            }
 	            if (path.nodeFeatures) {
-	                analystResult.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
+	                path.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
 	            }
-	            analystResults.push(analystResult);
 	        });
-	        return analystResults;
+	        return result;
 	    },
 
 	    CLASS_NAME: "SuperMap.REST.FindMTSPPathsService"
@@ -16104,7 +17307,7 @@
 	};
 
 /***/ },
-/* 130 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16115,7 +17318,7 @@
 	 * 例如：现在有50个报刊零售地（配送目的地），和4个报刊供应地（配送中心），现寻求这4个供应地向报刊零售地发送报纸的最优路线，属物流配送问题。
 	 */
 
-	__webpack_require__(120);
+	__webpack_require__(132);
 	SuperMap.FindMTSPPathsParameters = SuperMap.Class({
 
 	    /**
@@ -16203,7 +17406,7 @@
 	};
 
 /***/ },
-/* 131 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16217,8 +17420,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(116);
-	__webpack_require__(132);
+	__webpack_require__(128);
+	__webpack_require__(144);
 	SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -16325,27 +17528,23 @@
 	        if (!result || !result.pathList || result.pathList.length < 1) {
 	            return null;
 	        }
-	        //只处理route ,pathGuide,edgeFeatures,nodeFeatures
-	        var analystResults = [];
 	        var geoJSONFormat = new SuperMap.Format.GeoJSON();
 	        result.pathList.forEach(function (path) {
-	            var analystResult = {};
 	            if (path.route) {
-	                analystResult.route = JSON.parse(geoJSONFormat.write(path.route));
+	                path.route = JSON.parse(geoJSONFormat.write(path.route));
 	            }
 	            if (path.pathGuideItems) {
-	                analystResult.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
+	                path.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
 
 	            }
 	            if (path.edgeFeatures) {
-	                analystResult.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
+	                path.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
 	            }
 	            if (path.nodeFeatures) {
-	                analystResult.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
+	                path.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
 	            }
-	            analystResults.push(analystResult);
 	        });
-	        return analystResults;
+	        return result;
 	    },
 
 	    CLASS_NAME: "SuperMap.REST.FindPathService"
@@ -16356,7 +17555,7 @@
 	};
 
 /***/ },
-/* 132 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16371,7 +17570,7 @@
 	 * 计算最佳路径除了受阻抗影响外，还受转向字段的影响。转向值通过 SuperMap.TransportationAnalystParameter.turnWeightField 设置。
 	 */
 
-	__webpack_require__(120);
+	__webpack_require__(132);
 	SuperMap.FindPathParameters = SuperMap.Class({
 
 	    /**
@@ -16449,7 +17648,7 @@
 	};
 
 /***/ },
-/* 133 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16462,8 +17661,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(116);
-	__webpack_require__(134);
+	__webpack_require__(128);
+	__webpack_require__(146);
 	SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -16572,15 +17771,23 @@
 	        if (!result || !result.serviceAreaList) {
 	            return result;
 	        }
-	        var analystResult = [];
 	        var geoJSONFormat = new SuperMap.Format.GeoJSON();
 	        result.serviceAreaList.map(function (serviceArea) {
 	            if (serviceArea.serviceRegion) {
-	                analystResult.push(JSON.parse(geoJSONFormat.write(serviceArea.serviceRegion)));
+	                serviceArea.serviceRegion = JSON.parse(geoJSONFormat.write(serviceArea.serviceRegion));
+	            }
+	            if (serviceArea.edgeFeatures) {
+	                serviceArea.edgeFeatures = JSON.parse(geoJSONFormat.write(serviceArea.edgeFeatures));
+	            }
+	            if (serviceArea.nodeFeatures) {
+	                serviceArea.nodeFeatures = JSON.parse(geoJSONFormat.write(serviceArea.nodeFeatures));
+	            }
+	            if (serviceArea.routes) {
+	                serviceArea.routes = JSON.parse(geoJSONFormat.write(serviceArea.routes));
 	            }
 	        });
 
-	        return analystResult;
+	        return result;
 	    },
 
 	    CLASS_NAME: "SuperMap.REST.FindServiceAreasService"
@@ -16591,7 +17798,7 @@
 	};
 
 /***/ },
-/* 134 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16601,7 +17808,7 @@
 	 * 例如：计算某快餐店能够在30分钟内送达快餐的区域。
 	 */
 
-	__webpack_require__(120);
+	__webpack_require__(132);
 	SuperMap.FindServiceAreasParameters = SuperMap.Class({
 
 	    /**
@@ -16698,7 +17905,7 @@
 	};
 
 /***/ },
-/* 135 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16711,8 +17918,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(116);
-	__webpack_require__(136);
+	__webpack_require__(128);
+	__webpack_require__(148);
 	SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -16818,27 +18025,22 @@
 	        if (!result || !result.tspPathList) {
 	            return null;
 	        }
-	        //只处理route ,pathGuide,edgeFeatures,nodeFeatures
-	        var analystResults = [];
 	        var geoJSONFormat = new SuperMap.Format.GeoJSON();
 	        result.tspPathList.forEach(function (path) {
-	            var analystResult = {};
 	            if (path.route) {
-	                analystResult.route = JSON.parse(geoJSONFormat.write(path.route));
+	                path.route = JSON.parse(geoJSONFormat.write(path.route));
 	            }
 	            if (path.pathGuideItems) {
-	                analystResult.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
-
+	                path.pathGuideItems = JSON.parse(geoJSONFormat.write(path.pathGuideItems));
 	            }
 	            if (path.edgeFeatures) {
-	                analystResult.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
+	                path.edgeFeatures = JSON.parse(geoJSONFormat.write(path.edgeFeatures));
 	            }
 	            if (path.nodeFeatures) {
-	                analystResult.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
+	                path.nodeFeatures = JSON.parse(geoJSONFormat.write(path.nodeFeatures));
 	            }
-	            analystResults.push(analystResult);
 	        });
-	        return analystResults;
+	        return result;
 	    },
 	    CLASS_NAME: "SuperMap.REST.FindTSPPathsService"
 	});
@@ -16848,7 +18050,7 @@
 	};
 
 /***/ },
-/* 136 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -16860,7 +18062,7 @@
 	 * 最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。
 	 */
 
-	__webpack_require__(120);
+	__webpack_require__(132);
 	SuperMap.FindTSPPathsParameters = SuperMap.Class({
 	    /**
 	     * APIProperty: endNodeAssigned
@@ -16939,15 +18141,15 @@
 	};
 
 /***/ },
-/* 137 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Class: SuperMap.REST.UpdateEdgeWeightService
 	 *  更新边的边的耗费权重服务
 	 */
-	__webpack_require__(116);
-	__webpack_require__(138);
+	__webpack_require__(128);
+	__webpack_require__(150);
 	SuperMap.REST.UpdateEdgeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -17063,7 +18265,7 @@
 	};
 
 /***/ },
-/* 138 */
+/* 150 */
 /***/ function(module, exports) {
 
 	/**
@@ -17145,15 +18347,15 @@
 	};
 
 /***/ },
-/* 139 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Class:SuperMap.REST.UpdateTurnNodeWeightService
 	 * 转向耗费权重更新服务类
 	 */
-	__webpack_require__(116);
-	__webpack_require__(140);
+	__webpack_require__(128);
+	__webpack_require__(152);
 	SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
 	    /**
@@ -17268,7 +18470,7 @@
 	};
 
 /***/ },
-/* 140 */
+/* 152 */
 /***/ function(module, exports) {
 
 	/**
@@ -17350,7 +18552,7 @@
 	};
 
 /***/ },
-/* 141 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17358,11 +18560,11 @@
 	 * 3D网络分析服务类
 	 */
 	__webpack_require__(15);
-	__webpack_require__(142);
-	__webpack_require__(145);
-	__webpack_require__(147);
-	__webpack_require__(149);
-	__webpack_require__(151);
+	__webpack_require__(154);
+	__webpack_require__(157);
+	__webpack_require__(159);
+	__webpack_require__(161);
+	__webpack_require__(163);
 
 	ol.supermap.NetworkAnalyst3DService = function (url, options) {
 	    ol.supermap.ServiceBase.call(this, url, options);
@@ -17458,7 +18660,7 @@
 	module.exports = ol.supermap.NetworkAnalyst3DService;
 
 /***/ },
-/* 142 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17472,7 +18674,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(19);
-	__webpack_require__(143);
+	__webpack_require__(155);
 	SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -17548,7 +18750,7 @@
 	};
 
 /***/ },
-/* 143 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17560,7 +18762,7 @@
 	 * 最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
 	 */
 
-	__webpack_require__(144);
+	__webpack_require__(156);
 	SuperMap.FacilityAnalystSinks3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
 
 	    /**
@@ -17607,7 +18809,7 @@
 	};
 
 /***/ },
-/* 144 */
+/* 156 */
 /***/ function(module, exports) {
 
 	/**
@@ -17690,7 +18892,7 @@
 	};
 
 /***/ },
-/* 145 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17705,7 +18907,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(19);
-	__webpack_require__(146);
+	__webpack_require__(158);
 	SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -17771,7 +18973,7 @@
 	};
 
 /***/ },
-/* 146 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17783,7 +18985,7 @@
 	 * 最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
 	 */
 
-	__webpack_require__(144);
+	__webpack_require__(156);
 	SuperMap.FacilityAnalystSources3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
 
 	    /**
@@ -17823,7 +19025,7 @@
 	};
 
 /***/ },
-/* 147 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17833,7 +19035,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(19);
-	__webpack_require__(148);
+	__webpack_require__(160);
 	SuperMap.REST.FacilityAnalystTraceup3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -17899,7 +19101,7 @@
 	};
 
 /***/ },
-/* 148 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17907,7 +19109,7 @@
 	 * 上游追踪资源参数类
 	 */
 
-	__webpack_require__(144);
+	__webpack_require__(156);
 	SuperMap.FacilityAnalystTraceup3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
 
 	    /**
@@ -17945,7 +19147,7 @@
 	};
 
 /***/ },
-/* 149 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -17955,7 +19157,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(19);
-	__webpack_require__(150);
+	__webpack_require__(162);
 	SuperMap.REST.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -18021,7 +19223,7 @@
 	};
 
 /***/ },
-/* 150 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18029,7 +19231,7 @@
 	 * 下游追踪资源参数类
 	 */
 
-	__webpack_require__(144);
+	__webpack_require__(156);
 	SuperMap.FacilityAnalystTracedown3DParameters = SuperMap.Class( SuperMap.FacilityAnalyst3DParameters, {
 
 	    /**
@@ -18068,7 +19270,7 @@
 	};
 
 /***/ },
-/* 151 */
+/* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18078,7 +19280,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(19);
-	__webpack_require__(152);
+	__webpack_require__(164);
 	SuperMap.REST.FacilityAnalystUpstream3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -18145,7 +19347,7 @@
 	};
 
 /***/ },
-/* 152 */
+/* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18153,7 +19355,7 @@
 	 * 上游关键设施查找资源参数类
 	 */
 
-	__webpack_require__(144);
+	__webpack_require__(156);
 	SuperMap.FacilityAnalystUpstream3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
 
 	    /**
@@ -18197,7 +19399,7 @@
 	};
 
 /***/ },
-/* 153 */
+/* 165 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18207,19 +19409,19 @@
 	 */
 
 	__webpack_require__(15);
-	__webpack_require__(154);
-	__webpack_require__(157);
-	__webpack_require__(164);
 	__webpack_require__(166);
-	__webpack_require__(168);
-	__webpack_require__(170);
-	__webpack_require__(177);
-	__webpack_require__(179);
-	__webpack_require__(183);
-	__webpack_require__(187);
+	__webpack_require__(169);
+	__webpack_require__(176);
+	__webpack_require__(178);
+	__webpack_require__(180);
+	__webpack_require__(182);
 	__webpack_require__(189);
-	__webpack_require__(194);
-	__webpack_require__(196);
+	__webpack_require__(191);
+	__webpack_require__(195);
+	__webpack_require__(199);
+	__webpack_require__(201);
+	__webpack_require__(206);
+	__webpack_require__(208);
 
 	ol.supermap.SpatialAnalystService = function (url, options) {
 	    ol.supermap.ServiceBase.call(this, url, options);
@@ -18230,6 +19432,7 @@
 	 * 地区太阳辐射
 	 * @param params {AreaSolarRadiationParameters}
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult = function (params, resultFormat) {
 	    var me = this;
@@ -18249,6 +19452,7 @@
 	 * 缓冲区分析
 	 * @param params {DatasetBufferAnalystParameters}
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.SpatialAnalystService.prototype.bufferAnalysis = function (params, resultFormat) {
 	    var me = this;
@@ -18268,6 +19472,7 @@
 	 * 点密度分析
 	 * @param params {DensityKernelAnalystParameters}
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.SpatialAnalystService.prototype.densityAnalysis = function (params, resultFormat) {
 	    var me = this;
@@ -18287,6 +19492,7 @@
 	 * 动态分段分析
 	 * @param params {GenerateSpatialDataParameters}
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.SpatialAnalystService.prototype.generateSpatialData = function (params, resultFormat) {
 	    var me = this;
@@ -18306,6 +19512,7 @@
 	 * 空间关系分析
 	 * @param params {GeoRelationAnalystParameters}
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis = function (params, resultFormat) {
 	    var me = this;
@@ -18325,6 +19532,7 @@
 	 * 插值分析
 	 * @param params {InterpolationRBFAnalystParameters}
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis = function (params, resultFormat) {
 	    var me = this;
@@ -18344,6 +19552,7 @@
 	 * 栅格代数运算
 	 * @param params {MathExpressionAnalysisParameters}
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis = function (params, resultFormat) {
 	    var me = this;
@@ -18363,6 +19572,7 @@
 	 * 叠加分析
 	 * @param params {DatasetOverlayAnalystParameters}
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.SpatialAnalystService.prototype.overlayAnalysis = function (params, resultFormat) {
 	    var me = this;
@@ -18382,6 +19592,7 @@
 	 * 路由测量计算
 	 * @param params {RouteCalculateMeasureParameters}
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure = function (params, resultFormat) {
 	    var me = this;
@@ -18401,6 +19612,7 @@
 	 * 路由定位
 	 * @param params {RouteLocatorParameters}
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.SpatialAnalystService.prototype.routeLocate = function (params, resultFormat) {
 	    var me = this;
@@ -18420,6 +19632,7 @@
 	 * 表面分析
 	 * @param params {DatasetSurfaceAnalystParameters}
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis = function (params, resultFormat) {
 	    var me = this;
@@ -18439,6 +19652,7 @@
 	 * 地形曲率计算
 	 * @param params {TerrainCurvatureCalculationParameters}
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate = function (params, resultFormat) {
 	    var me = this;
@@ -18458,6 +19672,7 @@
 	 * 泰森多边形分析
 	 * @param params {DatasetThiessenAnalystParameters}
 	 * @param resultFormat
+			 *		<SuperMap.DataFormat>
 	 */
 	ol.supermap.SpatialAnalystService.prototype.thiessenAnalysis = function (params, resultFormat) {
 	    var me = this;
@@ -18535,7 +19750,7 @@
 	    return params;
 	};
 	ol.supermap.SpatialAnalystService.prototype._processFormat = function (resultFormat) {
-	    return (resultFormat) ? resultFormat : SuperMap.Format.GEOJSON;
+	    return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
 	};
 	ol.supermap.SpatialAnalystService.prototype.convertGeometry = function (ol3Geometry) {
 	    return ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(ol3Geometry)));
@@ -18544,7 +19759,7 @@
 	module.exports = ol.supermap.SpatialAnalystService;
 
 /***/ },
-/* 154 */
+/* 166 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18554,8 +19769,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(155);
-	__webpack_require__(156);
+	__webpack_require__(167);
+	__webpack_require__(168);
 	SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -18640,7 +19855,7 @@
 	};
 
 /***/ },
-/* 155 */
+/* 167 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18658,7 +19873,7 @@
 	     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
 	     *  参数格式为"ISERVER","GEOJSON",GEOJSON
 	     */
-	    format: SuperMap.Format.GEOJSON,
+	    format: SuperMap.DataFormat.GEOJSON,
 
 	    initialize: function (url, options) {
 	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
@@ -18677,7 +19892,7 @@
 	    },
 
 	    /**
-	     * Method: getMapStatusCompleted
+	     * Method: serviceProcessCompleted
 	     * 分析完成，执行此方法。
 	     *
 	     * Parameters:
@@ -18686,13 +19901,13 @@
 	    serviceProcessCompleted: function (result) {
 	        var me = this, analystResult;
 	        result = SuperMap.Util.transformResult(result);
-	        if (result && me.format === SuperMap.Format.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+	        if (result && me.format === SuperMap.DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
 	            analystResult = me.toGeoJSONResult(result);
 	        }
 	        if (!analystResult) {
 	            analystResult = result;
 	        }
-	        me.events.triggerEvent("processCompleted", {result: analystResult, originalResult: result});
+	        me.events.triggerEvent("processCompleted", {result: analystResult});
 	    },
 	    /**
 	     * Method: toGeoJSONResult
@@ -18705,21 +19920,18 @@
 	        if (!result) {
 	            return null;
 	        }
-	        var geoJSONResult;
 	        var geoJSONFormat = new SuperMap.Format.GeoJSON();
 	        if (result.recordsets) {
-	            geoJSONResult = [];
 	            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
 	                if (recordsets[i].features) {
-	                    var feature = JSON.parse(geoJSONFormat.write(recordsets[i].features));
-	                    geoJSONResult.push(feature);
+	                    recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
 	                }
 	            }
 	        } else if (result.recordset && result.recordset.features) {
-	            geoJSONResult = JSON.parse(geoJSONFormat.write(result.recordset.features));
+	            result.recordset.features = JSON.parse(geoJSONFormat.write(result.recordset.features));
 	        }
-	        
-	        return geoJSONResult;
+
+	        return result;
 	    },
 	    CLASS_NAME: "SuperMap.REST.SpatialAnalystBase"
 	});
@@ -18730,7 +19942,7 @@
 
 
 /***/ },
-/* 156 */
+/* 168 */
 /***/ function(module, exports) {
 
 	/**
@@ -18911,7 +20123,7 @@
 	};
 
 /***/ },
-/* 157 */
+/* 169 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -18923,9 +20135,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(155);
-	__webpack_require__(158);
-	__webpack_require__(163);
+	__webpack_require__(167);
+	__webpack_require__(170);
+	__webpack_require__(175);
 	SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -19032,11 +20244,11 @@
 	        }
 
 	        var analystResult = SuperMap.REST.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
-	        if (!analystResult && result.resultGeometry) {
+	        if (analystResult.resultGeometry) {
 	            var geoJSONFormat = new SuperMap.Format.GeoJSON();
-	            analystResult = JSON.parse(geoJSONFormat.write(result.resultGeometry));
+	            result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
 	        }
-	        return analystResult;
+	        return result;
 	    },
 	    CLASS_NAME: "SuperMap.REST.BufferAnalystService"
 	});
@@ -19046,7 +20258,7 @@
 	};
 
 /***/ },
-/* 158 */
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19057,8 +20269,8 @@
 	 *  - <SuperMap.BufferAnalystParameters>
 	 */
 
-	__webpack_require__(159);
-	__webpack_require__(160);
+	__webpack_require__(171);
+	__webpack_require__(172);
 	SuperMap.DatasetBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystParameters, {
 
 	    /**
@@ -19163,7 +20375,7 @@
 	};
 
 /***/ },
-/* 159 */
+/* 171 */
 /***/ function(module, exports) {
 
 	/**
@@ -19239,7 +20451,7 @@
 	};
 
 /***/ },
-/* 160 */
+/* 172 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19247,7 +20459,7 @@
 	 * 缓冲区分析参数基类。
 	 */
 
-	__webpack_require__(161);
+	__webpack_require__(173);
 	SuperMap.BufferAnalystParameters = SuperMap.Class({
 
 	    /**
@@ -19296,7 +20508,7 @@
 	};
 
 /***/ },
-/* 161 */
+/* 173 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19304,7 +20516,7 @@
 	 * 缓冲区分析通用设置类
 	 */
 
-	__webpack_require__(162);
+	__webpack_require__(174);
 	SuperMap.BufferSetting = SuperMap.Class({
 
 	    /**
@@ -19395,7 +20607,7 @@
 	};
 
 /***/ },
-/* 162 */
+/* 174 */
 /***/ function(module, exports) {
 
 	/**
@@ -19454,7 +20666,7 @@
 	};
 
 /***/ },
-/* 163 */
+/* 175 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19466,7 +20678,7 @@
 	 *  - <SuperMap.BufferAnalystParameters>
 	 */
 
-	__webpack_require__(160);
+	__webpack_require__(172);
 	 SuperMap.GeometryBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystParameters, {
 
 	    /**
@@ -19533,7 +20745,7 @@
 	};
 
 /***/ },
-/* 164 */
+/* 176 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19547,8 +20759,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(155);
-	__webpack_require__(165);
+	__webpack_require__(167);
+	__webpack_require__(177);
 	SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -19644,7 +20856,7 @@
 	};
 
 /***/ },
-/* 165 */
+/* 177 */
 /***/ function(module, exports) {
 
 	/**
@@ -19764,7 +20976,7 @@
 	};
 
 /***/ },
-/* 166 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19778,8 +20990,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(155);
 	__webpack_require__(167);
+	__webpack_require__(179);
 	SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -19904,7 +21116,7 @@
 	};
 
 /***/ },
-/* 167 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -19913,7 +21125,7 @@
 	 * 通过该类可以为动态分段提供参数信息。
 	 */
 
-	__webpack_require__(159);
+	__webpack_require__(171);
 	SuperMap.GenerateSpatialDataParameters = SuperMap.Class({
 
 	    /**
@@ -20041,7 +21253,7 @@
 	};
 
 /***/ },
-/* 168 */
+/* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20049,8 +21261,8 @@
 	 * 空间关系分析服务类。
 	 * 该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
 	 */
-	__webpack_require__(155);
-	__webpack_require__(169);
+	__webpack_require__(167);
+	__webpack_require__(181);
 	SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -20150,7 +21362,7 @@
 	};
 
 /***/ },
-/* 169 */
+/* 181 */
 /***/ function(module, exports) {
 
 	/**
@@ -20274,7 +21486,7 @@
 	};
 
 /***/ },
-/* 170 */
+/* 182 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20289,12 +21501,12 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(155);
-	__webpack_require__(171);
-	__webpack_require__(173);
-	__webpack_require__(175);
-	__webpack_require__(176);
-	__webpack_require__(172);
+	__webpack_require__(167);
+	__webpack_require__(183);
+	__webpack_require__(185);
+	__webpack_require__(187);
+	__webpack_require__(188);
+	__webpack_require__(184);
 	SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -20419,7 +21631,7 @@
 	};
 
 /***/ },
-/* 171 */
+/* 183 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20430,7 +21642,7 @@
 	 *  - <SuperMap.InterpolationAnalystParameters>
 	 */
 
-	__webpack_require__(172);
+	__webpack_require__(184);
 	SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
 	    /**
 	     * APIProperty: smooth
@@ -20563,7 +21775,7 @@
 	};
 
 /***/ },
-/* 172 */
+/* 184 */
 /***/ function(module, exports) {
 
 	/**
@@ -20741,12 +21953,12 @@
 	};
 
 /***/ },
-/* 173 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	
-	__webpack_require__(172);
-	__webpack_require__(174);
+	__webpack_require__(184);
+	__webpack_require__(186);
 	/**
 	 * Class: SuperMap.InterpolationDensityAnalystParameters
 	 * 点密度差值分析参数类
@@ -20814,7 +22026,7 @@
 	};
 
 /***/ },
-/* 174 */
+/* 186 */
 /***/ function(module, exports) {
 
 	/**
@@ -20900,7 +22112,7 @@
 	};
 
 /***/ },
-/* 175 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -20911,7 +22123,7 @@
 	 *  - <SuperMap.InterpolationAnalystParameters>
 	 */
 
-	__webpack_require__(172);
+	__webpack_require__(184);
 	SuperMap.InterpolationIDWAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
 	    /**
 	     * APIProperty: power
@@ -21008,7 +22220,7 @@
 
 
 /***/ },
-/* 176 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21059,8 +22271,8 @@
 	 *  - <SuperMap.InterpolationAnalystParameters>
 	 */
 
-	__webpack_require__(172);
-	__webpack_require__(174);
+	__webpack_require__(184);
+	__webpack_require__(186);
 
 	SuperMap.InterpolationKrigingAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
 	    /**
@@ -21260,7 +22472,7 @@
 	};
 
 /***/ },
-/* 177 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21270,8 +22482,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(155);
-	__webpack_require__(178);
+	__webpack_require__(167);
+	__webpack_require__(190);
 	SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -21356,7 +22568,7 @@
 	};
 
 /***/ },
-/* 178 */
+/* 190 */
 /***/ function(module, exports) {
 
 	/**
@@ -21497,7 +22709,7 @@
 	};
 
 /***/ },
-/* 179 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21510,8 +22722,8 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(19);
-	__webpack_require__(180);
-	__webpack_require__(182);
+	__webpack_require__(192);
+	__webpack_require__(194);
 	SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -21612,7 +22824,7 @@
 	};
 
 /***/ },
-/* 180 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21623,8 +22835,8 @@
 	 *  - <SuperMap.OverlayAnalystParameters>
 	 */
 
-	__webpack_require__(159);
-	__webpack_require__(181);
+	__webpack_require__(171);
+	__webpack_require__(193);
 	SuperMap.DatasetOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalystParameters, {
 
 	    /**
@@ -21784,7 +22996,7 @@
 	};
 
 /***/ },
-/* 181 */
+/* 193 */
 /***/ function(module, exports) {
 
 	/**
@@ -21834,7 +23046,7 @@
 	};
 
 /***/ },
-/* 182 */
+/* 194 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21846,7 +23058,7 @@
 	 *  - <SuperMap.OverlayAnalystParameters>
 	 */
 
-	__webpack_require__(181);
+	__webpack_require__(193);
 	SuperMap.GeometryOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalystParameters, {
 
 	    /**
@@ -21921,7 +23133,7 @@
 	};
 
 /***/ },
-/* 183 */
+/* 195 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -21932,8 +23144,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(155);
-	__webpack_require__(184);
+	__webpack_require__(167);
+	__webpack_require__(196);
 	SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -22065,7 +23277,7 @@
 	};
 
 /***/ },
-/* 184 */
+/* 196 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22073,7 +23285,7 @@
 	 * 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
 	 */
 
-	__webpack_require__(185);
+	__webpack_require__(197);
 	SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
 
 	    /**
@@ -22162,7 +23374,7 @@
 	};
 
 /***/ },
-/* 185 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22174,7 +23386,7 @@
 	 *  - <SuperMap.Geometry.Collection>
 	 */
 
-	__webpack_require__(186);
+	__webpack_require__(198);
 	SuperMap.Route = SuperMap.Class(SuperMap.Geometry.Collection, {
 
 	    /**
@@ -22397,7 +23609,7 @@
 	};
 
 /***/ },
-/* 186 */
+/* 198 */
 /***/ function(module, exports) {
 
 	/**
@@ -22514,7 +23726,7 @@
 	};
 
 /***/ },
-/* 187 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22524,8 +23736,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(155);
-	__webpack_require__(188);
+	__webpack_require__(167);
+	__webpack_require__(200);
 	SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -22660,7 +23872,7 @@
 	};
 
 /***/ },
-/* 188 */
+/* 200 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22670,7 +23882,7 @@
 	 * 如果用户两种参数均设置，优先选择Dataset方式
 	 */
 
-	__webpack_require__(185);
+	__webpack_require__(197);
 	SuperMap.RouteLocatorParameters = SuperMap.Class({
 
 	    /**
@@ -22802,7 +24014,7 @@
 	};
 
 /***/ },
-/* 189 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22814,9 +24026,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(155);
-	__webpack_require__(190);
-	__webpack_require__(193);
+	__webpack_require__(167);
+	__webpack_require__(202);
+	__webpack_require__(205);
 	SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -22925,7 +24137,7 @@
 	};
 
 /***/ },
-/* 190 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -22937,8 +24149,8 @@
 	 *  - <SurfaceAnalystParameters>
 	 */
 
-	__webpack_require__(159);
-	__webpack_require__(191);
+	__webpack_require__(171);
+	__webpack_require__(203);
 	SuperMap.DatasetSurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnalystParameters, {
 
 	    /**
@@ -23027,7 +24239,7 @@
 	};
 
 /***/ },
-/* 191 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23037,8 +24249,8 @@
 	 * {<SuperMap.DatasetSurfaceAnalystParameters>} 和 {<SuperMap.GeometrySurfaceAnalystParameters>} 继承自该类。
 	 */
 
-	__webpack_require__(192);
-	__webpack_require__(159);
+	__webpack_require__(204);
+	__webpack_require__(171);
 	SuperMap.SurfaceAnalystParameters = SuperMap.Class({
 
 	    /**
@@ -23114,7 +24326,7 @@
 	};
 
 /***/ },
-/* 192 */
+/* 204 */
 /***/ function(module, exports) {
 
 	/**
@@ -23234,7 +24446,7 @@
 	};
 
 /***/ },
-/* 193 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23246,7 +24458,7 @@
 	 *  - <SurfaceAnalystParameters>
 	 */
 
-	__webpack_require__(191);
+	__webpack_require__(203);
 	SuperMap.GeometrySurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnalystParameters, {
 
 	    /**
@@ -23308,7 +24520,7 @@
 	};
 
 /***/ },
-/* 194 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23318,8 +24530,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(155);
-	__webpack_require__(195);
+	__webpack_require__(167);
+	__webpack_require__(207);
 	SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -23404,7 +24616,7 @@
 
 
 /***/ },
-/* 195 */
+/* 207 */
 /***/ function(module, exports) {
 
 	/**
@@ -23508,7 +24720,7 @@
 	};
 
 /***/ },
-/* 196 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23523,9 +24735,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(155);
-	__webpack_require__(197);
-	__webpack_require__(198);
+	__webpack_require__(167);
+	__webpack_require__(209);
+	__webpack_require__(210);
 	SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
 	    /**
@@ -23631,12 +24843,12 @@
 	            return result;
 	        }
 
-	        var analystResult = SuperMap.REST.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
-	        if (!analystResult && result.regions) {
+	        result = SuperMap.REST.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
+	        if (result.regions) {
 	            var geoJSONFormat = new SuperMap.Format.GeoJSON();
-	            analystResult = JSON.parse(geoJSONFormat.write(result.regions));
+	            result.regions = JSON.parse(geoJSONFormat.write(result.regions));
 	        }
-	        return analystResult;
+	        return result;
 	    },
 
 	    CLASS_NAME: "SuperMap.REST.ThiessenAnalystService"
@@ -23647,7 +24859,7 @@
 	};
 
 /***/ },
-/* 197 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23658,7 +24870,7 @@
 	 *  - <SuperMap.ThiessenAnalystParameters>
 	 */
 
-	__webpack_require__(174);
+	__webpack_require__(186);
 	SuperMap.DatasetThiessenAnalystParameters = SuperMap.Class(SuperMap.ThiessenAnalystParameters, {
 
 	    /**
@@ -23731,7 +24943,7 @@
 	};
 
 /***/ },
-/* 198 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23743,7 +24955,7 @@
 	 *  - <SuperMap.ThiessenAnalystParameters>
 	 */
 
-	__webpack_require__(174);
+	__webpack_require__(186);
 	SuperMap.GeometryThiessenAnalystParameters = SuperMap.Class(SuperMap.ThiessenAnalystParameters, {
 
 	    /**
@@ -23804,7 +25016,7 @@
 	};
 
 /***/ },
-/* 199 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23812,9 +25024,9 @@
 	 * 交通换乘分析服务类
 	 */
 	__webpack_require__(15);
-	__webpack_require__(200);
-	__webpack_require__(202);
-	__webpack_require__(205);
+	__webpack_require__(212);
+	__webpack_require__(214);
+	__webpack_require__(217);
 
 	ol.supermap.TrafficTransferAnalystService = function (url, options) {
 	    ol.supermap.ServiceBase.call(this, url, options);
@@ -23891,7 +25103,7 @@
 	module.exports = ol.supermap.TrafficTransferAnalystService;
 
 /***/ },
-/* 200 */
+/* 212 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -23903,7 +25115,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(19);
-	__webpack_require__(201);
+	__webpack_require__(213);
 	SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -23977,7 +25189,7 @@
 	};
 
 /***/ },
-/* 201 */
+/* 213 */
 /***/ function(module, exports) {
 
 	/**
@@ -24030,7 +25242,7 @@
 	};
 
 /***/ },
-/* 202 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24042,7 +25254,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(19);
-	__webpack_require__(203);
+	__webpack_require__(215);
 	SuperMap.REST.TransferPathService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -24121,7 +25333,7 @@
 
 
 /***/ },
-/* 203 */
+/* 215 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24129,7 +25341,7 @@
 	 * 交通换乘线路查询参数类。
 	 */
 
-	__webpack_require__(204);
+	__webpack_require__(216);
 	SuperMap.TransferPathParameters = SuperMap.Class({
 	    /**
 	     * APIProperty: transferLines
@@ -24193,7 +25405,7 @@
 	};
 
 /***/ },
-/* 204 */
+/* 216 */
 /***/ function(module, exports) {
 
 	/**
@@ -24322,7 +25534,7 @@
 	};
 
 /***/ },
-/* 205 */
+/* 217 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -24334,7 +25546,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(19);
-	__webpack_require__(206);
+	__webpack_require__(218);
 	SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -24420,7 +25632,7 @@
 
 
 /***/ },
-/* 206 */
+/* 218 */
 /***/ function(module, exports) {
 
 	/**
@@ -24561,7 +25773,86 @@
 
 
 /***/ },
-/* 207 */
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(220);
+	ol.source.Graphic = function (options) {
+	    this.canvasContext_ = ol.dom.createCanvasContext2D();
+	    this.imageTransform = ol.transform.create();
+	    this.graphics_ = options.graphics;
+	    ol.source.ImageCanvas.call(this, {
+	        attributions: options.attributions,
+	        canvasFunction: this.canvasFunctionInternal_.bind(this),
+	        logo: options.logo,
+	        projection: options.projection,
+	        ratio: options.ratio,
+	        resolutions: options.resolutions,
+	        state: options.state
+	    });
+	};
+	ol.inherits(ol.source.Graphic, ol.source.ImageCanvas);
+
+	ol.source.Graphic.prototype.canvasFunctionInternal_ = function (extent, resolution, pixelRatio, size, projection) {
+	    var width = Math.round(ol.extent.getWidth(extent) / resolution);
+	    var height = Math.round(ol.extent.getHeight(extent) / resolution);
+	    this.canvasContext_.canvas.width = width;
+	    this.canvasContext_.canvas.height = height;
+	    this.imageTransform = this.getTransform_(ol.extent.getCenter(extent), resolution, pixelRatio, size);
+	    var vectorContext = new ol.render.canvas.Immediate(this.canvasContext_, pixelRatio, extent, this.imageTransform, 0);
+	    var graphics = this.getGraphicsInExtent(extent);
+	    graphics.map(function (graphic) {
+	        vectorContext.drawFeature(graphic, graphic.getStyle());
+	    });
+	    return this.canvasContext_.canvas;
+	};
+
+	ol.source.Graphic.prototype.forEachFeatureAtCoordinate = function (coordinate, resolution, rotation, hitTolerance, skippedFeatureUids, callback) {
+	    var graphics = this.getGraphicsInExtent();
+	    for (var i = 0; i < graphics.length; i++) {
+	        var center = graphics[i].getGeometry().flatCoordinates;
+	        var image = graphics[i].getStyle().getImage();
+	        var extent = [];
+	        extent[0] = center[0] - image.getAnchor()[0] * resolution;
+	        extent[2] = center[0] + image.getAnchor()[0] * resolution;
+	        extent[1] = center[1] - image.getAnchor()[1] * resolution;
+	        extent[3] = center[1] + image.getAnchor()[1] * resolution;
+	        if (ol.extent.containsCoordinate(extent, coordinate)) {
+	            return callback.call(this, graphics[i]);
+	        }
+	    }
+	};
+
+	ol.source.Graphic.prototype.getTransform_ = function (center, resolution, pixelRatio, size) {
+	    var dx1 = size[0] / 2;
+	    var dy1 = size[1] / 2;
+	    var sx = pixelRatio / resolution;
+	    var sy = -sx;
+	    var dx2 = -center[0];
+	    var dy2 = -center[1];
+	    return ol.transform.compose(this.imageTransform, dx1, dy1, sx, sy, 0, dx2, dy2);
+	};
+
+	ol.source.Graphic.prototype.getGraphicsInExtent = function (extent) {
+	    var graphics = [];
+	    if (!extent) {
+	        this.graphics_.map(function (graphic) {
+	            graphics.push(graphic);
+	        })
+	        return graphics;
+	    }
+	    this.graphics_.map(function (graphic) {
+	        if (ol.extent.containsExtent(extent, graphic.getGeometry().getExtent())) {
+	            graphics.push(graphic);
+	        }
+	    })
+	    return graphics;
+	};
+
+	module.exports = ol.source.Graphic;
+
+/***/ },
+/* 220 */
 /***/ function(module, exports) {
 
 	ol.Graphic = function (geometry) {
@@ -24648,89 +25939,13 @@
 	module.exports = ol.Graphic;
 
 /***/ },
-/* 208 */
-/***/ function(module, exports) {
-
-	ol.source.Graphic = function (options) {
-	    this.canvasContext_ = ol.dom.createCanvasContext2D();
-	    this.imageTransform = ol.transform.create();
-	    this.graphics_ = options.graphics;
-	    ol.source.ImageCanvas.call(this, {
-	        attributions: options.attributions,
-	        canvasFunction: this.canvasFunctionInternal_.bind(this),
-	        logo: options.logo,
-	        projection: options.projection,
-	        ratio: options.ratio,
-	        resolutions: options.resolutions,
-	        state: options.state
-	    });
-	};
-	ol.inherits(ol.source.Graphic, ol.source.ImageCanvas);
-
-	ol.source.Graphic.prototype.canvasFunctionInternal_ = function (extent, resolution, pixelRatio, size, projection) {
-	    var width = Math.round(ol.extent.getWidth(extent) / resolution);
-	    var height = Math.round(ol.extent.getHeight(extent) / resolution);
-	    this.canvasContext_.canvas.width = width;
-	    this.canvasContext_.canvas.height = height;
-	    this.imageTransform = this.getTransform_(ol.extent.getCenter(extent), resolution, pixelRatio, size);
-	    var vectorContext = new ol.render.canvas.Immediate(this.canvasContext_, pixelRatio, extent, this.imageTransform, 0);
-	    var graphics = this.getGraphicsInExtent(extent);
-	    graphics.map(function (graphic) {
-	        vectorContext.drawFeature(graphic, graphic.getStyle());
-	    });
-	    return this.canvasContext_.canvas;
-	};
-
-	ol.source.Graphic.prototype.forEachFeatureAtCoordinate = function (coordinate, resolution, rotation, hitTolerance, skippedFeatureUids, callback) {
-	    var graphics = this.getGraphicsInExtent();
-	    for (var i = 0; i < graphics.length; i++) {
-	        var center = graphics[i].getGeometry().flatCoordinates;
-	        var image = graphics[i].getStyle().getImage();
-	        var extent = [];
-	        extent[0] = center[0] - image.getAnchor()[0] * resolution;
-	        extent[2] = center[0] + image.getAnchor()[0] * resolution;
-	        extent[1] = center[1] - image.getAnchor()[1] * resolution;
-	        extent[3] = center[1] + image.getAnchor()[1] * resolution;
-	        if (ol.extent.containsCoordinate(extent, coordinate)) {
-	            return callback.call(this, graphics[i]);
-	        }
-	    }
-	};
-
-	ol.source.Graphic.prototype.getTransform_ = function (center, resolution, pixelRatio, size) {
-	    var dx1 = size[0] / 2;
-	    var dy1 = size[1] / 2;
-	    var sx = pixelRatio / resolution;
-	    var sy = -sx;
-	    var dx2 = -center[0];
-	    var dy2 = -center[1];
-	    return ol.transform.compose(this.imageTransform, dx1, dy1, sx, sy, 0, dx2, dy2);
-	};
-
-	ol.source.Graphic.prototype.getGraphicsInExtent = function (extent) {
-	    var graphics = [];
-	    if (!extent) {
-	        this.graphics_.map(function (graphic) {
-	            graphics.push(graphic);
-	        })
-	        return graphics;
-	    }
-	    this.graphics_.map(function (graphic) {
-	        if (ol.extent.containsExtent(extent, graphic.getGeometry().getExtent())) {
-	            graphics.push(graphic);
-	        }
-	    })
-	    return graphics;
-	};
-
-	module.exports = ol.source.Graphic;
-
-/***/ },
-/* 209 */
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(2);
-	var fetchJsonp = __webpack_require__(13);
+	__webpack_require__(222);
+	__webpack_require__(226);
+	__webpack_require__(225);
 
 	ol.supermap.VectorTileSuperMapRest = function (options) {
 	    if (options.url === undefined) {
@@ -24743,7 +25958,7 @@
 	                html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
 	            })]
 	    }
-	    var layerUrl = options.url + '/tileFeature.jsonp?';
+	    var layerUrl = options.url + '/tileFeature.json?';
 	    //为url添加安全认证信息片段
 	    if (SuperMap.Credential && SuperMap.Credential.CREDENTIAL) {
 	        layerUrl += "&" + SuperMap.Credential.CREDENTIAL.getUrlParameters();
@@ -24800,7 +26015,7 @@
 
 	    function tileLoadFunction(tile, tileUrl) {
 	        tile.setLoader(function () {
-	            fetchJsonp(tileUrl).then(function (response) {
+	            SuperMap.Request.get(tileUrl).then(function (response) {
 	                return response.json();
 	            }).then(function (tileFeatureJson) {
 	                tileFeatureJson.recordsets.map(function (recordset) {
@@ -24944,11 +26159,11 @@
 	module.exports = ol.supermap.VectorTileSuperMapRest;
 
 /***/ },
-/* 210 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(211);
-	__webpack_require__(212);
+	__webpack_require__(223);
+	__webpack_require__(224);
 
 	ol.supermap.VectorTileStyles = function (options) {
 	    ol.Observable.call(this);
@@ -25287,7 +26502,7 @@
 	module.exports = ol.supermap.VectorTileStyles;
 
 /***/ },
-/* 211 */
+/* 223 */
 /***/ function(module, exports) {
 
 	/**
@@ -30239,12 +31454,12 @@
 	};
 
 /***/ },
-/* 212 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(2);
-	__webpack_require__(213);
-	__webpack_require__(214);
+	__webpack_require__(225);
+	__webpack_require__(226);
 
 	ol.supermap.StyleUtils = {
 	    getValidStyleFromLayerInfo: function (layerInfo, feature, url) {
@@ -30601,7 +31816,7 @@
 	};
 
 /***/ },
-/* 213 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(2);
@@ -30700,7 +31915,7 @@
 	};
 
 /***/ },
-/* 214 */
+/* 226 */
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(2);

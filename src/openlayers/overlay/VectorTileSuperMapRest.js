@@ -3,8 +3,6 @@ require('./vectortile/VectorTileStyles');
 require('./vectortile/StyleMap');
 require('./vectortile/DeafultCanvasStyle');
 
-var fetchJsonp = require('fetch-jsonp');
-
 ol.supermap.VectorTileSuperMapRest = function (options) {
     if (options.url === undefined) {
         return;
@@ -16,7 +14,7 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
                 html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
             })]
     }
-    var layerUrl = options.url + '/tileFeature.jsonp?';
+    var layerUrl = options.url + '/tileFeature.json?';
     //为url添加安全认证信息片段
     if (SuperMap.Credential && SuperMap.Credential.CREDENTIAL) {
         layerUrl += "&" + SuperMap.Credential.CREDENTIAL.getUrlParameters();
@@ -73,7 +71,7 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
 
     function tileLoadFunction(tile, tileUrl) {
         tile.setLoader(function () {
-            fetchJsonp(tileUrl).then(function (response) {
+            SuperMap.Request.get(tileUrl).then(function (response) {
                 return response.json();
             }).then(function (tileFeatureJson) {
                 tileFeatureJson.recordsets.map(function (recordset) {

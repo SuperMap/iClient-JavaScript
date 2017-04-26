@@ -5,7 +5,6 @@ require('./PointSymbolizer');
 require('./LineSymbolizer');
 require('./RegionSymbolizer');
 var tileFeatureProcessor = require('./TileFeatureProcessor');
-var fetchJsonp = require('fetch-jsonp');
 VectorTile = L.Class.extend({
 
     initialize: function (options, done) {
@@ -19,7 +18,7 @@ VectorTile = L.Class.extend({
     renderTile: function () {
         var me = this, layer = me.layer, coords = me.coords;
         var tileFeatureUrl = layer._getTileUrl(coords);
-        fetchJsonp(tileFeatureUrl, {
+        SuperMap.Request.get(tileFeatureUrl, null, {
             timeout: 10000,
         }).then(function (response) {
             return response.json()

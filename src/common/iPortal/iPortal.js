@@ -6,13 +6,12 @@ SuperMap.iPortal = SuperMap.Class({
 
     initialize: function (iportalUrl, token) {
         this.iportalUrl = iportalUrl;
-        this.request = new SuperMap.Request();
         this.token = token;
     },
 
     load: function () {
         var me = this;
-        return me.request.get(me.iportalUrl + '/web').then(function (result) {
+        return SuperMap.Request.get(me.iportalUrl + '/web').then(function (result) {
             if (result) {
                 SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(me.token, 'token');
             }
@@ -21,7 +20,7 @@ SuperMap.iPortal = SuperMap.Class({
 
     queryServices: function (queryParams) {
         var serviceUrl = this.iportalUrl + "/web/services";
-        return this.request.get(serviceUrl, queryParams).then(function (result) {
+        return SuperMap.Request.get(serviceUrl, queryParams).then(function (result) {
             var services = [];
             result.content.map(function (serviceJsonObj) {
                 services.push(new SuperMap.iPortalService(serviceUrl, serviceJsonObj));
@@ -32,7 +31,7 @@ SuperMap.iPortal = SuperMap.Class({
 
     deleteServices: function (ids) {
         var serviceUrl = this.iportalUrl + "/web/services";
-        return this.request.delete(serviceUrl, {ids: ids});
+        return SuperMap.Request.delete(serviceUrl, {ids: ids});
     }
 
 })

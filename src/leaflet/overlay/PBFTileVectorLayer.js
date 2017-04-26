@@ -132,7 +132,7 @@ L.PBFTileVectorLayer = L.VectorGrid.extend({
 
         var tileUrl = L.Util.template(this._url, L.extend(data, this.options));
 
-        return fetch(tileUrl).then(function (response) {
+        return SuperMap.Request.get(tileUrl).then(function (response) {
 
             if (!response.ok) {
                 return {layers: []};

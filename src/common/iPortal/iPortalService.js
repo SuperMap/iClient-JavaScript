@@ -34,12 +34,11 @@ SuperMap.iPortalService = SuperMap.Class({
         params = params || {};
         SuperMap.Util.extend(this, params);
         this.serviceUrl = seviceUrl + "/" + this.id;
-        this.request = new SuperMap.Request();
     },
 
     load: function () {
         var me = this;
-        return me.request.get(me.serviceUrl).then(function (serviceInfo) {
+        return SuperMap.Request.get(me.serviceUrl).then(function (serviceInfo) {
             for (var key in serviceInfo) {
                 me[key] = serviceInfo[key];
             }
@@ -56,7 +55,7 @@ SuperMap.iPortalService = SuperMap.Class({
         var options = {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         };
-        return this.request.put(this.serviceUrl, JSON.stringify(serviceUpdateParam), options);
+        return SuperMap.Request.put(this.serviceUrl, JSON.stringify(serviceUpdateParam), options);
     }
 
 });

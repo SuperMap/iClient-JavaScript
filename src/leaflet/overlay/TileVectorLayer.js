@@ -7,7 +7,6 @@
 require('../core/Base');
 require('./vectortile/VectorGrid');
 var CartoCSSToLeaflet = require('./carto/CartoCSSToLeaflet');
-var fetchJsonp = require('fetch-jsonp');
 
 TileVectorLayer = L.VectorGrid.extend({
 
@@ -66,8 +65,8 @@ TileVectorLayer = L.VectorGrid.extend({
     //主要设置scales
     initMapScales: function () {
         var me = this;
-        var mapUrl = me.options.url + ".jsonp";
-        fetchJsonp(mapUrl, {
+        var mapUrl = me.options.url + ".json";
+        SuperMap.Request.get(mapUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
             return response.json();
@@ -81,8 +80,8 @@ TileVectorLayer = L.VectorGrid.extend({
     //获取服务器layers资源下的风格信息(当CartoCSS中不存在相应图层渲染信息时使用)
     initLayersInfo: function () {
         var me = this;
-        var layersUrl = me.options.url + "/layers.jsonp";
-        fetchJsonp(layersUrl, {
+        var layersUrl = me.options.url + "/layers.json";
+        SuperMap.Request.get(layersUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
             return response.json();
@@ -151,8 +150,8 @@ TileVectorLayer = L.VectorGrid.extend({
     //等待服务器的carto返回之后拼接本地配置的cartoCSS,并调用onAdd出图
     getVectorStylesFromServer: function () {
         var me = this;
-        var vectorStyleUrl = me.options.url + "/tileFeature/vectorstyles.jsonp";
-        fetchJsonp(vectorStyleUrl, {
+        var vectorStyleUrl = me.options.url + "/tileFeature/vectorstyles.json";
+        SuperMap.Request.get(vectorStyleUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
             return response.json()
@@ -319,7 +318,7 @@ TileVectorLayer = L.VectorGrid.extend({
         if (!options.url) {
             return;
         }
-        this._tileUrl = options.url + "/tileFeature.jsonp?";
+        this._tileUrl = options.url + "/tileFeature.json?";
         this._tileUrl += this._createURLParam(options);
     },
 

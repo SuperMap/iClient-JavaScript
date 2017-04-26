@@ -31,7 +31,7 @@ SuperMap.Online = SuperMap.Class({
     },
 
     load: function () {
-        return fetch(this.rootUrl).then(function (response) {
+        return SuperMap.Request.get(this.rootUrl).then(function (response) {
             return response;
         });
     },
