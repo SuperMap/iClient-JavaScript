@@ -2,7 +2,7 @@
  * Class: MeasureService
  * 量算服务服务类
  * 用法：
- *      L.superMap.measureService(url).measureDistance({
+ *      L.supermap.measureService(url).measureDistance({
  *          geometry:xxx
  *      },function(result){
  *           //doSomething

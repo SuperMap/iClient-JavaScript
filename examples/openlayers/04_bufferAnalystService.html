@@ -12,7 +12,7 @@
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var map, roadLine, resultLayer, service, dsBufferAnalystParameters,
+    var map, roadLine,
             baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
             serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
     var extent = [48.4, -7668.25, 8958.85, -55.58];
@@ -21,9 +21,8 @@
         units: 'm'
     });
 
-    var mapService = new ol.supermap.MapService(baseUrl);
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -61,9 +60,11 @@
             })
         });
         map.addLayer(vectorLayer);
+        bufferAnalystProcess();
+    });
 
-        service = new ol.supermap.SpatialAnalystService(serviceUrl);
-        dsBufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
+    function bufferAnalystProcess() {
+        var dsBufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
             dataset: "RoadLine2@Changchun",
             filterQueryParameter: new SuperMap.FilterParameter({
                 attributeFilter: "NAME='团结路'"
@@ -75,11 +76,11 @@
                 semicircleLineSegment: 10
             })
         });
-        service.on('complete', function (serviceResult) {
+        new ol.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(dsBufferAnalystParameters, function (serviceResult) {
             var vectorSource = new ol.source.Vector({
-                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)
+                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordset.features)
             });
-            resultLayer = new ol.layer.Vector({
+            var resultLayer = new ol.layer.Vector({
                 source: vectorSource,
                 style: new ol.style.Style({
                     stroke: new ol.style.Stroke({
@@ -93,13 +94,6 @@
             });
             map.addLayer(resultLayer);
         });
-        bufferAnalystProcess();
-    });
-    mapService.getMapStatus();
-
-
-    function bufferAnalystProcess() {
-        service.bufferAnalysis(dsBufferAnalystParameters);
     }
 </script>
 </body>

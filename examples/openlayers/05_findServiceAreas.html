@@ -12,17 +12,16 @@
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var map, resultLayer, service, parameter,
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
-            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+    var map,
+        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         extent: extent,
         units: 'm'
     });
-    var mapService = new ol.supermap.MapService(baseUrl);
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -37,7 +36,6 @@
         map.addLayer(layer);
         findServiceAreas();
     });
-    mapService.getMapStatus();
 
     function findServiceAreas() {
         //添加待分析的中心点
@@ -52,12 +50,11 @@
         var pointSource = new ol.source.Vector({
             features: [feature]
         });
-        vectorLayer = new ol.layer.Vector({
+        var vectorLayer = new ol.layer.Vector({
             source: pointSource
         });
         map.addLayer(vectorLayer);
 
-        service = new ol.supermap.NetworkAnalystService(serviceUrl);
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
             returnEdgeGeometry: true,
@@ -72,23 +69,22 @@
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        parameter = new SuperMap.FindServiceAreasParameters({
+        var parameter = new SuperMap.FindServiceAreasParameters({
             centers: [point],
             isAnalyzeById: false,
             parameter: analystParameter
         });
         parameter.weights = [400 + Math.random() * 100];
 
-        service.findServiceAreas(parameter)
-                .on('complete', function (serviceResult) {
-                    var vectorSource = new ol.source.Vector({
-                        features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result[0])
-                    });
-                    resultLayer = new ol.layer.Vector({
-                        source: vectorSource
-                    });
-                    map.addLayer(resultLayer);
-                });
+        new ol.supermap.NetworkAnalystService(serviceUrl).findServiceAreas(parameter, function (serviceResult) {
+            var vectorSource = new ol.source.Vector({
+                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.serviceAreaList[0].edgeFeatures)
+            });
+            var resultLayer = new ol.layer.Vector({
+                source: vectorSource
+            });
+            map.addLayer(resultLayer);
+        });
     }
 </script>
 </body>

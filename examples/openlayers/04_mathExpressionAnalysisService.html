@@ -12,18 +12,16 @@
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var map, options, mathExpressionAnalysisService, mathExpressionAnalysisParameters, mathExpressionAnalysisResult,
-            themeService, themeGridRange, themeParameters,
+    var map, options, mathExpressionAnalysisResult,
             baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图",
             serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
-    var mapService = new ol.supermap.MapService(baseUrl);
     var extent = [114.59, 37.76, 119.51, 42.31];
     var projection = new ol.proj.Projection({
         extent: extent,
         units: 'm'
     });
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -39,13 +37,10 @@
         map.addLayer(layer);
         mathExpressionAnalysisProcess();
     });
-    mapService.getMapStatus();
 
     function mathExpressionAnalysisProcess() {
-        //创建栅格代数运算服务实例
-        mathExpressionAnalysisService = new ol.supermap.SpatialAnalystService(serviceUrl);
         //创建栅格代数运算参数实例
-        mathExpressionAnalysisParameters = new SuperMap.MathExpressionAnalysisParameters({
+        var mathExpressionAnalysisParameters = new SuperMap.MathExpressionAnalysisParameters({
             //指定数据集,必设
             dataset: "JingjinTerrain@Jingjin",
             //要执行的栅格运算代数表达式,必设
@@ -64,16 +59,14 @@
              ])*/
         });
         //向iServer发起栅格代数运算请求
-        mathExpressionAnalysisService.mathExpressionAnalysis(mathExpressionAnalysisParameters)
-                .on('complete', function (serviceResult) {
-                    mathExpressionAnalysisResult = serviceResult.element.result;
-                    //用栅格专题图展示分析结果
-                    showAnalysisResult_ThemeGridRange();
-                });
+        new ol.supermap.SpatialAnalystService(serviceUrl).mathExpressionAnalysis(mathExpressionAnalysisParameters, function (serviceResult) {
+            mathExpressionAnalysisResult = serviceResult.result;
+            //用栅格专题图展示分析结果
+            showAnalysisResult_ThemeGridRange();
+        });
 
         //构造栅格专题图
         function showAnalysisResult_ThemeGridRange() {
-            themeService = new ol.supermap.ThemeService(baseUrl);
             var themeGridRangeIteme1 = new SuperMap.ThemeGridRangeItem({
                         start: 0,
                         end: 650,
@@ -100,7 +93,7 @@
                         color: new SuperMap.ServerColor(127, 0, 0)
                     });
 
-            themeGridRange = new SuperMap.ThemeGridRange({
+            var themeGridRange = new SuperMap.ThemeGridRange({
                 reverseColor: false,
                 rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
                 //栅格分段专题图子项数组
@@ -112,7 +105,7 @@
                 ]
             });
 
-            themeParameters = new SuperMap.ThemeParameters({
+            var themeParameters = new SuperMap.ThemeParameters({
                 //制作专题图的数据集
                 datasetNames: [mathExpressionAnalysisResult.dataset.split('@')[0]],
                 dataSourceNames: ["Jingjin"],
@@ -120,27 +113,26 @@
                 themes: [themeGridRange]
             });
 
-            themeService.getThemeStatus(themeParameters)
-                    .on('complete', function (serviceResult) {
-                        var result = serviceResult.element.result;
-                        if (result && result.newResourceID) {
-                            var themeLayer = new ol.layer.Tile({
-                                opacity: 0.8,
-                                source: new ol.supermap.TileSuperMapRest({
-                                    url: baseUrl,
-                                    noWrap: true,
-                                    cacheEnabled: false,
-                                    transparent: true,
-                                    layersID: result.newResourceID,
-                                    tileGrid: new ol.tilegrid.TileGrid({
-                                        extent: options.tileGrid.extent_,
-                                        resolutions: options.tileGrid.resolutions_
-                                    })
-                                })
-                            });
-                            map.addLayer(themeLayer);
-                        }
+            new ol.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters, function (serviceResult) {
+                var result = serviceResult.result;
+                if (result && result.newResourceID) {
+                    var themeLayer = new ol.layer.Tile({
+                        opacity: 0.8,
+                        source: new ol.supermap.TileSuperMapRest({
+                            url: baseUrl,
+                            noWrap: true,
+                            cacheEnabled: false,
+                            transparent: true,
+                            layersID: result.newResourceID,
+                            tileGrid: new ol.tilegrid.TileGrid({
+                                extent: options.tileGrid.extent_,
+                                resolutions: options.tileGrid.resolutions_
+                            })
+                        })
                     });
+                    map.addLayer(themeLayer);
+                }
+            });
         }
     }
 </script>

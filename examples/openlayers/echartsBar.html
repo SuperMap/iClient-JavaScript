@@ -94,11 +94,10 @@
                 attributeFilter: "1 = 1"
             }]
         });
-        queryService.queryBySQL(param);
-        queryService.on("complete", function (serviceResult) {
+        queryService.queryBySQL(param, function (serviceResult) {
             var features = [];
-            for (var i = 0; i < serviceResult.element.result.length; i++) {
-                var temp = (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result[i], {
+            for (var i = 0; i < serviceResult.result.recordsets.length; i++) {
+                var temp = (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[i].features, {
                     dataProjection: 'EPSG:3857',
                     featureProjection: 'EPSG:4326'
                 });

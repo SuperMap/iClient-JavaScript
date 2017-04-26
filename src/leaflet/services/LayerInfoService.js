@@ -2,7 +2,7 @@
  * Class: LayerInfoService
  * 图层信息服务类
  * 用法：
- *      L.superMap.layerInfoService(url).getLayersInfo(function(result){
+ *      L.supermap.layerInfoService(url).getLayersInfo(function(result){
  *           //doSomething
  *      })
  */

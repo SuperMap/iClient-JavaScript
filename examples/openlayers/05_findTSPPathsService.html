@@ -21,18 +21,17 @@
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var map, findTSPPathsService, findTSPPathsParameter, findTSPPathsResult, resultLayer,
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
-            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+    var map,
+        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     //多旅行商分析是无序的路径分析
-    var mapService = new ol.supermap.MapService(baseUrl);
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         extent: extent,
         units: 'm'
     });
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -41,14 +40,13 @@
                 projection: projection
             })
         });
-        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        var options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
         var layer = new ol.layer.Tile({
             source: new ol.supermap.TileSuperMapRest(options)
         });
         map.addLayer(layer);
         findTSPPathsProcess();
     });
-    mapService.getMapStatus();
 
     function findTSPPathsProcess() {
         //添加站点
@@ -71,8 +69,6 @@
         map.addOverlay(stopMarker2);
         map.addOverlay(stopMarker3);
 
-        //创建多旅行商分析服务实例
-        findTSPPathsService = new ol.supermap.NetworkAnalystService(serviceUrl);
         //创建多旅行商分析参数实例
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -88,7 +84,7 @@
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        findTSPPathsParameter = new SuperMap.FindTSPPathsParameters({
+        var findTSPPathsParameter = new SuperMap.FindTSPPathsParameters({
             //是否指定终止点
             endNodeAssigned: false,
             isAnalyzeById: false,
@@ -97,28 +93,26 @@
             parameter: analystParameter
         });
         //进行查找
-        findTSPPathsService.findTSPPaths(findTSPPathsParameter)
-                .on('complete', function (serviceResult) {
-                    findTSPPathsResult = serviceResult.element.result;
-                    serviceResult.element.result.map(function (result) {
-                        var vectorSource = new ol.source.Vector({
-                            features: (new ol.format.GeoJSON()).readFeatures(result.route)
-                        });
-                        resultLayer = new ol.layer.Vector({
-                            source: vectorSource,
-                            style: new ol.style.Style({
-                                stroke: new ol.style.Stroke({
-                                    color: 'rgba(100, 100, 225, 10)',
-                                    width: 3
-                                }),
-                                fill: new ol.style.Fill({
-                                    color: 'rgba(0, 0, 255, 0.1)'
-                                })
-                            })
-                        });
-                        map.addLayer(resultLayer);
-                    });
+        new ol.supermap.NetworkAnalystService(serviceUrl).findTSPPaths(findTSPPathsParameter, function (serviceResult) {
+            serviceResult.result.tspPathList.map(function (result) {
+                var vectorSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(result.route)
                 });
+                var resultLayer = new ol.layer.Vector({
+                    source: vectorSource,
+                    style: new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(100, 100, 225, 10)',
+                            width: 3
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 0, 255, 0.1)'
+                        })
+                    })
+                });
+                map.addLayer(resultLayer);
+            });
+        });
     }
 </script>
 </body>

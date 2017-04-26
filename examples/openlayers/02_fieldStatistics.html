@@ -63,9 +63,8 @@
     //获取子图层信息
     function showLayersInfo() {
         var subLayer;
-        var getLayersInfoService = new ol.supermap.GetLayersInfoService(mapURL);
-        getLayersInfoService.on("complete", function (serviceResult) {
-            var layers = serviceResult.element.result;
+        new ol.supermap.LayerInfoService(mapURL).getLayersInfo(function (serviceResult) {
+            var layers = serviceResult.result.subLayers.layers;
             if (!layers) return;
             for (var i = 0, len = layers.length; i < len; i++) {
                 subLayer = layers[i];
@@ -82,7 +81,6 @@
             }
             getFields();
         });
-        getLayersInfoService.getLayersInfo();
     }
 
     function getFields() {
@@ -93,29 +91,29 @@
             if (dataInfo.layerName == name) {
                 //设置数据集，数据源，查询fields信息
                 currentData = dataInfo;
-                var getFieldsService = new ol.supermap.GetFieldsService(dataURL, {
+                new ol.supermap.FieldService(dataURL, {
                     dataSourceName: dataInfo.dataSourceName, dataSetName: dataInfo.dataSetName
-                });
-                getFieldsService.on("complete", function (serviceResult) {
+                }).getFields(function (serviceResult) {
                     fieldStatistic();
                 });
-                getFieldsService.getFields();
             }
         }
     }
 
     function fieldStatistic() {
         var fieldName = 'SmID';
+        var param = new SuperMap.FieldStatisticsParameters({
+            fieldName: fieldName,
+            statisticMode: SuperMap.StatisticMode
+        });
         if (currentData) {
-            var fieldStatisticService = new ol.supermap.FieldStatisticService(dataURL, {
+            new ol.supermap.FieldService(dataURL, {
                 dataSourceName: currentData.dataSourceName,
                 dataSetName: currentData.dataSetName,
                 fieldName: fieldName
+            }).getFieldStatisticsInfo(param, function (serviceResult) {
+                showResult(serviceResult.result);
             });
-            fieldStatisticService.on("complete", function (serviceResult) {
-                showResult(serviceResult.element.result);
-            });
-            fieldStatisticService.getFieldStatisticInfo();
         }
     }
 

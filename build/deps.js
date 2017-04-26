@@ -233,22 +233,17 @@ var deps = {
                 "src": [
                     "./src/openlayers/services/MapService.js",
                     "./src/openlayers/services/QueryService.js",
-                    "./src/openlayers/services/ChartQueryService.js",
-                    "./src/openlayers/services/TilesetsService.js",
-                    "./src/openlayers/services/GetLayersInfoService.js",
-                    "./src/openlayers/services/ChartFeatureInfoSpecsService.js",
-                    "./src/openlayers/services/SetLayerService.js",
-                    "./src/openlayers/services/MeasureService.js"
+                    "./src/openlayers/services/LayerInfoService.js",
+                    "./src/openlayers/services/MeasureService.js",
+                    "./src/openlayers/services/ChartService.js"
                 ]
             },
             "Data": {
                 "name": "数据服务",
                 "src": [
-                    "./src/openlayers/services/FieldStatisticService.js",
-                    "./src/openlayers/services/GetFeaturesService.js",
-                    "./src/openlayers/services/GetFieldsService.js",
-                    "./src/openlayers/services/EditFeaturesService.js",
-                    "./src/openlayers/services/GetGridCellInfosService.js"
+                    "./src/openlayers/services/FeatureService.js",
+                    "./src/openlayers/services/FieldService.js",
+                    "./src/openlayers/services/GridCellInfosService.js"
                 ]
             },
             "Theme": {

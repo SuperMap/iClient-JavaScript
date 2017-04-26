@@ -53,15 +53,13 @@
         });
         map.addLayer(vectorLayer);
         //创建集Bounds查询服务
-        var getFeaturesService = new ol.supermap.GetFeaturesService(url);
         var boundsParam = new SuperMap.GetFeaturesByBoundsParameters({
             datasetNames: ["World:Capitals"],
             bounds: polygon.getExtent()
         });
-        getFeaturesService.getFeaturesByBounds(boundsParam);
-        getFeaturesService.on("complete", function (serviceResult) {
+        new ol.supermap.FeatureService(url).getFeaturesByBounds(boundsParam, function (serviceResult) {
             var vectorSource = new ol.source.Vector({
-                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result),
+                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.features),
                 wrapX: false
             });
             resultLayer = new ol.layer.Vector({

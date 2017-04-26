@@ -12,18 +12,16 @@
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var map, options, densityAnalystService, densityAnalystParameters, densityAnalystResult,
-            themeService, themeGridRange, themeParameters,
+    var map, options, densityAnalystResult,
             baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
             serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
-    var mapService = new ol.supermap.MapService(baseUrl);
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         extent: extent,
         units: 'm'
     });
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -39,13 +37,10 @@
         map.addLayer(layer);
         densityAnalystProcess();
     });
-    mapService.getMapStatus();
 
     function densityAnalystProcess() {
-        //创建一个核密度分析服务实例
-        densityAnalystService = new ol.supermap.SpatialAnalystService(serviceUrl);
         //创建点密度插值分析参数实例
-        densityAnalystParameters = new SuperMap.DensityKernelAnalystParameters({
+        var densityAnalystParameters = new SuperMap.DensityKernelAnalystParameters({
             //指定数据集
             dataset: "Railway@Changchun",
             //指定范围
@@ -57,17 +52,14 @@
             resultGridName: "KernelDensity_Result",
             deleteExistResultDataset: true
         });
-        densityAnalystService.densityAnalysis(densityAnalystParameters)
-                .on('complete', function (serviceResult) {
-                    densityAnalystResult = serviceResult.element.result;
-                    //用栅格专题图展示分析结果
-                    showAnalysisResult_ThemeGridRange();
-                });
+        new ol.supermap.SpatialAnalystService(serviceUrl).densityAnalysis(densityAnalystParameters, function (serviceResult) {
+            densityAnalystResult = serviceResult.result;
+            //用栅格专题图展示分析结果
+            showAnalysisResult_ThemeGridRange();
+        });
 
         //构造栅格专题图
         function showAnalysisResult_ThemeGridRange() {
-            //创建专题图服务实例
-            themeService = new ol.supermap.ThemeService(baseUrl);
             var color1 = new SuperMap.ServerColor(255, 212, 170),
                     color2 = new SuperMap.ServerColor(255, 127, 0),
                     color3 = new SuperMap.ServerColor(191, 95, 0),
@@ -98,7 +90,7 @@
                         end: 360,
                         color: color5
                     });
-            themeGridRange = new SuperMap.ThemeGridRange({
+            var themeGridRange = new SuperMap.ThemeGridRange({
                 reverseColor: false,
                 rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
                 //栅格分段专题图子项数组
@@ -110,7 +102,7 @@
                 ]
             });
 
-            themeParameters = new SuperMap.ThemeParameters({
+            var themeParameters = new SuperMap.ThemeParameters({
                 //制作专题图的数据集
                 datasetNames: [densityAnalystResult.dataset.split('@')[0]],
                 dataSourceNames: ["Changchun"],
@@ -118,26 +110,25 @@
                 themes: [themeGridRange]
             });
 
-            themeService.getThemeStatus(themeParameters)
-                    .on('complete', function (serviceResult) {
-                        var result = serviceResult.element.result;
-                        if (result && result.newResourceID) {
-                            var themeLayer = new ol.layer.Tile({
-                                source: new ol.supermap.TileSuperMapRest({
-                                    url: baseUrl,
-                                    noWrap: true,
-                                    cacheEnabled: false,
-                                    transparent: true,
-                                    layersID: result.newResourceID,
-                                    tileGrid: new ol.tilegrid.TileGrid({
-                                        extent: options.tileGrid.extent_,
-                                        resolutions: options.tileGrid.resolutions_
-                                    })
-                                })
-                            });
-                            map.addLayer(themeLayer);
-                        }
+            new ol.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters, function (serviceResult) {
+                var result = serviceResult.result;
+                if (result && result.newResourceID) {
+                    var themeLayer = new ol.layer.Tile({
+                        source: new ol.supermap.TileSuperMapRest({
+                            url: baseUrl,
+                            noWrap: true,
+                            cacheEnabled: false,
+                            transparent: true,
+                            layersID: result.newResourceID,
+                            tileGrid: new ol.tilegrid.TileGrid({
+                                extent: options.tileGrid.extent_,
+                                resolutions: options.tileGrid.resolutions_
+                            })
+                        })
                     });
+                    map.addLayer(themeLayer);
+                }
+            });
         }
     }
 </script>

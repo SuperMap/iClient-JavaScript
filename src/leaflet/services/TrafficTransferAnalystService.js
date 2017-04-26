@@ -2,7 +2,7 @@
  * Class: TrafficTransferAnalystService
  * 交通换乘分析服务类
  * 用法：
- *      L.superMap
+ *      L.supermap
  *      .trafficTransferAnalystService(url)
  *      .queryStop(params,function(result){
  *           //doSomething

@@ -45,17 +45,15 @@
                 type: "LineString",
                 finishCondition: function (MapBrowserPointerEvent) {
                     if (MapBrowserPointerEvent) {
-                        var measureService = new ol.supermap.MeasureService(url, {measureMode: ""});
-                        measureService.on("complete", function (serviceResult) {
-                            alert(serviceResult.element.result.distance + "米");
-                        });
                         var line = new ol.geom.LineString();
                         var points = MapBrowserPointerEvent.frameState.pixelToCoordinateTransform;
                         for (var i = 0; i < points.length; i = i + 2) {
                             line.appendCoordinate([points[i], points[i + 1]]);
                         }
                         var distanceMeasureParam = new SuperMap.MeasureParameters(line);
-                        measureService.measureDistance(distanceMeasureParam);
+                        new ol.supermap.MeasureService(url, {measureMode: ""}).measureDistance(distanceMeasureParam, function (serviceResult) {
+                            alert(serviceResult.result.distance + "米");
+                        });
                     }
                     return true;
                 }

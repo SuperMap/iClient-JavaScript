@@ -57,9 +57,8 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
     var url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326";
-    var mapService = new ol.supermap.MapService(url);
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         var container = document.getElementById('popup');
         var content = document.getElementById('popup-content');
         var overlay = new ol.Overlay(({
@@ -124,7 +123,6 @@
         });
         map.addLayer(graphicLayer);
     });
-    mapService.getMapStatus();
 </script>
 </body>
 </html>

@@ -106,13 +106,11 @@
         line-color:@provinceLineColor;
         line-width:1;
         }
-
 </script>
 
 <script type="text/javascript">
     var url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
-    var mapService = new ol.supermap.MapService(url);
-    mapService.on("complete", function (serviceResult) {
+    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
         var map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -127,7 +125,7 @@
             cartoCss: document.getElementById("cartoCssStr").text
         }
         var vectorTileStyles = new ol.supermap.VectorTileStyles(stylesOptions);
-        var vectorTileOptions = ol.supermap.VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.element.result);
+        var vectorTileOptions = ol.supermap.VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
         vectorTileOptions.returnAttributes = false;
         var vectorLayer = new ol.layer.VectorTile({
             source: new ol.supermap.VectorTileSuperMapRest(vectorTileOptions),
@@ -146,7 +144,6 @@
         })
 
     });
-    mapService.getMapStatus();
 </script>
 </body>
 </html>

@@ -52,18 +52,17 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
     var map, startMarker, endMarker, container, content, tempMarker, solution, line,
-            stopSourceLayer, roadSourceLayer, tempMarkerSourceLayer, tempRedSourceLayer,
-            info, paths = {transSolutions: null, solutions: null},
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
-            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun";
-    var mapService = new ol.supermap.MapService(baseUrl);
+        stopSourceLayer, roadSourceLayer, tempMarkerSourceLayer, tempRedSourceLayer,
+        info, paths = {transSolutions: null, solutions: null},
+        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun";
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         extent: extent,
         units: 'm'
     });
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -72,7 +71,7 @@
                 projection: projection
             })
         });
-        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        var options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
         var layer = new ol.layer.Tile({
             source: new ol.supermap.TileSuperMapRest(options)
         });
@@ -98,7 +97,6 @@
         initResultInfoWin();
         execTransSolutionsQuery('LESS_TIME');  //交通换乘的有4种方式:'LESS_TIME','MIN_DISTANCE','LESS_WALK','LESS_TRANSFER'
     });
-    mapService.getMapStatus();
 
     function initResultInfoWin() {
         container = document.getElementById('popup');
@@ -156,18 +154,17 @@
             points: paths.points     //起始点坐标
         });
         new ol.supermap.TrafficTransferAnalystService(serviceUrl)
-                .analysisTransferSolution(params)
-                .on('complete', function (serviceResult) {
-                    transferSolutionsSucceed(serviceResult.element.result);
-                });
+            .analysisTransferSolution(params, function (serviceResult) {
+                transferSolutionsSucceed(serviceResult.result);
+            });
     }
 
     function transferSolutionsSucceed(result) {
         clearLayer();
         //在地图上叠加符号信息
         var transGuide = result.defaultGuide,
-                transSolutions = result.solutionItems,
-                solutions = [];
+            transSolutions = result.solutionItems,
+            solutions = [];
         for (var j = 0; j < transSolutions.length; j++) {
             var linesItems = transSolutions[j].linesItems, transSolution = [];
             for (var jj = 0; jj < linesItems.length; jj++) {
@@ -227,7 +224,7 @@
                 $("<td>" + parseInt(item.distance) + "米</td>").appendTo(tr2);
             } else {
                 var otherLines = transSolutions[indexX].linesItems[indexY],
-                        links = "";
+                    links = "";
                 if (otherLines && otherLines.lineItems.length > 1) {
                     links = "</br>还可乘坐:"
                     for (var oti = 0, otLen = otherLines.lineItems.length; oti < otLen; oti++) {
@@ -360,20 +357,20 @@
     }
 
     function execTransPathQuery(id, transLines) {
-        var params = new TransferPathParameters({
+        var params = new SuperMap.TransferPathParameters({
             points: paths["points"],
             transferLines: transLines
         });
-        new ol.supermap.TrafficTransferAnalystService(serviceUrl).analysisTransferPath(params)
-                .on('complete', function (serviceResult) {
-                    $("#transferInfo-" + id).empty();
-                    var transGuide = serviceResult.element.result;
-                    transSolutions = paths["transSolutions"];
-                    map.getView().setCenter([4700, -3600]);
-                    map.getView().setZoom(2);
-                    fillTransferInfo(transGuide, transSolutions, id).appendTo($("#transferInfo-" + id));
-                    setPopup();
-                });
+        new ol.supermap.TrafficTransferAnalystService(serviceUrl)
+            .analysisTransferPath(params, function (serviceResult) {
+                $("#transferInfo-" + id).empty();
+                var transGuide = serviceResult.result;
+                transSolutions = paths["transSolutions"];
+                map.getView().setCenter([4700, -3600]);
+                map.getView().setZoom(2);
+                fillTransferInfo(transGuide, transSolutions, id).appendTo($("#transferInfo-" + id));
+                setPopup();
+            });
     }
 
     function clearLayer() {

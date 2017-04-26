@@ -12,17 +12,16 @@
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var map, options, findMTSPPathsService, findMTSPPathsParameter,
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
-            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
-    var mapService = new ol.supermap.MapService(baseUrl);
+    var map, options,
+        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         extent: extent,
         units: 'm'
     });
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -82,8 +81,6 @@
             source: destSource
         });
 
-        //创建多旅行商分析服务实例
-        findMTSPPathsService = new ol.supermap.NetworkAnalystService(serviceUrl);
         //创建多旅行商分析参数实例
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -99,7 +96,7 @@
             resultSetting: resultSetting,
             weightFieldName: "length"  //"length"或者"time"
         });
-        findMTSPPathsParameter = new SuperMap.FindMTSPPathsParameters({
+        var findMTSPPathsParameter = new SuperMap.FindMTSPPathsParameters({
             centers: [new ol.geom.Point([6000, -5500]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([2500, -3500])],
             isAnalyzeById: false,
             nodes: [new ol.geom.Point([5000, -5000]), new ol.geom.Point([6500, -3200])],
@@ -107,29 +104,28 @@
             parameter: analystParameter
         });
         //进行查找
-        findMTSPPathsService.findMTSPPaths(findMTSPPathsParameter)
-                .on('complete', function (serviceResult) {
-                    serviceResult.element.result.map(function (result) {
-                        var vectorSource = new ol.source.Vector({
-                            features: (new ol.format.GeoJSON()).readFeatures(result.route)
-                        });
-                        var pathLayer = new ol.layer.Vector({
-                            source: vectorSource,
-                            style: new ol.style.Style({
-                                stroke: new ol.style.Stroke({
-                                    color: 'rgba(100, 100, 225, 10)',
-                                    width: 3
-                                }),
-                                fill: new ol.style.Fill({
-                                    color: 'rgba(0, 0, 255, 0.1)'
-                                })
-                            })
-                        });
-                        map.addLayer(pathLayer);
-                    });
-                    map.addLayer(facilityLayer);
-                    map.addLayer(destLayer);
+        new ol.supermap.NetworkAnalystService(serviceUrl).findMTSPPaths(findMTSPPathsParameter, function (serviceResult) {
+            serviceResult.result.pathList.map(function (result) {
+                var vectorSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(result.route)
                 });
+                var pathLayer = new ol.layer.Vector({
+                    source: vectorSource,
+                    style: new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(100, 100, 225, 10)',
+                            width: 3
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 0, 255, 0.1)'
+                        })
+                    })
+                });
+                map.addLayer(pathLayer);
+            });
+            map.addLayer(facilityLayer);
+            map.addLayer(destLayer);
+        });
     }
 </script>
 </body>

@@ -2,8 +2,8 @@
  * Class: MapService
  * 地图信息服务类
  * 用法：
- *      L.superMap.mapService(url)
- *      .getMapStatus(function(result){
+ *      L.supermap.mapService(url)
+ *      .getMapInfo(function(result){
  *           //doSomething
  *      })
  */

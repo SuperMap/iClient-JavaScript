@@ -12,17 +12,16 @@
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var map, options, findClosetFacilitiesService, findClosetFacilitiesParameter,
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
-            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
-    var mapService = new ol.supermap.MapService(baseUrl);
+    var map, options,
+        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         extent: extent,
         units: 'm'
     });
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -38,7 +37,6 @@
         map.addLayer(layer);
         findClosetFacilitiesProcess();
     });
-    mapService.getMapStatus();
 
     function findClosetFacilitiesProcess() {
         //添加设施点
@@ -77,8 +75,6 @@
         var eventLayer = new ol.layer.Vector({
             source: eventSource
         });
-        //创建最近设施分析服务实例
-        findClosetFacilitiesService = new ol.supermap.NetworkAnalystService(serviceUrl);
         //创建最近设施分析参数实例
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -95,7 +91,7 @@
             turnWeightField: "TurnCost",
             weightFieldName: "length"  //length,time
         });
-        findClosetFacilitiesParameter = new SuperMap.FindClosestFacilitiesParameters({
+        var findClosetFacilitiesParameter = new SuperMap.FindClosestFacilitiesParameters({
             //事件点,必设参数
             event: new ol.geom.Point([5000, -3700]),
             //要查找的设施点数量。默认值为1
@@ -106,29 +102,28 @@
             parameter: analystParameter
         });
         //进行查找
-        findClosetFacilitiesService.findClosestFacilities(findClosetFacilitiesParameter)
-                .on('complete', function (serviceResult) {
-                    serviceResult.element.result.map(function (result) {
-                        var vectorSource = new ol.source.Vector({
-                            features: (new ol.format.GeoJSON()).readFeatures(result.route)
-                        });
-                        var pathLayer = new ol.layer.Vector({
-                            source: vectorSource,
-                            style: new ol.style.Style({
-                                stroke: new ol.style.Stroke({
-                                    color: 'rgba(100, 100, 225, 10)',
-                                    width: 3
-                                }),
-                                fill: new ol.style.Fill({
-                                    color: 'rgba(0, 0, 255, 0.1)'
-                                })
-                            })
-                        });
-                        map.addLayer(pathLayer);
-                    });
-                    map.addLayer(facilityLayer);
-                    map.addLayer(eventLayer);
+        new ol.supermap.NetworkAnalystService(serviceUrl).findClosestFacilities(findClosetFacilitiesParameter, function (serviceResult) {
+            serviceResult.result.facilityPathList.map(function (result) {
+                var vectorSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(result.route)
                 });
+                var pathLayer = new ol.layer.Vector({
+                    source: vectorSource,
+                    style: new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(100, 100, 225, 10)',
+                            width: 3
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 0, 255, 0.1)'
+                        })
+                    })
+                });
+                map.addLayer(pathLayer);
+            });
+            map.addLayer(facilityLayer);
+            map.addLayer(eventLayer);
+        });
     }
 </script>
 </body>

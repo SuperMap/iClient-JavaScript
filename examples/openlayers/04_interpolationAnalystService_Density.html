@@ -12,18 +12,16 @@
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var map, options, interpolationAnalystService, interpolationAnalystParameters, interpolationAnalystResult,
-            themeService, themeGridRange, themeParameters,
+    var map, options, interpolationAnalystResult,
             baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-temperature/rest/maps/全国温度变化图",
             serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
-    var mapService = new ol.supermap.MapService(baseUrl);
     var extent = [-2640403.63, 1873792.1, 3247669.39, 5921501.4];
     var projection = new ol.proj.Projection({
         extent: extent,
         units: 'm'
     });
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -40,13 +38,10 @@
         map.addLayer(layer);
         interpolationAnalystProcess();
     });
-    mapService.getMapStatus();
 
     function interpolationAnalystProcess() {
-        //创建点密度插值分析服务实例
-        interpolationAnalystService = new ol.supermap.SpatialAnalystService(serviceUrl);
         //创建点密度插值分析参数实例
-        interpolationAnalystParameters = new SuperMap.InterpolationDensityAnalystParameters({
+        var interpolationAnalystParameters = new SuperMap.InterpolationDensityAnalystParameters({
             //用于做插值分析的数据源中数据集的名称
             dataset: "SamplesP@Interpolation",
             //插值分析结果数据集的名称
@@ -62,17 +57,14 @@
             //结果栅格数据集的范围（生效）
             bounds: [-2640403.63, 1873792.1, 3247669.39, 5921501.4]
         });
-        interpolationAnalystService.interpolationAnalysis(interpolationAnalystParameters)
-                .on('complete', function (serviceResult) {
-                    interpolationAnalystResult = serviceResult.element.result;
-                    //用栅格专题图展示分析结果
-                    showAnalysisResult_ThemeGridRange();
-                });
+        new ol.supermap.SpatialAnalystService(serviceUrl).interpolationAnalysis(interpolationAnalystParameters, function (serviceResult) {
+            interpolationAnalystResult = serviceResult.result;
+            //用栅格专题图展示分析结果
+            showAnalysisResult_ThemeGridRange();
+        });
 
         //构造栅格专题图
         function showAnalysisResult_ThemeGridRange() {
-            //创建专题图服务实例
-            themeService = new ol.supermap.ThemeService(baseUrl);
             var color1 = new SuperMap.ServerColor(170, 240, 233),
                     color2 = new SuperMap.ServerColor(176, 244, 188),
                     color3 = new SuperMap.ServerColor(218, 251, 178),
@@ -195,7 +187,7 @@
                         color: color20
                     });
 
-            themeGridRange = new SuperMap.ThemeGridRange({
+            var themeGridRange = new SuperMap.ThemeGridRange({
                 reverseColor: false,
                 rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
                 //栅格分段专题图子项数组
@@ -212,7 +204,7 @@
                 ]
             });
 
-            themeParameters = new SuperMap.ThemeParameters({
+            var themeParameters = new SuperMap.ThemeParameters({
                 //制作专题图的数据集
                 datasetNames: [interpolationAnalystResult.dataset.split('@')[0]],
                 dataSourceNames: ["Interpolation"],
@@ -220,26 +212,25 @@
                 themes: [themeGridRange]
             });
 
-            themeService.getThemeStatus(themeParameters)
-                    .on('complete', function (serviceResult) {
-                        var result = serviceResult.element.result;
-                        if (result && result.newResourceID) {
-                            var themeLayer = new ol.layer.Tile({
-                                source: new ol.supermap.TileSuperMapRest({
-                                    url: baseUrl,
-                                    noWrap: true,
-                                    cacheEnabled: false,
-                                    transparent: true,
-                                    layersID: result.newResourceID,
-                                    tileGrid: new ol.tilegrid.TileGrid({
-                                        extent: options.tileGrid.extent_,
-                                        resolutions: options.tileGrid.resolutions_
-                                    })
-                                })
-                            });
-                            map.addLayer(themeLayer);
-                        }
+            new ol.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters, function (serviceResult) {
+                var result = serviceResult.result;
+                if (result && result.newResourceID) {
+                    var themeLayer = new ol.layer.Tile({
+                        source: new ol.supermap.TileSuperMapRest({
+                            url: baseUrl,
+                            noWrap: true,
+                            cacheEnabled: false,
+                            transparent: true,
+                            layersID: result.newResourceID,
+                            tileGrid: new ol.tilegrid.TileGrid({
+                                extent: options.tileGrid.extent_,
+                                resolutions: options.tileGrid.resolutions_
+                            })
+                        })
                     });
+                    map.addLayer(themeLayer);
+                }
+            });
         }
     }
 </script>

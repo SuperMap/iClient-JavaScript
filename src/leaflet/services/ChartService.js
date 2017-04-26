@@ -2,7 +2,7 @@
  * Class:ChartService
  * 海图服务
  * 用法：
- *      L.superMap.chartService(url)
+ *      L.supermap.chartService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })

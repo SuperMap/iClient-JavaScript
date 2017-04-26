@@ -49,11 +49,15 @@
             source: pointSource
         });
         map.addLayer(vectorLayer);
+        var param = new SuperMap.QueryByDistanceParameters({
+            queryParams: {name: "Capitals@World.1"},
+            distance: 10,
+            geometry: point
+        });
         //创建距离查询实例
-        var queryService = new ol.supermap.QueryService(url);
-        queryService.on("complete", function (serviceResult) {
+        new ol.supermap.QueryService(url).queryByDistance(param, function (serviceResult) {
             var vectorSource = new ol.source.Vector({
-                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result[0]),
+                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[0].features),
                 wrapX: false
             });
             resultLayer = new ol.layer.Vector({
@@ -61,12 +65,6 @@
             });
             map.addLayer(resultLayer);
         });
-        var param = new SuperMap.QueryByDistanceParameters({
-            queryParams: {name: "Capitals@World.1"},
-            distance: 10,
-            geometry: point
-        });
-        queryService.queryByDistance(param);
     }
 </script>
 </body>

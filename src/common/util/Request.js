@@ -121,3 +121,4 @@ SuperMap.Request = {
     }
 
 }
+module.exports = SuperMap.Request;

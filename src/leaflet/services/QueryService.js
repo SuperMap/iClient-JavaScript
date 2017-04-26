@@ -3,8 +3,7 @@
  * 地图查询服务类
  * 提供：范围查询，SQL查询，几何查询，距离查询
  * 用法：
- *      L.superMap.queryService(url)
- *      .queryByBounds(param,function(result){
+ *      L.supermap.queryService(url).queryByBounds(param,function(result){
  *          //doSomething
  *      })
  */

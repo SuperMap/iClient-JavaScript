@@ -12,11 +12,11 @@
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var map, themeService, themeLayer, themeDotDensity, themeParameters,
+    var map, themeLayer, options,
             url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
     var mapService = new ol.supermap.MapService(url);
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    mapService.getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -25,14 +25,16 @@
                 projection: "EPSG:4326"
             })
         });
-        var options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
+        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
         var layer = new ol.layer.Tile({
             source: new ol.supermap.TileSuperMapRest(options)
         });
         map.addLayer(layer);
+        createTheme();
+    });
 
-        themeService = new ol.supermap.ThemeService(url);
-        themeDotDensity = new SuperMap.ThemeDotDensity({
+    function createTheme() {
+        var themeDotDensity = new SuperMap.ThemeDotDensity({
             dotExpression: "Pop_1994",
             value: 5000000,
             style: new SuperMap.ServerStyle({
@@ -40,13 +42,13 @@
                 markerSymbolID: 12
             })
         });
-        themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new SuperMap.ThemeParameters({
             themes: [themeDotDensity],
             datasetNames: ["Countries"],
             dataSourceNames: ["World"]
         });
-        themeService.on('complete', function (serviceResult) {
-            var result = serviceResult.element.result;
+        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters, function (serviceResult) {
+            var result = serviceResult.result;
             if (result && result.newResourceID) {
                 themeLayer = new ol.layer.Tile({
                     source: new ol.supermap.TileSuperMapRest({
@@ -63,16 +65,7 @@
                 });
                 map.addLayer(themeLayer);
             }
-        });
-        themeService.on('failed', function (error) {
-            alert(error.errorMsg);
-        });
-        createTheme();
-    });
-    mapService.getMapStatus();
-
-    function createTheme() {
-        themeService.getThemeStatus(themeParameters)
+        })
     }
 </script>
 </body>

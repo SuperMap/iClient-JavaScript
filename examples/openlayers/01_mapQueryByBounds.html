@@ -51,10 +51,13 @@
         });
         map.addLayer(vectorLayer);
 
-        var queryService = new ol.supermap.QueryService(url);
-        queryService.on("complete", function (serviceResult) {
+        var param = new SuperMap.QueryByBoundsParameters({
+            queryParams: {name: "Capitals@World.1"},
+            bounds: polygon.getExtent()
+        });
+        new ol.supermap.QueryService(url).queryByBounds(param, function (serviceResult) {
             var vectorSource = new ol.source.Vector({
-                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result[0]),
+                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[0].features),
                 wrapX: false
             });
             resultLayer = new ol.layer.Vector({
@@ -62,11 +65,6 @@
             });
             map.addLayer(resultLayer);
         });
-        var param = new SuperMap.QueryByBoundsParameters({
-            queryParams: {name: "Capitals@World.1"},
-            bounds: polygon.getExtent()
-        });
-        queryService.queryByBounds(param);
     }
 </script>
 </body>

@@ -52,10 +52,14 @@
         });
         map.addLayer(vectorLayer);
 
-        var getFeaturesService = new ol.supermap.GetFeaturesService(url);
-        getFeaturesService.on("complete", function (serviceResult) {
+        var geometryParam = new SuperMap.GetFeaturesByGeometryParameters({
+            datasetNames: ["World:Countries"],
+            geometry: polygon,
+            spatialQueryMode: "INTERSECT"
+        });
+        new ol.supermap.FeatureService(url).getFeaturesByGeometry(geometryParam, function (serviceResult) {
             var vectorSource = new ol.source.Vector({
-                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result),
+                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.features),
                 wrapX: false
             });
             resultLayer = new ol.layer.Vector({
@@ -63,12 +67,6 @@
             });
             map.addLayer(resultLayer);
         });
-        var geometryParam = new SuperMap.GetFeaturesByGeometryParameters({
-            datasetNames: ["World:Countries"],
-            geometry: polygon,
-            spatialQueryMode: "INTERSECT"
-        });
-        getFeaturesService.getFeaturesByGeometry(geometryParam);
     }
     function clearLayer() {
         if (vectorLayer) {

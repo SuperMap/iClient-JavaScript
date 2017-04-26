@@ -9,16 +9,15 @@ ol.supermap.ServiceBase = function (url, options) {
     ol.Observable.call(this);
     this.options = options || {};
     this.options.url = url;
+    this.dispatchEvent(new ol.supermap.ResultEvent('initialized', this));
 };
 ol.inherits(ol.supermap.ServiceBase, ol.Observable);
 
-ol.supermap.ServiceBase.prototype.processCompleted = function (serverResult) {
-    this.dispatchEvent(new ol.Collection.Event('complete', {result: serverResult.result}));
-};
+ol.supermap.ResultEvent = function (type, opt_element) {
+    ol.events.Event.call(this, type);
+    this.result = opt_element;
 
-ol.supermap.ServiceBase.prototype.processFailed = function (failedResult) {
-    this.dispatchEvent(new ol.Collection.Event('failed', {error: failedResult.error}));
-    console.log(failedResult.error.errorMsg);
 };
+ol.inherits(ol.supermap.ResultEvent, ol.events.Event);
 
 module.exports = ol.supermap.ServiceBase;

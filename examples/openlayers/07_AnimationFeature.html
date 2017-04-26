@@ -12,9 +12,8 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
     var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326";
-    var mapService = new ol.supermap.MapService(url);
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         var map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -81,7 +80,6 @@
         map.addLayer(vector);
         window.setInterval(addRandomFeature, 1000);
     });
-    mapService.getMapStatus();
 </script>
 </body>
 </html>

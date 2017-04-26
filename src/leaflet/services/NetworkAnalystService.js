@@ -2,8 +2,7 @@
  * Class: NetworkAnalystService
  * 网络分析服务类
  * 用法：
- *      L.superMap
- *      .networkAnalystService(url)
+ *      L.supermap.networkAnalystService(url)
  *      .findPath(params,function(result){
  *           //doSomething
  *      })

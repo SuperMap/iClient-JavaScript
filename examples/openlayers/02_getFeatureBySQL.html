@@ -33,17 +33,6 @@
     query();
 
     function query() {
-        var getFeaturesService = new ol.supermap.GetFeaturesService(url);
-        getFeaturesService.on("complete", function (serviceResult) {
-            var vectorSource = new ol.source.Vector({
-                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result),
-                wrapX: false
-            });
-            resultLayer = new ol.layer.Vector({
-                source: vectorSource
-            });
-            map.addLayer(resultLayer);
-        });
         var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
             queryParameter: {
                 name: "Countries@World",
@@ -51,7 +40,16 @@
             },
             datasetNames: ["World:Countries"]
         });
-        getFeaturesService.getFeaturesBySQL(sqlParam);
+        new ol.supermap.FeatureService(url).getFeaturesBySQL(sqlParam, function (serviceResult) {
+            var vectorSource = new ol.source.Vector({
+                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.features),
+                wrapX: false
+            });
+            resultLayer = new ol.layer.Vector({
+                source: vectorSource
+            });
+            map.addLayer(resultLayer);
+        });
     }
 </script>
 </body>

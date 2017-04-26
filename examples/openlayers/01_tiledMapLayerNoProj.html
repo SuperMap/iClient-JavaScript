@@ -18,9 +18,8 @@
         extent: extent,
         units: 'm'
     });
-    var mapService = new ol.supermap.MapService(url);
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         var map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -34,7 +33,6 @@
         });
         map.addLayer(layer);
     });
-    mapService.getMapStatus();
 
 </script>
 </body>

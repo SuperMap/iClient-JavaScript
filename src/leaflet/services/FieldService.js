@@ -2,10 +2,7 @@
  * Class: FieldService
  * 字段服务类
  * 用法：
- *      L.superMap.fieldService(url)
- *      .on("complete",function(result){
- *           //doSomething
- *      }).on("failed",function(result){
+ *      L.supermap.fieldService(url).getFields(function(result){
  *           //doSomething
  *      });
  */

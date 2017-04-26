@@ -12,18 +12,16 @@
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var map, options, roadLine, bufferAnalystService, geoBufferAnalystParams, resultLayer,
-            queryService, queryByGeometryParameters, resultLayer1,
+    var map, options,
             baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
             serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
-    var mapService = new ol.supermap.MapService(baseUrl);
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         extent: extent,
         units: 'm'
     });
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -39,7 +37,6 @@
         map.addLayer(layer);
         geoBufferAnalystProcess();
     });
-    mapService.getMapStatus();
 
     function geoBufferAnalystProcess() {
         var pointsList = [
@@ -112,9 +109,6 @@
             })
         });
         map.addLayer(roadLineLayer);
-        //生成缓冲区
-        //创建缓冲区分析服务
-        bufferAnalystService = new ol.supermap.SpatialAnalystService(serviceUrl);
         //创建缓冲区分析服务参数
         geoBufferAnalystParams = new SuperMap.GeometryBufferAnalystParameters({
             sourceGeometry: roadLine,
@@ -126,61 +120,57 @@
             })
         });
         //向iServer发送请求并返回结果
-        bufferAnalystService.bufferAnalysis(geoBufferAnalystParams)
-                .on('complete', function (serviceResult) {
-                    var bufferSource = new ol.source.Vector({
-                        features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result)
-                    });
-                    resultLayer = new ol.layer.Vector({
-                        source: bufferSource,
-                        style: new ol.style.Style({
-                            stroke: new ol.style.Stroke({
-                                color: 'blue',
-                                width: 1
-                            }),
-                            fill: new ol.style.Fill({
-                                color: 'rgba(255, 0, 0, 0.1)'
-                            })
-                        })
-                    });
-                    map.addLayer(resultLayer);
+        new ol.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(geoBufferAnalystParams, function (serviceResult) {
+            var bufferSource = new ol.source.Vector({
+                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result)
+            });
+            var resultLayer = new ol.layer.Vector({
+                source: bufferSource,
+                style: new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: 'blue',
+                        width: 1
+                    }),
+                    fill: new ol.style.Fill({
+                        color: 'rgba(255, 0, 0, 0.1)'
+                    })
+                })
+            });
+            map.addLayer(resultLayer);
 
-                    //查询出缓冲区内信号影响范围内的工厂
-                    queryService = new ol.supermap.QueryService(baseUrl);
-                    //将组成缓冲区的边界点提出来，为了构造下面查询服务的geometry
-                    var bufferPoints = [];
-                    var coordinate = serviceResult.element.result.geometry.coordinates[0][0];
-                    for (var i = 0; i < coordinate.length; i++) {
-                        bufferPoints.push([coordinate[i][0], coordinate[i][1]]);
-                    }
-                    var geometry = new ol.geom.Polygon([bufferPoints]);
-                    queryByGeometryParameters = new SuperMap.QueryByGeometryParameters({
-                        queryParams: [new SuperMap.FilterParameter({name: "Company@Changchun.2"})],
-                        geometry: geometry,
-                        spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT
-                    });
+            //将组成缓冲区的边界点提出来，为了构造下面查询服务的geometry
+            var bufferPoints = [];
+            var coordinate = serviceResult.result.geometry.coordinates[0][0];
+            for (var i = 0; i < coordinate.length; i++) {
+                bufferPoints.push([coordinate[i][0], coordinate[i][1]]);
+            }
+            var geometry = new ol.geom.Polygon([bufferPoints]);
+            queryByGeometryParameters = new SuperMap.QueryByGeometryParameters({
+                queryParams: [new SuperMap.FilterParameter({name: "Company@Changchun.2"})],
+                geometry: geometry,
+                spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT
+            });
 
-                    queryService.queryByGeometry(queryByGeometryParameters)
-                            .on('complete', function (serviceResult) {
-                                var features = (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result[0]);
-                                var iconStyle = new ol.style.Style({
-                                    image: new ol.style.Icon(({
-                                        anchor: [0.5, 1],
-                                        src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker-gold.png'
-                                    }))
-                                });
-                                for (var i = 0; i < features.length; i++) {
-                                    features[i].setStyle(iconStyle);
-                                }
-                                var vectorSource = new ol.source.Vector({
-                                    features: features
-                                });
-                                resultLayer1 = new ol.layer.Vector({
-                                    source: vectorSource
-                                });
-                                map.addLayer(resultLayer1);
-                            });
+            new ol.supermap.QueryService(baseUrl).queryByGeometry(queryByGeometryParameters, function (serviceResult) {
+                var features = (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[0].features);
+                var iconStyle = new ol.style.Style({
+                    image: new ol.style.Icon(({
+                        anchor: [0.5, 1],
+                        src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/theme/images/marker-gold.png'
+                    }))
                 });
+                for (var i = 0; i < features.length; i++) {
+                    features[i].setStyle(iconStyle);
+                }
+                var vectorSource = new ol.source.Vector({
+                    features: features
+                });
+                var resultLayer1 = new ol.layer.Vector({
+                    source: vectorSource
+                });
+                map.addLayer(resultLayer1);
+            });
+        });
     }
 </script>
 </body>

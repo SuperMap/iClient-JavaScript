@@ -12,18 +12,16 @@
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var map, options, generateSpatialDataService, generateSpatialDataParameters,
-            themeService, themeParameters,
+    var map, options,
             baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
             serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
-    var mapService = new ol.supermap.MapService(baseUrl);
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         extent: extent,
         units: 'm'
     });
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -39,12 +37,10 @@
         map.addLayer(layer);
         generateSpatialDataAnalystProcess();
     });
-    mapService.getMapStatus();
 
     function generateSpatialDataAnalystProcess() {
-        generateSpatialDataService = new ol.supermap.SpatialAnalystService(serviceUrl);
         //配置动态分段Parameters
-        generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
+        var generateSpatialDataParameters = new SuperMap.GenerateSpatialDataParameters({
             routeTable: "RouteDT_road@Changchun",
             routeIDField: "RouteID",
             eventTable: "LinearEventTabDT@Changchun",
@@ -61,16 +57,13 @@
                 dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY
             })
         });
-        generateSpatialDataService.generateSpatialData(generateSpatialDataParameters)
-                .on('complete', function (serviceResult) {
-                    var a = serviceResult.element.result;
-                    //用专题图展示分析结果
-                    showAnalysisResult_ThemeGridUnique();
-                });
+        new ol.supermap.SpatialAnalystService(serviceUrl).generateSpatialData(generateSpatialDataParameters, function (serviceResult) {
+            var a = serviceResult.result;
+            //用专题图展示分析结果
+            showAnalysisResult_ThemeGridUnique();
+        });
         //构造专题图
         function showAnalysisResult_ThemeGridUnique() {
-            //创建专题图服务实例
-            themeService = new ol.supermap.ThemeService(baseUrl);
             //配置专题样式
             var style1, style2, style3;
             style1 = new SuperMap.ServerStyle({
@@ -110,13 +103,13 @@
                 }),
                 items: [themeUniqueIteme1, themeUniqueIteme2, themeUniqueIteme3]
             });
-            themeParameters = new SuperMap.ThemeParameters({
+            var themeParameters = new SuperMap.ThemeParameters({
                 themes: [themeUnique],
                 datasetNames: ["generateSpatialData"],
                 dataSourceNames: ["Changchun"]
             });
-            themeService.getThemeStatus(themeParameters).on('complete', function (serviceResult) {
-                var result = serviceResult.element.result;
+            new ol.supermap.ThemeService(baseUrl).getThemeInfo(themeParameters, function (serviceResult) {
+                var result = serviceResult.result;
                 if (result && result.newResourceID) {
                     var themeLayer = new ol.layer.Tile({
                         source: new ol.supermap.TileSuperMapRest({

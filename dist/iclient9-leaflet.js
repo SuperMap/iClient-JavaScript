@@ -9599,8 +9599,8 @@
 	 * Class: MapService
 	 * 地图信息服务类
 	 * 用法：
-	 *      L.superMap.mapService(url)
-	 *      .getMapStatus(function(result){
+	 *      L.supermap.mapService(url)
+	 *      .getMapInfo(function(result){
 	 *           //doSomething
 	 *      })
 	 */
@@ -9754,7 +9754,7 @@
 
 	    _postSimulatie: function (type, url, params, options) {
 	        var separator = url.indexOf("?") > -1 ? "&" : "?";
-	        url += separator + '_method= ' + type + this._appendUrlTokenParameter(url);
+	        url += separator + '_method= ' + type;
 	        return this.post(url, params, options);
 	    },
 
@@ -9832,6 +9832,7 @@
 	    }
 
 	}
+	module.exports = SuperMap.Request;
 
 /***/ },
 /* 22 */
@@ -10814,8 +10815,7 @@
 	 * 地图查询服务类
 	 * 提供：范围查询，SQL查询，几何查询，距离查询
 	 * 用法：
-	 *      L.superMap.queryService(url)
-	 *      .queryByBounds(param,function(result){
+	 *      L.supermap.queryService(url).queryByBounds(param,function(result){
 	 *          //doSomething
 	 *      })
 	 */
@@ -12060,7 +12060,7 @@
 	 * Class: LayerInfoService
 	 * 图层信息服务类
 	 * 用法：
-	 *      L.superMap.layerInfoService(url).getLayersInfo(function(result){
+	 *      L.supermap.layerInfoService(url).getLayersInfo(function(result){
 	 *           //doSomething
 	 *      })
 	 */
@@ -15163,7 +15163,7 @@
 	    res.graphText = SuperMap.ThemeGraphText.fromObj(obj);
 	    res.offset = SuperMap.ThemeOffset.fromObj(obj);
 	    for (var i = 0; i < len; i++) {
-	        res.items.push(ThemeGraphItem.fromObj(itemsG[i]));
+	        res.items.push(SuperMap.ThemeGraphItem.fromObj(itemsG[i]));
 	    }
 	    return res;
 	};
@@ -17786,7 +17786,7 @@
 	 * Class: MeasureService
 	 * 量算服务服务类
 	 * 用法：
-	 *      L.superMap.measureService(url).measureDistance({
+	 *      L.supermap.measureService(url).measureDistance({
 	 *          geometry:xxx
 	 *      },function(result){
 	 *           //doSomething
@@ -18082,7 +18082,7 @@
 	 * Class:ChartService
 	 * 海图服务
 	 * 用法：
-	 *      L.superMap.chartService(url)
+	 *      L.supermap.chartService(url)
 	 *      .queryChart(param,function(result){
 	 *          //doSomething
 	 *      })
@@ -18270,6 +18270,7 @@
 	     *
 	     */
 	    destroy: function () {
+	        var me = this;
 	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
 	        me.returnContent = null;
 	        me.format = null;
@@ -18706,7 +18707,9 @@
 	    CLASS_NAME: "SuperMap.REST.ChartFeatureInfoSpecsService"
 	});
 
-	module.exports = function (url, options) {
+	module.exports =
+
+	    function (url, options) {
 	    return new SuperMap.REST.ChartFeatureInfoSpecsService(url, options);
 	};
 
@@ -18720,7 +18723,7 @@
 	 * 数据集类。
 	 * 提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询，地物编辑
 	 * 用法：
-	 *      L.superMap.featureService(url)
+	 *      L.supermap.featureService(url)
 	 *      .getFeaturesByIDs(param,function(result){
 	 *          //doSomething
 	 *      })
@@ -20447,10 +20450,7 @@
 	 * Class: FieldService
 	 * 字段服务类
 	 * 用法：
-	 *      L.superMap.fieldService(url)
-	 *      .on("complete",function(result){
-	 *           //doSomething
-	 *      }).on("failed",function(result){
+	 *      L.supermap.fieldService(url).getFields(function(result){
 	 *           //doSomething
 	 *      });
 	 */
@@ -20815,7 +20815,7 @@
 	 * Class: GridCellInfosService
 	 * 数据栅格查询服务
 	 * 用法：
-	 *      L.superMap.gridCellInfosService(url)
+	 *      L.supermap.gridCellInfosService(url)
 	 *      .getGridCellInfos(param,function(result){
 	 *           //doSomething
 	 *      })
@@ -21118,11 +21118,9 @@
 	 * Class: ThemeService
 	 * 地图信息服务类
 	 * 用法：
-	 *      L.superMap.themeService(url,{
+	 *      L.supermap.themeService(url,{
 	 *            projection:projection
-	 *      }).on("complete",function(result){
-	 *           //doSomething
-	 *      }).on("failed",function(result){
+	 *      }).getThemeInfo(params,function(result){
 	 *           //doSomething
 	 *      });
 	 */
@@ -21889,8 +21887,7 @@
 	 * Class: NetworkAnalystService
 	 * 网络分析服务类
 	 * 用法：
-	 *      L.superMap
-	 *      .networkAnalystService(url)
+	 *      L.supermap.networkAnalystService(url)
 	 *      .findPath(params,function(result){
 	 *           //doSomething
 	 *      })
@@ -24796,8 +24793,7 @@
 	 * Class: NetworkAnalyst3DService
 	 * 3D网络分析服务类
 	 * 用法：
-	 *      L.superMap
-	 *      .networkAnalyst3DService(url)
+	 *      L.supermap.networkAnalyst3DService(url)
 	 *      .sinksFacilityAnalyst(params,function(result){
 	 *           //doSomething
 	 *      })
@@ -25669,7 +25665,7 @@
 	 * 空间分析服务类。
 	 * 提供：地区太阳辐射、缓冲区分析、点密度分析、动态分段分析、空间关系分析、插值分析、栅格代数运算、叠加分析、路由定位、路由测量计算、表面分析、地形曲率计算、泰森多边形分析。
 	 * 用法：
-	 *      L.superMap.spatialAnalystService(url)
+	 *      L.supermap.spatialAnalystService(url)
 	 *      .bufferAnalysis(params,function(result){
 	 *          //doSomething 
 	 *      })
@@ -26105,7 +26101,7 @@
 
 	        var parameterObject = new Object();
 
-	        if (parameter instanceof AreaSolarRadiationService) {
+	        if (parameter instanceof SuperMap.AreaSolarRadiationParameter) {
 	            me.url += 'datasets/' + parameter.dataset + '/solarradiation';
 	        }
 
@@ -31303,7 +31299,7 @@
 	 * Class: TrafficTransferAnalystService
 	 * 交通换乘分析服务类
 	 * 用法：
-	 *      L.superMap
+	 *      L.supermap
 	 *      .trafficTransferAnalystService(url)
 	 *      .queryStop(params,function(result){
 	 *           //doSomething
@@ -32493,7 +32489,7 @@
 
 	        me.options.url = url;
 	        if (url && url.indexOf("/") === (url.length - 1)) {
-	            url = url.substr(0, str.length - 1);
+	            url = url.substr(0, url.length - 1);
 	            me.options.url = url;
 	        }
 	        me._initLayerUrl();
@@ -32736,7 +32732,7 @@
 	        me.resolutions = me._resolutionsFromScales(me.scales);
 	        var len = me.resolutions.length;
 	        me.scales = [len];
-	        for (i = 0; i < len; i++) {
+	        for (var i = 0; i < len; i++) {
 	            me.scales[i] = SuperMap.Util.getScaleFromResolutionDpi(
 	                me.resolutions[i], me.dpi, me.units, me.datumAxis
 	            );
@@ -34037,7 +34033,7 @@
 	            return style;
 	        }
 	        if (type === "POINT") {
-	            size = Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]) || 8;
+	            var size = Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]) || 8;
 	            var symbolParameters = {
 	                "transparent": true,
 	                "resourceType": "SYMBOLMARKER",
@@ -34050,7 +34046,7 @@
 	            return style;
 	        }
 	        if (type === "TEXT") {
-	            shader = feature.properties.textStyle || layerStyle;
+	            shader = feature.properties.textStyle || layerInfo.layerStyle;
 	            //设置文本是否使用粗体
 	            style.fontWeight = shader.bold ? shader.fontWeight : "normal";
 	            //设置文本的尺寸（对应fontHeight属性）和行高，行高iserver不支持，默认5像素

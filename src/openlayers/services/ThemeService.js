@@ -1,5 +1,12 @@
 ﻿/**
  * Class: ThemeService
+ * 地图信息服务类
+ * 用法：
+ *      new ol.supermap.ThemeService(url,{
+ *            projection:projection
+ *      }).getThemeInfo(params,function(result){
+ *           //doSomething
+ *      });
  */
 require('./ServiceBase');
 require('../../common/iServer/ThemeService');
@@ -10,13 +17,13 @@ ol.supermap.ThemeService = function (url, options) {
 
 ol.inherits(ol.supermap.ThemeService, ol.supermap.ServiceBase);
 
-ol.supermap.ThemeService.prototype.getThemeStatus = function (params) {
+ol.supermap.ThemeService.prototype.getThemeInfo = function (params, callback) {
     var me = this;
     var themeService = new SuperMap.REST.ThemeService(me.options.url, {
         eventListeners: {
             scope: me,
-            processCompleted: me.processCompleted,
-            processFailed: me.processFailed
+            processCompleted: callback,
+            processFailed: callback
         }
     });
     themeService.processAsync(params);

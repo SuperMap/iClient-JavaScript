@@ -84,15 +84,13 @@
     mapService();
 
     function mapService() {
-        var getFieldsService = new ol.supermap.GetFieldsService(url, {
+        new ol.supermap.FieldService(url, {
             dataSourceName: "World",
             dataSetName: "continent_T"
-        });
-        getFieldsService.on("complete", function (serviceResult) {
-            content.innerHTML = serviceResult.element.result.fieldNames.join(', ');
+        }).getFields(function (serviceResult) {
+            content.innerHTML = serviceResult.result.fieldNames.join(', ');
             overlay.setPosition([0, 0]);
         });
-        getFieldsService.getFields();
     }
 </script>
 </body>

@@ -2,8 +2,7 @@
  * Class: NetworkAnalyst3DService
  * 3D网络分析服务类
  * 用法：
- *      L.superMap
- *      .networkAnalyst3DService(url)
+ *      L.supermap.networkAnalyst3DService(url)
  *      .sinksFacilityAnalyst(params,function(result){
  *           //doSomething
  *      })

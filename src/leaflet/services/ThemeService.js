@@ -2,11 +2,9 @@
  * Class: ThemeService
  * 地图信息服务类
  * 用法：
- *      L.superMap.themeService(url,{
+ *      L.supermap.themeService(url,{
  *            projection:projection
- *      }).on("complete",function(result){
- *           //doSomething
- *      }).on("failed",function(result){
+ *      }).getThemeInfo(params,function(result){
  *           //doSomething
  *      });
  */

@@ -83,18 +83,16 @@
     mapService();
 
     function mapService() {
-        var mapService = new ol.supermap.MapService(url, {
+        new ol.supermap.MapService(url, {
             "projection": "4326"
-        });
-        mapService.on("complete", function (serviceResult) {
+        }).getMapInfo(function (serviceResult) {
             var innerHTML = "(map信息太多，只打印一部分)" + "<br><br>";
-            innerHTML += "地图名：" + JSON.stringify(serviceResult.element.result.name, null, 2) + "<br>";
-            innerHTML += "中心点:" + JSON.stringify(serviceResult.element.result.center, null, 2) + "<br>";
-            innerHTML += "Bounds:" + JSON.stringify(serviceResult.element.result.bounds, null, 2) + "<br>";
+            innerHTML += "地图名：" + JSON.stringify(serviceResult.result.name, null, 2) + "<br>";
+            innerHTML += "中心点:" + JSON.stringify(serviceResult.result.center, null, 2) + "<br>";
+            innerHTML += "Bounds:" + JSON.stringify(serviceResult.result.bounds, null, 2) + "<br>";
             content.innerHTML = innerHTML;
             overlay.setPosition([0, 0]);
         });
-        mapService.getMapStatus();
     }
 </script>
 </body>

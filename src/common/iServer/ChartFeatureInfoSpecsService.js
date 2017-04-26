@@ -67,6 +67,8 @@ SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase
     CLASS_NAME: "SuperMap.REST.ChartFeatureInfoSpecsService"
 });
 
-module.exports = function (url, options) {
+module.exports =
+
+    function (url, options) {
     return new SuperMap.REST.ChartFeatureInfoSpecsService(url, options);
 };

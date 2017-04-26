@@ -21,18 +21,17 @@
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var map, findPathService, findPathParameter,
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
-            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
+    var map,
+        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     //最佳路径分析是按照站点添加顺序对站点进行访问的
-    var mapService = new ol.supermap.MapService(baseUrl);
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         extent: extent,
         units: 'm'
     });
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -41,14 +40,13 @@
                 projection: projection
             })
         });
-        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        var options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
         var layer = new ol.layer.Tile({
             source: new ol.supermap.TileSuperMapRest(options)
         });
         map.addLayer(layer);
         findPathProcess();
     });
-    mapService.getMapStatus();
 
     function findPathProcess() {
         //添加站点
@@ -71,8 +69,6 @@
         map.addOverlay(stopMarker2);
         map.addOverlay(stopMarker3);
 
-        //创建最佳路径分析服务实例
-        findPathService = new ol.supermap.NetworkAnalystService(serviceUrl);
         //创建最佳路径分析参数实例
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -88,7 +84,7 @@
             resultSetting: resultSetting,
             weightFieldName: "length"
         });
-        findPathParameter = new SuperMap.FindPathParameters({
+        var findPathParameter = new SuperMap.FindPathParameters({
             isAnalyzeById: false,
             nodes: [new ol.geom.Point([4000, -3000]), new ol.geom.Point([5500, -2500]), new ol.geom.Point([6900, -4000])],
             hasLeastEdgeCount: false,
@@ -96,44 +92,43 @@
         });
 
         //进行查找
-        findPathService.findPath(findPathParameter)
-                .on('complete', function (serviceResult) {
-                    var guideLayerStyle = new ol.style.Style({
-                        image: new ol.style.Icon(({
-                            src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/walk.png',
-                            size: [20, 20]
-                        }))
-                    });
-                    var routeLayerStyle = new ol.style.Style({
-                        stroke: new ol.style.Stroke({
-                            color: 'rgba(100, 100, 225, 10)',
-                            width: 3
-                        }),
-                        fill: new ol.style.Fill({
-                            color: 'rgba(0, 0, 255, 0.1)'
-                        })
-                    });
-                    serviceResult.element.result.map(function (result) {
-                        //添加分析出的路线
-                        var routeSource = new ol.source.Vector({
-                            features: (new ol.format.GeoJSON()).readFeatures(result.route)
-                        });
-                        var pathLayer = new ol.layer.Vector({
-                            source: routeSource,
-                            style: routeLayerStyle
-                        });
-                        map.addLayer(pathLayer);
-                        //添加分析出的引导点
-                        var guideSource = new ol.source.Vector({
-                            features: (new ol.format.GeoJSON()).readFeatures(result.pathGuideItems)
-                        });
-                        var guideLayer = new ol.layer.Vector({
-                            source: guideSource,
-                            style: guideLayerStyle
-                        });
-                        map.addLayer(guideLayer);
-                    });
+        new ol.supermap.NetworkAnalystService(serviceUrl).findPath(findPathParameter, function (serviceResult) {
+            var guideLayerStyle = new ol.style.Style({
+                image: new ol.style.Icon(({
+                    src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/walk.png',
+                    size: [20, 20]
+                }))
+            });
+            var routeLayerStyle = new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(100, 100, 225, 10)',
+                    width: 3
+                }),
+                fill: new ol.style.Fill({
+                    color: 'rgba(0, 0, 255, 0.1)'
+                })
+            });
+            serviceResult.result.pathList.map(function (result) {
+                //添加分析出的路线
+                var routeSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(result.route)
                 });
+                var pathLayer = new ol.layer.Vector({
+                    source: routeSource,
+                    style: routeLayerStyle
+                });
+                map.addLayer(pathLayer);
+                //添加分析出的引导点
+                var guideSource = new ol.source.Vector({
+                    features: (new ol.format.GeoJSON()).readFeatures(result.pathGuideItems)
+                });
+                var guideLayer = new ol.layer.Vector({
+                    source: guideSource,
+                    style: guideLayerStyle
+                });
+                map.addLayer(guideLayer);
+            });
+        });
     }
 </script>
 </body>

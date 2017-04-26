@@ -31,17 +31,15 @@
     query();
 
     function query() {
-        var queryService = new ol.supermap.QueryService(url);
         var param = new SuperMap.QueryBySQLParameters({
             queryParams: {
                 name: "Capitals@World.1",
                 attributeFilter: "SMID < 10"
             }
         });
-        queryService.queryBySQL(param);
-        queryService.on("complete", function (serviceResult) {
+        queryService = new ol.supermap.QueryService(url).queryBySQL(param, function (serviceResult) {
             var vectorSource = new ol.source.Vector({
-                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result[0]),
+                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.recordsets[0].features),
                 wrapX: false
             });
             resultLayer = new ol.layer.Vector({

@@ -12,11 +12,10 @@
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var map, themeService, themeLayer, themeGridUnique, themeParameters,
+    var map, themeLayer, options,
             url = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图";
-    var mapService = new ol.supermap.MapService(url);
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -25,49 +24,13 @@
                 projection: "EPSG:4326"
             })
         });
-        var options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
+        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
         var layer = new ol.layer.Tile({
             source: new ol.supermap.TileSuperMapRest(options)
         });
         map.addLayer(layer);
-        themeService = new ol.supermap.ThemeService(url);
-
-        themeGridUnique = new SuperMap.ThemeGridUnique({
-            defaultcolor: new SuperMap.ServerColor(0, 0, 0),
-            items: setItems()
-        });
-        themeParameters = new SuperMap.ThemeParameters({
-            datasetNames: ["JingjinTerrain"],
-            dataSourceNames: ["Jingjin"],
-            themes: [themeGridUnique]
-        });
-
-        themeService.on('complete', function (serviceResult) {
-            var result = serviceResult.element.result;
-            if (result && result.newResourceID) {
-                themeLayer = new ol.layer.Tile({
-                    source: new ol.supermap.TileSuperMapRest({
-                        url: url,
-                        noWrap: true,
-                        cacheEnabled: false,
-                        transparent: true,
-                        layersID: result.newResourceID,
-                        tileGrid: new ol.tilegrid.TileGrid({
-                            extent: options.tileGrid.extent_,
-                            resolutions: options.tileGrid.resolutions_
-                        })
-                    })
-                });
-                map.addLayer(themeLayer);
-            }
-        });
-        themeService.on('failed', function (error) {
-            alert(error.errorMsg);
-        });
         createTheme();
     });
-    mapService.getMapStatus();
-
 
     function setItems() {
         var items = [],
@@ -152,7 +115,35 @@
     }
 
     function createTheme() {
-        themeService.getThemeStatus(themeParameters);
+        var themeGridUnique = new SuperMap.ThemeGridUnique({
+            defaultcolor: new SuperMap.ServerColor(0, 0, 0),
+            items: setItems()
+        });
+        var themeParameters = new SuperMap.ThemeParameters({
+            datasetNames: ["JingjinTerrain"],
+            dataSourceNames: ["Jingjin"],
+            themes: [themeGridUnique]
+        });
+
+        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters, function (serviceResult) {
+            var result = serviceResult.result;
+            if (result && result.newResourceID) {
+                themeLayer = new ol.layer.Tile({
+                    source: new ol.supermap.TileSuperMapRest({
+                        url: url,
+                        noWrap: true,
+                        cacheEnabled: false,
+                        transparent: true,
+                        layersID: result.newResourceID,
+                        tileGrid: new ol.tilegrid.TileGrid({
+                            extent: options.tileGrid.extent_,
+                            resolutions: options.tileGrid.resolutions_
+                        })
+                    })
+                });
+                map.addLayer(themeLayer);
+            }
+        });
     }
 </script>
 </body>

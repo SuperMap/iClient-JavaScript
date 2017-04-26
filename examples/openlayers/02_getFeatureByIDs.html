@@ -33,16 +33,14 @@
     query();
 
     function query() {
-        var getFeaturesService = new ol.supermap.GetFeaturesService(url);
         var idsParam = new SuperMap.GetFeaturesByIDsParameters({
             IDs: [246, 247],
             datasetNames: ["World:Countries"]
         });
-        getFeaturesService.getFeaturesByIDs(idsParam);
-        getFeaturesService.on("complete", function (serviceResult) {
+        new ol.supermap.FeatureService(url).getFeaturesByIDs(idsParam, function (serviceResult) {
             var vectorSource = new ol.source.Vector({
-                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result),
-                wrapX:false
+                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.features),
+                wrapX: false
             });
             resultLayer = new ol.layer.Vector({
                 source: vectorSource

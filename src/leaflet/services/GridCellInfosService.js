@@ -2,7 +2,7 @@
  * Class: GridCellInfosService
  * 数据栅格查询服务
  * 用法：
- *      L.superMap.gridCellInfosService(url)
+ *      L.supermap.gridCellInfosService(url)
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })

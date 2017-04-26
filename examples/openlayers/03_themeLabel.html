@@ -12,11 +12,10 @@
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var map, themeService, themeLayer, themeLabel, themeParameters,
-            url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
-    var mapService = new ol.supermap.MapService(url);
-    mapService.on("complete", function (serviceResult) {
-        var mapJSONObj = serviceResult.element.result;
+    var map, themeService, themeLayer, themeLabel, themeParameters, options
+    url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -25,12 +24,15 @@
                 projection: "EPSG:4326"
             })
         });
-        var options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
+        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
         var layer = new ol.layer.Tile({
             source: new ol.supermap.TileSuperMapRest(options)
         });
         map.addLayer(layer);
-        themeService = new ol.supermap.ThemeService(url);
+        createTheme();
+    });
+
+    function createTheme() {
         var style1, style2, style3;
         style1 = new SuperMap.ServerTextStyle({
             fontHeight: 4,
@@ -83,7 +85,7 @@
             style: style3
         });
 
-        themeLabel = new SuperMap.ThemeLabel({
+        var themeLabel = new SuperMap.ThemeLabel({
             matrixCells: [
                 [new SuperMap.LabelThemeCell({
                     themeLabel: new SuperMap.ThemeLabel({
@@ -111,14 +113,14 @@
                 labelBackShape: "RECT"
             })
         });
-        themeParameters = new SuperMap.ThemeParameters({
+        var themeParameters = new SuperMap.ThemeParameters({
             themes: [themeLabel],
             datasetNames: ["Capitals"],
             dataSourceNames: ["World"]
         });
 
-        themeService.on('complete', function (serviceResult) {
-            var result = serviceResult.element.result;
+        new ol.supermap.ThemeService(url).getThemeInfo(themeParameters, function (serviceResult) {
+            var result = serviceResult.result;
             if (result && result.newResourceID) {
                 themeLayer = new ol.layer.Tile({
                     source: new ol.supermap.TileSuperMapRest({
@@ -136,15 +138,6 @@
                 map.addLayer(themeLayer);
             }
         });
-        themeService.on('failed', function (error) {
-            alert(error.errorMsg);
-        });
-        createTheme();
-    });
-    mapService.getMapStatus();
-
-    function createTheme() {
-        themeService.getThemeStatus(themeParameters);
     }
 
 </script>

@@ -2,6 +2,11 @@
  * Class:QueryService
  * 地图查询服务类
  * 提供：范围查询，SQL查询，几何查询，距离查询
+ * 用法：
+ *      new ol.supermap.QueryService(url)
+ *      .queryByBounds(param,function(result){
+ *          //doSomething
+ *      })
  */
 require('./ServiceBase');
 require('../../common/iServer/QueryByBoundsService');
@@ -12,25 +17,29 @@ require('../../common/iServer/QueryByGeometryService');
 ol.supermap.QueryService = function (url, options) {
     ol.supermap.ServiceBase.call(this, url, options);
 };
+
 ol.inherits(ol.supermap.QueryService, ol.supermap.ServiceBase);
 
 /**
  * 地图bounds查询服务
  * @param params:
- *     <QueryByBoundsParameters>
+ * <SuperMap.QueryByBoundsParameters>
+ * @param callback
  * @param resultFormat
-		 *		<SuperMap.DataFormat>
+ * <SuperMap.DataFormat>
+ *
  */
-ol.supermap.QueryService.prototype.queryByBounds = function (params, resultFormat) {
+ol.supermap.QueryService.prototype.queryByBounds = function (params, callback, resultFormat) {
     var me = this;
     var queryService = new SuperMap.REST.QueryByBoundsService(me.options.url, {
         eventListeners: {
             scope: me,
-            processCompleted: me.processCompleted,
-            processFailed: me.processFailed
+            processCompleted: callback,
+            processFailed: callback
         },
         format: me._processFormat(resultFormat)
     });
+
     queryService.processAsync(me._processParams(params));
     return me;
 };
@@ -38,20 +47,22 @@ ol.supermap.QueryService.prototype.queryByBounds = function (params, resultForma
 /**
  * 地图距离查询服务
  * @param params:
- *     <QueryByDistanceParameters>
+ * <QueryByDistanceParameters>
+ * @param callback
  * @param resultFormat
-		 *		<SuperMap.DataFormat>
+ * <SuperMap.DataFormat>
  */
-ol.supermap.QueryService.prototype.queryByDistance = function (params, resultFormat) {
+ol.supermap.QueryService.prototype.queryByDistance = function (params, callback, resultFormat) {
     var me = this;
     var queryByDistanceService = new SuperMap.REST.QueryByDistanceService(me.options.url, {
         eventListeners: {
             scope: me,
-            processCompleted: me.processCompleted,
-            processFailed: me.processFailed
+            processCompleted: callback,
+            processFailed: callback
         },
         format: me._processFormat(resultFormat)
     });
+
     queryByDistanceService.processAsync(me._processParams(params));
     return me;
 };
@@ -59,20 +70,22 @@ ol.supermap.QueryService.prototype.queryByDistance = function (params, resultFor
 /**
  * 地图SQL查询服务
  * @param params:
- *     <QueryBySQLParameters>
+ * <SuperMap.QueryBySQLParameters>
+ * @param callback
  * @param resultFormat
-		 *		<SuperMap.DataFormat>
+ * <SuperMap.DataFormat>
  */
-ol.supermap.QueryService.prototype.queryBySQL = function (params, resultFormat) {
+ol.supermap.QueryService.prototype.queryBySQL = function (params, callback, resultFormat) {
     var me = this;
     var queryBySQLService = new SuperMap.REST.QueryBySQLService(me.options.url, {
         eventListeners: {
             scope: me,
-            processCompleted: me.processCompleted,
-            processFailed: me.processFailed
+            processCompleted: callback,
+            processFailed: callback
         },
         format: me._processFormat(resultFormat)
     });
+
     queryBySQLService.processAsync(me._processParams(params));
     return me;
 };
@@ -80,20 +93,22 @@ ol.supermap.QueryService.prototype.queryBySQL = function (params, resultFormat) 
 /**
  * 地图几何查询服务
  * @param params:
- *     <QueryByGeometryParameters>
+ * <SuperMap.QueryByGeometryParameters>
+ * @param callback
  * @param resultFormat
-		 *		<SuperMap.DataFormat>
+ * <SuperMap.DataFormat>
  */
-ol.supermap.QueryService.prototype.queryByGeometry = function (params, resultFormat) {
+ol.supermap.QueryService.prototype.queryByGeometry = function (params, callback, resultFormat) {
     var me = this;
     var queryByGeometryService = new SuperMap.REST.QueryByGeometryService(me.options.url, {
         eventListeners: {
             scope: me,
-            processCompleted: me.processCompleted,
-            processFailed: me.processFailed
+            processCompleted: callback,
+            processFailed: callback
         },
         format: me._processFormat(resultFormat)
     });
+
     queryByGeometryService.processAsync(me._processParams(params));
     return me;
 };
@@ -123,8 +138,9 @@ ol.supermap.QueryService.prototype._processParams = function (params) {
     }
     return params;
 };
+
 ol.supermap.QueryService.prototype._processFormat = function (resultFormat) {
     return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
-};
+}
 
 module.exports = ol.supermap.QueryService;
