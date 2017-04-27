@@ -22,26 +22,25 @@
             color: #FFFFFF;
         }
 
-        @media screen and (max-width:1200px) {
+        @media screen and (max-width: 1200px) {
             .pt50.tc {
                 font-size: 30px;
             }
         }
 
-        @media screen and (max-width:992px) {
+        @media screen and (max-width: 992px) {
             .pt50.tc {
                 font-size: 25px;
             }
         }
 
-
-        #header2-text{
+        #header2-text {
             padding-top: 80px;
             padding-bottom: 20px;
             text-align: center
         }
 
-        @media screen and (max-width:992px) {
+        @media screen and (max-width: 992px) {
             #header2-text {
                 padding-top: 75px;
                 padding-bottom: 0;
@@ -87,7 +86,7 @@
             background-color: transparent
         }
 
-        @media screen and (max-width:992px) {
+        @media screen and (max-width: 992px) {
             .btn {
                 margin-top: 18px;
             }
@@ -97,80 +96,80 @@
             font-family: 'HiraginoSansGB-W6';
             font-size: 18px;
             color: #FFFFFF;
-            line-height:30px;
+            line-height: 30px;
         }
 
-        #button_zip{
+        #button_zip {
             text-align: center;
 
         }
 
-        @media screen and (max-width:1200px) {
+        @media screen and (max-width: 1200px) {
             #button_zip {
                 float: right;
                 margin-right: 24%;
             }
         }
 
-        @media screen and (max-width:992px) {
+        @media screen and (max-width: 992px) {
             #button_zip {
                 float: right;
                 margin-right: auto;
             }
         }
 
-        @media screen and (max-width:768px) {
+        @media screen and (max-width: 768px) {
             #button_zip {
                 float: right;
                 margin: auto;
             }
         }
 
-        @media screen and (max-width:762px) {
+        @media screen and (max-width: 762px) {
             #button_zip {
                 float: none;
                 margin: auto;
             }
         }
 
-        #button_sourceCode{
+        #button_sourceCode {
             text-align: center;
-            margin-left:70px;
+            margin-left: 70px;
         }
 
-        @media screen and (max-width:1200px) {
+        @media screen and (max-width: 1200px) {
             #button_sourceCode {
                 float: right;
                 margin-right: 24%;
             }
         }
 
-        @media screen and (max-width:992px) {
+        @media screen and (max-width: 992px) {
             #button_sourceCode {
                 float: right;
                 margin-right: auto;
             }
         }
 
-        @media screen and (max-width:768px) {
+        @media screen and (max-width: 768px) {
             #button_sourceCode {
                 float: right;
                 margin: auto;
             }
         }
 
-        @media screen and (max-width:762px) {
+        @media screen and (max-width: 762px) {
             #button_sourceCode {
                 float: none;
                 margin: auto;
             }
         }
 
-        #quick-start{
+        #quick-start {
             margin-top: 83px;
         }
 
-        #new-attributes{
+        #new-attributes {
             margin-top: 50px;
         }
 
@@ -239,30 +238,22 @@
                 <div id="mapLeaflet"
                      style="height:300px;position: relative;margin-top: 18px;background-color: #f5f5f5;border: 1px solid #ccc;border-radius: 4px;"></div>
                 <p style="margin-top: 18px">将 iSevrer 发布的地图加载至 Leaflet 的 map 中 </p>
-                <pre class="basic-code javascript" style="margin-top: 18px"><code class="hljs">var map = L.map(&#39;mapLeaflet&#39;, {
-    center: [39.89393354258348, 116.38738402603143],
-    maxZoom: 18,
-    zoom: 10
-});
+                <pre class="javascript"><code>var map = L.map(&#39;map&#39;);
 
-L.supermap.tiledMapLayer(&quot;http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China&quot;).addTo(map);</code></pre>
+L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/maps/China&quot;).addTo(map);
+                    </code></pre>
                 <a href="#" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a></h3>
 
                 <h3 style="margin-top: 34px;font-size: 24px;color: #404040;letter-spacing: -0.16px;">openLayers</h3>
                 <div id="map"
                      style="height:300px;position: relative;margin-top: 18px;background-color: #f5f5f5;border: 1px solid #ccc;border-radius: 4px;"></div>
                 <p style="margin-top: 19px">将 iSevrer 发布的地图加载至 OpenLayers 的 map 中 </p>
-                <pre class="basic-code javascript" style="margin-top: 18px"><code class="hljs">var map = new ol.Map({
+                <pre class="javascript">
+                    <code>var map = new ol.Map({
     target: &#39;map&#39;,
-    view: new ol.View({
-          center: [100.94238281254322,35.496456056550095],
-          zoom: 4,
-          projection:&quot;EPSG:4326&quot;
-    }),
     layers: [new ol.layer.Tile({
              source: new ol.supermap.TileSuperMapRest({
-             url: &quot;http://support.supermap.com:8090/iserver/services/map-world/rest/maps/World&quot;,
-             projection:&quot;EPSG:4326&quot;
+             url: &quot;http://localhost:8090/iserver/services/map/rest/maps/World&quot;
              }),
     })]
 });</code></pre>
@@ -389,27 +380,30 @@ L.supermap.tiledMapLayer(&quot;http://support.supermap.com.cn:8090/iserver/servi
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../dist/iclient9-leaflet.js"></script>
 <script type="text/javascript">
-    var map = new ol.Map({
+    var olMap = new ol.Map({
         target: 'map',
         view: new ol.View({
             center: [100.94238281254322, 35.496456056550095],
             zoom: 4,
+            maxZoom: 4,
+            minZoom: 4,
             projection: "EPSG:4326"
         }),
         layers: [new ol.layer.Tile({
             source: new ol.supermap.TileSuperMapRest({
                 url: "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
                 projection: "EPSG:4326"
-            }),
+            })
         })]
     });
 
-    var map = L.map('mapLeaflet', {
+    var lMap = L.map('mapLeaflet', {
         center: [39.89393354258348, 116.38738402603143],
-        maxZoom: 18,
+        maxZoom: 10,
+        minZoom: 10,
         zoom: 10
     });
-    L.supermap.tiledMapLayer("http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China").addTo(map);
+    L.supermap.tiledMapLayer("http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China").addTo(lMap);
 </script>
 <script>
     /*切换新特性中的折叠指示图标*/
@@ -419,15 +413,6 @@ L.supermap.tiledMapLayer(&quot;http://support.supermap.com.cn:8090/iserver/servi
             $(this).find("span").toggleClass("glyphicon-chevron-up");
         });
     });
-</script>
-<script>
-    $('.dropdown-menu li').on('click', function () {
-        var host = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9" : "");
-        window.location.href = host + "/examples/" + this.innerText.toLowerCase() + "/examples.html";
-    })
-    $('#headerMenu #headerIndex').on('click', function () {
-        window.location.href = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9/web/index.html" : "");
-    })
 </script>
 </body>
 </html>

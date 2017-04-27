@@ -1,9 +1,21 @@
+
 /*此处的position: relative;margin-bottom: 0可以使出现折叠菜单时下面的头部往后顺延相应的位置  #337ab7;*/
-.navbar-fixed-top{
+.navbar-fixed-top {
     background: #49A6E5;
-    border:0;
+    border: 0;
     position: relative;
     margin-bottom: 0
+}
+
+.container.bc.clearfix {
+    margin: 0 auto;
+    padding: 0 40px  0 40px;
+    width: 100%;
+    background-color: #49A6E5;
+}
+
+.navbar {
+    font-size: 16px;
 }
 
 .navbar .project-title {
@@ -39,8 +51,9 @@
 }
 
 .navbar #headerMenu > .open > a {
-    background-color: #3c8dbc;  /*#0099cc*/
+    background-color: #3c8dbc; /*#0099cc*/
 }
+
 .nav_apis_box_li > li:hover {
     color: #ffffff;
     background-color: #0099cc;
@@ -64,30 +77,26 @@
     letter-spacing: -0.1px;
 }
 
-@media screen and (max-width:1200px)
-{
-    #title{
-        font-size:20px;
+@media screen and (max-width: 1200px) {
+    #title {
+        font-size: 20px;
     }
 }
 
-@media screen and (max-width:992px)
-{
-    #title{
-        font-size:18px;
+@media screen and (max-width: 992px) {
+    #title {
+        font-size: 18px;
     }
 }
 
-@media screen and (max-width:768px)
-{
-    #title{
-        font-size:16px;
+@media screen and (max-width: 768px) {
+    #title {
+        font-size: 16px;
     }
 }
 
-@media screen and (max-width:650px)
-{
-    #title{
-        font-size:13px;
+@media screen and (max-width: 650px) {
+    #title {
+        font-size: 13px;
     }
 }

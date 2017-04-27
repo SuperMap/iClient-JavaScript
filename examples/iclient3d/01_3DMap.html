@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>三维场景</title>
+    <link href="http://support.supermap.com.cn:8090/iserver/iClient/for3D/webgl/examples/css/widgets.css" rel="stylesheet">
+
+    <script type="text/javascript" src="http://cdn.bootcss.com/require.js/2.3.3/require.js"
+            data-main="../../web/libs/Cesium/main.js"></script>
+    <style>
+        html, body, #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div id="cesiumContainer"></div>
+<script>
+    function onload(Cesium) {
+        var viewer = new Cesium.Viewer('cesiumContainer');
+    }
+</script>
+</body>
+
+</html>

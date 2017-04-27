@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container  bc clearfix">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
                 data-target="#navbar-collapse" aria-expanded="false">
@@ -26,7 +26,8 @@
                 <ul class="dropdown-menu nav_apis_box_li">
                     <li>Leaflet</li>
                     <li>OpenLayers</li>
-                    <li>WebGL</li>
+                    <li>MapBoxGL</li>
+                    <li>iClient3D</li>
                 </ul>
             </li>
             <li id="headerPricing">
@@ -40,3 +41,13 @@
         </ul>
     </div>
 </div>
+<script>
+    $('.dropdown-menu li').on('click', function () {
+        var host = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9" : "");
+        window.location.href = host + "/examples/" + this.innerText.toLowerCase() + "/examples.html";
+    })
+    $('#headerMenu #headerIndex').on('click', function () {
+        window.location.href = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9/web/index.html" : "");
+    })
+
+</script>

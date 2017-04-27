@@ -15,7 +15,7 @@ div {
 }
 
 .header {
-    height: 60px;
+    height: 52px;
     width: 100%;
     position: fixed;
     top: 0;
@@ -25,7 +25,7 @@ div {
 
 .content {
     position: absolute;
-    top: 60px;
+    top: 52px;
     bottom: 0;
     width: 100%;
     z-index: 99;
