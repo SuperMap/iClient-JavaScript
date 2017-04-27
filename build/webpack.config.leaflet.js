@@ -12,7 +12,10 @@ module.exports = {
     resolve: {
         extensions: ['', '.js', '.json', '.css']
     },
-
+    externals: {
+        'echarts': 'echarts',
+        'leaflet': 'L'
+    },
     module: {
         //加载器配置
         loaders: [

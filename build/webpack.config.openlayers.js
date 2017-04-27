@@ -12,10 +12,16 @@ module.exports = {
     resolve: {
         extensions: ['', '.js', '.json', '.css']
     },
+    externals: {
+        'echarts': 'echarts',
+        'openlayers': 'ol'
+    },
 
     module: {
+        noParse: /[\/\\]node_modules[\/\\]openlayers[\/\\]dist[\/\\]ol\.js$/,
         //加载器配置
         loaders: [
+            
             // {test: /\.css$/, loader: 'style-loader!css-loader'},
             //{test: /\.css$/, loader:  ExtractTextPlugin.extract("style-loader", "css-loader")},
             //{test: /\.(png|jpg)$/, loader: "file-loader?name=images/[name].[ext]"}

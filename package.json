@@ -26,8 +26,8 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "browserify": "^14.3.0",
-    "commander": "2.9.0",
-    "commonjs": "0.0.1",
+    "commander": "^2.9.0",
+    "commonjs": "^0.0.1",
     "css-loader": "^0.26.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.10.0",
@@ -41,13 +41,14 @@
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
     "karma-teamcity-reporter": "^1.0.0",
-    "leaflet": "1.0.3",
-    "openlayers": "4.0.0",
-    "shelljs": "0.7.6",
+    "shelljs": "^0.7.6",
     "style-loader": "^0.13.1",
     "underscore": "^1.8.3",
     "watchify": "^3.9.0",
-    "webpack": "^1.14.0"
+    "webpack": "^1.14.0",
+    "leaflet": "1.0.3",
+    "openlayers": "4.1.0",
+    "echarts ": "3.5.3"
   },
   "dependencies": {
     "proj4": "^2.4.3",
