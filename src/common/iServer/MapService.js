@@ -84,30 +84,12 @@ SuperMap.REST.MapService = SuperMap.Class(ServiceBase, {
      */
     processAsync: function () {
         var me = this;
-        if (typeof Windows === "undefined") {
-            var option = {
-                method: "GET",
-                scope: me,
-                success: me.serviceProcessCompleted,
-                failure: me.serviceProcessFailed
-            };
-            me.request(option);
-        } else {
-            me.url = me.url.replace(/.jsonp/, ".json");
-            var urlWithToken = me.url;
-            if (SuperMap.Credential.CREDENTIAL) {
-                urlWithToken += urlWithToken.indexOf("?") > -1 ? "&" : "?";
-                urlWithToken += SuperMap.Credential.CREDENTIAL.getUrlParameters();
-            }
-            WinJS.xhr({
-                url: urlWithToken,
-                type: "GET"
-            }).then(function (result) {
-                me.serviceProcessCompleted(result);
-            }, function (error) {
-                me.serviceProcessFailed(error);
-            });
-        }
+        me.request({
+            method: "GET",
+            scope: me,
+            success: me.serviceProcessCompleted,
+            failure: me.serviceProcessFailed
+        });
     },
 
     /**

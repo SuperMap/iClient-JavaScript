@@ -51,22 +51,22 @@
 	__webpack_require__(14);
 	__webpack_require__(15);
 	__webpack_require__(23);
-	__webpack_require__(27);
-	__webpack_require__(42);
-	__webpack_require__(86);
-	__webpack_require__(89);
-	__webpack_require__(94);
-	__webpack_require__(109);
-	__webpack_require__(113);
-	__webpack_require__(116);
-	__webpack_require__(127);
-	__webpack_require__(154);
-	__webpack_require__(166);
-	__webpack_require__(212);
-	__webpack_require__(220);
+	__webpack_require__(28);
+	__webpack_require__(43);
+	__webpack_require__(87);
+	__webpack_require__(90);
+	__webpack_require__(95);
+	__webpack_require__(110);
+	__webpack_require__(114);
+	__webpack_require__(117);
+	__webpack_require__(128);
+	__webpack_require__(155);
+	__webpack_require__(167);
+	__webpack_require__(213);
 	__webpack_require__(221);
-	__webpack_require__(224);
-	module.exports = __webpack_require__(241);
+	__webpack_require__(222);
+	__webpack_require__(225);
+	module.exports = __webpack_require__(242);
 
 
 /***/ }),
@@ -10251,10 +10251,12 @@
 	 *           //doSomething
 	 *      })
 	 */
-	var ServiceBase=__webpack_require__(24);
-	__webpack_require__(25);
-
-	MapService = ServiceBase.extend({
+	var L = __webpack_require__(3);
+	var ServiceBase = __webpack_require__(24);
+	var SuperMap = __webpack_require__(4);
+	var SuperMapMapService = __webpack_require__(25);
+	var TilesetsService = __webpack_require__(27);
+	var MapService = ServiceBase.extend({
 	    options: {
 	        projection: null
 	    },
@@ -10274,7 +10276,7 @@
 	     */
 	    getMapInfo: function (callback) {
 	        var me = this;
-	        var getMapStatusService = new SuperMap.REST.MapService(me.options.url, {
+	        var getMapStatusService = new SuperMapMapService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: callback,
@@ -10291,7 +10293,7 @@
 	     */
 	    getTilesets: function (callback) {
 	        var me = this;
-	        var tilesetsService = new SuperMap.REST.TilesetsService(me.options.url, {
+	        var tilesetsService = new TilesetsService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
 	                processCompleted: callback,
@@ -10308,7 +10310,7 @@
 	    return new MapService(url, options);
 	};
 
-	module.exports = L.supermap.mapService;
+	module.exports = MapService;
 
 /***/ }),
 /* 24 */
@@ -10318,27 +10320,28 @@
 	 * Class: ServiceBase
 	 * 服务基类
 	 */
+	var L = __webpack_require__(3);
 	__webpack_require__(2);
 	__webpack_require__(20);
-	ServiceBase = L.Evented.extend({
+
+	var ServiceBase = L.Evented.extend({
 	    options: {
 	        url: null
 	    },
 	    initialize: function (url, options) {
+	        if (url) {
+	            url = (url.indexOf("/") !== url.length - 1) ?
+	                url : url.substr(0, url.length - 1);
+	        }
 	        this.options.url = url;
 	        L.setOptions(this, options);
-	        this.fire('loaded',this);
+	        this.fire("initialized", this);
 	    },
 
-	    processCompleted: function (serverResult) {
-	        this.fire('complete', {result: serverResult.result});
-
-	    },
-	    processFailed: function (failedResult) {
-	        var error = failedResult.error ? failedResult.error : failedResult;
-	        this.fire('failed', {error: error});
-	        console.log(error.errorMsg);
+	    destroy: function () {
+	        this.fire("destroy", this);
 	    }
+
 	});
 
 	module.exports = ServiceBase;
@@ -10433,30 +10436,12 @@
 	     */
 	    processAsync: function () {
 	        var me = this;
-	        if (typeof Windows === "undefined") {
-	            var option = {
-	                method: "GET",
-	                scope: me,
-	                success: me.serviceProcessCompleted,
-	                failure: me.serviceProcessFailed
-	            };
-	            me.request(option);
-	        } else {
-	            me.url = me.url.replace(/.jsonp/, ".json");
-	            var urlWithToken = me.url;
-	            if (SuperMap.Credential.CREDENTIAL) {
-	                urlWithToken += urlWithToken.indexOf("?") > -1 ? "&" : "?";
-	                urlWithToken += SuperMap.Credential.CREDENTIAL.getUrlParameters();
-	            }
-	            WinJS.xhr({
-	                url: urlWithToken,
-	                type: "GET"
-	            }).then(function (result) {
-	                me.serviceProcessCompleted(result);
-	            }, function (error) {
-	                me.serviceProcessFailed(error);
-	            });
-	        }
+	        me.request({
+	            method: "GET",
+	            scope: me,
+	            success: me.serviceProcessCompleted,
+	            failure: me.serviceProcessFailed
+	        });
 	    },
 
 	    /**
@@ -10847,6 +10832,75 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
+	 * Class: SuperMap.REST.TilesetsService
+	 * 切片列表信息查询服务类;即查询切片地图服务的切片列表，返回切片集名称、地图切片元数据信息、切片版本集信息
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.ServiceBase>
+	 */
+
+	__webpack_require__(26);
+	var SuperMap = __webpack_require__(4);
+	SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
+
+
+	    /**
+	     * Constructor: SuperMap.REST.TilesetsService
+	     * 切片列表信息查询服务类构造函数。
+	     *
+	     * Parameters:
+	     * url - {String} 地图服务地址。URL应为：
+	     * http://{服务器地址}:{服务端口号}/iserver/services/{服务名}/rest/maps/map；
+	     * 例如: "http://localhost:8090/iserver/services/test/rest/maps/tianlocal";
+	     * options - {Object} 参数。
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     */
+
+	    initialize: function (url, options) {
+	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源，将引用的资源属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	    },
+
+	    /**
+	     * APIMethod: processAsync
+	     * 负责将客户端的查询参数传递到服务端。
+	     */
+	    processAsync: function () {
+	        if (!this.url) {
+	            return;
+	        }
+	        var me = this;
+	        var end = me.url.substr(me.url.length - 1, 1);
+
+	        me.url = me.url + ((end === "/") ? "tilesets" : "/tilesets") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+
+	        me.request({
+	            method: "GET",
+	            scope: me,
+	            success: me.serviceProcessCompleted,
+	            failure: me.serviceProcessFailed
+	        });
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.TilesetsService"
+	});
+
+	module.exports = SuperMap.REST.TilesetsService;
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
 	 * Class:QueryService
 	 * 地图查询服务类
 	 * 提供：范围查询，SQL查询，几何查询，距离查询
@@ -10859,10 +10913,10 @@
 	var ServiceBase = __webpack_require__(24);
 	var SuperMap = __webpack_require__(4);
 	var Util = __webpack_require__(16);
-	var QueryByBoundsService = __webpack_require__(28);
-	var QueryByDistanceService = __webpack_require__(36);
-	var QueryBySQLService = __webpack_require__(38);
-	var QueryByGeometryService = __webpack_require__(40);
+	var QueryByBoundsService = __webpack_require__(29);
+	var QueryByDistanceService = __webpack_require__(37);
+	var QueryBySQLService = __webpack_require__(39);
+	var QueryByGeometryService = __webpack_require__(41);
 
 	var QueryService = ServiceBase.extend({
 
@@ -11005,7 +11059,7 @@
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -11015,8 +11069,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.QueryService>
 	 */
-	__webpack_require__(29);
-	__webpack_require__(35);
+	__webpack_require__(30);
+	__webpack_require__(36);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, {
 
@@ -11087,7 +11141,7 @@
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* COPYRIGHT 2017 SUPERMAP
@@ -11106,7 +11160,7 @@
 	__webpack_require__(26);
 	var SuperMap = __webpack_require__(4);
 	var GeoJSONFormat = __webpack_require__(17);
-	var QueryParameters = __webpack_require__(30);
+	var QueryParameters = __webpack_require__(31);
 
 	SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -11268,7 +11322,7 @@
 	module.exports = SuperMap.REST.QueryService;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -11277,7 +11331,7 @@
 	 * 距离查询、SQL 查询、几何地物查询等各自的参数均继承此类。
 	 */
 	__webpack_require__(6);
-	__webpack_require__(31);
+	__webpack_require__(32);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.QueryParameters = SuperMap.Class({
 
@@ -11390,13 +11444,13 @@
 	module.exports = SuperMap.QueryParameters;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	/** * Class: SuperMap.FilterParameter * 查询过滤条件参数类。 * 该类用于设置查询数据集的查询过滤参数。 */__webpack_require__(32);__webpack_require__(33);var SuperMap = __webpack_require__(4);SuperMap.FilterParameter = SuperMap.Class({    /**     * APIProperty: attributeFilter     * {String} 属性过滤条件。     * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，     * attributeFilter 就是其中的“条件表达式”。     * 该字段的用法为 attributeFilter = "过滤条件"。     * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；     * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。     */    attributeFilter: null,    /**     * APIProperty: name     * {String} 查询数据集名称或者图层名称，根据实际的查询对象而定，必设属性。     * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，     * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。     * 因为一个地图的图层可能是来自于不同数据源的数据集，     * 而不同的数据源中可能存在同名的数据集，     * 使用数据集名称不能唯一的确定数据集，     * 所以在进行与地图相关功能的操作时，该值需要设置为图层名称。     */    name: null,    /**     * APIProperty: joinItems     * {Array(<SuperMap.JoinItem>)} 与外部表的连接信息 SuperMap.JoinItem 数组。     */    joinItems: null,    /**     * APIProperty: linkItems     * {Array(<LinkItem>)} 与外部表的关联信息 LinkItem 数组。     */    linkItems: null,    /**     * APIProperty: ids     * {Array(String)} 查询 id 数组，即属性表中的 SmID 值。     */    ids: null,    /**     * APIProperty: orderBy     * {String} 查询排序的字段,orderBy的字段须为数值型的。     * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；     * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。     * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，     * 分别表示国家的面积和1994年的各国人口数量。     * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；     * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。     */    orderBy: null,    /**     * APIProperty: groupBy     * {String} 查询分组条件的字段。     * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段分组时，该字段的用法为 groupBy = "字段名"；     * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。     * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，     * 分别表示某个城市所属的洲和国家。     * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；     * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。     */    groupBy: null,    /**     * APIProperty: fields     * {Array(String)} 查询字段数组，如果不设置则使用系统返回的所有字段。     */    fields: null,    /**     * Constructor: SuperMap.FilterParameter     * 查询过滤条件参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * attributeFilter - {String} 属性过滤条件。     * name - {String} 查询数据集名称或者图层名称。     * joinItems - {Array(<SuperMap.JoinItem>)} 与外部表的连接信息 SuperMap.JoinItem 数组。     * linkItems - {Array(<SuperMap.LinkItem>)} 与外部表的关联信息 SuperMap.LinkItem 数组。     * ids - {Array(String)} 查询 id 数组，即属性表中的 SmID 值。     * orderBy - {String} 查询排序的字段, orderBy 的字段须为数值型的。     * groupBy - {String} 查询分组条件的字段。     * fields - {Array(String)} 查询字段数组。     */    initialize: function (options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.attributeFilter = null;        me.name = null;        if (me.joinItems) {            for (var i = 0, joinItems = me.joinItems, len = joinItems.length; i < len; i++) {                joinItems[i].destroy();            }            me.joinItems = null;        }        if (me.linkItems) {            for (var i = 0, linkItems = me.linkItems, len = linkItems.length; i < len; i++) {                linkItems[i].destroy();            }            me.linkItems = null;        }        me.ids = null;        me.orderBy = null;        me.groupBy = null;        me.fields = null;    },    CLASS_NAME: "SuperMap.FilterParameter"});module.exports = SuperMap.FilterParameter;
+	/** * Class: SuperMap.FilterParameter * 查询过滤条件参数类。 * 该类用于设置查询数据集的查询过滤参数。 */__webpack_require__(33);__webpack_require__(34);var SuperMap = __webpack_require__(4);SuperMap.FilterParameter = SuperMap.Class({    /**     * APIProperty: attributeFilter     * {String} 属性过滤条件。     * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，     * attributeFilter 就是其中的“条件表达式”。     * 该字段的用法为 attributeFilter = "过滤条件"。     * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；     * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。     */    attributeFilter: null,    /**     * APIProperty: name     * {String} 查询数据集名称或者图层名称，根据实际的查询对象而定，必设属性。     * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，     * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。     * 因为一个地图的图层可能是来自于不同数据源的数据集，     * 而不同的数据源中可能存在同名的数据集，     * 使用数据集名称不能唯一的确定数据集，     * 所以在进行与地图相关功能的操作时，该值需要设置为图层名称。     */    name: null,    /**     * APIProperty: joinItems     * {Array(<SuperMap.JoinItem>)} 与外部表的连接信息 SuperMap.JoinItem 数组。     */    joinItems: null,    /**     * APIProperty: linkItems     * {Array(<LinkItem>)} 与外部表的关联信息 LinkItem 数组。     */    linkItems: null,    /**     * APIProperty: ids     * {Array(String)} 查询 id 数组，即属性表中的 SmID 值。     */    ids: null,    /**     * APIProperty: orderBy     * {String} 查询排序的字段,orderBy的字段须为数值型的。     * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；     * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。     * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，     * 分别表示国家的面积和1994年的各国人口数量。     * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；     * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。     */    orderBy: null,    /**     * APIProperty: groupBy     * {String} 查询分组条件的字段。     * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段分组时，该字段的用法为 groupBy = "字段名"；     * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。     * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，     * 分别表示某个城市所属的洲和国家。     * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；     * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。     */    groupBy: null,    /**     * APIProperty: fields     * {Array(String)} 查询字段数组，如果不设置则使用系统返回的所有字段。     */    fields: null,    /**     * Constructor: SuperMap.FilterParameter     * 查询过滤条件参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * attributeFilter - {String} 属性过滤条件。     * name - {String} 查询数据集名称或者图层名称。     * joinItems - {Array(<SuperMap.JoinItem>)} 与外部表的连接信息 SuperMap.JoinItem 数组。     * linkItems - {Array(<SuperMap.LinkItem>)} 与外部表的关联信息 SuperMap.LinkItem 数组。     * ids - {Array(String)} 查询 id 数组，即属性表中的 SmID 值。     * orderBy - {String} 查询排序的字段, orderBy 的字段须为数值型的。     * groupBy - {String} 查询分组条件的字段。     * fields - {Array(String)} 查询字段数组。     */    initialize: function (options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.attributeFilter = null;        me.name = null;        if (me.joinItems) {            for (var i = 0, joinItems = me.joinItems, len = joinItems.length; i < len; i++) {                joinItems[i].destroy();            }            me.joinItems = null;        }        if (me.linkItems) {            for (var i = 0, linkItems = me.linkItems, len = linkItems.length; i < len; i++) {                linkItems[i].destroy();            }            me.linkItems = null;        }        me.ids = null;        me.orderBy = null;        me.groupBy = null;        me.fields = null;    },    CLASS_NAME: "SuperMap.FilterParameter"});module.exports = SuperMap.FilterParameter;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -11521,13 +11575,13 @@
 	module.exports = SuperMap.JoinItem;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	/** * Class: SuperMap.LinkItem * 关联信息类。 * 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表， * 矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。 使用LinkItem时， * 空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。 * SuperMap.LinkItem 只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 SuperMap.LinkItem; * 另外，用于建立关联关系的两个表可以不在同一个数据源下。 * * (注意： * 1. 使用 SuperMap.LinkItem 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段； * 2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。) * */__webpack_require__(34);var SuperMap = __webpack_require__(4);SuperMap.LinkItem = SuperMap.Class({    /**     * APIProperty: datasourceConnectionInfo     * {<SuperMap.DatasourceConnectionInfo>} 关联的外部数据源信息 。     */    datasourceConnectionInfo: null,    /**     * APIProperty: foreignKeys     * {Array(String)} 主空间数据集的外键。     */    foreignKeys: null,    /**     * APIProperty: foreignTable     * {String} 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。     */    foreignTable: null,    /**     * APIProperty: linkFields     * {Array(String)} 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返     * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。     */    linkFields: null,    /**     * APIProperty: linkFilter     * {String} 与外部属性表的连接条件。     */    linkFilter: null,    /**     * APIProperty: name     * {String} 此关联信息对象的名称。     */    name: null,    /**     * APIProperty: primaryKeys     * {Array(String)} 需要关联的外部属性表的主键。     */    primaryKeys: null,    /**     * Constructor: SuperMap.LinkItem     * 关联信息类构造函数。     *     * 设置将TableB关联到TableA的关联信息，即建立LinkItem类并设置其属性，     * TableA与TableB是通过主表（TableA）的外键（LinkItem类的 ForeignKey 属性）     * 和副表（TableB）的主键（LinkItem类的 PrimaryKey 属性）实现关联的，     * 当执行TableA的查询操作时，系统将根据关联信息中的过滤条件及查询条件，分别查询TableA     * 与TableB中满足条件的内容，TableA的查询结果与TableB的查询结果分别作为     * 独立的两个结果表保存在内存中，当需要获取结果时，SuperMap将对两个结果进行拼接并返回，     * 因此，进行关联查询时，查询参数中的返回字段一定要有关联条件中的外键，     * 否则无法根据外键的值获取副表中的关联字段值，副表中的字段值将返回 null。     * 在应用层看来，连接和关联操作很相似。     *     * 下面以SQL查询说明linkitem的使用方法：     * (start code)     *  function queryBySQL() {     *      // 设置关联的外部数据库信息,alias表示数据库别名     *      var dc = new SuperMap.DatasourceConnectionInfo({     *          dataBase: "RelQuery",     *          server: "192.168.168.39",     *          user: "sa",     *          password: "map",     *          driver: "SQL Server",     *          connect: true,     *          OpenLinkTable: false,     *          alias: "RelQuery",     *          engineType: EngineType.SQLPLUS,     *          readOnly: false,     *          exclusive: false     *      });     *     // 设置关联信息     *      var linkItem = new SuperMap.LinkItem({     *          datasourceConnectionInfo: dc,     *          foreignKeys: ["name"],     *          foreignTable: "Pop_2011",     *          linkFields: ["SmID as Pid","pop"],     *          name: "link",     *          primatryKeys: ["name"],     *      });     *      // 设置查询参数，在查询参数中添加linkItem关联条件信息     *      var queryParam, queryBySQLParams, queryBySQLService;     *      queryParam = new SuperMap.FilterParameter({     *          name: "Province@RelQuery",     *          fields: ["SmID","name"],     *          attributeFilter: "SmID<7",     *          linkItems: [linkItem]     *       }),      *      queryBySQLParams = new SuperMap.QueryBySQLParameters({     *           queryParams: [queryParam]     *              }),      *      queryBySQLService = new SuperMap.REST.QueryBySQLService(url, {     *          eventListeners: {     *              "processCompleted": processCompleted,     *              "processFailed": processFailed     *              }     *      });     *      queryBySQLService.processAsync(queryBySQLParams);     *  }     *  function processCompleted(queryEventArgs) {//todo}     *  function processFailed(e) {//todo}     * (end)     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * datasourceConnectionInfo - {<SuperMap.DatasourceConnectionInfo>} 关联的外部数据源信息。     * foreignKeys - {Array(String)} 主空间数据集的外键。     * foreignTable - {String} 关联的外部属性表的名称。     * linkFields - {Array(String)} 欲保留的外部属性表的字段。     * linkFilter - {String} 与外部属性表的连接条件。     * name - {String} 此关联信息对象的名称。     * primaryKeys - {Array(String)} 需要关联的外部属性表的主键。     */    initialize: function (options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        if (me.datasourceConnectionInfo) {            me.datasourceConnectionInfo.destroy();            me.datasourceConnectionInfo = null;        }        me.foreignKeys = null;        me.foreignTable = null;        me.linkFields = null;        me.linkFilter = null;        me.name = null;        me.primaryKeys = null;    },    CLASS_NAME: "SuperMap.LinkItem"});module.exports = SuperMap.LinkItem;
+	/** * Class: SuperMap.LinkItem * 关联信息类。 * 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表， * 矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。 使用LinkItem时， * 空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。 * SuperMap.LinkItem 只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 SuperMap.LinkItem; * 另外，用于建立关联关系的两个表可以不在同一个数据源下。 * * (注意： * 1. 使用 SuperMap.LinkItem 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段； * 2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。) * */__webpack_require__(35);var SuperMap = __webpack_require__(4);SuperMap.LinkItem = SuperMap.Class({    /**     * APIProperty: datasourceConnectionInfo     * {<SuperMap.DatasourceConnectionInfo>} 关联的外部数据源信息 。     */    datasourceConnectionInfo: null,    /**     * APIProperty: foreignKeys     * {Array(String)} 主空间数据集的外键。     */    foreignKeys: null,    /**     * APIProperty: foreignTable     * {String} 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。     */    foreignTable: null,    /**     * APIProperty: linkFields     * {Array(String)} 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返     * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。     */    linkFields: null,    /**     * APIProperty: linkFilter     * {String} 与外部属性表的连接条件。     */    linkFilter: null,    /**     * APIProperty: name     * {String} 此关联信息对象的名称。     */    name: null,    /**     * APIProperty: primaryKeys     * {Array(String)} 需要关联的外部属性表的主键。     */    primaryKeys: null,    /**     * Constructor: SuperMap.LinkItem     * 关联信息类构造函数。     *     * 设置将TableB关联到TableA的关联信息，即建立LinkItem类并设置其属性，     * TableA与TableB是通过主表（TableA）的外键（LinkItem类的 ForeignKey 属性）     * 和副表（TableB）的主键（LinkItem类的 PrimaryKey 属性）实现关联的，     * 当执行TableA的查询操作时，系统将根据关联信息中的过滤条件及查询条件，分别查询TableA     * 与TableB中满足条件的内容，TableA的查询结果与TableB的查询结果分别作为     * 独立的两个结果表保存在内存中，当需要获取结果时，SuperMap将对两个结果进行拼接并返回，     * 因此，进行关联查询时，查询参数中的返回字段一定要有关联条件中的外键，     * 否则无法根据外键的值获取副表中的关联字段值，副表中的字段值将返回 null。     * 在应用层看来，连接和关联操作很相似。     *     * 下面以SQL查询说明linkitem的使用方法：     * (start code)     *  function queryBySQL() {     *      // 设置关联的外部数据库信息,alias表示数据库别名     *      var dc = new SuperMap.DatasourceConnectionInfo({     *          dataBase: "RelQuery",     *          server: "192.168.168.39",     *          user: "sa",     *          password: "map",     *          driver: "SQL Server",     *          connect: true,     *          OpenLinkTable: false,     *          alias: "RelQuery",     *          engineType: EngineType.SQLPLUS,     *          readOnly: false,     *          exclusive: false     *      });     *     // 设置关联信息     *      var linkItem = new SuperMap.LinkItem({     *          datasourceConnectionInfo: dc,     *          foreignKeys: ["name"],     *          foreignTable: "Pop_2011",     *          linkFields: ["SmID as Pid","pop"],     *          name: "link",     *          primatryKeys: ["name"],     *      });     *      // 设置查询参数，在查询参数中添加linkItem关联条件信息     *      var queryParam, queryBySQLParams, queryBySQLService;     *      queryParam = new SuperMap.FilterParameter({     *          name: "Province@RelQuery",     *          fields: ["SmID","name"],     *          attributeFilter: "SmID<7",     *          linkItems: [linkItem]     *       }),      *      queryBySQLParams = new SuperMap.QueryBySQLParameters({     *           queryParams: [queryParam]     *              }),      *      queryBySQLService = new SuperMap.REST.QueryBySQLService(url, {     *          eventListeners: {     *              "processCompleted": processCompleted,     *              "processFailed": processFailed     *              }     *      });     *      queryBySQLService.processAsync(queryBySQLParams);     *  }     *  function processCompleted(queryEventArgs) {//todo}     *  function processFailed(e) {//todo}     * (end)     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * datasourceConnectionInfo - {<SuperMap.DatasourceConnectionInfo>} 关联的外部数据源信息。     * foreignKeys - {Array(String)} 主空间数据集的外键。     * foreignTable - {String} 关联的外部属性表的名称。     * linkFields - {Array(String)} 欲保留的外部属性表的字段。     * linkFilter - {String} 与外部属性表的连接条件。     * name - {String} 此关联信息对象的名称。     * primaryKeys - {Array(String)} 需要关联的外部属性表的主键。     */    initialize: function (options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        if (me.datasourceConnectionInfo) {            me.datasourceConnectionInfo.destroy();            me.datasourceConnectionInfo = null;        }        me.foreignKeys = null;        me.foreignTable = null;        me.linkFields = null;        me.linkFilter = null;        me.name = null;        me.primaryKeys = null;    },    CLASS_NAME: "SuperMap.LinkItem"});module.exports = SuperMap.LinkItem;
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -11672,7 +11726,7 @@
 	module.exports = SuperMap.DatasourceConnectionInfo;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -11683,7 +11737,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.QueryParameters>
 	 */
-	__webpack_require__(30);
+	__webpack_require__(31);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.QueryByBoundsParameters = SuperMap.Class(SuperMap.QueryParameters, {
 
@@ -11746,7 +11800,7 @@
 	module.exports = SuperMap.QueryByBoundsParameters;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -11756,8 +11810,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.QueryService>
 	 */
-	__webpack_require__(29);
-	__webpack_require__(37);
+	__webpack_require__(30);
+	__webpack_require__(38);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService, {
 
@@ -11826,13 +11880,13 @@
 	module.exports = SuperMap.REST.QueryByDistanceService;
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	/** * Class: SuperMap.QueryByDistanceParameters * Distance 查询参数类。 * 该类用于设置 Distance 查询的相关参数。 * * Inherits from: *  - <SuperMap.QueryParameters> */__webpack_require__(30);var SuperMap = __webpack_require__(4);SuperMap.QueryByDistanceParameters = SuperMap.Class(SuperMap.QueryParameters, {    /**     * APIProperty: distance     * {Number} 查询距离，默认为0，单位与所查询图层对应的数据集单位相同。     * 当查找最近地物时，该属性无效。     */    distance: 0,    /**     * APIProperty: geometry     * {<Object>} 用于查询的地理对象，必设属性。     */    geometry: null,    /**     * APIProperty: isNearest     * {Boolean} 是否为最近距离查询。     * 建议该属性与 expectCount （继承自 SuperMap.QueryParameters）属性联合使用。     * 当该属性为 true 时，即表示查找最近地物，如果查询结果数大于期望返回的结果记录数（expectCount），     * 则查找结果为查询总记录中距离中心最近的expectCount个地物。     * 当该属性为不为 true 时，如果查询结果数大于期望返回的结果记录数（expectCount），     * 则查找结果为从查询总记录中随机抽取的expectCount个地物。     * 目前查询结果不支持按远近距离排序。     */    isNearest: null,    /**     * APIProperty: returnContent     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     * 如果为 true，则直接返回新创建资源，即查询结果的表述。     * 为 false，则返回的是查询结果资源的 URI。默认为 true。     */    returnContent: true,    /**     * Constructor: SuperMap.QueryByDistanceParameters     * Distance 查询参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * customParams - {String} 自定义参数，供扩展使用。     * distance - {Number} 查询距离。     * expectCount - {Integer} 期望返回结果记录个数。     * geometry - {<Object>} 用于查询的几何对象。     * holdTime - {Integer} 资源在服务端保存的时间。     * isNearest - {Boolean} 是否为最近距离查询。     * networkType - {<SuperMap.GeometryType>} 网络数据集对应的查询类型。     * queryOption - {<SuperMap.QueryOption>} 查询结果类型枚举类。     * queryParams -  {Array(<SuperMap.FilterParameter>)} 查询过滤条件参数数组。     * startRecord - {Integer} 查询起始记录号。     * returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     */    initialize: function (options) {        SuperMap.QueryParameters.prototype.initialize.apply(this, arguments);        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        SuperMap.QueryParameters.prototype.destroy.apply(this, arguments);        var me = this;        me.returnContent = null;        me.distance = null;        me.isNearest = null;        if (me.geometry) {            me.geometry.destroy();            me.geometry = null;        }    },    CLASS_NAME: "SuperMap.QueryByDistanceParameters"});module.exports = SuperMap.QueryByDistanceParameters;
+	/** * Class: SuperMap.QueryByDistanceParameters * Distance 查询参数类。 * 该类用于设置 Distance 查询的相关参数。 * * Inherits from: *  - <SuperMap.QueryParameters> */__webpack_require__(31);var SuperMap = __webpack_require__(4);SuperMap.QueryByDistanceParameters = SuperMap.Class(SuperMap.QueryParameters, {    /**     * APIProperty: distance     * {Number} 查询距离，默认为0，单位与所查询图层对应的数据集单位相同。     * 当查找最近地物时，该属性无效。     */    distance: 0,    /**     * APIProperty: geometry     * {<Object>} 用于查询的地理对象，必设属性。     */    geometry: null,    /**     * APIProperty: isNearest     * {Boolean} 是否为最近距离查询。     * 建议该属性与 expectCount （继承自 SuperMap.QueryParameters）属性联合使用。     * 当该属性为 true 时，即表示查找最近地物，如果查询结果数大于期望返回的结果记录数（expectCount），     * 则查找结果为查询总记录中距离中心最近的expectCount个地物。     * 当该属性为不为 true 时，如果查询结果数大于期望返回的结果记录数（expectCount），     * 则查找结果为从查询总记录中随机抽取的expectCount个地物。     * 目前查询结果不支持按远近距离排序。     */    isNearest: null,    /**     * APIProperty: returnContent     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     * 如果为 true，则直接返回新创建资源，即查询结果的表述。     * 为 false，则返回的是查询结果资源的 URI。默认为 true。     */    returnContent: true,    /**     * Constructor: SuperMap.QueryByDistanceParameters     * Distance 查询参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * customParams - {String} 自定义参数，供扩展使用。     * distance - {Number} 查询距离。     * expectCount - {Integer} 期望返回结果记录个数。     * geometry - {<Object>} 用于查询的几何对象。     * holdTime - {Integer} 资源在服务端保存的时间。     * isNearest - {Boolean} 是否为最近距离查询。     * networkType - {<SuperMap.GeometryType>} 网络数据集对应的查询类型。     * queryOption - {<SuperMap.QueryOption>} 查询结果类型枚举类。     * queryParams -  {Array(<SuperMap.FilterParameter>)} 查询过滤条件参数数组。     * startRecord - {Integer} 查询起始记录号。     * returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     */    initialize: function (options) {        SuperMap.QueryParameters.prototype.initialize.apply(this, arguments);        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        SuperMap.QueryParameters.prototype.destroy.apply(this, arguments);        var me = this;        me.returnContent = null;        me.distance = null;        me.isNearest = null;        if (me.geometry) {            me.geometry.destroy();            me.geometry = null;        }    },    CLASS_NAME: "SuperMap.QueryByDistanceParameters"});module.exports = SuperMap.QueryByDistanceParameters;
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -11842,8 +11896,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.QueryService>
 	 */
-	__webpack_require__(29);
-	__webpack_require__(39);
+	__webpack_require__(30);
+	__webpack_require__(40);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
 
@@ -11918,13 +11972,13 @@
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	/** * Class: SuperMap.QueryBySQLParameters * SQL 查询参数类。 * 该类用于设置 SQL 查询的相关参数。 * * Inherits from: *  - <SuperMap.QueryParameters> */__webpack_require__(30);var SuperMap = __webpack_require__(4);SuperMap.QueryBySQLParameters = SuperMap.Class(SuperMap.QueryParameters, {    /**     * APIProperty: returnContent     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     * 如果为 true，则直接返回新创建资源，即查询结果的表述。     * 为 false，则返回的是查询结果资源的 URI。默认为 true。     */    returnContent: true,    /**     * Constructor: SuperMap.QueryBySQLParameters     * SQL 查询参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * customParams - {String} 自定义参数，供扩展使用。     * expectCount - {Integer} 期望返回结果记录个数。     * networkType - {<SuperMap.GeometryType>} 网络数据集对应的查询类型。     * queryOption - {<SuperMap.QueryOption>} 查询结果类型枚举类。     * queryParams -  {Array(<SuperMap.FilterParameter>)} 查询过滤条件参数数组。     * startRecord - {Integer} 查询起始记录号。     * holdTime - {Integer} 资源在服务端保存的时间。     * returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     */    initialize: function (options) {        SuperMap.QueryParameters.prototype.initialize.apply(this, arguments);        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        SuperMap.QueryParameters.prototype.destroy.apply(this, arguments);        var me = this;        me.returnContent = null;    },    CLASS_NAME: "SuperMap.QueryBySQLParameters"});module.exports = SuperMap.QueryBySQLParameters;
+	/** * Class: SuperMap.QueryBySQLParameters * SQL 查询参数类。 * 该类用于设置 SQL 查询的相关参数。 * * Inherits from: *  - <SuperMap.QueryParameters> */__webpack_require__(31);var SuperMap = __webpack_require__(4);SuperMap.QueryBySQLParameters = SuperMap.Class(SuperMap.QueryParameters, {    /**     * APIProperty: returnContent     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     * 如果为 true，则直接返回新创建资源，即查询结果的表述。     * 为 false，则返回的是查询结果资源的 URI。默认为 true。     */    returnContent: true,    /**     * Constructor: SuperMap.QueryBySQLParameters     * SQL 查询参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * customParams - {String} 自定义参数，供扩展使用。     * expectCount - {Integer} 期望返回结果记录个数。     * networkType - {<SuperMap.GeometryType>} 网络数据集对应的查询类型。     * queryOption - {<SuperMap.QueryOption>} 查询结果类型枚举类。     * queryParams -  {Array(<SuperMap.FilterParameter>)} 查询过滤条件参数数组。     * startRecord - {Integer} 查询起始记录号。     * holdTime - {Integer} 资源在服务端保存的时间。     * returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     */    initialize: function (options) {        SuperMap.QueryParameters.prototype.initialize.apply(this, arguments);        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        SuperMap.QueryParameters.prototype.destroy.apply(this, arguments);        var me = this;        me.returnContent = null;    },    CLASS_NAME: "SuperMap.QueryBySQLParameters"});module.exports = SuperMap.QueryBySQLParameters;
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -11934,8 +11988,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.QueryService>
 	 */
-	__webpack_require__(29);
-	__webpack_require__(41);
+	__webpack_require__(30);
+	__webpack_require__(42);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService, {
 
@@ -12006,7 +12060,7 @@
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -12018,7 +12072,7 @@
 	 *  - <SuperMap.QueryParameters>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(30);
+	__webpack_require__(31);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.QueryByGeometryParameters = SuperMap.Class(SuperMap.QueryParameters, {
 
@@ -12086,7 +12140,7 @@
 	module.exports = SuperMap.QueryByGeometryParameters;
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -12099,10 +12153,10 @@
 	 */
 	var L = __webpack_require__(3);
 	var ServiceBase = __webpack_require__(24);
-	var GetLayersInfoService = __webpack_require__(43);
-	var SetLayerInfoService = __webpack_require__(79);
-	var SetLayersInfoService = __webpack_require__(81);
-	var SetLayerStatusService = __webpack_require__(83);
+	var GetLayersInfoService = __webpack_require__(44);
+	var SetLayerInfoService = __webpack_require__(80);
+	var SetLayersInfoService = __webpack_require__(82);
+	var SetLayerStatusService = __webpack_require__(84);
 
 	var LayerInfoService = ServiceBase.extend({
 
@@ -12221,7 +12275,7 @@
 	module.exports = LayerInfoService;
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -12234,10 +12288,10 @@
 	 */
 	__webpack_require__(26);
 	var SuperMap = __webpack_require__(4);
-	var ServerTheme = __webpack_require__(44);
-	var Grid = __webpack_require__(75);
-	var Image = __webpack_require__(77);
-	var Vector = __webpack_require__(78);
+	var ServerTheme = __webpack_require__(45);
+	var Grid = __webpack_require__(76);
+	var Image = __webpack_require__(78);
+	var Vector = __webpack_require__(79);
 	SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
@@ -12372,7 +12426,7 @@
 	module.exports = SuperMap.REST.GetLayersInfoService;
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -12382,13 +12436,13 @@
 	 * Inherits from:
 	 *  - <SuperMap.UGCSubLayer>
 	 */
-	__webpack_require__(45);
-	__webpack_require__(59);
-	__webpack_require__(61);
-	__webpack_require__(66);
+	__webpack_require__(46);
+	__webpack_require__(60);
+	__webpack_require__(62);
 	__webpack_require__(67);
-	__webpack_require__(69);
-	__webpack_require__(71);
+	__webpack_require__(68);
+	__webpack_require__(70);
+	__webpack_require__(72);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
 
@@ -12485,7 +12539,7 @@
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -12501,16 +12555,16 @@
 	 *  - <SuperMap.Theme>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(46);
-	__webpack_require__(48);
-	__webpack_require__(51);
+	__webpack_require__(47);
+	__webpack_require__(49);
+	__webpack_require__(52);
 
 	var SuperMap = __webpack_require__(4);
-	var ThemeFlow = __webpack_require__(52);
-	var ThemeOffset = __webpack_require__(54);
-	var ThemeLabelText = __webpack_require__(55);
-	var ThemeLabelAlongLine = __webpack_require__(57);
-	var ThemeLabelBackground = __webpack_require__(58);
+	var ThemeFlow = __webpack_require__(53);
+	var ThemeOffset = __webpack_require__(55);
+	var ThemeLabelText = __webpack_require__(56);
+	var ThemeLabelAlongLine = __webpack_require__(58);
+	var ThemeLabelBackground = __webpack_require__(59);
 	SuperMap.ThemeLabel = SuperMap.Class(SuperMap.Theme, {
 
 	    /**
@@ -12808,14 +12862,14 @@
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Class: SuperMap.Theme
 	 * 专题图基类。
 	 */
-	__webpack_require__(47);
+	__webpack_require__(48);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.Theme = SuperMap.Class({
 
@@ -12881,7 +12935,7 @@
 	module.exports = SuperMap.Theme;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -12959,7 +13013,7 @@
 	module.exports = SuperMap.ThemeMemoryData;
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -12972,7 +13026,7 @@
 	 * SuperMap.ThemeLabelItem[0].end=5，SuperMap.ThemeLabelItem[1].start=5，SuperMap.ThemeLabelItem[1].end=10。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var ServerTextStyle = __webpack_require__(49);
+	var ServerTextStyle = __webpack_require__(50);
 	SuperMap.ThemeLabelItem = SuperMap.Class({
 
 	    /**
@@ -13058,7 +13112,7 @@
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -13068,7 +13122,7 @@
 	 */
 	__webpack_require__(6);
 	var SuperMap = __webpack_require__(4);
-	var ServerColor = __webpack_require__(50);
+	var ServerColor = __webpack_require__(51);
 	SuperMap.ServerTextStyle = SuperMap.Class({
 
 	    /**
@@ -13282,7 +13336,7 @@
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -13397,7 +13451,7 @@
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -13408,7 +13462,7 @@
 	 * 每一个子项都具有其名称、风格、指定的单值、X方向偏移量和Y方向偏移量。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var ServerTextStyle = __webpack_require__(49);
+	var ServerTextStyle = __webpack_require__(50);
 	SuperMap.ThemeLabelUniqueItem = SuperMap.Class({
 
 	    /**
@@ -13498,7 +13552,7 @@
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -13507,7 +13561,7 @@
 	 * 通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var ServerStyle = __webpack_require__(53);
+	var ServerStyle = __webpack_require__(54);
 	SuperMap.ThemeFlow = SuperMap.Class({
 
 	    /**
@@ -13582,7 +13636,7 @@
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -13591,7 +13645,7 @@
 	 * 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var ServerColor = __webpack_require__(50);
+	var ServerColor = __webpack_require__(51);
 	SuperMap.ServerStyle = SuperMap.Class({
 
 	    /**
@@ -13816,7 +13870,7 @@
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -13887,7 +13941,7 @@
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -13895,9 +13949,9 @@
 	 * 标签中文本风格类。
 	 * 通过该类可以设置标签中的文本字体大小和显示风格。
 	 */
-	__webpack_require__(56);
+	__webpack_require__(57);
 	var SuperMap = __webpack_require__(4);
-	var ServerTextStyle = __webpack_require__(49);
+	var ServerTextStyle = __webpack_require__(50);
 	SuperMap.ThemeLabelText = SuperMap.Class({
 
 	    /**
@@ -14001,7 +14055,7 @@
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -14019,7 +14073,7 @@
 	 * 索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var ServerTextStyle = __webpack_require__(49);
+	var ServerTextStyle = __webpack_require__(50);
 	SuperMap.LabelMixedTextStyle = SuperMap.Class({
 
 	    /**
@@ -14125,7 +14179,7 @@
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -14224,7 +14278,7 @@
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -14234,7 +14288,7 @@
 	 */
 	__webpack_require__(6);
 	var SuperMap = __webpack_require__(4);
-	var ServerStyle = __webpack_require__(53);
+	var ServerStyle = __webpack_require__(54);
 	SuperMap.ThemeLabelBackground = SuperMap.Class({
 
 	    /**
@@ -14298,7 +14352,7 @@
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -14311,10 +14365,10 @@
 	 *  - <SuperMap.Theme>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(46);
+	__webpack_require__(47);
 	var SuperMap = __webpack_require__(4);
-	var ServerStyle = __webpack_require__(53);
-	var ThemeUniqueItem = __webpack_require__(60);
+	var ServerStyle = __webpack_require__(54);
+	var ThemeUniqueItem = __webpack_require__(61);
 	SuperMap.ThemeUnique = SuperMap.Class(SuperMap.Theme, {
 
 	    /**
@@ -14438,7 +14492,7 @@
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -14448,7 +14502,7 @@
 	 * 省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var ServerStyle = __webpack_require__(53);
+	var ServerStyle = __webpack_require__(54);
 	SuperMap.ThemeUniqueItem = SuperMap.Class({
 
 	    /**
@@ -14541,7 +14595,7 @@
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -14556,14 +14610,14 @@
 	 *  - <SuperMap.Theme>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(46);
+	__webpack_require__(47);
 	var SuperMap = __webpack_require__(4);
-	var ThemeFlow = __webpack_require__(52);
-	var ThemeOffset = __webpack_require__(54);
-	var ThemeGraphAxes = __webpack_require__(62);
-	var ThemeGraphSize = __webpack_require__(63);
-	var ThemeGraphText = __webpack_require__(64);
-	var ThemeGraphItem = __webpack_require__(65);
+	var ThemeFlow = __webpack_require__(53);
+	var ThemeOffset = __webpack_require__(55);
+	var ThemeGraphAxes = __webpack_require__(63);
+	var ThemeGraphSize = __webpack_require__(64);
+	var ThemeGraphText = __webpack_require__(65);
+	var ThemeGraphItem = __webpack_require__(66);
 	SuperMap.ThemeGraph = SuperMap.Class(SuperMap.Theme, {
 
 	    /**
@@ -14913,7 +14967,7 @@
 	module.exports = SuperMap.ThemeGraph;
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -14922,8 +14976,8 @@
 	 * 该类用于设置统计图中坐标轴样式相关信息，如坐标轴颜色、是否显示、坐标文本样式等。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var ServerColor = __webpack_require__(50);
-	var ServerTextStyle = __webpack_require__(49);
+	var ServerColor = __webpack_require__(51);
+	var ServerTextStyle = __webpack_require__(50);
 	SuperMap.ThemeGraphAxes = SuperMap.Class({
 
 	    /**
@@ -15013,7 +15067,7 @@
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -15075,7 +15129,7 @@
 
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -15085,7 +15139,7 @@
 	 */
 	__webpack_require__(6);
 	var SuperMap = __webpack_require__(4);
-	var ServerTextStyle = __webpack_require__(49);
+	var ServerTextStyle = __webpack_require__(50);
 	SuperMap.ThemeGraphText = SuperMap.Class({
 
 	    /**
@@ -15153,7 +15207,7 @@
 
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -15163,7 +15217,7 @@
 	 * 该类用来设置每个统计专题图子项的名称，专题变量，显示风格，甚至可以将该子项再制作成范围分段专题图。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var ServerStyle = __webpack_require__(53);
+	var ServerStyle = __webpack_require__(54);
 	SuperMap.ThemeGraphItem = SuperMap.Class({
 
 	    /**
@@ -15240,7 +15294,7 @@
 
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -15257,9 +15311,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.Theme>
 	 */
-	__webpack_require__(46);
+	__webpack_require__(47);
 	var SuperMap = __webpack_require__(4);
-	var ServerStyle = __webpack_require__(53);
+	var ServerStyle = __webpack_require__(54);
 	SuperMap.ThemeDotDensity = SuperMap.Class(SuperMap.Theme, {
 
 	    /**
@@ -15349,7 +15403,7 @@
 
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -15363,11 +15417,11 @@
 	 * -<SuperMap.Theme>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(46);
+	__webpack_require__(47);
 	var SuperMap = __webpack_require__(4);
-	var ThemeFlow = __webpack_require__(52);
-	var ThemeOffset = __webpack_require__(54);
-	var ThemeGraduatedSymbolStyle = __webpack_require__(68);
+	var ThemeFlow = __webpack_require__(53);
+	var ThemeOffset = __webpack_require__(55);
+	var ThemeGraduatedSymbolStyle = __webpack_require__(69);
 	SuperMap.ThemeGraduatedSymbol = SuperMap.Class(SuperMap.Theme, {
 
 	    /**
@@ -15522,7 +15576,7 @@
 
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -15531,7 +15585,7 @@
 	 * 通过该类可以设置正值的显示风格，零值和或负值的显示风格以及是否显示零值和或负值对应的等级符号。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var ServerStyle = __webpack_require__(53);
+	var ServerStyle = __webpack_require__(54);
 	SuperMap.ThemeGraduatedSymbolStyle = SuperMap.Class({
 
 	    /**
@@ -15617,7 +15671,7 @@
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -15631,8 +15685,8 @@
 	 *  - <SuperMap.Theme>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(46);
-	__webpack_require__(70);
+	__webpack_require__(47);
+	__webpack_require__(71);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.ThemeRange = SuperMap.Class(SuperMap.Theme, {
 	    /**
@@ -15746,7 +15800,7 @@
 
 
 /***/ }),
-/* 70 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -15756,7 +15810,7 @@
 	 * 每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var ServerStyle = __webpack_require__(53);
+	var ServerStyle = __webpack_require__(54);
 	SuperMap.ThemeRangeItem = SuperMap.Class({
 
 	    /**
@@ -15863,7 +15917,7 @@
 
 
 /***/ }),
-/* 71 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -15875,10 +15929,10 @@
 	 */
 
 	__webpack_require__(6);
-	__webpack_require__(72);
+	__webpack_require__(73);
 	var SuperMap = __webpack_require__(4);
-	var JoinItem = __webpack_require__(32);
-	var DatasetInfo = __webpack_require__(74);
+	var JoinItem = __webpack_require__(33);
+	var DatasetInfo = __webpack_require__(75);
 
 	SuperMap.UGCSubLayer = SuperMap.Class(SuperMap.UGCMapLayer, {
 
@@ -15987,7 +16041,7 @@
 
 
 /***/ }),
-/* 72 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -15997,7 +16051,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.UGCLayer>
 	 */
-	__webpack_require__(73);
+	__webpack_require__(74);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.UGCMapLayer = SuperMap.Class(SuperMap.UGCLayer, {
 
@@ -16106,7 +16160,7 @@
 
 
 /***/ }),
-/* 73 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -16225,7 +16279,7 @@
 	module.exports = SuperMap.UGCLayer;
 
 /***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -16356,7 +16410,7 @@
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -16367,11 +16421,11 @@
 	 *  - <SuperMap.UGCSubLayer>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(71);
+	__webpack_require__(72);
 	var SuperMap = __webpack_require__(4);
-	var ServerColor = __webpack_require__(50);
-	var ServerStyle = __webpack_require__(53);
-	var ColorDictionary = __webpack_require__(76);
+	var ServerColor = __webpack_require__(51);
+	var ServerStyle = __webpack_require__(54);
+	var ColorDictionary = __webpack_require__(77);
 	SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
 	    /**
 	     * APIProperty: colorDictionarys
@@ -16560,7 +16614,7 @@
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -16574,7 +16628,7 @@
 	 * 然后通过渐变运算要显示的颜色。如果设置了颜色对照表的话，则颜色表设置无效。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var ServerColor = __webpack_require__(50);
+	var ServerColor = __webpack_require__(51);
 	SuperMap.ColorDictionary = SuperMap.Class({
 
 	    /**
@@ -16626,7 +16680,7 @@
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -16637,9 +16691,9 @@
 	 *  - <SuperMap.UGCSubLayer>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(71);
+	__webpack_require__(72);
 	var SuperMap = __webpack_require__(4);
-	var ServerColor = __webpack_require__(50);
+	var ServerColor = __webpack_require__(51);
 	SuperMap.Image = SuperMap.Class(SuperMap.UGCSubLayer, {
 
 	    /**
@@ -16740,7 +16794,7 @@
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -16750,9 +16804,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.UGCSubLayer>
 	 */
-	__webpack_require__(71);
+	__webpack_require__(72);
 	var SuperMap = __webpack_require__(4);
-	var ServerStyle = __webpack_require__(53);
+	var ServerStyle = __webpack_require__(54);
 
 	SuperMap.Vector = SuperMap.Class(SuperMap.UGCSubLayer, {
 
@@ -16819,7 +16873,7 @@
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -16831,7 +16885,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(26);
-	__webpack_require__(80);
+	__webpack_require__(81);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -16902,7 +16956,7 @@
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -16957,7 +17011,7 @@
 
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -16971,7 +17025,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(26);
-	__webpack_require__(82);
+	__webpack_require__(83);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -17089,7 +17143,7 @@
 
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -17139,7 +17193,7 @@
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -17151,7 +17205,7 @@
 	 * 一种是使用 AsyncResponder 类实现异步处理。
 	 */
 	__webpack_require__(26);
-	__webpack_require__(84);
+	__webpack_require__(85);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -17297,7 +17351,7 @@
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -17306,7 +17360,7 @@
 	 * 该类存储了各子图层是否可见的状态。
 	 * 注意在 SuperMap iClient 系列产品中所说的图层与 SuperMap Deskpro 的地图对应，子图层与 SuperMap Deskpro 的图层对应。
 	 */
-	__webpack_require__(85);
+	__webpack_require__(86);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.SetLayerStatusParameters = SuperMap.Class({
 
@@ -17386,7 +17440,7 @@
 	module.exports = SuperMap.SetLayerStatusParameters;
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -17494,7 +17548,7 @@
 	module.exports = SuperMap.LayerStatus;
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -17511,7 +17565,7 @@
 	var ServiceBase = __webpack_require__(24);
 	var SuperMap = __webpack_require__(4);
 	var Util = __webpack_require__(16);
-	var SuperMapMeasureService = __webpack_require__(87);
+	var SuperMapMeasureService = __webpack_require__(88);
 
 	var MeasureService = ServiceBase.extend({
 
@@ -17577,7 +17631,7 @@
 	module.exports = MeasureService;
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -17590,7 +17644,7 @@
 	 */
 	__webpack_require__(6);
 	__webpack_require__(26);
-	__webpack_require__(88);
+	__webpack_require__(89);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -17713,7 +17767,7 @@
 	module.exports = SuperMap.REST.MeasureService;
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -17792,24 +17846,23 @@
 	module.exports = SuperMap.MeasureParameters;
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
-	 * Class:ChartQueryService
-	 * 海图查询服务
+	 * Class:ChartService
+	 * 海图服务
 	 * 用法：
-	 *      L.superMap.chartQueryService(url).queryChart()
-	 *      .on("complete",function(result){
+	 *      L.supermap.chartService(url)
+	 *      .queryChart(param,function(result){
 	 *          //doSomething
-	 *      }).on("failed",function(result){
-	 *          //doSomething
-	 *      });
+	 *      })
 	 */
-	__webpack_require__(90);
-	__webpack_require__(91);
-
-	ChartQueryService = ServiceBase.extend({
+	var L = __webpack_require__(3);
+	var ServiceBase = __webpack_require__(24);
+	var ChartQueryService = __webpack_require__(91);
+	var ChartFeatureInfoSpecsService = __webpack_require__(94);
+	var ChartService = ServiceBase.extend({
 
 	    initialize: function (url, options) {
 	        ServiceBase.prototype.initialize.call(this, url, options);
@@ -17817,16 +17870,20 @@
 
 	    /**
 	     * @param params
-	     * <ChartQueryParameters>
+	     * <SuperMap.ChartQueryParameters>
+	     * @param callback
 	     * @param resultFormat
+	     * <SuperMap.DataFormat>
 	     */
-	    queryChart: function (params, resultFormat) {
-	        var me = this, param = me._processParams(params), format = me._processFormat(resultFormat);
-	        var chartQueryService = new SuperMap.REST.ChartQueryService(me.options.url, {
+	    queryChart: function (params, callback, resultFormat) {
+	        var me = this,
+	            param = me._processParams(params),
+	            format = me._processFormat(resultFormat);
+	        var chartQueryService = new ChartQueryService(me.options.url, {
 	            eventListeners: {
 	                scope: me,
-	                processCompleted: me.processCompleted,
-	                processFailed: me.processFailed
+	                processCompleted: callback,
+	                processFailed: callback
 	            },
 	            format: format
 	        });
@@ -17834,6 +17891,24 @@
 	        chartQueryService.processAsync(param);
 	        return me;
 	    },
+
+	    /**
+	     * 海图物标信息服务
+	     */
+	    getChartFeatureInfo: function (callback) {
+	        var me = this, url = me.options.url.concat();
+	        url += "/chartFeatureInfoSpecs";
+	        var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
+	            eventListeners: {
+	                scope: me,
+	                processCompleted: callback,
+	                processFailed: callback
+	            }
+	        });
+	        chartFeatureInfoSpecsService.processAsync();
+	        return me;
+	    },
+
 	    _processParams: function (params) {
 	        if (!params) {
 	            return {};
@@ -17853,24 +17928,16 @@
 	        }
 	    },
 	    _processFormat: function (resultFormat) {
-	        return (resultFormat) ? resultFormat : SuperMap.Format.GEOJSON;
+	        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
 	    }
 	});
 
-	L.supermap.chartQueryService = function (url, options) {
-	    return new ChartQueryService(url, options);
+	L.supermap.chartService = function (url, options) {
+	    return new ChartService(url, options);
 	};
 
-	module.exports = L.supermap.chartQueryService;
+	module.exports = ChartService;
 
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	__webpack_require__(5);
-	module.exports.SuperMap=window.SuperMap;
-	module.exports.Util=window.SuperMap;
 
 /***/ }),
 /* 91 */
@@ -18340,6 +18407,83 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
+	 * Class: SuperMap.REST.ChartFeatureInfoSpecsService
+	 *      海图物标信息服务类，通过该服务类可以查询到服务端支持的所有海图物标信息。
+	 *      用户可以通过两种方式获取查询结果：
+	 *      一种是通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件；
+	 *      另一种是使用 AsyncResponder 类实现异步处理。
+	 *
+	 * Inherits from:
+	 *  - <SuperMap.ServiceBase>
+	 */
+	__webpack_require__(26);
+	var SuperMap = __webpack_require__(4);
+	SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase, {
+
+	    /**
+	     * Constructor: SuperMap.REST.ChartFeatureInfoSpecsService
+	     *     使用地图（特指海图）服务地址 URL 初始化 ChartFeatureInfoSpecsService
+	     *     类的新实例。
+	     *
+	     * Parameters:
+	     * url - {String} 地图（特指海图）服务地址。
+	     *     如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。
+	     *     发送请求格式类似于："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图/chartFeatureInfoSpecs.json"
+	     *
+	     * Allowed options properties:
+	     * eventListeners - {Object} 需要被注册的监听器对象。
+	     */
+	    initialize: function (url, options) {
+	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	    },
+
+	    /**
+	     * APIMethod: destroy
+	     * 释放资源,将引用资源的属性置空。
+	     */
+	    destroy: function () {
+	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	        SuperMap.Util.reset(this);
+	    },
+
+	    /**
+	     * APIMethod: processAsync
+	     *     根据地图（特指海图）服务地址与服务端完成异步通讯，获取物标信息。
+	     *
+	     * Note: 当查询物标信息成功时，将触发 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE
+	     *     事件。用可以通过户两种方式获取图层信息:
+	     *     1. 通过 AsyncResponder 类获取（推荐使用）；
+	     *     2. 通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件获取。
+	     */
+	    processAsync: function () {
+	        var me = this, method = "GET",
+	            end = me.url.substr(me.url.length - 1, 1);
+	        if (!me.isTempLayers) {
+	            me.url += (end === "/") ? '' : '/';
+	            me.url += me.isInTheSameDomain ? "chartFeatureInfoSpecs.json?" : "chartFeatureInfoSpecs.jsonp?";
+	        } else {
+	            me.url += me.isInTheSameDomain ? ".json?" : ".jsonp?";
+	        }
+	        me.request({
+	            method: method,
+	            params: null,
+	            scope: me,
+	            success: me.serviceProcessCompleted,
+	            failure: me.serviceProcessFailed
+	        });
+	    },
+
+	    CLASS_NAME: "SuperMap.REST.ChartFeatureInfoSpecsService"
+	});
+
+	module.exports = SuperMap.REST.ChartFeatureInfoSpecsService;
+
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
 	 * Class: FeatureService
 	 * 数据集类。
 	 * 提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询，地物编辑
@@ -18353,12 +18497,12 @@
 	var SuperMap = __webpack_require__(4);
 	var ServiceBase = __webpack_require__(24);
 	var Util = __webpack_require__(16);
-	var GetFeaturesByIDsService = __webpack_require__(95);
-	var GetFeaturesBySQLService = __webpack_require__(99);
-	var GetFeaturesByBoundsService = __webpack_require__(101);
-	var GetFeaturesByBufferService = __webpack_require__(103);
-	var GetFeaturesByGeometryService = __webpack_require__(105);
-	var EditFeaturesService = __webpack_require__(107);
+	var GetFeaturesByIDsService = __webpack_require__(96);
+	var GetFeaturesBySQLService = __webpack_require__(100);
+	var GetFeaturesByBoundsService = __webpack_require__(102);
+	var GetFeaturesByBufferService = __webpack_require__(104);
+	var GetFeaturesByGeometryService = __webpack_require__(106);
+	var EditFeaturesService = __webpack_require__(108);
 
 	var FeatureService = ServiceBase.extend({
 
@@ -18564,7 +18708,7 @@
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -18575,8 +18719,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(96);
 	__webpack_require__(97);
+	__webpack_require__(98);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
@@ -18638,7 +18782,7 @@
 	module.exports = SuperMap.REST.GetFeaturesByIDsService;
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -18814,7 +18958,7 @@
 	module.exports = SuperMap.REST.GetFeaturesServiceBase;
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -18824,9 +18968,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.GetFeaturesParametersBase>
 	 */
-	__webpack_require__(98);
+	__webpack_require__(99);
 	var SuperMap = __webpack_require__(4);
-	var FilterParameter = __webpack_require__(31);
+	var FilterParameter = __webpack_require__(32);
 	SuperMap.GetFeaturesByIDsParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
 
 	    /**
@@ -18920,7 +19064,7 @@
 	module.exports = SuperMap.GetFeaturesByIDsParameters;
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -19007,7 +19151,7 @@
 	module.exports = SuperMap.GetFeaturesParametersBase;
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -19018,8 +19162,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(96);
-	__webpack_require__(100);
+	__webpack_require__(97);
+	__webpack_require__(101);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
@@ -19081,7 +19225,7 @@
 	module.exports = SuperMap.REST.GetFeaturesBySQLService;
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -19091,8 +19235,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.GetFeaturesParametersBase>
 	 */
-	__webpack_require__(31);
-	__webpack_require__(98);
+	__webpack_require__(32);
+	__webpack_require__(99);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.GetFeaturesBySQLParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
 	    /**
@@ -19165,7 +19309,7 @@
 	module.exports = SuperMap.GetFeaturesBySQLParameters;
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -19176,8 +19320,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(96);
-	__webpack_require__(102);
+	__webpack_require__(97);
+	__webpack_require__(103);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
@@ -19239,7 +19383,7 @@
 	module.exports = SuperMap.REST.GetFeaturesByBoundsService;
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -19251,7 +19395,7 @@
 	 *  - <SuperMap.GetFeaturesParametersBase>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(98);
+	__webpack_require__(99);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.GetFeaturesByBoundsParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
 
@@ -19386,7 +19530,7 @@
 	module.exports = SuperMap.GetFeaturesByBoundsParameters;
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -19396,8 +19540,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(96);
-	__webpack_require__(104);
+	__webpack_require__(97);
+	__webpack_require__(105);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
@@ -19459,7 +19603,7 @@
 	module.exports = SuperMap.REST.GetFeaturesByBufferService;
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -19469,9 +19613,9 @@
 	 * Inherits from:
 	 *  - < SuperMap.GetFeaturesParametersBase>
 	 */
-	__webpack_require__(98);
+	__webpack_require__(99);
 	var SuperMap = __webpack_require__(4);
-	var FilterParameter = __webpack_require__(31);
+	var FilterParameter = __webpack_require__(32);
 	SuperMap.GetFeaturesByBufferParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
 	    /**
 	     * APIProperty: bufferDistance
@@ -19582,7 +19726,7 @@
 	module.exports = SuperMap.GetFeaturesByBufferParameters;
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -19593,8 +19737,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.GetFeaturesServiceBase>
 	 */
-	__webpack_require__(96);
-	__webpack_require__(106);
+	__webpack_require__(97);
+	__webpack_require__(107);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
@@ -19656,7 +19800,7 @@
 	module.exports = SuperMap.REST.GetFeaturesByGeometryService;
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -19668,9 +19812,9 @@
 	 *  - <SuperMap.GetFeaturesParametersBase>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(98);
+	__webpack_require__(99);
 	var SuperMap = __webpack_require__(4);
-	var FilterParameter = __webpack_require__(31);
+	var FilterParameter = __webpack_require__(32);
 	SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
 
 	    /**
@@ -19794,7 +19938,7 @@
 	module.exports = SuperMap.GetFeaturesByGeometryParameters;
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -19805,7 +19949,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(26);
-	__webpack_require__(108);
+	__webpack_require__(109);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -19926,7 +20070,7 @@
 	module.exports = SuperMap.REST.EditFeaturesService;
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -20054,7 +20198,7 @@
 	module.exports = SuperMap.EditFeaturesParameters;
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -20067,8 +20211,8 @@
 	 */
 	var L = __webpack_require__(3);
 	var ServiceBase = __webpack_require__(24);
-	var GetFieldsService = __webpack_require__(110);
-	var FieldStatisticService = __webpack_require__(111);
+	var GetFieldsService = __webpack_require__(111);
+	var FieldStatisticService = __webpack_require__(112);
 
 	var FieldService = ServiceBase.extend({
 
@@ -20166,7 +20310,7 @@
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -20260,7 +20404,7 @@
 	module.exports = SuperMap.REST.GetFieldsService;
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -20272,7 +20416,7 @@
 	 */
 	__webpack_require__(6);
 	__webpack_require__(26);
-	__webpack_require__(112);
+	__webpack_require__(113);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -20377,7 +20521,7 @@
 	module.exports = SuperMap.REST.FieldStatisticService;
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -20419,7 +20563,7 @@
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -20433,7 +20577,7 @@
 	 */
 	var L = __webpack_require__(3);
 	var ServiceBase = __webpack_require__(24);
-	var GetGridCellInfosService = __webpack_require__(114);
+	var GetGridCellInfosService = __webpack_require__(115);
 	var GridCellInfosService = ServiceBase.extend({
 
 	    initialize: function (url, options) {
@@ -20469,7 +20613,7 @@
 	module.exports = GridCellInfosService;
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -20480,7 +20624,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(26);
-	__webpack_require__(115);
+	__webpack_require__(116);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -20647,7 +20791,7 @@
 	module.exports = SuperMap.REST.GetGridCellInfosService;
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -20718,7 +20862,7 @@
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -20733,7 +20877,7 @@
 	 */
 	var L = __webpack_require__(3);
 	var ServiceBase = __webpack_require__(24);
-	var SuperMapThemeService = __webpack_require__(117);
+	var SuperMapThemeService = __webpack_require__(118);
 	var ThemeService = ServiceBase.extend({
 
 	    initialize: function (url, options) {
@@ -20761,7 +20905,7 @@
 	module.exports = ThemeService;
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -20772,7 +20916,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(26);
-	__webpack_require__(118);
+	__webpack_require__(119);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -20918,7 +21062,7 @@
 	module.exports = SuperMap.REST.ThemeService;
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -20926,18 +21070,18 @@
 	 * 专题图参数类
 	 * 该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
 	 */
-	__webpack_require__(32);
-	__webpack_require__(66);
+	__webpack_require__(33);
 	__webpack_require__(67);
-	__webpack_require__(61);
-	__webpack_require__(45);
-	__webpack_require__(69);
-	__webpack_require__(59);
-	__webpack_require__(119);
-	__webpack_require__(121);
-	__webpack_require__(123);
-	__webpack_require__(125);
+	__webpack_require__(68);
+	__webpack_require__(62);
+	__webpack_require__(46);
+	__webpack_require__(70);
+	__webpack_require__(60);
+	__webpack_require__(120);
+	__webpack_require__(122);
+	__webpack_require__(124);
 	__webpack_require__(126);
+	__webpack_require__(127);
 	var SuperMap = __webpack_require__(4);
 
 	SuperMap.ThemeParameters = SuperMap.Class({
@@ -21036,7 +21180,7 @@
 	module.exports = SuperMap.ThemeParameters;
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -21049,8 +21193,8 @@
 	 *  - <SuperMap.Theme>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(46);
-	__webpack_require__(120);
+	__webpack_require__(47);
+	__webpack_require__(121);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.ThemeGridRange = SuperMap.Class(SuperMap.Theme, {
 
@@ -21154,7 +21298,7 @@
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -21164,7 +21308,7 @@
 	 * 本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var ServerColor = __webpack_require__(50);
+	var ServerColor = __webpack_require__(51);
 	SuperMap.ThemeGridRangeItem = SuperMap.Class({
 
 	    /**
@@ -21264,7 +21408,7 @@
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -21276,10 +21420,10 @@
 	 * Inherits from:
 	 *  - <SuperMap.Theme>
 	 */
-	__webpack_require__(46);
+	__webpack_require__(47);
 	var SuperMap = __webpack_require__(4);
-	var ServerColor = __webpack_require__(50);
-	var ThemeGridUniqueItem = __webpack_require__(122);
+	var ServerColor = __webpack_require__(51);
+	var ThemeGridUniqueItem = __webpack_require__(123);
 
 	SuperMap.ThemeGridUnique = SuperMap.Class(SuperMap.Theme, {
 
@@ -21383,7 +21527,7 @@
 
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -21392,7 +21536,7 @@
 	 * 栅格单值专题图是将值相同的单元格归为一类，每一类是一个专题图子项。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var ServerColor = __webpack_require__(50);
+	var ServerColor = __webpack_require__(51);
 	SuperMap.ThemeGridUniqueItem = SuperMap.Class({
 
 	    /**
@@ -21484,7 +21628,7 @@
 
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -21500,7 +21644,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.LabelMatrixCell>
 	 */
-	__webpack_require__(124);
+	__webpack_require__(125);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.LabelImageCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 
@@ -21578,7 +21722,7 @@
 	module.exports = SuperMap.LabelImageCell;
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -21594,7 +21738,7 @@
 	module.exports = SuperMap.LabelMatrixCell;
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -21610,9 +21754,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.LabelMatrixCell>
 	 */
-	__webpack_require__(124);
+	__webpack_require__(125);
 	var SuperMap = __webpack_require__(4);
-	var ServerStyle = __webpack_require__(53);
+	var ServerStyle = __webpack_require__(54);
 	SuperMap.LabelSymbolCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 
 	    /**
@@ -21671,7 +21815,7 @@
 	module.exports = SuperMap.LabelSymbolCell;
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -21687,9 +21831,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.LabelMatrixCell>
 	 */
-	__webpack_require__(124);
+	__webpack_require__(125);
 	var SuperMap = __webpack_require__(4);
-	var ThemeLabel = __webpack_require__(45);
+	var ThemeLabel = __webpack_require__(46);
 	SuperMap.LabelThemeCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 
 	    /**
@@ -21739,7 +21883,7 @@
 	module.exports = SuperMap.LabelThemeCell;
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -21754,17 +21898,17 @@
 	var L = __webpack_require__(3);
 	var ServiceBase = __webpack_require__(24);
 	var SuperMap = __webpack_require__(4);
-	var BurstPipelineAnalystService = __webpack_require__(128);
-	var ComputeWeightMatrixService = __webpack_require__(131);
-	var FacilityAnalystStreamService = __webpack_require__(135);
-	var FindClosestFacilitiesService = __webpack_require__(137);
-	var FindLocationService = __webpack_require__(139);
-	var FindMTSPPathsService = __webpack_require__(142);
-	var FindPathService = __webpack_require__(144);
-	var FindServiceAreasService = __webpack_require__(146);
-	var FindTSPPathsService = __webpack_require__(148);
-	var UpdateEdgeWeightService = __webpack_require__(150);
-	var UpdateTurnNodeWeightService = __webpack_require__(152);
+	var BurstPipelineAnalystService = __webpack_require__(129);
+	var ComputeWeightMatrixService = __webpack_require__(132);
+	var FacilityAnalystStreamService = __webpack_require__(136);
+	var FindClosestFacilitiesService = __webpack_require__(138);
+	var FindLocationService = __webpack_require__(140);
+	var FindMTSPPathsService = __webpack_require__(143);
+	var FindPathService = __webpack_require__(145);
+	var FindServiceAreasService = __webpack_require__(147);
+	var FindTSPPathsService = __webpack_require__(149);
+	var UpdateEdgeWeightService = __webpack_require__(151);
+	var UpdateTurnNodeWeightService = __webpack_require__(153);
 
 	var NetworkAnalystService = ServiceBase.extend({
 
@@ -22046,7 +22190,7 @@
 	module.exports = NetworkAnalystService;
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -22056,8 +22200,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(129);
 	__webpack_require__(130);
+	__webpack_require__(131);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
@@ -22131,7 +22275,7 @@
 
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -22205,7 +22349,7 @@
 
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -22278,7 +22422,7 @@
 	module.exports = SuperMap.BurstPipelineAnalystParameters;
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -22290,8 +22434,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(129);
-	__webpack_require__(132);
+	__webpack_require__(130);
+	__webpack_require__(133);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
@@ -22394,7 +22538,7 @@
 	module.exports = SuperMap.REST.ComputeWeightMatrixService;
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -22403,7 +22547,7 @@
 	 * 根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var TransportationAnalystParameter = __webpack_require__(133);
+	var TransportationAnalystParameter = __webpack_require__(134);
 	SuperMap.ComputeWeightMatrixParameters = SuperMap.Class({
 
 	    /**
@@ -22467,19 +22611,19 @@
 
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	/** * Class: SuperMap.TransportationAnalystParameter * 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 */var SuperMap = __webpack_require__(4);var TransportationAnalystResultSetting = __webpack_require__(134);SuperMap.TransportationAnalystParameter = SuperMap.Class({    /**     * APIProperty: barrierEdgeIDs     * {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。     */    barrierEdgeIDs: null,    /**     * APIProperty: barrierNodeIDs     * {Array(<Number>)} 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。     */    barrierNodeIDs: null,    /**     * APIProperty: barrierPoints     * {Array(<Point>)}网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */    barrierPoints: null,    /**     * APIProperty: weightFieldName     * {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */    weightFieldName: null,    /**     * APIProperty: turnWeightField     * {String} 转向权重字段的名称。     */    turnWeightField: null,    /**     * APIProperty: resultSetting     * {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    resultSetting: null,    /**     * Constructor: SuperMap.TransportationAnalystParameter     * 交通网络分析通用参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * barrierEdgeIDs - {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。     * barrierNodeIDs - {Array(<Number>)} 网络分析中障碍点的 ID 数组。     * barrierPoints - {Array(<Point>)}     * weightFieldName - {String} 阻力字段的名称。     * turnWeightField - {String} 转向权重字段的名称。     * resultSetting - {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    initialize: function (options) {        var me = this;        me.resultSetting = new TransportationAnalystResultSetting();        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.barrierEdgeIDs = null;        me.barrierNodeIDs = null;        me.weightFieldName = null;        me.turnWeightField = null;        if (me.resultSetting) {            me.resultSetting.destroy();            me.resultSetting = null;        }        if (me.barrierPoints && me.barrierPoints.length) {            for (var i in me.barrierPoints) {                me.barrierPoints.destroy();            }        }        me.barrierPoints = null;    },    CLASS_NAME: "SuperMap.TransportationAnalystParameter"});module.exports = SuperMap.TransportationAnalystParameter;
+	/** * Class: SuperMap.TransportationAnalystParameter * 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 */var SuperMap = __webpack_require__(4);var TransportationAnalystResultSetting = __webpack_require__(135);SuperMap.TransportationAnalystParameter = SuperMap.Class({    /**     * APIProperty: barrierEdgeIDs     * {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。     */    barrierEdgeIDs: null,    /**     * APIProperty: barrierNodeIDs     * {Array(<Number>)} 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。     */    barrierNodeIDs: null,    /**     * APIProperty: barrierPoints     * {Array(<Point>)}网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */    barrierPoints: null,    /**     * APIProperty: weightFieldName     * {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */    weightFieldName: null,    /**     * APIProperty: turnWeightField     * {String} 转向权重字段的名称。     */    turnWeightField: null,    /**     * APIProperty: resultSetting     * {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    resultSetting: null,    /**     * Constructor: SuperMap.TransportationAnalystParameter     * 交通网络分析通用参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * barrierEdgeIDs - {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。     * barrierNodeIDs - {Array(<Number>)} 网络分析中障碍点的 ID 数组。     * barrierPoints - {Array(<Point>)}     * weightFieldName - {String} 阻力字段的名称。     * turnWeightField - {String} 转向权重字段的名称。     * resultSetting - {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    initialize: function (options) {        var me = this;        me.resultSetting = new TransportationAnalystResultSetting();        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.barrierEdgeIDs = null;        me.barrierNodeIDs = null;        me.weightFieldName = null;        me.turnWeightField = null;        if (me.resultSetting) {            me.resultSetting.destroy();            me.resultSetting = null;        }        if (me.barrierPoints && me.barrierPoints.length) {            for (var i in me.barrierPoints) {                me.barrierPoints.destroy();            }        }        me.barrierPoints = null;    },    CLASS_NAME: "SuperMap.TransportationAnalystParameter"});module.exports = SuperMap.TransportationAnalystParameter;
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/** * Class: SuperMap.TransportationAnalystResultSetting * 交通网络分析结果参数类。 * 通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。 */var SuperMap = __webpack_require__(4);SuperMap.TransportationAnalystResultSetting = SuperMap.Class({    /**     * APIProperty: returnEdgeFeatures     * {Boolean} 是否在分析结果中包含弧段要素集合。弧段要素包括弧段的空间信息和属性信息。     */    returnEdgeFeatures: false,    /**     * APIProperty: returnEdgeGeometry     * {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     */    returnEdgeGeometry: false,    /**     * APIProperty: returnEdgeIDs     * {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。     */    returnEdgeIDs: false,    /**     * APIProperty: returnNodeFeatures     * {Boolean} 是否在分析结果中包含结点要素集合。     * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。默认为 false。     */    returnNodeFeatures: false,    /**     * APIProperty: returnNodeGeometry     * {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。     */    returnNodeGeometry: false,    /**     * APIProperty: returnNodeIDs     * {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。     */    returnNodeIDs: false,    /**     * APIProperty: returnPathGuides     * {Boolean} 返回分析结果中是否包含行驶导引集合。     */    returnPathGuides: false,    /**     * APIProperty: returnRoutes     * {Boolean} 返回分析结果中是否包含路由对象的集合。     */    returnRoutes: false,    /**     * Constructor: SuperMap.TransportationAnalystResultSetting     * 交通网络分析结果参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * returnEdgeFeatures - {Boolean} 是否在分析结果中包含弧段要素集合。     * returnEdgeGeometry - {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     * returnEdgeIDs - {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。     * returnNodeFeatures - {Boolean} 是否在分析结果中包含结点要素集合。     * returnNodeGeometry - {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。     * returnNodeIDs - {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。     * returnPathGuides - {Boolean} 返回分析结果中是否包含行驶导引集合。     * returnRoutes - {Boolean} 返回分析结果中是否包含路由对象的集合。     */    initialize: function (options) {        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.returnEdgeFeatures = null;        me.returnEdgeGeometry = null;        me.returnEdgeIDs = null;        me.returnNodeFeatures = null;        me.returnNodeGeometry = null;        me.returnNodeIDs = null;        me.returnPathGuides = null;        me.returnRoutes = null;    },    CLASS_NAME: "SuperMap.TransportationAnalystResultSetting"});module.exports = SuperMap.TransportationAnalystResultSetting;
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -22489,8 +22633,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(129);
-	__webpack_require__(136);
+	__webpack_require__(130);
+	__webpack_require__(137);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
@@ -22572,7 +22716,7 @@
 	module.exports = SuperMap.REST.FacilityAnalystStreamService;
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -22653,7 +22797,7 @@
 	module.exports = SuperMap.FacilityAnalystStreamParameters;
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -22667,8 +22811,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(129);
-	__webpack_require__(138);
+	__webpack_require__(130);
+	__webpack_require__(139);
 	var SuperMap = __webpack_require__(4);
 	var GeoJSONFormat = __webpack_require__(17);
 	SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
@@ -22805,7 +22949,7 @@
 	module.exports = SuperMap.REST.FindClosestFacilitiesService;
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -22817,7 +22961,7 @@
 	 * 最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var TransportationAnalystParameter = __webpack_require__(133);
+	var TransportationAnalystParameter = __webpack_require__(134);
 	SuperMap.FindClosestFacilitiesParameters = SuperMap.Class({
 
 	    /**
@@ -22921,7 +23065,7 @@
 	module.exports = SuperMap.FindClosestFacilitiesParameters;
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -22934,8 +23078,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(129);
-	__webpack_require__(140);
+	__webpack_require__(130);
+	__webpack_require__(141);
 	var SuperMap = __webpack_require__(4);
 	var GeoJSONFormat = __webpack_require__(17);
 	SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
@@ -23055,7 +23199,7 @@
 	module.exports = SuperMap.REST.FindLocationService;
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -23066,7 +23210,7 @@
 	 *  分析过程中使用的需求点都为网络结点，即除了各种类型的中心点所对应的网络结点以外，
 	 * 所有网络结点都作为资源需求点参与选址分区分析，如果要排除某部分结点不分析，可以将其设置为障碍点。
 	 */
-	__webpack_require__(141);
+	__webpack_require__(142);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.FindLocationParameters = SuperMap.Class({
 
@@ -23150,7 +23294,7 @@
 	module.exports = SuperMap.FindLocationParameters;
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -23238,7 +23382,7 @@
 
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -23252,8 +23396,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(129);
-	__webpack_require__(143);
+	__webpack_require__(130);
+	__webpack_require__(144);
 	var SuperMap = __webpack_require__(4);
 	var GeoJSONFormat = __webpack_require__(17);
 	SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
@@ -23388,7 +23532,7 @@
 	module.exports = SuperMap.REST.FindMTSPPathsService;
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -23399,7 +23543,7 @@
 	 * 例如：现在有50个报刊零售地（配送目的地），和4个报刊供应地（配送中心），现寻求这4个供应地向报刊零售地发送报纸的最优路线，属物流配送问题。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var TransportationAnalystParameter = __webpack_require__(133);
+	var TransportationAnalystParameter = __webpack_require__(134);
 	SuperMap.FindMTSPPathsParameters = SuperMap.Class({
 
 	    /**
@@ -23485,7 +23629,7 @@
 	module.exports = SuperMap.FindMTSPPathsParameters;
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -23499,8 +23643,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(129);
-	__webpack_require__(145);
+	__webpack_require__(130);
+	__webpack_require__(146);
 	var SuperMap = __webpack_require__(4);
 	var GeoJSONFormat = __webpack_require__(17);
 	SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
@@ -23634,7 +23778,7 @@
 	module.exports = SuperMap.REST.FindPathService;
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -23649,7 +23793,7 @@
 	 * 计算最佳路径除了受阻抗影响外，还受转向字段的影响。转向值通过 SuperMap.TransportationAnalystParameter.turnWeightField 设置。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var TransportationAnalystParameter = __webpack_require__(133);
+	var TransportationAnalystParameter = __webpack_require__(134);
 	SuperMap.FindPathParameters = SuperMap.Class({
 
 	    /**
@@ -23725,7 +23869,7 @@
 	module.exports = SuperMap.FindPathParameters;
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -23738,8 +23882,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(129);
-	__webpack_require__(147);
+	__webpack_require__(130);
+	__webpack_require__(148);
 	var SuperMap = __webpack_require__(4);
 	var GeoJSONFormat = __webpack_require__(17);
 	SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
@@ -23875,7 +24019,7 @@
 	module.exports = SuperMap.REST.FindServiceAreasService;
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -23885,7 +24029,7 @@
 	 * 例如：计算某快餐店能够在30分钟内送达快餐的区域。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var TransportationAnalystParameter = __webpack_require__(133);
+	var TransportationAnalystParameter = __webpack_require__(134);
 	SuperMap.FindServiceAreasParameters = SuperMap.Class({
 
 	    /**
@@ -23980,7 +24124,7 @@
 	module.exports = SuperMap.FindServiceAreasParameters;
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -23993,8 +24137,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.NetworkAnalystServiceBase>
 	 */
-	__webpack_require__(129);
-	__webpack_require__(149);
+	__webpack_require__(130);
+	__webpack_require__(150);
 	var SuperMap = __webpack_require__(4);
 	var GeoJSONFormat = __webpack_require__(17);
 	SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
@@ -24125,7 +24269,7 @@
 	module.exports = SuperMap.REST.FindTSPPathsService;
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -24137,7 +24281,7 @@
 	 * 最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var TransportationAnalystParameter = __webpack_require__(133);
+	var TransportationAnalystParameter = __webpack_require__(134);
 	SuperMap.FindTSPPathsParameters = SuperMap.Class({
 	    /**
 	     * APIProperty: endNodeAssigned
@@ -24214,15 +24358,15 @@
 	module.exports = SuperMap.FindTSPPathsParameters;
 
 /***/ }),
-/* 150 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Class: SuperMap.REST.UpdateEdgeWeightService
 	 *  更新边的边的耗费权重服务
 	 */
-	__webpack_require__(129);
-	__webpack_require__(151);
+	__webpack_require__(130);
+	__webpack_require__(152);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.UpdateEdgeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
@@ -24337,7 +24481,7 @@
 	module.exports = SuperMap.REST.UpdateEdgeWeightService;
 
 /***/ }),
-/* 151 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -24417,7 +24561,7 @@
 	module.exports = SuperMap.UpdateEdgeWeightParameters;
 
 /***/ }),
-/* 152 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -24425,8 +24569,8 @@
 	 * 转向耗费权重更新服务类
 	 */
 
-	__webpack_require__(129);
-	__webpack_require__(153);
+	__webpack_require__(130);
+	__webpack_require__(154);
 	var SuperMap = __webpack_require__(4);
 
 	SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
@@ -24541,7 +24685,7 @@
 	module.exports = SuperMap.REST.UpdateTurnNodeWeightService;
 
 /***/ }),
-/* 153 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -24622,7 +24766,7 @@
 	module.exports = SuperMap.UpdateTurnNodeWeightParameters;
 
 /***/ }),
-/* 154 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -24636,11 +24780,11 @@
 	 */
 	var L = __webpack_require__(3);
 	var ServiceBase = __webpack_require__(24);
-	var FacilityAnalystSinks3DService = __webpack_require__(155);
-	var FacilityAnalystSources3DService = __webpack_require__(158);
-	var FacilityAnalystTraceup3DService = __webpack_require__(160);
-	var FacilityAnalystTracedown3DService = __webpack_require__(162);
-	var FacilityAnalystUpstream3DService = __webpack_require__(164);
+	var FacilityAnalystSinks3DService = __webpack_require__(156);
+	var FacilityAnalystSources3DService = __webpack_require__(159);
+	var FacilityAnalystTraceup3DService = __webpack_require__(161);
+	var FacilityAnalystTracedown3DService = __webpack_require__(163);
+	var FacilityAnalystUpstream3DService = __webpack_require__(165);
 
 	var NetworkAnalyst3DService = ServiceBase.extend({
 
@@ -24755,7 +24899,7 @@
 	module.exports = NetworkAnalyst3DService;
 
 /***/ }),
-/* 155 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -24769,7 +24913,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(26);
-	__webpack_require__(156);
+	__webpack_require__(157);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -24844,7 +24988,7 @@
 	module.exports = SuperMap.REST.FacilityAnalystSinks3DService;
 
 /***/ }),
-/* 156 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -24855,7 +24999,7 @@
 	 * 例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。
 	 * 最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
 	 */
-	__webpack_require__(157);
+	__webpack_require__(158);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.FacilityAnalystSinks3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
 
@@ -24901,7 +25045,7 @@
 	module.exports = SuperMap.FacilityAnalystSinks3DParameters;
 
 /***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -24982,7 +25126,7 @@
 	module.exports = SuperMap.FacilityAnalyst3DParameters;
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -24997,7 +25141,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(26);
-	__webpack_require__(159);
+	__webpack_require__(160);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -25062,7 +25206,7 @@
 	module.exports = SuperMap.REST.FacilityAnalystSources3DService;
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -25073,7 +25217,7 @@
 	 * 例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。
 	 * 最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
 	 */
-	__webpack_require__(157);
+	__webpack_require__(158);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.FacilityAnalystSources3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
 
@@ -25112,7 +25256,7 @@
 	module.exports = SuperMap.FacilityAnalystSources3DParameters;
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -25122,7 +25266,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(26);
-	__webpack_require__(161);
+	__webpack_require__(162);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.FacilityAnalystTraceup3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -25187,14 +25331,14 @@
 	module.exports = SuperMap.REST.FacilityAnalystTraceup3DService;
 
 /***/ }),
-/* 161 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Class: SuperMap.FacilityAnalystTraceup3DParameters
 	 * 上游追踪资源参数类
 	 */
-	__webpack_require__(157);
+	__webpack_require__(158);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.FacilityAnalystTraceup3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
 
@@ -25231,7 +25375,7 @@
 	module.exports = SuperMap.FacilityAnalystTraceup3DParameters;
 
 /***/ }),
-/* 162 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -25241,7 +25385,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(26);
-	__webpack_require__(163);
+	__webpack_require__(164);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -25306,14 +25450,14 @@
 	module.exports = SuperMap.REST.FacilityAnalystTracedown3DService;
 
 /***/ }),
-/* 163 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Class: SuperMap.FacilityAnalystTracedown3DParameters
 	 * 下游追踪资源参数类
 	 */
-	__webpack_require__(157);
+	__webpack_require__(158);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.FacilityAnalystTracedown3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
 
@@ -25351,7 +25495,7 @@
 	module.exports = SuperMap.FacilityAnalystTracedown3DParameters;
 
 /***/ }),
-/* 164 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -25361,7 +25505,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(26);
-	__webpack_require__(165);
+	__webpack_require__(166);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.FacilityAnalystUpstream3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -25428,14 +25572,14 @@
 
 
 /***/ }),
-/* 165 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Class: SuperMap.FacilityAnalystUpstream3DParameters
 	 * 上游关键设施查找资源参数类
 	 */
-	__webpack_require__(157);
+	__webpack_require__(158);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.FacilityAnalystUpstream3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
 
@@ -25478,7 +25622,7 @@
 	module.exports = SuperMap.FacilityAnalystUpstream3DParameters;
 
 /***/ }),
-/* 166 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -25495,19 +25639,19 @@
 	var ServiceBase = __webpack_require__(24);
 	var SuperMap = __webpack_require__(4);
 	var Util = __webpack_require__(16);
-	var AreaSolarRadiationService = __webpack_require__(167);
-	var BufferAnalystService = __webpack_require__(170);
-	var DensityAnalystService = __webpack_require__(177);
-	var GenerateSpatialDataService = __webpack_require__(179);
-	var GeoRelationAnalystService = __webpack_require__(181);
-	var InterpolationAnalystService = __webpack_require__(183);
-	var MathExpressionAnalysisService = __webpack_require__(190);
-	var OverlayAnalystService = __webpack_require__(192);
-	var RouteCalculateMeasureService = __webpack_require__(196);
-	var RouteLocatorService = __webpack_require__(200);
-	var SurfaceAnalystService = __webpack_require__(202);
-	var TerrainCurvatureCalculationService = __webpack_require__(207);
-	var ThiessenAnalystService = __webpack_require__(209);
+	var AreaSolarRadiationService = __webpack_require__(168);
+	var BufferAnalystService = __webpack_require__(171);
+	var DensityAnalystService = __webpack_require__(178);
+	var GenerateSpatialDataService = __webpack_require__(180);
+	var GeoRelationAnalystService = __webpack_require__(182);
+	var InterpolationAnalystService = __webpack_require__(184);
+	var MathExpressionAnalysisService = __webpack_require__(191);
+	var OverlayAnalystService = __webpack_require__(193);
+	var RouteCalculateMeasureService = __webpack_require__(197);
+	var RouteLocatorService = __webpack_require__(201);
+	var SurfaceAnalystService = __webpack_require__(203);
+	var TerrainCurvatureCalculationService = __webpack_require__(208);
+	var ThiessenAnalystService = __webpack_require__(210);
 
 	var SpatialAnalystService = ServiceBase.extend({
 
@@ -25859,7 +26003,7 @@
 	module.exports = SpatialAnalystService;
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -25869,8 +26013,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(168);
 	__webpack_require__(169);
+	__webpack_require__(170);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -25930,7 +26074,7 @@
 	            me.url += 'datasets/' + parameter.dataset + '/solarradiation';
 	        }
 
-	        AreaSolarRadiationService.toObject(parameter, parameterObject);
+	        SuperMap.AreaSolarRadiationParameters.toObject(parameter, parameterObject);
 	        var jsonParameters = SuperMap.Util.toJSON(parameterObject);
 
 	        if (me.isInTheSameDomain) {
@@ -25953,7 +26097,7 @@
 	module.exports = SuperMap.REST.AreaSolarRadiationService;
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -25962,10 +26106,10 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(17);
-	__webpack_require__(26);
-	var util = __webpack_require__(26).Util;
-	SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
+	var SuperMap = __webpack_require__(4);
+	var GeoJSONFormat = __webpack_require__(17);
+	var ServiceBase = __webpack_require__(26);
+	SuperMap.REST.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
 
 	    /**
 	     *  Property: format
@@ -25975,7 +26119,7 @@
 	    format: SuperMap.DataFormat.GEOJSON,
 
 	    initialize: function (url, options) {
-	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	        ServiceBase.prototype.initialize.apply(this, arguments);
 	        if (options && options.format) {
 	            this.format = options.format.toUpperCase();
 	        }
@@ -25986,7 +26130,7 @@
 	     * 释放资源，将引用的资源属性置空。
 	     */
 	    destroy: function () {
-	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	        ServiceBase.prototype.destroy.apply(this, arguments);
 	        this.format = null;
 	    },
 
@@ -26019,7 +26163,7 @@
 	        if (!result) {
 	            return null;
 	        }
-	        var geoJSONFormat = new SuperMap.Format.GeoJSON();
+	        var geoJSONFormat = new GeoJSONFormat();
 	        if (result.recordsets) {
 	            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
 	                if (recordsets[i].features) {
@@ -26035,13 +26179,11 @@
 	    CLASS_NAME: "SuperMap.REST.SpatialAnalystBase"
 	});
 
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.SpatialAnalystBase(url, options);
-	};
+	module.exports = SuperMap.REST.SpatialAnalystBase;
 
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -26220,7 +26362,7 @@
 	module.exports = SuperMap.AreaSolarRadiationParameters;
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -26232,9 +26374,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(168);
-	__webpack_require__(171);
-	__webpack_require__(176);
+	__webpack_require__(169);
+	__webpack_require__(172);
+	__webpack_require__(177);
 	var SuperMap = __webpack_require__(4);
 	var GeoJSONFormat = __webpack_require__(17);
 	SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
@@ -26355,7 +26497,7 @@
 	module.exports = SuperMap.REST.BufferAnalystService;
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -26366,10 +26508,10 @@
 	 *  - <SuperMap.BufferAnalystParameters>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(172);
+	__webpack_require__(173);
 	var SuperMap = __webpack_require__(4);
-	var DataReturnOption = __webpack_require__(175);
-	var FilterParameter = __webpack_require__(31);
+	var DataReturnOption = __webpack_require__(176);
+	var FilterParameter = __webpack_require__(32);
 	SuperMap.DatasetBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystParameters, {
 
 	    /**
@@ -26472,7 +26614,7 @@
 	module.exports = SuperMap.DatasetBufferAnalystParameters;
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -26480,7 +26622,7 @@
 	 * 缓冲区分析参数基类。
 	 */
 	var SuperMap = __webpack_require__(4);
-	var BufferSetting = __webpack_require__(173);
+	var BufferSetting = __webpack_require__(174);
 	SuperMap.BufferAnalystParameters = SuperMap.Class({
 
 	    /**
@@ -26527,7 +26669,7 @@
 	module.exports = SuperMap.BufferAnalystParameters;
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -26536,7 +26678,7 @@
 	 */
 	__webpack_require__(6);
 	var SuperMap = __webpack_require__(4);
-	var BufferDistance = __webpack_require__(174);
+	var BufferDistance = __webpack_require__(175);
 	SuperMap.BufferSetting = SuperMap.Class({
 
 	    /**
@@ -26625,7 +26767,7 @@
 	module.exports = SuperMap.BufferSetting;
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -26682,7 +26824,7 @@
 	module.exports = SuperMap.BufferDistance;
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -26757,7 +26899,7 @@
 	module.exports = SuperMap.DataReturnOption;
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -26768,7 +26910,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.BufferAnalystParameters>
 	 */
-	__webpack_require__(172);
+	__webpack_require__(173);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.GeometryBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystParameters, {
 
@@ -26834,7 +26976,7 @@
 	module.exports = SuperMap.GeometryBufferAnalystParameters;
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -26848,8 +26990,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(168);
-	__webpack_require__(178);
+	__webpack_require__(169);
+	__webpack_require__(179);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -26944,7 +27086,7 @@
 	module.exports = SuperMap.REST.DensityAnalystService;
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -27061,7 +27203,7 @@
 	module.exports = SuperMap.DensityKernelAnalystParameters;
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -27075,8 +27217,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(168);
-	__webpack_require__(180);
+	__webpack_require__(169);
+	__webpack_require__(181);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -27200,7 +27342,7 @@
 	module.exports = SuperMap.REST.GenerateSpatialDataService;
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -27208,7 +27350,7 @@
 	 * 动态分段操作参数类。
 	 * 通过该类可以为动态分段提供参数信息。
 	 */
-	__webpack_require__(175);
+	__webpack_require__(176);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.GenerateSpatialDataParameters = SuperMap.Class({
 
@@ -27335,7 +27477,7 @@
 	module.exports = SuperMap.GenerateSpatialDataParameters;
 
 /***/ }),
-/* 181 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -27343,8 +27485,8 @@
 	 * 空间关系分析服务类。
 	 * 该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
 	 */
-	__webpack_require__(168);
-	__webpack_require__(182);
+	__webpack_require__(169);
+	__webpack_require__(183);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -27443,7 +27585,7 @@
 	module.exports = SuperMap.REST.GeoRelationAnalystService;
 
 /***/ }),
-/* 182 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -27452,7 +27594,7 @@
 	 * 使用该类可以为空间关系分析服务提供所需的参数信息。
 	 */
 	__webpack_require__(6);
-	__webpack_require__(31);
+	__webpack_require__(32);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.GeoRelationAnalystParameters = SuperMap.Class({
 
@@ -27567,7 +27709,7 @@
 	module.exports = SuperMap.GeoRelationAnalystParameters;
 
 /***/ }),
-/* 183 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -27582,12 +27724,12 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(168);
-	__webpack_require__(184);
-	__webpack_require__(186);
-	__webpack_require__(188);
-	__webpack_require__(189);
+	__webpack_require__(169);
 	__webpack_require__(185);
+	__webpack_require__(187);
+	__webpack_require__(189);
+	__webpack_require__(190);
+	__webpack_require__(186);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -27711,7 +27853,7 @@
 	module.exports = SuperMap.REST.InterpolationAnalystService;
 
 /***/ }),
-/* 184 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -27721,7 +27863,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.InterpolationAnalystParameters>
 	 */
-	__webpack_require__(185);
+	__webpack_require__(186);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
 	    /**
@@ -27853,7 +27995,7 @@
 	module.exports = SuperMap.InterpolationRBFAnalystParameters;
 
 /***/ }),
-/* 185 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -28030,7 +28172,7 @@
 	module.exports = SuperMap.InterpolationAnalystParameters;
 
 /***/ }),
-/* 186 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -28040,8 +28182,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.InterpolationAnalystParameters>
 	 */
-	__webpack_require__(185);
-	__webpack_require__(187);
+	__webpack_require__(186);
+	__webpack_require__(188);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.InterpolationDensityAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
 
@@ -28101,7 +28243,7 @@
 	module.exports = SuperMap.InterpolationDensityAnalystParameters;
 
 /***/ }),
-/* 187 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -28185,7 +28327,7 @@
 	module.exports = SuperMap.ThiessenAnalystParameters;
 
 /***/ }),
-/* 188 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -28195,7 +28337,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.InterpolationAnalystParameters>
 	 */
-	__webpack_require__(185);
+	__webpack_require__(186);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.InterpolationIDWAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
 	    /**
@@ -28291,7 +28433,7 @@
 
 
 /***/ }),
-/* 189 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -28342,8 +28484,8 @@
 	 *  - <SuperMap.InterpolationAnalystParameters>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(185);
-	__webpack_require__(187);
+	__webpack_require__(186);
+	__webpack_require__(188);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.InterpolationKrigingAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
 	    /**
@@ -28541,7 +28683,7 @@
 	module.exports = SuperMap.InterpolationKrigingAnalystParameters;
 
 /***/ }),
-/* 190 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -28551,8 +28693,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(168);
-	__webpack_require__(191);
+	__webpack_require__(169);
+	__webpack_require__(192);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -28636,7 +28778,7 @@
 	module.exports = SuperMap.REST.MathExpressionAnalysisService;
 
 /***/ }),
-/* 191 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -28775,7 +28917,7 @@
 	module.exports = SuperMap.MathExpressionAnalysisParameters;
 
 /***/ }),
-/* 192 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -28788,8 +28930,8 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(26);
-	__webpack_require__(193);
-	__webpack_require__(195);
+	__webpack_require__(194);
+	__webpack_require__(196);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -28889,7 +29031,7 @@
 	module.exports = SuperMap.REST.OverlayAnalystService;
 
 /***/ }),
-/* 193 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -28900,10 +29042,10 @@
 	 *  - <SuperMap.OverlayAnalystParameters>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(194);
+	__webpack_require__(195);
 	var SuperMap = __webpack_require__(4);
-	var DataReturnOption = __webpack_require__(175);
-	var FilterParameter = __webpack_require__(31);
+	var DataReturnOption = __webpack_require__(176);
+	var FilterParameter = __webpack_require__(32);
 	SuperMap.DatasetOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalystParameters, {
 
 	    /**
@@ -29061,7 +29203,7 @@
 	module.exports = SuperMap.DatasetOverlayAnalystParameters;
 
 /***/ }),
-/* 194 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -29110,7 +29252,7 @@
 	module.exports = SuperMap.OverlayAnalystParameters;
 
 /***/ }),
-/* 195 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -29121,7 +29263,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.OverlayAnalystParameters>
 	 */
-	__webpack_require__(194);
+	__webpack_require__(195);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.GeometryOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalystParameters, {
 
@@ -29195,7 +29337,7 @@
 	module.exports = SuperMap.GeometryOverlayAnalystParameters;
 
 /***/ }),
-/* 196 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -29206,8 +29348,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(168);
-	__webpack_require__(197);
+	__webpack_require__(169);
+	__webpack_require__(198);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -29339,14 +29481,14 @@
 
 
 /***/ }),
-/* 197 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Class: SuperMap.RouteCalculateMeasureParameters
 	 * 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
 	 */
-	__webpack_require__(198);
+	__webpack_require__(199);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
 
@@ -29434,7 +29576,7 @@
 	module.exports = SuperMap.RouteCalculateMeasureParameters;
 
 /***/ }),
-/* 198 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -29445,7 +29587,7 @@
 	 *  Inherits from:
 	 *  - <SuperMap.Geometry.Collection>
 	 */
-	__webpack_require__(199);
+	__webpack_require__(200);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.Route = SuperMap.Class(SuperMap.Geometry.Collection, {
 
@@ -29670,7 +29812,7 @@
 	module.exports = SuperMap.Route;
 
 /***/ }),
-/* 199 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -29789,7 +29931,7 @@
 	module.exports = SuperMap.PointWithMeasure;
 
 /***/ }),
-/* 200 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -29799,8 +29941,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(168);
-	__webpack_require__(201);
+	__webpack_require__(169);
+	__webpack_require__(202);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -29935,7 +30077,7 @@
 
 
 /***/ }),
-/* 201 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -29944,7 +30086,7 @@
 	 * 参数有两种方式，分别为Geometry和Dataset两种，前者需要指定sourceRoute对象作为参数，后者需要dataset，routeIDField，routeID三个参数
 	 * 如果用户两种参数均设置，优先选择Dataset方式
 	 */
-	__webpack_require__(198);
+	__webpack_require__(199);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.RouteLocatorParameters = SuperMap.Class({
 
@@ -30075,7 +30217,7 @@
 	module.exports = SuperMap.RouteLocatorParameters;
 
 /***/ }),
-/* 202 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -30087,9 +30229,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(168);
-	__webpack_require__(203);
-	__webpack_require__(206);
+	__webpack_require__(169);
+	__webpack_require__(204);
+	__webpack_require__(207);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -30197,7 +30339,7 @@
 	module.exports = SuperMap.REST.SurfaceAnalystService;
 
 /***/ }),
-/* 203 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -30208,11 +30350,11 @@
 	 * Inherits from:
 	 *  - <SurfaceAnalystParameters>
 	 */
-	__webpack_require__(31);
-	__webpack_require__(204);
+	__webpack_require__(32);
+	__webpack_require__(205);
 	var SuperMap = __webpack_require__(4);
-	var FilterParameter = __webpack_require__(31);
-	var DataReturnOption = __webpack_require__(175);
+	var FilterParameter = __webpack_require__(32);
+	var DataReturnOption = __webpack_require__(176);
 	SuperMap.DatasetSurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnalystParameters, {
 
 	    /**
@@ -30301,7 +30443,7 @@
 	};
 
 /***/ }),
-/* 204 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -30311,10 +30453,10 @@
 	 * {<SuperMap.DatasetSurfaceAnalystParameters>} 和 {<SuperMap.GeometrySurfaceAnalystParameters>} 继承自该类。
 	 */
 	__webpack_require__(6);
-	__webpack_require__(31);
+	__webpack_require__(32);
 	var SuperMap = __webpack_require__(4);
-	var DataReturnOption = __webpack_require__(175);
-	var SurfaceAnalystParametersSetting = __webpack_require__(205);
+	var DataReturnOption = __webpack_require__(176);
+	var SurfaceAnalystParametersSetting = __webpack_require__(206);
 	SuperMap.SurfaceAnalystParameters = SuperMap.Class({
 
 	    /**
@@ -30388,7 +30530,7 @@
 	module.exports = SuperMap.SurfaceAnalystParameters;
 
 /***/ }),
-/* 205 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -30507,7 +30649,7 @@
 	module.exports = SuperMap.SurfaceAnalystParametersSetting;
 
 /***/ }),
-/* 206 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -30518,7 +30660,7 @@
 	 * Inherits from:
 	 *  - <SurfaceAnalystParameters>
 	 */
-	__webpack_require__(204);
+	__webpack_require__(205);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.GeometrySurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnalystParameters, {
 
@@ -30579,7 +30721,7 @@
 	module.exports = SuperMap.GeometrySurfaceAnalystParameters;
 
 /***/ }),
-/* 207 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -30589,8 +30731,8 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(168);
-	__webpack_require__(208);
+	__webpack_require__(169);
+	__webpack_require__(209);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -30674,7 +30816,7 @@
 
 
 /***/ }),
-/* 208 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -30776,7 +30918,7 @@
 	module.exports = SuperMap.TerrainCurvatureCalculationParameters;
 
 /***/ }),
-/* 209 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -30791,9 +30933,9 @@
 	 * Inherits from:
 	 *  - <SuperMap.REST.SpatialAnalystBase>
 	 */
-	__webpack_require__(168);
-	__webpack_require__(210);
+	__webpack_require__(169);
 	__webpack_require__(211);
+	__webpack_require__(212);
 	var SuperMap = __webpack_require__(4);
 	var GeoJSONFormat = __webpack_require__(17);
 	SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
@@ -30915,7 +31057,7 @@
 	module.exports = SuperMap.REST.ThiessenAnalystService;
 
 /***/ }),
-/* 210 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -30926,7 +31068,7 @@
 	 *  - <SuperMap.ThiessenAnalystParameters>
 	 */
 	__webpack_require__(6);
-	__webpack_require__(187);
+	__webpack_require__(188);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.DatasetThiessenAnalystParameters = SuperMap.Class(SuperMap.ThiessenAnalystParameters, {
 
@@ -30998,7 +31140,7 @@
 	module.exports = SuperMap.DatasetThiessenAnalystParameters;
 
 /***/ }),
-/* 211 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -31009,7 +31151,7 @@
 	 * Inherits from:
 	 *  - <SuperMap.ThiessenAnalystParameters>
 	 */
-	__webpack_require__(187);
+	__webpack_require__(188);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.GeometryThiessenAnalystParameters = SuperMap.Class(SuperMap.ThiessenAnalystParameters, {
 
@@ -31069,7 +31211,7 @@
 	module.exports = SuperMap.GeometryThiessenAnalystParameters;
 
 /***/ }),
-/* 212 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -31084,9 +31226,9 @@
 	 */
 	var L = __webpack_require__(3);
 	var ServiceBase = __webpack_require__(24);
-	var StopQueryService = __webpack_require__(213);
-	var TransferPathService = __webpack_require__(215);
-	var TransferSolutionService = __webpack_require__(218);
+	var StopQueryService = __webpack_require__(214);
+	var TransferPathService = __webpack_require__(216);
+	var TransferSolutionService = __webpack_require__(219);
 
 	var TrafficTransferAnalystService = ServiceBase.extend({
 
@@ -31170,7 +31312,7 @@
 	module.exports = TrafficTransferAnalystService;
 
 /***/ }),
-/* 213 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -31182,7 +31324,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(26);
-	__webpack_require__(214);
+	__webpack_require__(215);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -31255,7 +31397,7 @@
 	module.exports = SuperMap.REST.StopQueryService;
 
 /***/ }),
-/* 214 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -31306,7 +31448,7 @@
 	module.exports = SuperMap.StopQueryParameters;
 
 /***/ }),
-/* 215 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -31318,7 +31460,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(26);
-	__webpack_require__(216);
+	__webpack_require__(217);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.TransferPathService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -31396,14 +31538,14 @@
 
 
 /***/ }),
-/* 216 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * Class: SuperMap.TransferPathParameters
 	 * 交通换乘线路查询参数类。
 	 */
-	__webpack_require__(217);
+	__webpack_require__(218);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.TransferPathParameters = SuperMap.Class({
 	    /**
@@ -31466,7 +31608,7 @@
 	module.exports = SuperMap.TransferPathParameters;
 
 /***/ }),
-/* 217 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -31593,7 +31735,7 @@
 	module.exports = SuperMap.TransferLine;
 
 /***/ }),
-/* 218 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -31605,7 +31747,7 @@
 	 *  - <SuperMap.ServiceBase>
 	 */
 	__webpack_require__(26);
-	__webpack_require__(219);
+	__webpack_require__(220);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -31691,7 +31833,7 @@
 
 
 /***/ }),
-/* 219 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -31832,7 +31974,7 @@
 
 
 /***/ }),
-/* 220 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(2);
@@ -32008,12 +32150,12 @@
 
 
 /***/ }),
-/* 221 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(2);
-	__webpack_require__(222);
 	__webpack_require__(223);
+	__webpack_require__(224);
 	var L = __webpack_require__(3);
 	L.supermap.GraphicGroup = L.Path.extend({
 
@@ -32115,7 +32257,7 @@
 	module.exports = L.supermap.GraphicGroup;
 
 /***/ }),
-/* 222 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(2);
@@ -32182,7 +32324,7 @@
 
 
 /***/ }),
-/* 223 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(2);
@@ -32220,7 +32362,7 @@
 	module.exports = L.supermap.Graphic;
 
 /***/ }),
-/* 224 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -32230,9 +32372,9 @@
 	 *      L.superMap.tiledVectorLayer(url).addTo(map);
 	 */
 	__webpack_require__(2);
-	__webpack_require__(225);
+	__webpack_require__(226);
 	var L = __webpack_require__(3);
-	var CartoCSSToLeaflet = __webpack_require__(237);
+	var CartoCSSToLeaflet = __webpack_require__(238);
 
 	var TileVectorLayer = L.VectorGrid.extend({
 
@@ -32580,12 +32722,12 @@
 	module.exports = TileVectorLayer;
 
 /***/ }),
-/* 225 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(226);
 	__webpack_require__(227);
 	__webpack_require__(228);
+	__webpack_require__(229);
 	var L = __webpack_require__(3);
 	L.VectorGrid = L.GridLayer.extend({
 	    options: {
@@ -32713,7 +32855,7 @@
 
 
 /***/ }),
-/* 226 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var L = __webpack_require__(3);
@@ -32810,7 +32952,7 @@
 
 
 /***/ }),
-/* 227 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var L = __webpack_require__(3);
@@ -32927,17 +33069,17 @@
 
 
 /***/ }),
-/* 228 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(2);
-	__webpack_require__(229);
 	__webpack_require__(230);
-	__webpack_require__(232);
-	__webpack_require__(234);
+	__webpack_require__(231);
+	__webpack_require__(233);
 	__webpack_require__(235);
+	__webpack_require__(236);
 	var L = __webpack_require__(3);
-	var TileFeatureProcessor = __webpack_require__(236);
+	var TileFeatureProcessor = __webpack_require__(237);
 	var VectorTile = L.Class.extend({
 
 	    initialize: function (options, done) {
@@ -33110,7 +33252,7 @@
 	module.exports = VectorTile;
 
 /***/ }),
-/* 229 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -33128,12 +33270,12 @@
 	module.exports = L.supermap.VectorFeatureType;
 
 /***/ }),
-/* 230 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(231);
+	__webpack_require__(232);
+	__webpack_require__(228);
 	__webpack_require__(227);
-	__webpack_require__(226);
 	var L = __webpack_require__(3);
 	L.TextSymbolizer = L.Path.extend({
 	    includes: L.Symbolizer.prototype,
@@ -33308,7 +33450,7 @@
 	module.exports = L.TextSymbolizer;
 
 /***/ }),
-/* 231 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var L = __webpack_require__(3);
@@ -33364,11 +33506,11 @@
 
 
 /***/ }),
-/* 232 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(231);
-	__webpack_require__(233);
+	__webpack_require__(232);
+	__webpack_require__(234);
 	var L = __webpack_require__(3);
 	L.PointSymbolizer = L.CircleMarker.extend({
 	    includes: L.Symbolizer.prototype,
@@ -33497,7 +33639,7 @@
 	module.exports = L.PointSymbolizer;
 
 /***/ }),
-/* 233 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var L = __webpack_require__(3);
@@ -33528,12 +33670,12 @@
 
 
 /***/ }),
-/* 234 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(231);
+	__webpack_require__(232);
 	var L = __webpack_require__(3);
-	var PolyBase = __webpack_require__(233);
+	var PolyBase = __webpack_require__(234);
 
 	L.LineSymbolizer = L.Polyline.extend({
 	    includes: [L.Symbolizer.prototype, PolyBase],
@@ -33558,12 +33700,12 @@
 	module.exports = L.LineSymbolizer;
 
 /***/ }),
-/* 235 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(231);
+	__webpack_require__(232);
 	var L = __webpack_require__(3);
-	var PolyBase = __webpack_require__(233);
+	var PolyBase = __webpack_require__(234);
 
 	L.RegionSymbolizer = L.Polygon.extend({
 	    includes: [L.Symbolizer.prototype, PolyBase],
@@ -33581,14 +33723,14 @@
 	module.exports = L.RegionSymbolizer;
 
 /***/ }),
-/* 236 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 *将iServer tileFeature转换为类似VT标准的格式
 	 */
 	__webpack_require__(2);
-	__webpack_require__(229);
+	__webpack_require__(230);
 	var L = __webpack_require__(3);
 	var Util=__webpack_require__(16);
 	L.supermap.TileFeatureProcessor = {
@@ -33697,16 +33839,16 @@
 	module.exports = L.supermap.TileFeatureProcessor;
 
 /***/ }),
-/* 237 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 *CartoCSS样式转Leaflet样式
 	 */
 	__webpack_require__(2);
-	__webpack_require__(238);
 	__webpack_require__(239);
-	var CartoCSS = __webpack_require__(240);
+	__webpack_require__(240);
+	var CartoCSS = __webpack_require__(241);
 	var L = __webpack_require__(3);
 
 	L.supermap.CartoCSSToLeaflet = {
@@ -33951,7 +34093,7 @@
 	module.exports = L.supermap.CartoCSSToLeaflet;
 
 /***/ }),
-/* 238 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -34007,7 +34149,7 @@
 
 
 /***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -34138,7 +34280,7 @@
 	};
 
 /***/ }),
-/* 240 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -39090,12 +39232,12 @@
 
 
 /***/ }),
-/* 241 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var L = __webpack_require__(3);
-	var Pbf = __webpack_require__(242);
-	var VectorTile = __webpack_require__(244);
+	var Pbf = __webpack_require__(243);
+	var VectorTile = __webpack_require__(245);
 
 	L.PBFTileVectorLayer = L.VectorGrid.extend({
 
@@ -39273,14 +39415,14 @@
 
 
 /***/ }),
-/* 242 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	module.exports = Pbf;
 
-	var ieee754 = __webpack_require__(243);
+	var ieee754 = __webpack_require__(244);
 
 	function Pbf(buf) {
 	    this.buf = ArrayBuffer.isView && ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
@@ -39897,7 +40039,7 @@
 
 
 /***/ }),
-/* 243 */
+/* 244 */
 /***/ (function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -39987,21 +40129,21 @@
 
 
 /***/ }),
-/* 244 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports.VectorTile = __webpack_require__(245);
-	module.exports.VectorTileFeature = __webpack_require__(247);
-	module.exports.VectorTileLayer = __webpack_require__(246);
+	module.exports.VectorTile = __webpack_require__(246);
+	module.exports.VectorTileFeature = __webpack_require__(248);
+	module.exports.VectorTileLayer = __webpack_require__(247);
 
 
 /***/ }),
-/* 245 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var VectorTileLayer = __webpack_require__(246);
+	var VectorTileLayer = __webpack_require__(247);
 
 	module.exports = VectorTile;
 
@@ -40019,12 +40161,12 @@
 
 
 /***/ }),
-/* 246 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var VectorTileFeature = __webpack_require__(247);
+	var VectorTileFeature = __webpack_require__(248);
 
 	module.exports = VectorTileLayer;
 
@@ -40086,12 +40228,12 @@
 
 
 /***/ }),
-/* 247 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var Point = __webpack_require__(248);
+	var Point = __webpack_require__(249);
 
 	module.exports = VectorTileFeature;
 
@@ -40325,7 +40467,7 @@
 
 
 /***/ }),
-/* 248 */
+/* 249 */
 /***/ (function(module, exports) {
 
 	'use strict';

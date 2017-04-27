@@ -66,7 +66,7 @@ SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAn
             me.url += 'datasets/' + parameter.dataset + '/solarradiation';
         }
 
-        AreaSolarRadiationService.toObject(parameter, parameterObject);
+        SuperMap.AreaSolarRadiationParameters.toObject(parameter, parameterObject);
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
 
         if (me.isInTheSameDomain) {

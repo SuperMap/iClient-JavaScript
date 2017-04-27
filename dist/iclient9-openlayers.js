@@ -107,7 +107,7 @@
 	    }
 	    function tileUrlFunction(tileCoord, pixelRatio, projection) {
 	        if (!this.tileGrid) {
-	            this.tileGrid = ol.source.TileImage.prototype.getTileGridForProjection.call(this, projection);
+	            this.tileGrid = this.getTileGridForProjection(projection);
 	        }
 	        var tileExtent = this.tileGrid.getTileCoordExtent(
 	            tileCoord, this.tmpExtent_);
@@ -1223,6 +1223,7 @@
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	__webpack_require__(2);
 	var ol = __webpack_require__(3);
 	ol.source.Baidu = function (opt_options) {
 
@@ -1265,8 +1266,7 @@
 	        return ol.source.Baidu.defaultTileGrid();
 	    }
 
-	}
-	;
+	};
 	ol.inherits(ol.source.Baidu, ol.source.TileImage);
 	ol.source.Baidu.defaultTileGrid = function () {
 	    var tileGird = new ol.tilegrid.TileGrid({
@@ -1275,10 +1275,10 @@
 	        origin: [0, 0],
 	        minZoom: 3,
 
-	    })
+	    });
 	    return tileGird;
-	}
-
+	};
+	module.exports = ol.source.Baidu;
 
 /***/ }),
 /* 8 */
@@ -2650,30 +2650,12 @@
 	     */
 	    processAsync: function () {
 	        var me = this;
-	        if (typeof Windows === "undefined") {
-	            var option = {
-	                method: "GET",
-	                scope: me,
-	                success: me.serviceProcessCompleted,
-	                failure: me.serviceProcessFailed
-	            };
-	            me.request(option);
-	        } else {
-	            me.url = me.url.replace(/.jsonp/, ".json");
-	            var urlWithToken = me.url;
-	            if (SuperMap.Credential.CREDENTIAL) {
-	                urlWithToken += urlWithToken.indexOf("?") > -1 ? "&" : "?";
-	                urlWithToken += SuperMap.Credential.CREDENTIAL.getUrlParameters();
-	            }
-	            WinJS.xhr({
-	                url: urlWithToken,
-	                type: "GET"
-	            }).then(function (result) {
-	                me.serviceProcessCompleted(result);
-	            }, function (error) {
-	                me.serviceProcessFailed(error);
-	            });
-	        }
+	        me.request({
+	            method: "GET",
+	            scope: me,
+	            success: me.serviceProcessCompleted,
+	            failure: me.serviceProcessFailed
+	        });
 	    },
 
 	    /**
@@ -19775,7 +19757,7 @@
 	            me.url += 'datasets/' + parameter.dataset + '/solarradiation';
 	        }
 
-	        AreaSolarRadiationService.toObject(parameter, parameterObject);
+	        SuperMap.AreaSolarRadiationParameters.toObject(parameter, parameterObject);
 	        var jsonParameters = SuperMap.Util.toJSON(parameterObject);
 
 	        if (me.isInTheSameDomain) {
@@ -19807,10 +19789,10 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	__webpack_require__(21);
-	__webpack_require__(17);
-	var util = __webpack_require__(17).Util;
-	SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
+	var SuperMap = __webpack_require__(4);
+	var GeoJSONFormat = __webpack_require__(21);
+	var ServiceBase = __webpack_require__(17);
+	SuperMap.REST.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
 
 	    /**
 	     *  Property: format
@@ -19820,7 +19802,7 @@
 	    format: SuperMap.DataFormat.GEOJSON,
 
 	    initialize: function (url, options) {
-	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+	        ServiceBase.prototype.initialize.apply(this, arguments);
 	        if (options && options.format) {
 	            this.format = options.format.toUpperCase();
 	        }
@@ -19831,7 +19813,7 @@
 	     * 释放资源，将引用的资源属性置空。
 	     */
 	    destroy: function () {
-	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+	        ServiceBase.prototype.destroy.apply(this, arguments);
 	        this.format = null;
 	    },
 
@@ -19864,7 +19846,7 @@
 	        if (!result) {
 	            return null;
 	        }
-	        var geoJSONFormat = new SuperMap.Format.GeoJSON();
+	        var geoJSONFormat = new GeoJSONFormat();
 	        if (result.recordsets) {
 	            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
 	                if (recordsets[i].features) {
@@ -19880,9 +19862,7 @@
 	    CLASS_NAME: "SuperMap.REST.SpatialAnalystBase"
 	});
 
-	module.exports = function (url, options) {
-	    return new SuperMap.REST.SpatialAnalystBase(url, options);
-	};
+	module.exports = SuperMap.REST.SpatialAnalystBase;
 
 
 /***/ }),
