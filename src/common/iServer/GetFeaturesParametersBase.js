@@ -2,7 +2,7 @@
  * Class: SuperMap.GetFeaturesParametersBase
  * 数据服务中数据集查询参数基类。
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.GetFeaturesParametersBase = SuperMap.Class({
     /**
      * APIProperty: datasetNames
@@ -79,6 +79,4 @@ SuperMap.GetFeaturesParametersBase = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.GetFeaturesParametersBase"
 });
-module.exports = function (options) {
-    return new SuperMap.GetFeaturesParametersBase(options);
-};
+module.exports = SuperMap.GetFeaturesParametersBase;

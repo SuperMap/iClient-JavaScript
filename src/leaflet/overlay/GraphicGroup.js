@@ -1,6 +1,7 @@
 require('../core/Base');
 require('./graphic/CircleStyle');
 require('./graphic/Graphic');
+var L = require("leaflet");
 L.supermap.GraphicGroup = L.Path.extend({
 
         initialize: function (graphics, options) {
@@ -97,3 +98,5 @@ L.Canvas.include({
 L.supermap.graphicGroup = function (graphics, options) {
     return new L.supermap.GraphicGroup(graphics, options);
 };
+
+module.exports = L.supermap.GraphicGroup;

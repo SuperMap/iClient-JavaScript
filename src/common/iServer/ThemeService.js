@@ -7,6 +7,7 @@
  */
 require('./ServiceBase');
 require('./ThemeParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -148,6 +149,4 @@ SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
 
     CLASS_NAME: "SuperMap.REST.ThemeService"
 });
-module.exports = function (url, options) {
-    return new SuperMap.REST.ThemeService(url, options);
-};
+module.exports = SuperMap.REST.ThemeService;

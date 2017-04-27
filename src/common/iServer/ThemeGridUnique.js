@@ -7,10 +7,11 @@
  * Inherits from:
  *  - <SuperMap.Theme>
  */
-
-require('./ServerColor');
 require('./Theme');
-require('./ThemeGridUniqueItem');
+var SuperMap = require('../SuperMap');
+var ServerColor = require('./ServerColor');
+var ThemeGridUniqueItem = require('./ThemeGridUniqueItem');
+
 SuperMap.ThemeGridUnique = SuperMap.Class(SuperMap.Theme, {
 
     /**
@@ -40,7 +41,7 @@ SuperMap.ThemeGridUnique = SuperMap.Class(SuperMap.Theme, {
      */
     initialize: function (options) {
         var me = this;
-        me.defaultcolor = new SuperMap.ServerColor();
+        me.defaultcolor = new ServerColor();
         SuperMap.Theme.prototype.initialize.apply(this, ["GRIDUNIQUE", options]);
         if (options) {
             SuperMap.Util.extend(this, options);
@@ -101,9 +102,9 @@ SuperMap.ThemeGridUnique.fromObj = function (obj) {
     var len = uItems ? uItems.length : 0;
     SuperMap.Util.extend(res, obj);
     res.items = [];
-    res.defaultcolor = new SuperMap.ServerColor.fromJson(obj.defaultcolor);
+    res.defaultcolor = new ServerColor.fromJson(obj.defaultcolor);
     for (var i = 0; i < len; i++) {
-        res.items.push(new SuperMap.ThemeGridUniqueItem.fromObj(uItems[i]));
+        res.items.push(new ThemeGridUniqueItem.fromObj(uItems[i]));
     }
     return res;
 };

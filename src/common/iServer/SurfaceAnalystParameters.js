@@ -4,9 +4,11 @@
  * 通过该类可以为进行表面分析提供参数信息，包括表面分析的方法提取等值线、提取等值面和中间结果的分辨率，
  * {<SuperMap.DatasetSurfaceAnalystParameters>} 和 {<SuperMap.GeometrySurfaceAnalystParameters>} 继承自该类。
  */
-
-require('./SurfaceAnalystParametersSetting');
-require('./DataReturnOption');
+require('../REST');
+require('./FilterParameter');
+var SuperMap = require('../SuperMap');
+var DataReturnOption = require('./DataReturnOption');
+var SurfaceAnalystParametersSetting = require('./SurfaceAnalystParametersSetting');
 SuperMap.SurfaceAnalystParameters = SuperMap.Class({
 
     /**
@@ -49,8 +51,8 @@ SuperMap.SurfaceAnalystParameters = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.extractParameter = new SuperMap.SurfaceAnalystParametersSetting();
-        me.resultSetting = new SuperMap.DataReturnOption();
+        me.extractParameter = new SurfaceAnalystParametersSetting();
+        me.resultSetting = new DataReturnOption();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -77,6 +79,4 @@ SuperMap.SurfaceAnalystParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.SurfaceAnalystParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.SurfaceAnalystParameters(options);
-};
+module.exports = SuperMap.SurfaceAnalystParameters;

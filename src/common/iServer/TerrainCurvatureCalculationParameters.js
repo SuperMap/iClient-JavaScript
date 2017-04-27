@@ -2,7 +2,7 @@
  * Class: SuperMap.TerrainCurvatureCalculationParameters
  * 地形曲率计算参数类。
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.TerrainCurvatureCalculationParameters = SuperMap.Class({
 
     /**
@@ -94,6 +94,4 @@ SuperMap.TerrainCurvatureCalculationParameters.toObject = function (derrainCurva
     }
 };
 
-module.exports = function (options) {
-    return new SuperMap.TerrainCurvatureCalculationParameters(options);
-};
+module.exports = SuperMap.TerrainCurvatureCalculationParameters;

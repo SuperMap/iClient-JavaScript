@@ -12,6 +12,7 @@ require('./ThemeDotDensity');
 require('./ThemeGraduatedSymbol');
 require('./ThemeRange');
 require('./UGCSubLayer');
+var SuperMap = require('../SuperMap');
 SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
 
     /**
@@ -103,6 +104,4 @@ SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
 
     CLASS_NAME: "SuperMap.ServerTheme"
 });
-module.exports = function (options) {
-    return new SuperMap.ServerTheme(options);
-};
+module.exports = SuperMap.ServerTheme;

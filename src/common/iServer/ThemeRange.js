@@ -8,9 +8,10 @@
  * Inherits from:
  *  - <SuperMap.Theme>
  */
-
+require('../REST');
 require('./Theme');
 require('./ThemeRangeItem');
+var SuperMap = require('../SuperMap');
 SuperMap.ThemeRange = SuperMap.Class(SuperMap.Theme, {
     /**
      * Property: precision
@@ -119,6 +120,4 @@ SuperMap.ThemeRange.fromObj = function (obj) {
     }
     return res;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeRange(options);
-};
+module.exports = SuperMap.ThemeRange;

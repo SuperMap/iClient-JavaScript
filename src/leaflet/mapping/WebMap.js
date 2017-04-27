@@ -1,5 +1,8 @@
+require('../core/Base');
 var fetchJsonp = require('fetch-jsonp');
-WebMap = L.LayerGroup.extend({
+var L = require("leaflet");
+var Util = require('../core/Util');
+var WebMap = L.LayerGroup.extend({
     options: {
         map: 'map',
         server: 'www.supermapol.com',
@@ -104,7 +107,7 @@ WebMap = L.LayerGroup.extend({
     getResolutionsFromScales: function (scales, dpi, units, datum) {
         var resolutions = [];
         for (var i = 0; i < scales.length; i++) {
-            resolutions.push(L.Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
+            resolutions.push(Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
         }
         return resolutions;
     },
@@ -226,7 +229,7 @@ WebMap = L.LayerGroup.extend({
             var ll = crs.unproject(L.point(coords[0], coords[1]));
             return new L.LatLng(ll.lat, ll.lng, coords[2]);
         };
-        var layer = L.geoJSON(L.Util.toGeoJSON(layerInfo.markers), {
+        var layer = L.geoJSON(Util.toGeoJSON(layerInfo.markers), {
             coordsToLatLng: coordsToLatLng, style: style,
             opacity: opacity
         });
@@ -249,7 +252,7 @@ WebMap = L.LayerGroup.extend({
             return new L.LatLng(ll.lat, ll.lng, coords[2]);
         };
         if (!layerInfo.url) {
-            var layer = L.geoJSON(L.Util.toGeoJSON(layerInfo.features), {
+            var layer = L.geoJSON(Util.toGeoJSON(layerInfo.features), {
                 coordsToLatLng: coordsToLatLng, style: style,
                 opacity: opacity
             });
@@ -307,3 +310,5 @@ WebMap = L.LayerGroup.extend({
 L.supermap.webmap = function (id, options) {
     return new WebMap(id, options);
 };
+
+module.exports = WebMap;

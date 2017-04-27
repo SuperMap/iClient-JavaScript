@@ -4,6 +4,7 @@
  */
 require('./NetworkAnalystServiceBase');
 require('./UpdateEdgeWeightParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.UpdateEdgeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -114,6 +115,4 @@ SuperMap.REST.UpdateEdgeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnal
     CLASS_NAME: "SuperMap.REST.UpdateEdgeWeightService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.UpdateEdgeWeightService(url, options);
-};
+module.exports = SuperMap.REST.UpdateEdgeWeightService;

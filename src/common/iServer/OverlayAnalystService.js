@@ -10,6 +10,7 @@
 require('./ServiceBase');
 require('./DatasetOverlayAnalystParameters');
 require('./GeometryOverlayAnalystParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -64,7 +65,7 @@ SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * params - {<SuperMap.OverlayAnalystParameters>}
      */
     processAsync: function (parameter) {
-        var parameterObject = new Object();
+        var parameterObject = {};
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);
@@ -105,6 +106,4 @@ SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
     CLASS_NAME: "SuperMap.REST.OverlayAnalystService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.OverlayAnalystService(url, options);
-};
+module.exports = SuperMap.REST.OverlayAnalystService;

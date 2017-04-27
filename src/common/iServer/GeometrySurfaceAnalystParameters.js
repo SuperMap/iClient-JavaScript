@@ -6,8 +6,8 @@
  * Inherits from:
  *  - <SurfaceAnalystParameters>
  */
-
 require('./SurfaceAnalystParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.GeometrySurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnalystParameters, {
 
     /**
@@ -64,6 +64,4 @@ SuperMap.GeometrySurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnaly
     CLASS_NAME: "SuperMap.GeometrySurfaceAnalystParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.GeometrySurfaceAnalystParameters(options);
-};
+module.exports = SuperMap.GeometrySurfaceAnalystParameters;

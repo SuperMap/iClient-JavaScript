@@ -3,7 +3,7 @@
  * 地区太阳辐射参数类。
  *
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.AreaSolarRadiationParameters = SuperMap.Class({
 
     /**
@@ -155,7 +155,7 @@ SuperMap.AreaSolarRadiationParameters = SuperMap.Class({
 });
 
 SuperMap.AreaSolarRadiationParameters.toObject = function (derrainCurvatureCalculationParameters, tempObj) {
-    var parameter = new Object();
+    var parameter = {};
     for (var name in derrainCurvatureCalculationParameters) {
         if (name !== "dataset") {
             if (name === "latitude" || name === "timeMode" || name === "dayStart" ||
@@ -171,6 +171,4 @@ SuperMap.AreaSolarRadiationParameters.toObject = function (derrainCurvatureCalcu
     tempObj["parameter"] = parameter;
 };
 
-module.exports = function (options) {
-    return new SuperMap.AreaSolarRadiationParameters(options);
-};
+module.exports = SuperMap.AreaSolarRadiationParameters;

@@ -8,9 +8,11 @@
  *      })
  */
 require('./ServiceBase');
-require('../../common/iServer/StopQueryService');
-require('../../common/iServer/TransferPathService');
-require('../../common/iServer/TransferSolutionService');
+var ol = require('openlayers');
+var Util = require('../core/Util');
+var StopQueryService = require('../../common/iServer/StopQueryService');
+var TransferPathService = require('../../common/iServer/TransferPathService');
+var TransferSolutionService = require('../../common/iServer/TransferSolutionService');
 
 ol.supermap.TrafficTransferAnalystService = function (url, options) {
     ol.supermap.ServiceBase.call(this, url, options);
@@ -26,7 +28,7 @@ ol.inherits(ol.supermap.TrafficTransferAnalystService, ol.supermap.ServiceBase);
  */
 ol.supermap.TrafficTransferAnalystService.prototype.queryStop = function (params, callback) {
     var me = this;
-    var stopQueryService = new SuperMap.REST.StopQueryService(me.options.url, {
+    var stopQueryService = new StopQueryService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -45,7 +47,7 @@ ol.supermap.TrafficTransferAnalystService.prototype.queryStop = function (params
  */
 ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath = function (params, callback) {
     var me = this;
-    var transferPathService = new SuperMap.REST.TransferPathService(me.options.url, {
+    var transferPathService = new TransferPathService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -64,7 +66,7 @@ ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath = funct
  */
 ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution = function (params, callback) {
     var me = this;
-    var transferSolutionService = new SuperMap.REST.TransferSolutionService(me.options.url, {
+    var transferSolutionService = new TransferSolutionService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -79,10 +81,10 @@ ol.supermap.TrafficTransferAnalystService.prototype._processParams = function (p
     if (!params) {
         return {};
     }
-    if (params.transferLines && !ol.supermap.Util.isArray(params.transferLines)) {
+    if (params.transferLines && !Util.isArray(params.transferLines)) {
         params.transferLines = [params.transferLines];
     }
-    if (params.points && ol.supermap.Util.isArray(params.points)) {
+    if (params.points && Util.isArray(params.points)) {
         params.points.map(function (point, key) {
             params.points[key] = (point instanceof ol.geom.Point) ? {
                 x: point.flatCoordinates[0],

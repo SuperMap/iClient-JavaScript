@@ -7,10 +7,11 @@
  *  - <SuperMap.ServiceBase>
  */
 require('./ServiceBase');
-require('./ServerTheme');
-require('./Grid');
-require('./Image');
-require('./Vector');
+var SuperMap = require('../SuperMap');
+var ServerTheme = require('./ServerTheme');
+var Grid = require('./Grid');
+var Image = require('./Image');
+var Vector = require('./Vector');
 SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -90,7 +91,7 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
         layers = existRes ? result[0].subLayers.layers : null;
         len = layers ? layers.length : 0;
         me.handleLayers(len, layers);
-        me.events.triggerEvent("processCompleted", {result:result[0]});
+        me.events.triggerEvent("processCompleted", {result: result[0]});
     },
 
     /**
@@ -113,22 +114,22 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
                     var type = layers[i].ugcLayerType;
                     switch (type) {
                         case 'THEME':
-                            tempLayer = new SuperMap.ServerTheme();
+                            tempLayer = new ServerTheme();
                             tempLayer.fromJson(layers[i]);
                             layers[i] = tempLayer;
                             break;
                         case 'GRID':
-                            tempLayer = new SuperMap.Grid();
+                            tempLayer = new Grid();
                             tempLayer.fromJson(layers[i]);
                             layers[i] = tempLayer;
                             break;
                         case 'IMAGE':
-                            tempLayer = new SuperMap.Image();
+                            tempLayer = new Image();
                             tempLayer.fromJson(layers[i]);
                             layers[i] = tempLayer;
                             break;
                         case 'VECTOR':
-                            tempLayer = new SuperMap.Vector();
+                            tempLayer = new Vector();
                             tempLayer.fromJson(layers[i]);
                             layers[i] = tempLayer;
                             break;
@@ -142,6 +143,4 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.GetLayersInfoService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.GetLayersInfoService(url, options);
-};
+module.exports = SuperMap.REST.GetLayersInfoService;

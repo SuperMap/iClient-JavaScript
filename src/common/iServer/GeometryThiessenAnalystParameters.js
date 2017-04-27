@@ -6,8 +6,8 @@
  * Inherits from:
  *  - <SuperMap.ThiessenAnalystParameters>
  */
-
 require('./ThiessenAnalystParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.GeometryThiessenAnalystParameters = SuperMap.Class(SuperMap.ThiessenAnalystParameters, {
 
     /**
@@ -63,6 +63,4 @@ SuperMap.GeometryThiessenAnalystParameters.toObject = function (geometryThiessen
     }
 };
 
-module.exports = function (options) {
-    return new SuperMap.GeometryThiessenAnalystParameters(options);
-};
+module.exports = SuperMap.GeometryThiessenAnalystParameters;

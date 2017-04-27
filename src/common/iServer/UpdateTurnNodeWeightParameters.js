@@ -2,6 +2,7 @@
  * Class:SuperMap.UpdateTurnNodeWeightParameters
  * 转向耗费权重更新服务参数类
  * */
+var SuperMap = require('../SuperMap');
 SuperMap.UpdateTurnNodeWeightParameters = SuperMap.Class({
     /**
      * APIProperty:  nodeId
@@ -72,6 +73,4 @@ SuperMap.UpdateTurnNodeWeightParameters = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.UpdateTurnNodeWeightParameters"
 });
-module.exports = function (options) {
-    return new SuperMap.UpdateTurnNodeWeightParameters(options);
-};
+module.exports = SuperMap.UpdateTurnNodeWeightParameters;

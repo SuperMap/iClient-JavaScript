@@ -10,19 +10,17 @@
  * Inherits from:
  *  - <SuperMap.Theme>
  */
-
+require('../REST');
 require('./Theme');
-require('./ThemeFlow');
-require('./ThemeOffset');
 require('./ThemeLabelItem');
 require('./ThemeLabelUniqueItem');
-require('./ThemeLabelText');
-require('./LabelImageCell');
-require('./LabelSymbolCell');
-require('./LabelThemeCell');
-require('./ThemeLabelAlongLine');
-require('./ThemeLabelBackground');
 
+var SuperMap = require('../SuperMap');
+var ThemeFlow = require('./ThemeFlow');
+var ThemeOffset = require('./ThemeOffset');
+var ThemeLabelText = require('./ThemeLabelText');
+var ThemeLabelAlongLine = require('./ThemeLabelAlongLine');
+var ThemeLabelBackground = require('./ThemeLabelBackground');
 SuperMap.ThemeLabel = SuperMap.Class(SuperMap.Theme, {
 
     /**
@@ -160,11 +158,11 @@ SuperMap.ThemeLabel = SuperMap.Class(SuperMap.Theme, {
      */
     initialize: function (options) {
         var me = this;
-        me.alongLine = new SuperMap.ThemeLabelAlongLine();
-        me.background = new SuperMap.ThemeLabelBackground();
-        me.flow = new SuperMap.ThemeFlow();
-        me.offset = new SuperMap.ThemeOffset();
-        me.text = new SuperMap.ThemeLabelText();
+        me.alongLine = new ThemeLabelAlongLine();
+        me.background = new ThemeLabelBackground();
+        me.flow = new ThemeFlow();
+        me.offset = new ThemeOffset();
+        me.text = new ThemeLabelText();
         SuperMap.Theme.prototype.initialize.apply(this, ["LABEL", options]);
         if (options) {
             SuperMap.Util.extend(this, options);
@@ -233,7 +231,7 @@ SuperMap.ThemeLabel = SuperMap.Class(SuperMap.Theme, {
      * 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject: function () {
-        var obj = new Object();
+        var obj = {};
         obj.type = this.type;
         obj.memoryData = this.memoryData;
         if (this.alongLine) {
@@ -316,6 +314,4 @@ SuperMap.ThemeLabel.fromObj = function (obj) {
     lab.text = SuperMap.ThemeLabelText.fromObj(obj);
     return lab;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeLabel(options);
-};
+module.exports = SuperMap.ThemeLabel;

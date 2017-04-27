@@ -1,3 +1,5 @@
+require('../core/Base');
+var ol = require('openlayers');
 ol.source.Baidu = function (opt_options) {
 
     var options = opt_options || {};
@@ -39,8 +41,7 @@ ol.source.Baidu = function (opt_options) {
         return ol.source.Baidu.defaultTileGrid();
     }
 
-}
-;
+};
 ol.inherits(ol.source.Baidu, ol.source.TileImage);
 ol.source.Baidu.defaultTileGrid = function () {
     var tileGird = new ol.tilegrid.TileGrid({
@@ -49,6 +50,7 @@ ol.source.Baidu.defaultTileGrid = function () {
         origin: [0, 0],
         minZoom: 3,
 
-    })
+    });
     return tileGird;
-}
+};
+module.exports = ol.source.Baidu;

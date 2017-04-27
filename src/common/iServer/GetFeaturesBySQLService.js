@@ -2,12 +2,13 @@
  * Class: SuperMap.REST.GetFeaturesBySQLService
  * 数据服务中数据集 SQL 查询服务类。
  * 在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
- * 
+ *
  * Inherits from:
  *  - <SuperMap.REST.GetFeaturesServiceBase>
  */
 require('./GetFeaturesServiceBase');
 require('./GetFeaturesBySQLParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
     /**
@@ -15,7 +16,7 @@ SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeatures
      * SQL 查询服务类构造函数。
      *
      * 例如：
-     * (start code)     
+     * (start code)
      * var myGetFeaturesBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url, {
      *     eventListeners: {
      *         "processCompleted": GetFeaturesCompleted, 
@@ -35,18 +36,18 @@ SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeatures
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function(url, options) {
+    initialize: function (url, options) {
         SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
-    
+
     /**
      * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。  
+     * 释放资源，将引用资源的属性置空。
      */
-    destroy: function() {
+    destroy: function () {
         SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
-    
+
     /**
      * Method: getJsonParameters
      * 将查询参数转化为 JSON 字符串。
@@ -58,13 +59,11 @@ SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeatures
      * Returns:
      * {Object} 转化后的 JSON 字符串。
      */
-    getJsonParameters: function(params) {
-        return  SuperMap.GetFeaturesBySQLParameters.toJsonParameters(params);
+    getJsonParameters: function (params) {
+        return SuperMap.GetFeaturesBySQLParameters.toJsonParameters(params);
     },
-    
+
     CLASS_NAME: "SuperMap.REST.GetFeaturesBySQLService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.GetFeaturesBySQLService(url, options);
-};
+module.exports = SuperMap.REST.GetFeaturesBySQLService;

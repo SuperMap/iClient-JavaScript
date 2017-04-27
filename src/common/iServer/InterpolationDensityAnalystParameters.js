@@ -1,13 +1,13 @@
-﻿
-require('./InterpolationAnalystParameters');
-require('./ThiessenAnalystParameters');
-/**
+﻿/**
  * Class: SuperMap.InterpolationDensityAnalystParameters
  * 点密度差值分析参数类
  *
  * Inherits from:
  *  - <SuperMap.InterpolationAnalystParameters>
  */
+require('./InterpolationAnalystParameters');
+require('./ThiessenAnalystParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.InterpolationDensityAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
 
     /**
@@ -63,6 +63,4 @@ SuperMap.InterpolationDensityAnalystParameters = SuperMap.Class(SuperMap.Interpo
     CLASS_NAME: "SuperMap.InterpolationDensityAnalystParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.InterpolationDensityAnalystParameters(options);
-};
+module.exports = SuperMap.InterpolationDensityAnalystParameters;

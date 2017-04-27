@@ -6,8 +6,9 @@
  * Inherits from:
  *  - <SuperMap.QueryParameters>
  */
-
+require('../REST');
 require('./QueryParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.QueryByGeometryParameters = SuperMap.Class(SuperMap.QueryParameters, {
 
     /**
@@ -71,6 +72,4 @@ SuperMap.QueryByGeometryParameters = SuperMap.Class(SuperMap.QueryParameters, {
 
     CLASS_NAME: "SuperMap.QueryByGeometryParameters"
 });
-module.exports = function (options) {
-    return new SuperMap.QueryByGeometryParameters(options);
-};
+module.exports = SuperMap.QueryByGeometryParameters;

@@ -8,6 +8,7 @@
  */
 require('./ServiceBase');
 require('./SetLayerInfoParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -73,6 +74,4 @@ SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.SetLayerInfoService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.SetLayerInfoService(url, options);
-};
+module.exports = SuperMap.REST.SetLayerInfoService;

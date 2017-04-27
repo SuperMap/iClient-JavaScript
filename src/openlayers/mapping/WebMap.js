@@ -1,6 +1,6 @@
+require('../core/Base');
 var fetchJsonp = require('fetch-jsonp');
-
-
+var ol = require('openlayers');
 ol.supermap.WebMap = function (id, options) {
     ol.Observable.call(this);
     this.id = id;
@@ -10,7 +10,7 @@ ol.supermap.WebMap = function (id, options) {
     this.server = options.server || 'www.supermapol.com';
     this.token = options.token;
     this.load();
-}
+};
 ol.inherits(ol.supermap.WebMap, ol.Observable);
 
 ol.supermap.WebMap.prototype.load = function () {

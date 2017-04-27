@@ -3,6 +3,8 @@
  * 交通换乘方案查询参数类。
  */
 
+require('../REST');
+var SuperMap = require('../SuperMap');
 SuperMap.TransferSolutionParameters = SuperMap.Class({
     /**
      * APIProperty: solutionCount
@@ -130,6 +132,4 @@ SuperMap.TransferSolutionParameters.toJson = function (params) {
     }
 };
 
-module.exports = function (options) {
-    return new SuperMap.TransferSolutionParameters(options);
-};
+module.exports = SuperMap.TransferSolutionParameters;

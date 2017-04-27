@@ -2,7 +2,7 @@
  * Class: SuperMap.StopQueryParameters
  * 站点查询参数类。
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.StopQueryParameters = SuperMap.Class({
     /**
      * APIProperty: keyWord
@@ -43,6 +43,4 @@ SuperMap.StopQueryParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.StopQueryParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.StopQueryParameters(options);
-};
+module.exports = SuperMap.StopQueryParameters;

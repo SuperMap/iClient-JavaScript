@@ -3,9 +3,9 @@
  * 标签中文本风格类。
  * 通过该类可以设置标签中的文本字体大小和显示风格。
  */
-
-require('./ServerTextStyle');
 require('./LabelMixedTextStyle');
+var SuperMap = require('../SuperMap');
+var ServerTextStyle = require('./ServerTextStyle');
 SuperMap.ThemeLabelText = SuperMap.Class({
 
     /**
@@ -69,7 +69,7 @@ SuperMap.ThemeLabelText = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.uniformStyle = new SuperMap.ServerTextStyle();
+        me.uniformStyle = new ServerTextStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -105,6 +105,4 @@ SuperMap.ThemeLabelText.fromObj = function (obj) {
     res.uniformMixedStyle = SuperMap.LabelMixedTextStyle.fromObj(obj.uniformMixedStyle);
     return res;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeLabelText(options);
-};
+module.exports = SuperMap.ThemeLabelText;

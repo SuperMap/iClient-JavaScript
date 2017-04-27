@@ -6,6 +6,7 @@
  *  - <SuperMap.ServiceBase>
  */
 require('./ServiceBase');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -85,6 +86,4 @@ SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.GetFieldsService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.GetFieldsService(url, options);
-};
+module.exports = SuperMap.REST.GetFieldsService;

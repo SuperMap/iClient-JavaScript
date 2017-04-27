@@ -5,8 +5,8 @@
  * Inherits from:
  *  - <SuperMap.InterpolationAnalystParameters>
  */
-
 require('./InterpolationAnalystParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.InterpolationIDWAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
     /**
      * APIProperty: power
@@ -97,6 +97,4 @@ SuperMap.InterpolationIDWAnalystParameters = SuperMap.Class(SuperMap.Interpolati
     CLASS_NAME: "SuperMap.InterpolationIDWAnalystParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.InterpolationIDWAnalystParameters(options);
-};
+module.exports = SuperMap.InterpolationIDWAnalystParameters;

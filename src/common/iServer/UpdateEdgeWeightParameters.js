@@ -2,7 +2,7 @@
  * Class:SuperMap.UpdateEdgeWeightParameters
  * 边的耗费权重更新服务参数类
  * */
-
+var SuperMap = require('../SuperMap');
 SuperMap.UpdateEdgeWeightParameters = SuperMap.Class({
     /**
      * APIProperty: edgeId
@@ -72,6 +72,4 @@ SuperMap.UpdateEdgeWeightParameters = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.UpdateEdgeWeightParameters"
 });
-module.exports = function (options) {
-    return new SuperMap.UpdateEdgeWeightParameters(options);
-};
+module.exports = SuperMap.UpdateEdgeWeightParameters;

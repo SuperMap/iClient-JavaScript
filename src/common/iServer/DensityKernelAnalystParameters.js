@@ -1,9 +1,8 @@
 /**
  * Class: SuperMap.DensityKernelAnalystParameters
  * 核密度分析参数类
- *
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.DensityKernelAnalystParameters = SuperMap.Class({
 
     /**
@@ -110,6 +109,4 @@ SuperMap.DensityKernelAnalystParameters.toObject = function (densityKernelAnalys
     }
 };
 
-module.exports = function (options) {
-    return new SuperMap.DensityKernelAnalystParameters(options);
-};
+module.exports = SuperMap.DensityKernelAnalystParameters;

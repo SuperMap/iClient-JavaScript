@@ -1,7 +1,8 @@
 /**
  * Online myData服务
  */
-require('../util/Request');
+var SuperMap = require('../SuperMap');
+var Request = require('../util/Request');
 SuperMap.OnlineData = SuperMap.Class({
     //MD5
     MD5: null,
@@ -77,7 +78,7 @@ SuperMap.OnlineData = SuperMap.Class({
             return;
         }
         var me = this;
-        return SuperMap.Request.get(this.serviceUrl).then(function (result) {
+        return Request.get(this.serviceUrl).then(function (result) {
             SuperMap.Util.extend(me, result);
         });
     },
@@ -97,6 +98,4 @@ SuperMap.OnlineData = SuperMap.Class({
 
 })
 ;
-module.exports = function (serviceRootUrl, options) {
-    return new SuperMap.OnlineData(serviceRootUrl, options);
-};
+module.exports = SuperMap.OnlineData;

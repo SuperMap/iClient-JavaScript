@@ -1,3 +1,4 @@
+var SuperMap = require('../SuperMap');
 SuperMap.iPortalServicesQueryParam = SuperMap.Class({
 
     tags: [],
@@ -19,11 +20,9 @@ SuperMap.iPortalServicesQueryParam = SuperMap.Class({
     initialize: function (params) {
         params = params || {};
         SuperMap.Util.extend(this, params);
-    },
+    }
 
 });
 
-module.exports = function (params) {
-    return new SuperMap.iPortalServicesQueryParam(params);
-};
+module.exports = SuperMap.iPortalServicesQueryParam;
 

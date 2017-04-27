@@ -4,6 +4,7 @@
  */
 require('../core/Base');
 require('../../common/util/Request');
+var ol = require('openlayers');
 
 ol.supermap.ServiceBase = function (url, options) {
     ol.Observable.call(this);

@@ -11,6 +11,7 @@
  * 目前版本支持的数据集主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD
  * 数据集）、网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
  */
+var SuperMap = require('../SuperMap');
 SuperMap.DatasetInfo = SuperMap.Class({
 
     /**
@@ -121,6 +122,4 @@ SuperMap.DatasetInfo = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.DatasetInfo"
 });
-module.exports = function (options) {
-    return new SuperMap.DatasetInfo(options);
-};
+module.exports = SuperMap.DatasetInfo;

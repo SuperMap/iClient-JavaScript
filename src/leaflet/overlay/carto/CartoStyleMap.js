@@ -2,6 +2,7 @@
  * CartoCSS中的style属性名与leaflet的style属性名的对应表
  * */
 require('../../core/Base');
+var L = require("leaflet");
 L.supermap.CartoStyleMap = {
     "TEXT": {
         "text-size": "fontSize",

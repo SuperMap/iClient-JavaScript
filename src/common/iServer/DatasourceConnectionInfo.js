@@ -7,7 +7,8 @@
  * 对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，其 他内容是不可以被修改的。
  * 对于用户创建的数据源连接信息对象，其内容都可以修改。
  */
-
+require('../REST');
+var SuperMap = require('../SuperMap');
 SuperMap.DatasourceConnectionInfo = SuperMap.Class({
 
     /**
@@ -136,6 +137,4 @@ SuperMap.DatasourceConnectionInfo = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.DatasourceConnectionInfo"
 });
-module.exports = function (options) {
-    return new SuperMap.DatasourceConnectionInfo(options);
-};
+module.exports = SuperMap.DatasourceConnectionInfo;

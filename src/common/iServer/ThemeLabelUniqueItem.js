@@ -5,8 +5,8 @@
  * 字段指定用于单值的字段，同一值的标签具有相同的显示风格，其中每一个值就是一个专题图子项，
  * 每一个子项都具有其名称、风格、指定的单值、X方向偏移量和Y方向偏移量。
  */
-
-require('./ServerTextStyle');
+var SuperMap = require('../SuperMap');
+var ServerTextStyle = require('./ServerTextStyle');
 SuperMap.ThemeLabelUniqueItem = SuperMap.Class({
 
     /**
@@ -61,7 +61,7 @@ SuperMap.ThemeLabelUniqueItem = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.style = new SuperMap.ServerTextStyle();
+        me.style = new ServerTextStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -92,6 +92,4 @@ SuperMap.ThemeLabelUniqueItem.fromObj = function (obj) {
     SuperMap.Util.copy(t, obj);
     return t;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeLabelUniqueItem(options);
-};
+module.exports = SuperMap.ThemeLabelUniqueItem;

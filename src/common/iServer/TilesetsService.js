@@ -5,7 +5,9 @@
  * Inherits from:
  *  - <SuperMap.ServiceBase>
  */
+
 require('./ServiceBase');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
 
 
@@ -59,6 +61,4 @@ SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.TilesetsService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.TilesetsService(url, options);
-};
+module.exports = SuperMap.REST.TilesetsService;

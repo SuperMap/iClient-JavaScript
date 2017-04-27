@@ -10,6 +10,8 @@
  */
 require('./NetworkAnalystServiceBase');
 require('./FindLocationParameters');
+var SuperMap = require('../SuperMap');
+var GeoJSONFormat = require('../format/GeoJSON');
 SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -110,12 +112,13 @@ SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
         if (!result) {
             return null;
         }
-        var geoJSONFormat = new SuperMap.Format.GeoJSON();
+        var geoJSONFormat = new GeoJSONFormat();
         if (result.demandResults) {
             result.demandResults = JSON.parse(geoJSONFormat.write(result.demandResults));
         }
         if (result.supplyResults) {
-            result.supplyResults = JSON.parse(geoJSONFormat.write(result.supplyResults)); }
+            result.supplyResults = JSON.parse(geoJSONFormat.write(result.supplyResults));
+        }
 
         return result;
     },
@@ -123,6 +126,4 @@ SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
     CLASS_NAME: "SuperMap.REST.FindLocationService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.FindLocationService(url, options);
-};
+module.exports = SuperMap.REST.FindLocationService;

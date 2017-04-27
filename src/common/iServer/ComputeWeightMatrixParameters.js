@@ -3,8 +3,8 @@
  * 耗费矩阵分析参数类。
  * 根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
  */
-
-require('./TransportationAnalystParameter');
+var SuperMap = require('../SuperMap');
+var TransportationAnalystParameter = require('./TransportationAnalystParameter');
 SuperMap.ComputeWeightMatrixParameters = SuperMap.Class({
 
     /**
@@ -41,7 +41,7 @@ SuperMap.ComputeWeightMatrixParameters = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.parameter = new SuperMap.TransportationAnalystParameter();
+        me.parameter = new TransportationAnalystParameter();
         if (!options) {
             return;
         }
@@ -64,6 +64,4 @@ SuperMap.ComputeWeightMatrixParameters = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.ComputeWeightMatrixParameters"
 });
-module.exports = function (options) {
-    return new SuperMap.ComputeWeightMatrixParameters(options);
-};
+module.exports = SuperMap.ComputeWeightMatrixParameters;

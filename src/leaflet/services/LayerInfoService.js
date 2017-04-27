@@ -6,13 +6,14 @@
  *           //doSomething
  *      })
  */
-require('./ServiceBase');
-require('../../common/iServer/GetLayersInfoService');
-require('../../common/iServer/SetLayerInfoService');
-require('../../common/iServer/SetLayersInfoService');
-require('../../common/iServer/SetLayerStatusService');
+var L = require("leaflet");
+var ServiceBase = require('./ServiceBase');
+var GetLayersInfoService = require('../../common/iServer/GetLayersInfoService');
+var SetLayerInfoService = require('../../common/iServer/SetLayerInfoService');
+var SetLayersInfoService = require('../../common/iServer/SetLayersInfoService');
+var SetLayerStatusService = require('../../common/iServer/SetLayerStatusService');
 
-LayerInfoService = ServiceBase.extend({
+var LayerInfoService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -20,7 +21,7 @@ LayerInfoService = ServiceBase.extend({
 
     getLayersInfo: function (callback) {
         var me = this;
-        var getLayersInfoService = new SuperMap.REST.GetLayersInfoService(me.options.url, {
+        var getLayersInfoService = new GetLayersInfoService(me.options.url, {
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback
@@ -51,7 +52,7 @@ LayerInfoService = ServiceBase.extend({
         var url = me.options.url.concat();
         url += "/tempLayersSet/" + tempLayerID + "/" + layerPath;
 
-        var setLayerInfoService = new SuperMap.REST.SetLayerInfoService(url, {
+        var setLayerInfoService = new SetLayerInfoService(url, {
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback
@@ -84,7 +85,7 @@ LayerInfoService = ServiceBase.extend({
         var layersInfoParam = {};
         layersInfoParam.subLayers = {};
         layersInfoParam.subLayers.layers = layersInfo;
-        var setLayersInfoService = new SuperMap.REST.SetLayersInfoService(me.options.url, {
+        var setLayersInfoService = new SetLayersInfoService(me.options.url, {
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback
@@ -110,7 +111,7 @@ LayerInfoService = ServiceBase.extend({
             return;
         }
         var me = this;
-        var setLayerStatusService = new SuperMap.REST.SetLayerStatusService(me.options.url, {
+        var setLayerStatusService = new SetLayerStatusService(me.options.url, {
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback
@@ -126,4 +127,4 @@ L.supermap.layerInfoService = function (url, options) {
     return new LayerInfoService(url, options);
 };
 
-module.exports = L.supermap.layerInfoService;
+module.exports = LayerInfoService;

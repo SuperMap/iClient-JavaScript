@@ -7,6 +7,7 @@
  */
 require('./QueryService');
 require('./QueryByGeometryParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService, {
 
     /**
@@ -63,7 +64,8 @@ SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService
             sg = SuperMap.REST.ServerGeometry.fromGeometry(geometry);
         qp = me.getQueryParameters(params);
         jsonParameters += "'queryMode':'SpatialQuery','queryParameters':";
-        jsonParameters += SuperMap.Util.toJSON(qp) + ",'geometry':" + SuperMap.Util.toJSON(sg) + ",'spatialQueryMode':" + SuperMap.Util.toJSON(params.spatialQueryMode);
+        jsonParameters += SuperMap.Util.toJSON(qp) + ",'geometry':" + SuperMap.Util.toJSON(sg)
+            + ",'spatialQueryMode':" + SuperMap.Util.toJSON(params.spatialQueryMode);
         jsonParameters = "{" + jsonParameters + "}";
         return jsonParameters;
     },
@@ -71,6 +73,4 @@ SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService
     CLASS_NAME: "SuperMap.REST.QueryByGeometryService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.QueryByGeometryService(url, options);
-};
+module.exports = SuperMap.REST.QueryByGeometryService;

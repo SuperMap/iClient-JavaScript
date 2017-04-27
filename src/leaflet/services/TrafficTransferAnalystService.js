@@ -8,12 +8,13 @@
  *           //doSomething
  *      })
  */
-require('./ServiceBase');
-require('../../common/iServer/StopQueryService');
-require('../../common/iServer/TransferPathService');
-require('../../common/iServer/TransferSolutionService');
+var L = require("leaflet");
+var ServiceBase = require('./ServiceBase');
+var StopQueryService = require('../../common/iServer/StopQueryService');
+var TransferPathService = require('../../common/iServer/TransferPathService');
+var TransferSolutionService = require('../../common/iServer/TransferSolutionService');
 
-TrafficTransferAnalystService = ServiceBase.extend({
+var TrafficTransferAnalystService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -27,7 +28,7 @@ TrafficTransferAnalystService = ServiceBase.extend({
      */
     queryStop: function (params, callback) {
         var me = this;
-        var stopQueryService = new SuperMap.REST.StopQueryService(me.options.url, {
+        var stopQueryService = new StopQueryService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -45,7 +46,7 @@ TrafficTransferAnalystService = ServiceBase.extend({
      */
     analysisTransferPath: function (params, callback) {
         var me = this;
-        var transferPathService = new SuperMap.REST.TransferPathService(me.options.url, {
+        var transferPathService = new TransferPathService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -63,7 +64,7 @@ TrafficTransferAnalystService = ServiceBase.extend({
      */
     analysisTransferSolution: function (params, callback) {
         var me = this;
-        var transferSolutionService = new SuperMap.REST.TransferSolutionService(me.options.url, {
+        var transferSolutionService = new TransferSolutionService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -92,4 +93,4 @@ L.supermap.trafficTransferAnalystService = function (url, options) {
     return new TrafficTransferAnalystService(url, options);
 };
 
-module.exports = L.supermap.trafficTransferAnalystService;
+module.exports = TrafficTransferAnalystService;

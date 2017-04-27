@@ -12,8 +12,8 @@
  * 字符分段范围相应的就是(-∞，1)，[1，3)，[3，4)，[4，9)，[9，+∞)，可以看出索引号为0的字符（即“珠” ）在第一个分段内，
  * 索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
  */
-
-require('./ServerTextStyle');
+var SuperMap = require('../SuperMap');
+var ServerTextStyle = require('./ServerTextStyle');
 SuperMap.LabelMixedTextStyle = SuperMap.Class({
 
     /**
@@ -69,7 +69,7 @@ SuperMap.LabelMixedTextStyle = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.defaultStyle = new SuperMap.ServerTextStyle();
+        me.defaultStyle = new ServerTextStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -105,16 +105,14 @@ SuperMap.LabelMixedTextStyle.fromObj = function (obj) {
     var res = new SuperMap.LabelMixedTextStyle();
     var stys = obj.styles;
     SuperMap.Util.copy(res, obj);
-    res.defaultStyle = new SuperMap.ServerTextStyle(obj.defaultStyle);
+    res.defaultStyle = new ServerTextStyle(obj.defaultStyle);
     if (stys) {
         res.styles = [];
         for (var i = 0, len = stys.length; i < len; i++) {
-            res.styles.push(new SuperMap.ServerTextStyle(stys[i]));
+            res.styles.push(new ServerTextStyle(stys[i]));
         }
     }
     return res;
 };
-module.exports = function (options) {
-    return new SuperMap.LabelMixedTextStyle(options);
-};
+module.exports = SuperMap.LabelMixedTextStyle;
 

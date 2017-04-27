@@ -7,6 +7,7 @@
  */
 require('./SpatialAnalystBase');
 require('./MathExpressionAnalysisParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -59,7 +60,7 @@ SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.Spati
             me.url += "/";
         }
 
-        var parameterObject = new Object();
+        var parameterObject = {};
 
         if (parameter instanceof SuperMap.MathExpressionAnalysisParameters) {
             me.url += 'datasets/' + parameter.dataset + '/mathanalyst';
@@ -86,6 +87,4 @@ SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.Spati
     CLASS_NAME: "SuperMap.REST.MathExpressionAnalysisService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.MathExpressionAnalysisService(url, options);
-};
+module.exports = SuperMap.REST.MathExpressionAnalysisService;

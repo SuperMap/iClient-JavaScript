@@ -9,14 +9,15 @@
  * Inherits from:
  *  - <SuperMap.Theme>
  */
-
+require('../REST');
 require('./Theme');
-require('./ThemeFlow');
-require('./ThemeOffset');
-require('./ThemeGraphAxes');
-require('./ThemeGraphSize');
-require('./ThemeGraphText');
-require('./ThemeGraphItem');
+var SuperMap = require('../SuperMap');
+var ThemeFlow = require('./ThemeFlow');
+var ThemeOffset = require('./ThemeOffset');
+var ThemeGraphAxes = require('./ThemeGraphAxes');
+var ThemeGraphSize = require('./ThemeGraphSize');
+var ThemeGraphText = require('./ThemeGraphText');
+var ThemeGraphItem = require('./ThemeGraphItem');
 SuperMap.ThemeGraph = SuperMap.Class(SuperMap.Theme, {
 
     /**
@@ -231,11 +232,11 @@ SuperMap.ThemeGraph = SuperMap.Class(SuperMap.Theme, {
      */
     initialize: function (options) {
         var me = this;
-        me.flow = new SuperMap.ThemeFlow();
-        me.graphAxes = new SuperMap.ThemeGraphAxes();
-        me.graphSize = new SuperMap.ThemeGraphSize();
-        me.graphText = new SuperMap.ThemeGraphText();
-        me.offset = new SuperMap.ThemeOffset();
+        me.flow = new ThemeFlow();
+        me.graphAxes = new ThemeGraphAxes();
+        me.graphSize = new ThemeGraphSize();
+        me.graphText = new ThemeGraphText();
+        me.offset = new ThemeOffset();
         SuperMap.Theme.prototype.initialize.apply(this, ["GRAPH", options]);
         if (options) {
             SuperMap.Util.extend(this, options);
@@ -303,7 +304,7 @@ SuperMap.ThemeGraph = SuperMap.Class(SuperMap.Theme, {
      * 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject: function () {
-        var obj = new Object();
+        var obj = {};
         obj.type = this.type;
         if (this.graphText) {
             obj.graphTextDisplayed = this.graphText.graphTextDisplayed;
@@ -363,6 +364,4 @@ SuperMap.ThemeGraph.fromObj = function (obj) {
     }
     return res;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeGraph(options);
-};
+module.exports = SuperMap.ThemeGraph;

@@ -2,7 +2,8 @@
  * Class: SuperMap.OverlayAnalystParameters
  * 叠加分析参数基类，数据集叠加分析参数和几何对象叠加分析参数均继承此基类
  */
-
+require('../REST');
+var SuperMap = require('../SuperMap');
 SuperMap.OverlayAnalystParameters = SuperMap.Class({
 
     /**
@@ -24,7 +25,7 @@ SuperMap.OverlayAnalystParameters = SuperMap.Class({
     initialize: function (options) {
         var me = this;
         if (options) {
-            SuperMap.Util.extend(this, options);
+            SuperMap.Util.extend(me, options);
         }
     },
 
@@ -40,6 +41,4 @@ SuperMap.OverlayAnalystParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.OverlayAnalystParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.OverlayAnalystParameters(options);
-};
+module.exports = SuperMap.OverlayAnalystParameters;

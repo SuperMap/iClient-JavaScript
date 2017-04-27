@@ -3,11 +3,13 @@
  * 距离测量服务
  */
 require('./ServiceBase');
-require('../../common/iServer/MeasureService');
+var ol = require('openlayers');
+var Util = require('../core/Util');
+var MeasureService = require('../../common/iServer/MeasureService');
 
 ol.supermap.MeasureService = function (url, options) {
     ol.supermap.ServiceBase.call(this, url, options);
-}
+};
 ol.inherits(ol.supermap.MeasureService, ol.supermap.ServiceBase);
 
 ol.supermap.MeasureService.prototype.measureDistance = function (params, callback) {
@@ -20,7 +22,7 @@ ol.supermap.MeasureService.prototype.measureArea = function (params, callback) {
 
 ol.supermap.MeasureService.prototype.measure = function (params, type, callback) {
     var me = this;
-    var measureService = new SuperMap.REST.MeasureService(me.options.url, {
+    var measureService = new MeasureService(me.options.url, {
         measureMode: type,
         eventListeners: {
             scope: me,
@@ -34,7 +36,7 @@ ol.supermap.MeasureService.prototype.measure = function (params, type, callback)
 
 ol.supermap.MeasureService.prototype._processParam = function (params) {
     if (params && params.geometry) {
-        params.geometry = ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
+        params.geometry = Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
     }
     return params;
 };

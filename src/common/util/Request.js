@@ -1,6 +1,6 @@
 require("whatwg-fetch");
 var fetchJsonp = require('fetch-jsonp');
-
+var SuperMap = require('../SuperMap');
 SuperMap.Support = {
     cors: ((window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()))
 };
@@ -120,5 +120,5 @@ SuperMap.Request = {
         return paramsArray.join("&");
     }
 
-}
+};
 module.exports = SuperMap.Request;

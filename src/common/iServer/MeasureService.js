@@ -6,8 +6,10 @@
  * Inherits from:
  *  - <SuperMap.ServiceBase>
  */
+require('../REST');
 require('./ServiceBase');
 require('./MeasureParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -126,6 +128,4 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.MeasureService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.MeasureService(url, options);
-};
+module.exports = SuperMap.REST.MeasureService;

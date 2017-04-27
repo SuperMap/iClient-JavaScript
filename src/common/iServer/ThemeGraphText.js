@@ -3,8 +3,9 @@
  * 统计图文字标注风格类。
  * 通过该类可以设置统计图表中文字可见性以及标注风格。
  */
-
-require('./ServerTextStyle');
+require('../REST');
+var SuperMap = require('../SuperMap');
+var ServerTextStyle = require('./ServerTextStyle');
 SuperMap.ThemeGraphText = SuperMap.Class({
 
     /**
@@ -39,7 +40,7 @@ SuperMap.ThemeGraphText = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.graphTextStyle = new SuperMap.ServerTextStyle();
+        me.graphTextStyle = new ServerTextStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -68,6 +69,4 @@ SuperMap.ThemeGraphText.fromObj = function (obj) {
     return res;
 
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeGraphText(options);
-};
+module.exports = SuperMap.ThemeGraphText;

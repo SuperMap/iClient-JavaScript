@@ -6,8 +6,8 @@
  * Inherits from:
  *  - <SuperMap.OverlayAnalystParameters>
  */
-
 require('./OverlayAnalystParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.GeometryOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalystParameters, {
 
     /**
@@ -77,6 +77,4 @@ SuperMap.GeometryOverlayAnalystParameters.toObject = function (geometryOverlayAn
     }
 };
 
-module.exports = function (options) {
-    return new SuperMap.GeometryOverlayAnalystParameters(options);
-};
+module.exports = SuperMap.GeometryOverlayAnalystParameters;

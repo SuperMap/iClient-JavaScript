@@ -3,8 +3,8 @@
  * 等级符号专题图正负零值显示风格类。
  * 通过该类可以设置正值的显示风格，零值和或负值的显示风格以及是否显示零值和或负值对应的等级符号。
  */
-
-require('./ServerStyle');
+var SuperMap = require('../SuperMap');
+var ServerStyle = require('./ServerStyle');
 SuperMap.ThemeGraduatedSymbolStyle = SuperMap.Class({
 
     /**
@@ -53,9 +53,9 @@ SuperMap.ThemeGraduatedSymbolStyle = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.negativeStyle = new SuperMap.ServerStyle();
-        me.positiveStyle = new SuperMap.ServerStyle();
-        me.zeroStyle = new SuperMap.ServerStyle();
+        me.negativeStyle = new ServerStyle();
+        me.positiveStyle = new ServerStyle();
+        me.zeroStyle = new ServerStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -85,6 +85,5 @@ SuperMap.ThemeGraduatedSymbolStyle.fromObj = function (obj) {
     res.zeroStyle = SuperMap.ServerStyle.fromJson(obj.zeroStyle);
     return res;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeGraduatedSymbolStyle(options);
-};
+module.exports = SuperMap.ThemeGraduatedSymbolStyle;
+

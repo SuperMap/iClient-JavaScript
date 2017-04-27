@@ -7,6 +7,7 @@
  */
 require('./QueryService');
 require('./QueryBySQLParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
 
     /**
@@ -76,6 +77,4 @@ SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
     CLASS_NAME: "SuperMap.REST.QueryBySQLService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.QueryBySQLService(url, options);
-};
+module.exports = SuperMap.REST.QueryBySQLService;

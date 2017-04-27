@@ -2,8 +2,8 @@
  * Class: SuperMap.TransferPathParameters
  * 交通换乘线路查询参数类。
  */
-
 require('./TransferLine');
+var SuperMap = require('../SuperMap');
 SuperMap.TransferPathParameters = SuperMap.Class({
     /**
      * APIProperty: transferLines
@@ -62,6 +62,4 @@ SuperMap.TransferPathParameters.toJson = function (params) {
     }
 };
 
-module.exports = function (options) {
-    return new SuperMap.TransferPathParameters(options);
-};
+module.exports = SuperMap.TransferPathParameters;

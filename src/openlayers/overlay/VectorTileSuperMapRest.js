@@ -2,6 +2,8 @@ require('../core/Base');
 require('./vectortile/VectorTileStyles');
 require('./vectortile/StyleMap');
 require('./vectortile/DeafultCanvasStyle');
+var ol = require('openlayers');
+var SuperMap = require('../../common/SuperMap');
 
 ol.supermap.VectorTileSuperMapRest = function (options) {
     if (options.url === undefined) {

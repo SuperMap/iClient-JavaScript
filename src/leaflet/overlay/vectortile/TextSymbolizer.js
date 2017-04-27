@@ -1,4 +1,7 @@
 require('./Symbolizer');
+require('./CanvasRenderer');
+require('./SVGRenderer');
+var L = require("leaflet");
 L.TextSymbolizer = L.Path.extend({
     includes: L.Symbolizer.prototype,
 
@@ -169,3 +172,4 @@ L.SVG.Renderer.include({
         }
     }
 });
+module.exports = L.TextSymbolizer;

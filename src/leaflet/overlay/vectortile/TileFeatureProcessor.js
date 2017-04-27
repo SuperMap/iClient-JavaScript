@@ -3,6 +3,8 @@
  */
 require("../../core/Base");
 require("./VectorFeatureType");
+var L = require("leaflet");
+var Util=require("../../core/Util");
 L.supermap.TileFeatureProcessor = {
     processTileFeature: function (recordSets) {
         if (!recordSets || recordSets.length < 1) {
@@ -100,7 +102,7 @@ L.supermap.TileFeatureProcessor = {
                 }
                 feature.geometry.points = points;
             }
-            recordset.features = L.Util.toGeoJSON(recordset.features).features;
+            recordset.features = Util.toGeoJSON(recordset.features).features;
         }
         return recordsets;
     }

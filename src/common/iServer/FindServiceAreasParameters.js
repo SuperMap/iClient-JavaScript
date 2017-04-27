@@ -4,8 +4,8 @@
  * 服务区分析是以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
  * 例如：计算某快餐店能够在30分钟内送达快餐的区域。
  */
-
-require('./TransportationAnalystParameter');
+var SuperMap = require('../SuperMap');
+var TransportationAnalystParameter = require('./TransportationAnalystParameter');
 SuperMap.FindServiceAreasParameters = SuperMap.Class({
 
     /**
@@ -71,7 +71,7 @@ SuperMap.FindServiceAreasParameters = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.parameter = new SuperMap.TransportationAnalystParameter();
+        me.parameter = new TransportationAnalystParameter();
         if (!options) {
             return;
         }
@@ -97,6 +97,4 @@ SuperMap.FindServiceAreasParameters = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.FindServiceAreasParameters"
 });
-module.exports = function (options) {
-    return new SuperMap.FindServiceAreasParameters(options);
-};
+module.exports = SuperMap.FindServiceAreasParameters;

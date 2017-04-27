@@ -8,6 +8,7 @@
  */
 require('./SpatialAnalystBase');
 require('./RouteCalculateMeasureParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -134,6 +135,4 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
     CLASS_NAME: "SuperMap.REST.RouteCalculateMeasureService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.RouteCalculateMeasureService(url, options);
-};
+module.exports = SuperMap.REST.RouteCalculateMeasureService;

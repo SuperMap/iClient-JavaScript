@@ -11,6 +11,8 @@
  */
 require('./NetworkAnalystServiceBase');
 require('./FindClosestFacilitiesParameters');
+var SuperMap = require('../SuperMap');
+var GeoJSONFormat = require('../format/GeoJSON');
 SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -121,7 +123,7 @@ SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.Networ
             return result;
         }
 
-        var geoJSONFormat = new SuperMap.Format.GeoJSON();
+        var geoJSONFormat = new GeoJSONFormat();
         result.facilityPathList.map(function (path) {
             if (path.route) {
                 path.route = JSON.parse(geoJSONFormat.write(path.route));
@@ -142,6 +144,4 @@ SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.Networ
 
     CLASS_NAME: "SuperMap.REST.FindClosestFacilitiesService"
 });
-module.exports = function (url, options) {
-    return new SuperMap.REST.FindClosestFacilitiesService(url, options);
-};
+module.exports = SuperMap.REST.FindClosestFacilitiesService;

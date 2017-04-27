@@ -3,7 +3,8 @@
  * 标签沿线标注样式类。
  * 通过该类可以设置是否标签沿线标注以及沿线标注的多种样式。沿线标注属性只适用于线数据集专题图。
  */
-
+require('../REST');
+var SuperMap = require('../SuperMap');
 SuperMap.ThemeLabelAlongLine = SuperMap.Class({
 
     /**
@@ -89,6 +90,4 @@ SuperMap.ThemeLabelAlongLine.fromObj = function (obj) {
     SuperMap.Util.copy(t, obj);
     return t;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeLabelAlongLine(options);
-};
+module.exports = SuperMap.ThemeLabelAlongLine;

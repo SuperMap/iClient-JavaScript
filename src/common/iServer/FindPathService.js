@@ -11,6 +11,8 @@
  */
 require('./NetworkAnalystServiceBase');
 require('./FindPathParameters');
+var SuperMap = require('../SuperMap');
+var GeoJSONFormat = require('../format/GeoJSON');
 SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -117,7 +119,7 @@ SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServi
         if (!result || !result.pathList || result.pathList.length < 1) {
             return null;
         }
-        var geoJSONFormat = new SuperMap.Format.GeoJSON();
+        var geoJSONFormat = new GeoJSONFormat();
         result.pathList.forEach(function (path) {
             if (path.route) {
                 path.route = JSON.parse(geoJSONFormat.write(path.route));
@@ -139,6 +141,4 @@ SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServi
     CLASS_NAME: "SuperMap.REST.FindPathService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.FindPathService(url, options);
-};
+module.exports = SuperMap.REST.FindPathService;

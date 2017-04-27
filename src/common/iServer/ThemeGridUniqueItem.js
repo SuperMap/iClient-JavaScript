@@ -3,8 +3,8 @@
  * 栅格单值专题图子项类。
  * 栅格单值专题图是将值相同的单元格归为一类，每一类是一个专题图子项。
  */
-
-require('./ServerColor');
+var SuperMap = require('../SuperMap');
+var ServerColor = require('./ServerColor');
 SuperMap.ThemeGridUniqueItem = SuperMap.Class({
 
     /**
@@ -46,7 +46,7 @@ SuperMap.ThemeGridUniqueItem = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.color = new SuperMap.ServerColor();
+        me.color = new ServerColor();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -92,6 +92,4 @@ SuperMap.ThemeGridUniqueItem.fromObj = function (obj) {
     return res;
 
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeGridUniqueItem(options);
-};
+module.exports = SuperMap.ThemeGridUniqueItem;

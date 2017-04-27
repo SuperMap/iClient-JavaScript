@@ -1,3 +1,4 @@
+var L = require("leaflet");
 var Pbf = require('pbf');
 var VectorTile = require('vector-tile');
 
@@ -171,4 +172,6 @@ L.PBFTileVectorLayer = L.VectorGrid.extend({
 L.pbfTileVectorLayer = function (url, options) {
     return new L.PBFTileVectorLayer(url, options);
 };
+
+module.exports = L.PBFTileVectorLayer;
 

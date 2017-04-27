@@ -3,7 +3,9 @@
  * 空间关系分析服务参数类。
  * 使用该类可以为空间关系分析服务提供所需的参数信息。
  */
-
+require('../REST');
+require('./FilterParameter');
+var SuperMap = require('../SuperMap');
 SuperMap.GeoRelationAnalystParameters = SuperMap.Class({
 
     /**
@@ -114,6 +116,4 @@ SuperMap.GeoRelationAnalystParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.GeoRelationAnalystParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.GeoRelationAnalystParameters(options);
-};
+module.exports = SuperMap.GeoRelationAnalystParameters;

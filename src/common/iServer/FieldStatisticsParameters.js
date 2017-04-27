@@ -2,6 +2,7 @@
  * Class: SuperMap.FieldStatisticsParameters
  * 字段统计信息查询参数类
  */
+var SuperMap = require('../SuperMap');
 SuperMap.FieldStatisticsParameters = SuperMap.Class({
     /**
      * APIProperty: fieldName
@@ -32,6 +33,4 @@ SuperMap.FieldStatisticsParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.FieldStatisticsParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.FieldStatisticsParameters(options);
-};
+module.exports = SuperMap.FieldStatisticsParameters;

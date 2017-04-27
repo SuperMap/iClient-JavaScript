@@ -3,6 +3,7 @@
  *  myDatas服务资源查询参数
  */
 require('./OnlineResources');
+var SuperMap = require('../SuperMap');
 SuperMap.OnlineQueryDatasParameter = SuperMap.Class({
 
     //String[]    数据作者名。可以根据数据作者名查询，默认查询全部。
@@ -42,7 +43,7 @@ SuperMap.OnlineQueryDatasParameter = SuperMap.Class({
             "keywords": me.keywords,
             "orderBy": me.orderBy,
             "tags": me.tags,
-            "filterFields": me.filterFields,
+            "filterFields": me.filterFields
         };
         for (var key in jsonObj) {
             if (jsonObj[key] == null) {
@@ -55,6 +56,4 @@ SuperMap.OnlineQueryDatasParameter = SuperMap.Class({
     CLASS_NAME: "SuperMap.OnlineQueryDatasParameter"
 });
 
-module.exports = function (options) {
-    return new SuperMap.OnlineQueryDatasParameter(options);
-};
+module.exports = SuperMap.OnlineQueryDatasParameter;

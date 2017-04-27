@@ -7,6 +7,7 @@
  */
 require('./QueryService');
 require('./QueryByBoundsParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, {
 
     /**
@@ -63,7 +64,8 @@ SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, 
         qp = me.getQueryParameters(params);
         jsonParameters += "'queryMode':'BoundsQuery','queryParameters':";
         jsonParameters += SuperMap.Util.toJSON(qp);
-        jsonParameters += ",'bounds': {'rightTop':{'y':" + bounds.top + ",'x':" + bounds.right + "},'leftBottom':{'y':" + bounds.bottom + ",'x':" + bounds.left + "}}";
+        jsonParameters += ",'bounds': {'rightTop':{'y':" + bounds.top + ",'x':" +
+            bounds.right + "},'leftBottom':{'y':" + bounds.bottom + ",'x':" + bounds.left + "}}";
         jsonParameters = "{" + jsonParameters + "}";
         return jsonParameters;
     },
@@ -71,6 +73,4 @@ SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, 
     CLASS_NAME: "SuperMap.REST.QueryByBoundsService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.QueryByBoundsService(url, options);
-};
+module.exports = SuperMap.REST.QueryByBoundsService;

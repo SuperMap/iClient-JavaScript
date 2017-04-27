@@ -5,8 +5,10 @@
  * Inherits from:
  *  - <SuperMap.UGCSubLayer>
  */
-require('./ServerColor');
+require('../REST');
 require('./UGCSubLayer');
+var SuperMap = require('../SuperMap');
+var ServerColor = require('./ServerColor');
 SuperMap.Image = SuperMap.Class(SuperMap.UGCSubLayer, {
 
     /**
@@ -87,7 +89,7 @@ SuperMap.Image = SuperMap.Class(SuperMap.UGCSubLayer, {
     fromJson: function (jsonObject) {
         SuperMap.UGCSubLayer.prototype.fromJson.apply(this, [jsonObject]);
         if (this.transparentColor) {
-            this.transparentColor = new SuperMap.ServerColor(this.transparentColor.red,
+            this.transparentColor = new ServerColor(this.transparentColor.red,
                 this.transparentColor.green,
                 this.transparentColor.blue);
         }
@@ -98,12 +100,9 @@ SuperMap.Image = SuperMap.Class(SuperMap.UGCSubLayer, {
      * 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject: function () {
-        var jsonObject = SuperMap.UGCSubLayer.prototype.toServerJSONObject.apply(this, arguments);
-        return jsonObject;
+        return SuperMap.UGCSubLayer.prototype.toServerJSONObject.apply(this, arguments);
     },
 
     CLASS_NAME: "SuperMap.Image"
 });
-module.exports = function (options) {
-    return new SuperMap.Image(options);
-};
+module.exports = SuperMap.Image;

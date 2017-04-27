@@ -5,10 +5,12 @@
  * Inherits from:
  *  - <SuperMap.UGCSubLayer>
  */
-require('./ServerColor');
-require('./ServerStyle');
-require('./ColorDictionary');
+require('../REST');
 require('./UGCSubLayer');
+var SuperMap = require('../SuperMap');
+var ServerColor = require('./ServerColor');
+var ServerStyle = require('./ServerStyle');
+var ColorDictionary = require('./ColorDictionary');
 SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
     /**
      * APIProperty: colorDictionarys
@@ -140,7 +142,7 @@ SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
     fromJson: function (jsonObject) {
         SuperMap.UGCSubLayer.prototype.fromJson.apply(this, [jsonObject]);
         if (this.specialColor) {
-            this.specialColor = new SuperMap.ServerColor(this.specialColor.red,
+            this.specialColor = new ServerColor(this.specialColor.red,
                 this.specialColor.green,
                 this.specialColor.blue);
         }
@@ -149,22 +151,22 @@ SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
                 color;
             for (var i in this.colors) {
                 color = this.colors[i];
-                colors.push(new SuperMap.ServerColor(color.red, color.green, color.blue));
+                colors.push(new ServerColor(color.red, color.green, color.blue));
             }
             this.colors = colors;
         }
         if (this.dashStyle) {
-            this.dashStyle = new SuperMap.ServerStyle(this.dashStyle);
+            this.dashStyle = new ServerStyle(this.dashStyle);
         }
         if (this.solidStyle) {
-            this.solidStyle = new SuperMap.ServerStyle(this.solidStyle);
+            this.solidStyle = new ServerStyle(this.solidStyle);
         }
         if (this.colorDictionary) {
             var colorDics = [],
                 colorDic;
             for (var key in this.colorDictionary) {
                 colorDic = this.colorDictionary[key];
-                colorDics.push(new SuperMap.ColorDictionary({elevation: key, color: colorDic}));
+                colorDics.push(new ColorDictionary({elevation: key, color: colorDic}));
             }
             this.colorDictionarys = colorDics;
         }
@@ -193,6 +195,4 @@ SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
 
     CLASS_NAME: "SuperMap.Grid"
 });
-module.exports = function (options) {
-    return new SuperMap.Grid(options);
-};
+module.exports = SuperMap.Grid;

@@ -7,10 +7,11 @@
  * Inherits from:
  *  - <SuperMap.Theme>
  */
-
-require('./ServerStyle');
+require('../REST');
 require('./Theme');
-require('./ThemeUniqueItem');
+var SuperMap = require('../SuperMap');
+var ServerStyle = require('./ServerStyle');
+var ThemeUniqueItem = require('./ThemeUniqueItem');
 SuperMap.ThemeUnique = SuperMap.Class(SuperMap.Theme, {
 
     /**
@@ -61,7 +62,7 @@ SuperMap.ThemeUnique = SuperMap.Class(SuperMap.Theme, {
      */
     initialize: function (options) {
         var me = this;
-        me.defaultStyle = new SuperMap.ServerStyle();
+        me.defaultStyle = new ServerStyle();
         SuperMap.Theme.prototype.initialize.apply(this, ["UNIQUE", options]);
         if (options) {
             SuperMap.Util.extend(this, options);
@@ -124,12 +125,10 @@ SuperMap.ThemeUnique.fromObj = function (obj) {
     var len = uItems ? uItems.length : 0;
     SuperMap.Util.extend(res, obj);
     res.items = [];
-    res.defaultStyle = new SuperMap.ServerStyle.fromJson(obj.defaultStyle);
+    res.defaultStyle = new ServerStyle.fromJson(obj.defaultStyle);
     for (var i = 0; i < len; i++) {
-        res.items.push(new SuperMap.ThemeUniqueItem.fromObj(uItems[i]));
+        res.items.push(new ThemeUniqueItem.fromObj(uItems[i]));
     }
     return res;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeUnique(options);
-};
+module.exports = SuperMap.ThemeUnique;

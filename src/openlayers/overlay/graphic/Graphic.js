@@ -1,3 +1,4 @@
+var ol = require('openlayers');
 ol.Graphic = function (geometry) {
     ol.Object.call(this);
     if (geometry instanceof ol.geom.Geometry) {

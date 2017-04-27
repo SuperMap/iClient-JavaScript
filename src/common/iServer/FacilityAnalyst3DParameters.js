@@ -6,7 +6,7 @@
  * 例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。
  * 最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.FacilityAnalyst3DParameters = SuperMap.Class({
 
     /**
@@ -55,7 +55,7 @@ SuperMap.FacilityAnalyst3DParameters = SuperMap.Class({
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        SuperMap.Util.extend(me, options);
     },
 
     /**
@@ -73,6 +73,4 @@ SuperMap.FacilityAnalyst3DParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.FacilityAnalyst3DParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.FacilityAnalyst3DParameters(options);
-};
+module.exports = SuperMap.FacilityAnalyst3DParameters;

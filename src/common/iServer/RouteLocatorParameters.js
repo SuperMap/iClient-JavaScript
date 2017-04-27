@@ -4,8 +4,8 @@
  * 参数有两种方式，分别为Geometry和Dataset两种，前者需要指定sourceRoute对象作为参数，后者需要dataset，routeIDField，routeID三个参数
  * 如果用户两种参数均设置，优先选择Dataset方式
  */
-
 require('./Route');
+var SuperMap = require('../SuperMap');
 SuperMap.RouteLocatorParameters = SuperMap.Class({
 
     /**
@@ -132,6 +132,4 @@ SuperMap.RouteLocatorParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.RouteLocatorParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.RouteLocatorParameters(options);
-};
+module.exports = SuperMap.RouteLocatorParameters;

@@ -9,9 +9,13 @@
  * Inherits from:
  *  - <SuperMap.ServiceBase>
  */
-require('../format/GeoJSON');
+
+require('../REST');
 require('./ServiceBase');
-require('./QueryParameters');
+var SuperMap = require('../SuperMap');
+var GeoJSONFormat = require('../format/GeoJSON');
+var QueryParameters = require('./QueryParameters');
+
 SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -132,9 +136,9 @@ SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
         var me = this;
         result = SuperMap.Util.transformResult(result);
         if (result && result.recordsets && me.format === SuperMap.DataFormat.GEOJSON) {
+            var geoJSONFormat = new GeoJSONFormat();
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
-                    var geoJSONFormat = new SuperMap.Format.GeoJSON();
                     recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
                 }
             }
@@ -154,7 +158,7 @@ SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * {<QueryParameters>} 返回转化后的 QueryParameters 对象。
      */
     getQueryParameters: function (params) {
-        return new SuperMap.QueryParameters({
+        return new QueryParameters({
             customParams: params.customParams,
             expectCount: params.expectCount,
             networkType: params.networkType,
@@ -169,6 +173,4 @@ SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.QueryService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.QueryService(url, options);
-};
+module.exports = SuperMap.REST.QueryService;

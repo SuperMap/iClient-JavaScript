@@ -6,9 +6,9 @@
  * Inherits from:
  *  - <SuperMap.BufferAnalystParameters>
  */
-
 require('./BufferAnalystParameters');
- SuperMap.GeometryBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystParameters, {
+var SuperMap = require('../SuperMap');
+SuperMap.GeometryBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystParameters, {
 
     /**
      * Property: sourceGeometry
@@ -50,7 +50,7 @@ require('./BufferAnalystParameters');
     CLASS_NAME: " SuperMap.GeometryBufferAnalystParameters"
 });
 
- SuperMap.GeometryBufferAnalystParameters.toObject = function (geometryBufferAnalystParameters, tempObj) {
+SuperMap.GeometryBufferAnalystParameters.toObject = function (geometryBufferAnalystParameters, tempObj) {
     for (var name in geometryBufferAnalystParameters) {
         if (name === "bufferSetting") {
             var tempBufferSetting = {};
@@ -69,6 +69,4 @@ require('./BufferAnalystParameters');
     }
 };
 
-module.exports = function (options) {
-    return new  SuperMap.GeometryBufferAnalystParameters(options);
-};
+module.exports = SuperMap.GeometryBufferAnalystParameters;

@@ -3,7 +3,7 @@
  * 资源供给中心类
  * 资源供给中心类，在资源分配和选址分区分析两个功能中使用。
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.SupplyCenter = SuperMap.Class({
     /**
      * APIProperty: maxWeight
@@ -78,7 +78,5 @@ SuperMap.SupplyCenter.fromJson = function (jsonObject) {
         type: jsonObject.type
     });
 };
-module.exports = function (options) {
-    return new SuperMap.SupplyCenter(options);
-};
+module.exports = SuperMap.SupplyCenter;
 

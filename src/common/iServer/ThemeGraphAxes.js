@@ -3,9 +3,9 @@
  * 统计专题图坐标轴样式类。
  * 该类用于设置统计图中坐标轴样式相关信息，如坐标轴颜色、是否显示、坐标文本样式等。
  */
-
-require('./ServerColor');
-require('./ServerTextStyle');
+var SuperMap = require('../SuperMap');
+var ServerColor = require('./ServerColor');
+var ServerTextStyle = require('./ServerTextStyle');
 SuperMap.ThemeGraphAxes = SuperMap.Class({
 
     /**
@@ -55,8 +55,8 @@ SuperMap.ThemeGraphAxes = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.axesColor = new SuperMap.ServerColor(0, 0, 0);
-        me.axesTextStyle = new SuperMap.ServerTextStyle();
+        me.axesColor = new ServerColor(0, 0, 0);
+        me.axesTextStyle = new ServerTextStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -91,6 +91,4 @@ SuperMap.ThemeGraphAxes.fromObj = function (obj) {
     res.axesTextStyle = SuperMap.ServerTextStyle.fromObj(obj.axesTextStyle);
     return res;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeGraphAxes(options);
-};
+module.exports = SuperMap.ThemeGraphAxes;

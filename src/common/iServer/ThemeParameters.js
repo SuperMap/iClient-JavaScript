@@ -3,7 +3,6 @@
  * 专题图参数类
  * 该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
  */
-
 require('./JoinItem');
 require('./ThemeDotDensity');
 require('./ThemeGraduatedSymbol');
@@ -13,6 +12,10 @@ require('./ThemeRange');
 require('./ThemeUnique');
 require('./ThemeGridRange');
 require('./ThemeGridUnique');
+require('./LabelImageCell');
+require('./LabelSymbolCell');
+require('./LabelThemeCell');
+var SuperMap = require('../SuperMap');
 
 SuperMap.ThemeParameters = SuperMap.Class({
 
@@ -107,6 +110,4 @@ SuperMap.ThemeParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.ThemeParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.ThemeParameters(options);
-};
+module.exports = SuperMap.ThemeParameters;

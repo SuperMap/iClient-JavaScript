@@ -2,7 +2,7 @@
  * Class: SuperMap.FacilityAnalystStreamParameters
  * 上游/下游关键设施查找资源参数类。
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.FacilityAnalystStreamParameters = SuperMap.Class({
 
     /**
@@ -55,7 +55,7 @@ SuperMap.FacilityAnalystStreamParameters = SuperMap.Class({
         if (!options) {
             return;
         }
-        SuperMap.Util.extend(this, options);
+        SuperMap.Util.extend(me, options);
     },
 
     /**
@@ -73,6 +73,4 @@ SuperMap.FacilityAnalystStreamParameters = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.FacilityAnalystStreamParameters"
 });
-module.exports = function (options) {
-    return new SuperMap.FacilityAnalystStreamParameters(options);
-};
+module.exports = SuperMap.FacilityAnalystStreamParameters;

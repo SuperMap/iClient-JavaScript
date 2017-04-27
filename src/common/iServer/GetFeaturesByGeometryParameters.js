@@ -6,7 +6,10 @@
  * Inherits from:
  *  - <SuperMap.GetFeaturesParametersBase>
  */
+require('../REST');
 require('./GetFeaturesParametersBase');
+var SuperMap = require('../SuperMap');
+var FilterParameter = require('./FilterParameter');
 SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
 
     /**
@@ -115,7 +118,7 @@ SuperMap.GetFeaturesByGeometryParameters.toJsonParameters = function (params) {
         spatialQueryMode: params.spatialQueryMode
     };
     if (params.fields) {
-        filterParameter = new SuperMap.FilterParameter();
+        filterParameter = new FilterParameter();
         filterParameter.name = params.datasetNames;
         filterParameter.fields = params.fields;
         parasByGeometry.queryParameter = filterParameter;
@@ -127,6 +130,4 @@ SuperMap.GetFeaturesByGeometryParameters.toJsonParameters = function (params) {
 
     return SuperMap.Util.toJSON(parasByGeometry);
 };
-module.exports = function (options) {
-    return new SuperMap.GetFeaturesByGeometryParameters(options);
-};
+module.exports = SuperMap.GetFeaturesByGeometryParameters;

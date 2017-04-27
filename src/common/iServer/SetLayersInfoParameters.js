@@ -2,6 +2,7 @@
  * Class: SuperMap.SetLayersInfoParameters
  * 设置图层信息参数类
  */
+var SuperMap = require('../SuperMap');
 SuperMap.SetLayersInfoParameters = SuperMap.Class({
 
     /**
@@ -40,6 +41,4 @@ SuperMap.SetLayersInfoParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.SetLayersInfoParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.SetLayersInfoParameters(options);
-};
+module.exports = SuperMap.SetLayersInfoParameters;

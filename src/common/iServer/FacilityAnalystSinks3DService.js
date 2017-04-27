@@ -10,6 +10,7 @@
  */
 require('./ServiceBase');
 require('./FacilityAnalystSinks3DParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -80,6 +81,4 @@ SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBas
     CLASS_NAME: "SuperMap.REST.FacilityAnalystSinks3DService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.FacilityAnalystSinks3DService(url, options);
-};
+module.exports = SuperMap.REST.FacilityAnalystSinks3DService;

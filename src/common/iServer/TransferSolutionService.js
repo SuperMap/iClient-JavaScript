@@ -8,6 +8,7 @@
  */
 require('./ServiceBase');
 require('./TransferSolutionParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -87,6 +88,5 @@ SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.TransferSolutionService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.TransferSolutionService(url, options);
-};
+module.exports = SuperMap.REST.TransferSolutionService;
+

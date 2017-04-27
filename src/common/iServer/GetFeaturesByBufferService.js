@@ -7,6 +7,7 @@
  */
 require('./GetFeaturesServiceBase');
 require('./GetFeaturesByBufferParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
     /**
@@ -64,6 +65,4 @@ SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeatu
     CLASS_NAME: "SuperMap.REST.GetFeaturesByBufferService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.GetFeaturesByBufferService(url, options);
-};
+module.exports = SuperMap.REST.GetFeaturesByBufferService;

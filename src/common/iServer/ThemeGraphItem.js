@@ -4,8 +4,8 @@
  * 统计专题图可以基于多个变量，反映多种属性，即可以将多个专题变量的值绘制在一个统计图上。每一个专题变量对应的统计图即为一个专题图子项。
  * 该类用来设置每个统计专题图子项的名称，专题变量，显示风格，甚至可以将该子项再制作成范围分段专题图。
  */
-
-require('./ServerStyle');
+var SuperMap = require('../SuperMap');
+var ServerStyle = require('./ServerStyle');
 SuperMap.ThemeGraphItem = SuperMap.Class({
 
     /**
@@ -51,7 +51,7 @@ SuperMap.ThemeGraphItem = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.uniformStyle = new SuperMap.ServerStyle();
+        me.uniformStyle = new ServerStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -78,6 +78,4 @@ SuperMap.ThemeGraphItem.fromObj = function (obj) {
     res.uniformStyle = SuperMap.ServerStyle.fromJson(obj.uniformStyle);
     return res;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeGraphItem(options);
-};
+module.exports = SuperMap.ThemeGraphItem;

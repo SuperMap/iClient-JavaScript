@@ -4,7 +4,7 @@
  * 该类存储了各个子图层的名字和是否可见的状态。
  *
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.LayerStatus = SuperMap.Class({
 
     /**
@@ -100,6 +100,4 @@ SuperMap.LayerStatus = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.LayerStatus"
 });
-module.exports = function (options) {
-    return new SuperMap.LayerStatus(options);
-};
+module.exports = SuperMap.LayerStatus;

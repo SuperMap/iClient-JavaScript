@@ -3,8 +3,8 @@
  * 动态分段操作参数类。
  * 通过该类可以为动态分段提供参数信息。
  */
-
 require('./DataReturnOption');
+var SuperMap = require('../SuperMap');
 SuperMap.GenerateSpatialDataParameters = SuperMap.Class({
 
     /**
@@ -127,6 +127,4 @@ SuperMap.GenerateSpatialDataParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.GenerateSpatialDataParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.GenerateSpatialDataParameters(options);
-};
+module.exports = SuperMap.GenerateSpatialDataParameters;

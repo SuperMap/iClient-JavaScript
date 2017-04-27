@@ -4,8 +4,8 @@
  * 单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，Name 字段代表
  * 省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
  */
-
-require('./ServerStyle');
+var SuperMap = require('../SuperMap');
+var ServerStyle = require('./ServerStyle');
 SuperMap.ThemeUniqueItem = SuperMap.Class({
 
     /**
@@ -47,7 +47,7 @@ SuperMap.ThemeUniqueItem = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.style = new SuperMap.ServerStyle();
+        me.style = new ServerStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -93,7 +93,5 @@ SuperMap.ThemeUniqueItem.fromObj = function (obj) {
     return res;
 
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeUniqueItem(options);
-};
+module.exports = SuperMap.ThemeUniqueItem;
 

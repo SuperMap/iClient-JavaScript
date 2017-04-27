@@ -1,3 +1,5 @@
+require('../core/Base');
+var ol = require('openlayers');
 ol.source.Tianditu = function (opt_options) {
     var options = opt_options || {};
     var attributions = options.attributions || new ol.Attribution({
@@ -34,7 +36,7 @@ ol.source.Tianditu.getTileGrid = function (projection) {
         return ol.source.Tianditu.default4326TileGrid();
     }
     return ol.source.Tianditu.default3857TileGrid();
-}
+};
 ol.source.Tianditu.default4326TileGrid = function () {
     var tdt_WGS84_resolutions = [];
     var matrixIds = [];
@@ -46,11 +48,11 @@ ol.source.Tianditu.default4326TileGrid = function () {
         extent: [-180, -90, 180, 90],
         resolutions: tdt_WGS84_resolutions,
         origin: [-180, 90],
-        matrixIds:matrixIds,
+        matrixIds: matrixIds,
         minZoom: 1
     })
     return tileGird;
-}
+};
 ol.source.Tianditu.default3857TileGrid = function () {
     var tdt_Mercator_resolutions = [];
     var matrixIds = [];
@@ -66,4 +68,5 @@ ol.source.Tianditu.default3857TileGrid = function () {
         minZoom: 1,
     })
     return tileGird;
-}
+};
+module.exports = ol.source.Tianditu;

@@ -7,6 +7,7 @@
  */
 require('./NetworkAnalystServiceBase');
 require('./BurstPipelineAnalystParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -75,6 +76,4 @@ SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.Network
     CLASS_NAME: "SuperMap.REST.BurstPipelineAnalystService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.BurstPipelineAnalystService(url, options);
-};
+module.exports = SuperMap.REST.BurstPipelineAnalystService;

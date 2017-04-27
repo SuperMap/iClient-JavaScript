@@ -4,8 +4,8 @@
  * 该类存储了各子图层是否可见的状态。
  * 注意在 SuperMap iClient 系列产品中所说的图层与 SuperMap Deskpro 的地图对应，子图层与 SuperMap Deskpro 的图层对应。
  */
-
 require('./LayerStatus');
+var SuperMap = require('../SuperMap');
 SuperMap.SetLayerStatusParameters = SuperMap.Class({
 
     /**
@@ -81,6 +81,4 @@ SuperMap.SetLayerStatusParameters = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.SetLayerStatusParameters"
 });
-module.exports = function (options) {
-    return new SuperMap.SetLayerStatusParameters(options);
-};
+module.exports = SuperMap.SetLayerStatusParameters;

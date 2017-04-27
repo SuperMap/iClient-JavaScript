@@ -8,11 +8,12 @@
  *      })
  */
 require('./ServiceBase');
-require('../../common/iServer/FacilityAnalystSinks3DService');
-require('../../common/iServer/FacilityAnalystSources3DService');
-require('../../common/iServer/FacilityAnalystTraceup3DService');
-require('../../common/iServer/FacilityAnalystTracedown3DService');
-require('../../common/iServer/FacilityAnalystUpstream3DService');
+var ol = require('openlayers');
+var FacilityAnalystSinks3DService = require('../../common/iServer/FacilityAnalystSinks3DService');
+var FacilityAnalystSources3DService = require('../../common/iServer/FacilityAnalystSources3DService');
+var FacilityAnalystTraceup3DService = require('../../common/iServer/FacilityAnalystTraceup3DService');
+var FacilityAnalystTracedown3DService = require('../../common/iServer/FacilityAnalystTracedown3DService');
+var FacilityAnalystUpstream3DService = require('../../common/iServer/FacilityAnalystUpstream3DService');
 
 /**
  * url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
@@ -35,7 +36,7 @@ ol.inherits(ol.supermap.NetworkAnalyst3DService, ol.supermap.ServiceBase);
  */
 ol.supermap.NetworkAnalyst3DService.prototype.sinksFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystSinks3DService = new SuperMap.REST.FacilityAnalystSinks3DService(me.options.url, {
+    var facilityAnalystSinks3DService = new FacilityAnalystSinks3DService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -54,7 +55,7 @@ ol.supermap.NetworkAnalyst3DService.prototype.sinksFacilityAnalyst = function (p
  */
 ol.supermap.NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystSources3DService = new SuperMap.REST.FacilityAnalystSources3DService(me.options.url, {
+    var facilityAnalystSources3DService = new FacilityAnalystSources3DService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -73,7 +74,7 @@ ol.supermap.NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst = function 
  */
 ol.supermap.NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystTraceup3DService = new SuperMap.REST.FacilityAnalystTraceup3DService(me.options.url, {
+    var facilityAnalystTraceup3DService = new FacilityAnalystTraceup3DService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -92,7 +93,7 @@ ol.supermap.NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst = function 
  */
 ol.supermap.NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystTracedown3DService = new SuperMap.REST.FacilityAnalystTracedown3DService(me.options.url, {
+    var facilityAnalystTracedown3DService = new FacilityAnalystTracedown3DService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -111,7 +112,7 @@ ol.supermap.NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst = functio
  */
 ol.supermap.NetworkAnalyst3DService.prototype.upstreamFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystUpstream3DService = new SuperMap.REST.FacilityAnalystUpstream3DService(me.options.url, {
+    var facilityAnalystUpstream3DService = new FacilityAnalystUpstream3DService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,

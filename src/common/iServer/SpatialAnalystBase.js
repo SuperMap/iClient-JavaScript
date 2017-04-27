@@ -4,9 +4,10 @@
  * Inherits from:
  *  - <SuperMap.ServiceBase>
  */
-require('../format/GeoJSON');
-require('./ServiceBase');
-SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
+var SuperMap = require('../SuperMap');
+var GeoJSONFormat = require('../format/GeoJSON');
+var ServiceBase = require('./ServiceBase');
+SuperMap.REST.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
 
     /**
      *  Property: format
@@ -16,7 +17,7 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
     format: SuperMap.DataFormat.GEOJSON,
 
     initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+        ServiceBase.prototype.initialize.apply(this, arguments);
         if (options && options.format) {
             this.format = options.format.toUpperCase();
         }
@@ -27,7 +28,7 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+        ServiceBase.prototype.destroy.apply(this, arguments);
         this.format = null;
     },
 
@@ -60,7 +61,7 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
         if (!result) {
             return null;
         }
-        var geoJSONFormat = new SuperMap.Format.GeoJSON();
+        var geoJSONFormat = new GeoJSONFormat();
         if (result.recordsets) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
@@ -76,6 +77,4 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.SpatialAnalystBase"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.SpatialAnalystBase(url, options);
-};
+module.exports = SuperMap.REST.SpatialAnalystBase;

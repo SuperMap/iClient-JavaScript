@@ -2,7 +2,7 @@
  * Class: SuperMap.Format
  * 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.Format = SuperMap.Class({
 
     /**
@@ -102,6 +102,4 @@ SuperMap.Format = SuperMap.Class({
     CLASS_NAME: "SuperMap.Format"
 });
 
-module.exports = function (options) {
-    return new SuperMap.Format(options);
-};
+module.exports = SuperMap.Format;

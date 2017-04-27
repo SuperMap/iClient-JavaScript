@@ -11,9 +11,9 @@
  * Inherits from:
  *  - <SuperMap.LabelMatrixCell>
  */
-
-require('./ThemeLabel');
 require('./LabelMatrixCell');
+var SuperMap = require('../SuperMap');
+var ThemeLabel = require('./ThemeLabel');
 SuperMap.LabelThemeCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 
     /**
@@ -40,7 +40,7 @@ SuperMap.LabelThemeCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
      */
     initialize: function (options) {
         var me = this;
-        me.themeLabel = new SuperMap.ThemeLabel();
+        me.themeLabel = new ThemeLabel();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -60,6 +60,4 @@ SuperMap.LabelThemeCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 
     CLASS_NAME: " SuperMap.LabelThemeCell"
 });
-module.exports = function (options) {
-    return new SuperMap.LabelThemeCell(options);
-};
+module.exports = SuperMap.LabelThemeCell;

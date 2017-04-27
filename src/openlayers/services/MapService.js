@@ -8,8 +8,9 @@
  *      })
  */
 require('./ServiceBase');
-require('../../common/iServer/MapService');
-
+var ol = require('openlayers');
+var MapService = require('../../common/iServer/MapService');
+var TilesetsService = require('../../common/iServer/TilesetsService');
 ol.supermap.MapService = function (url, options) {
     ol.supermap.ServiceBase.call(this, url, options);
 };
@@ -22,7 +23,7 @@ ol.inherits(ol.supermap.MapService, ol.supermap.ServiceBase);
  */
 ol.supermap.MapService.prototype.getMapInfo = function (callback) {
     var me = this;
-    var getMapStatusService = new SuperMap.REST.MapService(me.options.url, {
+    var getMapStatusService = new MapService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -39,7 +40,7 @@ ol.supermap.MapService.prototype.getMapInfo = function (callback) {
  */
 ol.supermap.MapService.prototype.getTilesets = function (callback) {
     var me = this;
-    var tilesetsService = new SuperMap.REST.TilesetsService(me.options.url, {
+    var tilesetsService = new TilesetsService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,

@@ -2,6 +2,7 @@
  * Class: SuperMap.SetLayerInfoParameters
  * 设置图层信息参数类
  */
+var SuperMap = require('../SuperMap');
 SuperMap.SetLayerInfoParameters = SuperMap.Class({
     /**
      * APIProperty: tempLayerID
@@ -45,6 +46,4 @@ SuperMap.SetLayerInfoParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.SetLayerInfoParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.SetLayerInfoParameters(options);
-};
+module.exports = SuperMap.SetLayerInfoParameters;

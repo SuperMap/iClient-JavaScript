@@ -8,9 +8,12 @@
  * Inherits from:
  *  - <SuperMap.ServiceBase>
  */
-require('../format/GeoJSON');
+require('../REST');
 require('./ServiceBase');
 require('./ChartQueryParameters');
+var SuperMap = require('../SuperMap');
+var GeoJSONFormat = require('../format/GeoJSON');
+
 SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -142,7 +145,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
         if (result && result.recordsets && me.format === Format.GEOJSON) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
-                    var geoJSONFormat = new SuperMap.Format.GeoJSON();
+                    var geoJSONFormat = new GeoJSONFormat();
                     recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
                 }
             }
@@ -174,6 +177,4 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.ChartQueryService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.ChartQueryService(url, options);
-};
+module.exports = SuperMap.REST.ChartQueryService;

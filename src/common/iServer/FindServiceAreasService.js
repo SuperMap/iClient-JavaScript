@@ -10,6 +10,8 @@
  */
 require('./NetworkAnalystServiceBase');
 require('./FindServiceAreasParameters');
+var SuperMap = require('../SuperMap');
+var GeoJSONFormat = require('../format/GeoJSON');
 SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -118,7 +120,7 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnal
         if (!result || !result.serviceAreaList) {
             return result;
         }
-        var geoJSONFormat = new SuperMap.Format.GeoJSON();
+        var geoJSONFormat = new GeoJSONFormat();
         result.serviceAreaList.map(function (serviceArea) {
             if (serviceArea.serviceRegion) {
                 serviceArea.serviceRegion = JSON.parse(geoJSONFormat.write(serviceArea.serviceRegion));
@@ -140,6 +142,4 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnal
     CLASS_NAME: "SuperMap.REST.FindServiceAreasService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.FindServiceAreasService(url, options);
-};
+module.exports = SuperMap.REST.FindServiceAreasService;

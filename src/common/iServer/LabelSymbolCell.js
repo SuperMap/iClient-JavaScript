@@ -11,9 +11,9 @@
  * Inherits from:
  *  - <SuperMap.LabelMatrixCell>
  */
-
-require('./ServerStyle');
 require('./LabelMatrixCell');
+var SuperMap = require('../SuperMap');
+var ServerStyle = require('./ServerStyle');
 SuperMap.LabelSymbolCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 
     /**
@@ -48,7 +48,7 @@ SuperMap.LabelSymbolCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
      */
     initialize: function (options) {
         var me = this;
-        me.style = new SuperMap.ServerStyle();
+        me.style = new ServerStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -69,6 +69,4 @@ SuperMap.LabelSymbolCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 
     CLASS_NAME: "SuperMap.LabelSymbolCell"
 });
-module.exports = function (options) {
-    return new SuperMap.LabelSymbolCell(options);
-};
+module.exports = SuperMap.LabelSymbolCell;

@@ -8,6 +8,7 @@
  */
 require('./GetFeaturesServiceBase');
 require('./GetFeaturesByGeometryParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
     /**
@@ -65,6 +66,4 @@ SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFea
     CLASS_NAME: "SuperMap.REST.GetFeaturesByGeometryService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.GetFeaturesByGeometryService(url, options);
-};
+module.exports = SuperMap.REST.GetFeaturesByGeometryService;

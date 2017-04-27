@@ -3,8 +3,9 @@
  * 查询参数基类。
  * 距离查询、SQL 查询、几何地物查询等各自的参数均继承此类。
  */
-
+require('../REST');
 require('./FilterParameter');
+var SuperMap = require('../SuperMap');
 SuperMap.QueryParameters = SuperMap.Class({
 
     /**
@@ -113,6 +114,4 @@ SuperMap.QueryParameters = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.QueryParameters"
 });
-module.exports = function (options) {
-    return new SuperMap.QueryParameters(options);
-};
+module.exports = SuperMap.QueryParameters;

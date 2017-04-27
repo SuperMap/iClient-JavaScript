@@ -1,6 +1,6 @@
 require('./Symbolizer');
 require('./SymbolizerPolyBase');
-
+var L = require("leaflet");
 L.PointSymbolizer = L.CircleMarker.extend({
     includes: L.Symbolizer.prototype,
 
@@ -125,3 +125,4 @@ L.PointSymbolizer = L.CircleMarker.extend({
     }
 });
 
+module.exports = L.PointSymbolizer;

@@ -11,8 +11,8 @@
  * Inherits from:
  *  - <SuperMap.LabelMatrixCell>
  */
-
 require('./LabelMatrixCell');
+var SuperMap = require('../SuperMap');
 SuperMap.LabelImageCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 
     /**
@@ -86,6 +86,4 @@ SuperMap.LabelImageCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 
     CLASS_NAME: "SuperMap.LabelImageCell"
 });
-module.exports = function (options) {
-    return new SuperMap.LabelImageCell(options);
-};
+module.exports = SuperMap.LabelImageCell;

@@ -2,7 +2,7 @@
  * Class: SuperMap.MathExpressionAnalysisParameters
  * 栅格代数运算参数类
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.MathExpressionAnalysisParameters = SuperMap.Class({
 
     /**
@@ -131,6 +131,4 @@ SuperMap.MathExpressionAnalysisParameters.toObject = function (mathExpressionAna
     }
 };
 
-module.exports = function (options) {
-    return new SuperMap.MathExpressionAnalysisParameters(options);
-};
+module.exports = SuperMap.MathExpressionAnalysisParameters;

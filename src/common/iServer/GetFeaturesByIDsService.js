@@ -2,12 +2,13 @@
  * Class: SuperMap.REST.GetFeaturesByIDsService
  * 数据集ID查询服务类。
  * 在数据集集合中查找指定 ID 号对应的空间地物要素。
- *  
+ *
  * Inherits from:
  *  - <SuperMap.REST.GetFeaturesServiceBase>
  */
 require('./GetFeaturesServiceBase');
 require('./GetFeaturesByIDsParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
     /**
@@ -24,7 +25,7 @@ SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeatures
      *     });
      * function getFeatureCompleted(object){//todo};
      * function getFeatureError(object){//todo}
-     * (end)     
+     * (end)
      *
      * Parameters:
      * url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
@@ -35,18 +36,18 @@ SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeatures
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function(url, options) {
+    initialize: function (url, options) {
         SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
-    
+
     /**
      * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。  
+     * 释放资源，将引用资源的属性置空。
      */
-    destroy: function() {
+    destroy: function () {
         SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
-    
+
     /**
      * Method: getJsonParameters
      * 将查询参数转化为 JSON 字符串。
@@ -58,13 +59,11 @@ SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeatures
      * Returns:
      * {Object} 转化后的 JSON 字符串。
      */
-    getJsonParameters: function(params) {
-        return  SuperMap.GetFeaturesByIDsParameters.toJsonParameters(params);
+    getJsonParameters: function (params) {
+        return SuperMap.GetFeaturesByIDsParameters.toJsonParameters(params);
     },
-    
+
     CLASS_NAME: "SuperMap.REST.GetFeaturesByIDsService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.GetFeaturesByIDsService(url, options);
-};
+module.exports = SuperMap.REST.GetFeaturesByIDsService;

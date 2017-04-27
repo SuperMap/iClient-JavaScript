@@ -8,10 +8,13 @@
  *           //doSomething
  *      })
  */
-require('./ServiceBase');
-require('../../common/iServer/MeasureService');
+var L = require("leaflet");
+var ServiceBase = require('./ServiceBase');
+var SuperMap = require('../../common/SuperMap');
+var Util = require('../core/Util');
+var SuperMapMeasureService = require('../../common/iServer/MeasureService');
 
-MeasureService = ServiceBase.extend({
+var MeasureService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -53,9 +56,9 @@ MeasureService = ServiceBase.extend({
         }
         var me = this;
         if (params.geometry) {
-            params.geometry = L.Util.toSuperMapGeometry(params.geometry);
+            params.geometry = Util.toSuperMapGeometry(params.geometry);
         }
-        var measureService = new SuperMap.REST.MeasureService(me.options.url, {
+        var measureService = new SuperMapMeasureService(me.options.url, {
             measureMode: type,
             eventListeners: {
                 scope: me,
@@ -72,4 +75,4 @@ L.supermap.measureService = function (url, options) {
     return new MeasureService(url, options);
 };
 
-module.exports = L.supermap.measureService;
+module.exports = MeasureService;

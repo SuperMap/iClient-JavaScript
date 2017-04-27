@@ -5,9 +5,9 @@
  * Inherits from:
  *  - <SuperMap.ServiceBase>
  */
-
 require('./ServiceBase');
 require('./GetGridCellInfosParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -170,6 +170,4 @@ SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.GetGridCellInfosService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.GetGridCellInfosService(url, options);
-};
+module.exports = SuperMap.REST.GetGridCellInfosService;

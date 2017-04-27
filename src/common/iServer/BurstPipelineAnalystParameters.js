@@ -2,8 +2,7 @@
  * Class: SuperMap.BurstPipelineAnalystParameters
  * 爆管分析参数类。
  */
-
-
+var SuperMap = require('../SuperMap');
 SuperMap.BurstPipelineAnalystParameters = SuperMap.Class({
 
     /**
@@ -66,6 +65,4 @@ SuperMap.BurstPipelineAnalystParameters = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.BurstPipelineAnalystParameters"
 });
-module.exports = function (options) {
-    return new SuperMap.BurstPipelineAnalystParameters(options);
-};
+module.exports = SuperMap.BurstPipelineAnalystParameters;

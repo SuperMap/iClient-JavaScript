@@ -1,4 +1,5 @@
 require('./Symbolizer');
+var L = require("leaflet");
 var PolyBase = require('./SymbolizerPolyBase');
 
 L.RegionSymbolizer = L.Polygon.extend({
@@ -14,3 +15,4 @@ L.RegionSymbolizer = L.Polygon.extend({
         this._updatePath();
     }
 });
+module.exports = L.RegionSymbolizer;

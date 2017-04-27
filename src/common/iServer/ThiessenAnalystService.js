@@ -13,6 +13,8 @@
 require('./SpatialAnalystBase');
 require('./DatasetThiessenAnalystParameters');
 require('./GeometryThiessenAnalystParameters');
+var SuperMap = require('../SuperMap');
+var GeoJSONFormat = require('../format/GeoJSON');
 SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -68,7 +70,7 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
      * {<GeometryThiessenAnalystParameters>}
      */
     processAsync: function (parameter) {
-        var parameterObject = new Object();
+        var parameterObject = {};
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);
@@ -120,7 +122,7 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
 
         result = SuperMap.REST.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
         if (result.regions) {
-            var geoJSONFormat = new SuperMap.Format.GeoJSON();
+            var geoJSONFormat = new GeoJSONFormat();
             result.regions = JSON.parse(geoJSONFormat.write(result.regions));
         }
         return result;
@@ -129,6 +131,4 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
     CLASS_NAME: "SuperMap.REST.ThiessenAnalystService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.ThiessenAnalystService(url, options);
-};
+module.exports = SuperMap.REST.ThiessenAnalystService;

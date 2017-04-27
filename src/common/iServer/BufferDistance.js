@@ -3,7 +3,7 @@
  * 缓冲区分析的缓冲距离类
  * 通过该类可以设置缓冲区分析的缓冲距离，距离可以是数值也可以是数值型的字段表达式。
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.BufferDistance = SuperMap.Class({
 
     /**
@@ -49,6 +49,4 @@ SuperMap.BufferDistance = SuperMap.Class({
     CLASS_NAME: "SuperMap.BufferDistance"
 });
 
-module.exports = function (options) {
-    return new SuperMap.BufferDistance(options);
-};
+module.exports = SuperMap.BufferDistance;

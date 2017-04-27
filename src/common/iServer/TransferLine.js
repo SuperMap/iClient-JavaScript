@@ -2,7 +2,7 @@
  * Class: SuperMap.TransferLine
  * 换乘路线信息类。
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.TransferLine = SuperMap.Class({
     /**
      * APIProperty: lineID
@@ -119,6 +119,4 @@ SuperMap.TransferLine.fromJson = function (jsonObject) {
     });
 };
 
-module.exports = function (options) {
-    return new SuperMap.TransferLine(options);
-};
+module.exports = SuperMap.TransferLine;

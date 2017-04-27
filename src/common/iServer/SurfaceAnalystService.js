@@ -10,6 +10,7 @@
 require('./SpatialAnalystBase');
 require('./DatasetSurfaceAnalystParameters');
 require('./GeometrySurfaceAnalystParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -113,6 +114,4 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
     CLASS_NAME: "SuperMap.REST.SurfaceAnalystService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.SurfaceAnalystService(url, options);
-};
+module.exports = SuperMap.REST.SurfaceAnalystService;

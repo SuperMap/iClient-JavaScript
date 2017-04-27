@@ -2,8 +2,9 @@
  * Class: BufferSetting
  * 缓冲区分析通用设置类
  */
-
-require('./BufferDistance');
+require('../REST');
+var SuperMap = require('../SuperMap');
+var BufferDistance = require('./BufferDistance');
 SuperMap.BufferSetting = SuperMap.Class({
 
     /**
@@ -60,8 +61,8 @@ SuperMap.BufferSetting = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.leftDistance = new SuperMap.BufferDistance();
-        me.rightDistance = new SuperMap.BufferDistance();
+        me.leftDistance = new BufferDistance();
+        me.rightDistance = new BufferDistance();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -89,6 +90,4 @@ SuperMap.BufferSetting = SuperMap.Class({
     CLASS_NAME: "SuperMap.BufferSetting"
 });
 
-module.exports = function (options) {
-    return new SuperMap.BufferSetting(options);
-};
+module.exports = SuperMap.BufferSetting;

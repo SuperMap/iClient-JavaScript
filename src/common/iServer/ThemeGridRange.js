@@ -7,9 +7,10 @@
  * Inherits from:
  *  - <SuperMap.Theme>
  */
-
+require('../REST');
 require('./Theme');
 require('./ThemeGridRangeItem');
+var SuperMap = require('../SuperMap');
 SuperMap.ThemeGridRange = SuperMap.Class(SuperMap.Theme, {
 
     /**
@@ -107,7 +108,5 @@ SuperMap.ThemeGridRange.fromObj = function (obj) {
     }
     return res;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeGridRange(options);
-};
+module.exports = SuperMap.ThemeGridRange;
 

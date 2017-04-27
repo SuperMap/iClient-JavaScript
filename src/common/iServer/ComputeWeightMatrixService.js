@@ -9,6 +9,7 @@
  */
 require('./NetworkAnalystServiceBase');
 require('./ComputeWeightMatrixParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -107,6 +108,4 @@ SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkA
     CLASS_NAME: "SuperMap.REST.ComputeWeightMatrixService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.ComputeWeightMatrixService(url, options);
-};
+module.exports = SuperMap.REST.ComputeWeightMatrixService;

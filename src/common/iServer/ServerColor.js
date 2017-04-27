@@ -3,7 +3,7 @@
  * 颜色类
  * 该类使用三原色（ RGB ）来表达颜色。
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.ServerColor = SuperMap.Class({
 
     /**
@@ -105,6 +105,5 @@ SuperMap.ServerColor.fromJson = function (jsonObject) {
     color.blue = blue;
     return color;
 };
-module.exports = function (red, green, blue) {
-    return new SuperMap.ServerColor(red, green, blue);
-};
+module.exports = SuperMap.ServerColor;
+

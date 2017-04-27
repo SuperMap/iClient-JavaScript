@@ -7,6 +7,7 @@
  */
 require('./QueryService');
 require('./QueryByDistanceParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService, {
 
     /**
@@ -71,6 +72,4 @@ SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService
     CLASS_NAME: "SuperMap.REST.QueryByDistanceService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.QueryByDistanceService(url, options);
-};
+module.exports = SuperMap.REST.QueryByDistanceService;

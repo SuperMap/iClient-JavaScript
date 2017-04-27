@@ -2,7 +2,8 @@
  * Class: SuperMap.EditFeaturesParameters
  * 数据服务中数据集添加、修改、删除参数类。
  */
-
+require('../REST');
+var SuperMap = require('../SuperMap');
 SuperMap.EditFeaturesParameters = SuperMap.Class({
 
     /**
@@ -119,6 +120,4 @@ SuperMap.EditFeaturesParameters.toJsonParameters = function (params) {
 
     return SuperMap.Util.toJSON(features);
 };
-module.exports = function (options) {
-    return new SuperMap.EditFeaturesParameters(options);
-};
+module.exports = SuperMap.EditFeaturesParameters;

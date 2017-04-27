@@ -5,7 +5,8 @@
  *      L.superMap.tiledMapLayer(url,{CRS:L.CRS.EPSG4326}).addTo(map);
  */
 require('../core/Base');
-TiledMapLayer = L.TileLayer.extend({
+var L = require("leaflet");
+var TiledMapLayer = L.TileLayer.extend({
 
     options: {
         url: null,
@@ -80,4 +81,4 @@ L.supermap.tiledMapLayer = function (url, options) {
     return new TiledMapLayer(url, options);
 };
 
-module.exports = L.supermap.tiledMapLayer;
+module.exports = TiledMapLayer;

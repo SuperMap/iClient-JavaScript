@@ -9,8 +9,8 @@
  * 阻抗值通过 SuperMap.TransportationAnalystParameter.weightFieldName 设置。
  * 计算最佳路径除了受阻抗影响外，还受转向字段的影响。转向值通过 SuperMap.TransportationAnalystParameter.turnWeightField 设置。
  */
-
-require('./TransportationAnalystParameter');
+var SuperMap = require('../SuperMap');
+var TransportationAnalystParameter = require('./TransportationAnalystParameter');
 SuperMap.FindPathParameters = SuperMap.Class({
 
     /**
@@ -59,7 +59,7 @@ SuperMap.FindPathParameters = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.parameter = new SuperMap.TransportationAnalystParameter();
+        me.parameter = new TransportationAnalystParameter();
         if (!options) {
             return;
         }
@@ -83,6 +83,4 @@ SuperMap.FindPathParameters = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.FindPathParameters"
 });
-module.exports = function (options) {
-    return new SuperMap.FindPathParameters(options);
-};
+module.exports = SuperMap.FindPathParameters;

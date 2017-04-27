@@ -8,22 +8,25 @@
  *          //doSomething 
  *      })
  */
-require('./ServiceBase');
-require('../../common/iServer/AreaSolarRadiationService');
-require('../../common/iServer/BufferAnalystService');
-require('../../common/iServer/DensityAnalystService');
-require('../../common/iServer/GenerateSpatialDataService');
-require('../../common/iServer/GeoRelationAnalystService');
-require('../../common/iServer/InterpolationAnalystService');
-require('../../common/iServer/MathExpressionAnalysisService');
-require('../../common/iServer/OverlayAnalystService');
-require('../../common/iServer/RouteCalculateMeasureService');
-require('../../common/iServer/RouteLocatorService');
-require('../../common/iServer/SurfaceAnalystService');
-require('../../common/iServer/TerrainCurvatureCalculationService');
-require('../../common/iServer/ThiessenAnalystService');
+var L = require("leaflet");
+var ServiceBase = require('./ServiceBase');
+var SuperMap = require('../../common/SuperMap');
+var Util = require('../core/Util');
+var AreaSolarRadiationService = require('../../common/iServer/AreaSolarRadiationService');
+var BufferAnalystService = require('../../common/iServer/BufferAnalystService');
+var DensityAnalystService = require('../../common/iServer/DensityAnalystService');
+var GenerateSpatialDataService = require('../../common/iServer/GenerateSpatialDataService');
+var GeoRelationAnalystService = require('../../common/iServer/GeoRelationAnalystService');
+var InterpolationAnalystService = require('../../common/iServer/InterpolationAnalystService');
+var MathExpressionAnalysisService = require('../../common/iServer/MathExpressionAnalysisService');
+var OverlayAnalystService = require('../../common/iServer/OverlayAnalystService');
+var RouteCalculateMeasureService = require('../../common/iServer/RouteCalculateMeasureService');
+var RouteLocatorService = require('../../common/iServer/RouteLocatorService');
+var SurfaceAnalystService = require('../../common/iServer/SurfaceAnalystService');
+var TerrainCurvatureCalculationService = require('../../common/iServer/TerrainCurvatureCalculationService');
+var ThiessenAnalystService = require('../../common/iServer/ThiessenAnalystService');
 
-SpatialAnalystService = ServiceBase.extend({
+var SpatialAnalystService = ServiceBase.extend({
 
     /**
      * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst 。
@@ -43,7 +46,7 @@ SpatialAnalystService = ServiceBase.extend({
      */
     getAreaSolarRadiationResult: function (params, callback, resultFormat) {
         var me = this;
-        var areaSolarRadiationService = new SuperMap.REST.AreaSolarRadiationService(me.options.url, {
+        var areaSolarRadiationService = new AreaSolarRadiationService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -64,7 +67,7 @@ SpatialAnalystService = ServiceBase.extend({
      */
     bufferAnalysis: function (params, callback, resultFormat) {
         var me = this;
-        var bufferAnalystService = new SuperMap.REST.BufferAnalystService(me.options.url, {
+        var bufferAnalystService = new BufferAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -85,7 +88,7 @@ SpatialAnalystService = ServiceBase.extend({
      */
     densityAnalysis: function (params, callback, resultFormat) {
         var me = this;
-        var densityAnalystService = new SuperMap.REST.DensityAnalystService(me.options.url, {
+        var densityAnalystService = new DensityAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -106,7 +109,7 @@ SpatialAnalystService = ServiceBase.extend({
      */
     generateSpatialData: function (params, callback, resultFormat) {
         var me = this;
-        var generateSpatialDataService = new SuperMap.REST.GenerateSpatialDataService(me.options.url, {
+        var generateSpatialDataService = new GenerateSpatialDataService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -127,7 +130,7 @@ SpatialAnalystService = ServiceBase.extend({
      */
     geoRelationAnalysis: function (params, callback, resultFormat) {
         var me = this;
-        var geoRelationAnalystService = new SuperMap.REST.GeoRelationAnalystService(me.options.url, {
+        var geoRelationAnalystService = new GeoRelationAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -148,7 +151,7 @@ SpatialAnalystService = ServiceBase.extend({
      */
     interpolationAnalysis: function (params, callback, resultFormat) {
         var me = this;
-        var interpolationAnalystService = new SuperMap.REST.InterpolationAnalystService(me.options.url, {
+        var interpolationAnalystService = new InterpolationAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -169,7 +172,7 @@ SpatialAnalystService = ServiceBase.extend({
      */
     mathExpressionAnalysis: function (params, callback, resultFormat) {
         var me = this;
-        var mathExpressionAnalysisService = new SuperMap.REST.MathExpressionAnalysisService(me.options.url, {
+        var mathExpressionAnalysisService = new MathExpressionAnalysisService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -190,7 +193,7 @@ SpatialAnalystService = ServiceBase.extend({
      */
     overlayAnalysis: function (params, callback, resultFormat) {
         var me = this;
-        var overlayAnalystService = new SuperMap.REST.OverlayAnalystService(me.options.url, {
+        var overlayAnalystService = new OverlayAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -211,7 +214,7 @@ SpatialAnalystService = ServiceBase.extend({
      */
     routeCalculateMeasure: function (params, callback, resultFormat) {
         var me = this;
-        var routeCalculateMeasureService = new SuperMap.REST.RouteCalculateMeasureService(me.options.url, {
+        var routeCalculateMeasureService = new RouteCalculateMeasureService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -232,7 +235,7 @@ SpatialAnalystService = ServiceBase.extend({
      */
     routeLocate: function (params, callback, resultFormat) {
         var me = this;
-        var routeLocatorService = new SuperMap.REST.RouteLocatorService(me.options.url, {
+        var routeLocatorService = new RouteLocatorService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -253,7 +256,7 @@ SpatialAnalystService = ServiceBase.extend({
      */
     surfaceAnalysis: function (params, callback, resultFormat) {
         var me = this;
-        var surfaceAnalystService = new SuperMap.REST.SurfaceAnalystService(me.options.url, {
+        var surfaceAnalystService = new SurfaceAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -274,7 +277,7 @@ SpatialAnalystService = ServiceBase.extend({
      */
     terrainCurvatureCalculate: function (params, callback, resultFormat) {
         var me = this;
-        var terrainCurvatureCalculationService = new SuperMap.REST.TerrainCurvatureCalculationService(me.options.url, {
+        var terrainCurvatureCalculationService = new TerrainCurvatureCalculationService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -295,7 +298,7 @@ SpatialAnalystService = ServiceBase.extend({
      */
     thiessenAnalysis: function (params, callback, resultFormat) {
         var me = this;
-        var thiessenAnalystService = new SuperMap.REST.ThiessenAnalystService(me.options.url, {
+        var thiessenAnalystService = new ThiessenAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -338,25 +341,25 @@ SpatialAnalystService = ServiceBase.extend({
         }
 
         if (params.extractRegion) {
-            params.extractRegion = L.Util.toSuperMapGeometry(params.extractRegion);
+            params.extractRegion = Util.toSuperMapGeometry(params.extractRegion);
         }
         if (params.clipRegion) {
-            params.clipRegion = L.Util.toSuperMapGeometry(params.clipRegion);
+            params.clipRegion = Util.toSuperMapGeometry(params.clipRegion);
         }
         if (params.sourceGeometry) {
-            params.sourceGeometry = L.Util.toSuperMapGeometry(params.sourceGeometry);
+            params.sourceGeometry = Util.toSuperMapGeometry(params.sourceGeometry);
         }
         if (params.sourceRoute && params.sourceRoute.points) {
-            params.sourceRoute.points = L.Util.toSuperMapGeometry(params.sourceRoute.points);
+            params.sourceRoute.points = Util.toSuperMapGeometry(params.sourceRoute.points);
         }
         if (params.operateRegions && L.Util.isArray(params.operateRegions)) {
             params.operateRegions.map(function (geometry, key) {
-                params.operateRegions[key] = L.Util.toSuperMapGeometry(geometry);
+                params.operateRegions[key] = Util.toSuperMapGeometry(geometry);
             });
         }
         if (params.sourceRoute && params.sourceRoute.components && L.Util.isArray(params.sourceRoute.components)) {
             params.sourceRoute.components.map(function (geometry, key) {
-                params.sourceRoute.components[key] = L.Util.toSuperMapGeometry(geometry);
+                params.sourceRoute.components[key] = Util.toSuperMapGeometry(geometry);
             });
         }
 
@@ -370,4 +373,4 @@ SpatialAnalystService = ServiceBase.extend({
 L.supermap.spatialAnalystService = function (url, options) {
     return new SpatialAnalystService(url, options);
 };
-module.exports = L.supermap.spatialAnalystService;
+module.exports = SpatialAnalystService;

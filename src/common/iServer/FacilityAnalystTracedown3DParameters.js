@@ -2,9 +2,9 @@
  * Class: SuperMap.FacilityAnalystTracedown3DParameters
  * 下游追踪资源参数类
  */
-
 require('./FacilityAnalyst3DParameters');
-SuperMap.FacilityAnalystTracedown3DParameters = SuperMap.Class( SuperMap.FacilityAnalyst3DParameters, {
+var SuperMap = require('../SuperMap');
+SuperMap.FacilityAnalystTracedown3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
 
     /**
      * Constructor: SuperMap.FacilityAnalystTracedown3DParameters
@@ -37,6 +37,4 @@ SuperMap.FacilityAnalystTracedown3DParameters = SuperMap.Class( SuperMap.Facilit
     CLASS_NAME: "SuperMap.FacilityAnalystTracedown3DParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.FacilityAnalystTracedown3DParameters(options);
-};
+module.exports = SuperMap.FacilityAnalystTracedown3DParameters;

@@ -10,6 +10,8 @@
  */
 require('./NetworkAnalystServiceBase');
 require('./FindTSPPathsParameters');
+var SuperMap = require('../SuperMap');
+var GeoJSONFormat = require('../format/GeoJSON');
 SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -115,7 +117,7 @@ SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
         if (!result || !result.tspPathList) {
             return null;
         }
-        var geoJSONFormat = new SuperMap.Format.GeoJSON();
+        var geoJSONFormat = new GeoJSONFormat();
         result.tspPathList.forEach(function (path) {
             if (path.route) {
                 path.route = JSON.parse(geoJSONFormat.write(path.route));
@@ -135,6 +137,4 @@ SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
     CLASS_NAME: "SuperMap.REST.FindTSPPathsService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.FindTSPPathsService(url, options);
-};
+module.exports = SuperMap.REST.FindTSPPathsService;

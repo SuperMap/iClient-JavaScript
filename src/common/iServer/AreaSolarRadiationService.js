@@ -7,6 +7,7 @@
  */
 require('./SpatialAnalystBase');
 require('./AreaSolarRadiationParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -59,7 +60,7 @@ SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAn
             me.url += "/";
         }
 
-        var parameterObject = new Object();
+        var parameterObject = {};
 
         if (parameter instanceof SuperMap.AreaSolarRadiationParameter) {
             me.url += 'datasets/' + parameter.dataset + '/solarradiation';
@@ -85,7 +86,4 @@ SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAn
 
     CLASS_NAME: "SuperMap.REST.AreaSolarRadiationService"
 });
-
-module.exports = function (url, options) {
-    return new SuperMap.REST.AreaSolarRadiationService(url, options);
-};
+module.exports = SuperMap.REST.AreaSolarRadiationService;

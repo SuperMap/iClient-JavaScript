@@ -3,8 +3,9 @@
  * 标签背景风格类。
  * 通过该类可以设置标签的背景形状和风格。
  */
-
-require('./ServerStyle');
+require('../REST');
+var SuperMap = require('../SuperMap');
+var ServerStyle = require('./ServerStyle');
 SuperMap.ThemeLabelBackground = SuperMap.Class({
 
     /**
@@ -35,7 +36,7 @@ SuperMap.ThemeLabelBackground = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.backStyle = new SuperMap.ServerStyle();
+        me.backStyle = new ServerStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -64,6 +65,4 @@ SuperMap.ThemeLabelBackground.fromObj = function (obj) {
 
     return t;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeLabelBackground(options);
-};
+module.exports = SuperMap.ThemeLabelBackground;

@@ -8,6 +8,7 @@
  */
 require('./ServiceBase');
 require('./SetLayerStatusParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
 
     lastparams: null,
@@ -148,6 +149,4 @@ SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.SetLayerStatusService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.SetLayerStatusService(url, options);
-};
+module.exports = SuperMap.REST.SetLayerStatusService;

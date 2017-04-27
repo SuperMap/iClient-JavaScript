@@ -1,3 +1,5 @@
+require('../core/Base');
+var L = require("leaflet");
 L.TileLayer.WMTS = L.TileLayer.extend({
     options: {
         version: '1.0.0',
@@ -38,3 +40,4 @@ L.TileLayer.WMTS = L.TileLayer.extend({
 L.tileLayer.wmts = function (url, options) {
     return new L.TileLayer.WMTS(url, options);
 };
+module.exports = L.TileLayer.WMTS;

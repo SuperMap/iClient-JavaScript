@@ -2,8 +2,8 @@
  * Class: SuperMap.BufferAnalystParameters
  * 缓冲区分析参数基类。
  */
-
-require('./BufferSetting');
+var SuperMap = require('../SuperMap');
+var BufferSetting = require('./BufferSetting');
 SuperMap.BufferAnalystParameters = SuperMap.Class({
 
     /**
@@ -25,7 +25,7 @@ SuperMap.BufferAnalystParameters = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.bufferSetting = new SuperMap.BufferSetting();
+        me.bufferSetting = new BufferSetting();
         if (!options) {
             return;
         }
@@ -47,6 +47,4 @@ SuperMap.BufferAnalystParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.BufferAnalystParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.BufferAnalystParameters(options);
-};
+module.exports = SuperMap.BufferAnalystParameters;

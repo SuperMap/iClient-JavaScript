@@ -4,8 +4,8 @@
  * 在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。
  * 本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。
  */
-
-require('./ServerColor');
+var SuperMap = require('../SuperMap');
+var ServerColor = require('./ServerColor');
 SuperMap.ThemeGridRangeItem = SuperMap.Class({
 
     /**
@@ -54,7 +54,7 @@ SuperMap.ThemeGridRangeItem = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.color = new SuperMap.ServerColor();
+        me.color = new ServerColor();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -101,6 +101,4 @@ SuperMap.ThemeGridRangeItem.fromObj = function (obj) {
     res.color = SuperMap.ServerColor.fromJson(obj.color);
     return res;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeGridRangeItem(options);
-};
+module.exports = SuperMap.ThemeGridRangeItem;

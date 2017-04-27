@@ -1,8 +1,8 @@
 ﻿/**
  * Class: SuperMap.ServiceBase
- * Core服务基类
+ * common服务基类
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.ServiceBase = SuperMap.Class({
 
     /**
@@ -345,13 +345,9 @@ SuperMap.ServiceBase = SuperMap.Class({
      */
     serviceProcessFailed: function (result) {
         result = SuperMap.Util.transformResult(result);
-        var error=result.error||result;
+        var error = result.error || result;
         this.events.triggerEvent("processFailed", {error: error});
     },
     CLASS_NAME: "SuperMap.ServiceBase"
-})
-;
-
-module.exports = function (url, options) {
-    return new SuperMap.ServiceBase(url, options);
-};
+});
+module.exports = SuperMap.ServiceBase;

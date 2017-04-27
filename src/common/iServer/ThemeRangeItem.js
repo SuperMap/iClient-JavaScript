@@ -4,8 +4,8 @@
  * 在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。
  * 每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。
  */
-
-require('./ServerStyle');
+var SuperMap = require('../SuperMap');
+var ServerStyle = require('./ServerStyle');
 SuperMap.ThemeRangeItem = SuperMap.Class({
 
     /**
@@ -61,7 +61,7 @@ SuperMap.ThemeRangeItem = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.style = new SuperMap.ServerStyle();
+        me.style = new ServerStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -108,6 +108,4 @@ SuperMap.ThemeRangeItem.fromObj = function (obj) {
     res.style = SuperMap.ServerStyle.fromJson(obj.style);
     return res;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeRangeItem(options);
-};
+module.exports = SuperMap.ThemeRangeItem;

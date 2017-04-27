@@ -7,6 +7,7 @@
  */
 require('./ServiceBase');
 require('./EditFeaturesParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -123,6 +124,4 @@ SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.EditFeaturesService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.EditFeaturesService(url, options);
-};
+module.exports = SuperMap.REST.EditFeaturesService;

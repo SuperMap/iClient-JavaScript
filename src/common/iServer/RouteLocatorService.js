@@ -7,6 +7,7 @@
  */
 require('./SpatialAnalystBase');
 require('./RouteLocatorParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -136,6 +137,4 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
     CLASS_NAME: "SuperMap.REST.RouteLocatorService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.RouteLocatorService(url, options);
-};
+module.exports = SuperMap.REST.RouteLocatorService;

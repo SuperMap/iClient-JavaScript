@@ -5,8 +5,8 @@
  * 物流配送功能就是解决如何合理分配配送次序和送货路线，使配送总花费达到最小或每个配送中心的花费达到最小。
  * 例如：现在有50个报刊零售地（配送目的地），和4个报刊供应地（配送中心），现寻求这4个供应地向报刊零售地发送报纸的最优路线，属物流配送问题。
  */
-
-require('./TransportationAnalystParameter');
+var SuperMap = require('../SuperMap');
+var TransportationAnalystParameter = require('./TransportationAnalystParameter');
 SuperMap.FindMTSPPathsParameters = SuperMap.Class({
 
     /**
@@ -63,7 +63,7 @@ SuperMap.FindMTSPPathsParameters = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.parameter = new SuperMap.TransportationAnalystParameter();
+        me.parameter = new TransportationAnalystParameter();
         if (!options) {
             return;
         }
@@ -89,6 +89,4 @@ SuperMap.FindMTSPPathsParameters = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.FindMTSPPathsParameters"
 });
-module.exports = function (options) {
-    return new SuperMap.FindMTSPPathsParameters(options);
-};
+module.exports = SuperMap.FindMTSPPathsParameters;

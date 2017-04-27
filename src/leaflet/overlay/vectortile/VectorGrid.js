@@ -1,7 +1,7 @@
 require('./SVGRenderer');
 require('./CanvasRenderer');
 require('./VectorTile');
-
+var L = require("leaflet");
 L.VectorGrid = L.GridLayer.extend({
     options: {
         renderer: L.svg.renderer,
@@ -117,11 +117,11 @@ L.VectorGrid = L.GridLayer.extend({
             case L.supermap.VectorFeatureType.TEXT:
                 return L.extend({}, L.TextSymbolizer.prototype.options, style);
         }
-    },
+    }
 
 });
 
 L.vectorGrid = function (options) {
     return new L.VectorGrid(options);
 };
-
+module.exports = L.VectorGrid;

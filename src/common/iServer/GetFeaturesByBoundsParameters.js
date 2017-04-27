@@ -6,8 +6,9 @@
  * Inherits from:
  *  - <SuperMap.GetFeaturesParametersBase>
  */
+require('../REST');
 require('./GetFeaturesParametersBase');
-
+var SuperMap = require('../SuperMap');
 SuperMap.GetFeaturesByBoundsParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
 
     /**
@@ -138,6 +139,4 @@ SuperMap.GetFeaturesByBoundsParameters.getFeatureMode = {
     "BOUNDS_ATTRIBUTEFILTER": "BOUNDS_ATTRIBUTEFILTER"
 };
 
-module.exports = function (options) {
-    return new SuperMap.GetFeaturesByBoundsParameters(options);
-};
+module.exports = SuperMap.GetFeaturesByBoundsParameters;

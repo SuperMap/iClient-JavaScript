@@ -1,11 +1,11 @@
 var deps = {
     "common": {
         "core": [
-            "./src/common/Base.js",
+            "./src/common/SuperMap.js",
             "./src/common/REST.js"
         ],
         "util": [
-            "./src/common/util/Request.js",
+            "./src/common/util/Request.js"
         ],
         "format": [
             "./src/common/format/GeoJSON.js"

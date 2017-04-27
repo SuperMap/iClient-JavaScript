@@ -5,8 +5,9 @@
  * Inherits from:
  *  - <SuperMap.ThiessenAnalystParameters>
  */
-
+require('../REST');
 require('./ThiessenAnalystParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.DatasetThiessenAnalystParameters = SuperMap.Class(SuperMap.ThiessenAnalystParameters, {
 
     /**
@@ -74,6 +75,4 @@ SuperMap.DatasetThiessenAnalystParameters.toObject = function (datasetThiessenAn
     }
 };
 
-module.exports = function (options) {
-    return new SuperMap.DatasetThiessenAnalystParameters(options);
-};
+module.exports = SuperMap.DatasetThiessenAnalystParameters;

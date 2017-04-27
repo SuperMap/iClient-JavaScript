@@ -11,6 +11,7 @@
  */
 require('./SpatialAnalystBase');
 require('./GenerateSpatialDataParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -130,6 +131,4 @@ SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialA
     CLASS_NAME: "SuperMap.REST.GenerateSpatialDataService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.GenerateSpatialDataService(url, options);
-};
+module.exports = SuperMap.REST.GenerateSpatialDataService;

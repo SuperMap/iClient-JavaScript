@@ -1,10 +1,11 @@
 /**
  *CartoCSS样式转Leaflet样式
  */
-require('../../../common/style/CartoCSS');
 require('../../core/Base');
 require('./CartoDeaultStyle');
 require('./CartoStyleMap');
+var CartoCSS = require('../../../common/style/CartoCSS');
+var L = require("leaflet");
 
 L.supermap.CartoCSSToLeaflet = {
 
@@ -16,7 +17,7 @@ L.supermap.CartoCSSToLeaflet = {
             cartoStr = this.processCharacters(cartoStr);
         }
         this.cartoCSS = this.cartoCSS || {};
-        var shaders = new SuperMap.CartoCSS(cartoStr).getShaders();
+        var shaders = new CartoCSS(cartoStr).getShaders();
         if (!shaders) {
             return;
         }

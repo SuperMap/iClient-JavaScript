@@ -7,13 +7,16 @@
  *          //doSomething
  *      })
  */
-require('./ServiceBase');
-require('../../common/iServer/QueryByBoundsService');
-require('../../common/iServer/QueryByDistanceService');
-require('../../common/iServer/QueryBySQLService');
-require('../../common/iServer/QueryByGeometryService');
+var L = require("leaflet");
+var ServiceBase = require('./ServiceBase');
+var SuperMap = require('../../common/SuperMap');
+var Util = require('../core/Util');
+var QueryByBoundsService = require('../../common/iServer/QueryByBoundsService');
+var QueryByDistanceService = require('../../common/iServer/QueryByDistanceService');
+var QueryBySQLService = require('../../common/iServer/QueryBySQLService');
+var QueryByGeometryService = require('../../common/iServer/QueryByGeometryService');
 
-QueryService = ServiceBase.extend({
+var QueryService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -30,7 +33,7 @@ QueryService = ServiceBase.extend({
      */
     queryByBounds: function (params, callback, resultFormat) {
         var me = this;
-        var queryService = new SuperMap.REST.QueryByBoundsService(me.options.url, {
+        var queryService = new QueryByBoundsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -53,7 +56,7 @@ QueryService = ServiceBase.extend({
      */
     queryByDistance: function (params, callback, resultFormat) {
         var me = this;
-        var queryByDistanceService = new SuperMap.REST.QueryByDistanceService(me.options.url, {
+        var queryByDistanceService = new QueryByDistanceService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -76,7 +79,7 @@ QueryService = ServiceBase.extend({
      */
     queryBySQL: function (params, callback, resultFormat) {
         var me = this;
-        var queryBySQLService = new SuperMap.REST.QueryBySQLService(me.options.url, {
+        var queryBySQLService = new QueryBySQLService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -99,7 +102,7 @@ QueryService = ServiceBase.extend({
      */
     queryByGeometry: function (params, callback, resultFormat) {
         var me = this;
-        var queryByGeometryService = new SuperMap.REST.QueryByGeometryService(me.options.url, {
+        var queryByGeometryService = new QueryByGeometryService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -134,7 +137,7 @@ QueryService = ServiceBase.extend({
             if (params.geometry instanceof L.Point) {
                 params.geometry = new SuperMap.Geometry.Point(params.geometry.x, params.geometry.y);
             } else {
-                params.geometry = L.Util.toSuperMapGeometry(params.geometry);
+                params.geometry = Util.toSuperMapGeometry(params.geometry);
             }
         }
 
@@ -150,4 +153,4 @@ L.supermap.queryService = function (url, options) {
     return new QueryService(url, options);
 };
 
-module.exports = L.supermap.queryService;
+module.exports = QueryService;

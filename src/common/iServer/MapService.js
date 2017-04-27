@@ -6,9 +6,10 @@
  * Inherits from:
  *  - <SuperMap.ServiceBase>
  */
-require('./ServiceBase');
 
-SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
+var SuperMap = require('../SuperMap');
+var ServiceBase = require('./ServiceBase');
+SuperMap.REST.MapService = SuperMap.Class(ServiceBase, {
 
     /**
      * APIProperty: projection
@@ -130,7 +131,4 @@ SuperMap.REST.MapService = SuperMap.Class(SuperMap.ServiceBase, {
 
     CLASS_NAME: "SuperMap.REST.MapService"
 });
-
-module.exports = function (url, options) {
-    return new SuperMap.REST.MapService(url, options);
-};
+module.exports = SuperMap.REST.MapService;

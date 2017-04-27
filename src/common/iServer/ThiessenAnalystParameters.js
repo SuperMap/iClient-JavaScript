@@ -2,7 +2,7 @@
  * Class: SuperMap.ThiessenAnalystParameters
  * 泰森多边形分析参数基类。
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.ThiessenAnalystParameters = SuperMap.Class({
 
     /**
@@ -76,6 +76,4 @@ SuperMap.ThiessenAnalystParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.ThiessenAnalystParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.ThiessenAnalystParameters(options);
-};
+module.exports = SuperMap.ThiessenAnalystParameters;

@@ -3,8 +3,9 @@
  * 服务端文本风格类
  * 该类用于定义文本风格的相关属性。
  */
-
-require('./ServerColor');
+require('../REST');
+var SuperMap = require('../SuperMap');
+var ServerColor = require('./ServerColor');
 SuperMap.ServerTextStyle = SuperMap.Class({
 
     /**
@@ -165,8 +166,8 @@ SuperMap.ServerTextStyle = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.backColor = new SuperMap.ServerColor(255, 255, 255);
-        me.foreColor = new SuperMap.ServerColor(0, 0, 0);
+        me.backColor = new ServerColor(255, 255, 255);
+        me.foreColor = new ServerColor(0, 0, 0);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -214,7 +215,4 @@ SuperMap.ServerTextStyle.fromObj = function (obj) {
     res.foreColor = SuperMap.ServerColor.fromJson(obj.foreColor);
     return res;
 };
-module.exports = function (options) {
-    return new SuperMap.ServerTextStyle(options);
-};
-
+module.exports = SuperMap.ServerTextStyle;

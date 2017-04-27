@@ -2,8 +2,8 @@
  * Class: SuperMap.RouteCalculateMeasureParameters
  * 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
  */
-
 require('./Route');
+var SuperMap = require('../SuperMap');
 SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
 
     /**
@@ -87,6 +87,4 @@ SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.RouteCalculateMeasureParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.RouteCalculateMeasureParameters(options);
-};
+module.exports = SuperMap.RouteCalculateMeasureParameters;

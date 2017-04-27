@@ -4,8 +4,9 @@ require('./TextSymbolizer');
 require('./PointSymbolizer');
 require('./LineSymbolizer');
 require('./RegionSymbolizer');
-var tileFeatureProcessor = require('./TileFeatureProcessor');
-VectorTile = L.Class.extend({
+var L = require("leaflet");
+var TileFeatureProcessor = require('./TileFeatureProcessor');
+var VectorTile = L.Class.extend({
 
     initialize: function (options, done) {
         this.layer = options.layer;
@@ -26,7 +27,7 @@ VectorTile = L.Class.extend({
             if (!json) {
                 return null;
             }
-            var tileFeature = tileFeatureProcessor.processTileFeature(json.recordsets);
+            var tileFeature = TileFeatureProcessor.processTileFeature(json.recordsets);
             me.render(tileFeature, coords);
 
         }).catch(function (ex) {
@@ -174,4 +175,4 @@ VectorTile = L.Class.extend({
 L.supermap.vectorTile = function (options, done) {
     return new VectorTile(options, done);
 };
-module.exports = L.vectorTile;
+module.exports = VectorTile;

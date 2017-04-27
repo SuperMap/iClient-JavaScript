@@ -7,8 +7,8 @@
  * 他们所代表的分段区间分别为[0,5)，[5,10)。那么需要分别设置 SuperMap.ThemeLabelItem[0].start=0，
  * SuperMap.ThemeLabelItem[0].end=5，SuperMap.ThemeLabelItem[1].start=5，SuperMap.ThemeLabelItem[1].end=10。
  */
-
-require('./ServerTextStyle');
+var SuperMap = require('../SuperMap');
+var ServerTextStyle = require('./ServerTextStyle');
 SuperMap.ThemeLabelItem = SuperMap.Class({
 
     /**
@@ -60,7 +60,7 @@ SuperMap.ThemeLabelItem = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.style = new SuperMap.ServerTextStyle();
+        me.style = new ServerTextStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -90,6 +90,4 @@ SuperMap.ThemeLabelItem.fromObj = function (obj) {
     SuperMap.Util.copy(t, obj);
     return t;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeLabelItem(options);
-};
+module.exports = SuperMap.ThemeLabelItem;

@@ -7,11 +7,11 @@
  *          //doSomething
  *      })
  */
-require('./ServiceBase');
-require('../../common/iServer/ChartQueryService');
-require('../../common/iServer/ChartFeatureInfoSpecsService');
-
-ChartService = ServiceBase.extend({
+var L = require("leaflet");
+var ServiceBase = require('./ServiceBase');
+var ChartQueryService = require('../../common/iServer/ChartQueryService');
+var ChartFeatureInfoSpecsService = require('../../common/iServer/ChartFeatureInfoSpecsService');
+var ChartService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -28,7 +28,7 @@ ChartService = ServiceBase.extend({
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
-        var chartQueryService = new SuperMap.REST.ChartQueryService(me.options.url, {
+        var chartQueryService = new ChartQueryService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -47,7 +47,7 @@ ChartService = ServiceBase.extend({
     getChartFeatureInfo: function (callback) {
         var me = this, url = me.options.url.concat();
         url += "/chartFeatureInfoSpecs";
-        var chartFeatureInfoSpecsService = new SuperMap.REST.ChartFeatureInfoSpecsService(url, {
+        var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -85,4 +85,4 @@ L.supermap.chartService = function (url, options) {
     return new ChartService(url, options);
 };
 
-module.exports = L.supermap.chartService;
+module.exports = ChartService;

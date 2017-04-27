@@ -2,7 +2,7 @@
  * Class: SuperMap.ThemeMemoryData
  * 专题图内存数据类。
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.ThemeMemoryData = SuperMap.Class({
 
     /**
@@ -70,6 +70,4 @@ SuperMap.ThemeMemoryData = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.ThemeMemoryData"
 });
-module.exports = function (srcData, targetData) {
-    return new SuperMap.ThemeMemoryData(srcData, targetData);
-};
+module.exports = SuperMap.ThemeMemoryData;

@@ -1,3 +1,4 @@
+var L = require("leaflet");
 var proj4 = require('proj4');
 L.Proj = {};
 

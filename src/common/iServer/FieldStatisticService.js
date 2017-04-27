@@ -5,8 +5,10 @@
  * Inherits from:
  *  - <SuperMap.ServiceBase>
  */
+require('../REST');
 require('./ServiceBase');
 require('./FieldStatisticsParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -107,6 +109,4 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.FieldStatisticService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.FieldStatisticService(url, options);
-};
+module.exports = SuperMap.REST.FieldStatisticService;

@@ -8,6 +8,7 @@
  */
 require('./ServiceBase');
 require('./StopQueryParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -76,6 +77,4 @@ SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.StopQueryService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.StopQueryService(url, options);
-};
+module.exports = SuperMap.REST.StopQueryService;

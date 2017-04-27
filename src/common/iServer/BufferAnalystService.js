@@ -10,6 +10,8 @@
 require('./SpatialAnalystBase');
 require('./DatasetBufferAnalystParameters');
 require('./GeometryBufferAnalystParameters');
+var SuperMap = require('../SuperMap');
+var GeoJSONFormat = require('../format/GeoJSON');
 SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -64,7 +66,7 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
      * params - {<BufferAnalystParameters>}
      */
     processAsync: function (parameter) {
-        var parameterObject = new Object();
+        var parameterObject = {};
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);
@@ -117,7 +119,7 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
 
         var analystResult = SuperMap.REST.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
         if (analystResult.resultGeometry) {
-            var geoJSONFormat = new SuperMap.Format.GeoJSON();
+            var geoJSONFormat = new GeoJSONFormat();
             result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
         }
         return result;
@@ -125,6 +127,4 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
     CLASS_NAME: "SuperMap.REST.BufferAnalystService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.BufferAnalystService(url, options);
-};
+module.exports = SuperMap.REST.BufferAnalystService;

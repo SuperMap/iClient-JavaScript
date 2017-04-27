@@ -6,6 +6,7 @@
  */
 require('./ServiceBase');
 require('./FacilityAnalystTraceup3DParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.FacilityAnalystTraceup3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -66,6 +67,4 @@ SuperMap.REST.FacilityAnalystTraceup3DService = SuperMap.Class(SuperMap.ServiceB
     CLASS_NAME: "SuperMap.REST.FacilityAnalystTraceup3DService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.FacilityAnalystTraceup3DService(url, options);
-};
+module.exports = SuperMap.REST.FacilityAnalystTraceup3DService;

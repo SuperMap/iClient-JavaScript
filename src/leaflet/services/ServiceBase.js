@@ -2,14 +2,15 @@
  * Class: ServiceBase
  * 服务基类
  */
+var L = require("leaflet");
 require('../core/Base');
 require('../../common/util/Request');
 
-ServiceBase = L.Evented.extend({
+var ServiceBase = L.Evented.extend({
     options: {
         url: null
     },
-    initialize: function (url,options) {
+    initialize: function (url, options) {
         if (url) {
             url = (url.indexOf("/") !== url.length - 1) ?
                 url : url.substr(0, url.length - 1);
@@ -18,13 +19,6 @@ ServiceBase = L.Evented.extend({
         L.setOptions(this, options);
         this.fire("initialized", this);
     },
-    processCompleted: function (servicesResult) {
-       this.callback(servicesResult.result);
-    },
-
-    processFailed: function () {
-
-    },
 
     destroy: function () {
         this.fire("destroy", this);
@@ -32,6 +26,4 @@ ServiceBase = L.Evented.extend({
 
 });
 
-module.exports = function (url, options) {
-    return new ServiceBase(url, options);
-};
+module.exports = ServiceBase;

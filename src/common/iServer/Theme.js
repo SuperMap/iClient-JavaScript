@@ -2,8 +2,8 @@
  * Class: SuperMap.Theme
  * 专题图基类。
  */
-
 require('./ThemeMemoryData');
+var SuperMap = require('../SuperMap');
 SuperMap.Theme = SuperMap.Class({
 
     /**
@@ -65,6 +65,4 @@ SuperMap.Theme = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.Theme"
 });
-module.exports = function (type, options) {
-    return new SuperMap.Theme(type, options);
-};
+module.exports = SuperMap.Theme;

@@ -7,6 +7,7 @@
  */
 require('./NetworkAnalystServiceBase');
 require('./FacilityAnalystStreamParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -84,6 +85,4 @@ SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.Networ
     CLASS_NAME: "SuperMap.REST.FacilityAnalystStreamService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.FacilityAnalystStreamService(url, options);
-};
+module.exports = SuperMap.REST.FacilityAnalystStreamService;

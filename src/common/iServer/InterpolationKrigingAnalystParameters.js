@@ -45,10 +45,10 @@
  * Inherits from:
  *  - <SuperMap.InterpolationAnalystParameters>
  */
-
+require('../REST');
 require('./InterpolationAnalystParameters');
 require('./ThiessenAnalystParameters');
-
+var SuperMap = require('../SuperMap');
 SuperMap.InterpolationKrigingAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
     /**
      * APIProperty: type
@@ -242,6 +242,4 @@ SuperMap.InterpolationKrigingAnalystParameters = SuperMap.Class(SuperMap.Interpo
     CLASS_NAME: "SuperMap.InterpolationKrigingAnalystParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.InterpolationKrigingAnalystParameters(options);
-};
+module.exports = SuperMap.InterpolationKrigingAnalystParameters;

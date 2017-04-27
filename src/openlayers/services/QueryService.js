@@ -9,10 +9,13 @@
  *      })
  */
 require('./ServiceBase');
-require('../../common/iServer/QueryByBoundsService');
-require('../../common/iServer/QueryByDistanceService');
-require('../../common/iServer/QueryBySQLService');
-require('../../common/iServer/QueryByGeometryService');
+var ol = require('openlayers');
+var Util = require('../core/Util');
+var SuperMap = require('../../common/SuperMap');
+var QueryByBoundsService = require('../../common/iServer/QueryByBoundsService');
+var QueryByDistanceService = require('../../common/iServer/QueryByDistanceService');
+var QueryBySQLService = require('../../common/iServer/QueryBySQLService');
+var QueryByGeometryService = require('../../common/iServer/QueryByGeometryService');
 
 ol.supermap.QueryService = function (url, options) {
     ol.supermap.ServiceBase.call(this, url, options);
@@ -31,7 +34,7 @@ ol.inherits(ol.supermap.QueryService, ol.supermap.ServiceBase);
  */
 ol.supermap.QueryService.prototype.queryByBounds = function (params, callback, resultFormat) {
     var me = this;
-    var queryService = new SuperMap.REST.QueryByBoundsService(me.options.url, {
+    var queryService = new QueryByBoundsService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -54,7 +57,7 @@ ol.supermap.QueryService.prototype.queryByBounds = function (params, callback, r
  */
 ol.supermap.QueryService.prototype.queryByDistance = function (params, callback, resultFormat) {
     var me = this;
-    var queryByDistanceService = new SuperMap.REST.QueryByDistanceService(me.options.url, {
+    var queryByDistanceService = new QueryByDistanceService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -77,7 +80,7 @@ ol.supermap.QueryService.prototype.queryByDistance = function (params, callback,
  */
 ol.supermap.QueryService.prototype.queryBySQL = function (params, callback, resultFormat) {
     var me = this;
-    var queryBySQLService = new SuperMap.REST.QueryBySQLService(me.options.url, {
+    var queryBySQLService = new QueryBySQLService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -100,7 +103,7 @@ ol.supermap.QueryService.prototype.queryBySQL = function (params, callback, resu
  */
 ol.supermap.QueryService.prototype.queryByGeometry = function (params, callback, resultFormat) {
     var me = this;
-    var queryByGeometryService = new SuperMap.REST.QueryByGeometryService(me.options.url, {
+    var queryByGeometryService = new QueryByGeometryService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -118,7 +121,7 @@ ol.supermap.QueryService.prototype._processParams = function (params) {
         return {};
     }
     params.returnContent = (params.returnContent == null) ? true : params.returnContent;
-    if (params.queryParams && !ol.supermap.Util.isArray(params.queryParams)) {
+    if (params.queryParams && !Util.isArray(params.queryParams)) {
         params.queryParams = [params.queryParams];
     }
     if (params.bounds) {
@@ -133,7 +136,7 @@ ol.supermap.QueryService.prototype._processParams = function (params) {
         if (params.geometry instanceof ol.geom.Point) {
             params.geometry = new SuperMap.Geometry.Point(params.geometry.flatCoordinates[0], params.geometry.flatCoordinates[1]);
         } else {
-            params.geometry = ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
+            params.geometry = Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
         }
     }
     return params;
@@ -141,6 +144,6 @@ ol.supermap.QueryService.prototype._processParams = function (params) {
 
 ol.supermap.QueryService.prototype._processFormat = function (resultFormat) {
     return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
-}
+};
 
 module.exports = ol.supermap.QueryService;

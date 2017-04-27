@@ -5,8 +5,10 @@
  * Inherits from:
  *  - <SuperMap.UGCSubLayer>
  */
-require('./ServerStyle');
 require('./UGCSubLayer');
+var SuperMap = require('../SuperMap');
+var ServerStyle = require('./ServerStyle');
+
 SuperMap.Vector = SuperMap.Class(SuperMap.UGCSubLayer, {
 
     /**
@@ -49,7 +51,7 @@ SuperMap.Vector = SuperMap.Class(SuperMap.UGCSubLayer, {
         SuperMap.UGCSubLayer.prototype.fromJson.apply(this, [jsonObject]);
         var sty = this.style;
         if (sty) {
-            this.style = new SuperMap.ServerStyle(sty);
+            this.style = new ServerStyle(sty);
         }
     },
 
@@ -68,6 +70,4 @@ SuperMap.Vector = SuperMap.Class(SuperMap.UGCSubLayer, {
     },
     CLASS_NAME: "SuperMap.Vector"
 });
-module.exports = function (options) {
-    return new SuperMap.Vector(options);
-};
+module.exports = SuperMap.Vector;

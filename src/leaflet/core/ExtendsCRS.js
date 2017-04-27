@@ -1,3 +1,4 @@
+var L = require("leaflet");
 L.CRS.BaiduCRS = L.extend({}, L.CRS.EPSG3857, {
 
     code: 'BaiduCRS',

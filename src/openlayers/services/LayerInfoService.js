@@ -7,10 +7,11 @@
  *      })
  */
 require('./ServiceBase');
-require('../../common/iServer/GetLayersInfoService');
-require('../../common/iServer/SetLayerInfoService');
-require('../../common/iServer/SetLayersInfoService');
-require('../../common/iServer/SetLayerStatusService');
+var ol = require('openlayers');
+var GetLayersInfoService = require('../../common/iServer/GetLayersInfoService');
+var SetLayerInfoService = require('../../common/iServer/SetLayerInfoService');
+var SetLayersInfoService = require('../../common/iServer/SetLayersInfoService');
+var SetLayerStatusService = require('../../common/iServer/SetLayerStatusService');
 
 ol.supermap.LayerInfoService = function (url, options) {
     ol.supermap.ServiceBase.call(this, url, options);
@@ -20,7 +21,7 @@ ol.inherits(ol.supermap.LayerInfoService, ol.supermap.ServiceBase);
 
 ol.supermap.LayerInfoService.prototype.getLayersInfo = function (callback) {
     var me = this;
-    var getLayersInfoService = new SuperMap.REST.GetLayersInfoService(me.options.url, {
+    var getLayersInfoService = new GetLayersInfoService(me.options.url, {
         eventListeners: {
             processCompleted: callback,
             processFailed: callback
@@ -51,7 +52,7 @@ ol.supermap.LayerInfoService.prototype.setLayerInfo = function (params, callback
     var url = me.options.url.concat();
     url += "/tempLayersSet/" + tempLayerID + "/" + layerPath;
 
-    var setLayerInfoService = new SuperMap.REST.SetLayerInfoService(url, {
+    var setLayerInfoService = new SetLayerInfoService(url, {
         eventListeners: {
             processCompleted: callback,
             processFailed: callback
@@ -83,7 +84,7 @@ ol.supermap.LayerInfoService.prototype.setLayersInfo = function (params, callbac
     var layersInfoParam = {};
     layersInfoParam.subLayers = {};
     layersInfoParam.subLayers.layers = layersInfo;
-    var setLayersInfoService = new SuperMap.REST.SetLayersInfoService(me.options.url, {
+    var setLayersInfoService = new SetLayersInfoService(me.options.url, {
         eventListeners: {
             processCompleted: callback,
             processFailed: callback
@@ -108,7 +109,7 @@ ol.supermap.LayerInfoService.prototype.setLayerStatus = function (params, callba
         return;
     }
     var me = this;
-    var setLayerStatusService = new SuperMap.REST.SetLayerStatusService(me.options.url, {
+    var setLayerStatusService = new SetLayerStatusService(me.options.url, {
         eventListeners: {
             processCompleted: callback,
             processFailed: callback

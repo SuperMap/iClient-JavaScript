@@ -6,9 +6,10 @@
  */
 require('../core/Base');
 require('./vectortile/VectorGrid');
+var L = require("leaflet");
 var CartoCSSToLeaflet = require('./carto/CartoCSSToLeaflet');
 
-TileVectorLayer = L.VectorGrid.extend({
+var TileVectorLayer = L.VectorGrid.extend({
 
     options: {
         url: null,
@@ -351,4 +352,4 @@ L.supermap.tiledVectorLayer = function (url, options) {
     return new TileVectorLayer(url, options);
 };
 
-module.exports = L.supermap.tiledVectorLayer;
+module.exports = TileVectorLayer;

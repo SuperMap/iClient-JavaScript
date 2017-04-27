@@ -16,6 +16,7 @@ require('./InterpolationDensityAnalystParameters');
 require('./InterpolationIDWAnalystParameters');
 require('./InterpolationKrigingAnalystParameters');
 require('./InterpolationAnalystParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -71,7 +72,7 @@ SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.Spatial
      * {<SuperMap.InterpolationAnalystParameters>}
      */
     processAsync: function (parameter) {
-        var parameterObject = new Object();
+        var parameterObject = {};
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);
@@ -135,6 +136,4 @@ SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.Spatial
     CLASS_NAME: "SuperMap.REST.InterpolationAnalystService"
 
 });
-module.exports = function (url, options) {
-    return new SuperMap.REST.InterpolationAnalystService(url, options);
-};
+module.exports = SuperMap.REST.InterpolationAnalystService;

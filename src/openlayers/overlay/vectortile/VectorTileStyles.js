@@ -1,6 +1,8 @@
 require('../../../common/style/CartoCSS');
-require('../../core/StyleUtils');
 
+var ol = require('openlayers');
+var SuperMap = require('../../../common/SuperMap');
+var StyleUtils = require('../../core/StyleUtils');
 ol.supermap.VectorTileStyles = function (options) {
     ol.Observable.call(this);
     if (!options) {
@@ -320,19 +322,19 @@ ol.supermap.VectorTileStyles.getStyle = function (feature) {
         return getStyleArray(ol.supermap.VectorTileStyles.getCartoShaders()[layerName]);
     }
     if (layerInfo.layerStyle || feature.getProperties().type === 'POINT' && layerInfo.type === 'LABEL' && feature.getProperties().attributes !== null) {
-        return ol.supermap.StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
+        return StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
     }
-    return ol.supermap.StyleUtils.getStyleFromCarto(zoom, scale, null, feature, true, url);
+    return StyleUtils.getStyleFromCarto(zoom, scale, null, feature, true, url);
 
     function getStyleArray(shaderAttachment) {
         var styleArray = [];
         for (var j in shaderAttachment) {
             shaderAttachment[j].map(function (shader) {
-                styleArray.push(ol.supermap.StyleUtils.getStyleFromCarto(zoom, scale, shader, feature, true, url))
+                styleArray.push(StyleUtils.getStyleFromCarto(zoom, scale, shader, feature, true, url))
             })
         }
         return styleArray;
     }
-}
+};
 
 module.exports = ol.supermap.VectorTileStyles;

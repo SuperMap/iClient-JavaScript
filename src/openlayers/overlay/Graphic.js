@@ -1,4 +1,6 @@
+require('../core/Base');
 require('./graphic/Graphic');
+var ol = require('openlayers');
 ol.source.Graphic = function (options) {
     this.canvasContext_ = ol.dom.createCanvasContext2D();
     this.imageTransform = ol.transform.create();

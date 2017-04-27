@@ -2,8 +2,8 @@
  * Class: SuperMap.FacilityAnalystUpstream3DParameters
  * 上游关键设施查找资源参数类
  */
-
 require('./FacilityAnalyst3DParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.FacilityAnalystUpstream3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
 
     /**
@@ -42,6 +42,4 @@ SuperMap.FacilityAnalystUpstream3DParameters = SuperMap.Class(SuperMap.FacilityA
     CLASS_NAME: "SuperMap.FacilityAnalystUpstream3DParameters"
 });
 
-module.exports = function (options) {
-    return new SuperMap.FacilityAnalystUpstream3DParameters(options);
-};
+module.exports = SuperMap.FacilityAnalystUpstream3DParameters;

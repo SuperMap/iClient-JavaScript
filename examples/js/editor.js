@@ -46,6 +46,7 @@ function initCodeEditor() {
         aceEditor.getSession().setMode("ace/mode/html");
         aceEditor.getSession().setUseWrapMode(true);
         aceEditor.setShowPrintMargin(false);
+        aceEditor.$blockScrolling = Infinity;
     }
     aceEditor.setValue($('#editor').val());
     aceEditor.clearSelection();

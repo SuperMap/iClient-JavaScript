@@ -6,10 +6,12 @@
  *           //doSomething
  *      });
  */
-require('./ServiceBase');
-require('../../common/iServer/GetFieldsService');
-require('../../common/iServer/FieldStatisticService');
-FieldService = ServiceBase.extend({
+var L = require("leaflet");
+var ServiceBase = require('./ServiceBase');
+var GetFieldsService = require('../../common/iServer/GetFieldsService');
+var FieldStatisticService = require('../../common/iServer/FieldStatisticService');
+
+var FieldService = ServiceBase.extend({
 
     options: {
         dataSourceName: null,
@@ -28,7 +30,7 @@ FieldService = ServiceBase.extend({
      */
     getFields: function (callback) {
         var me = this;
-        var getFieldsService = new SuperMap.REST.GetFieldsService(me.options.url, {
+        var getFieldsService = new GetFieldsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -64,7 +66,7 @@ FieldService = ServiceBase.extend({
 
     _fieldStatisticRequest: function (fieldName, statisticMode) {
         var me = this;
-        var statisticService = new SuperMap.REST.FieldStatisticService(me.options.url, {
+        var statisticService = new FieldStatisticService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: me._processCompleted,
@@ -79,7 +81,7 @@ FieldService = ServiceBase.extend({
     },
 
     _processCompleted: function (fieldStatisticResult) {
-        var me =this;
+        var me = this;
         var getAll = true,
             result = fieldStatisticResult.result;
         if (this.currentStatisticResult) {
@@ -101,4 +103,4 @@ FieldService = ServiceBase.extend({
 L.supermap.fieldService = function (url, options) {
     return new FieldService(url, options);
 };
-module.exports = L.supermap.fieldService;
+module.exports = FieldService;

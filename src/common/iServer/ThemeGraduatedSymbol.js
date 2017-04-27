@@ -8,11 +8,12 @@
  * Inherits from:
  * -<SuperMap.Theme>
  */
-
+require('../REST');
 require('./Theme');
-require('./ThemeFlow');
-require('./ThemeOffset');
-require('./ThemeGraduatedSymbolStyle');
+var SuperMap = require('../SuperMap');
+var ThemeFlow = require('./ThemeFlow');
+var ThemeOffset = require('./ThemeOffset');
+var ThemeGraduatedSymbolStyle = require('./ThemeGraduatedSymbolStyle');
 SuperMap.ThemeGraduatedSymbol = SuperMap.Class(SuperMap.Theme, {
 
     /**
@@ -80,9 +81,9 @@ SuperMap.ThemeGraduatedSymbol = SuperMap.Class(SuperMap.Theme, {
     initialize: function (options) {
         SuperMap.Theme.prototype.initialize.apply(this, ["GRADUATEDSYMBOL", options]);
         var me = this;
-        me.flow = new SuperMap.ThemeFlow();
-        me.offset = new SuperMap.ThemeOffset();
-        me.style = new SuperMap.ThemeGraduatedSymbolStyle();
+        me.flow = new ThemeFlow();
+        me.offset = new ThemeOffset();
+        me.style = new ThemeGraduatedSymbolStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -126,7 +127,7 @@ SuperMap.ThemeGraduatedSymbol = SuperMap.Class(SuperMap.Theme, {
      * 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject: function () {
-        var obj = new Object();
+        var obj = {};
         obj.type = this.type;
         obj.memoryData = this.memoryData;
         obj.baseValue = this.baseValue;
@@ -163,6 +164,4 @@ SuperMap.ThemeGraduatedSymbol.fromObj = function (obj) {
     res.style = SuperMap.ThemeGraduatedSymbolStyle.fromObj(obj);
     return res;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeGraduatedSymbol(options);
-};
+module.exports = SuperMap.ThemeGraduatedSymbol;

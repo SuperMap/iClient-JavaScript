@@ -2,10 +2,13 @@
  * Class: SuperMap.Online
  * 对接SuperMap Online 所有基础服务
  */
-require('../util/Request');
-require('./OnlineSecurity');
-require('./OnlineData');
+
+
 require('./OnlineQueryDatasParameter');
+var SuperMap = require('../SuperMap');
+var Request = require('../util/Request');
+var OnlineSecurity = require('./OnlineSecurity');
+var OnlineData = require('./OnlineData');
 SuperMap.Online = SuperMap.Class({
 
     /**
@@ -26,12 +29,12 @@ SuperMap.Online = SuperMap.Class({
         var mContentUrl = this.webUrl + "/mycontent";
         this.mDatasUrl = mContentUrl + "/datas";
 
-        this.security = new SuperMap.OnlineSecurity();
-        this.request = new SuperMap.Request();
+        this.security = new OnlineSecurity();
+        this.request = new Request();
     },
 
     load: function () {
-        return SuperMap.Request.get(this.rootUrl).then(function (response) {
+        return Request.get(this.rootUrl).then(function (response) {
             return response;
         });
     },
@@ -57,7 +60,7 @@ SuperMap.Online = SuperMap.Class({
             var services = [], contents = json.content, len = contents.length;
             for (var i = 0; i < len; i++) {
                 var content = contents[i];
-                var service = new SuperMap.OnlineData(me.mDatasUrl, content);
+                var service = new OnlineData(me.mDatasUrl, content);
                 services.push(service);
             }
             return services;
@@ -67,6 +70,4 @@ SuperMap.Online = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.Online"
 });
-module.exports = function () {
-    return new SuperMap.Online();
-};
+module.exports = SuperMap.Online;

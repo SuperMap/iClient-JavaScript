@@ -7,20 +7,22 @@
  *           //doSomething
  *      })
  */
-require('./ServiceBase');
-require('../../common/iServer/BurstPipelineAnalystService');
-require('../../common/iServer/ComputeWeightMatrixService');
-require('../../common/iServer/FacilityAnalystStreamService');
-require('../../common/iServer/FindClosestFacilitiesService');
-require('../../common/iServer/FindLocationService');
-require('../../common/iServer/FindMTSPPathsService');
-require('../../common/iServer/FindPathService');
-require('../../common/iServer/FindServiceAreasService');
-require('../../common/iServer/FindTSPPathsService');
-require('../../common/iServer/UpdateEdgeWeightService');
-require('../../common/iServer/UpdateTurnNodeWeightService');
+var L = require("leaflet");
+var ServiceBase = require('./ServiceBase');
+var SuperMap = require('../../common/SuperMap');
+var BurstPipelineAnalystService = require('../../common/iServer/BurstPipelineAnalystService');
+var ComputeWeightMatrixService = require('../../common/iServer/ComputeWeightMatrixService');
+var FacilityAnalystStreamService = require('../../common/iServer/FacilityAnalystStreamService');
+var FindClosestFacilitiesService = require('../../common/iServer/FindClosestFacilitiesService');
+var FindLocationService = require('../../common/iServer/FindLocationService');
+var FindMTSPPathsService = require('../../common/iServer/FindMTSPPathsService');
+var FindPathService = require('../../common/iServer/FindPathService');
+var FindServiceAreasService = require('../../common/iServer/FindServiceAreasService');
+var FindTSPPathsService = require('../../common/iServer/FindTSPPathsService');
+var UpdateEdgeWeightService = require('../../common/iServer/UpdateEdgeWeightService');
+var UpdateTurnNodeWeightService = require('../../common/iServer/UpdateTurnNodeWeightService');
 
-NetworkAnalystService = ServiceBase.extend({
+var NetworkAnalystService = ServiceBase.extend({
 
     /**
      * url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
@@ -41,7 +43,7 @@ NetworkAnalystService = ServiceBase.extend({
      */
     burstPipelineAnalyst: function (params, callback) {
         var me = this;
-        var burstPipelineAnalystService = new SuperMap.REST.BurstPipelineAnalystService(me.options.url, {
+        var burstPipelineAnalystService = new BurstPipelineAnalystService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -59,7 +61,7 @@ NetworkAnalystService = ServiceBase.extend({
      */
     computeWeightMatrix: function (params, callback) {
         var me = this;
-        var computeWeightMatrixService = new SuperMap.REST.ComputeWeightMatrixService(me.options.url, {
+        var computeWeightMatrixService = new ComputeWeightMatrixService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -79,7 +81,7 @@ NetworkAnalystService = ServiceBase.extend({
      */
     findClosestFacilities: function (params, callback, resultFormat) {
         var me = this;
-        var findClosestFacilitiesService = new SuperMap.REST.FindClosestFacilitiesService(me.options.url, {
+        var findClosestFacilitiesService = new FindClosestFacilitiesService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -99,7 +101,7 @@ NetworkAnalystService = ServiceBase.extend({
      */
     streamFacilityAnalyst: function (params, callback, resultFormat) {
         var me = this;
-        var facilityAnalystStreamService = new SuperMap.REST.FacilityAnalystStreamService(me.options.url, {
+        var facilityAnalystStreamService = new FacilityAnalystStreamService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -119,7 +121,7 @@ NetworkAnalystService = ServiceBase.extend({
      */
     findLocation: function (params, callback, resultFormat) {
         var me = this;
-        var findLocationService = new SuperMap.REST.FindLocationService(me.options.url, {
+        var findLocationService = new FindLocationService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -139,7 +141,7 @@ NetworkAnalystService = ServiceBase.extend({
      */
     findPath: function (params, callback, resultFormat) {
         var me = this;
-        var findPathService = new SuperMap.REST.FindPathService(me.options.url, {
+        var findPathService = new FindPathService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -159,7 +161,7 @@ NetworkAnalystService = ServiceBase.extend({
      */
     findTSPPaths: function (params, callback, resultFormat) {
         var me = this;
-        var findTSPPathsService = new SuperMap.REST.FindTSPPathsService(me.options.url, {
+        var findTSPPathsService = new FindTSPPathsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -179,7 +181,7 @@ NetworkAnalystService = ServiceBase.extend({
      */
     findMTSPPaths: function (params, callback, resultFormat) {
         var me = this;
-        var findMTSPPathsService = new SuperMap.REST.FindMTSPPathsService(me.options.url, {
+        var findMTSPPathsService = new FindMTSPPathsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -199,7 +201,7 @@ NetworkAnalystService = ServiceBase.extend({
      */
     findServiceAreas: function (params, callback, resultFormat) {
         var me = this;
-        var findServiceAreasService = new SuperMap.REST.FindServiceAreasService(me.options.url, {
+        var findServiceAreasService = new FindServiceAreasService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -218,7 +220,7 @@ NetworkAnalystService = ServiceBase.extend({
      */
     updateEdgeWeight: function (params, callback) {
         var me = this;
-        var updateEdgeWeightService = new SuperMap.REST.UpdateEdgeWeightService(me.options.url, {
+        var updateEdgeWeightService = new UpdateEdgeWeightService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -236,7 +238,7 @@ NetworkAnalystService = ServiceBase.extend({
      */
     updateTurnNodeWeight: function (params, callback) {
         var me = this;
-        var updateTurnNodeWeightService = new SuperMap.REST.UpdateTurnNodeWeightService(me.options.url, {
+        var updateTurnNodeWeightService = new UpdateTurnNodeWeightService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -297,4 +299,4 @@ L.supermap.networkAnalystService = function (url, options) {
     return new NetworkAnalystService(url, options);
 };
 
-module.exports = L.supermap.networkAnalystService;
+module.exports = NetworkAnalystService;

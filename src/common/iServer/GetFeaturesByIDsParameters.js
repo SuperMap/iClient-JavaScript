@@ -6,6 +6,8 @@
  *  - <SuperMap.GetFeaturesParametersBase>
  */
 require('./GetFeaturesParametersBase');
+var SuperMap = require('../SuperMap');
+var FilterParameter = require('./FilterParameter');
 SuperMap.GetFeaturesByIDsParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
 
     /**
@@ -89,13 +91,11 @@ SuperMap.GetFeaturesByIDsParameters.toJsonParameters = function (params) {
         ids: params.IDs
     };
     if (params.fields) {
-        filterParameter = new SuperMap.FilterParameter();
+        filterParameter = new FilterParameter();
         filterParameter.name = params.datasetNames;
         filterParameter.fields = params.fields;
         parasByIDs.queryParameter = filterParameter;
     }
     return SuperMap.Util.toJSON(parasByIDs);
 };
-module.exports = function (options) {
-    return new SuperMap.GetFeaturesByIDsParameters(options);
-};
+module.exports = SuperMap.GetFeaturesByIDsParameters;

@@ -6,8 +6,8 @@
  *  Inherits from:
  *  - <SuperMap.Geometry.Collection>
  */
-
 require('./PointWithMeasure');
+var SuperMap = require('../SuperMap');
 SuperMap.Route = SuperMap.Class(SuperMap.Geometry.Collection, {
 
     /**
@@ -101,8 +101,7 @@ SuperMap.Route = SuperMap.Class(SuperMap.Geometry.Collection, {
      * type - {String} 数据类型，如："LINEM"
      */
     initialize: function (points, options) {
-        SuperMap.Geometry.Collection.prototype.initialize.apply(this,
-            arguments);
+        SuperMap.Geometry.Collection.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -143,7 +142,7 @@ SuperMap.Route = SuperMap.Class(SuperMap.Geometry.Collection, {
             result += "],";
         }
         if (this.components != null && this.components.length > 0) {
-            result += "\"points\":["
+            result += "\"points\":[";
             for (var j = 0, len = this.components.length; j < len; j++) {
                 for (var k = 0, len2 = this.components[j].components.length; k < len2; k++) {
                     result += this.components[j].components[k].toJson() + ",";
@@ -228,3 +227,5 @@ SuperMap.Route.fromJson = function (jsonObject) {
         parts: jsonObject.parts
     });
 };
+
+module.exports = SuperMap.Route;

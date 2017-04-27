@@ -9,6 +9,7 @@
  *  - <SuperMap.ServiceBase>
  */
 require('./ServiceBase');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -25,7 +26,7 @@ SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this,arguments);
+        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -67,8 +68,4 @@ SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase
     CLASS_NAME: "SuperMap.REST.ChartFeatureInfoSpecsService"
 });
 
-module.exports =
-
-    function (url, options) {
-    return new SuperMap.REST.ChartFeatureInfoSpecsService(url, options);
-};
+module.exports = SuperMap.REST.ChartFeatureInfoSpecsService;

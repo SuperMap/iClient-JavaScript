@@ -6,7 +6,7 @@
  * Inherits from:
  *  - <SuperMap.Geometry.Point>
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.PointWithMeasure = SuperMap.Class(SuperMap.Geometry.Point, {
 
     /**
@@ -110,3 +110,5 @@ SuperMap.PointWithMeasure.fromJson = function (jsonObject) {
         measure: jsonObject.measure
     });
 };
+
+module.exports = SuperMap.PointWithMeasure;

@@ -6,9 +6,11 @@
  * Inherits from:
  *  - <SurfaceAnalystParameters>
  */
-
-require('./DataReturnOption');
+require('./FilterParameter');
 require('./SurfaceAnalystParameters');
+var SuperMap = require('../SuperMap');
+var FilterParameter = require('./FilterParameter');
+var DataReturnOption = require('./DataReturnOption');
 SuperMap.DatasetSurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnalystParameters, {
 
     /**
@@ -49,7 +51,7 @@ SuperMap.DatasetSurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnalys
      */
     initialize: function (options) {
         var me = this;
-        me.filterQueryParameter = new SuperMap.FilterParameter();
+        me.filterQueryParameter = new FilterParameter();
         SuperMap.SurfaceAnalystParameters.prototype.initialize.apply(this, arguments);
         if (options) {
             SuperMap.Util.extend(this, options);

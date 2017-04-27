@@ -7,10 +7,12 @@
  *           //doSomething
  *      })
  */
-require('./ServiceBase');
-require('../../common/iServer/MapService');
-
-MapService = ServiceBase.extend({
+var L = require("leaflet");
+var ServiceBase = require('./ServiceBase');
+var SuperMap = require('../../common/SuperMap');
+var SuperMapMapService = require('../../common/iServer/MapService');
+var TilesetsService = require('../../common/iServer/TilesetsService');
+var MapService = ServiceBase.extend({
     options: {
         projection: null
     },
@@ -30,7 +32,7 @@ MapService = ServiceBase.extend({
      */
     getMapInfo: function (callback) {
         var me = this;
-        var getMapStatusService = new SuperMap.REST.MapService(me.options.url, {
+        var getMapStatusService = new SuperMapMapService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -47,7 +49,7 @@ MapService = ServiceBase.extend({
      */
     getTilesets: function (callback) {
         var me = this;
-        var tilesetsService = new SuperMap.REST.TilesetsService(me.options.url, {
+        var tilesetsService = new TilesetsService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -64,4 +66,4 @@ L.supermap.mapService = function (url, options) {
     return new MapService(url, options);
 };
 
-module.exports = L.supermap.mapService;
+module.exports = MapService;

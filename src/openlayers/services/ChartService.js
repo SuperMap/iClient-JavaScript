@@ -8,9 +8,10 @@
  *      })
  */
 require('./ServiceBase');
-require('../../common/iServer/ChartQueryService');
-require('../../common/iServer/ChartFeatureInfoSpecsService');
-
+var ol = require('openlayers');
+var SuperMap = require('../../common/SuperMap');
+var ChartQueryService = require('../../common/iServer/ChartQueryService');
+var ChartFeatureInfoSpecsService = require('../../common/iServer/ChartFeatureInfoSpecsService');
 ol.supermap.ChartService = function (url, options) {
     ol.supermap.ServiceBase.call(this, url, options);
 };
@@ -28,7 +29,7 @@ ol.supermap.ChartService.prototype.queryChart = function (params, callback, resu
     var me = this,
         param = me._processParams(params),
         format = me._processFormat(resultFormat);
-    var chartQueryService = new SuperMap.REST.ChartQueryService(me.options.url, {
+    var chartQueryService = new ChartQueryService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -47,7 +48,7 @@ ol.supermap.ChartService.prototype.queryChart = function (params, callback, resu
 ol.supermap.ChartService.prototype.getChartFeatureInfo = function (callback) {
     var me = this, url = me.options.url.concat();
     url += "/chartFeatureInfoSpecs";
-    var chartFeatureInfoSpecsService = new SuperMap.REST.ChartFeatureInfoSpecsService(url, {
+    var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -78,6 +79,6 @@ ol.supermap.ChartService.prototype._processParams = function (params) {
 
 ol.supermap.ChartService.prototype._processFormat = function (resultFormat) {
     return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
-}
+};
 
 module.exports = ol.supermap.ChartService;

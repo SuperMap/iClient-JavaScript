@@ -1,4 +1,6 @@
-EchartsMapLayer = L.Layer.extend({
+require('../core/Base');
+var L = require("leaflet");
+var EchartsMapLayer = L.Layer.extend({
     includes: [],
     _echartsContainer: null,
     _map: null,
@@ -164,5 +166,5 @@ Geo.prototype = {
 L.echartsMapLayer = function (options, echartsOptions) {
     return new EchartsMapLayer(options, echartsOptions);
 };
-module.exports = L.echartsMapLayer;
+module.exports = EchartsMapLayer;
 

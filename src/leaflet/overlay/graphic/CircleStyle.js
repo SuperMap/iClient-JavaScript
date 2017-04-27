@@ -1,5 +1,5 @@
 require('../../core/Base');
-
+var L = require("leaflet");
 L.supermap.CircleStyle = L.Class.extend({
 
     options: {
@@ -58,3 +58,4 @@ L.supermap.CircleStyle = L.Class.extend({
 L.supermap.circleStyle = function (options) {
     return new L.supermap.CircleStyle(options);
 };
+module.exports = L.supermap.CircleStyle;

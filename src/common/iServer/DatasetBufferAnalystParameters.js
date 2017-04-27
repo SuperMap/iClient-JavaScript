@@ -5,9 +5,11 @@
  * Inherits from:
  *  - <SuperMap.BufferAnalystParameters>
  */
-
-require('./DataReturnOption');
+require('../REST');
 require('./BufferAnalystParameters');
+var SuperMap = require('../SuperMap');
+var DataReturnOption = require('./DataReturnOption');
+var FilterParameter = require('./FilterParameter');
 SuperMap.DatasetBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystParameters, {
 
     /**
@@ -57,8 +59,8 @@ SuperMap.DatasetBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystP
      */
     initialize: function (options) {
         var me = this;
-        me.filterQueryParameter = new SuperMap.FilterParameter();
-        me.resultSetting = new SuperMap.DataReturnOption();
+        me.filterQueryParameter = new FilterParameter();
+        me.resultSetting = new DataReturnOption();
         SuperMap.BufferAnalystParameters.prototype.initialize.apply(this, arguments);
         if (!options) {
             return;
@@ -107,6 +109,4 @@ SuperMap.DatasetBufferAnalystParameters.toObject = function (datasetBufferAnalys
     }
 };
 
-module.exports = function (options) {
-    return new SuperMap.DatasetBufferAnalystParameters(options);
-};
+module.exports = SuperMap.DatasetBufferAnalystParameters;

@@ -8,7 +8,8 @@
  * 对于栅格图层中高程值在颜色对照表中没有对应颜色的点，则查找颜色对照表中与当前高程值相邻的两个高程对应的颜色，
  * 然后通过渐变运算要显示的颜色。如果设置了颜色对照表的话，则颜色表设置无效。
  */
-require('./ServerColor');
+var SuperMap = require('../SuperMap');
+var ServerColor = require('./ServerColor');
 SuperMap.ColorDictionary = SuperMap.Class({
 
     /**
@@ -30,7 +31,7 @@ SuperMap.ColorDictionary = SuperMap.Class({
         var me = this,
             c = me.color;
         if (c) {
-            me.color = new SuperMap.ServerColor(c.red, c.green, c.blue);
+            me.color = new ServerColor(c.red, c.green, c.blue);
         }
     },
 
@@ -55,6 +56,5 @@ SuperMap.ColorDictionary = SuperMap.Class({
     CLASS_NAME: "SuperMap.ColorDictionary"
 });
 
-module.exports = function (options) {
-    return new SuperMap.ColorDictionary(options);
-};
+module.exports = SuperMap.ColorDictionary;
+

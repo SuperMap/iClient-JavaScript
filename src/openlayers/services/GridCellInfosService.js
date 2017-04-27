@@ -8,7 +8,8 @@
  *      })
  */
 require('./ServiceBase');
-require('../../common/iServer/GetGridCellInfosService');
+var ol = require('openlayers');
+var GetGridCellInfosService = require('../../common/iServer/GetGridCellInfosService');
 
 ol.supermap.GridCellInfosService = function (url, options) {
     ol.supermap.ServiceBase.call(this, url, options);
@@ -25,7 +26,7 @@ ol.supermap.GridCellInfosService.prototype.getGridCellInfos = function (params, 
         return null;
     }
     var me = this;
-    var gridCellQueryService = new SuperMap.REST.GetGridCellInfosService(me.options.url, {
+    var gridCellQueryService = new GetGridCellInfosService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,

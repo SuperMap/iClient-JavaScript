@@ -5,9 +5,11 @@
  * Inherits from:
  *  - <SuperMap.OverlayAnalystParameters>
  */
-
-require('./DataReturnOption');
+require('../REST');
 require('./OverlayAnalystParameters');
+var SuperMap = require('../SuperMap');
+var DataReturnOption = require('./DataReturnOption');
+var FilterParameter = require('./FilterParameter');
 SuperMap.DatasetOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalystParameters, {
 
     /**
@@ -90,12 +92,12 @@ SuperMap.DatasetOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalys
      */
     initialize: function (options) {
         var me = this;
-        me.operateDatasetFields = new Array();
-        me.operateDatasetFilter = new SuperMap.FilterParameter();
-        me.operateRegions = new Array();
-        me.sourceDatasetFields = new Array();
-        me.sourceDatasetFilter = new SuperMap.FilterParameter();
-        me.resultSetting = new SuperMap.DataReturnOption();
+        me.operateDatasetFields = [];
+        me.operateDatasetFilter = new FilterParameter();
+        me.operateRegions = [];
+        me.sourceDatasetFields = [];
+        me.sourceDatasetFilter = new FilterParameter();
+        me.resultSetting = new DataReturnOption();
 
         SuperMap.OverlayAnalystParameters.prototype.initialize.apply(this, arguments);
         if (!options) {
@@ -145,7 +147,7 @@ SuperMap.DatasetOverlayAnalystParameters.toObject = function (datasetOverlayAnal
         if (name === "sourceDataset") {
         }
         else if (name === "operateRegions") {
-            tempObj.operateRegions = new Array();
+            tempObj.operateRegions = [];
             var ors = datasetOverlayAnalystParameters.operateRegions;
             for (var index in ors) {
                 if (ors.hasOwnProperty(index)) {    //icl542
@@ -162,6 +164,4 @@ SuperMap.DatasetOverlayAnalystParameters.toObject = function (datasetOverlayAnal
     }
 };
 
-module.exports = function (options) {
-    return new SuperMap.DatasetOverlayAnalystParameters(options);
-};
+module.exports = SuperMap.DatasetOverlayAnalystParameters;

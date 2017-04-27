@@ -11,6 +11,7 @@
  */
 require('./SpatialAnalystBase');
 require('./DensityKernelAnalystParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -101,6 +102,4 @@ SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
 
     CLASS_NAME: "SuperMap.REST.DensityAnalystService"
 });
-module.exports = function (url, options) {
-    return new SuperMap.REST.DensityAnalystService(url, options);
-};
+module.exports = SuperMap.REST.DensityAnalystService;

@@ -2,8 +2,11 @@
  * Class:SuperMap.REST.UpdateTurnNodeWeightService
  * 转向耗费权重更新服务类
  */
+
 require('./NetworkAnalystServiceBase');
 require('./UpdateTurnNodeWeightParameters');
+var SuperMap = require('../SuperMap');
+
 SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -113,6 +116,4 @@ SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.REST.Network
     CLASS_NAME: "SuperMap.REST.UpdateTurnNodeWeightService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.UpdateTurnNodeWeightService(url, options);
-};
+module.exports = SuperMap.REST.UpdateTurnNodeWeightService;

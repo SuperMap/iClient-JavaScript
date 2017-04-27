@@ -1,6 +1,7 @@
 /**
  * 服务发布状态
  */
+var SuperMap = require('../SuperMap');
 SuperMap.ServiceStatus = {
     DOES_NOT_INVOLVE: "DOES_NOT_INVOLVE",
     PUBLISH_FAILED: "PUBLISH_FAILED",

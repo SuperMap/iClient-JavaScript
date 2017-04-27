@@ -8,17 +8,20 @@
  *      })
  */
 require('./ServiceBase');
-require('../../common/iServer/BurstPipelineAnalystService');
-require('../../common/iServer/ComputeWeightMatrixService');
-require('../../common/iServer/FacilityAnalystStreamService');
-require('../../common/iServer/FindClosestFacilitiesService');
-require('../../common/iServer/FindLocationService');
-require('../../common/iServer/FindMTSPPathsService');
-require('../../common/iServer/FindPathService');
-require('../../common/iServer/FindServiceAreasService');
-require('../../common/iServer/FindTSPPathsService');
-require('../../common/iServer/UpdateEdgeWeightService');
-require('../../common/iServer/UpdateTurnNodeWeightService');
+var ol = require('openlayers');
+var Util=require('../core/Util');
+var SuperMap = require('../../common/SuperMap');
+var BurstPipelineAnalystService = require('../../common/iServer/BurstPipelineAnalystService');
+var ComputeWeightMatrixService = require('../../common/iServer/ComputeWeightMatrixService');
+var FacilityAnalystStreamService = require('../../common/iServer/FacilityAnalystStreamService');
+var FindClosestFacilitiesService = require('../../common/iServer/FindClosestFacilitiesService');
+var FindLocationService = require('../../common/iServer/FindLocationService');
+var FindMTSPPathsService = require('../../common/iServer/FindMTSPPathsService');
+var FindPathService = require('../../common/iServer/FindPathService');
+var FindServiceAreasService = require('../../common/iServer/FindServiceAreasService');
+var FindTSPPathsService = require('../../common/iServer/FindTSPPathsService');
+var UpdateEdgeWeightService = require('../../common/iServer/UpdateEdgeWeightService');
+var UpdateTurnNodeWeightService = require('../../common/iServer/UpdateTurnNodeWeightService');
 
 /**
  * url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
@@ -41,7 +44,7 @@ ol.inherits(ol.supermap.NetworkAnalystService, ol.supermap.ServiceBase);
  */
 ol.supermap.NetworkAnalystService.prototype.burstPipelineAnalyst = function (params, callback) {
     var me = this;
-    var burstPipelineAnalystService = new SuperMap.REST.BurstPipelineAnalystService(me.options.url, {
+    var burstPipelineAnalystService = new BurstPipelineAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -60,7 +63,7 @@ ol.supermap.NetworkAnalystService.prototype.burstPipelineAnalyst = function (par
  */
 ol.supermap.NetworkAnalystService.prototype.computeWeightMatrix = function (params, callback) {
     var me = this;
-    var computeWeightMatrixService = new SuperMap.REST.ComputeWeightMatrixService(me.options.url, {
+    var computeWeightMatrixService = new ComputeWeightMatrixService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -80,7 +83,7 @@ ol.supermap.NetworkAnalystService.prototype.computeWeightMatrix = function (para
  */
 ol.supermap.NetworkAnalystService.prototype.findClosestFacilities = function (params, callback, resultFormat) {
     var me = this;
-    var findClosestFacilitiesService = new SuperMap.REST.FindClosestFacilitiesService(me.options.url, {
+    var findClosestFacilitiesService = new FindClosestFacilitiesService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -101,7 +104,7 @@ ol.supermap.NetworkAnalystService.prototype.findClosestFacilities = function (pa
  */
 ol.supermap.NetworkAnalystService.prototype.streamFacilityAnalyst = function (params, callback, resultFormat) {
     var me = this;
-    var facilityAnalystStreamService = new SuperMap.REST.FacilityAnalystStreamService(me.options.url, {
+    var facilityAnalystStreamService = new FacilityAnalystStreamService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -122,7 +125,7 @@ ol.supermap.NetworkAnalystService.prototype.streamFacilityAnalyst = function (pa
  */
 ol.supermap.NetworkAnalystService.prototype.findLocation = function (params, callback, resultFormat) {
     var me = this;
-    var findLocationService = new SuperMap.REST.FindLocationService(me.options.url, {
+    var findLocationService = new FindLocationService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -143,7 +146,7 @@ ol.supermap.NetworkAnalystService.prototype.findLocation = function (params, cal
  */
 ol.supermap.NetworkAnalystService.prototype.findTSPPaths = function (params, callback, resultFormat) {
     var me = this;
-    var findTSPPathsService = new SuperMap.REST.FindTSPPathsService(me.options.url, {
+    var findTSPPathsService = new FindTSPPathsService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -164,7 +167,7 @@ ol.supermap.NetworkAnalystService.prototype.findTSPPaths = function (params, cal
  */
 ol.supermap.NetworkAnalystService.prototype.findPath = function (params, callback, resultFormat) {
     var me = this;
-    var findPathService = new SuperMap.REST.FindPathService(me.options.url, {
+    var findPathService = new FindPathService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -185,7 +188,7 @@ ol.supermap.NetworkAnalystService.prototype.findPath = function (params, callbac
  */
 ol.supermap.NetworkAnalystService.prototype.findMTSPPaths = function (params, callback, resultFormat) {
     var me = this;
-    var findMTSPPathsService = new SuperMap.REST.FindMTSPPathsService(me.options.url, {
+    var findMTSPPathsService = new FindMTSPPathsService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -206,7 +209,7 @@ ol.supermap.NetworkAnalystService.prototype.findMTSPPaths = function (params, ca
  */
 ol.supermap.NetworkAnalystService.prototype.findServiceAreas = function (params, callback, resultFormat) {
     var me = this;
-    var findServiceAreasService = new SuperMap.REST.FindServiceAreasService(me.options.url, {
+    var findServiceAreasService = new FindServiceAreasService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -226,7 +229,7 @@ ol.supermap.NetworkAnalystService.prototype.findServiceAreas = function (params,
  */
 ol.supermap.NetworkAnalystService.prototype.updateEdgeWeight = function (params, callback) {
     var me = this;
-    var updateEdgeWeightService = new SuperMap.REST.UpdateEdgeWeightService(me.options.url, {
+    var updateEdgeWeightService = new UpdateEdgeWeightService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -245,7 +248,7 @@ ol.supermap.NetworkAnalystService.prototype.updateEdgeWeight = function (params,
  */
 ol.supermap.NetworkAnalystService.prototype.updateTurnNodeWeight = function (params, callback) {
     var me = this;
-    var updateTurnNodeWeightService = new SuperMap.REST.UpdateTurnNodeWeightService(me.options.url, {
+    var updateTurnNodeWeightService = new UpdateTurnNodeWeightService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -260,21 +263,21 @@ ol.supermap.NetworkAnalystService.prototype._processParams = function (params) {
     if (!params) {
         return {};
     }
-    if (params.centers && ol.supermap.Util.isArray(params.centers)) {
+    if (params.centers && Util.isArray(params.centers)) {
         params.centers.map(function (point, key) {
             params.centers[key] = (point instanceof ol.geom.Point) ? {
-                    x: point.flatCoordinates[0],
-                    y: point.flatCoordinates[1]
-                } : point;
+                x: point.flatCoordinates[0],
+                y: point.flatCoordinates[1]
+            } : point;
         });
     }
 
-    if (params.nodes && ol.supermap.Util.isArray(params.nodes)) {
+    if (params.nodes && Util.isArray(params.nodes)) {
         params.nodes.map(function (point, key) {
             params.nodes[key] = (point instanceof ol.geom.Point) ? {
-                    x: point.flatCoordinates[0],
-                    y: point.flatCoordinates[1]
-                } : point;
+                x: point.flatCoordinates[0],
+                y: point.flatCoordinates[1]
+            } : point;
         });
     }
 
@@ -282,29 +285,29 @@ ol.supermap.NetworkAnalystService.prototype._processParams = function (params) {
         params.event = {x: params.event.flatCoordinates[0], y: params.event.flatCoordinates[1]};
     }
 
-    if (params.facilities && ol.supermap.Util.isArray(params.facilities)) {
+    if (params.facilities && Util.isArray(params.facilities)) {
         params.facilities.map(function (point, key) {
             params.facilities[key] = (point instanceof ol.geom.Point) ? {
-                    x: point.flatCoordinates[0],
-                    y: point.flatCoordinates[1]
-                } : point;
+                x: point.flatCoordinates[0],
+                y: point.flatCoordinates[1]
+            } : point;
         });
     }
 
     if (params.parameter && params.parameter.barrierPoints) {
         var barrierPoints = params.parameter.barrierPoints;
-        if (ol.supermap.Util.isArray(barrierPoints)) {
+        if (Util.isArray(barrierPoints)) {
             barrierPoints.map(function (point, key) {
                 params.parameter.barrierPoints[key] = (point instanceof ol.geom.Point) ? {
-                        x: point.flatCoordinates[0],
-                        y: point.flatCoordinates[1]
-                    } : point;
+                    x: point.flatCoordinates[0],
+                    y: point.flatCoordinates[1]
+                } : point;
             });
         } else {
             params.parameter.barrierPoints = [(barrierPoints instanceof ol.geom.Point) ? {
-                    x: barrierPoints.flatCoordinates[0],
-                    y: barrierPoints.flatCoordinates[1]
-                } : barrierPoints];
+                x: barrierPoints.flatCoordinates[0],
+                y: barrierPoints.flatCoordinates[1]
+            } : barrierPoints];
         }
     }
     return params;

@@ -9,19 +9,22 @@
  *      })
  */
 require('./ServiceBase');
-require('../../common/iServer/AreaSolarRadiationService');
-require('../../common/iServer/BufferAnalystService');
-require('../../common/iServer/DensityAnalystService');
-require('../../common/iServer/GenerateSpatialDataService');
-require('../../common/iServer/GeoRelationAnalystService');
-require('../../common/iServer/InterpolationAnalystService');
-require('../../common/iServer/MathExpressionAnalysisService');
-require('../../common/iServer/OverlayAnalystService');
-require('../../common/iServer/RouteCalculateMeasureService');
-require('../../common/iServer/RouteLocatorService');
-require('../../common/iServer/SurfaceAnalystService');
-require('../../common/iServer/TerrainCurvatureCalculationService');
-require('../../common/iServer/ThiessenAnalystService');
+var ol = require('openlayers');
+var Util = require('../core/Util');
+var SuperMap = require('../../common/SuperMap');
+var AreaSolarRadiationService = require('../../common/iServer/AreaSolarRadiationService');
+var BufferAnalystService = require('../../common/iServer/BufferAnalystService');
+var DensityAnalystService = require('../../common/iServer/DensityAnalystService');
+var GenerateSpatialDataService = require('../../common/iServer/GenerateSpatialDataService');
+var GeoRelationAnalystService = require('../../common/iServer/GeoRelationAnalystService');
+var InterpolationAnalystService = require('../../common/iServer/InterpolationAnalystService');
+var MathExpressionAnalysisService = require('../../common/iServer/MathExpressionAnalysisService');
+var OverlayAnalystService = require('../../common/iServer/OverlayAnalystService');
+var RouteCalculateMeasureService = require('../../common/iServer/RouteCalculateMeasureService');
+var RouteLocatorService = require('../../common/iServer/RouteLocatorService');
+var SurfaceAnalystService = require('../../common/iServer/SurfaceAnalystService');
+var TerrainCurvatureCalculationService = require('../../common/iServer/TerrainCurvatureCalculationService');
+var ThiessenAnalystService = require('../../common/iServer/ThiessenAnalystService');
 
 /**
  * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst 。
@@ -43,7 +46,7 @@ ol.inherits(ol.supermap.SpatialAnalystService, ol.supermap.ServiceBase);
  */
 ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult = function (params, callback, resultFormat) {
     var me = this;
-    var areaSolarRadiationService = new SuperMap.REST.AreaSolarRadiationService(me.options.url, {
+    var areaSolarRadiationService = new AreaSolarRadiationService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -64,7 +67,7 @@ ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult = functi
  */
 ol.supermap.SpatialAnalystService.prototype.bufferAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var bufferAnalystService = new SuperMap.REST.BufferAnalystService(me.options.url, {
+    var bufferAnalystService = new BufferAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -85,7 +88,7 @@ ol.supermap.SpatialAnalystService.prototype.bufferAnalysis = function (params, c
  */
 ol.supermap.SpatialAnalystService.prototype.densityAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var densityAnalystService = new SuperMap.REST.DensityAnalystService(me.options.url, {
+    var densityAnalystService = new DensityAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -106,7 +109,7 @@ ol.supermap.SpatialAnalystService.prototype.densityAnalysis = function (params, 
  */
 ol.supermap.SpatialAnalystService.prototype.generateSpatialData = function (params, callback, resultFormat) {
     var me = this;
-    var generateSpatialDataService = new SuperMap.REST.GenerateSpatialDataService(me.options.url, {
+    var generateSpatialDataService = new GenerateSpatialDataService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -127,7 +130,7 @@ ol.supermap.SpatialAnalystService.prototype.generateSpatialData = function (para
  */
 ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var geoRelationAnalystService = new SuperMap.REST.GeoRelationAnalystService(me.options.url, {
+    var geoRelationAnalystService = new GeoRelationAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -148,7 +151,7 @@ ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis = function (para
  */
 ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var interpolationAnalystService = new SuperMap.REST.InterpolationAnalystService(me.options.url, {
+    var interpolationAnalystService = new InterpolationAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -169,7 +172,7 @@ ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis = function (pa
  */
 ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var mathExpressionAnalysisService = new SuperMap.REST.MathExpressionAnalysisService(me.options.url, {
+    var mathExpressionAnalysisService = new MathExpressionAnalysisService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -190,7 +193,7 @@ ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis = function (p
  */
 ol.supermap.SpatialAnalystService.prototype.overlayAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var overlayAnalystService = new SuperMap.REST.OverlayAnalystService(me.options.url, {
+    var overlayAnalystService = new OverlayAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -211,7 +214,7 @@ ol.supermap.SpatialAnalystService.prototype.overlayAnalysis = function (params, 
  */
 ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure = function (params, callback, resultFormat) {
     var me = this;
-    var routeCalculateMeasureService = new SuperMap.REST.RouteCalculateMeasureService(me.options.url, {
+    var routeCalculateMeasureService = new RouteCalculateMeasureService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -232,7 +235,7 @@ ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure = function (pa
  */
 ol.supermap.SpatialAnalystService.prototype.routeLocate = function (params, callback, resultFormat) {
     var me = this;
-    var routeLocatorService = new SuperMap.REST.RouteLocatorService(me.options.url, {
+    var routeLocatorService = new RouteLocatorService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -253,7 +256,7 @@ ol.supermap.SpatialAnalystService.prototype.routeLocate = function (params, call
  */
 ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var surfaceAnalystService = new SuperMap.REST.SurfaceAnalystService(me.options.url, {
+    var surfaceAnalystService = new SurfaceAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -274,7 +277,7 @@ ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis = function (params, 
  */
 ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate = function (params, callback, resultFormat) {
     var me = this;
-    var terrainCurvatureCalculationService = new SuperMap.REST.TerrainCurvatureCalculationService(me.options.url, {
+    var terrainCurvatureCalculationService = new TerrainCurvatureCalculationService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -295,7 +298,7 @@ ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate = function
  */
 ol.supermap.SpatialAnalystService.prototype.thiessenAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var thiessenAnalystService = new SuperMap.REST.ThiessenAnalystService(me.options.url, {
+    var thiessenAnalystService = new ThiessenAnalystService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -322,7 +325,7 @@ ol.supermap.SpatialAnalystService.prototype._processParams = function (params) {
     if (params.inputPoints) {
         for (var i = 0; i < params.inputPoints.length; i++) {
             var inputPoint = params.points[i];
-            if (ol.supermap.Util.isArray(inputPoint)) {
+            if (Util.isArray(inputPoint)) {
                 inputPoint.flatCoordinates = inputPoint;
             }
             params.inputPoints[i] = new SuperMap.Geometry.Point(inputPoint.flatCoordinates[0], inputPoint.flatCoordinates[1]);
@@ -331,7 +334,7 @@ ol.supermap.SpatialAnalystService.prototype._processParams = function (params) {
     if (params.points) {
         for (var i = 0; i < params.points.length; i++) {
             var point = params.points[i];
-            if (ol.supermap.Util.isArray(point)) {
+            if (Util.isArray(point)) {
                 point.flatCoordinates = point;
             }
             params.points[i] = new SuperMap.Geometry.Point(point.flatCoordinates[0], point.flatCoordinates[1]);
@@ -350,13 +353,13 @@ ol.supermap.SpatialAnalystService.prototype._processParams = function (params) {
     if (params.sourceRoute && params.sourceRoute.points) {
         params.sourceRoute.points = this.convertGeometry(params.sourceRoute.points);
     }
-    if (params.operateRegions && ol.supermap.Util.isArray(params.operateRegions)) {
+    if (params.operateRegions && Util.isArray(params.operateRegions)) {
         var me = this;
         params.operateRegions.map(function (geometry, key) {
             params.operateRegions[key] = me.convertGeometry(geometry);
         });
     }
-    if (params.sourceRoute && params.sourceRoute.components && ol.supermap.Util.isArray(params.sourceRoute.components)) {
+    if (params.sourceRoute && params.sourceRoute.components && Util.isArray(params.sourceRoute.components)) {
         var me = this;
         params.sourceRoute.components.map(function (geometry, key) {
             params.sourceRoute.components[key] = me.convertGeometry(geometry);
@@ -370,6 +373,6 @@ ol.supermap.SpatialAnalystService.prototype._processFormat = function (resultFor
 };
 
 ol.supermap.SpatialAnalystService.prototype.convertGeometry = function (ol3Geometry) {
-    return ol.supermap.Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(ol3Geometry)));
+    return Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(ol3Geometry)));
 };
 module.exports = ol.supermap.SpatialAnalystService;

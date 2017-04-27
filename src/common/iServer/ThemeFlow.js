@@ -3,8 +3,8 @@
  * 标签或符号流动显示和牵引线风格设置类。
  * 通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
  */
-
-require('./ServerStyle');
+var SuperMap = require('../SuperMap');
+var ServerStyle = require('./ServerStyle');
 SuperMap.ThemeFlow = SuperMap.Class({
 
     /**
@@ -44,7 +44,7 @@ SuperMap.ThemeFlow = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.leaderLineStyle = new SuperMap.ServerStyle();
+        me.leaderLineStyle = new ServerStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -75,6 +75,4 @@ SuperMap.ThemeFlow.fromObj = function (obj) {
     res.leaderLineStyle = SuperMap.ServerStyle.fromJson(obj.leaderLineStyle);
     return res;
 };
-module.exports = function (options) {
-    return new SuperMap.ThemeFlow(options);
-};
+module.exports = SuperMap.ThemeFlow;

@@ -5,6 +5,7 @@
  */
 require('./SpatialAnalystBase');
 require('./GeoRelationAnalystParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -99,6 +100,4 @@ SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAn
     CLASS_NAME: "SuperMap.REST.GeoRelationAnalystService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.GeoRelationAnalystService(url, options);
-};
+module.exports = SuperMap.REST.GeoRelationAnalystService;

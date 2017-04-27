@@ -1,3 +1,4 @@
+var L = require("leaflet");
 L.Canvas.Renderer = L.Canvas.extend({
 
     initialize: function (tileCoord, tileSize, options) {
@@ -107,4 +108,4 @@ L.Canvas.Renderer = L.Canvas.extend({
 L.canvas.renderer = function (tileCoord, tileSize, opts) {
     return new L.Canvas.Renderer(tileCoord, tileSize, opts);
 };
-
+module.exports = L.Canvas.Renderer;

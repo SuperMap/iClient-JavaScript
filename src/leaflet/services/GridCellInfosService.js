@@ -7,10 +7,10 @@
  *           //doSomething
  *      })
  */
-require('./ServiceBase');
-require('../../common/iServer/GetGridCellInfosService');
-
-GridCellInfosService = ServiceBase.extend({
+var L = require("leaflet");
+var ServiceBase = require('./ServiceBase');
+var GetGridCellInfosService = require('../../common/iServer/GetGridCellInfosService');
+var GridCellInfosService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -26,7 +26,7 @@ GridCellInfosService = ServiceBase.extend({
             return null;
         }
         var me = this;
-        var gridCellQueryService = new SuperMap.REST.GetGridCellInfosService(me.options.url, {
+        var gridCellQueryService = new GetGridCellInfosService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -42,4 +42,4 @@ L.supermap.gridCellInfosService = function (url, options) {
     return new GridCellInfosService(url, options);
 };
 
-module.exports = L.supermap.gridCellInfosService;
+module.exports = GridCellInfosService;

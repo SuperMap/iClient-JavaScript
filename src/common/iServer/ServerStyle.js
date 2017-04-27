@@ -3,8 +3,8 @@
  * 服务端矢量要素风格类
  * 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
  */
-
-require('./ServerColor');
+var SuperMap = require('../SuperMap');
+var ServerColor = require('./ServerColor');
 SuperMap.ServerStyle = SuperMap.Class({
 
     /**
@@ -137,9 +137,9 @@ SuperMap.ServerStyle = SuperMap.Class({
      */
     initialize: function (options) {
         var me = this;
-        me.fillBackColor = new SuperMap.ServerColor(255, 255, 255);
-        me.fillForeColor = new SuperMap.ServerColor(255, 0, 0);
-        me.lineColor = new SuperMap.ServerColor(0, 0, 0);
+        me.fillBackColor = new ServerColor(255, 255, 255);
+        me.fillForeColor = new ServerColor(255, 0, 0);
+        me.lineColor = new ServerColor(0, 0, 0);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -225,6 +225,4 @@ SuperMap.ServerStyle.fromJson = function (jsonObject) {
         markerSymbolID: jsonObject.markerSymbolID
     });
 };
-module.exports = function (options) {
-    return new SuperMap.ServerStyle(options);
-};
+module.exports = SuperMap.ServerStyle;

@@ -9,7 +9,8 @@
  *      });
  */
 require('./ServiceBase');
-require('../../common/iServer/ThemeService');
+var ol = require('openlayers');
+var ThemeService = require('../../common/iServer/ThemeService');
 
 ol.supermap.ThemeService = function (url, options) {
     ol.supermap.ServiceBase.call(this, url, options);
@@ -19,7 +20,7 @@ ol.inherits(ol.supermap.ThemeService, ol.supermap.ServiceBase);
 
 ol.supermap.ThemeService.prototype.getThemeInfo = function (params, callback) {
     var me = this;
-    var themeService = new SuperMap.REST.ThemeService(me.options.url, {
+    var themeService = new ThemeService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,

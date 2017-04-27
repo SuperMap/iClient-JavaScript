@@ -2,6 +2,7 @@
  * Class: SuperMap.UGCLayer
  * UGC 图层类。
  */
+var SuperMap = require('../SuperMap');
 SuperMap.UGCLayer = SuperMap.Class({
 
     /**
@@ -110,6 +111,4 @@ SuperMap.UGCLayer = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.UGCLayer"
 });
-module.exports = function (options) {
-    return new SuperMap.UGCLayer(options);
-};
+module.exports = SuperMap.UGCLayer;

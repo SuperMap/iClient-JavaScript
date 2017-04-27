@@ -1,3 +1,4 @@
+var L = require("leaflet");
 L.Symbolizer = L.Class.extend({
 
     initialize: function (feature) {
@@ -44,6 +45,6 @@ L.Symbolizer = L.Class.extend({
 
         return bounds;
     },
-    _clickTolerance: L.Path.prototype._clickTolerance,
+    _clickTolerance: L.Path.prototype._clickTolerance
 });
-
+module.exports = L.Symbolizer;

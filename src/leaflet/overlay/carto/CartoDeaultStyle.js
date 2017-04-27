@@ -3,6 +3,7 @@
  * {Object} 这个style对应的是默认设置
  */
 require('../../core/Base');
+var L = require("leaflet");
 L.supermap.DefaultStyle = {
     "TEXT": {
         fontSize: "14px",
@@ -46,3 +47,4 @@ L.supermap.DefaultStyle = {
         dashArray: [],
     }
 };
+module.exports = L.supermap.DefaultStyle;

@@ -8,9 +8,10 @@
  *           //doSomething
  *      });
  */
-require('./ServiceBase');
-require('../../common/iServer/ThemeService');
-ThemeService = ServiceBase.extend({
+var L = require("leaflet");
+var ServiceBase = require('./ServiceBase');
+var SuperMapThemeService = require('../../common/iServer/ThemeService');
+var ThemeService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -18,7 +19,7 @@ ThemeService = ServiceBase.extend({
 
     getThemeInfo: function (params, callback) {
         var me = this;
-        var themeService = new SuperMap.REST.ThemeService(me.options.url, {
+        var themeService = new SuperMapThemeService(me.options.url, {
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -34,4 +35,4 @@ L.supermap.themeService = function (url, options) {
     return new ThemeService(url, options);
 };
 
-module.exports = L.supermap.ThemeService;
+module.exports = ThemeService;

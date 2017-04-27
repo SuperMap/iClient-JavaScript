@@ -2,7 +2,8 @@
  * Class: SuperMap.InterpolationAnalystParameters
  * 插值分析参数类
  */
-
+require('../REST');
+var SuperMap = require('../SuperMap');
 SuperMap.InterpolationAnalystParameters = SuperMap.Class({
 
     /**
@@ -168,6 +169,4 @@ SuperMap.InterpolationAnalystParameters.toObject = function (interpolationAnalys
     }
 };
 
-module.exports = function (options) {
-    return new SuperMap.InterpolationAnalystParameters(options);
-};
+module.exports = SuperMap.InterpolationAnalystParameters;

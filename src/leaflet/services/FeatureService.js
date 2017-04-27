@@ -8,15 +8,18 @@
  *          //doSomething
  *      })
  */
-require('./ServiceBase');
-require('../../common/iServer/GetFeaturesByIDsService');
-require('../../common/iServer/GetFeaturesBySQLService');
-require('../../common/iServer/GetFeaturesByBoundsService');
-require('../../common/iServer/GetFeaturesByBufferService');
-require('../../common/iServer/GetFeaturesByGeometryService');
-require('../../common/iServer/EditFeaturesService');
+var L = require("leaflet");
+var SuperMap = require('../../common/SuperMap');
+var ServiceBase = require('./ServiceBase');
+var Util = require('../core/Util');
+var GetFeaturesByIDsService = require('../../common/iServer/GetFeaturesByIDsService');
+var GetFeaturesBySQLService = require('../../common/iServer/GetFeaturesBySQLService');
+var GetFeaturesByBoundsService = require('../../common/iServer/GetFeaturesByBoundsService');
+var GetFeaturesByBufferService = require('../../common/iServer/GetFeaturesByBufferService');
+var GetFeaturesByGeometryService = require('../../common/iServer/GetFeaturesByGeometryService');
+var EditFeaturesService = require('../../common/iServer/EditFeaturesService');
 
-FeatureService = ServiceBase.extend({
+var FeatureService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -32,7 +35,7 @@ FeatureService = ServiceBase.extend({
      */
     getFeaturesByIDs: function (params, callback, resultFormat) {
         var me = this;
-        var getFeaturesByIDsService = new SuperMap.REST.GetFeaturesByIDsService(me.options.url, {
+        var getFeaturesByIDsService = new GetFeaturesByIDsService(me.options.url, {
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback
@@ -53,7 +56,7 @@ FeatureService = ServiceBase.extend({
      */
     getFeaturesByBounds: function (params, callback, resultFormat) {
         var me = this;
-        var getFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(me.options.url, {
+        var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.options.url, {
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback
@@ -73,7 +76,7 @@ FeatureService = ServiceBase.extend({
      */
     getFeaturesByBuffer: function (params, callback, resultFormat) {
         var me = this;
-        var getFeatureService = new SuperMap.REST.GetFeaturesByBufferService(me.options.url, {
+        var getFeatureService = new GetFeaturesByBufferService(me.options.url, {
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback
@@ -93,7 +96,7 @@ FeatureService = ServiceBase.extend({
      */
     getFeaturesBySQL: function (params, callback, resultFormat) {
         var me = this;
-        var getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(me.options.url, {
+        var getFeatureBySQLService = new GetFeaturesBySQLService(me.options.url, {
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback
@@ -114,7 +117,7 @@ FeatureService = ServiceBase.extend({
      */
     getFeaturesByGeometry: function (params, callback, resultFormat) {
         var me = this;
-        var getFeaturesByGeometryService = new SuperMap.REST.GetFeaturesByGeometryService(me.options.url, {
+        var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.options.url, {
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback
@@ -144,7 +147,7 @@ FeatureService = ServiceBase.extend({
             dataSetName = params.dataSetName;
 
         url += "/datasources/" + dataSourceName + "/datasets/" + dataSetName;
-        editFeatureService = new SuperMap.REST.EditFeaturesService(url, {
+        editFeatureService = new EditFeaturesService(url, {
             eventListeners: {
 
                 processCompleted: callback,
@@ -172,7 +175,7 @@ FeatureService = ServiceBase.extend({
             );
         }
         if (params.geometry) {
-            params.geometry = L.Util.toSuperMapGeometry(params.geometry);
+            params.geometry = Util.toSuperMapGeometry(params.geometry);
         }
 
         if (params.editType) {
@@ -203,7 +206,7 @@ FeatureService = ServiceBase.extend({
         }
         feature.fieldNames = fieldNames;
         feature.fieldValues = fieldValues;
-        feature.geometry = L.Util.toSuperMapGeometry(geoJSONFeature);
+        feature.geometry = Util.toSuperMapGeometry(geoJSONFeature);
         return feature;
     },
 
@@ -216,4 +219,4 @@ L.supermap.featureService = function (url, options) {
     return new FeatureService(url, options);
 };
 
-module.exports = L.supermap.featureService;
+module.exports = FeatureService;

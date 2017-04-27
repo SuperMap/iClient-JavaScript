@@ -7,6 +7,7 @@
  */
 require('./SpatialAnalystBase');
 require('./TerrainCurvatureCalculationParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -59,7 +60,7 @@ SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.
             me.url += "/";
         }
 
-        var parameterObject = new Object();
+        var parameterObject = {};
 
         if (parameter instanceof SuperMap.TerrainCurvatureCalculationParameters) {
             me.url += 'datasets/' + parameter.dataset + '/terraincalculation/curvature';
@@ -85,6 +86,4 @@ SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.
 
     CLASS_NAME: "SuperMap.REST.TerrainCurvatureCalculationService"
 });
-module.exports = function (url, options) {
-    return new SuperMap.REST.TerrainCurvatureCalculationService(url, options);
-};
+module.exports = SuperMap.REST.TerrainCurvatureCalculationService;

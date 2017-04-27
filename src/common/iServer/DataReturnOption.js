@@ -2,7 +2,8 @@
  * Class: SuperMap.DataReturnOption
  * 数据返回设置类
  */
-
+require('../REST');
+var SuperMap = require('../SuperMap');
 SuperMap.DataReturnOption = SuperMap.Class({
 
     /**
@@ -66,6 +67,4 @@ SuperMap.DataReturnOption = SuperMap.Class({
     CLASS_NAME: "SuperMap.DataReturnOption"
 });
 
-module.exports = function (options) {
-    return new SuperMap.DataReturnOption(options);
-};
+module.exports = SuperMap.DataReturnOption;

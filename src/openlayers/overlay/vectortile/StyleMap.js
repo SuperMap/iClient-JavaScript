@@ -1,5 +1,5 @@
 require('../../core/Base');
-
+var ol = require('openlayers');
 ol.supermap.StyleMap = {
     /**
      * CartoCSS中的style属性名与Canvas的style属性名的对应表
@@ -210,8 +210,6 @@ ol.supermap.StyleMap = {
         "color": "",
         "value": ""
     }
-}
-
-module.exports = function () {
-    return new ol.supermap.StyleMap();
 };
+
+module.exports = ol.supermap.StyleMap;

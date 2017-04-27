@@ -12,9 +12,9 @@
  * Inherits from:
  *  - <SuperMap.Theme>
  */
-
-require('./ServerStyle');
 require('./Theme');
+var SuperMap = require('../SuperMap');
+var ServerStyle = require('./ServerStyle');
 SuperMap.ThemeDotDensity = SuperMap.Class(SuperMap.Theme, {
 
     /**
@@ -53,7 +53,7 @@ SuperMap.ThemeDotDensity = SuperMap.Class(SuperMap.Theme, {
      */
     initialize: function (options) {
         var me = this;
-        me.style = new SuperMap.ServerStyle();
+        me.style = new ServerStyle();
         SuperMap.Theme.prototype.initialize.apply(this, ["DOTDENSITY", options]);
         if (options) {
             SuperMap.Util.extend(this, options);
@@ -100,6 +100,4 @@ SuperMap.ThemeDotDensity.fromObj = function (obj) {
     return res;
 };
 
-module.exports = function (options) {
-    return new SuperMap.ThemeDotDensity(options);
-};
+module.exports = SuperMap.ThemeDotDensity;

@@ -6,11 +6,10 @@
  * Inherits from:
  *  - <SuperMap.ServiceBase>
  */
-
-// TODO 待iServer featureResult GeoJSON表述bug修复当修改此类中TODO注释说明的地方
-require('../format/GeoJSON');
+require('../REST');
 require('./ServiceBase');
-
+var SuperMap = require('../SuperMap');
+var GeoJSONFormat = require('../format/GeoJSON');
 SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -160,7 +159,7 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
         var me = this;
         result = SuperMap.Util.transformResult(result);
         if (me.format === SuperMap.DataFormat.GEOJSON && result.features) {
-            var geoJSONFormat = new SuperMap.Format.GeoJSON();
+            var geoJSONFormat = new GeoJSONFormat();
             result.features = JSON.parse(geoJSONFormat.write(result.features));
         }
         me.events.triggerEvent("processCompleted", {result: result});
@@ -169,6 +168,4 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.GetFeaturesServiceBase"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.GetFeaturesServiceBase(url, options);
-};
+module.exports = SuperMap.REST.GetFeaturesServiceBase;

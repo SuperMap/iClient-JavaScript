@@ -11,6 +11,8 @@
  */
 require('./NetworkAnalystServiceBase');
 require('./FindMTSPPathsParameters');
+var SuperMap = require('../SuperMap');
+var GeoJSONFormat = require('../format/GeoJSON');
 SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -119,7 +121,7 @@ SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalyst
         if (!result || !result.pathList) {
             return null;
         }
-        var geoJSONFormat = new SuperMap.Format.GeoJSON();
+        var geoJSONFormat = new GeoJSONFormat();
         result.pathList.map(function (path) {
             if (path.route) {
                 path.route = JSON.parse(geoJSONFormat.write(path.route));
@@ -140,6 +142,4 @@ SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalyst
     CLASS_NAME: "SuperMap.REST.FindMTSPPathsService"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.FindMTSPPathsService(url, options);
-};
+module.exports = SuperMap.REST.FindMTSPPathsService;

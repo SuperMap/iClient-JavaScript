@@ -5,8 +5,8 @@
  * Inherits from:
  *  - <SuperMap.Format>
  */
+var SuperMap = require('../SuperMap');
 require('./Format');
-
 SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
 
     /**
@@ -376,6 +376,4 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
     CLASS_NAME: "SuperMap.Format.JSON"
 });
 
-module.exports = function (options) {
-    return new SuperMap.Format.JSON(options);
-};
+module.exports = SuperMap.Format.JSON;

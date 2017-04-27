@@ -1,3 +1,5 @@
+require('../core/Base');
+var ol = require('openlayers');
 ol.source.SuperMapCloud = function (opt_options) {
 
     var options = opt_options || {};
@@ -13,7 +15,7 @@ ol.source.SuperMapCloud = function (opt_options) {
     var mapName = options.mapName || 'quanguo';
     var mapType = options.mapType || 'web';
     var url = options.url || 'http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}';
-    url = url.replace('{mapName}', mapName).replace('{type}', mapType)
+    url = url.replace('{mapName}', mapName).replace('{type}', mapType);
     ol.source.XYZ.call(this, {
         attributions: attributions,
         cacheSize: options.cacheSize,
@@ -28,3 +30,4 @@ ol.source.SuperMapCloud = function (opt_options) {
 
 };
 ol.inherits(ol.source.SuperMapCloud, ol.source.XYZ);
+module.exports = ol.source.SuperMapCloud;

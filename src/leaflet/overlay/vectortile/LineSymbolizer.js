@@ -1,4 +1,5 @@
 require('./Symbolizer');
+var L = require("leaflet");
 var PolyBase = require('./SymbolizerPolyBase');
 
 L.LineSymbolizer = L.Polyline.extend({
@@ -21,3 +22,4 @@ L.LineSymbolizer = L.Polyline.extend({
     }
 });
 
+module.exports = L.LineSymbolizer;

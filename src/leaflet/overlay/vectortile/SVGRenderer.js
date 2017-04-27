@@ -1,3 +1,4 @@
+var L = require("leaflet");
 L.SVG.Renderer = L.SVG.extend({
 
     initialize: function (tileCoord, tileSize, options) {
@@ -68,8 +69,8 @@ L.SVG.Renderer = L.SVG.extend({
             path.setAttribute('width', size.x + 'px');
             path.setAttribute('height', size.y + 'px');
         } else {
-            var img =new Image();
-            img.src=iconUrl;
+            var img = new Image();
+            img.src = iconUrl;
             L.DomEvent.on(img, 'load', function (evt) {
                 var size = L.point([img.width, img.height]),
                     anchor = size && size.divideBy(2, true),
@@ -87,4 +88,4 @@ L.SVG.Renderer = L.SVG.extend({
 L.svg.renderer = function (tileCoord, tileSize, opts) {
     return new L.SVG.Renderer(tileCoord, tileSize, opts);
 };
-
+module.exports = L.SVG.Renderer;

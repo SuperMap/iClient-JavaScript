@@ -6,8 +6,8 @@
  *  分析过程中使用的需求点都为网络结点，即除了各种类型的中心点所对应的网络结点以外，
  * 所有网络结点都作为资源需求点参与选址分区分析，如果要排除某部分结点不分析，可以将其设置为障碍点。
  */
-
 require('./SupplyCenter');
+var SuperMap = require('../SuperMap');
 SuperMap.FindLocationParameters = SuperMap.Class({
 
     /**
@@ -87,6 +87,4 @@ SuperMap.FindLocationParameters = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.FindLocationParameters"
 });
-module.exports = function (options) {
-    return new SuperMap.FindLocationParameters(options);
-};
+module.exports = SuperMap.FindLocationParameters;

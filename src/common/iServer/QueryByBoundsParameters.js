@@ -6,9 +6,8 @@
  * Inherits from:
  *  - <SuperMap.QueryParameters>
  */
-
 require('./QueryParameters');
-require('./FilterParameter');
+var SuperMap = require('../SuperMap');
 SuperMap.QueryByBoundsParameters = SuperMap.Class(SuperMap.QueryParameters, {
 
     /**
@@ -67,6 +66,4 @@ SuperMap.QueryByBoundsParameters = SuperMap.Class(SuperMap.QueryParameters, {
 
     CLASS_NAME: "SuperMap.QueryByBoundsParameters"
 });
-module.exports = function (options) {
-    return new SuperMap.QueryByBoundsParameters(options);
-};
+module.exports = SuperMap.QueryByBoundsParameters;

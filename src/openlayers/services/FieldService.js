@@ -7,8 +7,9 @@
  *      });
  */
 require('./ServiceBase');
-require('../../common/iServer/GetFieldsService');
-require('../../common/iServer/FieldStatisticService');
+var ol = require('openlayers');
+var GetFieldsService = require('../../common/iServer/GetFieldsService');
+var FieldStatisticService = require('../../common/iServer/FieldStatisticService');
 
 ol.supermap.FieldService = function (url, options) {
     ol.supermap.ServiceBase.call(this, url, options);
@@ -24,7 +25,7 @@ ol.inherits(ol.supermap.FieldService, ol.supermap.ServiceBase);
  */
 ol.supermap.FieldService.prototype.getFields = function (callback) {
     var me = this;
-    var getFieldsService = new SuperMap.REST.GetFieldsService(me.options.url, {
+    var getFieldsService = new GetFieldsService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -59,7 +60,7 @@ ol.supermap.FieldService.prototype.getFieldStatisticsInfo = function (params, ca
 
 ol.supermap.FieldService.prototype._fieldStatisticRequest = function (fieldName, statisticMode) {
     var me = this;
-    var statisticService = new SuperMap.REST.FieldStatisticService(me.options.url, {
+    var statisticService = new FieldStatisticService(me.options.url, {
         eventListeners: {
             scope: me,
             processCompleted: me._processCompleted,

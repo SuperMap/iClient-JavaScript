@@ -5,8 +5,8 @@
  * Inherits from:
  *  - <SuperMap.InterpolationAnalystParameters>
  */
-
 require('./InterpolationAnalystParameters');
+var SuperMap = require('../SuperMap');
 SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
     /**
      * APIProperty: smooth
@@ -134,6 +134,4 @@ SuperMap.InterpolationRBFAnalystParameters.toObject = function (datasetInterpola
     }
 };
 
-module.exports = function (options) {
-    return new SuperMap.InterpolationRBFAnalystParameters(options);
-};
+module.exports = SuperMap.InterpolationRBFAnalystParameters;

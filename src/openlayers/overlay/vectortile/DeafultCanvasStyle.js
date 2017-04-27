@@ -1,5 +1,5 @@
 require('../../core/Base');
-
+var ol = require('openlayers');
 ol.supermap.DeafultCanvasStyle = {
     "TEXT": {
         font: "10px sans-serif",
@@ -89,6 +89,4 @@ ol.supermap.DeafultCanvasStyle = {
     }
 };
 
-module.exports = function () {
-    return new ol.supermap.DeafultCanvasStyle();
-};
+module.exports = ol.supermap.DeafultCanvasStyle;

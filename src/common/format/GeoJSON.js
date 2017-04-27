@@ -10,8 +10,8 @@
  * Inherits from:
  *  - <SuperMap.Format.JSON>
  */
+var SuperMap = require('../SuperMap');
 require('./JSON');
-
 SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
 
     /**
@@ -893,6 +893,4 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
     CLASS_NAME: "SuperMap.Format.GeoJSON"
 });
 
-module.exports = function (options) {
-    return new SuperMap.Format.GeoJSON(options);
-};
+module.exports = SuperMap.Format.GeoJSON;

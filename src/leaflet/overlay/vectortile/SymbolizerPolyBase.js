@@ -1,3 +1,4 @@
+var L = require("leaflet");
 var PolyBase = {
     _makeFeatureParts: function (feat, pxPerExtent) {
         pxPerExtent = pxPerExtent || {x: 1, y: 1};

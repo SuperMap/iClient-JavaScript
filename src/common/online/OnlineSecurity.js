@@ -2,6 +2,7 @@
  * Class:SuperMap.Security
  * Online SSO 安全管理类
  */
+var SuperMap = require('../SuperMap');
 SuperMap.OnlineSecurity = SuperMap.Class({
     /**
      * @param url：online地址
@@ -26,3 +27,4 @@ SuperMap.OnlineSecurity = SuperMap.Class({
 });
 SuperMap.OnlineSecurity.SSO = "https://sso.supermap.com";
 SuperMap.OnlineSecurity.ONLINE = "http://www.supermapol.com/shiro-cas";
+module.exports = SuperMap.OnlineSecurity;

@@ -15,33 +15,34 @@
  * 并且用于建立连接的两个表必须在同一个数据源下。
  * )
  */
-
+require('../REST');
+var SuperMap = require('../SuperMap');
 SuperMap.JoinItem = SuperMap.Class({
-    
-    /** 
+
+    /**
      * APIProperty: foreignTableName
      * {String} 外部表的名称。
      * 如果外部表的名称是以“表名@数据源名”命名方式，则该属性只需赋值表名。
-     * 例如：外部表 Name@changchun，Name 为表名，changchun 为数据源名称，则该属性的赋值应为：Name。 
+     * 例如：外部表 Name@changchun，Name 为表名，changchun 为数据源名称，则该属性的赋值应为：Name。
      */
     foreignTableName: null,
-    
-    /** 
-     * APIProperty: joinFilter 
+
+    /**
+     * APIProperty: joinFilter
      * {String} 矢量数据集与外部表之间的连接表达式，即设定两个表之间关联的字段。
      * 例如，将房屋面数据集（Building）的 district 字段与房屋拥有者的纯属性数据集（Owner）的 region 字段相连接，
      * 两个数据集对应的表名称分别为 Table_Building 和 Table_Owner，
      * 则连接表达式为 Table_Building.district = Table_Owner.region。
-     * 当有多个字段相连接时，用 AND 将多个表达式相连。 
+     * 当有多个字段相连接时，用 AND 将多个表达式相连。
      */
     joinFilter: null,
-    
+
     /** APIProperty: joinType
      * {<JoinType>} 两个表之间连接类型。
-     * 连接类型决定了对两个表进行连接查询后返回的记录的情况。 
+     * 连接类型决定了对两个表进行连接查询后返回的记录的情况。
      */
     joinType: null,
-    
+
     /**
      * Constructor: SuperMap.JoinItem
      * 连接信息类构造函数。
@@ -86,36 +87,34 @@ SuperMap.JoinItem = SuperMap.Class({
      * joinFilter - {String} 矢量数据集与外部表之间的连接表达式，即设定两个表之间关联的字段。
      * joinType - {<JoinType>} 两个表之间连接类型。
      */
-    initialize: function(options) {
+    initialize: function (options) {
         if (options) {
             SuperMap.Util.extend(this, options);
         }
     },
-    
+
     /**
      * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。 
+     * 释放资源，将引用资源的属性置空。
      */
-    destroy: function() {
+    destroy: function () {
         var me = this;
         me.foreignTableName = null;
         me.joinFilter = null;
         me.joinType = null;
     },
-    
+
     /**
      * Method: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */
-    toServerJSONObject: function(){
+    toServerJSONObject: function () {
         var dataObj = {};
         dataObj = SuperMap.Util.copyAttributes(dataObj, this);
         //joinFilter基本是个纯属性对象，这里不再做转换
         return dataObj;
     },
-    
+
     CLASS_NAME: "SuperMap.JoinItem"
 });
-module.exports = function (options) {
-    return new SuperMap.JoinItem(options);
-};
+module.exports = SuperMap.JoinItem;

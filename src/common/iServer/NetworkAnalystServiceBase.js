@@ -4,8 +4,9 @@
  * Inherits from:
  *  - <SuperMap.ServiceBase>
  */
-require('../format/GeoJSON');
+require('../REST');
 require('./ServiceBase');
+var SuperMap = require('../SuperMap');
 SuperMap.REST.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -64,6 +65,4 @@ SuperMap.REST.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
     CLASS_NAME: "SuperMap.REST.NetworkAnalystServiceBase"
 });
 
-module.exports = function (url, options) {
-    return new SuperMap.REST.NetworkAnalystServiceBase(url, options);
-};
+module.exports = SuperMap.REST.NetworkAnalystServiceBase;
