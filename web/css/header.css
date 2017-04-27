@@ -30,16 +30,16 @@
     padding: 4px 9px;
     border: solid 2px transparent;
     border-radius: 4px;
-    margin-right: 8px;
+    margin-right: 0;
     line-height: 20px;
 }
 
 .navbar #headerMenu > li > a:hover {
-    background-color: #0099cc;
+    background-color: #3c8dbc; /*#0099cc*/
 }
 
 .navbar #headerMenu > .open > a {
-    background-color: #0099cc;
+    background-color: #3c8dbc;  /*#0099cc*/
 }
 .nav_apis_box_li > li:hover {
     color: #ffffff;
@@ -74,13 +74,20 @@
 @media screen and (max-width:992px)
 {
     #title{
-        font-size:16px;
+        font-size:18px;
     }
 }
 
 @media screen and (max-width:768px)
 {
     #title{
-        font-size:12px;
+        font-size:16px;
+    }
+}
+
+@media screen and (max-width:650px)
+{
+    #title{
+        font-size:13px;
     }
 }
