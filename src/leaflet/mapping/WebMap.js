@@ -1,14 +1,15 @@
 require('../core/Base');
-var fetchJsonp = require('fetch-jsonp');
 var L = require("leaflet");
 var Util = require('../core/Util');
+var Request = require('../../common/util/Request');
 var WebMap = L.LayerGroup.extend({
     options: {
         map: 'map',
-        server: 'www.supermapol.com',
-        token: null,
+        server: 'http://www.supermapol.com',
         featureLayerPopupEnable: true,
-        featureLayerPopup: null
+        featureLayerPopup: null,
+        credentialValue: null,
+        credentialKey: 'key'
     },
     defaultFeatureLayerPopup: function (layer) {
         return layer.feature.properties.attributes.title + ":" + layer.feature.properties.attributes.description;
@@ -21,9 +22,15 @@ var WebMap = L.LayerGroup.extend({
 
     },
     load: function () {
-        var mapUrl = "http://" + this.options.server + '/web/maps/' + this.id;
+        if (this.options.server.indexOf('http://') < 0 && this.options.server.indexOf('https://') < 0) {
+            this.options.server = "http://" + this.options.server;
+        }
+        var mapUrl = this.options.server + '/web/maps/' + this.id + '.json';
+        if (this.options.credentialValue) {
+            mapUrl += ('?' + this.options.credentialKey + '=' + this.options.credentialValue);
+        }
         var me = this;
-        fetchJsonp(mapUrl + '.jsonp').then(function (response) {
+        Request.get(mapUrl).then(function (response) {
             return response.json()
         }).then(function (jsonObj) {
             if (!jsonObj) {
@@ -32,7 +39,17 @@ var WebMap = L.LayerGroup.extend({
             var layers = jsonObj.layers;
             me.mapInfo = jsonObj;
             me.createLayersByJson(layers);
-        })
+        });
+        // fetchJsonp(mapUrl + '.jsonp').then(function (response) {
+        //     return response.json()
+        // }).then(function (jsonObj) {
+        //     if (!jsonObj) {
+        //         return;
+        //     }
+        //     var layers = jsonObj.layers;
+        //     me.mapInfo = jsonObj;
+        //     me.createLayersByJson(layers);
+        // })
     },
     addLayerWrapper: function (layer, isBaseLayer, options) {
         if (isBaseLayer) {
@@ -75,7 +92,14 @@ var WebMap = L.LayerGroup.extend({
         }
         this.fire('mapLoaded', {map: this._map});
     },
-    createCRS: function (epsgCode, origin, resolutions, bounds) {
+    createCRS: function (epsgCode, type, resolutions, origin, bounds) {
+        if (epsgCode == -1000 && type == "PCS_NON_EARTH") {
+            return L.supermap.NonEarthCRS({
+                bounds: bounds,
+                origin: origin,
+                resolutions: resolutions
+            })
+        }
         if (epsgCode === 910112 || epsgCode === 910102) {
             return L.CRS.BaiduCRS;
         }
@@ -96,22 +120,25 @@ var WebMap = L.LayerGroup.extend({
     },
     createMap: function (options) {
         var crs = options.crs || L.CRS.EPSG3857;
+        var bounds = L.latLngBounds(crs.unproject(options.bounds.min), crs.unproject(options.bounds.max));
         this._map = L.map(this.options.map, {
-            center: crs.unproject(options.center),
+            center: bounds.getCenter(),
             maxZoom: options.maxZoom || 22,
             minZoom: options.minZoom || 0,
             zoom: options.zoom || 0,
             crs: crs
         });
+        this._map.fitBounds(bounds);
+
     },
     getResolutionsFromScales: function (scales, dpi, units, datum) {
         var resolutions = [];
         for (var i = 0; i < scales.length; i++) {
-            resolutions.push(Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
+            resolutions.push(L.Util.GetResolutionFromScaleDpi(scales[i], dpi, units, datum))
         }
         return resolutions;
     },
-    createLayer: function (type, layerInfo, isBaseLayer) {
+    createLayer: function (type, layerInfo) {
         var prjCoordSys = layerInfo.prjCoordSys,
             epsgCode = prjCoordSys && prjCoordSys.epsgCode || this.mapInfo.epsgCode,
             center = this.mapInfo.center || layerInfo.center,
@@ -120,14 +147,16 @@ var WebMap = L.LayerGroup.extend({
             scales = layerInfo.scales,
             isBaseLayer = layerInfo.isBaseLayer,
             opacity = layerInfo.opacity;
-        var boundsL = L.bounds([bounds.leftBottom.x, bounds.leftBottom.y], [bounds.rightTop.x, bounds.rightTop.y]);
-        var origin = [bounds.leftBottom.x, bounds.rightTop.y];
-        var resolution = !scales ? [] : this.getResolutionsFromScales(scales, 96, layerInfo.units);
-        var crs = this.createCRS(epsgCode, origin, resolution, boundsL);
+        var mapBounds = L.bounds([bounds.leftBottom.x, bounds.leftBottom.y], [bounds.rightTop.x, bounds.rightTop.y]);
+        var layerBounds = layerInfo.bounds ? L.bounds([layerInfo.bounds.leftBottom.x, layerInfo.bounds.leftBottom.y], [layerInfo.bounds.rightTop.x, layerInfo.bounds.rightTop.y]) : null;
+        var origin = layerBounds ? L.point(layerBounds.min.x, layerBounds.max.y) : L.point(mapBounds.min.x, mapBounds.max.y);
+        var resolutions = !scales ? [] : this.getResolutionsFromScales(scales, 96, layerInfo.units);
+        var crs = this.createCRS(epsgCode, prjCoordSys ? prjCoordSys.type : '', resolutions, origin, layerBounds || mapBounds);
         var mapOptions = {
+            bounds: mapBounds,
             center: L.point(center.x, center.y),
             crs: crs,
-            zoom: level - 1,
+            zoom: level
         };
         var layer;
         switch (type) {
@@ -180,7 +209,7 @@ var WebMap = L.LayerGroup.extend({
                 layer = L.supermap.cloudTileLayer(layerInfo.url, {opacity: opacity});
                 break;
             case "MARKER_LAYER":
-                this.createMarkersLayer(layerInfo, crs);
+                layer = this.createMarkersLayer(layerInfo, crs);
                 break;
             case "FEATURE_LAYER":
                 if (layerInfo.identifier == "ANIMATORVECTOR") {
@@ -195,7 +224,9 @@ var WebMap = L.LayerGroup.extend({
                 throw new Error('unSupported Layer Type');
                 break;
         }
-        this.addLayerWrapper(layer, isBaseLayer, mapOptions);
+        if (layer) {
+            this.addLayerWrapper(layer, isBaseLayer, mapOptions);
+        }
     },
     createTiandituLayer: function (layerInfo, epsgCode) {
         var proj = epsgCode === 4326 ? "c" : "w";
@@ -229,7 +260,7 @@ var WebMap = L.LayerGroup.extend({
             var ll = crs.unproject(L.point(coords[0], coords[1]));
             return new L.LatLng(ll.lat, ll.lng, coords[2]);
         };
-        var layer = L.geoJSON(Util.toGeoJSON(layerInfo.markers), {
+        var layer = L.geoJSON(L.Util.toGeoJSON(layerInfo.markers), {
             coordsToLatLng: coordsToLatLng, style: style,
             opacity: opacity
         });
@@ -252,7 +283,7 @@ var WebMap = L.LayerGroup.extend({
             return new L.LatLng(ll.lat, ll.lng, coords[2]);
         };
         if (!layerInfo.url) {
-            var layer = L.geoJSON(Util.toGeoJSON(layerInfo.features), {
+            var layer = L.geoJSON(L.Util.toGeoJSON(layerInfo.features), {
                 coordsToLatLng: coordsToLatLng, style: style,
                 opacity: opacity
             });
@@ -261,19 +292,20 @@ var WebMap = L.LayerGroup.extend({
             }
             return layer;
         } else {
+            var me = this;
             var url = layerInfo.url,
                 datasourceName = layerInfo.name,
-                datasetNames = layerInfo.features;
+                datasets = layerInfo.features;
             style = layerInfo.style;
-            for (var setNameIndex = 0; setNameIndex < datasetNames.length; setNameIndex++) {
-                var dataset = datasetNames[setNameIndex];
+            for (var setNameIndex = 0; setNameIndex < datasets.length; setNameIndex++) {
+                var dataset = datasets[setNameIndex];
                 if (dataset.visible) {
                     var sqlParam = new SuperMap.GetFeaturesBySQLParameters({
                         queryParameter: {
-                            name: dataset + "@" + datasourceName,
+                            name: dataset.name + "@" + datasourceName,
                             attributeFilter: "SMID >0"
                         },
-                        datasetNames: [datasourceName + ":" + dataset]
+                        datasetNames: [datasourceName + ":" + dataset.name]
                     });
                     L.supermap.getFeaturesService(url).getFeaturesBySQL(sqlParam).on("complete", function (serviceResult) {
                         var layer = L.geoJSON(serviceResult.result, {
@@ -283,7 +315,7 @@ var WebMap = L.LayerGroup.extend({
                         if (this.options.featureLayerPopupEnable) {
                             layer.bindPopup(this.options.featureLayerPopup || this.defaultFeatureLayerPopup)
                         }
-                        return layer;
+                        me.addLayer(layer);
                     });
                 }
             }
@@ -310,5 +342,3 @@ var WebMap = L.LayerGroup.extend({
 L.supermap.webmap = function (id, options) {
     return new WebMap(id, options);
 };
-
-module.exports = WebMap;

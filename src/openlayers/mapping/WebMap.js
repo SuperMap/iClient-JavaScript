@@ -1,22 +1,29 @@
 require('../core/Base');
-var fetchJsonp = require('fetch-jsonp');
 var ol = require('openlayers');
+var Request = require('../../common/util/Request');
 ol.supermap.WebMap = function (id, options) {
     ol.Observable.call(this);
     this.id = id;
     options = options || {};
     this.target = options.target || 'map';
     this.map = options.map;
-    this.server = options.server || 'www.supermapol.com';
-    this.token = options.token;
+    this.server = options.server || 'http://www.supermapol.com';
+    this.credentialValue = options.credentialValue;
+    this.credentialKey = options.credentialKey || 'key';
     this.load();
 };
 ol.inherits(ol.supermap.WebMap, ol.Observable);
 
 ol.supermap.WebMap.prototype.load = function () {
-    var mapUrl = "http://" + this.server + '/web/maps/' + this.id;
+    if (this.server.indexOf('http://') < 0 && this.server.indexOf('https://') < 0) {
+        this.server = "http://" + this.server;
+    }
+    var mapUrl = this.server + '/web/maps/' + this.id + '.json';
+    if (this.credentialValue) {
+        mapUrl += ('?' + this.credentialKey + '=' + this.credentialValue);
+    }
     var me = this;
-    fetchJsonp(mapUrl + '.jsonp').then(function (response) {
+    Request.get(mapUrl).then(function (response) {
         return response.json()
     }).then(function (jsonObj) {
         if (!jsonObj) {
@@ -68,20 +75,25 @@ ol.supermap.WebMap.prototype.addLayer = function (layer, options) {
     }
     return this.map.addLayer(layer);
 };
-ol.supermap.WebMap.prototype.rectifyEpsg = function (epsgCode) {
+ol.supermap.WebMap.prototype.toProjection = function (epsgCode, type, extent) {
+    if (epsgCode == -1000 && type == "PCS_NON_EARTH") {
+        return new ol.proj.Projection({
+            extent: extent,
+            units: 'm'
+        });
+    }
     if (epsgCode === 910112 || epsgCode === 910102) {
-        // todo baidu
-        return 3857;
+        return 'EPSG:3857';
     }
     if (epsgCode === 910111) {
-        return 3857
+        return 'EPSG:3857'
         //todo 火星mercator
     }
     if (epsgCode === 910101) {
-        return 4326
+        return 'EPSG:4326'
         //todo 火星
     }
-    return epsgCode;
+    return 'EPSG:' + epsgCode;
 };
 ol.supermap.WebMap.prototype.createMap = function (options) {
     if (!this.map) {
@@ -90,6 +102,7 @@ ol.supermap.WebMap.prototype.createMap = function (options) {
             target: this.target,
             view: view
         });
+        view.fit(options.extent);
     }
 };
 ol.supermap.WebMap.prototype.getResolutionsFromScales = function (scales, dpi, units, datum) {
@@ -102,7 +115,6 @@ ol.supermap.WebMap.prototype.getResolutionsFromScales = function (scales, dpi, u
 ol.supermap.WebMap.prototype.createLayer = function (type, layerInfo) {
     var prjCoordSys = layerInfo.prjCoordSys,
         epsgCode = prjCoordSys && prjCoordSys.epsgCode || this.mapInfo.epsgCode,
-        projection = 'EPSG:' + this.rectifyEpsg(epsgCode),
         center = this.mapInfo.center || layerInfo.center,
         level = this.mapInfo.level || layerInfo.level,
         bounds = this.mapInfo.extent || layerInfo.bounds,
@@ -110,6 +122,7 @@ ol.supermap.WebMap.prototype.createLayer = function (type, layerInfo) {
         opacity = layerInfo.opacity,
         origin = [bounds.leftBottom.x, bounds.rightTop.y],
         extent = [bounds.leftBottom.x, bounds.leftBottom.y, bounds.rightTop.x, bounds.rightTop.y];
+    var projection = this.toProjection(epsgCode, prjCoordSys ? prjCoordSys.type : '', extent);
     //var crs = this.createCRS(epsgCode, origin, resolution, boundsL);
     var viewOptions = {
         center: [center.x, center.y],

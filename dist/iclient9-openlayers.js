@@ -49,7 +49,7 @@
 	__webpack_require__(8);
 	__webpack_require__(9);
 	__webpack_require__(10);
-	__webpack_require__(12);
+	__webpack_require__(14);
 	__webpack_require__(19);
 	__webpack_require__(38);
 	__webpack_require__(82);
@@ -107,7 +107,7 @@
 	    }
 	    function tileUrlFunction(tileCoord, pixelRatio, projection) {
 	        if (!this.tileGrid) {
-	            this.tileGrid = this.getTileGridForProjection(projection);
+	            this.tileGrid = ol.source.TileImage.prototype.getTileGridForProjection.call(this, projection);
 	        }
 	        var tileExtent = this.tileGrid.getTileCoordExtent(
 	            tileCoord, this.tmpExtent_);
@@ -1223,7 +1223,6 @@
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	__webpack_require__(2);
 	var ol = __webpack_require__(3);
 	ol.source.Baidu = function (opt_options) {
 
@@ -1266,7 +1265,8 @@
 	        return ol.source.Baidu.defaultTileGrid();
 	    }
 
-	};
+	}
+	;
 	ol.inherits(ol.source.Baidu, ol.source.TileImage);
 	ol.source.Baidu.defaultTileGrid = function () {
 	    var tileGird = new ol.tilegrid.TileGrid({
@@ -1275,10 +1275,10 @@
 	        origin: [0, 0],
 	        minZoom: 3,
 
-	    });
+	    })
 	    return tileGird;
-	};
-	module.exports = ol.source.Baidu;
+	}
+
 
 /***/ }),
 /* 8 */
@@ -1401,24 +1401,31 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	__webpack_require__(2);
-	var fetchJsonp = __webpack_require__(11);
 	var ol = __webpack_require__(3);
+	var Request = __webpack_require__(11);
 	ol.supermap.WebMap = function (id, options) {
 	    ol.Observable.call(this);
 	    this.id = id;
 	    options = options || {};
 	    this.target = options.target || 'map';
 	    this.map = options.map;
-	    this.server = options.server || 'www.supermapol.com';
-	    this.token = options.token;
+	    this.server = options.server || 'http://www.supermapol.com';
+	    this.credentialValue = options.credentialValue;
+	    this.credentialKey = options.credentialKey || 'key';
 	    this.load();
 	};
 	ol.inherits(ol.supermap.WebMap, ol.Observable);
 
 	ol.supermap.WebMap.prototype.load = function () {
-	    var mapUrl = "http://" + this.server + '/web/maps/' + this.id;
+	    if (this.server.indexOf('http://') < 0 && this.server.indexOf('https://') < 0) {
+	        this.server = "http://" + this.server;
+	    }
+	    var mapUrl = this.server + '/web/maps/' + this.id + '.json';
+	    if (this.credentialValue) {
+	        mapUrl += ('?' + this.credentialKey + '=' + this.credentialValue);
+	    }
 	    var me = this;
-	    fetchJsonp(mapUrl + '.jsonp').then(function (response) {
+	    Request.get(mapUrl).then(function (response) {
 	        return response.json()
 	    }).then(function (jsonObj) {
 	        if (!jsonObj) {
@@ -1470,20 +1477,25 @@
 	    }
 	    return this.map.addLayer(layer);
 	};
-	ol.supermap.WebMap.prototype.rectifyEpsg = function (epsgCode) {
+	ol.supermap.WebMap.prototype.toProjection = function (epsgCode, type, extent) {
+	    if (epsgCode == -1000 && type == "PCS_NON_EARTH") {
+	        return new ol.proj.Projection({
+	            extent: extent,
+	            units: 'm'
+	        });
+	    }
 	    if (epsgCode === 910112 || epsgCode === 910102) {
-	        // todo baidu
-	        return 3857;
+	        return 'EPSG:3857';
 	    }
 	    if (epsgCode === 910111) {
-	        return 3857
+	        return 'EPSG:3857'
 	        //todo 火星mercator
 	    }
 	    if (epsgCode === 910101) {
-	        return 4326
+	        return 'EPSG:4326'
 	        //todo 火星
 	    }
-	    return epsgCode;
+	    return 'EPSG:' + epsgCode;
 	};
 	ol.supermap.WebMap.prototype.createMap = function (options) {
 	    if (!this.map) {
@@ -1492,6 +1504,7 @@
 	            target: this.target,
 	            view: view
 	        });
+	        view.fit(options.extent);
 	    }
 	};
 	ol.supermap.WebMap.prototype.getResolutionsFromScales = function (scales, dpi, units, datum) {
@@ -1504,7 +1517,6 @@
 	ol.supermap.WebMap.prototype.createLayer = function (type, layerInfo) {
 	    var prjCoordSys = layerInfo.prjCoordSys,
 	        epsgCode = prjCoordSys && prjCoordSys.epsgCode || this.mapInfo.epsgCode,
-	        projection = 'EPSG:' + this.rectifyEpsg(epsgCode),
 	        center = this.mapInfo.center || layerInfo.center,
 	        level = this.mapInfo.level || layerInfo.level,
 	        bounds = this.mapInfo.extent || layerInfo.bounds,
@@ -1512,6 +1524,7 @@
 	        opacity = layerInfo.opacity,
 	        origin = [bounds.leftBottom.x, bounds.rightTop.y],
 	        extent = [bounds.leftBottom.x, bounds.leftBottom.y, bounds.rightTop.x, bounds.rightTop.y];
+	    var projection = this.toProjection(epsgCode, prjCoordSys ? prjCoordSys.type : '', extent);
 	    //var crs = this.createCRS(epsgCode, origin, resolution, boundsL);
 	    var viewOptions = {
 	        center: [center.x, center.y],
@@ -1753,210 +1766,8 @@
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports !== 'undefined' && typeof module !== 'undefined') {
-	    factory(exports, module);
-	  } else {
-	    var mod = {
-	      exports: {}
-	    };
-	    factory(mod.exports, mod);
-	    global.fetchJsonp = mod.exports;
-	  }
-	})(this, function (exports, module) {
-	  'use strict';
-
-	  var defaultOptions = {
-	    timeout: 5000,
-	    jsonpCallback: 'callback',
-	    jsonpCallbackFunction: null
-	  };
-
-	  function generateCallbackFunction() {
-	    return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
-	  }
-
-	  // Known issue: Will throw 'Uncaught ReferenceError: callback_*** is not defined'
-	  // error if request timeout
-	  function clearFunction(functionName) {
-	    // IE8 throws an exception when you try to delete a property on window
-	    // http://stackoverflow.com/a/1824228/751089
-	    try {
-	      delete window[functionName];
-	    } catch (e) {
-	      window[functionName] = undefined;
-	    }
-	  }
-
-	  function removeScript(scriptId) {
-	    var script = document.getElementById(scriptId);
-	    document.getElementsByTagName('head')[0].removeChild(script);
-	  }
-
-	  function fetchJsonp(_url) {
-	    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-	    // to avoid param reassign
-	    var url = _url;
-	    var timeout = options.timeout || defaultOptions.timeout;
-	    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
-
-	    var timeoutId = undefined;
-
-	    return new Promise(function (resolve, reject) {
-	      var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
-	      var scriptId = jsonpCallback + '_' + callbackFunction;
-
-	      window[callbackFunction] = function (response) {
-	        resolve({
-	          ok: true,
-	          // keep consistent with fetch API
-	          json: function json() {
-	            return Promise.resolve(response);
-	          }
-	        });
-
-	        if (timeoutId) clearTimeout(timeoutId);
-
-	        removeScript(scriptId);
-
-	        clearFunction(callbackFunction);
-	      };
-
-	      // Check if the user set their own params, and if not add a ? to start a list of params
-	      url += url.indexOf('?') === -1 ? '?' : '&';
-
-	      var jsonpScript = document.createElement('script');
-	      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
-	      jsonpScript.id = scriptId;
-	      document.getElementsByTagName('head')[0].appendChild(jsonpScript);
-
-	      timeoutId = setTimeout(function () {
-	        reject(new Error('JSONP request to ' + _url + ' timed out'));
-
-	        clearFunction(callbackFunction);
-	        removeScript(scriptId);
-	      }, timeout);
-	    });
-	  }
-
-	  // export as global function
-	  /*
-	  let local;
-	  if (typeof global !== 'undefined') {
-	    local = global;
-	  } else if (typeof self !== 'undefined') {
-	    local = self;
-	  } else {
-	    try {
-	      local = Function('return this')();
-	    } catch (e) {
-	      throw new Error('polyfill failed because global object is unavailable in this environment');
-	    }
-	  }
-	  local.fetchJsonp = fetchJsonp;
-	  */
-
-	  module.exports = fetchJsonp;
-	});
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: MapService
-	 * 地图信息服务类
-	 * 用法：
-	 *      new ol.superMap.MapService(url)
-	 *      .getMapInfo(function(result){
-	 *           //doSomething
-	 *      })
-	 */
-	__webpack_require__(13);
-	var ol = __webpack_require__(3);
-	var MapService = __webpack_require__(16);
-	var TilesetsService = __webpack_require__(18);
-	ol.supermap.MapService = function (url, options) {
-	    ol.supermap.ServiceBase.call(this, url, options);
-	};
-
-	ol.inherits(ol.supermap.MapService, ol.supermap.ServiceBase);
-
-	/**
-	 * 地图信息查询服务
-	 * @param callback
-	 */
-	ol.supermap.MapService.prototype.getMapInfo = function (callback) {
-	    var me = this;
-	    var getMapStatusService = new MapService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: callback,
-	            processFailed: callback
-	        }, projection: me.options.projection
-	    });
-	    getMapStatusService.processAsync();
-	    return me;
-	};
-
-	/**
-	 * 切片列表信息查询服务
-	 * @param callback
-	 */
-	ol.supermap.MapService.prototype.getTilesets = function (callback) {
-	    var me = this;
-	    var tilesetsService = new TilesetsService(me.options.url, {
-	        eventListeners: {
-	            scope: me,
-	            processCompleted: callback,
-	            processFailed: callback
-	        }
-	    });
-
-	    tilesetsService.processAsync();
-	    return me;
-	};
-
-	module.exports = ol.supermap.MapService;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/**
-	 * Class: ServiceBase
-	 * 服务基类
-	 */
-	__webpack_require__(2);
-	__webpack_require__(14);
-	var ol = __webpack_require__(3);
-
-	ol.supermap.ServiceBase = function (url, options) {
-	    ol.Observable.call(this);
-	    this.options = options || {};
-	    this.options.url = url;
-	    this.dispatchEvent(new ol.supermap.ResultEvent('initialized', this));
-	};
-	ol.inherits(ol.supermap.ServiceBase, ol.Observable);
-
-	ol.supermap.ResultEvent = function (type, opt_element) {
-	    ol.events.Event.call(this, type);
-	    this.result = opt_element;
-
-	};
-	ol.inherits(ol.supermap.ResultEvent, ol.events.Event);
-
-	module.exports = ol.supermap.ServiceBase;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	__webpack_require__(15);
-	var fetchJsonp = __webpack_require__(11);
+	__webpack_require__(12);
+	var fetchJsonp = __webpack_require__(13);
 	var SuperMap = __webpack_require__(4);
 	SuperMap.Support = {
 	    cors: ((window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()))
@@ -2081,7 +1892,7 @@
 	module.exports = SuperMap.Request;
 
 /***/ }),
-/* 15 */
+/* 12 */
 /***/ (function(module, exports) {
 
 	(function(self) {
@@ -2546,6 +2357,208 @@
 	  self.fetch.polyfill = true
 	})(typeof self !== 'undefined' ? self : this);
 
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, module], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports !== 'undefined' && typeof module !== 'undefined') {
+	    factory(exports, module);
+	  } else {
+	    var mod = {
+	      exports: {}
+	    };
+	    factory(mod.exports, mod);
+	    global.fetchJsonp = mod.exports;
+	  }
+	})(this, function (exports, module) {
+	  'use strict';
+
+	  var defaultOptions = {
+	    timeout: 5000,
+	    jsonpCallback: 'callback',
+	    jsonpCallbackFunction: null
+	  };
+
+	  function generateCallbackFunction() {
+	    return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
+	  }
+
+	  // Known issue: Will throw 'Uncaught ReferenceError: callback_*** is not defined'
+	  // error if request timeout
+	  function clearFunction(functionName) {
+	    // IE8 throws an exception when you try to delete a property on window
+	    // http://stackoverflow.com/a/1824228/751089
+	    try {
+	      delete window[functionName];
+	    } catch (e) {
+	      window[functionName] = undefined;
+	    }
+	  }
+
+	  function removeScript(scriptId) {
+	    var script = document.getElementById(scriptId);
+	    document.getElementsByTagName('head')[0].removeChild(script);
+	  }
+
+	  function fetchJsonp(_url) {
+	    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+	    // to avoid param reassign
+	    var url = _url;
+	    var timeout = options.timeout || defaultOptions.timeout;
+	    var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
+
+	    var timeoutId = undefined;
+
+	    return new Promise(function (resolve, reject) {
+	      var callbackFunction = options.jsonpCallbackFunction || generateCallbackFunction();
+	      var scriptId = jsonpCallback + '_' + callbackFunction;
+
+	      window[callbackFunction] = function (response) {
+	        resolve({
+	          ok: true,
+	          // keep consistent with fetch API
+	          json: function json() {
+	            return Promise.resolve(response);
+	          }
+	        });
+
+	        if (timeoutId) clearTimeout(timeoutId);
+
+	        removeScript(scriptId);
+
+	        clearFunction(callbackFunction);
+	      };
+
+	      // Check if the user set their own params, and if not add a ? to start a list of params
+	      url += url.indexOf('?') === -1 ? '?' : '&';
+
+	      var jsonpScript = document.createElement('script');
+	      jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
+	      jsonpScript.id = scriptId;
+	      document.getElementsByTagName('head')[0].appendChild(jsonpScript);
+
+	      timeoutId = setTimeout(function () {
+	        reject(new Error('JSONP request to ' + _url + ' timed out'));
+
+	        clearFunction(callbackFunction);
+	        removeScript(scriptId);
+	      }, timeout);
+	    });
+	  }
+
+	  // export as global function
+	  /*
+	  let local;
+	  if (typeof global !== 'undefined') {
+	    local = global;
+	  } else if (typeof self !== 'undefined') {
+	    local = self;
+	  } else {
+	    try {
+	      local = Function('return this')();
+	    } catch (e) {
+	      throw new Error('polyfill failed because global object is unavailable in this environment');
+	    }
+	  }
+	  local.fetchJsonp = fetchJsonp;
+	  */
+
+	  module.exports = fetchJsonp;
+	});
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: MapService
+	 * 地图信息服务类
+	 * 用法：
+	 *      new ol.superMap.MapService(url)
+	 *      .getMapInfo(function(result){
+	 *           //doSomething
+	 *      })
+	 */
+	__webpack_require__(15);
+	var ol = __webpack_require__(3);
+	var MapService = __webpack_require__(16);
+	var TilesetsService = __webpack_require__(18);
+	ol.supermap.MapService = function (url, options) {
+	    ol.supermap.ServiceBase.call(this, url, options);
+	};
+
+	ol.inherits(ol.supermap.MapService, ol.supermap.ServiceBase);
+
+	/**
+	 * 地图信息查询服务
+	 * @param callback
+	 */
+	ol.supermap.MapService.prototype.getMapInfo = function (callback) {
+	    var me = this;
+	    var getMapStatusService = new MapService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: callback,
+	            processFailed: callback
+	        }, projection: me.options.projection
+	    });
+	    getMapStatusService.processAsync();
+	    return me;
+	};
+
+	/**
+	 * 切片列表信息查询服务
+	 * @param callback
+	 */
+	ol.supermap.MapService.prototype.getTilesets = function (callback) {
+	    var me = this;
+	    var tilesetsService = new TilesetsService(me.options.url, {
+	        eventListeners: {
+	            scope: me,
+	            processCompleted: callback,
+	            processFailed: callback
+	        }
+	    });
+
+	    tilesetsService.processAsync();
+	    return me;
+	};
+
+	module.exports = ol.supermap.MapService;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Class: ServiceBase
+	 * 服务基类
+	 */
+	__webpack_require__(2);
+	__webpack_require__(11);
+	var ol = __webpack_require__(3);
+
+	ol.supermap.ServiceBase = function (url, options) {
+	    ol.Observable.call(this);
+	    this.options = options || {};
+	    this.options.url = url;
+	    this.dispatchEvent(new ol.supermap.ResultEvent('initialized', this));
+	};
+	ol.inherits(ol.supermap.ServiceBase, ol.Observable);
+
+	ol.supermap.ResultEvent = function (type, opt_element) {
+	    ol.events.Event.call(this, type);
+	    this.result = opt_element;
+
+	};
+	ol.inherits(ol.supermap.ResultEvent, ol.events.Event);
+
+	module.exports = ol.supermap.ServiceBase;
 
 /***/ }),
 /* 16 */
@@ -3129,7 +3142,7 @@
 	 *          //doSomething
 	 *      })
 	 */
-	__webpack_require__(13);
+	__webpack_require__(15);
 	var ol = __webpack_require__(3);
 	var Util = __webpack_require__(20);
 	var SuperMap = __webpack_require__(4);
@@ -5894,7 +5907,7 @@
 	 *           //doSomething
 	 *      })
 	 */
-	__webpack_require__(13);
+	__webpack_require__(15);
 	var ol = __webpack_require__(3);
 	var GetLayersInfoService = __webpack_require__(39);
 	var SetLayerInfoService = __webpack_require__(75);
@@ -11290,7 +11303,7 @@
 	 * Class:MeasureService
 	 * 距离测量服务
 	 */
-	__webpack_require__(13);
+	__webpack_require__(15);
 	var ol = __webpack_require__(3);
 	var Util = __webpack_require__(20);
 	var MeasureService = __webpack_require__(83);
@@ -11558,7 +11571,7 @@
 	 *          //doSomething
 	 *      })
 	 */
-	__webpack_require__(13);
+	__webpack_require__(15);
 	var ol = __webpack_require__(3);
 	var SuperMap = __webpack_require__(4);
 	var ChartQueryService = __webpack_require__(86);
@@ -12189,7 +12202,7 @@
 	 *          //doSomething
 	 *      })
 	 */
-	__webpack_require__(13);
+	__webpack_require__(15);
 	var ol = __webpack_require__(3);
 	var Util=__webpack_require__(20);
 	var SuperMap = __webpack_require__(4);
@@ -13896,7 +13909,7 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(13);
+	__webpack_require__(15);
 	var ol = __webpack_require__(3);
 	var GetFieldsService = __webpack_require__(106);
 	var FieldStatisticService = __webpack_require__(107);
@@ -14253,7 +14266,7 @@
 	 *           //doSomething
 	 *      })
 	 */
-	__webpack_require__(13);
+	__webpack_require__(15);
 	var ol = __webpack_require__(3);
 	var GetGridCellInfosService = __webpack_require__(110);
 
@@ -14548,7 +14561,7 @@
 	 *           //doSomething
 	 *      });
 	 */
-	__webpack_require__(13);
+	__webpack_require__(15);
 	var ol = __webpack_require__(3);
 	var ThemeService = __webpack_require__(113);
 
@@ -15564,7 +15577,7 @@
 	 *           //doSomething
 	 *      })
 	 */
-	__webpack_require__(13);
+	__webpack_require__(15);
 	var ol = __webpack_require__(3);
 	var Util=__webpack_require__(20);
 	var SuperMap = __webpack_require__(4);
@@ -18466,7 +18479,7 @@
 	 *           //doSomething
 	 *      })
 	 */
-	__webpack_require__(13);
+	__webpack_require__(15);
 	var ol = __webpack_require__(3);
 	var FacilityAnalystSinks3DService = __webpack_require__(151);
 	var FacilityAnalystSources3DService = __webpack_require__(154);
@@ -19321,7 +19334,7 @@
 	 *          //doSomething 
 	 *      })
 	 */
-	__webpack_require__(13);
+	__webpack_require__(15);
 	var ol = __webpack_require__(3);
 	var Util = __webpack_require__(20);
 	var SuperMap = __webpack_require__(4);
@@ -19794,10 +19807,10 @@
 	 * Inherits from:
 	 *  - <SuperMap.ServiceBase>
 	 */
-	var SuperMap = __webpack_require__(4);
-	var GeoJSONFormat = __webpack_require__(21);
-	var ServiceBase = __webpack_require__(17);
-	SuperMap.REST.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
+	__webpack_require__(21);
+	__webpack_require__(17);
+	var util = __webpack_require__(17).Util;
+	SuperMap.REST.SpatialAnalystBase = SuperMap.Class(SuperMap.ServiceBase, {
 
 	    /**
 	     *  Property: format
@@ -19807,7 +19820,7 @@
 	    format: SuperMap.DataFormat.GEOJSON,
 
 	    initialize: function (url, options) {
-	        ServiceBase.prototype.initialize.apply(this, arguments);
+	        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
 	        if (options && options.format) {
 	            this.format = options.format.toUpperCase();
 	        }
@@ -19818,7 +19831,7 @@
 	     * 释放资源，将引用的资源属性置空。
 	     */
 	    destroy: function () {
-	        ServiceBase.prototype.destroy.apply(this, arguments);
+	        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
 	        this.format = null;
 	    },
 
@@ -19851,7 +19864,7 @@
 	        if (!result) {
 	            return null;
 	        }
-	        var geoJSONFormat = new GeoJSONFormat();
+	        var geoJSONFormat = new SuperMap.Format.GeoJSON();
 	        if (result.recordsets) {
 	            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
 	                if (recordsets[i].features) {
@@ -19867,7 +19880,9 @@
 	    CLASS_NAME: "SuperMap.REST.SpatialAnalystBase"
 	});
 
-	module.exports = SuperMap.REST.SpatialAnalystBase;
+	module.exports = function (url, options) {
+	    return new SuperMap.REST.SpatialAnalystBase(url, options);
+	};
 
 
 /***/ }),
@@ -24911,7 +24926,7 @@
 	 *           //doSomething
 	 *      })
 	 */
-	__webpack_require__(13);
+	__webpack_require__(15);
 	var ol = __webpack_require__(3);
 	var Util = __webpack_require__(20);
 	var StopQueryService = __webpack_require__(209);
