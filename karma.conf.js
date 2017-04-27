@@ -18,15 +18,12 @@ module.exports = function (config) {
         // list of files  patterns to load in the browser
         // include:false表示不包含这些文件到浏览器中,注意添加顺序
         files: [
-            {pattern: 'src/legacy/libs/SuperMap_Basic-8.1.1-14426.js', include: false},
             /***legacy文件夹下的源码添加至此***/
             {pattern: 'src/legacy/libs/SuperMap_Basic-8.1.1-14426.js', include: false},
             {pattern: 'src/legacy/libs/Lang/*.js', include: false},
             {pattern: 'src/legacy/theme/default/*.css', include: false},
-            './node_modules/whatwg-fetch/fetch.js',
-            './node_modules/fetch-jsonp/build/fetch-jsonp.js',
             /***common文件夹下的源码添加至此***/
-            'src/common/Base.js',
+            'src/common/SuperMap.js',
             'src/common/REST.js',
             'src/common/style/CartoCSS.js',
 
