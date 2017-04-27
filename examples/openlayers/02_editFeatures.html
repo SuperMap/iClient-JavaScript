@@ -82,6 +82,9 @@
     }
 
     function commit() {
+        if (!pointFeature) {
+            return;
+        }
         var me = this;
         var featureService = new ol.supermap.FeatureService(urlCapital);
         var addFeatureParams = new SuperMap.EditFeaturesParameters({
@@ -101,6 +104,9 @@
     }
 
     function clearLayer() {
+        if (!id) {
+            return;
+        }
         var me = this;
         var editFeaturesService = new ol.supermap.FeatureService(urlCapital);
         editFeaturesService.editFeatures({
@@ -112,6 +118,7 @@
             if (serviceResult.result.succeed) {
                 map.removeLayer(resultLayer);
                 pointFeature = null;
+                id = null;
                 me.initFeature();
                 alert("删除成功")
             } else {
