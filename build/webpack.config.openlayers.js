@@ -13,8 +13,8 @@ module.exports = {
         extensions: ['', '.js', '.json', '.css']
     },
     externals: {
-        'echarts': true,
-        'openlayers': true
+        'echarts': 'echarts',
+        'openlayers': 'ol'
     },
 
     module: {

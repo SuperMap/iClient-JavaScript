@@ -13,8 +13,8 @@ module.exports = {
         extensions: ['', '.js', '.json', '.css']
     },
     externals: {
-        'echarts': true,
-        'leaflet': true
+        'echarts': 'echarts',
+        'leaflet': 'L'
     },
     module: {
         //加载器配置
