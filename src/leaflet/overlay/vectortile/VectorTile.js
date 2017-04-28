@@ -5,6 +5,7 @@ require('./PointSymbolizer');
 require('./LineSymbolizer');
 require('./RegionSymbolizer');
 var L = require("leaflet");
+var SuperMap = require('../../../common/SuperMap');
 var TileFeatureProcessor = require('./TileFeatureProcessor');
 var VectorTile = L.Class.extend({
 

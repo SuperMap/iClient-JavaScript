@@ -142,7 +142,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
     serviceProcessCompleted: function (result) {
         var me = this;
         result = SuperMap.Util.transformResult(result);
-        if (result && result.recordsets && me.format === Format.GEOJSON) {
+        if (result && result.recordsets && me.format === SuperMap.DataFormat.GEOJSON) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
                     var geoJSONFormat = new GeoJSONFormat();

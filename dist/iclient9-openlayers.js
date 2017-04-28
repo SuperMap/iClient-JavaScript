@@ -72,6 +72,7 @@
 
 	__webpack_require__(2);
 	var ol = __webpack_require__(3);
+	var SuperMap = __webpack_require__(4);
 	ol.supermap.TileSuperMapRest = function (options) {
 	    if (options.url === undefined) {
 	        return;
@@ -1403,6 +1404,7 @@
 	__webpack_require__(2);
 	var ol = __webpack_require__(3);
 	var Request = __webpack_require__(11);
+	var SuperMap = __webpack_require__(4);
 	ol.supermap.WebMap = function (id, options) {
 	    ol.Observable.call(this);
 	    this.id = id;
@@ -1688,7 +1690,7 @@
 	        isVisible = layerInfo.isVisible;
 	    //todo readonly = layerInfo.readonly;
 	    if (!layerInfo.url) {
-	        layer = new ol.layer.Vector({
+	        var layer = new ol.layer.Vector({
 	            source: new ol.source.Vector({
 	                features: (new ol.format.GeoJSON()).readFeatures(ol.supermap.Util.toGeoJSON(layerInfo.features)),
 	                wrapX: false
@@ -3272,6 +3274,7 @@
 	__webpack_require__(2);
 	var ol = __webpack_require__(3);
 	var GeoJSONFormat = __webpack_require__(21);
+	var SuperMap = __webpack_require__(4);
 
 	ol.supermap.Util.toGeoJSON = function (smObj) {
 	    if (smObj) {
@@ -11778,7 +11781,7 @@
 	    serviceProcessCompleted: function (result) {
 	        var me = this;
 	        result = SuperMap.Util.transformResult(result);
-	        if (result && result.recordsets && me.format === Format.GEOJSON) {
+	        if (result && result.recordsets && me.format === SuperMap.DataFormat.GEOJSON) {
 	            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
 	                if (recordsets[i].features) {
 	                    var geoJSONFormat = new GeoJSONFormat();
@@ -12323,7 +12326,7 @@
 	        dataSetName = params.dataSetName;
 
 	    url += "/datasources/" + dataSourceName + "/datasets/" + dataSetName;
-	    editFeatureService = new EditFeaturesService(url, {
+	    var editFeatureService = new EditFeaturesService(url, {
 	        eventListeners: {
 	            processCompleted: callback,
 	            processFailed: callback
@@ -29780,7 +29783,7 @@
 	        return shaderAttrs;
 	    },
 	    clone: function (filters) {
-	        if (filters) assert.ok(filters instanceof SuperMap.CartoCSS.Tree.Filterset);
+	        //if (filters) assert.ok(filters instanceof SuperMap.CartoCSS.Tree.Filterset);
 	        var clone = Object.create(SuperMap.CartoCSS.Tree.Definition.prototype);
 	        clone.rules = this.rules.slice();
 	        clone.ruleIndex = _.clone(this.ruleIndex);
@@ -31354,6 +31357,7 @@
 	__webpack_require__(222);
 	__webpack_require__(223);
 	var ol = __webpack_require__(3);
+	var SuperMap = __webpack_require__(4);
 	ol.supermap.StyleUtils = {
 	    getValidStyleFromLayerInfo: function (layerInfo, feature, url) {
 	        var type = feature.getProperties().type,

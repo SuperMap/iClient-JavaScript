@@ -2,6 +2,7 @@ require('../core/Base');
 var L = require("leaflet");
 var Util = require('../core/Util');
 var Request = require('../../common/util/Request');
+var SuperMap = require('../../common/SuperMap');
 var WebMap = L.LayerGroup.extend({
     options: {
         map: 'map',
@@ -239,7 +240,7 @@ var WebMap = L.LayerGroup.extend({
             if (type == "ter")type = "cta"
         }
         wmtsURL = wmtsURL.replace("{type}", type).replace("{proj}", proj);
-        layer = L.tileLayer.wmts(wmtsURL,
+        var layer = L.tileLayer.wmts(wmtsURL,
             {
                 layer: type,
                 style: "default",

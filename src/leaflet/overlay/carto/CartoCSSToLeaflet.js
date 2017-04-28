@@ -5,6 +5,7 @@ require('../../core/Base');
 require('./CartoDeaultStyle');
 require('./CartoStyleMap');
 var CartoCSS = require('../../../common/style/CartoCSS');
+var SuperMap = require('../../../common/SuperMap');
 var L = require("leaflet");
 
 L.supermap.CartoCSSToLeaflet = {

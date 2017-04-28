@@ -1,6 +1,7 @@
 var L = require("leaflet");
 var Pbf = require('pbf');
 var VectorTile = require('vector-tile');
+var SuperMap = require('../../common/SuperMap');
 
 L.PBFTileVectorLayer = L.VectorGrid.extend({
 

@@ -147,7 +147,7 @@ var FeatureService = ServiceBase.extend({
             dataSetName = params.dataSetName;
 
         url += "/datasources/" + dataSourceName + "/datasets/" + dataSetName;
-        editFeatureService = new EditFeaturesService(url, {
+        var editFeatureService = new EditFeaturesService(url, {
             eventListeners: {
 
                 processCompleted: callback,

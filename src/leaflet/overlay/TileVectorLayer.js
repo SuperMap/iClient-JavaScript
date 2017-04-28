@@ -8,7 +8,7 @@ require('../core/Base');
 require('./vectortile/VectorGrid');
 var L = require("leaflet");
 var CartoCSSToLeaflet = require('./carto/CartoCSSToLeaflet');
-
+var SuperMap = require('../../common/SuperMap');
 var TileVectorLayer = L.VectorGrid.extend({
 
     options: {

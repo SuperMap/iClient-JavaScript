@@ -17,8 +17,8 @@ L.TileLayer.WMTS = L.TileLayer.extend({
     },
     getTileUrl: function (coords) { // (Point, Number) -> String
         var zoom = this._getZoomForUrl();
-        ident = this.options.matrixIds ? this.options.matrixIds[zoom].identifier : zoom;
-        url = L.Util.template(this._url, {s: this._getSubdomain(coords)});
+        var ident = this.options.matrixIds ? this.options.matrixIds[zoom].identifier : zoom;
+        var url = L.Util.template(this._url, {s: this._getSubdomain(coords)});
         var obj = {
             service: 'WMTS',
             request: 'GetTile',

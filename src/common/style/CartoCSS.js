@@ -3380,7 +3380,7 @@ SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
         return shaderAttrs;
     },
     clone: function (filters) {
-        if (filters) assert.ok(filters instanceof SuperMap.CartoCSS.Tree.Filterset);
+        //if (filters) assert.ok(filters instanceof SuperMap.CartoCSS.Tree.Filterset);
         var clone = Object.create(SuperMap.CartoCSS.Tree.Definition.prototype);
         clone.rules = this.rules.slice();
         clone.ruleIndex = _.clone(this.ruleIndex);

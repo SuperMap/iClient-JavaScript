@@ -1,6 +1,7 @@
 require('./Base');
 var ol = require('openlayers');
 var GeoJSONFormat = require('../../common/format/GeoJSON');
+var SuperMap = require('../../common/SuperMap');
 
 ol.supermap.Util.toGeoJSON = function (smObj) {
     if (smObj) {

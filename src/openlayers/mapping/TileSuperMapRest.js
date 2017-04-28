@@ -1,5 +1,6 @@
 require('../core/Base');
 var ol = require('openlayers');
+var SuperMap = require('../../common/SuperMap');
 ol.supermap.TileSuperMapRest = function (options) {
     if (options.url === undefined) {
         return;

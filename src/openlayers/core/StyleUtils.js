@@ -2,6 +2,7 @@ require('./Base');
 require('../overlay/vectortile/DeafultCanvasStyle');
 require('../overlay/vectortile/StyleMap');
 var ol = require('openlayers');
+var SuperMap = require('../../common/SuperMap');
 ol.supermap.StyleUtils = {
     getValidStyleFromLayerInfo: function (layerInfo, feature, url) {
         var type = feature.getProperties().type,
