@@ -7593,8 +7593,8 @@
 	    },
 	    getTileUrl: function (coords) { // (Point, Number) -> String
 	        var zoom = this._getZoomForUrl();
-	        ident = this.options.matrixIds ? this.options.matrixIds[zoom].identifier : zoom;
-	        url = L.Util.template(this._url, {s: this._getSubdomain(coords)});
+	        var ident = this.options.matrixIds ? this.options.matrixIds[zoom].identifier : zoom;
+	        var url = L.Util.template(this._url, {s: this._getSubdomain(coords)});
 	        var obj = {
 	            service: 'WMTS',
 	            request: 'GetTile',
@@ -7654,6 +7654,7 @@
 	var L = __webpack_require__(3);
 	var Util = __webpack_require__(16);
 	var Request = __webpack_require__(20);
+	var SuperMap = __webpack_require__(4);
 	var WebMap = L.LayerGroup.extend({
 	    options: {
 	        map: 'map',
@@ -7891,7 +7892,7 @@
 	            if (type == "ter")type = "cta"
 	        }
 	        wmtsURL = wmtsURL.replace("{type}", type).replace("{proj}", proj);
-	        layer = L.tileLayer.wmts(wmtsURL,
+	        var layer = L.tileLayer.wmts(wmtsURL,
 	            {
 	                layer: type,
 	                style: "default",
@@ -17859,6 +17860,7 @@
 	 *      })
 	 */
 	var L = __webpack_require__(3);
+	var SuperMap = __webpack_require__(4);
 	var ServiceBase = __webpack_require__(24);
 	var ChartQueryService = __webpack_require__(91);
 	var ChartFeatureInfoSpecsService = __webpack_require__(94);
@@ -18087,7 +18089,7 @@
 	    serviceProcessCompleted: function (result) {
 	        var me = this;
 	        result = SuperMap.Util.transformResult(result);
-	        if (result && result.recordsets && me.format === Format.GEOJSON) {
+	        if (result && result.recordsets && me.format === SuperMap.DataFormat.GEOJSON) {
 	            for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
 	                if (recordsets[i].features) {
 	                    var geoJSONFormat = new GeoJSONFormat();
@@ -18632,7 +18634,7 @@
 	            dataSetName = params.dataSetName;
 
 	        url += "/datasources/" + dataSourceName + "/datasets/" + dataSetName;
-	        editFeatureService = new EditFeaturesService(url, {
+	        var editFeatureService = new EditFeaturesService(url, {
 	            eventListeners: {
 
 	                processCompleted: callback,
@@ -32375,7 +32377,7 @@
 	__webpack_require__(226);
 	var L = __webpack_require__(3);
 	var CartoCSSToLeaflet = __webpack_require__(238);
-
+	var SuperMap = __webpack_require__(4);
 	var TileVectorLayer = L.VectorGrid.extend({
 
 	    options: {
@@ -33079,6 +33081,7 @@
 	__webpack_require__(235);
 	__webpack_require__(236);
 	var L = __webpack_require__(3);
+	var SuperMap = __webpack_require__(4);
 	var TileFeatureProcessor = __webpack_require__(237);
 	var VectorTile = L.Class.extend({
 
@@ -33849,6 +33852,7 @@
 	__webpack_require__(239);
 	__webpack_require__(240);
 	var CartoCSS = __webpack_require__(241);
+	var SuperMap = __webpack_require__(4);
 	var L = __webpack_require__(3);
 
 	L.supermap.CartoCSSToLeaflet = {
@@ -37665,7 +37669,7 @@
 	        return shaderAttrs;
 	    },
 	    clone: function (filters) {
-	        if (filters) assert.ok(filters instanceof SuperMap.CartoCSS.Tree.Filterset);
+	        //if (filters) assert.ok(filters instanceof SuperMap.CartoCSS.Tree.Filterset);
 	        var clone = Object.create(SuperMap.CartoCSS.Tree.Definition.prototype);
 	        clone.rules = this.rules.slice();
 	        clone.ruleIndex = _.clone(this.ruleIndex);
@@ -39238,6 +39242,7 @@
 	var L = __webpack_require__(3);
 	var Pbf = __webpack_require__(243);
 	var VectorTile = __webpack_require__(245);
+	var SuperMap = __webpack_require__(4);
 
 	L.PBFTileVectorLayer = L.VectorGrid.extend({
 

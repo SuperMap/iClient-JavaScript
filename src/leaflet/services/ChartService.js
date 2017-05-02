@@ -8,6 +8,7 @@
  *      })
  */
 var L = require("leaflet");
+var SuperMap = require('../../common/SuperMap');
 var ServiceBase = require('./ServiceBase');
 var ChartQueryService = require('../../common/iServer/ChartQueryService');
 var ChartFeatureInfoSpecsService = require('../../common/iServer/ChartFeatureInfoSpecsService');

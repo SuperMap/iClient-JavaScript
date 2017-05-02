@@ -1,6 +1,7 @@
 require('../core/Base');
 var ol = require('openlayers');
 var Request = require('../../common/util/Request');
+var SuperMap = require('../../common/SuperMap');
 ol.supermap.WebMap = function (id, options) {
     ol.Observable.call(this);
     this.id = id;
@@ -286,7 +287,7 @@ ol.supermap.WebMap.prototype.createVectorLayer = function (layerInfo) {
         isVisible = layerInfo.isVisible;
     //todo readonly = layerInfo.readonly;
     if (!layerInfo.url) {
-        layer = new ol.layer.Vector({
+        var layer = new ol.layer.Vector({
             source: new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(ol.supermap.Util.toGeoJSON(layerInfo.features)),
                 wrapX: false
