@@ -1,71 +1,96 @@
+//左侧层级是否包含示例
+var containExample = false;
+var sideBarIconMap = sideBarIconMap || {};
+
+function initSideBar() {
+    var sideBar = $("ul#sidebar-menu");
+    for (var key in exampleConfig) {
+        sideBar.append(createSideBarMenuItem(key, exampleConfig[key], false));
+    }
+}
+
+//创建菜单项
 function createSideBarMenuItem(id, config, containAll) {
     if (!config) {
         return;
     }
     containExample = containAll;
-    var li = $("<li id='" + id + "' ></li>");
-    if (config.name) {
-        createSideBarMenuTitle("title menuTitle", id, config.name).appendTo(li);
-    }
+    var li = $("<li id='" + id + "' class='treeview'></li>");
+    var menuItemIcon = sideBarIconMap[id];
     if (config.content) {
+        createSideBarMenuTitle(id, config.name, true, menuItemIcon).appendTo(li);
         createSideBarSecondMenu(config.content).appendTo(li);
+    } else {
+        createSideBarMenuTitle(id, config.name, false, menuItemIcon).appendTo(li);
     }
     return li;
-}
-
-//创建中间菜单item项
-function createSideBarMenuTitle(className, id, title) {
-    var div = $("<a>" + title + "</a>");
-    if (className) {
-        div.attr({"class": className})
-    }
-    if (id) {
-        div.attr({"id": id})
-    }
-    return div;
 }
 
 //创建二级菜单
 function createSideBarSecondMenu(config) {
-    var ul = $("<ul class='secondMenu'></ul>");
+    var ul = $("<ul class='treeview-menu second-menu'></ul>");
     for (var key in config) {
-        var li = $("<li id='" + key + "' ></li>");
+        var li = $("<li class='menuTitle' id='" + key + "' ></li>");
         li.appendTo(ul);
         var configItem = config[key];
-        createSideBarMenuTitle("title secondMenuTitle", key, configItem.name).appendTo(li);
+
         if (containExample && configItem.content) {
+            createSideBarMenuTitle(key, configItem.name, true).appendTo(li);
             createSideBarThirdMenu(configItem.content).appendTo(li);
+        } else {
+            createSideBarMenuTitle(key, configItem.name, false).appendTo(li);
         }
     }
     return ul;
 }
+
 
 //创建三级菜单
 function createSideBarThirdMenu(examples) {
-    var ul = $("<ul class='thirdMenu'></ul>");
+    var ul = $("<ul class='treeview-menu third-menu'></ul>");
     var len = (examples && examples.length) ? examples.length : 0;
     for (var i = 0; i < len; i++) {
         var example = examples[i];
+        var li = $("<li class='menuTitle' id='" + example.fileName + "' ></li>");
+        li.appendTo(ul);
         if (example.fileName && example.name) {
-            createEndMenuItem(example.fileName, example.name).appendTo(ul);
+            createSideBarMenuTitle(example.fileName, example.name, false, "").appendTo(li);
         }
     }
     return ul;
 }
 
-//创建叶节点菜单item项
-function createEndMenuItem(id, title) {
-    var li = $("<li></li>");
-    var a = $("<a class='link' id='" + id + "'>" + title + "</a>");
-    li.append(a);
-    return li;
+function createSideBarMenuTitle(id, title, collapse, iconName) {
+    iconName = iconName || "fa-minus-square-o";
+    id = id || "";
+    var div = $("<a href='#' id='" + id + "'><i class='fa " + iconName + "'></i><span>" + title + "</span></a>");
+    if (collapse) {
+        div.append(createCollapsedIcon());
+    }
+    return div;
 }
 
+//创建右侧折叠菜单
+function createCollapsedIcon() {
+    return $("<span class='pull-right-container'> <i class='fa fa-angle-left pull-right'></i> </span>");
+}
+
+//只处理三层节点,后续可优化
 function selectMenu(id) {
-    $("#sidebar a.active").removeClass("active");
-    var link = $("#sidebar a#" + id);
-    var className = link.attr("class");
-    if (!className || className.indexOf("active") === -1) {
-        link.addClass("active");
+    $("section#sidebar ul.menu-open").removeClass("menu-open");
+    var target = $("section#sidebar li#" + id);
+    selectTarget(target.parent().parent().parent());
+    selectTarget(target.parent());
+    selectTarget(target.find("ul"));
+    function selectTarget(target) {
+        if (!target || target.length < 1) {
+            return;
+        }
+        var className = target.attr("class");
+        if (className && className.indexOf("treeview-menu") > -1 && className.indexOf("menu-open") === -1) {
+            target.addClass("menu-open");
+            target.css("display", "block");
+        }
     }
 }
+

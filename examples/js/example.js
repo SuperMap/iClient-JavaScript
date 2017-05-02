@@ -4,10 +4,10 @@ var exConfig = exampleConfig,
 
 //左侧层级不包含例子，只包含分类
 function initPage() {
-    var menu = $("#sidebar ul.menu");
+    var sideBar = $("ul#sidebar-menu");
     var chartList = $("#charts-list");
     for (var key in exConfig) {
-        menu.append(createSideBarMenuItem(key, exConfig[key], containExamples));
+        sideBar.append(createSideBarMenuItem(key, exConfig[key], containExamples));
         chartList.append(createGalleryItem(key, exConfig[key]));
     }
     resizeCharts();
@@ -18,7 +18,7 @@ function initSelect() {
     var hash = window.location.hash;
 
     if (hash.indexOf("#") === -1) {
-        var id = $("#sidebar .menu .menuTitle").first().attr('id');
+        var id = $("#sidebar li.menuTitle").first().attr('id');
         window.location.hash = (id) ? "#" + id : window.location.hash;
     }
     scroll();
@@ -120,5 +120,8 @@ function scroll() {
             selectMenu(param[1]);
         }
     }
-    $('.content').scrollTo(ele, 500, {offset: -30});
+    if (ele) {
+        $('body').scrollTo(ele, 500, {offset: -60});
+    }
+
 }

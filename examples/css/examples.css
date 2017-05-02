@@ -1,19 +1,31 @@
-#examples-container {
-    margin-left: 205px;
-    z-index: 10;
+.main-header {
+    position: fixed;
+    width: 100%;
+}
+
+.examples-container {
     background-color: #f9f9f9;
+    margin-top: 50px;
+    overflow: auto;
+}
+
+@media (max-width: 767px) {
+    .examples-container {
+        margin-top: 100px;
+    }
 }
 
 #charts-list {
     margin: 0px;
-    padding-left: 20px;
+    padding: 1px 20px;
     list-style: none;
     overflow: inherit;
 }
 
 h3.category-title {
-    height: 60px;
-    line-height: 60px;
+    margin-top: 10px;
+    height: 50px;
+    line-height: 50px;
     border-bottom: 1px solid #cccccc;
 }
 

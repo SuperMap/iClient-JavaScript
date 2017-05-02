@@ -1,7 +1,45 @@
+html, body, .wrapper {
+    height: 100% !important;
+}
+
+.wrapper {
+    overflow: hidden;
+}
+
+.main-header {
+    position: fixed;
+    width: 100%;
+}
+
+.edit-container {
+    background-color: #f9f9f9;
+    position: relative;
+    height: 100%;
+}
+
+.content {
+    top: 52px;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    z-index: 99;
+    overflow: hidden;
+    position: absolute;
+}
+
+@media (max-width: 767px) {
+    .edit-container {
+        margin-top: 100px;
+    }
+    .content{
+        top:0;
+    }
+}
+
 #codePane {
     width: 660px;
     height: 100%;
-    margin-left: 200px;
     position: absolute;
     box-shadow: 2px 0px 6px #cccccc;
 }
@@ -43,19 +81,11 @@
     font-size: 12px;
 }
 
-#drag {
-    width: 2px;
-    height: 100%;
-    background: #eee;
-    cursor: w-resize;
-    left: 860px;
-    position: absolute;
-}
-
 #preview {
     height: 100%;
+    right: 0;
     min-width: 400px;
-    margin-left: 862px;
+    margin-left: 662px;
     position: relative;
 }
 
@@ -69,14 +99,13 @@
     #codePane {
         width: 340px;
         height: 100%;
-        margin-left: 200px;
         position: absolute;
         box-shadow: 3px 0px 6px #cccccc;
     }
 
     #preview {
         height: 100%;
-        margin-left: 540px;
+        margin-left: 340px;
         position: relative;
     }
 }
@@ -85,27 +114,24 @@
     #codePane {
         width: 500px;
         height: 100%;
-        margin-left: 200px;
         position: absolute;
         box-shadow: 3px 0px 6px #cccccc;
     }
 
     #preview {
         height: 100%;
+        margin-left: 502px;
         min-width: 400px;
-        margin-left: 700px;
         position: relative;
     }
 }
-.content{
-    overflow: hidden;
-}
+
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
     border-radius: 12px;
-    background: #f7f7f7;
+    background: #e7e7e7;
     -webkit-box-shadow: inset 0 0 6px #d1cfcf;
 }

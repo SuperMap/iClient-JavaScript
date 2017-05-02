@@ -1,53 +1,62 @@
-<div class="container  bc clearfix">
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                data-target="#navbar-collapse" aria-expanded="false">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">
-            <div id="title">SuperMap iClient for JavaScript 9D</div>
-        </a>
-    </div>
-    <div class="collapse navbar-collapse" id="navbar-collapse" style="border:0;background-color: transparent">
-        <ul class="nav navbar-nav navbar-right" id="headerMenu" style="margin-right: 0">
-            <li class="hidden active">
-                <a href="#page-top"></a>
-            </li>
-            <li id="headerIndex">
-                <a href="#">首页</a>
-            </li>
-            <li id="headerMaps">
-                <a href="#">开发指南</a>
-            </li>
-            <li><a href="#" data-toggle="dropdown" class="dropdown-toggle">示例<b class="caret"></b></a>
-                <ul class="dropdown-menu nav_apis_box_li">
-                    <li>Leaflet</li>
-                    <li>OpenLayers</li>
-                    <li>MapBoxGL</li>
-                    <li>iClient3D</li>
-                </ul>
-            </li>
-            <li id="headerPricing">
-                <a href="#">API</a>
-            </li>
-            <li><a href="#" data-toggle="dropdown" class="dropdown-toggle">下载<b class="caret"></b></a>
-                <ul class="dropdown-menu  nav_apis_box_li">
-                    <li>在线构建</li>
-                </ul>
-            </li>
-        </ul>
-    </div>
+<div class="navbar-header">
+    <a href="#" class="navbar-brand" id="title">SuperMap iClient for JavaScript 9D</a>
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+        <i class="fa fa-bars"></i>
+    </button>
 </div>
-<script>
-    $('.dropdown-menu li').on('click', function () {
+
+<div class="collapse navbar-collapse navbar-custom-menu" id="navbar-collapse">
+
+
+    <ul class="nav navbar-nav">
+        <li class="overview-menu" id="headerIndex">
+            <a href="#" class="center">
+                首页
+            </a>
+        </li>
+        <li class="guide-menu" id="headerMaps">
+            <a href="#">
+                开发指南
+            </a>
+        </li>
+        <li class="dropdown nav-dropdown-menu example-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                示例
+                <i class="fa fa-sort-down"></i>
+            </a>
+            <ul class="dropdown-menu ">
+                <li><a href="#"><h5>Leaflet</h5></a></li>
+                <li><a href="#"><h5>OpenLayers</h5></a></li>
+                <li><a href="#"><h5>MapboxGL</h5></a></li>
+                <li><a href="#"><h5>iClient3D</h5></a></li>
+            </ul>
+        </li>
+        <li class="api-menu" id="headerPricing">
+            <a href="#">
+                API
+            </a>
+        </li>
+        <li class="dropdown nav-dropdown-menu download-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                下载
+                <i class="fa fa-sort-down"></i>
+            </a>
+            <ul class="dropdown-menu ">
+                <li class="build"><a href="#"><h5>在线构建</h5></a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript">
+    $('.example-menu .dropdown-menu li').on('click', function () {
         var host = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9" : "");
         window.location.href = host + "/examples/" + this.innerText.toLowerCase() + "/examples.html";
-    })
-    $('#headerMenu #headerIndex').on('click', function () {
+    });
+    $('.download-menu .build').on('click', function () {
+        var host = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9" : "");
+        window.location.href = host + "/build/build.html";
+    });
+    $('.nav #headerIndex').on('click', function (evt) {
         window.location.href = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9/web/index.html" : "");
     })
-
 </script>

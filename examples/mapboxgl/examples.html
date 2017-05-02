@@ -1,76 +1,111 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>MapBox GL示范程序</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/common.css">
+    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../web/libs/css/adminLTE.min.css">
+    <link rel="stylesheet" href="../../web/libs/css/skin-blue.min.css">
+    <link rel="stylesheet" href="../../web/libs/css/blue.css">
+    <link rel="stylesheet" href="../../web/css/header.css">
     <link rel="stylesheet" href="../css/sideBar.css">
     <link rel="stylesheet" href="../css/examples.css">
-    <link rel="stylesheet" href="../../web/css/header.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/scrollTo.min.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="./config.js"></script>
-    <style>
-        .container {
-            width: 100%;
-        }
-
-        .navbar #headerMenu > li > a {
-
-            font-weight: inherit;
-        }
-    </style>
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
+<body class="hold-transition skin-blue sidebar-mini">
 
-<body>
-<nav class="navbar navbar-fixed-top navbar-default">
-</nav>
-<script>
-    $('.navbar-fixed-top').load('../../web/header.html');
-</script>
-<div class="main">
+<div class="wrapper">
+    <!--头部-->
+    <header class="header-wrapper main-header">
 
-    <div class="content" data-spy="scroll" data-target="#sidebar .menu">
-        <div id="sidebar">
-            <ul class="menu"></ul>
-        </div>
-        <div id="examples-container">
-            <ul id="charts-list">
+        <nav class="navbar navbar-static-top">
+
+
+            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <span class="sr-only"></span>
+            </a>
+            <div class="nav-header">
+
+            </div>
+        </nav>
+    </header>
+
+    <!-- 侧边栏 -->
+
+    <aside class="sidebar-wrapper main-sidebar" style="position: fixed;">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar" id="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" id="sidebar-menu">
 
             </ul>
-        </div>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- 内容区 -->
+    <div class="content-wrapper examples-container">
+        <ul id="charts-list">
+
+        </ul>
     </div>
+    <!-- footer -->
+    <footer class="main-footer">
+        <div class="ip-copyRight iportalfooterDiv" id="iportalfooter">版权所有 © 2000-2017 北京超图软件股份有限公司 京ICP备11032883号-8 京公网安备11010502008721 甲测资字11002074
+        </div>
+    </footer>
+
 </div>
+<!-- ./wrapper -->
+<script type="text/javascript" src="../js/scrollTo.min.js"></script>
+
+<script type="text/javascript" src="../../web/libs/js/app.min.js"></script>
+<script>
+    $('.nav-header').load('../../web/header.html');
+</script>
+<script type="text/javascript" src="./config.js"></script>
 <script type="text/javascript" src="../js/sidebar.js"></script>
 <script type="text/javascript" src="../js/example.js"></script>
 <script>
 
     $(document).ready(function () {
         initPage();
-        bindEvents()
+        bindEvents();
+
     });
     function bindEvents() {
-        $("#sidebar ul.menu>li").on('click', function (evt) {
+        $("ul#sidebar-menu>li").on('click', function (evt) {
             window.location.hash = "#" + evt.target.id;
         });
-        $("#sidebar ul.secondMenu>li").on('click', function (evt) {
-            var id = $(evt.target).parent().parent().parent().find("a.menuTitle").attr('id');
-            id = id + "-" + evt.target.id;
-            window.location.hash = "#" + id;
-            evt.stopPropagation();
+
+        $("ul#sidebar-menu ul.second-menu a").on('click', function (evt) {
+            var target = $(evt.target).parent().parent();
+            var nodeId = evt.target.id;
+            //如果点击的是span节点还要往上一层
+            if (evt.target.localName === "span") {
+                nodeId = target.attr('id');
+                target = target.parent().parent();
+            }
+            var prefixId = target.attr('id');
+            if (nodeId) {
+                evt.preventDefault();
+                var id = prefixId + "-" + nodeId;
+                window.location.hash = "#" + id;
+                evt.stopPropagation();
+            }
         });
         window.addEventListener("hashchange", function () {
-            this.scroll();
+            scroll();
         });
-        $('.dropdown-menu li a').on('click', function () {
-            var host = window.location.protocol + "//" + window.location.host;
-            window.location.href = host + "/examples/" + this.text + "/examples.html";
-        })
-
     }
 
 

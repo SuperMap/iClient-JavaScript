@@ -3,198 +3,46 @@
     <title>SuperMap iClient for JavaScript 9D</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./libs/css/adminLTE.min.css">
+    <link rel="stylesheet" href="./libs/css/skin-blue.min.css">
+    <link rel="stylesheet" href="./libs/css/blue.css">
+    <link rel="stylesheet" href="./css/index.css">
     <link rel="stylesheet" href="./css/header.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
-    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css">
+    <link rel='stylesheet' href='http://cdn.bootcss.com/mapbox-gl/0.36.0/mapbox-gl.css'/>
+    <link rel="stylesheet" href="libs/css/widgets.css">
     <link rel="stylesheet" href="libs/css/default.css">
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="libs/js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-    <style>
-        * {
-            font-family: 'Microsoft YaHei'
-        }
-
-        .pt50.tc {
-            font-family: 'HiraginoSansGB-W6';
-            font-size: 39px;
-            color: #FFFFFF;
-        }
-
-        @media screen and (max-width: 1200px) {
-            .pt50.tc {
-                font-size: 30px;
-            }
-        }
-
-        @media screen and (max-width: 992px) {
-            .pt50.tc {
-                font-size: 25px;
-            }
-        }
-
-        #header2-text {
-            padding-top: 80px;
-            padding-bottom: 20px;
-            text-align: center
-        }
-
-        @media screen and (max-width: 992px) {
-            #header2-text {
-                padding-top: 75px;
-                padding-bottom: 0;
-            }
-        }
-
-        .ip-copyRight {
-            color: #7d7d7d;
-            font-size: 13px !important;
-            text-align: center;
-            height: 54px;
-            line-height: 54px;
-        }
-
-        .ip-footer {
-            /* background-color: #f3f3f3; */
-            border-top: 1px solid #ddd;
-        }
-
-        /*    p {
-                display: block;
-                -webkit-margin-before: 1em;
-                -webkit-margin-after: 1em;
-                -webkit-margin-start: 0px;
-                -webkit-margin-end: 0px;
-                font-size: 16px;
-            }
-    */
-        .html .tag, .css .tag, .javascript .keyword {
-            color: #3182bd;
-        }
-
-        .html .attr, .css .attr, .javascript .class, .javascript .special {
-            color: #e6550d;
-        }
-
-        .btn {
-            height: 50px;
-            width: 185px;
-            border-radius: 300px;
-            margin-top: 29px;
-            border: 1px solid white;
-            background-color: transparent
-        }
-
-        @media screen and (max-width: 992px) {
-            .btn {
-                margin-top: 18px;
-            }
-        }
-
-        .btn a {
-            font-family: 'HiraginoSansGB-W6';
-            font-size: 18px;
-            color: #FFFFFF;
-            line-height: 30px;
-        }
-
-        #button_zip {
-            text-align: center;
-
-        }
-
-        @media screen and (max-width: 1200px) {
-            #button_zip {
-                float: right;
-                margin-right: 24%;
-            }
-        }
-
-        @media screen and (max-width: 992px) {
-            #button_zip {
-                float: right;
-                margin-right: auto;
-            }
-        }
-
-        @media screen and (max-width: 768px) {
-            #button_zip {
-                float: right;
-                margin: auto;
-            }
-        }
-
-        @media screen and (max-width: 762px) {
-            #button_zip {
-                float: none;
-                margin: auto;
-            }
-        }
-
-        #button_sourceCode {
-            text-align: center;
-            margin-left: 70px;
-        }
-
-        @media screen and (max-width: 1200px) {
-            #button_sourceCode {
-                float: right;
-                margin-right: 24%;
-            }
-        }
-
-        @media screen and (max-width: 992px) {
-            #button_sourceCode {
-                float: right;
-                margin-right: auto;
-            }
-        }
-
-        @media screen and (max-width: 768px) {
-            #button_sourceCode {
-                float: right;
-                margin: auto;
-            }
-        }
-
-        @media screen and (max-width: 762px) {
-            #button_sourceCode {
-                float: none;
-                margin: auto;
-            }
-        }
-
-        #quick-start {
-            margin-top: 83px;
-        }
-
-        #new-attributes {
-            margin-top: 50px;
-        }
-
-        .new-attributes_bottomMenu .panel-heading {
-            margin-top: 0;
-            margin-bottom: 0;
-            margin-left: 0;
-            color: dimgray;
-            font-size: 14px;
-            cursor: pointer;
-            background-color: transparent;
-        }
-    </style>
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body>
+<body class="hold-transition skin-blue sidebar-mini">
 
 <!--头部1-->
-<nav class="navbar navbar-fixed-top navbar-default">
-</nav>
+<header class="header-wrapper main-header">
+
+    <nav class="navbar navbar-static-top">
+
+        <div class="nav-header">
+
+        </div>
+    </nav>
+</header>
 <script>
-    $('.navbar-fixed-top').load('./header.html');
+    $('.nav-header').load('./header.html');
 </script>
 
 <!--头部2-->
-<header class="header-home" style="/*margin-top: 50px;*/background: #49A6E5">
+<header class="header-home" style="background: #49A6E5">
     <div class="container">
         <div class="row">
             <!-- 左边的图片 -->
@@ -209,12 +57,12 @@
             <!-- 右边的链接按钮 -->
             <div class="row" style="margin-bottom: 20px">
                 <div class="col-md-2 col-md-offset-1 col-sm-6 col-xs-6" id="button_zip">
-                    <button type="button" class="btn">
+                    <button type="button" class="radiusBtn">
                         <img src="./img/packageIcon.png" style="height: 20px;width: 20px"><a href="downloads/iclient9.zip">&nbsp;iclient9.zip</a>
                     </button>
                 </div>
                 <div class="col-md-2 col-md-offset-1 col-sm-6 col-xs-6" id="button_sourceCode">
-                    <button type="button" class="btn">
+                    <button type="button" class="radiusBtn">
                         <img src="./img/sourcecodeIcon.png" style="height: 20px;width: 20px"><a href="https://git.oschina.net/isupermap/iClient9" target="_blank">&nbsp;source code</a>
                     </button>
                 </div>
@@ -228,141 +76,228 @@
         <div class="col-md-1" role="main"></div>
         <div class="col-md-10" role="main">
             <div class="bs-docs-section">
-                <p class="lead" style="font-size: 24px;text-align: center;color:#505666;margin-top: 40px ">SuperMap iClient for
-                    JavaScript 9D
-                    是空间信息和服务的可视化交互开发平台，是SuperMap服务器和在线GIS平台系列产品的统一JS客户端。支持多源数据地图，支持多终端，跨浏览器，通过本产品可快速实现浏览器上美观、流畅的地图呈现。</p>
+                <p class="lead" style="font-size: 20px;text-align: left;color:#505666;margin-top: 40px ">
+                    SuperMap iClient for JavaScript 9D是空间信息和服务的可视化交互开发平台，是SuperMap服务器和在线GIS平台系列产品的统一JS客户端。支持多源数据地图，支持多终端，跨浏览器，通过本产品可快速实现浏览器上美观、流畅的地图呈现。</p>
 
                 <h2 id="quick-start">快速入门</h2>
+                <!--leaflet-->
+                <div>
+                    <h3 style="margin-top: 34px;font-size: 24px;color: #404040;letter-spacing: -0.16px;">Leaflet</h3>
+                    <div class="map" id="leafletMap"></div>
+                    <p style="margin-top: 18px">将 iSevrer 发布的地图加载至 Leaflet 的 map 中
+                        <a href="../examples/leaflet/editor.html" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a>
+                    </p>
+                    <pre class="javascript"><code>var map = L.map(&#39;map&#39;);
+L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/maps/China&quot;).addTo(map);</code></pre>
 
-                <h3 style="margin-top: 34px;font-size: 24px;color: #404040;letter-spacing: -0.16px;">Leaflet</h3>
-                <div id="mapLeaflet"
-                     style="height:300px;position: relative;margin-top: 18px;background-color: #f5f5f5;border: 1px solid #ccc;border-radius: 4px;"></div>
-                <p style="margin-top: 18px">将 iSevrer 发布的地图加载至 Leaflet 的 map 中 </p>
-                <pre class="javascript"><code>var map = L.map(&#39;map&#39;);
-
-L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/maps/China&quot;).addTo(map);
-                    </code></pre>
-                <a href="#" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a></h3>
-
-                <h3 style="margin-top: 34px;font-size: 24px;color: #404040;letter-spacing: -0.16px;">openLayers</h3>
-                <div id="map"
-                     style="height:300px;position: relative;margin-top: 18px;background-color: #f5f5f5;border: 1px solid #ccc;border-radius: 4px;"></div>
-                <p style="margin-top: 19px">将 iSevrer 发布的地图加载至 OpenLayers 的 map 中 </p>
-                <pre class="javascript">
-                    <code>var map = new ol.Map({
+                </div>
+                <!--OpenLayers-->
+                <div>
+                    <h3 style="margin-top: 34px;font-size: 24px;color: #404040;letter-spacing: -0.16px;">OpenLayers</h3>
+                    <div class="map" id="olMap"></div>
+                    <p style="margin-top: 19px">将 iSevrer 发布的地图加载至 OpenLayers 的 map 中
+                        <a href="../examples/openlayers/editor.html" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a>
+                    </p>
+                    <pre class="javascript"><code>var map = new ol.Map({
     target: &#39;map&#39;,
     layers: [new ol.layer.Tile({
-             source: new ol.supermap.TileSuperMapRest({
-             url: &quot;http://localhost:8090/iserver/services/map/rest/maps/World&quot;
-             }),
+        source: new ol.supermap.TileSuperMapRest({
+            url: &quot;http://localhost:8090/iserver/services/map/rest/maps/World&quot;
+        }),
     })]
 });</code></pre>
-                <a href="#" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a></h3>
 
-                <h2 id="new-attributes">新特性</h2>
-
-                <div class="panel-group" id="accordion" role="tablist">
-                    <div class="panel panel-default new-attributes_bottomMenu">
-                        <div class="panel-heading" id="collapseListGroupHeading1" data-toggle="collapse"
-                             data-target="#collapse1" role="tab">
-                            <span class="glyphicon glyphicon-chevron-right" style="font-size: 12px"></span>
-                            <strong>&nbsp;&nbsp;全新的站点</strong>
-                        </div>
-                        <!--data-parent="#accordion"默认只开启一个折叠面板-->
-                        <div id="collapse1" class="panel-collapse collapse" role="tabpanel">
-                            <p style="margin-top: 0;margin-bottom: 5px;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;新的站点和页面设计</p>
-
-                            <p style="margin-top: 0px;margin-bottom: 5px;text-indent: 40px; font-size: 10px">SuperMap iClient for JavaScript 9D 打造了一个全新的站点，界面风格友好简洁，用户可以从此站点直接查看API、开发指南、对应的示例，进行在线构建。</p>
-
-                            <p style="margin-top: 10px;margin-bottom: 5px;text-indent: 40px;font-size: 13px">&bull;&nbsp;&nbsp;示例在线编辑功能</p>
-
-                            <p style="margin-top: 0px;margin-bottom: 5px;text-indent:40px;font-size: 10px">示例新增在线编辑功能，用户使用更加方便。</p>
-                        </div>
-                    </div>
-
-                    <div class="panel panel-default new-attributes_bottomMenu">
-                        <div class="panel-heading" id="collapseListGroupHeading2" data-toggle="collapse"
-                             data-target="#collapse2" role="tab">
-                            <span class="glyphicon glyphicon-chevron-right" style="font-size: 12px"></span>
-                            <strong>&nbsp;&nbsp;支持iServer服务</strong>
-                        </div>
-                        <div id="collapse2" class="panel-collapse collapse">
-                            <p style="margin-top: 0;margin-bottom: 0;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;iServer地图服务</p>
-
-                            <p style="margin-top: 5px;margin-bottom: 0;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;iServer数据服务</p>
-
-                            <p style="margin-top: 5px;margin-bottom: 0;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;iServer网络分析服务</p>
-
-                            <p style="margin-top: 5px;margin-bottom: 0;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;iServer空间分析服务</p>
-
-                            <p style="margin-top: 5px;margin-bottom: 5px;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;iServer交通换乘服务</p>
-                        </div>
-                    </div>
-
-                    <div class="panel panel-default new-attributes_bottomMenu">
-                        <div class="panel-heading" id="collapseListGroupHeading3" data-toggle="collapse"
-                             data-target="#collapse3" role="tab">
-                            <span class="glyphicon glyphicon-chevron-right" style="font-size: 12px"></span>
-                            <strong>&nbsp;&nbsp;支持iPortal</strong>
-                        </div>
-                        <div id="collapse3" class="panel-collapse collapse">
-                            <p style="margin-top: 0;margin-bottom: 5px;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;iPortal地图</p>
-                        </div>
-                    </div>
-
-                    <div class="panel panel-default new-attributes_bottomMenu">
-                        <div class="panel-heading" id="collapseListGroupHeading4" data-toggle="collapse"
-                             data-target="#collapse4" role="tab">
-                            <span class="glyphicon glyphicon-chevron-right" style="font-size: 12px"></span>
-                            <strong>&nbsp;&nbsp;支持online</strong>
-                        </div>
-                        <div id="collapse4" class="panel-collapse collapse">
-                            <p style="margin-top: 0;margin-bottom: 5px;text-indent: 40px;font-size: 13px">&bull;&nbsp;&nbsp;online地图</p>
-                        </div>
-                    </div>
-
-                    <div class="panel panel-default new-attributes_bottomMenu">
-                        <div class="panel-heading" id="collapseListGroupHeading5" data-toggle="collapse"
-                             data-target="#collapse5" role="tab">
-                            <span class="glyphicon glyphicon-chevron-right" style="font-size: 12px"></span>
-                            <strong>&nbsp;&nbsp;支持OGC服务</strong>
-                        </div>
-                        <div id="collapse5" class="panel-collapse collapse">
-                            <p style="margin-top: 0;margin-bottom: 5px;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;WMTS、WMS图层</p>
-                        </div>
-                    </div>
-
-                    <div class="panel panel-default new-attributes_bottomMenu">
-                        <div class="panel-heading" id="collapseListGroupHeading6" data-toggle="collapse"
-                             data-target="#collapse6" role="tab">
-                            <span class="glyphicon glyphicon-chevron-right" style="font-size: 12px"></span>
-                            <strong>&nbsp;&nbsp;支持第三方地图</strong>
-                        </div>
-                        <div id="collapse6" class="panel-collapse collapse">
-                            <p style="margin-top: 0; margin-bottom: 0;text-indent: 40px;font-size: 13px">&bull;&nbsp;&nbsp;OpenLayers支持百度地图</p>
-
-                            <p style="margin-top: 5px; margin-bottom: 5px;text-indent: 40px;font-size: 13px">&bull;&nbsp;&nbsp;Leaflet支持百度地图、天地图、超图云地图</p>
-                        </div>
-                    </div>
-
-                    <div class="panel panel-default new-attributes_bottomMenu">
-                        <div class="panel-heading" id="collapseListGroupHeading7" data-toggle="collapse"
-                             data-target="#collapse7" role="tab">
-                            <span class="glyphicon glyphicon-chevron-right" style="font-size: 12px"></span>
-                            <strong>&nbsp;&nbsp;数据可视化</strong>
-                        </div>
-                        <div id="collapse7" class="panel-collapse collapse">
-                            <p style="margin-top: 0;margin-bottom: 0;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;支持访问iServer矢量瓦片</p>
-                            <p style="margin-top: 5px;margin-bottom: 0;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;支持OpenLayers、Leaflet热力图</p>
-                            <p style="margin-top: 5px;margin-bottom: 0;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;支持OpenLayers、Leaflet聚点图</p>
-                            <p style="margin-top: 5px;margin-bottom: 0;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;支持OpenLayers、Leaflet动画要素图</p>
-                            <p style="margin-top: 5px;margin-bottom: 0;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;支持OpenLayers(Canvas、webGL)、Leaflet(Canvas)高效率点图层</p>
-                            <p style="margin-top: 5px;margin-bottom: 0;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;OpenLayers支持Echarts折线图、柱状图、散点图、饼图</p>
-                            <p style="margin-top: 5px;margin-bottom: 5px;text-indent: 40px; font-size: 13px">&bull;&nbsp;&nbsp;Leaflet支持Echarts折线图、柱状图、散点图、饼图、散点地图、迁徙图、热力图、线路图、线特效图</p>
-                        </div>
-                    </div>
                 </div>
+                <!--Mapbox GL JS-->
+                <div>
+                    <h3 style="margin-top: 34px;font-size: 24px;color: #404040;letter-spacing: -0.16px;">Mapbox GL JS</h3>
+                    <div class="map" id="mapboxMap"></div>
+                    <p style="margin-top: 19px">将 iSevrer 发布的地图加载至 Mapbox GL JS 的 map 中
+                        <a href="../examples/mapboxgl/editor.html" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a>
+                    </p>
+                    <pre class="javascript"><code>var map = new mapboxgl.Map({
+        container: "map",
+        style: {
+            "sources": {
+                "raster-tiles": {
+                    "type": "raster",
+                    "tiles": ['http://localhost:8090/iserver/services/map/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+            }]
+        },
+});</code></pre>
 
+                </div>
+                <!--iClient3D-->
+                <div>
+                    <h3 style="margin-top: 34px;font-size: 24px;color: #404040;letter-spacing: -0.16px;">iClient3D</h3>
+                    <div class="map" id="iC3DMap"></div>
+                    <p style="margin-top: 19px">将 iSevrer 发布的地图加载至 iClient3D 的 map 中
+                        <a href="../examples/iclient3d/editor.html" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a>
+                    </p>
+
+                    <pre class="javascript"><code>var viewer = new Cesium.Viewer('cesiumContainer');</code></pre>
+
+                </div>
+                <!--新特性-->
+                <div class="new-attributes">
+                    <h2>新特性</h2>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="box  box-solid collapsed-box">
+                                <div class="box-header with-border">
+                                    <h4 class="box-title">全新的站点</h4>
+
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="box-body">
+                                    <ul>
+                                        <li>新的站点和页面设计</li>
+                                        <li>示例在线编辑功能</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="box  box-solid collapsed-box">
+                                <div class="box-header with-border">
+                                    <h4 class="box-title">支持iServer服务</h4>
+
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="box-body">
+                                    <ul>
+                                        <li>iServer地图服务</li>
+                                        <li>iServer数据服务</li>
+                                        <li>iServer网络分析服务</li>
+                                        <li>iServer空间分析服务</li>
+                                        <li>iServer交通换乘服务</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="box  box-solid collapsed-box">
+                                <div class="box-header with-border">
+                                    <h4 class="box-title"> 支持iPortal</h4>
+
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                                <div class="box-body">
+                                    <ul>
+                                        <li>iPortal地图</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <!-- /.box -->
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="box  box-solid collapsed-box">
+                                <div class="box-header with-border">
+                                    <h4 class="box-title">支持online</h4>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="box-body">
+                                    <ul>
+                                        <li>online地图</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <!-- /.box -->
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="box  box-solid collapsed-box">
+                                <div class="box-header with-border">
+                                    <h4 class="box-title">支持OGC服务</h4>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="box-body">
+                                    <ul>
+                                        <li>WMTS、WMS图层</li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <!-- /.box -->
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="box  box-solid collapsed-box">
+                                <div class="box-header with-border">
+                                    <h4 class="box-title"> 支持第三方地图</h4>
+
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <ul>
+                                        <li>OpenLayers支持百度地图</li>
+                                        <li>Leaflet支持百度地图、天地图、超图云地图</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="box  box-solid collapsed-box">
+                                <div class="box-header with-border">
+                                    <h4 class="box-title">数据可视化</h4>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <ul>
+                                        <li>支持访问iServer矢量瓦片</li>
+                                        <li>支持OpenLayers、Leaflet热力图</li>
+                                        <li>支持OpenLayers、Leaflet聚点图</li>
+                                        <li>支持OpenLayers、Leaflet动画要素图</li>
+                                        <li>支持OpenLayers(Canvas、webGL)、Leaflet(Canvas)高效率点图层</li>
+                                        <li>OpenLayers支持Echarts折线图、柱状图、散点图、饼图</li>
+                                        <li>Leaflet支持Echarts折线图、柱状图、散点图、饼图、散点地图、迁徙图、热力图、线路图、线特效图</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
@@ -373,37 +308,82 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
         </div>
     </div>
 </div>
-
-<script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="./libs/js/app.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript" src='http://cdn.bootcss.com/mapbox-gl/0.36.0/mapbox-gl.js'></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/require.js/2.3.3/require.min.js"></script>
+<script type="text/javascript" src="./libs/Cesium/Cesium.js"></script>
+<script type="text/javascript" src="./libs/Cesium/Workers/zlib.min.js"></script>
 <script type="text/javascript">
+    /*Leaflet Map*/
+    var lMap = L.map('leafletMap', {
+        center: [39.89, 116.38],
+        maxZoom: 15,
+        minZoom: 1,
+        scrollWheelZoom: false,
+        zoom: 10
+    });
+    L.supermap
+            .tiledMapLayer("http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China")
+            .addTo(lMap);
+
+    /*OpenLayers Map*/
     var olMap = new ol.Map({
-        target: 'map',
+        target: 'olMap',
+        interactions: ol.interaction.defaults({
+            mouseWheelZoom: false
+        }),
         view: new ol.View({
-            center: [100.94238281254322, 35.496456056550095],
+            center: [100.94, 35.49],
             zoom: 4,
-            maxZoom: 4,
-            minZoom: 4,
-            projection: "EPSG:4326"
+            maxZoom: 10,
+            minZoom: 0,
+            projection: 'EPSG:4326'
         }),
         layers: [new ol.layer.Tile({
             source: new ol.supermap.TileSuperMapRest({
-                url: "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
-                projection: "EPSG:4326"
-            })
+                url: "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World"
+            }),
+            projection: 'EPSG:4326'
         })]
     });
 
-    var lMap = L.map('mapLeaflet', {
-        center: [39.89393354258348, 116.38738402603143],
-        maxZoom: 10,
-        minZoom: 10,
-        zoom: 10
+    /*Mapbox Map*/
+    var mbMap = new mapboxgl.Map({
+        container: 'mapboxMap',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "type": "raster",
+                    "tiles": ['http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 1,
+                "maxzoom": 15
+            }]
+        },
+        center: [116.38, 39.89],
+        zoom: 9.5,
+        interactive: false,
+        navigationControl: false
     });
-    L.supermap.tiledMapLayer("http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China").addTo(lMap);
+    mbMap.dragPan.enable();
+    mbMap.addControl(new mapboxgl.AttributionControl({compact: true}), 'bottom-right');
+    mbMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+    /*iClient3D*/
+    if (Cesium) {
+        var viewer = new Cesium.Viewer('iC3DMap');
+    }
+
 </script>
 <script>
     /*切换新特性中的折叠指示图标*/

@@ -382,7 +382,7 @@ var exampleConfig = {
         name: "OGC",
         content: {
             "WMTS": {
-                name: "",
+                name: "WMTS",
                 content: [{
                     name: "WMTS图层",
                     thumbnail: "l_WMTSLayer.png",
@@ -390,7 +390,7 @@ var exampleConfig = {
                 }]
             },
             "WMS": {
-                name: "",
+                name: "WMS",
                 content: [{
                     name: "WMS图层",
                     thumbnail: "l_WMSLayer.png",
@@ -403,7 +403,7 @@ var exampleConfig = {
         name: "互联网地图",
         content: {
             "Baidu": {
-                name: "",
+                name: "百度地图",
                 content: [{
                     name: "百度地图",
                     thumbnail: "l_baiduLayer.png",
@@ -411,7 +411,7 @@ var exampleConfig = {
                 }]
             },
             "Tianditu": {
-                name: "",
+                name: "天地图",
                 content: [{
                     name: "天地图-墨卡托",
                     thumbnail: "l_tiandituLayer_mercator.png",
@@ -423,7 +423,7 @@ var exampleConfig = {
                 }]
             },
             "cloud": {
-                name: "",
+                name: "超图云",
                 content: [{
                     name: "超图云地图",
                     thumbnail: "l_cloudLayer.png",
@@ -433,4 +433,14 @@ var exampleConfig = {
         }
     }
 
+};
+var sideBarIconMap={
+    "iServer":"fa-server",
+    "iPortal":"fa-desktop",
+    "online":"fa-cloud",
+    "iManager":"fa-group",
+    "plot":"fa-edit",
+    "viz":"fa-map",
+    "OGC":"fa-globe",
+    "mapping":"fa-send"
 };

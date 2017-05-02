@@ -1,31 +1,18 @@
-
-/*此处的position: relative;margin-bottom: 0可以使出现折叠菜单时下面的头部往后顺延相应的位置  #337ab7;*/
-.navbar-fixed-top {
-    background: #49A6E5;
-    border: 0;
-    position: relative;
-    margin-bottom: 0
-}
-
-.container.bc.clearfix {
-    margin: 0 auto;
-    padding: 0 40px  0 40px;
-    width: 100%;
-    background-color: #49A6E5;
-}
-
 .navbar {
     font-size: 16px;
 }
 
 .navbar .project-title {
-    margin-left: 40px;
     text-decoration: none;
     vertical-align: middle;
     font-family: HiraginoSansGB-W6;
     font-size: 24px;
     color: #FFFFFF;
     letter-spacing: -0.16px;
+}
+
+.navbar-nav > li > .dropdown-menu {
+    margin-top: 2px !important;
 }
 
 .navbar #headerMenu {
@@ -93,10 +80,14 @@
     #title {
         font-size: 16px;
     }
+
+    .navbar-nav > li > .dropdown-menu {
+        margin-top: 0 !important;
+    }
 }
 
 @media screen and (max-width: 650px) {
     #title {
-        font-size: 13px;
+        font-size: 14px;
     }
 }

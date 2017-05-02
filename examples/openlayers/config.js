@@ -445,4 +445,14 @@ var exampleConfig = {
             }
         }
     }
-}
+};
+var sideBarIconMap = {
+    "iServer": "fa-server",
+    "iPortal": "fa-desktop",
+    "online": "fa-cloud",
+    "iManager": "fa-group",
+    "plot": "fa-edit",
+    "viz": "fa-map",
+    "OGC": "fa-globe",
+    "mapping": "fa-send"
+};

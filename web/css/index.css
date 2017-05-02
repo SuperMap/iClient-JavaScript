@@ -1,0 +1,181 @@
+@charset "UTF-8";
+html, body, .wrapper {
+    height: 100% !important;
+}
+
+* {
+    font-family: 'Microsoft Yahei'
+}
+
+.pt50.tc {
+    font-family: 'HiraginoSansGB-W6';
+    font-size: 39px;
+    color: #FFFFFF;
+}
+
+@media screen and (max-width: 1200px) {
+    .pt50.tc {
+        font-size: 30px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .pt50.tc {
+        font-size: 25px;
+    }
+}
+
+#header2-text {
+    padding-top: 80px;
+    padding-bottom: 20px;
+    text-align: center
+}
+
+@media screen and (max-width: 992px) {
+    #header2-text {
+        padding-top: 75px;
+        padding-bottom: 0;
+    }
+}
+
+.ip-copyRight {
+    color: #7d7d7d;
+    font-size: 13px !important;
+    text-align: center;
+    height: 54px;
+    line-height: 54px;
+}
+
+.ip-footer {
+    border-top: 1px solid #ddd;
+}
+
+.html .tag, .css .tag, .javascript .keyword {
+    color: #3182bd;
+}
+
+.html .attr, .css .attr, .javascript .class, .javascript .special {
+    color: #e6550d;
+}
+
+.radiusBtn {
+    height: 50px;
+    width: 185px;
+    border-radius: 300px;
+    margin-top: 29px;
+    border: 1px solid white;
+    background-color: transparent
+}
+
+@media screen and (max-width: 992px) {
+    .radiusBtn {
+        margin-top: 18px;
+    }
+}
+
+.radiusBtn a {
+    font-family: 'HiraginoSansGB-W6';
+    font-size: 18px;
+    color: #FFFFFF;
+    line-height: 30px;
+}
+
+#button_zip {
+    text-align: center;
+
+}
+
+.bs-docs-section h2 {
+    font-size: 30px;
+}
+
+.javascript {
+    border: 1px solid #e0e0e0;
+}
+
+.map {
+    height: 300px;
+    width: 100%;
+    position: relative;
+    margin-top: 18px;
+    background-color: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+}
+
+@media screen and (max-width: 1200px) {
+    #button_zip {
+        float: right;
+        margin-right: 24%;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    #button_zip {
+        float: right;
+        margin-right: auto;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #button_zip {
+        float: right;
+        margin: auto;
+    }
+}
+
+@media screen and (max-width: 762px) {
+    #button_zip {
+        float: none;
+        margin: auto;
+    }
+}
+
+#button_sourceCode {
+    text-align: center;
+    margin-left: 70px;
+}
+
+@media screen and (max-width: 1200px) {
+    #button_sourceCode {
+        float: right;
+        margin-right: 24%;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    #button_sourceCode {
+        float: right;
+        margin-right: auto;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #button_sourceCode {
+        float: right;
+        margin: auto;
+    }
+}
+
+@media screen and (max-width: 762px) {
+    #button_sourceCode {
+        float: none;
+        margin: auto;
+    }
+}
+
+#quick-start {
+    margin-top: 83px;
+}
+
+.new-attributes {
+    margin:50px 0;
+}
+
+.new-attributes .box{
+    margin-bottom: 0;
+}
+.new-attributes .box .box-title {
+    color: #337ab7;
+    font-size: 16px;
+}

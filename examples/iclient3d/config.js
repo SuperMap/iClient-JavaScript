@@ -19,3 +19,7 @@ var exampleConfig = {
         }
     }
 };
+
+var sideBarIconMap = {
+    "iClient3D": "fa-globe"
+};

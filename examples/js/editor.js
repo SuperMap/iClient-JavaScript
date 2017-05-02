@@ -4,9 +4,9 @@ var containExamples = true;
 
 function initPage() {
     var config = exampleConfig;
-    var menu = $("#sidebar>.menu");
+    var sideBar = $("ul#sidebar-menu");
     for (var key in config) {
-        menu.append(createSideBarMenuItem(key, config[key], containExamples));
+        sideBar.append(createSideBarMenuItem(key, config[key], containExamples));
     }
     initSelect();
     initEditor();
