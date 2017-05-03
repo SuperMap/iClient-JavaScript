@@ -4,24 +4,20 @@ module.exports = {
     entry: {},
     //入口文件输出配置
     output: {
-        path: './dist/',
+        path: __dirname + '/../dist',
         filename: 'iclient9-leaflet.js'
     },
 
     //其它解决方案配置
     resolve: {
-        extensions: ['', '.js', '.json', '.css']
+        extensions: ['.js', '.json', '.css']
     },
     externals: {
         'echarts': 'echarts',
         'leaflet': 'L'
     },
     module: {
-        //加载器配置
-        loaders: [
-            // {test: /\.css$/, loader: 'style-loader!css-loader'},
-            //{test: /\.css$/, loader:  ExtractTextPlugin.extract("style-loader", "css-loader")},
-            //{test: /\.(png|jpg)$/, loader: "file-loader?name=images/[name].[ext]"}
+        rules: [
         ]
     },
 

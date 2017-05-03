@@ -1,5 +1,5 @@
 var L = require("leaflet");
-var proj4 = require('proj4');
+var proj4 = require('proj4').default;
 L.Proj = {};
 
 L.Proj._isProj4Obj = function (a) {

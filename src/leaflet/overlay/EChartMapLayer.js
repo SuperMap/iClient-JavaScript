@@ -1,5 +1,11 @@
 require('../core/Base');
 var L = require("leaflet");
+var echarts = {};
+try {
+    echarts = require("echarts");
+} catch (ex) {
+    echarts = {};
+}
 var EchartsMapLayer = L.Layer.extend({
     includes: [],
     _echartsContainer: null,
