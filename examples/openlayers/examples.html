@@ -75,41 +75,6 @@
 <script type="text/javascript" src="./config.js"></script>
 <script type="text/javascript" src="../js/sidebar.js"></script>
 <script type="text/javascript" src="../js/example.js"></script>
-<script>
-
-    $(document).ready(function () {
-        initPage();
-        bindEvents();
-
-    });
-    function bindEvents() {
-        $("ul#sidebar-menu>li").on('click', function (evt) {
-            window.location.hash = "#" + evt.target.id;
-        });
-
-        $("ul#sidebar-menu ul.second-menu a").on('click', function (evt) {
-            var target = $(evt.target).parent().parent();
-            var nodeId = evt.target.id;
-            //如果点击的是span节点还要往上一层
-            if (evt.target.localName === "span") {
-                nodeId = target.attr('id');
-                target = target.parent().parent();
-            }
-            var prefixId = target.attr('id');
-            if (nodeId) {
-                evt.preventDefault();
-                var id = prefixId + "-" + nodeId;
-                window.location.hash = "#" + id;
-                evt.stopPropagation();
-            }
-        });
-        window.addEventListener("hashchange", function () {
-            scroll();
-        });
-    }
-
-
-</script>
 
 </body>
 </html>

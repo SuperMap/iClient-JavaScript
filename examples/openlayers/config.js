@@ -446,7 +446,13 @@ var exampleConfig = {
         }
     }
 };
-var sideBarIconMap = {
+/**
+ *key值：为exampleConfig配置的key值或者fileName值
+ *      （为中间节点时是key值，叶结点是fileName值）
+ *value值：fontawesome字体icon名
+ *不分层
+ */
+var sideBarIconConfig = {
     "iServer": "fa-server",
     "iPortal": "fa-desktop",
     "online": "fa-cloud",

@@ -1,6 +1,6 @@
 //左侧层级是否包含示例
 var containExample = false;
-var sideBarIconMap = sideBarIconMap || {};
+var sideBarIconConfig = sideBarIconConfig || {};
 
 function initSideBar() {
     var sideBar = $("ul#sidebar-menu");
@@ -16,7 +16,7 @@ function createSideBarMenuItem(id, config, containAll) {
     }
     containExample = containAll;
     var li = $("<li id='" + id + "' class='treeview'></li>");
-    var menuItemIcon = sideBarIconMap[id];
+    var menuItemIcon = sideBarIconConfig[id];
     if (config.content) {
         createSideBarMenuTitle(id, config.name, true, menuItemIcon).appendTo(li);
         createSideBarSecondMenu(config.content).appendTo(li);
@@ -35,10 +35,10 @@ function createSideBarSecondMenu(config) {
         var configItem = config[key];
 
         if (containExample && configItem.content) {
-            createSideBarMenuTitle(key, configItem.name, true).appendTo(li);
+            createSideBarFirstLevelTitle(key, configItem.name, true).appendTo(li);
             createSideBarThirdMenu(configItem.content).appendTo(li);
         } else {
-            createSideBarMenuTitle(key, configItem.name, false).appendTo(li);
+            createSideBarSecondLevelTitle(key, configItem.name, false).appendTo(li);
         }
     }
     return ul;
@@ -54,14 +54,23 @@ function createSideBarThirdMenu(examples) {
         var li = $("<li class='menuTitle' id='" + example.fileName + "' ></li>");
         li.appendTo(ul);
         if (example.fileName && example.name) {
-            createSideBarMenuTitle(example.fileName, example.name, false, "").appendTo(li);
+            createSideBarSecondLevelTitle(example.fileName, example.name, false).appendTo(li);
         }
     }
     return ul;
 }
 
+function createSideBarFirstLevelTitle(id, title, collapse, iconName) {
+    iconName = iconName || "fa-circle-o";
+    return createSideBarMenuTitle(id, title, collapse, iconName)
+}
+
+function createSideBarSecondLevelTitle(id, title, collapse, iconName) {
+    iconName = iconName || "  fa-genderless";
+    return createSideBarMenuTitle(id, title, collapse, iconName)
+}
+
 function createSideBarMenuTitle(id, title, collapse, iconName) {
-    iconName = iconName || "fa-minus-square-o";
     id = id || "";
     var div = $("<a href='#' id='" + id + "'><i class='fa " + iconName + "'></i><span>" + title + "</span></a>");
     if (collapse) {
@@ -78,7 +87,9 @@ function createCollapsedIcon() {
 //只处理三层节点,后续可优化
 function selectMenu(id) {
     $("section#sidebar ul.menu-open").removeClass("menu-open");
+    $("section#sidebar li.active").removeClass("active");
     var target = $("section#sidebar li#" + id);
+    target.addClass('active');
     selectTarget(target.parent().parent().parent());
     selectTarget(target.parent());
     selectTarget(target.find("ul"));
@@ -91,6 +102,19 @@ function selectMenu(id) {
             target.addClass("menu-open");
             target.css("display", "block");
         }
+    }
+}
+
+function collapseSideBar(rootElement, fold) {
+    if (!rootElement) {
+        return;
+    }
+    var collapseClassName = "sidebar-collapse";
+    rootElement.removeClass(collapseClassName);
+    if (fold) {
+        rootElement.addClass(collapseClassName)
+    } else {
+        rootElement.removeClass(collapseClassName);
     }
 }
 

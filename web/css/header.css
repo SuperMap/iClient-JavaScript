@@ -64,6 +64,10 @@
     letter-spacing: -0.1px;
 }
 
+.main-header .sidebar-toggle:before {
+    content: "\f03b";
+}
+
 @media screen and (max-width: 1200px) {
     #title {
         font-size: 20px;

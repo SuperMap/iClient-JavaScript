@@ -25,6 +25,10 @@ html, body, .wrapper {
     }
 }
 
+.header-home {
+    background: #3c8dbc
+}
+
 #header2-text {
     padding-top: 80px;
     padding-bottom: 20px;
@@ -133,7 +137,7 @@ html, body, .wrapper {
 
 #button_sourceCode {
     text-align: center;
-    margin-left: 70px;
+    margin-left: 30px;
 }
 
 @media screen and (max-width: 1200px) {
@@ -169,12 +173,13 @@ html, body, .wrapper {
 }
 
 .new-attributes {
-    margin:50px 0;
+    margin: 50px 0;
 }
 
-.new-attributes .box{
+.new-attributes .box {
     margin-bottom: 0;
 }
+
 .new-attributes .box .box-title {
     color: #337ab7;
     font-size: 16px;

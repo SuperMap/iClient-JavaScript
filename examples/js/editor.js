@@ -1,3 +1,8 @@
+$(document).ready(function () {
+    initPage();
+    bindEvents();
+});
+
 var aceEditor;
 var myWidth = 0, myHeight = 0;
 var containExamples = true;
@@ -11,7 +16,7 @@ function initPage() {
     initSelect();
     initEditor();
     screenResize();
-    dragCode();
+    // dragCode();
 }
 
 function screenResize() {
@@ -157,7 +162,31 @@ function initSelect() {
 }
 
 function mapHeight() {
-    $("#innerPage").contents().find("html").height("100%");
-    $("#innerPage").contents().find("body").height("100%");
+    var doc = $("#innerPage").contents();
+    doc.find("html").height("100%");
+    doc.find("body").height("100%");
 }
 
+function bindEvents() {
+    $("#sidebar ul.third-menu a").click(function (evt) {
+        var target = $(evt.target).parent().parent();
+        var nodeId = evt.target.id;
+        //如果点击的是span节点还要往上一层
+        if (evt.target.localName === "span") {
+            nodeId = target.attr('id');
+        }
+        if (nodeId) {
+            evt.preventDefault();
+            window.location.hash = "#" + nodeId;
+            initEditor();
+            evt.stopPropagation();
+        }
+    });
+    window.addEventListener("hashchange", function () {
+        var hash = window.location.hash;
+        if (hash.indexOf("#") !== -1) {
+            var id = hash.split("#")[1];
+            selectMenu(id);
+        }
+    });
+}

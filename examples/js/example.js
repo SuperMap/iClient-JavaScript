@@ -1,3 +1,7 @@
+$(document).ready(function () {
+    initPage();
+    bindEvents();
+});
 var exConfig = exampleConfig,
     containExamples = false,
     thumbLocation = getThumbLocation();
@@ -40,10 +44,6 @@ function createGalleryItem(id, config) {
     return categoryLi;
 }
 
-function createGalleryItemTitle(id, title) {
-    return $("<h3 class='category-title' id='" + id + "'>" + title + "</h3>");
-}
-
 function createSubGalleryItem(config) {
     var categoryContentDiv = $("<div class='category-content'></div>");
     for (var key in config) {
@@ -56,6 +56,10 @@ function createSubGalleryItem(config) {
         content.appendTo(categoryContentDiv);
     }
     return categoryContentDiv;
+}
+
+function createGalleryItemTitle(id, title) {
+    return $("<h3 class='category-title' id='" + id + "'>" + title + "</h3>");
 }
 
 function createSubGalleryItemTitle(id, title) {
@@ -125,3 +129,30 @@ function scroll() {
     }
 
 }
+
+function bindEvents() {
+    $("ul#sidebar-menu>li").on('click', function (evt) {
+        window.location.hash = "#" + evt.target.id;
+    });
+
+    $("ul#sidebar-menu ul.second-menu a").on('click', function (evt) {
+        var target = $(evt.target).parent().parent();
+        var nodeId = evt.target.id;
+        //如果点击的是span节点还要往上一层
+        if (evt.target.localName === "span") {
+            nodeId = target.attr('id');
+            target = target.parent().parent();
+        }
+        var prefixId = target.attr('id');
+        if (nodeId) {
+            evt.preventDefault();
+            var id = prefixId + "-" + nodeId;
+            window.location.hash = "#" + id;
+            evt.stopPropagation();
+        }
+    });
+    window.addEventListener("hashchange", function () {
+        scroll();
+    });
+}
+
