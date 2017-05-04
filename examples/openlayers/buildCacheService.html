@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>生成地图缓存作业</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<button type="button" id="btn" class="btn btn-primary" autocomplete="off">创建生成地图缓存作业</button>
+<div id="model" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body">
+                <p>正在创建生成地图缓存作业...</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
+
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var layer, processingJobsUrl = "http://192.168.12.28:8090/iserver/services/processing/rest/v1/jobs",
+            token = '5JtxoDBziy-6O00kK7UGKl3arPZXaO8OrIHc-3iTzfeS7JFQ_ay4yCvTwtwUuf53YSrosYOsWPiHj9J76KhPZQ..',
+            extent = [-74.05, 40.65, -73.85, 40.85],
+            projection = new ol.proj.Projection({
+                extent: extent,
+                units: 'm'
+            }),
+            map = new ol.Map({
+                target: 'map',
+                view: new ol.View({
+                    center: [-73.95, 40.75],
+                    zoom: 0,
+                    projection: projection
+                })
+            }),
+            buildCacheJobParameter = new SuperMap.BuildCacheJobParameter({
+                datasetName: 'taxi_newyork_taxi_2013-01_14k',
+                cacheName: 'cache',
+                cacheType: 'MongoDB',
+                serverAdresses: ['192.168.12.28:27010'],
+                database: 'smtiles',
+                version: 'v1',
+                bounds: [-74.050, 40.650, -73.850, 40.850],
+                imageType: 'Heatmap',
+                level: 5
+            }),
+            processingJobsService = new ol.supermap.ProcessingJobsService(processingJobsUrl);
+
+    SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(token, 'token');
+
+    $('#btn').on('click', function () {
+        $('#btn').prop('disabled', true);
+        $("#model").modal({show: true, backdrop: 'static', keyboard: false});
+        if (map && layer) {
+            map.removeLayer(layer);
+        }
+        processingJobsService.addBuildCacheJob(buildCacheJobParameter, function (serviceResult) {
+            if (serviceResult.error) {
+                $('#btn').prop('disabled', false);
+                $("#model").modal('hide');
+                alert(serviceResult.error.message);
+                return;
+            }
+            serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                if (info.serviceType === 'RESTMAP') {
+                    var mapUrl = info.serviceAddress + '/maps/cache';
+                    new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
+                        layer = new ol.layer.Tile({
+                            source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
+                        });
+                        map.addLayer(layer);
+                        $("#model").modal('hide');
+                        $('#btn').prop('disabled', false);
+                    });
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+</html>

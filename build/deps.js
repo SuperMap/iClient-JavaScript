@@ -82,8 +82,10 @@ var deps = {
             "./src/common/iServer/RouteLocatorService.js",
             "./src/common/iServer/SurfaceAnalystService.js",
             "./src/common/iServer/TerrainCurvatureCalculationService.js",
-            "./src/common/iServer/ThiessenAnalystService.js"
-
+            "./src/common/iServer/ThiessenAnalystService.js",
+            //ProcessingJobs
+            "./src/common/iServer/KernelDensityJobsService.js",
+            "./src/common/iServer/BuildCacheJobsService.js",
         ]
     },
 
@@ -168,6 +170,12 @@ var deps = {
                 "name": "交通换乘分析服务",
                 "src": [
                     "./src/leaflet/services/TrafficTransferAnalystService.js"
+                ]
+            },
+            "ProcessingJobs": {
+                "name": "分布式空间处理作业服务",
+                "src": [
+                    "./src/leaflet/services/ProcessingJobsService.js"
                 ]
             }
         },
@@ -274,6 +282,12 @@ var deps = {
                 "name": "交通换乘分析服务",
                 "src": [
                     "./src/openlayers/services/TrafficTransferAnalystService.js"
+                ]
+            },
+            "ProcessingJobs": {
+                "name": "分布式空间处理作业服务",
+                "src": [
+                    "./src/openlayers/services/ProcessingJobsService.js"
                 ]
             }
         },

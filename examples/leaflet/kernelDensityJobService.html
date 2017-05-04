@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>核密度分析作业</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<button type="button" id="btn" class="btn btn-primary" autocomplete="off">创建核密度分析作业</button>
+<div id="model" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body">
+                <p>正在创建核密度分析作业...</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var layer, processingJobsUrl = "http://192.168.12.28:8090/iserver/services/processing/rest/v1/jobs",
+            token = '5JtxoDBziy-6O00kK7UGKl3arPZXaO8OrIHc-3iTzfeS7JFQ_ay4yCvTwtwUuf53YSrosYOsWPiHj9J76KhPZQ..',
+            map = L.map('map', {
+                crs: L.supermap.NonEarthCRS({
+                    bounds: L.bounds([40.65, -74.05], [40.85, -73.85]),
+                    origin: L.point(40.65, -73.85)
+                }),
+                center: [40.75, -73.95],
+                zoom: 0
+            }),
+            kernelDensityJobParameter = new SuperMap.KernelDensityJobParameter({
+                datasetName: 'taxi_newyork_taxi_2013-01_14k',
+                resolution: 0.001,
+                method: 0,
+                meshType: 0,
+                fields: 10,
+                query: L.latLngBounds(L.latLng(40.550, -74.150), L.latLng(40.950, -73.750)),
+                radius: 0.01
+            }),
+            processingJobsService = new L.supermap.processingJobsService(processingJobsUrl);
+
+    SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(token, 'token');
+
+    $('#btn').on('click', function () {
+        $('#btn').prop('disabled', true);
+        $("#model").modal({show: true, backdrop: 'static', keyboard: false});
+        if (map && layer) {
+            map.removeLayer(layer);
+        }
+        processingJobsService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
+            if (serviceResult.error) {
+                $('#btn').prop('disabled', false);
+                $("#model").modal('hide');
+                alert(serviceResult.error.message);
+                return;
+            }
+            serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
+                if (info.serviceType === 'RESTMAP') {
+                    var mapUrl = info.serviceAddress + '/maps/kernelDensity_map';
+                    L.supermap.tiledMapLayer(mapUrl, {noWrap: true}).addTo(map);
+                    $("#model").modal('hide');
+                    $('#btn').prop('disabled', false);
+                }
+            });
+        });
+    });
+
+</script>
+</body>
+</html>

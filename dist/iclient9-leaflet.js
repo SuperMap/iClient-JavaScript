@@ -63,14 +63,14 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 335);
+/******/ 	return __webpack_require__(__webpack_require__.s = 343);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(333);
+__webpack_require__(341);
 module.exports = window.SuperMap;
 
 /***/ }),
@@ -1507,13 +1507,47 @@ var L = __webpack_require__(1);
 L.supermap = L.supermap || {};
 __webpack_require__(0);
 __webpack_require__(2);
-__webpack_require__(319);
-__webpack_require__(320);
-__webpack_require__(318);
+__webpack_require__(327);
+__webpack_require__(328);
+__webpack_require__(326);
 
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+﻿/**
+ * Class: ServiceBase
+ * 服务基类
+ */
+var L = __webpack_require__(1);
+__webpack_require__(6);
+__webpack_require__(51);
+
+var ServiceBase = L.Evented.extend({
+    options: {
+        url: null
+    },
+    initialize: function (url, options) {
+        if (url) {
+            url = (url.indexOf("/") !== url.length - 1) ?
+                url : url.substr(0, url.length - 1);
+        }
+        this.options.url = url;
+        L.setOptions(this, options);
+        this.fire("initialized", this);
+    },
+
+    destroy: function () {
+        this.fire("destroy", this);
+    }
+
+});
+
+module.exports = ServiceBase;
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* COPYRIGHT 2017 SUPERMAP
@@ -1529,7 +1563,7 @@ __webpack_require__(318);
  *  - <SuperMap.Format.JSON>
  */
 var SuperMap = __webpack_require__(0);
-__webpack_require__(164);
+__webpack_require__(166);
 SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
 
     /**
@@ -2414,40 +2448,6 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
 module.exports = SuperMap.Format.GeoJSON;
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-﻿/**
- * Class: ServiceBase
- * 服务基类
- */
-var L = __webpack_require__(1);
-__webpack_require__(6);
-__webpack_require__(73);
-
-var ServiceBase = L.Evented.extend({
-    options: {
-        url: null
-    },
-    initialize: function (url, options) {
-        if (url) {
-            url = (url.indexOf("/") !== url.length - 1) ?
-                url : url.substr(0, url.length - 1);
-        }
-        this.options.url = url;
-        L.setOptions(this, options);
-        this.fire("initialized", this);
-    },
-
-    destroy: function () {
-        this.fire("destroy", this);
-    }
-
-});
-
-module.exports = ServiceBase;
-
-/***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2458,7 +2458,7 @@ module.exports = ServiceBase;
  *  - <SuperMap.ServiceBase>
  */
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(7);
+var GeoJSONFormat = __webpack_require__(8);
 var ServiceBase = __webpack_require__(4);
 SuperMap.REST.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
 
@@ -2537,7 +2537,7 @@ module.exports = SuperMap.REST.SpatialAnalystBase;
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
-﻿/** * Class: SuperMap.FilterParameter * 查询过滤条件参数类。 * 该类用于设置查询数据集的查询过滤参数。 */__webpack_require__(45);__webpack_require__(249);var SuperMap = __webpack_require__(0);SuperMap.FilterParameter = SuperMap.Class({    /**     * APIProperty: attributeFilter     * {String} 属性过滤条件。     * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，     * attributeFilter 就是其中的“条件表达式”。     * 该字段的用法为 attributeFilter = "过滤条件"。     * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；     * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。     */    attributeFilter: null,    /**     * APIProperty: name     * {String} 查询数据集名称或者图层名称，根据实际的查询对象而定，必设属性。     * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，     * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。     * 因为一个地图的图层可能是来自于不同数据源的数据集，     * 而不同的数据源中可能存在同名的数据集，     * 使用数据集名称不能唯一的确定数据集，     * 所以在进行与地图相关功能的操作时，该值需要设置为图层名称。     */    name: null,    /**     * APIProperty: joinItems     * {Array(<SuperMap.JoinItem>)} 与外部表的连接信息 SuperMap.JoinItem 数组。     */    joinItems: null,    /**     * APIProperty: linkItems     * {Array(<LinkItem>)} 与外部表的关联信息 LinkItem 数组。     */    linkItems: null,    /**     * APIProperty: ids     * {Array(String)} 查询 id 数组，即属性表中的 SmID 值。     */    ids: null,    /**     * APIProperty: orderBy     * {String} 查询排序的字段,orderBy的字段须为数值型的。     * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；     * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。     * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，     * 分别表示国家的面积和1994年的各国人口数量。     * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；     * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。     */    orderBy: null,    /**     * APIProperty: groupBy     * {String} 查询分组条件的字段。     * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段分组时，该字段的用法为 groupBy = "字段名"；     * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。     * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，     * 分别表示某个城市所属的洲和国家。     * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；     * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。     */    groupBy: null,    /**     * APIProperty: fields     * {Array(String)} 查询字段数组，如果不设置则使用系统返回的所有字段。     */    fields: null,    /**     * Constructor: SuperMap.FilterParameter     * 查询过滤条件参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * attributeFilter - {String} 属性过滤条件。     * name - {String} 查询数据集名称或者图层名称。     * joinItems - {Array(<SuperMap.JoinItem>)} 与外部表的连接信息 SuperMap.JoinItem 数组。     * linkItems - {Array(<SuperMap.LinkItem>)} 与外部表的关联信息 SuperMap.LinkItem 数组。     * ids - {Array(String)} 查询 id 数组，即属性表中的 SmID 值。     * orderBy - {String} 查询排序的字段, orderBy 的字段须为数值型的。     * groupBy - {String} 查询分组条件的字段。     * fields - {Array(String)} 查询字段数组。     */    initialize: function (options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.attributeFilter = null;        me.name = null;        if (me.joinItems) {            for (var i = 0, joinItems = me.joinItems, len = joinItems.length; i < len; i++) {                joinItems[i].destroy();            }            me.joinItems = null;        }        if (me.linkItems) {            for (var i = 0, linkItems = me.linkItems, len = linkItems.length; i < len; i++) {                linkItems[i].destroy();            }            me.linkItems = null;        }        me.ids = null;        me.orderBy = null;        me.groupBy = null;        me.fields = null;    },    CLASS_NAME: "SuperMap.FilterParameter"});module.exports = SuperMap.FilterParameter;
+﻿/** * Class: SuperMap.FilterParameter * 查询过滤条件参数类。 * 该类用于设置查询数据集的查询过滤参数。 */__webpack_require__(45);__webpack_require__(255);var SuperMap = __webpack_require__(0);SuperMap.FilterParameter = SuperMap.Class({    /**     * APIProperty: attributeFilter     * {String} 属性过滤条件。     * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，     * attributeFilter 就是其中的“条件表达式”。     * 该字段的用法为 attributeFilter = "过滤条件"。     * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；     * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。     */    attributeFilter: null,    /**     * APIProperty: name     * {String} 查询数据集名称或者图层名称，根据实际的查询对象而定，必设属性。     * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，     * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。     * 因为一个地图的图层可能是来自于不同数据源的数据集，     * 而不同的数据源中可能存在同名的数据集，     * 使用数据集名称不能唯一的确定数据集，     * 所以在进行与地图相关功能的操作时，该值需要设置为图层名称。     */    name: null,    /**     * APIProperty: joinItems     * {Array(<SuperMap.JoinItem>)} 与外部表的连接信息 SuperMap.JoinItem 数组。     */    joinItems: null,    /**     * APIProperty: linkItems     * {Array(<LinkItem>)} 与外部表的关联信息 LinkItem 数组。     */    linkItems: null,    /**     * APIProperty: ids     * {Array(String)} 查询 id 数组，即属性表中的 SmID 值。     */    ids: null,    /**     * APIProperty: orderBy     * {String} 查询排序的字段,orderBy的字段须为数值型的。     * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；     * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。     * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，     * 分别表示国家的面积和1994年的各国人口数量。     * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；     * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。     */    orderBy: null,    /**     * APIProperty: groupBy     * {String} 查询分组条件的字段。     * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段分组时，该字段的用法为 groupBy = "字段名"；     * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。     * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，     * 分别表示某个城市所属的洲和国家。     * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；     * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。     */    groupBy: null,    /**     * APIProperty: fields     * {Array(String)} 查询字段数组，如果不设置则使用系统返回的所有字段。     */    fields: null,    /**     * Constructor: SuperMap.FilterParameter     * 查询过滤条件参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * attributeFilter - {String} 属性过滤条件。     * name - {String} 查询数据集名称或者图层名称。     * joinItems - {Array(<SuperMap.JoinItem>)} 与外部表的连接信息 SuperMap.JoinItem 数组。     * linkItems - {Array(<SuperMap.LinkItem>)} 与外部表的关联信息 SuperMap.LinkItem 数组。     * ids - {Array(String)} 查询 id 数组，即属性表中的 SmID 值。     * orderBy - {String} 查询排序的字段, orderBy 的字段须为数值型的。     * groupBy - {String} 查询分组条件的字段。     * fields - {Array(String)} 查询字段数组。     */    initialize: function (options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.attributeFilter = null;        me.name = null;        if (me.joinItems) {            for (var i = 0, joinItems = me.joinItems, len = joinItems.length; i < len; i++) {                joinItems[i].destroy();            }            me.joinItems = null;        }        if (me.linkItems) {            for (var i = 0, linkItems = me.linkItems, len = linkItems.length; i < len; i++) {                linkItems[i].destroy();            }            me.linkItems = null;        }        me.ids = null;        me.orderBy = null;        me.groupBy = null;        me.fields = null;    },    CLASS_NAME: "SuperMap.FilterParameter"});module.exports = SuperMap.FilterParameter;
 
 /***/ }),
 /* 11 */
@@ -2970,7 +2970,7 @@ module.exports = SuperMap.ServerColor;
  * Class: SuperMap.Theme
  * 专题图基类。
  */
-__webpack_require__(297);
+__webpack_require__(305);
 var SuperMap = __webpack_require__(0);
 SuperMap.Theme = SuperMap.Class({
 
@@ -3285,14 +3285,14 @@ module.exports = SuperMap.ServerTextStyle;
 /* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-﻿/** * Class: SuperMap.TransportationAnalystParameter * 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 */var SuperMap = __webpack_require__(0);var TransportationAnalystResultSetting = __webpack_require__(309);SuperMap.TransportationAnalystParameter = SuperMap.Class({    /**     * APIProperty: barrierEdgeIDs     * {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。     */    barrierEdgeIDs: null,    /**     * APIProperty: barrierNodeIDs     * {Array(<Number>)} 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。     */    barrierNodeIDs: null,    /**     * APIProperty: barrierPoints     * {Array(<Point>)}网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */    barrierPoints: null,    /**     * APIProperty: weightFieldName     * {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */    weightFieldName: null,    /**     * APIProperty: turnWeightField     * {String} 转向权重字段的名称。     */    turnWeightField: null,    /**     * APIProperty: resultSetting     * {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    resultSetting: null,    /**     * Constructor: SuperMap.TransportationAnalystParameter     * 交通网络分析通用参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * barrierEdgeIDs - {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。     * barrierNodeIDs - {Array(<Number>)} 网络分析中障碍点的 ID 数组。     * barrierPoints - {Array(<Point>)}     * weightFieldName - {String} 阻力字段的名称。     * turnWeightField - {String} 转向权重字段的名称。     * resultSetting - {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    initialize: function (options) {        var me = this;        me.resultSetting = new TransportationAnalystResultSetting();        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.barrierEdgeIDs = null;        me.barrierNodeIDs = null;        me.weightFieldName = null;        me.turnWeightField = null;        if (me.resultSetting) {            me.resultSetting.destroy();            me.resultSetting = null;        }        if (me.barrierPoints && me.barrierPoints.length) {            for (var i in me.barrierPoints) {                me.barrierPoints.destroy();            }        }        me.barrierPoints = null;    },    CLASS_NAME: "SuperMap.TransportationAnalystParameter"});module.exports = SuperMap.TransportationAnalystParameter;
+﻿/** * Class: SuperMap.TransportationAnalystParameter * 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 */var SuperMap = __webpack_require__(0);var TransportationAnalystResultSetting = __webpack_require__(317);SuperMap.TransportationAnalystParameter = SuperMap.Class({    /**     * APIProperty: barrierEdgeIDs     * {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。     */    barrierEdgeIDs: null,    /**     * APIProperty: barrierNodeIDs     * {Array(<Number>)} 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。     */    barrierNodeIDs: null,    /**     * APIProperty: barrierPoints     * {Array(<Point>)}网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */    barrierPoints: null,    /**     * APIProperty: weightFieldName     * {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */    weightFieldName: null,    /**     * APIProperty: turnWeightField     * {String} 转向权重字段的名称。     */    turnWeightField: null,    /**     * APIProperty: resultSetting     * {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    resultSetting: null,    /**     * Constructor: SuperMap.TransportationAnalystParameter     * 交通网络分析通用参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * barrierEdgeIDs - {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。     * barrierNodeIDs - {Array(<Number>)} 网络分析中障碍点的 ID 数组。     * barrierPoints - {Array(<Point>)}     * weightFieldName - {String} 阻力字段的名称。     * turnWeightField - {String} 转向权重字段的名称。     * resultSetting - {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    initialize: function (options) {        var me = this;        me.resultSetting = new TransportationAnalystResultSetting();        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.barrierEdgeIDs = null;        me.barrierNodeIDs = null;        me.weightFieldName = null;        me.turnWeightField = null;        if (me.resultSetting) {            me.resultSetting.destroy();            me.resultSetting = null;        }        if (me.barrierPoints && me.barrierPoints.length) {            for (var i in me.barrierPoints) {                me.barrierPoints.destroy();            }        }        me.barrierPoints = null;    },    CLASS_NAME: "SuperMap.TransportationAnalystParameter"});module.exports = SuperMap.TransportationAnalystParameter;
 
 /***/ }),
 /* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var L = __webpack_require__(1);
-var GeoJSONFormat = __webpack_require__(7);
+var GeoJSONFormat = __webpack_require__(8);
 
 L.Util.supermap_callbacks = {};
 
@@ -3707,7 +3707,7 @@ module.exports = SuperMap.GetFeaturesParametersBase;
 __webpack_require__(2);
 __webpack_require__(4);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(7);
+var GeoJSONFormat = __webpack_require__(8);
 SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -4272,7 +4272,7 @@ module.exports = SuperMap.QueryParameters;
 __webpack_require__(2);
 __webpack_require__(4);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(7);
+var GeoJSONFormat = __webpack_require__(8);
 var QueryParameters = __webpack_require__(27);
 
 SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
@@ -4531,10 +4531,10 @@ module.exports = SuperMap.ThiessenAnalystParameters;
  */
 
 __webpack_require__(2);
-__webpack_require__(311);
+__webpack_require__(319);
 var SuperMap = __webpack_require__(0);
 var JoinItem = __webpack_require__(45);
-var DatasetInfo = __webpack_require__(180);
+var DatasetInfo = __webpack_require__(184);
 
 SuperMap.UGCSubLayer = SuperMap.Class(SuperMap.UGCMapLayer, {
 
@@ -4703,12 +4703,12 @@ module.exports = L.Symbolizer;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parseCode__ = __webpack_require__(126);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__extend__ = __webpack_require__(123);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projections__ = __webpack_require__(127);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__deriveConstants__ = __webpack_require__(122);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_Datum__ = __webpack_require__(114);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datum__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parseCode__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__extend__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projections__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__deriveConstants__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_Datum__ = __webpack_require__(117);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datum__ = __webpack_require__(122);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__match__ = __webpack_require__(44);
 
 
@@ -5010,6 +5010,114 @@ module.exports = SuperMap.LabelMatrixCell;
 /* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var ServiceBase = __webpack_require__(4);
+var SuperMap = __webpack_require__(0);
+var Request = __webpack_require__(51);
+
+SuperMap.REST.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
+
+    /**
+     * Constant: EVENT_TYPES
+     * {Array(String)}
+     * 此类支持的事件类型
+     * - *processCompleted* 创建作业成功后触发的事件。
+     * - *processFailed* 创建作业失败后触发的事件 。
+     * - *processRunning* 创建作业过程的整个阶段都会触发的事件，用于获取作业创建过程的状态 。
+     */
+    EVENT_TYPES: ["processCompleted", "processFailed", "processRunning"],
+
+    initialize: function (url, options) {
+        ServiceBase.prototype.initialize.apply(this, arguments);
+    },
+
+    destroy: function () {
+        ServiceBase.prototype.destroy.apply(this, arguments);
+    },
+
+    /**
+     *
+     * @param url 一个空间分析作业的资源地址。
+     */
+    getJobs: function (url) {
+        var me = this;
+        return Request.get(url).then(function (response) {
+            return response.json();
+        }).then(function (result) {
+            me.events.triggerEvent("processCompleted", {result: result});
+        }).catch(function (e) {
+            me.eventListeners.processFailed({error: e});
+        });
+    },
+
+    /**
+     *
+     * @param url 分布式空间分析作业资源根地址。
+     * @param params 创建一个空间分析作业的请求参数。
+     * @param paramType 请求参数类型。
+     * @param seconds 开始创建作业后，获取创建成功结果的时间间隔。
+     */
+    addJob: function (url, params, paramType, seconds) {
+        var me = this, parameterObject = null;
+        if (params && params instanceof paramType) {
+            parameterObject = new Object();
+            paramType.toObject(params, parameterObject);
+        }
+        var options = {
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        };
+        return Request.post(url, JSON.stringify(parameterObject), options).then(function (response) {
+            return response.json();
+        }).then(function (result) {
+            if (result.succeed) {
+                me.serviceProcessCompleted(result, seconds);
+            } else {
+                me.serviceProcessFailed(result);
+            }
+        }).catch(function (e) {
+            me.eventListeners.processFailed({error: e});
+        });
+    },
+
+    serviceProcessCompleted: function (result, seconds) {
+        result = SuperMap.Util.transformResult(result);
+        seconds = seconds || 1000;
+        var me = this;
+        if (result) {
+            var id = setInterval(function () {
+                return Request.get(result.newResourceLocation)
+                    .then(function (response) {
+                        return response.json();
+                    }).then(function (job) {
+                        me.events.triggerEvent("processRunning", {id: job.id, state: job.state});
+                        if (job.state.runState === 'LOST') {
+                            clearInterval(id);
+                            me.events.triggerEvent("processFailed", {error: job.state.errorMsg});
+                        }
+                        if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
+                            clearInterval(id);
+                            me.events.triggerEvent("processCompleted", {result: job});
+                        }
+                    }).catch(function (e) {
+                        clearInterval(id);
+                        me.events.triggerEvent("processFailed", {error: e});
+                    });
+            }, seconds);
+        }
+    },
+
+    serviceProcessFailed: function (result) {
+        ServiceBase.prototype.serviceProcessFailed.apply(this, arguments);
+    },
+
+    CLASS_NAME: "SuperMap.REST.ProcessingJobsServiceBase"
+});
+
+module.exports = SuperMap.REST.ProcessingJobsServiceBase;
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
 ﻿/**
  * Class: SuperMap.ThemeFlow
  * 标签或符号流动显示和牵引线风格设置类。
@@ -5091,7 +5199,7 @@ module.exports = SuperMap.ThemeFlow;
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -5108,15 +5216,15 @@ module.exports = SuperMap.ThemeFlow;
  */
 __webpack_require__(2);
 __webpack_require__(14);
-__webpack_require__(294);
-__webpack_require__(296);
+__webpack_require__(302);
+__webpack_require__(304);
 
 var SuperMap = __webpack_require__(0);
-var ThemeFlow = __webpack_require__(47);
-var ThemeOffset = __webpack_require__(49);
-var ThemeLabelText = __webpack_require__(295);
-var ThemeLabelAlongLine = __webpack_require__(292);
-var ThemeLabelBackground = __webpack_require__(293);
+var ThemeFlow = __webpack_require__(48);
+var ThemeOffset = __webpack_require__(50);
+var ThemeLabelText = __webpack_require__(303);
+var ThemeLabelAlongLine = __webpack_require__(300);
+var ThemeLabelBackground = __webpack_require__(301);
 SuperMap.ThemeLabel = SuperMap.Class(SuperMap.Theme, {
 
     /**
@@ -5414,7 +5522,7 @@ module.exports = SuperMap.ThemeLabel;
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -5485,7 +5593,136 @@ module.exports = SuperMap.ThemeOffset;
 
 
 /***/ }),
-/* 50 */
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(162);
+var fetchJsonp = __webpack_require__(102);
+var SuperMap = __webpack_require__(0);
+SuperMap.Support = {
+    cors: ((window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()))
+};
+
+SuperMap.Request = {
+
+    get: function (url, params, options) {
+        var type = 'GET';
+        url = this._appendUrlTokenParameter(url);
+        url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
+        if (url.length <= 2000) {
+            if (SuperMap.Support.cors) {
+                return this._fetch(url, params, options, type);
+            }
+            if (!SuperMap.Util.isInTheSameDomain(url)) {
+                url = url.replace('.json', '.jsonp');
+                return this._fetchJsonp(url, options);
+            }
+        }
+        return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+    },
+
+    delete: function (url, params, options) {
+        var type = 'DELETE';
+        url = this._appendUrlTokenParameter(url);
+        url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
+        if (url.length <= 2000 && SuperMap.Support.cors) {
+            return this._fetch(url, params, options, type);
+        }
+        return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
+    },
+
+    post: function (url, params, options) {
+        return this._fetch(this._appendUrlTokenParameter(url), params, options, 'POST');
+    },
+
+    put: function (url, params, options) {
+        return this._fetch(this._appendUrlTokenParameter(url), params, options, 'PUT');
+    },
+
+    _postSimulatie: function (type, url, params, options) {
+        var separator = url.indexOf("?") > -1 ? "&" : "?";
+        url += separator + '_method= ' + type;
+        return this.post(url, params, options);
+    },
+
+    _appendUrlTokenParameter: function (url) {
+        url = url.indexOf('.json') !== -1 ? url : url + '.json';
+        if (SuperMap.Credential.CREDENTIAL && SuperMap.Credential.CREDENTIAL.getUrlParameters()) {
+            var separator = url.indexOf("?") > -1 ? "&" : "?";
+            url += separator + SuperMap.Credential.CREDENTIAL.getUrlParameters();
+        }
+        return url;
+    },
+
+    _fetch: function (url, params, options, type) {
+        options = options || {};
+        if (options.timeout) {
+            return this._timeout(options.timeout, fetch(url, {
+                method: type,
+                headers: options.headers,
+                body: type === 'PUT' || type === 'POST' ? params : undefined,
+                credentials: options.withCredentials ? 'include' : 'omit',
+                mode: 'cors'
+            }).then(function (response) {
+                return response;
+            }));
+        }
+        return fetch(url, {
+            method: type,
+            body: type === 'PUT' || type === 'POST' ? params : undefined,
+            headers: options.headers
+        }).then(function (response) {
+            return response;
+        });
+    },
+
+    _fetchJsonp: function (url, options) {
+        options = options || {};
+        return fetchJsonp(url, {method: 'GET', timeout: options.timeout})
+            .then(function (response) {
+                return response;
+            });
+    },
+
+    _timeout: function (seconds, promise) {
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                reject(new Error("timeout"))
+            }, seconds)
+            promise.then(resolve, reject)
+        })
+    },
+
+    _getParameterString: function (params) {
+        var paramsArray = [];
+        for (var key in params) {
+            var value = params[key];
+            if ((value != null) && (typeof value !== 'function')) {
+                var encodedValue;
+                if (typeof value === 'object' && value.constructor === Array) {
+                    var encodedItemArray = [];
+                    var item;
+                    for (var itemIndex = 0, len = value.length; itemIndex < len; itemIndex++) {
+                        item = value[itemIndex];
+                        encodedItemArray.push(encodeURIComponent(
+                            (item === null || item === undefined) ? "" : item)
+                        );
+                    }
+                    encodedValue = '[' + encodedItemArray.join(",") + ']';
+                } else {
+                    encodedValue = encodeURIComponent(value);
+                }
+                paramsArray.push(encodeURIComponent(key) + "=" + encodedValue);
+            }
+        }
+        return paramsArray.join("&");
+    }
+
+};
+module.exports = SuperMap.Request;
+
+/***/ }),
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var L = __webpack_require__(1);
@@ -5516,600 +5753,7 @@ module.exports = PolyBase;
 
 
 /***/ }),
-/* 51 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function(x, y) {
-  x = Math.abs(x);
-  y = Math.abs(y);
-  var a = Math.max(x, y);
-  var b = Math.min(x, y) / (a ? a : 1);
-
-  return a * Math.sqrt(1 + Math.pow(b, 2));
-});
-
-
-/***/ }),
-/* 52 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var C00 = 1;
-var C02 = 0.25;
-var C04 = 0.046875;
-var C06 = 0.01953125;
-var C08 = 0.01068115234375;
-var C22 = 0.75;
-var C44 = 0.46875;
-var C46 = 0.01302083333333333333;
-var C48 = 0.00712076822916666666;
-var C66 = 0.36458333333333333333;
-var C68 = 0.00569661458333333333;
-var C88 = 0.3076171875;
-
-/* harmony default export */ __webpack_exports__["a"] = (function(es) {
-  var en = [];
-  en[0] = C00 - es * (C02 + es * (C04 + es * (C06 + es * C08)));
-  en[1] = es * (C22 - es * (C04 + es * (C06 + es * C08)));
-  var t = es * es;
-  en[2] = t * (C44 - es * (C46 + es * C48));
-  t *= es;
-  en[3] = t * (C66 - es * C68);
-  en[4] = t * es * C88;
-  return en;
-});
-
-/***/ }),
 /* 53 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pj_mlfn__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
-
-
-
-var MAX_ITER = 20;
-
-/* harmony default export */ __webpack_exports__["a"] = (function(arg, es, en) {
-  var k = 1 / (1 - es);
-  var phi = arg;
-  for (var i = MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
-    var s = Math.sin(phi);
-    var t = 1 - es * s * s;
-    //t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
-    //phi -= t * (t * Math.sqrt(t)) * k;
-    t = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__pj_mlfn__["a" /* default */])(phi, s, Math.cos(phi), en) - arg) * (t * Math.sqrt(t)) * k;
-    phi -= t;
-    if (Math.abs(t) < __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
-      return phi;
-    }
-  }
-  //..reportError("cass:pj_inv_mlfn: Convergence error");
-  return phi;
-});
-
-
-/***/ }),
-/* 54 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function(x) {
-  var r = Math.exp(x);
-  r = (r - 1 / r) / 2;
-  return r;
-});
-
-/***/ }),
-/* 55 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function (array){
-  var out = {
-    x: array[0],
-    y: array[1]
-  };
-  if (array.length>2) {
-    out.z = array[2];
-  }
-  if (array.length>3) {
-    out.m = array[3];
-  }
-  return out;
-});
-
-/***/ }),
-/* 56 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global__ = __webpack_require__(124);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projString__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_wkt_parser__ = __webpack_require__(61);
-
-
-
-
-function defs(name) {
-  /*global console*/
-  var that = this;
-  if (arguments.length === 2) {
-    var def = arguments[1];
-    if (typeof def === 'string') {
-      if (def.charAt(0) === '+') {
-        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__projString__["a" /* default */])(arguments[1]);
-      }
-      else {
-        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_wkt_parser__["a" /* default */])(arguments[1]);
-      }
-    } else {
-      defs[name] = def;
-    }
-  }
-  else if (arguments.length === 1) {
-    if (Array.isArray(name)) {
-      return name.map(function(v) {
-        if (Array.isArray(v)) {
-          defs.apply(that, v);
-        }
-        else {
-          defs(v);
-        }
-      });
-    }
-    else if (typeof name === 'string') {
-      if (name in defs) {
-        return defs[name];
-      }
-    }
-    else if ('EPSG' in name) {
-      defs['EPSG:' + name.EPSG] = name;
-    }
-    else if ('ESRI' in name) {
-      defs['ESRI:' + name.ESRI] = name;
-    }
-    else if ('IAU2000' in name) {
-      defs['IAU2000:' + name.IAU2000] = name;
-    }
-    else {
-      console.log(name);
-    }
-    return;
-  }
-
-
-}
-__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__global__["a" /* default */])(defs);
-/* harmony default export */ __webpack_exports__["a"] = (defs);
-
-
-/***/ }),
-/* 57 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__ = __webpack_require__(116);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_units__ = __webpack_require__(117);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__match__ = __webpack_require__(44);
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = (function(defData) {
-  var self = {};
-  var paramObj = defData.split('+').map(function(v) {
-    return v.trim();
-  }).filter(function(a) {
-    return a;
-  }).reduce(function(p, a) {
-    var split = a.split('=');
-    split.push(true);
-    p[split[0].toLowerCase()] = split[1];
-    return p;
-  }, {});
-  var paramName, paramVal, paramOutname;
-  var params = {
-    proj: 'projName',
-    datum: 'datumCode',
-    rf: function(v) {
-      self.rf = parseFloat(v);
-    },
-    lat_0: function(v) {
-      self.lat0 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lat_1: function(v) {
-      self.lat1 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lat_2: function(v) {
-      self.lat2 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lat_ts: function(v) {
-      self.lat_ts = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lon_0: function(v) {
-      self.long0 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lon_1: function(v) {
-      self.long1 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lon_2: function(v) {
-      self.long2 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    alpha: function(v) {
-      self.alpha = parseFloat(v) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lonc: function(v) {
-      self.longc = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    x_0: function(v) {
-      self.x0 = parseFloat(v);
-    },
-    y_0: function(v) {
-      self.y0 = parseFloat(v);
-    },
-    k_0: function(v) {
-      self.k0 = parseFloat(v);
-    },
-    k: function(v) {
-      self.k0 = parseFloat(v);
-    },
-    a: function(v) {
-      self.a = parseFloat(v);
-    },
-    b: function(v) {
-      self.b = parseFloat(v);
-    },
-    r_a: function() {
-      self.R_A = true;
-    },
-    zone: function(v) {
-      self.zone = parseInt(v, 10);
-    },
-    south: function() {
-      self.utmSouth = true;
-    },
-    towgs84: function(v) {
-      self.datum_params = v.split(",").map(function(a) {
-        return parseFloat(a);
-      });
-    },
-    to_meter: function(v) {
-      self.to_meter = parseFloat(v);
-    },
-    units: function(v) {
-      self.units = v;
-      var unit = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_2__constants_units__["a" /* default */], v);
-      if (unit) {
-        self.to_meter = unit.to_meter;
-      }
-    },
-    from_greenwich: function(v) {
-      self.from_greenwich = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    pm: function(v) {
-      var pm = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__["a" /* default */], v);
-      self.from_greenwich = (pm ? pm : parseFloat(v)) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    nadgrids: function(v) {
-      if (v === '@null') {
-        self.datumCode = 'none';
-      }
-      else {
-        self.nadgrids = v;
-      }
-    },
-    axis: function(v) {
-      var legalAxis = "ewnsud";
-      if (v.length === 3 && legalAxis.indexOf(v.substr(0, 1)) !== -1 && legalAxis.indexOf(v.substr(1, 1)) !== -1 && legalAxis.indexOf(v.substr(2, 1)) !== -1) {
-        self.axis = v;
-      }
-    }
-  };
-  for (paramName in paramObj) {
-    paramVal = paramObj[paramName];
-    if (paramName in params) {
-      paramOutname = params[paramName];
-      if (typeof paramOutname === 'function') {
-        paramOutname(paramVal);
-      }
-      else {
-        self[paramOutname] = paramVal;
-      }
-    }
-    else {
-      self[paramName] = paramVal;
-    }
-  }
-  if(typeof self.datumCode === 'string' && self.datumCode !== "WGS84"){
-    self.datumCode = self.datumCode.toLowerCase();
-  }
-  return self;
-});
-
-
-/***/ }),
-/* 58 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_sinh__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_hypot__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinhy__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_gatg__ = __webpack_require__(110);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_clens__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__ = __webpack_require__(5);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-// Heavily based on this etmerc projection implementation
-// https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/etmerc.js
-
-
-
-
-
-
-
-
-
-function init() {
-  if (this.es === undefined || this.es <= 0) {
-    throw new Error('incorrect elliptical usage');
-  }
-
-  this.x0 = this.x0 !== undefined ? this.x0 : 0;
-  this.y0 = this.y0 !== undefined ? this.y0 : 0;
-  this.long0 = this.long0 !== undefined ? this.long0 : 0;
-  this.lat0 = this.lat0 !== undefined ? this.lat0 : 0;
-
-  this.cgb = [];
-  this.cbg = [];
-  this.utg = [];
-  this.gtu = [];
-
-  var f = this.es / (1 + Math.sqrt(1 - this.es));
-  var n = f / (2 - f);
-  var np = n;
-
-  this.cgb[0] = n * (2 + n * (-2 / 3 + n * (-2 + n * (116 / 45 + n * (26 / 45 + n * (-2854 / 675 ))))));
-  this.cbg[0] = n * (-2 + n * ( 2 / 3 + n * ( 4 / 3 + n * (-82 / 45 + n * (32 / 45 + n * (4642 / 4725))))));
-
-  np = np * n;
-  this.cgb[1] = np * (7 / 3 + n * (-8 / 5 + n * (-227 / 45 + n * (2704 / 315 + n * (2323 / 945)))));
-  this.cbg[1] = np * (5 / 3 + n * (-16 / 15 + n * ( -13 / 9 + n * (904 / 315 + n * (-1522 / 945)))));
-
-  np = np * n;
-  this.cgb[2] = np * (56 / 15 + n * (-136 / 35 + n * (-1262 / 105 + n * (73814 / 2835))));
-  this.cbg[2] = np * (-26 / 15 + n * (34 / 21 + n * (8 / 5 + n * (-12686 / 2835))));
-
-  np = np * n;
-  this.cgb[3] = np * (4279 / 630 + n * (-332 / 35 + n * (-399572 / 14175)));
-  this.cbg[3] = np * (1237 / 630 + n * (-12 / 5 + n * ( -24832 / 14175)));
-
-  np = np * n;
-  this.cgb[4] = np * (4174 / 315 + n * (-144838 / 6237));
-  this.cbg[4] = np * (-734 / 315 + n * (109598 / 31185));
-
-  np = np * n;
-  this.cgb[5] = np * (601676 / 22275);
-  this.cbg[5] = np * (444337 / 155925);
-
-  np = Math.pow(n, 2);
-  this.Qn = this.k0 / (1 + n) * (1 + np * (1 / 4 + np * (1 / 64 + np / 256)));
-
-  this.utg[0] = n * (-0.5 + n * ( 2 / 3 + n * (-37 / 96 + n * ( 1 / 360 + n * (81 / 512 + n * (-96199 / 604800))))));
-  this.gtu[0] = n * (0.5 + n * (-2 / 3 + n * (5 / 16 + n * (41 / 180 + n * (-127 / 288 + n * (7891 / 37800))))));
-
-  this.utg[1] = np * (-1 / 48 + n * (-1 / 15 + n * (437 / 1440 + n * (-46 / 105 + n * (1118711 / 3870720)))));
-  this.gtu[1] = np * (13 / 48 + n * (-3 / 5 + n * (557 / 1440 + n * (281 / 630 + n * (-1983433 / 1935360)))));
-
-  np = np * n;
-  this.utg[2] = np * (-17 / 480 + n * (37 / 840 + n * (209 / 4480 + n * (-5569 / 90720 ))));
-  this.gtu[2] = np * (61 / 240 + n * (-103 / 140 + n * (15061 / 26880 + n * (167603 / 181440))));
-
-  np = np * n;
-  this.utg[3] = np * (-4397 / 161280 + n * (11 / 504 + n * (830251 / 7257600)));
-  this.gtu[3] = np * (49561 / 161280 + n * (-179 / 168 + n * (6601661 / 7257600)));
-
-  np = np * n;
-  this.utg[4] = np * (-4583 / 161280 + n * (108847 / 3991680));
-  this.gtu[4] = np * (34729 / 80640 + n * (-3418889 / 1995840));
-
-  np = np * n;
-  this.utg[5] = np * (-20648693 / 638668800);
-  this.gtu[5] = np * (212378941 / 319334400);
-
-  var Z = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cbg, this.lat0);
-  this.Zb = -this.Qn * (Z + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_clens__["a" /* default */])(this.gtu, 2 * Z));
-}
-
-function forward(p) {
-  var Ce = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(p.x - this.long0);
-  var Cn = p.y;
-
-  Cn = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cbg, Cn);
-  var sin_Cn = Math.sin(Cn);
-  var cos_Cn = Math.cos(Cn);
-  var sin_Ce = Math.sin(Ce);
-  var cos_Ce = Math.cos(Ce);
-
-  Cn = Math.atan2(sin_Cn, cos_Ce * cos_Cn);
-  Ce = Math.atan2(sin_Ce * cos_Cn, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_hypot__["a" /* default */])(sin_Cn, cos_Cn * cos_Ce));
-  Ce = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_asinhy__["a" /* default */])(Math.tan(Ce));
-
-  var tmp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__["a" /* default */])(this.gtu, 2 * Cn, 2 * Ce);
-
-  Cn = Cn + tmp[0];
-  Ce = Ce + tmp[1];
-
-  var x;
-  var y;
-
-  if (Math.abs(Ce) <= 2.623395162778) {
-    x = this.a * (this.Qn * Ce) + this.x0;
-    y = this.a * (this.Qn * Cn + this.Zb) + this.y0;
-  }
-  else {
-    x = Infinity;
-    y = Infinity;
-  }
-
-  p.x = x;
-  p.y = y;
-
-  return p;
-}
-
-function inverse(p) {
-  var Ce = (p.x - this.x0) * (1 / this.a);
-  var Cn = (p.y - this.y0) * (1 / this.a);
-
-  Cn = (Cn - this.Zb) / this.Qn;
-  Ce = Ce / this.Qn;
-
-  var lon;
-  var lat;
-
-  if (Math.abs(Ce) <= 2.623395162778) {
-    var tmp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__["a" /* default */])(this.utg, 2 * Cn, 2 * Ce);
-
-    Cn = Cn + tmp[0];
-    Ce = Ce + tmp[1];
-    Ce = Math.atan(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_sinh__["a" /* default */])(Ce));
-
-    var sin_Cn = Math.sin(Cn);
-    var cos_Cn = Math.cos(Cn);
-    var sin_Ce = Math.sin(Ce);
-    var cos_Ce = Math.cos(Ce);
-
-    Cn = Math.atan2(sin_Cn * cos_Ce, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_hypot__["a" /* default */])(sin_Ce, cos_Ce * cos_Cn));
-    Ce = Math.atan2(sin_Ce, cos_Ce * cos_Cn);
-
-    lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(Ce + this.long0);
-    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cgb, Cn);
-  }
-  else {
-    lon = Infinity;
-    lat = Infinity;
-  }
-
-  p.x = lon;
-  p.y = lat;
-
-  return p;
-}
-
-var names = ["Extended_Transverse_Mercator", "Extended Transverse Mercator", "etmerc"];
-/* harmony default export */ __webpack_exports__["a"] = ({
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
-});
-
-
-/***/ }),
-/* 59 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datum_transform__ = __webpack_require__(121);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adjust_axis__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Proj__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_toPoint__ = __webpack_require__(55);
-/* harmony export (immutable) */ __webpack_exports__["a"] = transform;
-
-
-
-
-
-function checkNotWGS(source, dest) {
-  return ((source.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || source.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) && dest.datumCode !== 'WGS84') || ((dest.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || dest.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) && source.datumCode !== 'WGS84');
-}
-
-function transform(source, dest, point) {
-  var wgs84;
-  if (Array.isArray(point)) {
-    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_toPoint__["a" /* default */])(point);
-  }
-
-  // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
-  if (source.datum && dest.datum && checkNotWGS(source, dest)) {
-    wgs84 = new __WEBPACK_IMPORTED_MODULE_3__Proj__["a" /* default */]('WGS84');
-    point = transform(source, wgs84, point);
-    source = wgs84;
-  }
-  // DGR, 2010/11/12
-  if (source.axis !== 'enu') {
-    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__adjust_axis__["a" /* default */])(source, false, point);
-  }
-  // Transform source points to long/lat, if they aren't already.
-  if (source.projName === 'longlat') {
-    point = {
-      x: point.x * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */],
-      y: point.y * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */]
-    };
-  }
-  else {
-    if (source.to_meter) {
-      point = {
-        x: point.x * source.to_meter,
-        y: point.y * source.to_meter
-      };
-    }
-    point = source.inverse(point); // Convert Cartesian to longlat
-  }
-  // Adjust for the prime meridian if necessary
-  if (source.from_greenwich) {
-    point.x += source.from_greenwich;
-  }
-
-  // Convert datums if needed, and if possible.
-  point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__datum_transform__["a" /* default */])(source.datum, dest.datum, point);
-
-  // Adjust for the prime meridian if necessary
-  if (dest.from_greenwich) {
-    point = {
-      x: point.x - dest.from_greenwich,
-      y: point.y
-    };
-  }
-
-  if (dest.projName === 'longlat') {
-    // convert radians to decimal degrees
-    point = {
-      x: point.x * __WEBPACK_IMPORTED_MODULE_0__constants_values__["j" /* R2D */],
-      y: point.y * __WEBPACK_IMPORTED_MODULE_0__constants_values__["j" /* R2D */]
-    };
-  } else { // else project
-    point = dest.forward(point);
-    if (dest.to_meter) {
-      point = {
-        x: point.x / dest.to_meter,
-        y: point.y / dest.to_meter
-      };
-    }
-  }
-
-  // DGR, 2010/11/12
-  if (dest.axis !== 'enu') {
-    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__adjust_axis__["a" /* default */])(dest, true, point);
-  }
-
-  return point;
-}
-
-
-/***/ }),
-/* 60 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6865,180 +6509,606 @@ function getMinNorthing(zoneLetter) {
 
 
 /***/ }),
+/* 54 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function(x, y) {
+  x = Math.abs(x);
+  y = Math.abs(y);
+  var a = Math.max(x, y);
+  var b = Math.min(x, y) / (a ? a : 1);
+
+  return a * Math.sqrt(1 + Math.pow(b, 2));
+});
+
+
+/***/ }),
+/* 55 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var C00 = 1;
+var C02 = 0.25;
+var C04 = 0.046875;
+var C06 = 0.01953125;
+var C08 = 0.01068115234375;
+var C22 = 0.75;
+var C44 = 0.46875;
+var C46 = 0.01302083333333333333;
+var C48 = 0.00712076822916666666;
+var C66 = 0.36458333333333333333;
+var C68 = 0.00569661458333333333;
+var C88 = 0.3076171875;
+
+/* harmony default export */ __webpack_exports__["a"] = (function(es) {
+  var en = [];
+  en[0] = C00 - es * (C02 + es * (C04 + es * (C06 + es * C08)));
+  en[1] = es * (C22 - es * (C04 + es * (C06 + es * C08)));
+  var t = es * es;
+  en[2] = t * (C44 - es * (C46 + es * C48));
+  t *= es;
+  en[3] = t * (C66 - es * C68);
+  en[4] = t * es * C88;
+  return en;
+});
+
+/***/ }),
+/* 56 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pj_mlfn__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
+
+
+
+var MAX_ITER = 20;
+
+/* harmony default export */ __webpack_exports__["a"] = (function(arg, es, en) {
+  var k = 1 / (1 - es);
+  var phi = arg;
+  for (var i = MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
+    var s = Math.sin(phi);
+    var t = 1 - es * s * s;
+    //t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
+    //phi -= t * (t * Math.sqrt(t)) * k;
+    t = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__pj_mlfn__["a" /* default */])(phi, s, Math.cos(phi), en) - arg) * (t * Math.sqrt(t)) * k;
+    phi -= t;
+    if (Math.abs(t) < __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+      return phi;
+    }
+  }
+  //..reportError("cass:pj_inv_mlfn: Convergence error");
+  return phi;
+});
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function(x) {
+  var r = Math.exp(x);
+  r = (r - 1 / r) / 2;
+  return r;
+});
+
+/***/ }),
+/* 58 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function (array){
+  var out = {
+    x: array[0],
+    y: array[1]
+  };
+  if (array.length>2) {
+    out.z = array[2];
+  }
+  if (array.length>3) {
+    out.m = array[3];
+  }
+  return out;
+});
+
+/***/ }),
+/* 59 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projString__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_wkt_parser__ = __webpack_require__(65);
+
+
+
+
+function defs(name) {
+  /*global console*/
+  var that = this;
+  if (arguments.length === 2) {
+    var def = arguments[1];
+    if (typeof def === 'string') {
+      if (def.charAt(0) === '+') {
+        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__projString__["a" /* default */])(arguments[1]);
+      }
+      else {
+        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_wkt_parser__["a" /* default */])(arguments[1]);
+      }
+    } else {
+      defs[name] = def;
+    }
+  }
+  else if (arguments.length === 1) {
+    if (Array.isArray(name)) {
+      return name.map(function(v) {
+        if (Array.isArray(v)) {
+          defs.apply(that, v);
+        }
+        else {
+          defs(v);
+        }
+      });
+    }
+    else if (typeof name === 'string') {
+      if (name in defs) {
+        return defs[name];
+      }
+    }
+    else if ('EPSG' in name) {
+      defs['EPSG:' + name.EPSG] = name;
+    }
+    else if ('ESRI' in name) {
+      defs['ESRI:' + name.ESRI] = name;
+    }
+    else if ('IAU2000' in name) {
+      defs['IAU2000:' + name.IAU2000] = name;
+    }
+    else {
+      console.log(name);
+    }
+    return;
+  }
+
+
+}
+__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__global__["a" /* default */])(defs);
+/* harmony default export */ __webpack_exports__["a"] = (defs);
+
+
+/***/ }),
+/* 60 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__ = __webpack_require__(119);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_units__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__match__ = __webpack_require__(44);
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = (function(defData) {
+  var self = {};
+  var paramObj = defData.split('+').map(function(v) {
+    return v.trim();
+  }).filter(function(a) {
+    return a;
+  }).reduce(function(p, a) {
+    var split = a.split('=');
+    split.push(true);
+    p[split[0].toLowerCase()] = split[1];
+    return p;
+  }, {});
+  var paramName, paramVal, paramOutname;
+  var params = {
+    proj: 'projName',
+    datum: 'datumCode',
+    rf: function(v) {
+      self.rf = parseFloat(v);
+    },
+    lat_0: function(v) {
+      self.lat0 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lat_1: function(v) {
+      self.lat1 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lat_2: function(v) {
+      self.lat2 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lat_ts: function(v) {
+      self.lat_ts = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lon_0: function(v) {
+      self.long0 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lon_1: function(v) {
+      self.long1 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lon_2: function(v) {
+      self.long2 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    alpha: function(v) {
+      self.alpha = parseFloat(v) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lonc: function(v) {
+      self.longc = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    x_0: function(v) {
+      self.x0 = parseFloat(v);
+    },
+    y_0: function(v) {
+      self.y0 = parseFloat(v);
+    },
+    k_0: function(v) {
+      self.k0 = parseFloat(v);
+    },
+    k: function(v) {
+      self.k0 = parseFloat(v);
+    },
+    a: function(v) {
+      self.a = parseFloat(v);
+    },
+    b: function(v) {
+      self.b = parseFloat(v);
+    },
+    r_a: function() {
+      self.R_A = true;
+    },
+    zone: function(v) {
+      self.zone = parseInt(v, 10);
+    },
+    south: function() {
+      self.utmSouth = true;
+    },
+    towgs84: function(v) {
+      self.datum_params = v.split(",").map(function(a) {
+        return parseFloat(a);
+      });
+    },
+    to_meter: function(v) {
+      self.to_meter = parseFloat(v);
+    },
+    units: function(v) {
+      self.units = v;
+      var unit = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_2__constants_units__["a" /* default */], v);
+      if (unit) {
+        self.to_meter = unit.to_meter;
+      }
+    },
+    from_greenwich: function(v) {
+      self.from_greenwich = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    pm: function(v) {
+      var pm = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__["a" /* default */], v);
+      self.from_greenwich = (pm ? pm : parseFloat(v)) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    nadgrids: function(v) {
+      if (v === '@null') {
+        self.datumCode = 'none';
+      }
+      else {
+        self.nadgrids = v;
+      }
+    },
+    axis: function(v) {
+      var legalAxis = "ewnsud";
+      if (v.length === 3 && legalAxis.indexOf(v.substr(0, 1)) !== -1 && legalAxis.indexOf(v.substr(1, 1)) !== -1 && legalAxis.indexOf(v.substr(2, 1)) !== -1) {
+        self.axis = v;
+      }
+    }
+  };
+  for (paramName in paramObj) {
+    paramVal = paramObj[paramName];
+    if (paramName in params) {
+      paramOutname = params[paramName];
+      if (typeof paramOutname === 'function') {
+        paramOutname(paramVal);
+      }
+      else {
+        self[paramOutname] = paramVal;
+      }
+    }
+    else {
+      self[paramName] = paramVal;
+    }
+  }
+  if(typeof self.datumCode === 'string' && self.datumCode !== "WGS84"){
+    self.datumCode = self.datumCode.toLowerCase();
+  }
+  return self;
+});
+
+
+/***/ }),
 /* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__process__ = __webpack_require__(156);
-var D2R = 0.01745329251994329577;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_sinh__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_hypot__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinhy__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_gatg__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_clens__ = __webpack_require__(110);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__ = __webpack_require__(5);
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
+// Heavily based on this etmerc projection implementation
+// https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/etmerc.js
 
 
 
 
 
-function rename(obj, params) {
-  var outName = params[0];
-  var inName = params[1];
-  if (!(outName in obj) && (inName in obj)) {
-    obj[outName] = obj[inName];
-    if (params.length === 3) {
-      obj[outName] = params[2](obj[outName]);
-    }
+
+
+
+
+function init() {
+  if (this.es === undefined || this.es <= 0) {
+    throw new Error('incorrect elliptical usage');
   }
+
+  this.x0 = this.x0 !== undefined ? this.x0 : 0;
+  this.y0 = this.y0 !== undefined ? this.y0 : 0;
+  this.long0 = this.long0 !== undefined ? this.long0 : 0;
+  this.lat0 = this.lat0 !== undefined ? this.lat0 : 0;
+
+  this.cgb = [];
+  this.cbg = [];
+  this.utg = [];
+  this.gtu = [];
+
+  var f = this.es / (1 + Math.sqrt(1 - this.es));
+  var n = f / (2 - f);
+  var np = n;
+
+  this.cgb[0] = n * (2 + n * (-2 / 3 + n * (-2 + n * (116 / 45 + n * (26 / 45 + n * (-2854 / 675 ))))));
+  this.cbg[0] = n * (-2 + n * ( 2 / 3 + n * ( 4 / 3 + n * (-82 / 45 + n * (32 / 45 + n * (4642 / 4725))))));
+
+  np = np * n;
+  this.cgb[1] = np * (7 / 3 + n * (-8 / 5 + n * (-227 / 45 + n * (2704 / 315 + n * (2323 / 945)))));
+  this.cbg[1] = np * (5 / 3 + n * (-16 / 15 + n * ( -13 / 9 + n * (904 / 315 + n * (-1522 / 945)))));
+
+  np = np * n;
+  this.cgb[2] = np * (56 / 15 + n * (-136 / 35 + n * (-1262 / 105 + n * (73814 / 2835))));
+  this.cbg[2] = np * (-26 / 15 + n * (34 / 21 + n * (8 / 5 + n * (-12686 / 2835))));
+
+  np = np * n;
+  this.cgb[3] = np * (4279 / 630 + n * (-332 / 35 + n * (-399572 / 14175)));
+  this.cbg[3] = np * (1237 / 630 + n * (-12 / 5 + n * ( -24832 / 14175)));
+
+  np = np * n;
+  this.cgb[4] = np * (4174 / 315 + n * (-144838 / 6237));
+  this.cbg[4] = np * (-734 / 315 + n * (109598 / 31185));
+
+  np = np * n;
+  this.cgb[5] = np * (601676 / 22275);
+  this.cbg[5] = np * (444337 / 155925);
+
+  np = Math.pow(n, 2);
+  this.Qn = this.k0 / (1 + n) * (1 + np * (1 / 4 + np * (1 / 64 + np / 256)));
+
+  this.utg[0] = n * (-0.5 + n * ( 2 / 3 + n * (-37 / 96 + n * ( 1 / 360 + n * (81 / 512 + n * (-96199 / 604800))))));
+  this.gtu[0] = n * (0.5 + n * (-2 / 3 + n * (5 / 16 + n * (41 / 180 + n * (-127 / 288 + n * (7891 / 37800))))));
+
+  this.utg[1] = np * (-1 / 48 + n * (-1 / 15 + n * (437 / 1440 + n * (-46 / 105 + n * (1118711 / 3870720)))));
+  this.gtu[1] = np * (13 / 48 + n * (-3 / 5 + n * (557 / 1440 + n * (281 / 630 + n * (-1983433 / 1935360)))));
+
+  np = np * n;
+  this.utg[2] = np * (-17 / 480 + n * (37 / 840 + n * (209 / 4480 + n * (-5569 / 90720 ))));
+  this.gtu[2] = np * (61 / 240 + n * (-103 / 140 + n * (15061 / 26880 + n * (167603 / 181440))));
+
+  np = np * n;
+  this.utg[3] = np * (-4397 / 161280 + n * (11 / 504 + n * (830251 / 7257600)));
+  this.gtu[3] = np * (49561 / 161280 + n * (-179 / 168 + n * (6601661 / 7257600)));
+
+  np = np * n;
+  this.utg[4] = np * (-4583 / 161280 + n * (108847 / 3991680));
+  this.gtu[4] = np * (34729 / 80640 + n * (-3418889 / 1995840));
+
+  np = np * n;
+  this.utg[5] = np * (-20648693 / 638668800);
+  this.gtu[5] = np * (212378941 / 319334400);
+
+  var Z = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cbg, this.lat0);
+  this.Zb = -this.Qn * (Z + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_clens__["a" /* default */])(this.gtu, 2 * Z));
 }
 
-function d2r(input) {
-  return input * D2R;
+function forward(p) {
+  var Ce = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(p.x - this.long0);
+  var Cn = p.y;
+
+  Cn = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cbg, Cn);
+  var sin_Cn = Math.sin(Cn);
+  var cos_Cn = Math.cos(Cn);
+  var sin_Ce = Math.sin(Ce);
+  var cos_Ce = Math.cos(Ce);
+
+  Cn = Math.atan2(sin_Cn, cos_Ce * cos_Cn);
+  Ce = Math.atan2(sin_Ce * cos_Cn, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_hypot__["a" /* default */])(sin_Cn, cos_Cn * cos_Ce));
+  Ce = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_asinhy__["a" /* default */])(Math.tan(Ce));
+
+  var tmp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__["a" /* default */])(this.gtu, 2 * Cn, 2 * Ce);
+
+  Cn = Cn + tmp[0];
+  Ce = Ce + tmp[1];
+
+  var x;
+  var y;
+
+  if (Math.abs(Ce) <= 2.623395162778) {
+    x = this.a * (this.Qn * Ce) + this.x0;
+    y = this.a * (this.Qn * Cn + this.Zb) + this.y0;
+  }
+  else {
+    x = Infinity;
+    y = Infinity;
+  }
+
+  p.x = x;
+  p.y = y;
+
+  return p;
 }
 
-function cleanWKT(wkt) {
-  if (wkt.type === 'GEOGCS') {
-    wkt.projName = 'longlat';
-  } else if (wkt.type === 'LOCAL_CS') {
-    wkt.projName = 'identity';
-    wkt.local = true;
-  } else {
-    if (typeof wkt.PROJECTION === 'object') {
-      wkt.projName = Object.keys(wkt.PROJECTION)[0];
-    } else {
-      wkt.projName = wkt.PROJECTION;
-    }
-  }
-  if (wkt.UNIT) {
-    wkt.units = wkt.UNIT.name.toLowerCase();
-    if (wkt.units === 'metre') {
-      wkt.units = 'meter';
-    }
-    if (wkt.UNIT.convert) {
-      if (wkt.type === 'GEOGCS') {
-        if (wkt.DATUM && wkt.DATUM.SPHEROID) {
-          wkt.to_meter = wkt.UNIT.convert*wkt.DATUM.SPHEROID.a;
-        }
-      } else {
-        wkt.to_meter = wkt.UNIT.convert, 10;
-      }
-    }
-  }
-  var geogcs = wkt.GEOGCS;
-  if (wkt.type === 'GEOGCS') {
-    geogcs = wkt;
-  }
-  if (geogcs) {
-    //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
-    //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
-    //}
-    if (geogcs.DATUM) {
-      wkt.datumCode = geogcs.DATUM.name.toLowerCase();
-    } else {
-      wkt.datumCode = geogcs.name.toLowerCase();
-    }
-    if (wkt.datumCode.slice(0, 2) === 'd_') {
-      wkt.datumCode = wkt.datumCode.slice(2);
-    }
-    if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
-      wkt.datumCode = 'nzgd49';
-    }
-    if (wkt.datumCode === 'wgs_1984') {
-      if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
-        wkt.sphere = true;
-      }
-      wkt.datumCode = 'wgs84';
-    }
-    if (wkt.datumCode.slice(-6) === '_ferro') {
-      wkt.datumCode = wkt.datumCode.slice(0, - 6);
-    }
-    if (wkt.datumCode.slice(-8) === '_jakarta') {
-      wkt.datumCode = wkt.datumCode.slice(0, - 8);
-    }
-    if (~wkt.datumCode.indexOf('belge')) {
-      wkt.datumCode = 'rnb72';
-    }
-    if (geogcs.DATUM && geogcs.DATUM.SPHEROID) {
-      wkt.ellps = geogcs.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
-      if (wkt.ellps.toLowerCase().slice(0, 13) === 'international') {
-        wkt.ellps = 'intl';
-      }
+function inverse(p) {
+  var Ce = (p.x - this.x0) * (1 / this.a);
+  var Cn = (p.y - this.y0) * (1 / this.a);
 
-      wkt.a = geogcs.DATUM.SPHEROID.a;
-      wkt.rf = parseFloat(geogcs.DATUM.SPHEROID.rf, 10);
-    }
-    if (~wkt.datumCode.indexOf('osgb_1936')) {
-      wkt.datumCode = 'osgb36';
-    }
-    if (~wkt.datumCode.indexOf('osni_1952')) {
-      wkt.datumCode = 'osni52';
-    }
-    if (~wkt.datumCode.indexOf('tm65')
-      || ~wkt.datumCode.indexOf('geodetic_datum_of_1965')) {
-      wkt.datumCode = 'ire65';
-    }
+  Cn = (Cn - this.Zb) / this.Qn;
+  Ce = Ce / this.Qn;
+
+  var lon;
+  var lat;
+
+  if (Math.abs(Ce) <= 2.623395162778) {
+    var tmp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__["a" /* default */])(this.utg, 2 * Cn, 2 * Ce);
+
+    Cn = Cn + tmp[0];
+    Ce = Ce + tmp[1];
+    Ce = Math.atan(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_sinh__["a" /* default */])(Ce));
+
+    var sin_Cn = Math.sin(Cn);
+    var cos_Cn = Math.cos(Cn);
+    var sin_Ce = Math.sin(Ce);
+    var cos_Ce = Math.cos(Ce);
+
+    Cn = Math.atan2(sin_Cn * cos_Ce, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_hypot__["a" /* default */])(sin_Ce, cos_Ce * cos_Cn));
+    Ce = Math.atan2(sin_Ce, cos_Ce * cos_Cn);
+
+    lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(Ce + this.long0);
+    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cgb, Cn);
   }
-  if (wkt.b && !isFinite(wkt.b)) {
-    wkt.b = wkt.a;
+  else {
+    lon = Infinity;
+    lat = Infinity;
   }
 
-  function toMeter(input) {
-    var ratio = wkt.to_meter || 1;
-    return input * ratio;
-  }
-  var renamer = function(a) {
-    return rename(wkt, a);
-  };
-  var list = [
-    ['standard_parallel_1', 'Standard_Parallel_1'],
-    ['standard_parallel_2', 'Standard_Parallel_2'],
-    ['false_easting', 'False_Easting'],
-    ['false_northing', 'False_Northing'],
-    ['central_meridian', 'Central_Meridian'],
-    ['latitude_of_origin', 'Latitude_Of_Origin'],
-    ['latitude_of_origin', 'Central_Parallel'],
-    ['scale_factor', 'Scale_Factor'],
-    ['k0', 'scale_factor'],
-    ['latitude_of_center', 'Latitude_of_center'],
-    ['lat0', 'latitude_of_center', d2r],
-    ['longitude_of_center', 'Longitude_Of_Center'],
-    ['longc', 'longitude_of_center', d2r],
-    ['x0', 'false_easting', toMeter],
-    ['y0', 'false_northing', toMeter],
-    ['long0', 'central_meridian', d2r],
-    ['lat0', 'latitude_of_origin', d2r],
-    ['lat0', 'standard_parallel_1', d2r],
-    ['lat1', 'standard_parallel_1', d2r],
-    ['lat2', 'standard_parallel_2', d2r],
-    ['alpha', 'azimuth', d2r],
-    ['srsCode', 'name']
-  ];
-  list.forEach(renamer);
-  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === 'Lambert_Azimuthal_Equal_Area')) {
-    wkt.long0 = wkt.longc;
-  }
-  if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
-    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
-    wkt.lat_ts = wkt.lat1;
-  }
+  p.x = lon;
+  p.y = lat;
+
+  return p;
 }
-/* harmony default export */ __webpack_exports__["a"] = (function(wkt) {
-  var lisp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* default */])(wkt);
-  var type = lisp.shift();
-  var name = lisp.shift();
-  lisp.unshift(['name', name]);
-  lisp.unshift(['type', type]);
-  var obj = {};
-  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__process__["a" /* sExpr */])(lisp, obj);
-  cleanWKT(obj);
-  return obj;
+
+var names = ["Extended_Transverse_Mercator", "Extended Transverse Mercator", "etmerc"];
+/* harmony default export */ __webpack_exports__["a"] = ({
+  init: init,
+  forward: forward,
+  inverse: inverse,
+  names: names
 });
 
 
 /***/ }),
 /* 62 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datum_transform__ = __webpack_require__(124);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adjust_axis__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Proj__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_toPoint__ = __webpack_require__(58);
+/* harmony export (immutable) */ __webpack_exports__["a"] = transform;
+
+
+
+
+
+function checkNotWGS(source, dest) {
+  return ((source.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || source.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) && dest.datumCode !== 'WGS84') || ((dest.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || dest.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) && source.datumCode !== 'WGS84');
+}
+
+function transform(source, dest, point) {
+  var wgs84;
+  if (Array.isArray(point)) {
+    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_toPoint__["a" /* default */])(point);
+  }
+
+  // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
+  if (source.datum && dest.datum && checkNotWGS(source, dest)) {
+    wgs84 = new __WEBPACK_IMPORTED_MODULE_3__Proj__["a" /* default */]('WGS84');
+    point = transform(source, wgs84, point);
+    source = wgs84;
+  }
+  // DGR, 2010/11/12
+  if (source.axis !== 'enu') {
+    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__adjust_axis__["a" /* default */])(source, false, point);
+  }
+  // Transform source points to long/lat, if they aren't already.
+  if (source.projName === 'longlat') {
+    point = {
+      x: point.x * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */],
+      y: point.y * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */]
+    };
+  }
+  else {
+    if (source.to_meter) {
+      point = {
+        x: point.x * source.to_meter,
+        y: point.y * source.to_meter
+      };
+    }
+    point = source.inverse(point); // Convert Cartesian to longlat
+  }
+  // Adjust for the prime meridian if necessary
+  if (source.from_greenwich) {
+    point.x += source.from_greenwich;
+  }
+
+  // Convert datums if needed, and if possible.
+  point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__datum_transform__["a" /* default */])(source.datum, dest.datum, point);
+
+  // Adjust for the prime meridian if necessary
+  if (dest.from_greenwich) {
+    point = {
+      x: point.x - dest.from_greenwich,
+      y: point.y
+    };
+  }
+
+  if (dest.projName === 'longlat') {
+    // convert radians to decimal degrees
+    point = {
+      x: point.x * __WEBPACK_IMPORTED_MODULE_0__constants_values__["j" /* R2D */],
+      y: point.y * __WEBPACK_IMPORTED_MODULE_0__constants_values__["j" /* R2D */]
+    };
+  } else { // else project
+    point = dest.forward(point);
+    if (dest.to_meter) {
+      point = {
+        x: point.x / dest.to_meter,
+        y: point.y / dest.to_meter
+      };
+    }
+  }
+
+  // DGR, 2010/11/12
+  if (dest.axis !== 'enu') {
+    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__adjust_axis__["a" /* default */])(dest, true, point);
+  }
+
+  return point;
+}
+
+
+/***/ }),
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Point = __webpack_require__(161);
+var Point = __webpack_require__(105);
 
 module.exports = VectorTileFeature;
 
@@ -7272,13 +7342,13 @@ function signedArea(ring) {
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var VectorTileFeature = __webpack_require__(62);
+var VectorTileFeature = __webpack_require__(63);
 
 module.exports = VectorTileLayer;
 
@@ -7340,7 +7410,167 @@ VectorTileLayer.prototype.feature = function(i) {
 
 
 /***/ }),
-/* 64 */
+/* 65 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(163);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__process__ = __webpack_require__(164);
+var D2R = 0.01745329251994329577;
+
+
+
+
+
+function rename(obj, params) {
+  var outName = params[0];
+  var inName = params[1];
+  if (!(outName in obj) && (inName in obj)) {
+    obj[outName] = obj[inName];
+    if (params.length === 3) {
+      obj[outName] = params[2](obj[outName]);
+    }
+  }
+}
+
+function d2r(input) {
+  return input * D2R;
+}
+
+function cleanWKT(wkt) {
+  if (wkt.type === 'GEOGCS') {
+    wkt.projName = 'longlat';
+  } else if (wkt.type === 'LOCAL_CS') {
+    wkt.projName = 'identity';
+    wkt.local = true;
+  } else {
+    if (typeof wkt.PROJECTION === 'object') {
+      wkt.projName = Object.keys(wkt.PROJECTION)[0];
+    } else {
+      wkt.projName = wkt.PROJECTION;
+    }
+  }
+  if (wkt.UNIT) {
+    wkt.units = wkt.UNIT.name.toLowerCase();
+    if (wkt.units === 'metre') {
+      wkt.units = 'meter';
+    }
+    if (wkt.UNIT.convert) {
+      if (wkt.type === 'GEOGCS') {
+        if (wkt.DATUM && wkt.DATUM.SPHEROID) {
+          wkt.to_meter = wkt.UNIT.convert*wkt.DATUM.SPHEROID.a;
+        }
+      } else {
+        wkt.to_meter = wkt.UNIT.convert, 10;
+      }
+    }
+  }
+  var geogcs = wkt.GEOGCS;
+  if (wkt.type === 'GEOGCS') {
+    geogcs = wkt;
+  }
+  if (geogcs) {
+    //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
+    //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
+    //}
+    if (geogcs.DATUM) {
+      wkt.datumCode = geogcs.DATUM.name.toLowerCase();
+    } else {
+      wkt.datumCode = geogcs.name.toLowerCase();
+    }
+    if (wkt.datumCode.slice(0, 2) === 'd_') {
+      wkt.datumCode = wkt.datumCode.slice(2);
+    }
+    if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
+      wkt.datumCode = 'nzgd49';
+    }
+    if (wkt.datumCode === 'wgs_1984') {
+      if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
+        wkt.sphere = true;
+      }
+      wkt.datumCode = 'wgs84';
+    }
+    if (wkt.datumCode.slice(-6) === '_ferro') {
+      wkt.datumCode = wkt.datumCode.slice(0, - 6);
+    }
+    if (wkt.datumCode.slice(-8) === '_jakarta') {
+      wkt.datumCode = wkt.datumCode.slice(0, - 8);
+    }
+    if (~wkt.datumCode.indexOf('belge')) {
+      wkt.datumCode = 'rnb72';
+    }
+    if (geogcs.DATUM && geogcs.DATUM.SPHEROID) {
+      wkt.ellps = geogcs.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
+      if (wkt.ellps.toLowerCase().slice(0, 13) === 'international') {
+        wkt.ellps = 'intl';
+      }
+
+      wkt.a = geogcs.DATUM.SPHEROID.a;
+      wkt.rf = parseFloat(geogcs.DATUM.SPHEROID.rf, 10);
+    }
+    if (~wkt.datumCode.indexOf('osgb_1936')) {
+      wkt.datumCode = 'osgb36';
+    }
+  }
+  if (wkt.b && !isFinite(wkt.b)) {
+    wkt.b = wkt.a;
+  }
+
+  function toMeter(input) {
+    var ratio = wkt.to_meter || 1;
+    return input * ratio;
+  }
+  var renamer = function(a) {
+    return rename(wkt, a);
+  };
+  var list = [
+    ['standard_parallel_1', 'Standard_Parallel_1'],
+    ['standard_parallel_2', 'Standard_Parallel_2'],
+    ['false_easting', 'False_Easting'],
+    ['false_northing', 'False_Northing'],
+    ['central_meridian', 'Central_Meridian'],
+    ['latitude_of_origin', 'Latitude_Of_Origin'],
+    ['latitude_of_origin', 'Central_Parallel'],
+    ['scale_factor', 'Scale_Factor'],
+    ['k0', 'scale_factor'],
+    ['latitude_of_center', 'Latitude_of_center'],
+    ['lat0', 'latitude_of_center', d2r],
+    ['longitude_of_center', 'Longitude_Of_Center'],
+    ['longc', 'longitude_of_center', d2r],
+    ['x0', 'false_easting', toMeter],
+    ['y0', 'false_northing', toMeter],
+    ['long0', 'central_meridian', d2r],
+    ['lat0', 'latitude_of_origin', d2r],
+    ['lat0', 'standard_parallel_1', d2r],
+    ['lat1', 'standard_parallel_1', d2r],
+    ['lat2', 'standard_parallel_2', d2r],
+    ['alpha', 'azimuth', d2r],
+    ['srsCode', 'name']
+  ];
+  list.forEach(renamer);
+  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === 'Lambert_Azimuthal_Equal_Area')) {
+    wkt.long0 = wkt.longc;
+  }
+  if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
+    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
+    wkt.lat_ts = wkt.lat1;
+  }
+}
+/* harmony default export */ __webpack_exports__["a"] = (function(wkt) {
+  var lisp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* default */])(wkt);
+  var type = lisp.shift();
+  var name = lisp.shift();
+  lisp.unshift(['name', name]);
+  lisp.unshift(['type', type]);
+  var obj = {};
+  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__process__["a" /* sExpr */])(lisp, obj);
+  cleanWKT(obj);
+  return obj;
+});
+
+
+/***/ }),
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -7348,7 +7578,7 @@ VectorTileLayer.prototype.feature = function(i) {
  * 缓冲区分析参数基类。
  */
 var SuperMap = __webpack_require__(0);
-var BufferSetting = __webpack_require__(169);
+var BufferSetting = __webpack_require__(171);
 SuperMap.BufferAnalystParameters = SuperMap.Class({
 
     /**
@@ -7395,7 +7625,7 @@ SuperMap.BufferAnalystParameters = SuperMap.Class({
 module.exports = SuperMap.BufferAnalystParameters;
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -7444,7 +7674,7 @@ SuperMap.OverlayAnalystParameters = SuperMap.Class({
 module.exports = SuperMap.OverlayAnalystParameters;
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -7455,7 +7685,7 @@ module.exports = SuperMap.OverlayAnalystParameters;
  *  Inherits from:
  *  - <SuperMap.Geometry.Collection>
  */
-__webpack_require__(256);
+__webpack_require__(262);
 var SuperMap = __webpack_require__(0);
 SuperMap.Route = SuperMap.Class(SuperMap.Geometry.Collection, {
 
@@ -7680,7 +7910,7 @@ SuperMap.Route.fromJson = function (jsonObject) {
 module.exports = SuperMap.Route;
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -7693,7 +7923,7 @@ __webpack_require__(2);
 __webpack_require__(10);
 var SuperMap = __webpack_require__(0);
 var DataReturnOption = __webpack_require__(22);
-var SurfaceAnalystParametersSetting = __webpack_require__(279);
+var SurfaceAnalystParametersSetting = __webpack_require__(287);
 SuperMap.SurfaceAnalystParameters = SuperMap.Class({
 
     /**
@@ -7767,7 +7997,7 @@ SuperMap.SurfaceAnalystParameters = SuperMap.Class({
 module.exports = SuperMap.SurfaceAnalystParameters;
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -7876,7 +8106,7 @@ module.exports = SuperMap.ThemeDotDensity;
 
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -7892,9 +8122,9 @@ module.exports = SuperMap.ThemeDotDensity;
 __webpack_require__(2);
 __webpack_require__(14);
 var SuperMap = __webpack_require__(0);
-var ThemeFlow = __webpack_require__(47);
-var ThemeOffset = __webpack_require__(49);
-var ThemeGraduatedSymbolStyle = __webpack_require__(283);
+var ThemeFlow = __webpack_require__(48);
+var ThemeOffset = __webpack_require__(50);
+var ThemeGraduatedSymbolStyle = __webpack_require__(291);
 SuperMap.ThemeGraduatedSymbol = SuperMap.Class(SuperMap.Theme, {
 
     /**
@@ -8049,7 +8279,7 @@ module.exports = SuperMap.ThemeGraduatedSymbol;
 
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -8066,12 +8296,12 @@ module.exports = SuperMap.ThemeGraduatedSymbol;
 __webpack_require__(2);
 __webpack_require__(14);
 var SuperMap = __webpack_require__(0);
-var ThemeFlow = __webpack_require__(47);
-var ThemeOffset = __webpack_require__(49);
-var ThemeGraphAxes = __webpack_require__(284);
-var ThemeGraphSize = __webpack_require__(286);
-var ThemeGraphText = __webpack_require__(287);
-var ThemeGraphItem = __webpack_require__(285);
+var ThemeFlow = __webpack_require__(48);
+var ThemeOffset = __webpack_require__(50);
+var ThemeGraphAxes = __webpack_require__(292);
+var ThemeGraphSize = __webpack_require__(294);
+var ThemeGraphText = __webpack_require__(295);
+var ThemeGraphItem = __webpack_require__(293);
 SuperMap.ThemeGraph = SuperMap.Class(SuperMap.Theme, {
 
     /**
@@ -8421,7 +8651,7 @@ SuperMap.ThemeGraph.fromObj = function (obj) {
 module.exports = SuperMap.ThemeGraph;
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -8436,7 +8666,7 @@ module.exports = SuperMap.ThemeGraph;
  */
 __webpack_require__(2);
 __webpack_require__(14);
-__webpack_require__(299);
+__webpack_require__(307);
 var SuperMap = __webpack_require__(0);
 SuperMap.ThemeRange = SuperMap.Class(SuperMap.Theme, {
     /**
@@ -8550,7 +8780,7 @@ module.exports = SuperMap.ThemeRange;
 
 
 /***/ }),
-/* 72 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -8566,7 +8796,7 @@ __webpack_require__(2);
 __webpack_require__(14);
 var SuperMap = __webpack_require__(0);
 var ServerStyle = __webpack_require__(12);
-var ThemeUniqueItem = __webpack_require__(301);
+var ThemeUniqueItem = __webpack_require__(309);
 SuperMap.ThemeUnique = SuperMap.Class(SuperMap.Theme, {
 
     /**
@@ -8690,136 +8920,7 @@ module.exports = SuperMap.ThemeUnique;
 
 
 /***/ }),
-/* 73 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(162);
-var fetchJsonp = __webpack_require__(100);
-var SuperMap = __webpack_require__(0);
-SuperMap.Support = {
-    cors: ((window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()))
-};
-
-SuperMap.Request = {
-
-    get: function (url, params, options) {
-        var type = 'GET';
-        url = this._appendUrlTokenParameter(url);
-        url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
-        if (url.length <= 2000) {
-            if (SuperMap.Support.cors) {
-                return this._fetch(url, params, options, type);
-            }
-            if (!SuperMap.Util.isInTheSameDomain(url)) {
-                url = url.replace('.json', '.jsonp');
-                return this._fetchJsonp(url, options);
-            }
-        }
-        return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
-    },
-
-    delete: function (url, params, options) {
-        var type = 'DELETE';
-        url = this._appendUrlTokenParameter(url);
-        url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
-        if (url.length <= 2000 && SuperMap.Support.cors) {
-            return this._fetch(url, params, options, type);
-        }
-        return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
-    },
-
-    post: function (url, params, options) {
-        return this._fetch(this._appendUrlTokenParameter(url), params, options, 'POST');
-    },
-
-    put: function (url, params, options) {
-        return this._fetch(this._appendUrlTokenParameter(url), params, options, 'PUT');
-    },
-
-    _postSimulatie: function (type, url, params, options) {
-        var separator = url.indexOf("?") > -1 ? "&" : "?";
-        url += separator + '_method= ' + type;
-        return this.post(url, params, options);
-    },
-
-    _appendUrlTokenParameter: function (url) {
-        url = url.indexOf('.json') !== -1 ? url : url + '.json';
-        if (SuperMap.Credential.CREDENTIAL && SuperMap.Credential.CREDENTIAL.getUrlParameters()) {
-            var separator = url.indexOf("?") > -1 ? "&" : "?";
-            url += separator + SuperMap.Credential.CREDENTIAL.getUrlParameters();
-        }
-        return url;
-    },
-
-    _fetch: function (url, params, options, type) {
-        options = options || {};
-        if (options.timeout) {
-            return this._timeout(options.timeout, fetch(url, {
-                method: type,
-                headers: options.headers,
-                body: type === 'PUT' || type === 'POST' ? params : undefined,
-                credentials: options.withCredentials ? 'include' : 'omit',
-                mode: 'cors'
-            }).then(function (response) {
-                return response;
-            }));
-        }
-        return fetch(url, {
-            method: type,
-            body: type === 'PUT' || type === 'POST' ? params : undefined,
-            headers: options.headers
-        }).then(function (response) {
-            return response;
-        });
-    },
-
-    _fetchJsonp: function (url, options) {
-        options = options || {};
-        return fetchJsonp(url, {method: 'GET', timeout: options.timeout})
-            .then(function (response) {
-                return response;
-            });
-    },
-
-    _timeout: function (seconds, promise) {
-        return new Promise(function (resolve, reject) {
-            setTimeout(function () {
-                reject(new Error("timeout"))
-            }, seconds)
-            promise.then(resolve, reject)
-        })
-    },
-
-    _getParameterString: function (params) {
-        var paramsArray = [];
-        for (var key in params) {
-            var value = params[key];
-            if ((value != null) && (typeof value !== 'function')) {
-                var encodedValue;
-                if (typeof value === 'object' && value.constructor === Array) {
-                    var encodedItemArray = [];
-                    var item;
-                    for (var itemIndex = 0, len = value.length; itemIndex < len; itemIndex++) {
-                        item = value[itemIndex];
-                        encodedItemArray.push(encodeURIComponent(
-                            (item === null || item === undefined) ? "" : item)
-                        );
-                    }
-                    encodedValue = '[' + encodedItemArray.join(",") + ']';
-                } else {
-                    encodedValue = encodeURIComponent(value);
-                }
-                paramsArray.push(encodeURIComponent(key) + "=" + encodedValue);
-            }
-        }
-        return paramsArray.join("&");
-    }
-
-};
-module.exports = SuperMap.Request;
-
-/***/ }),
-/* 74 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var L = __webpack_require__(1);
@@ -8936,7 +9037,7 @@ module.exports = L.Canvas.Renderer;
 
 
 /***/ }),
-/* 75 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var L = __webpack_require__(1);
@@ -9033,7 +9134,7 @@ module.exports = L.SVG.Renderer;
 
 
 /***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9051,7 +9152,7 @@ L.supermap.VectorFeatureType = {
 module.exports = L.supermap.VectorFeatureType;
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
@@ -9093,7 +9194,7 @@ module.exports = BaiduTileLayer;
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
@@ -9130,7 +9231,7 @@ module.exports = CloudTileLayer;
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
@@ -9158,7 +9259,7 @@ module.exports = TiandituTileLayer;
 
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
@@ -9206,7 +9307,7 @@ L.tileLayer.wmts = function (url, options) {
 module.exports = L.TileLayer.WMTS;
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -9295,13 +9396,13 @@ L.supermap.tiledMapLayer = function (url, options) {
 module.exports = TiledMapLayer;
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
 var L = __webpack_require__(1);
 var Util = __webpack_require__(19);
-var Request = __webpack_require__(73);
+var Request = __webpack_require__(51);
 var SuperMap = __webpack_require__(0);
 var WebMap = L.LayerGroup.extend({
     options: {
@@ -9645,14 +9746,14 @@ L.supermap.webmap = function (id, options) {
 };
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
 var L = __webpack_require__(1);
 var echarts = {};
 try {
-    echarts = __webpack_require__(334);
+    echarts = __webpack_require__(342);
 } catch (ex) {
     echarts = {};
 }
@@ -9827,12 +9928,12 @@ module.exports = EchartsMapLayer;
 
 
 /***/ }),
-/* 84 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
-__webpack_require__(324);
-__webpack_require__(325);
+__webpack_require__(332);
+__webpack_require__(333);
 var L = __webpack_require__(1);
 L.supermap.GraphicGroup = L.Path.extend({
 
@@ -9934,12 +10035,12 @@ L.supermap.graphicGroup = function (graphics, options) {
 module.exports = L.supermap.GraphicGroup;
 
 /***/ }),
-/* 85 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var L = __webpack_require__(1);
-var Pbf = __webpack_require__(101);
-var VectorTile = __webpack_require__(159);
+var Pbf = __webpack_require__(104);
+var VectorTile = __webpack_require__(160);
 var SuperMap = __webpack_require__(0);
 
 L.PBFTileVectorLayer = L.VectorGrid.extend({
@@ -10118,7 +10219,7 @@ module.exports = L.PBFTileVectorLayer;
 
 
 /***/ }),
-/* 86 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -10128,9 +10229,9 @@ module.exports = L.PBFTileVectorLayer;
  *      L.superMap.tiledVectorLayer(url).addTo(map);
  */
 __webpack_require__(6);
-__webpack_require__(331);
+__webpack_require__(339);
 var L = __webpack_require__(1);
-var CartoCSSToLeaflet = __webpack_require__(321);
+var CartoCSSToLeaflet = __webpack_require__(329);
 var SuperMap = __webpack_require__(0);
 var TileVectorLayer = L.VectorGrid.extend({
 
@@ -10478,7 +10579,7 @@ L.supermap.tiledVectorLayer = function (url, options) {
 module.exports = TileVectorLayer;
 
 /***/ }),
-/* 87 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -10492,9 +10593,9 @@ module.exports = TileVectorLayer;
  */
 var L = __webpack_require__(1);
 var SuperMap = __webpack_require__(0);
-var ServiceBase = __webpack_require__(8);
-var ChartQueryService = __webpack_require__(175);
-var ChartFeatureInfoSpecsService = __webpack_require__(172);
+var ServiceBase = __webpack_require__(7);
+var ChartQueryService = __webpack_require__(179);
+var ChartFeatureInfoSpecsService = __webpack_require__(176);
 var ChartService = ServiceBase.extend({
 
     initialize: function (url, options) {
@@ -10573,7 +10674,7 @@ module.exports = ChartService;
 
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -10588,14 +10689,14 @@ module.exports = ChartService;
  */
 var L = __webpack_require__(1);
 var SuperMap = __webpack_require__(0);
-var ServiceBase = __webpack_require__(8);
+var ServiceBase = __webpack_require__(7);
 var Util = __webpack_require__(19);
-var GetFeaturesByIDsService = __webpack_require__(230);
-var GetFeaturesBySQLService = __webpack_require__(232);
-var GetFeaturesByBoundsService = __webpack_require__(224);
-var GetFeaturesByBufferService = __webpack_require__(226);
-var GetFeaturesByGeometryService = __webpack_require__(228);
-var EditFeaturesService = __webpack_require__(188);
+var GetFeaturesByIDsService = __webpack_require__(234);
+var GetFeaturesBySQLService = __webpack_require__(236);
+var GetFeaturesByBoundsService = __webpack_require__(228);
+var GetFeaturesByBufferService = __webpack_require__(230);
+var GetFeaturesByGeometryService = __webpack_require__(232);
+var EditFeaturesService = __webpack_require__(192);
 
 var FeatureService = ServiceBase.extend({
 
@@ -10801,7 +10902,7 @@ module.exports = FeatureService;
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -10813,9 +10914,9 @@ module.exports = FeatureService;
  *      });
  */
 var L = __webpack_require__(1);
-var ServiceBase = __webpack_require__(8);
-var GetFieldsService = __webpack_require__(233);
-var FieldStatisticService = __webpack_require__(201);
+var ServiceBase = __webpack_require__(7);
+var GetFieldsService = __webpack_require__(237);
+var FieldStatisticService = __webpack_require__(205);
 
 var FieldService = ServiceBase.extend({
 
@@ -10913,7 +11014,7 @@ module.exports = FieldService;
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -10926,8 +11027,8 @@ module.exports = FieldService;
  *      })
  */
 var L = __webpack_require__(1);
-var ServiceBase = __webpack_require__(8);
-var GetGridCellInfosService = __webpack_require__(235);
+var ServiceBase = __webpack_require__(7);
+var GetGridCellInfosService = __webpack_require__(239);
 var GridCellInfosService = ServiceBase.extend({
 
     initialize: function (url, options) {
@@ -10963,7 +11064,7 @@ L.supermap.gridCellInfosService = function (url, options) {
 module.exports = GridCellInfosService;
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -10975,11 +11076,11 @@ module.exports = GridCellInfosService;
  *      })
  */
 var L = __webpack_require__(1);
-var ServiceBase = __webpack_require__(8);
-var GetLayersInfoService = __webpack_require__(236);
-var SetLayerInfoService = __webpack_require__(271);
-var SetLayersInfoService = __webpack_require__(275);
-var SetLayerStatusService = __webpack_require__(273);
+var ServiceBase = __webpack_require__(7);
+var GetLayersInfoService = __webpack_require__(240);
+var SetLayerInfoService = __webpack_require__(277);
+var SetLayersInfoService = __webpack_require__(281);
+var SetLayerStatusService = __webpack_require__(279);
 
 var LayerInfoService = ServiceBase.extend({
 
@@ -11098,7 +11199,7 @@ L.supermap.layerInfoService = function (url, options) {
 module.exports = LayerInfoService;
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -11111,10 +11212,10 @@ module.exports = LayerInfoService;
  *      })
  */
 var L = __webpack_require__(1);
-var ServiceBase = __webpack_require__(8);
+var ServiceBase = __webpack_require__(7);
 var SuperMap = __webpack_require__(0);
-var SuperMapMapService = __webpack_require__(250);
-var TilesetsService = __webpack_require__(303);
+var SuperMapMapService = __webpack_require__(256);
+var TilesetsService = __webpack_require__(311);
 var MapService = ServiceBase.extend({
     options: {
         projection: null
@@ -11172,7 +11273,7 @@ L.supermap.mapService = function (url, options) {
 module.exports = MapService;
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -11186,10 +11287,10 @@ module.exports = MapService;
  *      })
  */
 var L = __webpack_require__(1);
-var ServiceBase = __webpack_require__(8);
+var ServiceBase = __webpack_require__(7);
 var SuperMap = __webpack_require__(0);
 var Util = __webpack_require__(19);
-var SuperMapMeasureService = __webpack_require__(254);
+var SuperMapMeasureService = __webpack_require__(260);
 
 var MeasureService = ServiceBase.extend({
 
@@ -11255,7 +11356,7 @@ L.supermap.measureService = function (url, options) {
 module.exports = MeasureService;
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -11268,12 +11369,12 @@ module.exports = MeasureService;
  *      })
  */
 var L = __webpack_require__(1);
-var ServiceBase = __webpack_require__(8);
-var FacilityAnalystSinks3DService = __webpack_require__(190);
-var FacilityAnalystSources3DService = __webpack_require__(192);
-var FacilityAnalystTraceup3DService = __webpack_require__(198);
-var FacilityAnalystTracedown3DService = __webpack_require__(196);
-var FacilityAnalystUpstream3DService = __webpack_require__(200);
+var ServiceBase = __webpack_require__(7);
+var FacilityAnalystSinks3DService = __webpack_require__(194);
+var FacilityAnalystSources3DService = __webpack_require__(196);
+var FacilityAnalystTraceup3DService = __webpack_require__(202);
+var FacilityAnalystTracedown3DService = __webpack_require__(200);
+var FacilityAnalystUpstream3DService = __webpack_require__(204);
 
 var NetworkAnalyst3DService = ServiceBase.extend({
 
@@ -11388,7 +11489,7 @@ L.supermap.networkAnalyst3DService = function (url, options) {
 module.exports = NetworkAnalyst3DService;
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -11401,19 +11502,19 @@ module.exports = NetworkAnalyst3DService;
  *      })
  */
 var L = __webpack_require__(1);
-var ServiceBase = __webpack_require__(8);
+var ServiceBase = __webpack_require__(7);
 var SuperMap = __webpack_require__(0);
-var BurstPipelineAnalystService = __webpack_require__(171);
-var ComputeWeightMatrixService = __webpack_require__(178);
-var FacilityAnalystStreamService = __webpack_require__(194);
-var FindClosestFacilitiesService = __webpack_require__(204);
-var FindLocationService = __webpack_require__(206);
-var FindMTSPPathsService = __webpack_require__(208);
-var FindPathService = __webpack_require__(210);
-var FindServiceAreasService = __webpack_require__(212);
-var FindTSPPathsService = __webpack_require__(214);
-var UpdateEdgeWeightService = __webpack_require__(313);
-var UpdateTurnNodeWeightService = __webpack_require__(315);
+var BurstPipelineAnalystService = __webpack_require__(175);
+var ComputeWeightMatrixService = __webpack_require__(182);
+var FacilityAnalystStreamService = __webpack_require__(198);
+var FindClosestFacilitiesService = __webpack_require__(208);
+var FindLocationService = __webpack_require__(210);
+var FindMTSPPathsService = __webpack_require__(212);
+var FindPathService = __webpack_require__(214);
+var FindServiceAreasService = __webpack_require__(216);
+var FindTSPPathsService = __webpack_require__(218);
+var UpdateEdgeWeightService = __webpack_require__(321);
+var UpdateTurnNodeWeightService = __webpack_require__(323);
 
 var NetworkAnalystService = ServiceBase.extend({
 
@@ -11695,7 +11796,245 @@ L.supermap.networkAnalystService = function (url, options) {
 module.exports = NetworkAnalystService;
 
 /***/ }),
-/* 96 */
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+﻿/**
+ * Class: MapService
+ * 地图信息服务类
+ * 用法：
+ *      L.supermap.processingJobsService(url)
+ *      .getKernelDensityJobs(function(result){
+ *           //doSomething
+ *      })
+ */
+var L = __webpack_require__(1);
+var ServiceBase = __webpack_require__(7);
+var SuperMap = __webpack_require__(0);
+var KernelDensityJobsService = __webpack_require__(249);
+var BuildCacheJobsService = __webpack_require__(173);
+var SummaryMeshJobsService = __webpack_require__(285);
+
+var ProcessingJobsService = ServiceBase.extend({
+
+    initialize: function (url, options) {
+        options = options || {};
+        L.setOptions(this, options);
+        ServiceBase.prototype.initialize.call(this, url, options);
+    },
+
+    /**
+     * 获取核密度分析作业的列表。
+     * @param callback 请求结果的回调函数。
+     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     */
+    getKernelDensityJobs: function (callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var kernelDensityJobsService = new KernelDensityJobsService(me.options.url, {
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        kernelDensityJobsService.getKernelDensityJobs();
+        return me;
+    },
+
+    /**
+     * 获取某一个核密度分析作业。
+     * @param id 空间分析作业的id。
+     * @param callback 请求结果的回调函数。
+     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     */
+    getKernelDensityJob: function (id, callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var kernelDensityJobsService = new KernelDensityJobsService(me.options.url, {
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        kernelDensityJobsService.getKernelDensityJob(id);
+        return me;
+    },
+
+    /**
+     * 新建一个核密度分析作业。
+     * @param callback 请求结果的回调函数。
+     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     */
+    addKernelDensityJob: function (params, callback, resultFormat) {
+        var me = this,
+            param = me._processParams(params),
+            format = me._processFormat(resultFormat);
+        var kernelDensityJobsService = new KernelDensityJobsService(me.options.url, {
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        kernelDensityJobsService.addKernelDensityJob(param);
+        return me;
+    },
+
+    /**
+     * 获取格网聚合分析作业的列表。
+     * @param callback 请求结果的回调函数。
+     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     */
+    getSummaryMeshJobs: function (callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var summaryMeshJobsService = new SummaryMeshJobsService(me.options.url, {
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        summaryMeshJobsService.getSummaryMeshJobs();
+        return me;
+    },
+
+    /**
+     * 获取某一个格网聚合分析作业。
+     * @param id 空间分析作业的id。
+     * @param callback 请求结果的回调函数。
+     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     */
+    getSummaryMeshJob: function (id, callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var summaryMeshJobsService = new SummaryMeshJobsService(me.options.url, {
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        summaryMeshJobsService.getSummaryMeshJob(id);
+        return me;
+    },
+
+    /**
+     * 新建一个格网聚合分析作业。
+     * @param callback 请求结果的回调函数。
+     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     */
+    addSummaryMeshJob: function (params, callback, resultFormat) {
+        var me = this,
+            param = me._processParams(params),
+            format = me._processFormat(resultFormat);
+        var summaryMeshJobsService = new SummaryMeshJobsService(me.options.url, {
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        summaryMeshJobsService.addSummaryMeshJob(param);
+        return me;
+    },
+
+    /**
+     * 获取生成地图缓存作业的列表。
+     * @param callback 请求结果的回调函数。
+     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     */
+    getBuildCacheJobs: function (callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var buildCacheJobsService = new BuildCacheJobsService(me.options.url, {
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        buildCacheJobsService.getBuildCacheJobs();
+        return me;
+    },
+
+    /**
+     * 获取某一个生成地图缓存作业。
+     * @param id 空间分析作业的id。
+     * @param callback 请求结果的回调函数。
+     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     */
+    getBuildCacheJob: function (id, callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var buildCacheJobsService = new BuildCacheJobsService(me.options.url, {
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        buildCacheJobsService.getBuildCacheJob(id);
+        return me;
+    },
+
+    /**
+     * 新建一个生成地图缓存作业。
+     * @param callback 请求结果的回调函数。
+     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     */
+    addBuildCacheJob: function (params, callback, resultFormat) {
+        var me = this,
+            param = me._processParams(params),
+            format = me._processFormat(resultFormat);
+        var buildCacheJobsService = new BuildCacheJobsService(me.options.url, {
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        buildCacheJobsService.addBuildCacheJob(param);
+        return me;
+    },
+
+    _processFormat: function (resultFormat) {
+        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
+    },
+
+    _processParams: function (params) {
+        if (!params) {
+            return {};
+        }
+        if (params.query && params.query instanceof L.LatLngBounds) {
+            params.query = params.query.toBBoxString();
+        }
+        if (params.bounds) {
+            params.bounds = params.bounds.toBBoxString();
+        }
+        return params;
+    },
+});
+
+L.supermap.processingJobsService = function (url, options) {
+    return new ProcessingJobsService(url, options);
+};
+
+module.exports = ProcessingJobsService;
+
+/***/ }),
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -11708,13 +12047,13 @@ module.exports = NetworkAnalystService;
  *      })
  */
 var L = __webpack_require__(1);
-var ServiceBase = __webpack_require__(8);
+var ServiceBase = __webpack_require__(7);
 var SuperMap = __webpack_require__(0);
 var Util = __webpack_require__(19);
-var QueryByBoundsService = __webpack_require__(258);
-var QueryByDistanceService = __webpack_require__(260);
-var QueryBySQLService = __webpack_require__(264);
-var QueryByGeometryService = __webpack_require__(262);
+var QueryByBoundsService = __webpack_require__(264);
+var QueryByDistanceService = __webpack_require__(266);
+var QueryBySQLService = __webpack_require__(270);
+var QueryByGeometryService = __webpack_require__(268);
 
 var QueryService = ServiceBase.extend({
 
@@ -11857,7 +12196,7 @@ module.exports = QueryService;
 
 
 /***/ }),
-/* 97 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -11871,22 +12210,22 @@ module.exports = QueryService;
  *      })
  */
 var L = __webpack_require__(1);
-var ServiceBase = __webpack_require__(8);
+var ServiceBase = __webpack_require__(7);
 var SuperMap = __webpack_require__(0);
 var Util = __webpack_require__(19);
-var AreaSolarRadiationService = __webpack_require__(166);
-var BufferAnalystService = __webpack_require__(167);
-var DensityAnalystService = __webpack_require__(185);
-var GenerateSpatialDataService = __webpack_require__(216);
-var GeoRelationAnalystService = __webpack_require__(218);
-var InterpolationAnalystService = __webpack_require__(239);
-var MathExpressionAnalysisService = __webpack_require__(252);
-var OverlayAnalystService = __webpack_require__(255);
-var RouteCalculateMeasureService = __webpack_require__(266);
-var RouteLocatorService = __webpack_require__(268);
-var SurfaceAnalystService = __webpack_require__(280);
-var TerrainCurvatureCalculationService = __webpack_require__(282);
-var ThiessenAnalystService = __webpack_require__(302);
+var AreaSolarRadiationService = __webpack_require__(168);
+var BufferAnalystService = __webpack_require__(169);
+var DensityAnalystService = __webpack_require__(189);
+var GenerateSpatialDataService = __webpack_require__(220);
+var GeoRelationAnalystService = __webpack_require__(222);
+var InterpolationAnalystService = __webpack_require__(243);
+var MathExpressionAnalysisService = __webpack_require__(258);
+var OverlayAnalystService = __webpack_require__(261);
+var RouteCalculateMeasureService = __webpack_require__(272);
+var RouteLocatorService = __webpack_require__(274);
+var SurfaceAnalystService = __webpack_require__(288);
+var TerrainCurvatureCalculationService = __webpack_require__(290);
+var ThiessenAnalystService = __webpack_require__(310);
 
 var SpatialAnalystService = ServiceBase.extend({
 
@@ -12238,7 +12577,7 @@ L.supermap.spatialAnalystService = function (url, options) {
 module.exports = SpatialAnalystService;
 
 /***/ }),
-/* 98 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -12252,8 +12591,8 @@ module.exports = SpatialAnalystService;
  *      });
  */
 var L = __webpack_require__(1);
-var ServiceBase = __webpack_require__(8);
-var SuperMapThemeService = __webpack_require__(300);
+var ServiceBase = __webpack_require__(7);
+var SuperMapThemeService = __webpack_require__(308);
 var ThemeService = ServiceBase.extend({
 
     initialize: function (url, options) {
@@ -12281,7 +12620,7 @@ L.supermap.themeService = function (url, options) {
 module.exports = ThemeService;
 
 /***/ }),
-/* 99 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -12295,10 +12634,10 @@ module.exports = ThemeService;
  *      })
  */
 var L = __webpack_require__(1);
-var ServiceBase = __webpack_require__(8);
-var StopQueryService = __webpack_require__(277);
-var TransferPathService = __webpack_require__(306);
-var TransferSolutionService = __webpack_require__(308);
+var ServiceBase = __webpack_require__(7);
+var StopQueryService = __webpack_require__(283);
+var TransferPathService = __webpack_require__(314);
+var TransferSolutionService = __webpack_require__(316);
 
 var TrafficTransferAnalystService = ServiceBase.extend({
 
@@ -12382,7 +12721,7 @@ L.supermap.trafficTransferAnalystService = function (url, options) {
 module.exports = TrafficTransferAnalystService;
 
 /***/ }),
-/* 100 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -12498,7 +12837,97 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 101 */
+/* 103 */
+/***/ (function(module, exports) {
+
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
+
+  i += d
+
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+}
+
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+  value = Math.abs(value)
+
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
+    }
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
+
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = (value * c - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
+    }
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
+
+
+/***/ }),
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12506,7 +12935,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 module.exports = Pbf;
 
-var ieee754 = __webpack_require__(102);
+var ieee754 = __webpack_require__(103);
 
 function Pbf(buf) {
     this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
@@ -13123,101 +13552,149 @@ function writeUtf8(buf, str, pos) {
 
 
 /***/ }),
-/* 102 */
-/***/ (function(module, exports) {
+/* 105 */
+/***/ (function(module, exports, __webpack_require__) {
 
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
+"use strict";
 
-  i += d
 
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+module.exports = Point;
 
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
 }
 
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+Point.prototype = {
+    clone: function() { return new Point(this.x, this.y); },
 
-  value = Math.abs(value)
+    add:     function(p) { return this.clone()._add(p);     },
+    sub:     function(p) { return this.clone()._sub(p);     },
+    mult:    function(k) { return this.clone()._mult(k);    },
+    div:     function(k) { return this.clone()._div(k);     },
+    rotate:  function(a) { return this.clone()._rotate(a);  },
+    matMult: function(m) { return this.clone()._matMult(m); },
+    unit:    function() { return this.clone()._unit(); },
+    perp:    function() { return this.clone()._perp(); },
+    round:   function() { return this.clone()._round(); },
 
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
+    mag: function() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    },
+
+    equals: function(p) {
+        return this.x === p.x &&
+               this.y === p.y;
+    },
+
+    dist: function(p) {
+        return Math.sqrt(this.distSqr(p));
+    },
+
+    distSqr: function(p) {
+        var dx = p.x - this.x,
+            dy = p.y - this.y;
+        return dx * dx + dy * dy;
+    },
+
+    angle: function() {
+        return Math.atan2(this.y, this.x);
+    },
+
+    angleTo: function(b) {
+        return Math.atan2(this.y - b.y, this.x - b.x);
+    },
+
+    angleWith: function(b) {
+        return this.angleWithSep(b.x, b.y);
+    },
+
+    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
+    angleWithSep: function(x, y) {
+        return Math.atan2(
+            this.x * y - this.y * x,
+            this.x * x + this.y * y);
+    },
+
+    _matMult: function(m) {
+        var x = m[0] * this.x + m[1] * this.y,
+            y = m[2] * this.x + m[3] * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _add: function(p) {
+        this.x += p.x;
+        this.y += p.y;
+        return this;
+    },
+
+    _sub: function(p) {
+        this.x -= p.x;
+        this.y -= p.y;
+        return this;
+    },
+
+    _mult: function(k) {
+        this.x *= k;
+        this.y *= k;
+        return this;
+    },
+
+    _div: function(k) {
+        this.x /= k;
+        this.y /= k;
+        return this;
+    },
+
+    _unit: function() {
+        this._div(this.mag());
+        return this;
+    },
+
+    _perp: function() {
+        var y = this.y;
+        this.y = this.x;
+        this.x = -y;
+        return this;
+    },
+
+    _rotate: function(angle) {
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            x = cos * this.x - sin * this.y,
+            y = sin * this.x + cos * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _round: function() {
+        this.x = Math.round(this.x);
+        this.y = Math.round(this.y);
+        return this;
     }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
+};
+
+// constructs Point from an array if necessary
+Point.convert = function (a) {
+    if (a instanceof Point) {
+        return a;
     }
-    if (value * c >= 2) {
-      e++
-      c /= 2
+    if (Array.isArray(a)) {
+        return new Point(a[0], a[1]);
     }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = (value * c - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
+    return a;
+};
 
 
 /***/ }),
-/* 103 */
+/* 106 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mgrs__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mgrs__ = __webpack_require__(53);
 
 
 function Point(x, y, z) {
@@ -13255,7 +13732,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 104 */
+/* 107 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13314,7 +13791,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 105 */
+/* 108 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13336,12 +13813,12 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 106 */
+/* 109 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hypot__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__log1py__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hypot__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__log1py__ = __webpack_require__(115);
 
 
 
@@ -13354,7 +13831,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 107 */
+/* 110 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13376,12 +13853,12 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 108 */
+/* 111 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sinh__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cosh__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sinh__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cosh__ = __webpack_require__(112);
 
 
 
@@ -13417,7 +13894,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 109 */
+/* 112 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13428,7 +13905,7 @@ Point.prototype.toMGRS = function(accuracy) {
 });
 
 /***/ }),
-/* 110 */
+/* 113 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13450,7 +13927,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 111 */
+/* 114 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13490,7 +13967,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 112 */
+/* 115 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13503,7 +13980,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 113 */
+/* 116 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13512,7 +13989,7 @@ Point.prototype.toMGRS = function(accuracy) {
 });
 
 /***/ }),
-/* 114 */
+/* 117 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13617,7 +14094,7 @@ exports.rnb72 = {
 
 
 /***/ }),
-/* 115 */
+/* 118 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13885,7 +14362,7 @@ exports.sphere = {
 
 
 /***/ }),
-/* 116 */
+/* 119 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13909,7 +14386,7 @@ exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 
 /***/ }),
-/* 117 */
+/* 120 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13920,12 +14397,12 @@ exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 
 /***/ }),
-/* 118 */
+/* 121 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Proj__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transform__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transform__ = __webpack_require__(62);
 
 
 var wgs84 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__Proj__["a" /* default */])('WGS84');
@@ -13992,7 +14469,7 @@ function proj4(fromProj, toProj, coord) {
 /* harmony default export */ __webpack_exports__["a"] = (proj4);
 
 /***/ }),
-/* 119 */
+/* 122 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14035,7 +14512,7 @@ function datum(datumCode, datum_params, a, b, es, ep2) {
 
 
 /***/ }),
-/* 120 */
+/* 123 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14290,12 +14767,12 @@ function geocentricFromWgs84(p, datum_type, datum_params) {
 
 
 /***/ }),
-/* 121 */
+/* 124 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datumUtils__ = __webpack_require__(120);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datumUtils__ = __webpack_require__(123);
 
 
 
@@ -14338,12 +14815,12 @@ function checkParams(type) {
 
 
 /***/ }),
-/* 122 */
+/* 125 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_Ellipsoid__ = __webpack_require__(115);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_Ellipsoid__ = __webpack_require__(118);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__match__ = __webpack_require__(44);
 /* harmony export (immutable) */ __webpack_exports__["b"] = eccentricity;
 /* harmony export (immutable) */ __webpack_exports__["a"] = sphere;
@@ -14398,7 +14875,7 @@ function sphere(a, b, rf, ellps, sphere) {
 
 
 /***/ }),
-/* 123 */
+/* 126 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14419,7 +14896,7 @@ function sphere(a, b, rf, ellps, sphere) {
 
 
 /***/ }),
-/* 124 */
+/* 127 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14437,20 +14914,20 @@ function sphere(a, b, rf, ellps, sphere) {
 
 
 /***/ }),
-/* 125 */
+/* 128 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(118);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(121);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Proj__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Point__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_toPoint__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__defs__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__transform__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_mgrs__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__version__ = __webpack_require__(154);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__projs__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Point__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_toPoint__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__defs__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__transform__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_mgrs__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__version__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__projs__ = __webpack_require__(159);
 
 
 
@@ -14475,13 +14952,13 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__projs__["a" /* default */])(_
 
 
 /***/ }),
-/* 126 */
+/* 129 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defs__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_wkt_parser__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projString__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defs__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_wkt_parser__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projString__ = __webpack_require__(60);
 
 
 
@@ -14521,12 +14998,12 @@ function parse(code){
 
 
 /***/ }),
-/* 127 */
+/* 130 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__projections_merc__ = __webpack_require__(140);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projections_longlat__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__projections_merc__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projections_longlat__ = __webpack_require__(142);
 /* unused harmony export add */
 /* unused harmony export get */
 /* unused harmony export start */
@@ -14572,7 +15049,7 @@ function start() {
 
 
 /***/ }),
-/* 128 */
+/* 131 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14718,7 +15195,7 @@ var names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
 
 /***/ }),
-/* 129 */
+/* 132 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -14946,7 +15423,7 @@ var names = ["Azimuthal_Equidistant", "aeqd"];
 
 
 /***/ }),
-/* 130 */
+/* 133 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15075,14 +15552,14 @@ var names = ["Cassini", "Cassini_Soldner", "cass"];
 
 
 /***/ }),
-/* 131 */
+/* 134 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_msfnz__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_iqsfnz__ = __webpack_require__(111);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_iqsfnz__ = __webpack_require__(114);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
@@ -15160,7 +15637,7 @@ var names = ["cea"];
 
 
 /***/ }),
-/* 132 */
+/* 135 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15221,7 +15698,7 @@ var names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
 
 /***/ }),
-/* 133 */
+/* 136 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15359,11 +15836,11 @@ var names = ["Equidistant_Conic", "eqdc"];
 
 
 /***/ }),
-/* 134 */
+/* 137 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_srat__ = __webpack_require__(113);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_srat__ = __webpack_require__(116);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
 /* unused harmony export init */
 /* unused harmony export forward */
@@ -15424,7 +15901,7 @@ var names = ["gauss"];
 
 
 /***/ }),
-/* 135 */
+/* 138 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15542,7 +16019,7 @@ var names = ["gnom"];
 
 
 /***/ }),
-/* 136 */
+/* 139 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15660,7 +16137,7 @@ var names = ["Krovak", "krovak"];
 
 
 /***/ }),
-/* 137 */
+/* 140 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15976,7 +16453,7 @@ var names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area", "la
 
 
 /***/ }),
-/* 138 */
+/* 141 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16132,7 +16609,7 @@ var names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Conformal
 
 
 /***/ }),
-/* 139 */
+/* 142 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16159,7 +16636,7 @@ var names = ["longlat", "identity"];
 
 
 /***/ }),
-/* 140 */
+/* 143 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16275,7 +16752,7 @@ var names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP"
 
 
 /***/ }),
-/* 141 */
+/* 144 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16339,7 +16816,7 @@ var names = ["Miller_Cylindrical", "mill"];
 
 
 /***/ }),
-/* 142 */
+/* 145 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16435,7 +16912,7 @@ var names = ["Mollweide", "moll"];
 
 
 /***/ }),
-/* 143 */
+/* 146 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16674,7 +17151,7 @@ var names = ["New_Zealand_Map_Grid", "nzmg"];
 
 
 /***/ }),
-/* 144 */
+/* 147 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16860,7 +17337,7 @@ var names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Obliq
 
 
 /***/ }),
-/* 145 */
+/* 148 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16965,7 +17442,7 @@ var names = ["ortho"];
 
 
 /***/ }),
-/* 146 */
+/* 149 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17120,15 +17597,15 @@ var names = ["Polyconic", "poly"];
 
 
 /***/ }),
-/* 147 */
+/* 150 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lat__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_enfn__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_enfn__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_pj_mlfn__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_pj_inv_mlfn__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_pj_inv_mlfn__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_values__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_asinz__ = __webpack_require__(15);
 /* unused harmony export init */
@@ -17253,7 +17730,7 @@ var names = ["Sinusoidal", "sinu"];
 
 
 /***/ }),
-/* 148 */
+/* 151 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17350,7 +17827,7 @@ var names = ["somerc"];
 
 
 /***/ }),
-/* 149 */
+/* 152 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17542,11 +18019,11 @@ var names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (variant 
 
 
 /***/ }),
-/* 150 */
+/* 153 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gauss__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gauss__ = __webpack_require__(137);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__ = __webpack_require__(5);
 /* unused harmony export init */
 /* unused harmony export forward */
@@ -17619,13 +18096,13 @@ var names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereog
 
 
 /***/ }),
-/* 151 */
+/* 154 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_pj_enfn__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_pj_enfn__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_pj_mlfn__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_inv_mlfn__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_inv_mlfn__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_adjust_lon__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_values__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_sign__ = __webpack_require__(21);
@@ -17809,12 +18286,12 @@ var names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 
 
 /***/ }),
-/* 152 */
+/* 155 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_zone__ = __webpack_require__(105);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__etmerc__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_zone__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__etmerc__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(3);
 /* unused harmony export dependsOn */
 /* unused harmony export init */
@@ -17850,7 +18327,7 @@ var names = ["Universal Transverse Mercator System", "utm"];
 
 
 /***/ }),
-/* 153 */
+/* 156 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17993,364 +18470,77 @@ var names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 
 
 /***/ }),
-/* 154 */
+/* 157 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__package_json__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__package_json__ = __webpack_require__(158);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__package_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__package_json__);
 /* harmony reexport (binding) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_0__package_json__, "version")) __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__package_json__["version"]; });
 
 
 
 /***/ }),
-/* 155 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (parseString);
-
-var NEUTRAL = 1;
-var KEYWORD = 2;
-var NUMBER = 3;
-var QUOTED = 4;
-var AFTERQUOTE = 5;
-var ENDED = -1;
-var whitespace = /\s/;
-var latin = /[A-Za-z]/;
-var keyword = /[A-Za-z84]/;
-var endThings = /[,\]]/;
-var digets = /[\d\.E\-\+]/;
-// const ignoredChar = /[\s_\-\/\(\)]/g;
-function Parser(text) {
-  if (typeof text !== 'string') {
-    throw new Error('not a string');
-  }
-  this.text = text.trim();
-  this.level = 0;
-  this.place = 0;
-  this.root = null;
-  this.stack = [];
-  this.currentObject = null;
-  this.state = NEUTRAL;
-}
-Parser.prototype.readCharicter = function() {
-  var char = this.text[this.place++];
-  if (this.state !== QUOTED) {
-    while (whitespace.test(char)) {
-      if (this.place >= this.text.length) {
-        return;
-      }
-      char = this.text[this.place++];
-    }
-  }
-  switch (this.state) {
-    case NEUTRAL:
-      return this.neutral(char);
-    case KEYWORD:
-      return this.keyword(char)
-    case QUOTED:
-      return this.quoted(char);
-    case AFTERQUOTE:
-      return this.afterquote(char);
-    case NUMBER:
-      return this.number(char);
-    case ENDED:
-      return;
-  }
-};
-Parser.prototype.afterquote = function(char) {
-  if (char === '"') {
-    this.word += '"';
-    this.state = QUOTED;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.word = this.word.trim();
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in afterquote yet, index ' + this.place);
-};
-Parser.prototype.afterItem = function(char) {
-  if (char === ',') {
-    if (this.word !== null) {
-      this.currentObject.push(this.word);
-    }
-    this.word = null;
-    this.state = NEUTRAL;
-    return;
-  }
-  if (char === ']') {
-    this.level--;
-    if (this.word !== null) {
-      this.currentObject.push(this.word);
-      this.word = null;
-    }
-    this.state = NEUTRAL;
-    this.currentObject = this.stack.pop();
-    if (!this.currentObject) {
-      this.state = ENDED;
-    }
-
-    return;
-  }
-};
-Parser.prototype.number = function(char) {
-  if (digets.test(char)) {
-    this.word += char;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.word = parseFloat(this.word);
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in number yet, index ' + this.place);
-};
-Parser.prototype.quoted = function(char) {
-  if (char === '"') {
-    this.state = AFTERQUOTE;
-    return;
-  }
-  this.word += char;
-  return;
-};
-Parser.prototype.keyword = function(char) {
-  if (keyword.test(char)) {
-    this.word += char;
-    return;
-  }
-  if (char === '[') {
-    var newObjects = [];
-    newObjects.push(this.word);
-    this.level++;
-    if (this.root === null) {
-      this.root = newObjects;
-    } else {
-      this.currentObject.push(newObjects);
-    }
-    this.stack.push(this.currentObject);
-    this.currentObject = newObjects;
-    this.state = NEUTRAL;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in keyword yet, index ' + this.place);
-};
-Parser.prototype.neutral = function(char) {
-  if (latin.test(char)) {
-    this.word = char;
-    this.state = KEYWORD;
-    return;
-  }
-  if (char === '"') {
-    this.word = '';
-    this.state = QUOTED;
-    return;
-  }
-  if (digets.test(char)) {
-    this.word = char;
-    this.state = NUMBER;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in neutral yet, index ' + this.place);
-};
-Parser.prototype.output = function() {
-  while (this.place < this.text.length) {
-    this.readCharicter();
-  }
-  if (this.state === ENDED) {
-    return this.root;
-  }
-  throw new Error('unable to parse string "' +this.text + '". State is ' + this.state);
-};
-
-function parseString(txt) {
-  var parser = new Parser(txt);
-  return parser.output();
-}
-
-
-/***/ }),
-/* 156 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = sExpr;
-
-
-function mapit(obj, key, value) {
-  if (Array.isArray(key)) {
-    value.unshift(key);
-    key = null;
-  }
-  var thing = key ? {} : obj;
-
-  var out = value.reduce(function(newObj, item) {
-    sExpr(item, newObj);
-    return newObj
-  }, thing);
-  if (key) {
-    obj[key] = out;
-  }
-}
-
-function sExpr(v, obj) {
-  if (!Array.isArray(v)) {
-    obj[v] = true;
-    return;
-  }
-  var key = v.shift();
-  if (key === 'PARAMETER') {
-    key = v.shift();
-  }
-  if (v.length === 1) {
-    if (Array.isArray(v[0])) {
-      obj[key] = {};
-      sExpr(v[0], obj[key]);
-      return;
-    }
-    obj[key] = v[0];
-    return;
-  }
-  if (!v.length) {
-    obj[key] = true;
-    return;
-  }
-  if (key === 'TOWGS84') {
-    obj[key] = v;
-    return;
-  }
-  if (!Array.isArray(key)) {
-    obj[key] = {};
-  }
-
-  var i;
-  switch (key) {
-    case 'UNIT':
-    case 'PRIMEM':
-    case 'VERT_DATUM':
-      obj[key] = {
-        name: v[0].toLowerCase(),
-        convert: v[1]
-      };
-      if (v.length === 3) {
-        sExpr(v[2], obj[key]);
-      }
-      return;
-    case 'SPHEROID':
-    case 'ELLIPSOID':
-      obj[key] = {
-        name: v[0],
-        a: v[1],
-        rf: v[2]
-      };
-      if (v.length === 4) {
-        sExpr(v[3], obj[key]);
-      }
-      return;
-    case 'PROJECTEDCRS':
-    case 'PROJCRS':
-    case 'GEOGCS':
-    case 'GEOCCS':
-    case 'PROJCS':
-    case 'LOCAL_CS':
-    case 'GEODCRS':
-    case 'GEODETICCRS':
-    case 'GEODETICDATUM':
-    case 'EDATUM':
-    case 'ENGINEERINGDATUM':
-    case 'VERT_CS':
-    case 'VERTCRS':
-    case 'VERTICALCRS':
-    case 'COMPD_CS':
-    case 'COMPOUNDCRS':
-    case 'ENGINEERINGCRS':
-    case 'ENGCRS':
-    case 'FITTED_CS':
-    case 'LOCAL_DATUM':
-    case 'DATUM':
-      v[0] = ['name', v[0]];
-      mapit(obj, key, v);
-      return;
-    default:
-      i = -1;
-      while (++i < v.length) {
-        if (!Array.isArray(v[i])) {
-          return sExpr(v, obj[key]);
-        }
-      }
-      return mapit(obj, key, v);
-  }
-}
-
-
-/***/ }),
-/* 157 */
+/* 158 */
 /***/ (function(module, exports) {
 
 module.exports = {
-	"name": "proj4",
-	"version": "2.4.3",
-	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
-	"main": "dist/proj4-src.js",
-	"module": "lib/index.js",
-	"directories": {
-		"test": "test",
-		"doc": "docs"
+	"_args": [
+		[
+			"proj4@^2.4.3",
+			"E:\\codes\\iClient9"
+		]
+	],
+	"_cnpm_publish_time": 1488570791097,
+	"_from": "proj4@>=2.4.3 <3.0.0",
+	"_hasShrinkwrap": false,
+	"_id": "proj4@2.4.3",
+	"_inCache": true,
+	"_installable": true,
+	"_location": "/proj4",
+	"_nodeVersion": "6.9.2",
+	"_npmOperationalInternal": {
+		"host": "packages-18-east.internal.npmjs.com",
+		"tmp": "tmp/proj4-2.4.3.tgz_1488570790416_0.3068596587982029"
 	},
-	"scripts": {
-		"build": "grunt",
-		"build:tmerc": "grunt build:tmerc",
-		"test": "npm run build && istanbul test _mocha test/test.js"
+	"_npmUser": {
+		"email": "calvin.metcalf@gmail.com",
+		"name": "cwmma"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/proj4js/proj4js.git"
+	"_npmVersion": "4.0.5",
+	"_phantomChildren": {},
+	"_requested": {
+		"name": "proj4",
+		"raw": "proj4@^2.4.3",
+		"rawSpec": "^2.4.3",
+		"scope": null,
+		"spec": ">=2.4.3 <3.0.0",
+		"type": "range"
 	},
+	"_requiredBy": [
+		"/"
+	],
+	"_resolved": "https://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
+	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
+	"_shrinkwrap": null,
+	"_spec": "proj4@^2.4.3",
+	"_where": "E:\\codes\\iClient9",
 	"author": "",
-	"license": "MIT",
-	"devDependencies": {
-		"grunt-cli": "~0.1.13",
-		"grunt": "~0.4.2",
-		"grunt-contrib-connect": "~0.6.0",
-		"grunt-contrib-jshint": "~1.1.0",
-		"chai": "~1.8.1",
-		"mocha": "~1.17.1",
-		"grunt-mocha-phantomjs": "~0.4.0",
-		"rollup": "^0.41.4",
-		"rollup-plugin-json": "^2.0.1",
-		"rollup-plugin-node-resolve": "^2.0.0",
-		"grunt-rollup": "^1.0.1",
-		"grunt-contrib-uglify": "~0.11.1",
-		"curl": "git://github.com/cujojs/curl.git",
-		"istanbul": "~0.2.4",
-		"tin": "~0.4.0"
-	},
-	"dependencies": {
-		"mgrs": "1.0.0",
-		"wkt-parser": "^1.1.3"
+	"bugs": {
+		"url": "https://github.com/proj4js/proj4js/issues"
 	},
 	"contributors": [
 		{
-			"name": "Mike Adair",
-			"email": "madair@dmsolutions.ca"
+			"email": "madair@dmsolutions.ca",
+			"name": "Mike Adair"
 		},
 		{
-			"name": "Richard Greenwood",
-			"email": "rich@greenwoodmap.com"
+			"email": "rich@greenwoodmap.com",
+			"name": "Richard Greenwood"
 		},
 		{
-			"name": "Calvin Metcalf",
-			"email": "calvin.metcalf@gmail.com"
+			"email": "calvin.metcalf@gmail.com",
+			"name": "Calvin Metcalf"
 		},
 		{
 			"name": "Richard Marsden",
@@ -18366,71 +18556,98 @@ module.exports = {
 			"name": "S. Nelson"
 		}
 	],
-	"gitHead": "e975a5462ad7abb23e33ea75281eb749e77e1510",
-	"bugs": {
-		"url": "https://github.com/proj4js/proj4js/issues"
+	"dependencies": {
+		"mgrs": "1.0.0",
+		"wkt-parser": "^1.1.3"
 	},
-	"homepage": "https://github.com/proj4js/proj4js#readme",
-	"_id": "proj4@2.4.3",
-	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
-	"_from": "proj4@2.4.3",
-	"_npmVersion": "4.0.5",
-	"_nodeVersion": "6.9.2",
-	"_npmUser": {
-		"name": "cwmma",
-		"email": "calvin.metcalf@gmail.com"
+	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
+	"devDependencies": {
+		"chai": "~1.8.1",
+		"curl": "git://github.com/cujojs/curl.git",
+		"grunt": "~0.4.2",
+		"grunt-cli": "~0.1.13",
+		"grunt-contrib-connect": "~0.6.0",
+		"grunt-contrib-jshint": "~1.1.0",
+		"grunt-contrib-uglify": "~0.11.1",
+		"grunt-mocha-phantomjs": "~0.4.0",
+		"grunt-rollup": "^1.0.1",
+		"istanbul": "~0.2.4",
+		"mocha": "~1.17.1",
+		"rollup": "^0.41.4",
+		"rollup-plugin-json": "^2.0.1",
+		"rollup-plugin-node-resolve": "^2.0.0",
+		"tin": "~0.4.0"
+	},
+	"directories": {
+		"doc": "docs",
+		"test": "test"
 	},
 	"dist": {
+		"noattachment": false,
 		"shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
-		"tarball": "https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz"
+		"size": 116887,
+		"tarball": "http://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz"
 	},
+	"gitHead": "e975a5462ad7abb23e33ea75281eb749e77e1510",
+	"homepage": "https://github.com/proj4js/proj4js#readme",
+	"license": "MIT",
+	"main": "dist/proj4-src.js",
 	"maintainers": [
 		{
-			"name": "cwmma",
-			"email": "calvin.metcalf@gmail.com"
+			"email": "andreas.hocevar@gmail.com",
+			"name": "ahocevar"
 		},
 		{
-			"name": "ahocevar",
-			"email": "andreas.hocevar@gmail.com"
+			"email": "calvin.metcalf@gmail.com",
+			"name": "cwmma"
 		}
 	],
-	"_npmOperationalInternal": {
-		"host": "packages-18-east.internal.npmjs.com",
-		"tmp": "tmp/proj4-2.4.3.tgz_1488570790416_0.3068596587982029"
+	"module": "lib/index.js",
+	"name": "proj4",
+	"optionalDependencies": {},
+	"publish_time": 1488570791097,
+	"readme": "ERROR: No README data found!",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/proj4js/proj4js.git"
 	},
-	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
-	"readme": "ERROR: No README data found!"
+	"scripts": {
+		"build": "grunt",
+		"build:tmerc": "grunt build:tmerc",
+		"test": "npm run build && istanbul test _mocha test/test.js"
+	},
+	"version": "2.4.3"
 };
 
 /***/ }),
-/* 158 */
+/* 159 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_projections_tmerc__ = __webpack_require__(151);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_projections_etmerc__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_projections_utm__ = __webpack_require__(152);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_projections_sterea__ = __webpack_require__(150);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_projections_stere__ = __webpack_require__(149);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_projections_somerc__ = __webpack_require__(148);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_projections_omerc__ = __webpack_require__(144);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_projections_lcc__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_projections_krovak__ = __webpack_require__(136);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_projections_cass__ = __webpack_require__(130);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__lib_projections_laea__ = __webpack_require__(137);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__lib_projections_aea__ = __webpack_require__(128);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__lib_projections_gnom__ = __webpack_require__(135);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__lib_projections_cea__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib_projections_eqc__ = __webpack_require__(132);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__lib_projections_poly__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__lib_projections_nzmg__ = __webpack_require__(143);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__lib_projections_mill__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__lib_projections_sinu__ = __webpack_require__(147);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__lib_projections_moll__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__lib_projections_eqdc__ = __webpack_require__(133);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__lib_projections_vandg__ = __webpack_require__(153);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__lib_projections_aeqd__ = __webpack_require__(129);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__lib_projections_ortho__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_projections_tmerc__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_projections_etmerc__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_projections_utm__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_projections_sterea__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_projections_stere__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_projections_somerc__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_projections_omerc__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_projections_lcc__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_projections_krovak__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_projections_cass__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__lib_projections_laea__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__lib_projections_aea__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__lib_projections_gnom__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__lib_projections_cea__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib_projections_eqc__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__lib_projections_poly__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__lib_projections_nzmg__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__lib_projections_mill__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__lib_projections_sinu__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__lib_projections_moll__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__lib_projections_eqdc__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__lib_projections_vandg__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__lib_projections_aeqd__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__lib_projections_ortho__ = __webpack_require__(148);
 
 
 
@@ -18483,22 +18700,22 @@ module.exports = {
 });
 
 /***/ }),
-/* 159 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports.VectorTile = __webpack_require__(160);
-module.exports.VectorTileFeature = __webpack_require__(62);
-module.exports.VectorTileLayer = __webpack_require__(63);
+module.exports.VectorTile = __webpack_require__(161);
+module.exports.VectorTileFeature = __webpack_require__(63);
+module.exports.VectorTileLayer = __webpack_require__(64);
 
 
 /***/ }),
-/* 160 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var VectorTileLayer = __webpack_require__(63);
+var VectorTileLayer = __webpack_require__(64);
 
 module.exports = VectorTile;
 
@@ -18513,144 +18730,6 @@ function readTile(tag, layers, pbf) {
     }
 }
 
-
-
-/***/ }),
-/* 161 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = Point;
-
-function Point(x, y) {
-    this.x = x;
-    this.y = y;
-}
-
-Point.prototype = {
-    clone: function() { return new Point(this.x, this.y); },
-
-    add:     function(p) { return this.clone()._add(p);     },
-    sub:     function(p) { return this.clone()._sub(p);     },
-    mult:    function(k) { return this.clone()._mult(k);    },
-    div:     function(k) { return this.clone()._div(k);     },
-    rotate:  function(a) { return this.clone()._rotate(a);  },
-    matMult: function(m) { return this.clone()._matMult(m); },
-    unit:    function() { return this.clone()._unit(); },
-    perp:    function() { return this.clone()._perp(); },
-    round:   function() { return this.clone()._round(); },
-
-    mag: function() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    },
-
-    equals: function(p) {
-        return this.x === p.x &&
-               this.y === p.y;
-    },
-
-    dist: function(p) {
-        return Math.sqrt(this.distSqr(p));
-    },
-
-    distSqr: function(p) {
-        var dx = p.x - this.x,
-            dy = p.y - this.y;
-        return dx * dx + dy * dy;
-    },
-
-    angle: function() {
-        return Math.atan2(this.y, this.x);
-    },
-
-    angleTo: function(b) {
-        return Math.atan2(this.y - b.y, this.x - b.x);
-    },
-
-    angleWith: function(b) {
-        return this.angleWithSep(b.x, b.y);
-    },
-
-    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
-    angleWithSep: function(x, y) {
-        return Math.atan2(
-            this.x * y - this.y * x,
-            this.x * x + this.y * y);
-    },
-
-    _matMult: function(m) {
-        var x = m[0] * this.x + m[1] * this.y,
-            y = m[2] * this.x + m[3] * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _add: function(p) {
-        this.x += p.x;
-        this.y += p.y;
-        return this;
-    },
-
-    _sub: function(p) {
-        this.x -= p.x;
-        this.y -= p.y;
-        return this;
-    },
-
-    _mult: function(k) {
-        this.x *= k;
-        this.y *= k;
-        return this;
-    },
-
-    _div: function(k) {
-        this.x /= k;
-        this.y /= k;
-        return this;
-    },
-
-    _unit: function() {
-        this._div(this.mag());
-        return this;
-    },
-
-    _perp: function() {
-        var y = this.y;
-        this.y = this.x;
-        this.x = -y;
-        return this;
-    },
-
-    _rotate: function(angle) {
-        var cos = Math.cos(angle),
-            sin = Math.sin(angle),
-            x = cos * this.x - sin * this.y,
-            y = sin * this.x + cos * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _round: function() {
-        this.x = Math.round(this.x);
-        this.y = Math.round(this.y);
-        return this;
-    }
-};
-
-// constructs Point from an array if necessary
-Point.convert = function (a) {
-    if (a instanceof Point) {
-        return a;
-    }
-    if (Array.isArray(a)) {
-        return new Point(a[0], a[1]);
-    }
-    return a;
-};
 
 
 /***/ }),
@@ -19122,6 +19201,296 @@ Point.convert = function (a) {
 
 /***/ }),
 /* 163 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (parseString);
+
+var NEUTRAL = 1;
+var KEYWORD = 2;
+var NUMBER = 3;
+var QUOTED = 4;
+var AFTERQUOTE = 5;
+var ENDED = -1;
+var whitespace = /\s/;
+var latin = /[A-Za-z]/;
+var keyword = /[A-Za-z84]/;
+var endThings = /[,\]]/;
+var digets = /[\d\.E\-\+]/;
+// const ignoredChar = /[\s_\-\/\(\)]/g;
+function Parser(text) {
+  if (typeof text !== 'string') {
+    throw new Error('not a string');
+  }
+  this.text = text.trim();
+  this.level = 0;
+  this.place = 0;
+  this.root = null;
+  this.stack = [];
+  this.currentObject = null;
+  this.state = NEUTRAL;
+}
+Parser.prototype.readCharicter = function() {
+  var char = this.text[this.place++];
+  if (this.state !== QUOTED) {
+    while (whitespace.test(char)) {
+      if (this.place >= this.text.length) {
+        return;
+      }
+      char = this.text[this.place++];
+    }
+  }
+  switch (this.state) {
+    case NEUTRAL:
+      return this.neutral(char);
+    case KEYWORD:
+      return this.keyword(char)
+    case QUOTED:
+      return this.quoted(char);
+    case AFTERQUOTE:
+      return this.afterquote(char);
+    case NUMBER:
+      return this.number(char);
+    case ENDED:
+      return;
+  }
+};
+Parser.prototype.afterquote = function(char) {
+  if (char === '"') {
+    this.word += '"';
+    this.state = QUOTED;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.word = this.word.trim();
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in afterquote yet, index ' + this.place);
+};
+Parser.prototype.afterItem = function(char) {
+  if (char === ',') {
+    if (this.word !== null) {
+      this.currentObject.push(this.word);
+    }
+    this.word = null;
+    this.state = NEUTRAL;
+    return;
+  }
+  if (char === ']') {
+    this.level--;
+    if (this.word !== null) {
+      this.currentObject.push(this.word);
+      this.word = null;
+    }
+    this.state = NEUTRAL;
+    this.currentObject = this.stack.pop();
+    if (!this.currentObject) {
+      this.state = ENDED;
+    }
+
+    return;
+  }
+};
+Parser.prototype.number = function(char) {
+  if (digets.test(char)) {
+    this.word += char;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.word = parseFloat(this.word);
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in number yet, index ' + this.place);
+};
+Parser.prototype.quoted = function(char) {
+  if (char === '"') {
+    this.state = AFTERQUOTE;
+    return;
+  }
+  this.word += char;
+  return;
+};
+Parser.prototype.keyword = function(char) {
+  if (keyword.test(char)) {
+    this.word += char;
+    return;
+  }
+  if (char === '[') {
+    var newObjects = [];
+    newObjects.push(this.word);
+    this.level++;
+    if (this.root === null) {
+      this.root = newObjects;
+    } else {
+      this.currentObject.push(newObjects);
+    }
+    this.stack.push(this.currentObject);
+    this.currentObject = newObjects;
+    this.state = NEUTRAL;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in keyword yet, index ' + this.place);
+};
+Parser.prototype.neutral = function(char) {
+  if (latin.test(char)) {
+    this.word = char;
+    this.state = KEYWORD;
+    return;
+  }
+  if (char === '"') {
+    this.word = '';
+    this.state = QUOTED;
+    return;
+  }
+  if (digets.test(char)) {
+    this.word = char;
+    this.state = NUMBER;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in neutral yet, index ' + this.place);
+};
+Parser.prototype.output = function() {
+  while (this.place < this.text.length) {
+    this.readCharicter();
+  }
+  if (this.state === ENDED) {
+    return this.root;
+  }
+  throw new Error('unable to parse string "' +this.text + '". State is ' + this.state);
+};
+
+function parseString(txt) {
+  var parser = new Parser(txt);
+  return parser.output();
+}
+
+
+/***/ }),
+/* 164 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = sExpr;
+
+
+function mapit(obj, key, value) {
+  if (Array.isArray(key)) {
+    value.unshift(key);
+    key = null;
+  }
+  var thing = key ? {} : obj;
+
+  var out = value.reduce(function(newObj, item) {
+    sExpr(item, newObj);
+    return newObj
+  }, thing);
+  if (key) {
+    obj[key] = out;
+  }
+}
+
+function sExpr(v, obj) {
+  if (!Array.isArray(v)) {
+    obj[v] = true;
+    return;
+  }
+  var key = v.shift();
+  if (key === 'PARAMETER') {
+    key = v.shift();
+  }
+  if (v.length === 1) {
+    if (Array.isArray(v[0])) {
+      obj[key] = {};
+      sExpr(v[0], obj[key]);
+      return;
+    }
+    obj[key] = v[0];
+    return;
+  }
+  if (!v.length) {
+    obj[key] = true;
+    return;
+  }
+  if (key === 'TOWGS84') {
+    obj[key] = v;
+    return;
+  }
+  if (!Array.isArray(key)) {
+    obj[key] = {};
+  }
+
+  var i;
+  switch (key) {
+    case 'UNIT':
+    case 'PRIMEM':
+    case 'VERT_DATUM':
+      obj[key] = {
+        name: v[0].toLowerCase(),
+        convert: v[1]
+      };
+      if (v.length === 3) {
+        sExpr(v[2], obj[key]);
+      }
+      return;
+    case 'SPHEROID':
+    case 'ELLIPSOID':
+      obj[key] = {
+        name: v[0],
+        a: v[1],
+        rf: v[2]
+      };
+      if (v.length === 4) {
+        sExpr(v[3], obj[key]);
+      }
+      return;
+    case 'PROJECTEDCRS':
+    case 'PROJCRS':
+    case 'GEOGCS':
+    case 'GEOCCS':
+    case 'PROJCS':
+    case 'LOCAL_CS':
+    case 'GEODCRS':
+    case 'GEODETICCRS':
+    case 'GEODETICDATUM':
+    case 'EDATUM':
+    case 'ENGINEERINGDATUM':
+    case 'VERT_CS':
+    case 'VERTCRS':
+    case 'VERTICALCRS':
+    case 'COMPD_CS':
+    case 'COMPOUNDCRS':
+    case 'ENGINEERINGCRS':
+    case 'ENGCRS':
+    case 'FITTED_CS':
+    case 'LOCAL_DATUM':
+    case 'DATUM':
+      v[0] = ['name', v[0]];
+      mapit(obj, key, v);
+      return;
+    default:
+      i = -1;
+      while (++i < v.length) {
+        if (!Array.isArray(v[i])) {
+          return sExpr(v, obj[key]);
+        }
+      }
+      return mapit(obj, key, v);
+  }
+}
+
+
+/***/ }),
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -19232,7 +19601,7 @@ module.exports = SuperMap.Format;
 
 
 /***/ }),
-/* 164 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -19243,7 +19612,7 @@ module.exports = SuperMap.Format;
  *  - <SuperMap.Format>
  */
 var SuperMap = __webpack_require__(0);
-__webpack_require__(163);
+__webpack_require__(165);
 SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
 
     /**
@@ -19616,7 +19985,7 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
 module.exports = SuperMap.Format.JSON;
 
 /***/ }),
-/* 165 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -19795,7 +20164,7 @@ SuperMap.AreaSolarRadiationParameters.toObject = function (derrainCurvatureCalcu
 module.exports = SuperMap.AreaSolarRadiationParameters;
 
 /***/ }),
-/* 166 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -19806,7 +20175,7 @@ module.exports = SuperMap.AreaSolarRadiationParameters;
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 __webpack_require__(9);
-__webpack_require__(165);
+__webpack_require__(167);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -19889,7 +20258,7 @@ SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAn
 module.exports = SuperMap.REST.AreaSolarRadiationService;
 
 /***/ }),
-/* 167 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -19902,10 +20271,10 @@ module.exports = SuperMap.REST.AreaSolarRadiationService;
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 __webpack_require__(9);
-__webpack_require__(179);
-__webpack_require__(219);
+__webpack_require__(183);
+__webpack_require__(223);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(7);
+var GeoJSONFormat = __webpack_require__(8);
 SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -20024,7 +20393,7 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
 module.exports = SuperMap.REST.BufferAnalystService;
 
 /***/ }),
-/* 168 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -20081,7 +20450,7 @@ SuperMap.BufferDistance = SuperMap.Class({
 module.exports = SuperMap.BufferDistance;
 
 /***/ }),
-/* 169 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -20090,7 +20459,7 @@ module.exports = SuperMap.BufferDistance;
  */
 __webpack_require__(2);
 var SuperMap = __webpack_require__(0);
-var BufferDistance = __webpack_require__(168);
+var BufferDistance = __webpack_require__(170);
 SuperMap.BufferSetting = SuperMap.Class({
 
     /**
@@ -20179,7 +20548,152 @@ SuperMap.BufferSetting = SuperMap.Class({
 module.exports = SuperMap.BufferSetting;
 
 /***/ }),
-/* 170 */
+/* 172 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Class: SuperMap.BuildCacheJobParameter
+ * 地图缓存作业参数类
+ */
+var SuperMap = __webpack_require__(0);
+SuperMap.BuildCacheJobParameter = SuperMap.Class({
+
+    /**
+     * APIProperty: datasetName
+     * {String} 数据集名称。
+     */
+    datasetName: null,
+
+    /**
+     * APIProperty: cacheName
+     * {String} 缓存名称。
+     */
+    cacheName: null,
+
+    /**
+     * APIProperty: cacheType
+     * {String} 存储类型。
+     */
+    cacheType: null,
+
+    /**
+     * APIProperty: serverAddresses
+     * {String} MongoDB地址。
+     */
+    serverAdresses: null,
+
+    /**
+     * APIProperty: database
+     * {String} 数据库。
+     */
+    database: null,
+
+    /**
+     * APIProperty: version
+     * {String} 版本。
+     */
+    version: null,
+
+    /**
+     * APIProperty: bounds
+     * {<SuperMap.Bounds>} 缓存范围。
+     */
+    bounds: null,
+
+    /**
+     * APIProperty: imageType
+     * {number} 缓存类型。
+     */
+    imageType: null,
+
+    /**
+     * APIProperty: level
+     * {number} 缓存比例尺级别。
+     */
+    level: null,
+
+    initialize: function (options) {
+        if (!options) {
+            return;
+        }
+        SuperMap.Util.extend(this, options);
+    },
+
+    /**
+     * APIMethod: destroy
+     * 释放资源，将引用资源的属性置空。
+     */
+    destroy: function () {
+        this.datasetName = null;
+        this.cacheName = null;
+        this.cacheType = null;
+        this.serverAdresses = null;
+        this.database = null;
+        this.version = null;
+        this.bounds = null;
+        this.imageType = null;
+        this.level = null;
+    }
+
+});
+
+SuperMap.BuildCacheJobParameter.toObject = function (buildCacheJobParameter, tempObj) {
+    for (var name in buildCacheJobParameter) {
+        if (name === "datasetName") {
+            tempObj['input'] = tempObj['input'] || {};
+            tempObj['input'][name] = buildCacheJobParameter[name];
+            continue;
+        }
+        if (name === "cacheName" || name === "cacheType" || name === "serverAdresses" || name === "database" || name === "version") {
+            tempObj['output'] = tempObj['output'] || {};
+            tempObj['output'][name] = buildCacheJobParameter[name];
+            continue;
+        }
+        tempObj['drawing'] = tempObj['drawing'] || {};
+        tempObj['drawing'][name] = buildCacheJobParameter[name];
+    }
+};
+
+module.exports = SuperMap.BuildCacheJobParameter;
+
+/***/ }),
+/* 173 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var SuperMap = __webpack_require__(0);
+var ProcessingJobsServiceBase = __webpack_require__(47);
+var BuildCacheJobParameter = __webpack_require__(172);
+
+SuperMap.REST.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+
+    initialize: function (url, options) {
+        url += "/mapping/buildCache";
+        ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+    },
+
+    destroy: function () {
+        ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
+    },
+
+    getBuildCacheJobs: function () {
+        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
+    },
+
+    getBuildCacheJob: function (id) {
+        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
+    },
+
+    addBuildCacheJob: function (params) {
+        ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, BuildCacheJobParameter]);
+    },
+
+    CLASS_NAME: "SuperMap.REST.BuildCacheJobsService"
+});
+
+module.exports = SuperMap.REST.BuildCacheJobsService;
+
+/***/ }),
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -20252,7 +20766,7 @@ SuperMap.BurstPipelineAnalystParameters = SuperMap.Class({
 module.exports = SuperMap.BurstPipelineAnalystParameters;
 
 /***/ }),
-/* 171 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -20263,7 +20777,7 @@ module.exports = SuperMap.BurstPipelineAnalystParameters;
  *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
 __webpack_require__(11);
-__webpack_require__(170);
+__webpack_require__(174);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
@@ -20337,7 +20851,7 @@ module.exports = SuperMap.REST.BurstPipelineAnalystService;
 
 
 /***/ }),
-/* 172 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -20414,7 +20928,7 @@ module.exports = SuperMap.REST.ChartFeatureInfoSpecsService;
 
 
 /***/ }),
-/* 173 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -20512,7 +21026,7 @@ SuperMap.ChartQueryFilterParameter = SuperMap.Class({
 module.exports = SuperMap.ChartQueryFilterParameter;
 
 /***/ }),
-/* 174 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -20522,7 +21036,7 @@ module.exports = SuperMap.ChartQueryFilterParameter;
  *     queryMode、chartLayerNames、chartQueryFilterParameters。当进行海图范围查询时，必设属性还包括bounds。
  */
 var SuperMap = __webpack_require__(0);
-var ChartQueryFilterParameter = __webpack_require__(173);
+var ChartQueryFilterParameter = __webpack_require__(177);
 SuperMap.ChartQueryParameters = SuperMap.Class({
 
     /**
@@ -20692,7 +21206,7 @@ SuperMap.ChartQueryParameters = SuperMap.Class({
 module.exports = SuperMap.ChartQueryParameters;
 
 /***/ }),
-/* 175 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -20707,9 +21221,9 @@ module.exports = SuperMap.ChartQueryParameters;
  */
 __webpack_require__(2);
 __webpack_require__(4);
-__webpack_require__(174);
+__webpack_require__(178);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(7);
+var GeoJSONFormat = __webpack_require__(8);
 
 SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -20877,7 +21391,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 module.exports = SuperMap.REST.ChartQueryService;
 
 /***/ }),
-/* 176 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -20943,7 +21457,7 @@ module.exports = SuperMap.ColorDictionary;
 
 
 /***/ }),
-/* 177 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -21016,7 +21530,7 @@ module.exports = SuperMap.ComputeWeightMatrixParameters;
 
 
 /***/ }),
-/* 178 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -21029,7 +21543,7 @@ module.exports = SuperMap.ComputeWeightMatrixParameters;
  *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
 __webpack_require__(11);
-__webpack_require__(177);
+__webpack_require__(181);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
@@ -21132,7 +21646,7 @@ SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkA
 module.exports = SuperMap.REST.ComputeWeightMatrixService;
 
 /***/ }),
-/* 179 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -21143,7 +21657,7 @@ module.exports = SuperMap.REST.ComputeWeightMatrixService;
  *  - <SuperMap.BufferAnalystParameters>
  */
 __webpack_require__(2);
-__webpack_require__(64);
+__webpack_require__(66);
 var SuperMap = __webpack_require__(0);
 var DataReturnOption = __webpack_require__(22);
 var FilterParameter = __webpack_require__(10);
@@ -21249,7 +21763,7 @@ SuperMap.DatasetBufferAnalystParameters.toObject = function (datasetBufferAnalys
 module.exports = SuperMap.DatasetBufferAnalystParameters;
 
 /***/ }),
-/* 180 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -21380,7 +21894,7 @@ module.exports = SuperMap.DatasetInfo;
 
 
 /***/ }),
-/* 181 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -21391,7 +21905,7 @@ module.exports = SuperMap.DatasetInfo;
  *  - <SuperMap.OverlayAnalystParameters>
  */
 __webpack_require__(2);
-__webpack_require__(65);
+__webpack_require__(67);
 var SuperMap = __webpack_require__(0);
 var DataReturnOption = __webpack_require__(22);
 var FilterParameter = __webpack_require__(10);
@@ -21552,7 +22066,7 @@ SuperMap.DatasetOverlayAnalystParameters.toObject = function (datasetOverlayAnal
 module.exports = SuperMap.DatasetOverlayAnalystParameters;
 
 /***/ }),
-/* 182 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -21564,7 +22078,7 @@ module.exports = SuperMap.DatasetOverlayAnalystParameters;
  *  - <SurfaceAnalystParameters>
  */
 __webpack_require__(10);
-__webpack_require__(67);
+__webpack_require__(69);
 var SuperMap = __webpack_require__(0);
 var FilterParameter = __webpack_require__(10);
 var DataReturnOption = __webpack_require__(22);
@@ -21656,7 +22170,7 @@ module.exports = function (options) {
 };
 
 /***/ }),
-/* 183 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -21739,7 +22253,7 @@ SuperMap.DatasetThiessenAnalystParameters.toObject = function (datasetThiessenAn
 module.exports = SuperMap.DatasetThiessenAnalystParameters;
 
 /***/ }),
-/* 184 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -21884,7 +22398,7 @@ SuperMap.DatasourceConnectionInfo = SuperMap.Class({
 module.exports = SuperMap.DatasourceConnectionInfo;
 
 /***/ }),
-/* 185 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -21899,7 +22413,7 @@ module.exports = SuperMap.DatasourceConnectionInfo;
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 __webpack_require__(9);
-__webpack_require__(186);
+__webpack_require__(190);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -21994,7 +22508,7 @@ SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
 module.exports = SuperMap.REST.DensityAnalystService;
 
 /***/ }),
-/* 186 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -22111,7 +22625,7 @@ SuperMap.DensityKernelAnalystParameters.toObject = function (densityKernelAnalys
 module.exports = SuperMap.DensityKernelAnalystParameters;
 
 /***/ }),
-/* 187 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -22239,7 +22753,7 @@ SuperMap.EditFeaturesParameters.toJsonParameters = function (params) {
 module.exports = SuperMap.EditFeaturesParameters;
 
 /***/ }),
-/* 188 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -22250,7 +22764,7 @@ module.exports = SuperMap.EditFeaturesParameters;
  *  - <SuperMap.ServiceBase>
  */
 __webpack_require__(4);
-__webpack_require__(187);
+__webpack_require__(191);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -22371,7 +22885,7 @@ SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
 module.exports = SuperMap.REST.EditFeaturesService;
 
 /***/ }),
-/* 189 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -22428,7 +22942,7 @@ SuperMap.FacilityAnalystSinks3DParameters = SuperMap.Class(SuperMap.FacilityAnal
 module.exports = SuperMap.FacilityAnalystSinks3DParameters;
 
 /***/ }),
-/* 190 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -22442,7 +22956,7 @@ module.exports = SuperMap.FacilityAnalystSinks3DParameters;
  *  - <SuperMap.ServiceBase>
  */
 __webpack_require__(4);
-__webpack_require__(189);
+__webpack_require__(193);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -22517,7 +23031,7 @@ SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBas
 module.exports = SuperMap.REST.FacilityAnalystSinks3DService;
 
 /***/ }),
-/* 191 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -22567,7 +23081,7 @@ SuperMap.FacilityAnalystSources3DParameters = SuperMap.Class(SuperMap.FacilityAn
 module.exports = SuperMap.FacilityAnalystSources3DParameters;
 
 /***/ }),
-/* 192 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -22582,7 +23096,7 @@ module.exports = SuperMap.FacilityAnalystSources3DParameters;
  *  - <SuperMap.ServiceBase>
  */
 __webpack_require__(4);
-__webpack_require__(191);
+__webpack_require__(195);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -22647,7 +23161,7 @@ SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.ServiceB
 module.exports = SuperMap.REST.FacilityAnalystSources3DService;
 
 /***/ }),
-/* 193 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -22728,7 +23242,7 @@ SuperMap.FacilityAnalystStreamParameters = SuperMap.Class({
 module.exports = SuperMap.FacilityAnalystStreamParameters;
 
 /***/ }),
-/* 194 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -22739,7 +23253,7 @@ module.exports = SuperMap.FacilityAnalystStreamParameters;
  *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
 __webpack_require__(11);
-__webpack_require__(193);
+__webpack_require__(197);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
@@ -22821,7 +23335,7 @@ SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.Networ
 module.exports = SuperMap.REST.FacilityAnalystStreamService;
 
 /***/ }),
-/* 195 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -22866,7 +23380,7 @@ SuperMap.FacilityAnalystTracedown3DParameters = SuperMap.Class(SuperMap.Facility
 module.exports = SuperMap.FacilityAnalystTracedown3DParameters;
 
 /***/ }),
-/* 196 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -22876,7 +23390,7 @@ module.exports = SuperMap.FacilityAnalystTracedown3DParameters;
  *  - <SuperMap.ServiceBase>
  */
 __webpack_require__(4);
-__webpack_require__(195);
+__webpack_require__(199);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -22941,7 +23455,7 @@ SuperMap.REST.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.Servic
 module.exports = SuperMap.REST.FacilityAnalystTracedown3DService;
 
 /***/ }),
-/* 197 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -22985,7 +23499,7 @@ SuperMap.FacilityAnalystTraceup3DParameters = SuperMap.Class(SuperMap.FacilityAn
 module.exports = SuperMap.FacilityAnalystTraceup3DParameters;
 
 /***/ }),
-/* 198 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -22995,7 +23509,7 @@ module.exports = SuperMap.FacilityAnalystTraceup3DParameters;
  *  - <SuperMap.ServiceBase>
  */
 __webpack_require__(4);
-__webpack_require__(197);
+__webpack_require__(201);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.FacilityAnalystTraceup3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -23060,7 +23574,7 @@ SuperMap.REST.FacilityAnalystTraceup3DService = SuperMap.Class(SuperMap.ServiceB
 module.exports = SuperMap.REST.FacilityAnalystTraceup3DService;
 
 /***/ }),
-/* 199 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -23110,7 +23624,7 @@ SuperMap.FacilityAnalystUpstream3DParameters = SuperMap.Class(SuperMap.FacilityA
 module.exports = SuperMap.FacilityAnalystUpstream3DParameters;
 
 /***/ }),
-/* 200 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -23120,7 +23634,7 @@ module.exports = SuperMap.FacilityAnalystUpstream3DParameters;
  *  - <SuperMap.ServiceBase>
  */
 __webpack_require__(4);
-__webpack_require__(199);
+__webpack_require__(203);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.FacilityAnalystUpstream3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -23187,7 +23701,7 @@ module.exports = SuperMap.REST.FacilityAnalystUpstream3DService;
 
 
 /***/ }),
-/* 201 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -23199,7 +23713,7 @@ module.exports = SuperMap.REST.FacilityAnalystUpstream3DService;
  */
 __webpack_require__(2);
 __webpack_require__(4);
-__webpack_require__(202);
+__webpack_require__(206);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -23304,7 +23818,7 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
 module.exports = SuperMap.REST.FieldStatisticService;
 
 /***/ }),
-/* 202 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -23346,7 +23860,7 @@ module.exports = SuperMap.FieldStatisticsParameters;
 
 
 /***/ }),
-/* 203 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -23462,7 +23976,7 @@ SuperMap.FindClosestFacilitiesParameters = SuperMap.Class({
 module.exports = SuperMap.FindClosestFacilitiesParameters;
 
 /***/ }),
-/* 204 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -23477,9 +23991,9 @@ module.exports = SuperMap.FindClosestFacilitiesParameters;
  *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
 __webpack_require__(11);
-__webpack_require__(203);
+__webpack_require__(207);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(7);
+var GeoJSONFormat = __webpack_require__(8);
 SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -23614,7 +24128,7 @@ SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.Networ
 module.exports = SuperMap.REST.FindClosestFacilitiesService;
 
 /***/ }),
-/* 205 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -23625,7 +24139,7 @@ module.exports = SuperMap.REST.FindClosestFacilitiesService;
  *  分析过程中使用的需求点都为网络结点，即除了各种类型的中心点所对应的网络结点以外，
  * 所有网络结点都作为资源需求点参与选址分区分析，如果要排除某部分结点不分析，可以将其设置为障碍点。
  */
-__webpack_require__(278);
+__webpack_require__(286);
 var SuperMap = __webpack_require__(0);
 SuperMap.FindLocationParameters = SuperMap.Class({
 
@@ -23709,7 +24223,7 @@ SuperMap.FindLocationParameters = SuperMap.Class({
 module.exports = SuperMap.FindLocationParameters;
 
 /***/ }),
-/* 206 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -23723,9 +24237,9 @@ module.exports = SuperMap.FindLocationParameters;
  *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
 __webpack_require__(11);
-__webpack_require__(205);
+__webpack_require__(209);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(7);
+var GeoJSONFormat = __webpack_require__(8);
 SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -23843,7 +24357,7 @@ SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
 module.exports = SuperMap.REST.FindLocationService;
 
 /***/ }),
-/* 207 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -23940,7 +24454,7 @@ SuperMap.FindMTSPPathsParameters = SuperMap.Class({
 module.exports = SuperMap.FindMTSPPathsParameters;
 
 /***/ }),
-/* 208 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -23955,9 +24469,9 @@ module.exports = SuperMap.FindMTSPPathsParameters;
  *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
 __webpack_require__(11);
-__webpack_require__(207);
+__webpack_require__(211);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(7);
+var GeoJSONFormat = __webpack_require__(8);
 SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -24090,7 +24604,7 @@ SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalyst
 module.exports = SuperMap.REST.FindMTSPPathsService;
 
 /***/ }),
-/* 209 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -24181,7 +24695,7 @@ SuperMap.FindPathParameters = SuperMap.Class({
 module.exports = SuperMap.FindPathParameters;
 
 /***/ }),
-/* 210 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -24196,9 +24710,9 @@ module.exports = SuperMap.FindPathParameters;
  *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
 __webpack_require__(11);
-__webpack_require__(209);
+__webpack_require__(213);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(7);
+var GeoJSONFormat = __webpack_require__(8);
 SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -24330,7 +24844,7 @@ SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServi
 module.exports = SuperMap.REST.FindPathService;
 
 /***/ }),
-/* 211 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -24435,7 +24949,7 @@ SuperMap.FindServiceAreasParameters = SuperMap.Class({
 module.exports = SuperMap.FindServiceAreasParameters;
 
 /***/ }),
-/* 212 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -24449,9 +24963,9 @@ module.exports = SuperMap.FindServiceAreasParameters;
  *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
 __webpack_require__(11);
-__webpack_require__(211);
+__webpack_require__(215);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(7);
+var GeoJSONFormat = __webpack_require__(8);
 SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -24585,7 +25099,7 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnal
 module.exports = SuperMap.REST.FindServiceAreasService;
 
 /***/ }),
-/* 213 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -24674,7 +25188,7 @@ SuperMap.FindTSPPathsParameters = SuperMap.Class({
 module.exports = SuperMap.FindTSPPathsParameters;
 
 /***/ }),
-/* 214 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -24688,9 +25202,9 @@ module.exports = SuperMap.FindTSPPathsParameters;
  *  - <SuperMap.REST.NetworkAnalystServiceBase>
  */
 __webpack_require__(11);
-__webpack_require__(213);
+__webpack_require__(217);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(7);
+var GeoJSONFormat = __webpack_require__(8);
 SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -24819,7 +25333,7 @@ SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
 module.exports = SuperMap.REST.FindTSPPathsService;
 
 /***/ }),
-/* 215 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -24954,7 +25468,7 @@ SuperMap.GenerateSpatialDataParameters = SuperMap.Class({
 module.exports = SuperMap.GenerateSpatialDataParameters;
 
 /***/ }),
-/* 216 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -24969,7 +25483,7 @@ module.exports = SuperMap.GenerateSpatialDataParameters;
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 __webpack_require__(9);
-__webpack_require__(215);
+__webpack_require__(219);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -25093,7 +25607,7 @@ SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialA
 module.exports = SuperMap.REST.GenerateSpatialDataService;
 
 /***/ }),
-/* 217 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -25217,7 +25731,7 @@ SuperMap.GeoRelationAnalystParameters = SuperMap.Class({
 module.exports = SuperMap.GeoRelationAnalystParameters;
 
 /***/ }),
-/* 218 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -25226,7 +25740,7 @@ module.exports = SuperMap.GeoRelationAnalystParameters;
  * 该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
  */
 __webpack_require__(9);
-__webpack_require__(217);
+__webpack_require__(221);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -25325,7 +25839,7 @@ SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAn
 module.exports = SuperMap.REST.GeoRelationAnalystService;
 
 /***/ }),
-/* 219 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -25336,7 +25850,7 @@ module.exports = SuperMap.REST.GeoRelationAnalystService;
  * Inherits from:
  *  - <SuperMap.BufferAnalystParameters>
  */
-__webpack_require__(64);
+__webpack_require__(66);
 var SuperMap = __webpack_require__(0);
 SuperMap.GeometryBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystParameters, {
 
@@ -25402,7 +25916,7 @@ SuperMap.GeometryBufferAnalystParameters.toObject = function (geometryBufferAnal
 module.exports = SuperMap.GeometryBufferAnalystParameters;
 
 /***/ }),
-/* 220 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -25413,7 +25927,7 @@ module.exports = SuperMap.GeometryBufferAnalystParameters;
  * Inherits from:
  *  - <SuperMap.OverlayAnalystParameters>
  */
-__webpack_require__(65);
+__webpack_require__(67);
 var SuperMap = __webpack_require__(0);
 SuperMap.GeometryOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalystParameters, {
 
@@ -25487,7 +26001,7 @@ SuperMap.GeometryOverlayAnalystParameters.toObject = function (geometryOverlayAn
 module.exports = SuperMap.GeometryOverlayAnalystParameters;
 
 /***/ }),
-/* 221 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -25498,7 +26012,7 @@ module.exports = SuperMap.GeometryOverlayAnalystParameters;
  * Inherits from:
  *  - <SurfaceAnalystParameters>
  */
-__webpack_require__(67);
+__webpack_require__(69);
 var SuperMap = __webpack_require__(0);
 SuperMap.GeometrySurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnalystParameters, {
 
@@ -25559,7 +26073,7 @@ SuperMap.GeometrySurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnaly
 module.exports = SuperMap.GeometrySurfaceAnalystParameters;
 
 /***/ }),
-/* 222 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -25630,7 +26144,7 @@ SuperMap.GeometryThiessenAnalystParameters.toObject = function (geometryThiessen
 module.exports = SuperMap.GeometryThiessenAnalystParameters;
 
 /***/ }),
-/* 223 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -25777,7 +26291,7 @@ SuperMap.GetFeaturesByBoundsParameters.getFeatureMode = {
 module.exports = SuperMap.GetFeaturesByBoundsParameters;
 
 /***/ }),
-/* 224 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -25789,7 +26303,7 @@ module.exports = SuperMap.GetFeaturesByBoundsParameters;
  *  - <SuperMap.REST.GetFeaturesServiceBase>
  */
 __webpack_require__(25);
-__webpack_require__(223);
+__webpack_require__(227);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
@@ -25851,7 +26365,7 @@ SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeatu
 module.exports = SuperMap.REST.GetFeaturesByBoundsService;
 
 /***/ }),
-/* 225 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -25974,7 +26488,7 @@ SuperMap.GetFeaturesByBufferParameters.toJsonParameters = function (params) {
 module.exports = SuperMap.GetFeaturesByBufferParameters;
 
 /***/ }),
-/* 226 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -25985,7 +26499,7 @@ module.exports = SuperMap.GetFeaturesByBufferParameters;
  *  - <SuperMap.REST.GetFeaturesServiceBase>
  */
 __webpack_require__(25);
-__webpack_require__(225);
+__webpack_require__(229);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
@@ -26047,7 +26561,7 @@ SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeatu
 module.exports = SuperMap.REST.GetFeaturesByBufferService;
 
 /***/ }),
-/* 227 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -26185,7 +26699,7 @@ SuperMap.GetFeaturesByGeometryParameters.toJsonParameters = function (params) {
 module.exports = SuperMap.GetFeaturesByGeometryParameters;
 
 /***/ }),
-/* 228 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -26197,7 +26711,7 @@ module.exports = SuperMap.GetFeaturesByGeometryParameters;
  *  - <SuperMap.REST.GetFeaturesServiceBase>
  */
 __webpack_require__(25);
-__webpack_require__(227);
+__webpack_require__(231);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
@@ -26259,7 +26773,7 @@ SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFea
 module.exports = SuperMap.REST.GetFeaturesByGeometryService;
 
 /***/ }),
-/* 229 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -26365,7 +26879,7 @@ SuperMap.GetFeaturesByIDsParameters.toJsonParameters = function (params) {
 module.exports = SuperMap.GetFeaturesByIDsParameters;
 
 /***/ }),
-/* 230 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -26377,7 +26891,7 @@ module.exports = SuperMap.GetFeaturesByIDsParameters;
  *  - <SuperMap.REST.GetFeaturesServiceBase>
  */
 __webpack_require__(25);
-__webpack_require__(229);
+__webpack_require__(233);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
@@ -26439,7 +26953,7 @@ SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeatures
 module.exports = SuperMap.REST.GetFeaturesByIDsService;
 
 /***/ }),
-/* 231 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -26523,7 +27037,7 @@ SuperMap.GetFeaturesBySQLParameters.toJsonParameters = function (params) {
 module.exports = SuperMap.GetFeaturesBySQLParameters;
 
 /***/ }),
-/* 232 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -26535,7 +27049,7 @@ module.exports = SuperMap.GetFeaturesBySQLParameters;
  *  - <SuperMap.REST.GetFeaturesServiceBase>
  */
 __webpack_require__(25);
-__webpack_require__(231);
+__webpack_require__(235);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
 
@@ -26597,7 +27111,7 @@ SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeatures
 module.exports = SuperMap.REST.GetFeaturesBySQLService;
 
 /***/ }),
-/* 233 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -26691,7 +27205,7 @@ SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
 module.exports = SuperMap.REST.GetFieldsService;
 
 /***/ }),
-/* 234 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -26762,7 +27276,7 @@ module.exports = SuperMap.GetGridCellInfosParameters;
 
 
 /***/ }),
-/* 235 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -26773,7 +27287,7 @@ module.exports = SuperMap.GetGridCellInfosParameters;
  *  - <SuperMap.ServiceBase>
  */
 __webpack_require__(4);
-__webpack_require__(234);
+__webpack_require__(238);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -26940,7 +27454,7 @@ SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
 module.exports = SuperMap.REST.GetGridCellInfosService;
 
 /***/ }),
-/* 236 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -26953,10 +27467,10 @@ module.exports = SuperMap.REST.GetGridCellInfosService;
  */
 __webpack_require__(4);
 var SuperMap = __webpack_require__(0);
-var ServerTheme = __webpack_require__(269);
-var Grid = __webpack_require__(237);
-var Image = __webpack_require__(238);
-var Vector = __webpack_require__(316);
+var ServerTheme = __webpack_require__(275);
+var Grid = __webpack_require__(241);
+var Image = __webpack_require__(242);
+var Vector = __webpack_require__(324);
 SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -27091,7 +27605,7 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 module.exports = SuperMap.REST.GetLayersInfoService;
 
 /***/ }),
-/* 237 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -27106,7 +27620,7 @@ __webpack_require__(37);
 var SuperMap = __webpack_require__(0);
 var ServerColor = __webpack_require__(13);
 var ServerStyle = __webpack_require__(12);
-var ColorDictionary = __webpack_require__(176);
+var ColorDictionary = __webpack_require__(180);
 SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
     /**
      * APIProperty: colorDictionarys
@@ -27295,7 +27809,7 @@ module.exports = SuperMap.Grid;
 
 
 /***/ }),
-/* 238 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -27409,7 +27923,7 @@ module.exports = SuperMap.Image;
 
 
 /***/ }),
-/* 239 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -27425,10 +27939,10 @@ module.exports = SuperMap.Image;
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 __webpack_require__(9);
-__webpack_require__(243);
-__webpack_require__(240);
-__webpack_require__(241);
-__webpack_require__(242);
+__webpack_require__(247);
+__webpack_require__(244);
+__webpack_require__(245);
+__webpack_require__(246);
 __webpack_require__(26);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
@@ -27553,7 +28067,7 @@ SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.Spatial
 module.exports = SuperMap.REST.InterpolationAnalystService;
 
 /***/ }),
-/* 240 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -27624,7 +28138,7 @@ SuperMap.InterpolationDensityAnalystParameters = SuperMap.Class(SuperMap.Interpo
 module.exports = SuperMap.InterpolationDensityAnalystParameters;
 
 /***/ }),
-/* 241 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -27730,7 +28244,7 @@ module.exports = SuperMap.InterpolationIDWAnalystParameters;
 
 
 /***/ }),
-/* 242 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -27980,7 +28494,7 @@ SuperMap.InterpolationKrigingAnalystParameters = SuperMap.Class(SuperMap.Interpo
 module.exports = SuperMap.InterpolationKrigingAnalystParameters;
 
 /***/ }),
-/* 243 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -28122,7 +28636,134 @@ SuperMap.InterpolationRBFAnalystParameters.toObject = function (datasetInterpola
 module.exports = SuperMap.InterpolationRBFAnalystParameters;
 
 /***/ }),
-/* 244 */
+/* 248 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var SuperMap = __webpack_require__(0);
+/**
+ * Class: SuperMap.KernelDensityJobParameter
+ * 核密度分析任务参数类
+ */
+
+SuperMap.KernelDensityJobParameter = SuperMap.Class({
+
+    /**
+     * APIProperty: datasetName
+     * {String} 数据集名。
+     */
+    datasetName: null,
+
+    /**
+     * APIProperty: query
+     * {<SuperMap.Bounds>} 分析范围。
+     */
+    query: null,
+
+    /**
+     * APIProperty: resolution
+     * {number} 分辨率。
+     */
+    resolution: null,
+
+    /**
+     * APIProperty: separator
+     * {numbert} 分析方法。
+     */
+    method: null,
+
+    /**
+     * APIProperty: separator
+     * {numbert} 分析类型。
+     */
+    meshType: null,
+
+    /**
+     * APIProperty: separator
+     * {numbert} 权重索引。
+     */
+    fields: null,
+
+    /**
+     * APIProperty: radius
+     * {number} 分析的影响半径。
+     */
+    radius: null,
+
+    initialize: function (options) {
+        if (!options) {
+            return;
+        }
+        SuperMap.Util.extend(this, options);
+    },
+
+    /**
+     * APIMethod: destroy
+     * 释放资源，将引用资源的属性置空。
+     */
+    destroy: function () {
+        this.datasetName = null;
+        this.query = null;
+        this.resolution = null;
+        this.method = null;
+        this.radius = null;
+        this.meshType = null;
+        this.fields = null;
+    }
+
+});
+
+SuperMap.KernelDensityJobParameter.toObject = function (kernelDensityJobParameter, tempObj) {
+    for (var name in kernelDensityJobParameter) {
+        if (name === "datasetName") {
+            tempObj['input'] = tempObj['input'] || {};
+            tempObj['input'][name] = kernelDensityJobParameter[name];
+            continue;
+        }
+        tempObj['analyst'] = tempObj['analyst'] || {};
+        tempObj['analyst'][name] = kernelDensityJobParameter[name];
+    }
+};
+
+module.exports = SuperMap.KernelDensityJobParameter;
+
+/***/ }),
+/* 249 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var SuperMap = __webpack_require__(0);
+var ProcessingJobsServiceBase = __webpack_require__(47);
+var KernelDensityJobParameter = __webpack_require__(248);
+
+SuperMap.REST.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+
+    initialize: function (url, options) {
+        url += "/spatialanalyst/kernelDensity";
+        ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+    },
+
+    destroy: function () {
+        ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
+    },
+
+    getKernelDensityJobs: function () {
+        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
+    },
+
+    getKernelDensityJob: function (id) {
+        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
+    },
+
+    addKernelDensityJob: function (params) {
+        return ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, KernelDensityJobParameter]);
+    },
+
+    CLASS_NAME: "SuperMap.REST.KernelDensityJobsService"
+});
+
+module.exports = SuperMap.REST.KernelDensityJobsService;
+
+/***/ }),
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -28216,7 +28857,7 @@ SuperMap.LabelImageCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 module.exports = SuperMap.LabelImageCell;
 
 /***/ }),
-/* 245 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -28340,7 +28981,7 @@ module.exports = SuperMap.LabelMixedTextStyle;
 
 
 /***/ }),
-/* 246 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -28417,7 +29058,7 @@ SuperMap.LabelSymbolCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 module.exports = SuperMap.LabelSymbolCell;
 
 /***/ }),
-/* 247 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -28435,7 +29076,7 @@ module.exports = SuperMap.LabelSymbolCell;
  */
 __webpack_require__(46);
 var SuperMap = __webpack_require__(0);
-var ThemeLabel = __webpack_require__(48);
+var ThemeLabel = __webpack_require__(49);
 SuperMap.LabelThemeCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 
     /**
@@ -28485,7 +29126,7 @@ SuperMap.LabelThemeCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 module.exports = SuperMap.LabelThemeCell;
 
 /***/ }),
-/* 248 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -28593,13 +29234,13 @@ SuperMap.LayerStatus = SuperMap.Class({
 module.exports = SuperMap.LayerStatus;
 
 /***/ }),
-/* 249 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
-﻿/** * Class: SuperMap.LinkItem * 关联信息类。 * 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表， * 矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。 使用LinkItem时， * 空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。 * SuperMap.LinkItem 只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 SuperMap.LinkItem; * 另外，用于建立关联关系的两个表可以不在同一个数据源下。 * * (注意： * 1. 使用 SuperMap.LinkItem 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段； * 2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。) * */__webpack_require__(184);var SuperMap = __webpack_require__(0);SuperMap.LinkItem = SuperMap.Class({    /**     * APIProperty: datasourceConnectionInfo     * {<SuperMap.DatasourceConnectionInfo>} 关联的外部数据源信息 。     */    datasourceConnectionInfo: null,    /**     * APIProperty: foreignKeys     * {Array(String)} 主空间数据集的外键。     */    foreignKeys: null,    /**     * APIProperty: foreignTable     * {String} 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。     */    foreignTable: null,    /**     * APIProperty: linkFields     * {Array(String)} 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返     * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。     */    linkFields: null,    /**     * APIProperty: linkFilter     * {String} 与外部属性表的连接条件。     */    linkFilter: null,    /**     * APIProperty: name     * {String} 此关联信息对象的名称。     */    name: null,    /**     * APIProperty: primaryKeys     * {Array(String)} 需要关联的外部属性表的主键。     */    primaryKeys: null,    /**     * Constructor: SuperMap.LinkItem     * 关联信息类构造函数。     *     * 设置将TableB关联到TableA的关联信息，即建立LinkItem类并设置其属性，     * TableA与TableB是通过主表（TableA）的外键（LinkItem类的 ForeignKey 属性）     * 和副表（TableB）的主键（LinkItem类的 PrimaryKey 属性）实现关联的，     * 当执行TableA的查询操作时，系统将根据关联信息中的过滤条件及查询条件，分别查询TableA     * 与TableB中满足条件的内容，TableA的查询结果与TableB的查询结果分别作为     * 独立的两个结果表保存在内存中，当需要获取结果时，SuperMap将对两个结果进行拼接并返回，     * 因此，进行关联查询时，查询参数中的返回字段一定要有关联条件中的外键，     * 否则无法根据外键的值获取副表中的关联字段值，副表中的字段值将返回 null。     * 在应用层看来，连接和关联操作很相似。     *     * 下面以SQL查询说明linkitem的使用方法：     * (start code)     *  function queryBySQL() {     *      // 设置关联的外部数据库信息,alias表示数据库别名     *      var dc = new SuperMap.DatasourceConnectionInfo({     *          dataBase: "RelQuery",     *          server: "192.168.168.39",     *          user: "sa",     *          password: "map",     *          driver: "SQL Server",     *          connect: true,     *          OpenLinkTable: false,     *          alias: "RelQuery",     *          engineType: EngineType.SQLPLUS,     *          readOnly: false,     *          exclusive: false     *      });     *     // 设置关联信息     *      var linkItem = new SuperMap.LinkItem({     *          datasourceConnectionInfo: dc,     *          foreignKeys: ["name"],     *          foreignTable: "Pop_2011",     *          linkFields: ["SmID as Pid","pop"],     *          name: "link",     *          primatryKeys: ["name"],     *      });     *      // 设置查询参数，在查询参数中添加linkItem关联条件信息     *      var queryParam, queryBySQLParams, queryBySQLService;     *      queryParam = new SuperMap.FilterParameter({     *          name: "Province@RelQuery",     *          fields: ["SmID","name"],     *          attributeFilter: "SmID<7",     *          linkItems: [linkItem]     *       }),      *      queryBySQLParams = new SuperMap.QueryBySQLParameters({     *           queryParams: [queryParam]     *              }),      *      queryBySQLService = new SuperMap.REST.QueryBySQLService(url, {     *          eventListeners: {     *              "processCompleted": processCompleted,     *              "processFailed": processFailed     *              }     *      });     *      queryBySQLService.processAsync(queryBySQLParams);     *  }     *  function processCompleted(queryEventArgs) {//todo}     *  function processFailed(e) {//todo}     * (end)     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * datasourceConnectionInfo - {<SuperMap.DatasourceConnectionInfo>} 关联的外部数据源信息。     * foreignKeys - {Array(String)} 主空间数据集的外键。     * foreignTable - {String} 关联的外部属性表的名称。     * linkFields - {Array(String)} 欲保留的外部属性表的字段。     * linkFilter - {String} 与外部属性表的连接条件。     * name - {String} 此关联信息对象的名称。     * primaryKeys - {Array(String)} 需要关联的外部属性表的主键。     */    initialize: function (options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        if (me.datasourceConnectionInfo) {            me.datasourceConnectionInfo.destroy();            me.datasourceConnectionInfo = null;        }        me.foreignKeys = null;        me.foreignTable = null;        me.linkFields = null;        me.linkFilter = null;        me.name = null;        me.primaryKeys = null;    },    CLASS_NAME: "SuperMap.LinkItem"});module.exports = SuperMap.LinkItem;
+﻿/** * Class: SuperMap.LinkItem * 关联信息类。 * 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表， * 矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。 使用LinkItem时， * 空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。 * SuperMap.LinkItem 只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 SuperMap.LinkItem; * 另外，用于建立关联关系的两个表可以不在同一个数据源下。 * * (注意： * 1. 使用 SuperMap.LinkItem 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段； * 2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。) * */__webpack_require__(188);var SuperMap = __webpack_require__(0);SuperMap.LinkItem = SuperMap.Class({    /**     * APIProperty: datasourceConnectionInfo     * {<SuperMap.DatasourceConnectionInfo>} 关联的外部数据源信息 。     */    datasourceConnectionInfo: null,    /**     * APIProperty: foreignKeys     * {Array(String)} 主空间数据集的外键。     */    foreignKeys: null,    /**     * APIProperty: foreignTable     * {String} 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。     */    foreignTable: null,    /**     * APIProperty: linkFields     * {Array(String)} 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返     * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。     */    linkFields: null,    /**     * APIProperty: linkFilter     * {String} 与外部属性表的连接条件。     */    linkFilter: null,    /**     * APIProperty: name     * {String} 此关联信息对象的名称。     */    name: null,    /**     * APIProperty: primaryKeys     * {Array(String)} 需要关联的外部属性表的主键。     */    primaryKeys: null,    /**     * Constructor: SuperMap.LinkItem     * 关联信息类构造函数。     *     * 设置将TableB关联到TableA的关联信息，即建立LinkItem类并设置其属性，     * TableA与TableB是通过主表（TableA）的外键（LinkItem类的 ForeignKey 属性）     * 和副表（TableB）的主键（LinkItem类的 PrimaryKey 属性）实现关联的，     * 当执行TableA的查询操作时，系统将根据关联信息中的过滤条件及查询条件，分别查询TableA     * 与TableB中满足条件的内容，TableA的查询结果与TableB的查询结果分别作为     * 独立的两个结果表保存在内存中，当需要获取结果时，SuperMap将对两个结果进行拼接并返回，     * 因此，进行关联查询时，查询参数中的返回字段一定要有关联条件中的外键，     * 否则无法根据外键的值获取副表中的关联字段值，副表中的字段值将返回 null。     * 在应用层看来，连接和关联操作很相似。     *     * 下面以SQL查询说明linkitem的使用方法：     * (start code)     *  function queryBySQL() {     *      // 设置关联的外部数据库信息,alias表示数据库别名     *      var dc = new SuperMap.DatasourceConnectionInfo({     *          dataBase: "RelQuery",     *          server: "192.168.168.39",     *          user: "sa",     *          password: "map",     *          driver: "SQL Server",     *          connect: true,     *          OpenLinkTable: false,     *          alias: "RelQuery",     *          engineType: EngineType.SQLPLUS,     *          readOnly: false,     *          exclusive: false     *      });     *     // 设置关联信息     *      var linkItem = new SuperMap.LinkItem({     *          datasourceConnectionInfo: dc,     *          foreignKeys: ["name"],     *          foreignTable: "Pop_2011",     *          linkFields: ["SmID as Pid","pop"],     *          name: "link",     *          primatryKeys: ["name"],     *      });     *      // 设置查询参数，在查询参数中添加linkItem关联条件信息     *      var queryParam, queryBySQLParams, queryBySQLService;     *      queryParam = new SuperMap.FilterParameter({     *          name: "Province@RelQuery",     *          fields: ["SmID","name"],     *          attributeFilter: "SmID<7",     *          linkItems: [linkItem]     *       }),      *      queryBySQLParams = new SuperMap.QueryBySQLParameters({     *           queryParams: [queryParam]     *              }),      *      queryBySQLService = new SuperMap.REST.QueryBySQLService(url, {     *          eventListeners: {     *              "processCompleted": processCompleted,     *              "processFailed": processFailed     *              }     *      });     *      queryBySQLService.processAsync(queryBySQLParams);     *  }     *  function processCompleted(queryEventArgs) {//todo}     *  function processFailed(e) {//todo}     * (end)     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * datasourceConnectionInfo - {<SuperMap.DatasourceConnectionInfo>} 关联的外部数据源信息。     * foreignKeys - {Array(String)} 主空间数据集的外键。     * foreignTable - {String} 关联的外部属性表的名称。     * linkFields - {Array(String)} 欲保留的外部属性表的字段。     * linkFilter - {String} 与外部属性表的连接条件。     * name - {String} 此关联信息对象的名称。     * primaryKeys - {Array(String)} 需要关联的外部属性表的主键。     */    initialize: function (options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        if (me.datasourceConnectionInfo) {            me.datasourceConnectionInfo.destroy();            me.datasourceConnectionInfo = null;        }        me.foreignKeys = null;        me.foreignTable = null;        me.linkFields = null;        me.linkFilter = null;        me.name = null;        me.primaryKeys = null;    },    CLASS_NAME: "SuperMap.LinkItem"});module.exports = SuperMap.LinkItem;
 
 /***/ }),
-/* 250 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -28721,7 +29362,7 @@ module.exports = SuperMap.REST.MapService;
 
 
 /***/ }),
-/* 251 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -28860,7 +29501,7 @@ SuperMap.MathExpressionAnalysisParameters.toObject = function (mathExpressionAna
 module.exports = SuperMap.MathExpressionAnalysisParameters;
 
 /***/ }),
-/* 252 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -28871,7 +29512,7 @@ module.exports = SuperMap.MathExpressionAnalysisParameters;
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 __webpack_require__(9);
-__webpack_require__(251);
+__webpack_require__(257);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -28955,7 +29596,7 @@ SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.Spati
 module.exports = SuperMap.REST.MathExpressionAnalysisService;
 
 /***/ }),
-/* 253 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -29034,7 +29675,7 @@ SuperMap.MeasureParameters = SuperMap.Class({
 module.exports = SuperMap.MeasureParameters;
 
 /***/ }),
-/* 254 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -29047,7 +29688,7 @@ module.exports = SuperMap.MeasureParameters;
  */
 __webpack_require__(2);
 __webpack_require__(4);
-__webpack_require__(253);
+__webpack_require__(259);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -29170,7 +29811,7 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
 module.exports = SuperMap.REST.MeasureService;
 
 /***/ }),
-/* 255 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -29183,8 +29824,8 @@ module.exports = SuperMap.REST.MeasureService;
  *  - <SuperMap.ServiceBase>
  */
 __webpack_require__(4);
-__webpack_require__(181);
-__webpack_require__(220);
+__webpack_require__(185);
+__webpack_require__(224);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -29284,7 +29925,7 @@ SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
 module.exports = SuperMap.REST.OverlayAnalystService;
 
 /***/ }),
-/* 256 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -29403,7 +30044,7 @@ SuperMap.PointWithMeasure.fromJson = function (jsonObject) {
 module.exports = SuperMap.PointWithMeasure;
 
 /***/ }),
-/* 257 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -29477,7 +30118,7 @@ SuperMap.QueryByBoundsParameters = SuperMap.Class(SuperMap.QueryParameters, {
 module.exports = SuperMap.QueryByBoundsParameters;
 
 /***/ }),
-/* 258 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -29488,7 +30129,7 @@ module.exports = SuperMap.QueryByBoundsParameters;
  *  - <SuperMap.REST.QueryService>
  */
 __webpack_require__(35);
-__webpack_require__(257);
+__webpack_require__(263);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, {
 
@@ -29559,13 +30200,13 @@ module.exports = SuperMap.REST.QueryByBoundsService;
 
 
 /***/ }),
-/* 259 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/** * Class: SuperMap.QueryByDistanceParameters * Distance 查询参数类。 * 该类用于设置 Distance 查询的相关参数。 * * Inherits from: *  - <SuperMap.QueryParameters> */__webpack_require__(27);var SuperMap = __webpack_require__(0);SuperMap.QueryByDistanceParameters = SuperMap.Class(SuperMap.QueryParameters, {    /**     * APIProperty: distance     * {Number} 查询距离，默认为0，单位与所查询图层对应的数据集单位相同。     * 当查找最近地物时，该属性无效。     */    distance: 0,    /**     * APIProperty: geometry     * {<Object>} 用于查询的地理对象，必设属性。     */    geometry: null,    /**     * APIProperty: isNearest     * {Boolean} 是否为最近距离查询。     * 建议该属性与 expectCount （继承自 SuperMap.QueryParameters）属性联合使用。     * 当该属性为 true 时，即表示查找最近地物，如果查询结果数大于期望返回的结果记录数（expectCount），     * 则查找结果为查询总记录中距离中心最近的expectCount个地物。     * 当该属性为不为 true 时，如果查询结果数大于期望返回的结果记录数（expectCount），     * 则查找结果为从查询总记录中随机抽取的expectCount个地物。     * 目前查询结果不支持按远近距离排序。     */    isNearest: null,    /**     * APIProperty: returnContent     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     * 如果为 true，则直接返回新创建资源，即查询结果的表述。     * 为 false，则返回的是查询结果资源的 URI。默认为 true。     */    returnContent: true,    /**     * Constructor: SuperMap.QueryByDistanceParameters     * Distance 查询参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * customParams - {String} 自定义参数，供扩展使用。     * distance - {Number} 查询距离。     * expectCount - {Integer} 期望返回结果记录个数。     * geometry - {<Object>} 用于查询的几何对象。     * holdTime - {Integer} 资源在服务端保存的时间。     * isNearest - {Boolean} 是否为最近距离查询。     * networkType - {<SuperMap.GeometryType>} 网络数据集对应的查询类型。     * queryOption - {<SuperMap.QueryOption>} 查询结果类型枚举类。     * queryParams -  {Array(<SuperMap.FilterParameter>)} 查询过滤条件参数数组。     * startRecord - {Integer} 查询起始记录号。     * returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     */    initialize: function (options) {        SuperMap.QueryParameters.prototype.initialize.apply(this, arguments);        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        SuperMap.QueryParameters.prototype.destroy.apply(this, arguments);        var me = this;        me.returnContent = null;        me.distance = null;        me.isNearest = null;        if (me.geometry) {            me.geometry.destroy();            me.geometry = null;        }    },    CLASS_NAME: "SuperMap.QueryByDistanceParameters"});module.exports = SuperMap.QueryByDistanceParameters;
 
 /***/ }),
-/* 260 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -29576,7 +30217,7 @@ module.exports = SuperMap.REST.QueryByBoundsService;
  *  - <SuperMap.REST.QueryService>
  */
 __webpack_require__(35);
-__webpack_require__(259);
+__webpack_require__(265);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService, {
 
@@ -29645,7 +30286,7 @@ SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService
 module.exports = SuperMap.REST.QueryByDistanceService;
 
 /***/ }),
-/* 261 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -29725,7 +30366,7 @@ SuperMap.QueryByGeometryParameters = SuperMap.Class(SuperMap.QueryParameters, {
 module.exports = SuperMap.QueryByGeometryParameters;
 
 /***/ }),
-/* 262 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -29736,7 +30377,7 @@ module.exports = SuperMap.QueryByGeometryParameters;
  *  - <SuperMap.REST.QueryService>
  */
 __webpack_require__(35);
-__webpack_require__(261);
+__webpack_require__(267);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService, {
 
@@ -29807,13 +30448,13 @@ module.exports = SuperMap.REST.QueryByGeometryService;
 
 
 /***/ }),
-/* 263 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/** * Class: SuperMap.QueryBySQLParameters * SQL 查询参数类。 * 该类用于设置 SQL 查询的相关参数。 * * Inherits from: *  - <SuperMap.QueryParameters> */__webpack_require__(27);var SuperMap = __webpack_require__(0);SuperMap.QueryBySQLParameters = SuperMap.Class(SuperMap.QueryParameters, {    /**     * APIProperty: returnContent     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     * 如果为 true，则直接返回新创建资源，即查询结果的表述。     * 为 false，则返回的是查询结果资源的 URI。默认为 true。     */    returnContent: true,    /**     * Constructor: SuperMap.QueryBySQLParameters     * SQL 查询参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * customParams - {String} 自定义参数，供扩展使用。     * expectCount - {Integer} 期望返回结果记录个数。     * networkType - {<SuperMap.GeometryType>} 网络数据集对应的查询类型。     * queryOption - {<SuperMap.QueryOption>} 查询结果类型枚举类。     * queryParams -  {Array(<SuperMap.FilterParameter>)} 查询过滤条件参数数组。     * startRecord - {Integer} 查询起始记录号。     * holdTime - {Integer} 资源在服务端保存的时间。     * returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。     */    initialize: function (options) {        SuperMap.QueryParameters.prototype.initialize.apply(this, arguments);        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        SuperMap.QueryParameters.prototype.destroy.apply(this, arguments);        var me = this;        me.returnContent = null;    },    CLASS_NAME: "SuperMap.QueryBySQLParameters"});module.exports = SuperMap.QueryBySQLParameters;
 
 /***/ }),
-/* 264 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -29824,7 +30465,7 @@ module.exports = SuperMap.REST.QueryByGeometryService;
  *  - <SuperMap.REST.QueryService>
  */
 __webpack_require__(35);
-__webpack_require__(263);
+__webpack_require__(269);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
 
@@ -29899,14 +30540,14 @@ module.exports = SuperMap.REST.QueryBySQLService;
 
 
 /***/ }),
-/* 265 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
  * Class: SuperMap.RouteCalculateMeasureParameters
  * 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
  */
-__webpack_require__(66);
+__webpack_require__(68);
 var SuperMap = __webpack_require__(0);
 SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
 
@@ -29994,7 +30635,7 @@ SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
 module.exports = SuperMap.RouteCalculateMeasureParameters;
 
 /***/ }),
-/* 266 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -30006,7 +30647,7 @@ module.exports = SuperMap.RouteCalculateMeasureParameters;
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 __webpack_require__(9);
-__webpack_require__(265);
+__webpack_require__(271);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -30138,7 +30779,7 @@ module.exports = SuperMap.REST.RouteCalculateMeasureService;
 
 
 /***/ }),
-/* 267 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -30147,7 +30788,7 @@ module.exports = SuperMap.REST.RouteCalculateMeasureService;
  * 参数有两种方式，分别为Geometry和Dataset两种，前者需要指定sourceRoute对象作为参数，后者需要dataset，routeIDField，routeID三个参数
  * 如果用户两种参数均设置，优先选择Dataset方式
  */
-__webpack_require__(66);
+__webpack_require__(68);
 var SuperMap = __webpack_require__(0);
 SuperMap.RouteLocatorParameters = SuperMap.Class({
 
@@ -30278,7 +30919,7 @@ SuperMap.RouteLocatorParameters = SuperMap.Class({
 module.exports = SuperMap.RouteLocatorParameters;
 
 /***/ }),
-/* 268 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -30289,7 +30930,7 @@ module.exports = SuperMap.RouteLocatorParameters;
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 __webpack_require__(9);
-__webpack_require__(267);
+__webpack_require__(273);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -30424,7 +31065,7 @@ module.exports = SuperMap.REST.RouteLocatorService;
 
 
 /***/ }),
-/* 269 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -30434,12 +31075,12 @@ module.exports = SuperMap.REST.RouteLocatorService;
  * Inherits from:
  *  - <SuperMap.UGCSubLayer>
  */
-__webpack_require__(48);
+__webpack_require__(49);
+__webpack_require__(74);
 __webpack_require__(72);
 __webpack_require__(70);
-__webpack_require__(68);
-__webpack_require__(69);
 __webpack_require__(71);
+__webpack_require__(73);
 __webpack_require__(37);
 var SuperMap = __webpack_require__(0);
 SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
@@ -30537,7 +31178,7 @@ module.exports = SuperMap.ServerTheme;
 
 
 /***/ }),
-/* 270 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -30592,7 +31233,7 @@ module.exports = SuperMap.SetLayerInfoParameters;
 
 
 /***/ }),
-/* 271 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -30604,7 +31245,7 @@ module.exports = SuperMap.SetLayerInfoParameters;
  *  - <SuperMap.ServiceBase>
  */
 __webpack_require__(4);
-__webpack_require__(270);
+__webpack_require__(276);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -30675,7 +31316,7 @@ module.exports = SuperMap.REST.SetLayerInfoService;
 
 
 /***/ }),
-/* 272 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -30684,7 +31325,7 @@ module.exports = SuperMap.REST.SetLayerInfoService;
  * 该类存储了各子图层是否可见的状态。
  * 注意在 SuperMap iClient 系列产品中所说的图层与 SuperMap Deskpro 的地图对应，子图层与 SuperMap Deskpro 的图层对应。
  */
-__webpack_require__(248);
+__webpack_require__(254);
 var SuperMap = __webpack_require__(0);
 SuperMap.SetLayerStatusParameters = SuperMap.Class({
 
@@ -30764,7 +31405,7 @@ SuperMap.SetLayerStatusParameters = SuperMap.Class({
 module.exports = SuperMap.SetLayerStatusParameters;
 
 /***/ }),
-/* 273 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -30776,7 +31417,7 @@ module.exports = SuperMap.SetLayerStatusParameters;
  * 一种是使用 AsyncResponder 类实现异步处理。
  */
 __webpack_require__(4);
-__webpack_require__(272);
+__webpack_require__(278);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -30922,7 +31563,7 @@ module.exports = SuperMap.REST.SetLayerStatusService;
 
 
 /***/ }),
-/* 274 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -30972,7 +31613,7 @@ module.exports = SuperMap.SetLayersInfoParameters;
 
 
 /***/ }),
-/* 275 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -30986,7 +31627,7 @@ module.exports = SuperMap.SetLayersInfoParameters;
  *  - <SuperMap.ServiceBase>
  */
 __webpack_require__(4);
-__webpack_require__(274);
+__webpack_require__(280);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -31104,7 +31745,7 @@ module.exports = SuperMap.REST.SetLayersInfoService;
 
 
 /***/ }),
-/* 276 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -31155,7 +31796,7 @@ SuperMap.StopQueryParameters = SuperMap.Class({
 module.exports = SuperMap.StopQueryParameters;
 
 /***/ }),
-/* 277 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -31167,7 +31808,7 @@ module.exports = SuperMap.StopQueryParameters;
  *  - <SuperMap.ServiceBase>
  */
 __webpack_require__(4);
-__webpack_require__(276);
+__webpack_require__(282);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -31240,7 +31881,134 @@ SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 module.exports = SuperMap.REST.StopQueryService;
 
 /***/ }),
-/* 278 */
+/* 284 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var SuperMap = __webpack_require__(0);
+/**
+ * Class: SuperMap.KernelDensityJobParameter
+ * 核密度分析任务参数类
+ */
+
+SuperMap.SummaryMeshJobParameter = SuperMap.Class({
+
+    /**
+     * APIProperty: datasetName
+     * {String} 数据集名。
+     */
+    datasetName: null,
+
+    /**
+     * APIProperty: query
+     * {<SuperMap.Bounds>} 分析范围。
+     */
+    query: null,
+
+    /**
+     * APIProperty: resolution
+     * {number} 分辨率。
+     */
+    resolution: null,
+
+    /**
+     * APIProperty: statisticModes
+     * {String} 分析模式。
+     */
+    statisticModes: null,
+
+    /**
+     * APIProperty: resultFieldNames
+     * {String} 结果字段名。
+     */
+    resultFieldNames: null,
+
+    /**
+     * APIProperty: separator
+     * {numbert} 分析类型。
+     */
+    meshType: null,
+
+    /**
+     * APIProperty: separator
+     * {numbert} 权重索引。
+     */
+    fields: null,
+
+    initialize: function (options) {
+        if (!options) {
+            return;
+        }
+        SuperMap.Util.extend(this, options);
+    },
+
+    /**
+     * APIMethod: destroy
+     * 释放资源，将引用资源的属性置空。
+     */
+    destroy: function () {
+        this.datasetName = null;
+        this.query = null;
+        this.resolution = null;
+        this.statisticModes = null;
+        this.resultFieldNames = null;
+        this.meshType = null;
+        this.fields = null;
+    }
+
+});
+
+SuperMap.SummaryMeshJobParameter.toObject = function (summaryMeshJobParameter, tempObj) {
+    for (var name in summaryMeshJobParameter) {
+        if (name === "datasetName") {
+            tempObj['input'] = tempObj['input'] || {};
+            tempObj['input'][name] = summaryMeshJobParameter[name];
+            continue;
+        }
+        tempObj['analyst'] = tempObj['analyst'] || {};
+        tempObj['analyst'][name] = summaryMeshJobParameter[name];
+    }
+};
+
+module.exports = SuperMap.SummaryMeshJobParameter;
+
+/***/ }),
+/* 285 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var SuperMap = __webpack_require__(0);
+var ProcessingJobsServiceBase = __webpack_require__(47);
+var SummaryMeshJobParameter = __webpack_require__(284);
+
+SuperMap.REST.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+
+    initialize: function (url, options) {
+        url += "/spatialanalyst/SummaryMesh";
+        ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+    },
+
+    destroy: function () {
+        ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
+    },
+
+    getSummaryMeshJobs: function () {
+        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
+    },
+
+    getSummaryMeshJob: function (id) {
+        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
+    },
+
+    addSummaryMeshJob: function (params) {
+        ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, SummaryMeshJobParameter]);
+    },
+
+    CLASS_NAME: "SuperMap.REST.SummaryMeshJobsService"
+});
+
+module.exports = SuperMap.REST.SummaryMeshJobsService;
+
+/***/ }),
+/* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -31328,7 +32096,7 @@ module.exports = SuperMap.SupplyCenter;
 
 
 /***/ }),
-/* 279 */
+/* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -31447,7 +32215,7 @@ SuperMap.SurfaceAnalystParametersSetting = SuperMap.Class({
 module.exports = SuperMap.SurfaceAnalystParametersSetting;
 
 /***/ }),
-/* 280 */
+/* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -31460,8 +32228,8 @@ module.exports = SuperMap.SurfaceAnalystParametersSetting;
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 __webpack_require__(9);
-__webpack_require__(182);
-__webpack_require__(221);
+__webpack_require__(186);
+__webpack_require__(225);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -31569,7 +32337,7 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
 module.exports = SuperMap.REST.SurfaceAnalystService;
 
 /***/ }),
-/* 281 */
+/* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31671,7 +32439,7 @@ SuperMap.TerrainCurvatureCalculationParameters.toObject = function (derrainCurva
 module.exports = SuperMap.TerrainCurvatureCalculationParameters;
 
 /***/ }),
-/* 282 */
+/* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -31682,7 +32450,7 @@ module.exports = SuperMap.TerrainCurvatureCalculationParameters;
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 __webpack_require__(9);
-__webpack_require__(281);
+__webpack_require__(289);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
@@ -31766,7 +32534,7 @@ module.exports = SuperMap.REST.TerrainCurvatureCalculationService;
 
 
 /***/ }),
-/* 283 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -31861,7 +32629,7 @@ module.exports = SuperMap.ThemeGraduatedSymbolStyle;
 
 
 /***/ }),
-/* 284 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -31961,7 +32729,7 @@ module.exports = SuperMap.ThemeGraphAxes;
 
 
 /***/ }),
-/* 285 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -32048,7 +32816,7 @@ module.exports = SuperMap.ThemeGraphItem;
 
 
 /***/ }),
-/* 286 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -32110,7 +32878,7 @@ module.exports = SuperMap.ThemeGraphSize;
 
 
 /***/ }),
-/* 287 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -32188,7 +32956,7 @@ module.exports = SuperMap.ThemeGraphText;
 
 
 /***/ }),
-/* 288 */
+/* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -32202,7 +32970,7 @@ module.exports = SuperMap.ThemeGraphText;
  */
 __webpack_require__(2);
 __webpack_require__(14);
-__webpack_require__(289);
+__webpack_require__(297);
 var SuperMap = __webpack_require__(0);
 SuperMap.ThemeGridRange = SuperMap.Class(SuperMap.Theme, {
 
@@ -32306,7 +33074,7 @@ module.exports = SuperMap.ThemeGridRange;
 
 
 /***/ }),
-/* 289 */
+/* 297 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -32416,7 +33184,7 @@ module.exports = SuperMap.ThemeGridRangeItem;
 
 
 /***/ }),
-/* 290 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -32431,7 +33199,7 @@ module.exports = SuperMap.ThemeGridRangeItem;
 __webpack_require__(14);
 var SuperMap = __webpack_require__(0);
 var ServerColor = __webpack_require__(13);
-var ThemeGridUniqueItem = __webpack_require__(291);
+var ThemeGridUniqueItem = __webpack_require__(299);
 
 SuperMap.ThemeGridUnique = SuperMap.Class(SuperMap.Theme, {
 
@@ -32535,7 +33303,7 @@ module.exports = function (options) {
 
 
 /***/ }),
-/* 291 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -32636,7 +33404,7 @@ module.exports = SuperMap.ThemeGridUniqueItem;
 
 
 /***/ }),
-/* 292 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -32735,7 +33503,7 @@ module.exports = SuperMap.ThemeLabelAlongLine;
 
 
 /***/ }),
-/* 293 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -32809,7 +33577,7 @@ module.exports = SuperMap.ThemeLabelBackground;
 
 
 /***/ }),
-/* 294 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -32908,7 +33676,7 @@ module.exports = SuperMap.ThemeLabelItem;
 
 
 /***/ }),
-/* 295 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -32916,7 +33684,7 @@ module.exports = SuperMap.ThemeLabelItem;
  * 标签中文本风格类。
  * 通过该类可以设置标签中的文本字体大小和显示风格。
  */
-__webpack_require__(245);
+__webpack_require__(251);
 var SuperMap = __webpack_require__(0);
 var ServerTextStyle = __webpack_require__(17);
 SuperMap.ThemeLabelText = SuperMap.Class({
@@ -33022,7 +33790,7 @@ module.exports = SuperMap.ThemeLabelText;
 
 
 /***/ }),
-/* 296 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -33123,7 +33891,7 @@ module.exports = SuperMap.ThemeLabelUniqueItem;
 
 
 /***/ }),
-/* 297 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -33201,7 +33969,7 @@ SuperMap.ThemeMemoryData = SuperMap.Class({
 module.exports = SuperMap.ThemeMemoryData;
 
 /***/ }),
-/* 298 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -33210,17 +33978,17 @@ module.exports = SuperMap.ThemeMemoryData;
  * 该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
  */
 __webpack_require__(45);
-__webpack_require__(68);
-__webpack_require__(69);
 __webpack_require__(70);
-__webpack_require__(48);
 __webpack_require__(71);
 __webpack_require__(72);
-__webpack_require__(288);
-__webpack_require__(290);
-__webpack_require__(244);
-__webpack_require__(246);
-__webpack_require__(247);
+__webpack_require__(49);
+__webpack_require__(73);
+__webpack_require__(74);
+__webpack_require__(296);
+__webpack_require__(298);
+__webpack_require__(250);
+__webpack_require__(252);
+__webpack_require__(253);
 var SuperMap = __webpack_require__(0);
 
 SuperMap.ThemeParameters = SuperMap.Class({
@@ -33319,7 +34087,7 @@ SuperMap.ThemeParameters = SuperMap.Class({
 module.exports = SuperMap.ThemeParameters;
 
 /***/ }),
-/* 299 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -33436,7 +34204,7 @@ module.exports = SuperMap.ThemeRangeItem;
 
 
 /***/ }),
-/* 300 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -33447,7 +34215,7 @@ module.exports = SuperMap.ThemeRangeItem;
  *  - <SuperMap.ServiceBase>
  */
 __webpack_require__(4);
-__webpack_require__(298);
+__webpack_require__(306);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -33593,7 +34361,7 @@ SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
 module.exports = SuperMap.REST.ThemeService;
 
 /***/ }),
-/* 301 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -33696,7 +34464,7 @@ module.exports = SuperMap.ThemeUniqueItem;
 
 
 /***/ }),
-/* 302 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -33712,10 +34480,10 @@ module.exports = SuperMap.ThemeUniqueItem;
  *  - <SuperMap.REST.SpatialAnalystBase>
  */
 __webpack_require__(9);
-__webpack_require__(183);
-__webpack_require__(222);
+__webpack_require__(187);
+__webpack_require__(226);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(7);
+var GeoJSONFormat = __webpack_require__(8);
 SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -33835,7 +34603,7 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
 module.exports = SuperMap.REST.ThiessenAnalystService;
 
 /***/ }),
-/* 303 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -33904,7 +34672,7 @@ SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
 module.exports = SuperMap.REST.TilesetsService;
 
 /***/ }),
-/* 304 */
+/* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -34031,14 +34799,14 @@ SuperMap.TransferLine.fromJson = function (jsonObject) {
 module.exports = SuperMap.TransferLine;
 
 /***/ }),
-/* 305 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
  * Class: SuperMap.TransferPathParameters
  * 交通换乘线路查询参数类。
  */
-__webpack_require__(304);
+__webpack_require__(312);
 var SuperMap = __webpack_require__(0);
 SuperMap.TransferPathParameters = SuperMap.Class({
     /**
@@ -34101,7 +34869,7 @@ SuperMap.TransferPathParameters.toJson = function (params) {
 module.exports = SuperMap.TransferPathParameters;
 
 /***/ }),
-/* 306 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -34113,7 +34881,7 @@ module.exports = SuperMap.TransferPathParameters;
  *  - <SuperMap.ServiceBase>
  */
 __webpack_require__(4);
-__webpack_require__(305);
+__webpack_require__(313);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.TransferPathService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -34191,7 +34959,7 @@ module.exports = SuperMap.REST.TransferPathService;
 
 
 /***/ }),
-/* 307 */
+/* 315 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -34332,7 +35100,7 @@ module.exports = SuperMap.TransferSolutionParameters;
 
 
 /***/ }),
-/* 308 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -34344,7 +35112,7 @@ module.exports = SuperMap.TransferSolutionParameters;
  *  - <SuperMap.ServiceBase>
  */
 __webpack_require__(4);
-__webpack_require__(307);
+__webpack_require__(315);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -34430,13 +35198,13 @@ module.exports = SuperMap.REST.TransferSolutionService;
 
 
 /***/ }),
-/* 309 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/** * Class: SuperMap.TransportationAnalystResultSetting * 交通网络分析结果参数类。 * 通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。 */var SuperMap = __webpack_require__(0);SuperMap.TransportationAnalystResultSetting = SuperMap.Class({    /**     * APIProperty: returnEdgeFeatures     * {Boolean} 是否在分析结果中包含弧段要素集合。弧段要素包括弧段的空间信息和属性信息。     */    returnEdgeFeatures: false,    /**     * APIProperty: returnEdgeGeometry     * {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     */    returnEdgeGeometry: false,    /**     * APIProperty: returnEdgeIDs     * {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。     */    returnEdgeIDs: false,    /**     * APIProperty: returnNodeFeatures     * {Boolean} 是否在分析结果中包含结点要素集合。     * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。默认为 false。     */    returnNodeFeatures: false,    /**     * APIProperty: returnNodeGeometry     * {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。     */    returnNodeGeometry: false,    /**     * APIProperty: returnNodeIDs     * {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。     */    returnNodeIDs: false,    /**     * APIProperty: returnPathGuides     * {Boolean} 返回分析结果中是否包含行驶导引集合。     */    returnPathGuides: false,    /**     * APIProperty: returnRoutes     * {Boolean} 返回分析结果中是否包含路由对象的集合。     */    returnRoutes: false,    /**     * Constructor: SuperMap.TransportationAnalystResultSetting     * 交通网络分析结果参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * returnEdgeFeatures - {Boolean} 是否在分析结果中包含弧段要素集合。     * returnEdgeGeometry - {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     * returnEdgeIDs - {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。     * returnNodeFeatures - {Boolean} 是否在分析结果中包含结点要素集合。     * returnNodeGeometry - {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。     * returnNodeIDs - {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。     * returnPathGuides - {Boolean} 返回分析结果中是否包含行驶导引集合。     * returnRoutes - {Boolean} 返回分析结果中是否包含路由对象的集合。     */    initialize: function (options) {        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.returnEdgeFeatures = null;        me.returnEdgeGeometry = null;        me.returnEdgeIDs = null;        me.returnNodeFeatures = null;        me.returnNodeGeometry = null;        me.returnNodeIDs = null;        me.returnPathGuides = null;        me.returnRoutes = null;    },    CLASS_NAME: "SuperMap.TransportationAnalystResultSetting"});module.exports = SuperMap.TransportationAnalystResultSetting;
 
 /***/ }),
-/* 310 */
+/* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -34555,7 +35323,7 @@ SuperMap.UGCLayer = SuperMap.Class({
 module.exports = SuperMap.UGCLayer;
 
 /***/ }),
-/* 311 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -34565,7 +35333,7 @@ module.exports = SuperMap.UGCLayer;
  * Inherits from:
  *  - <SuperMap.UGCLayer>
  */
-__webpack_require__(310);
+__webpack_require__(318);
 var SuperMap = __webpack_require__(0);
 SuperMap.UGCMapLayer = SuperMap.Class(SuperMap.UGCLayer, {
 
@@ -34674,7 +35442,7 @@ module.exports = SuperMap.UGCMapLayer;
 
 
 /***/ }),
-/* 312 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -34754,7 +35522,7 @@ SuperMap.UpdateEdgeWeightParameters = SuperMap.Class({
 module.exports = SuperMap.UpdateEdgeWeightParameters;
 
 /***/ }),
-/* 313 */
+/* 321 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -34762,7 +35530,7 @@ module.exports = SuperMap.UpdateEdgeWeightParameters;
  *  更新边的边的耗费权重服务
  */
 __webpack_require__(11);
-__webpack_require__(312);
+__webpack_require__(320);
 var SuperMap = __webpack_require__(0);
 SuperMap.REST.UpdateEdgeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
@@ -34877,7 +35645,7 @@ SuperMap.REST.UpdateEdgeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnal
 module.exports = SuperMap.REST.UpdateEdgeWeightService;
 
 /***/ }),
-/* 314 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -34958,7 +35726,7 @@ SuperMap.UpdateTurnNodeWeightParameters = SuperMap.Class({
 module.exports = SuperMap.UpdateTurnNodeWeightParameters;
 
 /***/ }),
-/* 315 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -34967,7 +35735,7 @@ module.exports = SuperMap.UpdateTurnNodeWeightParameters;
  */
 
 __webpack_require__(11);
-__webpack_require__(314);
+__webpack_require__(322);
 var SuperMap = __webpack_require__(0);
 
 SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
@@ -35082,7 +35850,7 @@ SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.REST.Network
 module.exports = SuperMap.REST.UpdateTurnNodeWeightService;
 
 /***/ }),
-/* 316 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -35161,7 +35929,7 @@ module.exports = SuperMap.Vector;
 
 
 /***/ }),
-/* 317 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -40113,7 +40881,7 @@ module.exports = SuperMap.CartoCSS;
 
 
 /***/ }),
-/* 318 */
+/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var L = __webpack_require__(1);
@@ -40154,7 +40922,7 @@ L.CRS.TianDiTu_Mercator = new L.Proj.CRS("EPSG:3857", '', {
 });
 
 /***/ }),
-/* 319 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
@@ -40236,11 +41004,11 @@ L.supermap.NonEarthCRS = function (options) {
 module.exports = NonEarthCRS;
 
 /***/ }),
-/* 320 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var L = __webpack_require__(1);
-var proj4 = __webpack_require__(125).default;
+var proj4 = __webpack_require__(128).default;
 L.Proj = {};
 
 L.Proj._isProj4Obj = function (a) {
@@ -40486,16 +41254,16 @@ L.Proj.imageOverlay = function (url, bounds, options) {
 
 
 /***/ }),
-/* 321 */
+/* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
  *CartoCSS样式转Leaflet样式
  */
 __webpack_require__(6);
-__webpack_require__(322);
-__webpack_require__(323);
-var CartoCSS = __webpack_require__(317);
+__webpack_require__(330);
+__webpack_require__(331);
+var CartoCSS = __webpack_require__(325);
 var SuperMap = __webpack_require__(0);
 var L = __webpack_require__(1);
 
@@ -40741,7 +41509,7 @@ L.supermap.CartoCSSToLeaflet = {
 module.exports = L.supermap.CartoCSSToLeaflet;
 
 /***/ }),
-/* 322 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -40797,7 +41565,7 @@ module.exports = L.supermap.DefaultStyle;
 
 
 /***/ }),
-/* 323 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -40928,7 +41696,7 @@ L.supermap.CompOpMap = {
 };
 
 /***/ }),
-/* 324 */
+/* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
@@ -40995,7 +41763,7 @@ module.exports = L.supermap.CircleStyle;
 
 
 /***/ }),
-/* 325 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
@@ -41033,12 +41801,12 @@ L.supermap.graphic = function (options) {
 module.exports = L.supermap.Graphic;
 
 /***/ }),
-/* 326 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(38);
 var L = __webpack_require__(1);
-var PolyBase = __webpack_require__(50);
+var PolyBase = __webpack_require__(52);
 
 L.LineSymbolizer = L.Polyline.extend({
     includes: [L.Symbolizer.prototype, PolyBase],
@@ -41063,11 +41831,11 @@ L.LineSymbolizer = L.Polyline.extend({
 module.exports = L.LineSymbolizer;
 
 /***/ }),
-/* 327 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(38);
-__webpack_require__(50);
+__webpack_require__(52);
 var L = __webpack_require__(1);
 L.PointSymbolizer = L.CircleMarker.extend({
     includes: L.Symbolizer.prototype,
@@ -41196,12 +41964,12 @@ L.PointSymbolizer = L.CircleMarker.extend({
 module.exports = L.PointSymbolizer;
 
 /***/ }),
-/* 328 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(38);
 var L = __webpack_require__(1);
-var PolyBase = __webpack_require__(50);
+var PolyBase = __webpack_require__(52);
 
 L.RegionSymbolizer = L.Polygon.extend({
     includes: [L.Symbolizer.prototype, PolyBase],
@@ -41219,12 +41987,12 @@ L.RegionSymbolizer = L.Polygon.extend({
 module.exports = L.RegionSymbolizer;
 
 /***/ }),
-/* 329 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(38);
-__webpack_require__(74);
 __webpack_require__(75);
+__webpack_require__(76);
 var L = __webpack_require__(1);
 L.TextSymbolizer = L.Path.extend({
     includes: L.Symbolizer.prototype,
@@ -41399,14 +42167,14 @@ L.SVG.Renderer.include({
 module.exports = L.TextSymbolizer;
 
 /***/ }),
-/* 330 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
  *将iServer tileFeature转换为类似VT标准的格式
  */
 __webpack_require__(6);
-__webpack_require__(76);
+__webpack_require__(77);
 var L = __webpack_require__(1);
 var Util=__webpack_require__(19);
 L.supermap.TileFeatureProcessor = {
@@ -41515,12 +42283,12 @@ L.supermap.TileFeatureProcessor = {
 module.exports = L.supermap.TileFeatureProcessor;
 
 /***/ }),
-/* 331 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(76);
 __webpack_require__(75);
-__webpack_require__(74);
-__webpack_require__(332);
+__webpack_require__(340);
 var L = __webpack_require__(1);
 L.VectorGrid = L.GridLayer.extend({
     options: {
@@ -41648,18 +42416,18 @@ module.exports = L.VectorGrid;
 
 
 /***/ }),
-/* 332 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(6);
-__webpack_require__(76);
-__webpack_require__(329);
-__webpack_require__(327);
-__webpack_require__(326);
-__webpack_require__(328);
+__webpack_require__(77);
+__webpack_require__(337);
+__webpack_require__(335);
+__webpack_require__(334);
+__webpack_require__(336);
 var L = __webpack_require__(1);
 var SuperMap = __webpack_require__(0);
-var TileFeatureProcessor = __webpack_require__(330);
+var TileFeatureProcessor = __webpack_require__(338);
 var VectorTile = L.Class.extend({
 
     initialize: function (options, done) {
@@ -41832,7 +42600,7 @@ L.supermap.vectorTile = function (options, done) {
 module.exports = VectorTile;
 
 /***/ }),
-/* 333 */
+/* 341 */
 /***/ (function(module, exports) {
 
 eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--)d[e(c)]=k[c]||e(c);k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('1G.A={aU:"aT 7.1.0",5H:(U(){B f=18 aS("(^|(.*?\\\\/))(A.aR.aQ)(\\\\?|$)"),e=1d.aP("4D"),g,b,c="";13(B d=0,a=e.V;d<a;d++){g=e[d].aO("1F");C(g){B b=g.1V(f);C(b){c=b[1];1r}}}T(U(){T c})})()};A.68=A.68||{};A.L=A.L||{};A.67=A.67||{};A.65=A.65||{};A.64=A.64||{};A.63=A.63||{};A.62=A.62||{};A.61=A.61||{};A.aN=U(){B a=1x.V;B d=1x[0];B c=1x[a-1];B e=1h c.4j==="U"?c.4j:U(){d.1O.4j.5Z(1b,1x)};C(a>1){B b=[e,d].4q(1A.1O.3H.5X(1x).3H(1,a-1),c);A.5Y.5Z(Z,b)}X{e.1O=c}T e};A.5Y=U(f,d){B c=U(){};c.1O=d.1O;f.1O=18 c;B b,a,e;13(b=2,a=1x.V;b<a;b++){e=1x[b];C(1h e==="U"){e=e.1O}A.L.3w(f.1O,e)}};A.L=A.L||{};A.L.3w=U(a,e){a=a||{};C(e){13(B d 1i e){B c=e[d];C(c!==1j){a[d]=c}}B b=1h 1G.2t==="U"&&e 1K 1G.2t;C(!b&&e.1E&&e.1E("1B")){a.1B=e.1B}}T a};A.L.4u=U(c,b){c=c||{};B a;C(b){13(B d 1i c){a=b[d];C(1h a!=="1j"){c[d]=a}}}};A.L.aM=U(c){c=c||{};13(B b 1i c){C(c.1E(b)){C(1h c[b]==="21"&&c[b]1K 1A){13(B a 1i c[b]){C(c[b][a].3z){c[b][a].3z()}}c[b].V=0}X{C(1h c[b]==="21"&&c[b]1K 3G){C(c[b].3z){c[b].3z()}}}c[b]=Z}}};A.L.aL=U(){B d=[];13(B c=0,a=1x.V;c<a;c++){B b=1x[c];C(1h b==="3L"){b=1d.aK(b)}C(1x.V===1){T b}d.1a(b)}T d};A.L.aJ=U(a){T!!(a&&a.aI===1)};A.L.5Q=U(b){T(3G.1O.1B.5X(b)==="[21 1A]")};A.L.aH=U(c,b){13(B a=c.V-1;a>=0;a--){C(c[a]===b){c.aG(a,1)}}T c};A.L.1c=U(d,c){C(d==Z){T-1}X{C(1h d.1c==="U"){T d.1c(c)}X{13(B b=0,a=d.V;b<a;b++){C(d[b]===c){T b}}T-1}}};A.L.2V=U(e,h,d,f,a,c,g,b){C(h){e.1o=h}C(d){e.15.1n=d.x+"2a";e.15.1m=d.y+"2a"}C(f){e.15.2K=f.w+"2a";e.15.3q=f.h+"2a"}C(a){e.15.2q=a}C(c){e.15.aF=c}C(g){e.15.2J=g}C(1z(b)>=0&&1z(b)<1){e.15.2U="4h(1Y="+(b*2o)+")";e.15.1Y=b}X{C(1z(b)===1){e.15.2U="";e.15.1Y=""}}};A.L.5M=U(a,i,h,f,e,c,b,g){B d=1d.1N("2L");C(f){d.15.aE="1l("+f+")"}C(!a){a=A.L.4b("5W")}C(!e){e="2p"}A.L.2V(d,a,i,h,e,c,b,g);T d};A.L.5L=U(a,h,g,e,d,c,f,i){B b=1d.1N("aD");C(!a){a=A.L.4b("5W")}C(!d){d="aC"}A.L.2V(b,a,h,g,d,c,Z,f);C(i){b.15.2u="5N";A.2t.5V(b,"aB",A.2k.2j(A.L.5U,b));A.2t.5V(b,"aA",A.2k.2j(A.L.5S,b))}b.15.az=a;b.ay="ax";C(e){b.1F=e}T b};A.L.5U=U(){C(!1b.4i||(1b.5T&&1b.4i===1b.5T.4i)){1b.15.2u=""}A.2N.aw(1b,"5P")};A.5R=0;A.L.5S=U(){1b.3y=(1b.3y)?(1b.3y+1):1;C(1b.3y<=A.5R){B d=1b.av;C(d&&A.L.5Q(d)&&d.V>1){B e=1b.1F.1B();B c,a;13(a=0;c=d[a];a++){C(e.1c(c)!==-1){1r}}B f=11.2B(d.V*11.3O());B b=d[f];a=0;1L(b===c&&a++<4){f=11.2B(d.V*11.3O());b=d[f]}1b.1F=e.1H(c,b)}X{1b.1F=1b.1F}}X{A.2N.au(1b,"5P")}1b.15.2u=""};A.L.3x=Z;A.L.5O=U(){C(A.L.3x==Z){B d=31.at.1W("as");B a=1z(d[1]);B b=1f;2z{b=!!(1d.1y.ar)}2y(c){}A.L.3x=(b&&(a>=5.5)&&(a<7))}T A.L.3x};A.L.5K=U(a,b,k,j,g,f,c,d,h,i){A.L.2V(a,b,k,j,f,Z,Z,h);B e=a.2M[0];C(g){e.1F=g}C(!!i){e.15.2u=i}A.L.2V(e,a.1o+"aq",Z,j,f,c);C(A.L.5O()){C(a.15.2u!=="5N"){a.15.2u="ap-5J"}C(d==Z){d="ao"}a.15.2U="an:am.al.ak(1F=\'"+e.1F+"\', aj=\'"+d+"\')";C(1z(a.15.1Y)>=0&&1z(a.15.1Y)<1){a.15.2U+=" 4h(1Y="+a.15.1Y*2o+")"}e.15.2U="4h(1Y=0)"}};A.L.ai=U(b,j,i,g,f,c,d,h,k){B a=A.L.5M();B e=A.L.5L(Z,Z,Z,Z,f,Z,Z,k);e.4S="ah";a.24(e);A.L.5K(a,b,j,i,g,f,c,d,h,"5J");T a};A.L.ag=U(b){B a={};13(B c 1i b){a[c.af()]=b[c]}T a};A.L.57=U(d,c){d=d||{};B b=1h 1G.2t==="U"&&c 1K 1G.2t;13(B a 1i c){C(d[a]===1j||(!b&&c.1E&&c.1E(a)&&!d.1E(a))){d[a]=c[a]}}C(!b&&c&&c.1E&&c.1E("1B")&&!d.1E("1B")){d.1B=c.1B}T d};A.L.4I=U(c){B b=[];13(B h 1i c){B g=c[h];C((g!=Z)&&(1h g!=="U")){B d;C(1h g==="21"&&g.4J===1A){B e=[];B i;13(B a=0,f=g.V;a<f;a++){i=g[a];e.1a(2E((i===Z||i===1j)?"":i))}d=e.2n(",")}X{d=2E(g)}b.1a(2E(h)+"="+d)}}T b.2n("&")};A.L.ae=U(a,b){B d=a;C(b){B c=(a+" ").1W(/[?&]/);d+=(c.56()===" "?b:c.V?"&"+b:"?"+b)}T d};A.5I="";A.L.ad=U(){T A.5I||(A.5H()+"../ac/ab/")};A.L.5G=U(){B d=Z;13(B c=0,a=1x.V;c<a;c++){B b=1x[c];2z{d=b();1r}2y(f){}}T d};A.L.aa=U(a){B b=Z;A.L.5G(U(){b=a.4B;C(!b){b=a.5F}C(!b){b=a.a9.a8}},U(){b=a.5F});T b};A.L.a7=U(a,c){B b=(a.5E)?a.5E:a.a6;1L(b!==c&&b!=Z){b=b.30}T(b!==c)};A.L.5D=14;A.L.a5=U(b,a){C(a==Z){a=A.L.5D}C(1h b!=="a4"){b=1z(b)}T a===0?b:1z(b.a3(a))};A.L.2s=U(a){T a*11.28/3X};A.L.4c=U(a){T a*3X/11.28};A.L.4g={a:3j,b:a2.a1,f:1/a0.9Z};A.L.9Y=U(g,e){B k=A.L.4g;B M=k.a,K=k.b,G=k.f;B n=A.L.2s(e.3p-g.3p);B J=11.5C((1-G)*11.4e(A.L.2s(g.4f)));B I=11.5C((1-G)*11.4e(A.L.2s(e.4f)));B m=11.2r(J),i=11.1X(J);B l=11.2r(I),h=11.1X(I);B r=n,o=2*11.28;B q=20;1L(11.3W(r-o)>1e-12&&--q>0){B z=11.2r(r),c=11.1X(r);B N=11.4d((h*z)*(h*z)+(i*l-m*h*c)*(i*l-m*h*c));C(N==0){T 0}B E=m*l+i*h*c;B y=11.2T(N,E);B j=11.9X(i*h*z/N);B F=11.1X(j)*11.1X(j);B p=E-2*m*l/F;B v=G/16*F*(4+G*(4-3*F));o=r;r=n+(1-v)*G*11.2r(j)*(y+v*N*(p+v*E*(-1+2*p*p)))}C(q==0){T 9W}B u=F*(M*M-K*K)/(K*K);B x=1+u/5B*(5A+u*(-5z+u*(5y-5x*u)));B w=u/5w*(5v+u*(-3R+u*(74-47*u)));B D=w*N*(p+w/4*(E*(-1+2*p*p)-w/6*p*(-3+4*N*N)*(-3+4*p*p)));B t=K*x*(y-D);B H=t.9V(3)/2A;T H};A.L.9U=U(l,P,E){B o=A.L;B i=o.4g;B Q=i.a,O=i.b,J=i.f;B N=l.3p;B g=l.4f;B q=E;B D=o.2s(P);B G=11.2r(D);B h=11.1X(D);B F=(1-J)*11.4e(o.2s(g));B c=1/11.4d((1+F*F)),j=F*c;B p=11.2T(F,h);B y=c*G;B I=1-y*y;B t=I*(Q*Q-O*O)/(O*O);B x=1+t/5B*(5A+t*(-5z+t*(5y-5x*t)));B v=t/5w*(5v+t*(-3R+t*(74-47*t)));B w=q/(O*x),K=2*11.28;1L(11.3W(w-K)>1e-12){B m=11.1X(2*p+w);B R=11.2r(w);B H=11.1X(w);B z=v*R*(m+v/4*(H*(-1+2*m*m)-v/6*m*(-3+4*R*R)*(-3+4*m*m)));K=w;w=q/(O*x)+z}B M=j*R-c*H*h;B d=11.2T(j*H+c*R*h,(1-J)*11.4d(y*y+M*M));B n=11.2T(R*G,c*H-j*R*h);B r=J/16*I*(4+J*(4-3*I));B k=n-(1-r)*J*y*(w+r*R*(m+r*H*(-1+2*m*m)));B e=11.2T(y,-M);T 18 A.9T(N+o.4c(k),o.4c(d))};A.L.50=U(b){b=(b===Z||b===1j)?1G.3l.54:b;B a="";C(A.2H.2d(b,"?")){B c=b.1c("?")+1;B f=A.2H.2d(b,"#")?b.1c("#"):b.V;a=b.1v(c,f)}B m={};B d=a.1W(/[&;]/);13(B h=0,j=d.V;h<j;++h){B g=d[h].1W("=");C(g[0]){B l=g[0];2z{l=5u(l)}2y(e){l=5t(l)}B k=(g[1]||"").1H(/\\+/g," ");2z{k=5u(k)}2y(e){k=5t(k)}k=k.1W(",");C(k.V==1){k=k[0]}m[l]=k}}T m};A.L.4a=0;A.L.4b=U(a){C(a==Z){a="9S"}A.L.4a+=1;T a+A.L.4a};A.17={2I:1,3n:12,3V:9R,m:39.9Q,3U:9P.1,2m:9O,3m:36};A.17["1i"]=A.17.2I;A.17.29=A.17.2m;A.17.5o=5r*A.17.m;A.Y=0.9N;A.L.3w(A.17,{9M:A.17.2I,2S:1/A.Y,5k:0.9L/A.Y,9K:0.9J/A.Y,9I:0.9H/A.Y,9G:0.9F/A.Y,9E:0.9D/A.Y,9C:0.27/A.Y,9B:0.9A/A.Y,9z:2.9y-8/A.Y,9x:0.9w/A.Y,9v:2A/A.Y,5j:0.9u/A.Y,9t:0.9s/A.Y,9r:0.9q/A.Y,5g:0.9p/A.Y,9o:0.9n/A.Y,9m:0.9l/A.Y,9k:0.9j/A.Y,5f:0.9i/A.Y,9h:0.9g/A.Y,9f:0.9e/A.Y,5h:5s.9d/A.Y,9c:0.9b/A.Y,9a:5s.99/A.Y,5p:5r/A.Y,"5q-66":98.97/A.Y,"5q-83":95.94/A.Y,93:0.1/A.Y,92:0.91/A.Y,90:10/A.Y,8Z:10/A.Y,8Y:2o/A.Y,8X:1.8W/A.Y,8V:0.8U/A.Y,8T:20.8S/A.Y,5i:20.8R/A.Y,8Q:20.8P/A.Y,8O:20.8N/A.Y,8M:0.8L/A.Y,8K:0.8J/A.Y,8I:0.8H/A.Y,8G:0.8F/A.Y,8E:5.49/A.Y,5m:20.8D/A.Y,5l:0.8C/A.Y,8B:5.49/A.Y,8A:5.49/A.Y,8z:8y.8x/A.Y,8w:3.8v/A.Y,8u:0.8t/A.Y,8s:8r/A.Y,8q:0.8p/A.Y,5n:1.8o/A.Y,"5p-8n":8m.8l/A.Y,"8k":8j/A.Y,"8i":8h/A.Y});A.L.3w(A.17,{8g:A.17.2S/2A,8f:A.17.2S/2o,4L:A.17.2S*2o,3U:A.17.2S*2A,8e:A.17.5o,8d:A.17.5n,46:A.17.5m,8c:A.17.5l,"2R-1i":A.17.2I,"2R-3n":A.17.5k,"2R-3m":A.17.5j,"2R-46":A.17.5i,"2R-3V":A.17.5h,"48-3m":A.17.5g,"48-3n":A.17.5f,"48-46":20.8b/A.Y});A.45=96;A.L.3T=U(b){B a=(b>1)?(1/b):b;T a};A.L.8a=U(d,a){B b;C(d){C(a==Z){a="29"}B c=A.L.3T(d);b=1/(c*A.17[a]*A.45)}T b};A.L.89=U(b,a){C(a==Z){a="29"}B c=b*A.17[a]*A.45;T c};A.L.88=U(d){B i=[0,0];B h=A.L.58();C(!d||d===1G||d===h){T i}B f=A.4Z&&1d.3v&&A.2N.3Z(d,"2q")==="2p"&&(d.15.1m==""||d.15.1n=="");B j=Z;B g;C(d.5e){g=d.5e();B b=h.59;B c=h.5a;i[0]=g.1n+c;i[1]=g.1m+b}X{C(1d.3v&&!f){g=1d.3v(d);B a=1d.3v(h);i[0]=g.5d-a.5d;i[1]=g.5c-a.5c}X{i[0]=d.5b;i[1]=d.44;j=d.3u;C(j!==d){1L(j){i[0]+=j.5b;i[1]+=j.44;j=j.3u}}B e=A.3t.2b;C(e==="2P"||(e==="3r"&&A.2N.3Z(d,"2q")==="2p")){i[1]-=1d.1y.44}j=d.3u;1L(j&&j!==1d.1y){i[0]-=j.5a;C(e!=="2P"||j.4T!=="87"){i[1]-=j.59}j=j.3u}}}T i};A.L.58=U(){B a=1x.86.85;C(a==1j){a=(A.3t.2b==="2O"&&1d.84!=="82")?1d.1y:1d.81}T a};A.L.7Z=U(f,e,c){c=c||{};A.L.57(c,{55:1g,52:1g,51:1g});B b=A.L.43(f,c);B a=A.L.43(e,c);13(B d 1i b){C(d!=="2c"){C(b[d]!==a[d]){T 1f}}}13(B d 1i b.2c){C(b.2c[d]!==a.2c[d]){T 1f}2Z a.2c[d]}13(B d 1i a.2c){T 1f}T 1g};A.L.43=U(c,k){k=k||{};C(!(/^\\w+:\\/\\//).7Y(c)){B g=1G.3l;B e=g.1I?":"+g.1I:"";B h=g.3k+"//"+g.42.1W(":").53()+e;C(c.1c("/")===0){c=h+c}X{B f=g.2Q.1W("/");f.56();c=h+f.2n("/")+"/"+c}}C(k.55){c=c.1q()}B i=1d.1N("a");i.54=c;B d={};d.42=i.42.1W(":").53();d.3k=i.3k;C(k.52){d.1I=(i.1I==="80"||i.1I=="0")?"":i.1I}X{d.1I=(i.1I==""||i.1I=="0")?"80":i.1I}d.41=(k.51||i.41==="#")?"":i.41;B b=i.7X;C(!b){B j=c.1c("?");b=(j!==-1)?c.2G(j):""}d.2c=A.L.50(b);d.2Q=(i.2Q.7W(0)==="/")?i.2Q:"/"+i.2Q;T d};A.L.7V=U(b){B c=Z;B a=b.1c("?");B d=b.1c("#");C(a==-1){c=(d!==-1)?b.2G(0,d):b}X{c=(d!==-1)?b.2G(0,11.3E(a,d)):b.2G(0,a)}T c};A.4Z=(U(){B a=31.3N.1q();T a.1c("7U")===-1&&a.1c("7T")!==-1})();A.3t=(U(){B c="",a="",e="7S",b;B d=31.3N.1q();C(d.1c("2O")>-1||(d.1c("7R")>-1&&d.1c("4Y")>-1)){c="2O";b=d.1V(/2O ([\\d.]+)/)||d.1V(/4Y:([\\d.]+)/)}X{C(d.1c("40")>-1){c="40";b=d.1V(/40\\/([\\d.]+)/)}X{C(d.1c("3s")>-1){c="3s";b=d.1V(/3s\\/([\\d.]+)/)}X{C(d.1c("2P")>-1){c="2P";b=d.1V(/1U\\/([\\d.]+)/)}X{C(d.1c("3r")>-1){c="3r";b=d.1V(/1U\\/([\\d.]+)/)}}}}}a=b?b[1]:"";C(d.1c("7Q")>-1||d.1c("7P")>-1||d.1c("7O")>-1){e="7N"}X{C(d.1c("4X")>-1){b=d.1V(/1U\\/([\\d.]+)/);a=b?b[1]:"";e="4X"}}T{2b:c,1U:a,7M:e}})();A.L.4W=U(){T A.3t};A.L.4V=(U(){B a=1g,b=A.L.4W();C(1d.1N("7L").7K){C(b.2b==="3s"&&1z(b.1U)<5){a=1f}C(b.2b==="3r"&&1z(b.1U)<4){a=1f}C(b.2b==="2P"&&1z(b.1U)<10){a=1f}C(b.2b==="2O"&&1z(b.1U)<9){a=1f}}X{a=1f}T a})();A.L.7J=U(){T A.L.4V};A.L.7I=U(b,o,p){B m,e;B a=1d.1N("2L");a.15.7H="4N";B n=(p&&p.4U)?p.4U:1d.1y;B q=1f;B g=Z;B k=n;1L(k&&k.4T.1q()!=="1y"){B j=A.2N.3Z(k,"2q");C(j==="2p"){q=1g;1r}X{C(j&&j!=="7G"){1r}}k=k.30}C(!q){a.15.2q="2p"}C(o){C(o.w){m=o.w;a.15.2K=m+"2a"}X{C(o.h){e=o.h;a.15.3q=e+"2a"}}}C(p&&p.4R){a.4S=p.4R}B f=1d.1N("2L");f.7F=b;f.15.2J="4Q";C(f.2M){13(B d=0,c=f.2M.V;d<c;d++){C(!f.2M[d].15){2X}f.2M[d].15.2J="4Q"}}a.24(f);n.24(a);n.24(a);C(!m){m=4P(f.7E);a.15.2K=m+"2a"}C(!e){e=4P(f.7D)}a.2h(f);n.2h(a);T 18 A.7C(m,e)};A.L.7B=U(){B c=A.L.3Y;C(c==Z){B e=Z;B d=Z;B a=0;B b=0;e=1d.1N("2L");e.15.2q="2p";e.15.1m="-4O";e.15.1n="-4O";e.15.2K="7A";e.15.3q="7z";e.15.2J="4N";d=1d.1N("2L");d.15.2K="2o%";d.15.3q="7y";e.24(d);1d.1y.24(e);a=d.4M;e.15.2J="7x";b=d.4M;1d.1y.2h(1d.1y.7w);A.L.3Y=(a-b);c=A.L.3Y}T c};A.L.7v=U(h,b,e){C(!e){e="4K"}h=(h+7u)%3h-3X;B d=11.3W(h);B i=11.2B(d);B a=(d-i)/(1/60);B c=a;a=11.2B(a);B g=(c-a)/(1/60);g=11.7t(g*10);g/=10;C(g>=60){g-=60;a+=1;C(a>=60){a-=60;i+=1}}C(i<10){i="0"+i}B f=i+"\\7s";C(e.1c("4L")>=0){C(a<10){a="0"+a}f+=a+"\'";C(e.1c("4K")>=0){C(g<10){g="0"+g}f+=g+\'"\'}}C(b==="3p"){f+=h<0?A.3o("W"):A.3o("E")}X{f+=h<0?A.3o("S"):A.3o("N")}T f};A.17.3i=A.17.2m;A.17.7r=A.17.m;A.17.7q=A.17.3n;A.17.7p=A.17.2I;A.17.7o=A.17.3V;A.17.7n=A.17.3U;A.17.7m=A.17.3m;A.L.2F=U(a){C(!a){T 1g}B g=a.1c("//");B j=1d.3l.1B();B b=j.1c("//");C(g===-1){T 1g}X{B f=a.1v(0,g);B h=j.1v(b+2);b=h.1c("/");B k=h.1v(0,b);B l=1d.3l.3k;C(l.1q()!==f.1q()){T 1f}f=a.1v(g+2);B c=f.1c(":");g=f.1c("/");B d=f.1v(0,c);B i=f.1v(0,g);B e=1d.7l;C(d===e&&i===k){T 1g}}T 1f};A.L.7k=U(e,f,c,k,n){C(!e||!f||!c){T}B j=3S,g=e.7j(),d=e.7i(),m=f.w,i=f.h;n=n||3j;k=k||"29";C(k.1q()==="3i"||k.1q()==="29"||k.1q()==="2m"){B l=g/m,h=d/i,b=l>h?l:h,a=0.27*j/b/c/((11.28*2*n)/3h)/j;T a}X{B b=g/m,a=0.27*j/b/c/j;T a}};A.L.1T=U(g){B d=g;C(d==Z){T Z}3Q(d.4J){1w 2H:d=\'"\'+d.1H(/(["\\\\])/g,"\\\\$1")+\'"\';d=d.1H(/\\n/g,"\\\\n");d=d.1H(/\\r/g,"\\\\r");d=d.1H("<","&7h;");d=d.1H(">","&7g;");d=d.1H(/%/g,"%25");d=d.1H(/&/g,"%26");T d;1w 1A:B c=[];13(B f=0,b=d.V;f<b;f++){c.1a(A.L.1T(d[f]))}T"["+c.2n(",")+"]";1w 7f:T 7e(d)?2H(d):Z;1w 7d:T 2H(d);1w 2w:B e="{\'7c\':\\"7b.7a\\",\'79\':"+d.78()+",\'77\':"+(d.76()+1)+",\'75\':"+d.73()+",\'72\':"+d.71()+",\'70\':"+d.6Z()+",\'6Y\':"+d.6X()+",\'6W\':"+d.6V()+",\'6U\':"+d.6T()+"}";T e;6S:C(d.1T!=Z&&1h d.1T==="U"){T d.1T()}C(1h d==="21"){C(d.V){B c=[];13(B f=0,b=d.V;f<b;f++){c.1a(A.L.1T(d[f]))}T"["+c.2n(",")+"]"}B c=[];13(B a 1i d){C(1h d[a]!=="U"&&a!=="1J"&&a!=="6R"){c.1a("\'"+a+"\':"+A.L.1T(d[a]))}}C(c.V>0){T"{"+c.2n(",")+"}"}X{T"{}"}}T d.1B()}};A.L.6Q=U(f,c,b,e){B a=Z,d=3S;e=e||3j;b=b||"";C(f>0&&c>0){f=A.L.3T(f);C(b.1q()==="3i"||b.1q()==="29"||b.1q()==="2m"){a=0.27*d/c/f/((11.28*2*e)/3h)/d;T a}X{a=0.27*d/c/f/d;T a}}T-1};A.L.6P=U(b,c,a,e){B f=Z,d=3S;e=e||3j;a=a||"";C(b>0&&c>0){C(a.1q()==="3i"||a.1q()==="29"||a.1q()==="2m"){f=0.27*d/c/b/((11.28*2*e)/3h)/d;T f}X{f=0.27*d/c/b/d;T f}}T-1};A.L.4H=U(c){B e=0,b=Z;13(B d=0,a=c.V;d<a;d++){b=c.6O(d);C(b<6N){e++}X{C((3R<=b)&&(b<=6M)){e+=2}X{C((6L<=b)&&(b<=6K)){e+=3}}}}T(e<6J)?1f:1g};A.L.6I=U(k){C(!k){T}B a=k.1l,h=a.1c("?")>-1?"&":"?",f=a.2G(a.V-1,1);C(1h 6H==="1j"){k.1l=1G.4G(k.1l);k.2F=k.2F||A.L.2F(k.1l);C(k.2F){C(k.2l==="1R"&&k.1Q){B e=k.1Q,d=A.L.4I(e);C(A.L.4H(d)){B g=k.22;k.2l="23";k.1l+=h+"3f=1R";g="{";13(B i 1i e){g+="\'"+i+"\':"+2E(e[i])+","}g+="}";k.22=g}X{C(d.V>0){a+=h+d}k.1l=a}2Z k.1Q}B c=k.3P||{};k.3P=c;3Q(k.2l){1w"1R":A.3g.1R(k);1r;1w"23":c["3e-3d"]="3c/x-3b-3a-38;37=35-8";A.3g.23(k);1r;1w"2g":c["3e-3d"]="3c/x-3b-3a-38;37=35-8";A.3g.2g(k);1r;1w"2f":c["3e-3d"]="3c/x-3b-3a-38;37=35-8";A.3g.2f(k);1r}}X{3Q(k.2l){1w"1R":A.L.2i.1R(k);1r;1w"23":k.1l+=h+"3f=23";A.L.2i.23(k);1r;1w"2g":k.1l+=h+"3f=2g";A.L.2i.2g(k);1r;1w"2f":k.1l+=h+"3f=2f";A.L.2i.2f(k);1r}}}X{B b="",j=1g;C(k.1Q&&k.2l==="1R"){13(B i 1i k.1Q){C(!j){b+="&"+i+"="+k.1Q[i]}X{j=1f;b+=i+"="+k.1Q[i]}}}k.1l=k.1l.1H(/6G/,"6F");C(b){k.1l+=h+b}k.1l=1G.4G(k.1l);6E.6D({1l:k.1l,3F:k.2l,22:k.22,3P:{"3e-3d":"3c/x-3b-3a-38;37=35-8"}}).6C(U(l){B m=(k.1S)?A.2k.2j(k.2D,k.1S):k.2D;m(l)},U(m){B l=(k.1S)?A.2k.2j(k.2C,k.1S):k.2C;l(m)})}};A.L.2i={32:6B,1s:[],1M:[],33:{},2e:U(a){B d=1b;13(B b 1i a){d.1s.1a(b);C(1h a[b]!=="3L"){a[b]=A.L.1T(a[b])}B c=2E(a[b]);d.1M.1a(c)}},2x:U(e){B m=1b,k=m.4F(),b=e.1l,p=Z,d=Z,n=[];C(e.2D){p=(e.1S)?A.2k.2j(e.2D,e.1S):e.2D}C(e.2C){d=(e.1S)?A.2k.2j(e.2C,e.1S):e.2C}m.33[k]=U(q){B i=A.L.4x(q);i.34=i.34==1j?1g:i.34;C(i.34&&p){p(q)}X{C(d){d(q)}}2Z m.33[k]};m.2e({6A:"A.L.2i.33["+k+"]"});B j=m.1s,l=b,g=0;B c=m.1s?m.1s.V:0;13(B f=0;f<c;f++){C(l.V+m.1s[f].V+2>=m.32){C(g==0){T 1f}C(n==Z){n=18 1A()}n.1a(l);l=b;g=0;f--}X{C(l.V+m.1s[f].V+2+m.1M[f].V>m.32){B a=m.1M[f];1L(a.V>0){B o=m.32-l.V-m.1s[f].V-2;C(l.1c("?")>-1){l+="&"}X{l+="?"}B h=a.1v(0,o);C(h.1v(o-1,o)==="%"){o-=1;h=a.1v(0,o)}X{C(h.1v(o-2,o-1)==="%"){o-=2;h=a.1v(0,o)}}l+=m.1s[f]+"="+h;a=a.1v(o);C(h.V>0){C(n==Z){n=18 1A()}n.1a(l);l=b;g=0}}}X{g++;C(l.1c("?")>-1){l+="&"}X{l+="?"}B h=m.1M[f];l+=m.1s[f]+"="+h}}}C(n==Z){n=18 1A()}l!==b&&n.1a(l);m.4E(n)},4F:U(){B a=18 2w().3I(),b=11.2B(11.3O()*6z);T a*2A+b},4E:U(e){B a=e.V;C(a>0){B f=18 2w().3I();13(B d=0;d<a;d++){B b=1d.1N("4D");B c=e[d];C(c.1c("?")>-1){c+="&"}X{c+="?"}c+="6y="+a;c+="&6x="+d;c+="&6w="+f;b.4C("1F",c);b.4C("3F","4B/6v");C(31.3N.1c("6u")>=0){b.4z=U(){C(1b&&("6t"===1b.4A||"6s"===1b.4A)){1b.4z=Z;2z{1d.1y.2h(1b)}2y(g){C(1b.30){1b.30.2h(1b)}2Z 1b}}}}X{b.4y=U(){1b.4y=Z;1d.1y.2h(1b)}}1d.1y.24(b)}}},1R:U(a){B b=1b;b.1s.V=0;b.1M.V=0;b.2e(a.1Q);b.2x(a)},23:U(a){B b=1b;b.1s.V=0;b.1M.V=0;b.2e({3M:a.22});b.2x(a)},2g:U(a){B b=1b;b.1s.V=0;b.1M.V=0;b.2e({3M:a.22});b.2x(a)},2f:U(a){B b=1b;b.1s.V=0;b.1M.V=0;b.2e({3M:a.22});b.2x(a)}};A.L.4x=U(1P){C(1P.2Y&&1h 1P.2Y==="3L"){C(1h 3K!="1j"&&3K.4w){1P=3K.4w(1P.2Y)}X{1P=6r("("+1P.2Y+")")}}T 1P};A.L.6q=U(a,d){a=a||{};C(d){13(B c 1i d){B b=d[c];C(b!==1j&&c!=="1J"&&1h b!=="U"){a[c]=b}}}T a};A.L.6p=U(b,h,d){b=b||{};C(h){13(B g 1i h){B f=1f;C(d&&d.V){13(B c=0,a=d.V;c<a;c++){C(g===d[c]){f=1g;1r}}}C(f===1g){2X}B e=h[g];C(e!==1j&&g!=="1J"&&1h e!=="U"){b[g]=e}}}T b};A.L.3J=U(b,h){b=b||{};C(h){C(h 1K 1A){b=[];13(B e=0,a=h.V;e<a;e++){B d=h[e];b.1a(A.L.3J({},d))}}X{13(B g 1i h){B f=h[g];C(1h f==="21"){B c={};b[g]=A.L.3J(c,f)}b[g]=f}}}T b};A.L.6o=U(a){A.6n=!!a};A.L.4v=U(b){C(Z===b||"21"!==1h b){T b}C(b 1K 2w){B c=18 2w();c.6m(b.3I());T c}C(b 1K 1A){B c=b.3H(0);T c}C(b 1K 3G){B c={};13(B a 1i b){C(b.1E(a)){c[a]=A.L.4v(b[a])}}T c}6l 18 6k("6j 6i 4u 6h! 6g 3F 6f\'t 6e.")};A.L.1Z=U(d,c,l,i){B o=Z;B g;B e;B j=(i.x-l.x)*(d.y-l.y)-(i.y-l.y)*(d.x-l.x);B k=(c.x-d.x)*(d.y-l.y)-(c.y-d.y)*(d.x-l.x);B p=(i.y-l.y)*(c.x-d.x)-(i.x-l.x)*(c.y-d.y);C(p!=0){g=j/p;e=k/p;C(g>=0&&e<=1&&g<=1&&e>=0){o=18 A.19.1p(d.x+g*(c.x-d.x),d.y+g*(c.y-d.y))}X{o="6d 6c"}}X{C(j==0&&k==0){B f=11.4t(d.y,c.y);B m=11.3E(d.y,c.y);B h=11.4t(d.x,c.x);B n=11.3E(d.x,c.x);C(((l.y>=m&&l.y<=f)||(i.y>=m&&i.y<=f))&&(l.x>=n&&l.x<=h)||(i.x>=n&&i.x<=h)){o="6b"}X{o="4s"}}X{o="4s"}}T o};A.L.4r=U(d,e,h){B c=[];B b=18 A.19.1p(h.1n,h.1t);B k=18 A.19.1p(h.1u,h.1m);B g=18 A.19.1p(h.1u,h.1t);B j=18 A.19.1p(h.1n,h.1m);B a=[];a.1a(A.L.1Z(b,g,d,e));a.1a(A.L.1Z(g,k,d,e));a.1a(A.L.1Z(k,j,d,e));a.1a(A.L.1Z(j,b,d,e));B f=0;1L(f<a.V){C(a[f].1J==="A.19.1p"){c.1a(a[f])}f++}T c};A.L.3C=U(l,j,b,c){b=b!=1j?b:1g;c=c!=1j?c:1f;C(!j.2W(l.1D())){T Z}C(j.2v(l.1D())){T[l]}B n=l.1k;B g=[];13(B e=0;e<n.V-1;e++){B k=18 A.19.1p(n[e].x,n[e].y);B h=18 A.19.1p(n[e+1].x,n[e+1].y);B f=A.L.4r(k,h,j);B o;C(f.V===2){C(((f[0].x-k.x)*(f[0].x-k.x)+(f[0].y-k.y)*(f[0].y-k.y))>((f[1].x-k.x)*(f[1].x-k.x)+(f[1].y-k.y)*(f[1].y-k.y))){B m=f[0];f[0]=f[1];f[1]=m}C(b){o=18 A.19.1C(f);g.1a(o)}X{g.1a(f[0],f[1])}}X{C(f.V===1){C(j.2d(k.x,k.y,1f)){C(b){o=18 A.19.1C([k,f[0]]);g.1a(o)}X{g.1a(k,f[0])}}X{C(j.2d(h.x,h.y,1f)){C(b){o=18 A.19.1C([f[0],h]);g.1a(o)}X{g.1a(f[0],h)}}X{}}}X{C(f.V==0){C(j.2d(k.x,k.y)&&j.2d(h.x,h.y)){C(b){o=18 A.19.1C([k,h]);g.1a(o)}X{g.1a(k,h)}}X{}}}}}C(g.V>0){C(!b){B d=18 A.19.1C(g);C(c){d.1o=l.1o}T d}X{C(c){g[0].1o=l.1o;C(g.V>1){13(B e=1;e<g.V;e++){g[e].1o=l.1o+"6a"+e}}}}T g}};A.L.4n=U(g,f,a,b){a=a!=1j?a:1g;b=b!=1j?b:1f;C(!f.2W(g.1D())){T Z}C(f.2v(g.1D())){T g}B c=g.1k;B j=[];13(B d=0;d<c.V;d++){B e=A.L.3C(c[d],f,a,b);C(!e){2X}C(e 1K 1A){j=j.4q(e)}X{j.1a(e)}}C(j.V>0){B h=18 A.19.3B(j);C(b){h.1o=g.1o;T h}T h}};A.L.4p=U(k,i){B f=18 A.19.1p(k.1n,k.1t<i.1t?k.1t:i.1t);B b=18 A.19.1p(k.1n,k.1m>i.1m?k.1m:i.1m);B l=18 A.19.1C([f,b]);B m=18 A.19.1p(k.1n<i.1n?k.1n:i.1n,k.1m);B a=18 A.19.1p(k.1u>i.1u?k.1u:i.1u,k.1m);B g=18 A.19.1C([m,a]);B n=18 A.19.1p(k.1u,k.1m>i.1m?k.1m:i.1m);B j=18 A.19.1p(k.1u,k.1t<i.1t?k.1t:i.1t);B e=18 A.19.1C([n,j]);B c=18 A.19.1p(k.1u>i.1u?k.1u:i.1u,k.1t);B h=18 A.19.1p(k.1n<i.1n?k.1n:i.1n,k.1t);B d=18 A.19.1C([c,h]);T[l,g,e,d]};A.L.3D=U(a,c,b){C((b==0)&&a.x>=c.1n){T 1g}X{C((b===1)&&a.y<=c.1m){T 1g}X{C((b===2)&&a.x<=c.1u){T 1g}X{C((b===3)&&a.y>=c.1t){T 1g}}}}T 1f};A.L.3A=U(m,a,t){C(!a.2W(m.1D())){T Z}C(a.2v(m.1D())){T m}t=t!=1j?t:1f;B y=[];B z=m.1k;13(B s=0;s<z.V;s++){C(a.2v(z[s].1D())){y.1a(z[s]);2X}B b=A.L.4p(a,z[s].1D());B w=z[s].1k;B c=[],h=[],g=[];B x=4,f=w.V;B d=w[f-1];13(B q=0;q<f;q++){h.1a(w[q])}B r;13(B q=0;q<x;q++){C(A.L.3D(d,a,q)){r=1f}X{r=1g}B p=h.V;13(B o=0;o<p;o++){C(A.L.3D(h[o],a,q)){C(r){r=1f;c.1a(A.L.1Z(d,h[o],b[q].1k[0],b[q].1k[1]))}c.1a(h[o])}X{C(!r){r=1g;c.1a(A.L.1Z(d,h[o],b[q].1k[0],b[q].1k[1]))}}d=h[o]}B u=c.V;h.V=0;13(B n=0;n<u;n++){h.1a(c[n])}c.V=0}13(B q=0;q<h.V;q++){g.1a(h[q])}C(g.V>2){B v=18 A.19.4o(g);C(t){v.1o=z[s].1o}y.1a(v)}}C(y.V>0){B e=18 A.19.4m(y);C(t){e.1o=m.1o;T e}T e}};A.L.4k=U(g,f,a){C(!f.2W(g.1D())){T Z}C(f.2v(g.1D())){T g}a=a!=1j?a:1f;B d=[];13(B c=0;c<g.1k.V;c++){B b=A.L.3A(g.1k[c],f,a);C(b){d.1a(b)}}C(d.V>0){B e=18 A.19.4l(d);C(a){e.1o=g.1o}T e}};A.L.69=U(e,c,d,b){C(e){d=d!=1j?d:1g;b=b!=1j?b:1f;C(((e.1J==="A.19.1C")||(e.1J==="A.19.4o"))&&(e.1k.V>1)){B a=A.L.3C(e,c,d,b);C(a){C(a.V===1){T a[0]}X{T 18 A.19.3B(a)}}}X{C((e.1J==="A.19.3B")&&(e.1k.V>0)&&(e.1k[0].1k.V>1)){T A.L.4n(e,c,d,b)}X{C((e.1J==="A.19.4m")&&(e.1k.V>0)&&(e.1k[0].1k.V>2)){T A.L.3A(e,c,b)}X{C((e.1J==="A.19.4l")&&(e.1k.V>0)){T A.L.4k(e,c,1g)}X{T e}}}}}};',62,677,'||||||||||||||||||||||||||||||||||||SuperMap|var|if|||||||||Util||||||||return|function|length||else|METERS_PER_INCH|null||Math||for||style||INCHES_PER_UNIT|new|Geometry|push|this|indexOf|document||false|true|typeof|in|undefined|components|url|top|left|id|Point|toLowerCase|break|queryKeys|bottom|right|substring|case|arguments|body|parseFloat|Array|toString|LineString|getBounds|hasOwnProperty|src|window|replace|port|CLASS_NAME|instanceof|while|queryValues|createElement|prototype|result|params|GET|scope|toJSON|version|match|split|cos|opacity|lineIntersection||object|data|POST|appendChild|||0254|PI|degrees|px|name|args|contains|addQueryStrings|DELETE|PUT|removeChild|RequestJSONP|bind|Function|method|dd|join|100|absolute|position|sin|rad|Event|display|containsBounds|Date|issue|catch|try|1000|floor|failure|success|encodeURIComponent|isInTheSameDomain|substr|String|inches|overflow|width|div|childNodes|Element|msie|opera|pathname|us|Meter|atan2|filter|modifyDOMElement|intersectsBounds|continue|responseText|delete|parentNode|navigator|limitLength|supermap_callbacks|succeed|UTF||charset|urlencoded||form|www|application|Type|Content|_method|Request|360|degree|6378137|protocol|location|yd|ft|i18n|lon|height|safari|firefox|Browser|offsetParent|getBoxObjectFor|extend|alphaHackNeeded|_attempts|destroy|clipPolygonRect|MultiLineString|clipLineStringRect|isInside|min|type|Object|slice|getTime|JSONClone|JSON|string|requestEntity|userAgent|random|headers|switch|128|10000|normalizeScale|km|mi|abs|180|_scrollbarWidth|getStyle|chrome|hash|host|createUrlObject|offsetTop|DOTS_PER_INCH|ch||ind|02921005842012|lastSeqID|createUniqueID|deg|sqrt|tan|lat|VincentyConstants|alpha|viewRequestID|initialize|clipMultiPolygonRect|MultiPolygon|Polygon|clipMultiLineStringRect|LinearRing|getIntersectLineArray|concat|clipLineRect|Parallel|max|copy|cloneObject|parse|transformResult|onload|onreadystatechange|readyState|text|setAttribute|script|send|getUid|encodeURI|urlIsLong|getParameterString|constructor|dms|dm|offsetWidth|hidden|1000px|parseInt|visible|displayClass|className|tagName|containerElement|isSupportCanvas|getBrowser|android|rv|IS_GECKO|getParameters|ignoreHash|ignorePort80|shift|href|ignoreCase|pop|applyDefaults|getViewportElement|scrollTop|scrollLeft|offsetLeft|screenY|screenX|getBoundingClientRect|IndianFt37|IndianYd37|Mile|GunterChain|Yard|Foot|IntnlLink|IntnlChain|Fathom|nmi|NautM|Lat|1852|1609|unescape|decodeURIComponent|256|1024|175|320|768|4096|16384|atan|DEFAULT_PRECISION|relatedTarget|textContent|Try|_getScriptLocation|ImgPath|block|modifyAlphaImageDiv|createImage|createDiv|none|alphaHack|smImageLoadError|isArray|IMAGE_RELOAD_ATTEMPTS|onImageLoadError|map|onImageLoad|observe|SuperMapDiv|call|inherit|apply||Plot|Tool|Scheme|Tile|Layer||REST|Control|clipGeometryRect|_clip_|Coincident|Intersection|No|supported|isn|Its|obj|to|Unable|Error|throw|setTime|isApp|setApp|copyAttributesWithClip|copyAttributes|eval|complete|loaded|IE|javascript|jsonpUserID|sectionIndex|sectionCount|100000000000000000|callback|1500|then|xhr|WinJS|json|jsonp|Windows|committer|2000|65535|2048|2047|127|charCodeAt|getScaleFromResolutionDpi|getResolutionFromScaleDpi|parent|default|getTimezoneOffset|TimezoneOffset|getMilliseconds|Millisecond|getSeconds|Second|getMinutes|Minute|getHours|Hour|getDate||Day|getMonth|Month|getFullYear|Year|DateTime|System|__type|Boolean|isFinite|Number|gt|lt|getHeight|getWidth|calculateDpi|domain|yard|kilometer|mile|inch|foot|meter|u00B0|round|540|getFormattedLonLat|lastChild|scroll|200px|50px|100px|getScrollbarWidth|Size|scrollHeight|scrollWidth|innerHTML|static|visibility|getRenderedDimensions|supportCanvas|getContext|canvas|device|apple|iphone|ipod|ipad|trident|pc|gecko|webkit|removeTail|charAt|search|test|isEquivalentUrl||documentElement|CSS1Compat||compatMode|viewportElement|callee|TR|pagePosition|getScaleFromResolution|getResolutionFromScale|11669506|link|fath|kmi|cm|mm|150000|150kilometers|50000|50kilometers|184|1853|UK|8288|304812252984506|ModAmFt|375|Brealey|3047972615|CapeFoot|778266898|Rood|1684023368046|201|Furlong|Pole|Perch|201168|1168|Rod|2011676512155|SearsLink|20116782494375873|BenoitLink|2011684023368047|GunterLink|201166194976|ClarkeLink|11676512155|SearsChain|116782494375872|BenoitChain|11684023368047|1166194976|ClarkeChain|999738|CaGrid|0000135965|GermanMeter|Hectometer|Decameter|Dekameter|001|Millimeter|Decimeter|25736872235|110946||31648893273|110943|344|IMile|9144|IYard|3472186944373|3047995|IndianFt75|3047996|IndianFt62|30479841|30479951|IndianFoot|9143985|IndianYd75|9143988|IndianYd62|91439523|9143985307444408|IndianYard|914398414616029|SearsYard|9144018288036576|Kilometer|01|Centimeter|54e|Mil|0000254|MicroInch|IInch|3047997101815088|GoldCoastFoot|30479947153867626|SearsFoot|3047972651151|ClarkeFoot|3048|IFoot|3048006096012192|Inch|0254000508001016|4374754|39370|3701|63360|id_|LonLat|destinationVincenty|toFixed|NaN|asin|distVincenty|257223563|298|3142|6356752|toPrecision|number|toFloat|toElement|mouseLeft|nodeValue|firstChild|getXmlNodeValue|images|theme|getImagesLocation|urlAppend|toUpperCase|upperCaseObject|olAlphaImg|createAlphaImageDiv|sizingMethod|AlphaImageLoader|Microsoft|DXImageTransform|progid|scale|inline|_innerImage|filters|MSIE|appVersion|addClass|urls|removeClass|no|galleryImg|alt|error|load|relative|img|backgroundImage|border|splice|removeItem|nodeType|isElement|getElementById|getElement|reset|Class|getAttribute|getElementsByTagName|js|Include|RegExp|Release|VERSION_NUMBER'.split('|'),0,{}))
@@ -41842,39 +42610,40 @@ eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
 
 
 /***/ }),
-/* 334 */
+/* 342 */
 /***/ (function(module, exports) {
 
 if(typeof echarts === 'undefined') {var e = new Error("Cannot find module \"echarts\""); e.code = 'MODULE_NOT_FOUND'; throw e;}
 module.exports = echarts;
 
 /***/ }),
-/* 335 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(81);
-__webpack_require__(77);
-__webpack_require__(78);
-__webpack_require__(80);
-__webpack_require__(79);
 __webpack_require__(82);
-__webpack_require__(92);
-__webpack_require__(96);
-__webpack_require__(91);
+__webpack_require__(78);
+__webpack_require__(79);
+__webpack_require__(81);
+__webpack_require__(80);
+__webpack_require__(83);
 __webpack_require__(93);
-__webpack_require__(87);
+__webpack_require__(98);
+__webpack_require__(92);
+__webpack_require__(94);
 __webpack_require__(88);
 __webpack_require__(89);
 __webpack_require__(90);
-__webpack_require__(98);
+__webpack_require__(91);
+__webpack_require__(100);
+__webpack_require__(96);
 __webpack_require__(95);
-__webpack_require__(94);
-__webpack_require__(97);
 __webpack_require__(99);
-__webpack_require__(83);
+__webpack_require__(101);
+__webpack_require__(97);
 __webpack_require__(84);
-__webpack_require__(86);
-module.exports = __webpack_require__(85);
+__webpack_require__(85);
+__webpack_require__(87);
+module.exports = __webpack_require__(86);
 
 
 /***/ })
