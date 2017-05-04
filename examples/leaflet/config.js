@@ -450,3 +450,19 @@ var sideBarIconConfig = {
     "OGC": "fa-globe",
     "mapping": "fa-send"
 };
+
+/**
+ *key值：为exampleConfig配置的key值    
+ *value值：fontawesome字体icon名
+ *与sideBarIconConfig的区别：sideBarIconConfig包括侧边栏所有层级目录的图标，exampleIconConfig仅包括一级标题的图标
+ */
+var exampleIconConfig = {
+    "iServer": "fa-server",
+    "iPortal": "fa-desktop",
+    "online": "fa-cloud",
+    "iManager": "fa-group",
+    "plot": "fa-edit",
+    "viz": "fa-map",
+    "OGC": "fa-globe",
+    "mapping": "fa-send"
+};

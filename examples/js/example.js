@@ -48,7 +48,7 @@ function createSubGalleryItem(config) {
     var categoryContentDiv = $("<div class='category-content'></div>");
     for (var key in config) {
         var configItem = config[key];
-        var content = $("<div id='category-content-" + key + "'></div>");
+        var content = $("<div class='box box-default color-palette-box' id='category-content-" + key + "'></div>");
         createSubGalleryItemTitle(key, configItem.name).appendTo(content);
         if (configItem.content) {
             createGalleryCharts(configItem.content).appendTo(content);
@@ -59,15 +59,19 @@ function createSubGalleryItem(config) {
 }
 
 function createGalleryItemTitle(id, title) {
-    return $("<h3 class='category-title' id='" + id + "'>" + title + "</h3>");
+    var menuItemIcon = exampleIconConfig[id];
+    return $("<h3 class='category-title' id='" + id + "'>" + "<i class='fa " + menuItemIcon + "'></i>" + "&nbsp;&nbsp;"+title + "</h3>");
 }
 
 function createSubGalleryItemTitle(id, title) {
-    return $("<h4 class='category-type' id='category-type-" + id + "'>" + title + "</h4>");
+    return $("<div class='box-header with-border'>"+"<h3 class='box-title' id='category-type-" + id + "'>" + "&nbsp;&nbsp;" + title + "</h4>"+"</h3>"+"</div>");
 }
 
+
+
+
 function createGalleryCharts(examples) {
-    var chartsDiv = $("<div class='row charts'></div>");
+    var chartsDiv = $("<div class='box-body'></div>");
     var len = (examples && examples.length) ? examples.length : 0;
     for (var i = 0; i < len; i++) {
         createGalleryChart(examples[i]).appendTo(chartsDiv);

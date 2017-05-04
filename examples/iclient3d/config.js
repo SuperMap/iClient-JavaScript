@@ -28,3 +28,12 @@ var exampleConfig = {
 var sideBarIconConfig = {
     "iClient3D": "fa-globe"
 };
+
+/**
+ *key值：为exampleConfig配置的key值    
+ *value值：fontawesome字体icon名
+ *与sideBarIconConfig的区别：sideBarIconConfig包括侧边栏所有层级目录的图标，exampleIconConfig仅包括一级标题的图标
+ */
+var exampleIconConfig = {
+    "iClient3D": "fa-globe"
+};
