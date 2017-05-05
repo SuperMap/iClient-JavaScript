@@ -1544,6 +1544,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
                             }
                     }
                     break;
+                default:break;
             }
         }
         return results;
@@ -10684,6 +10685,7 @@ SuperMap.Format = SuperMap.Class({
      * 销毁该格式类，释放相关资源。
      */
     destroy: function () {
+        //用来销毁该格式类，释放相关资源
     },
 
     /**
@@ -10698,6 +10700,7 @@ SuperMap.Format = SuperMap.Class({
      * Depends on the subclass
      */
     read: function (data) {
+        //用来从字符串中读取数据
     },
 
     /**
@@ -10711,6 +10714,7 @@ SuperMap.Format = SuperMap.Class({
      * {String} A string representation of the object.
      */
     write: function (object) {
+        //用来写字符串
     },
 
     CLASS_NAME: "SuperMap.Format"
@@ -11267,9 +11271,10 @@ SuperMap.AreaSolarRadiationParameters.toObject = function (derrainCurvatureCalcu
     var parameter = {};
     for (var name in derrainCurvatureCalculationParameters) {
         if (name !== "dataset") {
-            if (name === "latitude" || name === "timeMode" || name === "dayStart" ||
-                name === "dayEnd" || name === "hourStart" || name === "hourEnd" ||
-                name === "transmittance" || name === "hourInterval" || name === "dayInterval") {
+            var name1 = (name === "latitude" || name === "timeMode" || name === "dayStart");
+            var name2 = (name === "dayEnd" || name === "hourStart" || name === "hourEnd");
+            var name3 = (name === "transmittance" || name === "hourInterval" || name === "dayInterval");
+            if (name1 || name2 || name3)  {
                 parameter[name] = derrainCurvatureCalculationParameters[name];
             }
             else {
@@ -18711,6 +18716,8 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
                             tempLayer.fromJson(layers[i]);
                             layers[i] = tempLayer;
                             break;
+                        default:
+                            break;
                     }
                 }
 
@@ -20466,7 +20473,9 @@ SuperMap.REST.MapService = SuperMap.Class(ServiceBase, {
     serviceProcessCompleted: function (result) {
         var me = this;
         result = SuperMap.Util.transformResult(result);
-        if (!result.code || (result.code && ((result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304))) {
+        var codeStatus = (result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304;
+        var isCodeValid = result.code && codeStatus;
+        if (!result.code || isCodeValid) {
             me.events && me.events.triggerEvent("processCompleted", {result: result});
         }
         //在没有token是返回的是200，但是其实是没有权限，所以这里也应该是触发失败事件
@@ -22262,6 +22271,8 @@ SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
                 break;
             case 'RANGE':
                 this.theme = SuperMap.ThemeRange.fromObj(themeObj);
+                break;
+            default:
                 break;
         }
         if (this.themeElementPosition) {
@@ -27140,6 +27151,7 @@ SuperMap.CartoCSS = SuperMap.Class({
         // This function is called after all files
         // have been imported through `@import`.
         var finish = function () {
+            //所有文件导入完成之后调用
         };
 
         function save() {
@@ -27245,7 +27257,7 @@ SuperMap.CartoCSS = SuperMap.Class({
             };
             if (defautls) {
                 for (var prop in defautls) {
-                    if (err[prop] === void 0) err[prop] = defautls[prop];
+                    if (err[prop] === 0) err[prop] = defautls[prop];
                 }
             }
 
@@ -27646,12 +27658,10 @@ SuperMap.CartoCSS = SuperMap.Class({
                 // Entities are the smallest recognized token,
                 // and can be found inside a rule's value.
                 entity: function () {
-                    return $(this.entities.call) ||
-                        $(this.entities.literal) ||
-                        $(this.entities.field) ||
-                        $(this.entities.variable) ||
-                        $(this.entities.url) ||
-                        $(this.entities.keyword);
+                    var property1 = $(this.entities.call) || $(this.entities.literal);
+                    var property2 = $(this.entities.field) || $(this.entities.variable);
+                    var property3 =  $(this.entities.url) || $(this.entities.keyword);
+                    return property1 || property2 || property3;
                 },
 
                 // A Rule terminator. Note that we use `peek()` to check for '}',
@@ -27996,7 +28006,7 @@ SuperMap.CartoCSS = SuperMap.Class({
                         for (var prop in shader) {
                             if (prop !== 'zoom' && prop !== 'frames' && prop !== "attachment" && prop != "elements") {
                                 //对layer-index作特殊处理以实现图层的控制
-                                if (prop === "layer-index") {
+                                if (prop === "layer-index") { 
                                     var getLayerIndex = Function("attributes", "zoom", "var _value = null;" + shader[prop].join('\n') + "; return _value; ");
                                     var layerIndex = getLayerIndex();
                                     Object.defineProperty(shaderArray, "layerIndex", {
@@ -30230,7 +30240,7 @@ SuperMap.CartoCSS.Tree.Call = SuperMap.Class({
                 };
             }
             if (fn !== args.length &&
-                // support variable-arg functions like `colorize-alpha`
+                    // support variable-arg functions like `colorize-alpha`
                 fn !== -1) {
                 env.error({
                     message: 'function ' + this.name + '() takes ' +
@@ -30349,6 +30359,8 @@ SuperMap.CartoCSS.Tree.Color = SuperMap.Class({
                     break;
                 case b:
                     h = (r - g) / d + 4;
+                    break;
+                default:
                     break;
             }
             h /= 6;
@@ -30482,8 +30494,8 @@ SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
         // Get a simple list of the symbolizers, in order
         function symbolizerList(sym_order) {
             return sym_order.sort(function (a, b) {
-                return a[1] - b[1];
-            })
+                    return a[1] - b[1];
+                })
                 .map(function (v) {
                     return v[0];
                 });
@@ -30994,6 +31006,9 @@ SuperMap.CartoCSS.Tree.Filterset = SuperMap.Class({
                 if (this.filters[key + '<'] !== undefined && this.filters[key + '<'].val <= value) return null;
                 if (this.filters[key + '<='] !== undefined && this.filters[key + '<='].val <= value) return null;
                 return true;
+
+            default:
+                break;
         }
     },
 
@@ -31019,12 +31034,10 @@ SuperMap.CartoCSS.Tree.Filterset = SuperMap.Class({
     },
 
     add: function (filter, env) {
-        var key = filter.key.toString(),
-            id,
+        var key = filter.key.toString(), id,
             op = filter.op,
             conflict = this.conflict(filter),
             numval;
-
         if (conflict) return conflict;
 
         if (op === '=') {
@@ -31925,6 +31938,9 @@ SuperMap.CartoCSS.Tree.Zoom = SuperMap.Class({
                 break;
             case '<=':
                 this.zoom = "zoom && zoom <= " + value;
+                break;
+            default:
+                return this;
                 break;
         }
         /*

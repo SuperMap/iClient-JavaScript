@@ -74,6 +74,8 @@ SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
             case 'RANGE':
                 this.theme = SuperMap.ThemeRange.fromObj(themeObj);
                 break;
+            default:
+                break;
         }
         if (this.themeElementPosition) {
             //待测试

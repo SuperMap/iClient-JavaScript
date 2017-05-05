@@ -87,6 +87,7 @@ SuperMap.CartoCSS = SuperMap.Class({
         // This function is called after all files
         // have been imported through `@import`.
         var finish = function () {
+            //所有文件导入完成之后调用
         };
 
         function save() {
@@ -192,7 +193,7 @@ SuperMap.CartoCSS = SuperMap.Class({
             };
             if (defautls) {
                 for (var prop in defautls) {
-                    if (err[prop] === void 0) err[prop] = defautls[prop];
+                    if (err[prop] === 0) err[prop] = defautls[prop];
                 }
             }
 
@@ -593,12 +594,10 @@ SuperMap.CartoCSS = SuperMap.Class({
                 // Entities are the smallest recognized token,
                 // and can be found inside a rule's value.
                 entity: function () {
-                    return $(this.entities.call) ||
-                        $(this.entities.literal) ||
-                        $(this.entities.field) ||
-                        $(this.entities.variable) ||
-                        $(this.entities.url) ||
-                        $(this.entities.keyword);
+                    var property1 = $(this.entities.call) || $(this.entities.literal);
+                    var property2 = $(this.entities.field) || $(this.entities.variable);
+                    var property3 =  $(this.entities.url) || $(this.entities.keyword);
+                    return property1 || property2 || property3;
                 },
 
                 // A Rule terminator. Note that we use `peek()` to check for '}',
@@ -943,7 +942,7 @@ SuperMap.CartoCSS = SuperMap.Class({
                         for (var prop in shader) {
                             if (prop !== 'zoom' && prop !== 'frames' && prop !== "attachment" && prop != "elements") {
                                 //对layer-index作特殊处理以实现图层的控制
-                                if (prop === "layer-index") {
+                                if (prop === "layer-index") { 
                                     var getLayerIndex = Function("attributes", "zoom", "var _value = null;" + shader[prop].join('\n') + "; return _value; ");
                                     var layerIndex = getLayerIndex();
                                     Object.defineProperty(shaderArray, "layerIndex", {
@@ -3177,7 +3176,7 @@ SuperMap.CartoCSS.Tree.Call = SuperMap.Class({
                 };
             }
             if (fn !== args.length &&
-                // support variable-arg functions like `colorize-alpha`
+                    // support variable-arg functions like `colorize-alpha`
                 fn !== -1) {
                 env.error({
                     message: 'function ' + this.name + '() takes ' +
@@ -3296,6 +3295,8 @@ SuperMap.CartoCSS.Tree.Color = SuperMap.Class({
                     break;
                 case b:
                     h = (r - g) / d + 4;
+                    break;
+                default:
                     break;
             }
             h /= 6;
@@ -3429,8 +3430,8 @@ SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
         // Get a simple list of the symbolizers, in order
         function symbolizerList(sym_order) {
             return sym_order.sort(function (a, b) {
-                return a[1] - b[1];
-            })
+                    return a[1] - b[1];
+                })
                 .map(function (v) {
                     return v[0];
                 });
@@ -3941,6 +3942,9 @@ SuperMap.CartoCSS.Tree.Filterset = SuperMap.Class({
                 if (this.filters[key + '<'] !== undefined && this.filters[key + '<'].val <= value) return null;
                 if (this.filters[key + '<='] !== undefined && this.filters[key + '<='].val <= value) return null;
                 return true;
+
+            default:
+                break;
         }
     },
 
@@ -3966,12 +3970,10 @@ SuperMap.CartoCSS.Tree.Filterset = SuperMap.Class({
     },
 
     add: function (filter, env) {
-        var key = filter.key.toString(),
-            id,
+        var key = filter.key.toString(), id,
             op = filter.op,
             conflict = this.conflict(filter),
             numval;
-
         if (conflict) return conflict;
 
         if (op === '=') {
@@ -4872,6 +4874,9 @@ SuperMap.CartoCSS.Tree.Zoom = SuperMap.Class({
                 break;
             case '<=':
                 this.zoom = "zoom && zoom <= " + value;
+                break;
+            default:
+                return this;
                 break;
         }
         /*

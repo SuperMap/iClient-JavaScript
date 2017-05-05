@@ -133,6 +133,8 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
                             tempLayer.fromJson(layers[i]);
                             layers[i] = tempLayer;
                             break;
+                        default:
+                            break;
                     }
                 }
 

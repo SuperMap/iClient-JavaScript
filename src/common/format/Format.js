@@ -70,6 +70,7 @@ SuperMap.Format = SuperMap.Class({
      * 销毁该格式类，释放相关资源。
      */
     destroy: function () {
+        //用来销毁该格式类，释放相关资源
     },
 
     /**
@@ -84,6 +85,7 @@ SuperMap.Format = SuperMap.Class({
      * Depends on the subclass
      */
     read: function (data) {
+        //用来从字符串中读取数据
     },
 
     /**
@@ -97,6 +99,7 @@ SuperMap.Format = SuperMap.Class({
      * {String} A string representation of the object.
      */
     write: function (object) {
+        //用来写字符串
     },
 
     CLASS_NAME: "SuperMap.Format"

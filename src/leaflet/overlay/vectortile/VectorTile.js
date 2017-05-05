@@ -127,6 +127,8 @@ var VectorTile = L.Class.extend({
             case L.supermap.VectorFeatureType.TEXT:
                 layer = new L.TextSymbolizer(feat, pxPerExtent);
                 break;
+            default:
+                break;
         }
         var vectorLayer = this.layer;
 
@@ -151,6 +153,8 @@ var VectorTile = L.Class.extend({
                 return L.extend({}, L.Polygon.prototype.options, style);
             case L.supermap.VectorFeatureType.TEXT:
                 return L.extend({}, L.TextSymbolizer.prototype.options, style);
+            default:
+                break;
         }
     },
 
@@ -169,6 +173,8 @@ var VectorTile = L.Class.extend({
                 return L.extend({}, defaultOptions, L.Polygon.prototype.options);
             case L.supermap.VectorFeatureType.TEXT:
                 return L.extend({}, defaultOptions, L.TextSymbolizer.prototype.options);
+            default:
+                break;
         }
     }
 

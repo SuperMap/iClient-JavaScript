@@ -116,6 +116,8 @@ L.VectorGrid = L.GridLayer.extend({
                 return L.extend({}, L.Polygon.prototype.options, style);
             case L.supermap.VectorFeatureType.TEXT:
                 return L.extend({}, L.TextSymbolizer.prototype.options, style);
+            default:
+                break;
         }
     }
 

@@ -158,9 +158,10 @@ SuperMap.AreaSolarRadiationParameters.toObject = function (derrainCurvatureCalcu
     var parameter = {};
     for (var name in derrainCurvatureCalculationParameters) {
         if (name !== "dataset") {
-            if (name === "latitude" || name === "timeMode" || name === "dayStart" ||
-                name === "dayEnd" || name === "hourStart" || name === "hourEnd" ||
-                name === "transmittance" || name === "hourInterval" || name === "dayInterval") {
+            var name1 = (name === "latitude" || name === "timeMode" || name === "dayStart");
+            var name2 = (name === "dayEnd" || name === "hourStart" || name === "hourEnd");
+            var name3 = (name === "transmittance" || name === "hourInterval" || name === "dayInterval");
+            if (name1 || name2 || name3)  {
                 parameter[name] = derrainCurvatureCalculationParameters[name];
             }
             else {
