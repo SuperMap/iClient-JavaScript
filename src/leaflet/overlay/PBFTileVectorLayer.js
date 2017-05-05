@@ -108,6 +108,8 @@ L.PBFTileVectorLayer = L.VectorGrid.extend({
             case 3:
                 layer = new L.RegionSymbolizer(feat, pxPerExtent);
                 break;
+            default:
+                break;
         }
 
         if (this.options.interactive) {

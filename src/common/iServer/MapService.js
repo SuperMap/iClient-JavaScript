@@ -102,7 +102,9 @@ SuperMap.REST.MapService = SuperMap.Class(ServiceBase, {
     serviceProcessCompleted: function (result) {
         var me = this;
         result = SuperMap.Util.transformResult(result);
-        if (!result.code || (result.code && ((result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304))) {
+        var codeStatus = (result.code >= 200 && result.code < 300) || result.code == 0 || result.code === 304;
+        var isCodeValid = result.code && codeStatus;
+        if (!result.code || isCodeValid) {
             me.events && me.events.triggerEvent("processCompleted", {result: result});
         }
         //在没有token是返回的是200，但是其实是没有权限，所以这里也应该是触发失败事件

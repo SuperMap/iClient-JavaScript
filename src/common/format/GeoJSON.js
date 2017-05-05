@@ -104,6 +104,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
                             }
                     }
                     break;
+                default:break;
             }
         }
         return results;
