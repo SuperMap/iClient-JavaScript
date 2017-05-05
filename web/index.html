@@ -87,19 +87,17 @@
                 <div>
                     <h3 style="margin-top: 34px;font-size: 24px;color: #404040;letter-spacing: -0.16px;">Leaflet</h3>
                     <div class="map" id="leafletMap"></div>
-                    <p style="margin-top: 18px">将 iSevrer 发布的地图加载至 Leaflet 的 map 中
-                        <a href="../examples/leaflet/editor.html" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a>
-                    </p>
+                    <p style="margin-top: 18px">将 iSevrer 发布的地图加载至 Leaflet 的 map 中</p>
                     <pre class="javascript"><code>var map = L.map(&#39;map&#39;);
 L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/maps/China&quot;).addTo(map);</code></pre>
-
+                    <a href="../examples/leaflet/editor.html#01_tiledMapLayer3857" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a>
                 </div>
                 <!--OpenLayers-->
                 <div>
                     <h3 style="margin-top: 34px;font-size: 24px;color: #404040;letter-spacing: -0.16px;">OpenLayers</h3>
                     <div class="map" id="olMap"></div>
                     <p style="margin-top: 19px">将 iSevrer 发布的地图加载至 OpenLayers 的 map 中
-                        <a href="../examples/openlayers/editor.html" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a>
+
                     </p>
                     <pre class="javascript"><code>var map = new ol.Map({
     target: &#39;map&#39;,
@@ -109,14 +107,13 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
         }),
     })]
 });</code></pre>
-
+                    <a href="../examples/openlayers/editor.html#01_tiledMapLayer4326" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a>
                 </div>
                 <!--Mapbox GL JS-->
                 <div>
                     <h3 style="margin-top: 34px;font-size: 24px;color: #404040;letter-spacing: -0.16px;">Mapbox GL JS</h3>
                     <div class="map" id="mapboxMap"></div>
                     <p style="margin-top: 19px">将 iSevrer 发布的地图加载至 Mapbox GL JS 的 map 中
-                        <a href="../examples/mapboxgl/editor.html" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a>
                     </p>
                     <pre class="javascript"><code>var map = new mapboxgl.Map({
         container: "map",
@@ -134,19 +131,17 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
             }]
         },
 });</code></pre>
-
+                    <a href="../examples/mapboxgl/editor.html#01_tiledMapLayer" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a>
                 </div>
                 <!--iClient3D-->
                 <div>
                     <h3 style="margin-top: 34px;font-size: 24px;color: #404040;letter-spacing: -0.16px;">iClient3D</h3>
                     <div class="map" id="iC3DMap"></div>
                     <p style="margin-top: 19px">
-                        &nbsp;
-                        <a href="../examples/iclient3d/editor.html" style="font-size: 10px;float:right;">查看源码&nbsp;&raquo;</a>
                     </p>
 
                     <pre class="javascript"><code>var viewer = new Cesium.Viewer('cesiumContainer');</code></pre>
-
+                    <a href="../examples/iclient3d/editor.html#01_3DMap" style="font-size: 10px;float:right;">查看源码&nbsp;&raquo;</a>
                 </div>
                 <!--新特性-->
                 <div class="new-attributes">
