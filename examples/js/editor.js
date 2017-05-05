@@ -8,15 +8,19 @@ var myWidth = 0, myHeight = 0;
 var containExamples = true;
 
 function initPage() {
+    initSideBar();
+    initEditor();
+    screenResize();
+    // dragCode();
+}
+
+function initSideBar() {
     var config = exampleConfig;
     var sideBar = $("ul#sidebar-menu");
     for (var key in config) {
         sideBar.append(createSideBarMenuItem(key, config[key], containExamples));
     }
     initSelect();
-    initEditor();
-    screenResize();
-    // dragCode();
 }
 
 function screenResize() {
@@ -43,9 +47,6 @@ function screenResize() {
 //初始化编辑器
 function initCodeEditor() {
     if (!aceEditor) {
-        var editorElem = document.getElementById("editor");
-        editorElem.style.fontSize = "13px";
-        editorElem.style.lineHeight = "18px";
         aceEditor = ace.edit("editor");
         aceEditor.setTheme("ace/theme/textmate");
         aceEditor.getSession().setMode("ace/mode/html");
@@ -61,6 +62,11 @@ function initCodeEditor() {
 
 //初始化编辑器以及预览内容
 function initEditor() {
+    loadExampleHtml();
+    initCodeEditor();
+}
+
+function loadExampleHtml() {
     var locationParam = getLocationParam();
     if (!locationParam) {
         return;
@@ -83,7 +89,6 @@ function initEditor() {
         $('#editor').val(html);
         loadPreview(html);
     }
-    initCodeEditor();
 }
 
 function getLocationParam() {
@@ -133,7 +138,7 @@ function dragCode() {
             $("#codePane").width(bottomX);
             $("#editor").width(bottomX);
             aceEditor.resize();
-            $("#preview").css({'left:': (myWidth - bottomX - 202) + "px"});
+            $("#previewPane").css({'left:': (myWidth - bottomX - 202) + "px"});
             $("#innerPage").width(myWidth - bottomX - 202);
             aceEditor.resize();
         };
@@ -153,7 +158,7 @@ function initSelect() {
     var hash = window.location.hash;
     var id;
     if (hash.indexOf("#") === -1) {
-        id = $("#sidebar .thirdMenu a.link").first().attr('id');
+        id = $("section#sidebar .thirdMenu a.link").first().attr('id');
         window.location.hash = (id) ? "#" + id : window.location.hash;
     } else {
         id = hash.split("#")[1];
@@ -175,13 +180,42 @@ function bindEvents() {
         if (evt.target.localName === "span") {
             nodeId = target.attr('id');
         }
+
         if (nodeId) {
+            //阻止冒泡防止上层事件响应导致修改url hash值
             evt.preventDefault();
             window.location.hash = "#" + nodeId;
             initEditor();
             evt.stopPropagation();
         }
     });
+    var codePane = $("#codePane");
+    var previewPane = $("#previewPane");
+    var expand = !1;
+    $("#showCodeBtn").click(function () {
+        if (expand) {
+            $(this).text(" 展开");
+            $(this).addClass("fa-arrows-alt");
+            $(this).removeClass(" fa-compress");
+            codePane.show(10, function () {
+                previewPane.addClass("col-md-7");
+                codePane.addClass("col-md-5");
+            });
+
+        } else {
+            $(this).text(" 源码");
+            $(this).addClass(" fa-compress");
+            $(this).removeClass("fa-arrows-alt");
+            codePane.hide(200, function () {
+                codePane.removeClass("col-md-5");
+                previewPane.removeClass("col-md-7");
+            });
+
+
+        }
+        expand = !expand;
+    });
+
     window.addEventListener("hashchange", function () {
         var hash = window.location.hash;
         if (hash.indexOf("#") !== -1) {

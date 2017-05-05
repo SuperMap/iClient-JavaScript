@@ -14,79 +14,50 @@ html, body, .wrapper {
 .edit-container {
     background-color: #f9f9f9;
     position: relative;
-    height: 100%;
 }
 
-.content {
-    top: 52px;
-    bottom: 0;
-    margin: 0;
-    padding: 0;
+.edit-container section.content {
     width: 100%;
-    z-index: 99;
-    overflow: hidden;
+    padding: 0;
     position: absolute;
+    top: 0;
+    bottom: 0;
 }
 
-@media (max-width: 767px) {
-    .edit-container {
-        margin-top: 100px;
-    }
-    .content{
-        top:0;
-    }
+.content .pane {
+    position: relative;
+    padding: 0;
 }
 
 #codePane {
-    width: 660px;
     height: 100%;
-    position: absolute;
     box-shadow: 2px 0px 6px #cccccc;
 }
 
-.contentTool {
-    height: 44px;
-    line-height: 44px;
-    box-shadow: 0px 2px 10px #dddddd;
-}
-
-.editorBtn {
-    display: inline-block;
-    width: 60px;
-    height: 30px;
-    text-align: center;
-    line-height: 30px;
-    color: #0083CB;
-    float: right;
-    cursor: pointer;
-    margin: 8px 4px;
-    border-radius: 2px;
-}
-
-.editorBtn:hover {
-    font-weight: bolder;
-}
-
-.editorBtn span {
-    width: 24px;
-    height: 24px;
+.codePaneTool {
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    line-height: 24px;
+    z-index: 800;
+    background-color: white;
+    padding: 8px 22px;
+    box-shadow: 0 2px 10px #dddddd;
 }
 
 #editor {
     font-family: Consolas, monaco, 'Courier New', Courier, monospace;
     position: absolute;
+    top: 42px;
     bottom: 0;
-    top: 46px;
+    right: 0;
     width: 100%;
-    font-size: 12px;
+    line-height: 18px;
+    font-size: 13px;
 }
 
-#preview {
+#previewPane {
     height: 100%;
-    right: 0;
-    min-width: 400px;
-    margin-left: 662px;
-    position: relative;
 }
 
 #innerPage {
@@ -95,34 +66,46 @@ html, body, .wrapper {
     border: none;
 }
 
-@media screen and (max-width: 1024px) {
-    #codePane {
-        width: 340px;
-        height: 100%;
-        position: absolute;
-        box-shadow: 3px 0px 6px #cccccc;
-    }
-
-    #preview {
-        height: 100%;
-        margin-left: 340px;
-        position: relative;
-    }
+.editorBtn {
+    display: inline-block;
+    width: 60px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    color: #0083CB;
+    float: right;
+    cursor: pointer;
 }
 
-@media screen and (min-width: 1024px)and ( max-width: 1400px) {
-    #codePane {
-        width: 500px;
-        height: 100%;
-        position: absolute;
-        box-shadow: 3px 0px 6px #cccccc;
-    }
+.editorBtn:hover {
+    font-weight: bold;
+}
 
-    #preview {
-        height: 100%;
-        margin-left: 502px;
-        min-width: 400px;
-        position: relative;
+#showCodeBtn {
+    cursor: pointer;
+    z-index: 900;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 54px;
+    height: 30px;
+    line-height: 30px;
+    margin: 4px;
+    text-align: center;
+    background-color: rgba(34, 45, 50, 0.7);
+    color: #fff;
+}
+
+#showCodeBtn:hover {
+    background-color: rgba(34, 45, 50, 0.9);
+}
+
+@media screen and (max-width: 992px) {
+    #codePane {
+        display: none;
+    }
+    .codePaneTool {
+        padding: 8px 68px 8px 20px;
     }
 }
 

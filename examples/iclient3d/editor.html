@@ -41,7 +41,7 @@
 
     <!-- 侧边栏 -->
 
-    <aside class="sidebar-wrapper main-sidebar" style="position: fixed;">
+    <aside class="sidebar-wrapper main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar" id="sidebar">
             <!-- sidebar menu: : style can be found in sidebar.less -->
@@ -53,26 +53,28 @@
     </aside>
     <!-- 内容区 -->
     <div class="content-wrapper edit-container">
-        <div class="content">
-            <div id="codePane">
-                <div class="contentTool">
-                    <span style="padding-left: 20px;">源代码编辑器</span>
-                    <div class="editorBtn" id="runBtn" onclick="run()"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span>&nbsp;运行</div>
-                    <div class="editorBtn" id="resetBtn" onclick="refresh()"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>&nbsp;重置</div>
-                </div>
 
+        <section class="content">
+            <a class="fa  fa-compress" id="showCodeBtn">&nbsp;源码</a>
+            <div class="pane" id="codePane" style="display: none">
+                <div class="codePaneTool">
+                    源代码编辑器
+                    <div class="fa fa-play-circle-o editorBtn" id="runBtn" onclick="run()">&nbsp;运行</div>
+                    <div class="fa fa-undo editorBtn" id="resetBtn" onclick="refresh()">&nbsp;重置</div>
+                </div>
                 <div id="editor">
 
                 </div>
             </div>
-            <div id="preview">
+            <div class="col-md-12 pane" id="previewPane">
                 <iframe id='innerPage' name='innerPage'></iframe>
-
             </div>
-        </div>
+        </section>
+
     </div>
 </div>
 <script type="text/javascript" src="../js/scrollTo.min.js"></script>
+
 <script type="text/javascript" src="../../web/libs/js/app.min.js"></script>
 <script>
     $('.nav-header').load('../../web/header.html');

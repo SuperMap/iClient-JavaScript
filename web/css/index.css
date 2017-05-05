@@ -26,23 +26,17 @@ html, body, .wrapper {
 }
 
 .header-home {
-    background: #3c8dbc
+    background: #3c8dbc;
 }
 
 #header2-text {
     padding-top: 80px;
     padding-bottom: 20px;
-    text-align: center
+    text-align: center;
 }
 
-@media screen and (max-width: 992px) {
-    #header2-text {
-        padding-top: 75px;
-        padding-bottom: 0;
-    }
-}
 
-.ip-copyRight {
+.iclient-copyright {
     color: #7d7d7d;
     font-size: 13px !important;
     text-align: center;
@@ -50,7 +44,7 @@ html, body, .wrapper {
     line-height: 54px;
 }
 
-.ip-footer {
+.iclient-footer {
     border-top: 1px solid #ddd;
 }
 
@@ -64,17 +58,11 @@ html, body, .wrapper {
 
 .radiusBtn {
     height: 50px;
-    width: 185px;
+    width: 160px;
     border-radius: 300px;
     margin-top: 29px;
     border: 1px solid white;
     background-color: transparent
-}
-
-@media screen and (max-width: 992px) {
-    .radiusBtn {
-        margin-top: 18px;
-    }
 }
 
 .radiusBtn a {
@@ -107,40 +95,17 @@ html, body, .wrapper {
     border-radius: 2px;
 }
 
-@media screen and (max-width: 1200px) {
-    #button_zip {
-        float: right;
-        margin-right: 24%;
-    }
-}
-
-@media screen and (max-width: 992px) {
-    #button_zip {
-        float: right;
-        margin-right: auto;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    #button_zip {
-        float: right;
-        margin: auto;
-    }
-}
-
-@media screen and (max-width: 762px) {
-    #button_zip {
-        float: none;
-        margin: auto;
-    }
-}
-
 #button_sourceCode {
     text-align: center;
     margin-left: 30px;
 }
 
 @media screen and (max-width: 1200px) {
+    #button_zip {
+        float: right;
+        margin-right: 24%;
+    }
+
     #button_sourceCode {
         float: right;
         margin-right: 24%;
@@ -148,13 +113,35 @@ html, body, .wrapper {
 }
 
 @media screen and (max-width: 992px) {
+    #button_zip {
+        float: right;
+        margin-right: auto;
+    }
+
+    .radiusBtn {
+        margin-top: 18px;
+    }
+
+    #header2-text {
+        padding-top: 75px;
+        padding-bottom: 0;
+    }
+
     #button_sourceCode {
         float: right;
         margin-right: auto;
     }
+    .navbar-brand {
+        padding: 15px 15px !important;
+    }
 }
 
 @media screen and (max-width: 768px) {
+    #button_zip {
+        float: right;
+        margin: auto;
+    }
+
     #button_sourceCode {
         float: right;
         margin: auto;
@@ -162,11 +149,17 @@ html, body, .wrapper {
 }
 
 @media screen and (max-width: 762px) {
+    #button_zip {
+        float: none;
+        margin: auto;
+    }
+
     #button_sourceCode {
         float: none;
         margin: auto;
     }
 }
+
 
 #quick-start {
     margin-top: 83px;

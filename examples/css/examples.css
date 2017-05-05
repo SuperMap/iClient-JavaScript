@@ -9,10 +9,6 @@
     overflow: auto;
 }
 
-@media (max-width: 767px) {
-    .examples-container {
-    }
-}
 
 #charts-list {
     margin: 0;
@@ -54,7 +50,7 @@ h3.category-title {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 10px 10px 8px 0px;
+    padding: 10px 10px 8px 0;
     margin: 0;
     font-weight: normal;
 }
@@ -67,24 +63,31 @@ h3.category-title {
     border-top: 3px solid #3c8dbc;
 }
 
-.box.box-default{
+.box.box-default {
     background-color: #FFFFFF;
     border-top-color: #3c8dbc;
 }
 
 .box-title {
-    padding-top: 10px ;
-    padding-bottom: 0 ;
+    padding-top: 10px;
+    padding-bottom: 0;
     padding-left: 5px;
-    color:	#555555;
+    color: #555555;
 }
 
-.box-header{
-    padding-top: 10px ;
-    padding-bottom: 5px ;
+.box-header {
+    padding-top: 10px;
+    padding-bottom: 5px;
     padding-left: 0;
 }
 
-.box-body{
+.box-body {
     padding: 0;
 }
+
+.main-footer {
+    color: #7d7d7d;
+    font-size: 13px !important;
+    text-align: center;
+}
+

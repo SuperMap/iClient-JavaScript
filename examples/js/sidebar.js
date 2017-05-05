@@ -16,12 +16,11 @@ function createSideBarMenuItem(id, config, containAll) {
     }
     containExample = containAll;
     var li = $("<li id='" + id + "' class='treeview'></li>");
-    var menuItemIcon = sideBarIconConfig[id];
     if (config.content) {
-        createSideBarMenuTitle(id, config.name, true, menuItemIcon).appendTo(li);
+        createSideBarMenuTitle(id, config.name, true).appendTo(li);
         createSideBarSecondMenu(config.content).appendTo(li);
     } else {
-        createSideBarMenuTitle(id, config.name, false, menuItemIcon).appendTo(li);
+        createSideBarMenuTitle(id, config.name, false).appendTo(li);
     }
     return li;
 }
@@ -35,10 +34,10 @@ function createSideBarSecondMenu(config) {
         var configItem = config[key];
 
         if (containExample && configItem.content) {
-            createSideBarFirstLevelTitle(key, configItem.name, true).appendTo(li);
+            createSideBarMenuTitle(key, configItem.name, true).appendTo(li);
             createSideBarThirdMenu(configItem.content).appendTo(li);
         } else {
-            createSideBarSecondLevelTitle(key, configItem.name, false).appendTo(li);
+            createSideBarMenuTitle(key, configItem.name, false).appendTo(li);
         }
     }
     return ul;
@@ -54,25 +53,21 @@ function createSideBarThirdMenu(examples) {
         var li = $("<li class='menuTitle' id='" + example.fileName + "' ></li>");
         li.appendTo(ul);
         if (example.fileName && example.name) {
-            createSideBarSecondLevelTitle(example.fileName, example.name, false).appendTo(li);
+            createSideBarMenuTitle(example.fileName, example.name, false).appendTo(li);
         }
     }
     return ul;
 }
 
-function createSideBarFirstLevelTitle(id, title, collapse, iconName) {
-    iconName = iconName || "fa-circle-o";
-    return createSideBarMenuTitle(id, title, collapse, iconName)
-}
 
-function createSideBarSecondLevelTitle(id, title, collapse, iconName) {
-    iconName = iconName || "  fa-genderless";
-    return createSideBarMenuTitle(id, title, collapse, iconName)
-}
-
-function createSideBarMenuTitle(id, title, collapse, iconName) {
+function createSideBarMenuTitle(id, title, collapse) {
     id = id || "";
-    var div = $("<a href='#' id='" + id + "'><i class='fa " + iconName + "'></i><span>" + title + "</span></a>");
+    var icon = "", iconName = sideBarIconConfig[id];
+    if (iconName) {
+        icon = "<i class='fa " + iconName + "'></i>"
+    }
+
+    var div = $("<a href='#' id='" + id + "'>" + icon + "<span>" + title + "</span></a>");
     if (collapse) {
         div.append(createCollapsedIcon());
     }
@@ -104,17 +99,3 @@ function selectMenu(id) {
         }
     }
 }
-
-function collapseSideBar(rootElement, fold) {
-    if (!rootElement) {
-        return;
-    }
-    var collapseClassName = "sidebar-collapse";
-    rootElement.removeClass(collapseClassName);
-    if (fold) {
-        rootElement.addClass(collapseClassName)
-    } else {
-        rootElement.removeClass(collapseClassName);
-    }
-}
-

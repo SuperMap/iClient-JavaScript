@@ -68,12 +68,6 @@
     content: "\f03b";
 }
 
-@media screen and (max-width: 1200px) {
-    #title {
-        font-size: 20px;
-    }
-}
-
 @media screen and (max-width: 992px) {
     #title {
         font-size: 18px;
@@ -81,17 +75,21 @@
 }
 
 @media screen and (max-width: 768px) {
-    #title {
-        font-size: 16px;
-    }
-
     .navbar-nav > li > .dropdown-menu {
         margin-top: 0 !important;
     }
+
+    .navbar-brand {
+        padding: 15px 0;
+    }
 }
 
-@media screen and (max-width: 650px) {
+@media screen and (max-width: 410px) {
     #title {
         font-size: 14px;
+    }
+
+    .sidebar-toggle {
+        padding: 15px 15px !important;
     }
 }
