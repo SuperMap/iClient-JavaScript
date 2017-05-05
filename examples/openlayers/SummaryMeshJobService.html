@@ -5,9 +5,15 @@
     <title>格网聚合分析作业</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+    <style>
+        .ol-popup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<button type="button" id="btn" class="btn btn-primary" autocomplete="off">创建格网聚合分析作业</button>
 <div id="model" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -21,14 +27,14 @@
     </div>
 </div>
 <div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
-
+<div id="popup" class="ol-popup"/>
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var layer, processingJobsUrl = "http://192.168.12.28:8090/iserver/services/processing/rest/v1/jobs",
-            token = '5JtxoDBziy-6O00kK7UGKl3arPZXaO8OrIHc-3iTzfeS7JFQ_ay4yCvTwtwUuf53YSrosYOsWPiHj9J76KhPZQ..',
+    var layer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
+            token = 'GSHB7qlocJkqEH0Ld6VUSGQfekOdPd3e9UdJoHjiupfbkGDggXQLSPWd6VaKm8NH4gvXx6UQ0TCI5wpfr-4Tlw..',
             extent = [-74.05, 40.65, -73.85, 40.85],
             projection = new ol.proj.Projection({
                 extent: extent,
@@ -43,7 +49,7 @@
                 })
             }),
             summaryMeshJobParameter = new SuperMap.SummaryMeshJobParameter({
-                datasetName: 'taxi_newyork_taxi_2013-01_14k',
+                datasetName: 'test_newyork_taxi_2013_01_14k',
                 resolution: 0.001,
                 resultFieldNames: 'result',
                 meshType: 0,
@@ -51,7 +57,17 @@
                 query: [-74.150, 40.550, -73.750, 40.950],
                 statisticModes: 'max'
             }),
-            processingJobsService = new ol.supermap.ProcessingJobsService(processingJobsUrl);
+            processingJobsService = new ol.supermap.ProcessingJobsService(processingJobsUrl),
+            popup = document.getElementById('popup'),
+            button = document.createElement('button');
+
+    popup.appendChild(button);
+    button.id = 'btn'
+    button.className = 'btn btn-primary';
+    button.innerHTML = '创建格网聚合分析作业';
+    var info = new ol.control.Control({element: popup});
+    info.setMap(map);
+    map.addControl(info);
 
     SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(token, 'token');
 
@@ -65,12 +81,12 @@
             if (serviceResult.error) {
                 $('#btn').prop('disabled', false);
                 $("#model").modal('hide');
-                alert(serviceResult.error.message);
+                alert('创建失败!');
                 return;
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                 if (info.serviceType === 'RESTMAP') {
-                    var mapUrl = info.serviceAddress + '/maps/summaryMesh_map';
+                    var mapUrl = info.serviceAddress + '/maps/summaryMesh1_Map';
                     new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
                         layer = new ol.layer.Tile({
                             source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))

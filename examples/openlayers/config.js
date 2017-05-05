@@ -230,6 +230,22 @@ var exampleConfig = {
                     thumbnail: "ol_trafficTransferAnalystService.png",
                     fileName: "06_trafficTransferAnalystService"
                 }]
+            },
+            "processingJobs": {
+                name: "分布式空间处理作业",
+                content: [{
+                    name: "密度分析作业",
+                    thumbnail: "kernelDensityJobService.png",
+                    fileName: "kernelDensityJobService"
+                }, {
+                    name: "格网聚合分析作业",
+                    thumbnail: "SummaryMeshJobService.png",
+                    fileName: "SummaryMeshJobService"
+                }, {
+                    name: "生成地图缓存作业",
+                    thumbnail: "buildCacheService.png",
+                    fileName: "buildCacheService"
+                }]
             }
         }
     },

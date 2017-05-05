@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
-<button type="button" id="btn" class="btn btn-primary" autocomplete="off">创建生成地图缓存作业</button>
 <div id="model" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -27,8 +26,8 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
 <script type="text/javascript">
-    var layer, processingJobsUrl = "http://192.168.12.28:8090/iserver/services/processing/rest/v1/jobs",
-            token = '5JtxoDBziy-6O00kK7UGKl3arPZXaO8OrIHc-3iTzfeS7JFQ_ay4yCvTwtwUuf53YSrosYOsWPiHj9J76KhPZQ..',
+    var layer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
+            token = 'GSHB7qlocJkqEH0Ld6VUSGQfekOdPd3e9UdJoHjiupfbkGDggXQLSPWd6VaKm8NH4gvXx6UQ0TCI5wpfr-4Tlw..',
             map = L.map('map', {
                 crs: L.supermap.NonEarthCRS({
                     bounds: L.bounds([40.65, -74.05], [40.85, -73.85]),
@@ -36,20 +35,29 @@
                 }),
                 center: [40.75, -73.95],
                 maxZoom: 18,
-                zoom: 0
+                zoom: 1
             }),
             buildCacheJobParameter = new SuperMap.BuildCacheJobParameter({
-                datasetName: 'taxi_newyork_taxi_2013-01_14k',
+                datasetName: 'test_newyork_taxi_2013_01_14k',
                 cacheName: 'cache',
                 cacheType: 'MongoDB',
-                serverAdresses: ['192.168.12.28:27010'],
+                serverAdresses: ['113.209.64.227:27010'],
                 database: 'smtiles',
                 version: 'v1',
                 bounds: L.latLngBounds(L.latLng(40.550, -74.150), L.latLng(40.950, -73.750)),
                 imageType: 'Heatmap',
                 level: 5
             }),
-            processingJobsService = new L.supermap.processingJobsService(processingJobsUrl);
+            processingJobsService = new L.supermap.processingJobsService(processingJobsUrl),
+            info = L.control({position: 'topright'});
+
+    info.onAdd = function () {
+        var btn = L.DomUtil.create('button', 'btn btn-primary');
+        btn.id = 'btn';
+        btn.innerHTML = '创建生成地图缓存作业';
+        return btn;
+    };
+    info.addTo(map);
 
     SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(token, 'token');
 
@@ -63,7 +71,7 @@
             if (serviceResult.error) {
                 $('#btn').prop('disabled', false);
                 $("#model").modal('hide');
-                alert(serviceResult.error.message);
+                alert('创建失败!');
                 return;
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {

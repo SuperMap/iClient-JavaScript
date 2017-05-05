@@ -1,7 +1,7 @@
 var SuperMap = require('../SuperMap');
 /**
  * Class: SuperMap.KernelDensityJobParameter
- * 核密度分析任务参数类
+ * 密度分析任务参数类
  */
 
 SuperMap.KernelDensityJobParameter = SuperMap.Class({

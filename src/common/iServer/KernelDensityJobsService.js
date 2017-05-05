@@ -5,7 +5,7 @@ var KernelDensityJobParameter = require('./KernelDensityJobParameter');
 SuperMap.REST.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
-        url += "/spatialanalyst/kernelDensity";
+        url += "/spatialanalyst/density";
         ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
     },
 

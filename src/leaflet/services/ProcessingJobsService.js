@@ -23,7 +23,7 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * 获取核密度分析作业的列表。
+     * 获取密度分析作业的列表。
      * @param callback 请求结果的回调函数。
      * @param resultFormat 返回的结果类型（默认为GeoJSON）。
      */
@@ -43,7 +43,7 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * 获取某一个核密度分析作业。
+     * 获取某一个密度分析作业。
      * @param id 空间分析作业的id。
      * @param callback 请求结果的回调函数。
      * @param resultFormat 返回的结果类型（默认为GeoJSON）。
@@ -64,7 +64,7 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * 新建一个核密度分析作业。
+     * 新建一个密度分析作业。
      * @param callback 请求结果的回调函数。
      * @param resultFormat 返回的结果类型（默认为GeoJSON）。
      */
@@ -219,7 +219,7 @@ var ProcessingJobsService = ServiceBase.extend({
         if (params.query && params.query instanceof L.LatLngBounds) {
             params.query = params.query.toBBoxString();
         }
-        if (params.bounds) {
+        if (params.bounds && params.bounds instanceof L.LatLngBounds) {
             params.bounds = params.bounds.toBBoxString();
         }
         return params;

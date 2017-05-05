@@ -9108,7 +9108,7 @@ ol.supermap.ProcessingJobsService = function (url, options) {
 ol.inherits(ol.supermap.ProcessingJobsService, ol.supermap.ServiceBase);
 
 /**
- * 获取核密度分析作业的列表。
+ * 获取密度分析作业的列表。
  * @param callback 请求结果的回调函数。
  * @param resultFormat 返回的结果类型（默认为GeoJSON）。
  */
@@ -9128,7 +9128,7 @@ ol.supermap.ProcessingJobsService.prototype.getKernelDensityJobs = function (cal
 };
 
 /**
- * 获取某一个核密度分析作业。
+ * 获取某一个密度分析作业。
  * @param id 空间分析作业的id。
  * @param callback 请求结果的回调函数。
  * @param resultFormat 返回的结果类型（默认为GeoJSON）。
@@ -9149,7 +9149,7 @@ ol.supermap.ProcessingJobsService.prototype.getKernelDensityJob = function (id, 
 };
 
 /**
- * 新建一个核密度分析作业。
+ * 新建一个密度分析作业。
  * @param callback 请求结果的回调函数。
  * @param resultFormat 返回的结果类型（默认为GeoJSON）。
  */
@@ -9173,8 +9173,8 @@ ol.supermap.ProcessingJobsService.prototype.addKernelDensityJob = function (para
 };
 
 /**
- * 获取核密度分析作业的状态。
- * @param id 核密度分析作业的id。
+ * 获取密度分析作业的状态。
+ * @param id 密度分析作业的id。
  */
 ol.supermap.ProcessingJobsService.prototype.getKernelDensityJobState = function (id) {
     return this.kernelDensityJobs[id];
@@ -19768,7 +19768,7 @@ module.exports = SuperMap.InterpolationRBFAnalystParameters;
 var SuperMap = __webpack_require__(0);
 /**
  * Class: SuperMap.KernelDensityJobParameter
- * 核密度分析任务参数类
+ * 密度分析任务参数类
  */
 
 SuperMap.KernelDensityJobParameter = SuperMap.Class({
@@ -19863,7 +19863,7 @@ var KernelDensityJobParameter = __webpack_require__(149);
 SuperMap.REST.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
-        url += "/spatialanalyst/kernelDensity";
+        url += "/spatialanalyst/density";
         ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
     },
 
@@ -23017,7 +23017,7 @@ module.exports = SuperMap.REST.StopQueryService;
 var SuperMap = __webpack_require__(0);
 /**
  * Class: SuperMap.KernelDensityJobParameter
- * 核密度分析任务参数类
+ * 格网聚合分析任务参数类
  */
 
 SuperMap.SummaryMeshJobParameter = SuperMap.Class({
