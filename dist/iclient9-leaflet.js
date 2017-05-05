@@ -36873,7 +36873,12 @@ SuperMap.CartoCSS = SuperMap.Class({
                             if (prop !== 'zoom' && prop !== 'frames' && prop !== "attachment" && prop != "elements") {
                                 //对layer-index作特殊处理以实现图层的控制
                                 if (prop === "layer-index") { 
-                                    var getLayerIndex = Function("attributes", "zoom", "var _value = null;" + shader[prop].join('\n') + "; return _value; ");
+                                    /*var getLayerIndex = Function("attributes", "zoom", "var _value = null;" + shader[prop].join('\n') + "; return _value; ");*/
+                                    var getLayerIndex = function(attributes,zoom){
+                                        var _value = null;
+                                        shader[prop].join('\n');
+                                        return _value;
+                                    };
                                     var layerIndex = getLayerIndex();
                                     Object.defineProperty(shaderArray, "layerIndex", {
                                         configurable: true,
@@ -36894,7 +36899,12 @@ SuperMap.CartoCSS = SuperMap.Class({
                                                 var featureFilterStart = index + myKeyword.length;
                                                 var featureFilterEnd = body.indexOf(")", featureFilterStart + 1);
                                                 var featureFilterStr = "featureId&&(featureId" + body.substring(featureFilterStart, featureFilterEnd) + ")";
-                                                var featureFilter = Function("featureId", "if(" + featureFilterStr + "){return true;}return false;");
+                                                /*var featureFilter = Function("featureId", "if(" + featureFilterStr + "){return true;}return false;");*/
+                                                var featureFilter = function(featureId){
+                                                    if(featureFilterStr){
+                                                        return true;}
+                                                    return false;
+                                                }
                                                 Object.defineProperty(shaderArray, "featureFilter", {
                                                     configurable: true,
                                                     enumerable: false,
