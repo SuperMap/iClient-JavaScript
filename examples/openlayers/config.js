@@ -268,7 +268,7 @@ var exampleConfig = {
             "ol_map": {
                 name: "地图",
                 content: [{
-                    name: "我的大学路线图",
+                    name: "2014当了一回背包客",
                     thumbnail: "ol_onlineWebMap.png",
                     fileName: "onlineWebMap"
                 }]

@@ -3,6 +3,7 @@ var L = require("leaflet");
 var Util = require('../core/Util');
 var Request = require('../../common/util/Request');
 var SuperMap = require('../../common/SuperMap');
+var CartoCSSToLeaflet = require('../overlay/carto/CartoCSSToLeaflet');
 var WebMap = L.LayerGroup.extend({
     options: {
         map: 'map',
@@ -261,9 +262,20 @@ var WebMap = L.LayerGroup.extend({
             var ll = crs.unproject(L.point(coords[0], coords[1]));
             return new L.LatLng(ll.lat, ll.lng, coords[2]);
         };
+
         var layer = L.geoJSON(L.Util.toGeoJSON(layerInfo.markers), {
-            coordsToLatLng: coordsToLatLng, style: style,
-            opacity: opacity
+            pointToLayer: function (geojson, latlng) {
+                var m = new L.Marker(latlng);
+                m.setStyle = function (style) {
+                    if(style){
+                        m.setIcon(style);
+                    }
+                }
+                return m;
+            },
+            coordsToLatLng: coordsToLatLng, style: function (geoJsonFeature) {
+                return CartoCSSToLeaflet.getStyleFromiPortalMarker(geoJsonFeature.properties.icon);
+            },
         });
         if (this.options.featureLayerPopupEnable) {
             layer.bindPopup(this.options.featureLayerPopup || this.defaultFeatureLayerPopup)
@@ -284,10 +296,23 @@ var WebMap = L.LayerGroup.extend({
             return new L.LatLng(ll.lat, ll.lng, coords[2]);
         };
         if (!layerInfo.url) {
+            var me = this;
             var layer = L.geoJSON(L.Util.toGeoJSON(layerInfo.features), {
-                coordsToLatLng: coordsToLatLng, style: style,
-                opacity: opacity
-            });
+                    pointToLayer: function (geojson, latlng) {
+                        var m = new L.Marker(latlng);
+                        m.setStyle = function (style) {
+                            if(style){
+                                m.setIcon(style);
+                            }
+                        }
+                        return m;
+                    },
+                    coordsToLatLng: coordsToLatLng, style: function (geoJsonFeature) {
+                        return CartoCSSToLeaflet.getStyleFromiPortalStyle(style ? style : {}, geoJsonFeature.geometry.type, geoJsonFeature.properties.style);
+                    },
+                    opacity: opacity
+                })
+                ;
             if (this.options.featureLayerPopupEnable) {
                 layer.bindPopup(this.options.featureLayerPopup || this.defaultFeatureLayerPopup)
             }
@@ -310,7 +335,19 @@ var WebMap = L.LayerGroup.extend({
                     });
                     L.supermap.getFeaturesService(url).getFeaturesBySQL(sqlParam).on("complete", function (serviceResult) {
                         var layer = L.geoJSON(serviceResult.result, {
-                            coordsToLatLng: coordsToLatLng, style: style,
+                            pointToLayer: function (geojson, latlng) {
+                                var m = new L.Marker(latlng);
+                                m.setStyle = function (style) {
+                                    if(style){
+                                        m.setIcon(style);
+                                    }
+                                }
+                                return m;
+                            },
+                            coordsToLatLng: coordsToLatLng,
+                            style: function (geoJsonFeature) {
+                                return CartoCSSToLeaflet.getStyleFromiPortalStyle(style ? style : {}, geoJsonFeature.geometry.type, geoJsonFeature.properties.style);
+                            },
                             opacity: opacity
                         });
                         if (this.options.featureLayerPopupEnable) {

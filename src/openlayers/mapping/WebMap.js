@@ -2,6 +2,7 @@ require('../core/Base');
 var ol = require('openlayers');
 var Request = require('../../common/util/Request');
 var SuperMap = require('../../common/SuperMap');
+var StyleUtils = require('../core/StyleUtils');
 ol.supermap.WebMap = function (id, options) {
     ol.Observable.call(this);
     this.id = id;
@@ -269,6 +270,9 @@ ol.supermap.WebMap.prototype.createMarkersLayer = function (layerInfo) {
         marker, point, size, offset, icon, that = this;
     //todo offset
     var layer = new ol.layer.Vector({
+        style: function (feature) {
+            return StyleUtils.getStyleFromiPortalMarker(feature.getProperties().icon);
+        },
         source: new ol.source.Vector({
             features: (new ol.format.GeoJSON()).readFeatures(ol.supermap.Util.toGeoJSON(layerInfo.markers)),
             wrapX: false
@@ -288,6 +292,9 @@ ol.supermap.WebMap.prototype.createVectorLayer = function (layerInfo) {
     //todo readonly = layerInfo.readonly;
     if (!layerInfo.url) {
         var layer = new ol.layer.Vector({
+            style: function (feature) {
+                return StyleUtils.getStyleFromiPortalStyle(style, feature.getGeometry().getType(), feature.getProperties().style);
+            },
             source: new ol.source.Vector({
                 features: (new ol.format.GeoJSON()).readFeatures(ol.supermap.Util.toGeoJSON(layerInfo.features)),
                 wrapX: false
@@ -313,6 +320,9 @@ ol.supermap.WebMap.prototype.createVectorLayer = function (layerInfo) {
                 });
                 new ol.supermap.GetFeaturesService(url).getFeaturesBySQL(sqlParam).on("complete", function (serviceResult) {
                     var layer = new ol.layer.Vector({
+                        style: function (feature) {
+                            return StyleUtils.getStyleFromiPortalStyle(style, feature.getGeometry().getType(), feature.getProperties().style);
+                        },
                         source: new ol.source.Vector({
                             features: (new ol.format.GeoJSON()).readFeatures(serviceResult.element.result),
                             wrapX: false

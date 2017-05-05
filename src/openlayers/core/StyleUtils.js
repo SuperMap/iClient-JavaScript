@@ -340,6 +340,128 @@ ol.supermap.StyleUtils = {
             });
         }
     },
+    dashStyle: function (style, widthFactor) {
+        if (!style)return [];
+        var w = style.strokeWidth * widthFactor;
+        var str = style.strokeDashstyle;
+        switch (str) {
+            case 'solid':
+                return [];
+            case 'dot':
+                return [1, 4 * w];
+            case 'dash':
+                return [4 * w, 4 * w];
+            case 'dashdot':
+                return [4 * w, 4 * w, 1, 4 * w];
+            case 'longdash':
+                return [8 * w, 4 * w];
+            case 'longdashdot':
+                return [8 * w, 4 * w, 1, 4 * w];
+            default:
+                if (!str)return [];
+                if (SuperMap.Util.isArray(str))return str;
+                str = SuperMap.String.trim(str).replace(/\s+/g, ",");
+                return str.replace(/\[|\]/gi, "").split(",");
+        }
+    },
+    getStyleFromiPortalMarker: function (icon) {
+        if (icon.indexOf("./") == 0) {
+            return null;
+        }
+        //兼容iportal示例的问题
+        if (icon.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
+            icon=icon.replace("http://support.supermap.com.cn:8092/static/portal","http://support.supermap.com.cn:8092/apps/viewer/static");
+        }
+        return new ol.style.Style({
+            image: new ol.style.Icon({
+                src: icon,
+                opacity: 1,
+                size: [48, 43],
+                anchor: [0.5, 1]
+            })
+        });
+    },
+    getStyleFromiPortalStyle: function (iPortalStyle, type, fStyle) {
+        var featureStyle = fStyle ? JSON.parse(fStyle) : null;
+        var me = this;
+        if (type === 'Point' || type === 'MultiPoint') {
+            var pointStyle = featureStyle || iPortalStyle.pointStyle;
+            if (pointStyle.externalGraphic) {
+                if (pointStyle.externalGraphic.indexOf("./") == 0) {
+                    return null;
+                }
+                //兼容iportal示例的问题
+                if (pointStyle.externalGraphic.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
+                    pointStyle.externalGraphic=pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal","http://support.supermap.com.cn:8092/apps/viewer/static");
+                }
+                return new ol.style.Style({
+                    image: new ol.style.Icon({
+                        src: pointStyle.externalGraphic,
+                        opacity: pointStyle.graphicOpacity,
+                        size: [pointStyle.graphicWidth, pointStyle.graphicHeight],
+                        //anchor: [-pointStyle.graphicXOffset / pointStyle.graphicWidth, -pointStyle.graphicYOffset / pointStyle.graphicHeight]
+                    })
+                });
+            }
+            return new ol.style.Style({
+                image: new ol.style.Circle({
+                    fill: new ol.style.Fill({
+                        color: me.hexToRgba(pointStyle.fillColor, pointStyle.fillOpacity)
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: me.hexToRgba(pointStyle.strokeColor, pointStyle.strokeOpacity),
+                        lineCap: pointStyle.strokeLineCap,
+                        lineDash: this.dashStyle(pointStyle, 1),
+                        width: pointStyle.strokeWidth
+                    }),
+                    radius: pointStyle.pointRadius
+                })
+            });
+        }
+        if (type === 'LineString' || type === 'MultiLineString' || type === 'Box') {
+            var lineStyle = featureStyle || iPortalStyle.lineStyle;
+            return new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: me.hexToRgba(lineStyle.strokeColor, lineStyle.strokeOpacity),
+                    lineCap: lineStyle.strokeLineCap,
+                    lineDash: this.dashStyle(lineStyle, 1),
+                    width: lineStyle.strokeWidth
+                })
+            });
+        }
+        if (type === 'Polygon' || type === 'MultiPolygon') {
+            var polygonStyle = featureStyle || iPortalStyle.polygonStyle;
+            return new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: me.hexToRgba(polygonStyle.fillColor, polygonStyle.fillOpacity)
+                }),
+                stroke: new ol.style.Stroke({
+                    color: me.hexToRgba(polygonStyle.strokeColor, polygonStyle.strokeOpacity),
+                    lineCap: polygonStyle.strokeLineCap,
+                    lineDash: this.dashStyle(polygonStyle, 1),
+                    width: polygonStyle.strokeWidth
+                })
+            });
+        }
+    },
+
+    hexToRgba: function (hex, opacity) {
+        var color = [], rgba = [];
+        hex = hex.replace(/#/, "");
+        if (hex.length == 3) {
+            var tmp = [];
+            for (var i = 0; i < 3; i++) {
+                tmp.push(hex.charAt(i) + hex.charAt(i));
+            }
+            hex = tmp.join("");
+        }
+        for (var i = 0; i < 6; i += 2) {
+            color[i] = "0x" + hex.substr(i, 2);
+            rgba.push(parseInt(Number(color[i])));
+        }
+        rgba.push(opacity);
+        return "rgba(" + rgba.join(",") + ")";
+    },
 
     getDefaultStyle: function (type) {
         var style = style || {};

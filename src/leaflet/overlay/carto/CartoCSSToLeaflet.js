@@ -70,7 +70,98 @@ L.supermap.CartoCSSToLeaflet = {
         }
         return style;
     },
+    getStyleFromiPortalMarker: function (icon) {
+        if (icon.indexOf("./") == 0) {
+            return null;
+        }
+        //兼容iportal示例的问题
+        if (icon.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
+            icon=icon.replace("http://support.supermap.com.cn:8092/static/portal","http://support.supermap.com.cn:8092/apps/viewer/static");
+        }
+        return L.icon({
+            iconUrl: icon,
+            iconSize: L.point(48, 43),
+            iconAnchor: L.point(24, 43),
+            popupAnchor: L.point(0, -43)
+        });
+    },
+    getStyleFromiPortalStyle: function (iPortalStyle, type, fStyle) {
+        var featureStyle = fStyle ? JSON.parse(fStyle) : null;
+        var style = {};
+        if (type === 'Point' || type === 'MultiPoint') {
+            var pointStyle = featureStyle || iPortalStyle.pointStyle;
+            if (pointStyle.externalGraphic) {
+                if (pointStyle.externalGraphic.indexOf("./") == 0) {
+                    return null;
+                }
+                //兼容iportal示例的问题
+                if (pointStyle.externalGraphic.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
+                    pointStyle.externalGraphic=pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal","http://support.supermap.com.cn:8092/apps/viewer/static");
+                }
+                return L.icon({
+                    iconUrl: pointStyle.externalGraphic,
+                    iconSize: L.point(pointStyle.graphicWidth, pointStyle.graphicHeight),
+                    iconAnchor: L.point(-pointStyle.graphicXOffset, -pointStyle.graphicYOffset),
+                    popupAnchor: L.point(0, -pointStyle.graphicHeight)
+                });
 
+            }
+            style.radius = pointStyle.pointRadius;
+            style.color = pointStyle.strokeColor;
+            style.opacity = pointStyle.strokeOpacity;
+            style.lineCap = pointStyle.strokeLineCap;
+            style.weight = pointStyle.strokeWidth;
+            style.fillColor = pointStyle.fillColor;
+            style.fillOpacity = pointStyle.fillOpacity;
+            style.dashArray = this.dashStyle(pointStyle, 1);
+            return style;
+        }
+        if (type === 'LineString' || type === 'MultiLineString' || type === 'Box') {
+            var lineStyle = featureStyle || iPortalStyle.lineStyle;
+            style.color = lineStyle.strokeColor;
+            style.opacity = lineStyle.strokeOpacity;
+            style.fillOpacity = lineStyle.fillOpacity;
+            style.lineCap = lineStyle.strokeLineCap;
+            style.weight = lineStyle.strokeWidth;
+            style.dashArray = this.dashStyle(lineStyle, 1);
+            return style;
+        }
+        if (type === 'Polygon' || type === 'MultiPolygon') {
+            var polygonStyle = featureStyle || iPortalStyle.polygonStyle;
+            style.color = polygonStyle.strokeColor;
+            style.opacity = polygonStyle.strokeOpacity;
+            style.lineCap = polygonStyle.strokeLineCap;
+            style.weight = polygonStyle.strokeWidth;
+            style.fillColor = polygonStyle.fillColor;
+            style.fillOpacity = polygonStyle.fillOpacity;
+            style.dashArray = this.dashStyle(polygonStyle, 1);
+            return style;
+        }
+    },
+    dashStyle: function (style, widthFactor) {
+        if (!style)return [];
+        var w = style.strokeWidth * widthFactor;
+        var str = style.strokeDashstyle;
+        switch (str) {
+            case 'solid':
+                return [];
+            case 'dot':
+                return [1, 4 * w];
+            case 'dash':
+                return [4 * w, 4 * w];
+            case 'dashdot':
+                return [4 * w, 4 * w, 1, 4 * w];
+            case 'longdash':
+                return [8 * w, 4 * w];
+            case 'longdashdot':
+                return [8 * w, 4 * w, 1, 4 * w];
+            default:
+                if (!str)return [];
+                if (SuperMap.Util.isArray(str))return str;
+                str = SuperMap.String.trim(str).replace(/\s+/g, ",");
+                return str.replace(/\[|\]/gi, "").split(",");
+        }
+    },
     getValidStyleFromCarto: function (zoom, scale, shader, feature, fromServer) {
         if (!shader) {
             return null;
