@@ -112,7 +112,7 @@ L.Util.Csv2GeoJSON = function (csv, options) {
             var campos = csv[num_linea].trim().split(options.fieldSeparator)
                 , lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)])
                 , lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
-            if (campos.length == titulos.length && lng < 180 && lng > -180 && lat < 90 && lat > -90) {
+            if (campos.length == titulos.length && Math.abs(lng) < 180 && Math.abs(lat) < 90) {
                 var feature = {};
                 feature["type"] = "Feature";
                 feature["geometry"] = {};

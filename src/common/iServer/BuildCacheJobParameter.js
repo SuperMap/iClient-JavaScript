@@ -91,7 +91,7 @@ SuperMap.BuildCacheJobParameter.toObject = function (buildCacheJobParameter, tem
             tempObj['input'][name] = buildCacheJobParameter[name];
             continue;
         }
-        if (name === "cacheName" || name === "cacheType" || name === "serverAdresses" || name === "database" || name === "version") {
+        if (SuperMap.Util.indexOf(["cacheName", "cacheType", "serverAdresses", "database", "version"], name) > -1) {
             tempObj['output'] = tempObj['output'] || {};
             tempObj['output'][name] = buildCacheJobParameter[name];
             continue;
