@@ -57,7 +57,7 @@ module.exports = function (config) {
             //'test/common/iServer/FacilityAnalystUpstream3DServiceSpec.js',
             'test/common/iServer/FieldStatisticServiceSpec.js',
             'test/common/iServer/FindClosestFacilitiesServiceSpec.js',
-           /* 'test/common/iServer/FindLocationServiceSpec.js',
+            'test/common/iServer/FindLocationServiceSpec.js',
             'test/common/iServer/FindMTSPPathsServiceSpec.js',
             'test/common/iServer/FindPathServiceSpec.js',
             'test/common/iServer/FindServiceAreasServiceSpec.js',
@@ -96,7 +96,7 @@ module.exports = function (config) {
             'test/common/iServer/TransferPathServiceSpec.js',
             'test/common/iServer/TransferSolutionServiceSpec.js',
             'test/common/iServer/UpdateEdgeWeightServiceSpec.js',
-            'test/common/iServer/UpdateTurnNodeWeightServiceSpec.js'*/
+            'test/common/iServer/UpdateTurnNodeWeightServiceSpec.js'
 
             /*Leaflet、OL3、legacy文件夹测试代码，暂未添加*/
 
