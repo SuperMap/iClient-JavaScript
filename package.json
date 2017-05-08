@@ -26,11 +26,14 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "browserify": "^14.3.0",
+    "browserify-istanbul": "^2.0.0",
     "commander": "^2.9.0",
     "css-loader": "^0.26.1",
+    "echarts ": "3.5.4",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.0",
     "imports-loader": "^0.7.0",
+    "istanbul": "^0.4.5",
     "jasmine-core": "^2.5.2",
     "karma": "^1.4.1",
     "karma-browserify": "^5.1.1",
@@ -39,13 +42,12 @@
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",
     "karma-teamcity-reporter": "^1.0.0",
+    "leaflet": "1.0.3",
+    "openlayers": "4.1.0",
     "shelljs": "^0.7.6",
     "style-loader": "^0.13.1",
     "watchify": "^3.9.0",
-    "webpack": "^2.4.1",
-    "leaflet": "1.0.3",
-    "openlayers": "4.1.0",
-    "echarts ": "3.5.4"
+    "webpack": "^2.4.1"
   },
   "dependencies": {
     "proj4": "2.4.3",

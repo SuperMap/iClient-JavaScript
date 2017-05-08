@@ -12,11 +12,13 @@ module.exports = function (config) {
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
         frameworks: ['jasmine', 'browserify'],
+
         browserify: {
-            debug: true
+            debug: true,
+            transform:[ 'browserify-istanbul'],
         },
         // list of files  patterns to load in the browser
-        // include:false表示不包含这些文件到浏览器中,注意添加顺序
+        // false 表示初始化的时候不会使用 script 标签直接将相关 js 引入到浏览器，需要自己写代码加载, 注意添加顺序
         files: [
             /***legacy文件夹下的源码添加至此***/
             {pattern: 'src/legacy/libs/SuperMap_Basic-8.1.1-14426.js', include: false},
@@ -55,7 +57,7 @@ module.exports = function (config) {
             //'test/common/iServer/FacilityAnalystUpstream3DServiceSpec.js',
             'test/common/iServer/FieldStatisticServiceSpec.js',
             'test/common/iServer/FindClosestFacilitiesServiceSpec.js',
-            'test/common/iServer/FindLocationServiceSpec.js',
+           /* 'test/common/iServer/FindLocationServiceSpec.js',
             'test/common/iServer/FindMTSPPathsServiceSpec.js',
             'test/common/iServer/FindPathServiceSpec.js',
             'test/common/iServer/FindServiceAreasServiceSpec.js',
@@ -94,7 +96,7 @@ module.exports = function (config) {
             'test/common/iServer/TransferPathServiceSpec.js',
             'test/common/iServer/TransferSolutionServiceSpec.js',
             'test/common/iServer/UpdateEdgeWeightServiceSpec.js',
-            'test/common/iServer/UpdateTurnNodeWeightServiceSpec.js'
+            'test/common/iServer/UpdateTurnNodeWeightServiceSpec.js'*/
 
             /*Leaflet、OL3、legacy文件夹测试代码，暂未添加*/
 
@@ -114,7 +116,7 @@ module.exports = function (config) {
             './node_modules/whatwg-fetch/fetch.js': ['browserify'],
             './node_modules/fetch-jsonp/build/fetch-jsonp.js': ['browserify'],
             'src/legacy/libs/Lang/*.js': ['browserify'],
-            'src/common/**/*.js': ['browserify', 'coverage'],
+            'src/common/**/*.js': ['browserify',/* 'coverage'*/],
             'test/common/**/*Spec.js': ['browserify']
         },
 
@@ -131,9 +133,17 @@ module.exports = function (config) {
         coverageReporter: {
             dir: 'testcoverage/',
             reporters: [
-                {type: 'lcov', subdir: '.'}
+                {type: 'lcov', subdir: '.'},
             ]
         },
+
+       /* coverageReporter: {
+            reporters: [
+                {'type': 'text'},
+                {'type': 'html', dir: 'testcoverage'},
+                {'type': 'lcov'}
+            ]
+        },*/
 
 
         // web server port
@@ -162,8 +172,18 @@ module.exports = function (config) {
         // if true, Karma captures browsers, runs the tests and exits
         singleRun: false,
 
+       /* plugins: [
+            'karma-coverage',
+            'karma-browserify',
+            'karma-chrome-launcher',
+            'karma-jasmine',
+            'karma-teamcity-reporter',
+        ],*/
+
         // Concurrency level
         // how many browser should be started simultaneous
-        concurrency: Infinity
+        concurrency: Infinity,
+
+      /*  plugins:['karma-sourcemap-loader']*/
     })
 };
