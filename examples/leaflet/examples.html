@@ -22,58 +22,18 @@
     <![endif]-->
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-
-<div class="wrapper">
-    <!--头部-->
-    <header class="header-wrapper main-header">
-
-        <nav class="navbar navbar-static-top">
-
-
-            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                <span class="sr-only"></span>
-            </a>
-           <div class="nav-header">
-
-           </div>
-        </nav>
-    </header>
-
-    <!-- 侧边栏 -->
-
-    <aside class="sidebar-wrapper main-sidebar">
-        <!-- sidebar: style can be found in sidebar.less -->
-        <section class="sidebar" id="sidebar">
-            <!-- sidebar menu: : style can be found in sidebar.less -->
-            <ul class="sidebar-menu" id="sidebar-menu">
-
-            </ul>
-        </section>
-        <!-- /.sidebar -->
-    </aside>
-
-    <!-- 内容区 -->
-    <div class="content-wrapper examples-container">
-        <ul id="charts-list">
-
-        </ul>
-    </div>
-    <!-- footer -->
-    <footer class="main-footer">
-        <div class="iclient-copyright" id="iclient-footer">版权所有 © 2000-2017 北京超图软件股份有限公司 京ICP备11032883号-8 京公网安备11010502008721 甲测资字11002074
-        </div>
-    </footer>
-
-</div>
+<div class="wrapper"></div>
 <!-- ./wrapper -->
 <script type="text/javascript" src="../js/scrollTo.min.js"></script>
-
 <script type="text/javascript" src="../../web/libs/js/app.min.js"></script>
 <script>
-    $('.nav-header').load('../../web/header.html');
+    $('.wrapper').load('../example.html', function () {
+        $('.nav-header').load('../../web/header.html');
+        var body = $('body');
+        body.append("<script type='text/javascript' src='./config.js'><\/script>");
+        body.append("<script type='text/javascript' src='../js/sidebar.js'><\/script>");
+        body.append("<script type='text/javascript' src='../js/example.js'><\/script>");
+    });
 </script>
-<script type="text/javascript" src="./config.js"></script>
-<script type="text/javascript" src="../js/sidebar.js"></script>
-<script type="text/javascript" src="../js/example.js"></script>
 </body>
 </html>

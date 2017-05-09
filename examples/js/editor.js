@@ -4,14 +4,12 @@ $(document).ready(function () {
 });
 
 var aceEditor;
-var myWidth = 0, myHeight = 0;
 var containExamples = true;
 
 function initPage() {
     initSideBar();
     initEditor();
     screenResize();
-    // dragCode();
 }
 
 function initSideBar() {
@@ -24,23 +22,7 @@ function initSideBar() {
 }
 
 function screenResize() {
-    if (typeof( $(window).innerWidth()) == 'number') {
-        myWidth = $(window).innerWidth();
-        myHeight = $(window).innerHeight();
-    }
-    else if (document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight)) {
-        myWidth = document.documentElement.clientWidth;
-        myHeight = document.documentElement.clientHeight;
-    }
     window.onresize = function () {
-        if (typeof( $(window).innerWidth() ) == 'number') {
-            myWidth = window.innerWidth;
-            myHeight = window.innerHeight;
-        }
-        else if (document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight)) {
-            myWidth = document.documentElement.clientWidth;
-            myHeight = document.documentElement.clientHeight;
-        }
         mapHeight();
     };
 }
@@ -57,7 +39,6 @@ function initCodeEditor() {
     aceEditor.setValue($('#editor').val());
     aceEditor.clearSelection();
     aceEditor.moveCursorTo(0, 0);
-
 }
 
 //初始化编辑器以及预览内容
@@ -113,41 +94,28 @@ function run() {
 
 //填充预览效果内容
 function loadPreview(content) {
-    var iFrame = document.getElementById("innerPage").contentWindow;
-    iFrame.document.open();
-    iFrame.addEventListener('load', mapHeight);
-    iFrame.document.write(content);
-    iFrame.document.close();
+    var iFrame = createIFrame(),
+        iframeDocument = iFrame.contentWindow.document;
+
+    iframeDocument.open();
+    iframeDocument.write(content);
+    iframeDocument.close();
+    iframeDocument.addEventListener('load', function () {
+        mapHeight();
+    });
     mapHeight();
 }
 
-/**设置显示源码的拖拽效果**/
-function dragCode() {
-    $("#drag").mousedown(function () {
-        document.onselectstart = function () {
-            return false;
-        };
-        document.onmousemove = function (e) {
-            var bottomX = (e || window.event).clientX - 202;
-            if (bottomX <= 0) {
-                bottomX = 0;
-            }
-            if (bottomX >= myWidth - 202) {
-                bottomX = myWidth - 202;
-            }
-            $("#codePane").width(bottomX);
-            $("#editor").width(bottomX);
-            aceEditor.resize();
-            $("#previewPane").css({'left:': (myWidth - bottomX - 202) + "px"});
-            $("#innerPage").width(myWidth - bottomX - 202);
-            aceEditor.resize();
-        };
-        document.onmouseup = function () {
-            document.onmousemove = null;
-            $("#overiframe").hide();
-        };
-    });
+function createIFrame() {
+    var preViewPane = $("#previewPane");
+    preViewPane.empty();
+    var iframe = document.createElement("iframe");
+    $(iframe).attr("id", "innerPage");
+    $(iframe).attr("name", "innerPage");
+    preViewPane.append(iframe);
+    return iframe;
 }
+
 //重置编辑器
 function refresh() {
     initEditor();
@@ -191,27 +159,28 @@ function bindEvents() {
     });
     var codePane = $("#codePane");
     var previewPane = $("#previewPane");
-    var expand = !1;
+    var expand = !!1;
     $("#showCodeBtn").click(function () {
         if (expand) {
+            //编辑器和预览宽度5:7
             $(this).text(" 展开");
             $(this).addClass("fa-arrows-alt");
             $(this).removeClass(" fa-compress");
             codePane.show(10, function () {
+                previewPane.removeClass("col-md-12");
                 previewPane.addClass("col-md-7");
                 codePane.addClass("col-md-5");
             });
-
         } else {
+            //预览独占一行
             $(this).text(" 源码");
             $(this).addClass(" fa-compress");
             $(this).removeClass("fa-arrows-alt");
             codePane.hide(200, function () {
                 codePane.removeClass("col-md-5");
                 previewPane.removeClass("col-md-7");
+                previewPane.addClass("col-md-12");
             });
-
-
         }
         expand = !expand;
     });

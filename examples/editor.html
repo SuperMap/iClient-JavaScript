@@ -1,0 +1,49 @@
+<!--头部-->
+<header class="header-wrapper main-header">
+
+    <nav class="navbar navbar-static-top">
+
+
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+            <span class="sr-only"></span>
+        </a>
+        <div class="nav-header">
+
+        </div>
+    </nav>
+</header>
+
+<!-- 侧边栏 -->
+
+<aside class="sidebar-wrapper main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar" id="sidebar">
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu" id="sidebar-menu">
+
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
+<!-- 内容区 -->
+<div class="content-wrapper edit-container">
+
+    <section class="content">
+        <span class="fa  fa-compress" id="showCodeBtn">&nbsp;源码</span>
+        <div class="pane" id="codePane" style="display: none">
+            <div class="codePaneTool">
+                源代码编辑器
+                <div class="fa fa-play-circle-o editorBtn" id="runBtn" onclick="run()">&nbsp;运行</div>
+                <div class="fa fa-undo editorBtn" id="resetBtn" onclick="refresh()">&nbsp;重置</div>
+            </div>
+            <div id="editor">
+
+            </div>
+        </div>
+        <div class="col-md-12 pane" id="previewPane">
+            <!--<iframe id='innerPage' name='innerPage'></iframe>-->
+        </div>
+    </section>
+
+</div>
+

@@ -64,9 +64,18 @@
     letter-spacing: -0.1px;
 }
 
+.main-header .sidebar-toggle {
+    float: left;
+    background-color: transparent;
+    background-image: none;
+    padding: 15px 17px;
+    font-family: fontAwesome;
+}
+
 .main-header .sidebar-toggle:before {
     content: "\f03b";
 }
+
 
 @media screen and (max-width: 992px) {
     #title {
