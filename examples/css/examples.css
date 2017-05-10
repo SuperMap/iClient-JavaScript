@@ -24,9 +24,11 @@ h3.category-title {
     margin-bottom: 0;
 }
 
-/*.category-content {
-    margin-left: 30px;
-}*/
+@media (min-width: 1400px) {
+    .col-xlg-2 {
+        width: 16.66666667%;
+    }
+}
 
 #charts-list .chart {
     width: 100%;
