@@ -86,7 +86,7 @@ describe('testQueryByGeometryService_processAsync',function(){
                 queryByGeometryService.destroy();
                 queryByGeometryParameters.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 queryByGeometryService.destroy();
@@ -133,7 +133,7 @@ describe('testQueryByGeometryService_processAsync',function(){
                 queryByGeometryService.destroy();
                 queryByGeometryParameters.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 queryByGeometryService.destroy();
@@ -173,7 +173,7 @@ describe('testQueryByGeometryService_processAsync',function(){
                 queryByGeometryService.destroy();
                 queryByGeometryParameters.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 queryByGeometryService.destroy();

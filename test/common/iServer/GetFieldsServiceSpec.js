@@ -77,7 +77,7 @@ describe('testGetFieldsService_processAsync',function(){
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 getFieldsService.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 getFieldsService.destroy();

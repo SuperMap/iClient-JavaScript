@@ -200,7 +200,7 @@ describe('testQueryBySQLService_processAsync',function(){
                 queryBySQLService.destroy();
                 queryBySQLParameters.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 queryBySQLService.destroy();
@@ -238,7 +238,7 @@ describe('testQueryBySQLService_processAsync',function(){
                 queryBySQLService.destroy();
                 queryBySQLParameters.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 queryBySQLService.destroy();

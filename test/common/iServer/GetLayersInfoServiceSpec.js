@@ -51,7 +51,7 @@ describe('testGetLayersInfoService_processAsync',function(){
                 expect(analystResult.subLayers.layers).not.toBeNull();
                 getLayersInfoService.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 getLayersInfoService.destroy();
@@ -72,7 +72,7 @@ describe('testGetLayersInfoService_processAsync',function(){
                 expect(analystResult.subLayers.layers).not.toBeNull();
                 getLayersInfoService.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 getLayersInfoService.destroy();
@@ -93,7 +93,7 @@ describe('testGetLayersInfoService_processAsync',function(){
                 expect(analystResult.subLayers.layers).not.toBeNull();
                 getLayersInfoService.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 getLayersInfoService.destroy();

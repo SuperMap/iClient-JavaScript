@@ -65,7 +65,7 @@ describe('testStopQueryService_processAsync',function(){
                 expect(stopQueryService.events).toBeNull();
                 stopQueryServiceParams.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 stopQueryService.destroy();
@@ -92,7 +92,7 @@ describe('testStopQueryService_processAsync',function(){
                 stopQueryService.destroy();
                 stopQueryServiceParams.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 stopQueryService.destroy();

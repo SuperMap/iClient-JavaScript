@@ -79,7 +79,7 @@ describe('testQueryByBoundsService_processAsync',function(){
                 expect(queryByBoundsService.returnContent).toBeNull();
                 queryByBoundsParameters.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 queryByBoundsService.destroy();
@@ -122,7 +122,7 @@ describe('testQueryByBoundsService_processAsync',function(){
                 queryByBoundsService.destroy();
                 queryByBoundsParameters.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 queryByBoundsService.destroy();
@@ -157,7 +157,7 @@ describe('testQueryByBoundsService_processAsync',function(){
                 queryByBoundsService.destroy();
                 queryByBoundsParameters.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 queryByBoundsService.destroy();

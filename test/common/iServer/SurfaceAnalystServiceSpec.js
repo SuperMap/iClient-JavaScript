@@ -68,7 +68,7 @@ describe('testSurfaceAnalystService_processAsync',function(){
                 expect(surfaceAnalystService.lastResult == null).toBeTruthy();
                 expect(surfaceAnalystService.eventListeners == null).toBeTruthy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
  expect(false).toBeTruthy();
  console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 surfaceAnalystService.destroy();
@@ -106,7 +106,7 @@ describe('testSurfaceAnalystService_processAsync',function(){
                 surfaceAnalystService.destroy();
                 params.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 surfaceAnalystService.destroy();
@@ -158,7 +158,7 @@ describe('testSurfaceAnalystService_processAsync',function(){
                 surfaceAnalystService.destroy();
                 params.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 surfaceAnalystService.destroy();
@@ -210,7 +210,7 @@ describe('testSurfaceAnalystService_processAsync',function(){
                 surfaceAnalystService.destroy();
                 params.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 surfaceAnalystService.destroy();
@@ -230,7 +230,7 @@ describe('testSurfaceAnalystService_processAsync',function(){
             try{
                 ok(surfaceAnalystResult == null, "surfaceAnalystService.lastResult");
                 done();
-            } catch (excepion) {
+            } catch (exception) {
  expect(false).toBeTruthy();
  console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 surfaceAnalystService.destroy();
@@ -265,7 +265,7 @@ describe('testSurfaceAnalystService_processAsync',function(){
                 surfaceAnalystService.destroy();
                 params.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 surfaceAnalystService.destroy();

@@ -80,7 +80,7 @@ describe('testRouteLocatorService_processAsync',function(){
                 expect(routeLocatorService.eventListeners == null).toBeTruthy();
                 routeLocatorParameters_point.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 routeLocatorService.destroy();
@@ -135,7 +135,7 @@ describe('testRouteLocatorService_processAsync',function(){
                 routeLocatorService.destroy();
                 routeLocatorParameters_line.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 routeLocatorService.destroy();

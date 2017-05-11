@@ -69,7 +69,7 @@ describe('testTransferPathService_processAsync',function(){
                 expect(service.eventListeners).toBeNull();
                 params.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("TransferPathService_" + exception.name + ":" + exception.message);
                 service.destroy();

@@ -82,7 +82,7 @@ describe('testRouteCalculateMeasureService_processAsync',function(){
                 expect(calculateMeasureResult.eventListeners == null).toBeTruthy();
                 parameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 calculateMeasureService.destroy();

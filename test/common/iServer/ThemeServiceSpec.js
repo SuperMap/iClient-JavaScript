@@ -96,7 +96,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -163,7 +163,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -275,7 +275,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -341,7 +341,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -427,7 +427,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -505,7 +505,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -591,7 +591,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -650,7 +650,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -745,7 +745,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -870,7 +870,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -936,7 +936,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -998,7 +998,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -1077,7 +1077,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -1125,7 +1125,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -1183,7 +1183,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();
@@ -1220,7 +1220,7 @@ describe('testThemeService_processAsync', function () {
                 expect(themeService.eventListeners == null).toBeTruthy();
                 themeParameters.destroy();
                 done();
-            } catch (excepion) {
+            } catch (exception) {
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 themeService.destroy();

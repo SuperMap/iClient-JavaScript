@@ -67,7 +67,7 @@ describe('testMapService_processAsync',function(){
                 expect(getMapService.events).toBeNull();
                 expect(getMapService.eventListeners).toBeNull();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 getMapService.destroy();

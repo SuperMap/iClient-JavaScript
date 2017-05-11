@@ -54,7 +54,7 @@ describe('testOverlayAnalystService_processAsync',function(){
                 expect(overlayServiceByDatasets.events).toBeNull();
                 dsOverlayAnalystParameters.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 overlayServiceByDatasets.destroy();
@@ -81,7 +81,7 @@ describe('testOverlayAnalystService_processAsync',function(){
                 overlayServiceByDatasets.destroy();
                 dsOverlayAnalystParameters.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 overlayServiceByDatasets.destroy();
@@ -119,7 +119,7 @@ describe('testOverlayAnalystService_processAsync',function(){
                 overlayServiceByDatasets.destroy();
                 geOverlayAnalystParameters.destroy();
                 done();
-            }catch(excepion){
+            }catch(exception){
                 expect(false).toBeTruthy();
                 console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
                 overlayServiceByDatasets.destroy();
