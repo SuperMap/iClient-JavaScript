@@ -14,30 +14,37 @@ var TileVectorLayer = L.VectorGrid.extend({
     options: {
         url: null,
         token: null,
+        crs: null,
         cartoCSS: null,
         // 指定图层的名称列表。支持的类型为矢量图层
         layerNames: null,
         //获取进行切片的地图图层 ID
         layersID: null,
-
         //是否服务端CartoCSS样式，默认使用
         serverCartoCSSStyle: true,
 
         returnAttributes: false,
         cacheEnabled: false,
+        //瓦片模板，如果设置了此参数，则按此模板出图，url无效（对接第三方瓦片）
+        tileTemplate: null,
+        subdomains: 'abc',
 
-        crs: null,
         timeout: 10000,
         attribution: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
     },
 
     initialize: function (url, options) {
         options = options || {};
-        options.noWrap = true;
+        options.noWrap = (options.noWrap == null) ? true : options.noWrap;
         L.VectorGrid.prototype.initialize.call(this, options);
         L.Util.setOptions(this, options);
         var me = this;
         L.stamp(me);
+
+        if (!url || url === "" || url.indexOf("http") < 0) {
+            url = "";
+            return this;
+        }
 
         me.options.url = url;
         if (url && url.indexOf("/") === (url.length - 1)) {
@@ -53,12 +60,10 @@ var TileVectorLayer = L.VectorGrid.extend({
         }
     },
 
-    //如果不设置获取服务器的cartoCSS情况下，则直接初始化瓦片网格
-    //如果设置了需获取服务器的cartoCSS情况下，待服务器返回cartocss之后再初始化瓦片网格
     onAdd: function (map) {
         this._crs = this.options.crs || map.options.crs;
         this._map = map;
-        if (!this.options.serverCartoCSSStyle) {
+        if (this.options.tileTemplate || !this.options.serverCartoCSSStyle) {
             this._initGrid();
         }
     },
@@ -119,7 +124,7 @@ var TileVectorLayer = L.VectorGrid.extend({
         }
 
         if (!me.layersInfo) {
-            return null;
+            return {};
         }
         var layerInfo = me.layersInfo[layerName];
         if (!layerInfo)return null;
@@ -227,7 +232,6 @@ var TileVectorLayer = L.VectorGrid.extend({
         return style;
     },
 
-
     setScales: function (scales) {
         this.scales = scales || this.scales;
     },
@@ -254,10 +258,6 @@ var TileVectorLayer = L.VectorGrid.extend({
             Math.abs(ne.y - sw.y) / tileSize
         );
         return 0.0254 / (96 * resolution);
-    },
-
-    _initGrid: function () {
-        L.VectorGrid.prototype.onAdd.call(this, this._map);
     },
 
     _initScales: function (mapInfo) {
@@ -307,6 +307,39 @@ var TileVectorLayer = L.VectorGrid.extend({
     },
 
     _getTileUrl: function (coords) {
+        var me = this, tileTemplate = me.options.tileTemplate;
+        if (!tileTemplate) {
+            return me._getDefaultTileUrl(coords);
+        }
+        return me._getTileTemplateUrl(coords)
+    },
+
+    _getTileTemplateUrl: function (coords) {
+        var me = this, tileTemplate = me.options.tileTemplate;
+        var data = {
+            s: me._getSubdomain(coords),
+            x: coords.x,
+            y: coords.y,
+            z: coords.z
+        };
+        if (me._map && !me._map.options.crs.infinite) {
+            var invertedY = me._globalTileRange.max.y - coords.y;
+            if (me.options.tms) {
+                data['y'] = invertedY;
+            }
+            data['-y'] = invertedY;
+        }
+
+        var tileUrl = L.Util.template(tileTemplate, L.extend(data, me.options));
+        return tileUrl;
+    },
+
+    _initGrid: function () {
+        L.VectorGrid.prototype.onAdd.call(this, this._map);
+    },
+
+    _getSubdomain: L.TileLayer.prototype._getSubdomain,
+    _getDefaultTileUrl: function (coords) {
         var x = coords.x, y = coords.y;
         var tileUrl = this._tileUrl + "&x=" + x + "&y=" + y;
         var scale = this.getScale(coords);
@@ -319,7 +352,8 @@ var TileVectorLayer = L.VectorGrid.extend({
         if (!options.url) {
             return;
         }
-        this._tileUrl = options.url + "/tileFeature.json?";
+        var format = options.format.toString().toLowerCase();
+        this._tileUrl = options.url + "/tileFeature." + format + "?";
         this._tileUrl += this._createURLParam(options);
     },
 

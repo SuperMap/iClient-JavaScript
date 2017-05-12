@@ -5223,7 +5223,7 @@ SuperMap.Request = {
     },
 
     _appendUrlTokenParameter: function (url) {
-        url = url.indexOf('.json') !== -1 ? url : url + '.json';
+        url = (url.indexOf('.json') === -1 && url.indexOf("?") === -1) ? (url + '.json') : url;
         if (SuperMap.Credential.CREDENTIAL && SuperMap.Credential.CREDENTIAL.getUrlParameters()) {
             var separator = url.indexOf("?") > -1 ? "&" : "?";
             url += separator + SuperMap.Credential.CREDENTIAL.getUrlParameters();

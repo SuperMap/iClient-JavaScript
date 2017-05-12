@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SuperMap MVT格式矢量瓦片</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, selectId, selectLayerName, vectorLayer,
+            url = "http://113.209.64.227:8090/iserver/services/map-China100/rest/maps/China";
+    map = L.map('map', {
+        center: [39.89, 116.43],
+        maxZoom: 15,
+        zoom: 1
+    });
+
+    vectorLayer = L.supermap.tiledVectorLayer(url, {
+        tileSize:512,
+        format: L.supermap.VectorTileFormat.MVT,
+        cacheEnabled: true,
+        returnAttributes: true
+    }).addTo(map);
+
+    vectorLayer.on('click', function (evt) {
+        var id = evt.layer.properties.id;
+        var layerName = evt.layer.layerName;
+        clearHighlight();
+        selectId = id;
+        selectLayerName = layerName;
+        var selectStyle = {
+            fillColor: '#800026',
+            fillOpacity: 0.5,
+            stroke: true,
+            fill: true,
+            color: 'red',
+            opacity: 1,
+            weight: 2
+        };
+        vectorLayer.setFeatureStyle(id, layerName, selectStyle);
+    });
+
+    function clearHighlight() {
+        if (selectId && selectLayerName) {
+            vectorLayer.resetFeatureStyle(selectId, selectLayerName);
+        }
+        selectId = null;
+        selectLayerName = null;
+    }
+
+</script>
+</body>
+</html>

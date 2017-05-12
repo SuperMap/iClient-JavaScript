@@ -82,13 +82,16 @@ function addGroup(client, title, description, div) {
     var ul = document.createElement('ul');
     ul.id = client + '_' + title;
     ul.className = 'deplist';
+    var container = document.createElement('div');
+    container.className = "contents";
     var h3 = document.createElement('h3');
     var span = document.createElement('span');
     h3.innerHTML = title;
     span.innerHTML = description;
     h3.appendChild(span);
-    div.appendChild(h3);
-    div.appendChild(ul);
+    container.appendChild(h3);
+    container.appendChild(ul);
+    div.appendChild(container);
 }
 
 function addModule(title, list, checked, name) {

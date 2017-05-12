@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>VectorGrid</title>
-    <meta charset="utf-8"/>
+    <meta charset="UTF-8">
+    <title>Mapbox 矢量瓦片</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
-<script>
-    var map = L.map('map');
+<script type="text/javascript">
+
+    var map = L.map('map', {
+        center: [39.89, 116.43],
+        maxZoom: 15,
+        zoom: 1
+    });
+
     var vectorTileStyling = {
         water: {
             fill: true,
@@ -72,44 +79,40 @@
             fillOpacity: 0.8,
             opacity: 0.4
         },
-        road: {	// mapbox & mapzen only
+        road: {
             weight: 1,
             fillColor: '#f2b648',
             color: '#f2b648',
             fillOpacity: 0.8,
             opacity: 0.4
         },
-        tunnel: {	// mapbox only
+        tunnel: {
             weight: 0.5,
             fillColor: '#f2b648',
             color: '#f2b648',
             fillOpacity: 0.8,
             opacity: 0.4,
-// 					dashArray: [4, 4]
         },
-        bridge: {	// mapbox only
+        bridge: {
             weight: 0.5,
             fillColor: '#f2b648',
             color: '#f2b648',
             fillOpacity: 0.8,
             opacity: 0.4,
-// 					dashArray: [4, 4]
         },
-        transportation: {	// openmaptiles only
+        transportation: {
             weight: 0.5,
             fillColor: '#f2b648',
             color: '#f2b648',
             fillOpacity: 0.8,
             opacity: 0.4,
-// 					dashArray: [4, 4]
         },
-        transit: {	// mapzen only
+        transit: {
             weight: 0.5,
             fillColor: '#f2b648',
             color: '#f2b648',
             fillOpacity: 0.8,
             opacity: 0.4,
-// 					dashArray: [4, 4]
         },
         building: {
             fill: true,
@@ -154,7 +157,7 @@
             fillOpacity: 0.8,
             opacity: 0.4
         },
-        earth: {	// mapzen only
+        earth: {
             fill: true,
             weight: 1,
             fillColor: '#c0c0c0',
@@ -162,7 +165,6 @@
             fillOpacity: 0.8,
             opacity: 0.4
         },
-        // Do not symbolize some stuff for mapbox
         country_label: [],
         marine_label: [],
         state_label: [],
@@ -171,7 +173,6 @@
         poi_label: [],
         road_label: [],
         housenum_label: [],
-        // Do not symbolize some stuff for openmaptiles
         country_name: [],
         marine_name: [],
         state_name: [],
@@ -179,21 +180,23 @@
         waterway_name: [],
         poi_name: [],
         road_name: [],
-        housenum_name: [],
+        housenum_name: []
     };
     vectorTileStyling.buildings = vectorTileStyling.building;
     vectorTileStyling.boundaries = vectorTileStyling.boundary;
     vectorTileStyling.places = vectorTileStyling.place;
     vectorTileStyling.pois = vectorTileStyling.poi;
     vectorTileStyling.roads = vectorTileStyling.road;
-    var mapboxUrl = "https://{s}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/{z}/{x}/{y}.vector.pbf?access_token={token}";
-    var mapboxVectorTileOptions = {
-        rendererFactory: L.canvas.tile,
+
+    var vectorLayer = L.supermap.tiledVectorLayer("mapbox", {
+        noWrap: false,
+        format: L.supermap.VectorTileFormat.PBF,
         vectorTileLayerStyles: vectorTileStyling,
-        token: 'pk.eyJ1IjoiaXZhbnNhbmNoZXoiLCJhIjoiY2l6ZTJmd3FnMDA0dzMzbzFtaW10cXh2MSJ9.VsWCS9-EAX4_4W1K-nXnsA'
-    };
-    var mapboxPbfLayer = L.pbfTileVectorLayer(mapboxUrl, mapboxVectorTileOptions).addTo(map);
-    map.setView({lat: 47.040182144806664, lng: 9.667968750000002}, 0);
+        tileTemplate: "https://{s}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/{z}/{x}/{y}.vector.pbf?access_token={token}",
+        token: "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA"
+    }).addTo(map);
+
+
 </script>
 </body>
 </html>

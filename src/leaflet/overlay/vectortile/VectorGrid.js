@@ -1,9 +1,11 @@
 require('./SVGRenderer');
 require('./CanvasRenderer');
+require("./VectorTileFormat");
 require('./VectorTile');
 var L = require("leaflet");
 L.VectorGrid = L.GridLayer.extend({
     options: {
+        format: L.supermap.VectorTileFormat.JSON,
         renderer: L.svg.renderer,
         vectorTileLayerStyles: {},
         interactive: true
@@ -15,6 +17,7 @@ L.VectorGrid = L.GridLayer.extend({
         this._vectorTiles = {};
         //交互事件使用,键值为id_layerName
         this._overriddenStyles = {};
+        this.vectorTileLayerStyles = this.options.vectorTileLayerStyles;
         this.on('tileunload', function (e) {
             var key = this._tileCoordsToKey(e.coords),
                 tile = this._vectorTiles[key];
@@ -39,8 +42,9 @@ L.VectorGrid = L.GridLayer.extend({
 
         L.supermap.vectorTile({
             layer: this,
+            format: me.options.format,
             coords: coords,
-            renderer: renderer,
+            renderer: renderer
         }, done).renderTile();
 
         return renderer.getContainer();

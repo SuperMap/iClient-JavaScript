@@ -389,6 +389,11 @@ var exampleConfig = {
                         name: "MapBox 矢量瓦片",
                         thumbnail: "l_mapboxVectorTile.png",
                         fileName: "mapboxVectorTile"
+                    }, {
+                        name: "默认风格(MVT)",
+                        thumbnail: "l_tileVectorLayer_normal.png",
+                        fileName: "vectorTileLayerMVT"
+
                     }
                 ]
             }
@@ -468,7 +473,7 @@ var sideBarIconConfig = {
 };
 
 /**
- *key值：为exampleConfig配置的key值    
+ *key值：为exampleConfig配置的key值
  *value值：fontawesome字体icon名
  *与sideBarIconConfig的区别：sideBarIconConfig包括侧边栏所有层级目录的图标，exampleIconConfig仅包括一级标题的图标
  */

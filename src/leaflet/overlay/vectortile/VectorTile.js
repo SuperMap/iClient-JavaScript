@@ -1,17 +1,20 @@
 require('../../core/Base');
 require('./VectorFeatureType');
+require("./VectorTileFormat");
 require('./TextSymbolizer');
 require('./PointSymbolizer');
 require('./LineSymbolizer');
 require('./RegionSymbolizer');
+require('./VectorTileJSON');
+require('./VectorTilePBF');
 var L = require("leaflet");
-var SuperMap = require('../../../common/SuperMap');
-var TileFeatureProcessor = require('./TileFeatureProcessor');
+
 var VectorTile = L.Class.extend({
 
     initialize: function (options, done) {
         this.layer = options.layer;
         this.tileSize = options.layer.getTileSize();
+        this.format = options.format;
         this.coords = options.coords;
         this.renderer = options.renderer;
         this.done = done;
@@ -20,17 +23,18 @@ var VectorTile = L.Class.extend({
     renderTile: function () {
         var me = this, layer = me.layer, coords = me.coords;
         var tileFeatureUrl = layer._getTileUrl(coords);
-        SuperMap.Request.get(tileFeatureUrl, null, {
-            timeout: 10000,
-        }).then(function (response) {
-            return response.json()
-        }).then(function (json) {
-            if (!json) {
-                return null;
-            }
-            var tileFeature = TileFeatureProcessor.processTileFeature(json.recordsets);
-            me.render(tileFeature, coords);
 
+        var format = [L.supermap.VectorTileFormat.MVT, L.supermap.VectorTileFormat.PBF];
+
+        var tileFeaturePromise;
+        if (format.indexOf(me.format.toUpperCase()) > -1) {
+            tileFeaturePromise = L.supermap.vectorTilePBF(tileFeatureUrl);
+        } else {
+            tileFeaturePromise = L.supermap.vectorTileJSON(tileFeatureUrl)
+        }
+
+        tileFeaturePromise.getTile().then(function (tileFeature) {
+            me.render(tileFeature, coords);
         }).catch(function (ex) {
             console.error('error', ex)
         });
@@ -70,7 +74,7 @@ var VectorTile = L.Class.extend({
                     || me._defaultStyle(type);
 
                 //根据id和layerName识别唯一要素
-                var id = feat.properties.id,
+                var id = feat.id,
                     styleKey = tileLayer._getFeatureKey(id, layerName),
                     styleOverride = tileLayer._overriddenStyles[styleKey];
 
@@ -176,9 +180,10 @@ var VectorTile = L.Class.extend({
             default:
                 break;
         }
-    }
+    },
 
 });
+
 L.supermap.vectorTile = function (options, done) {
     return new VectorTile(options, done);
 };
