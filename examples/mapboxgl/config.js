@@ -17,7 +17,23 @@ var exampleConfig = {
             }
 
         }
-    }
+    },
+    "viz": {
+        name: "可视化",
+        content: {
+
+            "VectorTileLayer": {
+                name: "矢量瓦片",
+                content: [
+                    {
+                        name: "MVT",
+                        thumbnail: "mvtVectorTile.png",
+                        fileName: "mvtVectorTile"
+                    }
+                ]
+            }
+        }
+    },
 };
 /**
  *key值：为exampleConfig配置的key值或者fileName值
@@ -26,7 +42,8 @@ var exampleConfig = {
  *不分层
  */
 var sideBarIconConfig = {
-    "iServer": "fa-server"
+    "iServer": "fa-server",
+    "viz": "fa-map",
 };
 
 /**
@@ -35,5 +52,6 @@ var sideBarIconConfig = {
  *与sideBarIconConfig的区别：sideBarIconConfig包括侧边栏所有层级目录的图标，exampleIconConfig仅包括一级标题的图标
  */
 var exampleIconConfig = {
-    "iServer": "fa-server"
+    "iServer": "fa-server",
+    "viz": "fa-map",
 };
