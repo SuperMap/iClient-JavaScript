@@ -1,5 +1,52 @@
 require('../../core/Base');
 var ol = require('openlayers');
+
+var pointMap = {
+    "point-file": "pointFile",
+    "point-fill": "fillStyle",
+    "point-radius": "pointRadius",
+    "point-halo-radius": "pointHaloRadius",
+    "point-halo-color": "pointHaloColor",
+    "point-dx": "offsetX",
+    "point-dy": "offsetY",
+    "point-opacity": "globalAlpha",
+    "point-comp-op": "globalCompositeOperation"
+};
+
+var lineMap = {
+    "line-color": "strokeStyle",
+    "line-width": "lineWidth",
+    "line-cap": "lineCap",
+    "line-join": "lineJoin",
+    "line-miterlimit": "miterLimit",
+    "line-dash-offset": "lineDashOffset",
+    /*expand*/
+    "line-opacity": "strokeOpacity",
+    "line-dasharray": "lineDasharray",
+    "line-offset": "offset",
+    "line-comp-op": "globalCompositeOperation"
+};
+
+var polygonMap = {
+    /*包括LINE的部分，用以设置面的外围边界*/
+    "line-color": "strokeStyle",
+    "line-width": "lineWidth",
+    "line-cap": "lineCap",
+    "line-join": "lineJoin",
+    "line-miterlimit": "miterLimit",
+    "line-dash-offset": "lineDashOffset",
+    /*expand*/
+    "line-opacity": "strokeOpacity",
+    "line-dasharray": "lineDasharray",
+
+    /*以下为面的特性*/
+    "polygon-fill": "fillStyle",
+    "polygon-dx": "offsetX",
+    "polygon-dy": "offsetY",
+    "polygon-opacity": "fillOpacity",
+    "polygon-comp-op": "globalCompositeOperation"
+};
+
 ol.supermap.StyleMap = {
     /**
      * CartoCSS中的style属性名与Canvas的style属性名的对应表
@@ -26,49 +73,14 @@ ol.supermap.StyleMap = {
             "text-comp-op": "globalCompositeOperation"
         },
         /*expand*/
-        "POINT": {
-            "point-file": "pointFile",
-            "point-fill": "fillStyle",
-            "point-radius": "pointRadius",
-            "point-halo-radius": "pointHaloRadius",
-            "point-halo-color": "pointHaloColor",
-            "point-dx": "offsetX",
-            "point-dy": "offsetY",
-            "point-opacity": "globalAlpha",
-            "point-comp-op": "globalCompositeOperation"
-        },
-        "LINE": {
-            "line-color": "strokeStyle",
-            "line-width": "lineWidth",
-            "line-cap": "lineCap",
-            "line-join": "lineJoin",
-            "line-miterlimit": "miterLimit",
-            "line-dash-offset": "lineDashOffset",
-            /*expand*/
-            "line-opacity": "strokeOpacity",
-            "line-dasharray": "lineDasharray",
-            "line-offset": "offset",
-            "line-comp-op": "globalCompositeOperation"
-        },
-        "REGION": {
-            /*包括LINE的部分，用以设置面的外围边界*/
-            "line-color": "strokeStyle",
-            "line-width": "lineWidth",
-            "line-cap": "lineCap",
-            "line-join": "lineJoin",
-            "line-miterlimit": "miterLimit",
-            "line-dash-offset": "lineDashOffset",
-            /*expand*/
-            "line-opacity": "strokeOpacity",
-            "line-dasharray": "lineDasharray",
-
-            /*以下为面的特性*/
-            "polygon-fill": "fillStyle",
-            "polygon-dx": "offsetX",
-            "polygon-dy": "offsetY",
-            "polygon-opacity": "fillOpacity",
-            "polygon-comp-op": "globalCompositeOperation"
-        }
+        "POINT": pointMap,
+        "MULTIPOINT": pointMap,
+        "LINE": lineMap,
+        "LINESTRING": lineMap,
+        "MULTILINESTRING": lineMap,
+        "REGION": polygonMap,
+        "POLYGON": polygonMap,
+        "MULTIPOLYGON": polygonMap
     },
     /**
      * 服务端传过来的style属性名与Canvas的style属性名的对应表

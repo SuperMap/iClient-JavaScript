@@ -5,30 +5,31 @@ var ol = require('openlayers');
 var SuperMap = require('../../common/SuperMap');
 ol.supermap.StyleUtils = {
     getValidStyleFromLayerInfo: function (layerInfo, feature, url) {
-        var type = feature.getProperties().type,
+        var type = feature.getGeometry().getType().toUpperCase(),
             style = this.getDefaultStyle(type),
             shader = layerInfo.layerStyle;
-        if (feature.getProperties().type === 'POINT' && layerInfo.type === 'LABEL' && feature.getProperties().attributes !== null) {
-            type = 'TEXT';
-            style = this.getDefaultStyle(type);
-        }
-        if (type === "POINT" && shader) {
-            var symbolParameters = {
-                "transparent": true,
-                "resourceType": "SYMBOLMARKER",
-                "picWidth": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]),
-                "picHeight": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]),
-                "style": JSON.stringify(shader)
-            };
-            var imageUrl = SuperMap.Util.urlAppend(url + "/symbol.png", SuperMap.Util.getParameterString(symbolParameters));
-            style.pointFile = imageUrl;
-            return new ol.style.Style({
-                image: new ol.style.Icon({
-                    src: style.pointFile
-                })
-            });
-        } else if (type === "TEXT") {
-            shader = feature.getProperties().textStyle || shader;
+        if ((type === "POINT" || type === 'MULTIPOINT') && !feature.getProperties().textStyle && layerInfo.type !== 'LABEL') {
+            if (shader) {
+                var symbolParameters = {
+                    "transparent": true,
+                    "resourceType": "SYMBOLMARKER",
+                    "picWidth": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]),
+                    "picHeight": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]),
+                    "style": JSON.stringify(shader)
+                };
+                var imageUrl = SuperMap.Util.urlAppend(url + "/symbol.png", SuperMap.Util.getParameterString(symbolParameters));
+                style.pointFile = imageUrl;
+                return new ol.style.Style({
+                    image: new ol.style.Icon({
+                        src: style.pointFile
+                    })
+                });
+            }
+            return this.toOLPointStyle(style);
+        } else if ((type === "POINT" || type === 'MULTIPOINT') && (feature.getProperties().textStyle || layerInfo.type === 'LABEL')) {
+            if (feature.getProperties().textStyle) {
+                shader = feature.getProperties().textStyle;
+            }
             if (shader) {
                 var fontStr = "";
                 //设置文本是否倾斜
@@ -80,30 +81,16 @@ ol.supermap.StyleUtils = {
                 style.rotation = shader.rotation;
             }
             var text;
-            if (feature.getProperties().texts) {
+            if (feature.getProperties().textStyle && feature.getProperties().texts) {
                 text = feature.getProperties().texts[0];
             }
             if (layerInfo.type === 'LABEL' && feature.getProperties().attributes !== null) {
-                text = feature.getProperties().attributes[layerInfo.textField];
+                text = feature.getProperties().attributes ? feature.getProperties().attributes[layerInfo.textField] : feature.getProperties()[layerInfo.textField];
             }
-            return new ol.style.Style({
-                text: new ol.style.Text({
-                    font: style.fontStyle + ' ' + style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily,
-                    text: text,
-                    textAlign: style.textAlign,
-                    textBaseline: style.textBaseline,
-                    fill: new ol.style.Fill({
-                        color: style.foreColor
-                    }),
-                    stroke: style.haloRadius > 0 ? new ol.style.Stroke({
-                        color: style.backColor,
-                        width: style.haloRadius
-                    }) : null,
-                    offsetX: style.offsetX,
-                    offsetY: style.offsetY,
-                    rotation: style.rotation
-                })
-            });
+            if (!text) {
+                return this.toOLPointStyle(style);
+            }
+            return this.toOLTextStyle(style, text);
         } else if (shader) {
             //目前只实现桌面系统默认的几种symbolID，非系统默认的面用颜色填充替代，线则用实线来替代
             var fillSymbolID = shader["fillSymbolID"] > 7 ? 0 : shader["fillSymbolID"];
@@ -112,8 +99,7 @@ ol.supermap.StyleUtils = {
                 var obj = ol.supermap.StyleMap.ServerStyleMap[attr];
                 var canvasStyle = obj.canvasStyle;
                 if (canvasStyle && canvasStyle != "") {
-                    var type = obj.type;
-                    switch (type) {
+                    switch (obj.type) {
                         case "number":
                             var value = shader[attr];
                             if (obj.unit) {
@@ -198,41 +184,16 @@ ol.supermap.StyleUtils = {
                 }
             }
         }
-        if (feature.getProperties().type === 'LINE') {
-            return new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: style.strokeStyle,
-                    width: style.lineWidth,
-                    lineCap: style.lineCap,
-                    lineDash: style.lineDasharray,
-                    lineDashOffset: style.lineDashOffset,
-                    lineJoin: style.lineJoin,
-                    miterLimit: style.miterLimit
-                })
-            });
+        if (type === 'LINESTRING' || type === 'MULTILINESTRING') {
+            return this.toOLLineStyle(style);
         }
-        if (feature.getProperties().type === 'REGION') {
-            var fill = new ol.style.Fill({
-                color: style.fillStyle
-            });
-            var stroke = new ol.style.Stroke({
-                color: style.strokeStyle,
-                width: style.lineWidth,
-                lineCap: style.lineCap,
-                lineDash: style.lineDasharray,
-                lineDashOffset: style.lineDashOffset,
-                lineJoin: style.lineJoin,
-                miterLimit: style.miterLimit
-            });
-            return new ol.style.Style({
-                fill: fill,
-                stroke: stroke
-            });
+        if (type === 'POLYGON' || type === 'MULTIPOLYGON') {
+            return this.toOLPolygonStyle(style);
         }
     },
 
     getStyleFromCarto: function (zoom, scale, shader, feature, fromServer, url) {
-        var type = feature.getProperties().type,
+        var type = feature.getGeometry().getType().toUpperCase(),
             attributes = {},
             style = this.getDefaultStyle(type);
         attributes.FEATUREID = feature.getProperties().id;
@@ -270,62 +231,44 @@ ol.supermap.StyleUtils = {
             }
         }
         if (feature.getProperties().type === 'TEXT') {
+            return this.toOLTextStyle(style, feature.getProperties().texts[0])
+        }
+        if (type === 'POINT' || type === 'MULTIPOINT') {
+            return this.toOLPointStyle(style);
+        }
+        if (type === 'LINESTRING' || type === 'MULTILINESTRING') {
+            return this.toOLLineStyle(style);
+        }
+        if (type === 'POLYGON' || type === 'MULTIPOLYGON') {
+            return this.toOLPolygonStyle(style);
+        }
+    },
+
+    toOLPointStyle: function (style) {
+        if (style.pointFile !== '') {
             return new ol.style.Style({
-                text: new ol.style.Text({
-                    font: style.fontStyle + ' ' + style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily,
-                    text: feature.getProperties().texts[0],
-                    textAlign: style.textAlign,
-                    textBaseline: style.textBaseline,
-                    fill: new ol.style.Fill({
-                        color: style.foreColor
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: style.backColor
-                    }),
-                    offsetX: style.offsetX,
-                    offsetY: style.offsetY
+                image: new ol.style.Icon({
+                    src: style.pointFile
+                })
+            });
+        }
+        return new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: style.pointRadius,
+                fill: new ol.style.Fill({
+                    color: style.fillStyle
+                }),
+                stroke: new ol.style.Stroke({
+                    color: style.pointHaloColor,
+                    width: style.pointHaloRadius
                 })
             })
-        }
-        if (feature.getProperties().type === 'POINT') {
-            if (style.pointFile !== '') {
-                return new ol.style.Style({
-                    image: new ol.style.Icon({
-                        src: style.pointFile
-                    })
-                });
-            }
-            return new ol.style.Style({
-                image: new ol.style.Circle({
-                    radius: style.pointRadius,
-                    fill: new ol.style.Fill({
-                        color: style.fillStyle
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: style.pointHaloColor,
-                        width: style.pointHaloRadius
-                    })
-                })
-            });
-        }
-        if (feature.getProperties().type === 'LINE') {
-            return new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: style.strokeStyle,
-                    width: style.lineWidth,
-                    lineCap: style.lineCap,
-                    lineDash: style.lineDasharray,
-                    lineDashOffset: style.lineDashOffset,
-                    lineJoin: style.lineJoin,
-                    miterLimit: style.miterLimit
-                })
-            });
-        }
-        if (feature.getProperties().type === 'REGION') {
-            var fill = new ol.style.Fill({
-                color: style.fillStyle
-            });
-            var stroke = new ol.style.Stroke({
+        });
+    },
+
+    toOLLineStyle: function (style) {
+        return new ol.style.Style({
+            stroke: new ol.style.Stroke({
                 color: style.strokeStyle,
                 width: style.lineWidth,
                 lineCap: style.lineCap,
@@ -333,12 +276,46 @@ ol.supermap.StyleUtils = {
                 lineDashOffset: style.lineDashOffset,
                 lineJoin: style.lineJoin,
                 miterLimit: style.miterLimit
-            });
-            return new ol.style.Style({
-                fill: fill,
-                stroke: stroke
-            });
-        }
+            })
+        });
+    },
+
+    toOLPolygonStyle: function (style) {
+        var fill = new ol.style.Fill({
+            color: style.fillStyle
+        });
+        var stroke = new ol.style.Stroke({
+            color: style.strokeStyle,
+            width: style.lineWidth,
+            lineCap: style.lineCap,
+            lineDash: style.lineDasharray,
+            lineDashOffset: style.lineDashOffset,
+            lineJoin: style.lineJoin,
+            miterLimit: style.miterLimit
+        });
+        return new ol.style.Style({
+            fill: fill,
+            stroke: stroke
+        });
+    },
+
+    toOLTextStyle: function (style, text) {
+        return new ol.style.Style({
+            text: new ol.style.Text({
+                font: style.fontStyle + ' ' + style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily,
+                text: text,
+                textAlign: style.textAlign,
+                textBaseline: style.textBaseline,
+                fill: new ol.style.Fill({
+                    color: style.foreColor
+                }),
+                stroke: new ol.style.Stroke({
+                    color: style.backColor
+                }),
+                offsetX: style.offsetX,
+                offsetY: style.offsetY
+            })
+        })
     },
     dashStyle: function (style, widthFactor) {
         if (!style)return [];
@@ -370,7 +347,7 @@ ol.supermap.StyleUtils = {
         }
         //兼容iportal示例的问题
         if (icon.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
-            icon=icon.replace("http://support.supermap.com.cn:8092/static/portal","http://support.supermap.com.cn:8092/apps/viewer/static");
+            icon = icon.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
         }
         return new ol.style.Style({
             image: new ol.style.Icon({
@@ -392,7 +369,7 @@ ol.supermap.StyleUtils = {
                 }
                 //兼容iportal示例的问题
                 if (pointStyle.externalGraphic.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
-                    pointStyle.externalGraphic=pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal","http://support.supermap.com.cn:8092/apps/viewer/static");
+                    pointStyle.externalGraphic = pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
                 }
                 return new ol.style.Style({
                     image: new ol.style.Icon({

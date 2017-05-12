@@ -173,7 +173,7 @@ var deps = {
                 ]
             },
             "ProcessingJobs": {
-                "name": "分布式空间处理作业服务",
+                "name": "分布式空间处理服务",
                 "src": [
                     "./src/leaflet/services/ProcessingJobsService.js"
                 ]
@@ -285,7 +285,7 @@ var deps = {
                 ]
             },
             "ProcessingJobs": {
-                "name": "分布式空间处理作业服务",
+                "name": "分布式空间处理服务",
                 "src": [
                     "./src/openlayers/services/ProcessingJobsService.js"
                 ]

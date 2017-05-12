@@ -208,7 +208,7 @@ var exampleConfig = {
                 }]
             },
             "processingJobs": {
-                name: "分布式空间处理作业",
+                name: "分布式空间处理",
                 content: [{
                     name: "密度分析作业",
                     thumbnail: "kernelDensityJobService.png",

@@ -6659,30 +6659,31 @@ var ol = __webpack_require__(2);
 var SuperMap = __webpack_require__(0);
 ol.supermap.StyleUtils = {
     getValidStyleFromLayerInfo: function (layerInfo, feature, url) {
-        var type = feature.getProperties().type,
+        var type = feature.getGeometry().getType().toUpperCase(),
             style = this.getDefaultStyle(type),
             shader = layerInfo.layerStyle;
-        if (feature.getProperties().type === 'POINT' && layerInfo.type === 'LABEL' && feature.getProperties().attributes !== null) {
-            type = 'TEXT';
-            style = this.getDefaultStyle(type);
-        }
-        if (type === "POINT" && shader) {
-            var symbolParameters = {
-                "transparent": true,
-                "resourceType": "SYMBOLMARKER",
-                "picWidth": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]),
-                "picHeight": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]),
-                "style": JSON.stringify(shader)
-            };
-            var imageUrl = SuperMap.Util.urlAppend(url + "/symbol.png", SuperMap.Util.getParameterString(symbolParameters));
-            style.pointFile = imageUrl;
-            return new ol.style.Style({
-                image: new ol.style.Icon({
-                    src: style.pointFile
-                })
-            });
-        } else if (type === "TEXT") {
-            shader = feature.getProperties().textStyle || shader;
+        if ((type === "POINT" || type === 'MULTIPOINT') && !feature.getProperties().textStyle && layerInfo.type !== 'LABEL') {
+            if (shader) {
+                var symbolParameters = {
+                    "transparent": true,
+                    "resourceType": "SYMBOLMARKER",
+                    "picWidth": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]),
+                    "picHeight": Math.ceil(shader.markerSize * SuperMap.DOTS_PER_INCH * SuperMap.INCHES_PER_UNIT["mm"]),
+                    "style": JSON.stringify(shader)
+                };
+                var imageUrl = SuperMap.Util.urlAppend(url + "/symbol.png", SuperMap.Util.getParameterString(symbolParameters));
+                style.pointFile = imageUrl;
+                return new ol.style.Style({
+                    image: new ol.style.Icon({
+                        src: style.pointFile
+                    })
+                });
+            }
+            return this.toOLPointStyle(style);
+        } else if ((type === "POINT" || type === 'MULTIPOINT') && (feature.getProperties().textStyle || layerInfo.type === 'LABEL')) {
+            if (feature.getProperties().textStyle) {
+                shader = feature.getProperties().textStyle;
+            }
             if (shader) {
                 var fontStr = "";
                 //设置文本是否倾斜
@@ -6734,30 +6735,16 @@ ol.supermap.StyleUtils = {
                 style.rotation = shader.rotation;
             }
             var text;
-            if (feature.getProperties().texts) {
+            if (feature.getProperties().textStyle && feature.getProperties().texts) {
                 text = feature.getProperties().texts[0];
             }
             if (layerInfo.type === 'LABEL' && feature.getProperties().attributes !== null) {
-                text = feature.getProperties().attributes[layerInfo.textField];
+                text = feature.getProperties().attributes ? feature.getProperties().attributes[layerInfo.textField] : feature.getProperties()[layerInfo.textField];
             }
-            return new ol.style.Style({
-                text: new ol.style.Text({
-                    font: style.fontStyle + ' ' + style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily,
-                    text: text,
-                    textAlign: style.textAlign,
-                    textBaseline: style.textBaseline,
-                    fill: new ol.style.Fill({
-                        color: style.foreColor
-                    }),
-                    stroke: style.haloRadius > 0 ? new ol.style.Stroke({
-                        color: style.backColor,
-                        width: style.haloRadius
-                    }) : null,
-                    offsetX: style.offsetX,
-                    offsetY: style.offsetY,
-                    rotation: style.rotation
-                })
-            });
+            if (!text) {
+                return this.toOLPointStyle(style);
+            }
+            return this.toOLTextStyle(style, text);
         } else if (shader) {
             //目前只实现桌面系统默认的几种symbolID，非系统默认的面用颜色填充替代，线则用实线来替代
             var fillSymbolID = shader["fillSymbolID"] > 7 ? 0 : shader["fillSymbolID"];
@@ -6766,8 +6753,7 @@ ol.supermap.StyleUtils = {
                 var obj = ol.supermap.StyleMap.ServerStyleMap[attr];
                 var canvasStyle = obj.canvasStyle;
                 if (canvasStyle && canvasStyle != "") {
-                    var type = obj.type;
-                    switch (type) {
+                    switch (obj.type) {
                         case "number":
                             var value = shader[attr];
                             if (obj.unit) {
@@ -6852,41 +6838,16 @@ ol.supermap.StyleUtils = {
                 }
             }
         }
-        if (feature.getProperties().type === 'LINE') {
-            return new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: style.strokeStyle,
-                    width: style.lineWidth,
-                    lineCap: style.lineCap,
-                    lineDash: style.lineDasharray,
-                    lineDashOffset: style.lineDashOffset,
-                    lineJoin: style.lineJoin,
-                    miterLimit: style.miterLimit
-                })
-            });
+        if (type === 'LINESTRING' || type === 'MULTILINESTRING') {
+            return this.toOLLineStyle(style);
         }
-        if (feature.getProperties().type === 'REGION') {
-            var fill = new ol.style.Fill({
-                color: style.fillStyle
-            });
-            var stroke = new ol.style.Stroke({
-                color: style.strokeStyle,
-                width: style.lineWidth,
-                lineCap: style.lineCap,
-                lineDash: style.lineDasharray,
-                lineDashOffset: style.lineDashOffset,
-                lineJoin: style.lineJoin,
-                miterLimit: style.miterLimit
-            });
-            return new ol.style.Style({
-                fill: fill,
-                stroke: stroke
-            });
+        if (type === 'POLYGON' || type === 'MULTIPOLYGON') {
+            return this.toOLPolygonStyle(style);
         }
     },
 
     getStyleFromCarto: function (zoom, scale, shader, feature, fromServer, url) {
-        var type = feature.getProperties().type,
+        var type = feature.getGeometry().getType().toUpperCase(),
             attributes = {},
             style = this.getDefaultStyle(type);
         attributes.FEATUREID = feature.getProperties().id;
@@ -6924,62 +6885,44 @@ ol.supermap.StyleUtils = {
             }
         }
         if (feature.getProperties().type === 'TEXT') {
+            return this.toOLTextStyle(style, feature.getProperties().texts[0])
+        }
+        if (type === 'POINT' || type === 'MULTIPOINT') {
+            return this.toOLPointStyle(style);
+        }
+        if (type === 'LINESTRING' || type === 'MULTILINESTRING') {
+            return this.toOLLineStyle(style);
+        }
+        if (type === 'POLYGON' || type === 'MULTIPOLYGON') {
+            return this.toOLPolygonStyle(style);
+        }
+    },
+
+    toOLPointStyle: function (style) {
+        if (style.pointFile !== '') {
             return new ol.style.Style({
-                text: new ol.style.Text({
-                    font: style.fontStyle + ' ' + style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily,
-                    text: feature.getProperties().texts[0],
-                    textAlign: style.textAlign,
-                    textBaseline: style.textBaseline,
-                    fill: new ol.style.Fill({
-                        color: style.foreColor
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: style.backColor
-                    }),
-                    offsetX: style.offsetX,
-                    offsetY: style.offsetY
+                image: new ol.style.Icon({
+                    src: style.pointFile
+                })
+            });
+        }
+        return new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: style.pointRadius,
+                fill: new ol.style.Fill({
+                    color: style.fillStyle
+                }),
+                stroke: new ol.style.Stroke({
+                    color: style.pointHaloColor,
+                    width: style.pointHaloRadius
                 })
             })
-        }
-        if (feature.getProperties().type === 'POINT') {
-            if (style.pointFile !== '') {
-                return new ol.style.Style({
-                    image: new ol.style.Icon({
-                        src: style.pointFile
-                    })
-                });
-            }
-            return new ol.style.Style({
-                image: new ol.style.Circle({
-                    radius: style.pointRadius,
-                    fill: new ol.style.Fill({
-                        color: style.fillStyle
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: style.pointHaloColor,
-                        width: style.pointHaloRadius
-                    })
-                })
-            });
-        }
-        if (feature.getProperties().type === 'LINE') {
-            return new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: style.strokeStyle,
-                    width: style.lineWidth,
-                    lineCap: style.lineCap,
-                    lineDash: style.lineDasharray,
-                    lineDashOffset: style.lineDashOffset,
-                    lineJoin: style.lineJoin,
-                    miterLimit: style.miterLimit
-                })
-            });
-        }
-        if (feature.getProperties().type === 'REGION') {
-            var fill = new ol.style.Fill({
-                color: style.fillStyle
-            });
-            var stroke = new ol.style.Stroke({
+        });
+    },
+
+    toOLLineStyle: function (style) {
+        return new ol.style.Style({
+            stroke: new ol.style.Stroke({
                 color: style.strokeStyle,
                 width: style.lineWidth,
                 lineCap: style.lineCap,
@@ -6987,12 +6930,46 @@ ol.supermap.StyleUtils = {
                 lineDashOffset: style.lineDashOffset,
                 lineJoin: style.lineJoin,
                 miterLimit: style.miterLimit
-            });
-            return new ol.style.Style({
-                fill: fill,
-                stroke: stroke
-            });
-        }
+            })
+        });
+    },
+
+    toOLPolygonStyle: function (style) {
+        var fill = new ol.style.Fill({
+            color: style.fillStyle
+        });
+        var stroke = new ol.style.Stroke({
+            color: style.strokeStyle,
+            width: style.lineWidth,
+            lineCap: style.lineCap,
+            lineDash: style.lineDasharray,
+            lineDashOffset: style.lineDashOffset,
+            lineJoin: style.lineJoin,
+            miterLimit: style.miterLimit
+        });
+        return new ol.style.Style({
+            fill: fill,
+            stroke: stroke
+        });
+    },
+
+    toOLTextStyle: function (style, text) {
+        return new ol.style.Style({
+            text: new ol.style.Text({
+                font: style.fontStyle + ' ' + style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily,
+                text: text,
+                textAlign: style.textAlign,
+                textBaseline: style.textBaseline,
+                fill: new ol.style.Fill({
+                    color: style.foreColor
+                }),
+                stroke: new ol.style.Stroke({
+                    color: style.backColor
+                }),
+                offsetX: style.offsetX,
+                offsetY: style.offsetY
+            })
+        })
     },
     dashStyle: function (style, widthFactor) {
         if (!style)return [];
@@ -7024,7 +7001,7 @@ ol.supermap.StyleUtils = {
         }
         //兼容iportal示例的问题
         if (icon.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
-            icon=icon.replace("http://support.supermap.com.cn:8092/static/portal","http://support.supermap.com.cn:8092/apps/viewer/static");
+            icon = icon.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
         }
         return new ol.style.Style({
             image: new ol.style.Icon({
@@ -7046,7 +7023,7 @@ ol.supermap.StyleUtils = {
                 }
                 //兼容iportal示例的问题
                 if (pointStyle.externalGraphic.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
-                    pointStyle.externalGraphic=pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal","http://support.supermap.com.cn:8092/apps/viewer/static");
+                    pointStyle.externalGraphic = pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
                 }
                 return new ol.style.Style({
                     image: new ol.style.Icon({
@@ -7137,6 +7114,65 @@ module.exports = ol.supermap.StyleUtils;
 
 __webpack_require__(7);
 var ol = __webpack_require__(2);
+
+var pointStyle = {
+    pointFile: "",
+
+    /*expand*/
+    pointRadius: 3,
+    pointHaloRadius: 1,
+    pointHaloColor: "#c33",
+    offsetX: 0,
+    offsetY: 0,
+    fillStyle: "#fc0",
+
+    globalAlpha: 1,
+    globalCompositeOperation: "source-over",
+    imageSmoothingEnabled: true
+};
+
+var lineStyle = {
+    strokeStyle: "rgba(0,0,0,0)",
+    lineWidth: 1,
+    lineCap: "butt",
+    lineJoin: "round",
+    miterLimit: 10,
+    lineDashOffset: 0,
+    /*expand*/
+    lineDasharray: [],
+    strokeOpacity: 1,
+    offset: 0,
+
+    globalAlpha: 1,
+    globalCompositeOperation: "source-over",
+    imageSmoothingEnabled: true
+};
+
+var polygonStyle = {
+    /*包含LINE的部分*/
+    strokeStyle: "rgba(0,0,0,0)",
+    lineWidth: 1,
+    lineCap: "butt",
+    lineJoin: "round",
+    miterLimit: 10,
+    lineDashOffset: 0,
+    /*expand*/
+    lineOpacity: 1,
+    fillOpacity: 1,
+    lineDasharray: [],
+
+    fillStyle: "rgba(0,0,0,0)",
+    polygonOpacity: 1,
+
+    /*expand*/
+    offsetX: 0,
+    offsetY: 0,
+
+    globalAlpha: 1,
+    globalCompositeOperation: "source-over",
+    imageSmoothingEnabled: true
+};
+
 ol.supermap.DeafultCanvasStyle = {
     "TEXT": {
         font: "10px sans-serif",
@@ -7157,62 +7193,14 @@ ol.supermap.DeafultCanvasStyle = {
         globalCompositeOperation: "source-over",
         imageSmoothingEnabled: true
     },
-    /*expand*/
-    "POINT": {
-        pointFile: "",
-
-        /*expand*/
-        pointRadius: 3,
-        pointHaloRadius: 1,
-        pointHaloColor: "#c33",
-        offsetX: 0,
-        offsetY: 0,
-        fillStyle: "#fc0",
-
-        globalAlpha: 1,
-        globalCompositeOperation: "source-over",
-        imageSmoothingEnabled: true
-    },
-    "LINE": {
-        strokeStyle: "rgba(0,0,0,0)",
-        lineWidth: 1,
-        lineCap: "butt",
-        lineJoin: "round",
-        miterLimit: 10,
-        lineDashOffset: 0,
-        /*expand*/
-        lineDasharray: [],
-        strokeOpacity: 1,
-        offset: 0,
-
-        globalAlpha: 1,
-        globalCompositeOperation: "source-over",
-        imageSmoothingEnabled: true
-    },
-    "REGION": {
-        /*包含LINE的部分*/
-        strokeStyle: "rgba(0,0,0,0)",
-        lineWidth: 1,
-        lineCap: "butt",
-        lineJoin: "round",
-        miterLimit: 10,
-        lineDashOffset: 0,
-        /*expand*/
-        lineOpacity: 1,
-        fillOpacity: 1,
-        lineDasharray: [],
-
-        fillStyle: "rgba(0,0,0,0)",
-        polygonOpacity: 1,
-
-        /*expand*/
-        offsetX: 0,
-        offsetY: 0,
-
-        globalAlpha: 1,
-        globalCompositeOperation: "source-over",
-        imageSmoothingEnabled: true
-    },
+    "POINT": pointStyle,
+    "MULTIPOINT": pointStyle,
+    "LINE": lineStyle,
+    "LINESTRING": lineStyle,
+    "MULTILINESTRING": lineStyle,
+    "REGION": polygonStyle,
+    "POLYGON": polygonStyle,
+    "MULTIPOLYGON": polygonStyle,
     "SHADOW": {
         shadowBlur: 0,
         shadowColor: "rgba(0,0,0,0)",
@@ -7234,6 +7222,53 @@ module.exports = ol.supermap.DeafultCanvasStyle;
 
 __webpack_require__(7);
 var ol = __webpack_require__(2);
+
+var pointMap = {
+    "point-file": "pointFile",
+    "point-fill": "fillStyle",
+    "point-radius": "pointRadius",
+    "point-halo-radius": "pointHaloRadius",
+    "point-halo-color": "pointHaloColor",
+    "point-dx": "offsetX",
+    "point-dy": "offsetY",
+    "point-opacity": "globalAlpha",
+    "point-comp-op": "globalCompositeOperation"
+};
+
+var lineMap = {
+    "line-color": "strokeStyle",
+    "line-width": "lineWidth",
+    "line-cap": "lineCap",
+    "line-join": "lineJoin",
+    "line-miterlimit": "miterLimit",
+    "line-dash-offset": "lineDashOffset",
+    /*expand*/
+    "line-opacity": "strokeOpacity",
+    "line-dasharray": "lineDasharray",
+    "line-offset": "offset",
+    "line-comp-op": "globalCompositeOperation"
+};
+
+var polygonMap = {
+    /*包括LINE的部分，用以设置面的外围边界*/
+    "line-color": "strokeStyle",
+    "line-width": "lineWidth",
+    "line-cap": "lineCap",
+    "line-join": "lineJoin",
+    "line-miterlimit": "miterLimit",
+    "line-dash-offset": "lineDashOffset",
+    /*expand*/
+    "line-opacity": "strokeOpacity",
+    "line-dasharray": "lineDasharray",
+
+    /*以下为面的特性*/
+    "polygon-fill": "fillStyle",
+    "polygon-dx": "offsetX",
+    "polygon-dy": "offsetY",
+    "polygon-opacity": "fillOpacity",
+    "polygon-comp-op": "globalCompositeOperation"
+};
+
 ol.supermap.StyleMap = {
     /**
      * CartoCSS中的style属性名与Canvas的style属性名的对应表
@@ -7260,49 +7295,14 @@ ol.supermap.StyleMap = {
             "text-comp-op": "globalCompositeOperation"
         },
         /*expand*/
-        "POINT": {
-            "point-file": "pointFile",
-            "point-fill": "fillStyle",
-            "point-radius": "pointRadius",
-            "point-halo-radius": "pointHaloRadius",
-            "point-halo-color": "pointHaloColor",
-            "point-dx": "offsetX",
-            "point-dy": "offsetY",
-            "point-opacity": "globalAlpha",
-            "point-comp-op": "globalCompositeOperation"
-        },
-        "LINE": {
-            "line-color": "strokeStyle",
-            "line-width": "lineWidth",
-            "line-cap": "lineCap",
-            "line-join": "lineJoin",
-            "line-miterlimit": "miterLimit",
-            "line-dash-offset": "lineDashOffset",
-            /*expand*/
-            "line-opacity": "strokeOpacity",
-            "line-dasharray": "lineDasharray",
-            "line-offset": "offset",
-            "line-comp-op": "globalCompositeOperation"
-        },
-        "REGION": {
-            /*包括LINE的部分，用以设置面的外围边界*/
-            "line-color": "strokeStyle",
-            "line-width": "lineWidth",
-            "line-cap": "lineCap",
-            "line-join": "lineJoin",
-            "line-miterlimit": "miterLimit",
-            "line-dash-offset": "lineDashOffset",
-            /*expand*/
-            "line-opacity": "strokeOpacity",
-            "line-dasharray": "lineDasharray",
-
-            /*以下为面的特性*/
-            "polygon-fill": "fillStyle",
-            "polygon-dx": "offsetX",
-            "polygon-dy": "offsetY",
-            "polygon-opacity": "fillOpacity",
-            "polygon-comp-op": "globalCompositeOperation"
-        }
+        "POINT": pointMap,
+        "MULTIPOINT": pointMap,
+        "LINE": lineMap,
+        "LINESTRING": lineMap,
+        "MULTILINESTRING": lineMap,
+        "REGION": polygonMap,
+        "POLYGON": polygonMap,
+        "MULTIPOLYGON": polygonMap
     },
     /**
      * 服务端传过来的style属性名与Canvas的style属性名的对应表
@@ -8225,6 +8225,9 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
             })]
     }
     var layerUrl = options.url + '/tileFeature.json?';
+    if (options.format instanceof ol.format.MVT) {
+        layerUrl = options.url + '/tileFeature.mvt?';
+    }
     //为url添加安全认证信息片段
     if (SuperMap.Credential && SuperMap.Credential.CREDENTIAL) {
         layerUrl += "&" + SuperMap.Credential.CREDENTIAL.getUrlParameters();
@@ -8242,7 +8245,6 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
     }
     if (options.layerNames !== undefined) {
         layerUrl += "&layerNames=" + options.layerNames;
-        // layerUrl += "&layerNames=%5B'China_Boundary_A%40China%231'%5D";
     }
     if (options.expands !== undefined) {
         layerUrl += "&expands=" + options.expands;
@@ -8280,34 +8282,42 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
     }
 
     function tileLoadFunction(tile, tileUrl) {
+        if (tile.getFormat() instanceof ol.format.MVT) {
+            ol.VectorTile.defaultLoadFunction(tile, tileUrl);
+            return;
+        }
         tile.setLoader(function () {
             SuperMap.Request.get(tileUrl).then(function (response) {
-                return response.json();
+                if (tile.getFormat() instanceof ol.format.GeoJSON) {
+                    return response.json();
+                }
             }).then(function (tileFeatureJson) {
-                tileFeatureJson.recordsets.map(function (recordset) {
-                    recordset.features.map(function (feature) {
-                        var points = [];
-                        var startIndex = 0;
-                        for (var i = 0; i < feature.geometry.parts.length; i++) {
-                            var partPointsLength = feature.geometry.parts[i] * 2;
-                            for (var j = 0, index = startIndex; j < partPointsLength; j += 2, index += 2) {
-                                points.push(new SuperMap.Geometry.Point(feature.geometry.points[index], feature.geometry.points[index + 1]));
-                            }
-                            startIndex += partPointsLength;
-                        }
-                        feature.geometry.points = points;
-                    })
-                });
                 var features = [];
-                tileFeatureJson.recordsets.map(function (recordset) {
-                    recordset.features.map(function (feature) {
-                        feature.layerName = recordset.layerName;
-                        feature.type = feature.geometry.type;
-                        features.push(feature);
-                    })
-                });
-
-                tile.setFeatures(tile.getFormat().readFeatures(ol.supermap.Util.toGeoJSON(features)));
+                if (tile.getFormat() instanceof ol.format.GeoJSON) {
+                    tileFeatureJson.recordsets.map(function (recordset) {
+                        recordset.features.map(function (feature) {
+                            var points = [];
+                            var startIndex = 0;
+                            for (var i = 0; i < feature.geometry.parts.length; i++) {
+                                var partPointsLength = feature.geometry.parts[i] * 2;
+                                for (var j = 0, index = startIndex; j < partPointsLength; j += 2, index += 2) {
+                                    points.push(new SuperMap.Geometry.Point(feature.geometry.points[index], feature.geometry.points[index + 1]));
+                                }
+                                startIndex += partPointsLength;
+                            }
+                            feature.geometry.points = points;
+                        })
+                    });
+                    tileFeatureJson.recordsets.map(function (recordset) {
+                        recordset.features.map(function (feature) {
+                            feature.layerName = recordset.layerName;
+                            feature.type = feature.geometry.type;
+                            features.push(feature);
+                        })
+                    });
+                    features = tile.getFormat().readFeatures(ol.supermap.Util.toGeoJSON(features));
+                }
+                tile.setFeatures(features);
                 tile.setProjection(new ol.proj.Projection({
                     code: 'TILE_PIXELS',
                     units: 'tile-pixels'
@@ -8411,9 +8421,10 @@ ol.supermap.VectorTileSuperMapRest.optionsFromMapJSON = function (url, mapJSONOb
                     scales[i], dpi, units, datumAxis);
             }
             return resolutions;
-        };
+        }
+
         return scales;
-    };
+    }
 
     options.tileGrid = new ol.tilegrid.TileGrid({
         extent: extent,
@@ -12261,7 +12272,7 @@ SuperMap.BuildCacheJobParameter.toObject = function (buildCacheJobParameter, tem
             tempObj['input'][name] = buildCacheJobParameter[name];
             continue;
         }
-        if (name === "cacheName" || name === "cacheType" || name === "serverAdresses" || name === "database" || name === "version") {
+        if (SuperMap.Util.indexOf(["cacheName", "cacheType", "serverAdresses", "database", "version"], name) > -1) {
             tempObj['output'] = tempObj['output'] || {};
             tempObj['output'][name] = buildCacheJobParameter[name];
             continue;
@@ -32867,13 +32878,13 @@ ol.supermap.VectorTileStyles.setSelectedTextStyle = function (selectedTextStyle)
 }
 
 ol.supermap.VectorTileStyles.getSelectedStyle = function (type) {
-    if (type === 'POINT') {
+    if (type === 'POINT' || type === 'MULTIPOINT') {
         return this.selectedPointStyle;
     }
-    if (type === 'LINE') {
+    if (type === 'LINESTRING' || type === 'MULTILINESTRING') {
         return this.selectedLineStyle;
     }
-    if (type === 'REGION') {
+    if (type === 'POLYGON' || type === 'MULTIPOLYGON') {
         return this.selectedRegionStyle;
     }
     if (type === 'TEXT') {
@@ -32883,20 +32894,22 @@ ol.supermap.VectorTileStyles.getSelectedStyle = function (type) {
 
 ol.supermap.VectorTileStyles.prototype.getFeatureStyle = function (feature) {
     var selectedStyle;
-    if (feature.getProperties().type === 'TEXT') {
-        selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getProperties().type);
+    var layerName = feature.getProperties().layerName || feature.getProperties().layer;
+    var id = feature.getProperties().id || feature.id_;
+    if (feature.getProperties().type && feature.getProperties().type.toUpperCase() === 'TEXT') {
+        selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getProperties().type.toUpperCase());
         selectedStyle.getText().text_ = feature.getProperties().texts[0];
     } else {
-        selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getProperties().type);
+        selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getGeometry().getType().toUpperCase());
     }
     if (selectedStyle) {
-        var layerName = ol.supermap.VectorTileStyles.getLayerName();
+        var selectedLayerName = ol.supermap.VectorTileStyles.getLayerName();
         var selectedId = ol.supermap.VectorTileStyles.getSelectedId();
-        if (layerName === feature.getProperties().layerName && feature.getProperties().id === selectedId) {
+        if (selectedLayerName === layerName && id === selectedId) {
             return selectedStyle;
         }
     }
-    return ol.supermap.VectorTileStyles.getStyle(feature);
+    return ol.supermap.VectorTileStyles.getStyle(layerName, feature);
 }
 
 ol.supermap.VectorTileStyles.getLayerInfo = function (layerName) {
@@ -32929,24 +32942,29 @@ ol.supermap.VectorTileStyles.getLayerInfo = function (layerName) {
     return layerInfo_simple;
 };
 
-ol.supermap.VectorTileStyles.getStyle = function (feature) {
+ol.supermap.VectorTileStyles.getStyle = function (originalLayerName, feature) {
     var url = ol.supermap.VectorTileStyles.getUrl(),
         view = ol.supermap.VectorTileStyles.getView(),
         zoom = view.getZoom(),
         dpi = 96,
         scale = ol.supermap.Util.resolutionToScale(view.getResolution(), dpi, SuperMap.Unit.METER),
-        layerName = feature.getProperties().layerName.replace(/(@)/gi, '___').replace(/(#)/gi, '___');
+        layerName = originalLayerName.replace(/(@)/gi, '___').replace(/(#)/gi, '___');
+    // feature对象样式的配置遵循以下优先级：
+    // 客户端CartoCSS > 服务器端CartoCSS > 服务器端layer样式 > 客户端默认样式。
     if (ol.supermap.VectorTileStyles.getCartoCss() && ol.supermap.VectorTileStyles.getClientCartoShaders()[layerName]) {
         return getStyleArray(ol.supermap.VectorTileStyles.getClientCartoShaders()[layerName]);
     }
-    var layerInfo = ol.supermap.VectorTileStyles.getLayerInfo(feature.getProperties().layerName);
-    if (!(feature.getProperties().type === 'POINT' && layerInfo.type === 'LABEL' && feature.getProperties().attributes !== null) && feature.getProperties().type !== 'TEXT' && !ol.supermap.VectorTileStyles.getDonotNeedServerCartoCss() && ol.supermap.VectorTileStyles.getCartoShaders()[layerName]) {
+    var layerInfo = ol.supermap.VectorTileStyles.getLayerInfo(originalLayerName);
+    if (!ol.supermap.VectorTileStyles.getDonotNeedServerCartoCss() && ol.supermap.VectorTileStyles.getCartoShaders()[layerName]) {
+        //如果是文本，这里特殊处理。
+        if (feature.getProperties().textStyle || layerInfo.type == 'LABEL' && layerInfo.textField) {
+            return StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
+        }
         return getStyleArray(ol.supermap.VectorTileStyles.getCartoShaders()[layerName]);
     }
-    if (layerInfo.layerStyle || feature.getProperties().type === 'POINT' && layerInfo.type === 'LABEL' && feature.getProperties().attributes !== null) {
+    if (layerInfo) {
         return StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
     }
-    return StyleUtils.getStyleFromCarto(zoom, scale, null, feature, true, url);
 
     function getStyleArray(shaderAttachment) {
         var styleArray = [];

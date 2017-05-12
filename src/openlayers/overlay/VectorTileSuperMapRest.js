@@ -17,6 +17,9 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
             })]
     }
     var layerUrl = options.url + '/tileFeature.json?';
+    if (options.format instanceof ol.format.MVT) {
+        layerUrl = options.url + '/tileFeature.mvt?';
+    }
     //为url添加安全认证信息片段
     if (SuperMap.Credential && SuperMap.Credential.CREDENTIAL) {
         layerUrl += "&" + SuperMap.Credential.CREDENTIAL.getUrlParameters();
@@ -34,7 +37,6 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
     }
     if (options.layerNames !== undefined) {
         layerUrl += "&layerNames=" + options.layerNames;
-        // layerUrl += "&layerNames=%5B'China_Boundary_A%40China%231'%5D";
     }
     if (options.expands !== undefined) {
         layerUrl += "&expands=" + options.expands;
@@ -72,34 +74,42 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
     }
 
     function tileLoadFunction(tile, tileUrl) {
+        if (tile.getFormat() instanceof ol.format.MVT) {
+            ol.VectorTile.defaultLoadFunction(tile, tileUrl);
+            return;
+        }
         tile.setLoader(function () {
             SuperMap.Request.get(tileUrl).then(function (response) {
-                return response.json();
+                if (tile.getFormat() instanceof ol.format.GeoJSON) {
+                    return response.json();
+                }
             }).then(function (tileFeatureJson) {
-                tileFeatureJson.recordsets.map(function (recordset) {
-                    recordset.features.map(function (feature) {
-                        var points = [];
-                        var startIndex = 0;
-                        for (var i = 0; i < feature.geometry.parts.length; i++) {
-                            var partPointsLength = feature.geometry.parts[i] * 2;
-                            for (var j = 0, index = startIndex; j < partPointsLength; j += 2, index += 2) {
-                                points.push(new SuperMap.Geometry.Point(feature.geometry.points[index], feature.geometry.points[index + 1]));
-                            }
-                            startIndex += partPointsLength;
-                        }
-                        feature.geometry.points = points;
-                    })
-                });
                 var features = [];
-                tileFeatureJson.recordsets.map(function (recordset) {
-                    recordset.features.map(function (feature) {
-                        feature.layerName = recordset.layerName;
-                        feature.type = feature.geometry.type;
-                        features.push(feature);
-                    })
-                });
-
-                tile.setFeatures(tile.getFormat().readFeatures(ol.supermap.Util.toGeoJSON(features)));
+                if (tile.getFormat() instanceof ol.format.GeoJSON) {
+                    tileFeatureJson.recordsets.map(function (recordset) {
+                        recordset.features.map(function (feature) {
+                            var points = [];
+                            var startIndex = 0;
+                            for (var i = 0; i < feature.geometry.parts.length; i++) {
+                                var partPointsLength = feature.geometry.parts[i] * 2;
+                                for (var j = 0, index = startIndex; j < partPointsLength; j += 2, index += 2) {
+                                    points.push(new SuperMap.Geometry.Point(feature.geometry.points[index], feature.geometry.points[index + 1]));
+                                }
+                                startIndex += partPointsLength;
+                            }
+                            feature.geometry.points = points;
+                        })
+                    });
+                    tileFeatureJson.recordsets.map(function (recordset) {
+                        recordset.features.map(function (feature) {
+                            feature.layerName = recordset.layerName;
+                            feature.type = feature.geometry.type;
+                            features.push(feature);
+                        })
+                    });
+                    features = tile.getFormat().readFeatures(ol.supermap.Util.toGeoJSON(features));
+                }
+                tile.setFeatures(features);
                 tile.setProjection(new ol.proj.Projection({
                     code: 'TILE_PIXELS',
                     units: 'tile-pixels'
@@ -203,9 +213,10 @@ ol.supermap.VectorTileSuperMapRest.optionsFromMapJSON = function (url, mapJSONOb
                     scales[i], dpi, units, datumAxis);
             }
             return resolutions;
-        };
+        }
+
         return scales;
-    };
+    }
 
     options.tileGrid = new ol.tilegrid.TileGrid({
         extent: extent,

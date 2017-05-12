@@ -245,13 +245,13 @@ ol.supermap.VectorTileStyles.setSelectedTextStyle = function (selectedTextStyle)
 }
 
 ol.supermap.VectorTileStyles.getSelectedStyle = function (type) {
-    if (type === 'POINT') {
+    if (type === 'POINT' || type === 'MULTIPOINT') {
         return this.selectedPointStyle;
     }
-    if (type === 'LINE') {
+    if (type === 'LINESTRING' || type === 'MULTILINESTRING') {
         return this.selectedLineStyle;
     }
-    if (type === 'REGION') {
+    if (type === 'POLYGON' || type === 'MULTIPOLYGON') {
         return this.selectedRegionStyle;
     }
     if (type === 'TEXT') {
@@ -261,20 +261,22 @@ ol.supermap.VectorTileStyles.getSelectedStyle = function (type) {
 
 ol.supermap.VectorTileStyles.prototype.getFeatureStyle = function (feature) {
     var selectedStyle;
-    if (feature.getProperties().type === 'TEXT') {
-        selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getProperties().type);
+    var layerName = feature.getProperties().layerName || feature.getProperties().layer;
+    var id = feature.getProperties().id || feature.id_;
+    if (feature.getProperties().type && feature.getProperties().type.toUpperCase() === 'TEXT') {
+        selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getProperties().type.toUpperCase());
         selectedStyle.getText().text_ = feature.getProperties().texts[0];
     } else {
-        selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getProperties().type);
+        selectedStyle = ol.supermap.VectorTileStyles.getSelectedStyle(feature.getGeometry().getType().toUpperCase());
     }
     if (selectedStyle) {
-        var layerName = ol.supermap.VectorTileStyles.getLayerName();
+        var selectedLayerName = ol.supermap.VectorTileStyles.getLayerName();
         var selectedId = ol.supermap.VectorTileStyles.getSelectedId();
-        if (layerName === feature.getProperties().layerName && feature.getProperties().id === selectedId) {
+        if (selectedLayerName === layerName && id === selectedId) {
             return selectedStyle;
         }
     }
-    return ol.supermap.VectorTileStyles.getStyle(feature);
+    return ol.supermap.VectorTileStyles.getStyle(layerName, feature);
 }
 
 ol.supermap.VectorTileStyles.getLayerInfo = function (layerName) {
@@ -307,24 +309,29 @@ ol.supermap.VectorTileStyles.getLayerInfo = function (layerName) {
     return layerInfo_simple;
 };
 
-ol.supermap.VectorTileStyles.getStyle = function (feature) {
+ol.supermap.VectorTileStyles.getStyle = function (originalLayerName, feature) {
     var url = ol.supermap.VectorTileStyles.getUrl(),
         view = ol.supermap.VectorTileStyles.getView(),
         zoom = view.getZoom(),
         dpi = 96,
         scale = ol.supermap.Util.resolutionToScale(view.getResolution(), dpi, SuperMap.Unit.METER),
-        layerName = feature.getProperties().layerName.replace(/(@)/gi, '___').replace(/(#)/gi, '___');
+        layerName = originalLayerName.replace(/(@)/gi, '___').replace(/(#)/gi, '___');
+    // feature对象样式的配置遵循以下优先级：
+    // 客户端CartoCSS > 服务器端CartoCSS > 服务器端layer样式 > 客户端默认样式。
     if (ol.supermap.VectorTileStyles.getCartoCss() && ol.supermap.VectorTileStyles.getClientCartoShaders()[layerName]) {
         return getStyleArray(ol.supermap.VectorTileStyles.getClientCartoShaders()[layerName]);
     }
-    var layerInfo = ol.supermap.VectorTileStyles.getLayerInfo(feature.getProperties().layerName);
-    if (!(feature.getProperties().type === 'POINT' && layerInfo.type === 'LABEL' && feature.getProperties().attributes !== null) && feature.getProperties().type !== 'TEXT' && !ol.supermap.VectorTileStyles.getDonotNeedServerCartoCss() && ol.supermap.VectorTileStyles.getCartoShaders()[layerName]) {
+    var layerInfo = ol.supermap.VectorTileStyles.getLayerInfo(originalLayerName);
+    if (!ol.supermap.VectorTileStyles.getDonotNeedServerCartoCss() && ol.supermap.VectorTileStyles.getCartoShaders()[layerName]) {
+        //如果是文本，这里特殊处理。
+        if (feature.getProperties().textStyle || layerInfo.type == 'LABEL' && layerInfo.textField) {
+            return StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
+        }
         return getStyleArray(ol.supermap.VectorTileStyles.getCartoShaders()[layerName]);
     }
-    if (layerInfo.layerStyle || feature.getProperties().type === 'POINT' && layerInfo.type === 'LABEL' && feature.getProperties().attributes !== null) {
+    if (layerInfo) {
         return StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
     }
-    return StyleUtils.getStyleFromCarto(zoom, scale, null, feature, true, url);
 
     function getStyleArray(shaderAttachment) {
         var styleArray = [];
