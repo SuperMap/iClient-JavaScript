@@ -6956,7 +6956,7 @@ ol.supermap.StyleUtils = {
     toOLTextStyle: function (style, text) {
         return new ol.style.Style({
             text: new ol.style.Text({
-                font: style.fontStyle + ' ' + style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily,
+                font: style.fontStyle || '' + ' ' + style.fontWeight || '' + ' ' + style.fontSize || '' + ' ' + style.fontFamily,
                 text: text,
                 textAlign: style.textAlign,
                 textBaseline: style.textBaseline,
