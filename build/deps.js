@@ -201,6 +201,12 @@ var deps = {
                 "src": [
                     './src/leaflet/overlay/TileVectorLayer.js'
                 ]
+            },
+            "ThemeLayer": {
+                "name": "专题图",
+                "src": [
+                    './src/leaflet/overlay/UniqueThemeLayer.js'
+                ]
             }
         }
     },

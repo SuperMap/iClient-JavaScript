@@ -396,7 +396,16 @@ var exampleConfig = {
 
                     }
                 ]
+            },
+            "ThemeLayer": {
+                name: "客户端专题图",
+                content: [{
+                    name: "单值专题图",
+                    thumbnail: "l_uniqueThemeLayer.png",
+                    fileName: "uniqueThemeLayer"
+                }]
             }
+
         }
     },
     "OGC": {
