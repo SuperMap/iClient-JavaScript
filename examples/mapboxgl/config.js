@@ -26,10 +26,21 @@ var exampleConfig = {
                 name: "矢量瓦片",
                 content: [
                     {
-                        name: "MVT",
+                        name: "China-矢量瓦片",
                         thumbnail: "mvtVectorTile.png",
                         fileName: "mvtVectorTile"
+                    },
+                    {
+                        name: "北京",
+                        thumbnail: "mvt_Beijing.png",
+                        fileName: "mvtVectorTile_Beijing"
+                    },
+                    {
+                        name: "北京-暗夜风格",
+                        thumbnail: "mvt_Beijing_dark.png",
+                        fileName: "mvtVectorTile_Beijing_dark"
                     }
+
                 ]
             }
         }

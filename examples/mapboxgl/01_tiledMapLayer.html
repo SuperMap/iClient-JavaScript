@@ -4,8 +4,8 @@
     <meta charset='utf-8'/>
     <title></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.34.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.34.0/mapbox-gl.css' rel='stylesheet'/>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css' rel='stylesheet'/>
     <style>
         body {
             margin: 0;
@@ -46,23 +46,8 @@
         center: [120.143, 30.236], // starting position
         zoom: 3 // starting zoom
     });
-    map.on('load', function () {
+    map.addControl(new mapboxgl.NavigationControl());
 
-        map.addLayer({
-            "id": "route",
-            "type": "fill",
-            "source": {
-                "type": "geojson",
-                "data": 'http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data/datasources/World/datasets/Countries/features/247.geojson'
-
-            },
-            'layout': {},
-            'paint': {
-                'fill-color': '#088',
-                'fill-opacity': 0.8
-            }
-        });
-    });
 </script>
 
 </body>
