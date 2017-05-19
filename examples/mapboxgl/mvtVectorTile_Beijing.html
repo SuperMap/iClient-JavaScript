@@ -74,22 +74,26 @@
 
         });
         map.addLayer({
-            "id": "湖泊、水库R@北京",
+            "id": "立交桥绿地R@北京",
             "type": "fill",
             "source": "vector-tiles",
-            "source-layer": "湖泊、水库R@北京",
+            "source-layer": "立交桥绿地R@北京",
             "paint": {
-                "fill-color": "hsl(196, 80%, 70%)"
-            }
-        });
-        map.addLayer({
-            "id": "	双线河R@北京",
-            "type": "fill",
-            "source": "vector-tiles",
-            "source-layer": "双线河R@北京",
-            "paint": {
-                "fill-color": "hsl(196, 80%, 70%)"
-            }
+                "fill-color": "hsl(100, 58%, 76%)",
+                "fill-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            5,
+                            0
+                        ],
+                        [
+                            6,
+                            0.5
+                        ]
+                    ]
+                }
+            },
         });
         map.addLayer({
             "id": "绿地R@北京",
@@ -114,26 +118,99 @@
             },
         });
         map.addLayer({
-            "id": "立交桥绿地R@北京",
+            "id": "	双线河R@北京",
             "type": "fill",
             "source": "vector-tiles",
-            "source-layer": "立交桥绿地R@北京",
+            "source-layer": "双线河R@北京",
             "paint": {
-                "fill-color": "hsl(100, 58%, 76%)",
-                "fill-opacity": {
-                    "base": 1,
+                "fill-color": "hsl(196, 80%, 70%)"
+            }
+        });
+        map.addLayer({
+            "id": "湖泊、水库R@北京",
+            "type": "fill",
+            "source": "vector-tiles",
+            "source-layer": "湖泊、水库R@北京",
+            "paint": {
+                "fill-color": "hsl(196, 80%, 70%)"
+            }
+        });
+
+        map.addLayer({
+            "id": "	四级道路L@北京",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "四级道路L@北京",
+            "paint": {
+                "line-width": {
+                    "base": 1.5,
                     "stops": [
                         [
-                            5,
-                            0
+                            11,
+                            1
                         ],
                         [
-                            6,
-                            0.5
+                            18,
+                            10
                         ]
                     ]
-                }
-            },
+                },
+                "line-color": "hsl(0, 0%, 100%)",
+            }
+        });
+        map.addLayer({
+            "id": "	三级道路L@北京",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "三级道路L@北京",
+            "paint": {
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            11,
+                            1
+                        ],
+                        [
+                            18,
+                            10
+                        ]
+                    ]
+                },
+                "line-color": "hsl(0, 0%, 100%)",
+            }
+        });
+        map.addLayer({
+            "id": "	二级道路L@北京",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "二级道路L@北京",
+            "paint": {
+                "line-width": 4,
+                "line-color": "hsl(230, 24%, 87%)",
+            }
+        });
+        map.addLayer({
+            "id": "	二级道路L@北京1",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "二级道路L@北京",
+            "paint": {
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            11,
+                            2
+                        ],
+                        [
+                            18,
+                            18
+                        ]
+                    ]
+                },
+                "line-color": "hsl(0, 0%, 100%)",
+            }
         });
         map.addLayer({
             "id": "一级道路L@北京1",
@@ -205,52 +282,6 @@
                 },
             }
         });
-
-        map.addLayer({
-            "id": "	高速公路L@北京",
-            "type": "line",
-            "source": "vector-tiles",
-            "source-layer": "高速公路L@北京",
-            "paint": {
-                "line-width": {
-                    "base": 1.5,
-                    "stops": [
-                        [
-                            11,
-                            6
-                        ],
-                        [
-                            18,
-                            32
-                        ]
-                    ]
-                },
-                "line-color": "hsl(26, 87%, 62%)",
-            }
-        });
-        map.addLayer({
-            "id": "	环城路L@北京",
-            "type": "line",
-            "source": "vector-tiles",
-            "source-layer": "环城路L@北京",
-            "paint": {
-                "line-width": 4,
-                "line-color": "hsl(26, 87%, 62%)",
-                "line-opacity": {
-                    "base": 1,
-                    "stops": [
-                        [
-                            10.99,
-                            1
-                        ],
-                        [
-                            11,
-                            0
-                        ]
-                    ]
-                }
-            }
-        });
         map.addLayer({
             "id": "	省道L@北京",
             "type": "line",
@@ -295,83 +326,30 @@
                 "line-color": "hsl(35, 32%, 91%)"
             }
         });
+        map.addLayer({
+            "id": "	高速公路L@北京",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "高速公路L@北京",
+            "paint": {
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            11,
+                            6
+                        ],
+                        [
+                            18,
+                            32
+                        ]
+                    ]
+                },
+                "line-color": "hsl(26, 87%, 62%)",
+            }
+        });
 
-        map.addLayer({
-            "id": "	二级道路L@北京",
-            "type": "line",
-            "source": "vector-tiles",
-            "source-layer": "二级道路L@北京",
-            "paint": {
-                "line-width": 4,
-                "line-color": "hsl(230, 24%, 87%)",
-            }
-        });
-        map.addLayer({
-            "id": "	二级道路L@北京",
-            "type": "line",
-            "source": "vector-tiles",
-            "source-layer": "二级道路L@北京",
-            "paint": {
-                "line-width": {
-                    "base": 1.5,
-                    "stops": [
-                        [
-                            11,
-                            2
-                        ],
-                        [
-                            18,
-                            18
-                        ]
-                    ]
-                },
-                "line-color": "hsl(0, 0%, 100%)",
-            }
-        });
-        map.addLayer({
-            "id": "	三级道路L@北京",
-            "type": "line",
-            "source": "vector-tiles",
-            "source-layer": "三级道路L@北京",
-            "paint": {
-                "line-width": {
-                    "base": 1.5,
-                    "stops": [
-                        [
-                            11,
-                            1
-                        ],
-                        [
-                            18,
-                            10
-                        ]
-                    ]
-                },
-                "line-color": "hsl(0, 0%, 100%)",
-            }
-        });
-        map.addLayer({
-            "id": "	四级道路L@北京",
-            "type": "line",
-            "source": "vector-tiles",
-            "source-layer": "四级道路L@北京",
-            "paint": {
-                "line-width": {
-                    "base": 1.5,
-                    "stops": [
-                        [
-                            11,
-                            1
-                        ],
-                        [
-                            18,
-                            10
-                        ]
-                    ]
-                },
-                "line-color": "hsl(0, 0%, 100%)",
-            }
-        });
+
         map.addLayer({
             "id": "标签专题图#10",
             "type": "symbol",
@@ -538,6 +516,7 @@
                 },
             },
         });
+
         map.addLayer({
             "id": "立交桥名称P@北京",
             "type": "symbol",
