@@ -345,6 +345,102 @@
 
         });
         map.addLayer({
+            "id": "	一级道路Name",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "一级道路L@北京",
+            "layout": {
+                "text-line-height": 1.1,
+                "text-size": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            13.99,
+                            12
+                        ],
+                        [
+                            20,
+                            24
+                        ]
+                    ]
+                },
+                "text-font": [
+                    "DIN Offc Pro Italic",
+                    "Arial Unicode MS Regular"
+                ],
+                "symbol-placement": "line",
+                "text-field": "{道路名称}",
+                "text-letter-spacing": 0.1,
+                "text-max-width": 5
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 0%)",
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1.25,
+                "text-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            13.99,
+                            0
+                        ],
+                        [
+                            14,
+                            1
+                        ]
+                    ]
+                },
+            },
+        });
+        map.addLayer({
+            "id": "	省道Name",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "省道L@北京",
+            "layout": {
+                "text-line-height": 1.1,
+                "text-size": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            11,
+                            10
+                        ],
+                        [
+                            18,
+                            24
+                        ]
+                    ]
+                },
+                "text-font": [
+                    "DIN Offc Pro Italic",
+                    "Arial Unicode MS Regular"
+                ],
+                "symbol-placement": "line",
+                "text-field": "{道路名称}",
+                "text-letter-spacing": 0.1,
+                "text-max-width": 5
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 0%)",
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1.25,
+                "text-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            10.99,
+                            0
+                        ],
+                        [
+                            11,
+                            1
+                        ]
+                    ]
+                },
+            },
+        });
+        map.addLayer({
             "id": "立交桥名称P@北京",
             "type": "symbol",
             "source": "vector-tiles",

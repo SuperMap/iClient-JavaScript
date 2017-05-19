@@ -141,7 +141,19 @@
             "source": "vector-tiles",
             "source-layer": "一级道路L@北京",
             "paint": {
-                "line-width": 6,
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            11,
+                            6
+                        ],
+                        [
+                            18,
+                            26
+                        ]
+                    ]
+                },
                 "line-color": "hsl(230, 24%, 87%)",
                 "line-opacity": {
                     "base": 1,
@@ -164,7 +176,19 @@
             "source": "vector-tiles",
             "source-layer": "一级道路L@北京",
             "paint": {
-                "line-width": 4,
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            11,
+                            4
+                        ],
+                        [
+                            18,
+                            20
+                        ]
+                    ]
+                },
                 "line-color": "hsl(0, 0%, 100%)",
                 "line-opacity": {
                     "base": 1,
@@ -181,13 +205,26 @@
                 },
             }
         });
+
         map.addLayer({
             "id": "	高速公路L@北京",
             "type": "line",
             "source": "vector-tiles",
             "source-layer": "高速公路L@北京",
             "paint": {
-                "line-width": 4,
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            11,
+                            6
+                        ],
+                        [
+                            18,
+                            32
+                        ]
+                    ]
+                },
                 "line-color": "hsl(26, 87%, 62%)",
             }
         });
@@ -203,11 +240,11 @@
                     "base": 1,
                     "stops": [
                         [
-                            9.99,
+                            10.99,
                             1
                         ],
                         [
-                            10,
+                            11,
                             0
                         ]
                     ]
@@ -220,7 +257,19 @@
             "source": "vector-tiles",
             "source-layer": "省道L@北京",
             "paint": {
-                "line-width": 4,
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            10,
+                            6
+                        ],
+                        [
+                            18,
+                            36
+                        ]
+                    ]
+                },
                 "line-color": "hsl(26, 87%, 62%)",
             }
         });
@@ -230,10 +279,23 @@
             "source": "vector-tiles",
             "source-layer": "省道L@北京",
             "paint": {
-                "line-width": 2,
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            10,
+                            4
+                        ],
+                        [
+                            18,
+                            32
+                        ]
+                    ]
+                },
                 "line-color": "hsl(35, 32%, 91%)"
             }
         });
+
         map.addLayer({
             "id": "	二级道路L@北京",
             "type": "line",
@@ -250,7 +312,19 @@
             "source": "vector-tiles",
             "source-layer": "二级道路L@北京",
             "paint": {
-                "line-width": 2,
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            11,
+                            2
+                        ],
+                        [
+                            18,
+                            18
+                        ]
+                    ]
+                },
                 "line-color": "hsl(0, 0%, 100%)",
             }
         });
@@ -260,7 +334,19 @@
             "source": "vector-tiles",
             "source-layer": "三级道路L@北京",
             "paint": {
-                "line-width": 1,
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            11,
+                            1
+                        ],
+                        [
+                            18,
+                            10
+                        ]
+                    ]
+                },
                 "line-color": "hsl(0, 0%, 100%)",
             }
         });
@@ -270,7 +356,19 @@
             "source": "vector-tiles",
             "source-layer": "四级道路L@北京",
             "paint": {
-                "line-width": 1,
+                "line-width": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            11,
+                            1
+                        ],
+                        [
+                            18,
+                            10
+                        ]
+                    ]
+                },
                 "line-color": "hsl(0, 0%, 100%)",
             }
         });
@@ -288,19 +386,7 @@
                     "DIN Offc Pro Medium",
                     "Arial Unicode MS Regular"
                 ],
-                "text-size": {
-                    "base": 0.9,
-                    "stops": [
-                        [
-                            4,
-                            12
-                        ],
-                        [
-                            10,
-                            22
-                        ]
-                    ]
-                }
+                "text-size": 22
             },
             "paint": {
                 "text-color": "hsl(230, 8%, 62%)",
@@ -355,6 +441,102 @@
                 "text-halo-blur": 1
             }
 
+        });
+        map.addLayer({
+            "id": "	一级道路Name",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "一级道路L@北京",
+            "layout": {
+                "text-line-height": 1.1,
+                "text-size": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            13.99,
+                            12
+                        ],
+                        [
+                            20,
+                            24
+                        ]
+                    ]
+                },
+                "text-font": [
+                    "DIN Offc Pro Italic",
+                    "Arial Unicode MS Regular"
+                ],
+                "symbol-placement": "line",
+                "text-field": "{道路名称}",
+                "text-letter-spacing": 0.1,
+                "text-max-width": 5
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 0%)",
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1.25,
+                "text-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            13.99,
+                            0
+                        ],
+                        [
+                            14,
+                            1
+                        ]
+                    ]
+                },
+            },
+        });
+        map.addLayer({
+            "id": "	省道Name",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "省道L@北京",
+            "layout": {
+                "text-line-height": 1.1,
+                "text-size": {
+                    "base": 1.5,
+                    "stops": [
+                        [
+                            11,
+                            10
+                        ],
+                        [
+                            18,
+                            24
+                        ]
+                    ]
+                },
+                "text-font": [
+                    "DIN Offc Pro Italic",
+                    "Arial Unicode MS Regular"
+                ],
+                "symbol-placement": "line",
+                "text-field": "{道路名称}",
+                "text-letter-spacing": 0.1,
+                "text-max-width": 5
+            },
+            "paint": {
+                "text-color": "hsl(0, 0%, 0%)",
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-width": 1.25,
+                "text-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            10.99,
+                            0
+                        ],
+                        [
+                            11,
+                            1
+                        ]
+                    ]
+                },
+            },
         });
         map.addLayer({
             "id": "立交桥名称P@北京",
