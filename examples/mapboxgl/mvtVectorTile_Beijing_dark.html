@@ -42,7 +42,7 @@
         minZoom: 10,
         zoom: 11
     });
-    map.addControl(new mapboxgl.NavigationControl());
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
     map.on('load', function () {
         map.addLayer({
