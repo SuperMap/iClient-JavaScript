@@ -29088,7 +29088,7 @@ SuperMap.KernelDensityJobParameter = SuperMap.Class({
 
     /**
      * APIProperty: separator
-     * {numbert} 权重索引。
+     * {String} 权重索引。
      */
     fields: null,
 
@@ -32330,12 +32330,6 @@ SuperMap.SummaryMeshJobParameter = SuperMap.Class({
     statisticModes: null,
 
     /**
-     * APIProperty: resultFieldNames
-     * {String} 结果字段名。
-     */
-    resultFieldNames: null,
-
-    /**
      * APIProperty: separator
      * {numbert} 分析类型。
      */
@@ -32346,6 +32340,12 @@ SuperMap.SummaryMeshJobParameter = SuperMap.Class({
      * {numbert} 权重索引。
      */
     fields: null,
+
+    /**
+     * APIProperty: separator
+     * {String} 聚合类型。
+     */
+    type: null,
 
     initialize: function (options) {
         if (!options) {
@@ -32363,9 +32363,9 @@ SuperMap.SummaryMeshJobParameter = SuperMap.Class({
         this.query = null;
         this.resolution = null;
         this.statisticModes = null;
-        this.resultFieldNames = null;
         this.meshType = null;
         this.fields = null;
+        this.type = null;
     }
 
 });
@@ -32375,6 +32375,10 @@ SuperMap.SummaryMeshJobParameter.toObject = function (summaryMeshJobParameter, t
         if (name === "datasetName") {
             tempObj['input'] = tempObj['input'] || {};
             tempObj['input'][name] = summaryMeshJobParameter[name];
+            continue;
+        }
+        if (name === "type") {
+            tempObj['type'] = summaryMeshJobParameter[name];
             continue;
         }
         tempObj['analyst'] = tempObj['analyst'] || {};
@@ -32395,7 +32399,7 @@ var SummaryMeshJobParameter = __webpack_require__(286);
 SuperMap.REST.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
-        url += "/spatialanalyst/SummaryMesh";
+        url += "/spatialanalyst/aggregatePoints";
         ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
     },
 
