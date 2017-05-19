@@ -409,6 +409,14 @@ var exampleConfig = {
                         fileName: "mvtVectorLayer"
                     }
                 ]
+            },
+            "ThemeLayer": {
+                name: "客户端专题图",
+                content: [{
+                    name: "单值专题图",
+                    thumbnail: "uniqueThemeLayer.png",
+                    fileName: "uniqueThemeLayer"
+                }]
             }
         }
     },

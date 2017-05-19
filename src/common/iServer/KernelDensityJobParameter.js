@@ -38,7 +38,7 @@ SuperMap.KernelDensityJobParameter = SuperMap.Class({
 
     /**
      * APIProperty: separator
-     * {numbert} 权重索引。
+     * {String} 权重索引。
      */
     fields: null,
 

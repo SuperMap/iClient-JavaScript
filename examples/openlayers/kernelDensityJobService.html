@@ -27,55 +27,96 @@
     </div>
 </div>
 <div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
-<div id="popup" class="ol-popup"/>
+<div id="popup" class="ol-popup" style='width:20%'>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">密度分析作业</h3>
+        </div>
+        <div class="panel-body">
+            <div class="input-group">
+                <span class="input-group-addon">输入数据</span>
+                <input id="datasetName" type="text" class="form-control" placeholder="test_newyork_taxi_2013_01_14k"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">分析方法</span>
+                <input id="method" type="text" class="form-control" placeholder="0"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">网格面类型</span>
+                <input id="meshType" type="text" class="form-control" placeholder="0"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">权重值索引</span>
+                <input id="fields" type="text" class="form-control" placeholder="7,8"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">分析范围</span>
+                <input id="query" type="text" class="form-control" placeholder="-74.150, 40.550, -73.750, 40.950"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">分辨率</span>
+                <input id="resolution" type="text" class="form-control" placeholder="0.001"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">半径</span>
+                <input id="radius" type="text" class="form-control" placeholder="0.01"/>
+            </div>
+            <p>
+            <div align="right">
+                <input type="button" id='btn' class="btn btn-primary" value="创建"/>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var layer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
+    var layer, baseLayer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
             token = 'GSHB7qlocJkqEH0Ld6VUSGQfekOdPd3e9UdJoHjiupfbkGDggXQLSPWd6VaKm8NH4gvXx6UQ0TCI5wpfr-4Tlw..',
-            extent = [-74.05, 40.65, -73.85, 40.85],
-            projection = new ol.proj.Projection({
-                extent: extent,
-                units: 'm'
-            }),
+            worldMapUrl = 'http://113.209.64.227:8090/iserver/services/map-World/rest/maps/世界地图_Day',
             map = new ol.Map({
                 target: 'map',
                 view: new ol.View({
                     center: [-73.95, 40.75],
-                    zoom: 0,
-                    projection: projection
+                    zoom: 12,
+                    projection: 'EPSG:4326'
                 })
             }),
-            kernelDensityJobParameter = new SuperMap.KernelDensityJobParameter({
-                datasetName: 'test_newyork_taxi_2013_01_14k',
-                resolution: '0.001',
-                method: '0',
-                meshType: '0',
-                fields: '10',
-                query: [-74.150, 40.550, -73.750, 40.950],
-                radius: '0.01'
+            query = [];
+    ($('#query').val() || $('#query').attr('placeholder')).split(',').map(function (el) {
+        return query.push(parseFloat(el));
+    });
+    var kernelDensityJobParameter = new SuperMap.KernelDensityJobParameter({
+                datasetName: $('#datasetName').val() || $('#datasetName').attr('placeholder'),
+                resolution: $('#resolution').val() || $('#resolution').attr('placeholder'),
+                method: $('#method').val() || $('#method').attr('placeholder'),
+                meshType: $('#meshType').val() || $('#meshType').attr('placeholder'),
+                fields: $('#fields').val() || $('#fields').attr('placeholder'),
+                query: query,
+                radius: $('#radius').val() || $('#radius').attr('placeholder')
             }),
-            processingJobsService = new ol.supermap.ProcessingJobsService(processingJobsUrl),
-            popup = document.getElementById('popup'),
-            button = document.createElement('button');
+            processingJobsService = new ol.supermap.ProcessingJobsService(processingJobsUrl);
 
-    popup.appendChild(button);
-    button.id = 'btn'
-    button.className = 'btn btn-primary';
-    button.innerHTML = '创建密度分析作业';
     var info = new ol.control.Control({element: popup});
     info.setMap(map);
     map.addControl(info);
-
     SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(token, 'token');
 
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
-        if (map && layer) {
+        if (map && layer && baseLayer) {
             map.removeLayer(layer);
+            map.removeLayer(baseLayer);
         }
         processingJobsService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
             if (serviceResult.error) {
@@ -86,14 +127,24 @@
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                 if (info.serviceType === 'RESTMAP') {
-                    var mapUrl = info.serviceAddress + '/maps/kernelDensity1_Map';
-                    new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
-                        layer = new ol.layer.Tile({
-                            source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
+                    SuperMap.Request.get(info.serviceAddress + '/maps').then(function (response) {
+                        return response.json();
+                    }).then(function (result) {
+                        var mapUrl = result[0].path;
+                        new ol.supermap.MapService(worldMapUrl).getMapInfo(function (worldMapInfo) {
+                            baseLayer = new ol.layer.Tile({
+                                source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(worldMapUrl, worldMapInfo.result))
+                            });
+                            map.addLayer(baseLayer);
+                            new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
+                                layer = new ol.layer.Tile({
+                                    source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
+                                });
+                                map.addLayer(layer);
+                                $("#model").modal('hide');
+                                $('#btn').prop('disabled', false);
+                            });
                         });
-                        map.addLayer(layer);
-                        $("#model").modal('hide');
-                        $('#btn').prop('disabled', false);
                     });
                 }
             });

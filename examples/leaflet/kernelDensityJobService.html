@@ -26,43 +26,82 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
 <script type="text/javascript">
-    var layer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
+    var layer, baseLayer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
             token = 'GSHB7qlocJkqEH0Ld6VUSGQfekOdPd3e9UdJoHjiupfbkGDggXQLSPWd6VaKm8NH4gvXx6UQ0TCI5wpfr-4Tlw..',
+            worldMapUrl = 'http://113.209.64.227:8090/iserver/services/map-World/rest/maps/世界地图_Day',
             map = L.map('map', {
-                crs: L.supermap.NonEarthCRS({
-                    bounds: L.bounds([40.65, -74.05], [40.85, -73.85]),
-                    origin: L.point(40.65, -73.85)
-                }),
+                crs: L.CRS.EPSG4326,
                 center: [40.75, -73.95],
-                zoom: 0
+                maxZoom: 18,
+                zoom: 11
             }),
-            kernelDensityJobParameter = new SuperMap.KernelDensityJobParameter({
-                datasetName: 'test_newyork_taxi_2013_01_14k',
-                resolution: 0.001,
-                method: 0,
-                meshType: 0,
-                fields: 10,
-                query: L.latLngBounds(L.latLng(40.550, -74.150), L.latLng(40.950, -73.750)),
-                radius: 0.01
-            }),
-            processingJobsService = new L.supermap.processingJobsService(processingJobsUrl),
-            info = L.control({position: 'topright'});
+            info = L.control({position: 'topright'}),
+            query = [];
 
     info.onAdd = function () {
-        var btn = L.DomUtil.create('button', 'btn btn-primary');
-        btn.id = 'btn';
-        btn.innerHTML = '创建密度分析作业';
-        return btn;
+        var popup = L.DomUtil.create('div');
+        popup.style = 'width:20%';
+        popup.innerHTML = "<div class='panel panel-default'>" +
+                "<div class='panel-heading'>" +
+                "<h3 class='panel-title'>密度分析作业</h3>" +
+                "</div>" +
+                "<div class='panel-body'>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>输入数据</span>" +
+                "<input id='datasetName' type='text' class='form-control' placeholder='test_newyork_taxi_2013_01_14k'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>分析方法</span>" +
+                "<input id='method' type='text' class='form-control' placeholder='0'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>网格面类型</span>" +
+                "<input id='meshType' type='text' class='form-control' placeholder='0'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>权重值索引</span>" +
+                "<input id='fields' type='text' class='form-control' placeholder='7,8'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>分析范围</span>" +
+                "<input id='query' type='text' class='form-control' placeholder='-74.150, 40.550, -73.750, 40.950'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>分辨率</span>" +
+                "<input id='resolution' type='text' class='form-control' placeholder='0.001'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>半径</span>" +
+                "<input id='radius' type='text' class='form-control' placeholder='0.01'/>" +
+                "</div><p>" +
+                "<div align='right'>" +
+                "<input type='button' id='btn' class='btn btn-primary' value='创建'/>" +
+                "</div></div></div>";
+        return popup;
     };
     info.addTo(map);
 
-    SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(token, 'token');
+    ($('#query').val() || $('#query').attr('placeholder')).split(',').map(function (el) {
+        return query.push(parseFloat(el));
+    });
+    var kernelDensityJobParameter = new SuperMap.KernelDensityJobParameter({
+                datasetName: $('#datasetName').val() || $('#datasetName').attr('placeholder'),
+                resolution: $('#resolution').val() || $('#resolution').attr('placeholder'),
+                method: $('#method').val() || $('#method').attr('placeholder'),
+                meshType: $('#meshType').val() || $('#meshType').attr('placeholder'),
+                fields: $('#fields').val() || $('#fields').attr('placeholder'),
+                query: L.latLngBounds(L.latLng(query[1], query[0]), L.latLng(query[3], query[2])),
+                radius: $('#radius').val() || $('#radius').attr('placeholder')
+            }),
+            processingJobsService = new L.supermap.processingJobsService(processingJobsUrl);
 
+    SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(token, 'token');
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
-        if (map && layer) {
+        if (map && layer && baseLayer) {
             map.removeLayer(layer);
+            map.removeLayer(baseLayer);
         }
         processingJobsService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
             if (serviceResult.error) {
@@ -73,10 +112,17 @@
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                 if (info.serviceType === 'RESTMAP') {
-                    var mapUrl = info.serviceAddress + '/maps/kernelDensity1_Map';
-                    L.supermap.tiledMapLayer(mapUrl, {noWrap: true}).addTo(map);
-                    $("#model").modal('hide');
-                    $('#btn').prop('disabled', false);
+                    SuperMap.Request.get(info.serviceAddress + '/maps').then(function (response) {
+                        return response.json();
+                    }).then(function (result) {
+                        var mapUrl = result[0].path;
+                        baseLayer = L.supermap.tiledMapLayer(worldMapUrl, {noWrap: true});
+                        layer = L.supermap.tiledMapLayer(mapUrl, {noWrap: true, transparent: true});
+                        baseLayer.addTo(map);
+                        layer.addTo(map);
+                        $("#model").modal('hide');
+                        $('#btn').prop('disabled', false);
+                    });
                 }
             });
         });

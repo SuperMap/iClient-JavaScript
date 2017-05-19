@@ -310,6 +310,15 @@ var deps = {
                 "src": [
                     "./src/openlayers/overlay/VectorTileSuperMapRest.js"
                 ]
+            },
+            "Theme": {
+                "name": "专题图",
+                "src": [
+                    "./src/openlayers/overlay/theme/theme.js",
+                    "./src/openlayers/overlay/theme/geoFeature.js",
+                    "./src/openlayers/overlay/theme/unique.js",
+                    "./src/openlayers/overlay/theme/vector.js"
+                ]
             }
         }
     }

@@ -27,46 +27,100 @@
     </div>
 </div>
 <div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
-<div id="popup" class="ol-popup"/>
+<div id="popup" class="ol-popup" style='width:20%'>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">地图缓存作业</h3>
+        </div>
+        <div class="panel-body">
+            <div class="input-group">
+                <span class="input-group-addon">输入数据</span>
+                <input id="datasetName" type="text" class="form-control" placeholder="test_newyork_taxi_2013_01_14k"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">缓存类型</span>
+                <input id="imageType" type="text" class="form-control" placeholder="Heatmap"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">缓存范围</span>
+                <input id="bounds" type="text" class="form-control" placeholder="-74.050, 40.650, -73.850, 40.850"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">缓存比例尺级别</span>
+                <input id="level" type="text" class="form-control" placeholder="5"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">缓存名称</span>
+                <input id="cacheName" type="text" class="form-control" placeholder="cache"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">存储类型</span>
+                <input id="cacheType" type="text" class="form-control" placeholder="MongoDB"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">服务地址</span>
+                <input id="serverAdresses" type="text" class="form-control" placeholder="113.209.64.227:27010"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">数据库</span>
+                <input id="database" type="text" class="form-control" placeholder="smtiles"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">版本</span>
+                <input id="version" type="text" class="form-control" placeholder="v1"/>
+            </div>
+            <p>
+            <div align="right">
+                <input type="button" id='btn' class="btn btn-primary" value="创建"/>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var layer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
+    var layer, baseLayer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
             token = 'GSHB7qlocJkqEH0Ld6VUSGQfekOdPd3e9UdJoHjiupfbkGDggXQLSPWd6VaKm8NH4gvXx6UQ0TCI5wpfr-4Tlw..',
-            extent = [-74.05, 40.65, -73.85, 40.85],
-            projection = new ol.proj.Projection({
-                extent: extent,
-                units: 'm'
-            }),
+            worldMapUrl = 'http://113.209.64.227:8090/iserver/services/map-World/rest/maps/世界地图_Day',
             map = new ol.Map({
                 target: 'map',
                 view: new ol.View({
                     center: [-73.95, 40.75],
-                    zoom: 1,
-                    projection: projection
+                    zoom: 12,
+                    projection: 'EPSG:4326'
                 })
             }),
-            buildCacheJobParameter = new SuperMap.BuildCacheJobParameter({
-                datasetName: 'test_newyork_taxi_2013_01_14k',
-                cacheName: 'cache',
-                cacheType: 'MongoDB',
-                serverAdresses: ['113.209.64.227:27010'],
-                database: 'smtiles',
-                version: 'v1',
-                bounds: [-74.050, 40.650, -73.850, 40.850],
-                imageType: 'Heatmap',
-                level: 5
+            bounds = [],
+            serverAddress = [];
+    ($('#bounds').val() || $('#bounds').attr('placeholder')).split(',').map(function (el) {
+        return bounds.push(parseFloat(el));
+    });
+    serverAddress.push(($('#serverAdresses').val() || $('#serverAdresses').attr('placeholder')).toString());
+    var buildCacheJobParameter = new SuperMap.BuildCacheJobParameter({
+                datasetName: $('#datasetName').val() || $('#datasetName').attr('placeholder'),
+                cacheName: $('#cacheName').val() || $('#cacheName').attr('placeholder'),
+                cacheType: $('#cacheType').val() || $('#cacheType').attr('placeholder'),
+                serverAdresses: serverAddress,
+                database: $('#database').val() || $('#database').attr('placeholder'),
+                version: $('#version').val() || $('#version').attr('placeholder'),
+                bounds: bounds,
+                imageType: $('#imageType').val() || $('#imageType').attr('placeholder'),
+                level: parseInt($('#level').val() || $('#level').attr('placeholder'))
             }),
             processingJobsService = new ol.supermap.ProcessingJobsService(processingJobsUrl),
-            popup = document.getElementById('popup'),
-            button = document.createElement('button');
+            popup = document.getElementById('popup');
 
-    popup.appendChild(button);
-    button.id = 'btn'
-    button.className = 'btn btn-primary';
-    button.innerHTML = '创建生成地图缓存作业';
     var info = new ol.control.Control({element: popup});
     info.setMap(map);
     map.addControl(info);
@@ -76,8 +130,9 @@
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
-        if (map && layer) {
+        if (map && layer && baseLayer) {
             map.removeLayer(layer);
+            map.removeLayer(baseLayer);
         }
         processingJobsService.addBuildCacheJob(buildCacheJobParameter, function (serviceResult) {
             if (serviceResult.error) {
@@ -88,14 +143,24 @@
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                 if (info.serviceType === 'RESTMAP') {
-                    var mapUrl = info.serviceAddress + '/maps/cache';
-                    new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
-                        layer = new ol.layer.Tile({
-                            source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
+                    SuperMap.Request.get(info.serviceAddress + '/maps').then(function (response) {
+                        return response.json();
+                    }).then(function (result) {
+                        var mapUrl = result[0].path;
+                        new ol.supermap.MapService(worldMapUrl).getMapInfo(function (worldMapInfo) {
+                            baseLayer = new ol.layer.Tile({
+                                source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(worldMapUrl, worldMapInfo.result))
+                            });
+                            map.addLayer(baseLayer);
+                            new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
+                                layer = new ol.layer.Tile({
+                                    source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
+                                });
+                                map.addLayer(layer);
+                                $("#model").modal('hide');
+                                $('#btn').prop('disabled', false);
+                            });
                         });
-                        map.addLayer(layer);
-                        $("#model").modal('hide');
-                        $('#btn').prop('disabled', false);
                     });
                 }
             });
