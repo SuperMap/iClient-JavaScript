@@ -31,6 +31,7 @@ var FieldService = ServiceBase.extend({
     getFields: function (callback) {
         var me = this;
         var getFieldsService = new GetFieldsService(me.options.url, {
+            serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,

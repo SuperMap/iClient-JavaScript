@@ -30,6 +30,7 @@ ol.supermap.ProcessingJobsService.prototype.getKernelDensityJobs = function (cal
     var me = this,
         format = me._processFormat(resultFormat);
     var kernelDensityJobsService = new KernelDensityJobsService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -51,6 +52,7 @@ ol.supermap.ProcessingJobsService.prototype.getKernelDensityJob = function (id, 
     var me = this,
         format = me._processFormat(resultFormat);
     var kernelDensityJobsService = new KernelDensityJobsService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -103,6 +105,7 @@ ol.supermap.ProcessingJobsService.prototype.getSummaryMeshJobs = function (callb
     var me = this,
         format = me._processFormat(resultFormat);
     var summaryMeshJobsService = new SummaryMeshJobsService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -124,6 +127,7 @@ ol.supermap.ProcessingJobsService.prototype.getSummaryMeshJob = function (id, ca
     var me = this,
         format = me._processFormat(resultFormat);
     var summaryMeshJobsService = new SummaryMeshJobsService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -176,6 +180,7 @@ ol.supermap.ProcessingJobsService.prototype.getBuildCacheJobs = function (callba
     var me = this,
         format = me._processFormat(resultFormat);
     var buildCacheJobsService = new BuildCacheJobsService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -197,6 +202,7 @@ ol.supermap.ProcessingJobsService.prototype.getBuildCacheJob = function (id, cal
     var me = this,
         format = me._processFormat(resultFormat);
     var buildCacheJobsService = new BuildCacheJobsService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,

@@ -20,6 +20,7 @@ var ThemeService = ServiceBase.extend({
     getThemeInfo: function (params, callback) {
         var me = this;
         var themeService = new SuperMapThemeService(me.options.url, {
+            serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,

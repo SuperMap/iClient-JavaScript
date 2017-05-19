@@ -29,6 +29,7 @@ ol.inherits(ol.supermap.TrafficTransferAnalystService, ol.supermap.ServiceBase);
 ol.supermap.TrafficTransferAnalystService.prototype.queryStop = function (params, callback) {
     var me = this;
     var stopQueryService = new StopQueryService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -48,6 +49,7 @@ ol.supermap.TrafficTransferAnalystService.prototype.queryStop = function (params
 ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath = function (params, callback) {
     var me = this;
     var transferPathService = new TransferPathService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -67,6 +69,7 @@ ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath = funct
 ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution = function (params, callback) {
     var me = this;
     var transferSolutionService = new TransferSolutionService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,

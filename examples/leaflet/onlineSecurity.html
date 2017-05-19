@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Online SecurityManager使用示例</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+    <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+
+    <style>
+        .panel {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: auto;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div class="container">
+    <div class="page-header">
+        <h4>Online SecurityManager使用示例</h4>
+    </div>
+    <div class="row">
+        <table class="table table-bordered col-md-8">
+            <thead>
+            <tr>
+                <th class="text-center">功能</th>
+                <th class="text-center">示例</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="text-center text-success">登录</td>
+                <td>
+                    <div class="col-md-12 text-center">
+                        <a class="btn btn-success" onclick="loginOnline()">登录</a>
+                    </div>
+                </td>
+            </tr>
+
+            <!-- 注册key -->
+            <tr>
+                <td class="text-center text-success">key授权访问私有服务</td>
+                <td>
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <form class="form-horizontal">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <label for="serviceUrl_online" class="col-md-2 control-label">服务地址</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="serviceUrl_online">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="key_online" class="col-md-2 control-label">key</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="key_online">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 text-center">
+                                            <a class="btn btn-success" onclick="requestOnlineKeyService()">直接访问</a>
+                                            <a class="btn btn-success" onclick="registerOnlineKeyAndRequestService()">key授权访问</a>
+                                            <a class="btn btn-success" onclick="setDefaultOnlineValue()">填充默认值</a>
+                                            <a class="btn btn-success" onclick="resetOnlineKey()">清空凭据</a>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <!-- 出图 -->
+            <tr>
+                <td class="text-center text-success">key授权出图</td>
+                <td>
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <form class="form-horizontal">
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <label for="serviceUrlMap_online" class="col-md-2 control-label">服务地址</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="serviceUrlMap_online">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="mapKey_online" class="col-md-2 control-label">key</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="mapKey_online">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12" id="online_map" style=" height: 200px;"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12  text-center">
+                                                <a class="btn btn-success" onclick="setDefaultOnlineMapValue()">填充默认值</a>
+                                                <a class="btn btn-success" onclick="showMapWithOnlineKey()">key授权出图</a>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+
+    /*登录*/
+    function loginOnline() {
+        var href = window.location.href;
+        SuperMap.SecurityManager.loginOnline(href, true);
+    }
+    /*登录 end*/
+
+
+    /*注册key*/
+    function requestOnlineKeyService() {
+        var serviceUrl = getOnlineServiceUrl();
+        if (!checkUrl(serviceUrl)) {
+            return;
+        }
+        L.supermap.mapService(serviceUrl, {
+            serverType: SuperMap.ServerType.ONLINE
+        }).getMapInfo(function (json) {
+            if (json.error) {
+                alert(JSON.stringify(json.error))
+            } else {
+                alert(JSON.stringify(json.result))
+            }
+        });
+    }
+    function registerOnlineKeyAndRequestService() {
+        var key = $('#key_online').val();
+        var serviceUrl = getOnlineServiceUrl();
+        if (!checkUrl(serviceUrl)) {
+            return;
+        }
+        SuperMap.SecurityManager.registerKey(serviceUrl, key);
+        requestOnlineKeyService();
+    }
+    function resetOnlineKey() {
+        SuperMap.SecurityManager.destroyKey(getOnlineServiceUrl());
+        $('#key_online').val("");
+    }
+
+    function setDefaultOnlineValue() {
+        $('#key_online').val("Ie2kriXZZz9GPevFDBQzgLRf");
+        $("#serviceUrl_online").val("http://www.supermapol.com/iserver/services/bsaq89v0/rest/maps/World");
+    }
+    function setDefaultOnlineMapValue() {
+        $('#mapKey_online').val("Ie2kriXZZz9GPevFDBQzgLRf");
+        $("#serviceUrlMap_online").val("http://www.supermapol.com/iserver/services/bsaq89v0/rest/maps/World");
+    }
+
+    function getOnlineServiceUrl() {
+        return $("#serviceUrl_online").val();
+    }
+
+    /*注册key end*/
+
+    /*出图*/
+    function showMapWithOnlineKey() {
+        var key = $('#mapKey_online').val();
+        var mapUrl = $('#serviceUrlMap_online').val();
+        if (!checkUrl(mapUrl)) {
+            return;
+        }
+        SuperMap.SecurityManager.registerKey(mapUrl, key);
+
+        var onlineMap = L.map('online_map', {
+            crs: L.CRS.EPSG4326,
+            center: [30, 104],
+            maxZoom: 18,
+            zoom: 2
+        });
+        L.supermap.tiledMapLayer(mapUrl, {
+            serverType: SuperMap.ServerType.ONLINE
+        }).addTo(onlineMap);
+    }
+    /*出图 end*/
+
+
+    function checkUrl(url) {
+        if (url === "") {
+            alert("请填写URL");
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>

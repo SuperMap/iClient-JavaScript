@@ -1,4 +1,5 @@
 require('../core/Base');
+require('../../common/security/SecurityManager');
 var ol = require('openlayers');
 var SuperMap = require('../../common/SuperMap');
 ol.supermap.TileSuperMapRest = function (options) {
@@ -11,11 +12,42 @@ ol.supermap.TileSuperMapRest = function (options) {
                 html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
             })]
     }
+
     var layerUrl = options.url + "/image.png?redirect=false";
+    options.serverType = options.serverType || SuperMap.ServerType.ISERVER;
     //为url添加安全认证信息片段
-    if (SuperMap.Credential && SuperMap.Credential.CREDENTIAL) {
-        layerUrl += "&" + SuperMap.Credential.CREDENTIAL.getUrlParameters();
+    layerUrl = appendCredential(layerUrl, options.serverType);
+
+    function appendCredential(url, serverType) {
+        var newUrl = url, credential, value;
+        switch (serverType) {
+            case SuperMap.ServerType.ISERVER:
+                value = SuperMap.SecurityManager.getToken(url);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                break;
+            case SuperMap.ServerType.IPORTAL:
+                value = SuperMap.SecurityManager.getToken(url);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                if (!credential) {
+                    value = SuperMap.SecurityManager.getKey(url);
+                    credential = value ? new SuperMap.Credential(value, "key") : null;
+                }
+                break;
+            case SuperMap.ServerType.ONLINE:
+                value = SuperMap.SecurityManager.getKey(url);
+                credential = value ? new SuperMap.Credential(value, "key") : null;
+                break;
+            default:
+                value = SuperMap.SecurityManager.getToken(url);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                break;
+        }
+        if (credential) {
+            newUrl += "&" + credential.getUrlParameters();
+        }
+        return newUrl;
     }
+
     //切片是否透明
     var transparent = true;
     if (options.opaque !== undefined) {
@@ -34,6 +66,7 @@ ol.supermap.TileSuperMapRest = function (options) {
     if (options.layersID !== undefined) {
         layerUrl += "&layersID=" + options.layersID;
     }
+
     function tileUrlFunction(tileCoord, pixelRatio, projection) {
         if (!this.tileGrid) {
             this.tileGrid = this.getTileGridForProjection(projection);
@@ -64,7 +97,6 @@ ol.supermap.TileSuperMapRest = function (options) {
         wrapX: options.wrapX !== undefined ? options.wrapX : false,
         cacheEnabled: options.cacheEnabled,
         layersID: options.layersID
-
     });
 };
 ol.inherits(ol.supermap.TileSuperMapRest, ol.source.TileImage);

@@ -27,6 +27,7 @@ var GridCellInfosService = ServiceBase.extend({
         }
         var me = this;
         var gridCellQueryService = new GetGridCellInfosService(me.options.url, {
+            serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,

@@ -1,6 +1,6 @@
+require('./iPortalServiceBase');
 var SuperMap = require('../SuperMap');
-var Request = require('../util/Request');
-SuperMap.iPortalService = SuperMap.Class({
+SuperMap.iPortalService = SuperMap.Class(SuperMap.iPortalServiceBase, {
 
     addedMapNames: null,
     addedSceneNames: null,
@@ -34,15 +34,20 @@ SuperMap.iPortalService = SuperMap.Class({
         params = params || {};
         SuperMap.Util.extend(this, params);
         this.serviceUrl = seviceUrl + "/" + this.id;
+        SuperMap.iPortalServiceBase.prototype.initialize.call(this.serviceUrl);
     },
 
     load: function () {
         var me = this;
-        return Request.get(me.serviceUrl).then(function (serviceInfo) {
-            for (var key in serviceInfo) {
-                me[key] = serviceInfo[key];
-            }
-        });
+        return me.request("GET", me.serviceUrl + ".json")
+            .then(function (serviceInfo) {
+                if (serviceInfo.error) {
+                    return serviceInfo;
+                }
+                for (var key in serviceInfo) {
+                    me[key] = serviceInfo[key];
+                }
+            });
     },
 
     update: function () {
@@ -55,7 +60,7 @@ SuperMap.iPortalService = SuperMap.Class({
         var options = {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         };
-        return Request.put(this.serviceUrl, JSON.stringify(serviceUpdateParam), options);
+        return me.request("PUT", this.serviceUrl, JSON.stringify(serviceUpdateParam), options);
     }
 
 });

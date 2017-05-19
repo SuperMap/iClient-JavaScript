@@ -37,6 +37,7 @@ var NetworkAnalyst3DService = ServiceBase.extend({
     sinksFacilityAnalyst: function (params, callback) {
         var me = this;
         var facilityAnalystSinks3DService = new FacilityAnalystSinks3DService(me.options.url, {
+            serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -55,6 +56,7 @@ var NetworkAnalyst3DService = ServiceBase.extend({
     sourcesFacilityAnalyst: function (params, callback) {
         var me = this;
         var facilityAnalystSources3DService = new FacilityAnalystSources3DService(me.options.url, {
+            serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -73,6 +75,7 @@ var NetworkAnalyst3DService = ServiceBase.extend({
     traceUpFacilityAnalyst: function (params, callback) {
         var me = this;
         var facilityAnalystTraceup3DService = new FacilityAnalystTraceup3DService(me.options.url, {
+            serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -91,6 +94,7 @@ var NetworkAnalyst3DService = ServiceBase.extend({
     traceDownFacilityAnalyst: function (params, callback) {
         var me = this;
         var facilityAnalystTracedown3DService = new FacilityAnalystTracedown3DService(me.options.url, {
+            serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -110,6 +114,7 @@ var NetworkAnalyst3DService = ServiceBase.extend({
     upstreamFacilityAnalyst: function (params, callback) {
         var me = this;
         var facilityAnalystUpstream3DService = new FacilityAnalystUpstream3DService(me.options.url, {
+            serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,

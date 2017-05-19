@@ -7,7 +7,7 @@
 require('./OnlineQueryDatasParameter');
 var SuperMap = require('../SuperMap');
 var Request = require('../util/Request');
-var OnlineSecurity = require('./OnlineSecurity');
+var SecurityManager = require('../security/SecurityManager');
 var OnlineData = require('./OnlineData');
 SuperMap.Online = SuperMap.Class({
 
@@ -28,9 +28,6 @@ SuperMap.Online = SuperMap.Class({
 
         var mContentUrl = this.webUrl + "/mycontent";
         this.mDatasUrl = mContentUrl + "/datas";
-
-        this.security = new OnlineSecurity();
-        this.request = new Request();
     },
 
     load: function () {
@@ -41,7 +38,7 @@ SuperMap.Online = SuperMap.Class({
 
 
     login: function () {
-        this.security.login();
+        SecurityManager.loginOnline(this.rootUrl, true);
     },
 
     /**
@@ -53,7 +50,7 @@ SuperMap.Online = SuperMap.Class({
         if (parameter) {
             parameter = parameter.toJSON();
         }
-        return this.request.get(url, parameter).then(function (json) {
+        return Request.get(url, parameter).then(function (json) {
             if (!json || !json.content || json.content.length < 1) {
                 return;
             }

@@ -1,11 +1,28 @@
 require("whatwg-fetch");
 var fetchJsonp = require('fetch-jsonp');
 var SuperMap = require('../SuperMap');
+
 SuperMap.Support = {
     cors: ((window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()))
 };
 
 SuperMap.Request = {
+
+    commit: function (method, url, params, options) {
+        method = method ? method.toUpperCase() : method;
+        switch (method) {
+            case 'GET':
+                return this.get(url, params, options);
+            case 'POST':
+                return this.POST(url, params, options);
+            case 'PUT':
+                return this.put(url, params, options);
+            case 'DELETE':
+                return this.delete(url, params, options);
+            default:
+                return this.get(url, params, options);
+        }
+    },
 
     get: function (url, params, options) {
         var type = 'GET';
@@ -58,6 +75,10 @@ SuperMap.Request = {
 
     _fetch: function (url, params, options, type) {
         options = options || {};
+        options.headers = options.headers || {};
+        if (!options.headers['Content-Type']) {
+            options.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+        }
         if (options.timeout) {
             return this._timeout(options.timeout, fetch(url, {
                 method: type,
@@ -72,7 +93,9 @@ SuperMap.Request = {
         return fetch(url, {
             method: type,
             body: type === 'PUT' || type === 'POST' ? params : undefined,
-            headers: options.headers
+            headers: options.headers,
+            credentials: options.withCredentials ? 'include' : 'omit',
+            mode: 'cors'
         }).then(function (response) {
             return response;
         });

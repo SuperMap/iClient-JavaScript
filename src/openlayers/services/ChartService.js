@@ -30,6 +30,7 @@ ol.supermap.ChartService.prototype.queryChart = function (params, callback, resu
         param = me._processParams(params),
         format = me._processFormat(resultFormat);
     var chartQueryService = new ChartQueryService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -49,6 +50,7 @@ ol.supermap.ChartService.prototype.getChartFeatureInfo = function (callback) {
     var me = this, url = me.options.url.concat();
     url += "/chartFeatureInfoSpecs";
     var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,

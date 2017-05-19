@@ -10,7 +10,7 @@
  */
 require('./ServiceBase');
 var ol = require('openlayers');
-var Util=require('../core/Util');
+var Util = require('../core/Util');
 var SuperMap = require('../../common/SuperMap');
 var GetFeaturesByIDsService = require('../../common/iServer/GetFeaturesByIDsService');
 var GetFeaturesBySQLService = require('../../common/iServer/GetFeaturesBySQLService');
@@ -35,6 +35,7 @@ ol.inherits(ol.supermap.FeatureService, ol.supermap.ServiceBase);
 ol.supermap.FeatureService.prototype.getFeaturesByIDs = function (params, callback, resultFormat) {
     var me = this;
     var getFeaturesByIDsService = new GetFeaturesByIDsService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
             processFailed: callback
@@ -57,6 +58,7 @@ ol.supermap.FeatureService.prototype.getFeaturesByIDs = function (params, callba
 ol.supermap.FeatureService.prototype.getFeaturesByBounds = function (params, callback, resultFormat) {
     var me = this;
     var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
             processFailed: callback
@@ -78,6 +80,7 @@ ol.supermap.FeatureService.prototype.getFeaturesByBounds = function (params, cal
 ol.supermap.FeatureService.prototype.getFeaturesByBuffer = function (params, callback, resultFormat) {
     var me = this;
     var getFeatureService = new GetFeaturesByBufferService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
             processFailed: callback
@@ -99,6 +102,7 @@ ol.supermap.FeatureService.prototype.getFeaturesByBuffer = function (params, cal
 ol.supermap.FeatureService.prototype.getFeaturesBySQL = function (params, callback, resultFormat) {
     var me = this;
     var getFeatureBySQLService = new GetFeaturesBySQLService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
             processFailed: callback
@@ -121,6 +125,7 @@ ol.supermap.FeatureService.prototype.getFeaturesBySQL = function (params, callba
 ol.supermap.FeatureService.prototype.getFeaturesByGeometry = function (params, callback, resultFormat) {
     var me = this;
     var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
             processFailed: callback
@@ -148,6 +153,7 @@ ol.supermap.FeatureService.prototype.editFeatures = function (params, callback) 
 
     url += "/datasources/" + dataSourceName + "/datasets/" + dataSetName;
     var editFeatureService = new EditFeaturesService(url, {
+        serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
             processFailed: callback

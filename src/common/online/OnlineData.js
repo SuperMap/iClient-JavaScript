@@ -1,9 +1,9 @@
 /**
  * Online myData服务
  */
+require('./OnlineServiceBase');
 var SuperMap = require('../SuperMap');
-var Request = require('../util/Request');
-SuperMap.OnlineData = SuperMap.Class({
+SuperMap.OnlineData = SuperMap.Class(SuperMap.OnlineServiceBase, {
     //MD5
     MD5: null,
     //文件类型。
@@ -69,6 +69,7 @@ SuperMap.OnlineData = SuperMap.Class({
         SuperMap.Util.extend(me, options);
         if (serviceRootUrl) {
             me.serviceUrl = serviceRootUrl + "/" + me.id;
+            SuperMap.OnlineServiceBase.prototype.initialize.call(me.serviceUrl);
         }
     },
 
@@ -78,7 +79,7 @@ SuperMap.OnlineData = SuperMap.Class({
             return;
         }
         var me = this;
-        return Request.get(this.serviceUrl).then(function (result) {
+        return me.request("GET", this.serviceUrl).then(function (result) {
             SuperMap.Util.extend(me, result);
         });
     },
@@ -96,6 +97,5 @@ SuperMap.OnlineData = SuperMap.Class({
 
     CLASS_NAME: "SuperMap.OnlineData"
 
-})
-;
+});
 module.exports = SuperMap.OnlineData;

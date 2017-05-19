@@ -988,3 +988,20 @@ SuperMap.Exponent = {
     EXP1: "EXP1",
     EXP2: "EXP2"
 };
+SuperMap.ServerType = {
+    ISERVER: "ISERVER",
+    IPORTAL: "IPORTAL",
+    ONLINE: "ONLINE"
+};
+/**
+ * token申请的客户端标识类型
+ * @type {{IP: string, REFERER: string, REQUESTIP: string, NONE: string}}
+ */
+SuperMap.ClientType = {
+    IP: "IP",
+    REFERER: "Referer",
+    REQUESTIP: "RequestIP",
+    NONE: "NONE",
+    SERVER:"SERVER",
+    WEB:"WEB"
+};

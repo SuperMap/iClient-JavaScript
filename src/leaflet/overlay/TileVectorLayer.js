@@ -5,6 +5,7 @@
  *      L.superMap.tiledVectorLayer(url).addTo(map);
  */
 require('../core/Base');
+require('../../common/security/SecurityManager');
 require('./vectortile/VectorGrid');
 var L = require("leaflet");
 var CartoCSSToLeaflet = require('./carto/CartoCSSToLeaflet');
@@ -13,7 +14,8 @@ var TileVectorLayer = L.VectorGrid.extend({
 
     options: {
         url: null,
-        token: null,
+        //服务器类型<SuperMap.ServerType>iServer|iPortal|Online
+        serverType: null,
         crs: null,
         cartoCSS: null,
         // 指定图层的名称列表。支持的类型为矢量图层
@@ -360,9 +362,10 @@ var TileVectorLayer = L.VectorGrid.extend({
     _createURLParam: function (options) {
         var params = [];
 
-        //为url添加安全认证信息片段
-        if (options.token) {
-            params.push("token=" + options.token);
+        //添加安全认证信息
+        var credential = this._getCredential();
+        if (credential) {
+            params.push(credential);
         }
         if (options.layersID) {
             params.push("layersID=" + options.layersID);
@@ -383,6 +386,37 @@ var TileVectorLayer = L.VectorGrid.extend({
         params.push("width=" + tileSize);
         params.push("height=" + tileSize);
         return params.join("&");
+    },
+
+    //获取token或key表达式
+    _getCredential: function (url) {
+        var credential, value;
+        switch (this.options.serverType) {
+            case SuperMap.ServerType.ISERVER:
+                value = SuperMap.SecurityManager.getToken(url);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                break;
+            case SuperMap.ServerType.IPORTAL:
+                value = SuperMap.SecurityManager.getToken(url);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                if (!credential) {
+                    value = SuperMap.SecurityManager.getKey(url);
+                    credential = value ? new SuperMap.Credential(value, "key") : null;
+                }
+                break;
+            case SuperMap.ServerType.ONLINE:
+                value = SuperMap.SecurityManager.getKey(url);
+                credential = value ? new SuperMap.Credential(value, "key") : null;
+                break;
+            default:
+                value = SuperMap.SecurityManager.getToken(url);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                break;
+        }
+        if (credential) {
+            return credential.getUrlParameters();
+        }
+        return null;
     }
 });
 

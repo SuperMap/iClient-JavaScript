@@ -45,6 +45,7 @@ ol.inherits(ol.supermap.NetworkAnalystService, ol.supermap.ServiceBase);
 ol.supermap.NetworkAnalystService.prototype.burstPipelineAnalyst = function (params, callback) {
     var me = this;
     var burstPipelineAnalystService = new BurstPipelineAnalystService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -64,6 +65,7 @@ ol.supermap.NetworkAnalystService.prototype.burstPipelineAnalyst = function (par
 ol.supermap.NetworkAnalystService.prototype.computeWeightMatrix = function (params, callback) {
     var me = this;
     var computeWeightMatrixService = new ComputeWeightMatrixService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -84,6 +86,7 @@ ol.supermap.NetworkAnalystService.prototype.computeWeightMatrix = function (para
 ol.supermap.NetworkAnalystService.prototype.findClosestFacilities = function (params, callback, resultFormat) {
     var me = this;
     var findClosestFacilitiesService = new FindClosestFacilitiesService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -105,6 +108,7 @@ ol.supermap.NetworkAnalystService.prototype.findClosestFacilities = function (pa
 ol.supermap.NetworkAnalystService.prototype.streamFacilityAnalyst = function (params, callback, resultFormat) {
     var me = this;
     var facilityAnalystStreamService = new FacilityAnalystStreamService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -126,6 +130,7 @@ ol.supermap.NetworkAnalystService.prototype.streamFacilityAnalyst = function (pa
 ol.supermap.NetworkAnalystService.prototype.findLocation = function (params, callback, resultFormat) {
     var me = this;
     var findLocationService = new FindLocationService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -147,6 +152,7 @@ ol.supermap.NetworkAnalystService.prototype.findLocation = function (params, cal
 ol.supermap.NetworkAnalystService.prototype.findTSPPaths = function (params, callback, resultFormat) {
     var me = this;
     var findTSPPathsService = new FindTSPPathsService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -168,6 +174,7 @@ ol.supermap.NetworkAnalystService.prototype.findTSPPaths = function (params, cal
 ol.supermap.NetworkAnalystService.prototype.findPath = function (params, callback, resultFormat) {
     var me = this;
     var findPathService = new FindPathService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -189,6 +196,7 @@ ol.supermap.NetworkAnalystService.prototype.findPath = function (params, callbac
 ol.supermap.NetworkAnalystService.prototype.findMTSPPaths = function (params, callback, resultFormat) {
     var me = this;
     var findMTSPPathsService = new FindMTSPPathsService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -210,6 +218,7 @@ ol.supermap.NetworkAnalystService.prototype.findMTSPPaths = function (params, ca
 ol.supermap.NetworkAnalystService.prototype.findServiceAreas = function (params, callback, resultFormat) {
     var me = this;
     var findServiceAreasService = new FindServiceAreasService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -230,6 +239,7 @@ ol.supermap.NetworkAnalystService.prototype.findServiceAreas = function (params,
 ol.supermap.NetworkAnalystService.prototype.updateEdgeWeight = function (params, callback) {
     var me = this;
     var updateEdgeWeightService = new UpdateEdgeWeightService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -249,6 +259,7 @@ ol.supermap.NetworkAnalystService.prototype.updateEdgeWeight = function (params,
 ol.supermap.NetworkAnalystService.prototype.updateTurnNodeWeight = function (params, callback) {
     var me = this;
     var updateTurnNodeWeightService = new UpdateTurnNodeWeightService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             scope: me,
             processCompleted: callback,

@@ -13,6 +13,9 @@ var deps = {
         "style": [
             "./src/common/style/CartoCSS.js"
         ],
+        "security": [
+            "./src/common/security/SecurityManager.js"
+        ],
         // "iManager" : [],
         "online": [
             "./src/common/online/Online.js"
@@ -87,6 +90,7 @@ var deps = {
             "./src/common/iServer/KernelDensityJobsService.js",
             "./src/common/iServer/BuildCacheJobsService.js",
         ]
+
     },
 
     "leaflet": {
@@ -177,7 +181,20 @@ var deps = {
                 "src": [
                     "./src/leaflet/services/ProcessingJobsService.js"
                 ]
+            },
+            "iPortal": {
+                "name": "iPortal服务",
+                "src": [
+                    "./src/common/iPortal/iPortal.js"
+                ]
+            },
+            "Online": {
+                "name": "Online服务",
+                "src": [
+                    "./src/common/online/Online.js"
+                ]
             }
+
         },
 
         "overlay": {

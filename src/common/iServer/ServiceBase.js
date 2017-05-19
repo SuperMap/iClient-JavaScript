@@ -2,6 +2,7 @@
  * Class: SuperMap.ServiceBase
  * common服务基类
  */
+require('../security/SecurityManager');
 var SuperMap = require('../SuperMap');
 SuperMap.ServiceBase = SuperMap.Class({
 
@@ -48,11 +49,10 @@ SuperMap.ServiceBase = SuperMap.Class({
     urls: null,
 
     /**
-     * Property: token
-     * {Array} 服务访问token。
+     *  Property: serverType
+     *  {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online
      */
-    token: null,
-
+    serverType: null,
 
     /**
      * Property: index
@@ -113,7 +113,7 @@ SuperMap.ServiceBase = SuperMap.Class({
             me.urls = url;
             me.length = url.length;
             me.totalTimes = me.length;
-            if (me.length == 1) {
+            if (me.length === 1) {
                 me.url = url[0];
             } else {
                 me.index = parseInt(Math.random() * me.length);
@@ -128,6 +128,8 @@ SuperMap.ServiceBase = SuperMap.Class({
             me.url = url[0];
             me.totalTimes = 1;
         }
+
+        me.serverType = me.serverType || SuperMap.ServerType.ISERVER;
 
         options = options || {};
 
@@ -156,7 +158,6 @@ SuperMap.ServiceBase = SuperMap.Class({
             me.totalTimes = null;
         }
         me.url = null;
-        me.token = null;
         me.options = null;
         me._processSuccess = null;
         me._processFailed = null;
@@ -195,17 +196,18 @@ SuperMap.ServiceBase = SuperMap.Class({
         options.url = options.url || me.url;
         options.isInTheSameDomain = me.isInTheSameDomain;
         //为url添加安全认证信息片段
-        if (me.token) {
+        var credential = this.getCredential(options.url);
+        if (credential) {
             //当url中含有?，并且?在url末尾的时候直接添加token *网络分析等服务请求url会出现末尾是?的情况*
             //当url中含有?，并且?不在url末尾的时候添加&token
             //当url中不含有?，在url末尾添加?token
             var endStr = options.url.substring(options.url.length - 1, options.url.length);
             if (options.url.indexOf("?") > -1 && endStr === "?") {
-                options.url += me.createUrlTokenParameter();
+                options.url += credential.getUrlParameters();
             } else if (options.url.indexOf("?") > -1 && endStr !== "?") {
-                options.url += "&" + me.createUrlTokenParameter();
+                options.url += "&" + credential.getUrlParameters();
             } else {
-                options.url += "?" + me.createUrlTokenParameter();
+                options.url += "?" + credential.getUrlParameters();
             }
         }
         me.calculatePollingTimes();
@@ -219,11 +221,35 @@ SuperMap.ServiceBase = SuperMap.Class({
     },
 
     /**
-     * Method: getUrlTokenParameter
-     * url中添加token。
+     * 获取凭据信息
+     * @param url
      */
-    createUrlTokenParameter: function () {
-        return (this.token) ? "token=" + this.token : "";
+    getCredential: function (url) {
+        var restUrl = this._clipUrlRestString(url);
+        var credential, value;
+        switch (this.serverType) {
+            case SuperMap.ServerType.ISERVER:
+                value = SuperMap.SecurityManager.getToken(restUrl);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                break;
+            case SuperMap.ServerType.IPORTAL:
+                value = SuperMap.SecurityManager.getToken(restUrl);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                if (!credential) {
+                    value = SuperMap.SecurityManager.getKey(restUrl);
+                    credential = value ? new SuperMap.Credential(value, "key") : null;
+                }
+                break;
+            case SuperMap.ServerType.ONLINE:
+                value = SuperMap.SecurityManager.getKey(restUrl);
+                credential = value ? new SuperMap.Credential(value, "key") : null;
+                break;
+            default:
+                value = SuperMap.SecurityManager.getToken(restUrl);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                break;
+        }
+        return credential;
     },
 
     /**
@@ -319,8 +345,8 @@ SuperMap.ServiceBase = SuperMap.Class({
     isServiceSupportPolling: function () {
         var me = this;
         return !(
-            me.CLASS_NAME == "SuperMap.REST.ThemeService" ||
-            me.CLASS_NAME == "SuperMap.REST.EditFeaturesService"
+            me.CLASS_NAME === "SuperMap.REST.ThemeService" ||
+            me.CLASS_NAME === "SuperMap.REST.EditFeaturesService"
         );
     },
 
@@ -348,6 +374,24 @@ SuperMap.ServiceBase = SuperMap.Class({
         var error = result.error || result;
         this.events.triggerEvent("processFailed", {error: error});
     },
+
+    /**
+     * 截取url rest路径
+     * @param url
+     * @private
+     */
+    _clipUrlRestString: function (url) {
+        if (!url) {
+            return url;
+        }
+        var patten = /http:\/\/(.*\/rest)/i;
+        var restStr = url.match(patten)[0];
+        if (restStr.indexOf("rest") < 1) {
+            return url;
+        }
+        return restStr;
+    },
+
     CLASS_NAME: "SuperMap.ServiceBase"
 });
 module.exports = SuperMap.ServiceBase;

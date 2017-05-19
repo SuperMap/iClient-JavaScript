@@ -5,12 +5,14 @@
  *      L.superMap.tiledMapLayer(url,{CRS:L.CRS.EPSG4326}).addTo(map);
  */
 require('../core/Base');
+require('../../common/security/SecurityManager');
 var L = require("leaflet");
+var SuperMap = require("../../common/SuperMap");
 var TiledMapLayer = L.TileLayer.extend({
 
     options: {
         url: null,
-        token: null,
+        serverType: SuperMap.ServerType.ISERVER,
         transparent: null,
         cacheEnabled: null,
         layersID: null, //如果有layersID，则是在使用专题图
@@ -55,10 +57,7 @@ var TiledMapLayer = L.TileLayer.extend({
 
         var layerUrl = options.url + "/image.png?redirect=false";
 
-        //为url添加安全认证信息片段
-        if (options.token) {
-            layerUrl += "&token=" + options.token;
-        }
+        layerUrl = this._appendCredential(layerUrl);
 
         if (options.layersID) {
             layerUrl += "&layersID=" + options.layersID;
@@ -74,6 +73,37 @@ var TiledMapLayer = L.TileLayer.extend({
         layerUrl += "&width=" + tileSize + "&height=" + tileSize;
 
         return layerUrl;
+    },
+
+    //追加token或key
+    _appendCredential: function (url) {
+        var newUrl = url, credential, value;
+        switch (this.options.serverType) {
+            case SuperMap.ServerType.ISERVER:
+                value = SuperMap.SecurityManager.getToken(url);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                break;
+            case SuperMap.ServerType.IPORTAL:
+                value = SuperMap.SecurityManager.getToken(url);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                if (!credential) {
+                    value = SuperMap.SecurityManager.getKey(url);
+                    credential = value ? new SuperMap.Credential(value, "key") : null;
+                }
+                break;
+            case SuperMap.ServerType.ONLINE:
+                value = SuperMap.SecurityManager.getKey(url);
+                credential = value ? new SuperMap.Credential(value, "key") : null;
+                break;
+            default:
+                value = SuperMap.SecurityManager.getToken(url);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                break;
+        }
+        if (credential) {
+            newUrl += "&" + credential.getUrlParameters();
+        }
+        return newUrl;
     }
 });
 

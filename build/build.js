@@ -35,23 +35,25 @@ function init() {
     $('#deplist li')[0].className = 'active';
     for (var openlayersModule in openlayersModules) {
         var title = openlayersModules[openlayersModule].title;
-        addGroup('openlayers', title, openlayersModules[openlayersModule].description, $('#openlayersselect')[0]);
+        addGroup('openlayers', openlayersModule, title, openlayersModules[openlayersModule].description, $('#openlayersselect')[0]);
         for (var module in openlayersModules[openlayersModule]) {
             if (module === 'title' || module === 'description') {
                 continue;
             }
-            addModule(module, $('#openlayers_' + title)[0], false, openlayersModules[openlayersModule][module].name);
+            addModule(module, $('#openlayers_' + openlayersModule)[0], false, openlayersModules[openlayersModule][module].name);
         }
+        $('#openlayers_' + openlayersModule).append($("<div style='clear:both;'></div>"));
     }
     for (var leafletModule in leafletModules) {
         var title = leafletModules[leafletModule].title;
-        addGroup('leaflet', title, leafletModules[leafletModule].description, $('#leafletselect')[0]);
+        addGroup('leaflet', leafletModule, title, leafletModules[leafletModule].description, $('#leafletselect')[0]);
         for (var module in leafletModules[leafletModule]) {
             if (module === 'title' || module === 'description') {
                 continue;
             }
-            addModule(module, $('#leaflet_' + title)[0], false, leafletModules[leafletModule][module].name);
+            addModule(module, $('#leaflet_' + leafletModule)[0], false, leafletModules[leafletModule][module].name);
         }
+        $('#leaflet_' + leafletModule).append($("<div style='clear:both;'></div>"));
     }
     updateCommand();
 
@@ -78,9 +80,9 @@ function cancelChecked(clientName) {
     }
 }
 
-function addGroup(client, title, description, div) {
+function addGroup(client, id, title, description, div) {
     var ul = document.createElement('ul');
-    ul.id = client + '_' + title;
+    ul.id = client + '_' + id;
     ul.className = 'deplist';
     var container = document.createElement('div');
     container.className = "contents";

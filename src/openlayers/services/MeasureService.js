@@ -23,6 +23,7 @@ ol.supermap.MeasureService.prototype.measureArea = function (params, callback) {
 ol.supermap.MeasureService.prototype.measure = function (params, type, callback) {
     var me = this;
     var measureService = new MeasureService(me.options.url, {
+        serverType: me.options.serverType,
         measureMode: type,
         eventListeners: {
             scope: me,

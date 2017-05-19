@@ -10,6 +10,8 @@ ol.supermap.ServiceBase = function (url, options) {
     ol.Observable.call(this);
     this.options = options || {};
     this.options.url = url;
+    //服务来源 iServer|iPortal|online
+    this.options.serverType = url;
     this.dispatchEvent(new ol.supermap.ResultEvent('initialized', this));
 };
 ol.inherits(ol.supermap.ServiceBase, ol.Observable);

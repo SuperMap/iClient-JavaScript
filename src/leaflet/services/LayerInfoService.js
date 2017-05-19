@@ -22,6 +22,7 @@ var LayerInfoService = ServiceBase.extend({
     getLayersInfo: function (callback) {
         var me = this;
         var getLayersInfoService = new GetLayersInfoService(me.options.url, {
+            serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback
@@ -53,6 +54,7 @@ var LayerInfoService = ServiceBase.extend({
         url += "/tempLayersSet/" + tempLayerID + "/" + layerPath;
 
         var setLayerInfoService = new SetLayerInfoService(url, {
+            serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback
@@ -86,6 +88,7 @@ var LayerInfoService = ServiceBase.extend({
         layersInfoParam.subLayers = {};
         layersInfoParam.subLayers.layers = layersInfo;
         var setLayersInfoService = new SetLayersInfoService(me.options.url, {
+            serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback
@@ -112,6 +115,7 @@ var LayerInfoService = ServiceBase.extend({
         }
         var me = this;
         var setLayerStatusService = new SetLayerStatusService(me.options.url, {
+            serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
                 processFailed: callback

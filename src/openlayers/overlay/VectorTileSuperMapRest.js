@@ -1,4 +1,5 @@
 require('../core/Base');
+require('../../common/security/SecurityManager');
 require('./vectortile/VectorTileStyles');
 require('./vectortile/StyleMap');
 require('./vectortile/DeafultCanvasStyle');
@@ -21,9 +22,38 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
         layerUrl = options.url + '/tileFeature.mvt?';
     }
     //为url添加安全认证信息片段
-    if (SuperMap.Credential && SuperMap.Credential.CREDENTIAL) {
-        layerUrl += "&" + SuperMap.Credential.CREDENTIAL.getUrlParameters();
+    options.serverType = options.serverType || SuperMap.ServerType.ISERVER;
+    layerUrl = appendCredential(layerUrl, options.serverType);
+    function appendCredential(url, serverType) {
+        var newUrl = url, credential, value;
+        switch (serverType) {
+            case SuperMap.ServerType.ISERVER:
+                value = SuperMap.SecurityManager.getToken(url);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                break;
+            case SuperMap.ServerType.IPORTAL:
+                value = SuperMap.SecurityManager.getToken(url);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                if (!credential) {
+                    value = SuperMap.SecurityManager.getKey(url);
+                    credential = value ? new SuperMap.Credential(value, "key") : null;
+                }
+                break;
+            case SuperMap.ServerType.ONLINE:
+                value = SuperMap.SecurityManager.getKey(url);
+                credential = value ? new SuperMap.Credential(value, "key") : null;
+                break;
+            default:
+                value = SuperMap.SecurityManager.getToken(url);
+                credential = value ? new SuperMap.Credential(value, "token") : null;
+                break;
+        }
+        if (credential) {
+            newUrl += "&" + credential.getUrlParameters();
+        }
+        return newUrl;
     }
+
     var returnAttributes = true;
     if (options.returnAttributes !== undefined) {
         returnAttributes = options.returnAttributes

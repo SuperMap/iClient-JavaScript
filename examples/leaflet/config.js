@@ -235,6 +235,14 @@ var exampleConfig = {
                     thumbnail: "l_iPortalWebmap.png",
                     fileName: "iPortalWebmap"
                 }]
+            },
+            "ip_security": {
+                name: "安全",
+                content: [{
+                    name: "安全认证",
+                    thumbnail: "l_iportalSecurity.png",
+                    fileName: "iPortalSecurity"
+                }]
             }
         }
     },
@@ -247,6 +255,14 @@ var exampleConfig = {
                     name: "黄龙溪徒步",
                     thumbnail: "l_onlineWebmap.png",
                     fileName: "onlineWebmap"
+                }]
+            },
+            "ol_security": {
+                name: "安全",
+                content: [{
+                    name: "安全认证",
+                    thumbnail: "l_onlineSecurity.png",
+                    fileName: "onlineSecurity"
                 }]
             }
         }

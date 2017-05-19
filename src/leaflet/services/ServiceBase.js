@@ -2,13 +2,15 @@
  * Class: ServiceBase
  * 服务基类
  */
-var L = require("leaflet");
 require('../core/Base');
 require('../../common/util/Request');
+var L = require("leaflet");
 
 var ServiceBase = L.Evented.extend({
     options: {
-        url: null
+        url: null,
+        //服务来源 iServer|iPortal|online
+        serverType: null
     },
     initialize: function (url, options) {
         if (url) {

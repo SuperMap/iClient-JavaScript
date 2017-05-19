@@ -22,6 +22,7 @@ ol.inherits(ol.supermap.LayerInfoService, ol.supermap.ServiceBase);
 ol.supermap.LayerInfoService.prototype.getLayersInfo = function (callback) {
     var me = this;
     var getLayersInfoService = new GetLayersInfoService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
             processFailed: callback
@@ -53,6 +54,7 @@ ol.supermap.LayerInfoService.prototype.setLayerInfo = function (params, callback
     url += "/tempLayersSet/" + tempLayerID + "/" + layerPath;
 
     var setLayerInfoService = new SetLayerInfoService(url, {
+        serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
             processFailed: callback
@@ -85,6 +87,7 @@ ol.supermap.LayerInfoService.prototype.setLayersInfo = function (params, callbac
     layersInfoParam.subLayers = {};
     layersInfoParam.subLayers.layers = layersInfo;
     var setLayersInfoService = new SetLayersInfoService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
             processFailed: callback
@@ -110,6 +113,7 @@ ol.supermap.LayerInfoService.prototype.setLayerStatus = function (params, callba
     }
     var me = this;
     var setLayerStatusService = new SetLayerStatusService(me.options.url, {
+        serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
             processFailed: callback
