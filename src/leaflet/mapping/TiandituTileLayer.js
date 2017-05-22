@@ -1,6 +1,7 @@
 require("../core/Base");
 var L = require("leaflet");
-var TiandituTileLayer = L.TileLayer.WMTS.extend({
+var WMTS = require("./TileLayer.WMTS");
+var TiandituTileLayer = WMTS.extend({
     defaultURL: 'http://t{s}.tianditu.com/img_w/wmts?"',
     options: {
         layer: "img",
