@@ -23,8 +23,7 @@
         });
         var stylesOptions = {
             url: url,
-            view: map.getView(),
-            donotNeedServerCartoCss: false
+            view: map.getView()
         }
         var vectorTileStyles = new ol.supermap.VectorTileStyles(stylesOptions);
         var vectorTileOptions = ol.supermap.VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);

@@ -8062,9 +8062,9 @@ var SuperMap = __webpack_require__(0);
 ol.supermap.StyleUtils = {
     getValidStyleFromLayerInfo: function (layerInfo, feature, url) {
         var type = feature.getGeometry().getType().toUpperCase(),
-            style = this.getDefaultStyle(type),
-            shader = layerInfo.layerStyle;
-        if ((type === "POINT" || type === 'MULTIPOINT') && !feature.getProperties().textStyle && layerInfo.type !== 'LABEL') {
+            shader = layerInfo.layerStyle,
+            style = this.getDefaultStyle(type);
+        if ((type === "POINT" || type === 'MULTIPOINT') && !feature.getProperties().textStyle && layerInfo.type !== 'LABEL' && !feature.getProperties().TEXT_FEATURE_CONTENT) {
             if (shader) {
                 var symbolParameters = {
                     "transparent": true,
@@ -8082,11 +8082,15 @@ ol.supermap.StyleUtils = {
                 });
             }
             return this.toOLPointStyle(style);
-        } else if ((type === "POINT" || type === 'MULTIPOINT') && (feature.getProperties().textStyle || layerInfo.type === 'LABEL')) {
+        } else if ((type === "POINT" || type === 'MULTIPOINT') && (feature.getProperties().textStyle || layerInfo.type === 'LABEL' || feature.getProperties().TEXT_STYLE_INFO)) {
+            style = this.getDefaultStyle('TEXT');
             if (feature.getProperties().textStyle) {
                 shader = feature.getProperties().textStyle;
             }
-            if (shader) {
+            if (feature.getProperties().TEXT_STYLE_INFO) {
+                shader = feature.getProperties().TEXT_STYLE_INFO;
+            }
+            if (shader && shader !== "{}") {
                 var fontStr = "";
                 //设置文本是否倾斜
                 style.fontStyle = !!shader.italic ? "italic" : "normal";
@@ -8140,11 +8144,14 @@ ol.supermap.StyleUtils = {
             if (feature.getProperties().textStyle && feature.getProperties().texts) {
                 text = feature.getProperties().texts[0];
             }
-            if (layerInfo.type === 'LABEL' && feature.getProperties().attributes !== null) {
+            if (layerInfo.type === 'LABEL') {
                 text = feature.getProperties().attributes ? feature.getProperties().attributes[layerInfo.textField] : feature.getProperties()[layerInfo.textField];
             }
+            if (feature.getProperties().TEXT_FEATURE_CONTENT) {
+                text = feature.getProperties().TEXT_FEATURE_CONTENT;
+            }
             if (!text) {
-                return this.toOLPointStyle(style);
+                return this.toOLPointStyle(this.getDefaultStyle('POINT'));
             }
             return this.toOLTextStyle(style, text);
         } else if (shader) {
@@ -8358,7 +8365,7 @@ ol.supermap.StyleUtils = {
     toOLTextStyle: function (style, text) {
         return new ol.style.Style({
             text: new ol.style.Text({
-                font: style.fontStyle || '' + ' ' + style.fontWeight || '' + ' ' + style.fontSize || '' + ' ' + style.fontFamily,
+                font: (style.fontStyle || '') + ' ' + (style.fontWeight || '') + ' ' + (style.fontSize || '') + ' ' + style.fontFamily,
                 text: text,
                 textAlign: style.textAlign,
                 textBaseline: style.textBaseline,
@@ -34721,7 +34728,7 @@ ol.supermap.VectorTileStyles.getStyle = function (originalLayerName, feature) {
     var layerInfo = ol.supermap.VectorTileStyles.getLayerInfo(originalLayerName);
     if (!ol.supermap.VectorTileStyles.getDonotNeedServerCartoCss() && ol.supermap.VectorTileStyles.getCartoShaders()[layerName]) {
         //如果是文本，这里特殊处理。
-        if (feature.getProperties().textStyle || layerInfo.type == 'LABEL' && layerInfo.textField) {
+        if (feature.getProperties().textStyle || feature.getProperties().TEXT_FEATURE_CONTENT || layerInfo.type == 'LABEL' && layerInfo.textField) {
             return StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
         }
         return getStyleArray(ol.supermap.VectorTileStyles.getCartoShaders()[layerName]);

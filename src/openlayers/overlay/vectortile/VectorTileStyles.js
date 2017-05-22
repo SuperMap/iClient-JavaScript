@@ -324,7 +324,7 @@ ol.supermap.VectorTileStyles.getStyle = function (originalLayerName, feature) {
     var layerInfo = ol.supermap.VectorTileStyles.getLayerInfo(originalLayerName);
     if (!ol.supermap.VectorTileStyles.getDonotNeedServerCartoCss() && ol.supermap.VectorTileStyles.getCartoShaders()[layerName]) {
         //如果是文本，这里特殊处理。
-        if (feature.getProperties().textStyle || layerInfo.type == 'LABEL' && layerInfo.textField) {
+        if (feature.getProperties().textStyle || feature.getProperties().TEXT_FEATURE_CONTENT || layerInfo.type == 'LABEL' && layerInfo.textField) {
             return StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
         }
         return getStyleArray(ol.supermap.VectorTileStyles.getCartoShaders()[layerName]);
