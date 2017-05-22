@@ -67,10 +67,11 @@ SuperMap.OnlineData = SuperMap.Class(SuperMap.OnlineServiceBase, {
         var me = this;
         options = options || {};
         SuperMap.Util.extend(me, options);
-        if (serviceRootUrl) {
+        me.serviceUrl = serviceRootUrl;
+        if (me.id) {
             me.serviceUrl = serviceRootUrl + "/" + me.id;
-            SuperMap.OnlineServiceBase.prototype.initialize.call(me.serviceUrl);
         }
+        SuperMap.OnlineServiceBase.prototype.initialize.call(me.serviceUrl);
     },
 
     //通过url请求获取该服务完整信息

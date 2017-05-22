@@ -1,9 +1,8 @@
-
 require('./iPortalServicesQueryParam');
 var SuperMap = require('../SuperMap');
 var Request = require('../util/Request');
 var iPortalService = require('./iPortalService');
-SuperMap.iPortal = SuperMap.Class({
+SuperMap.iPortal = SuperMap.Class(SuperMap.iPortalServiceBase, {
 
     initialize: function (iportalUrl, token) {
         this.iportalUrl = iportalUrl;
@@ -21,7 +20,7 @@ SuperMap.iPortal = SuperMap.Class({
 
     queryServices: function (queryParams) {
         var serviceUrl = this.iportalUrl + "/web/services";
-        return Request.get(serviceUrl, queryParams).then(function (result) {
+        return this.request("GET", serviceUrl, queryParams).then(function (result) {
             var services = [];
             result.content.map(function (serviceJsonObj) {
                 services.push(new iPortalService(serviceUrl, serviceJsonObj));
@@ -32,7 +31,7 @@ SuperMap.iPortal = SuperMap.Class({
 
     deleteServices: function (ids) {
         var serviceUrl = this.iportalUrl + "/web/services";
-        return SuperMap.Request.delete(serviceUrl, {ids: ids});
+        return this.request("DELETE", serviceUrl, {ids: ids});
     }
 
 });

@@ -61,10 +61,7 @@
                                         </div>
 
                                         <div class="col-md-12 text-center">
-                                            <a class="btn btn-success" onclick="requestOnlineKeyService()">直接访问</a>
-                                            <a class="btn btn-success" onclick="registerOnlineKeyAndRequestService()">key授权访问</a>
-                                            <a class="btn btn-success" onclick="setDefaultOnlineValue()">填充默认值</a>
-                                            <a class="btn btn-success" onclick="resetOnlineKey()">清空凭据</a>
+                                            <a class="btn btn-success" onclick="registerOnlineKeyAndRequestService()">访问</a>
                                         </div>
                                     </fieldset>
                                 </form>
@@ -95,12 +92,8 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <div class="col-md-12" id="online_map" style=" height: 200px;"></div>
-                                        </div>
-                                        <div class="form-group">
                                             <div class="col-md-12  text-center">
-                                                <a class="btn btn-success" onclick="setDefaultOnlineMapValue()">填充默认值</a>
-                                                <a class="btn btn-success" onclick="showMapWithOnlineKey()">key授权出图</a>
+                                                <a class="btn btn-success" onclick="showMapWithOnlineKey()">出图</a>
                                             </div>
                                         </div>
                                     </fieldset>
@@ -110,11 +103,27 @@
                     </div>
                 </td>
             </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="row">
+                        <div class="col-md-12  text-center">
+                            <div class="col-md-12" id="online_map" style=" height: 300px;"></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
 </div>
 <script>
+
+    $(document).ready(function () {
+        $("#serviceUrl_online").val("http://www.supermapol.com/iserver/services/bsaq89v0/rest/maps/World");
+        $('#key_online').val("Ie2kriXZZz9GPevFDBQzgLRf");
+        $("#serviceUrlMap_online").val("http://www.supermapol.com/iserver/services/bsaq89v0/rest/maps/World");
+        $('#mapKey_online').val("Ie2kriXZZz9GPevFDBQzgLRf");
+    });
 
     /*登录*/
     function loginOnline() {
@@ -146,21 +155,9 @@
         if (!checkUrl(serviceUrl)) {
             return;
         }
+        SuperMap.SecurityManager.destroyKey(serviceUrl);
         SuperMap.SecurityManager.registerKey(serviceUrl, key);
         requestOnlineKeyService();
-    }
-    function resetOnlineKey() {
-        SuperMap.SecurityManager.destroyKey(getOnlineServiceUrl());
-        $('#key_online').val("");
-    }
-
-    function setDefaultOnlineValue() {
-        $('#key_online').val("Ie2kriXZZz9GPevFDBQzgLRf");
-        $("#serviceUrl_online").val("http://www.supermapol.com/iserver/services/bsaq89v0/rest/maps/World");
-    }
-    function setDefaultOnlineMapValue() {
-        $('#mapKey_online').val("Ie2kriXZZz9GPevFDBQzgLRf");
-        $("#serviceUrlMap_online").val("http://www.supermapol.com/iserver/services/bsaq89v0/rest/maps/World");
     }
 
     function getOnlineServiceUrl() {
@@ -182,7 +179,7 @@
             crs: L.CRS.EPSG4326,
             center: [30, 104],
             maxZoom: 18,
-            zoom: 2
+            zoom: 1
         });
         L.supermap.tiledMapLayer(mapUrl, {
             serverType: SuperMap.ServerType.ONLINE

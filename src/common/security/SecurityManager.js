@@ -159,7 +159,11 @@ SuperMap.SecurityManager = {
 
     _getTokenStorageKey: function (url) {
         var patten = /http:\/\/([^\/]+)/i;
-        return url.match(patten)[0];
+        var result = url.match(patten);
+        if (!result) {
+            return url;
+        }
+        return result[0];
     },
 
     _getUrlRestString: function (url) {
@@ -167,7 +171,11 @@ SuperMap.SecurityManager = {
             return url;
         }
         var patten = /http:\/\/(.*\/rest)/i;
-        return url.match(patten)[0];
+        var result = url.match(patten);
+        if (!result) {
+            return url;
+        }
+        return result[0];
     }
 
 };
