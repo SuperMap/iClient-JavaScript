@@ -1343,7 +1343,7 @@ SuperMap.ServiceBase = SuperMap.Class({
                 credential = value ? new SuperMap.Credential(value, "key") : null;
                 break;
             default:
-                value = SuperMap.SecurityManager.getToken(restUrl);
+                value = SuperMap.SecurityManager.getToken(keyUrl);
                 credential = value ? new SuperMap.Credential(value, "token") : null;
                 break;
         }
