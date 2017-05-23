@@ -14,14 +14,15 @@ html, body, .wrapper {
 .edit-container {
     background-color: #f9f9f9;
     position: relative;
+    margin-top: 52px;
 }
 
 .edit-container section.content {
     width: 100%;
-    padding: 52px 0 0 0;
+    padding: 0;
     position: absolute;
     top: 0;
-    bottom: -52px;
+    bottom: 0;
 }
 
 .content .pane {
@@ -85,7 +86,7 @@ html, body, .wrapper {
     cursor: pointer;
     z-index: 900;
     position: absolute;
-    top: 54px;
+    top: 4px;
     right: 0;
     width: 54px;
     height: 30px;

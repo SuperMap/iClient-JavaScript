@@ -222,7 +222,8 @@ var deps = {
             "ThemeLayer": {
                 "name": "专题图",
                 "src": [
-                    './src/leaflet/overlay/UniqueThemeLayer.js'
+                    './src/leaflet/overlay/UniqueThemeLayer.js',
+                    './src/leaflet/overlay/RangeThemeLayer.js'
                 ]
             }
         }

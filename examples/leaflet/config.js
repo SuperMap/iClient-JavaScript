@@ -424,6 +424,10 @@ var exampleConfig = {
                     name: "单值专题图",
                     thumbnail: "l_uniqueThemeLayer.png",
                     fileName: "uniqueThemeLayer"
+                }, {
+                    name: "分段专题图",
+                    thumbnail: "l_rangeThemeLayer.png",
+                    fileName: "rangeThemeLayer"
                 }]
             }
 

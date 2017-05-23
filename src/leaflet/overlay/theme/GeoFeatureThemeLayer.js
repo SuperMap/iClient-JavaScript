@@ -37,7 +37,7 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
 
 
     initialize: function (name, options) {
-        ThemeLayer.prototype.initialize.call(this, name,options);
+        ThemeLayer.prototype.initialize.call(this, name, options);
         L.Util.setOptions(this, options);
         var me = this;
         me.cache = {};
@@ -47,20 +47,23 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
 
     //向专题图图层中添加数据 , 专题图仅接收 SuperMap.Feature.Vector 类型数据，
     //feature 将储存于 features 属性中，其存储形式为数组。
+    // 向专题图图层中添加数据 , 专题图仅接收 <iServer返回的feature json对象> 类型数据，
     addFeatures: function (features) {
         //数组
         if (!(L.Util.isArray(features))) {
             features = [features];
         }
-        var me = this, event = {features: features};
+        var me = this;
+        var event = {features: features};
         me.fire("beforefeaturesadded", event);
         features = event.features;
-        var featuresFailAdded = [];
         for (var i = 0, len = features.length; i < len; i++) {
-            me.features.push(features[i]);
+            var feature = features[i];
+            feature = new SuperMap.REST.ServerFeature.fromJson(feature).toFeature();
+            me.features.push(feature);
         }
-        var succeed = featuresFailAdded.length == 0;
-        me.fire("featuresadded", {features: featuresFailAdded, succeed: succeed});
+        var succeed = me.features.length == 0;
+        me.fire("featuresadded", {features: me.features, succeed: succeed});
 
         if (!me.isCustomSetMaxCacheCount) {
             me.maxCacheCount = me.features.length * 5;
@@ -163,8 +166,8 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
     //创建专题要素
     createThematicFeature: function (feature) {
         var me = this;
-        var style = SuperMap.Util.copyAttributesWithClip(me.style);
-        if (feature.style && me.options.isAllowFeatureStyle) {
+        var style = me.getStyleByData(feature);
+        if (feature.style && me.isAllowFeatureStyle) {
             style = SuperMap.Util.copyAttributesWithClip(feature.style);
         }
 

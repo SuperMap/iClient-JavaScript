@@ -1,18 +1,18 @@
 /**
- * Class: UniqueThemeLayer
- * 客户端单值专题图。
+ * Class: SuperMap.Layer.Range
+ * 范围分段专题图。
  *
- * 单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格
- * 比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。
+ * 范围分段专题图对数据（<SuperMap.Feature.Vector>）属性字段（attributes）的属性值进行分段，使用不同的颜色或符号（线型、填充）渲染不同范围段的属性值。
+ * 分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
+ *
  * Inherits from:
  *  - <GeoFeatureThemeLayer>
  */
-
 var L = require("leaflet");
 var SuperMap = require('../../common/SuperMap');
 var GeoFeatureThemeLayer = require('./theme/GeoFeatureThemeLayer');
 
-var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
+var RangeThemeLayer = GeoFeatureThemeLayer.extend({
 
 
     initialize: function (name, options) {
@@ -40,17 +40,18 @@ var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
             feature = feat,
             style = SuperMap.Util.copyAttributesWithClip({}, me.style);
 
-
         var groups = me.styleGroups,
             isSfInAttributes = false,//指定的 themeField 是否是 feature 的属性字段之一
             attribute = null; //属性值
 
         var isValidStyleGroup = me.styleGroups && me.styleGroups.length > 0;
+
         if (me.themeField && isValidStyleGroup && feature.attributes) {
-            var tf = me.themeField,
+            var Sf = me.themeField,
                 attributes = feature.attributes;
+
             for (var property in attributes) {
-                if (tf !== property) {
+                if (Sf !== property) {
                     continue;
                 }
                 isSfInAttributes = true;
@@ -62,19 +63,19 @@ var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
         //判断属性值是否属于styleGroups的某一个范围，以便对获取分组 style
         if (isSfInAttributes && isValidStyleGroup) {
             for (var i = 0, len = groups.length; i < len; i++) {
-                if ((attribute).toString() === ( groups[i].value).toString()) {
+                if ((attribute >= groups[i].start) && (attribute < groups[i].end)) {
                     var sty1 = groups[i].style;
                     style = SuperMap.Util.copyAttributesWithClip(style, sty1);
                 }
-
             }
+
         }
         return style;
     }
-});
 
-L.supermap.uniqueThemeLayer = function (name, options) {
-    return new UniqueThemeLayer(name, options);
+});
+L.supermap.rangeThemeLayer = function (name, options) {
+    return new RangeThemeLayer(name, options);
 };
 
-module.exports = UniqueThemeLayer;
+module.exports = RangeThemeLayer;

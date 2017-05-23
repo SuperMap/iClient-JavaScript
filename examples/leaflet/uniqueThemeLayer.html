@@ -5,7 +5,7 @@
     <title>客户端单值专题图</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
-    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet-src.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
     <style>
@@ -188,7 +188,7 @@
         var legendView = L.control({position: 'bottomright'});
         legendView.onAdd = function () {
             this._div = L.DomUtil.create('div', 'panel panel-primary legend ');
-            var title = "<div class='panel-heading'><h5 class='panel-title text-center'>属性表</h5></div>";
+            var title = "<div class='panel-heading'><h5 class='panel-title text-center'>图例</h5></div>";
             $(title + "<div class='panel-body text-left' ><table>" +
                 "<tr><td class='legendItemHeader'>土地类型</td><td class='legendItemValue'>颜色</td></tr>" +
                 "<tr> <td class='legendItemHeader' >草地</td> <td class='legendItemValue' style='background: #C1FFC1'></td></tr>" +
