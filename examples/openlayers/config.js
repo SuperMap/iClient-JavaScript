@@ -407,6 +407,11 @@ var exampleConfig = {
                         name: "默认风格(MVT)",
                         thumbnail: "mvtVectorLayer.png",
                         fileName: "mvtVectorLayer"
+                    },
+                    {
+                        name: "默认风格(MVT 4326)",
+                        thumbnail: "mvtVectorLayer4326.png",
+                        fileName: "mvtVectorLayer4326"
                     }
                 ]
             },
