@@ -7,6 +7,7 @@ html, body, .wrapper {
 }
 
 .main-header {
+    position: fixed;
     width: 100%;
 }
 
@@ -17,10 +18,10 @@ html, body, .wrapper {
 
 .edit-container section.content {
     width: 100%;
-    padding: 0;
+    padding: 52px 0 0 0;
     position: absolute;
     top: 0;
-    bottom: 0;
+    bottom: -52px;
 }
 
 .content .pane {
@@ -84,8 +85,8 @@ html, body, .wrapper {
     cursor: pointer;
     z-index: 900;
     position: absolute;
+    top: 54px;
     right: 0;
-    top: 0;
     width: 54px;
     height: 30px;
     line-height: 30px;
@@ -103,6 +104,7 @@ html, body, .wrapper {
     #codePane {
         display: none;
     }
+
     .codePaneTool {
         padding: 8px 68px 8px 20px;
     }

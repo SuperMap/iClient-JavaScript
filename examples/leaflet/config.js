@@ -410,6 +410,11 @@ var exampleConfig = {
                         thumbnail: "l_tileVectorLayer_normal.png",
                         fileName: "vectorTileLayerMVT"
 
+                    }, {
+                        name: "默认风格(MVT 4326)",
+                        thumbnail: "l_tileVectorLayer_mvt4326.png",
+                        fileName: "vectorTileLayerMVT_4326"
+
                     }
                 ]
             },

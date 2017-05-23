@@ -38,6 +38,44 @@ L.Util.toSuperMapGeometry = function (geometry) {
 
 };
 
+
+L.Util.resolutionToScale = function (resolution, dpi, mapUnit) {
+    var inchPerMeter = 1 / 0.0254;
+    // 地球半径。
+    var meterPerMapUnit = this.getMeterPerMapUnit(mapUnit);
+    var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
+    scale = 1 / scale;
+    return scale;
+};
+
+L.Util.scaleToResolution = function (scale, dpi, mapUnit) {
+    var inchPerMeter = 1 / 0.0254;
+    var meterPerMapUnitValue = this.getMeterPerMapUnit(mapUnit);
+    var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
+    resolution = 1 / resolution;
+    return resolution;
+};
+
+L.Util.getMeterPerMapUnit = function (mapUnit) {
+    var earchRadiusInMeters = 6378137;
+    var meterPerMapUnit;
+    if (mapUnit === SuperMap.Unit.METER) {
+        meterPerMapUnit = 1;
+    } else if (mapUnit === SuperMap.Unit.DEGREE) {
+        // 每度表示多少米。
+        meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
+    } else if (mapUnit === SuperMap.Unit.KILOMETER) {
+        meterPerMapUnit = 1.0E-3;
+    } else if (mapUnit === SuperMap.Unit.INCH) {
+        meterPerMapUnit = 1 / 2.5399999918E-2;
+    } else if (mapUnit === SuperMap.Unit.FOOT) {
+        meterPerMapUnit = 0.3048;
+    } else {
+        return meterPerMapUnit;
+    }
+    return meterPerMapUnit;
+};
+
 L.Util.GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
     var resolution = null,
         ratio = 10000;

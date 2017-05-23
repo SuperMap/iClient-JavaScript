@@ -54,7 +54,6 @@ var TileVectorLayer = L.VectorGrid.extend({
             me.options.url = url;
         }
         me._initLayerUrl();
-        me.initMapScales();
         me.initLayersInfo();
         CartoCSSToLeaflet.mapUrl = me.options.url;
         if (!me.options.serverCartoCSSStyle && me.options) {
@@ -68,21 +67,6 @@ var TileVectorLayer = L.VectorGrid.extend({
         if (this.options.tileTemplate || !this.options.serverCartoCSSStyle) {
             this._initGrid();
         }
-    },
-
-    //主要设置scales
-    initMapScales: function () {
-        var me = this;
-        var mapUrl = me.options.url + ".json";
-        SuperMap.Request.get(mapUrl, null, {
-            timeout: me.options.timeout
-        }).then(function (response) {
-            return response.json();
-        }).then(function (json) {
-            me._initScales(json);
-        }).catch(function (ex) {
-            console.error('error', ex)
-        });
     },
 
     //获取服务器layers资源下的风格信息(当CartoCSS中不存在相应图层渲染信息时使用)
@@ -251,61 +235,25 @@ var TileVectorLayer = L.VectorGrid.extend({
 
     getDefaultScale: function (coords) {
         var me = this, crs = me._crs;
-        var tileBounds = me._tileCoordsToBounds(coords);
-        var ne = crs.project(tileBounds.getNorthEast());
-        var sw = crs.project(tileBounds.getSouthWest());
-        var tileSize = me.options.tileSize;
-        var resolution = Math.max(
-            Math.abs(ne.x - sw.x) / tileSize,
-            Math.abs(ne.y - sw.y) / tileSize
-        );
-        return 0.0254 / (96 * resolution);
-    },
-
-    _initScales: function (mapInfo) {
-        var me = this;
-        me.scales = mapInfo.visibleScales;
-        if (!me.scales) {
-            return null;
-        }
-        var viewBounds = mapInfo.viewBounds,
-            coordUnit = mapInfo.coordUnit,
-            viewer = mapInfo.viewer,
-            scale = mapInfo.scale,
-            datumAxis = mapInfo.datumAxis;
-        //将jsonObject转化为SuperMap.Bounds，用于计算dpi。
-        viewBounds = new SuperMap.Bounds(viewBounds.left, viewBounds.bottom, viewBounds.right, viewBounds.top);
-
-        viewer = new SuperMap.Size(viewer.rightBottom.x, viewer.rightBottom.y);
-
-        coordUnit = coordUnit.toLowerCase();
-        me.units = me.units || coordUnit;
-        me.datumAxis = datumAxis || 6378137;
-
-        me.dpi = SuperMap.Util.calculateDpi(viewBounds, viewer, scale, me.units, datumAxis);
-        me.resolutions = me._resolutionsFromScales(me.scales);
-        var len = me.resolutions.length;
-        me.scales = [len];
-        for (var i = 0; i < len; i++) {
-            me.scales[i] = SuperMap.Util.getScaleFromResolutionDpi(
-                me.resolutions[i], me.dpi, me.units, me.datumAxis
+        var resolution;
+        if (crs.options && crs.options.resolutions) {
+            resolution = crs.options.resolutions[coords.z];
+        } else {
+            var tileBounds = me._tileCoordsToBounds(coords);
+            var ne = crs.project(tileBounds.getNorthEast());
+            var sw = crs.project(tileBounds.getSouthWest());
+            var tileSize = me.options.tileSize;
+            resolution = Math.max(
+                Math.abs(ne.x - sw.x) / tileSize,
+                Math.abs(ne.y - sw.y) / tileSize
             );
         }
-    },
 
-    _resolutionsFromScales: function (scales) {
-        if (scales == null) {
-            return;
+        var mapUnit = SuperMap.Unit.METER;
+        if (crs.code.indexOf("4326") > -1) {
+            mapUnit = SuperMap.Unit.DEGREE;
         }
-        var me = this,
-            resolutions, len;
-        len = scales.length;
-        resolutions = [len];
-        for (var i = 0; i < len; i++) {
-            resolutions[i] = SuperMap.Util.getResolutionFromScaleDpi(
-                scales[i], me.dpi, me.units, me.datumAxis);
-        }
-        return resolutions;
+        return L.Util.resolutionToScale(resolution, 96, mapUnit);
     },
 
     _getTileUrl: function (coords) {

@@ -3719,6 +3719,44 @@ L.Util.toSuperMapGeometry = function (geometry) {
 
 };
 
+
+L.Util.resolutionToScale = function (resolution, dpi, mapUnit) {
+    var inchPerMeter = 1 / 0.0254;
+    // 地球半径。
+    var meterPerMapUnit = this.getMeterPerMapUnit(mapUnit);
+    var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
+    scale = 1 / scale;
+    return scale;
+};
+
+L.Util.scaleToResolution = function (scale, dpi, mapUnit) {
+    var inchPerMeter = 1 / 0.0254;
+    var meterPerMapUnitValue = this.getMeterPerMapUnit(mapUnit);
+    var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
+    resolution = 1 / resolution;
+    return resolution;
+};
+
+L.Util.getMeterPerMapUnit = function (mapUnit) {
+    var earchRadiusInMeters = 6378137;
+    var meterPerMapUnit;
+    if (mapUnit === SuperMap.Unit.METER) {
+        meterPerMapUnit = 1;
+    } else if (mapUnit === SuperMap.Unit.DEGREE) {
+        // 每度表示多少米。
+        meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
+    } else if (mapUnit === SuperMap.Unit.KILOMETER) {
+        meterPerMapUnit = 1.0E-3;
+    } else if (mapUnit === SuperMap.Unit.INCH) {
+        meterPerMapUnit = 1 / 2.5399999918E-2;
+    } else if (mapUnit === SuperMap.Unit.FOOT) {
+        meterPerMapUnit = 0.3048;
+    } else {
+        return meterPerMapUnit;
+    }
+    return meterPerMapUnit;
+};
+
 L.Util.GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
     var resolution = null,
         ratio = 10000;
@@ -7191,6 +7229,10 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__projs__["a" /* default */])(_
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_sinh__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_hypot__ = __webpack_require__(57);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinhy__ = __webpack_require__(115);
@@ -7198,10 +7240,6 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__projs__["a" /* default */])(_
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_clens__ = __webpack_require__(116);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__ = __webpack_require__(117);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__ = __webpack_require__(5);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 // Heavily based on this etmerc projection implementation
 // https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/etmerc.js
 
@@ -7374,12 +7412,12 @@ var names = ["Extended_Transverse_Mercator", "Extended Transverse Mercator", "et
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = transform;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datum_transform__ = __webpack_require__(130);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adjust_axis__ = __webpack_require__(113);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Proj__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_toPoint__ = __webpack_require__(61);
-/* harmony export (immutable) */ __webpack_exports__["a"] = transform;
 
 
 
@@ -7871,6 +7909,13 @@ function cleanWKT(wkt) {
     }
     if (~wkt.datumCode.indexOf('osgb_1936')) {
       wkt.datumCode = 'osgb36';
+    }
+    if (~wkt.datumCode.indexOf('osni_1952')) {
+      wkt.datumCode = 'osni52';
+    }
+    if (~wkt.datumCode.indexOf('tm65')
+      || ~wkt.datumCode.indexOf('geodetic_datum_of_1965')) {
+      wkt.datumCode = 'ire65';
     }
   }
   if (wkt.b && !isFinite(wkt.b)) {
@@ -10942,7 +10987,6 @@ var TileVectorLayer = L.VectorGrid.extend({
             me.options.url = url;
         }
         me._initLayerUrl();
-        me.initMapScales();
         me.initLayersInfo();
         CartoCSSToLeaflet.mapUrl = me.options.url;
         if (!me.options.serverCartoCSSStyle && me.options) {
@@ -10956,21 +11000,6 @@ var TileVectorLayer = L.VectorGrid.extend({
         if (this.options.tileTemplate || !this.options.serverCartoCSSStyle) {
             this._initGrid();
         }
-    },
-
-    //主要设置scales
-    initMapScales: function () {
-        var me = this;
-        var mapUrl = me.options.url + ".json";
-        SuperMap.Request.get(mapUrl, null, {
-            timeout: me.options.timeout
-        }).then(function (response) {
-            return response.json();
-        }).then(function (json) {
-            me._initScales(json);
-        }).catch(function (ex) {
-            console.error('error', ex)
-        });
     },
 
     //获取服务器layers资源下的风格信息(当CartoCSS中不存在相应图层渲染信息时使用)
@@ -11139,61 +11168,25 @@ var TileVectorLayer = L.VectorGrid.extend({
 
     getDefaultScale: function (coords) {
         var me = this, crs = me._crs;
-        var tileBounds = me._tileCoordsToBounds(coords);
-        var ne = crs.project(tileBounds.getNorthEast());
-        var sw = crs.project(tileBounds.getSouthWest());
-        var tileSize = me.options.tileSize;
-        var resolution = Math.max(
-            Math.abs(ne.x - sw.x) / tileSize,
-            Math.abs(ne.y - sw.y) / tileSize
-        );
-        return 0.0254 / (96 * resolution);
-    },
-
-    _initScales: function (mapInfo) {
-        var me = this;
-        me.scales = mapInfo.visibleScales;
-        if (!me.scales) {
-            return null;
-        }
-        var viewBounds = mapInfo.viewBounds,
-            coordUnit = mapInfo.coordUnit,
-            viewer = mapInfo.viewer,
-            scale = mapInfo.scale,
-            datumAxis = mapInfo.datumAxis;
-        //将jsonObject转化为SuperMap.Bounds，用于计算dpi。
-        viewBounds = new SuperMap.Bounds(viewBounds.left, viewBounds.bottom, viewBounds.right, viewBounds.top);
-
-        viewer = new SuperMap.Size(viewer.rightBottom.x, viewer.rightBottom.y);
-
-        coordUnit = coordUnit.toLowerCase();
-        me.units = me.units || coordUnit;
-        me.datumAxis = datumAxis || 6378137;
-
-        me.dpi = SuperMap.Util.calculateDpi(viewBounds, viewer, scale, me.units, datumAxis);
-        me.resolutions = me._resolutionsFromScales(me.scales);
-        var len = me.resolutions.length;
-        me.scales = [len];
-        for (var i = 0; i < len; i++) {
-            me.scales[i] = SuperMap.Util.getScaleFromResolutionDpi(
-                me.resolutions[i], me.dpi, me.units, me.datumAxis
+        var resolution;
+        if (crs.options && crs.options.resolutions) {
+            resolution = crs.options.resolutions[coords.z];
+        } else {
+            var tileBounds = me._tileCoordsToBounds(coords);
+            var ne = crs.project(tileBounds.getNorthEast());
+            var sw = crs.project(tileBounds.getSouthWest());
+            var tileSize = me.options.tileSize;
+            resolution = Math.max(
+                Math.abs(ne.x - sw.x) / tileSize,
+                Math.abs(ne.y - sw.y) / tileSize
             );
         }
-    },
 
-    _resolutionsFromScales: function (scales) {
-        if (scales == null) {
-            return;
+        var mapUnit = SuperMap.Unit.METER;
+        if (crs.code.indexOf("4326") > -1) {
+            mapUnit = SuperMap.Unit.DEGREE;
         }
-        var me = this,
-            resolutions, len;
-        len = scales.length;
-        resolutions = [len];
-        for (var i = 0; i < len; i++) {
-            resolutions[i] = SuperMap.Util.getResolutionFromScaleDpi(
-                scales[i], me.dpi, me.units, me.datumAxis);
-        }
-        return resolutions;
+        return L.Util.resolutionToScale(resolution, 96, mapUnit);
     },
 
     _getTileUrl: function (coords) {
@@ -15461,12 +15454,12 @@ function datum(datumCode, datum_params, a, b, es, ep2) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
 /* harmony export (immutable) */ __webpack_exports__["a"] = compareDatums;
 /* harmony export (immutable) */ __webpack_exports__["b"] = geodeticToGeocentric;
 /* harmony export (immutable) */ __webpack_exports__["e"] = geocentricToGeodetic;
 /* harmony export (immutable) */ __webpack_exports__["c"] = geocentricToWgs84;
 /* harmony export (immutable) */ __webpack_exports__["d"] = geocentricFromWgs84;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
 
 
 function compareDatums(source, dest) {
@@ -15764,11 +15757,11 @@ function checkParams(type) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["b"] = eccentricity;
+/* harmony export (immutable) */ __webpack_exports__["a"] = sphere;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_Ellipsoid__ = __webpack_require__(124);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__match__ = __webpack_require__(46);
-/* harmony export (immutable) */ __webpack_exports__["b"] = eccentricity;
-/* harmony export (immutable) */ __webpack_exports__["a"] = sphere;
 
 
 
@@ -15909,11 +15902,11 @@ function parse(code){
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__projections_merc__ = __webpack_require__(148);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projections_longlat__ = __webpack_require__(147);
 /* unused harmony export add */
 /* unused harmony export get */
 /* unused harmony export start */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__projections_merc__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projections_longlat__ = __webpack_require__(147);
 
 
 var projs = [__WEBPACK_IMPORTED_MODULE_0__projections_merc__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1__projections_longlat__["a" /* default */]];
@@ -15960,16 +15953,16 @@ function start() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_msfnz__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_asinz__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_values__ = __webpack_require__(3);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export phi1z */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_msfnz__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_asinz__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_values__ = __webpack_require__(3);
 
 
 
@@ -16106,6 +16099,10 @@ var names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_mlfn__ = __webpack_require__(34);
@@ -16116,10 +16113,6 @@ var names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_gN__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_asinz__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__common_imlfn__ = __webpack_require__(43);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 
 
 
@@ -16334,6 +16327,10 @@ var names = ["Azimuthal_Equidistant", "aeqd"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_mlfn__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_e0fn__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_e1fn__ = __webpack_require__(31);
@@ -16344,10 +16341,6 @@ var names = ["Azimuthal_Equidistant", "aeqd"];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_adjust_lat__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_imlfn__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__constants_values__ = __webpack_require__(3);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 
 
 
@@ -16463,14 +16456,14 @@ var names = ["Cassini", "Cassini_Soldner", "cass"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_msfnz__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_iqsfnz__ = __webpack_require__(120);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_msfnz__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_iqsfnz__ = __webpack_require__(120);
 
 
 
@@ -16548,12 +16541,12 @@ var names = ["cea"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lat__ = __webpack_require__(22);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lat__ = __webpack_require__(22);
 
 
 
@@ -16609,6 +16602,10 @@ var names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_e0fn__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_e1fn__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_e2fn__ = __webpack_require__(32);
@@ -16619,10 +16616,6 @@ var names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_adjust_lat__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_imlfn__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__constants_values__ = __webpack_require__(3);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 
 
 
@@ -16747,12 +16740,12 @@ var names = ["Equidistant_Conic", "eqdc"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_srat__ = __webpack_require__(122);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_srat__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
 
 var MAX_ITER = 20;
 
@@ -16812,13 +16805,13 @@ var names = ["gauss"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_asinz__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(3);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_asinz__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(3);
 
 
 
@@ -16930,11 +16923,11 @@ var names = ["gnom"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
 
 
 function init() {
@@ -17048,9 +17041,6 @@ var names = ["Krovak", "krovak"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_adjust_lon__ = __webpack_require__(5);
 /* unused harmony export S_POLE */
 /* unused harmony export N_POLE */
 /* unused harmony export EQUIT */
@@ -17059,6 +17049,9 @@ var names = ["Krovak", "krovak"];
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_adjust_lon__ = __webpack_require__(5);
 
 
 
@@ -17364,16 +17357,16 @@ var names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area", "la
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_msfnz__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_tsfnz__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_sign__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_adjust_lon__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_phi2z__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_values__ = __webpack_require__(3);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 
 
 
@@ -17547,15 +17540,15 @@ var names = ["longlat", "identity"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_msfnz__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_tsfnz__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_phi2z__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_values__ = __webpack_require__(3);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 
 
 
@@ -17663,11 +17656,11 @@ var names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP"
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
 
 
 /*
@@ -17727,12 +17720,12 @@ var names = ["Miller_Cylindrical", "mill"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
 
 function init() {}
 
@@ -17823,12 +17816,12 @@ var names = ["Mollweide", "moll"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
 /* unused harmony export iterations */
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
 
 
 /*
@@ -18062,14 +18055,14 @@ var names = ["New_Zealand_Map_Grid", "nzmg"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_tsfnz__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_phi2z__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_values__ = __webpack_require__(3);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_tsfnz__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_phi2z__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_values__ = __webpack_require__(3);
 
 
 
@@ -18248,13 +18241,13 @@ var names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Obliq
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_asinz__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(3);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_asinz__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(3);
 
 
 
@@ -18353,6 +18346,10 @@ var names = ["ortho"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_e0fn__ = __webpack_require__(30);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_e1fn__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_e2fn__ = __webpack_require__(32);
@@ -18362,10 +18359,6 @@ var names = ["ortho"];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_mlfn__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__constants_values__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_gN__ = __webpack_require__(42);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 
 
 
@@ -18508,6 +18501,10 @@ var names = ["Polyconic", "poly"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lat__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_enfn__ = __webpack_require__(58);
@@ -18515,10 +18512,6 @@ var names = ["Polyconic", "poly"];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_pj_inv_mlfn__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_values__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_asinz__ = __webpack_require__(16);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 
 
 
@@ -18738,17 +18731,17 @@ var names = ["somerc"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export ssfn_ */
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_sign__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_msfnz__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_tsfnz__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_phi2z__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_adjust_lon__ = __webpack_require__(5);
-/* unused harmony export ssfn_ */
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 
 
 
@@ -18930,12 +18923,12 @@ var names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (variant 
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gauss__ = __webpack_require__(142);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__ = __webpack_require__(5);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gauss__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__ = __webpack_require__(5);
 
 
 
@@ -19007,16 +19000,16 @@ var names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereog
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_pj_enfn__ = __webpack_require__(58);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_pj_mlfn__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_inv_mlfn__ = __webpack_require__(59);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_adjust_lon__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_values__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_sign__ = __webpack_require__(23);
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 // Heavily based on this tmerc projection implementation
 // https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/tmerc.js
 
@@ -19197,12 +19190,12 @@ var names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_zone__ = __webpack_require__(114);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__etmerc__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(3);
 /* unused harmony export dependsOn */
 /* unused harmony export init */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_zone__ = __webpack_require__(114);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__etmerc__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(3);
 
 
 var dependsOn = 'etmerc';
@@ -19238,13 +19231,13 @@ var names = ["Universal Transverse Mercator System", "utm"];
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinz__ = __webpack_require__(16);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinz__ = __webpack_require__(16);
 
 
 
@@ -19394,16 +19387,23 @@ var names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 module.exports = {
 	"_args": [
 		[
-			"proj4@^2.4.3",
-			"E:\\codes\\iClient9"
+			{
+				"raw": "proj4@2.4.3",
+				"scope": null,
+				"escapedName": "proj4",
+				"name": "proj4",
+				"rawSpec": "2.4.3",
+				"spec": "2.4.3",
+				"type": "version"
+			},
+			"F:\\dev\\iClient9"
 		]
 	],
 	"_cnpm_publish_time": 1488570791097,
-	"_from": "proj4@>=2.4.3 <3.0.0",
+	"_from": "proj4@2.4.3",
 	"_hasShrinkwrap": false,
 	"_id": "proj4@2.4.3",
 	"_inCache": true,
-	"_installable": true,
 	"_location": "/proj4",
 	"_nodeVersion": "6.9.2",
 	"_npmOperationalInternal": {
@@ -19411,18 +19411,19 @@ module.exports = {
 		"tmp": "tmp/proj4-2.4.3.tgz_1488570790416_0.3068596587982029"
 	},
 	"_npmUser": {
-		"email": "calvin.metcalf@gmail.com",
-		"name": "cwmma"
+		"name": "cwmma",
+		"email": "calvin.metcalf@gmail.com"
 	},
 	"_npmVersion": "4.0.5",
 	"_phantomChildren": {},
 	"_requested": {
-		"name": "proj4",
-		"raw": "proj4@^2.4.3",
-		"rawSpec": "^2.4.3",
+		"raw": "proj4@2.4.3",
 		"scope": null,
-		"spec": ">=2.4.3 <3.0.0",
-		"type": "range"
+		"escapedName": "proj4",
+		"name": "proj4",
+		"rawSpec": "2.4.3",
+		"spec": "2.4.3",
+		"type": "version"
 	},
 	"_requiredBy": [
 		"/"
@@ -19430,24 +19431,24 @@ module.exports = {
 	"_resolved": "https://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
 	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 	"_shrinkwrap": null,
-	"_spec": "proj4@^2.4.3",
-	"_where": "E:\\codes\\iClient9",
+	"_spec": "proj4@2.4.3",
+	"_where": "F:\\dev\\iClient9",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"
 	},
 	"contributors": [
 		{
-			"email": "madair@dmsolutions.ca",
-			"name": "Mike Adair"
+			"name": "Mike Adair",
+			"email": "madair@dmsolutions.ca"
 		},
 		{
-			"email": "rich@greenwoodmap.com",
-			"name": "Richard Greenwood"
+			"name": "Richard Greenwood",
+			"email": "rich@greenwoodmap.com"
 		},
 		{
-			"email": "calvin.metcalf@gmail.com",
-			"name": "Calvin Metcalf"
+			"name": "Calvin Metcalf",
+			"email": "calvin.metcalf@gmail.com"
 		},
 		{
 			"name": "Richard Marsden",
@@ -19486,13 +19487,13 @@ module.exports = {
 		"tin": "~0.4.0"
 	},
 	"directories": {
-		"doc": "docs",
-		"test": "test"
+		"test": "test",
+		"doc": "docs"
 	},
 	"dist": {
-		"noattachment": false,
 		"shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 		"size": 116887,
+		"noattachment": false,
 		"tarball": "http://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz"
 	},
 	"gitHead": "e975a5462ad7abb23e33ea75281eb749e77e1510",
@@ -19501,12 +19502,12 @@ module.exports = {
 	"main": "dist/proj4-src.js",
 	"maintainers": [
 		{
-			"email": "andreas.hocevar@gmail.com",
-			"name": "ahocevar"
+			"name": "ahocevar",
+			"email": "andreas.hocevar@gmail.com"
 		},
 		{
-			"email": "calvin.metcalf@gmail.com",
-			"name": "cwmma"
+			"name": "cwmma",
+			"email": "calvin.metcalf@gmail.com"
 		}
 	],
 	"module": "lib/index.js",
