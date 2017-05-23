@@ -1101,7 +1101,7 @@ module.exports = ol;
  * Class: SuperMap.ServiceBase
  * common服务基类
  */
-__webpack_require__(33);
+__webpack_require__(32);
 var SuperMap = __webpack_require__(0);
 SuperMap.ServiceBase = SuperMap.Class({
 
@@ -2517,7 +2517,7 @@ __webpack_require__(1);
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
-﻿/** * Class: SuperMap.FilterParameter * 查询过滤条件参数类。 * 该类用于设置查询数据集的查询过滤参数。 */__webpack_require__(27);__webpack_require__(162);var SuperMap = __webpack_require__(0);SuperMap.FilterParameter = SuperMap.Class({    /**     * APIProperty: attributeFilter     * {String} 属性过滤条件。     * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，     * attributeFilter 就是其中的“条件表达式”。     * 该字段的用法为 attributeFilter = "过滤条件"。     * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；     * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。     */    attributeFilter: null,    /**     * APIProperty: name     * {String} 查询数据集名称或者图层名称，根据实际的查询对象而定，必设属性。     * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，     * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。     * 因为一个地图的图层可能是来自于不同数据源的数据集，     * 而不同的数据源中可能存在同名的数据集，     * 使用数据集名称不能唯一的确定数据集，     * 所以在进行与地图相关功能的操作时，该值需要设置为图层名称。     */    name: null,    /**     * APIProperty: joinItems     * {Array(<SuperMap.JoinItem>)} 与外部表的连接信息 SuperMap.JoinItem 数组。     */    joinItems: null,    /**     * APIProperty: linkItems     * {Array(<LinkItem>)} 与外部表的关联信息 LinkItem 数组。     */    linkItems: null,    /**     * APIProperty: ids     * {Array(String)} 查询 id 数组，即属性表中的 SmID 值。     */    ids: null,    /**     * APIProperty: orderBy     * {String} 查询排序的字段,orderBy的字段须为数值型的。     * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；     * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。     * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，     * 分别表示国家的面积和1994年的各国人口数量。     * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；     * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。     */    orderBy: null,    /**     * APIProperty: groupBy     * {String} 查询分组条件的字段。     * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段分组时，该字段的用法为 groupBy = "字段名"；     * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。     * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，     * 分别表示某个城市所属的洲和国家。     * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；     * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。     */    groupBy: null,    /**     * APIProperty: fields     * {Array(String)} 查询字段数组，如果不设置则使用系统返回的所有字段。     */    fields: null,    /**     * Constructor: SuperMap.FilterParameter     * 查询过滤条件参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * attributeFilter - {String} 属性过滤条件。     * name - {String} 查询数据集名称或者图层名称。     * joinItems - {Array(<SuperMap.JoinItem>)} 与外部表的连接信息 SuperMap.JoinItem 数组。     * linkItems - {Array(<SuperMap.LinkItem>)} 与外部表的关联信息 SuperMap.LinkItem 数组。     * ids - {Array(String)} 查询 id 数组，即属性表中的 SmID 值。     * orderBy - {String} 查询排序的字段, orderBy 的字段须为数值型的。     * groupBy - {String} 查询分组条件的字段。     * fields - {Array(String)} 查询字段数组。     */    initialize: function (options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.attributeFilter = null;        me.name = null;        if (me.joinItems) {            for (var i = 0, joinItems = me.joinItems, len = joinItems.length; i < len; i++) {                joinItems[i].destroy();            }            me.joinItems = null;        }        if (me.linkItems) {            for (var i = 0, linkItems = me.linkItems, len = linkItems.length; i < len; i++) {                linkItems[i].destroy();            }            me.linkItems = null;        }        me.ids = null;        me.orderBy = null;        me.groupBy = null;        me.fields = null;    },    CLASS_NAME: "SuperMap.FilterParameter"});module.exports = SuperMap.FilterParameter;
+﻿/** * Class: SuperMap.FilterParameter * 查询过滤条件参数类。 * 该类用于设置查询数据集的查询过滤参数。 */__webpack_require__(26);__webpack_require__(162);var SuperMap = __webpack_require__(0);SuperMap.FilterParameter = SuperMap.Class({    /**     * APIProperty: attributeFilter     * {String} 属性过滤条件。     * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，     * attributeFilter 就是其中的“条件表达式”。     * 该字段的用法为 attributeFilter = "过滤条件"。     * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；     * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。     */    attributeFilter: null,    /**     * APIProperty: name     * {String} 查询数据集名称或者图层名称，根据实际的查询对象而定，必设属性。     * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，     * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。     * 因为一个地图的图层可能是来自于不同数据源的数据集，     * 而不同的数据源中可能存在同名的数据集，     * 使用数据集名称不能唯一的确定数据集，     * 所以在进行与地图相关功能的操作时，该值需要设置为图层名称。     */    name: null,    /**     * APIProperty: joinItems     * {Array(<SuperMap.JoinItem>)} 与外部表的连接信息 SuperMap.JoinItem 数组。     */    joinItems: null,    /**     * APIProperty: linkItems     * {Array(<LinkItem>)} 与外部表的关联信息 LinkItem 数组。     */    linkItems: null,    /**     * APIProperty: ids     * {Array(String)} 查询 id 数组，即属性表中的 SmID 值。     */    ids: null,    /**     * APIProperty: orderBy     * {String} 查询排序的字段,orderBy的字段须为数值型的。     * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；     * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。     * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，     * 分别表示国家的面积和1994年的各国人口数量。     * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；     * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。     */    orderBy: null,    /**     * APIProperty: groupBy     * {String} 查询分组条件的字段。     * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段分组时，该字段的用法为 groupBy = "字段名"；     * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。     * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，     * 分别表示某个城市所属的洲和国家。     * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；     * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。     */    groupBy: null,    /**     * APIProperty: fields     * {Array(String)} 查询字段数组，如果不设置则使用系统返回的所有字段。     */    fields: null,    /**     * Constructor: SuperMap.FilterParameter     * 查询过滤条件参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * attributeFilter - {String} 属性过滤条件。     * name - {String} 查询数据集名称或者图层名称。     * joinItems - {Array(<SuperMap.JoinItem>)} 与外部表的连接信息 SuperMap.JoinItem 数组。     * linkItems - {Array(<SuperMap.LinkItem>)} 与外部表的关联信息 SuperMap.LinkItem 数组。     * ids - {Array(String)} 查询 id 数组，即属性表中的 SmID 值。     * orderBy - {String} 查询排序的字段, orderBy 的字段须为数值型的。     * groupBy - {String} 查询分组条件的字段。     * fields - {Array(String)} 查询字段数组。     */    initialize: function (options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.attributeFilter = null;        me.name = null;        if (me.joinItems) {            for (var i = 0, joinItems = me.joinItems, len = joinItems.length; i < len; i++) {                joinItems[i].destroy();            }            me.joinItems = null;        }        if (me.linkItems) {            for (var i = 0, linkItems = me.linkItems, len = linkItems.length; i < len; i++) {                linkItems[i].destroy();            }            me.linkItems = null;        }        me.ids = null;        me.orderBy = null;        me.groupBy = null;        me.fields = null;    },    CLASS_NAME: "SuperMap.FilterParameter"});module.exports = SuperMap.FilterParameter;
 
 /***/ }),
 /* 9 */
@@ -4379,7 +4379,7 @@ module.exports = SuperMap.ThiessenAnalystParameters;
 __webpack_require__(1);
 __webpack_require__(226);
 var SuperMap = __webpack_require__(0);
-var JoinItem = __webpack_require__(27);
+var JoinItem = __webpack_require__(26);
 var DatasetInfo = __webpack_require__(91);
 
 SuperMap.UGCSubLayer = SuperMap.Class(SuperMap.UGCMapLayer, {
@@ -4644,545 +4644,6 @@ module.exports = SuperMap.Request;
 /* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ol = __webpack_require__(2);
-var SuperMap = __webpack_require__(0);
-
-ol.supermap.Vector = function (data, layer, style, options, shapeOptions) {
-    SuperMap.Feature.Theme.prototype.initialize.apply(this, arguments);
-
-    //数据的 geometry 属性必须存在且类型是 SuperMap.Geometry 或其子类的类型
-    if (!data.geometry) return;
-    if (!(data.geometry instanceof SuperMap.Geometry)) return;
-    this.style = style ? style : {};
-    this.data = data;
-
-    if (options) {
-        SuperMap.Util.copyAttributesWithClip(this, options, ["shapeOptions", "dataBounds"])
-    }
-    ;
-    if (shapeOptions) {
-        this.shapeOptions = {};
-        SuperMap.Util.copyAttributesWithClip(this.shapeOptions, shapeOptions);
-    }
-    ;
-
-    //设置基础参数 dataBounds、lonlat、location
-    var geometry = data.geometry;
-    this.dataBounds = geometry.getBounds();
-    this.lonlat = this.dataBounds.getCenterLonLat();
-    this.location = this.getLocalXY(this.lonlat);
-
-    //将地理要素转为专题要素
-    if (geometry instanceof SuperMap.Geometry.LinearRing) {
-        this.lineToTF(geometry);
-    }
-    else if (geometry instanceof SuperMap.Geometry.LineString) {
-        this.lineToTF(geometry);
-    }
-    else if (geometry instanceof SuperMap.Geometry.Curve) {
-        //独立几何体
-    }
-    else if (geometry instanceof SuperMap.Geometry.MultiPoint) {
-        this.multiPointToTF(geometry);
-    }
-    else if (geometry instanceof SuperMap.Geometry.MultiLineString) {
-
-        this.multiLineStringToTF(geometry);
-    }
-    else if (geometry instanceof SuperMap.Geometry.MultiPolygon) {
-        this.multiPolygonToTF(geometry);
-    }
-    else if (geometry instanceof SuperMap.Geometry.Polygon) {
-        this.polygonToTF(geometry);
-    }
-    else if (geometry instanceof SuperMap.Geometry.Collection) {
-        //独立几何体
-    }
-    else if (geometry instanceof SuperMap.Geometry.Point) {
-        this.pointToTF(geometry);
-    }
-    else if (geometry instanceof SuperMap.Geometry.Rectangle) {
-        this.rectangleToTF(geometry);
-    }
-    else if (geometry instanceof SuperMap.Geometry.GeoText) {
-        this.geoTextToTF(geometry);
-    }
-};
-
-ol.supermap.Vector.prototype.destroy = function () {
-    this.style = null;
-    this.dataBounds = null;
-    this.nodesClipPixel = null;
-    this.isHoverAble = null;
-    this.isMultiHover = null;
-    this.isClickAble = null;
-    this.highlightStyle = null;
-    this.shapeOptions = null;
-
-    SuperMap.Feature.Theme.prototype.destroy.apply(this, arguments);
-};
-
-ol.supermap.Vector.prototype.lineToTF = function (geometry) {
-    var components = geometry.components;
-
-    //节点像素坐标
-    var localLX = [];
-    //参考位置，参考中心为
-    var refLocal = [];
-    var location = this.location;
-    var pointList = [];
-
-    //节点抽稀距离
-    var nCPx = this.nodesClipPixel;
-
-    for (var i = 0; i < components.length; i++) {
-        var components_i = components[i];
-        refLocal = [];
-        localLX = [];
-
-        localLX = this.getLocalXY(components_i);
-
-        refLocal[0] = localLX[0] - location[0];
-        refLocal[1] = localLX[1] - location[1];
-
-        //抽稀 - 2 px
-        if (pointList.length > 0) {
-            var lastLocalXY = pointList[pointList.length - 1];
-            if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) continue;
-        }
-
-        //使用参考点
-        pointList.push(refLocal);
-    }
-
-    if (pointList.length < 2) {
-        return null;
-    }
-
-    //赋 style
-    var style = new Object();
-    style = SuperMap.Util.copyAttributesWithClip(style, this.style, ['pointList']);
-    style.pointList = pointList;
-
-    //创建图形
-    var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
-        style: style,
-        clickable: this.isClickAble,
-        hoverable: this.isHoverAble
-    });
-
-    //设置高亮样式
-    if (this.highlightStyle) {
-        shape.highlightStyle = this.highlightStyle;
-    }
-
-    //设置参考中心，指定图形位置
-    shape.refOriginalPosition = this.location;
-
-    //储存数据 id 属性，用于事件
-    shape.refDataID = this.data.id;
-
-    //储存数据 id 属性，用于事件-多图形同时高亮
-    shape.isHoverByRefDataID = this.isMultiHover;
-
-    //添加到渲染器前修改 shape 的一些属性，非特殊情况通常不允许这么做
-    if (this.shapeOptions) {
-        SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
-    }
-
-    this.shapes.push(shape);
-};
-
-ol.supermap.Vector.prototype.multiPointToTF = function (geometry) {
-    /*   //-- 不抽稀
-     var components = geometry.components;
-
-     for(var i = 0; i < components.length; i++){
-     var components_i = components[i];
-     this.pointToTF(components_i);
-     }
-     */
-
-    var components = geometry.components;
-
-    //节点像素坐标
-    var localLX = [];
-    //参考位置，参考中心为
-    var refLocal = [];
-    var location = this.location;
-    var pointList = [];
-
-    //节点抽稀距离
-    var nCPx = this.nodesClipPixel;
-
-    for (var i = 0; i < components.length; i++) {
-        var components_i = components[i];
-        refLocal = [];
-        localLX = [];
-
-        localLX = this.getLocalXY(components_i);
-
-        refLocal[0] = localLX[0] - location[0];
-        refLocal[1] = localLX[1] - location[1];
-
-        //抽稀
-        if (pointList.length > 0) {
-            var lastLocalXY = pointList[pointList.length - 1];
-            if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) continue;
-        }
-
-        //使用参考点
-        pointList.push(refLocal);
-
-        //赋 style
-        var style = new Object();
-        style.r = 6; //防止漏设此参数，默认 6 像素
-        style = SuperMap.Util.copyAttributesWithClip(style, this.style);
-        style.x = refLocal[0];
-        style.y = refLocal[1];
-
-        //创建图形
-        var shape = new SuperMap.LevelRenderer.Shape.SmicPoint({
-            style: style,
-            clickable: this.isClickAble,
-            hoverable: this.isHoverAble
-        });
-
-        //设置高亮样式
-        if (this.highlightStyle) {
-            shape.highlightStyle = this.highlightStyle;
-        }
-
-        //设置参考中心，指定图形位置
-        shape.refOriginalPosition = location;
-
-        //储存数据 id 属性，用于事件
-        shape.refDataID = this.data.id;
-
-        //储存数据 id 属性，用于事件-多图形同时高亮
-        shape.isHoverByRefDataID = this.isMultiHover;
-
-        //修改一些 shape 可选属性，通常不需要这么做
-        if (this.shapeOptions) {
-            SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
-        }
-
-        this.shapes.push(shape);
-    }
-};
-
-ol.supermap.Vector.prototype.multiLineStringToTF = function (geometry) {
-    var components = geometry.components;
-
-    for (var i = 0; i < components.length; i++) {
-        var components_i = components[i];
-        this.lineToTF(components_i);
-    }
-};
-
-ol.supermap.Vector.prototype.multiPolygonToTF = function (geometry) {
-    var components = geometry.components;
-
-    for (var i = 0; i < components.length; i++) {
-        var components_i = components[i];
-        this.polygonToTF(components_i);
-    }
-};
-
-ol.supermap.Vector.prototype.pointToTF = function (geometry) {
-    //参考位置，参考中心为
-    var location = this.location;
-    //geometry 像素坐标
-    var localLX = this.getLocalXY(geometry);
-
-    //赋 style
-    var style = new Object();
-    style.r = 6; //防止漏设此参数，默认 6 像素
-    style = SuperMap.Util.copyAttributesWithClip(style, this.style);
-    style.x = localLX[0] - location[0];
-    style.y = localLX[1] - location[1];
-
-    //创建图形
-    var shape = new SuperMap.LevelRenderer.Shape.SmicPoint({
-        style: style,
-        clickable: this.isClickAble,
-        hoverable: this.isHoverAble
-    });
-
-    //设置高亮样式
-    if (this.highlightStyle) {
-        shape.highlightStyle = this.highlightStyle;
-    }
-
-    //设置参考中心，指定图形位置
-    shape.refOriginalPosition = location;
-
-    //储存数据 id 属性，用于事件
-    shape.refDataID = this.data.id;
-
-    //储存数据 id 属性，用于事件-多图形同时高亮
-    shape.isHoverByRefDataID = this.isMultiHover;
-
-    //修改一些 shape 可选属性，通常不需要这么做
-    if (this.shapeOptions) {
-        SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
-    }
-
-    this.shapes.push(shape);
-};
-
-ol.supermap.Vector.prototype.polygonToTF = function (geometry) {
-    var components = geometry.components;
-    ;
-
-    //节点像素坐标
-    var localLX = [];
-    //参考位置，参考中心为
-    var refLocal = [];
-    var location = this.location;
-    var pointList = [];
-    //岛洞
-    var holePolygonPointList = [];
-    var holePolygonPointLists = [];
-
-    //节点抽稀距离
-    var nCPx = this.nodesClipPixel;
-
-    for (var i = 0; i < components.length; i++) {
-        var components_i = components[i].components;
-
-
-        if (i === 0) {
-            // 第一个 component 正常绘制
-            pointList = [];
-
-            for (var j = 0; j < components_i.length; j++) {
-                refLocal = [];
-                localLX = [];
-
-                localLX = this.getLocalXY(components_i[j]);
-
-                refLocal[0] = localLX[0] - location[0];
-                refLocal[1] = localLX[1] - location[1];
-
-                //抽稀 - 2 px
-                if (pointList.length > 0) {
-                    var lastLocalXY = pointList[pointList.length - 1];
-                    if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) continue;
-                }
-
-                //使用参考点
-                pointList.push(refLocal);
-            }
-        }
-        else {
-            // 其它 component 作为岛洞
-            holePolygonPointList = [];
-
-            for (var j = 0; j < components_i.length; j++) {
-                refLocal = [];
-                localLX = [];
-
-                localLX = this.getLocalXY(components_i[j]);
-
-                refLocal[0] = localLX[0] - location[0];
-                refLocal[1] = localLX[1] - location[1];
-
-                //抽稀 - 2 px
-                if (holePolygonPointList.length > 0) {
-                    var lastLocalXY = holePolygonPointList[holePolygonPointList.length - 1];
-                    if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) continue;
-                }
-
-                //使用参考点
-                holePolygonPointList.push(refLocal);
-            }
-        }
-
-        if (holePolygonPointList.length < 2) {
-            continue;
-        }
-
-        holePolygonPointLists.push(holePolygonPointList);
-    }
-
-    if (pointList.length < 2) {
-        return;
-    }
-
-    //赋 style
-    var style = new Object();
-    style = SuperMap.Util.copyAttributesWithClip(style, this.style, ['pointList']);
-    style.pointList = pointList;
-
-    //创建图形
-    var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
-        style: style,
-        clickable: this.isClickAble,
-        hoverable: this.isHoverAble
-    });
-
-    //设置高亮样式
-    if (this.highlightStyle) {
-        shape.highlightStyle = this.highlightStyle;
-    }
-
-    //设置参考中心，指定图形位置
-    shape.refOriginalPosition = this.location;
-
-    //储存数据 id 属性，用于事件
-    shape.refDataID = this.data.id;
-
-    //储存数据 id 属性，用于事件-多图形同时高亮
-    shape.isHoverByRefDataID = this.isMultiHover;
-
-    //岛洞面
-    if (holePolygonPointLists.length > 0) {
-        shape.holePolygonPointLists = holePolygonPointLists;
-    }
-
-    //修改一些 shape 可选属性，通常不需要这么做
-    if (this.shapeOptions) {
-        SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
-    }
-
-    this.shapes.push(shape);
-};
-
-ol.supermap.Vector.prototype.rectangleToTF = function (geometry) {
-    //参考位置，参考中心为
-    var location = this.location;
-    var ll = new SuperMap.LonLat(geometry.x, geometry.y);
-
-    //地图分辨率
-    var res = this.layer.map.getResolution();
-
-    //geometry 像素坐标
-    var localLX = this.getLocalXY(ll);
-
-    //赋 style
-    var style = new Object();
-    style.r = 6; //防止漏设此参数，默认 6 像素
-    style = SuperMap.Util.copyAttributesWithClip(style, this.style);
-    style.x = localLX[0] - location[0];
-    // SuperMap.Geometry.Rectangle 使用左下角定位， SmicRectangle 使用左上角定位，需要转换
-    style.y = (localLX[1] - location[1]) - 2 * geometry.width / res;
-    style.width = geometry.width / res;
-    style.height = geometry.height / res;
-
-    //创建图形
-    var shape = new SuperMap.LevelRenderer.Shape.SmicRectangle({
-        style: style,
-        clickable: this.isClickAble,
-        hoverable: this.isHoverAble
-    });
-
-    //设置高亮样式
-    if (this.highlightStyle) {
-        shape.highlightStyle = this.highlightStyle;
-    }
-
-    //设置参考中心，指定图形位置
-    shape.refOriginalPosition = location;
-
-    //储存数据 id 属性，用于事件
-    shape.refDataID = this.data.id;
-
-    //储存数据 id 属性，用于事件-多图形同时高亮
-    shape.isHoverByRefDataID = this.isMultiHover;
-
-    //修改一些 shape 可选属性，通常不需要这么做
-    if (this.shapeOptions) {
-        SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
-    }
-
-    this.shapes.push(shape);
-};
-
-ol.supermap.Vector.prototype.geoTextToTF = function (geometry) {
-    //参考位置，参考中心为
-    var location = this.location;
-    //geometry 像素坐标
-    var localLX = this.getLocalXY(geometry);
-
-    //赋 style
-    var style = new Object();
-    style.r = 6; //防止漏设此参数，默认 6 像素
-    style = SuperMap.Util.copyAttributesWithClip(style, this.style, ["x", "y", "text"]);
-    style.x = localLX[0] - location[0];
-    style.y = localLX[1] - location[1];
-    style.text = geometry.text;
-
-    //创建图形
-    var shape = new SuperMap.LevelRenderer.Shape.SmicText({
-        style: style,
-        clickable: this.isClickAble,
-        hoverable: this.isHoverAble
-    });
-
-    //设置高亮样式
-    if (this.highlightStyle) {
-        shape.highlightStyle = this.highlightStyle;
-    }
-
-    //设置参考中心，指定图形位置
-    shape.refOriginalPosition = location;
-
-    //储存数据 id 属性，用于事件
-    shape.refDataID = this.data.id;
-
-    //储存数据 id 属性，用于事件-多图形同时高亮
-    shape.isHoverByRefDataID = this.isMultiHover;
-
-    //修改一些 shape 可选属性，通常不需要这么做
-    if (this.shapeOptions) {
-        SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
-    }
-
-    this.shapes.push(shape);
-};
-
-ol.supermap.Vector.prototype.updateAndAddShapes = function () {
-    var newLocalLX = this.getLocalXY(this.lonlat);
-    this.location = newLocalLX;
-
-    var render = this.layer.renderer;
-    for (var i = 0, len = this.shapes.length; i < len; i++) {
-        var shape = this.shapes[i];
-        //设置参考中心，指定图形位置
-        shape.refOriginalPosition = newLocalLX;
-        render.addShape(shape);
-    }
-};
-
-ol.supermap.Vector.prototype.getShapesCount = function () {
-    return this.shapes.length;
-};
-
-ol.supermap.Vector.prototype.getLocalXY = function (coordinate) {
-    var resolution = this.layer.map.getView().getResolution();
-    var extent = this.layer.map.getView().calculateExtent();
-    if (coordinate instanceof SuperMap.Geometry.Point || coordinate instanceof SuperMap.Geometry.GeoText) {
-        var x = (coordinate.x / resolution + (-extent[0] / resolution));
-        var y = ((extent[3] / resolution) - coordinate.y / resolution);
-        return [x, y];
-    }
-    else if (coordinate instanceof SuperMap.LonLat) {
-        var x = (coordinate.lon / resolution + (-extent[0] / resolution));
-        var y = ((extent[3] / resolution) - coordinate.lat / resolution);
-        return [x, y];
-    }
-    else {
-        return null;
-    }
-};
-
-module.exports = ol.supermap.Vector;
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
 ﻿/**
  * Class: SuperMap.JoinItem
  * 连接信息类。
@@ -5305,7 +4766,7 @@ SuperMap.JoinItem = SuperMap.Class({
 module.exports = SuperMap.JoinItem;
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -5321,7 +4782,7 @@ SuperMap.LabelMatrixCell = SuperMap.Class({
 module.exports = SuperMap.LabelMatrixCell;
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ServiceBase = __webpack_require__(3);
@@ -5429,7 +4890,7 @@ SuperMap.REST.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
 module.exports = SuperMap.REST.ProcessingJobsServiceBase;
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -5513,7 +4974,7 @@ module.exports = SuperMap.ThemeFlow;
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -5534,8 +4995,8 @@ __webpack_require__(209);
 __webpack_require__(211);
 
 var SuperMap = __webpack_require__(0);
-var ThemeFlow = __webpack_require__(30);
-var ThemeOffset = __webpack_require__(32);
+var ThemeFlow = __webpack_require__(29);
+var ThemeOffset = __webpack_require__(31);
 var ThemeLabelText = __webpack_require__(210);
 var ThemeLabelAlongLine = __webpack_require__(207);
 var ThemeLabelBackground = __webpack_require__(208);
@@ -5836,7 +5297,7 @@ module.exports = SuperMap.ThemeLabel;
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -5907,7 +5368,7 @@ module.exports = SuperMap.ThemeOffset;
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -6096,13 +5557,13 @@ SuperMap.SecurityManager.ONLINE = "http://www.supermapol.com";
 module.exports = SuperMap.SecurityManager;
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ol = __webpack_require__(2);
 var SuperMap = __webpack_require__(0);
-var Theme = __webpack_require__(35);
-var Vector = __webpack_require__(26);
+var Theme = __webpack_require__(34);
+var Vector = __webpack_require__(44);
 
 ol.source.GeoFeature = function (name, opt_options) {
     Theme.call(this, name, opt_options);
@@ -6304,7 +5765,7 @@ ol.source.GeoFeature.prototype.getShapesByFeatureID = function (featureID) {
 module.exports = ol.source.GeoFeature;
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var ol = __webpack_require__(2);
@@ -6688,10 +6149,28 @@ ol.source.Theme.prototype.canvasFunctionInternal_ = function (extent, resolution
     return context.canvas;
 };
 
+ol.source.Theme.prototype.getLocalXY = function (coordinate) {
+    var resolution = this.map.getView().getResolution();
+    var extent = this.map.getView().calculateExtent();
+    if (coordinate instanceof SuperMap.Geometry.Point || coordinate instanceof SuperMap.Geometry.GeoText) {
+        var x = (coordinate.x / resolution + (-extent[0] / resolution));
+        var y = ((extent[3] / resolution) - coordinate.y / resolution);
+        return [x, y];
+    }
+    else if (coordinate instanceof SuperMap.LonLat) {
+        var x = (coordinate.lon / resolution + (-extent[0] / resolution));
+        var y = ((extent[3] / resolution) - coordinate.lat / resolution);
+        return [x, y];
+    }
+    else {
+        return null;
+    }
+};
+
 module.exports = ol.source.Theme;
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -6746,7 +6225,7 @@ SuperMap.BufferAnalystParameters = SuperMap.Class({
 module.exports = SuperMap.BufferAnalystParameters;
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -6795,7 +6274,7 @@ SuperMap.OverlayAnalystParameters = SuperMap.Class({
 module.exports = SuperMap.OverlayAnalystParameters;
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -7031,7 +6510,7 @@ SuperMap.Route.fromJson = function (jsonObject) {
 module.exports = SuperMap.Route;
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -7118,7 +6597,7 @@ SuperMap.SurfaceAnalystParameters = SuperMap.Class({
 module.exports = SuperMap.SurfaceAnalystParameters;
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -7227,7 +6706,7 @@ module.exports = SuperMap.ThemeDotDensity;
 
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -7243,8 +6722,8 @@ module.exports = SuperMap.ThemeDotDensity;
 __webpack_require__(1);
 __webpack_require__(12);
 var SuperMap = __webpack_require__(0);
-var ThemeFlow = __webpack_require__(30);
-var ThemeOffset = __webpack_require__(32);
+var ThemeFlow = __webpack_require__(29);
+var ThemeOffset = __webpack_require__(31);
 var ThemeGraduatedSymbolStyle = __webpack_require__(198);
 SuperMap.ThemeGraduatedSymbol = SuperMap.Class(SuperMap.Theme, {
 
@@ -7400,7 +6879,7 @@ module.exports = SuperMap.ThemeGraduatedSymbol;
 
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -7417,8 +6896,8 @@ module.exports = SuperMap.ThemeGraduatedSymbol;
 __webpack_require__(1);
 __webpack_require__(12);
 var SuperMap = __webpack_require__(0);
-var ThemeFlow = __webpack_require__(30);
-var ThemeOffset = __webpack_require__(32);
+var ThemeFlow = __webpack_require__(29);
+var ThemeOffset = __webpack_require__(31);
 var ThemeGraphAxes = __webpack_require__(199);
 var ThemeGraphSize = __webpack_require__(201);
 var ThemeGraphText = __webpack_require__(202);
@@ -7772,7 +7251,7 @@ SuperMap.ThemeGraph.fromObj = function (obj) {
 module.exports = SuperMap.ThemeGraph;
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -7901,7 +7380,7 @@ module.exports = SuperMap.ThemeRange;
 
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -8039,6 +7518,683 @@ SuperMap.ThemeUnique.fromObj = function (obj) {
 };
 module.exports = SuperMap.ThemeUnique;
 
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * Class: SuperMap.Feature.Theme.Vector
+ * 矢量专题要素类。
+ *
+ * Inherits:
+ *  - <SuperMap.Feature.Theme>
+ */
+var SuperMap = __webpack_require__(0);
+SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
+
+    /**
+     * Property: dataBounds
+     * {<SuperMap.Bounds>} 用户数据的（feature.geometry）地理范围。
+     */
+    dataBounds: null,
+
+    /**
+     * Property: nodesClipPixel
+     * {Number} 节点抽稀像素距离，默认值 2。
+     */
+    nodesClipPixel: 2,
+
+    /**
+     * Property: isHoverAble
+     * {Boolean} 图形是否可 hover，默认 true
+     */
+    isHoverAble: true,
+
+    /**
+     * Property: isMultiHover
+     * {Boolean} 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true
+     */
+    isMultiHover: true,
+
+    /**
+     * Property: isClickAble
+     * {Boolean} 图形是否可点击，默认 true
+     */
+    isClickAble: true,
+
+    /**
+     * Property: highlightStyle
+     * {Object} 高亮样式
+     */
+    highlightStyle: null,
+
+    /**
+     * Property: shapeOptions
+     * {Object}  添加到渲染器前修改 shape 的一些属性，非特殊情况通常不允许这么做
+     */
+    shapeOptions: null,
+
+    /**
+     * Property: style
+     * {Object} 可视化图形的 style。在子类中规定其对象结构和默认属性值。
+     */
+    style: null,
+
+    /**
+     * Constructor: SuperMap.Feature.Theme.Vector
+     * 创建一个矢量专题要素。
+     *
+     * Parameters:
+     * data - {<SuperMap.Feature.Vector>}  用户数据，必设参数, 矢量专题要素的类型为矢量数据 feature。
+     * layer - {<SuperMap.Layer>} 此专题要素所在图层，必设参数。
+     * style - {Object} 样式。
+     * options - {Object} 创建专题要素时的可选参数。
+     *
+     * Allowed params properties:
+     *
+     * nodesClipPixel - {Number} 节点抽稀像素距离，默认值 2, 单位：像素。
+     * isHoverAble - {Boolean} 图形是否可 hover，默认 true。
+     * isMultiHover - {Boolean} 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true
+     * isClickAble - {Boolean} 图形是否可点击，默认 true
+     * highlightStyle - {Object} 高亮样式
+     *
+     * Returns:
+     * {<SuperMap.Feature.Theme.Vector>} 返回一个矢量专题要素类。
+     */
+    initialize: function (data, layer, style, options, shapeOptions) {
+        SuperMap.Feature.Theme.prototype.initialize.apply(this, [data,layer]);
+
+        //数据的 geometry 属性必须存在且类型是 SuperMap.Geometry 或其子类的类型
+        if (!data.geometry) return;
+        if (!(data.geometry instanceof SuperMap.Geometry)) return;
+        this.style = style ? style : {};
+        this.data = data;
+        this.layer = layer;
+        this.id = SuperMap.Util.createUniqueID(this.CLASS_NAME + "_");
+        this.location = [];
+        this.shapes = [];
+        if (options) {
+            SuperMap.Util.copyAttributesWithClip(this, options, ["shapeOptions", "dataBounds"])
+        }
+        if (shapeOptions) {
+            this.shapeOptions = {};
+            SuperMap.Util.copyAttributesWithClip(this.shapeOptions, shapeOptions);
+        }
+
+        //设置基础参数 dataBounds、lonlat、location
+        var geometry = data.geometry;
+        this.dataBounds = geometry.getBounds();
+        this.lonlat = this.dataBounds.getCenterLonLat();
+        this.location = this.getLocalXY(this.lonlat);
+
+        //将地理要素转为专题要素
+        if (geometry instanceof SuperMap.Geometry.LinearRing) {
+            this.lineToTF(geometry);
+        }
+        else if (geometry instanceof SuperMap.Geometry.LineString) {
+            this.lineToTF(geometry);
+        }
+        else if (geometry instanceof SuperMap.Geometry.Curve) {
+            //独立几何体
+        }
+        else if (geometry instanceof SuperMap.Geometry.MultiPoint) {
+            this.multiPointToTF(geometry);
+        }
+        else if (geometry instanceof SuperMap.Geometry.MultiLineString) {
+
+            this.multiLineStringToTF(geometry);
+        }
+        else if (geometry instanceof SuperMap.Geometry.MultiPolygon) {
+            this.multiPolygonToTF(geometry);
+        }
+        else if (geometry instanceof SuperMap.Geometry.Polygon) {
+            this.polygonToTF(geometry);
+        }
+        else if (geometry instanceof SuperMap.Geometry.Collection) {
+            //独立几何体
+        }
+        else if (geometry instanceof SuperMap.Geometry.Point) {
+            this.pointToTF(geometry);
+        }
+        else if (geometry instanceof SuperMap.Geometry.Rectangle) {
+            this.rectangleToTF(geometry);
+        }
+        else if (geometry instanceof SuperMap.Geometry.GeoText) {
+            this.geoTextToTF(geometry);
+        }
+
+    },
+
+    /**
+     * Method: destroy
+     * 销毁专题要素。
+     */
+    destroy: function () {
+        this.style = null;
+        this.dataBounds = null;
+        this.nodesClipPixel = null;
+        this.isHoverAble = null;
+        this.isMultiHover = null;
+        this.isClickAble = null;
+        this.highlightStyle = null;
+        this.shapeOptions = null;
+
+        SuperMap.Feature.Theme.prototype.destroy.apply(this, arguments);
+    },
+
+    /**
+     * Method: LinearRingAndLineStringToTF
+     * 转换线和线环要素。
+     *
+     * Parameters:
+     * geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 LineString 或 LineRing。
+     */
+    lineToTF: function (geometry) {
+        var components = geometry.components;
+
+        //节点像素坐标
+        var localLX = [];
+        //参考位置，参考中心为
+        var refLocal = [];
+        var location = this.location;
+        var pointList = [];
+
+        //节点抽稀距离
+        var nCPx = this.nodesClipPixel;
+
+        for (var i = 0; i < components.length; i++) {
+            var components_i = components[i];
+            refLocal = [];
+            localLX = [];
+
+            localLX = this.getLocalXY(components_i);
+
+            refLocal[0] = localLX[0] - location[0];
+            refLocal[1] = localLX[1] - location[1];
+
+            //抽稀 - 2 px
+            if (pointList.length > 0) {
+                var lastLocalXY = pointList[pointList.length - 1];
+                if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) continue;
+            }
+
+            //使用参考点
+            pointList.push(refLocal);
+        }
+
+        if (pointList.length < 2) {
+            return null;
+        }
+
+        //赋 style
+        var style = new Object();
+        style = SuperMap.Util.copyAttributesWithClip(style, this.style, ['pointList']);
+        style.pointList = pointList;
+
+        //创建图形
+        var shape = new SuperMap.LevelRenderer.Shape.SmicBrokenLine({
+            style: style,
+            clickable: this.isClickAble,
+            hoverable: this.isHoverAble
+        });
+
+        //设置高亮样式
+        if (this.highlightStyle) {
+            shape.highlightStyle = this.highlightStyle;
+        }
+
+        //设置参考中心，指定图形位置
+        shape.refOriginalPosition = this.location;
+
+        //储存数据 id 属性，用于事件
+        shape.refDataID = this.data.id;
+
+        //储存数据 id 属性，用于事件-多图形同时高亮
+        shape.isHoverByRefDataID = this.isMultiHover;
+
+        //添加到渲染器前修改 shape 的一些属性，非特殊情况通常不允许这么做
+        if (this.shapeOptions) {
+            SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
+        }
+
+        this.shapes.push(shape);
+    },
+
+    /**
+     * Method: multiPointToTF
+     * 转多点要素。
+     *
+     * Parameters:
+     * geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 MultiPoint。
+     */
+    multiPointToTF: function (geometry) {
+        /*   //-- 不抽稀
+         var components = geometry.components;
+
+         for(var i = 0; i < components.length; i++){
+         var components_i = components[i];
+         this.pointToTF(components_i);
+         }
+         */
+
+        var components = geometry.components;
+
+        //节点像素坐标
+        var localLX = [];
+        //参考位置，参考中心为
+        var refLocal = [];
+        var location = this.location;
+        var pointList = [];
+
+        //节点抽稀距离
+        var nCPx = this.nodesClipPixel;
+
+        for (var i = 0; i < components.length; i++) {
+            var components_i = components[i];
+            refLocal = [];
+            localLX = [];
+
+            localLX = this.getLocalXY(components_i);
+
+            refLocal[0] = localLX[0] - location[0];
+            refLocal[1] = localLX[1] - location[1];
+
+            //抽稀
+            if (pointList.length > 0) {
+                var lastLocalXY = pointList[pointList.length - 1];
+                if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) continue;
+            }
+
+            //使用参考点
+            pointList.push(refLocal);
+
+            //赋 style
+            var style = new Object();
+            style.r = 6; //防止漏设此参数，默认 6 像素
+            style = SuperMap.Util.copyAttributesWithClip(style, this.style);
+            style.x = refLocal[0];
+            style.y = refLocal[1];
+
+            //创建图形
+            var shape = new SuperMap.LevelRenderer.Shape.SmicPoint({
+                style: style,
+                clickable: this.isClickAble,
+                hoverable: this.isHoverAble
+            });
+
+            //设置高亮样式
+            if (this.highlightStyle) {
+                shape.highlightStyle = this.highlightStyle;
+            }
+
+            //设置参考中心，指定图形位置
+            shape.refOriginalPosition = location;
+
+            //储存数据 id 属性，用于事件
+            shape.refDataID = this.data.id;
+
+            //储存数据 id 属性，用于事件-多图形同时高亮
+            shape.isHoverByRefDataID = this.isMultiHover;
+
+            //修改一些 shape 可选属性，通常不需要这么做
+            if (this.shapeOptions) {
+                SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
+            }
+
+            this.shapes.push(shape);
+        }
+    },
+
+    /**
+     * Method: multiLineStringToTF
+     * 转换多线要素。
+     *
+     * Parameters:
+     * geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 MultiLineString。
+     */
+    multiLineStringToTF: function (geometry) {
+        var components = geometry.components;
+
+        for (var i = 0; i < components.length; i++) {
+            var components_i = components[i];
+            this.lineToTF(components_i);
+        }
+    },
+
+    /**
+     * Method: multiPolygonToTF
+     * 转换多面要素。
+     *
+     * Parameters:
+     * geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 MultiPolygon。
+     */
+    multiPolygonToTF: function (geometry) {
+        var components = geometry.components;
+
+        for (var i = 0; i < components.length; i++) {
+            var components_i = components[i];
+            this.polygonToTF(components_i);
+        }
+    },
+
+    /**
+     * Method: pointToTF
+     * 转换点要素。
+     *
+     * Parameters:
+     * geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 Point。
+     */
+    pointToTF: function (geometry) {
+        //参考位置，参考中心为
+        var location = this.location;
+        //geometry 像素坐标
+        var localLX = this.getLocalXY(geometry);
+
+        //赋 style
+        var style = new Object();
+        style.r = 6; //防止漏设此参数，默认 6 像素
+        style = SuperMap.Util.copyAttributesWithClip(style, this.style);
+        style.x = localLX[0] - location[0];
+        style.y = localLX[1] - location[1];
+
+        //创建图形
+        var shape = new SuperMap.LevelRenderer.Shape.SmicPoint({
+            style: style,
+            clickable: this.isClickAble,
+            hoverable: this.isHoverAble
+        });
+
+        //设置高亮样式
+        if (this.highlightStyle) {
+            shape.highlightStyle = this.highlightStyle;
+        }
+
+        //设置参考中心，指定图形位置
+        shape.refOriginalPosition = location;
+
+        //储存数据 id 属性，用于事件
+        shape.refDataID = this.data.id;
+
+        //储存数据 id 属性，用于事件-多图形同时高亮
+        shape.isHoverByRefDataID = this.isMultiHover;
+
+        //修改一些 shape 可选属性，通常不需要这么做
+        if (this.shapeOptions) {
+            SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
+        }
+
+        this.shapes.push(shape);
+    },
+
+    /**
+     * Method: polygonToThemeFeature
+     * 转换面要素。
+     *
+     * Parameters:
+     * geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 Polygon。
+     */
+    polygonToTF: function (geometry) {
+        var components = geometry.components;
+        ;
+
+        //节点像素坐标
+        var localLX = [];
+        //参考位置，参考中心为
+        var refLocal = [];
+        var location = this.location;
+        var pointList = [];
+        //岛洞
+        var holePolygonPointList = [];
+        var holePolygonPointLists = [];
+
+        //节点抽稀距离
+        var nCPx = this.nodesClipPixel;
+
+        for (var i = 0; i < components.length; i++) {
+            var components_i = components[i].components;
+
+
+            if (i === 0) {
+                // 第一个 component 正常绘制
+                pointList = [];
+
+                for (var j = 0; j < components_i.length; j++) {
+                    refLocal = [];
+                    localLX = [];
+
+                    localLX = this.getLocalXY(components_i[j]);
+
+                    refLocal[0] = localLX[0] - location[0];
+                    refLocal[1] = localLX[1] - location[1];
+
+                    //抽稀 - 2 px
+                    if (pointList.length > 0) {
+                        var lastLocalXY = pointList[pointList.length - 1];
+                        if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) continue;
+                    }
+
+                    //使用参考点
+                    pointList.push(refLocal);
+                }
+            }
+            else {
+                // 其它 component 作为岛洞
+                holePolygonPointList = [];
+
+                for (var j = 0; j < components_i.length; j++) {
+                    refLocal = [];
+                    localLX = [];
+
+                    localLX = this.getLocalXY(components_i[j]);
+
+                    refLocal[0] = localLX[0] - location[0];
+                    refLocal[1] = localLX[1] - location[1];
+
+                    //抽稀 - 2 px
+                    if (holePolygonPointList.length > 0) {
+                        var lastLocalXY = holePolygonPointList[holePolygonPointList.length - 1];
+                        if ((Math.abs(lastLocalXY[0] - refLocal[0]) <= nCPx) && (Math.abs(lastLocalXY[1] - refLocal[1]) <= nCPx)) continue;
+                    }
+
+                    //使用参考点
+                    holePolygonPointList.push(refLocal);
+                }
+            }
+
+            if (holePolygonPointList.length < 2) {
+                continue;
+            }
+
+            holePolygonPointLists.push(holePolygonPointList);
+        }
+
+        if (pointList.length < 2) {
+            return;
+        }
+
+        //赋 style
+        var style = new Object();
+        style = SuperMap.Util.copyAttributesWithClip(style, this.style, ['pointList']);
+        style.pointList = pointList;
+
+        //创建图形
+        var shape = new SuperMap.LevelRenderer.Shape.SmicPolygon({
+            style: style,
+            clickable: this.isClickAble,
+            hoverable: this.isHoverAble
+        });
+
+        //设置高亮样式
+        if (this.highlightStyle) {
+            shape.highlightStyle = this.highlightStyle;
+        }
+
+        //设置参考中心，指定图形位置
+        shape.refOriginalPosition = this.location;
+
+        //储存数据 id 属性，用于事件
+        shape.refDataID = this.data.id;
+
+        //储存数据 id 属性，用于事件-多图形同时高亮
+        shape.isHoverByRefDataID = this.isMultiHover;
+
+        //岛洞面
+        if (holePolygonPointLists.length > 0) {
+            shape.holePolygonPointLists = holePolygonPointLists;
+        }
+
+        //修改一些 shape 可选属性，通常不需要这么做
+        if (this.shapeOptions) {
+            SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
+        }
+
+        this.shapes.push(shape);
+    },
+
+    /**
+     * Method: rectangleToTF
+     * 转换矩形要素。
+     *
+     * Parameters:
+     * geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 Rectangle。
+     */
+    rectangleToTF: function (geometry) {
+        //参考位置，参考中心为
+        var location = this.location;
+        var ll = new SuperMap.LonLat(geometry.x, geometry.y);
+
+        //地图分辨率
+        var res = this.layer.map.getResolution();
+
+        //geometry 像素坐标
+        var localLX = this.getLocalXY(ll);
+
+        //赋 style
+        var style = new Object();
+        style.r = 6; //防止漏设此参数，默认 6 像素
+        style = SuperMap.Util.copyAttributesWithClip(style, this.style);
+        style.x = localLX[0] - location[0];
+        // SuperMap.Geometry.Rectangle 使用左下角定位， SmicRectangle 使用左上角定位，需要转换
+        style.y = (localLX[1] - location[1]) - 2 * geometry.width / res;
+        style.width = geometry.width / res;
+        style.height = geometry.height / res;
+
+        //创建图形
+        var shape = new SuperMap.LevelRenderer.Shape.SmicRectangle({
+            style: style,
+            clickable: this.isClickAble,
+            hoverable: this.isHoverAble
+        });
+
+        //设置高亮样式
+        if (this.highlightStyle) {
+            shape.highlightStyle = this.highlightStyle;
+        }
+
+        //设置参考中心，指定图形位置
+        shape.refOriginalPosition = location;
+
+        //储存数据 id 属性，用于事件
+        shape.refDataID = this.data.id;
+
+        //储存数据 id 属性，用于事件-多图形同时高亮
+        shape.isHoverByRefDataID = this.isMultiHover;
+
+        //修改一些 shape 可选属性，通常不需要这么做
+        if (this.shapeOptions) {
+            SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
+        }
+
+        this.shapes.push(shape);
+    },
+
+    /**
+     * Method: geoTextToTF
+     * 转换文本要素。
+     *
+     * Parameters:
+     * geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 GeoText。
+     */
+    geoTextToTF: function (geometry) {
+        //参考位置，参考中心为
+        var location = this.location;
+        //geometry 像素坐标
+        var localLX = this.getLocalXY(geometry);
+
+        //赋 style
+        var style = new Object();
+        style.r = 6; //防止漏设此参数，默认 6 像素
+        style = SuperMap.Util.copyAttributesWithClip(style, this.style, ["x", "y", "text"]);
+        style.x = localLX[0] - location[0];
+        style.y = localLX[1] - location[1];
+        style.text = geometry.text;
+
+        //创建图形
+        var shape = new SuperMap.LevelRenderer.Shape.SmicText({
+            style: style,
+            clickable: this.isClickAble,
+            hoverable: this.isHoverAble
+        });
+
+        //设置高亮样式
+        if (this.highlightStyle) {
+            shape.highlightStyle = this.highlightStyle;
+        }
+
+        //设置参考中心，指定图形位置
+        shape.refOriginalPosition = location;
+
+        //储存数据 id 属性，用于事件
+        shape.refDataID = this.data.id;
+
+        //储存数据 id 属性，用于事件-多图形同时高亮
+        shape.isHoverByRefDataID = this.isMultiHover;
+
+        //修改一些 shape 可选属性，通常不需要这么做
+        if (this.shapeOptions) {
+            SuperMap.Util.copyAttributesWithClip(shape, this.shapeOptions);
+        }
+
+        this.shapes.push(shape);
+    },
+
+    /**
+     * Method: updateAndAddShapes
+     * 修改位置，针对地图平移操作，地图漫游操作后调用此函数。
+     */
+    updateAndAddShapes: function () {
+        var newLocalLX = this.getLocalXY(this.lonlat);
+        this.location = newLocalLX;
+
+        var render = this.layer.renderer;
+        for (var i = 0, len = this.shapes.length; i < len; i++) {
+            var shape = this.shapes[i];
+            //设置参考中心，指定图形位置
+            shape.refOriginalPosition = newLocalLX;
+            render.addShape(shape);
+        }
+    },
+
+    /**
+     * APIMethod: getShapesCount
+     * 获得专题要素中可视化图形的数量。
+     *
+     * Returns:
+     * {Boolean} 可视化图形的数量。
+     */
+    getShapesCount: function () {
+        return this.shapes.length;
+    },
+
+    //地理坐标转为像素坐标。
+    getLocalXY: function (lonlat) {
+        return this.layer.getLocalXY(lonlat);
+    },
+
+    CLASS_NAME: "SuperMap.Feature.Theme.Vector"
+});
+module.exports = SuperMap.Feature.Theme.Vector;
 
 /***/ }),
 /* 45 */
@@ -9029,7 +9185,7 @@ module.exports = ol.source.Tianditu;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(7);
-__webpack_require__(33);
+__webpack_require__(32);
 var ol = __webpack_require__(2);
 var SuperMap = __webpack_require__(0);
 ol.supermap.TileSuperMapRest = function (options) {
@@ -9638,7 +9794,7 @@ module.exports = ol.source.Graphic;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(7);
-__webpack_require__(33);
+__webpack_require__(32);
 __webpack_require__(239);
 __webpack_require__(47);
 __webpack_require__(46);
@@ -9902,8 +10058,8 @@ module.exports = ol.supermap.VectorTileSuperMapRest;
 
 var ol = __webpack_require__(2);
 var SuperMap = __webpack_require__(0);
-var GeoFeature = __webpack_require__(34);
-var Vector = __webpack_require__(26);
+var GeoFeature = __webpack_require__(33);
+var Vector = __webpack_require__(44);
 
 ol.source.Unique = function (name, opt_options) {
     GeoFeature.call(this, name, opt_options);
@@ -13915,7 +14071,7 @@ module.exports = SuperMap.BuildCacheJobParameter;
 /***/ (function(module, exports, __webpack_require__) {
 
 var SuperMap = __webpack_require__(0);
-var ProcessingJobsServiceBase = __webpack_require__(29);
+var ProcessingJobsServiceBase = __webpack_require__(28);
 var BuildCacheJobParameter = __webpack_require__(79);
 
 SuperMap.REST.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
@@ -14911,7 +15067,7 @@ module.exports = SuperMap.REST.ComputeWeightMatrixService;
  *  - <SuperMap.BufferAnalystParameters>
  */
 __webpack_require__(1);
-__webpack_require__(36);
+__webpack_require__(35);
 var SuperMap = __webpack_require__(0);
 var DataReturnOption = __webpack_require__(16);
 var FilterParameter = __webpack_require__(8);
@@ -15159,7 +15315,7 @@ module.exports = SuperMap.DatasetInfo;
  *  - <SuperMap.OverlayAnalystParameters>
  */
 __webpack_require__(1);
-__webpack_require__(37);
+__webpack_require__(36);
 var SuperMap = __webpack_require__(0);
 var DataReturnOption = __webpack_require__(16);
 var FilterParameter = __webpack_require__(8);
@@ -15332,7 +15488,7 @@ module.exports = SuperMap.DatasetOverlayAnalystParameters;
  *  - <SurfaceAnalystParameters>
  */
 __webpack_require__(8);
-__webpack_require__(39);
+__webpack_require__(38);
 var SuperMap = __webpack_require__(0);
 var FilterParameter = __webpack_require__(8);
 var DataReturnOption = __webpack_require__(16);
@@ -19104,7 +19260,7 @@ module.exports = SuperMap.REST.GeoRelationAnalystService;
  * Inherits from:
  *  - <SuperMap.BufferAnalystParameters>
  */
-__webpack_require__(36);
+__webpack_require__(35);
 var SuperMap = __webpack_require__(0);
 SuperMap.GeometryBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystParameters, {
 
@@ -19181,7 +19337,7 @@ module.exports = SuperMap.GeometryBufferAnalystParameters;
  * Inherits from:
  *  - <SuperMap.OverlayAnalystParameters>
  */
-__webpack_require__(37);
+__webpack_require__(36);
 var SuperMap = __webpack_require__(0);
 SuperMap.GeometryOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalystParameters, {
 
@@ -19266,7 +19422,7 @@ module.exports = SuperMap.GeometryOverlayAnalystParameters;
  * Inherits from:
  *  - <SurfaceAnalystParameters>
  */
-__webpack_require__(39);
+__webpack_require__(38);
 var SuperMap = __webpack_require__(0);
 SuperMap.GeometrySurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnalystParameters, {
 
@@ -21987,7 +22143,7 @@ module.exports = SuperMap.KernelDensityJobParameter;
 /***/ (function(module, exports, __webpack_require__) {
 
 var SuperMap = __webpack_require__(0);
-var ProcessingJobsServiceBase = __webpack_require__(29);
+var ProcessingJobsServiceBase = __webpack_require__(28);
 var KernelDensityJobParameter = __webpack_require__(155);
 
 SuperMap.REST.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
@@ -22035,7 +22191,7 @@ module.exports = SuperMap.REST.KernelDensityJobsService;
  * Inherits from:
  *  - <SuperMap.LabelMatrixCell>
  */
-__webpack_require__(28);
+__webpack_require__(27);
 var SuperMap = __webpack_require__(0);
 SuperMap.LabelImageCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 
@@ -22253,7 +22409,7 @@ module.exports = SuperMap.LabelMixedTextStyle;
  * Inherits from:
  *  - <SuperMap.LabelMatrixCell>
  */
-__webpack_require__(28);
+__webpack_require__(27);
 var SuperMap = __webpack_require__(0);
 var ServerStyle = __webpack_require__(10);
 SuperMap.LabelSymbolCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
@@ -22330,9 +22486,9 @@ module.exports = SuperMap.LabelSymbolCell;
  * Inherits from:
  *  - <SuperMap.LabelMatrixCell>
  */
-__webpack_require__(28);
+__webpack_require__(27);
 var SuperMap = __webpack_require__(0);
-var ThemeLabel = __webpack_require__(31);
+var ThemeLabel = __webpack_require__(30);
 SuperMap.LabelThemeCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 
     /**
@@ -23805,7 +23961,7 @@ module.exports = SuperMap.REST.QueryBySQLService;
  * Class: SuperMap.RouteCalculateMeasureParameters
  * 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
  */
-__webpack_require__(38);
+__webpack_require__(37);
 var SuperMap = __webpack_require__(0);
 SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
 
@@ -24046,7 +24202,7 @@ module.exports = SuperMap.REST.RouteCalculateMeasureService;
  * 参数有两种方式，分别为Geometry和Dataset两种，前者需要指定sourceRoute对象作为参数，后者需要dataset，routeIDField，routeID三个参数
  * 如果用户两种参数均设置，优先选择Dataset方式
  */
-__webpack_require__(38);
+__webpack_require__(37);
 var SuperMap = __webpack_require__(0);
 SuperMap.RouteLocatorParameters = SuperMap.Class({
 
@@ -24333,12 +24489,12 @@ module.exports = SuperMap.REST.RouteLocatorService;
  * Inherits from:
  *  - <SuperMap.UGCSubLayer>
  */
-__webpack_require__(31);
-__webpack_require__(44);
-__webpack_require__(42);
-__webpack_require__(40);
-__webpack_require__(41);
+__webpack_require__(30);
 __webpack_require__(43);
+__webpack_require__(41);
+__webpack_require__(39);
+__webpack_require__(40);
+__webpack_require__(42);
 __webpack_require__(24);
 var SuperMap = __webpack_require__(0);
 SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
@@ -25240,7 +25396,7 @@ module.exports = SuperMap.SummaryMeshJobParameter;
 /***/ (function(module, exports, __webpack_require__) {
 
 var SuperMap = __webpack_require__(0);
-var ProcessingJobsServiceBase = __webpack_require__(29);
+var ProcessingJobsServiceBase = __webpack_require__(28);
 var SummaryMeshJobParameter = __webpack_require__(191);
 
 SuperMap.REST.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
@@ -27241,13 +27397,13 @@ module.exports = SuperMap.ThemeMemoryData;
  * 专题图参数类
  * 该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
  */
-__webpack_require__(27);
+__webpack_require__(26);
+__webpack_require__(39);
 __webpack_require__(40);
 __webpack_require__(41);
+__webpack_require__(30);
 __webpack_require__(42);
-__webpack_require__(31);
 __webpack_require__(43);
-__webpack_require__(44);
 __webpack_require__(203);
 __webpack_require__(205);
 __webpack_require__(157);
@@ -34765,10 +34921,9 @@ __webpack_require__(69);
 __webpack_require__(65);
 __webpack_require__(53);
 __webpack_require__(54);
-__webpack_require__(35);
 __webpack_require__(34);
-__webpack_require__(55);
-module.exports = __webpack_require__(26);
+__webpack_require__(33);
+module.exports = __webpack_require__(55);
 
 
 /***/ })

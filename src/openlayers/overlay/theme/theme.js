@@ -379,4 +379,22 @@ ol.source.Theme.prototype.canvasFunctionInternal_ = function (extent, resolution
     return context.canvas;
 };
 
+ol.source.Theme.prototype.getLocalXY = function (coordinate) {
+    var resolution = this.map.getView().getResolution();
+    var extent = this.map.getView().calculateExtent();
+    if (coordinate instanceof SuperMap.Geometry.Point || coordinate instanceof SuperMap.Geometry.GeoText) {
+        var x = (coordinate.x / resolution + (-extent[0] / resolution));
+        var y = ((extent[3] / resolution) - coordinate.y / resolution);
+        return [x, y];
+    }
+    else if (coordinate instanceof SuperMap.LonLat) {
+        var x = (coordinate.lon / resolution + (-extent[0] / resolution));
+        var y = ((extent[3] / resolution) - coordinate.lat / resolution);
+        return [x, y];
+    }
+    else {
+        return null;
+    }
+};
+
 module.exports = ol.source.Theme;

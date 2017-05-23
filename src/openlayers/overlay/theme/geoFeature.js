@@ -1,7 +1,7 @@
 var ol = require('openlayers');
 var SuperMap = require('../../../common/SuperMap');
 var Theme = require('./theme');
-var Vector = require('./vector');
+var Vector = require('../../../common/iServer/ThemeVector');
 
 ol.source.GeoFeature = function (name, opt_options) {
     Theme.call(this, name, opt_options);
