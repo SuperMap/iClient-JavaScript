@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>分段专题图</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+    <style type="text/css">
+        /*图例 style*/
+        .legend {
+            position: absolute;
+            right: 10px;
+            top: 350px;
+            width: 250px;
+            text-align: center;
+            border: 2px solid #D6E3F1;
+            background: #FFF;
+            z-index: 1000;
+            display: none;
+        }
+
+        .legendTitle {
+            background: #1E90FF;
+        }
+
+        .legendContent {
+            padding-left: 15px;
+            padding-right: 15px;
+            height: 160px;
+            display: block;
+            overflow-y: auto;
+        }
+
+        .legendItemHeader {
+            top: 5px;
+            width: 100px;
+            height: 18px;
+            text-align: center;
+        }
+
+        .legendItemValue {
+            top: 5px;
+            width: 120px;
+            text-align: center;
+            height: 18px;
+        }
+
+        /*信息框 style*/
+        #infoBox {
+            border: 2px solid #D6E3F1;
+            position: absolute;
+            right: 10px;
+            top: 250px;
+            width: 250px;
+            z-index: 999;
+            display: none;
+        }
+
+    <!--</style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
+<div>
+    <div id="mapLegend" class="legend">
+        <div class="legendTitle">
+            <span>图例</span>
+        </div>
+        <div class="legendContent">
+            <table>
+                <tr>
+                    <td class="legendItemHeader">人口密度(1999年)</td>
+                    <td class="legendItemValue">颜色</td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0 - 0.02</td>
+                    <td class="legendItemValue" style="background: #FDE2CA"></td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0.02 - 0.04</td>
+                    <td class="legendItemValue" style="background: #FACE9C"></td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0.04 - 0.06</td>
+                    <td class="legendItemValue" style="background: #F09C42"></td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0.06 - 0.1</td>
+                    <td class="legendItemValue" style="background: #D0770B"></td>
+                </tr>
+                <tr>
+                    <td class="legendItemHeader">0.1 - 0.2</td>
+                    <td class="legendItemValue" style="background: #945305"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="infoBox">
+        <div style="text-align: center;background: #1E90FF"> 属性表 </div>
+        <div id="infoContent" style="overflow-y: auto; padding: 5px; background-color: #FFFFFF">
+        </div>
+    </div>
+</div>
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+
+<script type="text/javascript">
+    var map, options, themeLayer, themeSource
+    baseUrl = "http://113.209.64.227:8090/iserver/services/map-Jingjin/rest/maps/京津地区地图",
+            url2 = "http://113.209.64.227:8090/iserver/services/data-Jingjin/rest/data",
+            extent = [114.59, 37.76, 119.51, 42.31],
+            projection = new ol.proj.Projection({
+                extent: extent,
+                units: 'm'
+            });
+    new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [116.85, 39.79],
+                zoom: 2,
+                projection: projection
+            })
+        });
+        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        var layer = new ol.layer.Tile({
+            source: new ol.supermap.TileSuperMapRest(options)
+        });
+        map.addLayer(layer);
+
+        themeSource = new ol.source.Range("ThemeLayer", {map: map});
+        themeSource.setOpacity(0.8);
+        themeLayer = new ol.layer.Image({
+            source: themeSource
+        });
+        themeLayer.setOpacity(0.8);
+        themeSource.style = {
+            shadowBlur: 16,
+            shadowColor: "#000000",
+            fillColor: "#FFFFFF"
+        };
+        // 开启 hover 高亮效果
+        themeSource.isHoverAble = true;
+        // hover 高亮样式
+        themeSource.highlightStyle = {
+            stroke: true,
+            strokeWidth: 4,
+            strokeColor: 'blue',
+            fillColor: "#00EEEE",
+            fillOpacity: 0.8
+        };
+        // 用于单值专题图的属性字段名称
+        themeSource.themeField = "POP_DENSITY99";
+        // 风格数组，设定值对应的样式
+        themeSource.styleGroups = [
+            {
+                start: 0,
+                end: 0.02,
+                style: {
+                    color: '#FDE2CA'
+                }
+            },
+            {
+                start: 0.02,
+                end: 0.04,
+                style: {
+                    color: '#FACE9C'
+                }
+            },
+            {
+                start: 0.04,
+                end: 0.06,
+                style: {
+                    color: '#F09C42'
+                }
+            },
+            {
+                start: 0.06,
+                end: 0.1,
+                style: {
+                    color: '#D0770B'
+                }
+            },
+            {
+                start: 0.1,
+                end: 0.2,
+                style: {
+                    color: '#945305'
+                }
+            }
+        ];
+        //专题图层 mousemove 事件
+        themeSource.on('mousemove', function (e) {
+            if (e.target && e.target.refDataID) {
+                document.getElementById("infoBox").style.display = "block";
+                var fid = e.target.refDataID;
+                var fea = themeSource.getFeatureById(fid);
+                if (fea) {
+                    document.getElementById("infoContent").innerHTML = "";
+                    document.getElementById("infoContent").innerHTML += "ID: " + fea.attributes.SMID + "<br/>";
+                    document.getElementById("infoContent").innerHTML += "行政区名:" + fea.attributes.NAME + "<br/>";
+                    document.getElementById("infoContent").innerHTML += "人口密度:" + parseFloat(fea.attributes.POP_DENSITY99).toFixed(5) + "<br/>";
+                }
+            }
+            else {
+                document.getElementById("infoContent").innerHTML = "";
+                document.getElementById("infoBox").style.display = "none";
+            }
+        });
+
+        var pointerInteraction = new ol.interaction.Pointer();
+        pointerInteraction.handleMoveEvent_ = function (event) {
+            themeSource.fire('mousemove', event);
+        };
+        map.addInteraction(pointerInteraction);
+        clearLayer();
+        var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+        getFeatureParam = new SuperMap.FilterParameter({
+            name: "Jingjin",
+            attributeFilter: "SMID > -1"
+        });
+        getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+            queryParameter: getFeatureParam,
+            toIndex: 500,
+            datasetNames:["Jingjin:BaseMap_R"]
+        });
+        getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url2, {
+            format: SuperMap.DataFormat.ISERVER,
+            eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}
+        });
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+    });
+
+    function processCompleted(getFeaturesEventArgs) {
+        var result = getFeaturesEventArgs.result;
+        if (result && result.features) {
+            themeSource.addFeatures(result.features);
+            map.addLayer(themeLayer);
+        }
+        //显示图例
+        document.getElementById("mapLegend").style.display = "block";
+    }
+
+    function processFailed(e) {
+        alert(e.error.errorMsg);
+    }
+
+    function clearLayer() {
+        document.getElementById("mapLegend").style.display = "none";
+        document.getElementById("infoBox").style.display = "none";
+        //先清除上次的显示结果
+        themeSource.clear();
+    }
+
+</script>
+</body>
+</html>
