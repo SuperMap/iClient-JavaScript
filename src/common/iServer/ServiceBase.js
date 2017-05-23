@@ -225,27 +225,26 @@ SuperMap.ServiceBase = SuperMap.Class({
      * @param url
      */
     getCredential: function (url) {
-        var restUrl = this._clipUrlRestString(url);
-        var credential, value;
+        var keyUrl = url, credential, value;
         switch (this.serverType) {
             case SuperMap.ServerType.ISERVER:
-                value = SuperMap.SecurityManager.getToken(restUrl);
+                value = SuperMap.SecurityManager.getToken(keyUrl);
                 credential = value ? new SuperMap.Credential(value, "token") : null;
                 break;
             case SuperMap.ServerType.IPORTAL:
-                value = SuperMap.SecurityManager.getToken(restUrl);
+                value = SuperMap.SecurityManager.getToken(keyUrl);
                 credential = value ? new SuperMap.Credential(value, "token") : null;
                 if (!credential) {
-                    value = SuperMap.SecurityManager.getKey(restUrl);
+                    value = SuperMap.SecurityManager.getKey(keyUrl);
                     credential = value ? new SuperMap.Credential(value, "key") : null;
                 }
                 break;
             case SuperMap.ServerType.ONLINE:
-                value = SuperMap.SecurityManager.getKey(restUrl);
+                value = SuperMap.SecurityManager.getKey(keyUrl);
                 credential = value ? new SuperMap.Credential(value, "key") : null;
                 break;
             default:
-                value = SuperMap.SecurityManager.getToken(restUrl);
+                value = SuperMap.SecurityManager.getToken(keyUrl);
                 credential = value ? new SuperMap.Credential(value, "token") : null;
                 break;
         }
@@ -373,23 +372,6 @@ SuperMap.ServiceBase = SuperMap.Class({
         result = SuperMap.Util.transformResult(result);
         var error = result.error || result;
         this.events.triggerEvent("processFailed", {error: error});
-    },
-
-    /**
-     * 截取url rest路径
-     * @param url
-     * @private
-     */
-    _clipUrlRestString: function (url) {
-        if (!url) {
-            return url;
-        }
-        var patten = /http:\/\/(.*\/rest)/i;
-        var restStr = url.match(patten)[0];
-        if (restStr.indexOf("rest") < 1) {
-            return url;
-        }
-        return restStr;
     },
 
     CLASS_NAME: "SuperMap.ServiceBase"

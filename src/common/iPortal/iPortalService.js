@@ -33,7 +33,10 @@ SuperMap.iPortalService = SuperMap.Class(SuperMap.iPortalServiceBase, {
     initialize: function (seviceUrl, params) {
         params = params || {};
         SuperMap.Util.extend(this, params);
-        this.serviceUrl = seviceUrl + "/" + this.id;
+        this.serviceUrl = seviceUrl;
+        if (this.id) {
+            this.serviceUrl = seviceUrl + "/" + this.id;
+        }
         SuperMap.iPortalServiceBase.prototype.initialize.call(this.serviceUrl);
     },
 
