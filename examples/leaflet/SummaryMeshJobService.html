@@ -26,16 +26,20 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
 <script type="text/javascript">
-    var layer, baseLayer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
+    var layer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
             token = 'GSHB7qlocJkqEH0Ld6VUSGQfekOdPd3e9UdJoHjiupfbkGDggXQLSPWd6VaKm8NH4gvXx6UQ0TCI5wpfr-4Tlw..',
-            worldMapUrl = 'http://113.209.64.227:8090/iserver/services/map-World/rest/maps/世界地图_Day',
             map = L.map('map', {
-                crs: L.CRS.EPSG4326,
+                crs: L.CRS.TianDiTu_WGS84,
                 center: [40.75, -73.95],
-                zoom: 11
+                maxZoom: 18,
+                zoom: 12
             }),
             info = L.control({position: 'topright'}),
             query = [];
+    L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
+        layer: "vec",
+        tilematrixSet: "c"
+    }).addTo(map);
 
     info.onAdd = function () {
         var popup = L.DomUtil.create('div');
@@ -51,11 +55,16 @@
                 "</div><p>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>聚合类型</span>" +
-                "<input id='type' type='text' class='form-control' placeholder='SUMMARYMESH'/>" +
+                "<select class='form-control' id='type' name='clientType'>" +
+                "<option value='SUMMARYMESH' selected='selected'>网格面聚合</option>" +
+                "</select>" +
                 "</div><p>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>网格面类型</span>" +
-                "<input id='meshType' type='text' class='form-control' placeholder='0'/>" +
+                "<select class='form-control' id='meshType' name='clientType'>" +
+                "<option value='0' selected='selected'>四边形网格</option>" +
+                "<option value='1'>六边形网格</option>" +
+                "</select>" +
                 "</div><p>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>权重值索引</span>" +
@@ -86,11 +95,11 @@
     var summaryMeshJobParameter = new SuperMap.SummaryMeshJobParameter({
                 datasetName: $('#datasetName').val() || $('#datasetName').attr('placeholder'),
                 resolution: $('#resolution').val() || $('#resolution').attr('placeholder'),
-                meshType: $('#meshType').val() || $('#meshType').attr('placeholder'),
+                meshType: $('#meshType option:selected').attr('value'),
                 fields: $('#fields').val() || $('#fields').attr('placeholder'),
                 query: L.latLngBounds(L.latLng(query[1], query[0]), L.latLng(query[3], query[2])),
                 statisticModes: $('#statisticModes').val() || $('#statisticModes').attr('placeholder'),
-                type: $('#type').val() || $('#type').attr('placeholder')
+                type: $('#type option:selected').attr('value')
             }),
             processingJobsService = new L.supermap.processingJobsService(processingJobsUrl);
 
@@ -98,9 +107,8 @@
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
-        if (map && layer && baseLayer) {
+        if (map && layer) {
             map.removeLayer(layer);
-            map.removeLayer(baseLayer);
         }
         processingJobsService.addSummaryMeshJob(summaryMeshJobParameter, function (serviceResult) {
             if (serviceResult.error) {
@@ -115,9 +123,7 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path;
-                        baseLayer = L.supermap.tiledMapLayer(worldMapUrl, {noWrap: true});
                         layer = L.supermap.tiledMapLayer(mapUrl, {noWrap: true, transparent: true});
-                        baseLayer.addTo(map);
                         layer.addTo(map);
                         $("#model").modal('hide');
                         $('#btn').prop('disabled', false);

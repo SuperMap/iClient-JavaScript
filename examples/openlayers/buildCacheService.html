@@ -35,12 +35,20 @@
         <div class="panel-body">
             <div class="input-group">
                 <span class="input-group-addon">输入数据</span>
-                <input id="datasetName" type="text" class="form-control" placeholder="test_newyork_taxi_2013_01_14k"/>
+                <div>
+                    <select class="form-control" id="datasetName" name="clientType">
+                        <option selected="selected">test_newyork_taxi_2013_01_14k</option>
+                    </select>
+                </div>
             </div>
             <p>
             <div class="input-group">
                 <span class="input-group-addon">缓存类型</span>
-                <input id="imageType" type="text" class="form-control" placeholder="Heatmap"/>
+                <div>
+                    <select class="form-control" id="imageType" name="clientType">
+                        <option value="Heatmap" selected="selected">热度图</option>
+                    </select>
+                </div>
             </div>
             <p>
             <div class="input-group">
@@ -60,7 +68,11 @@
             <p>
             <div class="input-group">
                 <span class="input-group-addon">存储类型</span>
-                <input id="cacheType" type="text" class="form-control" placeholder="MongoDB"/>
+                <div>
+                    <select class="form-control" id="cacheType" name="clientType">
+                        <option selected="selected">MongoDB</option>
+                    </select>
+                </div>
             </div>
             <p>
             <div class="input-group">
@@ -90,9 +102,14 @@
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var layer, baseLayer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
+
+    $('.dropdown-menu').on('click', function (e) {
+        var $target = $(e.target);
+        $('#imageTypeBtn').text($target.text())
+    });
+
+    var layer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
             token = 'GSHB7qlocJkqEH0Ld6VUSGQfekOdPd3e9UdJoHjiupfbkGDggXQLSPWd6VaKm8NH4gvXx6UQ0TCI5wpfr-4Tlw..',
-            worldMapUrl = 'http://113.209.64.227:8090/iserver/services/map-World/rest/maps/世界地图_Day',
             map = new ol.Map({
                 target: 'map',
                 view: new ol.View({
@@ -103,19 +120,31 @@
             }),
             bounds = [],
             serverAddress = [];
+    var resolutions = [];
+    for (var i = 6; i < 10; i++) {
+        resolutions.push(0.703125 / (Math.pow(2, i)));
+    }
+    map.addLayer(new ol.layer.Tile({
+        source: new ol.source.Tianditu({
+            url: "http://t0.tianditu.com/vec_c/wmts",
+            matrixSet: 'c',
+            layer: 'vec',
+            projection: "EPSG:4326"
+        })
+    }));
     ($('#bounds').val() || $('#bounds').attr('placeholder')).split(',').map(function (el) {
         return bounds.push(parseFloat(el));
     });
     serverAddress.push(($('#serverAdresses').val() || $('#serverAdresses').attr('placeholder')).toString());
     var buildCacheJobParameter = new SuperMap.BuildCacheJobParameter({
-                datasetName: $('#datasetName').val() || $('#datasetName').attr('placeholder'),
+                datasetName: $('#datasetName option:selected').text(),
                 cacheName: $('#cacheName').val() || $('#cacheName').attr('placeholder'),
-                cacheType: $('#cacheType').val() || $('#cacheType').attr('placeholder'),
+                cacheType: $('#cacheType option:selected').text(),
                 serverAdresses: serverAddress,
                 database: $('#database').val() || $('#database').attr('placeholder'),
                 version: $('#version').val() || $('#version').attr('placeholder'),
                 bounds: bounds,
-                imageType: $('#imageType').val() || $('#imageType').attr('placeholder'),
+                imageType: $('#imageType option:selected').attr('value'),
                 level: parseInt($('#level').val() || $('#level').attr('placeholder'))
             }),
             processingJobsService = new ol.supermap.ProcessingJobsService(processingJobsUrl),
@@ -130,9 +159,8 @@
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
-        if (map && layer && baseLayer) {
+        if (map && layer) {
             map.removeLayer(layer);
-            map.removeLayer(baseLayer);
         }
         processingJobsService.addBuildCacheJob(buildCacheJobParameter, function (serviceResult) {
             if (serviceResult.error) {
@@ -147,19 +175,13 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path;
-                        new ol.supermap.MapService(worldMapUrl).getMapInfo(function (worldMapInfo) {
-                            baseLayer = new ol.layer.Tile({
-                                source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(worldMapUrl, worldMapInfo.result))
+                        new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
+                            layer = new ol.layer.Tile({
+                                source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
                             });
-                            map.addLayer(baseLayer);
-                            new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
-                                layer = new ol.layer.Tile({
-                                    source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
-                                });
-                                map.addLayer(layer);
-                                $("#model").modal('hide');
-                                $('#btn').prop('disabled', false);
-                            });
+                            map.addLayer(layer);
+                            $("#model").modal('hide');
+                            $('#btn').prop('disabled', false);
                         });
                     });
                 }

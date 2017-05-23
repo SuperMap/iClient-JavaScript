@@ -26,17 +26,19 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
 <script type="text/javascript">
-    var layer, baseLayer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
+    var layer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
             token = 'GSHB7qlocJkqEH0Ld6VUSGQfekOdPd3e9UdJoHjiupfbkGDggXQLSPWd6VaKm8NH4gvXx6UQ0TCI5wpfr-4Tlw..',
-            worldMapUrl = 'http://113.209.64.227:8090/iserver/services/map-World/rest/maps/世界地图_Day',
             map = L.map('map', {
-                crs: L.CRS.EPSG4326,
+                crs: L.CRS.TianDiTu_WGS84,
                 center: [40.75, -73.95],
                 maxZoom: 18,
                 zoom: 12
             }),
             info = L.control({position: 'topright'});
-
+    L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
+        layer: "vec",
+        tilematrixSet: "c"
+    }).addTo(map);
     info.onAdd = function () {
         var popup = L.DomUtil.create('div');
         popup.style = 'width:20%';
@@ -47,16 +49,20 @@
                 "<div class='panel-body'>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>输入数据</span>" +
-                "<input id='datasetName' type='text' class='form-control' placeholder='test_newyork_taxi_2013_01_14k'/>" +
-                "</div><p>" +
+                "<div>" +
+                "<select class='form-control' id='datasetName' name='clientType'>" +
+                "<option selected='selected'>test_newyork_taxi_2013_01_14k</option>" +
+                "</select> </div> </div> <p>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>缓存类型</span>" +
-                "<input id='imageType' type='text' class='form-control' placeholder='Heatmap'/>" +
-                "</div><p>" +
+                "<div>" +
+                "<select class='form-control' id='imageType' name='clientType'>" +
+                "<option value='Heatmap' selected='selected'>热度图</option>" +
+                "</select> </div> </div> <p>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>缓存范围</span>" +
                 "<input id='bounds' type='text' class='form-control' placeholder='-74.050, 40.650, -73.850, 40.850'/>" +
-                "</div><p>" +
+                "</div> <p>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>缓存比例尺级别</span>" +
                 "<input id='level' type='text' class='form-control' placeholder='5'/>" +
@@ -67,8 +73,10 @@
                 "</div><p>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>存储类型</span>" +
-                "<input id='cacheType' type='text' class='form-control' placeholder='MongoDB'/>" +
-                "</div><p>" +
+                "<div>" +
+                "<select class='form-control' id='cacheType' name='clientType'>" +
+                "<option selected='selected'>MongoDB</option>" +
+                "</select></div></div><p>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>服务地址</span>" +
                 "<input id='serverAdresses' type='text' class='form-control' placeholder='113.209.64.227:27010'/>" +
@@ -96,12 +104,12 @@
     var buildCacheJobParameter = new SuperMap.BuildCacheJobParameter({
         datasetName: $('#datasetName').val() || $('#datasetName').attr('placeholder'),
         cacheName: $('#cacheName').val() || $('#cacheName').attr('placeholder'),
-        cacheType: $('#cacheType').val() || $('#cacheType').attr('placeholder'),
+        cacheType: $('#cacheType option:selected').text(),
         serverAdresses: serverAddress,
         database: $('#database').val() || $('#database').attr('placeholder'),
         version: $('#version').val() || $('#version').attr('placeholder'),
-        bounds: bounds,
-        imageType: $('#imageType').val() || $('#imageType').attr('placeholder'),
+        bounds: L.latLngBounds(L.latLng(bounds[1], bounds[0]), L.latLng(bounds[3], bounds[2])),
+        imageType: $('#imageType option:selected').attr('value'),
         level: parseInt($('#level').val() || $('#level').attr('placeholder'))
     });
     processingJobsService = new L.supermap.processingJobsService(processingJobsUrl);
@@ -111,9 +119,8 @@
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
-        if (map && layer && baseLayer) {
+        if (map && layer) {
             map.removeLayer(layer);
-            map.removeLayer(baseLayer);
         }
         processingJobsService.addBuildCacheJob(buildCacheJobParameter, function (serviceResult) {
             if (serviceResult.error) {
@@ -128,9 +135,7 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path;
-                        baseLayer = L.supermap.tiledMapLayer(worldMapUrl, {noWrap: true});
                         layer = L.supermap.tiledMapLayer(mapUrl, {noWrap: true, transparent: true});
-                        baseLayer.addTo(map);
                         layer.addTo(map);
                         $("#model").modal('hide');
                         $('#btn').prop('disabled', false);

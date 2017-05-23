@@ -40,12 +40,20 @@
             <p>
             <div class="input-group">
                 <span class="input-group-addon">分析方法</span>
-                <input id="method" type="text" class="form-control" placeholder="0"/>
+                <div>
+                    <select class="form-control" id="method" name="clientType">
+                        <option value="0" selected="selected">简单点密度分析</option>
+                        <option value="1">核密度分析</option>
+                    </select>
+                </div>
             </div>
             <p>
             <div class="input-group">
                 <span class="input-group-addon">网格面类型</span>
-                <input id="meshType" type="text" class="form-control" placeholder="0"/>
+                <select class="form-control" id="meshType" name="clientType">
+                    <option value="0" selected="selected">四边形网格</option>
+                    <option value="1">六边形网格</option>
+                </select>
             </div>
             <p>
             <div class="input-group">
@@ -80,9 +88,8 @@
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
 <script type="text/javascript">
-    var layer, baseLayer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
+    var layer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
             token = 'GSHB7qlocJkqEH0Ld6VUSGQfekOdPd3e9UdJoHjiupfbkGDggXQLSPWd6VaKm8NH4gvXx6UQ0TCI5wpfr-4Tlw..',
-            worldMapUrl = 'http://113.209.64.227:8090/iserver/services/map-World/rest/maps/世界地图_Day',
             map = new ol.Map({
                 target: 'map',
                 view: new ol.View({
@@ -92,14 +99,26 @@
                 })
             }),
             query = [];
+    var resolutions = [];
+    for (var i = 6; i < 10; i++) {
+        resolutions.push(0.703125 / (Math.pow(2, i)));
+    }
+    map.addLayer(new ol.layer.Tile({
+        source: new ol.source.Tianditu({
+            url: "http://t0.tianditu.com/vec_c/wmts",
+            matrixSet: 'c',
+            layer: 'vec',
+            projection: "EPSG:4326"
+        })
+    }));
     ($('#query').val() || $('#query').attr('placeholder')).split(',').map(function (el) {
         return query.push(parseFloat(el));
     });
     var kernelDensityJobParameter = new SuperMap.KernelDensityJobParameter({
                 datasetName: $('#datasetName').val() || $('#datasetName').attr('placeholder'),
                 resolution: $('#resolution').val() || $('#resolution').attr('placeholder'),
-                method: $('#method').val() || $('#method').attr('placeholder'),
-                meshType: $('#meshType').val() || $('#meshType').attr('placeholder'),
+                method: $('#method option:selected').attr('value'),
+                meshType: $('#meshType option:selected').attr('value'),
                 fields: $('#fields').val() || $('#fields').attr('placeholder'),
                 query: query,
                 radius: $('#radius').val() || $('#radius').attr('placeholder')
@@ -114,9 +133,8 @@
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
-        if (map && layer && baseLayer) {
+        if (map && layer) {
             map.removeLayer(layer);
-            map.removeLayer(baseLayer);
         }
         processingJobsService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
             if (serviceResult.error) {
@@ -131,19 +149,13 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path;
-                        new ol.supermap.MapService(worldMapUrl).getMapInfo(function (worldMapInfo) {
-                            baseLayer = new ol.layer.Tile({
-                                source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(worldMapUrl, worldMapInfo.result))
+                        new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
+                            layer = new ol.layer.Tile({
+                                source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
                             });
-                            map.addLayer(baseLayer);
-                            new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
-                                layer = new ol.layer.Tile({
-                                    source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
-                                });
-                                map.addLayer(layer);
-                                $("#model").modal('hide');
-                                $('#btn').prop('disabled', false);
-                            });
+                            map.addLayer(layer);
+                            $("#model").modal('hide');
+                            $('#btn').prop('disabled', false);
                         });
                     });
                 }
