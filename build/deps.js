@@ -333,7 +333,8 @@ var deps = {
                 "src": [
                     "./src/openlayers/overlay/theme/theme.js",
                     "./src/openlayers/overlay/theme/geoFeature.js",
-                    "./src/openlayers/overlay/theme/unique.js"
+                    "./src/openlayers/overlay/theme/unique.js",
+                    "./src/openlayers/overlay/theme/range.js"
                 ]
             }
         }
