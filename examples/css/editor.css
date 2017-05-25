@@ -14,7 +14,7 @@ html, body, .wrapper {
 .edit-container {
     background-color: #f9f9f9;
     position: relative;
-    margin-top: 52px;
+    margin-top: 50px;
 }
 
 .edit-container section.content {
@@ -22,7 +22,7 @@ html, body, .wrapper {
     padding: 0;
     position: absolute;
     top: 0;
-    bottom: 0;
+    bottom: -2px;
 }
 
 .content .pane {

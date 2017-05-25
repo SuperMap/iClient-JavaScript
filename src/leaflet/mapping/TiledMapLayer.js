@@ -22,6 +22,7 @@ var TiledMapLayer = L.TileLayer.extend({
 
     initialize: function (url, options) {
         this.options.url = url;
+        L.TileLayer.prototype.initialize.apply(this, arguments);
         L.setOptions(this, options);
         this._initParams();
         L.stamp(this);

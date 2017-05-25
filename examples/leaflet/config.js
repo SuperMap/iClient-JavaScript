@@ -428,6 +428,10 @@ var exampleConfig = {
                     name: "分段专题图",
                     thumbnail: "l_rangeThemeLayer.png",
                     fileName: "rangeThemeLayer"
+                }, {
+                    name: "等级符号专题图",
+                    thumbnail: "l_rankSymbolThemeLayer.png",
+                    fileName: "rankSymbolThemeLayer"
                 }]
             }
 

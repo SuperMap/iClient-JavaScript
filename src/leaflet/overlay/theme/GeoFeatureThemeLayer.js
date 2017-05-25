@@ -12,6 +12,7 @@ require('../../../common/style/ThemeStyle');
 require('../../../common/iServer/ThemeVector');
 var SuperMap = require('../../../common/SuperMap');
 var ThemeLayer = require('./ThemeLayer');
+var ThemeFeature = require('./ThemeFeature');
 var L = require("leaflet");
 
 var GeoFeatureThemeLayer = ThemeLayer.extend({
@@ -45,24 +46,22 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
         me.style = {};
     },
 
-    //向专题图图层中添加数据 , 专题图仅接收 SuperMap.Feature.Vector 类型数据，
-    //feature 将储存于 features 属性中，其存储形式为数组。
-    // 向专题图图层中添加数据 , 专题图仅接收 <iServer返回的feature json对象> 类型数据，
+    //向专题图图层中添加数据, 支持的feature类型为:
+    //iServer返回的feature json对象 或L.supermap.themeFeature类型
     addFeatures: function (features) {
         //数组
         if (!(L.Util.isArray(features))) {
             features = [features];
         }
-        var me = this;
-        var event = {features: features};
+        var me = this, event = {features: features};
         me.fire("beforefeaturesadded", event);
         features = event.features;
         for (var i = 0, len = features.length; i < len; i++) {
             var feature = features[i];
-            feature = new SuperMap.REST.ServerFeature.fromJson(feature).toFeature();
+            feature = me._createFeature(feature);
             me.features.push(feature);
         }
-        var succeed = me.features.length == 0;
+        var succeed = me.features.length === 0;
         me.fire("featuresadded", {features: me.features, succeed: succeed});
 
         if (!me.isCustomSetMaxCacheCount) {
@@ -243,6 +242,23 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
             }
         }
         return list;
+    },
+    _createFeature: function (feature) {
+        if (feature instanceof ThemeFeature) {
+            feature = feature.toFeature();
+        } else if (!(feature instanceof SuperMap.Feature.Vector)) {
+            feature = new SuperMap.REST.ServerFeature.fromJson(feature).toFeature();
+        }
+        if (!feature.hasOwnProperty("attributes") && feature.fieldNames && feature.filedValues) {
+            var attrs = {},
+                fieldNames = feature.fieldNames,
+                filedValues = feature.filedValues;
+            for (var i = 0; i < fieldNames.length; i++) {
+                attrs[fieldNames[i]] = filedValues[i];
+            }
+            feature.attributes = attrs;
+        }
+        return feature;
     }
 
 });

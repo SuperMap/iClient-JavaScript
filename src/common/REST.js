@@ -1002,6 +1002,19 @@ SuperMap.ClientType = {
     REFERER: "Referer",
     REQUESTIP: "RequestIP",
     NONE: "NONE",
-    SERVER:"SERVER",
-    WEB:"WEB"
+    SERVER: "SERVER",
+    WEB: "WEB"
+};
+/**
+ * 客户端专题图图表类型
+ * @type {{BAR: string, BAR3D: string, CIRCLE: string, PIE: string, POINT: string, LINE: string, RING: string}}
+ */
+SuperMap.ChartType = {
+    BAR: "Bar",
+    BAR3D: "Bar3D",
+    CIRCLE: "Circle",
+    PIE: "Pie",
+    POINT: "Point",
+    LINE: "Line",
+    RING: "Ring"
 };

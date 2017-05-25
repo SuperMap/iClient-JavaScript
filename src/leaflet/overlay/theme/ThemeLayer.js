@@ -52,6 +52,7 @@ var ThemeLayer = L.Layer.extend({
             return;
         }
 
+        me.map = map;
         //初始化渲染器
         var size = map.getSize();
         me.container.style.width = size.x + "px";
@@ -68,8 +69,8 @@ var ThemeLayer = L.Layer.extend({
         });
     },
 
-    //向专题图图层中添加数据 , 专题图仅接收 SuperMap.Feature.Vector 类型数据，
-    //抽象方法，可实例化子类必须实现此方法。
+    //向专题图图层中添加数据, 支持的feature类型为:
+    //iServer返回的feature json对象 或L.supermap.themeFeature类型
     addFeatures: function (features) {
     },
 

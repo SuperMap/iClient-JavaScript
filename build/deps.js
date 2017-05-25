@@ -89,6 +89,15 @@ var deps = {
             //ProcessingJobs
             "./src/common/iServer/KernelDensityJobsService.js",
             "./src/common/iServer/BuildCacheJobsService.js",
+        ],
+        "graph": [
+            "./src/common/iServer/Bar.js",
+            "./src/common/iServer/Bar3D.js",
+            "./src/common/iServer/Circle.js",
+            "./src/common/iServer/Line.js",
+            "./src/common/iServer/Pie.js",
+            "./src/common/iServer/Point.js",
+            "./src/common/iServer/Ring.js"
         ]
 
     },
@@ -223,7 +232,8 @@ var deps = {
                 "name": "专题图",
                 "src": [
                     './src/leaflet/overlay/UniqueThemeLayer.js',
-                    './src/leaflet/overlay/RangeThemeLayer.js'
+                    './src/leaflet/overlay/RangeThemeLayer.js',
+                    './src/leaflet/overlay/RankSymbolThemeLayer.js'
                 ]
             }
         }
