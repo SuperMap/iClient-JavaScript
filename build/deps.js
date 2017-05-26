@@ -345,7 +345,11 @@ var deps = {
                     "./src/openlayers/overlay/theme/theme.js",
                     "./src/openlayers/overlay/theme/geoFeature.js",
                     "./src/openlayers/overlay/theme/unique.js",
-                    "./src/openlayers/overlay/theme/range.js"
+                    "./src/openlayers/overlay/theme/range.js",
+                    "./src/openlayers/overlay/theme/graph.js",
+                    "./src/openlayers/overlay/theme/rankSymbol.js",
+                    "./src/openlayers/overlay/theme/themeFeature.js"
+
                 ]
             }
         }

@@ -2,6 +2,7 @@ var ol = require('openlayers');
 var SuperMap = require('../../../common/SuperMap');
 var Theme = require('./theme');
 var Vector = require('../../../common/iServer/ThemeVector');
+var ThemeFeature = require('./themeFeature');
 
 ol.source.GeoFeature = function (name, opt_options) {
     Theme.call(this, name, opt_options);
@@ -47,7 +48,7 @@ ol.source.GeoFeature.prototype.addFeatures = function (features) {
     features = event.features;
     var featuresFailAdded = [];
     for (var i = 0, len = features.length; i < len; i++) {
-        this.features.push(new SuperMap.REST.ServerFeature.fromJson(features[i]).toFeature());
+        this.features.push(this.toiClientFeature(features[i]));
     }
     var succeed = featuresFailAdded.length == 0 ? true : false;
     this.dispatchEvent(new ol.Collection.Event('featuresadded', {features: featuresFailAdded, succeed: succeed}));

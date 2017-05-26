@@ -21,7 +21,7 @@
     });
     L.supermap.tiledMapLayer(url).addTo(map);
 
-    $.get('data/hangzhou-tracks.json', function (data) {
+    $.get('../data/hangzhou-tracks.json', function (data) {
         var points = [].concat.apply([], data.map(function (track) {
             return track.map(function (seg) {
                 return seg.coord.concat([1]);

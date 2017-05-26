@@ -425,6 +425,10 @@ var exampleConfig = {
                     name: "分段专题图",
                     thumbnail: "rangeThemeLayer.png",
                     fileName: "rangeThemeLayer"
+                }, {
+                    name: "符号等级专题图",
+                    thumbnail: "rankSymbolThemeLayer.png",
+                    fileName: "rankSymbolThemeLayer"
                 }]
             }
         }
