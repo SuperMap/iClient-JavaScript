@@ -22,7 +22,7 @@
     });
     L.supermap.tiledMapLayer(url).addTo(map);
 
-    $.get('data/lines-bus.json', function (data) {
+    $.get('../data/lines-bus.json', function (data) {
         var busLines = [].concat.apply([], data.map(function (busLine, idx) {
             var prevPt;
             var points = [];

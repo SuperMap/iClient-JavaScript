@@ -28,7 +28,7 @@ ol.source.Unique.prototype.addFeatures = function (features) {
     features = event.features;
     var featuresFailAdded = [];
     for (var i = 0, len = features.length; i < len; i++) {
-        this.features.push(new SuperMap.REST.ServerFeature.fromJson(features[i]).toFeature());
+        this.features.push(this.toiClientFeature(features[i]));
     }
     var succeed = featuresFailAdded.length == 0 ? true : false;
     this.dispatchEvent(new ol.Collection.Event('featuresadded', {features: featuresFailAdded, succeed: succeed}));

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>符号等级专题图</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+</head>
+<div id="popup" class="ol-popup">
+    <div id="popup-content"></div>
+</div>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script src='../data/chinaConsumptionLevel.js'></script>
+
+<script type="text/javascript">
+    var map, options, themeLayer, themeSource,
+            url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326",
+            container = document.getElementById('popup'),
+            content = document.getElementById('popup-content'),
+            overlay = new ol.Overlay(({
+                element: container,
+                autoPan: true,
+                autoPanAnimation: {
+                    duration: 250
+                }
+            }));
+    new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [116.85, 39.79],
+                zoom: 4,
+                projection: 'EPSG:4326'
+            }),
+            overlays: [overlay]
+        });
+        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
+        options.wrapX = true;
+        var layer = new ol.layer.Tile({
+            source: new ol.supermap.TileSuperMapRest(options)
+        });
+        map.addLayer(layer);
+
+        // 创建一个圆形符号专题图层
+        themeSource = new ol.source.RankSymbol("RankSymbolLayer", "Circle", {map: map});
+        // 指定用于专题图制作的属性字段  详看下面 addThemeLayer（）中的feature.attrs.CON2009
+        themeSource.themeField = "CON2009";
+        // 配置图表参数
+        themeSource.symbolSetting = {
+            //必设参数
+            codomain: [0, 40000], // 允许图形展示的值域范围，此范围外的数据将不制作图图形
+            //圆最大半径 默认100
+            maxR: 100,
+            //圆最小半径 默认0
+            minR: 0,
+            // 圆形样式
+            circleStyle: {fillOpacity: 0.8},
+            // 符号专题图填充颜色
+            fillColor: "#FFA500",
+            // 专题图hover 样式
+            circleHoverStyle: {fillOpacity: 1}
+        };
+        themeSource.on("mousemove", showInfoWin);
+        themeLayer = new ol.layer.Image({
+            source: themeSource
+        });
+        map.addLayer(themeLayer);
+
+        var features = [];
+        for (var i = 0, len = chinaConsumptionLevel.length; i < len; i++) {
+            // 省居民消费水平（单位：元）信息
+            var provinceInfo = chinaConsumptionLevel[i];
+            var geo = new ol.geom.Point([provinceInfo[1], provinceInfo[2]]);
+            var attrs = {};
+            attrs.NAME = provinceInfo[0];
+            attrs.CON2009 = provinceInfo[3];
+            var fea = new ol.supermap.ThemeFeature(geo, attrs);
+            features.push(fea);
+        }
+        themeSource.addFeatures(features);
+
+        // 地图弹窗的显示
+        function showInfoWin(e) {
+            // e.target 是图形对象，即数据的可视化对象。
+            // 图形对象的 refDataID 属性是数据（feature）的 id 属性，它指明图形对象是由那个数据制作而来;
+            // 图形对象的 dataInfo 属性是图形对象表示的具体数据，他有两个属性，field、R 和 value;
+            if (e.target && e.target.refDataID && e.target.dataInfo) {
+                closeInfoWin();
+                // 获取图形对应的数据 (feature)
+                var fea = themeSource.getFeatureById(e.target.refDataID);
+                var info = e.target.dataInfo;
+                // 弹窗内容
+                var contentHTML = "<div style='color: #000; background-color: #fff'>";
+                contentHTML += "省级行政区名称:<br><strong>" + fea.attributes.NAME + "</strong>";
+                contentHTML += "<hr style='margin: 3px'>";
+                switch (info.field) {
+                    case "CON2009":
+                        contentHTML += "09年居民消费水平 <br/><strong>" + info.value + "</strong>（元）";
+                        break;
+                    default:
+                        contentHTML += "No Data";
+                }
+                contentHTML += "</div>";
+                content.innerHTML = contentHTML;
+                overlay.setPosition(map.getCoordinateFromPixel([e.event.x, e.event.y]));
+                return;
+            }
+            closeInfoWin();
+        }
+
+        // 移除地图弹窗
+        function closeInfoWin() {
+            if (overlay) {
+                overlay.setPosition(undefined);
+            }
+        }
+
+        var pointerInteraction = new ol.interaction.Pointer();
+        pointerInteraction.handleMoveEvent_ = function (event) {
+            themeSource.fire('mousemove', event);
+        };
+        map.addInteraction(pointerInteraction);
+    });
+
+</script>
+</body>
+</html>

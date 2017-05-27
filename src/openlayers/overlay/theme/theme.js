@@ -1,5 +1,6 @@
 var ol = require('openlayers');
 var SuperMap = require('../../../common/SuperMap');
+var ThemeFeature = require('./themeFeature');
 
 ol.source.Theme = function (name, opt_options) {
     var options = opt_options ? opt_options : {};
@@ -395,6 +396,13 @@ ol.source.Theme.prototype.getLocalXY = function (coordinate) {
     else {
         return null;
     }
+};
+
+ol.source.Theme.prototype.toiClientFeature = function (feature) {
+    if (feature instanceof ThemeFeature) {
+        return feature.toFeature();
+    }
+    return new SuperMap.REST.ServerFeature.fromJson(feature).toFeature();
 };
 
 module.exports = ol.source.Theme;
