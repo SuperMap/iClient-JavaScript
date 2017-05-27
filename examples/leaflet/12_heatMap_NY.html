@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>纽约出租车上车点热力图</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+    <style>
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 800;
+            margin-left: -130px;
+            text-align: center;
+            margin-top: -50px;
+            width: 290px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: whitesmoke;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%;border: 1px solid #dddddd"></div>
+<div id="loading">纽约出租车145万上车点数据加载中...</div>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/PapaParse/4.3.2/papaparse.min.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+
+    var token = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
+        mbUrl = "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=" + token;
+
+    var map = L.map('map', {
+        maxZoom: 20,
+        center: [40.68, -73.92],
+        zoom: 12,
+    });
+
+    var attribution = '数据来源<a target="_blank" href="http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml">NYC Taxi(纽约出租车上车点)</a>|' +
+        'Imagery © <a href="http://mapbox.com">Mapbox</a>';
+    L.tileLayer(mbUrl, {id: 'mapbox.light', attribution: attribution}).addTo(map);
+
+    loadHeatMap();
+
+    function loadHeatMap() {
+        //145万个点
+        var radius = 30, opacity = 0.5;
+        var length = 0;//需要截取示例数据的长度,0表示全部
+        $.get('./data/nyc-taxi.csv', function (csvstr) {
+            var result = Papa.parse(csvstr, {skipEmptyLines: true, header: true});
+            $("#loading").hide();
+
+            var heatPoints = processData(result, length);
+            resultLayer = L.heatLayer(heatPoints, {
+                radius: radius,
+                minOpacity: opacity
+            }).addTo(map);
+        });
+    }
+
+    function processData(result, length) {
+        var data = result.data;
+        var len = (length < 1 || length > data.lenth || length == null) ? data.length : length;
+        data = data.slice(0, len);
+        return data;
+    }
+</script>
+</body>
+</html>
