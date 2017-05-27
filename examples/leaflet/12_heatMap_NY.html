@@ -52,7 +52,7 @@
         //145万个点
         var radius = 30, opacity = 0.5;
         var length = 0;//需要截取示例数据的长度,0表示全部
-        $.get('./data/nyc-taxi.csv', function (csvstr) {
+        $.get('../data/nyc-taxi.csv', function (csvstr) {
             var result = Papa.parse(csvstr, {skipEmptyLines: true, header: true});
             $("#loading").hide();
 
