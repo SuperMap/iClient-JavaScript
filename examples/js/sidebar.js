@@ -34,10 +34,10 @@ function createSideBarSecondMenu(config) {
         var configItem = config[key];
 
         if (containExample && configItem.content) {
-            createSideBarMenuTitle(key, configItem.name, true).appendTo(li);
+            createSideBarMenuSecondTitle(key, configItem.name, true).appendTo(li);
             createSideBarThirdMenu(configItem.content).appendTo(li);
         } else {
-            createSideBarMenuTitle(key, configItem.name, false).appendTo(li);
+            createSideBarMenuSecondTitle(key, configItem.name, false).appendTo(li);
         }
     }
     return ul;
@@ -53,7 +53,7 @@ function createSideBarThirdMenu(examples) {
         var li = $("<li class='menuTitle' id='" + example.fileName + "' ></li>");
         li.appendTo(ul);
         if (example.fileName && example.name) {
-            createSideBarMenuTitle(example.fileName, example.name, false).appendTo(li);
+            createSideBarMenuThirdTitle(example.fileName, example.name, false).appendTo(li);
         }
     }
     return ul;
@@ -67,7 +67,35 @@ function createSideBarMenuTitle(id, title, collapse) {
         icon = "<i class='fa " + iconName + "'></i>"
     }
 
+    var div = $("<a href='#' id='" + id + "'>" + icon + "<span style='font-weight:bold;color:#222222'>" + title + "</span></a>");
+    if (collapse) {
+        div.append(createCollapsedIcon());
+    }
+    return div;
+}
+
+function createSideBarMenuSecondTitle(id, title, collapse) {
+    id = id || "";
+    var icon = "", iconName = sideBarIconConfig[id];
+    if (iconName) {
+        icon = "<i class='fa " + iconName + "'></i>"
+    }
+
     var div = $("<a href='#' id='" + id + "'>" + icon + "<span>" + title + "</span></a>");
+    if (collapse) {
+        div.append(createCollapsedIcon());
+    }
+    return div;
+}
+
+function createSideBarMenuThirdTitle(id, title, collapse) {
+    id = id || "";
+    var icon = "", iconName = sideBarIconConfig[id];
+    if (iconName) {
+        icon = "<i class='fa " + iconName + "'></i>"
+    }
+
+    var div = $("<a href='#' id='" + id + "'>" + icon + "<span style='font-size:12px;padding-left: 20px'>" + title + "</span></a>");
     if (collapse) {
         div.append(createCollapsedIcon());
     }
@@ -81,11 +109,15 @@ function createCollapsedIcon() {
 
 //只处理三层节点,后续可优化
 function selectMenu(id) {
-    $("section#sidebar ul.menu-open").removeClass("menu-open");
+    $("section#sidebar #ul").addClass("active");
     $("section#sidebar li.active").removeClass("active");
     var target = $("section#sidebar li#" + id);
     target.addClass('active');
-    selectTarget(target.parent().parent().parent());
+    //控制editor页面左侧导航栏一级菜单高亮
+    selectTarget(target.parent().parent().parent().parent());
+    //控制示例页面左侧导航栏一级菜单高亮
+    selectTarget(target.parent().parent());
+    //控制左侧导航栏最低级菜单高亮
     selectTarget(target.parent());
     selectTarget(target.find("ul"));
     function selectTarget(target) {
@@ -96,6 +128,9 @@ function selectMenu(id) {
         if (className && className.indexOf("treeview-menu") > -1 && className.indexOf("menu-open") === -1) {
             target.addClass("menu-open");
             target.css("display", "block");
+        }
+        if(className && className.indexOf("treeview") > -1){
+            target.addClass('active');
         }
     }
 }

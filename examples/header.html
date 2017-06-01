@@ -1,12 +1,14 @@
 <div class="navbar-header">
-    <a href="#" class="navbar-brand" id="title">SuperMap iClient for JavaScript 9D</a>
-    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+    <a href="#" class="navbar-brand" id="title">SuperMap iClient 9D</a>
+
+    <div class="navbar-brand" id="suffix-title" style="padding-left: 10px"></div>
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"
+            aria-expanded="false">
         <i class="fa fa-bars"></i>
     </button>
 </div>
 
 <div class="collapse navbar-collapse navbar-custom-menu" id="navbar-collapse">
-
 
     <ul class="nav navbar-nav">
         <li class="overview-menu" id="headerIndex">
@@ -52,7 +54,7 @@
         var host = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9" : "");
         if (this.innerText.indexOf("WebGL") > 0) {
             var typeName3d = this.innerText.replace(/[\-]/g, '');
-            window.location.href = host + "/examples/" +typeName3d.toLowerCase() + "/examples.html";
+            window.location.href = host + "/examples/" + typeName3d.toLowerCase() + "/examples.html";
         }
         else {
             var typeNameElse = this.innerText.substring(4, this.innerText.length - 1);
@@ -65,5 +67,10 @@
     });
     $('.nav #headerIndex,.navbar-header #title').on('click', function (evt) {
         window.location.href = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9/web/index.html" : "");
-    })
+    });
+    $(document).ready (function () {
+        var suffixHeader = document.getElementById("suffix-title");
+        suffixHeader.innerText = "for " + identification.name;
+    });
+
 </script>

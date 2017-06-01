@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
-<meta charset="UTF-8">
 <head>
-    <title>SuperMap iClient3D示例代码</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>SuperMap iClient3D示范程序</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -10,28 +11,29 @@
     <link rel="stylesheet" href="../../web/libs/css/adminLTE.min.css">
     <link rel="stylesheet" href="../../web/libs/css/skin-blue.min.css">
     <link rel="stylesheet" href="../../web/libs/css/blue.css">
-    <link rel="stylesheet" href="../../web/css/header.css">
+    <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/sideBar.css">
-    <link rel="stylesheet" href="../css/editor.css">
+    <link rel="stylesheet" href="../css/examples.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="http://cdn.bootcss.com/ace/1.2.6/ace.js"></script>
     <!--[if lt IE 9]>
     <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
     <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
-<div class="wrapper"></div>
+<body class="hold-transition skin-blue sidebar-mini">
+<div class="wrapper" id="webGL3D"></div>
+<!-- ./wrapper -->
 <script type="text/javascript" src="../js/scrollTo.min.js"></script>
 <script type="text/javascript" src="../../web/libs/js/app.min.js"></script>
 <script>
-    $('.wrapper').load('../editor.html', function () {
-        $('.nav-header').load('../../web/header.html');
+    $('.wrapper').load('../example.html', function () {
+        var header = $('.nav-header');
+        header.load('../header.html');
         var body = $('body');
         body.append("<script type='text/javascript' src='./config.js'><\/script>");
         body.append("<script type='text/javascript' src='../js/sidebar.js'><\/script>");
-        body.append("<script type='text/javascript' src='../js/editor.js'><\/script>");
+        body.append("<script type='text/javascript' src='../js/example.js'><\/script>");
     });
 </script>
 </body>

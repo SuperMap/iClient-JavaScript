@@ -5,7 +5,7 @@
 .navbar .project-title {
     text-decoration: none;
     vertical-align: middle;
-    font-family: 'HiraginoSansGB-W6';
+    font-family: HiraginoSansGB-W6;
     font-size: 24px;
     color: #FFFFFF;
     letter-spacing: -0.16px;
@@ -76,14 +76,13 @@
     content: "\f03b";
 }
 
-
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 767px) {
     #title {
         font-size: 18px;
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
     .navbar-nav > li > .dropdown-menu {
         margin-top: 0 !important;
     }
@@ -93,12 +92,62 @@
     }
 }
 
-@media screen and (max-width: 410px) {
+@media screen and (max-width: 430px) {
     #title {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .sidebar-toggle {
         padding: 15px 15px !important;
     }
 }
+
+.navbar-brand {
+    float: left;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+    padding-right: 0;
+}
+
+#suffix-title {
+    font-family: 'HiraginoSansGB-W6';
+    font-size: 16px;
+    color: #FFFFFF;
+}
+
+@media screen and (max-width: 430px){
+    #suffix-title {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .navbar-header {
+        float: none
+    }
+
+    .navbar-toggle {
+        display: block;
+        float: right
+    }
+
+    .navbar-collapse.collapse {
+        display: none !important;
+    }
+
+    .navbar-collapse {
+        border-top: 1px solid transparent;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar-nav > li {
+        float: none;
+    }
+
+    .collapse.in {
+        display: block !important;
+    }
+}
+

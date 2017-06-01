@@ -1,6 +1,5 @@
 .main-sidebar {
     position: fixed;
-    border: 1px solid #e7e7e7;
 }
 
 .menuTitle a.active {
@@ -11,13 +10,23 @@
     background-color: #f2f2f2;
 }
 
-.skin-blue .sidebar .second-menu,.skin-blue .sidebar .third-menu{
+.skin-blue .sidebar-menu > li.treeview:hover > a {
+    border-left: 3px solid #999999;
+}
+
+.skin-blue .sidebar-menu > li.treeview.active > a {
+    border-left: 3px solid #999999;
+}
+
+.skin-blue .sidebar .second-menu, .skin-blue .sidebar .third-menu {
     padding-left: 0;
 }
-.skin-blue .sidebar .third-menu a{
+
+.skin-blue .sidebar .third-menu a {
     padding-left: 30px;
 }
-.sidebar-mini.sidebar-collapse .sidebar-menu>li>.treeview-menu{
+
+.sidebar-mini.sidebar-collapse .sidebar-menu > li > .treeview-menu {
     padding-top: 0;
 }
 
@@ -36,6 +45,7 @@
 
 .skin-blue .treeview-menu > li > a {
     color: #000000;
+    padding-left: 35px;
 }
 
 .skin-blue .sidebar-menu > li > .treeview-menu {
@@ -49,7 +59,7 @@
 
 .skin-blue .sidebar-menu > li:hover > a, .skin-blue .sidebar-menu > li.active > a {
     color: #000000;
-    background: #e9e9e9;
+    background: #DCDCDC;
     border-left-color: #e9e9e9;
 }
 

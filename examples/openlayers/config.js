@@ -1,6 +1,10 @@
 /**
  * OpenLayers 示例配置文件：包括示例的分类、名称、缩略图、文件路径
  */
+var identification = {
+    name: "OpenLayers"
+};
+
 var exampleConfig = {
     "iServer": {
         name: "iServer",

@@ -33,6 +33,7 @@ html, body, .wrapper {
 #codePane {
     height: 100%;
     box-shadow: 2px 0px 6px #cccccc;
+    border-left: 1px solid #e7e7e7;
 }
 
 .codePaneTool {
@@ -59,6 +60,7 @@ html, body, .wrapper {
 
 #previewPane {
     height: 100%;
+    border-left: 1px solid #e7e7e7;
 }
 
 #innerPage {

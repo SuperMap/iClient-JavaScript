@@ -1,6 +1,10 @@
 /**
- * Leaflet 示例配置文件：包含示例的分类、名称、缩略图、文件路径
+ * MapboxGL 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
+var identification = {
+    name: "MapboxGL"
+};
+
 var exampleConfig = {
     "iServer": {
         name: "iServer",

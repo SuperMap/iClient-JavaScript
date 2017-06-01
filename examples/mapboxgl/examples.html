@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../../web/libs/css/adminLTE.min.css">
     <link rel="stylesheet" href="../../web/libs/css/skin-blue.min.css">
     <link rel="stylesheet" href="../../web/libs/css/blue.css">
-    <link rel="stylesheet" href="../../web/css/header.css">
+    <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/sideBar.css">
     <link rel="stylesheet" href="../css/examples.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
@@ -28,7 +28,8 @@
 <script type="text/javascript" src="../../web/libs/js/app.min.js"></script>
 <script>
     $('.wrapper').load('../example.html', function () {
-        $('.nav-header').load('../../web/header.html');
+        var header = $('.nav-header');
+        header.load('../header.html');
         var body = $('body');
         body.append("<script type='text/javascript' src='./config.js'><\/script>");
         body.append("<script type='text/javascript' src='../js/sidebar.js'><\/script>");
