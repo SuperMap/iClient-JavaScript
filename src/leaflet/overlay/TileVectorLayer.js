@@ -319,10 +319,10 @@ var TileVectorLayer = L.VectorGrid.extend({
             params.push("layersID=" + options.layersID);
         }
         if (options.layerNames) {
-            if (!L.Util.isArray(layerNames)) {
-                layerNames = [layerNames];
+            if (!L.Util.isArray(options.layerNames)) {
+                options.layerNames = [options.layerNames];
             }
-            var layerNamesString = '[' + layerNames.join(',') + ']';
+            var layerNamesString = '[' + options.layerNames.join(',') + ']';
             params.push("layerNames=" + layerNamesString);
         }
 

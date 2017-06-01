@@ -5912,9 +5912,6 @@ ol.source.GeoFeature.prototype.addFeatures = function (features) {
     var event = {features: features};
     this.dispatchEvent(new ol.Collection.Event('beforefeaturesadded', event));
 
-    if (ret === false) {
-        return;
-    }
     features = event.features;
     var featuresFailAdded = [];
     for (var i = 0, len = features.length; i < len; i++) {
