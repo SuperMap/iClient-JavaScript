@@ -235,6 +235,12 @@ var deps = {
                     './src/leaflet/overlay/RangeThemeLayer.js',
                     './src/leaflet/overlay/RankSymbolThemeLayer.js'
                 ]
+            },
+            "MapV": {
+                "name": "MapV",
+                "src": [
+                    './src/leaflet/overlay/MapVLayer.js'
+                ]
             }
         }
     },

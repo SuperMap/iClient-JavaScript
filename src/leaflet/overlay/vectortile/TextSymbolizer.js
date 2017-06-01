@@ -13,7 +13,7 @@ L.TextSymbolizer = L.Path.extend({
         weight: 0.2,
         rotation: 0.0,
         stroke: true,
-        fontFamily: 'sans-serif',
+        fontFamily: 'Microsoft Yahei',
         fontSize: 12,
         fontWeight: 'normal',
         textAlign: 'center'
@@ -33,7 +33,7 @@ L.TextSymbolizer = L.Path.extend({
         if (!this._text) {
             var attributes = this.properties.attributes;
             this._text = (attributes && this.properties.textField) ?
-            attributes[this.properties.textField] || "" : "";
+                attributes[this.properties.textField] || "" : "";
         }
         L.Symbolizer.prototype.render.call(this, renderer, style);
         L.Util.setOptions(this, style);
@@ -104,7 +104,7 @@ L.Canvas.Renderer.include({
             "normal",
             options.fontWeight ? options.fontWeight : "normal",
             options.fontSize ? options.fontSize : "1em",
-            options.fontFamily ? options.fontFamily : "sans-serif"
+            options.fontFamily ? options.fontFamily : "Microsoft Yahei"
         ].join(" ");
         ctx.textAlign = options.textAlign;
         ctx.lineWidth = options.weight / 10;

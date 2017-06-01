@@ -14,11 +14,18 @@ module.exports = {
     },
     externals: {
         'echarts': 'echarts',
-        'leaflet': 'L'
+        'leaflet': 'L',
+        'mapv': 'mapv'
     },
     module: {
-        rules: [
-        ]
-    },
+        loaders: [{
+            test: /MapVRenderer\.js/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            query: {
+                presets: ['es2015']
+            }
+        }]
+    }
 
 };

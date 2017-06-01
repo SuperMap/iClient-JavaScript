@@ -378,6 +378,18 @@ var exampleConfig = {
                 ]
 
             },
+            "MapV": {
+                name: "MapV",
+                content: [{
+                    name: "蜂巢图",
+                    thumbnail: "l_mapVLayer_honeycomb.png",
+                    fileName: "mapVLayerHoneycomb"
+                },{
+                    name: "纽约出租车上车点",
+                    thumbnail: "l_mapVLayer_point.png",
+                    fileName: "mapVLayerPoint"
+                }]
+            },
             "tileVectorLayer": {
                 name: "矢量瓦片",
                 content: [
@@ -495,7 +507,6 @@ var exampleConfig = {
             }
         }
     }
-
 };
 /**
  *key值：为exampleConfig配置的key值或者fileName值
