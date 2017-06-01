@@ -355,7 +355,12 @@ var deps = {
                     "./src/openlayers/overlay/theme/graph.js",
                     "./src/openlayers/overlay/theme/rankSymbol.js",
                     "./src/openlayers/overlay/theme/themeFeature.js"
-
+                ]
+            },
+            "Mapv": {
+                "name": "Mapv",
+                "src": [
+                    "./src/openlayers/overlay/mapv/source/mapv.js",
                 ]
             }
         }

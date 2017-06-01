@@ -365,6 +365,18 @@ var exampleConfig = {
                 ]
 
             },
+            "Mapv": {
+                name: "Mapv",
+                content: [{
+                    name: "蜂巢图",
+                    thumbnail: "mapvHoneycomb.png",
+                    fileName: "mapvHoneycomb"
+                }, {
+                    name: "纽约出租车上车点",
+                    thumbnail: "mapNycTaxi.png",
+                    fileName: "mapNycTaxi"
+                }]
+            },
             "VectorTileLayer": {
                 name: "矢量瓦片",
                 content: [
