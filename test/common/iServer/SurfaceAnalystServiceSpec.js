@@ -3,82 +3,83 @@
 var surfaceAnalystEventArgsSystem = null,
     serviceFailedEventArgsSystem = null;
 
-function surfaceAnalystCompleted(surfaceAnalystEventArgs){
+function surfaceAnalystCompleted(surfaceAnalystEventArgs) {
     surfaceAnalystEventArgsSystem = surfaceAnalystEventArgs;
 }
-function surfaceAnalystFailed(serviceFailedEventArgs){
+function surfaceAnalystFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 function initSurfaceService() {
     return new SuperMap.REST.SurfaceAnalystService(spatialAnalystURL, {
-        eventListeners:{"processCompleted": surfaceAnalystCompleted,
+        eventListeners: {
+            "processCompleted": surfaceAnalystCompleted,
             'processFailed': surfaceAnalystFailed
         }
     });
 }
 
-describe('testSurfaceAnalystService_processAsync',function(){
+describe('testSurfaceAnalystService_processAsync', function () {
     var originalTimeout;
-    beforeEach(function() {
+    beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-     //   surfaceAnalystEventArgsSystem = null;
-     //   serviceFailedEventArgsSystem = null;
+        //   surfaceAnalystEventArgsSystem = null;
+        //   serviceFailedEventArgsSystem = null;
     });
-    afterEach(function() {
+    afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
-/* 等值线LinearRing待开发添加到GeoJason后再测试
-    //点数据集提取等值线
-    it('Dataset_ISOLINE',function(done){
-        var surfaceAnalystService = initSurfaceService();
-        var surfaceAnalystParameters = new SuperMap.SurfaceAnalystParametersSetting({
-            datumValue: 70,
-            interval: 100,
-            resampleTolerance: 0.7,
-            smoothMethod: SuperMap.SmoothMethod.BSPLINE,
-            smoothness: 3
-        });
-        var params = new SuperMap.DatasetSurfaceAnalystParameters({
-            extractParameter: surfaceAnalystParameters,
-            dataset: "SamplesP@Interpolation",
-            resolution: 3000,
-            zValueFieldName: "AVG_WTR"
-        });
+    /* 等值线LinearRing待开发添加到GeoJason后再测试
+     //点数据集提取等值线
+     it('Dataset_ISOLINE',function(done){
+     var surfaceAnalystService = initSurfaceService();
+     var surfaceAnalystParameters = new SuperMap.SurfaceAnalystParametersSetting({
+     datumValue: 70,
+     interval: 100,
+     resampleTolerance: 0.7,
+     smoothMethod: SuperMap.SmoothMethod.BSPLINE,
+     smoothness: 3
+     });
+     var params = new SuperMap.DatasetSurfaceAnalystParameters({
+     extractParameter: surfaceAnalystParameters,
+     dataset: "SamplesP@Interpolation",
+     resolution: 3000,
+     zValueFieldName: "AVG_WTR"
+     });
 
-        expect(surfaceAnalystService).not.toBeNull();
-        expect(surfaceAnalystService.url).toEqual(spatialAnalystURL);
-        surfaceAnalystService.processAsync(params);
+     expect(surfaceAnalystService).not.toBeNull();
+     expect(surfaceAnalystService.url).toEqual(spatialAnalystURL);
+     surfaceAnalystService.processAsync(params);
 
-        setTimeout(function() {
-            try{
-                var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result;
-                expect(surfaceAnalystResult).not.toBeNull();
+     setTimeout(function() {
+     try{
+     var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result;
+     expect(surfaceAnalystResult).not.toBeNull();
 
-              /!*  ok(surfaceAnalystResult.recordset != null, "surfaceAnalystResult.recordset");
-                equal(surfaceAnalystResult.succeed, true, "surfaceAnalystResult.succeed");
-                ok(surfaceAnalystResult.recordset != null,
-                    "surfaceAnalystResult.recordset:" + surfaceAnalystResult.recordset);*!/
+     /!*  ok(surfaceAnalystResult.recordset != null, "surfaceAnalystResult.recordset");
+     equal(surfaceAnalystResult.succeed, true, "surfaceAnalystResult.succeed");
+     ok(surfaceAnalystResult.recordset != null,
+     "surfaceAnalystResult.recordset:" + surfaceAnalystResult.recordset);*!/
 
-                surfaceAnalystService.destroy();
-                expect(surfaceAnalystService.EVENT_TYPES == null).toBeTruthy();
-                expect(surfaceAnalystService.events == null).toBeTruthy();
-                expect(surfaceAnalystService.lastResult == null).toBeTruthy();
-                expect(surfaceAnalystService.eventListeners == null).toBeTruthy();
-                done();
-            } catch (exception) {
- expect(false).toBeTruthy();
- console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
-                surfaceAnalystService.destroy();
-                done();
-            }
-        }, 8000);
-    });*/
+     surfaceAnalystService.destroy();
+     expect(surfaceAnalystService.EVENT_TYPES == null).toBeTruthy();
+     expect(surfaceAnalystService.events == null).toBeTruthy();
+     expect(surfaceAnalystService.lastResult == null).toBeTruthy();
+     expect(surfaceAnalystService.eventListeners == null).toBeTruthy();
+     done();
+     } catch (exception) {
+     expect(false).toBeTruthy();
+     console.log("SurfaceAnalystService" + exception.name + ":" + exception.message);
+     surfaceAnalystService.destroy();
+     done();
+     }
+     }, 20000);
+     });*/
 
     //点数据集提取等值面
-    it('Dataset_ISOREGION',function(done){
+    it('Dataset_ISOREGION', function (done) {
         var surfaceAnalystService = initSurfaceService();
         var surfaceAnalystParameters = new SuperMap.SurfaceAnalystParametersSetting({
             datumValue: 70,
@@ -97,8 +98,8 @@ describe('testSurfaceAnalystService_processAsync',function(){
         });
         surfaceAnalystService.processAsync(params);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result.recordset.features;
                 expect(surfaceAnalystResult).not.toBeNull();
                 expect(surfaceAnalystResult.features).not.toBeNull();
@@ -107,17 +108,17 @@ describe('testSurfaceAnalystService_processAsync',function(){
                 params.destroy();
                 done();
             } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("SurfaceAnalystService" + exception.name + ":" + exception.message);
                 surfaceAnalystService.destroy();
                 params.destroy();
+                expect(false).toBeTruthy();
                 done();
             }
-        }, 8000);
+        }, 20000);
     });
 
     //对象提取等值线
-    it('Geometry_ISOLINE',function(done){
+    it('Geometry_ISOLINE', function (done) {
         var surfaceAnalystService = initSurfaceService();
         var surfaceAnalystParameters = new SuperMap.SurfaceAnalystParametersSetting({
             datumValue: -3,
@@ -149,8 +150,8 @@ describe('testSurfaceAnalystService_processAsync',function(){
         });
         surfaceAnalystService.processAsync(params);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result.recordset.features;
                 expect(surfaceAnalystResult).not.toBeNull();
                 expect(surfaceAnalystResult.features).not.toBeNull();
@@ -159,17 +160,17 @@ describe('testSurfaceAnalystService_processAsync',function(){
                 params.destroy();
                 done();
             } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("SurfaceAnalystService" + exception.name + ":" + exception.message);
                 surfaceAnalystService.destroy();
                 params.destroy();
+                expect(false).toBeTruthy();
                 done();
             }
-        }, 8000);
+        }, 20000);
     });
 
     //对象提取等值面
-    it('Geometry_ISOREGION',function(done){
+    it('Geometry_ISOREGION', function (done) {
         var surfaceAnalystService = initSurfaceService();
         var surfaceAnalystParameters = new SuperMap.SurfaceAnalystParametersSetting({
             datumValue: -3,
@@ -201,8 +202,8 @@ describe('testSurfaceAnalystService_processAsync',function(){
         });
         surfaceAnalystService.processAsync(params);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 var surfaceAnalystResult = surfaceAnalystEventArgsSystem.result.recordset.features;
                 expect(surfaceAnalystResult).not.toBeNull();
                 expect(surfaceAnalystResult.features).not.toBeNull();
@@ -211,36 +212,36 @@ describe('testSurfaceAnalystService_processAsync',function(){
                 params.destroy();
                 done();
             } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("SurfaceAnalystService" + exception.name + ":" + exception.message);
                 surfaceAnalystService.destroy();
                 params.destroy();
+                expect(false).toBeTruthy();
                 done();
             }
-        }, 8000);
+        }, 20000);
     });
 
-/*  暂时没法测
-    //参数为空
-    it('parameter_null',function(done){
-        var surfaceAnalystService = initSurfaceService();
-        surfaceAnalystService.processAsync();
+    /*  暂时没法测
+     //参数为空
+     it('parameter_null',function(done){
+     var surfaceAnalystService = initSurfaceService();
+     surfaceAnalystService.processAsync();
 
-        setTimeout(function() {
-            try{
-                ok(surfaceAnalystResult == null, "surfaceAnalystService.lastResult");
-                done();
-            } catch (exception) {
- expect(false).toBeTruthy();
- console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
-                surfaceAnalystService.destroy();
-                done();
-            }
-        }, 8000);
-    });*/
+     setTimeout(function() {
+     try{
+     ok(surfaceAnalystResult == null, "surfaceAnalystService.lastResult");
+     done();
+     } catch (exception) {
+     expect(false).toBeTruthy();
+     console.log("SurfaceAnalystService" + exception.name + ":" + exception.message);
+     surfaceAnalystService.destroy();
+     done();
+     }
+     }, 20000);
+     });*/
 
     //失败
-    it('fail',function(done){
+    it('fail', function (done) {
         var surfaceAnalystService = initSurfaceService();
         var surfaceAnalystParameters = new SuperMap.SurfaceAnalystParametersSetting({
             datumValue: 70,
@@ -257,8 +258,8 @@ describe('testSurfaceAnalystService_processAsync',function(){
         });
         surfaceAnalystService.processAsync(params);
 
-        setTimeout(function() {
-            try{
+        setTimeout(function () {
+            try {
                 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
                 expect(serviceFailedEventArgsSystem.error.errorMsg).toContain("数据集SamplesP1@Interpolation不存在");
                 expect(serviceFailedEventArgsSystem.error.code).toEqual(400);
@@ -267,12 +268,12 @@ describe('testSurfaceAnalystService_processAsync',function(){
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("SurfaceAnalystService" + exception.name + ":" + exception.message);
                 surfaceAnalystService.destroy();
                 params.destroy();
                 done();
             }
-        }, 8000);
+        }, 20000);
     })
 });
 
