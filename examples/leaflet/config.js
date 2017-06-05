@@ -231,7 +231,7 @@ var exampleConfig = {
                 name: "地址匹配",
                 content: [{
                     name: "地址匹配",
-                    thumbnail: "addressService.png",
+                    thumbnail: "l_addressService.png",
                     fileName: "addressService"
                 }]
             }
