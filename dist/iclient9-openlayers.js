@@ -9155,7 +9155,7 @@ ol.supermap.StyleUtils = {
                 shader = feature.getProperties().textStyle;
             }
             if (feature.getProperties().TEXT_STYLE_INFO) {
-                shader = feature.getProperties().TEXT_STYLE_INFO;
+                shader = JSON.parse(feature.getProperties().TEXT_STYLE_INFO).textStyle;
             }
             if (shader && shader !== "{}") {
                 var fontStr = "";
