@@ -9,15 +9,17 @@
  */
 var ol = require('openlayers');
 var SuperMap = require('../../common/SuperMap');
+var ServiceBase = require('./ServiceBase');
 var AddressService = require('../../common/iServer/AddressService');
 
 ol.supermap.AddressService = function (url, options) {
-    ol.supermap.ServiceBase.call(this, url, options);
+    ServiceBase.call(this, url, options);
 };
-ol.inherits(ol.supermap.AddressService, ol.supermap.ServiceBase);
+ol.inherits(ol.supermap.AddressService, ServiceBase);
 
 /**
  * 获取正向地址匹配结果。
+ * @param params 正向匹配参数。
  * @param callback 请求结果的回调函数。
  * @param resultFormat 返回的结果类型（默认为GeoJSON）。
  */
@@ -39,6 +41,7 @@ ol.supermap.AddressService.prototype.code = function (params, callback, resultFo
 
 /**
  * 获取反向地址匹配结果。
+ * @param params 反向匹配参数。
  * @param callback 请求结果的回调函数。
  * @param resultFormat 返回的结果类型（默认为GeoJSON）。
  */

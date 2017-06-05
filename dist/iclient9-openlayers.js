@@ -1511,6 +1511,37 @@ __webpack_require__(1);
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
+﻿/**
+ * Class: ServiceBase
+ * 服务基类
+ */
+__webpack_require__(4);
+__webpack_require__(23);
+var ol = __webpack_require__(2);
+
+ol.supermap.ServiceBase = function (url, options) {
+    ol.Observable.call(this);
+    this.options = options || {};
+    this.options.url = url;
+    //服务来源 iServer|iPortal|online
+    this.options.serverType = url;
+    this.dispatchEvent(new ol.supermap.ResultEvent('initialized', this));
+};
+ol.inherits(ol.supermap.ServiceBase, ol.Observable);
+
+ol.supermap.ResultEvent = function (type, opt_element) {
+    ol.events.Event.call(this, type);
+    this.result = opt_element;
+
+};
+ol.inherits(ol.supermap.ResultEvent, ol.events.Event);
+
+module.exports = ol.supermap.ServiceBase;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
 /* COPYRIGHT 2017 SUPERMAP
  * 本程序只能在有效的授权许可下使用。
  * 未经许可，不得以任何手段擅自使用或传播。*/
@@ -2410,37 +2441,6 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
 module.exports = SuperMap.Format.GeoJSON;
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-﻿/**
- * Class: ServiceBase
- * 服务基类
- */
-__webpack_require__(4);
-__webpack_require__(23);
-var ol = __webpack_require__(2);
-
-ol.supermap.ServiceBase = function (url, options) {
-    ol.Observable.call(this);
-    this.options = options || {};
-    this.options.url = url;
-    //服务来源 iServer|iPortal|online
-    this.options.serverType = url;
-    this.dispatchEvent(new ol.supermap.ResultEvent('initialized', this));
-};
-ol.inherits(ol.supermap.ServiceBase, ol.Observable);
-
-ol.supermap.ResultEvent = function (type, opt_element) {
-    ol.events.Event.call(this, type);
-    this.result = opt_element;
-
-};
-ol.inherits(ol.supermap.ResultEvent, ol.events.Event);
-
-module.exports = ol.supermap.ServiceBase;
-
-/***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2451,7 +2451,7 @@ module.exports = ol.supermap.ServiceBase;
  *  - <SuperMap.ServiceBase>
  */
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(5);
+var GeoJSONFormat = __webpack_require__(6);
 var ServiceBase = __webpack_require__(3);
 SuperMap.REST.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
 
@@ -3798,7 +3798,7 @@ module.exports = SuperMap.ServerTextStyle;
 
 __webpack_require__(4);
 var ol = __webpack_require__(2);
-var GeoJSONFormat = __webpack_require__(5);
+var GeoJSONFormat = __webpack_require__(6);
 var SuperMap = __webpack_require__(0);
 
 ol.supermap.Util.toGeoJSON = function (smObj) {
@@ -4186,7 +4186,7 @@ module.exports = SuperMap.GetFeaturesParametersBase;
 __webpack_require__(1);
 __webpack_require__(3);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(5);
+var GeoJSONFormat = __webpack_require__(6);
 SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
@@ -4817,7 +4817,7 @@ module.exports = SuperMap.Request;
 __webpack_require__(1);
 __webpack_require__(3);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(5);
+var GeoJSONFormat = __webpack_require__(6);
 var QueryParameters = __webpack_require__(22);
 
 SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
@@ -11303,15 +11303,17 @@ module.exports = ol.source.Unique;
  */
 var ol = __webpack_require__(2);
 var SuperMap = __webpack_require__(0);
+var ServiceBase = __webpack_require__(5);
 var AddressService = __webpack_require__(81);
 
 ol.supermap.AddressService = function (url, options) {
-    ol.supermap.ServiceBase.call(this, url, options);
+    ServiceBase.call(this, url, options);
 };
-ol.inherits(ol.supermap.AddressService, ol.supermap.ServiceBase);
+ol.inherits(ol.supermap.AddressService, ServiceBase);
 
 /**
  * 获取正向地址匹配结果。
+ * @param params 正向匹配参数。
  * @param callback 请求结果的回调函数。
  * @param resultFormat 返回的结果类型（默认为GeoJSON）。
  */
@@ -11333,6 +11335,7 @@ ol.supermap.AddressService.prototype.code = function (params, callback, resultFo
 
 /**
  * 获取反向地址匹配结果。
+ * @param params 反向匹配参数。
  * @param callback 请求结果的回调函数。
  * @param resultFormat 返回的结果类型（默认为GeoJSON）。
  */
@@ -11372,7 +11375,7 @@ module.exports = ol.supermap.AddressService;
  *          //doSomething
  *      })
  */
-__webpack_require__(6);
+__webpack_require__(5);
 var ol = __webpack_require__(2);
 var SuperMap = __webpack_require__(0);
 var ChartQueryService = __webpack_require__(96);
@@ -11465,7 +11468,7 @@ module.exports = ol.supermap.ChartService;
  *          //doSomething
  *      })
  */
-__webpack_require__(6);
+__webpack_require__(5);
 var ol = __webpack_require__(2);
 var Util = __webpack_require__(16);
 var SuperMap = __webpack_require__(0);
@@ -11688,7 +11691,7 @@ module.exports = ol.supermap.FeatureService;
  *           //doSomething
  *      });
  */
-__webpack_require__(6);
+__webpack_require__(5);
 var ol = __webpack_require__(2);
 var GetFieldsService = __webpack_require__(157);
 var FieldStatisticService = __webpack_require__(123);
@@ -11793,7 +11796,7 @@ module.exports = ol.supermap.FieldService;
  *           //doSomething
  *      })
  */
-__webpack_require__(6);
+__webpack_require__(5);
 var ol = __webpack_require__(2);
 var GetGridCellInfosService = __webpack_require__(159);
 
@@ -11838,7 +11841,7 @@ module.exports = ol.supermap.GridCellInfosService;
  *           //doSomething
  *      })
  */
-__webpack_require__(6);
+__webpack_require__(5);
 var ol = __webpack_require__(2);
 var GetLayersInfoService = __webpack_require__(160);
 var SetLayerInfoService = __webpack_require__(202);
@@ -11970,7 +11973,7 @@ module.exports = ol.supermap.LayerInfoService;
  *           //doSomething
  *      })
  */
-__webpack_require__(6);
+__webpack_require__(5);
 var ol = __webpack_require__(2);
 var MapService = __webpack_require__(177);
 var TilesetsService = __webpack_require__(236);
@@ -12027,7 +12030,7 @@ module.exports = ol.supermap.MapService;
  * Class:MeasureService
  * 距离测量服务
  */
-__webpack_require__(6);
+__webpack_require__(5);
 var ol = __webpack_require__(2);
 var Util = __webpack_require__(16);
 var MeasureService = __webpack_require__(181);
@@ -12081,7 +12084,7 @@ module.exports = ol.supermap.MeasureService;
  *           //doSomething
  *      })
  */
-__webpack_require__(6);
+__webpack_require__(5);
 var ol = __webpack_require__(2);
 var FacilityAnalystSinks3DService = __webpack_require__(112);
 var FacilityAnalystSources3DService = __webpack_require__(114);
@@ -12217,7 +12220,7 @@ module.exports = ol.supermap.NetworkAnalyst3DService;
  *           //doSomething
  *      })
  */
-__webpack_require__(6);
+__webpack_require__(5);
 var ol = __webpack_require__(2);
 var Util=__webpack_require__(16);
 var SuperMap = __webpack_require__(0);
@@ -12827,7 +12830,7 @@ module.exports = ol.supermap.ProcessingJobsService;
  *          //doSomething
  *      })
  */
-__webpack_require__(6);
+__webpack_require__(5);
 var ol = __webpack_require__(2);
 var Util = __webpack_require__(16);
 var SuperMap = __webpack_require__(0);
@@ -12986,7 +12989,7 @@ module.exports = ol.supermap.QueryService;
  *          //doSomething 
  *      })
  */
-__webpack_require__(6);
+__webpack_require__(5);
 var ol = __webpack_require__(2);
 var Util = __webpack_require__(16);
 var SuperMap = __webpack_require__(0);
@@ -13382,7 +13385,7 @@ module.exports = ol.supermap.SpatialAnalystService;
  *           //doSomething
  *      });
  */
-__webpack_require__(6);
+__webpack_require__(5);
 var ol = __webpack_require__(2);
 var ThemeService = __webpack_require__(233);
 
@@ -13421,7 +13424,7 @@ module.exports = ol.supermap.ThemeService;
  *           //doSomething
  *      })
  */
-__webpack_require__(6);
+__webpack_require__(5);
 var ol = __webpack_require__(2);
 var Util = __webpack_require__(16);
 var StopQueryService = __webpack_require__(208);
@@ -15774,7 +15777,7 @@ __webpack_require__(7);
 __webpack_require__(101);
 __webpack_require__(143);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(5);
+var GeoJSONFormat = __webpack_require__(6);
 SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**
@@ -16723,7 +16726,7 @@ __webpack_require__(1);
 __webpack_require__(3);
 __webpack_require__(95);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(5);
+var GeoJSONFormat = __webpack_require__(6);
 
 SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -19647,7 +19650,7 @@ module.exports = SuperMap.FindClosestFacilitiesParameters;
 __webpack_require__(9);
 __webpack_require__(125);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(5);
+var GeoJSONFormat = __webpack_require__(6);
 SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -19893,7 +19896,7 @@ module.exports = SuperMap.FindLocationParameters;
 __webpack_require__(9);
 __webpack_require__(127);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(5);
+var GeoJSONFormat = __webpack_require__(6);
 SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -20125,7 +20128,7 @@ module.exports = SuperMap.FindMTSPPathsParameters;
 __webpack_require__(9);
 __webpack_require__(129);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(5);
+var GeoJSONFormat = __webpack_require__(6);
 SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -20366,7 +20369,7 @@ module.exports = SuperMap.FindPathParameters;
 __webpack_require__(9);
 __webpack_require__(131);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(5);
+var GeoJSONFormat = __webpack_require__(6);
 SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -20619,7 +20622,7 @@ module.exports = SuperMap.FindServiceAreasParameters;
 __webpack_require__(9);
 __webpack_require__(133);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(5);
+var GeoJSONFormat = __webpack_require__(6);
 SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -20858,7 +20861,7 @@ module.exports = SuperMap.FindTSPPathsParameters;
 __webpack_require__(9);
 __webpack_require__(135);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(5);
+var GeoJSONFormat = __webpack_require__(6);
 SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
 
     /**
@@ -31539,7 +31542,7 @@ __webpack_require__(7);
 __webpack_require__(105);
 __webpack_require__(146);
 var SuperMap = __webpack_require__(0);
-var GeoJSONFormat = __webpack_require__(5);
+var GeoJSONFormat = __webpack_require__(6);
 SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
 
     /**

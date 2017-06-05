@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>地址匹配服务</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="width: 100%;height:100%;border: 1px solid #dddddd"></div>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, codeMarkers = [], decodeMarkers = [], url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326",
+            addressUrl = "http://localhost:8090/iserver/services/addressmatch-BeijingAddress/restjsr/v1/address",
+            addressService = L.supermap.AddressService(addressUrl),
+            map = L.map('map', {
+                crs: L.CRS.EPSG4326,
+                center: [39.914714, 116.383572],
+                maxZoom: 18,
+                zoom: 11
+            });
+    L.supermap.tiledMapLayer(url).addTo(map);
+    var control = L.control({position: 'topright'});
+    control.onAdd = function () {
+        var popup = L.DomUtil.create('div');
+        popup.style = 'width:20%';
+        popup.innerHTML = "<div class='panel panel-default'>" +
+                "<div class='panel-body'>" +
+                "<ul class='nav nav-tabs nav-justified'>" +
+                "<li id='geocode' role='presentation' class='active'><a href='#'>正向匹配</a></li>" +
+                "<li id='geodecode' role='presentation'><a href='#'>反向匹配</a></li>" +
+                "</ul><p>" +
+                "<div class='tab-content'>" +
+                "<div id='geocodeParam' role='tabpanel' class='tab-pane deplistContent active'>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>地址　　　</span>" +
+                "<input id='address' type='text' class='form-control' placeholder='公司'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>过滤字段　</span>" +
+                "<input id='filters' type='text' class='form-control'placeholder='北京市,海淀区'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>最小索引　</span>" +
+                "<input id='fromIndex' type='text' class='form-control' placeholder='0'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>最大索引　</span>" +
+                "<input id='toIndex' type='text' class='form-control' placeholder='10'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>最大结果数</span>" +
+                "<input id='maxReturn' type='text' class='form-control' placeholder='-1'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>坐标系　　</span>" +
+                "<input id='prjCoordSys' type='text' class='form-control' placeholder='{epsgcode:4326}'/>" +
+                "</div><p>" +
+                "<div align='right'>" +
+                "<input type='button' id='codeBtn' class='btn btn-primary' value='匹配'/>" +
+                "</div></div>" +
+                "<div id='geodecodeParam' role='tabpanel' class='tab-pane deplistContent'>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>横坐标　　</span>" +
+                "<input id='xCoord' type='text' class='form-control' placeholder='116.3518541194752'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>纵坐标　　</span>" +
+                "<input id='yCoord' type='text' class='form-control' placeholder='40.00097839595237'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>过滤字段　</span>" +
+                "<input id='filters2' type='text' class='form-control' placeholder='北京市,海淀区'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>最小索引　</span>" +
+                "<input id='fromIndex2' type='text' class='form-control' placeholder='0'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>最大索引　</span>" +
+                "<input id='toIndex2' type='text' class='form-control' placeholder='10'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>最大结果数</span>" +
+                "<input id='maxReturn2' type='text' class='form-control' placeholder='-1'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>查询半径　</span>" +
+                "<input id='geoDecodingRadius' type='text' class='form-control' placeholder='-1'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>坐标系　　</span>" +
+                "<input id='prjCoordSys2' type='text' class='form-control' placeholder='{epsgcode:4326}'/>" +
+                "</div><p>" +
+                "<div align='right'>" +
+                "<input type='button' id='decodeBtn' class='btn btn-primary' value='匹配'/>" +
+                "</div></div></div>";
+        return popup;
+    }
+    control.addTo(map);
+
+    $("#geocode").click(function () {
+        $("#geocode")[0].className = 'active';
+        $("#geodecode")[0].className = '';
+        $("#geocodeParam").addClass('active');
+        $("#geodecodeParam").removeClass('active');
+    });
+    $("#geodecode").click(function () {
+        $("#geocode")[0].className = '';
+        $("#geodecode")[0].className = 'active';
+        $("#geodecodeParam").addClass('active');
+        $("#geocodeParam").removeClass('active');
+    });
+    $("#codeBtn").click(function () {
+        var geoCodeParam = new SuperMap.GeoCodingParameter({
+            address: $('#address').val() || $('#address').attr('placeholder'),
+            fromIndex: $('#fromIndex').val() || $('#fromIndex').attr('placeholder'),
+            toIndex: $('#toIndex').val() || $('#toIndex').attr('placeholder'),
+            filters: $('#filters').val() || $('#filters').attr('placeholder'),
+            prjCoordSys: $('#prjCoordSys').val() || $('#prjCoordSys').attr('placeholder'),
+            maxReturn: $('#maxReturn').val() || $('#maxReturn').attr('placeholder')
+        });
+        addressService.code(geoCodeParam, match);
+    });
+    $("#decodeBtn").click(function () {
+        var geoDecodeParam = new SuperMap.GeoDecodingParameter({
+            x: $('#xCoord').val() || $('#xCoord').attr('placeholder'),
+            y: $('#yCoord').val() || $('#yCoord').attr('placeholder'),
+            fromIndex: $('#fromIndex2').val() || $('#fromIndex2').attr('placeholder'),
+            toIndex: $('#toIndex2').val() || $('#toIndex2').attr('placeholder'),
+            filters: $('#filters2').val() || $('#filters2').attr('placeholder'),
+            prjCoordSys: $('#prjCoordSys2').val() || $('#prjCoordSys2').attr('placeholder'),
+            maxReturn: $('#maxReturn2').val() || $('#maxReturn2').attr('placeholder'),
+            geoDecodingRadius: $('#geoDecodingRadius').val() || $('#geoDecodingRadius').attr('placeholder'),
+        });
+        addressService.decode(geoDecodeParam, match);
+    });
+    function match(obj) {
+        clearMarkers();
+        obj.result.map(function (item) {
+            var marker = L.marker([item.location.y, item.location.x]);
+            decodeMarkers.push(marker);
+            var innerHTML = "";
+            innerHTML += "地址:" + item.address + "<br>";
+            var x = Number(item.location.x.toString().match(/^\d+(?:\.\d{0,2})?/));
+            var y = Number(item.location.y.toString().match(/^\d+(?:\.\d{0,2})?/));
+            innerHTML += "坐标:[" + x + "," + y + "]<br>";
+            if (item.score > 0) {
+                innerHTML += "匹配度:" + item.score + "<br>";
+            }
+            innerHTML += "过滤字段:" + item.filters + "<br>";
+            marker.bindPopup(innerHTML);
+        });
+        for (var i = 0; i < decodeMarkers.length; i++) {
+            decodeMarkers[i].addTo(map);
+        }
+        map.setView(L.latLng(39.914714, 116.383572), 10);
+    }
+    function clearMarkers() {
+        if (codeMarkers) {
+            for (var i = 0; i < codeMarkers.length; i++) {
+                codeMarkers[i].remove();
+            }
+        }
+        if (decodeMarkers) {
+            for (var i = 0; i < decodeMarkers.length; i++) {
+                decodeMarkers[i].remove();
+            }
+        }
+        codeMarkers = [];
+        decodeMarkers = [];
+    }
+</script>
+</body>
+</html>

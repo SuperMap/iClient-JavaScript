@@ -204,6 +204,12 @@ var deps = {
                 "src": [
                     "./src/common/online/Online.js"
                 ]
+            },
+            "Address": {
+                "name": "地理匹配服务",
+                "src": [
+                    "./src/leaflet/services/AddressService.js"
+                ]
             }
 
         },

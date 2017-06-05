@@ -226,6 +226,14 @@ var exampleConfig = {
                     thumbnail: "buildCacheService.png",
                     fileName: "buildCacheService"
                 }]
+            },
+            "address": {
+                name: "地址匹配",
+                content: [{
+                    name: "地址匹配",
+                    thumbnail: "addressService.png",
+                    fileName: "addressService"
+                }]
             }
         }
     },
@@ -388,7 +396,7 @@ var exampleConfig = {
                     name: "蜂巢图",
                     thumbnail: "l_mapVLayer_honeycomb.png",
                     fileName: "mapVLayerHoneycomb"
-                },{
+                }, {
                     name: "纽约出租车上车点",
                     thumbnail: "l_mapVLayer_point.png",
                     fileName: "mapVLayerPoint"
