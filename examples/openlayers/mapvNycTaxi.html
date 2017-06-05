@@ -84,7 +84,6 @@
         popup.appendChild(gui.domElement);
         gui.add(options, 'size', 0.1, 10).onFinishChange(finished);
         gui.addColor(options, 'fillStyle').onChange(finished);
-
         function finished() {
             layer.getSource().update(options);
         }
@@ -92,7 +91,6 @@
         var control = new ol.control.Control({element: popup});
         control.setMap(map);
         map.addControl(control);
-
     }
 </script>
 </body>

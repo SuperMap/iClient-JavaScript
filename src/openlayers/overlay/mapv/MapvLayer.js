@@ -1,8 +1,13 @@
 require('../../core/Base');
 var ol = require('openlayers');
 var MapvCanvasLayer = require('./MapvCanvasLayer');
-var mapv = require('mapv');
-var BaiduMapLayer = mapv.baiduMapLayer;
+var mapv = {};
+try {
+    mapv = require('mapv');
+} catch (ex) {
+    mapv = {};
+}
+var BaiduMapLayer = mapv.baiduMapLayer || Function;
 
 class MapvLayer extends BaiduMapLayer {
 

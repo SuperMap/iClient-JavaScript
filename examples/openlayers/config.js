@@ -250,6 +250,14 @@ var exampleConfig = {
                     thumbnail: "buildCacheService.png",
                     fileName: "buildCacheService"
                 }]
+            },
+            "address": {
+                name: "地址匹配",
+                content: [{
+                    name: "地址匹配",
+                    thumbnail: "addressService.png",
+                    fileName: "addressService"
+                }]
             }
         }
     },

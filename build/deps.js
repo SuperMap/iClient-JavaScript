@@ -89,6 +89,8 @@ var deps = {
             //ProcessingJobs
             "./src/common/iServer/KernelDensityJobsService.js",
             "./src/common/iServer/BuildCacheJobsService.js",
+            //AddressService
+            "./src/common/iServer/AddressService.js",
         ],
         "graph": [
             "./src/common/iServer/Bar.js",
@@ -327,6 +329,12 @@ var deps = {
                 "name": "分布式空间处理服务",
                 "src": [
                     "./src/openlayers/services/ProcessingJobsService.js"
+                ]
+            },
+            "Address": {
+                "name": "地理匹配服务",
+                "src": [
+                    "./src/openlayers/services/AddressService.js"
                 ]
             }
         },
