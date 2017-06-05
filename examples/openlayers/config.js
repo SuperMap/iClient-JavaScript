@@ -386,7 +386,7 @@ var exampleConfig = {
                 }, {
                     name: "纽约出租车上车点",
                     thumbnail: "mapNycTaxi.png",
-                    fileName: "mapNycTaxi"
+                    fileName: "mapvNycTaxi"
                 }]
             },
             "VectorTileLayer": {

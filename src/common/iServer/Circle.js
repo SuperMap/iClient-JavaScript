@@ -84,7 +84,8 @@ SuperMap.Feature.Theme.Circle = SuperMap.Class(SuperMap.Feature.Theme.RankSymbol
             this.DVBUnitValue = sets.maxR / (codomain[1] - codomain[0]);
         }
         else {
-            this.DVBUnitValue = sets.maxR / maxValue;
+            //this.DVBUnitValue = sets.maxR / maxValue;
+            this.DVBUnitValue = sets.maxR;
         }
 
         var uv = this.DVBUnitValue;

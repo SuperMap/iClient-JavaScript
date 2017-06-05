@@ -5,14 +5,13 @@ try {
 } catch (ex) {
     mapv = {};
 }
-var BaseLayer = mapv.baiduMapLayer || Function;
+var BaseLayer = mapv.baiduMapLayer.__proto__ || Function;
 
 class MapVRenderer extends BaseLayer {
     constructor(map, layer, dataSet, options) {
         if (!BaseLayer) {
             return;
         }
-        MapVRenderer.__proto__ = BaseLayer.__proto__;
         super(map, dataSet, options);
 
         var self = this;
@@ -27,12 +26,12 @@ class MapVRenderer extends BaseLayer {
     }
 
     clickEvent(e) {
-        var pixel = e.pixel;
+        var pixel = e.layerPoint;
         super.clickEvent(pixel, e);
     }
 
     mousemoveEvent(e) {
-        var pixel = e.pixel;
+        var pixel = e.layerPoint;
         super.mousemoveEvent(pixel, e);
     }
 
@@ -41,7 +40,6 @@ class MapVRenderer extends BaseLayer {
 
         if (this.options.methods) {
             if (this.options.methods.click) {
-                map.setDefaultCursor("default");
                 map.on('click', this.clickEvent);
             }
             if (this.options.methods.mousemove) {
@@ -129,13 +127,8 @@ class MapVRenderer extends BaseLayer {
 
         this.processData(data);
 
-        if (self.options.unit === 'm' && self.options.size) {
-            self.options._size = self.options.size / zoomUnit;
-        } else {
-            self.options._size = self.options.size;
-        }
+        self.options._size = self.options.size;
 
-        // var pixel = {x: 0, y: 0};
         var worldPoint = map.latLngToContainerPoint(L.latLng(0, 0));
         var pixel = {
             x: worldPoint.x - offset.x,

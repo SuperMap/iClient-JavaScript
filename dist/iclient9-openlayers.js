@@ -5912,9 +5912,6 @@ ol.source.GeoFeature.prototype.addFeatures = function (features) {
     var event = {features: features};
     this.dispatchEvent(new ol.Collection.Event('beforefeaturesadded', event));
 
-    if (ret === false) {
-        return;
-    }
     features = event.features;
     var featuresFailAdded = [];
     for (var i = 0, len = features.length; i < len; i++) {
@@ -16983,7 +16980,8 @@ SuperMap.Feature.Theme.Circle = SuperMap.Class(SuperMap.Feature.Theme.RankSymbol
             this.DVBUnitValue = sets.maxR / (codomain[1] - codomain[0]);
         }
         else {
-            this.DVBUnitValue = sets.maxR / maxValue;
+            //this.DVBUnitValue = sets.maxR / maxValue;
+            this.DVBUnitValue = sets.maxR;
         }
 
         var uv = this.DVBUnitValue;
@@ -38270,7 +38268,7 @@ module.exports = ol.Graphic;
 
 __webpack_require__(4);
 
-MapvCanvasLayer = function (options) {
+var MapvCanvasLayer = function (options) {
     this.options = options || {};
     this.paneName = this.options.paneName || 'mapPane';
     this.context = this.options.context || '2d';
@@ -38339,12 +38337,11 @@ try {
 } catch (ex) {
     mapv = {};
 }
-var BaiduMapLayer = mapv.baiduMapLayer || Function;
+var BaiduMapLayer = mapv.baiduMapLayer.__proto__ || Function;
 
 class MapvLayer extends BaiduMapLayer {
 
     constructor(map, dataSet, options) {
-        MapvLayer.__proto__ = BaiduMapLayer.__proto__;
         super(map, dataSet, options);
         this.dataSet = dataSet;
         var self = this;
@@ -38387,32 +38384,12 @@ class MapvLayer extends BaiduMapLayer {
 
     clickEvent(e) {
         var pixel = e.pixel;
-        var context = this.canvasLayer.canvas.getContext(this.context);
-        var data = this.dataSet.get();
-        for (var i = 0; i < data.length; i++) {
-            context.beginPath();
-            pathSimple.draw(context, data[i], this.options);
-            if (context.isPointInPath(pixel[0] * this.canvasLayer.devicePixelRatio, pixel[1] * this.canvasLayer.devicePixelRatio)) {
-                this.options.methods.click(data[i], e);
-                return;
-            }
-        }
-        this.options.methods.click(null, e);
+        super.clickEvent({x: pixel[0], y: pixel[1]}, e);
     }
 
     mousemoveEvent(e) {
         var pixel = e.pixel;
-        var context = this.canvasLayer.canvas.getContext(this.context);
-        var data = this.dataSet.get();
-        for (var i = 0; i < data.length; i++) {
-            context.beginPath();
-            pathSimple.draw(context, data[i], this.options);
-            if (context.isPointInPath(pixel[0] * this.canvasLayer.devicePixelRatio, pixel[1] * this.canvasLayer.devicePixelRatio)) {
-                this.options.methods.mousemove(data[i], e);
-                return;
-            }
-        }
-        this.options.methods.mousemove(null, e);
+        super.mousemoveEvent({x: pixel[0], y: pixel[1]}, e);
     }
 
     bindEvent() {
@@ -38490,11 +38467,9 @@ class MapvLayer extends BaiduMapLayer {
             };
         }
         var data = self.dataSet.get(dataGetOptions);
-        if (self.options.unit === 'm' && self.options.size) {
-            self.options._size = self.options.size / zoomUnit;
-        } else {
-            self.options._size = self.options.size;
-        }
+
+        self.options._size = self.options.size;
+
         var pixel = map.getPixelFromCoordinate([0, 0]);
         this.drawContext(context, new mapv.DataSet(data), self.options, {x: pixel[0], y: pixel[1]});
         self.options.updateCallback && self.options.updateCallback(time);

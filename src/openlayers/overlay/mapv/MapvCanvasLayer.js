@@ -1,6 +1,6 @@
 require('../../core/Base');
 
-MapvCanvasLayer = function (options) {
+var MapvCanvasLayer = function (options) {
     this.options = options || {};
     this.paneName = this.options.paneName || 'mapPane';
     this.context = this.options.context || '2d';

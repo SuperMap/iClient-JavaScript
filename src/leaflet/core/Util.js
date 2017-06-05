@@ -1,6 +1,6 @@
 var L = require("leaflet");
 var GeoJSONFormat = require('../../common/format/GeoJSON');
-
+var SuperMap = require('../../common/SuperMap');
 L.Util.supermap_callbacks = {};
 
 L.Util.toGeoJSON = function (feature) {
