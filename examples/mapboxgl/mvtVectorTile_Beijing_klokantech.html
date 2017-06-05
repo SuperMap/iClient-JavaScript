@@ -3,8 +3,8 @@
     <meta charset='utf-8'/>
     <title></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css' rel='stylesheet'/>
+    <link href="https://cdn.bootcss.com/mapbox-gl/0.37.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/mapbox-gl/0.37.0/mapbox-gl.js"></script>
     <style>
         body {
             margin: 0;
@@ -31,10 +31,9 @@
             "sources": {
                 "vector-tiles": {
                     "type": "vector",
-                    "tiles": ["http://113.209.64.227:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?_cache=false&returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}"]
+                    "tiles": ["http://113.209.64.227:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?_cache=false&returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 },
             },
-            "sprite": "http://icltest.supermapol.com/web/styles/dark/sprite",
             "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
             "layers": []
         },
@@ -50,38 +49,19 @@
             "type": "background",
             "layout": {},
             "paint": {
-                "background-color": "hsl(55, 1%, 20%)"
+                "background-color": "hsl(47, 26%, 88%)"
             }
         });
-        map.addLayer({
-            "id": "单值专题图#2",
-            "type": "fill",
-            "source": "vector-tiles",
-            "source-layer": "单值专题图#2",
-            "paint": {
-                "fill-color": "hsl(55, 1%, 20%)",
-            }
-        });
-        map.addLayer({
-            "id": "单值专题图#1",
-            "type": "line",
-            "source": "vector-tiles",
-            "source-layer": "单值专题图#1",
-            "paint": {
-                "line-color": "hsl(0, 0%, 35%)",
-                "line-width": 0.5
-            }
 
-        });
         map.addLayer({
             "id": "立交桥绿地R@北京",
             "type": "fill",
             "source": "vector-tiles",
             "source-layer": "立交桥绿地R@北京",
             "paint": {
-                "fill-color": "hsl(132, 2%, 20%)",
-                "fill-opacity": 0.5,
-            },
+                "fill-color": "hsl(82, 46%, 72%)",
+                "fill-opacity": 1
+            }
         });
         map.addLayer({
             "id": "绿地R@北京",
@@ -89,9 +69,9 @@
             "source": "vector-tiles",
             "source-layer": "绿地R@北京",
             "paint": {
-                "fill-color": "hsl(132, 2%, 20%)",
-                "fill-opacity": 0.5,
-            },
+                "fill-color": "hsl(82, 46%, 72%)",
+                "fill-opacity": 1
+            }
         });
         map.addLayer({
             "id": "	双线河R@北京",
@@ -99,8 +79,8 @@
             "source": "vector-tiles",
             "source-layer": "双线河R@北京",
             "paint": {
-                "fill-color": "hsl(185, 2%, 10%)"
-            },
+                "fill-color": "hsl(205, 56%, 73%)",
+            }
         });
         map.addLayer({
             "id": "湖泊、水库R@北京",
@@ -108,8 +88,8 @@
             "source": "vector-tiles",
             "source-layer": "湖泊、水库R@北京",
             "paint": {
-                "fill-color": "hsl(185, 2%, 10%)"
-            },
+                "fill-color": "hsl(205, 56%, 73%)",
+            }
         });
 
         map.addLayer({
@@ -117,9 +97,25 @@
             "type": "line",
             "source": "vector-tiles",
             "source-layer": "四级道路L@北京",
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
             "paint": {
-                "line-width": 1,
-                "line-color": "hsl(0, 0%, 27%)",
+                "line-color": "hsl(0, 0%, 97%)",
+                "line-width": {
+                    "base": 1.55,
+                    "stops": [
+                        [
+                            4,
+                            0.25
+                        ],
+                        [
+                            20,
+                            30
+                        ]
+                    ]
+                }
             }
         });
         map.addLayer({
@@ -127,52 +123,51 @@
             "type": "line",
             "source": "vector-tiles",
             "source-layer": "三级道路L@北京",
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
             "paint": {
-                "line-width": 1,
-                "line-color": "hsl(0, 0%,27%)",
-            }
-        });
-        map.addLayer({
-            "id": "	二级道路L@北京",
-            "type": "line",
-            "source": "vector-tiles",
-            "source-layer": "二级道路L@北京",
-            "paint": {
-                "line-width": 4,
-                "line-color": "hsl(0, 0%, 17%)",
-            }
-        });
-        map.addLayer({
-            "id": "	二级道路L@北京",
-            "type": "line",
-            "source": "vector-tiles",
-            "source-layer": "二级道路L@北京",
-            "paint": {
-                "line-width": 2,
-                "line-color": "hsl(0, 0%, 27%)",
-            }
-        });
-        map.addLayer({
-            "id": "一级道路L@北京1",
-            "type": "line",
-            "source": "vector-tiles",
-            "source-layer": "一级道路L@北京",
-            "paint": {
-                "line-width": 6,
-                "line-color": "hsl(0, 0%, 17%)",
-                "line-opacity": {
-                    "base": 1,
+                "line-color": "hsl(0, 0%, 97%)",
+                "line-width": {
+                    "base": 1.55,
                     "stops": [
                         [
-                            10.99,
-                            0
+                            4,
+                            0.25
                         ],
                         [
-                            11,
-                            1
+                            20,
+                            30
                         ]
                     ]
-                },
+                }
+            }
+        });
+        map.addLayer({
+            "id": "	二级道路L@北京",
+            "type": "line",
+            "source": "vector-tiles",
+            "source-layer": "二级道路L@北京",
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
+            "paint": {
+                "line-color": "#fff",
+                "line-width": {
+                    "base": 1.4,
+                    "stops": [
+                        [
+                            6,
+                            0.5
+                        ],
+                        [
+                            20,
+                            20
+                        ]
+                    ]
+                }
             }
         });
         map.addLayer({
@@ -180,22 +175,25 @@
             "type": "line",
             "source": "vector-tiles",
             "source-layer": "一级道路L@北京",
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
             "paint": {
-                "line-width": 4,
-                "line-color": "hsl(0, 0%, 27%)",
-                "line-opacity": {
-                    "base": 1,
+                "line-color": "#fff",
+                "line-width": {
+                    "base": 1.4,
                     "stops": [
                         [
-                            10.99,
-                            0
+                            6,
+                            0.5
                         ],
                         [
-                            11,
-                            1
+                            20,
+                            30
                         ]
                     ]
-                },
+                }
             }
         });
         map.addLayer({
@@ -203,34 +201,57 @@
             "type": "line",
             "source": "vector-tiles",
             "source-layer": "省道L@北京",
-            "paint": {
-                "line-width": 6,
-                "line-color": "hsl(0, 0%, 17%)",
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
             },
-        });
-        map.addLayer({
-            "id": "	省道L@北京1",
-            "type": "line",
-            "source": "vector-tiles",
-            "source-layer": "省道L@北京",
             "paint": {
-                "line-width": 4,
-                "line-color": "hsl(0, 0%, 27%)"
-            },
+                "line-color": "hsl(0, 0%, 100%)",
+                "line-width": {
+                    "base": 1.4,
+                    "stops": [
+                        [
+                            8,
+                            1
+                        ],
+                        [
+                            16,
+                            10
+                        ]
+                    ]
+                },
+                "line-offset": 0
+            }
         });
         map.addLayer({
             "id": "	高速公路L@北京",
             "type": "line",
             "source": "vector-tiles",
             "source-layer": "高速公路L@北京",
+            "layout": {
+                "line-cap": "round",
+                "line-join": "round"
+            },
             "paint": {
-                "line-width": 4,
-                "line-color": "hsl(0, 0%, 27%)",
-
+                "line-color": "hsl(0, 0%, 100%)",
+                "line-width": {
+                    "base": 1.4,
+                    "stops": [
+                        [
+                            8,
+                            1
+                        ],
+                        [
+                            16,
+                            10
+                        ]
+                    ]
+                },
+                "line-offset": 0
             }
         });
 
-        //区划
+
         map.addLayer({
             "id": "标签专题图#10",
             "type": "symbol",
@@ -241,36 +262,14 @@
                 "text-anchor": "bottom-left",
                 "text-field": "{NAME}",
                 "text-max-width": 7,
-                "text-size": {
-                    "base": 0.9,
-                    "stops": [
-                        [
-                            4,
-                            12
-                        ],
-                        [
-                            10,
-                            22
-                        ]
-                    ]
-                }
+                "text-font": [
+                    "DIN Offc Pro Medium",
+                    "Arial Unicode MS Regular"
+                ],
+                "text-size": 22
             },
             "paint": {
-                "text-color": {
-                    "base": 1,
-                    "stops": [
-                        [
-                            10,
-                            "hsl(0, 0%, 75%)"
-                        ],
-                        [
-                            11,
-                            "hsl(0, 0%, 85%)"
-                        ]
-                    ]
-                },
-                "text-halo-color": "hsla(0, 0%, 10%, 0.75)",
-                "text-halo-width": 1.25,
+                "text-color": "hsl(230, 8%, 62%)",
                 "text-opacity": {
                     "base": 1,
                     "stops": [
@@ -284,10 +283,12 @@
                         ]
                     ]
                 },
-                "text-halo-blur": 0
-            },
+                "text-halo-color": "rgba(255,255,255,0.75)",
+                "text-halo-width": 1,
+                "text-halo-blur": 1
+            }
+
         });
-        //地标
         map.addLayer({
             "id": "标签专题图#64",
             "type": "symbol",
@@ -301,10 +302,7 @@
                 "text-size": 14
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 60%)",
-                "text-halo-color": "#212121",
-                "text-halo-width": 1,
-                "text-halo-blur": 0,
+                "text-color": "hsl(26, 25%, 32%)",
                 "text-opacity": {
                     "base": 1,
                     "stops": [
@@ -318,42 +316,78 @@
                         ]
                     ]
                 },
+                "text-halo-color": "rgba(255,255,255,0.75)",
+                "text-halo-width": 1,
+                "text-halo-blur": 1
             }
 
         });
         map.addLayer({
-            "id": "	一级道路Name",
+            "id": "	四级道路Name",
             "type": "symbol",
             "source": "vector-tiles",
-            "source-layer": "一级道路L@北京",
+            "source-layer": "四级道路L@北京",
             "layout": {
-                "text-line-height": 1.1,
                 "text-size": {
-                    "base": 1.5,
+                    "base": 1,
                     "stops": [
                         [
-                            13.99,
+                            13,
                             12
                         ],
                         [
-                            20,
-                            24
+                            14,
+                            13
                         ]
                     ]
                 },
-                "text-font": [
-                    "DIN Offc Pro Italic",
-                    "Arial Unicode MS Regular"
-                ],
-                "symbol-placement": "line",
                 "text-field": "{道路名称}",
-                "text-letter-spacing": 0.1,
-                "text-max-width": 5
+                "symbol-placement": "line",
+                "text-rotation-alignment": "map"
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 0%)",
+                "text-halo-blur": 0.5,
+                "text-color": "#000",
                 "text-halo-color": "hsl(0, 0%, 100%)",
-                "text-halo-width": 1.25,
+                "text-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            14.99,
+                            0
+                        ],
+                        [
+                            15,
+                            1
+                        ]
+                    ]
+                },
+                "text-halo-width": 2
+            }
+        });
+        map.addLayer({
+            "id": "	三级道路Name",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "三级道路L@北京",
+            "layout": {
+                "text-size": 10,
+                "text-max-angle": 30,
+                "text-transform": "uppercase",
+                "symbol-spacing": 350,
+                "symbol-placement": "line",
+                "visibility": "visible",
+                "text-rotation-alignment": "map",
+                "text-pitch-alignment": "viewport",
+                "text-field": "{道路名称}"
+            },
+            "paint": {
+                "text-color": "#000",
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-translate": [
+                    0,
+                    0
+                ],
                 "text-opacity": {
                     "base": 1,
                     "stops": [
@@ -367,7 +401,85 @@
                         ]
                     ]
                 },
+                "text-halo-width": 2,
+                "text-halo-blur": 1
+            }
+        });
+        map.addLayer({
+            "id": "	二级道路Name",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "二级道路L@北京",
+            "layout": {
+                "text-size": 10,
+                "text-max-angle": 30,
+                "text-transform": "uppercase",
+                "symbol-spacing": 350,
+                "symbol-placement": "line",
+                "visibility": "visible",
+                "text-rotation-alignment": "map",
+                "text-pitch-alignment": "viewport",
+                "text-field": "{道路名称}"
             },
+            "paint": {
+                "text-color": "#000",
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-translate": [
+                    0,
+                    0
+                ],
+                "text-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            13.99,
+                            0
+                        ],
+                        [
+                            14,
+                            1
+                        ]
+                    ]
+                },
+                "text-halo-width": 2,
+                "text-halo-blur": 1
+            }
+        });
+        map.addLayer({
+            "id": "	一级道路Name",
+            "type": "symbol",
+            "source": "vector-tiles",
+            "source-layer": "一级道路L@北京",
+            "layout": {
+                "text-size": 10,
+                "text-max-angle": 30,
+                "text-transform": "uppercase",
+                "symbol-spacing": 350,
+                "symbol-placement": "line",
+                "visibility": "visible",
+                "text-rotation-alignment": "map",
+                "text-pitch-alignment": "viewport",
+                "text-field": "{道路名称}"
+            },
+            "paint": {
+                "text-color": "#000",
+                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-opacity": {
+                    "base": 1,
+                    "stops": [
+                        [
+                            12.99,
+                            0
+                        ],
+                        [
+                            13,
+                            1
+                        ]
+                    ]
+                },
+                "text-halo-width": 2,
+                "text-halo-blur": 1
+            }
         });
         map.addLayer({
             "id": "	省道Name",
@@ -375,47 +487,35 @@
             "source": "vector-tiles",
             "source-layer": "省道L@北京",
             "layout": {
-                "text-line-height": 1.1,
-                "text-size": {
-                    "base": 1.5,
-                    "stops": [
-                        [
-                            11,
-                            10
-                        ],
-                        [
-                            18,
-                            24
-                        ]
-                    ]
-                },
-                "text-font": [
-                    "DIN Offc Pro Italic",
-                    "Arial Unicode MS Regular"
-                ],
+                "text-size": 10,
+                "text-max-angle": 30,
+                "text-transform": "uppercase",
+                "symbol-spacing": 350,
                 "symbol-placement": "line",
-                "text-field": "{道路名称}",
-                "text-letter-spacing": 0.1,
-                "text-max-width": 5
+                "visibility": "visible",
+                "text-rotation-alignment": "map",
+                "text-pitch-alignment": "viewport",
+                "text-field": "{道路名称}"
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 0%)",
+                "text-color": "#000",
                 "text-halo-color": "hsl(0, 0%, 100%)",
-                "text-halo-width": 1.25,
                 "text-opacity": {
                     "base": 1,
                     "stops": [
                         [
-                            10.99,
+                            12.99,
                             0
                         ],
                         [
-                            11,
+                            13,
                             1
                         ]
                     ]
                 },
-            },
+                "text-halo-width": 2,
+                "text-halo-blur": 1
+            }
         });
 
         map.addLayer({
@@ -430,11 +530,11 @@
                 "text-size": 14
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
+                "text-color": "#666",
                 "text-opacity": 1,
-                "text-halo-color": "#212121",
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
+                "text-halo-blur": 1
             }
 
         });
@@ -444,18 +544,18 @@
             "source": "vector-tiles",
             "source-layer": "长途汽车站@北京",
             "layout": {
-                "icon-image": "bus-11",
                 "text-offset": [-1, -1],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
-            },
+                "text-halo-blur": 1
+            }
 
         });
         map.addLayer({
@@ -464,18 +564,18 @@
             "source": "vector-tiles",
             "source-layer": "图书馆@北京",
             "layout": {
-                "icon-image": "library-11",
                 "text-offset": [-1, -1],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
-            },
+                "text-halo-blur": 1
+            }
 
         });
         map.addLayer({
@@ -484,18 +584,18 @@
             "source": "vector-tiles",
             "source-layer": "公园@北京",
             "layout": {
-                "icon-image": "park-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
-            },
+                "text-halo-blur": 1
+            }
 
         });
         map.addLayer({
@@ -504,39 +604,38 @@
             "source": "vector-tiles",
             "source-layer": "综合性广场@北京",
             "layout": {
-                "icon-image": "campsite-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
-            },
+                "text-halo-blur": 1
+            }
 
         });
-
         map.addLayer({
             "id": "旅游景点@北京",
             "type": "symbol",
             "source": "vector-tiles",
             "source-layer": "旅游景点@北京",
             "layout": {
-                "icon-image": "volcano-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
-            },
+                "text-halo-blur": 1
+            }
 
         });
         map.addLayer({
@@ -545,17 +644,17 @@
             "source": "vector-tiles",
             "source-layer": "医疗卫生@北京",
             "layout": {
-                "icon-image": "hospital-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
+                "text-halo-blur": 1
             }
 
         });
@@ -565,16 +664,15 @@
             "source": "vector-tiles",
             "source-layer": "娱乐场所@北京",
             "layout": {
-                "icon-image": "amusement-park-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 0%)",
+                "text-color": "#666",
                 "text-opacity": 1,
-                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
                 "text-halo-blur": 1
             }
@@ -586,16 +684,15 @@
             "source": "vector-tiles",
             "source-layer": "大厦@北京",
             "layout": {
-                "icon-image": "picnic-site-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 0%)",
+                "text-color": "#666",
                 "text-opacity": 1,
-                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
                 "text-halo-blur": 1
             }
@@ -607,16 +704,15 @@
             "source": "vector-tiles",
             "source-layer": "文化场所@北京",
             "layout": {
-                "icon-image": "art-gallery-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 0%)",
+                "text-color": "#666",
                 "text-opacity": 1,
-                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
                 "text-halo-blur": 1
             }
@@ -628,16 +724,15 @@
             "source": "vector-tiles",
             "source-layer": "运动场所@北京",
             "layout": {
-                "icon-image": "bicycle-share-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 0%)",
+                "text-color": "#666",
                 "text-opacity": 1,
-                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
                 "text-halo-blur": 1
             }
@@ -649,16 +744,15 @@
             "source": "vector-tiles",
             "source-layer": "交通运输@北京",
             "layout": {
-                "icon-image": "bakery-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 0%)",
+                "text-color": "#666",
                 "text-opacity": 1,
-                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
                 "text-halo-blur": 1
             }
@@ -670,7 +764,6 @@
             "source": "vector-tiles",
             "source-layer": "其它@北京",
             "layout": {
-                "icon-image": "toilet-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
@@ -682,9 +775,9 @@
                 "公厕"
             ],
             "paint": {
-                "text-color": "hsl(0, 0%, 0%)",
+                "text-color": "#666",
                 "text-opacity": 1,
-                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
                 "text-halo-blur": 1
             }
@@ -696,16 +789,15 @@
             "source": "vector-tiles",
             "source-layer": "服务行业@北京",
             "layout": {
-                "icon-image": "embassy-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 0%)",
+                "text-color": "#666",
                 "text-opacity": 1,
-                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
                 "text-halo-blur": 1
             }
@@ -717,7 +809,6 @@
             "source": "vector-tiles",
             "source-layer": "其它@北京",
             "layout": {
-                "icon-image": "car-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
@@ -729,9 +820,9 @@
                 "停车场"
             ],
             "paint": {
-                "text-color": "hsl(0, 0%, 0%)",
+                "text-color": "#666",
                 "text-opacity": 1,
-                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
                 "text-halo-blur": 1
             }
@@ -743,7 +834,6 @@
             "source": "vector-tiles",
             "source-layer": "邮政电信@北京",
             "layout": {
-                "icon-image": "post-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
@@ -752,9 +842,9 @@
             },
 
             "paint": {
-                "text-color": "hsl(0, 0%, 0%)",
+                "text-color": "#666",
                 "text-opacity": 1,
-                "text-halo-color": "hsl(0, 0%, 100%)",
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
                 "text-halo-blur": 1
             }
@@ -766,17 +856,17 @@
             "source": "vector-tiles",
             "source-layer": "商场@北京",
             "layout": {
-                "icon-image": "grocery-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
+                "text-halo-blur": 1
             }
 
         });
@@ -786,17 +876,17 @@
             "source": "vector-tiles",
             "source-layer": "综合性商店@北京",
             "layout": {
-                "icon-image": "grocery-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
+                "text-halo-blur": 1
             }
 
         });
@@ -806,17 +896,17 @@
             "source": "vector-tiles",
             "source-layer": "饭店@北京",
             "layout": {
-                "icon-image": "restaurant-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
+                "text-halo-blur": 1
             }
 
         });
@@ -826,17 +916,17 @@
             "source": "vector-tiles",
             "source-layer": "加油站@北京",
             "layout": {
-                "icon-image": "fuel-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
+                "text-halo-blur": 1
             }
 
         });
@@ -846,17 +936,17 @@
             "source": "vector-tiles",
             "source-layer": "建筑@北京",
             "layout": {
-                "icon-image": "place-of-worship-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
+                "text-halo-blur": 1
             }
 
         });
@@ -866,17 +956,17 @@
             "source": "vector-tiles",
             "source-layer": "码头@北京",
             "layout": {
-                "icon-image": "harbor-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
+                "text-halo-blur": 1
             }
 
         });
@@ -886,17 +976,17 @@
             "source": "vector-tiles",
             "source-layer": "机场@北京",
             "layout": {
-                "icon-image": "airport-11",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
+                "text-halo-blur": 1
             }
 
         });
@@ -906,17 +996,17 @@
             "source": "vector-tiles",
             "source-layer": "火车站@北京",
             "layout": {
-                "icon-image": "rail-15",
                 "text-offset": [0, -0.5],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
+                "text-halo-blur": 1
             }
 
         });
@@ -926,17 +1016,17 @@
             "source": "vector-tiles",
             "source-layer": "地名@北京",
             "layout": {
-                "icon-image": "dot-11",
                 "text-offset": [0, -0.3],
                 "text-anchor": "bottom",
                 "text-field": "{NAME}",
                 "text-size": 12
             },
             "paint": {
-                "text-color": "hsl(0, 0%, 78%)",
-                "text-halo-color": "#212121",
+                "text-color": "#666",
+                "text-opacity": 1,
+                "text-halo-color": "rgba(255,255,255,0.75)",
                 "text-halo-width": 1,
-                "text-halo-blur": 0
+                "text-halo-blur": 1
             }
 
         });

@@ -43,8 +43,27 @@ var exampleConfig = {
                         name: "北京-暗夜风格",
                         thumbnail: "mvt_Beijing_dark.png",
                         fileName: "mvtVectorTile_Beijing_dark"
-                    }
-
+                    },
+                    {
+                        name: "北京-深海风格",
+                        thumbnail: "mvt_Beijing_fiordcolor.png",
+                        fileName: "mvtVectorTile_Beijing_fiordcolor"
+                    },
+                    {
+                        name: "北京-淡绿风格",
+                        thumbnail: "mvt_Beijing_klokantech.png",
+                        fileName: "mvtVectorTile_Beijing_klokantech"
+                    },
+                    {
+                        name: "北京-OSM风格",
+                        thumbnail: "mvt_Beijing_osm.png",
+                        fileName: "mvtVectorTile_Beijing_OSM"
+                    },
+                    {
+                        name: "北京-淡灰风格",
+                        thumbnail: "mvt_Beijing_positron.png",
+                        fileName: "mvtVectorTile_Beijing_positron"
+                    },
                 ]
             }
         }

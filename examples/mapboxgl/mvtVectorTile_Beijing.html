@@ -3,8 +3,9 @@
     <meta charset='utf-8'/>
     <title></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css' rel='stylesheet'/>
+    <script src="https://cdn.bootcss.com/mapbox-gl/0.37.0/mapbox-gl.js"></script>
+    <link href="https://cdn.bootcss.com/mapbox-gl/0.37.0/mapbox-gl.css" rel="stylesheet">
+
     <style>
         body {
             margin: 0;
@@ -31,10 +32,10 @@
             "sources": {
                 "vector-tiles": {
                     "type": "vector",
-                    "tiles": ["http://113.209.64.227:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.pbf?_cache=false&returnAttributes=true&width=512&height=512&viewBounds={bbox-epsg-3857}"]
+                    "tiles": ["http://113.209.64.227:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?_cache=false&returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 },
             },
-            "sprite": "mapbox://sprites/mapbox/streets-v9",
+            "sprite": "http://icltest.supermapol.com/web/styles/street/sprite",
             "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
             "layers": []
         },

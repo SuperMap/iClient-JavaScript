@@ -3,8 +3,8 @@
     <meta charset='utf-8'/>
     <title></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.37.0/mapbox-gl.css' rel='stylesheet'/>
+    <link href="https://cdn.bootcss.com/mapbox-gl/0.37.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/mapbox-gl/0.37.0/mapbox-gl.js"></script>
     <style>
         body {
             margin: 0;
@@ -31,7 +31,7 @@
             "sources": {
                 "vector-tiles": {
                     "type": "vector",
-                    "tiles": ["http://113.209.64.227:8090/iserver/services/map-China100/rest/maps/China/tileFeature.pbf?_cache=false&returnAttributes=true&width=512&height=512&viewBounds={bbox-epsg-3857}"]
+                    "tiles": ["http://113.209.64.227:8090/iserver/services/map-China100/rest/maps/China/tileFeature.mvt?_cache=false&returnAttributes=true&width=512&height=512&viewBounds={bbox-epsg-3857}"]
                 },
             },
             "sprite": "mapbox://sprites/mapbox/streets-v9",
