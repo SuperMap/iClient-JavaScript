@@ -20,5 +20,13 @@ module.exports = {
 
     module: {
         noParse: /[\/\\]node_modules[\/\\]openlayers[\/\\]dist[\/\\]ol\.js$/,
+        rules: [{
+            test: /MapvLayer\.js/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            query: {
+                presets: ['es2015']
+            }
+        }]
     }
 };

@@ -18,7 +18,7 @@ module.exports = {
         'mapv': 'mapv'
     },
     module: {
-        loaders: [{
+        rules: [{
             test: /MapVRenderer\.js/,
             exclude: /node_modules/,
             loader: 'babel-loader',
