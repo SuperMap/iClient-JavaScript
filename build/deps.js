@@ -331,6 +331,18 @@ var deps = {
                     "./src/openlayers/services/TrafficTransferAnalystService.js"
                 ]
             },
+            "iPortal": {
+                "name": "iPortal服务",
+                "src": [
+                    "./src/common/iPortal/iPortal.js"
+                ]
+            },
+            "Online": {
+                "name": "Online服务",
+                "src": [
+                    "./src/common/online/Online.js"
+                ]
+            },
             "ProcessingJobs": {
                 "name": "分布式空间处理服务",
                 "src": [
