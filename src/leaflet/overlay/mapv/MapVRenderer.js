@@ -5,7 +5,7 @@ try {
 } catch (ex) {
     mapv = {};
 }
-var BaseLayer = mapv.baiduMapLayer.__proto__ || Function;
+var BaseLayer = mapv.baiduMapLayer ? mapv.baiduMapLayer.__proto__ : Function;
 
 class MapVRenderer extends BaseLayer {
     constructor(map, layer, dataSet, options) {

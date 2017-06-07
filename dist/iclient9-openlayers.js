@@ -13661,7 +13661,7 @@ try {
 } catch (ex) {
     mapv = {};
 }
-var BaiduMapLayer = mapv.baiduMapLayer.__proto__ || Function;
+var BaiduMapLayer = mapv.baiduMapLayer ? mapv.baiduMapLayer.__proto__ : Function;
 
 var MapvLayer = function (_BaiduMapLayer) {
     _inherits(MapvLayer, _BaiduMapLayer);
