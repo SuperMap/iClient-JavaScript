@@ -1,6 +1,6 @@
 var ServiceBase = require('./ServiceBase');
 var SuperMap = require('../SuperMap');
-var Request = require('../../../src/common/util/Request');
+var Request = require('../util/Request');
 require('./GeoCodingParameter');
 require('./GeoDecodingParameter');
 
