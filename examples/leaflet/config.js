@@ -1,6 +1,10 @@
 /**
  * Leaflet 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
+var identification = {
+    name: "Leaflet"
+};
+
 var exampleConfig = {
     "iServer": {
         name: "iServer",
@@ -222,6 +226,14 @@ var exampleConfig = {
                     thumbnail: "buildCacheService.png",
                     fileName: "buildCacheService"
                 }]
+            },
+            "address": {
+                name: "地址匹配",
+                content: [{
+                    name: "地址匹配",
+                    thumbnail: "l_addressService.png",
+                    fileName: "addressService"
+                }]
             }
         }
     },
@@ -301,6 +313,10 @@ var exampleConfig = {
                     name: "热力图-随机点",
                     thumbnail: "l_heat.png",
                     fileName: "12_heatMap"
+                }, {
+                    name: "热力图-纽约出租车上车点",
+                    thumbnail: "l_heatmap_nyc.png",
+                    fileName: "12_heatMap_NY"
                 }]
             },
             "animate": {
@@ -381,6 +397,18 @@ var exampleConfig = {
                     }
                 ]
 
+            },
+            "MapV": {
+                name: "MapV",
+                content: [{
+                    name: "蜂巢图",
+                    thumbnail: "l_mapVLayer_honeycomb.png",
+                    fileName: "mapVLayerHoneycomb"
+                }, {
+                    name: "纽约出租车上车点",
+                    thumbnail: "l_mapVLayer_point.png",
+                    fileName: "mapVLayerPoint"
+                }]
             },
             "tileVectorLayer": {
                 name: "矢量瓦片",
