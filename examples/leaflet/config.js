@@ -260,7 +260,7 @@ var exampleConfig = {
                 name: "地图列表",
                 content: [{
                     name: "地图列表",
-                    thumbnail: "l_iportalQueryMaps.png",
+                    thumbnail: "l_iPortalQueryMaps.png",
                     fileName: "iPortalQueryMaps"
                 }]
             }
