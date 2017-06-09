@@ -2,6 +2,18 @@
     font-size: 16px;
 }
 
+.main-header .navbar-brand {
+    padding-top: 10px;
+}
+
+/*logo的样式*/
+#logo {
+    width: 35px;
+    height: 35px;
+    float: left;
+    margin-left: 8px;
+}
+
 .navbar .project-title {
     text-decoration: none;
     vertical-align: middle;
@@ -11,8 +23,12 @@
     letter-spacing: -0.16px;
 }
 
+/*头部选项下拉菜单框的样式*/
 .navbar-nav > li > .dropdown-menu {
-    margin-top: 2px !important;
+    margin-top: 0 !important;
+    background-color: #3375A1;
+    border: 0;
+    border-radius: 0;
 }
 
 .navbar #headerMenu {
@@ -61,7 +77,8 @@
     font-family: 'HiraginoSansGB-W6';
     font-size: 24px;
     color: #FFFFFF;
-    letter-spacing: -0.1px;
+    padding-left: 8px;
+    padding-right: 8px;
 }
 
 .main-header .sidebar-toggle {
@@ -76,10 +93,77 @@
     content: "\f03b";
 }
 
+/*下拉菜单的样式*/
+.navbar-nav > .nav-dropdown-menu > .dropdown-menu > li > a {
+    color: #F8F8F8;
+    font-size: 14px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+/*鼠标在下拉菜单划过时的样式*/
+.navbar-nav > .nav-dropdown-menu > .dropdown-menu > li:hover > a {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.navbar-nav > li > a {
+    padding-bottom: 17px;
+}
+
+/*头部选项选中时的颜色*/
+.skin-blue .main-header .navbar .nav > li > a:hover, .skin-blue .main-header .navbar .nav > li > a:active, .skin-blue .main-header .navbar .nav > li > a:focus, .skin-blue .main-header .navbar .nav .open > a, .skin-blue .main-header .navbar .nav .open > a:hover, .skin-blue .main-header .navbar .nav .open > a:focus, .skin-blue .main-header .navbar .nav > .active > a {
+    background: #3375A1;
+}
+
+.skin-blue .main-header .navbar .nav > li > a:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
 
 @media screen and (max-width: 992px) {
-    #title {
-        font-size: 18px;
+    .navbar-brand {
+        padding-left: 8px !important;
+    }
+
+    /*尺寸小于992时下拉菜单的样式*/
+    .navbar-custom-menu > .navbar-nav > li > .dropdown-menu {
+        border: 0;
+        border-top: 1px solid #f9f9f9;
+        background: #3375A1;
+    }
+
+    .navbar-custom-menu > .navbar-nav > li > .dropdown-menu > li {
+        position: relative;
+        right: 0;
+        left: auto;
+        border: 0;
+        background: #3375A1;
+    }
+
+    .skin-blue .main-header .navbar .dropdown-menu > li > a {
+        color: #ffffff;
+    }
+
+    /*头部右侧收缩按钮的收缩样式和宽度控制*/
+    .navbar-header {
+        float: none
+    }
+
+    .navbar-toggle {
+        display: block;
+        float: right
+    }
+
+    .navbar-collapse.collapse {
+        display: none !important;
+    }
+
+    .navbar-nav > li {
+        float: none;
+    }
+
+    .collapse.in {
+        display: block !important;
     }
 }
 
@@ -91,14 +175,83 @@
     .navbar-brand {
         padding: 15px 0;
     }
-}
 
-@media screen and (max-width: 410px) {
-    #title {
-        font-size: 14px;
+    /*尺寸小于768px时，logo和产品名称的样式*/
+    #logo {
+        width: 28px;
+        height: 28px;
     }
 
-    .sidebar-toggle {
-        padding: 15px 15px !important;
+    #title {
+        font-size: 20px;
+    }
+
+    .navbar-brand {
+        padding-right: 10px !important;
+    }
+
+    .navbar-toggle {
+        padding-left: 10px;
+        padding-top: 18px
+    }
+}
+
+/*尺寸小于510px时，logo和产品名称的样式，主要是为了适应iphone6 plus等移动端的浏览器*/
+@media screen and (max-width: 510px) {
+    #logo {
+        width: 25px;
+        height: 25px;
+    }
+
+    #title {
+        font-size: 15px;
+    }
+
+    /*尺寸小于510时,利用按钮展开的头部选项的样式*/
+    .navbar-custom-menu .navbar-nav > li > a {
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        line-height: 20px;
+    }
+
+    .skin-blue .main-header .navbar .nav > li > a {
+        font-size: 15px;
+    }
+}
+
+/*尺寸小于410px时，logo、产品名称、右侧收缩按钮的样式，主要是为了适应iphone6等移动端的浏览器*/
+@media screen and (max-width: 410px) {
+    #logo {
+        width: 20px;
+        height: 20px;
+    }
+
+    #title {
+        font-size: 11px;
+    }
+
+    .navbar-toggle {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    /*尺寸小于400时,利用按钮展开的头部选项的样式*/
+    .navbar-custom-menu .navbar-nav > li > a {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .skin-blue .main-header .navbar .nav > li > a {
+        font-size: 13px;
+    }
+}
+
+/*尺寸小于350px时，logo、产品名称、右侧收缩按钮的样式，主要是为了适应iphone5等移动端的浏览器*/
+@media screen and (max-width: 350px) {
+    .navbar-toggle {
+        padding-left: 3px;
+        padding-right: 6px;
     }
 }

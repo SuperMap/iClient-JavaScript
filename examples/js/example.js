@@ -64,7 +64,7 @@ function createGalleryItemTitle(id, title) {
 }
 
 function createSubGalleryItemTitle(id, title) {
-    return $("<div class='box-header with-border'>"+"<h3 class='box-title' id='category-type-" + id + "'>" + "&nbsp;&nbsp;" + title + "</h4>"+"</h3>"+"</div>");
+    return $("<div class='box-header'>"+"<h3 class='box-title' id='category-type-" + id + "'>" + "&nbsp;&nbsp;&nbsp;&nbsp;" + title + "</h4>"+"</h3>"+"</div>");
 }
 
 
@@ -89,7 +89,7 @@ function createGalleryChart(example) {
     var chart = $("<div class='chart'></div>");
     var link = $("<a class='chart-link' target='_blank' href='" + target + "#" + href + "'></a>");
     var chartTitle = $("<h5 class='chart-title'>" + title + "</h5>");
-    var thumb = $("<img class='chart-area' src='" + thumbnail + "' style='display: inline;'>");
+    var thumb = $("<img class='chart-area' src='" + thumbnail + "' style='display: inline'>");
 
     chartTitle.appendTo(link);
     thumb.appendTo(link);

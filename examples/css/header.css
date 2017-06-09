@@ -2,17 +2,25 @@
     font-size: 16px;
 }
 
+.main-header .navbar-brand {
+    padding-top: 10px;
+}
+
 .navbar .project-title {
     text-decoration: none;
     vertical-align: middle;
-    font-family: HiraginoSansGB-W6;
+    font-family: 'HiraginoSansGB-W6';
     font-size: 24px;
     color: #FFFFFF;
     letter-spacing: -0.16px;
 }
 
+/*头部选项下拉菜单框的样式*/
 .navbar-nav > li > .dropdown-menu {
-    margin-top: 2px !important;
+    margin-top: 0 !important;
+    background-color: #3375A1;
+    border: 0;
+    border-radius: 0;
 }
 
 .navbar #headerMenu {
@@ -73,38 +81,13 @@
 }
 
 .main-header .sidebar-toggle:before {
-    content: "\f03b";
-}
-
-@media screen and (max-width: 767px) {
-    #title {
-        font-size: 18px;
-    }
-}
-
-@media screen and (max-width: 767px) {
-    .navbar-nav > li > .dropdown-menu {
-        margin-top: 0 !important;
-    }
-
-    .navbar-brand {
-        padding: 15px 0;
-    }
-}
-
-@media screen and (max-width: 430px) {
-    #title {
-        font-size: 12px;
-    }
-
-    .sidebar-toggle {
-        padding: 15px 15px !important;
-    }
+    /* content: "\f03b";*/
+    content: "\f015";
 }
 
 .navbar-brand {
     float: left;
-    height: 50px;
+    height: 52px;
     padding: 15px 15px;
     font-size: 18px;
     line-height: 20px;
@@ -115,12 +98,38 @@
     font-family: 'HiraginoSansGB-W6';
     font-size: 16px;
     color: #FFFFFF;
+    height: 52px;
+    padding-left: 10px;
+    padding-top: 16px;
+    padding-bottom: 15px;
+    float: left;
 }
 
-@media screen and (max-width: 430px){
-    #suffix-title {
-        font-size: 12px;
-    }
+/*下拉菜单的样式*/
+.navbar-nav > .nav-dropdown-menu > .dropdown-menu > li > a {
+    color: #F8F8F8;
+    font-size: 14px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+/*鼠标在下拉菜单划过时的样式*/
+.navbar-nav > .nav-dropdown-menu > .dropdown-menu > li:hover > a {
+    background-color: rgba(0, 0, 0, 0.1);
+    /* background-color: #3c8dbc;*/
+}
+
+.navbar-nav > li > a {
+    padding-bottom: 17px;
+}
+
+/*头部选项选中时的颜色*/
+.skin-blue .main-header .navbar .nav > li > a:hover, .skin-blue .main-header .navbar .nav > li > a:active, .skin-blue .main-header .navbar .nav > li > a:focus, .skin-blue .main-header .navbar .nav .open > a, .skin-blue .main-header .navbar .nav .open > a:hover, .skin-blue .main-header .navbar .nav .open > a:focus, .skin-blue .main-header .navbar .nav > .active > a {
+    background: #3375A1;
+}
+
+.skin-blue .main-header .navbar .nav > li > a:hover {
+    background: rgba(0, 0, 0, 0.1);
 }
 
 @media screen and (max-width: 992px) {
@@ -149,5 +158,97 @@
     .collapse.in {
         display: block !important;
     }
+
+    /*尺寸小于992时下拉菜单的样式*/
+    .navbar-custom-menu > .navbar-nav > li > .dropdown-menu {
+        border: 0;
+        border-top: 1px solid #f9f9f9;
+        background: #3375A1;
+    }
+
+    .navbar-custom-menu > .navbar-nav > li > .dropdown-menu > li {
+        position: relative;
+        right: 0;
+        left: auto;
+        border: 0;
+        background: #3375A1;
+    }
+
+    .skin-blue .main-header .navbar .dropdown-menu > li > a {
+        color: #ffffff;
+    }
 }
 
+@media screen and (max-width: 768px) {
+    #title {
+        font-size: 18px;
+    }
+
+    #suffix-title {
+        font-size: 14px;
+    }
+
+    .navbar-nav > li > .dropdown-menu {
+        margin-top: 0 !important;
+    }
+
+    .navbar-brand {
+        padding: 15px 0;
+    }
+}
+
+/*尺寸小于510时,利用按钮展开的头部选项的样式*/
+@media (max-width: 510px) {
+    .navbar-custom-menu .navbar-nav > li > a {
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        line-height: 20px;
+    }
+
+    .skin-blue .main-header .navbar .nav > li > a {
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 460px) {
+    #title {
+        font-size: 15px;
+    }
+
+    #suffix-title {
+        padding-left: 5px;
+        font-size: 12px;
+        padding-top: 17px;
+        padding-bottom: 15px;
+    }
+
+    .sidebar-toggle {
+        padding: 15px 15px !important;
+    }
+}
+
+/*尺寸小于410时*/
+@media (max-width: 410px) {
+    .navbar-custom-menu .navbar-nav > li > a {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .skin-blue .main-header .navbar .nav > li > a {
+        font-size: 13px;
+    }
+
+    #title {
+        font-size: 8px;
+    }
+
+    #suffix-title {
+        font-size: 8px;
+    }
+
+    .navbar-toggle {
+        padding: 15px 5px 15px 5px;
+    }
+}

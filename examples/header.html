@@ -1,7 +1,10 @@
 <div class="navbar-header">
-    <a href="#" class="navbar-brand" id="title">SuperMap iClient 9D</a>
 
-    <div class="navbar-brand" id="suffix-title" style="padding-left: 10px"></div>
+    <a class="navbar-brand" href="#">
+        <span class="project-title vm" id="title">SuperMap iClient 9D<span style="vertical-align:super; font-size:14px; color:#ffffff; margin-left:5px;">alpha</span></span>
+    </a>
+
+    <div id="suffix-title"></div>
     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse"
             aria-expanded="false">
         <i class="fa fa-bars"></i>
@@ -27,10 +30,10 @@
                 <i class="fa fa-sort-down"></i>
             </a>
             <ul class="dropdown-menu ">
-                <li><a href="#"><h5>for Leaflet</h5></a></li>
-                <li><a href="#"><h5>for OpenLayers</h5></a></li>
-                <li><a href="#"><h5>for MapboxGL</h5></a></li>
-                <li><a href="#"><h5>3D-WebGL</h5></a></li>
+                <li><a href="#" id="lf">for Leaflet</a></li>
+                <li><a href="#" id="ol">for OpenLayers</a></li>
+                <li><a href="#" id="mbgl">for MapboxGL</a></li>
+                <li><a href="#" id="wbgl">3D-WebGL</a></li>
             </ul>
         </li>
         <li class="api-menu" id="headerPricing">
@@ -44,21 +47,19 @@
                 <i class="fa fa-sort-down"></i>
             </a>
             <ul class="dropdown-menu ">
-                <li class="build"><a href="#"><h5>在线构建</h5></a></li>
+                <li class="build"><a href="#">在线构建</a></li>
             </ul>
         </li>
     </ul>
 </div>
+<script type="text/javascript" src="../../web/config.js"></script>
 <script type="text/javascript">
-    $('.example-menu .dropdown-menu li').on('click', function () {
+    $('.example-menu .dropdown-menu li').on('click', function (e) {
+        var id = $(e.target).attr("id");
+        var path = dropMenuConfig[id];
         var host = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9" : "");
-        if (this.innerText.indexOf("WebGL") > 0) {
-            var typeName3d = this.innerText.replace(/[\-]/g, '');
-            window.location.href = host + "/examples/" + typeName3d.toLowerCase() + "/examples.html";
-        }
-        else {
-            var typeNameElse = this.innerText.substring(4, this.innerText.length - 1);
-            window.location.href = host + "/examples/" + typeNameElse.toLowerCase() + "/examples.html";
+        if (path) {
+            window.location.href = host + "/examples/" + dropMenuConfig[id] + "/examples.html";
         }
     });
     $('.download-menu .build').on('click', function () {

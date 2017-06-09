@@ -14,7 +14,7 @@ html, body, .wrapper {
 .edit-container {
     background-color: #f9f9f9;
     position: relative;
-    margin-top: 50px;
+    margin-top: 52px;
 }
 
 .edit-container section.content {
@@ -33,7 +33,6 @@ html, body, .wrapper {
 #codePane {
     height: 100%;
     box-shadow: 2px 0px 6px #cccccc;
-    border-left: 1px solid #e7e7e7;
 }
 
 .codePaneTool {
@@ -60,7 +59,6 @@ html, body, .wrapper {
 
 #previewPane {
     height: 100%;
-    border-left: 1px solid #e7e7e7;
 }
 
 #innerPage {

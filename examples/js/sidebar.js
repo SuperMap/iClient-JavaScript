@@ -64,10 +64,10 @@ function createSideBarMenuTitle(id, title, collapse) {
     id = id || "";
     var icon = "", iconName = sideBarIconConfig[id];
     if (iconName) {
-        icon = "<i class='fa " + iconName + "'></i>"
+        icon = "<i class='fa " + iconName + " iconName'></i>"
     }
 
-    var div = $("<a href='#' id='" + id + "'>" + icon + "<span style='font-weight:bold;color:#222222'>" + title + "</span></a>");
+    var div = $("<a href='#' id='" + id + "'>" + icon + "<span class='firstMenuTitle'>" + title + "</span></a>");
     if (collapse) {
         div.append(createCollapsedIcon());
     }
@@ -81,7 +81,7 @@ function createSideBarMenuSecondTitle(id, title, collapse) {
         icon = "<i class='fa " + iconName + "'></i>"
     }
 
-    var div = $("<a href='#' id='" + id + "'>" + icon + "<span>" + title + "</span></a>");
+    var div = $("<a href='#' id='" + id + "'>" + icon + "<span class='secondMenuTitle'>" + title + "</span></a>");
     if (collapse) {
         div.append(createCollapsedIcon());
     }
@@ -95,7 +95,7 @@ function createSideBarMenuThirdTitle(id, title, collapse) {
         icon = "<i class='fa " + iconName + "'></i>"
     }
 
-    var div = $("<a href='#' id='" + id + "'>" + icon + "<span style='font-size:12px;padding-left: 20px'>" + title + "</span></a>");
+    var div = $("<a href='#' id='" + id + "'>" + icon + "<span class='thirdMenuTitle'>" + title + "</span></a>");
     if (collapse) {
         div.append(createCollapsedIcon());
     }
@@ -129,7 +129,7 @@ function selectMenu(id) {
             target.addClass("menu-open");
             target.css("display", "block");
         }
-        if(className && className.indexOf("treeview") > -1){
+        if (className && className.indexOf("treeview") > -1) {
             target.addClass('active');
         }
     }

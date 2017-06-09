@@ -7,15 +7,15 @@
 }
 
 .skin-blue .main-sidebar {
-    background-color: #f2f2f2;
+    background-color: #3c8dbc;
 }
 
 .skin-blue .sidebar-menu > li.treeview:hover > a {
-    border-left: 3px solid #999999;
+    border-left: 3px solid rgba(0, 0, 0, 0.1);
 }
 
 .skin-blue .sidebar-menu > li.treeview.active > a {
-    border-left: 3px solid #999999;
+    border-left: 3px solid rgba(0, 0, 0, 0.1);
 }
 
 .skin-blue .sidebar .second-menu, .skin-blue .sidebar .third-menu {
@@ -26,21 +26,17 @@
     padding-left: 30px;
 }
 
-.sidebar-mini.sidebar-collapse .sidebar-menu > li > .treeview-menu {
-    padding-top: 0;
-}
-
 .skin-blue .sidebar a {
     color: #000000;
 }
 
 .skin-blue .treeview-menu li > a {
-    border-left: 3px solid #f8f8f8;
+    border-left: 3px solid #3c8dbc;
 }
 
 .skin-blue .treeview-menu li > a:hover, .skin-blue .treeview-menu li.active > a {
-    background-color: #e9e9e9;
-    border-left-color: #3c8dbc;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-left-color: rgba(0, 0, 0, 0.3);
 }
 
 .skin-blue .treeview-menu > li > a {
@@ -50,19 +46,59 @@
 
 .skin-blue .sidebar-menu > li > .treeview-menu {
     margin: 0;
-    background: #f8f8f8;
+    background: #3c8dbc;
 }
 
 .sidebar-menu li.active > .treeview-menu {
-    background: #f8f8f8;
+    background: #3c8dbc;
+}
+
+/*侧边栏收起后向右展开的边框宽度*/
+.sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > a > span:not(.pull-right), .sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > .treeview-menu {
+    border-radius: 0;
+    width: 220px;
+}
+
+/*侧边栏收起后向右展开时一级菜单箭头的位置*/
+.sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > a > .pull-right-container {
+    left: 220px !important;
+}
+
+.sidebar-mini.sidebar-collapse .sidebar-menu > li > .treeview-menu {
+    padding-top: 0;
+    padding-bottom: 0;
+    border-radius: 0;
 }
 
 .skin-blue .sidebar-menu > li:hover > a, .skin-blue .sidebar-menu > li.active > a {
-    color: #000000;
-    background: #DCDCDC;
-    border-left-color: #e9e9e9;
+    color: #3c8dbc;
+    background: #3375A1;
 }
 
 .skin-blue .treeview-menu > li.active > a, .skin-blue .treeview-menu > li > a:hover {
     color: #000000;
+}
+
+.main-sidebar .iconName {
+    margin-right: 10px;
+    color: #FFFFFF
+}
+
+.main-sidebar .firstMenuTitle {
+    color: #FFFFFF;
+}
+
+.main-sidebar .secondMenuTitle {
+    color: #FFFFFF;
+    padding-left: 10px;
+}
+
+.main-sidebar .thirdMenuTitle {
+    color: #FFFFFF;
+    font-size: 12px;
+    padding-left: 32px;
+}
+
+.main-sidebar .pull-right {
+    color: #FFFFFF
 }
