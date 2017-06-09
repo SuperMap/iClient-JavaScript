@@ -225,11 +225,11 @@ var ProcessingJobsService = ServiceBase.extend({
         if (!params) {
             return {};
         }
-        if (params.query && params.query instanceof L.LatLngBounds) {
-            params.query = params.query.toBBoxString();
+        if (params.query) {
+            params.query = L.CommontypesConversion.toSuperMapBounds(params.query).toBBOX();
         }
-        if (params.bounds && params.bounds instanceof L.LatLngBounds) {
-            params.bounds = params.bounds.toBBoxString();
+        if (params.bounds) {
+            params.bounds = L.CommontypesConversion.toSuperMapBounds(params.bounds).toBBOX();
         }
         return params;
     },

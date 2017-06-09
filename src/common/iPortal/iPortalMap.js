@@ -68,7 +68,7 @@ SuperMap.iPortalMap = SuperMap.Class(SuperMap.iPortalServiceBase, {
         var options = {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         };
-        return me.request("PUT", this.mapUrl, JSON.stringify(mapUpdateParam), options);
+        return this.request("PUT", this.mapUrl, JSON.stringify(mapUpdateParam), options);
     }
 
 });

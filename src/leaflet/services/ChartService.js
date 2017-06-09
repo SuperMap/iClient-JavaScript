@@ -70,13 +70,8 @@ var ChartService = ServiceBase.extend({
             params.chartQueryFilterParameters = [params.chartQueryFilterParameters];
         }
 
-        if (params.bounds && params.bounds instanceof L.LatLngBounds) {
-            params.bounds = new SuperMap.Bounds(
-                params.bounds.getSouthWest().lng,
-                params.bounds.getSouthWest().lat,
-                params.bounds.getNorthEast().lng,
-                params.bounds.getNorthEast().lat
-            );
+        if (params.bounds) {
+            params.bounds = L.CommontypesConversion.toSuperMapBounds(bounds);
         }
     },
     _processFormat: function (resultFormat) {

@@ -327,13 +327,8 @@ var SpatialAnalystService = ServiceBase.extend({
         if (!params) {
             return {};
         }
-        if (params.bounds && params.bounds instanceof L.LatLngBounds) {
-            params.bounds = new SuperMap.Bounds(
-                params.bounds.getSouthWest().lng,
-                params.bounds.getSouthWest().lat,
-                params.bounds.getNorthEast().lng,
-                params.bounds.getNorthEast().lat
-            );
+        if (params.bounds) {
+            params.bounds = L.CommontypesConversion.toSuperMapBounds(params.bounds);
         }
         if (params.inputPoints) {
             for (var i = 0; i < params.inputPoints.length; i++) {

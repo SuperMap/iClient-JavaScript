@@ -103,14 +103,7 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
         if (hoverone && hoverone.refDataID) {
             hoverFid = hoverone.refDataID;
         }
-        if (bounds instanceof L.LatLngBounds) {
-            bounds = new SuperMap.Bounds(
-                bounds.getWest(),
-                bounds.getSouth(),
-                bounds.getEast(),
-                bounds.getNorth()
-            );
-        }
+        bounds = L.CommontypesConversion.toSuperMapBounds(bounds);
         //清除当前所有可视元素
         me.renderer.clearAll();
 

@@ -170,13 +170,8 @@ var FeatureService = ServiceBase.extend({
         params.fromIndex = params.fromIndex ? params.fromIndex : 0;
         params.toIndex = params.fromIndex ? params.fromIndex : -1;
         params.isUseBatch = (params.isUseBatch == null) ? false : params.isUseBatch;
-        if (params.bounds && params.bounds instanceof L.LatLngBounds) {
-            params.bounds = new SuperMap.Bounds(
-                params.bounds.getSouthWest().lng,
-                params.bounds.getSouthWest().lat,
-                params.bounds.getNorthEast().lng,
-                params.bounds.getNorthEast().lat
-            );
+        if (params.bounds) {
+            params.bounds = L.CommontypesConversion.toSuperMapBounds(bounds);
         }
         if (params.geometry) {
             params.geometry = Util.toSuperMapGeometry(params.geometry);

@@ -108,14 +108,7 @@ var GraphThemeLayer = ThemeLayer.extend({
         //清除当前所有可视元素
         me.renderer.clearAll();
         var features = me.features;
-        if (bounds instanceof L.LatLngBounds) {
-            bounds = new SuperMap.Bounds(
-                bounds.getWest(),
-                bounds.getSouth(),
-                bounds.getEast(),
-                bounds.getNorth()
-            );
-        }
+        bounds = L.CommontypesConversion.toSuperMapBounds(bounds);
         for (var i = 0, len = features.length; i < len; i++) {
             var feature = features[i];
             // 要素范围判断
