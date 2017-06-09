@@ -60,7 +60,7 @@ describe('testTerrainCurvatureCalculationService_processAsync',function(){
                 terrainCurvatureCalculationParameters.destroy();
                 done();
             }
-        },6000);
+        },20000);
     });
 
     //测试失败事件
@@ -94,7 +94,7 @@ describe('testTerrainCurvatureCalculationService_processAsync',function(){
                 terrainCurvatureCalculationParameters.destroy();
                 done();
             }
-        },6000);
+        },20000);
     });
 });
 
