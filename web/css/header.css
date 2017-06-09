@@ -8,8 +8,8 @@
 
 /*logo的样式*/
 #logo {
-    width: 35px;
-    height: 35px;
+    width: 28px;
+    height: 28px;
     float: left;
     margin-left: 8px;
 }
@@ -177,11 +177,6 @@
     }
 
     /*尺寸小于768px时，logo和产品名称的样式*/
-    #logo {
-        width: 28px;
-        height: 28px;
-    }
-
     #title {
         font-size: 20px;
     }

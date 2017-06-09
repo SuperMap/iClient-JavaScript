@@ -81,8 +81,7 @@
 }
 
 .main-header .sidebar-toggle:before {
-    /* content: "\f03b";*/
-    content: "\f015";
+    content: "\f03b";
 }
 
 .navbar-brand {
