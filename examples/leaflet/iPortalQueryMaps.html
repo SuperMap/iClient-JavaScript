@@ -67,10 +67,10 @@
         pageSize:mapsPageSize,
     };
     //Maps查询初始化工作
-    var iPoortalMaps=new SuperMap.iPortal(iPortalUrl);
+    var iPortalMaps=new SuperMap.iPortal(iPortalUrl);
     $(document).ready(function () {
         //加载完DOM后，开始地图数据查询并添加
-        iPoortalMaps.load().then(function () {
+        iPortalMaps.load().then(function () {
             queryMaps(queryParams);
         });
         //为分页列表项绑定事件
@@ -93,7 +93,7 @@
     });
     // 查询iPortal中的地图
     function queryMaps(queryParams){
-        iPoortalMaps.queryMaps(queryParams).then(function (mapsData) {
+        iPortalMaps.queryMaps(queryParams).then(function (mapsData) {
             //返回的结果集，需要查看可打开下行代码
             // console.log(mapsData);
             $("#mapList").children().remove();
