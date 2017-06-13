@@ -16,7 +16,7 @@
 
     <ul class="nav navbar-nav">
         <li class="overview-menu" id="headerIndex">
-            <a href="#" class="center">
+            <a href="./index.html" class="center">
                 首页
             </a>
         </li>
@@ -31,10 +31,10 @@
                 <i class="fa fa-sort-down"></i>
             </a>
             <ul class="dropdown-menu ">
-                <li><a href="#" id="leaflet">for Leaflet</a></li>
-                <li><a href="#" id="openlayers">for OpenLayers</a></li>
-                <li><a href="#" id="mapboxgl">for MapboxGL</a></li>
-                <li><a href="#" id="3dwebgl">3D-WebGL</a></li>
+                <li><a href="../examples/leaflet/examples.html" id="leaflet">for Leaflet</a></li>
+                <li><a href="../examples/openlayers/examples.html" id="openlayers">for OpenLayers</a></li>
+                <li><a href="../examples/mapboxgl/examples.html" id="mapboxgl">for MapboxGL</a></li>
+                <li><a href="../examples/3dwebgl/examples.html" id="3dwebgl">3D-WebGL</a></li>
             </ul>
         </li>
         <li class="api-menu" id="headerPricing">
@@ -53,21 +53,3 @@
         </li>
     </ul>
 </div>
-<script type="text/javascript" src="./config.js"></script>
-<script type="text/javascript">
-    $('.example-menu .dropdown-menu li').on('click', function (e) {
-        var id = $(e.target).attr("id");
-        var path = dropMenuConfig[id];
-        var host = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9" : "");
-        if (path) {
-            window.location.href = host + "/examples/" + dropMenuConfig[id] + "/examples.html";
-        }
-    });
-//    $('.download-menu .build').on('click', function () {
-//        var host = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9" : "");
-//        window.location.href = host + "/build/build.html";
-//    });
-    $('.nav #headerIndex,.navbar-header #title').on('click', function (evt) {
-        window.location.href = window.location.protocol + "//" + window.location.host + (window.location.port ? "/iClient9/web/index.html" : "");
-    })
-</script>
