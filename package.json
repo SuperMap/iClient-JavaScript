@@ -8,12 +8,14 @@
     "test": "test"
   },
   "scripts": {
-    "release": "npm run package - leaflet && npm run package - openlayers",
+    "release": "npm run package - leaflet && npm run package - openlayers && npm run compress-leaflet&& npm run compress-openlayers",
     "deploy": "webpack",
     "deploy-leaflet": "webpack --config ./build/webpack.config.leaflet.js ",
-    "deploy-openlayers": "webpack --config ./build/webpack.config.openlayers.js ",
-    "compress": "webpack -p",
+    "deploy-openlayers": "webpack --config ./build/webpack.config.openlayers.js",
+    "compress-openlayers": "uglifyjs -c -m -o ./dist/iclient9-openlayers.min.js -- ./dist/iclient9-openlayers.js ",
+    "compress-leaflet": "uglifyjs -c -m -o ./dist/iclient9-leaflet.min.js -- ./dist/iclient9-leaflet.js",
     "package": "node ./build/pack.js",
+    "package-debug": "node ./build/pack.js - debug",
     "test": "karma start",
     "citest": "karma start --single-run"
   },
@@ -51,7 +53,8 @@
     "webpack": "^2.4.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
-    "babel-preset-es2015": "^6.24.1"
+    "babel-preset-es2015": "^6.24.1",
+    "uglify-js":"^3.0.15"
   },
   "dependencies": {
     "proj4": "2.4.3",

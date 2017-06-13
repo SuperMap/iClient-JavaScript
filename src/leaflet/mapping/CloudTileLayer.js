@@ -14,7 +14,8 @@ var CloudTileLayer = L.TileLayer.extend({
          */
         type: "web",
         minZoom: 3,
-        maxZoom: 18
+        maxZoom: 18,
+        attribution: 'Map Data ©2013 SuperMap - GS(2011)6014号-data©Navinfo with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
 
     },
     initialize: function (url, options) {

@@ -13,7 +13,8 @@ var ThemeLayer = L.Layer.extend({
         opacity: 1,
         // {Array} 专题要素事件临时存储，临时保存图层未添加到 map 前用户添加的事件监听，待图层添加到 map 后把这些事件监听添加到图层上，清空此图层。
         //这是一个二维数组，组成二维数组的每个一维数组长度为 2，分别是 event, callback。
-        TFEvents: null
+        TFEvents: null,
+        attribution: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
     },
 
     initialize: function (name, options) {

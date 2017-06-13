@@ -11,7 +11,8 @@ var WebMap = L.LayerGroup.extend({
         featureLayerPopupEnable: true,
         featureLayerPopup: null,
         credentialValue: null,
-        credentialKey: 'key'
+        credentialKey: 'key',
+        attribution: 'Map Data <a href="http://www.supermapol.com">SuperMap Online</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
     },
     defaultFeatureLayerPopup: function (layer) {
         return layer.feature.properties.attributes.title + ":" + layer.feature.properties.attributes.description;

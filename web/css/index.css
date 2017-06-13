@@ -60,8 +60,8 @@ html, body, .wrapper {
 }
 
 #button_zip {
+    margin-left: 120px;
     text-align: center;
-
 }
 
 .bs-docs-section h2 {
@@ -111,6 +111,7 @@ html, body, .wrapper {
     }
 
     #button_zip {
+        margin-left: 8.33333333%;
         float: right;
         margin-right: 24%;
     }
@@ -127,6 +128,7 @@ html, body, .wrapper {
     }
 
     #button_zip {
+        margin-left: 0;
         float: right;
         margin-right: auto;
     }
@@ -148,6 +150,7 @@ html, body, .wrapper {
 
 @media screen and (max-width: 768px) {
     #button_zip {
+        margin-left: 8.33333333%;
         float: right;
         margin: auto;
     }
@@ -160,6 +163,7 @@ html, body, .wrapper {
 
 @media screen and (max-width: 762px) {
     #button_zip {
+        margin-left: 8.33333333%;
         float: none;
         margin: auto;
     }

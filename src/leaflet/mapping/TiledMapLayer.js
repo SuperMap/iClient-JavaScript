@@ -17,7 +17,7 @@ var TiledMapLayer = L.TileLayer.extend({
         cacheEnabled: null,
         layersID: null, //如果有layersID，则是在使用专题图
         crs: null,
-        attribution: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
     },
 
     initialize: function (url, options) {
@@ -31,6 +31,7 @@ var TiledMapLayer = L.TileLayer.extend({
     onAdd: function (map) {
         this._crs = this.options.crs || map.options.crs;
         L.TileLayer.prototype.onAdd.call(this, map);
+
     },
 
     getTileUrl: function (coords) {

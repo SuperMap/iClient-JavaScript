@@ -7,14 +7,18 @@ try {
     echarts = {};
 }
 var EchartsMapLayer = L.Layer.extend({
+    options: {
+        attribution: '© 2017 百度 ECharts with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+    },
     includes: [],
     _echartsContainer: null,
     _map: null,
     _ec: null,
-    _option: null,
+    _ecOption: null,
 
-    initialize: function (option) {
-        this._option = option;
+    initialize: function (echartsOptions,options) {
+        this._ecOption = echartsOptions;
+        L.Util.setOptions(this, options);
     },
 
     onAdd: function (map) {
@@ -66,7 +70,7 @@ var EchartsMapLayer = L.Layer.extend({
         this._echartsContainer.style.visibility = "visible";
     },
     _redraw: function () {
-        var lastOption = this._ec && this._ec.getOption() ? this._ec.getOption() : this._option;
+        var lastOption = this._ec && this._ec.getOption() ? this._ec.getOption() : this._ecOption;
         this._resetCanvasPosition();
         this._echartsContainer.innerHTML = '';
         this.initECharts();
@@ -169,8 +173,8 @@ Geo.prototype = {
     }
 };
 
-L.echartsMapLayer = function (options, echartsOptions) {
-    return new EchartsMapLayer(options, echartsOptions);
+L.echartsMapLayer = function (echartsOptions,options) {
+    return new EchartsMapLayer(echartsOptions,options);
 };
 module.exports = EchartsMapLayer;
 

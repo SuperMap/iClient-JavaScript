@@ -6,7 +6,9 @@ var L = require("leaflet");
 var MapVRenderer = require("./mapv/MapVRenderer");
 var MapVLayer = L.Layer.extend({
 
-    options: {},
+    options: {
+        attribution: '© 2017 百度 MapV with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+    },
 
     initialize: function (dataSet, mapVOptions, options) {
         options = options || {};

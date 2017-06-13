@@ -9,6 +9,7 @@ L.TileLayer.WMTS = L.TileLayer.extend({
         tileSize: 256,
         matrixIds: null,
         layer: '',
+        attribution: 'with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
     },
     //todo 自动获取Capabilities
     initialize: function (url, options) { // (String, Object)
