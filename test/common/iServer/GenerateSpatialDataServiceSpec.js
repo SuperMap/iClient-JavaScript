@@ -74,7 +74,7 @@ describe('testGenerateSpatialDataService_processAsync',function(){
                 generateSpatialDataParameters.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 
     //点事件表数据集动态分段,设置deleteExistResultDataset=false，并且设置一个已存在的数据集名称
@@ -117,7 +117,7 @@ describe('testGenerateSpatialDataService_processAsync',function(){
                 generateSpatialDataParameters.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 
     //线事件表数据集动态分段,并设置期望返回记录数2
@@ -163,7 +163,7 @@ describe('testGenerateSpatialDataService_processAsync',function(){
                 generateSpatialDataParameters.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 
     //线事件表数据集动态分段,设置deleteExistResultDataset=false，并且设置一个已存在的数据集名称
@@ -206,7 +206,7 @@ describe('testGenerateSpatialDataService_processAsync',function(){
                 generateSpatialDataParameters.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 });
 

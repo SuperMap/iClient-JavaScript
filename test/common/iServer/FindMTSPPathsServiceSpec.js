@@ -38,7 +38,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
         var centerArray = [new SuperMap.Geometry.Point(3000, -3000), new SuperMap.Geometry.Point(3500, -2000)],
             nodeArray = [new SuperMap.Geometry.Point(5600, -3600),
                 new SuperMap.Geometry.Point(5000, -4600),
-                new SuperMap.Geometry.Point(6000, -4600)
+                new SuperMap.Geometry.Point(1000, -4600)
             ];
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -91,7 +91,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 6000)
+        }, 1000)
     });
 
     //测试hasLeastTotalCost为true
@@ -99,7 +99,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
         var centerArray = [new SuperMap.Geometry.Point(3000, -3000), new SuperMap.Geometry.Point(3500, -2000)];
         var nodeArray = [new SuperMap.Geometry.Point(5600, -3600),
             new SuperMap.Geometry.Point(5000, -4600),
-            new SuperMap.Geometry.Point(6000, -4600)
+            new SuperMap.Geometry.Point(1000, -4600)
         ];
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -152,7 +152,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 6000);
+        }, 1000);
     });
 
     //测试传入参数为id
@@ -211,7 +211,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 6000)
+        }, 1000)
     });
 
     //测试传入参数为id，但是传入为空
@@ -219,7 +219,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
         var centerArray = [new SuperMap.Geometry.Point(3000, -3000), new SuperMap.Geometry.Point(3500, -2000)];
         var nodeArray = [new SuperMap.Geometry.Point(5600, -3600),
             new SuperMap.Geometry.Point(5000, -4600),
-            new SuperMap.Geometry.Point(6000, -4600)
+            new SuperMap.Geometry.Point(1000, -4600)
         ];
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -262,7 +262,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 6000)
+        }, 1000)
     });
 
     //参数错误
@@ -270,7 +270,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
         var centerArray = [new SuperMap.Geometry.Point(3000, -3000), new SuperMap.Geometry.Point(3500, -2000)];
         var nodeArray = [new SuperMap.Geometry.Point(5600, -3600),
             new SuperMap.Geometry.Point(5000, -4600),
-            new SuperMap.Geometry.Point(6000, -4600)
+            new SuperMap.Geometry.Point(1000, -4600)
         ];
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -313,7 +313,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 6000)
+        }, 1000)
     });
 
     //参数为空
@@ -334,7 +334,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 findMTSPPathsService.destroy();
                 done();
             }
-        }, 6000)
+        }, 1000)
     });
 
     //错误的isAnalyzeById
@@ -342,7 +342,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
         var centerArray = [new SuperMap.Geometry.Point(3000, -3000), new SuperMap.Geometry.Point(3500, -2000)],
             nodeArray = [new SuperMap.Geometry.Point(5600, -3600),
                 new SuperMap.Geometry.Point(5000, -4600),
-                new SuperMap.Geometry.Point(6000, -4600)
+                new SuperMap.Geometry.Point(1000, -4600)
             ];
         var resultSetting = new SuperMap.TransportationAnalystResultSetting({
             returnEdgeFeatures: true,
@@ -384,7 +384,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 6000)
+        }, 1000)
     })
 });
 

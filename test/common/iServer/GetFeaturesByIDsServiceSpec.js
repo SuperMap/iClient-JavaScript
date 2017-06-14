@@ -63,7 +63,7 @@ describe('testGetFeaturesByIDsService_processAsync',function(){
                 getFeaturesByIDsParameters.destroy();
                 done();
             }
-        },6000);
+        },1000);
     });
 
     it('returnContent',function(done){
@@ -95,7 +95,7 @@ describe('testGetFeaturesByIDsService_processAsync',function(){
                 getFeaturesByIDsParameters.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 
     //测试没有传入参数时的情况
@@ -123,7 +123,7 @@ describe('testGetFeaturesByIDsService_processAsync',function(){
                 getFeaturesByIDsParameters.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 
     //查询目标图层不存在情况
@@ -155,7 +155,7 @@ describe('testGetFeaturesByIDsService_processAsync',function(){
                 getFeaturesByIDsParameters.destroy();
                 done();
             }
-        },6000)
+        },1000)
     })
 });
 

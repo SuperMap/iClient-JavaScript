@@ -93,7 +93,7 @@ describe('testQueryByGeometryService_processAsync',function(){
                 queryByGeometryParameters.destroy();
                 done();
             }
-        },6000);
+        },1000);
     });
 
     it('returnContent',function(done){
@@ -140,7 +140,7 @@ describe('testQueryByGeometryService_processAsync',function(){
                 queryByGeometryParameters.destroy();
                 done();
             }
-        },6000);
+        },1000);
     });
 
     //查询参数为空
@@ -180,7 +180,7 @@ describe('testQueryByGeometryService_processAsync',function(){
                 queryByGeometryParameters.destroy();
                 done();
             }
-        },6000);
+        },1000);
     })
 });
 

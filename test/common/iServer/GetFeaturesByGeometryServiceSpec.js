@@ -65,7 +65,7 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 getFeaturesByGeometryParameters.destroy();
                 done();
             }
-        },6000);
+        },1000);
     });
 
     //直接返回结果情况
@@ -98,7 +98,7 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 getFeaturesByGeometryParameters.destroy();
                 done();
             }
-        },6000);
+        },1000);
     });
 
     //具有attributeFilter直接返回结果情况
@@ -131,7 +131,7 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 getFeaturesByGeometryParameters.destroy();
                 done();
             }
-        },6000);
+        },1000);
     });
 
     //测试没有传入参数时的情况
@@ -162,7 +162,7 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 getFeaturesByGeometryParameters.destroy();
                 done();
             }
-        },6000);
+        },1000);
     });
 
     //查询目标图层不存在情况
@@ -195,6 +195,6 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 getFeaturesByGeometryParameters.destroy();
                 done();
             }
-        },6000);
+        },1000);
     });
 });

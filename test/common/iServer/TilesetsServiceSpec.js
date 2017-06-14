@@ -70,6 +70,6 @@ describe('testTilesetsService_processAsync',function(){
                 tilesetsService.destroy();
                 done();
             }
-        }, 6000);
+        }, 1000);
     });
 });

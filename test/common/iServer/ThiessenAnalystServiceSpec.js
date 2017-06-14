@@ -62,7 +62,7 @@ describe('testThiessenAnalystService_processAsync',function(){
                 dsThiessenAnalystParameters.destroy();
                 done();
             }
-        }, 8000);
+        }, 1500);
     });
 
     //成功事件 AnalyzeByGeometry
@@ -102,7 +102,7 @@ describe('testThiessenAnalystService_processAsync',function(){
                 geoThiessenAnalystParameters.destroy();
                 done();
             }
-        }, 8000);
+        }, 1500);
     });
 
     //测试失败事件 AnalyzeByGeometry
@@ -128,7 +128,7 @@ describe('testThiessenAnalystService_processAsync',function(){
                 geoThiessenAnalystParameters.destroy();
                 done();
             }
-        }, 8000);
+        }, 1500);
     });
 
     //测试失败事件 AnalyzeByDataset
@@ -156,7 +156,7 @@ describe('testThiessenAnalystService_processAsync',function(){
                 dsThiessenAnalystParameters.destroy();
                 done();
             }
-        }, 8000);
+        }, 1500);
     })
 });
 

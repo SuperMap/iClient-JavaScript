@@ -89,7 +89,7 @@ describe('testRouteCalculateMeasureService_processAsync',function(){
                 parameters.destroy();
                 done();
             }
-        }, 6000);
+        }, 1000);
     });
 });
 

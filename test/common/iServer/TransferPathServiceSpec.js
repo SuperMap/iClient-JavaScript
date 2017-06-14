@@ -42,7 +42,7 @@ describe('testTransferPathService_processAsync',function(){
               service.destroy();
               done();
           }
-        },8000)
+        },1500)
     });
 
     it('success',function(done){
@@ -76,6 +76,6 @@ describe('testTransferPathService_processAsync',function(){
                 params.destroy();
                 done();
             }
-        },8000);
+        },1500);
     })
 });

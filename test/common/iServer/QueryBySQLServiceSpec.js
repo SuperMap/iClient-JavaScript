@@ -84,7 +84,7 @@ describe('testQueryBySQLService_processAsync',function(){
                 queryBySQLParameters.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 
     //直接返回查询结果
@@ -134,7 +134,7 @@ describe('testQueryBySQLService_processAsync',function(){
                 queryBySQLParameters.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 
     //返回bounds信息
@@ -176,7 +176,7 @@ describe('testQueryBySQLService_processAsync',function(){
                 queryBySQLParameters.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 
     it('noParams',function(done){
@@ -207,7 +207,7 @@ describe('testQueryBySQLService_processAsync',function(){
                 queryBySQLParameters.destroy();
                 done();
             }
-        },6000);
+        },1000);
     });
 
     //查询目标图层不存在情况
@@ -245,6 +245,6 @@ describe('testQueryBySQLService_processAsync',function(){
                 queryBySQLParameters.destroy();
                 done();
             }
-        },6000);
+        },1000);
     })
 });

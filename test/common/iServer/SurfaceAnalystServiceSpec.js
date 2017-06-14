@@ -75,7 +75,7 @@ describe('testSurfaceAnalystService_processAsync', function () {
      surfaceAnalystService.destroy();
      done();
      }
-     }, 20000);
+     }, 2000);
      });*/
 
     //点数据集提取等值面
@@ -114,7 +114,7 @@ describe('testSurfaceAnalystService_processAsync', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 20000);
+        }, 2000);
     });
 
     //对象提取等值线
@@ -166,7 +166,7 @@ describe('testSurfaceAnalystService_processAsync', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 20000);
+        }, 2000);
     });
 
     //对象提取等值面
@@ -218,7 +218,7 @@ describe('testSurfaceAnalystService_processAsync', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 20000);
+        }, 2000);
     });
 
     /*  暂时没法测
@@ -237,7 +237,7 @@ describe('testSurfaceAnalystService_processAsync', function () {
      surfaceAnalystService.destroy();
      done();
      }
-     }, 20000);
+     }, 2000);
      });*/
 
     //失败
@@ -273,7 +273,7 @@ describe('testSurfaceAnalystService_processAsync', function () {
                 params.destroy();
                 done();
             }
-        }, 20000);
+        }, 2000);
     })
 });
 

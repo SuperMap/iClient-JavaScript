@@ -82,7 +82,7 @@ describe('testFindServiceAreasService_processAsync',function(){
                 findServiceAreasService.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 
     //设置返回信息的有效性
@@ -138,7 +138,7 @@ describe('testFindServiceAreasService_processAsync',function(){
                 parameter.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 
     //id为空
@@ -188,7 +188,7 @@ describe('testFindServiceAreasService_processAsync',function(){
                 parameter.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 
     //参数错误
@@ -238,7 +238,7 @@ describe('testFindServiceAreasService_processAsync',function(){
                 parameter.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 
     //参数为空
@@ -260,7 +260,7 @@ describe('testFindServiceAreasService_processAsync',function(){
                 findServiceAreasService.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 
     //AnalyzeById_null
@@ -310,6 +310,6 @@ describe('testFindServiceAreasService_processAsync',function(){
                 parameter.destroy();
                 done();
             }
-        },6000)
+        },1000)
     })
 });

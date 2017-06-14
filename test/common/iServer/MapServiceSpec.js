@@ -73,7 +73,7 @@ describe('testMapService_processAsync',function(){
                 getMapService.destroy();
                 done();
             }
-        },6000);
+        },1000);
     });
 
     it('fail',function(done){
@@ -94,7 +94,7 @@ describe('testMapService_processAsync',function(){
                 getMapService.destroy();
                 done();
             }
-        },6000);
+        },1000);
     })
 });
 

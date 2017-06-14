@@ -57,7 +57,7 @@ describe('testGetLayersInfoService_processAsync',function(){
                 getLayersInfoService.destroy();
                 done();
             }
-        },6000);
+        },1000);
     });
 
     it('image',function(done){
@@ -78,7 +78,7 @@ describe('testGetLayersInfoService_processAsync',function(){
                 getLayersInfoService.destroy();
                 done();
             }
-        },6000);
+        },1000);
     });
 
     it('grid',function(done){
@@ -99,6 +99,6 @@ describe('testGetLayersInfoService_processAsync',function(){
                 getLayersInfoService.destroy();
                 done();
             }
-        },6000);
+        },1000);
     });
 });

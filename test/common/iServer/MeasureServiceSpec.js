@@ -72,7 +72,7 @@ describe('testMeasureService_processAsync', function () {
                 measureParameters.destroy();
                 done();
             }
-        }, 8000);
+        }, 1500);
     });
 
     //反向测试用例，输入点进行距离量算
@@ -104,7 +104,7 @@ describe('testMeasureService_processAsync', function () {
                 measureParameters.destroy();
                 done();
             }
-        }, 8000);
+        }, 1500);
     });
 
     //反向测试用例，输入距离单位枚举值错误
@@ -138,7 +138,7 @@ describe('testMeasureService_processAsync', function () {
                 measureParameters.destroy();
                 done();
             }
-        }, 8000);
+        }, 1500);
     });
 
     //area
@@ -171,7 +171,7 @@ describe('testMeasureService_processAsync', function () {
                 measureParameters.destroy();
                 done();
             }
-        }, 8000);
+        }, 1500);
     });
 
     //反向测试用例，传入的点无法构成面
@@ -203,7 +203,7 @@ describe('testMeasureService_processAsync', function () {
                 measureParameters.destroy();
                 done();
             }
-        }, 8000);
+        }, 1500);
     });
 
     //反向测试用例，传入线进行面积量算
@@ -232,7 +232,7 @@ describe('testMeasureService_processAsync', function () {
                 measureParameters.destroy();
                 done();
             }
-        }, 8000);
+        }, 1500);
     });
 
     //反向测试用例，地图名错误，无法调用回调函数
@@ -263,7 +263,7 @@ describe('testMeasureService_processAsync', function () {
                 measureParameters.destroy();
                 done();
             }
-        }, 8000);
+        }, 1500);
     });
 
 
@@ -290,7 +290,7 @@ describe('testMeasureService_processAsync', function () {
      measureService.destroy();
      done();
      }
-     },8000);
+     },1500);
      });
 
      asyncTest("TestMeasureService_serverGeometry_null",function(){
@@ -309,7 +309,7 @@ describe('testMeasureService_processAsync', function () {
      ok(false,"exception occcurs,message is:"+exception.message)
      start();
      }
-     },8000);
+     },1500);
      });
      */
 });

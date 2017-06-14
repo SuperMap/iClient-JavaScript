@@ -80,7 +80,7 @@ describe('testQueryByBoundsService_processAsync',function(){
                 queryByDistanceParameters.destroy();
                 done();
             }
-        }, 6000);
+        }, 1000);
     });
 
     it('pass',function(done){
@@ -119,7 +119,7 @@ describe('testQueryByBoundsService_processAsync',function(){
                 queryByDistanceParameters.destroy();
                 done();
             }
-        }, 6000);
+        }, 1000);
     });
 
     it('fail',function(done){
@@ -158,7 +158,7 @@ describe('testQueryByBoundsService_processAsync',function(){
                 queryByDistanceParameters.destroy();
                 done();
             }
-        }, 6000);
+        }, 1000);
 
     })
 });

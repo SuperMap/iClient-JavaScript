@@ -103,7 +103,7 @@ describe('testFindLocationService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 6000);
+        }, 1000);
     });
 
     //isFromCenter为true的情况
@@ -181,7 +181,7 @@ describe('testFindLocationService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 6000)
+        }, 1000)
     });
 
     //参数错误
@@ -233,7 +233,7 @@ describe('testFindLocationService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 6000)
+        }, 1000)
     });
 
     //参数为空

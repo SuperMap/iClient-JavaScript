@@ -59,7 +59,7 @@ describe('testGetFieldsService_processAsync',function(){
                 getFieldsService.destroy();
                 done();
             }
-        },6000)
+        },1000)
     });
 
     //错误数据集，查询错误
@@ -83,6 +83,6 @@ describe('testGetFieldsService_processAsync',function(){
                 getFieldsService.destroy();
                 done();
             }
-        },6000);
+        },1000);
     });
 });

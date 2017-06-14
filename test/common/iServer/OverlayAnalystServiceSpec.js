@@ -61,7 +61,7 @@ describe('testOverlayAnalystService_processAsync', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 20000)
+        }, 2000)
     });
 
     it('AnalyzeByDatasets_failed', function (done) {
@@ -88,7 +88,7 @@ describe('testOverlayAnalystService_processAsync', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 20000)
+        }, 2000)
     });
 
     it('AnalyzeByDatasets_Geometry', function (done) {
@@ -126,6 +126,6 @@ describe('testOverlayAnalystService_processAsync', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 20000)
+        }, 2000)
     });
 });
