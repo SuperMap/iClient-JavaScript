@@ -26,6 +26,13 @@ var TileVectorLayer = L.VectorGrid.extend({
         serverCartoCSSStyle: true,
 
         returnAttributes: false,
+
+        /*各图层扩展的像素值。
+         *例如：
+         * 0_15:0_5,1_10：表示顶级0图层的0、1子图层扩展的像素分别为5、10像素；顶级0图层下，除0、1图层外的子图层的扩展像素都为15像素。
+         * 0:0_5,1_10：表示顶级0图层的0、1子图层扩展的像素分别为5、10像素；顶级0图层下，其他除0、1图层外的子图层的扩展像素为根据该图层默认样式计算得出的默认值。
+         */
+        expands: null,
         cacheEnabled: false,
         //瓦片模板，如果设置了此参数，则按此模板出图，url无效（对接第三方瓦片）
         tileTemplate: null,
@@ -324,6 +331,10 @@ var TileVectorLayer = L.VectorGrid.extend({
             }
             var layerNamesString = '[' + options.layerNames.join(',') + ']';
             params.push("layerNames=" + layerNamesString);
+        }
+
+        if (options.expands) {
+            params.push("expands=" + options.expands);
         }
 
         params.push("returnAttributes=" + options.returnAttributes);

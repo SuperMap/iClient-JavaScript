@@ -14923,7 +14923,7 @@ SuperMap.TimeControlBase = SuperMap.Class({
     /**
      * Property: speed
      * {Number} 步长，必须为非负数，默认为1
-     * （表示前后两次渲染的数据之间的间隔为1），设置越大时间跳跃越快。
+     * （表示前后两次渲染的数据之间的间隔为1）
      */
     speed: 1,
 

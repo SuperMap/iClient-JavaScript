@@ -29,7 +29,7 @@ var VectorTileJSON = L.Class.extend({
         var recordsets = records.recordsets;
         // 如果iServer支持了tileFeature geojson表述则不需要此步骤
         recordsets = scope._convertToGeoJSON(recordsets);
-        if (!recordsets || recordsets.length < 1) {
+        if (!recordsets) {
             return null;
         }
 

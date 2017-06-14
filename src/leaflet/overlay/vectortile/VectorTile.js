@@ -18,6 +18,7 @@ var VectorTile = L.Class.extend({
         this.coords = options.coords;
         this.renderer = options.renderer;
         this.done = done;
+        this.layer._textVectorTiles = {};
     },
 
     renderTile: function () {
@@ -51,12 +52,9 @@ var VectorTile = L.Class.extend({
         for (var k = 0; k < tileFeature.length; k++) {
             var layer = tileFeature[k], layerName = layer.layerName;
             tileLayer._dataLayerNames[layerName] = true;
-
             var pxPerExtent = me.tileSize.divideBy(layer.extent);
-
-            var type = (layer.features[0]) ? layer.features[0].type : 1;
-
             var layerStyleInfo = tileLayer.getLayerStyleInfo(layer.layerName);
+
             for (var i = 0; i < layer.features.length; i++) {
                 var feat = layer.features[i];
                 if (!feat) {
@@ -70,18 +68,7 @@ var VectorTile = L.Class.extend({
                     feat.type = L.supermap.VectorFeatureType.TEXT;
                 }
 
-                var styleOptions = tileLayer.getVectorTileLayerStyle(coords, feat)
-                    || me._defaultStyle(type);
-
-                //根据id和layerName识别唯一要素
-                var id = feat.id,
-                    styleKey = tileLayer._getFeatureKey(id, layerName),
-                    styleOverride = tileLayer._overriddenStyles[styleKey];
-
-                styleOptions = styleOverride ? styleOverride : styleOptions;
-                styleOptions = (styleOptions instanceof Function) ? styleOptions(feat.properties, coords.z) : styleOptions;
-                styleOptions = !(styleOptions instanceof Array) ? [styleOptions] : styleOptions;
-
+                var styleOptions = me._getStyleOptions(coords, feat, layerName, me);
                 if (!styleOptions.length) {
                     continue;
                 }
@@ -89,6 +76,12 @@ var VectorTile = L.Class.extend({
                 var featureLayer = me._createFeatureLayer(feat, pxPerExtent);
 
                 if (!featureLayer) {
+                    continue;
+                }
+
+                // 保存文本图层单独绘制，避免被压盖
+                var param = {scope: me, coords: coords, renderer: renderer};
+                if (me._extractTextLayer(feat, featureLayer, styleOptions, param)) {
                     continue;
                 }
 
@@ -101,7 +94,8 @@ var VectorTile = L.Class.extend({
                 if (tileLayer.options.interactive) {
                     featureLayer.makeInteractive();
                 }
-                var featureKey = tileLayer._getFeatureKey(id, layerName);
+
+                var featureKey = tileLayer._getFeatureKey(feat.id, layerName);
                 renderer._features[featureKey] = {
                     layerName: layerName,
                     feature: featureLayer
@@ -113,7 +107,57 @@ var VectorTile = L.Class.extend({
             renderer.addTo(tileLayer._map);
         }
 
-        L.Util.requestAnimFrame(me.done.bind(coords, null, null));
+        L.Util.requestAnimFrame(me.done.bind(coords, null, me.layer._vectorTiles[me.layer._tileCoordsToKey(coords)]));
+    },
+
+    // 保存文本图层单独绘制，避免被压盖
+    _extractTextLayer: function (feat, featureLayer, style, param) {
+
+        if (feat.type !== L.supermap.VectorFeatureType.TEXT) {
+            return false;
+        }
+
+        var me = param.scope,
+            coords = param.coords,
+            tileLayer = me.layer,
+            key = tileLayer._tileCoordsToKey(coords);
+
+        var id = feat.id,
+            layerName = feat.layerName;
+
+        var textTileLayers = tileLayer._textVectorTiles[key];
+        if (!textTileLayers) {
+            textTileLayers = {
+                layers: {},
+                coords: coords,
+                renderer: param.renderer
+            };
+        }
+
+        // 不同瓦片可能请求到同一个文本图层，为避免重复绘制，只保存绘制最后一个
+        textTileLayers.layers[id] = {
+            layer: featureLayer,
+            style: style,
+            layerName: layerName
+        };
+        tileLayer._textVectorTiles[key] = textTileLayers;
+        return true;
+    },
+
+    _getStyleOptions: function (coords, feature, layerName, scope) {
+        var me = scope;
+        var tileLayer = me.layer;
+        var styleOptions = tileLayer.getVectorTileLayerStyle(coords, feature) || me._defaultStyle(feature.type);
+
+        //根据id和layerName识别唯一要素
+        var id = feature.id,
+            styleKey = tileLayer._getFeatureKey(id, layerName),
+            styleOverride = tileLayer._overriddenStyles[styleKey];
+
+        styleOptions = styleOverride ? styleOverride : styleOptions;
+        styleOptions = (styleOptions instanceof Function) ? styleOptions(feat.properties, coords.z) : styleOptions;
+        styleOptions = !(styleOptions instanceof Array) ? [styleOptions] : styleOptions;
+        return styleOptions;
     },
 
     _createFeatureLayer: function (feat, pxPerExtent) {

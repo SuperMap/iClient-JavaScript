@@ -7,11 +7,11 @@ var L = require("leaflet");
 L.supermap.DefaultStyle = {
     "TEXT": {
         fontSize: "14px",
-        fontFamily: "sans-serif",
+        fontFamily: "Arial Unicode MS Regular,Microsoft YaHei",
         textAlign: "left",
 
         color: "rgba(255,255,255,0)",
-        fillColor: "rgba(0,0,0,1)",
+        fillColor: "rgba(80,80,80,1)",
         weight: 1,
         globalAlpha: 1,
     },

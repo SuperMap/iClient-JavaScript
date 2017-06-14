@@ -6,22 +6,27 @@ L.TextSymbolizer = L.Path.extend({
     includes: L.Symbolizer.prototype,
 
     options: {
-        color: 'black',
+        color: 'white',
         fillColor: 'black',
         fill: true,
-        fillOpacity: 1.0,
-        weight: 0.2,
+        fillOpacity: 1,
+        opacity: 0.6,
+        weight: 1,
         rotation: 0.0,
         stroke: true,
-        fontFamily: 'Microsoft Yahei',
-        fontSize: 12,
-        fontWeight: 'normal',
-        textAlign: 'center'
+        fontFamily: "Arial Unicode MS Regular",
+        fontSize: 14,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        offsetX: 1,
+        offsetY: 1
     },
 
     initialize: function (feature, pxPerExtent) {
         L.Symbolizer.prototype.initialize.call(this, feature);
         this._makeFeatureParts(feature, pxPerExtent);
+        this.options.offsetX = pxPerExtent || 1;
+        this.options.offsetY = pxPerExtent || 1;
     },
 
     render: function (renderer, style) {
@@ -35,8 +40,10 @@ L.TextSymbolizer = L.Path.extend({
             this._text = (attributes && this.properties.textField) ?
                 attributes[this.properties.textField] || "" : "";
         }
-        L.Symbolizer.prototype.render.call(this, renderer, style);
-        L.Util.setOptions(this, style);
+        options = this.options;
+        this._pxBounds = L.bounds(this._point, this._point);
+        L.Symbolizer.prototype.render.apply(this, [renderer, style]);
+        this.options = L.Util.extend(options, style);
         this._updatePath();
     },
 
@@ -79,16 +86,20 @@ L.Canvas.Renderer.include({
     _getTextWidth: function (layer) {
         return this._ctx.measureText(layer._text).width;
     },
-
     _updateText: function (layer) {
         if (!this._drawing || layer._empty()) {
             return;
         }
-
+        container = this.getContainer();
+        var size = this._map.getSize();
+        container.width = size.x;
+        container.height = size.y;
+        container.style.width = size.x + 'px';
+        container.style.height = size.y + 'px';
         var ctx = this._ctx,
             options = layer.options,
-            offsetX = options.offsetX || 0,
-            offsetY = options.offsetY || 0,
+            offsetX = options.offsetX || 1,
+            offsetY = options.offsetY || 1,
             p = layer._point.subtract(L.point(offsetX, offsetY));
         if (!options.fill) {
             return;
@@ -96,28 +107,24 @@ L.Canvas.Renderer.include({
 
         this._drawnLayers[layer._leaflet_id] = layer;
 
-        ctx.translate(p.x, p.y);
-        ctx.rotate(options.rotation);
-        ctx.fillStyle = options.fillColor;
+        ctx.fillRect(0, 0, size.x, size.y);
         ctx.font = [
-            "normal",
-            "normal",
-            options.fontWeight ? options.fontWeight : "normal",
-            options.fontSize ? options.fontSize : "1em",
-            options.fontFamily ? options.fontFamily : "Microsoft Yahei"
+            options.fontWeight ? options.fontWeight : "bold",
+            options.fontSize ? options.fontSize : "14px",
+            options.fontFamily ? options.fontFamily : "Arial Unicode MS Regular,Microsoft Yahei"
         ].join(" ");
         ctx.textAlign = options.textAlign;
-        ctx.lineWidth = options.weight / 10;
-        ctx.fillText(layer._text, 0, 0);
+        ctx.lineWidth = options.weight;
+        ctx.fillStyle = options.fillColor;
+        ctx.fillText(layer._text, p.x, p.y);
         ctx.strokeStyle = options.color;
-        ctx.strokeText(layer._text, 0, 0);
-        ctx.rotate(-options.rotation);
-        ctx.translate(-p.x, -p.y);
+        ctx.strokeText(layer._text, p.x, p.y);
+        ctx.rotate(options.rotation);
     }
 });
 L.SVG.Renderer.include({
     _getTextWidth: function (layer) {
-        return layer._path.getComputedTextLength();
+        return layer._path.getComputedTextLength() || 0;
     },
 
     _initPath: function (layer) {
@@ -146,8 +153,8 @@ L.SVG.Renderer.include({
     _updateText: function (layer) {
         var path = layer._path,
             options = layer.options,
-            offsetX = options.offsetX || 0,
-            offsetY = options.offsetY || 0,
+            offsetX = options.offsetX || 1,
+            offsetY = options.offsetY || 1,
             p = layer._point.subtract(L.point(offsetX, offsetY));
         path.setAttribute('x', p.x);
         path.setAttribute('y', p.y);
@@ -156,11 +163,14 @@ L.SVG.Renderer.include({
         path.setAttribute('text-anchor', options.textAlign === 'center' ? 'middle' : options.textAlign);
         path.style.fontSize = options.fontSize;
         path.style.fontFamily = options.fontFamily;
+        path.style.fontWeight = options.fontWeight || "bold";
         path.style.glyphOrientationVertical = options.rotation;
         if (options.stroke) {
             path.setAttribute('stroke', options.color);
+            path.setAttribute('stroke-linecap', 'round');
+            path.setAttribute('stroke-linejoin', 'round');
             path.setAttribute('stroke-opacity', options.opacity);
-            path.setAttribute('stroke-width', options.weight / 10);
+            path.setAttribute('stroke-width', options.weight > 1 ? options.weight / 10 : options.weight);
         } else {
             path.setAttribute('stroke', 'none');
         }
@@ -171,5 +181,7 @@ L.SVG.Renderer.include({
             path.setAttribute('fill', 'none');
         }
     }
+
+
 });
 module.exports = L.TextSymbolizer;

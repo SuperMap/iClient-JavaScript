@@ -10786,7 +10786,7 @@ L.supermap.CartoCSSToLeaflet = {
         }
         //兼容iportal示例的问题
         if (icon.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
-            icon=icon.replace("http://support.supermap.com.cn:8092/static/portal","http://support.supermap.com.cn:8092/apps/viewer/static");
+            icon = icon.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
         }
         return L.icon({
             iconUrl: icon,
@@ -10806,7 +10806,7 @@ L.supermap.CartoCSSToLeaflet = {
                 }
                 //兼容iportal示例的问题
                 if (pointStyle.externalGraphic.indexOf("http://support.supermap.com.cn:8092/static/portal") == 0) {
-                    pointStyle.externalGraphic=pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal","http://support.supermap.com.cn:8092/apps/viewer/static");
+                    pointStyle.externalGraphic = pointStyle.externalGraphic.replace("http://support.supermap.com.cn:8092/static/portal", "http://support.supermap.com.cn:8092/apps/viewer/static");
                 }
                 return L.icon({
                     iconUrl: pointStyle.externalGraphic,
@@ -10904,6 +10904,7 @@ L.supermap.CartoCSSToLeaflet = {
                         if (!value || value === "")continue;
                     } else if (fromServer && prop === 'iconUrl') {
                         value = this.mapUrl + '/tileFeature/symbols/' + value.replace(/(___)/gi, '@');
+                        value = value.replace(/(__0__0__)/gi, '__8__8__');
                         style["iconUrl"] = value;
                         continue;
                     }
@@ -13750,6 +13751,13 @@ var TileVectorLayer = L.VectorGrid.extend({
         serverCartoCSSStyle: true,
 
         returnAttributes: false,
+
+        /*各图层扩展的像素值。
+         *例如：
+         * 0_15:0_5,1_10：表示顶级0图层的0、1子图层扩展的像素分别为5、10像素；顶级0图层下，除0、1图层外的子图层的扩展像素都为15像素。
+         * 0:0_5,1_10：表示顶级0图层的0、1子图层扩展的像素分别为5、10像素；顶级0图层下，其他除0、1图层外的子图层的扩展像素为根据该图层默认样式计算得出的默认值。
+         */
+        expands: null,
         cacheEnabled: false,
         //瓦片模板，如果设置了此参数，则按此模板出图，url无效（对接第三方瓦片）
         tileTemplate: null,
@@ -14048,6 +14056,10 @@ var TileVectorLayer = L.VectorGrid.extend({
             }
             var layerNamesString = '[' + options.layerNames.join(',') + ']';
             params.push("layerNames=" + layerNamesString);
+        }
+
+        if (options.expands) {
+            params.push("expands=" + options.expands);
         }
 
         params.push("returnAttributes=" + options.returnAttributes);
@@ -48983,11 +48995,11 @@ var L = __webpack_require__(1);
 L.supermap.DefaultStyle = {
     "TEXT": {
         fontSize: "14px",
-        fontFamily: "sans-serif",
+        fontFamily: "Arial Unicode MS Regular,Microsoft YaHei",
         textAlign: "left",
 
         color: "rgba(255,255,255,0)",
-        fillColor: "rgba(0,0,0,1)",
+        fillColor: "rgba(80,80,80,1)",
         weight: 1,
         globalAlpha: 1,
     },
@@ -49936,22 +49948,27 @@ L.TextSymbolizer = L.Path.extend({
     includes: L.Symbolizer.prototype,
 
     options: {
-        color: 'black',
+        color: 'white',
         fillColor: 'black',
         fill: true,
-        fillOpacity: 1.0,
-        weight: 0.2,
+        fillOpacity: 1,
+        opacity: 0.6,
+        weight: 1,
         rotation: 0.0,
         stroke: true,
-        fontFamily: 'Microsoft Yahei',
-        fontSize: 12,
-        fontWeight: 'normal',
-        textAlign: 'center'
+        fontFamily: "Arial Unicode MS Regular",
+        fontSize: 14,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        offsetX: 1,
+        offsetY: 1
     },
 
     initialize: function (feature, pxPerExtent) {
         L.Symbolizer.prototype.initialize.call(this, feature);
         this._makeFeatureParts(feature, pxPerExtent);
+        this.options.offsetX = pxPerExtent || 1;
+        this.options.offsetY = pxPerExtent || 1;
     },
 
     render: function (renderer, style) {
@@ -49965,8 +49982,10 @@ L.TextSymbolizer = L.Path.extend({
             this._text = (attributes && this.properties.textField) ?
                 attributes[this.properties.textField] || "" : "";
         }
-        L.Symbolizer.prototype.render.call(this, renderer, style);
-        L.Util.setOptions(this, style);
+        options = this.options;
+        this._pxBounds = L.bounds(this._point, this._point);
+        L.Symbolizer.prototype.render.apply(this, [renderer, style]);
+        this.options = L.Util.extend(options, style);
         this._updatePath();
     },
 
@@ -50009,16 +50028,20 @@ L.Canvas.Renderer.include({
     _getTextWidth: function (layer) {
         return this._ctx.measureText(layer._text).width;
     },
-
     _updateText: function (layer) {
         if (!this._drawing || layer._empty()) {
             return;
         }
-
+        container = this.getContainer();
+        var size = this._map.getSize();
+        container.width = size.x;
+        container.height = size.y;
+        container.style.width = size.x + 'px';
+        container.style.height = size.y + 'px';
         var ctx = this._ctx,
             options = layer.options,
-            offsetX = options.offsetX || 0,
-            offsetY = options.offsetY || 0,
+            offsetX = options.offsetX || 1,
+            offsetY = options.offsetY || 1,
             p = layer._point.subtract(L.point(offsetX, offsetY));
         if (!options.fill) {
             return;
@@ -50026,28 +50049,24 @@ L.Canvas.Renderer.include({
 
         this._drawnLayers[layer._leaflet_id] = layer;
 
-        ctx.translate(p.x, p.y);
-        ctx.rotate(options.rotation);
-        ctx.fillStyle = options.fillColor;
+        ctx.fillRect(0, 0, size.x, size.y);
         ctx.font = [
-            "normal",
-            "normal",
-            options.fontWeight ? options.fontWeight : "normal",
-            options.fontSize ? options.fontSize : "1em",
-            options.fontFamily ? options.fontFamily : "Microsoft Yahei"
+            options.fontWeight ? options.fontWeight : "bold",
+            options.fontSize ? options.fontSize : "14px",
+            options.fontFamily ? options.fontFamily : "Arial Unicode MS Regular,Microsoft Yahei"
         ].join(" ");
         ctx.textAlign = options.textAlign;
-        ctx.lineWidth = options.weight / 10;
-        ctx.fillText(layer._text, 0, 0);
+        ctx.lineWidth = options.weight;
+        ctx.fillStyle = options.fillColor;
+        ctx.fillText(layer._text, p.x, p.y);
         ctx.strokeStyle = options.color;
-        ctx.strokeText(layer._text, 0, 0);
-        ctx.rotate(-options.rotation);
-        ctx.translate(-p.x, -p.y);
+        ctx.strokeText(layer._text, p.x, p.y);
+        ctx.rotate(options.rotation);
     }
 });
 L.SVG.Renderer.include({
     _getTextWidth: function (layer) {
-        return layer._path.getComputedTextLength();
+        return layer._path.getComputedTextLength() || 0;
     },
 
     _initPath: function (layer) {
@@ -50076,8 +50095,8 @@ L.SVG.Renderer.include({
     _updateText: function (layer) {
         var path = layer._path,
             options = layer.options,
-            offsetX = options.offsetX || 0,
-            offsetY = options.offsetY || 0,
+            offsetX = options.offsetX || 1,
+            offsetY = options.offsetY || 1,
             p = layer._point.subtract(L.point(offsetX, offsetY));
         path.setAttribute('x', p.x);
         path.setAttribute('y', p.y);
@@ -50086,11 +50105,14 @@ L.SVG.Renderer.include({
         path.setAttribute('text-anchor', options.textAlign === 'center' ? 'middle' : options.textAlign);
         path.style.fontSize = options.fontSize;
         path.style.fontFamily = options.fontFamily;
+        path.style.fontWeight = options.fontWeight || "bold";
         path.style.glyphOrientationVertical = options.rotation;
         if (options.stroke) {
             path.setAttribute('stroke', options.color);
+            path.setAttribute('stroke-linecap', 'round');
+            path.setAttribute('stroke-linejoin', 'round');
             path.setAttribute('stroke-opacity', options.opacity);
-            path.setAttribute('stroke-width', options.weight / 10);
+            path.setAttribute('stroke-width', options.weight > 1 ? options.weight / 10 : options.weight);
         } else {
             path.setAttribute('stroke', 'none');
         }
@@ -50101,6 +50123,8 @@ L.SVG.Renderer.include({
             path.setAttribute('fill', 'none');
         }
     }
+
+
 });
 module.exports = L.TextSymbolizer;
 
@@ -50122,24 +50146,27 @@ L.VectorGrid = L.GridLayer.extend({
     },
 
     initialize: function (options) {
-        L.Util.setOptions(this, options);
-        L.GridLayer.prototype.initialize.apply(this, arguments);
-        this._vectorTiles = {};
+        var me = this;
+        L.Util.setOptions(me, options);
+        L.GridLayer.prototype.initialize.call(me, options);
+        me._vectorTiles = {};
         //交互事件使用,键值为id_layerName
-        this._overriddenStyles = {};
-        this.vectorTileLayerStyles = this.options.vectorTileLayerStyles;
-        this.on('tileunload', function (e) {
-            var key = this._tileCoordsToKey(e.coords),
-                tile = this._vectorTiles[key];
+        me._overriddenStyles = {};
+        me.vectorTileLayerStyles = me.options.vectorTileLayerStyles;
+        me.on('tileunload', function (e) {
+            var key = me._tileCoordsToKey(e.coords),
+                tile = me._vectorTiles[key];
 
-            if (tile && this._map) {
-                tile.removeFrom(this._map);
+            if (tile && me._map) {
+                tile.removeFrom(me._map);
             }
-            delete this._vectorTiles[key];
-        }, this);
-
-        this._dataLayerNames = {};
+            delete me._vectorTiles[key];
+        }, me);
+        me.on('tileerror ',me._renderText, me);
+        me.on('load',me._renderText, me);
+        me._dataLayerNames = {};
     },
+
 
     createTile: function (coords, done) {
         var me = this;
@@ -50196,6 +50223,34 @@ L.VectorGrid = L.GridLayer.extend({
 
     getDataLayerNames: function () {
         return Object.keys(this._dataLayerNames);
+    },
+
+    _removeAllTiles: function () {
+        L.GridLayer.prototype._removeAllTiles.call(this);
+        this._textVectorTiles = {};
+    },
+
+
+    _renderText: function () {
+        var textVectorTiles = this._textVectorTiles;
+        for (var key in textVectorTiles) {
+            var textTiles = textVectorTiles[key];
+            var renderer = textTiles.renderer;
+
+            for (var layerId in textTiles.layers) {
+                var tile = textTiles.layers[layerId];
+                var styleOptions = tile.style,
+                    featureLayer = tile.layer;
+                for (var j = 0; j < styleOptions.length; j++) {
+                    featureLayer.render(renderer, styleOptions[j]);
+                    renderer._addPath(featureLayer);
+                }
+
+                if (this.options.interactive) {
+                    featureLayer.makeInteractive();
+                }
+            }
+        }
     },
 
     _getFeatureKey: function (id, layerName) {
@@ -50267,6 +50322,7 @@ var VectorTile = L.Class.extend({
         this.coords = options.coords;
         this.renderer = options.renderer;
         this.done = done;
+        this.layer._textVectorTiles = {};
     },
 
     renderTile: function () {
@@ -50300,12 +50356,9 @@ var VectorTile = L.Class.extend({
         for (var k = 0; k < tileFeature.length; k++) {
             var layer = tileFeature[k], layerName = layer.layerName;
             tileLayer._dataLayerNames[layerName] = true;
-
             var pxPerExtent = me.tileSize.divideBy(layer.extent);
-
-            var type = (layer.features[0]) ? layer.features[0].type : 1;
-
             var layerStyleInfo = tileLayer.getLayerStyleInfo(layer.layerName);
+
             for (var i = 0; i < layer.features.length; i++) {
                 var feat = layer.features[i];
                 if (!feat) {
@@ -50319,18 +50372,7 @@ var VectorTile = L.Class.extend({
                     feat.type = L.supermap.VectorFeatureType.TEXT;
                 }
 
-                var styleOptions = tileLayer.getVectorTileLayerStyle(coords, feat)
-                    || me._defaultStyle(type);
-
-                //根据id和layerName识别唯一要素
-                var id = feat.id,
-                    styleKey = tileLayer._getFeatureKey(id, layerName),
-                    styleOverride = tileLayer._overriddenStyles[styleKey];
-
-                styleOptions = styleOverride ? styleOverride : styleOptions;
-                styleOptions = (styleOptions instanceof Function) ? styleOptions(feat.properties, coords.z) : styleOptions;
-                styleOptions = !(styleOptions instanceof Array) ? [styleOptions] : styleOptions;
-
+                var styleOptions = me._getStyleOptions(coords, feat, layerName, me);
                 if (!styleOptions.length) {
                     continue;
                 }
@@ -50338,6 +50380,12 @@ var VectorTile = L.Class.extend({
                 var featureLayer = me._createFeatureLayer(feat, pxPerExtent);
 
                 if (!featureLayer) {
+                    continue;
+                }
+
+                // 保存文本图层单独绘制，避免被压盖
+                var param = {scope: me, coords: coords, renderer: renderer};
+                if (me._extractTextLayer(feat, featureLayer, styleOptions, param)) {
                     continue;
                 }
 
@@ -50350,7 +50398,8 @@ var VectorTile = L.Class.extend({
                 if (tileLayer.options.interactive) {
                     featureLayer.makeInteractive();
                 }
-                var featureKey = tileLayer._getFeatureKey(id, layerName);
+
+                var featureKey = tileLayer._getFeatureKey(feat.id, layerName);
                 renderer._features[featureKey] = {
                     layerName: layerName,
                     feature: featureLayer
@@ -50362,7 +50411,57 @@ var VectorTile = L.Class.extend({
             renderer.addTo(tileLayer._map);
         }
 
-        L.Util.requestAnimFrame(me.done.bind(coords, null, null));
+        L.Util.requestAnimFrame(me.done.bind(coords, null, me.layer._vectorTiles[me.layer._tileCoordsToKey(coords)]));
+    },
+
+    // 保存文本图层单独绘制，避免被压盖
+    _extractTextLayer: function (feat, featureLayer, style, param) {
+
+        if (feat.type !== L.supermap.VectorFeatureType.TEXT) {
+            return false;
+        }
+
+        var me = param.scope,
+            coords = param.coords,
+            tileLayer = me.layer,
+            key = tileLayer._tileCoordsToKey(coords);
+
+        var id = feat.id,
+            layerName = feat.layerName;
+
+        var textTileLayers = tileLayer._textVectorTiles[key];
+        if (!textTileLayers) {
+            textTileLayers = {
+                layers: {},
+                coords: coords,
+                renderer: param.renderer
+            };
+        }
+
+        // 不同瓦片可能请求到同一个文本图层，为避免重复绘制，只保存绘制最后一个
+        textTileLayers.layers[id] = {
+            layer: featureLayer,
+            style: style,
+            layerName: layerName
+        };
+        tileLayer._textVectorTiles[key] = textTileLayers;
+        return true;
+    },
+
+    _getStyleOptions: function (coords, feature, layerName, scope) {
+        var me = scope;
+        var tileLayer = me.layer;
+        var styleOptions = tileLayer.getVectorTileLayerStyle(coords, feature) || me._defaultStyle(feature.type);
+
+        //根据id和layerName识别唯一要素
+        var id = feature.id,
+            styleKey = tileLayer._getFeatureKey(id, layerName),
+            styleOverride = tileLayer._overriddenStyles[styleKey];
+
+        styleOptions = styleOverride ? styleOverride : styleOptions;
+        styleOptions = (styleOptions instanceof Function) ? styleOptions(feat.properties, coords.z) : styleOptions;
+        styleOptions = !(styleOptions instanceof Array) ? [styleOptions] : styleOptions;
+        return styleOptions;
     },
 
     _createFeatureLayer: function (feat, pxPerExtent) {
@@ -50473,7 +50572,7 @@ var VectorTileJSON = L.Class.extend({
         var recordsets = records.recordsets;
         // 如果iServer支持了tileFeature geojson表述则不需要此步骤
         recordsets = scope._convertToGeoJSON(recordsets);
-        if (!recordsets || recordsets.length < 1) {
+        if (!recordsets) {
             return null;
         }
 

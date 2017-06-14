@@ -12,24 +12,27 @@ L.VectorGrid = L.GridLayer.extend({
     },
 
     initialize: function (options) {
-        L.Util.setOptions(this, options);
-        L.GridLayer.prototype.initialize.apply(this, arguments);
-        this._vectorTiles = {};
+        var me = this;
+        L.Util.setOptions(me, options);
+        L.GridLayer.prototype.initialize.call(me, options);
+        me._vectorTiles = {};
         //交互事件使用,键值为id_layerName
-        this._overriddenStyles = {};
-        this.vectorTileLayerStyles = this.options.vectorTileLayerStyles;
-        this.on('tileunload', function (e) {
-            var key = this._tileCoordsToKey(e.coords),
-                tile = this._vectorTiles[key];
+        me._overriddenStyles = {};
+        me.vectorTileLayerStyles = me.options.vectorTileLayerStyles;
+        me.on('tileunload', function (e) {
+            var key = me._tileCoordsToKey(e.coords),
+                tile = me._vectorTiles[key];
 
-            if (tile && this._map) {
-                tile.removeFrom(this._map);
+            if (tile && me._map) {
+                tile.removeFrom(me._map);
             }
-            delete this._vectorTiles[key];
-        }, this);
-
-        this._dataLayerNames = {};
+            delete me._vectorTiles[key];
+        }, me);
+        me.on('tileerror ',me._renderText, me);
+        me.on('load',me._renderText, me);
+        me._dataLayerNames = {};
     },
+
 
     createTile: function (coords, done) {
         var me = this;
@@ -86,6 +89,34 @@ L.VectorGrid = L.GridLayer.extend({
 
     getDataLayerNames: function () {
         return Object.keys(this._dataLayerNames);
+    },
+
+    _removeAllTiles: function () {
+        L.GridLayer.prototype._removeAllTiles.call(this);
+        this._textVectorTiles = {};
+    },
+
+
+    _renderText: function () {
+        var textVectorTiles = this._textVectorTiles;
+        for (var key in textVectorTiles) {
+            var textTiles = textVectorTiles[key];
+            var renderer = textTiles.renderer;
+
+            for (var layerId in textTiles.layers) {
+                var tile = textTiles.layers[layerId];
+                var styleOptions = tile.style,
+                    featureLayer = tile.layer;
+                for (var j = 0; j < styleOptions.length; j++) {
+                    featureLayer.render(renderer, styleOptions[j]);
+                    renderer._addPath(featureLayer);
+                }
+
+                if (this.options.interactive) {
+                    featureLayer.makeInteractive();
+                }
+            }
+        }
     },
 
     _getFeatureKey: function (id, layerName) {
