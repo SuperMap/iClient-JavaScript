@@ -135,6 +135,7 @@
             $("<div class='panel-heading'><h5 class='panel-title text-center'>属性表</h5></div>").appendTo(this._div);
             var content = $("<div class='panel-body content'></div>").appendTo(this._div);
             content.css('fontSize', '14px');
+            handleMapEvent(this._div, this._map);
             return this._div;
         };
 
@@ -166,6 +167,7 @@
                 "<tr> <td class='legendItemHeader'>0.1  - 0.2</td> <td class='legendItemValue' style='background: #945305'></td> </tr>" +
                 "</table></div>"
             ).appendTo(this._div);
+            handleMapEvent(this._div, this._map);
             return this._div;
         };
         legendView.addTo(map);
@@ -181,6 +183,22 @@
         } else if (infoView) {
             infoView.remove();
         }
+    }
+
+    function handleMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        });
     }
 
 </script>

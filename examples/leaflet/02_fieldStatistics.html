@@ -41,6 +41,7 @@
         info.onAdd = function () {
             this._div = L.DomUtil.create('div', 'resultInfo');
             info.update();
+            handleMapEvent(this._div, this._map);
             return this._div;
         };
 
@@ -129,6 +130,22 @@
                 info.update(serviceResult.result);
             });
         }
+    }
+
+    function handleMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        });
     }
 </script>
 </body>

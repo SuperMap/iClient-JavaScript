@@ -6,22 +6,40 @@
 
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+    <style>
+        .editPane {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            width: 300px;
+            text-align: center;
+            background: #FFF;
+            z-index: 1000;
+            display: none;
+        }
+    </style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
-<div id="toolbar" style="height:44px; padding-top: 6px; text-align: right ">
-    <input type="button" class="btn btn-default" value="添加地物" onclick="addMarker()"/>
-    <input type="button" class="btn btn-default" value="提交添加" onclick="commit()"/>
-    <input type="button" class="btn btn-default" value="清除结果" onclick="clearLayer()"/>
-</div>
-<div id="map" style="width: 100%;height:100%"></div>
 
+<div id="map" style="width: 100%;height:100%"></div>
+<div>
+    <div class="panel panel-primary editPane" id="editPane">
+        <div class='panel-heading'>
+            <h5 class='panel-title text-center'>编辑</h5></div>
+        <div class='panel-body content'>
+            <input type='button' class='btn btn-default' value='添加地物' onclick='addMarker()'/>&nbsp;
+            <input type='button' class='btn btn-default' value='提交添加' onclick='commit()'/>&nbsp;
+            <input type='button' class='btn btn-default' value='清除结果' onclick='clearLayer()'/>
+        </div>
+    </div>
+</div>
 <script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var map, id, pointFeature, vectorSource, resultLayer,
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
-            urlCapital = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data",
-            url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
+        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
+        urlCapital = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data",
+        url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
 
     map = new ol.Map({
         target: 'map',
@@ -65,6 +83,7 @@
                 source: vectorSource,
             });
             map.addLayer(resultLayer);
+            document.getElementById("editPane").style.display = "block";
         });
     }
 

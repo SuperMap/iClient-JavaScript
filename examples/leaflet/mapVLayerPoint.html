@@ -75,6 +75,7 @@
             var gui = new dat.GUI();
             var configDiv = L.DomUtil.create('div');
             configDiv.appendChild(gui.domElement);
+
             gui.add(options, 'size', 0.1, 10).onFinishChange(finished);
             gui.addColor(options, 'fillStyle').onChange(finished);
 
@@ -89,7 +90,24 @@
                 return configDiv;
             };
             configControl.addTo(map);
+            handleMapEvent(configDiv, map);
         }
+    }
+
+    function handleMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        });
     }
 </script>
 </body>

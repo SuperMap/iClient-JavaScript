@@ -86,6 +86,7 @@
                 "<div align='right'>" +
                 "<input type='button' id='btn' class='btn btn-primary' value='创建'/>" +
                 "</div></div></div>";
+        handleMapEvent(popup, this._map);
         return popup;
     };
     info.addTo(map);
@@ -133,7 +134,21 @@
             });
         });
     });
-
+    function handleMapEvent(div, map) {
+        if (!div || !map) {
+            return;
+        }
+        div.addEventListener('mouseover', function () {
+            map.dragging.disable();
+            map.scrollWheelZoom.disable();
+            map.doubleClickZoom.disable();
+        });
+        div.addEventListener('mouseout', function () {
+            map.dragging.enable();
+            map.scrollWheelZoom.enable();
+            map.doubleClickZoom.enable();
+        });
+    }
 </script>
 </body>
 </html>
