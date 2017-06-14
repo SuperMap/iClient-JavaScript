@@ -64,7 +64,7 @@ describe('testGeoRelationAnalystService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GeoRelationAnalystService_" + exception.name + ":" + exception.message);
                 datasetRelationService.destroy();
                 datasetGeoRelationParameters.destroy();
                 done();
@@ -104,7 +104,7 @@ describe('testGeoRelationAnalystService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GeoRelationAnalystService_" + exception.name + ":" + exception.message);
                 datasetRelationService.destroy();
                 datasetGeoRelationParameters.destroy();
                 done();
@@ -143,7 +143,7 @@ describe('testGeoRelationAnalystService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GeoRelationAnalystService_" + exception.name + ":" + exception.message);
                 datasetRelationService.destroy();
                 datasetGeoRelationParameters.destroy();
                 done();

@@ -67,7 +67,7 @@ describe('testMeasureService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("MeasureService_" + exception.name + ":" + exception.message);
                 measureService.destroy();
                 measureParameters.destroy();
                 done();
@@ -99,7 +99,7 @@ describe('testMeasureService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("MeasureService_" + exception.name + ":" + exception.message);
                 measureService.destroy();
                 measureParameters.destroy();
                 done();
@@ -133,7 +133,7 @@ describe('testMeasureService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("MeasureService_" + exception.name + ":" + exception.message);
                 measureService.destroy();
                 measureParameters.destroy();
                 done();
@@ -166,7 +166,7 @@ describe('testMeasureService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("MeasureService_" + exception.name + ":" + exception.message);
                 measureService.destroy();
                 measureParameters.destroy();
                 done();
@@ -198,7 +198,7 @@ describe('testMeasureService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("MeasureService_" + exception.name + ":" + exception.message);
                 measureService.destroy();
                 measureParameters.destroy();
                 done();
@@ -227,7 +227,7 @@ describe('testMeasureService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("MeasureService_" + exception.name + ":" + exception.message);
                 measureService.destroy();
                 measureParameters.destroy();
                 done();
@@ -258,7 +258,7 @@ describe('testMeasureService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("MeasureService_" + exception.name + ":" + exception.message);
                 measureService.destroy();
                 measureParameters.destroy();
                 done();

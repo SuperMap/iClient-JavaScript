@@ -65,7 +65,7 @@ describe('testGetFeaturesByBoundsService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFeaturesByBoundsService_" + exception.name + ":" + exception.message);
                 getFeaturesByBoundsService.destroy();
                 boundsParams.destroy();
                 done();

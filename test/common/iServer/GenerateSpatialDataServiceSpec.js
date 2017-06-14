@@ -69,7 +69,7 @@ describe('testGenerateSpatialDataService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GenerateSpatialDataService_" + exception.name + ":" + exception.message);
                 generateSpatialDataService.destroy();
                 generateSpatialDataParameters.destroy();
                 done();
@@ -112,7 +112,7 @@ describe('testGenerateSpatialDataService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GenerateSpatialDataService_" + exception.name + ":" + exception.message);
                 generateSpatialDataService.destroy();
                 generateSpatialDataParameters.destroy();
                 done();
@@ -158,7 +158,7 @@ describe('testGenerateSpatialDataService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GenerateSpatialDataService_" + exception.name + ":" + exception.message);
                 generateSpatialDataService.destroy();
                 generateSpatialDataParameters.destroy();
                 done();
@@ -201,7 +201,7 @@ describe('testGenerateSpatialDataService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GenerateSpatialDataService_" + exception.name + ":" + exception.message);
                 generateSpatialDataService.destroy();
                 generateSpatialDataParameters.destroy();
                 done();

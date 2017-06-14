@@ -75,7 +75,7 @@ describe('testQueryByBoundsService_processAsync',function(){
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("QueryByDistanceService_" + exception.name + ":" + exception.message);
                 queryByDistanceService.destroy();
                 queryByDistanceParameters.destroy();
                 done();
@@ -114,7 +114,7 @@ describe('testQueryByBoundsService_processAsync',function(){
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("QueryByDistanceService_" + exception.name + ":" + exception.message);
                 queryByDistanceService.destroy();
                 queryByDistanceParameters.destroy();
                 done();
@@ -153,7 +153,7 @@ describe('testQueryByBoundsService_processAsync',function(){
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("QueryByDistanceService_" + exception.name + ":" + exception.message);
                 queryByDistanceService.destroy();
                 queryByDistanceParameters.destroy();
                 done();

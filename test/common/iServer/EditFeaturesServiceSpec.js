@@ -103,7 +103,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				done();
 			}catch(exception){
 				expect(false).toBeTruthy();
-				console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+				console.log("EditFeaturesService_" + exception.name + ":" + exception.message);
 				editFeaturesService.destroy();
 				editFeatureParameter.destroy();
 				done();
@@ -153,7 +153,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				done();
 			}catch(exception){
 				expect(false).toBeTruthy();
-				console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+				console.log("EditFeaturesService_" + exception.name + ":" + exception.message);
 				editFeaturesService.destroy();
 				editFeatureParameter.destroy();
 				done();
@@ -180,7 +180,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				done();
 			} catch (exception) {
 				expect(false).toBeTruthy();
-				console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+				console.log("EditFeaturesService_" + exception.name + ":" + exception.message);
 				editFeaturesService.destroy();
 				editFeatureParameter.destroy();
 				done();
@@ -234,7 +234,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				done();
 			}catch(exception){
 				expect(false).toBeTruthy();
-				console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+				console.log("EditFeaturesService_" + exception.name + ":" + exception.message);
 				editFeaturesService.destroy();
 				editFeatureParameter.destroy();
 				done();
@@ -274,7 +274,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				done();
 			}catch(exception){
 			expect(false).toBeTruthy();
-				console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+				console.log("EditFeaturesService_" + exception.name + ":" + exception.message);
 				editFeaturesService.destroy();
 				editFeatureParameter.destroy();
 				done();

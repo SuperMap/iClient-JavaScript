@@ -76,7 +76,7 @@ describe('testGetGridCellInfosService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetGridCellInfosService_" + exception.name + ":" + exception.message);
                 myService.destroy();
                 queryParam.destroy();
                 done();
@@ -106,7 +106,7 @@ describe('testGetGridCellInfosService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetGridCellInfosService_" + exception.name + ":" + exception.message);
                 myService.destroy();
                 done();
             }

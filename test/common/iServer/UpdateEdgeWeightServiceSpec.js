@@ -44,7 +44,7 @@ describe('testUpdateEdgeWeightService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("UpdateEdgeWeightService_" + exception.name + ":" + exception.message);
                 myUpdateEdgeWeightService.destroy();
                 done();
             }

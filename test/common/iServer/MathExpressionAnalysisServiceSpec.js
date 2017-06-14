@@ -57,7 +57,7 @@ describe('testMathExpressionAnalysisService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("MathExpressionAnalysisService_" + exception.name + ":" + exception.message);
                 mathExpressionAnalysisService.destroy();
                 mathExpressionAnalysisParameters.destroy();
                 done();
@@ -88,7 +88,7 @@ describe('testMathExpressionAnalysisService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("MathExpressionAnalysisService_" + exception.name + ":" + exception.message);
                 mathExpressionAnalysisService.destroy();
                 mathExpressionAnalysisParameters.destroy();
                 done();

@@ -72,7 +72,7 @@ describe('testSetLayerStatusService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("SetLayerStatusService_" + exception.name + ":" + exception.message);
                 setLayerStatusService.destroy();
                 done();
             }
@@ -102,7 +102,7 @@ describe('testSetLayerStatusService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("SetLayerStatusService_" + exception.name + ":" + exception.message);
                 setLayerStatusParams.destroy();
                 setLayerStatusService.destroy();
                 done();

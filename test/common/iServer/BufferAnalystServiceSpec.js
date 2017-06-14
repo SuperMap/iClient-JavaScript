@@ -59,7 +59,7 @@ describe('testBufferAnalystService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("BufferAnalystService_" + exception.name + ":" + exception.message);
                 bfServiceByDatasets.destroy();
                 dsBufferAnalystParameters.destroy();
                 done();
@@ -103,7 +103,7 @@ describe('testBufferAnalystService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("BufferAnalystService_" + exception.name + ":" + exception.message);
                 bfServiceByGeometry.destroy();
                 geometryBufferAnalystParameters.destroy();
                 done();
@@ -151,7 +151,7 @@ describe('testBufferAnalystService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("BufferAnalystService_" + exception.name + ":" + exception.message);
                 bfServiceByGeometry.destroy();
                 dsBufferAnalystParameters.destroy();
                 done();
