@@ -122,7 +122,7 @@ describe('testComputeWeightMatrixService_processAsync',function(){
                 parameter.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 
     //参数错误
@@ -186,7 +186,7 @@ describe('testComputeWeightMatrixService_processAsync',function(){
                 computeWeightMatrixService.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 
     it('isAnalyzeByIdInvalid',function(done){
@@ -229,6 +229,6 @@ describe('testComputeWeightMatrixService_processAsync',function(){
                 parameter.destroy();
                 done();
             }
-        },1000)
+        },2000)
     })
 });

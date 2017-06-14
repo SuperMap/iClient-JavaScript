@@ -44,7 +44,7 @@ describe('testTransferSolutionService_processAsync',function(){
                 service.destroy();
                 done();
             }
-        },1000);
+        },2000);
     });
 
     it('success',function(done){
@@ -78,6 +78,6 @@ describe('testTransferSolutionService_processAsync',function(){
                 params.destroy();
                 done();
             }
-        },1000);
+        },2000);
     });
 });

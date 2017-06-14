@@ -114,7 +114,7 @@ describe('testSurfaceAnalystService_processAsync', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 6000);
+        }, 10000);
     });
 
     //对象提取等值线
@@ -130,15 +130,15 @@ describe('testSurfaceAnalystService_processAsync', function () {
 
         var params = new SuperMap.GeometrySurfaceAnalystParameters({
             extractParameter: surfaceAnalystParameters,
-            points: [new SuperMap.Geometry.Point(-4000, 1000),
+            points: [new SuperMap.Geometry.Point(-4000, 2000),
                 new SuperMap.Geometry.Point(-4500, 2000),
                 new SuperMap.Geometry.Point(-3000, 3000),
                 new SuperMap.Geometry.Point(-3000, 2000),
                 new SuperMap.Geometry.Point(-2500, 2500),
                 new SuperMap.Geometry.Point(-2000, 2000),
                 new SuperMap.Geometry.Point(-2000, 3000),
-                new SuperMap.Geometry.Point(-1000, 1000),
-                new SuperMap.Geometry.Point(1000, 4000),
+                new SuperMap.Geometry.Point(-2000, 2000),
+                new SuperMap.Geometry.Point(2000, 4000),
                 new SuperMap.Geometry.Point(0, 0)
             ],
             resolution: 3000,
@@ -182,15 +182,15 @@ describe('testSurfaceAnalystService_processAsync', function () {
 
         var params = new SuperMap.GeometrySurfaceAnalystParameters({
             extractParameter: surfaceAnalystParameters,
-            points: [new SuperMap.Geometry.Point(-4000, 1000),
+            points: [new SuperMap.Geometry.Point(-4000, 2000),
                 new SuperMap.Geometry.Point(-4500, 2000),
                 new SuperMap.Geometry.Point(-3000, 3000),
                 new SuperMap.Geometry.Point(-3000, 2000),
                 new SuperMap.Geometry.Point(-2500, 2500),
                 new SuperMap.Geometry.Point(-2000, 2000),
                 new SuperMap.Geometry.Point(-2000, 3000),
-                new SuperMap.Geometry.Point(-1000, 1000),
-                new SuperMap.Geometry.Point(1000, 4000),
+                new SuperMap.Geometry.Point(-2000, 2000),
+                new SuperMap.Geometry.Point(2000, 4000),
                 new SuperMap.Geometry.Point(0, 0)
             ],
             resolution: 3000,
@@ -218,7 +218,7 @@ describe('testSurfaceAnalystService_processAsync', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        }, 4000);
     });
 
     /*  暂时没法测

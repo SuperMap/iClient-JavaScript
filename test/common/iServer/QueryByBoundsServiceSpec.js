@@ -86,7 +86,7 @@ describe('testQueryByBoundsService_processAsync',function(){
                 queryByBoundsParameters.destroy();
                 done();
             }
-        },1000);
+        },2000);
     });
 
     it('customsResult',function(done){
@@ -129,7 +129,7 @@ describe('testQueryByBoundsService_processAsync',function(){
                 queryByBoundsParameters.destroy();
                 done();
             }
-        },1000);
+        },2000);
     });
 
     //查询参数为空
@@ -164,7 +164,7 @@ describe('testQueryByBoundsService_processAsync',function(){
                 queryByBoundsParameters.destroy();
                 done();
             }
-        },1000);
+        },2000);
     })
 });
 

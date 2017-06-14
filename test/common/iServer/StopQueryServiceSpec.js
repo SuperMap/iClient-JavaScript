@@ -45,7 +45,7 @@ describe('testStopQueryService_processAsync',function(){
                 stopQueryService.destroy();
                 done();
             }
-        },1000);
+        },2000);
     });
 
     it('success_returnPosition',function(done){
@@ -72,7 +72,7 @@ describe('testStopQueryService_processAsync',function(){
                 stopQueryServiceParams.destroy();
                 done();
             }
-        },1000);
+        },2000);
     });
 
     it('success_returnPosition:false',function(done){
@@ -99,6 +99,6 @@ describe('testStopQueryService_processAsync',function(){
                 stopQueryServiceParams.destroy();
                 done();
             }
-        },1000);
+        },2000);
     })
 });

@@ -88,7 +88,7 @@ describe('testFindTSPPathsService_processAsync',function(){
                 parameter.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 
     //id为空
@@ -135,7 +135,7 @@ describe('testFindTSPPathsService_processAsync',function(){
                 parameter.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 
     //参数错误
@@ -182,7 +182,7 @@ describe('testFindTSPPathsService_processAsync',function(){
                 parameter.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 
     //参数为空
@@ -204,7 +204,7 @@ describe('testFindTSPPathsService_processAsync',function(){
                 findTSPPathsService.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 
     //AnalyzeById_null
@@ -251,6 +251,6 @@ describe('testFindTSPPathsService_processAsync',function(){
                 parameter.destroy();
                 done();
             }
-        },1000)
+        },2000)
     })
 });

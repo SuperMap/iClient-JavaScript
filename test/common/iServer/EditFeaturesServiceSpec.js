@@ -108,7 +108,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				editFeatureParameter.destroy();
 				done();
 			}
-		},1000)
+		},2000)
 	});
 
 	//测试新增要素 returnContent = false
@@ -158,7 +158,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				editFeatureParameter.destroy();
 				done();
 			}
-		},1000);
+		},2000);
 	});
 
 	it('addFeatures_noParameters',function(done) {
@@ -185,7 +185,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				editFeatureParameter.destroy();
 				done();
 			}
-		}, 1000);
+		}, 2000);
 	});
 
 	//测试编辑要素
@@ -222,13 +222,14 @@ describe('testEditFeaturesService_processAsync', function () {
 		setTimeout(function(){
 			try{
 				//成功编辑
-				// var editFeaturesResult = editFeaturesService.lastResult;
-				// ok(editFeaturesResult !== null,"editFeaturesService.lastResult");
-				// ok(editFeaturesResult.resourceInfo !== null,"editFeaturesResult.resourceInfo");
-				// equal(editFeaturesResult.resourceInfo.succeed, true,"editFeaturesResult.resourceInfo.succeed");
-				// ok(editFeaturesResult.IDs === null,"editFeaturesResult.IDs:"+editFeaturesResult.IDs);
+				 var editFeaturesResult = editFeaturesEventArgsSystem.result;
+				 expect(editFeaturesResult.succeed).toBeTruthy();
+				/* ok(editFeaturesResult !== null,"editFeaturesService.lastResult");
+				 ok(editFeaturesResult.resourceInfo !== null,"editFeaturesResult.resourceInfo");
+				 equal(editFeaturesResult.resourceInfo.succeed, true,"editFeaturesResult.resourceInfo.succeed");
+				 ok(editFeaturesResult.IDs === null,"editFeaturesResult.IDs:"+editFeaturesResult.IDs);
 				//失败编辑
-				expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
+				expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();*/
 				editFeaturesService.destroy();
 				editFeatureParameter.destroy();
 				done();
@@ -239,7 +240,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				editFeatureParameter.destroy();
 				done();
 			}
-		},1000);
+		},2000);
 	});
 
 /*	//测试删除要素
@@ -279,6 +280,6 @@ describe('testEditFeaturesService_processAsync', function () {
 				editFeatureParameter.destroy();
 				done();
 			}
-		},1000);
+		},2000);
 	})*/
 });

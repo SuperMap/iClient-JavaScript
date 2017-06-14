@@ -69,7 +69,7 @@ describe('testGeoRelationAnalystService_processAsync',function(){
                 datasetGeoRelationParameters.destroy();
                 done();
             }
-        },1000);
+        },2000);
     });
 
     //空间关系分析服务，比较返回结果
@@ -109,7 +109,7 @@ describe('testGeoRelationAnalystService_processAsync',function(){
                 datasetGeoRelationParameters.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 
     //空间关系分析服务，比较返回结果
@@ -148,7 +148,7 @@ describe('testGeoRelationAnalystService_processAsync',function(){
                 datasetGeoRelationParameters.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 });
 
