@@ -239,7 +239,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				editFeatureParameter.destroy();
 				done();
 			}
-		},1000);
+		},4000);
 	});
 
 /*	//测试删除要素
