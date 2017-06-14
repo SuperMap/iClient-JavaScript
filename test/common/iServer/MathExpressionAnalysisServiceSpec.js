@@ -62,7 +62,7 @@ describe('testMathExpressionAnalysisService_processAsync',function(){
                 mathExpressionAnalysisParameters.destroy();
                 done();
             }
-        },6000);
+        },10000);
     });
 
     it('fail',function(done){

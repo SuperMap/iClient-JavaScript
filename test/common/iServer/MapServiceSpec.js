@@ -94,7 +94,7 @@ describe('testMapService_processAsync',function(){
                 getMapService.destroy();
                 done();
             }
-        },1000);
+        },2000);
     })
 });
 
