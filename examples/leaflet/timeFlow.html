@@ -383,7 +383,7 @@
             map = L.map('map', {
                 center: [34, 110],
                 maxZoom: 20,
-                minZoom: 1,
+                minZoom: 3,
                 zoom: 5,
                 crs: L.CRS.EPSG3857
             });
@@ -524,6 +524,9 @@
         if (liveRenderer) {
             map.removeLayer(liveRenderer);
             liveRenderer = null;
+        }
+        if(liveDataSet){
+            liveDataSet=null;
         }
         if (planeLabels) {
             for (var item in planeLabels) {
