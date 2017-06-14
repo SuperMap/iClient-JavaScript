@@ -103,6 +103,9 @@ var VectorTileJSON = L.Class.extend({
     },
 
     _convertToGeoJSON: function (recordsets) {
+        if (!recordsets) {
+            return;
+        }
         for (var i = 0; i < recordsets.length; i++) {
             var recordset = recordsets[i];
             for (var j = 0; j < recordset.features.length; j++) {
