@@ -114,7 +114,7 @@ describe('testSurfaceAnalystService_processAsync', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        }, 4000);
     });
 
     //对象提取等值线

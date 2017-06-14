@@ -103,7 +103,7 @@ describe('testThemeService_processAsync', function () {
                 themeParameters.destroy();
                 done();
             }
-        }, 1000);
+        }, 2000);
     });
 
     it('Range_1',function(done){
@@ -752,7 +752,7 @@ describe('testThemeService_processAsync', function () {
                 themeParameters.destroy();
                 done();
             }
-        }, 1000);
+        }, 2000);
     });
 
     //分段标签专题图

@@ -72,7 +72,7 @@ describe('testMeasureService_processAsync', function () {
                 measureParameters.destroy();
                 done();
             }
-        }, 1500);
+        }, 2000);
     });
 
     //反向测试用例，输入点进行距离量算
@@ -104,7 +104,7 @@ describe('testMeasureService_processAsync', function () {
                 measureParameters.destroy();
                 done();
             }
-        }, 1500);
+        }, 2000);
     });
 
     //反向测试用例，输入距离单位枚举值错误

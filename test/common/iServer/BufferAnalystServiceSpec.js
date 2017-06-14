@@ -108,7 +108,7 @@ describe('testBufferAnalystService_processAsync', function () {
                 geometryBufferAnalystParameters.destroy();
                 done();
             }
-        }, 1000)
+        }, 2000)
     });
 
     //测试失败事件
@@ -156,7 +156,7 @@ describe('testBufferAnalystService_processAsync', function () {
                 dsBufferAnalystParameters.destroy();
                 done();
             }
-        }, 1000)
+        }, 2000)
     });
 });
 
