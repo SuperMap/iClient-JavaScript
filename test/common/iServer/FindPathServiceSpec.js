@@ -87,7 +87,7 @@ describe('testFindPathService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 1000);
+        }, 2000);
     });
 
     //设置返回信息的有效性
@@ -139,7 +139,7 @@ describe('testFindPathService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 1000)
+        }, 2000)
     });
 
     //id为空
@@ -186,7 +186,7 @@ describe('testFindPathService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 1000)
+        }, 2000)
     });
 
     //参数错误
@@ -233,7 +233,7 @@ describe('testFindPathService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 1000)
+        }, 2000)
     });
 
     //参数为空
@@ -255,7 +255,7 @@ describe('testFindPathService_processAsync', function () {
                 findPathService.destroy();
                 done();
             }
-        }, 1000)
+        }, 2000)
     });
 
     //AnalyzeById_null
@@ -302,7 +302,7 @@ describe('testFindPathService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 1000)
+        }, 2000)
     });
 });
 

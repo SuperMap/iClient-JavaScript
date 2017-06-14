@@ -49,6 +49,6 @@ describe('testUpdateTurnNodeWeightService_processAsync',function(){
                 myUpdateTurnNodeWeightService.destroy();
                 done();
             }
-        },1000)
+        },2000)
     })
 });

@@ -87,7 +87,7 @@ describe('testRouteLocatorService_processAsync',function(){
                 routeLocatorParameters_point.destroy();
                 done();
             }
-        }, 1000);
+        }, 2000);
     });
 
     it('RouteLocatorLine',function(done){
@@ -142,7 +142,7 @@ describe('testRouteLocatorService_processAsync',function(){
                 routeLocatorParameters_line.destroy();
                 done();
             }
-        }, 1000);
+        }, 2000);
     });
 });
 

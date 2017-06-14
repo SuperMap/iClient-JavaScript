@@ -74,7 +74,7 @@ describe('testGenerateSpatialDataService_processAsync',function(){
                 generateSpatialDataParameters.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 
     //点事件表数据集动态分段,设置deleteExistResultDataset=false，并且设置一个已存在的数据集名称
@@ -117,7 +117,7 @@ describe('testGenerateSpatialDataService_processAsync',function(){
                 generateSpatialDataParameters.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 
     //线事件表数据集动态分段,并设置期望返回记录数2
@@ -163,14 +163,14 @@ describe('testGenerateSpatialDataService_processAsync',function(){
                 generateSpatialDataParameters.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 
     //线事件表数据集动态分段,设置deleteExistResultDataset=false，并且设置一个已存在的数据集名称
     it('LinearEventTable_deleteExistResultDataset_false',function(done){
         var generateSpatialDataService = initGenerateSpatialDataService();
         var dataRtnOption = new SuperMap.DataReturnOption({
-            expectCount: 1000,
+            expectCount: 2000,
             dataset: "generateSpatialData",
             deleteExistResultDataset: false,
             dataReturnMode: SuperMap.DataReturnMode.DATASET_AND_RECORDSET

@@ -81,7 +81,7 @@ describe('testGetGridCellInfosService_processAsync',function(){
                 queryParam.destroy();
                 done();
             }
-        },1000);
+        },2000);
     });
 
     it('getGridCellInfos_Failed',function(done){
@@ -110,7 +110,7 @@ describe('testGetGridCellInfosService_processAsync',function(){
                 myService.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 });
 

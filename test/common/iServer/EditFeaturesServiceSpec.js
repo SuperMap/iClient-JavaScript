@@ -108,7 +108,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				editFeatureParameter.destroy();
 				done();
 			}
-		},1000)
+		},2000)
 	});
 
 	//测试新增要素 returnContent = false
@@ -158,7 +158,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				editFeatureParameter.destroy();
 				done();
 			}
-		},1000);
+		},2000);
 	});
 
 	it('addFeatures_noParameters',function(done) {
@@ -185,7 +185,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				editFeatureParameter.destroy();
 				done();
 			}
-		}, 1000);
+		}, 2000);
 	});
 
 	//测试编辑要素
@@ -279,6 +279,6 @@ describe('testEditFeaturesService_processAsync', function () {
 				editFeatureParameter.destroy();
 				done();
 			}
-		},1000);
+		},2000);
 	})*/
 });

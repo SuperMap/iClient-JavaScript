@@ -59,7 +59,7 @@ describe('testFieldStatisticService_processAsync', function () {
                 fieldStatisticService.destroy();
                 done();
             }
-        },1000);
+        },2000);
     });
 
     //错误数据集，查询错误
@@ -85,6 +85,6 @@ describe('testFieldStatisticService_processAsync', function () {
                 fieldStatisticService.destroy();
                 done();
             }
-        },1000);
+        },2000);
     })
 });

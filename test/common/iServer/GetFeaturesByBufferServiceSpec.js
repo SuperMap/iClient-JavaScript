@@ -66,7 +66,7 @@ describe('testGetFeaturesByBufferService_processAsync',function(){
                 getFeaturesByBufferParameters.destroy();
                 done();
             }
-        },1000);
+        },2000);
     });
 
     //直接返回查询结果
@@ -111,7 +111,7 @@ describe('testGetFeaturesByBufferService_processAsync',function(){
                 getFeaturesByBufferParameters.destroy();
                 done();
             }
-        },1000);
+        },2000);
     });
 
     //测试没有传入参数时的情况
@@ -146,7 +146,7 @@ describe('testGetFeaturesByBufferService_processAsync',function(){
                 getFeaturesByBufferParameters.destroy();
                 done();
             }
-        },1000);
+        },2000);
     });
 
     //测试目标图层不存在
@@ -182,6 +182,6 @@ describe('testGetFeaturesByBufferService_processAsync',function(){
                 getFeaturesByBufferParameters.destroy();
                 done();
             }
-        },1000);
+        },2000);
     });
 });

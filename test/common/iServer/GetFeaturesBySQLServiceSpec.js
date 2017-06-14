@@ -67,7 +67,7 @@ describe('testGetFeaturesBySQLService_processAsync',function(){
                 getFeaturesBySQLParameters.destroy();
                 done();
             }
-        },1000);
+        },2000);
     });
 
     //直接返回查询结果
@@ -103,7 +103,7 @@ describe('testGetFeaturesBySQLService_processAsync',function(){
                 getFeaturesBySQLParameters.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 
     //测试没有传入参数时的情况
@@ -134,7 +134,7 @@ describe('testGetFeaturesBySQLService_processAsync',function(){
                 getFeaturesBySQLParameters.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 
     //查询目标图层不存在情况
@@ -168,6 +168,6 @@ describe('testGetFeaturesBySQLService_processAsync',function(){
                 getFeaturesBySQLParameters.destroy();
                 done();
             }
-        },1000);
+        },2000);
     })
 });

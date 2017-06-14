@@ -70,6 +70,6 @@ describe('testGetFeaturesByBoundsService_processAsync',function(){
                 boundsParams.destroy();
                 done();
             }
-        },1000);
+        },2000);
     })
 });

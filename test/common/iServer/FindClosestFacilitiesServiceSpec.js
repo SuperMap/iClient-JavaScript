@@ -76,7 +76,7 @@ describe('testFindClosestFacilitiesService_processAsync', function () {
                 parameter.destroy();
                 done();
             }
-        }, 1000);
+        }, 2000);
     });
 
     // isAnalyzeById
@@ -118,7 +118,7 @@ describe('testFindClosestFacilitiesService_processAsync', function () {
                 facilitiesParams.destroy();
                 done();
             }
-        }, 1000)
+        }, 2000)
     });
 
     //参数为空
@@ -156,7 +156,7 @@ describe('testFindClosestFacilitiesService_processAsync', function () {
                 closestFacilitiesService.destroy();
                 done();
             }
-        }, 1000);
+        }, 2000);
     });
 
     it('failedEvent', function (done) {
@@ -199,7 +199,7 @@ describe('testFindClosestFacilitiesService_processAsync', function () {
                 facilitiesParams.destroy();
                 done();
             }
-        }, 1000)
+        }, 2000)
     })
 });
 

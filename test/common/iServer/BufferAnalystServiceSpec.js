@@ -33,7 +33,7 @@ describe('testBufferAnalystService_processAsync', function () {
     it('SuccessEvent:byDatasets_NotReturnContent', function (done) {
         var bfServiceByDatasets = initBufferAnalystService();
         var resultSetting = new SuperMap.DataReturnOption({
-            expectCount: 1000,
+            expectCount: 2000,
             dataset: null,
             dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY,
             deleteExistResultDataset: true
@@ -64,7 +64,7 @@ describe('testBufferAnalystService_processAsync', function () {
                 dsBufferAnalystParameters.destroy();
                 done();
             }
-        }, 1000)
+        }, 2000)
     });
 
     it('byGeometry_NotReturnContent', function (done) {
@@ -79,7 +79,7 @@ describe('testBufferAnalystService_processAsync', function () {
         bufferSetting.leftDistance.value = 300;
         bufferSetting.semicircleLineSegment = 5;
         var resultSetting = new SuperMap.DataReturnOption({
-            expectCount: 1000,
+            expectCount: 2000,
             dataset: "Landuse_R@Jingjin",
             dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY,
             deleteExistResultDataset: false
@@ -123,7 +123,7 @@ describe('testBufferAnalystService_processAsync', function () {
         bufferSetting.leftDistance.value = -1;
         bufferSetting.semicircleLineSegment = 5;
         var resultSetting = new SuperMap.DataReturnOption({
-            expectCount: 1000,
+            expectCount: 2000,
             dataset: null,
             dataReturnMode: SuperMap.DataReturnMode.DATASET_ONLY,
             deleteExistResultDataset: true

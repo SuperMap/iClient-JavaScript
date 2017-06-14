@@ -48,6 +48,6 @@ describe('testUpdateEdgeWeightService_processAsync',function(){
                 myUpdateEdgeWeightService.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 });
