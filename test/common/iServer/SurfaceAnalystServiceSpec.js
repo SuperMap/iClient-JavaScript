@@ -114,7 +114,7 @@ describe('testSurfaceAnalystService_processAsync', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 6000);
+        }, 10000);
     });
 
     //对象提取等值线
@@ -218,7 +218,7 @@ describe('testSurfaceAnalystService_processAsync', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        }, 4000);
     });
 
     /*  暂时没法测
