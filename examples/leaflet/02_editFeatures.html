@@ -68,6 +68,8 @@
     function commit() {
         var me = this;
         if (featureGroup.hasLayer(marker)) {
+            marker= marker.toGeoJSON();
+            marker.properties={POP:1,CAPITAL:'test'};
             var addFeatureParams = new SuperMap.EditFeaturesParameters({
                 dataSourceName: "World",
                 dataSetName: "Capitals",
