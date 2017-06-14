@@ -249,8 +249,17 @@ var deps = {
                 "src": [
                     './src/leaflet/overlay/MapVLayer.js'
                 ]
+            },
+
+            "ElasticSearch": {
+                "name": "ElasticSearch",
+                "src": [
+                    "./src/common/control/TimeFlowControl.js",
+                    "./src/common/thirdparty/elasticsearch/ElasticSearchService.js"
+                ]
             }
         }
+
     },
 
     "openlayers": {
@@ -387,6 +396,13 @@ var deps = {
                 "name": "Mapv",
                 "src": [
                     "./src/openlayers/overlay/mapv/source/mapv.js",
+                ]
+            },
+            "ElasticSearch": {
+                "name": "ElasticSearch",
+                "src": [
+                    "./src/common/control/TimeFlowControl.js",
+                    "./src/common/thirdparty/elasticsearch/ElasticSearchService.js"
                 ]
             }
         }

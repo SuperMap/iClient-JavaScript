@@ -15,7 +15,8 @@ module.exports = {
     externals: {
         'echarts': 'echarts',
         'openlayers': 'ol',
-        'mapv': 'mapv'
+        'mapv': 'mapv',
+        'elasticsearch': 'elasticsearch'
     },
 
     module: {

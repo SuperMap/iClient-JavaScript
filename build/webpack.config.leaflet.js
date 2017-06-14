@@ -15,7 +15,8 @@ module.exports = {
     externals: {
         'echarts': 'echarts',
         'leaflet': 'L',
-        'mapv': 'mapv'
+        'mapv': 'mapv',
+        'elasticsearch': 'elasticsearch'
     },
     module: {
         rules: [{

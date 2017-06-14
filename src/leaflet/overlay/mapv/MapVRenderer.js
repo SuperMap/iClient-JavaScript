@@ -65,6 +65,13 @@ class MapVRenderer extends BaseLayer {
         return this.canvasLayer.getCanvas().getContext(this.context);
     }
 
+    updateData(dataSet, options) {
+        if (dataSet && dataSet.get) {
+            this.dataSet.set(dataSet.get());
+        }
+        this.update({options: options});
+    }
+
     _canvasUpdate(time) {
         if (!this.canvasLayer) {
             return;

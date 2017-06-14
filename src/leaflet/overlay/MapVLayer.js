@@ -17,6 +17,7 @@ var MapVLayer = L.Layer.extend({
         this.render = this.render.bind(this);
         L.Util.setOptions(this, options);
         this.canvas = this._createCanvas();
+        L.stamp(this);
     },
 
 
@@ -44,6 +45,7 @@ var MapVLayer = L.Layer.extend({
     },
 
     onRemove: function (map) {
+        L.DomUtil.remove(this.container);
         map.off({
             moveend: this.draw,
             zoomend: this.draw,
@@ -52,8 +54,8 @@ var MapVLayer = L.Layer.extend({
         }, this);
     },
 
-    update: function (data) {
-        this.mapvLayer.update(data);
+    update: function (data, options) {
+        this.mapvLayer.updateData(data, options);
     },
 
     draw: function () {

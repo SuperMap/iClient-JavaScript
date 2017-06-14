@@ -54,7 +54,8 @@
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-preset-es2015": "^6.24.1",
-    "uglify-js":"^3.0.15"
+    "uglify-js": "^3.0.15",
+    "elasticsearch": "13.0.1"
   },
   "dependencies": {
     "proj4": "2.4.3",

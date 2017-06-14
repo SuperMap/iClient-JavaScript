@@ -261,8 +261,8 @@ SuperMap.ServiceBase = SuperMap.Class({
     getUrlCompleted: function (result) {
         var me = this;
         me._processSuccess(result);
-    }
-    ,
+    },
+
 
     /**
      * Method: getUrlFailed
@@ -279,8 +279,8 @@ SuperMap.ServiceBase = SuperMap.Class({
         } else {
             me._processFailed(result);
         }
-    }
-    ,
+    },
+
 
     /**
      * Method: ajaxPolling
@@ -306,8 +306,8 @@ SuperMap.ServiceBase = SuperMap.Class({
         me.options.url = url;
         me.options.isInTheSameDomain = isInTheSameDomain;
         SuperMap.Util.committer(me.options);
-    }
-    ,
+    },
+
 
     /**
      * Method: calculatePollingTimes
@@ -334,8 +334,8 @@ SuperMap.ServiceBase = SuperMap.Class({
             }
         }
         me.totalTimes--;
-    }
-    ,
+    },
+
 
     /**
      * Method: isServiceSupportPolling
