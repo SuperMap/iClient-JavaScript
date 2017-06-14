@@ -69,7 +69,7 @@ describe('testMapService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("MapService_" + exception.name + ":" + exception.message);
                 getMapService.destroy();
                 done();
             }
@@ -90,7 +90,7 @@ describe('testMapService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("MapService_" + exception.name + ":" + exception.message);
                 getMapService.destroy();
                 done();
             }

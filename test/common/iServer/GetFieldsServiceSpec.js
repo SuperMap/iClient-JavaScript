@@ -55,7 +55,7 @@ describe('testGetFieldsService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFieldsService_" + exception.name + ":" + exception.message);
                 getFieldsService.destroy();
                 done();
             }
@@ -79,7 +79,7 @@ describe('testGetFieldsService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFieldsService_" + exception.name + ":" + exception.message);
                 getFieldsService.destroy();
                 done();
             }

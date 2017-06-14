@@ -82,7 +82,7 @@ describe('testFindPathService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindPathService_" + exception.name + ":" + exception.message);
                 findPathService.destroy();
                 parameter.destroy();
                 done();
@@ -134,7 +134,7 @@ describe('testFindPathService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindPathService_" + exception.name + ":" + exception.message);
                 findPathService.destroy();
                 parameter.destroy();
                 done();
@@ -181,7 +181,7 @@ describe('testFindPathService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindPathService_" + exception.name + ":" + exception.message);
                 findPathService.destroy();
                 parameter.destroy();
                 done();
@@ -228,7 +228,7 @@ describe('testFindPathService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindPathService_" + exception.name + ":" + exception.message);
                 findPathService.destroy();
                 parameter.destroy();
                 done();
@@ -251,7 +251,7 @@ describe('testFindPathService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindPathService_" + exception.name + ":" + exception.message);
                 findPathService.destroy();
                 done();
             }
@@ -297,7 +297,7 @@ describe('testFindPathService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindPathService_" + exception.name + ":" + exception.message);
                 findPathService.destroy();
                 parameter.destroy();
                 done();

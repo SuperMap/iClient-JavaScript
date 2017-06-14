@@ -56,11 +56,9 @@ describe('testTilesetsService_processAsync',function(){
                // expect(serviceCompletedEventArgsSystem.result[0].metaData.resolutions.length).toEqual(3);
                 expect(serviceCompletedEventArgsSystem.result[0].metaData.resolutions[0]).toEqual(0.24598888713);
                 expect(serviceCompletedEventArgsSystem.result[0].metaData.resolutions[1]).toEqual(0.12299444357);
-                expect(serviceCompletedEventArgsSystem.result[0].metaData.resolutions[2]).toEqual(0.061497221783);
                 // expect(serviceCompletedEventArgsSystem.result[0].metaData.scaleDenominators.length).toEqual(3);
                 expect(serviceCompletedEventArgsSystem.result[0].metaData.scaleDenominators[0]).toEqual(103496154.92075206);
                 expect(serviceCompletedEventArgsSystem.result[0].metaData.scaleDenominators[1]).toEqual(51748077.46247971);
-                expect(serviceCompletedEventArgsSystem.result[0].metaData.scaleDenominators[2]).toEqual(25874038.730398387);
                 expect(serviceCompletedEventArgsSystem.result[0].metaData.tileFormat).toBe("PNG");
                 expect(serviceCompletedEventArgsSystem.result[0].metaData.tileHeight).toEqual(256);
                 expect(serviceCompletedEventArgsSystem.result[0].metaData.tileWidth).toEqual(256);

@@ -73,7 +73,7 @@ describe('testComputeWeightMatrixService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("ComputeWeightMatrixService_" + exception.name + ":" + exception.message);
                 computeWeightMatrixService.destroy();
                 parameter.destroy();
                 done();
@@ -117,7 +117,7 @@ describe('testComputeWeightMatrixService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("ComputeWeightMatrixService_" + exception.name + ":" + exception.message);
                 computeWeightMatrixService.destroy();
                 parameter.destroy();
                 done();
@@ -161,7 +161,7 @@ describe('testComputeWeightMatrixService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("ComputeWeightMatrixService_" + exception.name + ":" + exception.message);
                 computeWeightMatrixService.destroy();
                 parameter.destroy();
                 done();
@@ -182,7 +182,7 @@ describe('testComputeWeightMatrixService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("ComputeWeightMatrixService_" + exception.name + ":" + exception.message);
                 computeWeightMatrixService.destroy();
                 done();
             }
@@ -224,7 +224,7 @@ describe('testComputeWeightMatrixService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("ComputeWeightMatrixService_" + exception.name + ":" + exception.message);
                 computeWeightMatrixService.destroy();
                 parameter.destroy();
                 done();

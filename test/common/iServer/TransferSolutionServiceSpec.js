@@ -40,7 +40,7 @@ describe('testTransferSolutionService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("TransferSolutionService_" + exception.name + ":" + exception.message);
                 service.destroy();
                 done();
             }
@@ -73,7 +73,7 @@ describe('testTransferSolutionService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("TransferSolutionService_" + exception.name + ":" + exception.message);
                 service.destroy();
                 params.destroy();
                 done();

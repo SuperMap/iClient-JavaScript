@@ -61,7 +61,7 @@ describe('testGetFeaturesByBufferService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFeaturesByBufferService_" + exception.name + ":" + exception.message);
                 getFeaturesByBufferService.destroy();
                 getFeaturesByBufferParameters.destroy();
                 done();
@@ -106,7 +106,7 @@ describe('testGetFeaturesByBufferService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFeaturesByBufferService_" + exception.name + ":" + exception.message);
                 getFeaturesByBufferService.destroy();
                 getFeaturesByBufferParameters.destroy();
                 done();
@@ -141,7 +141,7 @@ describe('testGetFeaturesByBufferService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFeaturesByBufferService_" + exception.name + ":" + exception.message);
                 getFeaturesByBufferService.destroy();
                 getFeaturesByBufferParameters.destroy();
                 done();
@@ -177,7 +177,7 @@ describe('testGetFeaturesByBufferService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFeaturesByBufferService_" + exception.name + ":" + exception.message);
                 getFeaturesByBufferService.destroy();
                 getFeaturesByBufferParameters.destroy();
                 done();

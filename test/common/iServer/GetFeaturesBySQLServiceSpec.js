@@ -62,7 +62,7 @@ describe('testGetFeaturesBySQLService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFeaturesBySQLService_" + exception.name + ":" + exception.message);
                 getFeaturesBySQLService.destroy();
                 getFeaturesBySQLParameters.destroy();
                 done();
@@ -98,7 +98,7 @@ describe('testGetFeaturesBySQLService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFeaturesBySQLService_" + exception.name + ":" + exception.message);
                 getFeaturesBySQLService.destroy();
                 getFeaturesBySQLParameters.destroy();
                 done();
@@ -129,7 +129,7 @@ describe('testGetFeaturesBySQLService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFeaturesBySQLService_" + exception.name + ":" + exception.message);
                 getFeaturesBySQLService.destroy();
                 getFeaturesBySQLParameters.destroy();
                 done();
@@ -163,7 +163,7 @@ describe('testGetFeaturesBySQLService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFeaturesBySQLService_" + exception.name + ":" + exception.message);
                 getFeaturesBySQLService.destroy();
                 getFeaturesBySQLParameters.destroy();
                 done();

@@ -53,7 +53,7 @@ describe('testGetLayersInfoService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetLayersInfoService_" + exception.name + ":" + exception.message);
                 getLayersInfoService.destroy();
                 done();
             }
@@ -74,7 +74,7 @@ describe('testGetLayersInfoService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetLayersInfoService_" + exception.name + ":" + exception.message);
                 getLayersInfoService.destroy();
                 done();
             }
@@ -95,7 +95,7 @@ describe('testGetLayersInfoService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetLayersInfoService_" + exception.name + ":" + exception.message);
                 getLayersInfoService.destroy();
                 done();
             }

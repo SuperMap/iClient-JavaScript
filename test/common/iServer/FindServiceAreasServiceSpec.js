@@ -78,7 +78,7 @@ describe('testFindServiceAreasService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindServiceAreasService_" + exception.name + ":" + exception.message);
                 findServiceAreasService.destroy();
                 done();
             }
@@ -133,7 +133,7 @@ describe('testFindServiceAreasService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindServiceAreasService_" + exception.name + ":" + exception.message);
                 findServiceAreasService.destroy();
                 parameter.destroy();
                 done();
@@ -183,7 +183,7 @@ describe('testFindServiceAreasService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindServiceAreasService_" + exception.name + ":" + exception.message);
                 findServiceAreasService.destroy();
                 parameter.destroy();
                 done();
@@ -233,7 +233,7 @@ describe('testFindServiceAreasService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindServiceAreasService_" + exception.name + ":" + exception.message);
                 findServiceAreasService.destroy();
                 parameter.destroy();
                 done();
@@ -256,7 +256,7 @@ describe('testFindServiceAreasService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindServiceAreasService_" + exception.name + ":" + exception.message);
                 findServiceAreasService.destroy();
                 done();
             }
@@ -305,7 +305,7 @@ describe('testFindServiceAreasService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindServiceAreasService_" + exception.name + ":" + exception.message);
                 findServiceAreasService.destroy();
                 parameter.destroy();
                 done();

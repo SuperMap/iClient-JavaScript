@@ -60,7 +60,7 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFeaturesByGeometryService_" + exception.name + ":" + exception.message);
                 getFeaturesByGeometryService.destroy();
                 getFeaturesByGeometryParameters.destroy();
                 done();
@@ -93,7 +93,7 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFeaturesByGeometryService_" + exception.name + ":" + exception.message);
                 getFeaturesByGeometryService.destroy();
                 getFeaturesByGeometryParameters.destroy();
                 done();
@@ -126,7 +126,7 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFeaturesByGeometryService_" + exception.name + ":" + exception.message);
                 getFeaturesByGeometryService.destroy();
                 getFeaturesByGeometryParameters.destroy();
                 done();
@@ -157,7 +157,7 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFeaturesByGeometryService_" + exception.name + ":" + exception.message);
                 getFeaturesByGeometryService.destroy();
                 getFeaturesByGeometryParameters.destroy();
                 done();
@@ -190,7 +190,7 @@ describe('testGetFeaturesByGeometryService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("GetFeaturesByGeometryService_" + exception.name + ":" + exception.message);
                 getFeaturesByGeometryService.destroy();
                 getFeaturesByGeometryParameters.destroy();
                 done();

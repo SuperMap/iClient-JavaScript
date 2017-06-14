@@ -79,7 +79,7 @@ describe('testQueryBySQLService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("QueryBySQLService_" + exception.name + ":" + exception.message);
                 queryBySQLService.destroy();
                 queryBySQLParameters.destroy();
                 done();
@@ -129,7 +129,7 @@ describe('testQueryBySQLService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("QueryBySQLService_" + exception.name + ":" + exception.message);
                 queryBySQLService.destroy();
                 queryBySQLParameters.destroy();
                 done();
@@ -171,7 +171,7 @@ describe('testQueryBySQLService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("QueryBySQLService_" + exception.name + ":" + exception.message);
                 queryBySQLService.destroy();
                 queryBySQLParameters.destroy();
                 done();
@@ -202,7 +202,7 @@ describe('testQueryBySQLService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("QueryBySQLService_" + exception.name + ":" + exception.message);
                 queryBySQLService.destroy();
                 queryBySQLParameters.destroy();
                 done();
@@ -240,7 +240,7 @@ describe('testQueryBySQLService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("QueryBySQLService_" + exception.name + ":" + exception.message);
                 queryBySQLService.destroy();
                 queryBySQLParameters.destroy();
                 done();

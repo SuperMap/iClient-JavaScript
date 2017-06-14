@@ -45,7 +45,7 @@ describe('testUpdateTurnNodeWeightService_processAsync',function(){
                 done();
             }catch(exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("UpdateTurnNodeWeightService_" + exception.name + ":" + exception.message);
                 myUpdateTurnNodeWeightService.destroy();
                 done();
             }

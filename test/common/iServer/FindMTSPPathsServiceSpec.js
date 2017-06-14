@@ -86,7 +86,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindMTSPPathsService_" + exception.name + ":" + exception.message);
                 findMTSPPathsService.destroy();
                 parameter.destroy();
                 done();
@@ -147,7 +147,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindMTSPPathsService_" + exception.name + ":" + exception.message);
                 findMTSPPathsService.destroy();
                 parameter.destroy();
                 done();
@@ -206,7 +206,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindMTSPPathsService_" + exception.name + ":" + exception.message);
                 findMTSPPathsService.destroy();
                 parameter.destroy();
                 done();
@@ -257,7 +257,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindMTSPPathsService_" + exception.name + ":" + exception.message);
                 findMTSPPathsService.destroy();
                 parameter.destroy();
                 done();
@@ -308,7 +308,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindMTSPPathsService_" + exception.name + ":" + exception.message);
                 findMTSPPathsService.destroy();
                 parameter.destroy();
                 done();
@@ -330,7 +330,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindMTSPPathsService_" + exception.name + ":" + exception.message);
                 findMTSPPathsService.destroy();
                 done();
             }
@@ -379,7 +379,7 @@ describe('testFindMTSPPathsService_processAsync', function () {
                 done();
             } catch (exception) {
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindMTSPPathsService_" + exception.name + ":" + exception.message);
                 findMTSPPathsService.destroy();
                 parameter.destroy();
                 done();

@@ -83,7 +83,7 @@ describe('testFindTSPPathsService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindTSPPathsService_" + exception.name + ":" + exception.message);
                 findTSPPathsService.destroy();
                 parameter.destroy();
                 done();
@@ -130,7 +130,7 @@ describe('testFindTSPPathsService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindTSPPathsService_" + exception.name + ":" + exception.message);
                 findTSPPathsService.destroy();
                 parameter.destroy();
                 done();
@@ -177,7 +177,7 @@ describe('testFindTSPPathsService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindTSPPathsService_" + exception.name + ":" + exception.message);
                 findTSPPathsService.destroy();
                 parameter.destroy();
                 done();
@@ -200,7 +200,7 @@ describe('testFindTSPPathsService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindTSPPathsService_" + exception.name + ":" + exception.message);
                 findTSPPathsService.destroy();
                 done();
             }
@@ -246,7 +246,7 @@ describe('testFindTSPPathsService_processAsync',function(){
                 done();
             }catch (exception){
                 expect(false).toBeTruthy();
-                console.log("FieldStatisticService_" + exception.name + ":" + exception.message);
+                console.log("FindTSPPathsService_" + exception.name + ":" + exception.message);
                 findTSPPathsService.destroy();
                 parameter.destroy();
                 done();
