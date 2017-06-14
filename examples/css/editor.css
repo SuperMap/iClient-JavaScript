@@ -12,17 +12,23 @@ html, body, .wrapper {
 }
 
 .edit-container {
+    min-height:52px;
     background-color: #f9f9f9;
-    position: relative;
+    position: absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
     margin-top: 52px;
 }
 
 .edit-container section.content {
+    min-height:100%;
     width: 100%;
     padding: 0;
     position: absolute;
     top: 0;
-    bottom: -2px;
+    bottom: 0;
 }
 
 .content .pane {
