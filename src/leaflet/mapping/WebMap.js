@@ -242,13 +242,10 @@ var WebMap = L.LayerGroup.extend({
             if (type == "ter")type = "cta"
         }
         wmtsURL = wmtsURL.replace("{type}", type).replace("{proj}", proj);
-        var layer = L.tileLayer.wmts(wmtsURL,
+        var layer = L.supermap.tiandituTileLayer(wmtsURL,
             {
                 layer: type,
-                style: "default",
                 tilematrixSet: proj,
-                format: "tiles",
-                subdomains: [0, 1, 2, 3, 4, 5, 6, 7]
             }
         );
         return layer;

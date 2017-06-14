@@ -206,7 +206,7 @@ describe('testGenerateSpatialDataService_processAsync',function(){
                 generateSpatialDataParameters.destroy();
                 done();
             }
-        },1000)
+        },2000)
     });
 });
 

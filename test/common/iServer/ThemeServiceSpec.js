@@ -103,7 +103,7 @@ describe('testThemeService_processAsync', function () {
                 themeParameters.destroy();
                 done();
             }
-        }, 2000);
+        }, 4000);
     });
 
     it('Range_1',function(done){
