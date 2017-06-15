@@ -6,12 +6,10 @@ ol.supermap.TileSuperMapRest = function (options) {
     if (options.url === undefined) {
         return;
     }
-    if (!options.attributions) {
-        options.attributions = [
+    options.attributions =options.attributions||
             new ol.Attribution({
-                html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
-            })]
-    }
+                html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+            })
 
     var layerUrl = options.url + "/image.png?redirect=false";
     options.serverType = options.serverType || SuperMap.ServerType.ISERVER;

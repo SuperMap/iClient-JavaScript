@@ -11,12 +11,10 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
         return;
     }
     options.crossOrigin = 'anonymous';
-    if (!options.attributions) {
-        options.attributions = [
+    options.attributions = options.attributions||
             new ol.Attribution({
-                html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
-            })]
-    }
+                html: 'Tile Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+            })
     var layerUrl = options.url + '/tileFeature.json?';
     if (options.format instanceof ol.format.MVT) {
         layerUrl = options.url + '/tileFeature.mvt?';

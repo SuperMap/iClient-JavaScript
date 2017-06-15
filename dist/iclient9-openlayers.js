@@ -6270,7 +6270,9 @@ var ThemeFeature = __webpack_require__(31);
 ol.source.Theme = function (name, opt_options) {
     var options = opt_options ? opt_options : {};
     ol.source.ImageCanvas.call(this, {
-        attributions: options.attributions,
+        attributions: options.attributions||  new ol.Attribution({
+            html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        }),
         canvasFunction: this.canvasFunctionInternal_.bind(this),
         logo: options.logo,
         projection: options.projection,
@@ -10532,14 +10534,9 @@ ol.source.Baidu = function (opt_options) {
 
     var options = opt_options || {};
 
-    var attributions;
-    if (options.attributions !== undefined) {
-        attributions = options.attributions;
-    } else {
-        attributions = new ol.Attribution({
-            html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+    var attributions = options.attributions || new ol.Attribution({
+            html: 'Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
         });
-    }
     var tileGrid = ol.source.Baidu.defaultTileGrid();
     var crossOrigin = options.crossOrigin !== undefined ?
         options.crossOrigin : 'anonymous';
@@ -10593,14 +10590,9 @@ ol.source.SuperMapCloud = function (opt_options) {
 
     var options = opt_options || {};
 
-    var attributions;
-    if (options.attributions !== undefined) {
-        attributions = options.attributions;
-    } else {
-        attributions = new ol.Attribution({
-            html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+    var attributions = options.attributions||new ol.Attribution({
+            html: 'Map Data ©2013 SuperMap - GS(2011)6014号-data©Navinfo with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
         });
-    }
     var mapName = options.mapName || 'quanguo';
     var mapType = options.mapType || 'web';
     var url = options.url || 'http://t2.supermapcloud.com/FileService/image?map={mapName}&type={type}&x={x}&y={y}&z={z}';
@@ -10630,7 +10622,7 @@ var ol = __webpack_require__(2);
 ol.source.Tianditu = function (opt_options) {
     var options = opt_options || {};
     var attributions = options.attributions || new ol.Attribution({
-            html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+            html: 'Map Data <a href="http://www.tianditu.com"><img style="background-color:transparent;bottom:2px;opacity:1;" src="http://api.tianditu.com/img/map/logo.png" width="53px" height="22px" opacity="0"></a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
         });
 
     if (!options.url && !options.urls) {
@@ -10711,12 +10703,10 @@ ol.supermap.TileSuperMapRest = function (options) {
     if (options.url === undefined) {
         return;
     }
-    if (!options.attributions) {
-        options.attributions = [
+    options.attributions =options.attributions||
             new ol.Attribution({
-                html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
-            })]
-    }
+                html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+            })
 
     var layerUrl = options.url + "/image.png?redirect=false";
     options.serverType = options.serverType || SuperMap.ServerType.ISERVER;
@@ -11325,12 +11315,10 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
         return;
     }
     options.crossOrigin = 'anonymous';
-    if (!options.attributions) {
-        options.attributions = [
+    options.attributions = options.attributions||
             new ol.Attribution({
-                html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
-            })]
-    }
+                html: 'Tile Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+            })
     var layerUrl = options.url + '/tileFeature.json?';
     if (options.format instanceof ol.format.MVT) {
         layerUrl = options.url + '/tileFeature.mvt?';
@@ -11582,7 +11570,8 @@ var MapvLayer = __webpack_require__(82);
 ol.source.Mapv = function (opt_options) {
     var options = opt_options ? opt_options : {};
     ol.source.ImageCanvas.call(this, {
-        attributions: options.attributions,
+        attributions: options.attributions|| new ol.Attribution({
+            html: '© 2017 百度 MapV with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'}),
         canvasFunction: this.canvasFunctionInternal_.bind(this),
         logo: options.logo,
         projection: options.projection,

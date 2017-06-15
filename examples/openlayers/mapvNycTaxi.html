@@ -55,7 +55,7 @@
             url: mbUrl,
             attributions: [
                 new ol.Attribution({
-                    html: ' 数据来源 <a href="http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml/">NYCTaxi(纽约出租车上车点)</a>'
+                    html: ' Imagery © <a href="http://mapbox.com">Mapbox</a>'
                 })]
         })
     }));
@@ -68,7 +68,10 @@
             fillStyle: 'rgba(250, 50, 50, 0.8)',
             draw: 'simple'
         };
-        var options = {map: map, dataSet: dataSet, mapvOptions: mapvOptions};
+        var options = {map: map, dataSet: dataSet, mapvOptions: mapvOptions, attributions: [
+            new ol.Attribution({
+                html: ' 数据来源 <a href="http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml/">NYCTaxi(纽约出租车上车点)</a>  © 2017 百度 MapV with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+            })]};
         var layer = new ol.layer.Image({
             source: new ol.source.Mapv(options)
         });

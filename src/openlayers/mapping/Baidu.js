@@ -4,14 +4,9 @@ ol.source.Baidu = function (opt_options) {
 
     var options = opt_options || {};
 
-    var attributions;
-    if (options.attributions !== undefined) {
-        attributions = options.attributions;
-    } else {
-        attributions = new ol.Attribution({
-            html: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+    var attributions = options.attributions || new ol.Attribution({
+            html: 'Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
         });
-    }
     var tileGrid = ol.source.Baidu.defaultTileGrid();
     var crossOrigin = options.crossOrigin !== undefined ?
         options.crossOrigin : 'anonymous';

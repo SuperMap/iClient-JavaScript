@@ -19,6 +19,9 @@
                     format: new ol.format.MVT(),
                     tileGrid: ol.tilegrid.createXYZ({maxZoom: 22}),
                     tilePixelRatio: 16,
+                    attributions:   new ol.Attribution({
+                        html: 'Imagery © <a href="http://mapbox.com">Mapbox</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+                    }),
                     url: 'https://{a-d}.tiles.mapbox.com/v4/mapbox.mapbox-streets-v6/' +
                     '{z}/{x}/{y}.vector.pbf?access_token=' + key
                 }),

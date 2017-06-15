@@ -58,7 +58,11 @@
         gradient: {0.25: "rgb(0,0,255)", 0.55: "rgb(0,255,0)", 0.85: "yellow", 1.0: "rgb(255,0,0)"},
         draw: 'honeycomb'
     };
-    var options = {map: map, dataSet: dataSet, mapvOptions: mapvOptions};
+    var options = {
+        map: map, dataSet: dataSet, mapvOptions: mapvOptions, attributions: new ol.Attribution({
+            html: 'Imagery © <a href="http://mapbox.com">Mapbox</a> © 2017 百度 MapV with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        })
+    };
     map.addLayer(new ol.layer.Image({
         source: new ol.source.Mapv(options)
     }));

@@ -5,7 +5,9 @@ var ThemeFeature = require('./themeFeature');
 ol.source.Theme = function (name, opt_options) {
     var options = opt_options ? opt_options : {};
     ol.source.ImageCanvas.call(this, {
-        attributions: options.attributions,
+        attributions: options.attributions||  new ol.Attribution({
+            html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        }),
         canvasFunction: this.canvasFunctionInternal_.bind(this),
         logo: options.logo,
         projection: options.projection,
