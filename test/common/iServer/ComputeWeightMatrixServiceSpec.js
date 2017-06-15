@@ -78,7 +78,7 @@ describe('testComputeWeightMatrixService_processAsync',function(){
                 parameter.destroy();
                 done();
             }
-        },1500);
+        },4000);
     });
 
     //id为空
@@ -122,7 +122,7 @@ describe('testComputeWeightMatrixService_processAsync',function(){
                 parameter.destroy();
                 done();
             }
-        },2000)
+        },4000)
     });
 
     //参数错误
@@ -166,7 +166,7 @@ describe('testComputeWeightMatrixService_processAsync',function(){
                 parameter.destroy();
                 done();
             }
-        },1500)
+        },4000)
     });
 
     //测试参数为空时的健壮性
@@ -186,7 +186,7 @@ describe('testComputeWeightMatrixService_processAsync',function(){
                 computeWeightMatrixService.destroy();
                 done();
             }
-        },2000)
+        },4000)
     });
 
     it('isAnalyzeByIdInvalid',function(done){
@@ -229,6 +229,6 @@ describe('testComputeWeightMatrixService_processAsync',function(){
                 parameter.destroy();
                 done();
             }
-        },2000)
+        },4000)
     })
 });

@@ -32,7 +32,7 @@ describe('testEditFeaturesService_processAsync', function () {
 	});
 
 	//测试新增要素 returnContent = true,isUseBatch =true
-	it('addFeatures_isUseBatch',function(done){
+	/*it('addFeatures_isUseBatch',function(done){
 		var pointList = [], m_list = [],
 				p1 = new SuperMap.Geometry.Point(117.75279632955, 39.275271578065),
 				p2 = new SuperMap.Geometry.Point(117.73088420723, 39.050672324315),
@@ -186,7 +186,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				done();
 			}
 		}, 2000);
-	});
+	});*/
 
 	//测试编辑要素
 	it('editFeatures',function(done){
@@ -222,14 +222,13 @@ describe('testEditFeaturesService_processAsync', function () {
 		setTimeout(function(){
 			try{
 				//成功编辑
-				 var editFeaturesResult = editFeaturesEventArgsSystem.result;
-				 expect(editFeaturesResult.succeed).toBeTruthy();
-				/* ok(editFeaturesResult !== null,"editFeaturesService.lastResult");
-				 ok(editFeaturesResult.resourceInfo !== null,"editFeaturesResult.resourceInfo");
-				 equal(editFeaturesResult.resourceInfo.succeed, true,"editFeaturesResult.resourceInfo.succeed");
-				 ok(editFeaturesResult.IDs === null,"editFeaturesResult.IDs:"+editFeaturesResult.IDs);
+				// var editFeaturesResult = editFeaturesService.lastResult;
+				// ok(editFeaturesResult !== null,"editFeaturesService.lastResult");
+				// ok(editFeaturesResult.resourceInfo !== null,"editFeaturesResult.resourceInfo");
+				// equal(editFeaturesResult.resourceInfo.succeed, true,"editFeaturesResult.resourceInfo.succeed");
+				// ok(editFeaturesResult.IDs === null,"editFeaturesResult.IDs:"+editFeaturesResult.IDs);
 				//失败编辑
-				expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();*/
+				expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
 				editFeaturesService.destroy();
 				editFeatureParameter.destroy();
 				done();
@@ -240,7 +239,7 @@ describe('testEditFeaturesService_processAsync', function () {
 				editFeatureParameter.destroy();
 				done();
 			}
-		},2000);
+		},10000);
 	});
 
 /*	//测试删除要素

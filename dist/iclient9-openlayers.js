@@ -12258,15 +12258,18 @@ ol.supermap.FeatureService.prototype._processParams = function (params) {
 };
 
 ol.supermap.FeatureService.prototype._createServerFeature = function (geoFeature) {
-    var geoJSONFeature, feature = {}, fieldNames = [], fieldValues = [];
-    geoJSONFeature = JSON.parse((new ol.format.GeoJSON()).writeGeometry(geoFeature));
-    for (var key in geoJSONFeature) {
+    var feature = {}, fieldNames = [], fieldValues = [];
+    var properties = geoFeature.getProperties();
+    for (var key in properties) {
+        if (key === geoFeature.getGeometryName()) {
+            continue;
+        }
         fieldNames.push(key);
-        fieldValues.push(geoJSONFeature[key]);
+        fieldValues.push(properties[key]);
     }
     feature.fieldNames = fieldNames;
     feature.fieldValues = fieldValues;
-    feature.geometry = Util.toSuperMapGeometry(geoJSONFeature);
+    feature.geometry = Util.toSuperMapGeometry((new ol.format.GeoJSON()).writeFeatureObject(geoFeature));
     return feature;
 };
 

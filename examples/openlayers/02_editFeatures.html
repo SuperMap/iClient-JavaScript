@@ -88,9 +88,6 @@
     }
 
     function addMarker() {
-        if (pointFeature) {
-            vectorSource.removeFeature(pointFeature);
-        }
         var xmax = 120, xmin = 100, ymax = 50, ymin = 20;
         pointFeature = new ol.Feature(new ol.geom.Point([Math.floor(Math.random() * (xmax - xmin + 1) + xmin), Math.floor(Math.random() * (ymax - ymin + 1) + ymin)]));
         pointFeature.setStyle(new ol.style.Style({
@@ -98,6 +95,7 @@
                 src: 'http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/markerbig.png'
             }))
         }));
+        pointFeature.setProperties({POP: 1, CAPITAL: 'test'});
         vectorSource.addFeature(pointFeature);
     }
 
@@ -108,7 +106,7 @@
         var me = this;
         var featureService = new ol.supermap.FeatureService(urlCapital);
         var addFeatureParams = new SuperMap.EditFeaturesParameters({
-            features: pointFeature.getGeometry(),
+            features: pointFeature,
             dataSourceName: "World",
             dataSetName: "Capitals",
             editType: "add",

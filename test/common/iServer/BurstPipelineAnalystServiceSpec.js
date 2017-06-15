@@ -82,7 +82,7 @@ describe('testBurstPipelineAnalystService_processAsync',function(){
                 burstPipelineAnalystService.destroy();
                 done();
             }
-        },2000);
+        },4000);
     });
 
     //正确返回结果
@@ -114,6 +114,6 @@ describe('testBurstPipelineAnalystService_processAsync',function(){
                 burstPipelineAnalystParams.destroy();
                 done();
             }
-        },2000)
+        },4000)
     });
 });
