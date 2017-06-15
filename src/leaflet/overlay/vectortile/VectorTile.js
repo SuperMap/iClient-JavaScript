@@ -155,7 +155,7 @@ var VectorTile = L.Class.extend({
             styleOverride = tileLayer._overriddenStyles[styleKey];
 
         styleOptions = styleOverride ? styleOverride : styleOptions;
-        styleOptions = (styleOptions instanceof Function) ? styleOptions(feat.properties, coords.z) : styleOptions;
+        styleOptions = (styleOptions instanceof Function) ? styleOptions(feature.properties, coords.z) : styleOptions;
         styleOptions = !(styleOptions instanceof Array) ? [styleOptions] : styleOptions;
         return styleOptions;
     },

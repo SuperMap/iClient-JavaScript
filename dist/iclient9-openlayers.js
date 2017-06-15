@@ -10470,13 +10470,15 @@ SuperMap.ElasticSearchService = SuperMap.Class({
     },
 
     validateDatas: function (datas) {
-        var me = this;
-        if (datas instanceof Array) {
-            datas.map(function (data) {
-                me._validateData(data);
-            });
-        } else {
-            me._validateData(data);
+        if (!datas) {
+            return;
+        }
+        if (!(datas instanceof Array)) {
+            datas = [datas];
+        }
+        var i, len = datas.length;
+        for (i = 0; i < len; i++) {
+            this._validateData(datas[i]);
         }
     },
 

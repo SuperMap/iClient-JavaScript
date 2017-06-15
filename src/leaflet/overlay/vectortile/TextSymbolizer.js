@@ -40,7 +40,7 @@ L.TextSymbolizer = L.Path.extend({
             this._text = (attributes && this.properties.textField) ?
                 attributes[this.properties.textField] || "" : "";
         }
-        options = this.options;
+        var options = this.options;
         this._pxBounds = L.bounds(this._point, this._point);
         L.Symbolizer.prototype.render.apply(this, [renderer, style]);
         this.options = L.Util.extend(options, style);
@@ -90,7 +90,7 @@ L.Canvas.Renderer.include({
         if (!this._drawing || layer._empty()) {
             return;
         }
-        container = this.getContainer();
+        var container = this.getContainer();
         var size = this._map.getSize();
         container.width = size.x;
         container.height = size.y;

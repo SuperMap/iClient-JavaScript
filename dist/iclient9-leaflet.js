@@ -12439,13 +12439,15 @@ SuperMap.ElasticSearchService = SuperMap.Class({
     },
 
     validateDatas: function (datas) {
-        var me = this;
-        if (datas instanceof Array) {
-            datas.map(function (data) {
-                me._validateData(data);
-            });
-        } else {
-            me._validateData(data);
+        if (!datas) {
+            return;
+        }
+        if (!(datas instanceof Array)) {
+            datas = [datas];
+        }
+        var i, len = datas.length;
+        for (i = 0; i < len; i++) {
+            this._validateData(datas[i]);
         }
     },
 
@@ -49983,7 +49985,7 @@ L.TextSymbolizer = L.Path.extend({
             this._text = (attributes && this.properties.textField) ?
                 attributes[this.properties.textField] || "" : "";
         }
-        options = this.options;
+        var options = this.options;
         this._pxBounds = L.bounds(this._point, this._point);
         L.Symbolizer.prototype.render.apply(this, [renderer, style]);
         this.options = L.Util.extend(options, style);
@@ -50033,7 +50035,7 @@ L.Canvas.Renderer.include({
         if (!this._drawing || layer._empty()) {
             return;
         }
-        container = this.getContainer();
+        var container = this.getContainer();
         var size = this._map.getSize();
         container.width = size.x;
         container.height = size.y;
@@ -50460,7 +50462,7 @@ var VectorTile = L.Class.extend({
             styleOverride = tileLayer._overriddenStyles[styleKey];
 
         styleOptions = styleOverride ? styleOverride : styleOptions;
-        styleOptions = (styleOptions instanceof Function) ? styleOptions(feat.properties, coords.z) : styleOptions;
+        styleOptions = (styleOptions instanceof Function) ? styleOptions(feature.properties, coords.z) : styleOptions;
         styleOptions = !(styleOptions instanceof Array) ? [styleOptions] : styleOptions;
         return styleOptions;
     },
