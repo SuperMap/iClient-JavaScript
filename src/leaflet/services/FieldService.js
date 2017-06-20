@@ -55,6 +55,9 @@ var FieldService = ServiceBase.extend({
         var me = this,
             fieldName = params.fieldName,
             modes = params.statisticMode;
+        if (modes && !L.Util.isArray(modes)) {
+            modes = [modes];
+        }
         me.currentStatisticResult = {fieldName: fieldName};
         me._statisticsCallback = callback;
         //针对每种统计方式分别进行请求

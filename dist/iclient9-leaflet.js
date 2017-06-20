@@ -14664,6 +14664,9 @@ var FieldService = ServiceBase.extend({
         var me = this,
             fieldName = params.fieldName,
             modes = params.statisticMode;
+        if (modes && !L.Util.isArray(modes)) {
+            modes = [modes];
+        }
         me.currentStatisticResult = {fieldName: fieldName};
         me._statisticsCallback = callback;
         //针对每种统计方式分别进行请求
@@ -29476,7 +29479,7 @@ SuperMap.FieldStatisticsParameters = SuperMap.Class({
     fieldName: null,
     /**
      * APIProperty: statisticMode
-     * {SuperMap.StatisticMode}字段统计方法类型
+     * {String<SuperMap.StatisticMode>|Array<String<SuperMap.StatisticMode>>}字段统计方法类型
      */
     statisticMode: null,
 

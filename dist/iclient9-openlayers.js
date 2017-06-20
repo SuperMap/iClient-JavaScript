@@ -1114,7 +1114,7 @@ module.exports = ol;
  * Class: SuperMap.ServiceBase
  * common服务基类
  */
-__webpack_require__(17);
+__webpack_require__(18);
 var SuperMap = __webpack_require__(0);
 SuperMap.ServiceBase = SuperMap.Class({
 
@@ -3727,6 +3727,142 @@ module.exports = SuperMap.Feature.Theme.Graph;
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(4);
+var ol = __webpack_require__(2);
+var GeoJSONFormat = __webpack_require__(6);
+var SuperMap = __webpack_require__(0);
+
+ol.supermap.Util.toGeoJSON = function (smObj) {
+    if (smObj) {
+        var format = new GeoJSONFormat();
+        return JSON.parse(format.write(smObj));
+    }
+};
+
+ol.supermap.Util.toSuperMapGeometry = function (geoJSON) {
+    if (geoJSON && geoJSON.type) {
+        var format = new GeoJSONFormat();
+        var result = format.read(geoJSON, "FeatureCollection");
+        return result[0].geometry;
+    }
+};
+
+ol.supermap.Util.resolutionToScale = function (resolution, dpi, mapUnit) {
+    var inchPerMeter = 1 / 0.0254;
+    // 地球半径。
+    var meterPerMapUnit = this.getMeterPerMapUnit(mapUnit);
+    var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
+    scale = 1 / scale;
+    return scale;
+};
+
+ol.supermap.Util.scaleToResolution = function (scale, dpi, mapUnit) {
+    var inchPerMeter = 1 / 0.0254;
+    var meterPerMapUnitValue = this.getMeterPerMapUnit(mapUnit);
+    var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
+    resolution = 1 / resolution;
+    return resolution;
+};
+
+ol.supermap.Util.getMeterPerMapUnit = function (mapUnit) {
+    var earchRadiusInMeters = 6378137;
+    var meterPerMapUnit;
+    if (mapUnit === SuperMap.Unit.METER) {
+        meterPerMapUnit = 1;
+    } else if (mapUnit === SuperMap.Unit.DEGREE) {
+        // 每度表示多少米。
+        meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
+    } else if (mapUnit === SuperMap.Unit.KILOMETER) {
+        meterPerMapUnit = 1.0E-3;
+    } else if (mapUnit === SuperMap.Unit.INCH) {
+        meterPerMapUnit = 1 / 2.5399999918E-2;
+    } else if (mapUnit === SuperMap.Unit.FOOT) {
+        meterPerMapUnit = 0.3048;
+    } else {
+        return meterPerMapUnit;
+    }
+    return meterPerMapUnit;
+};
+
+ol.supermap.Util.isArray = function (obj) {
+    return Object.prototype.toString.call(obj) == '[object Array]'
+};
+
+ol.supermap.Util.Csv2GeoJSON = function (csv, options) {
+    var defaultOptions = {
+        titles: ['lon', 'lat'],
+        latitudeTitle: 'lat',
+        longitudeTitle: 'lon',
+        fieldSeparator: ',',
+        lineSeparator: '\n',
+        deleteDoubleQuotes: true,
+        firstLineTitles: false
+    };
+    options = options || defaultOptions;
+    var _propertiesNames = []
+    if (typeof csv === 'string') {
+        var titulos = options.titles;
+        if (options.firstLineTitles) {
+            csv = csv.split(options.lineSeparator);
+            if (csv.length < 2) return;
+            titulos = csv[0];
+            csv.splice(0, 1);
+            csv = csv.join(options.lineSeparator);
+            titulos = titulos.trim().split(options.fieldSeparator);
+            for (var i = 0; i < titulos.length; i++) {
+                titulos[i] = _deleteDoubleQuotes(titulos[i]);
+            }
+            options.titles = titulos;
+        }
+        for (var i = 0; i < titulos.length; i++) {
+            var prop = titulos[i].toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '_');
+            if (prop == '' || prop == '_') prop = 'prop-' + i;
+            _propertiesNames[i] = prop;
+        }
+        csv = _csv2json(csv);
+    }
+    return csv;
+
+    function _deleteDoubleQuotes(cadena) {
+        if (options.deleteDoubleQuotes) cadena = cadena.trim().replace(/^"/, "").replace(/"$/, "");
+        return cadena;
+    }
+
+    function _csv2json(csv) {
+        var json = {};
+        json["type"] = "FeatureCollection";
+        json["features"] = [];
+        var titulos = options.titles;
+        csv = csv.split(options.lineSeparator);
+        for (var num_linea = 0; num_linea < csv.length; num_linea++) {
+            var campos = csv[num_linea].trim().split(options.fieldSeparator)
+                , lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)])
+                , lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
+            if (campos.length == titulos.length && lng < 180 && lng > -180 && lat < 90 && lat > -90) {
+                var feature = {};
+                feature["type"] = "Feature";
+                feature["geometry"] = {};
+                feature["properties"] = {};
+                feature["geometry"]["type"] = "Point";
+                feature["geometry"]["coordinates"] = [lng, lat];
+                for (var i = 0; i < titulos.length; i++) {
+                    if (titulos[i] != options.latitudeTitle && titulos[i] != options.longitudeTitle) {
+                        feature["properties"][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
+                    }
+                }
+                json["features"].push(feature);
+            }
+        }
+        return json;
+    }
+};
+
+module.exports = ol.supermap.Util;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
 ﻿/**
  * Class: SuperMap.ServerTextStyle
  * 服务端文本风格类
@@ -3948,13 +4084,13 @@ module.exports = SuperMap.ServerTextStyle;
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/** * Class: SuperMap.TransportationAnalystParameter * 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 */var SuperMap = __webpack_require__(0);var TransportationAnalystResultSetting = __webpack_require__(253);SuperMap.TransportationAnalystParameter = SuperMap.Class({    /**     * APIProperty: barrierEdgeIDs     * {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。     */    barrierEdgeIDs: null,    /**     * APIProperty: barrierNodeIDs     * {Array(<Number>)} 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。     */    barrierNodeIDs: null,    /**     * APIProperty: barrierPoints     * {Array(<Point>)}网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */    barrierPoints: null,    /**     * APIProperty: weightFieldName     * {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */    weightFieldName: null,    /**     * APIProperty: turnWeightField     * {String} 转向权重字段的名称。     */    turnWeightField: null,    /**     * APIProperty: resultSetting     * {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    resultSetting: null,    /**     * Constructor: SuperMap.TransportationAnalystParameter     * 交通网络分析通用参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * barrierEdgeIDs - {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。     * barrierNodeIDs - {Array(<Number>)} 网络分析中障碍点的 ID 数组。     * barrierPoints - {Array(<Point>)}     * weightFieldName - {String} 阻力字段的名称。     * turnWeightField - {String} 转向权重字段的名称。     * resultSetting - {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    initialize: function (options) {        var me = this;        me.resultSetting = new TransportationAnalystResultSetting();        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.barrierEdgeIDs = null;        me.barrierNodeIDs = null;        me.weightFieldName = null;        me.turnWeightField = null;        if (me.resultSetting) {            me.resultSetting.destroy();            me.resultSetting = null;        }        if (me.barrierPoints && me.barrierPoints.length) {            for (var i in me.barrierPoints) {                me.barrierPoints.destroy();            }        }        me.barrierPoints = null;    },    CLASS_NAME: "SuperMap.TransportationAnalystParameter"});module.exports = SuperMap.TransportationAnalystParameter;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -4141,142 +4277,6 @@ SuperMap.SecurityManager = {
 SuperMap.SecurityManager.SSO = "https://sso.supermap.com";
 SuperMap.SecurityManager.ONLINE = "http://www.supermapol.com";
 module.exports = SuperMap.SecurityManager;
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(4);
-var ol = __webpack_require__(2);
-var GeoJSONFormat = __webpack_require__(6);
-var SuperMap = __webpack_require__(0);
-
-ol.supermap.Util.toGeoJSON = function (smObj) {
-    if (smObj) {
-        var format = new GeoJSONFormat();
-        return JSON.parse(format.write(smObj));
-    }
-};
-
-ol.supermap.Util.toSuperMapGeometry = function (geoJSON) {
-    if (geoJSON && geoJSON.type) {
-        var format = new GeoJSONFormat();
-        var result = format.read(geoJSON, "FeatureCollection");
-        return result[0].geometry;
-    }
-};
-
-ol.supermap.Util.resolutionToScale = function (resolution, dpi, mapUnit) {
-    var inchPerMeter = 1 / 0.0254;
-    // 地球半径。
-    var meterPerMapUnit = this.getMeterPerMapUnit(mapUnit);
-    var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
-    scale = 1 / scale;
-    return scale;
-};
-
-ol.supermap.Util.scaleToResolution = function (scale, dpi, mapUnit) {
-    var inchPerMeter = 1 / 0.0254;
-    var meterPerMapUnitValue = this.getMeterPerMapUnit(mapUnit);
-    var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
-    resolution = 1 / resolution;
-    return resolution;
-};
-
-ol.supermap.Util.getMeterPerMapUnit = function (mapUnit) {
-    var earchRadiusInMeters = 6378137;
-    var meterPerMapUnit;
-    if (mapUnit === SuperMap.Unit.METER) {
-        meterPerMapUnit = 1;
-    } else if (mapUnit === SuperMap.Unit.DEGREE) {
-        // 每度表示多少米。
-        meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
-    } else if (mapUnit === SuperMap.Unit.KILOMETER) {
-        meterPerMapUnit = 1.0E-3;
-    } else if (mapUnit === SuperMap.Unit.INCH) {
-        meterPerMapUnit = 1 / 2.5399999918E-2;
-    } else if (mapUnit === SuperMap.Unit.FOOT) {
-        meterPerMapUnit = 0.3048;
-    } else {
-        return meterPerMapUnit;
-    }
-    return meterPerMapUnit;
-};
-
-ol.supermap.Util.isArray = function (obj) {
-    return Object.prototype.toString.call(obj) == '[object Array]'
-};
-
-ol.supermap.Util.Csv2GeoJSON = function (csv, options) {
-    var defaultOptions = {
-        titles: ['lon', 'lat'],
-        latitudeTitle: 'lat',
-        longitudeTitle: 'lon',
-        fieldSeparator: ',',
-        lineSeparator: '\n',
-        deleteDoubleQuotes: true,
-        firstLineTitles: false
-    };
-    options = options || defaultOptions;
-    var _propertiesNames = []
-    if (typeof csv === 'string') {
-        var titulos = options.titles;
-        if (options.firstLineTitles) {
-            csv = csv.split(options.lineSeparator);
-            if (csv.length < 2) return;
-            titulos = csv[0];
-            csv.splice(0, 1);
-            csv = csv.join(options.lineSeparator);
-            titulos = titulos.trim().split(options.fieldSeparator);
-            for (var i = 0; i < titulos.length; i++) {
-                titulos[i] = _deleteDoubleQuotes(titulos[i]);
-            }
-            options.titles = titulos;
-        }
-        for (var i = 0; i < titulos.length; i++) {
-            var prop = titulos[i].toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '_');
-            if (prop == '' || prop == '_') prop = 'prop-' + i;
-            _propertiesNames[i] = prop;
-        }
-        csv = _csv2json(csv);
-    }
-    return csv;
-
-    function _deleteDoubleQuotes(cadena) {
-        if (options.deleteDoubleQuotes) cadena = cadena.trim().replace(/^"/, "").replace(/"$/, "");
-        return cadena;
-    }
-
-    function _csv2json(csv) {
-        var json = {};
-        json["type"] = "FeatureCollection";
-        json["features"] = [];
-        var titulos = options.titles;
-        csv = csv.split(options.lineSeparator);
-        for (var num_linea = 0; num_linea < csv.length; num_linea++) {
-            var campos = csv[num_linea].trim().split(options.fieldSeparator)
-                , lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)])
-                , lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
-            if (campos.length == titulos.length && lng < 180 && lng > -180 && lat < 90 && lat > -90) {
-                var feature = {};
-                feature["type"] = "Feature";
-                feature["geometry"] = {};
-                feature["properties"] = {};
-                feature["geometry"]["type"] = "Point";
-                feature["geometry"]["coordinates"] = [lng, lat];
-                for (var i = 0; i < titulos.length; i++) {
-                    if (titulos[i] != options.latitudeTitle && titulos[i] != options.longitudeTitle) {
-                        feature["properties"][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
-                    }
-                }
-                json["features"].push(feature);
-            }
-        }
-        return json;
-    }
-};
-
-module.exports = ol.supermap.Util;
 
 /***/ }),
 /* 19 */
@@ -7784,7 +7784,7 @@ module.exports = ol.source.Graph;
  */
 var SuperMap = __webpack_require__(0);
 var Request = __webpack_require__(12);
-var SecurityManager = __webpack_require__(17);
+var SecurityManager = __webpack_require__(18);
 
 SuperMap.iPortalServiceBase = SuperMap.Class({
 
@@ -10280,7 +10280,7 @@ module.exports = SuperMap.iPortal;
 __webpack_require__(262);
 var SuperMap = __webpack_require__(0);
 var Request = __webpack_require__(12);
-var SecurityManager = __webpack_require__(17);
+var SecurityManager = __webpack_require__(18);
 var OnlineData = __webpack_require__(261);
 SuperMap.Online = SuperMap.Class({
 
@@ -10698,7 +10698,7 @@ module.exports = ol.source.Tianditu;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(4);
-__webpack_require__(17);
+__webpack_require__(18);
 var ol = __webpack_require__(2);
 var SuperMap = __webpack_require__(0);
 ol.supermap.TileSuperMapRest = function (options) {
@@ -11305,7 +11305,7 @@ module.exports = ol.source.Graphic;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(4);
-__webpack_require__(17);
+__webpack_require__(18);
 __webpack_require__(279);
 __webpack_require__(51);
 __webpack_require__(50);
@@ -12059,7 +12059,7 @@ module.exports = ol.supermap.ChartService;
  */
 __webpack_require__(5);
 var ol = __webpack_require__(2);
-var Util = __webpack_require__(18);
+var Util = __webpack_require__(15);
 var SuperMap = __webpack_require__(0);
 var GetFeaturesByIDsService = __webpack_require__(165);
 var GetFeaturesBySQLService = __webpack_require__(167);
@@ -12288,6 +12288,7 @@ module.exports = ol.supermap.FeatureService;
  */
 __webpack_require__(5);
 var ol = __webpack_require__(2);
+var Util = __webpack_require__(15);
 var GetFieldsService = __webpack_require__(168);
 var FieldStatisticService = __webpack_require__(134);
 
@@ -12329,6 +12330,9 @@ ol.supermap.FieldService.prototype.getFieldStatisticsInfo = function (params, ca
     var me = this,
         fieldName = params.fieldName,
         modes = params.statisticMode;
+    if (modes && !Util.isArray(modes)) {
+        modes = [modes];
+    }
     me.currentStatisticResult = {fieldName: fieldName};
     me._statisticsCallback = callback;
     //针对每种统计方式分别进行请求
@@ -12627,7 +12631,7 @@ module.exports = ol.supermap.MapService;
  */
 __webpack_require__(5);
 var ol = __webpack_require__(2);
-var Util = __webpack_require__(18);
+var Util = __webpack_require__(15);
 var MeasureService = __webpack_require__(192);
 
 ol.supermap.MeasureService = function (url, options) {
@@ -12817,7 +12821,7 @@ module.exports = ol.supermap.NetworkAnalyst3DService;
  */
 __webpack_require__(5);
 var ol = __webpack_require__(2);
-var Util=__webpack_require__(18);
+var Util=__webpack_require__(15);
 var SuperMap = __webpack_require__(0);
 var BurstPipelineAnalystService = __webpack_require__(103);
 var ComputeWeightMatrixService = __webpack_require__(111);
@@ -13427,7 +13431,7 @@ module.exports = ol.supermap.ProcessingJobsService;
  */
 __webpack_require__(5);
 var ol = __webpack_require__(2);
-var Util = __webpack_require__(18);
+var Util = __webpack_require__(15);
 var SuperMap = __webpack_require__(0);
 var QueryByBoundsService = __webpack_require__(198);
 var QueryByDistanceService = __webpack_require__(200);
@@ -13586,7 +13590,7 @@ module.exports = ol.supermap.QueryService;
  */
 __webpack_require__(5);
 var ol = __webpack_require__(2);
-var Util = __webpack_require__(18);
+var Util = __webpack_require__(15);
 var SuperMap = __webpack_require__(0);
 var AreaSolarRadiationService = __webpack_require__(94);
 var BufferAnalystService = __webpack_require__(97);
@@ -14021,7 +14025,7 @@ module.exports = ol.supermap.ThemeService;
  */
 __webpack_require__(5);
 var ol = __webpack_require__(2);
-var Util = __webpack_require__(18);
+var Util = __webpack_require__(15);
 var StopQueryService = __webpack_require__(219);
 var TransferPathService = __webpack_require__(250);
 var TransferSolutionService = __webpack_require__(252);
@@ -18624,7 +18628,7 @@ module.exports = SuperMap.ColorDictionary;
  * 根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
  */
 var SuperMap = __webpack_require__(0);
-var TransportationAnalystParameter = __webpack_require__(16);
+var TransportationAnalystParameter = __webpack_require__(17);
 SuperMap.ComputeWeightMatrixParameters = SuperMap.Class({
 
     /**
@@ -20992,7 +20996,7 @@ SuperMap.FieldStatisticsParameters = SuperMap.Class({
     fieldName: null,
     /**
      * APIProperty: statisticMode
-     * {SuperMap.StatisticMode}字段统计方法类型
+     * {String<SuperMap.StatisticMode>|Array<String<SuperMap.StatisticMode>>}字段统计方法类型
      */
     statisticMode: null,
 
@@ -21030,7 +21034,7 @@ module.exports = SuperMap.FieldStatisticsParameters;
  * 最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
  */
 var SuperMap = __webpack_require__(0);
-var TransportationAnalystParameter = __webpack_require__(16);
+var TransportationAnalystParameter = __webpack_require__(17);
 SuperMap.FindClosestFacilitiesParameters = SuperMap.Class({
 
     /**
@@ -21526,7 +21530,7 @@ module.exports = SuperMap.REST.FindLocationService;
  * 例如：现在有50个报刊零售地（配送目的地），和4个报刊供应地（配送中心），现寻求这4个供应地向报刊零售地发送报纸的最优路线，属物流配送问题。
  */
 var SuperMap = __webpack_require__(0);
-var TransportationAnalystParameter = __webpack_require__(16);
+var TransportationAnalystParameter = __webpack_require__(17);
 SuperMap.FindMTSPPathsParameters = SuperMap.Class({
 
     /**
@@ -21777,7 +21781,7 @@ module.exports = SuperMap.REST.FindMTSPPathsService;
  * 计算最佳路径除了受阻抗影响外，还受转向字段的影响。转向值通过 SuperMap.TransportationAnalystParameter.turnWeightField 设置。
  */
 var SuperMap = __webpack_require__(0);
-var TransportationAnalystParameter = __webpack_require__(16);
+var TransportationAnalystParameter = __webpack_require__(17);
 SuperMap.FindPathParameters = SuperMap.Class({
 
     /**
@@ -22012,7 +22016,7 @@ module.exports = SuperMap.REST.FindPathService;
  * 例如：计算某快餐店能够在30分钟内送达快餐的区域。
  */
 var SuperMap = __webpack_require__(0);
-var TransportationAnalystParameter = __webpack_require__(16);
+var TransportationAnalystParameter = __webpack_require__(17);
 SuperMap.FindServiceAreasParameters = SuperMap.Class({
 
     /**
@@ -22269,7 +22273,7 @@ module.exports = SuperMap.REST.FindServiceAreasService;
  * 最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。
  */
 var SuperMap = __webpack_require__(0);
-var TransportationAnalystParameter = __webpack_require__(16);
+var TransportationAnalystParameter = __webpack_require__(17);
 SuperMap.FindTSPPathsParameters = SuperMap.Class({
     /**
      * APIProperty: endNodeAssigned
@@ -26210,7 +26214,7 @@ module.exports = SuperMap.LabelImageCell;
  * 索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
  */
 var SuperMap = __webpack_require__(0);
-var ServerTextStyle = __webpack_require__(15);
+var ServerTextStyle = __webpack_require__(16);
 SuperMap.LabelMixedTextStyle = SuperMap.Class({
 
     /**
@@ -31199,7 +31203,7 @@ module.exports = SuperMap.ThemeGraduatedSymbolStyle;
  */
 var SuperMap = __webpack_require__(0);
 var ServerColor = __webpack_require__(11);
-var ServerTextStyle = __webpack_require__(15);
+var ServerTextStyle = __webpack_require__(16);
 SuperMap.ThemeGraphAxes = SuperMap.Class({
 
     /**
@@ -31448,7 +31452,7 @@ module.exports = SuperMap.ThemeGraphSize;
  */
 __webpack_require__(1);
 var SuperMap = __webpack_require__(0);
-var ServerTextStyle = __webpack_require__(15);
+var ServerTextStyle = __webpack_require__(16);
 SuperMap.ThemeGraphText = SuperMap.Class({
 
     /**
@@ -32150,7 +32154,7 @@ module.exports = SuperMap.ThemeLabelBackground;
  * SuperMap.ThemeLabelItem[0].end=5，SuperMap.ThemeLabelItem[1].start=5，SuperMap.ThemeLabelItem[1].end=10。
  */
 var SuperMap = __webpack_require__(0);
-var ServerTextStyle = __webpack_require__(15);
+var ServerTextStyle = __webpack_require__(16);
 SuperMap.ThemeLabelItem = SuperMap.Class({
 
     /**
@@ -32246,7 +32250,7 @@ module.exports = SuperMap.ThemeLabelItem;
  */
 __webpack_require__(182);
 var SuperMap = __webpack_require__(0);
-var ServerTextStyle = __webpack_require__(15);
+var ServerTextStyle = __webpack_require__(16);
 SuperMap.ThemeLabelText = SuperMap.Class({
 
     /**
@@ -32361,7 +32365,7 @@ module.exports = SuperMap.ThemeLabelText;
  * 每一个子项都具有其名称、风格、指定的单值、X方向偏移量和Y方向偏移量。
  */
 var SuperMap = __webpack_require__(0);
-var ServerTextStyle = __webpack_require__(15);
+var ServerTextStyle = __webpack_require__(16);
 SuperMap.ThemeLabelUniqueItem = SuperMap.Class({
 
     /**
@@ -34747,7 +34751,7 @@ SuperMap.FilterField = {
  * Online服务基类(使用key作为权限限制的类需要实现此类)
  */
 var SuperMap = __webpack_require__(0);
-var SecurityManager = __webpack_require__(17);
+var SecurityManager = __webpack_require__(18);
 var Request = __webpack_require__(12);
 SuperMap.OnlineServiceBase = SuperMap.Class({
 

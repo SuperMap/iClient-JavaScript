@@ -11,7 +11,7 @@ SuperMap.FieldStatisticsParameters = SuperMap.Class({
     fieldName: null,
     /**
      * APIProperty: statisticMode
-     * {SuperMap.StatisticMode}字段统计方法类型
+     * {String<SuperMap.StatisticMode>|Array<String<SuperMap.StatisticMode>>}字段统计方法类型
      */
     statisticMode: null,
 
