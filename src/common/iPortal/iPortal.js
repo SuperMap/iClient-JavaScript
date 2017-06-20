@@ -6,18 +6,12 @@ var iPortalService = require('./iPortalService');
 var iPortalMap = require('./iPortalMap');
 SuperMap.iPortal = SuperMap.Class(SuperMap.iPortalServiceBase, {
 
-    initialize: function (iportalUrl, token) {
+    initialize: function (iportalUrl) {
         this.iportalUrl = iportalUrl;
-        this.token = token;
     },
 
     load: function () {
-        var me = this;
-        return SuperMap.Request.get(me.iportalUrl + '/web').then(function (result) {
-            if (result) {
-                SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(me.token, 'token');
-            }
-        });
+        return SuperMap.Request.get(this.iportalUrl + '/web');
     },
 
     queryServices: function (queryParams) {
@@ -42,7 +36,7 @@ SuperMap.iPortal = SuperMap.Class(SuperMap.iPortalServiceBase, {
             var mapRetult = {};
             var maps = [];
             result.content.map(function (mapJsonObj) {
-                maps.push(new iPortalMap(mapsUrl+"/"+mapJsonObj.id, mapJsonObj));
+                maps.push(new iPortalMap(mapsUrl + "/" + mapJsonObj.id, mapJsonObj));
             });
             mapRetult.content = maps;
             mapRetult.currentPage = result.currentPage;
@@ -51,8 +45,7 @@ SuperMap.iPortal = SuperMap.Class(SuperMap.iPortalServiceBase, {
             mapRetult.totalPage = result.totalPage;
             return mapRetult;
         });
-    },
-
+    }
 });
 
 module.exports = SuperMap.iPortal;

@@ -26,7 +26,7 @@ SuperMap.Request = {
 
     get: function (url, params, options) {
         var type = 'GET';
-        url = this._appendUrlTokenParameter(url);
+        url = this._processUrl(url);
         url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
         if (url.length <= 2000) {
             if (SuperMap.Support.cors) {
@@ -42,7 +42,7 @@ SuperMap.Request = {
 
     delete: function (url, params, options) {
         var type = 'DELETE';
-        url = this._appendUrlTokenParameter(url);
+        url = this._processUrl(url);
         url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
         if (url.length <= 2000 && SuperMap.Support.cors) {
             return this._fetch(url, params, options, type);
@@ -51,11 +51,11 @@ SuperMap.Request = {
     },
 
     post: function (url, params, options) {
-        return this._fetch(this._appendUrlTokenParameter(url), params, options, 'POST');
+        return this._fetch(this._processUrl(url), params, options, 'POST');
     },
 
     put: function (url, params, options) {
-        return this._fetch(this._appendUrlTokenParameter(url), params, options, 'PUT');
+        return this._fetch(this._processUrl(url), params, options, 'PUT');
     },
 
     _postSimulatie: function (type, url, params, options) {
@@ -64,11 +64,16 @@ SuperMap.Request = {
         return this.post(url, params, options);
     },
 
-    _appendUrlTokenParameter: function (url) {
-        url = (url.indexOf('.json') === -1 && url.indexOf("?") === -1) ? (url + '.json') : url;
-        if (SuperMap.Credential.CREDENTIAL && SuperMap.Credential.CREDENTIAL.getUrlParameters()) {
-            var separator = url.indexOf("?") > -1 ? "&" : "?";
-            url += separator + SuperMap.Credential.CREDENTIAL.getUrlParameters();
+    _processUrl: function (url) {
+        if (url.indexOf('.json') === -1) {
+            if (url.indexOf("?") < 0) {
+                url += '.json'
+            } else {
+                var urlArrays = url.split("?");
+                if (urlArrays.length === 2) {
+                    url = urlArrays[0] + ".json?" + urlArrays[1]
+                }
+            }
         }
         return url;
     },

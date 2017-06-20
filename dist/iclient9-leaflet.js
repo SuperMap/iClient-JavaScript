@@ -3059,7 +3059,7 @@ SuperMap.Request = {
 
     get: function (url, params, options) {
         var type = 'GET';
-        url = this._appendUrlTokenParameter(url);
+        url = this._processUrl(url);
         url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
         if (url.length <= 2000) {
             if (SuperMap.Support.cors) {
@@ -3075,7 +3075,7 @@ SuperMap.Request = {
 
     delete: function (url, params, options) {
         var type = 'DELETE';
-        url = this._appendUrlTokenParameter(url);
+        url = this._processUrl(url);
         url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
         if (url.length <= 2000 && SuperMap.Support.cors) {
             return this._fetch(url, params, options, type);
@@ -3084,11 +3084,11 @@ SuperMap.Request = {
     },
 
     post: function (url, params, options) {
-        return this._fetch(this._appendUrlTokenParameter(url), params, options, 'POST');
+        return this._fetch(this._processUrl(url), params, options, 'POST');
     },
 
     put: function (url, params, options) {
-        return this._fetch(this._appendUrlTokenParameter(url), params, options, 'PUT');
+        return this._fetch(this._processUrl(url), params, options, 'PUT');
     },
 
     _postSimulatie: function (type, url, params, options) {
@@ -3097,11 +3097,16 @@ SuperMap.Request = {
         return this.post(url, params, options);
     },
 
-    _appendUrlTokenParameter: function (url) {
-        url = (url.indexOf('.json') === -1 && url.indexOf("?") === -1) ? (url + '.json') : url;
-        if (SuperMap.Credential.CREDENTIAL && SuperMap.Credential.CREDENTIAL.getUrlParameters()) {
-            var separator = url.indexOf("?") > -1 ? "&" : "?";
-            url += separator + SuperMap.Credential.CREDENTIAL.getUrlParameters();
+    _processUrl: function (url) {
+        if (url.indexOf('.json') === -1) {
+            if (url.indexOf("?") < 0) {
+                url += '.json'
+            } else {
+                var urlArrays = url.split("?");
+                if (urlArrays.length === 2) {
+                    url = urlArrays[0] + ".json?" + urlArrays[1]
+                }
+            }
         }
         return url;
     },
@@ -12183,18 +12188,12 @@ var iPortalService = __webpack_require__(189);
 var iPortalMap = __webpack_require__(187);
 SuperMap.iPortal = SuperMap.Class(SuperMap.iPortalServiceBase, {
 
-    initialize: function (iportalUrl, token) {
+    initialize: function (iportalUrl) {
         this.iportalUrl = iportalUrl;
-        this.token = token;
     },
 
     load: function () {
-        var me = this;
-        return SuperMap.Request.get(me.iportalUrl + '/web').then(function (result) {
-            if (result) {
-                SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(me.token, 'token');
-            }
-        });
+        return SuperMap.Request.get(this.iportalUrl + '/web');
     },
 
     queryServices: function (queryParams) {
@@ -12219,7 +12218,7 @@ SuperMap.iPortal = SuperMap.Class(SuperMap.iPortalServiceBase, {
             var mapRetult = {};
             var maps = [];
             result.content.map(function (mapJsonObj) {
-                maps.push(new iPortalMap(mapsUrl+"/"+mapJsonObj.id, mapJsonObj));
+                maps.push(new iPortalMap(mapsUrl + "/" + mapJsonObj.id, mapJsonObj));
             });
             mapRetult.content = maps;
             mapRetult.currentPage = result.currentPage;
@@ -12228,8 +12227,7 @@ SuperMap.iPortal = SuperMap.Class(SuperMap.iPortalServiceBase, {
             mapRetult.totalPage = result.totalPage;
             return mapRetult;
         });
-    },
-
+    }
 });
 
 module.exports = SuperMap.iPortal;
