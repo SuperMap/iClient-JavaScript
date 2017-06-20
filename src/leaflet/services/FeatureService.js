@@ -198,9 +198,9 @@ var FeatureService = ServiceBase.extend({
 
     _createServerFeature: function (geoFeature) {
         var geoJSONFeature, feature = {}, fieldNames = [], fieldValues = [];
-        if(geoFeature instanceof  L.Path){
+        if (geoFeature instanceof L.Path) {
             geoJSONFeature = geoFeature.toGeoJSON();
-        }else{
+        } else {
             geoJSONFeature = geoFeature;
         }
         for (var key in geoJSONFeature.properties) {
@@ -209,6 +209,9 @@ var FeatureService = ServiceBase.extend({
         }
         feature.fieldNames = fieldNames;
         feature.fieldValues = fieldValues;
+        if (geoJSONFeature.id) {
+            feature.id = geoJSONFeature.id;
+        }
         feature.geometry = Util.toSuperMapGeometry(geoJSONFeature);
         return feature;
     },

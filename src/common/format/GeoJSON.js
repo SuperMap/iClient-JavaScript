@@ -104,7 +104,8 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
                             }
                     }
                     break;
-                default:break;
+                default:
+                    break;
             }
         }
         return results;
@@ -504,6 +505,9 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
             }
             if (feature.fid !== null) {
                 json.id = feature.fid;
+            }
+            if (feature.ID !== null) {
+                json.id = feature.ID;
             }
             return json;
         },
