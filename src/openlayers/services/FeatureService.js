@@ -170,7 +170,7 @@ ol.supermap.FeatureService.prototype._processParams = function (params) {
     var me = this;
     params.returnContent = (params.returnContent == null) ? true : params.returnContent;
     params.fromIndex = params.fromIndex ? params.fromIndex : 0;
-    params.toIndex = params.fromIndex ? params.fromIndex : -1;
+    params.toIndex = params.toIndex ? params.toIndex : -1;
     if (params.bounds) {
         params.bounds = new SuperMap.Bounds(
             params.bounds[0],

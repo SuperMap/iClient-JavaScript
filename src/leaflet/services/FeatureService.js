@@ -168,7 +168,7 @@ var FeatureService = ServiceBase.extend({
         }
         params.returnContent = (params.returnContent == null) ? true : params.returnContent;
         params.fromIndex = params.fromIndex ? params.fromIndex : 0;
-        params.toIndex = params.fromIndex ? params.fromIndex : -1;
+        params.toIndex = params.toIndex ? params.toIndex : -1;
         params.isUseBatch = (params.isUseBatch == null) ? false : params.isUseBatch;
         if (params.bounds) {
             params.bounds = L.CommontypesConversion.toSuperMapBounds(params.bounds);
