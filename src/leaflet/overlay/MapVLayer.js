@@ -37,20 +37,24 @@ var MapVLayer = L.Layer.extend({
     getEvents: function () {
         return {
             moveend: this.draw,
-            zoomend: this.draw,
-            resize: this._resize,
-            zoomanim: this._animateZoom
+            zoomstart:this._hide,
+            zoomend:this._show
         }
 
     },
+    _hide : function () {
+        this.canvas.style.display = 'none';
+    },
 
+    _show : function () {
+        this.canvas.style.display = 'block';
+    },
     onRemove: function (map) {
         L.DomUtil.remove(this.container);
         map.off({
             moveend: this.draw,
-            zoomend: this.draw,
-            resize: this._resize,
-            zoomanim: this._animateZoom
+            zoomstart:this._hide,
+            zoomend:this._show
         }, this);
     },
 
@@ -99,45 +103,33 @@ var MapVLayer = L.Layer.extend({
         return canvas;
     },
 
-    _animateZoom: function (evt) {
-        if (!this._animating) {
-            this._animating = true;
-        }
-
-        var zoom = evt.zoom, center = evt.center;
-        var scale = this._map.getZoomScale(zoom),
-            offset = this._map._getCenterOffset(center)._multiplyBy(-scale).subtract(this._map._getMapPanePos());
-
-        if (L.DomUtil.setTransform) {
-            L.DomUtil.setTransform(this.canvas, offset, scale);
-        } else {
-            L.DomUtil.setPosition(this.canvas, offset);
-        }
-    },
 
     _resize: function () {
         var canvas = this.canvas;
         if (!canvas) {
             return;
         }
+
         var map = this._map;
-        var center = map.getCenter();
         var size = map.getSize();
         canvas.width = size.x;
         canvas.height = size.y;
         canvas.style.width = size.x + 'px';
         canvas.style.height = size.y + 'px';
-        var divCenter = map.latLngToLayerPoint(center);
-        var offsetX = -Math.round(size.x / 2 - divCenter.x);
-        var offsetY = -Math.round(size.y / 2 - divCenter.y);
-        L.DomUtil.setPosition(canvas, L.point(offsetX, offsetY));
+        var bounds =map.getBounds();
+        var topLeft = map.latLngToLayerPoint(bounds.getNorthWest());
+        L.DomUtil.setPosition(canvas, topLeft);
+
     },
 
     _reset: function () {
         this._resize();
         this._render()
     },
-
+    redraw: function () {
+        this._resize();
+        this._render()
+    },
     _render: function () {
         this.render();
     },
