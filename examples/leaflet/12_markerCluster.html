@@ -17,8 +17,8 @@
 <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
 <script type="text/javascript">
     var map, resultLayer, getFeatureBySQLParams,
-            dataUrl = "http://support.supermap.com.cn:8090/iserver/services/data-DynamicData/rest/data",
-            url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+        dataUrl = "http://support.supermap.com.cn:8090/iserver/services/data-DynamicData/rest/data",
+        url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
     map = L.map('map', {
         preferCanvas: true,
         center: [32, 104],
@@ -36,16 +36,17 @@
             name: "Train@DynamicData",
             attributeFilter: "SmID>100 and SmID < 800"
         }),
+        toIndex: -1,
         datasetNames: ["DynamicData:Train"]
     });
     loadMarkerCluster();
 
     function loadMarkerCluster() {
         L.supermap
-                .featureService(dataUrl)
-                .getFeaturesBySQL(getFeatureBySQLParams, function (serviceResult) {
-                    createLayers(serviceResult.result.features);
-                });
+            .featureService(dataUrl)
+            .getFeaturesBySQL(getFeatureBySQLParams, function (serviceResult) {
+                createLayers(serviceResult.result.features);
+            });
     }
     function createLayers(result) {
         if (!result || !result.features || result.features.length < 1) {
