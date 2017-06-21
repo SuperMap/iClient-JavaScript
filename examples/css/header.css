@@ -198,7 +198,7 @@
 }
 
 /*尺寸小于510时,利用按钮展开的头部选项的样式*/
-@media (max-width: 510px) {
+@media screen and (max-width: 510px) {
     .navbar-custom-menu .navbar-nav > li > a {
         padding-left: 15px;
         padding-right: 15px;
@@ -230,7 +230,7 @@
 }
 
 /*尺寸小于410时*/
-@media (max-width: 410px) {
+@media screen and (max-width: 410px){
     .navbar-custom-menu .navbar-nav > li > a {
         padding-left: 10px;
         padding-right: 10px;
