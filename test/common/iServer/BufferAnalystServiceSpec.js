@@ -67,7 +67,7 @@ describe('testBufferAnalystService_processAsync', function () {
         }, 4000)
     });
 
-    it('byGeometry_NotReturnContent', function (done) {
+    it('SuccessEvent:byGeometry_NotReturnContent', function (done) {
 
         var bfServiceByGeometry = initBufferAnalystService();
         expect(bfServiceByGeometry).not.toBeNull();
@@ -112,7 +112,7 @@ describe('testBufferAnalystService_processAsync', function () {
     });
 
     //测试失败事件
-    it('byGeometry_NotReturnContent', function (done) {
+    it('failEvent:byGeometry_NotReturnContent', function (done) {
         var bfServiceByGeometry = initBufferAnalystService();
         expect(bfServiceByGeometry).not.toBeNull();
         expect(bfServiceByGeometry.url).toEqual(url);

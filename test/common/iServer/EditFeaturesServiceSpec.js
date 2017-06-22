@@ -1,285 +1,250 @@
 ﻿require('../../../src/common/iServer/EditFeaturesService');
 
-var serviceFailedEventArgsSystem = null;
-var editFeaturesEventArgsSystem = null;
 var editServiceURL = GlobeParameter.editServiceURL;
-var options = {
-	eventListeners:{
-		'processCompleted': editFeaturesServiceCompleted,
-		'processFailed':editFeaturesServiceFailed
-	}
-};
-function initEditFeaturesService() {
-	return new SuperMap.REST.EditFeaturesService(editServiceURL,options);
-}
-function editFeaturesServiceFailed(serviceFailedEventArgs){
-    serviceFailedEventArgsSystem = serviceFailedEventArgs;
-}
-function editFeaturesServiceCompleted(editFeaturesEventArgs){
-    editFeaturesEventArgsSystem = editFeaturesEventArgs;
-}
+var editServiceURL_POINT = GlobeParameter.editServiceURL_POINT;
+var editServiceURL_LINE = GlobeParameter.editServiceURL_LINE;
+var id1;
+describe('testEditFeaturesService', function () {
+    var originalTimeout;
+    beforeEach(function () {
+        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+    });
+    afterEach(function () {
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    });
 
-describe('testEditFeaturesService_processAsync', function () {
-	var originalTimeout;
-	beforeEach(function() {
-		originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-		jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-		serviceFailedEventArgsSystem = null;
-		editFeaturesEventArgsSystem = null;
-	});
-	afterEach(function() {
-		jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-	});
+    // 成功：增加一个REGION要素，returnContent为true
+    it('successEvent:addFeature_returnContent=true', function (done) {
+        var addFeatureFailedEventArgsSystem = null;
+        var addFeatureSuccessEventArgsSystem = null;
 
-	//测试新增要素 returnContent = true,isUseBatch =true
-	/*it('addFeatures_isUseBatch',function(done){
-		var pointList = [], m_list = [],
-				p1 = new SuperMap.Geometry.Point(117.75279632955, 39.275271578065),
-				p2 = new SuperMap.Geometry.Point(117.73088420723, 39.050672324315),
-				p3 = new SuperMap.Geometry.Point(118.15269256183, 39.08901853837),
-				p4 = new SuperMap.Geometry.Point(118.20199483705, 39.253359455748),
-				m1 = new SuperMap.Geometry.Point(116.75279632955, 38.275271578065),
-				m2 = new SuperMap.Geometry.Point(116.73088420723, 38.050672324315),
-				m3 = new SuperMap.Geometry.Point(117.15269256183, 40.08901853837),
-				m4 = new SuperMap.Geometry.Point(117.20199483705, 40.253359455748),
-				linearRing, linearRing1,
-				polygon, polygon1,
-				features = [],
-				editFeatureParameter;
-		pointList.push(p1);
-		pointList.push(p2);
-		pointList.push(p3);
-		pointList.push(p4);
-		pointList.push(p1);
-		m_list.push(m1);
-		m_list.push(m2);
-		m_list.push(m3);
-		m_list.push(m4);
-		m_list.push(m1);
-		linearRing = new SuperMap.Geometry.LinearRing(pointList);
-		polygon = new SuperMap.Geometry.Polygon([linearRing]);
-		polygon.id = 0;
-		features.push({
-			fieldNames:[],
-			fieldValues:[],
-			geometry:polygon
-		});
-		linearRing1 = new SuperMap.Geometry.LinearRing(m_list);
-		polygon1 = new SuperMap.Geometry.Polygon([linearRing1]);
-		polygon1.id = 0;
-		features.push({
-			fieldNames:[],
-			fieldValues:[],
-			geometry:polygon1
-		});
-		editFeatureParameter = new SuperMap.EditFeaturesParameters({
-			features: features,
-			editType: SuperMap.EditType.ADD,
-			returnContent:true,
-			isUseBatch: true
-		});
-		var editFeaturesService = initEditFeaturesService();
-		var isInTheSameDomain = SuperMap.Util.isInTheSameDomain(editFeaturesService.url);
-		expect(editFeaturesService).not.toBeNull();
-		if(!isInTheSameDomain) {
-			expect(editFeaturesService.url).toEqual(editServiceURL + "/features.jsonp?");
-		}else {
-			expect(editFeaturesService.url).toEqual(editServiceURL + "/features.json?");
-		}
-		editFeaturesService.processAsync(editFeatureParameter);
+        function addFeatureFailed(serviceFailedEventArgs) {
+            addFeatureFailedEventArgsSystem = serviceFailedEventArgs;
+        }
 
-		setTimeout(function(){
-			try{
-				var editFeaturesResult = editFeaturesEventArgsSystem.result;
-				expect(editFeaturesResult).not.toBeNull();
-				expect(editFeaturesResult.succeed).toBeTruthy();
-				editFeaturesService.destroy();
-				expect(editFeaturesService.EVENT_TYPES).toBeNull();
-				expect(editFeaturesService.events).toBeNull();
-				expect(editFeaturesService.eventListeners).toBeNull();
-				expect(editFeaturesService.returnContent).toBeNull();
-				expect(editFeaturesService.isUseBatch).toBeNull();
-				editFeatureParameter.destroy();
-				done();
-			}catch(exception){
-				expect(false).toBeTruthy();
-				console.log("EditFeaturesService_" + exception.name + ":" + exception.message);
-				editFeaturesService.destroy();
-				editFeatureParameter.destroy();
-				done();
-			}
-		},2000)
-	});
+        function addFeatureCompleted(editFeaturesEventArgs) {
+            addFeatureSuccessEventArgsSystem = editFeaturesEventArgs;
+        }
 
-	//测试新增要素 returnContent = false
-	it('addFeatures_notReturnContent',function(done){
-		var pointList = [],
-				p1 = new SuperMap.Geometry.Point(118.05408801141, 38.837029131724),
-				p2 = new SuperMap.Geometry.Point(117.80757663534, 38.606951847395),
-				p3 = new SuperMap.Geometry.Point(118.43207212138, 38.530259419285),
-				linearRing,
-				polygon,
-				features,
-				editFeatureParameter;
-		pointList.push(p1);
-		pointList.push(p2);
-		pointList.push(p3);
-		pointList.push(p1);
-		linearRing = new SuperMap.Geometry.LinearRing(pointList);
-		polygon = new SuperMap.Geometry.Polygon([linearRing]);
-		polygon.id = 0;
-		features = {
-			fieldNames:[],
-			fieldValues:[],
-			geometry:polygon
-		};
-		editFeatureParameter = new SuperMap.EditFeaturesParameters({
-			features: [features],
-			editType: SuperMap.EditType.ADD,
-			returnContent:false
-		});
-		var editFeaturesService = initEditFeaturesService();
-		editFeaturesService.processAsync(editFeatureParameter);
+        var addFeatureOptions = {
+            eventListeners: {
+                'processCompleted': addFeatureCompleted,
+                'processFailed': addFeatureFailed
+            }
+        };
+        var pointList = [],
+            p1 = new SuperMap.Geometry.Point(118.05408801141, 38.837029131724),
+            p2 = new SuperMap.Geometry.Point(117.80757663534, 38.606951847395),
+            p3 = new SuperMap.Geometry.Point(118.43207212138, 38.530259419285);
+        pointList.push(p1);
+        pointList.push(p2);
+        pointList.push(p3);
+        pointList.push(p1);
+        var linearRing = new SuperMap.Geometry.LinearRing(pointList);
+        var polygon = new SuperMap.Geometry.Polygon([linearRing]);
+        var features = {
+            fieldNames: [],
+            fieldValues: [],
+            geometry: polygon
+        };
+        var addFeaturesParams = new SuperMap.EditFeaturesParameters({
+            features: [features],
+            editType: SuperMap.EditType.ADD,
+            returnContent: true
+        });
+        var addFeatureService = new SuperMap.REST.EditFeaturesService(editServiceURL, addFeatureOptions);
+        addFeatureService.processAsync(addFeaturesParams);
 
-		setTimeout(function(){
-			try{
-				var editFeaturesResult = editFeaturesEventArgsSystem.result;
-				expect(editFeaturesResult).not.toBeNull();
-				expect(editFeaturesResult.succeed).toBeTruthy();
-				expect(editFeaturesResult.newResourceID).not.toBeNull();
-				expect(editFeaturesResult.newResourceLocation).not.toBeNull();
-				editFeaturesService.destroy();
-				editFeatureParameter.destroy();
-				done();
-			}catch(exception){
-				expect(false).toBeTruthy();
-				console.log("EditFeaturesService_" + exception.name + ":" + exception.message);
-				editFeaturesService.destroy();
-				editFeatureParameter.destroy();
-				done();
-			}
-		},2000);
-	});
+        setTimeout(function () {
+            try {
+                var serviceResult = addFeatureSuccessEventArgsSystem.result;
+                expect(addFeatureService).not.toBeNull();
+                expect(addFeatureService.isInTheSameDomain).toBeFalsy();
+                expect(addFeatureService.isUseBatch).toBeFalsy();
+                expect(addFeatureService.returnContent).toBeTruthy();
+                expect(addFeatureService.options.method).toBe("POST");
+                expect(addFeatureService.options.data).toContain("'parts':[4]");
+                expect(addFeatureService.options.data).toContain('"REGION"');
+                expect(serviceResult).not.toBeNull();
+                expect(serviceResult.succeed).toBeTruthy();
+                expect(serviceResult[0]).not.toBeNull();
+                id1 = serviceResult[0];
+                addFeatureService.destroy();
+                addFeaturesParams.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("addFeature案例失败" + exception.name + ":" + exception.message);
+                addFeatureService.destroy();
+                addFeaturesParams.destroy();
+                done();
+            }
+        }, 2000);
+    });
 
-	it('addFeatures_noParameters',function(done) {
-		var editFeaturesService = initEditFeaturesService();
-		editFeatureParameter = new SuperMap.EditFeaturesParameters({
-			editType: SuperMap.EditType.ADD,
-			returnContent: true
-		});
-		editFeaturesService.processAsync(editFeatureParameter);
+    // 更新要素
+    it('successEvent:updateFeatures', function (done) {
+        var updateFailedEventArgsSystem = null;
+        var updateSuccessEventArgsSystem = null;
 
-		setTimeout(function () {
-			try {
-				expect(serviceFailedEventArgsSystem).not.toBeNull();
-				expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
-				//iserver的错误信息变来变去的，这一句先注释掉
-				//equal(editFeaturesResult.errorMsg, "在FeaturesResource中，在把请求体转化成对象时失败");
-				editFeaturesService.destroy();
-				editFeatureParameter.destroy();
-				done();
-			} catch (exception) {
-				expect(false).toBeTruthy();
-				console.log("EditFeaturesService_" + exception.name + ":" + exception.message);
-				editFeaturesService.destroy();
-				editFeatureParameter.destroy();
-				done();
-			}
-		}, 2000);
-	});*/
+        function updateFeaturesFailed(serviceFailedEventArgs) {
+            updateFailedEventArgsSystem = serviceFailedEventArgs;
+        }
 
-	//测试编辑要素
-	it('editFeatures',function(done){
-		var editFeaturesService = initEditFeaturesService();
-		var pointList = [],
-				p1 = new SuperMap.Geometry.Point(118.05408801141, 38.837029131724),
-				p2 = new SuperMap.Geometry.Point(117.80757663534, 38.606951847395),
-				p3 = new SuperMap.Geometry.Point(118.43207212138, 38.530259419285),
-				p4 = new SuperMap.Geometry.Point(118.56207212138, 38.660259419285),
-				linearRing,
-				polygon,
-				features,
-				editFeatureParameter;
-		pointList.push(p1);
-		pointList.push(p2);
-		pointList.push(p3);
-		pointList.push(p4);
-		pointList.push(p1);
-		linearRing = new SuperMap.Geometry.LinearRing(pointList);
-		polygon = new SuperMap.Geometry.Polygon([linearRing]);
-		polygon.id = 173;
-		features = {
-			fieldNames:[],
-			fieldValues:[],
-			geometry:polygon
-		};
-		editFeatureParameter = new SuperMap.EditFeaturesParameters({
-			features: [features],
-			editType: SuperMap.EditType.UPDATE
-		});
-		editFeaturesService.processAsync(editFeatureParameter);
+        function updateFeaturesCompleted(editFeaturesEventArgs) {
+            updateSuccessEventArgsSystem = editFeaturesEventArgs;
+        }
 
-		setTimeout(function(){
-			try{
-				//成功编辑
-				var editFeaturesResult = editFeaturesEventArgsSystem.result;
-				expect(editFeaturesResult.succeed).toBeTruthy();
-				/* ok(editFeaturesResult !== null,"editFeaturesService.lastResult");
-				 ok(editFeaturesResult.resourceInfo !== null,"editFeaturesResult.resourceInfo");
-				 equal(editFeaturesResult.resourceInfo.succeed, true,"editFeaturesResult.resourceInfo.succeed");
-				 ok(editFeaturesResult.IDs === null,"editFeaturesResult.IDs:"+editFeaturesResult.IDs);
-				 //失败编辑
-				 expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();*/
-				editFeaturesService.destroy();
-				editFeatureParameter.destroy();
-				done();
-			}catch(exception){
-				expect(false).toBeTruthy();
-				console.log("EditFeaturesService_" + exception.name + ":" + exception.message);
-				editFeaturesService.destroy();
-				editFeatureParameter.destroy();
-				done();
-			}
-		},10000);
-	});
+        var updateFeaturesOptions = {
+            eventListeners: {
+                'processCompleted': updateFeaturesCompleted,
+                'processFailed': updateFeaturesFailed
+            }
+        };
+        var pointList = [],
+            p1 = new SuperMap.Geometry.Point(118.05, 38.83),
+            p2 = new SuperMap.Geometry.Point(117.80, 38.60),
+            p3 = new SuperMap.Geometry.Point(118.43, 38.53);
+        pointList.push(p1);
+        pointList.push(p2);
+        pointList.push(p3);
+        pointList.push(p1);
+        var linearRing = new SuperMap.Geometry.LinearRing(pointList);
+        var polygonUpdate = new SuperMap.Geometry.Polygon([linearRing]);
+        var features = {
+            fieldNames: [],
+            fieldValues: [],
+            geometry: polygonUpdate
+        };
+        polygonUpdate.id = id1;
+        var updateFeaturesParams = new SuperMap.EditFeaturesParameters({
+            features: [features],
+            editType: SuperMap.EditType.UPDATE
+        });
+        var updateFeaturesService = new SuperMap.REST.EditFeaturesService(editServiceURL, updateFeaturesOptions);
+        updateFeaturesService.processAsync(updateFeaturesParams);
 
-/*	//测试删除要素
-	it('deleteFeatures',function(done){
-		var editFeaturesService = initEditFeaturesService();
-		var editFeatureParameter = new SuperMap.EditFeaturesParameters({
-			IDs: [172, 173],
-			editType: SuperMap.EditType.DELETE
-		});
-		editFeaturesService.processAsync(editFeatureParameter);
+        setTimeout(function () {
+            try {
+                expect(updateFeaturesService).not.toBeNull();
+                expect(updateFeaturesService.isInTheSameDomain).toBeFalsy();
+                expect(updateFailedEventArgsSystem).toBeNull();
+                expect(updateSuccessEventArgsSystem.type).toBe("processCompleted");
+                expect(updateSuccessEventArgsSystem.object.options.method).toBe("PUT");
+                expect(updateSuccessEventArgsSystem.result.succeed).toBeTruthy();
+                updateFeaturesService.destroy();
+                updateFeaturesParams.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("updateFeatures案例失败" + exception.name + ":" + exception.message);
+                updateFeaturesService.destroy();
+                updateFeaturesParams.destroy();
+                done();
+            }
+        }, 2000);
+    });
 
-		setTimeout(function() {
-			try{
-				//成功删除
-				if(editFeaturesEventArgsSystem!==null){
-					expect(editFeaturesEventArgsSystem.result).not.toBeNull();
-					expect(editFeaturesEventArgsSystem.result.succeed).toBeTruthy();
-					//expect(editFeaturesEventArgsSystem.result.IDs).toBeNull();
-					// var editFeaturesResult = editFeaturesService.lastResult;
-					// ok(editFeaturesResult !== null,"editFeaturesService.lastResult");
-					// ok(editFeaturesResult.resourceInfo !== null,"editFeaturesResult.resourceInfo");
-					// equal(editFeaturesResult.resourceInfo.succeed, true,"editFeaturesResult.resourceInfo.succeed");
-					// ok(editFeaturesResult.IDs === null,"editFeaturesResult.IDs:"+editFeaturesResult.IDs);
-				}
-				//失败删除
-				else {
-					expect(serviceFailedEventArgsSystem.error).not.toBeNull();
-					expect(serviceFailedEventArgsSystem.error.errorMsg).not.toBeNull();
-				}
-				editFeaturesService.destroy();
-				editFeatureParameter.destroy();
-				done();
-			}catch(exception){
-			expect(false).toBeTruthy();
-				console.log("EditFeaturesService_" + exception.name + ":" + exception.message);
-				editFeaturesService.destroy();
-				editFeatureParameter.destroy();
-				done();
-			}
-		},2000);
-	})*/
+    // 删除要素
+    it('successEvent:deleteFeature', function (done) {
+        var deleteFailedEventArgsSystem = null;
+        var deleteSuccessEventArgsSystem = null;
+
+        function deleteFeaturesFailed(serviceFailedEventArgs) {
+            deleteFailedEventArgsSystem = serviceFailedEventArgs;
+        }
+
+        function deleteFeaturesCompleted(editFeaturesEventArgs) {
+            deleteSuccessEventArgsSystem = editFeaturesEventArgs;
+        }
+
+        var deleteFeaturesOptions = {
+            eventListeners: {
+                'processCompleted': deleteFeaturesCompleted,
+                'processFailed': deleteFeaturesFailed
+            }
+        };
+
+        var deleteFeaturesParams = new SuperMap.EditFeaturesParameters({
+            dataSourceName: "Jingjin",
+            dataSetName: "Landuse_R",
+            IDs: [id1],
+            editType: SuperMap.EditType.DELETE
+        });
+        var deleteFeaturesService = new SuperMap.REST.EditFeaturesService(editServiceURL, deleteFeaturesOptions);
+        deleteFeaturesService.processAsync(deleteFeaturesParams);
+
+        setTimeout(function () {
+            try {
+                expect(deleteFailedEventArgsSystem).toBeNull();
+                expect(deleteSuccessEventArgsSystem.type).toBe("processCompleted");
+                var id = "[" + id1 + "]";
+                expect(deleteSuccessEventArgsSystem.object.options.data).toBe(id);
+                expect(deleteSuccessEventArgsSystem.object.options.method).toBe("DELETE");
+                expect(deleteSuccessEventArgsSystem.result.succeed).toBeTruthy();
+                deleteFeaturesService.destroy();
+                deleteFeaturesParams.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("deleteFeatures案例失败" + exception.name + ":" + exception.message);
+                deleteFeaturesService.destroy();
+                deleteFeaturesParams.destroy();
+                done();
+            }
+        }, 2000);
+    });
+
+    // 失败事件
+    it('failEvent:addFeatures_noParameters', function (done) {
+        var noParamsFailedEventArgsSystem = null;
+        var noParamsSuccessEventArgsSystem = null;
+
+        function noParamsFailed(serviceFailedEventArgs) {
+            noParamsFailedEventArgsSystem = serviceFailedEventArgs;
+        }
+
+        function noParamsCompleted(editFeaturesEventArgs) {
+            noParamsSuccessEventArgsSystem = editFeaturesEventArgs;
+        }
+
+        var noParamsOptions = {
+            eventListeners: {
+                'processCompleted': noParamsCompleted,
+                'processFailed': noParamsFailed
+            }
+        };
+
+        var noParams = new SuperMap.EditFeaturesParameters({
+            features: null,
+            editType: SuperMap.EditType.ADD,
+            returnContent: true
+        });
+        var noParamsService = new SuperMap.REST.EditFeaturesService(editServiceURL, noParamsOptions);
+        noParamsService.processAsync(noParams);
+
+        setTimeout(function () {
+            try {
+                expect(noParamsSuccessEventArgsSystem).toBeNull();
+                expect(noParamsFailedEventArgsSystem).not.toBeNull();
+                expect(noParamsFailedEventArgsSystem.type).toBe('processFailed');
+                expect(noParamsFailedEventArgsSystem.object.options.data).toBeUndefined();
+                expect(noParamsFailedEventArgsSystem.object.options.method).toBe('POST');
+                expect(noParamsFailedEventArgsSystem.error).not.toBeNull();
+                expect(noParamsFailedEventArgsSystem.error.code).toEqual(400);
+                expect(noParamsFailedEventArgsSystem.error.errorMsg).not.toBeNull();
+                noParamsService.destroy();
+                noParams.destroy();
+                done();
+            } catch (exception) {
+                expect(false).toBeTruthy();
+                console.log("'failEvent:addFeatures_noParameters'案例失败" + exception.name + ":" + exception.message);
+                noParamsService.destroy();
+                noParams.destroy();
+                done();
+            }
+        }, 2000);
+    });
+
 });

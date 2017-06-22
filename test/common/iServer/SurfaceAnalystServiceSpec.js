@@ -218,7 +218,7 @@ describe('testSurfaceAnalystService_processAsync', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 4000);
+        }, 10000);
     });
 
     /*  暂时没法测

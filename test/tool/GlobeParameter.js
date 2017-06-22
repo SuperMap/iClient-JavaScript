@@ -6,7 +6,9 @@
     spatialAnalystURL: "http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst",
     spatialAnalystURL_Changchun:"http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst",
     dataServiceURL: "http://localhost:8090/iserver/services/data-world/rest/data",
-    editServiceURL: "http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R",
+    editServiceURL: "http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Landuse_R",
+    editServiceURL_LINE:"http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Geomor_L",
+    editServiceURL_POINT:"http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/Jingjin/datasets/Neighbor_P",
     trafficTransferURL: "http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun",
 	vectorURL: "http://localhost:8090/iserver/services/map-world/rest/maps/World/",
     gridURL:"http://localhost:8090/iserver/services/map-jingjin/rest/maps/京津地区土地利用现状图",
@@ -16,5 +18,8 @@
     WMTSURL:"http://localhost:8090/iserver/services/map-world/wmts100",
 	WCSURL:  "http://localhost:8090/iserver/services/data-world/wcs111",
     plotUrl:  "http://localhost:8090/iserver/services/plot-jingyong/rest/plot",
-    tileSetsURL: "http://localhost:8090/iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces"
+    tileSetsURL: "http://localhost:8090/iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces",
+    addressMatchURL: "http://localhost:8090/iserver/services/addressmatch-BeijingAddress/restjsr/v1/address",
+    jingjinMapURL : "http://localhost:8090/iserver/services/map-jingjin/rest",
+    editServiceURL_leaflet: "http://localhost:8090/iserver/services/data-jingjin/rest/data",
 };
