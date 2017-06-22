@@ -1,6 +1,6 @@
 <html xmlns="http://www.w3.org/1999/html">
 <head>
-    <title>SuperMap iClient for JavaScript 9D alpha</title>
+    <title>SuperMap iClient for JavaScript 9D Beta</title>
     <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
@@ -94,7 +94,10 @@
                             <h2 class="feature-heading">开源产品的最佳实践</h2>
 
                             <p class="feature-text">
-                                全面对接集成了Leaflet、OpenLayers、Mapbox GL JS、ECharts、D3等常用的地图库和制图制表库，避免用户的重复学习和成本投入
+                                全面对接集成了 <a target="_blank" href="http://leafletjs.com">Leaflet</a>、<a target="_blank" href="https://openlayers.org/">OpenLayers</a>、
+                                <a target="_blank" href="https://www.mapbox.com/mapbox-gl-js/api/">Mapbox GL JS</a>、
+                                <a target="_blank" href="http://echarts.baidu.com/">ECharts</a>、
+                                <a target="_blank" href="https://d3js.org/">D3</a>、<a target="_blank" href="http://mapv.baidu.com/">MapV</a> 等常用的地图库和制图制表库，避免用户的重复学习和成本投入
                             </p>
                         </div>
                         <div class="col-lg-5">
@@ -109,7 +112,7 @@
                             <h2 class="feature-heading">Morden WebGIS</h2>
 
                             <p class="feature-text">
-                                基于H5、WebGL、WebSocket、CSS6、RequireJS、ReactJS等现代Web技术栈，完全重建，符合IT发展的先进方向
+                                基于H5、WebGL、WebSocket、CSS6、RequireJS、ReactJS等现代Web技术栈，完全重建
                             </p>
                         </div>
                         <div class="col-lg-5 pull-lg-7">
@@ -126,7 +129,7 @@
                             <h2 class="feature-heading">完全开源 + 开放</h2>
 
                             <p class="feature-text">
-                                完全开源至Github、OSChina，建立开源社区，为Leaflet、OpenLayers、Mapbox GL JS等开源库提供扩展插件包，融入国际GIS开源社区
+                                iClient for JavaScript 9D 核心源代码基于Apache License 2.0开源许可协议发布，可在 github、<a target="_blank" href="https://git.oschina.net/isupermap/iClient9">oschina </a>自由下载和分发使用
                             </p>
                         </div>
                         <div class="col-lg-5">
@@ -190,7 +193,9 @@
                         </div>
                         <div id="fast-leaflet-content" class="collapse in">
                             <div class="map" id="leafletMap"></div>
-                            <p style="margin-top: 18px">将 iSevrer 发布的地图加载至 Leaflet 的 map 中</p>
+                            <p style="margin-top: 18px">引入 iclient9-leaflet.js 或 iclient9-leaflet.min.js，以 iclient9-leaflet.js 为例：</p>
+                            <pre class="javascript"><code class="html">&lt;script type=&quot;text/javascript&quot; src=&quot;http://iclient.supermapol.com/dist/iclient9-leaflet.js&quot;&gt;&lt;/script&gt;</code></pre>
+                            <p style="margin-top: 18px">将 iServer 发布的地图加载至 Leaflet 的 map 中：</p>
                     <pre class="javascript"><code>var map = L.map(&#39;map&#39;);
 L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/maps/China&quot;).addTo(map);</code><a href="../examples/leaflet/editor.html#01_tiledMapLayer3857" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a></pre>
                         </div>
@@ -205,13 +210,15 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
                         </div>
                         <div id="fast-openlayers-content" class="collapse in">
                         <div class="map" id="olMap"></div>
-                        <p style="margin-top: 19px">将 iSevrer 发布的地图加载至 OpenLayers 的 map 中</p>
+                            <p style="margin-top: 18px">引入 iclient9-openlayers.js 或 iclient9-openlayers.min.js，以 iclient9-openlayers.js 为例：：</p>
+        <pre class="javascript"><code class="html">&lt;script src=&quot;http://iclient.supermapol.com/iclient9-openlayers.js&quot;&gt;&lt;/script&gt;</code></pre>
+                        <p style="margin-top: 19px">将 iServer 发布的地图加载至 OpenLayers 的 map 中：</p>
                     <pre class="javascript"><code>var map = new ol.Map({
     target: &#39;map&#39;,
     layers: [new ol.layer.Tile({
-             source: new ol.supermap.TileSuperMapRest({
-             url: &quot;http://localhost:8090/iserver/services/map/rest/maps/World&quot;
-             }),
+            source: new ol.supermap.TileSuperMapRest({
+                    url: &quot;http://localhost:8090/iserver/services/map/rest/maps/World&quot;
+            }),
      })]
 });</code><a href="../examples/openlayers/editor.html#01_tiledMapLayer4326" style="font-size: 10px;float:right">查看源码&nbsp;&raquo;</a></pre>
                 </div>
@@ -226,7 +233,7 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
                         </div>
                         <div id="fast-mapboxgljs-content" class="collapse in">
                         <div class="map" id="mapboxMap"></div>
-                        <p style="margin-top: 19px">将 iSevrer 发布的地图加载至 Mapbox GL JS 的 map 中</p>
+                        <p style="margin-top: 19px">将 iServer 发布的地图加载至 Mapbox GL JS 的 map 中</p>
                     <pre class="javascript"><code>var map = new mapboxgl.Map({
           container: "map",
           style: {
@@ -282,7 +289,7 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
                                 </div>
                                 <div class="news-box">
                                     <p class="new-attributes_content">
-                                        完成了基础设施重建，完全开源+开放，全面对接集成了Leaflet、OpenLayers、MapboxGL JS、ECharts、MapV等常用的地图库和制图制表库，避免用户的重复学习和成本投入
+                                        完成了基础设施重建，完全开源 + 开放，全面对接集成了 Leaflet、OpenLayers、Mapbox GL JS、ECharts、MapV 等常用的地图库和制图制表库，避免用户的重复学习和成本投入
                                     </p>
                                 </div>
                             </div>
@@ -294,7 +301,7 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
                                 </div>
                                 <div class="news-box">
                                     <p class="new-attributes_content">
-                                        支持访问SuperMap iServer 9D 的分布式处理服务，提供核密度分析、格网聚合分析和地图缓存生成功能
+                                        支持访问 SuperMap iServer 9D 的分布式处理服务，提供核密度分析、格网聚合分析和地图缓存生成功能
                                     </p>
                                 </div>
                             </div>
@@ -306,7 +313,7 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
                                 </div>
                                 <div class="news-box">
                                     <p class="new-attributes_content">
-                                        支持访问SuperMap iServer 9D 的地址匹配服务，提供正向匹配和反向匹配功能
+                                        支持访问 SuperMap iServer 9D 的地址匹配服务，提供正向匹配和反向匹配功能
                                     </p>
                                 </div>
                             </div>
@@ -318,7 +325,7 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
                                 </div>
                                 <div class="news-box">
                                     <p class="new-attributes_content">
-                                        支持Mapbox矢量瓦片标准，为用户提供了更多可在客户端自由更改样式的地图风格
+                                        支持 Mapbox 矢量瓦片标准，为用户提供了更多可在客户端自由更改样式的地图风格
                                     </p>
                                 </div>
                             </div>
@@ -342,7 +349,7 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
                                 </div>
                                 <div class="news-box">
                                     <p class="new-attributes_content">
-                                        集成ECharts常用可视化效果：散点地图、迁徙图、热力图、线路图、线特效、折线图、柱状图、饼图
+                                        集成 ECharts 常用可视化效果：散点地图、迁徙图、热力图、线路图、线特效、折线图、柱状图、饼图
                                     </p>
                                 </div>
                             </div>
@@ -355,7 +362,7 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
                                 </div>
                                 <div class="news-box">
                                     <p class="new-attributes_content">
-                                        集成数据可视化开源库MapV，提供蜂巢图和海量点数据的绘制
+                                        集成数据可视化开源库 MapV，提供蜂巢图和海量点数据的绘制
                                     </p>
                                 </div>
                             </div>
@@ -367,7 +374,7 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
                                 </div>
                                 <div class="news-box">
                                     <p class="new-attributes_content">
-                                        更简单的访问SuperMap iPortal和SuperMap Online中用户配置的地图
+                                        更简单的访问 SuperMap iPortal 和 SuperMap Online 中用户配置的地图
                                     </p>
                                 </div>
                             </div>
@@ -379,7 +386,7 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
                                 </div>
                                 <div class="news-box">
                                     <p class="new-attributes_content">
-                                        统一SuperMap iServer、SuperMap iPortal、SuperMap Online的安全认证接口，支持安全登录，支持以token或key的方式访问服务或地图
+                                        统一 SuperMap iServer、SuperMap iPortal、SuperMap Online 的安全认证接口，支持安全登录，支持以 token 或 key 的方式访问服务或地图
                                     </p>
                                 </div>
                             </div>
