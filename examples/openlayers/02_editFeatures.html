@@ -62,6 +62,7 @@
         var polygon = new ol.geom.Polygon([[[118, 20], [120, 20], [120, 50], [-120, 50], [118, 20]]]);
         var featureService = new ol.supermap.FeatureService(url);
         var getFeatureParams = new SuperMap.GetFeaturesByGeometryParameters({
+            toIndex:-1,
             datasetNames: ["World:Capitals"],
             geometry: polygon,
             spatialQueryMode: "INTERSECT"

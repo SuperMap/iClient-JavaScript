@@ -18,7 +18,7 @@ SuperMap.EditFeaturesParameters = SuperMap.Class({
     dataSetName: null,
     /**
      * APIProperty: features
-     * {Array(Object)} 当前需要创建或者是修改的要素集。
+     * {Array<SuperMap.Feature.Vector|GeoJSON Feature>} 当前需要创建或者是修改的要素集。
      */
     features: null,
 

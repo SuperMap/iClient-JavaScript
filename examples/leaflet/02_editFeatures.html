@@ -32,6 +32,7 @@
     function initFeature() {
         var polygon = L.polygon([[10, 100], [10, 124], [40, 124], [40, 100], [10, 100]]);
         var getFeatureParams = new SuperMap.GetFeaturesByGeometryParameters({
+            toIndex:-1,
             datasetNames: ["World:Capitals"],
             geometry: polygon
         });

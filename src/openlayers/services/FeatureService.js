@@ -211,8 +211,8 @@ ol.supermap.FeatureService.prototype._createServerFeature = function (geoFeature
     }
     feature.fieldNames = fieldNames;
     feature.fieldValues = fieldValues;
-    if (geoJSONFeature.id) {
-        feature.id = geoJSONFeature.id;
+    if (geoFeature.getId()) {
+        feature.id = geoFeature.getId();
     }
     feature.geometry = Util.toSuperMapGeometry((new ol.format.GeoJSON()).writeFeatureObject(geoFeature));
     return feature;
