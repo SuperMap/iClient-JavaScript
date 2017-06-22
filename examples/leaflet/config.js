@@ -296,7 +296,15 @@ var exampleConfig = {
         content: {
             "draw": {
                 name: "点线面绘制",
-                content: null
+                content: [{
+                    name: "绘制与修改",
+                    thumbnail: "l_drawAndModify.png",
+                    fileName: "drawAndModify"
+                }, {
+                    name: "捕捉与修改",
+                    thumbnail: "l_snapAndModify.png",
+                    fileName: "snapAndModify"
+                }]
             },
             "drawPlot": {
                 name: "动态标绘",

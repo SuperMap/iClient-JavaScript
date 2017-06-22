@@ -296,7 +296,27 @@ var exampleConfig = {
         content: {
             "draw": {
                 name: "点线面绘制",
-                content: null
+                content: [{
+                    name: "绘制",
+                    thumbnail: "drawFeatures.png",
+                    fileName: "drawFeatures"
+                }, {
+                    name: "手写",
+                    thumbnail: "freehandDrawFeatures.png",
+                    fileName: "freehandDrawFeatures"
+                }, {
+                    name: "捕捉",
+                    thumbnail: "snapDrawFeatures.png",
+                    fileName: "snapDrawFeatures"
+                }, {
+                    name: "修改",
+                    thumbnail: "modifyFeatures.png",
+                    fileName: "modifyFeatures"
+                }, {
+                    name: "拖拽",
+                    thumbnail: "dragFeatures.png",
+                    fileName: "dragFeatures"
+                }]
             },
             "drawPlot": {
                 name: "动态标绘",
