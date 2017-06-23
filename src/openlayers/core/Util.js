@@ -109,20 +109,24 @@ ol.supermap.Util.Csv2GeoJSON = function (csv, options) {
             var campos = csv[num_linea].trim().split(options.fieldSeparator)
                 , lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)])
                 , lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
-            if (campos.length == titulos.length && lng < 180 && lng > -180 && lat < 90 && lat > -90) {
-                var feature = {};
-                feature["type"] = "Feature";
-                feature["geometry"] = {};
-                feature["properties"] = {};
-                feature["geometry"]["type"] = "Point";
-                feature["geometry"]["coordinates"] = [lng, lat];
-                for (var i = 0; i < titulos.length; i++) {
-                    if (titulos[i] != options.latitudeTitle && titulos[i] != options.longitudeTitle) {
-                        feature["properties"][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
-                    }
-                }
-                json["features"].push(feature);
+
+            var isInRange = lng < 180 && lng > -180 && lat < 90 && lat > -90;
+            if (!(campos.length == titulos.length && isInRange)) {
+                continue;
             }
+
+            var feature = {};
+            feature["type"] = "Feature";
+            feature["geometry"] = {};
+            feature["properties"] = {};
+            feature["geometry"]["type"] = "Point";
+            feature["geometry"]["coordinates"] = [lng, lat];
+            for (var i = 0; i < titulos.length; i++) {
+                if (titulos[i] != options.latitudeTitle && titulos[i] != options.longitudeTitle) {
+                    feature["properties"][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
+                }
+            }
+            json["features"].push(feature);
         }
         return json;
     }

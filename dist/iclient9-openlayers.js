@@ -3575,6 +3575,7 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
      * PS: (目前用于二维柱状图渐变色 所以子类实现此方法)
      */
     resetLinearGradient: function () {
+        //子类实现此方法
     },
 
     /**
@@ -3604,6 +3605,8 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
                         break;
                     case "y":
                         style[sty] -= shapeROP[1];
+                        break;
+                    default:
                         break;
                 }
             }
@@ -3669,6 +3672,7 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
      *
      */
     assembleShapes: function () {
+        //子类必须实现此方法
     },
 
     //地理坐标转为像素坐标。
@@ -3838,20 +3842,24 @@ ol.supermap.Util.Csv2GeoJSON = function (csv, options) {
             var campos = csv[num_linea].trim().split(options.fieldSeparator)
                 , lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)])
                 , lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
-            if (campos.length == titulos.length && lng < 180 && lng > -180 && lat < 90 && lat > -90) {
-                var feature = {};
-                feature["type"] = "Feature";
-                feature["geometry"] = {};
-                feature["properties"] = {};
-                feature["geometry"]["type"] = "Point";
-                feature["geometry"]["coordinates"] = [lng, lat];
-                for (var i = 0; i < titulos.length; i++) {
-                    if (titulos[i] != options.latitudeTitle && titulos[i] != options.longitudeTitle) {
-                        feature["properties"][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
-                    }
-                }
-                json["features"].push(feature);
+
+            var isInRange = lng < 180 && lng > -180 && lat < 90 && lat > -90;
+            if (!(campos.length == titulos.length && isInRange)) {
+                continue;
             }
+
+            var feature = {};
+            feature["type"] = "Feature";
+            feature["geometry"] = {};
+            feature["properties"] = {};
+            feature["geometry"]["type"] = "Point";
+            feature["geometry"]["coordinates"] = [lng, lat];
+            for (var i = 0; i < titulos.length; i++) {
+                if (titulos[i] != options.latitudeTitle && titulos[i] != options.longitudeTitle) {
+                    feature["properties"][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
+                }
+            }
+            json["features"].push(feature);
         }
         return json;
     }
@@ -4659,8 +4667,8 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
             me.url += "returnContent=" + me.returnContent;
             firstPara = false;
         }
-        if (me.fromIndex != null &&
-            me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex) && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
+        var isValidNumber = me.fromIndex != null && me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex);
+        if (isValidNumber && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
             me.url += "&fromIndex=" + me.fromIndex + "&toIndex=" + me.toIndex;
         }
 
@@ -7543,18 +7551,19 @@ ol.source.Graph.prototype.redrawThematicFeatures = function (extent, zoomChanged
         // 用 feature id 做缓存标识
         var cacheField = feature.id;
         // 数据对应的图表是否已缓存，没缓存则重新创建图表
-        if (!cache[cacheField]) {
-            cache[cacheField] = cacheField;
-            var chart = this.createThematicFeature(feature);
-            // 压盖处理权重值
-            if (chart && this.overlayWeightField) {
-                if (feature.attributes[this.overlayWeightField] && !isNaN(feature.attributes[this.overlayWeightField])) {
-                    chart["__overlayWeight"] = feature.attributes[this.overlayWeightField];
-                }
+        if (cache[cacheField]) {
+            continue;
+        }
+        cache[cacheField] = cacheField;
+        var chart = this.createThematicFeature(feature);
+        // 压盖处理权重值
+        if (chart && this.overlayWeightField) {
+            if (feature.attributes[this.overlayWeightField] && !isNaN(feature.attributes[this.overlayWeightField])) {
+                chart["__overlayWeight"] = feature.attributes[this.overlayWeightField];
             }
-            if (chart) {
-                this.charts.push(chart);
-            }
+        }
+        if (chart) {
+            this.charts.push(chart);
         }
     }
     this.drawCharts();
@@ -10052,6 +10061,7 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
                 var aArgs = Array.prototype.slice.call(arguments, 1),
                     fToBind = this,
                     fNOP = function () {
+                        //empty Function
                     },
                     fBound = function () {
                         return fToBind.apply(this instanceof fNOP && oThis
@@ -10176,8 +10186,7 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
                 me.currentTime = me.endTime;
             }
 
-        }
-        else {
+        } else {
             //如果相等，则代表上一帧已经运行到了最前，下一帧运行结束的状态
             if (me.currentTime === me.startTime) {
                 //不循环时
@@ -28133,8 +28142,10 @@ SuperMap.PointWithMeasure = SuperMap.Class(SuperMap.Geometry.Point, {
     equals: function (geom) {
         var equals = false;
         if (geom != null) {
-            equals = ((this.x === geom.x && this.y === geom.y && this.measure === geom.measure) ||
-            (isNaN(this.x) && isNaN(this.y) && isNaN(this.measure) && isNaN(geom.x) && isNaN(geom.y) && isNaN(geom.measure)));
+            var isValueEquals = this.x === geom.x && this.y === geom.y && this.measure === geom.measure;
+            var isNaNValue = isNaN(this.x) && isNaN(this.y) && isNaN(this.measure);
+            var isNaNGeometry = isNaN(geom.x) && isNaN(geom.y) && isNaN(geom.measure);
+            equals = ( isValueEquals || ( isNaNValue && isNaNGeometry ));
         }
         return equals;
     },
@@ -29034,10 +29045,12 @@ SuperMap.Feature.Theme.Ring = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
         var r = this.DVBHeight < this.DVBWidth ? this.DVBHeight / 2 : this.DVBWidth / 2;
 
         // 扇形内环（自适应）半径
-        var r0 = (typeof(sets.innerRingRadius) !== "undefined"
-        && !isNaN(sets.innerRingRadius)
-        && sets.innerRingRadius >= 0
-        && sets.innerRingRadius < r) ? sets.innerRingRadius : 0;
+        var isInRange = sets.innerRingRadius >= 0 && sets.innerRingRadius < r;
+        var r0 = (
+            typeof(sets.innerRingRadius) !== "undefined"
+            && !isNaN(sets.innerRingRadius)
+            && isInRange
+        ) ? sets.innerRingRadius : 0;
 
         for (var i = 0; i < fv.length; i++) {
             var fvi = Math.abs(fv[i]);
@@ -29152,23 +29165,22 @@ SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
      *
      */
     initialize: function (options) {
-        if (options) {
-            var routeFromClient = options.sourceRoute;
-            var routeHandle = {};
-            if (routeFromClient) {
-                if (routeFromClient instanceof SuperMap.Geometry && routeFromClient.components) {
-                    routeHandle.type = routeFromClient.type;
-                    routeHandle.parts = routeFromClient.parts;
-                    var parts = [];
-                    for (var i = 0, len = routeFromClient.components.length; i < len; i++) {
-                        parts = parts.concat(routeFromClient.components[i].components);
-                    }
-                    routeHandle.points = parts;
-                    options.sourceRoute = routeHandle;
-                }
-            }
-            SuperMap.Util.extend(this, options);
+        if (!options) {
+            return this;
         }
+        var routeFromClient = options.sourceRoute;
+        var routeHandle = {};
+        if (routeFromClient && routeFromClient instanceof SuperMap.Geometry && routeFromClient.components) {
+            routeHandle.type = routeFromClient.type;
+            routeHandle.parts = routeFromClient.parts;
+            var parts = [];
+            for (var i = 0, len = routeFromClient.components.length; i < len; i++) {
+                parts = parts.concat(routeFromClient.components[i].components);
+            }
+            routeHandle.points = parts;
+            options.sourceRoute = routeHandle;
+        }
+        SuperMap.Util.extend(this, options);
     },
 
     /**
@@ -29434,23 +29446,22 @@ SuperMap.RouteLocatorParameters = SuperMap.Class({
      * endMeasure -  {Double} 定位线的终止M值。只当路由对象定位线时有意义。
      */
     initialize: function (options) {
-        if (options) {
-            var routeFromClient = options.sourceRoute;
-            var routeHandle = {};
-            if (routeFromClient) {
-                if (routeFromClient instanceof SuperMap.Geometry && routeFromClient.components) {
-                    routeHandle.type = routeFromClient.type;
-                    routeHandle.parts = routeFromClient.parts;
-                    var parts = [];
-                    for (var i = 0, len = routeFromClient.components.length; i < len; i++) {
-                        parts = parts.concat(routeFromClient.components[i].components);
-                    }
-                    routeHandle.points = parts;
-                    options.sourceRoute = routeHandle;
-                }
-            }
-            SuperMap.Util.extend(this, options);
+        if (!options) {
+            return this;
         }
+        var routeFromClient = options.sourceRoute;
+        var routeHandle = {};
+        if (routeFromClient && routeFromClient instanceof SuperMap.Geometry && routeFromClient.components) {
+            routeHandle.type = routeFromClient.type;
+            routeHandle.parts = routeFromClient.parts;
+            var parts = [];
+            for (var i = 0, len = routeFromClient.components.length; i < len; i++) {
+                parts = parts.concat(routeFromClient.components[i].components);
+            }
+            routeHandle.points = parts;
+            options.sourceRoute = routeHandle;
+        }
+        SuperMap.Util.extend(this, options);
     },
 
     /**

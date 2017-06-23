@@ -380,6 +380,7 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
      * PS: (目前用于二维柱状图渐变色 所以子类实现此方法)
      */
     resetLinearGradient: function () {
+        //子类实现此方法
     },
 
     /**
@@ -409,6 +410,8 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
                         break;
                     case "y":
                         style[sty] -= shapeROP[1];
+                        break;
+                    default:
                         break;
                 }
             }
@@ -474,6 +477,7 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
      *
      */
     assembleShapes: function () {
+        //子类必须实现此方法
     },
 
     //地理坐标转为像素坐标。

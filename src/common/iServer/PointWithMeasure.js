@@ -57,8 +57,10 @@ SuperMap.PointWithMeasure = SuperMap.Class(SuperMap.Geometry.Point, {
     equals: function (geom) {
         var equals = false;
         if (geom != null) {
-            equals = ((this.x === geom.x && this.y === geom.y && this.measure === geom.measure) ||
-            (isNaN(this.x) && isNaN(this.y) && isNaN(this.measure) && isNaN(geom.x) && isNaN(geom.y) && isNaN(geom.measure)));
+            var isValueEquals = this.x === geom.x && this.y === geom.y && this.measure === geom.measure;
+            var isNaNValue = isNaN(this.x) && isNaN(this.y) && isNaN(this.measure);
+            var isNaNGeometry = isNaN(geom.x) && isNaN(geom.y) && isNaN(geom.measure);
+            equals = ( isValueEquals || ( isNaNValue && isNaNGeometry ));
         }
         return equals;
     },

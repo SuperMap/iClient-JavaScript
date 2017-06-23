@@ -73,10 +73,12 @@ var ThemeLayer = L.Layer.extend({
     //向专题图图层中添加数据, 支持的feature类型为:
     //iServer返回的feature json对象 或L.supermap.themeFeature类型
     addFeatures: function (features) {
+        //子类实现此方法
     },
 
     //抽象方法，可实例化子类必须实现此方法。
     redrawThematicFeatures: function (bounds) {
+        //子类必须实现此方法
     },
 
     destroyFeatures: function (features) {

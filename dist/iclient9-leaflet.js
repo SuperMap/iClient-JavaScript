@@ -3643,6 +3643,7 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
      * PS: (目前用于二维柱状图渐变色 所以子类实现此方法)
      */
     resetLinearGradient: function () {
+        //子类实现此方法
     },
 
     /**
@@ -3672,6 +3673,8 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
                         break;
                     case "y":
                         style[sty] -= shapeROP[1];
+                        break;
+                    default:
                         break;
                 }
             }
@@ -3737,6 +3740,7 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
      *
      */
     assembleShapes: function () {
+        //子类必须实现此方法
     },
 
     //地理坐标转为像素坐标。
@@ -4813,8 +4817,8 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
             me.url += "returnContent=" + me.returnContent;
             firstPara = false;
         }
-        if (me.fromIndex != null &&
-            me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex) && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
+        var isValidNumber = me.fromIndex != null && me.toIndex != null && !isNaN(me.fromIndex) && !isNaN(me.toIndex);
+        if (isValidNumber && me.fromIndex >= 0 && me.toIndex >= 0 && !firstPara) {
             me.url += "&fromIndex=" + me.fromIndex + "&toIndex=" + me.toIndex;
         }
 
@@ -11460,10 +11464,12 @@ var ThemeLayer = L.Layer.extend({
     //向专题图图层中添加数据, 支持的feature类型为:
     //iServer返回的feature json对象 或L.supermap.themeFeature类型
     addFeatures: function (features) {
+        //子类实现此方法
     },
 
     //抽象方法，可实例化子类必须实现此方法。
     redrawThematicFeatures: function (bounds) {
+        //子类必须实现此方法
     },
 
     destroyFeatures: function (features) {
@@ -12019,6 +12025,7 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
                 var aArgs = Array.prototype.slice.call(arguments, 1),
                     fToBind = this,
                     fNOP = function () {
+                        //empty Function
                     },
                     fBound = function () {
                         return fToBind.apply(this instanceof fNOP && oThis
@@ -12143,8 +12150,7 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
                 me.currentTime = me.endTime;
             }
 
-        }
-        else {
+        } else {
             //如果相等，则代表上一帧已经运行到了最前，下一帧运行结束的状态
             if (me.currentTime === me.startTime) {
                 //不循环时
@@ -36606,8 +36612,10 @@ SuperMap.PointWithMeasure = SuperMap.Class(SuperMap.Geometry.Point, {
     equals: function (geom) {
         var equals = false;
         if (geom != null) {
-            equals = ((this.x === geom.x && this.y === geom.y && this.measure === geom.measure) ||
-            (isNaN(this.x) && isNaN(this.y) && isNaN(this.measure) && isNaN(geom.x) && isNaN(geom.y) && isNaN(geom.measure)));
+            var isValueEquals = this.x === geom.x && this.y === geom.y && this.measure === geom.measure;
+            var isNaNValue = isNaN(this.x) && isNaN(this.y) && isNaN(this.measure);
+            var isNaNGeometry = isNaN(geom.x) && isNaN(geom.y) && isNaN(geom.measure);
+            equals = ( isValueEquals || ( isNaNValue && isNaNGeometry ));
         }
         return equals;
     },
@@ -37507,10 +37515,12 @@ SuperMap.Feature.Theme.Ring = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
         var r = this.DVBHeight < this.DVBWidth ? this.DVBHeight / 2 : this.DVBWidth / 2;
 
         // 扇形内环（自适应）半径
-        var r0 = (typeof(sets.innerRingRadius) !== "undefined"
-        && !isNaN(sets.innerRingRadius)
-        && sets.innerRingRadius >= 0
-        && sets.innerRingRadius < r) ? sets.innerRingRadius : 0;
+        var isInRange = sets.innerRingRadius >= 0 && sets.innerRingRadius < r;
+        var r0 = (
+            typeof(sets.innerRingRadius) !== "undefined"
+            && !isNaN(sets.innerRingRadius)
+            && isInRange
+        ) ? sets.innerRingRadius : 0;
 
         for (var i = 0; i < fv.length; i++) {
             var fvi = Math.abs(fv[i]);
@@ -37625,23 +37635,22 @@ SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
      *
      */
     initialize: function (options) {
-        if (options) {
-            var routeFromClient = options.sourceRoute;
-            var routeHandle = {};
-            if (routeFromClient) {
-                if (routeFromClient instanceof SuperMap.Geometry && routeFromClient.components) {
-                    routeHandle.type = routeFromClient.type;
-                    routeHandle.parts = routeFromClient.parts;
-                    var parts = [];
-                    for (var i = 0, len = routeFromClient.components.length; i < len; i++) {
-                        parts = parts.concat(routeFromClient.components[i].components);
-                    }
-                    routeHandle.points = parts;
-                    options.sourceRoute = routeHandle;
-                }
-            }
-            SuperMap.Util.extend(this, options);
+        if (!options) {
+            return this;
         }
+        var routeFromClient = options.sourceRoute;
+        var routeHandle = {};
+        if (routeFromClient && routeFromClient instanceof SuperMap.Geometry && routeFromClient.components) {
+            routeHandle.type = routeFromClient.type;
+            routeHandle.parts = routeFromClient.parts;
+            var parts = [];
+            for (var i = 0, len = routeFromClient.components.length; i < len; i++) {
+                parts = parts.concat(routeFromClient.components[i].components);
+            }
+            routeHandle.points = parts;
+            options.sourceRoute = routeHandle;
+        }
+        SuperMap.Util.extend(this, options);
     },
 
     /**
@@ -37907,23 +37916,22 @@ SuperMap.RouteLocatorParameters = SuperMap.Class({
      * endMeasure -  {Double} 定位线的终止M值。只当路由对象定位线时有意义。
      */
     initialize: function (options) {
-        if (options) {
-            var routeFromClient = options.sourceRoute;
-            var routeHandle = {};
-            if (routeFromClient) {
-                if (routeFromClient instanceof SuperMap.Geometry && routeFromClient.components) {
-                    routeHandle.type = routeFromClient.type;
-                    routeHandle.parts = routeFromClient.parts;
-                    var parts = [];
-                    for (var i = 0, len = routeFromClient.components.length; i < len; i++) {
-                        parts = parts.concat(routeFromClient.components[i].components);
-                    }
-                    routeHandle.points = parts;
-                    options.sourceRoute = routeHandle;
-                }
-            }
-            SuperMap.Util.extend(this, options);
+        if (!options) {
+            return this;
         }
+        var routeFromClient = options.sourceRoute;
+        var routeHandle = {};
+        if (routeFromClient && routeFromClient instanceof SuperMap.Geometry && routeFromClient.components) {
+            routeHandle.type = routeFromClient.type;
+            routeHandle.parts = routeFromClient.parts;
+            var parts = [];
+            for (var i = 0, len = routeFromClient.components.length; i < len; i++) {
+                parts = parts.concat(routeFromClient.components[i].components);
+            }
+            routeHandle.points = parts;
+            options.sourceRoute = routeHandle;
+        }
+        SuperMap.Util.extend(this, options);
     },
 
     /**
@@ -50739,7 +50747,7 @@ var VectorTilePBF = L.Class.extend({
                 var feat = vectorTile.layers[layerName].feature(i);
                 feat.geometry = feat.loadGeometry();
                 feat.layerName = layerName;
-                feat.properties = {attributes: L.Util.extend({}, feat.properties),id:feat.id};
+                feat.properties = {attributes: L.Util.extend({}, feat.properties), id: feat.id};
                 switch (feat.type) {
                     case 1:
                         feat.type = L.supermap.VectorFeatureType.POINT;
@@ -50749,6 +50757,8 @@ var VectorTilePBF = L.Class.extend({
                         break;
                     case 3:
                         feat.type = L.supermap.VectorFeatureType.REGION;
+                        break;
+                    default:
                         break;
                 }
                 feats.push(feat);

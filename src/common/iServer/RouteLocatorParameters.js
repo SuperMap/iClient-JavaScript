@@ -92,23 +92,22 @@ SuperMap.RouteLocatorParameters = SuperMap.Class({
      * endMeasure -  {Double} 定位线的终止M值。只当路由对象定位线时有意义。
      */
     initialize: function (options) {
-        if (options) {
-            var routeFromClient = options.sourceRoute;
-            var routeHandle = {};
-            if (routeFromClient) {
-                if (routeFromClient instanceof SuperMap.Geometry && routeFromClient.components) {
-                    routeHandle.type = routeFromClient.type;
-                    routeHandle.parts = routeFromClient.parts;
-                    var parts = [];
-                    for (var i = 0, len = routeFromClient.components.length; i < len; i++) {
-                        parts = parts.concat(routeFromClient.components[i].components);
-                    }
-                    routeHandle.points = parts;
-                    options.sourceRoute = routeHandle;
-                }
-            }
-            SuperMap.Util.extend(this, options);
+        if (!options) {
+            return this;
         }
+        var routeFromClient = options.sourceRoute;
+        var routeHandle = {};
+        if (routeFromClient && routeFromClient instanceof SuperMap.Geometry && routeFromClient.components) {
+            routeHandle.type = routeFromClient.type;
+            routeHandle.parts = routeFromClient.parts;
+            var parts = [];
+            for (var i = 0, len = routeFromClient.components.length; i < len; i++) {
+                parts = parts.concat(routeFromClient.components[i].components);
+            }
+            routeHandle.points = parts;
+            options.sourceRoute = routeHandle;
+        }
+        SuperMap.Util.extend(this, options);
     },
 
     /**

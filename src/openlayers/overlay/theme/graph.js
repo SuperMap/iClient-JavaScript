@@ -83,18 +83,19 @@ ol.source.Graph.prototype.redrawThematicFeatures = function (extent, zoomChanged
         // 用 feature id 做缓存标识
         var cacheField = feature.id;
         // 数据对应的图表是否已缓存，没缓存则重新创建图表
-        if (!cache[cacheField]) {
-            cache[cacheField] = cacheField;
-            var chart = this.createThematicFeature(feature);
-            // 压盖处理权重值
-            if (chart && this.overlayWeightField) {
-                if (feature.attributes[this.overlayWeightField] && !isNaN(feature.attributes[this.overlayWeightField])) {
-                    chart["__overlayWeight"] = feature.attributes[this.overlayWeightField];
-                }
+        if (cache[cacheField]) {
+            continue;
+        }
+        cache[cacheField] = cacheField;
+        var chart = this.createThematicFeature(feature);
+        // 压盖处理权重值
+        if (chart && this.overlayWeightField) {
+            if (feature.attributes[this.overlayWeightField] && !isNaN(feature.attributes[this.overlayWeightField])) {
+                chart["__overlayWeight"] = feature.attributes[this.overlayWeightField];
             }
-            if (chart) {
-                this.charts.push(chart);
-            }
+        }
+        if (chart) {
+            this.charts.push(chart);
         }
     }
     this.drawCharts();

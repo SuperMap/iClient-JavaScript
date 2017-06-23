@@ -157,10 +157,12 @@ SuperMap.Feature.Theme.Ring = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
         var r = this.DVBHeight < this.DVBWidth ? this.DVBHeight / 2 : this.DVBWidth / 2;
 
         // 扇形内环（自适应）半径
-        var r0 = (typeof(sets.innerRingRadius) !== "undefined"
-        && !isNaN(sets.innerRingRadius)
-        && sets.innerRingRadius >= 0
-        && sets.innerRingRadius < r) ? sets.innerRingRadius : 0;
+        var isInRange = sets.innerRingRadius >= 0 && sets.innerRingRadius < r;
+        var r0 = (
+            typeof(sets.innerRingRadius) !== "undefined"
+            && !isNaN(sets.innerRingRadius)
+            && isInRange
+        ) ? sets.innerRingRadius : 0;
 
         for (var i = 0; i < fv.length; i++) {
             var fvi = Math.abs(fv[i]);

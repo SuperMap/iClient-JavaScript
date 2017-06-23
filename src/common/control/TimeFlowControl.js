@@ -42,6 +42,7 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
                 var aArgs = Array.prototype.slice.call(arguments, 1),
                     fToBind = this,
                     fNOP = function () {
+                        //empty Function
                     },
                     fBound = function () {
                         return fToBind.apply(this instanceof fNOP && oThis
@@ -166,8 +167,7 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
                 me.currentTime = me.endTime;
             }
 
-        }
-        else {
+        } else {
             //如果相等，则代表上一帧已经运行到了最前，下一帧运行结束的状态
             if (me.currentTime === me.startTime) {
                 //不循环时

@@ -43,7 +43,7 @@ var VectorTilePBF = L.Class.extend({
                 var feat = vectorTile.layers[layerName].feature(i);
                 feat.geometry = feat.loadGeometry();
                 feat.layerName = layerName;
-                feat.properties = {attributes: L.Util.extend({}, feat.properties),id:feat.id};
+                feat.properties = {attributes: L.Util.extend({}, feat.properties), id: feat.id};
                 switch (feat.type) {
                     case 1:
                         feat.type = L.supermap.VectorFeatureType.POINT;
@@ -53,6 +53,8 @@ var VectorTilePBF = L.Class.extend({
                         break;
                     case 3:
                         feat.type = L.supermap.VectorFeatureType.REGION;
+                        break;
+                    default:
                         break;
                 }
                 feats.push(feat);
