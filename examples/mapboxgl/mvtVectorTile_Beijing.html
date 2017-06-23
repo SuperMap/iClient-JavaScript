@@ -4,8 +4,8 @@
     <title></title>
 
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-    <script src="https://cdn.bootcss.com/mapbox-gl/0.37.0/mapbox-gl.js"></script>
-    <link href="https://cdn.bootcss.com/mapbox-gl/0.37.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/mapbox-gl/0.38.0/mapbox-gl.js"></script>
+    <link href="https://cdn.bootcss.com/mapbox-gl/0.38.0/mapbox-gl.css" rel="stylesheet">
 
     <style>
         body {
@@ -25,6 +25,10 @@
 
 <div id='map'></div>
 <script>
+    var attribution="<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> " +
+        " with <a href='http://icltest.supermapol.com' target='_blank'>SuperMap iClient</a>";
+
     mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
     var map = new mapboxgl.Map({
         container: 'map', // container id
@@ -32,6 +36,7 @@
             "version": 8,
             "sources": {
                 "vector-tiles": {
+                    "attribution":attribution,
                     "type": "vector",
                     "tiles": ["http://localhost:8090/iserver/services/map-beijing4/rest/maps/beijingMap/tileFeature.mvt?_cache=false&returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 },

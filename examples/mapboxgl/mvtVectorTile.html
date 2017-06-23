@@ -4,8 +4,8 @@
     <title></title>
 
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
-    <link href="https://cdn.bootcss.com/mapbox-gl/0.37.0/mapbox-gl.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/mapbox-gl/0.37.0/mapbox-gl.js"></script>
+    <link href="https://cdn.bootcss.com/mapbox-gl/0.38.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/mapbox-gl/0.38.0/mapbox-gl.js"></script>
     <style>
         body {
             margin: 0;
@@ -24,6 +24,10 @@
 
 <div id='map'></div>
 <script>
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> " +
+        " with <a href='http://icltest.supermapol.com' target='_blank'>SuperMap iClient</a>";
+
     mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
     var map = new mapboxgl.Map({
         container: 'map', // container id
@@ -31,6 +35,7 @@
             "version": 8,
             "sources": {
                 "vector-tiles": {
+                    "attribution": attribution,
                     "type": "vector",
                     "tiles": ["http://113.209.64.227:8090/iserver/services/map-China100/rest/maps/China/tileFeature.mvt?_cache=false&returnAttributes=true&width=512&height=512&viewBounds={bbox-epsg-3857}"]
                 },
@@ -42,7 +47,7 @@
         center: [120.143, 30.236], // starting position
         zoom: 0 // starting zoom
     });
-    map.addControl(new mapboxgl.NavigationControl(),'top-left');
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
     map.on('load', function () {
         map.addLayer({
@@ -801,7 +806,7 @@
                 "text-opacity": 1,
                 "text-halo-color": "hsl(0, 0%, 100%)",
                 "text-halo-width": 1,
-                "icon-color":"#ff0000",
+                "icon-color": "#ff0000",
                 "icon-opacity": {
                     "base": 1,
                     "stops": [

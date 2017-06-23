@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="http://cdn.bootcss.com/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css">
-    <link rel='stylesheet' href='http://cdn.bootcss.com/mapbox-gl/0.36.0/mapbox-gl.css'/>
+    <link rel='stylesheet' href='http://cdn.bootcss.com/mapbox-gl/0.38.0/mapbox-gl.css'/>
     <link rel="stylesheet" href="libs/css/widgets.css">
     <link rel="stylesheet" href="libs/css/default.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
@@ -417,83 +417,91 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="./libs/js/app.min.js"></script>
+    </div>
+</div>
+<script type="text/javascript" src="./libs/js/app.min.js"></script>
 
-        <script type="text/javascript" src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
-        <script type="text/javascript" src="../dist/iclient9-openlayers.min.js"></script>
-        <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-        <script type="text/javascript" src="../dist/iclient9-leaflet.min.js"></script>
-        <script type="text/javascript" src='http://cdn.bootcss.com/mapbox-gl/0.36.0/mapbox-gl.js'></script>
-        <script type="text/javascript" src="http://cdn.bootcss.com/require.js/2.3.3/require.min.js"></script>
-        <script type="text/javascript" src="./libs/Cesium/Cesium.js"></script>
-        <script type="text/javascript" src="./libs/Cesium/Workers/zlib.min.js"></script>
-        <script type="text/javascript">
-            /*Leaflet Map*/
-            var lMap = L.map('leafletMap', {
-                center: [39.89, 116.38],
-                maxZoom: 15,
-                minZoom: 1,
-                scrollWheelZoom: false,
-                zoom: 10
-            });
-            L.supermap
-                    .tiledMapLayer("http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China")
-                    .addTo(lMap);
+<script type="text/javascript" src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../dist/iclient9-openlayers.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../dist/iclient9-leaflet.min.js"></script>
+<script type="text/javascript" src='http://cdn.bootcss.com/mapbox-gl/0.38.0/mapbox-gl.js'></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/require.js/2.3.3/require.min.js"></script>
+<script type="text/javascript" src="./libs/Cesium/Cesium.js"></script>
+<script type="text/javascript" src="./libs/Cesium/Workers/zlib.min.js"></script>
+<script type="text/javascript">
+    /*Leaflet Map*/
+    var lMap = L.map('leafletMap', {
+        center: [39.89, 116.38],
+        maxZoom: 15,
+        minZoom: 1,
+      /*  scrollWheelZoom: false,*/
+        zoom: 10
+    });
+    L.supermap
+        .tiledMapLayer("http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China")
+        .addTo(lMap);
 
-            /*OpenLayers Map*/
-            var olMap = new ol.Map({
-                target: 'olMap',
-                interactions: ol.interaction.defaults({
-                    mouseWheelZoom: false
-                }),
-                view: new ol.View({
-                    center: [100.94, 35.49],
-                    zoom: 4,
-                    maxZoom: 10,
-                    minZoom: 0,
-                    projection: 'EPSG:4326'
-                }),
-                layers: [new ol.layer.Tile({
-                    source: new ol.supermap.TileSuperMapRest({
-                        url: "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World"
-                    }),
-                    projection: 'EPSG:4326'
-                })]
-            });
+    /*OpenLayers Map*/
+    var olMap = new ol.Map({
+        target: 'olMap',
+       /* interactions: ol.interaction.defaults({
+            mouseWheelZoom: false
+        }),*/
+        view: new ol.View({
+            center: [100.94, 35.49],
+            zoom: 4,
+            maxZoom: 10,
+            minZoom: 0,
+            projection: 'EPSG:4326'
+        }),
+        layers: [new ol.layer.Tile({
+            source: new ol.supermap.TileSuperMapRest({
+                url: "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World"
+            }),
+            projection: 'EPSG:4326'
+        })]
+    });
 
-            /*Mapbox Map*/
-            var mbMap = new mapboxgl.Map({
-                container: 'mapboxMap',
-                style: {
-                    "version": 8,
-                    "sources": {
-                        "raster-tiles": {
-                            "type": "raster",
-                            "tiles": ['http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
-                        }
-                    },
-                    "layers": [{
-                        "id": "simple-tiles",
-                        "type": "raster",
-                        "source": "raster-tiles",
-                        "minzoom": 1,
-                        "maxzoom": 15
-                    }]
-                },
-                center: [116.38, 39.89],
-                zoom: 9.5,
-                interactive: false,
-                navigationControl: false
-            });
-            mbMap.dragPan.enable();
-            mbMap.addControl(new mapboxgl.AttributionControl({compact: true}), 'bottom-right');
-            mbMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-            /*iClient3D*/
-            if (Cesium) {
-                var viewer = new Cesium.Viewer('iC3DMap');
-            }
+    /*Mapbox Map*/
+    var mbAttribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+        "| Map Data <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> " +
+        " with <a href='http://icltest.supermapol.com' target='_blank'>SuperMap iClient</a>";
 
-        </script>
+    var mbMap = new mapboxgl.Map({
+        container: 'mapboxMap',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": mbAttribution,
+                    "type": "raster",
+                    "tiles": ['http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}'],
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 1,
+                "maxzoom": 15
+            }]
+        },
+        center: [116.38, 39.89],
+        zoom: 9.5,
+        /*  interactive: false,*/
+        attributionControl: false
+    });
+    mbMap.dragPan.enable();
+    mbMap.addControl(new mapboxgl.AttributionControl({compact: true}));
+    mbMap.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+    /*iClient3D*/
+    if (Cesium) {
+        var viewer = new Cesium.Viewer('iC3DMap');
+    }
+
+</script>
 </body>
 </html>
