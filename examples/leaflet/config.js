@@ -266,8 +266,8 @@ var exampleConfig = {
             }
         }
     },
-    "online": {
-        name: "online",
+    "Online": {
+        name: "Online",
         content: {
             "ol_map": {
                 name: "地图",
@@ -291,27 +291,7 @@ var exampleConfig = {
         name: "iManager",
         content: null
     },
-    "plot": {
-        name: "标绘",
-        content: {
-            "draw": {
-                name: "点线面绘制",
-                content: [{
-                    name: "绘制与修改",
-                    thumbnail: "l_drawAndModify.png",
-                    fileName: "drawAndModify"
-                }, {
-                    name: "捕捉与修改",
-                    thumbnail: "l_snapAndModify.png",
-                    fileName: "snapAndModify"
-                }]
-            },
-            "drawPlot": {
-                name: "动态标绘",
-                content: null
-            }
-        }
-    },
+
     "viz": {
         name: "可视化",
         content: {
@@ -481,6 +461,27 @@ var exampleConfig = {
 
         }
     },
+    "plot": {
+        name: "标绘",
+        content: {
+            "draw": {
+                name: "点线面绘制",
+                content: [{
+                    name: "绘制与修改",
+                    thumbnail: "l_drawAndModify.png",
+                    fileName: "drawAndModify"
+                }, {
+                    name: "捕捉与修改",
+                    thumbnail: "l_snapAndModify.png",
+                    fileName: "snapAndModify"
+                }]
+            },
+            "drawPlot": {
+                name: "动态标绘",
+                content: null
+            }
+        }
+    },
     "OGC": {
         name: "OGC",
         content: {
@@ -546,7 +547,7 @@ var exampleConfig = {
 var sideBarIconConfig = {
     "iServer": "fa-server",
     "iPortal": "fa-desktop",
-    "online": "fa-cloud",
+    "Online": "fa-cloud",
     "iManager": "fa-group",
     "plot": "fa-edit",
     "viz": "fa-map",
@@ -562,7 +563,7 @@ var sideBarIconConfig = {
 var exampleIconConfig = {
     "iServer": "fa-server",
     "iPortal": "fa-desktop",
-    "online": "fa-cloud",
+    "Online": "fa-cloud",
     "iManager": "fa-group",
     "plot": "fa-edit",
     "viz": "fa-map",

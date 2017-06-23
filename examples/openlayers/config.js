@@ -274,8 +274,8 @@ var exampleConfig = {
             }
         }
     },
-    "online": {
-        name: "online",
+    "Online": {
+        name: "Online",
         content: {
             "ol_map": {
                 name: "地图",
@@ -290,39 +290,6 @@ var exampleConfig = {
     "iManager": {
         name: "iManager",
         content: null
-    },
-    "plot": {
-        name: "标绘",
-        content: {
-            "draw": {
-                name: "点线面绘制",
-                content: [{
-                    name: "绘制",
-                    thumbnail: "drawFeatures.png",
-                    fileName: "drawFeatures"
-                }, {
-                    name: "手写",
-                    thumbnail: "freehandDrawFeatures.png",
-                    fileName: "freehandDrawFeatures"
-                }, {
-                    name: "捕捉",
-                    thumbnail: "snapDrawFeatures.png",
-                    fileName: "snapDrawFeatures"
-                }, {
-                    name: "修改",
-                    thumbnail: "modifyFeatures.png",
-                    fileName: "modifyFeatures"
-                }, {
-                    name: "拖拽",
-                    thumbnail: "dragFeatures.png",
-                    fileName: "dragFeatures"
-                }]
-            },
-            "drawPlot": {
-                name: "动态标绘",
-                content: null
-            }
-        }
     },
     "viz": {
         name: "可视化",
@@ -477,6 +444,39 @@ var exampleConfig = {
             }
         }
     },
+    "plot": {
+        name: "标绘",
+        content: {
+            "draw": {
+                name: "点线面绘制",
+                content: [{
+                    name: "绘制",
+                    thumbnail: "drawFeatures.png",
+                    fileName: "drawFeatures"
+                }, {
+                    name: "手写",
+                    thumbnail: "freehandDrawFeatures.png",
+                    fileName: "freehandDrawFeatures"
+                }, {
+                    name: "捕捉",
+                    thumbnail: "snapDrawFeatures.png",
+                    fileName: "snapDrawFeatures"
+                }, {
+                    name: "修改",
+                    thumbnail: "modifyFeatures.png",
+                    fileName: "modifyFeatures"
+                }, {
+                    name: "拖拽",
+                    thumbnail: "dragFeatures.png",
+                    fileName: "dragFeatures"
+                }]
+            },
+            "drawPlot": {
+                name: "动态标绘",
+                content: null
+            }
+        }
+    },
     "OGC": {
         name: "OGC",
         content: {
@@ -541,7 +541,7 @@ var exampleConfig = {
 var sideBarIconConfig = {
     "iServer": "fa-server",
     "iPortal": "fa-desktop",
-    "online": "fa-cloud",
+    "Online": "fa-cloud",
     "iManager": "fa-group",
     "plot": "fa-edit",
     "viz": "fa-map",
@@ -557,7 +557,7 @@ var sideBarIconConfig = {
 var exampleIconConfig = {
     "iServer": "fa-server",
     "iPortal": "fa-desktop",
-    "online": "fa-cloud",
+    "Online": "fa-cloud",
     "iManager": "fa-group",
     "plot": "fa-edit",
     "viz": "fa-map",

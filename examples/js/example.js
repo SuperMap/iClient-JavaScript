@@ -1,6 +1,8 @@
 $(document).ready(function () {
     initPage();
+
     bindEvents();
+    scrollSpy();
 });
 var exConfig = exampleConfig,
     containExamples = false,
@@ -60,14 +62,12 @@ function createSubGalleryItem(config) {
 
 function createGalleryItemTitle(id, title) {
     var menuItemIcon = exampleIconConfig[id];
-    return $("<h3 class='category-title' id='" + id + "'>" + "<i class='fa " + menuItemIcon + "'></i>" + "&nbsp;&nbsp;"+title + "</h3>");
+    return $("<h3 class='category-title' id='" + id + "'>" + "<i class='fa " + menuItemIcon + "'></i>" + "&nbsp;&nbsp;" + title + "</h3>");
 }
 
 function createSubGalleryItemTitle(id, title) {
-    return $("<div class='box-header'>"+"<h3 class='box-title' id='category-type-" + id + "'>" + "&nbsp;&nbsp;&nbsp;&nbsp;" + title + "</h4>"+"</h3>"+"</div>");
+    return $("<div class='box-header'>" + "<h3 class='box-title' id='category-type-" + id + "'>" + "&nbsp;&nbsp;&nbsp;&nbsp;" + title + "</h4>" + "</h3>" + "</div>");
 }
-
-
 
 
 function createGalleryCharts(examples) {
@@ -129,7 +129,7 @@ function scroll() {
         }
     }
     if (ele) {
-        $('body').scrollTo(ele, 500, {offset: -60});
+        $('body').scrollTo(ele, 600, {offset: -60});
     }
 
 }
@@ -140,12 +140,14 @@ function bindEvents() {
     });
 
     $("ul#sidebar-menu ul.second-menu a").on('click', function (evt) {
-        var target = $(evt.target).parent().parent();
-        var nodeId = evt.target.id;
+        if (evt.target.localName === "a") {
+            var target = $(evt.target).parent().parent().parent();
+            var nodeId = evt.target.id;
+        }
         //如果点击的是span节点还要往上一层
         if (evt.target.localName === "span") {
-            nodeId = target.attr('id');
-            target = target.parent().parent();
+            var target = $(evt.target).parent().parent();
+            var nodeId = target.attr('id');
         }
         var prefixId = target.attr('id');
         if (nodeId) {
@@ -159,4 +161,50 @@ function bindEvents() {
         scroll();
     });
 }
+
+//滚动监听
+function scrollSpy() {
+    //获取一级菜单名称
+    var stageList = new Array();
+    for (var key in exConfig) {
+        stageList.push(key);
+    }
+
+    var scrollTimer; // 定义监听滚动时间
+    $(window).on('scroll', function () {
+        var $scroll = $(this).scrollTop() + 46;
+        if (scrollTimer) {
+            clearTimeout(scrollTimer);
+        }
+        // 监听滚轮无操作100ms后认定为滚动停止
+        scrollTimer = setTimeout(function () {
+            //拖动滚轮，对应的楼梯样式进行匹配
+            $('.box').each(function (i, n) {
+                var $stageTop = $('.box').eq(i).offset().top + $(n).outerHeight();
+                if ($stageTop <= $scroll) {
+                    return true;
+                }
+                var id = $(n).parent().parent().attr("id");
+                //二级菜单高亮
+                $("ul#sidebar-menu>li").not("#" + id).removeClass('active');
+                $("ul#sidebar-menu>li#" + id).addClass('active');
+
+                for (var k = 0; k < stageList.length; k++) {
+                    if (stageList[k] === id) {
+                        $("ul#sidebar-menu>li").removeClass("active").find('ul').removeAttr("style");
+                        $("ul#sidebar-menu>li#" + id).addClass('active');
+                    }
+                }
+
+                // 第一级菜单高亮
+                $('.menuTitle').removeClass('active');
+                $('.menuTitle').eq(i).addClass('active');
+                return false;//中断循环
+            });
+        }, 100);
+    });
+}
+
+
+
 
