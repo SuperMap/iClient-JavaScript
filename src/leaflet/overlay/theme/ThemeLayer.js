@@ -240,14 +240,14 @@ var ThemeLayer = L.Layer.extend({
     redraw: function () {
         var me = this;
         if (!me.renderer) {
-            return;
+            return false;
         }
         if (me._map) {
             me.redrawThematicFeatures(me._map.getBounds());
         } else {
             me.redrawThematicFeatures();
         }
-        return this;
+        return true;
     },
 
     //添加专题要素事件监听。添加专题要素事件监听。
