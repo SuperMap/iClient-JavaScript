@@ -30,6 +30,7 @@ module.exports = function (config) {
             'src/common/style/CartoCSS.js',
             'src/common/**/*.js',
         /***Leaflet文件夹下的源码添加至此，暂未添加***/
+            {pattern: './node_modules/leaflet/dist/leaflet.css', include: false},
             'src/leaflet/**/*.js',
             'src/leaflet/overlay/**/*.js',
         /***OL3文件夹下的源码添加至此，暂未添加***/
@@ -37,7 +38,7 @@ module.exports = function (config) {
             //'src/openlayers/overlay/**/*.js',
 
         /***以下全是测试文件***/
-            'test/tool/GlobeParameter.js',
+            'test/tool/**.js',
         /**common --iServer**/
             //'test/common/iServer/AreaSolarRadiationServiceSpec.js',     //iclient8注释掉
             'test/common/iServer/BufferAnalystServiceSpec.js',
@@ -116,6 +117,7 @@ module.exports = function (config) {
             'test/leaflet/services/AddressServiceSpec.js',
             'test/leaflet/services/FieldServiceSpec.js',
             'test/leaflet/services/ThemeServiceSpec.js',
+            'test/leaflet/overlay/theme/GraphThemeLayerSpec.js',
 
         /**openlayers --services**/
             //'test/openlayers/services/QueryServiceSpec.js'
