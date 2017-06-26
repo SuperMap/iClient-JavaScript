@@ -10719,7 +10719,7 @@ ol.supermap.TileSuperMapRest = function (options) {
                 html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
             })
 
-    var layerUrl = options.url + "/image.png?redirect=false";
+    var layerUrl = options.url + "/tileImage.png?redirect=false";
     options.serverType = options.serverType || SuperMap.ServerType.ISERVER;
     //为url添加安全认证信息片段
     layerUrl = appendCredential(layerUrl, options.serverType);
@@ -10774,14 +10774,25 @@ ol.supermap.TileSuperMapRest = function (options) {
     }
 
     function tileUrlFunction(tileCoord, pixelRatio, projection) {
+        this.projection = projection;
         if (!this.tileGrid) {
             this.tileGrid = this.getTileGridForProjection(projection);
         }
-        var tileExtent = this.tileGrid.getTileCoordExtent(
-            tileCoord, this.tmpExtent_);
-        var tileSize = ol.size.toSize(
-            this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
-        return layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}";
+        var z = tileCoord[0];
+        var x = tileCoord[1];
+        var y = -tileCoord[2] - 1;
+        var resolution = this.tileGrid.getResolution(z);
+        var dpi = 96;
+        var unit = projection.getUnits();
+        if (unit === 'degrees') {
+            unit = SuperMap.Unit.DEGREE;
+        }
+        if (unit === 'm') {
+            unit = SuperMap.Unit.METER;
+        }
+        var scale = ol.supermap.Util.resolutionToScale(resolution, dpi, unit);
+        var tileSize = ol.size.toSize(this.tileGrid.getTileSize(z, this.tmpSize));
+        return layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale;
     }
 
     ol.source.TileImage.call(this, {
