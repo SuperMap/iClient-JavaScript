@@ -25,8 +25,9 @@
                 projection: 'EPSG:4326'
             })
         });
+        var options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
         var layer = new ol.layer.Tile({
-            source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj))
+            source: new ol.supermap.TileSuperMapRest(options)
         });
         map.addLayer(layer);
 

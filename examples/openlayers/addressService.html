@@ -219,7 +219,8 @@
         source: new ol.supermap.TileSuperMapRest({
             url: url,
             wrapX: true,
-            projection: 'EPSG:4326'
+            projection: 'EPSG:4326',
+            origin: [-180.0, 90]
         })
     });
     var vectorLayer = new ol.layer.Vector({

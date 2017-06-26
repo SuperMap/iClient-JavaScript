@@ -17,7 +17,7 @@
 <script src='../data/chinaConsumptionLevel.js'></script>
 
 <script type="text/javascript">
-    var map, options, themeLayer, themeSource,
+    var map, themeLayer, themeSource,
             url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326",
             container = document.getElementById('popup'),
             content = document.getElementById('popup-content'),
@@ -39,7 +39,7 @@
             }),
             overlays: [overlay]
         });
-        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
+        var options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
         options.wrapX = true;
         var layer = new ol.layer.Tile({
             source: new ol.supermap.TileSuperMapRest(options)

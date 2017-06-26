@@ -46,7 +46,7 @@
     "karma-jasmine": "^1.1.0",
     "karma-teamcity-reporter": "^1.0.0",
     "leaflet": "1.0.3",
-    "openlayers": "4.1.0",
+    "openlayers": "4.2.0",
     "shelljs": "^0.7.6",
     "style-loader": "^0.13.1",
     "watchify": "^3.9.0",

@@ -56,7 +56,7 @@
             display: none;
         }
 
-    <!--</style>
+        <!--</style>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="width: 100%;height:100%"></div>
@@ -95,7 +95,7 @@
         </div>
     </div>
     <div id="infoBox">
-        <div style="text-align: center;background: #1E90FF"> 属性表 </div>
+        <div style="text-align: center;background: #1E90FF"> 属性表</div>
         <div id="infoContent" style="overflow-y: auto; padding: 5px; background-color: #FFFFFF">
         </div>
     </div>
@@ -104,22 +104,19 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 
 <script type="text/javascript">
-    var map, options, themeLayer, themeSource
-    baseUrl = "http://113.209.64.227:8090/iserver/services/map-Jingjin/rest/maps/京津地区地图",
-            url2 = "http://113.209.64.227:8090/iserver/services/data-Jingjin/rest/data",
-            extent = [114.59, 37.76, 119.51, 42.31],
-            projection = new ol.proj.Projection({
-                extent: extent,
-                units: 'm'
-            });
+    var map, options, themeLayer, themeSource,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图",
+            url2 = "http://support.supermap.com.cn:8090/iserver/services/data-jingjin/rest/data",
+            extent = [104.07, 30.54, 119.51, 42.31];
     new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
                 center: [116.85, 39.79],
-                zoom: 2,
-                projection: projection
+                zoom: 8,
+                projection: "EPSG:4326",
+                extent: extent
             })
         });
         options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
@@ -222,7 +219,7 @@
         getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
             queryParameter: getFeatureParam,
             toIndex: 500,
-            datasetNames:["Jingjin:BaseMap_R"]
+            datasetNames: ["Jingjin:BaseMap_R"]
         });
         getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url2, {
             format: SuperMap.DataFormat.ISERVER,

@@ -130,25 +130,23 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 
 <script type="text/javascript">
-    var map, options, themeLayer, themeSource
-    baseUrl = "http://113.209.64.227:8090/iserver/services/map-Jingjin/rest/maps/京津地区地图",
-            url2 = "http://113.209.64.227:8090/iserver/services/data-Jingjin/rest/data",
-            extent = [114.59, 37.76, 119.51, 42.31],
-            projection = new ol.proj.Projection({
-                extent: extent,
-                units: 'm'
-            });
+    var map, options, themeLayer, themeSource,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图",
+            url2 = "http://support.supermap.com.cn:8090/iserver/services/data-jingjin/rest/data",
+            extent = [104.07, 30.54, 119.51, 42.31];
     new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
                 center: [116.85, 39.79],
-                zoom: 2,
-                projection: projection
+                zoom: 8,
+                projection: "EPSG:4326",
+                extent: extent
             })
         });
         options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        options.origin = [104.07, 42.31];
         var layer = new ol.layer.Tile({
             source: new ol.supermap.TileSuperMapRest(options)
         });
