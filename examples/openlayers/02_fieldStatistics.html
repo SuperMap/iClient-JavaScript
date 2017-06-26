@@ -105,7 +105,14 @@
         var fieldName = 'SmID';
         var param = new SuperMap.FieldStatisticsParameters({
             fieldName: fieldName,
-            statisticMode: SuperMap.StatisticMode
+            statisticMode: [
+                SuperMap.StatisticMode.MAX,
+                SuperMap.StatisticMode.MIN,
+                SuperMap.StatisticMode.SUM,
+                SuperMap.StatisticMode.AVERAGE,
+                SuperMap.StatisticMode.STDDEVIATION,
+                SuperMap.StatisticMode.VARIANCE
+            ]
         });
         if (currentData) {
             new ol.supermap.FieldService(dataURL, {

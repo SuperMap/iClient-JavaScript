@@ -12,15 +12,20 @@
 <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
 <script type="text/javascript">
     var map, urlWorld = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
-            urlJinjing = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
+        urlJinjing = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
     map = L.map('map', {
         crs: L.CRS.EPSG4326,
         center: [40, 118],
         maxZoom: 18,
         zoom: 6
     });
+
     L.supermap.tiledMapLayer(urlWorld).addTo(map);
-    L.supermap.tiledMapLayer(urlJinjing, {transparent: true, opacity: 0.6}).addTo(map);
+    L.supermap.tiledMapLayer(urlJinjing, {
+        origin: [90, -180],
+        transparent: true,
+        opacity: 0.6
+    }).addTo(map);
 </script>
 </body>
 </html>

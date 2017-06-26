@@ -41,7 +41,7 @@
             maxZoom: 18,
             zoom: 7
         });
-        L.supermap.tiledMapLayer(baseUrl).addTo(map);
+        L.supermap.tiledMapLayer(baseUrl,{origin: [90, -180]}).addTo(map);
         initThemeLayer();
     }
 

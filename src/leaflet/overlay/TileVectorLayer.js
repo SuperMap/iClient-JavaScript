@@ -257,7 +257,7 @@ var TileVectorLayer = L.VectorGrid.extend({
         }
 
         var mapUnit = SuperMap.Unit.METER;
-        if (crs.code.indexOf("4326") > -1) {
+        if (crs.code && crs.code.indexOf("4326") > -1) {
             mapUnit = SuperMap.Unit.DEGREE;
         }
         return L.Util.resolutionToScale(resolution, 96, mapUnit);

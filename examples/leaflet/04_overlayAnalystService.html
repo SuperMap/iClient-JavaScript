@@ -14,18 +14,15 @@
 <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
 <script type="text/javascript">
     var map, overlayAnalystService, datasetOverlayAnalystParameters, resultLayer,
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图",
-            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图",
+        serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
     map = L.map('map', {
-        crs: L.supermap.NonEarthCRS({
-            bounds: L.bounds([114.59, 37.76], [119.51, 42.31]),
-            origin: L.point(114.59, 42.31)
-        }),
+        crs: L.CRS.EPSG4326,
         center: [40.05, 116.85],
         maxZoom: 18,
-        zoom: 1
+        zoom: 6
     });
-    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    L.supermap.tiledMapLayer(baseUrl, {origin: [90, -180], transparent: true, cacheEnabled: false, noWrap: true}).addTo(map);
     overlayAnalystProcess();
 
     function overlayAnalystProcess() {

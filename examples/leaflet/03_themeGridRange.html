@@ -21,7 +21,7 @@
         maxZoom: 18,
         zoom: 6
     });
-    L.supermap.tiledMapLayer(url, {noWrap: true}).addTo(map);
+    L.supermap.tiledMapLayer(url, {origin: [90, -180],noWrap: true}).addTo(map);
     createTheme();
 
     function createTheme() {
@@ -133,6 +133,7 @@
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 themeLayer = L.supermap.tiledMapLayer(url, {
+                    origin: [90, -180],
                     noWrap: true,
                     cacheEnabled: false,
                     transparent: true,
