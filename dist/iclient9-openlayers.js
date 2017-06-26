@@ -10714,12 +10714,12 @@ ol.supermap.TileSuperMapRest = function (options) {
     if (options.url === undefined) {
         return;
     }
-    options.attributions =options.attributions||
-            new ol.Attribution({
-                html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
-            })
+    options.attributions = options.attributions ||
+        new ol.Attribution({
+            html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        })
 
-    var layerUrl = options.url + "/tileImage.png?redirect=false";
+    var layerUrl = options.url + "/tileImage.png?";
     options.serverType = options.serverType || SuperMap.ServerType.ISERVER;
     //为url添加安全认证信息片段
     layerUrl = appendCredential(layerUrl, options.serverType);
@@ -10754,23 +10754,47 @@ ol.supermap.TileSuperMapRest = function (options) {
         return newUrl;
     }
 
+    //是否重定向
+    var redirect = false;
+    if (options.redirect) {
+        redirect = options.opaque;
+    }
+    layerUrl += "&redirect=" + redirect;
     //切片是否透明
     var transparent = true;
     if (options.opaque !== undefined) {
         transparent = options.opaque;
     }
     layerUrl += "&transparent=" + transparent;
-
-    //是否使用缓存
-    var cacheEnabled = false;
-    if (options.cacheEnabled !== undefined) {
+    //设置切片原点
+    if (options.origin && options.origin instanceof Array) {
+        layerUrl += "&origin={\"x\":" + origin[0] + "," + "\"y\":" + origin[1] + "}";
+    }
+    options.clipRegionEnabled = false;
+    if (options.clipRegion instanceof ol.geom.Geometry) {
+        options.clipRegionEnabled = true;
+        options.clipRegion = ol.supermap.Util.toSuperMapGeometry(new ol.format.GeoJSON().writeGeometryObject(options.clipRegion));
+        options.clipRegion = SuperMap.Util.toJSON(SuperMap.REST.ServerGeometry.fromGeometry(options.clipRegion));
+        layerUrl += "&clipRegionEnabled=" + options.clipRegionEnabled + "&clipRegion=" + JSON.stringify(options.clipRegion);
+    }
+    if (!!options.overlapDisplayed && options.overlapDisplayedOptions) {
+        options.overlapDisplayedOptions = options.overlapDisplayedOptions;
+        layerUrl += "&overlapDisplayed=" + options.overlapDisplayed + "&overlapDisplayedOptions=" + options.overlapDisplayedOptions.toString();
+    }
+    var cacheEnabled = true;
+    if (!!options.cacheEnabled) {
         cacheEnabled = options.cacheEnabled;
     }
-    layerUrl += "&cacheEnabled=" + cacheEnabled;
-
+    layerUrl += "&_cache=" + cacheEnabled;
+    if (options.cacheEnabled && options.tileversion) {
+        layerUrl += "&tileversion=" + tileversion;
+    }
     //如果有layersID，则是在使用专题图
     if (options.layersID !== undefined) {
         layerUrl += "&layersID=" + options.layersID;
+    }
+    if (options.prjCoordSys) {
+        layerUrl += "&prjCoordSys=" + options.prjCoordSys;
     }
 
     function tileUrlFunction(tileCoord, pixelRatio, projection) {
