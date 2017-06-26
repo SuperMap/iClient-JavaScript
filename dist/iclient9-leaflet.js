@@ -1158,7 +1158,7 @@ var SPI = 3.14159265359;
  * Class: SuperMap.ServiceBase
  * common服务基类
  */
-__webpack_require__(21);
+__webpack_require__(22);
 var SuperMap = __webpack_require__(0);
 SuperMap.ServiceBase = SuperMap.Class({
 
@@ -1564,6 +1564,7 @@ var L = __webpack_require__(1);
 L.supermap = L.supermap || {};
 __webpack_require__(0);
 __webpack_require__(2);
+__webpack_require__(17);
 __webpack_require__(373);
 __webpack_require__(375);
 __webpack_require__(376);
@@ -3031,7 +3032,7 @@ module.exports = SuperMap.ServerColor;
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(181);
+__webpack_require__(183);
 var fetchJsonp = __webpack_require__(122);
 var SuperMap = __webpack_require__(0);
 
@@ -3797,6 +3798,182 @@ module.exports = SuperMap.Feature.Theme.Graph;
 
 /***/ }),
 /* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var L = __webpack_require__(1);
+var GeoJSONFormat = __webpack_require__(8);
+var SuperMap = __webpack_require__(0);
+L.Util.supermap_callbacks = {};
+
+L.Util.toGeoJSON = function (feature) {
+    if (!feature) {
+        return feature;
+    }
+    return JSON.parse(new GeoJSONFormat().write(feature));
+};
+
+L.Util.toSuperMapGeometry = function (geometry) {
+    if (!geometry) {
+        return geometry;
+    }
+    var result, format = new GeoJSONFormat();
+    if (["FeatureCollection", "Feature", "Geometry"].indexOf(geometry.type) != -1) {
+        result = format.read(geometry, geometry.type);
+    } else if (typeof geometry.toGeoJSON === "function") {
+        var geojson = geometry.toGeoJSON();
+        result = (geojson) ? format.read(geojson, geojson.type) : geometry;
+    }
+
+    var serverResult = result;
+    if (L.Util.isArray(result)) {
+        if (result.length === 1) {
+            serverResult = result[0];
+        } else if (result.length > 1) {
+            serverResult = [];
+            result.map(function (item) {
+                serverResult.push(item.geometry);
+            });
+        }
+    }
+
+    return (serverResult && serverResult.geometry) ? serverResult.geometry : serverResult;
+
+};
+
+
+L.Util.resolutionToScale = function (resolution, dpi, mapUnit) {
+    var inchPerMeter = 1 / 0.0254;
+    // 地球半径。
+    var meterPerMapUnit = this.getMeterPerMapUnit(mapUnit);
+    var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
+    scale = 1 / scale;
+    return scale;
+};
+
+L.Util.scaleToResolution = function (scale, dpi, mapUnit) {
+    var inchPerMeter = 1 / 0.0254;
+    var meterPerMapUnitValue = this.getMeterPerMapUnit(mapUnit);
+    var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
+    resolution = 1 / resolution;
+    return resolution;
+};
+
+L.Util.getMeterPerMapUnit = function (mapUnit) {
+    var earchRadiusInMeters = 6378137;
+    var meterPerMapUnit;
+    if (mapUnit === SuperMap.Unit.METER) {
+        meterPerMapUnit = 1;
+    } else if (mapUnit === SuperMap.Unit.DEGREE) {
+        // 每度表示多少米。
+        meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
+    } else if (mapUnit === SuperMap.Unit.KILOMETER) {
+        meterPerMapUnit = 1.0E-3;
+    } else if (mapUnit === SuperMap.Unit.INCH) {
+        meterPerMapUnit = 1 / 2.5399999918E-2;
+    } else if (mapUnit === SuperMap.Unit.FOOT) {
+        meterPerMapUnit = 0.3048;
+    } else {
+        return meterPerMapUnit;
+    }
+    return meterPerMapUnit;
+};
+
+L.Util.GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
+    var resolution = null,
+        ratio = 10000;
+    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
+    datumAxis = datumAxis || 6378137;
+    coordUnit = coordUnit || "";
+    if (scale > 0 && dpi > 0) {
+        scale = L.Util.NormalizeScale(scale);
+        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
+            //scale = SuperMap.Util.normalizeScale(scale);
+            resolution = 0.0254 * ratio / dpi / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
+            return resolution;
+        } else {
+            resolution = 0.0254 * ratio / dpi / scale / ratio;
+            return resolution;
+        }
+    }
+    return -1;
+};
+
+L.Util.NormalizeScale = function (scale) {
+    return (scale > 1.0) ? (1.0 / scale) : scale;
+};
+
+L.Util.Csv2GeoJSON = function (csv, options) {
+    var defaultOptions = {
+        titles: ['lon', 'lat'],
+        latitudeTitle: 'lat',
+        longitudeTitle: 'lon',
+        fieldSeparator: ',',
+        lineSeparator: '\n',
+        deleteDoubleQuotes: true,
+        firstLineTitles: false
+    };
+    options = options || defaultOptions;
+    var _propertiesNames = [];
+    if (typeof csv === 'string') {
+        var titulos = options.titles;
+        if (options.firstLineTitles) {
+            csv = csv.split(options.lineSeparator);
+            if (csv.length < 2) return;
+            titulos = csv[0];
+            csv.splice(0, 1);
+            csv = csv.join(options.lineSeparator);
+            titulos = titulos.trim().split(options.fieldSeparator);
+            for (var i = 0; i < titulos.length; i++) {
+                titulos[i] = _deleteDoubleQuotes(titulos[i]);
+            }
+            options.titles = titulos;
+        }
+        for (var i = 0; i < titulos.length; i++) {
+            var prop = titulos[i].toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '_');
+            if (prop == '' || prop == '_') prop = 'prop-' + i;
+            _propertiesNames[i] = prop;
+        }
+        csv = _csv2json(csv);
+    }
+    return csv;
+
+    function _deleteDoubleQuotes(cadena) {
+        if (options.deleteDoubleQuotes) cadena = cadena.trim().replace(/^"/, "").replace(/"$/, "");
+        return cadena;
+    }
+
+    function _csv2json(csv) {
+        var json = {};
+        json["type"] = "FeatureCollection";
+        json["features"] = [];
+        var titulos = options.titles;
+        csv = csv.split(options.lineSeparator);
+        for (var num_linea = 0; num_linea < csv.length; num_linea++) {
+            var campos = csv[num_linea].trim().split(options.fieldSeparator)
+                , lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)])
+                , lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
+            if (campos.length == titulos.length && Math.abs(lng) < 180 && Math.abs(lat) < 90) {
+                var feature = {};
+                feature["type"] = "Feature";
+                feature["geometry"] = {};
+                feature["properties"] = {};
+                feature["geometry"]["type"] = "Point";
+                feature["geometry"]["coordinates"] = [lng, lat];
+                for (var i = 0; i < titulos.length; i++) {
+                    if (titulos[i] != options.latitudeTitle && titulos[i] != options.longitudeTitle) {
+                        feature["properties"][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
+                    }
+                }
+                json["features"].push(feature);
+            }
+        }
+        return json;
+    }
+};
+module.exports = L.Util;
+
+/***/ }),
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3808,7 +3985,7 @@ module.exports = SuperMap.Feature.Theme.Graph;
 });
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -3818,7 +3995,7 @@ module.exports = SuperMap.Feature.Theme.Graph;
 });
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
@@ -4042,13 +4219,13 @@ module.exports = SuperMap.ServerTextStyle;
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/** * Class: SuperMap.TransportationAnalystParameter * 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 */var SuperMap = __webpack_require__(0);var TransportationAnalystResultSetting = __webpack_require__(352);SuperMap.TransportationAnalystParameter = SuperMap.Class({    /**     * APIProperty: barrierEdgeIDs     * {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。弧段设置为障碍边之后，表示双向都不通。     */    barrierEdgeIDs: null,    /**     * APIProperty: barrierNodeIDs     * {Array(<Number>)} 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。     */    barrierNodeIDs: null,    /**     * APIProperty: barrierPoints     * {Array(<Point>)}网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */    barrierPoints: null,    /**     * APIProperty: weightFieldName     * {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */    weightFieldName: null,    /**     * APIProperty: turnWeightField     * {String} 转向权重字段的名称。     */    turnWeightField: null,    /**     * APIProperty: resultSetting     * {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    resultSetting: null,    /**     * Constructor: SuperMap.TransportationAnalystParameter     * 交通网络分析通用参数类构造函数。     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * barrierEdgeIDs - {Array(<Number>)} 网络分析中障碍弧段的 ID 数组。     * barrierNodeIDs - {Array(<Number>)} 网络分析中障碍点的 ID 数组。     * barrierPoints - {Array(<Point>)}     * weightFieldName - {String} 阻力字段的名称。     * turnWeightField - {String} 转向权重字段的名称。     * resultSetting - {<SuperMap.TransportationAnalystResultSetting>} 分析结果返回内容。     */    initialize: function (options) {        var me = this;        me.resultSetting = new TransportationAnalystResultSetting();        if (!options) {            return;        }        SuperMap.Util.extend(this, options);    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        me.barrierEdgeIDs = null;        me.barrierNodeIDs = null;        me.weightFieldName = null;        me.turnWeightField = null;        if (me.resultSetting) {            me.resultSetting.destroy();            me.resultSetting = null;        }        if (me.barrierPoints && me.barrierPoints.length) {            for (var i in me.barrierPoints) {                me.barrierPoints.destroy();            }        }        me.barrierPoints = null;    },    CLASS_NAME: "SuperMap.TransportationAnalystParameter"});module.exports = SuperMap.TransportationAnalystParameter;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -4235,182 +4412,6 @@ SuperMap.SecurityManager = {
 SuperMap.SecurityManager.SSO = "https://sso.supermap.com";
 SuperMap.SecurityManager.ONLINE = "http://www.supermapol.com";
 module.exports = SuperMap.SecurityManager;
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var L = __webpack_require__(1);
-var GeoJSONFormat = __webpack_require__(8);
-var SuperMap = __webpack_require__(0);
-L.Util.supermap_callbacks = {};
-
-L.Util.toGeoJSON = function (feature) {
-    if (!feature) {
-        return feature;
-    }
-    return JSON.parse(new GeoJSONFormat().write(feature));
-};
-
-L.Util.toSuperMapGeometry = function (geometry) {
-    if (!geometry) {
-        return geometry;
-    }
-    var result, format = new GeoJSONFormat();
-    if (["FeatureCollection", "Feature", "Geometry"].indexOf(geometry.type) != -1) {
-        result = format.read(geometry, geometry.type);
-    } else if (typeof geometry.toGeoJSON === "function") {
-        var geojson = geometry.toGeoJSON();
-        result = (geojson) ? format.read(geojson, geojson.type) : geometry;
-    }
-
-    var serverResult = result;
-    if (L.Util.isArray(result)) {
-        if (result.length === 1) {
-            serverResult = result[0];
-        } else if (result.length > 1) {
-            serverResult = [];
-            result.map(function (item) {
-                serverResult.push(item.geometry);
-            });
-        }
-    }
-
-    return (serverResult && serverResult.geometry) ? serverResult.geometry : serverResult;
-
-};
-
-
-L.Util.resolutionToScale = function (resolution, dpi, mapUnit) {
-    var inchPerMeter = 1 / 0.0254;
-    // 地球半径。
-    var meterPerMapUnit = this.getMeterPerMapUnit(mapUnit);
-    var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
-    scale = 1 / scale;
-    return scale;
-};
-
-L.Util.scaleToResolution = function (scale, dpi, mapUnit) {
-    var inchPerMeter = 1 / 0.0254;
-    var meterPerMapUnitValue = this.getMeterPerMapUnit(mapUnit);
-    var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
-    resolution = 1 / resolution;
-    return resolution;
-};
-
-L.Util.getMeterPerMapUnit = function (mapUnit) {
-    var earchRadiusInMeters = 6378137;
-    var meterPerMapUnit;
-    if (mapUnit === SuperMap.Unit.METER) {
-        meterPerMapUnit = 1;
-    } else if (mapUnit === SuperMap.Unit.DEGREE) {
-        // 每度表示多少米。
-        meterPerMapUnit = Math.PI * 2 * earchRadiusInMeters / 360;
-    } else if (mapUnit === SuperMap.Unit.KILOMETER) {
-        meterPerMapUnit = 1.0E-3;
-    } else if (mapUnit === SuperMap.Unit.INCH) {
-        meterPerMapUnit = 1 / 2.5399999918E-2;
-    } else if (mapUnit === SuperMap.Unit.FOOT) {
-        meterPerMapUnit = 0.3048;
-    } else {
-        return meterPerMapUnit;
-    }
-    return meterPerMapUnit;
-};
-
-L.Util.GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
-    var resolution = null,
-        ratio = 10000;
-    //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
-    datumAxis = datumAxis || 6378137;
-    coordUnit = coordUnit || "";
-    if (scale > 0 && dpi > 0) {
-        scale = L.Util.NormalizeScale(scale);
-        if (coordUnit.toLowerCase() === "degree" || coordUnit.toLowerCase() === "degrees" || coordUnit.toLowerCase() === "dd") {
-            //scale = SuperMap.Util.normalizeScale(scale);
-            resolution = 0.0254 * ratio / dpi / scale / ((Math.PI * 2 * datumAxis) / 360) / ratio;
-            return resolution;
-        } else {
-            resolution = 0.0254 * ratio / dpi / scale / ratio;
-            return resolution;
-        }
-    }
-    return -1;
-};
-
-L.Util.NormalizeScale = function (scale) {
-    return (scale > 1.0) ? (1.0 / scale) : scale;
-};
-
-L.Util.Csv2GeoJSON = function (csv, options) {
-    var defaultOptions = {
-        titles: ['lon', 'lat'],
-        latitudeTitle: 'lat',
-        longitudeTitle: 'lon',
-        fieldSeparator: ',',
-        lineSeparator: '\n',
-        deleteDoubleQuotes: true,
-        firstLineTitles: false
-    };
-    options = options || defaultOptions;
-    var _propertiesNames = [];
-    if (typeof csv === 'string') {
-        var titulos = options.titles;
-        if (options.firstLineTitles) {
-            csv = csv.split(options.lineSeparator);
-            if (csv.length < 2) return;
-            titulos = csv[0];
-            csv.splice(0, 1);
-            csv = csv.join(options.lineSeparator);
-            titulos = titulos.trim().split(options.fieldSeparator);
-            for (var i = 0; i < titulos.length; i++) {
-                titulos[i] = _deleteDoubleQuotes(titulos[i]);
-            }
-            options.titles = titulos;
-        }
-        for (var i = 0; i < titulos.length; i++) {
-            var prop = titulos[i].toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '_');
-            if (prop == '' || prop == '_') prop = 'prop-' + i;
-            _propertiesNames[i] = prop;
-        }
-        csv = _csv2json(csv);
-    }
-    return csv;
-
-    function _deleteDoubleQuotes(cadena) {
-        if (options.deleteDoubleQuotes) cadena = cadena.trim().replace(/^"/, "").replace(/"$/, "");
-        return cadena;
-    }
-
-    function _csv2json(csv) {
-        var json = {};
-        json["type"] = "FeatureCollection";
-        json["features"] = [];
-        var titulos = options.titles;
-        csv = csv.split(options.lineSeparator);
-        for (var num_linea = 0; num_linea < csv.length; num_linea++) {
-            var campos = csv[num_linea].trim().split(options.fieldSeparator)
-                , lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)])
-                , lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
-            if (campos.length == titulos.length && Math.abs(lng) < 180 && Math.abs(lat) < 90) {
-                var feature = {};
-                feature["type"] = "Feature";
-                feature["geometry"] = {};
-                feature["properties"] = {};
-                feature["geometry"]["type"] = "Point";
-                feature["geometry"]["coordinates"] = [lng, lat];
-                for (var i = 0; i < titulos.length; i++) {
-                    if (titulos[i] != options.latitudeTitle && titulos[i] != options.longitudeTitle) {
-                        feature["properties"][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
-                    }
-                }
-                json["features"].push(feature);
-            }
-        }
-        return json;
-    }
-};
-module.exports = L.Util;
 
 /***/ }),
 /* 23 */
@@ -5690,12 +5691,12 @@ module.exports = L.Symbolizer;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parseCode__ = __webpack_require__(148);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__extend__ = __webpack_require__(146);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projections__ = __webpack_require__(149);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__deriveConstants__ = __webpack_require__(145);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_Datum__ = __webpack_require__(137);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datum__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parseCode__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__extend__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projections__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__deriveConstants__ = __webpack_require__(144);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_Datum__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__datum__ = __webpack_require__(141);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__match__ = __webpack_require__(47);
 
 
@@ -6680,6 +6681,637 @@ module.exports = L.TileLayer.WMTS;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function(x, y) {
+  x = Math.abs(x);
+  y = Math.abs(y);
+  var a = Math.max(x, y);
+  var b = Math.min(x, y) / (a ? a : 1);
+
+  return a * Math.sqrt(1 + Math.pow(b, 2));
+});
+
+
+/***/ }),
+/* 58 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var C00 = 1;
+var C02 = 0.25;
+var C04 = 0.046875;
+var C06 = 0.01953125;
+var C08 = 0.01068115234375;
+var C22 = 0.75;
+var C44 = 0.46875;
+var C46 = 0.01302083333333333333;
+var C48 = 0.00712076822916666666;
+var C66 = 0.36458333333333333333;
+var C68 = 0.00569661458333333333;
+var C88 = 0.3076171875;
+
+/* harmony default export */ __webpack_exports__["a"] = (function(es) {
+  var en = [];
+  en[0] = C00 - es * (C02 + es * (C04 + es * (C06 + es * C08)));
+  en[1] = es * (C22 - es * (C04 + es * (C06 + es * C08)));
+  var t = es * es;
+  en[2] = t * (C44 - es * (C46 + es * C48));
+  t *= es;
+  en[3] = t * (C66 - es * C68);
+  en[4] = t * es * C88;
+  return en;
+});
+
+/***/ }),
+/* 59 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pj_mlfn__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
+
+
+
+var MAX_ITER = 20;
+
+/* harmony default export */ __webpack_exports__["a"] = (function(arg, es, en) {
+  var k = 1 / (1 - es);
+  var phi = arg;
+  for (var i = MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
+    var s = Math.sin(phi);
+    var t = 1 - es * s * s;
+    //t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
+    //phi -= t * (t * Math.sqrt(t)) * k;
+    t = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__pj_mlfn__["a" /* default */])(phi, s, Math.cos(phi), en) - arg) * (t * Math.sqrt(t)) * k;
+    phi -= t;
+    if (Math.abs(t) < __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
+      return phi;
+    }
+  }
+  //..reportError("cass:pj_inv_mlfn: Convergence error");
+  return phi;
+});
+
+
+/***/ }),
+/* 60 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function(x) {
+  var r = Math.exp(x);
+  r = (r - 1 / r) / 2;
+  return r;
+});
+
+/***/ }),
+/* 61 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (function (array){
+  var out = {
+    x: array[0],
+    y: array[1]
+  };
+  if (array.length>2) {
+    out.z = array[2];
+  }
+  if (array.length>3) {
+    out.m = array[3];
+  }
+  return out;
+});
+
+/***/ }),
+/* 62 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projString__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_wkt_parser__ = __webpack_require__(68);
+
+
+
+
+function defs(name) {
+  /*global console*/
+  var that = this;
+  if (arguments.length === 2) {
+    var def = arguments[1];
+    if (typeof def === 'string') {
+      if (def.charAt(0) === '+') {
+        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__projString__["a" /* default */])(arguments[1]);
+      }
+      else {
+        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_wkt_parser__["a" /* default */])(arguments[1]);
+      }
+    } else {
+      defs[name] = def;
+    }
+  }
+  else if (arguments.length === 1) {
+    if (Array.isArray(name)) {
+      return name.map(function(v) {
+        if (Array.isArray(v)) {
+          defs.apply(that, v);
+        }
+        else {
+          defs(v);
+        }
+      });
+    }
+    else if (typeof name === 'string') {
+      if (name in defs) {
+        return defs[name];
+      }
+    }
+    else if ('EPSG' in name) {
+      defs['EPSG:' + name.EPSG] = name;
+    }
+    else if ('ESRI' in name) {
+      defs['ESRI:' + name.ESRI] = name;
+    }
+    else if ('IAU2000' in name) {
+      defs['IAU2000:' + name.IAU2000] = name;
+    }
+    else {
+      console.log(name);
+    }
+    return;
+  }
+
+
+}
+__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__global__["a" /* default */])(defs);
+/* harmony default export */ __webpack_exports__["a"] = (defs);
+
+
+/***/ }),
+/* 63 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Proj__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Point__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_toPoint__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__defs__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__transform__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_mgrs__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__version__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__projs__ = __webpack_require__(179);
+
+
+
+
+
+
+
+
+
+
+__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].defaultDatum = 'WGS84'; //default datum
+__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].Proj = __WEBPACK_IMPORTED_MODULE_1__Proj__["a" /* default */];
+__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].WGS84 = new __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].Proj('WGS84');
+__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].Point = __WEBPACK_IMPORTED_MODULE_2__Point__["a" /* default */];
+__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].toPoint = __WEBPACK_IMPORTED_MODULE_3__common_toPoint__["a" /* default */];
+__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].defs = __WEBPACK_IMPORTED_MODULE_4__defs__["a" /* default */];
+__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].transform = __WEBPACK_IMPORTED_MODULE_5__transform__["a" /* default */];
+__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].mgrs = __WEBPACK_IMPORTED_MODULE_6_mgrs__["a" /* default */];
+__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].version = __WEBPACK_IMPORTED_MODULE_7__version__["a" /* default */];
+__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__projs__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */]);
+/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */]);
+
+
+/***/ }),
+/* 64 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_units__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__match__ = __webpack_require__(47);
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = (function(defData) {
+  var self = {};
+  var paramObj = defData.split('+').map(function(v) {
+    return v.trim();
+  }).filter(function(a) {
+    return a;
+  }).reduce(function(p, a) {
+    var split = a.split('=');
+    split.push(true);
+    p[split[0].toLowerCase()] = split[1];
+    return p;
+  }, {});
+  var paramName, paramVal, paramOutname;
+  var params = {
+    proj: 'projName',
+    datum: 'datumCode',
+    rf: function(v) {
+      self.rf = parseFloat(v);
+    },
+    lat_0: function(v) {
+      self.lat0 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lat_1: function(v) {
+      self.lat1 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lat_2: function(v) {
+      self.lat2 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lat_ts: function(v) {
+      self.lat_ts = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lon_0: function(v) {
+      self.long0 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lon_1: function(v) {
+      self.long1 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lon_2: function(v) {
+      self.long2 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    alpha: function(v) {
+      self.alpha = parseFloat(v) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    lonc: function(v) {
+      self.longc = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    x_0: function(v) {
+      self.x0 = parseFloat(v);
+    },
+    y_0: function(v) {
+      self.y0 = parseFloat(v);
+    },
+    k_0: function(v) {
+      self.k0 = parseFloat(v);
+    },
+    k: function(v) {
+      self.k0 = parseFloat(v);
+    },
+    a: function(v) {
+      self.a = parseFloat(v);
+    },
+    b: function(v) {
+      self.b = parseFloat(v);
+    },
+    r_a: function() {
+      self.R_A = true;
+    },
+    zone: function(v) {
+      self.zone = parseInt(v, 10);
+    },
+    south: function() {
+      self.utmSouth = true;
+    },
+    towgs84: function(v) {
+      self.datum_params = v.split(",").map(function(a) {
+        return parseFloat(a);
+      });
+    },
+    to_meter: function(v) {
+      self.to_meter = parseFloat(v);
+    },
+    units: function(v) {
+      self.units = v;
+      var unit = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_2__constants_units__["a" /* default */], v);
+      if (unit) {
+        self.to_meter = unit.to_meter;
+      }
+    },
+    from_greenwich: function(v) {
+      self.from_greenwich = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    pm: function(v) {
+      var pm = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__["a" /* default */], v);
+      self.from_greenwich = (pm ? pm : parseFloat(v)) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
+    },
+    nadgrids: function(v) {
+      if (v === '@null') {
+        self.datumCode = 'none';
+      }
+      else {
+        self.nadgrids = v;
+      }
+    },
+    axis: function(v) {
+      var legalAxis = "ewnsud";
+      if (v.length === 3 && legalAxis.indexOf(v.substr(0, 1)) !== -1 && legalAxis.indexOf(v.substr(1, 1)) !== -1 && legalAxis.indexOf(v.substr(2, 1)) !== -1) {
+        self.axis = v;
+      }
+    }
+  };
+  for (paramName in paramObj) {
+    paramVal = paramObj[paramName];
+    if (paramName in params) {
+      paramOutname = params[paramName];
+      if (typeof paramOutname === 'function') {
+        paramOutname(paramVal);
+      }
+      else {
+        self[paramOutname] = paramVal;
+      }
+    }
+    else {
+      self[paramName] = paramVal;
+    }
+  }
+  if(typeof self.datumCode === 'string' && self.datumCode !== "WGS84"){
+    self.datumCode = self.datumCode.toLowerCase();
+  }
+  return self;
+});
+
+
+/***/ }),
+/* 65 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_sinh__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_hypot__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinhy__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_gatg__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_clens__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__ = __webpack_require__(5);
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
+// Heavily based on this etmerc projection implementation
+// https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/etmerc.js
+
+
+
+
+
+
+
+
+
+function init() {
+  if (this.es === undefined || this.es <= 0) {
+    throw new Error('incorrect elliptical usage');
+  }
+
+  this.x0 = this.x0 !== undefined ? this.x0 : 0;
+  this.y0 = this.y0 !== undefined ? this.y0 : 0;
+  this.long0 = this.long0 !== undefined ? this.long0 : 0;
+  this.lat0 = this.lat0 !== undefined ? this.lat0 : 0;
+
+  this.cgb = [];
+  this.cbg = [];
+  this.utg = [];
+  this.gtu = [];
+
+  var f = this.es / (1 + Math.sqrt(1 - this.es));
+  var n = f / (2 - f);
+  var np = n;
+
+  this.cgb[0] = n * (2 + n * (-2 / 3 + n * (-2 + n * (116 / 45 + n * (26 / 45 + n * (-2854 / 675 ))))));
+  this.cbg[0] = n * (-2 + n * ( 2 / 3 + n * ( 4 / 3 + n * (-82 / 45 + n * (32 / 45 + n * (4642 / 4725))))));
+
+  np = np * n;
+  this.cgb[1] = np * (7 / 3 + n * (-8 / 5 + n * (-227 / 45 + n * (2704 / 315 + n * (2323 / 945)))));
+  this.cbg[1] = np * (5 / 3 + n * (-16 / 15 + n * ( -13 / 9 + n * (904 / 315 + n * (-1522 / 945)))));
+
+  np = np * n;
+  this.cgb[2] = np * (56 / 15 + n * (-136 / 35 + n * (-1262 / 105 + n * (73814 / 2835))));
+  this.cbg[2] = np * (-26 / 15 + n * (34 / 21 + n * (8 / 5 + n * (-12686 / 2835))));
+
+  np = np * n;
+  this.cgb[3] = np * (4279 / 630 + n * (-332 / 35 + n * (-399572 / 14175)));
+  this.cbg[3] = np * (1237 / 630 + n * (-12 / 5 + n * ( -24832 / 14175)));
+
+  np = np * n;
+  this.cgb[4] = np * (4174 / 315 + n * (-144838 / 6237));
+  this.cbg[4] = np * (-734 / 315 + n * (109598 / 31185));
+
+  np = np * n;
+  this.cgb[5] = np * (601676 / 22275);
+  this.cbg[5] = np * (444337 / 155925);
+
+  np = Math.pow(n, 2);
+  this.Qn = this.k0 / (1 + n) * (1 + np * (1 / 4 + np * (1 / 64 + np / 256)));
+
+  this.utg[0] = n * (-0.5 + n * ( 2 / 3 + n * (-37 / 96 + n * ( 1 / 360 + n * (81 / 512 + n * (-96199 / 604800))))));
+  this.gtu[0] = n * (0.5 + n * (-2 / 3 + n * (5 / 16 + n * (41 / 180 + n * (-127 / 288 + n * (7891 / 37800))))));
+
+  this.utg[1] = np * (-1 / 48 + n * (-1 / 15 + n * (437 / 1440 + n * (-46 / 105 + n * (1118711 / 3870720)))));
+  this.gtu[1] = np * (13 / 48 + n * (-3 / 5 + n * (557 / 1440 + n * (281 / 630 + n * (-1983433 / 1935360)))));
+
+  np = np * n;
+  this.utg[2] = np * (-17 / 480 + n * (37 / 840 + n * (209 / 4480 + n * (-5569 / 90720 ))));
+  this.gtu[2] = np * (61 / 240 + n * (-103 / 140 + n * (15061 / 26880 + n * (167603 / 181440))));
+
+  np = np * n;
+  this.utg[3] = np * (-4397 / 161280 + n * (11 / 504 + n * (830251 / 7257600)));
+  this.gtu[3] = np * (49561 / 161280 + n * (-179 / 168 + n * (6601661 / 7257600)));
+
+  np = np * n;
+  this.utg[4] = np * (-4583 / 161280 + n * (108847 / 3991680));
+  this.gtu[4] = np * (34729 / 80640 + n * (-3418889 / 1995840));
+
+  np = np * n;
+  this.utg[5] = np * (-20648693 / 638668800);
+  this.gtu[5] = np * (212378941 / 319334400);
+
+  var Z = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cbg, this.lat0);
+  this.Zb = -this.Qn * (Z + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_clens__["a" /* default */])(this.gtu, 2 * Z));
+}
+
+function forward(p) {
+  var Ce = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(p.x - this.long0);
+  var Cn = p.y;
+
+  Cn = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cbg, Cn);
+  var sin_Cn = Math.sin(Cn);
+  var cos_Cn = Math.cos(Cn);
+  var sin_Ce = Math.sin(Ce);
+  var cos_Ce = Math.cos(Ce);
+
+  Cn = Math.atan2(sin_Cn, cos_Ce * cos_Cn);
+  Ce = Math.atan2(sin_Ce * cos_Cn, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_hypot__["a" /* default */])(sin_Cn, cos_Cn * cos_Ce));
+  Ce = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_asinhy__["a" /* default */])(Math.tan(Ce));
+
+  var tmp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__["a" /* default */])(this.gtu, 2 * Cn, 2 * Ce);
+
+  Cn = Cn + tmp[0];
+  Ce = Ce + tmp[1];
+
+  var x;
+  var y;
+
+  if (Math.abs(Ce) <= 2.623395162778) {
+    x = this.a * (this.Qn * Ce) + this.x0;
+    y = this.a * (this.Qn * Cn + this.Zb) + this.y0;
+  }
+  else {
+    x = Infinity;
+    y = Infinity;
+  }
+
+  p.x = x;
+  p.y = y;
+
+  return p;
+}
+
+function inverse(p) {
+  var Ce = (p.x - this.x0) * (1 / this.a);
+  var Cn = (p.y - this.y0) * (1 / this.a);
+
+  Cn = (Cn - this.Zb) / this.Qn;
+  Ce = Ce / this.Qn;
+
+  var lon;
+  var lat;
+
+  if (Math.abs(Ce) <= 2.623395162778) {
+    var tmp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__["a" /* default */])(this.utg, 2 * Cn, 2 * Ce);
+
+    Cn = Cn + tmp[0];
+    Ce = Ce + tmp[1];
+    Ce = Math.atan(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_sinh__["a" /* default */])(Ce));
+
+    var sin_Cn = Math.sin(Cn);
+    var cos_Cn = Math.cos(Cn);
+    var sin_Ce = Math.sin(Ce);
+    var cos_Ce = Math.cos(Ce);
+
+    Cn = Math.atan2(sin_Cn * cos_Ce, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_hypot__["a" /* default */])(sin_Ce, cos_Ce * cos_Cn));
+    Ce = Math.atan2(sin_Ce, cos_Ce * cos_Cn);
+
+    lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(Ce + this.long0);
+    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cgb, Cn);
+  }
+  else {
+    lon = Infinity;
+    lat = Infinity;
+  }
+
+  p.x = lon;
+  p.y = lat;
+
+  return p;
+}
+
+var names = ["Extended_Transverse_Mercator", "Extended Transverse Mercator", "etmerc"];
+/* harmony default export */ __webpack_exports__["a"] = ({
+  init: init,
+  forward: forward,
+  inverse: inverse,
+  names: names
+});
+
+
+/***/ }),
+/* 66 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datum_transform__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adjust_axis__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Proj__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_toPoint__ = __webpack_require__(61);
+/* harmony export (immutable) */ __webpack_exports__["a"] = transform;
+
+
+
+
+
+function checkNotWGS(source, dest) {
+  return ((source.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || source.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) && dest.datumCode !== 'WGS84') || ((dest.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || dest.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) && source.datumCode !== 'WGS84');
+}
+
+function transform(source, dest, point) {
+  var wgs84;
+  if (Array.isArray(point)) {
+    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_toPoint__["a" /* default */])(point);
+  }
+
+  // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
+  if (source.datum && dest.datum && checkNotWGS(source, dest)) {
+    wgs84 = new __WEBPACK_IMPORTED_MODULE_3__Proj__["a" /* default */]('WGS84');
+    point = transform(source, wgs84, point);
+    source = wgs84;
+  }
+  // DGR, 2010/11/12
+  if (source.axis !== 'enu') {
+    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__adjust_axis__["a" /* default */])(source, false, point);
+  }
+  // Transform source points to long/lat, if they aren't already.
+  if (source.projName === 'longlat') {
+    point = {
+      x: point.x * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */],
+      y: point.y * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */]
+    };
+  }
+  else {
+    if (source.to_meter) {
+      point = {
+        x: point.x * source.to_meter,
+        y: point.y * source.to_meter
+      };
+    }
+    point = source.inverse(point); // Convert Cartesian to longlat
+  }
+  // Adjust for the prime meridian if necessary
+  if (source.from_greenwich) {
+    point.x += source.from_greenwich;
+  }
+
+  // Convert datums if needed, and if possible.
+  point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__datum_transform__["a" /* default */])(source.datum, dest.datum, point);
+
+  // Adjust for the prime meridian if necessary
+  if (dest.from_greenwich) {
+    point = {
+      x: point.x - dest.from_greenwich,
+      y: point.y
+    };
+  }
+
+  if (dest.projName === 'longlat') {
+    // convert radians to decimal degrees
+    point = {
+      x: point.x * __WEBPACK_IMPORTED_MODULE_0__constants_values__["j" /* R2D */],
+      y: point.y * __WEBPACK_IMPORTED_MODULE_0__constants_values__["j" /* R2D */]
+    };
+  } else { // else project
+    point = dest.forward(point);
+    if (dest.to_meter) {
+      point = {
+        x: point.x / dest.to_meter,
+        y: point.y / dest.to_meter
+      };
+    }
+  }
+
+  // DGR, 2010/11/12
+  if (dest.axis !== 'enu') {
+    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__adjust_axis__["a" /* default */])(dest, true, point);
+  }
+
+  return point;
+}
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (immutable) */ __webpack_exports__["c"] = forward;
 /* unused harmony export inverse */
 /* harmony export (immutable) */ __webpack_exports__["b"] = toPoint;
@@ -7432,644 +8064,180 @@ function getMinNorthing(zoneLetter) {
 
 
 /***/ }),
-/* 58 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function(x, y) {
-  x = Math.abs(x);
-  y = Math.abs(y);
-  var a = Math.max(x, y);
-  var b = Math.min(x, y) / (a ? a : 1);
-
-  return a * Math.sqrt(1 + Math.pow(b, 2));
-});
-
-
-/***/ }),
-/* 59 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-var C00 = 1;
-var C02 = 0.25;
-var C04 = 0.046875;
-var C06 = 0.01953125;
-var C08 = 0.01068115234375;
-var C22 = 0.75;
-var C44 = 0.46875;
-var C46 = 0.01302083333333333333;
-var C48 = 0.00712076822916666666;
-var C66 = 0.36458333333333333333;
-var C68 = 0.00569661458333333333;
-var C88 = 0.3076171875;
-
-/* harmony default export */ __webpack_exports__["a"] = (function(es) {
-  var en = [];
-  en[0] = C00 - es * (C02 + es * (C04 + es * (C06 + es * C08)));
-  en[1] = es * (C22 - es * (C04 + es * (C06 + es * C08)));
-  var t = es * es;
-  en[2] = t * (C44 - es * (C46 + es * C48));
-  t *= es;
-  en[3] = t * (C66 - es * C68);
-  en[4] = t * es * C88;
-  return en;
-});
-
-/***/ }),
-/* 60 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__pj_mlfn__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
-
-
-
-var MAX_ITER = 20;
-
-/* harmony default export */ __webpack_exports__["a"] = (function(arg, es, en) {
-  var k = 1 / (1 - es);
-  var phi = arg;
-  for (var i = MAX_ITER; i; --i) { /* rarely goes over 2 iterations */
-    var s = Math.sin(phi);
-    var t = 1 - es * s * s;
-    //t = this.pj_mlfn(phi, s, Math.cos(phi), en) - arg;
-    //phi -= t * (t * Math.sqrt(t)) * k;
-    t = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__pj_mlfn__["a" /* default */])(phi, s, Math.cos(phi), en) - arg) * (t * Math.sqrt(t)) * k;
-    phi -= t;
-    if (Math.abs(t) < __WEBPACK_IMPORTED_MODULE_1__constants_values__["a" /* EPSLN */]) {
-      return phi;
-    }
-  }
-  //..reportError("cass:pj_inv_mlfn: Convergence error");
-  return phi;
-});
-
-
-/***/ }),
-/* 61 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function(x) {
-  var r = Math.exp(x);
-  r = (r - 1 / r) / 2;
-  return r;
-});
-
-/***/ }),
-/* 62 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function (array){
-  var out = {
-    x: array[0],
-    y: array[1]
-  };
-  if (array.length>2) {
-    out.z = array[2];
-  }
-  if (array.length>3) {
-    out.m = array[3];
-  }
-  return out;
-});
-
-/***/ }),
-/* 63 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global__ = __webpack_require__(147);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projString__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_wkt_parser__ = __webpack_require__(70);
-
-
-
-
-function defs(name) {
-  /*global console*/
-  var that = this;
-  if (arguments.length === 2) {
-    var def = arguments[1];
-    if (typeof def === 'string') {
-      if (def.charAt(0) === '+') {
-        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__projString__["a" /* default */])(arguments[1]);
-      }
-      else {
-        defs[name] = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_wkt_parser__["a" /* default */])(arguments[1]);
-      }
-    } else {
-      defs[name] = def;
-    }
-  }
-  else if (arguments.length === 1) {
-    if (Array.isArray(name)) {
-      return name.map(function(v) {
-        if (Array.isArray(v)) {
-          defs.apply(that, v);
-        }
-        else {
-          defs(v);
-        }
-      });
-    }
-    else if (typeof name === 'string') {
-      if (name in defs) {
-        return defs[name];
-      }
-    }
-    else if ('EPSG' in name) {
-      defs['EPSG:' + name.EPSG] = name;
-    }
-    else if ('ESRI' in name) {
-      defs['ESRI:' + name.ESRI] = name;
-    }
-    else if ('IAU2000' in name) {
-      defs['IAU2000:' + name.IAU2000] = name;
-    }
-    else {
-      console.log(name);
-    }
-    return;
-  }
-
-
-}
-__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__global__["a" /* default */])(defs);
-/* harmony default export */ __webpack_exports__["a"] = (defs);
-
-
-/***/ }),
-/* 64 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Proj__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Point__ = __webpack_require__(126);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_toPoint__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__defs__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__transform__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_mgrs__ = __webpack_require__(57);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__version__ = __webpack_require__(176);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__projs__ = __webpack_require__(178);
-
-
-
-
-
-
-
-
-
-
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].defaultDatum = 'WGS84'; //default datum
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].Proj = __WEBPACK_IMPORTED_MODULE_1__Proj__["a" /* default */];
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].WGS84 = new __WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].Proj('WGS84');
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].Point = __WEBPACK_IMPORTED_MODULE_2__Point__["a" /* default */];
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].toPoint = __WEBPACK_IMPORTED_MODULE_3__common_toPoint__["a" /* default */];
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].defs = __WEBPACK_IMPORTED_MODULE_4__defs__["a" /* default */];
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].transform = __WEBPACK_IMPORTED_MODULE_5__transform__["a" /* default */];
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].mgrs = __WEBPACK_IMPORTED_MODULE_6_mgrs__["a" /* default */];
-__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */].version = __WEBPACK_IMPORTED_MODULE_7__version__["a" /* default */];
-__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8__projs__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */]);
-/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__core__["a" /* default */]);
-
-
-/***/ }),
-/* 65 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_units__ = __webpack_require__(140);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__match__ = __webpack_require__(47);
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["a"] = (function(defData) {
-  var self = {};
-  var paramObj = defData.split('+').map(function(v) {
-    return v.trim();
-  }).filter(function(a) {
-    return a;
-  }).reduce(function(p, a) {
-    var split = a.split('=');
-    split.push(true);
-    p[split[0].toLowerCase()] = split[1];
-    return p;
-  }, {});
-  var paramName, paramVal, paramOutname;
-  var params = {
-    proj: 'projName',
-    datum: 'datumCode',
-    rf: function(v) {
-      self.rf = parseFloat(v);
-    },
-    lat_0: function(v) {
-      self.lat0 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lat_1: function(v) {
-      self.lat1 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lat_2: function(v) {
-      self.lat2 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lat_ts: function(v) {
-      self.lat_ts = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lon_0: function(v) {
-      self.long0 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lon_1: function(v) {
-      self.long1 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lon_2: function(v) {
-      self.long2 = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    alpha: function(v) {
-      self.alpha = parseFloat(v) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    lonc: function(v) {
-      self.longc = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    x_0: function(v) {
-      self.x0 = parseFloat(v);
-    },
-    y_0: function(v) {
-      self.y0 = parseFloat(v);
-    },
-    k_0: function(v) {
-      self.k0 = parseFloat(v);
-    },
-    k: function(v) {
-      self.k0 = parseFloat(v);
-    },
-    a: function(v) {
-      self.a = parseFloat(v);
-    },
-    b: function(v) {
-      self.b = parseFloat(v);
-    },
-    r_a: function() {
-      self.R_A = true;
-    },
-    zone: function(v) {
-      self.zone = parseInt(v, 10);
-    },
-    south: function() {
-      self.utmSouth = true;
-    },
-    towgs84: function(v) {
-      self.datum_params = v.split(",").map(function(a) {
-        return parseFloat(a);
-      });
-    },
-    to_meter: function(v) {
-      self.to_meter = parseFloat(v);
-    },
-    units: function(v) {
-      self.units = v;
-      var unit = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_2__constants_units__["a" /* default */], v);
-      if (unit) {
-        self.to_meter = unit.to_meter;
-      }
-    },
-    from_greenwich: function(v) {
-      self.from_greenwich = v * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    pm: function(v) {
-      var pm = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__match__["a" /* default */])(__WEBPACK_IMPORTED_MODULE_1__constants_PrimeMeridian__["a" /* default */], v);
-      self.from_greenwich = (pm ? pm : parseFloat(v)) * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */];
-    },
-    nadgrids: function(v) {
-      if (v === '@null') {
-        self.datumCode = 'none';
-      }
-      else {
-        self.nadgrids = v;
-      }
-    },
-    axis: function(v) {
-      var legalAxis = "ewnsud";
-      if (v.length === 3 && legalAxis.indexOf(v.substr(0, 1)) !== -1 && legalAxis.indexOf(v.substr(1, 1)) !== -1 && legalAxis.indexOf(v.substr(2, 1)) !== -1) {
-        self.axis = v;
-      }
-    }
-  };
-  for (paramName in paramObj) {
-    paramVal = paramObj[paramName];
-    if (paramName in params) {
-      paramOutname = params[paramName];
-      if (typeof paramOutname === 'function') {
-        paramOutname(paramVal);
-      }
-      else {
-        self[paramOutname] = paramVal;
-      }
-    }
-    else {
-      self[paramName] = paramVal;
-    }
-  }
-  if(typeof self.datumCode === 'string' && self.datumCode !== "WGS84"){
-    self.datumCode = self.datumCode.toLowerCase();
-  }
-  return self;
-});
-
-
-/***/ }),
-/* 66 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_sinh__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_hypot__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinhy__ = __webpack_require__(129);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_gatg__ = __webpack_require__(133);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_clens__ = __webpack_require__(130);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__ = __webpack_require__(131);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__ = __webpack_require__(5);
-// Heavily based on this etmerc projection implementation
-// https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/etmerc.js
-
-
-
-
-
-
-
-
-
-function init() {
-  if (this.es === undefined || this.es <= 0) {
-    throw new Error('incorrect elliptical usage');
-  }
-
-  this.x0 = this.x0 !== undefined ? this.x0 : 0;
-  this.y0 = this.y0 !== undefined ? this.y0 : 0;
-  this.long0 = this.long0 !== undefined ? this.long0 : 0;
-  this.lat0 = this.lat0 !== undefined ? this.lat0 : 0;
-
-  this.cgb = [];
-  this.cbg = [];
-  this.utg = [];
-  this.gtu = [];
-
-  var f = this.es / (1 + Math.sqrt(1 - this.es));
-  var n = f / (2 - f);
-  var np = n;
-
-  this.cgb[0] = n * (2 + n * (-2 / 3 + n * (-2 + n * (116 / 45 + n * (26 / 45 + n * (-2854 / 675 ))))));
-  this.cbg[0] = n * (-2 + n * ( 2 / 3 + n * ( 4 / 3 + n * (-82 / 45 + n * (32 / 45 + n * (4642 / 4725))))));
-
-  np = np * n;
-  this.cgb[1] = np * (7 / 3 + n * (-8 / 5 + n * (-227 / 45 + n * (2704 / 315 + n * (2323 / 945)))));
-  this.cbg[1] = np * (5 / 3 + n * (-16 / 15 + n * ( -13 / 9 + n * (904 / 315 + n * (-1522 / 945)))));
-
-  np = np * n;
-  this.cgb[2] = np * (56 / 15 + n * (-136 / 35 + n * (-1262 / 105 + n * (73814 / 2835))));
-  this.cbg[2] = np * (-26 / 15 + n * (34 / 21 + n * (8 / 5 + n * (-12686 / 2835))));
-
-  np = np * n;
-  this.cgb[3] = np * (4279 / 630 + n * (-332 / 35 + n * (-399572 / 14175)));
-  this.cbg[3] = np * (1237 / 630 + n * (-12 / 5 + n * ( -24832 / 14175)));
-
-  np = np * n;
-  this.cgb[4] = np * (4174 / 315 + n * (-144838 / 6237));
-  this.cbg[4] = np * (-734 / 315 + n * (109598 / 31185));
-
-  np = np * n;
-  this.cgb[5] = np * (601676 / 22275);
-  this.cbg[5] = np * (444337 / 155925);
-
-  np = Math.pow(n, 2);
-  this.Qn = this.k0 / (1 + n) * (1 + np * (1 / 4 + np * (1 / 64 + np / 256)));
-
-  this.utg[0] = n * (-0.5 + n * ( 2 / 3 + n * (-37 / 96 + n * ( 1 / 360 + n * (81 / 512 + n * (-96199 / 604800))))));
-  this.gtu[0] = n * (0.5 + n * (-2 / 3 + n * (5 / 16 + n * (41 / 180 + n * (-127 / 288 + n * (7891 / 37800))))));
-
-  this.utg[1] = np * (-1 / 48 + n * (-1 / 15 + n * (437 / 1440 + n * (-46 / 105 + n * (1118711 / 3870720)))));
-  this.gtu[1] = np * (13 / 48 + n * (-3 / 5 + n * (557 / 1440 + n * (281 / 630 + n * (-1983433 / 1935360)))));
-
-  np = np * n;
-  this.utg[2] = np * (-17 / 480 + n * (37 / 840 + n * (209 / 4480 + n * (-5569 / 90720 ))));
-  this.gtu[2] = np * (61 / 240 + n * (-103 / 140 + n * (15061 / 26880 + n * (167603 / 181440))));
-
-  np = np * n;
-  this.utg[3] = np * (-4397 / 161280 + n * (11 / 504 + n * (830251 / 7257600)));
-  this.gtu[3] = np * (49561 / 161280 + n * (-179 / 168 + n * (6601661 / 7257600)));
-
-  np = np * n;
-  this.utg[4] = np * (-4583 / 161280 + n * (108847 / 3991680));
-  this.gtu[4] = np * (34729 / 80640 + n * (-3418889 / 1995840));
-
-  np = np * n;
-  this.utg[5] = np * (-20648693 / 638668800);
-  this.gtu[5] = np * (212378941 / 319334400);
-
-  var Z = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cbg, this.lat0);
-  this.Zb = -this.Qn * (Z + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_clens__["a" /* default */])(this.gtu, 2 * Z));
-}
-
-function forward(p) {
-  var Ce = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(p.x - this.long0);
-  var Cn = p.y;
-
-  Cn = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cbg, Cn);
-  var sin_Cn = Math.sin(Cn);
-  var cos_Cn = Math.cos(Cn);
-  var sin_Ce = Math.sin(Ce);
-  var cos_Ce = Math.cos(Ce);
-
-  Cn = Math.atan2(sin_Cn, cos_Ce * cos_Cn);
-  Ce = Math.atan2(sin_Ce * cos_Cn, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_hypot__["a" /* default */])(sin_Cn, cos_Cn * cos_Ce));
-  Ce = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_asinhy__["a" /* default */])(Math.tan(Ce));
-
-  var tmp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__["a" /* default */])(this.gtu, 2 * Cn, 2 * Ce);
-
-  Cn = Cn + tmp[0];
-  Ce = Ce + tmp[1];
-
-  var x;
-  var y;
-
-  if (Math.abs(Ce) <= 2.623395162778) {
-    x = this.a * (this.Qn * Ce) + this.x0;
-    y = this.a * (this.Qn * Cn + this.Zb) + this.y0;
-  }
-  else {
-    x = Infinity;
-    y = Infinity;
-  }
-
-  p.x = x;
-  p.y = y;
-
-  return p;
-}
-
-function inverse(p) {
-  var Ce = (p.x - this.x0) * (1 / this.a);
-  var Cn = (p.y - this.y0) * (1 / this.a);
-
-  Cn = (Cn - this.Zb) / this.Qn;
-  Ce = Ce / this.Qn;
-
-  var lon;
-  var lat;
-
-  if (Math.abs(Ce) <= 2.623395162778) {
-    var tmp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__common_clens_cmplx__["a" /* default */])(this.utg, 2 * Cn, 2 * Ce);
-
-    Cn = Cn + tmp[0];
-    Ce = Ce + tmp[1];
-    Ce = Math.atan(__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__common_sinh__["a" /* default */])(Ce));
-
-    var sin_Cn = Math.sin(Cn);
-    var cos_Cn = Math.cos(Cn);
-    var sin_Ce = Math.sin(Ce);
-    var cos_Ce = Math.cos(Ce);
-
-    Cn = Math.atan2(sin_Cn * cos_Ce, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_hypot__["a" /* default */])(sin_Ce, cos_Ce * cos_Cn));
-    Ce = Math.atan2(sin_Ce, cos_Ce * cos_Cn);
-
-    lon = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__["a" /* default */])(Ce + this.long0);
-    lat = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_gatg__["a" /* default */])(this.cgb, Cn);
-  }
-  else {
-    lon = Infinity;
-    lat = Infinity;
-  }
-
-  p.x = lon;
-  p.y = lat;
-
-  return p;
-}
-
-var names = ["Extended_Transverse_Mercator", "Extended Transverse Mercator", "etmerc"];
-/* harmony default export */ __webpack_exports__["a"] = ({
-  init: init,
-  forward: forward,
-  inverse: inverse,
-  names: names
-});
-
-
-/***/ }),
-/* 67 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = transform;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datum_transform__ = __webpack_require__(144);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__adjust_axis__ = __webpack_require__(127);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Proj__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_toPoint__ = __webpack_require__(62);
-
-
-
-
-
-function checkNotWGS(source, dest) {
-  return ((source.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || source.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) && dest.datumCode !== 'WGS84') || ((dest.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["h" /* PJD_3PARAM */] || dest.datum.datum_type === __WEBPACK_IMPORTED_MODULE_0__constants_values__["i" /* PJD_7PARAM */]) && source.datumCode !== 'WGS84');
-}
-
-function transform(source, dest, point) {
-  var wgs84;
-  if (Array.isArray(point)) {
-    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_toPoint__["a" /* default */])(point);
-  }
-
-  // Workaround for datum shifts towgs84, if either source or destination projection is not wgs84
-  if (source.datum && dest.datum && checkNotWGS(source, dest)) {
-    wgs84 = new __WEBPACK_IMPORTED_MODULE_3__Proj__["a" /* default */]('WGS84');
-    point = transform(source, wgs84, point);
-    source = wgs84;
-  }
-  // DGR, 2010/11/12
-  if (source.axis !== 'enu') {
-    point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__adjust_axis__["a" /* default */])(source, false, point);
-  }
-  // Transform source points to long/lat, if they aren't already.
-  if (source.projName === 'longlat') {
-    point = {
-      x: point.x * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */],
-      y: point.y * __WEBPACK_IMPORTED_MODULE_0__constants_values__["g" /* D2R */]
-    };
-  }
-  else {
-    if (source.to_meter) {
-      point = {
-        x: point.x * source.to_meter,
-        y: point.y * source.to_meter
-      };
-    }
-    point = source.inverse(point); // Convert Cartesian to longlat
-  }
-  // Adjust for the prime meridian if necessary
-  if (source.from_greenwich) {
-    point.x += source.from_greenwich;
-  }
-
-  // Convert datums if needed, and if possible.
-  point = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__datum_transform__["a" /* default */])(source.datum, dest.datum, point);
-
-  // Adjust for the prime meridian if necessary
-  if (dest.from_greenwich) {
-    point = {
-      x: point.x - dest.from_greenwich,
-      y: point.y
-    };
-  }
-
-  if (dest.projName === 'longlat') {
-    // convert radians to decimal degrees
-    point = {
-      x: point.x * __WEBPACK_IMPORTED_MODULE_0__constants_values__["j" /* R2D */],
-      y: point.y * __WEBPACK_IMPORTED_MODULE_0__constants_values__["j" /* R2D */]
-    };
-  } else { // else project
-    point = dest.forward(point);
-    if (dest.to_meter) {
-      point = {
-        x: point.x / dest.to_meter,
-        y: point.y / dest.to_meter
-      };
-    }
-  }
-
-  // DGR, 2010/11/12
-  if (dest.axis !== 'enu') {
-    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__adjust_axis__["a" /* default */])(dest, true, point);
-  }
-
-  return point;
-}
-
-
-/***/ }),
 /* 68 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__process__ = __webpack_require__(177);
+var D2R = 0.01745329251994329577;
+
+
+
+
+
+function rename(obj, params) {
+  var outName = params[0];
+  var inName = params[1];
+  if (!(outName in obj) && (inName in obj)) {
+    obj[outName] = obj[inName];
+    if (params.length === 3) {
+      obj[outName] = params[2](obj[outName]);
+    }
+  }
+}
+
+function d2r(input) {
+  return input * D2R;
+}
+
+function cleanWKT(wkt) {
+  if (wkt.type === 'GEOGCS') {
+    wkt.projName = 'longlat';
+  } else if (wkt.type === 'LOCAL_CS') {
+    wkt.projName = 'identity';
+    wkt.local = true;
+  } else {
+    if (typeof wkt.PROJECTION === 'object') {
+      wkt.projName = Object.keys(wkt.PROJECTION)[0];
+    } else {
+      wkt.projName = wkt.PROJECTION;
+    }
+  }
+  if (wkt.UNIT) {
+    wkt.units = wkt.UNIT.name.toLowerCase();
+    if (wkt.units === 'metre') {
+      wkt.units = 'meter';
+    }
+    if (wkt.UNIT.convert) {
+      if (wkt.type === 'GEOGCS') {
+        if (wkt.DATUM && wkt.DATUM.SPHEROID) {
+          wkt.to_meter = wkt.UNIT.convert*wkt.DATUM.SPHEROID.a;
+        }
+      } else {
+        wkt.to_meter = wkt.UNIT.convert, 10;
+      }
+    }
+  }
+  var geogcs = wkt.GEOGCS;
+  if (wkt.type === 'GEOGCS') {
+    geogcs = wkt;
+  }
+  if (geogcs) {
+    //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
+    //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
+    //}
+    if (geogcs.DATUM) {
+      wkt.datumCode = geogcs.DATUM.name.toLowerCase();
+    } else {
+      wkt.datumCode = geogcs.name.toLowerCase();
+    }
+    if (wkt.datumCode.slice(0, 2) === 'd_') {
+      wkt.datumCode = wkt.datumCode.slice(2);
+    }
+    if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
+      wkt.datumCode = 'nzgd49';
+    }
+    if (wkt.datumCode === 'wgs_1984') {
+      if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
+        wkt.sphere = true;
+      }
+      wkt.datumCode = 'wgs84';
+    }
+    if (wkt.datumCode.slice(-6) === '_ferro') {
+      wkt.datumCode = wkt.datumCode.slice(0, - 6);
+    }
+    if (wkt.datumCode.slice(-8) === '_jakarta') {
+      wkt.datumCode = wkt.datumCode.slice(0, - 8);
+    }
+    if (~wkt.datumCode.indexOf('belge')) {
+      wkt.datumCode = 'rnb72';
+    }
+    if (geogcs.DATUM && geogcs.DATUM.SPHEROID) {
+      wkt.ellps = geogcs.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
+      if (wkt.ellps.toLowerCase().slice(0, 13) === 'international') {
+        wkt.ellps = 'intl';
+      }
+
+      wkt.a = geogcs.DATUM.SPHEROID.a;
+      wkt.rf = parseFloat(geogcs.DATUM.SPHEROID.rf, 10);
+    }
+    if (~wkt.datumCode.indexOf('osgb_1936')) {
+      wkt.datumCode = 'osgb36';
+    }
+    if (~wkt.datumCode.indexOf('osni_1952')) {
+      wkt.datumCode = 'osni52';
+    }
+    if (~wkt.datumCode.indexOf('tm65')
+      || ~wkt.datumCode.indexOf('geodetic_datum_of_1965')) {
+      wkt.datumCode = 'ire65';
+    }
+  }
+  if (wkt.b && !isFinite(wkt.b)) {
+    wkt.b = wkt.a;
+  }
+
+  function toMeter(input) {
+    var ratio = wkt.to_meter || 1;
+    return input * ratio;
+  }
+  var renamer = function(a) {
+    return rename(wkt, a);
+  };
+  var list = [
+    ['standard_parallel_1', 'Standard_Parallel_1'],
+    ['standard_parallel_2', 'Standard_Parallel_2'],
+    ['false_easting', 'False_Easting'],
+    ['false_northing', 'False_Northing'],
+    ['central_meridian', 'Central_Meridian'],
+    ['latitude_of_origin', 'Latitude_Of_Origin'],
+    ['latitude_of_origin', 'Central_Parallel'],
+    ['scale_factor', 'Scale_Factor'],
+    ['k0', 'scale_factor'],
+    ['latitude_of_center', 'Latitude_of_center'],
+    ['lat0', 'latitude_of_center', d2r],
+    ['longitude_of_center', 'Longitude_Of_Center'],
+    ['longc', 'longitude_of_center', d2r],
+    ['x0', 'false_easting', toMeter],
+    ['y0', 'false_northing', toMeter],
+    ['long0', 'central_meridian', d2r],
+    ['lat0', 'latitude_of_origin', d2r],
+    ['lat0', 'standard_parallel_1', d2r],
+    ['lat1', 'standard_parallel_1', d2r],
+    ['lat2', 'standard_parallel_2', d2r],
+    ['alpha', 'azimuth', d2r],
+    ['srsCode', 'name']
+  ];
+  list.forEach(renamer);
+  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === 'Lambert_Azimuthal_Equal_Area')) {
+    wkt.long0 = wkt.longc;
+  }
+  if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
+    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
+    wkt.lat_ts = wkt.lat1;
+  }
+}
+/* harmony default export */ __webpack_exports__["a"] = (function(wkt) {
+  var lisp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* default */])(wkt);
+  var type = lisp.shift();
+  var name = lisp.shift();
+  lisp.unshift(['name', name]);
+  lisp.unshift(['type', type]);
+  var obj = {};
+  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__process__["a" /* sExpr */])(lisp, obj);
+  cleanWKT(obj);
+  return obj;
+});
+
+
+/***/ }),
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Point = __webpack_require__(125);
+var Point = __webpack_require__(182);
 
 module.exports = VectorTileFeature;
 
@@ -8303,13 +8471,13 @@ function signedArea(ring) {
 
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var VectorTileFeature = __webpack_require__(68);
+var VectorTileFeature = __webpack_require__(69);
 
 module.exports = VectorTileLayer;
 
@@ -8371,173 +8539,6 @@ VectorTileLayer.prototype.feature = function(i) {
 
 
 /***/ }),
-/* 70 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__parser__ = __webpack_require__(182);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__process__ = __webpack_require__(183);
-var D2R = 0.01745329251994329577;
-
-
-
-
-
-function rename(obj, params) {
-  var outName = params[0];
-  var inName = params[1];
-  if (!(outName in obj) && (inName in obj)) {
-    obj[outName] = obj[inName];
-    if (params.length === 3) {
-      obj[outName] = params[2](obj[outName]);
-    }
-  }
-}
-
-function d2r(input) {
-  return input * D2R;
-}
-
-function cleanWKT(wkt) {
-  if (wkt.type === 'GEOGCS') {
-    wkt.projName = 'longlat';
-  } else if (wkt.type === 'LOCAL_CS') {
-    wkt.projName = 'identity';
-    wkt.local = true;
-  } else {
-    if (typeof wkt.PROJECTION === 'object') {
-      wkt.projName = Object.keys(wkt.PROJECTION)[0];
-    } else {
-      wkt.projName = wkt.PROJECTION;
-    }
-  }
-  if (wkt.UNIT) {
-    wkt.units = wkt.UNIT.name.toLowerCase();
-    if (wkt.units === 'metre') {
-      wkt.units = 'meter';
-    }
-    if (wkt.UNIT.convert) {
-      if (wkt.type === 'GEOGCS') {
-        if (wkt.DATUM && wkt.DATUM.SPHEROID) {
-          wkt.to_meter = wkt.UNIT.convert*wkt.DATUM.SPHEROID.a;
-        }
-      } else {
-        wkt.to_meter = wkt.UNIT.convert, 10;
-      }
-    }
-  }
-  var geogcs = wkt.GEOGCS;
-  if (wkt.type === 'GEOGCS') {
-    geogcs = wkt;
-  }
-  if (geogcs) {
-    //if(wkt.GEOGCS.PRIMEM&&wkt.GEOGCS.PRIMEM.convert){
-    //  wkt.from_greenwich=wkt.GEOGCS.PRIMEM.convert*D2R;
-    //}
-    if (geogcs.DATUM) {
-      wkt.datumCode = geogcs.DATUM.name.toLowerCase();
-    } else {
-      wkt.datumCode = geogcs.name.toLowerCase();
-    }
-    if (wkt.datumCode.slice(0, 2) === 'd_') {
-      wkt.datumCode = wkt.datumCode.slice(2);
-    }
-    if (wkt.datumCode === 'new_zealand_geodetic_datum_1949' || wkt.datumCode === 'new_zealand_1949') {
-      wkt.datumCode = 'nzgd49';
-    }
-    if (wkt.datumCode === 'wgs_1984') {
-      if (wkt.PROJECTION === 'Mercator_Auxiliary_Sphere') {
-        wkt.sphere = true;
-      }
-      wkt.datumCode = 'wgs84';
-    }
-    if (wkt.datumCode.slice(-6) === '_ferro') {
-      wkt.datumCode = wkt.datumCode.slice(0, - 6);
-    }
-    if (wkt.datumCode.slice(-8) === '_jakarta') {
-      wkt.datumCode = wkt.datumCode.slice(0, - 8);
-    }
-    if (~wkt.datumCode.indexOf('belge')) {
-      wkt.datumCode = 'rnb72';
-    }
-    if (geogcs.DATUM && geogcs.DATUM.SPHEROID) {
-      wkt.ellps = geogcs.DATUM.SPHEROID.name.replace('_19', '').replace(/[Cc]larke\_18/, 'clrk');
-      if (wkt.ellps.toLowerCase().slice(0, 13) === 'international') {
-        wkt.ellps = 'intl';
-      }
-
-      wkt.a = geogcs.DATUM.SPHEROID.a;
-      wkt.rf = parseFloat(geogcs.DATUM.SPHEROID.rf, 10);
-    }
-    if (~wkt.datumCode.indexOf('osgb_1936')) {
-      wkt.datumCode = 'osgb36';
-    }
-    if (~wkt.datumCode.indexOf('osni_1952')) {
-      wkt.datumCode = 'osni52';
-    }
-    if (~wkt.datumCode.indexOf('tm65')
-      || ~wkt.datumCode.indexOf('geodetic_datum_of_1965')) {
-      wkt.datumCode = 'ire65';
-    }
-  }
-  if (wkt.b && !isFinite(wkt.b)) {
-    wkt.b = wkt.a;
-  }
-
-  function toMeter(input) {
-    var ratio = wkt.to_meter || 1;
-    return input * ratio;
-  }
-  var renamer = function(a) {
-    return rename(wkt, a);
-  };
-  var list = [
-    ['standard_parallel_1', 'Standard_Parallel_1'],
-    ['standard_parallel_2', 'Standard_Parallel_2'],
-    ['false_easting', 'False_Easting'],
-    ['false_northing', 'False_Northing'],
-    ['central_meridian', 'Central_Meridian'],
-    ['latitude_of_origin', 'Latitude_Of_Origin'],
-    ['latitude_of_origin', 'Central_Parallel'],
-    ['scale_factor', 'Scale_Factor'],
-    ['k0', 'scale_factor'],
-    ['latitude_of_center', 'Latitude_of_center'],
-    ['lat0', 'latitude_of_center', d2r],
-    ['longitude_of_center', 'Longitude_Of_Center'],
-    ['longc', 'longitude_of_center', d2r],
-    ['x0', 'false_easting', toMeter],
-    ['y0', 'false_northing', toMeter],
-    ['long0', 'central_meridian', d2r],
-    ['lat0', 'latitude_of_origin', d2r],
-    ['lat0', 'standard_parallel_1', d2r],
-    ['lat1', 'standard_parallel_1', d2r],
-    ['lat2', 'standard_parallel_2', d2r],
-    ['alpha', 'azimuth', d2r],
-    ['srsCode', 'name']
-  ];
-  list.forEach(renamer);
-  if (!wkt.long0 && wkt.longc && (wkt.projName === 'Albers_Conic_Equal_Area' || wkt.projName === 'Lambert_Azimuthal_Equal_Area')) {
-    wkt.long0 = wkt.longc;
-  }
-  if (!wkt.lat_ts && wkt.lat1 && (wkt.projName === 'Stereographic_South_Pole' || wkt.projName === 'Polar Stereographic (variant B)')) {
-    wkt.lat0 = d2r(wkt.lat1 > 0 ? 90 : -90);
-    wkt.lat_ts = wkt.lat1;
-  }
-}
-/* harmony default export */ __webpack_exports__["a"] = (function(wkt) {
-  var lisp = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__parser__["a" /* default */])(wkt);
-  var type = lisp.shift();
-  var name = lisp.shift();
-  lisp.unshift(['name', name]);
-  lisp.unshift(['type', type]);
-  var obj = {};
-  __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__process__["a" /* sExpr */])(lisp, obj);
-  cleanWKT(obj);
-  return obj;
-});
-
-
-/***/ }),
 /* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8546,7 +8547,7 @@ function cleanWKT(wkt) {
  */
 var SuperMap = __webpack_require__(0);
 var Request = __webpack_require__(14);
-var SecurityManager = __webpack_require__(21);
+var SecurityManager = __webpack_require__(22);
 
 SuperMap.iPortalServiceBase = SuperMap.Class({
 
@@ -12253,7 +12254,7 @@ module.exports = SuperMap.iPortal;
 __webpack_require__(361);
 var SuperMap = __webpack_require__(0);
 var Request = __webpack_require__(14);
-var SecurityManager = __webpack_require__(21);
+var SecurityManager = __webpack_require__(22);
 var OnlineData = __webpack_require__(360);
 SuperMap.Online = SuperMap.Class({
 
@@ -12622,7 +12623,7 @@ module.exports = TiandituTileLayer;
  *      L.superMap.tiledMapLayer(url,{CRS:L.CRS.EPSG4326}).addTo(map);
  */
 __webpack_require__(6);
-__webpack_require__(21);
+__webpack_require__(22);
 var L = __webpack_require__(1);
 var SuperMap = __webpack_require__(0);
 var TiledMapLayer = L.TileLayer.extend({
@@ -12822,7 +12823,7 @@ module.exports = TiledMapLayer;
 
 __webpack_require__(6);
 var L = __webpack_require__(1);
-var Util = __webpack_require__(22);
+var Util = __webpack_require__(17);
 var Request = __webpack_require__(14);
 var SuperMap = __webpack_require__(0);
 var CartoCSSToLeaflet = __webpack_require__(83);
@@ -13813,7 +13814,7 @@ module.exports = RankSymbolThemeLayer;
  *      L.superMap.tiledVectorLayer(url).addTo(map);
  */
 __webpack_require__(6);
-__webpack_require__(21);
+__webpack_require__(22);
 __webpack_require__(386);
 var L = __webpack_require__(1);
 var CartoCSSToLeaflet = __webpack_require__(83);
@@ -14468,7 +14469,7 @@ module.exports = ChartService;
 var L = __webpack_require__(1);
 var SuperMap = __webpack_require__(0);
 var ServiceBase = __webpack_require__(7);
-var Util = __webpack_require__(22);
+var Util = __webpack_require__(17);
 var GetFeaturesByIDsService = __webpack_require__(264);
 var GetFeaturesBySQLService = __webpack_require__(266);
 var GetFeaturesByBoundsService = __webpack_require__(258);
@@ -15082,7 +15083,7 @@ module.exports = MapService;
 var L = __webpack_require__(1);
 var ServiceBase = __webpack_require__(7);
 var SuperMap = __webpack_require__(0);
-var Util = __webpack_require__(22);
+var Util = __webpack_require__(17);
 var SuperMapMeasureService = __webpack_require__(291);
 
 var MeasureService = ServiceBase.extend({
@@ -15868,7 +15869,7 @@ module.exports = ProcessingJobsService;
 var L = __webpack_require__(1);
 var ServiceBase = __webpack_require__(7);
 var SuperMap = __webpack_require__(0);
-var Util = __webpack_require__(22);
+var Util = __webpack_require__(17);
 var QueryByBoundsService = __webpack_require__(297);
 var QueryByDistanceService = __webpack_require__(299);
 var QueryBySQLService = __webpack_require__(303);
@@ -16030,7 +16031,7 @@ module.exports = QueryService;
 var L = __webpack_require__(1);
 var ServiceBase = __webpack_require__(7);
 var SuperMap = __webpack_require__(0);
-var Util = __webpack_require__(22);
+var Util = __webpack_require__(17);
 var AreaSolarRadiationService = __webpack_require__(193);
 var BufferAnalystService = __webpack_require__(196);
 var DensityAnalystService = __webpack_require__(217);
@@ -16897,96 +16898,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 /* 123 */
-/***/ (function(module, exports) {
-
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
-
-  i += d
-
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-}
-
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-
-  value = Math.abs(value)
-
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
-    }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
-    }
-    if (value * c >= 2) {
-      e++
-      c /= 2
-    }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = (value * c - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
-
-
-/***/ }),
-/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16994,7 +16905,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 module.exports = Pbf;
 
-var ieee754 = __webpack_require__(123);
+var ieee754 = __webpack_require__(124);
 
 function Pbf(buf) {
     this.buf = ArrayBuffer.isView(buf) ? buf : new Uint8Array(buf || 0);
@@ -17611,149 +17522,101 @@ function writeUtf8(buf, str, pos) {
 
 
 /***/ }),
-/* 125 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 124 */
+/***/ (function(module, exports) {
 
-"use strict";
+exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+  var e, m
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var nBits = -7
+  var i = isLE ? (nBytes - 1) : 0
+  var d = isLE ? -1 : 1
+  var s = buffer[offset + i]
 
+  i += d
 
-module.exports = Point;
+  e = s & ((1 << (-nBits)) - 1)
+  s >>= (-nBits)
+  nBits += eLen
+  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
 
-function Point(x, y) {
-    this.x = x;
-    this.y = y;
+  m = e & ((1 << (-nBits)) - 1)
+  e >>= (-nBits)
+  nBits += mLen
+  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+  if (e === 0) {
+    e = 1 - eBias
+  } else if (e === eMax) {
+    return m ? NaN : ((s ? -1 : 1) * Infinity)
+  } else {
+    m = m + Math.pow(2, mLen)
+    e = e - eBias
+  }
+  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
 }
 
-Point.prototype = {
-    clone: function() { return new Point(this.x, this.y); },
+exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+  var e, m, c
+  var eLen = nBytes * 8 - mLen - 1
+  var eMax = (1 << eLen) - 1
+  var eBias = eMax >> 1
+  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+  var i = isLE ? 0 : (nBytes - 1)
+  var d = isLE ? 1 : -1
+  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
 
-    add:     function(p) { return this.clone()._add(p);     },
-    sub:     function(p) { return this.clone()._sub(p);     },
-    mult:    function(k) { return this.clone()._mult(k);    },
-    div:     function(k) { return this.clone()._div(k);     },
-    rotate:  function(a) { return this.clone()._rotate(a);  },
-    matMult: function(m) { return this.clone()._matMult(m); },
-    unit:    function() { return this.clone()._unit(); },
-    perp:    function() { return this.clone()._perp(); },
-    round:   function() { return this.clone()._round(); },
+  value = Math.abs(value)
 
-    mag: function() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
-    },
-
-    equals: function(p) {
-        return this.x === p.x &&
-               this.y === p.y;
-    },
-
-    dist: function(p) {
-        return Math.sqrt(this.distSqr(p));
-    },
-
-    distSqr: function(p) {
-        var dx = p.x - this.x,
-            dy = p.y - this.y;
-        return dx * dx + dy * dy;
-    },
-
-    angle: function() {
-        return Math.atan2(this.y, this.x);
-    },
-
-    angleTo: function(b) {
-        return Math.atan2(this.y - b.y, this.x - b.x);
-    },
-
-    angleWith: function(b) {
-        return this.angleWithSep(b.x, b.y);
-    },
-
-    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
-    angleWithSep: function(x, y) {
-        return Math.atan2(
-            this.x * y - this.y * x,
-            this.x * x + this.y * y);
-    },
-
-    _matMult: function(m) {
-        var x = m[0] * this.x + m[1] * this.y,
-            y = m[2] * this.x + m[3] * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _add: function(p) {
-        this.x += p.x;
-        this.y += p.y;
-        return this;
-    },
-
-    _sub: function(p) {
-        this.x -= p.x;
-        this.y -= p.y;
-        return this;
-    },
-
-    _mult: function(k) {
-        this.x *= k;
-        this.y *= k;
-        return this;
-    },
-
-    _div: function(k) {
-        this.x /= k;
-        this.y /= k;
-        return this;
-    },
-
-    _unit: function() {
-        this._div(this.mag());
-        return this;
-    },
-
-    _perp: function() {
-        var y = this.y;
-        this.y = this.x;
-        this.x = -y;
-        return this;
-    },
-
-    _rotate: function(angle) {
-        var cos = Math.cos(angle),
-            sin = Math.sin(angle),
-            x = cos * this.x - sin * this.y,
-            y = sin * this.x + cos * this.y;
-        this.x = x;
-        this.y = y;
-        return this;
-    },
-
-    _round: function() {
-        this.x = Math.round(this.x);
-        this.y = Math.round(this.y);
-        return this;
+  if (isNaN(value) || value === Infinity) {
+    m = isNaN(value) ? 1 : 0
+    e = eMax
+  } else {
+    e = Math.floor(Math.log(value) / Math.LN2)
+    if (value * (c = Math.pow(2, -e)) < 1) {
+      e--
+      c *= 2
     }
-};
+    if (e + eBias >= 1) {
+      value += rt / c
+    } else {
+      value += rt * Math.pow(2, 1 - eBias)
+    }
+    if (value * c >= 2) {
+      e++
+      c /= 2
+    }
 
-// constructs Point from an array if necessary
-Point.convert = function (a) {
-    if (a instanceof Point) {
-        return a;
+    if (e + eBias >= eMax) {
+      m = 0
+      e = eMax
+    } else if (e + eBias >= 1) {
+      m = (value * c - 1) * Math.pow(2, mLen)
+      e = e + eBias
+    } else {
+      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+      e = 0
     }
-    if (Array.isArray(a)) {
-        return new Point(a[0], a[1]);
-    }
-    return a;
-};
+  }
+
+  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+  e = (e << mLen) | m
+  eLen += mLen
+  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+  buffer[offset + i - d] |= s * 128
+}
 
 
 /***/ }),
-/* 126 */
+/* 125 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mgrs__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_mgrs__ = __webpack_require__(67);
 
 
 function Point(x, y, z) {
@@ -17791,7 +17654,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 127 */
+/* 126 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17850,7 +17713,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 128 */
+/* 127 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17872,12 +17735,12 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 129 */
+/* 128 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hypot__ = __webpack_require__(58);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__log1py__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__hypot__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__log1py__ = __webpack_require__(134);
 
 
 
@@ -17890,7 +17753,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 130 */
+/* 129 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17912,12 +17775,12 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 131 */
+/* 130 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sinh__ = __webpack_require__(61);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cosh__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sinh__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__cosh__ = __webpack_require__(131);
 
 
 
@@ -17953,7 +17816,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 132 */
+/* 131 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17964,7 +17827,7 @@ Point.prototype.toMGRS = function(accuracy) {
 });
 
 /***/ }),
-/* 133 */
+/* 132 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -17986,7 +17849,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 134 */
+/* 133 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18026,7 +17889,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 135 */
+/* 134 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18039,7 +17902,7 @@ Point.prototype.toMGRS = function(accuracy) {
 
 
 /***/ }),
-/* 136 */
+/* 135 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18048,7 +17911,7 @@ Point.prototype.toMGRS = function(accuracy) {
 });
 
 /***/ }),
-/* 137 */
+/* 136 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18153,7 +18016,7 @@ exports.rnb72 = {
 
 
 /***/ }),
-/* 138 */
+/* 137 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18421,7 +18284,7 @@ exports.sphere = {
 
 
 /***/ }),
-/* 139 */
+/* 138 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18445,7 +18308,7 @@ exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 
 /***/ }),
-/* 140 */
+/* 139 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18456,12 +18319,12 @@ exports.oslo = 10.722916666667; //"10d43'22.5\"E"
 
 
 /***/ }),
-/* 141 */
+/* 140 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Proj__ = __webpack_require__(42);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transform__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__transform__ = __webpack_require__(66);
 
 
 var wgs84 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__Proj__["a" /* default */])('WGS84');
@@ -18528,7 +18391,7 @@ function proj4(fromProj, toProj, coord) {
 /* harmony default export */ __webpack_exports__["a"] = (proj4);
 
 /***/ }),
-/* 142 */
+/* 141 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18571,16 +18434,16 @@ function datum(datumCode, datum_params, a, b, es, ep2) {
 
 
 /***/ }),
-/* 143 */
+/* 142 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
 /* harmony export (immutable) */ __webpack_exports__["a"] = compareDatums;
 /* harmony export (immutable) */ __webpack_exports__["b"] = geodeticToGeocentric;
 /* harmony export (immutable) */ __webpack_exports__["e"] = geocentricToGeodetic;
 /* harmony export (immutable) */ __webpack_exports__["c"] = geocentricToWgs84;
 /* harmony export (immutable) */ __webpack_exports__["d"] = geocentricFromWgs84;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
 
 
 function compareDatums(source, dest) {
@@ -18826,12 +18689,12 @@ function geocentricFromWgs84(p, datum_type, datum_params) {
 
 
 /***/ }),
-/* 144 */
+/* 143 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datumUtils__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datumUtils__ = __webpack_require__(142);
 
 
 
@@ -18874,15 +18737,15 @@ function checkParams(type) {
 
 
 /***/ }),
-/* 145 */
+/* 144 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_Ellipsoid__ = __webpack_require__(137);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__match__ = __webpack_require__(47);
 /* harmony export (immutable) */ __webpack_exports__["b"] = eccentricity;
 /* harmony export (immutable) */ __webpack_exports__["a"] = sphere;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_Ellipsoid__ = __webpack_require__(138);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__match__ = __webpack_require__(47);
 
 
 
@@ -18934,7 +18797,7 @@ function sphere(a, b, rf, ellps, sphere) {
 
 
 /***/ }),
-/* 146 */
+/* 145 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18955,7 +18818,7 @@ function sphere(a, b, rf, ellps, sphere) {
 
 
 /***/ }),
-/* 147 */
+/* 146 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18973,13 +18836,13 @@ function sphere(a, b, rf, ellps, sphere) {
 
 
 /***/ }),
-/* 148 */
+/* 147 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defs__ = __webpack_require__(63);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_wkt_parser__ = __webpack_require__(70);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projString__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defs__ = __webpack_require__(62);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_wkt_parser__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__projString__ = __webpack_require__(64);
 
 
 
@@ -19019,15 +18882,15 @@ function parse(code){
 
 
 /***/ }),
-/* 149 */
+/* 148 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__projections_merc__ = __webpack_require__(161);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projections_longlat__ = __webpack_require__(160);
 /* unused harmony export add */
 /* unused harmony export get */
 /* unused harmony export start */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__projections_merc__ = __webpack_require__(162);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__projections_longlat__ = __webpack_require__(161);
 
 
 var projs = [__WEBPACK_IMPORTED_MODULE_0__projections_merc__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1__projections_longlat__["a" /* default */]];
@@ -19070,20 +18933,20 @@ function start() {
 
 
 /***/ }),
-/* 150 */
+/* 149 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_msfnz__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_asinz__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_values__ = __webpack_require__(3);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export phi1z */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_msfnz__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_asinz__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_values__ = __webpack_require__(3);
 
 
 
@@ -19216,14 +19079,10 @@ var names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 
 
 /***/ }),
-/* 151 */
+/* 150 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_mlfn__ = __webpack_require__(35);
@@ -19232,8 +19091,12 @@ var names = ["Albers_Conic_Equal_Area", "Albers", "aea"];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_e2fn__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_e3fn__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_gN__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_asinz__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_asinz__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__common_imlfn__ = __webpack_require__(44);
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 
 
 
@@ -19444,14 +19307,10 @@ var names = ["Azimuthal_Equidistant", "aeqd"];
 
 
 /***/ }),
-/* 152 */
+/* 151 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_mlfn__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_e0fn__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_e1fn__ = __webpack_require__(32);
@@ -19462,6 +19321,10 @@ var names = ["Azimuthal_Equidistant", "aeqd"];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_adjust_lat__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_imlfn__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__constants_values__ = __webpack_require__(3);
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 
 
 
@@ -19573,18 +19436,18 @@ var names = ["Cassini", "Cassini_Soldner", "cass"];
 
 
 /***/ }),
-/* 153 */
+/* 152 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_msfnz__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_iqsfnz__ = __webpack_require__(133);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_msfnz__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_iqsfnz__ = __webpack_require__(134);
 
 
 
@@ -19658,16 +19521,16 @@ var names = ["cea"];
 
 
 /***/ }),
-/* 154 */
+/* 153 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lat__ = __webpack_require__(23);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lat__ = __webpack_require__(23);
 
 
 
@@ -19719,24 +19582,24 @@ var names = ["Equirectangular", "Equidistant_Cylindrical", "eqc"];
 
 
 /***/ }),
-/* 155 */
+/* 154 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_e0fn__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_e1fn__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_e2fn__ = __webpack_require__(33);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_e3fn__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_msfnz__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_msfnz__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_mlfn__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_adjust_lon__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__common_adjust_lat__ = __webpack_require__(23);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_imlfn__ = __webpack_require__(44);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__constants_values__ = __webpack_require__(3);
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 
 
 
@@ -19857,16 +19720,16 @@ var names = ["Equidistant_Conic", "eqdc"];
 
 
 /***/ }),
-/* 156 */
+/* 155 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_srat__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_srat__ = __webpack_require__(136);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
 
 var MAX_ITER = 20;
 
@@ -19922,17 +19785,17 @@ var names = ["gauss"];
 
 
 /***/ }),
-/* 157 */
+/* 156 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_asinz__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(3);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_asinz__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(3);
 
 
 
@@ -20040,15 +19903,15 @@ var names = ["gnom"];
 
 
 /***/ }),
-/* 158 */
+/* 157 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
 
 
 function init() {
@@ -20158,10 +20021,13 @@ var names = ["Krovak", "krovak"];
 
 
 /***/ }),
-/* 159 */
+/* 158 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_adjust_lon__ = __webpack_require__(5);
 /* unused harmony export S_POLE */
 /* unused harmony export N_POLE */
 /* unused harmony export EQUIT */
@@ -20170,9 +20036,6 @@ var names = ["Krovak", "krovak"];
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_qsfnz__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_adjust_lon__ = __webpack_require__(5);
 
 
 
@@ -20474,20 +20337,20 @@ var names = ["Lambert Azimuthal Equal Area", "Lambert_Azimuthal_Equal_Area", "la
 
 
 /***/ }),
-/* 160 */
+/* 159 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_msfnz__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_msfnz__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_tsfnz__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_sign__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_adjust_lon__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_phi2z__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_values__ = __webpack_require__(3);
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 
 
 
@@ -20630,7 +20493,7 @@ var names = ["Lambert Tangential Conformal Conic Projection", "Lambert_Conformal
 
 
 /***/ }),
-/* 161 */
+/* 160 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20657,19 +20520,19 @@ var names = ["longlat", "identity"];
 
 
 /***/ }),
-/* 162 */
+/* 161 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_msfnz__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_msfnz__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_tsfnz__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_phi2z__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_values__ = __webpack_require__(3);
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 
 
 
@@ -20773,15 +20636,15 @@ var names = ["Mercator", "Popular Visualisation Pseudo Mercator", "Mercator_1SP"
 
 
 /***/ }),
-/* 163 */
+/* 162 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
 
 
 /*
@@ -20837,16 +20700,16 @@ var names = ["Miller_Cylindrical", "mill"];
 
 
 /***/ }),
-/* 164 */
+/* 163 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
 
 function init() {}
 
@@ -20933,16 +20796,16 @@ var names = ["Mollweide", "moll"];
 
 
 /***/ }),
-/* 165 */
+/* 164 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
 /* unused harmony export iterations */
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
 
 
 /*
@@ -21172,18 +21035,18 @@ var names = ["New_Zealand_Map_Grid", "nzmg"];
 
 
 /***/ }),
-/* 166 */
+/* 165 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_tsfnz__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_phi2z__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__constants_values__ = __webpack_require__(3);
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 
 
 
@@ -21358,17 +21221,17 @@ var names = ["Hotine_Oblique_Mercator", "Hotine Oblique Mercator", "Hotine_Obliq
 
 
 /***/ }),
-/* 167 */
+/* 166 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_asinz__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(3);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_asinz__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(3);
 
 
 
@@ -21463,14 +21326,10 @@ var names = ["ortho"];
 
 
 /***/ }),
-/* 168 */
+/* 167 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export init */
-/* unused harmony export forward */
-/* unused harmony export inverse */
-/* unused harmony export names */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_e0fn__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_e1fn__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_e2fn__ = __webpack_require__(33);
@@ -21480,6 +21339,10 @@ var names = ["ortho"];
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_mlfn__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__constants_values__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__common_gN__ = __webpack_require__(43);
+/* unused harmony export init */
+/* unused harmony export forward */
+/* unused harmony export inverse */
+/* unused harmony export names */
 
 
 
@@ -21618,21 +21481,21 @@ var names = ["Polyconic", "poly"];
 
 
 /***/ }),
-/* 169 */
+/* 168 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lat__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_enfn__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_pj_mlfn__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_pj_inv_mlfn__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_values__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_asinz__ = __webpack_require__(18);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lat__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_enfn__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_pj_mlfn__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_pj_inv_mlfn__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__common_asinz__ = __webpack_require__(17);
 
 
 
@@ -21751,7 +21614,7 @@ var names = ["Sinusoidal", "sinu"];
 
 
 /***/ }),
-/* 170 */
+/* 169 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -21848,21 +21711,21 @@ var names = ["somerc"];
 
 
 /***/ }),
-/* 171 */
+/* 170 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_sign__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_msfnz__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_tsfnz__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_phi2z__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_adjust_lon__ = __webpack_require__(5);
 /* unused harmony export ssfn_ */
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_sign__ = __webpack_require__(24);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_msfnz__ = __webpack_require__(18);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_tsfnz__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_phi2z__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_adjust_lon__ = __webpack_require__(5);
 
 
 
@@ -22040,16 +21903,16 @@ var names = ["stere", "Stereographic_South_Pole", "Polar Stereographic (variant 
 
 
 /***/ }),
-/* 172 */
+/* 171 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gauss__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__ = __webpack_require__(5);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__gauss__ = __webpack_require__(156);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_adjust_lon__ = __webpack_require__(5);
 
 
 
@@ -22117,20 +21980,20 @@ var names = ["Stereographic_North_Pole", "Oblique_Stereographic", "Polar_Stereog
 
 
 /***/ }),
-/* 173 */
+/* 172 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_pj_enfn__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_pj_mlfn__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_inv_mlfn__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_values__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_sign__ = __webpack_require__(24);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_pj_enfn__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_pj_mlfn__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_pj_inv_mlfn__ = __webpack_require__(60);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__common_sign__ = __webpack_require__(24);
 // Heavily based on this tmerc projection implementation
 // https://github.com/mbloch/mapshaper-proj/blob/master/src/projections/tmerc.js
 
@@ -22307,16 +22170,16 @@ var names = ["Transverse_Mercator", "Transverse Mercator", "tmerc"];
 
 
 /***/ }),
-/* 174 */
+/* 173 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_zone__ = __webpack_require__(127);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__etmerc__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(3);
 /* unused harmony export dependsOn */
 /* unused harmony export init */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_zone__ = __webpack_require__(128);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__etmerc__ = __webpack_require__(66);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__constants_values__ = __webpack_require__(3);
 
 
 var dependsOn = 'etmerc';
@@ -22348,17 +22211,17 @@ var names = ["Universal Transverse Mercator System", "utm"];
 
 
 /***/ }),
-/* 175 */
+/* 174 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinz__ = __webpack_require__(18);
 /* unused harmony export init */
 /* unused harmony export forward */
 /* unused harmony export inverse */
 /* unused harmony export names */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__common_adjust_lon__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_values__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_asinz__ = __webpack_require__(17);
 
 
 
@@ -22491,49 +22354,352 @@ var names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 
 
 /***/ }),
-/* 176 */
+/* 175 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__package_json__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__package_json__ = __webpack_require__(178);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__package_json___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__package_json__);
 /* harmony reexport (binding) */ if(__webpack_require__.o(__WEBPACK_IMPORTED_MODULE_0__package_json__, "version")) __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__package_json__["version"]; });
 
 
 
 /***/ }),
+/* 176 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = (parseString);
+
+var NEUTRAL = 1;
+var KEYWORD = 2;
+var NUMBER = 3;
+var QUOTED = 4;
+var AFTERQUOTE = 5;
+var ENDED = -1;
+var whitespace = /\s/;
+var latin = /[A-Za-z]/;
+var keyword = /[A-Za-z84]/;
+var endThings = /[,\]]/;
+var digets = /[\d\.E\-\+]/;
+// const ignoredChar = /[\s_\-\/\(\)]/g;
+function Parser(text) {
+  if (typeof text !== 'string') {
+    throw new Error('not a string');
+  }
+  this.text = text.trim();
+  this.level = 0;
+  this.place = 0;
+  this.root = null;
+  this.stack = [];
+  this.currentObject = null;
+  this.state = NEUTRAL;
+}
+Parser.prototype.readCharicter = function() {
+  var char = this.text[this.place++];
+  if (this.state !== QUOTED) {
+    while (whitespace.test(char)) {
+      if (this.place >= this.text.length) {
+        return;
+      }
+      char = this.text[this.place++];
+    }
+  }
+  switch (this.state) {
+    case NEUTRAL:
+      return this.neutral(char);
+    case KEYWORD:
+      return this.keyword(char)
+    case QUOTED:
+      return this.quoted(char);
+    case AFTERQUOTE:
+      return this.afterquote(char);
+    case NUMBER:
+      return this.number(char);
+    case ENDED:
+      return;
+  }
+};
+Parser.prototype.afterquote = function(char) {
+  if (char === '"') {
+    this.word += '"';
+    this.state = QUOTED;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.word = this.word.trim();
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in afterquote yet, index ' + this.place);
+};
+Parser.prototype.afterItem = function(char) {
+  if (char === ',') {
+    if (this.word !== null) {
+      this.currentObject.push(this.word);
+    }
+    this.word = null;
+    this.state = NEUTRAL;
+    return;
+  }
+  if (char === ']') {
+    this.level--;
+    if (this.word !== null) {
+      this.currentObject.push(this.word);
+      this.word = null;
+    }
+    this.state = NEUTRAL;
+    this.currentObject = this.stack.pop();
+    if (!this.currentObject) {
+      this.state = ENDED;
+    }
+
+    return;
+  }
+};
+Parser.prototype.number = function(char) {
+  if (digets.test(char)) {
+    this.word += char;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.word = parseFloat(this.word);
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in number yet, index ' + this.place);
+};
+Parser.prototype.quoted = function(char) {
+  if (char === '"') {
+    this.state = AFTERQUOTE;
+    return;
+  }
+  this.word += char;
+  return;
+};
+Parser.prototype.keyword = function(char) {
+  if (keyword.test(char)) {
+    this.word += char;
+    return;
+  }
+  if (char === '[') {
+    var newObjects = [];
+    newObjects.push(this.word);
+    this.level++;
+    if (this.root === null) {
+      this.root = newObjects;
+    } else {
+      this.currentObject.push(newObjects);
+    }
+    this.stack.push(this.currentObject);
+    this.currentObject = newObjects;
+    this.state = NEUTRAL;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in keyword yet, index ' + this.place);
+};
+Parser.prototype.neutral = function(char) {
+  if (latin.test(char)) {
+    this.word = char;
+    this.state = KEYWORD;
+    return;
+  }
+  if (char === '"') {
+    this.word = '';
+    this.state = QUOTED;
+    return;
+  }
+  if (digets.test(char)) {
+    this.word = char;
+    this.state = NUMBER;
+    return;
+  }
+  if (endThings.test(char)) {
+    this.afterItem(char);
+    return;
+  }
+  throw new Error('havn\'t handled "' +char + '" in neutral yet, index ' + this.place);
+};
+Parser.prototype.output = function() {
+  while (this.place < this.text.length) {
+    this.readCharicter();
+  }
+  if (this.state === ENDED) {
+    return this.root;
+  }
+  throw new Error('unable to parse string "' +this.text + '". State is ' + this.state);
+};
+
+function parseString(txt) {
+  var parser = new Parser(txt);
+  return parser.output();
+}
+
+
+/***/ }),
 /* 177 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = sExpr;
+
+
+function mapit(obj, key, value) {
+  if (Array.isArray(key)) {
+    value.unshift(key);
+    key = null;
+  }
+  var thing = key ? {} : obj;
+
+  var out = value.reduce(function(newObj, item) {
+    sExpr(item, newObj);
+    return newObj
+  }, thing);
+  if (key) {
+    obj[key] = out;
+  }
+}
+
+function sExpr(v, obj) {
+  if (!Array.isArray(v)) {
+    obj[v] = true;
+    return;
+  }
+  var key = v.shift();
+  if (key === 'PARAMETER') {
+    key = v.shift();
+  }
+  if (v.length === 1) {
+    if (Array.isArray(v[0])) {
+      obj[key] = {};
+      sExpr(v[0], obj[key]);
+      return;
+    }
+    obj[key] = v[0];
+    return;
+  }
+  if (!v.length) {
+    obj[key] = true;
+    return;
+  }
+  if (key === 'TOWGS84') {
+    obj[key] = v;
+    return;
+  }
+  if (!Array.isArray(key)) {
+    obj[key] = {};
+  }
+
+  var i;
+  switch (key) {
+    case 'UNIT':
+    case 'PRIMEM':
+    case 'VERT_DATUM':
+      obj[key] = {
+        name: v[0].toLowerCase(),
+        convert: v[1]
+      };
+      if (v.length === 3) {
+        sExpr(v[2], obj[key]);
+      }
+      return;
+    case 'SPHEROID':
+    case 'ELLIPSOID':
+      obj[key] = {
+        name: v[0],
+        a: v[1],
+        rf: v[2]
+      };
+      if (v.length === 4) {
+        sExpr(v[3], obj[key]);
+      }
+      return;
+    case 'PROJECTEDCRS':
+    case 'PROJCRS':
+    case 'GEOGCS':
+    case 'GEOCCS':
+    case 'PROJCS':
+    case 'LOCAL_CS':
+    case 'GEODCRS':
+    case 'GEODETICCRS':
+    case 'GEODETICDATUM':
+    case 'EDATUM':
+    case 'ENGINEERINGDATUM':
+    case 'VERT_CS':
+    case 'VERTCRS':
+    case 'VERTICALCRS':
+    case 'COMPD_CS':
+    case 'COMPOUNDCRS':
+    case 'ENGINEERINGCRS':
+    case 'ENGCRS':
+    case 'FITTED_CS':
+    case 'LOCAL_DATUM':
+    case 'DATUM':
+      v[0] = ['name', v[0]];
+      mapit(obj, key, v);
+      return;
+    default:
+      i = -1;
+      while (++i < v.length) {
+        if (!Array.isArray(v[i])) {
+          return sExpr(v, obj[key]);
+        }
+      }
+      return mapit(obj, key, v);
+  }
+}
+
+
+/***/ }),
+/* 178 */
 /***/ (function(module, exports) {
 
 module.exports = {
-	"_from": "proj4@2.4.3",
-	"_id": "proj4@2.4.3",
-	"_inBundle": false,
-	"_integrity": "sha1-87t+Yxv/wEfDaho8wUUzoDu+mWk=",
-	"_location": "/proj4",
-	"_phantomChildren": {},
-	"_requested": {
-		"type": "version",
-		"registry": true,
-		"raw": "proj4@2.4.3",
-		"name": "proj4",
-		"escapedName": "proj4",
-		"rawSpec": "2.4.3",
-		"saveSpec": null,
-		"fetchSpec": "2.4.3"
+	"name": "proj4",
+	"version": "2.4.3",
+	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
+	"main": "dist/proj4-src.js",
+	"module": "lib/index.js",
+	"directories": {
+		"test": "test",
+		"doc": "docs"
 	},
-	"_requiredBy": [
-		"/"
-	],
-	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
-	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
-	"_spec": "proj4@2.4.3",
-	"_where": "F:\\dev\\iClient9",
+	"scripts": {
+		"build": "grunt",
+		"build:tmerc": "grunt build:tmerc",
+		"test": "npm run build && istanbul test _mocha test/test.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/proj4js/proj4js.git"
+	},
 	"author": "",
-	"bugs": {
-		"url": "https://github.com/proj4js/proj4js/issues"
+	"license": "MIT",
+	"devDependencies": {
+		"grunt-cli": "~0.1.13",
+		"grunt": "~0.4.2",
+		"grunt-contrib-connect": "~0.6.0",
+		"grunt-contrib-jshint": "~1.1.0",
+		"chai": "~1.8.1",
+		"mocha": "~1.17.1",
+		"grunt-mocha-phantomjs": "~0.4.0",
+		"rollup": "^0.41.4",
+		"rollup-plugin-json": "^2.0.1",
+		"rollup-plugin-node-resolve": "^2.0.0",
+		"grunt-rollup": "^1.0.1",
+		"grunt-contrib-uglify": "~0.11.1",
+		"curl": "git://github.com/cujojs/curl.git",
+		"istanbul": "~0.2.4",
+		"tin": "~0.4.0"
 	},
-	"bundleDependencies": false,
+	"dependencies": {
+		"mgrs": "1.0.0",
+		"wkt-parser": "^1.1.3"
+	},
 	"contributors": [
 		{
 			"name": "Mike Adair",
@@ -22561,79 +22727,71 @@ module.exports = {
 			"name": "S. Nelson"
 		}
 	],
-	"dependencies": {
-		"mgrs": "1.0.0",
-		"wkt-parser": "^1.1.3"
-	},
-	"deprecated": false,
-	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
-	"devDependencies": {
-		"chai": "~1.8.1",
-		"curl": "git://github.com/cujojs/curl.git",
-		"grunt": "~0.4.2",
-		"grunt-cli": "~0.1.13",
-		"grunt-contrib-connect": "~0.6.0",
-		"grunt-contrib-jshint": "~1.1.0",
-		"grunt-contrib-uglify": "~0.11.1",
-		"grunt-mocha-phantomjs": "~0.4.0",
-		"grunt-rollup": "^1.0.1",
-		"istanbul": "~0.2.4",
-		"mocha": "~1.17.1",
-		"rollup": "^0.41.4",
-		"rollup-plugin-json": "^2.0.1",
-		"rollup-plugin-node-resolve": "^2.0.0",
-		"tin": "~0.4.0"
-	},
-	"directories": {
-		"test": "test",
-		"doc": "docs"
+	"gitHead": "e975a5462ad7abb23e33ea75281eb749e77e1510",
+	"bugs": {
+		"url": "https://github.com/proj4js/proj4js/issues"
 	},
 	"homepage": "https://github.com/proj4js/proj4js#readme",
-	"license": "MIT",
-	"main": "dist/proj4-src.js",
-	"module": "lib/index.js",
-	"name": "proj4",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/proj4js/proj4js.git"
+	"_id": "proj4@2.4.3",
+	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
+	"_from": "proj4@2.4.3",
+	"_npmVersion": "4.0.5",
+	"_nodeVersion": "6.9.2",
+	"_npmUser": {
+		"name": "cwmma",
+		"email": "calvin.metcalf@gmail.com"
 	},
-	"scripts": {
-		"build": "grunt",
-		"build:tmerc": "grunt build:tmerc",
-		"test": "npm run build && istanbul test _mocha test/test.js"
+	"dist": {
+		"shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
+		"tarball": "https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz"
 	},
-	"version": "2.4.3"
+	"maintainers": [
+		{
+			"name": "cwmma",
+			"email": "calvin.metcalf@gmail.com"
+		},
+		{
+			"name": "ahocevar",
+			"email": "andreas.hocevar@gmail.com"
+		}
+	],
+	"_npmOperationalInternal": {
+		"host": "packages-18-east.internal.npmjs.com",
+		"tmp": "tmp/proj4-2.4.3.tgz_1488570790416_0.3068596587982029"
+	},
+	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
+	"readme": "ERROR: No README data found!"
 };
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_projections_tmerc__ = __webpack_require__(173);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_projections_etmerc__ = __webpack_require__(66);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_projections_utm__ = __webpack_require__(174);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_projections_sterea__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_projections_stere__ = __webpack_require__(171);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_projections_somerc__ = __webpack_require__(170);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_projections_omerc__ = __webpack_require__(166);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_projections_lcc__ = __webpack_require__(160);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_projections_krovak__ = __webpack_require__(158);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_projections_cass__ = __webpack_require__(152);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__lib_projections_laea__ = __webpack_require__(159);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__lib_projections_aea__ = __webpack_require__(150);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__lib_projections_gnom__ = __webpack_require__(157);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__lib_projections_cea__ = __webpack_require__(153);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib_projections_eqc__ = __webpack_require__(154);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__lib_projections_poly__ = __webpack_require__(168);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__lib_projections_nzmg__ = __webpack_require__(165);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__lib_projections_mill__ = __webpack_require__(163);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__lib_projections_sinu__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__lib_projections_moll__ = __webpack_require__(164);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__lib_projections_eqdc__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__lib_projections_vandg__ = __webpack_require__(175);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__lib_projections_aeqd__ = __webpack_require__(151);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__lib_projections_ortho__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_projections_tmerc__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lib_projections_etmerc__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lib_projections_utm__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lib_projections_sterea__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__lib_projections_stere__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__lib_projections_somerc__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__lib_projections_omerc__ = __webpack_require__(165);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__lib_projections_lcc__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__lib_projections_krovak__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__lib_projections_cass__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__lib_projections_laea__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__lib_projections_aea__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__lib_projections_gnom__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__lib_projections_cea__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__lib_projections_eqc__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__lib_projections_poly__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__lib_projections_nzmg__ = __webpack_require__(164);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__lib_projections_mill__ = __webpack_require__(162);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__lib_projections_sinu__ = __webpack_require__(168);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__lib_projections_moll__ = __webpack_require__(163);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__lib_projections_eqdc__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__lib_projections_vandg__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__lib_projections_aeqd__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__lib_projections_ortho__ = __webpack_require__(166);
 
 
 
@@ -22686,22 +22844,22 @@ module.exports = {
 });
 
 /***/ }),
-/* 179 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports.VectorTile = __webpack_require__(180);
-module.exports.VectorTileFeature = __webpack_require__(68);
-module.exports.VectorTileLayer = __webpack_require__(69);
+module.exports.VectorTile = __webpack_require__(181);
+module.exports.VectorTileFeature = __webpack_require__(69);
+module.exports.VectorTileLayer = __webpack_require__(70);
 
 
 /***/ }),
-/* 180 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var VectorTileLayer = __webpack_require__(69);
+var VectorTileLayer = __webpack_require__(70);
 
 module.exports = VectorTile;
 
@@ -22719,7 +22877,145 @@ function readTile(tag, layers, pbf) {
 
 
 /***/ }),
-/* 181 */
+/* 182 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = Point;
+
+function Point(x, y) {
+    this.x = x;
+    this.y = y;
+}
+
+Point.prototype = {
+    clone: function() { return new Point(this.x, this.y); },
+
+    add:     function(p) { return this.clone()._add(p);     },
+    sub:     function(p) { return this.clone()._sub(p);     },
+    mult:    function(k) { return this.clone()._mult(k);    },
+    div:     function(k) { return this.clone()._div(k);     },
+    rotate:  function(a) { return this.clone()._rotate(a);  },
+    matMult: function(m) { return this.clone()._matMult(m); },
+    unit:    function() { return this.clone()._unit(); },
+    perp:    function() { return this.clone()._perp(); },
+    round:   function() { return this.clone()._round(); },
+
+    mag: function() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    },
+
+    equals: function(p) {
+        return this.x === p.x &&
+               this.y === p.y;
+    },
+
+    dist: function(p) {
+        return Math.sqrt(this.distSqr(p));
+    },
+
+    distSqr: function(p) {
+        var dx = p.x - this.x,
+            dy = p.y - this.y;
+        return dx * dx + dy * dy;
+    },
+
+    angle: function() {
+        return Math.atan2(this.y, this.x);
+    },
+
+    angleTo: function(b) {
+        return Math.atan2(this.y - b.y, this.x - b.x);
+    },
+
+    angleWith: function(b) {
+        return this.angleWithSep(b.x, b.y);
+    },
+
+    // Find the angle of the two vectors, solving the formula for the cross product a x b = |a||b|sin(θ) for θ.
+    angleWithSep: function(x, y) {
+        return Math.atan2(
+            this.x * y - this.y * x,
+            this.x * x + this.y * y);
+    },
+
+    _matMult: function(m) {
+        var x = m[0] * this.x + m[1] * this.y,
+            y = m[2] * this.x + m[3] * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _add: function(p) {
+        this.x += p.x;
+        this.y += p.y;
+        return this;
+    },
+
+    _sub: function(p) {
+        this.x -= p.x;
+        this.y -= p.y;
+        return this;
+    },
+
+    _mult: function(k) {
+        this.x *= k;
+        this.y *= k;
+        return this;
+    },
+
+    _div: function(k) {
+        this.x /= k;
+        this.y /= k;
+        return this;
+    },
+
+    _unit: function() {
+        this._div(this.mag());
+        return this;
+    },
+
+    _perp: function() {
+        var y = this.y;
+        this.y = this.x;
+        this.x = -y;
+        return this;
+    },
+
+    _rotate: function(angle) {
+        var cos = Math.cos(angle),
+            sin = Math.sin(angle),
+            x = cos * this.x - sin * this.y,
+            y = sin * this.x + cos * this.y;
+        this.x = x;
+        this.y = y;
+        return this;
+    },
+
+    _round: function() {
+        this.x = Math.round(this.x);
+        this.y = Math.round(this.y);
+        return this;
+    }
+};
+
+// constructs Point from an array if necessary
+Point.convert = function (a) {
+    if (a instanceof Point) {
+        return a;
+    }
+    if (Array.isArray(a)) {
+        return new Point(a[0], a[1]);
+    }
+    return a;
+};
+
+
+/***/ }),
+/* 183 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -23183,296 +23479,6 @@ function readTile(tag, layers, pbf) {
   }
   self.fetch.polyfill = true
 })(typeof self !== 'undefined' ? self : this);
-
-
-/***/ }),
-/* 182 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = (parseString);
-
-var NEUTRAL = 1;
-var KEYWORD = 2;
-var NUMBER = 3;
-var QUOTED = 4;
-var AFTERQUOTE = 5;
-var ENDED = -1;
-var whitespace = /\s/;
-var latin = /[A-Za-z]/;
-var keyword = /[A-Za-z84]/;
-var endThings = /[,\]]/;
-var digets = /[\d\.E\-\+]/;
-// const ignoredChar = /[\s_\-\/\(\)]/g;
-function Parser(text) {
-  if (typeof text !== 'string') {
-    throw new Error('not a string');
-  }
-  this.text = text.trim();
-  this.level = 0;
-  this.place = 0;
-  this.root = null;
-  this.stack = [];
-  this.currentObject = null;
-  this.state = NEUTRAL;
-}
-Parser.prototype.readCharicter = function() {
-  var char = this.text[this.place++];
-  if (this.state !== QUOTED) {
-    while (whitespace.test(char)) {
-      if (this.place >= this.text.length) {
-        return;
-      }
-      char = this.text[this.place++];
-    }
-  }
-  switch (this.state) {
-    case NEUTRAL:
-      return this.neutral(char);
-    case KEYWORD:
-      return this.keyword(char)
-    case QUOTED:
-      return this.quoted(char);
-    case AFTERQUOTE:
-      return this.afterquote(char);
-    case NUMBER:
-      return this.number(char);
-    case ENDED:
-      return;
-  }
-};
-Parser.prototype.afterquote = function(char) {
-  if (char === '"') {
-    this.word += '"';
-    this.state = QUOTED;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.word = this.word.trim();
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in afterquote yet, index ' + this.place);
-};
-Parser.prototype.afterItem = function(char) {
-  if (char === ',') {
-    if (this.word !== null) {
-      this.currentObject.push(this.word);
-    }
-    this.word = null;
-    this.state = NEUTRAL;
-    return;
-  }
-  if (char === ']') {
-    this.level--;
-    if (this.word !== null) {
-      this.currentObject.push(this.word);
-      this.word = null;
-    }
-    this.state = NEUTRAL;
-    this.currentObject = this.stack.pop();
-    if (!this.currentObject) {
-      this.state = ENDED;
-    }
-
-    return;
-  }
-};
-Parser.prototype.number = function(char) {
-  if (digets.test(char)) {
-    this.word += char;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.word = parseFloat(this.word);
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in number yet, index ' + this.place);
-};
-Parser.prototype.quoted = function(char) {
-  if (char === '"') {
-    this.state = AFTERQUOTE;
-    return;
-  }
-  this.word += char;
-  return;
-};
-Parser.prototype.keyword = function(char) {
-  if (keyword.test(char)) {
-    this.word += char;
-    return;
-  }
-  if (char === '[') {
-    var newObjects = [];
-    newObjects.push(this.word);
-    this.level++;
-    if (this.root === null) {
-      this.root = newObjects;
-    } else {
-      this.currentObject.push(newObjects);
-    }
-    this.stack.push(this.currentObject);
-    this.currentObject = newObjects;
-    this.state = NEUTRAL;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in keyword yet, index ' + this.place);
-};
-Parser.prototype.neutral = function(char) {
-  if (latin.test(char)) {
-    this.word = char;
-    this.state = KEYWORD;
-    return;
-  }
-  if (char === '"') {
-    this.word = '';
-    this.state = QUOTED;
-    return;
-  }
-  if (digets.test(char)) {
-    this.word = char;
-    this.state = NUMBER;
-    return;
-  }
-  if (endThings.test(char)) {
-    this.afterItem(char);
-    return;
-  }
-  throw new Error('havn\'t handled "' +char + '" in neutral yet, index ' + this.place);
-};
-Parser.prototype.output = function() {
-  while (this.place < this.text.length) {
-    this.readCharicter();
-  }
-  if (this.state === ENDED) {
-    return this.root;
-  }
-  throw new Error('unable to parse string "' +this.text + '". State is ' + this.state);
-};
-
-function parseString(txt) {
-  var parser = new Parser(txt);
-  return parser.output();
-}
-
-
-/***/ }),
-/* 183 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = sExpr;
-
-
-function mapit(obj, key, value) {
-  if (Array.isArray(key)) {
-    value.unshift(key);
-    key = null;
-  }
-  var thing = key ? {} : obj;
-
-  var out = value.reduce(function(newObj, item) {
-    sExpr(item, newObj);
-    return newObj
-  }, thing);
-  if (key) {
-    obj[key] = out;
-  }
-}
-
-function sExpr(v, obj) {
-  if (!Array.isArray(v)) {
-    obj[v] = true;
-    return;
-  }
-  var key = v.shift();
-  if (key === 'PARAMETER') {
-    key = v.shift();
-  }
-  if (v.length === 1) {
-    if (Array.isArray(v[0])) {
-      obj[key] = {};
-      sExpr(v[0], obj[key]);
-      return;
-    }
-    obj[key] = v[0];
-    return;
-  }
-  if (!v.length) {
-    obj[key] = true;
-    return;
-  }
-  if (key === 'TOWGS84') {
-    obj[key] = v;
-    return;
-  }
-  if (!Array.isArray(key)) {
-    obj[key] = {};
-  }
-
-  var i;
-  switch (key) {
-    case 'UNIT':
-    case 'PRIMEM':
-    case 'VERT_DATUM':
-      obj[key] = {
-        name: v[0].toLowerCase(),
-        convert: v[1]
-      };
-      if (v.length === 3) {
-        sExpr(v[2], obj[key]);
-      }
-      return;
-    case 'SPHEROID':
-    case 'ELLIPSOID':
-      obj[key] = {
-        name: v[0],
-        a: v[1],
-        rf: v[2]
-      };
-      if (v.length === 4) {
-        sExpr(v[3], obj[key]);
-      }
-      return;
-    case 'PROJECTEDCRS':
-    case 'PROJCRS':
-    case 'GEOGCS':
-    case 'GEOCCS':
-    case 'PROJCS':
-    case 'LOCAL_CS':
-    case 'GEODCRS':
-    case 'GEODETICCRS':
-    case 'GEODETICDATUM':
-    case 'EDATUM':
-    case 'ENGINEERINGDATUM':
-    case 'VERT_CS':
-    case 'VERTCRS':
-    case 'VERTICALCRS':
-    case 'COMPD_CS':
-    case 'COMPOUNDCRS':
-    case 'ENGINEERINGCRS':
-    case 'ENGCRS':
-    case 'FITTED_CS':
-    case 'LOCAL_DATUM':
-    case 'DATUM':
-      v[0] = ['name', v[0]];
-      mapit(obj, key, v);
-      return;
-    default:
-      i = -1;
-      while (++i < v.length) {
-        if (!Array.isArray(v[i])) {
-          return sExpr(v, obj[key]);
-        }
-      }
-      return mapit(obj, key, v);
-  }
-}
 
 
 /***/ }),
@@ -27191,7 +27197,7 @@ module.exports = SuperMap.ColorDictionary;
  * 根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
  */
 var SuperMap = __webpack_require__(0);
-var TransportationAnalystParameter = __webpack_require__(20);
+var TransportationAnalystParameter = __webpack_require__(21);
 SuperMap.ComputeWeightMatrixParameters = SuperMap.Class({
 
     /**
@@ -29597,7 +29603,7 @@ module.exports = SuperMap.FieldStatisticsParameters;
  * 最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
  */
 var SuperMap = __webpack_require__(0);
-var TransportationAnalystParameter = __webpack_require__(20);
+var TransportationAnalystParameter = __webpack_require__(21);
 SuperMap.FindClosestFacilitiesParameters = SuperMap.Class({
 
     /**
@@ -30093,7 +30099,7 @@ module.exports = SuperMap.REST.FindLocationService;
  * 例如：现在有50个报刊零售地（配送目的地），和4个报刊供应地（配送中心），现寻求这4个供应地向报刊零售地发送报纸的最优路线，属物流配送问题。
  */
 var SuperMap = __webpack_require__(0);
-var TransportationAnalystParameter = __webpack_require__(20);
+var TransportationAnalystParameter = __webpack_require__(21);
 SuperMap.FindMTSPPathsParameters = SuperMap.Class({
 
     /**
@@ -30344,7 +30350,7 @@ module.exports = SuperMap.REST.FindMTSPPathsService;
  * 计算最佳路径除了受阻抗影响外，还受转向字段的影响。转向值通过 SuperMap.TransportationAnalystParameter.turnWeightField 设置。
  */
 var SuperMap = __webpack_require__(0);
-var TransportationAnalystParameter = __webpack_require__(20);
+var TransportationAnalystParameter = __webpack_require__(21);
 SuperMap.FindPathParameters = SuperMap.Class({
 
     /**
@@ -30579,7 +30585,7 @@ module.exports = SuperMap.REST.FindPathService;
  * 例如：计算某快餐店能够在30分钟内送达快餐的区域。
  */
 var SuperMap = __webpack_require__(0);
-var TransportationAnalystParameter = __webpack_require__(20);
+var TransportationAnalystParameter = __webpack_require__(21);
 SuperMap.FindServiceAreasParameters = SuperMap.Class({
 
     /**
@@ -30836,7 +30842,7 @@ module.exports = SuperMap.REST.FindServiceAreasService;
  * 最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。
  */
 var SuperMap = __webpack_require__(0);
-var TransportationAnalystParameter = __webpack_require__(20);
+var TransportationAnalystParameter = __webpack_require__(21);
 SuperMap.FindTSPPathsParameters = SuperMap.Class({
     /**
      * APIProperty: endNodeAssigned
@@ -34777,7 +34783,7 @@ module.exports = SuperMap.LabelImageCell;
  * 索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
  */
 var SuperMap = __webpack_require__(0);
-var ServerTextStyle = __webpack_require__(19);
+var ServerTextStyle = __webpack_require__(20);
 SuperMap.LabelMixedTextStyle = SuperMap.Class({
 
     /**
@@ -39768,7 +39774,7 @@ module.exports = SuperMap.ThemeGraduatedSymbolStyle;
  */
 var SuperMap = __webpack_require__(0);
 var ServerColor = __webpack_require__(13);
-var ServerTextStyle = __webpack_require__(19);
+var ServerTextStyle = __webpack_require__(20);
 SuperMap.ThemeGraphAxes = SuperMap.Class({
 
     /**
@@ -40017,7 +40023,7 @@ module.exports = SuperMap.ThemeGraphSize;
  */
 __webpack_require__(2);
 var SuperMap = __webpack_require__(0);
-var ServerTextStyle = __webpack_require__(19);
+var ServerTextStyle = __webpack_require__(20);
 SuperMap.ThemeGraphText = SuperMap.Class({
 
     /**
@@ -40719,7 +40725,7 @@ module.exports = SuperMap.ThemeLabelBackground;
  * SuperMap.ThemeLabelItem[0].end=5，SuperMap.ThemeLabelItem[1].start=5，SuperMap.ThemeLabelItem[1].end=10。
  */
 var SuperMap = __webpack_require__(0);
-var ServerTextStyle = __webpack_require__(19);
+var ServerTextStyle = __webpack_require__(20);
 SuperMap.ThemeLabelItem = SuperMap.Class({
 
     /**
@@ -40815,7 +40821,7 @@ module.exports = SuperMap.ThemeLabelItem;
  */
 __webpack_require__(281);
 var SuperMap = __webpack_require__(0);
-var ServerTextStyle = __webpack_require__(19);
+var ServerTextStyle = __webpack_require__(20);
 SuperMap.ThemeLabelText = SuperMap.Class({
 
     /**
@@ -40930,7 +40936,7 @@ module.exports = SuperMap.ThemeLabelText;
  * 每一个子项都具有其名称、风格、指定的单值、X方向偏移量和Y方向偏移量。
  */
 var SuperMap = __webpack_require__(0);
-var ServerTextStyle = __webpack_require__(19);
+var ServerTextStyle = __webpack_require__(20);
 SuperMap.ThemeLabelUniqueItem = SuperMap.Class({
 
     /**
@@ -43316,7 +43322,7 @@ SuperMap.FilterField = {
  * Online服务基类(使用key作为权限限制的类需要实现此类)
  */
 var SuperMap = __webpack_require__(0);
-var SecurityManager = __webpack_require__(21);
+var SecurityManager = __webpack_require__(22);
 var Request = __webpack_require__(14);
 SuperMap.OnlineServiceBase = SuperMap.Class({
 
@@ -48830,7 +48836,7 @@ module.exports = NonEarthCRS;
 /***/ (function(module, exports, __webpack_require__) {
 
 var L = __webpack_require__(1);
-var proj4 = __webpack_require__(64).default||__webpack_require__(64);
+var proj4 = __webpack_require__(63).default||__webpack_require__(63);
 L.Proj = {};
 
 L.Proj._isProj4Obj = function (a) {
@@ -50642,7 +50648,7 @@ __webpack_require__(6);
 __webpack_require__(89);
 __webpack_require__(55);
 var L = __webpack_require__(1);
-var Util = __webpack_require__(22);
+var Util = __webpack_require__(17);
 var SuperMap = __webpack_require__(0);
 
 var VectorTileJSON = L.Class.extend({
@@ -50790,8 +50796,8 @@ module.exports = VectorTileJSON;
  *矢量瓦片PBF(MVT)表述出图
  */
 var L = __webpack_require__(1);
-var Pbf = __webpack_require__(124);
-var VectorTileSpec = __webpack_require__(179);
+var Pbf = __webpack_require__(123);
+var VectorTileSpec = __webpack_require__(180);
 var SuperMap = __webpack_require__(0);
 
 var VectorTilePBF = L.Class.extend({

@@ -7,6 +7,7 @@ var L = require("leaflet");
 L.supermap = L.supermap || {};
 require('../../common/SuperMap');
 require('../../common/REST');
+require('./Util');
 require('./CommontypesConversion');
 require('./NonEarthCRS');
 require('./Proj4Leaflet');

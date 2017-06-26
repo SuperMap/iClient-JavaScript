@@ -179,7 +179,7 @@ html, body, .wrapper {
 
 .attributes .feature-heading {
     color: #333743;
-    padding-top: 100px;
+    padding-top: 70px;
     padding-left: 20px;
     margin-bottom: 20px;
 }
@@ -199,7 +199,9 @@ html, body, .wrapper {
     border: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1)
 }
-
+.attributes .image-class{
+    text-align: center;
+}
 .attributes .img-fluid {
     max-width: 100%;
     height: auto
@@ -208,6 +210,10 @@ html, body, .wrapper {
 .attributes .figure-img {
     margin-bottom: .5rem;
     line-height: 1
+}
+.row.feature{
+    margin-top:50px;
+    margin-bottom:50px;
 }
 
 @media (min-width: 992px) {

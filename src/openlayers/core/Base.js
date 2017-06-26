@@ -6,5 +6,6 @@
 var ol = require('openlayers');
 ol.supermap = ol.supermap || {};
 ol.supermap.Util = ol.supermap.Util || {};
+require('./Util');
 require('../../common/SuperMap');
 require('../../common/REST');
