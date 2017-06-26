@@ -10768,7 +10768,7 @@ ol.supermap.TileSuperMapRest = function (options) {
     layerUrl += "&transparent=" + transparent;
     //设置切片原点
     if (options.origin && options.origin instanceof Array) {
-        layerUrl += "&origin={\"x\":" + origin[0] + "," + "\"y\":" + origin[1] + "}";
+        layerUrl += "&origin={\"x\":" + options.origin[0] + "," + "\"y\":" + options.origin[1] + "}";
     }
     options.clipRegionEnabled = false;
     if (options.clipRegion instanceof ol.geom.Geometry) {
