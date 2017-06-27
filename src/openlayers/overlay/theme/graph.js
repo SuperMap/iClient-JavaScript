@@ -1,4 +1,4 @@
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var SuperMap = require('../../../common/SuperMap');
 require('../../../common/REST');
 require('../../../common/iServer/Bar');

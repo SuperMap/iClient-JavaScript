@@ -9,7 +9,7 @@
  *      });
  */
 require('./ServiceBase');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var ThemeService = require('../../common/iServer/ThemeService');
 
 ol.supermap.ThemeService = function (url, options) {

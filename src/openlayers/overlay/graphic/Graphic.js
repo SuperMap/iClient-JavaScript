@@ -1,4 +1,4 @@
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 ol.Graphic = function (geometry) {
     ol.Object.call(this);
     if (geometry instanceof ol.geom.Geometry) {

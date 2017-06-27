@@ -51,7 +51,7 @@ var TiledMapLayer = L.TileLayer.extend({
 
 
     getTileUrl: function (coords) {
-        var scale = this.getScale(coords);
+        var scale = this.getScaleFromCoords(coords);
         var tileUrl = this._layerUrl + "&scale=" + scale + "&x=" + coords.x + "&y=" + coords.y;
         return tileUrl;
     },
@@ -60,11 +60,15 @@ var TiledMapLayer = L.TileLayer.extend({
         this.scales = scales || this.scales;
     },
 
-    getScale: function (coords) {
+    getScale: function (zoom) {
+        var me = this;
+        //返回当前比例尺
+        var z = zoom || me._map.getZoom();
+        return me.scales[z];
+    },
+
+    getScaleFromCoords: function (coords) {
         var me = this, scale;
-        if (!coords) {
-            return me.scales;
-        }
         if (me.scales && me.scales[coords.z]) {
             return me.scales[coords.z];
         }

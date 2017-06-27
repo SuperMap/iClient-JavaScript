@@ -9,7 +9,7 @@
  *      })
  */
 require('./ServiceBase');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var Util = require('../core/Util');
 var SuperMap = require('../../common/SuperMap');
 var QueryByBoundsService = require('../../common/iServer/QueryByBoundsService');

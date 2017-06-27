@@ -8,7 +8,7 @@
  *      })
  */
 require('./ServiceBase');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var FacilityAnalystSinks3DService = require('../../common/iServer/FacilityAnalystSinks3DService');
 var FacilityAnalystSources3DService = require('../../common/iServer/FacilityAnalystSources3DService');
 var FacilityAnalystTraceup3DService = require('../../common/iServer/FacilityAnalystTraceup3DService');

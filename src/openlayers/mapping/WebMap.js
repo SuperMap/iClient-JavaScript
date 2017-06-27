@@ -1,5 +1,5 @@
 require('../core/Base');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var Request = require('../../common/util/Request');
 var SuperMap = require('../../common/SuperMap');
 var StyleUtils = require('../core/StyleUtils');

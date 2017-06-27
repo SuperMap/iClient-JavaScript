@@ -14,7 +14,7 @@ module.exports = {
     },
     externals: {
         'echarts': 'echarts',
-        'openlayers': 'ol',
+        'openlayers/dist/ol-debug': 'ol',
         'mapv': 'mapv',
         'elasticsearch': 'elasticsearch'
     },

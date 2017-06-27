@@ -7,7 +7,7 @@
  *      })
  */
 require('./ServiceBase');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var GetLayersInfoService = require('../../common/iServer/GetLayersInfoService');
 var SetLayerInfoService = require('../../common/iServer/SetLayerInfoService');
 var SetLayersInfoService = require('../../common/iServer/SetLayersInfoService');

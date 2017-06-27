@@ -229,7 +229,14 @@ var TileVectorLayer = L.VectorGrid.extend({
         this.scales = scales || this.scales;
     },
 
-    getScale: function (coords) {
+    getScale: function (zoom) {
+        var me = this;
+        //返回当前比例尺
+        var z = zoom || me._map.getZoom();
+        return me.scales[z];
+    },
+
+    getScaleFromCoords: function (coords) {
         var me = this, scale;
         if (me.scales && me.scales[coords.z]) {
             return me.scales[coords.z];
@@ -299,7 +306,7 @@ var TileVectorLayer = L.VectorGrid.extend({
     _getDefaultTileUrl: function (coords) {
         var x = coords.x, y = coords.y;
         var tileUrl = this._tileUrl + "&x=" + x + "&y=" + y;
-        var scale = this.getScale(coords);
+        var scale = this.getScaleFromCoords(coords);
         tileUrl += "&scale=" + scale;
         return tileUrl;
     },

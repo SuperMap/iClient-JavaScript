@@ -8,7 +8,7 @@
  *      })
  */
 require('./ServiceBase');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var MapService = require('../../common/iServer/MapService');
 var TilesetsService = require('../../common/iServer/TilesetsService');
 ol.supermap.MapService = function (url, options) {

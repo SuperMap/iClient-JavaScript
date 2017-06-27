@@ -8,7 +8,7 @@
  *      })
  */
 require('./ServiceBase');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var Util = require('../core/Util');
 var StopQueryService = require('../../common/iServer/StopQueryService');
 var TransferPathService = require('../../common/iServer/TransferPathService');

@@ -4,7 +4,7 @@
  */
 require('../../core/Base');
 var SuperMap = require('../../../common/SuperMap');
-var ol = require("openlayers");
+var ol = require('openlayers/dist/ol-debug');
 
 ol.supermap.ThemeFeature = function (geometry, attributes) {
     this.geometry = geometry;

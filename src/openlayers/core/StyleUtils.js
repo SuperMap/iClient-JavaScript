@@ -1,7 +1,7 @@
 require('./Base');
 require('../overlay/vectortile/DeafultCanvasStyle');
 require('../overlay/vectortile/StyleMap');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var SuperMap = require('../../common/SuperMap');
 ol.supermap.StyleUtils = {
     getValidStyleFromLayerInfo: function (layerInfo, feature, url) {
@@ -61,7 +61,7 @@ ol.supermap.StyleUtils = {
                 var alignStr = shader.align.replace(/TOP|MIDDLE|BASELINE|BOTTOM/, "");
                 style.textAlign = alignStr.toLowerCase();
                 var baselineStr = shader.align.replace(/LEFT|RIGHT|CENTER/, "");
-                if (baselineStr === "BASELINE")baselineStr = "alphabetic";
+                if (baselineStr === "BASELINE") baselineStr = "alphabetic";
                 style.textBaseline = baselineStr.toLowerCase();
 
                 /*//首先判定是否需要绘制阴影，如果需要绘制，阴影应该在最下面
@@ -132,7 +132,9 @@ ol.supermap.StyleUtils = {
                                         tempCvs.width = 8;
                                         var tempCtx = tempCvs.getContext("2d");
                                         var image = new Image();
-                                        tempCtx.drawImage(this.layer.fillImages["System " + fillSymbolID], 0, 0);
+                                        if (this.layer && this.layer.fillImages) {
+                                            tempCtx.drawImage(this.layer.fillImages["System " + fillSymbolID], 0, 0);
+                                        }
                                         var imageData = tempCtx.getImageData(0, 0, tempCvs.width, tempCvs.height);
                                         var pix = imageData.data;
                                         for (var i = 0, len = pix.length; i < len; i += 4) {
@@ -151,9 +153,11 @@ ol.supermap.StyleUtils = {
                                         tempCtx.putImageData(imageData, 0, 0);
                                         image.src = tempCvs.toDataURL();
 
-                                        value = this.context.createPattern(image, "repeat");
+                                        if (this.context) {
+                                            value = this.context.createPattern(image, "repeat");
+                                        }
                                     } catch (e) {
-                                        throw Error("cross-origin");
+                                        throw Error(e.message);
                                     }
                                 }
                             } else if (canvasStyle === "strokeStyle") {

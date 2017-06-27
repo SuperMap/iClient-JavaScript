@@ -1,5 +1,5 @@
 require('../../core/Base');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 
 var pointMap = {
     "point-file": "pointFile",

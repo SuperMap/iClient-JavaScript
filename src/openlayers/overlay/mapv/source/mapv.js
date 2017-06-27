@@ -1,5 +1,5 @@
 require('../../../core/Base');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var MapvLayer = require('./../MapvLayer');
 
 ol.source.Mapv = function (opt_options) {

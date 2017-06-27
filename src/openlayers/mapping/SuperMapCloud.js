@@ -1,5 +1,5 @@
 require('../core/Base');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 ol.source.SuperMapCloud = function (opt_options) {
 
     var options = opt_options || {};

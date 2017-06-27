@@ -3,7 +3,7 @@
  * 距离测量服务
  */
 require('./ServiceBase');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var Util = require('../core/Util');
 var MeasureService = require('../../common/iServer/MeasureService');
 

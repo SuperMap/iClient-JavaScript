@@ -3,7 +3,7 @@ require('../../common/security/SecurityManager');
 require('./vectortile/VectorTileStyles');
 require('./vectortile/StyleMap');
 require('./vectortile/DeafultCanvasStyle');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var SuperMap = require('../../common/SuperMap');
 
 ol.supermap.VectorTileSuperMapRest = function (options) {

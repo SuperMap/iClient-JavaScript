@@ -7,7 +7,7 @@
  *          //doSomething
  *      })
  */
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var SuperMap = require('../../common/SuperMap');
 var ServiceBase = require('./ServiceBase');
 var AddressService = require('../../common/iServer/AddressService');

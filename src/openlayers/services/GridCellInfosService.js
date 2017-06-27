@@ -8,7 +8,7 @@
  *      })
  */
 require('./ServiceBase');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var GetGridCellInfosService = require('../../common/iServer/GetGridCellInfosService');
 
 ol.supermap.GridCellInfosService = function (url, options) {

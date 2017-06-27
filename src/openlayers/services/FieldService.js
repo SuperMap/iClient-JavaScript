@@ -7,7 +7,7 @@
  *      });
  */
 require('./ServiceBase');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var Util = require('../core/Util');
 var GetFieldsService = require('../../common/iServer/GetFieldsService');
 var FieldStatisticService = require('../../common/iServer/FieldStatisticService');

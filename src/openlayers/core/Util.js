@@ -1,5 +1,5 @@
 require('./Base');
-var ol = require('openlayers');
+var ol = require('openlayers/dist/ol-debug');
 var GeoJSONFormat = require('../../common/format/GeoJSON');
 var SuperMap = require('../../common/SuperMap');
 
