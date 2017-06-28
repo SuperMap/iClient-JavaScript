@@ -135,8 +135,8 @@ function scroll() {
 }
 
 function bindEvents() {
-    $("ul#sidebar-menu>li").on('click', function (evt) {
-        window.location.hash = "#" + evt.target.id;
+    $('ul#sidebar-menu>li>a').on('click', function (evt) {
+        window.location.hash = "#" + evt.currentTarget.id;
     });
 
     $("ul#sidebar-menu ul.second-menu a").on('click', function (evt) {
