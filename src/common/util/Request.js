@@ -29,12 +29,12 @@ SuperMap.Request = {
         url = this._processUrl(url);
         url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
         if (url.length <= 2000) {
+            if (SuperMap.Util.isInTheSameDomain(url) || (SuperMap.Support.cors && this._isMVTRequest(url))) {
+                return this._fetch(url, params, options, type);
+            }
             if (!SuperMap.Util.isInTheSameDomain(url)) {
                 url = url.replace('.json', '.jsonp');
                 return this._fetchJsonp(url, options);
-            }
-            if (SuperMap.Support.cors) {
-                return this._fetch(url, params, options, type);
             }
         }
         return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
@@ -65,6 +65,10 @@ SuperMap.Request = {
     },
 
     _processUrl: function (url) {
+        if (this._isMVTRequest(url)) {
+            return url;
+        }
+
         if (url.indexOf('.json') === -1) {
             if (url.indexOf("?") < 0) {
                 url += '.json'
@@ -146,7 +150,12 @@ SuperMap.Request = {
             }
         }
         return paramsArray.join("&");
+    },
+
+    _isMVTRequest: function (url) {
+        return (url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1);
     }
+
 
 };
 module.exports = SuperMap.Request;
