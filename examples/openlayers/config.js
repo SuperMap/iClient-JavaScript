@@ -271,6 +271,14 @@ var exampleConfig = {
                     thumbnail: "ol_iPortalWebMap.png",
                     fileName: "iportalWebMap"
                 }]
+            },
+            "ip_querymaps": {
+                name: "地图列表",
+                content: [{
+                    name: "地图列表",
+                    thumbnail: "ol_iPortalQueryMaps.png",
+                    fileName: "iPortalQueryMaps"
+                }]
             }
         }
     },
