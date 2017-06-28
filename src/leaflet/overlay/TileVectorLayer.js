@@ -202,7 +202,7 @@ var TileVectorLayer = L.VectorGrid.extend({
         // SuperMap.CartoCSSToLeaflet内部做了客户端配置的cartoCSS和服务端cartoCSS的拼接处理
         // 客户端配置的cartoCSS会覆盖相应图层的服务端cartoCSS
         if (!style && feature.type !== "TEXT") {
-            var scale = this.getScale(coords);
+            var scale = this.getScaleFromCoords(coords);
             var shaders = CartoCSSToLeaflet.pickShader(layerName) || [];
             style = [];
             for (var itemKey in shaders) {

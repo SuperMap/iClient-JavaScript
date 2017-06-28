@@ -1,3 +1,11 @@
+/*!
+ * 
+ *     iclient9-openlayers.(http://iclient.supermapol.com)
+ *     Copyright© 2000-2017 SuperMap Software Co. Ltd
+ *     license: Apache-2.0
+ *     version: v9.0.0
+ * 
+ */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -2995,12 +3003,12 @@ SuperMap.Request = {
         url = this._processUrl(url);
         url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
         if (url.length <= 2000) {
-            if (SuperMap.Support.cors) {
-                return this._fetch(url, params, options, type);
-            }
             if (!SuperMap.Util.isInTheSameDomain(url)) {
                 url = url.replace('.json', '.jsonp');
                 return this._fetchJsonp(url, options);
+            }
+            if (SuperMap.Support.cors) {
+                return this._fetch(url, params, options, type);
             }
         }
         return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);

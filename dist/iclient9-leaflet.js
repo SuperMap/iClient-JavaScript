@@ -1,3 +1,11 @@
+/*!
+ * 
+ *     iclient9-leaflet.(http://iclient.supermapol.com)
+ *     Copyright© 2000-2017 SuperMap Software Co. Ltd
+ *     license: Apache-2.0
+ *     version: v9.0.0
+ * 
+ */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -3063,12 +3071,12 @@ SuperMap.Request = {
         url = this._processUrl(url);
         url = SuperMap.Util.urlAppend(url, this._getParameterString(params || {}));
         if (url.length <= 2000) {
-            if (SuperMap.Support.cors) {
-                return this._fetch(url, params, options, type);
-            }
             if (!SuperMap.Util.isInTheSameDomain(url)) {
                 url = url.replace('.json', '.jsonp');
                 return this._fetchJsonp(url, options);
+            }
+            if (SuperMap.Support.cors) {
+                return this._fetch(url, params, options, type);
             }
         }
         return this._postSimulatie(type, url.substring(0, url.indexOf('?') - 1), params, options);
@@ -14015,7 +14023,7 @@ var TileVectorLayer = L.VectorGrid.extend({
         // SuperMap.CartoCSSToLeaflet内部做了客户端配置的cartoCSS和服务端cartoCSS的拼接处理
         // 客户端配置的cartoCSS会覆盖相应图层的服务端cartoCSS
         if (!style && feature.type !== "TEXT") {
-            var scale = this.getScale(coords);
+            var scale = this.getScaleFromCoords(coords);
             var shaders = CartoCSSToLeaflet.pickShader(layerName) || [];
             style = [];
             for (var itemKey in shaders) {

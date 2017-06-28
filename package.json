@@ -12,8 +12,8 @@
     "deploy": "webpack",
     "deploy-leaflet": "webpack --config ./build/webpack.config.leaflet.js ",
     "deploy-openlayers": "webpack --config ./build/webpack.config.openlayers.js",
-    "compress-openlayers": "uglifyjs -c -m -o ./dist/iclient9-openlayers.min.js -- ./dist/iclient9-openlayers.js ",
-    "compress-leaflet": "uglifyjs -c -m -o ./dist/iclient9-leaflet.min.js -- ./dist/iclient9-leaflet.js",
+    "compress-openlayers": "uglifyjs --comments /Copyright©/i -c -m -o ./dist/iclient9-openlayers.min.js -- ./dist/iclient9-openlayers.js ",
+    "compress-leaflet": "uglifyjs --comments /Copyright©/i -c -m -o ./dist/iclient9-leaflet.min.js -- ./dist/iclient9-leaflet.js",
     "package": "node ./build/pack.js",
     "package-debug": "node ./build/pack.js - debug",
     "test": "karma start",
@@ -24,6 +24,11 @@
     "Leaflet",
     "OpenLayers3"
   ],
+  "homepage": "http://iclient.supermapol.com",
+  "repository": {
+    "type": "git",
+    "url": "https://git.oschina.net/isupermap/iClient9.git"
+  },
   "author": "SuperMap",
   "license": "Apache-2.0",
   "devDependencies": {

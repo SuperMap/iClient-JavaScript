@@ -28,11 +28,10 @@
     initFeature();
     initEditView();
 
-
     function initFeature() {
         var polygon = L.polygon([[10, 100], [10, 124], [40, 124], [40, 100], [10, 100]]);
         var getFeatureParams = new SuperMap.GetFeaturesByGeometryParameters({
-            toIndex:-1,
+            toIndex: -1,
             datasetNames: ["World:Capitals"],
             geometry: polygon
         });
@@ -120,10 +119,7 @@
 
     function clearLayer() {
         var me = this;
-        if (!featureGroup.hasLayer(marker)) {
-            return;
-        }
-        if (id) {
+        if (id && featureService) {
             var deleteParams = new SuperMap.EditFeaturesParameters({
                 dataSourceName: "World",
                 dataSetName: "Capitals",
