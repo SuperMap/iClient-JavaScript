@@ -20,27 +20,28 @@ module.exports = function (config) {
         // list of files  patterns to load in the browser
         // false 表示初始化的时候不会使用 script 标签直接将相关 js 引入到浏览器，需要自己写代码加载, 注意添加顺序
         files: [
-            /***legacy文件夹下的源码添加至此***/
+        /***legacy文件夹下的源码添加至此***/
             {pattern: 'src/legacy/libs/SuperMap_Basic-8.1.1-14426.js', include: false},
             {pattern: 'src/legacy/libs/Lang/*.js', include: false},
             {pattern: 'src/legacy/theme/default/*.css', include: false},
-            /***common文件夹下的源码添加至此***/
+        /***common文件夹下的源码添加至此***/
             'src/common/SuperMap.js',
             'src/common/REST.js',
             'src/common/style/CartoCSS.js',
             'src/common/**/*.js',
-            /***Leaflet文件夹下的源码添加至此，暂未添加***/
+        /***Leaflet文件夹下的源码添加至此，暂未添加***/
             {pattern: './node_modules/leaflet/dist/leaflet.css', include: false},
             'src/leaflet/**/*.js',
             'src/leaflet/overlay/**/*.js',
-            /***OL3文件夹下的源码添加至此，暂未添加***/
+        /***OL3文件夹下的源码添加至此，暂未添加***/
             {pattern: './node_modules/openlayers/dist/ol-debug.css', include: false},
             'src/openlayers/**/*.js',
             'src/openlayers/overlay/**/*.js',
-            /***以下全是测试文件***/
+        /***以下全是测试文件***/
             'test/tool/**.js',
-            /**common --iServer**/
+        /**common --iServer**/
             //'test/common/iServer/AreaSolarRadiationServiceSpec.js',     //iclient8注释掉
+            'test/common/iServer/AddressServiceSpec.js',
             'test/common/iServer/BufferAnalystServiceSpec.js',
             'test/common/iServer/BufferDistanceSpec.js',
             'test/common/iServer/BufferSettingSpec.js',
@@ -101,7 +102,7 @@ module.exports = function (config) {
             'test/common/iServer/UpdateTurnNodeWeightServiceSpec.js',
 
             /*Leaflet、OL3、legacy文件夹测试代码，暂未添加*/
-            /**leaflet --services**/
+        /**leaflet --services**/
             'test/leaflet/services/QueryByBoundsServiceSpec.js',
             'test/leaflet/services/QueryByDistanceServiceSpec.js',
             'test/leaflet/services/QueryBySQLServiceSpec.js',
@@ -117,18 +118,20 @@ module.exports = function (config) {
             'test/leaflet/services/AddressServiceSpec.js',
             'test/leaflet/services/FieldServiceSpec.js',
             'test/leaflet/services/ThemeServiceSpec.js',
+            /*overlay*/
+            //'test/leaflet/overlay/RangeThemeLayerSpec.js',
+            'test/leaflet/overlay/RankSymbolThemeLayerSpec.js',
+            'test/leaflet/overlay/UniqueThemeLayerSpec.js',
             'test/leaflet/overlay/theme/GraphThemeLayerSpec.js',
 
-            /**openlayers --services**/
+
+        /**openlayers --services**/
             'test/openlayers/core/StyleUtilsSpec.js'
         ],
 
         // list of files to exclude 测试时排除的文件
         exclude: [
-            //暂时先排除(因为Request引用了node_modules中的库，但在karma下识别不到路径，暂时找不到解决办法)
-
-            /*leaflet*/
-            'test/leaflet/services/AddressServiceSpec.js'    //启了服务再测
+            //'test/leaflet/overlay/RangeThemeLayerSpec.js',
         ],
 
 

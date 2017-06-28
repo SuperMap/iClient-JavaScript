@@ -20,8 +20,6 @@ describe('leaflet_testFeatureService_getFeaturesBySQL', function () {
     it('successEvent:returnContent=true', function (done) {
         var getFeaturesBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
             returnContent: true,
-            //fromIndex:1,
-            //toIndex:19,
             queryParameter: {
                 name: "Countries@World",
                 attributeFilter: "SMID =247"
@@ -40,7 +38,7 @@ describe('leaflet_testFeatureService_getFeaturesBySQL', function () {
                 expect(serviceResult.result).not.toBeNull();
                 expect(serviceResult.result.succeed).toBeTruthy();
                 expect(serviceResult.result.featureCount).toEqual(1);
-                expect(serviceResult.result.totalCount).toEqual(247);
+                expect(serviceResult.result.totalCount).toEqual(1);
                 expect(serviceResult.result.features.type).toBe("FeatureCollection");
                 expect(serviceResult.result.features.features.length).toEqual(1);
                 expect(serviceResult.result.features.features[0].type).toBe("Feature");

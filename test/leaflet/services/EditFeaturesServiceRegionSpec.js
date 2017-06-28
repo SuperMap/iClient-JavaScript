@@ -151,7 +151,7 @@ describe('leaflet_testFeatureService_editFeatures', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        }, 4000)
     });
     // 将上面获取的要素update
     it('successEvent:updateFeature', function (done) {
@@ -180,6 +180,6 @@ describe('leaflet_testFeatureService_editFeatures', function () {
                 updateFeaturesService.destroy();
                 done();
             }
-        }, 2000);
+        }, 6000);
     });
 });

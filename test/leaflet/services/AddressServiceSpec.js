@@ -34,55 +34,38 @@ describe('leaflet_testAddressService', function () {
                 expect(GeoCodingService).not.toBeNull();
                 expect(GeoCodingService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
-                /*expect(serviceResult.object.url).toBe("http://localhost:8090/iserver/services/data-world/rest/data/featureResults.jsonp?");
-                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
-                 expect(serviceResult.result).not.toBeNull();
-                 expect(serviceResult.result.succeed).toBeTruthy();
-                 expect(serviceResult.result.featureCount).toEqual(7);
-                 expect(serviceResult.result.totalCount).toEqual(7);
-                 expect(serviceResult.result.features.type).toBe("FeatureCollection");
-                 expect(serviceResult.result.features.features.length).toEqual(7);
-                 for (var i = 0; i < serviceResult.result.features.features.length; i++) {
-                 expect(serviceResult.result.features.features[i].type).toBe("Feature");
-                 expect(serviceResult.result.features.features[i].geometry.type).toBe("Point");
-                 expect(serviceResult.result.features.features[i].geometry.coordinates.length).toEqual(2);
-                 }
-                 expect(serviceResult.result.features.features[0].properties).toEqual(Object({
-                 CAPITAL: "达累斯萨拉姆",
-                 CAPITAL_CH: "达累斯萨拉姆",
-                 CAPITAL_EN: "Dar es Salaam",
-                 CAPITAL_LO: "Dodoma",
-                 CAP_POP: "2698652.0",
-                 COUNTRY: "坦桑尼亚",
-                 COUNTRY_CH: "坦桑尼亚",
-                 COUNTRY_EN: "Tanzania",
-                 ID: 49,
-                 POP: "2698652.0",
-                 SMGEOMETRYSIZE: "16",
-                 SMID: "49",
-                 SMLIBTILEID: "1",
-                 SMUSERID: "0",
-                 SMX: "39.253347298189766",
-                 SMY: "-6.817356064000194",
-                 USERID: "0"
-                 }));*/
+                var result = serviceResult.result;
+                expect(result).not.toBeNull();
+                expect(result.length).toEqual(10);
+                for (var i = 0; i < result.length; i++) {
+                    expect(result[i].filters.length).toEqual(2);
+                    expect(result[i].filters[0]).toBe("北京市");
+                    expect(result[i].filters[1]).toBe("海淀区");
+                }
+                expect(result[0].address).toBe("北京市海淀区阜成路8号东4区航天时代仪器公司");
+                expect(result[0].location).toEqual(Object({
+                    x: 116.31740122415627,
+                    y: 39.92311315752059
+                }));
+                expect(result[0].score).not.toBeNull();
                 GeoCodingService.destroy();
                 done();
             } catch (exception) {
-                console.log("leafletAddressService_'successEvent:GeoCoding'案例失败：" + exception.name + ":" + exception.message);
+                console.log("'successEvent:GeoCoding'案例失败：" + exception.name + ":" + exception.message);
                 GeoCodingService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        }, 5000)
     });
+
 
     it('successEvent:GeoDecoding', function (done) {
         var GeoDecodingParams = new SuperMap.GeoDecodingParameter({
-            x: 116.3518541194752,
-            y: 40.00097839595237,
+            x: 116.31740122415627,
+            y: 39.92311315752059,
             fromIndex: 0,
-            toIndex: 10,
+            toIndex: 5,
             filters: '北京市,海淀区',
             prjCoordSys: '{epsgcode:4326}',
             maxReturn: -1,
@@ -96,47 +79,29 @@ describe('leaflet_testAddressService', function () {
                 expect(GeoDecodingService).not.toBeNull();
                 expect(GeoDecodingService.options.serverType).toBe("iServer");
                 expect(serviceResult.type).toBe("processCompleted");
-                /*expect(serviceResult.object.url).toBe("http://localhost:8090/iserver/services/data-world/rest/data/featureResults.jsonp?");
-                 expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
-                 expect(serviceResult.result).not.toBeNull();
-                 expect(serviceResult.result.succeed).toBeTruthy();
-                 expect(serviceResult.result.featureCount).toEqual(7);
-                 expect(serviceResult.result.totalCount).toEqual(7);
-                 expect(serviceResult.result.features.type).toBe("FeatureCollection");
-                 expect(serviceResult.result.features.features.length).toEqual(7);
-                 for (var i = 0; i < serviceResult.result.features.features.length; i++) {
-                 expect(serviceResult.result.features.features[i].type).toBe("Feature");
-                 expect(serviceResult.result.features.features[i].geometry.type).toBe("Point");
-                 expect(serviceResult.result.features.features[i].geometry.coordinates.length).toEqual(2);
-                 }
-                 expect(serviceResult.result.features.features[0].properties).toEqual(Object({
-                 CAPITAL: "达累斯萨拉姆",
-                 CAPITAL_CH: "达累斯萨拉姆",
-                 CAPITAL_EN: "Dar es Salaam",
-                 CAPITAL_LO: "Dodoma",
-                 CAP_POP: "2698652.0",
-                 COUNTRY: "坦桑尼亚",
-                 COUNTRY_CH: "坦桑尼亚",
-                 COUNTRY_EN: "Tanzania",
-                 ID: 49,
-                 POP: "2698652.0",
-                 SMGEOMETRYSIZE: "16",
-                 SMID: "49",
-                 SMLIBTILEID: "1",
-                 SMUSERID: "0",
-                 SMX: "39.253347298189766",
-                 SMY: "-6.817356064000194",
-                 USERID: "0"
-                 }));*/
+                var result = serviceResult.result;
+                expect(result).not.toBeNull();
+                expect(result.length).toEqual(5);
+                for (var i = 0; i < result.length; i++) {
+                    expect(result[i].filters.length).toEqual(2);
+                    expect(result[i].filters[0]).toBe("北京市");
+                    expect(result[i].filters[1]).toBe("海淀区");
+                }
+                expect(result[0].address).toBe("北京市海淀区阜成路33号北京工商大学");
+                expect(result[0].location).toEqual(Object({
+                    x: 116.31431550481403,
+                    y: 39.92438137908202
+                }));
+                expect(result[0].score).not.toBeNull();
                 GeoDecodingService.destroy();
                 done();
             } catch (exception) {
-                console.log("leafletAddressService_'successEvent:GeoDecoding'案例失败：" + exception.name + ":" + exception.message);
+                console.log("'successEvent:GeoDecoding'案例失败：" + exception.name + ":" + exception.message);
                 GeoDecodingService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000)
+        }, 5000)
     });
 
     it('failEvent:GeocodingAddressNull', function (done) {
@@ -155,54 +120,55 @@ describe('leaflet_testAddressService', function () {
             try {
                 expect(GeoCodingService).not.toBeNull();
                 expect(GeoCodingService.options.serverType).toBe("iServer");
-                expect(serviceResult.type).toBe("processFailed");
-                expect(serviceResult.object.url).toBe("http://localhost:8090/iserver/services/data-world/rest/data/featureResults.jsonp?returnContent=true");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
-                expect(serviceResult.error).not.toBeNull();
-                expect(serviceResult.error.code).toEqual(400);
-                //expect(serviceResult.error.errorMsg).toBe("数据源World1不存在，获取相应的数据服务组件失败");
+                expect(serviceResult.type).toBe("processCompleted");
+                var result = serviceResult.result;
+                expect(result).not.toBeNull();
+                expect(result.success).toBeFalsy();
+                expect(result.error.code).toEqual(400);
+                expect(result.error.errorMsg).toBe("address cannot be null!");
                 GeoCodingService.destroy();
                 done();
             } catch (exception) {
-                console.log("leafletGetFeaturesByBoundsService_'failEvent:datasetNotExist'案例失败：" + exception.name + ":" + exception.message);
+                console.log("'failEvent:GeocodingAddressNull'案例失败：" + exception.name + ":" + exception.message);
                 GeoCodingService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        }, 5000);
     });
 
-    it('failEvent:GeoDecodingAddressNull', function (done) {
-        var GeoCodingParams = new SuperMap.GeoCodingParameter({
-            address: null,
+    it('failEvent:GeoDecodingLocationInvalid', function (done) {
+        var GeoDecodingParams = new SuperMap.GeoDecodingParameter({
             fromIndex: 0,
-            toIndex: 10,
+            toIndex: 5,
             filters: '北京市,海淀区',
             prjCoordSys: '{epsgcode:4326}',
-            maxReturn: -1
+            maxReturn: -1,
+            geoDecodingRadius: 500
         });
-        var GeoCodingService = L.supermap.AddressService(addressMatchURL, options).code(GeoCodingParams, function (result) {
+        var GeoDecodingService = L.supermap.AddressService(addressMatchURL, options).decode(GeoDecodingParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
             try {
-                expect(GeoCodingService).not.toBeNull();
-                expect(GeoCodingService.options.serverType).toBe("iServer");
-                expect(serviceResult.type).toBe("processFailed");
-                expect(serviceResult.object.url).toBe("http://localhost:8090/iserver/services/data-world/rest/data/featureResults.jsonp?returnContent=true");
-                expect(serviceResult.object.isInTheSameDomain).toBeFalsy();
-                expect(serviceResult.error).not.toBeNull();
-                expect(serviceResult.error.code).toEqual(400);
-                //expect(serviceResult.error.errorMsg).toBe("数据源World1不存在，获取相应的数据服务组件失败");
-                GeoCodingService.destroy();
+                expect(GeoDecodingService).not.toBeNull();
+                expect(GeoDecodingService.options.serverType).toBe("iServer");
+                expect(serviceResult.type).toBe("processCompleted");
+                var result = serviceResult.result;
+                expect(result).not.toBeNull();
+                expect(result).not.toBeNull();
+                expect(result.success).toBeFalsy();
+                expect(result.error.code).toEqual(400);
+                expect(result.error.errorMsg).toBe("location not valid!");
+                GeoDecodingService.destroy();
                 done();
             } catch (exception) {
-                console.log("leafletGetFeaturesByBoundsService_'failEvent:datasetNotExist'案例失败：" + exception.name + ":" + exception.message);
-                GeoCodingService.destroy();
+                console.log("'failEvent:GeoDecodingLocationInvalid'案例失败：" + exception.name + ":" + exception.message);
+                GeoDecodingService.destroy();
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 2000);
+        }, 5000)
     });
 
 });

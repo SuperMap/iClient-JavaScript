@@ -4,26 +4,9 @@ require('../../../tool/chinaConsumptionLevel');
 var options = {
     isOverLay: true
 };
-
+var url = GlobeParameter.China4326URL;
 describe('leaflet_testGraphThemeLayer', function () {
     var originalTimeout;
-    var url = GlobeParameter.China4326URL;
-    var mydiv = window.document.createElement("div");
-    mydiv.setAttribute("id", "map");
-    mydiv.style.styleFloat = "left";
-    mydiv.style.marginLeft = "8px";
-    mydiv.style.marginTop = "50px";
-    mydiv.style.width = "400px";
-    mydiv.style.height = "400px";
-    window.document.body.appendChild(mydiv);
-    var map = L.map("map", {
-        crs: L.CRS.EPSG4326,
-        center: [40, 117],
-        maxZoom: 18,
-        zoom: 0
-    });
-    L.supermap.tiledMapLayer(url).addTo(map);
-
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
@@ -31,11 +14,23 @@ describe('leaflet_testGraphThemeLayer', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
-    afterAll(function () {
-        window.document.body.removeChild(mydiv);
-    });
 
     it('construtor and destroy', function () {
+        var mydiv = window.document.createElement("div");
+        mydiv.setAttribute("id", "map");
+        mydiv.style.styleFloat = "left";
+        mydiv.style.marginLeft = "8px";
+        mydiv.style.marginTop = "50px";
+        mydiv.style.width = "400px";
+        mydiv.style.height = "400px";
+        window.document.body.appendChild(mydiv);
+        var map = L.map("map", {
+            crs: L.CRS.EPSG4326,
+            center: [40, 117],
+            maxZoom: 18,
+            zoom: 0
+        });
+        L.supermap.tiledMapLayer(url).addTo(map);
         var barThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", {isOverLay: false}).addTo(map);
         barThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
         barThemeLayer.chartsSetting = {
@@ -76,9 +71,25 @@ describe('leaflet_testGraphThemeLayer', function () {
         expect(barThemeLayer.options.name).toBe("BarThemeLayer");
         expect(barThemeLayer.themeFields.length).toEqual(5);
         barThemeLayer.clear();
+        window.document.body.removeChild(mydiv);
     });
 
     it('setChartsType', function () {
+        var mydiv = window.document.createElement("div");
+        mydiv.setAttribute("id", "map");
+        mydiv.style.styleFloat = "left";
+        mydiv.style.marginLeft = "8px";
+        mydiv.style.marginTop = "50px";
+        mydiv.style.width = "400px";
+        mydiv.style.height = "400px";
+        window.document.body.appendChild(mydiv);
+        var map = L.map("map", {
+            crs: L.CRS.EPSG4326,
+            center: [40, 117],
+            maxZoom: 18,
+            zoom: 0
+        });
+        L.supermap.tiledMapLayer(url).addTo(map);
         var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
         graphThemeLayer.chartsSetting = {
             width: 240,
@@ -89,9 +100,25 @@ describe('leaflet_testGraphThemeLayer', function () {
         graphThemeLayer.setChartsType("Line");
         expect(graphThemeLayer.chartsType).toBe("Line");
         graphThemeLayer.clear();
+        window.document.body.removeChild(mydiv);
     });
 
     it('addFeatures_point', function () {
+        var mydiv = window.document.createElement("div");
+        mydiv.setAttribute("id", "map");
+        mydiv.style.styleFloat = "left";
+        mydiv.style.marginLeft = "8px";
+        mydiv.style.marginTop = "50px";
+        mydiv.style.width = "400px";
+        mydiv.style.height = "400px";
+        window.document.body.appendChild(mydiv);
+        var map = L.map("map", {
+            crs: L.CRS.EPSG4326,
+            center: [40, 117],
+            maxZoom: 18,
+            zoom: 0
+        });
+        L.supermap.tiledMapLayer(url).addTo(map);
         var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
         graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
         graphThemeLayer.chartsSetting = {
@@ -154,9 +181,25 @@ describe('leaflet_testGraphThemeLayer', function () {
         expect(graphThemeLayer.features[0].geometry.x).toEqual(39);
         expect(redraw).toBeTruthy();
         graphThemeLayer.clear();
+        window.document.body.removeChild(mydiv);
     });
 
     it('isQuadrilateralOverLap', function () {
+        var mydiv = window.document.createElement("div");
+        mydiv.setAttribute("id", "map");
+        mydiv.style.styleFloat = "left";
+        mydiv.style.marginLeft = "8px";
+        mydiv.style.marginTop = "50px";
+        mydiv.style.width = "400px";
+        mydiv.style.height = "400px";
+        window.document.body.appendChild(mydiv);
+        var map = L.map("map", {
+            crs: L.CRS.EPSG4326,
+            center: [40, 117],
+            maxZoom: 18,
+            zoom: 0
+        });
+        L.supermap.tiledMapLayer(url).addTo(map);
         var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar").addTo(map);
         graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
         graphThemeLayer.chartsSetting = {
@@ -170,11 +213,27 @@ describe('leaflet_testGraphThemeLayer', function () {
         var isPointInPoly = graphThemeLayer.isQuadrilateralOverLap(quadrilateral, quadrilateral2);
         expect(isPointInPoly).toBeTruthy();
         graphThemeLayer.clear();
+        window.document.body.removeChild(mydiv);
     });
 
 
     // 此方法为iclient8的私有方法,不支持leaflet对象,此处测试传入iclient对象的情况
     it('isPointInPoly', function () {
+        var mydiv = window.document.createElement("div");
+        mydiv.setAttribute("id", "map");
+        mydiv.style.styleFloat = "left";
+        mydiv.style.marginLeft = "8px";
+        mydiv.style.marginTop = "50px";
+        mydiv.style.width = "400px";
+        mydiv.style.height = "400px";
+        window.document.body.appendChild(mydiv);
+        var map = L.map("map", {
+            crs: L.CRS.EPSG4326,
+            center: [40, 117],
+            maxZoom: 18,
+            zoom: 0
+        });
+        L.supermap.tiledMapLayer(url).addTo(map);
         var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
         graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
         graphThemeLayer.chartsSetting = {
@@ -187,9 +246,25 @@ describe('leaflet_testGraphThemeLayer', function () {
         var isPointInPoly = graphThemeLayer.isPointInPoly(point, polygon);
         expect(isPointInPoly).toBeTruthy();
         graphThemeLayer.clear();
+        window.document.body.removeChild(mydiv);
     });
 
     it('drawCharts', function () {
+        var mydiv = window.document.createElement("div");
+        mydiv.setAttribute("id", "map");
+        mydiv.style.styleFloat = "left";
+        mydiv.style.marginLeft = "8px";
+        mydiv.style.marginTop = "50px";
+        mydiv.style.width = "400px";
+        mydiv.style.height = "400px";
+        window.document.body.appendChild(mydiv);
+        var map = L.map("map", {
+            crs: L.CRS.EPSG4326,
+            center: [40, 117],
+            maxZoom: 18,
+            zoom: 0
+        });
+        L.supermap.tiledMapLayer(url).addTo(map);
         var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", {
             isOverLay: false
         }).addTo(map);
@@ -213,9 +288,25 @@ describe('leaflet_testGraphThemeLayer', function () {
         graphThemeLayer.drawCharts();
         expect(graphThemeLayer).not.toBeNull();
         graphThemeLayer.clear();
+        window.document.body.removeChild(mydiv);
     });
 
     it('removeFeatures', function () {
+        var mydiv = window.document.createElement("div");
+        mydiv.setAttribute("id", "map");
+        mydiv.style.styleFloat = "left";
+        mydiv.style.marginLeft = "8px";
+        mydiv.style.marginTop = "50px";
+        mydiv.style.width = "400px";
+        mydiv.style.height = "400px";
+        window.document.body.appendChild(mydiv);
+        var map = L.map("map", {
+            crs: L.CRS.EPSG4326,
+            center: [40, 117],
+            maxZoom: 18,
+            zoom: 0
+        });
+        L.supermap.tiledMapLayer(url).addTo(map);
         var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
         graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
         graphThemeLayer.chartsSetting = {
@@ -236,9 +327,25 @@ describe('leaflet_testGraphThemeLayer', function () {
         graphThemeLayer.removeAllFeatures();
         expect(graphThemeLayer.features.length).toEqual(0);
         graphThemeLayer.clear();
+        window.document.body.removeChild(mydiv);
     });
 
     it('clearCache', function () {
+        var mydiv = window.document.createElement("div");
+        mydiv.setAttribute("id", "map");
+        mydiv.style.styleFloat = "left";
+        mydiv.style.marginLeft = "8px";
+        mydiv.style.marginTop = "50px";
+        mydiv.style.width = "400px";
+        mydiv.style.height = "400px";
+        window.document.body.appendChild(mydiv);
+        var map = L.map("map", {
+            crs: L.CRS.EPSG4326,
+            center: [40, 117],
+            maxZoom: 18,
+            zoom: 0
+        });
+        L.supermap.tiledMapLayer(url).addTo(map);
         var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
         graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
         graphThemeLayer.chartsSetting = {
@@ -255,9 +362,25 @@ describe('leaflet_testGraphThemeLayer', function () {
         graphThemeLayer.clearCache();
         expect(graphThemeLayer.charts.length).toEqual(0);
         expect(graphThemeLayer.cache).toEqual(Object({}));
+        window.document.body.removeChild(mydiv);
     });
 
     it('createThematicFeature', function () {
+        var mydiv = window.document.createElement("div");
+        mydiv.setAttribute("id", "map");
+        mydiv.style.styleFloat = "left";
+        mydiv.style.marginLeft = "8px";
+        mydiv.style.marginTop = "50px";
+        mydiv.style.width = "400px";
+        mydiv.style.height = "400px";
+        window.document.body.appendChild(mydiv);
+        var map = L.map("map", {
+            crs: L.CRS.EPSG4326,
+            center: [40, 117],
+            maxZoom: 18,
+            zoom: 0
+        });
+        L.supermap.tiledMapLayer(url).addTo(map);
         var graphThemeLayer = L.supermap.graphThemeLayer("BarThemeLayer", "Bar", options).addTo(map);
         graphThemeLayer.addTo(map);
         graphThemeLayer.themeFields = ["CON2009", "CON2010", "CON2011", "CON2012", "CON2013"];
@@ -290,6 +413,7 @@ describe('leaflet_testGraphThemeLayer', function () {
         graphThemeLayer.createThematicFeature(feature);
         expect(graphThemeLayer).not.toBeNull();
         graphThemeLayer.clear();
+        window.document.body.removeChild(mydiv);
     });
 
 
