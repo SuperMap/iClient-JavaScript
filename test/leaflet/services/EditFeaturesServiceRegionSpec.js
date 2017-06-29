@@ -1,7 +1,7 @@
 require('../../../src/leaflet/services/FeatureService');
 
 var editServiceURL = GlobeParameter.editServiceURL_leaflet;
-var id1, id2, id3, id4, id5;
+var id1, id2;
 var originFeature = null;
 describe('leaflet_testFeatureService_editFeatures', function () {
     var originalTimeout;
@@ -137,49 +137,52 @@ describe('leaflet_testFeatureService_editFeatures', function () {
             getFeatureResult = result
         });
         setTimeout(function () {
-            try {
+            if (getFeatureResult != null) {
                 expect(getFeaturesByIDsService).not.toBeNull();
                 expect(getFeatureResult.type).toBe("processCompleted");
                 expect(getFeatureResult.result).not.toBeNull();
                 expect(getFeatureResult.result.succeed).toBeTruthy();
                 originFeature = getFeatureResult.result.features.features[0];
                 getFeaturesByIDsService.destroy();
-                done();
-            } catch (exception) {
-                console.log("'getFeatureForUpdate'案例失败：" + exception.name + ":" + exception.message);
+            } else {
+                console.log("未获取到数据");
                 getFeaturesByIDsService.destroy();
-                expect(false).toBeTruthy();
-                done();
             }
+            done();
         }, 4000)
     });
     // 将上面获取的要素update
     it('successEvent:updateFeature', function (done) {
         var updateFeatureResult = null;
-        originFeature.properties.LANDTYPE = "用材林" + Math.random() * 100;
-        var updateFeaturesParams = new SuperMap.EditFeaturesParameters({
-            dataSourceName: "Jingjin",
-            dataSetName: "Landuse_R",
-            features: originFeature,
-            editType: "update"
-        });
-        var updateFeaturesService = L.supermap.featureService(editServiceURL).editFeatures(updateFeaturesParams, function (result) {
-            updateFeatureResult = result
-        });
-        setTimeout(function () {
-            try {
-                expect(updateFeaturesService).not.toBeNull();
-                expect(updateFeatureResult).not.toBeNull();
-                expect(updateFeatureResult.type).toBe("processCompleted");
-                expect(updateFeatureResult.result.succeed).toBeTruthy();
-                updateFeaturesService.destroy();
-                done();
-            } catch (exception) {
-                expect(false).toBeTruthy();
-                console.log("'successEvent:updateFeature'案例失败" + exception.name + ":" + exception.message);
-                updateFeaturesService.destroy();
-                done();
-            }
-        }, 6000);
+        if (originFeature) {
+            originFeature.properties.LANDTYPE = "用材林" + Math.random() * 100;
+            var updateFeaturesParams = new SuperMap.EditFeaturesParameters({
+                dataSourceName: "Jingjin",
+                dataSetName: "Landuse_R",
+                features: originFeature,
+                editType: "update"
+            });
+            var updateFeaturesService = L.supermap.featureService(editServiceURL).editFeatures(updateFeaturesParams, function (result) {
+                updateFeatureResult = result
+            });
+            setTimeout(function () {
+                try {
+                    expect(updateFeaturesService).not.toBeNull();
+                    expect(updateFeatureResult).not.toBeNull();
+                    expect(updateFeatureResult.type).toBe("processCompleted");
+                    expect(updateFeatureResult.result.succeed).toBeTruthy();
+                    updateFeaturesService.destroy();
+                    done();
+                } catch (exception) {
+                    expect(false).toBeTruthy();
+                    console.log("'successEvent:updateFeature'案例失败" + exception.name + ":" + exception.message);
+                    updateFeaturesService.destroy();
+                    done();
+                }
+            }, 10000);
+        }
+        else {
+            console.log("'updateFeature'未获取到数据");
+        }
     });
 });

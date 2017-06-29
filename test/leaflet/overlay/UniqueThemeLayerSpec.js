@@ -5,8 +5,25 @@ var baseUrl = GlobeParameter.jingjinMapURL + "/maps/京津地区地图",
 var features = [];
 describe('leaflet_testUniqueThemeLayer', function () {
     var originalTimeout;
-    var testDiv = window.document.createElement("div");
+    var testDiv, map;
+    beforeAll(function () {
+        testDiv = window.document.createElement("div");
+        testDiv.setAttribute("id", "map");
+        testDiv.style.styleFloat = "left";
+        testDiv.style.marginLeft = "8px";
+        testDiv.style.marginTop = "50px";
+        testDiv.style.width = "500px";
+        testDiv.style.height = "500px";
+        window.document.body.appendChild(testDiv);
+        map = L.map("map", {
+            crs: L.CRS.EPSG4326,
+            center: [40, 117],
+            maxZoom: 18,
+            zoom: 6
+        });
+        L.supermap.tiledMapLayer(baseUrl).addTo(map);
 
+    });
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
@@ -14,6 +31,11 @@ describe('leaflet_testUniqueThemeLayer', function () {
     afterEach(function () {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
+    afterAll(function () {
+        window.document.body.removeChild(testDiv);
+        map.remove();
+    });
+
 
     it('prepareFeaturesToAdd', function (done) {
         function concatAttributes(fieldNames, filedValues) {
@@ -237,20 +259,6 @@ describe('leaflet_testUniqueThemeLayer', function () {
     });
 
     it('addFeatures', function () {
-        testDiv.setAttribute("id", "map");
-        testDiv.style.styleFloat = "left";
-        testDiv.style.marginLeft = "8px";
-        testDiv.style.marginTop = "50px";
-        testDiv.style.width = "500px";
-        testDiv.style.height = "500px";
-        window.document.body.appendChild(testDiv);
-        var map = L.map("map", {
-            crs: L.CRS.EPSG4326,
-            center: [40, 117],
-            maxZoom: 18,
-            zoom: 6
-        });
-        L.supermap.tiledMapLayer(baseUrl).addTo(map);
         //constructor
         var uniqueThemeLayer = L.supermap.uniqueThemeLayer("ThemeLayer", {
             isHoverAble: true,
@@ -370,6 +378,5 @@ describe('leaflet_testUniqueThemeLayer', function () {
         uniqueThemeLayer.removeAllFeatures();
         expect(uniqueThemeLayer.features.length).toEqual(0);
         uniqueThemeLayer.clear();
-        window.document.body.removeChild(testDiv);
     });
 });

@@ -5,17 +5,9 @@ var China4326URL = GlobeParameter.China4326URL;
 
 describe('leaflet_testRankSymbolThemeLayer', function () {
     var originalTimeout;
-    beforeEach(function () {
-        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
-    });
-    afterEach(function () {
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
-       // window.document.body.removeChild(testDiv);
-    });
-
-    it('addFeatures', function () {
-        var testDiv = window.document.createElement("div");
+    var testDiv, map;
+    beforeAll(function () {
+        testDiv = window.document.createElement("div");
         testDiv.setAttribute("id", "map");
         testDiv.style.styleFloat = "left";
         testDiv.style.marginLeft = "8px";
@@ -23,13 +15,28 @@ describe('leaflet_testRankSymbolThemeLayer', function () {
         testDiv.style.width = "500px";
         testDiv.style.height = "500px";
         window.document.body.appendChild(testDiv);
-        var map = L.map("map", {
+        map = L.map("map", {
             crs: L.CRS.EPSG4326,
             center: [40, 117],
             maxZoom: 18,
             zoom: 2
         });
         L.supermap.tiledMapLayer(China4326URL).addTo(map);
+    });
+    beforeEach(function () {
+        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 50000;
+    });
+    afterEach(function () {
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+    });
+    afterAll(function () {
+        window.document.body.removeChild(testDiv);
+        map.remove();
+    });
+
+
+    it('addFeatures', function () {
         //initialize
         var rankSymbolThemeLayer = L.supermap.rankSymbolThemeLayer("ThemeLayer", SuperMap.ChartType.CIRCLE).addTo(map);
         rankSymbolThemeLayer.themeField = "CON2009";
@@ -60,7 +67,6 @@ describe('leaflet_testRankSymbolThemeLayer', function () {
         rankSymbolThemeLayer.addFeatures(features);
         expect(rankSymbolThemeLayer.features.length).toBeGreaterThan(0);
         rankSymbolThemeLayer.clear();
-        window.document.body.removeChild(testDiv);
     });
 
     it('setSymbolType', function () {
