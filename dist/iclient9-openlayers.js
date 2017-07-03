@@ -1531,7 +1531,7 @@ var ol = __webpack_require__(2);
 ol.supermap.ServiceBase = function (url, options) {
     ol.Observable.call(this);
     this.options = options || {};
-    this.options.url = url;
+    this.url = url;
     //服务来源 iServer|iPortal|online
     this.options.serverType = url;
     this.dispatchEvent(new ol.supermap.ResultEvent('initialized', this));
@@ -11080,6 +11080,7 @@ ol.supermap.TileSuperMapRest = function (options) {
     if (options.url === undefined) {
         return;
     }
+    options = options || {};
     options.attributions = options.attributions ||
         new ol.Attribution({
             html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
@@ -12319,7 +12320,7 @@ ol.inherits(ol.supermap.AddressService, ServiceBase);
 ol.supermap.AddressService.prototype.code = function (params, callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var addressService = new AddressService(me.options.url, {
+    var addressService = new AddressService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -12328,7 +12329,7 @@ ol.supermap.AddressService.prototype.code = function (params, callback, resultFo
         },
         format: format
     });
-    addressService.code(me.options.url + '/geocoding', params);
+    addressService.code(me.url + '/geocoding', params);
     return me;
 };
 
@@ -12341,7 +12342,7 @@ ol.supermap.AddressService.prototype.code = function (params, callback, resultFo
 ol.supermap.AddressService.prototype.decode = function (params, callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var addressService = new AddressService(me.options.url, {
+    var addressService = new AddressService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -12350,7 +12351,7 @@ ol.supermap.AddressService.prototype.decode = function (params, callback, result
         },
         format: format
     });
-    addressService.decode(me.options.url + '/geodecoding', params);
+    addressService.decode(me.url + '/geodecoding', params);
     return me;
 };
 
@@ -12396,7 +12397,7 @@ ol.supermap.ChartService.prototype.queryChart = function (params, callback, resu
     var me = this,
         param = me._processParams(params),
         format = me._processFormat(resultFormat);
-    var chartQueryService = new ChartQueryService(me.options.url, {
+    var chartQueryService = new ChartQueryService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -12414,7 +12415,7 @@ ol.supermap.ChartService.prototype.queryChart = function (params, callback, resu
  * 海图物标信息服务
  */
 ol.supermap.ChartService.prototype.getChartFeatureInfo = function (callback) {
-    var me = this, url = me.options.url.concat();
+    var me = this, url = me.url.concat();
     url += "/chartFeatureInfoSpecs";
     var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
         serverType: me.options.serverType,
@@ -12493,7 +12494,7 @@ ol.inherits(ol.supermap.FeatureService, ol.supermap.ServiceBase);
  */
 ol.supermap.FeatureService.prototype.getFeaturesByIDs = function (params, callback, resultFormat) {
     var me = this;
-    var getFeaturesByIDsService = new GetFeaturesByIDsService(me.options.url, {
+    var getFeaturesByIDsService = new GetFeaturesByIDsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
@@ -12516,7 +12517,7 @@ ol.supermap.FeatureService.prototype.getFeaturesByIDs = function (params, callba
  */
 ol.supermap.FeatureService.prototype.getFeaturesByBounds = function (params, callback, resultFormat) {
     var me = this;
-    var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.options.url, {
+    var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
@@ -12538,7 +12539,7 @@ ol.supermap.FeatureService.prototype.getFeaturesByBounds = function (params, cal
  */
 ol.supermap.FeatureService.prototype.getFeaturesByBuffer = function (params, callback, resultFormat) {
     var me = this;
-    var getFeatureService = new GetFeaturesByBufferService(me.options.url, {
+    var getFeatureService = new GetFeaturesByBufferService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
@@ -12560,7 +12561,7 @@ ol.supermap.FeatureService.prototype.getFeaturesByBuffer = function (params, cal
  */
 ol.supermap.FeatureService.prototype.getFeaturesBySQL = function (params, callback, resultFormat) {
     var me = this;
-    var getFeatureBySQLService = new GetFeaturesBySQLService(me.options.url, {
+    var getFeatureBySQLService = new GetFeaturesBySQLService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
@@ -12583,7 +12584,7 @@ ol.supermap.FeatureService.prototype.getFeaturesBySQL = function (params, callba
  */
 ol.supermap.FeatureService.prototype.getFeaturesByGeometry = function (params, callback, resultFormat) {
     var me = this;
-    var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.options.url, {
+    var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
@@ -12606,7 +12607,7 @@ ol.supermap.FeatureService.prototype.editFeatures = function (params, callback) 
         return;
     }
     var me = this,
-        url = me.options.url,
+        url = me.url,
         dataSourceName = params.dataSourceName,
         dataSetName = params.dataSetName;
 
@@ -12716,7 +12717,7 @@ ol.inherits(ol.supermap.FieldService, ol.supermap.ServiceBase);
  */
 ol.supermap.FieldService.prototype.getFields = function (callback) {
     var me = this;
-    var getFieldsService = new GetFieldsService(me.options.url, {
+    var getFieldsService = new GetFieldsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -12755,7 +12756,7 @@ ol.supermap.FieldService.prototype.getFieldStatisticsInfo = function (params, ca
 
 ol.supermap.FieldService.prototype._fieldStatisticRequest = function (fieldName, statisticMode) {
     var me = this;
-    var statisticService = new FieldStatisticService(me.options.url, {
+    var statisticService = new FieldStatisticService(me.url, {
         eventListeners: {
             scope: me,
             processCompleted: me._processCompleted,
@@ -12824,7 +12825,7 @@ ol.supermap.GridCellInfosService.prototype.getGridCellInfos = function (params, 
         return null;
     }
     var me = this;
-    var gridCellQueryService = new GetGridCellInfosService(me.options.url, {
+    var gridCellQueryService = new GetGridCellInfosService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -12865,7 +12866,7 @@ ol.inherits(ol.supermap.LayerInfoService, ol.supermap.ServiceBase);
 
 ol.supermap.LayerInfoService.prototype.getLayersInfo = function (callback) {
     var me = this;
-    var getLayersInfoService = new GetLayersInfoService(me.options.url, {
+    var getLayersInfoService = new GetLayersInfoService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
@@ -12894,7 +12895,7 @@ ol.supermap.LayerInfoService.prototype.setLayerInfo = function (params, callback
     if (!tempLayerID || !layerPath || !resourceID) {
         return;
     }
-    var url = me.options.url.concat();
+    var url = me.url.concat();
     url += "/tempLayersSet/" + tempLayerID + "/" + layerPath;
 
     var setLayerInfoService = new SetLayerInfoService(url, {
@@ -12930,7 +12931,7 @@ ol.supermap.LayerInfoService.prototype.setLayersInfo = function (params, callbac
     var layersInfoParam = {};
     layersInfoParam.subLayers = {};
     layersInfoParam.subLayers.layers = layersInfo;
-    var setLayersInfoService = new SetLayersInfoService(me.options.url, {
+    var setLayersInfoService = new SetLayersInfoService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
@@ -12956,7 +12957,7 @@ ol.supermap.LayerInfoService.prototype.setLayerStatus = function (params, callba
         return;
     }
     var me = this;
-    var setLayerStatusService = new SetLayerStatusService(me.options.url, {
+    var setLayerStatusService = new SetLayerStatusService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
@@ -12998,7 +12999,7 @@ ol.inherits(ol.supermap.MapService, ol.supermap.ServiceBase);
  */
 ol.supermap.MapService.prototype.getMapInfo = function (callback) {
     var me = this;
-    var getMapStatusService = new MapService(me.options.url, {
+    var getMapStatusService = new MapService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13016,7 +13017,7 @@ ol.supermap.MapService.prototype.getMapInfo = function (callback) {
  */
 ol.supermap.MapService.prototype.getTilesets = function (callback) {
     var me = this;
-    var tilesetsService = new TilesetsService(me.options.url, {
+    var tilesetsService = new TilesetsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13059,7 +13060,7 @@ ol.supermap.MeasureService.prototype.measureArea = function (params, callback) {
 
 ol.supermap.MeasureService.prototype.measure = function (params, type, callback) {
     var me = this;
-    var measureService = new MeasureService(me.options.url, {
+    var measureService = new MeasureService(me.url, {
         serverType: me.options.serverType,
         measureMode: type,
         eventListeners: {
@@ -13122,7 +13123,7 @@ ol.inherits(ol.supermap.NetworkAnalyst3DService, ol.supermap.ServiceBase);
  */
 ol.supermap.NetworkAnalyst3DService.prototype.sinksFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystSinks3DService = new FacilityAnalystSinks3DService(me.options.url, {
+    var facilityAnalystSinks3DService = new FacilityAnalystSinks3DService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13142,7 +13143,7 @@ ol.supermap.NetworkAnalyst3DService.prototype.sinksFacilityAnalyst = function (p
  */
 ol.supermap.NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystSources3DService = new FacilityAnalystSources3DService(me.options.url, {
+    var facilityAnalystSources3DService = new FacilityAnalystSources3DService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13162,7 +13163,7 @@ ol.supermap.NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst = function 
  */
 ol.supermap.NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystTraceup3DService = new FacilityAnalystTraceup3DService(me.options.url, {
+    var facilityAnalystTraceup3DService = new FacilityAnalystTraceup3DService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13182,7 +13183,7 @@ ol.supermap.NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst = function 
  */
 ol.supermap.NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystTracedown3DService = new FacilityAnalystTracedown3DService(me.options.url, {
+    var facilityAnalystTracedown3DService = new FacilityAnalystTracedown3DService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13202,7 +13203,7 @@ ol.supermap.NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst = functio
  */
 ol.supermap.NetworkAnalyst3DService.prototype.upstreamFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystUpstream3DService = new FacilityAnalystUpstream3DService(me.options.url, {
+    var facilityAnalystUpstream3DService = new FacilityAnalystUpstream3DService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13266,7 +13267,7 @@ ol.inherits(ol.supermap.NetworkAnalystService, ol.supermap.ServiceBase);
  */
 ol.supermap.NetworkAnalystService.prototype.burstPipelineAnalyst = function (params, callback) {
     var me = this;
-    var burstPipelineAnalystService = new BurstPipelineAnalystService(me.options.url, {
+    var burstPipelineAnalystService = new BurstPipelineAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13286,7 +13287,7 @@ ol.supermap.NetworkAnalystService.prototype.burstPipelineAnalyst = function (par
  */
 ol.supermap.NetworkAnalystService.prototype.computeWeightMatrix = function (params, callback) {
     var me = this;
-    var computeWeightMatrixService = new ComputeWeightMatrixService(me.options.url, {
+    var computeWeightMatrixService = new ComputeWeightMatrixService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13307,7 +13308,7 @@ ol.supermap.NetworkAnalystService.prototype.computeWeightMatrix = function (para
  */
 ol.supermap.NetworkAnalystService.prototype.findClosestFacilities = function (params, callback, resultFormat) {
     var me = this;
-    var findClosestFacilitiesService = new FindClosestFacilitiesService(me.options.url, {
+    var findClosestFacilitiesService = new FindClosestFacilitiesService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13329,7 +13330,7 @@ ol.supermap.NetworkAnalystService.prototype.findClosestFacilities = function (pa
  */
 ol.supermap.NetworkAnalystService.prototype.streamFacilityAnalyst = function (params, callback, resultFormat) {
     var me = this;
-    var facilityAnalystStreamService = new FacilityAnalystStreamService(me.options.url, {
+    var facilityAnalystStreamService = new FacilityAnalystStreamService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13351,7 +13352,7 @@ ol.supermap.NetworkAnalystService.prototype.streamFacilityAnalyst = function (pa
  */
 ol.supermap.NetworkAnalystService.prototype.findLocation = function (params, callback, resultFormat) {
     var me = this;
-    var findLocationService = new FindLocationService(me.options.url, {
+    var findLocationService = new FindLocationService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13373,7 +13374,7 @@ ol.supermap.NetworkAnalystService.prototype.findLocation = function (params, cal
  */
 ol.supermap.NetworkAnalystService.prototype.findTSPPaths = function (params, callback, resultFormat) {
     var me = this;
-    var findTSPPathsService = new FindTSPPathsService(me.options.url, {
+    var findTSPPathsService = new FindTSPPathsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13395,7 +13396,7 @@ ol.supermap.NetworkAnalystService.prototype.findTSPPaths = function (params, cal
  */
 ol.supermap.NetworkAnalystService.prototype.findPath = function (params, callback, resultFormat) {
     var me = this;
-    var findPathService = new FindPathService(me.options.url, {
+    var findPathService = new FindPathService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13417,7 +13418,7 @@ ol.supermap.NetworkAnalystService.prototype.findPath = function (params, callbac
  */
 ol.supermap.NetworkAnalystService.prototype.findMTSPPaths = function (params, callback, resultFormat) {
     var me = this;
-    var findMTSPPathsService = new FindMTSPPathsService(me.options.url, {
+    var findMTSPPathsService = new FindMTSPPathsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13439,7 +13440,7 @@ ol.supermap.NetworkAnalystService.prototype.findMTSPPaths = function (params, ca
  */
 ol.supermap.NetworkAnalystService.prototype.findServiceAreas = function (params, callback, resultFormat) {
     var me = this;
-    var findServiceAreasService = new FindServiceAreasService(me.options.url, {
+    var findServiceAreasService = new FindServiceAreasService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13460,7 +13461,7 @@ ol.supermap.NetworkAnalystService.prototype.findServiceAreas = function (params,
  */
 ol.supermap.NetworkAnalystService.prototype.updateEdgeWeight = function (params, callback) {
     var me = this;
-    var updateEdgeWeightService = new UpdateEdgeWeightService(me.options.url, {
+    var updateEdgeWeightService = new UpdateEdgeWeightService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13480,7 +13481,7 @@ ol.supermap.NetworkAnalystService.prototype.updateEdgeWeight = function (params,
  */
 ol.supermap.NetworkAnalystService.prototype.updateTurnNodeWeight = function (params, callback) {
     var me = this;
-    var updateTurnNodeWeightService = new UpdateTurnNodeWeightService(me.options.url, {
+    var updateTurnNodeWeightService = new UpdateTurnNodeWeightService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13588,7 +13589,7 @@ ol.inherits(ol.supermap.ProcessingJobsService, ol.supermap.ServiceBase);
 ol.supermap.ProcessingJobsService.prototype.getKernelDensityJobs = function (callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var kernelDensityJobsService = new KernelDensityJobsService(me.options.url, {
+    var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13610,7 +13611,7 @@ ol.supermap.ProcessingJobsService.prototype.getKernelDensityJobs = function (cal
 ol.supermap.ProcessingJobsService.prototype.getKernelDensityJob = function (id, callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var kernelDensityJobsService = new KernelDensityJobsService(me.options.url, {
+    var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13632,7 +13633,7 @@ ol.supermap.ProcessingJobsService.prototype.addKernelDensityJob = function (para
     var me = this,
         param = me._processParams(params),
         format = me._processFormat(resultFormat);
-    var kernelDensityJobsService = new KernelDensityJobsService(me.options.url, {
+    var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -13663,7 +13664,7 @@ ol.supermap.ProcessingJobsService.prototype.getKernelDensityJobState = function 
 ol.supermap.ProcessingJobsService.prototype.getSummaryMeshJobs = function (callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var summaryMeshJobsService = new SummaryMeshJobsService(me.options.url, {
+    var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13685,7 +13686,7 @@ ol.supermap.ProcessingJobsService.prototype.getSummaryMeshJobs = function (callb
 ol.supermap.ProcessingJobsService.prototype.getSummaryMeshJob = function (id, callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var summaryMeshJobsService = new SummaryMeshJobsService(me.options.url, {
+    var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13707,7 +13708,7 @@ ol.supermap.ProcessingJobsService.prototype.addSummaryMeshJob = function (params
     var me = this,
         param = me._processParams(params),
         format = me._processFormat(resultFormat);
-    var summaryMeshJobsService = new SummaryMeshJobsService(me.options.url, {
+    var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -13738,7 +13739,7 @@ ol.supermap.ProcessingJobsService.prototype.getSummaryMeshJobState = function (i
 ol.supermap.ProcessingJobsService.prototype.getBuildCacheJobs = function (callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var buildCacheJobsService = new BuildCacheJobsService(me.options.url, {
+    var buildCacheJobsService = new BuildCacheJobsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13760,7 +13761,7 @@ ol.supermap.ProcessingJobsService.prototype.getBuildCacheJobs = function (callba
 ol.supermap.ProcessingJobsService.prototype.getBuildCacheJob = function (id, callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var buildCacheJobsService = new BuildCacheJobsService(me.options.url, {
+    var buildCacheJobsService = new BuildCacheJobsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13782,7 +13783,7 @@ ol.supermap.ProcessingJobsService.prototype.addBuildCacheJob = function (params,
     var me = this,
         param = me._processParams(params),
         format = me._processFormat(resultFormat);
-    var buildCacheJobsService = new BuildCacheJobsService(me.options.url, {
+    var buildCacheJobsService = new BuildCacheJobsService(me.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -13865,7 +13866,7 @@ ol.inherits(ol.supermap.QueryService, ol.supermap.ServiceBase);
  */
 ol.supermap.QueryService.prototype.queryByBounds = function (params, callback, resultFormat) {
     var me = this;
-    var queryService = new QueryByBoundsService(me.options.url, {
+    var queryService = new QueryByBoundsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13889,7 +13890,7 @@ ol.supermap.QueryService.prototype.queryByBounds = function (params, callback, r
  */
 ol.supermap.QueryService.prototype.queryByDistance = function (params, callback, resultFormat) {
     var me = this;
-    var queryByDistanceService = new QueryByDistanceService(me.options.url, {
+    var queryByDistanceService = new QueryByDistanceService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13913,7 +13914,7 @@ ol.supermap.QueryService.prototype.queryByDistance = function (params, callback,
  */
 ol.supermap.QueryService.prototype.queryBySQL = function (params, callback, resultFormat) {
     var me = this;
-    var queryBySQLService = new QueryBySQLService(me.options.url, {
+    var queryBySQLService = new QueryBySQLService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -13937,7 +13938,7 @@ ol.supermap.QueryService.prototype.queryBySQL = function (params, callback, resu
  */
 ol.supermap.QueryService.prototype.queryByGeometry = function (params, callback, resultFormat) {
     var me = this;
-    var queryByGeometryService = new QueryByGeometryService(me.options.url, {
+    var queryByGeometryService = new QueryByGeometryService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14036,7 +14037,7 @@ ol.inherits(ol.supermap.SpatialAnalystService, ol.supermap.ServiceBase);
  */
 ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult = function (params, callback, resultFormat) {
     var me = this;
-    var areaSolarRadiationService = new AreaSolarRadiationService(me.options.url, {
+    var areaSolarRadiationService = new AreaSolarRadiationService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14058,7 +14059,7 @@ ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult = functi
  */
 ol.supermap.SpatialAnalystService.prototype.bufferAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var bufferAnalystService = new BufferAnalystService(me.options.url, {
+    var bufferAnalystService = new BufferAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14080,7 +14081,7 @@ ol.supermap.SpatialAnalystService.prototype.bufferAnalysis = function (params, c
  */
 ol.supermap.SpatialAnalystService.prototype.densityAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var densityAnalystService = new DensityAnalystService(me.options.url, {
+    var densityAnalystService = new DensityAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14102,7 +14103,7 @@ ol.supermap.SpatialAnalystService.prototype.densityAnalysis = function (params, 
  */
 ol.supermap.SpatialAnalystService.prototype.generateSpatialData = function (params, callback, resultFormat) {
     var me = this;
-    var generateSpatialDataService = new GenerateSpatialDataService(me.options.url, {
+    var generateSpatialDataService = new GenerateSpatialDataService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14124,7 +14125,7 @@ ol.supermap.SpatialAnalystService.prototype.generateSpatialData = function (para
  */
 ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var geoRelationAnalystService = new GeoRelationAnalystService(me.options.url, {
+    var geoRelationAnalystService = new GeoRelationAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14146,7 +14147,7 @@ ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis = function (para
  */
 ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var interpolationAnalystService = new InterpolationAnalystService(me.options.url, {
+    var interpolationAnalystService = new InterpolationAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14168,7 +14169,7 @@ ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis = function (pa
  */
 ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var mathExpressionAnalysisService = new MathExpressionAnalysisService(me.options.url, {
+    var mathExpressionAnalysisService = new MathExpressionAnalysisService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14190,7 +14191,7 @@ ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis = function (p
  */
 ol.supermap.SpatialAnalystService.prototype.overlayAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var overlayAnalystService = new OverlayAnalystService(me.options.url, {
+    var overlayAnalystService = new OverlayAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14212,7 +14213,7 @@ ol.supermap.SpatialAnalystService.prototype.overlayAnalysis = function (params, 
  */
 ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure = function (params, callback, resultFormat) {
     var me = this;
-    var routeCalculateMeasureService = new RouteCalculateMeasureService(me.options.url, {
+    var routeCalculateMeasureService = new RouteCalculateMeasureService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14234,7 +14235,7 @@ ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure = function (pa
  */
 ol.supermap.SpatialAnalystService.prototype.routeLocate = function (params, callback, resultFormat) {
     var me = this;
-    var routeLocatorService = new RouteLocatorService(me.options.url, {
+    var routeLocatorService = new RouteLocatorService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14256,7 +14257,7 @@ ol.supermap.SpatialAnalystService.prototype.routeLocate = function (params, call
  */
 ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var surfaceAnalystService = new SurfaceAnalystService(me.options.url, {
+    var surfaceAnalystService = new SurfaceAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14278,7 +14279,7 @@ ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis = function (params, 
  */
 ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate = function (params, callback, resultFormat) {
     var me = this;
-    var terrainCurvatureCalculationService = new TerrainCurvatureCalculationService(me.options.url, {
+    var terrainCurvatureCalculationService = new TerrainCurvatureCalculationService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14300,7 +14301,7 @@ ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate = function
  */
 ol.supermap.SpatialAnalystService.prototype.thiessenAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var thiessenAnalystService = new ThiessenAnalystService(me.options.url, {
+    var thiessenAnalystService = new ThiessenAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14406,7 +14407,7 @@ ol.inherits(ol.supermap.ThemeService, ol.supermap.ServiceBase);
 
 ol.supermap.ThemeService.prototype.getThemeInfo = function (params, callback) {
     var me = this;
-    var themeService = new ThemeService(me.options.url, {
+    var themeService = new ThemeService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14454,7 +14455,7 @@ ol.inherits(ol.supermap.TrafficTransferAnalystService, ol.supermap.ServiceBase);
  */
 ol.supermap.TrafficTransferAnalystService.prototype.queryStop = function (params, callback) {
     var me = this;
-    var stopQueryService = new StopQueryService(me.options.url, {
+    var stopQueryService = new StopQueryService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14474,7 +14475,7 @@ ol.supermap.TrafficTransferAnalystService.prototype.queryStop = function (params
  */
 ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath = function (params, callback) {
     var me = this;
-    var transferPathService = new TransferPathService(me.options.url, {
+    var transferPathService = new TransferPathService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -14494,7 +14495,7 @@ ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath = funct
  */
 ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution = function (params, callback) {
     var me = this;
-    var transferSolutionService = new TransferSolutionService(me.options.url, {
+    var transferSolutionService = new TransferSolutionService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,

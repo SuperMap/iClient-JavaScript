@@ -58,7 +58,7 @@ var MeasureService = ServiceBase.extend({
         if (params.geometry) {
             params.geometry = Util.toSuperMapGeometry(params.geometry);
         }
-        var measureService = new SuperMapMeasureService(me.options.url, {
+        var measureService = new SuperMapMeasureService(me.url, {
             serverType: me.options.serverType,
             measureMode: type,
             eventListeners: {

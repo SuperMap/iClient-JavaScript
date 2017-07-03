@@ -23,7 +23,7 @@ ol.inherits(ol.supermap.MapService, ol.supermap.ServiceBase);
  */
 ol.supermap.MapService.prototype.getMapInfo = function (callback) {
     var me = this;
-    var getMapStatusService = new MapService(me.options.url, {
+    var getMapStatusService = new MapService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -41,7 +41,7 @@ ol.supermap.MapService.prototype.getMapInfo = function (callback) {
  */
 ol.supermap.MapService.prototype.getTilesets = function (callback) {
     var me = this;
-    var tilesetsService = new TilesetsService(me.options.url, {
+    var tilesetsService = new TilesetsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,

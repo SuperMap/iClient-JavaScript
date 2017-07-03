@@ -35,7 +35,7 @@ var FeatureService = ServiceBase.extend({
      */
     getFeaturesByIDs: function (params, callback, resultFormat) {
         var me = this;
-        var getFeaturesByIDsService = new GetFeaturesByIDsService(me.options.url, {
+        var getFeaturesByIDsService = new GetFeaturesByIDsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -57,7 +57,7 @@ var FeatureService = ServiceBase.extend({
      */
     getFeaturesByBounds: function (params, callback, resultFormat) {
         var me = this;
-        var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.options.url, {
+        var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -78,7 +78,7 @@ var FeatureService = ServiceBase.extend({
      */
     getFeaturesByBuffer: function (params, callback, resultFormat) {
         var me = this;
-        var getFeatureService = new GetFeaturesByBufferService(me.options.url, {
+        var getFeatureService = new GetFeaturesByBufferService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -99,7 +99,7 @@ var FeatureService = ServiceBase.extend({
      */
     getFeaturesBySQL: function (params, callback, resultFormat) {
         var me = this;
-        var getFeatureBySQLService = new GetFeaturesBySQLService(me.options.url, {
+        var getFeatureBySQLService = new GetFeaturesBySQLService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -120,7 +120,7 @@ var FeatureService = ServiceBase.extend({
      */
     getFeaturesByGeometry: function (params, callback, resultFormat) {
         var me = this;
-        var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.options.url, {
+        var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -146,7 +146,7 @@ var FeatureService = ServiceBase.extend({
         }
 
         var me = this,
-            url = me.options.url,
+            url = me.url,
             dataSourceName = params.dataSourceName,
             dataSetName = params.dataSetName;
 

@@ -34,7 +34,7 @@ ol.inherits(ol.supermap.FeatureService, ol.supermap.ServiceBase);
  */
 ol.supermap.FeatureService.prototype.getFeaturesByIDs = function (params, callback, resultFormat) {
     var me = this;
-    var getFeaturesByIDsService = new GetFeaturesByIDsService(me.options.url, {
+    var getFeaturesByIDsService = new GetFeaturesByIDsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
@@ -57,7 +57,7 @@ ol.supermap.FeatureService.prototype.getFeaturesByIDs = function (params, callba
  */
 ol.supermap.FeatureService.prototype.getFeaturesByBounds = function (params, callback, resultFormat) {
     var me = this;
-    var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.options.url, {
+    var getFeaturesByBoundsService = new GetFeaturesByBoundsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
@@ -79,7 +79,7 @@ ol.supermap.FeatureService.prototype.getFeaturesByBounds = function (params, cal
  */
 ol.supermap.FeatureService.prototype.getFeaturesByBuffer = function (params, callback, resultFormat) {
     var me = this;
-    var getFeatureService = new GetFeaturesByBufferService(me.options.url, {
+    var getFeatureService = new GetFeaturesByBufferService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
@@ -101,7 +101,7 @@ ol.supermap.FeatureService.prototype.getFeaturesByBuffer = function (params, cal
  */
 ol.supermap.FeatureService.prototype.getFeaturesBySQL = function (params, callback, resultFormat) {
     var me = this;
-    var getFeatureBySQLService = new GetFeaturesBySQLService(me.options.url, {
+    var getFeatureBySQLService = new GetFeaturesBySQLService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
@@ -124,7 +124,7 @@ ol.supermap.FeatureService.prototype.getFeaturesBySQL = function (params, callba
  */
 ol.supermap.FeatureService.prototype.getFeaturesByGeometry = function (params, callback, resultFormat) {
     var me = this;
-    var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.options.url, {
+    var getFeaturesByGeometryService = new GetFeaturesByGeometryService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             processCompleted: callback,
@@ -147,7 +147,7 @@ ol.supermap.FeatureService.prototype.editFeatures = function (params, callback) 
         return;
     }
     var me = this,
-        url = me.options.url,
+        url = me.url,
         dataSourceName = params.dataSourceName,
         dataSetName = params.dataSetName;
 

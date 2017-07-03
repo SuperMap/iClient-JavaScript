@@ -21,7 +21,7 @@ var LayerInfoService = ServiceBase.extend({
 
     getLayersInfo: function (callback) {
         var me = this;
-        var getLayersInfoService = new GetLayersInfoService(me.options.url, {
+        var getLayersInfoService = new GetLayersInfoService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -50,7 +50,7 @@ var LayerInfoService = ServiceBase.extend({
         if (!tempLayerID || !layerPath || !resourceID) {
             return;
         }
-        var url = me.options.url.concat();
+        var url = me.url.concat();
         url += "/tempLayersSet/" + tempLayerID + "/" + layerPath;
 
         var setLayerInfoService = new SetLayerInfoService(url, {
@@ -87,7 +87,7 @@ var LayerInfoService = ServiceBase.extend({
         var layersInfoParam = {};
         layersInfoParam.subLayers = {};
         layersInfoParam.subLayers.layers = layersInfo;
-        var setLayersInfoService = new SetLayersInfoService(me.options.url, {
+        var setLayersInfoService = new SetLayersInfoService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,
@@ -114,7 +114,7 @@ var LayerInfoService = ServiceBase.extend({
             return;
         }
         var me = this;
-        var setLayerStatusService = new SetLayerStatusService(me.options.url, {
+        var setLayerStatusService = new SetLayerStatusService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 processCompleted: callback,

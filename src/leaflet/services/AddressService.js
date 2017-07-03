@@ -27,7 +27,7 @@ var AddressService = ServiceBase.extend({
     code: function (params, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var addressService = new CommonAddressService(me.options.url, {
+        var addressService = new CommonAddressService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -36,7 +36,7 @@ var AddressService = ServiceBase.extend({
             },
             format: format
         });
-        addressService.code(me.options.url + '/geocoding', params);
+        addressService.code(me.url + '/geocoding', params);
         return me;
     },
 
@@ -49,7 +49,7 @@ var AddressService = ServiceBase.extend({
     decode: function (params, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var addressService = new CommonAddressService(me.options.url, {
+        var addressService = new CommonAddressService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -58,7 +58,7 @@ var AddressService = ServiceBase.extend({
             },
             format: format
         });
-        addressService.decode(me.options.url + '/geodecoding', params);
+        addressService.decode(me.url + '/geodecoding', params);
         return me;
     },
 

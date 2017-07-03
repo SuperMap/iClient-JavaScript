@@ -11,7 +11,6 @@ var SuperMap = require("../../common/SuperMap");
 var TiledMapLayer = L.TileLayer.extend({
 
     options: {
-        url: null,
         //如果有layersID，则是在使用专题图
         layersID: null,
         //如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流

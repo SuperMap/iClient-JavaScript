@@ -20,7 +20,7 @@ ol.inherits(ol.supermap.ThemeService, ol.supermap.ServiceBase);
 
 ol.supermap.ThemeService.prototype.getThemeInfo = function (params, callback) {
     var me = this;
-    var themeService = new ThemeService(me.options.url, {
+    var themeService = new ThemeService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,

@@ -29,7 +29,7 @@ ol.supermap.ChartService.prototype.queryChart = function (params, callback, resu
     var me = this,
         param = me._processParams(params),
         format = me._processFormat(resultFormat);
-    var chartQueryService = new ChartQueryService(me.options.url, {
+    var chartQueryService = new ChartQueryService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -47,7 +47,7 @@ ol.supermap.ChartService.prototype.queryChart = function (params, callback, resu
  * 海图物标信息服务
  */
 ol.supermap.ChartService.prototype.getChartFeatureInfo = function (callback) {
-    var me = this, url = me.options.url.concat();
+    var me = this, url = me.url.concat();
     url += "/chartFeatureInfoSpecs";
     var chartFeatureInfoSpecsService = new ChartFeatureInfoSpecsService(url, {
         serverType: me.options.serverType,

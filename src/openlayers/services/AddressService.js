@@ -26,7 +26,7 @@ ol.inherits(ol.supermap.AddressService, ServiceBase);
 ol.supermap.AddressService.prototype.code = function (params, callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var addressService = new AddressService(me.options.url, {
+    var addressService = new AddressService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -35,7 +35,7 @@ ol.supermap.AddressService.prototype.code = function (params, callback, resultFo
         },
         format: format
     });
-    addressService.code(me.options.url + '/geocoding', params);
+    addressService.code(me.url + '/geocoding', params);
     return me;
 };
 
@@ -48,7 +48,7 @@ ol.supermap.AddressService.prototype.code = function (params, callback, resultFo
 ol.supermap.AddressService.prototype.decode = function (params, callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var addressService = new AddressService(me.options.url, {
+    var addressService = new AddressService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -57,7 +57,7 @@ ol.supermap.AddressService.prototype.decode = function (params, callback, result
         },
         format: format
     });
-    addressService.decode(me.options.url + '/geodecoding', params);
+    addressService.decode(me.url + '/geodecoding', params);
     return me;
 };
 

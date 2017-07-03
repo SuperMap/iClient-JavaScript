@@ -26,7 +26,7 @@ ol.supermap.GridCellInfosService.prototype.getGridCellInfos = function (params, 
         return null;
     }
     var me = this;
-    var gridCellQueryService = new GetGridCellInfosService(me.options.url, {
+    var gridCellQueryService = new GetGridCellInfosService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,

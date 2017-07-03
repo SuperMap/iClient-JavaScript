@@ -30,7 +30,7 @@ var ProcessingJobsService = ServiceBase.extend({
     getKernelDensityJobs: function (callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var kernelDensityJobsService = new KernelDensityJobsService(me.options.url, {
+        var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -52,7 +52,7 @@ var ProcessingJobsService = ServiceBase.extend({
     getKernelDensityJob: function (id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var kernelDensityJobsService = new KernelDensityJobsService(me.options.url, {
+        var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -74,7 +74,7 @@ var ProcessingJobsService = ServiceBase.extend({
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
-        var kernelDensityJobsService = new KernelDensityJobsService(me.options.url, {
+        var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -95,7 +95,7 @@ var ProcessingJobsService = ServiceBase.extend({
     getSummaryMeshJobs: function (callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var summaryMeshJobsService = new SummaryMeshJobsService(me.options.url, {
+        var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -117,7 +117,7 @@ var ProcessingJobsService = ServiceBase.extend({
     getSummaryMeshJob: function (id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var summaryMeshJobsService = new SummaryMeshJobsService(me.options.url, {
+        var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -139,7 +139,7 @@ var ProcessingJobsService = ServiceBase.extend({
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
-        var summaryMeshJobsService = new SummaryMeshJobsService(me.options.url, {
+        var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -160,7 +160,7 @@ var ProcessingJobsService = ServiceBase.extend({
     getBuildCacheJobs: function (callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var buildCacheJobsService = new BuildCacheJobsService(me.options.url, {
+        var buildCacheJobsService = new BuildCacheJobsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -182,7 +182,7 @@ var ProcessingJobsService = ServiceBase.extend({
     getBuildCacheJob: function (id, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var buildCacheJobsService = new BuildCacheJobsService(me.options.url, {
+        var buildCacheJobsService = new BuildCacheJobsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -204,7 +204,7 @@ var ProcessingJobsService = ServiceBase.extend({
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
-        var buildCacheJobsService = new BuildCacheJobsService(me.options.url, {
+        var buildCacheJobsService = new BuildCacheJobsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

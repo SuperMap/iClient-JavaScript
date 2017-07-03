@@ -28,7 +28,7 @@ var TrafficTransferAnalystService = ServiceBase.extend({
      */
     queryStop: function (params, callback) {
         var me = this;
-        var stopQueryService = new StopQueryService(me.options.url, {
+        var stopQueryService = new StopQueryService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -47,7 +47,7 @@ var TrafficTransferAnalystService = ServiceBase.extend({
      */
     analysisTransferPath: function (params, callback) {
         var me = this;
-        var transferPathService = new TransferPathService(me.options.url, {
+        var transferPathService = new TransferPathService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -66,7 +66,7 @@ var TrafficTransferAnalystService = ServiceBase.extend({
      */
     analysisTransferSolution: function (params, callback) {
         var me = this;
-        var transferSolutionService = new TransferSolutionService(me.options.url, {
+        var transferSolutionService = new TransferSolutionService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

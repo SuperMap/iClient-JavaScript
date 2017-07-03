@@ -33,7 +33,7 @@ var QueryService = ServiceBase.extend({
      */
     queryByBounds: function (params, callback, resultFormat) {
         var me = this;
-        var queryService = new QueryByBoundsService(me.options.url, {
+        var queryService = new QueryByBoundsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -57,7 +57,7 @@ var QueryService = ServiceBase.extend({
      */
     queryByDistance: function (params, callback, resultFormat) {
         var me = this;
-        var queryByDistanceService = new QueryByDistanceService(me.options.url, {
+        var queryByDistanceService = new QueryByDistanceService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -81,7 +81,7 @@ var QueryService = ServiceBase.extend({
      */
     queryBySQL: function (params, callback, resultFormat) {
         var me = this;
-        var queryBySQLService = new QueryBySQLService(me.options.url, {
+        var queryBySQLService = new QueryBySQLService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -105,7 +105,7 @@ var QueryService = ServiceBase.extend({
      */
     queryByGeometry: function (params, callback, resultFormat) {
         var me = this;
-        var queryByGeometryService = new QueryByGeometryService(me.options.url, {
+        var queryByGeometryService = new QueryByGeometryService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

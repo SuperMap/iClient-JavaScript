@@ -46,7 +46,7 @@ ol.inherits(ol.supermap.SpatialAnalystService, ol.supermap.ServiceBase);
  */
 ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult = function (params, callback, resultFormat) {
     var me = this;
-    var areaSolarRadiationService = new AreaSolarRadiationService(me.options.url, {
+    var areaSolarRadiationService = new AreaSolarRadiationService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -68,7 +68,7 @@ ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult = functi
  */
 ol.supermap.SpatialAnalystService.prototype.bufferAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var bufferAnalystService = new BufferAnalystService(me.options.url, {
+    var bufferAnalystService = new BufferAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -90,7 +90,7 @@ ol.supermap.SpatialAnalystService.prototype.bufferAnalysis = function (params, c
  */
 ol.supermap.SpatialAnalystService.prototype.densityAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var densityAnalystService = new DensityAnalystService(me.options.url, {
+    var densityAnalystService = new DensityAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -112,7 +112,7 @@ ol.supermap.SpatialAnalystService.prototype.densityAnalysis = function (params, 
  */
 ol.supermap.SpatialAnalystService.prototype.generateSpatialData = function (params, callback, resultFormat) {
     var me = this;
-    var generateSpatialDataService = new GenerateSpatialDataService(me.options.url, {
+    var generateSpatialDataService = new GenerateSpatialDataService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -134,7 +134,7 @@ ol.supermap.SpatialAnalystService.prototype.generateSpatialData = function (para
  */
 ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var geoRelationAnalystService = new GeoRelationAnalystService(me.options.url, {
+    var geoRelationAnalystService = new GeoRelationAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -156,7 +156,7 @@ ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis = function (para
  */
 ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var interpolationAnalystService = new InterpolationAnalystService(me.options.url, {
+    var interpolationAnalystService = new InterpolationAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -178,7 +178,7 @@ ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis = function (pa
  */
 ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var mathExpressionAnalysisService = new MathExpressionAnalysisService(me.options.url, {
+    var mathExpressionAnalysisService = new MathExpressionAnalysisService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -200,7 +200,7 @@ ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis = function (p
  */
 ol.supermap.SpatialAnalystService.prototype.overlayAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var overlayAnalystService = new OverlayAnalystService(me.options.url, {
+    var overlayAnalystService = new OverlayAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -222,7 +222,7 @@ ol.supermap.SpatialAnalystService.prototype.overlayAnalysis = function (params, 
  */
 ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure = function (params, callback, resultFormat) {
     var me = this;
-    var routeCalculateMeasureService = new RouteCalculateMeasureService(me.options.url, {
+    var routeCalculateMeasureService = new RouteCalculateMeasureService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -244,7 +244,7 @@ ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure = function (pa
  */
 ol.supermap.SpatialAnalystService.prototype.routeLocate = function (params, callback, resultFormat) {
     var me = this;
-    var routeLocatorService = new RouteLocatorService(me.options.url, {
+    var routeLocatorService = new RouteLocatorService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -266,7 +266,7 @@ ol.supermap.SpatialAnalystService.prototype.routeLocate = function (params, call
  */
 ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var surfaceAnalystService = new SurfaceAnalystService(me.options.url, {
+    var surfaceAnalystService = new SurfaceAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -288,7 +288,7 @@ ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis = function (params, 
  */
 ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate = function (params, callback, resultFormat) {
     var me = this;
-    var terrainCurvatureCalculationService = new TerrainCurvatureCalculationService(me.options.url, {
+    var terrainCurvatureCalculationService = new TerrainCurvatureCalculationService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -310,7 +310,7 @@ ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate = function
  */
 ol.supermap.SpatialAnalystService.prototype.thiessenAnalysis = function (params, callback, resultFormat) {
     var me = this;
-    var thiessenAnalystService = new ThiessenAnalystService(me.options.url, {
+    var thiessenAnalystService = new ThiessenAnalystService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,

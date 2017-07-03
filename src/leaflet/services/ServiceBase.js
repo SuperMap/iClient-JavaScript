@@ -17,7 +17,7 @@ var ServiceBase = L.Evented.extend({
             url = (url.indexOf("/") !== url.length - 1) ?
                 url : url.substr(0, url.length - 1);
         }
-        this.options.url = url;
+        this.url = url;
         L.setOptions(this, options);
         this.fire("initialized", this);
     },

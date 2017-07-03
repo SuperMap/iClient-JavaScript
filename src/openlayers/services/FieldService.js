@@ -26,7 +26,7 @@ ol.inherits(ol.supermap.FieldService, ol.supermap.ServiceBase);
  */
 ol.supermap.FieldService.prototype.getFields = function (callback) {
     var me = this;
-    var getFieldsService = new GetFieldsService(me.options.url, {
+    var getFieldsService = new GetFieldsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -65,7 +65,7 @@ ol.supermap.FieldService.prototype.getFieldStatisticsInfo = function (params, ca
 
 ol.supermap.FieldService.prototype._fieldStatisticRequest = function (fieldName, statisticMode) {
     var me = this;
-    var statisticService = new FieldStatisticService(me.options.url, {
+    var statisticService = new FieldStatisticService(me.url, {
         eventListeners: {
             scope: me,
             processCompleted: me._processCompleted,

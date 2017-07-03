@@ -32,7 +32,7 @@ var MapService = ServiceBase.extend({
      */
     getMapInfo: function (callback) {
         var me = this;
-        var getMapStatusService = new SuperMapMapService(me.options.url, {
+        var getMapStatusService = new SuperMapMapService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -50,7 +50,7 @@ var MapService = ServiceBase.extend({
      */
     getTilesets: function (callback) {
         var me = this;
-        var tilesetsService = new TilesetsService(me.options.url, {
+        var tilesetsService = new TilesetsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

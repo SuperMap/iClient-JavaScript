@@ -36,7 +36,7 @@ ol.inherits(ol.supermap.NetworkAnalyst3DService, ol.supermap.ServiceBase);
  */
 ol.supermap.NetworkAnalyst3DService.prototype.sinksFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystSinks3DService = new FacilityAnalystSinks3DService(me.options.url, {
+    var facilityAnalystSinks3DService = new FacilityAnalystSinks3DService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -56,7 +56,7 @@ ol.supermap.NetworkAnalyst3DService.prototype.sinksFacilityAnalyst = function (p
  */
 ol.supermap.NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystSources3DService = new FacilityAnalystSources3DService(me.options.url, {
+    var facilityAnalystSources3DService = new FacilityAnalystSources3DService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -76,7 +76,7 @@ ol.supermap.NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst = function 
  */
 ol.supermap.NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystTraceup3DService = new FacilityAnalystTraceup3DService(me.options.url, {
+    var facilityAnalystTraceup3DService = new FacilityAnalystTraceup3DService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -96,7 +96,7 @@ ol.supermap.NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst = function 
  */
 ol.supermap.NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystTracedown3DService = new FacilityAnalystTracedown3DService(me.options.url, {
+    var facilityAnalystTracedown3DService = new FacilityAnalystTracedown3DService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -116,7 +116,7 @@ ol.supermap.NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst = functio
  */
 ol.supermap.NetworkAnalyst3DService.prototype.upstreamFacilityAnalyst = function (params, callback) {
     var me = this;
-    var facilityAnalystUpstream3DService = new FacilityAnalystUpstream3DService(me.options.url, {
+    var facilityAnalystUpstream3DService = new FacilityAnalystUpstream3DService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,

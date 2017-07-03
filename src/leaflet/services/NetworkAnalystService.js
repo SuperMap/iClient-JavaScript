@@ -43,7 +43,7 @@ var NetworkAnalystService = ServiceBase.extend({
      */
     burstPipelineAnalyst: function (params, callback) {
         var me = this;
-        var burstPipelineAnalystService = new BurstPipelineAnalystService(me.options.url, {
+        var burstPipelineAnalystService = new BurstPipelineAnalystService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -62,7 +62,7 @@ var NetworkAnalystService = ServiceBase.extend({
      */
     computeWeightMatrix: function (params, callback) {
         var me = this;
-        var computeWeightMatrixService = new ComputeWeightMatrixService(me.options.url, {
+        var computeWeightMatrixService = new ComputeWeightMatrixService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -83,7 +83,7 @@ var NetworkAnalystService = ServiceBase.extend({
      */
     findClosestFacilities: function (params, callback, resultFormat) {
         var me = this;
-        var findClosestFacilitiesService = new FindClosestFacilitiesService(me.options.url, {
+        var findClosestFacilitiesService = new FindClosestFacilitiesService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -104,7 +104,7 @@ var NetworkAnalystService = ServiceBase.extend({
      */
     streamFacilityAnalyst: function (params, callback, resultFormat) {
         var me = this;
-        var facilityAnalystStreamService = new FacilityAnalystStreamService(me.options.url, {
+        var facilityAnalystStreamService = new FacilityAnalystStreamService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -125,7 +125,7 @@ var NetworkAnalystService = ServiceBase.extend({
      */
     findLocation: function (params, callback, resultFormat) {
         var me = this;
-        var findLocationService = new FindLocationService(me.options.url, {
+        var findLocationService = new FindLocationService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -146,7 +146,7 @@ var NetworkAnalystService = ServiceBase.extend({
      */
     findPath: function (params, callback, resultFormat) {
         var me = this;
-        var findPathService = new FindPathService(me.options.url, {
+        var findPathService = new FindPathService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -167,7 +167,7 @@ var NetworkAnalystService = ServiceBase.extend({
      */
     findTSPPaths: function (params, callback, resultFormat) {
         var me = this;
-        var findTSPPathsService = new FindTSPPathsService(me.options.url, {
+        var findTSPPathsService = new FindTSPPathsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -188,7 +188,7 @@ var NetworkAnalystService = ServiceBase.extend({
      */
     findMTSPPaths: function (params, callback, resultFormat) {
         var me = this;
-        var findMTSPPathsService = new FindMTSPPathsService(me.options.url, {
+        var findMTSPPathsService = new FindMTSPPathsService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -209,7 +209,7 @@ var NetworkAnalystService = ServiceBase.extend({
      */
     findServiceAreas: function (params, callback, resultFormat) {
         var me = this;
-        var findServiceAreasService = new FindServiceAreasService(me.options.url, {
+        var findServiceAreasService = new FindServiceAreasService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -229,7 +229,7 @@ var NetworkAnalystService = ServiceBase.extend({
      */
     updateEdgeWeight: function (params, callback) {
         var me = this;
-        var updateEdgeWeightService = new UpdateEdgeWeightService(me.options.url, {
+        var updateEdgeWeightService = new UpdateEdgeWeightService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -248,7 +248,7 @@ var NetworkAnalystService = ServiceBase.extend({
      */
     updateTurnNodeWeight: function (params, callback) {
         var me = this;
-        var updateTurnNodeWeightService = new UpdateTurnNodeWeightService(me.options.url, {
+        var updateTurnNodeWeightService = new UpdateTurnNodeWeightService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,

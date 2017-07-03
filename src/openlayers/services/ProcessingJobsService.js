@@ -29,7 +29,7 @@ ol.inherits(ol.supermap.ProcessingJobsService, ol.supermap.ServiceBase);
 ol.supermap.ProcessingJobsService.prototype.getKernelDensityJobs = function (callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var kernelDensityJobsService = new KernelDensityJobsService(me.options.url, {
+    var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -51,7 +51,7 @@ ol.supermap.ProcessingJobsService.prototype.getKernelDensityJobs = function (cal
 ol.supermap.ProcessingJobsService.prototype.getKernelDensityJob = function (id, callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var kernelDensityJobsService = new KernelDensityJobsService(me.options.url, {
+    var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -73,7 +73,7 @@ ol.supermap.ProcessingJobsService.prototype.addKernelDensityJob = function (para
     var me = this,
         param = me._processParams(params),
         format = me._processFormat(resultFormat);
-    var kernelDensityJobsService = new KernelDensityJobsService(me.options.url, {
+    var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -104,7 +104,7 @@ ol.supermap.ProcessingJobsService.prototype.getKernelDensityJobState = function 
 ol.supermap.ProcessingJobsService.prototype.getSummaryMeshJobs = function (callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var summaryMeshJobsService = new SummaryMeshJobsService(me.options.url, {
+    var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -126,7 +126,7 @@ ol.supermap.ProcessingJobsService.prototype.getSummaryMeshJobs = function (callb
 ol.supermap.ProcessingJobsService.prototype.getSummaryMeshJob = function (id, callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var summaryMeshJobsService = new SummaryMeshJobsService(me.options.url, {
+    var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -148,7 +148,7 @@ ol.supermap.ProcessingJobsService.prototype.addSummaryMeshJob = function (params
     var me = this,
         param = me._processParams(params),
         format = me._processFormat(resultFormat);
-    var summaryMeshJobsService = new SummaryMeshJobsService(me.options.url, {
+    var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,
@@ -179,7 +179,7 @@ ol.supermap.ProcessingJobsService.prototype.getSummaryMeshJobState = function (i
 ol.supermap.ProcessingJobsService.prototype.getBuildCacheJobs = function (callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var buildCacheJobsService = new BuildCacheJobsService(me.options.url, {
+    var buildCacheJobsService = new BuildCacheJobsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -201,7 +201,7 @@ ol.supermap.ProcessingJobsService.prototype.getBuildCacheJobs = function (callba
 ol.supermap.ProcessingJobsService.prototype.getBuildCacheJob = function (id, callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var buildCacheJobsService = new BuildCacheJobsService(me.options.url, {
+    var buildCacheJobsService = new BuildCacheJobsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -223,7 +223,7 @@ ol.supermap.ProcessingJobsService.prototype.addBuildCacheJob = function (params,
     var me = this,
         param = me._processParams(params),
         format = me._processFormat(resultFormat);
-    var buildCacheJobsService = new BuildCacheJobsService(me.options.url, {
+    var buildCacheJobsService = new BuildCacheJobsService(me.url, {
         eventListeners: {
             scope: me,
             processCompleted: callback,

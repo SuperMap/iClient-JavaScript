@@ -34,7 +34,7 @@ ol.inherits(ol.supermap.QueryService, ol.supermap.ServiceBase);
  */
 ol.supermap.QueryService.prototype.queryByBounds = function (params, callback, resultFormat) {
     var me = this;
-    var queryService = new QueryByBoundsService(me.options.url, {
+    var queryService = new QueryByBoundsService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -58,7 +58,7 @@ ol.supermap.QueryService.prototype.queryByBounds = function (params, callback, r
  */
 ol.supermap.QueryService.prototype.queryByDistance = function (params, callback, resultFormat) {
     var me = this;
-    var queryByDistanceService = new QueryByDistanceService(me.options.url, {
+    var queryByDistanceService = new QueryByDistanceService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -82,7 +82,7 @@ ol.supermap.QueryService.prototype.queryByDistance = function (params, callback,
  */
 ol.supermap.QueryService.prototype.queryBySQL = function (params, callback, resultFormat) {
     var me = this;
-    var queryBySQLService = new QueryBySQLService(me.options.url, {
+    var queryBySQLService = new QueryBySQLService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -106,7 +106,7 @@ ol.supermap.QueryService.prototype.queryBySQL = function (params, callback, resu
  */
 ol.supermap.QueryService.prototype.queryByGeometry = function (params, callback, resultFormat) {
     var me = this;
-    var queryByGeometryService = new QueryByGeometryService(me.options.url, {
+    var queryByGeometryService = new QueryByGeometryService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,

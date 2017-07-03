@@ -13,7 +13,6 @@ var SuperMap = require('../../common/SuperMap');
 var TileVectorLayer = L.VectorGrid.extend({
 
     options: {
-        url: null,
         //服务器类型<SuperMap.ServerType>iServer|iPortal|Online
         serverType: null,
         crs: null,
@@ -55,14 +54,14 @@ var TileVectorLayer = L.VectorGrid.extend({
             return this;
         }
 
-        me.options.url = url;
+        me.url = url;
         if (url && url.indexOf("/") === (url.length - 1)) {
             url = url.substr(0, url.length - 1);
-            me.options.url = url;
+            me.url = url;
         }
         me._initLayerUrl();
         me.initLayersInfo();
-        CartoCSSToLeaflet.mapUrl = me.options.url;
+        CartoCSSToLeaflet.mapUrl = me.url;
         if (!me.options.serverCartoCSSStyle && me.options) {
             me.setClientCartoCSS(me.options.cartoCSS);
         }
@@ -79,7 +78,7 @@ var TileVectorLayer = L.VectorGrid.extend({
     //获取服务器layers资源下的风格信息(当CartoCSS中不存在相应图层渲染信息时使用)
     initLayersInfo: function () {
         var me = this;
-        var layersUrl = me.options.url + "/layers.json";
+        var layersUrl = me.url + "/layers.json";
         SuperMap.Request.get(layersUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
@@ -149,7 +148,7 @@ var TileVectorLayer = L.VectorGrid.extend({
     //等待服务器的carto返回之后拼接本地配置的cartoCSS,并调用onAdd出图
     getVectorStylesFromServer: function () {
         var me = this;
-        var vectorStyleUrl = me.options.url + "/tileFeature/vectorstyles.json";
+        var vectorStyleUrl = me.url + "/tileFeature/vectorstyles.json";
         SuperMap.Request.get(vectorStyleUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
@@ -312,13 +311,14 @@ var TileVectorLayer = L.VectorGrid.extend({
     },
 
     _initLayerUrl: function () {
-        var options = this.options;
-        if (!options.url) {
+        var me = this;
+        var options = me.options;
+        if (!me.url) {
             return;
         }
         var format = options.format.toString().toLowerCase();
-        this._tileUrl = options.url + "/tileFeature." + format + "?";
-        this._tileUrl += this._createURLParam(options);
+        me._tileUrl = me.url + "/tileFeature." + format + "?";
+        me._tileUrl += me._createURLParam(options);
     },
 
     _createURLParam: function (options) {
