@@ -11076,7 +11076,7 @@ __webpack_require__(4);
 __webpack_require__(18);
 var ol = __webpack_require__(2);
 var SuperMap = __webpack_require__(0);
-ol.supermap.TileSuperMapRest = function (options) {
+ol.source.TileSuperMapRest = function (options) {
     if (options.url === undefined) {
         return;
     }
@@ -11207,8 +11207,8 @@ ol.supermap.TileSuperMapRest = function (options) {
         layersID: options.layersID
     });
 };
-ol.inherits(ol.supermap.TileSuperMapRest, ol.source.TileImage);
-ol.supermap.TileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
+ol.inherits(ol.source.TileSuperMapRest, ol.source.TileImage);
+ol.source.TileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
     var options = {};
     options.url = url;
     options.crossOrigin = 'anonymous';
@@ -11251,7 +11251,7 @@ ol.supermap.TileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
     return options;
 };
 
-module.exports = ol.supermap.TileSuperMapRest;
+module.exports = ol.source.TileSuperMapRest;
 
 /***/ }),
 /* 60 */
@@ -11395,7 +11395,7 @@ ol.supermap.WebMap.prototype.createLayer = function (type, layerInfo) {
     switch (type) {
         case "SUPERMAP_REST" :
             layer = new ol.layer.Tile({
-                source: new ol.supermap.TileSuperMapRest({
+                source: new ol.source.TileSuperMapRest({
                     url: layerInfo.url,
                     opaque: opacity
                 }),
@@ -11723,15 +11723,15 @@ __webpack_require__(50);
 var ol = __webpack_require__(2);
 var SuperMap = __webpack_require__(0);
 
-ol.supermap.VectorTileSuperMapRest = function (options) {
+ol.source.VectorTileSuperMapRest = function (options) {
     if (options.url === undefined) {
         return;
     }
     options.crossOrigin = 'anonymous';
-    options.attributions = options.attributions||
-            new ol.Attribution({
-                html: 'Tile Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
-            })
+    options.attributions = options.attributions ||
+        new ol.Attribution({
+            html: 'Tile Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
+        })
     var layerUrl = options.url + '/tileFeature.json?';
     if (options.format instanceof ol.format.MVT) {
         layerUrl = options.url + '/tileFeature.mvt?';
@@ -11881,9 +11881,9 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
         wrapX: options.wrapX !== undefined ? options.wrapX : false
     });
 };
-ol.inherits(ol.supermap.VectorTileSuperMapRest, ol.source.VectorTile);
+ol.inherits(ol.source.VectorTileSuperMapRest, ol.source.VectorTile);
 
-ol.supermap.VectorTileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
+ol.source.VectorTileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
     var options = {};
     options.url = url;
     options.crossOrigin = 'anonymous';
@@ -11970,7 +11970,7 @@ ol.supermap.VectorTileSuperMapRest.optionsFromMapJSON = function (url, mapJSONOb
     return options;
 };
 
-module.exports = ol.supermap.VectorTileSuperMapRest;
+module.exports = ol.source.VectorTileSuperMapRest;
 
 /***/ }),
 /* 63 */

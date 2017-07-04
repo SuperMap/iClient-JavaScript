@@ -216,7 +216,7 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
                     <pre class="javascript"><code>var map = new ol.Map({
     target: &#39;map&#39;,
     layers: [new ol.layer.Tile({
-            source: new ol.supermap.TileSuperMapRest({
+            source: new ol.source.TileSuperMapRest({
                     url: &quot;http://localhost:8090/iserver/services/map/rest/maps/World&quot;
             }),
      })]
@@ -456,7 +456,7 @@ L.supermap.tiledMapLayer(&quot;http://localhost:8090/iserver/services/map/rest/m
             projection: 'EPSG:4326'
         }),
         layers: [new ol.layer.Tile({
-            source: new ol.supermap.TileSuperMapRest({
+            source: new ol.source.TileSuperMapRest({
                 url: "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World"
             }),
             projection: 'EPSG:4326'

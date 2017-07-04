@@ -24,14 +24,14 @@
         })
     });
     var worldLayer = new ol.layer.Tile({
-        source: new ol.supermap.TileSuperMapRest({
+        source: new ol.source.TileSuperMapRest({
             url: urlWorld
         }),
         projection: 'EPSG:4326'
     });
     map.addLayer(worldLayer);
     var jinJingLayer = new ol.layer.Tile({
-        source: new ol.supermap.TileSuperMapRest({
+        source: new ol.source.TileSuperMapRest({
             url: urlJinjing,
             origin: [-180, 90]
         }),

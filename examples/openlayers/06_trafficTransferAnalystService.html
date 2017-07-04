@@ -72,9 +72,9 @@
                 projection: projection
             })
         });
-        var options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        var options = ol.source.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
         var layer = new ol.layer.Tile({
-            source: new ol.supermap.TileSuperMapRest(options)
+            source: new ol.source.TileSuperMapRest(options)
         });
         stopSourceLayer = new ol.source.Vector();
         roadSourceLayer = new ol.source.Vector();

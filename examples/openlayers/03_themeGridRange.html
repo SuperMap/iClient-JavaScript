@@ -25,9 +25,9 @@
                 projection: "EPSG:4326"
             })
         });
-        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
+        options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
         var layer = new ol.layer.Tile({
-            source: new ol.supermap.TileSuperMapRest(options)
+            source: new ol.source.TileSuperMapRest(options)
         });
         map.addLayer(layer);
         createTheme();
@@ -142,7 +142,7 @@
             var result = serviceResult.result;
             if (result && result.newResourceID) {
                 themeLayer = new ol.layer.Tile({
-                    source: new ol.supermap.TileSuperMapRest({
+                    source: new ol.source.TileSuperMapRest({
                         url: url,
                         noWrap: true,
                         cacheEnabled: false,

@@ -136,7 +136,7 @@ ol.supermap.WebMap.prototype.createLayer = function (type, layerInfo) {
     switch (type) {
         case "SUPERMAP_REST" :
             layer = new ol.layer.Tile({
-                source: new ol.supermap.TileSuperMapRest({
+                source: new ol.source.TileSuperMapRest({
                     url: layerInfo.url,
                     opaque: opacity
                 }),

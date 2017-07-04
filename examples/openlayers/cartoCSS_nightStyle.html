@@ -107,10 +107,10 @@
             cartoCss: document.getElementById("cartoCssStr").text
         }
         var vectorTileStyles = new ol.supermap.VectorTileStyles(stylesOptions);
-        var vectorTileOptions = ol.supermap.VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
+        var vectorTileOptions = ol.source.VectorTileSuperMapRest.optionsFromMapJSON(url, serviceResult.result);
         vectorTileOptions.returnAttributes = false;
         var vectorLayer = new ol.layer.VectorTile({
-            source: new ol.supermap.VectorTileSuperMapRest(vectorTileOptions),
+            source: new ol.source.VectorTileSuperMapRest(vectorTileOptions),
             style: vectorTileStyles.getFeatureStyle
         });
         map.addLayer(vectorLayer);

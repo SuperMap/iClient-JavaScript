@@ -39,10 +39,10 @@
             }),
             overlays: [overlay]
         });
-        var options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
+        var options = ol.source.TileSuperMapRest.optionsFromMapJSON(url, mapJSONObj);
         options.wrapX = true;
         var layer = new ol.layer.Tile({
-            source: new ol.supermap.TileSuperMapRest(options)
+            source: new ol.source.TileSuperMapRest(options)
         });
         map.addLayer(layer);
 

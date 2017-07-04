@@ -151,7 +151,7 @@
                         var mapUrl = result[0].path;
                         new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
                             layer = new ol.layer.Tile({
-                                source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
+                                source: new ol.source.TileSuperMapRest(ol.source.TileSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
                             });
                             map.addLayer(layer);
                             $("#model").modal('hide');

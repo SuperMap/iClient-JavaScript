@@ -32,7 +32,7 @@
             })
         });
         var layer = new ol.layer.Tile({
-            source: new ol.supermap.TileSuperMapRest(ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj))
+            source: new ol.source.TileSuperMapRest(ol.source.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj))
         });
         map.addLayer(layer);
         findServiceAreas();

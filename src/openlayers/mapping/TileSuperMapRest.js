@@ -2,7 +2,7 @@ require('../core/Base');
 require('../../common/security/SecurityManager');
 var ol = require('openlayers/dist/ol-debug');
 var SuperMap = require('../../common/SuperMap');
-ol.supermap.TileSuperMapRest = function (options) {
+ol.source.TileSuperMapRest = function (options) {
     if (options.url === undefined) {
         return;
     }
@@ -133,8 +133,8 @@ ol.supermap.TileSuperMapRest = function (options) {
         layersID: options.layersID
     });
 };
-ol.inherits(ol.supermap.TileSuperMapRest, ol.source.TileImage);
-ol.supermap.TileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
+ol.inherits(ol.source.TileSuperMapRest, ol.source.TileImage);
+ol.source.TileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
     var options = {};
     options.url = url;
     options.crossOrigin = 'anonymous';
@@ -177,4 +177,4 @@ ol.supermap.TileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
     return options;
 };
 
-module.exports = ol.supermap.TileSuperMapRest;
+module.exports = ol.source.TileSuperMapRest;

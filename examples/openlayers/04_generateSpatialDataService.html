@@ -31,9 +31,9 @@
                 projection: projection
             })
         });
-        options = ol.supermap.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        options = ol.source.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
         var layer = new ol.layer.Tile({
-            source: new ol.supermap.TileSuperMapRest(options)
+            source: new ol.source.TileSuperMapRest(options)
         });
         map.addLayer(layer);
         generateSpatialDataAnalystProcess();
@@ -113,7 +113,7 @@
                 var result = serviceResult.result;
                 if (result && result.newResourceID) {
                     var themeLayer = new ol.layer.Tile({
-                        source: new ol.supermap.TileSuperMapRest({
+                        source: new ol.source.TileSuperMapRest({
                             url: baseUrl,
                             noWrap: true,
                             cacheEnabled: false,

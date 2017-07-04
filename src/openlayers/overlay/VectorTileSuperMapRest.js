@@ -6,15 +6,15 @@ require('./vectortile/DeafultCanvasStyle');
 var ol = require('openlayers/dist/ol-debug');
 var SuperMap = require('../../common/SuperMap');
 
-ol.supermap.VectorTileSuperMapRest = function (options) {
+ol.source.VectorTileSuperMapRest = function (options) {
     if (options.url === undefined) {
         return;
     }
     options.crossOrigin = 'anonymous';
-    options.attributions = options.attributions||
-            new ol.Attribution({
-                html: 'Tile Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
-            })
+    options.attributions = options.attributions ||
+        new ol.Attribution({
+            html: 'Tile Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
+        })
     var layerUrl = options.url + '/tileFeature.json?';
     if (options.format instanceof ol.format.MVT) {
         layerUrl = options.url + '/tileFeature.mvt?';
@@ -164,9 +164,9 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
         wrapX: options.wrapX !== undefined ? options.wrapX : false
     });
 };
-ol.inherits(ol.supermap.VectorTileSuperMapRest, ol.source.VectorTile);
+ol.inherits(ol.source.VectorTileSuperMapRest, ol.source.VectorTile);
 
-ol.supermap.VectorTileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
+ol.source.VectorTileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
     var options = {};
     options.url = url;
     options.crossOrigin = 'anonymous';
@@ -253,4 +253,4 @@ ol.supermap.VectorTileSuperMapRest.optionsFromMapJSON = function (url, mapJSONOb
     return options;
 };
 
-module.exports = ol.supermap.VectorTileSuperMapRest;
+module.exports = ol.source.VectorTileSuperMapRest;
