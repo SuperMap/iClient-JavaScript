@@ -71,7 +71,7 @@ var ChartService = ServiceBase.extend({
         }
 
         if (params.bounds) {
-            params.bounds = L.CommontypesConversion.toSuperMapBounds(params.bounds);
+            params.bounds = L.supermap.CommontypesConversion.toSuperMapBounds(params.bounds);
         }
     },
     _processFormat: function (resultFormat) {

@@ -38,7 +38,7 @@ var TileVectorLayer = L.VectorGrid.extend({
         subdomains: 'abc',
 
         timeout: 10000,
-        attribution: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: ' with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
 
     initialize: function (url, options) {

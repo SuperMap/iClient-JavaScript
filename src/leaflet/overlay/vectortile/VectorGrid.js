@@ -6,7 +6,7 @@ var L = require("leaflet");
 L.VectorGrid = L.GridLayer.extend({
     options: {
         format: L.supermap.VectorTileFormat.JSON,
-        renderer: L.svg.renderer,
+        renderer: L.supermap.svgRenderer,
         vectorTileLayerStyles: {},
         interactive: true
     },
@@ -28,8 +28,8 @@ L.VectorGrid = L.GridLayer.extend({
             }
             delete me._vectorTiles[key];
         }, me);
-        me.on('tileerror ',me._renderText, me);
-        me.on('load',me._renderText, me);
+        me.on('tileerror ', me._renderText, me);
+        me.on('load', me._renderText, me);
         me._dataLayerNames = {};
     },
 
@@ -44,7 +44,7 @@ L.VectorGrid = L.GridLayer.extend({
         renderer._features = {};
 
         L.supermap.vectorTile({
-            layer: this,
+            layer: me,
             format: me.options.format,
             coords: coords,
             renderer: renderer

@@ -328,7 +328,7 @@ var SpatialAnalystService = ServiceBase.extend({
             return {};
         }
         if (params.bounds) {
-            params.bounds = L.CommontypesConversion.toSuperMapBounds(params.bounds);
+            params.bounds = L.supermap.CommontypesConversion.toSuperMapBounds(params.bounds);
         }
         if (params.inputPoints) {
             for (var i = 0; i < params.inputPoints.length; i++) {

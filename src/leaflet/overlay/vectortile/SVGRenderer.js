@@ -85,7 +85,7 @@ L.SVG.Renderer = L.SVG.extend({
     }
 });
 
-L.svg.renderer = function (tileCoord, tileSize, opts) {
+L.supermap.svgRenderer = function (tileCoord, tileSize, opts) {
     return new L.SVG.Renderer(tileCoord, tileSize, opts);
 };
 module.exports = L.SVG.Renderer;

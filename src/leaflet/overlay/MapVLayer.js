@@ -7,7 +7,7 @@ var MapVRenderer = require("./mapv/MapVRenderer");
 var MapVLayer = L.Layer.extend({
 
     options: {
-        attribution: '© 2017 百度 MapV with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: '© 2017 百度 MapV with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
 
     initialize: function (dataSet, mapVOptions, options) {

@@ -1,6 +1,6 @@
 require('../core/Base');
 var L = require("leaflet");
-L.TileLayer.WMTS = L.TileLayer.extend({
+var WMTSLayer = L.TileLayer.extend({
     options: {
         version: '1.0.0',
         style: '',
@@ -9,7 +9,7 @@ L.TileLayer.WMTS = L.TileLayer.extend({
         tileSize: 256,
         matrixIds: null,
         layer: '',
-        attribution: 'with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: 'with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
     //todo 自动获取Capabilities
     initialize: function (url, options) { // (String, Object)
@@ -38,7 +38,7 @@ L.TileLayer.WMTS = L.TileLayer.extend({
     }
 });
 
-L.tileLayer.wmts = function (url, options) {
-    return new L.TileLayer.WMTS(url, options);
+L.supermap.wmtsLayer = function (url, options) {
+    return new WMTSLayer(url, options);
 };
-module.exports = L.TileLayer.WMTS;
+module.exports = WMTSLayer;

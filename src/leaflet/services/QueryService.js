@@ -129,7 +129,7 @@ var QueryService = ServiceBase.extend({
         }
 
         if (params.bounds ) {
-            params.bounds=L.CommontypesConversion.toSuperMapBounds(params.bounds);
+            params.bounds=L.supermap.CommontypesConversion.toSuperMapBounds(params.bounds);
         }
 
         if (params.geometry) {

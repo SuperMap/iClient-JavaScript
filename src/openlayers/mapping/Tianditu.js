@@ -3,7 +3,7 @@ var ol = require('openlayers/dist/ol-debug');
 ol.source.Tianditu = function (opt_options) {
     var options = opt_options || {};
     var attributions = options.attributions || new ol.Attribution({
-            html: 'Map Data <a href="http://www.tianditu.com"><img style="background-color:transparent;bottom:2px;opacity:1;" src="http://api.tianditu.com/img/map/logo.png" width="53px" height="22px" opacity="0"></a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+            html: 'Map Data <a href="http://www.tianditu.com"><img style="background-color:transparent;bottom:2px;opacity:1;" src="http://api.tianditu.com/img/map/logo.png" width="53px" height="22px" opacity="0"></a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
         });
 
     if (!options.url && !options.urls) {

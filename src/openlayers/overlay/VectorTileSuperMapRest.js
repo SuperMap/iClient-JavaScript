@@ -13,7 +13,7 @@ ol.supermap.VectorTileSuperMapRest = function (options) {
     options.crossOrigin = 'anonymous';
     options.attributions = options.attributions||
             new ol.Attribution({
-                html: 'Tile Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+                html: 'Tile Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
             })
     var layerUrl = options.url + '/tileFeature.json?';
     if (options.format instanceof ol.format.MVT) {

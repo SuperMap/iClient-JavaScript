@@ -6650,7 +6650,7 @@ L.supermap.VectorTileFormat = {
 
 __webpack_require__(6);
 var L = __webpack_require__(1);
-L.TileLayer.WMTS = L.TileLayer.extend({
+var WMTSLayer = L.TileLayer.extend({
     options: {
         version: '1.0.0',
         style: '',
@@ -6659,7 +6659,7 @@ L.TileLayer.WMTS = L.TileLayer.extend({
         tileSize: 256,
         matrixIds: null,
         layer: '',
-        attribution: 'with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: 'with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
     //todo 自动获取Capabilities
     initialize: function (url, options) { // (String, Object)
@@ -6688,10 +6688,10 @@ L.TileLayer.WMTS = L.TileLayer.extend({
     }
 });
 
-L.tileLayer.wmts = function (url, options) {
-    return new L.TileLayer.WMTS(url, options);
+L.supermap.wmtsLayer = function (url, options) {
+    return new WMTSLayer(url, options);
 };
-module.exports = L.TileLayer.WMTS;
+module.exports = WMTSLayer;
 
 /***/ }),
 /* 57 */
@@ -11191,7 +11191,7 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
         if (hoverone && hoverone.refDataID) {
             hoverFid = hoverone.refDataID;
         }
-        bounds = L.CommontypesConversion.toSuperMapBounds(bounds);
+        bounds = L.supermap.CommontypesConversion.toSuperMapBounds(bounds);
         //清除当前所有可视元素
         me.renderer.clearAll();
 
@@ -11423,7 +11423,7 @@ var ThemeLayer = L.Layer.extend({
         // {Array} 专题要素事件临时存储，临时保存图层未添加到 map 前用户添加的事件监听，待图层添加到 map 后把这些事件监听添加到图层上，清空此图层。
         //这是一个二维数组，组成二维数组的每个一维数组长度为 2，分别是 event, callback。
         TFEvents: null,
-        attribution: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
 
     initialize: function (name, options) {
@@ -11874,7 +11874,7 @@ L.Canvas.Renderer = L.Canvas.extend({
     }
 });
 
-L.canvas.renderer = function (tileCoord, tileSize, opts) {
+L.supermap.canvasRenderer = function (tileCoord, tileSize, opts) {
     return new L.Canvas.Renderer(tileCoord, tileSize, opts);
 };
 module.exports = L.Canvas.Renderer;
@@ -11971,7 +11971,7 @@ L.SVG.Renderer = L.SVG.extend({
     }
 });
 
-L.svg.renderer = function (tileCoord, tileSize, opts) {
+L.supermap.svgRenderer = function (tileCoord, tileSize, opts) {
     return new L.SVG.Renderer(tileCoord, tileSize, opts);
 };
 module.exports = L.SVG.Renderer;
@@ -12875,7 +12875,7 @@ var BaiduTileLayer = L.TileLayer.extend({
         maxZoom: 19,
         bounds: L.latLngBounds(L.latLng(-85.0511287798, -180), L.latLng(85.0511287798, 180)),
         retina: L.Browser.retina,
-        attribution: 'Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: 'Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
     initialize: function (url, options) {
         if (url) {
@@ -12925,7 +12925,7 @@ var CloudTileLayer = L.TileLayer.extend({
         type: "web",
         minZoom: 3,
         maxZoom: 18,
-        attribution: 'Map Data ©2013 SuperMap - GS(2011)6014号-data©Navinfo with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: 'Map Data ©2013 SuperMap - GS(2011)6014号-data©Navinfo with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
 
     },
     initialize: function (url, options) {
@@ -12957,7 +12957,7 @@ var TiandituTileLayer = WMTS.extend({
         tilematrixSet: "w",
         format: "tiles",
         subdomains: [0, 1, 2, 3, 4, 5, 6, 7],
-        attribution: 'Map Data <a href="http://www.tianditu.com"><img style="background-color:transparent;bottom:2px;opacity:1;" src="http://api.tianditu.com/img/map/logo.png" width="53px" height="22px" opacity="0"></a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: 'Map Data <a href="http://www.tianditu.com"><img style="background-color:transparent;bottom:2px;opacity:1;" src="http://api.tianditu.com/img/map/logo.png" width="53px" height="22px" opacity="0"></a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
 
 
     },
@@ -13011,7 +13011,7 @@ var TiledMapLayer = L.TileLayer.extend({
         crs: null,
         serverType: SuperMap.ServerType.ISERVER,
 
-        attribution: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
 
     initialize: function (url, options) {
@@ -13199,7 +13199,7 @@ var WebMap = L.LayerGroup.extend({
         featureLayerPopup: null,
         credentialValue: null,
         credentialKey: 'key',
-        attribution: 'Map Data <a href="http://www.supermapol.com">SuperMap Online</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: 'Map Data <a href="http://www.supermapol.com">SuperMap Online</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
     defaultFeatureLayerPopup: function (layer) {
         return layer.feature.properties.attributes.title + ":" + layer.feature.properties.attributes.description;
@@ -13383,7 +13383,7 @@ var WebMap = L.LayerGroup.extend({
                 mapOptions.resolutions = this.getResolutionsFromScales(scales, 90.71446714322, layerInfo.units);
                 var identifier = layerInfo.identifier;
                 var layerName = identifier.substring(identifier.indexOf("_") + 1);
-                layer = L.tileLayer.wmts(layerInfo.url,
+                layer = L.supermap.wmtsLayer(layerInfo.url,
                     {
                         layer: layerName,
                         style: "default",
@@ -13580,7 +13580,7 @@ try {
 }
 var EchartsMapLayer = L.Layer.extend({
     options: {
-        attribution: '© 2017 百度 ECharts with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: '© 2017 百度 ECharts with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
     includes: [],
     _echartsContainer: null,
@@ -13588,7 +13588,7 @@ var EchartsMapLayer = L.Layer.extend({
     _ec: null,
     _ecOption: null,
 
-    initialize: function (echartsOptions,options) {
+    initialize: function (echartsOptions, options) {
         this._ecOption = echartsOptions;
         L.Util.setOptions(this, options);
     },
@@ -13745,8 +13745,8 @@ Geo.prototype = {
     }
 };
 
-L.echartsMapLayer = function (echartsOptions,options) {
-    return new EchartsMapLayer(echartsOptions,options);
+L.supermap.echartsMapLayer = function (echartsOptions, options) {
+    return new EchartsMapLayer(echartsOptions, options);
 };
 module.exports = EchartsMapLayer;
 
@@ -13760,7 +13760,7 @@ __webpack_require__(6);
 __webpack_require__(374);
 __webpack_require__(375);
 var L = __webpack_require__(1);
-L.supermap.GraphicGroup = L.Path.extend({
+var GraphicGroup = L.Path.extend({
 
         initialize: function (graphics, options) {
             options = options || {};
@@ -13854,10 +13854,10 @@ L.Canvas.include({
 });
 
 L.supermap.graphicGroup = function (graphics, options) {
-    return new L.supermap.GraphicGroup(graphics, options);
+    return new GraphicGroup(graphics, options);
 };
 
-module.exports = L.supermap.GraphicGroup;
+module.exports = GraphicGroup;
 
 /***/ }),
 /* 101 */
@@ -13872,7 +13872,7 @@ var MapVRenderer = __webpack_require__(121);
 var MapVLayer = L.Layer.extend({
 
     options: {
-        attribution: '© 2017 百度 MapV with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: '© 2017 百度 MapV with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
 
     initialize: function (dataSet, mapVOptions, options) {
@@ -14211,7 +14211,7 @@ var TileVectorLayer = L.VectorGrid.extend({
         subdomains: 'abc',
 
         timeout: 10000,
-        attribution: ' with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: ' with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
 
     initialize: function (url, options) {
@@ -14808,7 +14808,7 @@ var ChartService = ServiceBase.extend({
         }
 
         if (params.bounds) {
-            params.bounds = L.CommontypesConversion.toSuperMapBounds(params.bounds);
+            params.bounds = L.supermap.CommontypesConversion.toSuperMapBounds(params.bounds);
         }
     },
     _processFormat: function (resultFormat) {
@@ -15000,7 +15000,7 @@ var FeatureService = ServiceBase.extend({
         params.toIndex = params.toIndex ? params.toIndex : -1;
         params.isUseBatch = (params.isUseBatch == null) ? false : params.isUseBatch;
         if (params.bounds) {
-            params.bounds = L.CommontypesConversion.toSuperMapBounds(params.bounds);
+            params.bounds = L.supermap.CommontypesConversion.toSuperMapBounds(params.bounds);
         }
         if (params.geometry) {
             params.geometry = Util.toSuperMapGeometry(params.geometry);
@@ -16209,10 +16209,10 @@ var ProcessingJobsService = ServiceBase.extend({
             return {};
         }
         if (params.query) {
-            params.query = L.CommontypesConversion.toSuperMapBounds(params.query).toBBOX();
+            params.query = L.supermap.CommontypesConversion.toSuperMapBounds(params.query).toBBOX();
         }
         if (params.bounds) {
-            params.bounds = L.CommontypesConversion.toSuperMapBounds(params.bounds).toBBOX();
+            params.bounds = L.supermap.CommontypesConversion.toSuperMapBounds(params.bounds).toBBOX();
         }
         return params;
     },
@@ -16359,7 +16359,7 @@ var QueryService = ServiceBase.extend({
         }
 
         if (params.bounds ) {
-            params.bounds=L.CommontypesConversion.toSuperMapBounds(params.bounds);
+            params.bounds=L.supermap.CommontypesConversion.toSuperMapBounds(params.bounds);
         }
 
         if (params.geometry) {
@@ -16719,7 +16719,7 @@ var SpatialAnalystService = ServiceBase.extend({
             return {};
         }
         if (params.bounds) {
-            params.bounds = L.CommontypesConversion.toSuperMapBounds(params.bounds);
+            params.bounds = L.supermap.CommontypesConversion.toSuperMapBounds(params.bounds);
         }
         if (params.inputPoints) {
             for (var i = 0; i < params.inputPoints.length; i++) {
@@ -48835,10 +48835,11 @@ module.exports = SuperMap.CartoCSS;
 /*
  Leaflet对象和SuperMap对象转换工具
  */
+__webpack_require__(6);
 var L = __webpack_require__(1);
 var SuperMap = __webpack_require__(0);
-L.CommontypesConversion = {};
-L.CommontypesConversion.toSuperMapBounds = function (bounds) {
+L.supermap.CommontypesConversion = {};
+L.supermap.CommontypesConversion.toSuperMapBounds = function (bounds) {
     if (bounds instanceof L.LatLngBounds) {
         return new SuperMap.Bounds(
             bounds.getSouthWest().lng,
@@ -48857,7 +48858,7 @@ L.CommontypesConversion.toSuperMapBounds = function (bounds) {
     }
     return new SuperMap.Bounds();
 };
-module.exports = L.CommontypesConversion;
+module.exports = L.supermap.CommontypesConversion;
 
 /***/ }),
 /* 369 */
@@ -49425,7 +49426,7 @@ L.supermap.CompOpMap = {
 
 __webpack_require__(6);
 var L = __webpack_require__(1);
-L.supermap.CircleStyle = L.Class.extend({
+var CircleStyle = L.Class.extend({
 
     options: {
         stroke: true,
@@ -49481,9 +49482,9 @@ L.supermap.CircleStyle = L.Class.extend({
 });
 
 L.supermap.circleStyle = function (options) {
-    return new L.supermap.CircleStyle(options);
+    return new CircleStyle(options);
 };
-module.exports = L.supermap.CircleStyle;
+module.exports = CircleStyle;
 
 
 /***/ }),
@@ -49493,7 +49494,7 @@ module.exports = L.supermap.CircleStyle;
 __webpack_require__(6);
 var L = __webpack_require__(1);
 
-L.supermap.Graphic = L.Class.extend({
+var Graphic = L.Class.extend({
 
     initialize: function (options) {
         options = options || {};
@@ -49520,9 +49521,9 @@ L.supermap.Graphic = L.Class.extend({
 });
 
 L.supermap.graphic = function (options) {
-    return new L.supermap.Graphic(options);
+    return new Graphic(options);
 };
-module.exports = L.supermap.Graphic;
+module.exports = Graphic;
 
 /***/ }),
 /* 376 */
@@ -49638,7 +49639,7 @@ var GraphThemeLayer = ThemeLayer.extend({
         //清除当前所有可视元素
         me.renderer.clearAll();
         var features = me.features;
-        bounds = L.CommontypesConversion.toSuperMapBounds(bounds);
+        bounds = L.supermap.CommontypesConversion.toSuperMapBounds(bounds);
         for (var i = 0, len = features.length; i < len; i++) {
             var feature = features[i];
             // 要素范围判断
@@ -50390,7 +50391,7 @@ var L = __webpack_require__(1);
 L.VectorGrid = L.GridLayer.extend({
     options: {
         format: L.supermap.VectorTileFormat.JSON,
-        renderer: L.svg.renderer,
+        renderer: L.supermap.svgRenderer,
         vectorTileLayerStyles: {},
         interactive: true
     },
@@ -50412,8 +50413,8 @@ L.VectorGrid = L.GridLayer.extend({
             }
             delete me._vectorTiles[key];
         }, me);
-        me.on('tileerror ',me._renderText, me);
-        me.on('load',me._renderText, me);
+        me.on('tileerror ', me._renderText, me);
+        me.on('load', me._renderText, me);
         me._dataLayerNames = {};
     },
 
@@ -50428,7 +50429,7 @@ L.VectorGrid = L.GridLayer.extend({
         renderer._features = {};
 
         L.supermap.vectorTile({
-            layer: this,
+            layer: me,
             format: me.options.format,
             coords: coords,
             renderer: renderer

@@ -6,7 +6,7 @@ ol.source.Mapv = function (opt_options) {
     var options = opt_options ? opt_options : {};
     ol.source.ImageCanvas.call(this, {
         attributions: options.attributions|| new ol.Attribution({
-            html: '© 2017 百度 MapV with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'}),
+            html: '© 2017 百度 MapV with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'}),
         canvasFunction: this.canvasFunctionInternal_.bind(this),
         logo: options.logo,
         projection: options.projection,

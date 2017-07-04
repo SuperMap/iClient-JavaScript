@@ -8,7 +8,7 @@ var BaiduTileLayer = L.TileLayer.extend({
         maxZoom: 19,
         bounds: L.latLngBounds(L.latLng(-85.0511287798, -180), L.latLng(85.0511287798, 180)),
         retina: L.Browser.retina,
-        attribution: 'Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: 'Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
     initialize: function (url, options) {
         if (url) {

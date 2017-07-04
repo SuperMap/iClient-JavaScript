@@ -108,7 +108,7 @@ var GraphThemeLayer = ThemeLayer.extend({
         //清除当前所有可视元素
         me.renderer.clearAll();
         var features = me.features;
-        bounds = L.CommontypesConversion.toSuperMapBounds(bounds);
+        bounds = L.supermap.CommontypesConversion.toSuperMapBounds(bounds);
         for (var i = 0, len = features.length; i < len; i++) {
             var feature = features[i];
             // 要素范围判断

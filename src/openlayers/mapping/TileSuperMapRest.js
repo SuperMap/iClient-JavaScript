@@ -9,7 +9,7 @@ ol.supermap.TileSuperMapRest = function (options) {
     options = options || {};
     options.attributions = options.attributions ||
         new ol.Attribution({
-            html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+            html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
         })
 
     var layerUrl = options.url + "/tileImage.png?";

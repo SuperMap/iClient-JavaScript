@@ -1,10 +1,11 @@
 /*
  Leaflet对象和SuperMap对象转换工具
  */
+require('../core/Base');
 var L = require("leaflet");
 var SuperMap = require('../../common/SuperMap');
-L.CommontypesConversion = {};
-L.CommontypesConversion.toSuperMapBounds = function (bounds) {
+L.supermap.CommontypesConversion = {};
+L.supermap.CommontypesConversion.toSuperMapBounds = function (bounds) {
     if (bounds instanceof L.LatLngBounds) {
         return new SuperMap.Bounds(
             bounds.getSouthWest().lng,
@@ -23,4 +24,4 @@ L.CommontypesConversion.toSuperMapBounds = function (bounds) {
     }
     return new SuperMap.Bounds();
 };
-module.exports = L.CommontypesConversion;
+module.exports = L.supermap.CommontypesConversion;

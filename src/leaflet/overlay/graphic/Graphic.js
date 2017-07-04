@@ -1,7 +1,7 @@
 require('../../core/Base');
 var L = require("leaflet");
 
-L.supermap.Graphic = L.Class.extend({
+var Graphic = L.Class.extend({
 
     initialize: function (options) {
         options = options || {};
@@ -28,6 +28,6 @@ L.supermap.Graphic = L.Class.extend({
 });
 
 L.supermap.graphic = function (options) {
-    return new L.supermap.Graphic(options);
+    return new Graphic(options);
 };
-module.exports = L.supermap.Graphic;
+module.exports = Graphic;

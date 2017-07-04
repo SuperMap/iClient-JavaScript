@@ -27,13 +27,13 @@
                     bounds: L.bounds([-2.0037508342789244E7, -2.0037508342789244E7], [2.0037508342789244E7, 2.0037508342789244E7])
                 })
     });
-    L.tileLayer.wmts("http://support.supermap.com.cn:8090/iserver/services/map-china400/wmts100",
+    L.supermap.wmtsLayer("http://support.supermap.com.cn:8090/iserver/services/map-china400/wmts100",
             {
                 layer: "China",
                 style: "default",
                 tilematrixSet: "Custom_China",
                 format: "image/png",
-                attribution: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+                attribution: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
             }
     ).addTo(map);
 </script>

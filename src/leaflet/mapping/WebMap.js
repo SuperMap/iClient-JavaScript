@@ -12,7 +12,7 @@ var WebMap = L.LayerGroup.extend({
         featureLayerPopup: null,
         credentialValue: null,
         credentialKey: 'key',
-        attribution: 'Map Data <a href="http://www.supermapol.com">SuperMap Online</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: 'Map Data <a href="http://www.supermapol.com">SuperMap Online</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
     defaultFeatureLayerPopup: function (layer) {
         return layer.feature.properties.attributes.title + ":" + layer.feature.properties.attributes.description;
@@ -196,7 +196,7 @@ var WebMap = L.LayerGroup.extend({
                 mapOptions.resolutions = this.getResolutionsFromScales(scales, 90.71446714322, layerInfo.units);
                 var identifier = layerInfo.identifier;
                 var layerName = identifier.substring(identifier.indexOf("_") + 1);
-                layer = L.tileLayer.wmts(layerInfo.url,
+                layer = L.supermap.wmtsLayer(layerInfo.url,
                     {
                         layer: layerName,
                         style: "default",

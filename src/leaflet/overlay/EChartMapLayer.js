@@ -8,7 +8,7 @@ try {
 }
 var EchartsMapLayer = L.Layer.extend({
     options: {
-        attribution: '© 2017 百度 ECharts with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: '© 2017 百度 ECharts with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
     includes: [],
     _echartsContainer: null,
@@ -16,7 +16,7 @@ var EchartsMapLayer = L.Layer.extend({
     _ec: null,
     _ecOption: null,
 
-    initialize: function (echartsOptions,options) {
+    initialize: function (echartsOptions, options) {
         this._ecOption = echartsOptions;
         L.Util.setOptions(this, options);
     },
@@ -173,8 +173,8 @@ Geo.prototype = {
     }
 };
 
-L.echartsMapLayer = function (echartsOptions,options) {
-    return new EchartsMapLayer(echartsOptions,options);
+L.supermap.echartsMapLayer = function (echartsOptions, options) {
+    return new EchartsMapLayer(echartsOptions, options);
 };
 module.exports = EchartsMapLayer;
 

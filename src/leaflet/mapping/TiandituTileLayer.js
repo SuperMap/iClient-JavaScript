@@ -9,7 +9,7 @@ var TiandituTileLayer = WMTS.extend({
         tilematrixSet: "w",
         format: "tiles",
         subdomains: [0, 1, 2, 3, 4, 5, 6, 7],
-        attribution: 'Map Data <a href="http://www.tianditu.com"><img style="background-color:transparent;bottom:2px;opacity:1;" src="http://api.tianditu.com/img/map/logo.png" width="53px" height="22px" opacity="0"></a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
+        attribution: 'Map Data <a href="http://www.tianditu.com"><img style="background-color:transparent;bottom:2px;opacity:1;" src="http://api.tianditu.com/img/map/logo.png" width="53px" height="22px" opacity="0"></a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
 
 
     },

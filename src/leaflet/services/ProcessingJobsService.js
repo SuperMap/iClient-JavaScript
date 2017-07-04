@@ -226,10 +226,10 @@ var ProcessingJobsService = ServiceBase.extend({
             return {};
         }
         if (params.query) {
-            params.query = L.CommontypesConversion.toSuperMapBounds(params.query).toBBOX();
+            params.query = L.supermap.CommontypesConversion.toSuperMapBounds(params.query).toBBOX();
         }
         if (params.bounds) {
-            params.bounds = L.CommontypesConversion.toSuperMapBounds(params.bounds).toBBOX();
+            params.bounds = L.supermap.CommontypesConversion.toSuperMapBounds(params.bounds).toBBOX();
         }
         return params;
     },
