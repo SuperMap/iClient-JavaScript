@@ -41,7 +41,7 @@
             maxZoom: 18,
             zoom: 7
         });
-        L.supermap.tiledMapLayer(baseUrl,{origin: [90, -180]}).addTo(map);
+        L.supermap.tiledMapLayer(baseUrl).addTo(map);
         initThemeLayer();
     }
 
@@ -206,7 +206,7 @@
                 "<tr> <td class='legendItemHeader'>缺省风格</td> <td class='legendItemValue' style='background: #ABABAB'></td> </tr>" +
                 "</table></div>"
             ).appendTo(this._div);
-            handleMapEvent(this._div,this._map);
+            handleMapEvent(this._div, this._map);
             return this._div;
         };
         legendView.addTo(map);
@@ -221,7 +221,7 @@
             $("<div class='panel-heading'><h5 class='panel-title text-center'>属性表</h5></div>").appendTo(this._div);
             var content = $("<div class='panel-body content'></div>").appendTo(this._div);
             content.css('fontSize', '14px');
-            handleMapEvent(this._div,this._map);
+            handleMapEvent(this._div, this._map);
             return this._div;
         };
 

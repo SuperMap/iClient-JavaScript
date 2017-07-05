@@ -23,7 +23,7 @@
         maxZoom: 18,
         zoom: 6
     });
-    L.supermap.tiledMapLayer(baseUrl, {origin: [90, -180], noWrap: true}).addTo(map).on("load", function () {
+    L.supermap.tiledMapLayer(baseUrl, { noWrap: true}).addTo(map).on("load", function () {
         terrainCurvatureCalculationProcess();
     });
 
@@ -94,7 +94,6 @@
             var result = serviceResult1.result;
             if (result && result.newResourceID) {
                 themeLayer = L.supermap.tiledMapLayer(baseUrl, {
-                    origin: [90, -180],
                     noWrap: true,
                     cacheEnabled: false,
                     transparent: true,

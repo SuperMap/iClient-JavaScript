@@ -12999,8 +12999,6 @@ var TiledMapLayer = L.TileLayer.extend({
         clipRegionEnabled: false,
         //请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
         prjCoordSys: null,
-        //切片的起始参考点，默认为地图范围的左上角。
-        origin: null,
         //地图对象在同一范围内时，是否重叠显示
         overlapDisplayed: true,
         //避免地图对象压盖显示的过滤选项
@@ -13073,8 +13071,12 @@ var TiledMapLayer = L.TileLayer.extend({
         }
 
         var mapUnit = SuperMap.Unit.METER;
-        if (crs.code && crs.code.indexOf("4326") > -1) {
-            mapUnit = SuperMap.Unit.DEGREE;
+        if (crs.code) {
+            var array = crs.code.split(':');
+            if (array && array.length > 1) {
+                var code = parseInt(array[1]);
+                mapUnit = code && code >= 4000 && code <= 5000 ? SuperMap.Unit.DEGREE : SuperMap.Unit.METER;
+            }
         }
         return L.Util.resolutionToScale(resolution, 96, mapUnit);
     },
@@ -13119,12 +13121,11 @@ var TiledMapLayer = L.TileLayer.extend({
         }
 
         //切片的起始参考点，默认为地图范围的左上角。
-        if (options.origin) {
-            var tileOrigin = options.origin;
-            if (L.Util.isArray(options.origin)) {
-                tileOrigin = L.latLng(options.origin);
-            }
-            params.push("origin={\"x\":" + tileOrigin.lng + "," + "\"y\":" + tileOrigin.lat + "}");
+        var crs = me._crs;
+        if (crs.projection && crs.projection.bounds) {
+            var bounds = crs.projection.bounds;
+            var tileOrigin = L.point(bounds.min.x, bounds.max.y);
+            params.push("origin={\"x\":" + tileOrigin.x + "," + "\"y\":" + tileOrigin.y + "}");
         }
 
         if (options.overlapDisplayed === false) {

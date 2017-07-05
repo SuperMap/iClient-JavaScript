@@ -22,7 +22,7 @@
         maxZoom: 18,
         zoom: 6
     });
-    L.supermap.tiledMapLayer(baseUrl, {origin: [90, -180], transparent: true, cacheEnabled: false, noWrap: true}).addTo(map);
+    L.supermap.tiledMapLayer(baseUrl, { transparent: true, cacheEnabled: false, noWrap: true}).addTo(map);
     overlayAnalystProcess();
 
     function overlayAnalystProcess() {
