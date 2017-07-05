@@ -191,7 +191,7 @@ var deps = {
                 ]
             },
             "ProcessingJobs": {
-                "name": "分布式空间处理服务",
+                "name": "大数据分析服务",
                 "src": [
                     "./src/leaflet/services/ProcessingJobsService.js"
                 ]
@@ -272,7 +272,9 @@ var deps = {
             "description": "--对接地图服务",
             "RESTMAP": {
                 "name": "iServer 地图图层",
-                "src": ["./src/openlayers/mapping/TileSuperMapRest.js"]
+                "src": ["./src/openlayers/mapping/TileSuperMapRest.js",
+                    "./src/openlayers/mapping/ImageSuperMapRest.js"
+                ]
             },
 
             "Baidu": {
@@ -356,7 +358,7 @@ var deps = {
                 ]
             },
             "ProcessingJobs": {
-                "name": "分布式空间处理服务",
+                "name": "大数据分析服务",
                 "src": [
                     "./src/openlayers/services/ProcessingJobsService.js"
                 ]

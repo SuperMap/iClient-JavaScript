@@ -12,12 +12,12 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 
 <script type="text/javascript">
-    var url = "http://113.209.64.227:8090/iserver/services/map-World/rest/maps/World";
+    var url = "http://117.122.248.69:8090/iserver/services/map-world/rest/maps/World";
     new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
         var map = new ol.Map({
             target: 'map',
             view: new ol.View({
-                center: [0,0],
+                center: [0, 0],
                 zoom: 2,
                 projection: 'EPSG:4326'
             }),

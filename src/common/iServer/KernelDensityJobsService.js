@@ -21,8 +21,8 @@ SuperMap.REST.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBas
         return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
     },
 
-    addKernelDensityJob: function (params) {
-        return ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, KernelDensityJobParameter]);
+    addKernelDensityJob: function (params, seconds) {
+        return ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, KernelDensityJobParameter, seconds]);
     },
 
     CLASS_NAME: "SuperMap.REST.KernelDensityJobsService"

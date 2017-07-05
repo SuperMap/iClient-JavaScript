@@ -5,7 +5,7 @@ var SummaryMeshJobParameter = require('./SummaryMeshJobParameter');
 SuperMap.REST.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
-        url += "/spatialanalyst/aggregatePoints";
+        url += "/spatialanalyst/aggregatepoints";
         ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
     },
 
@@ -21,8 +21,8 @@ SuperMap.REST.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase,
         return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
     },
 
-    addSummaryMeshJob: function (params) {
-        ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, SummaryMeshJobParameter]);
+    addSummaryMeshJob: function (params, seconds) {
+        ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, SummaryMeshJobParameter, seconds]);
     },
 
     CLASS_NAME: "SuperMap.REST.SummaryMeshJobsService"

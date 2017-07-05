@@ -70,7 +70,7 @@ var ProcessingJobsService = ServiceBase.extend({
      * @param callback 请求结果的回调函数。
      * @param resultFormat 返回的结果类型（默认为GeoJSON）。
      */
-    addKernelDensityJob: function (params, callback, resultFormat) {
+    addKernelDensityJob: function (params, callback, seconds, resultFormat) {
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
@@ -83,7 +83,7 @@ var ProcessingJobsService = ServiceBase.extend({
             },
             format: format
         });
-        kernelDensityJobsService.addKernelDensityJob(param);
+        kernelDensityJobsService.addKernelDensityJob(param, seconds);
         return me;
     },
 
@@ -135,7 +135,7 @@ var ProcessingJobsService = ServiceBase.extend({
      * @param callback 请求结果的回调函数。
      * @param resultFormat 返回的结果类型（默认为GeoJSON）。
      */
-    addSummaryMeshJob: function (params, callback, resultFormat) {
+    addSummaryMeshJob: function (params, callback, seconds, resultFormat) {
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
@@ -148,7 +148,7 @@ var ProcessingJobsService = ServiceBase.extend({
             },
             format: format
         });
-        summaryMeshJobsService.addSummaryMeshJob(param);
+        summaryMeshJobsService.addSummaryMeshJob(param, seconds);
         return me;
     },
 
@@ -200,7 +200,7 @@ var ProcessingJobsService = ServiceBase.extend({
      * @param callback 请求结果的回调函数。
      * @param resultFormat 返回的结果类型（默认为GeoJSON）。
      */
-    addBuildCacheJob: function (params, callback, resultFormat) {
+    addBuildCacheJob: function (params, callback, seconds, resultFormat) {
         var me = this,
             param = me._processParams(params),
             format = me._processFormat(resultFormat);
@@ -213,7 +213,7 @@ var ProcessingJobsService = ServiceBase.extend({
             },
             format: format
         });
-        buildCacheJobsService.addBuildCacheJob(param);
+        buildCacheJobsService.addBuildCacheJob(param, seconds);
         return me;
     },
 

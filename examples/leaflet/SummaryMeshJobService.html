@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>格网聚合分析作业</title>
-
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
 </head>
@@ -27,8 +26,8 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
 <script type="text/javascript">
-    var layer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
-            token = 'GSHB7qlocJkqEH0Ld6VUSGQfekOdPd3e9UdJoHjiupfbkGDggXQLSPWd6VaKm8NH4gvXx6UQ0TCI5wpfr-4Tlw..',
+    var layer, processingJobsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
+            token = 'oZdJwpVhYnPNEAt8-ykB-Cy39gEZkdvPZ9knTbCdui1SoBeXWVCwx-j5tOVSScotsUX1qwZF44X9m6wNME1kBg..',
             map = L.map('map', {
                 crs: L.CRS.TianDiTu_WGS84,
                 center: [40.75, -73.95],
@@ -52,7 +51,7 @@
                 "<div class='panel-body'>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>输入数据　</span>" +
-                "<input id='datasetName' type='text' class='form-control' placeholder='test_newyork_taxi_2013_01_14k'/>" +
+                "<input id='datasetName' type='text' class='form-control' placeholder='samples_newyork_taxi_2013-01_14k'/>" +
                 "</div><p>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>聚合类型　</span>" +
@@ -94,24 +93,24 @@
     ($('#query').val() || $('#query').attr('placeholder')).split(',').map(function (el) {
         return query.push(parseFloat(el));
     });
-    var summaryMeshJobParameter = new SuperMap.SummaryMeshJobParameter({
-                datasetName: $('#datasetName').val() || $('#datasetName').attr('placeholder'),
-                resolution: $('#resolution').val() || $('#resolution').attr('placeholder'),
-                meshType: $('#meshType option:selected').attr('value'),
-                fields: $('#fields').val() || $('#fields').attr('placeholder'),
-                query: L.latLngBounds(L.latLng(query[1], query[0]), L.latLng(query[3], query[2])),
-                statisticModes: $('#statisticModes').val() || $('#statisticModes').attr('placeholder'),
-                type: $('#type option:selected').attr('value')
-            }),
-            processingJobsService = new L.supermap.processingJobsService(processingJobsUrl);
+    var processingJobsService = new L.supermap.processingJobsService(processingJobsUrl);
+    SuperMap.SecurityManager.registerToken("http://117.122.248.69:8090", token);
 
-    SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(token, 'token');
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
         if (map && layer) {
             map.removeLayer(layer);
         }
+        var summaryMeshJobParameter = new SuperMap.SummaryMeshJobParameter({
+            datasetName: $('#datasetName').val() || $('#datasetName').attr('placeholder'),
+            resolution: $('#resolution').val() || $('#resolution').attr('placeholder'),
+            meshType: $('#meshType option:selected').attr('value'),
+            fields: $('#fields').val() || $('#fields').attr('placeholder'),
+            query: L.latLngBounds(L.latLng(query[1], query[0]), L.latLng(query[3], query[2])),
+            statisticModes: $('#statisticModes').val() || $('#statisticModes').attr('placeholder'),
+            type: $('#type option:selected').attr('value')
+        });
         processingJobsService.addSummaryMeshJob(summaryMeshJobParameter, function (serviceResult) {
             if (serviceResult.error) {
                 $('#btn').prop('disabled', false);
@@ -125,7 +124,7 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path;
-                        layer = L.supermap.tiledMapLayer(mapUrl, {noWrap: true, transparent: true});
+                        layer = L.supermap.imageMapLayer(mapUrl, {noWrap: true, transparent: true});
                         layer.addTo(map);
                         $("#model").modal('hide');
                         $('#btn').prop('disabled', false);

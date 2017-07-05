@@ -2,17 +2,17 @@ require('../core/Base');
 require('../../common/security/SecurityManager');
 var ol = require('openlayers/dist/ol-debug');
 var SuperMap = require('../../common/SuperMap');
-ol.source.TileSuperMapRest = function (options) {
+
+ol.source.ImageSuperMapRest = function (options) {
     if (options.url === undefined) {
         return;
     }
-    options = options || {};
     options.attributions = options.attributions ||
         new ol.Attribution({
-            html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
+            html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://icltest.supermapol.com/">SuperMap iClient</a>'
         })
 
-    var layerUrl = options.url + "/tileImage.png?";
+    var layerUrl = options.url + "/image.png?";
     options.serverType = options.serverType || SuperMap.ServerType.ISERVER;
     //为url添加安全认证信息片段
     layerUrl = appendCredential(layerUrl, options.serverType);
@@ -47,21 +47,33 @@ ol.source.TileSuperMapRest = function (options) {
         return newUrl;
     }
 
-    //是否重定向
-    var redirect = false;
-    if (options.redirect) {
-        redirect = options.opaque;
-    }
-    layerUrl += "&redirect=" + redirect;
     //切片是否透明
     var transparent = true;
     if (options.opaque !== undefined) {
         transparent = options.opaque;
     }
     layerUrl += "&transparent=" + transparent;
-    //设置切片原点
-    if (options.origin && options.origin instanceof Array) {
-        layerUrl += "&origin={\"x\":" + options.origin[0] + "," + "\"y\":" + options.origin[1] + "}";
+
+    //是否使用缓存
+    var cacheEnabled = false;
+    if (options.cacheEnabled !== undefined) {
+        cacheEnabled = options.cacheEnabled;
+    }
+    layerUrl += "&cacheEnabled=" + cacheEnabled;
+
+    //如果有layersID，则是在使用专题图
+    if (options.layersID !== undefined) {
+        layerUrl += "&layersID=" + options.layersID;
+    }
+    //是否重定向
+    if (options.redirect !== undefined) {
+        layerUrl += "&redirect=" + options.redirect;
+    }
+    if (options.cacheEnabled !== undefined) {
+        layerUrl += "&cacheEnabled=" + options.cacheEnabled;
+    }
+    if (options.prjCoordSys) {
+        layerUrl += "prjCoordSys=" + JSON.stringify(options.prjCoordSys);
     }
     if (options.clipRegion instanceof ol.geom.Geometry) {
         options.clipRegionEnabled = true;
@@ -73,42 +85,19 @@ ol.source.TileSuperMapRest = function (options) {
         options.overlapDisplayedOptions = options.overlapDisplayedOptions;
         layerUrl += "&overlapDisplayed=" + options.overlapDisplayed + "&overlapDisplayedOptions=" + options.overlapDisplayedOptions.toString();
     }
-    var cacheEnabled = true;
-    if (!!options.cacheEnabled) {
-        cacheEnabled = options.cacheEnabled;
-    }
-    layerUrl += "&_cache=" + cacheEnabled;
-    if (options.cacheEnabled && options.tileversion) {
-        layerUrl += "&tileversion=" + tileversion;
-    }
-    //如果有layersID，则是在使用专题图
-    if (options.layersID !== undefined) {
-        layerUrl += "&layersID=" + options.layersID;
-    }
-    if (options.prjCoordSys) {
-        layerUrl += "&prjCoordSys=" + options.prjCoordSys;
+    if (options.cacheEnabled === true && options.tileversion) {
+        layerUrl += "tileversion=" + options.tileversion;
     }
 
     function tileUrlFunction(tileCoord, pixelRatio, projection) {
-        this.projection = projection;
         if (!this.tileGrid) {
             this.tileGrid = this.getTileGridForProjection(projection);
         }
-        var z = tileCoord[0];
-        var x = tileCoord[1];
-        var y = -tileCoord[2] - 1;
-        var resolution = this.tileGrid.getResolution(z);
-        var dpi = 96;
-        var unit = projection.getUnits();
-        if (unit === 'degrees') {
-            unit = SuperMap.Unit.DEGREE;
-        }
-        if (unit === 'm') {
-            unit = SuperMap.Unit.METER;
-        }
-        var scale = ol.supermap.Util.resolutionToScale(resolution, dpi, unit);
-        var tileSize = ol.size.toSize(this.tileGrid.getTileSize(z, this.tmpSize));
-        return layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale;
+        var tileExtent = this.tileGrid.getTileCoordExtent(
+            tileCoord, this.tmpExtent_);
+        var tileSize = ol.size.toSize(
+            this.tileGrid.getTileSize(tileCoord[0]), this.tmpSize);
+        return layerUrl + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + tileExtent[0] + ",\"y\":" + tileExtent[1] + "},\"rightTop\" : {\"x\":" + tileExtent[2] + ",\"y\":" + tileExtent[3] + "}}";
     }
 
     ol.source.TileImage.call(this, {
@@ -132,8 +121,8 @@ ol.source.TileSuperMapRest = function (options) {
         layersID: options.layersID
     });
 };
-ol.inherits(ol.source.TileSuperMapRest, ol.source.TileImage);
-ol.source.TileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
+ol.inherits(ol.source.ImageSuperMapRest, ol.source.TileImage);
+ol.source.ImageSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
     var options = {};
     options.url = url;
     options.crossOrigin = 'anonymous';
@@ -176,7 +165,7 @@ ol.source.TileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
     return options;
 };
 
-ol.source.TileSuperMapRest.createTileGrid = function (extent, maxZoom, minZoom, tileSize, origin) {
+ol.source.ImageSuperMapRest.createTileGrid = function (extent, maxZoom, minZoom, tileSize, origin) {
     var tilegrid = ol.tilegrid.createXYZ({
         extent: extent,
         maxZoom: maxZoom,
@@ -193,4 +182,4 @@ ol.source.TileSuperMapRest.createTileGrid = function (extent, maxZoom, minZoom, 
     );
 };
 
-module.exports = ol.source.TileSuperMapRest;
+module.exports = ol.source.ImageSuperMapRest;

@@ -53,7 +53,7 @@ SuperMap.REST.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
         var options = {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         };
-        return Request.post(url, JSON.stringify(parameterObject), options).then(function (response) {
+        return Request.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result.succeed) {
@@ -95,6 +95,17 @@ SuperMap.REST.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
 
     serviceProcessFailed: function (result) {
         ServiceBase.prototype.serviceProcessFailed.apply(this, arguments);
+    },
+
+    //为不是以.json结尾的url加上.json，并且如果有token的话，在.json后加上token参数。
+    _processUrl: function (url) {
+        if (url.indexOf('.json') === -1) {
+            url += '.json';
+        }
+        if (SuperMap.SecurityManager.getToken(url)) {
+            url += '?token=' + SuperMap.SecurityManager.getToken(url);
+        }
+        return url;
     },
 
     CLASS_NAME: "SuperMap.REST.ProcessingJobsServiceBase"

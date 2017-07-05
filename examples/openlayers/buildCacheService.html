@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>生成地图缓存作业</title>
-
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
     <style>
@@ -38,7 +37,7 @@
                 <span class="input-group-addon">输入数据　　　</span>
                 <div>
                     <select class="form-control" id="datasetName" name="clientType">
-                        <option selected="selected">test_newyork_taxi_2013_01_14k</option>
+                        <option selected="selected">samples_newyork_taxi_2013-01_14k</option>
                     </select>
                 </div>
             </div>
@@ -54,7 +53,7 @@
             <p>
             <div class="input-group">
                 <span class="input-group-addon">缓存范围　　　</span>
-                <input id="bounds" type="text" class="form-control" placeholder="-74.050, 40.650, -73.850, 40.850"/>
+                <input id="bounds" type="text" class="form-control" placeholder="-74.050,40.650,-73.850,40.850"/>
             </div>
             <p>
             <div class="input-group">
@@ -78,7 +77,7 @@
             <p>
             <div class="input-group">
                 <span class="input-group-addon">服务地址　　　</span>
-                <input id="serverAdresses" type="text" class="form-control" placeholder="113.209.64.227:27010"/>
+                <input id="serverAdresses" type="text" class="form-control" placeholder="117.122.248.69:27017"/>
             </div>
             <p>
             <div class="input-group">
@@ -109,8 +108,8 @@
         $('#imageTypeBtn').text($target.text())
     });
 
-    var layer, processingJobsUrl = "http://113.209.64.227:8090/iserver/services/processing/rest/v1/jobs",
-            token = 'GSHB7qlocJkqEH0Ld6VUSGQfekOdPd3e9UdJoHjiupfbkGDggXQLSPWd6VaKm8NH4gvXx6UQ0TCI5wpfr-4Tlw..',
+    var layer, processingJobsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
+            token = 'oZdJwpVhYnPNEAt8-ykB-Cy39gEZkdvPZ9knTbCdui1SoBeXWVCwx-j5tOVSScotsUX1qwZF44X9m6wNME1kBg..',
             map = new ol.Map({
                 target: 'map',
                 view: new ol.View({
@@ -121,10 +120,6 @@
             }),
             bounds = [],
             serverAddress = [];
-    var resolutions = [];
-    for (var i = 6; i < 10; i++) {
-        resolutions.push(0.703125 / (Math.pow(2, i)));
-    }
     map.addLayer(new ol.layer.Tile({
         source: new ol.source.Tianditu({
             url: "http://t0.tianditu.com/vec_c/wmts",
@@ -137,25 +132,13 @@
         return bounds.push(parseFloat(el));
     });
     serverAddress.push(($('#serverAdresses').val() || $('#serverAdresses').attr('placeholder')).toString());
-    var buildCacheJobParameter = new SuperMap.BuildCacheJobParameter({
-                datasetName: $('#datasetName option:selected').text(),
-                cacheName: $('#cacheName').val() || $('#cacheName').attr('placeholder'),
-                cacheType: $('#cacheType option:selected').text(),
-                serverAdresses: serverAddress,
-                database: $('#database').val() || $('#database').attr('placeholder'),
-                version: $('#version').val() || $('#version').attr('placeholder'),
-                bounds: bounds,
-                imageType: $('#imageType option:selected').attr('value'),
-                level: parseInt($('#level').val() || $('#level').attr('placeholder'))
-            }),
-            processingJobsService = new ol.supermap.ProcessingJobsService(processingJobsUrl),
+    var processingJobsService = new ol.supermap.ProcessingJobsService(processingJobsUrl),
             popup = document.getElementById('popup');
 
     var info = new ol.control.Control({element: popup});
     info.setMap(map);
     map.addControl(info);
-
-    SuperMap.Credential.CREDENTIAL = new SuperMap.Credential(token, 'token');
+    SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090', token);
 
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
@@ -163,6 +146,17 @@
         if (map && layer) {
             map.removeLayer(layer);
         }
+        var buildCacheJobParameter = new SuperMap.BuildCacheJobParameter({
+            datasetName: $('#datasetName option:selected').text(),
+            cacheName: $('#cacheName').val() || $('#cacheName').attr('placeholder'),
+            cacheType: $('#cacheType option:selected').text(),
+            serverAdresses: serverAddress,
+            database: $('#database').val() || $('#database').attr('placeholder'),
+            version: $('#version').val() || $('#version').attr('placeholder'),
+            bounds: bounds,
+            imageType: $('#imageType option:selected').attr('value'),
+            level: parseInt($('#level').val() || $('#level').attr('placeholder'))
+        });
         processingJobsService.addBuildCacheJob(buildCacheJobParameter, function (serviceResult) {
             if (serviceResult.error) {
                 $('#btn').prop('disabled', false);
@@ -178,7 +172,7 @@
                         var mapUrl = result[0].path;
                         new ol.supermap.MapService(mapUrl).getMapInfo(function (mapInfo) {
                             layer = new ol.layer.Tile({
-                                source: new ol.source.TileSuperMapRest(ol.source.TileSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
+                                source: new ol.source.ImageSuperMapRest(ol.source.ImageSuperMapRest.optionsFromMapJSON(mapUrl, mapInfo.result))
                             });
                             map.addLayer(layer);
                             $("#model").modal('hide');

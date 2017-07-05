@@ -21,8 +21,8 @@ SuperMap.REST.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, 
         return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
     },
 
-    addBuildCacheJob: function (params) {
-        ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, BuildCacheJobParameter]);
+    addBuildCacheJob: function (params, seconds) {
+        ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, BuildCacheJobParameter, seconds]);
     },
 
     CLASS_NAME: "SuperMap.REST.BuildCacheJobsService"

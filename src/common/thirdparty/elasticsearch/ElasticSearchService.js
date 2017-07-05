@@ -44,7 +44,7 @@ SuperMap.ElasticSearchService = SuperMap.Class({
      *    unit: 'meter|degree'
      *  }
      */
-    geoFence: null,
+    设想geoFence: null,
 
     /**
      * Constant: EVENT_TYPES
@@ -85,6 +85,10 @@ SuperMap.ElasticSearchService = SuperMap.Class({
         }
     },
 
+    /**
+     * 设置地理围栏，openGeoFence参数为true的时候，设置的地理围栏才生效。
+     * @param geoFence
+     */
     setGeoFence: function (geoFence) {
         this.geoFence = geoFence;
     },
@@ -259,25 +263,6 @@ SuperMap.ElasticSearchService = SuperMap.Class({
     mget: function (params, callback) {
         return this.client.mget(params, callback);
     },
-
-// {
-//     index: 'flightware',
-//         type: 'flight',
-//     body: {
-//     "aggs": {
-//         "minTime": {
-//             "min": {
-//                 "field": "time_ms"
-//             }
-//         },
-//         "maxTime": {
-//             "max": {
-//                 "field": "time_ms"
-//             }
-//         }
-//     }
-// }
-// }
 
     /**
      * 在同一请求中执行多个搜索请求。

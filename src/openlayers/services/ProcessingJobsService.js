@@ -69,7 +69,7 @@ ol.supermap.ProcessingJobsService.prototype.getKernelDensityJob = function (id, 
  * @param callback 请求结果的回调函数。
  * @param resultFormat 返回的结果类型（默认为GeoJSON）。
  */
-ol.supermap.ProcessingJobsService.prototype.addKernelDensityJob = function (params, callback, resultFormat) {
+ol.supermap.ProcessingJobsService.prototype.addKernelDensityJob = function (params, callback, seconds, resultFormat) {
     var me = this,
         param = me._processParams(params),
         format = me._processFormat(resultFormat);
@@ -84,7 +84,7 @@ ol.supermap.ProcessingJobsService.prototype.addKernelDensityJob = function (para
         },
         format: format
     });
-    kernelDensityJobsService.addKernelDensityJob(param);
+    kernelDensityJobsService.addKernelDensityJob(param, seconds);
     return me;
 };
 
@@ -144,7 +144,7 @@ ol.supermap.ProcessingJobsService.prototype.getSummaryMeshJob = function (id, ca
  * @param callback 请求结果的回调函数。
  * @param resultFormat 返回的结果类型（默认为GeoJSON）。
  */
-ol.supermap.ProcessingJobsService.prototype.addSummaryMeshJob = function (params, callback, resultFormat) {
+ol.supermap.ProcessingJobsService.prototype.addSummaryMeshJob = function (params, callback, seconds, resultFormat) {
     var me = this,
         param = me._processParams(params),
         format = me._processFormat(resultFormat);
@@ -159,7 +159,7 @@ ol.supermap.ProcessingJobsService.prototype.addSummaryMeshJob = function (params
         },
         format: format
     });
-    summaryMeshJobsService.addSummaryMeshJob(param);
+    summaryMeshJobsService.addSummaryMeshJob(param, seconds);
     return me;
 };
 
@@ -219,7 +219,7 @@ ol.supermap.ProcessingJobsService.prototype.getBuildCacheJob = function (id, cal
  * @param callback 请求结果的回调函数。
  * @param resultFormat 返回的结果类型（默认为GeoJSON）。
  */
-ol.supermap.ProcessingJobsService.prototype.addBuildCacheJob = function (params, callback, resultFormat) {
+ol.supermap.ProcessingJobsService.prototype.addBuildCacheJob = function (params, callback, seconds, resultFormat) {
     var me = this,
         param = me._processParams(params),
         format = me._processFormat(resultFormat);
@@ -234,7 +234,7 @@ ol.supermap.ProcessingJobsService.prototype.addBuildCacheJob = function (params,
         },
         format: format
     });
-    buildCacheJobsService.addBuildCacheJob(param);
+    buildCacheJobsService.addBuildCacheJob(param, seconds);
     return me;
 };
 
