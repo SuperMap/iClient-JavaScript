@@ -112,7 +112,10 @@ var deps = {
 
             "RESTMAP": {
                 "name": "iServer 地图图层",
-                "src": ["./src/leaflet/mapping/TiledMapLayer.js"]
+                "src": [
+                    "./src/leaflet/mapping/TiledMapLayer.js",
+                    "./src/leaflet/mapping/ImageMapLayer.js"
+                ]
             },
             "Baidu": {
                 "name": "百度图层",

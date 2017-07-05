@@ -1,15 +1,15 @@
 /**
- * Class: TiledMapLayer
+ * Class: ImageMapLayer
  * SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)
- * 使用TileImage资源出图
+ * 使用Image资源出图
  * 用法：
- *      L.superMap.tiledMapLayer(url).addTo(map);
+ *      L.superMap.imageMapLayer(url).addTo(map);
  */
 require('../core/Base');
 require('../../common/security/SecurityManager');
 var L = require("leaflet");
 var SuperMap = require("../../common/SuperMap");
-var TiledMapLayer = L.TileLayer.extend({
+var ImageMapLayer = L.TileLayer.extend({
 
     options: {
         //如果有layersID，则是在使用专题图
@@ -19,7 +19,7 @@ var TiledMapLayer = L.TileLayer.extend({
         transparent: null,
         cacheEnabled: null,
         clipRegionEnabled: false,
-        //请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}
+        //请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。
         prjCoordSys: null,
         //地图对象在同一范围内时，是否重叠显示
         overlapDisplayed: true,
@@ -49,63 +49,17 @@ var TiledMapLayer = L.TileLayer.extend({
 
 
     getTileUrl: function (coords) {
-        var scale = this.getScaleFromCoords(coords);
-        var tileUrl = this._layerUrl + "&scale=" + scale + "&x=" + coords.x + "&y=" + coords.y;
+        //使用ViewBounds出图
+        var tileBounds = this._tileCoordsToBounds(coords),
+            nw = this._crs.project(tileBounds.getNorthWest()),
+            se = this._crs.project(tileBounds.getSouthEast());
+        var tileUrl = this._layerUrl + "&viewBounds=" + "{\"leftBottom\" : {\"x\":" + nw.x + ",\"y\":" + se.y + "},\"rightTop\" : {\"x\":" + se.x + ",\"y\":" + nw.y + "}}";
         return tileUrl;
-    },
-
-    setScales: function (scales) {
-        this.scales = scales || this.scales;
-    },
-
-    getScale: function (zoom) {
-        var me = this;
-        //返回当前比例尺
-        var z = zoom || me._map.getZoom();
-        return me.scales[z];
-    },
-
-    getScaleFromCoords: function (coords) {
-        var me = this, scale;
-        if (me.scales && me.scales[coords.z]) {
-            return me.scales[coords.z];
-        }
-        me.scales = me.scales || {};
-        scale = me.getDefaultScale(coords);
-        me.scales[coords.z] = scale;
-        return scale;
-    },
-
-    getDefaultScale: function (coords) {
-        var me = this, crs = me._crs;
-        var resolution;
-        if (crs.options && crs.options.resolutions) {
-            resolution = crs.options.resolutions[coords.z];
-        } else {
-            var tileBounds = me._tileCoordsToBounds(coords);
-            var ne = crs.project(tileBounds.getNorthEast());
-            var sw = crs.project(tileBounds.getSouthWest());
-            var tileSize = me.options.tileSize;
-            resolution = Math.max(
-                Math.abs(ne.x - sw.x) / tileSize,
-                Math.abs(ne.y - sw.y) / tileSize
-            );
-        }
-
-        var mapUnit = SuperMap.Unit.METER;
-        if (crs.code) {
-            var array = crs.code.split(':');
-            if (array && array.length > 1) {
-                var code = parseInt(array[1]);
-                mapUnit = code && code >= 4000 && code <= 5000 ? SuperMap.Unit.DEGREE : SuperMap.Unit.METER;
-            }
-        }
-        return L.Util.resolutionToScale(resolution, 96, mapUnit);
     },
 
     _initLayerUrl: function () {
         var me = this;
-        var layerUrl = me.url + "/tileImage.png?";
+        var layerUrl = me.url + "/image.png?";
         layerUrl += me._initAllRequestParams().join('&');
         layerUrl = this._appendCredential(layerUrl);
         this._layerUrl = layerUrl;
@@ -140,14 +94,6 @@ var TiledMapLayer = L.TileLayer.extend({
             options.clipRegion = SuperMap.Util.toJSON(SuperMap.REST.ServerGeometry.fromGeometry(options.clipRegion));
             params.push("clipRegionEnabled=" + options.clipRegionEnabled);
             params.push("clipRegion=" + JSON.stringify(options.clipRegion));
-        }
-
-        //切片的起始参考点，默认为地图范围的左上角。
-        var crs = me._crs;
-        if (crs.projection && crs.projection.bounds) {
-            var bounds = crs.projection.bounds;
-            var tileOrigin = L.point(bounds.min.x, bounds.max.y);
-            params.push("origin={\"x\":" + tileOrigin.x + "," + "\"y\":" + tileOrigin.y + "}");
         }
 
         if (options.overlapDisplayed === false) {
@@ -198,8 +144,8 @@ var TiledMapLayer = L.TileLayer.extend({
     }
 });
 
-L.supermap.tiledMapLayer = function (url, options) {
-    return new TiledMapLayer(url, options);
+L.supermap.imageMapLayer = function (url, options) {
+    return new ImageMapLayer(url, options);
 };
 
-module.exports = TiledMapLayer;
+module.exports = ImageMapLayer;
