@@ -14354,7 +14354,6 @@ var TileVectorLayer = L.VectorGrid.extend({
         layersID: null,
         //是否服务端CartoCSS样式，默认使用
         serverCartoCSSStyle: true,
-
         returnAttributes: false,
 
         /*各图层扩展的像素值。
@@ -14375,16 +14374,15 @@ var TileVectorLayer = L.VectorGrid.extend({
     initialize: function (url, options) {
         options = options || {};
         options.noWrap = (options.noWrap == null) ? true : options.noWrap;
+        L.setOptions(this, options);
         L.VectorGrid.prototype.initialize.call(this, options);
-        L.Util.setOptions(this, options);
+        L.stamp(this);
         var me = this;
-        L.stamp(me);
 
         if (!url || url === "" || url.indexOf("http") < 0) {
             url = "";
             return this;
         }
-
         me.url = url;
         if (url && url.indexOf("/") === (url.length - 1)) {
             url = url.substr(0, url.length - 1);
@@ -50548,15 +50546,15 @@ __webpack_require__(383);
 var L = __webpack_require__(1);
 L.VectorGrid = L.GridLayer.extend({
     options: {
-        format: L.supermap.VectorTileFormat.JSON,
+        vectorTileLayerStyles: null,
         renderer: L.supermap.svgRenderer,
-        vectorTileLayerStyles: {},
+        format: L.supermap.VectorTileFormat.JSON,
         interactive: true
     },
 
     initialize: function (options) {
         var me = this;
-        L.Util.setOptions(me, options);
+        L.setOptions(me, options);
         L.GridLayer.prototype.initialize.call(me, options);
         me._vectorTiles = {};
         //交互事件使用,键值为id_layerName
@@ -50594,6 +50592,14 @@ L.VectorGrid = L.GridLayer.extend({
         }, done).renderTile();
 
         return renderer.getContainer();
+    },
+
+    getStyles: function () {
+        return this.vectorTileLayerStyles;
+    },
+
+    getStyle: function (layerName) {
+        return this.vectorTileLayerStyles && this.vectorTileLayerStyles[layerName];
     },
 
     //需要id和layerName才能确定一个要素

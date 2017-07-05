@@ -44,10 +44,10 @@ var TileVectorLayer = L.VectorGrid.extend({
     initialize: function (url, options) {
         options = options || {};
         options.noWrap = (options.noWrap == null) ? true : options.noWrap;
+        L.setOptions(this, options);
         L.VectorGrid.prototype.initialize.call(this, options);
-        L.Util.setOptions(this, options);
+        L.stamp(this);
         var me = this;
-        L.stamp(me);
 
         if (!url || url === "" || url.indexOf("http") < 0) {
             url = "";
