@@ -1,34 +1,65 @@
+@charset "UTF-8";
+/*重写AdmineLTE 的部分效果*/
 body {
-    font-family: "Microsoft YaHei";
-    margin: 0;
-    padding: 0;
+    font-family: 'Microsoft YaHei UI', 'Microsoft YaHei', Microsoft YaHei, Arial, sans-serif
 }
 
-.main {
-    height: 100%;
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: 'Microsoft YaHei UI', 'Microsoft YaHei', Microsoft YaHei, Arial, sans-serif
 }
 
-div {
+.main-header .navbar {
+    -webkit-transition: margin-left .3s ease-in-out;
+    -o-transition: margin-left .3s ease-in-out;
+    transition: margin-left .3s ease-in-out;
+    margin-bottom: 0;
+    margin-left: 0;
     border: none;
-    padding: 0;
+    min-height: 50px;
+    border-radius: 0
+}
+
+@media (max-width: 767px) {
+    .main-sidebar, .left-side {
+        padding-top: 50px
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar-mini.sidebar-collapse .main-header .navbar {
+        margin-left: 0 !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .sidebar-mini.sidebar-collapse .sidebar-menu > li:hover > a > .pull-right-container {
+        position: relative !important;
+        float: right;
+        width: auto !important;
+        left: 180px !important;
+        top: -22px !important;
+        z-index: 900
+    }
+
+    .sidebar-mini.sidebar-collapse .main-header .navbar {
+        margin-left: 0
+    }
+}
+
+.navbar-nav > .nav-dropdown-menu > .dropdown-menu {
+    width: 150px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 0 0 0 0;
     margin: 0;
+    top: 100%
 }
 
-.header {
-    height: 52px;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    background-color: #0083CB;
-    z-index: 100;
+.main-header .sidebar-toggle {
+    float: left;
+    background-color: transparent;
+    background-image: none;
+    padding: 15px 17px;
+    font-family: fontAwesome
 }
 
-.content {
-    position: absolute;
-    top: 52px;
-    bottom: 0;
-    width: 100%;
-    z-index: 99;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
+/*重写AdmineLTE 的部分效果*/

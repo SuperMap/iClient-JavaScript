@@ -13,7 +13,7 @@
 
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
-<script src="https://cdn.bootcss.com/leaflet.draw/0.4.9/leaflet.draw.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/leaflet.draw/0.4.9/leaflet.draw.js"></script>
 <script type="text/javascript">
     var map, url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
     map = L.map('map', {
@@ -44,7 +44,7 @@
     handleMapEvent(drawControl._container, map);
     map.on(L.Draw.Event.CREATED, function (e) {
         var type = e.layerType,
-                layer = e.layer;
+            layer = e.layer;
         if (type === 'marker') {
             layer.bindPopup('A popup!');
         }
