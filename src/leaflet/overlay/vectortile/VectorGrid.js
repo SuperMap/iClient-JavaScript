@@ -5,15 +5,15 @@ require('./VectorTile');
 var L = require("leaflet");
 L.VectorGrid = L.GridLayer.extend({
     options: {
-        format: L.supermap.VectorTileFormat.JSON,
+        vectorTileLayerStyles: null,
         renderer: L.supermap.svgRenderer,
-        vectorTileLayerStyles: {},
+        format: L.supermap.VectorTileFormat.JSON,
         interactive: true
     },
 
     initialize: function (options) {
         var me = this;
-        L.Util.setOptions(me, options);
+        L.setOptions(me, options);
         L.GridLayer.prototype.initialize.call(me, options);
         me._vectorTiles = {};
         //交互事件使用,键值为id_layerName
@@ -51,6 +51,14 @@ L.VectorGrid = L.GridLayer.extend({
         }, done).renderTile();
 
         return renderer.getContainer();
+    },
+
+    getStyles: function () {
+        return this.vectorTileLayerStyles;
+    },
+
+    getStyle: function (layerName) {
+        return this.vectorTileLayerStyles && this.vectorTileLayerStyles[layerName];
     },
 
     //需要id和layerName才能确定一个要素
