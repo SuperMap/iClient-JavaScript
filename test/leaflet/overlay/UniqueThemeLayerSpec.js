@@ -254,11 +254,14 @@ describe('leaflet_testUniqueThemeLayer', function () {
                 features = IHFeas.concat(features);
                 expect(features.length).toBeGreaterThan(0);
                 done();
+            } else {
+                console.log("未能通过'getFeaturesBySQL'方法获取接下来'addFeatures'方法所需要的数据");
+                done();
             }
-        }, 4000);
+        }, 6000);
     });
 
-    it('addFeatures', function () {
+    it('addFeatures', function (done) {
         //constructor
         var uniqueThemeLayer = L.supermap.uniqueThemeLayer("ThemeLayer", {
             isHoverAble: true,
@@ -356,27 +359,41 @@ describe('leaflet_testUniqueThemeLayer', function () {
         expect(uniqueThemeLayer.themeField).toBe("LANDTYPE");
         expect(uniqueThemeLayer.features.length).toEqual(0);
         // addFeatures
-        uniqueThemeLayer.addFeatures(features);
-        expect(uniqueThemeLayer.features.length).toBeGreaterThan(0);
-        // getCacheCount
-        var cacheCount = uniqueThemeLayer.getCacheCount();
-        expect(cacheCount).toBeGreaterThan(0);
-        // setMaxCacheCount
-        expect(uniqueThemeLayer.maxCacheCount).toBeGreaterThan(10);
-        uniqueThemeLayer.setMaxCacheCount(10);
-        expect(uniqueThemeLayer.maxCacheCount).toEqual(10);
-        // getShapesByFeatureID
-        var shape1 = uniqueThemeLayer.getShapesByFeatureID();
-        var shape2 = uniqueThemeLayer.getShapesByFeatureID(features[0].ID);
-        expect(shape1.length).toBeGreaterThan(0);
-        expect(shape2.length).toEqual(0);
-        // redraw
-        var isRedraw = uniqueThemeLayer.redraw();
-        expect(isRedraw).toBeTruthy();
-        // removeFeatures
-        uniqueThemeLayer.removeFeatures(features);
-        uniqueThemeLayer.removeAllFeatures();
-        expect(uniqueThemeLayer.features.length).toEqual(0);
-        uniqueThemeLayer.clear();
+        if (features.length != 0) {
+            uniqueThemeLayer.addFeatures(features);
+            setTimeout(function () {
+                try {
+                    expect(uniqueThemeLayer.features.length).toBeGreaterThan(0);
+                    // getCacheCount
+                    var cacheCount = uniqueThemeLayer.getCacheCount();
+                    expect(cacheCount).toBeGreaterThan(0);
+                    // setMaxCacheCount
+                    expect(uniqueThemeLayer.maxCacheCount).toBeGreaterThan(10);
+                    uniqueThemeLayer.setMaxCacheCount(10);
+                    expect(uniqueThemeLayer.maxCacheCount).toEqual(10);
+                    // getShapesByFeatureID
+                    var shape1 = uniqueThemeLayer.getShapesByFeatureID();
+                    var shape2 = uniqueThemeLayer.getShapesByFeatureID(features[0].ID);
+                    expect(shape1.length).toBeGreaterThan(0);
+                    expect(shape2.length).toEqual(0);
+                    // redraw
+                    var isRedraw = uniqueThemeLayer.redraw();
+                    expect(isRedraw).toBeTruthy();
+                    // removeFeatures
+                    uniqueThemeLayer.removeFeatures(features);
+                    uniqueThemeLayer.removeAllFeatures();
+                    expect(uniqueThemeLayer.features.length).toEqual(0);
+                    uniqueThemeLayer.clear();
+                    done();
+                } catch (exception) {
+                    console.log("'addFeatures'案例失败：" + exception.name + ":" + exception.message);
+                    themeUniqueService.destroy();
+                    expect(false).toBeTruthy();
+                    done();
+                }
+            }, 6000);
+        } else {
+            console.log("'addFeatures'案例未获取到待添加的数据");
+        }
     });
 });

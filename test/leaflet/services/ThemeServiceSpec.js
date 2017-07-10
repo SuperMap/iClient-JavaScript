@@ -267,7 +267,7 @@ describe('leaflet_testThemeService', function () {
                 expect(false).toBeTruthy();
                 done();
             }
-        }, 3000)
+        }, 6000)
     });
 
     // 标签专题图
