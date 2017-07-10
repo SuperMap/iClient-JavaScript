@@ -22,26 +22,26 @@ module.exports = function (config) {
         // false 表示初始化的时候不会使用 script 标签直接将相关 js 引入到浏览器，需要自己写代码加载, 注意添加顺序
         files: [
         /***legacy的源码***/
-            {pattern: './src/legacy/libs/SuperMap_Basic-8.1.1-14426.js', include: false},
-            {pattern: './src/legacy/libs/Lang/*.js', include: false},
-            {pattern: './src/legacy/theme/default/*.css', include: false},
+            {pattern: '../src/legacy/libs/SuperMap_Basic-8.1.1-14426.js', include: false},
+            {pattern: '../src/legacy/libs/Lang/*.js', include: false},
+            {pattern: '../src/legacy/theme/default/*.css', include: false},
         /***common的源码***/
-            './src/common/*.js',
-            './src/common/**/*.js',
+            '../src/common/*.js',
+            '../src/common/**/*.js',
         /***leaflet的源码***/
-            {pattern: './node_modules/leaflet/dist/leaflet.css', include: false},
-            './src/leaflet/**/*.js',
-            './src/leaflet/overlay/**/*.js',
+            {pattern: '../node_modules/leaflet/dist/leaflet.css', include: false},
+            '../src/leaflet/**/*.js',
+            '../src/leaflet/overlay/**/*.js',
         /***openlayers的源码***/
-            {pattern: './node_modules/openlayers/dist/ol-debug.css', include: false},
-            './src/openlayers/**/*.js',
-            './src/openlayers/overlay/**/*.js',
+            {pattern: '../node_modules/openlayers/dist/ol-debug.css', include: false},
+            '../src/openlayers/**/*.js',
+            '../src/openlayers/overlay/**/*.js',
         /***测试文件***/
-            './test/tool/**.js',
+            './tool/**.js',
             // 以下为不同客户端对应的配置文件, 分别存放各自的测试用例以便调试
-            './test/test-main-common.js',
-            './test/test-main-leaflet.js',
-            './test/test-main-openlayers.js'
+            './test-main-common.js',
+            './test-main-leaflet.js',
+            './test-main-openlayers.js'
         ],
 
         // list of files to exclude 测试时排除的文件
@@ -51,25 +51,25 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            './node_modules/whatwg-fetch/fetch.js': ['browserify'],
-            './node_modules/fetch-jsonp/build/fetch-jsonp.js': ['browserify'],
-            './src/legacy/libs/SuperMap_Basic-8.1.1-14426.js': ['browserify'],
-            './src/legacy/libs/Lang/*.js': ['browserify'],
-            './src/common/**/*.js': ['browserify'],
-            './test/common/**/*Spec.js': ['browserify'],
-            './test/test-main-common.js': ['browserify'],
+            '../node_modules/whatwg-fetch/fetch.js': ['browserify'],
+            '../node_modules/fetch-jsonp/build/fetch-jsonp.js': ['browserify'],
+            '../src/legacy/libs/SuperMap_Basic-8.1.1-14426.js': ['browserify'],
+            '../src/legacy/libs/Lang/*.js': ['browserify'],
+            '../src/common/**/*.js': ['browserify'],
+            './common/**/*Spec.js': ['browserify'],
+            './test-main-common.js': ['browserify'],
 
-            './node_modules/leaflet/dist/leaflet-src.js': ['browserify'],
-            './src/leaflet/**/*.js': ['browserify'],
-            './src/leaflet/overlay/**/*.js': ['browserify'],
-            './test/leaflet/**/*Spec.js': ['browserify'],
-            './test/test-main-leaflet.js': ['browserify'],
+            '../node_modules/leaflet/dist/leaflet-src.js': ['browserify'],
+            '../src/leaflet/**/*.js': ['browserify'],
+            '../src/leaflet/overlay/**/*.js': ['browserify'],
+            './leaflet/**/*Spec.js': ['browserify'],
+            './test-main-leaflet.js': ['browserify'],
 
-            './node_modules/openlayers/dist/ol-debug.js': ['browserify'],
-            './src/openlayers/**/*.js': ['browserify'],
-            './src/openlayers/overlay/**/*.js': ['browserify'],
-            './test/openlayers/**/*Spec.js': ['browserify'],
-            './test/test-main-openlayers.js': ['browserify']
+            '../node_modules/openlayers/dist/ol-debug.js': ['browserify'],
+            '../src/openlayers/**/*.js': ['browserify'],
+            '../src/openlayers/overlay/**/*.js': ['browserify'],
+            './openlayers/**/*Spec.js': ['browserify'],
+            './test-main-openlayers.js': ['browserify']
         },
 
         // test results reporter to use
@@ -118,7 +118,7 @@ module.exports = function (config) {
 
         // Concurrency level
         // how many browser should be started simultaneous
-        concurrency: Infinity,
+        concurrency: Infinity
 
     })
 };

@@ -16,8 +16,8 @@
     "compress-leaflet": "uglifyjs --comments /Copyright©/i -c -m -o ./dist/iclient9-leaflet.min.js -- ./dist/iclient9-leaflet.js",
     "package": "node ./build/pack.js",
     "package-debug": "node ./build/pack.js - debug",
-    "test": "karma start",
-    "citest": "karma start --single-run"
+    "test": "karma start ./test/karma.conf.js",
+    "citest": "karma start ./test/karma.conf.js --single-run"
   },
   "keywords": [
     "SuperMap",
