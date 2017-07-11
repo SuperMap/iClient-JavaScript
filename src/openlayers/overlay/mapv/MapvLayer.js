@@ -11,17 +11,17 @@ var BaiduMapLayer = mapv.baiduMapLayer ? mapv.baiduMapLayer.__proto__ : Function
 
 class MapvLayer extends BaiduMapLayer {
 
-    constructor(map, dataSet, options) {
+    constructor(map, dataSet, options, source) {
         super(map, dataSet, options);
         this.dataSet = dataSet;
         var self = this;
         options = options || {};
-
+        this.source = source;
         self.animator = null;
         self.map = map;
         self.init(options);
         self.argCheck(options);
-        var canvasLayer = this.canvasLayer = new MapvCanvasLayer({
+        this.canvasLayer = new MapvCanvasLayer({
             map: map,
             context: this.context,
             paneName: options.paneName,
@@ -31,10 +31,6 @@ class MapvLayer extends BaiduMapLayer {
             update: function update() {
                 self._canvasUpdate();
             }
-        });
-        canvasLayer.draw();
-        dataSet.on('change', function () {
-            canvasLayer.draw();
         });
         this.clickEvent = this.clickEvent.bind(this);
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
@@ -122,7 +118,7 @@ class MapvLayer extends BaiduMapLayer {
             context.clear(context.COLOR_BUFFER_BIT);
         }
         var dataGetOptions = {
-            transferCoordinate: function transferCoordinate(coordinate) {
+            transferCoordinate: function (coordinate) {
                 return map.getPixelFromCoordinate(coordinate);
             }
         };
@@ -138,10 +134,14 @@ class MapvLayer extends BaiduMapLayer {
         }
         var data = self.dataSet.get(dataGetOptions);
 
+        this.processData(data);
+
         self.options._size = self.options.size;
 
         var pixel = map.getPixelFromCoordinate([0, 0]);
         this.drawContext(context, new mapv.DataSet(data), self.options, {x: pixel[0], y: pixel[1]});
+        if (self.isEnabledTime()) {
+        this.source.changed();}
         self.options.updateCallback && self.options.updateCallback(time);
     }
 

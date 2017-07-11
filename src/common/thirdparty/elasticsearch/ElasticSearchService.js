@@ -432,15 +432,6 @@ SuperMap.ElasticSearchService = SuperMap.Class({
         return this.client.updateByQuery(params, callback);
     },
 
-    /**
-     * 通过查询API来更新文档。
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-updatebyquery
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html
-     */
-    updateByQuery: function (params, callback) {
-        return this.client.updateByQuery(params, callback);
-    },
-
     _update: function (data) {
         var me = this;
         if (!data) {

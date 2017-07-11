@@ -10822,15 +10822,6 @@ SuperMap.ElasticSearchService = SuperMap.Class({
         return this.client.updateByQuery(params, callback);
     },
 
-    /**
-     * 通过查询API来更新文档。
-     * 参数设置参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-reference.html#api-updatebyquery
-     * 更多信息参考 https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update-by-query.html
-     */
-    updateByQuery: function (params, callback) {
-        return this.client.updateByQuery(params, callback);
-    },
-
     _update: function (data) {
         var me = this;
         if (!data) {
@@ -12185,8 +12176,9 @@ var MapvLayer = __webpack_require__(83);
 ol.source.Mapv = function (opt_options) {
     var options = opt_options ? opt_options : {};
     ol.source.ImageCanvas.call(this, {
-        attributions: options.attributions|| new ol.Attribution({
-            html: '© 2017 百度 MapV with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'}),
+        attributions: options.attributions || new ol.Attribution({
+            html: '© 2017 百度 MapV with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
+        }),
         canvasFunction: this.canvasFunctionInternal_.bind(this),
         logo: options.logo,
         projection: options.projection,
@@ -12194,21 +12186,24 @@ ol.source.Mapv = function (opt_options) {
         resolutions: options.resolutions,
         state: options.state
     });
-    this.layer = new MapvLayer(opt_options.map, opt_options.dataSet, opt_options.mapvOptions);
+    this.layer = new MapvLayer(opt_options.map, opt_options.dataSet, opt_options.mapvOptions, this);
+    this.layer.canvasLayer.draw();
     this.map = opt_options.map;
 };
 ol.inherits(ol.source.Mapv, ol.source.ImageCanvas);
 
 ol.source.Mapv.prototype.canvasFunctionInternal_ = function (extent, resolution, pixelRatio, size, projection) {
     if (this.layer) {
-        var mapWidth = Math.round(ol.extent.getWidth(extent) / resolution);
-        var mapHeight = Math.round(ol.extent.getHeight(extent) / resolution);
+        if (!this.layer.isEnabledTime()) {
+            this.layer.canvasLayer.draw();
+        }
+        var mapWidth = size[0];
+        var mapHeight = size[1];
         var width = this.map.getSize()[0];
         var height = this.map.getSize()[1];
         var canvas = this.layer.canvasLayer.canvas;
-        this.layer.canvasLayer.draw();
         var context = ol.dom.createCanvasContext2D(mapWidth, mapHeight);
-        context.drawImage(canvas, 0, 0, mapWidth, mapHeight, (mapWidth - width) / 2, (mapHeight - height) / 2, mapWidth, mapHeight);
+        context.drawImage(canvas, 0, 0, width, height, (mapWidth - width) / 2, (mapHeight - height) / 2, width, height);
         if (this.resolution !== resolution || JSON.stringify(this.extent) !== JSON.stringify(extent)) {
             this.resolution = resolution;
             this.extent = extent;
@@ -14760,7 +14755,7 @@ var BaiduMapLayer = mapv.baiduMapLayer ? mapv.baiduMapLayer.__proto__ : Function
 var MapvLayer = function (_BaiduMapLayer) {
     _inherits(MapvLayer, _BaiduMapLayer);
 
-    function MapvLayer(map, dataSet, options) {
+    function MapvLayer(map, dataSet, options, source) {
         _classCallCheck(this, MapvLayer);
 
         var _this = _possibleConstructorReturn(this, (MapvLayer.__proto__ || Object.getPrototypeOf(MapvLayer)).call(this, map, dataSet, options));
@@ -14768,12 +14763,12 @@ var MapvLayer = function (_BaiduMapLayer) {
         _this.dataSet = dataSet;
         var self = _this;
         options = options || {};
-
+        _this.source = source;
         self.animator = null;
         self.map = map;
         self.init(options);
         self.argCheck(options);
-        var canvasLayer = _this.canvasLayer = new MapvCanvasLayer({
+        _this.canvasLayer = new MapvCanvasLayer({
             map: map,
             context: _this.context,
             paneName: options.paneName,
@@ -14783,10 +14778,6 @@ var MapvLayer = function (_BaiduMapLayer) {
             update: function update() {
                 self._canvasUpdate();
             }
-        });
-        canvasLayer.draw();
-        dataSet.on('change', function () {
-            canvasLayer.draw();
         });
         _this.clickEvent = _this.clickEvent.bind(_this);
         _this.mousemoveEvent = _this.mousemoveEvent.bind(_this);
@@ -14898,10 +14889,15 @@ var MapvLayer = function (_BaiduMapLayer) {
             }
             var data = self.dataSet.get(dataGetOptions);
 
+            this.processData(data);
+
             self.options._size = self.options.size;
 
             var pixel = map.getPixelFromCoordinate([0, 0]);
             this.drawContext(context, new mapv.DataSet(data), self.options, { x: pixel[0], y: pixel[1] });
+            if (self.isEnabledTime()) {
+                this.source.changed();
+            }
             self.options.updateCallback && self.options.updateCallback(time);
         }
     }, {
