@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MapV轨迹</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="http://mapv.baidu.com/build/mapv.min.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
+
+<script type="text/javascript">
+    var map = L.map('map', {
+        center: [30.41, 114.32],
+        zoom: 11,
+    });
+
+    var mbAttr = 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        token = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
+        mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + token;
+
+    var baseLayer = L.tileLayer(mbUrl, {id: 'mapbox.dark', attribution: mbAttr}).addTo(map);
+    baseLayer.once('load', function () {
+        loadData();
+    });
+
+    //示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理，请自行纠偏数据
+    function loadData() {
+        $.get('../data/wuhan-car', function (rs) {
+            var data = [];
+            var timeData = [];
+
+            rs = rs.split("\n");
+            var maxLength = 0;
+            //leaflet只识别经纬度坐标，需要将数据中的米坐标转成经纬度坐标
+            var projection = L.CRS.EPSG3857.projection;
+            var ggPoints;
+            for (var i = 0; i < rs.length; i++) {
+                var item = rs[i].split(',');
+                var coordinates = [];
+                if (item.length > maxLength) {
+                    maxLength = item.length;
+                }
+                if (item.length < 2) {
+                    continue;
+                }
+                for (j = 0; j < item.length; j += 2) {
+                    //需要将数据中的米坐标转成经纬度坐标
+                    var latLng = projection.unproject(L.point([item[j], item[j + 1]]));
+                    coordinates.push([latLng.lng, latLng.lat]);
+                    timeData.push({
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [latLng.lng, latLng.lat]
+                        },
+                        count: 1,
+                        time: j
+                    });
+                }
+                ggPoints = coordinates;
+                data.push({
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: coordinates
+                    }
+                });
+
+            }
+
+
+            var dataSet1 = new mapv.DataSet(data);
+
+            var options1 = {
+                strokeStyle: 'rgba(53,57,255,0.5)',
+                shadowColor: 'rgba(53,57,255,0.2)',
+                shadowBlur: 3,
+                lineWidth: 3.0,
+                draw: 'simple'
+            };
+            //线图层
+            var dataAttr = "数据来源<a target='_blank' href='http://mapv.baidu.com/examples/baidu-map-polyline-time.html'> MapV</a> ";
+            L.supermap.mapVLayer(dataSet1, options1, {attributionPrefix: dataAttr, attribution: ""}).addTo(map);
+
+            var dataSet2 = new mapv.DataSet(timeData);
+            var options2 = {
+                fillStyle: 'rgba(255, 250, 250, 0.2)',
+                globalCompositeOperation: "lighter",
+                size: 1.5,
+                animation: {
+                    stepsRange: {
+                        start: 0,
+                        end: 100
+                    },
+                    trails: 3,
+                    duration: 5,
+                },
+                draw: 'simple'
+            };
+            //动态轨迹图层
+            L.supermap.mapVLayer(dataSet2, options2).addTo(map);
+            setTimeout(function () {
+                alert("示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理，请自行纠偏数据")
+            }, 1000)
+        });
+    }
+
+</script>
+
+</body>
+</html>

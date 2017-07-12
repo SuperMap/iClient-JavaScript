@@ -396,6 +396,34 @@ var exampleConfig = {
                     name: "纽约出租车上车点",
                     thumbnail: "l_mapVLayer_point.png",
                     fileName: "mapVLayerPoint"
+                }, {
+                    name: "通勤图",
+                    thumbnail: "l_mapvLayer_csvCar.png",
+                    fileName: "mapVLayerCSVCar"
+                }, {
+                    name: "强边界图",
+                    thumbnail: "l_mapvLayer_forceEdgeBunding.png",
+                    fileName: "mapVLayerForceEdgeBunding"
+                }, {
+                    name: "迁徙图",
+                    thumbnail: "l_mapvLayer_qianxi.png",
+                    fileName: "mapVLayerQianxi"
+                }, {
+                    name: "动态轨迹",
+                    thumbnail: "l_mapvLayer_polylineTime.png",
+                    fileName: "mapVLayerPolylineTime"
+                }, {
+                    name: "简单线",
+                    thumbnail: "l_mapvLayer_polyline.png",
+                    fileName: "mapVLayerPolylineSimple"
+                }, {
+                    name: "强度线",
+                    thumbnail: "l_mapvLayer_polylineIntensity.png",
+                    fileName: "mapVLayerPolylineIntensity"
+                }, {
+                    name: "面",
+                    thumbnail: "l_mapvLayer_polygon.png",
+                    fileName: "mapVLayerPolygon"
                 }]
             },
             "tileVectorLayer": {

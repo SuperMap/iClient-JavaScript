@@ -4,10 +4,13 @@
  */
 var L = require("leaflet");
 var MapVRenderer = require("./mapv/MapVRenderer");
+
+
 var MapVLayer = L.Layer.extend({
 
     options: {
-        attribution: '© 2017 百度 MapV with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
+        attributionPrefix: null,
+        attribution: ' © 2017 百度 MapV with <a href="http://iclient.supermapol.com">SuperMap iClient</a>'
     },
 
     initialize: function (dataSet, mapVOptions, options) {
@@ -16,6 +19,10 @@ var MapVLayer = L.Layer.extend({
         this.mapVOptions = mapVOptions || {};
         this.render = this.render.bind(this);
         L.Util.setOptions(this, options);
+        if (this.options.attributionPrefix) {
+            this.options.attribution = this.options.attributionPrefix + this.options.attribution;
+        }
+
         this.canvas = this._createCanvas();
         L.stamp(this);
     },
@@ -37,24 +44,24 @@ var MapVLayer = L.Layer.extend({
     getEvents: function () {
         return {
             moveend: this.draw,
-            zoomstart:this._hide,
-            zoomend:this._show
+            zoomstart: this._hide,
+            zoomend: this._show
         }
 
     },
-    _hide : function () {
+    _hide: function () {
         this.canvas.style.display = 'none';
     },
 
-    _show : function () {
+    _show: function () {
         this.canvas.style.display = 'block';
     },
     onRemove: function (map) {
         L.DomUtil.remove(this.container);
         map.off({
             moveend: this.draw,
-            zoomstart:this._hide,
-            zoomend:this._show
+            zoomstart: this._hide,
+            zoomend: this._show
         }, this);
     },
 
@@ -116,7 +123,7 @@ var MapVLayer = L.Layer.extend({
         canvas.height = size.y;
         canvas.style.width = size.x + 'px';
         canvas.style.height = size.y + 'px';
-        var bounds =map.getBounds();
+        var bounds = map.getBounds();
         var topLeft = map.latLngToLayerPoint(bounds.getNorthWest());
         L.DomUtil.setPosition(canvas, topLeft);
 
@@ -140,3 +147,16 @@ L.supermap.mapVLayer = function (dataSet, mapVOptions, options) {
     return new MapVLayer(dataSet, mapVOptions, options);
 };
 module.exports = MapVLayer;
+
+L.Map.include({
+    /**
+     * 获取精确的像素坐标.
+     * 当需要绘制比较平滑的曲线的时候可调用此方法代替latLngToContainerPoint
+     * @param latlng
+     */
+    latLngToAccurateContainerPoint: function (latlng) {
+        var projectedPoint = this.project(L.latLng(latlng));
+        var layerPoint = projectedPoint._subtract(this.getPixelOrigin());
+        return L.point(layerPoint).add(this._getMapPanePos());
+    },
+});

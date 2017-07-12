@@ -111,10 +111,11 @@ class MapVRenderer extends BaseLayer {
             return;
         }
 
-        var offset = map.latLngToContainerPoint(this.canvasLayer.getTopLeft());
+
+        var offset = map.latLngToAccurateContainerPoint(this.canvasLayer.getTopLeft());
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
-                var worldPoint = map.latLngToContainerPoint(L.latLng(coordinate[1], coordinate[0]));
+                var worldPoint = map.latLngToAccurateContainerPoint(L.latLng(coordinate[1], coordinate[0]));
                 var pixel = {
                     x: worldPoint.x - offset.x,
                     y: worldPoint.y - offset.y,

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MapV迁徙动态图</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="http://mapv.baidu.com/build/mapv.min.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
+<script type="text/javascript">
+    var map = L.map('map', {
+        center: [36.64, 108.15],
+        zoom: 4,
+    });
+
+
+    var mbAttr = 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        token = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
+        mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + token;
+
+    var baseLayer = L.tileLayer(mbUrl, {id: 'mapbox.dark', attribution: mbAttr}).addTo(map);
+    baseLayer.once('load', function () {
+        loadData();
+    });
+
+    //示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理，请自行纠偏数据
+    function loadData() {
+        var data = [];
+        var timeData = [];
+
+        function curive(fromPoint, endPoint, n) {
+            var delLng = (endPoint.lng - fromPoint.lng) / n;
+            var delLat = (endPoint.lat - fromPoint.lat) / n;
+
+            for (var i = 0; i < n; i++) {
+                var pointNLng = fromPoint.lng + delLng * i;
+                var pointNLat = fromPoint.lat + delLat * i;
+                timeData.push({
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [pointNLng, pointNLat]
+                    },
+                    count: 1,
+                    time: i
+                });
+            }
+        }
+
+        // 构造数据
+        $.ajax({
+            url: '../data/qianxi-time',
+            success: function (rs) {
+                var items = rs.split('|');
+                for (var i = 0; i < items.length; i++) {
+                    var itemArr = items[i].split(/\n/);
+                    for (var k = 0; k < itemArr.length; k++) {
+                        if (!!itemArr[k]) {
+                            var item = itemArr[k].split(/\t/);
+                            if (item[0] === '起点城市' || item[0] === '迁出城市') {
+                                var cityBegin = item[1];
+                            }
+                            if (item[0] !== '起点城市' || item[0] !== '迁出城市' && item.length > 1) {
+                                var cityCenter1 = mapv.utilCityCenter.getCenterByCityName(item[0].replace(/市|省/, ""));
+                                var cityCenter2 = mapv.utilCityCenter.getCenterByCityName(cityBegin.replace(/市|省/, ""));
+                                if (cityCenter1) {
+                                    if (Math.random() > 0.7) {
+                                        curive(cityCenter2, cityCenter1, 50);
+                                    }
+                                    data.push({
+                                        geometry: {
+                                            type: 'LineString',
+                                            coordinates: [[cityCenter1.lng, cityCenter1.lat], [cityCenter2.lng, cityCenter2.lat]]
+                                        },
+                                        count: 100 * Math.random()
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+
+                var dataSet1 = new mapv.DataSet(data);
+                var options1 = {
+                    strokeStyle: 'rgba(55, 50, 250, 0.3)',
+                    globalCompositeOperation: 'lighter',
+                    shadowColor: 'rgba(55, 50, 250, 0.5)',
+                    methods: {
+                        click: function (item) {
+                        }
+                    },
+                    gradient: {0: 'rgba(55, 50, 250, 0)', 1: 'rgba(55, 50, 250, 1)'},
+                    lineWidth: .2,
+                    draw: 'intensity'
+                };
+                //线图层
+                var dataAttr = "数据来源<a target='_blank' href='http://mapv.baidu.com/examples/qianxi-time.html'>MapV</a>";
+                L.supermap.mapVLayer(dataSet1, options1, {attributionPrefix: dataAttr, attribution: ""}).addTo(map);
+
+                var dataSet2 = new mapv.DataSet(timeData);
+                var options2 = {
+                    fillStyle: 'rgba(255, 250, 250, 0.9)',
+                    size: .5,
+                    animation: {
+                        type: 'time',
+                        stepsRange: {
+                            start: 0,
+                            end: 50
+                        },
+                        trails: 1,
+                        duration: 5,
+                    },
+                    draw: 'simple'
+                };
+                //动画图层
+                L.supermap.mapVLayer(dataSet2, options2).addTo(map);
+                setTimeout(function () {
+                    alert("示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理，请自行纠偏数据")
+                }, 1000)
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>

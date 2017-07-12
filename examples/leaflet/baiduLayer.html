@@ -13,9 +13,9 @@
 <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
 <script type="text/javascript">
     map = L.map('map', {
+        crs: L.CRS.Baidu,
         center: [0, 0],
         zoom: 3,
-        crs: L.CRS.BaiduCRS
     });
     L.supermap.baiduTileLayer().addTo(map);
 </script>

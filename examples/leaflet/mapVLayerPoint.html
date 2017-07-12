@@ -33,8 +33,7 @@
 <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
 <script type="text/javascript">
 
-    var mbAttr = '数据来源<a target="_blank" href="http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml">NYC Taxi</a>|' +
-            'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    var mbAttr = 'Imagery © <a href="http://mapbox.com">Mapbox</a>',
         token = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
         mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + token;
 
@@ -60,7 +59,8 @@
             var dataSet = mapv.csv.getDataSet(csvstr);
             dataSet.initGeometry();
 
-            var layer = L.supermap.mapVLayer(dataSet, options);
+            var dataAttr = "数据来源<a target='_blank' href='http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml'>NYC Taxi</a>,";
+            var layer = L.supermap.mapVLayer(dataSet, options, {attributionPrefix: dataAttr});
 
             layer.on('loaded', function () {
                 $('#loading').hide();

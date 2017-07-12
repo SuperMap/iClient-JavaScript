@@ -1,7 +1,8 @@
 var L = require("leaflet");
-L.CRS.BaiduCRS = L.extend({}, L.CRS.EPSG3857, {
 
-    code: 'BaiduCRS',
+L.CRS.Baidu = L.extend({}, L.CRS.EPSG3857, {
+
+    code: 'Baidu',
     scale: function (zoom) {
         return (6378137 * Math.PI * 2) / Math.pow(2, 18 - zoom)
     },
