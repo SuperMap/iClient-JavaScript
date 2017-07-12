@@ -372,7 +372,7 @@ var exampleConfig = {
                 ]
 
             },
-            "Mapv": {
+            "MapV": {
                 name: "Mapv",
                 content: [{
                     name: "蜂巢图",
@@ -384,7 +384,15 @@ var exampleConfig = {
                     fileName: "mapvNycTaxi"
                 }]
             },
-            "VectorTileLayer": {
+            "extrusion": {
+                name: "2.5D",
+                content: [{
+                    name: "建筑立体效果",
+                    thumbnail: "ol_osmbuildings.png",
+                    fileName: "osmbuildings"
+                }]
+            },
+            "vectorTileLayer": {
                 name: "矢量瓦片",
                 content: [
                     {
@@ -434,7 +442,7 @@ var exampleConfig = {
                     }
                 ]
             },
-            "ThemeLayer": {
+            "themeLayer": {
                 name: "客户端专题图",
                 content: [{
                     name: "单值专题图",

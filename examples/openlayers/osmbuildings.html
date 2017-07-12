@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>openlayers 建筑立体效果</title>
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+    <script type="text/javascript" src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="http://iclient.supermapol.com/libs/osmbuildings/OSMBuildings-OL3.js"></script>
+    <style>
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            font-size: 14px;
+            min-width: 250px;
+            z-index: 100;
+        }
+
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+
+        .ol-popup-closer:after {
+            content: "✖";
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<div id="popup" class="ol-popup">
+    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+    <div id="popup-content"></div>
+</div>
+<script>
+    var container = document.getElementById('popup');
+    var content = document.getElementById('popup-content');
+    var closer = document.getElementById('popup-closer');
+    var overlay = new ol.Overlay(({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    }));
+
+    var map = new ol.Map({
+        target: 'map',
+        view: new ol.View({
+            center: ol.proj.transform([116.450, 39.916], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 16,
+        }),
+        overlays: [overlay]
+    });
+    map.addLayer(new ol.layer.Tile({
+        source: new ol.source.XYZ({
+            url: "https://a.tiles.mapbox.com/v3/osmbuildings.kbpalbpk/{z}/{x}/{y}.png",
+            attributions: [
+                new ol.Attribution({
+                    html: ' Imagery © <a href="http://mapbox.com">Mapbox</a>'
+                })]
+        })
+    }));
+
+    loadData();
+
+    function loadData() {
+        var data;
+        $.get('../data/buildings.json', function (geojson) {
+            data = geojson;
+            new OSMBuildings(map)
+                .date(new Date(2017, 5, 15, 17, 30))
+                .set(geojson)
+                .click(bindPopup);
+        });
+
+        function bindPopup(evt) {
+            var name = getFeatureNameById(evt.feature);
+            if (name) {
+                content.innerHTML = name;
+                overlay.setPosition([evt.lat, evt.lon]);
+            }
+            closer.onclick = function () {
+                overlay.setPosition(undefined);
+                closer.blur();
+                return false;
+            };
+        }
+
+        function getFeatureNameById(id) {
+            if (!data || !id) {
+                return null;
+            }
+            var features = data.features;
+            for (var i = 0; i < features.length; i++) {
+                if (features[i].properties.id === id) {
+                    return features[i].properties.name;
+                }
+            }
+        }
+    }
+
+</script>
+</body>
+</html>

@@ -426,6 +426,14 @@ var exampleConfig = {
                     fileName: "mapVLayerPolygon"
                 }]
             },
+            "extrusion": {
+                name: "2.5D",
+                content: [{
+                    name: "建筑立体效果",
+                    thumbnail: "l_osmbuildings.png",
+                    fileName: "osmbuildings"
+                }]
+            },
             "tileVectorLayer": {
                 name: "矢量瓦片",
                 content: [
@@ -470,7 +478,7 @@ var exampleConfig = {
                     }
                 ]
             },
-            "ThemeLayer": {
+            "themeLayer": {
                 name: "客户端专题图",
                 content: [{
                     name: "单值专题图",
@@ -486,7 +494,6 @@ var exampleConfig = {
                     fileName: "rankSymbolThemeLayer"
                 }]
             }
-
         }
     },
     "plot": {
