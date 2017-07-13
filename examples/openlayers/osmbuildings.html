@@ -9,17 +9,16 @@
     <script type="text/javascript" src="http://iclient.supermapol.com/libs/osmbuildings/OSMBuildings-OL3.js"></script>
     <style>
         .ol-popup {
-            position: absolute;
+            position: relative;
             background-color: white;
             -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
             filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
             padding: 15px;
             border-radius: 10px;
             border: 1px solid #cccccc;
-            bottom: 12px;
+            bottom: 60px;
             left: -50px;
             font-size: 14px;
-            min-width: 250px;
             z-index: 100;
         }
 
@@ -109,10 +108,9 @@
 
         function bindPopup(evt) {
             var name = getFeatureNameById(evt.feature);
-            if (name) {
-                content.innerHTML = name;
-                overlay.setPosition([evt.lat, evt.lon]);
-            }
+            name = name || "<span style='color:red'>无数据</span>";
+            content.innerHTML = name;
+            overlay.setPosition([evt.lat, evt.lon]);
             closer.onclick = function () {
                 overlay.setPosition(undefined);
                 closer.blur();

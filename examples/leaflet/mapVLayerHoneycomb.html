@@ -23,10 +23,8 @@
         zoom: 4,
     });
 
-    var baseLayer = L.tileLayer(mbUrl, {id: 'mapbox.dark', attribution: mbAttr}).addTo(map);
-    baseLayer.once('load', function () {
-        loadData();
-    });
+    L.tileLayer(mbUrl, {id: 'mapbox.dark', attribution: mbAttr}).addTo(map);
+    loadData();
 
     function loadData() {
         var randomCount = 1000;

@@ -22,12 +22,10 @@
         token = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
         mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + token;
 
-    var baseLayer = L.tileLayer(mbUrl, {id: 'mapbox.dark', attribution: mbAttr}).addTo(map);
-    baseLayer.once('load', function () {
-        loadData();
-    });
+    L.tileLayer(mbUrl, {id: 'mapbox.dark', attribution: mbAttr}).addTo(map);
+    loadData();
 
-    //示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理，请自行纠偏数据
+    //示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理
     function loadData() {
         $.get('../data/wuhan-car', function (rs) {
             var data = [];
@@ -102,7 +100,7 @@
             //动态轨迹图层
             L.supermap.mapVLayer(dataSet2, options2).addTo(map);
             setTimeout(function () {
-                alert("示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理，请自行纠偏数据")
+                map.openPopup("示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理", map.getCenter());
             }, 1000)
         });
     }

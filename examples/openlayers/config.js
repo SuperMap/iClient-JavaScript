@@ -385,7 +385,7 @@ var exampleConfig = {
                 }]
             },
             "extrusion": {
-                name: "2.5D",
+                name: "OSMBuildings",
                 content: [{
                     name: "建筑立体效果",
                     thumbnail: "ol_osmbuildings.png",

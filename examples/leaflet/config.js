@@ -424,10 +424,14 @@ var exampleConfig = {
                     name: "面",
                     thumbnail: "l_mapvLayer_polygon.png",
                     fileName: "mapVLayerPolygon"
+                }, {
+                    name: "北京",
+                    thumbnail: "l_mapvLayer_polygonBuildings.png",
+                    fileName: "mapVLayerPolygonBuildings"
                 }]
             },
             "extrusion": {
-                name: "2.5D",
+                name: "OSMBuildings",
                 content: [{
                     name: "建筑立体效果",
                     thumbnail: "l_osmbuildings.png",

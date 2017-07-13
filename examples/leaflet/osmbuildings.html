@@ -35,9 +35,8 @@
 
         function bindPopup(evt) {
             var name = getFeatureNameById(evt.feature);
-            if (name) {
-                L.popup().setContent(name).setLatLng(L.latLng(evt.lat, evt.lon)).openOn(map);
-            }
+            name = name || "<span style='color:red'>无数据</span>";
+            L.popup().setContent(name).setLatLng(L.latLng(evt.lat, evt.lon)).openOn(map);
         }
 
         function getFeatureNameById(id) {
