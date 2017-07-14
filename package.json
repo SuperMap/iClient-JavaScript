@@ -8,12 +8,14 @@
     "test": "test"
   },
   "scripts": {
-    "release": "npm run package - leaflet && npm run package - openlayers && npm run compress-leaflet&& npm run compress-openlayers",
+    "release": "npm run package - leaflet && npm run package - openlayers && npm run package - mapboxgl && npm run compress-leaflet&& npm run compress-openlayers && npm run compress-mapboxgl",
     "deploy": "webpack",
     "deploy-leaflet": "webpack --config ./build/webpack.config.leaflet.js ",
     "deploy-openlayers": "webpack --config ./build/webpack.config.openlayers.js",
+    "deploy-mapboxgl": "webpack --config ./build/webpack.config.mapboxgl.js",
     "compress-openlayers": "uglifyjs --comments /Copyright©/i -c -m -o ./dist/iclient9-openlayers.min.js -- ./dist/iclient9-openlayers.js ",
     "compress-leaflet": "uglifyjs --comments /Copyright©/i -c -m -o ./dist/iclient9-leaflet.min.js -- ./dist/iclient9-leaflet.js",
+    "compress-mapboxgl": "uglifyjs --comments /Copyright©/i -c -m -o ./dist/iclient9-mapboxgl.min.js -- ./dist/iclient9-mapboxgl.js",
     "package": "node ./build/pack.js",
     "package-debug": "node ./build/pack.js - debug",
     "test": "karma start ./test/karma.conf.js",
@@ -38,6 +40,7 @@
     "css-loader": "^0.26.1",
     "echarts": "3.5.4",
     "mapv": "2.0.14",
+    "mapbox-gl": "0.38.0",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.0",
     "imports-loader": "^0.7.0",

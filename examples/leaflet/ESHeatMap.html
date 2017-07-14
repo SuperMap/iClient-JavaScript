@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>时序热力图</title>
+    <title>时序热力/格网图</title>
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet"
           href="http://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
@@ -38,11 +38,11 @@
 <script type="text/javascript">
     var map,
             timeControl,
-            liveESService,//实时点查询的ESService
-            liveRenderer,//实时点层
-            liveDataSet,//渲染用实时点数据集
+            liveESService,
+            liveRenderer,
+            liveDataSet,
             geoFenceLayer,
-            dataUrl = "http://192.168.13.97:9222",
+            dataUrl = "http://117.122.248.69:9200",
             info = L.control({position: 'bottomleft'}),
             layerOptions = getGridOptions();
 
@@ -103,7 +103,6 @@
     //时间控制器回调参数，即每次刷新时执行的操作，此处为向服务器请求数据并绘制。实时刷新执行。
     function loadLiveData(currentTime) {
         getESAggregations(map.getZoom(), map.getBounds(), currentTime, currentTime + getControlOptions().speed);
-//        getESAggregations(map.getZoom(), map.getBounds(), 1472461459877, 1472777509573);
         updateProgress(moment(currentTime).format("YYYY-MM-DD HH:mm:ss"));
     }
 
@@ -136,14 +135,14 @@
             prec = 12;
         }
         liveESService.search({
-            index: "flightware",
-            type: "flight",
+            index: "flights",
+            type: "flight_utc",
             body: {
                 query: {
                     constant_score: {
                         filter: {
                             range: {
-                                time_ms: {
+                                'time-ms': {
                                     from: startT,
                                     to: endT
                                 }
@@ -155,7 +154,7 @@
                     zoomedInView: {
                         filter: {
                             geo_bounding_box: {
-                                geo: {
+                                'pin.location': {
                                     top_left: {
                                         lat: coords.getNorthWest().lat,
                                         lon: coords.getNorthWest().lng
@@ -170,7 +169,7 @@
                         aggregations: {
                             geohash: {
                                 geohash_grid: {
-                                    field: "geo",
+                                    field: "pin.location",
                                     precision: prec
                                 }
                             }
@@ -336,8 +335,8 @@
 
     //默认设置参数
     function getDefaultControlOptions() {
-        var startMs = 1472461459877;
-        var endMs = 1472777509573;
+        var startMs = 1498772645774;
+        var endMs = 1498935332879;
         var start = moment(startMs).format("YYYY-MM-DD HH:mm:ss");
         var end = moment(endMs).format("YYYY-MM-DD HH:mm:ss");
         return {
@@ -384,11 +383,11 @@
 
             var defaultOption = getDefaultControlOptions();
 
-            $("<div class='form-group form-inline'><label class='text-right' for='startTime' >起始时间<span style='color:red'>*</span></label>" +
+            $("<div class='form-group form-inline'><label class='text-right' for='startTime' >起始时间</label>" +
                     "<input id='startTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.startTime +
                     "' value='" + defaultOption.startTime + "'/></div></div>").appendTo(optionsDiv);
 
-            $("<div class='form-group form-inline'><label class='text-right' for='endTime' >终止时间<span style='color:red'>*</span></label>" +
+            $("<div class='form-group form-inline'><label class='text-right' for='endTime' >终止时间</label>" +
                     "<input id='endTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.endTime +
                     "' value='" + defaultOption.endTime + "'/></div></div>").appendTo(optionsDiv);
 

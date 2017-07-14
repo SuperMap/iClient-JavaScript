@@ -1,0 +1,111 @@
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <title>世界飞机航线图</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <link href="https://cdn.bootcss.com/mapbox-gl/0.38.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/mapbox-gl/0.38.0/mapbox-gl.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/echarts/3.4.0/echarts.min.js"></script>
+    <script type="text/javascript" src="http://iclient.supermapol.com/libs/echartsLayer/EchartsLayer.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<script>
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a> with " +
+            "<a href='http://echarts.baidu.com/' target='_blank'>© 2017 百度 ECharts</a>";
+    var token = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw";
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": ["https://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=" + token],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [0, 0],
+        zoom: 2
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+    $.get('../data/flights.json', function (data) {
+        function getAirportCoord(idx) {
+            return [data.airports[idx][3], data.airports[idx][4]];
+        }
+
+        var routes = data.routes.map(function (airline) {
+            return [
+                getAirportCoord(airline[1]),
+                getAirportCoord(airline[2])
+            ];
+        });
+        map.on('load', function () {
+            var echartslayer = new EchartsLayer(map);
+            echartslayer.chart.setOption(option = {
+                title: {
+                    text: 'World Flights',
+                    left: 'center',
+                    textStyle: {
+                        color: '#eee'
+                    }
+                },
+
+                tooltip: {
+                    formatter: function (param) {
+                        var route = data.routes[param.dataIndex];
+                        return data.airports[route[1]][1] + ' > ' + data.airports[route[
+                                        2]][1];
+                    }
+                },
+                GLMap: {
+                    roam: true
+                },
+                series: [{
+                    type: 'lines',
+                    coordinateSystem: 'GLMap',
+                    data: routes,
+                    large: true,
+                    largeThreshold: 100,
+                    lineStyle: {
+                        normal: {
+                            opacity: 0.05,
+                            width: 0.5,
+                            curveness: 0.3
+                        }
+                    },
+                    // 设置混合模式为叠加
+                    blendMode: 'lighter'
+                }]
+            });
+        })
+    });
+</script>
+
+</body>
+</html>

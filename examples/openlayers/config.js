@@ -382,6 +382,36 @@ var exampleConfig = {
                     name: "纽约出租车上车点",
                     thumbnail: "mapNycTaxi.png",
                     fileName: "mapvNycTaxi"
+                }, {
+                    name: "强边界图",
+                    thumbnail: "mapvForceEdgeBuilding.png",
+                    fileName: "mapvForceEdgeBuilding"
+                },
+                    //     {
+                    //     name: "迁徙图",
+                    //     thumbnail: "mapvQianxiTime.png",
+                    //     fileName: "mapvQianxiTime"
+                    // },
+                    {
+                    name: "动态轨迹",
+                    thumbnail: "mapvPolylineTime.png",
+                    fileName: "mapvPolylineTime"
+                }, {
+                    name: "强度线",
+                    thumbnail: "mapvPolylineIntensity.png",
+                    fileName: "mapvPolylineIntensity"
+                }, {
+                    name: "通勤图",
+                    thumbnail: "mapvCsvcar.png",
+                    fileName: "mapvCsvcar"
+                }, {
+                    name: "北京村庄分布图",
+                    thumbnail: "mapvBeijingVillage.png",
+                    fileName: "mapvBeijingVillage"
+                }, {
+                    name: "简单线",
+                    thumbnail: "mapvPolylineSimple.png",
+                    fileName: "mapvPolylineSimple"
                 }]
             },
             "extrusion": {

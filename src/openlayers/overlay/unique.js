@@ -1,7 +1,7 @@
 var ol = require('openlayers/dist/ol-debug');
-var SuperMap = require('../../../common/SuperMap');
-var GeoFeature = require('./geoFeature');
-var Vector = require('../../../common/iServer/ThemeVector');
+var SuperMap = require('../../common/SuperMap');
+var GeoFeature = require('./theme/geoFeature');
+var Vector = require('../../common/iServer/ThemeVector');
 
 ol.source.Unique = function (name, opt_options) {
     GeoFeature.call(this, name, opt_options);

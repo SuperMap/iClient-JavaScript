@@ -1,6 +1,6 @@
 var ol = require('openlayers/dist/ol-debug');
-var SuperMap = require('../../../common/SuperMap');
-var Graph = require('./graph');
+var SuperMap = require('../../common/SuperMap');
+var Graph = require('./theme/graph');
 // var Vector = require('../../../common/iServer/ThemeVector');
 
 ol.source.RankSymbol = function (name, symbolType, opt_options) {

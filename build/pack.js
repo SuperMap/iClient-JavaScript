@@ -7,7 +7,7 @@ program.description('Customized pack iClient9.');
 program.command('- <key> [modules]')
     .description('pack iClent9')
     .action(function (key, modules) {
-        if (!key || (key !== "leaflet" && key !== "common" && key !== "openlayers")) {
+        if (!key || (key !== "leaflet" && key !== "common" && key !== "openlayers" && key !== "mapboxgl")) {
             console.log(key + "值输入有误，可选值为leaflet或openlayers");
             return;
         }
@@ -24,6 +24,9 @@ program.command('- <key> [modules]')
         }
         if (key === "openlayers") {
             clientModules = deps.openlayers;
+        }
+        if (key === "mapboxgl") {
+            clientModules = deps.mapboxgl;
         }
         if (!modules) {
             for (var clientModule in clientModules) {

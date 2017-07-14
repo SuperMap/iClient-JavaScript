@@ -65,6 +65,76 @@ var exampleConfig = {
                         fileName: "mvtVectorTile_Beijing_positron"
                     },
                 ]
+            },
+            "Echarts": {
+                name: "Echarts",
+                content: [
+                    {
+                        name: "全国主要城市空气质量图",
+                        thumbnail: "echarts_effectScatter.png",
+                        fileName: "echarts_effectScatter"
+                    },
+                    {
+                        name: "模拟迁徙图",
+                        thumbnail: "echarts_geoline.png",
+                        fileName: "echarts_geoline"
+                    },
+                    {
+                        name: "世界飞机航线图",
+                        thumbnail: "echarts_linesAirline.png",
+                        fileName: "echarts_linesAirline"
+                    },
+                    {
+                        name: "微博签到图",
+                        thumbnail: "echarts_scatterWeibo.png",
+                        fileName: "echarts_scatterWeibo"
+                    }
+                ]
+            },
+            "MapV": {
+                name: "MapV",
+                content: [
+                    {
+                        name: "北京村庄分布图",
+                        thumbnail: "mapvBeijingVillage.png",
+                        fileName: "mapvBeijingVillage"
+                    },
+                    {
+                        name: "通勤图",
+                        thumbnail: "mapvCsvcar.png",
+                        fileName: "mapvCsvcar"
+                    },
+                    {
+                        name: "强边界图",
+                        thumbnail: "mapvForceEdgeBuilding.png",
+                        fileName: "mapvForceEdgeBuilding"
+                    },
+                    {
+                        name: "强度线",
+                        thumbnail: "mapvPolylineIntensity.png",
+                        fileName: "mapvPolylineIntensity"
+                    },
+                    {
+                        name: "简单线",
+                        thumbnail: "mapvPolylineSimple.png",
+                        fileName: "mapvPolylineSimple"
+                    },
+                    {
+                        name: "动态轨迹",
+                        thumbnail: "mapvPolylineTime.png",
+                        fileName: "mapvPolylineTime"
+                    },
+                    // {
+                    //     name: "迁徙时序图",
+                    //     thumbnail: "mapvQianxiTime.png",
+                    //     fileName: "mapvQianxiTime"
+                    // },
+                    {
+                        name: "迁徙图",
+                        thumbnail: "mapvQianxi.png",
+                        fileName: "mapvQianxi"
+                    },
+                ]
             }
         }
     },

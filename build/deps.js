@@ -390,24 +390,30 @@ var deps = {
                 "src": [
                     "./src/openlayers/overlay/theme/theme.js",
                     "./src/openlayers/overlay/theme/geoFeature.js",
-                    "./src/openlayers/overlay/theme/unique.js",
-                    "./src/openlayers/overlay/theme/range.js",
+                    "./src/openlayers/overlay/unique.js",
+                    "./src/openlayers/overlay/range.js",
                     "./src/openlayers/overlay/theme/graph.js",
-                    "./src/openlayers/overlay/theme/rankSymbol.js",
+                    "./src/openlayers/overlay/rankSymbol.js",
                     "./src/openlayers/overlay/theme/themeFeature.js"
                 ]
             },
             "Mapv": {
                 "name": "Mapv",
                 "src": [
-                    "./src/openlayers/overlay/mapv/source/mapv.js",
+                    "./src/openlayers/overlay/mapv.js",
                 ]
-            },
-            "ElasticSearch": {
-                "name": "ElasticSearch",
+            }
+        }
+    },
+
+    "mapboxgl": {
+        "overlay": {
+            "title": "可视化",
+            "description": "--对接可视化",
+            "Mapv": {
+                "name": "Mapv",
                 "src": [
-                    "./src/common/control/TimeFlowControl.js",
-                    "./src/common/thirdparty/elasticsearch/ElasticSearchService.js"
+                    "./src/mapboxgl/overlay/MapvLayer.js"
                 ]
             }
         }

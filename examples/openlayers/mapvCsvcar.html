@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+    <title>通勤图</title>
+    <style>
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 280px;
+            font-size: 8pt;
+        }
+
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+        .ol-popup-closer {
+            text-decoration: none;
+            position: absolute;
+            top: 2px;
+            right: 8px;
+        }
+
+        .ol-popup-closer:after {
+            content: "✖";
+        }
+    </style>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%"></div>
+<div id="popup" class="ol-popup">
+    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+    <div id="popup-content">示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理</div>
+</div>
+<script src="http://mapv.baidu.com/build/mapv.min.js"></script>
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
+<script type="text/javascript">
+    var token = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
+            mbUrl = 'https://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=' + token;
+    var container = document.getElementById('popup');
+    var closer = document.getElementById('popup-closer');
+    var overlay = new ol.Overlay(({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    }));
+    closer.onclick = function () {
+        overlay.setPosition(undefined);
+        closer.blur();
+        return false;
+    };
+    var map = new ol.Map({
+        target: 'map',
+        overlays: [overlay],
+        view: new ol.View({
+            center: ol.proj.transform([106.563777, 29.578285], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 11,
+            projection: 'EPSG:3857'
+        })
+    });
+    map.addLayer(new ol.layer.Tile({
+        source: new ol.source.XYZ({
+            url: mbUrl
+        })
+    }));
+    overlay.setPosition(map.getView().getCenter());
+
+    $.get('../data/car.csv', function (csvstr) {
+        var mapvOptions = {
+            strokeStyle: 'rgba(50, 50, 255, 0.8)',
+            lineWidth: 0.05,
+            globalCompositeOperation: 'lighter',
+            draw: 'simple'
+        };
+        var dataSet = mapv.csv.getDataSet(csvstr);
+        dataSet._data.map(function (data, i) {
+            data.geometry.coordinates.map(function (coord, j) {
+                dataSet._data[i].geometry.coordinates[j] = ol.proj.transform(coord, 'EPSG:4326', 'EPSG:3857');
+            })
+        });
+
+        var options = {
+            map: map, dataSet: dataSet, mapvOptions: mapvOptions, attributions: new ol.Attribution({
+                html: 'Imagery © <a href="http://mapbox.com">Mapbox</a> © 2017 百度 MapV with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
+            })
+        };
+        map.addLayer(new ol.layer.Image({
+            source: new ol.source.Mapv(options)
+        }));
+    });
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <title>微博签到图</title>
+
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <link href="https://cdn.bootcss.com/mapbox-gl/0.38.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/mapbox-gl/0.38.0/mapbox-gl.js"></script>
+    <script type="text/javascript" src="http://cdn.bootcss.com/echarts/3.4.0/echarts.min.js"></script>
+    <script type="text/javascript" src="http://iclient.supermapol.com/libs/echartsLayer/EchartsLayer.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<script>
+    var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a> with " +
+            "<a href='http://echarts.baidu.com/' target='_blank'>© 2017 百度 ECharts</a>";
+    var token = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw";
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": ["https://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=" + token],
+                    "tileSize": 256,
+                },
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 0,
+                "maxzoom": 22
+            }]
+        },
+        center: [112, 37.94],
+        zoom: 3
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+    $.get('../data/weibo.json', function (weiboData) {
+        weiboData = weiboData.map(function (serieData, idx) {
+            var px = serieData[0] / 1000;
+            var py = serieData[1] / 1000;
+            var res = [
+                [px, py]
+            ];
+
+            for (var i = 2; i < serieData.length; i += 2) {
+                var dx = serieData[i] / 1000;
+                var dy = serieData[i + 1] / 1000;
+                var x = px + dx;
+                var y = py + dy;
+                res.push([x.toFixed(2), y.toFixed(2), 1]);
+
+                px = x;
+                py = y;
+            }
+            return res;
+        });
+
+        map.on('load', function () {
+            var echartslayer = new EchartsLayer(map);
+            echartslayer.chart.setOption(option = {
+
+                GLMap: {
+                    roam: true
+                },
+                coordinateSystem: 'GLMap',
+                title: {
+                    text: '微博签到数据点亮中国',
+                    subtext: 'From ThinkGIS',
+                    sublink: 'http://www.thinkgis.cn/public/sina',
+                    left: 'center',
+                    top: 'top',
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                tooltip: {},
+                legend: {
+                    left: 'left',
+                    data: ['强', '中', '弱'],
+                    textStyle: {
+                        color: '#ccc'
+                    }
+                },
+                geo: {
+                    name: '强',
+                    type: 'scatter',
+                    map: 'GLMap',
+                    label: {
+                        emphasis: {
+                            show: false
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            areaColor: '#323c48',
+                            borderColor: '#111'
+                        },
+                        emphasis: {
+                            areaColor: '#2a333d'
+                        }
+                    }
+                },
+                series: [{
+                    name: '弱',
+                    type: 'scatter',
+                    coordinateSystem: 'GLMap',
+                    symbolSize: 1,
+                    large: true,
+                    itemStyle: {
+                        normal: {
+                            shadowBlur: 2,
+                            shadowColor: 'rgba(37, 140, 249, 0.8)',
+                            color: 'rgba(37, 140, 249, 0.8)'
+                        }
+                    },
+                    data: weiboData[0]
+                }, {
+                    name: '中',
+                    type: 'scatter',
+                    coordinateSystem: 'GLMap',
+                    symbolSize: 1,
+                    large: true,
+                    itemStyle: {
+                        normal: {
+                            shadowBlur: 2,
+                            shadowColor: 'rgba(14, 241, 242, 0.8)',
+                            color: 'rgba(14, 241, 242, 0.8)'
+                        }
+                    },
+                    data: weiboData[1]
+                }, {
+                    name: '强',
+                    type: 'scatter',
+                    coordinateSystem: 'GLMap',
+                    symbolSize: 1,
+                    large: true,
+                    itemStyle: {
+                        normal: {
+                            shadowBlur: 2,
+                            shadowColor: 'rgba(255, 255, 255, 0.8)',
+                            color: 'rgba(255, 255, 255, 0.8)'
+                        }
+                    },
+                    data: weiboData[2]
+                }]
+            });
+        })
+    });
+</script>
+
+</body>
+</html>

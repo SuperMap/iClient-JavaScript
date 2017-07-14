@@ -289,7 +289,16 @@ var exampleConfig = {
     },
     "iManager": {
         name: "iManager",
-        content: null
+        content: {
+            "elastic_search": {
+                name: "ElasticSearch",
+                content: [{
+                    name: "时序热力/格网图",
+                    thumbnail: "l_ESHeatMap.png",
+                    fileName: "ESHeatMap"
+                }]
+            }
+        }
     },
 
     "viz": {
