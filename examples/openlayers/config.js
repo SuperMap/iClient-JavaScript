@@ -386,13 +386,11 @@ var exampleConfig = {
                     name: "强边界图",
                     thumbnail: "mapvForceEdgeBuilding.png",
                     fileName: "mapvForceEdgeBuilding"
-                },
-                    //     {
-                    //     name: "迁徙图",
-                    //     thumbnail: "mapvQianxiTime.png",
-                    //     fileName: "mapvQianxiTime"
-                    // },
-                    {
+                }, {
+                    name: "迁徙图",
+                    thumbnail: "mapvQianxiTime.png",
+                    fileName: "mapvQianxiTime"
+                }, {
                     name: "动态轨迹",
                     thumbnail: "mapvPolylineTime.png",
                     fileName: "mapvPolylineTime"
@@ -412,7 +410,8 @@ var exampleConfig = {
                     name: "简单线",
                     thumbnail: "mapvPolylineSimple.png",
                     fileName: "mapvPolylineSimple"
-                }]
+                }
+                ]
             },
             "extrusion": {
                 name: "OSMBuildings",

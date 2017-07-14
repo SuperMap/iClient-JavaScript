@@ -124,11 +124,11 @@ var exampleConfig = {
                         thumbnail: "mapvPolylineTime.png",
                         fileName: "mapvPolylineTime"
                     },
-                    // {
-                    //     name: "迁徙时序图",
-                    //     thumbnail: "mapvQianxiTime.png",
-                    //     fileName: "mapvQianxiTime"
-                    // },
+                    {
+                        name: "迁徙时序图",
+                        thumbnail: "mapvQianxiTime.png",
+                        fileName: "mapvQianxiTime"
+                    },
                     {
                         name: "迁徙图",
                         thumbnail: "mapvQianxi.png",
