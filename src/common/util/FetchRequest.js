@@ -14,7 +14,7 @@ SuperMap.FetchRequest = {
             case 'GET':
                 return this.get(url, params, options);
             case 'POST':
-                return this.POST(url, params, options);
+                return this.post(url, params, options);
             case 'PUT':
                 return this.put(url, params, options);
             case 'DELETE':
