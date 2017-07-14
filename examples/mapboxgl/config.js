@@ -95,11 +95,6 @@ var exampleConfig = {
                 name: "MapV",
                 content: [
                     {
-                        name: "北京村庄分布图",
-                        thumbnail: "mapvBeijingVillage.png",
-                        fileName: "mapvBeijingVillage"
-                    },
-                    {
                         name: "通勤图",
                         thumbnail: "mapvCsvcar.png",
                         fileName: "mapvCsvcar"
@@ -134,6 +129,11 @@ var exampleConfig = {
                         thumbnail: "mapvQianxi.png",
                         fileName: "mapvQianxi"
                     },
+                    {
+                        name: "北京村庄分布图",
+                        thumbnail: "mapvBeijingVillage.png",
+                        fileName: "mapvBeijingVillage"
+                    }
                 ]
             }
         }
