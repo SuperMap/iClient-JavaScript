@@ -15,10 +15,12 @@ function createSideBarMenuItem(id, config, containAll) {
         return;
     }
     containExample = containAll;
-    var li = $("<li id='" + id + "' class='treeview'></li>");
+    var li = $("<li id='iclient_" + id + "' class='treeview '></li>");
+
     if (config.content) {
+
         createSideBarMenuTitle(id, config.name, true).appendTo(li);
-        createSideBarSecondMenu(config.content).appendTo(li);
+        createSideBarSecondMenu(config.content, id).appendTo(li);
     } else {
         createSideBarMenuTitle(id, config.name, false).appendTo(li);
     }
@@ -26,23 +28,22 @@ function createSideBarMenuItem(id, config, containAll) {
 }
 
 //创建二级菜单
-function createSideBarSecondMenu(config) {
-    var ul = $("<ul class='treeview-menu second-menu'></ul>");
+function createSideBarSecondMenu(config, name) {
+    var ul = $("<ul class='treeview-menu second-menu '></ul>");
     for (var key in config) {
-        var li = $("<li class='menuTitle' id='" + key + "' ></li>");
+        var li = $("<li class='menuTitle ' id='" + key + "' ></li>");
         li.appendTo(ul);
         var configItem = config[key];
 
         if (containExample && configItem.content) {
-            createSideBarMenuSecondTitle(key, configItem.name, true).appendTo(li);
+            createSideBarMenuSecondTitle(name + '-' + key, configItem.name, true).appendTo(li);
             createSideBarThirdMenu(configItem.content).appendTo(li);
         } else {
-            createSideBarMenuSecondTitle(key, configItem.name, false).appendTo(li);
+            createSideBarMenuSecondTitle(name + '-' + key, configItem.name, false).appendTo(li);
         }
     }
     return ul;
 }
-
 
 //创建三级菜单
 function createSideBarThirdMenu(examples) {
@@ -59,7 +60,6 @@ function createSideBarThirdMenu(examples) {
     return ul;
 }
 
-
 function createSideBarMenuTitle(id, title, collapse) {
     id = id || "";
     var icon = "", iconName = sideBarIconConfig[id];
@@ -67,12 +67,13 @@ function createSideBarMenuTitle(id, title, collapse) {
         icon = "<i class='fa " + iconName + " iconName'></i>"
     }
 
-    var div = $("<a href='#' id='" + id + "'>" + icon + "<span class='firstMenuTitle'>" + title + "</span></a>");
+    var div = $("<a  href='#" + id + "' >" + icon + "<span class='firstMenuTitle'>" + title + "</span></a>");
     if (collapse) {
         div.append(createCollapsedIcon());
     }
     return div;
 }
+
 
 function createSideBarMenuSecondTitle(id, title, collapse) {
     id = id || "";
@@ -81,7 +82,8 @@ function createSideBarMenuSecondTitle(id, title, collapse) {
         icon = "<i class='fa " + iconName + "'></i>"
     }
 
-    var div = $("<a href='#' id='" + id + "'>" + icon + "<span class='secondMenuTitle'>" + title + "</span></a>");
+    var div = $("<a href='#" + id + "' id='" + id + '-' + id + "'>" + icon + "<span class='secondMenuTitle'>" + title + "</span></a>");
+
     if (collapse) {
         div.append(createCollapsedIcon());
     }
@@ -108,29 +110,50 @@ function createCollapsedIcon() {
 }
 
 //只处理三层节点,后续可优化
-function selectMenu(id) {
-    $("section#sidebar #ul").addClass("active");
-    $("section#sidebar li.active").removeClass("active");
-    var target = $("section#sidebar li#" + id);
-    target.addClass('active');
-    //控制editor页面左侧导航栏一级菜单高亮
-    selectTarget(target.parent().parent().parent().parent());
-    //控制示例页面左侧导航栏一级菜单高亮
-    selectTarget(target.parent().parent());
-    //控制左侧导航栏最低级菜单高亮
-    selectTarget(target.parent());
-    selectTarget(target.find("ul"));
-    function selectTarget(target) {
-        if (!target || target.length < 1) {
-            return;
+function selectMenu(id, length) {
+    var target = _getTarget(id, length);
+    if (length !== 1) {
+        //控制editor页面左侧导航栏一级菜单高亮
+        _selectTarget(target.parent().parent().parent().parent());
+        //控制示例页面左侧导航栏一级菜单高亮
+        _selectTarget(target.parent().parent());
+        //控制左侧导航栏最低级菜单高亮
+        _selectTarget(target.parent());
+        _selectTarget(target.find("ul"));
+    }
+}
+
+function _getTarget(id, length) {
+    var target;
+    if (length) {
+        if (length === 1) {
+            $("section#sidebar li.active").removeClass("active");
+            target = $("section#sidebar li#iclient_" + id);
+            target.children('ul').show();
         }
-        var className = target.attr("class");
-        if (className && className.indexOf("treeview-menu") > -1 && className.indexOf("menu-open") === -1) {
-            target.addClass("menu-open");
-            target.css("display", "block");
+        if (length === 2) {
+            $("section#sidebar li.active ul.active li").removeClass("active");
+            target = $("section#sidebar li.treeview").children('ul').children('li#' + id);
         }
-        if (className && className.indexOf("treeview") > -1) {
-            target.addClass('active');
-        }
+    } else {
+        $("section#sidebar #ul").addClass("active");
+        $("section#sidebar li.active").removeClass("active");
+        target = $("section#sidebar li#" + id);
+    }
+    target && target.addClass('active');
+    return target;
+}
+
+function _selectTarget(target) {
+    if (!target || target.length < 1) {
+        return;
+    }
+    var className = target.attr("class");
+    if (className && className.indexOf("treeview-menu") > -1 && className.indexOf("menu-open") === -1) {
+        target.addClass("menu-open");
+        target.css("display", "block");
+    }
+    if (className && className.indexOf("treeview") > -1) {
+        target.addClass('active');
     }
 }

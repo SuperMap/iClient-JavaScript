@@ -2,7 +2,6 @@ $(document).ready(function () {
     initPage();
 
     bindEvents();
-    scrollSpy();
 });
 var exConfig = exampleConfig,
     containExamples = false,
@@ -20,12 +19,13 @@ function initPage() {
     initSelect();
 }
 
+//初始化页面第一次加载
 function initSelect() {
     var hash = window.location.hash;
-
     if (hash.indexOf("#") === -1) {
-        var id = $("#sidebar li.menuTitle").first().attr('id');
-        window.location.hash = (id) ? "#" + id : window.location.hash;
+        var id = $('#sidebar li').first().children('a')[0].hash;
+
+        window.location.hash = (id) ? id : window.location.hash;
     }
     scroll();
 }
@@ -36,21 +36,23 @@ function createGalleryItem(id, config) {
     if (!config) {
         return;
     }
+
     var categoryLi = $("<li class='category' id='" + id + "'></li>");
     if (config.name) {
         createGalleryItemTitle(id, config.name).appendTo(categoryLi);
     }
     if (config.content) {
-        createSubGalleryItem(config.content).appendTo(categoryLi);
+        createSubGalleryItem(config.content, id).appendTo(categoryLi);
     }
     return categoryLi;
 }
 
-function createSubGalleryItem(config) {
+
+function createSubGalleryItem(config, name) {
     var categoryContentDiv = $("<div class='category-content'></div>");
     for (var key in config) {
         var configItem = config[key];
-        var content = $("<div class='box box-default color-palette-box' id='category-content-" + key + "'></div>");
+        var content = $("<div class='box box-default color-palette-box' id='" + name + '-' + key + "'></div>");
         createSubGalleryItemTitle(key, configItem.name).appendTo(content);
         if (configItem.content) {
             createGalleryCharts(configItem.content).appendTo(content);
@@ -62,7 +64,7 @@ function createSubGalleryItem(config) {
 
 function createGalleryItemTitle(id, title) {
     var menuItemIcon = exampleIconConfig[id];
-    return $("<h3 class='category-title' id='" + id + "'>" + "<i class='fa " + menuItemIcon + "'></i>" + "&nbsp;&nbsp;" + title + "</h3>");
+    return $("<h3 class='category-title' id='title_" + id + "'>" + "<i class='fa " + menuItemIcon + "'></i>" + "&nbsp;&nbsp;" + title + "</h3>");
 }
 
 function createSubGalleryItemTitle(id, title) {
@@ -117,93 +119,71 @@ function resizeCharts() {
 function scroll() {
     var hash = window.location.hash;
     var ele;
+
     if (hash && hash.indexOf("#") !== -1) {
         var param = hash.split("#")[1].split("-");
         if (param.length === 1) {
-            ele = $(".category-title#" + param[0]);
-            selectMenu(param[0]);
+            ele = $(".category-title#title_" + param[0]);
+            selectMenu(param[0], param.length);
         }
-        if (param.length === 2) {
+
+        if (param.length == 2) {
+            //二级菜单里面的li
             ele = $("#category-type-" + param[1]);
-            selectMenu(param[1]);
+            selectMenu(param[1], param.length);
         }
-    }
-    if (ele) {
-        $('body').scrollTo(ele, 600, {offset: -60});
+
     }
 
+    if (ele) {
+         $("body").animate({scrollTop: ele.offset().top - 50}, 0);
+    }
 }
 
+//绑定点击事件
 function bindEvents() {
-    $('ul#sidebar-menu>li>a').on('click', function (evt) {
-        window.location.hash = "#" + evt.currentTarget.id;
+    var child = $("ul#sidebar-menu>li.treeview>ul>li");
+    var parent = $('ul.sidebar-menu>li').parent("ul");
+    //因为iManager只有1级所以，iManager点击的时候相当于一级菜单，其他的二级都要关闭.
+    if ($('ul.sidebar-menu>li#firstMenuiManager').find('ul').length == 0) {
+        if ($('ul.sidebar-menu>li#firstMenuiManager').click(function () {
+                $('ul#sidebar-menu>li>ul').slideUp(500);
+            }));
+    }
+    //一级菜单跳转
+    child.parent('ul').siblings('a').click(function (evt) {
+        if ($(this).siblings('ul').is(':visible') && $(this).siblings('ul').children('li').hasClass('active')) {
+            evt.stopPropagation();//阻止点击事件触发折叠的冒泡
+        }
+        window.location = evt.currentTarget.href;
     });
 
-    $("ul#sidebar-menu ul.second-menu a").on('click', function (evt) {
-        if (evt.target.localName === "a") {
-            var target = $(evt.target).parent().parent().parent();
-            var nodeId = evt.target.id;
-        }
-        //如果点击的是span节点还要往上一层
-        if (evt.target.localName === "span") {
-            var target = $(evt.target).parent().parent();
-            var nodeId = target.attr('id');
-        }
-        var prefixId = target.attr('id');
-        if (nodeId) {
-            evt.preventDefault();
-            var id = prefixId + "-" + nodeId;
-            window.location.hash = "#" + id;
-            evt.stopPropagation();
-        }
-    });
+    //二级菜单跳转,不用 boot自带
     window.addEventListener("hashchange", function () {
         scroll();
     });
 }
 
-//滚动监听
-function scrollSpy() {
-    //获取一级菜单名称
-    var stageList = new Array();
-    for (var key in exConfig) {
-        stageList.push(key);
-    }
+var openTimer; // 定义展开的延时
+var animationSpeed = 500;
+$(window).on('scroll', function () {
+    if ($('ul.sidebar-menu>li').hasClass('active')) {
+        var parent = $('ul.sidebar-menu>li').parent("ul");
 
-    var scrollTimer; // 定义监听滚动时间
-    $(window).on('scroll', function () {
-        var $scroll = $(this).scrollTop() + 46;
-        if (scrollTimer) {
-            clearTimeout(scrollTimer);
+        //设置0.1秒后再打开，目的是为了防止滚轮拉快 中途经过的展开和折叠效果还来不及完成而产生的重叠效果;
+        if (openTimer) {
+            clearTimeout(openTimer);
         }
-        // 监听滚轮无操作100ms后认定为滚动停止
-        scrollTimer = setTimeout(function () {
-            //拖动滚轮，对应的楼梯样式进行匹配
-            $('.box').each(function (i, n) {
-                var $stageTop = $('.box').eq(i).offset().top + $(n).outerHeight();
-                if ($stageTop <= $scroll) {
-                    return true;
-                }
-                var id = $(n).parent().parent().attr("id");
-                //二级菜单高亮
-                $("ul#sidebar-menu>li").not("#" + id).removeClass('active');
-                $("ul#sidebar-menu>li#" + id).addClass('active');
-
-                for (var k = 0; k < stageList.length; k++) {
-                    if (stageList[k] === id) {
-                        $("ul#sidebar-menu>li").removeClass("active").find('ul').removeAttr("style");
-                        $("ul#sidebar-menu>li#" + id).addClass('active');
-                    }
-                }
-
-                // 第一级菜单高亮
-                $('.menuTitle').removeClass('active');
-                $('.menuTitle').eq(i).addClass('active');
-                return false;//中断循环
-            });
+        openTimer = setTimeout(function () {
+            parent.children('li.active').children('ul').slideDown(animationSpeed, function () {
+                parent.children('li.active').children('ul').css('display', 'block');
+            })
         }, 100);
-    });
-}
+    }
+    $('ul.sidebar-menu>li').not("li.active").children('ul').css('display', 'none');
+});
+
+
 
 
 

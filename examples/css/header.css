@@ -252,3 +252,9 @@
         padding: 15px 5px 15px 5px;
     }
 }
+
+/*改变navbar.less的默认属性*/
+.navbar-collapse.in{
+    overflow-y: visible !important;
+}
+/*改变navbar.less的默认属性*/
