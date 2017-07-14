@@ -1,7 +1,7 @@
 require('../core/Base');
 var L = require("leaflet");
 var Util = require('../core/Util');
-var Request = require('../../common/util/Request');
+var Request = require('../../common/util/FetchRequest');
 var SuperMap = require('../../common/SuperMap');
 var CartoCSSToLeaflet = require('../overlay/carto/CartoCSSToLeaflet');
 var WebMap = L.LayerGroup.extend({

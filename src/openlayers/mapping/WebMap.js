@@ -1,6 +1,6 @@
 require('../core/Base');
 var ol = require('openlayers/dist/ol-debug');
-var Request = require('../../common/util/Request');
+var Request = require('../../common/util/FetchRequest');
 var SuperMap = require('../../common/SuperMap');
 var StyleUtils = require('../core/StyleUtils');
 ol.supermap.WebMap = function (id, options) {

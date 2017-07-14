@@ -3,7 +3,7 @@
  * 服务基类
  */
 require('../core/Base');
-require('../../common/util/Request');
+require('../../common/util/FetchRequest');
 var L = require("leaflet");
 
 var ServiceBase = L.Evented.extend({

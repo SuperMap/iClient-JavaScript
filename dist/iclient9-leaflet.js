@@ -3048,7 +3048,7 @@ SuperMap.Support = {
     cors: ((window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()))
 };
 
-SuperMap.Request = {
+SuperMap.FetchRequest = {
 
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
@@ -3200,7 +3200,7 @@ SuperMap.Request = {
 
 
 };
-module.exports = SuperMap.Request;
+module.exports = SuperMap.FetchRequest;
 
 /***/ }),
 /* 15 */
@@ -12221,7 +12221,7 @@ SuperMap.iPortal = SuperMap.Class(SuperMap.iPortalServiceBase, {
     },
 
     load: function () {
-        return SuperMap.Request.get(this.iportalUrl + '/web');
+        return SuperMap.FetchRequest.get(this.iportalUrl + '/web');
     },
 
     queryServices: function (queryParams) {
@@ -14410,7 +14410,7 @@ var TileVectorLayer = L.VectorGrid.extend({
     initLayersInfo: function () {
         var me = this;
         var layersUrl = me.url + "/layers.json";
-        SuperMap.Request.get(layersUrl, null, {
+        SuperMap.FetchRequest.get(layersUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
             return response.json();
@@ -14480,7 +14480,7 @@ var TileVectorLayer = L.VectorGrid.extend({
     getVectorStylesFromServer: function () {
         var me = this;
         var vectorStyleUrl = me.url + "/tileFeature/vectorstyles.json";
-        SuperMap.Request.get(vectorStyleUrl, null, {
+        SuperMap.FetchRequest.get(vectorStyleUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
             return response.json()
@@ -51012,7 +51012,7 @@ var VectorTileJSON = L.Class.extend({
 
     getTile: function () {
         var me = this;
-        return SuperMap.Request.get(me.url, null, {
+        return SuperMap.FetchRequest.get(me.url, null, {
             timeout: 10000
         }).then(function (response) {
             return response.json()
@@ -51162,7 +51162,7 @@ var VectorTilePBF = L.Class.extend({
 
     getTile: function () {
         var me = this;
-        return SuperMap.Request.get(me.url, null, {
+        return SuperMap.FetchRequest.get(me.url, null, {
             timeout: 10000
         }).then(function (response) {
             if (!response.ok) {

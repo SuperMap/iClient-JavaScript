@@ -3,7 +3,7 @@
  * 服务基类
  */
 require('../core/Base');
-require('../../common/util/Request');
+require('../../common/util/FetchRequest');
 var ol = require('openlayers/dist/ol-debug');
 
 ol.supermap.ServiceBase = function (url, options) {

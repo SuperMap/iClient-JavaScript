@@ -120,7 +120,7 @@
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
                 if (info.serviceType === 'RESTMAP') {
-                    SuperMap.Request.get(info.serviceAddress + '/maps').then(function (response) {
+                    SuperMap.FetchRequest.get(info.serviceAddress + '/maps').then(function (response) {
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path;

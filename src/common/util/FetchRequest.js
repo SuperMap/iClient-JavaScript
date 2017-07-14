@@ -6,7 +6,7 @@ SuperMap.Support = {
     cors: ((window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()))
 };
 
-SuperMap.Request = {
+SuperMap.FetchRequest = {
 
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
@@ -158,4 +158,4 @@ SuperMap.Request = {
 
 
 };
-module.exports = SuperMap.Request;
+module.exports = SuperMap.FetchRequest;

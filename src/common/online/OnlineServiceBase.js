@@ -3,7 +3,7 @@
  */
 var SuperMap = require('../SuperMap');
 var SecurityManager = require('../security/SecurityManager');
-var Request = require('../util/Request');
+var Request = require('../util/FetchRequest');
 SuperMap.OnlineServiceBase = SuperMap.Class({
 
     initialize: function (options) {

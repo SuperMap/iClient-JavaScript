@@ -2980,7 +2980,7 @@ SuperMap.Support = {
     cors: ((window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()))
 };
 
-SuperMap.Request = {
+SuperMap.FetchRequest = {
 
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
@@ -3132,7 +3132,7 @@ SuperMap.Request = {
 
 
 };
-module.exports = SuperMap.Request;
+module.exports = SuperMap.FetchRequest;
 
 /***/ }),
 /* 13 */
@@ -10063,7 +10063,7 @@ SuperMap.iPortal = SuperMap.Class(SuperMap.iPortalServiceBase, {
     },
 
     load: function () {
-        return SuperMap.Request.get(this.iportalUrl + '/web');
+        return SuperMap.FetchRequest.get(this.iportalUrl + '/web');
     },
 
     queryServices: function (queryParams) {
@@ -11308,7 +11308,7 @@ ol.source.VectorTileSuperMapRest = function (options) {
             return;
         }
         tile.setLoader(function () {
-            SuperMap.Request.get(tileUrl).then(function (response) {
+            SuperMap.FetchRequest.get(tileUrl).then(function (response) {
                 if (tile.getFormat() instanceof ol.format.GeoJSON) {
                     return response.json();
                 }

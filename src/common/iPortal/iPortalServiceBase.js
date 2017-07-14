@@ -2,7 +2,7 @@
  * iPortal服务基类(有权限限制的类需要实现此类)
  */
 var SuperMap = require('../SuperMap');
-var Request = require('../util/Request');
+var Request = require('../util/FetchRequest');
 var SecurityManager = require('../security/SecurityManager');
 
 SuperMap.iPortalServiceBase = SuperMap.Class({

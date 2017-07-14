@@ -10,7 +10,7 @@
 require('./ServerInfo');
 require('./TokenServiceParameter');
 require('./KeyServiceParameter');
-var Request = require('../util/Request');
+var Request = require('../util/FetchRequest');
 var SuperMap = require('../SuperMap');
 SuperMap.SecurityManager = {
 

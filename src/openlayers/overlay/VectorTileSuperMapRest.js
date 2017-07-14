@@ -107,7 +107,7 @@ ol.source.VectorTileSuperMapRest = function (options) {
             return;
         }
         tile.setLoader(function () {
-            SuperMap.Request.get(tileUrl).then(function (response) {
+            SuperMap.FetchRequest.get(tileUrl).then(function (response) {
                 if (tile.getFormat() instanceof ol.format.GeoJSON) {
                     return response.json();
                 }

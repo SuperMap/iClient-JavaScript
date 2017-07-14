@@ -6,7 +6,7 @@
 
 require('./OnlineQueryDatasParameter');
 var SuperMap = require('../SuperMap');
-var Request = require('../util/Request');
+var Request = require('../util/FetchRequest');
 var SecurityManager = require('../security/SecurityManager');
 var OnlineData = require('./OnlineData');
 SuperMap.Online = SuperMap.Class({

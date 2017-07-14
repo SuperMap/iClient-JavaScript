@@ -79,7 +79,7 @@ var TileVectorLayer = L.VectorGrid.extend({
     initLayersInfo: function () {
         var me = this;
         var layersUrl = me.url + "/layers.json";
-        SuperMap.Request.get(layersUrl, null, {
+        SuperMap.FetchRequest.get(layersUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
             return response.json();
@@ -149,7 +149,7 @@ var TileVectorLayer = L.VectorGrid.extend({
     getVectorStylesFromServer: function () {
         var me = this;
         var vectorStyleUrl = me.url + "/tileFeature/vectorstyles.json";
-        SuperMap.Request.get(vectorStyleUrl, null, {
+        SuperMap.FetchRequest.get(vectorStyleUrl, null, {
             timeout: me.options.timeout
         }).then(function (response) {
             return response.json()

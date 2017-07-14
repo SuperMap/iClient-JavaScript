@@ -1,7 +1,7 @@
 require('./iPortalServicesQueryParam');
 require('./iPortalMapsQueryParam');
 var SuperMap = require('../SuperMap');
-var Request = require('../util/Request');
+var Request = require('../util/FetchRequest');
 var iPortalService = require('./iPortalService');
 var iPortalMap = require('./iPortalMap');
 SuperMap.iPortal = SuperMap.Class(SuperMap.iPortalServiceBase, {
@@ -11,7 +11,7 @@ SuperMap.iPortal = SuperMap.Class(SuperMap.iPortalServiceBase, {
     },
 
     load: function () {
-        return SuperMap.Request.get(this.iportalUrl + '/web');
+        return SuperMap.FetchRequest.get(this.iportalUrl + '/web');
     },
 
     queryServices: function (queryParams) {

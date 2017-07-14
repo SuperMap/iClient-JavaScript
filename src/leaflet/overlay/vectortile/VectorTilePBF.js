@@ -14,7 +14,7 @@ var VectorTilePBF = L.Class.extend({
 
     getTile: function () {
         var me = this;
-        return SuperMap.Request.get(me.url, null, {
+        return SuperMap.FetchRequest.get(me.url, null, {
             timeout: 10000
         }).then(function (response) {
             if (!response.ok) {

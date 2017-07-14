@@ -5,7 +5,7 @@ var deps = {
             "./src/common/REST.js"
         ],
         "util": [
-            "./src/common/util/Request.js"
+            "./src/common/util/FetchRequest.js"
         ],
         "format": [
             "./src/common/format/GeoJSON.js"
