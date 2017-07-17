@@ -54,18 +54,19 @@
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-    $.get('../data/flights.json', function (data) {
-        function getAirportCoord(idx) {
-            return [data.airports[idx][3], data.airports[idx][4]];
-        }
+    map.on('load', function () {
+        $.get('../data/flights.json', function (data) {
+            function getAirportCoord(idx) {
+                return [data.airports[idx][3], data.airports[idx][4]];
+            }
 
-        var routes = data.routes.map(function (airline) {
-            return [
-                getAirportCoord(airline[1]),
-                getAirportCoord(airline[2])
-            ];
-        });
-        map.on('load', function () {
+            var routes = data.routes.map(function (airline) {
+                return [
+                    getAirportCoord(airline[1]),
+                    getAirportCoord(airline[2])
+                ];
+            });
+
             var echartslayer = new EchartsLayer(map);
             echartslayer.chart.setOption(option = {
                 title: {
@@ -103,8 +104,9 @@
                     blendMode: 'lighter'
                 }]
             });
-        })
+        });
     });
+
 </script>
 
 </body>
