@@ -11279,16 +11279,17 @@ ol.source.VectorTileSuperMapRest = function (options) {
     if (options.returnCutEdges !== undefined) {
         layerUrl += "&returnCutEdges=" + options.returnCutEdges;
     }
+    var me = this;
     function tileUrlFunction(tileCoord, pixelRatio, projection) {
         this.projection = projection;
-        if (!this.tileGrid) {
-            this.tileGrid = this.getTileGridForProjection(projection);
+        if (!me.tileGrid) {
+            me.tileGrid = me.getTileGridForProjection(projection);
         }
         var z = tileCoord[0];
         var x = tileCoord[1];
         var y = -tileCoord[2] - 1;
-        var origin = this.tileGrid.getOrigin(z);
-        var resolution = this.tileGrid.getResolution(z);
+        var origin = me.tileGrid.getOrigin(z);
+        var resolution = me.tileGrid.getResolution(z);
         var dpi = 96;
         var unit = projection.getUnits();
         if (unit === 'degrees') {
@@ -11298,13 +11299,13 @@ ol.source.VectorTileSuperMapRest = function (options) {
             unit = SuperMap.Unit.METER;
         }
         var scale = ol.supermap.Util.resolutionToScale(resolution, dpi, unit);
-        var tileSize = ol.size.toSize(this.tileGrid.getTileSize(z, this.tmpSize));
+        var tileSize = ol.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
         return layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale + "&origin={'x':" + origin[0] + ",'y':" + origin[1] + "}";
     }
 
     function tileLoadFunction(tile, tileUrl) {
         if (tile.getFormat() instanceof ol.format.MVT) {
-            ol.VectorTile.defaultLoadFunction(tile, tileUrl);
+            ol.VectorImageTile.defaultLoadFunction(tile, tileUrl);
             return;
         }
         tile.setLoader(function () {
