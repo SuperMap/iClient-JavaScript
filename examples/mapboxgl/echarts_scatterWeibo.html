@@ -55,28 +55,28 @@
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 
-    $.get('../data/weibo.json', function (weiboData) {
-        weiboData = weiboData.map(function (serieData, idx) {
-            var px = serieData[0] / 1000;
-            var py = serieData[1] / 1000;
-            var res = [
-                [px, py]
-            ];
+    map.on('load', function () {
+        $.get('../data/weibo.json', function (weiboData) {
+            weiboData = weiboData.map(function (serieData, idx) {
+                var px = serieData[0] / 1000;
+                var py = serieData[1] / 1000;
+                var res = [
+                    [px, py]
+                ];
 
-            for (var i = 2; i < serieData.length; i += 2) {
-                var dx = serieData[i] / 1000;
-                var dy = serieData[i + 1] / 1000;
-                var x = px + dx;
-                var y = py + dy;
-                res.push([x.toFixed(2), y.toFixed(2), 1]);
+                for (var i = 2; i < serieData.length; i += 2) {
+                    var dx = serieData[i] / 1000;
+                    var dy = serieData[i + 1] / 1000;
+                    var x = px + dx;
+                    var y = py + dy;
+                    res.push([x.toFixed(2), y.toFixed(2), 1]);
 
-                px = x;
-                py = y;
-            }
-            return res;
-        });
+                    px = x;
+                    py = y;
+                }
+                return res;
+            });
 
-        map.on('load', function () {
             var echartslayer = new EchartsLayer(map);
             echartslayer.chart.setOption(option = {
 
@@ -165,8 +165,9 @@
                     data: weiboData[2]
                 }]
             });
-        })
+        });
     });
+
 </script>
 
 </body>
