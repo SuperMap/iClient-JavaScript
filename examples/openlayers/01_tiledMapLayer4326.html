@@ -16,19 +16,17 @@
     map = new ol.Map({
         target: 'map',
         view: new ol.View({
-            center: [12957388, 4853991],
-            zoom: 5,
-            projection: 'EPSG:3857'
+            center: [0, 0],
+            zoom: 2,
+            projection: 'EPSG:4326'
         })
     });
     var layer = new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
             url: url,
-            wrapX: true,
-            prjCoordSys: "{\"epsgCode\":3857}",
-            origin: [-20037508.34, 20037508.34]
+            wrapX: true
         }),
-        projection: 'EPSG:3857'
+        projection: 'EPSG:4326'
     });
     map.addLayer(layer);
 </script>
