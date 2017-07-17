@@ -289,13 +289,21 @@ var exampleConfig = {
     },
     "iManager": {
         name: "iManager",
+        content: null
+    },
+    "ElasticSearch": {
+        name: "ElasticSearch",
         content: {
-            "elastic_search": {
-                name: "ElasticSearch",
+            "": {
+                name: "可视化",
                 content: [{
-                    name: "时序热力/格网图",
+                    name: "热力/格网图",
                     thumbnail: "l_ESHeatMap.png",
                     fileName: "ESHeatMap"
+                }, {
+                    name: "航班监控",
+                    thumbnail: "l_PlanesMonitor.png",
+                    fileName: "PlanesMonitor"
                 }]
             }
         }
@@ -597,6 +605,7 @@ var sideBarIconConfig = {
     "iPortal": "fa-desktop",
     "Online": "fa-cloud",
     "iManager": "fa-group",
+    "ElasticSearch": "fa-tasks",
     "plot": "fa-edit",
     "viz": "fa-map",
     "OGC": "fa-globe",
@@ -613,6 +622,7 @@ var exampleIconConfig = {
     "iPortal": "fa-desktop",
     "Online": "fa-cloud",
     "iManager": "fa-group",
+    "ElasticSearch": "fa-tasks",
     "plot": "fa-edit",
     "viz": "fa-map",
     "OGC": "fa-globe",
