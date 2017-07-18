@@ -7,44 +7,102 @@ try {
     echarts = {};
 }
 var EchartsMapLayer = L.Layer.extend({
-    options: {
-        attribution: '© 2017 百度 ECharts with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
-    },
     includes: [],
     _echartsContainer: null,
     _map: null,
     _ec: null,
-    _ecOption: null,
+    _echartsOptions: null,
 
-    initialize: function (echartsOptions, options) {
-        this._ecOption = echartsOptions;
+    initialize: function (echartsOptions,options) {
+        if(echartsOptions){
+            echartsOptions.LeafletMap={
+                roam: true
+            }
+        }
+        this._echartsOptions = echartsOptions;
         L.Util.setOptions(this, options);
     },
-
+    setOption: function (echartsOptions, notMerge, lazyUpdate){
+        if(echartsOptions){
+            echartsOptions.LeafletMap={
+                roam: true
+            }
+        }
+        this._echartsOptions = echartsOptions;
+        this._ec.setOption(echartsOptions,notMerge,lazyUpdate);
+    },
+    _disableEchartsContainer: function () {
+        this._echartsContainer.style.visibility = "hidden";
+    },
+    _enableEchartsContainer: function () {
+        this._echartsContainer.style.visibility = "visible";
+    },
     onAdd: function (map) {
         this._map = map;
         this._initEchartsContainer();
-        map.on("moveend", this._redraw, this);
-        var me = this;
-        map.on("movestart", function (e) {
+        this._ec = echarts.init(this._echartsContainer);
+        echarts.leafletMap = map;
+        map.on("zoomstart", function (e) {
             me._disableEchartsContainer();
-        })
-        this._redraw();
-    },
+        });
+        map.on("zoomend", function (e) {
+            me._enableEchartsContainer();
+        });
+        var me = this;
+        echarts.registerAction({
+            type: 'LeafletMapLayout',
+            event: 'LeafletMapLayout',
+            update: 'updateLayout'
+        }, function (payload, ecModel) {})
+        echarts.registerCoordinateSystem(
+            'leaflet', LeafletMapCoordSys
+        );
+        echarts.extendComponentModel({
+            type: 'LeafletMap',
+            getBMap: function () {
+                return this.__LeafletMap;
+            },
+            defaultOption: {
+                roam: false
+            }
+        });
+        echarts.extendComponentView({
+            type: 'LeafletMap',
+            render: function (LeafletMapModel, ecModel, api) {
+                var rendering = true
+                var leafletMap = echarts.leafletMap;
+                var viewportRoot = api.getZr().painter.getViewportRoot()
+                var coordSys = LeafletMapModel.coordinateSystem;
+                var moveHandler = function (type, target) {
+                    if (rendering) {
+                        return
+                    }
+                    var bounds = map.getBounds();
+                    var topLeft = map.latLngToLayerPoint(bounds.getNorthWest());
+                    var mapOffset = [parseInt(topLeft.x, 10) || 0, parseInt(topLeft.y, 10) || 0]
+                    viewportRoot.style.left = mapOffset[0] + 'px';
+                    viewportRoot.style.top = mapOffset[1] + 'px';
+                    coordSys.setMapOffset(mapOffset);
+                    LeafletMapModel.__mapOffset = mapOffset;
+                    api.dispatchAction({
+                        type: 'LeafletMapLayout'
+                    })
+                }
 
-    onRemove: function (map) {
-        if (this._echartsContainer) {
-            map.getPanes().overlayPane.removeChild(this._echartsContainer);
-        }
-        map.off("moveend", this._redraw, this);
-        var me = this;
-        map.off("movestart", function () {
-            me._disableEchartsContainer();
-        })
-    },
-    addTo: function (map) {
-        map.addLayer(this);
-        return this;
+                function zoomEndHandler() {
+                    if (rendering) {
+                        return
+                    }
+                    api.dispatchAction({
+                        type: 'LeafletMapLayout'
+                    })
+                }
+                leafletMap.on('move', moveHandler);
+                leafletMap.on('zoomend', zoomEndHandler)
+                rendering = false
+            }
+        });
+        this._ec.setOption(this._echartsOptions);
     },
     _initEchartsContainer: function () {
         var size = this._map.getSize();
@@ -57,122 +115,63 @@ var EchartsMapLayer = L.Layer.extend({
         this._map.getPanes().overlayPane.appendChild(this._echartsContainer);
     },
 
-    _resetCanvasPosition: function () {
-        var bounds = this._map.getBounds();
-        var topLeft = this._map.latLngToLayerPoint(bounds.getNorthWest());
-        L.DomUtil.setPosition(this._echartsContainer, topLeft);
-        this._enableEchartsContainer();
-    },
-    _disableEchartsContainer: function () {
-        this._echartsContainer.style.visibility = "hidden";
-    },
-    _enableEchartsContainer: function () {
-        this._echartsContainer.style.visibility = "visible";
-    },
-    _redraw: function () {
-        var lastOption = this._ec && this._ec.getOption() ? this._ec.getOption() : this._ecOption;
-        this._resetCanvasPosition();
-        this._echartsContainer.innerHTML = '';
-        this.initECharts();
-        this._ec.setOption(lastOption);
-        return this;
-    },
-
-    clear: function () {
-        this._echartsContainer.innerHTML = '';
-    },
-
-    redraw: function () {
-        this._redraw();
-    },
-
-    /**
-     * 初始化echarts实例
-     *
-     */
-    initECharts: function () {
-        this._ec = echarts.init(this._echartsContainer);
-        var me = this;
-        echarts.registerCoordinateSystem("leaflet",
-            {
-                create: function (ecModel, api) {
-                    ecModel.eachSeries(function (seriesModel, index) {
-                        var coordSysType = seriesModel.get('coordinateSystem');
-                        if (!coordSysType || coordSysType === 'leaflet') {
-                            seriesModel.coordinateSystem = new Geo(me._map);
-                        }
-                    });
-                    for (var i = 0; i < me._ec._componentsViews.length; i++) {
-                        var view = me._ec._componentsViews[i];
-                        if (view.__model && view.__model.mainType === 'visualMap') {
-                            view.__model.eachTargetSeries(function (targetSeries) {
-                                var viewRect = view.group.getBoundingRect();
-                                viewRect.width = parseInt(me._echartsContainer.style.width);
-                                viewRect.height = parseInt(me._echartsContainer.style.height);
-                                targetSeries.coordinateSystem.setViewRect(viewRect);
-                            });
-                        }
-                        if (view.__model && view.__model.mainType === 'visualMap' && view._shapes && view._shapes.barGroup) {
-                            view._shapes.barGroup.on('mouseover', function () {
-                                me._map.dragging.disable();
-                                me._map.scrollWheelZoom.disable();
-                                me._map.doubleClickZoom.disable();
-                            })
-                            view._shapes.barGroup.on('mouseout', function () {
-                                me._map.dragging.enable();
-                                me._map.scrollWheelZoom.enable();
-                                me._map.doubleClickZoom.enable();
-                            })
-                        }
-                    }
-
-                },
-                dimensions: ['lng', 'lat']
-            }
-        );
-    }
 });
-
-function Geo(map) {
-    this._map = map;
-    this.viewRect = null;
+function LeafletMapCoordSys(LeafletMap, api) {
+    this._LeafletMap = LeafletMap
+    this.dimensions = ['lng', 'lat']
+    this._mapOffset = [0, 0]
+    this._api = api
 }
-Geo.prototype = {
-    constructor: Geo,
-    type: 'geo',
-    dimensions: ['lng', 'lat'],
-    dataToPoints: function (data) {
-        var item = [];
-        return data.mapArray(['lng', 'lat'], function (lon, lat) {
-            item[0] = lon;
-            item[1] = lat;
-            return this.dataToPoint(item);
-        }, this);
-    },
-    setViewRect: function (viewRect) {
-        this.viewRect = viewRect;
-    },
-    getViewRect: function () {
-        return this.viewRect;
-    },
-    getRoamTransform: function () {
-        var roamTransform = {};
-        roamTransform.transform;
-        return roamTransform;
-    },
 
-    // Overwrite
-    dataToPoint: function (data) {
-        var point = new L.latLng(data[1], data[0]);
-        if (point && point.lng && point.lat) {
-            var pos = this._map.latLngToContainerPoint(point);
-            return [pos.x, pos.y];
+LeafletMapCoordSys.prototype.dimensions = ['lng', 'lat']
+
+LeafletMapCoordSys.prototype.setMapOffset = function (mapOffset) {
+    this._mapOffset = mapOffset
+}
+
+LeafletMapCoordSys.prototype.getBMap = function () {
+    return this._LeafletMap
+}
+
+LeafletMapCoordSys.prototype.dataToPoint = function (data) {
+    var point = new L.latLng(data[1], data[0]);
+    var px = this._LeafletMap.latLngToLayerPoint(point);
+    var mapOffset = this._mapOffset;
+    return [px.x - mapOffset[0], px.y - mapOffset[1]];
+}
+
+LeafletMapCoordSys.prototype.pointToData = function (pt) {
+    var mapOffset = this._mapOffset;
+    var pt = this._LeafletMap.layerPointToLatLng([pt[0] + mapOffset[0], pt[1] + mapOffset[1]]);
+    return [pt.lng, pt.lat];
+}
+
+LeafletMapCoordSys.prototype.getViewRect = function () {
+    var api = this._api;
+    return new echarts.graphic.BoundingRect(0, 0, api.getWidth(), api.getHeight());
+}
+
+LeafletMapCoordSys.prototype.getRoamTransform = function () {
+    return echarts.matrix.create();
+}
+LeafletMapCoordSys.dimensions = LeafletMapCoordSys.prototype.dimensions
+
+LeafletMapCoordSys.create = function (ecModel, api) {
+    var coordSys;
+
+    ecModel.eachComponent('LeafletMap', function (LeafletMapModel) {
+        var leafletMap = echarts.leafletMap;
+        coordSys = new LeafletMapCoordSys(leafletMap, api);
+        coordSys.setMapOffset(LeafletMapModel.__mapOffset || [0, 0]);
+        LeafletMapModel.coordinateSystem = coordSys;
+    })
+
+    ecModel.eachSeries(function (seriesModel) {
+        if (seriesModel.get('coordinateSystem') === 'leaflet') {
+            seriesModel.coordinateSystem = coordSys
         }
-        return data;
-
-    }
-};
-
+    })
+}
 L.supermap.echartsMapLayer = function (echartsOptions, options) {
     return new EchartsMapLayer(echartsOptions, options);
 };
