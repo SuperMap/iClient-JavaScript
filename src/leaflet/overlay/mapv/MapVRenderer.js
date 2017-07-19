@@ -65,10 +65,21 @@ class MapVRenderer extends BaseLayer {
         return this.canvasLayer.getCanvas().getContext(this.context);
     }
 
-    updateData(dataSet, options) {
-        if (dataSet && dataSet.get) {
-            this.dataSet.set(dataSet.get());
+    addData(data, options) {
+        var _data = data;
+        if (data && data.get) {
+            _data = data.get();
         }
+        this.dataSet.add(_data);
+        this.update({options: options});
+    }
+
+    updateData(data, options) {
+        var _data = data;
+        if (data && data.get) {
+            _data = data.get();
+        }
+        this.dataSet.set(_data);
         this.update({options: options});
     }
 
@@ -178,7 +189,7 @@ class MapVRenderer extends BaseLayer {
     }
 
     hide() {
-        this.map.addLayer(this.canvasLayer);
+        this.map.removeLayer(this.canvasLayer);
     }
 
     draw() {

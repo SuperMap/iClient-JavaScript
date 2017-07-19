@@ -65,6 +65,10 @@ var MapVLayer = L.Layer.extend({
         }, this);
     },
 
+    addData: function (data, options) {
+        this.mapvLayer.addData(data, options);
+    },
+
     update: function (data, options) {
         this.mapvLayer.updateData(data, options);
     },
