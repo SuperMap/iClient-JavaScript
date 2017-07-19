@@ -1,5 +1,5 @@
 /**
- * Class: SuperMap.REST.GetGridCellInfosService
+ * Class: SuperMap.GetGridCellInfosService
  * 数据栅格查询服务，支持查询指定地理位置的栅格信息
  *
  * Inherits from:
@@ -8,7 +8,7 @@
 require('./ServiceBase');
 require('./GetGridCellInfosParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: datasetName
@@ -41,12 +41,12 @@ SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
     Y: null,
 
     /**
-     * Constructor: SuperMap.REST.GetGridCellInfosService
+     * Constructor: SuperMap.GetGridCellInfosService
      * 字段查询服务构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.GetGridCellInfosService(url, {eventListeners: {
+     * var myService = new SuperMap.GetGridCellInfosService(url, {eventListeners: {
      *     "processCompleted": queryCompleted,
      *     "processFailed": queryError
      *     }
@@ -167,7 +167,7 @@ SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
         me.serviceProcessFailed(result);
     },
 
-    CLASS_NAME: "SuperMap.REST.GetGridCellInfosService"
+    CLASS_NAME: "SuperMap.GetGridCellInfosService"
 });
 
-module.exports = SuperMap.REST.GetGridCellInfosService;
+module.exports = SuperMap.GetGridCellInfosService;

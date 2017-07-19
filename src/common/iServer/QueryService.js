@@ -3,7 +3,7 @@
  * 未经许可，不得以任何手段擅自使用或传播。
  */
 /**
- * Class: SuperMap.REST.QueryService
+ * Class: SuperMap.QueryService
  * 查询服务基类。
  * 结果保存在一个object对象中，对象包含一个属性result为iServer返回的json对象
  * Inherits from:
@@ -16,7 +16,7 @@ var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
 var QueryParameters = require('./QueryParameters');
 
-SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Property: returnContent
@@ -32,12 +32,12 @@ SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
     format: SuperMap.DataFormat.GEOJSON,
 
     /**
-     * Constructor: SuperMap.REST.QueryService
+     * Constructor: SuperMap.QueryService
      * 查询服务基类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.QueryService(url, {
+     * var myService = new SuperMap.QueryService(url, {
      *     eventListeners: {
      *	       "processCompleted": queryCompleted, 
      *		   "processFailed": queryError
@@ -170,7 +170,7 @@ SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.QueryService"
+    CLASS_NAME: "SuperMap.QueryService"
 });
 
-module.exports = SuperMap.REST.QueryService;
+module.exports = SuperMap.QueryService;

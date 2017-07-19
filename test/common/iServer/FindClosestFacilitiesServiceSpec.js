@@ -10,7 +10,7 @@ var options = {
     }
 };
 function initFindClosestFacilitiesService() {
-    return new SuperMap.REST.FindClosestFacilitiesService(url, options);
+    return new SuperMap.FindClosestFacilitiesService(url, options);
 }
 function findClosestFacilitiesServiceCompleted(serviceSucceedEventArgs) {
     serviceSucceedEventArgsSystem = serviceSucceedEventArgs;

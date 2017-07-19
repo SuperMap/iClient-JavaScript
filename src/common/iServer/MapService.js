@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.MapService
+ * Class: SuperMap.MapService
  * 地图信息服务类 。
  * 该类负责将从客户端指定的服务器上获取该服务器提供的地图信息
  * 结果保存在一个object对象中，对象包含一个属性result为iServer返回的json对象
@@ -9,7 +9,7 @@
 
 var SuperMap = require('../SuperMap');
 var ServiceBase = require('./ServiceBase');
-SuperMap.REST.MapService = SuperMap.Class(ServiceBase, {
+SuperMap.MapService = SuperMap.Class(ServiceBase, {
 
     /**
      * APIProperty: projection
@@ -20,12 +20,12 @@ SuperMap.REST.MapService = SuperMap.Class(ServiceBase, {
 
 
     /**
-     * Constructor: SuperMap.REST.MapService
+     * Constructor: SuperMap.MapService
      * 地图信息服务类构造函数 。
      *
      * 例如：
      * (start code)
-     * var myMapService = new SuperMap.REST.MapService(url, {
+     * var myMapService = new SuperMap.MapService(url, {
      * eventListeners:{
      *     "processCompleted": MapServiceCompleted, 
      *       "processFailed": MapServiceFailed
@@ -113,6 +113,6 @@ SuperMap.REST.MapService = SuperMap.Class(ServiceBase, {
         }
     },
 
-    CLASS_NAME: "SuperMap.REST.MapService"
+    CLASS_NAME: "SuperMap.MapService"
 });
-module.exports = SuperMap.REST.MapService;
+module.exports = SuperMap.MapService;

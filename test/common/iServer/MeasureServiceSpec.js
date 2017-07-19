@@ -7,12 +7,12 @@ var worldMapURL = mapServiceURL + "World Map";
 
 //跨域下的测试
 function initMeasureService() {
-    return new SuperMap.REST.MeasureService(worldMapURL);
+    return new SuperMap.MeasureService(worldMapURL);
 }
 
 //注册监听器对象，面积量算
 function initMeasureService_RegisterListener() {
-    return new SuperMap.REST.MeasureService(worldMapURL, {
+    return new SuperMap.MeasureService(worldMapURL, {
         eventListeners: {
             'processCompleted': measureCompleted,
             'processFailed': measureFailed
@@ -237,7 +237,7 @@ describe('testMeasureService_processAsync', function () {
 
     //反向测试用例，地图名错误，无法调用回调函数
     it('area_failed2', function (done) {
-        var measureService = new SuperMap.REST.MeasureService(worldMapURL + "_Error", {measureMode: SuperMap.MeasureMode.AREA});
+        var measureService = new SuperMap.MeasureService(worldMapURL + "_Error", {measureMode: SuperMap.MeasureMode.AREA});
         var points = [new SuperMap.Geometry.Point(0, 0), new SuperMap.Geometry.Point(10, 10), new SuperMap.Geometry.Point(10, 0)];
         //服务端缺陷,new SuperMap.Geometry.Point(20, 20),new SuperMap.Geometry.Point(0, 0)
         var geometry = new SuperMap.Geometry.Polygon(new SuperMap.Geometry.LinearRing(points));

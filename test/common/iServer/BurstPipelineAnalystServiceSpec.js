@@ -9,7 +9,7 @@ var options = {
         'processFailed': analyzeFailed
     }};
 function initBurstPipelineAnalystService() {
-    return new SuperMap.REST.BurstPipelineAnalystService(url, options);
+    return new SuperMap.BurstPipelineAnalystService(url, options);
 }
 function analyzeFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
@@ -20,9 +20,9 @@ function analyzeCompleted(analyseEventArgs) {
 
 describe('testBurstPipelineAnalystService_constructor',function(){
     it('constructor_Default',function(){
-        var burstPipelineAnalystService = new SuperMap.REST.BurstPipelineAnalystService();
+        var burstPipelineAnalystService = new SuperMap.BurstPipelineAnalystService();
         expect(burstPipelineAnalystService).not.toBeNull();
-        expect(burstPipelineAnalystService.CLASS_NAME).toBe("SuperMap.REST.BurstPipelineAnalystService");
+        expect(burstPipelineAnalystService.CLASS_NAME).toBe("SuperMap.BurstPipelineAnalystService");
         var burstPipelineAnalystParams = new SuperMap.BurstPipelineAnalystParameters();
         expect(burstPipelineAnalystParams.sourceNodeIDs).toBeNull();
         expect(burstPipelineAnalystParams.edgeID).toBeNull();

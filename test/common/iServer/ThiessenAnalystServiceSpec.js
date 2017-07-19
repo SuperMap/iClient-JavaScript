@@ -4,7 +4,7 @@ var serviceFailedEventArgsSystem = null;
 var analystEventArgsSystem = null;
 var spatialAnalystURL_Changchun = GlobeParameter.spatialAnalystURL_Changchun;
 function initThiessenAnalystService() {
-    return new SuperMap.REST.ThiessenAnalystService(spatialAnalystURL_Changchun,
+    return new SuperMap.ThiessenAnalystService(spatialAnalystURL_Changchun,
         {eventListeners:{
             "processCompleted": analyzeCompleted,
             'processFailed': analyzeFailed

@@ -7,12 +7,12 @@ var worldMapURL =  GlobeParameter.worldMapURL;
 function initMapService() {
     getMapStatusEventArgsSystem=null;
     serviceFailedEventArgsSystem=null;
-    return new SuperMap.REST.MapService(worldMapURL);
+    return new SuperMap.MapService(worldMapURL);
 }
 
 //初始化注册事件监听器的Services
 function initMapService_RegisterListener() {
-    return new SuperMap.REST.MapService(worldMapURL, {
+    return new SuperMap.MapService(worldMapURL, {
         eventListeners: {'processFailed':GetMapStatusFailed,'processCompleted':GetMapStatusCompleted}}
     );
 }
@@ -25,7 +25,7 @@ function GetMapStatusFailed(serviceFailedEventArgs){
 
 describe('testMapService_constructor',function(){
     it('token',function(){
-        var getMapService = new SuperMap.REST.MapService(worldMapURL,{token:88888});
+        var getMapService = new SuperMap.MapService(worldMapURL,{token:88888});
         expect(getMapService).not.toBeNull();
         expect(getMapService.token).toEqual(88888);
         getMapService.destroy();
@@ -78,7 +78,7 @@ describe('testMapService_processAsync',function(){
 
     it('fail',function(done){
         var mapServiceURL = GlobeParameter.mapServiceURL;
-        var getMapService = new SuperMap.REST.MapService(mapServiceURL + "MapNameError");
+        var getMapService = new SuperMap.MapService(mapServiceURL + "MapNameError");
         getMapService.events.on({'processFailed':GetMapStatusFailed});
         getMapService.processAsync();
 

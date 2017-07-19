@@ -10,7 +10,7 @@ var options = {
     }
 };
 function initFieldStatisticService() {
-    return new SuperMap.REST.FieldStatisticService(dataServiceURL, options);
+    return new SuperMap.FieldStatisticService(dataServiceURL, options);
 }
 function fieldStatisticCompleted(getFeaturesEventArgs){
     fieldStatisticEventArgsSystem = getFeaturesEventArgs;

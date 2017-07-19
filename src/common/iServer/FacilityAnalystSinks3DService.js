@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.FacilityAnalystSinks3DService
+ * Class: SuperMap.FacilityAnalystSinks3DService
  * 最近设施分析服务类(汇查找资源)
  * 最近设施分析是指在网络上给定一个事件点和一组设施点，
  * 查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
@@ -11,15 +11,15 @@
 require('./ServiceBase');
 require('./FacilityAnalystSinks3DParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FacilityAnalystSinks3DService
+     * Constructor: SuperMap.FacilityAnalystSinks3DService
      * 最近设施分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myFacilityAnalystSinks3DService = new SuperMap.REST.FacilityAnalystSinks3DService(url, {
+     * var myFacilityAnalystSinks3DService = new SuperMap.FacilityAnalystSinks3DService(url, {
      *     eventListeners: {
      *	       "processCompleted": facilityAnalystSinks3DCompleted,
      *		   "processFailed": facilityAnalystSinks3DError
@@ -78,7 +78,7 @@ SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBas
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.FacilityAnalystSinks3DService"
+    CLASS_NAME: "SuperMap.FacilityAnalystSinks3DService"
 });
 
-module.exports = SuperMap.REST.FacilityAnalystSinks3DService;
+module.exports = SuperMap.FacilityAnalystSinks3DService;

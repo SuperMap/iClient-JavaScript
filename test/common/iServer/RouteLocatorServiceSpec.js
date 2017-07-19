@@ -10,7 +10,7 @@ function routeLocatorFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 function initRouteLocatorService() {
-    return new SuperMap.REST.RouteLocatorService(spatialAnalystURL,
+    return new SuperMap.RouteLocatorService(spatialAnalystURL,
         {
             eventListeners:{
                 "processCompleted":routeLocatorCompleted,

@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.MeasureService
+ * Class: SuperMap.MeasureService
  * 量算服务类。
  * 该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
  *
@@ -10,7 +10,7 @@ require('../REST');
 require('./ServiceBase');
 require('./MeasureParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: measureMode
@@ -19,12 +19,12 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
     measureMode: SuperMap.MeasureMode.DISTANCE,
 
     /**
-     * Constructor: SuperMap.REST.MeasureService
+     * Constructor: SuperMap.MeasureService
      * 量算服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myMeasuerService = new SuperMap.REST.MeasureService(url, {
+     * var myMeasuerService = new SuperMap.MeasureService(url, {
      *      measureMode: SuperMap.MeasureMode.DISTANCE,
      *      eventListeners:{
      *          "processCompleted": measureCompleted
@@ -125,7 +125,7 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
 
     },
 
-    CLASS_NAME: "SuperMap.REST.MeasureService"
+    CLASS_NAME: "SuperMap.MeasureService"
 });
 
-module.exports = SuperMap.REST.MeasureService;
+module.exports = SuperMap.MeasureService;

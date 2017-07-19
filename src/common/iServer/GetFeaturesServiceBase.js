@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.GetFeaturesServiceBase
+ * Class: SuperMap.GetFeaturesServiceBase
  * 数据服务中数据集查询服务基类。
  * 获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON
  *
@@ -10,7 +10,7 @@ require('../REST');
 require('./ServiceBase');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
-SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Property: returnContent
@@ -48,12 +48,12 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
     format: SuperMap.DataFormat.GEOJSON,
 
     /**
-     * Constructor: SuperMap.REST.GetFeaturesServiceBase
+     * Constructor: SuperMap.GetFeaturesServiceBase
      * 数据集查询服务基类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.GetFeaturesServiceBase(url, {
+     * var myService = new SuperMap.GetFeaturesServiceBase(url, {
      *     eventListeners: {
      *         "processCompleted": getFeatureCompleted, 
      *         "processFailed": getFeatureError
@@ -165,7 +165,7 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
         me.events.triggerEvent("processCompleted", {result: result});
     },
 
-    CLASS_NAME: "SuperMap.REST.GetFeaturesServiceBase"
+    CLASS_NAME: "SuperMap.GetFeaturesServiceBase"
 });
 
-module.exports = SuperMap.REST.GetFeaturesServiceBase;
+module.exports = SuperMap.GetFeaturesServiceBase;

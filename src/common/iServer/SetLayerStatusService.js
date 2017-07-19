@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.SetLayerStatusService
+ * Class: SuperMap.SetLayerStatusService
  * 子图层显示控制服务类。
  * 该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
  * 用户获取服务端返回的各子图层显示状态有两种方式：
@@ -9,14 +9,14 @@
 require('./ServiceBase');
 require('./SetLayerStatusParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
 
     lastparams: null,
 
     mapUrl: null,
 
     /**
-     * Constructor: SuperMap.REST.SetLayerStatusService
+     * Constructor: SuperMap.SetLayerStatusService
      * 子图层显示控制服务类构造函数。
      *
      * Parameters:
@@ -146,7 +146,7 @@ SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
         me.events.triggerEvent("processCompleted", {result: result});
     },
 
-    CLASS_NAME: "SuperMap.REST.SetLayerStatusService"
+    CLASS_NAME: "SuperMap.SetLayerStatusService"
 });
 
-module.exports = SuperMap.REST.SetLayerStatusService;
+module.exports = SuperMap.SetLayerStatusService;

@@ -1,22 +1,22 @@
 ﻿/**
- * Class: SuperMap.REST.QueryByBoundsService
+ * Class: SuperMap.QueryByBoundsService
  * Bounds 查询服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.QueryService>
+ *  - <SuperMap.QueryService>
  */
 require('./QueryService');
 require('./QueryByBoundsParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, {
+SuperMap.QueryByBoundsService = SuperMap.Class(SuperMap.QueryService, {
 
     /**
-     * Constructor: SuperMap.REST.QueryByBoundsService
+     * Constructor: SuperMap.QueryByBoundsService
      * Bounds 查询服务类构造函数。
      *
      * 例如：
      * (start end)
-     * var myQueryByBoundsService = new SuperMap.REST.QueryByBoundsService(url, {
+     * var myQueryByBoundsService = new SuperMap.QueryByBoundsService(url, {
      *     eventListeners: {
      *         "processCompleted": queryCompleted,
      *		   "processFailed": queryError
@@ -34,7 +34,7 @@ SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, 
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.QueryService.prototype.initialize.apply(this, arguments);
+        SuperMap.QueryService.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -42,7 +42,7 @@ SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, 
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.QueryService.prototype.destroy.apply(this, arguments);
+        SuperMap.QueryService.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -70,7 +70,7 @@ SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, 
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.QueryByBoundsService"
+    CLASS_NAME: "SuperMap.QueryByBoundsService"
 });
 
-module.exports = SuperMap.REST.QueryByBoundsService;
+module.exports = SuperMap.QueryByBoundsService;

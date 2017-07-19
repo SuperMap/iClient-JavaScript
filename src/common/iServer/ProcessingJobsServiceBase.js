@@ -2,7 +2,7 @@ var ServiceBase = require('./ServiceBase');
 var SuperMap = require('../SuperMap');
 var Request = require('../util/FetchRequest');
 
-SuperMap.REST.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
+SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
 
     /**
      * Constant: EVENT_TYPES
@@ -108,7 +108,7 @@ SuperMap.REST.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
         return url;
     },
 
-    CLASS_NAME: "SuperMap.REST.ProcessingJobsServiceBase"
+    CLASS_NAME: "SuperMap.ProcessingJobsServiceBase"
 });
 
-module.exports = SuperMap.REST.ProcessingJobsServiceBase;
+module.exports = SuperMap.ProcessingJobsServiceBase;

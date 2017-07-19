@@ -12,7 +12,7 @@ var options = {
     }
 };
 function initFindServiceAreasService() {
-    return new SuperMap.REST.FindServiceAreasService(url, options);
+    return new SuperMap.FindServiceAreasService(url, options);
 }
 function findServiceAreasServiceCompleted(serviceSucceedEventArgs){
     serviceSucceedEventArgsSystem = serviceSucceedEventArgs;

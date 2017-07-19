@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.SetLayersInfoService
+ * Class: SuperMap.SetLayersInfoService
  * 设置图层信息服务类。可以实现创建新的临时图层和对现有临时图层的修改，当 isTempLayers 为 false
  * 的时候执行创建临时图层。当 isTempLayers 为 ture 并且临时图层资源 resourceID 被设置有效时执行
  * 对临时图层的编辑。
@@ -11,7 +11,7 @@
 require('./ServiceBase');
 require('./SetLayersInfoParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: resourceID
@@ -26,7 +26,7 @@ SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
     isTempLayers: false,
 
     /**
-     * Constructor: SuperMap.REST.SetLayersInfoService
+     * Constructor: SuperMap.SetLayersInfoService
      * 设置图层信息服务类构造函数。可以实现创建新的临时图层和对现有临时图层的修改。
      *
      * Parameters:
@@ -61,7 +61,7 @@ SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * APIMethod: processAsync
      * 负责将客户端的更新参数传递到服务端。
      * Parameters:
-     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务<SuperMap.REST.GetLayerInfoService>.result.subLayers.layers
+     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务<SuperMap.GetLayerInfoService>.result.subLayers.layers
      * 返回图层信息，然后对其属性进行修改来获取。
      */
     processAsync: function (params) {
@@ -120,7 +120,7 @@ SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.SetLayersInfoService"
+    CLASS_NAME: "SuperMap.SetLayersInfoService"
 });
 
-module.exports = SuperMap.REST.SetLayersInfoService;
+module.exports = SuperMap.SetLayersInfoService;

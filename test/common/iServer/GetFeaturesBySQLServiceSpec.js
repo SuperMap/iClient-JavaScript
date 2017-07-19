@@ -10,7 +10,7 @@ var options = {
     }
 };
 function initGetFeaturesBySQLService() {
-    return new SuperMap.REST.GetFeaturesBySQLService(dataServiceURL, options);
+    return new SuperMap.GetFeaturesBySQLService(dataServiceURL, options);
 }
 function getFeaturesBySQLFailed(serviceFailedEventArgs){
     serviceFailedEventArgsSystem = serviceFailedEventArgs;

@@ -1,15 +1,15 @@
 ﻿/**
- * Class: SuperMap.REST.GeoRelationAnalystService
+ * Class: SuperMap.GeoRelationAnalystService
  * 空间关系分析服务类。
  * 该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
  */
 require('./SpatialAnalystBase');
 require('./GeoRelationAnalystParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.GeoRelationAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.GenerateSpatialDataService
+     * Constructor: SuperMap.GenerateSpatialDataService
      * 空间关系分析服务类构造函数。
      *
      * 实例化该类如下例所示：
@@ -21,7 +21,7 @@ SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAn
      *      var sourceFilter = new SuperMap.FilterParameter({
      *                          attributeFilter:"SmID>0"});
      *      //初始化服务类
-     *      var datasetGeoRelationService = new SuperMap.REST.GeoRelationAnalystService(
+     *      var datasetGeoRelationService = new SuperMap.GeoRelationAnalystService(
      *          "http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst/"),
      *      //构建参数类
      *      datasetGeoRelationParameters = new SuperMap.GeoRelationAnalystParameters({
@@ -53,7 +53,7 @@ SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAn
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -61,7 +61,7 @@ SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAn
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -97,7 +97,7 @@ SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAn
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.GeoRelationAnalystService"
+    CLASS_NAME: "SuperMap.GeoRelationAnalystService"
 });
 
-module.exports = SuperMap.REST.GeoRelationAnalystService;
+module.exports = SuperMap.GeoRelationAnalystService;

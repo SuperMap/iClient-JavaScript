@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.NetworkAnalystServiceBase
+ * Class: SuperMap.NetworkAnalystServiceBase
  * 网络分析服务基类。
  * Inherits from:
  *  - <SuperMap.ServiceBase>
@@ -7,7 +7,7 @@
 require('../REST');
 require('./ServiceBase');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      *  Property: format
@@ -62,7 +62,7 @@ SuperMap.REST.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
         return null;
     },
 
-    CLASS_NAME: "SuperMap.REST.NetworkAnalystServiceBase"
+    CLASS_NAME: "SuperMap.NetworkAnalystServiceBase"
 });
 
-module.exports = SuperMap.REST.NetworkAnalystServiceBase;
+module.exports = SuperMap.NetworkAnalystServiceBase;

@@ -11,7 +11,7 @@ var options = {
     }
 };
 function initGetFeaturesByBufferService() {
-    return new SuperMap.REST.GetFeaturesByBufferService(dataServiceURL,options);
+    return new SuperMap.GetFeaturesByBufferService(dataServiceURL,options);
 }
 function getFeaturesByBufferFailed(serviceFailedEventArgs){
     serviceFailedEventArgsSystem = serviceFailedEventArgs;

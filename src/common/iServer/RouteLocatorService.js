@@ -1,17 +1,17 @@
 /**
- * Class: SuperMap.REST.RouteLocatorService
+ * Class: SuperMap.RouteLocatorService
  * 路由对象定位空间对象的服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
 require('./RouteLocatorParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.RouteLocatorService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.RouteLocatorService
+     * Constructor: SuperMap.RouteLocatorService
      * 路由对象定位空间对象的服务类构造函数。
      *
      * 实例化该类如下例所示：
@@ -48,7 +48,7 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
      *   "offset":3,
      *   "isIgnoreGap":true
      * });
-     * var routeLocatorService = new SuperMap.REST.RouteLocatorService(spatialAnalystURL, {
+     * var routeLocatorService = new SuperMap.RouteLocatorService(spatialAnalystURL, {
      *     eventListeners:{
      *         processCompleted:routeLocatorCompleted,
      *         processFailed:routeLocatorFailded
@@ -70,7 +70,7 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
      *
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -78,7 +78,7 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -134,7 +134,7 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.RouteLocatorService"
+    CLASS_NAME: "SuperMap.RouteLocatorService"
 });
 
-module.exports = SuperMap.REST.RouteLocatorService;
+module.exports = SuperMap.RouteLocatorService;

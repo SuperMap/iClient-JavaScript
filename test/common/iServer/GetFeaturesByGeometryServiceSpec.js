@@ -10,7 +10,7 @@ var options = {
     }
 };
 function initGetFeaturesByGeometryService() {
-    return new SuperMap.REST.GetFeaturesByGeometryService(dataServiceURL,options);
+    return new SuperMap.GetFeaturesByGeometryService(dataServiceURL,options);
 }
 function getFeaturesByGeometryFailed(serviceFailedEventArgs){
     serviceFailedEventArgsSystem=serviceFailedEventArgs;

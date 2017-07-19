@@ -10,7 +10,7 @@ var options = {
     }
 };
 function initGetFieldsService() {
-    return new SuperMap.REST.GetFieldsService(dataServiceURL, options);
+    return new SuperMap.GetFieldsService(dataServiceURL, options);
 }
 function getFieldsFailed(serviceFailedEventArgs){
     serviceFailedEventArgsSystem=serviceFailedEventArgs;

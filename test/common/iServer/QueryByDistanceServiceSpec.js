@@ -5,7 +5,7 @@ var serviceCompletedEventArgsSystem = null;
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 
 function initQueryByDistanceService() {
-    return new SuperMap.REST.QueryByDistanceService(worldMapURL);
+    return new SuperMap.QueryByDistanceService(worldMapURL);
 }
 var options = {
     eventListeners: {
@@ -15,7 +15,7 @@ var options = {
 };
 //服务初始化时注册事件监听函数
 function initQueryByDistanceService_RegisterListener() {
-    return new SuperMap.REST.QueryByDistanceService(worldMapURL, options);
+    return new SuperMap.QueryByDistanceService(worldMapURL, options);
 }
 function QueryByDistanceFailed(serviceFailedEventArgs){
     serviceFailedEventArgsSystem=serviceFailedEventArgs;

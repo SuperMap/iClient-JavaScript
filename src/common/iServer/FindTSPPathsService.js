@@ -1,26 +1,26 @@
 /**
- * Class: SuperMap.REST.FindTSPPathsService
+ * Class: SuperMap.FindTSPPathsService
  * 旅行商分析服务类
  * 旅行商分析是路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
  * 旅行商分析也可以指定到达的终点，这时查找从起点能够遍历所有途经点最后到达终点，且花费最小的路径。
  * 该类负责将客户端指定的旅行商分析参数传递给服务端，并接收服务端返回的结果数据。
  * 旅行商分析结果通过该类支持的事件的监听函数参数获取
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 require('./NetworkAnalystServiceBase');
 require('./FindTSPPathsParameters');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
-SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.FindTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FindTSPPathsService
+     * Constructor: SuperMap.FindTSPPathsService
      * 最佳路径分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myFindTSPPathsService = new SuperMap.REST.FindTSPPathsService(url, {
+     * var myFindTSPPathsService = new SuperMap.FindTSPPathsService(url, {
      *     eventListeners: {
      *	      "processCompleted": findTSPPathsCompleted, 
      *		  "processFailed": findTSPPathsError
@@ -38,7 +38,7 @@ SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -46,7 +46,7 @@ SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -134,7 +134,7 @@ SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
         });
         return result;
     },
-    CLASS_NAME: "SuperMap.REST.FindTSPPathsService"
+    CLASS_NAME: "SuperMap.FindTSPPathsService"
 });
 
-module.exports = SuperMap.REST.FindTSPPathsService;
+module.exports = SuperMap.FindTSPPathsService;

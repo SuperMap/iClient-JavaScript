@@ -1,21 +1,21 @@
 /**
- * Class: SuperMap.REST.UpdateEdgeWeightService
+ * Class: SuperMap.UpdateEdgeWeightService
  *  更新边的边的耗费权重服务
  */
 require('./NetworkAnalystServiceBase');
 require('./UpdateEdgeWeightParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.UpdateEdgeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.UpdateEdgeWeightService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.UpdateEdgeWeightService
+     * Constructor: SuperMap.UpdateEdgeWeightService
      * 更新边的边的耗费权重服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var updateEdgeWeightService = new SuperMap.REST.UpdateEdgeWeightService(url, {
+     * var updateEdgeWeightService = new SuperMap.UpdateEdgeWeightService(url, {
      *     eventListeners: {
-     *         "processCompleted": UpdateEdgeWeightCompleted,      //参数为SuperMap.REST.UpdateEdgeWeightEventArgs
+     *         "processCompleted": UpdateEdgeWeightCompleted,      //参数为SuperMap.UpdateEdgeWeightEventArgs
      *		   "processFailed": UpdateEdgeWeightError             //参数为SuperMap.ServiceFailedEventArgs
      *		   }
      * });
@@ -29,7 +29,7 @@ SuperMap.REST.UpdateEdgeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnal
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -37,7 +37,7 @@ SuperMap.REST.UpdateEdgeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnal
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
 
@@ -112,7 +112,7 @@ SuperMap.REST.UpdateEdgeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnal
         return paramStr;
     },
 
-    CLASS_NAME: "SuperMap.REST.UpdateEdgeWeightService"
+    CLASS_NAME: "SuperMap.UpdateEdgeWeightService"
 });
 
-module.exports = SuperMap.REST.UpdateEdgeWeightService;
+module.exports = SuperMap.UpdateEdgeWeightService;

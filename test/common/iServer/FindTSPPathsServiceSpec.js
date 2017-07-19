@@ -12,7 +12,7 @@ var options = {
     }
 };
 function initFindTSPPathService() {
-    return new SuperMap.REST.FindTSPPathsService(url, options);
+    return new SuperMap.FindTSPPathsService(url, options);
 }
 function findTSPPathServiceCompleted(serviceSucceedEventArgs){
     serviceSucceedEventArgsSystem = serviceSucceedEventArgs;

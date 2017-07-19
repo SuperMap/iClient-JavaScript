@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.FieldStatisticService
+ * Class: SuperMap.FieldStatisticService
  * 字段查询统计服务类。用来完成对指定数据集指定字段的查询统计分析，即求平均值，最大值等。
  *
  * Inherits from:
@@ -9,7 +9,7 @@ require('../REST');
 require('./ServiceBase');
 require('./FieldStatisticsParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: datasource
@@ -36,12 +36,12 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
     statisticMode: null,
 
     /**
-     * Constructor: SuperMap.REST.FieldStatisticService
+     * Constructor: SuperMap.FieldStatisticService
      * 字段查询统计服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.FieldStatisticService(url, {eventListeners: {
+     * var myService = new SuperMap.FieldStatisticService(url, {eventListeners: {
      *     "processCompleted": fieldStatisticCompleted, 
      *     "processFailed": fieldStatisticError
      *     }，
@@ -106,7 +106,7 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.FieldStatisticService"
+    CLASS_NAME: "SuperMap.FieldStatisticService"
 });
 
-module.exports = SuperMap.REST.FieldStatisticService;
+module.exports = SuperMap.FieldStatisticService;

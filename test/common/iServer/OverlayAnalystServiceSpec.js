@@ -10,7 +10,7 @@ var options = {
     }
 };
 function initOverlayAnalystService_Register() {
-    return new SuperMap.REST.OverlayAnalystService(spatialAnalystURL, options);
+    return new SuperMap.OverlayAnalystService(spatialAnalystURL, options);
 }
 function OverlayAnalystServiceCompleted(eventArgs) {
     analystEventArgsSystem = eventArgs;

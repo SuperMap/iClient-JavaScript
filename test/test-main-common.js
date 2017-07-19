@@ -1,6 +1,6 @@
 /**common -- iServer**/
 //require('./common/iServer/AreaSolarRadiationServiceSpec.js');     //iclient8注释掉
-require('./common/iServer/AddressServiceSpec.js');
+require('./common/iServer/AddressMatchServiceSpec.js');
 
 require('./common/iServer/BufferAnalystServiceSpec.js');
 require('./common/iServer/BufferDistanceSpec.js');

@@ -9,7 +9,7 @@ var options = {
     }
 };
 function initGetLayersInfoService(url) {
-    return new SuperMap.REST.GetLayersInfoService(url, options);
+    return new SuperMap.GetLayersInfoService(url, options);
 }
 function getLayersInfoServiceCompleted(result) {
     getFieldsEventArgsSystem = result;

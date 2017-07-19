@@ -1,24 +1,24 @@
 ﻿/**
- * Class: SuperMap.REST.ComputeWeightMatrixService
+ * Class: SuperMap.ComputeWeightMatrixService
  * 耗费矩阵分析服务类。
  * 耗费矩阵是根据交通网络分析参数中的耗费字段来计算一个二维数组，
  * 用来存储指定的任意两点间的资源消耗。
  * 耗费矩阵分析结果通过该类支持的事件的监听函数参数获取
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 require('./NetworkAnalystServiceBase');
 require('./ComputeWeightMatrixParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.ComputeWeightMatrixService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.ComputeWeightMatrixService
+     * Constructor: SuperMap.ComputeWeightMatrixService
      * 耗费矩阵分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var mycomputeWeightMatrixService = new SuperMap.REST.ComputeWeightMatrixService(url,{
+     * var mycomputeWeightMatrixService = new SuperMap.ComputeWeightMatrixService(url,{
      *     eventListeners: {
      *	       "processCompleted": computeWeightMatrixCompleted, 
      *		   "processFailed": computeWeightMatrixnError
@@ -37,7 +37,7 @@ SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkA
      */
 
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -45,7 +45,7 @@ SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkA
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -105,7 +105,7 @@ SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkA
         return jsonString;
     },
 
-    CLASS_NAME: "SuperMap.REST.ComputeWeightMatrixService"
+    CLASS_NAME: "SuperMap.ComputeWeightMatrixService"
 });
 
-module.exports = SuperMap.REST.ComputeWeightMatrixService;
+module.exports = SuperMap.ComputeWeightMatrixService;

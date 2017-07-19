@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.FindPathService
+ * Class: SuperMap.FindPathService
  * 最佳路径分析服务类。
  * 最佳路径是在网络数据集中指定一些节点，按照节点的选择顺序，
  * 顺序访问这些节点从而求解起止点之间阻抗最小的路经。
@@ -7,21 +7,21 @@
  * 最佳路径分析结果通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 require('./NetworkAnalystServiceBase');
 require('./FindPathParameters');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
-SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.FindPathService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FindPathService
+     * Constructor: SuperMap.FindPathService
      * 最佳路径分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myFindPathService = new SuperMap.REST.FindPathService(url, {
+     * var myFindPathService = new SuperMap.FindPathService(url, {
      *     eventListeners: {
      *	       "processCompleted": findPathCompleted, 
      *		   "processFailed": findPathError
@@ -39,7 +39,7 @@ SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServi
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -47,7 +47,7 @@ SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServi
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -138,7 +138,7 @@ SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServi
         return result;
     },
 
-    CLASS_NAME: "SuperMap.REST.FindPathService"
+    CLASS_NAME: "SuperMap.FindPathService"
 });
 
-module.exports = SuperMap.REST.FindPathService;
+module.exports = SuperMap.FindPathService;

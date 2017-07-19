@@ -10,7 +10,7 @@ var options = {
     }
 };
 function initComputeWeightMatrixService_RegisterListener() {
-    return new SuperMap.REST.ComputeWeightMatrixService(url, options);
+    return new SuperMap.ComputeWeightMatrixService(url, options);
 }
 function ComputeWeightMatrixServiceCompleted(getFeaturesEventArgs){
     serviceCompletedEventArgsSystem = getFeaturesEventArgs;

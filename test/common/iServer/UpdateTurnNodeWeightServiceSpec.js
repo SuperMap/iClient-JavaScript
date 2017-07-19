@@ -6,7 +6,7 @@ var serviceCompletedEventArgsSystem = null;
 //服务初始化时注册事件监听函数
 var networkAnalystURL = GlobeParameter.networkAnalystURL;
 function initUpdateTurnNodeWeightService_RegisterListener() {
-    return new SuperMap.REST.UpdateTurnNodeWeightService(networkAnalystURL,
+    return new SuperMap.UpdateTurnNodeWeightService(networkAnalystURL,
         {eventListeners:{
             'processFailed':updateTurnNodeWeightFailed,
             'processCompleted': updateTurnNodeWeightCompleted

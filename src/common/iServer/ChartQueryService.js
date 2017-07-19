@@ -1,5 +1,5 @@
 /**
- * Class: SuperMap.REST.ChartQueryService
+ * Class: SuperMap.ChartQueryService
  *      海图查询服务类。该类负责将海图查询所需参数（ChartQueryParameters）传递至服务端，并获取服务端的返回结果。
  *      用户可以通过两种方式获取查询结果:
  *      1.通过 AsyncResponder 类获取（推荐使用）；
@@ -14,7 +14,7 @@ require('./ChartQueryParameters');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
 
-SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Property: returnContent
@@ -29,7 +29,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
      */
     format: SuperMap.DataFormat.GEOJSON,
     /**
-     * Constructor: SuperMap.REST.ChartQueryService
+     * Constructor: SuperMap.ChartQueryService
      * 获取图层信息服务类构造函数。
      *
      * Parameters:
@@ -55,7 +55,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
      *        chartQueryFilterParameters:[chartQueryFilterParameter]
      *    });
      *
-     * var chartQueryService = new SuperMap.REST.ChartQueryService(url);
+     * var chartQueryService = new SuperMap.ChartQueryService(url);
      *
      * chartQueryService.events.on({
      *        "processCompleted":processCompleted,
@@ -174,7 +174,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.ChartQueryService"
+    CLASS_NAME: "SuperMap.ChartQueryService"
 });
 
-module.exports = SuperMap.REST.ChartQueryService;
+module.exports = SuperMap.ChartQueryService;

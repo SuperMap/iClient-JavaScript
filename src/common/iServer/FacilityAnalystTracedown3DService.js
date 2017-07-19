@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.FacilityAnalystTracedown3DService
+ * Class: SuperMap.FacilityAnalystTracedown3DService
  * 下游追踪资源服务类
  * Inherits from:
  *  - <SuperMap.ServiceBase>
@@ -7,10 +7,10 @@
 require('./ServiceBase');
 require('./FacilityAnalystTracedown3DParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FacilityAnalystTracedown3DService
+     * Constructor: SuperMap.FacilityAnalystTracedown3DService
      * 下游追踪资源服务类构造函数
      *
      * Parameters:
@@ -64,7 +64,7 @@ SuperMap.REST.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.Servic
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.FacilityAnalystTracedown3DService"
+    CLASS_NAME: "SuperMap.FacilityAnalystTracedown3DService"
 });
 
-module.exports = SuperMap.REST.FacilityAnalystTracedown3DService;
+module.exports = SuperMap.FacilityAnalystTracedown3DService;

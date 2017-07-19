@@ -9,7 +9,7 @@ var options = {
         "processFailed": failed}
 };
 function initTransferPathService() {
-    return new SuperMap.REST.TransferPathService(trafficTransferURL, options);
+    return new SuperMap.TransferPathService(trafficTransferURL, options);
 }
 function succeed(event){
     analystEventArgsSystem = event;

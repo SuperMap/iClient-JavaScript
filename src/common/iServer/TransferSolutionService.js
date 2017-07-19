@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.TransferSolutionService
+ * Class: SuperMap.TransferSolutionService
  * 交通换乘方案查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取
  *
@@ -9,15 +9,15 @@
 require('./ServiceBase');
 require('./TransferSolutionParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.TransferSolutionService
+     * Constructor: SuperMap.TransferSolutionService
      * 交通换乘方案查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.TransferSolutionService(url, {eventListeners: {
+     * var myService = new SuperMap.TransferSolutionService(url, {eventListeners: {
      *     "processCompleted": trafficTransferCompleted,
      *     "processFailed": trafficTransferError
      *     }
@@ -85,8 +85,8 @@ SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
             failure: me.serviceProcessFailed
         });
     },
-    CLASS_NAME: "SuperMap.REST.TransferSolutionService"
+    CLASS_NAME: "SuperMap.TransferSolutionService"
 });
 
-module.exports = SuperMap.REST.TransferSolutionService;
+module.exports = SuperMap.TransferSolutionService;
 

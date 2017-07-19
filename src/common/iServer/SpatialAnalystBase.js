@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.SpatialAnalystBase
+ * Class: SuperMap.SpatialAnalystBase
  * 空间分析服务基类。
  * Inherits from:
  *  - <SuperMap.ServiceBase>
@@ -7,7 +7,7 @@
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
 var ServiceBase = require('./ServiceBase');
-SuperMap.REST.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
+SuperMap.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
 
     /**
      *  Property: format
@@ -74,7 +74,7 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
 
         return result;
     },
-    CLASS_NAME: "SuperMap.REST.SpatialAnalystBase"
+    CLASS_NAME: "SuperMap.SpatialAnalystBase"
 });
 
-module.exports = SuperMap.REST.SpatialAnalystBase;
+module.exports = SuperMap.SpatialAnalystBase;

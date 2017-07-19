@@ -9,7 +9,7 @@ var options = {
         'processFailed': TerrainCurvatureCalculationServiceFailed}
 };
 function initTerrainCurvatureCalculationService() {
-    return new SuperMap.REST.TerrainCurvatureCalculationService(spatialAnalystURL, options);
+    return new SuperMap.TerrainCurvatureCalculationService(spatialAnalystURL, options);
 }
 function TerrainCurvatureCalculationServiceCompleted(event){
     analystEventArgsSystem = event;

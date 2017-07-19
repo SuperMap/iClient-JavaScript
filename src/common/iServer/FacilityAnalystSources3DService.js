@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.FacilityAnalystSources3DService
+ * Class: SuperMap.FacilityAnalystSources3DService
  * 最近设施分析服务类(源查找资源)
  * 最近设施分析是指在网络上给定一个事件点和一组设施点，
  * 查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
@@ -12,10 +12,10 @@
 require('./ServiceBase');
 require('./FacilityAnalystSources3DParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FacilityAnalystSources3DService
+     * Constructor: SuperMap.FacilityAnalystSources3DService
      * 最近设施分析服务类构造函数。
      *
      * Parameters:
@@ -69,7 +69,7 @@ SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.ServiceB
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.FacilityAnalystSources3DService"
+    CLASS_NAME: "SuperMap.FacilityAnalystSources3DService"
 });
 
-module.exports = SuperMap.REST.FacilityAnalystSources3DService;
+module.exports = SuperMap.FacilityAnalystSources3DService;

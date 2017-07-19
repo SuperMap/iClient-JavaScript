@@ -1,22 +1,22 @@
 /**
- * Class: SuperMap.REST.AreaSolarRadiationService
+ * Class: SuperMap.AreaSolarRadiationService
  *  地区太阳辐射服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
 require('./AreaSolarRadiationParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.AreaSolarRadiationService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.AreaSolarRadiationService
+     * Constructor: SuperMap.AreaSolarRadiationService
      * 地区太阳辐射服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myAreaSolarRadiationService = new SuperMap.REST.AreaSolarRadiationService(url);
+     * var myAreaSolarRadiationService = new SuperMap.AreaSolarRadiationService(url);
      * myAreaSolarRadiationService.on({
      *     "processCompleted": processCompleted,
      *     "processFailed": processFailed
@@ -32,7 +32,7 @@ SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAn
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -40,7 +40,7 @@ SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAn
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -84,6 +84,6 @@ SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAn
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.AreaSolarRadiationService"
+    CLASS_NAME: "SuperMap.AreaSolarRadiationService"
 });
-module.exports = SuperMap.REST.AreaSolarRadiationService;
+module.exports = SuperMap.AreaSolarRadiationService;

@@ -1,25 +1,25 @@
 ﻿/**
- * Class: SuperMap.REST.SurfaceAnalystService
+ * Class: SuperMap.SurfaceAnalystService
  * 表面分析服务类。
  * 该类负责将客户设置的表面分析服务参数传递给服务端，并接收服务端返回的表面分析服务分析结果数据。
  * 表面分析结果通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
 require('./DatasetSurfaceAnalystParameters');
 require('./GeometrySurfaceAnalystParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.SurfaceAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.SurfaceAnalystService
+     * Constructor: SuperMap.SurfaceAnalystService
      * 表面分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var mySurfaceAnalystService = new SuperMap.REST.SurfaceAnalystService(url, {
+     * var mySurfaceAnalystService = new SuperMap.SurfaceAnalystService(url, {
      *      eventListeners: {
      *	       "processCompleted": surfaceAnalysCompleted, 
      *		   "processFailed": surfaceAnalysFailed
@@ -35,7 +35,7 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -43,7 +43,7 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -51,7 +51,7 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * 负责将客户端的表面分析服务参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.SurfaceAnalystParameters>}
+     * params - {<SuperMap.SurfaceAnalystParameters>}
      */
     processAsync: function (params) {
         if (!params) {
@@ -73,7 +73,7 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * 将参数转化为 JSON 字符串。
      *
      * Parameters:
-     * params - {<SuperMap.REST.SurfaceAnalystParameters>}
+     * params - {<SuperMap.SurfaceAnalystParameters>}
      *
      * Returns:
      * {Object} 转化后的JSON字符串。
@@ -111,7 +111,7 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.SurfaceAnalystService"
+    CLASS_NAME: "SuperMap.SurfaceAnalystService"
 });
 
-module.exports = SuperMap.REST.SurfaceAnalystService;
+module.exports = SuperMap.SurfaceAnalystService;

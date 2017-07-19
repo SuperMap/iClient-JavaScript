@@ -2,7 +2,7 @@
 var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 describe('testQueryBySQLService_constructor', function () {
     it('constructor and destroy', function () {
-        var queryBySQLService = new SuperMap.REST.QueryBySQLService(worldMapURL);
+        var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL);
         expect(queryBySQLService).not.toBeNull();
         expect(queryBySQLService.url).toEqual(worldMapURL + "/queryResults.jsonp?");
         queryBySQLService.destroy();
@@ -39,7 +39,7 @@ describe('testQueryBySQLService_processAsync', function () {
             serviceSuccessEventArgs = queryEventArgs;
         }
 
-        var queryBySQLService = new SuperMap.REST.QueryBySQLService(worldMapURL, options);
+        var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL, options);
         var queryBySQLParameters = new SuperMap.QueryBySQLParameters({
             customParams: null,
             expectCount: 100,
@@ -99,7 +99,7 @@ describe('testQueryBySQLService_processAsync', function () {
             serviceSuccessEventArgs = queryEventArgs;
         }
 
-        var queryBySQLService = new SuperMap.REST.QueryBySQLService(worldMapURL, options);
+        var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL, options);
         var queryBySQLParameters = new SuperMap.QueryBySQLParameters({
             customParams: null,
             expectCount: 100,
@@ -164,7 +164,7 @@ describe('testQueryBySQLService_processAsync', function () {
             serviceSuccessEventArgs = queryEventArgs;
         }
 
-        var queryBySQLService = new SuperMap.REST.QueryBySQLService(worldMapURL, options);
+        var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL, options);
         var queryBySQLParameters = new SuperMap.QueryBySQLParameters({
             customParams: null,
             expectCount: 100,
@@ -225,7 +225,7 @@ describe('testQueryBySQLService_processAsync', function () {
             serviceSuccessEventArgs = queryEventArgs;
         }
 
-        var queryBySQLService = new SuperMap.REST.QueryBySQLService(worldMapURL, options);
+        var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL, options);
         var queryBySQLParameters = new SuperMap.QueryBySQLParameters({
             customParams: null,
             expectCount: 100,
@@ -277,7 +277,7 @@ describe('testQueryBySQLService_processAsync', function () {
             serviceSuccessEventArgs = queryEventArgs;
         }
 
-        var queryBySQLService = new SuperMap.REST.QueryBySQLService(worldMapURL, options);
+        var queryBySQLService = new SuperMap.QueryBySQLService(worldMapURL, options);
         var queryBySQLParameters = new SuperMap.QueryBySQLParameters({
             customParams: null,
             expectCount: 100,

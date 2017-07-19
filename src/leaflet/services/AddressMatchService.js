@@ -1,8 +1,8 @@
 /**
- * Class:L.supermap.AddressService
+ * Class:L.supermap.AddressMatchService
  * 地址匹配服务
  * 用法：
- *      L.supermap.AddressService(url,options)
+ *      L.supermap.AddressMatchService(url,options)
  *      .code(function(result){
  *          //doSomething
  *      })
@@ -10,9 +10,9 @@
 var L = require("leaflet");
 var SuperMap = require('../../common/SuperMap');
 var ServiceBase = require('./ServiceBase');
-var CommonAddressService = require('../../common/iServer/AddressService');
+var CommonMatchAddressService = require('../../common/iServer/AddressMatchService');
 
-var AddressService = ServiceBase.extend({
+var AddressMatchService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -27,7 +27,7 @@ var AddressService = ServiceBase.extend({
     code: function (params, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var addressService = new CommonAddressService(me.url, {
+        var addressMatchService = new CommonMatchAddressService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -36,7 +36,7 @@ var AddressService = ServiceBase.extend({
             },
             format: format
         });
-        addressService.code(me.url + '/geocoding', params);
+        addressMatchService.code(me.url + '/geocoding', params);
         return me;
     },
 
@@ -49,7 +49,7 @@ var AddressService = ServiceBase.extend({
     decode: function (params, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
-        var addressService = new CommonAddressService(me.url, {
+        var addressMatchService = new CommonMatchAddressService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
@@ -58,7 +58,7 @@ var AddressService = ServiceBase.extend({
             },
             format: format
         });
-        addressService.decode(me.url + '/geodecoding', params);
+        addressMatchService.decode(me.url + '/geodecoding', params);
         return me;
     },
 
@@ -67,8 +67,8 @@ var AddressService = ServiceBase.extend({
     }
 });
 
-L.supermap.AddressService = function (url, options) {
-    return new AddressService(url, options);
+L.supermap.AddressMatchService = function (url, options) {
+    return new AddressMatchService(url, options);
 };
 
-module.exports = AddressService;
+module.exports = AddressMatchService;

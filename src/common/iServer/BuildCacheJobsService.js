@@ -2,7 +2,7 @@ var SuperMap = require('../SuperMap');
 var ProcessingJobsServiceBase = require('./ProcessingJobsServiceBase');
 var BuildCacheJobParameter = require('./BuildCacheJobParameter');
 
-SuperMap.REST.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+SuperMap.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
         url += "/mapping/buildCache";
@@ -25,7 +25,7 @@ SuperMap.REST.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, 
         ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, BuildCacheJobParameter, seconds]);
     },
 
-    CLASS_NAME: "SuperMap.REST.BuildCacheJobsService"
+    CLASS_NAME: "SuperMap.BuildCacheJobsService"
 });
 
-module.exports = SuperMap.REST.BuildCacheJobsService;
+module.exports = SuperMap.BuildCacheJobsService;

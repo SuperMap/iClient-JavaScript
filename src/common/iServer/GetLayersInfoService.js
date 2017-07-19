@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.GetLayersInfoService
+ * Class: SuperMap.GetLayersInfoService
  * 获取图层信息服务类。
  * 该类负责将从客户端指定的服务器上获取该服务器提供的图层信息。
  *
@@ -12,7 +12,7 @@ var ServerTheme = require('./ServerTheme');
 var Grid = require('./Grid');
 var Image = require('./Image');
 var Vector = require('./Vector');
-SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Property: isTempLayers
@@ -21,7 +21,7 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
     isTempLayers: false,
 
     /**
-     * Constructor: SuperMap.REST.GetLayersInfoService
+     * Constructor: SuperMap.GetLayersInfoService
      * 获取图层信息服务类构造函数。
      *
      * Parameters:
@@ -142,7 +142,7 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
         }
     },
 
-    CLASS_NAME: "SuperMap.REST.GetLayersInfoService"
+    CLASS_NAME: "SuperMap.GetLayersInfoService"
 });
 
-module.exports = SuperMap.REST.GetLayersInfoService;
+module.exports = SuperMap.GetLayersInfoService;

@@ -6,7 +6,7 @@ var worldMapURL = GlobeParameter.mapServiceURL + "World Map";
 
 //跨域下的测试
 function initQueryByGeometryService() {
-    return new SuperMap.REST.QueryByGeometryService(worldMapURL);
+    return new SuperMap.QueryByGeometryService(worldMapURL);
 }
 var options = {
     eventListeners: {
@@ -16,7 +16,7 @@ var options = {
 };
 //服务初始化时注册事件监听函数
 function initQueryByGeometryService_RegisterListener() {
-    return new SuperMap.REST.QueryByGeometryService(worldMapURL, options);
+    return new SuperMap.QueryByGeometryService(worldMapURL, options);
 }
 function QueryByGeometryServiceFailed(serviceFailedEventArgs){
     serviceFailedEventArgsSystem=serviceFailedEventArgs;

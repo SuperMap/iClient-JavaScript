@@ -1,5 +1,5 @@
 /**
- * Class: SuperMap.REST.DensityAnalystService
+ * Class: SuperMap.DensityAnalystService
  *  密度分析服务类，密度分析可计算每个输出栅格像元周围圆形邻域内输入的点或线对象的密度。
  *  密度分析，在某种意义上来说，相当于在表面上将输入的点线对象的测量值散开来，
  *  将每个点或线对象的测量量分布在整个研究区域，并计算输出栅格中每个像元的密度值。
@@ -7,12 +7,12 @@
  *  目前提供1种密度分析：核密度分析（Kernel）。
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
 require('./DensityKernelAnalystParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.DensityAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
      * Property: mode
@@ -21,12 +21,12 @@ SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
     mode: null,
 
     /**
-     * Constructor: SuperMap.REST.DensityAnalystService
+     * Constructor: SuperMap.DensityAnalystService
      * 密度分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myDensityAnalystService = new SuperMap.REST.DensityAnalystService(url);
+     * var myDensityAnalystService = new SuperMap.DensityAnalystService(url);
      * myDensityAnalystService.on({
      *     "processCompleted": processCompleted,
      *     "processFailed": processFailed
@@ -42,7 +42,7 @@ SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
         var me = this;
         if (options) {
             SuperMap.Util.extend(me, options);
@@ -54,7 +54,7 @@ SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
         this.mode = null;
     },
 
@@ -100,6 +100,6 @@ SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.DensityAnalystService"
+    CLASS_NAME: "SuperMap.DensityAnalystService"
 });
-module.exports = SuperMap.REST.DensityAnalystService;
+module.exports = SuperMap.DensityAnalystService;

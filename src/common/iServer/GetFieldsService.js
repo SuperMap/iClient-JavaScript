@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.GetFieldsService
+ * Class: SuperMap.GetFieldsService
  * 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
  *
  * Inherits from:
@@ -7,7 +7,7 @@
  */
 require('./ServiceBase');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: datasource
@@ -22,12 +22,12 @@ SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
     dataset: null,
 
     /**
-     * Constructor: SuperMap.REST.GetFieldsService
+     * Constructor: SuperMap.GetFieldsService
      * 字段查询服务构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.GetFieldsService(url, {eventListeners: {
+     * var myService = new SuperMap.GetFieldsService(url, {eventListeners: {
      *     "processCompleted": getFieldsCompleted, 
      *     "processFailed": getFieldsError
      *     },
@@ -83,7 +83,7 @@ SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.GetFieldsService"
+    CLASS_NAME: "SuperMap.GetFieldsService"
 });
 
-module.exports = SuperMap.REST.GetFieldsService;
+module.exports = SuperMap.GetFieldsService;

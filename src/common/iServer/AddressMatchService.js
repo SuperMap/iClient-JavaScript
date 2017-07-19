@@ -7,7 +7,7 @@ require('./GeoDecodingParameter');
 /**
  * 地址匹配服务，包括正向匹配和反向匹配。
  */
-SuperMap.REST.AddressService = SuperMap.Class(ServiceBase, {
+SuperMap.AddressMatchService = SuperMap.Class(ServiceBase, {
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.apply(this, arguments);
@@ -58,7 +58,7 @@ SuperMap.REST.AddressService = SuperMap.Class(ServiceBase, {
         ServiceBase.prototype.serviceProcessFailed.apply(this, arguments);
     },
 
-    CLASS_NAME: "SuperMap.REST.AddressService"
+    CLASS_NAME: "SuperMap.AddressMatchService"
 });
 
-module.exports = SuperMap.REST.AddressService;
+module.exports = SuperMap.AddressMatchService;

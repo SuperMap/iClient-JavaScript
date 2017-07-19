@@ -1,22 +1,22 @@
 ﻿/**
- * Class: SuperMap.REST.QueryByGeometryService
+ * Class: SuperMap.QueryByGeometryService
  * Geometry 查询服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.QueryService>
+ *  - <SuperMap.QueryService>
  */
 require('./QueryService');
 require('./QueryByGeometryParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService, {
+SuperMap.QueryByGeometryService = SuperMap.Class(SuperMap.QueryService, {
 
     /**
-     * Constructor: SuperMap.REST.QueryByGeometryService
+     * Constructor: SuperMap.QueryByGeometryService
      * Geometry 查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myQueryByGeometryService = new SuperMap.REST.QueryByGeometryService(url, {
+     * var myQueryByGeometryService = new SuperMap.QueryByGeometryService(url, {
     *     eventListeners: {
     *	      "processCompleted": queryCompleted, 
     *		  "processFailed": queryError
@@ -34,7 +34,7 @@ SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.QueryService.prototype.initialize.apply(this, arguments);
+        SuperMap.QueryService.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -42,7 +42,7 @@ SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.QueryService.prototype.destroy.apply(this, arguments);
+        SuperMap.QueryService.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -70,7 +70,7 @@ SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.QueryByGeometryService"
+    CLASS_NAME: "SuperMap.QueryByGeometryService"
 });
 
-module.exports = SuperMap.REST.QueryByGeometryService;
+module.exports = SuperMap.QueryByGeometryService;

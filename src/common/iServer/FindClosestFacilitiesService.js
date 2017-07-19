@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.FindClosestFacilitiesService
+ * Class: SuperMap.FindClosestFacilitiesService
  * 最近设施分析服务类。
  * 最近设施分析是指在网络上给定一个事件点和一组设施点，
  * 查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
@@ -7,21 +7,21 @@
  * 最近设施分析结果通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 require('./NetworkAnalystServiceBase');
 require('./FindClosestFacilitiesParameters');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
-SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.FindClosestFacilitiesService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FindClosestFacilitiesService
+     * Constructor: SuperMap.FindClosestFacilitiesService
      * 最近设施分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myfindClosestFacilitiesService = new SuperMap.REST.FindClosestFacilitiesService(url, {
+     * var myfindClosestFacilitiesService = new SuperMap.FindClosestFacilitiesService(url, {
      *     eventListeners: {
      *	       "processCompleted": findClosestFacilitiesCompleted, 
      *		   "processFailed": findClosestFacilitiesError
@@ -40,7 +40,7 @@ SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.Networ
      */
 
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -48,7 +48,7 @@ SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.Networ
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -142,6 +142,6 @@ SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.Networ
         return result;
     },
 
-    CLASS_NAME: "SuperMap.REST.FindClosestFacilitiesService"
+    CLASS_NAME: "SuperMap.FindClosestFacilitiesService"
 });
-module.exports = SuperMap.REST.FindClosestFacilitiesService;
+module.exports = SuperMap.FindClosestFacilitiesService;

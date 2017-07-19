@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.EditFeaturesService
+ * Class: SuperMap.EditFeaturesService
  * 数据服务中数据集添加、更新、删除服务类。
  *
  * Inherits from:
@@ -8,7 +8,7 @@
 require('./ServiceBase');
 require('./EditFeaturesParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Property: returnContent
@@ -26,12 +26,12 @@ SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
     isUseBatch: false,
 
     /**
-     * Constructor: SuperMap.REST.EditFeaturesService
+     * Constructor: SuperMap.EditFeaturesService
      * 数据集编辑服务基类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.EditFeaturesService(url, {eventListeners: {
+     * var myService = new SuperMap.EditFeaturesService(url, {eventListeners: {
      *     "processCompleted": editFeatureCompleted, 
      *     "processFailed": editFeatureError
      *       }
@@ -121,7 +121,7 @@ SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.EditFeaturesService"
+    CLASS_NAME: "SuperMap.EditFeaturesService"
 });
 
-module.exports = SuperMap.REST.EditFeaturesService;
+module.exports = SuperMap.EditFeaturesService;

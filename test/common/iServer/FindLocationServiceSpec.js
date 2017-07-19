@@ -11,7 +11,7 @@ var options = {
     }
 };
 function initFindLocationService_RegisterListener() {
-    return new SuperMap.REST.FindLocationService(url, options);
+    return new SuperMap.FindLocationService(url, options);
 }
 function findLocationServiceCompleted(serviceSucceedEventArgs) {
     serviceSucceedEventArgsSystem = serviceSucceedEventArgs;

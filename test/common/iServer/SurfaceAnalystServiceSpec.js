@@ -11,7 +11,7 @@ function surfaceAnalystFailed(serviceFailedEventArgs) {
 }
 var spatialAnalystURL = GlobeParameter.spatialAnalystURL;
 function initSurfaceService() {
-    return new SuperMap.REST.SurfaceAnalystService(spatialAnalystURL, {
+    return new SuperMap.SurfaceAnalystService(spatialAnalystURL, {
         eventListeners: {
             "processCompleted": surfaceAnalystCompleted,
             'processFailed': surfaceAnalystFailed

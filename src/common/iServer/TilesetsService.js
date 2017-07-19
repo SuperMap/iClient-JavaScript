@@ -1,5 +1,5 @@
 /**
- * Class: SuperMap.REST.TilesetsService
+ * Class: SuperMap.TilesetsService
  * 切片列表信息查询服务类;即查询切片地图服务的切片列表，返回切片集名称、地图切片元数据信息、切片版本集信息
  *
  * Inherits from:
@@ -8,11 +8,11 @@
 
 require('./ServiceBase');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
 
 
     /**
-     * Constructor: SuperMap.REST.TilesetsService
+     * Constructor: SuperMap.TilesetsService
      * 切片列表信息查询服务类构造函数。
      *
      * Parameters:
@@ -58,7 +58,7 @@ SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.TilesetsService"
+    CLASS_NAME: "SuperMap.TilesetsService"
 });
 
-module.exports = SuperMap.REST.TilesetsService;
+module.exports = SuperMap.TilesetsService;

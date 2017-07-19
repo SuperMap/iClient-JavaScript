@@ -221,7 +221,7 @@
             toIndex: 500,
             datasetNames: ["Jingjin:BaseMap_R"]
         });
-        getFeatureBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url2, {
+        getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(url2, {
             format: SuperMap.DataFormat.ISERVER,
             eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}
         });

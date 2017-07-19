@@ -170,7 +170,7 @@
             addressUrl = "http://117.122.248.69:8090/iserver/services/addressmatch-Address/restjsr/v1/address",
             imgUrl = "http://support.supermap.com.cn:8090/iserver/iClient/forJavaScript/examples/images/markerbig_select.png",
             vectorSource = new ol.source.Vector(),
-            addressService = new ol.supermap.AddressService(addressUrl),
+            addressMatchService = new ol.supermap.AddressMatchService(addressUrl),
             view = new ol.View({
                 center: [116.383572, 39.914714],
                 zoom: 12,
@@ -250,7 +250,7 @@
             prjCoordSys: $('#prjCoordSys').val() || $('#prjCoordSys').attr('placeholder'),
             maxReturn: $('#maxReturn').val() || $('#maxReturn').attr('placeholder')
         });
-        addressService.code(geoCodeParam, match);
+        addressMatchService.code(geoCodeParam, match);
     });
     $("#decodeBtn").click(function () {
         var geoDecodeParam = new SuperMap.GeoDecodingParameter({
@@ -263,7 +263,7 @@
             maxReturn: $('#maxReturn2').val() || $('#maxReturn2').attr('placeholder'),
             geoDecodingRadius: $('#geoDecodingRadius').val() || $('#geoDecodingRadius').attr('placeholder'),
         });
-        addressService.decode(geoDecodeParam, match);
+        addressMatchService.decode(geoDecodeParam, match);
     });
 
     function match(obj) {

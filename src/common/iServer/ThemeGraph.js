@@ -158,7 +158,7 @@ SuperMap.ThemeGraph = SuperMap.Class(SuperMap.Theme, {
      *                   datasetNames: ["BaseMap_R"]
      *               }),
      *    //与服务端交互
-     *               themeService=new SuperMap.REST.ThemeService(url, {
+     *               themeService=new SuperMap.ThemeService(url, {
      *                   eventListeners: {
      *                       "processCompleted": ThemeCompleted,
      *                        "processFailed": themeFailed

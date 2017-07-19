@@ -12,10 +12,10 @@ function themeFailed(serviceFailedEventArgs){
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 function initThemeService() {
-    return new SuperMap.REST.ThemeService(themeURL);
+    return new SuperMap.ThemeService(themeURL);
 }
 function initThemeService_RegisterListener() {
-    return new SuperMap.REST.ThemeService(themeURL,
+    return new SuperMap.ThemeService(themeURL,
         {eventListeners: {
             "processCompleted": themeCompleted,
             "processFailed": themeFailed

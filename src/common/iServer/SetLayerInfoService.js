@@ -1,5 +1,5 @@
 /**
- * Class: SuperMap.REST.SetLayerInfoService
+ * Class: SuperMap.SetLayerInfoService
  * 设置图层信息服务类。可以实现临时图层中子图层的修改
  * 该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。
  *
@@ -9,7 +9,7 @@
 require('./ServiceBase');
 require('./SetLayerInfoParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: resourceID
@@ -19,7 +19,7 @@ SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
 
     /**
-     * Constructor: SuperMap.REST.SetLayerInfoService
+     * Constructor: SuperMap.SetLayerInfoService
      * 设置图层信息服务类构造函数。可以实现临时图层中子图层的修改。
      *
      * Parameters:
@@ -51,7 +51,7 @@ SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * APIMethod: processAsync
      * 负责将客户端的更新参数传递到服务端。
      * Parameters:
-     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务 <SuperMap.REST.GetLayerInfoService>.result.subLayers.layers[i]
+     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务 <SuperMap.GetLayerInfoService>.result.subLayers.layers[i]
      * 返回图层信息，然后对其属性进行修改来获取。
      */
     processAsync: function (params) {
@@ -71,7 +71,7 @@ SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.SetLayerInfoService"
+    CLASS_NAME: "SuperMap.SetLayerInfoService"
 });
 
-module.exports = SuperMap.REST.SetLayerInfoService;
+module.exports = SuperMap.SetLayerInfoService;

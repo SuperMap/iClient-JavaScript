@@ -2,7 +2,7 @@ require('../../../src/common/iServer/QueryService');
 
 var url = GlobeParameter.mapServiceURL + "World Map";
 function initQueryService() {
-    return new SuperMap.REST.QueryService(url);
+    return new SuperMap.QueryService(url);
 }
 
 describe('testQueryService',function(){

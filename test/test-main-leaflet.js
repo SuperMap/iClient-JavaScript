@@ -1,5 +1,5 @@
 /**leaflet -- services**/
-require('./leaflet/services/AddressServiceSpec.js');
+require('./leaflet/services/AddressMatchServiceSpec.js');
 
 require('./leaflet/services/EditFeaturesServiceRegionSpec.js');
 require('./leaflet/services/EditFeaturesServiceLineSpec.js');

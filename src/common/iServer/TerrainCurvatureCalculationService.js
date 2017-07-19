@@ -1,22 +1,22 @@
 /**
- * Class: SuperMap.REST.TerrainCurvatureCalculationService
+ * Class: SuperMap.TerrainCurvatureCalculationService
  *  地形曲率计算服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
 require('./TerrainCurvatureCalculationParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.TerrainCurvatureCalculationService
+     * Constructor: SuperMap.TerrainCurvatureCalculationService
      * 地形曲率计算服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myTerrainCurvatureCalculationService = new SuperMap.REST.TerrainCurvatureCalculationService(url);
+     * var myTerrainCurvatureCalculationService = new SuperMap.TerrainCurvatureCalculationService(url);
      * myTerrainCurvatureCalculationService.on({
      *     "processCompleted": processCompleted,
      *     "processFailed": processFailed
@@ -32,7 +32,7 @@ SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -40,7 +40,7 @@ SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -84,6 +84,6 @@ SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.TerrainCurvatureCalculationService"
+    CLASS_NAME: "SuperMap.TerrainCurvatureCalculationService"
 });
-module.exports = SuperMap.REST.TerrainCurvatureCalculationService;
+module.exports = SuperMap.TerrainCurvatureCalculationService;

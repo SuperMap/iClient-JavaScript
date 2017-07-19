@@ -2,7 +2,7 @@
  * Class:ol.supermap.AddressService
  * 地址匹配服务
  * 用法：
- *      new ol.supermap.AddressService(url,options)
+ *      new ol.supermap.AddressMatchService(url,options)
  *      .code(function(result){
  *          //doSomething
  *      })
@@ -10,12 +10,12 @@
 var ol = require('openlayers/dist/ol-debug');
 var SuperMap = require('../../common/SuperMap');
 var ServiceBase = require('./ServiceBase');
-var AddressService = require('../../common/iServer/AddressService');
+var AddressMatchService = require('../../common/iServer/AddressMatchService');
 
-ol.supermap.AddressService = function (url, options) {
+ol.supermap.AddressMatchService = function (url, options) {
     ServiceBase.call(this, url, options);
 };
-ol.inherits(ol.supermap.AddressService, ServiceBase);
+ol.inherits(ol.supermap.AddressMatchService, ServiceBase);
 
 /**
  * 获取正向地址匹配结果。
@@ -23,10 +23,10 @@ ol.inherits(ol.supermap.AddressService, ServiceBase);
  * @param callback 请求结果的回调函数。
  * @param resultFormat 返回的结果类型（默认为GeoJSON）。
  */
-ol.supermap.AddressService.prototype.code = function (params, callback, resultFormat) {
+ol.supermap.AddressMatchService.prototype.code = function (params, callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var addressService = new AddressService(me.url, {
+    var addressMatchService = new AddressMatchService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -35,7 +35,7 @@ ol.supermap.AddressService.prototype.code = function (params, callback, resultFo
         },
         format: format
     });
-    addressService.code(me.url + '/geocoding', params);
+    addressMatchService.code(me.url + '/geocoding', params);
     return me;
 };
 
@@ -45,10 +45,10 @@ ol.supermap.AddressService.prototype.code = function (params, callback, resultFo
  * @param callback 请求结果的回调函数。
  * @param resultFormat 返回的结果类型（默认为GeoJSON）。
  */
-ol.supermap.AddressService.prototype.decode = function (params, callback, resultFormat) {
+ol.supermap.AddressMatchService.prototype.decode = function (params, callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var addressService = new AddressService(me.url, {
+    var addressMatchService = new AddressMatchService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -57,12 +57,12 @@ ol.supermap.AddressService.prototype.decode = function (params, callback, result
         },
         format: format
     });
-    addressService.decode(me.url + '/geodecoding', params);
+    addressMatchService.decode(me.url + '/geodecoding', params);
     return me;
 };
 
-ol.supermap.AddressService.prototype._processFormat = function (resultFormat) {
+ol.supermap.AddressMatchService.prototype._processFormat = function (resultFormat) {
     return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
 };
 
-module.exports = ol.supermap.AddressService;
+module.exports = ol.supermap.AddressMatchService;

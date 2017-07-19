@@ -1,17 +1,17 @@
 /**
- * Class: SuperMap.REST.FacilityAnalystStreamService
+ * Class: SuperMap.FacilityAnalystStreamService
  * 上游/下游 关键设施查找资源服务类;即查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
  *
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 require('./NetworkAnalystServiceBase');
 require('./FacilityAnalystStreamParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.FacilityAnalystStreamService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FacilityAnalystStreamService
+     * Constructor: SuperMap.FacilityAnalystStreamService
      * 上游/下游关键设施查找资源服务类构造函数。
      *
      * Parameters:
@@ -25,7 +25,7 @@ SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.Networ
      */
 
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -33,7 +33,7 @@ SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.Networ
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -82,7 +82,7 @@ SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.Networ
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.FacilityAnalystStreamService"
+    CLASS_NAME: "SuperMap.FacilityAnalystStreamService"
 });
 
-module.exports = SuperMap.REST.FacilityAnalystStreamService;
+module.exports = SuperMap.FacilityAnalystStreamService;

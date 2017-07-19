@@ -4,7 +4,7 @@ var setLayersStatusEvtArgs = null;
 var setLayersStatusFaildEvtArgs = null;
 
 function initSetLayerStatusService(url) {
-    return new SuperMap.REST.SetLayerStatusService(url, {
+    return new SuperMap.SetLayerStatusService(url, {
         eventListeners: {
             processCompleted: setLayerStatusCompleted,
             processFailed: setLayerStatusFailed
@@ -21,7 +21,7 @@ function setLayerStatusFailed(result) {
 describe('testSetLayerStatusService_constructor',function(){
     it('constructor and destroy',function(){
         var url= GlobeParameter.WorldURL;
-        var setLayerStatusService = new SuperMap.REST.SetLayerStatusService(url,
+        var setLayerStatusService = new SuperMap.SetLayerStatusService(url,
             {eventListeners:{
                 "processCompleted":this.setLayerComplted
             }});
@@ -39,7 +39,7 @@ describe('testSetLayerStatusService_constructor',function(){
 describe('testSetLayerStatusService_getMapName',function(){
     it('getMapName',function(){
         var url = GlobeParameter.WorldURL;
-        var setLayerStatusService = new SuperMap.REST.SetLayerStatusService(url);
+        var setLayerStatusService = new SuperMap.SetLayerStatusService(url);
         var name = setLayerStatusService.getMapName(url);
         expect(name).toEqual("World");
         setLayerStatusService.destroy();
@@ -62,7 +62,7 @@ describe('testSetLayerStatusService_processAsync',function(){
     //processAsync没有参数的时候
     it('noParams',function(done){
         var worldURL= GlobeParameter.WorldURL;
-        var setLayerStatusService = new SuperMap.REST.SetLayerStatusService(worldURL);
+        var setLayerStatusService = new SuperMap.SetLayerStatusService(worldURL);
         setLayerStatusService.processAsync();
 
         setTimeout(function(){

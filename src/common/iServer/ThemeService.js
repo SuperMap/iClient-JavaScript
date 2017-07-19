@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.ThemeService
+ * Class: SuperMap.ThemeService
  * 专题图服务类。
  *
  * Inherits from:
@@ -8,15 +8,15 @@
 require('./ServiceBase');
 require('./ThemeParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.ThemeService
+     * Constructor: SuperMap.ThemeService
      * 专题图服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myThemeService = new SuperMap.REST.ThemeService(url, {
+     * var myThemeService = new SuperMap.ThemeService(url, {
      *     eventListeners: {
      *           "processCompleted": themeCompleted,
      *           "processFailed": themeFailed
@@ -147,6 +147,6 @@ SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.ThemeService"
+    CLASS_NAME: "SuperMap.ThemeService"
 });
-module.exports = SuperMap.REST.ThemeService;
+module.exports = SuperMap.ThemeService;

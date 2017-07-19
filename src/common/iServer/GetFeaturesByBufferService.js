@@ -1,22 +1,22 @@
 ﻿/**
- * Class:   SuperMap.REST.GetFeaturesByBufferService
+ * Class:   SuperMap.GetFeaturesByBufferService
  * 数据服务中数据集缓冲区查询服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.GetFeaturesServiceBase>
+ *  - <SuperMap.GetFeaturesServiceBase>
  */
 require('./GetFeaturesServiceBase');
 require('./GetFeaturesByBufferParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
+SuperMap.GetFeaturesByBufferService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
 
     /**
-     * Constructor:   SuperMap.REST.GetFeaturesByBufferService
+     * Constructor:   SuperMap.GetFeaturesByBufferService
      * 数据服务缓冲区查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myGetFeaturesByBufferService = new   SuperMap.REST.GetFeaturesByBufferService(url, {
+     * var myGetFeaturesByBufferService = new   SuperMap.GetFeaturesByBufferService(url, {
      *     eventListeners: {
      *           "processCompleted": GetFeaturesCompleted, 
      *           "processFailed": GetFeaturesError
@@ -36,7 +36,7 @@ SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeatu
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -44,7 +44,7 @@ SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeatu
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -62,7 +62,7 @@ SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeatu
         return SuperMap.GetFeaturesByBufferParameters.toJsonParameters(params);
     },
 
-    CLASS_NAME: "SuperMap.REST.GetFeaturesByBufferService"
+    CLASS_NAME: "SuperMap.GetFeaturesByBufferService"
 });
 
-module.exports = SuperMap.REST.GetFeaturesByBufferService;
+module.exports = SuperMap.GetFeaturesByBufferService;

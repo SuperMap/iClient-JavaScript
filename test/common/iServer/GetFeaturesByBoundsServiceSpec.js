@@ -11,7 +11,7 @@ var options = {
     }
 };
 function initGetFeaturesByBoundsService_RegisterListener() {
-    return new SuperMap.REST.GetFeaturesByBoundsService(url, options);
+    return new SuperMap.GetFeaturesByBoundsService(url, options);
 }
 function serviceCompleted(serviceSucceedEventArgs){
     serviceSucceedEventArgsSystem = serviceSucceedEventArgs;
@@ -28,7 +28,7 @@ describe('testGetFeaturesByBoundsService',function(){
             'processCompleted':serviceCompleted
         });
         expect(getFeaturesByBoundsService).not.toBeNull();
-        expect(getFeaturesByBoundsService.CLASS_NAME).toEqual("SuperMap.REST.GetFeaturesByBoundsService");
+        expect(getFeaturesByBoundsService.CLASS_NAME).toEqual("SuperMap.GetFeaturesByBoundsService");
         getFeaturesByBoundsService.destroy();
         expect(getFeaturesByBoundsService.EVENT_TYPES).toBeNull();
         expect(getFeaturesByBoundsService.events).toBeNull();

@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.OverlayAnalystService
+ * Class: SuperMap.OverlayAnalystService
  * 叠加分析服务类
  * 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
  * 叠加分析结果通过该类支持的事件的监听函数参数获取
@@ -11,7 +11,7 @@ require('./ServiceBase');
 require('./DatasetOverlayAnalystParameters');
 require('./GeometryOverlayAnalystParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.OverlayAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
      * Property: mode
@@ -20,12 +20,12 @@ SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
     mode: null,
 
     /**
-     * Constructor: SuperMap.REST.OverlayAnalystService
+     * Constructor: SuperMap.OverlayAnalystService
      * 查询叠加分析服务基类构造函数。
      *
      * 例如：
      * (start code)
-     * var myOverlayAnalystService = new SuperMap.REST.OverlayAnalystService(url, {
+     * var myOverlayAnalystService = new SuperMap.OverlayAnalystService(url, {
      *     eventListeners: {
      *	       "processCompleted": OverlayCompleted, 
      *		   "processFailed": OverlayFailed
@@ -41,7 +41,7 @@ SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
         var me = this;
         if (options) {
             SuperMap.Util.extend(me, options);
@@ -53,7 +53,7 @@ SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
         this.mode = null;
     },
 
@@ -103,7 +103,7 @@ SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.OverlayAnalystService"
+    CLASS_NAME: "SuperMap.OverlayAnalystService"
 });
 
-module.exports = SuperMap.REST.OverlayAnalystService;
+module.exports = SuperMap.OverlayAnalystService;

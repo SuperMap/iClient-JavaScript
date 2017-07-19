@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.TransferPathService
+ * Class: SuperMap.TransferPathService
  * 交通换乘线路查询服务类，根据交通换乘分析结果(TransferSolutionResult)，获取某一条乘车路线的详细信息。
  * 返回结果通过该类支持的事件的监听函数参数获取
  *
@@ -9,15 +9,15 @@
 require('./ServiceBase');
 require('./TransferPathParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.TransferPathService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.TransferPathService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.TransferPathService
+     * Constructor: SuperMap.TransferPathService
      * 交通换乘线路服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.TransferPathService(url, {eventListeners: {
+     * var myService = new SuperMap.TransferPathService(url, {eventListeners: {
      *     "processCompleted": TrafficTransferCompleted, 
      *     "processFailed": TrafficTransferError
      *     }
@@ -78,7 +78,7 @@ SuperMap.REST.TransferPathService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.TransferPathService"
+    CLASS_NAME: "SuperMap.TransferPathService"
 });
 
-module.exports = SuperMap.REST.TransferPathService;
+module.exports = SuperMap.TransferPathService;

@@ -10,7 +10,7 @@ var options = {
     }
 };
 function initGetFeaturesByIDsService() {
-    return new SuperMap.REST.GetFeaturesByIDsService(dataServiceURL, options);
+    return new SuperMap.GetFeaturesByIDsService(dataServiceURL, options);
 }
 function getFeaturesByIDsFailed(serviceFailedEventArgs){
     serviceFailedEventArgsSystem=serviceFailedEventArgs;

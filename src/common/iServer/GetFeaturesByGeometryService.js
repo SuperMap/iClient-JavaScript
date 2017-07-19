@@ -1,23 +1,23 @@
 ﻿/**
- * Class: SuperMap.REST.GetFeaturesByGeometryService
+ * Class: SuperMap.GetFeaturesByGeometryService
  * 数据集几何查询服务类
  * 查询与指定几何对象符合一定空间关系的矢量要素。
  *
  * Inherits from:
- *  - <SuperMap.REST.GetFeaturesServiceBase>
+ *  - <SuperMap.GetFeaturesServiceBase>
  */
 require('./GetFeaturesServiceBase');
 require('./GetFeaturesByGeometryParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
+SuperMap.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.GetFeaturesByGeometryService
+     * Constructor: SuperMap.GetFeaturesByGeometryService
      * 数据集几何查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.GetFeaturesByGeometryService(url, {
+     * var myService = new SuperMap.GetFeaturesByGeometryService(url, {
      *     eventListeners: {
      *           "processCompleted": getFeatureCompleted, 
      *           "processFailed": getFeatureError
@@ -37,7 +37,7 @@ SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFea
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -45,7 +45,7 @@ SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFea
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -63,7 +63,7 @@ SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFea
         return SuperMap.GetFeaturesByGeometryParameters.toJsonParameters(params);
     },
 
-    CLASS_NAME: "SuperMap.REST.GetFeaturesByGeometryService"
+    CLASS_NAME: "SuperMap.GetFeaturesByGeometryService"
 });
 
-module.exports = SuperMap.REST.GetFeaturesByGeometryService;
+module.exports = SuperMap.GetFeaturesByGeometryService;

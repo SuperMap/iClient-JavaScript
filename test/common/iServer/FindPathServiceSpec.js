@@ -12,7 +12,7 @@ var options = {
     }
 };
 function initFindPathService() {
-    return new SuperMap.REST.FindPathService(url, options);
+    return new SuperMap.FindPathService(url, options);
 }
 function findPathServiceCompleted(serviceSucceedEventArgs) {
     serviceSucceedEventArgsSystem = serviceSucceedEventArgs;

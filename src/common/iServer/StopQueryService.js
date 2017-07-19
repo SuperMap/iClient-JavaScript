@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.StopQueryService
+ * Class: SuperMap.StopQueryService
  * 站点查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取
  *
@@ -9,15 +9,15 @@
 require('./ServiceBase');
 require('./StopQueryParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.StopQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.StopQueryService
+     * Constructor: SuperMap.StopQueryService
      * 站点查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.StopQueryService(url, {eventListeners: {
+     * var myService = new SuperMap.StopQueryService(url, {eventListeners: {
      *     "processCompleted": StopQueryCompleted, 
      *     "processFailed": StopQueryError
      *     }
@@ -74,7 +74,7 @@ SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.StopQueryService"
+    CLASS_NAME: "SuperMap.StopQueryService"
 });
 
-module.exports = SuperMap.REST.StopQueryService;
+module.exports = SuperMap.StopQueryService;

@@ -6,7 +6,7 @@ var serviceCompletedEventArgsSystem = null;
 //服务初始化时注册事件监听函数
 var networkAnalystURL = GlobeParameter.networkAnalystURL;
 function initUpdateEdgeWeightService_RegisterListener() {
-    return new SuperMap.REST.UpdateEdgeWeightService(networkAnalystURL,
+    return new SuperMap.UpdateEdgeWeightService(networkAnalystURL,
         {eventListeners:{
             'processFailed': updateEdgeWeightFailed,
             'processCompleted': updateEdgeWeightCompleted

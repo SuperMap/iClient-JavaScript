@@ -6,7 +6,7 @@ var serviceCompletedEventArgsSystem = null;
 //服务初始化时注册事件监听函数
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
 function initTransferSolutionService() {
-    return new SuperMap.REST.TransferSolutionService(trafficTransferURL, {
+    return new SuperMap.TransferSolutionService(trafficTransferURL, {
         eventListeners: {
             processCompleted: succeed,
             processFailed: failed

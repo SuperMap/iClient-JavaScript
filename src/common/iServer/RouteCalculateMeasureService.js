@@ -1,18 +1,18 @@
 /**
- * Class: SuperMap.REST.RouteCalculateMeasureService
+ * Class: SuperMap.RouteCalculateMeasureService
  * 该类负责将客户设置的计算指定点的M值参数传递给服务端，并接收服务端返回的
  *      指定点的M值。通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
 require('./RouteCalculateMeasureParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.RouteCalculateMeasureService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.RouteCalculateMeasureService
+     * Constructor: SuperMap.RouteCalculateMeasureService
      * 计算指定点的M值服务类构造函数。
      *
      * 实例化该类如下例所示：
@@ -52,7 +52,7 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
      *     "isIgnoreGap":false
      * });
      *
-     * var routeCalculateMeasureService = new SuperMap.REST.RouteCalculateMeasureService(spatialAnalystURL, {
+     * var routeCalculateMeasureService = new SuperMap.RouteCalculateMeasureService(spatialAnalystURL, {
      *     eventListeners:{
      *         processCompleted:calculateCompleted,
      *         processFailed:calculateFailded
@@ -73,7 +73,7 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -81,7 +81,7 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -132,7 +132,7 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.RouteCalculateMeasureService"
+    CLASS_NAME: "SuperMap.RouteCalculateMeasureService"
 });
 
-module.exports = SuperMap.REST.RouteCalculateMeasureService;
+module.exports = SuperMap.RouteCalculateMeasureService;

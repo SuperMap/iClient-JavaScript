@@ -11,7 +11,7 @@ var options = {
     }
 };
 function initGenerateSpatialDataService() {
-    return new SuperMap.REST.GenerateSpatialDataService(url, options);
+    return new SuperMap.GenerateSpatialDataService(url, options);
 }
 function generateSpatialDataCompleted(completedEventArgs){
     completedEventArgsSystem = completedEventArgs;

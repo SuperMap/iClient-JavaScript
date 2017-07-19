@@ -1,26 +1,26 @@
 ﻿/**
- * Class: SuperMap.REST.FindLocationService
+ * Class: SuperMap.FindLocationService
  * 选址分区分析服务类。
  * 选址分区分析是为了确定一个或多个待建设施的最佳或最优位置，使得设施可以用一种最经济有效的方式为需求方提供服务或者商品。
  * 选址分区不仅仅是一个选址过程，还要将需求点的需求分配到相应的新建设施的服务区中，因此称之为选址与分区。
  * 选址分区分析结果通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 require('./NetworkAnalystServiceBase');
 require('./FindLocationParameters');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
-SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.FindLocationService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FindLocationService
+     * Constructor: SuperMap.FindLocationService
      * 选址分区分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var findLocationService = new SuperMap.REST.FindLocationService(url, {
+     * var findLocationService = new SuperMap.FindLocationService(url, {
      *     eventListeners: {
      *         "processCompleted": findLocationCompleted, 
      *		   "processFailed": findLocationError
@@ -36,7 +36,7 @@ SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -44,7 +44,7 @@ SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -123,7 +123,7 @@ SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
         return result;
     },
 
-    CLASS_NAME: "SuperMap.REST.FindLocationService"
+    CLASS_NAME: "SuperMap.FindLocationService"
 });
 
-module.exports = SuperMap.REST.FindLocationService;
+module.exports = SuperMap.FindLocationService;

@@ -53,7 +53,7 @@ describe('testEditFeaturesService', function () {
             editType: SuperMap.EditType.ADD,
             returnContent: true
         });
-        var addFeatureService = new SuperMap.REST.EditFeaturesService(editServiceURL, addFeatureOptions);
+        var addFeatureService = new SuperMap.EditFeaturesService(editServiceURL, addFeatureOptions);
         addFeatureService.processAsync(addFeaturesParams);
 
         setTimeout(function () {
@@ -122,7 +122,7 @@ describe('testEditFeaturesService', function () {
             features: [features],
             editType: SuperMap.EditType.UPDATE
         });
-        var updateFeaturesService = new SuperMap.REST.EditFeaturesService(editServiceURL, updateFeaturesOptions);
+        var updateFeaturesService = new SuperMap.EditFeaturesService(editServiceURL, updateFeaturesOptions);
         updateFeaturesService.processAsync(updateFeaturesParams);
 
         setTimeout(function () {
@@ -172,7 +172,7 @@ describe('testEditFeaturesService', function () {
             IDs: [id1],
             editType: SuperMap.EditType.DELETE
         });
-        var deleteFeaturesService = new SuperMap.REST.EditFeaturesService(editServiceURL, deleteFeaturesOptions);
+        var deleteFeaturesService = new SuperMap.EditFeaturesService(editServiceURL, deleteFeaturesOptions);
         deleteFeaturesService.processAsync(deleteFeaturesParams);
 
         setTimeout(function () {
@@ -221,7 +221,7 @@ describe('testEditFeaturesService', function () {
             editType: SuperMap.EditType.ADD,
             returnContent: true
         });
-        var noParamsService = new SuperMap.REST.EditFeaturesService(editServiceURL, noParamsOptions);
+        var noParamsService = new SuperMap.EditFeaturesService(editServiceURL, noParamsOptions);
         noParamsService.processAsync(noParams);
 
         setTimeout(function () {

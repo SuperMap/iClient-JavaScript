@@ -13,7 +13,7 @@ var options = {
     }
 };
 function initFindMTSPathsService() {
-    return new SuperMap.REST.FindMTSPPathsService(url, options);
+    return new SuperMap.FindMTSPPathsService(url, options);
 }
 function findMTSPathsServiceCompleted(serviceSucceedEventArgs) {
     serviceSucceedEventArgsSystem = serviceSucceedEventArgs;

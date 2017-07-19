@@ -1,23 +1,23 @@
 ﻿/**
- * Class: SuperMap.REST.GetFeaturesByIDsService
+ * Class: SuperMap.GetFeaturesByIDsService
  * 数据集ID查询服务类。
  * 在数据集集合中查找指定 ID 号对应的空间地物要素。
  *
  * Inherits from:
- *  - <SuperMap.REST.GetFeaturesServiceBase>
+ *  - <SuperMap.GetFeaturesServiceBase>
  */
 require('./GetFeaturesServiceBase');
 require('./GetFeaturesByIDsParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
+SuperMap.GetFeaturesByIDsService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.GetFeaturesByIDsService
+     * Constructor: SuperMap.GetFeaturesByIDsService
      * 数据集ID查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myGetFeaturesByIDsService = new SuperMap.REST.GetFeaturesByIDsService(url, {
+     * var myGetFeaturesByIDsService = new SuperMap.GetFeaturesByIDsService(url, {
      *     eventListeners: {
      *         "processCompleted": getFeatureCompleted, 
      *         "processFailed": getFeatureError
@@ -37,7 +37,7 @@ SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeatures
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -45,7 +45,7 @@ SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeatures
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -63,7 +63,7 @@ SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeatures
         return SuperMap.GetFeaturesByIDsParameters.toJsonParameters(params);
     },
 
-    CLASS_NAME: "SuperMap.REST.GetFeaturesByIDsService"
+    CLASS_NAME: "SuperMap.GetFeaturesByIDsService"
 });
 
-module.exports = SuperMap.REST.GetFeaturesByIDsService;
+module.exports = SuperMap.GetFeaturesByIDsService;

@@ -4,7 +4,7 @@ var serviceFailedEventArgsSystem = null;
 var serviceCompletedEventArgsSystem = null;
 var tileSetsURL = GlobeParameter.tileSetsURL;
 function initTilesetsService_Register() {
-    return new SuperMap.REST.TilesetsService(tileSetsURL,
+    return new SuperMap.TilesetsService(tileSetsURL,
         {eventListeners:{
             "processCompleted": analyzeCompleted,
             'processFailed': analyzeFailed
@@ -22,7 +22,7 @@ describe('testTilesetsService',function(){
         var tilesetsService = initTilesetsService_Register();
         tilesetsService.events.on({"processCompleted": analyzeCompleted});
         expect(tilesetsService.url).toEqual(tileSetsURL);
-        expect(tilesetsService.CLASS_NAME).toBe("SuperMap.REST.TilesetsService");
+        expect(tilesetsService.CLASS_NAME).toBe("SuperMap.TilesetsService");
         tilesetsService.destroy();
         expect(tilesetsService.eventListeners).toBeNull();
         expect(tilesetsService.EVENT_TYPES).toBeNull();

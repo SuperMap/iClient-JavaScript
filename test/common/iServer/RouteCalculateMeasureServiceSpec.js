@@ -10,7 +10,7 @@ function routeCalculateMeasureFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;
 }
 function initCalculateMeasureService() {
-    return new SuperMap.REST.RouteCalculateMeasureService(spatialAnalystURL,
+    return new SuperMap.RouteCalculateMeasureService(spatialAnalystURL,
         {
             eventListeners:{
                 "processCompleted":routeCalculateMeasureCompleted,

@@ -1,26 +1,26 @@
 ﻿/**
- * Class: SuperMap.REST.FindServiceAreasService
+ * Class: SuperMap.FindServiceAreasService
  * 服务区分析服务类。
  * 服务区分析是以指定服务站点为中心，
  * 在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
  * 该类负责将客户端指定的服务区分析参数传递给服务端，并接收服务端返回的结果数据。
  * 服务区分析结果通过该类支持的事件的监听函数参数获取
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 require('./NetworkAnalystServiceBase');
 require('./FindServiceAreasParameters');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
-SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.FindServiceAreasService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FindServiceAreasService
+     * Constructor: SuperMap.FindServiceAreasService
      * 服务区分析服务类构造函数。
      *
      * 例如:
      * (start code)
-     * var myFindServiceAreasService = new SuperMap.REST.FindServiceAreasService(url, {
+     * var myFindServiceAreasService = new SuperMap.FindServiceAreasService(url, {
      *          eventListeners: {
      *              "processCompleted": findServiceAreasCompleted,
      *              "processFailed": findServiceAreasError
@@ -38,7 +38,7 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnal
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -46,7 +46,7 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnal
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -139,7 +139,7 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnal
         return result;
     },
 
-    CLASS_NAME: "SuperMap.REST.FindServiceAreasService"
+    CLASS_NAME: "SuperMap.FindServiceAreasService"
 });
 
-module.exports = SuperMap.REST.FindServiceAreasService;
+module.exports = SuperMap.FindServiceAreasService;

@@ -7,7 +7,7 @@ var options = {
     eventListeners: {"processCompleted": analyzeCompleted, 'processFailed': analyzeFailed}
 };
 function initBufferAnalystService() {
-    return new SuperMap.REST.BufferAnalystService(url, options);
+    return new SuperMap.BufferAnalystService(url, options);
 }
 function analyzeFailed(serviceFailedEventArgs) {
     serviceFailedEventArgsSystem = serviceFailedEventArgs;

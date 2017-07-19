@@ -1,22 +1,22 @@
 ﻿/**
- * Class: SuperMap.REST.QueryByDistanceService
+ * Class: SuperMap.QueryByDistanceService
  * Distance查询服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.QueryService>
+ *  - <SuperMap.QueryService>
  */
 require('./QueryService');
 require('./QueryByDistanceParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService, {
+SuperMap.QueryByDistanceService = SuperMap.Class(SuperMap.QueryService, {
 
     /**
-     * Constructor: SuperMap.REST.QueryByDistanceService
+     * Constructor: SuperMap.QueryByDistanceService
      * Distance查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myQueryByDistService = new SuperMap.REST.QueryByDistanceService(url, {
+     * var myQueryByDistService = new SuperMap.QueryByDistanceService(url, {
      *     eventListeners: {
      *         "processCompleted": queryCompleted, 
      *		   "processFailed": queryError
@@ -34,7 +34,7 @@ SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.QueryService.prototype.initialize.apply(this, arguments);
+        SuperMap.QueryService.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -42,7 +42,7 @@ SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.QueryService.prototype.destroy.apply(this, arguments);
+        SuperMap.QueryService.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -69,7 +69,7 @@ SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.QueryByDistanceService"
+    CLASS_NAME: "SuperMap.QueryByDistanceService"
 });
 
-module.exports = SuperMap.REST.QueryByDistanceService;
+module.exports = SuperMap.QueryByDistanceService;

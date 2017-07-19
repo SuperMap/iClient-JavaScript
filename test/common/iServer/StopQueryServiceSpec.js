@@ -4,7 +4,7 @@ var stopQueryServiceEventArgsSystem = null,
     serviceFailedEventArgsSystem = null;
 var trafficTransferURL = GlobeParameter.trafficTransferURL;
 function initStopQueryService() {
-    return new SuperMap.REST.StopQueryService(trafficTransferURL, {
+    return new SuperMap.StopQueryService(trafficTransferURL, {
         eventListeners: {
             processCompleted: succeed,
             processFailed: failed

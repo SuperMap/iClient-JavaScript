@@ -1,23 +1,23 @@
 ﻿/**
- * Class: SuperMap.REST.GetFeaturesBySQLService
+ * Class: SuperMap.GetFeaturesBySQLService
  * 数据服务中数据集 SQL 查询服务类。
  * 在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
  *
  * Inherits from:
- *  - <SuperMap.REST.GetFeaturesServiceBase>
+ *  - <SuperMap.GetFeaturesServiceBase>
  */
 require('./GetFeaturesServiceBase');
 require('./GetFeaturesBySQLParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
+SuperMap.GetFeaturesBySQLService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.GetFeaturesBySQLService
+     * Constructor: SuperMap.GetFeaturesBySQLService
      * SQL 查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myGetFeaturesBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url, {
+     * var myGetFeaturesBySQLService = new SuperMap.GetFeaturesBySQLService(url, {
      *     eventListeners: {
      *         "processCompleted": GetFeaturesCompleted, 
      *         "processFailed": GetFeaturesError
@@ -37,7 +37,7 @@ SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeatures
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -45,7 +45,7 @@ SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeatures
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -63,7 +63,7 @@ SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeatures
         return SuperMap.GetFeaturesBySQLParameters.toJsonParameters(params);
     },
 
-    CLASS_NAME: "SuperMap.REST.GetFeaturesBySQLService"
+    CLASS_NAME: "SuperMap.GetFeaturesBySQLService"
 });
 
-module.exports = SuperMap.REST.GetFeaturesBySQLService;
+module.exports = SuperMap.GetFeaturesBySQLService;

@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.FindMTSPPathsService
+ * Class: SuperMap.FindMTSPPathsService
  * 多旅行商分析服务类
  * 多旅行商分析也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。
  * 查找经济有效的配送路径，并给出相应的行走路线。
@@ -7,21 +7,21 @@
  * 该类负责将客户端指定的多旅行商分析参数传递给服务端，并接收服务端返回的结果数据。
  * 多旅行商分析结果通过该类支持的事件的监听函数参数获取
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 require('./NetworkAnalystServiceBase');
 require('./FindMTSPPathsParameters');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
-SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.FindMTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FindMTSPPathsService
+     * Constructor: SuperMap.FindMTSPPathsService
      * 最佳路径分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myFindMTSPPathsService = new SuperMap.REST.FindMTSPPathsService(url, {
+     * var myFindMTSPPathsService = new SuperMap.FindMTSPPathsService(url, {
      *     eventListeners: {
      *         "processCompleted": findMTSPPathsCompleted, 
      *		   "processFailed": findMTSPPathsError
@@ -39,7 +39,7 @@ SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalyst
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -47,7 +47,7 @@ SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalyst
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -139,7 +139,7 @@ SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalyst
         return result;
     },
 
-    CLASS_NAME: "SuperMap.REST.FindMTSPPathsService"
+    CLASS_NAME: "SuperMap.FindMTSPPathsService"
 });
 
-module.exports = SuperMap.REST.FindMTSPPathsService;
+module.exports = SuperMap.FindMTSPPathsService;

@@ -1,5 +1,5 @@
 /**
- * Class: SuperMap.REST.ChartFeatureInfoSpecsService
+ * Class: SuperMap.ChartFeatureInfoSpecsService
  *      海图物标信息服务类，通过该服务类可以查询到服务端支持的所有海图物标信息。
  *      用户可以通过两种方式获取查询结果：
  *      一种是通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件；
@@ -10,10 +10,10 @@
  */
 require('./ServiceBase');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.ChartFeatureInfoSpecsService
+     * Constructor: SuperMap.ChartFeatureInfoSpecsService
      *     使用地图（特指海图）服务地址 URL 初始化 ChartFeatureInfoSpecsService
      *     类的新实例。
      *
@@ -65,7 +65,7 @@ SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.ChartFeatureInfoSpecsService"
+    CLASS_NAME: "SuperMap.ChartFeatureInfoSpecsService"
 });
 
-module.exports = SuperMap.REST.ChartFeatureInfoSpecsService;
+module.exports = SuperMap.ChartFeatureInfoSpecsService;

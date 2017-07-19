@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.ThiessenAnalystService
+ * Class: SuperMap.ThiessenAnalystService
  * 泰森多边形分析服务类
  * 该类负责将客户设置的泰森多边形分析参数传递给服务端，并接收服务端返回的分析结果数据。
  * 泰森多边形分析结果通过该类支持的事件的监听函数参数获取
@@ -8,14 +8,14 @@
  * 执行几何对象泰森多边形分析。
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
 require('./DatasetThiessenAnalystParameters');
 require('./GeometryThiessenAnalystParameters');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
-SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.ThiessenAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
      * Property: mode
@@ -24,12 +24,12 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
     mode: null,
 
     /**
-     * Constructor: SuperMap.REST.ThiessenAnalystService
+     * Constructor: SuperMap.ThiessenAnalystService
      * 泰森多边形分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myThiessenAnalystService = new SuperMap.REST.ThiessenAnalystService(url, {
+     * var myThiessenAnalystService = new SuperMap.ThiessenAnalystService(url, {
      *     eventListeners: {
      *           "processCompleted": bufferCompleted, 
      *           "processFailed": bufferFailed
@@ -45,7 +45,7 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
         var me = this;
         if (options) {
             SuperMap.Util.extend(me, options);
@@ -57,7 +57,7 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
         this.mode = null;
     },
 
@@ -120,7 +120,7 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
             return result;
         }
 
-        result = SuperMap.REST.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
+        result = SuperMap.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
         if (result.regions) {
             var geoJSONFormat = new GeoJSONFormat();
             result.regions = JSON.parse(geoJSONFormat.write(result.regions));
@@ -128,7 +128,7 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
         return result;
     },
 
-    CLASS_NAME: "SuperMap.REST.ThiessenAnalystService"
+    CLASS_NAME: "SuperMap.ThiessenAnalystService"
 });
 
-module.exports = SuperMap.REST.ThiessenAnalystService;
+module.exports = SuperMap.ThiessenAnalystService;

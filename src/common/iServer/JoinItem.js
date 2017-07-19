@@ -70,7 +70,7 @@ SuperMap.JoinItem = SuperMap.Class({
      *       queryBySQLParams = new SuperMap.QueryBySQLParameters({
      *             queryParams: [queryParam]
      *         }),
-     *       queryBySQLService = new SuperMap.REST.QueryBySQLService(url, {
+     *       queryBySQLService = new SuperMap.QueryBySQLService(url, {
      *             eventListeners: { "processCompleted": processCompleted, "processFailed": processFailed}
      *         });
      *       queryBySQLService.processAsync(queryBySQLParams);

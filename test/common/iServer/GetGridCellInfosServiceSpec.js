@@ -4,7 +4,7 @@ var eventCompleted ,
     eventFailed ;
 var dataServiceURL = GlobeParameter.dataServiceURL;
 function initGetGridCellInfosService(url){
-    return new SuperMap.REST.GetGridCellInfosService(url, {
+    return new SuperMap.GetGridCellInfosService(url, {
         eventListeners: {
             "processCompleted": queryCompleted,
             "processFailed": queryError
@@ -20,7 +20,7 @@ function queryError(event) {
 describe('testGetGridCellInfosService_constructor',function(){
     it('constructor and destroy',function(){
         var getGridCellInfosService = initGetGridCellInfosService(dataServiceURL);
-        expect(getGridCellInfosService.CLASS_NAME).toEqual("SuperMap.REST.GetGridCellInfosService");
+        expect(getGridCellInfosService.CLASS_NAME).toEqual("SuperMap.GetGridCellInfosService");
         expect(getGridCellInfosService.EVENT_TYPES.length).toEqual(2);
         expect(getGridCellInfosService.EVENT_TYPES[0]).toEqual("processCompleted");
         expect(getGridCellInfosService.EVENT_TYPES[1]).toEqual("processFailed");
@@ -56,7 +56,7 @@ describe('testGetGridCellInfosService_processAsync',function(){
             X: "110",
             Y: "50"
         });
-        var myService = new SuperMap.REST.GetGridCellInfosService(dataServiceURL, {
+        var myService = new SuperMap.GetGridCellInfosService(dataServiceURL, {
             eventListeners: {
                 "processCompleted": queryCompleted,
                 "processFailed": queryError
@@ -86,7 +86,7 @@ describe('testGetGridCellInfosService_processAsync',function(){
 
     it('getGridCellInfos_Failed',function(done){
         var url = dataServiceURL + "/datasources/World/datasets";
-        var myService = new SuperMap.REST.GetGridCellInfosService(url, {
+        var myService = new SuperMap.GetGridCellInfosService(url, {
             eventListeners: {
                 "processCompleted": queryCompleted,
                 "processFailed": queryError
@@ -116,7 +116,7 @@ describe('testGetGridCellInfosService_processAsync',function(){
 
 describe('testGetGridCellInfosService_getDatasetInfoCompleted',function(){
     it('getDatasetInfoCompleted',function(){
-        var myService = new SuperMap.REST.GetGridCellInfosService(dataServiceURL,{
+        var myService = new SuperMap.GetGridCellInfosService(dataServiceURL,{
             eventListeners: {
                 "processCompleted": queryCompleted,
                 "processFailed": queryError

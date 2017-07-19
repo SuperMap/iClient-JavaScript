@@ -2458,7 +2458,7 @@ module.exports = SuperMap.Format.GeoJSON;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.SpatialAnalystBase
+ * Class: SuperMap.SpatialAnalystBase
  * 空间分析服务基类。
  * Inherits from:
  *  - <SuperMap.ServiceBase>
@@ -2466,7 +2466,7 @@ module.exports = SuperMap.Format.GeoJSON;
 var SuperMap = __webpack_require__(0);
 var GeoJSONFormat = __webpack_require__(6);
 var ServiceBase = __webpack_require__(3);
-SuperMap.REST.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
+SuperMap.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
 
     /**
      *  Property: format
@@ -2533,10 +2533,10 @@ SuperMap.REST.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
 
         return result;
     },
-    CLASS_NAME: "SuperMap.REST.SpatialAnalystBase"
+    CLASS_NAME: "SuperMap.SpatialAnalystBase"
 });
 
-module.exports = SuperMap.REST.SpatialAnalystBase;
+module.exports = SuperMap.SpatialAnalystBase;
 
 
 /***/ }),
@@ -2550,7 +2550,7 @@ module.exports = SuperMap.REST.SpatialAnalystBase;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.NetworkAnalystServiceBase
+ * Class: SuperMap.NetworkAnalystServiceBase
  * 网络分析服务基类。
  * Inherits from:
  *  - <SuperMap.ServiceBase>
@@ -2558,7 +2558,7 @@ module.exports = SuperMap.REST.SpatialAnalystBase;
 __webpack_require__(1);
 __webpack_require__(3);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      *  Property: format
@@ -2613,10 +2613,10 @@ SuperMap.REST.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
         return null;
     },
 
-    CLASS_NAME: "SuperMap.REST.NetworkAnalystServiceBase"
+    CLASS_NAME: "SuperMap.NetworkAnalystServiceBase"
 });
 
-module.exports = SuperMap.REST.NetworkAnalystServiceBase;
+module.exports = SuperMap.NetworkAnalystServiceBase;
 
 
 /***/ }),
@@ -4552,7 +4552,7 @@ module.exports = SuperMap.GetFeaturesParametersBase;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.GetFeaturesServiceBase
+ * Class: SuperMap.GetFeaturesServiceBase
  * 数据服务中数据集查询服务基类。
  * 获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON
  *
@@ -4563,7 +4563,7 @@ __webpack_require__(1);
 __webpack_require__(3);
 var SuperMap = __webpack_require__(0);
 var GeoJSONFormat = __webpack_require__(6);
-SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Property: returnContent
@@ -4601,12 +4601,12 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
     format: SuperMap.DataFormat.GEOJSON,
 
     /**
-     * Constructor: SuperMap.REST.GetFeaturesServiceBase
+     * Constructor: SuperMap.GetFeaturesServiceBase
      * 数据集查询服务基类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.GetFeaturesServiceBase(url, {
+     * var myService = new SuperMap.GetFeaturesServiceBase(url, {
      *     eventListeners: {
      *         "processCompleted": getFeatureCompleted, 
      *         "processFailed": getFeatureError
@@ -4718,10 +4718,10 @@ SuperMap.REST.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
         me.events.triggerEvent("processCompleted", {result: result});
     },
 
-    CLASS_NAME: "SuperMap.REST.GetFeaturesServiceBase"
+    CLASS_NAME: "SuperMap.GetFeaturesServiceBase"
 });
 
-module.exports = SuperMap.REST.GetFeaturesServiceBase;
+module.exports = SuperMap.GetFeaturesServiceBase;
 
 /***/ }),
 /* 23 */
@@ -5031,7 +5031,7 @@ module.exports = SuperMap.QueryParameters;
  * 未经许可，不得以任何手段擅自使用或传播。
  */
 /**
- * Class: SuperMap.REST.QueryService
+ * Class: SuperMap.QueryService
  * 查询服务基类。
  * 结果保存在一个object对象中，对象包含一个属性result为iServer返回的json对象
  * Inherits from:
@@ -5044,7 +5044,7 @@ var SuperMap = __webpack_require__(0);
 var GeoJSONFormat = __webpack_require__(6);
 var QueryParameters = __webpack_require__(24);
 
-SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Property: returnContent
@@ -5060,12 +5060,12 @@ SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
     format: SuperMap.DataFormat.GEOJSON,
 
     /**
-     * Constructor: SuperMap.REST.QueryService
+     * Constructor: SuperMap.QueryService
      * 查询服务基类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.QueryService(url, {
+     * var myService = new SuperMap.QueryService(url, {
      *     eventListeners: {
      *	       "processCompleted": queryCompleted, 
      *		   "processFailed": queryError
@@ -5198,10 +5198,10 @@ SuperMap.REST.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.QueryService"
+    CLASS_NAME: "SuperMap.QueryService"
 });
 
-module.exports = SuperMap.REST.QueryService;
+module.exports = SuperMap.QueryService;
 
 /***/ }),
 /* 26 */
@@ -6829,7 +6829,7 @@ SuperMap.JoinItem = SuperMap.Class({
      *       queryBySQLParams = new SuperMap.QueryBySQLParameters({
      *             queryParams: [queryParam]
      *         }),
-     *       queryBySQLService = new SuperMap.REST.QueryBySQLService(url, {
+     *       queryBySQLService = new SuperMap.QueryBySQLService(url, {
      *             eventListeners: { "processCompleted": processCompleted, "processFailed": processFailed}
      *         });
      *       queryBySQLService.processAsync(queryBySQLParams);
@@ -6902,7 +6902,7 @@ var ServiceBase = __webpack_require__(3);
 var SuperMap = __webpack_require__(0);
 var Request = __webpack_require__(12);
 
-SuperMap.REST.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
+SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
 
     /**
      * Constant: EVENT_TYPES
@@ -7008,10 +7008,10 @@ SuperMap.REST.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
         return url;
     },
 
-    CLASS_NAME: "SuperMap.REST.ProcessingJobsServiceBase"
+    CLASS_NAME: "SuperMap.ProcessingJobsServiceBase"
 });
 
-module.exports = SuperMap.REST.ProcessingJobsServiceBase;
+module.exports = SuperMap.ProcessingJobsServiceBase;
 
 /***/ }),
 /* 35 */
@@ -8758,7 +8758,7 @@ SuperMap.ThemeGraph = SuperMap.Class(SuperMap.Theme, {
      *                   datasetNames: ["BaseMap_R"]
      *               }),
      *    //与服务端交互
-     *               themeService=new SuperMap.REST.ThemeService(url, {
+     *               themeService=new SuperMap.ThemeService(url, {
      *                   eventListeners: {
      *                       "processCompleted": ThemeCompleted,
      *                        "processFailed": themeFailed
@@ -11785,7 +11785,7 @@ module.exports = ol.source.Unique;
  * Class:ol.supermap.AddressService
  * 地址匹配服务
  * 用法：
- *      new ol.supermap.AddressService(url,options)
+ *      new ol.supermap.AddressMatchService(url,options)
  *      .code(function(result){
  *          //doSomething
  *      })
@@ -11793,12 +11793,12 @@ module.exports = ol.source.Unique;
 var ol = __webpack_require__(2);
 var SuperMap = __webpack_require__(0);
 var ServiceBase = __webpack_require__(5);
-var AddressService = __webpack_require__(90);
+var AddressMatchService = __webpack_require__(90);
 
-ol.supermap.AddressService = function (url, options) {
+ol.supermap.AddressMatchService = function (url, options) {
     ServiceBase.call(this, url, options);
 };
-ol.inherits(ol.supermap.AddressService, ServiceBase);
+ol.inherits(ol.supermap.AddressMatchService, ServiceBase);
 
 /**
  * 获取正向地址匹配结果。
@@ -11806,10 +11806,10 @@ ol.inherits(ol.supermap.AddressService, ServiceBase);
  * @param callback 请求结果的回调函数。
  * @param resultFormat 返回的结果类型（默认为GeoJSON）。
  */
-ol.supermap.AddressService.prototype.code = function (params, callback, resultFormat) {
+ol.supermap.AddressMatchService.prototype.code = function (params, callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var addressService = new AddressService(me.url, {
+    var addressMatchService = new AddressMatchService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -11818,7 +11818,7 @@ ol.supermap.AddressService.prototype.code = function (params, callback, resultFo
         },
         format: format
     });
-    addressService.code(me.url + '/geocoding', params);
+    addressMatchService.code(me.url + '/geocoding', params);
     return me;
 };
 
@@ -11828,10 +11828,10 @@ ol.supermap.AddressService.prototype.code = function (params, callback, resultFo
  * @param callback 请求结果的回调函数。
  * @param resultFormat 返回的结果类型（默认为GeoJSON）。
  */
-ol.supermap.AddressService.prototype.decode = function (params, callback, resultFormat) {
+ol.supermap.AddressMatchService.prototype.decode = function (params, callback, resultFormat) {
     var me = this,
         format = me._processFormat(resultFormat);
-    var addressService = new AddressService(me.url, {
+    var addressMatchService = new AddressMatchService(me.url, {
         serverType: me.options.serverType,
         eventListeners: {
             scope: me,
@@ -11840,15 +11840,15 @@ ol.supermap.AddressService.prototype.decode = function (params, callback, result
         },
         format: format
     });
-    addressService.decode(me.url + '/geodecoding', params);
+    addressMatchService.decode(me.url + '/geodecoding', params);
     return me;
 };
 
-ol.supermap.AddressService.prototype._processFormat = function (resultFormat) {
+ol.supermap.AddressMatchService.prototype._processFormat = function (resultFormat) {
     return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
 };
 
-module.exports = ol.supermap.AddressService;
+module.exports = ol.supermap.AddressMatchService;
 
 
 /***/ }),
@@ -15554,7 +15554,7 @@ __webpack_require__(149);
 /**
  * 地址匹配服务，包括正向匹配和反向匹配。
  */
-SuperMap.REST.AddressService = SuperMap.Class(ServiceBase, {
+SuperMap.AddressMatchService = SuperMap.Class(ServiceBase, {
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.apply(this, arguments);
@@ -15605,10 +15605,10 @@ SuperMap.REST.AddressService = SuperMap.Class(ServiceBase, {
         ServiceBase.prototype.serviceProcessFailed.apply(this, arguments);
     },
 
-    CLASS_NAME: "SuperMap.REST.AddressService"
+    CLASS_NAME: "SuperMap.AddressMatchService"
 });
 
-module.exports = SuperMap.REST.AddressService;
+module.exports = SuperMap.AddressMatchService;
 
 /***/ }),
 /* 91 */
@@ -15795,24 +15795,24 @@ module.exports = SuperMap.AreaSolarRadiationParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.AreaSolarRadiationService
+ * Class: SuperMap.AreaSolarRadiationService
  *  地区太阳辐射服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 __webpack_require__(7);
 __webpack_require__(91);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.AreaSolarRadiationService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.AreaSolarRadiationService
+     * Constructor: SuperMap.AreaSolarRadiationService
      * 地区太阳辐射服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myAreaSolarRadiationService = new SuperMap.REST.AreaSolarRadiationService(url);
+     * var myAreaSolarRadiationService = new SuperMap.AreaSolarRadiationService(url);
      * myAreaSolarRadiationService.on({
      *     "processCompleted": processCompleted,
      *     "processFailed": processFailed
@@ -15828,7 +15828,7 @@ SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAn
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -15836,7 +15836,7 @@ SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAn
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -15880,9 +15880,9 @@ SuperMap.REST.AreaSolarRadiationService = SuperMap.Class(SuperMap.REST.SpatialAn
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.AreaSolarRadiationService"
+    CLASS_NAME: "SuperMap.AreaSolarRadiationService"
 });
-module.exports = SuperMap.REST.AreaSolarRadiationService;
+module.exports = SuperMap.AreaSolarRadiationService;
 
 /***/ }),
 /* 93 */
@@ -16708,20 +16708,20 @@ module.exports = SuperMap.Feature.Theme.Bar3D;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.BufferAnalystService
+ * Class: SuperMap.BufferAnalystService
  * 缓冲区分析服务类
  * 该类负责将客户设置的缓冲区分析参数传递给服务端，并接收服务端返回的缓冲区分析结果数据。
  * 缓冲区分析结果通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 __webpack_require__(7);
 __webpack_require__(110);
 __webpack_require__(152);
 var SuperMap = __webpack_require__(0);
 var GeoJSONFormat = __webpack_require__(6);
-SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.BufferAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
      * Property: mode
@@ -16730,12 +16730,12 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
     mode: null,
 
     /**
-     * Constructor: SuperMap.REST.BufferAnalystService
+     * Constructor: SuperMap.BufferAnalystService
      * 缓冲区分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myBufferAnalystService = new SuperMap.REST.BufferAnalystService(url, {
+     * var myBufferAnalystService = new SuperMap.BufferAnalystService(url, {
      *     eventListeners: {
      *           "processCompleted": bufferCompleted,
      *           "processFailed": bufferFailed
@@ -16751,7 +16751,7 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
         var me = this;
         if (options) {
             SuperMap.Util.extend(me, options);
@@ -16763,7 +16763,7 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
         this.mode = null;
     },
 
@@ -16826,17 +16826,17 @@ SuperMap.REST.BufferAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalyst
             return result;
         }
 
-        var analystResult = SuperMap.REST.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
+        var analystResult = SuperMap.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
         if (analystResult.resultGeometry) {
             var geoJSONFormat = new GeoJSONFormat();
             result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
         }
         return result;
     },
-    CLASS_NAME: "SuperMap.REST.BufferAnalystService"
+    CLASS_NAME: "SuperMap.BufferAnalystService"
 });
 
-module.exports = SuperMap.REST.BufferAnalystService;
+module.exports = SuperMap.BufferAnalystService;
 
 /***/ }),
 /* 96 */
@@ -17110,7 +17110,7 @@ var SuperMap = __webpack_require__(0);
 var ProcessingJobsServiceBase = __webpack_require__(34);
 var BuildCacheJobParameter = __webpack_require__(98);
 
-SuperMap.REST.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+SuperMap.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
         url += "/mapping/buildCache";
@@ -17133,10 +17133,10 @@ SuperMap.REST.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, 
         ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, BuildCacheJobParameter, seconds]);
     },
 
-    CLASS_NAME: "SuperMap.REST.BuildCacheJobsService"
+    CLASS_NAME: "SuperMap.BuildCacheJobsService"
 });
 
-module.exports = SuperMap.REST.BuildCacheJobsService;
+module.exports = SuperMap.BuildCacheJobsService;
 
 /***/ }),
 /* 100 */
@@ -17216,19 +17216,19 @@ module.exports = SuperMap.BurstPipelineAnalystParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.BurstPipelineAnalystService
+ * Class: SuperMap.BurstPipelineAnalystService
  * 爆管分析服务类;即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
  *
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 __webpack_require__(9);
 __webpack_require__(100);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.BurstPipelineAnalystService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.BurstPipelineAnalystService
+     * Constructor: SuperMap.BurstPipelineAnalystService
      * 爆管分析服务类构造函数。
      *
      * Parameters:
@@ -17242,7 +17242,7 @@ SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.Network
      */
 
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -17250,7 +17250,7 @@ SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.Network
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -17290,10 +17290,10 @@ SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.Network
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.BurstPipelineAnalystService"
+    CLASS_NAME: "SuperMap.BurstPipelineAnalystService"
 });
 
-module.exports = SuperMap.REST.BurstPipelineAnalystService;
+module.exports = SuperMap.BurstPipelineAnalystService;
 
 
 /***/ }),
@@ -17301,7 +17301,7 @@ module.exports = SuperMap.REST.BurstPipelineAnalystService;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.ChartFeatureInfoSpecsService
+ * Class: SuperMap.ChartFeatureInfoSpecsService
  *      海图物标信息服务类，通过该服务类可以查询到服务端支持的所有海图物标信息。
  *      用户可以通过两种方式获取查询结果：
  *      一种是通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件；
@@ -17312,10 +17312,10 @@ module.exports = SuperMap.REST.BurstPipelineAnalystService;
  */
 __webpack_require__(3);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.ChartFeatureInfoSpecsService
+     * Constructor: SuperMap.ChartFeatureInfoSpecsService
      *     使用地图（特指海图）服务地址 URL 初始化 ChartFeatureInfoSpecsService
      *     类的新实例。
      *
@@ -17367,10 +17367,10 @@ SuperMap.REST.ChartFeatureInfoSpecsService = SuperMap.Class(SuperMap.ServiceBase
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.ChartFeatureInfoSpecsService"
+    CLASS_NAME: "SuperMap.ChartFeatureInfoSpecsService"
 });
 
-module.exports = SuperMap.REST.ChartFeatureInfoSpecsService;
+module.exports = SuperMap.ChartFeatureInfoSpecsService;
 
 
 /***/ }),
@@ -17656,7 +17656,7 @@ module.exports = SuperMap.ChartQueryParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.ChartQueryService
+ * Class: SuperMap.ChartQueryService
  *      海图查询服务类。该类负责将海图查询所需参数（ChartQueryParameters）传递至服务端，并获取服务端的返回结果。
  *      用户可以通过两种方式获取查询结果:
  *      1.通过 AsyncResponder 类获取（推荐使用）；
@@ -17671,7 +17671,7 @@ __webpack_require__(104);
 var SuperMap = __webpack_require__(0);
 var GeoJSONFormat = __webpack_require__(6);
 
-SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Property: returnContent
@@ -17686,7 +17686,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
      */
     format: SuperMap.DataFormat.GEOJSON,
     /**
-     * Constructor: SuperMap.REST.ChartQueryService
+     * Constructor: SuperMap.ChartQueryService
      * 获取图层信息服务类构造函数。
      *
      * Parameters:
@@ -17712,7 +17712,7 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
      *        chartQueryFilterParameters:[chartQueryFilterParameter]
      *    });
      *
-     * var chartQueryService = new SuperMap.REST.ChartQueryService(url);
+     * var chartQueryService = new SuperMap.ChartQueryService(url);
      *
      * chartQueryService.events.on({
      *        "processCompleted":processCompleted,
@@ -17831,10 +17831,10 @@ SuperMap.REST.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.ChartQueryService"
+    CLASS_NAME: "SuperMap.ChartQueryService"
 });
 
-module.exports = SuperMap.REST.ChartQueryService;
+module.exports = SuperMap.ChartQueryService;
 
 /***/ }),
 /* 106 */
@@ -18135,26 +18135,26 @@ module.exports = SuperMap.ComputeWeightMatrixParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.ComputeWeightMatrixService
+ * Class: SuperMap.ComputeWeightMatrixService
  * 耗费矩阵分析服务类。
  * 耗费矩阵是根据交通网络分析参数中的耗费字段来计算一个二维数组，
  * 用来存储指定的任意两点间的资源消耗。
  * 耗费矩阵分析结果通过该类支持的事件的监听函数参数获取
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 __webpack_require__(9);
 __webpack_require__(108);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.ComputeWeightMatrixService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.ComputeWeightMatrixService
+     * Constructor: SuperMap.ComputeWeightMatrixService
      * 耗费矩阵分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var mycomputeWeightMatrixService = new SuperMap.REST.ComputeWeightMatrixService(url,{
+     * var mycomputeWeightMatrixService = new SuperMap.ComputeWeightMatrixService(url,{
      *     eventListeners: {
      *	       "processCompleted": computeWeightMatrixCompleted, 
      *		   "processFailed": computeWeightMatrixnError
@@ -18173,7 +18173,7 @@ SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkA
      */
 
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -18181,7 +18181,7 @@ SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkA
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -18241,10 +18241,10 @@ SuperMap.REST.ComputeWeightMatrixService = SuperMap.Class(SuperMap.REST.NetworkA
         return jsonString;
     },
 
-    CLASS_NAME: "SuperMap.REST.ComputeWeightMatrixService"
+    CLASS_NAME: "SuperMap.ComputeWeightMatrixService"
 });
 
-module.exports = SuperMap.REST.ComputeWeightMatrixService;
+module.exports = SuperMap.ComputeWeightMatrixService;
 
 /***/ }),
 /* 110 */
@@ -19003,7 +19003,7 @@ module.exports = SuperMap.DatasourceConnectionInfo;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.DensityAnalystService
+ * Class: SuperMap.DensityAnalystService
  *  密度分析服务类，密度分析可计算每个输出栅格像元周围圆形邻域内输入的点或线对象的密度。
  *  密度分析，在某种意义上来说，相当于在表面上将输入的点线对象的测量值散开来，
  *  将每个点或线对象的测量量分布在整个研究区域，并计算输出栅格中每个像元的密度值。
@@ -19011,12 +19011,12 @@ module.exports = SuperMap.DatasourceConnectionInfo;
  *  目前提供1种密度分析：核密度分析（Kernel）。
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 __webpack_require__(7);
 __webpack_require__(117);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.DensityAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
      * Property: mode
@@ -19025,12 +19025,12 @@ SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
     mode: null,
 
     /**
-     * Constructor: SuperMap.REST.DensityAnalystService
+     * Constructor: SuperMap.DensityAnalystService
      * 密度分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myDensityAnalystService = new SuperMap.REST.DensityAnalystService(url);
+     * var myDensityAnalystService = new SuperMap.DensityAnalystService(url);
      * myDensityAnalystService.on({
      *     "processCompleted": processCompleted,
      *     "processFailed": processFailed
@@ -19046,7 +19046,7 @@ SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
         var me = this;
         if (options) {
             SuperMap.Util.extend(me, options);
@@ -19058,7 +19058,7 @@ SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
         this.mode = null;
     },
 
@@ -19104,9 +19104,9 @@ SuperMap.REST.DensityAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.DensityAnalystService"
+    CLASS_NAME: "SuperMap.DensityAnalystService"
 });
-module.exports = SuperMap.REST.DensityAnalystService;
+module.exports = SuperMap.DensityAnalystService;
 
 /***/ }),
 /* 117 */
@@ -19358,7 +19358,7 @@ module.exports = SuperMap.EditFeaturesParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.EditFeaturesService
+ * Class: SuperMap.EditFeaturesService
  * 数据服务中数据集添加、更新、删除服务类。
  *
  * Inherits from:
@@ -19367,7 +19367,7 @@ module.exports = SuperMap.EditFeaturesParameters;
 __webpack_require__(3);
 __webpack_require__(118);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Property: returnContent
@@ -19385,12 +19385,12 @@ SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
     isUseBatch: false,
 
     /**
-     * Constructor: SuperMap.REST.EditFeaturesService
+     * Constructor: SuperMap.EditFeaturesService
      * 数据集编辑服务基类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.EditFeaturesService(url, {eventListeners: {
+     * var myService = new SuperMap.EditFeaturesService(url, {eventListeners: {
      *     "processCompleted": editFeatureCompleted, 
      *     "processFailed": editFeatureError
      *       }
@@ -19480,10 +19480,10 @@ SuperMap.REST.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.EditFeaturesService"
+    CLASS_NAME: "SuperMap.EditFeaturesService"
 });
 
-module.exports = SuperMap.REST.EditFeaturesService;
+module.exports = SuperMap.EditFeaturesService;
 
 /***/ }),
 /* 120 */
@@ -19547,7 +19547,7 @@ module.exports = SuperMap.FacilityAnalystSinks3DParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.FacilityAnalystSinks3DService
+ * Class: SuperMap.FacilityAnalystSinks3DService
  * 最近设施分析服务类(汇查找资源)
  * 最近设施分析是指在网络上给定一个事件点和一组设施点，
  * 查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
@@ -19559,15 +19559,15 @@ module.exports = SuperMap.FacilityAnalystSinks3DParameters;
 __webpack_require__(3);
 __webpack_require__(120);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FacilityAnalystSinks3DService
+     * Constructor: SuperMap.FacilityAnalystSinks3DService
      * 最近设施分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myFacilityAnalystSinks3DService = new SuperMap.REST.FacilityAnalystSinks3DService(url, {
+     * var myFacilityAnalystSinks3DService = new SuperMap.FacilityAnalystSinks3DService(url, {
      *     eventListeners: {
      *	       "processCompleted": facilityAnalystSinks3DCompleted,
      *		   "processFailed": facilityAnalystSinks3DError
@@ -19626,10 +19626,10 @@ SuperMap.REST.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBas
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.FacilityAnalystSinks3DService"
+    CLASS_NAME: "SuperMap.FacilityAnalystSinks3DService"
 });
 
-module.exports = SuperMap.REST.FacilityAnalystSinks3DService;
+module.exports = SuperMap.FacilityAnalystSinks3DService;
 
 /***/ }),
 /* 122 */
@@ -19686,7 +19686,7 @@ module.exports = SuperMap.FacilityAnalystSources3DParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.FacilityAnalystSources3DService
+ * Class: SuperMap.FacilityAnalystSources3DService
  * 最近设施分析服务类(源查找资源)
  * 最近设施分析是指在网络上给定一个事件点和一组设施点，
  * 查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
@@ -19699,10 +19699,10 @@ module.exports = SuperMap.FacilityAnalystSources3DParameters;
 __webpack_require__(3);
 __webpack_require__(122);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FacilityAnalystSources3DService
+     * Constructor: SuperMap.FacilityAnalystSources3DService
      * 最近设施分析服务类构造函数。
      *
      * Parameters:
@@ -19756,10 +19756,10 @@ SuperMap.REST.FacilityAnalystSources3DService = SuperMap.Class(SuperMap.ServiceB
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.FacilityAnalystSources3DService"
+    CLASS_NAME: "SuperMap.FacilityAnalystSources3DService"
 });
 
-module.exports = SuperMap.REST.FacilityAnalystSources3DService;
+module.exports = SuperMap.FacilityAnalystSources3DService;
 
 /***/ }),
 /* 124 */
@@ -19847,19 +19847,19 @@ module.exports = SuperMap.FacilityAnalystStreamParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.FacilityAnalystStreamService
+ * Class: SuperMap.FacilityAnalystStreamService
  * 上游/下游 关键设施查找资源服务类;即查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
  *
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 __webpack_require__(9);
 __webpack_require__(124);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.FacilityAnalystStreamService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FacilityAnalystStreamService
+     * Constructor: SuperMap.FacilityAnalystStreamService
      * 上游/下游关键设施查找资源服务类构造函数。
      *
      * Parameters:
@@ -19873,7 +19873,7 @@ SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.Networ
      */
 
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -19881,7 +19881,7 @@ SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.Networ
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -19930,10 +19930,10 @@ SuperMap.REST.FacilityAnalystStreamService = SuperMap.Class(SuperMap.REST.Networ
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.FacilityAnalystStreamService"
+    CLASS_NAME: "SuperMap.FacilityAnalystStreamService"
 });
 
-module.exports = SuperMap.REST.FacilityAnalystStreamService;
+module.exports = SuperMap.FacilityAnalystStreamService;
 
 /***/ }),
 /* 126 */
@@ -19985,7 +19985,7 @@ module.exports = SuperMap.FacilityAnalystTracedown3DParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.FacilityAnalystTracedown3DService
+ * Class: SuperMap.FacilityAnalystTracedown3DService
  * 下游追踪资源服务类
  * Inherits from:
  *  - <SuperMap.ServiceBase>
@@ -19993,10 +19993,10 @@ module.exports = SuperMap.FacilityAnalystTracedown3DParameters;
 __webpack_require__(3);
 __webpack_require__(126);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FacilityAnalystTracedown3DService
+     * Constructor: SuperMap.FacilityAnalystTracedown3DService
      * 下游追踪资源服务类构造函数
      *
      * Parameters:
@@ -20050,10 +20050,10 @@ SuperMap.REST.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.Servic
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.FacilityAnalystTracedown3DService"
+    CLASS_NAME: "SuperMap.FacilityAnalystTracedown3DService"
 });
 
-module.exports = SuperMap.REST.FacilityAnalystTracedown3DService;
+module.exports = SuperMap.FacilityAnalystTracedown3DService;
 
 /***/ }),
 /* 128 */
@@ -20104,7 +20104,7 @@ module.exports = SuperMap.FacilityAnalystTraceup3DParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.FacilityAnalystTraceup3DService
+ * Class: SuperMap.FacilityAnalystTraceup3DService
  * 上游追踪资源服务类
  * Inherits from:
  *  - <SuperMap.ServiceBase>
@@ -20112,10 +20112,10 @@ module.exports = SuperMap.FacilityAnalystTraceup3DParameters;
 __webpack_require__(3);
 __webpack_require__(128);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.FacilityAnalystTraceup3DService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.FacilityAnalystTraceup3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FacilityAnalystTraceup3DService
+     * Constructor: SuperMap.FacilityAnalystTraceup3DService
      * 上游追踪资源服务类构造函数。
      *
      * Parameters:
@@ -20169,10 +20169,10 @@ SuperMap.REST.FacilityAnalystTraceup3DService = SuperMap.Class(SuperMap.ServiceB
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.FacilityAnalystTraceup3DService"
+    CLASS_NAME: "SuperMap.FacilityAnalystTraceup3DService"
 });
 
-module.exports = SuperMap.REST.FacilityAnalystTraceup3DService;
+module.exports = SuperMap.FacilityAnalystTraceup3DService;
 
 /***/ }),
 /* 130 */
@@ -20229,7 +20229,7 @@ module.exports = SuperMap.FacilityAnalystUpstream3DParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.FacilityAnalystUpstream3DService
+ * Class: SuperMap.FacilityAnalystUpstream3DService
  * 上游关键设施查找资源服务类
  * Inherits from:
  *  - <SuperMap.ServiceBase>
@@ -20237,10 +20237,10 @@ module.exports = SuperMap.FacilityAnalystUpstream3DParameters;
 __webpack_require__(3);
 __webpack_require__(130);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.FacilityAnalystUpstream3DService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.FacilityAnalystUpstream3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FacilityAnalystUpstream3DService
+     * Constructor: SuperMap.FacilityAnalystUpstream3DService
      * 上游关键设施查找资源服务类构造函数。
      *
      * Parameters:
@@ -20295,10 +20295,10 @@ SuperMap.REST.FacilityAnalystUpstream3DService = SuperMap.Class(SuperMap.Service
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.FacilityAnalystUpstream3DService"
+    CLASS_NAME: "SuperMap.FacilityAnalystUpstream3DService"
 });
 
-module.exports = SuperMap.REST.FacilityAnalystUpstream3DService;
+module.exports = SuperMap.FacilityAnalystUpstream3DService;
 
 
 /***/ }),
@@ -20306,7 +20306,7 @@ module.exports = SuperMap.REST.FacilityAnalystUpstream3DService;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.FieldStatisticService
+ * Class: SuperMap.FieldStatisticService
  * 字段查询统计服务类。用来完成对指定数据集指定字段的查询统计分析，即求平均值，最大值等。
  *
  * Inherits from:
@@ -20316,7 +20316,7 @@ __webpack_require__(1);
 __webpack_require__(3);
 __webpack_require__(133);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: datasource
@@ -20343,12 +20343,12 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
     statisticMode: null,
 
     /**
-     * Constructor: SuperMap.REST.FieldStatisticService
+     * Constructor: SuperMap.FieldStatisticService
      * 字段查询统计服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.FieldStatisticService(url, {eventListeners: {
+     * var myService = new SuperMap.FieldStatisticService(url, {eventListeners: {
      *     "processCompleted": fieldStatisticCompleted, 
      *     "processFailed": fieldStatisticError
      *     }，
@@ -20413,10 +20413,10 @@ SuperMap.REST.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.FieldStatisticService"
+    CLASS_NAME: "SuperMap.FieldStatisticService"
 });
 
-module.exports = SuperMap.REST.FieldStatisticService;
+module.exports = SuperMap.FieldStatisticService;
 
 /***/ }),
 /* 133 */
@@ -20581,7 +20581,7 @@ module.exports = SuperMap.FindClosestFacilitiesParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.FindClosestFacilitiesService
+ * Class: SuperMap.FindClosestFacilitiesService
  * 最近设施分析服务类。
  * 最近设施分析是指在网络上给定一个事件点和一组设施点，
  * 查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
@@ -20589,21 +20589,21 @@ module.exports = SuperMap.FindClosestFacilitiesParameters;
  * 最近设施分析结果通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 __webpack_require__(9);
 __webpack_require__(134);
 var SuperMap = __webpack_require__(0);
 var GeoJSONFormat = __webpack_require__(6);
-SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.FindClosestFacilitiesService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FindClosestFacilitiesService
+     * Constructor: SuperMap.FindClosestFacilitiesService
      * 最近设施分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myfindClosestFacilitiesService = new SuperMap.REST.FindClosestFacilitiesService(url, {
+     * var myfindClosestFacilitiesService = new SuperMap.FindClosestFacilitiesService(url, {
      *     eventListeners: {
      *	       "processCompleted": findClosestFacilitiesCompleted, 
      *		   "processFailed": findClosestFacilitiesError
@@ -20622,7 +20622,7 @@ SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.Networ
      */
 
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -20630,7 +20630,7 @@ SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.Networ
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -20724,9 +20724,9 @@ SuperMap.REST.FindClosestFacilitiesService = SuperMap.Class(SuperMap.REST.Networ
         return result;
     },
 
-    CLASS_NAME: "SuperMap.REST.FindClosestFacilitiesService"
+    CLASS_NAME: "SuperMap.FindClosestFacilitiesService"
 });
-module.exports = SuperMap.REST.FindClosestFacilitiesService;
+module.exports = SuperMap.FindClosestFacilitiesService;
 
 /***/ }),
 /* 136 */
@@ -20828,28 +20828,28 @@ module.exports = SuperMap.FindLocationParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.FindLocationService
+ * Class: SuperMap.FindLocationService
  * 选址分区分析服务类。
  * 选址分区分析是为了确定一个或多个待建设施的最佳或最优位置，使得设施可以用一种最经济有效的方式为需求方提供服务或者商品。
  * 选址分区不仅仅是一个选址过程，还要将需求点的需求分配到相应的新建设施的服务区中，因此称之为选址与分区。
  * 选址分区分析结果通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 __webpack_require__(9);
 __webpack_require__(136);
 var SuperMap = __webpack_require__(0);
 var GeoJSONFormat = __webpack_require__(6);
-SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.FindLocationService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FindLocationService
+     * Constructor: SuperMap.FindLocationService
      * 选址分区分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var findLocationService = new SuperMap.REST.FindLocationService(url, {
+     * var findLocationService = new SuperMap.FindLocationService(url, {
      *     eventListeners: {
      *         "processCompleted": findLocationCompleted, 
      *		   "processFailed": findLocationError
@@ -20865,7 +20865,7 @@ SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -20873,7 +20873,7 @@ SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -20952,10 +20952,10 @@ SuperMap.REST.FindLocationService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
         return result;
     },
 
-    CLASS_NAME: "SuperMap.REST.FindLocationService"
+    CLASS_NAME: "SuperMap.FindLocationService"
 });
 
-module.exports = SuperMap.REST.FindLocationService;
+module.exports = SuperMap.FindLocationService;
 
 /***/ }),
 /* 138 */
@@ -21059,7 +21059,7 @@ module.exports = SuperMap.FindMTSPPathsParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.FindMTSPPathsService
+ * Class: SuperMap.FindMTSPPathsService
  * 多旅行商分析服务类
  * 多旅行商分析也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。
  * 查找经济有效的配送路径，并给出相应的行走路线。
@@ -21067,21 +21067,21 @@ module.exports = SuperMap.FindMTSPPathsParameters;
  * 该类负责将客户端指定的多旅行商分析参数传递给服务端，并接收服务端返回的结果数据。
  * 多旅行商分析结果通过该类支持的事件的监听函数参数获取
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 __webpack_require__(9);
 __webpack_require__(138);
 var SuperMap = __webpack_require__(0);
 var GeoJSONFormat = __webpack_require__(6);
-SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.FindMTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FindMTSPPathsService
+     * Constructor: SuperMap.FindMTSPPathsService
      * 最佳路径分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myFindMTSPPathsService = new SuperMap.REST.FindMTSPPathsService(url, {
+     * var myFindMTSPPathsService = new SuperMap.FindMTSPPathsService(url, {
      *     eventListeners: {
      *         "processCompleted": findMTSPPathsCompleted, 
      *		   "processFailed": findMTSPPathsError
@@ -21099,7 +21099,7 @@ SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalyst
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -21107,7 +21107,7 @@ SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalyst
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -21199,10 +21199,10 @@ SuperMap.REST.FindMTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalyst
         return result;
     },
 
-    CLASS_NAME: "SuperMap.REST.FindMTSPPathsService"
+    CLASS_NAME: "SuperMap.FindMTSPPathsService"
 });
 
-module.exports = SuperMap.REST.FindMTSPPathsService;
+module.exports = SuperMap.FindMTSPPathsService;
 
 /***/ }),
 /* 140 */
@@ -21300,7 +21300,7 @@ module.exports = SuperMap.FindPathParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.FindPathService
+ * Class: SuperMap.FindPathService
  * 最佳路径分析服务类。
  * 最佳路径是在网络数据集中指定一些节点，按照节点的选择顺序，
  * 顺序访问这些节点从而求解起止点之间阻抗最小的路经。
@@ -21308,21 +21308,21 @@ module.exports = SuperMap.FindPathParameters;
  * 最佳路径分析结果通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 __webpack_require__(9);
 __webpack_require__(140);
 var SuperMap = __webpack_require__(0);
 var GeoJSONFormat = __webpack_require__(6);
-SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.FindPathService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FindPathService
+     * Constructor: SuperMap.FindPathService
      * 最佳路径分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myFindPathService = new SuperMap.REST.FindPathService(url, {
+     * var myFindPathService = new SuperMap.FindPathService(url, {
      *     eventListeners: {
      *	       "processCompleted": findPathCompleted, 
      *		   "processFailed": findPathError
@@ -21340,7 +21340,7 @@ SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServi
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -21348,7 +21348,7 @@ SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServi
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -21439,10 +21439,10 @@ SuperMap.REST.FindPathService = SuperMap.Class(SuperMap.REST.NetworkAnalystServi
         return result;
     },
 
-    CLASS_NAME: "SuperMap.REST.FindPathService"
+    CLASS_NAME: "SuperMap.FindPathService"
 });
 
-module.exports = SuperMap.REST.FindPathService;
+module.exports = SuperMap.FindPathService;
 
 /***/ }),
 /* 142 */
@@ -21554,28 +21554,28 @@ module.exports = SuperMap.FindServiceAreasParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.FindServiceAreasService
+ * Class: SuperMap.FindServiceAreasService
  * 服务区分析服务类。
  * 服务区分析是以指定服务站点为中心，
  * 在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
  * 该类负责将客户端指定的服务区分析参数传递给服务端，并接收服务端返回的结果数据。
  * 服务区分析结果通过该类支持的事件的监听函数参数获取
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 __webpack_require__(9);
 __webpack_require__(142);
 var SuperMap = __webpack_require__(0);
 var GeoJSONFormat = __webpack_require__(6);
-SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.FindServiceAreasService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FindServiceAreasService
+     * Constructor: SuperMap.FindServiceAreasService
      * 服务区分析服务类构造函数。
      *
      * 例如:
      * (start code)
-     * var myFindServiceAreasService = new SuperMap.REST.FindServiceAreasService(url, {
+     * var myFindServiceAreasService = new SuperMap.FindServiceAreasService(url, {
      *          eventListeners: {
      *              "processCompleted": findServiceAreasCompleted,
      *              "processFailed": findServiceAreasError
@@ -21593,7 +21593,7 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnal
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -21601,7 +21601,7 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnal
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -21694,10 +21694,10 @@ SuperMap.REST.FindServiceAreasService = SuperMap.Class(SuperMap.REST.NetworkAnal
         return result;
     },
 
-    CLASS_NAME: "SuperMap.REST.FindServiceAreasService"
+    CLASS_NAME: "SuperMap.FindServiceAreasService"
 });
 
-module.exports = SuperMap.REST.FindServiceAreasService;
+module.exports = SuperMap.FindServiceAreasService;
 
 /***/ }),
 /* 144 */
@@ -21793,28 +21793,28 @@ module.exports = SuperMap.FindTSPPathsParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.FindTSPPathsService
+ * Class: SuperMap.FindTSPPathsService
  * 旅行商分析服务类
  * 旅行商分析是路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
  * 旅行商分析也可以指定到达的终点，这时查找从起点能够遍历所有途经点最后到达终点，且花费最小的路径。
  * 该类负责将客户端指定的旅行商分析参数传递给服务端，并接收服务端返回的结果数据。
  * 旅行商分析结果通过该类支持的事件的监听函数参数获取
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 __webpack_require__(9);
 __webpack_require__(144);
 var SuperMap = __webpack_require__(0);
 var GeoJSONFormat = __webpack_require__(6);
-SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.FindTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.FindTSPPathsService
+     * Constructor: SuperMap.FindTSPPathsService
      * 最佳路径分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myFindTSPPathsService = new SuperMap.REST.FindTSPPathsService(url, {
+     * var myFindTSPPathsService = new SuperMap.FindTSPPathsService(url, {
      *     eventListeners: {
      *	      "processCompleted": findTSPPathsCompleted, 
      *		  "processFailed": findTSPPathsError
@@ -21832,7 +21832,7 @@ SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -21840,7 +21840,7 @@ SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -21928,10 +21928,10 @@ SuperMap.REST.FindTSPPathsService = SuperMap.Class(SuperMap.REST.NetworkAnalystS
         });
         return result;
     },
-    CLASS_NAME: "SuperMap.REST.FindTSPPathsService"
+    CLASS_NAME: "SuperMap.FindTSPPathsService"
 });
 
-module.exports = SuperMap.REST.FindTSPPathsService;
+module.exports = SuperMap.FindTSPPathsService;
 
 /***/ }),
 /* 146 */
@@ -22073,7 +22073,7 @@ module.exports = SuperMap.GenerateSpatialDataParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.GenerateSpatialDataService
+ * Class: SuperMap.GenerateSpatialDataService
  * 动态分段分析服务类。
  * 该类负责将客户设置的动态分段分析服务参数传递给服务端，并接收服务端返回的动态分段分析结果数据。
  * 获取的结果数据包括 originResult 、result 两种，
@@ -22081,15 +22081,15 @@ module.exports = SuperMap.GenerateSpatialDataParameters;
  * result 为服务端返回的动态分段分析结果数据，
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 __webpack_require__(7);
 __webpack_require__(146);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.GenerateSpatialDataService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.GenerateSpatialDataService
+     * Constructor: SuperMap.GenerateSpatialDataService
      * 动态分段服务类构造函数。
      *
      * 实例化该类如下例所示：
@@ -22118,7 +22118,7 @@ SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialA
      *      dataReturnOption: option
      *  }),
      *  //配置动态分段iService
-     *  iService = new SuperMap.REST.GenerateSpatialDataService(Changchun_spatialanalyst, {
+     *  iService = new SuperMap.GenerateSpatialDataService(Changchun_spatialanalyst, {
      *      eventListeners: {
      *          processCompleted: generateCompleted,
      *          processFailed: generateFailded 
@@ -22138,7 +22138,7 @@ SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialA
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -22146,7 +22146,7 @@ SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialA
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -22202,10 +22202,10 @@ SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialA
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.GenerateSpatialDataService"
+    CLASS_NAME: "SuperMap.GenerateSpatialDataService"
 });
 
-module.exports = SuperMap.REST.GenerateSpatialDataService;
+module.exports = SuperMap.GenerateSpatialDataService;
 
 /***/ }),
 /* 148 */
@@ -22511,17 +22511,17 @@ module.exports = SuperMap.GeoRelationAnalystParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.GeoRelationAnalystService
+ * Class: SuperMap.GeoRelationAnalystService
  * 空间关系分析服务类。
  * 该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
  */
 __webpack_require__(7);
 __webpack_require__(150);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.GeoRelationAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.GenerateSpatialDataService
+     * Constructor: SuperMap.GenerateSpatialDataService
      * 空间关系分析服务类构造函数。
      *
      * 实例化该类如下例所示：
@@ -22533,7 +22533,7 @@ SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAn
      *      var sourceFilter = new SuperMap.FilterParameter({
      *                          attributeFilter:"SmID>0"});
      *      //初始化服务类
-     *      var datasetGeoRelationService = new SuperMap.REST.GeoRelationAnalystService(
+     *      var datasetGeoRelationService = new SuperMap.GeoRelationAnalystService(
      *          "http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst/"),
      *      //构建参数类
      *      datasetGeoRelationParameters = new SuperMap.GeoRelationAnalystParameters({
@@ -22565,7 +22565,7 @@ SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAn
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -22573,7 +22573,7 @@ SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAn
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -22609,10 +22609,10 @@ SuperMap.REST.GeoRelationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAn
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.GeoRelationAnalystService"
+    CLASS_NAME: "SuperMap.GeoRelationAnalystService"
 });
 
-module.exports = SuperMap.REST.GeoRelationAnalystService;
+module.exports = SuperMap.GeoRelationAnalystService;
 
 /***/ }),
 /* 152 */
@@ -23071,25 +23071,25 @@ module.exports = SuperMap.GetFeaturesByBoundsParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.GetFeaturesByBoundsService
+ * Class: SuperMap.GetFeaturesByBoundsService
  * 数据集范围查询服务类
  * 查询与指定范围对象符合一定空间关系的矢量要素。
  *
  * Inherits from:
- *  - <SuperMap.REST.GetFeaturesServiceBase>
+ *  - <SuperMap.GetFeaturesServiceBase>
  */
 __webpack_require__(22);
 __webpack_require__(156);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
+SuperMap.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.GetFeaturesByBoundsService
+     * Constructor: SuperMap.GetFeaturesByBoundsService
      * 数据集范围查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myGetFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(url, {
+     * var myGetFeaturesByBoundsService = new SuperMap.GetFeaturesByBoundsService(url, {
      *     eventListeners: {
      *           "processCompleted": getFeatureCompleted, 
      *           "processFailed": getFeatureError
@@ -23109,7 +23109,7 @@ SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeatu
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -23117,7 +23117,7 @@ SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeatu
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -23135,10 +23135,10 @@ SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeatu
         return SuperMap.GetFeaturesByBoundsParameters.toJsonParameters(params);
     },
 
-    CLASS_NAME: "SuperMap.REST.GetFeaturesByBoundsService"
+    CLASS_NAME: "SuperMap.GetFeaturesByBoundsService"
 });
 
-module.exports = SuperMap.REST.GetFeaturesByBoundsService;
+module.exports = SuperMap.GetFeaturesByBoundsService;
 
 /***/ }),
 /* 158 */
@@ -23268,24 +23268,24 @@ module.exports = SuperMap.GetFeaturesByBufferParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class:   SuperMap.REST.GetFeaturesByBufferService
+ * Class:   SuperMap.GetFeaturesByBufferService
  * 数据服务中数据集缓冲区查询服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.GetFeaturesServiceBase>
+ *  - <SuperMap.GetFeaturesServiceBase>
  */
 __webpack_require__(22);
 __webpack_require__(158);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
+SuperMap.GetFeaturesByBufferService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
 
     /**
-     * Constructor:   SuperMap.REST.GetFeaturesByBufferService
+     * Constructor:   SuperMap.GetFeaturesByBufferService
      * 数据服务缓冲区查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myGetFeaturesByBufferService = new   SuperMap.REST.GetFeaturesByBufferService(url, {
+     * var myGetFeaturesByBufferService = new   SuperMap.GetFeaturesByBufferService(url, {
      *     eventListeners: {
      *           "processCompleted": GetFeaturesCompleted, 
      *           "processFailed": GetFeaturesError
@@ -23305,7 +23305,7 @@ SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeatu
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -23313,7 +23313,7 @@ SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeatu
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -23331,10 +23331,10 @@ SuperMap.REST.GetFeaturesByBufferService = SuperMap.Class(SuperMap.REST.GetFeatu
         return SuperMap.GetFeaturesByBufferParameters.toJsonParameters(params);
     },
 
-    CLASS_NAME: "SuperMap.REST.GetFeaturesByBufferService"
+    CLASS_NAME: "SuperMap.GetFeaturesByBufferService"
 });
 
-module.exports = SuperMap.REST.GetFeaturesByBufferService;
+module.exports = SuperMap.GetFeaturesByBufferService;
 
 /***/ }),
 /* 160 */
@@ -23479,25 +23479,25 @@ module.exports = SuperMap.GetFeaturesByGeometryParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.GetFeaturesByGeometryService
+ * Class: SuperMap.GetFeaturesByGeometryService
  * 数据集几何查询服务类
  * 查询与指定几何对象符合一定空间关系的矢量要素。
  *
  * Inherits from:
- *  - <SuperMap.REST.GetFeaturesServiceBase>
+ *  - <SuperMap.GetFeaturesServiceBase>
  */
 __webpack_require__(22);
 __webpack_require__(160);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
+SuperMap.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.GetFeaturesByGeometryService
+     * Constructor: SuperMap.GetFeaturesByGeometryService
      * 数据集几何查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.GetFeaturesByGeometryService(url, {
+     * var myService = new SuperMap.GetFeaturesByGeometryService(url, {
      *     eventListeners: {
      *           "processCompleted": getFeatureCompleted, 
      *           "processFailed": getFeatureError
@@ -23517,7 +23517,7 @@ SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFea
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -23525,7 +23525,7 @@ SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFea
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -23543,10 +23543,10 @@ SuperMap.REST.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.REST.GetFea
         return SuperMap.GetFeaturesByGeometryParameters.toJsonParameters(params);
     },
 
-    CLASS_NAME: "SuperMap.REST.GetFeaturesByGeometryService"
+    CLASS_NAME: "SuperMap.GetFeaturesByGeometryService"
 });
 
-module.exports = SuperMap.REST.GetFeaturesByGeometryService;
+module.exports = SuperMap.GetFeaturesByGeometryService;
 
 /***/ }),
 /* 162 */
@@ -23659,25 +23659,25 @@ module.exports = SuperMap.GetFeaturesByIDsParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.GetFeaturesByIDsService
+ * Class: SuperMap.GetFeaturesByIDsService
  * 数据集ID查询服务类。
  * 在数据集集合中查找指定 ID 号对应的空间地物要素。
  *
  * Inherits from:
- *  - <SuperMap.REST.GetFeaturesServiceBase>
+ *  - <SuperMap.GetFeaturesServiceBase>
  */
 __webpack_require__(22);
 __webpack_require__(162);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
+SuperMap.GetFeaturesByIDsService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.GetFeaturesByIDsService
+     * Constructor: SuperMap.GetFeaturesByIDsService
      * 数据集ID查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myGetFeaturesByIDsService = new SuperMap.REST.GetFeaturesByIDsService(url, {
+     * var myGetFeaturesByIDsService = new SuperMap.GetFeaturesByIDsService(url, {
      *     eventListeners: {
      *         "processCompleted": getFeatureCompleted, 
      *         "processFailed": getFeatureError
@@ -23697,7 +23697,7 @@ SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeatures
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -23705,7 +23705,7 @@ SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeatures
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -23723,10 +23723,10 @@ SuperMap.REST.GetFeaturesByIDsService = SuperMap.Class(SuperMap.REST.GetFeatures
         return SuperMap.GetFeaturesByIDsParameters.toJsonParameters(params);
     },
 
-    CLASS_NAME: "SuperMap.REST.GetFeaturesByIDsService"
+    CLASS_NAME: "SuperMap.GetFeaturesByIDsService"
 });
 
-module.exports = SuperMap.REST.GetFeaturesByIDsService;
+module.exports = SuperMap.GetFeaturesByIDsService;
 
 /***/ }),
 /* 164 */
@@ -23817,25 +23817,25 @@ module.exports = SuperMap.GetFeaturesBySQLParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.GetFeaturesBySQLService
+ * Class: SuperMap.GetFeaturesBySQLService
  * 数据服务中数据集 SQL 查询服务类。
  * 在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
  *
  * Inherits from:
- *  - <SuperMap.REST.GetFeaturesServiceBase>
+ *  - <SuperMap.GetFeaturesServiceBase>
  */
 __webpack_require__(22);
 __webpack_require__(164);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
+SuperMap.GetFeaturesBySQLService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.GetFeaturesBySQLService
+     * Constructor: SuperMap.GetFeaturesBySQLService
      * SQL 查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myGetFeaturesBySQLService = new SuperMap.REST.GetFeaturesBySQLService(url, {
+     * var myGetFeaturesBySQLService = new SuperMap.GetFeaturesBySQLService(url, {
      *     eventListeners: {
      *         "processCompleted": GetFeaturesCompleted, 
      *         "processFailed": GetFeaturesError
@@ -23855,7 +23855,7 @@ SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeatures
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -23863,7 +23863,7 @@ SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeatures
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -23881,17 +23881,17 @@ SuperMap.REST.GetFeaturesBySQLService = SuperMap.Class(SuperMap.REST.GetFeatures
         return SuperMap.GetFeaturesBySQLParameters.toJsonParameters(params);
     },
 
-    CLASS_NAME: "SuperMap.REST.GetFeaturesBySQLService"
+    CLASS_NAME: "SuperMap.GetFeaturesBySQLService"
 });
 
-module.exports = SuperMap.REST.GetFeaturesBySQLService;
+module.exports = SuperMap.GetFeaturesBySQLService;
 
 /***/ }),
 /* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.GetFieldsService
+ * Class: SuperMap.GetFieldsService
  * 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
  *
  * Inherits from:
@@ -23899,7 +23899,7 @@ module.exports = SuperMap.REST.GetFeaturesBySQLService;
  */
 __webpack_require__(3);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: datasource
@@ -23914,12 +23914,12 @@ SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
     dataset: null,
 
     /**
-     * Constructor: SuperMap.REST.GetFieldsService
+     * Constructor: SuperMap.GetFieldsService
      * 字段查询服务构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.GetFieldsService(url, {eventListeners: {
+     * var myService = new SuperMap.GetFieldsService(url, {eventListeners: {
      *     "processCompleted": getFieldsCompleted, 
      *     "processFailed": getFieldsError
      *     },
@@ -23975,10 +23975,10 @@ SuperMap.REST.GetFieldsService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.GetFieldsService"
+    CLASS_NAME: "SuperMap.GetFieldsService"
 });
 
-module.exports = SuperMap.REST.GetFieldsService;
+module.exports = SuperMap.GetFieldsService;
 
 /***/ }),
 /* 167 */
@@ -24056,7 +24056,7 @@ module.exports = SuperMap.GetGridCellInfosParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.GetGridCellInfosService
+ * Class: SuperMap.GetGridCellInfosService
  * 数据栅格查询服务，支持查询指定地理位置的栅格信息
  *
  * Inherits from:
@@ -24065,7 +24065,7 @@ module.exports = SuperMap.GetGridCellInfosParameters;
 __webpack_require__(3);
 __webpack_require__(167);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: datasetName
@@ -24098,12 +24098,12 @@ SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
     Y: null,
 
     /**
-     * Constructor: SuperMap.REST.GetGridCellInfosService
+     * Constructor: SuperMap.GetGridCellInfosService
      * 字段查询服务构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.GetGridCellInfosService(url, {eventListeners: {
+     * var myService = new SuperMap.GetGridCellInfosService(url, {eventListeners: {
      *     "processCompleted": queryCompleted,
      *     "processFailed": queryError
      *     }
@@ -24224,17 +24224,17 @@ SuperMap.REST.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
         me.serviceProcessFailed(result);
     },
 
-    CLASS_NAME: "SuperMap.REST.GetGridCellInfosService"
+    CLASS_NAME: "SuperMap.GetGridCellInfosService"
 });
 
-module.exports = SuperMap.REST.GetGridCellInfosService;
+module.exports = SuperMap.GetGridCellInfosService;
 
 /***/ }),
 /* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.GetLayersInfoService
+ * Class: SuperMap.GetLayersInfoService
  * 获取图层信息服务类。
  * 该类负责将从客户端指定的服务器上获取该服务器提供的图层信息。
  *
@@ -24247,7 +24247,7 @@ var ServerTheme = __webpack_require__(209);
 var Grid = __webpack_require__(170);
 var Image = __webpack_require__(171);
 var Vector = __webpack_require__(258);
-SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * Property: isTempLayers
@@ -24256,7 +24256,7 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
     isTempLayers: false,
 
     /**
-     * Constructor: SuperMap.REST.GetLayersInfoService
+     * Constructor: SuperMap.GetLayersInfoService
      * 获取图层信息服务类构造函数。
      *
      * Parameters:
@@ -24377,10 +24377,10 @@ SuperMap.REST.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
         }
     },
 
-    CLASS_NAME: "SuperMap.REST.GetLayersInfoService"
+    CLASS_NAME: "SuperMap.GetLayersInfoService"
 });
 
-module.exports = SuperMap.REST.GetLayersInfoService;
+module.exports = SuperMap.GetLayersInfoService;
 
 /***/ }),
 /* 170 */
@@ -24705,7 +24705,7 @@ module.exports = SuperMap.Image;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.InterpolationAnalystService
+ * Class: SuperMap.InterpolationAnalystService
  * 插值分析服务类
  * 插值分析可以将有限的采样点数据， 通过插值算法对采样点周围的数值情况进行预测，
  * 可以掌握研究区域内数据的总体分布状况，从而使采样的离散点不仅仅反映其所在位置的数值情况，
@@ -24714,7 +24714,7 @@ module.exports = SuperMap.Image;
  * 包括：反距离加权插值、克吕金（Kriging）插值法、样条（径向基函数，Radial Basis Function）插值、点密度插值。
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 __webpack_require__(7);
 __webpack_require__(176);
@@ -24723,7 +24723,7 @@ __webpack_require__(174);
 __webpack_require__(175);
 __webpack_require__(23);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.InterpolationAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
      * Property: mode
@@ -24732,12 +24732,12 @@ SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.Spatial
     mode: null,
 
     /**
-     * Constructor: SuperMap.REST.InterpolationAnalystService
+     * Constructor: SuperMap.InterpolationAnalystService
      * 插值分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myTInterpolationAnalystService = new SuperMap.REST.InterpolationAnalystService(url);
+     * var myTInterpolationAnalystService = new SuperMap.InterpolationAnalystService(url);
      * myTInterpolationAnalystService.events.on({
      *     "processCompleted": processCompleted,
      *     "processFailed": processFailed
@@ -24753,7 +24753,7 @@ SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.Spatial
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
         var me = this;
         if (options) {
             SuperMap.Util.extend(me, options);
@@ -24765,7 +24765,7 @@ SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.Spatial
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
         this.mode = null;
     },
 
@@ -24839,10 +24839,10 @@ SuperMap.REST.InterpolationAnalystService = SuperMap.Class(SuperMap.REST.Spatial
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.InterpolationAnalystService"
+    CLASS_NAME: "SuperMap.InterpolationAnalystService"
 
 });
-module.exports = SuperMap.REST.InterpolationAnalystService;
+module.exports = SuperMap.InterpolationAnalystService;
 
 /***/ }),
 /* 173 */
@@ -25512,7 +25512,7 @@ var SuperMap = __webpack_require__(0);
 var ProcessingJobsServiceBase = __webpack_require__(34);
 var KernelDensityJobParameter = __webpack_require__(177);
 
-SuperMap.REST.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+SuperMap.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
         url += "/spatialanalyst/density";
@@ -25535,10 +25535,10 @@ SuperMap.REST.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBas
         return ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, KernelDensityJobParameter, seconds]);
     },
 
-    CLASS_NAME: "SuperMap.REST.KernelDensityJobsService"
+    CLASS_NAME: "SuperMap.KernelDensityJobsService"
 });
 
-module.exports = SuperMap.REST.KernelDensityJobsService;
+module.exports = SuperMap.KernelDensityJobsService;
 
 /***/ }),
 /* 179 */
@@ -26320,14 +26320,14 @@ module.exports = SuperMap.Feature.Theme.Line;
 /* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
-﻿/** * Class: SuperMap.LinkItem * 关联信息类。 * 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表， * 矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。 使用LinkItem时， * 空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。 * SuperMap.LinkItem 只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 SuperMap.LinkItem; * 另外，用于建立关联关系的两个表可以不在同一个数据源下。 * * (注意： * 1. 使用 SuperMap.LinkItem 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段； * 2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。) * */__webpack_require__(115);var SuperMap = __webpack_require__(0);SuperMap.LinkItem = SuperMap.Class({    /**     * APIProperty: datasourceConnectionInfo     * {<SuperMap.DatasourceConnectionInfo>} 关联的外部数据源信息 。     */    datasourceConnectionInfo: null,    /**     * APIProperty: foreignKeys     * {Array(String)} 主空间数据集的外键。     */    foreignKeys: null,    /**     * APIProperty: foreignTable     * {String} 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。     */    foreignTable: null,    /**     * APIProperty: linkFields     * {Array(String)} 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返     * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。     */    linkFields: null,    /**     * APIProperty: linkFilter     * {String} 与外部属性表的连接条件。     */    linkFilter: null,    /**     * APIProperty: name     * {String} 此关联信息对象的名称。     */    name: null,    /**     * APIProperty: primaryKeys     * {Array(String)} 需要关联的外部属性表的主键。     */    primaryKeys: null,    /**     * Constructor: SuperMap.LinkItem     * 关联信息类构造函数。     *     * 设置将TableB关联到TableA的关联信息，即建立LinkItem类并设置其属性，     * TableA与TableB是通过主表（TableA）的外键（LinkItem类的 ForeignKey 属性）     * 和副表（TableB）的主键（LinkItem类的 PrimaryKey 属性）实现关联的，     * 当执行TableA的查询操作时，系统将根据关联信息中的过滤条件及查询条件，分别查询TableA     * 与TableB中满足条件的内容，TableA的查询结果与TableB的查询结果分别作为     * 独立的两个结果表保存在内存中，当需要获取结果时，SuperMap将对两个结果进行拼接并返回，     * 因此，进行关联查询时，查询参数中的返回字段一定要有关联条件中的外键，     * 否则无法根据外键的值获取副表中的关联字段值，副表中的字段值将返回 null。     * 在应用层看来，连接和关联操作很相似。     *     * 下面以SQL查询说明linkitem的使用方法：     * (start code)     *  function queryBySQL() {     *      // 设置关联的外部数据库信息,alias表示数据库别名     *      var dc = new SuperMap.DatasourceConnectionInfo({     *          dataBase: "RelQuery",     *          server: "192.168.168.39",     *          user: "sa",     *          password: "map",     *          driver: "SQL Server",     *          connect: true,     *          OpenLinkTable: false,     *          alias: "RelQuery",     *          engineType: EngineType.SQLPLUS,     *          readOnly: false,     *          exclusive: false     *      });     *     // 设置关联信息     *      var linkItem = new SuperMap.LinkItem({     *          datasourceConnectionInfo: dc,     *          foreignKeys: ["name"],     *          foreignTable: "Pop_2011",     *          linkFields: ["SmID as Pid","pop"],     *          name: "link",     *          primatryKeys: ["name"],     *      });     *      // 设置查询参数，在查询参数中添加linkItem关联条件信息     *      var queryParam, queryBySQLParams, queryBySQLService;     *      queryParam = new SuperMap.FilterParameter({     *          name: "Province@RelQuery",     *          fields: ["SmID","name"],     *          attributeFilter: "SmID<7",     *          linkItems: [linkItem]     *       }),      *      queryBySQLParams = new SuperMap.QueryBySQLParameters({     *           queryParams: [queryParam]     *              }),      *      queryBySQLService = new SuperMap.REST.QueryBySQLService(url, {     *          eventListeners: {     *              "processCompleted": processCompleted,     *              "processFailed": processFailed     *              }     *      });     *      queryBySQLService.processAsync(queryBySQLParams);     *  }     *  function processCompleted(queryEventArgs) {//todo}     *  function processFailed(e) {//todo}     * (end)     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * datasourceConnectionInfo - {<SuperMap.DatasourceConnectionInfo>} 关联的外部数据源信息。     * foreignKeys - {Array(String)} 主空间数据集的外键。     * foreignTable - {String} 关联的外部属性表的名称。     * linkFields - {Array(String)} 欲保留的外部属性表的字段。     * linkFilter - {String} 与外部属性表的连接条件。     * name - {String} 此关联信息对象的名称。     * primaryKeys - {Array(String)} 需要关联的外部属性表的主键。     */    initialize: function (options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        if (me.datasourceConnectionInfo) {            me.datasourceConnectionInfo.destroy();            me.datasourceConnectionInfo = null;        }        me.foreignKeys = null;        me.foreignTable = null;        me.linkFields = null;        me.linkFilter = null;        me.name = null;        me.primaryKeys = null;    },    CLASS_NAME: "SuperMap.LinkItem"});module.exports = SuperMap.LinkItem;
+﻿/** * Class: SuperMap.LinkItem * 关联信息类。 * 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表， * 矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。 使用LinkItem时， * 空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。 * SuperMap.LinkItem 只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 SuperMap.LinkItem; * 另外，用于建立关联关系的两个表可以不在同一个数据源下。 * * (注意： * 1. 使用 SuperMap.LinkItem 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段； * 2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。) * */__webpack_require__(115);var SuperMap = __webpack_require__(0);SuperMap.LinkItem = SuperMap.Class({    /**     * APIProperty: datasourceConnectionInfo     * {<SuperMap.DatasourceConnectionInfo>} 关联的外部数据源信息 。     */    datasourceConnectionInfo: null,    /**     * APIProperty: foreignKeys     * {Array(String)} 主空间数据集的外键。     */    foreignKeys: null,    /**     * APIProperty: foreignTable     * {String} 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。     */    foreignTable: null,    /**     * APIProperty: linkFields     * {Array(String)} 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返     * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。     */    linkFields: null,    /**     * APIProperty: linkFilter     * {String} 与外部属性表的连接条件。     */    linkFilter: null,    /**     * APIProperty: name     * {String} 此关联信息对象的名称。     */    name: null,    /**     * APIProperty: primaryKeys     * {Array(String)} 需要关联的外部属性表的主键。     */    primaryKeys: null,    /**     * Constructor: SuperMap.LinkItem     * 关联信息类构造函数。     *     * 设置将TableB关联到TableA的关联信息，即建立LinkItem类并设置其属性，     * TableA与TableB是通过主表（TableA）的外键（LinkItem类的 ForeignKey 属性）     * 和副表（TableB）的主键（LinkItem类的 PrimaryKey 属性）实现关联的，     * 当执行TableA的查询操作时，系统将根据关联信息中的过滤条件及查询条件，分别查询TableA     * 与TableB中满足条件的内容，TableA的查询结果与TableB的查询结果分别作为     * 独立的两个结果表保存在内存中，当需要获取结果时，SuperMap将对两个结果进行拼接并返回，     * 因此，进行关联查询时，查询参数中的返回字段一定要有关联条件中的外键，     * 否则无法根据外键的值获取副表中的关联字段值，副表中的字段值将返回 null。     * 在应用层看来，连接和关联操作很相似。     *     * 下面以SQL查询说明linkitem的使用方法：     * (start code)     *  function queryBySQL() {     *      // 设置关联的外部数据库信息,alias表示数据库别名     *      var dc = new SuperMap.DatasourceConnectionInfo({     *          dataBase: "RelQuery",     *          server: "192.168.168.39",     *          user: "sa",     *          password: "map",     *          driver: "SQL Server",     *          connect: true,     *          OpenLinkTable: false,     *          alias: "RelQuery",     *          engineType: EngineType.SQLPLUS,     *          readOnly: false,     *          exclusive: false     *      });     *     // 设置关联信息     *      var linkItem = new SuperMap.LinkItem({     *          datasourceConnectionInfo: dc,     *          foreignKeys: ["name"],     *          foreignTable: "Pop_2011",     *          linkFields: ["SmID as Pid","pop"],     *          name: "link",     *          primatryKeys: ["name"],     *      });     *      // 设置查询参数，在查询参数中添加linkItem关联条件信息     *      var queryParam, queryBySQLParams, queryBySQLService;     *      queryParam = new SuperMap.FilterParameter({     *          name: "Province@RelQuery",     *          fields: ["SmID","name"],     *          attributeFilter: "SmID<7",     *          linkItems: [linkItem]     *       }),      *      queryBySQLParams = new SuperMap.QueryBySQLParameters({     *           queryParams: [queryParam]     *              }),      *      queryBySQLService = new SuperMap.QueryBySQLService(url, {     *          eventListeners: {     *              "processCompleted": processCompleted,     *              "processFailed": processFailed     *              }     *      });     *      queryBySQLService.processAsync(queryBySQLParams);     *  }     *  function processCompleted(queryEventArgs) {//todo}     *  function processFailed(e) {//todo}     * (end)     *     * Parameters:     * options - {Object} 参数。     *     * Allowed options properties:     * datasourceConnectionInfo - {<SuperMap.DatasourceConnectionInfo>} 关联的外部数据源信息。     * foreignKeys - {Array(String)} 主空间数据集的外键。     * foreignTable - {String} 关联的外部属性表的名称。     * linkFields - {Array(String)} 欲保留的外部属性表的字段。     * linkFilter - {String} 与外部属性表的连接条件。     * name - {String} 此关联信息对象的名称。     * primaryKeys - {Array(String)} 需要关联的外部属性表的主键。     */    initialize: function (options) {        if (options) {            SuperMap.Util.extend(this, options);        }    },    /**     * APIMethod: destroy     * 释放资源，将引用资源的属性置空。     */    destroy: function () {        var me = this;        if (me.datasourceConnectionInfo) {            me.datasourceConnectionInfo.destroy();            me.datasourceConnectionInfo = null;        }        me.foreignKeys = null;        me.foreignTable = null;        me.linkFields = null;        me.linkFilter = null;        me.name = null;        me.primaryKeys = null;    },    CLASS_NAME: "SuperMap.LinkItem"});module.exports = SuperMap.LinkItem;
 
 /***/ }),
 /* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.MapService
+ * Class: SuperMap.MapService
  * 地图信息服务类 。
  * 该类负责将从客户端指定的服务器上获取该服务器提供的地图信息
  * 结果保存在一个object对象中，对象包含一个属性result为iServer返回的json对象
@@ -26337,7 +26337,7 @@ module.exports = SuperMap.Feature.Theme.Line;
 
 var SuperMap = __webpack_require__(0);
 var ServiceBase = __webpack_require__(3);
-SuperMap.REST.MapService = SuperMap.Class(ServiceBase, {
+SuperMap.MapService = SuperMap.Class(ServiceBase, {
 
     /**
      * APIProperty: projection
@@ -26348,12 +26348,12 @@ SuperMap.REST.MapService = SuperMap.Class(ServiceBase, {
 
 
     /**
-     * Constructor: SuperMap.REST.MapService
+     * Constructor: SuperMap.MapService
      * 地图信息服务类构造函数 。
      *
      * 例如：
      * (start code)
-     * var myMapService = new SuperMap.REST.MapService(url, {
+     * var myMapService = new SuperMap.MapService(url, {
      * eventListeners:{
      *     "processCompleted": MapServiceCompleted, 
      *       "processFailed": MapServiceFailed
@@ -26441,9 +26441,9 @@ SuperMap.REST.MapService = SuperMap.Class(ServiceBase, {
         }
     },
 
-    CLASS_NAME: "SuperMap.REST.MapService"
+    CLASS_NAME: "SuperMap.MapService"
 });
-module.exports = SuperMap.REST.MapService;
+module.exports = SuperMap.MapService;
 
 
 /***/ }),
@@ -26590,24 +26590,24 @@ module.exports = SuperMap.MathExpressionAnalysisParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.MathExpressionAnalysisService
+ * Class: SuperMap.MathExpressionAnalysisService
  *  栅格代数运算服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 __webpack_require__(7);
 __webpack_require__(187);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.MathExpressionAnalysisService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.MathExpressionAnalysisService
+     * Constructor: SuperMap.MathExpressionAnalysisService
      * 核栅格代数运算服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myMathExpressionAnalysisService = new SuperMap.REST.MathExpressionAnalysisService(url);
+     * var myMathExpressionAnalysisService = new SuperMap.MathExpressionAnalysisService(url);
      * myMathExpressionAnalysisService.on({
      *     "processCompleted": processCompleted,
      *     "processFailed": processFailed
@@ -26623,7 +26623,7 @@ SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.Spati
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -26631,7 +26631,7 @@ SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.Spati
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -26675,10 +26675,10 @@ SuperMap.REST.MathExpressionAnalysisService = SuperMap.Class(SuperMap.REST.Spati
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.MathExpressionAnalysisService"
+    CLASS_NAME: "SuperMap.MathExpressionAnalysisService"
 });
 
-module.exports = SuperMap.REST.MathExpressionAnalysisService;
+module.exports = SuperMap.MathExpressionAnalysisService;
 
 /***/ }),
 /* 189 */
@@ -26764,7 +26764,7 @@ module.exports = SuperMap.MeasureParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.MeasureService
+ * Class: SuperMap.MeasureService
  * 量算服务类。
  * 该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
  *
@@ -26775,7 +26775,7 @@ __webpack_require__(1);
 __webpack_require__(3);
 __webpack_require__(189);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: measureMode
@@ -26784,12 +26784,12 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
     measureMode: SuperMap.MeasureMode.DISTANCE,
 
     /**
-     * Constructor: SuperMap.REST.MeasureService
+     * Constructor: SuperMap.MeasureService
      * 量算服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myMeasuerService = new SuperMap.REST.MeasureService(url, {
+     * var myMeasuerService = new SuperMap.MeasureService(url, {
      *      measureMode: SuperMap.MeasureMode.DISTANCE,
      *      eventListeners:{
      *          "processCompleted": measureCompleted
@@ -26890,17 +26890,17 @@ SuperMap.REST.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
 
     },
 
-    CLASS_NAME: "SuperMap.REST.MeasureService"
+    CLASS_NAME: "SuperMap.MeasureService"
 });
 
-module.exports = SuperMap.REST.MeasureService;
+module.exports = SuperMap.MeasureService;
 
 /***/ }),
 /* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.OverlayAnalystService
+ * Class: SuperMap.OverlayAnalystService
  * 叠加分析服务类
  * 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
  * 叠加分析结果通过该类支持的事件的监听函数参数获取
@@ -26912,7 +26912,7 @@ __webpack_require__(3);
 __webpack_require__(112);
 __webpack_require__(153);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.OverlayAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
      * Property: mode
@@ -26921,12 +26921,12 @@ SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
     mode: null,
 
     /**
-     * Constructor: SuperMap.REST.OverlayAnalystService
+     * Constructor: SuperMap.OverlayAnalystService
      * 查询叠加分析服务基类构造函数。
      *
      * 例如：
      * (start code)
-     * var myOverlayAnalystService = new SuperMap.REST.OverlayAnalystService(url, {
+     * var myOverlayAnalystService = new SuperMap.OverlayAnalystService(url, {
      *     eventListeners: {
      *	       "processCompleted": OverlayCompleted, 
      *		   "processFailed": OverlayFailed
@@ -26942,7 +26942,7 @@ SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
         var me = this;
         if (options) {
             SuperMap.Util.extend(me, options);
@@ -26954,7 +26954,7 @@ SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
         this.mode = null;
     },
 
@@ -27004,10 +27004,10 @@ SuperMap.REST.OverlayAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.OverlayAnalystService"
+    CLASS_NAME: "SuperMap.OverlayAnalystService"
 });
 
-module.exports = SuperMap.REST.OverlayAnalystService;
+module.exports = SuperMap.OverlayAnalystService;
 
 /***/ }),
 /* 192 */
@@ -27709,24 +27709,24 @@ module.exports = SuperMap.QueryByBoundsParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.QueryByBoundsService
+ * Class: SuperMap.QueryByBoundsService
  * Bounds 查询服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.QueryService>
+ *  - <SuperMap.QueryService>
  */
 __webpack_require__(25);
 __webpack_require__(195);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, {
+SuperMap.QueryByBoundsService = SuperMap.Class(SuperMap.QueryService, {
 
     /**
-     * Constructor: SuperMap.REST.QueryByBoundsService
+     * Constructor: SuperMap.QueryByBoundsService
      * Bounds 查询服务类构造函数。
      *
      * 例如：
      * (start end)
-     * var myQueryByBoundsService = new SuperMap.REST.QueryByBoundsService(url, {
+     * var myQueryByBoundsService = new SuperMap.QueryByBoundsService(url, {
      *     eventListeners: {
      *         "processCompleted": queryCompleted,
      *		   "processFailed": queryError
@@ -27744,7 +27744,7 @@ SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, 
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.QueryService.prototype.initialize.apply(this, arguments);
+        SuperMap.QueryService.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -27752,7 +27752,7 @@ SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, 
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.QueryService.prototype.destroy.apply(this, arguments);
+        SuperMap.QueryService.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -27780,10 +27780,10 @@ SuperMap.REST.QueryByBoundsService = SuperMap.Class(SuperMap.REST.QueryService, 
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.QueryByBoundsService"
+    CLASS_NAME: "SuperMap.QueryByBoundsService"
 });
 
-module.exports = SuperMap.REST.QueryByBoundsService;
+module.exports = SuperMap.QueryByBoundsService;
 
 
 /***/ }),
@@ -27797,24 +27797,24 @@ module.exports = SuperMap.REST.QueryByBoundsService;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.QueryByDistanceService
+ * Class: SuperMap.QueryByDistanceService
  * Distance查询服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.QueryService>
+ *  - <SuperMap.QueryService>
  */
 __webpack_require__(25);
 __webpack_require__(197);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService, {
+SuperMap.QueryByDistanceService = SuperMap.Class(SuperMap.QueryService, {
 
     /**
-     * Constructor: SuperMap.REST.QueryByDistanceService
+     * Constructor: SuperMap.QueryByDistanceService
      * Distance查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myQueryByDistService = new SuperMap.REST.QueryByDistanceService(url, {
+     * var myQueryByDistService = new SuperMap.QueryByDistanceService(url, {
      *     eventListeners: {
      *         "processCompleted": queryCompleted, 
      *		   "processFailed": queryError
@@ -27832,7 +27832,7 @@ SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.QueryService.prototype.initialize.apply(this, arguments);
+        SuperMap.QueryService.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -27840,7 +27840,7 @@ SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.QueryService.prototype.destroy.apply(this, arguments);
+        SuperMap.QueryService.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -27867,10 +27867,10 @@ SuperMap.REST.QueryByDistanceService = SuperMap.Class(SuperMap.REST.QueryService
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.QueryByDistanceService"
+    CLASS_NAME: "SuperMap.QueryByDistanceService"
 });
 
-module.exports = SuperMap.REST.QueryByDistanceService;
+module.exports = SuperMap.QueryByDistanceService;
 
 /***/ }),
 /* 199 */
@@ -27957,24 +27957,24 @@ module.exports = SuperMap.QueryByGeometryParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.QueryByGeometryService
+ * Class: SuperMap.QueryByGeometryService
  * Geometry 查询服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.QueryService>
+ *  - <SuperMap.QueryService>
  */
 __webpack_require__(25);
 __webpack_require__(199);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService, {
+SuperMap.QueryByGeometryService = SuperMap.Class(SuperMap.QueryService, {
 
     /**
-     * Constructor: SuperMap.REST.QueryByGeometryService
+     * Constructor: SuperMap.QueryByGeometryService
      * Geometry 查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myQueryByGeometryService = new SuperMap.REST.QueryByGeometryService(url, {
+     * var myQueryByGeometryService = new SuperMap.QueryByGeometryService(url, {
     *     eventListeners: {
     *	      "processCompleted": queryCompleted, 
     *		  "processFailed": queryError
@@ -27992,7 +27992,7 @@ SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.QueryService.prototype.initialize.apply(this, arguments);
+        SuperMap.QueryService.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -28000,7 +28000,7 @@ SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.QueryService.prototype.destroy.apply(this, arguments);
+        SuperMap.QueryService.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -28028,10 +28028,10 @@ SuperMap.REST.QueryByGeometryService = SuperMap.Class(SuperMap.REST.QueryService
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.QueryByGeometryService"
+    CLASS_NAME: "SuperMap.QueryByGeometryService"
 });
 
-module.exports = SuperMap.REST.QueryByGeometryService;
+module.exports = SuperMap.QueryByGeometryService;
 
 
 /***/ }),
@@ -28045,19 +28045,19 @@ module.exports = SuperMap.REST.QueryByGeometryService;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.QueryBySQLService
+ * Class: SuperMap.QueryBySQLService
  * SQL 查询服务类。在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
  *
  * Inherits from:
- *  - <SuperMap.REST.QueryService>
+ *  - <SuperMap.QueryService>
  */
 __webpack_require__(25);
 __webpack_require__(201);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
+SuperMap.QueryBySQLService = SuperMap.Class(SuperMap.QueryService, {
 
     /**
-     * Constructor: SuperMap.REST.QueryBySQLService
+     * Constructor: SuperMap.QueryBySQLService
      * SQL 查询服务类构造函数。
      *
      * 例如：
@@ -28069,7 +28069,7 @@ SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
      * var queryBySQLParams = new SuperMap.QueryBySQLParameters({
      *     queryParams: [queryParam]
      * });
-     * var myQueryBySQLService = new SuperMap.REST.QueryBySQLService(url, {eventListeners: {
+     * var myQueryBySQLService = new SuperMap.QueryBySQLService(url, {eventListeners: {
      *     "processCompleted": queryCompleted, 
      *     "processFailed": queryError
      *	   }
@@ -28087,7 +28087,7 @@ SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.QueryService.prototype.initialize.apply(this, arguments);
+        SuperMap.QueryService.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -28095,7 +28095,7 @@ SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.QueryService.prototype.destroy.apply(this, arguments);
+        SuperMap.QueryService.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -28120,10 +28120,10 @@ SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.QueryBySQLService"
+    CLASS_NAME: "SuperMap.QueryBySQLService"
 });
 
-module.exports = SuperMap.REST.QueryBySQLService;
+module.exports = SuperMap.QueryBySQLService;
 
 
 /***/ }),
@@ -28639,20 +28639,20 @@ module.exports = SuperMap.RouteCalculateMeasureParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.RouteCalculateMeasureService
+ * Class: SuperMap.RouteCalculateMeasureService
  * 该类负责将客户设置的计算指定点的M值参数传递给服务端，并接收服务端返回的
  *      指定点的M值。通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 __webpack_require__(7);
 __webpack_require__(205);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.RouteCalculateMeasureService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.RouteCalculateMeasureService
+     * Constructor: SuperMap.RouteCalculateMeasureService
      * 计算指定点的M值服务类构造函数。
      *
      * 实例化该类如下例所示：
@@ -28692,7 +28692,7 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
      *     "isIgnoreGap":false
      * });
      *
-     * var routeCalculateMeasureService = new SuperMap.REST.RouteCalculateMeasureService(spatialAnalystURL, {
+     * var routeCalculateMeasureService = new SuperMap.RouteCalculateMeasureService(spatialAnalystURL, {
      *     eventListeners:{
      *         processCompleted:calculateCompleted,
      *         processFailed:calculateFailded
@@ -28713,7 +28713,7 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -28721,7 +28721,7 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -28772,10 +28772,10 @@ SuperMap.REST.RouteCalculateMeasureService = SuperMap.Class(SuperMap.REST.Spatia
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.RouteCalculateMeasureService"
+    CLASS_NAME: "SuperMap.RouteCalculateMeasureService"
 });
 
-module.exports = SuperMap.REST.RouteCalculateMeasureService;
+module.exports = SuperMap.RouteCalculateMeasureService;
 
 
 /***/ }),
@@ -28922,19 +28922,19 @@ module.exports = SuperMap.RouteLocatorParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.RouteLocatorService
+ * Class: SuperMap.RouteLocatorService
  * 路由对象定位空间对象的服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 __webpack_require__(7);
 __webpack_require__(207);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.RouteLocatorService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.RouteLocatorService
+     * Constructor: SuperMap.RouteLocatorService
      * 路由对象定位空间对象的服务类构造函数。
      *
      * 实例化该类如下例所示：
@@ -28971,7 +28971,7 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
      *   "offset":3,
      *   "isIgnoreGap":true
      * });
-     * var routeLocatorService = new SuperMap.REST.RouteLocatorService(spatialAnalystURL, {
+     * var routeLocatorService = new SuperMap.RouteLocatorService(spatialAnalystURL, {
      *     eventListeners:{
      *         processCompleted:routeLocatorCompleted,
      *         processFailed:routeLocatorFailded
@@ -28993,7 +28993,7 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
      *
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -29001,7 +29001,7 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -29057,10 +29057,10 @@ SuperMap.REST.RouteLocatorService = SuperMap.Class(SuperMap.REST.SpatialAnalystB
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.RouteLocatorService"
+    CLASS_NAME: "SuperMap.RouteLocatorService"
 });
 
-module.exports = SuperMap.REST.RouteLocatorService;
+module.exports = SuperMap.RouteLocatorService;
 
 
 /***/ }),
@@ -29238,7 +29238,7 @@ module.exports = SuperMap.SetLayerInfoParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.SetLayerInfoService
+ * Class: SuperMap.SetLayerInfoService
  * 设置图层信息服务类。可以实现临时图层中子图层的修改
  * 该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。
  *
@@ -29248,7 +29248,7 @@ module.exports = SuperMap.SetLayerInfoParameters;
 __webpack_require__(3);
 __webpack_require__(210);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: resourceID
@@ -29258,7 +29258,7 @@ SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
 
     /**
-     * Constructor: SuperMap.REST.SetLayerInfoService
+     * Constructor: SuperMap.SetLayerInfoService
      * 设置图层信息服务类构造函数。可以实现临时图层中子图层的修改。
      *
      * Parameters:
@@ -29290,7 +29290,7 @@ SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * APIMethod: processAsync
      * 负责将客户端的更新参数传递到服务端。
      * Parameters:
-     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务 <SuperMap.REST.GetLayerInfoService>.result.subLayers.layers[i]
+     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务 <SuperMap.GetLayerInfoService>.result.subLayers.layers[i]
      * 返回图层信息，然后对其属性进行修改来获取。
      */
     processAsync: function (params) {
@@ -29310,10 +29310,10 @@ SuperMap.REST.SetLayerInfoService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.SetLayerInfoService"
+    CLASS_NAME: "SuperMap.SetLayerInfoService"
 });
 
-module.exports = SuperMap.REST.SetLayerInfoService;
+module.exports = SuperMap.SetLayerInfoService;
 
 
 /***/ }),
@@ -29410,7 +29410,7 @@ module.exports = SuperMap.SetLayerStatusParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.SetLayerStatusService
+ * Class: SuperMap.SetLayerStatusService
  * 子图层显示控制服务类。
  * 该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
  * 用户获取服务端返回的各子图层显示状态有两种方式：
@@ -29420,14 +29420,14 @@ module.exports = SuperMap.SetLayerStatusParameters;
 __webpack_require__(3);
 __webpack_require__(212);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
 
     lastparams: null,
 
     mapUrl: null,
 
     /**
-     * Constructor: SuperMap.REST.SetLayerStatusService
+     * Constructor: SuperMap.SetLayerStatusService
      * 子图层显示控制服务类构造函数。
      *
      * Parameters:
@@ -29557,10 +29557,10 @@ SuperMap.REST.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
         me.events.triggerEvent("processCompleted", {result: result});
     },
 
-    CLASS_NAME: "SuperMap.REST.SetLayerStatusService"
+    CLASS_NAME: "SuperMap.SetLayerStatusService"
 });
 
-module.exports = SuperMap.REST.SetLayerStatusService;
+module.exports = SuperMap.SetLayerStatusService;
 
 
 /***/ }),
@@ -29618,7 +29618,7 @@ module.exports = SuperMap.SetLayersInfoParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.SetLayersInfoService
+ * Class: SuperMap.SetLayersInfoService
  * 设置图层信息服务类。可以实现创建新的临时图层和对现有临时图层的修改，当 isTempLayers 为 false
  * 的时候执行创建临时图层。当 isTempLayers 为 ture 并且临时图层资源 resourceID 被设置有效时执行
  * 对临时图层的编辑。
@@ -29630,7 +29630,7 @@ module.exports = SuperMap.SetLayersInfoParameters;
 __webpack_require__(3);
 __webpack_require__(214);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIProperty: resourceID
@@ -29645,7 +29645,7 @@ SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
     isTempLayers: false,
 
     /**
-     * Constructor: SuperMap.REST.SetLayersInfoService
+     * Constructor: SuperMap.SetLayersInfoService
      * 设置图层信息服务类构造函数。可以实现创建新的临时图层和对现有临时图层的修改。
      *
      * Parameters:
@@ -29680,7 +29680,7 @@ SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * APIMethod: processAsync
      * 负责将客户端的更新参数传递到服务端。
      * Parameters:
-     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务<SuperMap.REST.GetLayerInfoService>.result.subLayers.layers
+     * params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务<SuperMap.GetLayerInfoService>.result.subLayers.layers
      * 返回图层信息，然后对其属性进行修改来获取。
      */
     processAsync: function (params) {
@@ -29739,10 +29739,10 @@ SuperMap.REST.SetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.SetLayersInfoService"
+    CLASS_NAME: "SuperMap.SetLayersInfoService"
 });
 
-module.exports = SuperMap.REST.SetLayersInfoService;
+module.exports = SuperMap.SetLayersInfoService;
 
 
 /***/ }),
@@ -29801,7 +29801,7 @@ module.exports = SuperMap.StopQueryParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.StopQueryService
+ * Class: SuperMap.StopQueryService
  * 站点查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取
  *
@@ -29811,15 +29811,15 @@ module.exports = SuperMap.StopQueryParameters;
 __webpack_require__(3);
 __webpack_require__(216);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.StopQueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.StopQueryService
+     * Constructor: SuperMap.StopQueryService
      * 站点查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.StopQueryService(url, {eventListeners: {
+     * var myService = new SuperMap.StopQueryService(url, {eventListeners: {
      *     "processCompleted": StopQueryCompleted, 
      *     "processFailed": StopQueryError
      *     }
@@ -29876,10 +29876,10 @@ SuperMap.REST.StopQueryService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.StopQueryService"
+    CLASS_NAME: "SuperMap.StopQueryService"
 });
 
-module.exports = SuperMap.REST.StopQueryService;
+module.exports = SuperMap.StopQueryService;
 
 /***/ }),
 /* 218 */
@@ -29984,7 +29984,7 @@ var SuperMap = __webpack_require__(0);
 var ProcessingJobsServiceBase = __webpack_require__(34);
 var SummaryMeshJobParameter = __webpack_require__(218);
 
-SuperMap.REST.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
         url += "/spatialanalyst/aggregatepoints";
@@ -30007,10 +30007,10 @@ SuperMap.REST.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase,
         ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, SummaryMeshJobParameter, seconds]);
     },
 
-    CLASS_NAME: "SuperMap.REST.SummaryMeshJobsService"
+    CLASS_NAME: "SuperMap.SummaryMeshJobsService"
 });
 
-module.exports = SuperMap.REST.SummaryMeshJobsService;
+module.exports = SuperMap.SummaryMeshJobsService;
 
 /***/ }),
 /* 220 */
@@ -30224,27 +30224,27 @@ module.exports = SuperMap.SurfaceAnalystParametersSetting;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.SurfaceAnalystService
+ * Class: SuperMap.SurfaceAnalystService
  * 表面分析服务类。
  * 该类负责将客户设置的表面分析服务参数传递给服务端，并接收服务端返回的表面分析服务分析结果数据。
  * 表面分析结果通过该类支持的事件的监听函数参数获取
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 __webpack_require__(7);
 __webpack_require__(113);
 __webpack_require__(154);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.SurfaceAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.SurfaceAnalystService
+     * Constructor: SuperMap.SurfaceAnalystService
      * 表面分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var mySurfaceAnalystService = new SuperMap.REST.SurfaceAnalystService(url, {
+     * var mySurfaceAnalystService = new SuperMap.SurfaceAnalystService(url, {
      *      eventListeners: {
      *	       "processCompleted": surfaceAnalysCompleted, 
      *		   "processFailed": surfaceAnalysFailed
@@ -30260,7 +30260,7 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -30268,7 +30268,7 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -30276,7 +30276,7 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * 负责将客户端的表面分析服务参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.REST.SurfaceAnalystParameters>}
+     * params - {<SuperMap.SurfaceAnalystParameters>}
      */
     processAsync: function (params) {
         if (!params) {
@@ -30298,7 +30298,7 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
      * 将参数转化为 JSON 字符串。
      *
      * Parameters:
-     * params - {<SuperMap.REST.SurfaceAnalystParameters>}
+     * params - {<SuperMap.SurfaceAnalystParameters>}
      *
      * Returns:
      * {Object} 转化后的JSON字符串。
@@ -30336,10 +30336,10 @@ SuperMap.REST.SurfaceAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalys
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.SurfaceAnalystService"
+    CLASS_NAME: "SuperMap.SurfaceAnalystService"
 });
 
-module.exports = SuperMap.REST.SurfaceAnalystService;
+module.exports = SuperMap.SurfaceAnalystService;
 
 /***/ }),
 /* 223 */
@@ -30448,24 +30448,24 @@ module.exports = SuperMap.TerrainCurvatureCalculationParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.TerrainCurvatureCalculationService
+ * Class: SuperMap.TerrainCurvatureCalculationService
  *  地形曲率计算服务类。
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 __webpack_require__(7);
 __webpack_require__(223);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.TerrainCurvatureCalculationService
+     * Constructor: SuperMap.TerrainCurvatureCalculationService
      * 地形曲率计算服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myTerrainCurvatureCalculationService = new SuperMap.REST.TerrainCurvatureCalculationService(url);
+     * var myTerrainCurvatureCalculationService = new SuperMap.TerrainCurvatureCalculationService(url);
      * myTerrainCurvatureCalculationService.on({
      *     "processCompleted": processCompleted,
      *     "processFailed": processFailed
@@ -30481,7 +30481,7 @@ SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -30489,7 +30489,7 @@ SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -30533,9 +30533,9 @@ SuperMap.REST.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.REST.
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.TerrainCurvatureCalculationService"
+    CLASS_NAME: "SuperMap.TerrainCurvatureCalculationService"
 });
-module.exports = SuperMap.REST.TerrainCurvatureCalculationService;
+module.exports = SuperMap.TerrainCurvatureCalculationService;
 
 
 /***/ }),
@@ -32213,7 +32213,7 @@ module.exports = SuperMap.ThemeRangeItem;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.ThemeService
+ * Class: SuperMap.ThemeService
  * 专题图服务类。
  *
  * Inherits from:
@@ -32222,15 +32222,15 @@ module.exports = SuperMap.ThemeRangeItem;
 __webpack_require__(3);
 __webpack_require__(240);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.ThemeService
+     * Constructor: SuperMap.ThemeService
      * 专题图服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myThemeService = new SuperMap.REST.ThemeService(url, {
+     * var myThemeService = new SuperMap.ThemeService(url, {
      *     eventListeners: {
      *           "processCompleted": themeCompleted,
      *           "processFailed": themeFailed
@@ -32361,9 +32361,9 @@ SuperMap.REST.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.ThemeService"
+    CLASS_NAME: "SuperMap.ThemeService"
 });
-module.exports = SuperMap.REST.ThemeService;
+module.exports = SuperMap.ThemeService;
 
 /***/ }),
 /* 243 */
@@ -32473,7 +32473,7 @@ module.exports = SuperMap.ThemeUniqueItem;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.ThiessenAnalystService
+ * Class: SuperMap.ThiessenAnalystService
  * 泰森多边形分析服务类
  * 该类负责将客户设置的泰森多边形分析参数传递给服务端，并接收服务端返回的分析结果数据。
  * 泰森多边形分析结果通过该类支持的事件的监听函数参数获取
@@ -32482,14 +32482,14 @@ module.exports = SuperMap.ThemeUniqueItem;
  * 执行几何对象泰森多边形分析。
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 __webpack_require__(7);
 __webpack_require__(114);
 __webpack_require__(155);
 var SuperMap = __webpack_require__(0);
 var GeoJSONFormat = __webpack_require__(6);
-SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.ThiessenAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
      * Property: mode
@@ -32498,12 +32498,12 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
     mode: null,
 
     /**
-     * Constructor: SuperMap.REST.ThiessenAnalystService
+     * Constructor: SuperMap.ThiessenAnalystService
      * 泰森多边形分析服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myThiessenAnalystService = new SuperMap.REST.ThiessenAnalystService(url, {
+     * var myThiessenAnalystService = new SuperMap.ThiessenAnalystService(url, {
      *     eventListeners: {
      *           "processCompleted": bufferCompleted, 
      *           "processFailed": bufferFailed
@@ -32519,7 +32519,7 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
         var me = this;
         if (options) {
             SuperMap.Util.extend(me, options);
@@ -32531,7 +32531,7 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
      * 释放资源,将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
         this.mode = null;
     },
 
@@ -32594,7 +32594,7 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
             return result;
         }
 
-        result = SuperMap.REST.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
+        result = SuperMap.SpatialAnalystBase.prototype.toGeoJSONResult.apply(this, arguments);
         if (result.regions) {
             var geoJSONFormat = new GeoJSONFormat();
             result.regions = JSON.parse(geoJSONFormat.write(result.regions));
@@ -32602,17 +32602,17 @@ SuperMap.REST.ThiessenAnalystService = SuperMap.Class(SuperMap.REST.SpatialAnaly
         return result;
     },
 
-    CLASS_NAME: "SuperMap.REST.ThiessenAnalystService"
+    CLASS_NAME: "SuperMap.ThiessenAnalystService"
 });
 
-module.exports = SuperMap.REST.ThiessenAnalystService;
+module.exports = SuperMap.ThiessenAnalystService;
 
 /***/ }),
 /* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.TilesetsService
+ * Class: SuperMap.TilesetsService
  * 切片列表信息查询服务类;即查询切片地图服务的切片列表，返回切片集名称、地图切片元数据信息、切片版本集信息
  *
  * Inherits from:
@@ -32621,11 +32621,11 @@ module.exports = SuperMap.REST.ThiessenAnalystService;
 
 __webpack_require__(3);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
 
 
     /**
-     * Constructor: SuperMap.REST.TilesetsService
+     * Constructor: SuperMap.TilesetsService
      * 切片列表信息查询服务类构造函数。
      *
      * Parameters:
@@ -32671,10 +32671,10 @@ SuperMap.REST.TilesetsService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.TilesetsService"
+    CLASS_NAME: "SuperMap.TilesetsService"
 });
 
-module.exports = SuperMap.REST.TilesetsService;
+module.exports = SuperMap.TilesetsService;
 
 /***/ }),
 /* 246 */
@@ -32878,7 +32878,7 @@ module.exports = SuperMap.TransferPathParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.TransferPathService
+ * Class: SuperMap.TransferPathService
  * 交通换乘线路查询服务类，根据交通换乘分析结果(TransferSolutionResult)，获取某一条乘车路线的详细信息。
  * 返回结果通过该类支持的事件的监听函数参数获取
  *
@@ -32888,15 +32888,15 @@ module.exports = SuperMap.TransferPathParameters;
 __webpack_require__(3);
 __webpack_require__(247);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.TransferPathService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.TransferPathService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.TransferPathService
+     * Constructor: SuperMap.TransferPathService
      * 交通换乘线路服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.TransferPathService(url, {eventListeners: {
+     * var myService = new SuperMap.TransferPathService(url, {eventListeners: {
      *     "processCompleted": TrafficTransferCompleted, 
      *     "processFailed": TrafficTransferError
      *     }
@@ -32957,10 +32957,10 @@ SuperMap.REST.TransferPathService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.TransferPathService"
+    CLASS_NAME: "SuperMap.TransferPathService"
 });
 
-module.exports = SuperMap.REST.TransferPathService;
+module.exports = SuperMap.TransferPathService;
 
 
 /***/ }),
@@ -33109,7 +33109,7 @@ module.exports = SuperMap.TransferSolutionParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 ﻿/**
- * Class: SuperMap.REST.TransferSolutionService
+ * Class: SuperMap.TransferSolutionService
  * 交通换乘方案查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取
  *
@@ -33119,15 +33119,15 @@ module.exports = SuperMap.TransferSolutionParameters;
 __webpack_require__(3);
 __webpack_require__(249);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
+SuperMap.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.TransferSolutionService
+     * Constructor: SuperMap.TransferSolutionService
      * 交通换乘方案查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myService = new SuperMap.REST.TransferSolutionService(url, {eventListeners: {
+     * var myService = new SuperMap.TransferSolutionService(url, {eventListeners: {
      *     "processCompleted": trafficTransferCompleted,
      *     "processFailed": trafficTransferError
      *     }
@@ -33195,10 +33195,10 @@ SuperMap.REST.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
             failure: me.serviceProcessFailed
         });
     },
-    CLASS_NAME: "SuperMap.REST.TransferSolutionService"
+    CLASS_NAME: "SuperMap.TransferSolutionService"
 });
 
-module.exports = SuperMap.REST.TransferSolutionService;
+module.exports = SuperMap.TransferSolutionService;
 
 
 
@@ -33531,23 +33531,23 @@ module.exports = SuperMap.UpdateEdgeWeightParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class: SuperMap.REST.UpdateEdgeWeightService
+ * Class: SuperMap.UpdateEdgeWeightService
  *  更新边的边的耗费权重服务
  */
 __webpack_require__(9);
 __webpack_require__(254);
 var SuperMap = __webpack_require__(0);
-SuperMap.REST.UpdateEdgeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.UpdateEdgeWeightService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.UpdateEdgeWeightService
+     * Constructor: SuperMap.UpdateEdgeWeightService
      * 更新边的边的耗费权重服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var updateEdgeWeightService = new SuperMap.REST.UpdateEdgeWeightService(url, {
+     * var updateEdgeWeightService = new SuperMap.UpdateEdgeWeightService(url, {
      *     eventListeners: {
-     *         "processCompleted": UpdateEdgeWeightCompleted,      //参数为SuperMap.REST.UpdateEdgeWeightEventArgs
+     *         "processCompleted": UpdateEdgeWeightCompleted,      //参数为SuperMap.UpdateEdgeWeightEventArgs
      *		   "processFailed": UpdateEdgeWeightError             //参数为SuperMap.ServiceFailedEventArgs
      *		   }
      * });
@@ -33561,7 +33561,7 @@ SuperMap.REST.UpdateEdgeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnal
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -33569,7 +33569,7 @@ SuperMap.REST.UpdateEdgeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnal
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
 
@@ -33644,10 +33644,10 @@ SuperMap.REST.UpdateEdgeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnal
         return paramStr;
     },
 
-    CLASS_NAME: "SuperMap.REST.UpdateEdgeWeightService"
+    CLASS_NAME: "SuperMap.UpdateEdgeWeightService"
 });
 
-module.exports = SuperMap.REST.UpdateEdgeWeightService;
+module.exports = SuperMap.UpdateEdgeWeightService;
 
 /***/ }),
 /* 256 */
@@ -33735,7 +33735,7 @@ module.exports = SuperMap.UpdateTurnNodeWeightParameters;
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
- * Class:SuperMap.REST.UpdateTurnNodeWeightService
+ * Class:SuperMap.UpdateTurnNodeWeightService
  * 转向耗费权重更新服务类
  */
 
@@ -33743,17 +33743,17 @@ __webpack_require__(9);
 __webpack_require__(256);
 var SuperMap = __webpack_require__(0);
 
-SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.UpdateTurnNodeWeightService
+     * Constructor: SuperMap.UpdateTurnNodeWeightService
      * 转向耗费权重更新服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var UpdateTurnNodeWeightService = new SuperMap.REST.UpdateTurnNodeWeightService(url, {
+     * var UpdateTurnNodeWeightService = new SuperMap.UpdateTurnNodeWeightService(url, {
      *     eventListeners: {
-     *         "processCompleted": UpdateTurnNodeWeightCompleted,    //参数为SuperMap.REST.UpdateTurnNodeWeightEventArgs
+     *         "processCompleted": UpdateTurnNodeWeightCompleted,    //参数为SuperMap.UpdateTurnNodeWeightEventArgs
      *		   "processFailed": UpdateTurnNodeWeightError          //参数为SuperMap.ServiceFailedEventArgs
      *		   }
      * });
@@ -33767,7 +33767,7 @@ SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.REST.Network
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -33775,7 +33775,7 @@ SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.REST.Network
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -33849,10 +33849,10 @@ SuperMap.REST.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.REST.Network
         return paramStr;
     },
 
-    CLASS_NAME: "SuperMap.REST.UpdateTurnNodeWeightService"
+    CLASS_NAME: "SuperMap.UpdateTurnNodeWeightService"
 });
 
-module.exports = SuperMap.REST.UpdateTurnNodeWeightService;
+module.exports = SuperMap.UpdateTurnNodeWeightService;
 
 /***/ }),
 /* 258 */

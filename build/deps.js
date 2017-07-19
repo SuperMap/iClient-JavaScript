@@ -90,7 +90,7 @@ var deps = {
             "./src/common/iServer/KernelDensityJobsService.js",
             "./src/common/iServer/BuildCacheJobsService.js",
             //AddressService
-            "./src/common/iServer/AddressService.js",
+            "./src/common/iServer/AddressMatchService.js",
         ],
         "graph": [
             "./src/common/iServer/Bar.js",
@@ -211,7 +211,7 @@ var deps = {
             "Address": {
                 "name": "地理匹配服务",
                 "src": [
-                    "./src/leaflet/services/AddressService.js"
+                    "./src/leaflet/services/AddressMatchService.js"
                 ]
             }
 
@@ -366,7 +366,7 @@ var deps = {
             "Address": {
                 "name": "地理匹配服务",
                 "src": [
-                    "./src/openlayers/services/AddressService.js"
+                    "./src/openlayers/services/AddressMatchService.js"
                 ]
             }
         },

@@ -1,17 +1,17 @@
 ﻿/**
- * Class: SuperMap.REST.QueryBySQLService
+ * Class: SuperMap.QueryBySQLService
  * SQL 查询服务类。在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
  *
  * Inherits from:
- *  - <SuperMap.REST.QueryService>
+ *  - <SuperMap.QueryService>
  */
 require('./QueryService');
 require('./QueryBySQLParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
+SuperMap.QueryBySQLService = SuperMap.Class(SuperMap.QueryService, {
 
     /**
-     * Constructor: SuperMap.REST.QueryBySQLService
+     * Constructor: SuperMap.QueryBySQLService
      * SQL 查询服务类构造函数。
      *
      * 例如：
@@ -23,7 +23,7 @@ SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
      * var queryBySQLParams = new SuperMap.QueryBySQLParameters({
      *     queryParams: [queryParam]
      * });
-     * var myQueryBySQLService = new SuperMap.REST.QueryBySQLService(url, {eventListeners: {
+     * var myQueryBySQLService = new SuperMap.QueryBySQLService(url, {eventListeners: {
      *     "processCompleted": queryCompleted, 
      *     "processFailed": queryError
      *	   }
@@ -41,7 +41,7 @@ SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.QueryService.prototype.initialize.apply(this, arguments);
+        SuperMap.QueryService.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -49,7 +49,7 @@ SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.QueryService.prototype.destroy.apply(this, arguments);
+        SuperMap.QueryService.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -74,7 +74,7 @@ SuperMap.REST.QueryBySQLService = SuperMap.Class(SuperMap.REST.QueryService, {
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.QueryBySQLService"
+    CLASS_NAME: "SuperMap.QueryBySQLService"
 });
 
-module.exports = SuperMap.REST.QueryBySQLService;
+module.exports = SuperMap.QueryBySQLService;

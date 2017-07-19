@@ -1,23 +1,23 @@
 /**
- * Class: SuperMap.REST.GetFeaturesByBoundsService
+ * Class: SuperMap.GetFeaturesByBoundsService
  * 数据集范围查询服务类
  * 查询与指定范围对象符合一定空间关系的矢量要素。
  *
  * Inherits from:
- *  - <SuperMap.REST.GetFeaturesServiceBase>
+ *  - <SuperMap.GetFeaturesServiceBase>
  */
 require('./GetFeaturesServiceBase');
 require('./GetFeaturesByBoundsParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeaturesServiceBase, {
+SuperMap.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.GetFeaturesByBoundsService
+     * Constructor: SuperMap.GetFeaturesByBoundsService
      * 数据集范围查询服务类构造函数。
      *
      * 例如：
      * (start code)
-     * var myGetFeaturesByBoundsService = new SuperMap.REST.GetFeaturesByBoundsService(url, {
+     * var myGetFeaturesByBoundsService = new SuperMap.GetFeaturesByBoundsService(url, {
      *     eventListeners: {
      *           "processCompleted": getFeatureCompleted, 
      *           "processFailed": getFeatureError
@@ -37,7 +37,7 @@ SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeatu
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -45,7 +45,7 @@ SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeatu
      * 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
-        SuperMap.REST.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -63,7 +63,7 @@ SuperMap.REST.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.REST.GetFeatu
         return SuperMap.GetFeaturesByBoundsParameters.toJsonParameters(params);
     },
 
-    CLASS_NAME: "SuperMap.REST.GetFeaturesByBoundsService"
+    CLASS_NAME: "SuperMap.GetFeaturesByBoundsService"
 });
 
-module.exports = SuperMap.REST.GetFeaturesByBoundsService;
+module.exports = SuperMap.GetFeaturesByBoundsService;

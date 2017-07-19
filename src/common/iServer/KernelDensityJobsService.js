@@ -2,7 +2,7 @@ var SuperMap = require('../SuperMap');
 var ProcessingJobsServiceBase = require('./ProcessingJobsServiceBase');
 var KernelDensityJobParameter = require('./KernelDensityJobParameter');
 
-SuperMap.REST.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+SuperMap.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
         url += "/spatialanalyst/density";
@@ -25,7 +25,7 @@ SuperMap.REST.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBas
         return ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, KernelDensityJobParameter, seconds]);
     },
 
-    CLASS_NAME: "SuperMap.REST.KernelDensityJobsService"
+    CLASS_NAME: "SuperMap.KernelDensityJobsService"
 });
 
-module.exports = SuperMap.REST.KernelDensityJobsService;
+module.exports = SuperMap.KernelDensityJobsService;

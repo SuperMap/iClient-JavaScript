@@ -1,17 +1,17 @@
 /**
- * Class: SuperMap.REST.BurstPipelineAnalystService
+ * Class: SuperMap.BurstPipelineAnalystService
  * 爆管分析服务类;即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
  *
  * Inherits from:
- *  - <SuperMap.REST.NetworkAnalystServiceBase>
+ *  - <SuperMap.NetworkAnalystServiceBase>
  */
 require('./NetworkAnalystServiceBase');
 require('./BurstPipelineAnalystParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.NetworkAnalystServiceBase, {
+SuperMap.BurstPipelineAnalystService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.REST.BurstPipelineAnalystService
+     * Constructor: SuperMap.BurstPipelineAnalystService
      * 爆管分析服务类构造函数。
      *
      * Parameters:
@@ -25,7 +25,7 @@ SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.Network
      */
 
     initialize: function (url, options) {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -33,7 +33,7 @@ SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.Network
      * 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -73,7 +73,7 @@ SuperMap.REST.BurstPipelineAnalystService = SuperMap.Class(SuperMap.REST.Network
         });
     },
 
-    CLASS_NAME: "SuperMap.REST.BurstPipelineAnalystService"
+    CLASS_NAME: "SuperMap.BurstPipelineAnalystService"
 });
 
-module.exports = SuperMap.REST.BurstPipelineAnalystService;
+module.exports = SuperMap.BurstPipelineAnalystService;

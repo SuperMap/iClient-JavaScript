@@ -1,5 +1,5 @@
 ﻿/**
- * Class: SuperMap.REST.GenerateSpatialDataService
+ * Class: SuperMap.GenerateSpatialDataService
  * 动态分段分析服务类。
  * 该类负责将客户设置的动态分段分析服务参数传递给服务端，并接收服务端返回的动态分段分析结果数据。
  * 获取的结果数据包括 originResult 、result 两种，
@@ -7,15 +7,15 @@
  * result 为服务端返回的动态分段分析结果数据，
  *
  * Inherits from:
- *  - <SuperMap.REST.SpatialAnalystBase>
+ *  - <SuperMap.SpatialAnalystBase>
  */
 require('./SpatialAnalystBase');
 require('./GenerateSpatialDataParameters');
 var SuperMap = require('../SuperMap');
-SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialAnalystBase, {
+SuperMap.GenerateSpatialDataService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
-     * Constructor: SuperMap.REST.GenerateSpatialDataService
+     * Constructor: SuperMap.GenerateSpatialDataService
      * 动态分段服务类构造函数。
      *
      * 实例化该类如下例所示：
@@ -44,7 +44,7 @@ SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialA
      *      dataReturnOption: option
      *  }),
      *  //配置动态分段iService
-     *  iService = new SuperMap.REST.GenerateSpatialDataService(Changchun_spatialanalyst, {
+     *  iService = new SuperMap.GenerateSpatialDataService(Changchun_spatialanalyst, {
      *      eventListeners: {
      *          processCompleted: generateCompleted,
      *          processFailed: generateFailded 
@@ -64,7 +64,7 @@ SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialA
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
-        SuperMap.REST.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
@@ -72,7 +72,7 @@ SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialA
      * 释放资源,将引用的资源属性置空。
      */
     destroy: function () {
-        SuperMap.REST.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -128,7 +128,7 @@ SuperMap.REST.GenerateSpatialDataService = SuperMap.Class(SuperMap.REST.SpatialA
         return jsonParameters;
     },
 
-    CLASS_NAME: "SuperMap.REST.GenerateSpatialDataService"
+    CLASS_NAME: "SuperMap.GenerateSpatialDataService"
 });
 
-module.exports = SuperMap.REST.GenerateSpatialDataService;
+module.exports = SuperMap.GenerateSpatialDataService;

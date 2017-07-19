@@ -1,23 +1,23 @@
-require('../../../src/common/iServer/AddressService');
+require('../../../src/common/iServer/AddressMatchService');
 
 var addressMatchURL_code = GlobeParameter.addressMatchURL_code;
 var addressMatchURL_decode = GlobeParameter.addressMatchURL_decode;
-describe('testAddressService', function () {
+describe('testAddressMatchService', function () {
     it('constructor and destroy', function () {
-        var addressService = new SuperMap.REST.AddressService(addressMatchURL_code);
-        expect(addressService).not.toBeNull();
-        expect(addressService.url).toEqual(addressMatchURL_code);
-        expect(addressService.isInTheSameDomain).toBeFalsy();
-        addressService.destroy();
-        expect(addressService.EVENT_TYPES).toBeNull();
-        expect(addressService.events).toBeNull();
-        expect(addressService.isInTheSameDomain).toBeNull();
-        expect(addressService.options).toBeNull();
-        expect(addressService.url).toBeNull();
+        var addressMatchService = new SuperMap.AddressMatchService(addressMatchURL_code);
+        expect(addressMatchService).not.toBeNull();
+        expect(addressMatchService.url).toEqual(addressMatchURL_code);
+        expect(addressMatchService.isInTheSameDomain).toBeFalsy();
+        addressMatchService.destroy();
+        expect(addressMatchService.EVENT_TYPES).toBeNull();
+        expect(addressMatchService.events).toBeNull();
+        expect(addressMatchService.isInTheSameDomain).toBeNull();
+        expect(addressMatchService.options).toBeNull();
+        expect(addressMatchService.url).toBeNull();
     });
 });
 
-describe('testAddressService异步', function () {
+describe('testAddressMatchService异步', function () {
     var originalTimeout;
     beforeEach(function () {
         originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -48,7 +48,7 @@ describe('testAddressService异步', function () {
             prjCoordSys: '{epsgcode:4326}',
             maxReturn: -1
         });
-        var addressCodeService = new SuperMap.REST.AddressService(addressMatchURL_code, options);
+        var addressCodeService = new SuperMap.AddressMatchService(addressMatchURL_code, options);
         addressCodeService.code(addressMatchURL_code, GeoCodingParams);
         setTimeout(function () {
             try {
@@ -98,7 +98,7 @@ describe('testAddressService异步', function () {
             maxReturn: -1,
             geoDecodingRadius: 500
         });
-        var addressDeCodeService = new SuperMap.REST.AddressService(addressMatchURL_decode, options);
+        var addressDeCodeService = new SuperMap.AddressMatchService(addressMatchURL_decode, options);
         addressDeCodeService.decode(addressMatchURL_decode, GeoDeCodingParams);
         setTimeout(function () {
             try {

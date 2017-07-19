@@ -10,7 +10,7 @@ var options = {
     }
 };
 function initGeoRelationAnalystService() {
-    return new SuperMap.REST.GeoRelationAnalystService(url,options);
+    return new SuperMap.GeoRelationAnalystService(url,options);
 }
 function generateSpatialDataCompleted(completedEventArgs){
     completedEventArgsSystem = completedEventArgs;

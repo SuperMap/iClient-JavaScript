@@ -10,7 +10,7 @@ var options =  {
     }
 };
 function initMathExpressionAnalysisService() {
-    return new SuperMap.REST.MathExpressionAnalysisService(spatialAnalystURL, options);
+    return new SuperMap.MathExpressionAnalysisService(spatialAnalystURL, options);
 }
 function MathExpressionAnalysisServiceCompleted(getMapStatusEventArgs){
     analystEventArgsSystem = getMapStatusEventArgs;
