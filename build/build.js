@@ -1,4 +1,9 @@
 var commonModules = deps.common;
+/**
+ * 自定义打包页面只需配置clientTabs即可
+ * key为显示在页面上Tab选项卡的名称
+ * value为deps文件中一级配置(客户端)的key
+ */
 var clientsTabs = {
     "OpenLayers": "openlayers",
     "Leaflet": "leaflet",
