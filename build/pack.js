@@ -1,14 +1,17 @@
 var program = require('commander');
 var shell = require("shelljs");
 var deps = require("./deps");
-
 program.description('Customized pack iClient9.');
 
 program.command('- <key> [modules]')
     .description('pack iClent9')
     .action(function (key, modules) {
-        if (!key || (key !== "leaflet" && key !== "common" && key !== "openlayers" && key !== "mapboxgl")) {
-            console.log(key + "值输入有误，可选值为leaflet或openlayers");
+        var packages = [];
+        for (var pack in deps) {
+            packages.push(pack);
+        }
+        if (!key || packages.indexOf(key) === -1) {
+            console.log(key + "值输入有误，可选值为" + packages.toString());
             return;
         }
 
@@ -18,16 +21,7 @@ program.command('- <key> [modules]')
             shell.exec('npm run deploy ' + modulePaths);
             return;
         }
-        var clientModules;
-        if (key === "leaflet") {
-            clientModules = deps.leaflet;
-        }
-        if (key === "openlayers") {
-            clientModules = deps.openlayers;
-        }
-        if (key === "mapboxgl") {
-            clientModules = deps.mapboxgl;
-        }
+        var clientModules = deps[key];
         if (!modules) {
             for (var clientModule in clientModules) {
                 for (var module in clientModules[clientModule]) {

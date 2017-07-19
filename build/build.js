@@ -1,73 +1,101 @@
 var commonModules = deps.common;
-var leafletModules = deps.leaflet;
-var openlayersModules = deps.openlayers;
+var clientsTabs = {
+    "OpenLayers": "openlayers",
+    "Leaflet": "leaflet",
+    "MapboxGL": "mapboxgl",
+};
+//设当前客户端名称，其值为clientsTabs的key值之一
+var currentClientTab = "OpenLayers";
 
 function init() {
-    document.getElementById('select-all').onclick = function () {
-        select(true);
-    };
-    document.getElementById('deselect-all').onclick = function () {
-        select(false);
-    };
-    function select(selectAll) {
-        var lists = $('.deplistContent.active ul');
-        for (var i = 0; i < lists.length; i++) {
-            var checks = lists[i].getElementsByTagName('input');
-            for (var j = 0; j < checks.length; j++) {
-                if (checks[j].id === 'common') {
-                    continue;
-                }
-                checks[j].checked = selectAll;
-            }
-            var lis = lists[i].getElementsByTagName('li');
-            for (var n = 0; n < checks.length; n++) {
-                if (checks[n].id === 'common') {
-                    continue;
-                }
-                lis[n].className = (selectAll) ? 'active' : '';
-            }
-        }
-        updateCommand();
-        return false;
-    }
-
+    initClientTabs();
     addModule('common', deplist, true);
-    $('#deplist li')[0].className = 'active';
-    for (var openlayersModule in openlayersModules) {
-        var title = openlayersModules[openlayersModule].title;
-        addGroup('openlayers', openlayersModule, title, openlayersModules[openlayersModule].description, $('#openlayersselect')[0]);
-        for (var module in openlayersModules[openlayersModule]) {
-            if (module === 'title' || module === 'description') {
-                continue;
-            }
-            addModule(module, $('#openlayers_' + openlayersModule)[0], false, openlayersModules[openlayersModule][module].name);
-        }
-        $('#openlayers_' + openlayersModule).append($("<div style='clear:both;'></div>"));
-    }
-    for (var leafletModule in leafletModules) {
-        var title = leafletModules[leafletModule].title;
-        addGroup('leaflet', leafletModule, title, leafletModules[leafletModule].description, $('#leafletselect')[0]);
-        for (var module in leafletModules[leafletModule]) {
-            if (module === 'title' || module === 'description') {
-                continue;
-            }
-            addModule(module, $('#leaflet_' + leafletModule)[0], false, leafletModules[leafletModule][module].name);
-        }
-        $('#leaflet_' + leafletModule).append($("<div style='clear:both;'></div>"));
-    }
-    updateCommand();
 
+    $('#deplist li')[0].className = 'active';
+
+    for (var key  in clientsTabs) {
+        initModules(clientsTabs[key], deps[clientsTabs[key]]);
+    }
+
+    updateCommand();
+    bindEvents();
+}
+function initClientTabs() {
+    var $clientTabList = $("ul#client");
+    var $clientTabContents = $('div.tab-content');
+    for (var clientName in clientsTabs) {
+        var target = clientsTabs[clientName];
+        var $tab = $("<li role='presentation'><a href='#" + target + "select'>" + clientName + "</a></li>").appendTo($clientTabList);
+        var $tabContent = $("<div role='tabpanel' class='tab-pane deplistContent' id='" + target + "select'></div>").appendTo($clientTabContents);
+        if (clientName === currentClientTab) {
+            $tab.addClass("active");
+            $tabContent.addClass("active");
+        }
+    }
+}
+
+function bindEvents() {
     $('.clientTabs li a').click(function (e) {
         e.preventDefault();
-        if (this.innerHTML === 'Leaflet') {
-            cancelChecked('openlayers');
-        }
-        if (this.innerHTML === 'OpenLayers') {
-            cancelChecked('leaflet');
+        currentClientTab = this.innerHTML;
+        for (var name in clientsTabs) {
+            if (name === currentClientTab) {
+                continue;
+            }
+            cancelChecked(clientsTabs[name])
         }
         updateCommand();
         $(this).tab('show');
-    })
+    });
+    $('#select-all').on('click', function () {
+        select(true);
+    });
+    $('#deselect-all').on('click', function () {
+        select(false);
+    });
+}
+
+function select(selectAll) {
+    var lists = $('.deplistContent.active ul');
+    for (var i = 0; i < lists.length; i++) {
+        var checks = lists[i].getElementsByTagName('input');
+        for (var j = 0; j < checks.length; j++) {
+            if (checks[j].id === 'common') {
+                continue;
+            }
+            checks[j].checked = selectAll;
+        }
+        var lis = lists[i].getElementsByTagName('li');
+        for (var n = 0; n < checks.length; n++) {
+            if (checks[n].id === 'common') {
+                continue;
+            }
+            lis[n].className = (selectAll) ? 'active' : '';
+        }
+    }
+    updateCommand();
+    return false;
+}
+
+function initModules(clientName, modules) {
+    if (!clientName) {
+        return;
+    }
+    clientName = clientName.toLowerCase();
+
+    for (var key in modules) {
+        var module = modules[key];
+        var title = module.title;
+        addGroup(clientName, key, title, module.description, $("#" + clientName + "select")[0]);
+        var $container = $("#" + clientName + "_" + key);
+        for (var itemKey in module) {
+            if (itemKey === 'title' || itemKey === 'description') {
+                continue;
+            }
+            addModule(itemKey, $container[0], false, module[itemKey].name);
+        }
+        $container.append($("<div style='clear:both;'></div>"));
+    }
 }
 
 function cancelChecked(clientName) {
@@ -142,22 +170,18 @@ function updateCommand() {
         }
     }
     modulePaths = modulePaths.substring(0, modulePaths.length - 1);
-    commandInput.value = 'npm run package - ' + getKey() + " " + modulePaths;
+    commandInput.value = 'npm run package - ' + getPackage() + " " + modulePaths;
 }
 
-function getKey() {
-    var key = "common";
-    for (var check in $('#openlayersselect .deplist li input')) {
-        if ($('#openlayersselect .deplist li input')[check].checked) {
-            key = "openlayers";
+function getPackage() {
+    var current = clientsTabs[currentClientTab];
+    var $currentTab = $("#" + current + "select .deplist li input");
+    for (var check in $currentTab) {
+        if ($currentTab[check].checked) {
+            return current;
         }
     }
-    for (var check in $('#leafletselect .deplist li input')) {
-        if ($('#leafletselect .deplist li input')[check].checked) {
-            key = "leaflet";
-        }
-    }
-    return key;
+    return "common";
 }
 
 function onCheckboxChange() {

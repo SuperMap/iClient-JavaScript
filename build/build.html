@@ -49,14 +49,15 @@
             font-weight: normal;
         }
 
-        .deplistContent >div.contents{
-            min-height:160px;
+        .deplistContent > div.contents {
+            min-height: 160px;
         }
 
         .deplist {
             list-style: none;
-            min-height: 120px;
+            min-height: 40px;
             padding: 20px;
+            padding-top: 0;
         }
 
         .deplist li {
@@ -87,6 +88,8 @@
 
         .deplist li input[type=checkbox]:checked + label {
             background: #44b549;
+            margin-top: -2px;
+            padding-bottom: 2px;
         }
 
         .deplist li input[type=checkbox]:checked + label:after {
@@ -125,6 +128,7 @@
 
         h3 {
             color: #aaaaaa;
+            clear: both;
             font-size: 16px;
             margin-left: 30px;
         }
@@ -176,14 +180,8 @@
             <div style="height: 30px;line-height: 35px;">客户端
             </div>
         </div>
-        <ul id="client" class="nav nav-tabs clientTabs" style="display: inline-block">
-            <li role="presentation" class="active"><a href="#openlayersselect">OpenLayers</a></li>
-            <li role="presentation"><a href="#leafletselect">Leaflet</a></li>
-        </ul>
-        <div class="tab-content">
-            <div role="tabpanel" class="tab-pane deplistContent active" id="openlayersselect"></div>
-            <div role="tabpanel" class="tab-pane deplistContent" id="leafletselect"></div>
-        </div>
+        <ul id="client" class="nav nav-tabs clientTabs" style="display: inline-block"></ul>
+        <div class="tab-content"></div>
 
     </section>
     <section class="sec commandSection">
