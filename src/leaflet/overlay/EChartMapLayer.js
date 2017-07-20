@@ -12,7 +12,10 @@ var EchartsMapLayer = L.Layer.extend({
     _map: null,
     _ec: null,
     _echartsOptions: null,
-
+    options: {
+        attribution: '© 2017 百度 ECharts with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>',
+        loadWhileAnimating:true
+    },
     initialize: function (echartsOptions,options) {
         if(echartsOptions){
             echartsOptions.LeafletMap={
@@ -42,13 +45,14 @@ var EchartsMapLayer = L.Layer.extend({
         this._initEchartsContainer();
         this._ec = echarts.init(this._echartsContainer);
         echarts.leafletMap = map;
+        var me = this;
         map.on("zoomstart", function (e) {
             me._disableEchartsContainer();
         });
         map.on("zoomend", function (e) {
             me._enableEchartsContainer();
         });
-        var me = this;
+
         echarts.registerAction({
             type: 'LeafletMapLayout',
             event: 'LeafletMapLayout',
@@ -97,7 +101,12 @@ var EchartsMapLayer = L.Layer.extend({
                         type: 'LeafletMapLayout'
                     })
                 }
-                leafletMap.on('move', moveHandler);
+                if(me.options.loadWhileAnimating){
+                    leafletMap.on('move', moveHandler);
+                }else{
+                    leafletMap.on('moveend', moveHandler);
+                }
+
                 leafletMap.on('zoomend', zoomEndHandler)
                 rendering = false
             }
@@ -165,7 +174,6 @@ LeafletMapCoordSys.create = function (ecModel, api) {
         coordSys.setMapOffset(LeafletMapModel.__mapOffset || [0, 0]);
         LeafletMapModel.coordinateSystem = coordSys;
     })
-
     ecModel.eachSeries(function (seriesModel) {
         if (seriesModel.get('coordinateSystem') === 'leaflet') {
             seriesModel.coordinateSystem = coordSys
