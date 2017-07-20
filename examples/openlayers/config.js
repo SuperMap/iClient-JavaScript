@@ -251,12 +251,12 @@ var exampleConfig = {
                     fileName: "buildCacheService"
                 }]
             },
-            "address": {
+            "addressMatch": {
                 name: "地址匹配",
                 content: [{
                     name: "地址匹配",
                     thumbnail: "addressService.png",
-                    fileName: "addressService"
+                    fileName: "addressMatchService"
                 }]
             }
         }
