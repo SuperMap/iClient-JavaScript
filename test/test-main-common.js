@@ -10,6 +10,7 @@ require('./common/iServer/BurstPipelineAnalystServiceSpec.js');
 //iclient8注释掉,海图测试LayerServices相关的类，等待服务端支持后添加
 //require('./common/iServer/ChartFeatureInfoSpecsServiceSpec.js');
 //require('./common/iServer/ChartQueryServiceSpec.js');
+
 require('./common/iServer/ComputeWeightMatrixServiceSpec.js');
 
 //require('./common/iServer/DensityAnalystServiceSpec.js');         //iclient8注释掉,fieldName
@@ -23,6 +24,7 @@ require('./common/iServer/EditFeaturesServiceSpec.js');
 //require('./common/iServer/FacilityAnalystTracedown3DServiceSpec.js');
 //require('./common/iServer/FacilityAnalystTraceup3DServiceSpec.js');
 //require('./common/iServer/FacilityAnalystUpstream3DServiceSpec.js');
+
 require('./common/iServer/FieldStatisticServiceSpec.js');
 require('./common/iServer/FindClosestFacilitiesServiceSpec.js');
 require('./common/iServer/FindLocationServiceSpec.js');

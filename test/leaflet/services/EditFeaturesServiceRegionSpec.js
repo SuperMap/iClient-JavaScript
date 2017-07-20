@@ -144,18 +144,21 @@ describe('leaflet_testFeatureService_editFeatures', function () {
                 expect(getFeatureResult.result.succeed).toBeTruthy();
                 originFeature = getFeatureResult.result.features.features[0];
                 getFeaturesByIDsService.destroy();
+                done();
             } else {
+                originFeature = null;
                 console.log("未获取到数据");
                 getFeaturesByIDsService.destroy();
+                done();
             }
-            done();
         }, 4000)
     });
     // 将上面获取的要素update
     it('successEvent:updateFeature', function (done) {
         var updateFeatureResult = null;
-        if (originFeature) {
-            originFeature.properties.LANDTYPE = "用材林" + Math.random() * 100;
+        if (originFeature != null) {
+            var random = parseInt(Math.random()*10000000);
+            originFeature.properties.LANDTYPE = "用材林" + random;
             var updateFeaturesParams = new SuperMap.EditFeaturesParameters({
                 dataSourceName: "Jingjin",
                 dataSetName: "Landuse_R",
@@ -166,23 +169,31 @@ describe('leaflet_testFeatureService_editFeatures', function () {
                 updateFeatureResult = result
             });
             setTimeout(function () {
-                try {
-                    expect(updateFeaturesService).not.toBeNull();
-                    expect(updateFeatureResult).not.toBeNull();
-                    expect(updateFeatureResult.type).toBe("processCompleted");
-                    expect(updateFeatureResult.result.succeed).toBeTruthy();
-                    updateFeaturesService.destroy();
-                    done();
-                } catch (exception) {
-                    expect(false).toBeTruthy();
-                    console.log("'successEvent:updateFeature'案例失败" + exception.name + ":" + exception.message);
-                    updateFeaturesService.destroy();
+                if (updateFeatureResult != null) {
+                    try {
+                        console.log(updateFeatureResult);
+                        expect(updateFeaturesService).not.toBeNull();
+                        expect(updateFeatureResult).not.toBeNull();
+                        expect(updateFeatureResult.type).toBe("processCompleted");
+                        expect(updateFeatureResult.result.succeed).toBeTruthy();
+                        updateFeaturesService.destroy();
+                        done();
+                    } catch (exception) {
+                        expect(false).toBeTruthy();
+                        console.log("'successEvent:updateFeature'案例失败" + exception.name + ":" + exception.message);
+                        updateFeaturesService.destroy();
+                        done();
+                    }
+                }
+                else {
+                    console.log("'updateFeature'在设置的延时时间内未完成要素更新");
                     done();
                 }
-            }, 10000);
+            }, 5000);
         }
         else {
             console.log("'updateFeature'未获取到数据");
+            done();
         }
     });
 });

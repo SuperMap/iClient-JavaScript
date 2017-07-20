@@ -1,8 +1,6 @@
 ﻿require('../../../src/common/iServer/EditFeaturesService');
 
 var editServiceURL = GlobeParameter.editServiceURL;
-var editServiceURL_POINT = GlobeParameter.editServiceURL_POINT;
-var editServiceURL_LINE = GlobeParameter.editServiceURL_LINE;
 var id1;
 describe('testEditFeaturesService', function () {
     var originalTimeout;
