@@ -417,6 +417,18 @@ var deps = {
                 ]
             }
         }
+    },
+    "legacy": {
+        "overlay": {
+            "title": "可视化",
+            "description": "--对接可视化",
+            "MapV": {
+                "name": "MapV",
+                "src": [
+                    "./src/legacy/overlay/MapVLayer.js"
+                ]
+            }
+        }
     }
 };
 module.exports = deps;
