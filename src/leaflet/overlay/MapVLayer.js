@@ -36,7 +36,7 @@ var MapVLayer = L.Layer.extend({
         var size = map.getSize();
         container.style.width = size.x + "px";
         container.style.height = size.y + "px";
-        this.mapvLayer = new MapVRenderer(map, this, this.dataSet, this.mapVOptions);
+        this.renderer = new MapVRenderer(map, this, this.dataSet, this.mapVOptions);
         this.draw();
         this.fire("loaded");
     },
@@ -65,12 +65,38 @@ var MapVLayer = L.Layer.extend({
         }, this);
     },
 
+
     addData: function (data, options) {
-        this.mapvLayer.addData(data, options);
+        this.renderer.addData(data, options);
     },
 
     update: function (data, options) {
-        this.mapvLayer.updateData(data, options);
+        this.renderer.updateData(data, options);
+    },
+
+    getData: function () {
+        if (this.renderer) {
+            this.dataSet = this.renderer.getData();
+        }
+        return this.dataSet;
+    },
+
+    /**
+     * 按照过滤条件移除数据
+     * @param filter
+     * eg: filter=function(data){
+     *         if(data.id="1"){
+     *            return true
+     *         }
+     *         return false;
+     *     }
+     */
+    removeData: function (filter) {
+        this.renderer && this.renderer.removeData(filter);
+    },
+
+    clearData: function () {
+        this.renderer.clearData();
     },
 
     draw: function () {
@@ -82,7 +108,7 @@ var MapVLayer = L.Layer.extend({
     },
 
     render: function () {
-        this.mapvLayer._canvasUpdate();
+        this.renderer._canvasUpdate();
     },
 
     getCanvas: function () {

@@ -83,6 +83,24 @@ class MapVRenderer extends BaseLayer {
         this.update({options: options});
     }
 
+    getData() {
+        return this.dataSet;
+    }
+    
+    removeData(filter) {
+        if (!this.dataSet) {
+            return;
+        }
+        var newData = this.dataSet.get(filter);
+        this.dataSet.set(newData);
+        this.update({options: null});
+    }
+
+    clearData() {
+        this.dataSet && this.dataSet.clear();
+        this.update({options: null});
+    }
+
     _canvasUpdate(time) {
         if (!this.canvasLayer) {
             return;

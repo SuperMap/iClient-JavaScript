@@ -7,6 +7,7 @@
  */
 require('../core/Base');
 require('../../common/security/SecurityManager');
+require('../../common/iServer/TilesetsService');
 var L = require("leaflet");
 var SuperMap = require("../../common/SuperMap");
 var TiledMapLayer = L.TileLayer.extend({
@@ -22,7 +23,7 @@ var TiledMapLayer = L.TileLayer.extend({
         //请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}
         prjCoordSys: null,
         //地图对象在同一范围内时，是否重叠显示
-        overlapDisplayed: true,
+        overlapDisplayed: false,
         //避免地图对象压盖显示的过滤选项
         overlapDisplayedOptions: null,
         //切片版本名称，cacheEnabled 为 true 时有效。
@@ -39,18 +40,22 @@ var TiledMapLayer = L.TileLayer.extend({
         L.TileLayer.prototype.initialize.apply(this, arguments);
         L.setOptions(this, options);
         L.stamp(this);
+
+        //当前切片在切片集中的index
+        this.tileSetsIndex = -1;
+        this.tempIndex = -1;
     },
 
     onAdd: function (map) {
         this._crs = this.options.crs || map.options.crs;
-        this._initLayerUrl();
         L.TileLayer.prototype.onAdd.call(this, map);
     },
 
 
     getTileUrl: function (coords) {
         var scale = this.getScaleFromCoords(coords);
-        var tileUrl = this._layerUrl + "&scale=" + scale + "&x=" + coords.x + "&y=" + coords.y;
+        var layerUrl = this._getLayerUrl();
+        var tileUrl = layerUrl + "&scale=" + scale + "&x=" + coords.x + "&y=" + coords.y;
         return tileUrl;
     },
 
@@ -103,43 +108,131 @@ var TiledMapLayer = L.TileLayer.extend({
         return L.Util.resolutionToScale(resolution, 96, mapUnit);
     },
 
-    _initLayerUrl: function () {
+    //获取当前图层切片版本列表,获取成功后存储当前的切片版本信息 并切换多相应的版本
+    getTileSetsInfo: function () {
         var me = this;
-        var layerUrl = me.url + "/tileImage.png?";
-        layerUrl += me._initAllRequestParams().join('&');
-        layerUrl = this._appendCredential(layerUrl);
-        this._layerUrl = layerUrl;
+        var tileSetsService = new SuperMap.TilesetsService(me.url, {
+            eventListeners: {
+                "processCompleted": getTilesInfoSucceed,
+                scope: me
+            }
+        });
+        tileSetsService.processAsync();
+
+        function getTilesInfoSucceed(info) {
+            me.tileSets = info.result;
+            if (L.Util.isArray(me.tileSets)) {
+                me.tileSets = info.result[0];
+            }
+            me.fire('tilesetsinfoloaded', {tileVersions: me.tileSets.tileVersions});
+            me.changeTilesVersion();
+        }
     },
 
-    _initAllRequestParams: function () {
-        var me = this, options = me.options || {}, params = [];
+    //请求上一个版本切片，并重新绘制。
+    lastTilesVersion: function () {
+        this.tempIndex = this.tileSetsIndex - 1;
+        this.changeTilesVersion();
+    },
+
+    //请求下一个版本切片，并重新绘制。
+    nextTilesVersion: function () {
+        this.tempIndex = this.tileSetsIndex + 1;
+        this.changeTilesVersion();
+    },
+
+    //切换到某一版本的切片，并重绘。
+    //通过this.tempIndex保存需要切换的版本索引
+    changeTilesVersion: function () {
+        var me = this;
+        //切片版本集信息是否存在
+        if (me.tileSets == null) {
+            //版本信息为空，重新查询，查询成功继续跳转到相应的版本
+            me.getTileSetsInfo();
+            return;
+        }
+        if (me.tempIndex === me.tileSetsIndex || this.tempIndex < 0) {
+            return;
+        }
+        //检测index是否可用
+        var tileVersions = me.tileSets.tileVersions;
+        if (tileVersions && me.tempIndex < tileVersions.length && me.tempIndex >= 0) {
+            var name = tileVersions[me.tempIndex].name;
+            var result = me.mergeTileVersionParam(name);
+            if (result) {
+                me.tileSetsIndex = me.tempIndex;
+                me.fire('tileversionschanged', {tileVersion: tileVersions[me.tempIndex]});
+            }
+        }
+    },
+
+    //手动设置当前切片集索引
+    //目前主要提供给控件使用
+    updateCurrentTileSetsIndex: function (index) {
+        this.tempIndex = index;
+    },
+
+    //更改URL请求参数中的切片版本号,并重绘
+    mergeTileVersionParam: function (version) {
+        if (version) {
+            this.requestParams["tileversion"] = version;
+            this._paramsChanged = true;
+            this.redraw();
+            this._paramsChanged = false;
+            return true;
+        }
+        return false;
+    },
+
+    _getLayerUrl: function () {
+        if (this._paramsChanged) {
+            this._layerUrl = this._createLayerUrl();
+        }
+        return this._layerUrl || this._createLayerUrl();
+    },
+
+    _createLayerUrl: function () {
+        var me = this;
+        var layerUrl = me.url + "/tileImage.png?";
+        layerUrl += me._getRequestParamString();
+        layerUrl = this._appendCredential(layerUrl);
+        this._layerUrl = layerUrl;
+        return layerUrl;
+    },
+
+    _getRequestParamString: function () {
+        this.requestParams = this.requestParams || this._getAllRequestParams();
+        var params = [];
+        for (var key in this.requestParams) {
+            params.push(key + "=" + this.requestParams[key]);
+        }
+        return params.join('&');
+    },
+
+    _getAllRequestParams: function () {
+        var me = this, options = me.options || {}, params = {};
 
         var tileSize = this.options.tileSize;
-        params.push("width=" + tileSize);
-        params.push("height=" + tileSize);
+        params["width"] = tileSize.toString();
+        params["height"] = tileSize.toString();
 
-        var redirect = (options.redirect === true) ? options.redirect : false;
-        params.push("redirect=" + redirect);
-
-        var transparent = (options.transparent === true) ? options.transparent : false;
-        params.push("transparent=" + transparent);
-
-        var cacheEnabled = (options.cacheEnabled === false) ? options.cacheEnabled : true;
-        params.push("cacheEnabled=" + cacheEnabled);
+        params["redirect"] = (options.redirect === true) ? options.redirect : false;
+        params["transparent"] = (options.transparent === true) ? options.transparent : false;
+        params["cacheEnabled"] = (options.cacheEnabled === false) ? options.cacheEnabled : true;
 
         if (options.prjCoordSys) {
-            params.push("prjCoordSys=" + JSON.stringify(options.prjCoordSys));
+            params["prjCoordSys"] = JSON.stringify(options.prjCoordSys);
         }
 
         if (options.layersID) {
-            params.push("layersID=" + options.layersID);
+            params["layersID"] = options.layersID.toString();
         }
 
         if (options.clipRegionEnabled && options.clipRegion instanceof L.Path) {
             options.clipRegion = L.Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
             options.clipRegion = SuperMap.Util.toJSON(SuperMap.REST.ServerGeometry.fromGeometry(options.clipRegion));
-            params.push("clipRegionEnabled=" + options.clipRegionEnabled);
-            params.push("clipRegion=" + JSON.stringify(options.clipRegion));
+            params["clipRegionEnabled"] = options.clipRegionEnabled;
+            params["clipRegion"] = JSON.stringify(options.clipRegion);
         }
 
         //切片的起始参考点，默认为地图范围的左上角。
@@ -147,20 +240,20 @@ var TiledMapLayer = L.TileLayer.extend({
         if (crs.projection && crs.projection.bounds) {
             var bounds = crs.projection.bounds;
             var tileOrigin = L.point(bounds.min.x, bounds.max.y);
-            params.push("origin={\"x\":" + tileOrigin.x + "," + "\"y\":" + tileOrigin.y + "}");
+            params["origin"] = JSON.stringify({x: tileOrigin.x, y: tileOrigin.y});
         }
 
         if (options.overlapDisplayed === false) {
-            params.push("overlapDisplayed=false");
+            params["overlapDisplayed"] = false;
             if (options.overlapDisplayedOptions) {
-                params.push("overlapDisplayedOptions=" + me.overlapDisplayedOptions.toString());
+                params["overlapDisplayedOptions"] = me.overlapDisplayedOptions.toString();
             }
         } else {
-            params.push("overlapDisplayed=true");
+            params["overlapDisplayed"] = true;
         }
 
         if (options.cacheEnabled === true && options.tileversion) {
-            params.push("tileversion=" + options.tileversion)
+            params["tileversion"] = options.tileversion.toString();
         }
 
         return params;

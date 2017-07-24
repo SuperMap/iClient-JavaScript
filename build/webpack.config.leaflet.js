@@ -1,5 +1,7 @@
 var webpack = require('webpack');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var pkg = require('../package.json');
+var packageName = "iclient9-leaflet";
 var banner = `
     iclient9-leaflet.(${pkg.homepage})
     Copyright© 2000-2017 SuperMap Software Co. Ltd
@@ -13,7 +15,7 @@ module.exports = {
     //入口文件输出配置
     output: {
         path: __dirname + '/../dist',
-        filename: 'iclient9-leaflet.js'
+        filename: packageName + ".js"
     },
 
     //其它解决方案配置
@@ -26,6 +28,7 @@ module.exports = {
         'mapv': 'mapv',
         'elasticsearch': 'elasticsearch'
     },
+
     module: {
         rules: [{
             test: /MapVRenderer\.js/,
@@ -34,10 +37,25 @@ module.exports = {
             query: {
                 presets: ['es2015']
             }
+        }, {
+            test: /\.css$/,
+            use: ExtractTextPlugin.extract({
+                use: {
+                    loader: 'css-loader',
+                    options: {
+                        minimize: true
+                    }
+                }
+            }),
+        }],
+        loaders: [{
+            test: /\.css$/,
+            loader: ExtractTextPlugin.extract(['style-loader', 'css-loader'])
         }]
     },
     plugins: [
-        new webpack.BannerPlugin(banner)
+        new webpack.BannerPlugin(banner),
+        new ExtractTextPlugin('/../dist/' + packageName + ".min.css")
     ]
 
 };

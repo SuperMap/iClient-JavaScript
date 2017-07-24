@@ -261,6 +261,18 @@ var deps = {
                     "./src/common/thirdparty/elasticsearch/ElasticSearchService.js"
                 ]
             }
+        },
+
+        "control": {
+            "title": "控件",
+            "description": "--对接控件",
+
+            "ChangeTileVersion": {
+                "name": "多版本缓存切换",
+                "src": [
+                    "./src/leaflet/control/ChangeTileVersion.js"
+                ]
+            },
         }
 
     },
