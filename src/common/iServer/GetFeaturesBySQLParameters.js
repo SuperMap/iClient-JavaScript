@@ -74,6 +74,9 @@ SuperMap.GetFeaturesBySQLParameters.toJsonParameters = function (params) {
         getFeatureMode: "SQL",
         queryParameter: params.queryParameter
     };
+    if(params.maxFeatures&&!isNaN(params.maxFeatures)){
+        paramsBySql.maxFeatures = params.maxFeatures;
+    }
     return SuperMap.Util.toJSON(paramsBySql);
 };
 module.exports = SuperMap.GetFeaturesBySQLParameters;

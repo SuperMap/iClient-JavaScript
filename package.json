@@ -44,7 +44,7 @@
     "browserify-istanbul": "^2.0.0",
     "commander": "^2.9.0",
     "css-loader": "^0.26.1",
-    "echarts": "3.5.4",
+    "echarts": "3.6.2",
     "mapv": "2.0.14",
     "mapbox-gl": "0.38.0",
     "extract-text-webpack-plugin": "^2.1.0",

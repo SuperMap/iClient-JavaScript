@@ -95,7 +95,6 @@ SuperMap.GetFeaturesByBufferParameters.toJsonParameters = function (params) {
     var filterParameter,
         paramsBySql,
         geometry;
-
     geometry = SuperMap.REST.ServerGeometry.fromGeometry(params.geometry);
     paramsBySql = {
         datasetNames: params.datasetNames,
@@ -112,6 +111,9 @@ SuperMap.GetFeaturesByBufferParameters.toJsonParameters = function (params) {
     if (params.attributeFilter) {
         paramsBySql.attributeFilter = params.attributeFilter;
         paramsBySql.getFeatureMode = "BUFFER_ATTRIBUTEFILTER";
+    }
+    if(params.maxFeatures&&!isNaN(params.maxFeatures)){
+        paramsBySql.maxFeatures = params.maxFeatures;
     }
     return SuperMap.Util.toJSON(paramsBySql);
 };

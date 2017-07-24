@@ -130,6 +130,9 @@ SuperMap.GetFeaturesByBoundsParameters.toJsonParameters = function (params) {
         parasByBounds.attributeFilter = params.attributeFilter;
         parasByBounds.getFeatureMode = SuperMap.GetFeaturesByBoundsParameters.getFeatureMode.BOUNDS_ATTRIBUTEFILTER;
     }
+    if(params.maxFeatures&&!isNaN(params.maxFeatures)){
+        parasByBounds.maxFeatures = params.maxFeatures;
+    }
 
     return SuperMap.Util.toJSON(parasByBounds);
 };

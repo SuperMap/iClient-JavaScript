@@ -127,6 +127,9 @@ SuperMap.GetFeaturesByGeometryParameters.toJsonParameters = function (params) {
         parasByGeometry.attributeFilter = params.attributeFilter;
         parasByGeometry.getFeatureMode = "SPATIAL_ATTRIBUTEFILTER";
     }
+    if(params.maxFeatures&&!isNaN(params.maxFeatures)){
+        parasByGeometry.maxFeatures = params.maxFeatures;
+    }
 
     return SuperMap.Util.toJSON(parasByGeometry);
 };

@@ -32744,6 +32744,9 @@ SuperMap.GetFeaturesByBoundsParameters.toJsonParameters = function (params) {
         parasByBounds.attributeFilter = params.attributeFilter;
         parasByBounds.getFeatureMode = SuperMap.GetFeaturesByBoundsParameters.getFeatureMode.BOUNDS_ATTRIBUTEFILTER;
     }
+    if(params.maxFeatures&&!isNaN(params.maxFeatures)){
+        parasByBounds.maxFeatures = params.maxFeatures;
+    }
 
     return SuperMap.Util.toJSON(parasByBounds);
 };
@@ -32930,7 +32933,6 @@ SuperMap.GetFeaturesByBufferParameters.toJsonParameters = function (params) {
     var filterParameter,
         paramsBySql,
         geometry;
-
     geometry = SuperMap.REST.ServerGeometry.fromGeometry(params.geometry);
     paramsBySql = {
         datasetNames: params.datasetNames,
@@ -32947,6 +32949,9 @@ SuperMap.GetFeaturesByBufferParameters.toJsonParameters = function (params) {
     if (params.attributeFilter) {
         paramsBySql.attributeFilter = params.attributeFilter;
         paramsBySql.getFeatureMode = "BUFFER_ATTRIBUTEFILTER";
+    }
+    if(params.maxFeatures&&!isNaN(params.maxFeatures)){
+        paramsBySql.maxFeatures = params.maxFeatures;
     }
     return SuperMap.Util.toJSON(paramsBySql);
 };
@@ -33157,6 +33162,9 @@ SuperMap.GetFeaturesByGeometryParameters.toJsonParameters = function (params) {
     if (params.attributeFilter) {
         parasByGeometry.attributeFilter = params.attributeFilter;
         parasByGeometry.getFeatureMode = "SPATIAL_ATTRIBUTEFILTER";
+    }
+    if(params.maxFeatures&&!isNaN(params.maxFeatures)){
+        parasByGeometry.maxFeatures = params.maxFeatures;
     }
 
     return SuperMap.Util.toJSON(parasByGeometry);
@@ -33497,6 +33505,9 @@ SuperMap.GetFeaturesBySQLParameters.toJsonParameters = function (params) {
         getFeatureMode: "SQL",
         queryParameter: params.queryParameter
     };
+    if(params.maxFeatures&&!isNaN(params.maxFeatures)){
+        paramsBySql.maxFeatures = params.maxFeatures;
+    }
     return SuperMap.Util.toJSON(paramsBySql);
 };
 module.exports = SuperMap.GetFeaturesBySQLParameters;
