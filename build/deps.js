@@ -208,8 +208,8 @@ var deps = {
                     "./src/common/online/Online.js"
                 ]
             },
-            "Address": {
-                "name": "地理匹配服务",
+            "AddressMatch": {
+                "name": "地址匹配服务",
                 "src": [
                     "./src/leaflet/services/AddressMatchService.js"
                 ]
@@ -375,8 +375,8 @@ var deps = {
                     "./src/openlayers/services/ProcessingJobsService.js"
                 ]
             },
-            "Address": {
-                "name": "地理匹配服务",
+            "AddressMatch": {
+                "name": "地址匹配服务",
                 "src": [
                     "./src/openlayers/services/AddressMatchService.js"
                 ]
@@ -441,7 +441,24 @@ var deps = {
             }
         }
     },
+
     "legacy": {
+        "services": {
+            "title": "服务",
+            "description": "--对接iServer服务",
+            "ProcessingJobs": {
+                "name": "大数据分析服务",
+                "src": [
+                    "./src/legacy/services/ProcessingJobsService.js"
+                ]
+            },
+            "AddressMatch": {
+                "name": "地址匹配服务",
+                "src": [
+                    "./src/legacy/services/AddressMatchService.js"
+                ]
+            }
+        },
         "overlay": {
             "title": "可视化",
             "description": "--对接可视化",

@@ -17579,8 +17579,8 @@ var BuildCacheJobParameter = __webpack_require__(100);
 SuperMap.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
-        url += "/mapping/buildCache";
         ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        this.url += "/mapping/buildCache";
     },
 
     destroy: function () {
@@ -25992,8 +25992,8 @@ var KernelDensityJobParameter = __webpack_require__(179);
 SuperMap.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
-        url += "/spatialanalyst/density";
         ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        this.url += "/spatialanalyst/density";
     },
 
     destroy: function () {
@@ -30464,8 +30464,8 @@ var SummaryMeshJobParameter = __webpack_require__(220);
 SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
-        url += "/spatialanalyst/aggregatepoints";
         ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        this.url += "/spatialanalyst/aggregatepoints";
     },
 
     destroy: function () {

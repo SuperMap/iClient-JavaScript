@@ -27,6 +27,9 @@ class MapvRenderer extends BaseLayer {
         this.canvasLayer = layer;
         this.clickEvent = this.clickEvent.bind(this);
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
+        this.map.on('move', this.moveEvent.bind(this));
+        this.map.on('moveend', this.moveEndEvent.bind(this));
+        this.map.on('remove', this.removeEvent.bind(this));
         this.bindEvent();
     }
 
@@ -159,21 +162,33 @@ class MapvRenderer extends BaseLayer {
     }
 
     addAnimatorEvent() {
-        this.map.on('movestart', this.animatorMovestartEvent.bind(this));
-        this.map.on('moveend', this.animatorMoveendEvent.bind(this));
+
+    }
+
+    removeEvent() {
+        this.canvasLayer.mapContainer.removeChild(this.canvasLayer.canvas);
+    }
+
+    moveEvent() {
+        this._hide();
+    }
+
+    moveEndEvent() {
+        this._canvasUpdate();
+        this._show();
     }
 
     clear(context) {
         context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     }
 
-    // show() {
-    //     this.map.addLayer(this.canvasLayer);
-    // }
-    //
-    // hide() {
-    //     this.map.addLayer(this.canvasLayer);
-    // }
+    _hide() {
+        this.canvasLayer.canvas.style.display = 'none';
+    }
+
+    _show() {
+        this.canvasLayer.canvas.style.display = 'block';
+    }
 
     draw() {
         this.canvasLayer.draw();

@@ -22,6 +22,9 @@ class MapVRenderer extends BaseLayer {
         this.canvasLayer = layer;
         this.clickEvent = this.clickEvent.bind(this);
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
+        this.map.on('movestart', this.moveStartEvent.bind(this));
+        this.map.on('moveend', this.moveEndEvent.bind(this));
+        this.map.on('zoomstart', this.zoomStartEvent.bind(this));
         this.bindEvent();
     }
 
@@ -194,20 +197,35 @@ class MapVRenderer extends BaseLayer {
     }
 
     addAnimatorEvent() {
-        this.map.on('movestart', this.animatorMovestartEvent.bind(this));
-        this.map.on('moveend', this.animatorMoveendEvent.bind(this));
+    }
+
+    moveStartEvent() {
+        var animationOptions = this.options.animation;
+        if (this.isEnabledTime() && this.animator) {
+            this.steps.step = animationOptions.stepsRange.start;
+            this._hide();
+        }
+    }
+
+    moveEndEvent() {
+        this.canvasLayer.draw();
+        this._show();
+    }
+
+    zoomStartEvent() {
+        this._hide();
     }
 
     clear(context) {
         context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     }
 
-    show() {
-        this.map.addLayer(this.canvasLayer);
+    _hide() {
+        this.canvasLayer.canvas.style.display = 'none';
     }
 
-    hide() {
-        this.map.removeLayer(this.canvasLayer);
+    _show() {
+        this.canvasLayer.canvas.style.display = 'block';
     }
 
     draw() {

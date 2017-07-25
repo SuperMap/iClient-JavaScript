@@ -5,8 +5,8 @@ var BuildCacheJobParameter = require('./BuildCacheJobParameter');
 SuperMap.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
-        url += "/mapping/buildCache";
         ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        this.url += "/mapping/buildCache";
     },
 
     destroy: function () {

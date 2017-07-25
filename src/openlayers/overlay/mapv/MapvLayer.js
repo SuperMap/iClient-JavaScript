@@ -141,7 +141,8 @@ class MapvLayer extends BaiduMapLayer {
         var pixel = map.getPixelFromCoordinate([0, 0]);
         this.drawContext(context, new mapv.DataSet(data), self.options, {x: pixel[0], y: pixel[1]});
         if (self.isEnabledTime()) {
-        this.source.changed();}
+            this.source.changed();
+        }
         self.options.updateCallback && self.options.updateCallback(time);
     }
 

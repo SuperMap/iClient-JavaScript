@@ -126,6 +126,9 @@ var MapvRenderer = function (_BaseLayer) {
         _this.canvasLayer = layer;
         _this.clickEvent = _this.clickEvent.bind(_this);
         _this.mousemoveEvent = _this.mousemoveEvent.bind(_this);
+        _this.map.on('move', _this.moveEvent.bind(_this));
+        _this.map.on('moveend', _this.moveEndEvent.bind(_this));
+        _this.map.on('remove', _this.removeEvent.bind(_this));
         _this.bindEvent();
         return _this;
     }
@@ -268,24 +271,38 @@ var MapvRenderer = function (_BaseLayer) {
         }
     }, {
         key: "addAnimatorEvent",
-        value: function addAnimatorEvent() {
-            this.map.on('movestart', this.animatorMovestartEvent.bind(this));
-            this.map.on('moveend', this.animatorMoveendEvent.bind(this));
+        value: function addAnimatorEvent() {}
+    }, {
+        key: "removeEvent",
+        value: function removeEvent() {
+            this.canvasLayer.mapContainer.removeChild(this.canvasLayer.canvas);
+        }
+    }, {
+        key: "moveEvent",
+        value: function moveEvent() {
+            this._hide();
+        }
+    }, {
+        key: "moveEndEvent",
+        value: function moveEndEvent() {
+            this._canvasUpdate();
+            this._show();
         }
     }, {
         key: "clear",
         value: function clear(context) {
             context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         }
-
-        // show() {
-        //     this.map.addLayer(this.canvasLayer);
-        // }
-        //
-        // hide() {
-        //     this.map.addLayer(this.canvasLayer);
-        // }
-
+    }, {
+        key: "_hide",
+        value: function _hide() {
+            this.canvasLayer.canvas.style.display = 'none';
+        }
+    }, {
+        key: "_show",
+        value: function _show() {
+            this.canvasLayer.canvas.style.display = 'block';
+        }
     }, {
         key: "draw",
         value: function draw() {
@@ -318,30 +335,9 @@ var MapvLayer = function () {
         this.map = map;
         this.mapvLayer = new MapvRenderer(map, this, dataSet, mapVOptions);
         this.canvas = this._createCanvas();
-        this._redraw();
+        this.mapvLayer._canvasUpdate();
         this.mapContainer = map.getCanvasContainer();
         this.mapContainer.appendChild(this.canvas);
-        var me = this;
-
-        map.on('resize', function (e) {
-            me._redraw();
-        });
-
-        map.on('move', function (e) {
-            me._redraw();
-        });
-
-        map.on('zoomstart', function (e) {
-            me._hide();
-        });
-
-        map.on('zoomend', function (e) {
-            me._show();
-        });
-
-        map.on('remove', function (e) {
-            me.mapContainer.removeChild(me.canvas);
-        });
     }
 
     _createClass(MapvLayer, [{
@@ -367,34 +363,6 @@ var MapvLayer = function () {
             canvas.style.width = this.map.getCanvas().style.width;
             canvas.style.height = this.map.getCanvas().style.height;
             return canvas;
-        }
-    }, {
-        key: '_redraw',
-        value: function _redraw() {
-            this._resize();
-            this.mapvLayer._canvasUpdate();
-        }
-    }, {
-        key: '_resize',
-        value: function _resize() {
-            var canvas = this.canvas;
-            if (!canvas) {
-                return;
-            }
-            canvas.width = parseInt(this.map.getCanvas().style.width);
-            canvas.height = parseInt(this.map.getCanvas().style.height);
-            canvas.style.width = this.map.getCanvas().style.width;
-            canvas.style.height = this.map.getCanvas().style.height;
-        }
-    }, {
-        key: '_hide',
-        value: function _hide() {
-            this.canvas.style.display = 'none';
-        }
-    }, {
-        key: '_show',
-        value: function _show() {
-            this.canvas.style.display = 'block';
         }
     }]);
 

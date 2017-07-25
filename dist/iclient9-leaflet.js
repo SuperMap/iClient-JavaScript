@@ -14517,14 +14517,6 @@ var MapVLayer = L.Layer.extend({
         this.fire("loaded");
     },
 
-    getEvents: function () {
-        return {
-            moveend: this.draw,
-            zoomstart: this._hide,
-            zoomend: this._show
-        }
-
-    },
     _hide: function () {
         this.canvas.style.display = 'none';
     },
@@ -17553,6 +17545,9 @@ var MapVRenderer = function (_BaseLayer) {
         _this.canvasLayer = layer;
         _this.clickEvent = _this.clickEvent.bind(_this);
         _this.mousemoveEvent = _this.mousemoveEvent.bind(_this);
+        _this.map.on('movestart', _this.moveStartEvent.bind(_this));
+        _this.map.on('moveend', _this.moveEndEvent.bind(_this));
+        _this.map.on('zoomstart', _this.zoomStartEvent.bind(_this));
         _this.bindEvent();
         return _this;
     }
@@ -17738,9 +17733,26 @@ var MapVRenderer = function (_BaseLayer) {
         }
     }, {
         key: 'addAnimatorEvent',
-        value: function addAnimatorEvent() {
-            this.map.on('movestart', this.animatorMovestartEvent.bind(this));
-            this.map.on('moveend', this.animatorMoveendEvent.bind(this));
+        value: function addAnimatorEvent() {}
+    }, {
+        key: 'moveStartEvent',
+        value: function moveStartEvent() {
+            var animationOptions = this.options.animation;
+            if (this.isEnabledTime() && this.animator) {
+                this.steps.step = animationOptions.stepsRange.start;
+                this._hide();
+            }
+        }
+    }, {
+        key: 'moveEndEvent',
+        value: function moveEndEvent() {
+            this.canvasLayer.draw();
+            this._show();
+        }
+    }, {
+        key: 'zoomStartEvent',
+        value: function zoomStartEvent() {
+            this._hide();
         }
     }, {
         key: 'clear',
@@ -17748,14 +17760,14 @@ var MapVRenderer = function (_BaseLayer) {
             context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         }
     }, {
-        key: 'show',
-        value: function show() {
-            this.map.addLayer(this.canvasLayer);
+        key: '_hide',
+        value: function _hide() {
+            this.canvasLayer.canvas.style.display = 'none';
         }
     }, {
-        key: 'hide',
-        value: function hide() {
-            this.map.removeLayer(this.canvasLayer);
+        key: '_show',
+        value: function _show() {
+            this.canvasLayer.canvas.style.display = 'block';
         }
     }, {
         key: 'draw',
@@ -23521,10 +23533,10 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
+	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
 	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 	"_spec": "proj4@2.4.3",
-	"_where": "F:\\dev\\iClient9",
+	"_where": "E:\\codes\\iClient9",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"
@@ -27233,8 +27245,8 @@ var BuildCacheJobParameter = __webpack_require__(202);
 SuperMap.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
-        url += "/mapping/buildCache";
         ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        this.url += "/mapping/buildCache";
     },
 
     destroy: function () {
@@ -35646,8 +35658,8 @@ var KernelDensityJobParameter = __webpack_require__(281);
 SuperMap.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
-        url += "/spatialanalyst/density";
         ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        this.url += "/spatialanalyst/density";
     },
 
     destroy: function () {
@@ -40118,8 +40130,8 @@ var SummaryMeshJobParameter = __webpack_require__(322);
 SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function (url, options) {
-        url += "/spatialanalyst/aggregatepoints";
         ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        this.url += "/spatialanalyst/aggregatepoints";
     },
 
     destroy: function () {

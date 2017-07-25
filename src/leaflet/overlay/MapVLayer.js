@@ -41,14 +41,6 @@ var MapVLayer = L.Layer.extend({
         this.fire("loaded");
     },
 
-    getEvents: function () {
-        return {
-            moveend: this.draw,
-            zoomstart: this._hide,
-            zoomend: this._show
-        }
-
-    },
     _hide: function () {
         this.canvas.style.display = 'none';
     },

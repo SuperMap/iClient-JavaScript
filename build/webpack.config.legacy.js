@@ -23,11 +23,13 @@ module.exports = {
     externals: {
         'echarts': 'echarts',
         'mapv': 'mapv',
-        'elasticsearch': 'elasticsearch'
+        'elasticsearch': 'elasticsearch',
+        '../legacy/libs/SuperMap_Basic-8.1.1-14426.js': 'SuperMap',
+        '../legacy/libs/SuperMap_Visualization-8.1.1-14426.js': 'SuperMap'
     },
     module: {
         rules: [{
-            test: /MapVRenderer\.js/,
+            test: /\.js/,
             exclude: /node_modules/,
             loader: 'babel-loader',
             query: {
