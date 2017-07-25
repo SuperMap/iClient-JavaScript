@@ -6,6 +6,7 @@
 var ol = require('openlayers/dist/ol-debug');
 ol.supermap = ol.supermap || {};
 ol.supermap.Util = ol.supermap.Util || {};
+ol.supermap.control = ol.supermap.control || {};
 require('./Util');
 require('../../common/SuperMap');
 require('../../common/REST');

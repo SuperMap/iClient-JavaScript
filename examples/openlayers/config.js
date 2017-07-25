@@ -522,6 +522,19 @@ var exampleConfig = {
             }
         }
     },
+    "control": {
+        name: "控件",
+        content: {
+            "changeTileVersion": {
+                name: "缓存切换",
+                content: [{
+                    name: "多版本缓存切换控件",
+                    thumbnail: "ol_changeTileVersion.png",
+                    fileName: "changeTileVersion"
+                }]
+            }
+        }
+    },
     "OGC": {
         name: "OGC",
         content: {
@@ -589,6 +602,7 @@ var sideBarIconConfig = {
     "Online": "fa-cloud",
     "iManager": "fa-group",
     "plot": "fa-edit",
+    "control": "fa-sliders",
     "viz": "fa-map",
     "OGC": "fa-globe",
     "mapping": "fa-send"
@@ -605,6 +619,7 @@ var exampleIconConfig = {
     "Online": "fa-cloud",
     "iManager": "fa-group",
     "plot": "fa-edit",
+    "control": "fa-sliders",
     "viz": "fa-map",
     "OGC": "fa-globe",
     "mapping": "fa-send"

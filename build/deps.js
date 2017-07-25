@@ -415,6 +415,17 @@ var deps = {
                     "./src/openlayers/overlay/mapv.js",
                 ]
             }
+        },
+        "control": {
+            "title": "控件",
+            "description": "--对接控件",
+
+            "ChangeTileVersion": {
+                "name": "多版本缓存切换",
+                "src": [
+                    "./src/openlayers/interaction/ChangeTileVersion.js"
+                ]
+            }
         }
     },
 

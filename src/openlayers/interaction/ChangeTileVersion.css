@@ -1,0 +1,347 @@
+.ol-control-ctv {
+    top: 5.5em;
+    left: .5em;
+    border-radius: 2px;
+}
+
+button.ol-control-ctv-toggle {
+    width: 26px;
+    height: 26px;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    display: block;
+    line-height: 26px !important;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1em;
+}
+
+.ol-control-ctv p.ol-control-ctv-value {
+    line-height: 26px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    background-color: rgba(0,60,136,.5);
+    border: none;
+    border-radius: 2px;
+    font-size: 0.8em;
+    display: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ol-control-ctv.ol-control-ctv-horizontal p.ol-control-ctv-value {
+    line-height: 26px;
+    height: 26px;
+    padding: 0 4px;
+    margin: 0px 0px 0px 0px;
+    border-right: 1px solid #CCC;
+    min-width: 35px;
+    max-width: 100px;
+    float: left;
+    clear: none;
+    white-space: nowrap;
+}
+
+.ol-control-ctv.ol-control-ctv-vertical p.ol-control-ctv-value {
+    min-height: 28px;
+    max-height: 100px;
+    line-height: 26px;
+    margin: 0px 0px 2px 0px;
+    border-bottom: 1px solid #CCC;
+    width: 28px;
+    white-space: pre-wrap;
+}
+
+.ol-control-ctv.ol-control-ctv-horizontal .ol-ctv-slider-main {
+    display: inline;
+}
+
+.ol-control-ctv.ol-control-ctv-vertical .ol-ctv-slider-main {
+    display: block;
+}
+
+.ol-control-ctv input.ol-ctv-slider,
+.ol-control-ctv .ol-ctv-slider-container {
+    display: none;
+    padding: 0px;
+}
+
+.ol-control-ctv.ol-control-ctv-horizontal .ol-ctv-slider-container {
+    float: right;
+    clear: none;
+    width: 90%;
+    height: 24px;
+}
+
+.ol-control-ctv.ol-control-ctv-horizontal input.ol-ctv-slider {
+    height: 24px;
+}
+
+.ol-control-ctv.ol-control-ctv-vertical input.ol-ctv-slider {
+    writing-mode: bt-lr;
+    width: 24px;
+    height: 100%;
+}
+
+.ol-control-ctv.ol-control-ctv-expanded p.ol-control-ctv-value {
+    display: block;
+}
+
+.ol-control-ctv.ol-control-ctv-expanded button.ol-control-ctv-toggle {
+    display: none;
+}
+
+.ol-control-ctv.ol-control-ctv-expanded input.ol-ctv-slider,
+.ol-control-ctv.ol-control-ctv-expanded .ol-ctv-slider-container {
+    display: inherit;
+}
+
+.ol-control-ctv.ol-control-ctv-vertical .ol-ctv-slider-container {
+    width: 28px;
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+}
+
+.ol-control-ctv.ol-control-ctv-vertical .ol-ctv-slider-container {
+    margin: 10px 0px;
+}
+
+
+.ol-control-ctv.ol-control-ctv-vertical.ol-control-ctv-incdec .ol-ctv-slider-container {
+    margin: 0px 0px;
+}
+
+.ol-control-ctv input[type=range] {
+    -webkit-appearance: none;
+    width: 100%;
+}
+
+.ol-control-ctv input[type=range]:focus {
+    outline: none;
+}
+
+.ol-control-ctv input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+    background: #dddddd;
+    border-radius: 25px;
+    border: 0px solid rgba(0, 0, 0, 0);
+}
+
+.ol-control-ctv input[type=range]::-webkit-slider-thumb {
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+    border: 0px solid rgba(0, 0, 0, 0);
+    height: 16px;
+    width: 16px;
+    border-radius: 8px;
+    background: #a4a4a4;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -5.5px;
+}
+
+.ol-control-ctv input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #eaeaea;
+}
+
+.ol-control-ctv input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+    background: #dddddd;
+    border-radius: 25px;
+    border: 0px solid rgba(0, 0, 0, 0);
+}
+
+.ol-control-ctv input[type=range]::-moz-range-thumb {
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+    border: 0px solid rgba(0, 0, 0, 0);
+    height: 16px;
+    width: 16px;
+    border-radius: 8px;
+    background: #a4a4a4;
+    cursor: pointer;
+}
+
+.ol-control-ctv input[type=range]::-ms-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+.ol-control-ctv input[type=range]::-ms-fill-lower {
+    background: #d0d0d0;
+    border: 0px solid rgba(0, 0, 0, 0);
+    border-radius: 50px;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+}
+
+.ol-control-ctv input[type=range]::-ms-fill-upper {
+    background: #dddddd;
+    border: 0px solid rgba(0, 0, 0, 0);
+    border-radius: 50px;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+}
+
+.ol-control-ctv input[type=range]::-ms-thumb {
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(13, 13, 13, 0);
+    border: 0px solid rgba(0, 0, 0, 0);
+    width: 16px;
+    border-radius: 8px;
+    background: #a4a4a4;
+    cursor: pointer;
+    height: 5px;
+}
+
+.ol-control-ctv input[type=range]:focus::-ms-fill-lower {
+    background: #dddddd;
+}
+
+.ol-control-ctv input[type=range]:focus::-ms-fill-upper {
+    background: #eaeaea;
+}
+
+.ol-control-ctv.ol-control-ctv-vertical input[type=range]::-moz-range-track {
+    height: 100%;
+    width: 5px;
+}
+
+.ol-ctv-slider-next, .ol-ctv-slider-last {
+    width: 26px;
+    height: 26px;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-color: white;
+    line-height: 26px !important;
+    font-weight: bolder;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+    color: #000;
+    font-size: 1.3em;
+    display: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.ol-control-ctv.ol-control-ctv-expanded{
+    box-shadow: 0 0 0.1px rgba(0,0,0,.2);
+}
+
+.ol-control-ctv.ol-control-ctv-expanded .ol-ctv-slider-next,
+.ol-control-ctv.ol-control-ctv-expanded .ol-ctv-slider-last {
+    display: block;
+}
+
+.ol-control-ctv.ol-control-ctv-horizontal .ol-ctv-slider-next,
+.ol-control-ctv.ol-control-ctv-horizontal .ol-ctv-slider-last {
+    float: right;
+}
+
+.ol-control-ctv input[type=range]::-moz-focus-outer {
+    border: 0;
+}
+
+.ol-ctv-slider-incdec {
+    cursor: pointer;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .ol-control-ctv.ol-control-ctv-vertical input[type=range] {
+        transform-origin: 10px 17px;
+        -webkit-transform-origin: 10px 17px;
+        -moz-transform-origin: 10px 17px;
+        transform: rotate(90deg);
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        height: 28px;
+    }
+}
+
+.ol-control-ctv .tooltip .tooltip-text {
+    display: none;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 2px 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.ol-control-ctv .tooltip .tooltip-text::after {
+    content: "";
+    position: absolute;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+}
+
+/* 提示在下侧 */
+.ol-control-ctv.ol-control-ctv-horizontal .tooltip .tooltip-text.tooltip-bottom {
+    top: 120%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.ol-control-ctv.ol-control-ctv-horizontal .tooltip .tooltip-text.tooltip-bottom::after {
+    bottom: 100%;
+    left: 50%;
+    border-color: transparent transparent black transparent;
+}
+
+/* 提示在上侧 */
+.ol-control-ctv.ol-control-ctv-horizontal .tooltip .tooltip-text.tooltip-top {
+    bottom: 120%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.ol-control-ctv.ol-control-ctv-horizontal .tooltip .tooltip-text.tooltip-top::after {
+    top: 100%;
+    left: 50%;
+    border-color: black transparent transparent transparent;
+}
+
+/* 提示在右侧 */
+.ol-control-ctv.ol-control-ctv-vertical .tooltip .tooltip-text.tooltip-right {
+    top: 50%;
+    left: 120%;
+}
+
+.ol-control-ctv.ol-control-ctv-vertical .tooltip .tooltip-text.tooltip-right::after {
+    top: 33%;
+    right: 100%;
+    border-color: transparent black transparent transparent;
+}
+
+/* 提示在左侧 */
+.ol-control-ctv.ol-control-ctv-vertical .tooltip .tooltip-text.tooltip-left {
+    top: 50%;
+    right: 110%;
+}
+
+.ol-control-ctv.ol-control-ctv-vertical .tooltip .tooltip-text.tooltip-left::after {
+    top: 33%;
+    left: 104%;
+    border-color: transparent transparent transparent black;
+}
+
+.ol-control-ctv.ol-control-ctv-horizontal .tooltip:hover .tooltip-text,
+.ol-control-ctv.ol-control-ctv-vertical .tooltip:hover .tooltip-text {
+    display: block;
+}

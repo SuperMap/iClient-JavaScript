@@ -11,7 +11,6 @@ require('../core/Base');
 require('./ChangeTileVersion.css');
 require('../mapping/TiledMapLayer');
 var L = require("leaflet");
-L.supermap.control = L.supermap.control || {};
 var ChangeTileVersion = L.Control.extend({
 
     options: {

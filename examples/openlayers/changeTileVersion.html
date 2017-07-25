@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>多版本缓存切换</title>
+    <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../dist/iclient9-openlayers.min.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var baseLayer, url = "http://117.122.248.69:8090/iserver/services/map-ChinaProvinces2/rest/maps/ChinaProvinces";
+    var map = new ol.Map({
+        target: 'map',
+        view: new ol.View({
+            center: [104.79, 33.03],
+            zoom: 4,
+            projection: 'EPSG:4326'
+        })
+    });
+
+    baseLayer = new ol.source.TileSuperMapRest({
+        origin: [-180, 90],
+        url: url,
+        wrapX: true
+    });
+
+    map.addLayer(new ol.layer.Tile({
+        source: baseLayer,
+        projection: 'EPSG:4326'
+    }));
+
+    var control = new ol.supermap.control.ChangeTileVersion({
+        layer: baseLayer,
+        orientation: "horizontal"
+    });
+    control.setMap(map);
+    map.addControl(control);
+</script>
+</body>
+</html>

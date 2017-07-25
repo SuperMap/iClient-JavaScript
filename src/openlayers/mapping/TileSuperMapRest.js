@@ -1,5 +1,6 @@
 require('../core/Base');
 require('../../common/security/SecurityManager');
+require('../services/MapService');
 var ol = require('openlayers/dist/ol-debug');
 var SuperMap = require('../../common/SuperMap');
 ol.source.TileSuperMapRest = function (options) {
@@ -10,12 +11,16 @@ ol.source.TileSuperMapRest = function (options) {
     options.attributions = options.attributions ||
         new ol.Attribution({
             html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
-        })
+        });
 
     var layerUrl = options.url + "/tileImage.png?";
     options.serverType = options.serverType || SuperMap.ServerType.ISERVER;
     //为url添加安全认证信息片段
     layerUrl = appendCredential(layerUrl, options.serverType);
+    this.options = options;
+    //当前切片在切片集中的index
+    this.tileSetsIndex = -1;
+    this.tempIndex = -1;
 
     function appendCredential(url, serverType) {
         var newUrl = url, credential, value;
@@ -47,46 +52,74 @@ ol.source.TileSuperMapRest = function (options) {
         return newUrl;
     }
 
-    //是否重定向
-    var redirect = false;
-    if (options.redirect) {
-        redirect = options.opaque;
+    function getAllRequestParams() {
+        var me = this, params = {};
+
+        params["redirect"] = options.redirect === true;
+        //切片是否透明
+        params["transparent"] = options.opaque === true;
+        params["cacheEnabled"] = !(options.cacheEnabled === false);
+        params["_cache"] = params["cacheEnabled"];
+
+        //设置切片原点
+        if (options.origin && options.origin instanceof Array) {
+            params["origin"] = JSON.stringify({x: options.origin[0], y: options.origin[1]});
+        }
+
+        if (options.prjCoordSys) {
+            params["prjCoordSys"] = JSON.stringify(options.prjCoordSys);
+        }
+
+        if (options.layersID) {
+            params["layersID"] = options.layersID.toString();
+        }
+
+
+        if (options.clipRegion instanceof ol.geom.Geometry) {
+            options.clipRegionEnabled = true;
+            options.clipRegion = ol.supermap.Util.toSuperMapGeometry(new ol.format.GeoJSON().writeGeometryObject(options.clipRegion));
+            options.clipRegion = SuperMap.Util.toJSON(SuperMap.REST.ServerGeometry.fromGeometry(options.clipRegion));
+            params["clipRegionEnabled"] = options.clipRegionEnabled;
+            params["clipRegion"] = JSON.stringify(options.clipRegion);
+        }
+
+        if (!options.overlapDisplayed) {
+            params["overlapDisplayed"] = false;
+            if (options.overlapDisplayedOptions) {
+                params["overlapDisplayedOptions"] = me.overlapDisplayedOptions.toString();
+            }
+        } else {
+            params["overlapDisplayed"] = true;
+        }
+
+        if (options.cacheEnabled && options.tileversion) {
+            params["tileversion"] = options.tileversion.toString();
+        }
+
+        return params;
     }
-    layerUrl += "&redirect=" + redirect;
-    //切片是否透明
-    var transparent = true;
-    if (options.opaque !== undefined) {
-        transparent = options.opaque;
+
+
+    function getFullRequestUrl() {
+        if (this._paramsChanged) {
+            this._layerUrl = createLayerUrl.call(this);
+            this._paramsChanged = false;
+        }
+        return this._layerUrl || createLayerUrl.call(this);
     }
-    layerUrl += "&transparent=" + transparent;
-    //设置切片原点
-    if (options.origin && options.origin instanceof Array) {
-        layerUrl += "&origin={\"x\":" + options.origin[0] + "," + "\"y\":" + options.origin[1] + "}";
+
+    function createLayerUrl() {
+        this._layerUrl = layerUrl + getRequestParamString.call(this);
+        return this._layerUrl;
     }
-    if (options.clipRegion instanceof ol.geom.Geometry) {
-        options.clipRegionEnabled = true;
-        options.clipRegion = ol.supermap.Util.toSuperMapGeometry(new ol.format.GeoJSON().writeGeometryObject(options.clipRegion));
-        options.clipRegion = SuperMap.Util.toJSON(SuperMap.REST.ServerGeometry.fromGeometry(options.clipRegion));
-        layerUrl += "&clipRegionEnabled=" + options.clipRegionEnabled + "&clipRegion=" + JSON.stringify(options.clipRegion);
-    }
-    if (!!options.overlapDisplayed && options.overlapDisplayedOptions) {
-        options.overlapDisplayedOptions = options.overlapDisplayedOptions;
-        layerUrl += "&overlapDisplayed=" + options.overlapDisplayed + "&overlapDisplayedOptions=" + options.overlapDisplayedOptions.toString();
-    }
-    var cacheEnabled = true;
-    if (!!options.cacheEnabled) {
-        cacheEnabled = options.cacheEnabled;
-    }
-    layerUrl += "&_cache=" + cacheEnabled;
-    if (options.cacheEnabled && options.tileversion) {
-        layerUrl += "&tileversion=" + tileversion;
-    }
-    //如果有layersID，则是在使用专题图
-    if (options.layersID !== undefined) {
-        layerUrl += "&layersID=" + options.layersID;
-    }
-    if (options.prjCoordSys) {
-        layerUrl += "&prjCoordSys=" + options.prjCoordSys;
+
+    function getRequestParamString() {
+        this.requestParams = this.requestParams || getAllRequestParams.call(this);
+        var params = [];
+        for (var key in this.requestParams) {
+            params.push(key + "=" + this.requestParams[key]);
+        }
+        return params.join('&');
     }
 
     function tileUrlFunction(tileCoord, pixelRatio, projection) {
@@ -108,8 +141,10 @@ ol.source.TileSuperMapRest = function (options) {
         }
         var scale = ol.supermap.Util.resolutionToScale(resolution, dpi, unit);
         var tileSize = ol.size.toSize(this.tileGrid.getTileSize(z, this.tmpSize));
+        var layerUrl = getFullRequestUrl.call(this);
         return layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale;
     }
+
 
     ol.source.TileImage.call(this, {
         attributions: options.attributions,
@@ -133,6 +168,76 @@ ol.source.TileSuperMapRest = function (options) {
     });
 };
 ol.inherits(ol.source.TileSuperMapRest, ol.source.TileImage);
+
+//获取当前图层切片版本列表,获取成功后存储当前的切片版本信息 并切换多相应的版本
+ol.source.TileSuperMapRest.prototype.getTileSetsInfo = function () {
+    var me = this;
+    new ol.supermap.MapService(me.options.url).getTilesets(getTilesInfoSucceed);
+
+    function getTilesInfoSucceed(info) {
+        me.tileSets = info.result;
+        if (ol.supermap.Util.isArray(me.tileSets)) {
+            me.tileSets = info.result[0];
+        }
+        me.dispatchEvent(new ol.supermap.ResultEvent('tilesetsinfoloaded', {tileVersions: me.tileSets.tileVersions}));
+        me.changeTilesVersion();
+    }
+};
+
+//请求上一个版本切片，并重新绘制。
+ol.source.TileSuperMapRest.prototype.lastTilesVersion = function () {
+    this.tempIndex = this.tileSetsIndex - 1;
+    this.changeTilesVersion();
+};
+
+//请求下一个版本切片，并重新绘制。
+ol.source.TileSuperMapRest.prototype.nextTilesVersion = function () {
+    this.tempIndex = this.tileSetsIndex + 1;
+    this.changeTilesVersion();
+};
+
+//切换到某一版本的切片，并重绘。
+//通过this.tempIndex保存需要切换的版本索引
+ol.source.TileSuperMapRest.prototype.changeTilesVersion = function () {
+    var me = this;
+    //切片版本集信息是否存在
+    if (me.tileSets == null) {
+        //版本信息为空，重新查询，查询成功继续跳转到相应的版本
+        me.getTileSetsInfo();
+        return;
+    }
+    if (me.tempIndex === me.tileSetsIndex || this.tempIndex < 0) {
+        return;
+    }
+    //检测index是否可用
+    var tileVersions = me.tileSets.tileVersions;
+    if (tileVersions && me.tempIndex < tileVersions.length && me.tempIndex >= 0) {
+        var name = tileVersions[me.tempIndex].name;
+        var result = me.mergeTileVersionParam(name);
+        if (result) {
+            me.tileSetsIndex = me.tempIndex;
+            me.dispatchEvent(new ol.supermap.ResultEvent('tileversionschanged', {tileVersion: tileVersions[me.tempIndex]}));
+        }
+    }
+};
+
+//手动设置当前切片集索引
+//目前主要提供给控件使用
+ol.source.TileSuperMapRest.prototype.updateCurrentTileSetsIndex = function (index) {
+    this.tempIndex = index;
+};
+
+//更改URL请求参数中的切片版本号,并重绘
+ol.source.TileSuperMapRest.prototype.mergeTileVersionParam = function (version) {
+    if (version) {
+        this.requestParams["tileversion"] = version;
+        this._paramsChanged = true;
+        this.refresh();
+        return true;
+    }
+    return false;
+};
+
 ol.source.TileSuperMapRest.optionsFromMapJSON = function (url, mapJSONObj) {
     var options = {};
     options.url = url;
@@ -192,5 +297,11 @@ ol.source.TileSuperMapRest.createTileGrid = function (extent, maxZoom, minZoom, 
         }
     );
 };
+//通用事件
+ol.supermap.ResultEvent = function (type, opt_element) {
+    ol.events.Event.call(this, type);
+    this.result = opt_element;
+};
+ol.inherits(ol.supermap.ResultEvent, ol.events.Event);
 
 module.exports = ol.source.TileSuperMapRest;

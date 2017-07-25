@@ -7,7 +7,7 @@
  */
 require('../core/Base');
 require('../../common/security/SecurityManager');
-require('../../common/iServer/TilesetsService');
+require('../services/MapService');
 var L = require("leaflet");
 var SuperMap = require("../../common/SuperMap");
 var TiledMapLayer = L.TileLayer.extend({
@@ -111,14 +111,7 @@ var TiledMapLayer = L.TileLayer.extend({
     //获取当前图层切片版本列表,获取成功后存储当前的切片版本信息 并切换多相应的版本
     getTileSetsInfo: function () {
         var me = this;
-        var tileSetsService = new SuperMap.TilesetsService(me.url, {
-            eventListeners: {
-                "processCompleted": getTilesInfoSucceed,
-                scope: me
-            }
-        });
-        tileSetsService.processAsync();
-
+        L.supermap.mapService(url).getTilesets(getTilesInfoSucceed);
         function getTilesInfoSucceed(info) {
             me.tileSets = info.result;
             if (L.Util.isArray(me.tileSets)) {
@@ -216,9 +209,9 @@ var TiledMapLayer = L.TileLayer.extend({
         params["width"] = tileSize.toString();
         params["height"] = tileSize.toString();
 
-        params["redirect"] = (options.redirect === true) ? options.redirect : false;
-        params["transparent"] = (options.transparent === true) ? options.transparent : false;
-        params["cacheEnabled"] = (options.cacheEnabled === false) ? options.cacheEnabled : true;
+        params["redirect"] = options.redirect === true;
+        params["transparent"] = options.transparent === true;
+        params["cacheEnabled"] = !(options.cacheEnabled === false);
 
         if (options.prjCoordSys) {
             params["prjCoordSys"] = JSON.stringify(options.prjCoordSys);
