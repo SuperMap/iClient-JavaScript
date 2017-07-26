@@ -111,7 +111,8 @@
                             tileGrid: new ol.tilegrid.TileGrid({
                                 extent: options.tileGrid.extent_,
                                 resolutions: options.tileGrid.resolutions_
-                            })
+                            }),
+                            opaque: true
                         })
                     });
                     map.addLayer(themeLayer);

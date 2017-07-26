@@ -33,7 +33,8 @@
     var jinJingLayer = new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
             url: urlJinjing,
-            origin: [-180, 90]
+            origin: [-180, 90],
+            opaque: true
         }),
         projection: 'EPSG:4326'
     });

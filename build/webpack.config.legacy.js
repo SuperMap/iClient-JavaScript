@@ -24,8 +24,8 @@ module.exports = {
         'echarts': 'echarts',
         'mapv': 'mapv',
         'elasticsearch': 'elasticsearch',
-        '../legacy/libs/SuperMap_Basic-8.1.1-14426.js': 'SuperMap',
-        '../legacy/libs/SuperMap_Visualization-8.1.1-14426.js': 'SuperMap'
+        '../legacy/libs/SuperMap_Basic-8.1.1-15125.js': 'SuperMap',
+        '../legacy/libs/SuperMap_Visualization-8.1.1-15125.js': 'SuperMap'
     },
     module: {
         rules: [{
