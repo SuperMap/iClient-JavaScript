@@ -42,9 +42,6 @@ module.exports = {
             use: ExtractTextPlugin.extract({
                 use: {
                     loader: 'css-loader',
-                    options: {
-                        minimize: true
-                    }
                 }
             }),
         }],
@@ -55,6 +52,6 @@ module.exports = {
     },
     plugins: [
         new webpack.BannerPlugin(banner),
-        new ExtractTextPlugin('/../dist/' + packageName + ".min.css")
+        new ExtractTextPlugin('/../dist/' + packageName + ".css")
     ]
 };

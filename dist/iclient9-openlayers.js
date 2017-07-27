@@ -10878,7 +10878,7 @@ ol.supermap.control.ChangeTileVersion.prototype.lastTilesVersion = function () {
 ol.supermap.control.ChangeTileVersion.prototype.tilesVersion = function (version) {
     var layer = this.options.layer,
         tileVersions = this.tileVersions;
-    len = tileVersions.length;
+    var len = tileVersions.length;
     for (var i = 0; i < len; i++) {
         if (tileVersions[i].name == version) {
             layer.updateCurrentTileSetsIndex(i);

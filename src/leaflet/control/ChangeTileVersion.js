@@ -8,7 +8,7 @@
  *  }).addTo(map);
  */
 require('../core/Base');
-require('./ChangeTileVersion.css');
+require('./css/ChangeTileVersion');
 require('../mapping/TiledMapLayer');
 var L = require("leaflet");
 var ChangeTileVersion = L.Control.extend({
@@ -145,7 +145,7 @@ var ChangeTileVersion = L.Control.extend({
     tilesVersion: function (version) {
         var layer = this.options.layer,
             tileVersions = this.tileVersions;
-        len = tileVersions.length;
+        var len = tileVersions.length;
         for (var i = 0; i < len; i++) {
             if (tileVersions[i].name == version) {
                 layer.updateCurrentTileSetsIndex(i);

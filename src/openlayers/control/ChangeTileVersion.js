@@ -9,7 +9,7 @@
  *      map.addControl(control)
  */
 require('../core/Base');
-require('./ChangeTileVersion.css');
+require('./css/ChangeTileVersion');
 require('../mapping/TileSuperMapRest');
 var ol = require('openlayers/dist/ol-debug');
 var SuperMap = require('../../common/SuperMap');
@@ -318,7 +318,7 @@ ol.supermap.control.ChangeTileVersion.prototype.lastTilesVersion = function () {
 ol.supermap.control.ChangeTileVersion.prototype.tilesVersion = function (version) {
     var layer = this.options.layer,
         tileVersions = this.tileVersions;
-    len = tileVersions.length;
+    var len = tileVersions.length;
     for (var i = 0; i < len; i++) {
         if (tileVersions[i].name == version) {
             layer.updateCurrentTileSetsIndex(i);

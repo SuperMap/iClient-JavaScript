@@ -13372,7 +13372,7 @@ var ChangeTileVersion = L.Control.extend({
     tilesVersion: function (version) {
         var layer = this.options.layer,
             tileVersions = this.tileVersions;
-        len = tileVersions.length;
+        var len = tileVersions.length;
         for (var i = 0; i < len; i++) {
             if (tileVersions[i].name == version) {
                 layer.updateCurrentTileSetsIndex(i);
@@ -23533,10 +23533,10 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
+	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
 	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 	"_spec": "proj4@2.4.3",
-	"_where": "E:\\codes\\iClient9",
+	"_where": "F:\\dev\\iClient9",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"

@@ -33,10 +33,12 @@ module.exports = function (config) {
             '../src/common/**/*.js',
         /***leaflet的源码***/
             {pattern: '../node_modules/leaflet/dist/leaflet.css', include: false},
+            {pattern: '../src/leaflet/**/**/*.css', include: false},
             '../src/leaflet/**/*.js',
             '../src/leaflet/overlay/**/*.js',
         /***openlayers的源码***/
             {pattern: '../node_modules/openlayers/dist/ol-debug.css', include: false},
+            {pattern: '../src/leaflet/**/**/*.css', include: false},
             '../src/openlayers/**/*.js',
             '../src/openlayers/overlay/**/*.js',
         /***测试文件***/
