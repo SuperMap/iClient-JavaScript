@@ -8,7 +8,7 @@
  *  }).addTo(map);
  */
 require('../core/Base');
-require('./css/ChangeTileVersion');
+require('./css/ChangeTileVersion.css');
 require('../mapping/TiledMapLayer');
 var L = require("leaflet");
 var ChangeTileVersion = L.Control.extend({

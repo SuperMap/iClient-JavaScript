@@ -9,7 +9,7 @@
  *      map.addControl(control)
  */
 require('../core/Base');
-require('./css/ChangeTileVersion');
+require('./css/ChangeTileVersion.css');
 require('../mapping/TileSuperMapRest');
 var ol = require('openlayers/dist/ol-debug');
 var SuperMap = require('../../common/SuperMap');
