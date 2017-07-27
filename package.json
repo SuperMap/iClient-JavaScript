@@ -55,6 +55,7 @@
     "karma": "^1.4.1",
     "karma-browserify": "^5.1.1",
     "karma-chrome-launcher": "^2.0.0",
+    "karma-chrome-css": "^0.11.0",
     "karma-cli": "^1.0.1",
     "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.0",

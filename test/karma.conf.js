@@ -15,7 +15,10 @@ module.exports = function (config) {
 
         browserify: {
             debug: true,
-            transform: ['browserify-istanbul']
+            transform: [
+				require('browserify-css'),
+				require('browserify-istanbul')
+			]
         },
 
         // list of files  patterns to load in the browser
