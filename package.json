@@ -5,7 +5,8 @@
   "directories": {
     "doc": "doc",
     "example": "examples",
-    "test": "test"
+    "test": "test",
+    "exampletest": "examples-test"
   },
   "scripts": {
     "release": "npm run release-leaflet && npm run release-openlayers && npm run release-mapboxgl && npm run release-legacy",
@@ -25,7 +26,8 @@
     "package": "node ./build/pack.js",
     "package-debug": "node ./build/pack.js - debug",
     "test": "karma start ./test/karma.conf.js",
-    "citest": "karma start ./test/karma.conf.js --single-run"
+    "citest": "karma start ./test/karma.conf.js --single-run",
+    "exampletest": "nightwatch --config ./examples-test/nightwatch.json"
   },
   "keywords": [
     "SuperMap",
@@ -47,12 +49,14 @@
     "browserify-css": "^0.11.1",
     "browserify-istanbul": "^2.0.0",
     "clean-css-cli": "^4.1.6",
+    "chromedriver": "^2.29.2",
     "commander": "^2.9.0",
     "css-loader": "^0.26.1",
     "echarts": "3.6.2",
     "elasticsearch": "13.0.1",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.0",
+    "get-pixels": "^3.3.0",
     "imports-loader": "^0.7.0",
     "istanbul": "^0.4.5",
     "jasmine-core": "^2.5.2",
@@ -66,7 +70,10 @@
     "leaflet": "1.0.3",
     "mapbox-gl": "0.38.0",
     "mapv": "2.0.14",
+    "nightwatch": "^0.9.5",
     "openlayers": "4.2.0",
+    "pngjs": "^3.2.0",
+    "selenium-server": "^2.53.1",
     "shelljs": "^0.7.6",
     "style-loader": "^0.13.1",
     "uglify-js": "^3.0.15",
