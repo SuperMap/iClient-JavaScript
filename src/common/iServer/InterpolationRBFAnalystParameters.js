@@ -1,13 +1,34 @@
-﻿/**
- * Class: SuperMap.InterpolationRBFAnalystParameters
- * 样条插值（径向基函数插值法）分析参数类
- *
- * Inherits from:
- *  - <SuperMap.InterpolationAnalystParameters>
- */
-require('./InterpolationAnalystParameters');
+﻿require('./InterpolationAnalystParameters');
 var SuperMap = require('../SuperMap');
 SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
+    /**
+     * @class SuperMap.InterpolationRBFAnalystParameters
+     * @constructs SuperMap.InterpolationRBFAnalystParameters
+     * @classdesc
+     * 样条插值（径向基函数插值法）分析参数类
+     * @extends {SuperMap.InterpolationAnalystParameters}
+     * @api
+     * @example 例如：
+     * (start code)
+     * var myInterpolationRBFAnalystParameters = new SuperMap.InterpolationRBFAnalystParameters({
+     *     dataset:"SamplesP@Interpolation",
+     *     smooth: 0.1,
+     *     tension: 40,
+     *     searchMode: "QUADTREE",
+     *     maxPointCountForInterpolation: 20,
+     *     maxPointCountInNode: 5,
+     *     pixelFormat: "BIT16",
+     *     zValueFieldName: "AVG_TMP",
+     *     resolution: 3000,
+     *     filterQueryParameter: {
+     *         attributeFilter: ""
+     *     },
+     *     outputDatasetName: "myRBF"
+     * });
+     * (end)
+     *
+     */
+
     /**
      * APIProperty: smooth
      * {Number} 光滑系数，值域为 0到1，默认值为0.1，常用取值如0、0.001、0.01、0.1、和0.5。
@@ -51,49 +72,28 @@ SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.Interpolati
     maxPointCountInNode: 50,
 
     /**
-     * Constructor: SuperMap.InterpolationRBFAnalystParameters
-     * 样条插值分析参数类构造函数。
      *
-     * 例如：
-     * (start code)
-     * var myInterpolationRBFAnalystParameters = new SuperMap.InterpolationRBFAnalystParameters({
-     *     dataset:"SamplesP@Interpolation",
-     *     smooth: 0.1,
-     *     tension: 40,
-     *     searchMode: "QUADTREE",
-     *     maxPointCountForInterpolation: 20,
-     *     maxPointCountInNode: 5,
-     *     pixelFormat: "BIT16",
-     *     zValueFieldName: "AVG_TMP",
-     *     resolution: 3000,
-     *     filterQueryParameter: {
-     *         attributeFilter: ""
-     *     },
-     *     outputDatasetName: "myRBF"
-     * });
-     * (end)
+     * @method SuperMap.InterpolationRBFAnalystParameters.initialize
+     * @param options - {Object} 参数。
      *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * smooth - {Number} 光滑系数，该值表示插值函数曲线与点的逼近程度，值域为 0到1，默认值为0.1。
-     * tension - {Number} 张力系数，用于调整结果栅格数据表面的特性，默认为40。
-     * bounds - {<SuperMap.Bounds>} 插值分析的范围，用于确定结果栅格数据集的范围。
-     * searchMode - {String} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数
-     * expectedCount - {Number} 【固定点数查找】方式下，设置参与差值运算的点数，默认值为12。
-     * searchRadius - {Number} 【定长查找】方式下，设置参与运算点的查找范围，默认值为0。
-     * maxPointCountForInterpolation - {Number} 【块查找】方式下，设置最多参与插值的点数。默认为200。
-     * maxPointCountInNode - {Number} 【块查找】方式下，设置单个块内最多参与运算点数。默认为50。
-     * zValueFieldName - {String} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。
-     * zValueScale - {Number} 用于进行插值分析值的缩放比率，默认值为1。
-     * resolution - {Number} 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。
-     * filterQueryParameter - {<SuperMap.FilterParameter>} 属性过滤条件。
-     * outputDatasetName - {String} 插值分析结果数据集的名称。必设参数
-     * outputDatasourceName - {String} 插值分析结果数据源的名称。必设参数
-     * pixelFormat - {String} 指定结果栅格数据集存储的像素格式。
-     * dataset - {String} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。
-     * inputPoints - {Array <SuperMap.Geometry.Point>} 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。
+     * Allowed options properties:</br>
+     * smooth - {Number} 光滑系数，该值表示插值函数曲线与点的逼近程度，值域为 0到1，默认值为0.1。</br>
+     * tension - {Number} 张力系数，用于调整结果栅格数据表面的特性，默认为40。</br>
+     * bounds - {<SuperMap.Bounds>} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+     * searchMode - {String} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数。</br>
+     * expectedCount - {Number} 【固定点数查找】方式下，设置参与差值运算的点数，默认值为12。</br>
+     * searchRadius - {Number} 【定长查找】方式下，设置参与运算点的查找范围，默认值为0。</br>
+     * maxPointCountForInterpolation - {Number} 【块查找】方式下，设置最多参与插值的点数。默认为200。</br>
+     * maxPointCountInNode - {Number} 【块查找】方式下，设置单个块内最多参与运算点数。默认为50。</br>
+     * zValueFieldName - {String} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。</br>
+     * zValueScale - {Number} 用于进行插值分析值的缩放比率，默认值为1。</br>
+     * resolution - {Number} 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
+     * filterQueryParameter - {<SuperMap.FilterParameter>} 属性过滤条件。</br>
+     * outputDatasetName - {String} 插值分析结果数据集的名称。必设参数。</br>
+     * outputDatasourceName - {String} 插值分析结果数据源的名称。必设参数。</br>
+     * pixelFormat - {String} 指定结果栅格数据集存储的像素格式。</br>
+     * dataset - {String} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。</br>
+     * inputPoints - {Array <SuperMap.Geometry.Point>} 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。</br>
      */
     initialize: function (options) {
         SuperMap.InterpolationAnalystParameters.prototype.initialize.apply(this, arguments);
@@ -109,7 +109,7 @@ SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.Interpolati
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

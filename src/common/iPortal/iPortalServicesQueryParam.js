@@ -1,4 +1,10 @@
 var SuperMap = require('../SuperMap');
+/**
+ * @class SuperMap.iPortalServicesQueryParam
+ * @classdesc iPortal服务查询参数
+ *
+ */
+
 SuperMap.iPortalServicesQueryParam = SuperMap.Class({
 
     tags: [],

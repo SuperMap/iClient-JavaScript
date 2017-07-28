@@ -1,15 +1,15 @@
-﻿/**
- * Class: SuperMap.GetFeaturesByIDsParameters
- * ID 查询参数类。
- *
- * Inherits from:
- *  - <SuperMap.GetFeaturesParametersBase>
- */
-require('./GetFeaturesParametersBase');
+﻿require('./GetFeaturesParametersBase');
 var SuperMap = require('../SuperMap');
 var FilterParameter = require('./FilterParameter');
 SuperMap.GetFeaturesByIDsParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
-
+    /**
+     * @class SuperMap.GetFeaturesByIDsParameters
+     * @constructs SuperMap.GetFeaturesByIDsParameters
+     * @classdesc
+     * ID 查询参数类。
+     * @extends {SuperMap.GetFeaturesParametersBase}
+     * @api
+     */
     /**
      * Property: getFeatureMode
      * {String} 数据集查询模式。
@@ -31,19 +31,16 @@ SuperMap.GetFeaturesByIDsParameters = SuperMap.Class(SuperMap.GetFeaturesParamet
     fields: null,
 
     /**
-     * Constructor: GetFeaturesBySQLParameters
-     * SQL 查询参数类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * IDs - {Array(Integer)} 所要查询指定的元素ID信息。
-     * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。
-     * dataSetNames - {Array(String)} 数据集集合中的数据集名称列表。
-     * returnContent - {Boolean} 是否直接返回查询结果。
-     * fromIndex - {Integer} 查询结果的最小索引号。
-     * toIndex - {Integer} 查询结果的最大索引号。
+     * @method SuperMap.GetFeaturesBySQLParameters.initialize
+     * @description SQL 查询参数类构造函数。
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * IDs - {Array(Integer)} 所要查询指定的元素ID信息。</br>
+     * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
+     * dataSetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
+     * returnContent - {Boolean} 是否直接返回查询结果。</br>
+     * fromIndex - {Integer} 查询结果的最小索引号。</br>
+     * toIndex - {Integer} 查询结果的最大索引号。</br>
      */
     initialize: function (options) {
         SuperMap.GetFeaturesParametersBase.prototype.initialize.apply(this, arguments);
@@ -53,7 +50,7 @@ SuperMap.GetFeaturesByIDsParameters = SuperMap.Class(SuperMap.GetFeaturesParamet
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
@@ -73,14 +70,10 @@ SuperMap.GetFeaturesByIDsParameters = SuperMap.Class(SuperMap.GetFeaturesParamet
 });
 
 /**
- * Function: SuperMap.GetFeaturesByIDsParameters.toJsonParameters
- * 将<SuperMap.GetFeaturesByIDsParameters>对象参数转换为json字符串。
- *
- * Parameters:
- * params - {<SuperMap.GetFeaturesByIDsParameters>} IDs查询参数。
- *
- * Returns:
- * {String} 转化后的 json字符串。
+ * @method SuperMap.GetFeaturesByIDsParameters.toJsonParameters
+ * @description 将<SuperMap.GetFeaturesByIDsParameters>对象参数转换为json字符串。
+ * @param params - {SuperMap.GetFeaturesByIDsParameters} IDs查询参数。
+ * @return {String} 转化后的 json字符串。
  */
 SuperMap.GetFeaturesByIDsParameters.toJsonParameters = function (params) {
     var parasByIDs, filterParameter;

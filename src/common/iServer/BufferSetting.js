@@ -1,11 +1,14 @@
-﻿/**
- * Class: BufferSetting
- * 缓冲区分析通用设置类
- */
-require('../REST');
+﻿require('../REST');
 var SuperMap = require('../SuperMap');
 var BufferDistance = require('./BufferDistance');
 SuperMap.BufferSetting = SuperMap.Class({
+    /**
+     * @class SuperMap.BufferSetting
+     * @constructs SuperMap.BufferSetting
+     * @classdesc
+     * 缓冲区分析通用设置类
+     * @api
+     */
 
     /**
      * APIProperty: endType
@@ -47,17 +50,15 @@ SuperMap.BufferSetting = SuperMap.Class({
     radiusUnit: SuperMap.Unit.METER,
 
     /**
-     * Constructor: BufferSetting
-     * 缓冲区分析通用设置类构造函数。
+
+     * @method SuperMap.BufferSetting.initialize
+     * @param options - {Object} 参数。
      *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * endType - {<SuperMap.BufferEndType>} 缓冲区端点枚举值。
-     * leftDistance - {<BufferDistance>} 左侧缓冲距离。
-     * rightDistance - {<BufferDistance>} 右侧缓冲距离。
-     * semicircleLineSegment - {Number} 圆头缓冲圆弧处线段的个数。
+     * Allowed options properties:</br>
+     * endType - {<SuperMap.BufferEndType>} 缓冲区端点枚举值。</br>
+     * leftDistance - {<BufferDistance>} 左侧缓冲距离。</br>
+     * rightDistance - {<BufferDistance>} 右侧缓冲距离。</br>
+     * semicircleLineSegment - {Number} 圆头缓冲圆弧处线段的个数。</br>
      */
     initialize: function (options) {
         var me = this;
@@ -68,7 +69,7 @@ SuperMap.BufferSetting = SuperMap.Class({
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

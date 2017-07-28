@@ -1,21 +1,17 @@
-﻿/**
- * Class: SuperMap.TransferSolutionService
- * 交通换乘方案查询服务类。
- * 返回结果通过该类支持的事件的监听函数参数获取
- *
- * Inherits from:
- *  - <SuperMap.ServiceBase>
- */
-require('./ServiceBase');
+﻿require('./ServiceBase');
 require('./TransferSolutionParameters');
 var SuperMap = require('../SuperMap');
 SuperMap.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
-
     /**
-     * Constructor: SuperMap.TransferSolutionService
-     * 交通换乘方案查询服务类构造函数。
-     *
-     * 例如：
+     * @class SuperMap.TransferSolutionService
+     * @constructs SuperMap.TransferSolutionService
+     * @classdesc
+     * 交通换乘方案查询服务类。
+     * 返回结果通过该类支持的事件的监听函数参数获取。
+     * @extends {SuperMap.ServiceBase}
+     * @api
+
+     * @example 例如：
      * (start code)
      * var myService = new SuperMap.TransferSolutionService(url, {eventListeners: {
      *     "processCompleted": trafficTransferCompleted,
@@ -24,19 +20,23 @@ SuperMap.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
      * };
      * (end)
      *
-     * Parameters:
-     * url - {String} 与客户端交互的交通换乘方案查询服务地址。
-     * 例如:"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
-     * options - {Object} 参数。
      *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     */
+
+    /**
+     *
+     * @method SuperMap.TransferSolutionService.initialize
+     * @param url - {String} 与客户端交互的交通换乘方案查询服务地址。
+     * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * eventListeners - {Object} 需要被注册的监听器对象。</br>
      */
     initialize: function (url, options) {
         SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
@@ -45,11 +45,9 @@ SuperMap.TransferSolutionService = SuperMap.Class(SuperMap.ServiceBase, {
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的更新参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.TransferSolutionParameters>} 交通换乘参数。
+     * @method SuperMap.TransferSolutionService.processAsync
+     * @description 负责将客户端的更新参数传递到服务端。
+     * @param params - {SuperMap.TransferSolutionParameters} 交通换乘参数。
      */
     processAsync: function (params) {
         if (!params) {

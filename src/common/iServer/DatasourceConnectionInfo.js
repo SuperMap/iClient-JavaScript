@@ -1,15 +1,18 @@
-﻿/**
- * Class: SuperMap.DatasourceConnectionInfo
- * 数据源连接信息类。
- * 该类包括了进行数据源连接的所有信息，如所要连接的服务器名称、数据库名称、用户名以及密码等。
- * 当保存为工作空间时， 工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的
- * 数据源，其连接信息有所区别。所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。
- * 对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，其 他内容是不可以被修改的。
- * 对于用户创建的数据源连接信息对象，其内容都可以修改。
- */
-require('../REST');
+﻿require('../REST');
 var SuperMap = require('../SuperMap');
 SuperMap.DatasourceConnectionInfo = SuperMap.Class({
+    /**
+     * @class SuperMap.DatasourceConnectionInfo
+     * @constructs SuperMap.DatasourceConnectionInfo
+     * @classdesc
+     * 数据源连接信息类。
+     * 该类包括了进行数据源连接的所有信息，如所要连接的服务器名称、数据库名称、用户名以及密码等。
+     * 当保存为工作空间时， 工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的
+     * 数据源，其连接信息有所区别。所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。
+     * 对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，其 他内容是不可以被修改的。
+     * 对于用户创建的数据源连接信息对象，其内容都可以修改。
+     * @api
+     */
 
     /**
      * APIProperty: alias
@@ -91,24 +94,22 @@ SuperMap.DatasourceConnectionInfo = SuperMap.Class({
     user: null,
 
     /**
-     * Constructor: DatasourceConnectionInfo
-     * 数据源连接信息类构造函数。
      *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * alias - {String} 数据源别名。
-     * connect - {Boolean} 数据源是否自动连接数据。
-     * dataBase - {String} 数据源连接的数据库名。
-     * driver - {String} 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。
-     * engineType - {<EngineType>} 数据源连接的引擎类型。
-     * exclusive - {Boolean} 是否以独占方式打开数据源。
-     * OpenLinkTable - {Boolean} 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。
-     * password - {String} 登录数据源连接的数据库或文件的密码。
-     * readOnly - {Boolean} 是否以只读方式打开数据源。
-     * server - {String} 数据库服务器名或 SDB 文件名。
-     * user - {String} 登录数据库的用户名。
+     * @method SuperMap.DatasourceConnectionInfo.initialize
+     * @description 数据源连接信息类构造函数。
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * alias - {String} 数据源别名。</br>
+     * connect - {Boolean} 数据源是否自动连接数据。</br>
+     * dataBase - {String} 数据源连接的数据库名。</br>
+     * driver - {String} 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。</br>
+     * engineType - {<EngineType>} 数据源连接的引擎类型。</br>
+     * exclusive - {Boolean} 是否以独占方式打开数据源。</br>
+     * OpenLinkTable - {Boolean} 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。</br>
+     * password - {String} 登录数据源连接的数据库或文件的密码。</br>
+     * readOnly - {Boolean} 是否以只读方式打开数据源。</br>
+     * server - {String} 数据库服务器名或 SDB 文件名。</br>
+     * user - {String} 登录数据库的用户名。</br>
      */
     initialize: function (options) {
         if (options) {
@@ -116,7 +117,7 @@ SuperMap.DatasourceConnectionInfo = SuperMap.Class({
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

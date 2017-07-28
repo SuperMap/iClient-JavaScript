@@ -1,12 +1,16 @@
 ﻿/**
- * Class: GridCellInfosService
+ * @class ol.supermap.GridCellInfosService
+ * @constructs ol.supermap.GridCellInfosService
+ * @classdesc
  * 数据栅格查询服务
- * 用法：
+ * @example 用法：
  *      new ol.superMap.GridCellInfosService(url)
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })
+ * @api
  */
+
 require('./ServiceBase');
 var ol = require('openlayers/dist/ol-debug');
 var GetGridCellInfosService = require('../../common/iServer/GetGridCellInfosService');
@@ -17,8 +21,8 @@ ol.supermap.GridCellInfosService = function (url, options) {
 ol.inherits(ol.supermap.GridCellInfosService, ol.supermap.ServiceBase);
 
 /**
- * @param params
- * <SuperMap.GetGridCellInfosParameters>
+ * @method ol.supermap.GridCellInfosService.prototype.getGridCellInfos
+ * @param params {SuperMap.GetGridCellInfosParameters}
  * @param callback
  */
 ol.supermap.GridCellInfosService.prototype.getGridCellInfos = function (params, callback) {

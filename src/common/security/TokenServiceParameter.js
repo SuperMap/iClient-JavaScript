@@ -1,9 +1,15 @@
-/**
+/*
  * token申请参数
  */
 require('../REST');
 var SuperMap = require('../SuperMap');
-
+/**
+ * @class SuperMap.TokenServiceParameter
+ * @constructs  SuperMap.TokenServiceParameter
+ * @classdesc
+ * token申请参数
+ * @api
+ */
 SuperMap.TokenServiceParameter = SuperMap.Class({
     userName: null,
     password: null,
@@ -14,10 +20,18 @@ SuperMap.TokenServiceParameter = SuperMap.Class({
     referer: null,
     //申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
     expiration: 60,
+
+    /**
+     * @method SuperMap.TokenServiceParameter.initialize
+     * @param options - {Object} 参数。
+     */
     initialize: function (options) {
         SuperMap.Util.extend(this, options);
     },
-
+    /**
+     * @method SuperMap.TokenServiceParameter.toJSON
+     * @return {String} 参数的JSON字符串
+     */
     toJSON: function () {
         return {
             userName: this.userName,

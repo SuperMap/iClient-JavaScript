@@ -1,13 +1,18 @@
 /**
- * Class:SpatialAnalystService
+ * @class L.supermap.SpatialAnalystService
+ * @constructs SuperMap.SpatialAnalystService
+ * @classdesc
  * 空间分析服务类。
  * 提供：地区太阳辐射、缓冲区分析、点密度分析、动态分段分析、空间关系分析、插值分析、栅格代数运算、叠加分析、路由定位、路由测量计算、表面分析、地形曲率计算、泰森多边形分析。
- * 用法：
+ * @example 用法：
  *      L.supermap.spatialAnalystService(url)
  *      .bufferAnalysis(params,function(result){
- *          //doSomething 
+ *          //doSomething
  *      })
+ * @extends{ServiceBase}
+ * @api
  */
+
 var L = require("leaflet");
 var ServiceBase = require('./ServiceBase');
 var SuperMap = require('../../common/SuperMap');
@@ -38,9 +43,9 @@ var SpatialAnalystService = ServiceBase.extend({
         ServiceBase.prototype.initialize.call(this, url, options);
     },
     /**
-     * 地区太阳辐射
-     * @param params
-     * {AreaSolarRadiationParameters}
+     * @method L.supermap.SpatialAnalystService.getAreaSolarRadiationResult
+     * @description 地区太阳辐射
+     * @param params {AreaSolarRadiationParameters}
      * @param callback
      * @param resultFormat
      */
@@ -60,9 +65,9 @@ var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * 缓冲区分析
-     * @param params
-     * {DatasetBufferAnalystParameters}
+     * @method L.supermap.SpatialAnalystService.bufferAnalysis
+     * @description 缓冲区分析
+     * @param params {DatasetBufferAnalystParameters}
      * @param callback
      * @param resultFormat
      */
@@ -82,9 +87,9 @@ var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * 点密度分析
-     * @param params
-     * {DensityKernelAnalystParameters}
+     * @method L.supermap.SpatialAnalystService.densityAnalysis
+     * @description 点密度分析
+     * @param params {DensityKernelAnalystParameters}
      * @param callback
      * @param resultFormat
      */
@@ -104,9 +109,9 @@ var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * 动态分段分析
-     * @param params
-     * {GenerateSpatialDataParameters}
+     * @method L.supermap.SpatialAnalystService.generateSpatialData
+     * @description 动态分段分析
+     * @param params {GenerateSpatialDataParameters}
      * @param callback
      * @param resultFormat
      */
@@ -126,9 +131,9 @@ var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * 空间关系分析
-     * @param params
-     * {GeoRelationAnalystParameters}
+     * @method L.supermap.SpatialAnalystService.generateSpatialData
+     * @description 空间关系分析
+     * @param params {GeoRelationAnalystParameters}
      * @param callback
      * @param resultFormat
      */
@@ -148,9 +153,9 @@ var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * 插值分析
-     * @param params
-     * {InterpolationRBFAnalystParameters}
+     * @method L.supermap.SpatialAnalystService.interpolationAnalysis
+     * @description 插值分析
+     * @param params {InterpolationRBFAnalystParameters}
      * @param callback
      * @param resultFormat
      */
@@ -170,9 +175,9 @@ var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * 栅格代数运算
-     * @param params
-     * {MathExpressionAnalysisParameters}
+     * @method L.supermap.SpatialAnalystService.mathExpressionAnalysis
+     * @description 栅格代数运算
+     * @param params {MathExpressionAnalysisParameters}
      * @param callback
      * @param resultFormat
      */
@@ -192,9 +197,9 @@ var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * 叠加分析
-     * @param params
-     * {DatasetOverlayAnalystParameters}
+     * @method L.supermap.SpatialAnalystService.overlayAnalysis
+     * @description 叠加分析
+     * @param params {DatasetOverlayAnalystParameters}
      * @param callback
      * @param resultFormat
      */
@@ -214,9 +219,9 @@ var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * 路由测量计算
-     * @param params
-     * {RouteCalculateMeasureParameters}
+     * @method L.supermap.SpatialAnalystService.routeCalculateMeasure
+     * @description 路由测量计算
+     * @param params {RouteCalculateMeasureParameters}
      * @param callback
      * @param resultFormat
      */
@@ -236,9 +241,9 @@ var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * 路由定位
-     * @param params
-     * {RouteLocatorParameters}
+     * @method L.supermap.SpatialAnalystService.routeLocate
+     * @description 路由定位
+     * @param params {RouteLocatorParameters}
      * @param callback
      * @param resultFormat
      */
@@ -258,9 +263,9 @@ var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * 表面分析
-     * @param params
-     * {DatasetSurfaceAnalystParameters}
+     * @method L.supermap.SpatialAnalystService.surfaceAnalysis
+     * @description 表面分析
+     * @param params {DatasetSurfaceAnalystParameters}
      * @param callback
      * @param resultFormat
      */
@@ -280,9 +285,9 @@ var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * 地形曲率计算
-     * @param params
-     * {TerrainCurvatureCalculationParameters}
+     * @method L.supermap.SpatialAnalystService.terrainCurvatureCalculate
+     * @description 地形曲率计算
+     * @param params {TerrainCurvatureCalculationParameters}
      * @param callback
      * @param resultFormat
      */
@@ -302,9 +307,9 @@ var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * 泰森多边形分析
-     * @param params
-     * {DatasetThiessenAnalystParameters}
+     * @method L.supermap.SpatialAnalystService.thiessenAnalysis
+     * @description 泰森多边形分析
+     * @param params {DatasetThiessenAnalystParameters}
      * @param callback
      * @param resultFormat
      */

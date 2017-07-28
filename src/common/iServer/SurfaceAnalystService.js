@@ -1,44 +1,44 @@
-﻿/**
- * Class: SuperMap.SurfaceAnalystService
- * 表面分析服务类。
- * 该类负责将客户设置的表面分析服务参数传递给服务端，并接收服务端返回的表面分析服务分析结果数据。
- * 表面分析结果通过该类支持的事件的监听函数参数获取
- *
- * Inherits from:
- *  - <SuperMap.SpatialAnalystBase>
- */
-require('./SpatialAnalystBase');
+﻿require('./SpatialAnalystBase');
 require('./DatasetSurfaceAnalystParameters');
 require('./GeometrySurfaceAnalystParameters');
 var SuperMap = require('../SuperMap');
 SuperMap.SurfaceAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-
     /**
-     * Constructor: SuperMap.SurfaceAnalystService
-     * 表面分析服务类构造函数。
-     *
-     * 例如：
+     * @class SuperMap.SurfaceAnalystService
+     * @constructs SuperMap.SurfaceAnalystService
+     * @classdesc
+     * 表面分析服务类。
+     * 该类负责将客户设置的表面分析服务参数传递给服务端，并接收服务端返回的表面分析服务分析结果数据。
+     * 表面分析结果通过该类支持的事件的监听函数参数获取
+     * @extends {SuperMap.SpatialAnalysctBase}
+     * @api
+     * @example 例如：
      * (start code)
      * var mySurfaceAnalystService = new SuperMap.SurfaceAnalystService(url, {
      *      eventListeners: {
-     *	       "processCompleted": surfaceAnalysCompleted, 
+     *	       "processCompleted": surfaceAnalysCompleted,
      *		   "processFailed": surfaceAnalysFailed
      *		   }
      * });
      * (end)
      *
-     * Parameters:
-     * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * options - {Object} 参数。
      *
-     * Allowed options properties:
+     */
+
+    /**
+     *
+     * @method SuperMap.SurfaceAnalystService.initialize
+     * @param options - {Object} 参数。
+     * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+     * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
+     *
      */
     initialize: function (url, options) {
         SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源,将引用的资源属性置空。
      */
@@ -47,11 +47,9 @@ SuperMap.SurfaceAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的表面分析服务参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.SurfaceAnalystParameters>}
+     * @method SuperMap.SurfaceAnalystService.processAsync
+     * @description 负责将客户端的表面分析服务参数传递到服务端。
+     * @param params - {SuperMap.SurfaceAnalystParameters}
      */
     processAsync: function (params) {
         if (!params) {
@@ -69,14 +67,10 @@ SuperMap.SurfaceAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
     },
 
     /**
-     * Method: getJsonParameters
-     * 将参数转化为 JSON 字符串。
-     *
-     * Parameters:
-     * params - {<SuperMap.SurfaceAnalystParameters>}
-     *
-     * Returns:
-     * {Object} 转化后的JSON字符串。
+     * @method SuperMap.SurfaceAnalystService.getJsonParameters
+     * @description 将参数转化为 JSON 字符串。
+     * @param params - {SuperMap.SurfaceAnalystParameters}
+     * @return {Object} 转化后的JSON字符串。
      */
     getJsonParameters: function (params) {
         var jsonParameters = "";

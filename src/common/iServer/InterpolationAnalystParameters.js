@@ -1,10 +1,13 @@
-﻿/**
- * Class: SuperMap.InterpolationAnalystParameters
- * 插值分析参数类
- */
-require('../REST');
+﻿require('../REST');
 var SuperMap = require('../SuperMap');
 SuperMap.InterpolationAnalystParameters = SuperMap.Class({
+    /**
+     * @class SuperMap.InterpolationAnalystParameters
+     * @constructs SuperMap.InterpolationAnalystParameters
+     * @classdesc
+     * 插值分析参数类。
+     * @api
+     */
 
     /**
      * APIProperty: bounds
@@ -101,26 +104,21 @@ SuperMap.InterpolationAnalystParameters = SuperMap.Class({
     clipParam: null,
 
     /**
-     * Constructor: SuperMap.InterpolationAnalystParameters
-     * 插值分析参数基类构造函数。不能用于实例化插值分析参数。
-     * 使用其具体子类（如点密度差值分析参数类）实例化对应的插值分析参数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * bounds - {<SuperMap.Bounds>} 插值分析的范围，用于确定结果栅格数据集的范围。
-     * searchRadius - {Number} 查找半径，即参与运算点的查找范围，与点数据集单位相同。
-     * zValueFieldName - {String} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。
-     * zValueScale - {Number} 用于进行插值分析值的缩放比率，默认为1。
-     * resolution - {Number} 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。
-     * filterQueryParameter - {<SuperMap.FilterParameter>} 属性过滤条件。
-     * outputDatasetName - {String} 插值分析结果数据集的名称。
-     * outputDatasourceName - {String} 插值分析结果数据源的名称。
-     * pixelFormat - {<SuperMap.PixelFormat>} 指定结果栅格数据集存储的像素格式。
-     * dataset - {String} 用于做插值分析的数据源中数据集的名称。
-     * inputPoints - {Array <Point||Array>} 用于做插值分析的离散点集合。
-     * InterpolationAnalystType - {String} 插值分析类型（dataset或geometry），默认为dataset 。
+     * @method SuperMap.InterpolationAnalystParameters.initialize
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * bounds - {<SuperMap.Bounds>} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+     * searchRadius - {Number} 查找半径，即参与运算点的查找范围，与点数据集单位相同。</br>
+     * zValueFieldName - {String} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。</br>
+     * zValueScale - {Number} 用于进行插值分析值的缩放比率，默认为1。</br>
+     * resolution - {Number} 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
+     * filterQueryParameter - {<SuperMap.FilterParameter>} 属性过滤条件。</br>
+     * outputDatasetName - {String} 插值分析结果数据集的名称。</br>
+     * outputDatasourceName - {String} 插值分析结果数据源的名称。</br>
+     * pixelFormat - {<SuperMap.PixelFormat>} 指定结果栅格数据集存储的像素格式。</br>
+     * dataset - {String} 用于做插值分析的数据源中数据集的名称。</br>
+     * inputPoints - {Array <Point||Array>} 用于做插值分析的离散点集合。</br>
+     * InterpolationAnalystType - {String} 插值分析类型（dataset或geometry），默认为dataset 。</br>
      */
     initialize: function (options) {
         if (!options) {
@@ -129,7 +127,7 @@ SuperMap.InterpolationAnalystParameters = SuperMap.Class({
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

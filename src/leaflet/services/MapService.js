@@ -1,11 +1,15 @@
 ﻿/**
- * Class: MapService
+ * @class L.supermap.mapService
+ * @constructs L.supermap.mapService
+ * @extends {ServiceBase}
+ * @classdesc
  * 地图信息服务类
- * 用法：
- *      L.supermap.mapService(url)
- *      .getMapInfo(function(result){
- *           //doSomething
- *      })
+ * @example  用法：
+ * L.supermap.mapService(url)
+ *   .getMapInfo(function(result){
+ *    //doSomething
+ *  })
+ * @api
  */
 var L = require("leaflet");
 var ServiceBase = require('./ServiceBase');
@@ -27,7 +31,8 @@ var MapService = ServiceBase.extend({
     },
 
     /**
-     * 地图信息查询服务
+     * @method L.supermap.mapService.getMapInfo
+     * @description 地图信息查询服务
      * @param callback
      */
     getMapInfo: function (callback) {
@@ -45,7 +50,8 @@ var MapService = ServiceBase.extend({
     },
 
     /**
-     * 切片列表信息查询服务
+     * @method L.supermap.mapService.getTilesets
+     * @description 切片列表信息查询服务
      * @param callback
      */
     getTilesets: function (callback) {

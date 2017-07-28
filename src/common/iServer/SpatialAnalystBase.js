@@ -1,13 +1,15 @@
-﻿/**
- * Class: SuperMap.SpatialAnalystBase
- * 空间分析服务基类。
- * Inherits from:
- *  - <SuperMap.ServiceBase>
- */
-var SuperMap = require('../SuperMap');
+﻿var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
 var ServiceBase = require('./ServiceBase');
 SuperMap.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
+    /**
+     * @class SuperMap.SpatialAnalystBase
+     * @constructs SuperMap.SpatialAnalystBase
+     * @classdesc
+     * 空间分析服务基类。
+     * @extends {SuperMap.ServiceBase}
+     * @api
+     */
 
     /**
      *  Property: format
@@ -23,7 +25,7 @@ SuperMap.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用的资源属性置空。
      */
@@ -33,11 +35,9 @@ SuperMap.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
     },
 
     /**
-     * Method: serviceProcessCompleted
-     * 分析完成，执行此方法。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
+     * @method SuperMap.SpatialAnalystBase.serviceProcessCompleted
+     * @description 分析完成，执行此方法。
+     * @param result - {Object} 服务器返回的结果对象。
      */
     serviceProcessCompleted: function (result) {
         var me = this, analystResult;
@@ -51,11 +51,10 @@ SuperMap.SpatialAnalystBase = SuperMap.Class(ServiceBase, {
         me.events.triggerEvent("processCompleted", {result: analystResult});
     },
     /**
-     * Method: toGeoJSONResult
-     * 将含有geometry的数据转换为geojson格式。
+     * @method SuperMap.SpatialAnalystBase.toGeoJSONResult
+     * @description 将含有geometry的数据转换为geojson格式。
+     * @param result - {Object} 服务器返回的结果对象。
      *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
      */
     toGeoJSONResult: function (result) {
         if (!result) {

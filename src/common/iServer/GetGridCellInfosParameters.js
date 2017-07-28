@@ -1,9 +1,13 @@
-/**
- * Class: SuperMap.GetGridCellInfosParameters
- * 数据服务栅格查询参数类。
- */
 var SuperMap = require('../SuperMap');
 SuperMap.GetGridCellInfosParameters = SuperMap.Class({
+    /**
+     * @class SuperMap.GetGridCellInfosParameters
+     * @constructs SuperMap.GetGridCellInfosParameters
+     * @classdesc
+     * 数据服务栅格查询参数类。。
+     * @api
+     */
+
     /**
      * APIProperty: datasetName
      * {String} 数据集名称。
@@ -29,17 +33,14 @@ SuperMap.GetGridCellInfosParameters = SuperMap.Class({
     Y: null,
 
     /**
-     * Constructor: SuperMap.GetGridCellInfosParameters
-     * SQL 查询参数类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * datasetName - {String} 数据集名称。
-     * dataSourceName - {String} 数据源名称
-     * X - {Integer} 要查询的地理位置X轴。
-     * Y - {Integer} 要查询的地理位置Y轴。
+     * @method SuperMap.GetGridCellInfosParameters.initialize
+     * @description SQL 查询参数类构造函数。
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * datasetName - {String} 数据集名称。</br>
+     * dataSourceName - {String} 数据源名称</br>
+     * X - {Integer} 要查询的地理位置X轴。</br>
+     * Y - {Integer} 要查询的地理位置Y轴。</br>
      */
     initialize: function (options) {
         if (!options) {
@@ -48,7 +49,7 @@ SuperMap.GetGridCellInfosParameters = SuperMap.Class({
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

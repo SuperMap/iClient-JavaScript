@@ -1,12 +1,15 @@
 /**
- * Class:SpatialAnalystService
+ * @class ol.supermap.SpatialAnalystService
+ * @constructs  ol.supermap.SpatialAnalystService
+ * @classdesc
  * 空间分析服务类。
  * 提供：地区太阳辐射、缓冲区分析、点密度分析、动态分段分析、空间关系分析、插值分析、栅格代数运算、叠加分析、路由定位、路由测量计算、表面分析、地形曲率计算、泰森多边形分析。
- * 用法：
+ * @example  用法：
  *      new ol.supermap.SpatialAnalystService(url)
  *      .bufferAnalysis(params,function(result){
- *          //doSomething 
+ *          //doSomething
  *      })
+ * @api
  */
 require('./ServiceBase');
 var ol = require('openlayers/dist/ol-debug');
@@ -38,7 +41,8 @@ ol.supermap.SpatialAnalystService = function (url, options) {
 ol.inherits(ol.supermap.SpatialAnalystService, ol.supermap.ServiceBase);
 
 /**
- * 地区太阳辐射
+ * @method ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult
+ * @description 地区太阳辐射
  * @param params
  * {AreaSolarRadiationParameters}
  * @param callback
@@ -60,7 +64,8 @@ ol.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult = functi
 };
 
 /**
- * 缓冲区分析
+ * @method ol.supermap.SpatialAnalystService.prototype.bufferAnalysis
+ * @description 缓冲区分析
  * @param params
  * {DatasetBufferAnalystParameters}
  * @param callback
@@ -82,7 +87,8 @@ ol.supermap.SpatialAnalystService.prototype.bufferAnalysis = function (params, c
 };
 
 /**
- * 点密度分析
+ * @method ol.supermap.SpatialAnalystService.prototype.densityAnalysis
+ * @description 点密度分析
  * @param params
  * {DensityKernelAnalystParameters}
  * @param callback
@@ -104,7 +110,8 @@ ol.supermap.SpatialAnalystService.prototype.densityAnalysis = function (params, 
 };
 
 /**
- * 动态分段分析
+ * @method ol.supermap.SpatialAnalystService.prototype.generateSpatialData
+ * @description 动态分段分析
  * @param params
  * {GenerateSpatialDataParameters}
  * @param callback
@@ -126,7 +133,8 @@ ol.supermap.SpatialAnalystService.prototype.generateSpatialData = function (para
 };
 
 /**
- * 空间关系分析
+ * @method ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis
+ * @description 空间关系分析
  * @param params
  * {GeoRelationAnalystParameters}
  * @param callback
@@ -148,7 +156,8 @@ ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis = function (para
 };
 
 /**
- * 插值分析
+ * @method ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis
+ * @description 插值分析
  * @param params
  * {InterpolationRBFAnalystParameters}
  * @param callback
@@ -170,7 +179,8 @@ ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis = function (pa
 };
 
 /**
- * 栅格代数运算
+ * @method ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis
+ * @description 栅格代数运算
  * @param params
  * {MathExpressionAnalysisParameters}
  * @param callback
@@ -192,7 +202,8 @@ ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis = function (p
 };
 
 /**
- * 叠加分析
+ * @method ol.supermap.SpatialAnalystService.prototype.overlayAnalysis
+ * @description 叠加分析
  * @param params
  * {DatasetOverlayAnalystParameters}
  * @param callback
@@ -214,7 +225,8 @@ ol.supermap.SpatialAnalystService.prototype.overlayAnalysis = function (params, 
 };
 
 /**
- * 路由测量计算
+ * @method ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure
+ * @description 路由测量计算
  * @param params
  * {RouteCalculateMeasureParameters}
  * @param callback
@@ -236,7 +248,8 @@ ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure = function (pa
 };
 
 /**
- * 路由定位
+ * @method ol.supermap.SpatialAnalystService.prototype.routeLocate
+ * @description 路由定位
  * @param params
  * {RouteLocatorParameters}
  * @param callback
@@ -258,7 +271,8 @@ ol.supermap.SpatialAnalystService.prototype.routeLocate = function (params, call
 };
 
 /**
- * 表面分析
+ * @method ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis
+ * @description 表面分析
  * @param params
  * {DatasetSurfaceAnalystParameters}
  * @param callback
@@ -280,7 +294,8 @@ ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis = function (params, 
 };
 
 /**
- * 地形曲率计算
+ * @method ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate
+ * @description 地形曲率计算
  * @param params
  * {TerrainCurvatureCalculationParameters}
  * @param callback
@@ -302,7 +317,8 @@ ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate = function
 };
 
 /**
- * 泰森多边形分析
+ * @method ol.supermap.SpatialAnalystService.prototype.thiessenAnalysis
+ * @description 泰森多边形分析
  * @param params
  * {DatasetThiessenAnalystParameters}
  * @param callback

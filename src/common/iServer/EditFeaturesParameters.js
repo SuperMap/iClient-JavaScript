@@ -1,10 +1,13 @@
-﻿/**
- * Class: SuperMap.EditFeaturesParameters
- * 数据服务中数据集添加、修改、删除参数类。
- */
-require('../REST');
+﻿require('../REST');
 var SuperMap = require('../SuperMap');
 SuperMap.EditFeaturesParameters = SuperMap.Class({
+    /**
+     * @class SuperMap.EditFeaturesParameters
+     * @constructs SuperMap.EditFeaturesParameters
+     * @classdesc
+     * 数据服务中数据集添加、修改、删除参数类。
+     * @api
+     */
 
     /**
      * APIProperty: dataSourceName
@@ -50,17 +53,15 @@ SuperMap.EditFeaturesParameters = SuperMap.Class({
     isUseBatch: false,
 
     /**
-     * Constructor: EditFeaturesParameters
-     * 数据服务中数据集添加、修改、删除参数类构造函数。
+     * @method SuperMap.EditFeaturesParameters.initialize
+     * @description 数据服务中数据集添加、修改、删除参数类构造函数。
+     * @param options - {Object} 参数。
      *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * features - {Array(Object)} 当前需要创建或者是修改的要素集。
-     * returnContent - {Boolean} 是返回创建要素的ID数组还是返回featureResult资源的URI。
-     * editType - {<SuperMap.EditType>} POST动作类型(ADD、UPDATE、DELETE)，默认为 SuperMap.EditType.ADD。
-     * IDs - {Array(String) 或 Array(Integer)} 删除要素时的要素的ID数组。
+     * Allowed options properties:</br>
+     * features - {Array(Object)} 当前需要创建或者是修改的要素集。</br>
+     * returnContent - {Boolean} 是返回创建要素的ID数组还是返回featureResult资源的URI。</br>
+     * editType - {<SuperMap.EditType>} POST动作类型(ADD、UPDATE、DELETE)，默认为 SuperMap.EditType.ADD。</br>
+     * IDs - {Array(String) 或 Array(Integer)} 删除要素时的要素的ID数组。</br>
      */
     initialize: function (options) {
         if (!options) {
@@ -69,7 +70,7 @@ SuperMap.EditFeaturesParameters = SuperMap.Class({
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
@@ -86,14 +87,10 @@ SuperMap.EditFeaturesParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.EditFeaturesParameters"
 });
 /**
- * Function: SuperMap.EditFeaturesParameters.toJsonParameters
- * 将 <EditFeaturesParameters> 对象参数转换为 json 字符串。
- *
- * Parameters:
- * params - {<SuperMap.EditFeaturesParameters>} 地物编辑参数。
- *
- * Returns:
- * {String} 转化后的 json字符串。
+ * @method SuperMap.EditFeaturesParameters.toJsonParameters
+ * @description 将 <EditFeaturesParameters> 对象参数转换为 json 字符串。
+ * @param params - {SuperMap.EditFeaturesParameters} 地物编辑参数。
+ * return {String} 转化后的 json字符串。
  */
 SuperMap.EditFeaturesParameters.toJsonParameters = function (params) {
     var geometry,

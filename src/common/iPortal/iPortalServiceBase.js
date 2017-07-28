@@ -1,27 +1,47 @@
 /**
- * iPortal服务基类(有权限限制的类需要实现此类)
+ * @class SuperMap.iPortalServiceBase
+ * @classdesc iPortal服务基类(有权限限制的类需要实现此类)
  */
+
 var SuperMap = require('../SuperMap');
 var Request = require('../util/FetchRequest');
 var SecurityManager = require('../security/SecurityManager');
 
 SuperMap.iPortalServiceBase = SuperMap.Class({
-
+    /**
+     * @method SuperMap.iPortalServiceBase.initialize
+     *
+     * @param url
+     */
     initialize: function (url) {
         var me = this;
         me.serviceUrl = url;
         me.serverType = SuperMap.ServerType.ONLINE;
     },
 
-    //子类统一通过该方法发送请求
+    /**
+     * @method SuperMap.iPortalServiceBase.request
+     * @description 子类统一通过该方法发送请求
+     * @param url
+     * @param method
+     * @param param
+     * @param requestOptions
+     *
+     */
+ 
     request: function (method, url, param, requestOptions) {
         url = this.createCredentialUrl(url);
         return Request.commit(method, url, param, requestOptions).then(function (response) {
             return response.json();
         });
     },
+    /**
+     * @method SuperMap.iPortalServiceBase.createCredentialUrl
+     * @description 追加授权信息
+     * @param url
+     * @return {string}
+     */
 
-    //追加授权信息
     createCredentialUrl: function (url) {
         var newUrl = url,
             credential = this.getCredential();
@@ -39,7 +59,12 @@ SuperMap.iPortalServiceBase = SuperMap.Class({
         }
         return newUrl;
     },
-
+    /**
+     * @method  SuperMap.iPortalServiceBase.getCredential
+     * @description 获取token
+     * @return {string } 返回获取的token
+     *
+     */
 
     getCredential: function () {
         var credential,
@@ -51,9 +76,11 @@ SuperMap.iPortalServiceBase = SuperMap.Class({
         }
         return credential;
     },
-
-    //其子类需要重写该方法，修改其中获取key的字段
-    //存储key可能是服务id字段，可能是url
+    /**
+     * @method SuperMap.iPortalServiceBase.getKey
+     * @description 其子类需要重写该方法，修改其中获取key的字段
+     * 存储key可能是服务id字段，可能是url
+     */
     getKey: function () {
         //return SecurityManager.getKey(this.id);
         //或

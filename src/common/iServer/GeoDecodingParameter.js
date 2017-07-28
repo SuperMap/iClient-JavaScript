@@ -1,13 +1,15 @@
-var SuperMap = require('../SuperMap');
 /**
- * Class: SuperMap.GeoDecodingParameter
+ * @class SuperMap.GeoDecodingParameter
+ * @constructs SuperMap.GeoDecodingParameter
+ * @classdesc
  * 地理反向匹配参数类。
+ * @api
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.GeoDecodingParameter = SuperMap.Class({
 
     /**
-     * APIProperty: x
+     * APIProperty : x
      * {number} 查询位置的横坐标。
      */
     x: null,
@@ -54,6 +56,11 @@ SuperMap.GeoDecodingParameter = SuperMap.Class({
      */
     geoDecodingRadius: null,
 
+    /**
+     *
+     * @method SuperMap.GeoDecodingParameter.initialize
+     * @param options - {Object} 参数。
+     */
     initialize: function (options) {
         if (!options) {
             return;
@@ -69,7 +76,7 @@ SuperMap.GeoDecodingParameter = SuperMap.Class({
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

@@ -1,9 +1,12 @@
-﻿/**
- * Class: SuperMap.ThiessenAnalystParameters
- * 泰森多边形分析参数基类。
- */
-var SuperMap = require('../SuperMap');
+﻿var SuperMap = require('../SuperMap');
 SuperMap.ThiessenAnalystParameters = SuperMap.Class({
+    /**
+     * @class SuperMap.ThiessenAnalystParameters
+     * @constructs SuperMap.ThiessenAnalystParameters
+     * @classdesc
+     * 泰森多边形分析参数基类。
+     * @api
+     */
 
     /**
      * APIProperty: clipRegion
@@ -37,18 +40,14 @@ SuperMap.ThiessenAnalystParameters = SuperMap.Class({
 
 
     /**
-     * Constructor: ThiessenAnalystParameters
-     * 泰森多边形分析参数基类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * clipRegion - {<SuperMap.Geometry>} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。
-     * createResultDataset - {Boolean} 是否返回结果数据集，默认不返回。
-     * resultDatasetName - {Boolean} 指定结果数据集名称。
-     * resultDatasourceName - {Boolean} 指定结果数据集所在数据源，默认为当前数据源。
-     * returnResultRegion - {Boolean} 是否返回分析得到的多边形面数组，默认返回。
+     * @method SuperMap.ThiessenAnalystParameters.initialize
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * clipRegion - {<SuperMap.Geometry>} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
+     * createResultDataset - {Boolean} 是否返回结果数据集，默认不返回。</br>
+     * resultDatasetName - {Boolean} 指定结果数据集名称。</br>
+     * resultDatasourceName - {Boolean} 指定结果数据集所在数据源，默认为当前数据源。</br>
+     * returnResultRegion - {Boolean} 是否返回分析得到的多边形面数组，默认返回。</br>
      */
     initialize: function (options) {
         if (!options) {
@@ -57,7 +56,7 @@ SuperMap.ThiessenAnalystParameters = SuperMap.Class({
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

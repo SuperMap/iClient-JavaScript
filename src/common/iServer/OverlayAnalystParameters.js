@@ -1,10 +1,13 @@
-﻿/**
- * Class: SuperMap.OverlayAnalystParameters
- * 叠加分析参数基类，数据集叠加分析参数和几何对象叠加分析参数均继承此基类
- */
-require('../REST');
+﻿require('../REST');
 var SuperMap = require('../SuperMap');
 SuperMap.OverlayAnalystParameters = SuperMap.Class({
+    /**
+     * @class SuperMap.OverlayAnalystParameters
+     * @constructs SuperMap.OverlayAnalystParameters
+     * @classdesc
+     * 叠加分析参数基类，数据集叠加分析参数和几何对象叠加分析参数均继承此基类
+     * @api
+     */
 
     /**
      * Property: operation
@@ -13,14 +16,11 @@ SuperMap.OverlayAnalystParameters = SuperMap.Class({
     operation: SuperMap.OverlayOperationType.UNION,
 
     /**
-     * Constructor: OverlayAnalystParameters
-     * 叠加分析参数基类构造函数构造函数。
+     * @method SuperMap.OverlayAnalystParameters.initialize
+     * @param options - {Object} 参数。
      *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * operation - {<SuperMap.OverlayOperationType>} 指定叠加分析操作类型。
+     * Allowed options properties:</br>
+     * operation - {SuperMap.OverlayOperationType} 指定叠加分析操作类型。
      */
     initialize: function (options) {
         var me = this;
@@ -29,7 +29,7 @@ SuperMap.OverlayAnalystParameters = SuperMap.Class({
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

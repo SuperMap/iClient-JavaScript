@@ -1,11 +1,14 @@
 ﻿/**
- * Class: MapService
+ * @class ol.supermap.MapService
+ * @constructs ol.supermap.MapService
+ * @classdesc
  * 地图信息服务类
- * 用法：
+ * @example 用法：
  *      new ol.superMap.MapService(url)
  *      .getMapInfo(function(result){
  *           //doSomething
  *      })
+ * @api
  */
 require('./ServiceBase');
 var ol = require('openlayers/dist/ol-debug');
@@ -18,7 +21,8 @@ ol.supermap.MapService = function (url, options) {
 ol.inherits(ol.supermap.MapService, ol.supermap.ServiceBase);
 
 /**
- * 地图信息查询服务
+ * @method ol.supermap.MapService.prototype.getMapInfo
+ * @description 地图信息查询服务
  * @param callback
  */
 ol.supermap.MapService.prototype.getMapInfo = function (callback) {
@@ -36,7 +40,8 @@ ol.supermap.MapService.prototype.getMapInfo = function (callback) {
 };
 
 /**
- * 切片列表信息查询服务
+ * @method ol.supermap.MapService.prototype.getTilesets
+ * @description 切片列表信息查询服务
  * @param callback
  */
 ol.supermap.MapService.prototype.getTilesets = function (callback) {

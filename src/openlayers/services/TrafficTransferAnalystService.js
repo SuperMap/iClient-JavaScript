@@ -1,11 +1,14 @@
 ﻿/**
- * Class: TrafficTransferAnalystService
+ * @class ol.supermap.TrafficTransferAnalystService
+ * @constructs  ol.supermap.TrafficTransferAnalystService
+ * @classdesc
  * 交通换乘分析服务类
- * 用法：
+ * @example 用法
  *      new ol.supermap.TrafficTransferAnalystService(url)
  *      .queryStop(params,function(result){
  *           //doSomething
  *      })
+ * @api
  */
 require('./ServiceBase');
 var ol = require('openlayers/dist/ol-debug');
@@ -21,9 +24,9 @@ ol.supermap.TrafficTransferAnalystService = function (url, options) {
 ol.inherits(ol.supermap.TrafficTransferAnalystService, ol.supermap.ServiceBase);
 
 /**
- * 站点查询服务
- * @param params
- * {StopQueryParameters}
+ * @method ol.supermap.TrafficTransferAnalystService.prototype.queryStop
+ * @description 站点查询服务
+ * @param params {StopQueryParameters}
  * @param callback
  */
 ol.supermap.TrafficTransferAnalystService.prototype.queryStop = function (params, callback) {
@@ -41,9 +44,9 @@ ol.supermap.TrafficTransferAnalystService.prototype.queryStop = function (params
 };
 
 /**
- * 交通换乘线路查询服务
- * @param params
- * {TransferPathParameters}
+ * @method ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath
+ * @description 交通换乘线路查询服务
+ * @param params {TransferPathParameters}
  * @param callback
  */
 ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath = function (params, callback) {
@@ -61,9 +64,9 @@ ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath = funct
 };
 
 /**
- * 交通换乘方案查询服务
- * @param params
- *{TransferSolutionParameters}
+ * @method ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution
+ * @description 交通换乘方案查询服务
+ * @param params {TransferSolutionParameters}
  * @param callback
  */
 ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution = function (params, callback) {

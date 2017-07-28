@@ -1,28 +1,46 @@
-﻿/**
- * Class: SuperMap.GetFeaturesServiceBase
- * 数据服务中数据集查询服务基类。
- * 获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON
- *
- * Inherits from:
- *  - <SuperMap.ServiceBase>
- */
-require('../REST');
+﻿require('../REST');
 require('./ServiceBase');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
+/**
+ * @class SuperMap.GetFeaturesServiceBase
+ * @constructs  SuperMap.GetFeaturesServiceBase
+ * @classdesc
+ * 数据服务中数据集查询服务基类。
+ * 获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON
+ *
+ * @extends {SuperMap.ServiceBase}
+ * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
+ * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/</br>
+ * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
+ * @param eventListeners - {Object} 需要被注册的监听器对象。
+ * @example
+ *
+ *
+ * (start code)
+ * var myService = new SuperMap.GetFeaturesServiceBase(url, {
+     *     eventListeners: {
+     *         "processCompleted": getFeatureCompleted,
+     *         "processFailed": getFeatureError
+     *     }
+     * });
+ * (end)
+ *
+ * @api
+ */
 SuperMap.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Property: returnContent
-     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。
+     * @property {Boolean} returnContent
+     *          @description 是否立即返回新创建资源的表述还是返回新资源的URI。
      *           如果为 true，则直接返回新创建资源，即查询结果的表述。
      *           如果为 false，则返回的是查询结果资源的 URI。默认为 false。
      */
     returnContent: true,
 
     /**
-     * Property: fromIndex
-     * {Integer} 查询结果的最小索引号。
+     * @property {Integer} fromIndex
+     * @description查询结果的最小索引号。
      *         默认值是0，如果该值大于查询结果的最大索引号，则查询结果为空。
      */
     fromIndex: 0,
@@ -41,34 +59,20 @@ SuperMap.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
     maxFeatures: null,
 
     /**
-     *  Property: format
-     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+     *  @property {String} format
+     *  @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
     format: SuperMap.DataFormat.GEOJSON,
 
-    /**
-     * Constructor: SuperMap.GetFeaturesServiceBase
-     * 数据集查询服务基类构造函数。
-     *
-     * 例如：
-     * (start code)
-     * var myService = new SuperMap.GetFeaturesServiceBase(url, {
-     *     eventListeners: {
-     *         "processCompleted": getFeatureCompleted, 
-     *         "processFailed": getFeatureError
-     *     }
-     * });
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
+
+    /* @method SuperMap.GetFeaturesServiceBase.initialize
+     * @description数据集查询服务基类构造函数。
+     * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
      * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
      * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
-     * options - {Object} 参数。
+     * @param options - {Object} 参数。
      *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
         SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
@@ -95,7 +99,7 @@ SuperMap.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
@@ -110,11 +114,9 @@ SuperMap.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<GetFeaturesParametersBase>} 查询参数。
+     *@method SuperMap.GetFeaturesServiceBase.processAsync
+     * @description  负责将客户端的查询参数传递到服务端。
+     *@param params - {GetFeaturesParametersBase} 查询参数。
      */
     processAsync: function (params) {
         if (!params) {
@@ -149,11 +151,9 @@ SuperMap.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
     },
 
     /**
-     * Method: getFeatureComplete
-     * 查询完成，执行此方法。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
+     * @method SuperMap.GetFeaturesServiceBase.getFeatureComplete
+     * @description 查询完成，执行此方法。
+     * @param result - {Object} 服务器返回的结果对象。
      */
     serviceProcessCompleted: function (result) {
         var me = this;

@@ -1,12 +1,15 @@
 /**
- * Class: FeatureService
+ * @class ol.supermap.FeatureService
+ * @constructs ol.supermap.FeatureService
+ * @classdesc
  * 数据集类。
  * 提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询，地物编辑
- * 用法：
+ * @example 用法：
  *      new ol.superMap.FeatureService(url)
  *      .getFeaturesByIDs(param,function(result){
  *          //doSomething
  *      })
+ * @api
  */
 require('./ServiceBase');
 var ol = require('openlayers/dist/ol-debug');
@@ -25,12 +28,11 @@ ol.supermap.FeatureService = function (url, options) {
 ol.inherits(ol.supermap.FeatureService, ol.supermap.ServiceBase);
 
 /**
- * 数据集ID查询服务
- * @param params:
- * <SuperMap.GetFeaturesByIDsParameters>
+ * @method ol.supermap.FeatureService.prototype.getFeaturesByIDs
+ * @description 数据集ID查询服务
+ * @param params {SuperMap.GetFeaturesByIDsParameters}
  * @param callback
- * @param resultFormat
- * <SuperMap.DataFormat>
+ * @param resultFormat {SuperMap.DataFormat}
  */
 ol.supermap.FeatureService.prototype.getFeaturesByIDs = function (params, callback, resultFormat) {
     var me = this;
@@ -48,12 +50,11 @@ ol.supermap.FeatureService.prototype.getFeaturesByIDs = function (params, callba
 };
 
 /**
- * 数据集Bounds查询服务
- * @param params:
- * <SuperMap.GetFeaturesByBoundsParameters>
+ * @method ol.supermap.FeatureService.prototype.getFeaturesByBounds
+ * @description 数据集Bounds查询服务
+ * @param params {SuperMap.GetFeaturesByBoundsParameters}
  * @param callback
- * @param resultFormat
- * <SuperMap.DataFormat>
+ * @param resultFormat {SuperMap.DataFormat}
  */
 ol.supermap.FeatureService.prototype.getFeaturesByBounds = function (params, callback, resultFormat) {
     var me = this;
@@ -70,12 +71,11 @@ ol.supermap.FeatureService.prototype.getFeaturesByBounds = function (params, cal
 };
 
 /**
- * 数据集Buffer查询服务
- * @param params:
- * <SuperMap.GetFeaturesByBufferParameters>
+ * @method ol.supermap.FeatureService.prototype.getFeaturesByBuffer
+ * @description 数据集Buffer查询服务
+ * @param params {SuperMap.GetFeaturesByBufferParameters}
  * @param callback
- * @param resultFormat
- * <SuperMap.DataFormat>
+ * @param resultFormat {SuperMap.DataFormat}
  */
 ol.supermap.FeatureService.prototype.getFeaturesByBuffer = function (params, callback, resultFormat) {
     var me = this;
@@ -92,12 +92,11 @@ ol.supermap.FeatureService.prototype.getFeaturesByBuffer = function (params, cal
 };
 
 /**
- * 数据集SQL查询服务
- * @param params:
- * <SuperMap.GetFeaturesBySQLParameters>
+ * @method ol.supermap.FeatureService.prototype.getFeaturesBySQL
+ * @description 数据集SQL查询服务
+ * @param params {SuperMap.GetFeaturesBySQLParameters}
  * @param callback
- * @param resultFormat
- * <SuperMap.DataFormat>
+ * @param resultFormat {SuperMap.DataFormat}
  */
 ol.supermap.FeatureService.prototype.getFeaturesBySQL = function (params, callback, resultFormat) {
     var me = this;
@@ -115,12 +114,11 @@ ol.supermap.FeatureService.prototype.getFeaturesBySQL = function (params, callba
 };
 
 /**
- * 数据集几何查询服务类
- * @param params:
- * <SuperMap.GetFeaturesByGeometryParameters>
+ * @method ol.supermap.FeatureService.prototype.getFeaturesByGeometry
+ * @description 数据集几何查询服务类
+ * @param params {SuperMap.GetFeaturesByGeometryParameters}
  * @param callback
- * @param resultFormat
- * <SuperMap.DataFormat>
+ * @param resultFormat {SuperMap.DataFormat}
  */
 ol.supermap.FeatureService.prototype.getFeaturesByGeometry = function (params, callback, resultFormat) {
     var me = this;
@@ -137,9 +135,9 @@ ol.supermap.FeatureService.prototype.getFeaturesByGeometry = function (params, c
 };
 
 /**
- *  地物编辑服务
- * @param params
- * <SuperMap.EditFeaturesParameters>
+ * @method ol.supermap.FeatureService.prototype.editFeatures
+ * @description 地物编辑服务
+ * @param params {SuperMap.EditFeaturesParameters}
  * @param callback
  */
 ol.supermap.FeatureService.prototype.editFeatures = function (params, callback) {

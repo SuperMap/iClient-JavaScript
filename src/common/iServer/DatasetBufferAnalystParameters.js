@@ -1,16 +1,17 @@
-﻿/**
- * Class: SuperMap.DatasetBufferAnalystParameters
- * 数据集缓冲区分析参数类
- *
- * Inherits from:
- *  - <SuperMap.BufferAnalystParameters>
- */
-require('../REST');
+﻿require('../REST');
 require('./BufferAnalystParameters');
 var SuperMap = require('../SuperMap');
 var DataReturnOption = require('./DataReturnOption');
 var FilterParameter = require('./FilterParameter');
 SuperMap.DatasetBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystParameters, {
+    /**
+     * @class SuperMap.DatasetBufferAnalystParameters
+     * @constructs SuperMap.DatasetBufferAnalystParameters
+     * @classdesc
+     * 数据集缓冲区分析参数类
+     * @extends {SuperMap.BufferAnalystParameters}
+     * @api
+     */
 
     /**
      * APIProperty: dataset
@@ -43,19 +44,15 @@ SuperMap.DatasetBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystP
     isUnion: false,
 
     /**
-     * Constructor: SuperMap.DatasetBufferAnalystParameters
-     * 数据集缓冲区分析参数类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * dataset - {String} 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。
-     * filterQueryParameter - {<SuperMap.FilterParameter>} 设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析。
-     * resultSetting - {<SuperMap.DataReturnOption>} 结果返回设置类。
-     * isAttributeRetained - {Boolean} 是否保留进行缓冲区分析的对象的字段属性，默认为 true。当 isUnion 字段为 false 时该字段有效。
-     * isUnion - {Boolean} 是否将缓冲区与源记录集中的对象合并后返回。对于面对象而言，要求源数据集中的面对象不相交。默认为 false。
-     * bufferSetting - {<SuperMap.BufferSetting>} 设置缓冲区通用参数。
+     * @method SuperMap.DatasetBufferAnalystParameters.initialize
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * dataset - {String} 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。</br>
+     * filterQueryParameter - {<SuperMap.FilterParameter>} 设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析。</br>
+     * resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
+     * isAttributeRetained - {Boolean} 是否保留进行缓冲区分析的对象的字段属性，默认为 true。当 isUnion 字段为 false 时该字段有效。</br>
+     * isUnion - {Boolean} 是否将缓冲区与源记录集中的对象合并后返回。对于面对象而言，要求源数据集中的面对象不相交。默认为 false。</br>
+     * bufferSetting - {SuperMap.BufferSetting} 设置缓冲区通用参数。</br>
      */
     initialize: function (options) {
         var me = this;
@@ -68,7 +65,7 @@ SuperMap.DatasetBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalystP
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

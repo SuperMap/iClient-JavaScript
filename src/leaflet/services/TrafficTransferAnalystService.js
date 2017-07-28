@@ -1,12 +1,14 @@
 ﻿/**
- * Class: TrafficTransferAnalystService
+ * @class L.supermap.TrafficTransferAnalystService
+ * @constructs L.supermap.TrafficTransferAnalystService
+ * @classdesc
  * 交通换乘分析服务类
- * 用法：
- *      L.supermap
- *      .trafficTransferAnalystService(url)
- *      .queryStop(params,function(result){
- *           //doSomething
- *      })
+ * @example 用法：
+ * L.supermap。/trafficTransferAnalystService(url).queryStop(params,function(result){
+ *      //doSomething
+ *    })
+ * @extends {ServiceBase}
+ * @api
  */
 var L = require("leaflet");
 var ServiceBase = require('./ServiceBase');
@@ -21,9 +23,9 @@ var TrafficTransferAnalystService = ServiceBase.extend({
     },
 
     /**
-     * 站点查询服务
-     * @param params
-     * {StopQueryParameters}
+     * @method  L.supermap.TrafficTransferAnalystService.queryStop
+     * @description 站点查询服务
+     * @param params {StopQueryParameters}
      * @param callback
      */
     queryStop: function (params, callback) {
@@ -40,9 +42,9 @@ var TrafficTransferAnalystService = ServiceBase.extend({
         return me;
     },
     /**
-     * 交通换乘线路查询服务
-     * @param params
-     * {TransferPathParameters}
+     * @method  L.supermap.TrafficTransferAnalystService.analysisTransferPath
+     * @description 交通换乘线路查询服务
+     * @param params {TransferPathParameters}
      * @param callback
      */
     analysisTransferPath: function (params, callback) {
@@ -59,9 +61,9 @@ var TrafficTransferAnalystService = ServiceBase.extend({
         return me;
     },
     /**
-     * 交通换乘方案查询服务
-     * @param params
-     *{TransferSolutionParameters}
+     * @method  L.supermap.TrafficTransferAnalystService.analysisTransferSolution
+     * @description 交通换乘方案查询服务
+     * @param params {TransferSolutionParameters}
      * @param callback
      */
     analysisTransferSolution: function (params, callback) {

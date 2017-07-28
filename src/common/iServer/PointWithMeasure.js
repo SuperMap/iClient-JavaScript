@@ -1,13 +1,14 @@
-﻿/**
- * Class: SuperMap.PointWithMeasure
- * 路由点类。
- * 路由点是指具有线性度量值(Measure)的二维地理坐标点。
- *
- * Inherits from:
- *  - <SuperMap.Geometry.Point>
- */
-var SuperMap = require('../SuperMap');
+﻿var SuperMap = require('../SuperMap');
 SuperMap.PointWithMeasure = SuperMap.Class(SuperMap.Geometry.Point, {
+    /**
+     * @class SuperMap.PointWithMeasure
+     * @constructs SuperMap.PointWithMeasure
+     * @classdesc
+     * 路由点类。
+     * 路由点是指具有线性度量值(Measure)的二维地理坐标点。
+     * @extends {SuperMap.Geometry.Point}
+     * @api
+     */
 
     /**
      * APIProperty: x
@@ -26,18 +27,13 @@ SuperMap.PointWithMeasure = SuperMap.Class(SuperMap.Geometry.Point, {
      * {Number} 度量值，即路由对象属性值 M。
      */
     measure: null,
-
     /**
-     * Constructor: SuperMap.PointWithMeasure
-     * 路由点类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * measure - {Number} 度量值，即路由对象属性值 M。
-     * x - {Number} 获取当前点对象在地理坐标系下的 X 坐标值。
-     * y - {Number} 获取当前点对象在地理坐标系下的 Y 坐标值。
+     * @method SuperMap.PointWithMeasure.initialize
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * measure - {Number} 度量值，即路由对象属性值 M。</br>
+     * x - {Number} 获取当前点对象在地理坐标系下的 X 坐标值。</br>
+     * y - {Number} 获取当前点对象在地理坐标系下的 Y 坐标值。</br>
      */
     initialize: function (options) {
         if (options) {
@@ -45,14 +41,10 @@ SuperMap.PointWithMeasure = SuperMap.Class(SuperMap.Geometry.Point, {
         }
     },
     /**
-     * APIMethod: equals
-     * 判断两个路由点对象是否相等。如果两个路由点对象具有相同的坐标以及度量值，则认为是相等的。
-     *
-     * Parameters:
-     * geom - {<SuperMap.PointWithMeasure>} 需要判断的路由点对象。
-     *
-     * Returns:
-     * {Boolean} 两个路由点对象是否相等（true为相等，false为不等）。
+     * @method SuperMap.PointWithMeasure.equals
+     * @description 判断两个路由点对象是否相等。如果两个路由点对象具有相同的坐标以及度量值，则认为是相等的。
+     * @param geom - {SuperMap.PointWithMeasure} 需要判断的路由点对象。
+     * @return {Boolean} 两个路由点对象是否相等（true为相等，false为不等）。
      */
     equals: function (geom) {
         var equals = false;
@@ -65,8 +57,8 @@ SuperMap.PointWithMeasure = SuperMap.Class(SuperMap.Geometry.Point, {
         return equals;
     },
     /**
-     * Method: toJson
-     * 转换为json对象。
+     * @method SuperMap.PointWithMeasure.toJson
+     * @description 转换为json对象。
      */
     toJson: function () {
         var result = "{";
@@ -78,7 +70,7 @@ SuperMap.PointWithMeasure = SuperMap.Class(SuperMap.Geometry.Point, {
         result += "}";
         return result;
     },
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
@@ -93,14 +85,10 @@ SuperMap.PointWithMeasure = SuperMap.Class(SuperMap.Geometry.Point, {
 });
 
 /**
- * Function: SuperMap.PointWithMeasure.fromJson
- * 将 JSON 对象转换为  SuperMap.PointWithMeasure 对象。
- *
- * Parameters:
- * jsonObject - {Object} JSON 对象表示的路由点。
- *
- * Returns:
- * {<SuperMap.PointWithMeasure>} 转化后的 PointWithMeasure 对象。
+ * @method SuperMap.PointWithMeasure.fromJson
+ * @description 将 JSON 对象转换为  SuperMap.PointWithMeasure 对象。
+ * @param jsonObject - {Object} JSON 对象表示的路由点。
+ * @return {SuperMap.PointWithMeasure} 转化后的 PointWithMeasure 对象。
  */
 SuperMap.PointWithMeasure.fromJson = function (jsonObject) {
     if (!jsonObject) {

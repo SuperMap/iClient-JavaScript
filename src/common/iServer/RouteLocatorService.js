@@ -1,20 +1,15 @@
-/**
- * Class: SuperMap.RouteLocatorService
- * 路由对象定位空间对象的服务类。
- *
- * Inherits from:
- *  - <SuperMap.SpatialAnalystBase>
- */
 require('./SpatialAnalystBase');
 require('./RouteLocatorParameters');
 var SuperMap = require('../SuperMap');
 SuperMap.RouteLocatorService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-
     /**
-     * Constructor: SuperMap.RouteLocatorService
-     * 路由对象定位空间对象的服务类构造函数。
-     *
-     * 实例化该类如下例所示：
+     * @class SuperMap.RouteLocatorService
+     * @constructs SuperMap.RouteLocatorService
+     * @classdesc
+     * 路由对象定位空间对象的服务类。
+     * @extends {SuperMap.SpatialAnalystBase}
+     * @api
+     * @example 实例化该类如下例所示：
      * (start code)
      * var routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
      *   "sourceRoute":{
@@ -61,11 +56,13 @@ SuperMap.RouteLocatorService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
      * function routeLocatorFailded(){todo}
      * (end)
      *
-     * Parameters:
-     * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
+     */
+
+    /**
+     * @method SuperMap.RouteLocatorService.initialize
+     * @param options - {Object} 参数。
+     * @param url  {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+     * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      *
      */
@@ -73,7 +70,8 @@ SuperMap.RouteLocatorService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
         SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
-    /**
+
+    /*
      * APIMethod: destroy
      * 释放资源,将引用的资源属性置空。
      */
@@ -82,11 +80,9 @@ SuperMap.RouteLocatorService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的基于路由对象计算指定点M值操作的参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.RouteLocatorParameters>}
+     * @method SuperMap.RouteLocatorService.processAsync
+     * @description 负责将客户端的基于路由对象计算指定点M值操作的参数传递到服务端。
+     * @param params - {SuperMap.RouteLocatorParameters}
      */
     processAsync: function (params) {
         if (!params) {
@@ -106,14 +102,10 @@ SuperMap.RouteLocatorService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
     },
 
     /**
-     * Method: getJsonParameters
-     * 将参数转化为 JSON 字符串。
-     *
-     * Parameters:
-     * params - {<SuperMap.RouteLocatorParameters>}
-     *
-     * Returns:
-     * {Object} 转化后的JSON字符串。
+     * @method SuperMap.RouteLocatorService.processAsync
+     * @description 将参数转化为 JSON 字符串。
+     * @param params - {SuperMap.RouteLocatorParameters}
+     * return {Object} 转化后的JSON字符串。
      */
     getJsonParameters: function (params) {
         var jsonParameters, jsonStr = "geometry/routelocator", me = this, end;

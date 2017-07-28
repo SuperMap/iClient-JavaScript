@@ -1,10 +1,13 @@
 /**
- * Class: FieldService
+ * @class ol.supermap.FieldService
+ * @constructs ol.supermap.FieldService
+ * @classdesc
  * 字段服务类
- * 用法：
+ * @example 用法：
  *      new ol.supermap.FieldService(url).getFields(function(result){
  *           //doSomething
  *      });
+ * @api
  */
 require('./ServiceBase');
 var ol = require('openlayers/dist/ol-debug');
@@ -21,7 +24,8 @@ ol.supermap.FieldService = function (url, options) {
 ol.inherits(ol.supermap.FieldService, ol.supermap.ServiceBase);
 
 /**
- *  字段查询服务
+ * @method ol.supermap.FieldService.prototype.getFields
+ * @description 字段查询服务
  * @param callback
  */
 ol.supermap.FieldService.prototype.getFields = function (callback) {
@@ -41,9 +45,9 @@ ol.supermap.FieldService.prototype.getFields = function (callback) {
 };
 
 /**
- * 字段统计服务
- * @param params
- * <SuperMap.FieldStatisticsParameters>
+ * @method ol.supermap.FieldService.prototype.getFieldStatisticsInfo
+ * @description 字段统计服务
+ * @param params {SuperMap.FieldStatisticsParameters}
  * @param callback
  */
 ol.supermap.FieldService.prototype.getFieldStatisticsInfo = function (params, callback) {

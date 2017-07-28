@@ -1,11 +1,16 @@
 /**
- * Class: LayerInfoService
+ * @class ol.superMap.LayerInfoService
+ * @constructs ol.superMap.LayerInfoService
+ * @classdesc
  * 图层信息服务类
- * 用法：
- *      new ol.superMap.LayerInfoService(url).getLayersInfo(function(result){
- *           //doSomething
- *      })
+ * @api
+ * @example  用法：
+ * new ol.superMap.LayerInfoService(url).getLayersInfo(function(result){
+ *     //doSomething
+ *  })
+ *
  */
+
 require('./ServiceBase');
 var ol = require('openlayers/dist/ol-debug');
 var GetLayersInfoService = require('../../common/iServer/GetLayersInfoService');
@@ -33,9 +38,9 @@ ol.supermap.LayerInfoService.prototype.getLayersInfo = function (callback) {
 };
 
 /**
- *设置图层信息服务类。可以实现临时图层中子图层的修改
- * @param params
- * <SuperMap.SetLayerInfoParameters>
+ * @method  ol.supermap.LayerInfoService.prototype.setLayerInfo
+ * @description 设置图层信息服务类。可以实现临时图层中子图层的修改
+ * @param params {SuperMap.SetLayerInfoParameters}
  * @param callback
  */
 ol.supermap.LayerInfoService.prototype.setLayerInfo = function (params, callback) {
@@ -67,9 +72,9 @@ ol.supermap.LayerInfoService.prototype.setLayerInfo = function (params, callback
 };
 
 /**
- *设置图层信息服务类。可以实现创建新的临时图层和对现有临时图层的修改
- * @param params
- * <SuperMap.SetLayersInfoParameters>
+ * @method  ol.supermap.LayerInfoService.prototype.setLayersInfo
+ * @description 设置图层信息服务类。可以实现创建新的临时图层和对现有临时图层的修改
+ * @param params {SuperMap.SetLayersInfoParameters}
  * @param callback
  */
 ol.supermap.LayerInfoService.prototype.setLayersInfo = function (params, callback) {
@@ -101,10 +106,10 @@ ol.supermap.LayerInfoService.prototype.setLayersInfo = function (params, callbac
 };
 
 /**
- * 子图层显示控制服务类。
+ * @method  ol.supermap.LayerInfoService.prototype.setLayerStatus
+ * @description 子图层显示控制服务类。
  * 该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
- * @param params
- * <SuperMap.SetLayerStatusParameters>
+ * @param params {SuperMap.SetLayerStatusParameters}
  * @param callback
  */
 ol.supermap.LayerInfoService.prototype.setLayerStatus = function (params, callback) {

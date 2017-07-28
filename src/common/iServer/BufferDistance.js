@@ -1,10 +1,13 @@
-﻿/**
- * Class: BufferDistance
- * 缓冲区分析的缓冲距离类
- * 通过该类可以设置缓冲区分析的缓冲距离，距离可以是数值也可以是数值型的字段表达式。
- */
-var SuperMap = require('../SuperMap');
+﻿var SuperMap = require('../SuperMap');
 SuperMap.BufferDistance = SuperMap.Class({
+    /**
+     * @class SuperMap.BufferDistance
+     * @constructs SuperMap.BufferDistance
+     * @classdesc
+     * 缓冲区分析的缓冲距离类
+     * 通过该类可以设置缓冲区分析的缓冲距离，距离可以是数值也可以是数值型的字段表达式。
+     * @api
+     */
 
     /**
      * APIProperty: exp
@@ -19,15 +22,11 @@ SuperMap.BufferDistance = SuperMap.Class({
     value: 100,
 
     /**
-     * Constructor: BufferDistance
-     * 缓冲区分析的缓冲距离类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 可选参数。
-     *
-     * Allowed options properties:
-     * exp - {String} 以数值型的字段表达式作为缓冲区分析的距离值。
-     * value - {Number} 以数值作为缓冲区分析的距离值。默认为100，单位：米。
+     * @method SuperMap.BufferDistance.initialize
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * exp - {String} 以数值型的字段表达式作为缓冲区分析的距离值。</br>
+     * value - {Number} 以数值作为缓冲区分析的距离值。默认为100，单位：米。</br>
      */
     initialize: function (options) {
         if (!options) {
@@ -36,7 +35,7 @@ SuperMap.BufferDistance = SuperMap.Class({
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

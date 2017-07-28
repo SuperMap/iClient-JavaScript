@@ -1,12 +1,15 @@
-﻿/**
- * Class: SuperMap.GeoRelationAnalystParameters
- * 空间关系分析服务参数类。
- * 使用该类可以为空间关系分析服务提供所需的参数信息。
- */
-require('../REST');
+﻿require('../REST');
 require('./FilterParameter');
 var SuperMap = require('../SuperMap');
 SuperMap.GeoRelationAnalystParameters = SuperMap.Class({
+    /**
+     * @class SuperMap.GeoRelationAnalystParameters
+     * @constructs SuperMap.GeoRelationAnalystParameters
+     * @classdesc
+     * 空间关系分析服务参数类。
+     * 使用该类可以为空间关系分析服务提供所需的参数信息。
+     * @api
+     */
 
     /**
      * APIProperty: dataset
@@ -64,22 +67,16 @@ SuperMap.GeoRelationAnalystParameters = SuperMap.Class({
     expectCount: 500,
 
     /**
-     * Constructor: SuperMap.GeoRelationAnalystParameters
-     * 叠加分析参数基类构造函数构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * sourceFilter - {<SuperMap.FilterParameter>} 空间关系分析中的参考数据集查询参数。仅 name, ids,
-     *      attributeFilter 和 fields 字段有效。
-     * referenceFilter - {<SuperMap.FilterParameter>} 空间关系分析中的参考数据集查询参数。仅 name, ids,
-     *      attributeFilter 和 fields 字段有效。
-     * isBorderInside - {Boolean} 边界处理方式，即位于面边线上的点是否被面包含。此参数仅用于空间关系为包含或被包含的情况。
-     * returnFeature - {Boolean} 是否返回Feature信息。
-     * returnGeoRelatedOnly - {Boolean} 仅返回满足指定空间关系的空间对象，默认为 True。
-     * startRecord - {Integer} 分析结果起始记录位置，默认为0。
-     * expectCount - {Integer} 空间关系分析期望返回结果记录数，默认为500条，如果实际不足500条结果则返回所有分析结果。
+     * @method SuperMap.GeoRelationAnalystParameters.initialize
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * sourceFilter - {<SuperMap.FilterParameter>} 空间关系分析中的参考数据集查询参数。仅 name, ids,attributeFilter 和 fields 字段有效。</br>
+     * referenceFilter - {<SuperMap.FilterParameter>} 空间关系分析中的参考数据集查询参数。仅 name, ids,attributeFilter 和 fields 字段有效。</br>
+     * isBorderInside - {Boolean} 边界处理方式，即位于面边线上的点是否被面包含。此参数仅用于空间关系为包含或被包含的情况。</br>
+     * returnFeature - {Boolean} 是否返回Feature信息。</br>
+     * returnGeoRelatedOnly - {Boolean} 仅返回满足指定空间关系的空间对象，默认为 True。</br>
+     * startRecord - {Integer} 分析结果起始记录位置，默认为0。</br>
+     * expectCount - {Integer} 空间关系分析期望返回结果记录数，默认为500条，如果实际不足500条结果则返回所有分析结果。</br>
      */
     initialize: function (options) {
         var me = this;
@@ -88,7 +85,7 @@ SuperMap.GeoRelationAnalystParameters = SuperMap.Class({
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

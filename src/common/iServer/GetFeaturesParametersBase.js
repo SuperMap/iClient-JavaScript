@@ -1,9 +1,14 @@
-﻿/**
- * Class: SuperMap.GetFeaturesParametersBase
- * 数据服务中数据集查询参数基类。
- */
-var SuperMap = require('../SuperMap');
+﻿var SuperMap = require('../SuperMap');
 SuperMap.GetFeaturesParametersBase = SuperMap.Class({
+    /**
+     * @class SuperMap.GetFeaturesParametersBase
+     * @constructs SuperMap.GetFeaturesParametersBase
+     * @classdesc
+     * SQL 查询
+     * @extends {SuperMap}
+     * @api
+     */
+
     /**
      * APIProperty: datasetNames
      * {Array(String)} 数据集集合中的数据集名称列表。
@@ -45,17 +50,13 @@ SuperMap.GetFeaturesParametersBase = SuperMap.Class({
     maxFeatures: null,
 
     /**
-     * Constructor: SuperMap.GetFeaturesParametersBase
-     * SQL 查询参数类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。
-     * returnContent - {<SuperMap.FilterParameter>} 是否直接返回查询结果。
-     * fromIndex - {Integer} 查询结果的最小索引号。
-     * toIndex - {Integer} 查询结果的最大索引号。
+     * @method SuperMap.GetFeaturesParametersBase.initialize
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
+     * returnContent - {<SuperMap.FilterParameter>} 是否直接返回查询结果。</br>
+     * fromIndex - {Integer} 查询结果的最小索引号。</br>
+     * toIndex - {Integer} 查询结果的最大索引号。</br>
      */
     initialize: function (options) {
         if (!options) {
@@ -64,7 +65,7 @@ SuperMap.GetFeaturesParametersBase = SuperMap.Class({
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

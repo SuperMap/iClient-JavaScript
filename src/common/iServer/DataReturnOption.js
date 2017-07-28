@@ -1,10 +1,13 @@
-﻿/**
- * Class: SuperMap.DataReturnOption
- * 数据返回设置类
- */
-require('../REST');
+﻿require('../REST');
 var SuperMap = require('../SuperMap');
 SuperMap.DataReturnOption = SuperMap.Class({
+    /**
+     * @class SuperMap.DataReturnOption
+     * @constructs SuperMap.DataReturnOption
+     * @classdesc
+     * 数据返回设置类
+     * @api
+     */
 
     /**
      * APIProperty: expectCount
@@ -33,18 +36,14 @@ SuperMap.DataReturnOption = SuperMap.Class({
     deleteExistResultDataset: true,
 
     /**
-     * Constructor: DataReturnOption
-     * 数据返回设置类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * expectCount - {Number} 返回的最大记录数。
+     * @method SuperMap.DataReturnOption.initialize
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * expectCount - {Number} 返回的最大记录数。</br>
      * dataset - {String} 设置结果数据集标识，当dataReturnMode为 SuperMap.DataReturnMode.DATASET_ONLY
-     或SuperMap.DataReturnMode.DATASET_AND_RECORDSET时有效，作为返回数据集的名称。
-     * dataReturnMode - {<SuperMap.DataReturnMode>} 数据返回模式，默认为DataReturnMode.DATASET_ONLY。
-     * deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
+     或SuperMap.DataReturnMode.DATASET_AND_RECORDSET时有效，作为返回数据集的名称。</br>
+     * dataReturnMode - {<SuperMap.DataReturnMode>} 数据返回模式，默认为DataReturnMode.DATASET_ONLY。</br>
+     * deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。</br>
      */
     initialize: function (options) {
         if (options) {
@@ -52,7 +51,7 @@ SuperMap.DataReturnOption = SuperMap.Class({
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

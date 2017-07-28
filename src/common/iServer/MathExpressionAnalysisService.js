@@ -1,20 +1,15 @@
-/**
- * Class: SuperMap.MathExpressionAnalysisService
- *  栅格代数运算服务类。
- *
- * Inherits from:
- *  - <SuperMap.SpatialAnalystBase>
- */
 require('./SpatialAnalystBase');
 require('./MathExpressionAnalysisParameters');
 var SuperMap = require('../SuperMap');
 SuperMap.MathExpressionAnalysisService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-
     /**
-     * Constructor: SuperMap.MathExpressionAnalysisService
-     * 核栅格代数运算服务类构造函数。
-     *
-     * 例如：
+     * @class SuperMap.MathExpressionAnalysisService
+     * @constructs SuperMap.MathExpressionAnalysisService
+     * @classdesc
+     * 栅格代数运算服务类。
+     * @extends {SuperMap.SpatialAnalystBase}
+     * @api
+     * @example 例如：
      * (start code)
      * var myMathExpressionAnalysisService = new SuperMap.MathExpressionAnalysisService(url);
      * myMathExpressionAnalysisService.on({
@@ -24,18 +19,20 @@ SuperMap.MathExpressionAnalysisService = SuperMap.Class(SuperMap.SpatialAnalystB
      * );
      * (end)
      *
-     * Parameters:
-     * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
+     */
+
+    /**
+     * @method SuperMap.MathExpressionAnalysisService.initialize
+     * @param options - {Object} 参数。
+     * @param url {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+     * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
         SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
@@ -46,9 +43,8 @@ SuperMap.MathExpressionAnalysisService = SuperMap.Class(SuperMap.SpatialAnalystB
     /**
      * APIMethod: processAsync
      * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.MathExpressionAnalysisParameters>}
+     * @method SuperMap.MathExpressionAnalysisService.processAsync
+     * @param  parameter - {SuperMap.MathExpressionAnalysisParameters}
      */
     processAsync: function (parameter) {
         var me = this;

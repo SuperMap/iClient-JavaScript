@@ -1,11 +1,27 @@
-﻿/**
- * Class: SuperMap.TransferSolutionParameters
- * 交通换乘方案查询参数类。
- */
-
-require('../REST');
+﻿require('../REST');
 var SuperMap = require('../SuperMap');
 SuperMap.TransferSolutionParameters = SuperMap.Class({
+    /**
+     * @class SuperMap.TransferSolutionParameters
+     * @constructs SuperMap.TransferSolutionParameters
+     * @classdesc
+     * 交通换乘方案查询参数类。
+     * @api
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * solutionCount - {Boolean} 乘车方案的数量。默认为6。</br>
+     * transferTactic - {<SuperMap.TransferTactic>} 交通换乘策略类型，
+     * 包括时间最短、距离最短、最少换乘、最少步行四种选择。</br>
+     * transferPreference - {<SuperMap.TransferPreference>} 乘车偏好枚举。</br>
+     * walkingRatio - {Array(Number)} 步行与公交的消耗权重比，默认值为 10。</br>
+     * points - {Array(Number)} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
+     * evadeLines - {Array(Number)} 避让路线的ID，默认为null。</br>
+     * evadeStops - {Array(Number)} 避让站点的ID，默认为null。</br>
+     * priorLines - {Array(Number)} 优先路线的ID，默认为null。</br>
+     * priorStops - {Array(Number)} 优先站点的ID，默认为null。</br>
+     * travelTime - {String} 出行的时间。</br>
+     */
+
     /**
      * APIProperty: solutionCount
      * {Number} 乘车方案的数量。默认为6。
@@ -81,32 +97,13 @@ SuperMap.TransferSolutionParameters = SuperMap.Class({
      */
     travelTime: null,
 
-    /**
-     * Constructor: SuperMap.TransferSolutionParameters
-     * 交通换乘方案查询参数类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * solutionCount - {Boolean} 乘车方案的数量。默认为6。
-     * transferTactic - {<SuperMap.TransferTactic>} 交通换乘策略类型，
-     * 包括时间最短、距离最短、最少换乘、最少步行四种选择。
-     * transferPreference - {<SuperMap.TransferPreference>} 乘车偏好枚举。
-     * walkingRatio - {Array(Number)} 步行与公交的消耗权重比，默认值为 10。
-     * points - {Array(Number)} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。
-     * evadeLines - {Array(Number)} 避让路线的ID，默认为null。
-     * evadeStops - {Array(Number)} 避让站点的ID，默认为null。
-     * priorLines - {Array(Number)} 优先路线的ID，默认为null。
-     * priorStops - {Array(Number)} 优先站点的ID，默认为null。
-     * travelTime - {String} 出行的时间。
-     */
+
     initialize: function (options) {
         options = options || {};
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
@@ -117,14 +114,10 @@ SuperMap.TransferSolutionParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.TransferSolutionParameters"
 });
 /**
- * Function: SuperMap.TransferSolutionParameters.toJsonParameters
- * 将 <SuperMap.TransferSolutionParameters> 对象参数转换为 json 字符串。
- *
- * Parameters:
- * params - {<SuperMap.TransferSolutionParameters>} 交通换乘参数。
- *
- * Returns:
- * {String} 转化后的 json字符串。
+ * @method SuperMap.TransferSolutionParameters.toJsonParameters
+ * @description 将 <SuperMap.TransferSolutionParameters> 对象参数转换为 json 字符串。
+ * @param  params - {SuperMap.TransferSolutionParameters} 交通换乘参数。
+ * @return {String} 转化后的 json字符串。
  */
 SuperMap.TransferSolutionParameters.toJson = function (params) {
     if (params) {

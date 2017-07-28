@@ -1,14 +1,24 @@
-﻿/**
- * Class: SuperMap.EditFeaturesService
- * 数据服务中数据集添加、更新、删除服务类。
- *
- * Inherits from:
- *  - <SuperMap.ServiceBase>
- */
-require('./ServiceBase');
+﻿require('./ServiceBase');
 require('./EditFeaturesParameters');
 var SuperMap = require('../SuperMap');
 SuperMap.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
+    /**
+     * @class SuperMap.EditFeaturesService
+     * @constructs SuperMap.EditFeaturesService
+     * @classdesc
+     * 数据服务中数据集添加、更新、删除服务类。。
+     * @extends {SuperMap.ServiceBase}
+     * @api
+     * @example 例如：
+     * (start code)
+     * var myService = new SuperMap.EditFeaturesService(url, {eventListeners: {
+     *     "processCompleted": editFeatureCompleted,
+     *     "processFailed": editFeatureError
+     *       }
+     * };
+     * (end)
+     *
+     */
 
     /**
      * Property: returnContent
@@ -26,25 +36,14 @@ SuperMap.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
     isUseBatch: false,
 
     /**
-     * Constructor: SuperMap.EditFeaturesService
-     * 数据集编辑服务基类构造函数。
-     *
-     * 例如：
-     * (start code)
-     * var myService = new SuperMap.EditFeaturesService(url, {eventListeners: {
-     *     "processCompleted": editFeatureCompleted, 
-     *     "processFailed": editFeatureError
-     *       }
-     * };
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 服务端的数据服务资源地址。请求数据服务中数据集编辑服务，URL 应为：
-     * http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/datasources/name/{数据源名}/datasets/name/{数据集名} 。
+     * @method SuperMap.EditFeaturesService.initialize
+     * @description 数据集编辑服务基类构造函数。
+     * @param url - {String} 服务端的数据服务资源地址。请求数据服务中数据集编辑服务，URL 应为：</br>
+     * http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/datasources/name/{数据源名}/datasets/name/{数据集名} 。</br>
      * 例如：http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R
-     * options - {Object} 参数。
+     * @param options - {Object} 参数。
      *
-     * Allowed options properties:
+     * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
@@ -61,7 +60,7 @@ SuperMap.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
@@ -74,7 +73,7 @@ SuperMap.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
         me.toIndex = null;
     },
 
-    /**
+    /*
      * APIMethod: processAsync
      * 负责将客户端的更新参数传递到服务端。
      *

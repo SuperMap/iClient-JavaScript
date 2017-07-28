@@ -1,8 +1,15 @@
-/**
+/*
  * 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
  */
 require('../REST');
 var SuperMap = require('../SuperMap');
+/**
+ * @class SuperMap.ServerInfo
+ * @constructs SuperMap.ServerInfo
+ * @classdesc
+ * 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
+ * @api
+ */
 
 SuperMap.ServerInfo = SuperMap.Class({
     //服务器类型:SuperMap.ServerType
@@ -13,6 +20,11 @@ SuperMap.ServerInfo = SuperMap.Class({
     tokenServiceUrl: null,
     //非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
     keyServiceUrl: null,
+    /**
+     * @method SuperMap.ServerInfo.initialize
+     * @param type
+     * @param options - {Object} 参数。
+     */
     initialize: function (type, options) {
         this.type = type || SuperMap.ServerType.ISERVER;
         SuperMap.Util.extend(this, options);

@@ -1,27 +1,20 @@
-﻿/**
- * Class: SuperMap.GenerateSpatialDataService
- * 动态分段分析服务类。
- * 该类负责将客户设置的动态分段分析服务参数传递给服务端，并接收服务端返回的动态分段分析结果数据。
- * 获取的结果数据包括 originResult 、result 两种，
- * 其中，originResult 为服务端返回的用 JSON 对象表示的动态分段分析结果数据，
- * result 为服务端返回的动态分段分析结果数据，
- *
- * Inherits from:
- *  - <SuperMap.SpatialAnalystBase>
- */
-require('./SpatialAnalystBase');
+﻿require('./SpatialAnalystBase');
 require('./GenerateSpatialDataParameters');
 var SuperMap = require('../SuperMap');
 SuperMap.GenerateSpatialDataService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-
     /**
-     * Constructor: SuperMap.GenerateSpatialDataService
-     * 动态分段服务类构造函数。
-     *
-     * 实例化该类如下例所示：
+     * @class SuperMap.GenerateSpatialDataService
+     * @constructs SuperMap.GenerateSpatialDataService
+     * @classdesc
+     * 动态分段分析服务类。
+     * 该类负责将客户设置的动态分段分析服务参数传递给服务端，并接收服务端返回的动态分段分析结果数据。
+     * 获取的结果数据包括 originResult 、result 两种，其中，originResult 为服务端返回的用 JSON 对象表示的动态分段分析结果数据，result 为服务端返回的动态分段分析结果数据。
+     * @extends {SuperMap.SpatialAnalystBase}
+     * @api
+     * @example 实例化该类如下例所示：
      * (start code)
      *  function GenerateSpatialData(){
-     *   
+     *
      *  //配置数据返回选项(option)
      *  var option = new SuperMap.DataReturnOption({
      *      expectCount: 1000,
@@ -47,27 +40,28 @@ SuperMap.GenerateSpatialDataService = SuperMap.Class(SuperMap.SpatialAnalystBase
      *  iService = new SuperMap.GenerateSpatialDataService(Changchun_spatialanalyst, {
      *      eventListeners: {
      *          processCompleted: generateCompleted,
-     *          processFailed: generateFailded 
+     *          processFailed: generateFailded
      *      }
      *  });
      *  //执行
      *  iService.processAsync(parameters);
      *  function Completed(generateSpatialDataEventArgs){//todo};
      *  function Error(generateSpatialDataEventArgs){//todo};
-     * (end)   
-     *          
-     * Parameters:
-     * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
+     * (end)
+     */
+
+    /**
+     * @method SuperMap.GenerateSpatialDataService.initialize
+     * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
         SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源,将引用的资源属性置空。
      */
@@ -76,11 +70,9 @@ SuperMap.GenerateSpatialDataService = SuperMap.Class(SuperMap.SpatialAnalystBase
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的动态分段服务参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.GenerateSpatialDataParameters>}
+     * @method SuperMap.GenerateSpatialDataService.processAsync
+     * @description 负责将客户端的动态分段服务参数传递到服务端。
+     * @param params - {SuperMap.GenerateSpatialDataParameters}
      */
     processAsync: function (params) {
         if (!params) {
@@ -101,14 +93,10 @@ SuperMap.GenerateSpatialDataService = SuperMap.Class(SuperMap.SpatialAnalystBase
     },
 
     /**
-     * Method: getJsonParameters
-     * 将参数转化为 JSON 字符串。
-     *
-     * Parameters:
-     * params - {<SuperMap.GenerateSpatialDataParameters>}
-     *
-     * Returns:
-     * {Object} 转化后的JSON字符串。
+     * @method SuperMap.GenerateSpatialDataService.getJsonParameters
+     * @description 将参数转化为 JSON 字符串。
+     * @param params -  {SuperMap.GenerateSpatialDataParameters}
+     * @return {Object} 转化后的JSON字符串。
      */
     getJsonParameters: function (params) {
         var jsonParameters = "",

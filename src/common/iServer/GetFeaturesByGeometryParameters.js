@@ -1,16 +1,17 @@
-﻿/**
- * Class: SuperMap.GetFeaturesByGeometryParameters
- * 数据集几何查询参数类。
- * 该类用于设置数据集几何查询的相关参数。
- *
- * Inherits from:
- *  - <SuperMap.GetFeaturesParametersBase>
- */
-require('../REST');
+﻿require('../REST');
 require('./GetFeaturesParametersBase');
 var SuperMap = require('../SuperMap');
 var FilterParameter = require('./FilterParameter');
 SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
+    /**
+     * @class SuperMap.GetFeaturesByGeometryParameters
+     * @constructs SuperMap.GetFeaturesByGeometryParameters
+     * @classdesc
+     * 数据集几何查询参数类。
+     * 该类用于设置数据集几何查询的相关参数。
+     * @extends {SuperMap.GetFeaturesParametersBase}
+     * @api
+     */
 
     /**
      * Property: getFeatureMode
@@ -46,22 +47,19 @@ SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesPa
     spatialQueryMode: SuperMap.SpatialQueryMode.CONTAIN,
 
     /**
-     * Constructor: SuperMap.SuperMap.GetFeaturesByGeometryParameters
-     * 几何空间查询参数类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * geometry - {<Object>} 用于查询的几何对象。
-     * attributeFilter - {String} 几何查询属性过滤条件。
-     * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。
-     * spatialQueryMode - {<SuperMap.SpatialQueryMode>} 空间查询模式常量,必设参数。
-     * queryParameter - {<SuperMap.FilterParameter>} 查询过滤条件参数。
-     * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。
-     * returnContent - {Boolean} 是否直接返回查询结果。
-     * fromIndex - {Integer} 查询结果的最小索引号。
-     * toIndex - {Integer} 查询结果的最大索引号。
+     * @method SuperMap.GetFeaturesByGeometryParameters.initialize
+     * @description 几何空间查询参数类构造函数。
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * geometry - {<Object>} 用于查询的几何对象。</br>
+     * attributeFilter - {String} 几何查询属性过滤条件。</br>
+     * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
+     * spatialQueryMode - {<SuperMap.SpatialQueryMode>} 空间查询模式常量,必设参数。</br>
+     * queryParameter - {<SuperMap.FilterParameter>} 查询过滤条件参数。</br>
+     * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
+     * returnContent - {Boolean} 是否直接返回查询结果。</br>
+     * fromIndex - {Integer} 查询结果的最小索引号。</br>
+     * toIndex - {Integer} 查询结果的最大索引号。</br>
      */
     initialize: function (options) {
         SuperMap.GetFeaturesParametersBase.prototype.initialize.apply(this, arguments);
@@ -71,7 +69,7 @@ SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesPa
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
@@ -96,14 +94,10 @@ SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesPa
 });
 
 /**
- * Function: SuperMap.GetFeaturesByGeometryParameters.toJsonParameters
- * 将<SuperMap.GetFeaturesByGeometryParameters>对象参数转换为json字符串。
- *
- * Parameters:
- * params - {<SuperMap.GetFeaturesByGeometryParameters>} 几何查询参数。
- *
- * Returns:
- * {String} 转化后的 json字符串。
+ * @method SuperMap.GetFeaturesByGeometryParameters.toJsonParameters
+ * @description 将<SuperMap.GetFeaturesByGeometryParameters>对象参数转换为json字符串。
+ * @param params - {SuperMap.GetFeaturesByGeometryParameters} 几何查询参数。
+ * @return {String} 转化后的 json字符串。
  */
 SuperMap.GetFeaturesByGeometryParameters.toJsonParameters = function (params) {
     var filterParameter,

@@ -1,9 +1,12 @@
-/**
- * Class: SuperMap.TerrainCurvatureCalculationParameters
- * 地形曲率计算参数类。
- */
 var SuperMap = require('../SuperMap');
 SuperMap.TerrainCurvatureCalculationParameters = SuperMap.Class({
+    /**
+     * @class SuperMap.TerrainCurvatureCalculationParameters
+     * @constructs SuperMap.TerrainCurvatureCalculationParameters
+     * @classdesc
+     * 地形曲率计算参数类。
+     * @api
+     */
 
     /**
      * APIProperty: dataset
@@ -48,19 +51,15 @@ SuperMap.TerrainCurvatureCalculationParameters = SuperMap.Class({
     deleteExistResultDataset: false,
 
     /**
-     * Constructor: SuperMap.TerrainCurvatureCalculationParameters
-     * 地形曲率计算参数构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * dataset - {String} 要用来做地形曲率计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。
-     * zFactor - {Number} 指定的高程缩放系数。默认值为 1.0，表示不缩放。
-     * averageCurvatureName - {String} 结果数据集：平均曲率数据集的名称，必设字段。
-     * profileCurvatureName - {String} 结果数据集：剖面曲率数据集的名称。
-     * planCurvatureName - {String} 结果数据集：平面曲率数据集的名称。
-     * deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
+     * @method SuperMap.TerrainCurvatureCalculationParameters.initialize
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * dataset - {String} 要用来做地形曲率计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。</br>
+     * zFactor - {Number} 指定的高程缩放系数。默认值为 1.0，表示不缩放。</br>
+     * averageCurvatureName - {String} 结果数据集：平均曲率数据集的名称，必设字段。</br>
+     * profileCurvatureName - {String} 结果数据集：剖面曲率数据集的名称。</br>
+     * planCurvatureName - {String} 结果数据集：平面曲率数据集的名称。</br>
+     * deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
      */
     initialize: function (options) {
         if (!options) {
@@ -69,7 +68,7 @@ SuperMap.TerrainCurvatureCalculationParameters = SuperMap.Class({
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

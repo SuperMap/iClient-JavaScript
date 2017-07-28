@@ -1,20 +1,15 @@
-/**
- * Class: SuperMap.TerrainCurvatureCalculationService
- *  地形曲率计算服务类。
- *
- * Inherits from:
- *  - <SuperMap.SpatialAnalystBase>
- */
 require('./SpatialAnalystBase');
 require('./TerrainCurvatureCalculationParameters');
 var SuperMap = require('../SuperMap');
 SuperMap.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-
     /**
-     * Constructor: SuperMap.TerrainCurvatureCalculationService
-     * 地形曲率计算服务类构造函数。
-     *
-     * 例如：
+     * @class SuperMap.TerrainCurvatureCalculationService
+     * @constructs SuperMap.TerrainCurvatureCalculationService
+     * @classdesc
+     * 地形曲率计算服务类。
+     * @extends {SuperMap.SpatialAnalystBase}
+     * @api
+     * @example 例如：
      * (start code)
      * var myTerrainCurvatureCalculationService = new SuperMap.TerrainCurvatureCalculationService(url);
      * myTerrainCurvatureCalculationService.on({
@@ -24,10 +19,12 @@ SuperMap.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.SpatialAna
      * );
      * (end)
      *
-     * Parameters:
-     * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * options - {Object} 参数。
-     *
+     */
+
+    /**
+     * @method SuperMap.TerrainCurvatureCalculationService.initialize
+     * @param options - {Object} 参数。
+     * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
@@ -35,7 +32,7 @@ SuperMap.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.SpatialAna
         SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
@@ -44,11 +41,9 @@ SuperMap.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.SpatialAna
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.TerrainCurvatureCalculationParameters>}
+     * @method SuperMap.TerrainCurvatureCalculationService.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @param parameter - {SuperMap.TerrainCurvatureCalculationParameters}
      */
     processAsync: function (parameter) {
         var me = this;

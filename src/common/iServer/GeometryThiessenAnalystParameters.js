@@ -1,14 +1,15 @@
-﻿/**
- * Class: SuperMap.GeometryThiessenAnalystParameters
- * 几何对象泰森多边形分析参数类
- * 对指定的某个几何对象做泰森多边形分析。通过该类可以指定要做泰森多边形分析的几何对象、返回数据集名称等。
- *
- * Inherits from:
- *  - <SuperMap.ThiessenAnalystParameters>
- */
-require('./ThiessenAnalystParameters');
+﻿require('./ThiessenAnalystParameters');
 var SuperMap = require('../SuperMap');
 SuperMap.GeometryThiessenAnalystParameters = SuperMap.Class(SuperMap.ThiessenAnalystParameters, {
+    /**
+     * @class SuperMap.GeometryThiessenAnalystParameters
+     * @constructs SuperMap.GeometryThiessenAnalystParameters
+     * @classdesc
+     * 几何对象泰森多边形分析参数类
+     * 对指定的某个几何对象做泰森多边形分析。通过该类可以指定要做泰森多边形分析的几何对象、返回数据集名称等。
+     * @extends {SuperMap.ThiessenAnalystParameters}
+     * @api
+     */
 
     /**
      * Property: points
@@ -18,13 +19,9 @@ SuperMap.GeometryThiessenAnalystParameters = SuperMap.Class(SuperMap.ThiessenAna
     points: null,
 
     /**
-     * Constructor: SuperMap.GeometryThiessenAnalystParameters
-     * 几何对象泰森多边形分析参数类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
+     * @method SuperMap.GetFeaturesByBufferService.initialize
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
      * points - {Array(<Point||Array>)} 使用点数组进行分析时使用的几何对象。
      */
     initialize: function (options) {
@@ -34,7 +31,7 @@ SuperMap.GeometryThiessenAnalystParameters = SuperMap.Class(SuperMap.ThiessenAna
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

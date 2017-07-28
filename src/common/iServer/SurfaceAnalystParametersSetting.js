@@ -1,11 +1,14 @@
-﻿/**
- * Class: SuperMap.SurfaceAnalystParametersSetting
- * 表面分析参数设置类。
- * 通过该类可以设置表面分析提取等值线、提取等值面的一些参数，包括基准值、等值距、光滑度、光滑方法等。
- */
-require('../REST');
+﻿require('../REST');
 var SuperMap = require('../SuperMap');
 SuperMap.SurfaceAnalystParametersSetting = SuperMap.Class({
+    /**
+     * @class SuperMap.SurfaceAnalystParametersSetting
+     * @constructs SuperMap.SurfaceAnalystParametersSetting
+     * @classdesc
+     * 表面分析参数设置类。
+     * 通过该类可以设置表面分析提取等值线、提取等值面的一些参数，包括基准值、等值距、光滑度、光滑方法等。
+     * @api
+     */
 
     /**
      * APIProperty: clipRegion
@@ -60,20 +63,16 @@ SuperMap.SurfaceAnalystParametersSetting = SuperMap.Class({
     smoothness: 0,
 
     /**
-     * Constructor: SurfaceAnalystParametersSetting
-     * 表面分析参数设置类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * clipRegion - {<SuperMap.Geometry>} 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。
-     * datumValue - {Number} 获取或设置表面分析中提取等值线、提取等值面的基准值。
-     * expectedZValues - {Array(Number)} 获取或设置期望分析结果的 Z 值集合。
-     * interval - {Number} 获取或设置等值距。等值距是两条等值线之间的间隔值。
-     * resampleTolerance - {Number} 获取或设置重采样容限。
-     * smoothMethod - {<SuperMap.SmoothMethod>} 获取或设置光滑处理所使用的方法。
-     * smoothness - {Number} 获取或设置表面分析中等值线或等值面的边界线的光滑度。
+     * @method SuperMap.SurfaceAnalystParametersSetting.initialize
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * clipRegion - {<SuperMap.Geometry>} 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。</br>
+     * datumValue - {Number} 获取或设置表面分析中提取等值线、提取等值面的基准值。</br>
+     * expectedZValues - {Array(Number)} 获取或设置期望分析结果的 Z 值集合。</br>
+     * interval - {Number} 获取或设置等值距。等值距是两条等值线之间的间隔值。</br>
+     * resampleTolerance - {Number} 获取或设置重采样容限。</br>
+     * smoothMethod - {<SuperMap.SmoothMethod>} 获取或设置光滑处理所使用的方法。</br>
+     * smoothness - {Number} 获取或设置表面分析中等值线或等值面的边界线的光滑度。</br>
      */
     initialize: function (options) {
         if (options) {
@@ -89,7 +88,7 @@ SuperMap.SurfaceAnalystParametersSetting = SuperMap.Class({
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

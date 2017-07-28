@@ -1,10 +1,13 @@
-﻿/**
- * Class: SuperMap.BufferAnalystParameters
- * 缓冲区分析参数基类。
- */
-var SuperMap = require('../SuperMap');
+﻿var SuperMap = require('../SuperMap');
 var BufferSetting = require('./BufferSetting');
 SuperMap.BufferAnalystParameters = SuperMap.Class({
+    /**
+     * @class SuperMap.BufferAnalystParameters
+     * @constructs SuperMap.BufferAnalystParameters
+     * @classdesc
+     * 缓冲区分析参数基类。
+     * @api
+     */
 
     /**
      * APIProperty: bufferSetting
@@ -14,14 +17,10 @@ SuperMap.BufferAnalystParameters = SuperMap.Class({
     bufferSetting: null,
 
     /**
-     * Constructor: SuperMap.BufferAnalystParameters
-     * 缓冲区分析参数基类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * bufferSetting - {<SuperMap.BufferSetting>} 设置缓冲区通用参数。
+     * @method SuperMap.BufferAnalystParameters.initialize
+     * @param options - {Object} 参数。
+     * Allowed options properties:<br>
+     * bufferSetting - {SuperMap.BufferSetting} 设置缓冲区通用参数。
      */
     initialize: function (options) {
         var me = this;
@@ -32,7 +31,7 @@ SuperMap.BufferAnalystParameters = SuperMap.Class({
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

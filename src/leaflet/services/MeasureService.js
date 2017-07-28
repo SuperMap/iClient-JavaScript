@@ -1,13 +1,19 @@
 ﻿/**
- * Class: MeasureService
+ * @class L.supermap.measureService
+ * @constructs L.supermap.measureService
+ * @classdesc
  * 量算服务服务类
- * 用法：
+ * @extends {ServiceBase}
+ * @api
+ * @example 用法：
+ *
  *      L.supermap.measureService(url).measureDistance({
  *          geometry:xxx
  *      },function(result){
  *           //doSomething
  *      })
  */
+
 var L = require("leaflet");
 var ServiceBase = require('./ServiceBase');
 var SuperMap = require('../../common/SuperMap');
@@ -21,9 +27,9 @@ var MeasureService = ServiceBase.extend({
     },
 
     /**
-     *测距
-     * @param params
-     *  <MeasureParameters>
+     * @method L.supermap.measureService.measureDistance
+     * @description 测距
+     * @param params {MeasureParameters}
      * @param callback
      */
     measureDistance: function (params, callback) {
@@ -32,9 +38,9 @@ var MeasureService = ServiceBase.extend({
     },
 
     /**
-     * 测面积
-     * @param params
-     * <MeasureParameters>
+     * @method L.supermap.measureService.measureArea
+     * @description 测面积
+     * @param params {MeasureParameters}
      * @param callback
      */
     measureArea: function (params, callback) {
@@ -43,11 +49,9 @@ var MeasureService = ServiceBase.extend({
     },
 
     /**
-     *
-     * @param type
-     * <SuperMap.MeasureMode>
-     * @param params
-     * <SuperMap.MeasureParameters>
+     * @method L.supermap.measureService.measure
+     * @param type {SuperMap.MeasureMode}
+     * @param params {SuperMap.MeasureParameters}
      * @param callback
      */
     measure: function (type, params, callback) {

@@ -1,5 +1,11 @@
 require('./iPortalServiceBase');
 var SuperMap = require('../SuperMap');
+/**
+ * @class SuperMap.iPortalService
+ * @classdesc iPortal服务
+ * @extends {SuperMap.iPortalServiceBase}
+ *
+ */
 SuperMap.iPortalService = SuperMap.Class(SuperMap.iPortalServiceBase, {
 
     addedMapNames: null,
@@ -29,6 +35,11 @@ SuperMap.iPortalService = SuperMap.Class(SuperMap.iPortalServiceBase, {
     verifyReason: null,
     version: null,
     visitCount: 0,
+    /**
+     * @method SuperMap.iPortalService.initialize
+     * @param seviceUrl
+     * @param params
+     */
 
     initialize: function (seviceUrl, params) {
         params = params || {};
@@ -39,6 +50,9 @@ SuperMap.iPortalService = SuperMap.Class(SuperMap.iPortalServiceBase, {
         }
         SuperMap.iPortalServiceBase.prototype.initialize.call(this.serviceUrl);
     },
+    /**
+     * @method SuperMap.iPortalService.load
+     */
 
     load: function () {
         var me = this;
@@ -52,7 +66,9 @@ SuperMap.iPortalService = SuperMap.Class(SuperMap.iPortalServiceBase, {
                 }
             });
     },
-
+    /**
+     * @method SuperMap.iPortalService.update
+     */
     update: function () {
         var serviceUpdateParam = {
             authorizeSetting: this.authorizeSetting,

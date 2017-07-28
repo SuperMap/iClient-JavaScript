@@ -1,21 +1,32 @@
-﻿/**
- * Class: SuperMap.ThiessenAnalystService
- * 泰森多边形分析服务类
- * 该类负责将客户设置的泰森多边形分析参数传递给服务端，并接收服务端返回的分析结果数据。
- * 泰森多边形分析结果通过该类支持的事件的监听函数参数获取
- * 泰森多边形分析的参数支持两种，当参数为 {<SuperMap.DatasetThiessenAnalystParameters>} 类型
- * 时，执行数据集泰森多边形分析，当参数为 {<SuperMap.GeometryThiessenAnalystParameters>} 类型时，
- * 执行几何对象泰森多边形分析。
- *
- * Inherits from:
- *  - <SuperMap.SpatialAnalystBase>
- */
-require('./SpatialAnalystBase');
+﻿require('./SpatialAnalystBase');
 require('./DatasetThiessenAnalystParameters');
 require('./GeometryThiessenAnalystParameters');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
 SuperMap.ThiessenAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
+    /**
+     * @class SuperMap.ThiessenAnalystService
+     * @constructs SuperMap.ThiessenAnalystService
+     * @classdesc
+     * 泰森多边形分析服务类
+     * 该类负责将客户设置的泰森多边形分析参数传递给服务端，并接收服务端返回的分析结果数据。
+     * 泰森多边形分析结果通过该类支持的事件的监听函数参数获取
+     * 泰森多边形分析的参数支持两种，当参数为 {<SuperMap.DatasetThiessenAnalystParameters>} 类型
+     * 时，执行数据集泰森多边形分析，当参数为 {<SuperMap.GeometryThiessenAnalystParameters>} 类型时，
+     * 执行几何对象泰森多边形分析。
+     * @extends {SuperMap.SpatialAnalystBase}
+     * @api
+     * @example 例如：
+     * (start code)
+     * var myThiessenAnalystService = new SuperMap.ThiessenAnalystService(url, {
+     *     eventListeners: {
+     *           "processCompleted": bufferCompleted,
+     *           "processFailed": bufferFailed
+     *           }
+     *    });
+     * (end)
+     *
+     */
 
     /**
      * Property: mode
@@ -24,24 +35,11 @@ SuperMap.ThiessenAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
     mode: null,
 
     /**
-     * Constructor: SuperMap.ThiessenAnalystService
-     * 泰森多边形分析服务类构造函数。
-     *
-     * 例如：
-     * (start code)
-     * var myThiessenAnalystService = new SuperMap.ThiessenAnalystService(url, {
-     *     eventListeners: {
-     *           "processCompleted": bufferCompleted, 
-     *           "processFailed": bufferFailed
-     *           }
-     *    });
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
+     * @method SuperMap.ThiessenAnalystService.initialize
+     * @param options - {Object} 参数。
+     * @param url - {String} 服务的访问地址。
+     * 如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+     * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
@@ -52,7 +50,7 @@ SuperMap.ThiessenAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
@@ -62,12 +60,10 @@ SuperMap.ThiessenAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
      *
-     * Parameters:
-     * params - {<SuperMap.DatasetThiessenAnalystParameters>}/
-     * {<GeometryThiessenAnalystParameters>}
+     * @method SuperMap.ThiessenAnalystService.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @param parameter - {SuperMap.DatasetThiessenAnalystParameters}/{GeometryThiessenAnalystParameters}
      */
     processAsync: function (parameter) {
         var parameterObject = {};
@@ -109,11 +105,9 @@ SuperMap.ThiessenAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
         });
     },
     /**
-     * Method: toGeoJSONResult
-     * 将含有geometry的数据转换为geojson格式。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
+     * @method SuperMap.ThiessenAnalystService.toGeoJSONResult
+     * @description 将含有geometry的数据转换为geojson格式。
+     * @result - {Object} 服务器返回的结果对象。
      */
     toGeoJSONResult: function (result) {
         if (!result) {

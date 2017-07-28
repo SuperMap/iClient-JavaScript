@@ -1,6 +1,9 @@
 ﻿/**
- * Class:MeasureService
+ * @class ol.supermap.MeasureService
+ * @constructs ol.supermap.MeasureService
+ * @classdesc
  * 距离测量服务
+ * @api
  */
 require('./ServiceBase');
 var ol = require('openlayers/dist/ol-debug');

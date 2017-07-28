@@ -1,12 +1,16 @@
 ﻿/**
- * Class: ThemeService
+ * @class L.supermap.themeService
+ * @constructs L.supermap.themeService
+ * @extends {ServiceBase}
+ * @classdesc
  * 地图信息服务类
- * 用法：
- *      L.supermap.themeService(url,{
- *            projection:projection
- *      }).getThemeInfo(params,function(result){
- *           //doSomething
- *      });
+ * @example 用法：
+ * L.supermap.themeService(url,{
+ *  projection:projection
+ *   }).getThemeInfo(params,function(result){
+ *      //doSomething
+ * });
+ * @api
  */
 var L = require("leaflet");
 var ServiceBase = require('./ServiceBase');

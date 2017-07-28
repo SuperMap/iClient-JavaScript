@@ -1,20 +1,16 @@
-/**
- * Class: SuperMap.AreaSolarRadiationService
- *  地区太阳辐射服务类。
- *
- * Inherits from:
- *  - <SuperMap.SpatialAnalystBase>
- */
+
 require('./SpatialAnalystBase');
 require('./AreaSolarRadiationParameters');
 var SuperMap = require('../SuperMap');
 SuperMap.AreaSolarRadiationService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-
     /**
-     * Constructor: SuperMap.AreaSolarRadiationService
-     * 地区太阳辐射服务类构造函数。
-     *
-     * 例如：
+     * @class SuperMap.AreaSolarRadiationService
+     * @constructs SuperMap.AreaSolarRadiationService
+     * @classdesc
+     * 地区太阳辐射服务类。
+     * @extends {SuperMap.SpatialAnalystBase}
+     * @api
+     * @example 例如：
      * (start code)
      * var myAreaSolarRadiationService = new SuperMap.AreaSolarRadiationService(url);
      * myAreaSolarRadiationService.on({
@@ -24,18 +20,23 @@ SuperMap.AreaSolarRadiationService = SuperMap.Class(SuperMap.SpatialAnalystBase,
      * );
      * (end)
      *
-     * Parameters:
-     * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst 。
-     * options - {Object} 参数。
+     */
+
+    /**
      *
-     * Allowed options properties:
+     *
+     * @method SuperMap.AreaSolarRadiationService.initialize
+     * @param url - {String} 服务的访问地址。如</br> http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst 。
+     * @param options - {Object} 参数。
+     *
+     * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
         SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
@@ -44,11 +45,9 @@ SuperMap.AreaSolarRadiationService = SuperMap.Class(SuperMap.SpatialAnalystBase,
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<AreaSolarRadiationService>}
+     * @method SuperMap.AreaSolarRadiationService.processAsync
+     * @description  负责将客户端的查询参数传递到服务端。
+     * @param parameter - {AreaSolarRadiationService}
      */
     processAsync: function (parameter) {
         var me = this;

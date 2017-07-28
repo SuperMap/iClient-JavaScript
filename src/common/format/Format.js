@@ -1,9 +1,17 @@
-/**
+/*
  * Class: SuperMap.Format
  * 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
  */
 var SuperMap = require('../SuperMap');
 SuperMap.Format = SuperMap.Class({
+    /**
+     * @class SuperMap.Format
+     * @constructs SuperMap.SuperMap.Format
+     * @classdesc
+     * 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
+     * @extends {SuperMap}
+     * @api
+     */
 
     /**
      * Property: options
@@ -60,12 +68,22 @@ SuperMap.Format = SuperMap.Class({
      * Returns:
      * 返回 <SuperMap.Format> 实例。
      */
+
+    /**
+     * @method SuperMap.Format.initialize
+     * @param options - {Object} 选项对象，其属性会被直接设置到format实例。
+     * Allowed options properties:</br>
+     * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
+     * returnContent - {<SuperMap.FilterParameter>} 是否直接返回查询结果。</br>
+     * fromIndex - {Integer} 查询结果的最小索引号。</br>
+     * toIndex - {Integer} 查询结果的最大索引号。</br>
+     */
     initialize: function (options) {
         SuperMap.Util.extend(this, options);
         this.options = options;
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 销毁该格式类，释放相关资源。
      */
@@ -73,7 +91,7 @@ SuperMap.Format = SuperMap.Class({
         //用来销毁该格式类，释放相关资源
     },
 
-    /**
+    /*
      * Method: read
      * Read data from a string, and return an object whose type depends on the
      * subclass.
@@ -88,7 +106,7 @@ SuperMap.Format = SuperMap.Class({
         //用来从字符串中读取数据
     },
 
-    /**
+    /*
      * Method: write
      * Accept an object, and return a string.
      *

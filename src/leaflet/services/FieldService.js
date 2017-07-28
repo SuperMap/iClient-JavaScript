@@ -1,11 +1,16 @@
 /**
- * Class: FieldService
+ * @class  L.supermap.FieldService
+ * @constructs L.supermap.FieldService
+ * @extends {ServiceBase}
+ * @classdesc
  * 字段服务类
- * 用法：
- *      L.supermap.fieldService(url).getFields(function(result){
- *           //doSomething
- *      });
+ * @example  用法：
+ * L.supermap.fieldService(url).getFields(function(result){
+      //doSomething
+ * });
+ * @api
  */
+
 var L = require("leaflet");
 var ServiceBase = require('./ServiceBase');
 var GetFieldsService = require('../../common/iServer/GetFieldsService');
@@ -25,7 +30,8 @@ var FieldService = ServiceBase.extend({
     },
 
     /**
-     *  字段查询服务
+     * @method L.supermap.FieldService.getFields
+     * @description 字段查询服务
      * @param callback
      */
     getFields: function (callback) {
@@ -45,9 +51,9 @@ var FieldService = ServiceBase.extend({
     },
 
     /**
-     * 字段统计服务
-     * @param params
-     * <SuperMap.FieldStatisticsParameters>
+     * @method L.supermap.FieldService.getFieldStatisticsInfo
+     * @description 字段统计服务
+     * @param params {SuperMap.FieldStatisticsParameters}
      * @param callback
      */
 

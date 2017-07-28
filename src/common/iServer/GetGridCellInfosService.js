@@ -1,14 +1,25 @@
-/**
- * Class: SuperMap.GetGridCellInfosService
- * 数据栅格查询服务，支持查询指定地理位置的栅格信息
- *
- * Inherits from:
- *  - <SuperMap.ServiceBase>
- */
 require('./ServiceBase');
 require('./GetGridCellInfosParameters');
 var SuperMap = require('../SuperMap');
 SuperMap.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
+    /**
+     * @class SuperMap.GetGridCellInfosService
+     * @constructs SuperMap.GetGridCellInfosService
+     * @classdesc
+     * 数据栅格查询服务，支持查询指定地理位置的栅格信息
+     * @extends {SuperMap.ServiceBase}
+     * @api
+     * @example  例如：
+     * (start code)
+     * var myService = new SuperMap.GetGridCellInfosService(url, {eventListeners: {
+     *     "processCompleted": queryCompleted,
+     *     "processFailed": queryError
+     *     }
+     * });
+     * (end)
+     *
+     *
+     */
 
     /**
      * APIProperty: datasetName
@@ -41,23 +52,13 @@ SuperMap.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
     Y: null,
 
     /**
-     * Constructor: SuperMap.GetGridCellInfosService
-     * 字段查询服务构造函数。
+     * @method SuperMap.GetGridCellInfosService.initialize
+     * @description 字段查询服务构造函数。
+
+     * @param url - {String} 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
+     * @param options - {Object} 参数。
      *
-     * 例如：
-     * (start code)
-     * var myService = new SuperMap.GetGridCellInfosService(url, {eventListeners: {
-     *     "processCompleted": queryCompleted,
-     *     "processFailed": queryError
-     *     }
-     * });
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
+     * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
@@ -67,7 +68,7 @@ SuperMap.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
@@ -81,7 +82,7 @@ SuperMap.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
         me.datasetType = null;
     },
 
-    /**
+    /*
      * APIMethod: processAsync
      * 执行服务，查询数据集信息。
      * Parameters:
@@ -104,7 +105,7 @@ SuperMap.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
         me.queryRequest(me.getDatasetInfoCompleted, me.getDatasetInfoFailed);
     },
 
-    /**
+    /*
      * Method: queryRequest
      * 执行服务，查询。
      */
@@ -120,11 +121,9 @@ SuperMap.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
     },
 
     /**
-     * Method: getDatasetInfoCompleted
-     * 数据集查询完成，执行此方法。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
+     * @method SuperMap.GetGridCellInfosService.getDatasetInfoCompleted
+     * @description  数据集查询完成，执行此方法。
+     * @param result - {Object} 服务器返回的结果对象。
      */
     getDatasetInfoCompleted: function (result) {
         var me = this;
@@ -134,8 +133,8 @@ SuperMap.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
     },
 
     /**
-     * Method: queryGridInfos
-     * 执行服务，查询数据集栅格信息信息。
+     * @method SuperMap.GetGridCellInfosService.queryGridInfos
+     * @description 执行服务，查询数据集栅格信息信息。
      */
     queryGridInfos: function () {
         var me = this,
@@ -156,11 +155,9 @@ SuperMap.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
     },
 
     /**
-     * Method: getDatasetInfoFailed
-     * 数据集查询失败，执行此方法。
-     *
-     * Parameters:
-     * result -  {Object} 服务器返回的结果对象。
+     * @method SuperMap.GetGridCellInfosService.getDatasetInfoFailed
+     * @description 数据集查询失败，执行此方法。
+     * @param result -  {Object} 服务器返回的结果对象。
      */
     getDatasetInfoFailed: function (result) {
         var me = this;

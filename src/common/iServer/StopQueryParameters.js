@@ -1,9 +1,17 @@
-﻿/**
- * Class: SuperMap.StopQueryParameters
- * 站点查询参数类。
- */
-var SuperMap = require('../SuperMap');
+﻿var SuperMap = require('../SuperMap');
 SuperMap.StopQueryParameters = SuperMap.Class({
+    /**
+     * @class SuperMap.StopQueryParameters
+     * @constructs SuperMap.StopQueryParameters
+     * @classdesc
+     * 站点查询参数类。
+     * @api
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * keyWord - {String} 站点名称关键字。</br>
+     * returnPosition - {Boolean} 是否返回站点坐标信息。</br>
+     */
+
     /**
      * APIProperty: keyWord
      * {String} 站点名称关键字。
@@ -16,23 +24,13 @@ SuperMap.StopQueryParameters = SuperMap.Class({
      */
     returnPosition: false,
 
-    /**
-     * Constructor: SuperMap.StopQueryParameters
-     * 站点查询参数类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * keyWord - {String} 站点名称关键字。
-     * returnPosition - {Boolean} 是否返回站点坐标信息。
-     */
+
     initialize: function (options) {
         options = options || {};
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

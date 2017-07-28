@@ -1,10 +1,13 @@
-/**
- * Class: SuperMap.RouteCalculateMeasureParameters
- * 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
- */
 require('./Route');
 var SuperMap = require('../SuperMap');
 SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
+    /**
+     * @class SuperMap.RouteCalculateMeasureParameters
+     * @constructs SuperMap.RouteCalculateMeasureParameters
+     * @classdesc
+     * 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
+     * @api
+     */
 
     /**
      * APIProperty: sourceRoute
@@ -33,21 +36,17 @@ SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
     isIgnoreGap: false,
 
     /**
-     * Constructor: SuperMap.RouteCalculateMeasureParameters
-     * 基于路由对象计算指定点M值操作的参数类的构造函数。
+     * @method SuperMap.RouteCalculateMeasureParameters.initialize
+     * @param options - {Object} 参数。
      *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * sourceRoute - {Object} 【必选参数】路由对象。该对象可以是用户自己生成或在
-     *      数据源中查询得到的符合标准的路由对象。
-     * point - {Object} 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。
-     * tolerance - {Double} 【可选参数】容限值。
-     * isIgnoreGap - {Double}  【可选参数】是否忽略子对象之间的距离。默认
-     *      为false，即不忽略子对象之间的距离。
+     * Allowed options properties:</br>
+     * sourceRoute - {Object} 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象。</br>
+     * point - {Object} 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。</br>
+     * tolerance - {Double} 【可选参数】容限值。</br>
+     * isIgnoreGap - {Double}  【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
      *
      */
+
     initialize: function (options) {
         if (!options) {
             return this;
@@ -67,7 +66,7 @@ SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

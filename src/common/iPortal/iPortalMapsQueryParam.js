@@ -1,4 +1,9 @@
 var SuperMap = require('../SuperMap');
+/**
+ * @class SuperMap.iPortalMapsQueryParam
+ * @classdesc iPortal地图资源查询参数
+ *
+ */
 SuperMap.iPortalMapsQueryParam = SuperMap.Class({
 
     userNames: '',
@@ -17,7 +22,11 @@ SuperMap.iPortalMapsQueryParam = SuperMap.Class({
     visitStart:0,
     visitEnd:0,
     filterFields: [],
-
+    /**
+     * @method SuperMap.iPortalMapsQueryParam.initialize
+     * @param params
+     *
+     */
     initialize: function (params) {
         params = params || {};
         SuperMap.Util.extend(this, params);

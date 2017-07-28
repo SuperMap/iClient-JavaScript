@@ -1,11 +1,16 @@
 /**
- * Class: LayerInfoService
+ * @class L.supermap.LayerInfoService
+ * @constructs L.supermap.LayerInfoService
+ * @classdesc
  * 图层信息服务类
- * 用法：
- *      L.supermap.layerInfoService(url).getLayersInfo(function(result){
- *           //doSomething
- *      })
+ * @example 用法：
+ * L.supermap.layerInfoService(url).getLayersInfo(function(result){
+ *  //doSomething
+ * })
+ * @extends {ServiceBase}
+ * @api
  */
+
 var L = require("leaflet");
 var ServiceBase = require('./ServiceBase');
 var GetLayersInfoService = require('../../common/iServer/GetLayersInfoService');
@@ -33,9 +38,9 @@ var LayerInfoService = ServiceBase.extend({
     },
 
     /**
-     *设置图层信息服务类。可以实现临时图层中子图层的修改
+     * @method L.supermap.LayerInfoService.setLayerInfo
+     * @description 设置图层信息服务类。可以实现临时图层中子图层的修改
      * @param params
-     * <SuperMap.SetLayerInfoParameters>
      * @param callback
      */
     setLayerInfo: function (params, callback) {
@@ -68,10 +73,11 @@ var LayerInfoService = ServiceBase.extend({
 
 
     /**
-     *设置图层信息服务类。可以实现创建新的临时图层和对现有临时图层的修改
+     * @method L.supermap.LayerInfoService.setLayersInfo
+     * @description 设置图层信息服务类。可以实现创建新的临时图层和对现有临时图层的修改
      * @param params
-     * <SuperMap.SetLayersInfoParameters>
      * @param callback
+     *
      */
     setLayersInfo: function (params, callback) {
         if (!params) {
@@ -103,10 +109,9 @@ var LayerInfoService = ServiceBase.extend({
 
 
     /**
-     * 子图层显示控制服务类。
-     * 该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
+     * @method L.supermap.LayerInfoService.setLayerStatus
+     * @description 子图层显示控制服务类。该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
      * @param params
-     * <SuperMap.SetLayerStatusParameters>
      * @param callback
      */
     setLayerStatus: function (params, callback) {

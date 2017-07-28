@@ -1,17 +1,27 @@
-﻿/**
- * Class: SuperMap.OverlayAnalystService
- * 叠加分析服务类
- * 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
- * 叠加分析结果通过该类支持的事件的监听函数参数获取
- *
- * Inherits from:
- *  - <SuperMap.ServiceBase>
- */
-require('./ServiceBase');
+﻿require('./ServiceBase');
 require('./DatasetOverlayAnalystParameters');
 require('./GeometryOverlayAnalystParameters');
 var SuperMap = require('../SuperMap');
 SuperMap.OverlayAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
+    /**
+     * @class SuperMap.OverlayAnalystService
+     * @constructs SuperMap.OverlayAnalystService
+     * @classdesc
+     * 叠加分析服务类
+     * 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
+     * 叠加分析结果通过该类支持的事件的监听函数参数获取
+     * @extends {SuperMap.ServiceBase}
+     * @api
+     * @example 例如：
+     * (start code)
+     * var myOverlayAnalystService = new SuperMap.OverlayAnalystService(url, {
+     *     eventListeners: {
+     *	       "processCompleted": OverlayCompleted,
+     *		   "processFailed": OverlayFailed
+     *		   }
+     * });
+     * (end)
+     */
 
     /**
      * Property: mode
@@ -20,24 +30,11 @@ SuperMap.OverlayAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
     mode: null,
 
     /**
-     * Constructor: SuperMap.OverlayAnalystService
-     * 查询叠加分析服务基类构造函数。
+     * @method SuperMap.OverlayAnalystService.initialize
+     * @param url {String} 服务的访问地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+     * @param options - {Object} 参数。
      *
-     * 例如：
-     * (start code)
-     * var myOverlayAnalystService = new SuperMap.OverlayAnalystService(url, {
-     *     eventListeners: {
-     *	       "processCompleted": OverlayCompleted, 
-     *		   "processFailed": OverlayFailed
-     *		   }
-     * });
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 服务的访问地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
+     * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
@@ -48,7 +45,7 @@ SuperMap.OverlayAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
@@ -58,11 +55,9 @@ SuperMap.OverlayAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.OverlayAnalystParameters>}
+     * @method SuperMap.OverlayAnalystService.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @param parameter - {SuperMap.OverlayAnalystParameters}
      */
     processAsync: function (parameter) {
         var parameterObject = {};

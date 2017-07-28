@@ -1,6 +1,7 @@
 ﻿/**
- * Class: ServiceBase
- * 服务基类
+ * @class: L.supermap.ServiceBase
+ * @classdesc 服务基类
+ * @extends {L.Evented}
  */
 require('../core/Base');
 require('../../common/util/FetchRequest');

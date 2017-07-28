@@ -1,14 +1,15 @@
-﻿/**
- * Class: SuperMap.Route
- * 路由对象类。
- * 路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
- *
- *  Inherits from:
- *  - <SuperMap.Geometry.Collection>
- */
-require('./PointWithMeasure');
+﻿require('./PointWithMeasure');
 var SuperMap = require('../SuperMap');
 SuperMap.Route = SuperMap.Class(SuperMap.Geometry.Collection, {
+    /**
+     * @class SuperMap.Route
+     * @constructs SuperMap.Route
+     * @classdesc
+     * 路由对象类。
+     * 路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
+     * @extends {SuperMap.Geometry.Collection}
+     * @api
+     */
 
     /**
      * APIProperty: id
@@ -86,19 +87,15 @@ SuperMap.Route = SuperMap.Class(SuperMap.Geometry.Collection, {
     componentTypes: ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"],
 
     /**
-     * Constructor: SuperMap.Route
-     * 路由对象类构造函数。
-     *
-     * Parameters:
-     * components - {Array(<SuperMap.Geometry.LinearRing> or <SuperMap.Geometry.LineString>)} 形成路由对象的线数组
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * id - {Number} 路由对象在数据库中的id。
-     * length - {Number} 路由对象的长度。
-     * maxM - {Number} 最大线性度量值，即所有结点到起始点的量算距离中最大值。
-     * minM - {Number} 最小线性度量值，即所有结点到起始点的量算距离中最小值。
-     * type - {String} 数据类型，如："LINEM"
+     * @method SuperMap.Route.initialize
+     * @param points - {Array} 形成路由对象的线数组。
+     * @param  options - {Object} 参数。
+     * Allowed options properties:</br>
+     * id - {Number} 路由对象在数据库中的id。</br>
+     * length - {Number} 路由对象的长度。</br>
+     * maxM - {Number} 最大线性度量值，即所有结点到起始点的量算距离中最大值。</br>
+     * minM - {Number} 最小线性度量值，即所有结点到起始点的量算距离中最小值。</br>
+     * type - {String} 数据类型，如："LINEM"</br>
      */
     initialize: function (points, options) {
         SuperMap.Geometry.Collection.prototype.initialize.apply(this, arguments);
@@ -107,8 +104,9 @@ SuperMap.Route = SuperMap.Class(SuperMap.Geometry.Collection, {
         }
     },
     /**
-     * Method: toJson
-     * 转换为json对象。
+     *
+     * @method SuperMap.Route.toJson
+     * @description 转换为json对象。
      */
     toJson: function () {
         var result = "{";
@@ -156,7 +154,7 @@ SuperMap.Route = SuperMap.Class(SuperMap.Geometry.Collection, {
         return result;
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
@@ -179,14 +177,10 @@ SuperMap.Route = SuperMap.Class(SuperMap.Geometry.Collection, {
 });
 
 /**
- * Function: SuperMap.Route.fromJson
- * 将 JSON 对象转换为 SuperMap.Route 对象。
- *
- * Parameters:
- * jsonObject - {Object} JSON 对象表示的路由对象。
- *
- * Returns:
- * {<SuperMap.Route>} 转化后的 Route 对象。
+ * @method SuperMap.Route.fromJson
+ * @description  将 JSON 对象转换为 SuperMap.Route 对象。
+ * @param jsonObject - {Object} JSON 对象表示的路由对象。
+ * @return {SuperMap.Route} 转化后的 Route 对象。
  */
 SuperMap.Route.fromJson = function (jsonObject) {
     if (!jsonObject) {

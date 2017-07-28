@@ -5,10 +5,21 @@ require('./GeoCodingParameter');
 require('./GeoDecodingParameter');
 
 /**
+ * @class SuperMap.AddressMatchService
+   @constructs SuperMap.AddressMatchService
+ * @classdesc
  * 地址匹配服务，包括正向匹配和反向匹配。
- */
-SuperMap.AddressMatchService = SuperMap.Class(ServiceBase, {
+ * @api
 
+ */
+
+SuperMap.AddressMatchService = SuperMap.Class(ServiceBase, {
+    /**
+     *
+     * @method SuperMap.AddressMatchService.prototype.initialize
+     * @param options - {Object} 参数。
+     * @param url {string}
+     */
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.apply(this, arguments);
     },
@@ -18,18 +29,18 @@ SuperMap.AddressMatchService = SuperMap.Class(ServiceBase, {
     },
 
     /**
-     *
-     * @param url 正向地址匹配服务地址
-     * @param params 正向地址匹配服务参数
+     * @function SuperMap.AddressMatchService.prototype.code
+     * @param url {string} 正向地址匹配服务地址
+     * @param params {object} 正向地址匹配服务参数
      */
     code: function (url, params) {
         this.processAsync(url, params);
     },
 
     /**
-     *
-     * @param url 反向地址匹配服务地址
-     * @param params 反向地址匹配服务参数
+     * @method SuperMap.AddressMatchService.prototype.decode
+     * @param url {string} 反向地址匹配服务地址
+     * @param params {object} 反向地址匹配服务参数
      */
     decode: function (url, params) {
         this.processAsync(url, params);

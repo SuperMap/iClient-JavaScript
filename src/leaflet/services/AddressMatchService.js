@@ -1,11 +1,15 @@
 /**
- * Class:L.supermap.AddressMatchService
+ * @class L.supermap.AddressMatchService
+ * @constructs L.supermap.AddressMatchService
+ * @classdesc
  * 地址匹配服务
- * 用法：
+ * @extends {ServiceBase.ServiceBase}
+ * @example 用法：
  *      L.supermap.AddressMatchService(url,options)
  *      .code(function(result){
  *          //doSomething
  *      })
+ * @api
  */
 var L = require("leaflet");
 var SuperMap = require('../../common/SuperMap');
@@ -19,7 +23,8 @@ var AddressMatchService = ServiceBase.extend({
     },
 
     /**
-     * 获取正向地址匹配结果。
+     * @method L.supermap.AddressMatchService.code
+     * @description 获取正向地址匹配结果。
      * @param params 正向匹配参数。
      * @param callback 请求结果的回调函数。
      * @param resultFormat 返回的结果类型（默认为GeoJSON）。
@@ -41,7 +46,8 @@ var AddressMatchService = ServiceBase.extend({
     },
 
     /**
-     * 获取反向地址匹配结果。
+     * @method L.supermap.AddressMatchService.decode
+     * @description 获取反向地址匹配结果。
      * @param params 反向匹配参数。
      * @param callback 请求结果的回调函数。
      * @param resultFormat 返回的结果类型（默认为GeoJSON）。

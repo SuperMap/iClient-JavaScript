@@ -1,30 +1,17 @@
-/**
- * Class: SuperMap.DensityAnalystService
- *  密度分析服务类，密度分析可计算每个输出栅格像元周围圆形邻域内输入的点或线对象的密度。
- *  密度分析，在某种意义上来说，相当于在表面上将输入的点线对象的测量值散开来，
- *  将每个点或线对象的测量量分布在整个研究区域，并计算输出栅格中每个像元的密度值。
- *
- *  目前提供1种密度分析：核密度分析（Kernel）。
- *
- * Inherits from:
- *  - <SuperMap.SpatialAnalystBase>
- */
 require('./SpatialAnalystBase');
 require('./DensityKernelAnalystParameters');
 var SuperMap = require('../SuperMap');
 SuperMap.DensityAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-
     /**
-     * Property: mode
-     * {String} 密度分析类型。
-     */
-    mode: null,
-
-    /**
-     * Constructor: SuperMap.DensityAnalystService
-     * 密度分析服务类构造函数。
+     * @class SuperMap.DensityAnalystService
+     * @constructs SuperMap.DensityAnalystService
+     * @classdesc
+     *  密度分析服务类，密度分析可计算每个输出栅格像元周围圆形邻域内输入的点或线对象的密度。
+     *  密度分析，在某种意义上来说，相当于在表面上将输入的点线对象的测量值散开来，将每个点或线对象的测量量分布在整个研究区域，并计算输出栅格中每个像元的密度值。目前提供1种密度分析：核密度分析（Kernel）。
+     * @extends {SuperMap.SpatialAnalystBase}
+     * @api
+     * @example  例如：
      *
-     * 例如：
      * (start code)
      * var myDensityAnalystService = new SuperMap.DensityAnalystService(url);
      * myDensityAnalystService.on({
@@ -34,11 +21,20 @@ SuperMap.DensityAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
      * );
      * (end)
      *
-     * Parameters:
-     * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * options - {Object} 参数。
+     */
+
+    /**
+     * Property: mode
+     * {String} 密度分析类型。
+     */
+    mode: null,
+
+    /**
+     * @method SuperMap.DensityAnalystService.initialize
+     * @param  url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+     * @param options - {Object} 参数。
      *
-     * Allowed options properties:
+     * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
@@ -49,7 +45,7 @@ SuperMap.DensityAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
@@ -59,11 +55,9 @@ SuperMap.DensityAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<DensityKernelAnalystParameters>}
+     * @method SuperMap.DensityAnalystService.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @param parameter - {DensityKernelAnalystParameters}
      */
     processAsync: function (parameter) {
         var me = this;

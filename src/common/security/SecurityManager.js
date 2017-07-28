@@ -1,26 +1,33 @@
-/**
- * Class:SuperMap.SecurityManager
- * 安全管理中心
- * 提供iServer,iPortal,Online统一权限认证管理
- *  使用说明：
- *  创建任何一个服务之前调用SuperMap.SecurityManager.registerToken或
- *  SuperMap.SecurityManager.registerKey注册凭据。
- *  发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
- */
+
 require('./ServerInfo');
 require('./TokenServiceParameter');
 require('./KeyServiceParameter');
 var Request = require('../util/FetchRequest');
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.SecurityManager
+ * @constructs SuperMap.SecurityManager
+ * @classdesc
+ *  安全管理中心
+ *  提供iServer,iPortal,Online统一权限认证管理
+ *  使用说明：
+ *  创建任何一个服务之前调用SuperMap.SecurityManager.registerToken或
+ *  SuperMap.SecurityManager.registerKey注册凭据。
+ *  发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
+ * @api
+ */
+
 SuperMap.SecurityManager = {
 
     INNER_WINDOW_WIDTH: 600,
     INNER_WINDOW_HEIGHT: 600,
 
     /**
-     * 从服务器获取一个token,在此之前要注册服务器信息
-     * @param url 服务器域名+端口，如：http://localhost:8092
-     * @param tokenParam<SuperMap.TokenServiceParameter>
+     *
+     * @description 从服务器获取一个token,在此之前要注册服务器信息
+     * @param url {String}服务器域名+端口，如：http://localhost:8092
+     * @param tokenParam {SuperMap.TokenServiceParameter}
      */
     generateToken: function (url, tokenParam) {
         var serverInfo = this.servers[url];
@@ -34,8 +41,9 @@ SuperMap.SecurityManager = {
 
 
     /**
-     * 注册安全服务器相关信息
-     * @param serverInfos<SuperMap.ServerInfo>
+     *
+     * @description 注册安全服务器相关信息
+     * @param serverInfos {SuperMap.ServerInfo}
      */
     registerServers: function (serverInfos) {
         this.servers = this.servers || {};
@@ -49,9 +57,9 @@ SuperMap.SecurityManager = {
     },
 
     /**
-     * 服务请求都会自动带上这个token
-     * @param url 服务器域名+端口：如http://localhost:8090
-     * @param token
+     * @description 服务请求都会自动带上这个token
+     * @param url {String}服务器域名+端口：如http://localhost:8090
+     * @param token {String}
      */
     registerToken: function (url, token) {
         this.tokens = this.tokens || {};
@@ -63,9 +71,9 @@ SuperMap.SecurityManager = {
     },
 
     /**
-     * 注册key,ids为数组(存在一个key对应多个服务)
-     * @param ids   <Array> 可以是服务id数组或者url地址数组或者webAPI类型数组
-     * @param key   <String>
+     * @description 注册key,ids为数组(存在一个key对应多个服务)
+     * @param ids   {Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
+     * @param key   {String}
      */
     registerKey: function (ids, key) {
         this.keys = this.keys || {};

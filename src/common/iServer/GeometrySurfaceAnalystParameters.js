@@ -1,14 +1,14 @@
-﻿/**
- * Class: SuperMap.GeometrySurfaceAnalystParameters
- * 几何对象表面分析参数类。
- * 该类对几何对象表面分析所用到的参数进行设置。
- *
- * Inherits from:
- *  - <SurfaceAnalystParameters>
- */
-require('./SurfaceAnalystParameters');
-var SuperMap = require('../SuperMap');
+﻿require('./SurfaceAnalystParameters');
 SuperMap.GeometrySurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnalystParameters, {
+    /**
+     * @class SuperMap.GeometrySurfaceAnalystParameters
+     * @constructs SuperMap.GeometrySurfaceAnalystParameters
+     * @classdesc
+     * 几何对象表面分析参数类。
+     * 该类对几何对象表面分析所用到的参数进行设置。
+     * @extends {SuperMap.SurfaceAnalystParameters}
+     * @api
+     */
 
     /**
      * APIProperty: points
@@ -24,19 +24,16 @@ SuperMap.GeometrySurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnaly
     zValues: null,
 
     /**
-     * Constructor:SuperMap. GeometrySurfaceAnalystParameters
-     * 几何对象表面分析参数类构造函数。
      *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * points - {Array(<SuperMap.Geometry.Point>)} 表面分析的坐标点数组。
-     * zValues - {Array(Number)} 表面分析的坐标点的 Z 值数组。
-     * resolution - {Number} 获取或设置指定中间结果（栅格数据集）的分辨率。
-     * resultSetting - {<SuperMap.DataReturnOption>} 结果返回设置类。
-     * extractParameter - {<SuperMap.SurfaceAnalystParametersSetting>} 获取或设置表面分析参数。
-     * surfaceAnalystMethod - {<SuperMap.SurfaceAnalystMethod>} 获取或设置表面分析的提取方法，提取等值线和提取等值面。
+     * @method SuperMap.GetFeaturesByBufferService.initialize
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * points - {Array(<SuperMap.Geometry.Point>)} 表面分析的坐标点数组。</br>
+     * zValues - {Array(Number)} 表面分析的坐标点的 Z 值数组。</br>
+     * resolution - {Number} 获取或设置指定中间结果（栅格数据集）的分辨率。</br>
+     * resultSetting - {<SuperMap.DataReturnOption>} 结果返回设置类。</br>
+     * extractParameter - {<SuperMap.SurfaceAnalystParametersSetting>} 获取或设置表面分析参数。</br>
+     * surfaceAnalystMethod - {<SuperMap.SurfaceAnalystMethod>} 获取或设置表面分析的提取方法，提取等值线和提取等值面。</br>
      */
     initialize: function (options) {
         SuperMap.SurfaceAnalystParameters.prototype.initialize.apply(this, arguments);
@@ -45,7 +42,7 @@ SuperMap.GeometrySurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnaly
         }
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */

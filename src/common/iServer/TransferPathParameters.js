@@ -1,10 +1,18 @@
-﻿/**
- * Class: SuperMap.TransferPathParameters
- * 交通换乘线路查询参数类。
- */
-require('./TransferLine');
+﻿require('./TransferLine');
 var SuperMap = require('../SuperMap');
 SuperMap.TransferPathParameters = SuperMap.Class({
+    /**
+     * @class SuperMap.TransferPathParameters
+     * @constructs SuperMap.TransferPathParameters
+     * @classdesc
+     * 交通换乘线路查询参数类。
+     * @api
+     * @param options - {Object} 参数。
+     * Allowed options properties:</br>
+     * transferLines - {Array(<SuperMap.TransferLine>)} 本换乘分段内可乘车的路线集合。</br>
+     * points - {Array(Integer)} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
+     */
+
     /**
      * APIProperty: transferLines
      * {Array(<SuperMap.TransferLine>)} 本换乘分段内可乘车的路线集合，通过交通换乘方案查询得到
@@ -20,23 +28,12 @@ SuperMap.TransferPathParameters = SuperMap.Class({
      */
     points: false,
 
-    /**
-     * Constructor: SuperMap.TransferPathParameters
-     * 交通换乘线路查询参数类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * transferLines - {Array(<SuperMap.TransferLine>)} 本换乘分段内可乘车的路线集合。
-     * points - {Array(Integer)} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。
-     */
     initialize: function (options) {
         options = options || {};
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
@@ -47,14 +44,10 @@ SuperMap.TransferPathParameters = SuperMap.Class({
     CLASS_NAME: "SuperMap.TransferPathParameters"
 });
 /**
- * Function: SuperMap.TransferPathParameters.toJson
- * 将 <SuperMap.TransferPathParameters> 对象参数转换为 json 字符串。
- *
- * Parameters:
- * params - {<SuperMap.TransferPathParameters>} 交通换乘参数。
- *
- * Returns:
- * {String} 转化后的 json字符串。
+ * @method SuperMap.TransferPathParameters.toJson
+ * @description 将 <SuperMap.TransferPathParameters> 对象参数转换为 json 字符串。
+ * @param params - {SuperMap.TransferPathParameters} 交通换乘参数。
+ * @returns {String} 转化后的 json字符串。
  */
 SuperMap.TransferPathParameters.toJson = function (params) {
     if (params) {

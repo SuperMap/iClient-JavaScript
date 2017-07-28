@@ -1,9 +1,11 @@
-var SuperMap = require('../SuperMap');
 /**
- * Class: SuperMap.GeoCodingParameter
+ * @class SuperMap.GeoCodingParameter
+ * @constructs SuperMap.GeoCodingParameter
+ * @classdesc
  * 地理正向匹配参数类。
+ * @api
  */
-
+var SuperMap = require('../SuperMap');
 SuperMap.GeoCodingParameter = SuperMap.Class({
 
     /**
@@ -42,6 +44,10 @@ SuperMap.GeoCodingParameter = SuperMap.Class({
      */
     maxReturn: null,
 
+    /**
+     * @method SuperMap.GeoCodingParameter.initialize
+     * @param options - {Object} 参数。
+     */
 
     initialize: function (options) {
         if (!options) {
@@ -58,7 +64,7 @@ SuperMap.GeoCodingParameter = SuperMap.Class({
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
