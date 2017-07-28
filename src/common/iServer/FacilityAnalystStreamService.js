@@ -1,4 +1,4 @@
-/**
+/*
  * Class: SuperMap.FacilityAnalystStreamService
  * 上游/下游 关键设施查找资源服务类;即查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
  *
@@ -8,40 +8,43 @@
 require('./NetworkAnalystServiceBase');
 require('./FacilityAnalystStreamParameters');
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.FacilityAnalystStreamService
+ * @description 上游/下游 关键设施查找资源服务类;即查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
+ * @augments SuperMap.NetworkAnalystServiceBase
+ * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ *                        例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
+ * @param options - {Object} 互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象。
+ */
 SuperMap.FacilityAnalystStreamService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.FacilityAnalystStreamService
-     * 上游/下游关键设施查找资源服务类构造函数。
-     *
-     * Parameters:
-     * url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
-     * http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
-     * 例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @function SuperMap.FacilityAnalystStreamService.prototype.initialize
+     * @description 上游/下游关键设施查找资源服务类构造函数。
+     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+     *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+     *                        例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
+     * @param options - {Object} 互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-
     initialize: function (url, options) {
         SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用的资源属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.FacilityAnalystStreamParameters>}
+     * @function SuperMap.FacilityAnalystStreamService.prototype. processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @param params - {SuperMap.FacilityAnalystStreamParameters} 上游/下游关键设施查找资源参数类。
      */
     processAsync: function (params) {
         if (!params) {

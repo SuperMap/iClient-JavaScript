@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: SuperMap.ThemeRangeItem
  * 范围分段专题图子项类。
  * 在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。
@@ -6,58 +6,65 @@
  */
 var SuperMap = require('../SuperMap');
 var ServerStyle = require('./ServerStyle');
+
+/**
+ * @class SuperMap.ThemeRangeItem
+ * @description 范围分段专题图子项类。<br>
+ *              在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。
+ *              每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。
+ * @param options - {Object} 可选参数。如：<br>
+ *        caption - {String} 分段专题图子项的标题。<br>
+ *        end - {Number} 分段专题图子项的终止值。<br>
+ *        start - {Number} 分段专题图子项的起始值。<br>
+ *        style - {SuperMap.ServerStyle} 分段专题图子项的风格。<br>
+ *        visible - {Boolean} 分段专题图子项是否可见。
+ */
 SuperMap.ThemeRangeItem = SuperMap.Class({
 
     /**
      * APIProperty: caption
-     * {String} 分段专题图子项的标题。
+     * @member SuperMap.ThemeRangeItem.prototype.caption -{String}
+     * @description 分段专题图子项的标题。
      */
     caption: null,
 
     /**
      * APIProperty: end
-     * {Number} 分段专题图子项的终止值，即该段专题值范围的最大值，默认值为 0。
-     * 如果该子项是分段中最后一个子项，则该终止值应大于分段字段（ThemeRange 类的 rangeExpression 属性）的最大值，若该终止值小于分段字段最大值，
-     * 则剩余部分由内部随机定义其颜色；如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常；
-     * 如果设置了范围分段模式和分段数，则会自动计算每段的范围[start, end)，故无需设置[start, end)；当然可以设置，那么结果就会按您设置的值对分段结果进行调整。
+     * @member SuperMap.ThemeRangeItem.prototype.end -{Number}
+     * @description 分段专题图子项的终止值，即该段专题值范围的最大值，默认值为 0。<br>
+     *              如果该子项是分段中最后一个子项，则该终止值应大于分段字段（ThemeRange 类的 rangeExpression 属性）的最大值，若该终止值小于分段字段最大值，
+     *              则剩余部分由内部随机定义其颜色；如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常；
+     *              如果设置了范围分段模式和分段数，则会自动计算每段的范围[start, end)，故无需设置[start, end)；当然可以设置，那么结果就会按您设置的值对分段结果进行调整。
      */
     end: 0,
 
     /**
      * APIProperty: start
-     * {Number} 分段专题图子项的起始值，即该段专题值范围的最小值，默认值为 0。
-     * 如果该子项是分段中第一个子项，那么该起始值就是分段的最小值；如果子项的序号大于等于1的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。
-     * 如果设置了范围分段模式和分段数，则会自动计算每段的范围[start, end)，故无需设置[start, end)；当然可以设置，那么结果就会按您设置的值对分段结果进行调整。
+     * @member SuperMap.ThemeRangeItem.prototype.start -{Number}
+     * @description 分段专题图子项的起始值，即该段专题值范围的最小值，默认值为 0。<br>
+     *              如果该子项是分段中第一个子项，那么该起始值就是分段的最小值；如果子项的序号大于等于1的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。
+     *              如果设置了范围分段模式和分段数，则会自动计算每段的范围[start, end)，故无需设置[start, end)；当然可以设置，那么结果就会按您设置的值对分段结果进行调整。
      */
     start: 0,
 
     /**
      * APIProperty: style
-     * {<SuperMap.ServerStyle>} 分段专题图子项的风格。
-     * 每一个分段专题图子项都对应一种显示风格。
+     * @member SuperMap.ThemeRangeItem.prototype.style -{SuperMap.ServerStyle}
+     * @description 分段专题图子项的风格。
+     *              每一个分段专题图子项都对应一种显示风格。
      */
     style: null,
 
     /**
      * APIProperty: visible
-     * {Boolean} 分段专题图子项是否可见。
-     * 默认为 true。
+     * @member SuperMap.ThemeRangeItem.prototype.visible -{Boolean}
+     * @description 分段专题图子项是否可见。默认为 true。
      */
     visible: true,
 
-    /**
+    /*
      * Constructor: SuperMap.ThemeRangeItem
      * 范围分段专题图子项类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * caption - {String} 分段专题图子项的标题。
-     * end - {Number} 分段专题图子项的终止值。
-     * start - {Number} 分段专题图子项的起始值。
-     * style - {<SuperMap.ServerStyle>} 分段专题图子项的风格。
-     * visible - {Boolean} 分段专题图子项是否可见。
      */
     initialize: function (options) {
         var me = this;
@@ -69,7 +76,8 @@ SuperMap.ThemeRangeItem = SuperMap.Class({
 
     /**
      * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
         var me = this;
@@ -84,7 +92,7 @@ SuperMap.ThemeRangeItem = SuperMap.Class({
         me.visible = null;
     },
 
-    /**
+    /*
      * Method: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */

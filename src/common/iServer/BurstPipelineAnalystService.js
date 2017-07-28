@@ -1,47 +1,43 @@
-/**
- * Class: SuperMap.BurstPipelineAnalystService
- * 爆管分析服务类;即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
- *
- * Inherits from:
- *  - <SuperMap.NetworkAnalystServiceBase>
- */
 require('./NetworkAnalystServiceBase');
 require('./BurstPipelineAnalystParameters');
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.BurstPipelineAnalystService
+ * @description 爆管分析服务类;即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
+ * @augments SuperMap.NetworkAnalystServiceBase
+ * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
+ * @param options - {Object} 互服务时所需可选参数。如：<br>
+ *        eventListeners - {Object} 需要被注册的监听器对象。
+ */
 SuperMap.BurstPipelineAnalystService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
-    /**
-     * Constructor: SuperMap.BurstPipelineAnalystService
-     * 爆管分析服务类构造函数。
-     *
-     * Parameters:
-     * url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
-     * http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
-     * 例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+    /*
+     * @function SuperMap.BurstPipelineAnalystService.prototype.initialize
+     * @description 爆管分析服务类构造函数。
+     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+     *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+     *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
+     * @param options - {Object} 互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象。。
      */
-
     initialize: function (url, options) {
         SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用的资源属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<BurstPipelineAnalystParameters>}
+     * @function SuperMap.BurstPipelineAnalystService.prototype.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @params - {BurstPipelineAnalystParameters} 爆管分析参数类
      */
     processAsync: function (params) {
         if (!params) {

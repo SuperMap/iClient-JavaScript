@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: SuperMap.FindServiceAreasService
  * 服务区分析服务类。
  * 服务区分析是以指定服务站点为中心，
@@ -12,49 +12,56 @@ require('./NetworkAnalystServiceBase');
 require('./FindServiceAreasParameters');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
+
+/**
+ * @class SuperMap.FindServiceAreasService
+ * @description 服务区分析服务类。<br>
+ *               服务区分析是以指定服务站点为中心，<br>
+ *               在一定服务范围内查找网络上服务站点能够提供服务的区域范围。<br>
+ *               该类负责将客户端指定的服务区分析参数传递给服务端，并接收服务端返回的结果数据。<br>
+ *               服务区分析结果通过该类支持的事件的监听函数参数获取
+ * @augments SuperMap.NetworkAnalystServiceBase
+ * @example
+ * (start code)
+ * var myFindServiceAreasService = new SuperMap.FindServiceAreasService(url, {
+ *          eventListeners: {
+ *              "processCompleted": findServiceAreasCompleted,
+ *              "processFailed": findServiceAreasError
+ *          }
+ * });
+ * (end)
+ * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+ * @param options - {Object} 互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象
+ */
 SuperMap.FindServiceAreasService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.FindServiceAreasService
-     * 服务区分析服务类构造函数。
-     *
-     * 例如:
-     * (start code)
-     * var myFindServiceAreasService = new SuperMap.FindServiceAreasService(url, {
-     *          eventListeners: {
-     *              "processCompleted": findServiceAreasCompleted,
-     *              "processFailed": findServiceAreasError
-     *          }
-     * });
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
-     * http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
-     * 例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @function SuperMap.FindServiceAreasService.prototype.initialize
+     * @description 服务区分析服务类构造函数。
+     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+     *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+     *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+     * @param options - {Object} 互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象
      */
     initialize: function (url, options) {
         SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.FindServiceAreasParameters>}
+     * @function SuperMap.FindServiceAreasService.prototype.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @param params - {SuperMap.FindServiceAreasParameters} 服务区分析服务参数类
      */
     processAsync: function (params) {
         if (!params) {
@@ -79,7 +86,7 @@ SuperMap.FindServiceAreasService = SuperMap.Class(SuperMap.NetworkAnalystService
         });
     },
 
-    /**
+    /*
      * Method: getJson
      * 将对象转化为JSON字符串。
      *
@@ -109,7 +116,7 @@ SuperMap.FindServiceAreasService = SuperMap.Class(SuperMap.NetworkAnalystService
         return jsonString;
     },
 
-    /**
+    /*
      * Method: toGeoJSONResult
      * 将含有geometry的数据转换为geojson格式。
      *

@@ -1,61 +1,72 @@
-/**
- * Class: SuperMap.BuildCacheJobParameter
- * 地图缓存作业参数类
- */
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.BuildCacheJobParameter
+ * @description 地图缓存作业参数类
+ * @param options - {Object} 可选参数。如：<br>
+ *         datasetName - {String} 数据集名称。<br>
+ *         cacheName - {String} 缓存名称。<br>
+ *         cacheType - {String} 存储类型。<br>
+ *         serverAdresses - {String} MongoDB地址。<br>
+ *         database -- {String} 数据库。<br>
+ *         version -{String} 版本。<br>
+ *         bounds -{SuperMap.Bounds} 缓存范围。<br>
+ *         imageType -{number} 缓存类型.<br>
+ *         level -{number} 缓存比例尺级别。
+ */
 SuperMap.BuildCacheJobParameter = SuperMap.Class({
 
     /**
-     * APIProperty: datasetName
-     * {String} 数据集名称。
+     * @member SuperMap.BuildCacheJobParameter.prototype.datasetName -{String}
+     * @description 数据集名称。
      */
     datasetName: null,
 
     /**
-     * APIProperty: cacheName
-     * {String} 缓存名称。
+     * @member SuperMap.BuildCacheJobParameter.prototype.cacheName -{String}
+     * @description 缓存名称。
      */
     cacheName: null,
 
     /**
-     * APIProperty: cacheType
-     * {String} 存储类型。
+     * @member SuperMap.BuildCacheJobParameter.prototype.cacheType -{String}
+     * @description 存储类型。
      */
     cacheType: null,
 
     /**
-     * APIProperty: serverAddresses
-     * {String} MongoDB地址。
+     * @member SuperMap.BuildCacheJobParameter.prototype.serverAdresses -{String}
+     * @description MongoDB地址。
      */
     serverAdresses: null,
 
     /**
-     * APIProperty: database
-     * {String} 数据库。
+     * @member SuperMap.BuildCacheJobParameter.prototype.database -{String}
+     * @description 数据库。
      */
     database: null,
 
     /**
-     * APIProperty: version
-     * {String} 版本。
+     * @member SuperMap.BuildCacheJobParameter.prototype.version -{String}
+     * @description 版本。
      */
     version: null,
 
     /**
-     * APIProperty: bounds
-     * {<SuperMap.Bounds>} 缓存范围。
+     * @member SuperMap.BuildCacheJobParameter.prototype.bounds -{SuperMap.Bounds}
+     * @description 缓存范围。
      */
     bounds: null,
 
     /**
-     * APIProperty: imageType
-     * {number} 缓存类型。
+     * @member SuperMap.BuildCacheJobParameter.prototype.imageType -{number}
+     * @description 缓存类型。
      */
     imageType: null,
 
     /**
-     * APIProperty: level
-     * {number} 缓存比例尺级别。
+     * @member SuperMap.BuildCacheJobParameter.prototype.level -{number}
+     * @description 缓存比例尺级别。
      */
     level: null,
 
@@ -67,8 +78,8 @@ SuperMap.BuildCacheJobParameter = SuperMap.Class({
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
         this.datasetName = null;

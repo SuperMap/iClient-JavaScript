@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: SuperMap.FindPathParameters
  * 最佳路径分析参数类。
  * 最佳路径是在网络数据集中指定一些结点，按照顺序访问结点从而求解起止点之间阻抗最小的路径。
@@ -11,51 +11,56 @@
  */
 var SuperMap = require('../SuperMap');
 var TransportationAnalystParameter = require('./TransportationAnalystParameter');
+
+/**
+ * @class SuperMap.FindPathParameters
+ * @description 最佳路径分析参数类.
+ * @param options - {Object} 可选参数。如：<br>
+ *        isAnalyzeById - {Boolean} 是否通过节点 ID 指定路径分析的结点。<br>
+ *        hasLeastEdgeCount - {Boolean} 是否按照弧段数最少的进行最佳路径分析。<br>
+ *        nodes - {Array()} 最佳路径分析经过的结点或设施点数组，必设字段。该字段至少包含两个点。<br>
+ *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
+ */
 SuperMap.FindPathParameters = SuperMap.Class({
 
     /**
      * APIProperty: isAnalyzeById
-     * {Boolean} 是否通过节点 ID 指定路径分析的结点，默认为 false。
-     * 指定路径分析经过的结点或设施点有两种方式：输入结点 ID 号或直接输入点坐标。
-     * 当该字段为 true 时，表示通过结点 ID 指定途经点，即 SuperMap.FindPathParameters.nodes = [ID1,ID2,...]；
-     * 反之表示通过结点坐标指定途经点，即 SuperMap.FindPathParameters.nodes = [{x1,y1},{x2,y2},...] 。
+     * @member SuperMap.FindPathParameters.prototype.isAnalyzeById -{Boolean}
+     * @description 是否通过节点 ID 指定路径分析的结点，默认为 false。<br>
+     *               指定路径分析经过的结点或设施点有两种方式：输入结点 ID 号或直接输入点坐标。<br>
+     *               当该字段为 true 时，表示通过结点 ID 指定途经点，即 SuperMap.FindPathParameters.nodes = [ID1,ID2,...]；<br>
+     *               反之表示通过结点坐标指定途经点，即 SuperMap.FindPathParameters.nodes = [{x1,y1},{x2,y2},...] 。
      */
     isAnalyzeById: false,
 
     /**
      * APIProperty: hasLeastEdgeCount
-     * {Boolean} 是否按照弧段数最少的进行最佳路径分析。
-     * true 表示按照弧段数最少进行分析，返回弧段数最少的路径中一个阻抗最小的最佳路径；
-     * false表示直接返回阻抗最小的路径，而不考虑弧段的多少。
+     * @member SuperMap.FindPathParameters.prototype.hasLeastEdgeCount -{Boolean}
+     * @description 是否按照弧段数最少的进行最佳路径分析。<br>
+     *               true 表示按照弧段数最少进行分析，返回弧段数最少的路径中一个阻抗最小的最佳路径；<br>
+     *               false表示直接返回阻抗最小的路径，而不考虑弧段的多少。
      */
     hasLeastEdgeCount: null,
 
     /**
      * APIProperty: nodes
-     * {Array(<Point>/Number)} 最佳路径分析经过的结点或设施点数组，必设字段。该字段至少包含两个点。
-     * 当 SuperMap.FindPathParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；
-     * 当 SuperMap.FindPathParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
+     * @member SuperMap.FindPathParameters.prototype.nodes -{Array(<Point>/Number)}
+     * @description 最佳路径分析经过的结点或设施点数组，必设字段。该字段至少包含两个点。<br>
+     *               当 SuperMap.FindPathParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
+     *               当 SuperMap.FindPathParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。
      */
     nodes: null,
 
     /**
      * APIProperty: parameter
-     * {<SuperMap.TransportationAnalystParameter>} 交通网络分析通用参数。
+     * @member SuperMap.FindPathParameters.prototype.parameter -{SuperMap.TransportationAnalystParameter}
+     * @description 交通网络分析通用参数。
      */
     parameter: null,
 
-    /**
+    /*
      * Constructor: SuperMap.FindPathParameters
      * 最佳路径分析参数类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * isAnalyzeById - {Boolean} 是否通过节点 ID 指定路径分析的结点。
-     * hasLeastEdgeCount - {Boolean} 是否按照弧段数最少的进行最佳路径分析。
-     * nodes - {Array()} 最佳路径分析经过的结点或设施点数组，必设字段。该字段至少包含两个点。
-     * parameter - {<SuperMap.TransportationAnalystParameter>} 交通网络分析通用参数。
      */
     initialize: function (options) {
         var me = this;
@@ -68,7 +73,8 @@ SuperMap.FindPathParameters = SuperMap.Class({
 
     /**
      * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
         var me = this;

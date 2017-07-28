@@ -1,4 +1,4 @@
-/**
+/*
  * Class:SuperMap.UpdateTurnNodeWeightService
  * 转向耗费权重更新服务类
  */
@@ -7,48 +7,50 @@ require('./NetworkAnalystServiceBase');
 require('./UpdateTurnNodeWeightParameters');
 var SuperMap = require('../SuperMap');
 
+/**
+ * @class SuperMap.UpdateTurnNodeWeightService
+ * @description 转向耗费权重更新服务类
+ * @augments SuperMap.NetworkAnalystServiceBase
+ * @example
+ * (start code)
+ * var UpdateTurnNodeWeightService = new SuperMap.UpdateTurnNodeWeightService(url, {
+ *     eventListeners: {
+ *         "processCompleted": UpdateTurnNodeWeightCompleted,    //参数为SuperMap.UpdateTurnNodeWeightEventArgs
+ *		   "processFailed": UpdateTurnNodeWeightError          //参数为SuperMap.ServiceFailedEventArgs
+ *		   }
+ * });
+ * (end)
+ * @param url - {String} 服务的访问地址。如:<br>
+ *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
+ * @param options - {Object} 互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象。
+ */
 SuperMap.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.UpdateTurnNodeWeightService
-     * 转向耗费权重更新服务类构造函数。
-     *
-     * 例如：
-     * (start code)
-     * var UpdateTurnNodeWeightService = new SuperMap.UpdateTurnNodeWeightService(url, {
-     *     eventListeners: {
-     *         "processCompleted": UpdateTurnNodeWeightCompleted,    //参数为SuperMap.UpdateTurnNodeWeightEventArgs
-     *		   "processFailed": UpdateTurnNodeWeightError          //参数为SuperMap.ServiceFailedEventArgs
-     *		   }
-     * });
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @function SuperMap.UpdateTurnNodeWeightService.prototype.initialize
+     * @description 转向耗费权重更新服务类构造函数。
+     * @param url - {String} 服务的访问地址。如:<br>
+     *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
+     * @param options - {Object} 互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
         SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
-     * APIMethod: processAsync
-     * 开始异步执行转向耗费权重的更新
-     * Parameters:
-     * params - {SuperMap.UpdateTurnNodeWeightParameters} 更新服务参数
-     *
-     * 例如:
+     * @function SuperMap.UpdateTurnNodeWeightService.prototype.processAsync
+     * @description 开始异步执行转向耗费权重的更新
+     * @param params - {SuperMap.UpdateTurnNodeWeightParameters} 转向耗费权重更新服务参数类
+     * @example
      * (code)
      *  var updateTurnNodeWeightParam=new SuperMap.UpdateTurnNodeWeightParameters({
      *           nodeId:"106",
@@ -59,7 +61,6 @@ SuperMap.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.NetworkAnalystSer
      *       });
      *  updateTurnNodeWeightService.processAsync(updateTurnNodeWeightParam);
      * (end)
-     *
      **/
     processAsync: function (params) {
         if (!params) {
@@ -82,7 +83,7 @@ SuperMap.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.NetworkAnalystSer
         });
     },
 
-    /**
+    /*
      * Method: parse
      * 将更新服务参数解析为用‘/’做分隔的字符串
      * */

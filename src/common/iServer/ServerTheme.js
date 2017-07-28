@@ -16,36 +16,40 @@ var SuperMap = require('../SuperMap');
 SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
 
     /**
-     * APIProperty: theme
-     * {<SuperMap.Theme>} 专题图对象。
+     * @member APIProperty: theme
+     * {SuperMap.Theme} 专题图对象。
      */
     theme: null,
 
     /**
-     * APIProperty: themeElementPosition
-     * {<SuperMap.LonLat>} 专题图元素位置。
+     * @member APIProperty: themeElementPosition
+     * {SuperMap.LonLat} 专题图元素位置。
      */
     themeElementPosition: null,
 
     /**
-     * Constructor: SuperMap.ServerTheme
+     * @class SuperMap.ServerTheme UGC 专题图图层类。
+     * @constructs SuperMap.ServerTheme
      * UGC 专题图图层类类构造函数。
-     *
+     * @augments SuperMap.UGCSubLayer
      * Parameters:
-     * theme - {<SuperMap.Theme>} 专题图对象。
-     * themeElementPosition - {<SuperMap.LonLat>} 专题图元素位置。
+     * @param theme - {SuperMap.Theme} 专题图对象。
+     * @param themeElementPosition - {SuperMap.LonLat} 专题图元素位置。
      */
     initialize: function (options) {
         options = options || {};
         SuperMap.UGCSubLayer.prototype.initialize.apply(this, [options]);
     },
 
+    /**
+     * @inheritdoc
+     */
     destroy: function () {
         SuperMap.UGCSubLayer.prototype.destroy.apply(this, arguments);
         SuperMap.Util.reset(this);
     },
 
-    /**
+    /*
      * Method: fromJson
      * 将服务端JSON对象转换成当前客户端对象
      * Parameters:
@@ -84,7 +88,7 @@ SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
     },
 
     /**
-     * APIMethod: toServerJSONObject
+     * @function APIMethod: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject: function () {

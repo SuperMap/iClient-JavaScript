@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: SuperMap.ThemeUnique
  * 单值专题图。
  * 单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格。单值专题图多用于具有分类属性的地图上，
@@ -12,53 +12,61 @@ require('./Theme');
 var SuperMap = require('../SuperMap');
 var ServerStyle = require('./ServerStyle');
 var ThemeUniqueItem = require('./ThemeUniqueItem');
+
+/**
+ * @class SuperMap.ThemeUnique
+ * @description 单值专题图。<br>
+ *              单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格。单值专题图多用于具有分类属性的地图上，
+ *              比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。尤其是有交叉或重叠现象时，此类不推荐使用，例如：民族分布区等。
+ * @augments SuperMap.Theme
+ * @param options - {Object} 可选参数。如：<br>
+ *        items - {Array<SuperMap.ThemeUniqueItem>} 单值专题图子项类数组。<br>
+ *        uniqueExpression - {String} 用于制作单值专题图的字段或字段表达式。<br>
+ *        defaultStyle - {SuperMap.ServerStyle} 未参与单值专题图制作的对象的显示风格。<br>
+ *        colorGradientType - {SuperMap.ColorGradientType} 渐变颜色枚举类。<br>
+ *        memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
+ */
 SuperMap.ThemeUnique = SuperMap.Class(SuperMap.Theme, {
 
     /**
      * APIProperty: defaultStyle
-     * {<SuperMap.ServerStyle>} 未参与单值专题图制作的对象的显示风格。
-     * 通过单值专题图子项数组 （items）可以指定某些要素参与单值专题图制作，对于那些没有被包含的要素，即不参加单值专题表达的要素，使用该风格显示。
+     * @member SuperMap.ThemeUnique,prototype.defaultStyle -{SuperMap.ServerStyle}
+     * @description 未参与单值专题图制作的对象的显示风格。<br>
+     *              通过单值专题图子项数组 （items）可以指定某些要素参与单值专题图制作，对于那些没有被包含的要素，即不参加单值专题表达的要素，使用该风格显示。
      */
     defaultStyle: null,
 
     /**
      * APIProperty: items
-     * {Array(<SuperMap.ThemeUniqueItem>)} 单值专题图子项类数组。
-     * 单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，
-     * Name 字段代表省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
+     * @member SuperMap.ThemeUnique,prototype.items -{Array<SuperMap.ThemeUniqueItem>}
+     * @description 单值专题图子项类数组。<br>
+     *              单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，
+     *              Name 字段代表省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
      */
     items: null,
 
     /**
      * APIProperty: uniqueExpression
-     * {String} 用于制作单值专题图的字段或字段表达式。
-     * 该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段。
+     * @member SuperMap.ThemeUnique,prototype.uniqueExpression -{String}
+     * @description 用于制作单值专题图的字段或字段表达式。<br>
+     *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段。
      */
     uniqueExpression: null,
 
     /**
      * APIProperty: colorGradientType
-     * {<SuperMap.ColorGradientType>} 渐变颜色枚举类
-     * 渐变色是由起始色根据一定算法逐渐过渡到终止色的一种混合型颜色。
-     * 该类作为单值专题图参数类、分段专题图参数类的属性，负责设置单值专题图、分段专题图的配色方案，在默认情况下专题图所有子项会根据这个配色方案完成填充。
-     * 但如果为某几个子项的风格进行单独设置后（设置了 ThemeUniqueItem 或 ThemeRangeItem 类中Style属性），
-     * 该配色方案对于这几个子项将不起作用。
+     * @member SuperMap.ThemeUnique,prototype.colorGradientType -{SuperMap.ColorGradientType}
+     * @description 渐变颜色枚举类。<br>
+     *              渐变色是由起始色根据一定算法逐渐过渡到终止色的一种混合型颜色。
+     *              该类作为单值专题图参数类、分段专题图参数类的属性，负责设置单值专题图、分段专题图的配色方案，在默认情况下专题图所有子项会根据这个配色方案完成填充。
+     *              但如果为某几个子项的风格进行单独设置后（设置了 ThemeUniqueItem 或 ThemeRangeItem 类中Style属性），
+     *              该配色方案对于这几个子项将不起作用。
      */
     colorGradientType: SuperMap.ColorGradientType.YELLOW_RED,
 
-    /**
+    /*
      * Constructor: SuperMap.ThemeUnique
      * 单值专题图构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * items - {Array(<SuperMap.ThemeUniqueItem>)} 单值专题图子项类数组。
-     * uniqueExpression - {String} 用于制作单值专题图的字段或字段表达式。
-     * defaultStyle - {<SuperMap.ServerStyle>} 未参与单值专题图制作的对象的显示风格。
-     * colorGradientType - {<SuperMap.ColorGradientType>} 渐变颜色枚举类。
-     * memoryData - {<SuperMap.ThemeMemoryData>} 专题图内存数据。
      */
     initialize: function (options) {
         var me = this;
@@ -71,7 +79,7 @@ SuperMap.ThemeUnique = SuperMap.Class(SuperMap.Theme, {
 
     /**
      * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.Theme.prototype.destroy.apply(this, arguments);

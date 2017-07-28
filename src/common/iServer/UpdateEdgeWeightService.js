@@ -1,65 +1,66 @@
-/**
+/*
  * Class: SuperMap.UpdateEdgeWeightService
- *  更新边的边的耗费权重服务
+ * 更新边的边的耗费权重服务
  */
 require('./NetworkAnalystServiceBase');
 require('./UpdateEdgeWeightParameters');
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.UpdateEdgeWeightService
+ * @description 更新边的边的耗费权重服务
+ * @augments SuperMap.NetworkAnalystServiceBase
+ * @example
+ *(start code)
+ * var updateEdgeWeightService = new SuperMap.UpdateEdgeWeightService(url, {
+ *     eventListeners: {
+ *         "processCompleted": UpdateEdgeWeightCompleted,      //参数为SuperMap.UpdateEdgeWeightEventArgs
+ *		   "processFailed": UpdateEdgeWeightError             //参数为SuperMap.ServiceFailedEventArgs
+ *		   }
+ * });
+ * (end)
+ * @param url - {String} 服务的访问地址。 如:<br>
+ *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
+ * @param options - {Object} 互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象。
+ */
 SuperMap.UpdateEdgeWeightService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.UpdateEdgeWeightService
-     * 更新边的边的耗费权重服务类构造函数。
-     *
-     * 例如：
-     * (start code)
-     * var updateEdgeWeightService = new SuperMap.UpdateEdgeWeightService(url, {
-     *     eventListeners: {
-     *         "processCompleted": UpdateEdgeWeightCompleted,      //参数为SuperMap.UpdateEdgeWeightEventArgs
-     *		   "processFailed": UpdateEdgeWeightError             //参数为SuperMap.ServiceFailedEventArgs
-     *		   }
-     * });
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @function SuperMap.UpdateEdgeWeightService.prototype.initialize
+     * @description 更新边的边的耗费权重服务类构造函数。
+     * @param url - {String} 服务的访问地址。 如:<br>
+     *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
+     * @param options - {Object} 互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
         SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
-
     /**
-     * APIMethod: processAsync
-     * 开始异步执行边的边的耗费权重的更新
-     * Parameters:
-     * params - {SuperMapUpdateEdgeWeightParameters} 更新服务参数
-     *
-     * 例如:
+     * @function SuperMap.UpdateEdgeWeightService.prototype.processAsync
+     * @description 开始异步执行边的边的耗费权重的更新
+     * @param params - {SuperMap.UpdateEdgeWeightParameters} 边的耗费权重更新服务参数类
+     * @example
      * (code)
      *  var updateEdgeWeightParam=new SuperMapUpdateEdgeWeightParameters({
-      *          edgeId:"20",
-      *          fromNodeId:"26",
-      *          toNodeId:"109",
-      *          weightField:"time",
-      *          edgeWeight:"25"
-      *      });
+     *          edgeId:"20",
+     *          fromNodeId:"26",
+     *          toNodeId:"109",
+     *          weightField:"time",
+     *          edgeWeight:"25"
+     *      });
      *  updateEdgeWeightService.processAsync(updateEdgeWeightParam);
      * (end)
-     *
-     **/
+     */
     processAsync: function (params) {
         if (!params) {
             return;
@@ -81,10 +82,10 @@ SuperMap.UpdateEdgeWeightService = SuperMap.Class(SuperMap.NetworkAnalystService
         });
     },
 
-    /**
+    /*
      * Method: parse
      * 将更新服务参数解析为用‘/’做分隔的字符串
-     * */
+     */
     parse: function (params) {
         if (!params) {
             return;

@@ -1,18 +1,26 @@
-﻿/**
- * @class: L.supermap.ServiceBase
- * @classdesc 服务基类
- * @extends {L.Evented}
- */
-require('../core/Base');
+﻿require('../core/Base');
 require('../../common/util/FetchRequest');
 var L = require("leaflet");
 
+/**
+ * @class L.supermap.ServiceBase
+ * @description L.supermap服务基类
+ * @param url - {String} 与客户端交互的服务地址。
+ * @param options - {Object} 参数。
+ */
 var ServiceBase = L.Evented.extend({
     options: {
         url: null,
         //服务来源 iServer|iPortal|online
         serverType: null
     },
+
+    /**
+     * @function L.ServiceBase.prototype.initialize
+     * @description L.supermap服务基类的构造函数
+     * @param url - {String} 与客户端交互的服务地址。
+     * @param options - {Object} 参数。
+     */
     initialize: function (url, options) {
         if (url) {
             url = (url.indexOf("/") !== url.length - 1) ?
@@ -23,6 +31,10 @@ var ServiceBase = L.Evented.extend({
         this.fire("initialized", this);
     },
 
+    /**
+     * @function destroy
+     * @description 释放资源，将引用的资源属性置空。
+     */
     destroy: function () {
         this.fire("destroy", this);
     }

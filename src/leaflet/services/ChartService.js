@@ -1,4 +1,4 @@
-/**
+/*
  * Class:ChartService
  * 海图服务
  * 用法：
@@ -12,18 +12,37 @@ var SuperMap = require('../../common/SuperMap');
 var ServiceBase = require('./ServiceBase');
 var ChartQueryService = require('../../common/iServer/ChartQueryService');
 var ChartFeatureInfoSpecsService = require('../../common/iServer/ChartFeatureInfoSpecsService');
+/**
+ * @class L.supermap.ChartService
+ * @description 海图服务。
+ * @augments L.supermap.ServiceBase
+ * @example
+ * 用法：
+ *      L.supermap.chartService(url)
+ *      .queryChart(param,function(result){
+ *          //doSomething
+ *      })
+ * @param url - {String} 与客户端交互的海图服务地址。
+ * @param options -{Object} 交互时所需可选参数。
+ */
 var ChartService = ServiceBase.extend({
 
+    /**
+     * @function L.supermap.ChartService.initialize
+     * @description L.supermap.chartService的构造函数
+     * @param url - {String} 与客户端交互的海图服务地址。
+     * @param options -{Object} 交互时所需可选参数。
+     */
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
-     * @param params
-     * <SuperMap.ChartQueryParameters>
-     * @param callback
-     * @param resultFormat
-     * <SuperMap.DataFormat>
+     * @function L.supermap.ChartService.queryChart
+     * @description leaflet客服端的查询海图服务。
+     * @param params -{SuperMap.ChartQueryParameters} 海图查询所需参数类。
+     * @param callback -{function} 回调函数。
+     * @param resultFormat -{SuperMap.DataFormat} 返回的结果格式类型。
      */
     queryChart: function (params, callback, resultFormat) {
         var me = this,
@@ -44,7 +63,9 @@ var ChartService = ServiceBase.extend({
     },
 
     /**
-     * 海图物标信息服务
+     * @function L.supermap.ChartService.getChartFeatureInfo
+     * @description 获取海图物标信息服务。
+     * @param callback -{function} 回调函数
      */
     getChartFeatureInfo: function (callback) {
         var me = this, url = me.url.concat();

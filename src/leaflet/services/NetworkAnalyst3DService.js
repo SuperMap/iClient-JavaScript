@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: NetworkAnalyst3DService
  * 3D网络分析服务类
  * 用法：
@@ -15,24 +15,41 @@ var FacilityAnalystTraceup3DService = require('../../common/iServer/FacilityAnal
 var FacilityAnalystTracedown3DService = require('../../common/iServer/FacilityAnalystTracedown3DService');
 var FacilityAnalystUpstream3DService = require('../../common/iServer/FacilityAnalystUpstream3DService');
 
+/**
+ * @class L.supermap.NetworkAnalyst3DService
+ * @description 3D网络分析服务类
+ * @augments L.supermap.ServiceBase
+ * @example 用法：
+ *      L.supermap.networkAnalyst3DService(url)
+ *      .sinksFacilityAnalyst(params,function(result){
+ *           //doSomething
+ *      })
+ * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+ * @param options - {Object} 互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象
+ */
 var NetworkAnalyst3DService = ServiceBase.extend({
 
     /**
-     * url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
-     * http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
-     * 例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
-     * @param url
-     * @param options
+     * @function L.supermap.NetworkAnalyst3DService.prototype.initialize
+     * @description 3D网络分析服务类构造函数
+     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+     *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+     *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+     * @param options - {Object} 互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象
      */
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
-     * 汇查找服务
-     * @param params
-     * <FacilityAnalystSinks3DParameters>
-     * @param callback
+     * @function  L.supermap.NetworkAnalyst3DService.prototype.sinksFacilityAnalyst
+     * @description 汇查找服务
+     * @param params - {FacilityAnalystSinks3DParameters} 最近设施分析参数类(汇查找资源)
+     * @param callback - {function} 回调函数
      */
     sinksFacilityAnalyst: function (params, callback) {
         var me = this;
@@ -47,11 +64,12 @@ var NetworkAnalyst3DService = ServiceBase.extend({
         facilityAnalystSinks3DService.processAsync(params);
         return me;
     },
+
     /**
-     * 源查找服务
-     * @param params
-     * <FacilityAnalystSources3DParameters>
-     * @param callback
+     * @function L.supermap.NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst
+     * @description 源查找服务
+     * @param params -{FacilityAnalystSources3DParameters} 最近设施分析参数类(源查找服务)
+     * @param callback - {function} 回调函数
      */
     sourcesFacilityAnalyst: function (params, callback) {
         var me = this;
@@ -66,11 +84,12 @@ var NetworkAnalyst3DService = ServiceBase.extend({
         facilityAnalystSources3DService.processAsync(params);
         return me;
     },
+
     /**
-     * 上游追踪资源服务
-     * @param params
-     * <FacilityAnalystTraceup3DParameters>
-     * @param callback
+     * @function L.supermap.NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst
+     * @description 上游追踪资源服务
+     * @param params - {FacilityAnalystTraceup3DParameters} 上游追踪资源参数类
+     * @param callback - {function} 回调函数
      */
     traceUpFacilityAnalyst: function (params, callback) {
         var me = this;
@@ -85,11 +104,12 @@ var NetworkAnalyst3DService = ServiceBase.extend({
         facilityAnalystTraceup3DService.processAsync(params);
         return me;
     },
+
     /**
-     * 下游追踪资源服务
-     * @param params
-     *  <FacilityAnalystTracedown3DParameters>
-     * @param callback
+     * @function L.supermap.NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst
+     * @description 下游追踪资源服务
+     * @param params {FacilityAnalystTracedown3DParameters} 下游追踪资源服务参数类
+     * @param callback - {function} 回调函数
      */
     traceDownFacilityAnalyst: function (params, callback) {
         var me = this;
@@ -106,10 +126,10 @@ var NetworkAnalyst3DService = ServiceBase.extend({
     },
 
     /**
-     * 上游关键设施查找服务
-     * @param params
-     * <FacilityAnalystUpstream3DParameters>
-     * @param callback
+     * @function L.supermap.NetworkAnalyst3DService.prototype.upstreamFacilityAnalyst
+     * @description 上游关键设施查找服务
+     * @param params -{FacilityAnalystUpstream3DParameters} 上游关键设施查找服务参数类
+     * @param callback - {function} 回调函数
      */
     upstreamFacilityAnalyst: function (params, callback) {
         var me = this;

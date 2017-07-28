@@ -1,14 +1,13 @@
-﻿
-require('../core/Base');
+﻿require('../core/Base');
 require('../../common/util/FetchRequest');
-var ol = require('openlayers/dist/ol-debug');
+
 /**
  * @class ol.supermap.ServiceBase
- * @constructs ol.supermap.ServiceBase
- * @classdesc
- * 服务基类
- * @api
+ * @description ol.supermap的服务基类。
+ * @param url - {String} 与客户端交互的服务地址。
+ * @param options - {Object} 参数。
  */
+var ol = require('openlayers/dist/ol-debug');
 
 ol.supermap.ServiceBase = function (url, options) {
     ol.Observable.call(this);

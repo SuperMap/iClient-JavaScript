@@ -1,8 +1,7 @@
 ﻿/* COPYRIGHT 2017 SUPERMAP
  * 本程序只能在有效的授权许可下使用。
  * 未经许可，不得以任何手段擅自使用或传播。
- */
-/**
+ *
  * Class: SuperMap.QueryService
  * 查询服务基类。
  * 结果保存在一个object对象中，对象包含一个属性result为iServer返回的json对象
@@ -16,15 +15,32 @@ var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
 var QueryParameters = require('./QueryParameters');
 
+/**
+ * @class SuperMap.QueryService
+ * @description 查询服务基类。
+ * @augments SuperMap.ServiceBase
+ * @param url - {String} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
+ * @param options - {Object} 可选参数。如：<br>
+ *        eventListeners - {Object} 需要被注册的监听器对象。
+ * @example
+ * (start code)
+ * var myService = new SuperMap.QueryService(url, {
+ *     eventListeners: {
+ *	       "processCompleted": queryCompleted,
+ *		   "processFailed": queryError
+ *		   }
+ * };
+ * (end)
+ */
 SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
-    /**
+    /*
      * Property: returnContent
      * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。
      */
     returnContent: false,
 
-    /**
+    /*
      *  Property: format
      *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
@@ -32,25 +48,11 @@ SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
     format: SuperMap.DataFormat.GEOJSON,
 
     /**
-     * Constructor: SuperMap.QueryService
-     * 查询服务基类构造函数。
-     *
-     * 例如：
-     * (start code)
-     * var myService = new SuperMap.QueryService(url, {
-     *     eventListeners: {
-     *	       "processCompleted": queryCompleted, 
-     *		   "processFailed": queryError
-     *		   }
-     * };
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @function SuperMap.QueryService.prototype.initialize
+     * @description 查询服务基类构造函数。
+     * @param url - {String} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
+     * @param options - {Object} 可选参数。如：<br>
+     *        eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
         SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
@@ -82,7 +84,8 @@ SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * APIMethod: destroy
-     * 释放资源,将引用资源的属性置空。
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
         SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
@@ -92,11 +95,9 @@ SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<QueryParameters>} 查询参数。
+     * @function SuperMap.QueryService.prototype.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @param params - {QueryParameters} 查询参数。
      */
     processAsync: function (params) {
         if (!params) {
@@ -125,7 +126,7 @@ SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    /**
+    /*
      * Method: queryComplete
      * 查询完成，执行此方法。
      *
@@ -147,7 +148,7 @@ SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
         me.events.triggerEvent("processCompleted", {result: result});
     },
 
-    /**
+    /*
      * Method: getQueryParameters
      * 将 JSON 对象表示的查询参数转化为 QueryParameters 对象。
      *

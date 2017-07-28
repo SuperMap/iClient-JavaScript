@@ -7,50 +7,49 @@
  */
 var SuperMap = require('../SuperMap');
 require('./Format');
+
+/**
+ * @class SuperMap.Format.JSON
+ * @description 安全的读写JSON的解析类。使用<SuperMap.Format.JSON> 构造函数创建新实例。
+ * @augments SuperMap.Format
+ * @param options - {Object} 选项对象，其属性会被直接设置到JSON实例。
+ */
 SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
-    /**
-     * @class SuperMap.Format.JSON
-     * @constructs SuperMap.Format.JSON
-     * @classdesc
-     * 安全的读写JSON的解析类。使用<SuperMap.Format.JSON> 构造函数创建新实例。
-     * @extends {SuperMap.Format}
-     * @api
-     */
 
     /**
-     * APIProperty: indent
-     * {String} 用于格式化输出，indent字符串会在每次缩进的时候使用一次；
+     * @member SuperMap.Format.JSON.prototype.indent -{String}
+     * @description 用于格式化输出，indent字符串会在每次缩进的时候使用一次；
      */
     indent: "    ",
 
     /**
-     * APIProperty: space
-     * {String} 用于格式化输出，space字符串会在名值对的":"后边添加。
+     * @member SuperMap.Format.JSON.prototype.space -{String}
+     * @description 用于格式化输出，space字符串会在名值对的":"后边添加。
      */
     space: " ",
 
     /**
-     * APIProperty: newline
-     * {String} 用于格式化输出, newline字符串会用在每一个名值对或数组项末尾。
+     * @member SuperMap.Format.JSON.prototype.newline -{String}
+     * @description 用于格式化输出, newline字符串会用在每一个名值对或数组项末尾。
      */
     newline: "\n",
 
     /**
-     * Property: level
-     * {Integer} 用于格式化输出, 表示的是缩进级别。
+     * @member SuperMap.Format.JSON.prototype.level -{Integer}
+     * @description 用于格式化输出, 表示的是缩进级别。
      */
     level: 0,
 
     /**
-     * Property: pretty
-     * {Boolean} 是否在序列化的时候使用额外的空格控制结构。在 <write> 方法中使用
-     * 默认值为false。
+     * @member SuperMap.Format.JSON.prototype.pretty -{Boolean}
+     * @description 是否在序列化的时候使用额外的空格控制结构。在 <write> 方法中使用
+     *              默认值为false。
      */
     pretty: false,
 
     /**
-     * Property: nativeJSON
-     * {Boolean} 判断浏览器是否原生支持JSON格式数据；
+     * @member SuperMap.Format.JSON.prototype.nativeJSON -{Boolean}
+     * @description 判断浏览器是否原生支持JSON格式数据；
      */
     nativeJSON: (function () {
         return !!(window.JSON && typeof JSON.parse === "function" && typeof JSON.stringify === "function");
@@ -65,11 +64,16 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
      */
 
     /**
-     * @method SuperMap.Format.JSON.read
+     * @function SuperMap.Format.JSON.prototype.read
      * @description 将一个符合json结构的字符串进行解析。
-     * @param json - {String} 符合json结构的字符串。
-     * @param filter - {Function} 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
-     * @return {Object} 对象，数组，字符串或数字。
+     *
+     * Parameters:
+     * json - {String} 符合json结构的字符串。
+     * filter - {Function} 过滤方法，最终结果的每一个键值对都会调用该过滤方法，
+     * 并在对应的值的位置替换成该方法返回的值。
+     *
+     * Returns:
+     * {Object} 对象，数组，字符串或数字。
      */
     read: function (json, filter) {
         var object;
@@ -81,7 +85,7 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
                 // Fall through if the regexp test fails.
             }
         } else try {
-            /**
+            /*
              * Parsing happens in three stages. In the first stage, we run the
              *     text against a regular expression which looks for non-JSON
              *     characters. We are especially concerned with '()' and 'new'
@@ -91,7 +95,7 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
              */
             if (/^[\],:{}\s]*$/.test(json.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
 
-                /**
+                /*
                  * In the second stage we use the eval function to compile the
                  *     text into a JavaScript structure. The '{' operator is
                  *     subject to a syntactic ambiguity in JavaScript - it can
@@ -100,7 +104,7 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
                  */
                 object = eval('(' + json + ')');
 
-                /**
+                /*
                  * In the optional third stage, we recursively walk the new
                  *     structure, passing each name/value pair to a filter
                  *     function for possible transformation.
@@ -132,10 +136,9 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
     },
 
     /**
-     * @method SuperMap.Format.JSON.write
+     * @function SuperMap.Format.JSON.prototype.write
      * @description 序列化一个对象到一个符合JSON格式的字符串。
      * @param value - {String} 需要被序列化的对象，数组，字符串，数字，布尔值。
-     * @param pretty - {Boolean} 是否使用换行和缩进来控制输出。默认值为false。
      * @return {String} 符合JSON格式的字符串。
      */
     write: function (value, pretty) {
@@ -155,7 +158,7 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
     },
 
     /**
-     * @method SuperMap.Format.JSON.writeIndent
+     * @function SuperMap.Format.JSON.prototype.writeIndent
      * @description 根据缩进级别输出一个缩进字符串。
      * @return {String} 一个适当的缩进字符串。
      */
@@ -170,8 +173,7 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
     },
 
     /**
-     *
-     * @method SuperMap.Format.JSON.writeNewline
+     * @function SuperMap.Format.JSON.prototype.writeNewline
      * @description 在格式化输出模式情况下输出代表新一行的字符串。
      * @return {String} 代表新的一行的字符串。
      */
@@ -180,7 +182,7 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
     },
 
     /**
-     * @method SuperMap.Format.JSON.writeSpace
+     * @function SuperMap.Format.JSON.prototype.writeSpace
      * @description 在格式化输出模式情况下输出一个代表空格的字符串。
      * @return {String} A space.
      */
@@ -189,16 +191,20 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
     },
 
     /**
-     * Property: serialize
-     * Object with properties corresponding to the serializable data types.
-     *     Property values are functions that do the actual serializing.
+     * @member SuperMap.Format.JSON.prototype.serialize
+     * @description Object with properties corresponding to the serializable data types.
+     *              Property values are functions that do the actual serializing.
      */
     serialize: {
-        /**
-         * @method SuperMap.Format.JSON.serialize.object
-         * @description Transform an object into a JSON string.
-         * @param object - {Object} The object to be serialized.
-         * @return {String} A JSON string representing the object.
+        /*
+         * Method: serialize.object
+         * Transform an object into a JSON string.
+         *
+         * Parameters:
+         * object - {Object} The object to be serialized.
+         *
+         * Returns:
+         * {String} A JSON string representing the object.
          */
         'object': function (object) {
             // three special objects that we want to treat differently
@@ -239,8 +245,8 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
             return pieces.join('');
         },
 
-        /**
-         * @method SuperMap.Format.JSON.serialize.array
+        /*
+         * @function SuperMap.Format.JSON.prototype.array
          * @description Transform an array into a JSON string.
          * @param array - {Array} The array to be serialized
          * @return {String} A JSON string representing the array.
@@ -267,8 +273,8 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
             return pieces.join('');
         },
 
-        /**
-         * @method SuperMap.Format.JSON.serialize.string
+        /*
+         * @function SuperMap.Format.JSON.prototype.string
          * @description Transform a string into a JSON string.
          * @param string - {String} The string to be serialized
          * @return {String} A JSON string representing the string.
@@ -277,7 +283,7 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
             // If the string contains no control characters, no quote characters, and no
             // backslash characters, then we can simply slap some quotes around it.
             // Otherwise we must also replace the offending characters with safe
-            // sequences.
+            // sequences.    
             var m = {
                 '\b': '\\b',
                 '\t': '\\t',
@@ -302,8 +308,8 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
             return '"' + string + '"';
         },
 
-        /**
-         * @method SuperMap.Format.JSON.serialize.number
+        /*
+         * @function SuperMap.Format.JSON.prototype.number
          * @description Transform a number into a JSON string.
          * @param number - {Number} The number to be serialized.
          * @return {String} A JSON string representing the number.
@@ -312,8 +318,8 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
             return isFinite(number) ? String(number) : "null";
         },
 
-        /**
-         * @method SuperMap.Format.JSON.serialize.boolean
+        /*
+         * @function SuperMap.Format.JSON.prototype.boolean
          * @description Transform a boolean into a JSON string.
          * @param bool - {Boolean} The boolean to be serialized.
          * @return {String} A JSON string representing the boolean.
@@ -322,8 +328,8 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
             return String(bool);
         },
 
-        /**
-         * @method SuperMap.Format.JSON.serialize.object
+        /*
+         * @function SuperMap.Format.JSON.prototype.date
          * @description Transform a date into a JSON string.
          * @param date - {Date} The date to be serialized.
          * @return {String} A JSON string representing the date.

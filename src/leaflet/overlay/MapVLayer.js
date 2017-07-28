@@ -73,16 +73,7 @@ var MapVLayer = L.Layer.extend({
         return this.dataSet;
     },
 
-    /**
-     * 按照过滤条件移除数据
-     * @param filter
-     * eg: filter=function(data){
-     *         if(data.id="1"){
-     *            return true
-     *         }
-     *         return false;
-     *     }
-     */
+
     removeData: function (filter) {
         this.renderer && this.renderer.removeData(filter);
     },

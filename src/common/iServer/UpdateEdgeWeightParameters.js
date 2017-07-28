@@ -1,52 +1,59 @@
-/**
+/*
  * Class:SuperMap.UpdateEdgeWeightParameters
  * 边的耗费权重更新服务参数类
- * */
+ */
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.UpdateEdgeWeightParameters
+ * @description 边的耗费权重更新服务参数类。
+ * @param options - {Object} 可选参数。如：<br>
+ *        edgeId - {String} 所在边的id。<br>
+ *        fromNodeId - {String} 起始转向点的id。<br>
+ *        toNodeId - {String} 终止转向点的id。<br>
+ *        weightField - {String} 边的耗费字段。<br>
+ *        edgeWeight - {String} 耗费权重。
+ */
 SuperMap.UpdateEdgeWeightParameters = SuperMap.Class({
+
     /**
      * APIProperty: edgeId
-     * {String} 所在边的id
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeId -{String}
+     * @description 所在边的id
      */
     edgeId: "",
 
     /**
      * APIProperty: fromNodeId
-     * {String} 起始转向点的id
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.fromNodeId -{String}
+     * @description 起始转向点的id
      */
     fromNodeId: "",
 
     /**
      * APIProperty: toNodeId
-     * {String} 终止转向点的id
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.toNodeId -{String}
+     * @description 终止转向点的id
      */
     toNodeId: "",
 
     /**
      * APIProperty: weightField
-     * {String} 边的耗费字段
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.weightField -{String}
+     * @description 边的耗费字段
      */
     weightField: "",
 
     /**
      * APIProperty: edgeWeight
-     * {String} 耗费权重
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeWeight -{String}
+     * @description 耗费权重
      */
     edgeWeight: "",
 
-    /**
+    /*
      * Constructor: SuperMap.UpdateEdgeWeightParameters
      * 边的耗费权重更新服务参数类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * edgeId - {String} 所在边的id
-     * fromNodeId - {String} 起始转向点的id
-     * toNodeId - {String}  终止转向点的id
-     * weightField - {String}  边的耗费字段
-     * edgeWeight - {String}   耗费权重
      */
     initialize: function (option) {
         if (!option)return;
@@ -60,7 +67,8 @@ SuperMap.UpdateEdgeWeightParameters = SuperMap.Class({
 
     /**
      * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
         this.edgeId = null;

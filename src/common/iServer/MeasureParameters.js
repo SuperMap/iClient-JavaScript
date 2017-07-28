@@ -1,4 +1,4 @@
-/**
+/*
  * Class: SuperMap.MeasureParameters
  * 量算参数类。
  * 客户端要量算的地物间的距离或某个区域的面积是一个 {<Object>}  类型的几何对象（{<Line>} 或 {<Polygon>}），
@@ -6,47 +6,53 @@
  */
 require('../REST');
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.MeasureParameters
+ * @description 量算参数类。
+ * @param geometry - {Object} 要量算的几何对象。
+ * @param options - {Object} 可选参数。如：<br>
+ *         unit - {Unit} 量算单位。<br>
+ *         prjCoordSys -{String} 用来指定该量算操作所使用的投影,该项默认值为空。<br>
+ *         distanceMode -{String} 用来指定量算的方式为按球面长度'Geodesic'或者平面长度'Planar'来计算，默认为'Geodesic'。
+ */
 SuperMap.MeasureParameters = SuperMap.Class({
 
     /**
      * APIProperty: geometry
-     * {<Object>} 要量算的几何对象（{<Line>} 或 {<Polygon>}），必设属性。
+     * @member SuperMap.MeasureParameters.prototype. -{Object}
+     * @description 要量算的几何对象（{<Line>} 或 {<Polygon>}），必设属性。
      */
     geometry: null,
 
     /**
      * APIProperty: unit
-     * {<Unit>}  量算单位。默认单位：米，即量算结果以米为单位。
+     * @member SuperMap.MeasureParameters.prototype. -{Unit}
+     * @description 量算单位。默认单位：米，即量算结果以米为单位。
      */
     unit: SuperMap.Unit.METER,
 
     /**
      * APIProperty: projection
-     * {String} 在 SuperMap.MeasureParameters 的 options 中被设置，用来指定该量算操作所使用的投影。该项默认值为空。
+     * @member SuperMap.MeasureParameters.prototype.prjCoordSys -{String}
+     * @description 用来指定该量算操作所使用的投影,该项默认值为空。
      */
     prjCoordSys: null,
 
     /**
      * APIProperty: distanceMode
-     * {String} 在SuperMap.MeasureParameters的options中设置，用来指定量算的方式为按球面长度'Geodesic'或者平面长度'Planar'来计算，默认为'Geodesic'
-     *
-     * Exampels:
+     * @member SuperMap.MeasureParameters.prototype.distanceMode -{String}
+     * @description 用来指定量算的方式为按球面长度'Geodesic'或者平面长度'Planar'来计算，默认为'Geodesic'。
+     * @example
      * (start code)
      * var param = new SuperMap.MeasureParameters(getmetry,{distanceMode:'Planar'});
      * (end)
      */
     distanceMode: null,
 
-    /**
+    /*
      * Constructor: SuperMap.MeasureParameters
      * 量算参数类构造函数。
-     *
-     * Parameters:
-     * geometry - {<Object>} 要量算的几何对象。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * unit - {<Unit>} 量算单位。
      */
     initialize: function (geometry, options) {
         if (!geometry) {
@@ -60,7 +66,8 @@ SuperMap.MeasureParameters = SuperMap.Class({
 
     /**
      * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
         var me = this;

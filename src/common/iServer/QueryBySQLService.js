@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: SuperMap.QueryBySQLService
  * SQL 查询服务类。在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
  *
@@ -8,51 +8,53 @@
 require('./QueryService');
 require('./QueryBySQLParameters');
 var SuperMap = require('../SuperMap');
+/**
+ * @class SuperMap.QueryBySQLService
+ * @description SQL 查询服务类。在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
+ * @augments SuperMap.QueryService
+ * @example
+ * (start code)
+ * var queryParam = new SuperMap.FilterParameter({
+ *     name: "Countries@World.1",
+ *     attributeFilter: "Pop_1994>1000000000 and SmArea>900"
+ * });
+ * var queryBySQLParams = new SuperMap.QueryBySQLParameters({
+ *     queryParams: [queryParam]
+ * });
+ * var myQueryBySQLService = new SuperMap.QueryBySQLService(url, {eventListeners: {
+ *     "processCompleted": queryCompleted,
+ *     "processFailed": queryError
+ *	   }
+ * });
+ * queryBySQLService.processAsync(queryBySQLParams);
+ * function queryCompleted(object){//todo};
+ * function queryError(object){//todo};
+ * (end)
+ * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
+ * @param options - {Object} 互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象。
+ */
 SuperMap.QueryBySQLService = SuperMap.Class(SuperMap.QueryService, {
 
     /**
-     * Constructor: SuperMap.QueryBySQLService
-     * SQL 查询服务类构造函数。
-     *
-     * 例如：
-     * (start code)
-     * var queryParam = new SuperMap.FilterParameter({
-     *     name: "Countries@World.1",
-     *     attributeFilter: "Pop_1994>1000000000 and SmArea>900"
-     * });
-     * var queryBySQLParams = new SuperMap.QueryBySQLParameters({
-     *     queryParams: [queryParam]
-     * });
-     * var myQueryBySQLService = new SuperMap.QueryBySQLService(url, {eventListeners: {
-     *     "processCompleted": queryCompleted, 
-     *     "processFailed": queryError
-     *	   }
-     * });
-     * queryBySQLService.processAsync(queryBySQLParams);
-     * function queryCompleted(object){//todo};
-     * function queryError(object){//todo};
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @function SuperMap.QueryBySQLService.initialize
+     * @descriptionSQL 查询服务类构造函数。
+     * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
+     * @param options - {Object} 互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
         SuperMap.QueryService.prototype.initialize.apply(this, arguments);
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.QueryService.prototype.destroy.apply(this, arguments);
     },
 
-    /**
+    /*
      * Method: getJsonParameters
      * 将查询参数转化为 JSON 字符串。
      * 在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。

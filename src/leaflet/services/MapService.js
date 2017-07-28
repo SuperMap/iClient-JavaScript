@@ -1,26 +1,41 @@
-﻿/**
- * @class L.supermap.mapService
- * @constructs L.supermap.mapService
- * @extends {ServiceBase}
- * @classdesc
+﻿/*
+ * Class: MapService
  * 地图信息服务类
- * @example  用法：
- * L.supermap.mapService(url)
- *   .getMapInfo(function(result){
- *    //doSomething
- *  })
- * @api
+ * 用法：
+ *      L.supermap.mapService(url)
+ *      .getMapInfo(function(result){
+ *           //doSomething
+ *      })
+ *      
  */
 var L = require("leaflet");
 var ServiceBase = require('./ServiceBase');
 var SuperMap = require('../../common/SuperMap');
 var SuperMapMapService = require('../../common/iServer/MapService');
 var TilesetsService = require('../../common/iServer/TilesetsService');
+/**
+ * @class  L.supermap.MapService
+ * @description 地图信息服务类
+ * @augments ServiceBase
+ * @param url -{String} 地图服务地址
+ * @param options -{Object} 地图服务信息相关参数
+ * @example
+ *     L.supermap.mapService(url)
+ *      .getMapInfo(function(result){
+ *           //doSomething
+ *      })
+ */
 var MapService = ServiceBase.extend({
     options: {
         projection: null
     },
 
+    /**
+     * @function L.supermap.MapService.prototype.initialize
+     * @description leaflet下MapService类的构造函数
+     * @param url -{String} 地图服务地址
+     * @param options -{Object} 地图服务信息相关参数
+     */
     initialize: function (url, options) {
         options = options || {};
         L.setOptions(this, options);
@@ -31,9 +46,9 @@ var MapService = ServiceBase.extend({
     },
 
     /**
-     * @method L.supermap.mapService.getMapInfo
+     * @function  L.supermap.MapService.prototype.getMapInfo
      * @description 地图信息查询服务
-     * @param callback
+     * @param callback -{function} 回调函数
      */
     getMapInfo: function (callback) {
         var me = this;
@@ -50,9 +65,9 @@ var MapService = ServiceBase.extend({
     },
 
     /**
-     * @method L.supermap.mapService.getTilesets
+     * @function  L.supermap.MapService.prototype.getTilesets
      * @description 切片列表信息查询服务
-     * @param callback
+     * @param callback -{function} 回调函数
      */
     getTilesets: function (callback) {
         var me = this;

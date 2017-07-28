@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: SuperMap.QueryByBoundsService
  * Bounds 查询服务类。
  *
@@ -8,44 +8,46 @@
 require('./QueryService');
 require('./QueryByBoundsParameters');
 var SuperMap = require('../SuperMap');
+/**
+ * @class SuperMap.QueryByBoundsService
+ * @description Bounds 查询服务类。
+ * @augments SuperMap.QueryService
+ * @example
+ * (start end)
+ * var myQueryByBoundsService = new SuperMap.QueryByBoundsService(url, {
+ *     eventListeners: {
+ *         "processCompleted": queryCompleted,
+ *		   "processFailed": queryError
+ *		   }
+ * });
+ * function queryCompleted(object){//todo};
+ * function queryError(object){//todo};
+ * (end)
+ * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
+ * @param options - {Object} 互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象。
+ */
 SuperMap.QueryByBoundsService = SuperMap.Class(SuperMap.QueryService, {
 
     /**
-     * Constructor: SuperMap.QueryByBoundsService
-     * Bounds 查询服务类构造函数。
-     *
-     * 例如：
-     * (start end)
-     * var myQueryByBoundsService = new SuperMap.QueryByBoundsService(url, {
-     *     eventListeners: {
-     *         "processCompleted": queryCompleted,
-     *		   "processFailed": queryError
-     *		   }
-     * });
-     * function queryCompleted(object){//todo};
-     * function queryError(object){//todo};
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 服务的访问地址。如访问World Map服务，只需将url设为：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @function SuperMap.QueryByBoundsService.initialize
+     * @description Bounds 查询服务类构造函数。
+     * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
+     * @param options - {Object} 互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
         SuperMap.QueryService.prototype.initialize.apply(this, arguments);
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.QueryService.prototype.destroy.apply(this, arguments);
     },
 
-    /**
+    /*
      * Method: getJsonParameters
      * 将查询参数转化为 JSON 字符串。
      * 在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds 等）。

@@ -1,86 +1,98 @@
-/**
- * Class: SuperMap.TimeControlBase
- * 时间控制基类类。
- */
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.TimeControlBase
+ * @description 时间控制基类类。
+ * @param options - {Object} 该类开放的可选属性。如：<br>
+ *        speed - {Number} 速度。不能小于0，默认为1（表示每帧渲染的数据之间的间隔为1），设置越大速度越快。<br>
+ *        startTime - {Number} 的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
+ *        endTime - {Number} 的结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
+ *        repeat - {Boolean} 是否重复循环。默认为true。<br>
+ *        reverse - {Boolean} 是否反向。默认为false。<br>
+ *        geoFence - {SuperMap.Geometry} 地理围栏。
+ */
 SuperMap.TimeControlBase = SuperMap.Class({
 
     /**
-     * Property: speed
-     * {Number} 步长，必须为非负数，默认为1
-     * （表示前后两次渲染的数据之间的间隔为1）
+     * @member SuperMap.TimeControlBase.prototype.speed -{Number}
+     * @description 步长，必须为非负数，默认为1（表示前后两次渲染的数据之间的间隔为1）
      */
     speed: 1,
 
     /**
-     *  Property: frequency
-     * {Number}刷新频率(单位ms)，服务器刷新的时间间隔，默认为1s
+     * @member SuperMap.TimeControlBase.prototype.frequency -{Number}
+     * @description 刷新频率(单位ms)，服务器刷新的时间间隔，默认为1s
      */
     frequency: 1000,
+
     /**
-     * Property: startTime
-     * {Number} 记录的起始时间，必须为数字，
-     * 如果不设置，初始化时为0，建议设置
+     * @member SuperMap.TimeControlBase.prototype.startTime -{Number}
+     * @description 记录的起始时间，必须为数字，
+     *              如果不设置，初始化时为0，建议设置
      */
     startTime: null,
+
     /**
-     * Property: endTime
-     * {Number} 记录的结束时间，必须为数字，
-     * 如果不设置，初始化时以当前时间进行设置，建议设置
+     * @member SuperMap.TimeControlBase.prototype.endTime -{Number}
+     * @description 记录的结束时间，必须为数字，
+     *              如果不设置，初始化时以当前时间进行设置，建议设置
      */
     endTime: null,
+
     /**
-     * Property: repeat
-     * {Boolean} 是否重复循环，默认为true。
+     * @member SuperMap.TimeControlBase.prototype.repeat -{Boolean}
+     * @description 是否重复循环，默认为true。
      */
     repeat: true,
+
     /**
-     * Property: currentTime
-     * {Number} 记录近期的时间，也就是当前帧运行到的时间。
+     * @member SuperMap.TimeControlBase.prototype.currentTime -{Number}
+     * @description 记录近期的时间，也就是当前帧运行到的时间。
      */
     currentTime: null,
 
     /**
-     * Property: oldTime
-     * {Number} 记录上一帧的时间，也就是之前运行到的时间。
+     * @member SuperMap.TimeControlBase.prototype.oldTime -{Number}
+     * @description 记录上一帧的时间，也就是之前运行到的时间。
      */
     oldTime: null,
+
     /**
-     * Property: running
-     * {Boolean} 记录当前是否处于中，默认为false。
+     * @member SuperMap.TimeControlBase.prototype.running -{Boolean}
+     * @description 记录当前是否处于中，默认为false。
      */
     running: false,
 
     /**
-     * Property: reverse
-     * {Boolean} 是否反向，默认为false。
+     * @member SuperMap.TimeControlBase.prototype.reverse -{Boolean}
+     * @description 是否反向，默认为false。
      */
     reverse: false,
 
-    /**
+    /*
      * Constant: EVENT_TYPES
      * {Array(String)}
      * 此类支持的事件类型。
      *
      */
     EVENT_TYPES: ["start", "pause", "stop"],
+
     /**
-     * APIProperty: events
-     * {<SuperMap.Events>}
+     * @member SuperMap.TimeControlBase.prototype.events -{SuperMap.Events}
+     * @description 事件
      */
     events: null,
 
     /**
-     * Parameters:
-     * options - {Object} 该类开放的可选属性。
-     *
-     * Allowed options properties:
-     * speed - {Number} 速度。不能小于0，默认为1（表示每帧渲染的数据之间的间隔为1），设置越大速度越快。
-     * startTime - {Number} 的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。
-     * endTime - {Number} 的结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。
-     * repeat - {Boolean} 是否重复循环。默认为true。
-     * reverse - {Boolean} 是否反向。默认为false。
-     * geoFence - {SuperMap.Geometry} 地理围栏。
+     * @function SuperMap.TimeControlBase.prototype.initialize
+     * @description 时间控制基类得构造函数。
+     * @param options - {Object} 该类开放的可选属性。如：<br>
+     *        speed - {Number} 速度。不能小于0，默认为1（表示每帧渲染的数据之间的间隔为1），设置越大速度越快。<br>
+     *        startTime - {Number} 的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
+     *        endTime - {Number} 的结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
+     *        repeat - {Boolean} 是否重复循环。默认为true。<br>
+     *        reverse - {Boolean} 是否反向。默认为false。<br>
+     *        geoFence - {SuperMap.Geometry} 地理围栏。
      */
     initialize: function (options) {
         //设置步长，刷新频率、开始结束时间、是否循环、是否反向
@@ -109,6 +121,10 @@ SuperMap.TimeControlBase = SuperMap.Class({
         me.currentTime = me.startTime;
     },
 
+    /**
+     * @function SuperMap.TimeControlBase.prototype.updateOptions
+     * @param options - {Object} 设置参数得可选参数。设置步长，刷新频率、开始结束时间、是否循环、是否反向。
+     */
     updateOptions: function (options) {
         //设置步长，刷新频率、开始结束时间、是否循环、是否反向
         var me = this;
@@ -143,9 +159,8 @@ SuperMap.TimeControlBase = SuperMap.Class({
     },
 
     /**
-     *
-     * APIMethod: start
-     * 开始
+     * @function SuperMap.TimeControlBase.prototype.start
+     * @description 开始
      */
     start: function () {
         var me = this;
@@ -159,8 +174,8 @@ SuperMap.TimeControlBase = SuperMap.Class({
 
 
     /**
-     * APIMethod: pause
-     * 暂停
+     * @function SuperMap.TimeControlBase.prototype.pause
+     * @description 暂停
      */
     pause: function () {
         var me = this;
@@ -170,8 +185,8 @@ SuperMap.TimeControlBase = SuperMap.Class({
 
 
     /**
-     * APIMethod: stop
-     * 停止，停止后返回起始状态
+     * @function SuperMap.TimeControlBase.prototype.stop
+     * @description 停止，停止后返回起始状态
      */
     stop: function () {
         var me = this;
@@ -186,8 +201,8 @@ SuperMap.TimeControlBase = SuperMap.Class({
 
 
     /**
-     * APIMethod: toggle
-     * 开关切换，切换的是开始和暂停
+     * @function SuperMap.TimeControlBase.prototype.toggle
+     * @description 开关切换，切换的是开始和暂停
      */
     toggle: function () {
         var me = this;
@@ -203,14 +218,10 @@ SuperMap.TimeControlBase = SuperMap.Class({
 
 
     /**
-     * APIMethod: setSpeed
-     * 设置步长。
-     *
-     * Parameters:
-     * speed - {Number} 步长，必须为非负数，默认为1
-     *
-     * Returns:
-     * {Boolean} true代表设置成功，false设置失败（speed小于0时失败）
+     * @function SuperMap.TimeControlBase.prototype.setSpeed
+     * @description 设置步长。
+     * @param speed - {Number} 步长，必须为非负数，默认为1
+     * @return {Boolean} true代表设置成功，false设置失败（speed小于0时失败）
      */
     setSpeed: function (speed) {
         var me = this;
@@ -220,26 +231,21 @@ SuperMap.TimeControlBase = SuperMap.Class({
         }
         return false;
     },
+
     /**
-     * APIMethod: getSpeed
-     * 获取步长。
-     *
-     * Returns:
-     * {Number} 返回当前的步长
+     * @function SuperMap.TimeControlBase.prototype.getSpeed
+     * @description 获取步长。
+     * @return {Number} 返回当前的步长
      */
     getSpeed: function () {
         return this.speed;
     },
 
     /**
-     * APIMethod: setFrequency
-     * 设置刷新频率。
-     *
-     * Parameters:
-     * speed - {Number} 刷新频率，单位为ms，默认为1s
-     *
-     * Returns:
-     * {Boolean} true代表设置成功，false设置失败（frequency小于0时失败）
+     * @function SuperMap.TimeControlBase.prototype.setFrequency
+     * @description 设置刷新频率。
+     * @param speed - {Number} 刷新频率，单位为ms，默认为1s
+     * @return {Boolean} true代表设置成功，false设置失败（frequency小于0时失败）
      */
     setFrequency: function (frequency) {
         var me = this;
@@ -249,12 +255,11 @@ SuperMap.TimeControlBase = SuperMap.Class({
         }
         return false;
     },
+
     /**
-     * APIMethod: getFrequency
-     * 获取刷新频率。
-     *
-     * Returns:
-     * {Number} 返回当前的刷新频率
+     * @function SuperMap.TimeControlBase.prototype.getFrequency
+     * @description 获取刷新频率。
+     * @return {Number} 返回当前的刷新频率
      */
     getFrequency: function () {
         return this.frequency;
@@ -262,14 +267,10 @@ SuperMap.TimeControlBase = SuperMap.Class({
 
 
     /**
-     * APIMethod: setStartTime
-     * 设置起始时间，设置完成后如果当前时间小于起始时间，则从起始时间开始
-     *
-     * Parameters:
-     * startTime - {Number} 需要设置的起始时间
-     *
-     * Returns:
-     * {Boolean} true代表设置成功，false设置失败（startTime 大于结束时间时失败）
+     * @function SuperMap.TimeControlBase.prototype.setStartTime
+     * @description 设置起始时间，设置完成后如果当前时间小于起始时间，则从起始时间开始
+     * @param startTime - {Number} 需要设置的起始时间
+     * @return {Boolean} true代表设置成功，false设置失败（startTime 大于结束时间时失败）
      */
     setStartTime: function (startTime) {
         var me = this;
@@ -288,25 +289,19 @@ SuperMap.TimeControlBase = SuperMap.Class({
     },
 
     /**
-     * APIMethod: getStartTime
-     * 获取起始时间
-     *
-     * Returns:
-     * {Number} 返回当前的起始时间
+     * @function SuperMap.TimeControlBase.prototype.getStartTime
+     * @description 获取起始时间
+     * @return {Number} 返回当前的起始时间
      */
     getStartTime: function () {
         return this.startTime;
     },
 
     /**
-     * APIMethod: setEndTime
-     * 设置结束时间，设置完成后如果当前时间大于结束，则从起始时间开始
-     *
-     * Parameters:
-     * endTime - {Number} 需要设置的结束时间
-     *
-     * Returns:
-     * {Boolean} true代表设置成功，false设置失败（endTime 小于开始时间时失败）
+     * @function SuperMap.TimeControlBase.prototype.setEndTime
+     * @description 设置结束时间，设置完成后如果当前时间大于结束，则从起始时间开始
+     * @param endTime - {Number} 需要设置的结束时间
+     * @return {Boolean} true代表设置成功，false设置失败（endTime 小于开始时间时失败）
      */
     setEndTime: function (endTime) {
         var me = this;
@@ -325,25 +320,19 @@ SuperMap.TimeControlBase = SuperMap.Class({
     },
 
     /**
-     * APIMethod: getEndTime
-     * 获取结束时间
-     *
-     * Returns:
-     * {Number} 返回当前的结束时间
+     * @function SuperMap.TimeControlBase.prototype.getEndTime
+     * @description 获取结束时间
+     * @return {Number} 返回当前的结束时间
      */
     getEndTime: function () {
         return this.endTime;
     },
 
     /**
-     * APIMethod: setCurrentTime
-     * 设置当前时间
-     *
-     * Parameters:
-     * currentTime - {Number} 需要设置的当前时间
-     *
-     * Returns:
-     * {Boolean} true代表设置成功，false设置失败
+     * @function SuperMap.TimeControlBase.prototype.setCurrentTime
+     * @description 设置当前时间
+     * @param currentTime - {Number} 需要设置的当前时间
+     * @return {Boolean} true代表设置成功，false设置失败
      */
     setCurrentTime: function (currentTime) {
         var me = this;
@@ -359,11 +348,9 @@ SuperMap.TimeControlBase = SuperMap.Class({
     },
 
     /**
-     * APIMethod: getCurrentTime
-     * 获取当前时间
-     *
-     * Returns:
-     * {Number} 返回当前时间
+     * @function SuperMap.TimeControlBase.prototype.getCurrentTime
+     * @description 获取当前时间
+     * @return {Number} 返回当前时间
      */
     getCurrentTime: function () {
         return this.currentTime;
@@ -371,33 +358,27 @@ SuperMap.TimeControlBase = SuperMap.Class({
 
 
     /**
-     * APIMethod: setRepeat
-     * 设置是否重复循环
-     *
-     * Parameters:
-     * repeat - {Boolean} 是否重复循环
+     * @function SuperMap.TimeControlBase.prototype.setRepeat
+     * @description 设置是否重复循环
+     * @param repeat - {Boolean} 是否重复循环
      */
     setRepeat: function (repeat) {
         this.repeat = repeat;
     },
 
     /**
-     * APIMethod: getRepeat
-     * 获取是否重复循环，默认是true。
-     *
-     * Returns:
-     * {Boolean} 返回是否重复循环
+     * @function SuperMap.TimeControlBase.prototype.getRepeat
+     * @description 获取是否重复循环，默认是true。
+     * @return {Boolean} 返回是否重复循环
      */
     getRepeat: function () {
         return this.repeat;
     },
 
     /**
-     * APIMethod: setReverse
-     * 设置是否反向
-     *
-     * Parameters:
-     * reverse - {Boolean} 是否反向
+     * @function SuperMap.TimeControlBase.prototype.setReverse
+     * @description 设置是否反向
+     * @param reverse - {Boolean} 是否反向
      */
     setReverse: function (reverse) {
         this.reverse = reverse;
@@ -405,32 +386,27 @@ SuperMap.TimeControlBase = SuperMap.Class({
 
 
     /**
-     * APIMethod: getReverse
-     * 获取是否反向，默认是false。
-     *
-     * Returns:
-     * {Boolean} 返回是否反向
+     * @function SuperMap.TimeControlBase.prototype.getReverse
+     * @description 获取是否反向，默认是false。
+     * @return {Boolean} 返回是否反向
      */
     getReverse: function () {
         return this.reverse;
     },
 
 
-//获取运行状态，Boolean类型
     /**
-     * APIMethod: getRunning
-     * 获取运行状态
-     *
-     * Returns:
-     * {Boolean} true代表正在运行，false发表没有运行
+     * @function SuperMap.TimeControlBase.prototype.getRunning
+     * @description 获取运行状态
+     * @return {Boolean} true代表正在运行，false发表没有运行
      */
     getRunning: function () {
         return this.running;
     },
 
     /**
-     * APIMethod: destroy
-     * 销毁Animator对象，释放资源。
+     * @function destroy
+     * @description 销毁Animator对象，释放资源。
      */
     destroy: function () {
         var me = this;

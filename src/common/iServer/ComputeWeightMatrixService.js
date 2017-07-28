@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: SuperMap.ComputeWeightMatrixService
  * 耗费矩阵分析服务类。
  * 耗费矩阵是根据交通网络分析参数中的耗费字段来计算一个二维数组，
@@ -10,50 +10,55 @@
 require('./NetworkAnalystServiceBase');
 require('./ComputeWeightMatrixParameters');
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.ComputeWeightMatrixService
+ * @description 耗费矩阵分析服务类。<br>
+ *               耗费矩阵是根据交通网络分析参数中的耗费字段来计算一个二维数组，
+ *               用来存储指定的任意两点间的资源消耗。
+ *               耗费矩阵分析结果通过该类支持的事件的监听函数参数获取
+ * @augments SuperMap.NetworkAnalystServiceBase
+ * @example
+ * (start code)
+ * var mycomputeWeightMatrixService = new SuperMap.ComputeWeightMatrixService(url,{
+ *     eventListeners: {
+ *	       "processCompleted": computeWeightMatrixCompleted,
+ *		   "processFailed": computeWeightMatrixnError
+ *		   }
+ * });
+ * (end)
+ * @param url - {String} 耗费矩阵分析服务地址。请求服务的URL应为：<br>
+ *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+ * @param options - {Object} 互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象。
+ */
 SuperMap.ComputeWeightMatrixService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.ComputeWeightMatrixService
-     * 耗费矩阵分析服务类构造函数。
-     *
-     * 例如：
-     * (start code)
-     * var mycomputeWeightMatrixService = new SuperMap.ComputeWeightMatrixService(url,{
-     *     eventListeners: {
-     *	       "processCompleted": computeWeightMatrixCompleted, 
-     *		   "processFailed": computeWeightMatrixnError
-     *		   }
-     * });
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 耗费矩阵分析服务地址。请求服务的URL应为：
-     * http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
-     * 例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @function SuperMap.ComputeWeightMatrixService.prototype.initialize
+     * @description 耗费矩阵分析服务类构造函数。
+     * @param url - {String} 耗费矩阵分析服务地址。请求服务的URL应为：<br>
+     *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+     *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+     * @param options - {Object} 互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-
     initialize: function (url, options) {
         SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源,将引用的资源属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<ComputeWeightMatrixParameters>}
+     * @function SuperMap.ComputeWeightMatrixService.prototype.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @param params - {ComputeWeightMatrixParameters} 耗费矩阵分析参数类
      */
     processAsync: function (params) {
         if (!params) {
@@ -75,7 +80,7 @@ SuperMap.ComputeWeightMatrixService = SuperMap.Class(SuperMap.NetworkAnalystServ
         });
     },
 
-    /**
+    /*
      * Method: getJson
      * 将对象转化为JSON字符串。
      *

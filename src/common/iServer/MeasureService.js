@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: SuperMap.MeasureService
  * 量算服务类。
  * 该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
@@ -10,35 +10,40 @@ require('../REST');
 require('./ServiceBase');
 require('./MeasureParameters');
 var SuperMap = require('../SuperMap');
+/**
+ * @class SuperMap.MeasureService
+ * @description 量算服务类。
+ * 该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
+ * @augments SuperMap.ServiceBase
+ * @example
+ * (start code)
+ * var myMeasuerService = new SuperMap.MeasureService(url, {
+ *      measureMode: SuperMap.MeasureMode.DISTANCE,
+ *      eventListeners:{
+ *          "processCompleted": measureCompleted
+ *      }
+ * });
+ * (end)
+ * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param options - {Object} 交互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象。
+ *         measureMode - {<MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。
+ */
 SuperMap.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * APIProperty: measureMode
-     * {<SuperMap.MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。默认值为：MeasureMode.DISTANCE 。
+     * @member SuperMap.MeasureService.measureMode -{SuperMap.MeasureMode}
+     * @description 量算模式，包括距离量算模式和面积量算模式。默认值为：MeasureMode.DISTANCE 。
      */
     measureMode: SuperMap.MeasureMode.DISTANCE,
 
     /**
-     * Constructor: SuperMap.MeasureService
-     * 量算服务类构造函数。
-     *
-     * 例如：
-     * (start code)
-     * var myMeasuerService = new SuperMap.MeasureService(url, {
-     *      measureMode: SuperMap.MeasureMode.DISTANCE,
-     *      eventListeners:{
-     *          "processCompleted": measureCompleted
-     *      }
-     * });
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
-     * measureMode - {<MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。
+     * @function SuperMap.MeasureService.initialize
+     * @description 量算服务类构造函数。
+     * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+     * @param options - {Object} 交互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象。
+     *         measureMode - {<MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。
      */
     initialize: function (url, options) {
         SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
@@ -48,8 +53,7 @@ SuperMap.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用的资源属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
@@ -58,11 +62,9 @@ SuperMap.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的量算参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.MeasureParameters>} 量算参数。
+     * @function SuperMap.MeasureService.processAsync
+     * @description 负责将客户端的量算参数传递到服务端。
+     * @param params - {SuperMap.MeasureParameters} 量算参数。
      */
     processAsync: function (params) {
         if (!params) {

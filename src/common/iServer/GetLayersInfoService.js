@@ -1,10 +1,9 @@
-﻿/**
- * Class: SuperMap.GetLayersInfoService
- * 获取图层信息服务类。
+﻿/*
+ * Class SuperMap.GetLayersInfoService 获取图层信息服务类。
  * 该类负责将从客户端指定的服务器上获取该服务器提供的图层信息。
- *
  * Inherits from:
  *  - <SuperMap.ServiceBase>
+ *  apidoc by tangqin
  */
 require('./ServiceBase');
 var SuperMap = require('../SuperMap');
@@ -12,29 +11,39 @@ var ServerTheme = require('./ServerTheme');
 var Grid = require('./Grid');
 var Image = require('./Image');
 var Vector = require('./Vector');
+/**
+ * @class SuperMap.GetLayersInfoService 获取图层信息服务类构造函数。
+ * @augments SuperMap.ServiceBase
+ * @constructs  SuperMap.GetLayersInfoService
+ * Parameters:
+ * @param url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
+ *         http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；<br>
+ *         如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。<br>
+ *         如果查询临时图层的信息，请指定完成的url，包含临时图层ID信息，如：<br>
+ *         http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID
+ * @param options - {Object} 交互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象。
+ *         isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。
+ */
 SuperMap.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
-    /**
-     * Property: isTempLayers
-     * {Boolean>} 当前url对应的图层是否是临时图层。
+    /*
+     * @instance isTempLayers 当前url对应的图层是否是临时图层。{Boolean}
      */
     isTempLayers: false,
 
     /**
-     * Constructor: SuperMap.GetLayersInfoService
-     * 获取图层信息服务类构造函数。
-     *
+     * @function  initialize
+     * @description GetLayersInfoService的构造函数
      * Parameters:
-     * url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：
-     * http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
-     * 如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。
-     * 如果查询临时图层的信息，请指定完成的url，包含临时图层ID信息，如：
-     * http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
-     * isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。
+     * @param url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
+     *         http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；<br>
+     *         如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。<br>
+     *         如果查询临时图层的信息，请指定完成的url，包含临时图层ID信息，如：<br>
+     *         http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID
+     * @param options - {Object} 互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象。<br>
+     *         isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。
      */
     initialize: function (url, options) {
         SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
@@ -44,8 +53,7 @@ SuperMap.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源,将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
@@ -53,9 +61,8 @@ SuperMap.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的更新参数传递到服务端。
-     *
+     * @function  processAsync
+     * @description APIMethod: 负责将客户端的更新参数传递到服务端。
      */
     processAsync: function () {
         var me = this,
@@ -76,11 +83,9 @@ SuperMap.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    /**
+    /*
      * Method: getLayerComplted
      * 编辑完成，执行此方法。
-     *
-     * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
     serviceProcessCompleted: function (result) {
@@ -94,12 +99,11 @@ SuperMap.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
         me.events.triggerEvent("processCompleted", {result: result[0]});
     },
 
-    /**
+    /*
      * TODO 专题图时候可能会用到
      * Method: handleLayers
      * 处理iserver 新增图层组数据 (subLayers.layers 中可能还会含有 subLayers.layers)
      *
-     * Parameters:
      * len - {Number} subLayers.layers的长度
      * layers - {Array} subLayers.layers
      */

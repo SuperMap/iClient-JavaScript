@@ -1,33 +1,41 @@
-/**
- * Class: SuperMap.TimeControl
- * 时间管理类。
- *
- * 此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。
- *
- * 如设置起始时间为1000，结束时间是2000，步长设置为1，
- * 那么表示按照每次1年（可以通过setSpeed进行修改）的变化从公元1000年开始到公元2000年为止，默认每1秒会1次(通过setFrequency修改)
- */
 require('./TimeControlBase');
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.TimeControl
+ * @description 时间管理类。<br>
+ *              此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。<br>
+ *              如设置起始时间为1000，结束时间是2000，步长设置为1，
+ *              那么表示按照每次1年（可以通过setSpeed进行修改）的变化从公元1000年开始到公元2000年为止，默认每1秒会1次(通过setFrequency修改)
+ * @augments SuperMap.TimeControlBase
+ * @param callback - {Function} 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
+ * @param options - {Object} 该类开放的可选属性。如：<br>
+ *        speed - {Number} 步长(单位ms)。不能小于0，默认为1（表示每次刷新的数据之间的间隔为1ms）。<br>
+ *        frequency -  {Number} 刷新频率(单位ms)，默认为1000ms。<br>
+ *        startTime - {Number} 起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
+ *        endTime - {Number} 结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
+ *        repeat - {Boolean} 是否重复循环。默认为true。<br>
+ *        reverse - {Boolean} 是否反向。默认为false。
+ */
 SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
+
     /**
-     * Property: callback
-     * {Function} 每次刷新执行的回调函数
+     * @member callback -{Function}
+     * @description 每次刷新执行的回调函数
      */
     callback: null,
 
-    /**
-     * Parameters:
-     * callback - {Function} 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
-     * options - {Object} 该类开放的可选属性。
-     *
-     * Allowed options properties:
-     * speed - {Number} 步长(单位ms)。不能小于0，默认为1（表示每次刷新的数据之间的间隔为1ms）
-     * frequency -  {Number} 刷新频率(单位ms)，默认为1000ms。
-     * startTime - {Number} 起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。
-     * endTime - {Number} 结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。
-     * repeat - {Boolean} 是否重复循环。默认为true。
-     * reverse - {Boolean} 是否反向。默认为false。
+    /*
+     * @function SuperMap.TimeControl.prototype.initialize
+     * @description 时间管理类的构造函数。
+     * @param callback - {Function} 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
+     * @param options - {Object} 该类开放的可选属性。如：<br>
+     *        speed - {Number} 步长(单位ms)。不能小于0，默认为1（表示每次刷新的数据之间的间隔为1ms）。<br>
+     *        frequency -  {Number} 刷新频率(单位ms)，默认为1000ms。<br>
+     *        startTime - {Number} 起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
+     *        endTime - {Number} 结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
+     *        repeat - {Boolean} 是否重复循环。默认为true。<br>
+     *        reverse - {Boolean} 是否反向。默认为false。
      */
     initialize: function (callback, options) {
         var me = this;
@@ -63,14 +71,16 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
         me.callback = callback;
     },
 
+    /**
+     * @inheritDoc
+     */
     updateOptions: function (options) {
         options = options || {};
         SuperMap.TimeControlBase.prototype.updateOptions.call(this, options);
     },
 
     /**
-     * APIMethod: start
-     * 开始
+     * @inheritDoc
      */
     start: function () {
         var me = this;
@@ -93,8 +103,7 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
     },
 
     /**
-     * APIMethod: stop
-     * 停止，停止后返回起始状态
+     * @inheritDoc
      */
     stop: function () {
         SuperMap.TimeControlBase.prototype.stop.call(this);
@@ -109,8 +118,7 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
     },
 
     /**
-     * APIMethod: destroy
-     * 销毁TimeControl对象，释放资源。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.TimeControlBase.prototype.destroy.call(this);
@@ -121,8 +129,8 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
 
 
     /**
-     * Method: tick
-     * 定时刷新
+     * @function SuperMap.TimeControl.prototype.tick
+     * @description 定时刷新
      */
     tick: function () {
         var me = this;
@@ -132,7 +140,7 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
     },
 
     /**
-     *执行回调，更新时间戳
+     * @inheritDoc
      */
     update: function () {
         var me = this;

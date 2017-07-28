@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: SuperMap.ThemeGridUnique
  * 栅格单值专题图类。
  * 栅格单值专题图，是将单元格值相同的归为一类，为每一类设定一种颜色，从而用来区分不同的类别。
@@ -12,32 +12,35 @@ var SuperMap = require('../SuperMap');
 var ServerColor = require('./ServerColor');
 var ThemeGridUniqueItem = require('./ThemeGridUniqueItem');
 
+/**
+ * @class SuperMap.ThemeGridUnique
+ * @description 栅格单值专题图类。
+ * @augments SuperMap.Theme
+ * @param options - {Object} 可选参数。如：<br>
+ *        items - {Array<SuperMap.ThemeGridUniqueItem>} 栅格单值专题图子项数组。
+ *        defaultcolor - {SuperMap.ServerColor} 栅格单值专题图的默认颜色。
+ */
 SuperMap.ThemeGridUnique = SuperMap.Class(SuperMap.Theme, {
 
     /**
      * APIProperty: defaultcolor
-     * {<SuperMap.ServerColor>} 栅格单值专题图的默认颜色。
-     * 对于那些未在格网单值专题图子项之列的要素使用该颜色显示。
+     * @member SuperMap.ThemeGridUnique.prototype.defaultcolor -{SuperMap.ServerColor}
+     * @description 栅格单值专题图的默认颜色。
+     *              对于那些未在格网单值专题图子项之列的要素使用该颜色显示。
      */
     defaultcolor: null,
 
     /**
      * APIProperty: items
-     * {Array(<SuperMap.ThemeGridUniqueItem>)} 栅格单值专题图子项数组。
-     * 栅格单值专题图将值相同的单元格归为一类，每一类是一个专题图子项。
+     * @member SuperMap.ThemeGridUnique.prototype.items -{Array<SuperMap.ThemeGridUniqueItem>}
+     * @description 栅格单值专题图子项数组。
+     *              栅格单值专题图将值相同的单元格归为一类，每一类是一个专题图子项。
      */
     items: null,
 
-    /**
+    /*
      * Constructor: SuperMap.ThemeGridUnique
      * 栅格单值专题图类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * items - {Array(<SuperMap.ThemeGridUniqueItem>)} 栅格单值专题图子项数组。
-     * defaultcolor - {<SuperMap.ServerColor>} 栅格单值专题图的默认颜色。
      */
     initialize: function (options) {
         var me = this;
@@ -50,7 +53,7 @@ SuperMap.ThemeGridUnique = SuperMap.Class(SuperMap.Theme, {
 
     /**
      * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.Theme.prototype.destroy.apply(this, arguments);
@@ -71,7 +74,7 @@ SuperMap.ThemeGridUnique = SuperMap.Class(SuperMap.Theme, {
         }
     },
 
-    /**
+    /*
      * Method: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */

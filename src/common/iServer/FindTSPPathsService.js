@@ -1,4 +1,4 @@
-/**
+/*
  * Class: SuperMap.FindTSPPathsService
  * 旅行商分析服务类
  * 旅行商分析是路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
@@ -12,49 +12,56 @@ require('./NetworkAnalystServiceBase');
 require('./FindTSPPathsParameters');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
+
+/**
+ * @class SuperMap.FindTSPPathsService
+ * @description 旅行商分析服务类<br>
+ *               旅行商分析是路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
+ *               旅行商分析也可以指定到达的终点，这时查找从起点能够遍历所有途经点最后到达终点，且花费最小的路径。
+ *               该类负责将客户端指定的旅行商分析参数传递给服务端，并接收服务端返回的结果数据。
+ *               旅行商分析结果通过该类支持的事件的监听函数参数获取
+ * @augments SuperMap.NetworkAnalystServiceBase
+ * @example
+ * (start code)
+ * var myFindTSPPathsService = new SuperMap.FindTSPPathsService(url, {
+ *     eventListeners: {
+ *	      "processCompleted": findTSPPathsCompleted,
+ *		  "processFailed": findTSPPathsError
+ *		  }
+ *  });
+ * (end)
+ * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
+ *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
+ *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+ * @param options - {Object} 互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象。
+ */
 SuperMap.FindTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.FindTSPPathsService
-     * 最佳路径分析服务类构造函数。
-     *
-     * 例如：
-     * (start code)
-     * var myFindTSPPathsService = new SuperMap.FindTSPPathsService(url, {
-     *     eventListeners: {
-     *	      "processCompleted": findTSPPathsCompleted, 
-     *		  "processFailed": findTSPPathsError
-     *		  }
-     *  });
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
-     * http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
-     * 例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @function SuperMap.FindTSPPathsService.prototype.initialize
+     * @description 最佳路径分析服务类构造函数。
+     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
+     *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
+     *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+     * @param options - {Object} 互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
         SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源,将引用的资源属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.FindTSPPathsParameters>}
+     * @function SuperMap.FindTSPPathsService.prototype.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @param params - {SuperMap.FindTSPPathsParameters} 旅行商分析服务参数类
      */
     processAsync: function (params) {
         if (!params) {
@@ -77,7 +84,7 @@ SuperMap.FindTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase
         });
     },
 
-    /**
+    /*
      * Method: getNodesJson
      * 将节点对象转化为JSON字符串。
      *
@@ -106,7 +113,8 @@ SuperMap.FindTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase
         }
         return jsonParameters;
     },
-    /**
+
+    /*
      * Method: toGeoJSONResult
      * 将含有geometry的数据转换为geojson格式。
      *

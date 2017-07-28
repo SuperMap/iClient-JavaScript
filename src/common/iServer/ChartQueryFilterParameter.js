@@ -1,54 +1,50 @@
-/**
- * Class: SuperMap.ChartQueryFilterParameter
- *      海图查询过滤参数类，用于设置海图查询的过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
- */
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.ChartQueryFilterParameter
+ * @description 海图查询过滤参数类，用于设置海图查询的过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
+ * @param options - {Object} 可选参数。如：<br>
+ *        isQueryPoint - {Boolean} 是否查询点。
+ *        isQueryLine  - {Boolean} 是否查询线。
+ *        isQueryRegion  - {Boolean} 是否查询面。
+ *        attributeFilter - {String} 属性字段过滤条件。
+ *        chartFeatureInfoSpecCode - {Number} 查询的物标代号。
+ */
 SuperMap.ChartQueryFilterParameter = SuperMap.Class({
 
     /**
-     * APIProperty: isQueryPoint
-     * {Boolean} 是否查询点。
+     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryPoint -{Boolean}
+     * @description 是否查询点。
      */
     isQueryPoint: null,
 
     /**
-     * APIProperty: isQueryLine
-     * {Boolean} 是否查询线。
+     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryLine -{Boolean}
+     * @description 是否查询线。
      */
     isQueryLine: null,
 
     /**
-     * APIProperty: isQueryRegion
-     * {Boolean} 是否查询面。
+     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryRegion -{Boolean}
+     * @description 是否查询面。
      */
     isQueryRegion: null,
 
     /**
-     * APIProperty: attributeFilter
-     * {String} 属性字段过滤条件。
+     * @member SuperMap.ChartQueryFilterParameter.prototype.attributeFilter -{String}
+     * @description 属性字段过滤条件。
      */
     attributeFilter: null,
 
     /**
-     * APIProperty: chartFeatureInfoSpecCode
-     * {Number} 查询的物标代号。
+     * @member SuperMap.ChartQueryFilterParameter.prototype.chartFeatureInfoSpecCode -{Number}
+     * @description 查询的物标代号。
      */
     chartFeatureInfoSpecCode: null,
 
-    /**
+    /*
      * Constructor: ChartQueryFilterParameter
      * 初始化 ChartQueryFilterParameter 类的新实例。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * isQueryPoint - {Boolean} 是否查询点。
-     * isQueryLine  - {Boolean} 是否查询线。
-     * isQueryRegion  - {Boolean} 是否查询面。
-     * isQueryLine  - {Boolean} 是否查询点。
-     * attributeFilter - {String} 属性字段过滤条件。
-     * chartFeatureInfoSpecCode - {Number} 查询的物标代号。
      */
     initialize: function (options) {
         if (!options) {
@@ -58,8 +54,8 @@ SuperMap.ChartQueryFilterParameter = SuperMap.Class({
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
         var me = this;
@@ -71,8 +67,8 @@ SuperMap.ChartQueryFilterParameter = SuperMap.Class({
     },
 
     /**
-     * Method: toJson
-     * 将属性信息转化成JSON格式字符串。
+     * @function  SuperMap.ChartQueryFilterParameter.prototype.toJson
+     * @description 将属性信息转化成JSON格式字符串。
      */
     toJson: function () {
         var json = "";

@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: SuperMap.ThemeService
  * 专题图服务类。
  *
@@ -8,28 +8,31 @@
 require('./ServiceBase');
 require('./ThemeParameters');
 var SuperMap = require('../SuperMap');
+/**
+ * @class SuperMap.ThemeService
+ * @description 专题图服务类。
+ * @augments SuperMap.ServiceBase
+ * @example
+ * (start code)
+ * var myThemeService = new SuperMap.ThemeService(url, {
+ *     eventListeners: {
+ *           "processCompleted": themeCompleted,
+ *           "processFailed": themeFailed
+ *           }
+ * });
+ * (end)
+ * @param url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param options - {Object} 交互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象。
+ */
 SuperMap.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.ThemeService
-     * 专题图服务类构造函数。
-     *
-     * 例如：
-     * (start code)
-     * var myThemeService = new SuperMap.ThemeService(url, {
-     *     eventListeners: {
-     *           "processCompleted": themeCompleted,
-     *           "processFailed": themeFailed
-     *           }
-     * });
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @function SuperMap.ThemeService.initialize
+     * @description 专题图服务类构造函数。
+     * @param url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+     * @param options - {Object} 交互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
         SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
@@ -47,19 +50,16 @@ SuperMap.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的专题图参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.ThemeParameters>}
+     * @function SuperMap.ThemeService.processAsync
+     * @description 负责将客户端的专题图参数传递到服务端。
+     * @param params - {SuperMap.ThemeParameters} 专题图参数类。
      */
     processAsync: function (params) {
         if (!params) {
@@ -77,7 +77,7 @@ SuperMap.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
         });
     },
 
-    /**
+    /*
      * Method: getJsonParameters
      * 将专题图参数参数转化为 JSON 字符串。
      *

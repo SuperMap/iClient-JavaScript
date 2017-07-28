@@ -1,29 +1,34 @@
-﻿/**
+﻿/*
  * Class: SuperMap.ThemeMemoryData
  * 专题图内存数据类。
  */
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.ThemeMemoryData
+ * @description 专题图内存数据类。
+ * @param srcData - {Array()} 原始值数组。
+ * @param targetData - {Array()} 外部值数组。
+ */
 SuperMap.ThemeMemoryData = SuperMap.Class({
 
-    /**
+    /*
      * Property: srcData
      * {Array()} 原始值数组，该属性值将被 targetData 属性所指定的值替换掉，然后制作专题图，但数据库中的值并不会改变。
      */
     srcData: null,
 
-    /**
+    /*
      * Property: targetData
      * {Array()} 外部值数组，即用于制作专题图的内存数据，设定该属性值后，会将 srcData 属性所指定的原始值替换掉制作专题图，但数据库中的值并不会改变。
      */
     targetData: null,
 
     /**
-     * Constructor: SuperMap.ThemeMemoryData
-     * 专题图内存数据类构造函数。
-     *
-     * Parameters:
-     * srcData - {Array()} 原始值数组。
-     * targetData - {Array()} 外部值数组。
+     * @function SuperMap.ThemeMemoryData.prototype.initialize
+     * @description 专题图内存数据类构造函数。
+     * @param srcData - {Array()} 原始值数组。
+     * @param targetData - {Array()} 外部值数组。
      */
     initialize: function (srcData, targetData) {
         if (srcData) {
@@ -36,7 +41,8 @@ SuperMap.ThemeMemoryData = SuperMap.Class({
 
     /**
      * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
         var me = this;
@@ -44,7 +50,7 @@ SuperMap.ThemeMemoryData = SuperMap.Class({
         me.targetData = null;
     },
 
-    /**
+    /*
      * Method: toJSON
      * 将 SuperMap.ThemeMemoryData 对象转化为json字符串。
      *

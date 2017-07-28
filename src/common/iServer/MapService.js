@@ -1,43 +1,45 @@
-﻿var SuperMap = require('../SuperMap');
+﻿/*
+ * Class: SuperMap.MapService
+ * 地图信息服务类 。
+ * 该类负责将从客户端指定的服务器上获取该服务器提供的地图信息
+ * 结果保存在一个object对象中，对象包含一个属性result为iServer返回的json对象
+ * Inherits from:
+ *  - <SuperMap.ServiceBase>
+ *      apidoc by tangqin
+ */
+
+var SuperMap = require('../SuperMap');
 var ServiceBase = require('./ServiceBase');
-SuperMap.MapService = SuperMap.Class(ServiceBase, {
-    /**
-     * @class SuperMap.MapService
-     * @constructs SuperMap.MapService
-     * @classdesc
-     * 地图信息服务类 。
-     * 该类负责将从客户端指定的服务器上获取该服务器提供的地图信息
-     * 结果保存在一个object对象中，对象包含一个属性result为iServer返回的json对象
-     * @extends {SuperMap.ServiceBase}
-     * @api
-     * @example 例如：
-     * (start code)
-     * var myMapService = new SuperMap.MapService(url, {
+/**
+ * @class SuperMap.MapService 地图信息服务类 。
+ * @augments SuperMap.ServiceBase
+ * @example
+ * (start code)
+ * var myMapService = new SuperMap.MapService(url, {
      * eventListeners:{
      *     "processCompleted": MapServiceCompleted,
      *       "processFailed": MapServiceFailed
      *       }
      * });
-     * (end)
-     *
-     *
-     */
+ * (end)
+ *
+ * @param url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param options - {Object} 参数 。
+ * eventListeners - {Object} 需要被注册的监听器对象。
+ */
+SuperMap.MapService = SuperMap.Class(ServiceBase, {
 
     /**
-     * APIProperty: projection
-     * {<SuperMap.Projection>} or {<String>}
-     * 根据投影参数获取地图状态信息。
+     * @member  SuperMap.MapService.prototype.projection -{SuperMap.Projection} or {String}
+     * @description 根据投影参数获取地图状态信息。
      */
     projection: null,
 
-
     /**
-     *
-     *
-     * @method SuperMap.MapService.initialize
-     * @param options - {Object} 参数。
-     * @param url {string} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
-     * Allowed options properties:</br>
+     * @function SuperMap.MapService.prototype.initialize
+     * @description MapService的构造函数
+     * @param url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+     * @param options - {Object} 参数 。
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
@@ -61,9 +63,9 @@ SuperMap.MapService = SuperMap.Class(ServiceBase, {
         }
     },
 
-    /*
-     * APIMethod: destroy
-     * 释放资源，将引用的资源属性置空。
+    /**
+     * @function  destroy
+     * @description 释放资源，将引用的资源属性置空。
      */
     destroy: function () {
         SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
@@ -78,9 +80,8 @@ SuperMap.MapService = SuperMap.Class(ServiceBase, {
     },
 
     /**
-     * @method SuperMap.MapService.processAsync
+     * @function  SuperMap.MapService.prototype.processAsync
      * @description 负责将客户端的设置的参数传递到服务端，与服务端完成异步通讯。
-     *
      */
     processAsync: function () {
         var me = this;
@@ -92,11 +93,12 @@ SuperMap.MapService = SuperMap.Class(ServiceBase, {
         });
     },
 
-    /**
+    /*
+     * Method: getMapStatusCompleted
+     * 获取地图状态完成，执行此方法。
      *
-     * @method SuperMap.MapService.getMapStatusCompleted
-     * @description 获取地图状态完成，执行此方法。
-     * @param result - {Object} 服务器返回的结果对象。
+     * Parameters:
+     * result - {Object} 服务器返回的结果对象。
      */
     serviceProcessCompleted: function (result) {
         var me = this;

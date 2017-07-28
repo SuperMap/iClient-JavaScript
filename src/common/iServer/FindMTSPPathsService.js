@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: SuperMap.FindMTSPPathsService
  * 多旅行商分析服务类
  * 多旅行商分析也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。
@@ -13,49 +13,57 @@ require('./NetworkAnalystServiceBase');
 require('./FindMTSPPathsParameters');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
+
+/**
+ * @class SuperMap.FindMTSPPathsService
+ * @description 多旅行商分析服务类<br>
+ *               多旅行商分析也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。<br>
+ *               查找经济有效的配送路径，并给出相应的行走路线。<br>
+ *               物流配送功能就是解决如何合理分配配送次序和送货路线，使配送总花费达到最小或每个配送中心的花费达到最小。<br>
+ *               该类负责将客户端指定的多旅行商分析参数传递给服务端，并接收服务端返回的结果数据。<br>
+ *               多旅行商分析结果通过该类支持的事件的监听函数参数获取
+ * @augments SuperMap.NetworkAnalystServiceBase
+ * @example
+ * (start code)
+ * var myFindMTSPPathsService = new SuperMap.FindMTSPPathsService(url, {
+ *     eventListeners: {
+ *         "processCompleted": findMTSPPathsCompleted,
+ *		   "processFailed": findMTSPPathsError
+ *		   }
+ * });
+ * (end)
+ * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ *                       http://{服务器地址}:{服务端口号}/iserver/services/网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+ * @param options - {Object} 互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象。
+ */
 SuperMap.FindMTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.FindMTSPPathsService
-     * 最佳路径分析服务类构造函数。
-     *
-     * 例如：
-     * (start code)
-     * var myFindMTSPPathsService = new SuperMap.FindMTSPPathsService(url, {
-     *     eventListeners: {
-     *         "processCompleted": findMTSPPathsCompleted, 
-     *		   "processFailed": findMTSPPathsError
-     *		   }
-     * });
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
-     * http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
-     * 例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @function SuperMap.FindMTSPPathsService..prototype.initialize
+     * @description 最佳路径分析服务类构造函数。
+     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+     *                       http://{服务器地址}:{服务端口号}/iserver/services/网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+     *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+     * @param options - {Object} 互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
         SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.FindMTSPPathsParameters>}
+     * @function SuperMap.FindMTSPPathsService..prototype.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     *@param params - {SuperMap.FindMTSPPathsParameters} 多旅行商分析服务参数类
      */
     processAsync: function (params) {
         if (!params) {
@@ -81,7 +89,7 @@ SuperMap.FindMTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBas
         });
     },
 
-    /**
+    /*
      * Method: getJson
      * 将对象转化为JSON字符串。
      *
@@ -110,7 +118,8 @@ SuperMap.FindMTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBas
         jsonString += ']';
         return jsonString;
     },
-    /**
+
+    /*
      * Method: toGeoJSONResult
      * 将含有geometry的数据转换为geojson格式。
      *

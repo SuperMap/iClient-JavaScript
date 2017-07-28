@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: SuperMap.FindPathService
  * 最佳路径分析服务类。
  * 最佳路径是在网络数据集中指定一些节点，按照节点的选择顺序，
@@ -13,49 +13,56 @@ require('./NetworkAnalystServiceBase');
 require('./FindPathParameters');
 var SuperMap = require('../SuperMap');
 var GeoJSONFormat = require('../format/GeoJSON');
+
+/**
+ * @class SuperMap.FindPathService
+ * @description 最佳路径分析服务类。<br>
+ *               最佳路径是在网络数据集中指定一些节点，按照节点的选择顺序，<br>
+ *               顺序访问这些节点从而求解起止点之间阻抗最小的路经。<br>
+ *               该类负责将客户端指定的最佳路径分析参数传递给服务端，并接收服务端返回的结果数据。<br>
+ *               最佳路径分析结果通过该类支持的事件的监听函数参数获取
+ * @augments SuperMap.NetworkAnalystServiceBase
+ * @example
+ * (start code)
+ * var myFindPathService = new SuperMap.FindPathService(url, {
+ *     eventListeners: {
+ *	       "processCompleted": findPathCompleted,
+ *		   "processFailed": findPathError
+ *		   }
+ * });
+ * (end)
+ * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ *               http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ *               例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+ * @param options - {Object} 互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象。
+ */
 SuperMap.FindPathService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
 
     /**
-     * Constructor: SuperMap.FindPathService
-     * 最佳路径分析服务类构造函数。
-     *
-     * 例如：
-     * (start code)
-     * var myFindPathService = new SuperMap.FindPathService(url, {
-     *     eventListeners: {
-     *	       "processCompleted": findPathCompleted, 
-     *		   "processFailed": findPathError
-     *		   }
-     * });
-     * (end)
-     *
-     * Parameters:
-     * url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
-     * http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
-     * 例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @function SuperMap.FindPathService.prototype.initialize
+     * @description 最佳路径分析服务类构造函数。
+     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+     *               http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+     *               例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+     * @param options - {Object} 互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象。
      */
     initialize: function (url, options) {
         SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.FindPathParameters>}
+     * @function SuperMap.FindPathService.prototype.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
+     * @param params - {SuperMap.FindPathParameters} 最佳路径分析服务参数类
      */
     processAsync: function (params) {
         if (!params) {
@@ -78,7 +85,7 @@ SuperMap.FindPathService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
         });
     },
 
-    /**
+    /*
      * Method: getJson
      * 将对象转化为JSON字符串。
      *
@@ -108,7 +115,7 @@ SuperMap.FindPathService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
         return jsonString;
     },
 
-    /**
+    /*
      * Method: toGeoJSONResult
      * 将含有geometry的数据转换为geojson格式。
      *

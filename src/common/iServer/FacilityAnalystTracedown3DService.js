@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: SuperMap.FacilityAnalystTracedown3DService
  * 下游追踪资源服务类
  * Inherits from:
@@ -7,20 +7,26 @@
 require('./ServiceBase');
 require('./FacilityAnalystTracedown3DParameters');
 var SuperMap = require('../SuperMap');
+/**
+ * @class SuperMap.FacilityAnalystTracedown3DService
+ * @description 下游追踪资源服务类
+ * @augments SuperMap.ServiceBase
+ * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+ *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+ * @param options - {Object} 互服务时所需可选参数。如：<br>
+ *         eventListeners - {Object} 需要被注册的监听器对象。
+ */
 SuperMap.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
-     * Constructor: SuperMap.FacilityAnalystTracedown3DService
-     * 下游追踪资源服务类构造函数
-     *
-     * Parameters:
-     * url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
-     * http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
-     * 例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @function SuperMap.FacilityAnalystTracedown3DService.initialize
+     * @description 下游追踪资源服务类构造函数
+     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+     *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
+     *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
+     * @param options - {Object} 互服务时所需可选参数。如：<br>
+     *         eventListeners - {Object} 需要被注册的监听器对象。
      */
 
     initialize: function (url, options) {
@@ -28,19 +34,16 @@ SuperMap.FacilityAnalystTracedown3DService = SuperMap.Class(SuperMap.ServiceBase
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用的资源属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     *
-     * Parameters:
-     * params - {<SuperMap.FacilityAnalystTracedown3DParameters>}
+     * @function SuperMap.FacilityAnalystTracedown3DService.processAsync
+     * @description负责将客户端的查询参数传递到服务端。
+     * @param params - {SuperMap.FacilityAnalystTracedown3DParameters} 下游追踪资源参数类
      */
     processAsync: function (params) {
         if (!params) {

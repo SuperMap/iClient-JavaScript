@@ -1,53 +1,59 @@
-/**
+/*
  * Class:SuperMap.UpdateTurnNodeWeightParameters
  * 转向耗费权重更新服务参数类
- * */
+ */
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.UpdateTurnNodeWeightParameters
+ * @description 转向耗费权重更新服务参数类
+ * @param options - {Object} 可选参数。如：<br>
+ *         nodeId - {String} 转向结点的id。<br>
+ *        fromEdgeId - {String} 起始边的id。<br>
+ *        toEdgeId - {String} 终止边的id。<br>
+ *        weightField - {String} 转向结点的耗费字段。<br>
+ *        turnNodeWeight - {String} 耗费权重
+ */
 SuperMap.UpdateTurnNodeWeightParameters = SuperMap.Class({
+
     /**
      * APIProperty:  nodeId
-     * {String} 转向结点的id
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.nodeId -{String}
+     * @description 转向结点的id
      */
     nodeId: "",
 
     /**
      * APIProperty: fromEdgeId
-     * {String} 起始边的id
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.fromEdgeId -{String}
+     * @description 起始边的id
      */
     fromEdgeId: "",
 
     /**
      * APIProperty: toEdgeId
-     * {String} 终止边的id
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.toEdgeId -{String}
+     * @description 终止边的id
      */
     toEdgeId: "",
 
     /**
      * APIProperty: weightField
-     * {String} 转向结点的耗费字段
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.weightField -{String}
+     * @description 转向结点的耗费字段
      */
     weightField: "",
 
     /**
      * APIProperty: turnNodeWeight
-     * {String} 耗费权重
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.turnNodeWeight -{String}
+     * @description 耗费权重
      */
     turnNodeWeight: "",
 
-
-    /**
+    /*
      * Constructor: SuperMap.UpdateTurnNodeWeightParameters
      * 转向耗费权重更新服务参数类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * nodeId - {String} 转向结点的id
-     * fromEdgeId - {String} 起始边的id
-     * toEdgeId - {String}  终止边的id
-     * weightField - {String}  转向结点的耗费字段
-     * turnNodeWeight - {String}   耗费权重
      */
     initialize: function (option) {
         if (!option)return;
@@ -61,7 +67,8 @@ SuperMap.UpdateTurnNodeWeightParameters = SuperMap.Class({
 
     /**
      * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
         this.nodeId = null;

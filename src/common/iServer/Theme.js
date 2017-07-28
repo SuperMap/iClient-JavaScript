@@ -1,12 +1,20 @@
-﻿/**
+﻿/*
  * Class: SuperMap.Theme
  * 专题图基类。
  */
 require('./ThemeMemoryData');
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.Theme
+ * @description 专题图基类。
+ * @param  type - {String} 专题图类型。
+ * @param options - {Object} 可选参数。如：<br>
+ *         memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
+ */
 SuperMap.Theme = SuperMap.Class({
 
-    /**
+    /*
      * Property: memoryData
      * {<SuperMap.ThemeMemoryData>} 专题图内存数据。
      * 用内存数据制作专题图的方式与表达式制作专题图的方式互斥，前者优先级较高。
@@ -14,22 +22,18 @@ SuperMap.Theme = SuperMap.Class({
      */
     memoryData: null,
 
-    /**
+    /*
      * Property: type
      * {String} 专题图类型。
      */
     type: null,
 
     /**
-     * Constructor: SuperMap.Theme
-     * 专题图基类构造函数。
-     *
-     * Parameters:
-     * type - {String} 专题图类型。
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * memoryData - {<SuperMap.ThemeMemoryData>} 专题图内存数据。
+     * @function SuperMap.Theme.prototype.initialize
+     * @description 专题图基类构造函数。
+     * @param  type - {String} 专题图类型。
+     * @param options - {Object} 可选参数。如：<br>
+     *         memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
      */
     initialize: function (type, options) {
         if (!type) {
@@ -43,7 +47,8 @@ SuperMap.Theme = SuperMap.Class({
 
     /**
      * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy: function () {
         var me = this;
@@ -54,7 +59,7 @@ SuperMap.Theme = SuperMap.Class({
         me.type = null;
     },
 
-    /**
+    /*
      * Method: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */

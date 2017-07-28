@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * Class: SuperMap.ThemeGridRange
  * 栅格分段专题图。
  * 栅格分段专题图，是将所有单元格的值按照某种分段方式分成多个范围段，值在同一个范围段中的单元格使用相同的颜色进行显示。
@@ -11,59 +11,67 @@ require('../REST');
 require('./Theme');
 require('./ThemeGridRangeItem');
 var SuperMap = require('../SuperMap');
+
+/**
+ * @class SuperMap.ThemeGridRange
+ * @description 栅格分段专题图。
+ * @augments SuperMap.Theme
+ * @param options - {Object} 参数。<br>
+ *        items - {Array<SuperMap.ThemeGridRangeItem>} 栅格分段专题图子项数组。<br>
+ *        reverseColor - {boolean} 是否对栅格分段专题图中分段的颜色风格进行反序显示。<br>
+ *        rangeMode - {SuperMap.RangeMode} 分段专题图的分段模式。<br>
+ *        rangeParameter - {Number} 分段参数。<br>
+ *        colorGradientType - {<SuperMap.ColorGradientType>} 渐变颜色枚举类。
+ */
 SuperMap.ThemeGridRange = SuperMap.Class(SuperMap.Theme, {
 
     /**
      * APIProperty: items
-     * {Array(<SuperMap.ThemeGridRangeItem>)} 栅格分段专题图子项数组。
-     * 在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。
-     * 本类用来设置每个栅格范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。
+     * @member SuperMap.ThemeGridRange.prototype.items -{Array<SuperMap.ThemeGridRangeItem>}
+     * @description 栅格分段专题图子项数组。<br>
+     *              在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。<br>
+     *              本类用来设置每个栅格范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。
      */
     items: null,
 
-
     /**
      * APIProperty: rangeMode
-     * {<SuperMap.RangeMode>} 分段专题图的分段模式。
-     * 默认值为 SuperMap.RangeMode.EQUALINTERVAL（等距离分段）。
-     * 在栅格分段专题图中，作为专题变量的字段或表达式的值按照某种分段方式被分成多个范围段。
-     * 目前 SuperMap 提供的分段方式包括：等距离分段法、平方根分段法、标准差分段法、对数分段法、等计数分段法和自定义距离法，
-     * 显然这些分段方法根据一定的距离进行分段，因而范围分段专题图所基于的专题变量必须为数值型。
+     * @member SuperMap.ThemeGridRange.prototype.rangeMode -{SuperMap.RangeMode}
+     * @description 分段专题图的分段模式。<br>
+     *              默认值为 SuperMap.RangeMode.EQUALINTERVAL（等距离分段）。<br>
+     *              在栅格分段专题图中，作为专题变量的字段或表达式的值按照某种分段方式被分成多个范围段。<br>
+     *              目前 SuperMap 提供的分段方式包括：等距离分段法、平方根分段法、标准差分段法、对数分段法、等计数分段法和自定义距离法，<br>
+     *              显然这些分段方法根据一定的距离进行分段，因而范围分段专题图所基于的专题变量必须为数值型。
      */
     rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
 
     /**
      * APIProperty: rangeParameter
-     * {Number} 分段参数。
-     * 当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，
-     * 该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。默认值为 -1。
+     * @member SuperMap.ThemeGridRange.prototype.rangeParameter -{Number}
+     * @description 分段参数。<br>
+     *              当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，<br>
+     *              该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。默认值为 -1。
      */
     rangeParameter: 0,
 
     /**
      * APIProperty: colorGradientType
-     * {<SuperMap.ColorGradientType>} 渐变颜色枚举类
+     * @member SuperMap.ThemeGridRange.prototype.colorGradientType -{SuperMap.ColorGradientType}
+     * @description 渐变颜色枚举类
      *
      */
     colorGradientType: SuperMap.ColorGradientType.YELLOW_RED,
+
     /**
      * APIProperty: reverseColor
-     * {boolean}是否对栅格分段专题图中分段的颜色风格进行反序显示。
+     * @member SuperMap.ThemeGridRange.prototype.reverseColor -{boolean}
+     * @description 是否对栅格分段专题图中分段的颜色风格进行反序显示。
      */
     reverseColor: false,
-    /**
+
+    /*
      * Constructor: SuperMap.ThemeGridRange
      * 栅格分段专题图构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * items - {Array(<SuperMap.ThemeGridRangeItem>)} 栅格分段专题图子项数组。
-     * reverseColor - {boolean} 是否对栅格分段专题图中分段的颜色风格进行反序显示。
-     * rangeMode - {<SuperMap.RangeMode>} 分段专题图的分段模式。
-     * rangeParameter - {Number} 分段参数。
-     * colorGradientType - {<SuperMap.ColorGradientType>} 渐变颜色枚举类。
      */
     initialize: function (options) {
         SuperMap.Theme.prototype.initialize.apply(this, ["GRIDRANGE", options]);
@@ -74,7 +82,7 @@ SuperMap.ThemeGridRange = SuperMap.Class(SuperMap.Theme, {
 
     /**
      * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy: function () {
         SuperMap.Theme.prototype.destroy.apply(this, arguments);
