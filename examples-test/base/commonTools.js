@@ -2,6 +2,7 @@ var fs = require('fs'),
     PNG = require('pngjs').PNG;
 var getPixels = require("get-pixels");
 var assert = require('assert');
+var path = require('path');
 
 var commonTools = ({
 
@@ -16,7 +17,8 @@ var commonTools = ({
                 console.log('invalid input : type or exampleName is not a string');
                 return;
             }
-            var exampleUrl = 'http://localhost:9999/iClient9/examples/' + type + '/' + exampleName + '.html';
+            var baseDir = path.resolve(__dirname, '../../').replace(/\\/g,'/');
+            var exampleUrl = baseDir + '/examples/' + type + '/' + exampleName + '.html';
             browser.url(exampleUrl);
             browser.expect.element('body').to.be.present.before(2000);
             browser.expect.element('#map').to.be.present.before(3000);
