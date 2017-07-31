@@ -1,8 +1,7 @@
-var fs = require('fs'),
-    PNG = require('pngjs').PNG;
+var fs = require('fs');
+var path = require('path');
 var getPixels = require("get-pixels");
 var assert = require('assert');
-var path = require('path');
 var images = require('images');
 
 var commonTools = ({
@@ -92,13 +91,8 @@ var commonTools = ({
          * function: get a tile with certain range from the screenshot
          * */
         getTileFromScreenshot: function (sourceImagePath, offsetX, offsetY, width, height, tilePath) {
-            var dst = new PNG({width: width, height: height});
-            fs.createReadStream(sourceImagePath)
-                .pipe(new PNG())
-                .on('parsed', function () {
-                    this.bitblt(dst, offsetX, offsetY, width, height, 0, 0);
-                    dst.pack().pipe(fs.createWriteStream(tilePath));
-                });
+            images(images(sourceImagePath), offsetX, offsetY, width, height)
+                .save(tilePath);
         },
 
         /*
