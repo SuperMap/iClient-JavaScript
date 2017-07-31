@@ -1,11 +1,11 @@
 /**
- * @class L.supermap.AddressMatchService
- * @constructs L.supermap.AddressMatchService
+ * @class L.supermap.addressMatchService
+ * @constructs L.supermap.addressMatchService
  * @classdesc
  * 地址匹配服务
  * @extends {ServiceBase.ServiceBase}
  * @example 用法：
- *      L.supermap.AddressMatchService(url,options)
+ *      L.supermap.addressMatchService(url,options)
  *      .code(function(result){
  *          //doSomething
  *      })
@@ -23,7 +23,7 @@ var AddressMatchService = ServiceBase.extend({
     },
 
     /**
-     * @method L.supermap.AddressMatchService.code
+     * @method L.supermap.addressMatchService.code
      * @description 获取正向地址匹配结果。
      * @param params 正向匹配参数。
      * @param callback 请求结果的回调函数。
@@ -46,7 +46,7 @@ var AddressMatchService = ServiceBase.extend({
     },
 
     /**
-     * @method L.supermap.AddressMatchService.decode
+     * @method L.supermap.addressMatchService.decode
      * @description 获取反向地址匹配结果。
      * @param params 反向匹配参数。
      * @param callback 请求结果的回调函数。
@@ -73,7 +73,7 @@ var AddressMatchService = ServiceBase.extend({
     }
 });
 
-L.supermap.AddressMatchService = function (url, options) {
+L.supermap.addressMatchService = function (url, options) {
     return new AddressMatchService(url, options);
 };
 

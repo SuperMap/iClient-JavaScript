@@ -92,15 +92,17 @@ module.exports = window.SuperMap;
 "use strict";
 
 
-/**
- * Class: SuperMap.ServiceBase
- * common服务基类
- */
 __webpack_require__(20);
 var SuperMap = __webpack_require__(0);
+/**
+ * @class SuperMap.ServiceBase common服务基类
+ * @constructs SuperMap.ServiceBase
+ * @param url - {String} 与客户端交互的服务地址。
+ * @param options - {Object} 参数。
+ */
 SuperMap.ServiceBase = SuperMap.Class({
 
-    /**
+    /*
      * Constant: EVENT_TYPES
      * {Array(String)}
      * 此类支持的事件类型
@@ -110,92 +112,96 @@ SuperMap.ServiceBase = SuperMap.Class({
     EVENT_TYPES: ["processCompleted", "processFailed"],
 
     /**
-     * APIProperty: events
-     * {<SuperMap.Events>} 处理所有事件的对象，支持 processCompleted 、processFailed 两种事件
-     * 服务端成功返回地图信息结果时触发 processCompleted 事件，服务端返回信息结果时触发 processFailed 事件。
+     * @member SuperMap.ServiceBase.prototype.events -{SuperMap.Events}
+     * @description 处理所有事件的对象，支持 processCompleted 、processFailed 两种事件
+     *               服务端成功返回地图信息结果时触发 processCompleted 事件，服务端返回信息结果时触发 processFailed 事件。
      */
     events: null,
 
     /**
-     * APIProperty: eventListeners
-     * {Object} 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
-     * 相当于调用 SuperMap.Events.on(eventListeners)。
+     * @member SuperMap.ServiceBase.prototype.eventListeners -{Object}
+     * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
+     *              相当于调用 SuperMap.Events.on(eventListeners)。
      */
     eventListeners: null,
 
     /**
-     * APIProperty: url
-     * {String|Array} 服务访问地址或者服务访问地址数组。
+     * @member SuperMap.ServiceBase.prototype.url -{String|Array}
+     * @description 服务访问地址或者服务访问地址数组。
      *
-     ** Examples:
-     * (start code)
+     * @example
      * var url1 = "http://localhost:8090/iserver/services/map-world/rest/maps/World";
      * var url2 = ["http://192.168.17.168:8090/iserver/services/map-world/rest/maps/World",
      *            "http://192.168.17.169:8091/iserver/services/map-world/rest/maps/World"];
-     * (end)*
      */
     url: null,
 
-    /**
+    /*
      * Property: urls
      * {Array} 服务访问地址数组。
      */
     urls: null,
 
-    /**
+    /*
      *  Property: serverType
      *  {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online
      */
     serverType: null,
 
-    /**
+    /*
      * Property: index
      * {Int} 服务访问地址在数组中的位置。
      */
     index: null,
 
-    /**
+    /*
      * Property: length
      * {String} 服务访问地址数组长度。
      */
     length: null,
 
-    /**
+    /*
      * Property: options
      * {Object} 请求参数。
      */
     options: null,
 
-    /**
+    /*
      * Property: totalTimes
      * {Int} 实际请求失败次数。
      */
     totalTimes: null,
 
-    /**
+    /*
      * Property: POLLING_TIMES
      * {Int} 默认请求失败次数。
      */
     POLLING_TIMES: 3,
 
-    /**
+    /*
      * Property: _processSuccess
      * {Function} 请求参数中成功回调函数。
      */
     _processSuccess: null,
 
-    /**
+    /*
      * Property: _processFailed
      * {Function} 请求参数中失败回调函数。
      */
     _processFailed: null,
 
-    /**
+    /*
      * Property: isInTheSameDomain
      * {Boolean}
      */
     isInTheSameDomain: null,
 
+    /**
+     * @function  SuperMap.ServiceBase.prototype.initialize
+     * @description  ServiceBase的构造函数
+     * @param url - {String} 与客户端交互的服务地址。
+     * @param options - {Object} 参数。
+     */
     initialize: function initialize(url, options) {
         if (!url) {
             return false;
@@ -239,8 +245,8 @@ SuperMap.ServiceBase = SuperMap.Class({
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用的资源属性置空。
+     * @function destroy
+     * @description释放资源，将引用的资源属性置空。
      */
     destroy: function destroy() {
         var me = this;
@@ -267,22 +273,20 @@ SuperMap.ServiceBase = SuperMap.Class({
     },
 
     /**
-     * APIMethod: request
-     * 该方法用于向服务发送请求。
+     * @function  request
+     * @description APIMethod: 该方法用于向服务发送请求。
      *
      * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * method - {String} 请求方式，包括GET，POST，PUT， DELETE。
-     * url - {String}  发送请求的地址。
-     * params - {Object} 作为查询字符串添加到url中的一组键值对，
-     *     此参数只适用于GET方式发送的请求。
-     * data - {String } 发送到服务器的数据。
-     * success - {Function} 请求成功后的回调函数。
-     * failure - {Function} 请求失败后的回调函数。
-     * scope - {Object} 如果回调函数是对象的一个公共方法，设定该对象的范围。
-     * isInTheSameDomain - {Boolean} 请求是否在当前域中。
+     * @param options - {Object} 参数。
+     *        method - {String} 请求方式，包括GET，POST，PUT， DELETE。<br>
+     *        url - {String}  发送请求的地址。<br>
+     *        params - {Object} 作为查询字符串添加到url中的一组键值对，
+     *                          此参数只适用于GET方式发送的请求。<br>
+     *        data - {String } 发送到服务器的数据。<br>
+     *        success - {function} 请求成功后的回调函数。<br>
+     *        failure - {function} 请求失败后的回调函数。<br>
+     *        scope - {Object} 如果回调函数是对象的一个公共方法，设定该对象的范围。<br>
+     *        isInTheSameDomain - {Boolean} 请求是否在当前域中。<br>
      */
     request: function request(options) {
         var me = this;
@@ -313,9 +317,9 @@ SuperMap.ServiceBase = SuperMap.Class({
         SuperMap.Util.committer(me.options);
     },
 
-    /**
+    /*
      * 获取凭据信息
-     * @param url
+     * parameter url
      */
     getCredential: function getCredential(url) {
         var keyUrl = url,
@@ -346,7 +350,7 @@ SuperMap.ServiceBase = SuperMap.Class({
         return credential;
     },
 
-    /**
+    /*
      * Method: getUrlCompleted
      * 请求成功后执行此方法。
      *
@@ -358,7 +362,7 @@ SuperMap.ServiceBase = SuperMap.Class({
         me._processSuccess(result);
     },
 
-    /**
+    /*
      * Method: getUrlFailed
      * 请求失败后执行此方法。
      *
@@ -375,7 +379,7 @@ SuperMap.ServiceBase = SuperMap.Class({
         }
     },
 
-    /**
+    /*
      * Method: ajaxPolling
      * 请求失败后，如果剩余请求失败次数不为0，重新获取url发送请求
      */
@@ -401,7 +405,7 @@ SuperMap.ServiceBase = SuperMap.Class({
         SuperMap.Util.committer(me.options);
     },
 
-    /**
+    /*
      * Method: calculatePollingTimes
      * 计算剩余请求失败执行次数。
      */
@@ -427,7 +431,7 @@ SuperMap.ServiceBase = SuperMap.Class({
         me.totalTimes--;
     },
 
-    /**
+    /*
      * Method: isServiceSupportPolling
      * 判断服务是否支持轮询。
      */
@@ -436,7 +440,7 @@ SuperMap.ServiceBase = SuperMap.Class({
         return !(me.CLASS_NAME === "SuperMap.REST.ThemeService" || me.CLASS_NAME === "SuperMap.REST.EditFeaturesService");
     },
 
-    /**
+    /*
      * Method: serviceProcessCompleted
      * 状态完成，执行此方法。
      *
@@ -448,7 +452,7 @@ SuperMap.ServiceBase = SuperMap.Class({
         this.events.triggerEvent("processCompleted", { result: result });
     },
 
-    /**
+    /*
      * Method: serviceProcessFailed
      * 状态失败，执行此方法。
      *
@@ -2349,10 +2353,21 @@ __webpack_require__(13);
 __webpack_require__(14);
 
 /**
+ * @class SuperMap.AddressMatchService
+   @constructs SuperMap.AddressMatchService
+ * @classdesc
  * 地址匹配服务，包括正向匹配和反向匹配。
- */
-SuperMap.AddressMatchService = SuperMap.Class(ServiceBase, {
+ * @api
 
+ */
+
+SuperMap.AddressMatchService = SuperMap.Class(ServiceBase, {
+    /**
+     *
+     * @method SuperMap.AddressMatchService.prototype.initialize
+     * @param options - {Object} 参数。
+     * @param url {string}
+     */
     initialize: function initialize(url, options) {
         ServiceBase.prototype.initialize.apply(this, arguments);
     },
@@ -2362,18 +2377,18 @@ SuperMap.AddressMatchService = SuperMap.Class(ServiceBase, {
     },
 
     /**
-     *
-     * @param url 正向地址匹配服务地址
-     * @param params 正向地址匹配服务参数
+     * @function SuperMap.AddressMatchService.prototype.code
+     * @param url {string} 正向地址匹配服务地址
+     * @param params {object} 正向地址匹配服务参数
      */
     code: function code(url, params) {
         this.processAsync(url, params);
     },
 
     /**
-     *
-     * @param url 反向地址匹配服务地址
-     * @param params 反向地址匹配服务参数
+     * @method SuperMap.AddressMatchService.prototype.decode
+     * @param url {string} 反向地址匹配服务地址
+     * @param params {object} 反向地址匹配服务参数
      */
     decode: function decode(url, params) {
         this.processAsync(url, params);
@@ -2414,64 +2429,75 @@ module.exports = SuperMap.AddressMatchService;
 "use strict";
 
 
-/**
- * Class: SuperMap.BuildCacheJobParameter
- * 地图缓存作业参数类
- */
 var SuperMap = __webpack_require__(0);
+
+/**
+ * @class SuperMap.BuildCacheJobParameter
+ * @description 地图缓存作业参数类
+ * @param options - {Object} 可选参数。如：<br>
+ *         datasetName - {String} 数据集名称。<br>
+ *         cacheName - {String} 缓存名称。<br>
+ *         cacheType - {String} 存储类型。<br>
+ *         serverAdresses - {String} MongoDB地址。<br>
+ *         database -- {String} 数据库。<br>
+ *         version -{String} 版本。<br>
+ *         bounds -{SuperMap.Bounds} 缓存范围。<br>
+ *         imageType -{number} 缓存类型.<br>
+ *         level -{number} 缓存比例尺级别。
+ */
 SuperMap.BuildCacheJobParameter = SuperMap.Class({
 
     /**
-     * APIProperty: datasetName
-     * {String} 数据集名称。
+     * @member SuperMap.BuildCacheJobParameter.prototype.datasetName -{String}
+     * @description 数据集名称。
      */
     datasetName: null,
 
     /**
-     * APIProperty: cacheName
-     * {String} 缓存名称。
+     * @member SuperMap.BuildCacheJobParameter.prototype.cacheName -{String}
+     * @description 缓存名称。
      */
     cacheName: null,
 
     /**
-     * APIProperty: cacheType
-     * {String} 存储类型。
+     * @member SuperMap.BuildCacheJobParameter.prototype.cacheType -{String}
+     * @description 存储类型。
      */
     cacheType: null,
 
     /**
-     * APIProperty: serverAddresses
-     * {String} MongoDB地址。
+     * @member SuperMap.BuildCacheJobParameter.prototype.serverAdresses -{String}
+     * @description MongoDB地址。
      */
     serverAdresses: null,
 
     /**
-     * APIProperty: database
-     * {String} 数据库。
+     * @member SuperMap.BuildCacheJobParameter.prototype.database -{String}
+     * @description 数据库。
      */
     database: null,
 
     /**
-     * APIProperty: version
-     * {String} 版本。
+     * @member SuperMap.BuildCacheJobParameter.prototype.version -{String}
+     * @description 版本。
      */
     version: null,
 
     /**
-     * APIProperty: bounds
-     * {<SuperMap.Bounds>} 缓存范围。
+     * @member SuperMap.BuildCacheJobParameter.prototype.bounds -{SuperMap.Bounds}
+     * @description 缓存范围。
      */
     bounds: null,
 
     /**
-     * APIProperty: imageType
-     * {number} 缓存类型。
+     * @member SuperMap.BuildCacheJobParameter.prototype.imageType -{number}
+     * @description 缓存类型。
      */
     imageType: null,
 
     /**
-     * APIProperty: level
-     * {number} 缓存比例尺级别。
+     * @member SuperMap.BuildCacheJobParameter.prototype.level -{number}
+     * @description 缓存比例尺级别。
      */
     level: null,
 
@@ -2483,8 +2509,8 @@ SuperMap.BuildCacheJobParameter = SuperMap.Class({
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy: function destroy() {
         this.datasetName = null;
@@ -2530,25 +2556,56 @@ var SuperMap = __webpack_require__(0);
 var ProcessingJobsServiceBase = __webpack_require__(4);
 var BuildCacheJobParameter = __webpack_require__(11);
 
+/**
+ * @class SuperMap.BuildCacheJobsService
+ * @description 创建大数据缓存服务类
+ * @augments SuperMap.ProcessingJobsServiceBase
+ * @param url -{String} 大数据缓存服务地址。
+ * @param options - {Object} 交互服务时所需可选参数。
+ */
 SuperMap.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
+    /*
+     * @function SuperMap.BuildCacheJobsService.prototype.initialize
+     * @description SuperMap.BuildCacheJobsService 的构造函数
+     * @param url -{String} 大数据缓存服务地址。
+     * @param options - {Object} 交互服务时所需可选参数。
+     */
     initialize: function initialize(url, options) {
         ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
         this.url += "/mapping/buildCache";
     },
 
+    /**
+     * @inheritDoc
+     */
     destroy: function destroy() {
         ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
     },
 
+    /**
+     * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJobs
+     * @description 获取创建的大数据缓存
+     */
     getBuildCacheJobs: function getBuildCacheJobs() {
         return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
     },
 
+    /**
+     * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJob
+     * @description 获取指定 id的大数据缓存
+     * @param id - {String} 大数据缓存id
+     */
     getBuildCacheJob: function getBuildCacheJob(id) {
         return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
     },
 
+    /**
+     * @function SuperMap.BuildCacheJobsService.prototype.addBuildCacheJob
+     * @description 新建大数据缓存服务
+     * @param params - {BuildCacheJobParameter}地图缓存作业参数类
+     * @param seconds - {String} 开始创建作业后，获取创建成功结果的时间间隔
+     */
     addBuildCacheJob: function addBuildCacheJob(params, seconds) {
         ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, BuildCacheJobParameter, seconds]);
     },
@@ -2565,12 +2622,14 @@ module.exports = SuperMap.BuildCacheJobsService;
 "use strict";
 
 
-var SuperMap = __webpack_require__(0);
 /**
- * Class: SuperMap.GeoCodingParameter
+ * @class SuperMap.GeoCodingParameter
+ * @constructs SuperMap.GeoCodingParameter
+ * @classdesc
  * 地理正向匹配参数类。
+ * @api
  */
-
+var SuperMap = __webpack_require__(0);
 SuperMap.GeoCodingParameter = SuperMap.Class({
 
     /**
@@ -2609,6 +2668,11 @@ SuperMap.GeoCodingParameter = SuperMap.Class({
      */
     maxReturn: null,
 
+    /**
+     * @method SuperMap.GeoCodingParameter.initialize
+     * @param options - {Object} 参数。
+     */
+
     initialize: function initialize(options) {
         if (!options) {
             return;
@@ -2624,7 +2688,7 @@ SuperMap.GeoCodingParameter = SuperMap.Class({
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
@@ -2648,16 +2712,18 @@ module.exports = SuperMap.GeoCodingParameter;
 "use strict";
 
 
-var SuperMap = __webpack_require__(0);
 /**
- * Class: SuperMap.GeoDecodingParameter
+ * @class SuperMap.GeoDecodingParameter
+ * @constructs SuperMap.GeoDecodingParameter
+ * @classdesc
  * 地理反向匹配参数类。
+ * @api
  */
-
+var SuperMap = __webpack_require__(0);
 SuperMap.GeoDecodingParameter = SuperMap.Class({
 
     /**
-     * APIProperty: x
+     * APIProperty : x
      * {number} 查询位置的横坐标。
      */
     x: null,
@@ -2704,6 +2770,11 @@ SuperMap.GeoDecodingParameter = SuperMap.Class({
      */
     geoDecodingRadius: null,
 
+    /**
+     *
+     * @method SuperMap.GeoDecodingParameter.initialize
+     * @param options - {Object} 参数。
+     */
     initialize: function initialize(options) {
         if (!options) {
             return;
@@ -2719,7 +2790,7 @@ SuperMap.GeoDecodingParameter = SuperMap.Class({
         SuperMap.Util.extend(this, options);
     },
 
-    /**
+    /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
@@ -2746,52 +2817,60 @@ module.exports = SuperMap.GeoDecodingParameter;
 
 
 var SuperMap = __webpack_require__(0);
-/**
- * Class: SuperMap.KernelDensityJobParameter
- * 密度分析任务参数类
- */
 
+/**
+ * @class SuperMap.KernelDensityJobParameter
+ * @description 密度分析任务参数类
+ * @param options - {Object} 可选参数。如：<br>
+ *         datasetName -{String} 数据集名。 <br>
+ *         query -{SuperMap.Bounds} 分析范围。 <br>
+ *         resolution -{number} 分辨率。 <br>
+ *         method -{number} 分析方法。 <br>
+ *         meshType -{number} 分析类型。 <br>
+ *         fields -{String} 权重索引。 <br>
+ *         radius -{number} 分析的影响半径。
+ */
 SuperMap.KernelDensityJobParameter = SuperMap.Class({
 
     /**
-     * APIProperty: datasetName
-     * {String} 数据集名。
+     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{String}
+     * @description 数据集名。
      */
     datasetName: null,
 
     /**
-     * APIProperty: query
-     * {<SuperMap.Bounds>} 分析范围。
+     * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
+     * @description 分析范围。
      */
     query: null,
 
     /**
-     * APIProperty: resolution
-     * {number} 分辨率。
+     * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
+     * @description 分辨率。
      */
     resolution: null,
 
     /**
-     * APIProperty: separator
-     * {numbert} 分析方法。
+     * @member SuperMap.KernelDensityJobParameter.prototype.method -{numbert}
+     * @description 分析方法。
      */
     method: null,
 
     /**
-     * APIProperty: separator
-     * {numbert} 分析类型。
+     * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{numbert}
+     * @description 分析类型。
      */
     meshType: null,
 
     /**
-     * APIProperty: separator
-     * {String} 权重索引。
+     * @member SuperMap.KernelDensityJobParameter.prototype.fields -{String}
+     * @description 权重索引。
      */
     fields: null,
 
     /**
-     * APIProperty: radius
-     * {number} 分析的影响半径。
+     * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
+     * @description 分析的影响半径。
      */
     radius: null,
 
@@ -2803,8 +2882,8 @@ SuperMap.KernelDensityJobParameter = SuperMap.Class({
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy: function destroy() {
         this.datasetName = null;
@@ -2842,26 +2921,57 @@ module.exports = SuperMap.KernelDensityJobParameter;
 var SuperMap = __webpack_require__(0);
 var ProcessingJobsServiceBase = __webpack_require__(4);
 var KernelDensityJobParameter = __webpack_require__(15);
-
+/**
+ * @class SuperMap.KernelDensityJobsService
+ * @description 核密度大数据服务类
+ * @augments SuperMap.ProcessingJobsServiceBase
+ * @param url -{String} 核密度大数据服务地址。
+ * @param options - {Object} 交互服务时所需可选参数。
+ */
 SuperMap.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
+    /**
+     * @function SuperMap.KernelDensityJobsService.protitype.initialize
+     * @description SuperMap.KernelDensityJobsService 的构造函数
+     * @param url -{String} 核密度大数据服务地址。
+     * @param options - {Object} 交互服务时所需可选参数。
+     */
     initialize: function initialize(url, options) {
         ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
         this.url += "/spatialanalyst/density";
     },
 
+    /**
+     *@inheritDoc
+     */
     destroy: function destroy() {
         ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
     },
 
+    /**
+     * @function SuperMap.KernelDensityJobsService.protitype.getKernelDensityJobs
+     * @description 获取核密度大数据
+     * @return {*}
+     */
     getKernelDensityJobs: function getKernelDensityJobs() {
         return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
     },
 
+    /**
+     * @function SuperMap.KernelDensityJobsService.protitype.getKernelDensityJobs
+     * @description 获取指定id的核密度大数据服务
+     * @param id -{String} 指定要获取数据的id
+     */
     getKernelDensityJob: function getKernelDensityJob(id) {
         return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
     },
 
+    /**
+     * @function SuperMap.KernelDensityJobsService.protitype.addKernelDensityJob
+     * @description 新建核密度大数据服务
+     * @param params - {SuperMap.KernelDensityJobParameter} 创建一个空间分析作业的请求参数。
+     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     */
     addKernelDensityJob: function addKernelDensityJob(params, seconds) {
         return ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, KernelDensityJobParameter, seconds]);
     },
@@ -2879,52 +2989,60 @@ module.exports = SuperMap.KernelDensityJobsService;
 
 
 var SuperMap = __webpack_require__(0);
-/**
- * Class: SuperMap.KernelDensityJobParameter
- * 格网聚合分析任务参数类
- */
 
+/**
+ * @class SuperMap.SummaryMeshJobParameter
+ * @description 格网聚合分析任务参数类
+ * @param options - {Object} 可选参数。如：<br>
+ *        datasetName -{String} 数据集名。<br>
+ *        query -{SuperMap.Bounds} 分析范围。<br>
+ *        resolution -{number} 分辨率。<br>
+ *        statisticModes -{String} 分析模式。<br>
+ *        meshType -{number} 分析类型。<br>
+ *        fields -{number} 权重索引。<br>
+ *        type -{String} 聚合类型。
+ */
 SuperMap.SummaryMeshJobParameter = SuperMap.Class({
 
     /**
-     * APIProperty: datasetName
-     * {String} 数据集名。
+     * @member SuperMap.SummaryMeshJobParameter.prototype.datasetName -{String}
+     * @description 数据集名。
      */
     datasetName: null,
 
     /**
-     * APIProperty: query
-     * {<SuperMap.Bounds>} 分析范围。
+     * @member SuperMap.SummaryMeshJobParameter.prototype.query -{SuperMap.Bounds}
+     * @description 分析范围。
      */
     query: null,
 
     /**
-     * APIProperty: resolution
-     * {number} 分辨率。
+     * @member SuperMap.SummaryMeshJobParameter.prototype.resolution -{number}
+     * @description 分辨率。
      */
     resolution: null,
 
     /**
-     * APIProperty: statisticModes
-     * {String} 分析模式。
+     * @member SuperMap.SummaryMeshJobParameter.prototype.statisticModes -{String}
+     * @description 分析模式。
      */
     statisticModes: null,
 
     /**
-     * APIProperty: separator
-     * {numbert} 分析类型。
+     * @member SuperMap.SummaryMeshJobParameter.prototype.meshType -{number}
+     * @description  分析类型。
      */
     meshType: null,
 
     /**
-     * APIProperty: separator
-     * {numbert} 权重索引。
+     * @member SuperMap.SummaryMeshJobParameter.prototype.fields -{number}
+     * @description 权重索引。
      */
     fields: null,
 
     /**
-     * APIProperty: separator
-     * {String} 聚合类型。
+     * @member SuperMap.SummaryMeshJobParameter.prototype.type -{String}
+     * @description 聚合类型。
      */
     type: null,
 
@@ -2936,8 +3054,7 @@ SuperMap.SummaryMeshJobParameter = SuperMap.Class({
     },
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy: function destroy() {
         this.datasetName = null;
@@ -2980,6 +3097,12 @@ var SuperMap = __webpack_require__(0);
 var ProcessingJobsServiceBase = __webpack_require__(4);
 var SummaryMeshJobParameter = __webpack_require__(17);
 
+/**
+ * @class SuperMap.SummaryMeshJobsService
+ * @description 格网聚合分析大数据任务类。
+ * @param url -{String} 格网聚合分析任务地址。
+ * @param options - {Object} 交互服务时所需可选参数。
+ */
 SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 
     initialize: function initialize(url, options) {
@@ -2987,18 +3110,36 @@ SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
         this.url += "/spatialanalyst/aggregatepoints";
     },
 
+    /**
+     * @inheritDoc
+     */
     destroy: function destroy() {
         ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
     },
 
+    /**
+     * @function SuperMap.SummaryMeshJobsService.protitype.getSummaryMeshJobs
+     * @description 获取格网聚合分析大数据
+     */
     getSummaryMeshJobs: function getSummaryMeshJobs() {
         return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
     },
 
+    /**
+     * @function SuperMap.SummaryMeshJobsService.protitype.getSummaryMeshJob
+     * @description 获取指定ip的格网聚合分析大数据
+     * @param id -{String} 指定要获取数据的id
+     */
     getSummaryMeshJob: function getSummaryMeshJob(id) {
         return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
     },
 
+    /**
+     * @function SuperMap.SummaryMeshJobsService.protitype.addSummaryMeshJob
+     * @description 新建格网聚合分析大数据服务
+     * @param params - {SuperMap.SummaryMeshJobParameter} 创建一个空间分析作业的请求参数。
+     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     */
     addSummaryMeshJob: function addSummaryMeshJob(params, seconds) {
         ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, SummaryMeshJobParameter, seconds]);
     },
@@ -3015,30 +3156,44 @@ module.exports = SuperMap.SummaryMeshJobsService;
 "use strict";
 
 
-/**
+/*
  * key申请参数
  */
 __webpack_require__(3);
 var SuperMap = __webpack_require__(0);
+/**
+ * @class SuperMap.KeyServiceParameter
+ * @constructs SuperMap.KeyServiceParameter
+ * @classdesc
+ * key申请参数
 
+ * @api
+ */
 SuperMap.KeyServiceParameter = SuperMap.Class({
-    name: null,
-    serviceIds: null,
-    clientType: SuperMap.ClientType.SERVER,
-    limitation: null,
-    initialize: function initialize(options) {
-        SuperMap.Util.extend(this, options);
-    },
-
-    toJSON: function toJSON() {
-        return {
-            name: this.name,
-            serviceIds: this.serviceIds,
-            clientType: this.clientType,
-            limitation: this.limitation
-        };
-    },
-    CLASS_NAME: "SuperMap.KeyServiceParameter"
+  name: null,
+  serviceIds: null,
+  clientType: SuperMap.ClientType.SERVER,
+  limitation: null,
+  /**
+   * @method SuperMap.KeyServiceParameter.initialize
+   * @param options - {Object} 参数。
+   */
+  initialize: function initialize(options) {
+    SuperMap.Util.extend(this, options);
+  },
+  /**
+   * @method SuperMap.KeyServiceParameter.toJSON
+   * @return {string} 参数的JSON字符串
+   */
+  toJSON: function toJSON() {
+    return {
+      name: this.name,
+      serviceIds: this.serviceIds,
+      clientType: this.clientType,
+      limitation: this.limitation
+    };
+  },
+  CLASS_NAME: "SuperMap.KeyServiceParameter"
 });
 
 module.exports = SuperMap.KeyServiceParameter;
@@ -3050,29 +3205,35 @@ module.exports = SuperMap.KeyServiceParameter;
 "use strict";
 
 
-/**
- * Class:SuperMap.SecurityManager
- * 安全管理中心
- * 提供iServer,iPortal,Online统一权限认证管理
- *  使用说明：
- *  创建任何一个服务之前调用SuperMap.SecurityManager.registerToken或
- *  SuperMap.SecurityManager.registerKey注册凭据。
- *  发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
- */
 __webpack_require__(21);
 __webpack_require__(22);
 __webpack_require__(19);
 var Request = __webpack_require__(5);
 var SuperMap = __webpack_require__(0);
+
+/**
+ * @class SuperMap.SecurityManager
+ * @constructs SuperMap.SecurityManager
+ * @classdesc
+ *  安全管理中心
+ *  提供iServer,iPortal,Online统一权限认证管理
+ *  使用说明：
+ *  创建任何一个服务之前调用SuperMap.SecurityManager.registerToken或
+ *  SuperMap.SecurityManager.registerKey注册凭据。
+ *  发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
+ * @api
+ */
+
 SuperMap.SecurityManager = {
 
     INNER_WINDOW_WIDTH: 600,
     INNER_WINDOW_HEIGHT: 600,
 
     /**
-     * 从服务器获取一个token,在此之前要注册服务器信息
-     * @param url 服务器域名+端口，如：http://localhost:8092
-     * @param tokenParam<SuperMap.TokenServiceParameter>
+     *
+     * @description 从服务器获取一个token,在此之前要注册服务器信息
+     * @param url {String}服务器域名+端口，如：http://localhost:8092
+     * @param tokenParam {SuperMap.TokenServiceParameter}
      */
     generateToken: function generateToken(url, tokenParam) {
         var serverInfo = this.servers[url];
@@ -3085,8 +3246,9 @@ SuperMap.SecurityManager = {
     },
 
     /**
-     * 注册安全服务器相关信息
-     * @param serverInfos<SuperMap.ServerInfo>
+     *
+     * @description 注册安全服务器相关信息
+     * @param serverInfos {SuperMap.ServerInfo}
      */
     registerServers: function registerServers(serverInfos) {
         this.servers = this.servers || {};
@@ -3100,9 +3262,9 @@ SuperMap.SecurityManager = {
     },
 
     /**
-     * 服务请求都会自动带上这个token
-     * @param url 服务器域名+端口：如http://localhost:8090
-     * @param token
+     * @description 服务请求都会自动带上这个token
+     * @param url {String}服务器域名+端口：如http://localhost:8090
+     * @param token {String}
      */
     registerToken: function registerToken(url, token) {
         this.tokens = this.tokens || {};
@@ -3114,9 +3276,9 @@ SuperMap.SecurityManager = {
     },
 
     /**
-     * 注册key,ids为数组(存在一个key对应多个服务)
-     * @param ids   <Array> 可以是服务id数组或者url地址数组或者webAPI类型数组
-     * @param key   <String>
+     * @description 注册key,ids为数组(存在一个key对应多个服务)
+     * @param ids   {Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
+     * @param key   {String}
      */
     registerKey: function registerKey(ids, key) {
         this.keys = this.keys || {};
@@ -3238,11 +3400,18 @@ module.exports = SuperMap.SecurityManager;
 "use strict";
 
 
-/**
+/*
  * 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
  */
 __webpack_require__(3);
 var SuperMap = __webpack_require__(0);
+/**
+ * @class SuperMap.ServerInfo
+ * @constructs SuperMap.ServerInfo
+ * @classdesc
+ * 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
+ * @api
+ */
 
 SuperMap.ServerInfo = SuperMap.Class({
     //服务器类型:SuperMap.ServerType
@@ -3253,6 +3422,11 @@ SuperMap.ServerInfo = SuperMap.Class({
     tokenServiceUrl: null,
     //非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
     keyServiceUrl: null,
+    /**
+     * @method SuperMap.ServerInfo.initialize
+     * @param type
+     * @param options - {Object} 参数。
+     */
     initialize: function initialize(type, options) {
         this.type = type || SuperMap.ServerType.ISERVER;
         SuperMap.Util.extend(this, options);
@@ -3290,12 +3464,18 @@ module.exports = SuperMap.ServerInfo;
 "use strict";
 
 
-/**
+/*
  * token申请参数
  */
 __webpack_require__(3);
 var SuperMap = __webpack_require__(0);
-
+/**
+ * @class SuperMap.TokenServiceParameter
+ * @constructs  SuperMap.TokenServiceParameter
+ * @classdesc
+ * token申请参数
+ * @api
+ */
 SuperMap.TokenServiceParameter = SuperMap.Class({
     userName: null,
     password: null,
@@ -3306,10 +3486,18 @@ SuperMap.TokenServiceParameter = SuperMap.Class({
     referer: null,
     //申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
     expiration: 60,
+
+    /**
+     * @method SuperMap.TokenServiceParameter.initialize
+     * @param options - {Object} 参数。
+     */
     initialize: function initialize(options) {
         SuperMap.Util.extend(this, options);
     },
-
+    /**
+     * @method SuperMap.TokenServiceParameter.toJSON
+     * @return {String} 参数的JSON字符串
+     */
     toJSON: function toJSON() {
         return {
             userName: this.userName,
