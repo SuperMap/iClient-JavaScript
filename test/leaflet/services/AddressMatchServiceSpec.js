@@ -26,7 +26,7 @@ describe('leaflet_testAddressMatchService', function () {
             prjCoordSys: '{epsgcode:4326}',
             maxReturn: -1
         });
-        var GeoCodingService = L.supermap.AddressMatchService(addressMatchURL, options).code(GeoCodingParams, function (result) {
+        var GeoCodingService = L.supermap.addressMatchService(addressMatchURL, options).code(GeoCodingParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -71,7 +71,7 @@ describe('leaflet_testAddressMatchService', function () {
             maxReturn: -1,
             geoDecodingRadius: 500
         });
-        var GeoDecodingService = L.supermap.AddressMatchService(addressMatchURL, options).decode(GeoDecodingParams, function (result) {
+        var GeoDecodingService = L.supermap.addressMatchService(addressMatchURL, options).decode(GeoDecodingParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -113,7 +113,7 @@ describe('leaflet_testAddressMatchService', function () {
             prjCoordSys: '{epsgcode:4326}',
             maxReturn: -1
         });
-        var GeoCodingService = L.supermap.AddressMatchService(addressMatchURL, options).code(GeoCodingParams, function (result) {
+        var GeoCodingService = L.supermap.addressMatchService(addressMatchURL, options).code(GeoCodingParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -146,7 +146,7 @@ describe('leaflet_testAddressMatchService', function () {
             maxReturn: -1,
             geoDecodingRadius: 500
         });
-        var GeoDecodingService = L.supermap.AddressMatchService(addressMatchURL, options).decode(GeoDecodingParams, function (result) {
+        var GeoDecodingService = L.supermap.addressMatchService(addressMatchURL, options).decode(GeoDecodingParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
