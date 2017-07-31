@@ -1,6 +1,6 @@
 var program = require('commander');
 var shell = require("shelljs");
-var deps = require("./deps");
+require("./deps");
 program.description('Customized pack iClient9.');
 
 program.command('- <key> [modules]')
