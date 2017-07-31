@@ -3,6 +3,7 @@ var fs = require('fs'),
 var getPixels = require("get-pixels");
 var assert = require('assert');
 var path = require('path');
+var images = require('images');
 
 var commonTools = ({
 
@@ -17,7 +18,7 @@ var commonTools = ({
                 console.log('invalid input : type or exampleName is not a string');
                 return;
             }
-            var baseDir = path.resolve(__dirname, '../../').replace(/\\/g,'/');
+            var baseDir = path.resolve(__dirname, '../../').replace(/\\/g, '/');
             var exampleUrl = baseDir + '/examples/' + type + '/' + exampleName + '.html';
             browser.url(exampleUrl);
             browser.expect.element('body').to.be.present.before(2000);
@@ -33,12 +34,16 @@ var commonTools = ({
          * exampleName(String) - eg:'01_tiledMapLayer3857' etc.
          * standardTilePrams(offsetX, offsetY, width, height).
          * */
-        getStdTile: function (browser, type, exampleName, offsetX, offsetY, width, height) {
+        getStdTile: function (browser, type, exampleName, width, height) {
             var screenShotPath = './examples-test/temp/' + exampleName + '.png';
             var tileTestPath = './examples-test/' + type + '/resources/' + exampleName + '.png';
             browser.pause(5000);
             browser.saveScreenshot(screenShotPath, function () {
                 console.log('Screenshot has been saved , now start to get StdTile from Screenshot');
+                var totalWidth = images(screenShotPath).width();
+                var totalHeight = images(screenShotPath).height();
+                var offsetX = (totalWidth - width) / 2;
+                var offsetY = (totalHeight - height) / 2;
                 commonTools.getTileFromScreenshot(screenShotPath, offsetX, offsetY, width, height, tileTestPath);
                 console.log('get StdTile completed');
             });
@@ -54,10 +59,10 @@ var commonTools = ({
          * params: broswer ;
          * type(String) - serviceType, eg:'leaflet'、'openlayers'、'3dwebgl'、'mapboxgl' etc.
          * exampleName(String) - eg:'01_tiledMapLayer3857' etc.
-         * testTilePrams(offsetX, offsetY, width, height) - should be equal with Corresponding standard tile params.
+         * testTilePrams(width, height) - should be equal with Corresponding standard tile params.
          * return : boolean
          * */
-        cmpTestTileWithStdTile: function (browser, type, exampleName, offsetX, offsetY, width, height) {
+        cmpTestTileWithStdTile: function (browser, type, exampleName, width, height) {
             var screenShotPath, tileTestPath, tileStandardPath;
             if (typeof type !== 'string' || typeof exampleName !== 'string') {
                 console.log('invalid input : type or exampleName is not a string');
@@ -69,6 +74,10 @@ var commonTools = ({
             browser.pause(5000);
             browser.saveScreenshot(screenShotPath, function () {
                 console.log('start to get the tile');
+                var totalWidth = images(screenShotPath).width();
+                var totalHeight = images(screenShotPath).height();
+                var offsetX = (totalWidth - width) / 2;
+                var offsetY = (totalHeight - height) / 2;
                 commonTools.getTileFromScreenshot(screenShotPath, offsetX, offsetY, width, height, tileTestPath);
                 console.log('get the tile completed');
             });

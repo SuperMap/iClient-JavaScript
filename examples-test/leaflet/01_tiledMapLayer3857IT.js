@@ -4,7 +4,8 @@ module.exports = {
         var type = 'leaflet';
         var exampleName = '01_tiledMapLayer3857';
         commonTools.openExampleAndLoadMap(browser, type, exampleName);
-        commonTools.cmpTestTileWithStdTile(browser, type, exampleName, 256, 256, 256, 256);
+        //commonTools.getStdTile(browser, type, exampleName, 256, 256);
+        commonTools.cmpTestTileWithStdTile(browser, type, exampleName, 256, 256);
         browser.end();
     }
 };
