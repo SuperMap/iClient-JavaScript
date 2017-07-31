@@ -1,0 +1,95 @@
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <title>风格切换</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="https://cdn.bootcss.com/mapbox-gl/0.38.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/mapbox-gl/0.38.0/mapbox-gl.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #menu {
+            position: absolute;
+            z-index: 2;
+            padding: 6px 0 6px 10px;
+            margin-right: 20px;
+            left: 60px;
+            top: 10px;
+            float: left;
+            border-radius: 4px;
+            -moz-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1);
+            -webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            background: #fff;
+
+        }
+
+        label {
+            margin: 0;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<div id='menu' class="mapboxgl-ctrl">
+    <input id='basic' type='radio' name='rtoggle' value='basic' checked='checked'>
+    <label for='basic'>默认风格</label>
+    <input id='dark' type='radio' name='rtoggle' value='dark'>
+    <label for='dark'>暗夜风格</label>
+    <input id='fiordcolor' type='radio' name='rtoggle' value='fiordcolor'>
+    <label for='fiordcolor'>深海风格</label>
+    <input id='klokantech' type='radio' name='rtoggle' value='klokantech'>
+    <label for='klokantech'>淡绿风格</label>
+    <input id='osm' type='radio' name='rtoggle' value='OSM'>
+    <label for='osm'>OSM风格</label>
+    <input id='positron' type='radio' name='rtoggle' value='positron'>
+    <label for='positron'>淡灰风格</label>
+</div>
+<script type="text/javascript" src="styles.js"></script>
+<script>
+    var currentLayerGroupId = "basic";
+    var defaultStyle = mapStyles[currentLayerGroupId].style;
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: defaultStyle,
+        center: [116.4, 39.9],
+        minZoom: 10,
+        zoom: 11
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+    var layerList = document.getElementById('menu');
+    var inputs = layerList.getElementsByTagName('input');
+
+    for (var i = 0; i < inputs.length; i++) {
+        inputs[i].onclick = switchStyle;
+    }
+    function switchStyle(layer) {
+        var layerGroupId = layer.target.id;
+        if (!layerGroupId || !(mapStyles[layerGroupId]) || layerGroupId === currentLayerGroupId) {
+            return;
+        }
+        map.setStyle(mapStyles[layerGroupId].style, {diff: false});
+        currentLayerGroupId = layerGroupId;
+    }
+
+
+</script>
+
+</body>
+</html>

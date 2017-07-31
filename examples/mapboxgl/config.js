@@ -64,6 +64,11 @@ var exampleConfig = {
                         thumbnail: "mvt_Beijing_positron.png",
                         fileName: "mvtVectorTile_Beijing_positron"
                     },
+                    {
+                        name: "风格切换",
+                        thumbnail: "mvt_changeStyle.png",
+                        fileName: "mvtVectorTile_changeStyle"
+                    }
                 ]
             },
             "Echarts": {
