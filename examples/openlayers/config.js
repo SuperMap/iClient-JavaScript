@@ -258,6 +258,14 @@ var exampleConfig = {
                     thumbnail: "addressService.png",
                     fileName: "addressMatchService"
                 }]
+            },
+            "dataFlow": {
+                name: "实时大数据",
+                content: [{
+                    name: "实时大数据",
+                    thumbnail: "dataflow.png",
+                    fileName: "dataFlowService"
+                }]
             }
         }
     },

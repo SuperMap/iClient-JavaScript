@@ -286,7 +286,8 @@ deps = {
                 "name": "Online服务",
                 "src": [
                     "./src/common/online/Online.js"
-                ], "modules": [{
+                ],
+                "modules": [{
                     "name": "SuperMap.Online",
                     "des": "Online服务"
                 }]
@@ -310,6 +311,20 @@ deps = {
                 "modules": [{
                     "name": "SuperMap.ElasticSearchService",
                     "des": "ElasticSearch服务"
+                }]
+            },
+            "DataFlow": {
+                "name": "实时大数据服务",
+                "src": [
+                    "./src/leaflet/services/DataFlowService.js",
+                    "./src/leaflet/overlay/DataFlowLayer.js"
+                ],
+                "modules": [{
+                    "name": "L.supermap.dataFlowService",
+                    "des": "实时大数据服务"
+                },{
+                    "name": "L.supermap.dataFlowLayer",
+                    "des": "实时大数据图层"
                 }]
             }
         },
@@ -345,7 +360,7 @@ deps = {
                 ],
                 "modules": [{
                     "name": "L.supermap.tiledVectorLayer",
-                    "des": "iServer矢量瓦片效果"
+                    "des": "矢量瓦片效果"
                 }]
             },
             "ThemeLayer": {
@@ -582,6 +597,20 @@ deps = {
                 "modules": [{
                     "name": "ol.supermap.AddressMatchService",
                     "des": "地址匹配服务"
+                }]
+            },
+            "DataFlow": {
+                "name": "实时大数据服务",
+                "src": [
+                    "./src/openlayers/services/DataFlowService.js",
+                    "./src/openlayers/overlay/DataFlow.js"
+                ],
+                "modules": [{
+                    "name": "ol.supermap.DataFlowService",
+                    "des": "实时大数据服务"
+                },{
+                    "name": "ol.source.DataFlow",
+                    "des": "实时大数据"
                 }]
             }
         },

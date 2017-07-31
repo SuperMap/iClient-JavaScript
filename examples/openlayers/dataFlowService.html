@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>实时大数据服务</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
+    <style>
+        .ol-popup {
+            position: absolute;
+            background-color: white;
+            -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #cccccc;
+            bottom: 12px;
+            left: -50px;
+            min-width: 210px;
+        }
+
+        .ol-popup:after, .ol-popup:before {
+            top: 100%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .ol-popup:after {
+            border-top-color: white;
+            border-width: 10px;
+            left: 48px;
+            margin-left: -10px;
+        }
+
+        .ol-popup:before {
+            border-top-color: #cccccc;
+            border-width: 11px;
+            left: 48px;
+            margin-left: -11px;
+        }
+
+    </style>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<div id="popup" class="ol-popup">
+    <div id="popup-content"></div>
+</div>
+
+<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var container = document.getElementById('popup');
+    var content = document.getElementById('popup-content');
+    var overlay = new ol.Overlay(({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    }));
+    var map, resultLayer,
+            urlMap = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China",
+            urlQuery = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326",
+            urlDataFlow = "ws://117.122.248.69:8091/iserver/services/dataflow/dataflow";
+    var timer, featureResult, dataFlowService, source;
+    new ol.supermap.MapService(urlQuery).getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
+        var map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [116.443571, 39.887549],
+                zoom: 12,
+                projection: 'EPSG:4326'
+            }),
+            overlays: [overlay]
+        });
+        var layer = new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest(ol.source.TileSuperMapRest.optionsFromMapJSON(urlQuery, mapJSONObj))
+        });
+        map.addLayer(layer);
+        query();
+        function query() {
+            var param = new SuperMap.QueryBySQLParameters({
+                queryParams: {
+                    name: "Main_Road_L@China#1",
+                    attributeFilter: "SMID = 1755"
+                }
+            });
+            var fill = new ol.style.Fill({
+                color: 'rgba(255,0,0,0.9)'
+            });
+            var stroke = new ol.style.Stroke({
+                color: '#3399CC',
+                width: 1.25
+            });
+            var styles = [
+                new ol.style.Style({
+                    image: new ol.style.Circle({
+                        fill: fill,
+                        radius: 5
+                    }),
+                    fill: fill,
+                })
+            ];
+            new ol.supermap.QueryService(urlQuery)
+                    .queryBySQL(param, function (serviceResult) {
+                        featureResult = serviceResult;
+                        source = new ol.source.DataFlow({ws: urlDataFlow});
+                        source.on('addfeature',function (e) {
+                            var feature=e.feature;
+                            content.innerHTML = feature.get('time');
+                            overlay.setPosition(feature.getGeometry().getCoordinates());
+                        });
+                        resultLayer = new ol.layer.Vector({
+                            source: source,
+                            style:new ol.style.Style({
+                                image: new ol.style.Circle({
+                                    fill: fill,
+                                    radius: 6
+                                }),
+                                fill: fill,
+                            })
+                        });
+                        source.on('subscribeSuccessed', function (e) {
+                            dataFlowService = new ol.supermap.DataFlowService(urlDataFlow).initBroadcast();
+                            dataFlowService.on('broadcastSocketConnected', function (e) {
+                                timer = window.setInterval("broadcast()", 2000);
+                            })
+                        })
+                        map.addLayer(resultLayer);
+                    });
+
+
+        }
+    });
+    var count = 200;
+    function broadcast() {
+        if (count >= featureResult.result.recordsets[0].features.features[0].geometry.coordinates.length) {
+            window.clearInterval(timer);
+            return;
+        }
+        if (count == 206) {
+            source.setGeometry({
+                coordinates: [[[116.381741960923, 39.8765100055449], [116.414681699817, 39.8765100055449], [116.414681699817, 39.8415115329708], [116.381741960923, 39.8415115329708], [116.381741960923, 39.8765100055449]]],
+                type: "Polygon"
+            });
+        }
+        var point = featureResult.result.recordsets[0].features.features[0].geometry.coordinates[count];
+        var featrue = {
+            geometry: {coordinates: [point[0], point[1]], type: "Point"},
+            id: 1,
+            type: "Feature",
+            properties: {id: count, time: new Date()}
+        };
+        dataFlowService.broadcast(featrue);
+        count += 3;
+    }
+</script>
+</body>
+</html>
