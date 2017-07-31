@@ -10,11 +10,11 @@ var mapStyles = {
                 "vector-tiles": {
                     "attribution": attribution,
                     "type": "vector",
-                    "tiles": ["http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?_cache=false&returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
+                    "tiles": ["http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 },
             },
             "sprite": "http://iclient.supermapol.com/web/styles/street/sprite",
-            "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+            "glyphs": "http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
                     "id": "background",
@@ -994,11 +994,11 @@ var mapStyles = {
                 "vector-tiles": {
                     "attribution": attribution,
                     "type": "vector",
-                    "tiles": ["http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?_cache=false&returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}"]
+                    "tiles": ["http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 },
             },
             "sprite": "http://iclient.supermapol.com/web/styles/dark/sprite",
-            "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+            "glyphs": "http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
                     "id": "background",
@@ -1895,11 +1895,11 @@ var mapStyles = {
                 "vector-tiles": {
                     "attribution": attribution,
                     "type": "vector",
-                    "tiles": ["http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?_cache=false&returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
+                    "tiles": ["http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 },
             },
             "sprite": "http://iclient.supermapol.com/web/styles/osm/sprite",
-            "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+            "glyphs": "http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
                     "id": "background",
@@ -2987,10 +2987,10 @@ var mapStyles = {
                 "vector-tiles": {
                     "attribution": attribution,
                     "type": "vector",
-                    "tiles": ["http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?_cache=false&returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
+                    "tiles": ["http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 },
             },
-            "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+            "glyphs": "http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
                     "id": "background",
@@ -3988,11 +3988,11 @@ var mapStyles = {
                 "vector-tiles": {
                     "attribution": attribution,
                     "type": "vector",
-                    "tiles": ["http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?_cache=false&returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
+                    "tiles": ["http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 },
             },
             "sprite": "http://iclient.supermapol.com/web/styles/osm/sprite",
-            "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+            "glyphs": "http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
                     "id": "background",
@@ -5239,10 +5239,10 @@ var mapStyles = {
                 "vector-tiles": {
                     "attribution": attribution,
                     "type": "vector",
-                    "tiles": ["http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?_cache=false&returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
+                    "tiles": ["http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature.mvt?returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}&expands=0:0_2,132_128,138_64,141_32,143_16,145_8,147_4"]
                 },
             },
-            "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
+            "glyphs": "http://117.122.248.69:8090/iserver/services/map-beijing/rest/maps/beijingMap/tileFeature/sdffonts/{fontstack}/{range}.pbf",
             "layers": [
                 {
                     "id": "background",
