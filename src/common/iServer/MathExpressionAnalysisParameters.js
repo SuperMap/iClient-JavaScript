@@ -18,7 +18,7 @@ SuperMap.MathExpressionAnalysisParameters = SuperMap.Class({
 
     /**
      * APIProperty: extractRegion
-     * {<SuperMap.Geometry.Ploygon>} 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。
+     * {SuperMap.Geometry.Ploygon} 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。
      * 如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。
      */
     extractRegion: null,
@@ -65,7 +65,7 @@ SuperMap.MathExpressionAnalysisParameters = SuperMap.Class({
      *
      * Allowed options properties:</br>
      * dataset - {String} 要用来做栅格代数运算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
-     * extractRegion - {<SuperMap.Geometry.Ploygon>} 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。</br>
+     * extractRegion - {SuperMap.Geometry.Ploygon} 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。</br>
      * 如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。</br>
      * expression - {String} 指定的栅格运算表达式。如：[DatasourceAlias1.Raster1]*2-10；必设字段。</br>
      * isZip - {Boolean} 是否对结果数据集进行压缩处理。默认为 false，表示不压缩。</br>

@@ -10,9 +10,9 @@ SuperMap.TransferSolutionParameters = SuperMap.Class({
      * @param options - {Object} 参数。
      * Allowed options properties:</br>
      * solutionCount - {Boolean} 乘车方案的数量。默认为6。</br>
-     * transferTactic - {<SuperMap.TransferTactic>} 交通换乘策略类型，
+     * transferTactic - {SuperMap.TransferTactic} 交通换乘策略类型，
      * 包括时间最短、距离最短、最少换乘、最少步行四种选择。</br>
-     * transferPreference - {<SuperMap.TransferPreference>} 乘车偏好枚举。</br>
+     * transferPreference - {SuperMap.TransferPreference} 乘车偏好枚举。</br>
      * walkingRatio - {Array(Number)} 步行与公交的消耗权重比，默认值为 10。</br>
      * points - {Array(Number)} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
      * evadeLines - {Array(Number)} 避让路线的ID，默认为null。</br>
@@ -30,13 +30,13 @@ SuperMap.TransferSolutionParameters = SuperMap.Class({
 
     /**
      * APIProperty: transferPreference
-     * {<SuperMap.TransferPreference>} 乘车偏好枚举。默认为SuperMap.TransferPreference.NONE
+     * {SuperMap.TransferPreference} 乘车偏好枚举。默认为SuperMap.TransferPreference.NONE
      */
     transferPreference: SuperMap.TransferPreference.NONE,
 
     /**
      * APIProperty: transferTactic
-     * {<SuperMap.TransferTactic>} 交通换乘策略类型，包括时间最短、距离最短、最少换乘、
+     * {SuperMap.TransferTactic} 交通换乘策略类型，包括时间最短、距离最短、最少换乘、
      * 最少步行四种选择。默认为SuperMap.TransferTactic.LESS_TIME
      */
     transferTactic: SuperMap.TransferTactic.LESS_TIME,

@@ -12,8 +12,8 @@ var ServerTextStyle = require('./ServerTextStyle');
  * @description 统计图文字标注风格类。
  * @param options - {Object} 可选参数。<br>
  *        graphTextDisplayed - {Boolean} 是否显示统计图上的文字标注。<br>
- *        graphTextFormat - {<SuperMap.ThemeGraphTextFormat>} 统计专题图文本显示格式。<br>
- *        graphTextStyle - {<SuperMap.ServerTextStyle>} 统计图上的文字标注风格。
+ *        graphTextFormat - {SuperMap.ThemeGraphTextFormat} 统计专题图文本显示格式。<br>
+ *        graphTextStyle - {SuperMap.ServerTextStyle} 统计图上的文字标注风格。
  */
 SuperMap.ThemeGraphText = SuperMap.Class({
 

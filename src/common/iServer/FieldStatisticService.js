@@ -18,7 +18,7 @@ var SuperMap = require('../SuperMap');
  * datasource - {String} 数据集所在的数据源名称。</br>
  * dataset - {String} 数据集名称。</br>
  * field - {String} 查询统计的目标字段名称。</br>
- * statisticMode - {<StatisticMode>} 字段查询统计的方法类型。</br>
+ * statisticMode - {StatisticMode} 字段查询统计的方法类型。</br>
  * @example
  * (start code)
  * var myService = new SuperMap.FieldStatisticService(url, {eventListeners: {
@@ -62,7 +62,7 @@ SuperMap.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
 
     /**
      * @method SuperMap.FieldStatisticService.initialize
-     * @param url {string}
+     * @param url - {string}
      * @param options - {Object} 参数。
      */
 

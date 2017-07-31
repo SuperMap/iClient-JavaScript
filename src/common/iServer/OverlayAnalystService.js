@@ -25,13 +25,13 @@ SuperMap.OverlayAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
      * Property: mode
-     * {<String>} 叠加分析类型
+     * {String} 叠加分析类型
      */
     mode: null,
 
     /**
      * @method SuperMap.OverlayAnalystService.initialize
-     * @param url {String} 服务的访问地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+     * @param url - {String} 服务的访问地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
      * @param options - {Object} 参数。
      *
      * Allowed options properties:</br>

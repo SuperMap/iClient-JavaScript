@@ -18,7 +18,7 @@ SuperMap.LabelSymbolCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 
     /**
      * APIProperty: style
-     * {<SuperMap.ServerStyle>} 获取或设置符号样式—— SuperMap.ServerStyle 对象，包括符号大小（SuperMap.ServerStyle.markerSize）
+     * {SuperMap.ServerStyle} 获取或设置符号样式—— SuperMap.ServerStyle 对象，包括符号大小（SuperMap.ServerStyle.markerSize）
      * 和符号旋转（SuperMap.ServerStyle.markerAngle）角度，其中用于设置符号 ID 的属性（SuperMap.ServerStyle.markerSymbolID）在此处不起作用。
      */
     style: null,
@@ -43,7 +43,7 @@ SuperMap.LabelSymbolCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
      * options - {Object} 参数。
      *
      * Allowed options properties:
-     * style - {<SuperMap.ServerStyle>} 获取或设置符号样式—— SuperMap.ServerStyle 对象。
+     * style - {SuperMap.ServerStyle} 获取或设置符号样式—— SuperMap.ServerStyle 对象。
      * symbolIDField - {String} 符号 ID 或符号 ID 所对应的字段名称。
      */
     initialize: function (options) {

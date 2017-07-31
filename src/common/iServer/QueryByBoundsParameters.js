@@ -24,7 +24,7 @@ var SuperMap = require('../SuperMap');
  *         holdTime - {Number} 资源在服务端保存的时间。<br>
  *         returnCustomResult -{Boolean} 仅供三维使用。<br>
  *         returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
- *         bounds - {<SuperMap.Bounds>} 指定的查询范围。
+ *         bounds - {SuperMap.Bounds} 指定的查询范围。
  */
 SuperMap.QueryByBoundsParameters = SuperMap.Class(SuperMap.QueryParameters, {
 

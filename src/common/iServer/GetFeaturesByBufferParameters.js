@@ -25,7 +25,7 @@ SuperMap.GetFeaturesByBufferParameters = SuperMap.Class(SuperMap.GetFeaturesPara
 
     /**
      * APIProperty: geometry
-     * {<Object>} 空间查询条件。
+     * {Object} 空间查询条件。
      */
     geometry: null,
 
@@ -47,7 +47,7 @@ SuperMap.GetFeaturesByBufferParameters = SuperMap.Class(SuperMap.GetFeaturesPara
      * bufferDistance - {Number} buffer 距离，单位与所查询图层对应的数据集单位相同。</br>
      * attributeFilter - {String} 属性查询条件。 </br>
      * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
-     * geometry - {<Object>} 空间查询条件。</br>
+     * geometry - {Object} 空间查询条件。</br>
      * dataSetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
      * returnContent - {Boolean} 是否直接返回查询结果。</br>
      * fromIndex - {Integer} 查询结果的最小索引号。</br>
@@ -87,7 +87,7 @@ SuperMap.GetFeaturesByBufferParameters = SuperMap.Class(SuperMap.GetFeaturesPara
 /**
  * @method SuperMap.GetFeaturesByBufferParameters.toJsonParameters
  * @description 对象参数转换为json字符串。
- * @param params {SuperMap.GetFeaturesByBufferParameters} SQL查询参数。
+ * @param params -{SuperMap.GetFeaturesByBufferParameters} SQL查询参数。
  * @return {String} 转化后的 json字符串。
  */
 SuperMap.GetFeaturesByBufferParameters.toJsonParameters = function (params) {

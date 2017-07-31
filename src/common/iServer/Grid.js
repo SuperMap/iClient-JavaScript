@@ -26,13 +26,13 @@ SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
 
     /**
      * APIProperty: colorGradientType
-     * {<SuperMap.ColorGradientType>}
+     * {SuperMap.ColorGradientType}
      */
     colorGradientType: null,
 
     /**
      * APIProperty: colors
-     * {<SuperMap.ServerColor>} 颜色表对象。
+     * {SuperMap.ServerColor} 颜色表对象。
      */
     colors: null,
 
@@ -44,13 +44,13 @@ SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
 
     /**
      * APIProperty: dashStyle
-     * {<SuperMap.ServerStyle>} 栅格数据集特殊值数据的颜色。
+     * {SuperMap.ServerStyle} 栅格数据集特殊值数据的颜色。
      */
     dashStyle: null,
 
     /**
      * APIProperty: gridType
-     * {<SuperMap.GridType>} 格网类型。
+     * {SuperMap.GridType} 格网类型。
      */
     gridType: null,
 
@@ -68,13 +68,13 @@ SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
 
     /**
      * APIProperty: solidStyle
-     * {<SuperMap.ServerStyle>} 格网实线的样式。
+     * {SuperMap.ServerStyle} 格网实线的样式。
      */
     solidStyle: null,
 
     /**
      * APIProperty: specialColor
-     * {<SuperMap.ServerColor>} 栅格数据集无值数据的颜色。
+     * {SuperMap.ServerColor} 栅格数据集无值数据的颜色。
      */
     specialColor: null,
 
@@ -107,13 +107,13 @@ SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
      * colorDictionary - {Array(Object)} 颜色对照表对象。
      * brightness - {Integer} Grid 图层的亮度。
      * colorGradientType - {Boolean} 文本压盖时是否显示压盖的文本对象。
-     * colors - {<SuperMap.ServerColor>} 颜色表对象。
+     * colors - {SuperMap.ServerColor} 颜色表对象。
      * contrast - {Integer} Grid 图层的对比度。
-     * gridType - {<SuperMap.GridType>} 格网类型。
+     * gridType - {SuperMap.GridType} 格网类型。
      * horizontalSpacing - {Number} 格网水平间隔大小。
      * sizeFixed - {Boolean} 格网是否固定大小，如果不固定大小，则格网随着地图缩放。
-     * solidStyle - {<SuperMap.ServerStyle>} 格网实线的样式。
-     * specialColor - {<SuperMap.ServerColor>} 栅格数据集无值数据的颜色。
+     * solidStyle - {SuperMap.ServerStyle} 格网实线的样式。
+     * specialColor - {SuperMap.ServerColor} 栅格数据集无值数据的颜色。
      * specialValue - {Number} 图层的特殊值。
      * specialValueTransparent - {Boolean} 图层的特殊值（specialValue）所处区域是否透明。
      * verticalSpacing - {Number} 格网垂直间隔大小。

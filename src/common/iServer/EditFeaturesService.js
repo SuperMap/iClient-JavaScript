@@ -78,7 +78,7 @@ SuperMap.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
      * 负责将客户端的更新参数传递到服务端。
      *
      * Parameters:
-     * params - {<SuperMap.EditFeaturesParameters>} 编辑要素参数。
+     * params - {SuperMap.EditFeaturesParameters} 编辑要素参数。
      */
     processAsync: function (params) {
         if (!params) {

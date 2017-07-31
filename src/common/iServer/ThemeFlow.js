@@ -12,7 +12,7 @@ var ServerStyle = require('./ServerStyle');
  * @param options - {Object} 可选参数。如：<br>
  *        flowEnabled - {Boolean} 是否流动显示标签或符号。
  *        leaderLineDisplayed - {Boolean} 是否显示标签或符号和它标注的对象之间的牵引线。
- *        leaderLineStyle - {<SuperMap.ServerStyle>} 标签或符号与其标注对象之间牵引线的风格。
+ *        leaderLineStyle - {SuperMap.ServerStyle} 标签或符号与其标注对象之间牵引线的风格。
  */
 SuperMap.ThemeFlow = SuperMap.Class({
 

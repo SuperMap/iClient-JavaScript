@@ -74,7 +74,7 @@ SuperMap.GenerateSpatialDataParameters = SuperMap.Class({
 
     /**
      * APIProperty: dataReturnOption
-     * {<SuperMap.DataReturnOption>} 设置数据返回的选项。
+     * {SuperMap.DataReturnOption} 设置数据返回的选项。
      */
     dataReturnOption: null,
 
@@ -93,7 +93,7 @@ SuperMap.GenerateSpatialDataParameters = SuperMap.Class({
      * measureOffsetField - {Sting} 刻度偏移量字段。</br>
      * errorInfoField - {Sting} 错误信息字段，直接写入原事件表，用于描述事件未能生成对应的点或线时的错误信息。</br>
      * retainedFields - {Array(String)} 欲保留到结果空间数据中的字段集合（系统字段除外）。</br>
-     * dataReturnOption - {<SuperMap.DataReturnOption>} 设置数据返回的最大记录。</br>
+     * dataReturnOption - {SuperMap.DataReturnOption} 设置数据返回的最大记录。</br>
      */
     initialize: function (options) {
         if (options) {

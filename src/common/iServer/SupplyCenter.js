@@ -28,7 +28,7 @@ SuperMap.SupplyCenter = SuperMap.Class({
 
     /**
      * APIProperty: type
-     * {<SuperMap.SupplyCenterType>} 资源供给中心点的类型常量。资源供给中心点的类型包括非中心，固定中心和可选中心。
+     * {SuperMap.SupplyCenterType} 资源供给中心点的类型常量。资源供给中心点的类型包括非中心，固定中心和可选中心。
      * 固定中心用于资源分配分析；固定中心和可选中心用于选址分析；非中心在两种网络分析时都不予考虑。
      */
     type: null,

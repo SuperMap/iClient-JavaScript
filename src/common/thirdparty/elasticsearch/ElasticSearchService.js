@@ -56,7 +56,7 @@ SuperMap.ElasticSearchService = SuperMap.Class({
 
     /**
      * APIProperty: events
-     * {<SuperMap.Events>}
+     * {SuperMap.Events}
      */
     events: null,
 

@@ -86,7 +86,7 @@ SuperMap.GetGridCellInfosService = SuperMap.Class(SuperMap.ServiceBase, {
      * APIMethod: processAsync
      * 执行服务，查询数据集信息。
      * Parameters:
-     * params - {<SuperMap.GetGridCellInfosParameters>} 查询参数。
+     * params - {SuperMap.GetGridCellInfosParameters} 查询参数。
      */
     processAsync: function (params) {
         if (params) {

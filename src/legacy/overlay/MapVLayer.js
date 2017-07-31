@@ -135,7 +135,7 @@ SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
      * 如果当前浏览器支持canvas，则开始渲染要素；如果不支持则移除图层。
      *
      * Parameters:
-     * map - {<SuperMap.Map>}需要绑定的map对象。
+     * map - {SuperMap.Map}需要绑定的map对象。
      */
     setMap: function (map) {
         SuperMap.Layer.prototype.setMap.apply(this, arguments);
@@ -153,7 +153,7 @@ SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
      * 修改当前显示范围，当平移或者缩放结束后开始重绘MapV图的渲染效果。
      *
      * Parameters:
-     * bounds - {<SuperMap.Bounds>}
+     * bounds - {SuperMap.Bounds}
      * zoomChanged - {Boolean}
      * dragging - {Boolean}
      */

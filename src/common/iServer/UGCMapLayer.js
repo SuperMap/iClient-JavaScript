@@ -57,7 +57,7 @@ SuperMap.UGCMapLayer = SuperMap.Class(SuperMap.UGCLayer, {
 
     /**
      * APIProperty: overlapDisplayedOptions
-     * {<SuperMap.OverlapDisplayedOptions>} 地图的压盖过滤显示选项，当 overlapDisplayed 为 false 时有效。
+     * {SuperMap.OverlapDisplayedOptions} 地图的压盖过滤显示选项，当 overlapDisplayed 为 false 时有效。
      */
     overlapDisplayedOptions: null,
 
@@ -77,7 +77,7 @@ SuperMap.UGCMapLayer = SuperMap.Class(SuperMap.UGCLayer, {
      * symbolScalable - {Boolean} 是否允许图层的符号大小随图缩放。
      * symbolScale - {Number} 图层的符号缩放基准比例尺。
      * overlapDisplayed - {Boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。
-     * overlapDisplayedOptions - {<SuperMap.OverlapDisplayedOptions>} 地图的压盖过滤显示选项，当
+     * overlapDisplayedOptions - {SuperMap.OverlapDisplayedOptions} 地图的压盖过滤显示选项，当
      * overlapDisplayed 为 false 时有效。
      */
     initialize: function (options) {

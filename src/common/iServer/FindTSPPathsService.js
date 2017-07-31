@@ -89,7 +89,7 @@ SuperMap.FindTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase
      * 将节点对象转化为JSON字符串。
      *
      * Parameters:
-     * params - {<SuperMap.FindTSPPathsParameters>}
+     * params - {SuperMap.FindTSPPathsParameters}
      *
      * Returns:
      * {Object} 转化后的JSON字符串。

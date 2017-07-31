@@ -16,7 +16,7 @@ SuperMap.UGCSubLayer = SuperMap.Class(SuperMap.UGCMapLayer, {
 
     /**
      * APIProperty: datasetInfo
-     * {<SuperMap.DatasetInfo>} 数据集信息。
+     * {SuperMap.DatasetInfo} 数据集信息。
      */
     datasetInfo: null,
 
@@ -28,7 +28,7 @@ SuperMap.UGCSubLayer = SuperMap.Class(SuperMap.UGCMapLayer, {
 
     /**
      * APIProperty: joinItems
-     * {<SuperMap.JoinItem>} 连接信息类。
+     * {SuperMap.JoinItem} 连接信息类。
      */
     joinItems: null,
 
@@ -40,7 +40,7 @@ SuperMap.UGCSubLayer = SuperMap.Class(SuperMap.UGCMapLayer, {
 
     /**
      * APIProperty: ugcLayerType
-     * {<SuperMap.LayerType>} 图层类型。
+     * {SuperMap.LayerType} 图层类型。
      */
     ugcLayerType: null,
 
@@ -52,11 +52,11 @@ SuperMap.UGCSubLayer = SuperMap.Class(SuperMap.UGCMapLayer, {
      * options - {Object} 参数。
      *
      * Allowed options properties:
-     * datasetInfo - {<SuperMap.DatasetInfo>} 数据集信息。
+     * datasetInfo - {SuperMap.DatasetInfo} 数据集信息。
      * displayFilter - {String} 图层显示过滤条件。
-     * joinItems - {<SuperMap.JoinItem>} 连接信息类。
+     * joinItems - {SuperMap.JoinItem} 连接信息类。
      * representationField - {String} 存储制图表达信息的字段。
-     * ugcLayerType - {<SuperMap.LayerType>} 图层类型。
+     * ugcLayerType - {SuperMap.LayerType} 图层类型。
      */
     initialize: function (options) {
         options = options || {};

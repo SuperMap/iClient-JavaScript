@@ -10,21 +10,21 @@ SuperMap.ServerTextStyle = SuperMap.Class({
 
     /**
      * APIProperty: align
-     * {<TextAlignment>} 文本的对齐方式。
+     * {TextAlignment} 文本的对齐方式。
      * 默认为 SuperMap.TextAlignment.BASELINECENTER（基准线居中对齐）。
      */
     align: SuperMap.TextAlignment.BASELINECENTER,
 
     /**
      * APIProperty: backColor
-     * {<SuperMap.ServerColor>} 文本的背景色。
+     * {SuperMap.ServerColor} 文本的背景色。
      * 默认为白色。
      */
     backColor: null,
 
     /**
      * APIProperty: foreColor
-     * {<SuperMap.ServerColor>} 文本的前景色。
+     * {SuperMap.ServerColor} 文本的前景色。
      * 默认为黑色。
      */
     foreColor: null,
@@ -145,9 +145,9 @@ SuperMap.ServerTextStyle = SuperMap.Class({
      * options - {Object} 参数。
      *
      * Allowed options properties:
-     * align - {<TextAlignment>} 文本的对齐方式。
-     * backColor - {<SuperMap.ServerColor>} 文本的背景色。
-     * foreColor - {<SuperMap.ServerColor>} 文本的前景色。
+     * align - {TextAlignment} 文本的对齐方式。
+     * backColor - {SuperMap.ServerColor} 文本的背景色。
+     * foreColor - {SuperMap.ServerColor} 文本的前景色。
      * backOpaque - {Boolean} 文本背景是否不透明。
      * sizeFixed - {Boolean} 文本大小是否固定。
      * fontHeight - {Number} 文本字体的高度。

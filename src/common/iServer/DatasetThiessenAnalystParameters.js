@@ -12,7 +12,7 @@ SuperMap.DatasetThiessenAnalystParameters = SuperMap.Class(SuperMap.ThiessenAnal
 
     /**
      * APIProperty: filterQueryParameter
-     * {<SuperMap.FilterParameter>} 过滤条件，
+     * {SuperMap.FilterParameter} 过滤条件，
      * 对待分析数据集中的点进行过滤，不设置时默认为null，即对数据集中的所有点进行分析。
      * (start code)
      * filterQueryParameter的使用方法如：
@@ -39,7 +39,7 @@ SuperMap.DatasetThiessenAnalystParameters = SuperMap.Class(SuperMap.ThiessenAnal
      * options - {Object} 参数。
      *
      * Allowed options properties:
-     * filterQueryParameter - {<SuperMap.FilterParameter>} 对待分析数据集中的点进行过滤，不设置时默认为null，即对数据集中的所有点进行分析。
+     * filterQueryParameter - {SuperMap.FilterParameter} 对待分析数据集中的点进行过滤，不设置时默认为null，即对数据集中的所有点进行分析。
      */
     initialize: function (options) {
         SuperMap.ThiessenAnalystParameters.prototype.initialize.apply(this, arguments);

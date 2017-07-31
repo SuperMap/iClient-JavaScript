@@ -16,7 +16,7 @@ SuperMap.DatasetInfo = SuperMap.Class({
 
     /**
      * APIProperty: bounds
-     * {<SuperMap.Bounds>} 数据集范围，该字段只读。
+     * {SuperMap.Bounds} 数据集范围，该字段只读。
      */
     bounds: null,
 
@@ -52,7 +52,7 @@ SuperMap.DatasetInfo = SuperMap.Class({
 
     /**
      * APIProperty: prjCoordSys
-     * {<SuperMap.Projection>} 数据集的投影信息。
+     * {SuperMap.Projection} 数据集的投影信息。
      */
     prjCoordSys: null,
 
@@ -77,13 +77,13 @@ SuperMap.DatasetInfo = SuperMap.Class({
      * options - {Object} 参数。
      *
      * Allowed options properties:
-     * bounds - {<SuperMap.Bounds>} 数据集范围，该字段只读。
+     * bounds - {SuperMap.Bounds} 数据集范围，该字段只读。
      * dataSourceName - {String} 数据源名称，该字段只读。
      * description - {String} 数据集的描述信息。
      * encodeType - {String} 数据集存储时的压缩编码方式，该字段只读。
      * isReadOnly - {Boolean} 数据集是否为只读。
      * name - {String} 数据集名称，该字段必须且只读。
-     * prjCoordSys - {<SuperMap.Projection>} 数据集的投影信息。
+     * prjCoordSys - {SuperMap.Projection} 数据集的投影信息。
      * tableName - {String} 表名，该字段只读。
      * type - {String} 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD
      * 数据集）、网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。

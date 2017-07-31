@@ -21,7 +21,7 @@ var SuperMap = require('../SuperMap');
  *        reverseColor - {boolean} 是否对栅格分段专题图中分段的颜色风格进行反序显示。<br>
  *        rangeMode - {SuperMap.RangeMode} 分段专题图的分段模式。<br>
  *        rangeParameter - {Number} 分段参数。<br>
- *        colorGradientType - {<SuperMap.ColorGradientType>} 渐变颜色枚举类。
+ *        colorGradientType - {SuperMap.ColorGradientType} 渐变颜色枚举类。
  */
 SuperMap.ThemeGridRange = SuperMap.Class(SuperMap.Theme, {
 

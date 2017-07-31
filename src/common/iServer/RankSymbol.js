@@ -40,14 +40,14 @@ SuperMap.Feature.Theme.RankSymbol = SuperMap.Class(SuperMap.Feature.Theme.Graph,
      * 创建一个矢量专题要素。
      *
      * Parameters:
-     * data - {<SuperMap.Feature.Vector>}  用户数据，必设参数。
-     * layer - {<SuperMap.Layer.RankSymbol>} 此专题要素所在图层，必设参数。
+     * data - {SuperMap.Feature.Vector}  用户数据，必设参数。
+     * layer - {SuperMap.Layer.RankSymbol} 此专题要素所在图层，必设参数。
      * fields - {Array{String}} data 中的参与此图表生成的字段名称，必设参数。
      * setting - {Object} 图表配置对象，必设参数。
-     * lonlat - {<SuperMap.LonLat>} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+     * lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
      *
      * Returns:
-     * {<SuperMap.Feature.Theme.RankSymbol>} 返回一个统计专题要素。
+     * {SuperMap.Feature.Theme.RankSymbol} 返回一个统计专题要素。
      */
     initialize: function (data, layer, fields, setting, lonlat, options) {
         SuperMap.Feature.Theme.Graph.prototype.initialize.apply(this, arguments);

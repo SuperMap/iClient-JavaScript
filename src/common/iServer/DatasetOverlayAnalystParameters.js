@@ -27,7 +27,7 @@ SuperMap.DatasetOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalys
 
     /**
      * APIProperty: operateDatasetFilter
-     * {<SuperMap.FilterParameter>} 设置操作数据集中空间对象过滤条件。
+     * {SuperMap.FilterParameter} 设置操作数据集中空间对象过滤条件。
      */
     operateDatasetFilter: null,
 
@@ -55,7 +55,7 @@ SuperMap.DatasetOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalys
 
     /**
      * APIProperty: filterQueryParameter
-     * {<SuperMap.FilterParameter>} 设置源数据集中空间对象过滤条件。
+     * {SuperMap.FilterParameter} 设置源数据集中空间对象过滤条件。
      */
     sourceDatasetFilter: null,
 
@@ -68,7 +68,7 @@ SuperMap.DatasetOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalys
 
     /**
      * APIProperty: resultSetting
-     * {<SuperMap.DataReturnOption>} 结果返回设置类。
+     * {SuperMap.DataReturnOption} 结果返回设置类。
      */
     resultSetting: null,
 
@@ -79,14 +79,14 @@ SuperMap.DatasetOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalys
      * Allowed options properties:</br>
      * operateDataset - {String} 叠加分析中操作数据集的名称。必设字段。</br>
      * operateDatasetFields - {Array(String} 叠加分析中操作数据集保留在结果数据集中的字段名列表。</br>
-     * operateDatasetFilter - {<SuperMap.FilterParameter>} 设置操作数据集中空间对象过滤条件。</br>
+     * operateDatasetFilter - {SuperMap.FilterParameter} 设置操作数据集中空间对象过滤条件。</br>
      * operateRegions - {Array(<SuperMap.Geometry>)} 操作区域。设置了操作区域后，仅对该区域内的对象进行分析。</br>
      * sourceDataset - {String} 叠加分析中源数据集的名称。必设字段。</br>
      * sourceDatasetFields - {Array(String} 叠加分析中源数据集保留在结果数据集中的字段名列表。</br>
-     * sourceDatasetFilter - {<SuperMap.FilterParameter>} 设置源数据集中空间对象过滤条件。</br>
+     * sourceDatasetFilter - {SuperMap.FilterParameter} 设置源数据集中空间对象过滤条件。</br>
      * tolerance - {Integer} 容限。</br>
-     * operation - {<SuperMap.OverlayOperationType>} 叠加操作枚举值。</br>
-     * resultSetting - {<SuperMap.DataReturnOption>} 结果返回设置类。</br>
+     * operation - {SuperMap.OverlayOperationType} 叠加操作枚举值。</br>
+     * resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
      */
     initialize: function (options) {
         var me = this;

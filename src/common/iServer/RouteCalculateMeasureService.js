@@ -66,7 +66,7 @@ SuperMap.RouteCalculateMeasureService = SuperMap.Class(SuperMap.SpatialAnalystBa
     /**
      * @method SuperMap.RouteCalculateMeasureService.initialize
      * @param options - {Object} 参数。
-     * @param url {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
+     * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
      * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */

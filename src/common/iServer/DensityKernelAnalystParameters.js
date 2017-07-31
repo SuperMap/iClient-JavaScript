@@ -19,7 +19,7 @@ SuperMap.DensityKernelAnalystParameters = SuperMap.Class({
 
     /**
      * APIProperty: bounds
-     * {<SuperMap.Bounds>} 核密度分析的范围，用于确定结果栅格数据集的范围。
+     * {SuperMap.Bounds} 核密度分析的范围，用于确定结果栅格数据集的范围。
      * 如果缺省，则默认为原数据集的范围。
      */
     bounds: null,
@@ -65,7 +65,7 @@ SuperMap.DensityKernelAnalystParameters = SuperMap.Class({
      * @param options - {Object} 参数。
      * Allowed options properties:</br>
      * dataset - {String} 要用来做核密度分析数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
-     * bounds - {<SuperMap.Bounds>} 核密度分析的范围，用于确定结果栅格数据集的范围。 如果缺省，则默认为原数据集的范围。</br>
+     * bounds - {SuperMap.Bounds} 核密度分析的范围，用于确定结果栅格数据集的范围。 如果缺省，则默认为原数据集的范围。</br>
      * searchRadius - {Number} 栅格邻域内用于计算密度的查找半径，单位与当前数据集相同。默认值为当前数据集的长宽中的最大值除30。</br>
      * fieldName - {String} 用于进行核密度分析的测量值的字段名称，核密度分析不支持文本类型的字段，必设字段。</br>
      * resultGridDatasetResolution - {Number} 密度分析结果栅格数据的分辨率，单位与当前数据集相同。默认值为当前数据集的长宽中的最小值除500。</br>

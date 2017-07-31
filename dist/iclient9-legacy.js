@@ -1537,7 +1537,7 @@ SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
 
     /**
      *
-     * @param url 一个空间分析作业的资源地址。
+     * @param url - 一个空间分析作业的资源地址。
      */
     getJobs: function getJobs(url) {
         var me = this;
@@ -1552,10 +1552,10 @@ SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
 
     /**
      *
-     * @param url 分布式空间分析作业资源根地址。
-     * @param params 创建一个空间分析作业的请求参数。
-     * @param paramType 请求参数类型。
-     * @param seconds 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param url - 分布式空间分析作业资源根地址。
+     * @param params - 创建一个空间分析作业的请求参数。
+     * @param paramType - 请求参数类型。
+     * @param seconds - 开始创建作业后，获取创建成功结果的时间间隔。
      */
     addJob: function addJob(url, params, paramType, seconds) {
         var me = this,
@@ -1942,7 +1942,7 @@ SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
      * 如果当前浏览器支持canvas，则开始渲染要素；如果不支持则移除图层。
      *
      * Parameters:
-     * map - {<SuperMap.Map>}需要绑定的map对象。
+     * map - {SuperMap.Map}需要绑定的map对象。
      */
     setMap: function setMap(map) {
         SuperMap.Layer.prototype.setMap.apply(this, arguments);
@@ -1960,7 +1960,7 @@ SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
      * 修改当前显示范围，当平移或者缩放结束后开始重绘MapV图的渲染效果。
      *
      * Parameters:
-     * bounds - {<SuperMap.Bounds>}
+     * bounds - {SuperMap.Bounds}
      * zoomChanged - {Boolean}
      * dragging - {Boolean}
      */
@@ -3232,7 +3232,7 @@ SuperMap.SecurityManager = {
     /**
      *
      * @description 从服务器获取一个token,在此之前要注册服务器信息
-     * @param url {String}服务器域名+端口，如：http://localhost:8092
+     * @param url {String} -服务器域名+端口，如：http://localhost:8092
      * @param tokenParam {SuperMap.TokenServiceParameter}
      */
     generateToken: function generateToken(url, tokenParam) {
@@ -3263,7 +3263,7 @@ SuperMap.SecurityManager = {
 
     /**
      * @description 服务请求都会自动带上这个token
-     * @param url {String}服务器域名+端口：如http://localhost:8090
+     * @param url {String} - 服务器域名+端口：如http://localhost:8090
      * @param token {String}
      */
     registerToken: function registerToken(url, token) {

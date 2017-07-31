@@ -12,7 +12,7 @@ var ServerStyle = require('./ServerStyle');
  * @description 标签背景风格类。通过该类可以设置标签的背景形状和风格。
  * @param options - {Object} 可选参数。如：<br>
  *        labelBackShape - {SuperMap.LabelBackShape} 标签专题图中标签背景风格。<br>
- *        backStyle - {<SuperMap.ServerStyle>} 标签专题图中标签背景的形状枚举类。
+ *        backStyle - {SuperMap.ServerStyle} 标签专题图中标签背景的形状枚举类。
  */
 SuperMap.ThemeLabelBackground = SuperMap.Class({
 

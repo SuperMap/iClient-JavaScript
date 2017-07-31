@@ -79,7 +79,7 @@ SuperMap.ServerColor = SuperMap.Class({
  * Parameters: jsonObject - {Object} 要转换的JSON对象
  *
  * Returns:
- * {< SuperMap.ServerColor> } 转化后的ServerColor对象。
+ * { SuperMap.ServerColor> } 转化后的ServerColor对象。
  */
 SuperMap.ServerColor.fromJson = function (jsonObject) {
     if (!jsonObject) {

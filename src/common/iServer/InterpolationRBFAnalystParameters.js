@@ -45,7 +45,7 @@ SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.Interpolati
 
     /**
      * APIProperty: searchMode
-     * {<SuperMap.SearchMode>} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数
+     * {SuperMap.SearchMode} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数
      * 具体如下：
      * {KDTREE_FIXED_COUNT} 使用 KDTREE 的固定点数方式查找参与内插分析的点。
      * {KDTREE_FIXED_RADIUS} 使用 KDTREE 的定长方式查找参与内插分析的点。
@@ -79,7 +79,7 @@ SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.Interpolati
      * Allowed options properties:</br>
      * smooth - {Number} 光滑系数，该值表示插值函数曲线与点的逼近程度，值域为 0到1，默认值为0.1。</br>
      * tension - {Number} 张力系数，用于调整结果栅格数据表面的特性，默认为40。</br>
-     * bounds - {<SuperMap.Bounds>} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+     * bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
      * searchMode - {String} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数。</br>
      * expectedCount - {Number} 【固定点数查找】方式下，设置参与差值运算的点数，默认值为12。</br>
      * searchRadius - {Number} 【定长查找】方式下，设置参与运算点的查找范围，默认值为0。</br>
@@ -88,12 +88,12 @@ SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.Interpolati
      * zValueFieldName - {String} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。</br>
      * zValueScale - {Number} 用于进行插值分析值的缩放比率，默认值为1。</br>
      * resolution - {Number} 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
-     * filterQueryParameter - {<SuperMap.FilterParameter>} 属性过滤条件。</br>
+     * filterQueryParameter - {SuperMap.FilterParameter} 属性过滤条件。</br>
      * outputDatasetName - {String} 插值分析结果数据集的名称。必设参数。</br>
      * outputDatasourceName - {String} 插值分析结果数据源的名称。必设参数。</br>
      * pixelFormat - {String} 指定结果栅格数据集存储的像素格式。</br>
      * dataset - {String} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。</br>
-     * inputPoints - {Array <SuperMap.Geometry.Point>} 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。</br>
+     * inputPoints - {Array <SuperMap.Geometry.Point} 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。</br>
      */
     initialize: function (options) {
         SuperMap.InterpolationAnalystParameters.prototype.initialize.apply(this, arguments);

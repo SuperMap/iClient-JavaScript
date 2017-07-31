@@ -102,12 +102,19 @@ var EchartsMapLayer = L.Layer.extend({
                     })
                 }
                 if(me.options.loadWhileAnimating){
+                    leafletMap.off('move', this._oldMoveHandler)
+                }else{
+                    leafletMap.off('moveend', this._oldMoveHandler)
+                }
+                leafletMap.off('zoomend', this._oldZoomEndHandler)
+                if(me.options.loadWhileAnimating){
                     leafletMap.on('move', moveHandler);
                 }else{
                     leafletMap.on('moveend', moveHandler);
                 }
-
                 leafletMap.on('zoomend', zoomEndHandler)
+                this._oldMoveHandler = moveHandler
+                this._oldZoomEndHandler = zoomEndHandler
                 rendering = false
             }
         });

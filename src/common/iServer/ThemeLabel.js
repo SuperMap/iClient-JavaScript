@@ -34,9 +34,9 @@ var ThemeLabelBackground = require('./ThemeLabelBackground');
  *         labelExpression - {String} 标注字段表达式。<br>
  *         labelOverLengthMode - {SuperMap.LabelOverLengthMode} 标签专题图中超长标签的处理模式枚举类。<br>
  *         matrixCells - {Array<SuperMap.LabelMatrixCell>} 矩阵标签元素数组。<br>
- *         maxLabelLength - {Number>} 标签在每一行显示的最大长度。<br>
+ *         maxLabelLength - {Number} 标签在每一行显示的最大长度。<br>
  *         numericPrecision - {Number} 通过该字段设置其显示的精度。<br>
- *         offset - {<SuperMap.ThemeOffset>} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
+ *         offset - {SuperMap.ThemeOffset} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
  *         overlapAvoided - {Boolean} 是否允许以文本避让方式显示文本。<br>
  *         rangeExpression - {String} 制作分段标签专题的分段字段或字段表达式。<br>
  *         smallGeometryLabeled - {Boolean} 是否显示长度大于被标注对象本身长度的标签。<br>

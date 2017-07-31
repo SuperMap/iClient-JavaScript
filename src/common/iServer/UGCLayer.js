@@ -7,7 +7,7 @@ SuperMap.UGCLayer = SuperMap.Class({
 
     /**
      * APIProperty: bounds
-     * {<SuperMap.Bounds>} 图层范围。
+     * {SuperMap.Bounds} 图层范围。
      */
     bounds: null,
 
@@ -43,7 +43,7 @@ SuperMap.UGCLayer = SuperMap.Class({
 
     /**
      * APIProperty: type
-     * {<SuperMap.UGCLayerType>} 图层类型。
+     * {SuperMap.UGCLayerType} 图层类型。
      */
     type: null,
 
@@ -60,13 +60,13 @@ SuperMap.UGCLayer = SuperMap.Class({
      * options - {Object} 参数。
      *
      * Allowed options properties:
-     * bounds - {<SuperMap.Bounds>} 图层范围。
+     * bounds - {SuperMap.Bounds} 图层范围。
      * caption - {String} 图层的标题。
      * description - {String} 图层的描述信息。
      * name - {String} 图层的名称。
      * queryable - {Boolean} 图层中的对象是否可以查询。
      * subUGCLayers - {Boolean} 是否允许图层的符号大小随图缩放。
-     * type - {<SuperMap.UGCLayerType>} 图层类型。
+     * type - {SuperMap.UGCLayerType} 图层类型。
      * visible - {Boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。
      */
     initialize: function (options) {

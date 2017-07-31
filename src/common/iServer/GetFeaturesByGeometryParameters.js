@@ -22,7 +22,7 @@ SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesPa
 
     /**
      * APIProperty: geometry
-     * {<Object>} 用于查询的几何对象。
+     * {Object} 用于查询的几何对象。
      */
     geometry: null,
 
@@ -42,7 +42,7 @@ SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesPa
 
     /**
      * APIProperty: spatialQueryMode
-     * {<SuperMap.SpatialQueryMode>} 空间查询模式常量，必设参数，默认为CONTAIN。
+     * {SuperMap.SpatialQueryMode} 空间查询模式常量，必设参数，默认为CONTAIN。
      */
     spatialQueryMode: SuperMap.SpatialQueryMode.CONTAIN,
 
@@ -51,11 +51,11 @@ SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesPa
      * @description 几何空间查询参数类构造函数。
      * @param options - {Object} 参数。
      * Allowed options properties:</br>
-     * geometry - {<Object>} 用于查询的几何对象。</br>
+     * geometry - {Object} 用于查询的几何对象。</br>
      * attributeFilter - {String} 几何查询属性过滤条件。</br>
      * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
-     * spatialQueryMode - {<SuperMap.SpatialQueryMode>} 空间查询模式常量,必设参数。</br>
-     * queryParameter - {<SuperMap.FilterParameter>} 查询过滤条件参数。</br>
+     * spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式常量,必设参数。</br>
+     * queryParameter - {SuperMap.FilterParameter} 查询过滤条件参数。</br>
      * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
      * returnContent - {Boolean} 是否直接返回查询结果。</br>
      * fromIndex - {Integer} 查询结果的最小索引号。</br>

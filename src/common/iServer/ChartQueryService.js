@@ -22,7 +22,7 @@ var GeoJSONFormat = require('../format/GeoJSON');
  *      2.通过监听 QueryEvent.PROCESS_COMPLETE 事件获取。<br>
  * @augments  SuperMap.ServiceBase
  * @param url - {String} 地图查询服务访问地址。如："http://192.168.168.35:8090/iserver/services/map-ChartW/rest/maps/海图"。
- * @param - options - {Object} 服务交互时所需的可选参数。
+ * @param options - {Object} 服务交互时所需的可选参数。
  * @example
  * 下面示例显示了如何进行海图属性查询：
  * (start code)

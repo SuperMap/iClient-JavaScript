@@ -13,7 +13,7 @@ SuperMap.RouteLocatorParameters = SuperMap.Class({
 
     /**
      * APIProperty:sourceRoute
-     * {<SuperMap.Route>} 路由对象。
+     * {SuperMap.Route} 路由对象。
      */
     sourceRoute: null,
 
@@ -82,7 +82,7 @@ SuperMap.RouteLocatorParameters = SuperMap.Class({
      * @method SuperMap.RouteLocatorParameters.initialize
      * @param options - {Object} 参数。
      * Allowed options properties:</br>
-     * sourceRoute -  {<SuperMap.Route>} 【必选参数】路由对象。</br>
+     * sourceRoute -  {SuperMap.Route} 【必选参数】路由对象。</br>
      * type -  {String} 【必选参数】类型：点 or 线。</br>
      * measure - {Double} 【必选参数】定位点的M值。只当路由对象定位点时有意义。</br>
      * offset - {Double} 定位点偏移量。只当路由对象定位点时有意义，默认为0。</br>

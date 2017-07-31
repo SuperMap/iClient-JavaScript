@@ -166,7 +166,7 @@ ol.source.Theme.prototype.removeAllFeatures = function () {
  * 查看当前图层中的有效数据。
  *
  * Returns:
- * {<SuperMap.Feature.Vector>} 用户加入图层的有效数据。
+ * {SuperMap.Feature.Vector} 用户加入图层的有效数据。
  */
 ol.source.Theme.prototype.getFeatures = function () {
     var len = this.features.length;
@@ -188,7 +188,7 @@ ol.source.Theme.prototype.getFeatures = function () {
  * value - {String} property 所对应的值。
  *
  * Returns:
- * {<SuperMap.Feature.Vector>} 第一个匹配属性和值的矢量要素。
+ * {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
  */
 ol.source.Theme.prototype.getFeatureBy = function (property, value) {
     var feature = null;
@@ -210,7 +210,7 @@ ol.source.Theme.prototype.getFeatureBy = function (property, value) {
  * featureId - {String} 矢量要素的属性 id。
  *
  * Returns:
- * {<SuperMap.Feature.Vector>} 对应id的 feature，如果不存在则返回 null。
+ * {SuperMap.Feature.Vector} 对应id的 feature，如果不存在则返回 null。
  */
 ol.source.Theme.prototype.getFeatureById = function (featureId) {
     return this.getFeatureBy('id', featureId);

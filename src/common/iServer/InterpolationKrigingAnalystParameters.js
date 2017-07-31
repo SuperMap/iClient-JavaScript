@@ -78,7 +78,7 @@ SuperMap.InterpolationKrigingAnalystParameters = SuperMap.Class(SuperMap.Interpo
 
     /**
      * APIProperty: type
-     * {<SuperMap.InterpolationAlgorithmType>} 克吕金插值的类型。必设参数
+     * {SuperMap.InterpolationAlgorithmType} 克吕金插值的类型。必设参数
      * 具体如下：
      * {KRIGING} 普通克吕金插值法
      * {SimpleKriging} 简单克吕金插值法
@@ -120,7 +120,7 @@ SuperMap.InterpolationKrigingAnalystParameters = SuperMap.Class(SuperMap.Interpo
 
     /**
      * APIProperty: variogramMode
-     * {<SuperMap.VariogramMode>} 克吕金插值时的半变函数类型.
+     * {SuperMap.VariogramMode} 克吕金插值时的半变函数类型.
      * 默认值为 SuperMap.VariogramMode.SPHERICAL。
      * 用户所选择的半变函数类型会影响未知点的预测，特别是曲线在原点处的不同形状有重要意义。
      * 曲线在原点处越陡，则较近领域对该预测值的影响就越大，因此输出表面就会越不光滑。
@@ -129,14 +129,14 @@ SuperMap.InterpolationKrigingAnalystParameters = SuperMap.Class(SuperMap.Interpo
 
     /**
      * APIProperty: exponent
-     * {<SuperMap.Exponent>} 【泛克吕金】类型下，用于插值的样点数据中趋势面方程的阶数。
+     * {SuperMap.Exponent} 【泛克吕金】类型下，用于插值的样点数据中趋势面方程的阶数。
      * 默认值为 SuperMap.Exponent.EXP1。
      */
     exponent: SuperMap.Exponent.EXP1,
 
     /**
      * APIProperty: searchMode
-     * {<SuperMap.SearchMode>} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数
+     * {SuperMap.SearchMode} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数
      * 简单克吕金和泛克吕金不支持块查找。
      * 具体如下：
      * {KDTREE_FIXED_COUNT} 使用 KDTREE 的固定点数方式查找参与内插分析的点。
@@ -184,7 +184,7 @@ SuperMap.InterpolationKrigingAnalystParameters = SuperMap.Class(SuperMap.Interpo
      * sill - {Number} 克吕金算法中基台值，默认值为0。</br>
      * variogramMode - {String} 克吕金插值时的半变函数类型，默认为球型（SPHERICAL）。</br>
      * exponent - {String} 【泛克吕金】类型下，用于插值的样点数据中趋势面方程的阶数，可选值为exp1、exp2，默认值为exp1。</br>
-     * bounds - {<SuperMap.Bounds>} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
+     * bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
      * searchMode - {String} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找，必设参数。</br>
      * expectedCount - {Number} 【固定点数查找】方式下，设置待查找的点数，默认值为12；【定长查找】方式下，设置查找的最小点数，默认值为12。</br>
      * searchRadius - {Number} 【定长查找】方式下，设置参与运算点的查找范围，默认值为0。</br>
@@ -193,13 +193,13 @@ SuperMap.InterpolationKrigingAnalystParameters = SuperMap.Class(SuperMap.Interpo
      * zValueFieldName - {String} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
      * zValueScale - {Number} 用于进行插值分析值的缩放比率，默认值为1。</br>
      * resolution - {Number} 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
-     * filterQueryParameter - {<SuperMap.FilterParameter>} 属性过滤条件。</br>
+     * filterQueryParameter - {SuperMap.FilterParameter} 属性过滤条件。</br>
      * outputDatasetName - {String} 插值分析结果数据集的名称，必设参数。</br>
      * outputDatasourceName - {String} 插值分析结果数据源的名称。必设参数</br>
      * pixelFormat - {String} 指定结果栅格数据集存储的像素格式。</br>
      * dataset - {String} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。</br>
      * 当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
-     * inputPoints - {Array <SuperMap.Geometry.Point>} 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。</br>
+     * inputPoints - {Array <SuperMap.Geometry.Point} 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。</br>
      */
     initialize: function (options) {
         SuperMap.InterpolationAnalystParameters.prototype.initialize.apply(this, arguments);

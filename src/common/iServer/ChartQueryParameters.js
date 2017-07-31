@@ -9,9 +9,9 @@ var ChartQueryFilterParameter = require('./ChartQueryFilterParameter');
  * @param options - {Object} 可选参数。如：<br>
  *         queryMode - {String} 海图查询模式类型，SuperMap iClient for JavaScript对
  *                              海图支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。<br>
- *         bounds - {<SuperMap.Bounds>}  海图查询范围。<br>
+ *         bounds - {SuperMap.Bounds}  海图查询范围。<br>
  *         chartLayerNames - {Array(String)} 查询的海图图层的名称。<br>
- *         chartQueryFilterParameters - {Array <ChartQueryFilterParameter>} 海图查询过滤参数。包括：物标代码、
+ *         chartQueryFilterParameters - {Array <ChartQueryFilterParameter} 海图查询过滤参数。包括：物标代码、
  *                                                                         物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。<br>
  *         returnContent - {Boolean} 获取或设置是返回查询结果记录集 recordsets，还
  *                                   是返回查询结果的资源 resourceInfo。默认为 true，表示返回 recordsets。<br>

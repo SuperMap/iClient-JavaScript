@@ -33,7 +33,7 @@ var SuperMap = require('../SuperMap');
 SuperMap.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
     /**
      * @method SuperMap.GetFeaturesByBoundsService.initialize
-     * @param url {string}
+     * @param url - {string}
      * @param options - {Object} 参数。
      */
 

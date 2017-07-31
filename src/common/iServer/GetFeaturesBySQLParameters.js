@@ -18,7 +18,7 @@ SuperMap.GetFeaturesBySQLParameters = SuperMap.Class(SuperMap.GetFeaturesParamet
     getFeatureMode: "SQL",
     /**
      * APIProperty: queryParameter
-     * {<SuperMap.FilterParameter>} 查询过滤条件参数类。
+     * {SuperMap.FilterParameter} 查询过滤条件参数类。
      */
     queryParameter: null,
 

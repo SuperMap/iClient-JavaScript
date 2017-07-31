@@ -19,7 +19,7 @@ SuperMap.Image = SuperMap.Class(SuperMap.UGCSubLayer, {
 
     /**
      * APIProperty: colorSpaceType
-     * {<SuperMap.ColorSpaceType>} 返回影像图层的色彩显示模式。
+     * {SuperMap.ColorSpaceType} 返回影像图层的色彩显示模式。
      */
     colorSpaceType: null,
 
@@ -43,7 +43,7 @@ SuperMap.Image = SuperMap.Class(SuperMap.UGCSubLayer, {
 
     /**
      * APIProperty: transparentColor
-     * {<SuperMap.ServerColor>} 返回背景透明色。
+     * {SuperMap.ServerColor} 返回背景透明色。
      */
     transparentColor: null,
 
@@ -61,12 +61,12 @@ SuperMap.Image = SuperMap.Class(SuperMap.UGCSubLayer, {
      * options - {Object} 参数。
      *
      * Allowed options properties:
-     * colorSpaceType - {<SuperMap.ColorSpaceType>} 返回影像图层的色彩显示模式。
+     * colorSpaceType - {SuperMap.ColorSpaceType} 返回影像图层的色彩显示模式。
      * brightness - {Integer} 影像图层的亮度。
      * displayBandIndexes - {Array(Integer)} 返回当前影像图层显示的波段索引。
      * contrast - {Integer} 影像图层的对比度。
      * transparent - {Boolean} 是否背景透明。
-     * transparentColor - {<SuperMap.ServerColor>} 返回背景透明色。
+     * transparentColor - {SuperMap.ServerColor} 返回背景透明色。
      * transparentColorTolerance - {Integer} 背景透明色容限。
      */
 

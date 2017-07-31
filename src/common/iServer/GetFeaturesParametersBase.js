@@ -54,7 +54,7 @@ SuperMap.GetFeaturesParametersBase = SuperMap.Class({
      * @param options - {Object} 参数。
      * Allowed options properties:</br>
      * datasetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
-     * returnContent - {<SuperMap.FilterParameter>} 是否直接返回查询结果。</br>
+     * returnContent - {SuperMap.FilterParameter} 是否直接返回查询结果。</br>
      * fromIndex - {Integer} 查询结果的最小索引号。</br>
      * toIndex - {Integer} 查询结果的最大索引号。</br>
      */

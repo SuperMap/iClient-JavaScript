@@ -156,7 +156,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
      * obj - {Object} 从GeoJSON对象中创建一个对象。
      *
      * Returns:
-     * {<SuperMap.Feature.Vector>} 一个要素。
+     * {SuperMap.Feature.Vector} 一个要素。
      */
     parseFeature: function (obj) {
         var feature, geometry, attributes, bbox;
@@ -186,7 +186,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
      * obj - {Object} 从GeoJSON对象中创建一个对象。
      *
      * Returns:
-     * {<SuperMap.Geometry>} 一个几何要素。
+     * {SuperMap.Geometry} 一个几何要素。
      */
     parseGeometry: function (obj) {
         if (obj == null) {
@@ -244,7 +244,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * array - {Object} GeoJSON片段中的一组坐标。
          *
          * Returns:
-         * {<SuperMap.Geometry>} 一个几何对象。
+         * {SuperMap.Geometry} 一个几何对象。
          */
         "point": function (array) {
             if (this.ignoreExtraDims == false &&
@@ -262,7 +262,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * array - {Object} GeoJSON片段中的坐标组数组。
          *
          * Returns:
-         * {<SuperMap.Geometry>} 一个几何对象。
+         * {SuperMap.Geometry} 一个几何对象。
          */
         "multipoint": function (array) {
             var points = [];
@@ -286,7 +286,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * array - {Object} GeoJSON片段中的坐标组数组。
          *
          * Returns:
-         * {<SuperMap.Geometry>} 一个几何对象。
+         * {SuperMap.Geometry} 一个几何对象。
          */
         "linestring": function (array) {
             var points = [];
@@ -310,7 +310,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * array - {Object} GeoJSON片段中的坐标组数组。
          *
          * Returns:
-         * {<SuperMap.Geometry>} 一个几何对象。
+         * {SuperMap.Geometry} 一个几何对象。
          */
         "multilinestring": function (array) {
             var lines = [];
@@ -331,7 +331,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
          *
          * Returns:
-         * {<SuperMap.Geometry>} 一个几何对象。
+         * {SuperMap.Geometry} 一个几何对象。
          */
         "polygon": function (array) {
             var rings = [];
@@ -356,7 +356,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * array - {Object} GeoJSON片段中的坐标组数组。
          *
          * Returns:
-         * {<SuperMap.Geometry>} 一个几何对象。
+         * {SuperMap.Geometry} 一个几何对象。
          */
         "multipolygon": function (array) {
             var polys = [];
@@ -380,7 +380,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * array - {Object} GeoJSON片段中的坐标组数组。
          *
          * Returns:
-         * {<SuperMap.Geometry>} 一个几何对象。
+         * {SuperMap.Geometry} 一个几何对象。
          */
         "box": function (array) {
             if (array.length != 2) {
@@ -447,7 +447,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
      * 从一个要素对象中创建一个坐标参考系对象。
      *
      * Parameters:
-     * object - {<SuperMap.Feature.Vector>} 要素对象
+     * object - {SuperMap.Feature.Vector} 要素对象
      *
      * Returns:
      * {Object} 一个可作为GeoJSON对象的crs属性使用的对象。
@@ -550,7 +550,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * 从一个点对象中返回一个坐标组。
          *
          * Parameters:
-         * point - {<SuperMap.Geometry.Point>} 一个点对象。
+         * point - {SuperMap.Geometry.Point} 一个点对象。
          *
          * Returns:
          * {Array} 一个表示一个点的坐标组。
@@ -578,7 +578,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * 从一个多点对象中返一个坐标组数组。
          *
          * Parameters:
-         * multipoint - {<SuperMap.Geometry.MultiPoint>} 多点对象。
+         * multipoint - {SuperMap.Geometry.MultiPoint} 多点对象。
          *
          * Returns:
          * {Array} 一个表示多点的坐标组数组。
@@ -596,7 +596,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * 从一个线对象中返回一个坐标组数组。
          *
          * Parameters:
-         * linestring - {<SuperMap.Geometry.LineString>} 线对象。
+         * linestring - {SuperMap.Geometry.LineString} 线对象。
          *
          * Returns:
          * {Array} 一个表示线对象的坐标组数组。
@@ -614,7 +614,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * 从一个多线对象中返回一个线数组。
          *
          * Parameters:
-         * multilinestring - {<SuperMap.Geometry.MultiLineString>} 多线对象
+         * multilinestring - {SuperMap.Geometry.MultiLineString} 多线对象
          *
          * Returns:
          * {Array} 一个表示多线的线数组。
@@ -632,7 +632,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * 从一个面对象中返回一组线环。
          *
          * Parameters:
-         * polygon - {<SuperMap.Geometry.Polygon> 面对象。
+         * polygon - {SuperMap.Geometry.Polygon> 面对象。
          *
          * Returns:
          * {Array} 一组表示面的线环。
@@ -650,7 +650,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * 从一个多面对象中返回一组面。
          *
          * Parameters:
-         * multipolygon - {<SuperMap.Geometry.MultiPolygon>} 多面对象。
+         * multipolygon - {SuperMap.Geometry.MultiPolygon} 多面对象。
          *
          * Returns:
          * {Array} 一组表示多面的面。
@@ -668,7 +668,7 @@ SuperMap.Format.GeoJSON = SuperMap.Class(SuperMap.Format.JSON, {
          * 从一个几何要素集合中一组几何要素数组。
          *
          * Parameters:
-         * collection - {<SuperMap.Geometry.Collection>} 几何要素集合。
+         * collection - {SuperMap.Geometry.Collection} 几何要素集合。
          *
          * Returns:
          * {Array} 一组表示几何要素集合的几何要素数组。

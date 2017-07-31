@@ -72,7 +72,7 @@ SuperMap.Route = SuperMap.Class(SuperMap.Geometry.Collection, {
 
     /**
      * APIProperty: type
-     * {<String>} 服务端几何对象类型。
+     * {String} 服务端几何对象类型。
      */
     type: null,
 

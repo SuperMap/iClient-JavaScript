@@ -13,26 +13,26 @@ SuperMap.GeoRelationAnalystParameters = SuperMap.Class({
 
     /**
      * APIProperty: dataset
-     * {<String>} 源数据集名称。
+     * {String} 源数据集名称。
      */
     dataset: null,
 
     /**
      * APIProperty: sourceFilter
-     * {<SuperMap.FilterParameter>} 空间关系分析中的源数据集查询参数。仅 ids、attributeFilter 和 fields 字段有效。
+     * {SuperMap.FilterParameter} 空间关系分析中的源数据集查询参数。仅 ids、attributeFilter 和 fields 字段有效。
      */
     sourceFilter: null,
 
     /**
      * APIProperty: referenceFilter
-     * {<SuperMap.FilterParameter>} 空间关系分析中的参考数据集查询参数。仅 name, ids, attributeFilter
+     * {SuperMap.FilterParameter} 空间关系分析中的参考数据集查询参数。仅 name, ids, attributeFilter
      * 和 fields 字段有效。
      */
     referenceFilter: null,
 
     /**
      * APIProperty: spatialRelationType
-     * {<SuperMap.SpatialRelationType>} 指定的空间关系类型。
+     * {SuperMap.SpatialRelationType} 指定的空间关系类型。
      */
     spatialRelationType: null,
 
@@ -70,8 +70,8 @@ SuperMap.GeoRelationAnalystParameters = SuperMap.Class({
      * @method SuperMap.GeoRelationAnalystParameters.initialize
      * @param options - {Object} 参数。
      * Allowed options properties:</br>
-     * sourceFilter - {<SuperMap.FilterParameter>} 空间关系分析中的参考数据集查询参数。仅 name, ids,attributeFilter 和 fields 字段有效。</br>
-     * referenceFilter - {<SuperMap.FilterParameter>} 空间关系分析中的参考数据集查询参数。仅 name, ids,attributeFilter 和 fields 字段有效。</br>
+     * sourceFilter - {SuperMap.FilterParameter} 空间关系分析中的参考数据集查询参数。仅 name, ids,attributeFilter 和 fields 字段有效。</br>
+     * referenceFilter - {SuperMap.FilterParameter} 空间关系分析中的参考数据集查询参数。仅 name, ids,attributeFilter 和 fields 字段有效。</br>
      * isBorderInside - {Boolean} 边界处理方式，即位于面边线上的点是否被面包含。此参数仅用于空间关系为包含或被包含的情况。</br>
      * returnFeature - {Boolean} 是否返回Feature信息。</br>
      * returnGeoRelatedOnly - {Boolean} 仅返回满足指定空间关系的空间对象，默认为 True。</br>

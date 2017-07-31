@@ -60,7 +60,7 @@ SuperMap.QueryBySQLService = SuperMap.Class(SuperMap.QueryService, {
      * 在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
      *
      * Parameters:
-     * params - {<SuperMap.QueryBySQLParameters>}
+     * params - {SuperMap.QueryBySQLParameters}
      *
      * Returns:
      * {Object} 转化后的 JSON 字符串。

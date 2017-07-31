@@ -13,7 +13,7 @@ SuperMap.Vector = SuperMap.Class(SuperMap.UGCSubLayer, {
 
     /**
      * APIProperty: style
-     * {<SuperMap.ServerStyle>} 矢量图层的风格。
+     * {SuperMap.ServerStyle} 矢量图层的风格。
      */
     style: null,
 
@@ -25,7 +25,7 @@ SuperMap.Vector = SuperMap.Class(SuperMap.UGCSubLayer, {
      * options - {Object} 参数。
      *
      * Allowed options properties:
-     * style - {<SuperMap.ServerStyle>} 矢量图层的风格。
+     * style - {SuperMap.ServerStyle} 矢量图层的风格。
      */
     initialize: function (options) {
         options = options || {};

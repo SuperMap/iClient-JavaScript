@@ -52,7 +52,7 @@ SuperMap.ThemeGraph = SuperMap.Class(SuperMap.Theme, {
 
     /**
      * APIProperty: flow
-     * @member SuperMap.ThemeGraph.prototype.flow -{<SuperMap.ThemeFlow>}
+     * @member SuperMap.ThemeGraph.prototype.flow -{SuperMap.ThemeFlow}
      * @description 统计专题图流动显示与牵引线设置。
      *              通过该字段可以设置统计符号是否流动显示和牵引线风格。
      */

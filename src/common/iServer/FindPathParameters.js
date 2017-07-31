@@ -44,7 +44,7 @@ SuperMap.FindPathParameters = SuperMap.Class({
 
     /**
      * APIProperty: nodes
-     * @member SuperMap.FindPathParameters.prototype.nodes -{Array(<Point>/Number)}
+     * @member SuperMap.FindPathParameters.prototype.nodes -{Array<{SuperMap.Point}|Number>}
      * @description 最佳路径分析经过的结点或设施点数组，必设字段。该字段至少包含两个点。<br>
      *               当 SuperMap.FindPathParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
      *               当 SuperMap.FindPathParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。

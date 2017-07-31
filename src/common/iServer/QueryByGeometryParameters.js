@@ -27,7 +27,7 @@ var SuperMap = require('../SuperMap');
  *         returnCustomResult -{Boolean} 仅供三维使用。
  *         returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。
  *         geometry - {Object} 用于查询的几何对象。
- *         spatialQueryMode - {<SuperMap.SpatialQueryMode>} 空间查询模式。
+ *         spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式。
  */
 SuperMap.QueryByGeometryParameters = SuperMap.Class(SuperMap.QueryParameters, {
 

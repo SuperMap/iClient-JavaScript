@@ -9,7 +9,7 @@ SuperMap.ServerStyle = SuperMap.Class({
 
     /**
      * APIProperty: fillBackColor
-     * {<SuperMap.ServerColor>} 填充背景颜色。
+     * {SuperMap.ServerColor} 填充背景颜色。
      * 当填充模式为渐变填充时，该颜色为填充终止色。默认为白色。
      */
     fillBackColor: null,
@@ -23,14 +23,14 @@ SuperMap.ServerStyle = SuperMap.Class({
 
     /**
      * APIProperty: fillForeColor
-     * {<SuperMap.ServerColor>} 填充颜色。
+     * {SuperMap.ServerColor} 填充颜色。
      * 当填充模式为渐变填充时，该颜色为填充起始颜色。默认为红色。
      */
     fillForeColor: null,
 
     /**
      * APIProperty: fillGradientMode
-     * {<FillGradientMode>} 渐变填充风格的渐变类型。
+     * {FillGradientMode} 渐变填充风格的渐变类型。
      */
     fillGradientMode: null,
 
@@ -71,7 +71,7 @@ SuperMap.ServerStyle = SuperMap.Class({
 
     /**
      * APIProperty: lineColor
-     * {<SuperMap.ServerColor>} 矢量要素的边线颜色。
+     * {SuperMap.ServerColor} 矢量要素的边线颜色。
      * 默认为黑色。
      */
     lineColor: null,
@@ -119,16 +119,16 @@ SuperMap.ServerStyle = SuperMap.Class({
      * options - {Object} 参数。
      *
      * Allowed options properties:
-     * fillBackColor - {<SuperMap.ServerColor>} 填充背景颜色。
+     * fillBackColor - {SuperMap.ServerColor} 填充背景颜色。
      * fillBackOpaque - {Boolean} 背景是否不透明。
-     * fillForeColor - {<SuperMap.ServerColor>} 填充颜色。
-     * fillGradientMode - {<FillGradientMode>} 渐变填充风格的渐变类型。
+     * fillForeColor - {SuperMap.ServerColor} 填充颜色。
+     * fillGradientMode - {FillGradientMode} 渐变填充风格的渐变类型。
      * fillGradientAngle - {Number} 渐变填充的旋转角度。
      * fillGradientOffsetRatioX - {Number} 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。
      * fillGradientOffsetRatioY - {Number} 填充中心点相对于填充区域范围中心点的垂直偏移百分比。
      * fillOpaqueRate - {Number} 填充不透明度。
      * fillSymbolID - {Integer} 填充符号的编码。
-     * lineColor - {<SuperMap.ServerColor>} 矢量要素的边线颜色。
+     * lineColor - {SuperMap.ServerColor} 矢量要素的边线颜色。
      * lineSymbolID - {Integer} 线状符号的编码。
      * lineWidth - {Number} 边线的宽度。
      * markerAngle - {Number} 点状符号的旋转角度。
@@ -201,7 +201,7 @@ SuperMap.ServerStyle = SuperMap.Class({
  * jsonObject - {Object} 要转换的 JSON 对象。
  *
  * Returns:
- * {<SuperMap.ServerStyle>} 转化后的 SuperMap.ServerStyle 对象。
+ * {SuperMap.ServerStyle} 转化后的 SuperMap.ServerStyle 对象。
  */
 SuperMap.ServerStyle.fromJson = function (jsonObject) {
     if (!jsonObject) {

@@ -56,7 +56,7 @@ SuperMap.ThemeParameters = SuperMap.Class({
 
     /**
      * APIProperty: themes
-     * @member SuperMap.ThemeParameters.prototype.themes -{Array(<SuperMap.Theme>)}
+     * @member SuperMap.ThemeParameters.prototype.themes -{Array<SuperMap.Theme>}
      * @description 专题图对象列表。
      *               该参数为实例化的各类专题图对象的集合。
      */
@@ -64,14 +64,14 @@ SuperMap.ThemeParameters = SuperMap.Class({
 
     /**
      * APIProperty: displayFilters
-     * @member SuperMap.ThemeParameters.prototype.displayFilters -{Array(String)}
+     * @member SuperMap.ThemeParameters.prototype.displayFilters -{Array<String>}
      * @description 专题图属性过滤条件。
      */
     displayFilters: null,
 
     /**
      * APIProperty: displayOrderBy
-     * @member SuperMap.ThemeParameters.prototype.displayOrderBys -{Array(String)}
+     * @member SuperMap.ThemeParameters.prototype.displayOrderBys -{Array<String>}
      * @description 专题图对象生成符号叠加次序排序字段
      */
     displayOrderBys: null,

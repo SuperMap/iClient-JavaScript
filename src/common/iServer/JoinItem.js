@@ -55,7 +55,7 @@ SuperMap.JoinItem = SuperMap.Class({
     joinFilter: null,
 
     /** APIProperty: joinType
-     * {<JoinType>} 两个表之间连接类型。
+     * {JoinType} 两个表之间连接类型。
      * 连接类型决定了对两个表进行连接查询后返回的记录的情况。
      */
     joinType: null,
@@ -72,7 +72,7 @@ SuperMap.JoinItem = SuperMap.Class({
      * Allowed options properties:</br>
      * foreignTableName - {String} 外部表的名称。</br>
      * joinFilter - {String} 矢量数据集与外部表之间的连接表达式，即设定两个表之间关联的字段。</br>
-     * joinType - {<JoinType>} 两个表之间连接类型。</br>
+     * joinType - {JoinType} 两个表之间连接类型。</br>
      */
     initialize: function (options) {
         if (options) {

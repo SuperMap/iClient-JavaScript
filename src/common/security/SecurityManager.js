@@ -26,7 +26,7 @@ SuperMap.SecurityManager = {
     /**
      *
      * @description 从服务器获取一个token,在此之前要注册服务器信息
-     * @param url {String}服务器域名+端口，如：http://localhost:8092
+     * @param url {String} -服务器域名+端口，如：http://localhost:8092
      * @param tokenParam {SuperMap.TokenServiceParameter}
      */
     generateToken: function (url, tokenParam) {
@@ -58,7 +58,7 @@ SuperMap.SecurityManager = {
 
     /**
      * @description 服务请求都会自动带上这个token
-     * @param url {String}服务器域名+端口：如http://localhost:8090
+     * @param url {String} - 服务器域名+端口：如http://localhost:8090
      * @param token {String}
      */
     registerToken: function (url, token) {

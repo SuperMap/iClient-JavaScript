@@ -203,7 +203,7 @@ var GraphThemeLayer = ThemeLayer.extend({
     /**
      * 判断两个四边形是否有压盖。
      * Parameters:
-     * quadrilateral - {Array<Objecy>}  四边形节点数组。
+     * quadrilateral - {Array<Object>}  四边形节点数组。
      * 例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      * quadrilateral2 - {Array<Object>}  第二个四边形节点数组。
      */
@@ -262,8 +262,8 @@ var GraphThemeLayer = ThemeLayer.extend({
     /**
      * 判断图表是否在地图里。
      * Parameters:
-     * mapPxBounds - {<SuperMap.Bounds>} 地图像素范围。
-     * chartPxBounds - - {Array<Objecy>}  图表范围的四边形节点数组。
+     * mapPxBounds - {SuperMap.Bounds} 地图像素范围。
+     * chartPxBounds - - {Array<Object>}  图表范围的四边形节点数组。
      * 例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
     isChartInMap: function (mapPxBounds, chartPxBounds) {
@@ -324,7 +324,7 @@ var GraphThemeLayer = ThemeLayer.extend({
     /**
      * 获取权重字段的值。
      * Parameters:
-     * feature - {<SuperMap.Feature.Vector>} 数据。
+     * feature - {SuperMap.Feature.Vector} 数据。
      * fields - {String} 字段名数组。
      * defaultValue - {Number} 当通过 weightField 获取不到权重值时，使用 defaultValue 作为权重值。
      */

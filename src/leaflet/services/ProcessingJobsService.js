@@ -116,7 +116,7 @@ var ProcessingJobsService = ServiceBase.extend({
     /**
      * @function L.supermap.ProcessingJobsService.prototype.getSummaryMeshJobs
      * @description 获取格网聚合分析作业的列表。
-     * @param - {String} callback 请求结果的回调函数。
+     * @param callback- {function}  请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {L.supermap.ProcessingJobsService}
      */

@@ -12,7 +12,7 @@ SuperMap.GeometryBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalyst
 
     /**
      * Property: sourceGeometry
-     * {<Object>} 要做缓冲区分析的几何对象(支持Point、LineString、LinearRing、Polygon)。必设字段。
+     * {Object} 要做缓冲区分析的几何对象(支持Point、LineString、LinearRing、Polygon)。必设字段。
      */
     sourceGeometry: null,
 
@@ -24,8 +24,8 @@ SuperMap.GeometryBufferAnalystParameters = SuperMap.Class(SuperMap.BufferAnalyst
      * options - {Object} 参数。
      *
      * Allowed options properties:
-     * sourceGeometry - {<Object>} 要做缓冲区分析的几何对象。必设字段。
-     * bufferSetting - {<SuperMap.BufferSetting>} 设置缓冲区通用参数。
+     * sourceGeometry - {Object} 要做缓冲区分析的几何对象。必设字段。
+     * bufferSetting - {SuperMap.BufferSetting} 设置缓冲区通用参数。
      */
     initialize: function (options) {
         SuperMap.BufferAnalystParameters.prototype.initialize.apply(this, arguments);

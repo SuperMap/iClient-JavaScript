@@ -27,7 +27,7 @@ var SuperMap = require('../SuperMap');
  * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
- *         measureMode - {<MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。
+ *         measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
  */
 SuperMap.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
 
@@ -43,7 +43,7 @@ SuperMap.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
      * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
      * @param options - {Object} 交互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
-     *         measureMode - {<MeasureMode>} 量算模式，包括距离量算模式和面积量算模式。
+     *         measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
      */
     initialize: function (url, options) {
         SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);

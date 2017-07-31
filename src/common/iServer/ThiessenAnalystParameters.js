@@ -10,7 +10,7 @@ SuperMap.ThiessenAnalystParameters = SuperMap.Class({
 
     /**
      * APIProperty: clipRegion
-     * {<SuperMap.Geometry>} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。
+     * {SuperMap.Geometry} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。
      */
     clipRegion: null,
 
@@ -43,7 +43,7 @@ SuperMap.ThiessenAnalystParameters = SuperMap.Class({
      * @method SuperMap.ThiessenAnalystParameters.initialize
      * @param options - {Object} 参数。
      * Allowed options properties:</br>
-     * clipRegion - {<SuperMap.Geometry>} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
+     * clipRegion - {SuperMap.Geometry} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
      * createResultDataset - {Boolean} 是否返回结果数据集，默认不返回。</br>
      * resultDatasetName - {Boolean} 指定结果数据集名称。</br>
      * resultDatasourceName - {Boolean} 指定结果数据集所在数据源，默认为当前数据源。</br>

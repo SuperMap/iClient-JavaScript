@@ -37,7 +37,7 @@ SuperMap.BurstPipelineAnalystService = SuperMap.Class(SuperMap.NetworkAnalystSer
     /**
      * @function SuperMap.BurstPipelineAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @params - {BurstPipelineAnalystParameters} 爆管分析参数类
+     * @params params - {BurstPipelineAnalystParameters} 爆管分析参数类
      */
     processAsync: function (params) {
         if (!params) {

@@ -24,7 +24,7 @@ SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
 
     /**
      *
-     * @param url 一个空间分析作业的资源地址。
+     * @param url - 一个空间分析作业的资源地址。
      */
     getJobs: function (url) {
         var me = this;
@@ -39,10 +39,10 @@ SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
 
     /**
      *
-     * @param url 分布式空间分析作业资源根地址。
-     * @param params 创建一个空间分析作业的请求参数。
-     * @param paramType 请求参数类型。
-     * @param seconds 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param url - 分布式空间分析作业资源根地址。
+     * @param params - 创建一个空间分析作业的请求参数。
+     * @param paramType - 请求参数类型。
+     * @param seconds - 开始创建作业后，获取创建成功结果的时间间隔。
      */
     addJob: function (url, params, paramType, seconds) {
         var me = this, parameterObject = null;

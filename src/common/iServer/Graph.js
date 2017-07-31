@@ -15,7 +15,7 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
 
     /**
      * APIProperty: shapeFactory
-     * {<SuperMap.Feature.ShapeFactory>} 内置的图形工厂对象，调用其 createShape 方法创建图形。
+     * {SuperMap.Feature.ShapeFactory} 内置的图形工厂对象，调用其 createShape 方法创建图形。
      */
     shapeFactory: null,
 
@@ -68,7 +68,7 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
 
     /**
      * APIProperty: chartBounds
-     * {<SuperMap.Bounds>} {ReadOnly} 图表 Bounds 随着 lonlat、XOffset、YOffset 更新，注意 chartBounds 是图表像素范围，不是地理范围。
+     * {SuperMap.Bounds} {ReadOnly} 图表 Bounds 随着 lonlat、XOffset、YOffset 更新，注意 chartBounds 是图表像素范围，不是地理范围。
      */
     chartBounds: null,
 
@@ -173,14 +173,14 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
      * 创建一个矢量专题要素。
      *
      * Parameters:
-     * data - {<SuperMap.Feature.Vector>}  用户数据，必设参数。
-     * layer - {<SuperMap.Layer.Theme>} 此专题要素所在图层，必设参数。
+     * data - {SuperMap.Feature.Vector}  用户数据，必设参数。
+     * layer - {SuperMap.Layer.Theme} 此专题要素所在图层，必设参数。
      * fields - {Array{String}} data 中的参与此图表生成的字段名称，必设参数。
      * setting - {Object} 图表配置对象，必设参数。
-     * lonlat - {<SuperMap.LonLat>} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+     * lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
      *
      * Returns:
-     * {<SuperMap.Feature.Theme.Graph>} 返回一个统计专题要素。
+     * {SuperMap.Feature.Theme.Graph} 返回一个统计专题要素。
      */
     initialize: function (data, layer, fields, setting, lonlat, options) {
         SuperMap.Feature.Theme.prototype.initialize.apply(this, arguments);
@@ -346,7 +346,7 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
      * 根据地理位置 lonlat 重置专题要素（图表）位置。
      *
      * Parameters:
-     * lonlat - {<SuperMap.LonLat>} 专题要素新的像素中心位置。
+     * lonlat - {SuperMap.LonLat} 专题要素新的像素中心位置。
      *
      * Returns:
      * {Array} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
@@ -493,7 +493,7 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
  * 根据字段名数组获取指定数据（feature）的属性值数组。属性值类型必须为 Number。
  *
  * Parameters:
- * data - {<SuperMap.Feature.Vector>} 数据。
+ * data - {SuperMap.Feature.Vector} 数据。
  * fields - {Array} 字段名数组。
  * decimalNumber - {Number} 小数位处理参数，对获取到的属性数据值进行小数位处理。
  *

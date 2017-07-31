@@ -11,8 +11,8 @@ var SuperMap = require('../SuperMap');
  * @class SuperMap.Feature.Theme.Vector
  * @description 矢量专题要素类。
  * @augments SuperMap.Feature.Theme
- * @param data - {<SuperMap.Feature.Vector>}  用户数据，必设参数, 矢量专题要素的类型为矢量数据 feature。
- * @param layer - {<SuperMap.Layer>} 此专题要素所在图层，必设参数。
+ * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数, 矢量专题要素的类型为矢量数据 feature。
+ * @param layer - {SuperMap.Layer} 此专题要素所在图层，必设参数。
  * @param style - {Object} 样式。
  * @param options - {Object} 创建专题要素时的可选参数。如：<br>
  *        nodesClipPixel - {Number} 节点抽稀像素距离，默认值 2, 单位：像素。<br>
@@ -25,7 +25,7 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
 
     /*
      * Property: dataBounds
-     * {<SuperMap.Bounds>} 用户数据的（feature.geometry）地理范围。
+     * {SuperMap.Bounds} 用户数据的（feature.geometry）地理范围。
      */
     dataBounds: null,
 
@@ -74,8 +74,8 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
     /**
      * @function SuperMap.Feature.Theme.Vector.prototype.initialize
      * @description 创建一个矢量专题要素。
-     * @param data - {<SuperMap.Feature.Vector>}  用户数据，必设参数, 矢量专题要素的类型为矢量数据 feature。
-     * @param layer - {<SuperMap.Layer>} 此专题要素所在图层，必设参数。
+     * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数, 矢量专题要素的类型为矢量数据 feature。
+     * @param layer - {SuperMap.Layer} 此专题要素所在图层，必设参数。
      * @param style - {Object} 样式。
      * @param options - {Object} 创建专题要素时的可选参数。如：<br>
      *        nodesClipPixel - {Number} 节点抽稀像素距离，默认值 2, 单位：像素。<br>

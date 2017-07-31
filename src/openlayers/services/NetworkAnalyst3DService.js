@@ -100,7 +100,7 @@ ol.supermap.NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst = function 
 /**
  * @function ol.supermap.NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst
  * @description 下游追踪资源服务
- * @param params {FacilityAnalystTracedown3DParameters} 下游追踪资源服务参数类
+ * @param params - {FacilityAnalystTracedown3DParameters} 下游追踪资源服务参数类
  * @param callback - {function} 回调函数
  */
 ol.supermap.NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst = function (params, callback) {

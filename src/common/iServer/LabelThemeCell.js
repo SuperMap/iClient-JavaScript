@@ -18,7 +18,7 @@ SuperMap.LabelThemeCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
 
     /**
      * APIProperty: themeLabel
-     * {<SuperMap.ThemeLabel>} 使用专题图对象作为矩阵标签的一个元素。
+     * {SuperMap.ThemeLabel} 使用专题图对象作为矩阵标签的一个元素。
      */
     themeLabel: null,
 
@@ -36,7 +36,7 @@ SuperMap.LabelThemeCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
      * options - {Object} 参数。
      *
      * Allowed options properties:
-     * themeLabel - {<SuperMap.ThemeLabel>} 使用专题图对象作为矩阵标签的一个元素。
+     * themeLabel - {SuperMap.ThemeLabel} 使用专题图对象作为矩阵标签的一个元素。
      */
     initialize: function (options) {
         var me = this;

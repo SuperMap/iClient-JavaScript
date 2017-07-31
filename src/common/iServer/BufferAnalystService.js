@@ -28,7 +28,7 @@ SuperMap.BufferAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
      * Property: mode
-     * {<String>} 缓冲区分析类型
+     * {String} 缓冲区分析类型
      */
     mode: null,
 

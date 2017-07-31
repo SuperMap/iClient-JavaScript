@@ -12,14 +12,14 @@ SuperMap.BufferSetting = SuperMap.Class({
 
     /**
      * APIProperty: endType
-     * {<SuperMap.BufferEndType>} 缓冲区端点枚举值。
+     * {SuperMap.BufferEndType} 缓冲区端点枚举值。
      * 分为平头和圆头两种，默认为平头，即 SuperMap.BufferEndType.FLAT 。
      */
     endType: SuperMap.BufferEndType.FLAT,
 
     /**
      * APIProperty: leftDistance
-     * {<BufferDistance>} 左侧缓冲距离。
+     * {BufferDistance} 左侧缓冲距离。
      * 默认为100。当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
      * 当为DatasetBufferAnalyst时，单位通过BufferSetting.radiusUnit设置（默认全部为米）。
      */
@@ -27,7 +27,7 @@ SuperMap.BufferSetting = SuperMap.Class({
 
     /**
      * APIProperty: rightDistance
-     * {<BufferDistance>} 右侧缓冲距离。
+     * {BufferDistance} 右侧缓冲距离。
      * 默认为100。当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
      * 当为DatasetBufferAnalyst时，单位通过BufferSetting.radiusUnit设置（默认全部为米）。
      */
@@ -55,9 +55,9 @@ SuperMap.BufferSetting = SuperMap.Class({
      * @param options - {Object} 参数。
      *
      * Allowed options properties:</br>
-     * endType - {<SuperMap.BufferEndType>} 缓冲区端点枚举值。</br>
-     * leftDistance - {<BufferDistance>} 左侧缓冲距离。</br>
-     * rightDistance - {<BufferDistance>} 右侧缓冲距离。</br>
+     * endType - {SuperMap.BufferEndType} 缓冲区端点枚举值。</br>
+     * leftDistance - {BufferDistance} 左侧缓冲距离。</br>
+     * rightDistance - {BufferDistance} 右侧缓冲距离。</br>
      * semicircleLineSegment - {Number} 圆头缓冲圆弧处线段的个数。</br>
      */
     initialize: function (options) {

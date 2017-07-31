@@ -29,7 +29,7 @@ SuperMap.GeometryOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnaly
      * Allowed options properties:</br>
      * operateGeometry - {SuperMap.Geometry} 叠加分析的操作几何对象。必设字段。</br>
      * sourceGeometry - {SuperMap.Geometry} 叠加分析的源几何对象。必设字段。</br>
-     * operation - {<SuperMap.OverlayOperationType>} 叠加操作枚举值。</br>
+     * operation - {SuperMap.OverlayOperationType} 叠加操作枚举值。</br>
      */
     initialize: function (options) {
         SuperMap.OverlayAnalystParameters.prototype.initialize.apply(this, arguments);

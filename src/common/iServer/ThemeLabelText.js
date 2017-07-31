@@ -16,8 +16,8 @@ var ServerTextStyle = require('./ServerTextStyle');
  *        maxTextWidth - {Number} 标签中文本的最大宽度。<br>
  *        minTextHeight - {Number} 标签中文本的最小高度。<br>
  *        minTextWidth - {Number} 标签中文本的最小宽度。<br>
- *        uniformStyle - {<SuperMap.ServerTextStyle>} 统一文本风格。<br>
- *        uniformMixedStyle - {<SuperMap.LabelMixedTextStyle>} 标签专题图统一的文本复合风格。
+ *        uniformStyle - {SuperMap.ServerTextStyle} 统一文本风格。<br>
+ *        uniformMixedStyle - {SuperMap.LabelMixedTextStyle} 标签专题图统一的文本复合风格。
  */
 SuperMap.ThemeLabelText = SuperMap.Class({
 

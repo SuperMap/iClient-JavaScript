@@ -12,7 +12,7 @@ SuperMap.SurfaceAnalystParametersSetting = SuperMap.Class({
 
     /**
      * APIProperty: clipRegion
-     * {<SuperMap.Geometry>} 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。
+     * {SuperMap.Geometry} 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。
      */
     clipRegion: null,
 
@@ -48,7 +48,7 @@ SuperMap.SurfaceAnalystParametersSetting = SuperMap.Class({
 
     /**
      * APIProperty: smoothMethod
-     * {<SuperMap.SmoothMethod>} 获取或设置光滑处理所使用的方法。
+     * {SuperMap.SmoothMethod} 获取或设置光滑处理所使用的方法。
      */
     smoothMethod: SuperMap.SmoothMethod.BSPLINE,
 
@@ -66,12 +66,12 @@ SuperMap.SurfaceAnalystParametersSetting = SuperMap.Class({
      * @method SuperMap.SurfaceAnalystParametersSetting.initialize
      * @param options - {Object} 参数。
      * Allowed options properties:</br>
-     * clipRegion - {<SuperMap.Geometry>} 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。</br>
+     * clipRegion - {SuperMap.Geometry} 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。</br>
      * datumValue - {Number} 获取或设置表面分析中提取等值线、提取等值面的基准值。</br>
      * expectedZValues - {Array(Number)} 获取或设置期望分析结果的 Z 值集合。</br>
      * interval - {Number} 获取或设置等值距。等值距是两条等值线之间的间隔值。</br>
      * resampleTolerance - {Number} 获取或设置重采样容限。</br>
-     * smoothMethod - {<SuperMap.SmoothMethod>} 获取或设置光滑处理所使用的方法。</br>
+     * smoothMethod - {SuperMap.SmoothMethod} 获取或设置光滑处理所使用的方法。</br>
      * smoothness - {Number} 获取或设置表面分析中等值线或等值面的边界线的光滑度。</br>
      */
     initialize: function (options) {

@@ -20,7 +20,7 @@ SuperMap.ColorDictionary = SuperMap.Class({
 
     /**
      * APIProperty: color
-     * {<SuperMap.ServerColor>} 服务端颜色类。
+     * {SuperMap.ServerColor} 服务端颜色类。
      */
     color: null,
 

@@ -11,7 +11,7 @@ SuperMap.OverlayAnalystParameters = SuperMap.Class({
 
     /**
      * Property: operation
-     * {<SuperMap.OverlayOperationType>}
+     * {SuperMap.OverlayOperationType}
      */
     operation: SuperMap.OverlayOperationType.UNION,
 

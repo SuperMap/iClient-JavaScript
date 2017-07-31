@@ -100,7 +100,7 @@ SuperMap.TransferLine = SuperMap.Class({
  * jsonObject - {Object} 新的返回结果。
  *
  * Returns:
- * {<SuperMap.TransferLine>} 转化后的 SuperMap.TransferLine 对象。
+ * {SuperMap.TransferLine} 转化后的 SuperMap.TransferLine 对象。
  */
 SuperMap.TransferLine.fromJson = function (jsonObject) {
     if (!jsonObject) {

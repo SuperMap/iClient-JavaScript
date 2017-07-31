@@ -18,7 +18,7 @@ SuperMap.LabelMixedTextStyle = SuperMap.Class({
 
     /**
      * APIProperty: defaultStyle
-     * {<SuperMap.ServerTextStyle>} 默认的文本复合风格，即 SuperMap.ServerTextStyle 各字段的默认值。
+     * {SuperMap.ServerTextStyle} 默认的文本复合风格，即 SuperMap.ServerTextStyle 各字段的默认值。
      */
     defaultStyle: null,
 
@@ -61,7 +61,7 @@ SuperMap.LabelMixedTextStyle = SuperMap.Class({
      * options - {Object} 参数。
      *
      * Allowed options properties:
-     * defaultStyle - {<SuperMap.ServerTextStyle>} 默认的文本复合风格。
+     * defaultStyle - {SuperMap.ServerTextStyle} 默认的文本复合风格。
      * separator - {String} 文本的分隔符。
      * separatorEnabled - Boolean} 文本的分隔符是否有效。
      * splitIndexes - {Array(Number)} 分段索引值，分段索引值用来对文本中的字符进行分段。

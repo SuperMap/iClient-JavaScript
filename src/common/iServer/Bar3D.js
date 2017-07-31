@@ -203,14 +203,14 @@ SuperMap.Feature.Theme.Bar3D = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
      * 创建一个三维柱状图表。
      *
      * Parameters:
-     * data - {<SuperMap.Feature.Vector>}  用户数据，必设参数。
-     * layer - {<SuperMap.Layer.Graph>} 此专题要素所在图层，必设参数。
+     * data - {SuperMap.Feature.Vector}  用户数据，必设参数。
+     * layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
      * fields - {Array{String}} data 中的参与此图表生成的字段名称，必设参数。
      * setting - {Object} 图表配置对象，必设参数。
-     * lonlat - {<SuperMap.LonLat>} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+     * lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
      *
      * Returns:
-     * {<SuperMap.Feature.Theme.Bar3D>} 返回一个三维柱状图表对象。
+     * {SuperMap.Feature.Theme.Bar3D} 返回一个三维柱状图表对象。
      */
     initialize: function(data, layer, fields, setting, lonlat) {
         SuperMap.Feature.Theme.Graph.prototype.initialize.apply(this, arguments);

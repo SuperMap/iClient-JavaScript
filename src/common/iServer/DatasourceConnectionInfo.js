@@ -43,7 +43,7 @@ SuperMap.DatasourceConnectionInfo = SuperMap.Class({
 
     /**
      * APIProperty: engineType
-     * {<EngineType>} 数据源连接的引擎类型。
+     * {EngineType} 数据源连接的引擎类型。
      */
     engineType: null,
 
@@ -103,7 +103,7 @@ SuperMap.DatasourceConnectionInfo = SuperMap.Class({
      * connect - {Boolean} 数据源是否自动连接数据。</br>
      * dataBase - {String} 数据源连接的数据库名。</br>
      * driver - {String} 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。</br>
-     * engineType - {<EngineType>} 数据源连接的引擎类型。</br>
+     * engineType - {EngineType} 数据源连接的引擎类型。</br>
      * exclusive - {Boolean} 是否以独占方式打开数据源。</br>
      * OpenLinkTable - {Boolean} 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。</br>
      * password - {String} 登录数据源连接的数据库或文件的密码。</br>

@@ -11,7 +11,7 @@ SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
 
     /**
      * APIProperty: sourceRoute
-     * {<SuperMap.Route>} 【必选参数】路由对象。该对象可以是用户自己生
+     * {SuperMap.Route} 【必选参数】路由对象。该对象可以是用户自己生
      *      成或在数据源中查询得到的符合标准的路由对象；
      */
     sourceRoute: null,

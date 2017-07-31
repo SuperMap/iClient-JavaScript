@@ -156,7 +156,7 @@ SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * params - {Object} JSON 字符串表示的查询参数。
      *
      * Returns:
-     * {<QueryParameters>} 返回转化后的 QueryParameters 对象。
+     * {QueryParameters} 返回转化后的 QueryParameters 对象。
      */
     getQueryParameters: function (params) {
         return new QueryParameters({

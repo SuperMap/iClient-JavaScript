@@ -11,8 +11,8 @@ SuperMap.ThiessenAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
      * 泰森多边形分析服务类
      * 该类负责将客户设置的泰森多边形分析参数传递给服务端，并接收服务端返回的分析结果数据。
      * 泰森多边形分析结果通过该类支持的事件的监听函数参数获取
-     * 泰森多边形分析的参数支持两种，当参数为 {<SuperMap.DatasetThiessenAnalystParameters>} 类型
-     * 时，执行数据集泰森多边形分析，当参数为 {<SuperMap.GeometryThiessenAnalystParameters>} 类型时，
+     * 泰森多边形分析的参数支持两种，当参数为 {SuperMap.DatasetThiessenAnalystParameters} 类型
+     * 时，执行数据集泰森多边形分析，当参数为 {SuperMap.GeometryThiessenAnalystParameters} 类型时，
      * 执行几何对象泰森多边形分析。
      * @extends {SuperMap.SpatialAnalystBase}
      * @api
@@ -30,7 +30,7 @@ SuperMap.ThiessenAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
 
     /**
      * Property: mode
-     * {<String>} 缓冲区分析类型
+     * {String} 缓冲区分析类型
      */
     mode: null,
 

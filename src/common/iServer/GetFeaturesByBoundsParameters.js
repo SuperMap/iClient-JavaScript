@@ -22,7 +22,7 @@ SuperMap.GetFeaturesByBoundsParameters = SuperMap.Class(SuperMap.GetFeaturesPara
 
     /**
      * APIProperty: bounds
-     * {<SuperMap.Bounds>} 用于查询的范围对象。
+     * {SuperMap.Bounds} 用于查询的范围对象。
      */
     bounds: null,
 
@@ -42,7 +42,7 @@ SuperMap.GetFeaturesByBoundsParameters = SuperMap.Class(SuperMap.GetFeaturesPara
 
     /**
      * APIProperty: spatialQueryMode
-     * {<SuperMap.SpatialQueryMode>} 空间查询模式常量，必设参数，默认为CONTAIN。
+     * {SuperMap.SpatialQueryMode} 空间查询模式常量，必设参数，默认为CONTAIN。
      */
     spatialQueryMode: SuperMap.SpatialQueryMode.CONTAIN,
 

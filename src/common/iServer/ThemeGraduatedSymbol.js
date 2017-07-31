@@ -49,7 +49,7 @@ SuperMap.ThemeGraduatedSymbol = SuperMap.Class(SuperMap.Theme, {
 
     /**
      * APIProperty: flow
-     * @member SuperMap.ThemeGraduatedSymbol.prototype.flow -{<SuperMap.ThemeFlow>}
+     * @member SuperMap.ThemeGraduatedSymbol.prototype.flow -{SuperMap.ThemeFlow}
      * @description 等级符号专题图符号流动显示与牵引线设置类。<br>
      *              通过该字段可以设置等级符号是否流动显示和牵引线风格。
      */

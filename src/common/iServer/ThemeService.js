@@ -82,7 +82,7 @@ SuperMap.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
      * 将专题图参数参数转化为 JSON 字符串。
      *
      * Parameters:
-     * params - {<SuperMap.ThemeParameters>}
+     * params - {SuperMap.ThemeParameters}
      *
      * Returns:
      * {Object} 转化后的JSON字符串。

@@ -10,7 +10,7 @@ SuperMap.SurfaceAnalystParameters = SuperMap.Class({
      * @classdesc
      * 表面分析提取操作参数类。
      * 通过该类可以为进行表面分析提供参数信息，包括表面分析的方法提取等值线、提取等值面和中间结果的分辨率，
-     * {<SuperMap.DatasetSurfaceAnalystParameters>} 和 {<SuperMap.GeometrySurfaceAnalystParameters>} 继承自该类。
+     * {SuperMap.DatasetSurfaceAnalystParameters} 和 {SuperMap.GeometrySurfaceAnalystParameters} 继承自该类。
      * @api
      */
 
@@ -22,20 +22,20 @@ SuperMap.SurfaceAnalystParameters = SuperMap.Class({
 
     /**
      * APIProperty: extractParameter
-     * {<SuperMap.SurfaceAnalystParametersSetting>} 获取或设置表面分析参数。
+     * {SuperMap.SurfaceAnalystParametersSetting} 获取或设置表面分析参数。
      * 在进行点数据集进行提取等值面分析时，暂时不支持 SurfaceAnalystParametersSetting 类中的 expectedZValues 字段。
      */
     extractParameter: null,
 
     /**
      * APIProperty: resultSetting
-     * {<SuperMap.DataReturnOption>} 结果返回设置类。
+     * {SuperMap.DataReturnOption} 结果返回设置类。
      */
     resultSetting: null,
 
     /**
      * APIProperty: surfaceAnalystMethod
-     * {<SuperMap.SurfaceAnalystMethod>} 获取或设置表面分析的提取方法，提取等值线和提取等值面，默认为等值线分析。
+     * {SuperMap.SurfaceAnalystMethod} 获取或设置表面分析的提取方法，提取等值线和提取等值面，默认为等值线分析。
      */
     surfaceAnalystMethod: SuperMap.SurfaceAnalystMethod.ISOLINE,
 
@@ -43,10 +43,10 @@ SuperMap.SurfaceAnalystParameters = SuperMap.Class({
      * @method SuperMap.SurfaceAnalystParameters.initialize
      * @param options - {Object} 参数。
      * Allowed options properties:</br>
-     * extractParameter - {<SuperMap.SurfaceAnalystParametersSetting>} 获取或设置表面分析参数。</br>
+     * extractParameter - {SuperMap.SurfaceAnalystParametersSetting} 获取或设置表面分析参数。</br>
      * resolution - {Number} 指定中间结果（栅格数据集）的分辨率。</br>
-     * resultSetting - {<SuperMap.DataReturnOption>} 结果返回设置类。</br>
-     * surfaceAnalystMethod - {<SuperMap.SurfaceAnalystMethod>} 获取或设置表面分析的提取方法，提取等值线和提取等值面。</br>
+     * resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
+     * surfaceAnalystMethod - {SuperMap.SurfaceAnalystMethod} 获取或设置表面分析的提取方法，提取等值线和提取等值面。</br>
      */
     initialize: function (options) {
         var me = this;

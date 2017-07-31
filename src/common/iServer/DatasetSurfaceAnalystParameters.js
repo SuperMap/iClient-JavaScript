@@ -23,7 +23,7 @@ SuperMap.DatasetSurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnalys
 
     /**
      * APIProperty: filterQueryParameter
-     * {<SuperMap.FilterParameter>} 获取或设置查询过滤条件参数。
+     * {SuperMap.FilterParameter} 获取或设置查询过滤条件参数。
      */
     filterQueryParameter: null,
 
@@ -39,12 +39,12 @@ SuperMap.DatasetSurfaceAnalystParameters = SuperMap.Class(SuperMap.SurfaceAnalys
      * @param options - {Object} 可选参数。
      * Allowed options properties:</br>
      * dataset - {String} 要用来做数据集表面分析的数据源中数据集的名称。</br>
-     * filterQueryParameter - {<SuperMap.FilterParameter>} 获取或设置查询过滤条件参数。</br>
+     * filterQueryParameter - {SuperMap.FilterParameter} 获取或设置查询过滤条件参数。</br>
      * zValueFieldName - {String} 获取或设置用于提取操作的字段名称。</br>
-     * extractParameter - {<SuperMap.SurfaceAnalystParametersSetting>} 表面分析参数设置类。获取或设置表面分析参数。</br>
+     * extractParameter - {SuperMap.SurfaceAnalystParametersSetting} 表面分析参数设置类。获取或设置表面分析参数。</br>
      * resolution - {Integer} 获取或设置指定中间结果（栅格数据集）的分辨率。</br>
-     * resultSetting - {<SuperMap.DataReturnOption>} 结果返回设置类。</br>
-     * surfaceAnalystMethod - {<SuperMap.SurfaceAnalystMethod>} 获取或设置表面分析的提取方法，提取等值线和提取等值面。</br>
+     * resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
+     * surfaceAnalystMethod - {SuperMap.SurfaceAnalystMethod} 获取或设置表面分析的提取方法，提取等值线和提取等值面。</br>
      */
     initialize: function (options) {
         var me = this;
