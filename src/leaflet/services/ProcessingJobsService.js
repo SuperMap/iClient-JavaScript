@@ -11,6 +11,7 @@ var L = require("leaflet");
 var ServiceBase = require('./ServiceBase');
 var SuperMap = require('../../common/SuperMap');
 var KernelDensityJobsService = require('../../common/iServer/KernelDensityJobsService');
+var SingleObjectQueryJobsService = require('../../common/iServer/SingleObjectQueryJobsService');
 var BuildCacheJobsService = require('../../common/iServer/BuildCacheJobsService');
 var SummaryMeshJobsService = require('../../common/iServer/SummaryMeshJobsService');
 /**
@@ -38,6 +39,10 @@ var ProcessingJobsService = ServiceBase.extend({
         options = options || {};
         L.setOptions(this, options);
         ServiceBase.prototype.initialize.call(this, url, options);
+        this.kernelDensityJobs = {};
+        this.buildCacheJobs = {};
+        this.summaryMeshJobs = {};
+        this.queryJobs = {};
     },
 
     /**
@@ -105,7 +110,10 @@ var ProcessingJobsService = ServiceBase.extend({
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
-                processFailed: callback
+                processFailed: callback,
+                processRunning: function (job) {
+                    me.kernelDensityJobs[job.id] = job.state;
+                }
             },
             format: format
         });
@@ -114,9 +122,18 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
+     * @function L.supermap.ProcessingJobsService.prototype.getKernelDensityJobState
+     * @description 获取密度分析作业的状态。
+     * @param id - {String}密度分析作业的id。
+     */
+    getKernelDensityJobState: function (id) {
+        return this.kernelDensityJobs[id];
+    },
+
+    /**
      * @function L.supermap.ProcessingJobsService.prototype.getSummaryMeshJobs
      * @description 获取格网聚合分析作业的列表。
-     * @param callback- {function}  请求结果的回调函数。
+     * @param callback - {function}  请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {L.supermap.ProcessingJobsService}
      */
@@ -178,12 +195,24 @@ var ProcessingJobsService = ServiceBase.extend({
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
-                processFailed: callback
+                processFailed: callback,
+                processRunning: function (job) {
+                    me.summaryMeshJobs[job.id] = job.state;
+                }
             },
             format: format
         });
         summaryMeshJobsService.addSummaryMeshJob(param, seconds);
         return me;
+    },
+
+    /**
+     * @function L.supermap.ProcessingJobsService.prototype.getSummaryMeshJobState
+     * @description 获取格网聚合分析作业的状态。
+     * @param id - {String} 格网聚合分析作业的id。
+     */
+    getSummaryMeshJobState: function (id) {
+        return this.summaryMeshJobs[id];
     },
 
     /**
@@ -251,12 +280,109 @@ var ProcessingJobsService = ServiceBase.extend({
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
-                processFailed: callback
+                processFailed: callback,
+                processRunning: function (job) {
+                    me.buildCacheJobs[job.id] = job.state;
+                }
             },
             format: format
         });
         buildCacheJobsService.addBuildCacheJob(param, seconds);
         return me;
+    },
+
+    /**
+     * @function L.supermap.ProcessingJobsService.prototype.getBuildCacheJobState
+     * @description 获取生成地图缓存作业的状态。
+     * @param id - {String}生成地图缓存作业的id。
+     */
+    getBuildCacheJobState: function (id) {
+        return this.buildCacheJobs[id];
+    },
+
+    /**
+     * @function L.supermap.ProcessingJobsService.prototype.getQueryJobs
+     * @description 获取单对象查询分析作业的列表。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {L.supermap.ProcessingJobsService}
+     */
+    getQueryJobs: function (callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        singleObjectQueryJobsService.getQueryJobs();
+        return me;
+    },
+
+    /**
+     * @function L.supermap.ProcessingJobsService.prototype.getQueryJob
+     * @description 获取某一个单对象查询分析作业。
+     * @param id - {String}空间分析作业的id。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {L.supermap.ProcessingJobsService}
+     */
+    getQueryJob: function (id, callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        singleObjectQueryJobsService.getQueryJob(id);
+        return me;
+    },
+
+    /**
+     * @function L.supermap.ProcessingJobsService.prototype.addQueryJob
+     * @description 新建一个单对象查询分析作业。
+     * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析作业的请求参数。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {L.supermap.ProcessingJobsService}
+     */
+    addQueryJob: function (params, callback, seconds, resultFormat) {
+        var me = this,
+            param = me._processParams(params),
+            format = me._processFormat(resultFormat);
+        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback,
+                processRunning: function (job) {
+                    me.queryJobs[job.id] = job.state;
+                }
+            },
+            format: format
+        });
+        singleObjectQueryJobsService.addQueryJob(param, seconds);
+        return me;
+    },
+
+    /**
+     * @function L.supermap.ProcessingJobsService.prototype.getQueryJobState
+     * @description 获取单对象查询分析作业的状态。
+     * @param id - {String}单对象查询分析作业的id。
+     */
+    getQueryJobState: function (id) {
+        return this.queryJobs[id];
     },
 
     _processFormat: function (resultFormat) {

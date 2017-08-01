@@ -71,7 +71,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 27);
+/******/ 	return __webpack_require__(__webpack_require__.s = 29);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -92,7 +92,129 @@ module.exports = window.SuperMap;
 "use strict";
 
 
-__webpack_require__(20);
+var ServiceBase = __webpack_require__(2);
+var SuperMap = __webpack_require__(0);
+var Request = __webpack_require__(5);
+
+SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
+
+    /**
+     * Constant: EVENT_TYPES
+     * {Array(String)}
+     * 此类支持的事件类型
+     * - *processCompleted* 创建作业成功后触发的事件。
+     * - *processFailed* 创建作业失败后触发的事件 。
+     * - *processRunning* 创建作业过程的整个阶段都会触发的事件，用于获取作业创建过程的状态 。
+     */
+    EVENT_TYPES: ["processCompleted", "processFailed", "processRunning"],
+
+    initialize: function initialize(url, options) {
+        ServiceBase.prototype.initialize.apply(this, arguments);
+    },
+
+    destroy: function destroy() {
+        ServiceBase.prototype.destroy.apply(this, arguments);
+    },
+
+    /**
+     *
+     * @param url - 一个空间分析作业的资源地址。
+     */
+    getJobs: function getJobs(url) {
+        var me = this;
+        return Request.get(url).then(function (response) {
+            return response.json();
+        }).then(function (result) {
+            me.events.triggerEvent("processCompleted", { result: result });
+        }).catch(function (e) {
+            me.eventListeners.processFailed({ error: e });
+        });
+    },
+
+    /**
+     *
+     * @param url - 分布式空间分析作业资源根地址。
+     * @param params - 创建一个空间分析作业的请求参数。
+     * @param paramType - 请求参数类型。
+     * @param seconds - 开始创建作业后，获取创建成功结果的时间间隔。
+     */
+    addJob: function addJob(url, params, paramType, seconds) {
+        var me = this,
+            parameterObject = null;
+        if (params && params instanceof paramType) {
+            parameterObject = new Object();
+            paramType.toObject(params, parameterObject);
+        }
+        var options = {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        };
+        return Request.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
+            return response.json();
+        }).then(function (result) {
+            if (result.succeed) {
+                me.serviceProcessCompleted(result, seconds);
+            } else {
+                me.serviceProcessFailed(result);
+            }
+        }).catch(function (e) {
+            me.eventListeners.processFailed({ error: e });
+        });
+    },
+
+    serviceProcessCompleted: function serviceProcessCompleted(result, seconds) {
+        result = SuperMap.Util.transformResult(result);
+        seconds = seconds || 1000;
+        var me = this;
+        if (result) {
+            var id = setInterval(function () {
+                return Request.get(result.newResourceLocation).then(function (response) {
+                    return response.json();
+                }).then(function (job) {
+                    me.events.triggerEvent("processRunning", { id: job.id, state: job.state });
+                    if (job.state.runState === 'LOST') {
+                        clearInterval(id);
+                        me.events.triggerEvent("processFailed", { error: job.state.errorMsg });
+                    }
+                    if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
+                        clearInterval(id);
+                        me.events.triggerEvent("processCompleted", { result: job });
+                    }
+                }).catch(function (e) {
+                    clearInterval(id);
+                    me.events.triggerEvent("processFailed", { error: e });
+                });
+            }, seconds);
+        }
+    },
+
+    serviceProcessFailed: function serviceProcessFailed(result) {
+        ServiceBase.prototype.serviceProcessFailed.apply(this, arguments);
+    },
+
+    //为不是以.json结尾的url加上.json，并且如果有token的话，在.json后加上token参数。
+    _processUrl: function _processUrl(url) {
+        if (url.indexOf('.json') === -1) {
+            url += '.json';
+        }
+        if (SuperMap.SecurityManager.getToken(url)) {
+            url += '?token=' + SuperMap.SecurityManager.getToken(url);
+        }
+        return url;
+    },
+
+    CLASS_NAME: "SuperMap.ProcessingJobsServiceBase"
+});
+
+module.exports = SuperMap.ProcessingJobsServiceBase;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(22);
 var SuperMap = __webpack_require__(0);
 /**
  * @class SuperMap.ServiceBase common服务基类
@@ -470,7 +592,7 @@ SuperMap.ServiceBase = SuperMap.Class({
 module.exports = SuperMap.ServiceBase;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -479,7 +601,7 @@ module.exports = SuperMap.ServiceBase;
 module.exports = window.SuperMap;
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1505,128 +1627,6 @@ SuperMap.ChartType = {
 };
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var ServiceBase = __webpack_require__(1);
-var SuperMap = __webpack_require__(0);
-var Request = __webpack_require__(5);
-
-SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
-
-    /**
-     * Constant: EVENT_TYPES
-     * {Array(String)}
-     * 此类支持的事件类型
-     * - *processCompleted* 创建作业成功后触发的事件。
-     * - *processFailed* 创建作业失败后触发的事件 。
-     * - *processRunning* 创建作业过程的整个阶段都会触发的事件，用于获取作业创建过程的状态 。
-     */
-    EVENT_TYPES: ["processCompleted", "processFailed", "processRunning"],
-
-    initialize: function initialize(url, options) {
-        ServiceBase.prototype.initialize.apply(this, arguments);
-    },
-
-    destroy: function destroy() {
-        ServiceBase.prototype.destroy.apply(this, arguments);
-    },
-
-    /**
-     *
-     * @param url - 一个空间分析作业的资源地址。
-     */
-    getJobs: function getJobs(url) {
-        var me = this;
-        return Request.get(url).then(function (response) {
-            return response.json();
-        }).then(function (result) {
-            me.events.triggerEvent("processCompleted", { result: result });
-        }).catch(function (e) {
-            me.eventListeners.processFailed({ error: e });
-        });
-    },
-
-    /**
-     *
-     * @param url - 分布式空间分析作业资源根地址。
-     * @param params - 创建一个空间分析作业的请求参数。
-     * @param paramType - 请求参数类型。
-     * @param seconds - 开始创建作业后，获取创建成功结果的时间间隔。
-     */
-    addJob: function addJob(url, params, paramType, seconds) {
-        var me = this,
-            parameterObject = null;
-        if (params && params instanceof paramType) {
-            parameterObject = new Object();
-            paramType.toObject(params, parameterObject);
-        }
-        var options = {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        };
-        return Request.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
-            return response.json();
-        }).then(function (result) {
-            if (result.succeed) {
-                me.serviceProcessCompleted(result, seconds);
-            } else {
-                me.serviceProcessFailed(result);
-            }
-        }).catch(function (e) {
-            me.eventListeners.processFailed({ error: e });
-        });
-    },
-
-    serviceProcessCompleted: function serviceProcessCompleted(result, seconds) {
-        result = SuperMap.Util.transformResult(result);
-        seconds = seconds || 1000;
-        var me = this;
-        if (result) {
-            var id = setInterval(function () {
-                return Request.get(result.newResourceLocation).then(function (response) {
-                    return response.json();
-                }).then(function (job) {
-                    me.events.triggerEvent("processRunning", { id: job.id, state: job.state });
-                    if (job.state.runState === 'LOST') {
-                        clearInterval(id);
-                        me.events.triggerEvent("processFailed", { error: job.state.errorMsg });
-                    }
-                    if (job.state.runState === 'FINISHED' && job.setting.serviceInfo) {
-                        clearInterval(id);
-                        me.events.triggerEvent("processCompleted", { result: job });
-                    }
-                }).catch(function (e) {
-                    clearInterval(id);
-                    me.events.triggerEvent("processFailed", { error: e });
-                });
-            }, seconds);
-        }
-    },
-
-    serviceProcessFailed: function serviceProcessFailed(result) {
-        ServiceBase.prototype.serviceProcessFailed.apply(this, arguments);
-    },
-
-    //为不是以.json结尾的url加上.json，并且如果有token的话，在.json后加上token参数。
-    _processUrl: function _processUrl(url) {
-        if (url.indexOf('.json') === -1) {
-            url += '.json';
-        }
-        if (SuperMap.SecurityManager.getToken(url)) {
-            url += '?token=' + SuperMap.SecurityManager.getToken(url);
-        }
-        return url;
-    },
-
-    CLASS_NAME: "SuperMap.ProcessingJobsServiceBase"
-});
-
-module.exports = SuperMap.ProcessingJobsServiceBase;
-
-/***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1635,8 +1635,8 @@ module.exports = SuperMap.ProcessingJobsServiceBase;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-__webpack_require__(25);
-var fetchJsonp = __webpack_require__(24);
+__webpack_require__(27);
+var fetchJsonp = __webpack_require__(26);
 var SuperMap = __webpack_require__(0);
 
 SuperMap.Support = {
@@ -1814,8 +1814,8 @@ module.exports = SuperMap;
  * Class: SuperMap.Layer.MapVLayer
  * MapV图层。
  */
-var SuperMap = __webpack_require__(2);
-var MapVRenderer = __webpack_require__(23);
+var SuperMap = __webpack_require__(3);
+var MapVRenderer = __webpack_require__(25);
 SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
 
     /**
@@ -2022,8 +2022,8 @@ module.exports = SuperMap.Layer.MapVLayer;
 "use strict";
 
 
-var SuperMap = __webpack_require__(2);
-var ServiceBase = __webpack_require__(1);
+var SuperMap = __webpack_require__(3);
+var ServiceBase = __webpack_require__(2);
 var AddressMatchService = __webpack_require__(10);
 
 /**
@@ -2083,11 +2083,12 @@ module.exports = SuperMap.REST.AddressMatchService;
 "use strict";
 
 
-var SuperMap = __webpack_require__(2);
-var ServiceBase = __webpack_require__(1);
+var SuperMap = __webpack_require__(3);
+var ServiceBase = __webpack_require__(2);
 var KernelDensityJobsService = __webpack_require__(16);
+var SingleObjectQueryJobsService = __webpack_require__(18);
 var BuildCacheJobsService = __webpack_require__(12);
-var SummaryMeshJobsService = __webpack_require__(18);
+var SummaryMeshJobsService = __webpack_require__(20);
 
 SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
 
@@ -2096,6 +2097,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         this.kernelDensityJobs = {};
         this.buildCacheJobs = {};
         this.summaryMeshJobs = {};
+        this.queryJobs = {};
     },
 
     /**
@@ -2318,6 +2320,76 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         return this.buildCacheJobs[id];
     },
 
+    /**
+     * 获取单对象查询分析作业的列表。
+     * @param callback 请求结果的回调函数。
+     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     */
+    getQueryJobs: function getQueryJobs(callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        singleObjectQueryJobsService.getQueryJobs();
+        return me;
+    },
+
+    /**
+     * 获取某一个单对象查询分析作业。
+     * @param id 空间分析作业的id。
+     * @param callback 请求结果的回调函数。
+     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     */
+    getQueryJob: function getQueryJob(id, callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        singleObjectQueryJobsService.getQueryJob(id);
+        return me;
+    },
+
+    addQueryJob: function addQueryJob(params, callback, seconds, resultFormat) {
+        var me = this,
+            param = me._processParams(params),
+            format = me._processFormat(resultFormat);
+        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback,
+                processRunning: function processRunning(job) {
+                    me.queryJobs[job.id] = job.state;
+                }
+            },
+            format: format
+        });
+        singleObjectQueryJobsService.addQueryJob(param, seconds);
+        return me;
+    },
+
+    /**
+     * 获取单对象查询分析作业的状态。
+     * @param id 单对象查询分析作业的id。
+     */
+    getQueryJobState: function getQueryJobState(id) {
+        return this.queryJobs[id];
+    },
+
     _processFormat: function _processFormat(resultFormat) {
         return resultFormat ? resultFormat : SuperMap.DataFormat.GEOJSON;
     },
@@ -2346,7 +2418,7 @@ module.exports = SuperMap.REST.ProcessingJobsService;
 "use strict";
 
 
-var ServiceBase = __webpack_require__(1);
+var ServiceBase = __webpack_require__(2);
 var SuperMap = __webpack_require__(0);
 var Request = __webpack_require__(5);
 __webpack_require__(13);
@@ -2553,7 +2625,7 @@ module.exports = SuperMap.BuildCacheJobParameter;
 
 
 var SuperMap = __webpack_require__(0);
-var ProcessingJobsServiceBase = __webpack_require__(4);
+var ProcessingJobsServiceBase = __webpack_require__(1);
 var BuildCacheJobParameter = __webpack_require__(11);
 
 /**
@@ -2919,7 +2991,7 @@ module.exports = SuperMap.KernelDensityJobParameter;
 
 
 var SuperMap = __webpack_require__(0);
-var ProcessingJobsServiceBase = __webpack_require__(4);
+var ProcessingJobsServiceBase = __webpack_require__(1);
 var KernelDensityJobParameter = __webpack_require__(15);
 /**
  * @class SuperMap.KernelDensityJobsService
@@ -2983,6 +3055,145 @@ module.exports = SuperMap.KernelDensityJobsService;
 
 /***/ }),
 /* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var SuperMap = __webpack_require__(0);
+/**
+ * @class SuperMap.SingleObjectQueryJobsParameter
+ * @description 单对象空间查询分析任务参数类
+ * @param options - {Object} 必填参数。<br>
+ *         datasetName -{String} 数据集名。 <br>
+ *         datasetQuery -{String} 查询对象所在的数据集名称。 <br>
+ *         mode -{SuperMap.SpatialQueryMode} 空间查询模式 。 <br>
+ */
+SuperMap.SingleObjectQueryJobsParameter = SuperMap.Class({
+
+    /**
+     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{String}
+     * @description 数据集名。
+     */
+    datasetName: null,
+
+    /**
+     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{String}
+     * @description 查询对象所在的数据集名称。
+     */
+    datasetQuery: null,
+
+    /**
+     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.mode -{SuperMap.SpatialQueryMode}
+     * @description 空间查询模式 。
+     */
+    mode: null,
+
+    initialize: function initialize(options) {
+        if (!options) {
+            return;
+        }
+        SuperMap.Util.extend(this, options);
+    },
+
+    /**
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy: function destroy() {
+        this.datasetName = null;
+        this.datasetQuery = null;
+        this.mode = null;
+    }
+
+});
+
+SuperMap.SingleObjectQueryJobsParameter.toObject = function (singleObjectQueryJobsParameter, tempObj) {
+    for (var name in singleObjectQueryJobsParameter) {
+        if (name === "datasetName") {
+            tempObj['input'] = tempObj['input'] || {};
+            tempObj['input'][name] = singleObjectQueryJobsParameter[name];
+            continue;
+        }
+        tempObj['analyst'] = tempObj['analyst'] || {};
+        tempObj['analyst'][name] = singleObjectQueryJobsParameter[name];
+    }
+};
+
+module.exports = SuperMap.SingleObjectQueryJobsParameter;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var SuperMap = __webpack_require__(0);
+var ProcessingJobsServiceBase = __webpack_require__(1);
+var SingleObjectQueryJobsParameter = __webpack_require__(17);
+/**
+ * @class SuperMap.SingleObjectQueryJobsService
+ * @description 大数据单对象查询分析服务类
+ * @augments SuperMap.ProcessingJobsServiceBase
+ * @param url -{String} 大数据单对象空间查询分析服务地址。
+ * @param options - {Object} 交互服务时所需可选参数。
+ */
+SuperMap.SingleObjectQueryJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+
+    /**
+     * @function SuperMap.SingleObjectQueryJobsService.protitype.initialize
+     * @description SuperMap.SingleObjectQueryJobsService 的构造函数
+     * @param url -{String} 大数据单对象空间查询分析服务地址。
+     * @param options - {Object} 交互服务时所需可选参数。
+     */
+    initialize: function initialize(url, options) {
+        ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        this.url += "/spatialanalyst/query";
+    },
+
+    /**
+     *@inheritDoc
+     */
+    destroy: function destroy() {
+        ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
+    },
+
+    /**
+     * @function SuperMap.SingleObjectQueryJobsService.protitype.getQueryJobs
+     * @description 获取大数据单对象空间查询分析所有作业
+     * @return {*}
+     */
+    getQueryJobs: function getQueryJobs() {
+        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
+    },
+
+    /**
+     * @function SuperMap.KernelDensityJobsService.protitype.getQueryJob
+     * @description 获取指定id的单对象空间查询分析服务
+     * @param id -{String} 指定要获取数据的id
+     */
+    getQueryJob: function getQueryJob(id) {
+        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
+    },
+
+    /**
+     * @function SuperMap.SingleObjectQueryJobsService.protitype.addQueryJob
+     * @description 新建大数据单对象空间查询分析服务
+     * @param params - {SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析作业的请求参数。
+     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     */
+    addQueryJob: function addQueryJob(params, seconds) {
+        return ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, SingleObjectQueryJobsParameter, seconds]);
+    },
+
+    CLASS_NAME: "SuperMap.SingleObjectQueryJobsService"
+});
+
+module.exports = SuperMap.SingleObjectQueryJobsService;
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3087,15 +3298,15 @@ SuperMap.SummaryMeshJobParameter.toObject = function (summaryMeshJobParameter, t
 module.exports = SuperMap.SummaryMeshJobParameter;
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var SuperMap = __webpack_require__(0);
-var ProcessingJobsServiceBase = __webpack_require__(4);
-var SummaryMeshJobParameter = __webpack_require__(17);
+var ProcessingJobsServiceBase = __webpack_require__(1);
+var SummaryMeshJobParameter = __webpack_require__(19);
 
 /**
  * @class SuperMap.SummaryMeshJobsService
@@ -3150,7 +3361,7 @@ SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
 module.exports = SuperMap.SummaryMeshJobsService;
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3159,7 +3370,7 @@ module.exports = SuperMap.SummaryMeshJobsService;
 /*
  * key申请参数
  */
-__webpack_require__(3);
+__webpack_require__(4);
 var SuperMap = __webpack_require__(0);
 /**
  * @class SuperMap.KeyServiceParameter
@@ -3199,15 +3410,15 @@ SuperMap.KeyServiceParameter = SuperMap.Class({
 module.exports = SuperMap.KeyServiceParameter;
 
 /***/ }),
-/* 20 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
+__webpack_require__(23);
+__webpack_require__(24);
 __webpack_require__(21);
-__webpack_require__(22);
-__webpack_require__(19);
 var Request = __webpack_require__(5);
 var SuperMap = __webpack_require__(0);
 
@@ -3394,7 +3605,7 @@ SuperMap.SecurityManager.ONLINE = "http://www.supermapol.com";
 module.exports = SuperMap.SecurityManager;
 
 /***/ }),
-/* 21 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3403,7 +3614,7 @@ module.exports = SuperMap.SecurityManager;
 /*
  * 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
  */
-__webpack_require__(3);
+__webpack_require__(4);
 var SuperMap = __webpack_require__(0);
 /**
  * @class SuperMap.ServerInfo
@@ -3458,7 +3669,7 @@ SuperMap.ServerInfo = SuperMap.Class({
 module.exports = SuperMap.ServerInfo;
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3467,7 +3678,7 @@ module.exports = SuperMap.ServerInfo;
 /*
  * token申请参数
  */
-__webpack_require__(3);
+__webpack_require__(4);
 var SuperMap = __webpack_require__(0);
 /**
  * @class SuperMap.TokenServiceParameter
@@ -3514,7 +3725,7 @@ SuperMap.TokenServiceParameter = SuperMap.Class({
 module.exports = SuperMap.TokenServiceParameter;
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3534,10 +3745,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * MapV renderer
  */
 
-var SuperMap = __webpack_require__(2);
+var SuperMap = __webpack_require__(3);
 var mapv = {};
 try {
-    mapv = __webpack_require__(26);
+    mapv = __webpack_require__(28);
 } catch (ex) {
     mapv = {};
 }
@@ -3822,7 +4033,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
 module.exports = MapVRenderer;
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -3938,7 +4149,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -4405,14 +4616,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports) {
 
 if(typeof mapv === 'undefined') {var e = new Error("Cannot find module \"mapv\""); e.code = 'MODULE_NOT_FOUND'; throw e;}
 module.exports = mapv;
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(9);

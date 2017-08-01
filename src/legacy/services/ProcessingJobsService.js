@@ -1,6 +1,7 @@
 var SuperMap = require('../SuperMap');
 var ServiceBase = require('../../common/iServer/ServiceBase');
 var KernelDensityJobsService = require('../../common/iServer/KernelDensityJobsService');
+var SingleObjectQueryJobsService = require('../../common/iServer/SingleObjectQueryJobsService');
 var BuildCacheJobsService = require('../../common/iServer/BuildCacheJobsService');
 var SummaryMeshJobsService = require('../../common/iServer/SummaryMeshJobsService');
 
@@ -11,6 +12,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         this.kernelDensityJobs = {};
         this.buildCacheJobs = {};
         this.summaryMeshJobs = {};
+        this.queryJobs={};
     },
 
     /**
@@ -231,6 +233,76 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
      */
     getBuildCacheJobState: function (id) {
         return this.buildCacheJobs[id];
+    },
+
+    /**
+     * 获取单对象查询分析作业的列表。
+     * @param callback 请求结果的回调函数。
+     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     */
+    getQueryJobs: function (callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        singleObjectQueryJobsService.getQueryJobs();
+        return me;
+    },
+
+    /**
+     * 获取某一个单对象查询分析作业。
+     * @param id 空间分析作业的id。
+     * @param callback 请求结果的回调函数。
+     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     */
+    getQueryJob: function (id, callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        singleObjectQueryJobsService.getQueryJob(id);
+        return me;
+    },
+
+    addQueryJob: function (params, callback, seconds, resultFormat) {
+        var me = this,
+            param = me._processParams(params),
+            format = me._processFormat(resultFormat);
+        var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback,
+                processRunning: function (job) {
+                    me.queryJobs[job.id] = job.state;
+                }
+            },
+            format: format
+        });
+        singleObjectQueryJobsService.addQueryJob(param, seconds);
+        return me;
+    },
+
+    /**
+     * 获取单对象查询分析作业的状态。
+     * @param id 单对象查询分析作业的id。
+     */
+    getQueryJobState: function (id) {
+        return this.queryJobs[id];
     },
 
     _processFormat: function (resultFormat) {

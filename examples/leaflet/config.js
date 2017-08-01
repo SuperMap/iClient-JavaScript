@@ -225,6 +225,11 @@ var exampleConfig = {
                     name: "生成地图缓存作业",
                     thumbnail: "buildCacheService.png",
                     fileName: "buildCacheService"
+                }, {
+                    name: "单对象查询分析作业",
+                    thumbnail: "l_singleObjectQueryJob.png",
+                    fileName: "singleObjectQueryJobService"
+
                 }]
             },
             "addressMatch": {

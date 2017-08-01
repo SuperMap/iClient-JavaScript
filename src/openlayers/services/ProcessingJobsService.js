@@ -10,6 +10,7 @@
 var ol = require('openlayers/dist/ol-debug');
 var SuperMap = require('../../common/SuperMap');
 var KernelDensityJobsService = require('../../common/iServer/KernelDensityJobsService');
+var SingleObjectQueryJobsService = require('../../common/iServer/SingleObjectQueryJobsService');
 var BuildCacheJobsService = require('../../common/iServer/BuildCacheJobsService');
 var SummaryMeshJobsService = require('../../common/iServer/SummaryMeshJobsService');
 /**
@@ -30,6 +31,7 @@ ol.supermap.ProcessingJobsService = function (url, options) {
     this.kernelDensityJobs = {};
     this.buildCacheJobs = {};
     this.summaryMeshJobs = {};
+    this.queryJobs = {};
 };
 ol.inherits(ol.supermap.ProcessingJobsService, ol.supermap.ServiceBase);
 
@@ -176,7 +178,7 @@ ol.supermap.ProcessingJobsService.prototype.getSummaryMeshJob = function (id, ca
 ol.supermap.ProcessingJobsService.prototype.addSummaryMeshJob = function (params, callback, seconds, resultFormat) {
     var me = this,
         param = me._processParams(params),
-    format = me._processFormat(resultFormat);
+        format = me._processFormat(resultFormat);
     var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
         eventListeners: {
             scope: me,
@@ -283,6 +285,91 @@ ol.supermap.ProcessingJobsService.prototype.addBuildCacheJob = function (params,
  */
 ol.supermap.ProcessingJobsService.prototype.getBuildCacheJobState = function (id) {
     return this.buildCacheJobs[id];
+};
+
+
+/**
+ * @function ol.supermap.ProcessingJobsService.prototype.getQueryJobs
+ * @description 获取单对象查询分析作业的列表。
+ * @param callback -{function}请求结果的回调函数。
+ * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+ * @return {ol.supermap.ProcessingJobsService}
+ */
+ol.supermap.ProcessingJobsService.prototype.getQueryJobs = function (callback, resultFormat) {
+    var me = this,
+        format = me._processFormat(resultFormat);
+    var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+        serverType: me.options.serverType,
+        eventListeners: {
+            scope: me,
+            processCompleted: callback,
+            processFailed: callback
+        },
+        format: format
+    });
+    singleObjectQueryJobsService.getQueryJobs();
+    return me;
+};
+
+/**
+ * @function ol.supermap.ProcessingJobsService.prototype.getQueryJob
+ * @description 获取某一个单对象查询分析作业。
+ * @param id -{String} 空间分析作业的id。
+ * @param callback - {function} 请求结果的回调函数。
+ * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+ * @return {ol.supermap.ProcessingJobsService}
+ */
+ol.supermap.ProcessingJobsService.prototype.getQueryJob = function (id, callback, resultFormat) {
+    var me = this,
+        format = me._processFormat(resultFormat);
+    var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+        serverType: me.options.serverType,
+        eventListeners: {
+            scope: me,
+            processCompleted: callback,
+            processFailed: callback
+        },
+        format: format
+    });
+    singleObjectQueryJobsService.getQueryJob(id);
+    return me;
+};
+
+/**
+ * @function ol.supermap.ProcessingJobsService.prototype.addQueryJob
+ * @function 新建一个单对象查询分析作业。
+ * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析作业的请求参数。
+ * @param callback - {function} 请求结果的回调函数。
+ * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+ * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+ * @return {ol.supermap.ProcessingJobsService}
+ */
+ol.supermap.ProcessingJobsService.prototype.addQueryJob = function (params, callback, seconds, resultFormat) {
+    var me = this,
+        param = me._processParams(params),
+        format = me._processFormat(resultFormat);
+    var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
+        eventListeners: {
+            scope: me,
+            processCompleted: callback,
+            processFailed: callback,
+            processRunning: function (job) {
+                me.queryJobs[job.id] = job.state;
+            }
+        },
+        format: format
+    });
+    singleObjectQueryJobsService.addQueryJob(param, seconds);
+    return me;
+};
+
+/**
+ * @function ol.supermap.ProcessingJobsService.prototype.getQueryJobState
+ * @description 获取单对象查询分析作业的状态。
+ * @param id - {String}单对象查询分析作业的id。
+ */
+ol.supermap.ProcessingJobsService.prototype.getQueryJobState = function (id) {
+    return this.queryJobs[id];
 };
 
 ol.supermap.ProcessingJobsService.prototype._processFormat = function (resultFormat) {

@@ -89,6 +89,7 @@ deps = {
             //ProcessingJobs
             "./src/common/iServer/KernelDensityJobsService.js",
             "./src/common/iServer/BuildCacheJobsService.js",
+            "./src/common/iServer/SingleObjectQueryJobsService.js",
             //AddressService
             "./src/common/iServer/AddressMatchService.js",
         ],
