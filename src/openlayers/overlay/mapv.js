@@ -1,7 +1,7 @@
 require('../core/Base');
 var ol = require('openlayers/dist/ol-debug');
 var MapvLayer = require('./mapv/MapvLayer');
-
+var Util = require('../core/Util');
 ol.source.Mapv = function (opt_options) {
     var options = opt_options ? opt_options : {};
     ol.source.ImageCanvas.call(this, {
@@ -31,7 +31,7 @@ ol.source.Mapv.prototype.canvasFunctionInternal_ = function (extent, resolution,
         var width = this.map.getSize()[0];
         var height = this.map.getSize()[1];
         var canvas = this.layer.canvasLayer.canvas;
-        var context = ol.dom.createCanvasContext2D(mapWidth, mapHeight);
+        var context =Util.CreateCanvasContext2D(mapWidth, mapHeight);
         context.drawImage(canvas, 0, 0, width, height, (mapWidth - width) / 2, (mapHeight - height) / 2, width, height);
         if (this.resolution !== resolution || JSON.stringify(this.extent) !== JSON.stringify(extent)) {
             this.resolution = resolution;

@@ -63,8 +63,6 @@ ol.Graphic.createStyleFunction = function (obj) {
         if (Array.isArray(obj)) {
             styles = obj;
         } else {
-            ol.asserts.assert(obj instanceof ol.style.Style,
-                41);
             styles = [obj];
         }
         styleFunction = function () {

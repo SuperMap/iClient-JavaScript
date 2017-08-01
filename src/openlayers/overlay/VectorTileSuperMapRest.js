@@ -103,10 +103,6 @@ ol.source.VectorTileSuperMapRest = function (options) {
     }
 
     function tileLoadFunction(tile, tileUrl) {
-        if (tile.getFormat() instanceof ol.format.MVT) {
-            ol.VectorImageTile.defaultLoadFunction(tile, tileUrl);
-            return;
-        }
         tile.setLoader(function () {
             SuperMap.FetchRequest.get(tileUrl).then(function (response) {
                 if (tile.getFormat() instanceof ol.format.GeoJSON) {
@@ -157,9 +153,9 @@ ol.source.VectorTileSuperMapRest = function (options) {
         state: options.state,
         tileClass: options.tileClass,
         tileGrid: options.tileGrid,
-        tileLoadFunction: tileLoadFunction,
         tilePixelRatio: options.tilePixelRatio,
         tileUrlFunction: tileUrlFunction,
+        tileLoadFunction:(options.format instanceof ol.format.MVT)?undefined:tileLoadFunction,
         url: options.url,
         urls: options.urls,
         wrapX: options.wrapX !== undefined ? options.wrapX : false

@@ -146,7 +146,7 @@ ol.supermap.QueryService.prototype._processParams = function (params) {
     }
     if (params.geometry) {
         if (params.geometry instanceof ol.geom.Point) {
-            params.geometry = new SuperMap.Geometry.Point(params.geometry.flatCoordinates[0], params.geometry.flatCoordinates[1]);
+            params.geometry = new SuperMap.Geometry.Point(params.geometry.getCoordinates()[0], params.geometry.getCoordinates()[1]);
         } else {
             params.geometry = Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
         }

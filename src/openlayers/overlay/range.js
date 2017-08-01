@@ -24,7 +24,7 @@ ol.source.Range.prototype.addFeatures = function (features) {
         features = [features];
     }
     var event = {features: features};
-    var ret = this.dispatchEvent(new ol.Collection.Event('beforefeaturesadded', event));
+    var ret = this.dispatchEvent({type: 'beforefeaturesadded', value:event});
     if (ret === false) {
         return;
     }
@@ -34,7 +34,7 @@ ol.source.Range.prototype.addFeatures = function (features) {
         this.features.push(new SuperMap.REST.ServerFeature.fromJson(features[i]).toFeature());
     }
     var succeed = featuresFailAdded.length == 0 ? true : false;
-    this.dispatchEvent(new ol.Collection.Event('featuresadded', {features: featuresFailAdded, succeed: succeed}))
+    this.dispatchEvent({type: 'featuresadded', value:{features: featuresFailAdded, succeed: succeed}});
     if (!this.isCustomSetMaxCacheCount) {
         this.maxCacheCount = this.features.length * 5;
     }

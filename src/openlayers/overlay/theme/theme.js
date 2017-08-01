@@ -1,11 +1,12 @@
 var ol = require('openlayers/dist/ol-debug');
 var SuperMap = require('../../../common/SuperMap');
+var Util = require('../../core/Util');
 var ThemeFeature = require('./themeFeature');
 
 ol.source.Theme = function (name, opt_options) {
     var options = opt_options ? opt_options : {};
     ol.source.ImageCanvas.call(this, {
-        attributions: options.attributions||  new ol.Attribution({
+        attributions: options.attributions || new ol.Attribution({
             html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
         }),
         canvasFunction: this.canvasFunctionInternal_.bind(this),
@@ -19,7 +20,7 @@ ol.source.Theme = function (name, opt_options) {
         SuperMap.Layer.Theme.prototype.EVENT_TYPES.concat(
             SuperMap.Layer.prototype.EVENT_TYPES
         );
-    this.imageTransform = ol.transform.create();
+    this.imageTransform = [1, 0, 0, 1, 0, 0];
     this.features = [];
     this.TFEvents = [];
     this.highLightCanvas = null;
@@ -78,10 +79,7 @@ ol.source.Theme.prototype.setOpacity = function (opacity) {
             null, null, null, opacity);
 
         if (this.map !== null) {
-            this.dispatchEvent(new ol.Collection.Event('changelayer', {
-                layer: this,
-                property: "opacity"
-            }));
+            this.dispatchEvent({type: 'changelayer', value: {layer: this, property: "opacity"}});
         }
     }
 };
@@ -146,7 +144,7 @@ ol.source.Theme.prototype.removeFeatures = function (features) {
         this.redrawThematicFeatures(this.map.getView().calculateExtent());
     }
     var succeed = featuresFailRemoved.length == 0 ? true : false;
-    this.dispatchEvent(new ol.Collection.Event('featuresremoved', {features: featuresFailRemoved, succeed: succeed}));
+    this.dispatchEvent({type: "featuresremoved", value: {features: featuresFailRemoved, succeed: succeed}});
 };
 
 /**
@@ -158,7 +156,7 @@ ol.source.Theme.prototype.removeAllFeatures = function () {
         this.renderer.clear();
     }
     this.features = [];
-    this.dispatchEvent(new ol.Collection.Event('featuresremoved', {features: [], succeed: true}));
+    this.dispatchEvent({type: 'featuresremoved', value: {features: [], succeed: true}});
 };
 
 /**
@@ -310,7 +308,7 @@ ol.source.Theme.prototype._initHighLightCanvas = function () {
     var canvas = highLightContext.canvas;
     var width = canvas.width;
     var height = canvas.height;
-    var copyHighLightContext = ol.dom.createCanvasContext2D(width, height);
+    var copyHighLightContext = Util.createCanvasContext2D(width, height);
     copyHighLightContext.putImageData(highLightContext.getImageData(0, 0, width, height), 0, 0);
     this.highLightCanvas = copyHighLightContext.canvas;
 }
@@ -368,7 +366,7 @@ ol.source.Theme.prototype.canvasFunctionInternal_ = function (extent, resolution
     this.renderer.resize();
     this.map.getViewport().removeChild(this.div);
     this.redrawThematicFeatures(extent);
-    var context = ol.dom.createCanvasContext2D(mapWidth, mapHeight);
+    var context = Util.CreateCanvasContext2D(mapWidth, mapHeight);
     var themeCanvas = this.renderer.painter.root.getElementsByTagName('canvas')[0];
     context.drawImage(themeCanvas, 0, 0, mapWidth, mapHeight, (mapWidth - width) / 2, (mapHeight - height) / 2, mapWidth, mapHeight);
     if (this.resolution !== resolution || JSON.stringify(this.extent) !== JSON.stringify(extent)) {

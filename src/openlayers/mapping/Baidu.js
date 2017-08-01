@@ -12,8 +12,9 @@ ol.source.Baidu = function (opt_options) {
         options.crossOrigin : 'anonymous';
 
     var url = options.url !== undefined ?
-        options.url : "http://online{1-8}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408";
-    var hidpi = options.hidpi || (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1
+        options.url : "http://online1.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20170408";
+    var hidpi = options.hidpi || (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
+    url= url.replace('{styles}', hidpi ? 'ph' : 'pl');
     ol.source.TileImage.call(this, {
         attributions: attributions,
         cacheSize: options.cacheSize,
@@ -26,15 +27,23 @@ ol.source.Baidu = function (opt_options) {
         projection: 'EPSG:3857',
         wrapX: options.wrapX,
         tilePixelRatio: hidpi ? 2 : 1,
-        tileUrlFunction: ol.TileUrlFunction.createFromTemplates(ol.TileUrlFunction.expandUrl(url.replace('{styles}', hidpi ? 'ph' : 'pl')), ol.source.Baidu.defaultTileGrid())
+        tileGrid:tileGrid,
+        tileUrlFunction: function(tileCoord, pixelRatio, projection) {
+                return url.replace("{z}", tileCoord[0].toString())
+                    .replace("{x}", tileCoord[1].toString())
+                    .replace("{y}", function() {
+                        var y = tileCoord[2];
+                        return y.toString();
+                    })
+                    .replace("{-y}", function() {
+                        var z = tileCoord[0];
+                        var range = tileGrid.getFullTileRange(z);
+                        ol.asserts.assert(range, 55); // The {-y} placeholder requires a tile grid with extent
+                        var y = range.getHeight() + tileCoord[2];
+                        return y.toString();
+                    });
+        }//ol.TileUrlFunction.createFromTemplates(ol.TileUrlFunction.expandUrl(url), ol.source.Baidu.defaultTileGrid())
     });
-    ol.source.Baidu.prototype.getTileCoordForTileUrlFunction = function (tileCoord, opt_projection) {
-        var temp = [tileCoord[0], tileCoord[1], -tileCoord[2] - 1];
-        return ol.source.TileImage.prototype.getTileCoordForTileUrlFunction.call(this, temp, opt_projection);
-    };
-    ol.source.Baidu.prototype.getTileGridForProjection = function (projection) {
-        return ol.source.Baidu.defaultTileGrid();
-    }
 
 };
 ol.inherits(ol.source.Baidu, ol.source.TileImage);

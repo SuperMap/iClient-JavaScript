@@ -1,9 +1,10 @@
 require('../core/Base');
 require('./graphic/Graphic');
 var ol = require('openlayers/dist/ol-debug');
+var Util = require('../core/Util');
 ol.source.Graphic = function (options) {
-    this.canvasContext_ = ol.dom.createCanvasContext2D();
-    this.imageTransform = ol.transform.create();
+    this.canvasContext_ = Util.CreateCanvasContext2D();
+    this.imageTransform = [1, 0, 0, 1, 0, 0];
     this.graphics_ = options.graphics;
     ol.source.ImageCanvas.call(this, {
         attributions: options.attributions,
@@ -24,6 +25,7 @@ ol.source.Graphic.prototype.canvasFunctionInternal_ = function (extent, resoluti
     this.canvasContext_.canvas.height = height;
     this.imageTransform = this.getTransform_(ol.extent.getCenter(extent), resolution, pixelRatio, size);
     var vectorContext = new ol.render.canvas.Immediate(this.canvasContext_, pixelRatio, extent, this.imageTransform, 0);
+    //var vectorContext = ol.render.toContext(this.canvasContext_, {pixelRatio:pixelRatio, size:size});
     var graphics = this.getGraphicsInExtent(extent);
     graphics.map(function (graphic) {
         vectorContext.drawFeature(graphic, graphic.getStyle());
@@ -34,7 +36,7 @@ ol.source.Graphic.prototype.canvasFunctionInternal_ = function (extent, resoluti
 ol.source.Graphic.prototype.forEachFeatureAtCoordinate = function (coordinate, resolution, rotation, hitTolerance, skippedFeatureUids, callback) {
     var graphics = this.getGraphicsInExtent();
     for (var i = 0; i < graphics.length; i++) {
-        var center = graphics[i].getGeometry().flatCoordinates;
+        var center = graphics[i].getGeometry().getCoordinates();
         var image = graphics[i].getStyle().getImage();
         var extent = [];
         extent[0] = center[0] - image.getAnchor()[0] * resolution;
@@ -56,7 +58,6 @@ ol.source.Graphic.prototype.getTransform_ = function (center, resolution, pixelR
     var dy2 = -center[1];
     return ol.transform.compose(this.imageTransform, dx1, dy1, sx, sy, 0, dx2, dy2);
 };
-
 ol.source.Graphic.prototype.getGraphicsInExtent = function (extent) {
     var graphics = [];
     if (!extent) {

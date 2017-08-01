@@ -93,8 +93,8 @@ ol.supermap.TrafficTransferAnalystService.prototype._processParams = function (p
     if (params.points && Util.isArray(params.points)) {
         params.points.map(function (point, key) {
             params.points[key] = (point instanceof ol.geom.Point) ? {
-                x: point.flatCoordinates[0],
-                y: point.flatCoordinates[1]
+                x: point.getCoordinates()[0],
+                y: point.getCoordinates()[1]
             } : point;
         });
     }

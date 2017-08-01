@@ -21,7 +21,6 @@ ol.source.TileSuperMapRest = function (options) {
     //当前切片在切片集中的index
     this.tileSetsIndex = -1;
     this.tempIndex = -1;
-
     function appendCredential(url, serverType) {
         var newUrl = url, credential, value;
         switch (serverType) {
@@ -124,8 +123,20 @@ ol.source.TileSuperMapRest = function (options) {
 
     function tileUrlFunction(tileCoord, pixelRatio, projection) {
         this.projection = projection;
-        if (!this.tileGrid) {
-            this.tileGrid = this.getTileGridForProjection(projection);
+        if(!this.tileGrid){
+            if(this.extent){
+                this.tileGrid = ol.source.TileSuperMapRest.createTileGrid(options.extent);
+                if(this.resolutions){
+                    this.tileGrid.resolutions=this.resolutions;
+                }
+            }else{
+                if(projection.getCode()==="EPSG:3857"){
+                    this.tileGrid = ol.source.TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
+                }
+                if(projection.getCode()==="EPSG:4326"){
+                    this.tileGrid = ol.source.TileSuperMapRest.createTileGrid([-180,-90,180,90]);
+                }
+            }
         }
         var z = tileCoord[0];
         var x = tileCoord[1];
@@ -144,6 +155,20 @@ ol.source.TileSuperMapRest = function (options) {
         var layerUrl = getFullRequestUrl.call(this);
         return layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale;
     }
+
+
+    // var me =this;
+    // if(options.tileGrid){
+    //     options.state="ready";
+    // }else{
+    //     options.state="loading";
+    //     SuperMap.FetchRequest.get(options.url ).then(function (response) {
+    //         return response.json();
+    //     }).then(function(result){
+    //         me.tileGrid=ol.source.TileSuperMapRest.optionsFromMapJSON(options.url,result).tileGrid;
+    //         me.setState("ready");
+    //     });
+    // }
 
 
     ol.source.TileImage.call(this, {
@@ -179,7 +204,7 @@ ol.source.TileSuperMapRest.prototype.getTileSetsInfo = function () {
         if (ol.supermap.Util.isArray(me.tileSets)) {
             me.tileSets = info.result[0];
         }
-        me.dispatchEvent(new ol.supermap.ResultEvent('tilesetsinfoloaded', {tileVersions: me.tileSets.tileVersions}));
+        me.dispatchEvent({type:'tilesetsinfoloaded',value:{tileVersions: me.tileSets.tileVersions}});
         me.changeTilesVersion();
     }
 };
@@ -216,7 +241,7 @@ ol.source.TileSuperMapRest.prototype.changeTilesVersion = function () {
         var result = me.mergeTileVersionParam(name);
         if (result) {
             me.tileSetsIndex = me.tempIndex;
-            me.dispatchEvent(new ol.supermap.ResultEvent('tileversionschanged', {tileVersion: tileVersions[me.tempIndex]}));
+            me.dispatchEvent({type:'tileversionschanged',value:{tileVersion: tileVersions[me.tempIndex]}});
         }
     }
 };
@@ -297,11 +322,5 @@ ol.source.TileSuperMapRest.createTileGrid = function (extent, maxZoom, minZoom, 
         }
     );
 };
-//通用事件
-ol.supermap.ResultEvent = function (type, opt_element) {
-    ol.events.Event.call(this, type);
-    this.result = opt_element;
-};
-ol.inherits(ol.supermap.ResultEvent, ol.events.Event);
 
 module.exports = ol.source.TileSuperMapRest;

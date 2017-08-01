@@ -131,5 +131,14 @@ ol.supermap.Util.Csv2GeoJSON = function (csv, options) {
         return json;
     }
 };
-
+ol.supermap.Util.CreateCanvasContext2D = function(opt_width, opt_height) {
+    var canvas = document.createElement('CANVAS');
+    if (opt_width) {
+        canvas.width = opt_width;
+    }
+    if (opt_height) {
+        canvas.height = opt_height;
+    }
+    return canvas.getContext('2d');
+};
 module.exports = ol.supermap.Util;

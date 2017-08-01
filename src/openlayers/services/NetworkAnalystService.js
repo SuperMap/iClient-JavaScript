@@ -286,8 +286,8 @@ ol.supermap.NetworkAnalystService.prototype._processParams = function (params) {
     if (params.centers && Util.isArray(params.centers)) {
         params.centers.map(function (point, key) {
             params.centers[key] = (point instanceof ol.geom.Point) ? {
-                x: point.flatCoordinates[0],
-                y: point.flatCoordinates[1]
+                x: point.getCoordinates()[0],
+                y: point.getCoordinates()[1]
             } : point;
         });
     }
@@ -295,21 +295,21 @@ ol.supermap.NetworkAnalystService.prototype._processParams = function (params) {
     if (params.nodes && Util.isArray(params.nodes)) {
         params.nodes.map(function (point, key) {
             params.nodes[key] = (point instanceof ol.geom.Point) ? {
-                x: point.flatCoordinates[0],
-                y: point.flatCoordinates[1]
+                x: point.getCoordinates()[0],
+                y: point.getCoordinates()[1]
             } : point;
         });
     }
 
     if (params.event && params.event instanceof ol.geom.Point) {
-        params.event = {x: params.event.flatCoordinates[0], y: params.event.flatCoordinates[1]};
+        params.event = {x: params.event.getCoordinates()[0], y: params.event.getCoordinates()[1]};
     }
 
     if (params.facilities && Util.isArray(params.facilities)) {
         params.facilities.map(function (point, key) {
             params.facilities[key] = (point instanceof ol.geom.Point) ? {
-                x: point.flatCoordinates[0],
-                y: point.flatCoordinates[1]
+                x: point.getCoordinates()[0],
+                y: point.getCoordinates()[1]
             } : point;
         });
     }
@@ -319,14 +319,14 @@ ol.supermap.NetworkAnalystService.prototype._processParams = function (params) {
         if (Util.isArray(barrierPoints)) {
             barrierPoints.map(function (point, key) {
                 params.parameter.barrierPoints[key] = (point instanceof ol.geom.Point) ? {
-                    x: point.flatCoordinates[0],
-                    y: point.flatCoordinates[1]
+                    x: point.getCoordinates()[0],
+                    y: point.getCoordinates()[1]
                 } : point;
             });
         } else {
             params.parameter.barrierPoints = [(barrierPoints instanceof ol.geom.Point) ? {
-                x: barrierPoints.flatCoordinates[0],
-                y: barrierPoints.flatCoordinates[1]
+                x: barrierPoints.getCoordinates()[0],
+                y: barrierPoints.getCoordinates()[1]
             } : barrierPoints];
         }
     }

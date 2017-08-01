@@ -67,9 +67,7 @@ ol.supermap.WebMap.prototype.createLayersByJson = function (layersJson) {
         }
         this.createLayer(type, layerInfo);
     }
-    this.dispatchEvent(
-        new ol.supermap.WebMap.Event(ol.supermap.WebMap.EventType.WEBMAPLOADEND,
-            this.map));
+    this.dispatchEvent({type: ol.supermap.WebMap.EventType.WEBMAPLOADEND, value: this.map});
 };
 ol.supermap.WebMap.prototype.addLayer = function (layer, options) {
     if (!this.map) {
@@ -353,18 +351,6 @@ ol.supermap.WebMap.prototype.createWmsLayer = function (layerInfo) {
         })
     })
 }
-ol.supermap.WebMap.Event = function (type, map) {
-
-    ol.events.Event.call(this, type);
-
-    /**
-     * The image related to the event.
-     * @type {ol.Image}
-     * @api
-     */
-    this.map = map;
-};
-ol.inherits(ol.supermap.WebMap.Event, ol.events.EventTarget);
 ol.supermap.WebMap.EventType = {
     WEBMAPLOADEND: 'webmaploadend',
 };

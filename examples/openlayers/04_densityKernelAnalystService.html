@@ -10,7 +10,7 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map" style="width: 100%;height:100%"></div>
 
-<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol-debug.js"></script>
+<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var map, options, densityAnalystResult,
@@ -122,8 +122,8 @@
                             transparent: true,
                             layersID: result.newResourceID,
                             tileGrid: new ol.tilegrid.TileGrid({
-                                extent: options.tileGrid.extent_,
-                                resolutions: options.tileGrid.resolutions_
+                                extent: extent,
+                                resolutions: options.tileGrid.getResolutions()
                             }),
                             opaque: true
                         })

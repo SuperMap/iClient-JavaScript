@@ -355,18 +355,18 @@ ol.supermap.SpatialAnalystService.prototype._processParams = function (params) {
         for (var i = 0; i < params.inputPoints.length; i++) {
             var inputPoint = params.points[i];
             if (Util.isArray(inputPoint)) {
-                inputPoint.flatCoordinates = inputPoint;
+                inputPoint.setCoordinates(inputPoint);
             }
-            params.inputPoints[i] = new SuperMap.Geometry.Point(inputPoint.flatCoordinates[0], inputPoint.flatCoordinates[1]);
+            params.inputPoints[i] = new SuperMap.Geometry.Point(inputPoint.getCoordinates()[0], inputPoint.getCoordinates()[1]);
         }
     }
     if (params.points) {
         for (var i = 0; i < params.points.length; i++) {
             var point = params.points[i];
             if (Util.isArray(point)) {
-                point.flatCoordinates = point;
+                point.setCoordinates(point);
             }
-            params.points[i] = new SuperMap.Geometry.Point(point.flatCoordinates[0], point.flatCoordinates[1]);
+            params.points[i] = new SuperMap.Geometry.Point(point.getCoordinates()[0], point.getCoordinates()[1]);
         }
     }
 

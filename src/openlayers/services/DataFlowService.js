@@ -6,7 +6,7 @@ var ServiceBase = require('./ServiceBase');
 var SuperMap = require('../../common/SuperMap');
 var DataFlow = require('../../common/iServer/DataFlowService');
 ol.supermap.DataFlowService = function (url, options) {
-    options = options||{};
+    options = options || {};
     if (options.projection) {
         this.options.prjCoordSys = new SuperMap.Projection(options.projection);
     }
@@ -63,6 +63,6 @@ ol.supermap.DataFlowService.prototype.unBroadcast = function () {
     this.dataFlow.unBroadcast();
 };
 ol.supermap.DataFlowService.prototype._defaultEvent = function (e) {
-    this.dispatchEvent(new ol.Collection.Event(e.eventType || e.type, e));
+    this.dispatchEvent({type: e.eventType || e.type, value: e});
 };
 module.exports = ol.supermap.DataFlowService;

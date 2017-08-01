@@ -262,11 +262,11 @@ ol.supermap.control.ChangeTileVersion.prototype.setLayer = function (layer) {
     var me = this;
     var tileLayer = me.options.layer;
     tileLayer.on("tilesetsinfoloaded", function (evt) {
-        var tileVersions = evt.result && evt.result.tileVersions;
+        var tileVersions = evt.value && evt.value.tileVersions;
         me.update(tileVersions);
     });
     tileLayer.on("tileversionschanged", function (evt) {
-        var tileVersions = evt.result && evt.result.tileVersion;
+        var tileVersions = evt.value && evt.value.tileVersion;
         me.setContent(tileVersions);
     });
     me.getTileSetsInfo();

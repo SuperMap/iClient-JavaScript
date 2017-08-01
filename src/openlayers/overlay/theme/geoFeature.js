@@ -40,7 +40,7 @@ ol.source.GeoFeature.prototype.addFeatures = function (features) {
         features = [features];
     }
     var event = {features: features};
-    this.dispatchEvent(new ol.Collection.Event('beforefeaturesadded', event));
+    this.dispatchEvent({type: 'beforefeaturesadded', value: event});
 
     features = event.features;
     var featuresFailAdded = [];
@@ -48,7 +48,7 @@ ol.source.GeoFeature.prototype.addFeatures = function (features) {
         this.features.push(this.toiClientFeature(features[i]));
     }
     var succeed = featuresFailAdded.length == 0 ? true : false;
-    this.dispatchEvent(new ol.Collection.Event('featuresadded', {features: featuresFailAdded, succeed: succeed}));
+    this.dispatchEvent({type: 'featuresadded', value: {features: featuresFailAdded, succeed: succeed}});
     if (!this.isCustomSetMaxCacheCount) {
         this.maxCacheCount = this.features.length * 5;
     }

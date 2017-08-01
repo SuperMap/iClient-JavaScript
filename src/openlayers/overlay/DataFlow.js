@@ -28,13 +28,13 @@ ol.source.DataFlow = function (opt_options) {
     }).initSubscribe();
     var me = this;
     me.dataService.on('subscribeSocketConnected', function (e) {
-        me.dispatchEvent(new ol.Collection.Event("subscribeSuccessed", e))
+        me.dispatchEvent({type:"subscribeSuccessed",value:e})
     });
     me.dataService.on('messageSuccessed', function (msg) {
         me._onMessageSuccessed(msg);
     });
     me.dataService.on('setFilterParamSuccessed', function (msg) {
-        me.dispatchEvent(new ol.Collection.Event("setFilterParamSuccessed", msg))
+        me.dispatchEvent({type:"setFilterParamSuccessed",value:msg})
     });
 };
 ol.inherits(ol.source.DataFlow, ol.source.Vector);
@@ -60,8 +60,8 @@ ol.source.DataFlow.prototype.setGeometry = function (geometry) {
 };
 ol.source.DataFlow.prototype._onMessageSuccessed = function (msg) {
     this.clear();
-    this.addFeature((new  ol.format.GeoJSON()).readFeature(msg.element.featureResult));
-    this.dispatchEvent(new ol.Collection.Event("dataUpdated", {source: this, data: msg.featureResult}))
+    this.addFeature((new  ol.format.GeoJSON()).readFeature(msg.value.featureResult));
+    this.dispatchEvent({type:"dataUpdated",value:{source: this, data: msg.featureResult}})
 };
 
 module.exports = ol.source.DataFlow;
