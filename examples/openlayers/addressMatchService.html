@@ -71,7 +71,7 @@
             <div class="input-group">
                 <span class="input-group-addon">过滤字段　</span>
                 <input id="filters" type="text" class="form-control"
-                       placeholder="北京市,海淀区"/>
+                       placeholder="北京"/>
             </div>
             <p>
             <div class="input-group">
@@ -117,7 +117,7 @@
             <div class="input-group">
                 <span class="input-group-addon">过滤字段　</span>
                 <input id="filters2" type="text" class="form-control"
-                       placeholder="北京市,海淀区"/>
+                       placeholder=""/>
             </div>
             <p>
             <div class="input-group">
@@ -241,12 +241,20 @@
         $("#geodecodeParam").addClass('active');
         $("#geocodeParam").removeClass('active');
     });
+    //判断输入字符串是否为空或者全部都是空格
+    function isNull(str) {
+        if (str == "") return true;
+        var regu = "^[ ]+$";
+        var re = new RegExp(regu);
+        return re.test(str);
+    }
+    var filters = $('#filters').val() || $('#filters').attr('placeholder');
     $("#codeBtn").click(function () {
         var geoCodeParam = new SuperMap.GeoCodingParameter({
             address: $('#address').val() || $('#address').attr('placeholder'),
             fromIndex: $('#fromIndex').val() || $('#fromIndex').attr('placeholder'),
             toIndex: $('#toIndex').val() || $('#toIndex').attr('placeholder'),
-            filters: $('#filters').val() || $('#filters').attr('placeholder'),
+            filters: isNull(filters) ? '' : filters,
             prjCoordSys: $('#prjCoordSys').val() || $('#prjCoordSys').attr('placeholder'),
             maxReturn: $('#maxReturn').val() || $('#maxReturn').attr('placeholder')
         });
