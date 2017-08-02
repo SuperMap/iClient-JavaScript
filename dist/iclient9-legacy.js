@@ -2211,7 +2211,7 @@ SuperMap.REST.ProcessingService = SuperMap.Class(ServiceBase, {
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJobs
-     * @description 获取格网聚合分析的列表。
+     * @description 获取点聚合分析的列表。
      * @param callback - {function}  请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {SuperMap.REST.ProcessingService}
@@ -2234,7 +2234,7 @@ SuperMap.REST.ProcessingService = SuperMap.Class(ServiceBase, {
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJob
-     * @description 获取某一个格网聚合分析。
+     * @description 获取某一个点聚合分析。
      * @param id - {String}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
@@ -2258,8 +2258,8 @@ SuperMap.REST.ProcessingService = SuperMap.Class(ServiceBase, {
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.addSummaryMeshJob
-     * @description 新建一个格网聚合分析。
-     * @param params - {SuperMap.SummaryMeshJobParameter} 格网聚合分析任务参数类。
+     * @description 新建一个点聚合分析。
+     * @param params - {SuperMap.SummaryMeshJobParameter} 点聚合分析任务参数类。
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
@@ -2286,8 +2286,8 @@ SuperMap.REST.ProcessingService = SuperMap.Class(ServiceBase, {
 
     /**
      * @function SuperMap.REST.ProcessingService.prototype.getSummaryMeshJobState
-     * @description 获取格网聚合分析的状态。
-     * @param id - {String} 格网聚合分析的id。
+     * @description 获取点聚合分析的状态。
+     * @param id - {String} 点聚合分析的id。
      */
     getSummaryMeshJobState: function getSummaryMeshJobState(id) {
         return this.summaryMeshJobs[id];
@@ -3463,7 +3463,7 @@ var SuperMap = __webpack_require__(0);
 
 /**
  * @class SuperMap.SummaryMeshJobParameter
- * @description 格网聚合分析任务参数类
+ * @description 点聚合分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{String} 数据集名。<br>
  *        query -{SuperMap.Bounds} 分析范围。<br>
@@ -3589,8 +3589,8 @@ var SummaryMeshJobParameter = __webpack_require__(19);
 
 /**
  * @class SuperMap.SummaryMeshJobsService
- * @description 格网聚合分析大数据任务类。
- * @param url -{String} 格网聚合分析任务地址。
+ * @description 点聚合分析大数据任务类。
+ * @param url -{String} 点聚合分析任务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
 SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingServiceBase, {
@@ -3609,7 +3609,7 @@ SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingServiceBase, {
 
     /**
      * @function SuperMap.SummaryMeshJobsService.protitype.getSummaryMeshJobs
-     * @description 获取格网聚合分析大数据
+     * @description 获取点聚合分析大数据
      */
     getSummaryMeshJobs: function getSummaryMeshJobs() {
         return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url]);
@@ -3617,7 +3617,7 @@ SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingServiceBase, {
 
     /**
      * @function SuperMap.SummaryMeshJobsService.protitype.getSummaryMeshJob
-     * @description 获取指定ip的格网聚合分析大数据
+     * @description 获取指定ip的点聚合分析大数据
      * @param id -{String} 指定要获取数据的id
      */
     getSummaryMeshJob: function getSummaryMeshJob(id) {
@@ -3626,7 +3626,7 @@ SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingServiceBase, {
 
     /**
      * @function SuperMap.SummaryMeshJobsService.protitype.addSummaryMeshJob
-     * @description 新建格网聚合分析大数据服务
+     * @description 新建点聚合分析大数据服务
      * @param params - {SuperMap.SummaryMeshJobParameter} 创建一个空间分析的请求参数。
      * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
      */

@@ -218,7 +218,7 @@ var exampleConfig = {
                     thumbnail: "kernelDensityJobService.png",
                     fileName: "kernelDensityJobService"
                 }, {
-                    name: "格网聚合分析",
+                    name: "点聚合分析",
                     thumbnail: "SummaryMeshJobService.png",
                     fileName: "SummaryMeshJobService"
                 }, {

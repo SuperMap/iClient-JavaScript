@@ -2,7 +2,7 @@ var SuperMap = require('../SuperMap');
 
 /**
  * @class SuperMap.SummaryMeshJobParameter
- * @description 格网聚合分析任务参数类
+ * @description 点聚合分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{String} 数据集名。<br>
  *        query -{SuperMap.Bounds} 分析范围。<br>
