@@ -212,7 +212,7 @@ var exampleConfig = {
                 }]
             },
             "processingJobs": {
-                name: "大数据空间分析",
+                name: "大数据分析",
                 content: [{
                     name: "密度分析作业",
                     thumbnail: "kernelDensityJobService.png",
@@ -229,7 +229,10 @@ var exampleConfig = {
                     name: "单对象查询分析作业",
                     thumbnail: "l_singleObjectQueryJob.png",
                     fileName: "singleObjectQueryJobService"
-
+                }, {
+                    name: "范围分析作业",
+                    thumbnail: "SummaryRegionJobService.png",
+                    fileName: "SummaryRegionJobService"
                 }]
             },
             "addressMatch": {

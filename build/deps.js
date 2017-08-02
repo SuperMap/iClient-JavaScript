@@ -90,6 +90,8 @@ deps = {
             "./src/common/iServer/KernelDensityJobsService.js",
             "./src/common/iServer/BuildCacheJobsService.js",
             "./src/common/iServer/SingleObjectQueryJobsService.js",
+            "./src/common/iServer/SummaryMeshJobsService.js",
+            "./src/common/iServer/SummaryRegionJobsService.js",
             //AddressService
             "./src/common/iServer/AddressMatchService.js",
         ],
@@ -323,7 +325,7 @@ deps = {
                 "modules": [{
                     "name": "L.supermap.dataFlowService",
                     "des": "实时大数据服务"
-                },{
+                }, {
                     "name": "L.supermap.dataFlowLayer",
                     "des": "实时大数据图层"
                 }]
@@ -609,7 +611,7 @@ deps = {
                 "modules": [{
                     "name": "ol.supermap.DataFlowService",
                     "des": "实时大数据服务"
-                },{
+                }, {
                     "name": "ol.source.DataFlow",
                     "des": "实时大数据"
                 }]

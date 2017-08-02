@@ -10,7 +10,7 @@ var exampleConfig = {
         name: "iServer",
         content: {
             "processingJobs": {
-                name: "大数据空间分析",
+                name: "大数据分析",
                 content: [{
                     name: "密度分析作业",
                     thumbnail: "kernelDensityJobService.png",
@@ -23,11 +23,15 @@ var exampleConfig = {
                     name: "生成地图缓存作业",
                     thumbnail: "buildCacheService.png",
                     fileName: "buildCacheService"
-                },{
+                }, {
                     name: "单对象查询分析作业",
                     thumbnail: "lg_singleObjectQueryJob.png",
                     fileName: "singleObjectQueryJobService"
 
+                }, {
+                    name: "范围分析作业",
+                    thumbnail: "SummaryRegionJobService.png",
+                    fileName: "SummaryRegionJobService"
                 }]
             },
             "addressMatch": {
@@ -66,7 +70,7 @@ var exampleConfig = {
  *不分层
  */
 var sideBarIconConfig = {
-	"iServer": "fa-server",
+    "iServer": "fa-server",
     "viz": "fa-map",
 };
 
@@ -76,6 +80,6 @@ var sideBarIconConfig = {
  *与sideBarIconConfig的区别：sideBarIconConfig包括侧边栏所有层级目录的图标，exampleIconConfig仅包括一级标题的图标
  */
 var exampleIconConfig = {
-	"iServer": "fa-server",
+    "iServer": "fa-server",
     "viz": "fa-map",
 };

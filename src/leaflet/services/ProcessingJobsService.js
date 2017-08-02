@@ -14,6 +14,7 @@ var KernelDensityJobsService = require('../../common/iServer/KernelDensityJobsSe
 var SingleObjectQueryJobsService = require('../../common/iServer/SingleObjectQueryJobsService');
 var BuildCacheJobsService = require('../../common/iServer/BuildCacheJobsService');
 var SummaryMeshJobsService = require('../../common/iServer/SummaryMeshJobsService');
+var SummaryRegionJobsService = require('../../common/iServer/SummaryRegionJobsService');
 /**
  * @class L.supermap.ProcessingJobsService
  * @description 大数据处理相关服务类
@@ -43,6 +44,7 @@ var ProcessingJobsService = ServiceBase.extend({
         this.buildCacheJobs = {};
         this.summaryMeshJobs = {};
         this.queryJobs = {};
+        this.summaryRegionJobs = {};
     },
 
     /**
@@ -180,7 +182,7 @@ var ProcessingJobsService = ServiceBase.extend({
     /**
      * @function L.supermap.ProcessingJobsService.prototype.addSummaryMeshJob
      * @description 新建一个格网聚合分析作业。
-     * @param params - {SummaryMeshJobParameter} 格网聚合分析任务参数类。
+     * @param params - {SuperMap.SummaryMeshJobParameter} 格网聚合分析任务参数类。
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
@@ -265,7 +267,7 @@ var ProcessingJobsService = ServiceBase.extend({
     /**
      * @function L.supermap.ProcessingJobsService.prototype.addBuildCacheJob
      * @description 新建一个生成地图缓存作业。
-     * @param params - {BuildCacheJobParameter} 地图缓存作业参数类
+     * @param params - {SuperMap.BuildCacheJobParameter} 地图缓存作业参数类
      * @param callback - {function} 请求结果的回调函数
      * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔
      * @param resultFormat -{SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
@@ -383,6 +385,91 @@ var ProcessingJobsService = ServiceBase.extend({
      */
     getQueryJobState: function (id) {
         return this.queryJobs[id];
+    },
+
+    /**
+     * @function L.supermap.ProcessingJobsService.prototype.getSummaryRegionJobs
+     * @description 获取范围分析作业的列表。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {L.supermap.ProcessingJobsService}
+     */
+    getSummaryRegionJobs: function (callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        summaryRegionJobsService.getSummaryRegionJobs();
+        return me;
+    },
+
+    /**
+     * @function L.supermap.ProcessingJobsService.prototype.getSummaryRegionJob
+     * @description 获取某一个范围分析作业。
+     * @param id - {String}范围分析作业的id。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {L.supermap.ProcessingJobsService}
+     */
+    getSummaryRegionJob: function (id, callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        summaryRegionJobsService.getSummaryRegionJob(id);
+        return me;
+    },
+
+    /**
+     * @function L.supermap.ProcessingJobsService.prototype.addSummaryRegionJob
+     * @description 新建一个范围分析作业。
+     * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个范围分析作业的请求参数。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {L.supermap.ProcessingJobsService}
+     */
+    addSummaryRegionJob: function (params, callback, seconds, resultFormat) {
+        var me = this,
+            param = me._processParams(params),
+            format = me._processFormat(resultFormat);
+        var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback,
+                processRunning: function (job) {
+                    me.summaryRegionJobs[job.id] = job.state;
+                }
+            },
+            format: format
+        });
+        summaryRegionJobsService.addSummaryRegionJob(param, seconds);
+        return me;
+    },
+
+    /**
+     * @function L.supermap.ProcessingJobsService.prototype.getSummaryRegionJobState
+     * @description 获取范围分析作业的状态。
+     * @param id - {String}范围分析作业的id。
+     */
+    getSummaryRegionJobState: function (id) {
+        return this.summaryRegionJobs[id];
     },
 
     _processFormat: function (resultFormat) {

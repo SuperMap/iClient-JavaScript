@@ -100,7 +100,7 @@
         });
     map.addControl(new SuperMap.Control.MousePosition());
 
-    query = [];
+    var query = [];
     ($('#query').val() || $('#query').attr('placeholder')).split(',').map(function (el) {
         return query.push(parseFloat(el));
     });

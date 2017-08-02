@@ -71,7 +71,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 29);
+/******/ 	return __webpack_require__(__webpack_require__.s = 31);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -214,7 +214,7 @@ module.exports = SuperMap.ProcessingJobsServiceBase;
 "use strict";
 
 
-__webpack_require__(22);
+__webpack_require__(24);
 var SuperMap = __webpack_require__(0);
 /**
  * @class SuperMap.ServiceBase common服务基类
@@ -1635,8 +1635,8 @@ SuperMap.ChartType = {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-__webpack_require__(27);
-var fetchJsonp = __webpack_require__(26);
+__webpack_require__(29);
+var fetchJsonp = __webpack_require__(28);
 var SuperMap = __webpack_require__(0);
 
 SuperMap.Support = {
@@ -1815,7 +1815,7 @@ module.exports = SuperMap;
  * MapV图层。
  */
 var SuperMap = __webpack_require__(3);
-var MapVRenderer = __webpack_require__(25);
+var MapVRenderer = __webpack_require__(27);
 SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
 
     /**
@@ -2089,6 +2089,7 @@ var KernelDensityJobsService = __webpack_require__(16);
 var SingleObjectQueryJobsService = __webpack_require__(18);
 var BuildCacheJobsService = __webpack_require__(12);
 var SummaryMeshJobsService = __webpack_require__(20);
+var SummaryRegionJobsService = __webpack_require__(22);
 
 SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
 
@@ -2098,12 +2099,15 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         this.buildCacheJobs = {};
         this.summaryMeshJobs = {};
         this.queryJobs = {};
+        this.summaryRegionJobs = {};
     },
 
     /**
-     * 获取密度分析作业的列表。
-     * @param callback 请求结果的回调函数。
-     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getKernelDensityJobs
+     * @description 获取密度分析作业的列表。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
      */
     getKernelDensityJobs: function getKernelDensityJobs(callback, resultFormat) {
         var me = this,
@@ -2122,10 +2126,12 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
     },
 
     /**
-     * 获取某一个密度分析作业。
-     * @param id 空间分析作业的id。
-     * @param callback 请求结果的回调函数。
-     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getKernelDensityJob
+     * @description 获取某一个密度分析作业。
+     * @param id - {String}空间分析作业的id。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
      */
     getKernelDensityJob: function getKernelDensityJob(id, callback, resultFormat) {
         var me = this,
@@ -2143,6 +2149,15 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         return me;
     },
 
+    /**
+     * @function SuperMap.REST.ProcessingJobsService.prototype.addKernelDensityJob
+     * @description 新建一个密度分析作业。
+     * @param params -{SuperMap.KernelDensityJobParameter} 创建一个空间分析作业的请求参数。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
+     */
     addKernelDensityJob: function addKernelDensityJob(params, callback, seconds, resultFormat) {
         var me = this,
             param = me._processParams(params),
@@ -2163,17 +2178,20 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
     },
 
     /**
-     * 获取密度分析作业的状态。
-     * @param id 密度分析作业的id。
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getKernelDensityJobState
+     * @description 获取密度分析作业的状态。
+     * @param id - {String}密度分析作业的id。
      */
     getKernelDensityJobState: function getKernelDensityJobState(id) {
         return this.kernelDensityJobs[id];
     },
 
     /**
-     * 获取格网聚合分析作业的列表。
-     * @param callback 请求结果的回调函数。
-     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getSummaryMeshJobs
+     * @description 获取格网聚合分析作业的列表。
+     * @param callback - {function}  请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
      */
     getSummaryMeshJobs: function getSummaryMeshJobs(callback, resultFormat) {
         var me = this,
@@ -2192,10 +2210,12 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
     },
 
     /**
-     * 获取某一个格网聚合分析作业。
-     * @param id 空间分析作业的id。
-     * @param callback 请求结果的回调函数。
-     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getSummaryMeshJob
+     * @description 获取某一个格网聚合分析作业。
+     * @param id - {String}空间分析作业的id。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
      */
     getSummaryMeshJob: function getSummaryMeshJob(id, callback, resultFormat) {
         var me = this,
@@ -2214,9 +2234,13 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
     },
 
     /**
-     * 新建一个格网聚合分析作业。
-     * @param callback 请求结果的回调函数。
-     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     * @function SuperMap.REST.ProcessingJobsService.prototype.addSummaryMeshJob
+     * @description 新建一个格网聚合分析作业。
+     * @param params - {SuperMap.SummaryMeshJobParameter} 格网聚合分析任务参数类。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
      */
     addSummaryMeshJob: function addSummaryMeshJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -2238,17 +2262,20 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
     },
 
     /**
-     * 获取格网聚合分析作业的状态。
-     * @param id 格网聚合分析作业的id。
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getSummaryMeshJobState
+     * @description 获取格网聚合分析作业的状态。
+     * @param id - {String} 格网聚合分析作业的id。
      */
     getSummaryMeshJobState: function getSummaryMeshJobState(id) {
         return this.summaryMeshJobs[id];
     },
 
     /**
-     * 获取生成地图缓存作业的列表。
-     * @param callback 请求结果的回调函数。
-     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getBuildCacheJobs
+     * @description 获取生成地图缓存作业的列表。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
      */
     getBuildCacheJobs: function getBuildCacheJobs(callback, resultFormat) {
         var me = this,
@@ -2267,10 +2294,12 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
     },
 
     /**
-     * 获取某一个生成地图缓存作业。
-     * @param id 空间分析作业的id。
-     * @param callback 请求结果的回调函数。
-     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getBuildCacheJob
+     * @description 获取某一个生成地图缓存作业。
+     * @param id - {String} 空间分析作业的id。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
      */
     getBuildCacheJob: function getBuildCacheJob(id, callback, resultFormat) {
         var me = this,
@@ -2289,9 +2318,13 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
     },
 
     /**
-     * 新建一个生成地图缓存作业。
-     * @param callback 请求结果的回调函数。
-     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     * @function SuperMap.REST.ProcessingJobsService.prototype.addBuildCacheJob
+     * @description 新建一个生成地图缓存作业。
+     * @param params - {SuperMap.BuildCacheJobParameter} 地图缓存作业参数类
+     * @param callback - {function} 请求结果的回调函数
+     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔
+     * @param resultFormat -{SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
      */
     addBuildCacheJob: function addBuildCacheJob(params, callback, seconds, resultFormat) {
         var me = this,
@@ -2313,17 +2346,20 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
     },
 
     /**
-     * 获取生成地图缓存作业的状态。
-     * @param id 生成地图缓存作业的id。
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getBuildCacheJobState
+     * @description 获取生成地图缓存作业的状态。
+     * @param id - {String}生成地图缓存作业的id。
      */
     getBuildCacheJobState: function getBuildCacheJobState(id) {
         return this.buildCacheJobs[id];
     },
 
     /**
-     * 获取单对象查询分析作业的列表。
-     * @param callback 请求结果的回调函数。
-     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getQueryJobs
+     * @description 获取单对象查询分析作业的列表。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
      */
     getQueryJobs: function getQueryJobs(callback, resultFormat) {
         var me = this,
@@ -2342,10 +2378,12 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
     },
 
     /**
-     * 获取某一个单对象查询分析作业。
-     * @param id 空间分析作业的id。
-     * @param callback 请求结果的回调函数。
-     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getQueryJob
+     * @description 获取某一个单对象查询分析作业。
+     * @param id - {String}空间分析作业的id。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
      */
     getQueryJob: function getQueryJob(id, callback, resultFormat) {
         var me = this,
@@ -2363,6 +2401,15 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         return me;
     },
 
+    /**
+     * @function SuperMap.REST.ProcessingJobsService.prototype.addQueryJob
+     * @description 新建一个单对象查询分析作业。
+     * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析作业的请求参数。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
+     */
     addQueryJob: function addQueryJob(params, callback, seconds, resultFormat) {
         var me = this,
             param = me._processParams(params),
@@ -2383,11 +2430,96 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
     },
 
     /**
-     * 获取单对象查询分析作业的状态。
-     * @param id 单对象查询分析作业的id。
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getQueryJobState
+     * @description 获取单对象查询分析作业的状态。
+     * @param id - {String}单对象查询分析作业的id。
      */
     getQueryJobState: function getQueryJobState(id) {
         return this.queryJobs[id];
+    },
+
+    /**
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getSummaryRegionJobs
+     * @description 获取范围分析作业的列表。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
+     */
+    getSummaryRegionJobs: function getSummaryRegionJobs(callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        summaryRegionJobsService.getSummaryRegionJobs();
+        return me;
+    },
+
+    /**
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getSummaryRegionJob
+     * @description 获取某一个范围分析作业。
+     * @param id - {String}范围分析作业的id。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
+     */
+    getSummaryRegionJob: function getSummaryRegionJob(id, callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        summaryRegionJobsService.getSummaryRegionJob(id);
+        return me;
+    },
+
+    /**
+     * @function SuperMap.REST.ProcessingJobsService.prototype.addSummaryRegionJob
+     * @description 新建一个范围分析作业。
+     * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个范围分析作业的请求参数。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.ProcessingJobsService}
+     */
+    addSummaryRegionJob: function addSummaryRegionJob(params, callback, seconds, resultFormat) {
+        var me = this,
+            param = me._processParams(params),
+            format = me._processFormat(resultFormat);
+        var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback,
+                processRunning: function processRunning(job) {
+                    me.summaryRegionJobs[job.id] = job.state;
+                }
+            },
+            format: format
+        });
+        summaryRegionJobsService.addSummaryRegionJob(param, seconds);
+        return me;
+    },
+
+    /**
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getSummaryRegionJobState
+     * @description 获取范围分析作业的状态。
+     * @param id - {String}范围分析作业的id。
+     */
+    getSummaryRegionJobState: function getSummaryRegionJobState(id) {
+        return this.summaryRegionJobs[id];
     },
 
     _processFormat: function _processFormat(resultFormat) {
@@ -2406,7 +2538,6 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         }
         return params;
     }
-
 });
 
 module.exports = SuperMap.REST.ProcessingJobsService;
@@ -3367,6 +3498,238 @@ module.exports = SuperMap.SummaryMeshJobsService;
 "use strict";
 
 
+var SuperMap = __webpack_require__(0);
+
+/**
+ * @class SuperMap.SummaryRegionJobParameter
+ * @description 范围汇总分析任务参数类
+ * @param options - {Object} 可选参数。如：<br>
+ *         datasetName -{String} 数据集名。 <br>
+ *         sumShape -{Boolean} 是否统计长度或面积。 <br>
+ *         query -{SuperMap.Bounds} 分析范围。 <br>
+ *         standardSummaryFields -{Boolean} 以标准属字段统计。 <br>
+ *         standardFields -{String} 以标准属字段统计的字段名称。 <br>
+ *         standardStatisticModes -{String} 以标准属字段统计的统计模式。 <br>
+ *         weightedSummaryFields -{Boolean} 以权重字段统计。 <br>
+ *         weightedFields -{String} 以权重字段统计的字段名称。 <br>
+ *         weightedStatisticModes -{String} 以权重字段统计的统计模式。 <br>
+ *         resolution -{number} 网格大小。 <br>
+ *         meshType -{number} 网格面汇总类型。 <br>
+ *         meshSizeUnit -{String} 网格大小单位。 <br>
+ *         type -{String} 汇总类型。 <br>
+ */
+SuperMap.SummaryRegionJobParameter = SuperMap.Class({
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{String}
+     * @description 数据集名。
+     */
+    datasetName: null,
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{String}
+     * @description 汇总数据源（多边形汇总时用到的参数）。
+     */
+    regionDataset: null,
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{Boolean}
+     * @description 是否统计长度或面积。
+     */
+    sumShape: true,
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.query -{SuperMap.Bounds}
+     * @description 分析范围。
+     */
+    query: null,
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{Boolean}
+     * @description 以标准属字段统计。
+     */
+    standardSummaryFields: false,
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{String}
+     * @description 以标准属字段统计的字段名称。
+     */
+    standardFields: "",
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes -{String}
+     * @description 以标准属字段统计的统计模式。
+     */
+    standardStatisticModes: "",
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields -{Boolean}
+     * @description 以权重字段统计。
+     */
+    weightedSummaryFields: false,
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedFields -{String}
+     * @description 以权重字段统计的字段名称。
+     */
+    weightedFields: "",
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedStatisticModes -{String}
+     * @description 以权重字段统计的统计模式。
+     */
+    weightedStatisticModes: "",
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.meshType -{number}
+     * @description 网格面汇总类型。
+     */
+    meshType: 0,
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.resolution -{number}
+     * @description 网格大小。
+     */
+    resolution: null,
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit -{String}
+     * @description 网格大小单位。
+     */
+    meshSizeUnit: null,
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.type -{String}
+     * @description 汇总类型。
+     */
+    type: "",
+
+    initialize: function initialize(options) {
+        if (!options) {
+            return;
+        }
+        SuperMap.Util.extend(this, options);
+    },
+
+    /**
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy: function destroy() {
+        this.datasetName = null;
+        this.sumShape = null;
+        this.query = null;
+        this.standardSummaryFields = null;
+        this.standardFields = null;
+        this.standardStatisticModes = null;
+        this.weightedSummaryFields = null;
+        this.weightedFields = null;
+        this.weightedStatisticModes = null;
+        this.meshType = null;
+        this.resolution = null;
+        this.meshSizeUnit = null;
+        this.type = null;
+    }
+
+});
+
+SuperMap.SummaryRegionJobParameter.toObject = function (summaryRegionJobParameter, tempObj) {
+    for (var name in summaryRegionJobParameter) {
+        if (name === "datasetName") {
+            tempObj['input'] = tempObj['input'] || {};
+            tempObj['input'][name] = summaryRegionJobParameter[name];
+            continue;
+        }
+        if (name === "type") {
+            tempObj['type'] = summaryRegionJobParameter[name];
+            continue;
+        }
+        if (summaryRegionJobParameter.type === "SUMMARYREGION" || summaryRegionJobParameter.type === "SUMMARYMESH" && name !== "regionDataset") {
+            tempObj['analyst'] = tempObj['analyst'] || {};
+            tempObj['analyst'][name] = summaryRegionJobParameter[name];
+        }
+    }
+};
+
+module.exports = SuperMap.SummaryRegionJobParameter;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var SuperMap = __webpack_require__(0);
+var ProcessingJobsServiceBase = __webpack_require__(1);
+var SummaryRegionJobParameter = __webpack_require__(21);
+/**
+ * @class SuperMap.SummaryRegionJobsService
+ * @description 范围汇总分析服务类
+ * @augments SuperMap.ProcessingJobsServiceBase
+ * @param url -{String} 范围汇总分析服务地址。
+ * @param options - {Object} 范围汇总分析服务可选参数。
+ */
+SuperMap.SummaryRegionJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+
+    /**
+     * @function SuperMap.SummaryRegionJobsService.protitype.initialize
+     * @description SuperMap.SummaryRegionJobsService 的构造函数
+     * @param url -{String} 范围汇总分析服务地址。
+     * @param options - {Object} 范围汇总分析服务可选参数。
+     */
+    initialize: function initialize(url, options) {
+        ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        this.url += "/spatialanalyst/summaryregion";
+    },
+
+    /**
+     *@inheritDoc
+     */
+    destroy: function destroy() {
+        ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
+    },
+
+    /**
+     * @function SuperMap.SummaryRegionJobsService.protitype.getSummaryRegionJobs
+     * @description 获取范围汇总分析任务集合。
+     * @return {*}
+     */
+    getSummaryRegionJobs: function getSummaryRegionJobs() {
+        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
+    },
+
+    /**
+     * @function SuperMap.SummaryRegionJobsService.protitype.getSummaryRegionJob
+     * @description 获取指定id的范围汇总分析任务。
+     * @param id -{String} 要获取范围汇总分析任务的id
+     */
+    getSummaryRegionJob: function getSummaryRegionJob(id) {
+        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
+    },
+
+    /**
+     * @function SuperMap.SummaryRegionJobsService.protitype.addSummaryRegionJob
+     * @description 新建范围汇总任务。
+     * @param params - {SuperMap.SummaryRegionJobParameter} 创建一个范围汇总任务的请求参数。
+     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     */
+    addSummaryRegionJob: function addSummaryRegionJob(params, seconds) {
+        return ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, SummaryRegionJobParameter, seconds]);
+    },
+
+    CLASS_NAME: "SuperMap.SummaryRegionJobsService"
+});
+
+module.exports = SuperMap.SummaryRegionJobsService;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 /*
  * key申请参数
  */
@@ -3410,15 +3773,15 @@ SuperMap.KeyServiceParameter = SuperMap.Class({
 module.exports = SuperMap.KeyServiceParameter;
 
 /***/ }),
-/* 22 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
+__webpack_require__(25);
+__webpack_require__(26);
 __webpack_require__(23);
-__webpack_require__(24);
-__webpack_require__(21);
 var Request = __webpack_require__(5);
 var SuperMap = __webpack_require__(0);
 
@@ -3605,7 +3968,7 @@ SuperMap.SecurityManager.ONLINE = "http://www.supermapol.com";
 module.exports = SuperMap.SecurityManager;
 
 /***/ }),
-/* 23 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3669,7 +4032,7 @@ SuperMap.ServerInfo = SuperMap.Class({
 module.exports = SuperMap.ServerInfo;
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3725,7 +4088,7 @@ SuperMap.TokenServiceParameter = SuperMap.Class({
 module.exports = SuperMap.TokenServiceParameter;
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3748,7 +4111,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var SuperMap = __webpack_require__(3);
 var mapv = {};
 try {
-    mapv = __webpack_require__(28);
+    mapv = __webpack_require__(30);
 } catch (ex) {
     mapv = {};
 }
@@ -4033,7 +4396,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
 module.exports = MapVRenderer;
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -4149,7 +4512,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -4616,14 +4979,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports) {
 
 if(typeof mapv === 'undefined') {var e = new Error("Cannot find module \"mapv\""); e.code = 'MODULE_NOT_FOUND'; throw e;}
 module.exports = mapv;
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(9);
