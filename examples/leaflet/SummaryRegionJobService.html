@@ -148,7 +148,8 @@
             if (serviceResult.error) {
                 $('#btn').prop('disabled', false);
                 $("#model").modal('hide');
-                showAlert("创建失败!<br>" + serviceResult.error.errorMsg, false);
+                var errorMsg = serviceResult.error.errorMsg || "code: " + serviceResult.error.code;
+                showAlert("创建失败!<br>" + errorMsg, false);
                 return;
             }
             serviceResult.result.setting.serviceInfo.targetServiceInfos.map(function (info) {
