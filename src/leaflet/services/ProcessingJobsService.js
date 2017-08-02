@@ -1,13 +1,4 @@
-﻿/*
- * Class: ProcessingJobsService
- * 大数据处理相关服务类
- * 用法：
- *      L.supermap.processingJobsService(url)
- *      .getKernelDensityJobs(function(result){
- *           //doSomething
- *      })
- */
-var L = require("leaflet");
+﻿var L = require("leaflet");
 var ServiceBase = require('./ServiceBase');
 var SuperMap = require('../../common/SuperMap');
 var KernelDensityJobsService = require('../../common/iServer/KernelDensityJobsService');
@@ -15,6 +6,7 @@ var SingleObjectQueryJobsService = require('../../common/iServer/SingleObjectQue
 var BuildCacheJobsService = require('../../common/iServer/BuildCacheJobsService');
 var SummaryMeshJobsService = require('../../common/iServer/SummaryMeshJobsService');
 var SummaryRegionJobsService = require('../../common/iServer/SummaryRegionJobsService');
+var VectorClipJobsService = require('../../common/iServer/VectorClipJobsService');
 /**
  * @class L.supermap.ProcessingJobsService
  * @description 大数据处理相关服务类
@@ -45,6 +37,7 @@ var ProcessingJobsService = ServiceBase.extend({
         this.summaryMeshJobs = {};
         this.queryJobs = {};
         this.summaryRegionJobs = {};
+        this.vectorClipJobs = {};
     },
 
     /**
@@ -470,6 +463,91 @@ var ProcessingJobsService = ServiceBase.extend({
      */
     getSummaryRegionJobState: function (id) {
         return this.summaryRegionJobs[id];
+    },
+
+    /**
+     * @function L.supermap.ProcessingJobsService.prototype.getVectorClipJobs
+     * @description 获取矢量裁剪分析作业的列表。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {L.supermap.ProcessingJobsService}
+     */
+    getVectorClipJobs: function (callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var vectorClipJobsService = new VectorClipJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        vectorClipJobsService.getVectorClipJobs();
+        return me;
+    },
+
+    /**
+     * @function L.supermap.ProcessingJobsService.prototype.getVectorClipJob
+     * @description 获取某一个矢量裁剪分析作业。
+     * @param id - {String}空间分析作业的id。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {L.supermap.ProcessingJobsService}
+     */
+    getVectorClipJob: function (id, callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var vectorClipJobsService = new VectorClipJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        vectorClipJobsService.getVectorClipJob(id);
+        return me;
+    },
+
+    /**
+     * @function L.supermap.ProcessingJobsService.prototype.addVectorClipJob
+     * @description 新建一个矢量裁剪分析作业。
+     * @param params -{SuperMap.VectorClipJobsParameter} 创建一个空间分析作业的请求参数。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {L.supermap.ProcessingJobsService}
+     */
+    addVectorClipJob: function (params, callback, seconds, resultFormat) {
+        var me = this,
+            param = me._processParams(params),
+            format = me._processFormat(resultFormat);
+        var vectorClipJobsService = new VectorClipJobsService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback,
+                processRunning: function (job) {
+                    me.vectorClipJobs[job.id] = job.state;
+                }
+            },
+            format: format
+        });
+        vectorClipJobsService.addVectorClipJob(param, seconds);
+        return me;
+    },
+
+    /**
+     * @function L.supermap.ProcessingJobsService.prototype.getVectorClipJobState
+     * @description 获取矢量裁剪分析作业的状态。
+     * @param id - {String}矢量裁剪分析作业的id。
+     */
+    getVectorClipJobState: function (id) {
+        return this.vectorClipJobs[id];
     },
 
     _processFormat: function (resultFormat) {

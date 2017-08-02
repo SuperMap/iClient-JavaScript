@@ -1018,3 +1018,12 @@ SuperMap.ChartType = {
     LINE: "Line",
     RING: "Ring"
 };
+
+/**
+ * 裁剪分析模式
+ * @type {{CLIP: string, INTERSECT: string}}
+ */
+SuperMap.ClipAnalystMode = {
+    CLIP: "clip",
+    INTERSECT: "intersect"
+};

@@ -233,6 +233,10 @@ var exampleConfig = {
                     name: "范围分析作业",
                     thumbnail: "SummaryRegionJobService.png",
                     fileName: "SummaryRegionJobService"
+                }, {
+                    name: "矢量裁剪分析作业",
+                    thumbnail: "l_vectorClipJob.png",
+                    fileName: "vectorClipJobService"
                 }]
             },
             "addressMatch": {

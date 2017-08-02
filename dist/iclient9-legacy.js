@@ -71,7 +71,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 31);
+/******/ 	return __webpack_require__(__webpack_require__.s = 33);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -214,7 +214,7 @@ module.exports = SuperMap.ProcessingJobsServiceBase;
 "use strict";
 
 
-__webpack_require__(24);
+__webpack_require__(26);
 var SuperMap = __webpack_require__(0);
 /**
  * @class SuperMap.ServiceBase common服务基类
@@ -1626,6 +1626,15 @@ SuperMap.ChartType = {
     RING: "Ring"
 };
 
+/**
+ * 裁剪分析模式
+ * @type {{CLIP: string, INTERSECT: string}}
+ */
+SuperMap.ClipAnalystMode = {
+    CLIP: "clip",
+    INTERSECT: "intersect"
+};
+
 /***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1635,8 +1644,8 @@ SuperMap.ChartType = {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-__webpack_require__(29);
-var fetchJsonp = __webpack_require__(28);
+__webpack_require__(31);
+var fetchJsonp = __webpack_require__(30);
 var SuperMap = __webpack_require__(0);
 
 SuperMap.Support = {
@@ -1815,7 +1824,7 @@ module.exports = SuperMap;
  * MapV图层。
  */
 var SuperMap = __webpack_require__(3);
-var MapVRenderer = __webpack_require__(27);
+var MapVRenderer = __webpack_require__(29);
 SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
 
     /**
@@ -2090,7 +2099,20 @@ var SingleObjectQueryJobsService = __webpack_require__(18);
 var BuildCacheJobsService = __webpack_require__(12);
 var SummaryMeshJobsService = __webpack_require__(20);
 var SummaryRegionJobsService = __webpack_require__(22);
-
+var VectorClipJobsService = __webpack_require__(24);
+/**
+ * @class SuperMap.REST.ProcessingJobsService
+ * @description 大数据处理相关服务类。
+ * @augments SuperMap.ServiceBase
+ * @example
+ * 用法：
+ *      new SuperMap.REST.ProcessingJobsService(url,options)
+ *      .getKernelDensityJobs(function(result){
+ *          //doSomething
+ *      })
+ * @param url -{String} 大数据服务地址。
+ * @param options - {Object} 交互服务时所需可选参数
+ */
 SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
 
     initialize: function initialize(url, options) {
@@ -2100,6 +2122,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         this.summaryMeshJobs = {};
         this.queryJobs = {};
         this.summaryRegionJobs = {};
+        this.vectorClipJobs = {};
     },
 
     /**
@@ -2113,7 +2136,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         var me = this,
             format = me._processFormat(resultFormat);
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
-            serverType: me.options.serverType,
+            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -2137,7 +2160,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         var me = this,
             format = me._processFormat(resultFormat);
         var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
-            serverType: me.options.serverType,
+            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -2197,7 +2220,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         var me = this,
             format = me._processFormat(resultFormat);
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
-            serverType: me.options.serverType,
+            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -2221,7 +2244,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         var me = this,
             format = me._processFormat(resultFormat);
         var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
-            serverType: me.options.serverType,
+            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -2281,7 +2304,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         var me = this,
             format = me._processFormat(resultFormat);
         var buildCacheJobsService = new BuildCacheJobsService(me.url, {
-            serverType: me.options.serverType,
+            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -2305,7 +2328,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         var me = this,
             format = me._processFormat(resultFormat);
         var buildCacheJobsService = new BuildCacheJobsService(me.url, {
-            serverType: me.options.serverType,
+            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -2365,7 +2388,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         var me = this,
             format = me._processFormat(resultFormat);
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
-            serverType: me.options.serverType,
+            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -2389,7 +2412,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         var me = this,
             format = me._processFormat(resultFormat);
         var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
-            serverType: me.options.serverType,
+            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -2449,7 +2472,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         var me = this,
             format = me._processFormat(resultFormat);
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
-            serverType: me.options.serverType,
+            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -2473,7 +2496,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         var me = this,
             format = me._processFormat(resultFormat);
         var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
-            serverType: me.options.serverType,
+            serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
@@ -2488,7 +2511,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
     /**
      * @function SuperMap.REST.ProcessingJobsService.prototype.addSummaryRegionJob
      * @description 新建一个范围分析作业。
-     * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个范围分析作业的请求参数。
+     * @param params -{SuperMap.SummaryRegionJobParameter} 创建一个范围分析作业的请求参数。
      * @param callback - {function} 请求结果的回调函数。
      * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
@@ -2520,6 +2543,91 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
      */
     getSummaryRegionJobState: function getSummaryRegionJobState(id) {
         return this.summaryRegionJobs[id];
+    },
+
+    /**
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getVectorClipJobs
+     * @description 获取矢量裁剪分析作业的列表。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {L.supermap.ProcessingJobsService}
+     */
+    getVectorClipJobs: function getVectorClipJobs(callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var vectorClipJobsService = new VectorClipJobsService(me.url, {
+            serverType: me.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        vectorClipJobsService.getVectorClipJobs();
+        return me;
+    },
+
+    /**
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getVectorClipJob
+     * @description 获取某一个矢量裁剪分析作业。
+     * @param id - {String}空间分析作业的id。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {L.supermap.ProcessingJobsService}
+     */
+    getVectorClipJob: function getVectorClipJob(id, callback, resultFormat) {
+        var me = this,
+            format = me._processFormat(resultFormat);
+        var vectorClipJobsService = new VectorClipJobsService(me.url, {
+            serverType: me.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            },
+            format: format
+        });
+        vectorClipJobsService.getVectorClipJob(id);
+        return me;
+    },
+
+    /**
+     * @function SuperMap.REST.ProcessingJobsService.prototype.addVectorClipJob
+     * @description 新建一个矢量裁剪分析作业。
+     * @param params -{SuperMap.VectorClipJobsParameter} 创建一个空间分析作业的请求参数。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {L.supermap.ProcessingJobsService}
+     */
+    addVectorClipJob: function addVectorClipJob(params, callback, seconds, resultFormat) {
+        var me = this,
+            param = me._processParams(params),
+            format = me._processFormat(resultFormat);
+        var vectorClipJobsService = new VectorClipJobsService(me.url, {
+            serverType: me.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback,
+                processRunning: function processRunning(job) {
+                    me.vectorClipJobs[job.id] = job.state;
+                }
+            },
+            format: format
+        });
+        vectorClipJobsService.addVectorClipJob(param, seconds);
+        return me;
+    },
+
+    /**
+     * @function SuperMap.REST.ProcessingJobsService.prototype.getVectorClipJobState
+     * @description 获取矢量裁剪分析作业的状态。
+     * @param id - {String}矢量裁剪分析作业的id。
+     */
+    getVectorClipJobState: function getVectorClipJobState(id) {
+        return this.vectorClipJobs[id];
     },
 
     _processFormat: function _processFormat(resultFormat) {
@@ -3730,6 +3838,146 @@ module.exports = SuperMap.SummaryRegionJobsService;
 "use strict";
 
 
+var SuperMap = __webpack_require__(0);
+/**
+ * @class SuperMap.VectorClipJobsParameter
+ * @description 矢量裁剪分析任务参数类
+ * @param options - {Object} 必填参数。<br>
+ *         datasetName -{String} 数据集名。 <br>
+ *         datasetOverlay -{String} 裁剪对象数据集。 <br>
+ *         mode -{SuperMap.SpatialQueryMode} 裁剪分析模式 。 <br>
+ */
+SuperMap.VectorClipJobsParameter = SuperMap.Class({
+
+    /**
+     * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{String}
+     * @description 数据集名。
+     */
+    datasetName: null,
+
+    /**
+     * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{String}
+     * @description 裁剪对象数据集。
+     */
+    datasetOverlay: null,
+
+    /**
+     * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
+     * @description 裁剪分析模式 。
+     */
+    mode: null,
+
+    initialize: function initialize(options) {
+        options = options || {};
+        if (options.mode && typeof options.mode === "string") {
+            options.mode = options.mode.toLowerCase();
+        }
+        SuperMap.Util.extend(this, options);
+    },
+
+    /**
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy: function destroy() {
+        this.datasetName = null;
+        this.datasetOverlay = null;
+        this.mode = null;
+    }
+
+});
+
+SuperMap.VectorClipJobsParameter.toObject = function (vectorClipJobsParameter, tempObj) {
+    for (var name in vectorClipJobsParameter) {
+        if (name === "datasetName") {
+            tempObj['input'] = tempObj['input'] || {};
+            tempObj['input'][name] = vectorClipJobsParameter[name];
+            continue;
+        }
+        tempObj['analyst'] = tempObj['analyst'] || {};
+        tempObj['analyst'][name] = vectorClipJobsParameter[name];
+    }
+};
+
+module.exports = SuperMap.VectorClipJobsParameter;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var SuperMap = __webpack_require__(0);
+var ProcessingJobsServiceBase = __webpack_require__(1);
+var VectorClipJobsParameter = __webpack_require__(23);
+/**
+ * @class SuperMap.VectorClipJobsService
+ * @description 大数据矢量裁剪分析服务类
+ * @augments SuperMap.ProcessingJobsServiceBase
+ * @param url -{String} 大数据矢量裁剪分析服务地址。
+ * @param options - {Object} 交互服务时所需可选参数。
+ */
+SuperMap.VectorClipJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+
+    /**
+     * @function SuperMap.VectorClipJobsService.protitype.initialize
+     * @description SuperMap.VectorClipJobsService 的构造函数
+     * @param url -{String} 大数据矢量裁剪分析服务地址。
+     * @param options - {Object} 交互服务时所需可选参数。
+     */
+    initialize: function initialize(url, options) {
+        ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        this.url += "/spatialanalyst/vectorclip";
+    },
+
+    /**
+     *@inheritDoc
+     */
+    destroy: function destroy() {
+        ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
+    },
+
+    /**
+     * @function SuperMap.VectorClipJobsService.protitype.getVectorClipJobs
+     * @description 获取大数据矢量裁剪分析所有作业
+     * @return {*}
+     */
+    getVectorClipJobs: function getVectorClipJobs() {
+        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
+    },
+
+    /**
+     * @function SuperMap.KernelDensityJobsService.protitype.getVectorClipJob
+     * @description 获取指定id的矢量裁剪分析服务
+     * @param id -{String} 指定要获取数据的id
+     */
+    getVectorClipJob: function getVectorClipJob(id) {
+        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
+    },
+
+    /**
+     * @function SuperMap.VectorClipJobsService.protitype.addVectorClipJob
+     * @description 新建大数据矢量裁剪分析服务
+     * @param params - {SuperMap.VectorClipJobsParameter} 创建一个空间分析作业的请求参数。
+     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     */
+    addVectorClipJob: function addVectorClipJob(params, seconds) {
+        return ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, VectorClipJobsParameter, seconds]);
+    },
+
+    CLASS_NAME: "SuperMap.VectorClipJobsService"
+});
+
+module.exports = SuperMap.VectorClipJobsService;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 /*
  * key申请参数
  */
@@ -3773,15 +4021,15 @@ SuperMap.KeyServiceParameter = SuperMap.Class({
 module.exports = SuperMap.KeyServiceParameter;
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
+__webpack_require__(27);
+__webpack_require__(28);
 __webpack_require__(25);
-__webpack_require__(26);
-__webpack_require__(23);
 var Request = __webpack_require__(5);
 var SuperMap = __webpack_require__(0);
 
@@ -3968,7 +4216,7 @@ SuperMap.SecurityManager.ONLINE = "http://www.supermapol.com";
 module.exports = SuperMap.SecurityManager;
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4032,7 +4280,7 @@ SuperMap.ServerInfo = SuperMap.Class({
 module.exports = SuperMap.ServerInfo;
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4088,7 +4336,7 @@ SuperMap.TokenServiceParameter = SuperMap.Class({
 module.exports = SuperMap.TokenServiceParameter;
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4111,7 +4359,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var SuperMap = __webpack_require__(3);
 var mapv = {};
 try {
-    mapv = __webpack_require__(30);
+    mapv = __webpack_require__(32);
 } catch (ex) {
     mapv = {};
 }
@@ -4396,7 +4644,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
 module.exports = MapVRenderer;
 
 /***/ }),
-/* 28 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
@@ -4512,7 +4760,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 });
 
 /***/ }),
-/* 29 */
+/* 31 */
 /***/ (function(module, exports) {
 
 (function(self) {
@@ -4979,14 +5227,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 30 */
+/* 32 */
 /***/ (function(module, exports) {
 
 if(typeof mapv === 'undefined') {var e = new Error("Cannot find module \"mapv\""); e.code = 'MODULE_NOT_FOUND'; throw e;}
 module.exports = mapv;
 
 /***/ }),
-/* 31 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(9);

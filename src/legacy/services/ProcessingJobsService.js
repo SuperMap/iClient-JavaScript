@@ -5,7 +5,20 @@ var SingleObjectQueryJobsService = require('../../common/iServer/SingleObjectQue
 var BuildCacheJobsService = require('../../common/iServer/BuildCacheJobsService');
 var SummaryMeshJobsService = require('../../common/iServer/SummaryMeshJobsService');
 var SummaryRegionJobsService = require('../../common/iServer/SummaryRegionJobsService');
-
+var VectorClipJobsService = require('../../common/iServer/VectorClipJobsService');
+/**
+ * @class SuperMap.REST.ProcessingJobsService
+ * @description 大数据处理相关服务类。
+ * @augments SuperMap.ServiceBase
+ * @example
+ * 用法：
+ *      new SuperMap.REST.ProcessingJobsService(url,options)
+ *      .getKernelDensityJobs(function(result){
+ *          //doSomething
+ *      })
+ * @param url -{String} 大数据服务地址。
+ * @param options - {Object} 交互服务时所需可选参数
+ */
 SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
 
         initialize: function (url, options) {
@@ -15,6 +28,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
             this.summaryMeshJobs = {};
             this.queryJobs = {};
             this.summaryRegionJobs = {};
+            this.vectorClipJobs = {};
         },
 
         /**
@@ -28,7 +42,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
             var me = this,
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
-                serverType: me.options.serverType,
+                serverType: me.serverType,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -52,7 +66,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
             var me = this,
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new KernelDensityJobsService(me.url, {
-                serverType: me.options.serverType,
+                serverType: me.serverType,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -112,7 +126,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
-                serverType: me.options.serverType,
+                serverType: me.serverType,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -136,7 +150,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new SummaryMeshJobsService(me.url, {
-                serverType: me.options.serverType,
+                serverType: me.serverType,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -196,7 +210,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
             var me = this,
                 format = me._processFormat(resultFormat);
             var buildCacheJobsService = new BuildCacheJobsService(me.url, {
-                serverType: me.options.serverType,
+                serverType: me.serverType,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -220,7 +234,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
             var me = this,
                 format = me._processFormat(resultFormat);
             var buildCacheJobsService = new BuildCacheJobsService(me.url, {
-                serverType: me.options.serverType,
+                serverType: me.serverType,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -280,7 +294,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
             var me = this,
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
-                serverType: me.options.serverType,
+                serverType: me.serverType,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -304,7 +318,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
             var me = this,
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new SingleObjectQueryJobsService(me.url, {
-                serverType: me.options.serverType,
+                serverType: me.serverType,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -364,7 +378,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
-                serverType: me.options.serverType,
+                serverType: me.serverType,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -388,7 +402,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
             var me = this,
                 format = me._processFormat(resultFormat);
             var summaryRegionJobsService = new SummaryRegionJobsService(me.url, {
-                serverType: me.options.serverType,
+                serverType: me.serverType,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
@@ -403,7 +417,7 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
         /**
          * @function SuperMap.REST.ProcessingJobsService.prototype.addSummaryRegionJob
          * @description 新建一个范围分析作业。
-         * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个范围分析作业的请求参数。
+         * @param params -{SuperMap.SummaryRegionJobParameter} 创建一个范围分析作业的请求参数。
          * @param callback - {function} 请求结果的回调函数。
          * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
@@ -435,6 +449,91 @@ SuperMap.REST.ProcessingJobsService = SuperMap.Class(ServiceBase, {
          */
         getSummaryRegionJobState: function (id) {
             return this.summaryRegionJobs[id];
+        },
+
+        /**
+         * @function SuperMap.REST.ProcessingJobsService.prototype.getVectorClipJobs
+         * @description 获取矢量裁剪分析作业的列表。
+         * @param callback - {function} 请求结果的回调函数。
+         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @return {L.supermap.ProcessingJobsService}
+         */
+        getVectorClipJobs: function (callback, resultFormat) {
+            var me = this,
+                format = me._processFormat(resultFormat);
+            var vectorClipJobsService = new VectorClipJobsService(me.url, {
+                serverType: me.serverType,
+                eventListeners: {
+                    scope: me,
+                    processCompleted: callback,
+                    processFailed: callback
+                },
+                format: format
+            });
+            vectorClipJobsService.getVectorClipJobs();
+            return me;
+        },
+
+        /**
+         * @function SuperMap.REST.ProcessingJobsService.prototype.getVectorClipJob
+         * @description 获取某一个矢量裁剪分析作业。
+         * @param id - {String}空间分析作业的id。
+         * @param callback - {function} 请求结果的回调函数。
+         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @return {L.supermap.ProcessingJobsService}
+         */
+        getVectorClipJob: function (id, callback, resultFormat) {
+            var me = this,
+                format = me._processFormat(resultFormat);
+            var vectorClipJobsService = new VectorClipJobsService(me.url, {
+                serverType: me.serverType,
+                eventListeners: {
+                    scope: me,
+                    processCompleted: callback,
+                    processFailed: callback
+                },
+                format: format
+            });
+            vectorClipJobsService.getVectorClipJob(id);
+            return me;
+        },
+
+        /**
+         * @function SuperMap.REST.ProcessingJobsService.prototype.addVectorClipJob
+         * @description 新建一个矢量裁剪分析作业。
+         * @param params -{SuperMap.VectorClipJobsParameter} 创建一个空间分析作业的请求参数。
+         * @param callback - {function} 请求结果的回调函数。
+         * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @return {L.supermap.ProcessingJobsService}
+         */
+        addVectorClipJob: function (params, callback, seconds, resultFormat) {
+            var me = this,
+                param = me._processParams(params),
+                format = me._processFormat(resultFormat);
+            var vectorClipJobsService = new VectorClipJobsService(me.url, {
+                serverType: me.serverType,
+                eventListeners: {
+                    scope: me,
+                    processCompleted: callback,
+                    processFailed: callback,
+                    processRunning: function (job) {
+                        me.vectorClipJobs[job.id] = job.state;
+                    }
+                },
+                format: format
+            });
+            vectorClipJobsService.addVectorClipJob(param, seconds);
+            return me;
+        },
+
+        /**
+         * @function SuperMap.REST.ProcessingJobsService.prototype.getVectorClipJobState
+         * @description 获取矢量裁剪分析作业的状态。
+         * @param id - {String}矢量裁剪分析作业的id。
+         */
+        getVectorClipJobState: function (id) {
+            return this.vectorClipJobs[id];
         },
 
         _processFormat: function (resultFormat) {
