@@ -2,7 +2,7 @@ var SuperMap = require('../SuperMap');
 
 /**
  * @class SuperMap.BuildCacheJobParameter
- * @description 地图缓存作业参数类
+ * @description 地图缓存参数类
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName - {String} 数据集名称。<br>
  *         cacheName - {String} 缓存名称。<br>

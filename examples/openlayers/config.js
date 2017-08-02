@@ -235,30 +235,30 @@ var exampleConfig = {
                     fileName: "06_trafficTransferAnalystService"
                 }]
             },
-            "processingJobs": {
+            "processingService": {
                 name: "大数据分析",
                 content: [{
-                    name: "密度分析作业",
+                    name: "密度分析",
                     thumbnail: "kernelDensityJobService.png",
                     fileName: "kernelDensityJobService"
                 }, {
-                    name: "格网聚合分析作业",
+                    name: "格网聚合分析",
                     thumbnail: "SummaryMeshJobService.png",
                     fileName: "SummaryMeshJobService"
                 }, {
-                    name: "生成地图缓存作业",
+                    name: "生成地图缓存",
                     thumbnail: "buildCacheService.png",
                     fileName: "buildCacheService"
                 }, {
-                    name: "单对象查询分析作业",
+                    name: "单对象查询分析",
                     thumbnail: "ol_singleObjectQueryJob.png",
                     fileName: "singleObjectQueryJobService"
                 }, {
-                    name: "范围分析作业",
+                    name: "范围汇总分析",
                     thumbnail: "SummaryRegionJobService.png",
                     fileName: "SummaryRegionJobService"
                 }, {
-                    name: "矢量裁剪分析作业",
+                    name: "矢量裁剪分析",
                     thumbnail: "ol_vectorClipJob.png",
                     fileName: "vectorClipJobService"
                 }]

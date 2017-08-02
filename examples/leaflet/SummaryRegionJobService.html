@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>范围分析作业</title>
+    <title>范围汇总分析</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
 </head>
@@ -14,7 +14,7 @@
                 <h4 class="modal-title">提示</h4>
             </div>
             <div class="modal-body">
-                <p>正在创建范围分析作业...</p>
+                <p>正在创建范围汇总分析...</p>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
 <script type="text/javascript">
-    var layer, processingJobsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
+    var layer, processingUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
             token = 'oZdJwpVhYnPNEAt8-ykB-Cy39gEZkdvPZ9knTbCdui1SoBeXWVCwx-j5tOVSScotsUX1qwZF44X9m6wNME1kBg..',
             map = L.map('map', {
                 crs: L.CRS.TianDiTu_WGS84,
@@ -46,7 +46,7 @@
         popup.style = 'width:420px';
         popup.innerHTML = "<div class='panel panel-default'>" +
                 "<div class='panel-heading'>" +
-                "<h3 class='panel-title'>范围分析作业</h3>" +
+                "<h3 class='panel-title'>范围汇总分析</h3>" +
                 "</div><div class='panel-body'>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>输入数据　　　　　</span>" +
@@ -119,7 +119,7 @@
     ($('#query').val() || $('#query').attr('placeholder')).split(',').map(function (el) {
         return query.push(parseFloat(el));
     });
-    var processingJobsService = new L.supermap.processingJobsService(processingJobsUrl);
+    var processingService = new L.supermap.processingService(processingUrl);
     SuperMap.SecurityManager.registerToken("http://117.122.248.69:8090", token);
 
     $('#btn').on('click', function () {
@@ -144,7 +144,7 @@
             meshSizeUnit: $('#meshSizeUnit option:selected').attr('value'),
             sumShape: $('#sumShape').get(0).checked
         });
-        processingJobsService.addSummaryRegionJob(summaryRegionJobParameter, function (serviceResult) {
+        processingService.addSummaryRegionJob(summaryRegionJobParameter, function (serviceResult) {
             if (serviceResult.error) {
                 $('#btn').prop('disabled', false);
                 $("#model").modal('hide');

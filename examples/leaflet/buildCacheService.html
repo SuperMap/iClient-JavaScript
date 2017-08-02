@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>生成地图缓存作业</title>
+    <title>生成地图缓存</title>
     <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
 </head>
@@ -14,7 +14,7 @@
                 <h4 class="modal-title">提示</h4>
             </div>
             <div class="modal-body">
-                <p>正在创建生成地图缓存作业...</p>
+                <p>正在创建生成地图缓存...</p>
             </div>
         </div>
     </div>
@@ -26,15 +26,15 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
 <script type="text/javascript">
-    var layer, processingJobsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
-        token = 'oZdJwpVhYnPNEAt8-ykB-Cy39gEZkdvPZ9knTbCdui1SoBeXWVCwx-j5tOVSScotsUX1qwZF44X9m6wNME1kBg..',
-        map = L.map('map', {
-            crs: L.CRS.TianDiTu_WGS84,
-            center: [40.75, -73.95],
-            maxZoom: 18,
-            zoom: 12
-        }),
-        info = L.control({position: 'topright'});
+    var layer, processingUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
+            token = 'oZdJwpVhYnPNEAt8-ykB-Cy39gEZkdvPZ9knTbCdui1SoBeXWVCwx-j5tOVSScotsUX1qwZF44X9m6wNME1kBg..',
+            map = L.map('map', {
+                crs: L.CRS.TianDiTu_WGS84,
+                center: [40.75, -73.95],
+                maxZoom: 18,
+                zoom: 12
+            }),
+            info = L.control({position: 'topright'});
     L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
         layer: "vec",
         tilematrixSet: "c"
@@ -43,55 +43,55 @@
         var popup = L.DomUtil.create('div');
         popup.style = 'width:22%';
         popup.innerHTML = "<div class='panel panel-default'>" +
-            "<div class='panel-heading'>" +
-            "<h3 class='panel-title'>地图缓存作业</h3>" +
-            "</div>" +
-            "<div class='panel-body'>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>输入数据　　　</span>" +
-            "<div>" +
-            "<select class='form-control' id='datasetName' name='clientType'>" +
-            "<option selected='selected'>newyork_taxi_2013_01_14k_csv_newyork_taxi_2013-01_14k</option>" +
-            "</select> </div> </div> <p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>缓存类型　　　</span>" +
-            "<div>" +
-            "<select class='form-control' id='imageType' name='clientType'>" +
-            "<option value='Heatmap' selected='selected'>热度图</option>" +
-            "</select> </div> </div> <p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>缓存范围　　　</span>" +
-            "<input id='bounds' type='text' class='form-control' placeholder='-74.050, 40.650, -73.850, 40.850'/>" +
-            "</div> <p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>缓存比例尺级别</span>" +
-            "<input id='level' type='text' class='form-control' placeholder='5'/>" +
-            "</div><p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>缓存名称　　　</span>" +
-            "<input id='cacheName' type='text' class='form-control' placeholder='cache'/>" +
-            "</div><p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>存储类型　　　</span>" +
-            "<div>" +
-            "<select class='form-control' id='cacheType' name='clientType'>" +
-            "<option selected='selected'>MongoDB</option>" +
-            "</select></div></div><p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>服务地址　　　</span>" +
-            "<input id='serverAdresses' type='text' class='form-control' placeholder='117.122.248.69:27017'/>" +
-            "</div><p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>数据库　　　　</span>" +
-            "<input id='database' type='text' class='form-control' placeholder='smtiles'/>" +
-            "</div><p>" +
-            "<div class='input-group'>" +
-            "<span class='input-group-addon'>版本　　　　　</span>" +
-            "<input id='version' type='text' class='form-control' placeholder='v1'/>" +
-            "</div><p>" +
-            "<div align='right'>" +
-            "<input type='button' id='btn' class='btn btn-primary' value='创建'/>" +
-            "</div></div></div>";
+                "<div class='panel-heading'>" +
+                "<h3 class='panel-title'>地图缓存</h3>" +
+                "</div>" +
+                "<div class='panel-body'>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>输入数据　　　</span>" +
+                "<div>" +
+                "<select class='form-control' id='datasetName' name='clientType'>" +
+                "<option selected='selected'>newyork_taxi_2013_01_14k_csv_newyork_taxi_2013-01_14k</option>" +
+                "</select> </div> </div> <p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>缓存类型　　　</span>" +
+                "<div>" +
+                "<select class='form-control' id='imageType' name='clientType'>" +
+                "<option value='Heatmap' selected='selected'>热度图</option>" +
+                "</select> </div> </div> <p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>缓存范围　　　</span>" +
+                "<input id='bounds' type='text' class='form-control' placeholder='-74.050, 40.650, -73.850, 40.850'/>" +
+                "</div> <p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>缓存比例尺级别</span>" +
+                "<input id='level' type='text' class='form-control' placeholder='5'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>缓存名称　　　</span>" +
+                "<input id='cacheName' type='text' class='form-control' placeholder='cache'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>存储类型　　　</span>" +
+                "<div>" +
+                "<select class='form-control' id='cacheType' name='clientType'>" +
+                "<option selected='selected'>MongoDB</option>" +
+                "</select></div></div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>服务地址　　　</span>" +
+                "<input id='serverAdresses' type='text' class='form-control' placeholder='117.122.248.69:27017'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>数据库　　　　</span>" +
+                "<input id='database' type='text' class='form-control' placeholder='smtiles'/>" +
+                "</div><p>" +
+                "<div class='input-group'>" +
+                "<span class='input-group-addon'>版本　　　　　</span>" +
+                "<input id='version' type='text' class='form-control' placeholder='v1'/>" +
+                "</div><p>" +
+                "<div align='right'>" +
+                "<input type='button' id='btn' class='btn btn-primary' value='创建'/>" +
+                "</div></div></div>";
         handleMapEvent(popup, this._map);
         return popup;
     };
@@ -102,7 +102,7 @@
         return bounds.push(parseFloat(el));
     });
     serverAddress.push(($('#serverAdresses').val() || $('#serverAdresses').attr('placeholder')).toString());
-    var processingJobsService = new L.supermap.processingJobsService(processingJobsUrl);
+    var processingService = new L.supermap.processingService(processingUrl);
     SuperMap.SecurityManager.registerToken("http://117.122.248.69:8090", token);
 
     $('#btn').on('click', function () {
@@ -122,7 +122,7 @@
             imageType: $('#imageType option:selected').attr('value'),
             level: parseInt($('#level').val() || $('#level').attr('placeholder'))
         });
-        processingJobsService.addBuildCacheJob(buildCacheJobParameter, function (serviceResult) {
+        processingService.addBuildCacheJob(buildCacheJobParameter, function (serviceResult) {
             if (serviceResult.error) {
                 $('#btn').prop('disabled', false);
                 $("#model").modal('hide');
@@ -151,9 +151,9 @@
         className += state ? "success" : "danger";
         if (!$('#msg_container')[0]) {
             var alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;margin:auto;left: 40%;width:400px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+                    "style='z-index:800;position: absolute;top: 20px;margin:auto;left: 40%;width:400px;display: none'>" +
+                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                    "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
             $('body').append(alertDiv)
         }
         $('#msg_container').addClass(className);

@@ -4245,15 +4245,15 @@ var ServiceBase = __webpack_require__(4);
 var SuperMap = __webpack_require__(0);
 var Request = __webpack_require__(14);
 
-SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
+SuperMap.ProcessingServiceBase = SuperMap.Class(ServiceBase, {
 
     /**
      * Constant: EVENT_TYPES
      * {Array(String)}
      * 此类支持的事件类型
-     * - *processCompleted* 创建作业成功后触发的事件。
-     * - *processFailed* 创建作业失败后触发的事件 。
-     * - *processRunning* 创建作业过程的整个阶段都会触发的事件，用于获取作业创建过程的状态 。
+     * - *processCompleted* 创建成功后触发的事件。
+     * - *processFailed* 创建失败后触发的事件 。
+     * - *processRunning* 创建过程的整个阶段都会触发的事件，用于获取创建过程的状态 。
      */
     EVENT_TYPES: ["processCompleted", "processFailed", "processRunning"],
 
@@ -4267,7 +4267,7 @@ SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
 
     /**
      *
-     * @param url - 一个空间分析作业的资源地址。
+     * @param url - 一个空间分析的资源地址。
      */
     getJobs: function (url) {
         var me = this;
@@ -4282,10 +4282,10 @@ SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
 
     /**
      *
-     * @param url - 分布式空间分析作业资源根地址。
-     * @param params - 创建一个空间分析作业的请求参数。
+     * @param url - 分布式空间分析资源根地址。
+     * @param params - 创建一个空间分析的请求参数。
      * @param paramType - 请求参数类型。
-     * @param seconds - 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addJob: function (url, params, paramType, seconds) {
         var me = this, parameterObject = null;
@@ -4351,10 +4351,10 @@ SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
         return url;
     },
 
-    CLASS_NAME: "SuperMap.ProcessingJobsServiceBase"
+    CLASS_NAME: "SuperMap.ProcessingServiceBase"
 });
 
-module.exports = SuperMap.ProcessingJobsServiceBase;
+module.exports = SuperMap.ProcessingServiceBase;
 
 /***/ }),
 /* 22 */
@@ -17059,23 +17059,23 @@ var SummaryMeshJobsService = __webpack_require__(328);
 var SummaryRegionJobsService = __webpack_require__(330);
 var VectorClipJobsService = __webpack_require__(371);
 /**
- * @class L.supermap.ProcessingJobsService
+ * @class L.supermap.processingService
  * @description 大数据处理相关服务类
  * @augments  L.supermap.ServiceBase
  * @example
  * 用法：
- *      L.supermap.processingJobsService(url)
+ *      L.supermap.processingService(url)
  *      .getKernelDensityJobs(function(result){
  *           //doSomething
  *      })
  * @param url -{String} 大数据服务地址。
  * @param options - {Object} 交互服务时所需可选参数
  */
-var ProcessingJobsService = ServiceBase.extend({
+var ProcessingService = ServiceBase.extend({
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.initialize
-     * @description L.supermap.ProcessingJobsService 类的构造函数
+     * @function L.supermap.processingService.prototype.initialize
+     * @description L.supermap.processingService 类的构造函数
      * @param url -{String} 大数据服务地址。
      * @param options - {Object} 交互服务时所需可选参数
      */
@@ -17092,11 +17092,11 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getKernelDensityJobs
-     * @description 获取密度分析作业的列表。
+     * @function L.supermap.processingService.prototype.getKernelDensityJobs
+     * @description 获取密度分析的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     getKernelDensityJobs: function (callback, resultFormat) {
         var me = this,
@@ -17115,12 +17115,12 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getKernelDensityJob
-     * @description 获取某一个密度分析作业。
-     * @param id - {String}空间分析作业的id。
+     * @function L.supermap.processingService.prototype.getKernelDensityJob
+     * @description 获取某一个密度分析。
+     * @param id - {String}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     getKernelDensityJob: function (id, callback, resultFormat) {
         var me = this,
@@ -17139,13 +17139,13 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.addKernelDensityJob
-     * @description 新建一个密度分析作业。
-     * @param params -{SuperMap.KernelDensityJobParameter} 创建一个空间分析作业的请求参数。
+     * @function L.supermap.processingService.prototype.addKernelDensityJob
+     * @description 新建一个密度分析。
+     * @param params -{SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
      * @param callback - {function} 请求结果的回调函数。
-     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     addKernelDensityJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -17168,20 +17168,20 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getKernelDensityJobState
-     * @description 获取密度分析作业的状态。
-     * @param id - {String}密度分析作业的id。
+     * @function L.supermap.processingService.prototype.getKernelDensityJobState
+     * @description 获取密度分析的状态。
+     * @param id - {String}密度分析的id。
      */
     getKernelDensityJobState: function (id) {
         return this.kernelDensityJobs[id];
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getSummaryMeshJobs
-     * @description 获取格网聚合分析作业的列表。
+     * @function L.supermap.processingService.prototype.getSummaryMeshJobs
+     * @description 获取格网聚合分析的列表。
      * @param callback - {function}  请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     getSummaryMeshJobs: function (callback, resultFormat) {
         var me = this,
@@ -17200,12 +17200,12 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getSummaryMeshJob
-     * @description 获取某一个格网聚合分析作业。
-     * @param id - {String}空间分析作业的id。
+     * @function L.supermap.processingService.prototype.getSummaryMeshJob
+     * @description 获取某一个格网聚合分析。
+     * @param id - {String}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     getSummaryMeshJob: function (id, callback, resultFormat) {
         var me = this,
@@ -17224,13 +17224,13 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.addSummaryMeshJob
-     * @description 新建一个格网聚合分析作业。
+     * @function L.supermap.processingService.prototype.addSummaryMeshJob
+     * @description 新建一个格网聚合分析。
      * @param params - {SuperMap.SummaryMeshJobParameter} 格网聚合分析任务参数类。
      * @param callback - {function} 请求结果的回调函数。
-     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔
+     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     addSummaryMeshJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -17253,20 +17253,20 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getSummaryMeshJobState
-     * @description 获取格网聚合分析作业的状态。
-     * @param id - {String} 格网聚合分析作业的id。
+     * @function L.supermap.processingService.prototype.getSummaryMeshJobState
+     * @description 获取格网聚合分析的状态。
+     * @param id - {String} 格网聚合分析的id。
      */
     getSummaryMeshJobState: function (id) {
         return this.summaryMeshJobs[id];
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getBuildCacheJobs
-     * @description 获取生成地图缓存作业的列表。
+     * @function L.supermap.processingService.prototype.getBuildCacheJobs
+     * @description 获取生成地图缓存的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     getBuildCacheJobs: function (callback, resultFormat) {
         var me = this,
@@ -17285,12 +17285,12 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getBuildCacheJob
-     * @description 获取某一个生成地图缓存作业。
-     * @param id - {String} 空间分析作业的id。
+     * @function L.supermap.processingService.prototype.getBuildCacheJob
+     * @description 获取某一个生成地图缓存。
+     * @param id - {String} 空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     getBuildCacheJob: function (id, callback, resultFormat) {
         var me = this,
@@ -17309,13 +17309,13 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.addBuildCacheJob
-     * @description 新建一个生成地图缓存作业。
-     * @param params - {SuperMap.BuildCacheJobParameter} 地图缓存作业参数类
+     * @function L.supermap.processingService.prototype.addBuildCacheJob
+     * @description 新建一个生成地图缓存。
+     * @param params - {SuperMap.BuildCacheJobParameter} 地图缓存参数类
      * @param callback - {function} 请求结果的回调函数
-     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔
+     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔
      * @param resultFormat -{SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     addBuildCacheJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -17338,20 +17338,20 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getBuildCacheJobState
-     * @description 获取生成地图缓存作业的状态。
-     * @param id - {String}生成地图缓存作业的id。
+     * @function L.supermap.processingService.prototype.getBuildCacheJobState
+     * @description 获取生成地图缓存的状态。
+     * @param id - {String}生成地图缓存的id。
      */
     getBuildCacheJobState: function (id) {
         return this.buildCacheJobs[id];
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getQueryJobs
-     * @description 获取单对象查询分析作业的列表。
+     * @function L.supermap.processingService.prototype.getQueryJobs
+     * @description 获取单对象查询分析的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     getQueryJobs: function (callback, resultFormat) {
         var me = this,
@@ -17370,12 +17370,12 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getQueryJob
-     * @description 获取某一个单对象查询分析作业。
-     * @param id - {String}空间分析作业的id。
+     * @function L.supermap.processingService.prototype.getQueryJob
+     * @description 获取某一个单对象查询分析。
+     * @param id - {String}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     getQueryJob: function (id, callback, resultFormat) {
         var me = this,
@@ -17394,13 +17394,13 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.addQueryJob
-     * @description 新建一个单对象查询分析作业。
-     * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析作业的请求参数。
+     * @function L.supermap.processingService.prototype.addQueryJob
+     * @description 新建一个单对象查询分析。
+     * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
      * @param callback - {function} 请求结果的回调函数。
-     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     addQueryJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -17423,20 +17423,20 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getQueryJobState
-     * @description 获取单对象查询分析作业的状态。
-     * @param id - {String}单对象查询分析作业的id。
+     * @function L.supermap.processingService.prototype.getQueryJobState
+     * @description 获取单对象查询分析的状态。
+     * @param id - {String}单对象查询分析的id。
      */
     getQueryJobState: function (id) {
         return this.queryJobs[id];
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getSummaryRegionJobs
-     * @description 获取范围分析作业的列表。
+     * @function L.supermap.processingService.prototype.getSummaryRegionJobs
+     * @description 获取范围汇总分析的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     getSummaryRegionJobs: function (callback, resultFormat) {
         var me = this,
@@ -17455,12 +17455,12 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getSummaryRegionJob
-     * @description 获取某一个范围分析作业。
-     * @param id - {String}范围分析作业的id。
+     * @function L.supermap.processingService.prototype.getSummaryRegionJob
+     * @description 获取某一个范围汇总分析。
+     * @param id - {String}范围汇总分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     getSummaryRegionJob: function (id, callback, resultFormat) {
         var me = this,
@@ -17479,13 +17479,13 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.addSummaryRegionJob
-     * @description 新建一个范围分析作业。
-     * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个范围分析作业的请求参数。
+     * @function L.supermap.processingService.prototype.addSummaryRegionJob
+     * @description 新建一个范围汇总分析。
+     * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个范围汇总分析的请求参数。
      * @param callback - {function} 请求结果的回调函数。
-     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     addSummaryRegionJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -17508,20 +17508,20 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getSummaryRegionJobState
-     * @description 获取范围分析作业的状态。
-     * @param id - {String}范围分析作业的id。
+     * @function L.supermap.processingService.prototype.getSummaryRegionJobState
+     * @description 获取范围汇总分析的状态。
+     * @param id - {String}范围汇总分析的id。
      */
     getSummaryRegionJobState: function (id) {
         return this.summaryRegionJobs[id];
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getVectorClipJobs
-     * @description 获取矢量裁剪分析作业的列表。
+     * @function L.supermap.processingService.prototype.getVectorClipJobs
+     * @description 获取矢量裁剪分析的列表。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     getVectorClipJobs: function (callback, resultFormat) {
         var me = this,
@@ -17540,12 +17540,12 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getVectorClipJob
-     * @description 获取某一个矢量裁剪分析作业。
-     * @param id - {String}空间分析作业的id。
+     * @function L.supermap.processingService.prototype.getVectorClipJob
+     * @description 获取某一个矢量裁剪分析。
+     * @param id - {String}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     getVectorClipJob: function (id, callback, resultFormat) {
         var me = this,
@@ -17564,13 +17564,13 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.addVectorClipJob
-     * @description 新建一个矢量裁剪分析作业。
-     * @param params -{SuperMap.VectorClipJobsParameter} 创建一个空间分析作业的请求参数。
+     * @function L.supermap.processingService.prototype.addVectorClipJob
+     * @description 新建一个矢量裁剪分析。
+     * @param params -{SuperMap.VectorClipJobsParameter} 创建一个空间分析的请求参数。
      * @param callback - {function} 请求结果的回调函数。
-     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-     * @return {L.supermap.ProcessingJobsService}
+     * @return {L.supermap.processingService}
      */
     addVectorClipJob: function (params, callback, seconds, resultFormat) {
         var me = this,
@@ -17593,9 +17593,9 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ProcessingJobsService.prototype.getVectorClipJobState
-     * @description 获取矢量裁剪分析作业的状态。
-     * @param id - {String}矢量裁剪分析作业的id。
+     * @function L.supermap.processingService.prototype.getVectorClipJobState
+     * @description 获取矢量裁剪分析的状态。
+     * @param id - {String}矢量裁剪分析的id。
      */
     getVectorClipJobState: function (id) {
         return this.vectorClipJobs[id];
@@ -17619,11 +17619,11 @@ var ProcessingJobsService = ServiceBase.extend({
     },
 });
 
-L.supermap.processingJobsService = function (url, options) {
-    return new ProcessingJobsService(url, options);
+L.supermap.processingService = function (url, options) {
+    return new ProcessingService(url, options);
 };
 
-module.exports = ProcessingJobsService;
+module.exports = ProcessingService;
 
 /***/ }),
 /* 121 */
@@ -27997,7 +27997,7 @@ var SuperMap = __webpack_require__(0);
 
 /**
  * @class SuperMap.BuildCacheJobParameter
- * @description 地图缓存作业参数类
+ * @description 地图缓存参数类
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName - {String} 数据集名称。<br>
  *         cacheName - {String} 缓存名称。<br>
@@ -28114,17 +28114,17 @@ module.exports = SuperMap.BuildCacheJobParameter;
 /***/ (function(module, exports, __webpack_require__) {
 
 var SuperMap = __webpack_require__(0);
-var ProcessingJobsServiceBase = __webpack_require__(21);
+var ProcessingServiceBase = __webpack_require__(21);
 var BuildCacheJobParameter = __webpack_require__(204);
 
 /**
  * @class SuperMap.BuildCacheJobsService
  * @description 创建大数据缓存服务类
- * @augments SuperMap.ProcessingJobsServiceBase
+ * @augments SuperMap.ProcessingServiceBase
  * @param url -{String} 大数据缓存服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-SuperMap.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+SuperMap.BuildCacheJobsService = SuperMap.Class(ProcessingServiceBase, {
 
     /*
      * @function SuperMap.BuildCacheJobsService.prototype.initialize
@@ -28133,7 +28133,7 @@ SuperMap.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @param options - {Object} 交互服务时所需可选参数。
      */
     initialize: function (url, options) {
-        ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        ProcessingServiceBase.prototype.initialize.apply(this, arguments);
         this.url += "/mapping/buildCache";
     },
 
@@ -28141,7 +28141,7 @@ SuperMap.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @inheritDoc
      */
     destroy: function () {
-        ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
+        ProcessingServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -28149,7 +28149,7 @@ SuperMap.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @description 获取创建的大数据缓存
      */
     getBuildCacheJobs: function () {
-        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
+        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url]);
     },
 
     /**
@@ -28158,17 +28158,17 @@ SuperMap.BuildCacheJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @param id - {String} 大数据缓存id
      */
     getBuildCacheJob: function (id) {
-        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
+        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
     },
 
     /**
      * @function SuperMap.BuildCacheJobsService.prototype.addBuildCacheJob
      * @description 新建大数据缓存服务
-     * @param params - {BuildCacheJobParameter}地图缓存作业参数类
-     * @param seconds - {String} 开始创建作业后，获取创建成功结果的时间间隔
+     * @param params - {BuildCacheJobParameter}地图缓存参数类
+     * @param seconds - {String} 开始创建后，获取创建成功结果的时间间隔
      */
     addBuildCacheJob: function (params, seconds) {
-        ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, BuildCacheJobParameter, seconds]);
+        ProcessingServiceBase.prototype.addJob.apply(this, [this.url, params, BuildCacheJobParameter, seconds]);
     },
 
     CLASS_NAME: "SuperMap.BuildCacheJobsService"
@@ -36835,16 +36835,16 @@ module.exports = SuperMap.KernelDensityJobParameter;
 /***/ (function(module, exports, __webpack_require__) {
 
 var SuperMap = __webpack_require__(0);
-var ProcessingJobsServiceBase = __webpack_require__(21);
+var ProcessingServiceBase = __webpack_require__(21);
 var KernelDensityJobParameter = __webpack_require__(284);
 /**
  * @class SuperMap.KernelDensityJobsService
  * @description 核密度大数据服务类
- * @augments SuperMap.ProcessingJobsServiceBase
+ * @augments SuperMap.ProcessingServiceBase
  * @param url -{String} 核密度大数据服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-SuperMap.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+SuperMap.KernelDensityJobsService = SuperMap.Class(ProcessingServiceBase, {
 
     /**
      * @function SuperMap.KernelDensityJobsService.protitype.initialize
@@ -36853,7 +36853,7 @@ SuperMap.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @param options - {Object} 交互服务时所需可选参数。
      */
     initialize: function (url, options) {
-        ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        ProcessingServiceBase.prototype.initialize.apply(this, arguments);
         this.url += "/spatialanalyst/density";
     },
 
@@ -36861,7 +36861,7 @@ SuperMap.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      *@inheritDoc
      */
     destroy: function () {
-        ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
+        ProcessingServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -36870,7 +36870,7 @@ SuperMap.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @return {*}
      */
     getKernelDensityJobs: function () {
-        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
+        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url]);
     },
 
     /**
@@ -36879,17 +36879,17 @@ SuperMap.KernelDensityJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @param id -{String} 指定要获取数据的id
      */
     getKernelDensityJob: function (id) {
-        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
+        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
     },
 
     /**
      * @function SuperMap.KernelDensityJobsService.protitype.addKernelDensityJob
      * @description 新建核密度大数据服务
-     * @param params - {SuperMap.KernelDensityJobParameter} 创建一个空间分析作业的请求参数。
-     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param params - {SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
+     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
      */
     addKernelDensityJob: function (params, seconds) {
-        return ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, KernelDensityJobParameter, seconds]);
+        return ProcessingServiceBase.prototype.addJob.apply(this, [this.url, params, KernelDensityJobParameter, seconds]);
     },
 
     CLASS_NAME: "SuperMap.KernelDensityJobsService"
@@ -41216,16 +41216,16 @@ module.exports = SuperMap.SingleObjectQueryJobsParameter;
 /***/ (function(module, exports, __webpack_require__) {
 
 var SuperMap = __webpack_require__(0);
-var ProcessingJobsServiceBase = __webpack_require__(21);
+var ProcessingServiceBase = __webpack_require__(21);
 var SingleObjectQueryJobsParameter = __webpack_require__(323);
 /**
  * @class SuperMap.SingleObjectQueryJobsService
  * @description 大数据单对象查询分析服务类
- * @augments SuperMap.ProcessingJobsServiceBase
+ * @augments SuperMap.ProcessingServiceBase
  * @param url -{String} 大数据单对象空间查询分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-SuperMap.SingleObjectQueryJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+SuperMap.SingleObjectQueryJobsService = SuperMap.Class(ProcessingServiceBase, {
 
     /**
      * @function SuperMap.SingleObjectQueryJobsService.protitype.initialize
@@ -41234,7 +41234,7 @@ SuperMap.SingleObjectQueryJobsService = SuperMap.Class(ProcessingJobsServiceBase
      * @param options - {Object} 交互服务时所需可选参数。
      */
     initialize: function (url, options) {
-        ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        ProcessingServiceBase.prototype.initialize.apply(this, arguments);
         this.url += "/spatialanalyst/query";
     },
 
@@ -41242,16 +41242,16 @@ SuperMap.SingleObjectQueryJobsService = SuperMap.Class(ProcessingJobsServiceBase
      *@inheritDoc
      */
     destroy: function () {
-        ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
+        ProcessingServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
      * @function SuperMap.SingleObjectQueryJobsService.protitype.getQueryJobs
-     * @description 获取大数据单对象空间查询分析所有作业
+     * @description 获取大数据单对象空间查询分析所有
      * @return {*}
      */
     getQueryJobs: function () {
-        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
+        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url]);
     },
 
     /**
@@ -41260,17 +41260,17 @@ SuperMap.SingleObjectQueryJobsService = SuperMap.Class(ProcessingJobsServiceBase
      * @param id -{String} 指定要获取数据的id
      */
     getQueryJob: function (id) {
-        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
+        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
     },
 
     /**
      * @function SuperMap.SingleObjectQueryJobsService.protitype.addQueryJob
      * @description 新建大数据单对象空间查询分析服务
-     * @param params - {SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析作业的请求参数。
-     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param params - {SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
+     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
      */
     addQueryJob: function (params, seconds) {
-        return ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, SingleObjectQueryJobsParameter, seconds]);
+        return ProcessingServiceBase.prototype.addJob.apply(this, [this.url, params, SingleObjectQueryJobsParameter, seconds]);
     },
 
     CLASS_NAME: "SuperMap.SingleObjectQueryJobsService"
@@ -41535,7 +41535,7 @@ module.exports = SuperMap.SummaryMeshJobParameter;
 /***/ (function(module, exports, __webpack_require__) {
 
 var SuperMap = __webpack_require__(0);
-var ProcessingJobsServiceBase = __webpack_require__(21);
+var ProcessingServiceBase = __webpack_require__(21);
 var SummaryMeshJobParameter = __webpack_require__(327);
 
 /**
@@ -41544,10 +41544,10 @@ var SummaryMeshJobParameter = __webpack_require__(327);
  * @param url -{String} 格网聚合分析任务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingServiceBase, {
 
     initialize: function (url, options) {
-        ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        ProcessingServiceBase.prototype.initialize.apply(this, arguments);
         this.url += "/spatialanalyst/aggregatepoints";
     },
 
@@ -41555,7 +41555,7 @@ SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @inheritDoc
      */
     destroy: function () {
-        ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
+        ProcessingServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -41563,7 +41563,7 @@ SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @description 获取格网聚合分析大数据
      */
     getSummaryMeshJobs: function () {
-        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
+        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url]);
     },
 
     /**
@@ -41572,17 +41572,17 @@ SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @param id -{String} 指定要获取数据的id
      */
     getSummaryMeshJob: function (id) {
-        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
+        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
     },
 
     /**
      * @function SuperMap.SummaryMeshJobsService.protitype.addSummaryMeshJob
      * @description 新建格网聚合分析大数据服务
-     * @param params - {SuperMap.SummaryMeshJobParameter} 创建一个空间分析作业的请求参数。
-     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param params - {SuperMap.SummaryMeshJobParameter} 创建一个空间分析的请求参数。
+     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
      */
     addSummaryMeshJob: function (params, seconds) {
-        ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, SummaryMeshJobParameter, seconds]);
+        ProcessingServiceBase.prototype.addJob.apply(this, [this.url, params, SummaryMeshJobParameter, seconds]);
     },
 
     CLASS_NAME: "SuperMap.SummaryMeshJobsService"
@@ -41755,16 +41755,16 @@ module.exports = SuperMap.SummaryRegionJobParameter;
 /***/ (function(module, exports, __webpack_require__) {
 
 var SuperMap = __webpack_require__(0);
-var ProcessingJobsServiceBase = __webpack_require__(21);
+var ProcessingServiceBase = __webpack_require__(21);
 var SummaryRegionJobParameter = __webpack_require__(329);
 /**
  * @class SuperMap.SummaryRegionJobsService
  * @description 范围汇总分析服务类
- * @augments SuperMap.ProcessingJobsServiceBase
+ * @augments SuperMap.ProcessingServiceBase
  * @param url -{String} 范围汇总分析服务地址。
  * @param options - {Object} 范围汇总分析服务可选参数。
  */
-SuperMap.SummaryRegionJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+SuperMap.SummaryRegionJobsService = SuperMap.Class(ProcessingServiceBase, {
 
     /**
      * @function SuperMap.SummaryRegionJobsService.protitype.initialize
@@ -41773,7 +41773,7 @@ SuperMap.SummaryRegionJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @param options - {Object} 范围汇总分析服务可选参数。
      */
     initialize: function (url, options) {
-        ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        ProcessingServiceBase.prototype.initialize.apply(this, arguments);
         this.url += "/spatialanalyst/summaryregion";
     },
 
@@ -41781,7 +41781,7 @@ SuperMap.SummaryRegionJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      *@inheritDoc
      */
     destroy: function () {
-        ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
+        ProcessingServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -41790,7 +41790,7 @@ SuperMap.SummaryRegionJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @return {*}
      */
     getSummaryRegionJobs: function () {
-        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
+        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url]);
     },
 
     /**
@@ -41799,17 +41799,17 @@ SuperMap.SummaryRegionJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @param id -{String} 要获取范围汇总分析任务的id
      */
     getSummaryRegionJob: function (id) {
-        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
+        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
     },
 
     /**
      * @function SuperMap.SummaryRegionJobsService.protitype.addSummaryRegionJob
      * @description 新建范围汇总任务。
      * @param params - {SuperMap.SummaryRegionJobParameter} 创建一个范围汇总任务的请求参数。
-     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
      */
     addSummaryRegionJob: function (params, seconds) {
-        return ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, SummaryRegionJobParameter, seconds]);
+        return ProcessingServiceBase.prototype.addJob.apply(this, [this.url, params, SummaryRegionJobParameter, seconds]);
     },
 
     CLASS_NAME: "SuperMap.SummaryRegionJobsService"
@@ -45922,16 +45922,16 @@ module.exports = SuperMap.VectorClipJobsParameter;
 /***/ (function(module, exports, __webpack_require__) {
 
 var SuperMap = __webpack_require__(0);
-var ProcessingJobsServiceBase = __webpack_require__(21);
+var ProcessingServiceBase = __webpack_require__(21);
 var VectorClipJobsParameter = __webpack_require__(370);
 /**
  * @class SuperMap.VectorClipJobsService
  * @description 大数据矢量裁剪分析服务类
- * @augments SuperMap.ProcessingJobsServiceBase
+ * @augments SuperMap.ProcessingServiceBase
  * @param url -{String} 大数据矢量裁剪分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-SuperMap.VectorClipJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+SuperMap.VectorClipJobsService = SuperMap.Class(ProcessingServiceBase, {
 
     /**
      * @function SuperMap.VectorClipJobsService.protitype.initialize
@@ -45940,7 +45940,7 @@ SuperMap.VectorClipJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @param options - {Object} 交互服务时所需可选参数。
      */
     initialize: function (url, options) {
-        ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        ProcessingServiceBase.prototype.initialize.apply(this, arguments);
         this.url += "/spatialanalyst/vectorclip";
     },
 
@@ -45948,16 +45948,16 @@ SuperMap.VectorClipJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      *@inheritDoc
      */
     destroy: function () {
-        ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
+        ProcessingServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
      * @function SuperMap.VectorClipJobsService.protitype.getVectorClipJobs
-     * @description 获取大数据矢量裁剪分析所有作业
+     * @description 获取大数据矢量裁剪分析所有
      * @return {*}
      */
     getVectorClipJobs: function () {
-        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
+        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url]);
     },
 
     /**
@@ -45966,17 +45966,17 @@ SuperMap.VectorClipJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @param id -{String} 指定要获取数据的id
      */
     getVectorClipJob: function (id) {
-        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
+        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
     },
 
     /**
      * @function SuperMap.VectorClipJobsService.protitype.addVectorClipJob
      * @description 新建大数据矢量裁剪分析服务
-     * @param params - {SuperMap.VectorClipJobsParameter} 创建一个空间分析作业的请求参数。
-     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param params - {SuperMap.VectorClipJobsParameter} 创建一个空间分析的请求参数。
+     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
      */
     addVectorClipJob: function (params, seconds) {
-        return ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, VectorClipJobsParameter, seconds]);
+        return ProcessingServiceBase.prototype.addJob.apply(this, [this.url, params, VectorClipJobsParameter, seconds]);
     },
 
     CLASS_NAME: "SuperMap.VectorClipJobsService"

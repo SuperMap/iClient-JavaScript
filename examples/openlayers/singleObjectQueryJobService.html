@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>单对象查询分析作业</title>
+    <title>单对象查询分析</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
     <style>
@@ -21,7 +21,7 @@
                 <h4 class="modal-title">提示</h4>
             </div>
             <div class="modal-body">
-                <p>正在创建单对象查询分析作业...</p>
+                <p>正在创建单对象查询分析...</p>
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
 <div id="popup" class="ol-popup" style='width:350px'>
     <div class="panel panel-default">
         <div class='panel-heading'>
-            <h3 class='panel-title'>单对象查询分析作业</h3>
+            <h3 class='panel-title'>单对象查询分析</h3>
         </div>
         <div class='panel-body'>
             <div class='input-group'>
@@ -70,7 +70,7 @@
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
-    var layer, processingJobsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
+    var layer, processingsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
         map = new ol.Map({
             target: 'map',
             view: new ol.View({
@@ -79,7 +79,7 @@
                 projection: 'EPSG:4326'
             })
         }),
-        processingJobsService = new ol.supermap.ProcessingJobsService(processingJobsUrl);
+        processingService = new ol.supermap.ProcessingService(processingsUrl);
 
     map.addLayer(new ol.layer.Tile({
         source: new ol.source.Tianditu({
@@ -116,7 +116,7 @@
             datasetQuery: $('#datasetQuery').val(),
             mode: $('#mode option:selected').attr('value')
         });
-        processingJobsService.addQueryJob(singleObjectQueryJobsParameter, function (serviceResult) {
+        processingService.addQueryJob(singleObjectQueryJobsParameter, function (serviceResult) {
             if (serviceResult.error) {
                 $('#btn').prop('disabled', false);
                 $("#model").modal('hide');

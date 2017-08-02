@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>矢量裁剪分析作业</title>
+    <title>矢量裁剪分析</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
 </head>
@@ -14,7 +14,7 @@
                 <h4 class="modal-title">提示</h4>
             </div>
             <div class="modal-body">
-                <p>正在创建矢量裁剪分析作业...</p>
+                <p>正在创建矢量裁剪分析...</p>
             </div>
         </div>
     </div>
@@ -25,14 +25,14 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
 <script type="text/javascript">
-    var layer, info, processingJobsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
-        map = L.map('map', {
-            crs: L.CRS.TianDiTu_WGS84,
-            center: [40.75, -73.95],
-            maxZoom: 18,
-            zoom: 12
-        }),
-        processingJobsService = L.supermap.processingJobsService(processingJobsUrl);
+    var layer, info, processingUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
+            map = L.map('map', {
+                crs: L.CRS.TianDiTu_WGS84,
+                center: [40.75, -73.95],
+                maxZoom: 18,
+                zoom: 12
+            }),
+            processingService = L.supermap.processingService(processingUrl);
 
     L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
         layer: "vec",
@@ -50,32 +50,32 @@
             var popup = L.DomUtil.create('div');
             popup.style = 'width:350px';
             popup.innerHTML = "<div class='panel panel-default'>" +
-                "<div class='panel-heading'>" +
-                "<h3 class='panel-title'>矢量裁剪分析作业</h3>" +
-                "</div>" +
-                "<div class='panel-body'>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>源数据集　</span>" +
-                "<input id='datasetName' type='text' class='form-control' " +
-                "value='ProcessingData_newyork_taxi_2013-01_14k' " +
-                "placeholder='ProcessingData_newyork_taxi_2013-01_14k'/>" +
-                "</div><p></p>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>裁剪对象数据集</span>" +
-                "<input id='datasetOverlay' type='text' class='form-control' " +
-                "value='ProcessingData_processing_singleRegion_R' " +
-                "placeholder='ProcessingData_processing_singleRegion_R'/>" +
-                "</div><p></p>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>裁剪分析模式</span>" +
-                "<select class='form-control' id='mode' name='mode'>" +
-                "<option value='clip' selected>内部裁剪</option>" +
-                "<option value='intersect'>外部裁剪</option>" +
-                "</select>" +
-                "</div><p></p>" +
-                "<div align='right'>" +
-                "<input type='button' id='btn' class='btn btn-primary' value='创建'/>" +
-                "</div></div></div>";
+                    "<div class='panel-heading'>" +
+                    "<h3 class='panel-title'>矢量裁剪分析</h3>" +
+                    "</div>" +
+                    "<div class='panel-body'>" +
+                    "<div class='input-group'>" +
+                    "<span class='input-group-addon'>源数据集　</span>" +
+                    "<input id='datasetName' type='text' class='form-control' " +
+                    "value='ProcessingData_newyork_taxi_2013-01_14k' " +
+                    "placeholder='ProcessingData_newyork_taxi_2013-01_14k'/>" +
+                    "</div><p></p>" +
+                    "<div class='input-group'>" +
+                    "<span class='input-group-addon'>裁剪对象数据集</span>" +
+                    "<input id='datasetOverlay' type='text' class='form-control' " +
+                    "value='ProcessingData_processing_singleRegion_R' " +
+                    "placeholder='ProcessingData_processing_singleRegion_R'/>" +
+                    "</div><p></p>" +
+                    "<div class='input-group'>" +
+                    "<span class='input-group-addon'>裁剪分析模式</span>" +
+                    "<select class='form-control' id='mode' name='mode'>" +
+                    "<option value='clip' selected>内部裁剪</option>" +
+                    "<option value='intersect'>外部裁剪</option>" +
+                    "</select>" +
+                    "</div><p></p>" +
+                    "<div align='right'>" +
+                    "<input type='button' id='btn' class='btn btn-primary' value='创建'/>" +
+                    "</div></div></div>";
             handleMapEvent(popup, this._map);
             return popup;
         };
@@ -99,7 +99,7 @@
             datasetOverlay: $('#datasetOverlay').val() || undefined,
             mode: $('#mode option:selected').attr('value')
         });
-        processingJobsService.addVectorClipJob(vectorClipJobsParameter, function (serviceResult) {
+        processingService.addVectorClipJob(vectorClipJobsParameter, function (serviceResult) {
             if (serviceResult.error) {
                 $('#btn').prop('disabled', false);
                 $("#model").modal('hide');
@@ -128,9 +128,9 @@
         className += state ? "success" : "danger";
         if (!$('#msg_container')[0]) {
             var alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+                    "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
+                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                    "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
             $('body').append(alertDiv)
         }
         $('#msg_container').addClass(className);

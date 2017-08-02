@@ -86,7 +86,7 @@ deps = {
             "./src/common/iServer/SurfaceAnalystService.js",
             "./src/common/iServer/TerrainCurvatureCalculationService.js",
             "./src/common/iServer/ThiessenAnalystService.js",
-            //ProcessingJobs
+            //ProcessingService
             "./src/common/iServer/KernelDensityJobsService.js",
             "./src/common/iServer/BuildCacheJobsService.js",
             "./src/common/iServer/SingleObjectQueryJobsService.js",
@@ -267,13 +267,13 @@ deps = {
                     "des": "交通换乘服务"
                 }]
             },
-            "ProcessingJobs": {
+            "ProcessingService": {
                 "name": "大数据分析服务",
                 "src": [
-                    "./src/leaflet/services/ProcessingJobsService.js"
+                    "./src/leaflet/services/ProcessingService.js"
                 ],
                 "modules": [{
-                    "name": "L.supermap.processingJobsService",
+                    "name": "L.supermap.processingService",
                     "des": "大数据分析服务"
                 }]
             },
@@ -583,13 +583,13 @@ deps = {
                     "des": "Online服务"
                 }]
             },
-            "ProcessingJobs": {
+            "ProcessingService": {
                 "name": "大数据分析服务",
                 "src": [
-                    "./src/openlayers/services/ProcessingJobsService.js"
+                    "./src/openlayers/services/ProcessingService.js"
                 ],
                 "modules": [{
-                    "name": "ol.supermap.ProcessingJobsService",
+                    "name": "ol.supermap.ProcessingService",
                     "des": "大数据分析服务"
                 }]
             },
@@ -708,13 +708,13 @@ deps = {
         "Services": {
             "title": "服务",
             "description": "对各种功能服务的包装",
-            "ProcessingJobs": {
+            "ProcessingService": {
                 "name": "大数据分析服务",
                 "src": [
-                    "./src/legacy/services/ProcessingJobsService.js"
+                    "./src/legacy/services/ProcessingService.js"
                 ],
                 "modules": [{
-                    "name": "SuperMap.REST.ProcessingJobsService",
+                    "name": "SuperMap.REST.ProcessingService",
                     "des": "大数据分析服务"
                 }]
             },

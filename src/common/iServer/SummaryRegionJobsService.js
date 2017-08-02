@@ -1,14 +1,14 @@
 var SuperMap = require('../SuperMap');
-var ProcessingJobsServiceBase = require('./ProcessingJobsServiceBase');
+var ProcessingServiceBase = require('./ProcessingServiceBase');
 var SummaryRegionJobParameter = require('./SummaryRegionJobParameter');
 /**
  * @class SuperMap.SummaryRegionJobsService
  * @description 范围汇总分析服务类
- * @augments SuperMap.ProcessingJobsServiceBase
+ * @augments SuperMap.ProcessingServiceBase
  * @param url -{String} 范围汇总分析服务地址。
  * @param options - {Object} 范围汇总分析服务可选参数。
  */
-SuperMap.SummaryRegionJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
+SuperMap.SummaryRegionJobsService = SuperMap.Class(ProcessingServiceBase, {
 
     /**
      * @function SuperMap.SummaryRegionJobsService.protitype.initialize
@@ -17,7 +17,7 @@ SuperMap.SummaryRegionJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @param options - {Object} 范围汇总分析服务可选参数。
      */
     initialize: function (url, options) {
-        ProcessingJobsServiceBase.prototype.initialize.apply(this, arguments);
+        ProcessingServiceBase.prototype.initialize.apply(this, arguments);
         this.url += "/spatialanalyst/summaryregion";
     },
 
@@ -25,7 +25,7 @@ SuperMap.SummaryRegionJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      *@inheritDoc
      */
     destroy: function () {
-        ProcessingJobsServiceBase.prototype.destroy.apply(this, arguments);
+        ProcessingServiceBase.prototype.destroy.apply(this, arguments);
     },
 
     /**
@@ -34,7 +34,7 @@ SuperMap.SummaryRegionJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @return {*}
      */
     getSummaryRegionJobs: function () {
-        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url]);
+        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url]);
     },
 
     /**
@@ -43,17 +43,17 @@ SuperMap.SummaryRegionJobsService = SuperMap.Class(ProcessingJobsServiceBase, {
      * @param id -{String} 要获取范围汇总分析任务的id
      */
     getSummaryRegionJob: function (id) {
-        return ProcessingJobsServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
+        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
     },
 
     /**
      * @function SuperMap.SummaryRegionJobsService.protitype.addSummaryRegionJob
      * @description 新建范围汇总任务。
      * @param params - {SuperMap.SummaryRegionJobParameter} 创建一个范围汇总任务的请求参数。
-     * @param seconds - {Number} 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
      */
     addSummaryRegionJob: function (params, seconds) {
-        return ProcessingJobsServiceBase.prototype.addJob.apply(this, [this.url, params, SummaryRegionJobParameter, seconds]);
+        return ProcessingServiceBase.prototype.addJob.apply(this, [this.url, params, SummaryRegionJobParameter, seconds]);
     },
 
     CLASS_NAME: "SuperMap.SummaryRegionJobsService"

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>密度分析作业</title>
+    <title>密度分析</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://cdn.bootcss.com/openlayers/4.2.0/ol.css" rel="stylesheet">
     <style>
@@ -21,7 +21,7 @@
                 <h4 class="modal-title">提示</h4>
             </div>
             <div class="modal-body">
-                <p>正在创建密度分析作业...</p>
+                <p>正在创建密度分析...</p>
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
 <div id="popup" class="ol-popup" style='width:300px'>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">密度分析作业</h3>
+            <h3 class="panel-title">密度分析</h3>
         </div>
         <div class="panel-body">
             <div class="input-group">
@@ -124,7 +124,7 @@
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
-    var layer, processingJobsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
+    var layer, processingsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
             token = 'oZdJwpVhYnPNEAt8-ykB-Cy39gEZkdvPZ9knTbCdui1SoBeXWVCwx-j5tOVSScotsUX1qwZF44X9m6wNME1kBg..',
             map = new ol.Map({
                 target: 'map',
@@ -146,7 +146,7 @@
     ($('#query').val() || $('#query').attr('placeholder')).split(',').map(function (el) {
         return query.push(parseFloat(el));
     });
-    var processingJobsService = new ol.supermap.ProcessingJobsService(processingJobsUrl);
+    var processingService = new ol.supermap.ProcessingService(processingsUrl);
     var info = new ol.control.Control({element: popup});
     info.setMap(map);
     map.addControl(info);
@@ -170,7 +170,7 @@
             radiusUnit: $('#radiusUnit option:selected').attr('value'),
             areaUnit: $('#areaUnit option:selected').attr('value'),
         });
-        processingJobsService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
+        processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
             if (serviceResult.error) {
                 $('#btn').prop('disabled', false);
                 $("#model").modal('hide');

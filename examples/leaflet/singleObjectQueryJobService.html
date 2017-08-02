@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>单对象查询分析作业</title>
+    <title>单对象查询分析</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
 </head>
@@ -14,7 +14,7 @@
                 <h4 class="modal-title">提示</h4>
             </div>
             <div class="modal-body">
-                <p>正在创建单对象查询分析作业...</p>
+                <p>正在创建单对象查询分析...</p>
             </div>
         </div>
     </div>
@@ -25,14 +25,14 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
 <script type="text/javascript">
-    var layer, info, processingJobsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
+    var layer, info, processingUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
         map = L.map('map', {
             crs: L.CRS.TianDiTu_WGS84,
             center: [40.75, -73.95],
             maxZoom: 18,
             zoom: 12
         }),
-        processingJobsService = L.supermap.processingJobsService(processingJobsUrl);
+        processingService = L.supermap.processingService(processingUrl);
 
     L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
         layer: "vec",
@@ -51,7 +51,7 @@
             popup.style = 'width:350px';
             popup.innerHTML = "<div class='panel panel-default'>" +
                 "<div class='panel-heading'>" +
-                "<h3 class='panel-title'>单对象查询分析作业</h3>" +
+                "<h3 class='panel-title'>单对象查询分析</h3>" +
                 "</div>" +
                 "<div class='panel-body'>" +
                 "<div class='input-group'>" +
@@ -105,7 +105,7 @@
             datasetQuery: $('#datasetQuery').val(),
             mode: $('#mode option:selected').attr('value')
         });
-        processingJobsService.addQueryJob(singleObjectQueryJobsParameter, function (serviceResult) {
+        processingService.addQueryJob(singleObjectQueryJobsParameter, function (serviceResult) {
             if (serviceResult.error) {
                 $('#btn').prop('disabled', false);
                 $("#model").modal('hide');

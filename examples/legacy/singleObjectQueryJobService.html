@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>单对象查询分析作业</title>
+    <title>单对象查询分析</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .control {
@@ -24,7 +24,7 @@
                 <h4 class="modal-title">提示</h4>
             </div>
             <div class="modal-body">
-                <p>正在创建单对象查询分析作业...</p>
+                <p>正在创建单对象查询分析...</p>
             </div>
         </div>
     </div>
@@ -33,7 +33,7 @@
 <div id="control" class="control" style='width:350px'>
     <div class="panel panel-default">
         <div class='panel-heading'>
-            <h3 class='panel-title'>单对象查询分析作业</h3>
+            <h3 class='panel-title'>单对象查询分析</h3>
         </div>
         <div class='panel-body'>
             <div class='input-group'>
@@ -73,14 +73,20 @@
 <script type="text/javascript" src="http://iclient.supermapol.com/libs/iclient8c/libs/SuperMap.Include.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-legacy.min.js"></script>
 <script type="text/javascript">
-    var layer, processingJobsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
-        map = new SuperMap.Map("map", {
-            controls: [
-                new SuperMap.Control.Navigation(),
-                new SuperMap.Control.Zoom()
-            ]
-        }),
-        processingJobsService = new SuperMap.REST.ProcessingJobsService(processingJobsUrl);
+    var layer, processingsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
+            map = new SuperMap.Map("map", {
+                controls: [
+                    new SuperMap.Control.Navigation(),
+                    new SuperMap.Control.Zoom(),
+                    new SuperMap.Control.LayerSwitcher()
+
+                ], allOverlays: true
+            });
+    map.addControl(new SuperMap.Control.MousePosition());
+    var tiandituLayer = new SuperMap.Layer.Tianditu();
+    map.addLayers([tiandituLayer]);
+    map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 12);
+    processingService = new SuperMap.REST.ProcessingService(processingsUrl);
 
     bindClick();
     function bindClick() {
@@ -100,7 +106,7 @@
             datasetQuery: $('#datasetQuery').val(),
             mode: $('#mode option:selected').attr('value')
         });
-        processingJobsService.addQueryJob(singleObjectQueryJobsParameter, function (serviceResult) {
+        processingService.addQueryJob(singleObjectQueryJobsParameter, function (serviceResult) {
             if (serviceResult.error) {
                 $('#btn').prop('disabled', false);
                 $("#model").modal('hide');
@@ -114,11 +120,10 @@
                         return response.json();
                     }).then(function (result) {
                         var mapUrl = result[0].path;
-                        resultLayer = new SuperMap.Layer.TiledDynamicRESTLayer("resultLayer", mapUrl, null);
+                        resultLayer = new SuperMap.Layer.TiledDynamicRESTLayer("resultLayer", mapUrl, {transparent: true});
                         resultLayer.events.on({"layerInitialized": addLayer});
                         function addLayer() {
                             map.addLayer(resultLayer);
-                            map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 0);
                             $("#model").modal('hide');
                             $('#btn').prop('disabled', false);
                         }
@@ -133,9 +138,9 @@
         className += state ? "success" : "danger";
         if (!$('#msg_container')[0]) {
             var alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+                    "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
+                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                    "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
             $('body').append(alertDiv)
         }
         $('#msg_container').addClass(className);

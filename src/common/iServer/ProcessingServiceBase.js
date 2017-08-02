@@ -2,15 +2,15 @@ var ServiceBase = require('./ServiceBase');
 var SuperMap = require('../SuperMap');
 var Request = require('../util/FetchRequest');
 
-SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
+SuperMap.ProcessingServiceBase = SuperMap.Class(ServiceBase, {
 
     /**
      * Constant: EVENT_TYPES
      * {Array(String)}
      * 此类支持的事件类型
-     * - *processCompleted* 创建作业成功后触发的事件。
-     * - *processFailed* 创建作业失败后触发的事件 。
-     * - *processRunning* 创建作业过程的整个阶段都会触发的事件，用于获取作业创建过程的状态 。
+     * - *processCompleted* 创建成功后触发的事件。
+     * - *processFailed* 创建失败后触发的事件 。
+     * - *processRunning* 创建过程的整个阶段都会触发的事件，用于获取创建过程的状态 。
      */
     EVENT_TYPES: ["processCompleted", "processFailed", "processRunning"],
 
@@ -24,7 +24,7 @@ SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
 
     /**
      *
-     * @param url - 一个空间分析作业的资源地址。
+     * @param url - 一个空间分析的资源地址。
      */
     getJobs: function (url) {
         var me = this;
@@ -39,10 +39,10 @@ SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
 
     /**
      *
-     * @param url - 分布式空间分析作业资源根地址。
-     * @param params - 创建一个空间分析作业的请求参数。
+     * @param url - 分布式空间分析资源根地址。
+     * @param params - 创建一个空间分析的请求参数。
      * @param paramType - 请求参数类型。
-     * @param seconds - 开始创建作业后，获取创建成功结果的时间间隔。
+     * @param seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
     addJob: function (url, params, paramType, seconds) {
         var me = this, parameterObject = null;
@@ -108,7 +108,7 @@ SuperMap.ProcessingJobsServiceBase = SuperMap.Class(ServiceBase, {
         return url;
     },
 
-    CLASS_NAME: "SuperMap.ProcessingJobsServiceBase"
+    CLASS_NAME: "SuperMap.ProcessingServiceBase"
 });
 
-module.exports = SuperMap.ProcessingJobsServiceBase;
+module.exports = SuperMap.ProcessingServiceBase;
