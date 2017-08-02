@@ -43,53 +43,57 @@
 
     info.onAdd = function () {
         var popup = L.DomUtil.create('div');
-        popup.style = 'width:20%';
+        popup.style = 'width:350px';
         popup.innerHTML = "<div class='panel panel-default'>" +
                 "<div class='panel-heading'>" +
                 "<h3 class='panel-title'>格网聚合分析作业</h3>" +
-                "</div>" +
-                "<div class='panel-body'>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>输入数据　</span>" +
+                "</div><div class='panel-body'>" +
+                "<div class='input-group'><span class='input-group-addon'>输入数据　</span>" +
                 "<input id='datasetName' type='text' class='form-control' placeholder='newyork_taxi_2013_01_14k_csv_newyork_taxi_2013-01_14k'/>" +
-                "</div><p>" +
-                "<div class='input-group'>" +
+                "</div><p><div class='input-group'>" +
                 "<span class='input-group-addon'>聚合类型　</span>" +
                 "<select class='form-control' id='type' name='clientType'>" +
                 "<option value='SUMMARYMESH' selected='selected'>网格面聚合</option>" +
-                "</select>" +
-                "</div><p>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>网格面类型</span>" +
+                "<option value='SUMMARYREGION'>多边形聚合</option>" +
+                "</select></div><p><div id='summarymeshS'>" +
+                "<div class='input-group'><span class='input-group-addon'>网格面类型</span>" +
                 "<select class='form-control' id='meshType' name='clientType'>" +
                 "<option value='0' selected='selected'>四边形网格</option>" +
-                "<option value='1'>六边形网格</option>" +
-                "</select>" +
-                "</div><p>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>权重值字段</span>" +
-                "<input id='fields' type='text' class='form-control' placeholder='col7'/>" +
-                "</div><p>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>分析范围　</span>" +
+                "<option value='1'>六边形网格</option></select></div><p>" +
+                "<div class='input-group'> <span class='input-group-addon'>分析范围　</span>" +
                 "<input id='query' type='text' class='form-control' placeholder='-74.150, 40.550, -73.750, 40.950'/>" +
-                "</div><p>" +
-                "<div class='input-group'>" +
+                "</div><p><div class='input-group'>" +
                 "<span class='input-group-addon'>分辨率　　</span>" +
                 "<input id='resolution' type='text' class='form-control' placeholder='100'/>" +
-                "</div><p>" +
+                "</div><p></div>" +
+                "<div id='summaryregionS' style='display: none'>" +
                 "<div class='input-group'>" +
+                "<span class='input-group-addon'>聚合面数据集</span>" +
+                "<select class='form-control' id='regionDataset' name='clientType'>" +
+                "<option value='ProcessingData_processing_newyorkZone_R' selected='selected'>ProcessingData_processing_newyorkZone_R</option>" +
+                "<option value='ProcessingData_processing_singleResion_R'>ProcessingData_processing_singleResion_R</option>" +
+                "</select></div><p></div><div class='input-group'>" +
                 "<span class='input-group-addon'>统计模式　</span>" +
                 "<input id='statisticModes' type='text' class='form-control' placeholder='max'/>" +
-                "</div><p>" +
-                "<div align='right'>" +
+                "</div><p><div class='input-group'>" +
+                "<span class='input-group-addon'>权重值字段</span>" +
+                "<input id='fields' type='text' class='form-control' placeholder='col7'/>" +
+                "</div><p><div align='right'>" +
                 "<input type='button' id='btn' class='btn btn-primary' value='创建'/>" +
-                "</div></div></div>";
+                "</div></div>";
         handleMapEvent(popup, this._map);
         return popup;
     };
     info.addTo(map);
-
+    $("#type").change(function (e) {
+        if (e.target.selectedIndex === 0) {
+            $("#summarymeshS").show();
+            $("#summaryregionS").hide();
+            return;
+        }
+        $("#summarymeshS").hide();
+        $("#summaryregionS").show();
+    });
     ($('#query').val() || $('#query').attr('placeholder')).split(',').map(function (el) {
         return query.push(parseFloat(el));
     });
@@ -109,7 +113,8 @@
             fields: $('#fields').val() || $('#fields').attr('placeholder'),
             query: L.latLngBounds(L.latLng(query[1], query[0]), L.latLng(query[3], query[2])),
             statisticModes: $('#statisticModes').val() || $('#statisticModes').attr('placeholder'),
-            type: $('#type option:selected').attr('value')
+            type: $('#type option:selected').attr('value'),
+            regionDataset: $('#regionDataset option:selected').attr('value')
         });
         processingJobsService.addSummaryMeshJob(summaryMeshJobParameter, function (serviceResult) {
             if (serviceResult.error) {
@@ -140,9 +145,9 @@
         className += state ? "success" : "danger";
         if (!$('#msg_container')[0]) {
             var alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+                    "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
+                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                    "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
             $('body').append(alertDiv)
         }
         $('#msg_container').addClass(className);

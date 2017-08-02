@@ -28,7 +28,7 @@ SuperMap.KernelDensityJobParameter = SuperMap.Class({
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
-     * @description 分辨率。
+     * @description 网格大小。
      */
     resolution: null,
 
@@ -56,6 +56,25 @@ SuperMap.KernelDensityJobParameter = SuperMap.Class({
      */
     radius: null,
 
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{String}
+     * @description 网格大小单位。
+     */
+    meshSizeUnit: 'Meter',
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{String}
+     * @description 搜索半径单位。
+     */
+    radiusUnit: 'Meter',
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{String}
+     * @description 面积单位。
+     */
+    areaUnit: 'SquareMile',
+
+
     initialize: function (options) {
         if (!options) {
             return;
@@ -75,6 +94,9 @@ SuperMap.KernelDensityJobParameter = SuperMap.Class({
         this.radius = null;
         this.meshType = null;
         this.fields = null;
+        this.meshSizeUnit = null;
+        this.radiusUnit = null;
+        this.areaUnit = null;
     }
 
 });

@@ -8,7 +8,7 @@
         .control {
             position: relative;
             top: 10px;
-            left: 79%;
+            left: 84%;
         }
 
         #map {
@@ -30,20 +30,20 @@
     </div>
 </div>
 <div id="map" style="width: 100%;height:100%"></div>
-<div id="control" class="control" style='width:20%'>
+<div id="control" class="control" style='width:300px'>
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">密度分析作业</h3>
         </div>
         <div class="panel-body">
             <div class="input-group">
-                <span class="input-group-addon">输入数据　</span>
+                <span class="input-group-addon">输入数据　　</span>
                 <input id="datasetName" type="text" class="form-control"
                        placeholder="newyork_taxi_2013_01_14k_csv_newyork_taxi_2013-01_14k"/>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">分析方法　</span>
+                <span class="input-group-addon">分析方法　　</span>
                 <div>
                     <select class="form-control" id="method" name="clientType">
                         <option value="0" selected="selected">简单点密度分析</option>
@@ -53,7 +53,7 @@
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">网格面类型</span>
+                <span class="input-group-addon">网格面类型　</span>
                 <select class="form-control" id="meshType" name="clientType">
                     <option value="0" selected="selected">四边形网格</option>
                     <option value="1">六边形网格</option>
@@ -61,23 +61,58 @@
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">权重值字段</span>
+                <span class="input-group-addon">权重值字段　</span>
                 <input id="fields" type="text" class="form-control" placeholder="col7,col8"/>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">分析范围　</span>
+                <span class="input-group-addon">分析范围　　</span>
                 <input id="query" type="text" class="form-control" placeholder="-74.150, 40.550, -73.750, 40.950"/>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">分辨率　　</span>
+                <span class="input-group-addon">网格大小　　</span>
                 <input id="resolution" type="text" class="form-control" placeholder="80"/>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">半径　　　</span>
+                <span class="input-group-addon">网格大小单位</span>
+                <select class="form-control" id="meshSizeUnit" name="clientType">
+                    <option value="Meter" selected="selected">Meter</option>
+                    <option value="Kilometer">Kilometer</option>
+                    <option value="Yard">Yard</option>
+                    <option value="Foot">Foot</option>
+                    <option value="Mile">Mile</option>
+                </select>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">搜索半径　　</span>
                 <input id="radius" type="text" class="form-control" placeholder="300"/>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">搜索半径单位</span>
+                <select class="form-control" id="radiusUnit" name="clientType">
+                    <option value="Meter" selected="selected">Meter</option>
+                    <option value="Kilometer">Kilometer</option>
+                    <option value="Yard">Yard</option>
+                    <option value="Foot">Foot</option>
+                    <option value="Mile">Mile</option>
+                </select>
+            </div>
+            <p>
+            <div class="input-group">
+                <span class="input-group-addon">面积单位　　</span>
+                <select class="form-control" id="areaUnit" name="clientType">
+                    <option value="SquareMeter" selected="selected">SquareMeter</option>
+                    <option value="Hectare">Hectare</option>
+                    <option value="Are">Are</option>
+                    <option value="Acre">Acre</option>
+                    <option value="SquareFoot">SquareFoot</option>
+                    <option value="SquareYard">SquareYard</option>
+                    <option value="SquareMile">SquareMile</option>
+                </select>
             </div>
             <p>
             <div align="right">
@@ -93,14 +128,14 @@
 <script type="text/javascript" src="../../dist/iclient9-legacy.min.js"></script>
 
 <script type="text/javascript">
-    var resultLayer, processingJobsUrl = "http://localhost:8090/iserver/services/spatialprocessing/rest/v1/jobs",
-        token = 'oZdJwpVhYnPNEAt8-ykB-Cy39gEZkdvPZ9knTbCdui1SoBeXWVCwx-j5tOVSScotsUX1qwZF44X9m6wNME1kBg..',
-        map = new SuperMap.Map("map", {
-            controls: [
-                new SuperMap.Control.Navigation(),
-                new SuperMap.Control.Zoom()
-            ]
-        });
+    var resultLayer, processingJobsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
+            token = 'oZdJwpVhYnPNEAt8-ykB-Cy39gEZkdvPZ9knTbCdui1SoBeXWVCwx-j5tOVSScotsUX1qwZF44X9m6wNME1kBg..',
+            map = new SuperMap.Map("map", {
+                controls: [
+                    new SuperMap.Control.Navigation(),
+                    new SuperMap.Control.Zoom()
+                ]
+            });
     map.addControl(new SuperMap.Control.MousePosition());
 
     query = [];
@@ -123,7 +158,10 @@
             meshType: $('#meshType option:selected').attr('value'),
             fields: $('#fields').val() || $('#fields').attr('placeholder'),
             query: query,
-            radius: $('#radius').val() || $('#radius').attr('placeholder')
+            radius: $('#radius').val() || $('#radius').attr('placeholder'),
+            meshSizeUnit: $('#meshSizeUnit option:selected').attr('value'),
+            radiusUnit: $('#radiusUnit option:selected').attr('value'),
+            areaUnit: $('#areaUnit option:selected').attr('value'),
         });
         processingJobsService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
             if (serviceResult.error) {
@@ -158,9 +196,9 @@
         className += state ? "success" : "danger";
         if (!$('#msg_container')[0]) {
             var alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+                    "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
+                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                    "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
             $('body').append(alertDiv)
         }
         $('#msg_container').addClass(className);
