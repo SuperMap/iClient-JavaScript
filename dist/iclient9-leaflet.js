@@ -13729,7 +13729,7 @@ var ChangeTileVersion = L.Control.extend({
 
         //判断浏览器是否支持Range滑动条
         if (this.slider.type == "text") {
-            alert("抱歉，您的浏览器不支持HTML5 range滑动条，请使用高版本浏览器");
+            console.error("抱歉，您的浏览器不支持HTML5 range滑动条，请使用高版本浏览器");
         }
         this.firstLoad = true;
         if ('oninput' in this.slider || 'onchange' in this.slider) {
@@ -24406,10 +24406,10 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
+	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
 	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 	"_spec": "proj4@2.4.3",
-	"_where": "E:\\codes\\iClient9",
+	"_where": "F:\\dev\\iClient9",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"

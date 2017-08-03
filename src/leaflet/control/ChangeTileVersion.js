@@ -208,7 +208,7 @@ var ChangeTileVersion = L.Control.extend({
 
         //判断浏览器是否支持Range滑动条
         if (this.slider.type == "text") {
-            alert("抱歉，您的浏览器不支持HTML5 range滑动条，请使用高版本浏览器");
+            console.error("抱歉，您的浏览器不支持HTML5 range滑动条，请使用高版本浏览器");
         }
         this.firstLoad = true;
         if ('oninput' in this.slider || 'onchange' in this.slider) {
