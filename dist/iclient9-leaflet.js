@@ -26003,8 +26003,10 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
                  *     begin a block or an object literal. We wrap the text in
                  *     parens to eliminate the ambiguity.
                  */
-                object = eval('(' + json + ')');
-
+                //object = eval('(' + json + ')');
+                object = function (str) {
+                    return (new Function("return " + str))();
+                }(json);
                 /*
                  * In the optional third stage, we recursively walk the new
                  *     structure, passing each name/value pair to a filter
@@ -26196,15 +26198,15 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
             };
             if (/["\\\x00-\x1f]/.test(string)) {
                 return '"' + string.replace(/([\x00-\x1f\\"])/g, function (a, b) {
-                        var c = m[b];
-                        if (c) {
-                            return c;
-                        }
-                        c = b.charCodeAt();
-                        return '\\u00' +
-                            Math.floor(c / 16).toString(16) +
-                            (c % 16).toString(16);
-                    }) + '"';
+                    var c = m[b];
+                    if (c) {
+                        return c;
+                    }
+                    c = b.charCodeAt();
+                    return '\\u00' +
+                        Math.floor(c / 16).toString(16) +
+                        (c % 16).toString(16);
+                }) + '"';
             }
             return '"' + string + '"';
         },
