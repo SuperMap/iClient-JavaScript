@@ -35,14 +35,13 @@
         <div class='panel-body'>
             <div class='input-group'>
                 <span class='input-group-addon'>源数据集　</span>
-                <input id='datasetName' type='text' class='form-control' value='ProcessingData_processing_newyorkZone_R'
-                       placeholder='ProcessingData_processing_newyorkZone_R'/></div>
+                <input id='datasetName' type='text' class='form-control'
+                       value='ProcessingData_processing_newyorkZone_R'/></div>
             <p></p>
             <div class='input-group'>
                 <span class='input-group-addon'>查询对象数据集</span>
                 <input id='datasetQuery' type='text' class='form-control'
-                       value='ProcessingData_processing_singleRegion_R'
-                       placeholder='ProcessingData_processing_singleRegion_R'/>
+                       value='ProcessingData_processing_singleRegion_R'/>
             </div>
             <p></p>
             <div class='input-group'>
@@ -71,15 +70,15 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var layer, processingsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
-        map = new ol.Map({
-            target: 'map',
-            view: new ol.View({
-                center: [-73.95, 40.75],
-                zoom: 12,
-                projection: 'EPSG:4326'
-            })
-        }),
-        processingService = new ol.supermap.ProcessingService(processingsUrl);
+            map = new ol.Map({
+                target: 'map',
+                view: new ol.View({
+                    center: [-73.95, 40.75],
+                    zoom: 12,
+                    projection: 'EPSG:4326'
+                })
+            }),
+            processingService = new ol.supermap.ProcessingService(processingsUrl);
 
     map.addLayer(new ol.layer.Tile({
         source: new ol.source.Tianditu({
@@ -149,9 +148,9 @@
         className += state ? "success" : "danger";
         if (!$('#msg_container')[0]) {
             var alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+                    "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
+                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                    "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
             $('body').append(alertDiv)
         }
         $('#msg_container').addClass(className);

@@ -13,19 +13,19 @@ SuperMap.SingleObjectQueryJobsParameter = SuperMap.Class({
      * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{String}
      * @description 数据集名。
      */
-    datasetName: null,
+    datasetName: "",
 
     /**
      * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{String}
      * @description 查询对象所在的数据集名称。
      */
-    datasetQuery: null,
+    datasetQuery: "",
 
     /**
      * @member SuperMap.SingleObjectQueryJobsParameter.prototype.mode -{SuperMap.SpatialQueryMode}
      * @description 空间查询模式 。
      */
-    mode: null,
+    mode: "CONTAIN",
 
     initialize: function (options) {
         if (!options) {

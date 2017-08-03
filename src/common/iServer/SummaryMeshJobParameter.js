@@ -18,49 +18,49 @@ SuperMap.SummaryMeshJobParameter = SuperMap.Class({
      * @member SuperMap.SummaryMeshJobParameter.prototype.datasetName -{String}
      * @description 数据集名。
      */
-    datasetName: null,
+    datasetName: "",
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.regionDataset -{String}
      * @description 聚合面数据集(聚合类型为多边形聚合时使用的参数)。
      */
-    regionDataset: null,
+    regionDataset: "",
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.query -{SuperMap.Bounds}
      * @description 分析范围(聚合类型为网格面聚合时使用的参数)。
      */
-    query: null,
+    query: "",
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.resolution -{number}
      * @description 分辨率(聚合类型为网格面聚合时使用的参数)。
      */
-    resolution: null,
+    resolution: 100,
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.meshType -{number}
      * @description  网格面类型(聚合类型为网格面聚合时使用的参数)。
      */
-    meshType: null,
+    meshType: 0,
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.statisticModes -{String}
      * @description 统计模式。
      */
-    statisticModes: null,
+    statisticModes: "",
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.fields -{number}
      * @description 权重字段。
      */
-    fields: null,
+    fields: "",
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.type -{String}
      * @description 聚合类型。
      */
-    type: null,
+    type: "SUMMARYMESH",
 
     initialize: function (options) {
         if (!options) {

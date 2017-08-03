@@ -24,13 +24,13 @@ SuperMap.SummaryRegionJobParameter = SuperMap.Class({
      * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{String}
      * @description 数据集名。
      */
-    datasetName: null,
+    datasetName: "",
 
     /**
      * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{String}
      * @description 汇总数据源（多边形汇总时用到的参数）。
      */
-    regionDataset: null,
+    regionDataset: "",
 
     /**
      * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{Boolean}
@@ -42,7 +42,7 @@ SuperMap.SummaryRegionJobParameter = SuperMap.Class({
      * @member SuperMap.SummaryRegionJobParameter.prototype.query -{SuperMap.Bounds}
      * @description 分析范围。
      */
-    query: null,
+    query: "",
 
     /**
      * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{Boolean}
@@ -90,19 +90,19 @@ SuperMap.SummaryRegionJobParameter = SuperMap.Class({
      * @member SuperMap.SummaryRegionJobParameter.prototype.resolution -{number}
      * @description 网格大小。
      */
-    resolution: null,
+    resolution: 100,
 
     /**
      * @member SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit -{String}
      * @description 网格大小单位。
      */
-    meshSizeUnit: null,
+    meshSizeUnit: 'Meter',
 
     /**
      * @member SuperMap.SummaryRegionJobParameter.prototype.type -{String}
      * @description 汇总类型。
      */
-    type: "",
+    type: "SUMMARYMESH",
 
 
     initialize: function (options) {

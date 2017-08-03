@@ -38,12 +38,8 @@
         layer: "vec",
         tilematrixSet: "c"
     }).addTo(map);
-
-
     initForm();
     bindClick();
-
-
     function initForm() {
         info = L.control({position: 'topright'});
         info.onAdd = function () {
@@ -57,14 +53,12 @@
                     "<div class='input-group'>" +
                     "<span class='input-group-addon'>源数据集　</span>" +
                     "<input id='datasetName' type='text' class='form-control' " +
-                    "value='ProcessingData_newyork_taxi_2013-01_14k' " +
-                    "placeholder='ProcessingData_newyork_taxi_2013-01_14k'/>" +
+                    "value='ProcessingData_newyork_taxi_2013-01_14k'/>" +
                     "</div><p></p>" +
                     "<div class='input-group'>" +
                     "<span class='input-group-addon'>裁剪对象数据集</span>" +
                     "<input id='datasetOverlay' type='text' class='form-control' " +
-                    "value='ProcessingData_processing_singleRegion_R' " +
-                    "placeholder='ProcessingData_processing_singleRegion_R'/>" +
+                    "value='ProcessingData_processing_singleRegion_R'/>" +
                     "</div><p></p>" +
                     "<div class='input-group'>" +
                     "<span class='input-group-addon'>裁剪分析模式</span>" +
@@ -95,8 +89,8 @@
 
     function addVectorClipJobs() {
         var vectorClipJobsParameter = new SuperMap.VectorClipJobsParameter({
-            datasetName: $('#datasetName').val() || undefined,
-            datasetOverlay: $('#datasetOverlay').val() || undefined,
+            datasetName: $('#datasetName').val(),
+            datasetOverlay: $('#datasetOverlay').val(),
             mode: $('#mode option:selected').attr('value')
         });
         processingService.addVectorClipJob(vectorClipJobsParameter, function (serviceResult) {

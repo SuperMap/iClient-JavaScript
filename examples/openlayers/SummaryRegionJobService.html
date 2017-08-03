@@ -36,7 +36,7 @@
             <div class="input-group">
                 <span class="input-group-addon">输入数据　　　　　</span>
                 <input id="datasetName" type="text" class="form-control"
-                       placeholder="ProcessingData_processing_newyorkZone_R"/>
+                       value="ProcessingData_processing_newyorkZone_R"/>
             </div>
             <p>
             <div class="input-group">
@@ -78,13 +78,13 @@
                     <div class="input-group">
                         <span class="input-group-addon">属性字段统计模式　</span>
                         <input id="standardStatisticModes" type="text" class="form-control"
-                               placeholder="max"/>
+                               value="max"/>
                     </div>
             <p>
             <div class="input-group">
                 <span class="input-group-addon">属性字段名　　　　</span>
                 <input id="standardFields" type="text" class="form-control"
-                       placeholder="LocationID"/>
+                       value="LocationID"/>
             </div>
             <p>
         </div>
@@ -92,13 +92,13 @@
             <div class="input-group">
                 <span class="input-group-addon">权重字段统计模式　</span>
                 <input id="weightedStatisticModes" type="text" class="form-control"
-                       placeholder="max"/>
+                       value="max"/>
             </div>
             <p>
             <div class="input-group">
                 <span class="input-group-addon">权重字段名　　　　</span>
                 <input id="weightedFields" type="text" class="form-control"
-                       placeholder="LocationID"/>
+                       value="LocationID"/>
             </div>
             <p>
         </div>
@@ -147,8 +147,8 @@
                     zoom: 12,
                     projection: 'EPSG:4326'
                 })
-            }),
-            query = null;
+            });
+
     map.addLayer(new ol.layer.Tile({
         source: new ol.source.Tianditu({
             url: "http://t0.tianditu.com/vec_c/wmts",
@@ -171,14 +171,21 @@
         }
         $("#weightS").hide();
     });
-    var arr = ($('#query').val() || $('#query').attr('placeholder')).split(',');
-    query = new SuperMap.Bounds(parseFloat(arr[0]), parseFloat(arr[1]), parseFloat(arr[2]), parseFloat(arr[3]));
     var processingService = new ol.supermap.ProcessingService(processingsUrl);
     var info = new ol.control.Control({element: popup});
     info.setMap(map);
     map.addControl(info);
     SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090', token);
-
+    function getQuery() {
+        if ($('#query').val() === "") {
+            return "";
+        }
+        var query = [];
+        $('#query').val().split(',').map(function (el) {
+            query.push(parseFloat(el));
+        });
+        return query;
+    }
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
@@ -186,18 +193,18 @@
             map.removeLayer(layer);
         }
         var summaryRegionJobParameter = new SuperMap.SummaryRegionJobParameter({
-            datasetName: $('#datasetName').val() || $('#datasetName').attr('placeholder'),
-            regionDataset: $('#type option:selected').attr('value') === 'SUMMARYREGION' ? $('#datasetName').val() || $('#datasetName').attr('placeholder') : undefined,
+            datasetName: $('#datasetName').val(),
+            regionDataset: $('#type option:selected').attr('value') === 'SUMMARYREGION' ? $('#datasetName').val() : undefined,
             type: $('#type option:selected').attr('value'),
             meshType: $('#meshType option:selected').attr('value'),
-            query: query,
+            query: getQuery(),
             standardSummaryFields: $('#standardSummaryFields').get(0).checked,
             weightedSummaryFields: $('#weightedSummaryFields').get(0).checked,
-            standardStatisticModes: $('#standardStatisticModes').val() || $('#standardStatisticModes').attr('placeholder'),
-            standardFields: $('#standardFields').val() || $('#standardFields').attr('placeholder'),
-            weightedStatisticModes: $('#weightedStatisticModes').val() || $('#weightedStatisticModes').attr('placeholder'),
-            weightedFields: $('#weightedFields').val() || $('#weightedFields').attr('placeholder'),
-            resolution: $('#resolution').val() || $('#resolution').attr('placeholder'),
+            standardStatisticModes: $('#standardStatisticModes').val(),
+            standardFields: $('#standardFields').val(),
+            weightedStatisticModes: $('#weightedStatisticModes').val(),
+            weightedFields: $('#weightedFields').val(),
+            resolution: $('#resolution').val(),
             meshSizeUnit: $('#meshSizeUnit option:selected').attr('value'),
             sumShape: $('#sumShape').get(0).checked
         });

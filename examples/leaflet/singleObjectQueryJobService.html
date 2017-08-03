@@ -26,13 +26,13 @@
 <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
 <script type="text/javascript">
     var layer, info, processingUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
-        map = L.map('map', {
-            crs: L.CRS.TianDiTu_WGS84,
-            center: [40.75, -73.95],
-            maxZoom: 18,
-            zoom: 12
-        }),
-        processingService = L.supermap.processingService(processingUrl);
+            map = L.map('map', {
+                crs: L.CRS.TianDiTu_WGS84,
+                center: [40.75, -73.95],
+                maxZoom: 18,
+                zoom: 12
+            }),
+            processingService = L.supermap.processingService(processingUrl);
 
     L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
         layer: "vec",
@@ -50,38 +50,36 @@
             var popup = L.DomUtil.create('div');
             popup.style = 'width:350px';
             popup.innerHTML = "<div class='panel panel-default'>" +
-                "<div class='panel-heading'>" +
-                "<h3 class='panel-title'>单对象查询分析</h3>" +
-                "</div>" +
-                "<div class='panel-body'>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>源数据集　</span>" +
-                "<input id='datasetName' type='text' class='form-control' " +
-                "value='ProcessingData_processing_newyorkZone_R' " +
-                "placeholder='ProcessingData_processing_newyorkZone_R'/>" +
-                "</div><p></p>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>查询对象数据集</span>" +
-                "<input id='datasetQuery' type='text' class='form-control' " +
-                "value='ProcessingData_processing_singleRegion_R' " +
-                "placeholder='ProcessingData_processing_singleRegion_R'/>" +
-                "</div><p></p>" +
-                "<div class='input-group'>" +
-                "<span class='input-group-addon'>空间查询模式</span>" +
-                "<select class='form-control' id='mode' name='mode'>" +
-                "<option value='CONTAIN'>包含</option>" +
-                "<option value='CROSS'>交叉</option>" +
-                "<option value='DISJOINT'>分离</option>" +
-                "<option value='IDENTITY'>重合</option>" +
-                "<option value='INTERSECT' selected>相交</option>" +
-                "<option value='OVERLAP'>叠加</option>" +
-                "<option value='TOUCH'>邻接</option>" +
-                "<option value='WITHIN'>被包含</option>" +
-                "</select>" +
-                "</div><p></p>" +
-                "<div align='right'>" +
-                "<input type='button' id='btn' class='btn btn-primary' value='创建'/>" +
-                "</div></div></div>";
+                    "<div class='panel-heading'>" +
+                    "<h3 class='panel-title'>单对象查询分析</h3>" +
+                    "</div>" +
+                    "<div class='panel-body'>" +
+                    "<div class='input-group'>" +
+                    "<span class='input-group-addon'>源数据集　</span>" +
+                    "<input id='datasetName' type='text' class='form-control' " +
+                    "value='ProcessingData_processing_newyorkZone_R'/>" +
+                    "</div><p></p>" +
+                    "<div class='input-group'>" +
+                    "<span class='input-group-addon'>查询对象数据集</span>" +
+                    "<input id='datasetQuery' type='text' class='form-control' " +
+                    "value='ProcessingData_processing_singleRegion_R'/>" +
+                    "</div><p></p>" +
+                    "<div class='input-group'>" +
+                    "<span class='input-group-addon'>空间查询模式</span>" +
+                    "<select class='form-control' id='mode' name='mode'>" +
+                    "<option value='CONTAIN'>包含</option>" +
+                    "<option value='CROSS'>交叉</option>" +
+                    "<option value='DISJOINT'>分离</option>" +
+                    "<option value='IDENTITY'>重合</option>" +
+                    "<option value='INTERSECT' selected>相交</option>" +
+                    "<option value='OVERLAP'>叠加</option>" +
+                    "<option value='TOUCH'>邻接</option>" +
+                    "<option value='WITHIN'>被包含</option>" +
+                    "</select>" +
+                    "</div><p></p>" +
+                    "<div align='right'>" +
+                    "<input type='button' id='btn' class='btn btn-primary' value='创建'/>" +
+                    "</div></div></div>";
             handleMapEvent(popup, this._map);
             return popup;
         };
@@ -134,9 +132,9 @@
         className += state ? "success" : "danger";
         if (!$('#msg_container')[0]) {
             var alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
-                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+                    "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
+                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                    "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
             $('body').append(alertDiv)
         }
         $('#msg_container').addClass(className);

@@ -17897,49 +17897,49 @@ SuperMap.BuildCacheJobParameter = SuperMap.Class({
      * @member SuperMap.BuildCacheJobParameter.prototype.datasetName -{String}
      * @description 数据集名称。
      */
-    datasetName: null,
+    datasetName: "",
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.cacheName -{String}
      * @description 缓存名称。
      */
-    cacheName: null,
+    cacheName: "",
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.cacheType -{String}
      * @description 存储类型。
      */
-    cacheType: null,
+    cacheType: "",
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.serverAdresses -{String}
      * @description MongoDB地址。
      */
-    serverAdresses: null,
+    serverAdresses: "",
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.database -{String}
      * @description 数据库。
      */
-    database: null,
+    database: "",
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.version -{String}
      * @description 版本。
      */
-    version: null,
+    version: "",
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.bounds -{SuperMap.Bounds}
      * @description 缓存范围。
      */
-    bounds: null,
+    bounds: "",
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.imageType -{number}
      * @description 缓存类型。
      */
-    imageType: null,
+    imageType: 'Heatmap',
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.level -{number}
@@ -26615,43 +26615,43 @@ SuperMap.KernelDensityJobParameter = SuperMap.Class({
      * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{String}
      * @description 数据集名。
      */
-    datasetName: null,
+    datasetName: "",
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
      * @description 分析范围。
      */
-    query: null,
+    query: "",
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
      * @description 网格大小。
      */
-    resolution: null,
+    resolution: 80,
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.method -{numbert}
+     * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
      * @description 分析方法。
      */
-    method: null,
+    method: 0,
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{numbert}
+     * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
      * @description 分析类型。
      */
-    meshType: null,
+    meshType: 0,
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.fields -{String}
      * @description 权重索引。
      */
-    fields: null,
+    fields: "",
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
      * @description 分析的影响半径。
      */
-    radius: null,
+    radius: 300,
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{String}
@@ -31046,19 +31046,19 @@ SuperMap.SingleObjectQueryJobsParameter = SuperMap.Class({
      * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{String}
      * @description 数据集名。
      */
-    datasetName: null,
+    datasetName: "",
 
     /**
      * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{String}
      * @description 查询对象所在的数据集名称。
      */
-    datasetQuery: null,
+    datasetQuery: "",
 
     /**
      * @member SuperMap.SingleObjectQueryJobsParameter.prototype.mode -{SuperMap.SpatialQueryMode}
      * @description 空间查询模式 。
      */
-    mode: null,
+    mode: "CONTAIN",
 
     initialize: function (options) {
         if (!options) {
@@ -31315,49 +31315,49 @@ SuperMap.SummaryMeshJobParameter = SuperMap.Class({
      * @member SuperMap.SummaryMeshJobParameter.prototype.datasetName -{String}
      * @description 数据集名。
      */
-    datasetName: null,
+    datasetName: "",
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.regionDataset -{String}
      * @description 聚合面数据集(聚合类型为多边形聚合时使用的参数)。
      */
-    regionDataset: null,
+    regionDataset: "",
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.query -{SuperMap.Bounds}
      * @description 分析范围(聚合类型为网格面聚合时使用的参数)。
      */
-    query: null,
+    query: "",
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.resolution -{number}
      * @description 分辨率(聚合类型为网格面聚合时使用的参数)。
      */
-    resolution: null,
+    resolution: 100,
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.meshType -{number}
      * @description  网格面类型(聚合类型为网格面聚合时使用的参数)。
      */
-    meshType: null,
+    meshType: 0,
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.statisticModes -{String}
      * @description 统计模式。
      */
-    statisticModes: null,
+    statisticModes: "",
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.fields -{number}
      * @description 权重字段。
      */
-    fields: null,
+    fields: "",
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.type -{String}
      * @description 聚合类型。
      */
-    type: null,
+    type: "SUMMARYMESH",
 
     initialize: function (options) {
         if (!options) {
@@ -31502,13 +31502,13 @@ SuperMap.SummaryRegionJobParameter = SuperMap.Class({
      * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{String}
      * @description 数据集名。
      */
-    datasetName: null,
+    datasetName: "",
 
     /**
      * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{String}
      * @description 汇总数据源（多边形汇总时用到的参数）。
      */
-    regionDataset: null,
+    regionDataset: "",
 
     /**
      * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{Boolean}
@@ -31520,7 +31520,7 @@ SuperMap.SummaryRegionJobParameter = SuperMap.Class({
      * @member SuperMap.SummaryRegionJobParameter.prototype.query -{SuperMap.Bounds}
      * @description 分析范围。
      */
-    query: null,
+    query: "",
 
     /**
      * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{Boolean}
@@ -31568,19 +31568,19 @@ SuperMap.SummaryRegionJobParameter = SuperMap.Class({
      * @member SuperMap.SummaryRegionJobParameter.prototype.resolution -{number}
      * @description 网格大小。
      */
-    resolution: null,
+    resolution: 100,
 
     /**
      * @member SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit -{String}
      * @description 网格大小单位。
      */
-    meshSizeUnit: null,
+    meshSizeUnit: 'Meter',
 
     /**
      * @member SuperMap.SummaryRegionJobParameter.prototype.type -{String}
      * @description 汇总类型。
      */
-    type: "",
+    type: "SUMMARYMESH",
 
 
     initialize: function (options) {
@@ -35751,19 +35751,19 @@ SuperMap.VectorClipJobsParameter = SuperMap.Class({
      * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{String}
      * @description 数据集名。
      */
-    datasetName: null,
+    datasetName: "",
 
     /**
      * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{String}
      * @description 裁剪对象数据集。
      */
-    datasetOverlay: null,
+    datasetOverlay: "",
 
     /**
      * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
      * @description 裁剪分析模式 。
      */
-    mode: null,
+    mode: "clip",
 
     initialize: function (options) {
         options = options || {};

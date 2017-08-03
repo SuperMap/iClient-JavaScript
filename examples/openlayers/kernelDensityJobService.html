@@ -36,7 +36,7 @@
             <div class="input-group">
                 <span class="input-group-addon">输入数据　　</span>
                 <input id="datasetName" type="text" class="form-control"
-                       placeholder="newyork_taxi_2013_01_14k_csv_newyork_taxi_2013-01_14k"/>
+                       value="newyork_taxi_2013_01_14k_csv_newyork_taxi_2013-01_14k"/>
             </div>
             <p>
             <div class="input-group">
@@ -69,7 +69,7 @@
             <p>
             <div class="input-group">
                 <span class="input-group-addon">网格大小　　</span>
-                <input id="resolution" type="text" class="form-control" placeholder="80"/>
+                <input id="resolution" type="text" class="form-control" value="80"/>
             </div>
             <p>
             <div class="input-group">
@@ -85,7 +85,7 @@
             <p>
             <div class="input-group">
                 <span class="input-group-addon">搜索半径　　</span>
-                <input id="radius" type="text" class="form-control" placeholder="300"/>
+                <input id="radius" type="text" class="form-control" value="300"/>
             </div>
             <p>
             <div class="input-group">
@@ -133,8 +133,7 @@
                     zoom: 12,
                     projection: 'EPSG:4326'
                 })
-            }),
-            query = [];
+            });
     map.addLayer(new ol.layer.Tile({
         source: new ol.source.Tianditu({
             url: "http://t0.tianditu.com/vec_c/wmts",
@@ -143,15 +142,21 @@
             projection: "EPSG:4326"
         })
     }));
-    ($('#query').val() || $('#query').attr('placeholder')).split(',').map(function (el) {
-        return query.push(parseFloat(el));
-    });
     var processingService = new ol.supermap.ProcessingService(processingsUrl);
     var info = new ol.control.Control({element: popup});
     info.setMap(map);
     map.addControl(info);
     SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090', token);
-
+    function getQuery() {
+        if ($('#query').val() === "") {
+            return "";
+        }
+        var query = [];
+        $('#query').val().split(',').map(function (el) {
+            query.push(parseFloat(el));
+        });
+        return query;
+    }
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
@@ -159,13 +164,13 @@
             map.removeLayer(layer);
         }
         var kernelDensityJobParameter = new SuperMap.KernelDensityJobParameter({
-            datasetName: $('#datasetName').val() || $('#datasetName').attr('placeholder'),
-            resolution: $('#resolution').val() || $('#resolution').attr('placeholder'),
+            datasetName: $('#datasetName').val(),
+            resolution: $('#resolution').val(),
             method: $('#method option:selected').attr('value'),
             meshType: $('#meshType option:selected').attr('value'),
-            fields: $('#fields').val() || $('#fields').attr('placeholder'),
-            query: query,
-            radius: $('#radius').val() || $('#radius').attr('placeholder'),
+            fields: $('#fields').val(),
+            query: getQuery(),
+            radius: $('#radius').val(),
             meshSizeUnit: $('#meshSizeUnit option:selected').attr('value'),
             radiusUnit: $('#radiusUnit option:selected').attr('value'),
             areaUnit: $('#areaUnit option:selected').attr('value'),

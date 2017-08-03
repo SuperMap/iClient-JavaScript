@@ -18,43 +18,43 @@ SuperMap.KernelDensityJobParameter = SuperMap.Class({
      * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{String}
      * @description 数据集名。
      */
-    datasetName: null,
+    datasetName: "",
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
      * @description 分析范围。
      */
-    query: null,
+    query: "",
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
      * @description 网格大小。
      */
-    resolution: null,
+    resolution: 80,
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.method -{numbert}
+     * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
      * @description 分析方法。
      */
-    method: null,
+    method: 0,
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{numbert}
+     * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
      * @description 分析类型。
      */
-    meshType: null,
+    meshType: 0,
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.fields -{String}
      * @description 权重索引。
      */
-    fields: null,
+    fields: "",
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
      * @description 分析的影响半径。
      */
-    radius: null,
+    radius: 300,
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{String}

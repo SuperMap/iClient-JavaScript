@@ -34,8 +34,7 @@
                 maxZoom: 18,
                 zoom: 12
             }),
-            info = L.control({position: 'topright'}),
-            query = [];
+            info = L.control({position: 'topright'});
     L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
         layer: "vec",
         tilematrixSet: "c"
@@ -51,7 +50,7 @@
                 "<div class='panel-body'>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>输入数据　　</span>" +
-                "<input id='datasetName' type='text' class='form-control' placeholder='newyork_taxi_2013_01_14k_csv_newyork_taxi_2013-01_14k'/>" +
+                "<input id='datasetName' type='text' class='form-control' value='newyork_taxi_2013_01_14k_csv_newyork_taxi_2013-01_14k'/>" +
                 "</div><p>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>分析方法　　</span>" +
@@ -78,7 +77,7 @@
                 "</div><p>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>网格大小　　</span>" +
-                "<input id='resolution' type='text' class='form-control' placeholder='80'/>" +
+                "<input id='resolution' type='text' class='form-control' value='80'/>" +
                 "</div><p>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>网格大小单位</span>" +
@@ -90,7 +89,7 @@
                 "<option value='Mile'>Mile</option></select></div><p>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>搜索半径　　</span>" +
-                "<input id='radius' type='text' class='form-control' placeholder='300'/>" +
+                "<input id='radius' type='text' class='form-control' value='300'/>" +
                 "</div><p>" +
                 "<div class='input-group'>" +
                 "<span class='input-group-addon'>搜索半径单位</span>" +
@@ -118,12 +117,18 @@
     };
     info.addTo(map);
 
-    ($('#query').val() || $('#query').attr('placeholder')).split(',').map(function (el) {
-        return query.push(parseFloat(el));
-    });
     var processingService = new L.supermap.processingService(processingUrl);
     SuperMap.SecurityManager.registerToken("http://117.122.248.69:8090", token);
-
+    function getQuery() {
+        if ($('#query').val() === "") {
+            return "";
+        }
+        var query = [];
+        $('#query').val().split(',').map(function (el) {
+            query.push(parseFloat(el));
+        });
+        return L.latLngBounds(L.latLng(query[1], query[0]), L.latLng(query[3], query[2]));
+    }
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
@@ -131,13 +136,16 @@
             map.removeLayer(layer);
         }
         var kernelDensityJobParameter = new SuperMap.KernelDensityJobParameter({
-            datasetName: $('#datasetName').val() || $('#datasetName').attr('placeholder'),
-            resolution: $('#resolution').val() || $('#resolution').attr('placeholder'),
+            datasetName: $('#datasetName').val(),
+            resolution: $('#resolution').val(),
             method: $('#method option:selected').attr('value'),
             meshType: $('#meshType option:selected').attr('value'),
-            fields: $('#fields').val() || $('#fields').attr('placeholder'),
-            query: L.latLngBounds(L.latLng(query[1], query[0]), L.latLng(query[3], query[2])),
-            radius: $('#radius').val() || $('#radius').attr('placeholder')
+            fields: $('#fields').val(),
+            query: getQuery(),
+            radius: $('#radius').val(),
+            meshSizeUnit: $('#meshSizeUnit option:selected').attr('value'),
+            radiusUnit: $('#radiusUnit option:selected').attr('value'),
+            areaUnit: $('#areaUnit option:selected').attr('value'),
         });
         processingService.addKernelDensityJob(kernelDensityJobParameter, function (serviceResult) {
             if (serviceResult.error) {

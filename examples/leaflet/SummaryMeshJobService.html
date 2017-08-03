@@ -34,8 +34,7 @@
                 maxZoom: 18,
                 zoom: 12
             }),
-            info = L.control({position: 'topright'}),
-            query = [];
+            info = L.control({position: 'topright'});
     L.supermap.tiandituTileLayer("http://t{s}.tianditu.com/vec_c/wmts", {
         layer: "vec",
         tilematrixSet: "c"
@@ -49,7 +48,7 @@
                 "<h3 class='panel-title'>点聚合分析</h3>" +
                 "</div><div class='panel-body'>" +
                 "<div class='input-group'><span class='input-group-addon'>输入数据　</span>" +
-                "<input id='datasetName' type='text' class='form-control' placeholder='newyork_taxi_2013_01_14k_csv_newyork_taxi_2013-01_14k'/>" +
+                "<input id='datasetName' type='text' class='form-control' value='newyork_taxi_2013_01_14k_csv_newyork_taxi_2013-01_14k'/>" +
                 "</div><p><div class='input-group'>" +
                 "<span class='input-group-addon'>聚合类型　</span>" +
                 "<select class='form-control' id='type' name='clientType'>" +
@@ -64,7 +63,7 @@
                 "<input id='query' type='text' class='form-control' placeholder='-74.150, 40.550, -73.750, 40.950'/>" +
                 "</div><p><div class='input-group'>" +
                 "<span class='input-group-addon'>分辨率　　</span>" +
-                "<input id='resolution' type='text' class='form-control' placeholder='100'/>" +
+                "<input id='resolution' type='text' class='form-control' value='100'/>" +
                 "</div><p></div>" +
                 "<div id='summaryregionS' style='display: none'>" +
                 "<div class='input-group'>" +
@@ -94,12 +93,18 @@
         $("#summarymeshS").hide();
         $("#summaryregionS").show();
     });
-    ($('#query').val() || $('#query').attr('placeholder')).split(',').map(function (el) {
-        return query.push(parseFloat(el));
-    });
     var processingService = new L.supermap.processingService(processingUrl);
     SuperMap.SecurityManager.registerToken("http://117.122.248.69:8090", token);
-
+    function getQuery() {
+        if ($('#query').val() === "") {
+            return "";
+        }
+        var query = [];
+        $('#query').val().split(',').map(function (el) {
+            query.push(parseFloat(el));
+        });
+        return L.latLngBounds(L.latLng(query[1], query[0]), L.latLng(query[3], query[2]));
+    }
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
@@ -107,12 +112,12 @@
             map.removeLayer(layer);
         }
         var summaryMeshJobParameter = new SuperMap.SummaryMeshJobParameter({
-            datasetName: $('#datasetName').val() || $('#datasetName').attr('placeholder'),
-            resolution: $('#resolution').val() || $('#resolution').attr('placeholder'),
+            datasetName: $('#datasetName').val(),
+            resolution: $('#resolution').val(),
             meshType: $('#meshType option:selected').attr('value'),
-            fields: $('#fields').val() || $('#fields').attr('placeholder'),
-            query: L.latLngBounds(L.latLng(query[1], query[0]), L.latLng(query[3], query[2])),
-            statisticModes: $('#statisticModes').val() || $('#statisticModes').attr('placeholder'),
+            fields: $('#fields').val(),
+            query: getQuery(),
+            statisticModes: $('#statisticModes').val(),
             type: $('#type option:selected').attr('value'),
             regionDataset: $('#regionDataset option:selected').attr('value')
         });

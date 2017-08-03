@@ -56,17 +56,17 @@
             <p>
             <div class="input-group">
                 <span class="input-group-addon">缓存范围　　　</span>
-                <input id="bounds" type="text" class="form-control" placeholder="-74.050,40.650,-73.850,40.850"/>
+                <input id="bounds" type="text" class="form-control" value="-74.050,40.650,-73.850,40.850"/>
             </div>
             <p>
             <div class="input-group">
                 <span class="input-group-addon">缓存比例尺级别</span>
-                <input id="level" type="text" class="form-control" placeholder="5"/>
+                <input id="level" type="text" class="form-control" value="5"/>
             </div>
             <p>
             <div class="input-group">
                 <span class="input-group-addon">缓存名称　　　</span>
-                <input id="cacheName" type="text" class="form-control" placeholder="cache"/>
+                <input id="cacheName" type="text" class="form-control" value="cache"/>
             </div>
             <p>
             <div class="input-group">
@@ -80,17 +80,17 @@
             <p>
             <div class="input-group">
                 <span class="input-group-addon">服务地址　　　</span>
-                <input id="serverAdresses" type="text" class="form-control" placeholder="117.122.248.69:27017"/>
+                <input id="serverAdresses" type="text" class="form-control" value="117.122.248.69:27017"/>
             </div>
             <p>
             <div class="input-group">
                 <span class="input-group-addon">数据库　　　　</span>
-                <input id="database" type="text" class="form-control" placeholder="smtiles"/>
+                <input id="database" type="text" class="form-control" value="smtiles"/>
             </div>
             <p>
             <div class="input-group">
                 <span class="input-group-addon">版本　　　　　</span>
-                <input id="version" type="text" class="form-control" placeholder="v1"/>
+                <input id="version" type="text" class="form-control" value="v1"/>
             </div>
             <p>
             <div align="right">
@@ -108,8 +108,6 @@
 <script type="text/javascript">
     var resultLayer, processingsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
             token = 'oZdJwpVhYnPNEAt8-ykB-Cy39gEZkdvPZ9knTbCdui1SoBeXWVCwx-j5tOVSScotsUX1qwZF44X9m6wNME1kBg..',
-            bounds = [],
-            serverAddress = [],
             map = new SuperMap.Map("map", {
                 controls: [
                     new SuperMap.Control.Navigation(),
@@ -122,11 +120,6 @@
     var tiandituLayer = new SuperMap.Layer.Tianditu();
     map.addLayers([tiandituLayer]);
     map.setCenter(new SuperMap.LonLat(-73.95, 40.75), 12);
-
-    ($('#bounds').val() || $('#bounds').attr('placeholder')).split(',').map(function (el) {
-        return bounds.push(parseFloat(el));
-    });
-    serverAddress.push(($('#serverAdresses').val() || $('#serverAdresses').attr('placeholder')).toString());
     var processingService = new SuperMap.REST.ProcessingService(processingsUrl);
     SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090', token);
 
@@ -134,7 +127,18 @@
         var $target = $(e.target);
         $('#imageTypeBtn').text($target.text())
     });
-
+    function getBounds() {
+        var bounds = [];
+        $('#bounds').val().split(',').map(function (el) {
+            bounds.push(parseFloat(el));
+        });
+        return bounds;
+    }
+    function getServerAddress() {
+        var serverAddress = [];
+        serverAddress.push($('#serverAdresses').val().toString());
+        return serverAddress;
+    }
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
@@ -143,14 +147,14 @@
         }
         var buildCacheJobParameter = new SuperMap.BuildCacheJobParameter({
             datasetName: $('#datasetName option:selected').text(),
-            cacheName: $('#cacheName').val() || $('#cacheName').attr('placeholder'),
+            cacheName: $('#cacheName').val(),
             cacheType: $('#cacheType option:selected').text(),
-            serverAdresses: serverAddress,
-            database: $('#database').val() || $('#database').attr('placeholder'),
-            version: $('#version').val() || $('#version').attr('placeholder'),
-            bounds: bounds,
+            serverAdresses: getServerAddress(),
+            database: $('#database').val(),
+            version: $('#version').val(),
+            bounds: getBounds(),
             imageType: $('#imageType option:selected').attr('value'),
-            level: parseInt($('#level').val() || $('#level').attr('placeholder'))
+            level: parseInt($('#level').val())
         });
         processingService.addBuildCacheJob(buildCacheJobParameter, function (serviceResult) {
             if (serviceResult.error) {

@@ -13,19 +13,19 @@ SuperMap.VectorClipJobsParameter = SuperMap.Class({
      * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{String}
      * @description 数据集名。
      */
-    datasetName: null,
+    datasetName: "",
 
     /**
      * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{String}
      * @description 裁剪对象数据集。
      */
-    datasetOverlay: null,
+    datasetOverlay: "",
 
     /**
      * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
      * @description 裁剪分析模式 。
      */
-    mode: null,
+    mode: "clip",
 
     initialize: function (options) {
         options = options || {};

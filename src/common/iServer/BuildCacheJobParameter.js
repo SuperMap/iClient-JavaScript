@@ -20,49 +20,49 @@ SuperMap.BuildCacheJobParameter = SuperMap.Class({
      * @member SuperMap.BuildCacheJobParameter.prototype.datasetName -{String}
      * @description 数据集名称。
      */
-    datasetName: null,
+    datasetName: "",
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.cacheName -{String}
      * @description 缓存名称。
      */
-    cacheName: null,
+    cacheName: "",
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.cacheType -{String}
      * @description 存储类型。
      */
-    cacheType: null,
+    cacheType: "",
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.serverAdresses -{String}
      * @description MongoDB地址。
      */
-    serverAdresses: null,
+    serverAdresses: "",
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.database -{String}
      * @description 数据库。
      */
-    database: null,
+    database: "",
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.version -{String}
      * @description 版本。
      */
-    version: null,
+    version: "",
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.bounds -{SuperMap.Bounds}
      * @description 缓存范围。
      */
-    bounds: null,
+    bounds: "",
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.imageType -{number}
      * @description 缓存类型。
      */
-    imageType: null,
+    imageType: 'Heatmap',
 
     /**
      * @member SuperMap.BuildCacheJobParameter.prototype.level -{number}

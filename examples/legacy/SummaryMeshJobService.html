@@ -39,7 +39,7 @@
             <div class="input-group">
                 <span class="input-group-addon">输入数据　</span>
                 <input id="datasetName" type="text" class="form-control"
-                       placeholder="newyork_taxi_2013_01_14k_csv_newyork_taxi_2013-01_14k"/>
+                       value="newyork_taxi_2013_01_14k_csv_newyork_taxi_2013-01_14k"/>
             </div>
             <p>
             <div class="input-group">
@@ -66,7 +66,7 @@
             <p>
             <div class="input-group">
                 <span class="input-group-addon">分辨率　　</span>
-                <input id="resolution" type="text" class="form-control" placeholder="100"/>
+                <input id="resolution" type="text" class="form-control" value="100"/>
             </div>
             <p>
         </div>
@@ -128,13 +128,18 @@
         $("#summarymeshS").hide();
         $("#summaryregionS").show();
     });
-    var query = [];
-    ($('#query').val() || $('#query').attr('placeholder')).split(',').map(function (el) {
-        return query.push(parseFloat(el));
-    });
     var processingService = new SuperMap.REST.ProcessingService(processingsUrl);
     SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090', token);
-
+    function getQuery() {
+        if ($('#query').val() === "") {
+            return "";
+        }
+        var query = [];
+        $('#query').val().split(',').map(function (el) {
+            query.push(parseFloat(el));
+        });
+        return query;
+    }
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
@@ -142,12 +147,12 @@
             map.removeLayer(resultLayer);
         }
         var summaryMeshJobParameter = new SuperMap.SummaryMeshJobParameter({
-            datasetName: $('#datasetName').val() || $('#datasetName').attr('placeholder'),
-            resolution: $('#resolution').val() || $('#resolution').attr('placeholder'),
+            datasetName: $('#datasetName').val(),
+            resolution: $('#resolution').val(),
             meshType: $('#meshType option:selected').attr('value'),
-            fields: $('#fields').val() || $('#fields').attr('placeholder'),
-            query: query,
-            statisticModes: $('#statisticModes').val() || $('#statisticModes').attr('placeholder'),
+            fields: $('#fields').val(),
+            query: getQuery(),
+            statisticModes: $('#statisticModes').val(),
             type: $('#type option:selected').attr('value'),
             regionDataset: $('#regionDataset option:selected').attr('value')
         });
