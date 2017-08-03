@@ -84,52 +84,7 @@ SuperMap.Format.JSON = SuperMap.Class(SuperMap.Format, {
             catch (e) {
                 // Fall through if the regexp test fails.
             }
-        } else try {
-            /*
-             * Parsing happens in three stages. In the first stage, we run the
-             *     text against a regular expression which looks for non-JSON
-             *     characters. We are especially concerned with '()' and 'new'
-             *     because they can cause invocation, and '=' because it can
-             *     cause mutation. But just to be safe, we will reject all
-             *     unexpected characters.
-             */
-            if (/^[\],:{}\s]*$/.test(json.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-
-                /*
-                 * In the second stage we use the eval function to compile the
-                 *     text into a JavaScript structure. The '{' operator is
-                 *     subject to a syntactic ambiguity in JavaScript - it can
-                 *     begin a block or an object literal. We wrap the text in
-                 *     parens to eliminate the ambiguity.
-                 */
-                //object = eval('(' + json + ')');
-                object = function (str) {
-                    return (new Function("return " + str))();
-                }(json);
-                /*
-                 * In the optional third stage, we recursively walk the new
-                 *     structure, passing each name/value pair to a filter
-                 *     function for possible transformation.
-                 */
-                if (typeof filter === 'function') {
-                    function walk(k, v) {
-                        if (v && typeof v === 'object') {
-                            for (var i in v) {
-                                if (v.hasOwnProperty(i)) {
-                                    v[i] = walk(i, v[i]);
-                                }
-                            }
-                        }
-                        return filter(k, v);
-                    }
-
-                    object = walk('', object);
-                }
-            }
-        } catch (e) {
-            // Fall through if the regexp test fails.
         }
-
         if (this.keepData) {
             this.data = object;
         }
