@@ -195,25 +195,6 @@
     control.setMap(map);
     map.addControl(control);
     var select = new ol.interaction.Select();
-    map.addInteraction(select);
-    select.on('select', function (e) {
-        if (e.selected.length > 0) {
-            var feature = e.selected[0];
-            var innerHTML = "";
-            innerHTML += "地址:" + feature.getProperties().address + "<br>";
-            var x = Number(feature.getProperties().location.x.toString().match(/^\d+(?:\.\d{0,2})?/));
-            var y = Number(feature.getProperties().location.y.toString().match(/^\d+(?:\.\d{0,2})?/));
-            innerHTML += "坐标:[" + x + "," + y + "]<br>";
-            if (feature.getProperties().score > 0) {
-                innerHTML += "匹配度:" + feature.getProperties().score + "<br>";
-            }
-            innerHTML += "过滤字段:" + feature.getProperties().filters + "<br>";
-            content.innerHTML = innerHTML;
-            overlay.setPosition(feature.getGeometry().flatCoordinates);
-        } else if (overlay) {
-            overlay.setPosition(undefined);
-        }
-    });
 
     var layer = new ol.layer.Tile({
         source: new ol.source.TileSuperMapRest({
@@ -275,6 +256,28 @@
     });
 
     function match(obj) {
+        map.removeInteraction(select);
+        select = new ol.interaction.Select();
+        map.addInteraction(select);
+        select.on('select', function (e) {
+            if (e.selected.length > 0) {
+                var feature = e.selected[0];
+                var innerHTML = "";
+                innerHTML += "地址:" + feature.getProperties().address + "<br>";
+                var x = Number(feature.getProperties().location.x.toString().match(/^\d+(?:\.\d{0,2})?/));
+                var y = Number(feature.getProperties().location.y.toString().match(/^\d+(?:\.\d{0,2})?/));
+                innerHTML += "坐标:[" + x + "," + y + "]<br>";
+                if (feature.getProperties().score > 0) {
+                    innerHTML += "匹配度:" + feature.getProperties().score + "<br>";
+                }
+                innerHTML += "过滤字段:" + feature.getProperties().filters + "<br>";
+                content.innerHTML = innerHTML;
+                overlay.setPosition(feature.getGeometry().getCoordinates());
+            } else if (overlay) {
+                overlay.setPosition(undefined);
+            }
+        });
+        map.addInteraction(select);
         overlay.setPosition(undefined);
         vectorSource.clear();
         var features = [];
