@@ -34,13 +34,13 @@
         </div>
         <div class="panel-body">
             <div class="input-group">
-                <span class="input-group-addon">输入数据　</span>
+                <span class="input-group-addon">输入数据<span title="必填字段" style="color: red;"> * </span>　</span>
                 <input id="datasetName" type="text" class="form-control"
                        value="newyork_taxi_2013_01_14k_csv_newyork_taxi_2013-01_14k"/>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">聚合类型　</span>
+                <span class="input-group-addon">聚合类型<span title="必填字段" style="color: red;"> * </span>　</span>
                 <select class="form-control" id="type" name="clientType">
                     <option value="SUMMARYMESH" selected="selected">网格面聚合</option>
                     <option value="SUMMARYREGION">多边形聚合</option>
@@ -49,7 +49,7 @@
             <p>
                 <div id="summarymeshS">
                     <div class="input-group">
-                        <span class="input-group-addon">网格面类型</span>
+                        <span class="input-group-addon">网格面类型<span title="必填字段" style="color: red;"> * </span></span>
                         <select class="form-control" id="meshType" name="clientType">
                             <option value="0" selected="selected">四边形网格</option>
                             <option value="1">六边形网格</option>
@@ -57,12 +57,12 @@
                     </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">分析范围　</span>
-                <input id="query" type="text" class="form-control" placeholder="-74.150, 40.550, -73.750, 40.950"/>
+                <span class="input-group-addon">分析范围　　</span>
+                <input id="query" type="text" class="form-control" value="-74.150, 40.550, -73.750, 40.950"/>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">分辨率　　</span>
+                <span class="input-group-addon">分辨率<span title="必填字段" style="color: red;"> * </span>　　</span>
                 <input id="resolution" type="text" class="form-control" value="100"/>
             </div>
             <p>
@@ -81,13 +81,13 @@
             <p>
         </div>
         <div class="input-group">
-            <span class="input-group-addon">统计模式　</span>
-            <input id="statisticModes" type="text" class="form-control" placeholder="max"/>
+            <span class="input-group-addon">统计模式　　</span>
+            <input id="statisticModes" type="text" class="form-control" value="max"/>
         </div>
         <p>
         <div class="input-group">
-            <span class="input-group-addon">权重值字段</span>
-            <input id="fields" type="text" class="form-control" placeholder="col7"/>
+            <span class="input-group-addon">权重值字段　</span>
+            <input id="fields" type="text" class="form-control" value="col7"/>
         </div>
         <p>
         <div align="right">

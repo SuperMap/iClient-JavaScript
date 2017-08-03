@@ -34,13 +34,13 @@
         </div>
         <div class="panel-body">
             <div class="input-group">
-                <span class="input-group-addon">输入数据　　　　　</span>
+                <span class="input-group-addon">输入数据<span title="必填字段" style="color: red;"> * </span>　　　　　</span>
                 <input id="datasetName" type="text" class="form-control"
                        value="ProcessingData_processing_newyorkZone_R"/>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">汇总类型　　　　　</span>
+                <span class="input-group-addon">汇总类型<span title="必填字段" style="color: red;"> * </span>　　　　　</span>
                 <div>
                     <select class="form-control" id="type" name="clientType">
                         <option value="SUMMARYMESH" selected="selected">网格面汇总</option>
@@ -50,7 +50,7 @@
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">网格面汇总类型　　</span>
+                <span class="input-group-addon">网格面汇总类型<span title="必填字段" style="color: red;"> * </span>　　</span>
                 <select class="form-control" id="meshType" name="clientType">
                     <option value="0" selected="selected">四边形网格</option>
                     <option value="1">六边形网格</option>
@@ -59,7 +59,7 @@
             <p>
             <div class="input-group">
                 <span class="input-group-addon">分析范围　　　　　</span>
-                <input id="query" type="text" class="form-control" placeholder="-74.050,40.650,-73.850,40.850"/>
+                <input id="query" type="text" class="form-control" value="-74.050,40.650,-73.850,40.850"/>
             </div>
             <p>
             <p>
@@ -76,13 +76,14 @@
             <p>
                 <div id="standardS" style="display: none">
                     <div class="input-group">
-                        <span class="input-group-addon">属性字段统计模式　</span>
+                        <span class="input-group-addon">属性字段统计模式<span title="必填字段"
+                                                                      style="color: red;"> * </span>　</span>
                         <input id="standardStatisticModes" type="text" class="form-control"
                                value="max"/>
                     </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">属性字段名　　　　</span>
+                <span class="input-group-addon">属性字段名<span title="必填字段" style="color: red;"> * </span>　　　　</span>
                 <input id="standardFields" type="text" class="form-control"
                        value="LocationID"/>
             </div>
@@ -90,13 +91,13 @@
         </div>
         <div id="weightS" style="display: none">
             <div class="input-group">
-                <span class="input-group-addon">权重字段统计模式　</span>
+                <span class="input-group-addon">权重字段统计模式<span title="必填字段" style="color: red;"> * </span>　</span>
                 <input id="weightedStatisticModes" type="text" class="form-control"
                        value="max"/>
             </div>
             <p>
             <div class="input-group">
-                <span class="input-group-addon">权重字段名　　　　</span>
+                <span class="input-group-addon">权重字段名<span title="必填字段" style="color: red;"> * </span>　　　　</span>
                 <input id="weightedFields" type="text" class="form-control"
                        value="LocationID"/>
             </div>
@@ -105,7 +106,7 @@
 
         <div class="input-group">
             <span class="input-group-addon">网格大小　　　　　</span>
-            <input id="resolution" type="text" class="form-control" placeholder="100"/>
+            <input id="resolution" type="text" class="form-control" value="100"/>
         </div>
         <p>
         <div class="input-group">
