@@ -1,3 +1,4 @@
+import ol from 'openlayers/dist/ol-debug';
 export default class Tianditu extends ol.source.WMTS {
 
     constructor(opt_options) {

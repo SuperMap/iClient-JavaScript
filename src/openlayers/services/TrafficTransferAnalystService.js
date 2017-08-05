@@ -1,4 +1,5 @@
-﻿import Util from '../core/Util';
+﻿import ol from 'openlayers/dist/ol-debug';
+import Util from '../core/Util';
 import ServiceBase from './ServiceBase';
 import StopQueryService from '../../common/iServer/StopQueryService';
 import TransferPathService from'../../common/iServer/TransferPathService';

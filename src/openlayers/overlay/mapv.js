@@ -1,3 +1,4 @@
+import ol from 'openlayers/dist/ol-debug';
 import MapvLayer from './mapv/MapvLayer';
 import Util from '../core/Util';
 

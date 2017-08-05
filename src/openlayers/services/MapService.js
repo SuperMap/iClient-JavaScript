@@ -1,4 +1,5 @@
-﻿import ServiceBase from './ServiceBase';
+﻿import ol from 'openlayers/dist/ol-debug';
+import ServiceBase from './ServiceBase';
 import CommonMapService  from '../../common/iServer/MapService';
 import TilesetsService from '../../common/iServer/TilesetsService';
 /**

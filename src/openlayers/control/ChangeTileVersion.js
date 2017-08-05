@@ -1,4 +1,5 @@
 import './css/ChangeTileVersion.css';
+import ol from 'openlayers/dist/ol-debug';
 ol.supermap = ol.supermap || {};
 ol.supermap.control = ol.supermap.control || {};
 

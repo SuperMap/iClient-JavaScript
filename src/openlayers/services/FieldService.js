@@ -1,3 +1,4 @@
+import ol from 'openlayers/dist/ol-debug';
 import Util from '../core/Util';
 import ServiceBase from './ServiceBase';
 import GetFieldsService from '../../common/iServer/GetFieldsService';

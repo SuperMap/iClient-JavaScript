@@ -1,4 +1,5 @@
-﻿import SuperMap from'../../common/SuperMap';
+﻿import ol from 'openlayers/dist/ol-debug';
+import SuperMap from'../../common/SuperMap';
 import Util from'../core/Util';
 import ServiceBase from './ServiceBase';
 import BurstPipelineAnalystService from'../../common/iServer/BurstPipelineAnalystService';

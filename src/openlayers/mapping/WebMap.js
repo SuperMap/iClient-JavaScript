@@ -1,3 +1,4 @@
+import ol from 'openlayers/dist/ol-debug';
 import {FetchRequest} from '../../common/util/FetchRequest';
 import SuperMap from '../../common/SuperMap';
 import StyleUtils from '../core/StyleUtils';

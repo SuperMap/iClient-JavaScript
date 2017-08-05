@@ -1,4 +1,5 @@
-﻿import ServiceBase from './ServiceBase';
+﻿import ol from 'openlayers/dist/ol-debug';
+import ServiceBase from './ServiceBase';
 import CommonThemeService from '../../common/iServer/ThemeService';
 /**
  * @class ol.supermap.ThemeService

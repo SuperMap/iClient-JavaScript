@@ -1,4 +1,5 @@
-﻿import ServiceBase from './ServiceBase';
+﻿import ol from 'openlayers/dist/ol-debug';
+import ServiceBase from './ServiceBase';
 import FacilityAnalystSinks3DService from '../../common/iServer/FacilityAnalystSinks3DService';
 import FacilityAnalystSources3DService from '../../common/iServer/FacilityAnalystSources3DService';
 import FacilityAnalystTraceup3DService from '../../common/iServer/FacilityAnalystTraceup3DService';

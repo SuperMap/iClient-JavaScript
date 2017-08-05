@@ -1,3 +1,4 @@
+import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import ServiceBase from './ServiceBase';
 import ChartQueryService from '../../common/iServer/ChartQueryService';

@@ -1,3 +1,4 @@
+import ol from 'openlayers/dist/ol-debug';
 export default class SuperMapCloud extends ol.source.XYZ {
 
     constructor(opt_options) {

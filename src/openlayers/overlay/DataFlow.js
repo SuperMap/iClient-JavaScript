@@ -1,3 +1,4 @@
+import ol from 'openlayers/dist/ol-debug';
 import DataFlowService  from "../services/DataFlowService";
 
 export default class DataFlow extends ol.source.Vector {

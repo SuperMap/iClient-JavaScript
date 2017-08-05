@@ -1,3 +1,4 @@
+import ol from 'openlayers/dist/ol-debug';
 import Util from '../core/Util';
 import SuperMap from '../../common/SuperMap';
 import ServiceBase from './ServiceBase';

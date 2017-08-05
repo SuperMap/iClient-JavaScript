@@ -1,4 +1,5 @@
-﻿import ServiceBase from './ServiceBase';
+﻿import ol from 'openlayers/dist/ol-debug';
+import ServiceBase from './ServiceBase';
 import GetGridCellInfosService from '../../common/iServer/GetGridCellInfosService';
 /**
  * @class ol.supermap.GridCellInfosService

@@ -1,3 +1,4 @@
+import ol from 'openlayers/dist/ol-debug';
 import '../../../common/REST';
 import '../../../common/iServer/Bar';
 import '../../../common/iServer/Bar3D';

@@ -1,4 +1,5 @@
-﻿ol.supermap = ol.supermap || {};
+﻿import ol from 'openlayers/dist/ol-debug';
+ol.supermap = ol.supermap || {};
 
 /**
  * @class ol.supermap.ServiceBase

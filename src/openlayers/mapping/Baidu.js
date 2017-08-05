@@ -1,3 +1,4 @@
+import ol from 'openlayers/dist/ol-debug';
 export default class Baidu extends ol.source.TileImage {
 
     constructor(opt_options) {

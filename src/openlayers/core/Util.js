@@ -1,3 +1,4 @@
+import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import GeoJSONFormat from '../../common/format/GeoJSON';
 ol.supermap = ol.supermap || {};

@@ -1,3 +1,4 @@
+import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import  '../../common/security/SecurityManager';
 import  Util from '../core/Util';

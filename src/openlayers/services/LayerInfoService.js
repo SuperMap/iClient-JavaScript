@@ -1,3 +1,4 @@
+import ol from 'openlayers/dist/ol-debug';
 import ServiceBase from './ServiceBase';
 import GetLayersInfoService from '../../common/iServer/GetLayersInfoService';
 import SetLayerInfoService from '../../common/iServer/SetLayerInfoService';

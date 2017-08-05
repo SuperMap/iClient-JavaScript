@@ -1,3 +1,4 @@
+import ol from 'openlayers/dist/ol-debug';
 export default class MapvCanvasLayer {
 
     constructor(options) {
