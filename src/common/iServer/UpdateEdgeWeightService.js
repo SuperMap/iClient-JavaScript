@@ -1,10 +1,6 @@
-/*
- * Class: SuperMap.UpdateEdgeWeightService
- * 更新边的边的耗费权重服务
- */
-require('./NetworkAnalystServiceBase');
-require('./UpdateEdgeWeightParameters');
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
+import UpdateEdgeWeightParameters from './UpdateEdgeWeightParameters';
 
 /**
  * @class SuperMap.UpdateEdgeWeightService
@@ -24,7 +20,7 @@ var SuperMap = require('../SuperMap');
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-SuperMap.UpdateEdgeWeightService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
+export default  class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
 
     /**
      * @function SuperMap.UpdateEdgeWeightService.prototype.initialize
@@ -34,16 +30,16 @@ SuperMap.UpdateEdgeWeightService = SuperMap.Class(SuperMap.NetworkAnalystService
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @function SuperMap.UpdateEdgeWeightService.prototype.processAsync
@@ -61,7 +57,7 @@ SuperMap.UpdateEdgeWeightService = SuperMap.Class(SuperMap.NetworkAnalystService
      *  updateEdgeWeightService.processAsync(updateEdgeWeightParam);
      * (end)
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -80,19 +76,19 @@ SuperMap.UpdateEdgeWeightService = SuperMap.Class(SuperMap.NetworkAnalystService
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /*
      * Method: parse
      * 将更新服务参数解析为用‘/’做分隔的字符串
      */
-    parse: function (params) {
+    parse(params) {
         if (!params) {
             return;
         }
         var paramStr = "";
         for (var attr in params) {
-            if (params[attr] === "" || params[attr] === "edgeWeight")continue;
+            if (params[attr] === "" || params[attr] === "edgeWeight") continue;
             switch (attr) {
                 case "edgeId":
                     paramStr += "/edgeweight/" + params[attr];
@@ -111,9 +107,9 @@ SuperMap.UpdateEdgeWeightService = SuperMap.Class(SuperMap.NetworkAnalystService
             }
         }
         return paramStr;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.UpdateEdgeWeightService"
-});
+    CLASS_NAME = "SuperMap.UpdateEdgeWeightService"
+}
 
-module.exports = SuperMap.UpdateEdgeWeightService;
+SuperMap.UpdateEdgeWeightService = UpdateEdgeWeightService;

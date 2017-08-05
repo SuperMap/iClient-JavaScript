@@ -1,5 +1,5 @@
-var L = require("leaflet");
-var PolyBase = {
+import L from "leaflet";
+export var PolyBase = {
     _makeFeatureParts: function (feat, pxPerExtent) {
         pxPerExtent = pxPerExtent || {x: 1, y: 1};
         var rings = feat.geometry;
@@ -21,5 +21,3 @@ var PolyBase = {
         this._pxBounds = this._getPixelBounds();
     }
 };
-
-module.exports = PolyBase;

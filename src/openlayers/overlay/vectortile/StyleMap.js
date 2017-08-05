@@ -1,7 +1,4 @@
-require('../../core/Base');
-var ol = require('openlayers/dist/ol-debug');
-
-var pointMap = {
+export var pointMap = {
     "point-file": "pointFile",
     "point-fill": "fillStyle",
     "point-radius": "pointRadius",
@@ -13,7 +10,7 @@ var pointMap = {
     "point-comp-op": "globalCompositeOperation"
 };
 
-var lineMap = {
+export var lineMap = {
     "line-color": "strokeStyle",
     "line-width": "lineWidth",
     "line-cap": "lineCap",
@@ -27,7 +24,7 @@ var lineMap = {
     "line-comp-op": "globalCompositeOperation"
 };
 
-var polygonMap = {
+export var polygonMap = {
     /*包括LINE的部分，用以设置面的外围边界*/
     "line-color": "strokeStyle",
     "line-width": "lineWidth",
@@ -47,7 +44,7 @@ var polygonMap = {
     "polygon-comp-op": "globalCompositeOperation"
 };
 
-ol.supermap.StyleMap = {
+export var StyleMap = {
     /**
      * CartoCSS中的style属性名与Canvas的style属性名的对应表
      * */
@@ -223,5 +220,3 @@ ol.supermap.StyleMap = {
         "value": ""
     }
 };
-
-module.exports = ol.supermap.StyleMap;

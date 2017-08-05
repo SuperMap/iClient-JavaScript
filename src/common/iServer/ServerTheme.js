@@ -1,31 +1,32 @@
-﻿/**
+﻿import SuperMap from '../SuperMap';
+import ThemeLabel from './ThemeLabel';
+import ThemeUnique from './ThemeUnique';
+import ThemeGraph from './ThemeGraph';
+import ThemeDotDensity from './ThemeDotDensity';
+import ThemeGraduatedSymbol from './ThemeGraduatedSymbol';
+import ThemeRange from './ThemeRange';
+import UGCSubLayer from './UGCSubLayer';
+
+/**
  * Class: SuperMap.ServerTheme
  * UGC 专题图图层类。
  *
  * Inherits from:
  *  - <SuperMap.UGCSubLayer>
  */
-require('./ThemeLabel');
-require('./ThemeUnique');
-require('./ThemeGraph');
-require('./ThemeDotDensity');
-require('./ThemeGraduatedSymbol');
-require('./ThemeRange');
-require('./UGCSubLayer');
-var SuperMap = require('../SuperMap');
-SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
+export default  class ServerTheme extends UGCSubLayer {
 
     /**
      * @member APIProperty: theme
      * {SuperMap.Theme} 专题图对象。
      */
-    theme: null,
+    theme = null;
 
     /**
      * @member APIProperty: themeElementPosition
      * {SuperMap.LonLat} 专题图元素位置。
      */
-    themeElementPosition: null,
+    themeElementPosition = null;
 
     /**
      * @class SuperMap.ServerTheme UGC 专题图图层类。
@@ -36,18 +37,20 @@ SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
      * @param theme - {SuperMap.Theme} 专题图对象。
      * @param themeElementPosition - {SuperMap.LonLat} 专题图元素位置。
      */
-    initialize: function (options) {
+    constructor(options) {
         options = options || {};
-        SuperMap.UGCSubLayer.prototype.initialize.apply(this, [options]);
-    },
+        super(options);
+    }
+
 
     /**
      * @inheritdoc
      */
-    destroy: function () {
-        SuperMap.UGCSubLayer.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         SuperMap.Util.reset(this);
-    },
+    }
+
 
     /*
      * Method: fromJson
@@ -55,28 +58,28 @@ SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
      * Parameters:
      * jsonObject - {Object} 要转换的 JSON 对象。
      */
-    fromJson: function (jsonObject) {
-        SuperMap.UGCSubLayer.prototype.fromJson.apply(this, [jsonObject]);
+    fromJson(jsonObject) {
+        super.fromJson(jsonObject);
         var themeObj = this.theme;
         var themeT = themeObj && themeObj.type;
         switch (themeT) {
             case 'LABEL':
-                this.theme = SuperMap.ThemeLabel.fromObj(themeObj);
+                this.theme = ThemeLabel.fromObj(themeObj);
                 break;
             case 'UNIQUE':
-                this.theme = SuperMap.ThemeUnique.fromObj(themeObj);
+                this.theme = ThemeUnique.fromObj(themeObj);
                 break;
             case 'GRAPH':
-                this.theme = SuperMap.ThemeGraph.fromObj(themeObj);
+                this.theme = ThemeGraph.fromObj(themeObj);
                 break;
             case 'DOTDENSITY':
-                this.theme = SuperMap.ThemeDotDensity.fromObj(themeObj);
+                this.theme = ThemeDotDensity.fromObj(themeObj);
                 break;
             case 'GRADUATEDSYMBOL':
-                this.theme = SuperMap.ThemeGraduatedSymbol.fromObj(themeObj);
+                this.theme = ThemeGraduatedSymbol.fromObj(themeObj);
                 break;
             case 'RANGE':
-                this.theme = SuperMap.ThemeRange.fromObj(themeObj);
+                this.theme = ThemeRange.fromObj(themeObj);
                 break;
             default:
                 break;
@@ -85,15 +88,15 @@ SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
             //待测试
             this.themeElementPosition = new SuperMap.LonLat(this.themeElementPosition.x, this.themeElementPosition.y);
         }
-    },
+    }
 
     /**
      * @function APIMethod: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */
-    toServerJSONObject: function () {
+    toServerJSONObject() {
         //普通属性直接赋值
-        var jsonObject = SuperMap.UGCSubLayer.prototype.toServerJSONObject.apply(this, arguments);
+        var jsonObject = super.toServerJSONObject();
 
         if (jsonObject.themeElementPosition) {
             if (jsonObject.themeElementPosition.toServerJSONObject) {
@@ -106,8 +109,10 @@ SuperMap.ServerTheme = SuperMap.Class(SuperMap.UGCSubLayer, {
             }
         }
         return jsonObject;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.ServerTheme"
-});
-module.exports = SuperMap.ServerTheme;
+
+    CLASS_NAME = "SuperMap.ServerTheme"
+}
+
+SuperMap.ServerTheme = ServerTheme;

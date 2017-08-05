@@ -1,18 +1,6 @@
-var mapv = {};
-var mapboxgl = {};
-try {
-    mapv = require("mapv");
-} catch (ex) {
-    mapv = {};
-}
-try {
-    mapboxgl = require("mapbox-gl");
-} catch (ex) {
-    mapboxgl = {};
-}
-var BaseLayer = mapv.baiduMapLayer ? mapv.baiduMapLayer.__proto__ : Function;
-
-class MapvRenderer extends BaseLayer {
+import {baiduMapLayer} from "mapv";
+var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
+export default class MapvRenderer extends BaseLayer {
     constructor(map, layer, dataSet, options) {
         if (!BaseLayer) {
             return;
@@ -28,6 +16,7 @@ class MapvRenderer extends BaseLayer {
         this.clickEvent = this.clickEvent.bind(this);
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
         this.map.on('move', this.moveEvent.bind(this));
+        this.map.on('resize', this.resizeEvent.bind(this));
         this.map.on('moveend', this.moveEndEvent.bind(this));
         this.map.on('remove', this.removeEvent.bind(this));
         this.bindEvent();
@@ -173,6 +162,17 @@ class MapvRenderer extends BaseLayer {
         this._hide();
     }
 
+    resizeEvent() {
+        var canvas = this.canvasLayer.canvas;
+        canvas.style.position = 'absolute';
+        canvas.style.top = 0 + "px";
+        canvas.style.left = 0 + "px";
+        canvas.width = parseInt(this.map.getCanvas().style.width);
+        canvas.height = parseInt(this.map.getCanvas().style.height);
+        canvas.style.width = this.map.getCanvas().style.width;
+        canvas.style.height = this.map.getCanvas().style.height;
+    }
+
     moveEndEvent() {
         this._canvasUpdate();
         this._show();
@@ -193,6 +193,5 @@ class MapvRenderer extends BaseLayer {
     draw() {
         this.canvasLayer.draw();
     }
-}
 
-module.exports = MapvRenderer;
+}

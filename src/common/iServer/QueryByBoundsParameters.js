@@ -1,13 +1,5 @@
-﻿/*
- * Class: SuperMap.QueryByBoundsParameters
- * Bounds 查询参数类。
- * 该类用于设置 Bounds 查询的相关参数。
- *
- * Inherits from:
- *  - <SuperMap.QueryParameters>
- */
-require('./QueryParameters');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import QueryParameters from './QueryParameters';
 
 /**
  * @class SuperMap.QueryByBoundsParameters
@@ -26,7 +18,7 @@ var SuperMap = require('../SuperMap');
  *         returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
  *         bounds - {SuperMap.Bounds} 指定的查询范围。
  */
-SuperMap.QueryByBoundsParameters = SuperMap.Class(SuperMap.QueryParameters, {
+export default  class QueryByBoundsParameters extends QueryParameters {
 
     /**
      * APIProperty: returnContent
@@ -35,42 +27,43 @@ SuperMap.QueryByBoundsParameters = SuperMap.Class(SuperMap.QueryParameters, {
      *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
      *               为 false，则返回的是查询结果资源的 URI。默认为 true。
      */
-    returnContent: true,
+    returnContent = true;
 
     /**
      * APIProperty: bounds
      * {@member SuperMap.QueryByBoundsParameters.prototype -SuperMap.Bounds}
      * @description 指定的查询范围。
      */
-    bounds: null,
+    bounds = null;
 
     /*
      * Constructor: SuperMap.QueryByBoundsParameters
      * Bounds 查询参数类构造函数。
      */
-    initialize: function (options) {
-        SuperMap.QueryParameters.prototype.initialize.apply(this, arguments);
+    constructor(options) {
+        super(options);
         if (!options) {
             return;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
 
     /**
      * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.QueryParameters.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         var me = this;
         me.returnContent = null;
         if (me.bounds) {
             me.bounds = null;
         }
 
-    },
+    }
 
-    CLASS_NAME: "SuperMap.QueryByBoundsParameters"
-});
-module.exports = SuperMap.QueryByBoundsParameters;
+    CLASS_NAME = "SuperMap.QueryByBoundsParameters"
+}
+
+SuperMap.QueryByBoundsParameters = QueryByBoundsParameters;

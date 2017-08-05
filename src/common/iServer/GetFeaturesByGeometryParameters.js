@@ -1,30 +1,32 @@
-﻿require('../REST');
-require('./GetFeaturesParametersBase');
-var SuperMap = require('../SuperMap');
-var FilterParameter = require('./FilterParameter');
-SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesParametersBase, {
-    /**
-     * @class SuperMap.GetFeaturesByGeometryParameters
-     * @constructs SuperMap.GetFeaturesByGeometryParameters
-     * @classdesc
-     * 数据集几何查询参数类。
-     * 该类用于设置数据集几何查询的相关参数。
-     * @extends {SuperMap.GetFeaturesParametersBase}
-     * @api
-     */
+﻿import SuperMap from '../SuperMap';
+import {SpatialQueryMode} from '../REST';
+import FilterParameter from './FilterParameter';
+import GetFeaturesParametersBase from './GetFeaturesParametersBase';
+
+/**
+ * @class SuperMap.GetFeaturesByGeometryParameters
+ * @constructs SuperMap.GetFeaturesByGeometryParameters
+ * @classdesc
+ * 数据集几何查询参数类。
+ * 该类用于设置数据集几何查询的相关参数。
+ * @extends {SuperMap.GetFeaturesParametersBase}
+ * @api
+ */
+export default  class GetFeaturesByGeometryParameters extends GetFeaturesParametersBase {
+
 
     /**
      * Property: getFeatureMode
      * {String} 数据集查询模式。
      * 几何查询有"SPATIAL"，"SPATIAL_ATTRIBUTEFILTER"两种,当用户设置attributeFilter时会自动切换到SPATIAL_ATTRIBUTEFILTER访问服务。
      */
-    getFeatureMode: "SPATIAL",
+    getFeatureMode = "SPATIAL";
 
     /**
      * APIProperty: geometry
      * {Object} 用于查询的几何对象。
      */
-    geometry: null,
+    geometry = null;
 
     /**
      * APIProperty: fields
@@ -32,19 +34,19 @@ SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesPa
      *                 当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。
      *                 不设置即返回全部字段。
      */
-    fields: null,
+    fields = null;
 
     /**
      * APIProperty: attributeFilter
      * {String} 几何查询属性过滤条件。
      */
-    attributeFilter: null,
+    attributeFilter = null;
 
     /**
      * APIProperty: spatialQueryMode
      * {SuperMap.SpatialQueryMode} 空间查询模式常量，必设参数，默认为CONTAIN。
      */
-    spatialQueryMode: SuperMap.SpatialQueryMode.CONTAIN,
+    spatialQueryMode = SpatialQueryMode.CONTAIN;
 
     /**
      * @method SuperMap.GetFeaturesByGeometryParameters.initialize
@@ -61,21 +63,22 @@ SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesPa
      * fromIndex - {Integer} 查询结果的最小索引号。</br>
      * toIndex - {Integer} 查询结果的最大索引号。</br>
      */
-    initialize: function (options) {
-        SuperMap.GetFeaturesParametersBase.prototype.initialize.apply(this, arguments);
+    constructor(options) {
+        super(options);
         if (!options) {
             return;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
+        super.destroy();
         var me = this;
-        SuperMap.GetFeaturesParametersBase.prototype.destroy.apply(me, arguments);
         if (me.geometry) {
             me.geometry.destroy();
             me.geometry = null;
@@ -89,42 +92,44 @@ SuperMap.GetFeaturesByGeometryParameters = SuperMap.Class(SuperMap.GetFeaturesPa
         me.attributeFilter = null;
         me.spatialQueryMode = null;
         me.getFeatureMode = null;
-    },
-    CLASS_NAME: "SuperMap.GetFeaturesByGeometryParameters"
-});
-
-/**
- * @method SuperMap.GetFeaturesByGeometryParameters.toJsonParameters
- * @description 将<SuperMap.GetFeaturesByGeometryParameters>对象参数转换为json字符串。
- * @param params - {SuperMap.GetFeaturesByGeometryParameters} 几何查询参数。
- * @return {String} 转化后的 json字符串。
- */
-SuperMap.GetFeaturesByGeometryParameters.toJsonParameters = function (params) {
-    var filterParameter,
-        geometry,
-        parasByGeometry;
-
-    geometry = SuperMap.REST.ServerGeometry.fromGeometry(params.geometry);
-    parasByGeometry = {
-        datasetNames: params.datasetNames,
-        getFeatureMode: "SPATIAL",
-        geometry: geometry,
-        spatialQueryMode: params.spatialQueryMode
-    };
-    if (params.fields) {
-        filterParameter = new FilterParameter();
-        filterParameter.name = params.datasetNames;
-        filterParameter.fields = params.fields;
-        parasByGeometry.queryParameter = filterParameter;
-    }
-    if (params.attributeFilter) {
-        parasByGeometry.attributeFilter = params.attributeFilter;
-        parasByGeometry.getFeatureMode = "SPATIAL_ATTRIBUTEFILTER";
-    }
-    if(params.maxFeatures&&!isNaN(params.maxFeatures)){
-        parasByGeometry.maxFeatures = params.maxFeatures;
     }
 
-    return SuperMap.Util.toJSON(parasByGeometry);
-};
-module.exports = SuperMap.GetFeaturesByGeometryParameters;
+    /**
+     * @method SuperMap.GetFeaturesByGeometryParameters.toJsonParameters
+     * @description 将<SuperMap.GetFeaturesByGeometryParameters>对象参数转换为json字符串。
+     * @param params - {SuperMap.GetFeaturesByGeometryParameters} 几何查询参数。
+     * @return {String} 转化后的 json字符串。
+     */
+    static toJsonParameters(params) {
+        var filterParameter,
+            geometry,
+            parasByGeometry;
+
+        geometry = SuperMap.REST.ServerGeometry.fromGeometry(params.geometry);
+        parasByGeometry = {
+            datasetNames: params.datasetNames,
+            getFeatureMode: "SPATIAL",
+            geometry: geometry,
+            spatialQueryMode: params.spatialQueryMode
+        };
+        if (params.fields) {
+            filterParameter = new FilterParameter();
+            filterParameter.name = params.datasetNames;
+            filterParameter.fields = params.fields;
+            parasByGeometry.queryParameter = filterParameter;
+        }
+        if (params.attributeFilter) {
+            parasByGeometry.attributeFilter = params.attributeFilter;
+            parasByGeometry.getFeatureMode = "SPATIAL_ATTRIBUTEFILTER";
+        }
+        if (params.maxFeatures && !isNaN(params.maxFeatures)) {
+            parasByGeometry.maxFeatures = params.maxFeatures;
+        }
+
+        return SuperMap.Util.toJSON(parasByGeometry);
+    }
+
+    CLASS_NAME = "SuperMap.GetFeaturesByGeometryParameters"
+}
+
+SuperMap.GetFeaturesByGeometryParameters = GetFeaturesByGeometryParameters;

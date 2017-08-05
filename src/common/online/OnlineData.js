@@ -1,51 +1,52 @@
+import SuperMap from '../SuperMap';
+import OnlineServiceBase from './OnlineServiceBase';
+
 /**
  * Online myData服务
  */
-require('./OnlineServiceBase');
-var SuperMap = require('../SuperMap');
-SuperMap.OnlineData = SuperMap.Class(SuperMap.OnlineServiceBase, {
+export default  class OnlineData extends OnlineServiceBase {
     //MD5
-    MD5: null,
+    MD5 = null;
     //文件类型。
-    type: null,
+    type = null;
     //数据上传者名称。
-    userName: null,
+    userName = null;
     //文件名称。
-    fileName: null,
+    fileName = null;
     //文件大小，单位为 B 。
-    size: null,
+    size = null;
     //服务发布状态。
-    serviceStatus: null,
+    serviceStatus = null;
     //服务 id 。
-    serviceId: null,
+    serviceId = null;
     //数据项 id 。
-    id: null,
+    id = null;
     //最后修改时间。
-    lastModfiedTime: null,
+    lastModfiedTime = null;
     //文件状态。
-    status: null,
+    status = null;
     //数据文件存储 id 。
-    storageId: null,
+    storageId = null;
     //数据的发布信息。
-    publishInfo: null,
+    publishInfo = null;
     //数据的权限信息。
-    authorizeSetting: null,
+    authorizeSetting = null;
     //用户的昵称。
-    nickname: null,
+    nickname = null;
     //数据的标签。
-    tags: [],
+    tags = [];
     //数据的描述信息。
-    description: null,
+    description = null;
     //数据发布的服务信息集合。
-    dataItemServices: null,
+    dataItemServices = null;
     //数据坐标类型。
-    coordType: null,
+    coordType = null;
     //数据审核信息
-    dataCheckResult: null,
+    dataCheckResult = null;
     //数据元数据信息
-    dataMetaInfo: null,
+    dataMetaInfo = null;
     //数据的缩略图路径。
-    thumbnail: null,
+    thumbnail = null;
 
     /**
      ** TODO 目前并没有对接服务支持的所有操作，日后需要补充完整
@@ -63,7 +64,8 @@ SuperMap.OnlineData = SuperMap.Class(SuperMap.OnlineServiceBase, {
      *                  });
      *
      */
-    initialize: function (serviceRootUrl, options) {
+    constructor(serviceRootUrl, options) {
+        super(serviceUrl);
         var me = this;
         options = options || {};
         SuperMap.Util.extend(me, options);
@@ -71,11 +73,11 @@ SuperMap.OnlineData = SuperMap.Class(SuperMap.OnlineServiceBase, {
         if (me.id) {
             me.serviceUrl = serviceRootUrl + "/" + me.id;
         }
-        SuperMap.OnlineServiceBase.prototype.initialize.call(me.serviceUrl);
-    },
+    }
+
 
     //通过url请求获取该服务完整信息
-    load: function () {
+    load() {
         if (!this.serviceUrl) {
             return;
         }
@@ -83,20 +85,23 @@ SuperMap.OnlineData = SuperMap.Class(SuperMap.OnlineServiceBase, {
         return me.request("GET", this.serviceUrl).then(function (result) {
             SuperMap.Util.extend(me, result);
         });
-    },
+    }
+
 
     //获取数据发布的所有服务
-    getPublishedServices: function () {
+    getPublishedServices() {
         return this.dataItemServices;
-    },
+    }
+
 
     //获取数据的权限信息
-    getAuthorizeSetting: function () {
+    getAuthorizeSetting() {
         return this.authorizeSetting;
-    },
+    }
 
 
-    CLASS_NAME: "SuperMap.OnlineData"
+    CLASS_NAME = "SuperMap.OnlineData"
 
-});
-module.exports = SuperMap.OnlineData;
+}
+
+SuperMap.OnlineData = OnlineData;

@@ -1,6 +1,7 @@
-require('./GetFeaturesServiceBase');
-require('./GetFeaturesByBoundsParameters');
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import GetFeaturesServiceBase from './GetFeaturesServiceBase';
+import GetFeaturesByBoundsParameters from './GetFeaturesByBoundsParameters';
+
 /**
  * @class SuperMap.GetFeaturesByBoundsService
  * @constructs  SuperMap.GetFeaturesByBoundsService
@@ -30,24 +31,24 @@ var SuperMap = require('../SuperMap');
  * (end)
  */
 
-SuperMap.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
+export default  class GetFeaturesByBoundsService extends GetFeaturesServiceBase {
     /**
      * @method SuperMap.GetFeaturesByBoundsService.initialize
      * @param url - {string}
      * @param options - {Object} 参数。
      */
 
-    initialize: function (url, options) {
-        SuperMap.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @method SuperMap.GetFeaturesByBoundsService.getJsonParameters
@@ -59,11 +60,11 @@ SuperMap.GetFeaturesByBoundsService = SuperMap.Class(SuperMap.GetFeaturesService
      * @return {Object} 转化后的 JSON 字符串。
      *
      */
-    getJsonParameters: function (params) {
-        return SuperMap.GetFeaturesByBoundsParameters.toJsonParameters(params);
-    },
+    getJsonParameters(params) {
+        return GetFeaturesByBoundsParameters.toJsonParameters(params);
+    }
 
-    CLASS_NAME: "SuperMap.GetFeaturesByBoundsService"
-});
+    CLASS_NAME = "SuperMap.GetFeaturesByBoundsService"
+}
 
-module.exports = SuperMap.GetFeaturesByBoundsService;
+SuperMap.GetFeaturesByBoundsService = GetFeaturesByBoundsService;

@@ -23,19 +23,22 @@ module.exports = {
         extensions: ['.js', '.json', '.css']
     },
     externals: {
-        'echarts': 'echarts',
         'leaflet': 'L',
-        'mapv': 'mapv',
-        'elasticsearch': 'elasticsearch'
+        'echarts': 'function(){try{return echarts}catch(e){return {}}}()',
+        'mapv':  "function(){try{return mapv}catch(e){return {}}}()",
+        'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()'
     },
 
     module: {
         rules: [{
-            test: /MapVRenderer\.js/,
-            exclude: /node_modules/,
+            test: /\.js/,
+            exclude: /node_modules[\/\\]proj4|legacy/,
             loader: 'babel-loader',
             query: {
-                presets: ['es2015']
+                presets: ['es2015'],
+                plugins: [
+                    'transform-class-properties',
+                ]
             }
         }, {
             test: /\.css$/,

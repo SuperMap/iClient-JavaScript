@@ -1,100 +1,101 @@
-﻿/**
+﻿import SuperMap from '../SuperMap';
+import UGCSubLayer from './UGCSubLayer';
+import ServerColor from './ServerColor';
+import ServerStyle from './ServerStyle';
+import ColorDictionary from './ColorDictionary';
+import {GridType} from '../REST';
+
+/**
  * Class: SuperMap.Grid
  * UGC 栅格图层类。
  *
  * Inherits from:
  *  - <SuperMap.UGCSubLayer>
  */
-require('../REST');
-require('./UGCSubLayer');
-var SuperMap = require('../SuperMap');
-var ServerColor = require('./ServerColor');
-var ServerStyle = require('./ServerStyle');
-var ColorDictionary = require('./ColorDictionary');
-SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
+export default class Grid extends UGCSubLayer {
     /**
      * APIProperty: colorDictionarys
      * {Array(<SuperMap.ColorDictionary>)} 颜色对照表对象。
      */
-    colorDictionarys: null,
+    colorDictionarys = null;
 
     /**
      * APIProperty: brightness
      * {Integer} Grid 图层的亮度。
      */
-    brightness: null,
+    brightness = null;
 
     /**
      * APIProperty: colorGradientType
      * {SuperMap.ColorGradientType}
      */
-    colorGradientType: null,
+    colorGradientType = null;
 
     /**
      * APIProperty: colors
      * {SuperMap.ServerColor} 颜色表对象。
      */
-    colors: null,
+    colors = null;
 
     /**
      * APIProperty: contrast
      * {Integer} Grid 图层的对比度。
      */
-    contrast: null,
+    contrast = null;
 
     /**
      * APIProperty: dashStyle
      * {SuperMap.ServerStyle} 栅格数据集特殊值数据的颜色。
      */
-    dashStyle: null,
+    dashStyle = null;
 
     /**
      * APIProperty: gridType
      * {SuperMap.GridType} 格网类型。
      */
-    gridType: null,
+    gridType = null;
 
     /**
      * APIProperty: horizontalSpacing
      * {Number} 格网水平间隔大小。
      */
-    horizontalSpacing: null,
+    horizontalSpacing = null;
 
     /**
      * APIProperty: sizeFixed
      * {Boolean} 格网是否固定大小，如果不固定大小，则格网随着地图缩放。
      */
-    sizeFixed: null,
+    sizeFixed = null;
 
     /**
      * APIProperty: solidStyle
      * {SuperMap.ServerStyle} 格网实线的样式。
      */
-    solidStyle: null,
+    solidStyle = null;
 
     /**
      * APIProperty: specialColor
      * {SuperMap.ServerColor} 栅格数据集无值数据的颜色。
      */
-    specialColor: null,
+    specialColor = null;
 
     /**
      * APIProperty: specialValue
      * {Number} 图层的特殊值。
      */
-    specialValue: null,
+    specialValue = null;
 
     /**
      * APIProperty: specialValueTransparent
      * {Boolean} 图层的特殊值（specialValue）所处区域是否透明。
      */
-    specialValueTransparent: null,
+    specialValueTransparent = null;
 
     /**
      * APIProperty: verticalSpacing
      * {Number} 格网垂直间隔大小。
      */
-    verticalSpacing: null,
+    verticalSpacing = null;
 
     /**
      * Constructor: SuperMap.Grid
@@ -119,19 +120,21 @@ SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
      * verticalSpacing - {Number} 格网垂直间隔大小。
      */
 
-    initialize: function (options) {
+    constructor(options) {
         options = options || {};
-        SuperMap.UGCSubLayer.prototype.initialize.apply(this, [options]);
-    },
+        super(options);
+    }
+
 
     /**
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.UGCSubLayer.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         SuperMap.Util.reset(this);
-    },
+    }
+
 
     /**
      * Method: fromJson
@@ -139,8 +142,8 @@ SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
      * Parameters:
      * jsonObject - {Object} 要转换的 JSON 对象。
      */
-    fromJson: function (jsonObject) {
-        SuperMap.UGCSubLayer.prototype.fromJson.apply(this, [jsonObject]);
+    fromJson(jsonObject) {
+        super.fromJson(jsonObject);
         if (this.specialColor) {
             this.specialColor = new ServerColor(this.specialColor.red,
                 this.specialColor.green,
@@ -171,14 +174,15 @@ SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
             this.colorDictionarys = colorDics;
         }
         delete this.colorDictionary;
-    },
+    }
+
 
     /**
      * APIMethod: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */
-    toServerJSONObject: function () {
-        var jsonObject = SuperMap.UGCSubLayer.prototype.toServerJSONObject.apply(this, arguments);
+    toServerJSONObject() {
+        var jsonObject = super.toServerJSONObject();
 
         if (jsonObject.dashStyle) {
             if (jsonObject.dashStyle.toServerJSONObject) {
@@ -191,8 +195,10 @@ SuperMap.Grid = SuperMap.Class(SuperMap.UGCSubLayer, {
             }
         }
         return jsonObject;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.Grid"
-});
-module.exports = SuperMap.Grid;
+
+    CLASS_NAME = "SuperMap.Grid"
+}
+
+SuperMap.Grid = Grid;

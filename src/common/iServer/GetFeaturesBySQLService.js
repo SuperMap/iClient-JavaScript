@@ -1,28 +1,30 @@
-﻿require('./GetFeaturesServiceBase');
-require('./GetFeaturesBySQLParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.GetFeaturesBySQLService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
-    /**
-     * @class SuperMap.GetFeaturesBySQLService
-     * @constructs SuperMap.GetFeaturesBySQLService
-     * @classdesc
-     * 数据服务中数据集 SQL 查询服务类。
-     * 在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
-     * @extends {SuperMap.GetFeaturesServiceBase}
-     * @api
-     * @example 例如：
-     * (start code)
-     * var myGetFeaturesBySQLService = new SuperMap.GetFeaturesBySQLService(url, {
+﻿import SuperMap from '../SuperMap';
+import GetFeaturesServiceBase from './GetFeaturesServiceBase';
+import GetFeaturesBySQLParameters from './GetFeaturesBySQLParameters';
+
+/**
+ * @class SuperMap.GetFeaturesBySQLService
+ * @constructs SuperMap.GetFeaturesBySQLService
+ * @classdesc
+ * 数据服务中数据集 SQL 查询服务类。
+ * 在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
+ * @extends {SuperMap.GetFeaturesServiceBase}
+ * @api
+ * @example 例如：
+ * (start code)
+ * var myGetFeaturesBySQLService = new SuperMap.GetFeaturesBySQLService(url, {
      *     eventListeners: {
      *         "processCompleted": GetFeaturesCompleted,
      *         "processFailed": GetFeaturesError
      *         }
      * });
-     * function getFeaturesCompleted(object){//todo};
-     * function getFeaturesError(object){//todo};
-     * (end)
-     *
-     */
+ * function getFeaturesCompleted(object){//todo};
+ * function getFeaturesError(object){//todo};
+ * (end)
+ *
+ */
+export default  class GetFeaturesBySQLService extends GetFeaturesServiceBase {
+
 
     /**
      * @method SuperMap.GetFeaturesBySQLService.initialize
@@ -35,17 +37,17 @@ SuperMap.GetFeaturesBySQLService = SuperMap.Class(SuperMap.GetFeaturesServiceBas
      * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /*
      * @method SuperMap.GetFeaturesBySQLService.getJsonParameters
@@ -54,11 +56,11 @@ SuperMap.GetFeaturesBySQLService = SuperMap.Class(SuperMap.GetFeaturesServiceBas
      * @param params - {SuperMap.GetFeaturesBySQLParameters}
      * @return {Object} 转化后的 JSON 字符串。
      */
-    getJsonParameters: function (params) {
-        return SuperMap.GetFeaturesBySQLParameters.toJsonParameters(params);
-    },
+    getJsonParameters(params) {
+        return GetFeaturesBySQLParameters.toJsonParameters(params);
+    }
 
-    CLASS_NAME: "SuperMap.GetFeaturesBySQLService"
-});
+    CLASS_NAME = "SuperMap.GetFeaturesBySQLService"
+}
 
-module.exports = SuperMap.GetFeaturesBySQLService;
+SuperMap.GetFeaturesBySQLService = GetFeaturesBySQLService;

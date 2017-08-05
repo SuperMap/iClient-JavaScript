@@ -128,7 +128,7 @@
                     draw: 'intensity'
                 };
 
-                new mapvlayer(map, dataSet, options);
+                new mapboxgl.supermap.MapvLayer(map, dataSet, options);
 
                 var dataSet = new mapv.DataSet(timeData);
                 var options = {
@@ -145,7 +145,7 @@
                     },
                     draw: 'simple'
                 };
-                new mapvlayer(map, dataSet, options);
+                new mapboxgl.supermap.MapvLayer(map, dataSet, options);
             }
         });
     });

@@ -2,11 +2,11 @@
  * Class:MapVLayer
  *  MapV图层
  */
-var L = require("leaflet");
-var MapVRenderer = require("./mapv/MapVRenderer");
+import L from "leaflet";
+import MapVRenderer from "./mapv/MapVRenderer";
 
 
-var MapVLayer = L.Layer.extend({
+export var MapVLayer = L.Layer.extend({
 
     options: {
         attributionPrefix: null,
@@ -156,10 +156,10 @@ var MapVLayer = L.Layer.extend({
 
 });
 
-L.supermap.mapVLayer = function (dataSet, mapVOptions, options) {
+export var mapVLayer = function (dataSet, mapVOptions, options) {
     return new MapVLayer(dataSet, mapVOptions, options);
 };
-module.exports = MapVLayer;
+L.supermap.mapVLayer = mapVLayer;
 
 L.Map.include({
     /**

@@ -1,10 +1,10 @@
-var L = require("leaflet");
-var DataFlowService = require("../services/DataFlowService");
+import L from "leaflet";
+import {DataFlowService} from "../services/DataFlowService";
 
 /**
 *@class DataFlowLayer
  */
-var DataFlowLayer = L.GeoJSON.extend({
+export var DataFlowLayer = L.GeoJSON.extend({
     options: {
         geometry: null,
         prjCoordSys: null,
@@ -66,7 +66,7 @@ var DataFlowLayer = L.GeoJSON.extend({
 
     }
 });
-L.supermap.dataFlowLayer = function (url, options) {
+export var dataFlowLayer = function (url, options) {
     return new DataFlowLayer(url, options);
 };
-module.exports = DataFlowLayer;
+L.supermap.dataFlowLayer = dataFlowLayer;

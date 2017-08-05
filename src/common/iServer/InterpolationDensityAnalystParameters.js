@@ -1,17 +1,16 @@
-﻿require('./InterpolationAnalystParameters');
-require('./ThiessenAnalystParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.InterpolationDensityAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
-    /**
-     * @class SuperMap.InterpolationDensityAnalystParameters
-     * @constructs SuperMap.InterpolationDensityAnalystParameters
-     * @classdesc
-     * 点密度差值分析参数类
-     * @extends {SuperMap.InterpolationAnalystParameters}
-     * @api
-     * @example 例如：
-     * (start code)
-     * var myInterpolationDensityAnalystParameters = new SuperMap.InterpolationDensityAnalystParameters({
+﻿import SuperMap from '../SuperMap';
+import InterpolationAnalystParameters from './InterpolationAnalystParameters';
+
+/**
+ * @class SuperMap.InterpolationDensityAnalystParameters
+ * @constructs SuperMap.InterpolationDensityAnalystParameters
+ * @classdesc
+ * 点密度差值分析参数类
+ * @extends {SuperMap.InterpolationAnalystParameters}
+ * @api
+ * @example 例如：
+ * (start code)
+ * var myInterpolationDensityAnalystParameters = new SuperMap.InterpolationDensityAnalystParameters({
      *      dataset: "SamplesP@Interpolation",
      *      searchRadius: "100000",
      *      pixelFormat: "BIT16",
@@ -22,8 +21,10 @@ SuperMap.InterpolationDensityAnalystParameters = SuperMap.Class(SuperMap.Interpo
      *      },
      *      outputDatasetName: "myDensity"
      * });
-     * (end)
-     */
+ * (end)
+ */
+export default  class InterpolationDensityAnalystParameters extends InterpolationAnalystParameters {
+
 
     /**
      *
@@ -42,22 +43,22 @@ SuperMap.InterpolationDensityAnalystParameters = SuperMap.Class(SuperMap.Interpo
      * dataset - {String} 用来做插值分析的数据源中数据集的名称，该名称用形如"数据集名称@数据源别名"形式来表示。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
      * inputPoints - {Array <SuperMap.Geometry.Point} 用于做插值分析的离散点集合。当插值分析类型（ SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。</br>
      */
-    initialize: function (options) {
-        SuperMap.InterpolationAnalystParameters.prototype.initialize.apply(this, arguments);
+    constructor(options) {
+        super(options);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.InterpolationAnalystParameters.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
-    CLASS_NAME: "SuperMap.InterpolationDensityAnalystParameters"
-});
+    CLASS_NAME = "SuperMap.InterpolationDensityAnalystParameters"
+}
 
-module.exports = SuperMap.InterpolationDensityAnalystParameters;
+SuperMap.InterpolationDensityAnalystParameters = InterpolationDensityAnalystParameters;

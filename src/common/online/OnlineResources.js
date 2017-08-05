@@ -1,8 +1,9 @@
+import SuperMap from '../SuperMap';
+
 /**
  * 服务发布状态
  */
-var SuperMap = require('../SuperMap');
-SuperMap.ServiceStatus = {
+export var ServiceStatus = SuperMap.ServiceStatus = {
     DOES_NOT_INVOLVE: "DOES_NOT_INVOLVE",
     PUBLISH_FAILED: "PUBLISH_FAILED",
     PUBLISHED: "PUBLISHED",
@@ -13,7 +14,7 @@ SuperMap.ServiceStatus = {
 /**
  * 数据项类型
  */
-SuperMap.DataItemType = {
+export var DataItemType = SuperMap.DataItemType = {
     AUDIO: "AUDIO",
     COLOR: "COLOR",
     COLORSCHEME: "COLORSCHEME",
@@ -44,7 +45,7 @@ SuperMap.DataItemType = {
 /**
  * 数据排序字段
  */
-SuperMap.DataItemOrderBy = {
+export var DataItemOrderBy = SuperMap.DataItemOrderBy = {
     FILENAME: "FILENAME",
     ID: "ID",
     LASTMODIFIEDTIME: "LASTMODIFIEDTIME",
@@ -61,7 +62,7 @@ SuperMap.DataItemOrderBy = {
 /**
  * 关键字查询时的过滤字段
  */
-SuperMap.FilterField = {
+export var FilterField = SuperMap.FilterField = {
     LINKPAGE: "LINKPAGE",
     MAPTITLE: "MAPTITLE",
     NICKNAME: "NICKNAME",

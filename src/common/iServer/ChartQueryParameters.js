@@ -1,5 +1,5 @@
-var SuperMap = require('../SuperMap');
-var ChartQueryFilterParameter = require('./ChartQueryFilterParameter');
+import SuperMap from '../SuperMap';
+import ChartQueryFilterParameter from './ChartQueryFilterParameter';
 
 /**
  * @class SuperMap.ChartQueryParameters
@@ -18,33 +18,33 @@ var ChartQueryFilterParameter = require('./ChartQueryFilterParameter');
  *         startRecord - {Number} 查询起始记录位置，默认为0。<br>
  *         expectCount - {Number} 期望查询结果返回的记录数，该值大于0。
  */
-SuperMap.ChartQueryParameters = SuperMap.Class({
+export default class ChartQueryParameters {
 
     /**
      * @member SuperMap.ChartQueryParameters.prototype.queryMode -{String}
      * @description 海图查询模式类型，SuperMap iClient for JavaScript对海图支持两种<br>
      *              查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。
      */
-    queryMode: null,
+    queryMode = null;
 
     /**
      * @member SuperMap.ChartQueryParameters.prototype.bounds -{SuperMap.Bounds}
      * @description 海图查询范围。
      */
-    bounds: null,
+    bounds = null;
 
     /**
      * @member SuperMap.ChartQueryParameters.prototype.chartLayerNames -{Array(String)}
      * @description 查询的海图图层的名称。
      */
-    chartLayerNames: null,
+    chartLayerNames = null;
 
     /**
      * @member SuperMap.ChartQueryParameters.prototype.chartQueryFilterParameters -{Array(ChartQueryFilterParameter)}
      * @description 海图查询过滤参数。<br>
      *               包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
      */
-    chartQueryFilterParameters: null,
+    chartQueryFilterParameters = null;
 
     /**
      * @member SuperMap.ChartQueryParameters.prototype.returnContent -{Boolean}
@@ -77,36 +77,37 @@ SuperMap.ChartQueryParameters = SuperMap.Class({
      *  (end)
      *  为空。
      */
-    returnContent: true,
+    returnContent = true;
 
     /**
      * @member SuperMap.ChartQueryParameters.prototype.startRecord -{Number}
      * @description 查询起始记录位置，默认为0。
      */
-    startRecord: 0,
+    startRecord = 0;
 
     /**
      * @member SuperMap.ChartQueryParameters.prototype.expectCount -{Number}
      * @description 期望查询结果返回的记录数，该值大于0。
      */
-    expectCount: null,
+    expectCount = null;
 
     /*
      * Constructor: ChartQueryParameters
      *  初始化 ChartQueryParameters 类的新实例。
      */
-    initialize: function (options) {
+    constructor(options) {
         if (!options) {
             return;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /**
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.queryMode = null;
         me.bounds = null;
@@ -115,14 +116,14 @@ SuperMap.ChartQueryParameters = SuperMap.Class({
         me.returnContent = true;
         me.startRecord = 0;
         me.expectCount = null;
-    },
+    }
 
     /**
      * Method: getVariablesJson
      * @function @member SuperMap.ChartQueryParameters.prototype.getVariablesJson
      * @description 将属性信息转换成能够被服务识别的JSON格式字符串。
      */
-    getVariablesJson: function () {
+    getVariablesJson() {
         var json = "";
 
         json += "\"queryMode\":\"" + this.queryMode + "\",";
@@ -160,8 +161,8 @@ SuperMap.ChartQueryParameters = SuperMap.Class({
         }
         json = "{" + json + "}";
         return json;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.ChartQueryParameters"
-});
-module.exports = SuperMap.ChartQueryParameters;
+    CLASS_NAME = "SuperMap.ChartQueryParameters"
+}
+SuperMap.ChartQueryParameters = ChartQueryParameters;

@@ -1,3 +1,21 @@
+import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {ServiceBase} from './ServiceBase';
+import * as Util from '../core/Util';
+import AreaSolarRadiationService from '../../common/iServer/AreaSolarRadiationService';
+import BufferAnalystService from '../../common/iServer/BufferAnalystService';
+import DensityAnalystService from '../../common/iServer/DensityAnalystService';
+import GenerateSpatialDataService from '../../common/iServer/GenerateSpatialDataService';
+import GeoRelationAnalystService from '../../common/iServer/GeoRelationAnalystService';
+import InterpolationAnalystService from '../../common/iServer/InterpolationAnalystService';
+import MathExpressionAnalysisService from '../../common/iServer/MathExpressionAnalysisService';
+import OverlayAnalystService from '../../common/iServer/OverlayAnalystService';
+import RouteCalculateMeasureService from '../../common/iServer/RouteCalculateMeasureService';
+import RouteLocatorService from '../../common/iServer/RouteLocatorService';
+import SurfaceAnalystService from '../../common/iServer/SurfaceAnalystService';
+import TerrainCurvatureCalculationService from '../../common/iServer/TerrainCurvatureCalculationService';
+import ThiessenAnalystService from '../../common/iServer/ThiessenAnalystService';
+import CommontypesConversion from '../core/CommontypesConversion';
 /**
  * @class L.supermap.SpatialAnalystService
  * @constructs SuperMap.SpatialAnalystService
@@ -9,29 +27,10 @@
  *      .bufferAnalysis(params,function(result){
  *          //doSomething
  *      })
- * @extends{ServiceBase}
+ * @extendsServiceBase
  * @api
  */
-
-var L = require("leaflet");
-var ServiceBase = require('./ServiceBase');
-var SuperMap = require('../../common/SuperMap');
-var Util = require('../core/Util');
-var AreaSolarRadiationService = require('../../common/iServer/AreaSolarRadiationService');
-var BufferAnalystService = require('../../common/iServer/BufferAnalystService');
-var DensityAnalystService = require('../../common/iServer/DensityAnalystService');
-var GenerateSpatialDataService = require('../../common/iServer/GenerateSpatialDataService');
-var GeoRelationAnalystService = require('../../common/iServer/GeoRelationAnalystService');
-var InterpolationAnalystService = require('../../common/iServer/InterpolationAnalystService');
-var MathExpressionAnalysisService = require('../../common/iServer/MathExpressionAnalysisService');
-var OverlayAnalystService = require('../../common/iServer/OverlayAnalystService');
-var RouteCalculateMeasureService = require('../../common/iServer/RouteCalculateMeasureService');
-var RouteLocatorService = require('../../common/iServer/RouteLocatorService');
-var SurfaceAnalystService = require('../../common/iServer/SurfaceAnalystService');
-var TerrainCurvatureCalculationService = require('../../common/iServer/TerrainCurvatureCalculationService');
-var ThiessenAnalystService = require('../../common/iServer/ThiessenAnalystService');
-
-var SpatialAnalystService = ServiceBase.extend({
+export var SpatialAnalystService = ServiceBase.extend({
 
     /**
      * url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst 。
@@ -333,7 +332,7 @@ var SpatialAnalystService = ServiceBase.extend({
             return {};
         }
         if (params.bounds) {
-            params.bounds = L.supermap.CommontypesConversion.toSuperMapBounds(params.bounds);
+            params.bounds = CommontypesConversion.toSuperMapBounds(params.bounds);
         }
         if (params.inputPoints) {
             for (var i = 0; i < params.inputPoints.length; i++) {
@@ -383,7 +382,7 @@ var SpatialAnalystService = ServiceBase.extend({
         return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
     }
 });
-L.supermap.spatialAnalystService = function (url, options) {
+export var spatialAnalystService = function (url, options) {
     return new SpatialAnalystService(url, options);
 };
-module.exports = SpatialAnalystService;
+L.supermap.spatialAnalystService = spatialAnalystService;

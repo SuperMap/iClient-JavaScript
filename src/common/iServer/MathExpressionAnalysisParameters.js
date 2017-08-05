@@ -1,12 +1,14 @@
-var SuperMap = require('../SuperMap');
-SuperMap.MathExpressionAnalysisParameters = SuperMap.Class({
-    /**
-     * @class SuperMap.MathExpressionAnalysisParameters
-     * @constructs SuperMap.MathExpressionAnalysisParameters
-     * @classdesc
-     * 栅格代数运算参数类
-     * @api
-     */
+import SuperMap from '../SuperMap';
+
+/**
+ * @class SuperMap.MathExpressionAnalysisParameters
+ * @constructs SuperMap.MathExpressionAnalysisParameters
+ * @classdesc
+ * 栅格代数运算参数类
+ * @api
+ */
+export default  class MathExpressionAnalysisParameters {
+
 
     /**
      * APIProperty: dataset
@@ -14,50 +16,50 @@ SuperMap.MathExpressionAnalysisParameters = SuperMap.Class({
      * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。
      *
      */
-    dataset: null,
+    dataset = null;
 
     /**
      * APIProperty: extractRegion
      * {SuperMap.Geometry.Ploygon} 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。
      * 如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。
      */
-    extractRegion: null,
+    extractRegion = null;
 
     /**
      * APIProperty: expression
      * {String} 指定的栅格运算表达式。如："[DatasourceAlias1.Raster1]*2-10"；必设字段。
      */
-    expression: null,
+    expression = null;
 
     /**
      * APIProperty: isZip
      * {Boolean} 是否对结果数据集进行压缩处理。默认为False，表示不压缩。
      */
-    isZip: false,
+    isZip = false;
 
     /**
      * APIProperty: ignoreNoValue
      * {Boolean} 是否忽略无值栅格数据，默认为true。
      */
-    ignoreNoValue: false,
+    ignoreNoValue = false;
 
     /**
      * APIProperty: targetDatasource
      * {String}  指定存储结果数据集的数据源，必设字段。
      */
-    targetDatasource: null,
+    targetDatasource = null;
 
     /**
      * APIProperty: resultGridName
      * {String} 指定结果数据集名称，必设字段。
      */
-    resultGridName: null,
+    resultGridName = null;
 
     /**
      * APIProperty: deleteExistResultDataset
      * {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
      */
-    deleteExistResultDataset: false,
+    deleteExistResultDataset = false;
 
     /**
      * @method SuperMap.MathExpressionAnalysisParameters.initialize
@@ -74,18 +76,19 @@ SuperMap.MathExpressionAnalysisParameters = SuperMap.Class({
      * resultGridName - {Number} 指定结果数据集名称，必设字段。</br>
      * deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
      */
-    initialize: function (options) {
+    constructor(options) {
         if (!options) {
             return;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.dataset = null;
         me.bounds = null;
@@ -95,40 +98,40 @@ SuperMap.MathExpressionAnalysisParameters = SuperMap.Class({
         me.targetDatasource = null;
         me.resultGridName = null;
         me.deleteExistResultDataset = null;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.MathExpressionAnalysisParameters"
-});
+    static toObject(mathExpressionAnalysisParameters, tempObj) {
+        for (var name in mathExpressionAnalysisParameters) {
+            if (name !== "dataset") {
+                tempObj[name] = mathExpressionAnalysisParameters[name];
+            }
 
-SuperMap.MathExpressionAnalysisParameters.toObject = function (mathExpressionAnalysisParameters, tempObj) {
-    for (var name in mathExpressionAnalysisParameters) {
-        if (name !== "dataset") {
-            tempObj[name] = mathExpressionAnalysisParameters[name];
-        }
+            if (name === "extractRegion") {
+                if (mathExpressionAnalysisParameters[name]) {
+                    var bs = mathExpressionAnalysisParameters[name].components[0].components;
+                    var region = {},
+                        points = [],
+                        type = "REGION";
 
-        if (name === "extractRegion") {
-            if (mathExpressionAnalysisParameters[name]) {
-                var bs = mathExpressionAnalysisParameters[name].components[0].components;
-                var region = {},
-                    points = [],
-                    type = "REGION";
+                    var len = bs.length;
+                    for (var i = 0; i < len - 1; i++) {
+                        var poi = {};
+                        poi["x"] = bs[i].x;
+                        poi["y"] = bs[i].y;
+                        points.push(poi);
+                    }
+                    ;
 
-                var len = bs.length;
-                for (var i = 0; i < len - 1; i++) {
-                    var poi = {};
-                    poi["x"] = bs[i].x;
-                    poi["y"] = bs[i].y;
-                    points.push(poi);
+                    region["points"] = points;
+                    region["type"] = type;
+
+                    tempObj[name] = region;
                 }
-                ;
-
-                region["points"] = points;
-                region["type"] = type;
-
-                tempObj[name] = region;
             }
         }
     }
-};
 
-module.exports = SuperMap.MathExpressionAnalysisParameters;
+    CLASS_NAME = "SuperMap.MathExpressionAnalysisParameters"
+}
+
+SuperMap.MathExpressionAnalysisParameters = MathExpressionAnalysisParameters;

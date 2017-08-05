@@ -1,18 +1,8 @@
-﻿/*
- * Class: MeasureService
- * 量算服务服务类
- * 用法：
- *      L.supermap.measureService(url).measureDistance({
- *          geometry:xxx
- *      },function(result){
- *           //doSomething
- *      })
- */
-var L = require("leaflet");
-var ServiceBase = require('./ServiceBase');
-var SuperMap = require('../../common/SuperMap');
-var Util = require('../core/Util');
-var SuperMapMeasureService = require('../../common/iServer/MeasureService');
+﻿import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {ServiceBase} from './ServiceBase';
+import * as Util from '../core/Util';
+import SuperMapMeasureService from '../../common/iServer/MeasureService' ;
 /**
  * @class L.supermap.MeasureService
  * @description 量算服务服务类
@@ -29,7 +19,7 @@ var SuperMapMeasureService = require('../../common/iServer/MeasureService');
  *         eventListeners - {Object} 需要被注册的监听器对象。
  *         measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
  */
-var MeasureService = ServiceBase.extend({
+export var MeasureService = ServiceBase.extend({
     /**
      * @function L.supermap.MeasureService.initialize
      * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
@@ -90,8 +80,8 @@ var MeasureService = ServiceBase.extend({
     }
 });
 
-L.supermap.measureService = function (url, options) {
+export var measureService = function (url, options) {
     return new MeasureService(url, options);
 };
 
-module.exports = MeasureService;
+L.supermap.measureService = measureService;

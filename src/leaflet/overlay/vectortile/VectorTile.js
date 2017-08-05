@@ -1,15 +1,14 @@
-require('../../core/Base');
-require('./VectorFeatureType');
-require("./VectorTileFormat");
-require('./TextSymbolizer');
-require('./PointSymbolizer');
-require('./LineSymbolizer');
-require('./RegionSymbolizer');
-require('./VectorTileJSON');
-require('./VectorTilePBF');
-var L = require("leaflet");
-
-var VectorTile = L.Class.extend({
+import'../../core/Base';
+import L from "leaflet";
+import {VectorFeatureType} from './VectorFeatureType';
+import {TextSymbolizer} from './TextSymbolizer';
+import {PointSymbolizer} from './PointSymbolizer';
+import {LineSymbolizer} from './LineSymbolizer';
+import {RegionSymbolizer} from './RegionSymbolizer';
+import {VectorTilePBF} from './VectorTilePBF';
+import {VectorTileJSON} from './VectorTileJSON';
+import {VectorTileFormat} from '../VectorTileFormat';
+export var VectorTile = L.Class.extend({
 
     initialize: function (options, done) {
         this.layer = options.layer;
@@ -25,20 +24,18 @@ var VectorTile = L.Class.extend({
         var me = this, layer = me.layer, coords = me.coords;
         var tileFeatureUrl = layer._getTileUrl(coords);
 
-        var format = [L.supermap.VectorTileFormat.MVT, L.supermap.VectorTileFormat.PBF];
+        var format = [VectorTileFormat.MVT, VectorTileFormat.PBF];
 
         var tileFeaturePromise;
         if (format.indexOf(me.format.toUpperCase()) > -1) {
-            tileFeaturePromise = L.supermap.vectorTilePBF(tileFeatureUrl);
+            tileFeaturePromise = new VectorTilePBF(tileFeatureUrl);
         } else {
-            tileFeaturePromise = L.supermap.vectorTileJSON(tileFeatureUrl)
+            tileFeaturePromise = new VectorTileJSON(tileFeatureUrl)
         }
 
         tileFeaturePromise.getTile().then(function (tileFeature) {
             me.render(tileFeature, coords);
-        }).catch(function (ex) {
-            console.error('error', ex)
-        });
+        })
     },
 
     render: function (tileFeature, coords) {
@@ -62,10 +59,10 @@ var VectorTile = L.Class.extend({
                 }
 
                 //标签图层处理为文本
-                if (layerStyleInfo.type === L.supermap.VectorFeatureType.LABEL
-                    && feat.type === L.supermap.VectorFeatureType.POINT
+                if (layerStyleInfo.type === VectorFeatureType.LABEL
+                    && feat.type === VectorFeatureType.POINT
                     && feat.properties.attributes) {
-                    feat.type = L.supermap.VectorFeatureType.TEXT;
+                    feat.type = VectorFeatureType.TEXT;
                 }
 
                 var styleOptions = me._getStyleOptions(coords, feat, layerName, me);
@@ -113,7 +110,7 @@ var VectorTile = L.Class.extend({
     // 保存文本图层单独绘制，避免被压盖
     _extractTextLayer: function (feat, featureLayer, style, param) {
 
-        if (feat.type !== L.supermap.VectorFeatureType.TEXT) {
+        if (feat.type !== VectorFeatureType.TEXT) {
             return false;
         }
 
@@ -163,17 +160,17 @@ var VectorTile = L.Class.extend({
     _createFeatureLayer: function (feat, pxPerExtent) {
         var layer;
         switch (feat.type) {
-            case L.supermap.VectorFeatureType.POINT:
-                layer = new L.PointSymbolizer(feat, pxPerExtent);
+            case VectorFeatureType.POINT:
+                layer = new PointSymbolizer(feat, pxPerExtent);
                 break;
-            case L.supermap.VectorFeatureType.LINE:
-                layer = new L.LineSymbolizer(feat, pxPerExtent);
+            case VectorFeatureType.LINE:
+                layer = new LineSymbolizer(feat, pxPerExtent);
                 break;
-            case L.supermap.VectorFeatureType.REGION:
-                layer = new L.RegionSymbolizer(feat, pxPerExtent);
+            case VectorFeatureType.REGION:
+                layer = new RegionSymbolizer(feat, pxPerExtent);
                 break;
-            case L.supermap.VectorFeatureType.TEXT:
-                layer = new L.TextSymbolizer(feat, pxPerExtent);
+            case VectorFeatureType.TEXT:
+                layer = new TextSymbolizer(feat, pxPerExtent);
                 break;
             default:
                 break;
@@ -193,14 +190,14 @@ var VectorTile = L.Class.extend({
         L.Path.prototype.options.weight = 1;
         L.Path.prototype.options.fillOpacity = 1;
         switch (type) {
-            case L.supermap.VectorFeatureType.POINT:
+            case VectorFeatureType.POINT:
                 return L.extend({}, L.CircleMarker.prototype.options, style);
-            case L.supermap.VectorFeatureType.LINE:
+            case VectorFeatureType.LINE:
                 return L.extend({}, L.Polyline.prototype.options, style);
-            case L.supermap.VectorFeatureType.REGION:
+            case VectorFeatureType.REGION:
                 return L.extend({}, L.Polygon.prototype.options, style);
-            case L.supermap.VectorFeatureType.TEXT:
-                return L.extend({}, L.TextSymbolizer.prototype.options, style);
+            case VectorFeatureType.TEXT:
+                return L.extend({}, TextSymbolizer.prototype.options, style);
             default:
                 break;
         }
@@ -213,22 +210,17 @@ var VectorTile = L.Class.extend({
         defaultOptions.fillOpacity = 1;
         defaultOptions.radius = 3;
         switch (type) {
-            case L.supermap.VectorFeatureType.POINT:
+            case VectorFeatureType.POINT:
                 return L.extend({}, defaultOptions, L.CircleMarker.prototype.options);
-            case L.supermap.VectorFeatureType.LINE:
+            case VectorFeatureType.LINE:
                 return L.extend({}, defaultOptions, L.Polyline.prototype.options);
-            case L.supermap.VectorFeatureType.REGION:
+            case VectorFeatureType.REGION:
                 return L.extend({}, defaultOptions, L.Polygon.prototype.options);
-            case L.supermap.VectorFeatureType.TEXT:
-                return L.extend({}, defaultOptions, L.TextSymbolizer.prototype.options);
+            case VectorFeatureType.TEXT:
+                return L.extend({}, defaultOptions, TextSymbolizer.prototype.options);
             default:
                 break;
         }
     },
 
 });
-
-L.supermap.vectorTile = function (options, done) {
-    return new VectorTile(options, done);
-};
-module.exports = VectorTile;

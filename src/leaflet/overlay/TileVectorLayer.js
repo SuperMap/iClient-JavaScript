@@ -4,13 +4,13 @@
  * 用法：
  *      L.superMap.tiledVectorLayer(url).addTo(map);
  */
-require('../core/Base');
-require('../../common/security/SecurityManager');
-require('./vectortile/VectorGrid');
-var L = require("leaflet");
-var CartoCSSToLeaflet = require('./carto/CartoCSSToLeaflet');
-var SuperMap = require('../../common/SuperMap');
-var TileVectorLayer = L.VectorGrid.extend({
+import '../core/Base';
+import '../../common/security/SecurityManager';
+import L from "leaflet";
+import {VectorGrid} from './vectortile/VectorGrid';
+import {CartoCSSToLeaflet} from './carto/CartoCSSToLeaflet';
+import SuperMap from '../../common/SuperMap';
+export var  TileVectorLayer = VectorGrid.extend({
 
     options: {
         //服务器类型<SuperMap.ServerType>iServer|iPortal|Online
@@ -45,7 +45,7 @@ var TileVectorLayer = L.VectorGrid.extend({
         options = options || {};
         options.noWrap = (options.noWrap == null) ? true : options.noWrap;
         L.setOptions(this, options);
-        L.VectorGrid.prototype.initialize.call(this, options);
+        VectorGrid.prototype.initialize.call(this, options);
         L.stamp(this);
         var me = this;
 
@@ -298,7 +298,7 @@ var TileVectorLayer = L.VectorGrid.extend({
     },
 
     _initGrid: function () {
-        L.VectorGrid.prototype.onAdd.call(this, this._map);
+        VectorGrid.prototype.onAdd.call(this, this._map);
     },
 
     _getSubdomain: L.TileLayer.prototype._getSubdomain,
@@ -386,8 +386,8 @@ var TileVectorLayer = L.VectorGrid.extend({
     }
 });
 
-L.supermap.tiledVectorLayer = function (url, options) {
+export var tiledVectorLayer = function (url, options) {
     return new TileVectorLayer(url, options);
 };
 
-module.exports = TileVectorLayer;
+L.supermap.tiledVectorLayer = tiledVectorLayer;

@@ -1,57 +1,58 @@
-﻿/**
+﻿import SuperMap from '../SuperMap';
+import UGCSubLayer from './UGCSubLayer';
+import ServerColor from './ServerColor';
+import {ColorSpaceType} from '../REST';
+
+/**
  * Class: SuperMap.Image
  * UGC 影像图层类。
  *
  * Inherits from:
  *  - <SuperMap.UGCSubLayer>
  */
-require('../REST');
-require('./UGCSubLayer');
-var SuperMap = require('../SuperMap');
-var ServerColor = require('./ServerColor');
-SuperMap.Image = SuperMap.Class(SuperMap.UGCSubLayer, {
+export default class UGCImage extends UGCSubLayer {
 
     /**
      * APIProperty: brightness
      * {Integer} 影像图层的亮度。
      */
-    brightness: null,
+    brightness = null;
 
     /**
      * APIProperty: colorSpaceType
      * {SuperMap.ColorSpaceType} 返回影像图层的色彩显示模式。
      */
-    colorSpaceType: null,
+    colorSpaceType = null;
 
     /**
      * APIProperty: contrast
      * {Integer} 影像图层的对比度。
      */
-    contrast: null,
+    contrast = null;
 
     /**
      * APIProperty: displayBandIndexes
      * {Array(Integer)} 返回当前影像图层显示的波段索引。
      */
-    displayBandIndexes: null,
+    displayBandIndexes = null;
 
     /**
      * APIProperty: transparent
      * {Boolean} 是否背景透明。
      */
-    transparent: null,
+    transparent = null;
 
     /**
      * APIProperty: transparentColor
      * {SuperMap.ServerColor} 返回背景透明色。
      */
-    transparentColor: null,
+    transparentColor = null;
 
     /**
      * APIProperty: transparentColorTolerance
      * {Integer} 背景透明色容限。
      */
-    transparentColorTolerance: null,
+    transparentColorTolerance = null;
 
     /**
      * Constructor: SuperMap.Image
@@ -70,15 +71,17 @@ SuperMap.Image = SuperMap.Class(SuperMap.UGCSubLayer, {
      * transparentColorTolerance - {Integer} 背景透明色容限。
      */
 
-    initialize: function (options) {
+    constructor(options) {
         options = options || {};
-        SuperMap.UGCSubLayer.prototype.initialize.apply(this, [options]);
-    },
+        super(options);
+    }
 
-    destroy: function () {
-        SuperMap.UGCSubLayer.prototype.destroy.apply(this, arguments);
+
+    destroy() {
+        super.destroy();
         SuperMap.Util.reset(this);
-    },
+    }
+
 
     /**
      * Method: fromJson
@@ -86,23 +89,26 @@ SuperMap.Image = SuperMap.Class(SuperMap.UGCSubLayer, {
      * Parameters:
      * jsonObject - {Object} 要转换的 JSON 对象。
      */
-    fromJson: function (jsonObject) {
-        SuperMap.UGCSubLayer.prototype.fromJson.apply(this, [jsonObject]);
+    fromJson(jsonObject) {
+        super.fromJson(jsonObject);
         if (this.transparentColor) {
             this.transparentColor = new ServerColor(this.transparentColor.red,
                 this.transparentColor.green,
                 this.transparentColor.blue);
         }
-    },
+    }
+
 
     /**
      * APIMethod: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */
-    toServerJSONObject: function () {
-        return SuperMap.UGCSubLayer.prototype.toServerJSONObject.apply(this, arguments);
-    },
+    toServerJSONObject() {
+        return super.toServerJSONObject();
+    }
 
-    CLASS_NAME: "SuperMap.Image"
-});
-module.exports = SuperMap.Image;
+
+    CLASS_NAME = "SuperMap.Image"
+}
+
+SuperMap.Image = UGCImage;

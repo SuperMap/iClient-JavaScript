@@ -1,28 +1,30 @@
-﻿require('./GetFeaturesServiceBase');
-require('./GetFeaturesByBufferParameters');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import GetFeaturesServiceBase from './GetFeaturesServiceBase';
+import GetFeaturesByBufferParameters from './GetFeaturesByBufferParameters';
 
-SuperMap.GetFeaturesByBufferService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
-    /**
-     * @class SuperMap.GetFeaturesByBufferService
-     * @constructs SuperMap.GetFeaturesByBufferService
-     * @classdesc
-     * 数据服务中数据集缓冲区查询服务类。
-     * @extends {SuperMap.GetFeaturesServiceBase}
-     * @api
-     * @example 例如：
-     * (start code)
-     * var myGetFeaturesByBufferService = new   SuperMap.GetFeaturesByBufferService(url, {
+/**
+ * @class SuperMap.GetFeaturesByBufferService
+ * @constructs SuperMap.GetFeaturesByBufferService
+ * @classdesc
+ * 数据服务中数据集缓冲区查询服务类。
+ * @extends {SuperMap.GetFeaturesServiceBase}
+ * @api
+ * @example 例如：
+ * (start code)
+ * var myGetFeaturesByBufferService = new   SuperMap.GetFeaturesByBufferService(url, {
      *     eventListeners: {
      *           "processCompleted": GetFeaturesCompleted,
      *           "processFailed": GetFeaturesError
      *           }
      * });
-     * function GetFeaturesCompleted(object){//todo};
-     * function GetFeaturesError(object){//todo};
-     * (end)
-     *
-     */
+ * function GetFeaturesCompleted(object){//todo};
+ * function GetFeaturesError(object){//todo};
+ * (end)
+ *
+ */
+
+export default  class GetFeaturesByBufferService extends GetFeaturesServiceBase {
+
     /**
      *
      * @method SuperMap.GetFeaturesByBufferService.initialize
@@ -34,17 +36,17 @@ SuperMap.GetFeaturesByBufferService = SuperMap.Class(SuperMap.GetFeaturesService
      * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @method SuperMap.GetFeaturesByBufferService.getJsonParameters
@@ -54,11 +56,11 @@ SuperMap.GetFeaturesByBufferService = SuperMap.Class(SuperMap.GetFeaturesService
      * @param params  {SuperMap.GetFeaturesByBufferParameters}
      * @return {Object} 转化后的 JSON 字符串。
      */
-    getJsonParameters: function (params) {
+    getJsonParameters(params) {
         return SuperMap.GetFeaturesByBufferParameters.toJsonParameters(params);
-    },
+    }
 
-    CLASS_NAME: "SuperMap.GetFeaturesByBufferService"
-});
+    CLASS_NAME = "SuperMap.GetFeaturesByBufferService"
+}
 
-module.exports = SuperMap.GetFeaturesByBufferService;
+SuperMap.GetFeaturesByBufferService = GetFeaturesByBufferService;

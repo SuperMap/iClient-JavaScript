@@ -1,19 +1,11 @@
-﻿/*
- * Class: NetworkAnalyst3DService
- * 3D网络分析服务类
- * 用法：
- *      L.supermap.networkAnalyst3DService(url)
- *      .sinksFacilityAnalyst(params,function(result){
- *           //doSomething
- *      })
- */
-var L = require("leaflet");
-var ServiceBase = require('./ServiceBase');
-var FacilityAnalystSinks3DService = require('../../common/iServer/FacilityAnalystSinks3DService');
-var FacilityAnalystSources3DService = require('../../common/iServer/FacilityAnalystSources3DService');
-var FacilityAnalystTraceup3DService = require('../../common/iServer/FacilityAnalystTraceup3DService');
-var FacilityAnalystTracedown3DService = require('../../common/iServer/FacilityAnalystTracedown3DService');
-var FacilityAnalystUpstream3DService = require('../../common/iServer/FacilityAnalystUpstream3DService');
+﻿import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {ServiceBase} from './ServiceBase';
+import FacilityAnalystSinks3DService from '../../common/iServer/FacilityAnalystSinks3DService';
+import FacilityAnalystSources3DService from '../../common/iServer/FacilityAnalystSources3DService';
+import FacilityAnalystTraceup3DService from '../../common/iServer/FacilityAnalystTraceup3DService';
+import FacilityAnalystTracedown3DService from '../../common/iServer/FacilityAnalystTracedown3DService';
+import FacilityAnalystUpstream3DService from '../../common/iServer/FacilityAnalystUpstream3DService';
 
 /**
  * @class L.supermap.NetworkAnalyst3DService
@@ -30,7 +22,7 @@ var FacilityAnalystUpstream3DService = require('../../common/iServer/FacilityAna
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象
  */
-var NetworkAnalyst3DService = ServiceBase.extend({
+export var NetworkAnalyst3DService = ServiceBase.extend({
 
     /**
      * @function L.supermap.NetworkAnalyst3DService.prototype.initialize
@@ -146,8 +138,8 @@ var NetworkAnalyst3DService = ServiceBase.extend({
     }
 });
 
-L.supermap.networkAnalyst3DService = function (url, options) {
+export var networkAnalyst3DService = function (url, options) {
     return new NetworkAnalyst3DService(url, options);
 };
 
-module.exports = NetworkAnalyst3DService;
+L.supermap.networkAnalyst3DService = networkAnalyst3DService;

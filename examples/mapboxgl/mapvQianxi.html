@@ -218,7 +218,7 @@
             });
             geojsonDataSet = new mapv.DataSet(data);
 
-            new mapvlayer(map, geojsonDataSet, geojsonOptions);
+            new mapboxgl.supermap.MapvLayer(map, geojsonDataSet, geojsonOptions);
 
             var textDataSet = new mapv.DataSet(textData);
 
@@ -232,7 +232,7 @@
                 shadowBlur: 10
             }
 
-            new mapvlayer(map, textDataSet, textOptions);
+            new mapboxgl.supermap.MapvLayer(map, textDataSet, textOptions);
 
             var lineDataSet = new mapv.DataSet(lineData);
 
@@ -245,7 +245,7 @@
                 draw: 'simple'
             }
 
-            new mapvlayer(map, lineDataSet, lineOptions);
+            new mapboxgl.supermap.MapvLayer(map, lineDataSet, lineOptions);
 
             var pointOptions = {
                 fillStyle: 'rgba(254,175,3,0.7)',
@@ -259,7 +259,7 @@
 
             var pointDataSet = new mapv.DataSet(pointData);
 
-            new mapvlayer(map, pointDataSet, pointOptions);
+            new mapboxgl.supermap.MapvLayer(map, pointDataSet, pointOptions);
 
 
             var timeDataSet = new mapv.DataSet(timeData);
@@ -282,7 +282,7 @@
                 draw: 'simple'
             }
 
-            new mapvlayer(map, timeDataSet, timeOptions);
+            new mapboxgl.supermap.MapvLayer(map, timeDataSet, timeOptions);
 
         });
 

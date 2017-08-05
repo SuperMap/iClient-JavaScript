@@ -1,3 +1,7 @@
+
+import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {GraphThemeLayer} from './theme/GraphThemeLayer';
 /**
  * Class: RankSymbolThemeLayer
  * 符号专题图图层。
@@ -11,11 +15,7 @@
  * Inherits from:
  *  - <GraphThemeLayer>
  */
-var L = require("leaflet");
-var SuperMap = require('../../common/SuperMap');
-var GraphThemeLayer = require('./theme/GraphThemeLayer');
-
-var RankSymbolThemeLayer = GraphThemeLayer.extend({
+export var RankSymbolThemeLayer = GraphThemeLayer.extend({
     /**
      * symbolSetting:各类型图表的 symbolSetting 对象可设属性请参考图表模型类的注释中对 symbolSetting 对象可设属性的描述。
      *  所有图表类型的 symbolSetting 对象通常都具有以下 5 个基础可设属性：
@@ -63,8 +63,8 @@ var RankSymbolThemeLayer = GraphThemeLayer.extend({
 
 });
 
-L.supermap.rankSymbolThemeLayer = function (name, symbolType, options) {
+export var rankSymbolThemeLayer = function (name, symbolType, options) {
     return new RankSymbolThemeLayer(name, symbolType, options);
 };
 
-module.exports = RankSymbolThemeLayer;
+L.supermap.rankSymbolThemeLayer = rankSymbolThemeLayer;

@@ -1,12 +1,13 @@
 /**
  *矢量瓦片PBF(MVT)表述出图
  */
-var L = require("leaflet");
-var Pbf = require('pbf');
-var VectorTileSpec = require('vector-tile');
-var SuperMap = require('../../../common/SuperMap');
+import L from "leaflet";
+import Pbf from 'pbf';
+import VectorTileSpec from 'vector-tile';
+import SuperMap from '../../../common/SuperMap';
+import {VectorFeatureType} from './VectorFeatureType';
 
-var VectorTilePBF = L.Class.extend({
+export var VectorTilePBF = L.Class.extend({
 
     initialize: function (url) {
         this.url = url;
@@ -46,13 +47,13 @@ var VectorTilePBF = L.Class.extend({
                 feat.properties = {attributes: L.Util.extend({}, feat.properties), id: feat.id};
                 switch (feat.type) {
                     case 1:
-                        feat.type = L.supermap.VectorFeatureType.POINT;
+                        feat.type = VectorFeatureType.POINT;
                         break;
                     case 2:
-                        feat.type = L.supermap.VectorFeatureType.LINE;
+                        feat.type = VectorFeatureType.LINE;
                         break;
                     case 3:
-                        feat.type = L.supermap.VectorFeatureType.REGION;
+                        feat.type = VectorFeatureType.REGION;
                         break;
                     default:
                         break;
@@ -69,9 +70,3 @@ var VectorTilePBF = L.Class.extend({
     }
 
 });
-
-L.supermap.vectorTilePBF = function (url) {
-    return new VectorTilePBF(url);
-};
-
-module.exports = VectorTilePBF;

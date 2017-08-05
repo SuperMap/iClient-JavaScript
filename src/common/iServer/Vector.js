@@ -1,21 +1,22 @@
-﻿/**
+﻿import SuperMap from '../SuperMap';
+import UGCSubLayer from './UGCSubLayer';
+import ServerStyle from './ServerStyle';
+
+/**
  * Class: SuperMap.Vector
  * UGC 矢量图层类。
  *
  * Inherits from:
  *  - <SuperMap.UGCSubLayer>
  */
-require('./UGCSubLayer');
-var SuperMap = require('../SuperMap');
-var ServerStyle = require('./ServerStyle');
 
-SuperMap.Vector = SuperMap.Class(SuperMap.UGCSubLayer, {
+export default  class Vector extends UGCSubLayer {
 
     /**
      * APIProperty: style
      * {SuperMap.ServerStyle} 矢量图层的风格。
      */
-    style: null,
+    style = null;
 
     /**
      * Constructor: SuperMap.Vector
@@ -27,19 +28,19 @@ SuperMap.Vector = SuperMap.Class(SuperMap.UGCSubLayer, {
      * Allowed options properties:
      * style - {SuperMap.ServerStyle} 矢量图层的风格。
      */
-    initialize: function (options) {
+    constructor(options) {
         options = options || {};
-        SuperMap.UGCSubLayer.prototype.initialize.apply(this, [options]);
-    },
+        super(options);
+    }
 
     /**
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.UGCSubLayer.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         SuperMap.Util.reset(this);
-    },
+    }
 
     /**
      * Method: fromJson
@@ -47,27 +48,29 @@ SuperMap.Vector = SuperMap.Class(SuperMap.UGCSubLayer, {
      * Parameters:
      * jsonObject - {Object} 要转换的 JSON 对象。
      */
-    fromJson: function (jsonObject) {
-        SuperMap.UGCSubLayer.prototype.fromJson.apply(this, [jsonObject]);
+    fromJson(jsonObject) {
+        super.fromJson(jsonObject);
         var sty = this.style;
         if (sty) {
             this.style = new ServerStyle(sty);
         }
-    },
+    }
 
     /**
      * APIMethod: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */
-    toServerJSONObject: function () {
-        var jsonObject = SuperMap.UGCSubLayer.prototype.toServerJSONObject.apply(this, arguments);
+    toServerJSONObject() {
+        var jsonObject = SuperMap.toServerJSONObject();
         if (jsonObject.style) {
             if (jsonObject.style.toServerJSONObject) {
                 jsonObject.style = jsonObject.style.toServerJSONObject();
             }
         }
         return jsonObject;
-    },
-    CLASS_NAME: "SuperMap.Vector"
-});
-module.exports = SuperMap.Vector;
+    }
+
+    CLASS_NAME = "SuperMap.Vector"
+}
+
+SuperMap.Vector = Vector;

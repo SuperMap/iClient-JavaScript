@@ -1,13 +1,11 @@
-require("whatwg-fetch");
-var fetchJsonp = require('fetch-jsonp');
-var SuperMap = require('../SuperMap');
+import fetch from 'whatwg-fetch-importable'
+import fetchJsonp from 'fetch-jsonp';
+import SuperMap from '../SuperMap';
 
-SuperMap.Support = {
+export var Support = SuperMap.Support = {
     cors: ((window.XMLHttpRequest && 'withCredentials' in new window.XMLHttpRequest()))
 };
-
-SuperMap.FetchRequest = {
-
+export var FetchRequest = SuperMap.FetchRequest = {
     commit: function (method, url, params, options) {
         method = method ? method.toUpperCase() : method;
         switch (method) {
@@ -155,7 +153,4 @@ SuperMap.FetchRequest = {
     _isMVTRequest: function (url) {
         return (url.indexOf('.mvt') > -1 || url.indexOf('.pbf') > -1);
     }
-
-
 };
-module.exports = SuperMap.FetchRequest;

@@ -2,14 +2,13 @@
  * iServer 矢量瓦片json表述出图
  */
 
-require("../../core/Base");
-require("./VectorFeatureType");
-require("./VectorTileFormat");
-var L = require("leaflet");
-var Util = require("../../core/Util");
-var SuperMap = require('../../../common/SuperMap');
+import "../../core/Base";
+import {VectorFeatureType} from "./VectorFeatureType";
+import L from "leaflet";
+import * as Util from "../../core/Util";
+import SuperMap from '../../../common/SuperMap';
 
-var VectorTileJSON = L.Class.extend({
+export var VectorTileJSON = L.Class.extend({
     initialize: function (url) {
         this.url = url;
     },
@@ -65,14 +64,14 @@ var VectorTileJSON = L.Class.extend({
 
         if (type === 'Point') {
             newFeature = (tags && tags.texts) ?
-                scope._createFeature(id, L.supermap.VectorFeatureType.TEXT, [coords], tags) :
-                scope._createFeature(id, L.supermap.VectorFeatureType.POINT, [coords], tags);
+                scope._createFeature(id, VectorFeatureType.TEXT, [coords], tags) :
+                scope._createFeature(id, VectorFeatureType.POINT, [coords], tags);
         }
         else if (type === 'MultiPoint') {
-            newFeature = scope._createFeature(id, L.supermap.VectorFeatureType.POINT, coords, tags);
+            newFeature = scope._createFeature(id, VectorFeatureType.POINT, coords, tags);
         }
         else if (type === 'LineString') {
-            newFeature = scope._createFeature(id, L.supermap.VectorFeatureType.LINE, [coords], tags);
+            newFeature = scope._createFeature(id, VectorFeatureType.LINE, [coords], tags);
         }
         else if (type === 'MultiLineString' || type === 'Polygon') {
             rings = [];
@@ -82,8 +81,8 @@ var VectorTileJSON = L.Class.extend({
                 rings.push(projectedRing);
             }
             var featureType = (type === 'Polygon') ?
-                L.supermap.VectorFeatureType.REGION :
-                L.supermap.VectorFeatureType.LINE;
+                VectorFeatureType.REGION :
+                VectorFeatureType.LINE;
             newFeature = scope._createFeature(id, featureType, rings, tags);
         }
         else if (type === 'MultiPolygon') {
@@ -95,7 +94,7 @@ var VectorTileJSON = L.Class.extend({
                     rings.push(projectedRing);
                 }
             }
-            newFeature = scope._createFeature(id, L.supermap.VectorFeatureType.REGION, rings, tags);
+            newFeature = scope._createFeature(id, VectorFeatureType.REGION, rings, tags);
         } else {
             throw new Error('不合法的GeoJSON对象');
         }
@@ -139,9 +138,3 @@ var VectorTileJSON = L.Class.extend({
     }
 
 });
-
-L.supermap.vectorTileJSON = function (url) {
-    return new VectorTileJSON(url);
-};
-
-module.exports = VectorTileJSON;

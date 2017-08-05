@@ -1,36 +1,38 @@
-var SuperMap = require('../SuperMap');
-SuperMap.GetGridCellInfosParameters = SuperMap.Class({
-    /**
-     * @class SuperMap.GetGridCellInfosParameters
-     * @constructs SuperMap.GetGridCellInfosParameters
-     * @classdesc
-     * 数据服务栅格查询参数类。。
-     * @api
-     */
+import SuperMap from '../SuperMap';
+
+/**
+ * @class SuperMap.GetGridCellInfosParameters
+ * @constructs SuperMap.GetGridCellInfosParameters
+ * @classdesc
+ * 数据服务栅格查询参数类。。
+ * @api
+ */
+export default  class GetGridCellInfosParameters {
+
 
     /**
      * APIProperty: datasetName
      * {String} 数据集名称。
      */
-    datasetName: null,
+    datasetName = null;
 
     /**
      * APIProperty: dataSourceName
      * {String} 数据源名称。
      */
-    dataSourceName: null,
+    dataSourceName = null;
 
     /**
      * APIProperty: X
      * {Number} 要查询的地理位置X轴
      */
-    X: null,
+    X = null;
 
     /**
      * APIProperty: X
      * {Number} 要查询的地理位置Y轴
      */
-    Y: null,
+    Y = null;
 
     /**
      * @method SuperMap.GetGridCellInfosParameters.initialize
@@ -42,25 +44,28 @@ SuperMap.GetGridCellInfosParameters = SuperMap.Class({
      * X - {Integer} 要查询的地理位置X轴。</br>
      * Y - {Integer} 要查询的地理位置Y轴。</br>
      */
-    initialize: function (options) {
+    constructor(options) {
         if (!options) {
             return;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.datasetName = null;
         me.dataSourceName = null;
         me.X = null;
         me.Y = null;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.GetGridCellInfosParameters"
-});
-module.exports = SuperMap.GetGridCellInfosParameters;
+
+    CLASS_NAME = "SuperMap.GetGridCellInfosParameters"
+}
+
+SuperMap.GetGridCellInfosParameters = GetGridCellInfosParameters;

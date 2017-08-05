@@ -1,7 +1,7 @@
-require('../../core/Base');
-var L = require("leaflet");
+import '../../core/Base';
+import L from "leaflet";
 
-var Graphic = L.Class.extend({
+export var Graphic = L.Class.extend({
 
     initialize: function (options) {
         options = options || {};
@@ -26,8 +26,7 @@ var Graphic = L.Class.extend({
     }
 
 });
-
-L.supermap.graphic = function (options) {
+export var graphic = function (options) {
     return new Graphic(options);
 };
-module.exports = Graphic;
+L.supermap.graphic = graphic;

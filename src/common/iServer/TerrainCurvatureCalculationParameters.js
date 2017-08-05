@@ -1,12 +1,14 @@
-var SuperMap = require('../SuperMap');
-SuperMap.TerrainCurvatureCalculationParameters = SuperMap.Class({
-    /**
-     * @class SuperMap.TerrainCurvatureCalculationParameters
-     * @constructs SuperMap.TerrainCurvatureCalculationParameters
-     * @classdesc
-     * 地形曲率计算参数类。
-     * @api
-     */
+import SuperMap from '../SuperMap';
+
+/**
+ * @class SuperMap.TerrainCurvatureCalculationParameters
+ * @constructs SuperMap.TerrainCurvatureCalculationParameters
+ * @classdesc
+ * 地形曲率计算参数类。
+ * @api
+ */
+export default  class TerrainCurvatureCalculationParameters {
+
 
     /**
      * APIProperty: dataset
@@ -15,8 +17,7 @@ SuperMap.TerrainCurvatureCalculationParameters = SuperMap.Class({
      *
      * 注：地形曲率计算必须为栅格数据集。
      */
-    dataset: null,
-
+    dataset = null;
     /**
      * APIProperty: zFactor
      * {Number} 指定的高程缩放系数。默认值为 1.0，表示不缩放。
@@ -24,31 +25,30 @@ SuperMap.TerrainCurvatureCalculationParameters = SuperMap.Class({
      * 通常有 X，Y，Z 都参加的计算中，需要将高程值乘以一个高程缩放系数，使得三者单位一致。
      * 例如，X、Y 方向上的单位是米，而 Z 方向的单位是英尺，由于 1 英尺等于 0.3048 米，则需要指定缩放系数为 0.3048。
      */
-    zFactor: 1.0,
+    zFactor = 1.0;
 
     /**
      * APIProperty: averageCurvatureName
      * {String} 结果数据集：平均曲率数据集的名称，必设字段。
      */
-    averageCurvatureName: null,
-
+    averageCurvatureName = null;
     /**
      * APIProperty: profileCurvatureName
      * {String} 结果数据集：剖面曲率数据集的名称。
      */
-    profileCurvatureName: "",
+    profileCurvatureName = "";
 
     /**
      * APIProperty: planCurvatureName
      * {String} 结果数据集：平面曲率数据集的名称。
      */
-    planCurvatureName: "",
+    planCurvatureName = "";
 
     /**
      * Property: deleteExistResultDataset
      * {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
      */
-    deleteExistResultDataset: false,
+    deleteExistResultDataset = false;
 
     /**
      * @method SuperMap.TerrainCurvatureCalculationParameters.initialize
@@ -61,18 +61,19 @@ SuperMap.TerrainCurvatureCalculationParameters = SuperMap.Class({
      * planCurvatureName - {String} 结果数据集：平面曲率数据集的名称。</br>
      * deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
      */
-    initialize: function (options) {
+    constructor(options) {
         if (!options) {
             return;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.dataset = null;
         me.zFactor = 1.0;
@@ -80,17 +81,17 @@ SuperMap.TerrainCurvatureCalculationParameters = SuperMap.Class({
         me.profileCurvatureName = null;
         me.planCurvatureName = null;
         me.deleteExistResultDataset = true;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.TerrainCurvatureCalculationParameters"
-});
-
-SuperMap.TerrainCurvatureCalculationParameters.toObject = function (derrainCurvatureCalculationParameters, tempObj) {
-    for (var name in derrainCurvatureCalculationParameters) {
-        if (name !== "dataset") {
-            tempObj[name] = derrainCurvatureCalculationParameters[name];
+    static toObject(derrainCurvatureCalculationParameters, tempObj) {
+        for (var name in derrainCurvatureCalculationParameters) {
+            if (name !== "dataset") {
+                tempObj[name] = derrainCurvatureCalculationParameters[name];
+            }
         }
     }
-};
 
-module.exports = SuperMap.TerrainCurvatureCalculationParameters;
+    CLASS_NAME = "SuperMap.TerrainCurvatureCalculationParameters"
+}
+
+SuperMap.TerrainCurvatureCalculationParameters = TerrainCurvatureCalculationParameters;

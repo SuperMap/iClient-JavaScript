@@ -1,20 +1,19 @@
-require('./Symbolizer');
-require('./SymbolizerPolyBase');
-var L = require("leaflet");
-L.PointSymbolizer = L.CircleMarker.extend({
-    includes: L.Symbolizer.prototype,
+import {Symbolizer} from './Symbolizer';
+import L from "leaflet";
+export var PointSymbolizer = L.CircleMarker.extend({
+    includes: Symbolizer.prototype,
 
     statics: {
         iconCache: {}
     },
 
     initialize: function (feature, pxPerExtent) {
-        L.Symbolizer.prototype.initialize.call(this, feature);
+        Symbolizer.prototype.initialize.call(this, feature);
         this._makeFeatureParts(feature, pxPerExtent);
     },
 
     render: function (renderer, style) {
-        L.Symbolizer.prototype.render.call(this, renderer, style);
+        Symbolizer.prototype.render.call(this, renderer, style);
         this._radius = style.radius || L.CircleMarker.prototype.options.radius;
         this._updatePath();
     },
@@ -38,7 +37,7 @@ L.PointSymbolizer = L.CircleMarker.extend({
     updateStyle: function (renderer, style) {
         this._radius = style.radius || this._radius;
         this._updateBounds();
-        return L.Symbolizer.prototype.updateStyle.call(this, renderer, style);
+        return Symbolizer.prototype.updateStyle.call(this, renderer, style);
     },
 
     _updateBounds: function () {
@@ -66,10 +65,10 @@ L.PointSymbolizer = L.CircleMarker.extend({
             return null;
         }
         var url = this.options.iconUrl,
-            img = L.PointSymbolizer.iconCache[url];
+            img = PointSymbolizer.iconCache[url];
         if (!img) {
             var iconSize = this.options.iconSize || [50, 50];
-            img = L.PointSymbolizer.iconCache[url] = this._createIcon(url, iconSize);
+            img = PointSymbolizer.iconCache[url] = this._createIcon(url, iconSize);
         }
         return img;
     },
@@ -124,5 +123,3 @@ L.PointSymbolizer = L.CircleMarker.extend({
         }
     }
 });
-
-module.exports = L.PointSymbolizer;

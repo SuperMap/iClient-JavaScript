@@ -1,17 +1,9 @@
-/*
- * Class:ChartService
- * 海图服务
- * 用法：
- *      L.supermap.chartService(url)
- *      .queryChart(param,function(result){
- *          //doSomething
- *      })
- */
-var L = require("leaflet");
-var SuperMap = require('../../common/SuperMap');
-var ServiceBase = require('./ServiceBase');
-var ChartQueryService = require('../../common/iServer/ChartQueryService');
-var ChartFeatureInfoSpecsService = require('../../common/iServer/ChartFeatureInfoSpecsService');
+import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {ServiceBase} from './ServiceBase';
+import ChartQueryService from '../../common/iServer/ChartQueryService';
+import ChartFeatureInfoSpecsService from '../../common/iServer/ChartFeatureInfoSpecsService';
+import CommontypesConversion from '../core/CommontypesConversion';
 /**
  * @class L.supermap.ChartService
  * @description 海图服务。
@@ -92,7 +84,7 @@ var ChartService = ServiceBase.extend({
         }
 
         if (params.bounds) {
-            params.bounds = L.supermap.CommontypesConversion.toSuperMapBounds(params.bounds);
+            params.bounds = CommontypesConversion.toSuperMapBounds(params.bounds);
         }
     },
     _processFormat: function (resultFormat) {
@@ -100,8 +92,8 @@ var ChartService = ServiceBase.extend({
     }
 });
 
-L.supermap.chartService = function (url, options) {
+export var chartService = function (url, options) {
     return new ChartService(url, options);
 };
 
-module.exports = ChartService;
+L.supermap.chartService = chartService;

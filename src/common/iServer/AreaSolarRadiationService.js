@@ -1,26 +1,25 @@
-
-require('./SpatialAnalystBase');
-require('./AreaSolarRadiationParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.AreaSolarRadiationService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-    /**
-     * @class SuperMap.AreaSolarRadiationService
-     * @constructs SuperMap.AreaSolarRadiationService
-     * @classdesc
-     * 地区太阳辐射服务类。
-     * @extends {SuperMap.SpatialAnalystBase}
-     * @api
-     * @example 例如：
-     * (start code)
-     * var myAreaSolarRadiationService = new SuperMap.AreaSolarRadiationService(url);
-     * myAreaSolarRadiationService.on({
+import SuperMap from '../SuperMap';
+import SpatialAnalystBase from './SpatialAnalystBase';
+import AreaSolarRadiationParameters from './AreaSolarRadiationParameters';
+/**
+ * @class SuperMap.AreaSolarRadiationService
+ * @constructs SuperMap.AreaSolarRadiationService
+ * @classdesc
+ * 地区太阳辐射服务类。
+ * @extends {SuperMap.SpatialAnalystBase}
+ * @api
+ * @example 例如：
+ * (start code)
+ * var myAreaSolarRadiationService = new SuperMap.AreaSolarRadiationService(url);
+ * myAreaSolarRadiationService.on({
      *     "processCompleted": processCompleted,
      *     "processFailed": processFailed
      *     }
-     * );
-     * (end)
-     *
-     */
+ * );
+ * (end)
+ *
+ */
+export default  class AreaSolarRadiationService extends SpatialAnalystBase {
 
     /**
      *
@@ -32,24 +31,24 @@ SuperMap.AreaSolarRadiationService = SuperMap.Class(SuperMap.SpatialAnalystBase,
      * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
-    /*
+    /**
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @method SuperMap.AreaSolarRadiationService.processAsync
      * @description  负责将客户端的查询参数传递到服务端。
      * @param parameter - {AreaSolarRadiationService}
      */
-    processAsync: function (parameter) {
+    processAsync(parameter) {
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);
@@ -81,8 +80,9 @@ SuperMap.AreaSolarRadiationService = SuperMap.Class(SuperMap.SpatialAnalystBase,
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
-    CLASS_NAME: "SuperMap.AreaSolarRadiationService"
-});
-module.exports = SuperMap.AreaSolarRadiationService;
+    CLASS_NAME = "SuperMap.AreaSolarRadiationService";
+}
+SuperMap.AreaSolarRadiationService = AreaSolarRadiationService;
+

@@ -1,9 +1,5 @@
-﻿/*
- * Class: SuperMap.FacilityAnalystUpstream3DParameters
- * 上游关键设施查找资源参数类
- */
-require('./FacilityAnalyst3DParameters');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
 
 /**
  * @class SuperMap.FacilityAnalystUpstream3DParameters
@@ -17,7 +13,7 @@ var SuperMap = require('../SuperMap');
  *                                              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。<br>
  *        sourceNodeIDs - {Array(Number)} 指定的设施点ID数组
  */
-SuperMap.FacilityAnalystUpstream3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
+export default  class FacilityAnalystUpstream3DParameters extends FacilityAnalyst3DParameters {
 
     /**
      * APIProperty: sourceNodeIDs
@@ -25,33 +21,29 @@ SuperMap.FacilityAnalystUpstream3DParameters = SuperMap.Class(SuperMap.FacilityA
      * @description 指定的设施点ID数组
      * @api
      */
-    sourceNodeIDs: null,
+    sourceNodeIDs = null;
 
     /*
      * Constructor: SuperMap.FacilityAnalystUpstream3DParameters
      * 上游关键设施查找资源参数类构造函数。
      *
      */
-    initialize: function (options) {
-        var me = this;
-        if (!options) {
-            return;
-        }
+    constructor(options) {
+        super(options);
+        options = options || {};
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        var me = this;
-        me.sourceNodeIDs = null;
-        me.edgeID = null;
-        me.nodeID = null;
-        me.isUncertainDirectionValid = null;
-    },
+    destroy() {
+        super.destroy();
+        this.sourceNodeIDs = null;
+    }
 
-    CLASS_NAME: "SuperMap.FacilityAnalystUpstream3DParameters"
-});
+    CLASS_NAME = "SuperMap.FacilityAnalystUpstream3DParameters"
+}
 
-module.exports = SuperMap.FacilityAnalystUpstream3DParameters;
+SuperMap.FacilityAnalystUpstream3DParameters = FacilityAnalystUpstream3DParameters;

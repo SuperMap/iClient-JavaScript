@@ -1,8 +1,4 @@
-/*
- * Class: SuperMap.SetLayersInfoParameters
- * 设置图层信息参数类
- */
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
 
 /**
  * @class SuperMap.SetLayersInfoParameters
@@ -12,46 +8,48 @@ var SuperMap = require('../SuperMap');
  *         resourceID -{String} 资源ID。<br>
  *        layerInfo -{String} 要更新的图层信息。
  */
-SuperMap.SetLayersInfoParameters = SuperMap.Class({
+export default  class SetLayersInfoParameters {
 
     /**
      * APIProperty: isTempLayers
      * @member SuperMap.SetLayersInfoParameters.prototype.isTempLayers -{Boolean}
      * @description 是否是临时图层。
      */
-    isTempLayers: null,
+    isTempLayers = null;
     /**
      * APIProperty: resourceID
      * @member SuperMap.SetLayersInfoParameters.prototype.resourceID -{String}
      * @description 资源ID，
      */
-    resourceID: null,
+    resourceID = null;
 
     /**
      * APIProperty: layerInfo
      * @member SuperMap.SetLayersInfoParameters.prototype.layerInfo -{String}
      * @description 要更新的图层信息。
      */
-    layerInfo: null,
+    layerInfo = null;
 
-    initialize: function (options) {
+    constructor(options) {
         options = options || {};
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /**
      * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.isTempLayers = null;
         me.resourceID = null;
         me.layerInfo = null;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.SetLayersInfoParameters"
-});
 
-module.exports = SuperMap.SetLayersInfoParameters;
+    CLASS_NAME = "SuperMap.SetLayersInfoParameters"
+}
+
+SuperMap.SetLayersInfoParameters = SetLayersInfoParameters;

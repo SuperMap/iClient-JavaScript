@@ -1,11 +1,12 @@
+
+import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {ServiceBase} from './ServiceBase';
+import DataFlow from '../../common/iServer/DataFlowService';
 /**
  *@class DataFlowService
  */
-var L = require("leaflet");
-var ServiceBase = require('./ServiceBase');
-var SuperMap = require('../../common/SuperMap');
-var DataFlow = require('../../common/iServer/DataFlowService');
-var DataFlowService = ServiceBase.extend({
+export var DataFlowService = ServiceBase.extend({
     options: {
         geometry: null,
         prjCoordSys: null,
@@ -74,8 +75,8 @@ var DataFlowService = ServiceBase.extend({
     },
 });
 
-L.supermap.dataFlowService = function (url, options) {
+export var dataFlowService = function (url, options) {
     return new DataFlowService(url, options);
 };
 
-module.exports = DataFlowService;
+L.supermap.dataFlowService = dataFlowService;

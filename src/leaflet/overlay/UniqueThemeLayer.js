@@ -8,11 +8,11 @@
  *  - <GeoFeatureThemeLayer>
  */
 
-var L = require("leaflet");
-var SuperMap = require('../../common/SuperMap');
-var GeoFeatureThemeLayer = require('./theme/GeoFeatureThemeLayer');
+import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
 
-var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
+export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
 
 
     initialize: function (name, options) {
@@ -73,8 +73,8 @@ var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
     }
 });
 
-L.supermap.uniqueThemeLayer = function (name, options) {
+export var uniqueThemeLayer = function (name, options) {
     return new UniqueThemeLayer(name, options);
 };
 
-module.exports = UniqueThemeLayer;
+L.supermap.uniqueThemeLayer = uniqueThemeLayer;

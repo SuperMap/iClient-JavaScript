@@ -1,15 +1,14 @@
+import SuperMap from '../SuperMap';
+import '../security/SecurityManager';
+import iPortalServicesQueryParam from './OnlineQueryDatasParameter';
+import iPortalServiceBase from './OnlineData';
+import {FetchRequest} from '../util/FetchRequest';
+
 /**
  * Class: SuperMap.Online
  * 对接SuperMap Online 所有基础服务
  */
-
-
-require('./OnlineQueryDatasParameter');
-var SuperMap = require('../SuperMap');
-var Request = require('../util/FetchRequest');
-var SecurityManager = require('../security/SecurityManager');
-var OnlineData = require('./OnlineData');
-SuperMap.Online = SuperMap.Class({
+export default class Online {
 
     /**
      *** TODO 目前并没有对接Online的所有操作，需要补充完整
@@ -22,35 +21,35 @@ SuperMap.Online = SuperMap.Class({
      *      service.updateDataInfo();
      * })
      */
-    initialize: function () {
+    constructor() {
         this.rootUrl = "http://www.supermapol.com";
         this.webUrl = this.rootUrl + "/web";
 
         var mContentUrl = this.webUrl + "/mycontent";
         this.mDatasUrl = mContentUrl + "/datas";
-    },
+    }
 
-    load: function () {
-        return Request.get(this.rootUrl).then(function (response) {
+    load() {
+        return FetchRequest.get(this.rootUrl).then(function (response) {
             return response;
         });
-    },
+    }
 
 
-    login: function () {
-        SecurityManager.loginOnline(this.rootUrl, true);
-    },
+    login() {
+        SuperMap.SecurityManager.loginOnline(this.rootUrl, true);
+    }
 
     /**
      * 查询Online “我的内容”下“我的数据”服务(需要登录状态获取),并返回可操作的服务对象
      * @param parameter   <OnlineQueryDatasParameter>
      */
-    queryDatas: function (parameter) {
+    queryDatas(parameter) {
         var me = this, url = me.mDatasUrl;
         if (parameter) {
             parameter = parameter.toJSON();
         }
-        return Request.get(url, parameter).then(function (json) {
+        return FetchRequest.get(url, parameter).then(function (json) {
             if (!json || !json.content || json.content.length < 1) {
                 return;
             }
@@ -62,9 +61,10 @@ SuperMap.Online = SuperMap.Class({
             }
             return services;
         });
-    },
+    }
 
 
-    CLASS_NAME: "SuperMap.Online"
-});
-module.exports = SuperMap.Online;
+    CLASS_NAME = "SuperMap.Online"
+}
+
+SuperMap.Online = Online;

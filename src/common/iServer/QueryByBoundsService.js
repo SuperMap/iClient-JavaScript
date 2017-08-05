@@ -1,13 +1,7 @@
-﻿/*
- * Class: SuperMap.QueryByBoundsService
- * Bounds 查询服务类。
- *
- * Inherits from:
- *  - <SuperMap.QueryService>
- */
-require('./QueryService');
-require('./QueryByBoundsParameters');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import QueryService from './QueryService';
+import QueryByBoundsParameters from './QueryByBoundsParameters';
+
 /**
  * @class SuperMap.QueryByBoundsService
  * @description Bounds 查询服务类。
@@ -27,7 +21,7 @@ var SuperMap = require('../SuperMap');
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-SuperMap.QueryByBoundsService = SuperMap.Class(SuperMap.QueryService, {
+export default  class QueryByBoundsService extends QueryService {
 
     /**
      * @function SuperMap.QueryByBoundsService.initialize
@@ -36,16 +30,18 @@ SuperMap.QueryByBoundsService = SuperMap.Class(SuperMap.QueryService, {
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.QueryService.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
+
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.QueryService.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
+
 
     /*
      * Method: getJsonParameters
@@ -58,7 +54,7 @@ SuperMap.QueryByBoundsService = SuperMap.Class(SuperMap.QueryService, {
      * Returns:
      * {Object} 转化后的 JSON 字符串。
      */
-    getJsonParameters: function (params) {
+    getJsonParameters(params) {
         var me = this,
             jsonParameters = "",
             qp = null,
@@ -70,9 +66,10 @@ SuperMap.QueryByBoundsService = SuperMap.Class(SuperMap.QueryService, {
             bounds.right + "},'leftBottom':{'y':" + bounds.bottom + ",'x':" + bounds.left + "}}";
         jsonParameters = "{" + jsonParameters + "}";
         return jsonParameters;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.QueryByBoundsService"
-});
 
-module.exports = SuperMap.QueryByBoundsService;
+    CLASS_NAME = "SuperMap.QueryByBoundsService"
+}
+
+SuperMap.QueryByBoundsService = QueryByBoundsService;

@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var map, themeLayer, options,
-            url = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
+        url = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
     var mapService = new ol.supermap.MapService(url);
     mapService.getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
@@ -80,6 +80,7 @@
             datasetNames: ["BaseMap_R"]
         });
 
+        var extent = [114.59, 37.76, 119.51, 42.31];
         new ol.supermap.ThemeService(url).getThemeInfo(themeParameters, function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
@@ -88,7 +89,10 @@
                         url: url,
                         noWrap: true,
                         cacheEnabled: false,
-                        transparent: true,
+                        tileGrid: new ol.tilegrid.TileGrid({
+                            extent: extent,
+                            resolutions: options.tileGrid.getResolutions()
+                        }),
                         layersID: result.newResourceID,
                         opaque: true
                     })

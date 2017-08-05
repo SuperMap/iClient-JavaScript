@@ -1,64 +1,70 @@
-require('./iPortalServicesQueryParam');
-require('./iPortalMapsQueryParam');
-var SuperMap = require('../SuperMap');
-var Request = require('../util/FetchRequest');
-var iPortalService = require('./iPortalService');
-var iPortalMap = require('./iPortalMap');
+import SuperMap from '../SuperMap';
+import IPortalServicesQueryParam from './iPortalServicesQueryParam';
+import IPortalMapsQueryParam from './iPortalMapsQueryParam';
+import {FetchRequest} from '../util/FetchRequest';
+import IPortalService from './iPortalService';
+import IPortalMap from './iPortalMap';
+import IPortalServiceBase from './iPortalServiceBase';
+
 /**
  * @class SuperMap.iPortal
  * @classdesc iPortal
  * @extends {SuperMap.iPortalServiceBase}
  *
  */
-SuperMap.iPortal = SuperMap.Class(SuperMap.iPortalServiceBase, {
+export default  class IPortal extends IPortalServiceBase {
     /**
      * @method SuperMap.iPortal.initialize
      * @param iportalUrl
      */
-    initialize: function (iportalUrl) {
+    constructor(iportalUrl) {
+        super(iportalUrl);
         this.iportalUrl = iportalUrl;
-    },
+    }
+
     /**
      * @method SuperMap.iPortal.load
      * @param iportalUrl
      */
-    load: function () {
-        return SuperMap.FetchRequest.get(this.iportalUrl + '/web');
-    },
+    load() {
+        return FetchRequest.get(this.iportalUrl + '/web');
+    }
 
     /**
      * @method SuperMap.iPortal.queryServices
      * @param queryParams
      */
-    queryServices: function (queryParams) {
+    queryServices(queryParams) {
         var serviceUrl = this.iportalUrl + "/web/services";
         return this.request("GET", serviceUrl, queryParams).then(function (result) {
             var services = [];
             result.content.map(function (serviceJsonObj) {
-                services.push(new iPortalService(serviceUrl, serviceJsonObj));
+                services.push(new IPortalService(serviceUrl, serviceJsonObj));
             });
             return services;
         });
-    },
+    }
+
     /**
      * @method SuperMap.iPortal.deleteServices
      * @param ids
      */
-    deleteServices: function (ids) {
+    deleteServices(ids) {
         var serviceUrl = this.iportalUrl + "/web/services";
         return this.request("DELETE", serviceUrl, {ids: ids});
-    },
+    }
+
     /**
      * @method SuperMap.iPortal.queryMaps
      * @param queryParams
      */
-    queryMaps: function (queryParams) {
+    queryMaps(queryParams) {
         var mapsUrl = this.iportalUrl + "/web/maps";
         return this.request("GET", mapsUrl, queryParams).then(function (result) {
             var mapRetult = {};
             var maps = [];
             result.content.map(function (mapJsonObj) {
-                maps.push(new iPortalMap(mapsUrl + "/" + mapJsonObj.id, mapJsonObj));
+                maps.push(new IPortalMap(mapsUrl + "/" + mapJsonObj.id, mapJsonObj));
             });
             mapRetult.content = maps;
             mapRetult.currentPage = result.currentPage;
@@ -68,7 +74,7 @@ SuperMap.iPortal = SuperMap.Class(SuperMap.iPortalServiceBase, {
             return mapRetult;
         });
     }
-});
+}
 
-module.exports = SuperMap.iPortal;
+SuperMap.iPortal = IPortal;
 

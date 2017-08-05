@@ -9,22 +9,23 @@
  * Inherits from:
  *  - <ThemeLayer>
  */
-var SuperMap = require('../../../common/SuperMap');
-require('../../../common/REST');
-require('../../../common/iServer/Bar');
-require('../../../common/iServer/Bar3D');
-require('../../../common/iServer/Circle');
-require('../../../common/iServer/Pie');
-require('../../../common/iServer/Point');
-require('../../../common/iServer/Line');
-require('../../../common/iServer/Ring');
-require('../../../common/iServer/ThemeVector');
-require('../../../common/style/ThemeStyle');
-var ThemeFeature = require('./ThemeFeature');
-var ThemeLayer = require('./ThemeLayer');
-var L = require("leaflet");
+import SuperMap from '../../../common/SuperMap';
+import '../../../common/REST';
+import '../../../common/iServer/Bar';
+import '../../../common/iServer/Bar3D';
+import '../../../common/iServer/Circle';
+import '../../../common/iServer/Pie';
+import '../../../common/iServer/Point';
+import '../../../common/iServer/Line';
+import '../../../common/iServer/Ring';
+import '../../../common/iServer/ThemeVector';
+import '../../../common/style/ThemeStyle';
+import {ThemeFeature} from './ThemeFeature';
+import {ThemeLayer} from './ThemeLayer';
+import L from "leaflet";
+import CommontypesConversion from '../../core/CommontypesConversion';
 
-var GraphThemeLayer = ThemeLayer.extend({
+export var GraphThemeLayer = ThemeLayer.extend({
 
     options: {
         //是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。
@@ -108,7 +109,7 @@ var GraphThemeLayer = ThemeLayer.extend({
         //清除当前所有可视元素
         me.renderer.clearAll();
         var features = me.features;
-        bounds = L.supermap.CommontypesConversion.toSuperMapBounds(bounds);
+        bounds = CommontypesConversion.toSuperMapBounds(bounds);
         for (var i = 0, len = features.length; i < len; i++) {
             var feature = features[i];
             // 要素范围判断
@@ -465,7 +466,7 @@ var GraphThemeLayer = ThemeLayer.extend({
         return feature;
     }
 });
-L.supermap.graphThemeLayer = function (name, chartsType, options) {
+export var graphThemeLayer = function (name, chartsType, options) {
     return new GraphThemeLayer(name, chartsType, options);
 };
-module.exports = GraphThemeLayer;
+L.supermap.graphThemeLayer= graphThemeLayer;

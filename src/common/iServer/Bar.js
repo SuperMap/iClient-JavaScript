@@ -1,3 +1,6 @@
+import SuperMap from '../SuperMap';
+import Graph from './Graph';
+
 /**
  * Class: SuperMap.Feature.Theme.Bar
  * 柱状图 。
@@ -97,10 +100,7 @@
  * Inherits:
  *  - <SuperMap.Feature.Theme.Graph>
  */
-var SuperMap = require('../SuperMap');
-require('./Graph');
-
-SuperMap.Feature.Theme.Bar = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
+export default  class Bar extends Graph {
 
     /**
      * Constructor: SuperMap.Feature.Theme.Bar
@@ -116,109 +116,111 @@ SuperMap.Feature.Theme.Bar = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
      * Returns:
      * {SuperMap.Feature.Theme.Bar} 返回一个柱状图表对象。
      */
-    initialize: function(data, layer, fields, setting, lonlat) {
-        SuperMap.Feature.Theme.Graph.prototype.initialize.apply(this, arguments);
-    },
+    constructor(data, layer, fields, setting, lonlat) {
+        super(data, layer, fields, setting, lonlat);
+    }
 
     /**
      * APIMethod: destroy
      * 销毁对象。调用 destroy 后此对象所以属性置为 null。
      */
-    destroy: function() {
-        SuperMap.Feature.Theme.Graph.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * Method: assembleShapes
      * 图表图形装配函数
      */
-    assembleShapes: function(){
+    assembleShapes() {
         //默认渐变颜色数组
-        var deafaultColors = [["#00FF00","#00CD00"],["#00CCFF","#5E87A2"],["#00FF66","#669985"],["#CCFF00","#94A25E"],["#FF9900","#A2945E"]];
+        var deafaultColors = [["#00FF00", "#00CD00"], ["#00CCFF", "#5E87A2"], ["#00FF66", "#669985"], ["#CCFF00", "#94A25E"], ["#FF9900", "#A2945E"]];
 
         //默认阴影
-        var deafaultShawdow = {showShadow: true ,
-            shadowBlur : 8,
-            shadowColor : "rgba(100,100,100,0.8)",
-            shadowOffsetX: 2 ,
-            shadowOffsetY : 2};
+        var deafaultShawdow = {
+            showShadow: true,
+            shadowBlur: 8,
+            shadowColor: "rgba(100,100,100,0.8)",
+            shadowOffsetX: 2,
+            shadowOffsetY: 2
+        };
 
         // 图表配置对象
         var sets = this.setting;
 
-        if(typeof (sets.barLinearGradient) !== "undifined") sets.barLinearGradient = deafaultColors;
+        if (typeof (sets.barLinearGradient) !== "undifined") sets.barLinearGradient = deafaultColors;
 
         // 默认数据视图框
-        if(!sets.dataViewBoxParameter){
-            if(typeof(sets.useAxis) === "undefined" || sets.useAxis){
+        if (!sets.dataViewBoxParameter) {
+            if (typeof(sets.useAxis) === "undefined" || sets.useAxis) {
                 sets.dataViewBoxParameter = [45, 15, 15, 15];
             }
-            else{
+            else {
                 sets.dataViewBoxParameter = [5, 5, 5, 5];
             }
         }
 
         // 重要步骤：初始化参数
-        if(!this.initBaseParameter()) return;
+        if (!this.initBaseParameter()) return;
         // 值域
         var codomain = this.DVBCodomain;
         // 重要步骤：定义图表 Bar 数据视图框中单位值的含义
-        this.DVBUnitValue = (codomain[1]-codomain[0])/this.DVBHeight;
+        this.DVBUnitValue = (codomain[1] - codomain[0]) / this.DVBHeight;
 
         // 数据视图域
         var dvb = this.dataViewBox;
         // 用户数据值
         var fv = this.dataValues;
-        if(fv.length < 1) return;       // 没有数据
+        if (fv.length < 1) return;       // 没有数据
 
         // 数据溢出值域范围处理
-        for(var i = 0, fvLen = fv.length; i < fvLen; i++){
-            if(fv[i] < codomain[0] || fv[i] > codomain[1]) return;
+        for (var i = 0, fvLen = fv.length; i < fvLen; i++) {
+            if (fv[i] < codomain[0] || fv[i] > codomain[1]) return;
         }
 
         // 获取 x 轴上的图形信息
         var xShapeInfo = this.calculateXShapeInfo();
-        if(!xShapeInfo) return;
+        if (!xShapeInfo) return;
         // 每个柱条 x 位置
         var xsLoc = xShapeInfo.xPositions;
         // 柱条宽度
         var xsWdith = xShapeInfo.width;
 
         // 背景框，默认启用
-        if(typeof(sets.useBackground) === "undefined" || sets.useBackground){
+        if (typeof(sets.useBackground) === "undefined" || sets.useBackground) {
             // 将背景框图形添加到模型的 shapes 数组，注意添加顺序，后添加的图形在先添加的图形之上。
             this.shapes.push(SuperMap.Feature.ShapeFactory.Background(this.shapeFactory, this.chartBox, sets));
         }
 
         // 坐标轴, 默认启用
-        if(typeof(sets.useAxis) === "undefined" || sets.useAxis){
+        if (typeof(sets.useAxis) === "undefined" || sets.useAxis) {
             // 添加坐标轴图形数组
             this.shapes = this.shapes.concat(SuperMap.Feature.ShapeFactory.GraphAxis(this.shapeFactory, dvb, sets, xShapeInfo));
         }
 
-        for(var i = 0; i < fv.length; i++){
+        for (var i = 0; i < fv.length; i++) {
             // 计算柱条 top 边的 y 轴坐标值
-            var yPx = dvb[1] - (fv[i] - codomain[0])/this.DVBUnitValue;
+            var yPx = dvb[1] - (fv[i] - codomain[0]) / this.DVBUnitValue;
 
             // 柱条节点数组
             var poiLists = [
-                [xsLoc[i] - xsWdith/2, dvb[1]-1],
-                [xsLoc[i] + xsWdith/2, dvb[1]-1],
-                [xsLoc[i] + xsWdith/2, yPx],
-                [xsLoc[i] - xsWdith/2, yPx]
+                [xsLoc[i] - xsWdith / 2, dvb[1] - 1],
+                [xsLoc[i] + xsWdith / 2, dvb[1] - 1],
+                [xsLoc[i] + xsWdith / 2, yPx],
+                [xsLoc[i] - xsWdith / 2, yPx]
             ];
 
             // 柱条参数对象（一个面参数对象）
             var barParams = new SuperMap.Feature.ShapeParameters.Polygon(poiLists);
 
             // 柱条 阴影 style
-            if(typeof(sets.showShadow) === "undefined" || sets.showShadow){
-                if(sets.barShadowStyle){
+            if (typeof(sets.showShadow) === "undefined" || sets.showShadow) {
+                if (sets.barShadowStyle) {
                     var sss = sets.barShadowStyle;
-                    if(sss.shadowBlur) deafaultShawdow.shadowBlur = sss.shadowBlur;
-                    if(sss.shadowColor) deafaultShawdow.shadowColor = sss.shadowColor;
-                    if(sss.shadowOffsetX) deafaultShawdow.shadowOffsetX = sss.shadowOffsetX;
-                    if(sss.shadowOffsetY) deafaultShawdow.shadowOffsetY = sss.shadowOffsetY;
+                    if (sss.shadowBlur) deafaultShawdow.shadowBlur = sss.shadowBlur;
+                    if (sss.shadowColor) deafaultShawdow.shadowColor = sss.shadowColor;
+                    if (sss.shadowOffsetX) deafaultShawdow.shadowOffsetX = sss.shadowOffsetX;
+                    if (sss.shadowOffsetY) deafaultShawdow.shadowOffsetY = sss.shadowOffsetY;
                 }
                 barParams.style = {};
                 SuperMap.Util.copyAttributesWithClip(barParams.style, deafaultShawdow);
@@ -232,10 +234,10 @@ SuperMap.Feature.Theme.Bar = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
             };
 
             // 柱条 hover click
-            if(typeof(sets.barHoverAble) !== "undefined"){
+            if (typeof(sets.barHoverAble) !== "undefined") {
                 barParams.hoverable = sets.barHoverAble;
             }
-            if(typeof(sets.barClickAble) !== "undefined"){
+            if (typeof(sets.barClickAble) !== "undefined") {
                 barParams.clickable = sets.barClickAble;
             }
 
@@ -246,7 +248,7 @@ SuperMap.Feature.Theme.Bar = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
         // 重要步骤：将图形转为由相对坐标表示的图形，以便在地图平移缩放过程中快速重绘图形
         // （统计专题图模块从结构上要求使用相对坐标，assembleShapes() 函数必须在图形装配完成后调用 shapesConvertToRelativeCoordinate() 函数）
         this.shapesConvertToRelativeCoordinate();
-    },
+    }
 
     /**
      * Method: calculateXShapeInfo
@@ -268,12 +270,12 @@ SuperMap.Feature.Theme.Bar = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
      * width - {Number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
      *
      */
-    calculateXShapeInfo: function(){
+    calculateXShapeInfo() {
         var dvb = this.dataViewBox;     // 数据视图框
         var sets = this.setting;     // 图表配置对象
         var fvc = this.dataValues.length;      // 数组值个数
 
-        if(fvc < 1) return null;
+        if (fvc < 1) return null;
 
         var xBlank;        // x 轴空白间隔参数
         var xShapePositions = [];         // x 轴上图形的位置
@@ -281,25 +283,27 @@ SuperMap.Feature.Theme.Bar = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
         var dvbWidth = this.DVBWidth;            // 数据视图框宽度
 
         //  x 轴空白间隔参数处理
-        if(sets.xShapeBlank && sets.xShapeBlank.length && sets.xShapeBlank.length == 3){
+        if (sets.xShapeBlank && sets.xShapeBlank.length && sets.xShapeBlank.length == 3) {
             xBlank = sets.xShapeBlank;
-            var xsLen =  dvbWidth - (xBlank[0] + xBlank[2] + (fvc - 1)*xBlank[1]);
-            if(xsLen <= fvc){ return null; }
-            xShapeWidth = xsLen/fvc
+            var xsLen = dvbWidth - (xBlank[0] + xBlank[2] + (fvc - 1) * xBlank[1]);
+            if (xsLen <= fvc) {
+                return null;
+            }
+            xShapeWidth = xsLen / fvc
         }
-        else{
+        else {
             // 默认使用等距离空白间隔，空白间隔为图形宽度
-            xShapeWidth = dvbWidth/(2*fvc + 1);
+            xShapeWidth = dvbWidth / (2 * fvc + 1);
             xBlank = [xShapeWidth, xShapeWidth, xShapeWidth];
         }
 
         // 图形 x 轴上的位置计算
         var xOffset = 0
-        for(var i = 0; i < fvc; i++){
-            if(i == 0){
-                xOffset = xBlank[0] + xShapeWidth/2;
+        for (var i = 0; i < fvc; i++) {
+            if (i == 0) {
+                xOffset = xBlank[0] + xShapeWidth / 2;
             }
-            else{
+            else {
                 xOffset += (xShapeWidth + xBlank[1]);
             }
 
@@ -310,21 +314,21 @@ SuperMap.Feature.Theme.Bar = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
             "xPositions": xShapePositions,
             "width": xShapeWidth
         };
-    },
+    }
 
     /**
      * Method: resetLinearGradient
      * 图表的相对坐标存在的时候，重新计算渐变的颜色
      * PS: (目前用于二维柱状图 所以子类实现此方法)
      */
-    resetLinearGradient: function(){
-        if(this.RelativeCoordinate){
+    resetLinearGradient() {
+        if (this.RelativeCoordinate) {
             var shpelength = this.shapes.length;
             var barLinearGradient = this.setting.barLinearGradient;
             var index = -1;
-            for(var i = 0; i < shpelength; i++){
+            for (var i = 0; i < shpelength; i++) {
                 var shape = this.shapes[i];
-                if(shape.CLASS_NAME === "SuperMap.LevelRenderer.Shape.SmicPolygon"){
+                if (shape.CLASS_NAME === "SuperMap.LevelRenderer.Shape.SmicPolygon") {
                     var style = shape.style;
                     //计算出当前的绝对 x y
                     var x1 = this.location[0] + style.pointList[0][0];
@@ -333,21 +337,23 @@ SuperMap.Feature.Theme.Bar = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
                     //渐变颜色
                     index++;
                     //以防定义的颜色数组不够用
-                    if(index >= barLinearGradient.length) index = index % barLinearGradient.length;
+                    if (index >= barLinearGradient.length) index = index % barLinearGradient.length;
                     var color1 = barLinearGradient[index][0];
                     var color2 = barLinearGradient[index][1];
 
                     //颜色
                     var zcolor = new SuperMap.LevelRenderer.Tool.Color();
                     var linearGradient = zcolor.getLinearGradient(x1, 0, x2, 0,
-                        [[0, color1],[1,color2]]);
+                        [[0, color1], [1, color2]]);
 
                     //赋值
                     shape.style.color = linearGradient;
                 }
             }
-        }},
+        }
+    }
 
-    CLASS_NAME: "SuperMap.Feature.Theme.Bar"
-});
-module.exports = SuperMap.Feature.Theme.Bar;
+    CLASS_NAME = "SuperMap.Feature.Theme.Bar"
+}
+
+SuperMap.Feature.Theme.Bar = Bar;

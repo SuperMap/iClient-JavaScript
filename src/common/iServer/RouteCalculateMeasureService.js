@@ -1,18 +1,18 @@
-require('./SpatialAnalystBase');
-require('./RouteCalculateMeasureParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.RouteCalculateMeasureService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-    /**
-     * @class SuperMap.RouteCalculateMeasureService
-     * @constructs SuperMap.RouteCalculateMeasureService
-     * @classdesc
-     * 该类负责将客户设置的计算指定点的M值参数传递给服务端，并接收服务端返回的
-     *      指定点的M值。通过该类支持的事件的监听函数参数获取
-     * @extends {SuperMap.SpatialAnalystBase}
-     * @api
-     * @example 实例化该类如下例所示：
-     * (start code)
-     * var parameters = new SuperMap.RouteCalculateMeasureParameters({
+import SuperMap from '../SuperMap';
+import SpatialAnalystBase from './SpatialAnalystBase';
+import RouteCalculateMeasureParameters from './RouteCalculateMeasureParameters';
+
+/**
+ * @class SuperMap.RouteCalculateMeasureService
+ * @constructs SuperMap.RouteCalculateMeasureService
+ * @classdesc
+ * 该类负责将客户设置的计算指定点的M值参数传递给服务端，并接收服务端返回的
+ *      指定点的M值。通过该类支持的事件的监听函数参数获取
+ * @extends {SuperMap.SpatialAnalystBase}
+ * @api
+ * @example 实例化该类如下例所示：
+ * (start code)
+ * var parameters = new SuperMap.RouteCalculateMeasureParameters({
      *     "sourceRoute":{
      *         "type":"LINEM",
      *        "parts":[4],
@@ -46,8 +46,8 @@ SuperMap.RouteCalculateMeasureService = SuperMap.Class(SuperMap.SpatialAnalystBa
      *     },
      *     "isIgnoreGap":false
      * });
-     *
-     * var routeCalculateMeasureService = new SuperMap.RouteCalculateMeasureService(spatialAnalystURL, {
+ *
+ * var routeCalculateMeasureService = new SuperMap.RouteCalculateMeasureService(spatialAnalystURL, {
      *     eventListeners:{
      *         processCompleted:calculateCompleted,
      *         processFailed:calculateFailded
@@ -61,7 +61,7 @@ SuperMap.RouteCalculateMeasureService = SuperMap.Class(SuperMap.SpatialAnalystBa
      * (end)
      *
      */
-
+export default  class RouteCalculateMeasureService extends SpatialAnalystBase {
 
     /**
      * @method SuperMap.RouteCalculateMeasureService.initialize
@@ -70,24 +70,24 @@ SuperMap.RouteCalculateMeasureService = SuperMap.Class(SuperMap.SpatialAnalystBa
      * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /*
      * APIMethod: destroy
      * 释放资源,将引用的资源属性置空。
      */
-    destroy: function () {
-        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @method SuperMap.RouteCalculateMeasureService.processAsync
      * @description 负责将客户端的基于路由对象计算指定点M值操作的参数传递到服务端。
      * @param params - {SuperMap.RouteCalculateMeasureParameters}
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -102,7 +102,7 @@ SuperMap.RouteCalculateMeasureService = SuperMap.Class(SuperMap.SpatialAnalystBa
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /**
      * @method SuperMap.RouteCalculateMeasureService.getJsonParameters
@@ -110,7 +110,7 @@ SuperMap.RouteCalculateMeasureService = SuperMap.Class(SuperMap.SpatialAnalystBa
      * @param params - {SuperMap.RouteCalculateMeasureParameters}
      * @return {Object} 转化后的JSON字符串。
      */
-    getJsonParameters: function (params) {
+    getJsonParameters(params) {
         var jsonParameters, jsonStr = "geometry/calculatemeasure", me = this, end;
         end = me.url.substr(me.url.length - 1, 1);
         if (me.isInTheSameDomain) {
@@ -122,9 +122,9 @@ SuperMap.RouteCalculateMeasureService = SuperMap.Class(SuperMap.SpatialAnalystBa
         me.url += "?returnContent=true";
         jsonParameters = SuperMap.Util.toJSON(params);
         return jsonParameters;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.RouteCalculateMeasureService"
-});
+    CLASS_NAME = "SuperMap.RouteCalculateMeasureService"
+}
 
-module.exports = SuperMap.RouteCalculateMeasureService;
+SuperMap.RouteCalculateMeasureService = RouteCalculateMeasureService;

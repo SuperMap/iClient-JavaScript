@@ -1,9 +1,8 @@
-
-require('./ServerInfo');
-require('./TokenServiceParameter');
-require('./KeyServiceParameter');
-var Request = require('../util/FetchRequest');
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import ServerInfo from './ServerInfo';
+import TokenServiceParameter from './TokenServiceParameter';
+import KeyServiceParameter from './KeyServiceParameter';
+import {FetchRequest} from '../util/FetchRequest';
 
 /**
  * @class SuperMap.SecurityManager
@@ -34,7 +33,7 @@ SuperMap.SecurityManager = {
         if (!serverInfo) {
             return;
         }
-        return Request.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
+        return FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
             return response.text();
         });
     },
@@ -111,7 +110,7 @@ SuperMap.SecurityManager = {
 
     //Online登录验证
     loginOnline: function (callbackLocation, newTab) {
-        var loginUrl = SuperMap.SecurityManager.SSO + "/login?service=" + callbackLocation;
+        var loginUrl = SecurityManager.SSO + "/login?service=" + callbackLocation;
         this._open(loginUrl, newTab);
     },
 
@@ -189,4 +188,3 @@ SuperMap.SecurityManager = {
 };
 SuperMap.SecurityManager.SSO = "https://sso.supermap.com";
 SuperMap.SecurityManager.ONLINE = "http://www.supermapol.com";
-module.exports = SuperMap.SecurityManager;

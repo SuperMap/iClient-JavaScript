@@ -1,1 +1,1 @@
-module.exports = window.SuperMap;
+export default window.SuperMap;

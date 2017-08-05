@@ -1,33 +1,35 @@
-﻿require('./ServiceBase');
-require('./DatasetOverlayAnalystParameters');
-require('./GeometryOverlayAnalystParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.OverlayAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-    /**
-     * @class SuperMap.OverlayAnalystService
-     * @constructs SuperMap.OverlayAnalystService
-     * @classdesc
-     * 叠加分析服务类
-     * 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
-     * 叠加分析结果通过该类支持的事件的监听函数参数获取
-     * @extends {SuperMap.ServiceBase}
-     * @api
-     * @example 例如：
-     * (start code)
-     * var myOverlayAnalystService = new SuperMap.OverlayAnalystService(url, {
+﻿import SuperMap from '../SuperMap';
+import SpatialAnalystBase from './SpatialAnalystBase';
+import DatasetOverlayAnalystParameters from './DatasetOverlayAnalystParameters';
+import GeometryOverlayAnalystParameters from './GeometryOverlayAnalystParameters';
+
+/**
+ * @class SuperMap.OverlayAnalystService
+ * @constructs SuperMap.OverlayAnalystService
+ * @classdesc
+ * 叠加分析服务类
+ * 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
+ * 叠加分析结果通过该类支持的事件的监听函数参数获取
+ * @extends {SuperMap.CommonServiceBase}
+ * @api
+ * @example 例如：
+ * (start code)
+ * var myOverlayAnalystService = new SuperMap.OverlayAnalystService(url, {
      *     eventListeners: {
      *	       "processCompleted": OverlayCompleted,
      *		   "processFailed": OverlayFailed
      *		   }
      * });
-     * (end)
-     */
+ * (end)
+ */
+export default  class OverlayAnalystService extends SpatialAnalystBase {
+
 
     /**
      * Property: mode
      * {String} 叠加分析类型
      */
-    mode: null,
+    mode = null;
 
     /**
      * @method SuperMap.OverlayAnalystService.initialize
@@ -37,29 +39,29 @@ SuperMap.OverlayAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
      * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+    constructor(url, options) {
+        super(url, options);
         var me = this;
         if (options) {
             SuperMap.Util.extend(me, options);
         }
-    },
+    }
 
     /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         this.mode = null;
-    },
+    }
 
     /**
      * @method SuperMap.OverlayAnalystService.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param parameter - {SuperMap.OverlayAnalystParameters}
      */
-    processAsync: function (parameter) {
+    processAsync(parameter) {
         var parameterObject = {};
         var me = this;
 
@@ -70,15 +72,15 @@ SuperMap.OverlayAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
             me.url += "/";
         }
 
-        if (parameter instanceof SuperMap.DatasetOverlayAnalystParameters) {
+        if (parameter instanceof DatasetOverlayAnalystParameters) {
             me.mode = "datasets";
             me.url += 'datasets/' + parameter.sourceDataset + '/overlay';
-            SuperMap.DatasetOverlayAnalystParameters.toObject(parameter, parameterObject);
+            DatasetOverlayAnalystParameters.toObject(parameter, parameterObject);
         }
-        else if (parameter instanceof SuperMap.GeometryOverlayAnalystParameters) {
+        else if (parameter instanceof GeometryOverlayAnalystParameters) {
             me.mode = "geometry";
             me.url += 'geometry/overlay';
-            SuperMap.GeometryOverlayAnalystParameters.toObject(parameter, parameterObject);
+            GeometryOverlayAnalystParameters.toObject(parameter, parameterObject);
         }
 
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
@@ -96,9 +98,9 @@ SuperMap.OverlayAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
-    CLASS_NAME: "SuperMap.OverlayAnalystService"
-});
+    CLASS_NAME = "SuperMap.OverlayAnalystService"
+}
 
-module.exports = SuperMap.OverlayAnalystService;
+SuperMap.OverlayAnalystService = OverlayAnalystService;

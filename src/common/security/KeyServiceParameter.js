@@ -1,8 +1,6 @@
-/*
- * key申请参数
- */
-require('../REST');
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import {ClientType} from '../REST';
+
 /**
  * @class SuperMap.KeyServiceParameter
  * @constructs SuperMap.KeyServiceParameter
@@ -11,31 +9,34 @@ var SuperMap = require('../SuperMap');
 
  * @api
  */
-SuperMap.KeyServiceParameter = SuperMap.Class({
-    name: null,
-    serviceIds: null,
-    clientType: SuperMap.ClientType.SERVER,
-    limitation: null,
+export default class KeyServiceParameter {
+    name = null;
+    serviceIds = null;
+    clientType = ClientType.SERVER;
+    limitation = null;
+
     /**
      * @method SuperMap.KeyServiceParameter.initialize
      * @param options - {Object} 参数。
      */
-    initialize: function (options) {
+    constructor(options) {
         SuperMap.Util.extend(this, options);
-    },
+    }
+
     /**
      * @method SuperMap.KeyServiceParameter.toJSON
      * @return {string} 参数的JSON字符串
      */
-    toJSON: function () {
+    toJSON() {
         return {
             name: this.name,
             serviceIds: this.serviceIds,
             clientType: this.clientType,
             limitation: this.limitation
         }
-    },
-    CLASS_NAME: "SuperMap.KeyServiceParameter"
-});
+    }
 
-module.exports = SuperMap.KeyServiceParameter;
+    CLASS_NAME = "SuperMap.KeyServiceParameter"
+}
+
+SuperMap.KeyServiceParameter = KeyServiceParameter;

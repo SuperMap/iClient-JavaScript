@@ -1,3 +1,6 @@
+import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
 /**
  * Class: SuperMap.Layer.Range
  * 范围分段专题图。
@@ -8,11 +11,7 @@
  * Inherits from:
  *  - <GeoFeatureThemeLayer>
  */
-var L = require("leaflet");
-var SuperMap = require('../../common/SuperMap');
-var GeoFeatureThemeLayer = require('./theme/GeoFeatureThemeLayer');
-
-var RangeThemeLayer = GeoFeatureThemeLayer.extend({
+export var RangeThemeLayer = GeoFeatureThemeLayer.extend({
 
 
     initialize: function (name, options) {
@@ -74,8 +73,8 @@ var RangeThemeLayer = GeoFeatureThemeLayer.extend({
     }
 
 });
-L.supermap.rangeThemeLayer = function (name, options) {
+export var rangeThemeLayer = function (name, options) {
     return new RangeThemeLayer(name, options);
 };
 
-module.exports = RangeThemeLayer;
+L.supermap.rangeThemeLayer = rangeThemeLayer;

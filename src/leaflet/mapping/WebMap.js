@@ -1,10 +1,9 @@
-require('../core/Base');
-var L = require("leaflet");
-var Util = require('../core/Util');
-var Request = require('../../common/util/FetchRequest');
-var SuperMap = require('../../common/SuperMap');
-var CartoCSSToLeaflet = require('../overlay/carto/CartoCSSToLeaflet');
-var WebMap = L.LayerGroup.extend({
+import '../core/Base';
+import L from "leaflet";
+import {FetchRequest as Request} from '../../common/util/FetchRequest';
+import SuperMap from '../../common/SuperMap';
+import {CartoCSSToLeaflet} from '../overlay/carto/CartoCSSToLeaflet' ;
+export var WebMap = L.LayerGroup.extend({
     options: {
         map: 'map',
         server: 'http://www.supermapol.com',
@@ -61,7 +60,7 @@ var WebMap = L.LayerGroup.extend({
         return this.addLayer(layer)
     },
     createLayersByJson: function (layersJson) {
-        if (!SuperMap.Util.isArray(layersJson)) {
+        if (!L.Util.isArray(layersJson)) {
             return;
         }
         if (layersJson.length === 0) {
@@ -265,7 +264,7 @@ var WebMap = L.LayerGroup.extend({
             pointToLayer: function (geojson, latlng) {
                 var m = new L.Marker(latlng);
                 m.setStyle = function (style) {
-                    if(style){
+                    if (style) {
                         m.setIcon(style);
                     }
                 }
@@ -299,7 +298,7 @@ var WebMap = L.LayerGroup.extend({
                     pointToLayer: function (geojson, latlng) {
                         var m = new L.Marker(latlng);
                         m.setStyle = function (style) {
-                            if(style){
+                            if (style) {
                                 m.setIcon(style);
                             }
                         }
@@ -336,7 +335,7 @@ var WebMap = L.LayerGroup.extend({
                             pointToLayer: function (geojson, latlng) {
                                 var m = new L.Marker(latlng);
                                 m.setStyle = function (style) {
-                                    if(style){
+                                    if (style) {
                                         m.setIcon(style);
                                     }
                                 }
@@ -375,6 +374,7 @@ var WebMap = L.LayerGroup.extend({
     }
 });
 
-L.supermap.webmap = function (id, options) {
+export var webMap = function (id, options) {
     return new WebMap(id, options);
 };
+L.supermap.webmap = webMap

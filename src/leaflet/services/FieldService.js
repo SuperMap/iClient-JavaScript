@@ -1,7 +1,11 @@
+import L from "leaflet";
+import {ServiceBase} from './ServiceBase';
+import GetFieldsService from '../../common/iServer/GetFieldsService';
+import FieldStatisticService from '../../common/iServer/FieldStatisticService';
 /**
  * @class  L.supermap.FieldService
  * @constructs L.supermap.FieldService
- * @extends {ServiceBase}
+ * @extends ServiceBase
  * @classdesc
  * 字段服务类
  * @example  用法：
@@ -10,13 +14,7 @@
  * });
  * @api
  */
-
-var L = require("leaflet");
-var ServiceBase = require('./ServiceBase');
-var GetFieldsService = require('../../common/iServer/GetFieldsService');
-var FieldStatisticService = require('../../common/iServer/FieldStatisticService');
-
-var FieldService = ServiceBase.extend({
+export var  FieldService = ServiceBase.extend({
 
     options: {
         dataSourceName: null,
@@ -110,7 +108,7 @@ var FieldService = ServiceBase.extend({
         }
     }
 });
-L.supermap.fieldService = function (url, options) {
+export var fieldService = function (url, options) {
     return new FieldService(url, options);
 };
-module.exports = FieldService;
+L.supermap.fieldService = fieldService;

@@ -2,9 +2,9 @@
  * Constant: L.supermap.DefaultStyle
  * {Object} 这个style对应的是默认设置
  */
-require('../../core/Base');
-var L = require("leaflet");
-L.supermap.DefaultStyle = {
+import '../../core/Base';
+import L from "leaflet";
+export var DefaultStyle= L.supermap.DefaultStyle = {
     "TEXT": {
         fontSize: "14px",
         fontFamily: "Arial Unicode MS Regular,Microsoft YaHei",
@@ -47,4 +47,3 @@ L.supermap.DefaultStyle = {
         dashArray: [],
     }
 };
-module.exports = L.supermap.DefaultStyle;

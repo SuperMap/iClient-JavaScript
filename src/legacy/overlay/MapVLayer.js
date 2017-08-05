@@ -1,43 +1,40 @@
-/* COPYRIGHT 2017 SUPERMAP
- * 本程序只能在有效的授权许可下使用。
- * 未经许可，不得以任何手段擅自使用或传播。*/
+import SuperMap from '../SuperMap';
+import MapVRenderer from './mapv/MapVRenderer';
 
 /**
  * Class: SuperMap.Layer.MapVLayer
  * MapV图层。
  */
-var SuperMap = require('../SuperMap');
-var MapVRenderer = require("./mapv/MapVRenderer");
-SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
+export class MapVLayer extends SuperMap.Layer {
 
     /**
      * mapv dataset 对象
      */
-    dataSet: null,
+    dataSet = null;
 
     /**
      *mapv 绘图风格配置信息
      */
-    options: null,
+    options = null;
 
     /**
      * Proterty: supported
      * {Boolean} 当前浏览器是否支持canvas绘制，默认为false。
      * 决定了MapV图是否可用，内部判断使用。
      */
-    supported: false,
+    supported = false;
 
     /**
      * Proterty: canvas
      * {Canvas} MapV图主绘制面板。
      */
-    canvas: null,
+    canvas = null;
 
     /**
      * Proterty: canvas
      * {Canvas} MapV图主绘制对象。
      */
-    canvasContext: null,
+    canvasContext = null;
 
     /**
      * MapV支持webgl和普通canvas渲染.
@@ -48,10 +45,11 @@ SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
      *        dataSet: mapv 的dataSet对象
      *        options: mapv 绘图风格配置信息
      */
-    initialize: function (name, options) {
-        this.EVENT_TYPES = SuperMap.Layer.prototype.EVENT_TYPES;
-
-        SuperMap.Layer.prototype.initialize.apply(this, arguments);
+    constructor(name, options) {
+        super(name, options);
+        if (options) {
+            SuperMap.Util.extend(this, options);
+        }
         //MapV图要求使用canvas绘制，判断是否支持
         this.canvas = document.createElement("canvas");
         if (!this.canvas.getContext) {
@@ -63,17 +61,18 @@ SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
         this.canvas.style.top = 0 + "px";
         this.canvas.style.left = 0 + "px";
         this.div.appendChild(this.canvas);
-        var context = this.options.context || "2d";
+        var context = this.options && this.options.context || "2d";
         this.canvasContext = this.canvas.getContext(context);
         this.attribution = "© 2017 百度 MapV with <a target='_blank' href='http://iclient.supermapol.com' " +
             "style='color: #08c;text-decoration: none;'>SuperMap iClient</a>";
-    },
+    }
+
 
     /**
      * APIMethod: destroy
      * 销毁图层，释放资源。
      */
-    destroy: function () {
+    destroy() {
         this.dataSet = null;
         this.options = null;
         this.renderer = null;
@@ -82,33 +81,37 @@ SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
         this.canvasContext = null;
         this.maxWidth = null;
         this.maxHeight = null;
-        SuperMap.Layer.prototype.destroy.apply(this, arguments);
-    },
+        super.destroy();
+    }
+
 
     /**
      * 追加数据
      * @param dataSet {MapV.DataSet}
      * @param options {MapV options}
      */
-    addData: function (dataSet, options) {
+    addData(dataSet, options) {
         this.renderer && this.renderer.addData(dataSet, options);
-    },
+    }
+
 
     /**
      * 设置数据
      * @param dataSet {MapV.DataSet}
      * @param options {MapV options}
      */
-    setData: function (dataSet, options) {
+    setData(dataSet, options) {
         this.renderer && this.renderer.setData(dataSet, options);
-    },
+    }
 
-    getData: function () {
+
+    getData() {
         if (this.renderer) {
             this.dataSet = this.renderer.getData();
         }
         return this.dataSet;
-    },
+    }
+
 
     /**
      * 按照过滤条件移除数据
@@ -120,13 +123,15 @@ SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
      *         return false;
      *     }
      */
-    removeData: function (filter) {
+    removeData(filter) {
         this.renderer && this.renderer.removeData(filter);
-    },
+    }
 
-    clearData: function () {
+
+    clearData() {
         this.renderer.clearData();
-    },
+    }
+
 
     /**
      * Method: setMap
@@ -137,15 +142,16 @@ SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
      * Parameters:
      * map - {SuperMap.Map}需要绑定的map对象。
      */
-    setMap: function (map) {
-        SuperMap.Layer.prototype.setMap.apply(this, arguments);
+    setMap(map) {
+        super.setMap(map);
         this.renderer = new MapVRenderer(map, this, this.dataSet, this.options);
         if (!this.supported) {
             this.map.removeLayer(this);
         } else {
             this.redraw();
         }
-    },
+    }
+
 
     /**
      * Method: moveTo
@@ -157,8 +163,8 @@ SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
      * zoomChanged - {Boolean}
      * dragging - {Boolean}
      */
-    moveTo: function (bounds, zoomChanged, dragging) {
-        SuperMap.Layer.prototype.moveTo.apply(this, arguments);
+    moveTo(bounds, zoomChanged, dragging) {
+        super.moveTo(bounds, zoomChanged, dragging);
         if (!this.supported) {
             return;
         }
@@ -187,22 +193,23 @@ SuperMap.Layer.MapVLayer = SuperMap.Class(SuperMap.Layer, {
         if (zoomChanged) {
             this.renderer && this.renderer.render();
         }
-    },
+    }
+
 
     /**
      * 将经纬度转成底图的投影坐标
      * @param latLng
      */
-    transferToMapLatLng: function (latLng) {
+    transferToMapLatLng(latLng) {
         var source = "EPSG:4326", dest = "EPSG:4326";
         var unit = this.map.getUnits();
         if (["m", "meter"].indexOf(unit.toLowerCase()) > -1) {
             dest = "EPSG:3857";
         }
         return new SuperMap.LonLat(latLng.lon, latLng.lat).transform(source, dest);
-    },
+    }
 
-    CLASS_NAME: "SuperMap.Layer.MapVLayer"
-});
+    CLASS_NAME = "SuperMap.Layer.MapVLayer"
+}
 
-module.exports = SuperMap.Layer.MapVLayer;
+SuperMap.Layer.MapVLayer = MapVLayer;

@@ -1,17 +1,7 @@
-﻿/*
- * Class: SuperMap.FindLocationService
- * 选址分区分析服务类。
- * 选址分区分析是为了确定一个或多个待建设施的最佳或最优位置，使得设施可以用一种最经济有效的方式为需求方提供服务或者商品。
- * 选址分区不仅仅是一个选址过程，还要将需求点的需求分配到相应的新建设施的服务区中，因此称之为选址与分区。
- * 选址分区分析结果通过该类支持的事件的监听函数参数获取
- *
- * Inherits from:
- *  - <SuperMap.NetworkAnalystServiceBase>
- */
-require('./NetworkAnalystServiceBase');
-require('./FindLocationParameters');
-var SuperMap = require('../SuperMap');
-var GeoJSONFormat = require('../format/GeoJSON');
+﻿import SuperMap from '../SuperMap';
+import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
+import FindLocationParameters from './FindLocationParameters';
+import GeoJSON from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindLocationService
@@ -34,7 +24,7 @@ var GeoJSONFormat = require('../format/GeoJSON');
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-SuperMap.FindLocationService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
+export default class FindLocationService extends NetworkAnalystServiceBase {
 
     /**
      * @function SuperMap.FindLocationService.prototype.initialize
@@ -44,23 +34,23 @@ SuperMap.FindLocationService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @function SuperMap.FindLocationService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param params - {SuperMap.FindLocationParameters} 选址分区分析服务参数类
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -85,7 +75,7 @@ SuperMap.FindLocationService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /*
      * Method: getCentersJson
@@ -97,7 +87,7 @@ SuperMap.FindLocationService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase
      * Returns:
      * {Object} 转化后的JSON字符串。
      */
-    getCentersJson: function (params) {
+    getCentersJson(params) {
         var json = "[",
             len = params ? params.length : 0;
         for (var i = 0; i < len; i++) {
@@ -106,7 +96,7 @@ SuperMap.FindLocationService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase
         }
         json += "]";
         return json;
-    },
+    }
 
     /*
      * Method: toGeoJSONResult
@@ -115,11 +105,11 @@ SuperMap.FindLocationService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
-    toGeoJSONResult: function (result) {
+    toGeoJSONResult(result) {
         if (!result) {
             return null;
         }
-        var geoJSONFormat = new GeoJSONFormat();
+        var geoJSONFormat = new GeoJSON();
         if (result.demandResults) {
             result.demandResults = JSON.parse(geoJSONFormat.write(result.demandResults));
         }
@@ -128,9 +118,9 @@ SuperMap.FindLocationService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase
         }
 
         return result;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.FindLocationService"
-});
+    CLASS_NAME = "SuperMap.FindLocationService"
+}
 
-module.exports = SuperMap.FindLocationService;
+SuperMap.FindLocationService = FindLocationService;

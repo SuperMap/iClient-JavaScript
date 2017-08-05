@@ -5,11 +5,10 @@
  * 用法：
  *      L.superMap.imageMapLayer(url).addTo(map);
  */
-require('../core/Base');
-require('../../common/security/SecurityManager');
-var L = require("leaflet");
-var SuperMap = require("../../common/SuperMap");
-var ImageMapLayer = L.TileLayer.extend({
+import '../core/Base';
+import L from "leaflet";
+import SuperMap from "../../common/SuperMap" ;
+export var ImageMapLayer = L.TileLayer.extend({
 
     options: {
         //如果有layersID，则是在使用专题图
@@ -144,8 +143,8 @@ var ImageMapLayer = L.TileLayer.extend({
     }
 });
 
-L.supermap.imageMapLayer = function (url, options) {
+export var imageMapLayer = function (url, options) {
     return new ImageMapLayer(url, options);
 };
 
-module.exports = ImageMapLayer;
+L.supermap.imageMapLayer = imageMapLayer;

@@ -1,3 +1,6 @@
+import SuperMap from '../SuperMap';
+import RankSymbol from './RankSymbol';
+
 /**
  * Class: SuperMap.Feature.Theme.Circle
  * 圆
@@ -18,11 +21,7 @@
  * Inherits:
  *  - <SuperMap.Feature.Theme.RankSymbol>
  */
-
-var SuperMap = require('../SuperMap');
-require('./RankSymbol');
-
-SuperMap.Feature.Theme.Circle = SuperMap.Class(SuperMap.Feature.Theme.RankSymbol, {
+export default  class Circle extends RankSymbol {
 
     /**
      * Constructor: SuperMap.Feature.Theme.Circle
@@ -38,20 +37,20 @@ SuperMap.Feature.Theme.Circle = SuperMap.Class(SuperMap.Feature.Theme.RankSymbol
      * Returns:
      * {SuperMap.Feature.Theme.Circle} 返回一个圆图。
      */
-    initialize: function (data, layer, fields, setting, lonlat) {
-        SuperMap.Feature.Theme.RankSymbol.prototype.initialize.apply(this, arguments);
-    },
+    constructor(data, layer, fields, setting, lonlat) {
+        super(data, layer, fields, setting, lonlat);
+    }
 
     /**
      * APIMethod: destroy
      * 销毁此专题要素。调用 destroy 后此对象所以属性置为 null。
      */
-    destroy: function () {
-        SuperMap.Feature.Theme.Graph.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     //装配图形（扩展接口）
-    assembleShapes: function () {
+    assembleShapes() {
         //默认填充颜色
         var defaultFillColor = "#ff9277";
 
@@ -143,8 +142,9 @@ SuperMap.Feature.Theme.Circle = SuperMap.Class(SuperMap.Feature.Theme.RankSymbol
         // 重要步骤：将图形转为由相对坐标表示的图形，以便在地图平移缩放过程中快速重绘图形
         // （统计专题图模块从结构上要求使用相对坐标，assembleShapes() 函数必须在图形装配完成后调用 shapesConvertToRelativeCoordinate() 函数）
         this.shapesConvertToRelativeCoordinate();
-    },
+    }
 
-    CLASS_NAME: "SuperMap.Feature.Theme.Circle"
-});
-module.exports = SuperMap.Feature.Theme.Circle;
+    CLASS_NAME = "SuperMap.Feature.Theme.Circle"
+}
+
+SuperMap.Feature.Theme.Circle = Circle;

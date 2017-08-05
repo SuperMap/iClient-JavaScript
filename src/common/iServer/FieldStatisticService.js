@@ -1,14 +1,14 @@
-﻿require('../REST');
-require('./ServiceBase');
-require('./FieldStatisticsParameters');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import {StatisticMode} from '../REST';
+import CommonServiceBase from './CommonServiceBase';
+import FieldStatisticsParameters from './FieldStatisticsParameters';
 
 /**
  * @class SuperMap.FieldStatisticService
  * @constructs SuperMap.FieldStatisticService
  * @classdesc
  * 字段查询统计服务类。用来完成对指定数据集指定字段的查询统计分析，即求平均值，最大值等。
- * @extends {SuperMap.ServiceBase}
+ * @extends {SuperMap.CommonServiceBase}
  * @api
  * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param options - {Object} 参数。
@@ -34,31 +34,31 @@ var SuperMap = require('../SuperMap');
  */
 
 
-SuperMap.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
+export default  class FieldStatisticService extends CommonServiceBase {
 
     /**
      * @property {String} APIProperty: datasource
      * 数据集所在的数据源名称。
      */
-    datasource: null,
+    datasource = null;
 
     /**
      *@property {String}  APIProperty: dataset
      *  数据集名称。
      */
-    dataset: null,
+    dataset = null;
 
     /**
      * @property {String} APIProperty: field
      *  查询统计的目标字段名称。
      */
-    field: null,
+    field = null;
 
     /**
      * @property {StatisticMode} APIProperty: statisticMode
      *  字段查询统计的方法类型。
      */
-    statisticMode: null,
+    statisticMode = null;
 
     /**
      * @method SuperMap.FieldStatisticService.initialize
@@ -66,32 +66,34 @@ SuperMap.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
      * @param options - {Object} 参数。
      */
 
-    initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+    constructor(url, options) {
+        super(url, options);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
+
 
     /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         var me = this;
         me.datasource = null;
         me.dataset = null;
         me.field = null;
         me.statisticMode = null;
-    },
+    }
+
 
     /**
      * @description 执行服务，进行指定字段的查询统计。
      * @method APIMethod: processAsync
      *
      */
-    processAsync: function () {
+    processAsync() {
         var me = this,
             end = me.url.substr(me.url.length - 1, 1),
             fieldStatisticURL = "datasources/" + me.datasource + "/datasets/" + me.dataset + "/fields/" + me.field + "/" + me.statisticMode;
@@ -108,9 +110,10 @@ SuperMap.FieldStatisticService = SuperMap.Class(SuperMap.ServiceBase, {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
-    CLASS_NAME: "SuperMap.FieldStatisticService"
-});
 
-module.exports = SuperMap.FieldStatisticService;
+    CLASS_NAME = "SuperMap.FieldStatisticService"
+}
+
+SuperMap.FieldStatisticService = FieldStatisticService;

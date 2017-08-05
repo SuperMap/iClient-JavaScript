@@ -1,4 +1,8 @@
-﻿/**
+﻿import SuperMap from '../SuperMap';
+import ServerStyle from './ServerStyle';
+import LabelMatrixCell from './LabelMatrixCell';
+
+/**
  * Class: SuperMap.LabelSymbolCell
  * 符号类型的矩阵标签元素类。
  * 该类继承自 SuperMap.LabelMatrixCell类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
@@ -11,29 +15,26 @@
  * Inherits from:
  *  - <SuperMap.LabelMatrixCell>
  */
-require('./LabelMatrixCell');
-var SuperMap = require('../SuperMap');
-var ServerStyle = require('./ServerStyle');
-SuperMap.LabelSymbolCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
+export default  class LabelSymbolCell extends LabelMatrixCell {
 
     /**
      * APIProperty: style
      * {SuperMap.ServerStyle} 获取或设置符号样式—— SuperMap.ServerStyle 对象，包括符号大小（SuperMap.ServerStyle.markerSize）
      * 和符号旋转（SuperMap.ServerStyle.markerAngle）角度，其中用于设置符号 ID 的属性（SuperMap.ServerStyle.markerSymbolID）在此处不起作用。
      */
-    style: null,
+    style = null;
 
     /**
      * APIProperty: symbolIDField
      * {String} 获取或设置符号 ID 或符号 ID 所对应的字段名称，必设属性。
      */
-    symbolIDField: null,
+    symbolIDField = null;
 
     /**
      * Property: type
      * {String} 制作矩阵专题图时是必须的。
      */
-    type: "SYMBOL",
+    type = "SYMBOL";
 
     /**
      * Constructor: SuperMap.LabelSymbolCell
@@ -46,27 +47,31 @@ SuperMap.LabelSymbolCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
      * style - {SuperMap.ServerStyle} 获取或设置符号样式—— SuperMap.ServerStyle 对象。
      * symbolIDField - {String} 符号 ID 或符号 ID 所对应的字段名称。
      */
-    initialize: function (options) {
+    constructor(options) {
+        super(options);
         var me = this;
         me.style = new ServerStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
+
 
     /**
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         if (me.style) {
             me.style.destroy();
             me.style = null;
         }
         me.symbolIDField = null;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.LabelSymbolCell"
-});
-module.exports = SuperMap.LabelSymbolCell;
+
+    CLASS_NAME = "SuperMap.LabelSymbolCell"
+}
+
+SuperMap.LabelSymbolCell = LabelSymbolCell;

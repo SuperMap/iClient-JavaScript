@@ -8,14 +8,15 @@
  *  - <ThemeLayer>
  */
 
-require('../../../common/style/ThemeStyle');
-require('../../../common/iServer/ThemeVector');
-var SuperMap = require('../../../common/SuperMap');
-var ThemeLayer = require('./ThemeLayer');
-var ThemeFeature = require('./ThemeFeature');
-var L = require("leaflet");
+import  '../../../common/style/ThemeStyle';
+import '../../../common/iServer/ThemeVector';
+import SuperMap from '../../../common/SuperMap';
+import {ThemeLayer} from './ThemeLayer';
+import {ThemeFeature} from './ThemeFeature';
+import CommontypesConversion from '../../core/CommontypesConversion';
+import L from "leaflet";
 
-var GeoFeatureThemeLayer = ThemeLayer.extend({
+export var GeoFeatureThemeLayer = ThemeLayer.extend({
     options: {
 
         // {Number} 节点抽稀像素距离，默认值 2。
@@ -103,7 +104,7 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
         if (hoverone && hoverone.refDataID) {
             hoverFid = hoverone.refDataID;
         }
-        bounds = L.supermap.CommontypesConversion.toSuperMapBounds(bounds);
+        bounds = CommontypesConversion.toSuperMapBounds(bounds);
         //清除当前所有可视元素
         me.renderer.clearAll();
 
@@ -255,5 +256,3 @@ var GeoFeatureThemeLayer = ThemeLayer.extend({
     }
 
 });
-
-module.exports = GeoFeatureThemeLayer;

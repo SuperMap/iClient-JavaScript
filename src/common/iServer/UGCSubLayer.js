@@ -1,48 +1,47 @@
-﻿/**
+﻿import SuperMap from '../SuperMap';
+import UGCMapLayer from './UGCMapLayer';
+import JoinItem from './JoinItem';
+import DatasetInfo from './DatasetInfo';
+import {LayerType} from '../REST';
+
+/**
  * Class: SuperMap.UGCSubLayer
  * 地图服务图层属性信息类，影像图层(Image)、专题图层(ServerTheme)、栅格图层(Grid)、矢量图层(Vector)等图层均继承该类。
  *
  * Inherits from:
  *  - <SuperMap.UGCMapLayer>
  */
-
-require('../REST');
-require('./UGCMapLayer');
-var SuperMap = require('../SuperMap');
-var JoinItem = require('./JoinItem');
-var DatasetInfo = require('./DatasetInfo');
-
-SuperMap.UGCSubLayer = SuperMap.Class(SuperMap.UGCMapLayer, {
+export default  class UGCSubLayer extends UGCMapLayer {
 
     /**
      * APIProperty: datasetInfo
      * {SuperMap.DatasetInfo} 数据集信息。
      */
-    datasetInfo: null,
+    datasetInfo = null;
 
     /**
      * APIProperty: displayFilter
      * {String} 图层显示过滤条件。
      */
-    displayFilter: null,
+    displayFilter = null;
 
     /**
      * APIProperty: joinItems
      * {SuperMap.JoinItem} 连接信息类。
      */
-    joinItems: null,
+    joinItems = null;
 
     /**
      * APIProperty: representationField
      * {String} 存储制图表达信息的字段。
      */
-    representationField: null,
+    representationField = null;
 
     /**
      * APIProperty: ugcLayerType
      * {SuperMap.LayerType} 图层类型。
      */
-    ugcLayerType: null,
+    ugcLayerType = null;
 
     /**
      * Constructor: SuperMap.UGCSubLayer
@@ -58,10 +57,10 @@ SuperMap.UGCSubLayer = SuperMap.Class(SuperMap.UGCMapLayer, {
      * representationField - {String} 存储制图表达信息的字段。
      * ugcLayerType - {SuperMap.LayerType} 图层类型。
      */
-    initialize: function (options) {
+    constructor(options) {
         options = options || {};
-        SuperMap.UGCMapLayer.prototype.initialize.apply(this, [options]);
-    },
+        super(options);
+    }
 
 
     /**
@@ -70,8 +69,8 @@ SuperMap.UGCSubLayer = SuperMap.Class(SuperMap.UGCMapLayer, {
      * Parameters:
      * jsonObject - {Object} 要转换的 JSON 对象。
      */
-    fromJson: function (jsonObject) {
-        SuperMap.UGCMapLayer.prototype.fromJson.apply(this, [jsonObject]);
+    fromJson(jsonObject) {
+        super.fromJson(jsonObject);
         if (this.datasetInfo) {
             this.datasetInfo = new DatasetInfo(this.datasetInfo);
         }
@@ -82,19 +81,21 @@ SuperMap.UGCSubLayer = SuperMap.Class(SuperMap.UGCMapLayer, {
             }
             this.joinItems = newJoinItems;
         }
-    },
+    }
 
-    destroy: function () {
-        SuperMap.UGCMapLayer.prototype.destroy.apply(this, arguments);
+
+    destroy() {
+        super.destroy();
         SuperMap.Util.reset(this);
-    },
+    }
+
 
     /**
      * Method: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */
-    toServerJSONObject: function () {
-        var jsonObject = SuperMap.UGCMapLayer.prototype.toServerJSONObject.apply(this, arguments);
+    toServerJSONObject() {
+        var jsonObject = super.toServerJSONObject();
         if (jsonObject.joinItems) {
             var joinItems = [];
             for (var i = 0; i < jsonObject.joinItems.length; i++) {
@@ -111,8 +112,9 @@ SuperMap.UGCSubLayer = SuperMap.Class(SuperMap.UGCMapLayer, {
             }
         }
         return jsonObject;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.UGCSubLayer"
-});
-module.exports = SuperMap.UGCSubLayer;
+    CLASS_NAME = "SuperMap.UGCSubLayer"
+}
+
+SuperMap.UGCSubLayer = UGCSubLayer;

@@ -1,23 +1,24 @@
+import SuperMap from '../SuperMap';
+import {ServerType} from '../REST';
+import '../security/SecurityManager';
+import {FetchRequest} from '../util/FetchRequest';
+
 /**
  * @class SuperMap.iPortalServiceBase
  * @classdesc iPortal服务基类(有权限限制的类需要实现此类)
  */
 
-var SuperMap = require('../SuperMap');
-var Request = require('../util/FetchRequest');
-var SecurityManager = require('../security/SecurityManager');
-
-SuperMap.iPortalServiceBase = SuperMap.Class({
+export default  class IPortalServiceBase {
     /**
      * @method SuperMap.iPortalServiceBase.initialize
      *
      * @param url
      */
-    initialize: function (url) {
+    constructor(url) {
         var me = this;
         me.serviceUrl = url;
-        me.serverType = SuperMap.ServerType.ONLINE;
-    },
+        me.serverType = ServerType.iPortal;
+    }
 
     /**
      * @method SuperMap.iPortalServiceBase.request
@@ -28,13 +29,15 @@ SuperMap.iPortalServiceBase = SuperMap.Class({
      * @param requestOptions
      *
      */
- 
-    request: function (method, url, param, requestOptions) {
+
+    request(method, url, param, requestOptions) {
         url = this.createCredentialUrl(url);
-        return Request.commit(method, url, param, requestOptions).then(function (response) {
+        return FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
             return response.json();
         });
-    },
+    }
+
+
     /**
      * @method SuperMap.iPortalServiceBase.createCredentialUrl
      * @description 追加授权信息
@@ -42,7 +45,7 @@ SuperMap.iPortalServiceBase = SuperMap.Class({
      * @return {string}
      */
 
-    createCredentialUrl: function (url) {
+    createCredentialUrl(url) {
         var newUrl = url,
             credential = this.getCredential();
 
@@ -58,7 +61,9 @@ SuperMap.iPortalServiceBase = SuperMap.Class({
             }
         }
         return newUrl;
-    },
+    }
+
+
     /**
      * @method  SuperMap.iPortalServiceBase.getCredential
      * @description 获取token
@@ -66,28 +71,32 @@ SuperMap.iPortalServiceBase = SuperMap.Class({
      *
      */
 
-    getCredential: function () {
+    getCredential() {
         var credential,
-            value = SecurityManager.getToken(this.serviceUrl);
+            value = SuperMap.SecurityManager.getToken(this.serviceUrl);
         credential = value ? new SuperMap.Credential(value, "token") : null;
         if (!credential) {
             value = this.getKey();
             credential = value ? new SuperMap.Credential(value, "key") : null;
         }
         return credential;
-    },
+    }
+
+
     /**
      * @method SuperMap.iPortalServiceBase.getKey
      * @description 其子类需要重写该方法，修改其中获取key的字段
      * 存储key可能是服务id字段，可能是url
      */
-    getKey: function () {
-        //return SecurityManager.getKey(this.id);
+    getKey() {
+        //return SuperMap.SecurityManager.getKey(this.id);
         //或
-        //return SecurityManager.getKey(this.serviceUrl);
-    },
+        //return SuperMap.SecurityManager.getKey(this.serviceUrl);
+    }
 
-    CLASS_NAME: "SuperMap.iPortalServiceBase"
 
-});
-module.exports = SuperMap.iPortalServiceBase;
+    CLASS_NAME = "SuperMap.iPortalServiceBase"
+
+}
+
+SuperMap.iPortalServiceBase = IPortalServiceBase;

@@ -1,14 +1,14 @@
 /**
  *CartoCSS样式转Leaflet样式
  */
-require('../../core/Base');
-require('./CartoDefaultStyle');
-require('./CartoStyleMap');
-var CartoCSS = require('../../../common/style/CartoCSS');
-var SuperMap = require('../../../common/SuperMap');
-var L = require("leaflet");
+import '../../core/Base';
+import './CartoDefaultStyle';
+import './CartoStyleMap';
+import CartoCSS from '../../../common/style/CartoCSS';
+import SuperMap from '../../../common/SuperMap';
+import L from "leaflet";
 
-L.supermap.CartoCSSToLeaflet = {
+export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
 
     cartoCSS: null,
     mapUrl: null,
@@ -339,4 +339,3 @@ L.supermap.CartoCSSToLeaflet = {
     }
 
 };
-module.exports = L.supermap.CartoCSSToLeaflet;

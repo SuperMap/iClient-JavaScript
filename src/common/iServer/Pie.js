@@ -1,3 +1,6 @@
+import SuperMap from '../SuperMap';
+import Graph from './Graph';
+
 /**
  * Class: SuperMap.Feature.Theme.Pie
  * 饼图 。
@@ -70,9 +73,7 @@
  * Inherits:
  *  - <SuperMap.Feature.Theme.Graph>
  */
-var SuperMap = require('../SuperMap');
-require('./Graph');
-SuperMap.Feature.Theme.Pie = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
+export default  class Pie extends Graph {
 
     /**
      * Constructor: SuperMap.Feature.Theme.Pie
@@ -88,111 +89,113 @@ SuperMap.Feature.Theme.Pie = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
      * Returns:
      * {SuperMap.Feature.Theme.Pie} 返回一个饼图。
      */
-    initialize: function(data, layer, fields, setting, lonlat) {
-        SuperMap.Feature.Theme.Graph.prototype.initialize.apply(this, arguments);
-    },
+    constructor(data, layer, fields, setting, lonlat) {
+        super(data, layer, fields, setting, lonlat);
+    }
 
     /**
      * APIMethod: destroy
      * 销毁此专题要素。调用 destroy 后此对象所以属性置为 null。
      */
-    destroy: function() {
-        SuperMap.Feature.Theme.Graph.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     //装配图形（扩展接口）
-    assembleShapes: function(){
+    assembleShapes() {
         // 图表配置对象
         var sets = this.setting;
 
         // 一个默认 style 组
         var defaultStyleGroup = [
-            { fillColor: "#ff9277" }, { fillColor: "#dddd00" }, { fillColor: "#ffc877" }, { fillColor: "#bbe3ff" }, { fillColor: "#d5ffbb" },
-            { fillColor: "#bbbbff" }, { fillColor: "#ddb000" }, { fillColor: "#b0dd00" }, { fillColor: "#e2bbff" }, { fillColor: "#ffbbe3" },
-            { fillColor: "#ff7777" }, { fillColor: "#ff9900" }, { fillColor: "#83dd00" }, { fillColor: "#77e3ff" }, { fillColor: "#778fff" },
-            { fillColor: "#c877ff" }, { fillColor: "#ff77ab" }, { fillColor: "#ff6600" }, { fillColor: "#aa8800" }, { fillColor: "#77c7ff" },
-            { fillColor: "#ad77ff" }, { fillColor: "#ff77ff" }, { fillColor: "#dd0083" }, { fillColor: "#777700" }, { fillColor: "#00aa00" },
-            { fillColor: "#0088aa" }, { fillColor: "#8400dd" }, { fillColor: "#aa0088" }, { fillColor: "#dd0000" }, { fillColor: "#772e00" }
+            {fillColor: "#ff9277"}, {fillColor: "#dddd00"}, {fillColor: "#ffc877"}, {fillColor: "#bbe3ff"}, {fillColor: "#d5ffbb"},
+            {fillColor: "#bbbbff"}, {fillColor: "#ddb000"}, {fillColor: "#b0dd00"}, {fillColor: "#e2bbff"}, {fillColor: "#ffbbe3"},
+            {fillColor: "#ff7777"}, {fillColor: "#ff9900"}, {fillColor: "#83dd00"}, {fillColor: "#77e3ff"}, {fillColor: "#778fff"},
+            {fillColor: "#c877ff"}, {fillColor: "#ff77ab"}, {fillColor: "#ff6600"}, {fillColor: "#aa8800"}, {fillColor: "#77c7ff"},
+            {fillColor: "#ad77ff"}, {fillColor: "#ff77ff"}, {fillColor: "#dd0083"}, {fillColor: "#777700"}, {fillColor: "#00aa00"},
+            {fillColor: "#0088aa"}, {fillColor: "#8400dd"}, {fillColor: "#aa0088"}, {fillColor: "#dd0000"}, {fillColor: "#772e00"}
         ];
 
         // 重要步骤：初始化参数
-        if(!this.initBaseParameter()) return;
+        if (!this.initBaseParameter()) return;
 
         // 背景框，默认不启用
-        if(sets.useBackground){
+        if (sets.useBackground) {
             this.shapes.push(SuperMap.Feature.ShapeFactory.Background(this.shapeFactory, this.chartBox, sets));
         }
 
         // 数据值数组
         var fv = this.dataValues;
-        if(fv.length < 1) return;       // 没有数据
+        if (fv.length < 1) return;       // 没有数据
 
         // 值域范围
         var codomain = this.DVBCodomain;
         // 值域范围检测
-        for(var i = 0; i < fv.length; i++){
-            if(fv[i] < codomain[0] || fv[i] > codomain[1]) { return; }
+        for (var i = 0; i < fv.length; i++) {
+            if (fv[i] < codomain[0] || fv[i] > codomain[1]) {
+                return;
+            }
         }
 
         // 值的绝对值总和
         var valueSum = 0;
-        for(var i = 0; i < fv.length; i++){
+        for (var i = 0; i < fv.length; i++) {
             valueSum += Math.abs(fv[i]);
         }
 
         // 重要步骤：定义图表 Pie 数据视图框中单位值的含义，单位值：每度代表的数值
-        this.DVBUnitValue = 360/valueSum;
+        this.DVBUnitValue = 360 / valueSum;
         var uv = this.DVBUnitValue;
-        
+
         var dvbCenter = this.DVBCenterPoint;        // 数据视图框中心作为扇心
 
         var startAngle = 0;         // 扇形起始边角度
         var endAngle = 0;          // 扇形终止边角度
         var startAngleTmp = startAngle;           // 扇形临时起始边角度
         // 扇形（自适应）半径
-        var r = this.DVBHeight < this.DVBWidth? this.DVBHeight/2 : this.DVBWidth/2;
+        var r = this.DVBHeight < this.DVBWidth ? this.DVBHeight / 2 : this.DVBWidth / 2;
 
-        for(var i = 0; i < fv.length; i++){
+        for (var i = 0; i < fv.length; i++) {
             var fvi = Math.abs(fv[i]);
             //计算终止角
-            if(i === 0){
-                endAngle = startAngle + fvi*uv;
+            if (i === 0) {
+                endAngle = startAngle + fvi * uv;
             }
-            else if(i === fvi.length -1){
+            else if (i === fvi.length - 1) {
                 endAngle = startAngleTmp;
             }
-            else{
-                endAngle = startAngle + fvi*uv;
+            else {
+                endAngle = startAngle + fvi * uv;
             }
             //矫正误差计算
-            if((endAngle-startAngle)>=360) endAngle =359.9999999;
+            if ((endAngle - startAngle) >= 360) endAngle = 359.9999999;
 
             // 扇形参数对象
-            var sectorSP =  new SuperMap.Feature.ShapeParameters.Sector(dvbCenter[0], dvbCenter[1], r, startAngle, endAngle);
+            var sectorSP = new SuperMap.Feature.ShapeParameters.Sector(dvbCenter[0], dvbCenter[1], r, startAngle, endAngle);
             // 扇形样式
-            if(typeof(sets.sectorStyleByFields) === "undefined"){
+            if (typeof(sets.sectorStyleByFields) === "undefined") {
                 // 使用默认 style 组
                 var colorIndex = i % defaultStyleGroup.length;
                 sectorSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.sectorStyle, defaultStyleGroup, null, colorIndex);
             }
-            else{
+            else {
                 sectorSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.sectorStyle, sets.sectorStyleByFields, sets.sectorStyleByCodomain, i, fv[i]);
             }
 
             // 扇形 hover 样式
             sectorSP.highlightStyle = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.sectorHoverStyle);
             // 扇形 hover 与 click 设置
-            if(typeof(sets.sectorHoverAble) !== "undefined"){
+            if (typeof(sets.sectorHoverAble) !== "undefined") {
                 sectorSP.hoverable = sets.sectorHoverAble;
             }
-            if(typeof(sets.sectorClickAble) !== "undefined"){
+            if (typeof(sets.sectorClickAble) !== "undefined") {
                 sectorSP.clickable = sets.sectorClickAble;
             }
             // 图形携带的数据信息
             sectorSP.refDataID = this.data.id;
-            sectorSP.dataInfo =  {
+            sectorSP.dataInfo = {
                 field: this.fields[i],
-                value:  fv[i]
+                value: fv[i]
             };
 
             // 创建扇形并把此扇形添加到图表图形数组
@@ -205,8 +208,10 @@ SuperMap.Feature.Theme.Pie = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
         // 重要步骤：将图形转为由相对坐标表示的图形，以便在地图平移缩放过程中快速重绘图形
         // （统计专题图模块从结构上要求使用相对坐标，assembleShapes() 函数必须在图形装配完成后调用 shapesConvertToRelativeCoordinate() 函数）
         this.shapesConvertToRelativeCoordinate();
-    },
+    }
 
-    CLASS_NAME: "SuperMap.Feature.Theme.Pie"
-});
-module.exports = SuperMap.Feature.Theme.Pie;
+
+    CLASS_NAME = "SuperMap.Feature.Theme.Pie"
+}
+
+SuperMap.Feature.Theme.Pie = Pie;

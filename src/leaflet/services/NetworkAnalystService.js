@@ -1,26 +1,17 @@
-﻿/**
- * Class: NetworkAnalystService
- * 网络分析服务类
- * 用法：
- *      L.supermap.networkAnalystService(url)
- *      .findPath(params,function(result){
- *           //doSomething
- *      })
- */
-var L = require("leaflet");
-var ServiceBase = require('./ServiceBase');
-var SuperMap = require('../../common/SuperMap');
-var BurstPipelineAnalystService = require('../../common/iServer/BurstPipelineAnalystService');
-var ComputeWeightMatrixService = require('../../common/iServer/ComputeWeightMatrixService');
-var FacilityAnalystStreamService = require('../../common/iServer/FacilityAnalystStreamService');
-var FindClosestFacilitiesService = require('../../common/iServer/FindClosestFacilitiesService');
-var FindLocationService = require('../../common/iServer/FindLocationService');
-var FindMTSPPathsService = require('../../common/iServer/FindMTSPPathsService');
-var FindPathService = require('../../common/iServer/FindPathService');
-var FindServiceAreasService = require('../../common/iServer/FindServiceAreasService');
-var FindTSPPathsService = require('../../common/iServer/FindTSPPathsService');
-var UpdateEdgeWeightService = require('../../common/iServer/UpdateEdgeWeightService');
-var UpdateTurnNodeWeightService = require('../../common/iServer/UpdateTurnNodeWeightService');
+﻿import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {ServiceBase} from './ServiceBase';
+import BurstPipelineAnalystService from  '../../common/iServer/BurstPipelineAnalystService';
+import ComputeWeightMatrixService from  '../../common/iServer/ComputeWeightMatrixService';
+import FacilityAnalystStreamService from  '../../common/iServer/FacilityAnalystStreamService';
+import FindClosestFacilitiesService from  '../../common/iServer/FindClosestFacilitiesService';
+import FindLocationService from  '../../common/iServer/FindLocationService';
+import FindMTSPPathsService from  '../../common/iServer/FindMTSPPathsService';
+import FindPathService from  '../../common/iServer/FindPathService';
+import FindServiceAreasService from  '../../common/iServer/FindServiceAreasService';
+import FindTSPPathsService from  '../../common/iServer/FindTSPPathsService';
+import UpdateEdgeWeightService from  '../../common/iServer/UpdateEdgeWeightService';
+import UpdateTurnNodeWeightService from  '../../common/iServer/UpdateTurnNodeWeightService';
 
 /**
  * @class L.supermap.NetworkAnalystService
@@ -38,7 +29,7 @@ var UpdateTurnNodeWeightService = require('../../common/iServer/UpdateTurnNodeWe
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-var NetworkAnalystService = ServiceBase.extend({
+export var NetworkAnalystService = ServiceBase.extend({
 
     /**
      * @function L.supermap.NetworkAnalystService.prototype.initialize
@@ -333,8 +324,8 @@ var NetworkAnalystService = ServiceBase.extend({
 
 });
 
-L.supermap.networkAnalystService = function (url, options) {
+export var networkAnalystService = function (url, options) {
     return new NetworkAnalystService(url, options);
 };
 
-module.exports = NetworkAnalystService;
+L.supermap.networkAnalystService = networkAnalystService;

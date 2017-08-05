@@ -1,11 +1,5 @@
-﻿/*
- * Class: SuperMap.ThemeUniqueItem
- * 单值专题图子项类。
- * 单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，Name 字段代表
- * 省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
- */
-var SuperMap = require('../SuperMap');
-var ServerStyle = require('./ServerStyle');
+﻿import SuperMap from '../SuperMap';
+import ServerStyle from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeUniqueItem
@@ -18,54 +12,55 @@ var ServerStyle = require('./ServerStyle');
  *        unique - {String} 单值专题图子项的单值。
  *        visible - {Boolean} 单值专题图子项是否可见。
  */
-SuperMap.ThemeUniqueItem = SuperMap.Class({
+export default  class ThemeUniqueItem {
 
     /**
      * APIProperty: caption
      * @member SuperMap.ThemeUniqueItem.prototype.caption -{String}
      * @description 单值专题图子项的标题。
      */
-    caption: null,
+    caption = null;
 
     /**
      * APIProperty: style
      * @member SuperMap.ThemeUniqueItem.prototype.style -{SuperMap.ServerStyle}
      * @description 单值专题图子项的显示风格。
      */
-    style: null,
+    style = null;
 
     /**
      * APIProperty: unique
      * @member SuperMap.ThemeUniqueItem.prototype.unique -{String}
      * @description 单值专题图子项的值，可以为数字、字符串等。
      */
-    unique: null,
+    unique = null;
 
     /**
      * APIProperty: visible
      * @member SuperMap.ThemeUniqueItem.prototype.visible -{Boolean}
      * @description 单值专题图子项的可见性。默认为 true，表示可见。
      */
-    visible: true,
+    visible = true;
 
     /*
      * Constructor: SuperMap.ThemeUniqueItem
      * 单值专题图子项类构造函数。
      */
-    initialize: function (options) {
+    constructor(options) {
         var me = this;
         me.style = new ServerStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
+
 
     /**
      * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.caption = null;
         me.unique = null;
@@ -75,13 +70,13 @@ SuperMap.ThemeUniqueItem = SuperMap.Class({
             me.style = null;
         }
         me.visible = null;
-    },
+    }
 
     /*
      * Method: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */
-    toServerJSONObject: function () {
+    toServerJSONObject() {
         var obj = {};
         obj = SuperMap.Util.copyAttributes(obj, this);
         if (obj.style) {
@@ -90,16 +85,18 @@ SuperMap.ThemeUniqueItem = SuperMap.Class({
             }
         }
         return obj;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.ThemeUniqueItem"
-});
-SuperMap.ThemeUniqueItem.fromObj = function (obj) {
-    var res = new SuperMap.ThemeUniqueItem();
-    SuperMap.Util.copy(res, obj);
-    res.style = SuperMap.ServerStyle.fromJson(obj.style);
-    return res;
+    static fromObj(obj) {
+        var res = new ThemeUniqueItem();
+        SuperMap.Util.copy(res, obj);
+        res.style = ServerStyle.fromJson(obj.style);
+        return res;
 
-};
-module.exports = SuperMap.ThemeUniqueItem;
+    }
+
+    CLASS_NAME = "SuperMap.ThemeUniqueItem"
+}
+
+SuperMap.ThemeUniqueItem = ThemeUniqueItem;
 

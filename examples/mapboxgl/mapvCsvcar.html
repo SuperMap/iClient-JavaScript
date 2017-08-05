@@ -69,7 +69,7 @@
                 draw: 'simple'
             };
             var dataSet = mapv.csv.getDataSet(csvstr);
-            new mapvlayer(map, dataSet, options);
+            new mapboxgl.supermap.MapvLayer(map, dataSet, options);
         });
 
     });

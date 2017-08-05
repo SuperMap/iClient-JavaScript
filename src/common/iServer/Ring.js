@@ -1,3 +1,6 @@
+import SuperMap from '../SuperMap';
+import Graph from './Graph';
+
 /**
  * Class: SuperMap.Feature.Theme.Ring
  * 环状图 。
@@ -72,9 +75,7 @@
  * Inherits:
  *  - <SuperMap.Feature.Theme.Graph>
  */
-var SuperMap = require('../SuperMap');
-require('./Graph');
-SuperMap.Feature.Theme.Ring = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
+export default  class Ring extends Graph {
 
     /**
      * Constructor: SuperMap.Feature.Theme.Ring
@@ -90,20 +91,20 @@ SuperMap.Feature.Theme.Ring = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
      * Returns:
      * {SuperMap.Feature.Theme.Ring} 返回一个环状图。
      */
-    initialize: function (data, layer, fields, setting, lonlat) {
-        SuperMap.Feature.Theme.Graph.prototype.initialize.apply(this, arguments);
-    },
+    constructor(data, layer, fields, setting, lonlat) {
+        super(data, layer, fields, setting, lonlat);
+    }
 
     /**
      * APIMethod: destroy
      * 销毁此专题要素。调用 destroy 后此对象所以属性置为 null。
      */
-    destroy: function () {
-        SuperMap.Feature.Theme.Graph.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     //装配图形（扩展接口）
-    assembleShapes: function () {
+    assembleShapes() {
         // 重要步骤：初始化参数
         if (!this.initBaseParameter()) return;
 
@@ -204,7 +205,6 @@ SuperMap.Feature.Theme.Ring = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
                 field: this.fields[i],
                 value: fv[i]
             };
-            ;
 
             // 创建扇形并把此扇形添加到图表图形数组
             this.shapes.push(this.shapeFactory.createShape(sectorSP));
@@ -216,8 +216,9 @@ SuperMap.Feature.Theme.Ring = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
         // 重要步骤：将图形转为由相对坐标表示的图形，以便在地图平移缩放过程中快速重绘图形
         // （统计专题图模块从结构上要求使用相对坐标，assembleShapes() 函数必须在图形装配完成后调用 shapesConvertToRelativeCoordinate() 函数）
         this.shapesConvertToRelativeCoordinate();
-    },
+    }
 
-    CLASS_NAME: "SuperMap.Feature.Theme.Ring"
-});
-module.exports = SuperMap.Feature.Theme.Ring;
+    CLASS_NAME = "SuperMap.Feature.Theme.Ring"
+}
+
+SuperMap.Feature.Theme.Ring = Ring;

@@ -1,7 +1,4 @@
-require('../../core/Base');
-var ol = require('openlayers/dist/ol-debug');
-
-var pointStyle = {
+export var pointStyle = {
     pointFile: "",
 
     /*expand*/
@@ -17,7 +14,7 @@ var pointStyle = {
     imageSmoothingEnabled: true
 };
 
-var lineStyle = {
+export var lineStyle = {
     strokeStyle: "rgba(0,0,0,0)",
     lineWidth: 1,
     lineCap: "butt",
@@ -34,7 +31,7 @@ var lineStyle = {
     imageSmoothingEnabled: true
 };
 
-var polygonStyle = {
+export var polygonStyle = {
     /*包含LINE的部分*/
     strokeStyle: "rgba(0,0,0,0)",
     lineWidth: 1,
@@ -59,7 +56,7 @@ var polygonStyle = {
     imageSmoothingEnabled: true
 };
 
-ol.supermap.DeafultCanvasStyle = {
+export var DeafultCanvasStyle = {
     "TEXT": {
         font: "10px sans-serif",
         textAlign: "middle",
@@ -99,5 +96,3 @@ ol.supermap.DeafultCanvasStyle = {
         imageSmoothingEnabled: true
     }
 };
-
-module.exports = ol.supermap.DeafultCanvasStyle;

@@ -1,4 +1,8 @@
-﻿/**
+﻿import SuperMap from '../SuperMap';
+import ThemeLabel from './ThemeLabel';
+import LabelMatrixCell from './LabelMatrixCell';
+
+/**
  * Class:  SuperMap.LabelThemeCell
  * 专题图类型的矩阵标签元素类。
  * 该类继承自 SuperMap.LabelMatrixCell类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
@@ -11,22 +15,19 @@
  * Inherits from:
  *  - <SuperMap.LabelMatrixCell>
  */
-require('./LabelMatrixCell');
-var SuperMap = require('../SuperMap');
-var ThemeLabel = require('./ThemeLabel');
-SuperMap.LabelThemeCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
+export default  class LabelThemeCell extends LabelMatrixCell {
 
     /**
      * APIProperty: themeLabel
      * {SuperMap.ThemeLabel} 使用专题图对象作为矩阵标签的一个元素。
      */
-    themeLabel: null,
+    themeLabel = null;
 
     /**
      * Property: type
      * {String} 制作矩阵专题图时是必须的。
      */
-    type: "THEME",
+    type = "THEME";
 
     /**
      * Constructor:  SuperMap.LabelThemeCell
@@ -38,26 +39,29 @@ SuperMap.LabelThemeCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
      * Allowed options properties:
      * themeLabel - {SuperMap.ThemeLabel} 使用专题图对象作为矩阵标签的一个元素。
      */
-    initialize: function (options) {
+    constructor(options) {
+        super(options);
         var me = this;
         me.themeLabel = new ThemeLabel();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
+
 
     /**
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         if (me.themeLabel) {
             me.themeLabel.destroy();
             me.themeLabel = null;
         }
-    },
+    }
 
-    CLASS_NAME: " SuperMap.LabelThemeCell"
-});
-module.exports = SuperMap.LabelThemeCell;
+    CLASS_NAME = " SuperMap.LabelThemeCell"
+}
+
+SuperMap.LabelThemeCell = LabelThemeCell;

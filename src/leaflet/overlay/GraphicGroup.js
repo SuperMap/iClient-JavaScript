@@ -1,8 +1,8 @@
-require('../core/Base');
-require('./graphic/CircleStyle');
-require('./graphic/Graphic');
-var L = require("leaflet");
-var GraphicGroup = L.Path.extend({
+import '../core/Base';
+import L from "leaflet";
+import './graphic/CircleStyle';
+import './graphic/Graphic';
+export var GraphicGroup = L.Path.extend({
 
         initialize: function (graphics, options) {
             options = options || {};
@@ -95,8 +95,8 @@ L.Canvas.include({
     }
 });
 
-L.supermap.graphicGroup = function (graphics, options) {
+export var graphicGroup = function (graphics, options) {
     return new GraphicGroup(graphics, options);
 };
 
-module.exports = GraphicGroup;
+L.supermap.graphicGroup = graphicGroup;

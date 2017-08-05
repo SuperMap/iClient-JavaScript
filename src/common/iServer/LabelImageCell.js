@@ -1,4 +1,7 @@
-﻿/**
+﻿import SuperMap from '../SuperMap';
+import LabelMatrixCell from './LabelMatrixCell';
+
+/**
  * Class: SuperMap.LabelImageCell
  * 图片类型的矩阵标签元素类。
  * 该类继承自 SuperMap.LabelMatrixCell类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
@@ -11,45 +14,43 @@
  * Inherits from:
  *  - <SuperMap.LabelMatrixCell>
  */
-require('./LabelMatrixCell');
-var SuperMap = require('../SuperMap');
-SuperMap.LabelImageCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
+export default  class LabelImageCell extends LabelMatrixCell {
 
     /**
      * APIProperty: height
      * {Number} 设置图片的高度，单位为毫米。
      */
-    height: 0,
+    height = 0;
 
     /**
      * APIProperty: pathField
      * {String} 设置矩阵标签元素所使用的图片路径对应的字段名。
      */
-    pathField: null,
+    pathField = null;
 
     /**
      * APIProperty: rotation
      * {Number} 图片的旋转角度。逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。
      */
-    rotation: 0.0,
+    rotation = 0.0;
 
     /**
      * APIProperty: width
      * {Number} 设置图片的宽度，单位为毫米。
      */
-    width: 0,
+    width = 0;
 
     /**
      * APIProperty: sizeFixed
      * {Boolean} 是否固定图片的大小。默认值为 false，即图片将随地图缩放。
      */
-    sizeFixed: false,
+    sizeFixed = false;
 
     /**
      * Property: type
      * {Boolean} 制作矩阵专题图时是必须的。
      */
-    type: "IMAGE",
+    type = "IMAGE";
 
     /**
      * Constructor: SuperMap.LabelImageCell
@@ -65,25 +66,29 @@ SuperMap.LabelImageCell = SuperMap.Class(SuperMap.LabelMatrixCell, {
      * width - {Number} 设置图片的宽度，单位为毫米。
      * sizeFixed - {Boolean} 是否固定图片的大小。默认值为 false，即图片将随地图缩放。
      */
-    initialize: function (options) {
+    constructor(options) {
+        super(options);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
+
 
     /**
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.height = null;
         me.pathField = null;
         me.rotation = null;
         me.width = null;
         me.sizeFixed = null;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.LabelImageCell"
-});
-module.exports = SuperMap.LabelImageCell;
+
+    CLASS_NAME = "SuperMap.LabelImageCell"
+}
+
+SuperMap.LabelImageCell = LabelImageCell;

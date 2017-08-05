@@ -7,11 +7,11 @@
  *      orientation: "horizontal"
  *  }).addTo(map);
  */
-require('../core/Base');
-require('./css/ChangeTileVersion.css');
-require('../mapping/TiledMapLayer');
-var L = require("leaflet");
-var ChangeTileVersion = L.Control.extend({
+import '../core/Base';
+import './css/ChangeTileVersion.css';
+import '../mapping/TiledMapLayer' ;
+import L from "leaflet";
+export var ChangeTileVersion = L.Control.extend({
 
     options: {
         //绑定的底图图层
@@ -284,8 +284,8 @@ L.Map.addInitHook(function () {
     }
 });
 
-L.supermap.control.changeTileVersion = function (options) {
+export var changeTileVersion = function (options) {
     return new ChangeTileVersion(options);
 };
 
-module.exports = ChangeTileVersion;
+L.supermap.control.changeTileVersion = changeTileVersion;

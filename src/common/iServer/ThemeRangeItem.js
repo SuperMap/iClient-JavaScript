@@ -1,11 +1,5 @@
-﻿/*
- * Class: SuperMap.ThemeRangeItem
- * 范围分段专题图子项类。
- * 在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。
- * 每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。
- */
-var SuperMap = require('../SuperMap');
-var ServerStyle = require('./ServerStyle');
+﻿import SuperMap from '../SuperMap';
+import ServerStyle from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeRangeItem
@@ -19,14 +13,14 @@ var ServerStyle = require('./ServerStyle');
  *        style - {SuperMap.ServerStyle} 分段专题图子项的风格。<br>
  *        visible - {Boolean} 分段专题图子项是否可见。
  */
-SuperMap.ThemeRangeItem = SuperMap.Class({
+export default  class ThemeRangeItem {
 
     /**
      * APIProperty: caption
      * @member SuperMap.ThemeRangeItem.prototype.caption -{String}
      * @description 分段专题图子项的标题。
      */
-    caption: null,
+    caption = null;
 
     /**
      * APIProperty: end
@@ -36,7 +30,7 @@ SuperMap.ThemeRangeItem = SuperMap.Class({
      *              则剩余部分由内部随机定义其颜色；如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常；
      *              如果设置了范围分段模式和分段数，则会自动计算每段的范围[start, end)，故无需设置[start, end)；当然可以设置，那么结果就会按您设置的值对分段结果进行调整。
      */
-    end: 0,
+    end = 0;
 
     /**
      * APIProperty: start
@@ -45,7 +39,7 @@ SuperMap.ThemeRangeItem = SuperMap.Class({
      *              如果该子项是分段中第一个子项，那么该起始值就是分段的最小值；如果子项的序号大于等于1的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。
      *              如果设置了范围分段模式和分段数，则会自动计算每段的范围[start, end)，故无需设置[start, end)；当然可以设置，那么结果就会按您设置的值对分段结果进行调整。
      */
-    start: 0,
+    start = 0;
 
     /**
      * APIProperty: style
@@ -53,33 +47,34 @@ SuperMap.ThemeRangeItem = SuperMap.Class({
      * @description 分段专题图子项的风格。
      *              每一个分段专题图子项都对应一种显示风格。
      */
-    style: null,
+    style = null;
 
     /**
      * APIProperty: visible
      * @member SuperMap.ThemeRangeItem.prototype.visible -{Boolean}
      * @description 分段专题图子项是否可见。默认为 true。
      */
-    visible: true,
+    visible = true;
 
     /*
      * Constructor: SuperMap.ThemeRangeItem
      * 范围分段专题图子项类构造函数。
      */
-    initialize: function (options) {
+    constructor(options) {
         var me = this;
         me.style = new ServerStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
+
 
     /**
      * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.caption = null;
         me.end = null;
@@ -90,13 +85,13 @@ SuperMap.ThemeRangeItem = SuperMap.Class({
             me.style = null;
         }
         me.visible = null;
-    },
+    }
 
     /*
      * Method: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */
-    toServerJSONObject: function () {
+    toServerJSONObject() {
         var obj = {};
         obj = SuperMap.Util.copyAttributes(obj, this);
         if (obj.style) {
@@ -105,15 +100,17 @@ SuperMap.ThemeRangeItem = SuperMap.Class({
             }
         }
         return obj;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.ThemeRangeItem"
-});
-SuperMap.ThemeRangeItem.fromObj = function (obj) {
-    if (!obj) return;
-    var res = new SuperMap.ThemeRangeItem();
-    SuperMap.Util.copy(res, obj);
-    res.style = SuperMap.ServerStyle.fromJson(obj.style);
-    return res;
-};
-module.exports = SuperMap.ThemeRangeItem;
+    static fromObj(obj) {
+        if (!obj) return;
+        var res = new ThemeRangeItem();
+        SuperMap.Util.copy(res, obj);
+        res.style = ServerStyle.fromJson(obj.style);
+        return res;
+    }
+
+    CLASS_NAME = "SuperMap.ThemeRangeItem"
+}
+
+SuperMap.ThemeRangeItem = ThemeRangeItem;

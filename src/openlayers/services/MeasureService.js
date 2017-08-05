@@ -1,11 +1,6 @@
-﻿/*
- * Class:MeasureService
- * 距离测量服务
- */
-require('./ServiceBase');
-var ol = require('openlayers/dist/ol-debug');
-var Util = require('../core/Util');
-var MeasureService = require('../../common/iServer/MeasureService');
+﻿import Util from '../core/Util';
+import ServiceBase from './ServiceBase';
+import CommonMeasureService from '../../common/iServer/MeasureService';
 /**
  * @class ol.supermap.MeasureService
  * @description 距离测量服务
@@ -15,51 +10,52 @@ var MeasureService = require('../../common/iServer/MeasureService');
  *         eventListeners - {Object} 需要被注册的监听器对象。
  *         measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
  */
-ol.supermap.MeasureService = function (url, options) {
-    ol.supermap.ServiceBase.call(this, url, options);
-};
+export default class MeasureService extends ServiceBase {
 
-ol.inherits(ol.supermap.MeasureService, ol.supermap.ServiceBase);
-
-/**
- * @function ol.supermap.MeasureService.measureDistance
- * @description 测距
- * @param params -{MeasureParameters} 测量相关参数类
- * @param callback - {function} 回调函数
- */
-ol.supermap.MeasureService.prototype.measureDistance = function (params, callback) {
-    this.measure(params, 'DISTANCE', callback);
-};
-
-/**
- * @function ol.supermap.MeasureService.measureArea
- * @description 测面积
- * @param params -{MeasureParameters} 测量相关参数类
- * @param callback - {function} 回调函数
- */
-ol.supermap.MeasureService.prototype.measureArea = function (params, callback) {
-    this.measure(params, 'AREA', callback);
-};
-
-ol.supermap.MeasureService.prototype.measure = function (params, type, callback) {
-    var me = this;
-    var measureService = new MeasureService(me.url, {
-        serverType: me.options.serverType,
-        measureMode: type,
-        eventListeners: {
-            scope: me,
-            processCompleted: callback,
-            processFailed: callback
-        }
-    });
-    measureService.processAsync(me._processParam(params));
-    return me;
-};
-
-ol.supermap.MeasureService.prototype._processParam = function (params) {
-    if (params && params.geometry) {
-        params.geometry = Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
+    constructor(url, options) {
+        super(url, options);
     }
-    return params;
-};
-module.exports = ol.supermap.MeasureService;
+
+    /**
+     * @function ol.supermap.MeasureService.measureDistance
+     * @description 测距
+     * @param params -{MeasureParameters} 测量相关参数类
+     * @param callback - {function} 回调函数
+     */
+    measureDistance(params, callback) {
+        this.measure(params, 'DISTANCE', callback);
+    }
+
+    /**
+     * @function ol.supermap.MeasureService.measureArea
+     * @description 测面积
+     * @param params -{MeasureParameters} 测量相关参数类
+     * @param callback - {function} 回调函数
+     */
+    measureArea(params, callback) {
+        this.measure(params, 'AREA', callback);
+    }
+
+    measure(params, type, callback) {
+        var me = this;
+        var measureService = new CommonMeasureService(me.url, {
+            serverType: me.options.serverType,
+            measureMode: type,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        measureService.processAsync(me._processParam(params));
+        return me;
+    }
+
+    _processParam(params) {
+        if (params && params.geometry) {
+            params.geometry = Util.toSuperMapGeometry(JSON.parse((new ol.format.GeoJSON()).writeGeometry(params.geometry)));
+        }
+        return params;
+    }
+}
+ol.supermap.MeasureService = MeasureService;

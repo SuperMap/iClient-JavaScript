@@ -1,36 +1,37 @@
-﻿require('../REST');
-var SuperMap = require('../SuperMap');
-SuperMap.DatasourceConnectionInfo = SuperMap.Class({
-    /**
-     * @class SuperMap.DatasourceConnectionInfo
-     * @constructs SuperMap.DatasourceConnectionInfo
-     * @classdesc
-     * 数据源连接信息类。
-     * 该类包括了进行数据源连接的所有信息，如所要连接的服务器名称、数据库名称、用户名以及密码等。
-     * 当保存为工作空间时， 工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的
-     * 数据源，其连接信息有所区别。所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。
-     * 对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，其 他内容是不可以被修改的。
-     * 对于用户创建的数据源连接信息对象，其内容都可以修改。
-     * @api
-     */
+﻿import SuperMap from '../SuperMap';
+import {EngineType} from '../REST';
+/**
+ * @class SuperMap.DatasourceConnectionInfo
+ * @constructs SuperMap.DatasourceConnectionInfo
+ * @classdesc
+ * 数据源连接信息类。
+ * 该类包括了进行数据源连接的所有信息，如所要连接的服务器名称、数据库名称、用户名以及密码等。
+ * 当保存为工作空间时， 工作空间中的数据源的连接信息都将存储到工作空间文件中。对于不同类型的
+ * 数据源，其连接信息有所区别。所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。
+ * 对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，其 他内容是不可以被修改的。
+ * 对于用户创建的数据源连接信息对象，其内容都可以修改。
+ * @api
+ */
+export default  class DatasourceConnectionInfo {
+
 
     /**
      * APIProperty: alias
      * {String} 数据源别名。
      */
-    alias: null,
+    alias = null;
 
     /**
      * APIProperty: connect
      * {Boolean} 数据源是否自动连接数据。
      */
-    connect: null,
+    connect = null;
 
     /**
      * APIProperty: dataBase
      * {String} 数据源连接的数据库名。
      */
-    dataBase: null,
+    dataBase = null;
 
     /**
      * APIProperty: driver
@@ -39,37 +40,37 @@ SuperMap.DatasourceConnectionInfo = SuperMap.Class({
      * 对于SQL Server 数据库，它使用 ODBC 连接，所设置的驱动程序名为 "SQL Server" 或 "SQL Native Client"；
      * 对于 iServer 发布的 WMTS 服务，设置的驱动名称为 "WMTS"。
      */
-    driver: null,
+    driver = null;
 
     /**
      * APIProperty: engineType
      * {EngineType} 数据源连接的引擎类型。
      */
-    engineType: null,
+    engineType = null;
 
     /**
      * APIProperty: exclusive
      * {Boolean} 是否以独占方式打开数据源。
      */
-    exclusive: null,
+    exclusive = null;
 
     /**
      * APIProperty: OpenLinkTable
      * {Boolean} 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。
      */
-    OpenLinkTable: null,
+    OpenLinkTable = null;
 
     /**
      * APIProperty: password
      * {String} 登录数据源连接的数据库或文件的密码。
      */
-    password: null,
+    password = null;
 
     /**
      * APIProperty: readOnly
      * {Boolean} 是否以只读方式打开数据源。
      */
-    readOnly: null,
+    readOnly = null;
 
     /**
      * APIProperty: server
@@ -85,13 +86,13 @@ SuperMap.DatasourceConnectionInfo = SuperMap.Class({
      * 9.对于MAPWORLD数据源，为其服务地址，默认设置为“http://www.tianditu.cn”，且不可更改。
      * 10.对于OGC和REST数据源，为其服务地址。
      */
-    server: null,
+    server = null;
 
     /**
      * APIProperty: user
      * {String} 登录数据库的用户名。
      */
-    user: null,
+    user = null;
 
     /**
      *
@@ -111,17 +112,17 @@ SuperMap.DatasourceConnectionInfo = SuperMap.Class({
      * server - {String} 数据库服务器名或 SDB 文件名。</br>
      * user - {String} 登录数据库的用户名。</br>
      */
-    initialize: function (options) {
+    constructor(options) {
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.alias = null;
         me.connect = null;
@@ -134,8 +135,8 @@ SuperMap.DatasourceConnectionInfo = SuperMap.Class({
         me.readOnly = null;
         me.server = null;
         me.user = null;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.DatasourceConnectionInfo"
-});
-module.exports = SuperMap.DatasourceConnectionInfo;
+    CLASS_NAME = "SuperMap.DatasourceConnectionInfo"
+}
+SuperMap.DatasourceConnectionInfo = DatasourceConnectionInfo;

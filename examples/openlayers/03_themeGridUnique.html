@@ -14,7 +14,7 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var map, themeLayer, options,
-            url = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图";
+        url = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图";
     new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
@@ -35,22 +35,22 @@
 
     function setItems() {
         var items = [],
-                color0 = new SuperMap.ServerColor(198, 244, 240),
-                color1 = new SuperMap.ServerColor(176, 244, 188),
-                color2 = new SuperMap.ServerColor(218, 251, 178),
-                color3 = new SuperMap.ServerColor(220, 236, 145),
-                color4 = new SuperMap.ServerColor(96, 198, 66),
-                color5 = new SuperMap.ServerColor(20, 142, 53),
-                color6 = new SuperMap.ServerColor(85, 144, 55),
-                color7 = new SuperMap.ServerColor(171, 168, 38),
-                color8 = new SuperMap.ServerColor(235, 165, 9),
-                color9 = new SuperMap.ServerColor(203, 89, 2),
-                color10 = new SuperMap.ServerColor(157, 25, 1),
-                color11 = new SuperMap.ServerColor(118, 15, 3),
-                color12 = new SuperMap.ServerColor(112, 32, 7),
-                color13 = new SuperMap.ServerColor(106, 45, 12),
-                color14 = new SuperMap.ServerColor(129, 80, 50),
-                color15 = new SuperMap.ServerColor(160, 154, 146);
+            color0 = new SuperMap.ServerColor(198, 244, 240),
+            color1 = new SuperMap.ServerColor(176, 244, 188),
+            color2 = new SuperMap.ServerColor(218, 251, 178),
+            color3 = new SuperMap.ServerColor(220, 236, 145),
+            color4 = new SuperMap.ServerColor(96, 198, 66),
+            color5 = new SuperMap.ServerColor(20, 142, 53),
+            color6 = new SuperMap.ServerColor(85, 144, 55),
+            color7 = new SuperMap.ServerColor(171, 168, 38),
+            color8 = new SuperMap.ServerColor(235, 165, 9),
+            color9 = new SuperMap.ServerColor(203, 89, 2),
+            color10 = new SuperMap.ServerColor(157, 25, 1),
+            color11 = new SuperMap.ServerColor(118, 15, 3),
+            color12 = new SuperMap.ServerColor(112, 32, 7),
+            color13 = new SuperMap.ServerColor(106, 45, 12),
+            color14 = new SuperMap.ServerColor(129, 80, 50),
+            color15 = new SuperMap.ServerColor(160, 154, 146);
         for (var i = -4; i < 2197; i++) {
             var num = parseInt(i / 135);
             var item = new SuperMap.ThemeGridUniqueItem();
@@ -126,6 +126,7 @@
             themes: [themeGridUnique]
         });
 
+        var extent = [114.59, 37.76, 119.51, 42.31];
         new ol.supermap.ThemeService(url).getThemeInfo(themeParameters, function (serviceResult) {
             var result = serviceResult.result;
             if (result && result.newResourceID) {
@@ -136,6 +137,10 @@
                         cacheEnabled: false,
                         transparent: true,
                         layersID: result.newResourceID,
+                        tileGrid: new ol.tilegrid.TileGrid({
+                            extent: extent,
+                            resolutions: options.tileGrid.getResolutions()
+                        }),
                         opaque: true
                     })
                 });

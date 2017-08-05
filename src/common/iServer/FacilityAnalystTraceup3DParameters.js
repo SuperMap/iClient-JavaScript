@@ -1,9 +1,5 @@
-﻿/*
- * Class: SuperMap.FacilityAnalystTraceup3DParameters
- * 上游追踪资源参数类
- */
-require('./FacilityAnalyst3DParameters');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
 
 /**
  * @class SuperMap.FacilityAnalystTraceup3DParameters
@@ -16,32 +12,24 @@ var SuperMap = require('../SuperMap');
  *         isUncertainDirectionValid -{Boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
  *                                              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
  */
-SuperMap.FacilityAnalystTraceup3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
+export default  class FacilityAnalystTraceup3DParameters extends FacilityAnalyst3DParameters {
 
     /*
      * Constructor: SuperMap.FacilityAnalystTraceup3DParameters
      * 上游追踪资源参数类构造函数。
      */
-    initialize: function (options) {
-        var me = this;
-        if (!options) {
-            return;
-        }
-        SuperMap.Util.extend(this, options);
-    },
+    constructor(options) {
+        super(options);
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        var me = this;
-        me.edgeID = null;
-        me.nodeID = null;
-        me.weightName = null;
-        me.isUncertainDirectionValid = null;
-    },
+    destroy() {
+        super.destroy();
+    }
 
-    CLASS_NAME: "SuperMap.FacilityAnalystTraceup3DParameters"
-});
+    CLASS_NAME = "SuperMap.FacilityAnalystTraceup3DParameters"
+}
 
-module.exports = SuperMap.FacilityAnalystTraceup3DParameters;
+SuperMap.FacilityAnalystTraceup3DParameters = FacilityAnalystTraceup3DParameters;

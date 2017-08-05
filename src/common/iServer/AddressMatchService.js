@@ -1,54 +1,53 @@
-var ServiceBase = require('./ServiceBase');
-var SuperMap = require('../SuperMap');
-var Request = require('../util/FetchRequest');
-require('./GeoCodingParameter');
-require('./GeoDecodingParameter');
+import SuperMap from '../SuperMap';
+import CommonServiceBase from './CommonServiceBase';
+import {FetchRequest} from '../util/FetchRequest';
+import GeoCodingParameter from './GeoCodingParameter';
+import GeoDecodingParameter from './GeoDecodingParameter';
 
 /**
  * @class SuperMap.AddressMatchService
-   @constructs SuperMap.AddressMatchService
+ * @constructs SuperMap.AddressMatchService
  * @classdesc
  * 地址匹配服务，包括正向匹配和反向匹配。
  * @api
 
  */
-
-SuperMap.AddressMatchService = SuperMap.Class(ServiceBase, {
+export default class AddressMatchService extends CommonServiceBase {
     /**
      *
-     * @method SuperMap.AddressMatchService.prototype.initialize
+     * @method SuperMap.AddressMatchService.initialize
      * @param options - {Object} 参数。
      * @param url {string}
      */
-    initialize: function (url, options) {
-        ServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
-    destroy: function () {
-        ServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
-     * @function SuperMap.AddressMatchService.prototype.code
+     * @method SuperMap.AddressMatchService.code
      * @param url {string} 正向地址匹配服务地址
      * @param params {object} 正向地址匹配服务参数
      */
-    code: function (url, params) {
+    code(url, params) {
         this.processAsync(url, params);
-    },
+    }
 
     /**
-     * @method SuperMap.AddressMatchService.prototype.decode
+     * @method SuperMap.AddressMatchService.decode
      * @param url {string} 反向地址匹配服务地址
      * @param params {object} 反向地址匹配服务参数
      */
-    decode: function (url, params) {
+    decode(url, params) {
         this.processAsync(url, params);
-    },
+    }
 
-    processAsync: function (url, params) {
+    processAsync(url, params) {
         var me = this;
-        return Request.get(url, params).then(function (response) {
+        return FetchRequest.get(url, params).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result) {
@@ -59,17 +58,16 @@ SuperMap.AddressMatchService = SuperMap.Class(ServiceBase, {
         }).catch(function (e) {
             me.eventListeners.processFailed({error: e});
         });
-    },
+    }
 
-    serviceProcessCompleted: function (result) {
-        ServiceBase.prototype.serviceProcessCompleted.apply(this, arguments);
-    },
+    serviceProcessCompleted(result) {
+        super.serviceProcessCompleted(result);
+    }
 
-    serviceProcessFailed: function (result) {
-        ServiceBase.prototype.serviceProcessFailed.apply(this, arguments);
-    },
+    serviceProcessFailed(result) {
+        super.serviceProcessFailed(result);
+    }
 
-    CLASS_NAME: "SuperMap.AddressMatchService"
-});
-
-module.exports = SuperMap.AddressMatchService;
+    CLASS_NAME = "SuperMap.AddressMatchService";
+}
+SuperMap.AddressMatchService = AddressMatchService;

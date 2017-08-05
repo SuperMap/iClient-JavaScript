@@ -1,5 +1,10 @@
+import SuperMap from '../SuperMap';
+import './VisualizationBase';
+
+const ThemeFeature = SuperMap.Feature.Theme;
+
 /**
- * Class: SuperMap.Feature.Theme.Graph
+ * @class  SuperMap.Feature.Theme.Graph
  * 统计专题要素基类，此类定义了统计专题要素基础模型，具体的图表模型通过继承此类，在子类中实现 assembleShapes 方法。
  *
  * 统计专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <SuperMap.Feature.Theme.Graph::setting> 的基础属性只有 7 个，
@@ -10,26 +15,25 @@
  * Inherits:
  *  - <SuperMap.Feature.Theme>
  */
-var SuperMap = require('../SuperMap');
-SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
+export default  class Graph extends ThemeFeature {
 
     /**
      * APIProperty: shapeFactory
      * {SuperMap.Feature.ShapeFactory} 内置的图形工厂对象，调用其 createShape 方法创建图形。
      */
-    shapeFactory: null,
+    shapeFactory = null;
 
     /**
      * Property: shapeParameters
      * {Object} 当前图形参数对象，<SuperMap.Feature.ShapeParameters> 的子类对象。
      */
-    shapeParameters: null,
+    shapeParameters = null;
 
     /**
      * Property: RelativeCoordinate
      * {bool} 图形是否已经计算了相对坐标
      */
-    RelativeCoordinate: false,
+    RelativeCoordinate = false;
 
     /**
      * APIProperty: setting
@@ -51,57 +55,57 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
      * 除了以上 7 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同。
      * 请在此类的子类中查看 setting 对象的可设属性和属性含义。
      */
-    setting: null,
+    setting = null;
 
     /**
      * APIProperty: origonPoint
      * {Array{Number}} {ReadOnly} 专题要素（图表）原点，图表左上角点像素坐标，是长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
-    origonPoint: null,
+    origonPoint = null;
 
     /**
      * APIProperty: chartBox
      * {Array{Number}} {ReadOnly} 专题要素（图表）区域，即图表框，长度为 4 的一维数组，数组的 4 个元素依次表示图表框左端 x 坐标值、
      * 下端 y坐标值、 右端 x坐标值、 上端 y 坐标值；[left, bottom, right, top]。
      */
-    chartBox: null,
+    chartBox = null;
 
     /**
      * APIProperty: chartBounds
      * {SuperMap.Bounds} {ReadOnly} 图表 Bounds 随着 lonlat、XOffset、YOffset 更新，注意 chartBounds 是图表像素范围，不是地理范围。
      */
-    chartBounds: null,
+    chartBounds = null;
 
     /**
      * APIProperty: width
      * {Number} {ReadOnly} 专题要素（图表）宽度 ，必设属性。
      */
-    width: null,
+    width = null;
 
     /**
      * APIProperty: height
      * {Number} {ReadOnly} 专题要素（图表）高度 ，必设属性。
      */
-    height: null,
+    height = null;
 
     /**
      * APIProperty: XOffset
      * {Number} {ReadOnly} 专题要素（图表）在 X 方向上的偏移值，单位像素。
      */
-    XOffset: 0,
+    XOffset = 0;
 
     /**
      * APIProperty: YOffset
      * {Number} {ReadOnly} 专题要素（图表）在 Y 方向上的偏移值，单位像素。
      */
-    YOffset: 0,
+    YOffset = 0;
 
     /**
      * APIProperty: DVBParameter
      * {Array{Number}} {ReadOnly} 数据视图框参数，长度为 4 的一维数组（数组元素值 >= 0），[leftOffset, bottomOffset, rightOffset, topOffset]，chartBox 内偏距值。
      * 此属性用于指定数据视图框 dataViewBox 的范围。
      */
-    DVBParameter: null,
+    DVBParameter = null;
 
     /**
      * APIProperty: dataViewBox
@@ -110,63 +114,63 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
      * dataViewBox 是统计专题要素最核心的内容，它负责解释数据在一个像素区域里的数据可视化含义，
      * 这种含义用可视化图形表达出来，这些表示数据的图形和一些辅助图形组合在一起构成统计专题图表。
      */
-    dataViewBox: null,
+    dataViewBox = null;
 
     /**
      * APIProperty: DVBCodomain
      * {Array{Number}} {ReadOnly} 数据视图框的内允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
      * dataViewBox 中允许的数据范围，对数据溢出值域范围情况的处理需要在 assembleShapes 中进行。
      */
-    DVBCodomain: null,
+    DVBCodomain = null;
 
     /**
      * APIProperty: DVBCenterPoint
      * {Array{Number}} {ReadOnly} 数据视图框中心点，长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
-    DVBCenterPoint: null,
+    DVBCenterPoint = null;
 
     /**
      * APIProperty: DVBUnitValue
      * {String} {ReadOnly} 单位值。在 assembleShapes() 中初始化其具体意义，例如：饼图的 DVBUnitValue 可以定义为"360/数据总和" ，
      * 折线图的 DVBUnitValue 可以定义为 "DVBCodomain/DVBHeight"。
      */
-    DVBUnitValue: null,
+    DVBUnitValue = null;
 
     /**
      * APIProperty: DVBOrigonPoint
      * {Array{Number}} {ReadOnly} 数据视图框原点，数据视图框左上角点，长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
-    DVBOrigonPoint: null,
+    DVBOrigonPoint = null;
 
     /**
      * APIProperty: DVBWidth
      * {Number} {ReadOnly} 数据视图框宽度。
      */
-    DVBWidth: null,
+    DVBWidth = null;
 
     /**
      * APIProperty: DVBHeight
      * {Number} {ReadOnly} 数据视图框高度。
      */
-    DVBHeight: null,
+    DVBHeight = null;
 
     /**
      * Property: origonPointOffset
      * {Array{Number}} {ReadOnly} 数据视图框原点相对于图表框的原点偏移量，长度为 2 的一维数组，第一个元素表示 x 偏移量，第二个元素表示 y 偏移量。
      */
-    origonPointOffset: null,
+    origonPointOffset = null;
 
     /**
      * APIProperty: fields
      * {Array{String}} 数据（ <SuperMap.Feature.Vector> ）属性字段。
      */
-    fields: null,
+    fields = null;
 
     /**
      * APIProperty: dataValues
      * {Array{Number}} 图表展示的数据值，通过 fields 从数据（feature）属性中获得。
      */
-    dataValues: null,
+    dataValues = null;
 
     /**
      * Constructor: SuperMap.Feature.Theme.Graph
@@ -182,8 +186,8 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
      * Returns:
      * {SuperMap.Feature.Theme.Graph} 返回一个统计专题要素。
      */
-    initialize: function (data, layer, fields, setting, lonlat, options) {
-        SuperMap.Feature.Theme.prototype.initialize.apply(this, arguments);
+    constructor(data, layer, fields, setting, lonlat, options) {
+        super(data, layer, fields, setting, lonlat, options);
         var me = this;
         // 图表位置
         if (lonlat) {
@@ -203,13 +207,13 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
         me.fields = fields ? fields : [];
 
         me.shapeFactory = new SuperMap.Feature.ShapeFactory();
-    },
+    }
 
     /**
      * APIMethod: destroy
      * 销毁专题要素。
      */
-    destroy: function () {
+    destroy() {
         this.shapeFactory = null;
         this.shapeParameters = null;
         this.width = null;
@@ -231,8 +235,9 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
         this.fields = null;
         this.dataValues = null;
         this.setting = null;
-        SuperMap.Feature.Theme.prototype.destroy.apply(this, arguments);
-    },
+        super.destroy();
+    }
+
 
     /**
      * APIMethod: initBaseParameter
@@ -254,7 +259,7 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
      * Returns:
      * {Boolean} 初始化参数是否成功。
      */
-    initBaseParameter: function () {
+    initBaseParameter() {
         // 参数初始化是否成功
         var isSuccess = true;
 
@@ -339,7 +344,8 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
         this.origonPointOffset = [this.DVBOrigonPoint[0] - op[0], this.DVBOrigonPoint[1] - op[1]];
 
         return isSuccess;
-    },
+    }
+
 
     /**
      * Method: resetLocation
@@ -351,7 +357,7 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
      * Returns:
      * {Array} - 新专题要素像素参考位置。长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
-    resetLocation: function (lonlat) {
+    resetLocation(lonlat) {
         if (lonlat) this.lonlat = lonlat;
 
         // 获取地理位置对应的像素坐标 newLocalLX
@@ -372,23 +378,25 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
         this.resetLinearGradient();
 
         return loc;
-    },
+    }
+
 
     /**
      * Method: resetLinearGradient
      * resetLocation中调用 图表的相对坐标存在的时候，重新计算渐变的颜色
      * PS: (目前用于二维柱状图渐变色 所以子类实现此方法)
      */
-    resetLinearGradient: function () {
+    resetLinearGradient() {
         //子类实现此方法
-    },
+    }
+
 
     /**
      * APIMethod: shapesConvertToRelativeCoordinate
      * 将（构成图表）图形的节点转为相对坐标表示，此函数必须且只能在 assembleShapes() 结束时调用。
      *
      */
-    shapesConvertToRelativeCoordinate: function () {
+    shapesConvertToRelativeCoordinate() {
         var shapes = this.shapes;
         var shapeROP = this.location;
         for (var i = 0, len = shapes.length; i < len; i++) {
@@ -417,7 +425,8 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
             }
         }
         this.RelativeCoordinate = true;
-    },
+    }
+
 
     /**
      * APIMethod: assembleShapes
@@ -476,17 +485,19 @@ SuperMap.Feature.Theme.Graph = SuperMap.Class(SuperMap.Feature.Theme, {
      * (end)
      *
      */
-    assembleShapes: function () {
+    assembleShapes() {
         //子类必须实现此方法
-    },
+    }
+
 
     //地理坐标转为像素坐标。
-    getLocalXY: function (lonlat) {
+    getLocalXY(lonlat) {
         return this.layer.getLocalXY(lonlat);
-    },
+    }
 
-    CLASS_NAME: "SuperMap.Feature.Theme.Graph"
-});
+
+    CLASS_NAME = "SuperMap.Feature.Theme.Graph"
+}
 
 /**
  * APIFunction: SuperMap.Feature.Theme.getDataValues
@@ -530,4 +541,4 @@ SuperMap.Feature.Theme.getDataValues = function (data, fields, decimalNumber) {
         return false;
     }
 };
-module.exports = SuperMap.Feature.Theme.Graph;
+SuperMap.Feature.Theme.Graph = Graph;

@@ -1,34 +1,35 @@
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+
 /**
  * @class SuperMap.iPortalServicesQueryParam
  * @classdesc iPortal服务查询参数
  *
  */
 
-SuperMap.iPortalServicesQueryParam = SuperMap.Class({
+export default  class IPortalServicesQueryParam {
 
-    tags: [],
-    userNames: '',
-    types: [],
-    checkStatus: '',
-    offline: false,
-    orderBy: '',
-    orderType: '',
-    keywords: [],
-    currentPage: 0,
-    pageSize: 0,
-    isBatch: false,
-    dirIds: [],
-    isNotInDir: false,
-    filterFields: [],
-    authorizedOnly: false,
+    tags = [];
+    userNames = '';
+    types = [];
+    checkStatus = '';
+    offline = false;
+    orderBy = '';
+    orderType = '';
+    keywords = [];
+    currentPage = 0;
+    pageSize = 0;
+    isBatch = false;
+    dirIds = [];
+    isNotInDir = false;
+    filterFields = [];
+    authorizedOnly = false;
 
-    initialize: function (params) {
+    constructor(params) {
         params = params || {};
         SuperMap.Util.extend(this, params);
     }
 
-});
+}
 
-module.exports = SuperMap.iPortalServicesQueryParam;
+SuperMap.iPortalServicesQueryParam = IPortalServicesQueryParam;
 

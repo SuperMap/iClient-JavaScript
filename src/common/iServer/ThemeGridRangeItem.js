@@ -1,15 +1,11 @@
-﻿/*
- * Class: SuperMap.ThemeGridRangeItem
- * 栅格分段专题图子项类。
- * 在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。
- * 本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。
- */
-var SuperMap = require('../SuperMap');
-var ServerColor = require('./ServerColor');
+﻿import SuperMap from '../SuperMap';
+import ServerColor from './ServerColor';
 
 /**
  * @class SuperMap.ThemeGridRangeItem
- * @description 栅格分段专题图子项类。
+ * @description 栅格分段专题图子项类。<br>
+ *              在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。<br>
+ *              本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。<br>
  * @param options - {Object} 可选参数。如：<br>
  *        caption - {String} 栅格分段专题图子项的标题。<br>
  *        color - {SuperMap.ServerColor}栅格分段专题图中每一个分段专题图子项的对应的颜色。<br>
@@ -17,35 +13,35 @@ var ServerColor = require('./ServerColor');
  *        start - {Number} 栅格分段专题图子项的起始值。<br>
  *        visible - {Boolean} 栅格分段专题图子项是否可见。
  */
-SuperMap.ThemeGridRangeItem = SuperMap.Class({
+export default  class ThemeGridRangeItem {
 
     /**
      * APIProperty: caption
      * @member SuperMap.ThemeGridRangeItem.prototype.caption -{String}
      * @description 栅格分段专题图子项的标题。
      */
-    caption: null,
+    caption = null;
 
     /**
      * APIProperty:color
      * @member @member SuperMap.ThemeGridRangeItem.prototype.color -{SuperMap.ServerColor}
      * @description 栅格分段专题图中每一个分段专题图子项的对应的颜色。
      */
-    color: null,
+    color = null;
 
     /**
      * APIProperty: end
      * @member SuperMap.ThemeGridRangeItem.prototype.end -{Number}
      * @description 栅格分段专题图子项的终止值，即该段专题值范围的最大值，默认值为 0。
      */
-    end: 0,
+    end = 0;
 
     /**
      * APIProperty: start
      * @member SuperMap.ThemeGridRangeItem.prototype.start -{Number}
      * @description 栅格分段专题图子项的起始值，即该段专题值范围的最小值，默认值为 0。
      */
-    start: 0,
+    start = 0;
 
 
     /**
@@ -53,26 +49,26 @@ SuperMap.ThemeGridRangeItem = SuperMap.Class({
      * @member SuperMap.ThemeGridRangeItem.prototype.visible -{Boolean}
      * @description 栅格分段专题图子项是否可见。默认为 true。
      */
-    visible: true,
+    visible = true;
 
     /*
      * Constructor: SuperMap.ThemeGridRangeItem
      * 栅格分段专题图子项类构造函数。
      */
-    initialize: function (options) {
+    constructor(options) {
         var me = this;
         me.color = new ServerColor();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
 
     /**
      * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.caption = null;
         me.end = null;
@@ -83,13 +79,13 @@ SuperMap.ThemeGridRangeItem = SuperMap.Class({
             me.color = null;
         }
         me.visible = null;
-    },
+    }
 
     /*
      * Method: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */
-    toServerJSONObject: function () {
+    toServerJSONObject() {
         var obj = {};
         obj = SuperMap.Util.copyAttributes(obj, this);
         if (obj.color) {
@@ -98,15 +94,17 @@ SuperMap.ThemeGridRangeItem = SuperMap.Class({
             }
         }
         return obj;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.ThemeGridRangeItem"
-});
-SuperMap.ThemeGridRangeItem.fromObj = function (obj) {
-    if (!obj) return;
-    var res = new SuperMap.ThemeGridRangeItem();
-    SuperMap.Util.copy(res, obj);
-    res.color = SuperMap.ServerColor.fromJson(obj.color);
-    return res;
-};
-module.exports = SuperMap.ThemeGridRangeItem;
+    static fromObj(obj) {
+        if (!obj) return;
+        var res = new ThemeGridRangeItem();
+        SuperMap.Util.copy(res, obj);
+        res.color = ServerColor.fromJson(obj.color);
+        return res;
+    }
+
+    CLASS_NAME = "SuperMap.ThemeGridRangeItem"
+}
+
+SuperMap.ThemeGridRangeItem = ThemeGridRangeItem;

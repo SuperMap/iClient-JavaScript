@@ -1,5 +1,5 @@
-var L = require("leaflet");
-L.Symbolizer = L.Class.extend({
+import L from "leaflet";
+export var Symbolizer = L.Class.extend({
 
     initialize: function (feature) {
         this.properties = feature.properties;
@@ -47,4 +47,3 @@ L.Symbolizer = L.Class.extend({
     },
     _clickTolerance: L.Path.prototype._clickTolerance
 });
-module.exports = L.Symbolizer;

@@ -1,20 +1,13 @@
-﻿/*
- * Class: SuperMap.MeasureService
- * 量算服务类。
- * 该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
- *
- * Inherits from:
- *  - <SuperMap.ServiceBase>
- */
-require('../REST');
-require('./ServiceBase');
-require('./MeasureParameters');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import CommonServiceBase from './CommonServiceBase';
+import MeasureParameters from './MeasureParameters';
+import {MeasureMode} from '../REST';
+
 /**
  * @class SuperMap.MeasureService
  * @description 量算服务类。
  * 该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
- * @augments SuperMap.ServiceBase
+ * @augments SuperMap.CommonServiceBase
  * @example
  * (start code)
  * var myMeasuerService = new SuperMap.MeasureService(url, {
@@ -29,13 +22,13 @@ var SuperMap = require('../SuperMap');
  *         eventListeners - {Object} 需要被注册的监听器对象。
  *         measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
  */
-SuperMap.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
+export default class MeasureService extends CommonServiceBase {
 
     /**
      * @member SuperMap.MeasureService.measureMode -{SuperMap.MeasureMode}
      * @description 量算模式，包括距离量算模式和面积量算模式。默认值为：MeasureMode.DISTANCE 。
      */
-    measureMode: SuperMap.MeasureMode.DISTANCE,
+    measureMode = MeasureMode.DISTANCE;
 
     /**
      * @function SuperMap.MeasureService.initialize
@@ -45,28 +38,28 @@ SuperMap.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
      *         eventListeners - {Object} 需要被注册的监听器对象。
      *         measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
      */
-    initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+    constructor(url, options) {
+        super(url, options);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         var me = this;
         me.measureMode = null;
-    },
+    }
 
     /**
      * @function SuperMap.MeasureService.processAsync
      * @description 负责将客户端的量算参数传递到服务端。
      * @param params - {SuperMap.MeasureParameters} 量算参数。
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -80,7 +73,7 @@ SuperMap.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
             return;
         }
         end = me.url.substr(me.url.length - 1, 1);
-        if (me.measureMode === SuperMap.MeasureMode.AREA) {
+        if (me.measureMode === MeasureMode.AREA) {
             if (me.isInTheSameDomain) {
                 me.url += ((end === "/") ? "area.json?" : "/area.json?");
             }
@@ -125,9 +118,9 @@ SuperMap.MeasureService = SuperMap.Class(SuperMap.ServiceBase, {
             failure: me.serviceProcessFailed
         });
 
-    },
+    }
 
-    CLASS_NAME: "SuperMap.MeasureService"
-});
+    CLASS_NAME = "SuperMap.MeasureService"
+}
 
-module.exports = SuperMap.MeasureService;
+SuperMap.MeasureService = MeasureService;

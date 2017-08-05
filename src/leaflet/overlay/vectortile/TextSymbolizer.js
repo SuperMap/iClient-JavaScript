@@ -1,9 +1,9 @@
-require('./Symbolizer');
-require('./CanvasRenderer');
-require('./SVGRenderer');
-var L = require("leaflet");
-L.TextSymbolizer = L.Path.extend({
-    includes: L.Symbolizer.prototype,
+import {Symbolizer} from './Symbolizer';
+import {CanvasRenderer} from './CanvasRenderer';
+import {SVGRenderer} from './SVGRenderer';
+import L from "leaflet";
+export var TextSymbolizer = L.Path.extend({
+    includes: Symbolizer.prototype,
 
     options: {
         color: 'white',
@@ -23,7 +23,7 @@ L.TextSymbolizer = L.Path.extend({
     },
 
     initialize: function (feature, pxPerExtent) {
-        L.Symbolizer.prototype.initialize.call(this, feature);
+        Symbolizer.prototype.initialize.call(this, feature);
         this._makeFeatureParts(feature, pxPerExtent);
         this.options.offsetX = pxPerExtent || 1;
         this.options.offsetY = pxPerExtent || 1;
@@ -42,7 +42,7 @@ L.TextSymbolizer = L.Path.extend({
         }
         var options = this.options;
         this._pxBounds = L.bounds(this._point, this._point);
-        L.Symbolizer.prototype.render.apply(this, [renderer, style]);
+        Symbolizer.prototype.render.apply(this, [renderer, style]);
         this.options = L.Util.extend(options, style);
         this._updatePath();
     },
@@ -65,7 +65,7 @@ L.TextSymbolizer = L.Path.extend({
 
     updateStyle: function (renderer, style) {
         this._updateBounds();
-        return L.Symbolizer.prototype.updateStyle.call(this, renderer, style);
+        return Symbolizer.prototype.updateStyle.call(this, renderer, style);
     },
 
 
@@ -82,7 +82,7 @@ L.TextSymbolizer = L.Path.extend({
         return false;
     }
 });
-L.Canvas.Renderer.include({
+CanvasRenderer.include({
     _getTextWidth: function (layer) {
         return this._ctx.measureText(layer._text).width;
     },
@@ -122,7 +122,7 @@ L.Canvas.Renderer.include({
         ctx.rotate(options.rotation);
     }
 });
-L.SVG.Renderer.include({
+SVGRenderer.include({
     _getTextWidth: function (layer) {
         return layer._path.getComputedTextLength() || 0;
     },
@@ -130,7 +130,7 @@ L.SVG.Renderer.include({
     _initPath: function (layer) {
         var path;
 
-        if (L.TextSymbolizer && layer instanceof L.TextSymbolizer) {
+        if (TextSymbolizer && layer instanceof TextSymbolizer) {
             path = layer._path = L.SVG.create("text");
             path.textContent = layer._text;
         } else {
@@ -184,4 +184,3 @@ L.SVG.Renderer.include({
 
 
 });
-module.exports = L.TextSymbolizer;

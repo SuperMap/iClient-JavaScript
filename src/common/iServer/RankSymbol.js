@@ -1,3 +1,6 @@
+import SuperMap from '../SuperMap';
+import Graph from './Graph';
+
 /**
  * Class: SuperMap.Feature.Theme.RankSymbol
  * 符号专题要素基类，此类定义了符号专题要素基础模型，具体的图表模型通过继承此类，在子类中实现 assembleShapes 方法。
@@ -10,10 +13,7 @@
  * Inherits:
  *  - <SuperMap.Feature.Theme.Graph>
  */
-var SuperMap = require('../SuperMap');
-require('./Graph');
-
-SuperMap.Feature.Theme.RankSymbol = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
+export default  class RankSymbol extends Graph {
     /**
      * APIProperty: setting
      * {Object} 符号配置对象，该对象控制着图表的可视化显示。
@@ -32,7 +32,7 @@ SuperMap.Feature.Theme.RankSymbol = SuperMap.Class(SuperMap.Feature.Theme.Graph,
      * 除了以上 5 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同。
      * 请在此类的子类中查看 setting 对象的可设属性和属性含义。
      */
-    setting: null,
+    setting = null;
 
 
     /**
@@ -49,8 +49,8 @@ SuperMap.Feature.Theme.RankSymbol = SuperMap.Class(SuperMap.Feature.Theme.Graph,
      * Returns:
      * {SuperMap.Feature.Theme.RankSymbol} 返回一个统计专题要素。
      */
-    initialize: function (data, layer, fields, setting, lonlat, options) {
-        SuperMap.Feature.Theme.Graph.prototype.initialize.apply(this, arguments);
+    constructor(data, layer, fields, setting, lonlat, options) {
+        super(data, layer, fields, setting, lonlat, options);
 
         // 图表位置
         if (lonlat) {
@@ -71,16 +71,17 @@ SuperMap.Feature.Theme.RankSymbol = SuperMap.Class(SuperMap.Feature.Theme.Graph,
         this.fields = fields ? fields : [];
 
         this.shapeFactory = new SuperMap.Feature.ShapeFactory();
-    },
+    }
 
     /**
      * APIMethod: destroy
      * 销毁专题要素。
      */
-    destroy: function () {
+    destroy() {
         this.setting = null;
-        SuperMap.Feature.Theme.Graph.prototype.destroy.apply(this, arguments);
-    },
+        super.destroy();
+    }
+
 
     /**
      * APIMethod: initBaseParameter
@@ -100,7 +101,7 @@ SuperMap.Feature.Theme.RankSymbol = SuperMap.Class(SuperMap.Feature.Theme.Graph,
      * Returns:
      * {Boolean} 初始化参数是否成功。
      */
-    initBaseParameter: function () {
+    initBaseParameter() {
         // 参数初始化是否成功
         var isSuccess = true;
 
@@ -173,8 +174,10 @@ SuperMap.Feature.Theme.RankSymbol = SuperMap.Class(SuperMap.Feature.Theme.Graph,
         this.origonPointOffset = [this.DVBOrigonPoint[0] - op[0], this.DVBOrigonPoint[1] - op[1]];
 
         return isSuccess;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.Feature.Theme.RankSymbol"
-});
-module.exports = SuperMap.Feature.Theme.RankSymbol;
+
+    CLASS_NAME = "SuperMap.Feature.Theme.RankSymbol"
+}
+
+SuperMap.Feature.Theme.RankSymbol = RankSymbol;

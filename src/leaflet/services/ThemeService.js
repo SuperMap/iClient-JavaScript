@@ -1,16 +1,6 @@
-﻿/*
- * Class: ThemeService
- * 地图信息服务类
- * 用法：
- *      L.supermap.themeService(url,{
- *            projection:projection
- *      }).getThemeInfo(params,function(result){
- *           //doSomething
- *      });
- */
-var L = require("leaflet");
-var ServiceBase = require('./ServiceBase');
-var SuperMapThemeService = require('../../common/iServer/ThemeService');
+﻿import L from "leaflet";
+import {ServiceBase} from './ServiceBase';
+import SuperMapThemeService from '../../common/iServer/ThemeService';
 /**
  * @class L.supermap.ThemeService
  * @description 专题图服务类
@@ -26,7 +16,7 @@ var SuperMapThemeService = require('../../common/iServer/ThemeService');
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-var ThemeService = ServiceBase.extend({
+export var ThemeService = ServiceBase.extend({
 
 
     /**
@@ -62,8 +52,8 @@ var ThemeService = ServiceBase.extend({
     }
 });
 
-L.supermap.themeService = function (url, options) {
+export var themeService = function (url, options) {
     return new ThemeService(url, options);
 };
 
-module.exports = ThemeService;
+L.supermap.themeService = themeService;

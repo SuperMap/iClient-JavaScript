@@ -1,4 +1,7 @@
-﻿/**
+﻿import SuperMap from '../SuperMap';
+import ServerTextStyle from './ServerTextStyle';
+
+/**
  * Class: SuperMap.LabelMixedTextStyle
  * 标签文本复合风格类。
  * 该类主要用于对标签专题图中标签的文本内容进行风格设置。通过该类用户可以使标签的文字显示不同的风格，
@@ -12,15 +15,13 @@
  * 字符分段范围相应的就是(-∞，1)，[1，3)，[3，4)，[4，9)，[9，+∞)，可以看出索引号为0的字符（即“珠” ）在第一个分段内，
  * 索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
  */
-var SuperMap = require('../SuperMap');
-var ServerTextStyle = require('./ServerTextStyle');
-SuperMap.LabelMixedTextStyle = SuperMap.Class({
+export default  class LabelMixedTextStyle {
 
     /**
      * APIProperty: defaultStyle
      * {SuperMap.ServerTextStyle} 默认的文本复合风格，即 SuperMap.ServerTextStyle 各字段的默认值。
      */
-    defaultStyle: null,
+    defaultStyle = null;
 
     /**
      * APIProperty: separator
@@ -28,14 +29,14 @@ SuperMap.LabelMixedTextStyle = SuperMap.Class({
      * 比如文本 “5_109” 被 “_” 隔符为 “5” 和 “109” 两部分，假设有风格数组：style1、style2。
      * 在显示时，“5” 和分隔符 “_” 使用 Style1 风格渲染，字符串 “109” 使用 Style2 的风格。
      */
-    separator: null,
+    separator = null;
 
     /**
      * APIProperty: separatorEnabled
      * {Boolean} 文本的分隔符是否有效。分隔符有效时利用分隔符对文本进行分段；无效时根据文本中字符的位置进行分段。
      * 分段后，同一分段内的字符具有相同的显示风格。默认为 false。
      */
-    separatorEnabled: false,
+    separatorEnabled = false;
 
     /**
      * APIProperty: splitIndexes
@@ -45,14 +46,15 @@ SuperMap.LabelMixedTextStyle = SuperMap.Class({
      * 可以看出索引号为0的字符（即“珠” ）在第一个分段内，索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，
      * 索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
      */
-    splitIndexes: null,
+    splitIndexes = null;
 
     /**
      * APIProperty: styles
      * {Array(<SuperMap.ServerTextStyle>)} 文本样式集合。文本样式集合中的样式根据索引与不同分段一一对应，
      * 如果有分段没有风格对应则使用 defaultStyle。
      */
-    styles: null,
+    styles = null;
+
     /**
      * Constructor: SuperMap.LabelMixedTextStyle
      * 标签文本复合风格类构造函数，用于创建 SuperMap.LabelMixedTextStyle 类的新实例。
@@ -67,19 +69,19 @@ SuperMap.LabelMixedTextStyle = SuperMap.Class({
      * splitIndexes - {Array(Number)} 分段索引值，分段索引值用来对文本中的字符进行分段。
      * styles - {Array(<SuperMap.ServerTextStyle>)} 文本样式集合。
      */
-    initialize: function (options) {
+    constructor(options) {
         var me = this;
         me.defaultStyle = new ServerTextStyle();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
 
     /**
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         if (me.defaultStyle) {
             me.defaultStyle.destroy();
@@ -96,23 +98,25 @@ SuperMap.LabelMixedTextStyle = SuperMap.Class({
             }
             me.styles = null;
         }
-    },
-
-    CLASS_NAME: "SuperMap.LabelMixedTextStyle"
-});
-SuperMap.LabelMixedTextStyle.fromObj = function (obj) {
-    if (!obj) return;
-    var res = new SuperMap.LabelMixedTextStyle();
-    var stys = obj.styles;
-    SuperMap.Util.copy(res, obj);
-    res.defaultStyle = new ServerTextStyle(obj.defaultStyle);
-    if (stys) {
-        res.styles = [];
-        for (var i = 0, len = stys.length; i < len; i++) {
-            res.styles.push(new ServerTextStyle(stys[i]));
-        }
     }
-    return res;
-};
-module.exports = SuperMap.LabelMixedTextStyle;
+
+    static fromObj(obj) {
+        if (!obj) return;
+        var res = new LabelMixedTextStyle();
+        var stys = obj.styles;
+        SuperMap.Util.copy(res, obj);
+        res.defaultStyle = new ServerTextStyle(obj.defaultStyle);
+        if (stys) {
+            res.styles = [];
+            for (var i = 0, len = stys.length; i < len; i++) {
+                res.styles.push(new ServerTextStyle(stys[i]));
+            }
+        }
+        return res;
+    }
+
+    CLASS_NAME = "SuperMap.LabelMixedTextStyle"
+}
+
+SuperMap.LabelMixedTextStyle = LabelMixedTextStyle;
 

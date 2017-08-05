@@ -1,34 +1,34 @@
+import SuperMap from '../SuperMap';
 /**
  * Class: SuperMap.CartoCSS
  * CartoCSS解析类，其主要功能为将CartoCSS字符串解析为CartoCSS的shader属性风格对象
  */
-var SuperMap = require('../SuperMap');
-SuperMap.CartoCSS = SuperMap.Class({
-    env: null,
+export default  class CartoCSS {
+    env = null;
 
     /**
      * APIProperty: parser
      * 解析器
      * */
-    parser: null,
+    parser = null;
 
     /**
      * Property: ruleSet
      * CartoCSS规则对象
      * */
-    ruleSet: null,
+    ruleSet = null;
 
     /**
      * Property: cartoStr
      * CartoCSS样式表字符串
      * */
-    cartoStr: "",
+    cartoStr = "";
 
     /**
      * Property: shaders
      * Carto着色器集
      * */
-    shaders: null,
+    shaders = null;
 
     /**
      * Constructor: SuperMap.CartoCSS
@@ -51,7 +51,7 @@ SuperMap.CartoCSS = SuperMap.Class({
      * (end)
      *
      * */
-    initialize: function (cartoStr) {
+    constructor(cartoStr) {
         if (typeof cartoStr === "string") {
             this.cartoStr = cartoStr;
             this.env = {
@@ -65,13 +65,13 @@ SuperMap.CartoCSS = SuperMap.Class({
             this.parse(cartoStr);
             this.shaders = this.toShaders();
         }
-    },
+    }
 
     /**
      * Method: getParser
      * 获取CartoCSS解析器
      * */
-    getParser: function (env) {
+    getParser(env) {
         var input,       // LeSS input string
             i,           // current index in `input`
             j,           // current chunk
@@ -596,7 +596,7 @@ SuperMap.CartoCSS = SuperMap.Class({
                 entity: function () {
                     var property1 = $(this.entities.call) || $(this.entities.literal);
                     var property2 = $(this.entities.field) || $(this.entities.variable);
-                    var property3 =  $(this.entities.url) || $(this.entities.keyword);
+                    var property3 = $(this.entities.url) || $(this.entities.keyword);
                     return property1 || property2 || property3;
                 },
 
@@ -876,7 +876,8 @@ SuperMap.CartoCSS = SuperMap.Class({
             }
         };
         return parser;
-    },
+    }
+
 
     /**
      * Method: parse
@@ -885,11 +886,12 @@ SuperMap.CartoCSS = SuperMap.Class({
      * Returns:
      * {Object} CartoCSS规则集
      * */
-    parse: function (str) {
+    parse(str) {
         var parser = this.parser;
         var ruleSet = this.ruleSet = parser.parse(str);
         return ruleSet;
-    },
+    }
+
 
     /**
      * Method: toShaders
@@ -898,7 +900,7 @@ SuperMap.CartoCSS = SuperMap.Class({
      * Returns:
      * {Array} CartoCSS着色器集
      * */
-    toShaders: function () {
+    toShaders() {
         if (this.ruleSet) {
             var ruleset = this.ruleSet;
             if (ruleset) {
@@ -942,9 +944,9 @@ SuperMap.CartoCSS = SuperMap.Class({
                         for (var prop in shader) {
                             if (prop !== 'zoom' && prop !== 'frames' && prop !== "attachment" && prop != "elements") {
                                 //对layer-index作特殊处理以实现图层的控制
-                                if (prop === "layer-index") { 
+                                if (prop === "layer-index") {
                                     /*var getLayerIndex = Function("attributes", "zoom", "var _value = null;" + shader[prop].join('\n') + "; return _value; ");*/
-                                    var getLayerIndex = function(attributes,zoom){
+                                    var getLayerIndex = function (attributes, zoom) {
                                         var _value = null;
                                         shader[prop].join('\n');
                                         return _value;
@@ -970,9 +972,10 @@ SuperMap.CartoCSS = SuperMap.Class({
                                                 var featureFilterEnd = body.indexOf(")", featureFilterStart + 1);
                                                 var featureFilterStr = "featureId&&(featureId" + body.substring(featureFilterStart, featureFilterEnd) + ")";
                                                 /*var featureFilter = Function("featureId", "if(" + featureFilterStr + "){return true;}return false;");*/
-                                                var featureFilter = function(featureId){
-                                                    if(featureFilterStr){
-                                                        return true;}
+                                                var featureFilter = function (featureId) {
+                                                    if (featureFilterStr) {
+                                                        return true;
+                                                    }
                                                     return false;
                                                 }
                                                 Object.defineProperty(shaderArray, "featureFilter", {
@@ -1019,7 +1022,8 @@ SuperMap.CartoCSS = SuperMap.Class({
             }
         }
         return null;
-    },
+    }
+
 
     /**
      * APIMethod: getShaders
@@ -1051,24 +1055,23 @@ SuperMap.CartoCSS = SuperMap.Class({
      *   ];
      * (end)
      * */
-    getShaders: function () {
+    getShaders() {
         return this.shaders;
-    },
+    }
 
     /**
      * APIMethod: destroy
      * CartoCSS解析对象的析构函数，用于销毁CartoCSS解析对象
      * */
-    destroy: function () {
+    destroy() {
         this.cartoStr = null;
         this.env = null;
         this.ruleSet = null;
         this.parser = null;
         this.shaders = null;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.CartoCSS"
-});
+}
 
 SuperMap._mapnik_reference_latest = {
     "version": "2.1.1",
@@ -2905,13 +2908,14 @@ SuperMap._mapnik_reference_latest = {
     }
 };
 
-SuperMap.CartoCSS['mapnik_reference'] = {
+CartoCSS['mapnik_reference'] = {
     version: {
         latest: SuperMap._mapnik_reference_latest,
         '2.1.1': SuperMap._mapnik_reference_latest
     }
 };
 
+SuperMap.CartoCSS = CartoCSS;
 SuperMap.CartoCSS.Tree = {};
 
 SuperMap.CartoCSS.Tree.functions = {
@@ -3186,7 +3190,7 @@ SuperMap.CartoCSS.Tree.Call = SuperMap.Class({
                 };
             }
             if (fn !== args.length &&
-                    // support variable-arg functions like `colorize-alpha`
+                // support variable-arg functions like `colorize-alpha`
                 fn !== -1) {
                 env.error({
                     message: 'function ' + this.name + '() takes ' +
@@ -3440,8 +3444,8 @@ SuperMap.CartoCSS.Tree.Definition = SuperMap.Class({
         // Get a simple list of the symbolizers, in order
         function symbolizerList(sym_order) {
             return sym_order.sort(function (a, b) {
-                    return a[1] - b[1];
-                })
+                return a[1] - b[1];
+            })
                 .map(function (v) {
                     return v[0];
                 });
@@ -4957,5 +4961,3 @@ SuperMap.CartoCSS.Tree.Zoom.ranges = {
     22: 250,
     23: 100
 };
-
-module.exports = SuperMap.CartoCSS;

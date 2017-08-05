@@ -1,13 +1,16 @@
-require('./SVGRenderer');
-require('./CanvasRenderer');
-require("./VectorTileFormat");
-require('./VectorTile');
-var L = require("leaflet");
-L.VectorGrid = L.GridLayer.extend({
+import {SVGRenderer} from './SVGRenderer';
+import {CanvasRenderer} from './CanvasRenderer';
+import {VectorTile} from './VectorTile';
+import {TextSymbolizer} from './TextSymbolizer';
+import {VectorTileFormat} from '../VectorTileFormat';
+import {VectorFeatureType} from './VectorFeatureType';
+import L from "leaflet";
+export var VectorGrid = L.GridLayer.extend({
     options: {
         vectorTileLayerStyles: null,
-        renderer: L.supermap.svgRenderer,
-        format: L.supermap.VectorTileFormat.JSON,
+        //SVG or Canvas
+        renderer: "SVG",
+        format: VectorTileFormat.JSON,
         interactive: true
     },
 
@@ -38,12 +41,18 @@ L.VectorGrid = L.GridLayer.extend({
         var me = this;
 
         var tileSize = me.getTileSize();
-        var renderer = me.options.renderer(coords, tileSize, me.options);
+        var renderer =null;
+
+        if(me.options.renderer==="Canvas"){
+            renderer= new CanvasRenderer(coords, tileSize, me.options);
+        }else{
+            renderer= new SVGRenderer(coords, tileSize, me.options);
+        }
 
         me._vectorTiles[me._tileCoordsToKey(coords)] = renderer;
         renderer._features = {};
 
-        L.supermap.vectorTile({
+        new VectorTile({
             layer: me,
             format: me.options.format,
             coords: coords,
@@ -151,22 +160,17 @@ L.VectorGrid = L.GridLayer.extend({
     //矫正一些参数
     _extendStyle: function (style, type) {
         switch (type) {
-            case L.supermap.VectorFeatureType.POINT:
+            case VectorFeatureType.POINT:
                 return L.extend({}, L.CircleMarker.prototype.options, style);
-            case L.supermap.VectorFeatureType.LINE:
+            case VectorFeatureType.LINE:
                 return L.extend({}, L.Polyline.prototype.options, style);
-            case L.supermap.VectorFeatureType.REGION:
+            case VectorFeatureType.REGION:
                 return L.extend({}, L.Polygon.prototype.options, style);
-            case L.supermap.VectorFeatureType.TEXT:
-                return L.extend({}, L.TextSymbolizer.prototype.options, style);
+            case VectorFeatureType.TEXT:
+                return L.extend({}, TextSymbolizer.prototype.options, style);
             default:
                 break;
         }
     }
 
 });
-
-L.vectorGrid = function (options) {
-    return new L.VectorGrid(options);
-};
-module.exports = L.VectorGrid;

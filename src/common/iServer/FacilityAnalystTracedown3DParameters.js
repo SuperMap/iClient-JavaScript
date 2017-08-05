@@ -1,9 +1,5 @@
-﻿/*
- * Class: SuperMap.FacilityAnalystTracedown3DParameters
- * 下游追踪资源参数类
- */
-require('./FacilityAnalyst3DParameters');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
 
 /**
  * @class SuperMap.FacilityAnalystTracedown3DParameters
@@ -17,32 +13,24 @@ var SuperMap = require('../SuperMap');
  *                                              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
 
  */
-SuperMap.FacilityAnalystTracedown3DParameters = SuperMap.Class(SuperMap.FacilityAnalyst3DParameters, {
+export default  class FacilityAnalystTracedown3DParameters extends FacilityAnalyst3DParameters {
 
     /*
      * Constructor: SuperMap.FacilityAnalystTracedown3DParameters
      * 下游追踪资源参数类构造函数。
      */
-    initialize: function (options) {
-        var me = this;
-        if (!options) {
-            return;
-        }
-        SuperMap.Util.extend(this, options);
-    },
+    constructor(options) {
+        super(options);
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        var me = this;
-        me.edgeID = null;
-        me.nodeID = null;
-        me.weightName = null;
-        me.isUncertainDirectionValid = null;
-    },
+    destroy() {
+        super.destroy();
+    }
 
-    CLASS_NAME: "SuperMap.FacilityAnalystTracedown3DParameters"
-});
+    CLASS_NAME = "SuperMap.FacilityAnalystTracedown3DParameters"
+}
 
-module.exports = SuperMap.FacilityAnalystTracedown3DParameters;
+SuperMap.FacilityAnalystTracedown3DParameters = FacilityAnalystTracedown3DParameters;

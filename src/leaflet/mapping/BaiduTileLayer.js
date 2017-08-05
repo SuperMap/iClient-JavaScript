@@ -1,7 +1,7 @@
-require("../core/Base");
-var L = require("leaflet");
+import '../core/Base';
+import L from "leaflet";
 
-var BaiduTileLayer = L.TileLayer.extend({
+export var BaiduTileLayer = L.TileLayer.extend({
     url: "http://online{num}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1",
     options: {
         minZoom: 3,
@@ -30,8 +30,8 @@ var BaiduTileLayer = L.TileLayer.extend({
         })
     }
 });
-L.supermap.baiduTileLayer = function (url, options) {
+export var baiduTileLayer = function (url, options) {
     return new BaiduTileLayer(url, options);
 };
 
-module.exports = BaiduTileLayer;
+L.supermap.baiduTileLayer = baiduTileLayer;

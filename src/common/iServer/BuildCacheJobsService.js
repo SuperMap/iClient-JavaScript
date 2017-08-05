@@ -1,6 +1,6 @@
-var SuperMap = require('../SuperMap');
-var ProcessingServiceBase = require('./ProcessingServiceBase');
-var BuildCacheJobParameter = require('./BuildCacheJobParameter');
+import SuperMap from '../SuperMap';
+import ProcessingServiceBase from './ProcessingServiceBase';
+import BuildCacheJobParameter from './BuildCacheJobParameter';
 
 /**
  * @class SuperMap.BuildCacheJobsService
@@ -9,54 +9,53 @@ var BuildCacheJobParameter = require('./BuildCacheJobParameter');
  * @param url -{String} 大数据缓存服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-SuperMap.BuildCacheJobsService = SuperMap.Class(ProcessingServiceBase, {
 
-    /*
-     * @function SuperMap.BuildCacheJobsService.prototype.initialize
+export default  class BuildCacheJobsService extends ProcessingServiceBase {
+
+    /**
+     * @function SuperMap.BuildCacheJobsService.constructor
      * @description SuperMap.BuildCacheJobsService 的构造函数
      * @param url -{String} 大数据缓存服务地址。
      * @param options - {Object} 交互服务时所需可选参数。
      */
-    initialize: function (url, options) {
-        ProcessingServiceBase.prototype.initialize.apply(this, arguments);
+    constructor(url, options) {
+        super(url, options);
         this.url += "/mapping/buildCache";
-    },
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        ProcessingServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destory();
+    }
 
     /**
-     * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJobs
+     * @function SuperMap.BuildCacheJobsService.getBuildCacheJobs
      * @description 获取创建的大数据缓存
      */
-    getBuildCacheJobs: function () {
-        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url]);
-    },
+    getBuildCacheJobs() {
+        return super.getJobs(this.url);
+    }
 
     /**
-     * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJob
+     * @function SuperMap.BuildCacheJobsService.getBuildCacheJob
      * @description 获取指定 id的大数据缓存
      * @param id - {String} 大数据缓存id
      */
-    getBuildCacheJob: function (id) {
-        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
-    },
+    getBuildCacheJob(id) {
+        return super.getJobs(this.url + '/' + id);
+    }
 
     /**
-     * @function SuperMap.BuildCacheJobsService.prototype.addBuildCacheJob
+     * @function SuperMap.BuildCacheJobsService.addBuildCacheJob
      * @description 新建大数据缓存服务
      * @param params - {BuildCacheJobParameter}地图缓存参数类
      * @param seconds - {String} 开始创建后，获取创建成功结果的时间间隔
      */
-    addBuildCacheJob: function (params, seconds) {
-        ProcessingServiceBase.prototype.addJob.apply(this, [this.url, params, BuildCacheJobParameter, seconds]);
-    },
+    addBuildCacheJob(params, seconds) {
+        super.addJob(this.url, params, BuildCacheJobParameter, seconds);
+    }
+}
 
-    CLASS_NAME: "SuperMap.BuildCacheJobsService"
-});
-
-module.exports = SuperMap.BuildCacheJobsService;
+SuperMap.BuildCacheJobsService = BuildCacheJobsService;

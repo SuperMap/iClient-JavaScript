@@ -1,16 +1,7 @@
-﻿/*
- * Class: SuperMap.FacilityAnalystSinks3DService
- * 最近设施分析服务类(汇查找资源)
- * 最近设施分析是指在网络上给定一个事件点和一组设施点，
- * 查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
- * 该类负责将客户端指定的最近设施分析参数传递给服务端，并接收服务端返回的结果数据。
- * 最近设施分析结果通过该类支持的事件的监听函数参数获取
- * Inherits from:
- *  - <SuperMap.ServiceBase>
- */
-require('./ServiceBase');
-require('./FacilityAnalystSinks3DParameters');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import CommonServiceBase from './CommonServiceBase';
+import FacilityAnalystSinks3DParameters from './FacilityAnalystSinks3DParameters';
+
 /**
  * @class SuperMap.FacilityAnalystSinks3DService
  * @description  最近设施分析服务类(汇查找资源)<br>
@@ -18,7 +9,7 @@ var SuperMap = require('../SuperMap');
  *                查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
  *                该类负责将客户端指定的最近设施分析参数传递给服务端，并接收服务端返回的结果数据。
  *                最近设施分析结果通过该类支持的事件的监听函数参数获取
- * @augments SuperMap.ServiceBase
+ * @augments SuperMap.CommonServiceBase
  * @example
  * (start code)
  * var myFacilityAnalystSinks3DService = new SuperMap.FacilityAnalystSinks3DService(url, {
@@ -33,7 +24,7 @@ var SuperMap = require('../SuperMap');
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-SuperMap.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBase, {
+export default  class FacilityAnalystSinks3DService extends CommonServiceBase {
 
     /**
      * @function SuperMap.FacilityAnalystSinks3DService.initialize
@@ -44,23 +35,25 @@ SuperMap.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBase, {
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
+
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        SuperMap.CommonServiceBase.prototype.destroy.apply(this, arguments);
+    }
+
 
     /**
      * @function SuperMap.FacilityAnalystSinks3DService.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param params - {SuperMap.FacilityAnalystSinks3DParameters} 最近设施分析参数类(汇查找资源)
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -80,9 +73,10 @@ SuperMap.FacilityAnalystSinks3DService = SuperMap.Class(SuperMap.ServiceBase, {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
-    CLASS_NAME: "SuperMap.FacilityAnalystSinks3DService"
-});
 
-module.exports = SuperMap.FacilityAnalystSinks3DService;
+    CLASS_NAME = "SuperMap.FacilityAnalystSinks3DService"
+}
+
+SuperMap.FacilityAnalystSinks3DService = FacilityAnalystSinks3DService;

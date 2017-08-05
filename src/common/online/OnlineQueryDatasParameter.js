@@ -1,38 +1,40 @@
+import SuperMap from '../SuperMap';
+import * as OnlineResources from './OnlineResources';
+
 /**
  * Class:SuperMap.OnlineQueryDatasParameter
  *  myDatas服务资源查询参数
  */
-require('./OnlineResources');
-var SuperMap = require('../SuperMap');
-SuperMap.OnlineQueryDatasParameter = SuperMap.Class({
+export default  class OnlineQueryDatasParameter {
 
     //String[]    数据作者名。可以根据数据作者名查询，默认查询全部。
-    userNames: null,
+    userNames = null;
     //DataItemType[]    数据类型
-    types: null,
+    types = null;
     //String    文件名称。
-    fileName: null,
+    fileName = null;
     //ServiceStatus[]    服务发布状态。
-    serviceStatuses: null,
+    serviceStatuses = null;
     // String	服务 id 。
-    serviceId: null,
+    serviceId = null;
     //Integer[] 由数据项 id 组成的整型数组。
-    ids: null,
+    ids = null;
     //String[]  	关键字。
-    keywords: null,
+    keywords = null;
     //DataItemOrderBy    排序字段。
-    orderBy: null,
+    orderBy = null;
     //String[] 数据的标签。
-    tags: null,
+    tags = null;
     //FilterFields[] 用于关键字查询时的字段过滤:
-    filterFields: null,
+    filterFields = null;
 
-    initialize: function (options) {
+    constructor(options) {
         options = options || {};
         SuperMap.Util.extend(this, options)
-    },
+    }
 
-    toJSON: function () {
+
+    toJSON() {
         var me = this;
         var jsonObj = {
             "types": me.types,
@@ -51,9 +53,10 @@ SuperMap.OnlineQueryDatasParameter = SuperMap.Class({
             }
         }
         return jsonObj;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.OnlineQueryDatasParameter"
-});
 
-module.exports = SuperMap.OnlineQueryDatasParameter;
+    CLASS_NAME = "SuperMap.OnlineQueryDatasParameter"
+}
+
+SuperMap.OnlineQueryDatasParameter = OnlineQueryDatasParameter;

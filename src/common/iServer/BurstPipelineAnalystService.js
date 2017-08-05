@@ -1,6 +1,6 @@
-require('./NetworkAnalystServiceBase');
-require('./BurstPipelineAnalystParameters');
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
+import BurstPipelineAnalystParameters from './BurstPipelineAnalystParameters';
 
 /**
  * @class SuperMap.BurstPipelineAnalystService
@@ -12,7 +12,7 @@ var SuperMap = require('../SuperMap');
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  */
-SuperMap.BurstPipelineAnalystService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
+export default  class BurstPipelineAnalystService extends NetworkAnalystServiceBase {
 
     /*
      * @function SuperMap.BurstPipelineAnalystService.prototype.initialize
@@ -23,23 +23,23 @@ SuperMap.BurstPipelineAnalystService = SuperMap.Class(SuperMap.NetworkAnalystSer
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。。
      */
-    initialize: function (url, options) {
-        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @function SuperMap.BurstPipelineAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @params params - {BurstPipelineAnalystParameters} 爆管分析参数类
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -67,9 +67,9 @@ SuperMap.BurstPipelineAnalystService = SuperMap.Class(SuperMap.NetworkAnalystSer
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
-    CLASS_NAME: "SuperMap.BurstPipelineAnalystService"
-});
+    CLASS_NAME = "SuperMap.BurstPipelineAnalystService"
+}
 
-module.exports = SuperMap.BurstPipelineAnalystService;
+SuperMap.BurstPipelineAnalystService = BurstPipelineAnalystService;

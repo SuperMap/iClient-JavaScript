@@ -1,7 +1,7 @@
-require("../core/Base");
-var L = require("leaflet");
-var WMTS = require("./TileLayer.WMTS");
-var TiandituTileLayer = WMTS.extend({
+import '../core/Base';
+import L from "leaflet";
+import {WMTSLayer} from "./TileLayer.WMTS";
+export var TiandituTileLayer = WMTSLayer.extend({
     defaultURL: 'http://t{s}.tianditu.com/img_w/wmts?"',
     options: {
         layer: "img",
@@ -19,7 +19,7 @@ var TiandituTileLayer = WMTS.extend({
         L.stamp(this);
     }
 });
-L.supermap.tiandituTileLayer = function (url, options) {
+export var tiandituTileLayer = function (url, options) {
     return new TiandituTileLayer(url, options);
 };
-module.exports = TiandituTileLayer;
+L.supermap.tiandituTileLayer = tiandituTileLayer;

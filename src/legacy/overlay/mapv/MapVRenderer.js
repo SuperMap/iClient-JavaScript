@@ -1,16 +1,12 @@
+import SuperMap from '../../SuperMap';
+import {baiduMapLayer} from 'mapv';
+
 /**
  * MapV renderer
  */
+var MapVBaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
-var SuperMap = require('../../SuperMap');
-var mapv = {};
-try {
-    mapv = require("mapv");
-} catch (ex) {
-    mapv = {};
-}
-var MapVBaseLayer = mapv.baiduMapLayer ? mapv.baiduMapLayer.__proto__ : Function;
-class MapVRenderer extends MapVBaseLayer {
+export default class MapVRenderer extends MapVBaseLayer {
     constructor(map, layer, dataSet, options) {
         if (!MapVBaseLayer) {
             return;
@@ -260,4 +256,3 @@ class MapVRenderer extends MapVBaseLayer {
         this.canvasLayer.redraw();
     }
 }
-module.exports = MapVRenderer;

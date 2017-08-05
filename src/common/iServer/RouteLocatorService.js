@@ -1,17 +1,17 @@
-require('./SpatialAnalystBase');
-require('./RouteLocatorParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.RouteLocatorService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-    /**
-     * @class SuperMap.RouteLocatorService
-     * @constructs SuperMap.RouteLocatorService
-     * @classdesc
-     * 路由对象定位空间对象的服务类。
-     * @extends {SuperMap.SpatialAnalystBase}
-     * @api
-     * @example 实例化该类如下例所示：
-     * (start code)
-     * var routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
+import SuperMap from '../SuperMap';
+import SpatialAnalystBase from './SpatialAnalystBase';
+import RouteLocatorParameters from './RouteLocatorParameters';
+
+/**
+ * @class SuperMap.RouteLocatorService
+ * @constructs SuperMap.RouteLocatorService
+ * @classdesc
+ * 路由对象定位空间对象的服务类。
+ * @extends {SuperMap.SpatialAnalystBase}
+ * @api
+ * @example 实例化该类如下例所示：
+ * (start code)
+ * var routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
      *   "sourceRoute":{
      *       "type":"LINEM",
      *       "parts":[4],
@@ -43,7 +43,7 @@ SuperMap.RouteLocatorService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
      *   "offset":3,
      *   "isIgnoreGap":true
      * });
-     * var routeLocatorService = new SuperMap.RouteLocatorService(spatialAnalystURL, {
+ * var routeLocatorService = new SuperMap.RouteLocatorService(spatialAnalystURL, {
      *     eventListeners:{
      *         processCompleted:routeLocatorCompleted,
      *         processFailed:routeLocatorFailded
@@ -57,6 +57,7 @@ SuperMap.RouteLocatorService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
      * (end)
      *
      */
+export default  class RouteLocatorService extends SpatialAnalystBase {
 
     /**
      * @method SuperMap.RouteLocatorService.initialize
@@ -66,25 +67,25 @@ SuperMap.RouteLocatorService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
      * eventListeners - {Object} 需要被注册的监听器对象。
      *
      */
-    initialize: function (url, options) {
-        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
 
     /*
      * APIMethod: destroy
      * 释放资源,将引用的资源属性置空。
      */
-    destroy: function () {
-        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @method SuperMap.RouteLocatorService.processAsync
      * @description 负责将客户端的基于路由对象计算指定点M值操作的参数传递到服务端。
      * @param params - {SuperMap.RouteLocatorParameters}
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -99,7 +100,7 @@ SuperMap.RouteLocatorService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /**
      * @method SuperMap.RouteLocatorService.processAsync
@@ -107,7 +108,7 @@ SuperMap.RouteLocatorService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
      * @param params - {SuperMap.RouteLocatorParameters}
      * return {Object} 转化后的JSON字符串。
      */
-    getJsonParameters: function (params) {
+    getJsonParameters(params) {
         var jsonParameters, jsonStr = "geometry/routelocator", me = this, end;
         end = me.url.substr(me.url.length - 1, 1);
 
@@ -124,9 +125,9 @@ SuperMap.RouteLocatorService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
         me.url += "?returnContent=true";
         jsonParameters = SuperMap.Util.toJSON(params);
         return jsonParameters;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.RouteLocatorService"
-});
+    CLASS_NAME = "SuperMap.RouteLocatorService"
+}
 
-module.exports = SuperMap.RouteLocatorService;
+SuperMap.RouteLocatorService = RouteLocatorService;

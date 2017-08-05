@@ -1,18 +1,7 @@
-﻿/*
- * Class: SuperMap.FindMTSPPathsService
- * 多旅行商分析服务类
- * 多旅行商分析也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。
- * 查找经济有效的配送路径，并给出相应的行走路线。
- * 物流配送功能就是解决如何合理分配配送次序和送货路线，使配送总花费达到最小或每个配送中心的花费达到最小。
- * 该类负责将客户端指定的多旅行商分析参数传递给服务端，并接收服务端返回的结果数据。
- * 多旅行商分析结果通过该类支持的事件的监听函数参数获取
- * Inherits from:
- *  - <SuperMap.NetworkAnalystServiceBase>
- */
-require('./NetworkAnalystServiceBase');
-require('./FindMTSPPathsParameters');
-var SuperMap = require('../SuperMap');
-var GeoJSONFormat = require('../format/GeoJSON');
+﻿import SuperMap from '../SuperMap';
+import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
+import FindMTSPPathsParameters from './FindMTSPPathsParameters';
+import GeoJSON from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindMTSPPathsService
@@ -38,7 +27,7 @@ var GeoJSONFormat = require('../format/GeoJSON');
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-SuperMap.FindMTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
+export default  class FindMTSPPathsService extends NetworkAnalystServiceBase {
 
     /**
      * @function SuperMap.FindMTSPPathsService..prototype.initialize
@@ -49,23 +38,23 @@ SuperMap.FindMTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBas
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @function SuperMap.FindMTSPPathsService..prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      *@param params - {SuperMap.FindMTSPPathsParameters} 多旅行商分析服务参数类
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -87,7 +76,7 @@ SuperMap.FindMTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBas
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /*
      * Method: getJson
@@ -100,7 +89,7 @@ SuperMap.FindMTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBas
      * Returns:
      * {Object} 转化后的JSON字符串。
      */
-    getJson: function (isAnalyzeById, params) {
+    getJson(isAnalyzeById, params) {
         var jsonString = "[",
             len = params ? params.length : 0;
 
@@ -117,7 +106,7 @@ SuperMap.FindMTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBas
         }
         jsonString += ']';
         return jsonString;
-    },
+    }
 
     /*
      * Method: toGeoJSONResult
@@ -126,11 +115,11 @@ SuperMap.FindMTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBas
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
-    toGeoJSONResult: function (result) {
+    toGeoJSONResult(result) {
         if (!result || !result.pathList) {
             return null;
         }
-        var geoJSONFormat = new GeoJSONFormat();
+        var geoJSONFormat = new GeoJSON();
         result.pathList.map(function (path) {
             if (path.route) {
                 path.route = JSON.parse(geoJSONFormat.write(path.route));
@@ -146,9 +135,9 @@ SuperMap.FindMTSPPathsService = SuperMap.Class(SuperMap.NetworkAnalystServiceBas
             }
         });
         return result;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.FindMTSPPathsService"
-});
+    CLASS_NAME = "SuperMap.FindMTSPPathsService"
+}
 
-module.exports = SuperMap.FindMTSPPathsService;
+SuperMap.FindMTSPPathsService = FindMTSPPathsService;

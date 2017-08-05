@@ -1,15 +1,6 @@
-﻿/*
- * Class: SuperMap.ComputeWeightMatrixService
- * 耗费矩阵分析服务类。
- * 耗费矩阵是根据交通网络分析参数中的耗费字段来计算一个二维数组，
- * 用来存储指定的任意两点间的资源消耗。
- * 耗费矩阵分析结果通过该类支持的事件的监听函数参数获取
- * Inherits from:
- *  - <SuperMap.NetworkAnalystServiceBase>
- */
-require('./NetworkAnalystServiceBase');
-require('./ComputeWeightMatrixParameters');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import ComputeWeightMatrixParameters from './ComputeWeightMatrixParameters';
+import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
 
 /**
  * @class SuperMap.ComputeWeightMatrixService
@@ -33,7 +24,7 @@ var SuperMap = require('../SuperMap');
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-SuperMap.ComputeWeightMatrixService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
+export default class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
 
     /**
      * @function SuperMap.ComputeWeightMatrixService.prototype.initialize
@@ -44,23 +35,25 @@ SuperMap.ComputeWeightMatrixService = SuperMap.Class(SuperMap.NetworkAnalystServ
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
+
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
+
 
     /**
      * @function SuperMap.ComputeWeightMatrixService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param params - {ComputeWeightMatrixParameters} 耗费矩阵分析参数类
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -78,7 +71,7 @@ SuperMap.ComputeWeightMatrixService = SuperMap.Class(SuperMap.NetworkAnalystServ
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /*
      * Method: getJson
@@ -91,7 +84,7 @@ SuperMap.ComputeWeightMatrixService = SuperMap.Class(SuperMap.NetworkAnalystServ
      * Returns:
      * {Object} 转化后的JSON字符串。
      */
-    getJson: function (isAnalyzeById, params) {
+    getJson(isAnalyzeById, params) {
         var jsonString = "[",
             len = params ? params.length : 0;
 
@@ -108,9 +101,8 @@ SuperMap.ComputeWeightMatrixService = SuperMap.Class(SuperMap.NetworkAnalystServ
         }
         jsonString += ']';
         return jsonString;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.ComputeWeightMatrixService"
-});
-
-module.exports = SuperMap.ComputeWeightMatrixService;
+    CLASS_NAME = "SuperMap.ComputeWeightMatrixService"
+}
+SuperMap.ComputeWeightMatrixService = ComputeWeightMatrixService;

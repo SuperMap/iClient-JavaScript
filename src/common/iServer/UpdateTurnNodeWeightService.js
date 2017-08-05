@@ -1,11 +1,6 @@
-/*
- * Class:SuperMap.UpdateTurnNodeWeightService
- * 转向耗费权重更新服务类
- */
-
-require('./NetworkAnalystServiceBase');
-require('./UpdateTurnNodeWeightParameters');
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
+import UpdateTurnNodeWeightParameters from './UpdateTurnNodeWeightParameters';
 
 /**
  * @class SuperMap.UpdateTurnNodeWeightService
@@ -25,7 +20,7 @@ var SuperMap = require('../SuperMap');
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-SuperMap.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
+export default  class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
 
     /**
      * @function SuperMap.UpdateTurnNodeWeightService.prototype.initialize
@@ -35,16 +30,16 @@ SuperMap.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.NetworkAnalystSer
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @function SuperMap.UpdateTurnNodeWeightService.prototype.processAsync
@@ -62,7 +57,7 @@ SuperMap.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.NetworkAnalystSer
      *  updateTurnNodeWeightService.processAsync(updateTurnNodeWeightParam);
      * (end)
      **/
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -81,19 +76,19 @@ SuperMap.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.NetworkAnalystSer
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /*
      * Method: parse
      * 将更新服务参数解析为用‘/’做分隔的字符串
      * */
-    parse: function (params) {
+    parse(params) {
         if (!params) {
             return;
         }
         var paramStr = "";
         for (var attr in params) {
-            if (params[attr] === "" || params[attr] === "turnNodeWeight")continue;
+            if (params[attr] === "" || params[attr] === "turnNodeWeight") continue;
             switch (attr) {
                 case "nodeId":
                     paramStr += "/turnnodeweight/" + params[attr];
@@ -112,9 +107,9 @@ SuperMap.UpdateTurnNodeWeightService = SuperMap.Class(SuperMap.NetworkAnalystSer
             }
         }
         return paramStr;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.UpdateTurnNodeWeightService"
-});
+    CLASS_NAME = "SuperMap.UpdateTurnNodeWeightService"
+}
 
-module.exports = SuperMap.UpdateTurnNodeWeightService;
+SuperMap.UpdateTurnNodeWeightService = UpdateTurnNodeWeightService;

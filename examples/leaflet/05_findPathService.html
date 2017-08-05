@@ -18,7 +18,7 @@
             serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun";
     //最佳路径分析必须按照指定顺序对站点进行访问
     map = L.map('map', {
-        crs: L.supermap.NonEarthCRS({
+        crs: L.CRS.NonEarthCRS({
             bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
             origin: L.point(48.4, -55.58)
         }),

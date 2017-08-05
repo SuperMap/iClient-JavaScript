@@ -1,36 +1,36 @@
-﻿/**
+﻿import SuperMap from '../SuperMap';
+import {DataFormat} from '../REST';
+import CommonServiceBase  from './CommonServiceBase';
+/**
  * Class: SuperMap.NetworkAnalystServiceBase
  * 网络分析服务基类。
  * Inherits from:
- *  - <SuperMap.ServiceBase>
+ *  - <SuperMap.CommonServiceBase>
  */
-require('../REST');
-require('./ServiceBase');
-var SuperMap = require('../SuperMap');
-SuperMap.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
+export default  class NetworkAnalystServiceBase extends CommonServiceBase {
 
     /**
      *  Property: format
      *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
-    format: SuperMap.DataFormat.GEOJSON,
+    format = DataFormat.GEOJSON;
 
-    initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+    constructor(url, options) {
+        super(url, options);
         if (options && options.format) {
             this.format = options.format.toUpperCase();
         }
-    },
+    }
 
     /**
      * APIMethod: destroy
      * 释放资源，将引用的资源属性置空。
      */
-    destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         this.format = null;
-    },
+    }
 
     /**
      * Method: serviceProcessCompleted
@@ -39,17 +39,17 @@ SuperMap.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
-    serviceProcessCompleted: function (result) {
+    serviceProcessCompleted(result) {
         var me = this, analystResult;
         result = SuperMap.Util.transformResult(result);
-        if (result && me.format === SuperMap.DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
+        if (result && me.format === DataFormat.GEOJSON && typeof me.toGeoJSONResult === 'function') {
             analystResult = me.toGeoJSONResult(result);
         }
         if (!analystResult) {
             analystResult = result;
         }
         me.events.triggerEvent("processCompleted", {result: analystResult});
-    },
+    }
 
     /**
      * Method: toGeoJSONResult
@@ -58,11 +58,10 @@ SuperMap.NetworkAnalystServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
-    toGeoJSONResult: function (result) {
+    toGeoJSONResult(result) {
         return null;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.NetworkAnalystServiceBase"
-});
-
-module.exports = SuperMap.NetworkAnalystServiceBase;
+    CLASS_NAME = "SuperMap.NetworkAnalystServiceBase"
+}
+SuperMap.NetworkAnalystServiceBase = NetworkAnalystServiceBase;

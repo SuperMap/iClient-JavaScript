@@ -150,13 +150,13 @@
             });
         }
         var point = featureResult.result.recordsets[0].features.features[0].geometry.coordinates[count];
-        var featrue = {
+        var feature = {
             geometry: {coordinates: [point[0], point[1]], type: "Point"},
             id: 1,
             type: "Feature",
             properties: {id: count, time: new Date()}
         };
-        dataFlowService.broadcast(featrue);
+        dataFlowService.broadcast(feature);
         count += 3;
     }
 </script>

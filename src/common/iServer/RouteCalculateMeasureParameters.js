@@ -1,39 +1,41 @@
-require('./Route');
-var SuperMap = require('../SuperMap');
-SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
-    /**
-     * @class SuperMap.RouteCalculateMeasureParameters
-     * @constructs SuperMap.RouteCalculateMeasureParameters
-     * @classdesc
-     * 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
-     * @api
-     */
+import SuperMap from '../SuperMap';
+import Route from './Route';
+
+/**
+ * @class SuperMap.RouteCalculateMeasureParameters
+ * @constructs SuperMap.RouteCalculateMeasureParameters
+ * @classdesc
+ * 基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
+ * @api
+ */
+export default  class RouteCalculateMeasureParameters {
+
 
     /**
      * APIProperty: sourceRoute
      * {SuperMap.Route} 【必选参数】路由对象。该对象可以是用户自己生
      *      成或在数据源中查询得到的符合标准的路由对象；
      */
-    sourceRoute: null,
+    sourceRoute = null;
 
     /**
      * APIProperty: point
      * {Object} 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。
      */
-    point: null,
+    point = null;
 
     /**
      * APIProperty: tolerance
      * {Double} 【可选参数】容限值。
      */
-    tolerance: null,
+    tolerance = null;
 
     /**
      * APIProperty: isIgnoreGap
      * {Boolean} 【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子
      *      对象之间的距离。
      */
-    isIgnoreGap: false,
+    isIgnoreGap = false;
 
     /**
      * @method SuperMap.RouteCalculateMeasureParameters.initialize
@@ -47,7 +49,7 @@ SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
      *
      */
 
-    initialize: function (options) {
+    constructor(options) {
         if (!options) {
             return this;
         }
@@ -64,13 +66,14 @@ SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
             options.sourceRoute = routeHandle;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.sourceRoute = null;
         me.point = null;
@@ -80,9 +83,10 @@ SuperMap.RouteCalculateMeasureParameters = SuperMap.Class({
         if (me.isIgnoreGap) {
             me.isIgnoreGap = false;
         }
-    },
+    }
 
-    CLASS_NAME: "SuperMap.RouteCalculateMeasureParameters"
-});
 
-module.exports = SuperMap.RouteCalculateMeasureParameters;
+    CLASS_NAME = "SuperMap.RouteCalculateMeasureParameters"
+}
+
+SuperMap.RouteCalculateMeasureParameters = RouteCalculateMeasureParameters;

@@ -1,15 +1,8 @@
-require('../../core/Base');
-var ol = require('openlayers/dist/ol-debug');
-var MapvCanvasLayer = require('./MapvCanvasLayer');
-var mapv = {};
-try {
-    mapv = require('mapv');
-} catch (ex) {
-    mapv = {};
-}
-var BaiduMapLayer = mapv.baiduMapLayer ? mapv.baiduMapLayer.__proto__ : Function;
+import MapvCanvasLayer from './MapvCanvasLayer';
+import {baiduMapLayer} from "mapv";
+var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
-class MapvLayer extends BaiduMapLayer {
+export default class MapvLayer extends BaiduMapLayer {
 
     constructor(map, dataSet, options, source) {
         super(map, dataSet, options);
@@ -172,7 +165,4 @@ class MapvLayer extends BaiduMapLayer {
         }
         self.init(options);
     }
-
 }
-
-module.exports = MapvLayer;

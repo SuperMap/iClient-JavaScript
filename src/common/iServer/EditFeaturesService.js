@@ -1,31 +1,34 @@
-﻿require('./ServiceBase');
-require('./EditFeaturesParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
-    /**
-     * @class SuperMap.EditFeaturesService
-     * @constructs SuperMap.EditFeaturesService
-     * @classdesc
-     * 数据服务中数据集添加、更新、删除服务类。。
-     * @extends {SuperMap.ServiceBase}
-     * @api
-     * @example 例如：
-     * (start code)
-     * var myService = new SuperMap.EditFeaturesService(url, {eventListeners: {
+﻿import SuperMap from '../SuperMap';
+import {EditType} from '../REST';
+import CommonServiceBase from './CommonServiceBase';
+import EditFeaturesParameters from './EditFeaturesParameters';
+
+/**
+ * @class SuperMap.EditFeaturesService
+ * @constructs SuperMap.EditFeaturesService
+ * @classdesc
+ * 数据服务中数据集添加、更新、删除服务类。。
+ * @extends {SuperMap.CommonServiceBase}
+ * @api
+ * @example 例如：
+ * (start code)
+ * var myService = new SuperMap.EditFeaturesService(url, {eventListeners: {
      *     "processCompleted": editFeatureCompleted,
      *     "processFailed": editFeatureError
      *       }
      * };
-     * (end)
-     *
-     */
+ * (end)
+ *
+ */
+export default class EditFeaturesService extends CommonServiceBase {
 
     /**
      * Property: returnContent
      * {Boolean} 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
      *           true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
      */
-    returnContent: false,
+    returnContent = false;
+
 
     /**
      * Property: isUseBatch
@@ -33,7 +36,7 @@ SuperMap.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
      *           批量添加能够提高要素编辑效率。
      *           true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
      */
-    isUseBatch: false,
+    isUseBatch = false;
 
     /**
      * @method SuperMap.EditFeaturesService.initialize
@@ -46,8 +49,8 @@ SuperMap.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
      * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+    constructor(url, options) {
+        super(url, options);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -58,20 +61,22 @@ SuperMap.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
         } else {
             me.url += (end == "/") ? "features.jsonp?" : "/features.jsonp?";
         }
-    },
+    }
+
 
     /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         var me = this;
         me.returnContent = null;
         me.isUseBatch = null;
         me.fromIndex = null;
         me.toIndex = null;
-    },
+    }
+
 
     /*
      * APIMethod: processAsync
@@ -80,7 +85,7 @@ SuperMap.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * params - {SuperMap.EditFeaturesParameters} 编辑要素参数。
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -92,13 +97,13 @@ SuperMap.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
 
         me.returnContent = params.returnContent;
         me.isUseBatch = params.isUseBatch;
-        jsonParameters = SuperMap.EditFeaturesParameters.toJsonParameters(params);
-        if (editType === SuperMap.EditType.DELETE) {
+        jsonParameters = EditFeaturesParameters.toJsonParameters(params);
+        if (editType === EditType.DELETE) {
             ids = SuperMap.Util.toJSON(params.IDs);
             me.url += "ids=" + ids;
             method = "DELETE";
             jsonParameters = ids;
-        } else if (editType === SuperMap.EditType.UPDATE) {
+        } else if (editType === EditType.UPDATE) {
             method = "PUT";
         } else {
             if (me.isUseBatch) {
@@ -118,9 +123,8 @@ SuperMap.EditFeaturesService = SuperMap.Class(SuperMap.ServiceBase, {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
-    CLASS_NAME: "SuperMap.EditFeaturesService"
-});
-
-module.exports = SuperMap.EditFeaturesService;
+    CLASS_NAME = "SuperMap.EditFeaturesService"
+}
+SuperMap.EditFeaturesService = EditFeaturesService;

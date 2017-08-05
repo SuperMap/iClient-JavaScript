@@ -1,5 +1,5 @@
-require('./TimeControlBase');
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import TimeControlBase from './TimeControlBase';
 
 /**
  * @class SuperMap.TimeControl
@@ -17,13 +17,13 @@ var SuperMap = require('../SuperMap');
  *        repeat - {Boolean} 是否重复循环。默认为true。<br>
  *        reverse - {Boolean} 是否反向。默认为false。
  */
-SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
+export default  class TimeFlowControl extends TimeControlBase {
 
     /**
      * @member callback -{Function}
      * @description 每次刷新执行的回调函数
      */
-    callback: null,
+    callback = null;
 
     /*
      * @function SuperMap.TimeControl.prototype.initialize
@@ -37,10 +37,10 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
      *        repeat - {Boolean} 是否重复循环。默认为true。<br>
      *        reverse - {Boolean} 是否反向。默认为false。
      */
-    initialize: function (callback, options) {
+    constructor(callback, options) {
+        super(options);
         var me = this;
 
-        SuperMap.TimeControlBase.prototype.initialize.call(this, options);
         //先让IE下支持bind方法
         if (!Function.prototype.bind) {
             Function.prototype.bind = function (oThis) {
@@ -54,8 +54,8 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
                     },
                     fBound = function () {
                         return fToBind.apply(this instanceof fNOP && oThis
-                                ? this
-                                : oThis,
+                            ? this
+                            : oThis,
                             aArgs.concat(Array.prototype.slice.call(arguments)));
                     };
                 fNOP.prototype = this.prototype;
@@ -69,20 +69,22 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
         me.oldTime = me.currentTime;
         //记录回调函数
         me.callback = callback;
-    },
+    }
+
 
     /**
      * @inheritDoc
      */
-    updateOptions: function (options) {
+    updateOptions(options) {
         options = options || {};
-        SuperMap.TimeControlBase.prototype.updateOptions.call(this, options);
-    },
+        super.updateOptions(options);
+    }
+
 
     /**
      * @inheritDoc
      */
-    start: function () {
+    start() {
         var me = this;
         if (me.running) {
             return;
@@ -100,13 +102,14 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
             }
         }
         me.tick();
-    },
+    }
+
 
     /**
      * @inheritDoc
      */
-    stop: function () {
-        SuperMap.TimeControlBase.prototype.stop.call(this);
+    stop() {
+        super.stop();
         var me = this;
         me.oldTime = me.currentTime;
 
@@ -115,34 +118,35 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
         }
         //清除定时tick
         me.intervalId && window.clearTimeout(me.intervalId);
-    },
+    }
+
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.TimeControlBase.prototype.destroy.call(this);
+    destroy() {
+        super.destroy();
         var me = this;
         me.oldTime = null;
         me.callback = null;
-    },
+    }
 
 
     /**
      * @function SuperMap.TimeControl.prototype.tick
      * @description 定时刷新
      */
-    tick: function () {
+    tick() {
         var me = this;
         me.intervalId && window.clearInterval(me.intervalId);
         me.intervalId = null;
         me.intervalId = window.setInterval(me.update, me.frequency);
-    },
+    }
 
     /**
      * @inheritDoc
      */
-    update: function () {
+    update() {
         var me = this;
 
         //判定是否还需要继续
@@ -198,10 +202,10 @@ SuperMap.TimeFlowControl = SuperMap.Class(SuperMap.TimeControlBase, {
             }
         }
 
-    },
+    }
 
-    CLASS_NAME: "SuperMap.TimeFlowControl"
-});
+    CLASS_NAME = "SuperMap.TimeFlowControl"
+}
 
-module.exports = SuperMap.TimeFlowControl;
+SuperMap.TimeFlowControl = TimeFlowControl;
 

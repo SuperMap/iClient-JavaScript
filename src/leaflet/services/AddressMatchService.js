@@ -1,3 +1,7 @@
+import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {ServiceBase} from './ServiceBase';
+import CommonMatchAddressService from'../../common/iServer/AddressMatchService';
 /**
  * @class L.supermap.addressMatchService
  * @constructs L.supermap.addressMatchService
@@ -11,12 +15,7 @@
  *      })
  * @api
  */
-var L = require("leaflet");
-var SuperMap = require('../../common/SuperMap');
-var ServiceBase = require('./ServiceBase');
-var CommonMatchAddressService = require('../../common/iServer/AddressMatchService');
-
-var AddressMatchService = ServiceBase.extend({
+export var  AddressMatchService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -73,8 +72,8 @@ var AddressMatchService = ServiceBase.extend({
     }
 });
 
-L.supermap.addressMatchService = function (url, options) {
+export var addressMatchService = function (url, options) {
     return new AddressMatchService(url, options);
 };
 
-module.exports = AddressMatchService;
+L.supermap.addressMatchService = addressMatchService;

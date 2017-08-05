@@ -6,13 +6,14 @@
  *      2.通过监听 QueryEvent.PROCESS_COMPLETE 事件获取。
  *
  * Inherits from:
- *  - <SuperMap.ServiceBase>
+ *  - <SuperMap.CommonServiceBase>
  */
-require('../REST');
-require('./ServiceBase');
-require('./ChartQueryParameters');
-var SuperMap = require('../SuperMap');
-var GeoJSONFormat = require('../format/GeoJSON');
+import SuperMap from '../SuperMap';
+import {DataFormat} from '../REST';
+import CommonServiceBase from './CommonServiceBase';
+import QueryParameters from './QueryParameters';
+import ChartQueryParameters from './ChartQueryParameters';
+import GeoJSON from '../format/GeoJSON';
 
 /**
  * @class SuperMap.ChartQueryService
@@ -20,7 +21,7 @@ var GeoJSONFormat = require('../format/GeoJSON');
  *      用户可以通过两种方式获取查询结果:<br>
  *      1.通过 AsyncResponder 类获取（推荐使用）；<br>
  *      2.通过监听 QueryEvent.PROCESS_COMPLETE 事件获取。<br>
- * @augments  SuperMap.ServiceBase
+ * @augments  SuperMap.CommonServiceBase
  * @param url - {String} 地图查询服务访问地址。如："http://192.168.168.35:8090/iserver/services/map-ChartW/rest/maps/海图"。
  * @param options - {Object} 服务交互时所需的可选参数。
  * @example
@@ -51,20 +52,20 @@ var GeoJSONFormat = require('../format/GeoJSON');
  * chartQueryService.processAsync(chartQueryParameters);
  * (end)
  */
-SuperMap.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
+export default class ChartQueryService extends CommonServiceBase {
 
     /*
      * Property: returnContent
      * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。
      */
-    returnContent: null,
+    returnContent = null;
 
     /*
      *  Property: format
      *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
-    format: SuperMap.DataFormat.GEOJSON,
+    format = DataFormat.GEOJSON;
 
     /**
      * @function SuperMap.ChartQueryService.initialize
@@ -74,8 +75,8 @@ SuperMap.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * @param url - {String} 地图查询服务访问地址。如："http://192.168.168.35:8090/iserver/services/map-ChartW/rest/maps/海图"。
      * @param options - {Object} 查询服务可选参数。
      */
-    initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+    constructor(url, options) {
+        super(url, options);
         options = options || {};
         if (options) {
             SuperMap.Util.extend(this, options);
@@ -101,17 +102,19 @@ SuperMap.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
         } else {
             me.url += (end === "/") ? "queryResults.jsonp?" : "/queryResults.jsonp?";
         }
-    },
+    }
+
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
+    destroy() {
         var me = this;
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+        SuperMap.CommonServiceBase.prototype.destroy.apply(this, arguments);
         me.returnContent = null;
         me.format = null;
-    },
+    }
+
 
     /**
      * @function SuperMap.ChartQueryService.processAsync
@@ -119,7 +122,7 @@ SuperMap.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * @param params - {ChartQueryParameters} 查询参数。
      */
-    processAsync: function (params) {
+    processAsync(params) {
         //todo重点需要添加代码的地方
         if (!params) {
             return;
@@ -137,7 +140,8 @@ SuperMap.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
+
 
     /*
      * Method: queryComplete
@@ -146,20 +150,20 @@ SuperMap.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
-    serviceProcessCompleted: function (result) {
+    serviceProcessCompleted(result) {
         var me = this;
         result = SuperMap.Util.transformResult(result);
-        if (result && result.recordsets && me.format === SuperMap.DataFormat.GEOJSON) {
+        if (result && result.recordsets && me.format === DataFormat.GEOJSON) {
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
-                    var geoJSONFormat = new GeoJSONFormat();
+                    var geoJSONFormat = new GeoJSON();
                     recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
                 }
             }
 
         }
         me.events.triggerEvent("processCompleted", {result: result});
-    },
+    }
 
     /*
      * @function  getQueryParameters
@@ -171,17 +175,16 @@ SuperMap.ChartQueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * Returns:
      * @return {chartQueryFilterParameters} 返回查询结果
      */
-    getQueryParameters: function (params) {
-        return new SuperMap.QueryParameters({
+    getQueryParameters(params) {
+        return new QueryParameters({
             queryMode: params.queryMode,
             bounds: params.bounds,
             chartLayerNames: params.chartLayerNames,
             chartQueryFilterParameters: params.chartQueryFilterParameters,
             returnContent: params.returnContent
         });
-    },
+    }
 
-    CLASS_NAME: "SuperMap.ChartQueryService"
-});
-
-module.exports = SuperMap.ChartQueryService;
+    CLASS_NAME = "SuperMap.ChartQueryService"
+}
+SuperMap.ChartQueryService = ChartQueryService;

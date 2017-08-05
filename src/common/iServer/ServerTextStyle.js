@@ -1,40 +1,41 @@
-﻿/**
+﻿import SuperMap from '../SuperMap';
+import {TextAlignment} from '../REST';
+import ServerColor from './ServerColor';
+
+/**
  * Class: SuperMap.ServerTextStyle
  * 服务端文本风格类
  * 该类用于定义文本风格的相关属性。
  */
-require('../REST');
-var SuperMap = require('../SuperMap');
-var ServerColor = require('./ServerColor');
-SuperMap.ServerTextStyle = SuperMap.Class({
+export default  class ServerTextStyle {
 
     /**
      * APIProperty: align
      * {TextAlignment} 文本的对齐方式。
      * 默认为 SuperMap.TextAlignment.BASELINECENTER（基准线居中对齐）。
      */
-    align: SuperMap.TextAlignment.BASELINECENTER,
+    align = TextAlignment.BASELINECENTER;
 
     /**
      * APIProperty: backColor
      * {SuperMap.ServerColor} 文本的背景色。
      * 默认为白色。
      */
-    backColor: null,
+    backColor = null;
 
     /**
      * APIProperty: foreColor
      * {SuperMap.ServerColor} 文本的前景色。
      * 默认为黑色。
      */
-    foreColor: null,
+    foreColor = null;
 
     /**
      * APIProperty: backOpaque
      * {Boolean} 文本背景是否不透明。
      * true 表示文本背景不透明。
      */
-    backOpaque: false,
+    backOpaque = false;
 
     /**
      * APIProperty: sizeFixed
@@ -42,7 +43,7 @@ SuperMap.ServerTextStyle = SuperMap.Class({
      * 默认为 true，表示图片为固定像素大小，具体大小请参考 fontHeight 。
      * 当设为 false 时，图片会随着地图缩放而缩放。
      */
-    sizeFixed: true,
+    sizeFixed = true;
 
     /**
      * APIProperty: fontHeight
@@ -50,42 +51,42 @@ SuperMap.ServerTextStyle = SuperMap.Class({
      * 单位与 sizeFixed 有关，当 sizeFixed 为 False 时，即非固定文本大小时使用地图坐标单位，
      * 如地理坐标系下的地图中单位为度；当 sizeFixed 为 True 时，单位为毫米（mm）。
      */
-    fontHeight: 6,
+    fontHeight = 6;
 
     /**
      * APIProperty: fontWidth
      * {Number} 文本字体的宽度。
      * 字体的宽度以英文字符为标准，由于一个中文字符相当于两个英文字符，默认为0地图坐标单位。
      */
-    fontWidth: 0,
+    fontWidth = 0;
 
     /**
      * APIProperty: fontWeight
      * {Integer} 文本字体的磅数。
      * 表示粗体的具体数值。取值范围为从0－900之间的整百数，默认值为400。
      */
-    fontWeight: 400,
+    fontWeight = 400;
 
     /**
      * APIProperty: fontName
      * {String} 文本字体的名称。
      * 默认值为 Times New Roman。
      */
-    fontName: "Times New Roman",
+    fontName = "Times New Roman";
 
     /**
      * APIProperty: bold
      * {Boolean} 文本是否为粗体字。
      * true 表示为粗体。默认值为 false，即文本不是粗体字。
      */
-    bold: false,
+    bold = false;
 
     /**
      * APIProperty: italic
      * {Boolean}文本是否采用斜体。
      * true 表示采用斜体。默认为 false。
      */
-    italic: false,
+    italic = false;
 
     /**
      * APIProperty: italicAngle
@@ -93,49 +94,49 @@ SuperMap.ServerTextStyle = SuperMap.Class({
      * 正负度之间，以度为单位，精确到0.1度，默认为0度。当倾斜角度为0度，为系统默认的字体倾斜样式。正负度是指以纵轴为起始零度线，
      * 其纵轴左侧为正，右侧为负。允许的最大角度为60，最小-60。大于60按照60处理，小于-60按照-60处理。目前只对标签专题图有效。
      */
-    italicAngle: 0,
+    italicAngle = 0;
 
     /**
      * APIProperty: shadow
      * {Boolean} 文本是否有阴影。
      * true 表示给文本增加阴影。默认值为 false，即文本没有阴影。
      */
-    shadow: false,
+    shadow = false;
 
     /**
      * APIProperty: strikeout
      * {Boolean} 文本字体是否加删除线。
      * true 表示加删除线。默认值为 false，即文本字体不加删除线。
      */
-    strikeout: false,
+    strikeout = false;
 
     /**
      * APIProperty: outline
      * {Boolean} 是否以轮廓的方式来显示文本的背景。
      * true 表示以轮廓的方式来显示文本的背景。默认值为 false，表示不以轮廓的方式来显示文本的背景。
      */
-    outline: false,
+    outline = false;
 
     /**
      * APIProperty: opaqueRate
      * {Number} 注记文字的不透明度。
      * 不透明度的范围为0-100。默认为0，表示透明。
      */
-    opaqueRate: 0,
+    opaqueRate = 0;
 
     /**
      * APIProperty: underline
      * {Boolean} 文本字体是否加下划线。
      * true 表示加下划线。默认为 false。
      */
-    underline: false,
+    underline = false;
 
     /**
      * APIProperty: rotation
      * {Number} 文本旋转的角度。
      * 逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。
      */
-    rotation: 0.0,
+    rotation = 0.0;
 
     /**
      * Constructor: SuperMap.ServerTextStyle
@@ -164,20 +165,21 @@ SuperMap.ServerTextStyle = SuperMap.Class({
      * underline - {Boolean} 文本字体是否加下划线。
      * rotation -  {Number} 文本旋转的角度。
      */
-    initialize: function (options) {
+    constructor(options) {
         var me = this;
         me.backColor = new ServerColor(255, 255, 255);
         me.foreColor = new ServerColor(0, 0, 0);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
+
 
     /**
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.align = null;
         if (me.backColor) {
@@ -203,16 +205,17 @@ SuperMap.ServerTextStyle = SuperMap.Class({
         me.opaqueRate = null;
         me.underline = null;
         me.rotation = null;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.ServerTextStyle"
-});
+    static fromObj(obj) {
+        var res = new ServerTextStyle(obj);
+        SuperMap.Util.copy(res, obj);
+        res.backColor = ServerColor.fromJson(obj.backColor);
+        res.foreColor = ServerColor.fromJson(obj.foreColor);
+        return res;
+    }
 
-SuperMap.ServerTextStyle.fromObj = function (obj) {
-    var res = new SuperMap.ServerTextStyle(obj);
-    SuperMap.Util.copy(res, obj);
-    res.backColor = SuperMap.ServerColor.fromJson(obj.backColor);
-    res.foreColor = SuperMap.ServerColor.fromJson(obj.foreColor);
-    return res;
-};
-module.exports = SuperMap.ServerTextStyle;
+    CLASS_NAME = "SuperMap.ServerTextStyle"
+}
+
+SuperMap.ServerTextStyle = ServerTextStyle;

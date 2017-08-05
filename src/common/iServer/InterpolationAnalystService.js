@@ -1,36 +1,38 @@
-﻿require('./SpatialAnalystBase');
-require('./InterpolationRBFAnalystParameters');
-require('./InterpolationDensityAnalystParameters');
-require('./InterpolationIDWAnalystParameters');
-require('./InterpolationKrigingAnalystParameters');
-require('./InterpolationAnalystParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.InterpolationAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-    /**
-     * @class SuperMap.InterpolationAnalystService
-     * @constructs SuperMap.InterpolationAnalystService
-     * @classdesc
-     * 插值分析服务类
-     * 插值分析可以将有限的采样点数据，通过插值算法对采样点周围的数值情况进行预测，可以掌握研究区域内数据的总体分布状况，从而使采样的离散点不仅仅反映其所在位置的数值情况，还可以反映区域的数值分布。目前SuperMap iServer的插值功能提供从点数据集插值得到栅格数据集的功能，支持以下常用的内插方法，包括：反距离加权插值、克吕金（Kriging）插值法、样条（径向基函数，Radial Basis Function）插值、点密度插值。
-     * @extends {SuperMap.SpatialAnalystBase}
-     * @api
-     * @example 例如：
-     * (start code)
-     * var myTInterpolationAnalystService = new SuperMap.InterpolationAnalystService(url);
-     * myTInterpolationAnalystService.events.on({
+﻿import SuperMap from '../SuperMap';
+import SpatialAnalystBase from './SpatialAnalystBase';
+import InterpolationRBFAnalystParameters from './InterpolationRBFAnalystParameters';
+import InterpolationDensityAnalystParameters from './InterpolationDensityAnalystParameters';
+import InterpolationIDWAnalystParameters from './InterpolationIDWAnalystParameters';
+import InterpolationKrigingAnalystParameters from './InterpolationKrigingAnalystParameters';
+import InterpolationAnalystParameters from './InterpolationAnalystParameters';
+
+/**
+ * @class SuperMap.InterpolationAnalystService
+ * @constructs SuperMap.InterpolationAnalystService
+ * @classdesc
+ * 插值分析服务类
+ * 插值分析可以将有限的采样点数据，通过插值算法对采样点周围的数值情况进行预测，可以掌握研究区域内数据的总体分布状况，从而使采样的离散点不仅仅反映其所在位置的数值情况，还可以反映区域的数值分布。目前SuperMap iServer的插值功能提供从点数据集插值得到栅格数据集的功能，支持以下常用的内插方法，包括：反距离加权插值、克吕金（Kriging）插值法、样条（径向基函数，Radial Basis Function）插值、点密度插值。
+ * @extends {SuperMap.SpatialAnalystBase}
+ * @api
+ * @example 例如：
+ * (start code)
+ * var myTInterpolationAnalystService = new SuperMap.InterpolationAnalystService(url);
+ * myTInterpolationAnalystService.events.on({
      *     "processCompleted": processCompleted,
      *     "processFailed": processFailed
      *     }
-     * );
-     * (end)
-     *
-     */
+ * );
+ * (end)
+ *
+ */
+export default  class InterpolationAnalystService extends SpatialAnalystBase {
+
 
     /**
      * Property: mode
      * {String} 插值分析类型。
      */
-    mode: null,
+    mode = null;
 
     /**
      * @method SuperMap.InterpolationAnalystService.initialize
@@ -39,29 +41,31 @@ SuperMap.InterpolationAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBas
      * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
+    constructor(url, options) {
+        super(url, options);
         var me = this;
         if (options) {
             SuperMap.Util.extend(me, options);
         }
-    },
+    }
+
 
     /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         this.mode = null;
-    },
+    }
+
 
     /**
      * @method SuperMap.InterpolationAnalystService.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param  parameter - {SuperMap.InterpolationAnalystParameters}
      */
-    processAsync: function (parameter) {
+    processAsync(parameter) {
         var parameterObject = {};
         var me = this;
 
@@ -72,7 +76,7 @@ SuperMap.InterpolationAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBas
             me.url += "/";
         }
 
-        if (parameter instanceof SuperMap.InterpolationDensityAnalystParameters) {
+        if (parameter instanceof InterpolationDensityAnalystParameters) {
             me.mode = "Density";
             if (parameter.InterpolationAnalystType === "geometry") {
                 me.url += 'geometry/interpolation/density';
@@ -80,7 +84,7 @@ SuperMap.InterpolationAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBas
                 me.url += 'datasets/' + parameter.dataset + '/interpolation/density';
             }
         }
-        else if (parameter instanceof SuperMap.InterpolationIDWAnalystParameters) {
+        else if (parameter instanceof InterpolationIDWAnalystParameters) {
             me.mode = "IDW";
             if (parameter.InterpolationAnalystType === "geometry") {
                 me.url += 'geometry/interpolation/idw';
@@ -88,7 +92,7 @@ SuperMap.InterpolationAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBas
                 me.url += 'datasets/' + parameter.dataset + '/interpolation/idw';
             }
         }
-        else if (parameter instanceof SuperMap.InterpolationRBFAnalystParameters) {
+        else if (parameter instanceof InterpolationRBFAnalystParameters) {
             me.mode = "RBF";
             if (parameter.InterpolationAnalystType === "geometry") {
                 me.url += 'geometry/interpolation/rbf';
@@ -96,7 +100,7 @@ SuperMap.InterpolationAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBas
                 me.url += 'datasets/' + parameter.dataset + '/interpolation/rbf';
             }
         }
-        else if (parameter instanceof SuperMap.InterpolationKrigingAnalystParameters) {
+        else if (parameter instanceof InterpolationKrigingAnalystParameters) {
             me.mode = "Kriging";
             if (parameter.InterpolationAnalystType === "geometry") {
                 me.url += 'geometry/interpolation/kriging';
@@ -104,7 +108,7 @@ SuperMap.InterpolationAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBas
                 me.url += 'datasets/' + parameter.dataset + '/interpolation/kriging';
             }
         }
-        SuperMap.InterpolationAnalystParameters.toObject(parameter, parameterObject);
+        InterpolationAnalystParameters.toObject(parameter, parameterObject);
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
 
 
@@ -121,9 +125,11 @@ SuperMap.InterpolationAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBas
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
-    CLASS_NAME: "SuperMap.InterpolationAnalystService"
 
-});
-module.exports = SuperMap.InterpolationAnalystService;
+    CLASS_NAME = "SuperMap.InterpolationAnalystService"
+
+}
+
+SuperMap.InterpolationAnalystService = InterpolationAnalystService;

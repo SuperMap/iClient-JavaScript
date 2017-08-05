@@ -71,7 +71,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -81,9 +81,15 @@
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _mapv = __webpack_require__(3);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -91,19 +97,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var mapv = {};
-var mapboxgl = {};
-try {
-    mapv = __webpack_require__(3);
-} catch (ex) {
-    mapv = {};
-}
-try {
-    mapboxgl = __webpack_require__(2);
-} catch (ex) {
-    mapboxgl = {};
-}
-var BaseLayer = mapv.baiduMapLayer ? mapv.baiduMapLayer.__proto__ : Function;
+var BaseLayer = _mapv.baiduMapLayer ? _mapv.baiduMapLayer.__proto__ : Function;
 
 var MapvRenderer = function (_BaseLayer) {
     _inherits(MapvRenderer, _BaseLayer);
@@ -127,6 +121,7 @@ var MapvRenderer = function (_BaseLayer) {
         _this.clickEvent = _this.clickEvent.bind(_this);
         _this.mousemoveEvent = _this.mousemoveEvent.bind(_this);
         _this.map.on('move', _this.moveEvent.bind(_this));
+        _this.map.on('resize', _this.resizeEvent.bind(_this));
         _this.map.on('moveend', _this.moveEndEvent.bind(_this));
         _this.map.on('remove', _this.removeEvent.bind(_this));
         _this.bindEvent();
@@ -134,19 +129,19 @@ var MapvRenderer = function (_BaseLayer) {
     }
 
     _createClass(MapvRenderer, [{
-        key: "clickEvent",
+        key: 'clickEvent',
         value: function clickEvent(e) {
             var pixel = e.layerPoint;
-            _get(MapvRenderer.prototype.__proto__ || Object.getPrototypeOf(MapvRenderer.prototype), "clickEvent", this).call(this, pixel, e);
+            _get(MapvRenderer.prototype.__proto__ || Object.getPrototypeOf(MapvRenderer.prototype), 'clickEvent', this).call(this, pixel, e);
         }
     }, {
-        key: "mousemoveEvent",
+        key: 'mousemoveEvent',
         value: function mousemoveEvent(e) {
             var pixel = e.layerPoint;
-            _get(MapvRenderer.prototype.__proto__ || Object.getPrototypeOf(MapvRenderer.prototype), "mousemoveEvent", this).call(this, pixel, e);
+            _get(MapvRenderer.prototype.__proto__ || Object.getPrototypeOf(MapvRenderer.prototype), 'mousemoveEvent', this).call(this, pixel, e);
         }
     }, {
-        key: "bindEvent",
+        key: 'bindEvent',
         value: function bindEvent(e) {
             var map = this.map;
             if (this.options.methods) {
@@ -159,7 +154,7 @@ var MapvRenderer = function (_BaseLayer) {
             }
         }
     }, {
-        key: "unbindEvent",
+        key: 'unbindEvent',
         value: function unbindEvent(e) {
             var map = this.map;
 
@@ -173,12 +168,12 @@ var MapvRenderer = function (_BaseLayer) {
             }
         }
     }, {
-        key: "getContext",
+        key: 'getContext',
         value: function getContext() {
             return this.canvasLayer.canvas.getContext(this.context);
         }
     }, {
-        key: "updateData",
+        key: 'updateData',
         value: function updateData(dataSet, options) {
             if (dataSet && dataSet.get) {
                 this.dataSet.set(dataSet.get());
@@ -186,7 +181,7 @@ var MapvRenderer = function (_BaseLayer) {
             this.update({ options: options });
         }
     }, {
-        key: "_canvasUpdate",
+        key: '_canvasUpdate',
         value: function _canvasUpdate(time) {
             if (!this.canvasLayer) {
                 return;
@@ -252,7 +247,7 @@ var MapvRenderer = function (_BaseLayer) {
             self.options.updateCallback && self.options.updateCallback(time);
         }
     }, {
-        key: "init",
+        key: 'init',
         value: function init(options) {
 
             var self = this;
@@ -270,41 +265,53 @@ var MapvRenderer = function (_BaseLayer) {
             this.initAnimator();
         }
     }, {
-        key: "addAnimatorEvent",
+        key: 'addAnimatorEvent',
         value: function addAnimatorEvent() {}
     }, {
-        key: "removeEvent",
+        key: 'removeEvent',
         value: function removeEvent() {
             this.canvasLayer.mapContainer.removeChild(this.canvasLayer.canvas);
         }
     }, {
-        key: "moveEvent",
+        key: 'moveEvent',
         value: function moveEvent() {
             this._hide();
         }
     }, {
-        key: "moveEndEvent",
+        key: 'resizeEvent',
+        value: function resizeEvent() {
+            var canvas = this.canvasLayer.canvas;
+            canvas.style.position = 'absolute';
+            canvas.style.top = 0 + "px";
+            canvas.style.left = 0 + "px";
+            canvas.width = parseInt(this.map.getCanvas().style.width);
+            canvas.height = parseInt(this.map.getCanvas().style.height);
+            canvas.style.width = this.map.getCanvas().style.width;
+            canvas.style.height = this.map.getCanvas().style.height;
+        }
+    }, {
+        key: 'moveEndEvent',
         value: function moveEndEvent() {
             this._canvasUpdate();
             this._show();
         }
     }, {
-        key: "clear",
+        key: 'clear',
         value: function clear(context) {
             context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         }
     }, {
-        key: "_hide",
+        key: '_hide',
         value: function _hide() {
             this.canvasLayer.canvas.style.display = 'none';
         }
     }, {
-        key: "_show",
+        key: '_show',
         value: function _show() {
             this.canvasLayer.canvas.style.display = 'block';
         }
     }, {
-        key: "draw",
+        key: 'draw',
         value: function draw() {
             this.canvasLayer.draw();
         }
@@ -313,27 +320,49 @@ var MapvRenderer = function (_BaseLayer) {
     return MapvRenderer;
 }(BaseLayer);
 
-module.exports = MapvRenderer;
+exports.default = MapvRenderer;
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+module.exports = mapboxgl;
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.MapvLayer = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _MapvRenderer = __webpack_require__(0);
+
+var _MapvRenderer2 = _interopRequireDefault(_MapvRenderer);
+
+var _mapboxGl = __webpack_require__(1);
+
+var _mapboxGl2 = _interopRequireDefault(_mapboxGl);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var MapvRenderer = __webpack_require__(0);
-
-var MapvLayer = function () {
+/*
+ @class MapvLayer
+ */
+var MapvLayer = exports.MapvLayer = function () {
     function MapvLayer(map, dataSet, mapVOptions) {
         _classCallCheck(this, MapvLayer);
 
         this.map = map;
-        this.mapvLayer = new MapvRenderer(map, this, dataSet, mapVOptions);
+        this.mapvLayer = new _MapvRenderer2.default(map, this, dataSet, mapVOptions);
         this.canvas = this._createCanvas();
         this.mapvLayer._canvasUpdate();
         this.mapContainer = map.getCanvasContainer();
@@ -369,23 +398,15 @@ var MapvLayer = function () {
     return MapvLayer;
 }();
 
-window.mapvlayer = MapvLayer;
-
-module.exports = MapvLayer;
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-if(typeof mapbox-gl === 'undefined') {var e = new Error("Cannot find module \"mapbox-gl\""); e.code = 'MODULE_NOT_FOUND'; throw e;}
-module.exports = mapbox-gl;
+;
+_mapboxGl2.default.supermap = _mapboxGl2.default.supermap || {};
+_mapboxGl2.default.supermap.MapvLayer = MapvLayer;
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
-if(typeof mapv === 'undefined') {var e = new Error("Cannot find module \"mapv\""); e.code = 'MODULE_NOT_FOUND'; throw e;}
-module.exports = mapv;
+module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ })
 /******/ ]);

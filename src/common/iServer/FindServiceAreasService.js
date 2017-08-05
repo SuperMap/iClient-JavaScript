@@ -1,17 +1,7 @@
-﻿/*
- * Class: SuperMap.FindServiceAreasService
- * 服务区分析服务类。
- * 服务区分析是以指定服务站点为中心，
- * 在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
- * 该类负责将客户端指定的服务区分析参数传递给服务端，并接收服务端返回的结果数据。
- * 服务区分析结果通过该类支持的事件的监听函数参数获取
- * Inherits from:
- *  - <SuperMap.NetworkAnalystServiceBase>
- */
-require('./NetworkAnalystServiceBase');
-require('./FindServiceAreasParameters');
-var SuperMap = require('../SuperMap');
-var GeoJSONFormat = require('../format/GeoJSON');
+﻿import SuperMap from '../SuperMap';
+import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
+import FindServiceAreasParameters from './FindServiceAreasParameters';
+import GeoJSON from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindServiceAreasService
@@ -36,7 +26,7 @@ var GeoJSONFormat = require('../format/GeoJSON');
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象
  */
-SuperMap.FindServiceAreasService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
+export default  class FindServiceAreasService extends NetworkAnalystServiceBase {
 
     /**
      * @function SuperMap.FindServiceAreasService.prototype.initialize
@@ -47,23 +37,23 @@ SuperMap.FindServiceAreasService = SuperMap.Class(SuperMap.NetworkAnalystService
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象
      */
-    initialize: function (url, options) {
-        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @function SuperMap.FindServiceAreasService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param params - {SuperMap.FindServiceAreasParameters} 服务区分析服务参数类
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -84,7 +74,7 @@ SuperMap.FindServiceAreasService = SuperMap.Class(SuperMap.NetworkAnalystService
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /*
      * Method: getJson
@@ -97,7 +87,7 @@ SuperMap.FindServiceAreasService = SuperMap.Class(SuperMap.NetworkAnalystService
      * Returns:
      * {Object} 转化后的JSON字符串。
      */
-    getJson: function (isAnalyzeById, params) {
+    getJson(isAnalyzeById, params) {
         var jsonString = "[",
             len = params ? params.length : 0;
 
@@ -114,7 +104,7 @@ SuperMap.FindServiceAreasService = SuperMap.Class(SuperMap.NetworkAnalystService
         }
         jsonString += ']';
         return jsonString;
-    },
+    }
 
     /*
      * Method: toGeoJSONResult
@@ -123,11 +113,11 @@ SuperMap.FindServiceAreasService = SuperMap.Class(SuperMap.NetworkAnalystService
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
-    toGeoJSONResult: function (result) {
+    toGeoJSONResult(result) {
         if (!result || !result.serviceAreaList) {
             return result;
         }
-        var geoJSONFormat = new GeoJSONFormat();
+        var geoJSONFormat = new GeoJSON();
         result.serviceAreaList.map(function (serviceArea) {
             if (serviceArea.serviceRegion) {
                 serviceArea.serviceRegion = JSON.parse(geoJSONFormat.write(serviceArea.serviceRegion));
@@ -144,9 +134,9 @@ SuperMap.FindServiceAreasService = SuperMap.Class(SuperMap.NetworkAnalystService
         });
 
         return result;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.FindServiceAreasService"
-});
+    CLASS_NAME = "SuperMap.FindServiceAreasService"
+}
 
-module.exports = SuperMap.FindServiceAreasService;
+SuperMap.FindServiceAreasService = FindServiceAreasService;

@@ -1,16 +1,16 @@
-﻿require('./InterpolationAnalystParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
-    /**
-     * @class SuperMap.InterpolationRBFAnalystParameters
-     * @constructs SuperMap.InterpolationRBFAnalystParameters
-     * @classdesc
-     * 样条插值（径向基函数插值法）分析参数类
-     * @extends {SuperMap.InterpolationAnalystParameters}
-     * @api
-     * @example 例如：
-     * (start code)
-     * var myInterpolationRBFAnalystParameters = new SuperMap.InterpolationRBFAnalystParameters({
+﻿import SuperMap from '../SuperMap';
+import InterpolationAnalystParameters from './InterpolationAnalystParameters';
+
+/**
+ * @class SuperMap.InterpolationRBFAnalystParameters
+ * @constructs SuperMap.InterpolationRBFAnalystParameters
+ * @classdesc
+ * 样条插值（径向基函数插值法）分析参数类
+ * @extends {SuperMap.InterpolationAnalystParameters}
+ * @api
+ * @example 例如：
+ * (start code)
+ * var myInterpolationRBFAnalystParameters = new SuperMap.InterpolationRBFAnalystParameters({
      *     dataset:"SamplesP@Interpolation",
      *     smooth: 0.1,
      *     tension: 40,
@@ -25,24 +25,24 @@ SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.Interpolati
      *     },
      *     outputDatasetName: "myRBF"
      * });
-     * (end)
-     *
-     */
+ * (end)
+ *
+ */
+export default  class InterpolationRBFAnalystParameters extends InterpolationAnalystParameters {
 
     /**
      * APIProperty: smooth
      * {Number} 光滑系数，值域为 0到1，默认值为0.1，常用取值如0、0.001、0.01、0.1、和0.5。
      * 该值表示插值函数曲线与点的逼近程度，此数值越大，函数曲线与点的偏差越大，反之越小。
      */
-    smooth: 0.1,
+    smooth = 0.1;
 
     /**
      * APIProperty: tension
      * {Number} 张力系数，默认为40，常用取值如0、1、5和10。
      * 用于调整结果栅格数据表面的特性，张力越大，插值时每个点对计算结果影响越小，反之越大。
      */
-    tension: 40,
-
+    tension = 40;
     /**
      * APIProperty: searchMode
      * {SuperMap.SearchMode} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数
@@ -51,25 +51,25 @@ SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.Interpolati
      * {KDTREE_FIXED_RADIUS} 使用 KDTREE 的定长方式查找参与内插分析的点。
      * {QUADTREE} 使用 QUADTREE 方式查找参与内插分析的点（块查找）。
      */
-    searchMode: null,
+    searchMode = null;
 
     /**
      * APIProperty: expectedCount
      * {Number} 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数。默认值为12。
      */
-    expectedCount: 12,
+    expectedCount = 12;
 
     /**
      * APIProperty: maxPointCountForInterpolation
      * {Number} 【块查找】方式下，最多参与插值的点数。默认值为200。
      */
-    maxPointCountForInterpolation: 200,
+    maxPointCountForInterpolation = 200;
 
     /**
      * APIProperty: maxPointCountInNode
      * {Number} 【块查找】方式下，单个块内最多参与运算点数。默认值为50。
      */
-    maxPointCountInNode: 50,
+    maxPointCountInNode = 50;
 
     /**
      *
@@ -95,8 +95,8 @@ SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.Interpolati
      * dataset - {String} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。</br>
      * inputPoints - {Array <SuperMap.Geometry.Point} 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。</br>
      */
-    initialize: function (options) {
-        SuperMap.InterpolationAnalystParameters.prototype.initialize.apply(this, arguments);
+    constructor(options) {
+        super(options);
         var me = this;
         me.smooth = 0.1;
         me.tension = 40;
@@ -107,14 +107,15 @@ SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.Interpolati
         if (options) {
             SuperMap.Util.extend(me, options);
         }
-    },
+    }
+
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.InterpolationAnalystParameters.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         var me = this;
         me.smooth = null;
         me.tension = null;
@@ -122,16 +123,16 @@ SuperMap.InterpolationRBFAnalystParameters = SuperMap.Class(SuperMap.Interpolati
         me.expectedCount = null;
         me.maxPointCountForInterpolation = null;
         me.maxPointCountInNode = null;
-    },
-
-    CLASS_NAME: "SuperMap.InterpolationRBFAnalystParameters"
-});
-
-SuperMap.InterpolationRBFAnalystParameters.toObject = function (datasetInterpolationRBFAnalystParameters, tempObj) {
-    for (var name in datasetInterpolationRBFAnalystParameters) {
-        tempObj[name] = datasetInterpolationRBFAnalystParameters[name];
-
     }
-};
 
-module.exports = SuperMap.InterpolationRBFAnalystParameters;
+    static toObject(datasetInterpolationRBFAnalystParameters, tempObj) {
+        for (var name in datasetInterpolationRBFAnalystParameters) {
+            tempObj[name] = datasetInterpolationRBFAnalystParameters[name];
+
+        }
+    }
+
+    CLASS_NAME = "SuperMap.InterpolationRBFAnalystParameters"
+}
+
+SuperMap.InterpolationRBFAnalystParameters = InterpolationRBFAnalystParameters;

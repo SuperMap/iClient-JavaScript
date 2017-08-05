@@ -2,11 +2,11 @@
  * Class: ThemeLayer
  * 专题图层基类
  */
-require('../../core/Base');
-var SuperMap = require('../../../common/SuperMap');
-var L = require("leaflet");
+import '../../core/Base';
+import SuperMap from '../../../common/SuperMap';
+import L from "leaflet";
 
-var ThemeLayer = L.Layer.extend({
+export var ThemeLayer = L.Layer.extend({
 
     options: {
         name: null,
@@ -351,5 +351,3 @@ var ThemeLayer = L.Layer.extend({
         me.renderer.resize();
     }
 });
-
-module.exports = ThemeLayer;

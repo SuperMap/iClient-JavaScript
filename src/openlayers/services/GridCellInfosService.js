@@ -1,4 +1,6 @@
-﻿/**
+﻿import ServiceBase from './ServiceBase';
+import GetGridCellInfosService from '../../common/iServer/GetGridCellInfosService';
+/**
  * @class ol.supermap.GridCellInfosService
  * @constructs ol.supermap.GridCellInfosService
  * @classdesc
@@ -10,36 +12,32 @@
  *      })
  * @api
  */
+export default class GridCellInfosService extends ServiceBase {
 
-require('./ServiceBase');
-var ol = require('openlayers/dist/ol-debug');
-var GetGridCellInfosService = require('../../common/iServer/GetGridCellInfosService');
-
-ol.supermap.GridCellInfosService = function (url, options) {
-    ol.supermap.ServiceBase.call(this, url, options);
-};
-ol.inherits(ol.supermap.GridCellInfosService, ol.supermap.ServiceBase);
-
-/**
- * @method ol.supermap.GridCellInfosService.prototype.getGridCellInfos
- * @param params {SuperMap.GetGridCellInfosParameters}
- * @param callback
- */
-ol.supermap.GridCellInfosService.prototype.getGridCellInfos = function (params, callback) {
-    if (!params) {
-        return null;
+    constructor(url, options) {
+        super(url, options);
     }
-    var me = this;
-    var gridCellQueryService = new GetGridCellInfosService(me.url, {
-        serverType: me.options.serverType,
-        eventListeners: {
-            scope: me,
-            processCompleted: callback,
-            processFailed: callback
-        }
-    });
-    gridCellQueryService.processAsync(params);
-    return me;
-};
 
-module.exports = ol.supermap.GridCellInfosService;
+    /**
+     * @method ol.supermap.GridCellInfosService.prototype.getGridCellInfos
+     * @param params {SuperMap.GetGridCellInfosParameters}
+     * @param callback
+     */
+    getGridCellInfos(params, callback) {
+        if (!params) {
+            return null;
+        }
+        var me = this;
+        var gridCellQueryService = new GetGridCellInfosService(me.url, {
+            serverType: me.options.serverType,
+            eventListeners: {
+                scope: me,
+                processCompleted: callback,
+                processFailed: callback
+            }
+        });
+        gridCellQueryService.processAsync(params);
+        return me;
+    }
+}
+ol.supermap.GridCellInfosService = GridCellInfosService;

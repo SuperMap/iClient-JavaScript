@@ -1,16 +1,16 @@
-﻿require('./InterpolationAnalystParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.InterpolationIDWAnalystParameters = SuperMap.Class(SuperMap.InterpolationAnalystParameters, {
-    /**
-     * @class SuperMap.InterpolationIDWAnalystParameters
-     * @constructs SuperMap.InterpolationIDWAnalystParameters
-     * @classdesc
-     * 反距离加权插值（IDW）分析参数类
-     * @extends {SuperMap.InterpolationAnalystParameters}
-     * @api
-     * @example 例如：
-     * (start code)
-     * var myInterpolationIDWAnalystParameters = new SuperMap.InterpolationIDWAnalystParameters({
+﻿import SuperMap from '../SuperMap';
+import InterpolationAnalystParameters from './InterpolationAnalystParameters';
+
+/**
+ * @class SuperMap.InterpolationIDWAnalystParameters
+ * @constructs SuperMap.InterpolationIDWAnalystParameters
+ * @classdesc
+ * 反距离加权插值（IDW）分析参数类
+ * @extends {SuperMap.InterpolationAnalystParameters}
+ * @api
+ * @example 例如：
+ * (start code)
+ * var myInterpolationIDWAnalystParameters = new SuperMap.InterpolationIDWAnalystParameters({
      *      dataset:"SamplesP@Interpolation",
      *      power: 2,
      *      searchMode: "KDTREE_FIXED_COUNT",
@@ -23,9 +23,11 @@ SuperMap.InterpolationIDWAnalystParameters = SuperMap.Class(SuperMap.Interpolati
      *      },
      *      outputDatasetName: "myIDW"
      * });
-     * (end)
-     *
-     */
+ * (end)
+ *
+ */
+export default  class InterpolationIDWAnalystParameters extends InterpolationAnalystParameters {
+
 
     /**
      * APIProperty: power
@@ -33,7 +35,7 @@ SuperMap.InterpolationIDWAnalystParameters = SuperMap.Class(SuperMap.Interpolati
      * 该值决定了权值下降的速度，幂次越大，随距离的增大权值下降越快，距离预测点越远的点的权值也越小。
      * 理论上，参数值必须大于0，但是0.5到3之间时运算结果更合理，因此推荐值为0.5~3。
      */
-    power: 2,
+    power = 2;
 
     /**
      * APIProperty: searchMode
@@ -42,13 +44,13 @@ SuperMap.InterpolationIDWAnalystParameters = SuperMap.Class(SuperMap.Interpolati
      * {KDTREE_FIXED_COUNT} 使用 KDTREE 的固定点数方式查找参与内插分析的点。
      * {KDTREE_FIXED_RADIUS} 使用 KDTREE 的定长方式查找参与内插分析的点。
      */
-    searchMode: null,
+    searchMode = null;
 
     /**
      * APIProperty: expectedCount
      * {Number} 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数，默认值为12。
      */
-    expectedCount: 12,
+    expectedCount = 12;
 
     /**
      * @method SuperMap.InterpolationIDWAnalystParameters.initialize
@@ -69,8 +71,8 @@ SuperMap.InterpolationIDWAnalystParameters = SuperMap.Class(SuperMap.Interpolati
      * dataset - {String} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
      * inputPoints - {Array <SuperMap.Geometry.Point} 用于做插值分析的离散点集合。当插值分析类型（SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。</br>
      */
-    initialize: function (options) {
-        SuperMap.InterpolationAnalystParameters.prototype.initialize.apply(this, arguments);
+    constructor(options) {
+        super(options);
         var me = this;
         me.power = 2;
         me.searchMode = null;
@@ -78,21 +80,21 @@ SuperMap.InterpolationIDWAnalystParameters = SuperMap.Class(SuperMap.Interpolati
         if (options) {
             SuperMap.Util.extend(me, options);
         }
-    },
+    }
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.InterpolationAnalystParameters.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         var me = this;
         me.power = null;
         me.searchMode = null;
         me.expectedCount = null;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.InterpolationIDWAnalystParameters"
-});
+    CLASS_NAME = "SuperMap.InterpolationIDWAnalystParameters"
+}
 
-module.exports = SuperMap.InterpolationIDWAnalystParameters;
+SuperMap.InterpolationIDWAnalystParameters = InterpolationIDWAnalystParameters;

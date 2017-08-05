@@ -1,6 +1,6 @@
-var SuperMap = require('../SuperMap');
-var ProcessingServiceBase = require('./ProcessingServiceBase');
-var SummaryMeshJobParameter = require('./SummaryMeshJobParameter');
+import SuperMap from '../SuperMap';
+import ProcessingServiceBase from './ProcessingServiceBase';
+import SummaryMeshJobParameter from './SummaryMeshJobParameter';
 
 /**
  * @class SuperMap.SummaryMeshJobsService
@@ -8,36 +8,36 @@ var SummaryMeshJobParameter = require('./SummaryMeshJobParameter');
  * @param url -{String} 点聚合分析任务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingServiceBase, {
+export default  class SummaryMeshJobsService extends ProcessingServiceBase {
 
-    initialize: function (url, options) {
-        ProcessingServiceBase.prototype.initialize.apply(this, arguments);
+    constructor(url, options) {
+        super(url, options);
         this.url += "/spatialanalyst/aggregatepoints";
-    },
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        ProcessingServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @function SuperMap.SummaryMeshJobsService.protitype.getSummaryMeshJobs
      * @description 获取点聚合分析大数据
      */
-    getSummaryMeshJobs: function () {
-        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url]);
-    },
+    getSummaryMeshJobs() {
+        return super.getJobs(this.url);
+    }
 
     /**
      * @function SuperMap.SummaryMeshJobsService.protitype.getSummaryMeshJob
      * @description 获取指定ip的点聚合分析大数据
      * @param id -{String} 指定要获取数据的id
      */
-    getSummaryMeshJob: function (id) {
-        return ProcessingServiceBase.prototype.getJobs.apply(this, [this.url + '/' + id]);
-    },
+    getSummaryMeshJob(id) {
+        return super.getJobs(this.url + '/' + id);
+    }
 
     /**
      * @function SuperMap.SummaryMeshJobsService.protitype.addSummaryMeshJob
@@ -45,11 +45,11 @@ SuperMap.SummaryMeshJobsService = SuperMap.Class(ProcessingServiceBase, {
      * @param params - {SuperMap.SummaryMeshJobParameter} 创建一个空间分析的请求参数。
      * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
      */
-    addSummaryMeshJob: function (params, seconds) {
-        ProcessingServiceBase.prototype.addJob.apply(this, [this.url, params, SummaryMeshJobParameter, seconds]);
-    },
+    addSummaryMeshJob(params, seconds) {
+        super.addJob(this.url, params, SummaryMeshJobParameter, seconds);
+    }
 
-    CLASS_NAME: "SuperMap.SummaryMeshJobsService"
-});
+    CLASS_NAME = "SuperMap.SummaryMeshJobsService"
+}
 
-module.exports = SuperMap.SummaryMeshJobsService;
+SuperMap.SummaryMeshJobsService = SummaryMeshJobsService;

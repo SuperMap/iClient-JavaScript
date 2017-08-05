@@ -1,29 +1,31 @@
-﻿require('./SpatialAnalystBase');
-require('./DatasetSurfaceAnalystParameters');
-require('./GeometrySurfaceAnalystParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.SurfaceAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-    /**
-     * @class SuperMap.SurfaceAnalystService
-     * @constructs SuperMap.SurfaceAnalystService
-     * @classdesc
-     * 表面分析服务类。
-     * 该类负责将客户设置的表面分析服务参数传递给服务端，并接收服务端返回的表面分析服务分析结果数据。
-     * 表面分析结果通过该类支持的事件的监听函数参数获取
-     * @extends {SuperMap.SpatialAnalysctBase}
-     * @api
-     * @example 例如：
-     * (start code)
-     * var mySurfaceAnalystService = new SuperMap.SurfaceAnalystService(url, {
+﻿import SuperMap from '../SuperMap';
+import SpatialAnalystBase from './SpatialAnalystBase';
+import DatasetSurfaceAnalystParameters from './DatasetSurfaceAnalystParameters';
+import GeometrySurfaceAnalystParameters from './GeometrySurfaceAnalystParameters';
+
+/**
+ * @class SuperMap.SurfaceAnalystService
+ * @constructs SuperMap.SurfaceAnalystService
+ * @classdesc
+ * 表面分析服务类。
+ * 该类负责将客户设置的表面分析服务参数传递给服务端，并接收服务端返回的表面分析服务分析结果数据。
+ * 表面分析结果通过该类支持的事件的监听函数参数获取
+ * @extends {SuperMap.SpatialAnalystBase}
+ * @api
+ * @example 例如：
+ * (start code)
+ * var mySurfaceAnalystService = new SuperMap.SurfaceAnalystService(url, {
      *      eventListeners: {
      *	       "processCompleted": surfaceAnalysCompleted,
      *		   "processFailed": surfaceAnalysFailed
      *		   }
      * });
-     * (end)
-     *
-     *
-     */
+ * (end)
+ *
+ *
+ */
+export default  class SurfaceAnalystService extends SpatialAnalystBase {
+
 
     /**
      *
@@ -34,24 +36,24 @@ SuperMap.SurfaceAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
      * eventListeners - {Object} 需要被注册的监听器对象。
      *
      */
-    initialize: function (url, options) {
-        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /*
      * APIMethod: destroy
      * 释放资源,将引用的资源属性置空。
      */
-    destroy: function () {
-        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @method SuperMap.SurfaceAnalystService.processAsync
      * @description 负责将客户端的表面分析服务参数传递到服务端。
      * @param params - {SuperMap.SurfaceAnalystParameters}
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -64,7 +66,7 @@ SuperMap.SurfaceAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /**
      * @method SuperMap.SurfaceAnalystService.getJsonParameters
@@ -72,40 +74,40 @@ SuperMap.SurfaceAnalystService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
      * @param params - {SuperMap.SurfaceAnalystParameters}
      * @return {Object} 转化后的JSON字符串。
      */
-    getJsonParameters: function (params) {
+    getJsonParameters(params) {
         var jsonParameters = "";
         var me = this, end;
-        if (params instanceof SuperMap.DatasetSurfaceAnalystParameters) {
+        if (params instanceof DatasetSurfaceAnalystParameters) {
             var end = me.url.substr(me.url.length - 1, 1);
 
             if (me.isInTheSameDomain) {
                 me.url += (end === "/") ? "datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() +
-                ".json?returnContent=true" : "/datasets/" + params.dataset + "/" +
-                params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
+                    ".json?returnContent=true" : "/datasets/" + params.dataset + "/" +
+                    params.surfaceAnalystMethod.toLowerCase() + ".json?returnContent=true";
             } else {
                 me.url += (end === "/") ? "datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() +
-                ".jsonp?returnContent=true" : "/datasets/" + params.dataset + "/" +
-                params.surfaceAnalystMethod.toLowerCase() + ".jsonp?returnContent=true";
+                    ".jsonp?returnContent=true" : "/datasets/" + params.dataset + "/" +
+                    params.surfaceAnalystMethod.toLowerCase() + ".jsonp?returnContent=true";
             }
-        } else if (params instanceof SuperMap.GeometrySurfaceAnalystParameters) {
+        } else if (params instanceof GeometrySurfaceAnalystParameters) {
             end = me.url.substr(me.url.length - 1, 1);
             if (me.isInTheSameDomain) {
                 me.url += (end === "/") ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() +
-                ".json?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
-                ".json?returnContent=true";
+                    ".json?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
+                    ".json?returnContent=true";
             } else {
                 me.url += (end === "/") ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() +
-                ".jsonp?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
-                ".jsonp?returnContent=true";
+                    ".jsonp?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() +
+                    ".jsonp?returnContent=true";
             }
         } else {
             return;
         }
         jsonParameters = SuperMap.Util.toJSON(params);
         return jsonParameters;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.SurfaceAnalystService"
-});
+    CLASS_NAME = "SuperMap.SurfaceAnalystService"
+}
 
-module.exports = SuperMap.SurfaceAnalystService;
+SuperMap.SurfaceAnalystService = SurfaceAnalystService;

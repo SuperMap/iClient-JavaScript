@@ -1,18 +1,7 @@
-﻿/*
- * Class: SuperMap.FindPathService
- * 最佳路径分析服务类。
- * 最佳路径是在网络数据集中指定一些节点，按照节点的选择顺序，
- * 顺序访问这些节点从而求解起止点之间阻抗最小的路经。
- * 该类负责将客户端指定的最佳路径分析参数传递给服务端，并接收服务端返回的结果数据。
- * 最佳路径分析结果通过该类支持的事件的监听函数参数获取
- *
- * Inherits from:
- *  - <SuperMap.NetworkAnalystServiceBase>
- */
-require('./NetworkAnalystServiceBase');
-require('./FindPathParameters');
-var SuperMap = require('../SuperMap');
-var GeoJSONFormat = require('../format/GeoJSON');
+﻿import SuperMap from '../SuperMap';
+import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
+import FindPathParameters from './FindPathParameters';
+import GeoJSON from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindPathService
@@ -37,7 +26,7 @@ var GeoJSONFormat = require('../format/GeoJSON');
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-SuperMap.FindPathService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
+export default  class FindPathService extends NetworkAnalystServiceBase {
 
     /**
      * @function SuperMap.FindPathService.prototype.initialize
@@ -48,23 +37,23 @@ SuperMap.FindPathService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @function SuperMap.FindPathService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param params - {SuperMap.FindPathParameters} 最佳路径分析服务参数类
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -83,7 +72,7 @@ SuperMap.FindPathService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /*
      * Method: getJson
@@ -96,7 +85,7 @@ SuperMap.FindPathService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
      * Returns:
      * {Object} 转化后的JSON字符串。
      */
-    getJson: function (isAnalyzeById, params) {
+    getJson(isAnalyzeById, params) {
         var jsonString = "[",
             len = params ? params.length : 0;
 
@@ -113,7 +102,7 @@ SuperMap.FindPathService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
         }
         jsonString += ']';
         return jsonString;
-    },
+    }
 
     /*
      * Method: toGeoJSONResult
@@ -122,11 +111,11 @@ SuperMap.FindPathService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
-    toGeoJSONResult: function (result) {
+    toGeoJSONResult(result) {
         if (!result || !result.pathList || result.pathList.length < 1) {
             return null;
         }
-        var geoJSONFormat = new GeoJSONFormat();
+        var geoJSONFormat = new GeoJSON();
         result.pathList.forEach(function (path) {
             if (path.route) {
                 path.route = JSON.parse(geoJSONFormat.write(path.route));
@@ -143,9 +132,9 @@ SuperMap.FindPathService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
             }
         });
         return result;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.FindPathService"
-});
+    CLASS_NAME = "SuperMap.FindPathService"
+}
 
-module.exports = SuperMap.FindPathService;
+SuperMap.FindPathService = FindPathService;

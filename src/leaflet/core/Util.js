@@ -1,16 +1,15 @@
-var L = require("leaflet");
-var GeoJSONFormat = require('../../common/format/GeoJSON');
-var SuperMap = require('../../common/SuperMap');
-L.Util.supermap_callbacks = {};
-
-L.Util.toGeoJSON = function (feature) {
+import L from "leaflet";
+import GeoJSONFormat from '../../common/format/GeoJSON';
+import SuperMap from '../../common/SuperMap';
+export var supermap_callbacks = {};
+L.Util.supermap_callbacks = supermap_callbacks;
+export var toGeoJSON = function (feature) {
     if (!feature) {
         return feature;
     }
     return JSON.parse(new GeoJSONFormat().write(feature));
 };
-
-L.Util.toSuperMapGeometry = function (geometry) {
+export var toSuperMapGeometry = function (geometry) {
     if (!geometry) {
         return geometry;
     }
@@ -37,9 +36,7 @@ L.Util.toSuperMapGeometry = function (geometry) {
     return (serverResult && serverResult.geometry) ? serverResult.geometry : serverResult;
 
 };
-
-
-L.Util.resolutionToScale = function (resolution, dpi, mapUnit) {
+export var resolutionToScale = function (resolution, dpi, mapUnit) {
     var inchPerMeter = 1 / 0.0254;
     // 地球半径。
     var meterPerMapUnit = this.getMeterPerMapUnit(mapUnit);
@@ -47,16 +44,14 @@ L.Util.resolutionToScale = function (resolution, dpi, mapUnit) {
     scale = 1 / scale;
     return scale;
 };
-
-L.Util.scaleToResolution = function (scale, dpi, mapUnit) {
+export var scaleToResolution = function (scale, dpi, mapUnit) {
     var inchPerMeter = 1 / 0.0254;
     var meterPerMapUnitValue = this.getMeterPerMapUnit(mapUnit);
     var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
     resolution = 1 / resolution;
     return resolution;
 };
-
-L.Util.getMeterPerMapUnit = function (mapUnit) {
+export var getMeterPerMapUnit = function (mapUnit) {
     var earchRadiusInMeters = 6378137;
     var meterPerMapUnit;
     if (mapUnit === SuperMap.Unit.METER) {
@@ -75,8 +70,7 @@ L.Util.getMeterPerMapUnit = function (mapUnit) {
     }
     return meterPerMapUnit;
 };
-
-L.Util.GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
+export var GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
     var resolution = null,
         ratio = 10000;
     //用户自定义地图的Options时，若未指定该参数的值，则系统默认为6378137米，即WGS84参考系的椭球体长半轴。
@@ -95,77 +89,13 @@ L.Util.GetResolutionFromScaleDpi = function (scale, dpi, coordUnit, datumAxis) {
     }
     return -1;
 };
-
-L.Util.NormalizeScale = function (scale) {
+export var NormalizeScale = function (scale) {
     return (scale > 1.0) ? (1.0 / scale) : scale;
 };
-
-L.Util.Csv2GeoJSON = function (csv, options) {
-    var defaultOptions = {
-        titles: ['lon', 'lat'],
-        latitudeTitle: 'lat',
-        longitudeTitle: 'lon',
-        fieldSeparator: ',',
-        lineSeparator: '\n',
-        deleteDoubleQuotes: true,
-        firstLineTitles: false
-    };
-    options = options || defaultOptions;
-    var _propertiesNames = [];
-    if (typeof csv === 'string') {
-        var titulos = options.titles;
-        if (options.firstLineTitles) {
-            csv = csv.split(options.lineSeparator);
-            if (csv.length < 2) return;
-            titulos = csv[0];
-            csv.splice(0, 1);
-            csv = csv.join(options.lineSeparator);
-            titulos = titulos.trim().split(options.fieldSeparator);
-            for (var i = 0; i < titulos.length; i++) {
-                titulos[i] = _deleteDoubleQuotes(titulos[i]);
-            }
-            options.titles = titulos;
-        }
-        for (var i = 0; i < titulos.length; i++) {
-            var prop = titulos[i].toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '_');
-            if (prop == '' || prop == '_') prop = 'prop-' + i;
-            _propertiesNames[i] = prop;
-        }
-        csv = _csv2json(csv);
-    }
-    return csv;
-
-    function _deleteDoubleQuotes(cadena) {
-        if (options.deleteDoubleQuotes) cadena = cadena.trim().replace(/^"/, "").replace(/"$/, "");
-        return cadena;
-    }
-
-    function _csv2json(csv) {
-        var json = {};
-        json["type"] = "FeatureCollection";
-        json["features"] = [];
-        var titulos = options.titles;
-        csv = csv.split(options.lineSeparator);
-        for (var num_linea = 0; num_linea < csv.length; num_linea++) {
-            var campos = csv[num_linea].trim().split(options.fieldSeparator)
-                , lng = parseFloat(campos[titulos.indexOf(options.longitudeTitle)])
-                , lat = parseFloat(campos[titulos.indexOf(options.latitudeTitle)]);
-            if (campos.length == titulos.length && Math.abs(lng) < 180 && Math.abs(lat) < 90) {
-                var feature = {};
-                feature["type"] = "Feature";
-                feature["geometry"] = {};
-                feature["properties"] = {};
-                feature["geometry"]["type"] = "Point";
-                feature["geometry"]["coordinates"] = [lng, lat];
-                for (var i = 0; i < titulos.length; i++) {
-                    if (titulos[i] != options.latitudeTitle && titulos[i] != options.longitudeTitle) {
-                        feature["properties"][_propertiesNames[i]] = _deleteDoubleQuotes(campos[i]);
-                    }
-                }
-                json["features"].push(feature);
-            }
-        }
-        return json;
-    }
-};
-module.exports = L.Util;
+L.Util.toGeoJSON = toGeoJSON;
+L.Util.toSuperMapGeometry = toSuperMapGeometry;
+L.Util.resolutionToScale = resolutionToScale;
+L.Util.scaleToResolution = scaleToResolution;
+L.Util.getMeterPerMapUnit = getMeterPerMapUnit;
+L.Util.GetResolutionFromScaleDpi = GetResolutionFromScaleDpi;
+L.Util.NormalizeScale = NormalizeScale;

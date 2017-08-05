@@ -1,13 +1,8 @@
-var L = require('leaflet');
-var mapv = {};
-try {
-    mapv = require("mapv");
-} catch (ex) {
-    mapv = {};
-}
-var BaseLayer = mapv.baiduMapLayer ? mapv.baiduMapLayer.__proto__ : Function;
+import L from 'leaflet';
+import {baiduMapLayer} from "mapv";
+var BaseLayer = baiduMapLayer? baiduMapLayer.__proto__ : Function;
 
-class MapVRenderer extends BaseLayer {
+export default class MapVRenderer extends BaseLayer {
     constructor(map, layer, dataSet, options) {
         if (!BaseLayer) {
             return;
@@ -232,5 +227,3 @@ class MapVRenderer extends BaseLayer {
         this.canvasLayer.draw();
     }
 }
-
-module.exports = MapVRenderer;

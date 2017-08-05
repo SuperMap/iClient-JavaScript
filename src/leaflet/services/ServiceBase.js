@@ -1,6 +1,4 @@
-﻿require('../core/Base');
-require('../../common/util/FetchRequest');
-var L = require("leaflet");
+﻿import L from "leaflet";
 
 /**
  * @class L.supermap.ServiceBase
@@ -8,7 +6,7 @@ var L = require("leaflet");
  * @param url - {String} 与客户端交互的服务地址。
  * @param options - {Object} 参数。
  */
-var ServiceBase = L.Evented.extend({
+export var ServiceBase = L.Evented.extend({
     options: {
         url: null,
         //服务来源 iServer|iPortal|online
@@ -40,5 +38,3 @@ var ServiceBase = L.Evented.extend({
     }
 
 });
-
-module.exports = ServiceBase;

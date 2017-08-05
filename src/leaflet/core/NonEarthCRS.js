@@ -1,10 +1,10 @@
-require("../core/Base");
-var L = require("leaflet");
+import "../core/Base";
+import L from "leaflet";
 L.Projection = {};
 
-var NonProjection = L.Class.extend({
+export var NonProjection = L.Class.extend({
     initialize: function (bounds) {
-        this.b = bounds;
+        this.bounds = bounds;
     },
     project: function (latlng) {
         return new L.Point(latlng.lng, latlng.lat);
@@ -12,16 +12,14 @@ var NonProjection = L.Class.extend({
 
     unproject: function (point) {
         return new L.LatLng(point.y, point.x);
-    },
-
-    bounds: this.b
+    }
 });
 
-L.supermap.NonProjection = function (bounds) {
+export var nonProjection = function (bounds) {
     return new NonProjection(bounds)
 };
 
-var NonEarthCRS = L.Class.extend({
+export var NonEarthCRS = L.Class.extend({
     includes: L.CRS,
 
     initialize: function (options) {
@@ -30,7 +28,7 @@ var NonEarthCRS = L.Class.extend({
                 new L.Transformation(1, options.origin.x,
                     -1, options.origin.y);
         }
-        this.projection = L.supermap.NonProjection(options.bounds);
+        this.projection = L.CRS.NonProjection(options.bounds);
         this.bounds = options.bounds;
         this.origin = options.origin;
         this.resolutions = options.resolutions;
@@ -68,10 +66,9 @@ var NonEarthCRS = L.Class.extend({
 
     infinite: true
 });
-
-
-L.supermap.NonEarthCRS = function (options) {
+export var nonEarthCRS = function (options) {
     return new NonEarthCRS(options)
 };
+L.CRS.NonProjection = nonProjection;
 
-module.exports = NonEarthCRS;
+L.CRS.NonEarthCRS = nonEarthCRS;

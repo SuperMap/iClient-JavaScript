@@ -1,18 +1,8 @@
-﻿/*
- * Class: MapService
- * 地图信息服务类
- * 用法：
- *      L.supermap.mapService(url)
- *      .getMapInfo(function(result){
- *           //doSomething
- *      })
- *      
- */
-var L = require("leaflet");
-var ServiceBase = require('./ServiceBase');
-var SuperMap = require('../../common/SuperMap');
-var SuperMapMapService = require('../../common/iServer/MapService');
-var TilesetsService = require('../../common/iServer/TilesetsService');
+﻿import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {ServiceBase} from './ServiceBase';
+import SuperMapMapService from  '../../common/iServer/MapService';
+import TilesetsService from  '../../common/iServer/TilesetsService';
 /**
  * @class  L.supermap.MapService
  * @description 地图信息服务类
@@ -25,7 +15,7 @@ var TilesetsService = require('../../common/iServer/TilesetsService');
  *           //doSomething
  *      })
  */
-var MapService = ServiceBase.extend({
+export var MapService = ServiceBase.extend({
     options: {
         projection: null
     },
@@ -85,8 +75,8 @@ var MapService = ServiceBase.extend({
     }
 });
 
-L.supermap.mapService = function (url, options) {
+export var mapService = function (url, options) {
     return new MapService(url, options);
 };
 
-module.exports = MapService;
+L.supermap.mapService = mapService;

@@ -1,13 +1,5 @@
-﻿/*
- * Class: SuperMap.FindClosestFacilitiesParameters
- * 最近设施分析参数类。
- * 最近设施分析是指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
- * 设施点一般为学校、超市、加油站等服务设施；事件点为需要服务设施的事件位置。
- * 例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。
- * 最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
- */
-var SuperMap = require('../SuperMap');
-var TransportationAnalystParameter = require('./TransportationAnalystParameter');
+﻿import SuperMap from '../SuperMap';
+import TransportationAnalystParameter from './TransportationAnalystParameter';
 
 /**
  * @class SuperMap.FindClosestFacilitiesParameters
@@ -21,7 +13,7 @@ var TransportationAnalystParameter = require('./TransportationAnalystParameter')
  *         maxWeight - {Number} 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。
  *         parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
-SuperMap.FindClosestFacilitiesParameters = SuperMap.Class({
+export default  class FindClosestFacilitiesParameters {
 
     /**
      * APIProperty: event
@@ -29,14 +21,14 @@ SuperMap.FindClosestFacilitiesParameters = SuperMap.Class({
      * @description 事件点，一般为需要获得服务设施服务的事件位置，必设字段。
      *                可以通过两种方式赋予事件点：当该类中字段 isAnalyzeById = true 时，应输入事件点 ID 号；当 isAnalyzeById = false 时，应输入事件点坐标。
      */
-    event: null,
+    event = null;
 
     /**
      * APIProperty: expectFacilityCount
      * @member SuperMap.FindClosestFacilitiesParameters.prototype.expectFacilityCount -{Number}
      * @description 要查找的设施点数量。默认值为1。
      */
-    expectFacilityCount: 1,
+    expectFacilityCount = 1;
 
     /**
      * APIProperty: facilities
@@ -44,7 +36,7 @@ SuperMap.FindClosestFacilitiesParameters = SuperMap.Class({
      * @description 设施点集合，一般为提供服务的服务设施位置，必设字段。
      *                可以通过两种方式赋予设施点：当该类中字段 isAnalyzeById = true 时，应输入设施点 ID 号；当 isAnalyzeById = false 时，应输入设施点坐标。
      */
-    facilities: null,
+    facilities = null;
 
     /**
      * APIProperty: fromEvent
@@ -56,15 +48,14 @@ SuperMap.FindClosestFacilitiesParameters = SuperMap.Class({
      *               因此在进行最近设施分析之前，需要设置获取的最优路线的方向，即是以事件点作为起点到最近设施点的方向分析，还是以最近设施点为起点到事件点的方向分析。
      *               如果需要以事件点作为起点到设施点方向进行查找，设置该字段值为 true；默认为 false，表示从设施点到事件点进行查找。
      */
-    fromEvent: false,
+    fromEvent = false;
 
     /**
      * APIProperty: isAnalyzeById
      * @member SuperMap.FindClosestFacilitiesParameters.prototype.isAnalyzeById -{Boolean}
      * @description 事件点和设施点是否通过节点 ID 号来指定，默认为 false，即通过坐标点指定事件点和设施点。
      */
-    isAnalyzeById: false,
-
+    isAnalyzeById = false;
     /**
      * APIProperty: maxWeight
      * @member SuperMap.FindClosestFacilitiesParameters.prototype.maxWeight -{Number}
@@ -72,7 +63,7 @@ SuperMap.FindClosestFacilitiesParameters = SuperMap.Class({
      *               例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。
      *               那么需要将网络分析参数中 parameter.weightFieldName 设置为表示时间的字段，然后设置查找范围的半径值为10。
      */
-    maxWeight: 0,
+    maxWeight = 0;
 
     /**
      * APIProperty: parameter
@@ -81,27 +72,28 @@ SuperMap.FindClosestFacilitiesParameters = SuperMap.Class({
      *               通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息。
      *               它为 SuperMap.TransportationAnalystParameter 类型，虽然为可选参数，但是如果不设置其中的 resultSetting 字段，则返回结果空间信息等都为空。
      */
-    parameter: null,
+    parameter = null;
 
     /*
      * Constructor: SuperMap.FindClosestFacilitiesParameters
      * 最近设施分析参数类构造函数。
      */
-    initialize: function (options) {
+    constructor(options) {
         var me = this;
         me.parameter = new TransportationAnalystParameter();
         if (!options) {
             return;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /**
      * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.event = null;
         me.expectFacilityCount = null;
@@ -113,8 +105,10 @@ SuperMap.FindClosestFacilitiesParameters = SuperMap.Class({
             me.parameter.destroy();
             me.parameter = null;
         }
-    },
+    }
 
-    CLASS_NAME: "SuperMap.FindClosestFacilitiesParameters"
-});
-module.exports = SuperMap.FindClosestFacilitiesParameters;
+
+    CLASS_NAME = "SuperMap.FindClosestFacilitiesParameters"
+}
+
+SuperMap.FindClosestFacilitiesParameters = FindClosestFacilitiesParameters;

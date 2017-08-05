@@ -1,21 +1,22 @@
-﻿require('../REST');
-var SuperMap = require('../SuperMap');
-var BufferDistance = require('./BufferDistance');
-SuperMap.BufferSetting = SuperMap.Class({
-    /**
-     * @class SuperMap.BufferSetting
-     * @constructs SuperMap.BufferSetting
-     * @classdesc
-     * 缓冲区分析通用设置类
-     * @api
-     */
+﻿import SuperMap from '../SuperMap';
+import {BufferEndType, Unit} from '../REST';
+import BufferDistance from './BufferDistance';
+
+/**
+ * @class SuperMap.BufferSetting
+ * @constructs SuperMap.BufferSetting
+ * @classdesc
+ * 缓冲区分析通用设置类
+ * @api
+ */
+export default class BufferSetting {
 
     /**
      * APIProperty: endType
      * {SuperMap.BufferEndType} 缓冲区端点枚举值。
      * 分为平头和圆头两种，默认为平头，即 SuperMap.BufferEndType.FLAT 。
      */
-    endType: SuperMap.BufferEndType.FLAT,
+    endType = BufferEndType.FLAT;
 
     /**
      * APIProperty: leftDistance
@@ -23,7 +24,7 @@ SuperMap.BufferSetting = SuperMap.Class({
      * 默认为100。当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
      * 当为DatasetBufferAnalyst时，单位通过BufferSetting.radiusUnit设置（默认全部为米）。
      */
-    leftDistance: null,
+    leftDistance = null;
 
     /**
      * APIProperty: rightDistance
@@ -31,14 +32,14 @@ SuperMap.BufferSetting = SuperMap.Class({
      * 默认为100。当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
      * 当为DatasetBufferAnalyst时，单位通过BufferSetting.radiusUnit设置（默认全部为米）。
      */
-    rightDistance: null,
+    rightDistance = null;
 
     /**
      * APIProperty: semicircleLineSegment
      * {Number} 圆头缓冲圆弧处线段的个数。
      * 即用多少个线段来模拟一个半圆，默认值为4。
      */
-    semicircleLineSegment: 4,
+    semicircleLineSegment = 4;
 
     /**
      * APIProperty: radiusUnit
@@ -47,7 +48,7 @@ SuperMap.BufferSetting = SuperMap.Class({
      * SuperMap.Unit.FOOT、SuperMap.Unit.INCH、SuperMap.Unit.MILE、
      * SuperMap.Unit.YARD。仅对DatasetBufferAnalyst有效
      */
-    radiusUnit: SuperMap.Unit.METER,
+    radiusUnit = Unit.METER;
 
     /**
 
@@ -60,21 +61,22 @@ SuperMap.BufferSetting = SuperMap.Class({
      * rightDistance - {BufferDistance} 右侧缓冲距离。</br>
      * semicircleLineSegment - {Number} 圆头缓冲圆弧处线段的个数。</br>
      */
-    initialize: function (options) {
-        var me = this;
+    constructor(options) {
+        let me = this;
         me.leftDistance = new BufferDistance();
         me.rightDistance = new BufferDistance();
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
 
-    /*
+
+    /**
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
-        var me = this;
+    destroy() {
+        let me = this;
         me.endType = null;
         if (me.leftDistance) {
             me.leftDistance.destroy();
@@ -86,9 +88,9 @@ SuperMap.BufferSetting = SuperMap.Class({
         }
         me.semicircleLineSegment = null;
         me.radiusUnit = null;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.BufferSetting"
-});
 
-module.exports = SuperMap.BufferSetting;
+    CLASS_NAME = "SuperMap.BufferSetting";
+}
+SuperMap.BufferSetting = BufferSetting;

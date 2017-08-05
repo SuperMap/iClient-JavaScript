@@ -1,4 +1,4 @@
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
 
 /**
  * @class SuperMap.BuildCacheJobParameter
@@ -14,74 +14,96 @@ var SuperMap = require('../SuperMap');
  *         imageType -{number} 缓存类型.<br>
  *         level -{number} 缓存比例尺级别。
  */
-SuperMap.BuildCacheJobParameter = SuperMap.Class({
-
+export default  class BuildCacheJobParameter {
     /**
+     * APIProperty: datasetName
      * @member SuperMap.BuildCacheJobParameter.prototype.datasetName -{String}
      * @description 数据集名称。
      */
-    datasetName: "",
+    datasetName= "";
 
     /**
+     * APIProperty: cacheName
      * @member SuperMap.BuildCacheJobParameter.prototype.cacheName -{String}
      * @description 缓存名称。
      */
-    cacheName: "",
+    cacheName= "";
+
 
     /**
+     * APIProperty: cacheType
      * @member SuperMap.BuildCacheJobParameter.prototype.cacheType -{String}
      * @description 存储类型。
      */
-    cacheType: "",
+    cacheType= "";
+
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.serverAdresses -{String}
+     * APIProperty: serverAddresses
+     * @member SuperMap.BuildCacheJobParameter.prototype.serverAddresses -{String}
      * @description MongoDB地址。
      */
-    serverAdresses: "",
+
+    serverAdresses= "";
+
 
     /**
+     * APIProperty: database
      * @member SuperMap.BuildCacheJobParameter.prototype.database -{String}
      * @description 数据库。
      */
-    database: "",
+
+    database= "";
+
 
     /**
+     * APIProperty: version
      * @member SuperMap.BuildCacheJobParameter.prototype.version -{String}
      * @description 版本。
      */
-    version: "",
+
+    version= "";
+
 
     /**
+     * APIProperty: bounds
      * @member SuperMap.BuildCacheJobParameter.prototype.bounds -{SuperMap.Bounds}
      * @description 缓存范围。
      */
-    bounds: "",
+
+    bounds= "";
+
 
     /**
+     * APIProperty: imageType
      * @member SuperMap.BuildCacheJobParameter.prototype.imageType -{number}
      * @description 缓存类型。
      */
-    imageType: 'Heatmap',
+
+    imageType= 'Heatmap';
+
 
     /**
+     * APIProperty: level
      * @member SuperMap.BuildCacheJobParameter.prototype.level -{number}
      * @description 缓存比例尺级别。
      */
-    level: null,
+    level = null;
 
-    initialize: function (options) {
+    constructor(options) {
         if (!options) {
             return;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /**
+     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         this.datasetName = null;
         this.cacheName = null;
         this.cacheType = null;
@@ -93,23 +115,22 @@ SuperMap.BuildCacheJobParameter = SuperMap.Class({
         this.level = null;
     }
 
-});
-
-SuperMap.BuildCacheJobParameter.toObject = function (buildCacheJobParameter, tempObj) {
-    for (var name in buildCacheJobParameter) {
-        if (name === "datasetName") {
-            tempObj['input'] = tempObj['input'] || {};
-            tempObj['input'][name] = buildCacheJobParameter[name];
-            continue;
+    static  toObject(buildCacheJobParameter, tempObj) {
+        for (let name in buildCacheJobParameter) {
+            if (name === "datasetName") {
+                tempObj['input'] = tempObj['input'] || {};
+                tempObj['input'][name] = buildCacheJobParameter[name];
+                continue;
+            }
+            if (SuperMap.Util.indexOf(["cacheName", "cacheType", "serverAdresses", "database", "version"], name) > -1) {
+                tempObj['output'] = tempObj['output'] || {};
+                tempObj['output'][name] = buildCacheJobParameter[name];
+                continue;
+            }
+            tempObj['drawing'] = tempObj['drawing'] || {};
+            tempObj['drawing'][name] = buildCacheJobParameter[name];
         }
-        if (SuperMap.Util.indexOf(["cacheName", "cacheType", "serverAdresses", "database", "version"], name) > -1) {
-            tempObj['output'] = tempObj['output'] || {};
-            tempObj['output'][name] = buildCacheJobParameter[name];
-            continue;
-        }
-        tempObj['drawing'] = tempObj['drawing'] || {};
-        tempObj['drawing'][name] = buildCacheJobParameter[name];
     }
-};
+}
 
-module.exports = SuperMap.BuildCacheJobParameter;
+SuperMap.BuildCacheJobParameter = BuildCacheJobParameter;

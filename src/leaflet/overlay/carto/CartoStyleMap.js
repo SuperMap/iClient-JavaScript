@@ -1,9 +1,9 @@
 /**
  * CartoCSS中的style属性名与leaflet的style属性名的对应表
  * */
-require('../../core/Base');
-var L = require("leaflet");
-L.supermap.CartoStyleMap = {
+import '../../core/Base';
+import L from "leaflet";
+export var CartoStyleMap = L.supermap.CartoStyleMap = {
     "TEXT": {
         "text-size": "fontSize",
         "text-face-name": "fontFamily",
@@ -72,9 +72,9 @@ L.supermap.ServerStyleMap = {
 
     markerSize: {
         leafletStyle: "markerSize",
-        type:"number",
-        unit:"mm",
-        defaultValue:2.4,
+        type: "number",
+        unit: "mm",
+        defaultValue: 2.4,
     },
 
     lineColor: {

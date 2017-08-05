@@ -1,4 +1,5 @@
-﻿/**
+﻿import  SuperMap from '../SuperMap';
+/**
  * Class: SuperMap.DatasetInfo
  * 数据集信息类。
  * 数据集一般为存储在一起的相关数据的集合；根据数据类型的不同，分为矢量数据集、栅格数据集(grid
@@ -11,63 +12,62 @@
  * 目前版本支持的数据集主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD
  * 数据集）、网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
  */
-var SuperMap = require('../SuperMap');
-SuperMap.DatasetInfo = SuperMap.Class({
+export default  class DatasetInfo {
 
     /**
      * APIProperty: bounds
      * {SuperMap.Bounds} 数据集范围，该字段只读。
      */
-    bounds: null,
+    bounds = null;
 
     /**
      * APIProperty: dataSourceName
      * {String} 数据源名称，该字段只读。
      */
-    dataSourceName: null,
+    dataSourceName = null;
 
     /**
      * APIProperty: description
      * {String} 数据集的描述信息。
      */
-    description: null,
+    description = null;
 
     /**
      * APIProperty: encodeType
      * {String} 数据集存储时的压缩编码方式，该字段只读。
      */
-    encodeType: null,
+    encodeType = null;
 
     /**
      * APIProperty: isReadOnly
      * {Boolean} 数据集是否为只读。
      */
-    isReadOnly: null,
+    isReadOnly = null;
 
     /**
      * APIProperty: name
      * {String} 数据集名称，该字段必须且只读。
      */
-    name: null,
+    name = null;
 
     /**
      * APIProperty: prjCoordSys
      * {SuperMap.Projection} 数据集的投影信息。
      */
-    prjCoordSys: null,
+    prjCoordSys = null;
 
     /**
      * APIProperty: tableName
      * {String} 表名，该字段只读。
      */
-    tableName: null,
+    tableName = null;
 
     /**
      * APIProperty: type
      * {String} 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD
      * 数据集）、网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
      */
-    type: null,
+    type = null;
 
     /**
      * Constructor: SuperMap.DatasetInfo
@@ -88,28 +88,30 @@ SuperMap.DatasetInfo = SuperMap.Class({
      * type - {String} 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD
      * 数据集）、网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
      */
-    initialize: function (options) {
+    constructor(options) {
         options = options || {};
         SuperMap.Util.extend(this, options);
         var b = this.bounds;
         if (b) {
             this.bounds = new SuperMap.Bounds(b.leftBottom.x, b.leftBottom.y, b.rightTop.x, b.rightTop.y);
         }
-    },
+    }
+
 
     /**
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         SuperMap.Util.reset(this);
-    },
+    }
+
 
     /**
      * Method: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */
-    toServerJSONObject: function () {
+    toServerJSONObject() {
         var dataObj = {};
         dataObj = SuperMap.Util.copyAttributes(dataObj, this);
         if (dataObj.bounds) {
@@ -118,8 +120,9 @@ SuperMap.DatasetInfo = SuperMap.Class({
             }
         }
         return dataObj;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.DatasetInfo"
-});
-module.exports = SuperMap.DatasetInfo;
+
+    CLASS_NAME = "SuperMap.DatasetInfo"
+}
+SuperMap.DatasetInfo = DatasetInfo;

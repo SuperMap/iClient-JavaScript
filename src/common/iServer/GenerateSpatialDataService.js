@@ -1,19 +1,19 @@
-﻿require('./SpatialAnalystBase');
-require('./GenerateSpatialDataParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.GenerateSpatialDataService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-    /**
-     * @class SuperMap.GenerateSpatialDataService
-     * @constructs SuperMap.GenerateSpatialDataService
-     * @classdesc
-     * 动态分段分析服务类。
-     * 该类负责将客户设置的动态分段分析服务参数传递给服务端，并接收服务端返回的动态分段分析结果数据。
-     * 获取的结果数据包括 originResult 、result 两种，其中，originResult 为服务端返回的用 JSON 对象表示的动态分段分析结果数据，result 为服务端返回的动态分段分析结果数据。
-     * @extends {SuperMap.SpatialAnalystBase}
-     * @api
-     * @example 实例化该类如下例所示：
-     * (start code)
-     *  function GenerateSpatialData(){
+﻿import SuperMap from '../SuperMap';
+import SpatialAnalystBase from './SpatialAnalystBase';
+import GenerateSpatialDataParameters from './GenerateSpatialDataParameters';
+
+/**
+ * @class SuperMap.GenerateSpatialDataService
+ * @constructs SuperMap.GenerateSpatialDataService
+ * @classdesc
+ * 动态分段分析服务类。
+ * 该类负责将客户设置的动态分段分析服务参数传递给服务端，并接收服务端返回的动态分段分析结果数据。
+ * 获取的结果数据包括 originResult 、result 两种，其中，originResult 为服务端返回的用 JSON 对象表示的动态分段分析结果数据，result 为服务端返回的动态分段分析结果数据。
+ * @extends {SuperMap.SpatialAnalystBase}
+ * @api
+ * @example 实例化该类如下例所示：
+ * (start code)
+ *  function GenerateSpatialData(){
      *
      *  //配置数据返回选项(option)
      *  var option = new SuperMap.DataReturnOption({
@@ -49,6 +49,8 @@ SuperMap.GenerateSpatialDataService = SuperMap.Class(SuperMap.SpatialAnalystBase
      *  function Error(generateSpatialDataEventArgs){//todo};
      * (end)
      */
+export default  class GenerateSpatialDataService extends SpatialAnalystBase {
+
 
     /**
      * @method SuperMap.GenerateSpatialDataService.initialize
@@ -57,24 +59,26 @@ SuperMap.GenerateSpatialDataService = SuperMap.Class(SuperMap.SpatialAnalystBase
      * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
+
 
     /*
      * APIMethod: destroy
      * 释放资源,将引用的资源属性置空。
      */
-    destroy: function () {
-        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
+
 
     /**
      * @method SuperMap.GenerateSpatialDataService.processAsync
      * @description 负责将客户端的动态分段服务参数传递到服务端。
      * @param params - {SuperMap.GenerateSpatialDataParameters}
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -90,7 +94,8 @@ SuperMap.GenerateSpatialDataService = SuperMap.Class(SuperMap.SpatialAnalystBase
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
+
 
     /**
      * @method SuperMap.GenerateSpatialDataService.getJsonParameters
@@ -98,7 +103,7 @@ SuperMap.GenerateSpatialDataService = SuperMap.Class(SuperMap.SpatialAnalystBase
      * @param params -  {SuperMap.GenerateSpatialDataParameters}
      * @return {Object} 转化后的JSON字符串。
      */
-    getJsonParameters: function (params) {
+    getJsonParameters(params) {
         var jsonParameters = "",
             jsonStr = "datasets/" + params.routeTable + "/linearreferencing/generatespatialdata",
             me = this,
@@ -114,9 +119,10 @@ SuperMap.GenerateSpatialDataService = SuperMap.Class(SuperMap.SpatialAnalystBase
         me.url += "?returnContent=true";
         jsonParameters = SuperMap.Util.toJSON(params);
         return jsonParameters;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.GenerateSpatialDataService"
-});
 
-module.exports = SuperMap.GenerateSpatialDataService;
+    CLASS_NAME = "SuperMap.GenerateSpatialDataService"
+}
+
+SuperMap.GenerateSpatialDataService = GenerateSpatialDataService;

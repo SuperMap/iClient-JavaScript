@@ -1,14 +1,6 @@
-﻿/*
- * Class: SuperMap.QueryByGeometryParameters
- * Geometry 查询参数类。
- * 该类用于设置 Geometry查询的相关参数。
- *
- * Inherits from:
- *  - <SuperMap.QueryParameters>
- */
-require('../REST');
-require('./QueryParameters');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import QueryParameters from './QueryParameters';
+import {SpatialQueryMode} from '../REST';
 
 /**
  * @class SuperMap.QueryByGeometryParameters
@@ -29,7 +21,7 @@ var SuperMap = require('../SuperMap');
  *         geometry - {Object} 用于查询的几何对象。
  *         spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式。
  */
-SuperMap.QueryByGeometryParameters = SuperMap.Class(SuperMap.QueryParameters, {
+export default  class QueryByGeometryParameters extends QueryParameters {
 
     /**
      * APIProperty: returnContent
@@ -38,47 +30,48 @@ SuperMap.QueryByGeometryParameters = SuperMap.Class(SuperMap.QueryParameters, {
      *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
      *               为 false，则返回的是查询结果资源的 URI。默认为 true。
      */
-    returnContent: true,
+    returnContent = true;
 
     /**
      * APIProperty: geometry
      * @member SuperMap.QueryByGeometryParameters.prototype.geometry -{Object}
      * @description 用于查询的几何对象。
      */
-    geometry: null,
+    geometry = null;
 
     /**
      * APIProperty: spatialQueryMode
      * @member SuperMap.QueryByGeometryParameters.prototype.spatialQueryMode -{SuperMap.SpatialQueryMode}
      * @description 空间查询模式。
      */
-    spatialQueryMode: SuperMap.SpatialQueryMode.INTERSECT,
+    spatialQueryMode = SpatialQueryMode.INTERSECT;
 
     /*
      * Constructor: SuperMap.QueryByGeometryParameters
      * Geometry 查询参数类构造函数。
      */
-    initialize: function (options) {
-        SuperMap.QueryParameters.prototype.initialize.apply(this, arguments);
+    constructor(options) {
+        super(options);
         if (!options) {
             return;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
 
     /**
      * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
+        super.destroy();
         var me = this;
-        SuperMap.QueryParameters.prototype.destroy.apply(me, arguments);
         me.returnContent = null;
         me.geometry = null;
         me.spatialQueryMode = null;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.QueryByGeometryParameters"
-});
-module.exports = SuperMap.QueryByGeometryParameters;
+    CLASS_NAME = "SuperMap.QueryByGeometryParameters"
+}
+
+SuperMap.QueryByGeometryParameters = QueryByGeometryParameters;

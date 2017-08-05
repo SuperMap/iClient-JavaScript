@@ -1,57 +1,59 @@
-﻿/**
+﻿import SuperMap from '../SuperMap';
+
+/**
  * Class: SuperMap.UGCLayer
  * UGC 图层类。
  */
-var SuperMap = require('../SuperMap');
-SuperMap.UGCLayer = SuperMap.Class({
+export default  class UGCLayer {
 
     /**
      * APIProperty: bounds
      * {SuperMap.Bounds} 图层范围。
      */
-    bounds: null,
+    bounds = null;
 
     /**
      * APIProperty: caption
      * {String} 图层的标题。
      */
-    caption: null,
+    caption = null;
 
     /**
      * APIProperty: description
      * {String} 图层的描述信息。
      */
-    description: null,
+    description = null;
 
     /**
      * APIProperty: name
      * {String} 图层的名称。
      */
-    name: null,
+    name = null;
 
     /**
      * APIProperty: queryable
      * {Boolean} 图层中的对象是否可以查询。
      */
-    queryable: null,
+    queryable = null;
 
     /**
      * APIProperty: subUGCLayers
      * {Array} 子图层集。
      */
-    subLayers: null,
+    subLayers = null;
 
     /**
      * APIProperty: type
      * {SuperMap.UGCLayerType} 图层类型。
      */
-    type: null,
+    type = null;
 
     /**
      * APIProperty: visible
      * {Boolean} 图层是否可视。
      */
-    visible: null,
+    visible = null;
+
     /**
      * Constructor: SuperMap.UGCMapLayer
      * UGC 图层类构造函数。
@@ -69,15 +71,17 @@ SuperMap.UGCLayer = SuperMap.Class({
      * type - {SuperMap.UGCLayerType} 图层类型。
      * visible - {Boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。
      */
-    initialize: function (options) {
+    constructor(options) {
         options = options ? options : {};
         SuperMap.Util.extend(this, options);
-    },
+    }
 
-    destroy: function () {
+
+    destroy() {
         var me = this;
         SuperMap.Util.reset(me);
-    },
+    }
+
 
     /**
      * Method: fromJson
@@ -85,20 +89,21 @@ SuperMap.UGCLayer = SuperMap.Class({
      * Parameters:
      * jsonObject - {Object} 要转换的 JSON 对象。
      */
-    fromJson: function (jsonObject) {
+    fromJson(jsonObject) {
         jsonObject = jsonObject ? jsonObject : {};
         SuperMap.Util.extend(this, jsonObject);
         var b = this.bounds;
         if (b) {
             this.bounds = new SuperMap.Bounds(b.leftBottom.x, b.leftBottom.y, b.rightTop.x, b.rightTop.y);
         }
-    },
+    }
+
 
     /**
      * Method: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */
-    toServerJSONObject: function () {
+    toServerJSONObject() {
         var jsonObject = {};
         jsonObject = SuperMap.Util.copyAttributes(jsonObject, this);
         if (jsonObject.bounds) {
@@ -107,8 +112,10 @@ SuperMap.UGCLayer = SuperMap.Class({
             }
         }
         return jsonObject;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.UGCLayer"
-});
-module.exports = SuperMap.UGCLayer;
+
+    CLASS_NAME = "SuperMap.UGCLayer"
+}
+
+SuperMap.UGCLayer = UGCLayer;

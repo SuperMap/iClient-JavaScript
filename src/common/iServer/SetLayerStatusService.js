@@ -1,31 +1,24 @@
-﻿/*
- * Class: SuperMap.SetLayerStatusService
- * 子图层显示控制服务类。
- * 该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
- * 用户获取服务端返回的各子图层显示状态有两种方式：
- * 一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；
- * 一种是使用 AsyncResponder 类实现异步处理。
- */
-require('./ServiceBase');
-require('./SetLayerStatusParameters');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import CommonServiceBase from './CommonServiceBase';
+import SetLayerStatusParameters from './SetLayerStatusParameters';
+
 /**
  * @class SuperMap.SetLayerStatusService
  * @description  子图层显示控制服务类。该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。<br>
  *                用户获取服务端返回的各子图层显示状态有两种方式：<br>
  *                一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；<br>
  *                一种是使用 AsyncResponder 类实现异步处理。
- * @augments SuperMap.ServiceBase
+ * @augments SuperMap.CommonServiceBase
  * @param url - {String} 地图服务访问地址。请求地图服务,URL 应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-SuperMap.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
+export default  class SetLayerStatusService extends CommonServiceBase {
 
-    lastparams: null,
+    lastparams = null;
 
-    mapUrl: null,
+    mapUrl = null;
 
     /**
      * @function  SuperMap.SetLayerStatusService.initialize
@@ -35,22 +28,23 @@ SuperMap.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
      * @param options - {Object} 交互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
+    constructor(url, options) {
+        super(url, options);
         var me = this;
-        SuperMap.ServiceBase.prototype.initialize.apply(me, arguments);
         if (options) {
             SuperMap.Util.extend(me, options);
         }
         me.mapUrl = url;
-    },
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         SuperMap.Util.reset(this);
-    },
+    }
+
 
     /**
      * @function SuperMap.SetLayerStatusService. processAsync
@@ -58,7 +52,7 @@ SuperMap.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
      * @param params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务 <SuperMap.SetLayerStatusParameters>
      *         返回图层信息，然后对其属性进行修改来获取。
      */
-    processAsync: function (params) {
+    processAsync(params) {
         var subLayers = [],
             me = this,
             method = "POST";
@@ -107,7 +101,8 @@ SuperMap.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
                 failure: me.serviceProcessFailed
             });
         }
-    },
+    }
+
 
     /*
      * Method: createTempLayerComplete
@@ -116,7 +111,7 @@ SuperMap.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * result - {Object} 服务器返回的结果对象，记录设置操作是否成功。
      */
-    createTempLayerComplete: function (result) {
+    createTempLayerComplete(result) {
         var me = this;
         result = SuperMap.Util.transformResult(result);
         if (result.succeed) {
@@ -124,9 +119,10 @@ SuperMap.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
         }
 
         me.processAsync(me.lastparams);
-    },
+    }
 
-    getMapName: function (url) {
+
+    getMapName(url) {
         var mapUrl = url;
         if (mapUrl.charAt(mapUrl.length - 1) === "/") {
             mapUrl = mapUrl.substr(0, mapUrl.length - 1);
@@ -134,7 +130,8 @@ SuperMap.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
         var index = mapUrl.lastIndexOf("/");
         var mapName = mapUrl.substring(index + 1, mapUrl.length);
         return mapName;
-    },
+    }
+
 
     /*
      * Method: setLayerCompleted
@@ -143,16 +140,16 @@ SuperMap.SetLayerStatusService = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * result - {Object} 服务器返回的结果对象，记录设置操作是否成功。
      */
-    serviceProcessCompleted: function (result) {
+    serviceProcessCompleted(result) {
         var me = this;
         result = SuperMap.Util.transformResult(result);
         if (result != null && me.lastparams != null) {
             result.newResourceID = me.lastparams.resourceID;
         }
         me.events.triggerEvent("processCompleted", {result: result});
-    },
+    }
 
-    CLASS_NAME: "SuperMap.SetLayerStatusService"
-});
+    CLASS_NAME = "SuperMap.SetLayerStatusService"
+}
 
-module.exports = SuperMap.SetLayerStatusService;
+SuperMap.SetLayerStatusService = SetLayerStatusService;

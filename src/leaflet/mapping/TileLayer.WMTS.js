@@ -1,6 +1,6 @@
-require('../core/Base');
-var L = require("leaflet");
-var WMTSLayer = L.TileLayer.extend({
+import '../core/Base';
+import L from "leaflet";
+export var WMTSLayer = L.TileLayer.extend({
     options: {
         version: '1.0.0',
         style: '',
@@ -38,7 +38,7 @@ var WMTSLayer = L.TileLayer.extend({
     }
 });
 
-L.supermap.wmtsLayer = function (url, options) {
+export var wmtsLayer = function (url, options) {
     return new WMTSLayer(url, options);
 };
-module.exports = WMTSLayer;
+L.supermap.wmtsLayer = wmtsLayer;

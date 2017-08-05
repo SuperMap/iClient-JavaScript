@@ -16,9 +16,18 @@ module.exports = function (config) {
         browserify: {
             debug: true,
             transform: [
-				require('browserify-css'),
-				require('browserify-istanbul')
-			]
+                [require('babelify'), {
+                    presets: ["es2015"],
+                    ignore: ["**/legacy/libs/**", "**/test/**"],
+                    plugins: ['transform-class-properties']
+                }],
+                require('browserify-css'),
+                [require('browserify-istanbul'), {
+                    instrumenterConfig: {
+                        embedSource: true
+                    }
+                }]
+            ]
         },
 
         // list of files  patterns to load in the browser
@@ -56,7 +65,7 @@ module.exports = function (config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            '../node_modules/whatwg-fetch/fetch.js': ['browserify'],
+            '../node_modules/whatwg-fetch-importable/whatwgFetch.js': ['browserify'],
             '../node_modules/fetch-jsonp/build/fetch-jsonp.js': ['browserify'],
             '../src/legacy/libs/SuperMap_Basic-8.1.1-15125.js': ['browserify'],
             '../src/legacy/libs/Lang/*.js': ['browserify'],

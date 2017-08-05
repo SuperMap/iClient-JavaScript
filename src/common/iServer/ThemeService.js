@@ -1,17 +1,11 @@
-﻿/*
- * Class: SuperMap.ThemeService
- * 专题图服务类。
- *
- * Inherits from:
- *  - <SuperMap.ServiceBase>
- */
-require('./ServiceBase');
-require('./ThemeParameters');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import CommonServiceBase from './CommonServiceBase';
+import ThemeParameters from './ThemeParameters';
+
 /**
  * @class SuperMap.ThemeService
  * @description 专题图服务类。
- * @augments SuperMap.ServiceBase
+ * @augments SuperMap.CommonServiceBase
  * @example
  * (start code)
  * var myThemeService = new SuperMap.ThemeService(url, {
@@ -25,7 +19,7 @@ var SuperMap = require('../SuperMap');
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-SuperMap.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
+export default  class ThemeService extends CommonServiceBase {
 
     /**
      * @function SuperMap.ThemeService.initialize
@@ -34,8 +28,8 @@ SuperMap.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
      * @param options - {Object} 交互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+    constructor(url, options) {
+        super(url, options);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -47,21 +41,21 @@ SuperMap.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
         } else {
             me.url += (end === "/") ? "tempLayersSet.jsonp?" : "/tempLayersSet.jsonp?";
         }
-    },
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @function SuperMap.ThemeService.processAsync
      * @description 负责将客户端的专题图参数传递到服务端。
      * @param params - {SuperMap.ThemeParameters} 专题图参数类。
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -75,7 +69,7 @@ SuperMap.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /*
      * Method: getJsonParameters
@@ -87,7 +81,7 @@ SuperMap.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
      * Returns:
      * {Object} 转化后的JSON字符串。
      */
-    getJsonParameters: function (parameter) {
+    getJsonParameters(parameter) {
         var jsonParameters = "",
             themeType = "",
             themeObj = null,
@@ -145,8 +139,9 @@ SuperMap.ThemeService = SuperMap.Class(SuperMap.ServiceBase, {
 
         jsonParameters += "'name': '" + jsonMapName + "'}]";
         return jsonParameters;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.ThemeService"
-});
-module.exports = SuperMap.ThemeService;
+    CLASS_NAME = "SuperMap.ThemeService"
+}
+
+SuperMap.ThemeService = ThemeService;

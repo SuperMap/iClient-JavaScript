@@ -1,11 +1,7 @@
-/*
- * Class: SuperMap.Feature.Theme.Vector
- * 矢量专题要素类。
- *
- * Inherits:
- *  - <SuperMap.Feature.Theme>
- */
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import './VisualizationBase';
+
+const ThemeFeature = SuperMap.Feature.Theme;
 
 /**
  * @class SuperMap.Feature.Theme.Vector
@@ -21,55 +17,55 @@ var SuperMap = require('../SuperMap');
  *        isClickAble - {Boolean} 图形是否可点击，默认 true。<br>
  *        highlightStyle - {Object} 高亮样式。
  */
-SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
+export default  class ThemeVector extends ThemeFeature {
 
     /*
      * Property: dataBounds
      * {SuperMap.Bounds} 用户数据的（feature.geometry）地理范围。
      */
-    dataBounds: null,
+    dataBounds = null;
 
     /*
      * Property: nodesClipPixel
      * {Number} 节点抽稀像素距离，默认值 2。
      */
-    nodesClipPixel: 2,
+    nodesClipPixel = 2;
 
     /*
      * Property: isHoverAble
      * {Boolean} 图形是否可 hover，默认 true
      */
-    isHoverAble: true,
+    isHoverAble = true;
 
     /*
      * Property: isMultiHover
      * {Boolean} 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true
      */
-    isMultiHover: true,
+    isMultiHover = true;
 
     /**
      * Property: isClickAble
      * {Boolean} 图形是否可点击，默认 true
      */
-    isClickAble: true,
+    isClickAble = true;
 
     /*
      * Property: highlightStyle
      * {Object} 高亮样式
      */
-    highlightStyle: null,
+    highlightStyle = null;
 
     /*
      * Property: shapeOptions
      * {Object}  添加到渲染器前修改 shape 的一些属性，非特殊情况通常不允许这么做
      */
-    shapeOptions: null,
+    shapeOptions = null;
 
     /*
      * Property: style
      * {Object} 可视化图形的 style。在子类中规定其对象结构和默认属性值。
      */
-    style: null,
+    style = null;
 
     /**
      * @function SuperMap.Feature.Theme.Vector.prototype.initialize
@@ -85,9 +81,8 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
      *        highlightStyle - {Object} 高亮样式。
      * @return {SuperMap.Feature.Theme.Vector} 返回一个矢量专题要素类。
      */
-    initialize: function (data, layer, style, options, shapeOptions) {
-        SuperMap.Feature.Theme.prototype.initialize.apply(this, [data,layer]);
-
+    constructor(data, layer, style, options, shapeOptions) {
+        super(data, layer);
         //数据的 geometry 属性必须存在且类型是 SuperMap.Geometry 或其子类的类型
         if (!data.geometry) return;
         if (!(data.geometry instanceof SuperMap.Geometry)) return;
@@ -147,13 +142,13 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
             this.geoTextToTF(geometry);
         }
 
-    },
+    }
 
     /**
      * Method: destroy
      * @inheritDoc
      */
-    destroy: function () {
+    destroy() {
         this.style = null;
         this.dataBounds = null;
         this.nodesClipPixel = null;
@@ -162,9 +157,9 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
         this.isClickAble = null;
         this.highlightStyle = null;
         this.shapeOptions = null;
+        super.destroy();
+    }
 
-        SuperMap.Feature.Theme.prototype.destroy.apply(this, arguments);
-    },
 
     /**
      * Method: LinearRingAndLineStringToTF
@@ -172,7 +167,7 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
      * @description 转换线和线环要素。
      * @param geometry - {SuperMap.Geometry} 用户数据几何地理信息，这里必须是 LineString 或 LineRing。
      */
-    lineToTF: function (geometry) {
+    lineToTF(geometry) {
         var components = geometry.components;
 
         //节点像素坐标
@@ -241,7 +236,8 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
         }
 
         this.shapes.push(shape);
-    },
+    }
+
 
     /**
      * Method: multiPointToTF
@@ -249,7 +245,7 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
      * @description 转多点要素。
      * @param geometry - {SuperMap.Geometry} 用户数据几何地理信息，这里必须是 MultiPoint。
      */
-    multiPointToTF: function (geometry) {
+    multiPointToTF(geometry) {
         /*   //-- 不抽稀
          var components = geometry.components;
 
@@ -325,7 +321,8 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
 
             this.shapes.push(shape);
         }
-    },
+    }
+
 
     /**
      * Method: multiLineStringToTF
@@ -333,14 +330,15 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
      * @description 转换多线要素。
      * @param geometry - {SuperMap.Geometry} 用户数据几何地理信息，这里必须是 MultiLineString。
      */
-    multiLineStringToTF: function (geometry) {
+    multiLineStringToTF(geometry) {
         var components = geometry.components;
 
         for (var i = 0; i < components.length; i++) {
             var components_i = components[i];
             this.lineToTF(components_i);
         }
-    },
+    }
+
 
     /**
      * Method: multiPolygonToTF
@@ -348,14 +346,15 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
      * @description 转换多面要素。
      * @param geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 MultiPolygon。
      */
-    multiPolygonToTF: function (geometry) {
+    multiPolygonToTF(geometry) {
         var components = geometry.components;
 
         for (var i = 0; i < components.length; i++) {
             var components_i = components[i];
             this.polygonToTF(components_i);
         }
-    },
+    }
+
 
     /**
      * Method: pointToTF
@@ -363,7 +362,7 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
      * @description 转换点要素。
      * @param geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 Point。
      */
-    pointToTF: function (geometry) {
+    pointToTF(geometry) {
         //参考位置，参考中心为
         var location = this.location;
         //geometry 像素坐标
@@ -403,7 +402,8 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
         }
 
         this.shapes.push(shape);
-    },
+    }
+
 
     /**
      * Method: polygonToThemeFeature
@@ -411,7 +411,7 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
      * @description 转换面要素。
      * @param geometry - {SuperMap.Geometry} 用户数据几何地理信息，这里必须是 Polygon。
      */
-    polygonToTF: function (geometry) {
+    polygonToTF(geometry) {
         var components = geometry.components;
         ;
 
@@ -527,7 +527,8 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
         }
 
         this.shapes.push(shape);
-    },
+    }
+
 
     /**
      * Method: rectangleToTF
@@ -535,7 +536,7 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
      * @description 转换矩形要素。
      * @param geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 Rectangle。
      */
-    rectangleToTF: function (geometry) {
+    rectangleToTF(geometry) {
         //参考位置，参考中心为
         var location = this.location;
         var ll = new SuperMap.LonLat(geometry.x, geometry.y);
@@ -583,7 +584,8 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
         }
 
         this.shapes.push(shape);
-    },
+    }
+
 
     /**
      * Method: geoTextToTF
@@ -591,7 +593,7 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
      * @description 转换文本要素。
      * @param geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 GeoText。
      */
-    geoTextToTF: function (geometry) {
+    geoTextToTF(geometry) {
         //参考位置，参考中心为
         var location = this.location;
         //geometry 像素坐标
@@ -632,14 +634,15 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
         }
 
         this.shapes.push(shape);
-    },
+    }
+
 
     /**
      * Method: updateAndAddShapes
      * @function SuperMap.Feature.Theme.Vector.prototype.updateAndAddShapes
      * @description 修改位置，针对地图平移操作，地图漫游操作后调用此函数。
      */
-    updateAndAddShapes: function () {
+    updateAndAddShapes() {
         var newLocalLX = this.getLocalXY(this.lonlat);
         this.location = newLocalLX;
 
@@ -650,7 +653,8 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
             shape.refOriginalPosition = newLocalLX;
             render.addShape(shape);
         }
-    },
+    }
+
 
     /**
      * APIMethod: getShapesCount
@@ -658,19 +662,22 @@ SuperMap.Feature.Theme.Vector = SuperMap.Class(SuperMap.Feature.Theme, {
      * @description 获得专题要素中可视化图形的数量。
      * @return {Number} 可视化图形的数量。
      */
-    getShapesCount: function () {
+    getShapesCount() {
         return this.shapes.length;
-    },
+    }
+
 
     /**
      * @function SuperMap.Feature.Theme.Vector.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。
      * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。
      */
-    getLocalXY: function (lonlat) {
+    getLocalXY(lonlat) {
         return this.layer.getLocalXY(lonlat);
-    },
+    }
 
-    CLASS_NAME: "SuperMap.Feature.Theme.Vector"
-});
-module.exports = SuperMap.Feature.Theme.Vector;
+
+    CLASS_NAME = "SuperMap.Feature.Theme.Vector"
+}
+
+SuperMap.Feature.Theme.Vector = ThemeVector;

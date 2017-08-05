@@ -1,4 +1,5 @@
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import {StatisticAnalystMode, SummaryType} from '../REST'
 
 /**
  * @class SuperMap.SummaryMeshJobParameter
@@ -12,67 +13,68 @@ var SuperMap = require('../SuperMap');
  *        fields -{number} 权重索引。<br>
  *        type -{String} 聚合类型。
  */
-SuperMap.SummaryMeshJobParameter = SuperMap.Class({
+export default class SummaryMeshJobParameter {
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.datasetName -{String}
      * @description 数据集名。
      */
-    datasetName: "",
+    datasetName = "";
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.regionDataset -{String}
      * @description 聚合面数据集(聚合类型为多边形聚合时使用的参数)。
      */
-    regionDataset: "",
+    regionDataset = "";
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.query -{SuperMap.Bounds}
      * @description 分析范围(聚合类型为网格面聚合时使用的参数)。
      */
-    query: "",
+    query = "";
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.resolution -{number}
      * @description 分辨率(聚合类型为网格面聚合时使用的参数)。
      */
-    resolution: 100,
+    resolution = 100;
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.meshType -{number}
-     * @description  网格面类型(聚合类型为网格面聚合时使用的参数)。
+     * @description  网格面类型(聚合类型为网格面聚合时使用的参数),取值：0或1。
      */
-    meshType: 0,
+    meshType = 0;
 
     /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.statisticModes -{String}
+     * @member SuperMap.SummaryMeshJobParameter.prototype.statisticModes -{SuperMap.StatisticAnalystMode}
      * @description 统计模式。
      */
-    statisticModes: "",
+    statisticModes = "";
 
     /**
      * @member SuperMap.SummaryMeshJobParameter.prototype.fields -{number}
      * @description 权重字段。
      */
-    fields: "",
+    fields = "";
 
     /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.type -{String}
+     * @member SuperMap.SummaryMeshJobParameter.prototype.type -{SuperMap.SummaryType}
      * @description 聚合类型。
      */
-    type: "SUMMARYMESH",
+    type = SummaryType.SUMMARYMESH;
 
-    initialize: function (options) {
+    constructor(options) {
         if (!options) {
             return;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
+    destroy() {
         this.datasetName = null;
         this.query = null;
         this.resolution = null;
@@ -83,34 +85,34 @@ SuperMap.SummaryMeshJobParameter = SuperMap.Class({
         this.type = null;
     }
 
-});
-
-SuperMap.SummaryMeshJobParameter.toObject = function (summaryMeshJobParameter, tempObj) {
-    for (var name in summaryMeshJobParameter) {
-        if (name === "datasetName") {
-            tempObj['input'] = tempObj['input'] || {};
-            tempObj['input'][name] = summaryMeshJobParameter[name];
-            continue;
-        }
-        if (name === "type") {
-            tempObj['type'] = summaryMeshJobParameter[name];
-            continue;
-        }
-        if (summaryMeshJobParameter.type === 'SUMMARYMESH' && name !== 'regionDataset' || summaryMeshJobParameter.type === 'SUMMARYREGION' && !contains(['meshType', 'resolution', 'query'], name)) {
-            tempObj['analyst'] = tempObj['analyst'] || {};
-            tempObj['analyst'][name] = summaryMeshJobParameter[name];
-        }
-    }
-
-    function contains(arr, obj) {
-        var i = arr.length;
-        while (i--) {
-            if (arr[i] === obj) {
-                return true;
+    static toObject(summaryMeshJobParameter, tempObj) {
+        for (var name in summaryMeshJobParameter) {
+            if (name === "datasetName") {
+                tempObj['input'] = tempObj['input'] || {};
+                tempObj['input'][name] = summaryMeshJobParameter[name];
+                continue;
+            }
+            if (name === "type") {
+                tempObj['type'] = summaryMeshJobParameter[name];
+                continue;
+            }
+            if (summaryMeshJobParameter.type === 'SUMMARYMESH' && name !== 'regionDataset' || summaryMeshJobParameter.type === 'SUMMARYREGION' && !contains(['meshType', 'resolution', 'query'], name)) {
+                tempObj['analyst'] = tempObj['analyst'] || {};
+                tempObj['analyst'][name] = summaryMeshJobParameter[name];
             }
         }
-        return false;
-    }
-};
 
-module.exports = SuperMap.SummaryMeshJobParameter;
+        function contains(arr, obj) {
+            var i = arr.length;
+            while (i--) {
+                if (arr[i] === obj) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+}
+
+SuperMap.SummaryMeshJobParameter = SummaryMeshJobParameter;

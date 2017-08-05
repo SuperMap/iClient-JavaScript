@@ -15,7 +15,7 @@
     var map, resultLayer,
             urlMap = "http://117.122.248.69:8090/iserver/services/map-china400/rest/maps/China",
             urlQuery = "http://117.122.248.69:8090/iserver/services/map-china400/rest/maps/China_4326",
-            urlDataFlow = "ws://117.122.248.69:8091/iserver/services/dataflow/d";
+            urlDataFlow = "ws://117.122.248.69:8091/iserver/services/dataflow/dataflow";
     map = L.map('map', {
         preferCanvas: true,
         crs: L.CRS.EPSG3857,
@@ -73,13 +73,13 @@
             return;
         }
         var point = featureResult.result.recordsets[0].features.features[0].geometry.coordinates[count];
-        var featrue = {
+        var feature = {
             geometry: {coordinates: [point[0], point[1]], type: "Point"},
             id: 1,
             type: "Feature",
             properties: {id: count, time: new Date()}
         };
-        dataFlowService.broadcast(featrue);
+        dataFlowService.broadcast(feature);
         count += 3;
     }
 </script>

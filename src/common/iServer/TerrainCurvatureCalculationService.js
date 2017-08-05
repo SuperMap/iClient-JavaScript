@@ -1,25 +1,27 @@
-require('./SpatialAnalystBase');
-require('./TerrainCurvatureCalculationParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-    /**
-     * @class SuperMap.TerrainCurvatureCalculationService
-     * @constructs SuperMap.TerrainCurvatureCalculationService
-     * @classdesc
-     * 地形曲率计算服务类。
-     * @extends {SuperMap.SpatialAnalystBase}
-     * @api
-     * @example 例如：
-     * (start code)
-     * var myTerrainCurvatureCalculationService = new SuperMap.TerrainCurvatureCalculationService(url);
-     * myTerrainCurvatureCalculationService.on({
+import SuperMap from '../SuperMap';
+import SpatialAnalystBase from './SpatialAnalystBase';
+import TerrainCurvatureCalculationParameters from './TerrainCurvatureCalculationParameters';
+
+/**
+ * @class SuperMap.TerrainCurvatureCalculationService
+ * @constructs SuperMap.TerrainCurvatureCalculationService
+ * @classdesc
+ * 地形曲率计算服务类。
+ * @extends {SuperMap.SpatialAnalystBase}
+ * @api
+ * @example 例如：
+ * (start code)
+ * var myTerrainCurvatureCalculationService = new SuperMap.TerrainCurvatureCalculationService(url);
+ * myTerrainCurvatureCalculationService.on({
      *     "processCompleted": processCompleted,
      *     "processFailed": processFailed
      *     }
-     * );
-     * (end)
-     *
-     */
+ * );
+ * (end)
+ *
+ */
+export default  class TerrainCurvatureCalculationService extends SpatialAnalystBase {
+
 
     /**
      * @method SuperMap.TerrainCurvatureCalculationService.initialize
@@ -28,24 +30,24 @@ SuperMap.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.SpatialAna
      * Allowed options properties:
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @method SuperMap.TerrainCurvatureCalculationService.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param parameter - {SuperMap.TerrainCurvatureCalculationParameters}
      */
-    processAsync: function (parameter) {
+    processAsync(parameter) {
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);
@@ -57,11 +59,11 @@ SuperMap.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.SpatialAna
 
         var parameterObject = {};
 
-        if (parameter instanceof SuperMap.TerrainCurvatureCalculationParameters) {
+        if (parameter instanceof TerrainCurvatureCalculationParameters) {
             me.url += 'datasets/' + parameter.dataset + '/terraincalculation/curvature';
         }
 
-        SuperMap.TerrainCurvatureCalculationParameters.toObject(parameter, parameterObject);
+        TerrainCurvatureCalculationParameters.toObject(parameter, parameterObject);
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
 
         if (me.isInTheSameDomain) {
@@ -77,8 +79,9 @@ SuperMap.TerrainCurvatureCalculationService = SuperMap.Class(SuperMap.SpatialAna
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
-    CLASS_NAME: "SuperMap.TerrainCurvatureCalculationService"
-});
-module.exports = SuperMap.TerrainCurvatureCalculationService;
+    CLASS_NAME = "SuperMap.TerrainCurvatureCalculationService"
+}
+
+SuperMap.TerrainCurvatureCalculationService = TerrainCurvatureCalculationService;

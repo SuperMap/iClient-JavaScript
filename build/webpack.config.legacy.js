@@ -21,19 +21,21 @@ module.exports = {
         extensions: ['.js', '.json', '.css']
     },
     externals: {
-        'echarts': 'echarts',
-        'mapv': 'mapv',
-        'elasticsearch': 'elasticsearch',
+        'echarts': 'function(){try{return echarts}catch(e){return {}}}()',
+        'mapv':  "function(){try{return mapv}catch(e){return {}}}()",
+        'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
         '../legacy/libs/SuperMap_Basic-8.1.1-15125.js': 'SuperMap',
         '../legacy/libs/SuperMap_Visualization-8.1.1-15125.js': 'SuperMap'
     },
     module: {
         rules: [{
             test: /\.js/,
-            exclude: /node_modules/,
             loader: 'babel-loader',
             query: {
-                presets: ['es2015']
+                presets: ['es2015'],
+                plugins: [
+                    'transform-class-properties',
+                ]
             }
         }]
     },

@@ -10,12 +10,13 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map" style="width: 100%;height:100%"></div>
-
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="http://cdn.bootcss.com/openlayers/4.2.0/ol.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
-    var map, interaction, vectorLayer,
-            url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+    var map, interaction, vectorLayer, alertDiv, feature,
+        url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
 
     map = new ol.Map({
         target: 'map',
@@ -32,36 +33,46 @@
         projection: 'EPSG:4326'
     });
     map.addLayer(layer);
-    measureService('distance');
 
-    function measureService(type) {
-        var source = new ol.source.Vector({wrapX: false});
-        vectorLayer = new ol.layer.Vector({
-            source: source
+
+    var source = new ol.source.Vector({wrapX: false});
+    vectorLayer = new ol.layer.Vector({
+        source: source
+    });
+    map.addLayer(vectorLayer);
+    interaction = new ol.interaction.Draw({
+        source: source,
+        type: "LineString"
+    });
+    interaction.on('drawstart', function (evt) {
+        feature = evt.feature;
+    });
+    interaction.on('drawend', function () {
+        var distanceMeasureParam = new SuperMap.MeasureParameters(feature.getGeometry());
+        new ol.supermap.MeasureService(url, {measureMode: ""}).measureDistance(distanceMeasureParam, function (serviceResult) {
+            showAlert(serviceResult.result.distance + "米");
         });
-        map.addLayer(vectorLayer);
-        if (type === 'distance') {
-            interaction = new ol.interaction.Draw({
-                source: source,
-                type: "LineString",
-                finishCondition: function (MapBrowserPointerEvent) {
-                    if (MapBrowserPointerEvent) {
-                        var line = new ol.geom.LineString();
-                        var points = MapBrowserPointerEvent.frameState.pixelToCoordinateTransform;
-                        for (var i = 0; i < points.length; i = i + 2) {
-                            line.appendCoordinate([points[i], points[i + 1]]);
-                        }
-                        var distanceMeasureParam = new SuperMap.MeasureParameters(line);
-                        new ol.supermap.MeasureService(url, {measureMode: ""}).measureDistance(distanceMeasureParam, function (serviceResult) {
-                            alert(serviceResult.result.distance + "米");
-                        });
-                    }
-                    return true;
-                }
-            })
+    });
+
+    map.addInteraction(interaction);
+
+    function showAlert(msg) {
+        var className = "alert-success";
+        if (alertDiv) {
+            $(alertDiv).remove();
         }
-        map.addInteraction(interaction);
+        if (!$('#msg_container')[0]) {
+            alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+            $('body').append(alertDiv)
+        }
+        $('#msg_container').addClass(className);
+        $('#msg_container').slideDown(300);
+        $('#msg').html(msg);
     }
+
 </script>
 </body>
 </html>

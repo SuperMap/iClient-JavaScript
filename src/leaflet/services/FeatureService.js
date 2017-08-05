@@ -1,3 +1,14 @@
+import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {ServiceBase} from './ServiceBase';
+import * as Util from  '../core/Util';
+import GetFeaturesByIDsService from'../../common/iServer/GetFeaturesByIDsService';
+import GetFeaturesBySQLService from'../../common/iServer/GetFeaturesBySQLService';
+import GetFeaturesByBoundsService from'../../common/iServer/GetFeaturesByBoundsService';
+import GetFeaturesByBufferService from'../../common/iServer/GetFeaturesByBufferService';
+import GetFeaturesByGeometryService from '../../common/iServer/GetFeaturesByGeometryService';
+import EditFeaturesService from '../../common/iServer/EditFeaturesService' ;
+import CommontypesConversion from '../core/CommontypesConversion';
 /**
  * @class L.supermap.FeatureService
  * @constructs L.supermap.FeatureService
@@ -10,22 +21,11 @@
  *          //doSomething
  *      })
  *
- * @extends {ServiceBase}
+ * @extends ServiceBase
  * @api
  */
 
-var L = require("leaflet");
-var SuperMap = require('../../common/SuperMap');
-var ServiceBase = require('./ServiceBase');
-var Util = require('../core/Util');
-var GetFeaturesByIDsService = require('../../common/iServer/GetFeaturesByIDsService');
-var GetFeaturesBySQLService = require('../../common/iServer/GetFeaturesBySQLService');
-var GetFeaturesByBoundsService = require('../../common/iServer/GetFeaturesByBoundsService');
-var GetFeaturesByBufferService = require('../../common/iServer/GetFeaturesByBufferService');
-var GetFeaturesByGeometryService = require('../../common/iServer/GetFeaturesByGeometryService');
-var EditFeaturesService = require('../../common/iServer/EditFeaturesService');
-
-var FeatureService = ServiceBase.extend({
+export var FeatureService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -172,7 +172,7 @@ var FeatureService = ServiceBase.extend({
         params.toIndex = params.toIndex ? params.toIndex : -1;
         params.isUseBatch = (params.isUseBatch == null) ? false : params.isUseBatch;
         if (params.bounds) {
-            params.bounds = L.supermap.CommontypesConversion.toSuperMapBounds(params.bounds);
+            params.bounds =CommontypesConversion.toSuperMapBounds(params.bounds);
         }
         if (params.geometry) {
             params.geometry = Util.toSuperMapGeometry(params.geometry);
@@ -220,8 +220,8 @@ var FeatureService = ServiceBase.extend({
     }
 });
 
-L.supermap.featureService = function (url, options) {
+export var featureService = function (url, options) {
     return new FeatureService(url, options);
 };
 
-module.exports = FeatureService;
+L.supermap.featureService = featureService;

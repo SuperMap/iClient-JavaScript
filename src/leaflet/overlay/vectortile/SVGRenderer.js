@@ -1,5 +1,5 @@
-var L = require("leaflet");
-L.SVG.Renderer = L.SVG.extend({
+import L from "leaflet";
+export var  SVGRenderer = L.SVG.extend({
 
     initialize: function (tileCoord, tileSize, options) {
         L.SVG.prototype.initialize.call(this, options);
@@ -84,8 +84,3 @@ L.SVG.Renderer = L.SVG.extend({
         path.setAttribute('href', iconUrl);
     }
 });
-
-L.supermap.svgRenderer = function (tileCoord, tileSize, opts) {
-    return new L.SVG.Renderer(tileCoord, tileSize, opts);
-};
-module.exports = L.SVG.Renderer;

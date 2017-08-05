@@ -1,4 +1,10 @@
-﻿/**
+﻿
+import L from "leaflet";
+import {ServiceBase} from './ServiceBase';
+import StopQueryService from '../../common/iServer/StopQueryService';
+import TransferPathService from '../../common/iServer/TransferPathService';
+import TransferSolutionService from '../../common/iServer/TransferSolutionService';
+/**
  * @class L.supermap.TrafficTransferAnalystService
  * @constructs L.supermap.TrafficTransferAnalystService
  * @classdesc
@@ -7,16 +13,10 @@
  * L.supermap。/trafficTransferAnalystService(url).queryStop(params,function(result){
  *      //doSomething
  *    })
- * @extends {ServiceBase}
+ * @extends ServiceBase
  * @api
  */
-var L = require("leaflet");
-var ServiceBase = require('./ServiceBase');
-var StopQueryService = require('../../common/iServer/StopQueryService');
-var TransferPathService = require('../../common/iServer/TransferPathService');
-var TransferSolutionService = require('../../common/iServer/TransferSolutionService');
-
-var TrafficTransferAnalystService = ServiceBase.extend({
+export var TrafficTransferAnalystService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -94,8 +94,8 @@ var TrafficTransferAnalystService = ServiceBase.extend({
     }
 });
 
-L.supermap.trafficTransferAnalystService = function (url, options) {
+export var trafficTransferAnalystService = function (url, options) {
     return new TrafficTransferAnalystService(url, options);
 };
 
-module.exports = TrafficTransferAnalystService;
+L.supermap.trafficTransferAnalystService = trafficTransferAnalystService;

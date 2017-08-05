@@ -6,6 +6,7 @@ var banner = `
     license: ${pkg.license}
     version: v${pkg.version}
 `;
+
 module.exports = {
     //页面入口文件配置
     entry: {},
@@ -20,20 +21,23 @@ module.exports = {
         extensions: ['.js', '.json', '.css']
     },
     externals: {
-        'echarts': 'echarts',
-        'mapbox-gl': 'mapbox-gl',
-        'mapv': 'mapv',
-        'elasticsearch': 'elasticsearch'
+        'echarts': 'function(){try{return echarts}catch(e){return {}}}()',
+        'mapbox-gl': 'mapboxgl',
+        'mapv':  "function(){try{return mapv}catch(e){return {}}}()",
+        'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()'
     },
 
     module: {
         noParse: /[\/\\]node_modules[\/\\]mapbox-gl[\/\\]dist[\/\\]mapbox-gl\.js$/,
         rules: [{
             test: /\.js/,
-            exclude: /node_modules/,
+            exclude: /legacy/,
             loader: 'babel-loader',
             query: {
-                presets: ['es2015']
+                presets: ['es2015'],
+                plugins: [
+                    'transform-class-properties',
+                ]
             }
         }]
     },

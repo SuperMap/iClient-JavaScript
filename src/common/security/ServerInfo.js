@@ -1,8 +1,6 @@
-/*
- * 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
- */
-require('../REST');
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import {ServerType} from '../REST';
+
 /**
  * @class SuperMap.ServerInfo
  * @constructs SuperMap.ServerInfo
@@ -11,22 +9,23 @@ var SuperMap = require('../SuperMap');
  * @api
  */
 
-SuperMap.ServerInfo = SuperMap.Class({
+export default class ServerInfo {
     //服务器类型:SuperMap.ServerType
-    type: null,
+    type = null;
     //如：http://supermapiserver:8090
-    server: null,
+    server = null;
     //非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
-    tokenServiceUrl: null,
+    tokenServiceUrl = null;
     //非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
-    keyServiceUrl: null,
+    keyServiceUrl = null;
+
     /**
      * @method SuperMap.ServerInfo.initialize
      * @param type
      * @param options - {Object} 参数。
      */
-    initialize: function (type, options) {
-        this.type = type || SuperMap.ServerType.ISERVER;
+    constructor(type, options) {
+        this.type = type || ServerType.ISERVER;
         SuperMap.Util.extend(this, options);
         if (!this.server) {
             console.error('server url require is not  undefined')
@@ -35,7 +34,7 @@ SuperMap.ServerInfo = SuperMap.Class({
         this.server = this.server.match(patten)[0];
 
         var tokenServiceSuffix = "/services/security/tokens.json";
-        if (this.type === SuperMap.ServerType.ISERVER && this.server.indexOf("iserver") < 0) {
+        if (this.type === ServerType.ISERVER && this.server.indexOf("iserver") < 0) {
             tokenServiceSuffix = "/iserver" + tokenServiceSuffix;
         }
 
@@ -44,13 +43,15 @@ SuperMap.ServerInfo = SuperMap.Class({
         }
 
         if (!this.keyServiceUrl) {
-            if (this.type === SuperMap.ServerType.IPORTAL) {
+            if (this.type === ServerType.IPORTAL) {
                 this.keyServiceUrl = this.server + "/web/mycontent/keys/register.json";
-            } else if (this.type === SuperMap.ServerType.ONLINE) {
+            } else if (this.type === ServerType.ONLINE) {
                 this.keyServiceUrl = this.server + "/web/mycontent/keys.json";
             }
         }
-    },
-    CLASS_NAME: "SuperMap.ServerInfo"
-});
-module.exports = SuperMap.ServerInfo;
+    }
+
+    CLASS_NAME = "SuperMap.ServerInfo"
+}
+
+SuperMap.ServerInfo = ServerInfo;

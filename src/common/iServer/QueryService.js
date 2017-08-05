@@ -1,24 +1,13 @@
-﻿/* COPYRIGHT 2017 SUPERMAP
- * 本程序只能在有效的授权许可下使用。
- * 未经许可，不得以任何手段擅自使用或传播。
- *
- * Class: SuperMap.QueryService
- * 查询服务基类。
- * 结果保存在一个object对象中，对象包含一个属性result为iServer返回的json对象
- * Inherits from:
- *  - <SuperMap.ServiceBase>
- */
-
-require('../REST');
-require('./ServiceBase');
-var SuperMap = require('../SuperMap');
-var GeoJSONFormat = require('../format/GeoJSON');
-var QueryParameters = require('./QueryParameters');
+﻿import SuperMap from '../SuperMap';
+import CommonServiceBase from './CommonServiceBase';
+import QueryParameters from './QueryParameters';
+import GeoJSON from '../format/GeoJSON';
+import {DataFormat} from '../REST';
 
 /**
  * @class SuperMap.QueryService
  * @description 查询服务基类。
- * @augments SuperMap.ServiceBase
+ * @augments SuperMap.CommonServiceBase
  * @param url - {String} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param options - {Object} 可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
@@ -32,20 +21,20 @@ var QueryParameters = require('./QueryParameters');
  * };
  * (end)
  */
-SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
+export default  class QueryService extends CommonServiceBase {
 
     /*
      * Property: returnContent
      * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。
      */
-    returnContent: false,
+    returnContent = false;
 
     /*
      *  Property: format
      *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
-    format: SuperMap.DataFormat.GEOJSON,
+    format = DataFormat.GEOJSON;
 
     /**
      * @function SuperMap.QueryService.prototype.initialize
@@ -54,8 +43,8 @@ SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * @param options - {Object} 可选参数。如：<br>
      *        eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+    constructor(url, options) {
+        super(url, options);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
@@ -80,26 +69,26 @@ SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
         } else {
             me.url += (end === "/") ? "queryResults.jsonp?" : "/queryResults.jsonp?";
         }
-    },
+    }
 
     /**
      * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         var me = this;
         me.returnContent = null;
         me.format = null;
-    },
+    }
 
     /**
      * @function SuperMap.QueryService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param params - {QueryParameters} 查询参数。
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -124,7 +113,7 @@ SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /*
      * Method: queryComplete
@@ -133,11 +122,11 @@ SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
-    serviceProcessCompleted: function (result) {
+    serviceProcessCompleted(result) {
         var me = this;
         result = SuperMap.Util.transformResult(result);
         if (result && result.recordsets && me.format === SuperMap.DataFormat.GEOJSON) {
-            var geoJSONFormat = new GeoJSONFormat();
+            var geoJSONFormat = new GeoJSON();
             for (var i = 0, recordsets = result.recordsets, len = recordsets.length; i < len; i++) {
                 if (recordsets[i].features) {
                     recordsets[i].features = JSON.parse(geoJSONFormat.write(recordsets[i].features));
@@ -146,7 +135,7 @@ SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
 
         }
         me.events.triggerEvent("processCompleted", {result: result});
-    },
+    }
 
     /*
      * Method: getQueryParameters
@@ -158,7 +147,7 @@ SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
      * Returns:
      * {QueryParameters} 返回转化后的 QueryParameters 对象。
      */
-    getQueryParameters: function (params) {
+    getQueryParameters(params) {
         return new QueryParameters({
             customParams: params.customParams,
             expectCount: params.expectCount,
@@ -169,9 +158,9 @@ SuperMap.QueryService = SuperMap.Class(SuperMap.ServiceBase, {
             prjCoordSys: params.prjCoordSys,
             holdTime: params.holdTime
         });
-    },
+    }
 
-    CLASS_NAME: "SuperMap.QueryService"
-});
+    CLASS_NAME = "SuperMap.QueryService"
+}
 
-module.exports = SuperMap.QueryService;
+SuperMap.QueryService = QueryService;

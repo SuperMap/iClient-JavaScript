@@ -1,4 +1,8 @@
-﻿/**
+﻿
+import L from "leaflet";
+import {ServiceBase} from './ServiceBase';
+import GetGridCellInfosService from  '../../common/iServer/GetGridCellInfosService';
+/**
  * Class: GridCellInfosService
  * 数据栅格查询服务
  * 用法：
@@ -7,10 +11,7 @@
  *           //doSomething
  *      })
  */
-var L = require("leaflet");
-var ServiceBase = require('./ServiceBase');
-var GetGridCellInfosService = require('../../common/iServer/GetGridCellInfosService');
-var GridCellInfosService = ServiceBase.extend({
+export var GridCellInfosService = ServiceBase.extend({
 
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
@@ -38,9 +39,8 @@ var GridCellInfosService = ServiceBase.extend({
         return me;
     }
 });
-
-L.supermap.gridCellInfosService = function (url, options) {
+export var gridCellInfosService = function (url, options) {
     return new GridCellInfosService(url, options);
 };
 
-module.exports = GridCellInfosService;
+L.supermap.gridCellInfosService = gridCellInfosService;

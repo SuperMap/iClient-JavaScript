@@ -1,6 +1,6 @@
-require('../../core/Base');
-var L = require("leaflet");
-var CircleStyle = L.Class.extend({
+import '../../core/Base';
+import L from "leaflet";
+export var CircleStyle = L.Class.extend({
 
     options: {
         stroke: true,
@@ -55,7 +55,7 @@ var CircleStyle = L.Class.extend({
 
 });
 
-L.supermap.circleStyle = function (options) {
+export var circleStyle = function (options) {
     return new CircleStyle(options);
 };
-module.exports = CircleStyle;
+L.supermap.circleStyle= circleStyle;

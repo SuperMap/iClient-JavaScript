@@ -1,60 +1,63 @@
-require('./iPortalServiceBase');
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import IPortalServiceBase from './iPortalServiceBase';
+
 /**
  * @class SuperMap.iPortalService
  * @classdesc iPortal服务
  * @extends {SuperMap.iPortalServiceBase}
  *
  */
-SuperMap.iPortalService = SuperMap.Class(SuperMap.iPortalServiceBase, {
+export default  class IPortalService extends IPortalServiceBase {
 
-    addedMapNames: null,
-    addedSceneNames: null,
-    authorizeSetting: [],
-    checkStatus: '',
-    createTime: 0,
-    description: '',
-    enable: true,
-    id: 0,
-    isBatch: false,
-    isDataItemService: false,
-    linkPage: null,
-    mapInfos: [],
-    metadata: null,
-    nickname: '',
-    offline: false,
-    proxiedUrl: null,
-    resTitle: '',
-    scenes: [],
-    serviceRootUrlId: null,
-    tags: [],
-    thumbnail: null,
-    type: '',
-    updateTime: 0,
-    userName: '',
-    verifyReason: null,
-    version: null,
-    visitCount: 0,
+    addedMapNames = null;
+    addedSceneNames = null;
+    authorizeSetting = [];
+    checkStatus = "";
+    createTime = 0;
+    description = "";
+    enable = true;
+    id = 0;
+    isBatch = false;
+    isDataItemService = false;
+    linkPage = null;
+    mapInfos = [];
+    metadata = null;
+    nickname = "";
+    offline = false;
+    proxiedUrl = null;
+    resTitle = "";
+    scenes = [];
+    serviceRootUrlId = null;
+    tags = [];
+    thumbnail = null;
+    type = "";
+    updateTime = 0;
+    userName = "";
+    verifyReason = null;
+    version = null;
+    visitCount = 0;
+
     /**
      * @method SuperMap.iPortalService.initialize
      * @param seviceUrl
      * @param params
      */
 
-    initialize: function (seviceUrl, params) {
+    constructor(serviceUrl, params) {
+        super(serviceUrl);
         params = params || {};
         SuperMap.Util.extend(this, params);
-        this.serviceUrl = seviceUrl;
+        this.serviceUrl = serviceUrl;
         if (this.id) {
-            this.serviceUrl = seviceUrl + "/" + this.id;
+            this.serviceUrl = serviceUrl + "/" + this.id;
         }
-        SuperMap.iPortalServiceBase.prototype.initialize.call(this.serviceUrl);
-    },
+    }
+
     /**
      * @method SuperMap.iPortalService.load
      */
 
-    load: function () {
+    load() {
         var me = this;
         return me.request("GET", me.serviceUrl + ".json")
             .then(function (serviceInfo) {
@@ -65,11 +68,12 @@ SuperMap.iPortalService = SuperMap.Class(SuperMap.iPortalServiceBase, {
                     me[key] = serviceInfo[key];
                 }
             });
-    },
+    }
+
     /**
      * @method SuperMap.iPortalService.update
      */
-    update: function () {
+    update() {
         var serviceUpdateParam = {
             authorizeSetting: this.authorizeSetting,
             metadata: this.metadata,
@@ -82,7 +86,7 @@ SuperMap.iPortalService = SuperMap.Class(SuperMap.iPortalServiceBase, {
         return this.request("PUT", this.serviceUrl, JSON.stringify(serviceUpdateParam), options);
     }
 
-});
+}
 
-module.exports = SuperMap.iPortalService;
+SuperMap.iPortalService = IPortalService;
 

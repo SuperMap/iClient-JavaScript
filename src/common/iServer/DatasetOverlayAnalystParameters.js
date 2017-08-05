@@ -1,76 +1,75 @@
-﻿require('../REST');
-require('./OverlayAnalystParameters');
-var SuperMap = require('../SuperMap');
-var DataReturnOption = require('./DataReturnOption');
-var FilterParameter = require('./FilterParameter');
-SuperMap.DatasetOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalystParameters, {
-    /**
-     * @class SuperMap.DatasetOverlayAnalystParameters
-     * @constructs SuperMap.DatasetOverlayAnalystParameters
-     * @classdesc
-     * 数据集叠加分析参数类。
-     * @extends {SuperMap.GetFeaturesParametersBase}
-     * @api
-     */
+﻿import  SuperMap from '../SuperMap';
+import DataReturnOption from './DataReturnOption';
+import FilterParameter from './FilterParameter';
+import OverlayAnalystParameters from './OverlayAnalystParameters';
+/**
+ * @class SuperMap.DatasetOverlayAnalystParameters
+ * @constructs SuperMap.DatasetOverlayAnalystParameters
+ * @classdesc
+ * 数据集叠加分析参数类。
+ * @extends {SuperMap.GetFeaturesParametersBase}
+ * @api
+ */
+export default  class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
 
     /**
      * APIProperty: operateDataset
      * {String} 叠加分析中操作数据集的名称。
      */
-    operateDataset: null,
+    operateDataset = null;
 
     /**
      * APIProperty: operateDatasetFields
      * {Array(String} 叠加分析中操作数据集保留在结果数据集中的字段名列表。
      */
-    operateDatasetFields: null,
+    operateDatasetFields = null;
 
     /**
      * APIProperty: operateDatasetFilter
      * {SuperMap.FilterParameter} 设置操作数据集中空间对象过滤条件。
      */
-    operateDatasetFilter: null,
+    operateDatasetFilter = null;
 
     /**
      * APIProperty: operateRegions
      * {Array(<SuperMap.Geometry>)}操作面对象集合，表示与这些面对象进行叠加分析。
      * 与 operateDataset 参数互斥，冲突时以operateDataset 为准。
      */
-    operateRegions: null,
+    operateRegions = null;
 
 
     /**
      * APIProperty: sourceDataset
      * {String} 叠加分析中源数据集的名称。必设字段。
      */
-    sourceDataset: null,
+    sourceDataset = null;
 
 
     /**
      * APIProperty: sourceDatasetFields
      * {Array(String} 叠加分析中源数据集保留在结果数据集中的字段名列表。
      */
-    sourceDatasetFields: null,
+    sourceDatasetFields = null;
 
 
     /**
      * APIProperty: filterQueryParameter
      * {SuperMap.FilterParameter} 设置源数据集中空间对象过滤条件。
      */
-    sourceDatasetFilter: null,
+    sourceDatasetFilter = null;
 
 
     /**
      * APIProperty: tolerance
      * {Integer} 容限。
      */
-    tolerance: 0,
+    tolerance = 0;
 
     /**
      * APIProperty: resultSetting
      * {SuperMap.DataReturnOption} 结果返回设置类。
      */
-    resultSetting: null,
+    resultSetting = null;
 
     /**
      * @method SuperMap.DatasetOverlayAnalystParameters.initialize
@@ -88,7 +87,8 @@ SuperMap.DatasetOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalys
      * operation - {SuperMap.OverlayOperationType} 叠加操作枚举值。</br>
      * resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
      */
-    initialize: function (options) {
+    constructor(options) {
+        super(options);
         var me = this;
         me.operateDatasetFields = [];
         me.operateDatasetFilter = new FilterParameter();
@@ -96,20 +96,19 @@ SuperMap.DatasetOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalys
         me.sourceDatasetFields = [];
         me.sourceDatasetFilter = new FilterParameter();
         me.resultSetting = new DataReturnOption();
-
-        SuperMap.OverlayAnalystParameters.prototype.initialize.apply(this, arguments);
         if (!options) {
-            return;
+            return this;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.OverlayAnalystParameters.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
 
         var me = this;
         me.operateDataset = null;
@@ -135,31 +134,31 @@ SuperMap.DatasetOverlayAnalystParameters = SuperMap.Class(SuperMap.OverlayAnalys
             me.resultSetting.destroy();
             me.resultSetting = null;
         }
-    },
+    }
 
-    CLASS_NAME: "SuperMap.DatasetOverlayAnalystParameters"
-});
-
-SuperMap.DatasetOverlayAnalystParameters.toObject = function (datasetOverlayAnalystParameters, tempObj) {
-    for (var name in datasetOverlayAnalystParameters) {
-        if (name === "sourceDataset") {
-        }
-        else if (name === "operateRegions") {
-            tempObj.operateRegions = [];
-            var ors = datasetOverlayAnalystParameters.operateRegions;
-            for (var index in ors) {
-                if (ors.hasOwnProperty(index)) {    //icl542
-                    tempObj.operateRegions[index] = SuperMap.REST.ServerGeometry.fromGeometry(ors[index]);
+    static toObject(datasetOverlayAnalystParameters, tempObj) {
+        for (var name in datasetOverlayAnalystParameters) {
+            if (name === "sourceDataset") {
+            }
+            else if (name === "operateRegions") {
+                tempObj.operateRegions = [];
+                var ors = datasetOverlayAnalystParameters.operateRegions;
+                for (var index in ors) {
+                    if (ors.hasOwnProperty(index)) {    //icl542
+                        tempObj.operateRegions[index] = SuperMap.REST.ServerGeometry.fromGeometry(ors[index]);
+                    }
                 }
             }
+            else if (name === "resultSetting") {
+                tempObj.dataReturnOption = datasetOverlayAnalystParameters.resultSetting;
+            }
+            else {
+                tempObj[name] = datasetOverlayAnalystParameters[name];
+            }
         }
-        else if (name === "resultSetting") {
-            tempObj.dataReturnOption = datasetOverlayAnalystParameters.resultSetting;
-        }
-        else {
-            tempObj[name] = datasetOverlayAnalystParameters[name];
-        }
-    }
-};
+    };
 
-module.exports = SuperMap.DatasetOverlayAnalystParameters;
+    CLASS_NAME = "SuperMap.DatasetOverlayAnalystParameters"
+}
+
+SuperMap.DatasetOverlayAnalystParameters = DatasetOverlayAnalystParameters;

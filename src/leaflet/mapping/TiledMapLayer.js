@@ -5,12 +5,12 @@
  * 用法：
  *      L.superMap.tiledMapLayer(url).addTo(map);
  */
-require('../core/Base');
-require('../../common/security/SecurityManager');
-require('../services/MapService');
-var L = require("leaflet");
-var SuperMap = require("../../common/SuperMap");
-var TiledMapLayer = L.TileLayer.extend({
+import '../core/Base';
+import '../../common/security/SecurityManager';
+import '../services/MapService';
+import L from "leaflet";
+import SuperMap from "../../common/SuperMap";
+export var TiledMapLayer = L.TileLayer.extend({
 
     options: {
         //如果有layersID，则是在使用专题图
@@ -36,7 +36,7 @@ var TiledMapLayer = L.TileLayer.extend({
     },
 
     initialize: function (url, options) {
-        this.url = this._url = url;
+        this._url = url;
         L.TileLayer.prototype.initialize.apply(this, arguments);
         L.setOptions(this, options);
         L.stamp(this);
@@ -111,7 +111,7 @@ var TiledMapLayer = L.TileLayer.extend({
     //获取当前图层切片版本列表,获取成功后存储当前的切片版本信息 并切换多相应的版本
     getTileSetsInfo: function () {
         var me = this;
-        L.supermap.mapService(url).getTilesets(getTilesInfoSucceed);
+        L.supermap.mapService(this._url).getTilesets(getTilesInfoSucceed);
         function getTilesInfoSucceed(info) {
             me.tileSets = info.result;
             if (L.Util.isArray(me.tileSets)) {
@@ -186,7 +186,7 @@ var TiledMapLayer = L.TileLayer.extend({
 
     _createLayerUrl: function () {
         var me = this;
-        var layerUrl = me.url + "/tileImage.png?";
+        var layerUrl = me._url + "/tileImage.png?";
         layerUrl += me._getRequestParamString();
         layerUrl = this._appendCredential(layerUrl);
         this._layerUrl = layerUrl;
@@ -284,8 +284,7 @@ var TiledMapLayer = L.TileLayer.extend({
     }
 });
 
-L.supermap.tiledMapLayer = function (url, options) {
+export var tiledMapLayer = function (url, options) {
     return new TiledMapLayer(url, options);
 };
-
-module.exports = TiledMapLayer;
+L.supermap.tiledMapLayer = tiledMapLayer;

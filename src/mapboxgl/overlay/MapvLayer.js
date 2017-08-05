@@ -1,6 +1,9 @@
-var MapvRenderer = require("./mapv/MapvRenderer");
-
-class MapvLayer {
+import MapvRenderer from  "./mapv/MapvRenderer";
+import mapboxgl from 'mapbox-gl';
+/*
+ @class MapvLayer
+ */
+export class MapvLayer {
 
     constructor(map, dataSet, mapVOptions) {
         this.map = map;
@@ -34,6 +37,6 @@ class MapvLayer {
     }
 
 }
-window.mapvlayer = MapvLayer;
-
-module.exports = MapvLayer;
+;
+mapboxgl.supermap = mapboxgl.supermap || {};
+mapboxgl.supermap.MapvLayer = MapvLayer;

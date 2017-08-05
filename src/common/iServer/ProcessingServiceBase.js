@@ -1,41 +1,41 @@
-var ServiceBase = require('./ServiceBase');
-var SuperMap = require('../SuperMap');
-var Request = require('../util/FetchRequest');
+import SuperMap from '../SuperMap';
+import CommonServiceBase from './CommonServiceBase';
+import {FetchRequest} from '../util/FetchRequest';
 
-SuperMap.ProcessingServiceBase = SuperMap.Class(ServiceBase, {
+export default class ProcessingServiceBase extends CommonServiceBase {
 
-    /**
-     * Constant: EVENT_TYPES
-     * {Array(String)}
-     * 此类支持的事件类型
-     * - *processCompleted* 创建成功后触发的事件。
-     * - *processFailed* 创建失败后触发的事件 。
-     * - *processRunning* 创建过程的整个阶段都会触发的事件，用于获取创建过程的状态 。
-     */
-    EVENT_TYPES: ["processCompleted", "processFailed", "processRunning"],
+    constructor(url, options) {
+        options=options||{};
+        /**
+         * Constant: EVENT_TYPES
+         * {Array(String)}
+         * 此类支持的事件类型
+         * - *processCompleted* 创建成功后触发的事件。
+         * - *processFailed* 创建失败后触发的事件 。
+         * - *processRunning* 创建过程的整个阶段都会触发的事件，用于获取创建过程的状态 。
+         */
+        options.EVENT_TYPES=["processCompleted", "processFailed", "processRunning"];
+        super(url, options)
+    }
 
-    initialize: function (url, options) {
-        ServiceBase.prototype.initialize.apply(this, arguments);
-    },
-
-    destroy: function () {
-        ServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      *
      * @param url - 一个空间分析的资源地址。
      */
-    getJobs: function (url) {
+    getJobs(url) {
         var me = this;
-        return Request.get(url).then(function (response) {
+        return FetchRequest.get(url).then(function (response) {
             return response.json();
         }).then(function (result) {
             me.events.triggerEvent("processCompleted", {result: result});
         }).catch(function (e) {
             me.eventListeners.processFailed({error: e});
         });
-    },
+    }
 
     /**
      *
@@ -44,7 +44,7 @@ SuperMap.ProcessingServiceBase = SuperMap.Class(ServiceBase, {
      * @param paramType - 请求参数类型。
      * @param seconds - 开始创建后，获取创建成功结果的时间间隔。
      */
-    addJob: function (url, params, paramType, seconds) {
+    addJob(url, params, paramType, seconds) {
         var me = this, parameterObject = null;
         if (params && params instanceof paramType) {
             parameterObject = new Object();
@@ -53,7 +53,7 @@ SuperMap.ProcessingServiceBase = SuperMap.Class(ServiceBase, {
         var options = {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         };
-        return Request.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
+        return FetchRequest.post(me._processUrl(url), JSON.stringify(parameterObject), options).then(function (response) {
             return response.json();
         }).then(function (result) {
             if (result.succeed) {
@@ -64,15 +64,15 @@ SuperMap.ProcessingServiceBase = SuperMap.Class(ServiceBase, {
         }).catch(function (e) {
             me.eventListeners.processFailed({error: e});
         });
-    },
+    }
 
-    serviceProcessCompleted: function (result, seconds) {
+    serviceProcessCompleted(result, seconds) {
         result = SuperMap.Util.transformResult(result);
         seconds = seconds || 1000;
         var me = this;
         if (result) {
             var id = setInterval(function () {
-                return Request.get(result.newResourceLocation)
+                return FetchRequest.get(result.newResourceLocation)
                     .then(function (response) {
                         return response.json();
                     }).then(function (job) {
@@ -91,14 +91,14 @@ SuperMap.ProcessingServiceBase = SuperMap.Class(ServiceBase, {
                     });
             }, seconds);
         }
-    },
+    }
 
-    serviceProcessFailed: function (result) {
-        ServiceBase.prototype.serviceProcessFailed.apply(this, arguments);
-    },
+    serviceProcessFailed(result) {
+        super.serviceProcessFailed(result);
+    }
 
     //为不是以.json结尾的url加上.json，并且如果有token的话，在.json后加上token参数。
-    _processUrl: function (url) {
+    _processUrl(url) {
         if (url.indexOf('.json') === -1) {
             url += '.json';
         }
@@ -106,9 +106,9 @@ SuperMap.ProcessingServiceBase = SuperMap.Class(ServiceBase, {
             url += '?token=' + SuperMap.SecurityManager.getToken(url);
         }
         return url;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.ProcessingServiceBase"
-});
+    CLASS_NAME = "SuperMap.ProcessingServiceBase"
+}
 
-module.exports = SuperMap.ProcessingServiceBase;
+SuperMap.ProcessingServiceBase = ProcessingServiceBase;

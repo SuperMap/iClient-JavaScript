@@ -1,14 +1,10 @@
-/*
- * Class: LayerInfoService
- * 图层信息服务类
- *  apidoc by tangqin
- */
-var L = require("leaflet");
-var ServiceBase = require('./ServiceBase');
-var GetLayersInfoService = require('../../common/iServer/GetLayersInfoService');
-var SetLayerInfoService = require('../../common/iServer/SetLayerInfoService');
-var SetLayersInfoService = require('../../common/iServer/SetLayersInfoService');
-var SetLayerStatusService = require('../../common/iServer/SetLayerStatusService');
+import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {ServiceBase} from './ServiceBase';
+import GetLayersInfoService from '../../common/iServer/GetLayersInfoService';
+import SetLayerInfoService from '../../common/iServer/SetLayerInfoService';
+import SetLayersInfoService from '../../common/iServer/SetLayersInfoService';
+import SetLayerStatusService from '../../common/iServer/SetLayerStatusService';
 /**
  * @class L.supermap.LayerInfoService
  * @description 图层信息关类
@@ -23,7 +19,7 @@ var SetLayerStatusService = require('../../common/iServer/SetLayerStatusService'
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-var LayerInfoService = ServiceBase.extend({
+export var LayerInfoService = ServiceBase.extend({
 
     /**
      * @function L.supermap.layerInfoService.initialize
@@ -150,8 +146,8 @@ var LayerInfoService = ServiceBase.extend({
 
 });
 
-L.supermap.layerInfoService = function (url, options) {
+export var layerInfoService = function (url, options) {
     return new LayerInfoService(url, options);
 };
 
-module.exports = LayerInfoService;
+L.supermap.layerInfoService  = layerInfoService;

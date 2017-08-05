@@ -1,10 +1,11 @@
-require('./Base');
-require('../overlay/vectortile/DeafultCanvasStyle');
-require('../overlay/vectortile/StyleMap');
-var ol = require('openlayers/dist/ol-debug');
-var SuperMap = require('../../common/SuperMap');
-ol.supermap.StyleUtils = {
-    getValidStyleFromLayerInfo: function (layerInfo, feature, url) {
+import SuperMap from '../../common/SuperMap';
+import {StyleMap} from '../overlay/vectortile/StyleMap';
+import {DeafultCanvasStyle} from '../overlay/vectortile/DeafultCanvasStyle';
+ol.supermap = ol.supermap || {};
+
+export default class StyleUtils {
+
+    static getValidStyleFromLayerInfo(layerInfo, feature, url) {
         var type = feature.getGeometry().getType().toUpperCase(),
             shader = layerInfo.layerStyle,
             style = this.getDefaultStyle(type);
@@ -103,7 +104,7 @@ ol.supermap.StyleUtils = {
             var fillSymbolID = shader["fillSymbolID"] > 7 ? 0 : shader["fillSymbolID"];
             var lineSymbolID = shader["lineSymbolID"] > 5 ? 0 : shader["lineSymbolID"];
             for (var attr in shader) {
-                var obj = ol.supermap.StyleMap.ServerStyleMap[attr];
+                var obj = StyleMap.ServerStyleMap[attr];
                 var canvasStyle = obj.canvasStyle;
                 if (canvasStyle && canvasStyle != "") {
                     switch (obj.type) {
@@ -201,15 +202,15 @@ ol.supermap.StyleUtils = {
         if (type === 'POLYGON' || type === 'MULTIPOLYGON') {
             return this.toOLPolygonStyle(style);
         }
-    },
+    }
 
-    getStyleFromCarto: function (zoom, scale, shader, feature, fromServer, url) {
+    static getStyleFromCarto(zoom, scale, shader, feature, fromServer, url) {
         var type = feature.getGeometry().getType().toUpperCase(),
             attributes = {},
             style = this.getDefaultStyle(type);
         attributes.FEATUREID = feature.getProperties().id;
         attributes.SCALE = scale;
-        var cartoStyleMap = ol.supermap.StyleMap.CartoStyleMap[type];
+        var cartoStyleMap = StyleMap.CartoStyleMap[type];
         var fontSize, fontName;
         if (shader) {
             for (var i = 0, len = shader.length; i < len; i++) {
@@ -228,7 +229,7 @@ ol.supermap.StyleUtils = {
                         fontName = value;
                     } else {
                         if (prop === "globalCompositeOperation") {
-                            value = ol.supermap.StyleMap.CartoCompOpMap[value];
+                            value = StyleMap.CartoCompOpMap[value];
                             if (!value || value === "")continue;
                         } else if (fromServer && prop === 'pointFile') {
                             value = url + '/tileFeature/symbols/' + value.replace(/(___)/gi, '@');
@@ -253,9 +254,9 @@ ol.supermap.StyleUtils = {
         if (type === 'POLYGON' || type === 'MULTIPOLYGON') {
             return this.toOLPolygonStyle(style);
         }
-    },
+    }
 
-    toOLPointStyle: function (style) {
+    static toOLPointStyle(style) {
         if (style.pointFile !== '') {
             return new ol.style.Style({
                 image: new ol.style.Icon({
@@ -275,9 +276,9 @@ ol.supermap.StyleUtils = {
                 })
             })
         });
-    },
+    }
 
-    toOLLineStyle: function (style) {
+    static toOLLineStyle(style) {
         return new ol.style.Style({
             stroke: new ol.style.Stroke({
                 color: style.strokeStyle,
@@ -289,9 +290,9 @@ ol.supermap.StyleUtils = {
                 miterLimit: style.miterLimit
             })
         });
-    },
+    }
 
-    toOLPolygonStyle: function (style) {
+    static toOLPolygonStyle(style) {
         var fill = new ol.style.Fill({
             color: style.fillStyle
         });
@@ -308,9 +309,9 @@ ol.supermap.StyleUtils = {
             fill: fill,
             stroke: stroke
         });
-    },
+    }
 
-    toOLTextStyle: function (style, text) {
+    static toOLTextStyle(style, text) {
         return new ol.style.Style({
             text: new ol.style.Text({
                 font: (style.fontStyle || '') + ' ' + (style.fontWeight || '') + ' ' + (style.fontSize || '') + ' ' + style.fontFamily,
@@ -327,8 +328,9 @@ ol.supermap.StyleUtils = {
                 offsetY: style.offsetY
             })
         })
-    },
-    dashStyle: function (style, widthFactor) {
+    }
+
+    static dashStyle(style, widthFactor) {
         if (!style)return [];
         var w = style.strokeWidth * widthFactor;
         var str = style.strokeDashstyle;
@@ -351,8 +353,9 @@ ol.supermap.StyleUtils = {
                 str = SuperMap.String.trim(str).replace(/\s+/g, ",");
                 return str.replace(/\[|\]/gi, "").split(",");
         }
-    },
-    getStyleFromiPortalMarker: function (icon) {
+    }
+
+    static getStyleFromiPortalMarker(icon) {
         if (icon.indexOf("./") == 0) {
             return null;
         }
@@ -368,8 +371,9 @@ ol.supermap.StyleUtils = {
                 anchor: [0.5, 1]
             })
         });
-    },
-    getStyleFromiPortalStyle: function (iPortalStyle, type, fStyle) {
+    }
+
+    static getStyleFromiPortalStyle(iPortalStyle, type, fStyle) {
         var featureStyle = fStyle ? JSON.parse(fStyle) : null;
         var me = this;
         if (type === 'Point' || type === 'MultiPoint') {
@@ -431,9 +435,9 @@ ol.supermap.StyleUtils = {
                 })
             });
         }
-    },
+    }
 
-    hexToRgba: function (hex, opacity) {
+    static hexToRgba(hex, opacity) {
         var color = [], rgba = [];
         hex = hex.replace(/#/, "");
         if (hex.length == 3) {
@@ -449,18 +453,17 @@ ol.supermap.StyleUtils = {
         }
         rgba.push(opacity);
         return "rgba(" + rgba.join(",") + ")";
-    },
+    }
 
-    getDefaultStyle: function (type) {
+    static getDefaultStyle(type) {
         var style = style || {};
-        var canvasStyle = ol.supermap.DeafultCanvasStyle[type];
+        var canvasStyle = DeafultCanvasStyle[type];
         for (var prop in canvasStyle) {
             var val = canvasStyle[prop];
             style[prop] = val;
         }
         return style;
     }
-
 };
 
-module.exports = ol.supermap.StyleUtils;
+ol.supermap.StyleUtils = StyleUtils;

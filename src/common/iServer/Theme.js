@@ -1,9 +1,6 @@
-﻿/*
- * Class: SuperMap.Theme
- * 专题图基类。
- */
-require('./ThemeMemoryData');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import ThemeMemoryData from './ThemeMemoryData';
+
 
 /**
  * @class SuperMap.Theme
@@ -12,7 +9,7 @@ var SuperMap = require('../SuperMap');
  * @param options - {Object} 可选参数。如：<br>
  *         memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
  */
-SuperMap.Theme = SuperMap.Class({
+export default  class Theme {
 
     /*
      * Property: memoryData
@@ -20,13 +17,13 @@ SuperMap.Theme = SuperMap.Class({
      * 用内存数据制作专题图的方式与表达式制作专题图的方式互斥，前者优先级较高。
      * 第一个参数代表专题值，即数据集中用来做专题图的字段或表达式的值；第二个参数代表外部值。在制作专题图时，会用外部值代替专题值来制作相应的专题图。
      */
-    memoryData: null,
+    memoryData = null;
 
     /*
      * Property: type
      * {String} 专题图类型。
      */
-    type: null,
+    type = null;
 
     /**
      * @function SuperMap.Theme.prototype.initialize
@@ -35,39 +32,42 @@ SuperMap.Theme = SuperMap.Class({
      * @param options - {Object} 可选参数。如：<br>
      *         memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
      */
-    initialize: function (type, options) {
+    constructor(type, options) {
         if (!type) {
-            return false;
+            return this;
         }
         this.type = type;
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
+
 
     /**
      * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         if (me.memoryData) {
             me.memoryData.destroy();
             me.memoryData = null;
         }
         me.type = null;
-    },
+    }
+
 
     /*
      * Method: toServerJSONObject
      * 转换成对应的 JSON 格式对象。
      */
-    toServerJSONObject: function () {
+    toServerJSONObject() {
         //return 子类实现
         return;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.Theme"
-});
-module.exports = SuperMap.Theme;
+    CLASS_NAME = "SuperMap.Theme"
+}
+
+SuperMap.Theme = Theme;

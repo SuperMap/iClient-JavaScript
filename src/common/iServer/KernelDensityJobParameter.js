@@ -1,4 +1,5 @@
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import {AnalystSizeUnit, AnalystAreaUnit} from '../REST';
 
 /**
  * @class SuperMap.KernelDensityJobParameter
@@ -12,81 +13,82 @@ var SuperMap = require('../SuperMap');
  *         fields -{String} 权重索引。 <br>
  *         radius -{number} 分析的影响半径。
  */
-SuperMap.KernelDensityJobParameter = SuperMap.Class({
+export default class KernelDensityJobParameter {
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{String}
      * @description 数据集名。
      */
-    datasetName: "",
+    datasetName = "";
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
      * @description 分析范围。
      */
-    query: "",
+    query = "";
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
      * @description 网格大小。
      */
-    resolution: 80,
+    resolution = 80;
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
      * @description 分析方法。
      */
-    method: 0,
+    method = 0;
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
      * @description 分析类型。
      */
-    meshType: 0,
+    meshType = 0;
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.fields -{String}
      * @description 权重索引。
      */
-    fields: "",
+    fields = "";
 
     /**
      * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
      * @description 分析的影响半径。
      */
-    radius: 300,
+    radius = 300;
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{String}
+     * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
      * @description 网格大小单位。
      */
-    meshSizeUnit: 'Meter',
+    meshSizeUnit = AnalystSizeUnit.METER;
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{String}
+     * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
      * @description 搜索半径单位。
      */
-    radiusUnit: 'Meter',
+    radiusUnit = AnalystSizeUnit.METER;
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{String}
+     * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
      * @description 面积单位。
      */
-    areaUnit: 'SquareMile',
+    areaUnit = AnalystAreaUnit.SQUAREMILE;
 
 
-    initialize: function (options) {
+    constructor(options) {
         if (!options) {
             return;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /**
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         this.datasetName = null;
         this.query = null;
         this.resolution = null;
@@ -99,18 +101,18 @@ SuperMap.KernelDensityJobParameter = SuperMap.Class({
         this.areaUnit = null;
     }
 
-});
-
-SuperMap.KernelDensityJobParameter.toObject = function (kernelDensityJobParameter, tempObj) {
-    for (var name in kernelDensityJobParameter) {
-        if (name === "datasetName") {
-            tempObj['input'] = tempObj['input'] || {};
-            tempObj['input'][name] = kernelDensityJobParameter[name];
-            continue;
+    static toObject(kernelDensityJobParameter, tempObj) {
+        for (var name in kernelDensityJobParameter) {
+            if (name === "datasetName") {
+                tempObj['input'] = tempObj['input'] || {};
+                tempObj['input'][name] = kernelDensityJobParameter[name];
+                continue;
+            }
+            tempObj['analyst'] = tempObj['analyst'] || {};
+            tempObj['analyst'][name] = kernelDensityJobParameter[name];
         }
-        tempObj['analyst'] = tempObj['analyst'] || {};
-        tempObj['analyst'][name] = kernelDensityJobParameter[name];
     }
-};
 
-module.exports = SuperMap.KernelDensityJobParameter;
+}
+
+SuperMap.KernelDensityJobParameter = KernelDensityJobParameter;

@@ -1,18 +1,7 @@
-﻿/*
- * Class: SuperMap.FindClosestFacilitiesService
- * 最近设施分析服务类。
- * 最近设施分析是指在网络上给定一个事件点和一组设施点，
- * 查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
- * 该类负责将客户端指定的最近设施分析参数传递给服务端，并接收服务端返回的结果数据。
- * 最近设施分析结果通过该类支持的事件的监听函数参数获取
- *
- * Inherits from:
- *  - <SuperMap.NetworkAnalystServiceBase>
- */
-require('./NetworkAnalystServiceBase');
-require('./FindClosestFacilitiesParameters');
-var SuperMap = require('../SuperMap');
-var GeoJSONFormat = require('../format/GeoJSON');
+﻿import SuperMap from '../SuperMap';
+import GeoJSON from '../format/GeoJSON';
+import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
+import FindClosestFacilitiesParameters from './FindClosestFacilitiesParameters';
 
 /**
  * @class SuperMap.FindClosestFacilitiesService
@@ -37,7 +26,7 @@ var GeoJSONFormat = require('../format/GeoJSON');
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-SuperMap.FindClosestFacilitiesService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
+export default class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
 
     /**
      * @function SuperMap.FindClosestFacilitiesService.prototype.initialize
@@ -48,23 +37,23 @@ SuperMap.FindClosestFacilitiesService = SuperMap.Class(SuperMap.NetworkAnalystSe
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @function SuperMap.FindClosestFacilitiesService.prototype. processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param params - {SuperMap.FindClosestFacilitiesParameters} 最近设施分析服务参数类
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -86,7 +75,7 @@ SuperMap.FindClosestFacilitiesService = SuperMap.Class(SuperMap.NetworkAnalystSe
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /*
      * Method: getJson
@@ -99,7 +88,7 @@ SuperMap.FindClosestFacilitiesService = SuperMap.Class(SuperMap.NetworkAnalystSe
      * Returns:
      * {Object} 转化后的JSON字符串。
      */
-    getJson: function (isAnalyzeById, params) {
+    getJson(isAnalyzeById, params) {
         var jsonString = "[",
             len = params ? params.length : 0;
 
@@ -116,7 +105,7 @@ SuperMap.FindClosestFacilitiesService = SuperMap.Class(SuperMap.NetworkAnalystSe
         }
         jsonString += ']';
         return jsonString;
-    },
+    }
 
     /*
      * Method: toGeoJSONResult
@@ -125,12 +114,12 @@ SuperMap.FindClosestFacilitiesService = SuperMap.Class(SuperMap.NetworkAnalystSe
      * Parameters:
      * result - {Object} 服务器返回的结果对象。
      */
-    toGeoJSONResult: function (result) {
+    toGeoJSONResult(result) {
         if (!result || !result.facilityPathList) {
             return result;
         }
 
-        var geoJSONFormat = new GeoJSONFormat();
+        var geoJSONFormat = new GeoJSON();
         result.facilityPathList.map(function (path) {
             if (path.route) {
                 path.route = JSON.parse(geoJSONFormat.write(path.route));
@@ -147,8 +136,9 @@ SuperMap.FindClosestFacilitiesService = SuperMap.Class(SuperMap.NetworkAnalystSe
             }
         });
         return result;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.FindClosestFacilitiesService"
-});
-module.exports = SuperMap.FindClosestFacilitiesService;
+    CLASS_NAME = "SuperMap.FindClosestFacilitiesService"
+}
+
+SuperMap.FindClosestFacilitiesService = FindClosestFacilitiesService;

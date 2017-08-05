@@ -1,13 +1,6 @@
-/*
- * Class: SuperMap.FacilityAnalystStreamService
- * 上游/下游 关键设施查找资源服务类;即查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
- *
- * Inherits from:
- *  - <SuperMap.NetworkAnalystServiceBase>
- */
-require('./NetworkAnalystServiceBase');
-require('./FacilityAnalystStreamParameters');
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
+import FacilityAnalystStreamParameters from './FacilityAnalystStreamParameters';
 
 /**
  * @class SuperMap.FacilityAnalystStreamService
@@ -19,7 +12,7 @@ var SuperMap = require('../SuperMap');
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-SuperMap.FacilityAnalystStreamService = SuperMap.Class(SuperMap.NetworkAnalystServiceBase, {
+export default  class FacilityAnalystStreamService extends NetworkAnalystServiceBase {
 
     /**
      * @function SuperMap.FacilityAnalystStreamService.prototype.initialize
@@ -30,23 +23,25 @@ SuperMap.FacilityAnalystStreamService = SuperMap.Class(SuperMap.NetworkAnalystSe
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.NetworkAnalystServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
+
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.NetworkAnalystServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
+
 
     /**
      * @function SuperMap.FacilityAnalystStreamService.prototype. processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param params - {SuperMap.FacilityAnalystStreamParameters} 上游/下游关键设施查找资源参数类。
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -56,11 +51,11 @@ SuperMap.FacilityAnalystStreamService = SuperMap.Class(SuperMap.NetworkAnalystSe
         //URL 通过参数类型来判断是 上游 还是下游 查询
         if (params.queryType === 0) {
             me.url = me.url + ((end === "/") ? "upstreamcirticalfaclilities" :
-                    "/upstreamcirticalfaclilities") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+                "/upstreamcirticalfaclilities") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
         }
         else if (params.queryType === 1) {
             me.url = me.url + ((end === "/") ? "downstreamcirticalfaclilities" :
-                    "/downstreamcirticalfaclilities") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
+                "/downstreamcirticalfaclilities") + (this.isInTheSameDomain ? ".json?" : ".jsonp?");
         }
         else return;
 
@@ -83,9 +78,9 @@ SuperMap.FacilityAnalystStreamService = SuperMap.Class(SuperMap.NetworkAnalystSe
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
-    CLASS_NAME: "SuperMap.FacilityAnalystStreamService"
-});
+    CLASS_NAME = "SuperMap.FacilityAnalystStreamService"
+}
 
-module.exports = SuperMap.FacilityAnalystStreamService;
+SuperMap.FacilityAnalystStreamService = FacilityAnalystStreamService;

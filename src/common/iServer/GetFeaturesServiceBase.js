@@ -1,7 +1,8 @@
-﻿require('../REST');
-require('./ServiceBase');
-var SuperMap = require('../SuperMap');
-var GeoJSONFormat = require('../format/GeoJSON');
+﻿import SuperMap from '../SuperMap';
+import {DataFormat} from '../REST';
+import CommonServiceBase from './CommonServiceBase';
+import GeoJSON from '../format/GeoJSON';
+
 /**
  * @class SuperMap.GetFeaturesServiceBase
  * @constructs  SuperMap.GetFeaturesServiceBase
@@ -9,7 +10,7 @@ var GeoJSONFormat = require('../format/GeoJSON');
  * 数据服务中数据集查询服务基类。
  * 获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON
  *
- * @extends {SuperMap.ServiceBase}
+ * @extends {SuperMap.CommonServiceBase}
  * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/</br>
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
@@ -28,7 +29,7 @@ var GeoJSONFormat = require('../format/GeoJSON');
  *
  * @api
  */
-SuperMap.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
+export default  class GetFeaturesServiceBase extends CommonServiceBase {
 
     /**
      * @property {Boolean} returnContent
@@ -36,35 +37,34 @@ SuperMap.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
      *           如果为 true，则直接返回新创建资源，即查询结果的表述。
      *           如果为 false，则返回的是查询结果资源的 URI。默认为 false。
      */
-    returnContent: true,
+    returnContent = true;
 
     /**
      * @property {Integer} fromIndex
      * @description查询结果的最小索引号。
      *         默认值是0，如果该值大于查询结果的最大索引号，则查询结果为空。
      */
-    fromIndex: 0,
+    fromIndex = 0;
 
     /**
      * Property: toIndex
      * {Integer} 查询结果的最大索引号。
      *         如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
      */
-    toIndex: 19,
+    toIndex = 19;
 
     /**
      * APIProperty: maxFeatures
      * {Integer} 进行SQL查询时，用于设置服务端返回查询结果条目数量，默认为1000。
      */
-    maxFeatures: null,
+    maxFeatures = null;
 
     /**
      *  @property {String} format
      *  @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
-    format: SuperMap.DataFormat.GEOJSON,
-
+    format = DataFormat.GEOJSON;
 
     /* @method SuperMap.GetFeaturesServiceBase.initialize
      * @description数据集查询服务基类构造函数。
@@ -74,8 +74,8 @@ SuperMap.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
      * @param options - {Object} 参数。
      *
      */
-    initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+    constructor(url, options) {
+        super(url, options);
         options = options || {};
         if (options) {
             SuperMap.Util.extend(this, options);
@@ -97,28 +97,28 @@ SuperMap.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
         } else {
             me.url += (end == "/") ? "featureResults.jsonp?" : "/featureResults.jsonp?";
         }
-    },
+    }
 
     /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         var me = this;
         me.returnContent = null;
         me.fromIndex = null;
         me.toIndex = null;
         me.maxFeatures = null;
         me.format = null;
-    },
+    }
 
     /**
      *@method SuperMap.GetFeaturesServiceBase.processAsync
      * @description  负责将客户端的查询参数传递到服务端。
      *@param params - {GetFeaturesParametersBase} 查询参数。
      */
-    processAsync: function (params) {
+    processAsync(params) {
         if (!params) {
             return;
         }
@@ -148,24 +148,24 @@ SuperMap.GetFeaturesServiceBase = SuperMap.Class(SuperMap.ServiceBase, {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /**
      * @method SuperMap.GetFeaturesServiceBase.getFeatureComplete
      * @description 查询完成，执行此方法。
      * @param result - {Object} 服务器返回的结果对象。
      */
-    serviceProcessCompleted: function (result) {
+    serviceProcessCompleted(result) {
         var me = this;
         result = SuperMap.Util.transformResult(result);
-        if (me.format === SuperMap.DataFormat.GEOJSON && result.features) {
-            var geoJSONFormat = new GeoJSONFormat();
+        if (me.format === DataFormat.GEOJSON && result.features) {
+            var geoJSONFormat = new GeoJSON();
             result.features = JSON.parse(geoJSONFormat.write(result.features));
         }
         me.events.triggerEvent("processCompleted", {result: result});
-    },
+    }
 
-    CLASS_NAME: "SuperMap.GetFeaturesServiceBase"
-});
+    CLASS_NAME = "SuperMap.GetFeaturesServiceBase"
+}
 
-module.exports = SuperMap.GetFeaturesServiceBase;
+SuperMap.GetFeaturesServiceBase = GetFeaturesServiceBase;

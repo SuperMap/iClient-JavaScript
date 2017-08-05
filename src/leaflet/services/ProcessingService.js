@@ -1,12 +1,13 @@
-﻿var L = require("leaflet");
-var ServiceBase = require('./ServiceBase');
-var SuperMap = require('../../common/SuperMap');
-var KernelDensityJobsService = require('../../common/iServer/KernelDensityJobsService');
-var SingleObjectQueryJobsService = require('../../common/iServer/SingleObjectQueryJobsService');
-var BuildCacheJobsService = require('../../common/iServer/BuildCacheJobsService');
-var SummaryMeshJobsService = require('../../common/iServer/SummaryMeshJobsService');
-var SummaryRegionJobsService = require('../../common/iServer/SummaryRegionJobsService');
-var VectorClipJobsService = require('../../common/iServer/VectorClipJobsService');
+﻿import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {ServiceBase} from './ServiceBase';
+import KernelDensityJobsService from  '../../common/iServer/KernelDensityJobsService';
+import SingleObjectQueryJobsService from  '../../common/iServer/SingleObjectQueryJobsService';
+import BuildCacheJobsService from  '../../common/iServer/BuildCacheJobsService';
+import SummaryMeshJobsService from  '../../common/iServer/SummaryMeshJobsService';
+import SummaryRegionJobsService from  '../../common/iServer/SummaryRegionJobsService';
+import VectorClipJobsService from  '../../common/iServer/VectorClipJobsService';
+import CommontypesConversion from '../core/CommontypesConversion';
 /**
  * @class L.supermap.processingService
  * @description 大数据处理相关服务类
@@ -20,7 +21,7 @@ var VectorClipJobsService = require('../../common/iServer/VectorClipJobsService'
  * @param url -{String} 大数据服务地址。
  * @param options - {Object} 交互服务时所需可选参数
  */
-var ProcessingService = ServiceBase.extend({
+export var ProcessingService = ServiceBase.extend({
 
     /**
      * @function L.supermap.processingService.prototype.initialize
@@ -559,17 +560,16 @@ var ProcessingService = ServiceBase.extend({
             return {};
         }
         if (params.query) {
-            params.query = L.supermap.CommontypesConversion.toSuperMapBounds(params.query).toBBOX();
+            params.query = CommontypesConversion.toSuperMapBounds(params.query).toBBOX();
         }
         if (params.bounds) {
-            params.bounds = L.supermap.CommontypesConversion.toSuperMapBounds(params.bounds).toBBOX();
+            params.bounds = CommontypesConversion.toSuperMapBounds(params.bounds).toBBOX();
         }
         return params;
     },
 });
-
-L.supermap.processingService = function (url, options) {
+export var processingService = function (url, options) {
     return new ProcessingService(url, options);
 };
 
-module.exports = ProcessingService;
+L.supermap.processingService = processingService;

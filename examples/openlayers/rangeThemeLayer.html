@@ -100,14 +100,14 @@
         </div>
     </div>
 </div>
-<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol.js"></script>
+<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol-debug.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 
 <script type="text/javascript">
     var map, options, themeLayer, themeSource,
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图",
-            url2 = "http://support.supermap.com.cn:8090/iserver/services/data-jingjin/rest/data",
-            extent = [104.07, 30.54, 119.51, 42.31];
+        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        url2 = "http://support.supermap.com.cn:8090/iserver/services/data-jingjin/rest/data",
+        extent = [104.07, 30.54, 119.51, 42.31];
     new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({

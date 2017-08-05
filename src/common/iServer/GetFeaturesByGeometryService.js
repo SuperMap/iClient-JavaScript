@@ -1,28 +1,30 @@
-﻿require('./GetFeaturesServiceBase');
-require('./GetFeaturesByGeometryParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.GetFeaturesServiceBase, {
-    /**
-     * @class SuperMap.GetFeaturesByGeometryService
-     * @constructs SuperMap.GetFeaturesByGeometryService
-     * @classdesc
-     * 数据集几何查询服务类
-     * 查询与指定几何对象符合一定空间关系的矢量要素。
-     * @extends {SuperMap.GetFeaturesServiceBase}
-     * @api
-     * @example 例如：
-     * (start code)
-     * var myService = new SuperMap.GetFeaturesByGeometryService(url, {
+﻿import SuperMap from '../SuperMap';
+import GetFeaturesServiceBase from './GetFeaturesServiceBase';
+import GetFeaturesByGeometryParameters from './GetFeaturesByGeometryParameters';
+
+/**
+ * @class SuperMap.GetFeaturesByGeometryService
+ * @constructs SuperMap.GetFeaturesByGeometryService
+ * @classdesc
+ * 数据集几何查询服务类
+ * 查询与指定几何对象符合一定空间关系的矢量要素。
+ * @extends {SuperMap.GetFeaturesServiceBase}
+ * @api
+ * @example 例如：
+ * (start code)
+ * var myService = new SuperMap.GetFeaturesByGeometryService(url, {
      *     eventListeners: {
      *           "processCompleted": getFeatureCompleted,
      *           "processFailed": getFeatureError
      *           }
      * });
-     * function getFeatureCompleted(object){//todo};
-     * function getFeatureError(object){//todo}
-     * (end)
-     *
-     */
+ * function getFeatureCompleted(object){//todo};
+ * function getFeatureError(object){//todo}
+ * (end)
+ *
+ */
+export default  class GetFeaturesByGeometryService extends GetFeaturesServiceBase {
+
 
     /**
      * @method SuperMap.GetFeaturesByGeometryService.initialize
@@ -36,17 +38,17 @@ SuperMap.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.GetFeaturesServi
      * eventListeners - {Object} 需要被注册的监听器对象。</br>
 
      */
-    initialize: function (url, options) {
-        SuperMap.GetFeaturesServiceBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.GetFeaturesServiceBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * @method SuperMap.GetFeaturesByGeometryService.getJsonParameters
@@ -56,11 +58,11 @@ SuperMap.GetFeaturesByGeometryService = SuperMap.Class(SuperMap.GetFeaturesServi
      * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
      * @return {Object} 转化后的 JSON 字符串。
      */
-    getJsonParameters: function (params) {
-        return SuperMap.GetFeaturesByGeometryParameters.toJsonParameters(params);
-    },
+    getJsonParameters(params) {
+        return GetFeaturesByGeometryParameters.toJsonParameters(params);
+    }
 
-    CLASS_NAME: "SuperMap.GetFeaturesByGeometryService"
-});
+    CLASS_NAME = "SuperMap.GetFeaturesByGeometryService"
+}
 
-module.exports = SuperMap.GetFeaturesByGeometryService;
+SuperMap.GetFeaturesByGeometryService = GetFeaturesByGeometryService;

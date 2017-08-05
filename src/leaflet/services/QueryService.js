@@ -1,20 +1,12 @@
-﻿/*
- * Class:QueryService
- * 地图查询服务类
- * 提供：范围查询，SQL查询，几何查询，距离查询
- * 用法：
- *      L.supermap.queryService(url).queryByBounds(param,function(result){
- *          //doSomething
- *      })
- */
-var L = require("leaflet");
-var ServiceBase = require('./ServiceBase');
-var SuperMap = require('../../common/SuperMap');
-var Util = require('../core/Util');
-var QueryByBoundsService = require('../../common/iServer/QueryByBoundsService');
-var QueryByDistanceService = require('../../common/iServer/QueryByDistanceService');
-var QueryBySQLService = require('../../common/iServer/QueryBySQLService');
-var QueryByGeometryService = require('../../common/iServer/QueryByGeometryService');
+﻿import L from "leaflet";
+import SuperMap from '../../common/SuperMap';
+import {ServiceBase} from './ServiceBase';
+import * as Util from  '../core/Util';
+import QueryByBoundsService from  '../../common/iServer/QueryByBoundsService';
+import QueryByDistanceService from  '../../common/iServer/QueryByDistanceService';
+import QueryBySQLService from  '../../common/iServer/QueryBySQLService';
+import QueryByGeometryService from  '../../common/iServer/QueryByGeometryService';
+import CommontypesConversion from '../core/CommontypesConversion';
 /**
  * @class  L.supermap.QueryService
  * @description 地图查询服务类。
@@ -27,7 +19,7 @@ var QueryByGeometryService = require('../../common/iServer/QueryByGeometryServic
  *          //doSomething
  *      })
  */
-var QueryService = ServiceBase.extend({
+export var QueryService = ServiceBase.extend({
 
     /**
      * @function L.supermap.queryService.initialize
@@ -141,7 +133,7 @@ var QueryService = ServiceBase.extend({
         }
 
         if (params.bounds ) {
-            params.bounds=L.supermap.CommontypesConversion.toSuperMapBounds(params.bounds);
+            params.bounds=CommontypesConversion.toSuperMapBounds(params.bounds);
         }
 
         if (params.geometry) {
@@ -160,8 +152,8 @@ var QueryService = ServiceBase.extend({
     }
 });
 
-L.supermap.queryService = function (url, options) {
+export var queryService = function (url, options) {
     return new QueryService(url, options);
 };
 
-module.exports = QueryService;
+L.supermap.queryService = queryService;

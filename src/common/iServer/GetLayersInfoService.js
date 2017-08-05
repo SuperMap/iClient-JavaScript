@@ -1,19 +1,13 @@
-﻿/*
- * Class SuperMap.GetLayersInfoService 获取图层信息服务类。
- * 该类负责将从客户端指定的服务器上获取该服务器提供的图层信息。
- * Inherits from:
- *  - <SuperMap.ServiceBase>
- *  apidoc by tangqin
- */
-require('./ServiceBase');
-var SuperMap = require('../SuperMap');
-var ServerTheme = require('./ServerTheme');
-var Grid = require('./Grid');
-var Image = require('./Image');
-var Vector = require('./Vector');
+﻿import SuperMap from '../SuperMap';
+import CommonServiceBase from './CommonServiceBase';
+import ServerTheme from './ServerTheme';
+import Grid from './Grid';
+import Image from './Image';
+import Vector from './Vector';
+
 /**
  * @class SuperMap.GetLayersInfoService 获取图层信息服务类构造函数。
- * @augments SuperMap.ServiceBase
+ * @augments SuperMap.CommonServiceBase
  * @constructs  SuperMap.GetLayersInfoService
  * Parameters:
  * @param url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
@@ -25,12 +19,12 @@ var Vector = require('./Vector');
  *         eventListeners - {Object} 需要被注册的监听器对象。
  *         isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。
  */
-SuperMap.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
+export default  class GetLayersInfoService extends CommonServiceBase {
 
     /*
      * @instance isTempLayers 当前url对应的图层是否是临时图层。{Boolean}
      */
-    isTempLayers: false,
+    isTempLayers = false;
 
     /**
      * @function  initialize
@@ -45,26 +39,26 @@ SuperMap.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      *         eventListeners - {Object} 需要被注册的监听器对象。<br>
      *         isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。
      */
-    initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+    constructor(url, options) {
+        super(url, options);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         SuperMap.Util.reset(this);
-    },
+    }
 
     /**
      * @function  processAsync
      * @description APIMethod: 负责将客户端的更新参数传递到服务端。
      */
-    processAsync: function () {
+    processAsync() {
         var me = this,
             method = "GET",
             end = me.url.substr(me.url.length - 1, 1);
@@ -81,14 +75,14 @@ SuperMap.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
     /*
      * Method: getLayerComplted
      * 编辑完成，执行此方法。
      * result - {Object} 服务器返回的结果对象。
      */
-    serviceProcessCompleted: function (result) {
+    serviceProcessCompleted(result) {
         var me = this, existRes, layers, len;
         result = SuperMap.Util.transformResult(result);
 
@@ -97,7 +91,7 @@ SuperMap.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
         len = layers ? layers.length : 0;
         me.handleLayers(len, layers);
         me.events.triggerEvent("processCompleted", {result: result[0]});
-    },
+    }
 
     /*
      * TODO 专题图时候可能会用到
@@ -107,7 +101,7 @@ SuperMap.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
      * len - {Number} subLayers.layers的长度
      * layers - {Array} subLayers.layers
      */
-    handleLayers: function (len, layers) {
+    handleLayers(len, layers) {
         var me = this, tempLayer;
         if (len) {
             for (var i = 0; i < len; i++) {
@@ -144,9 +138,9 @@ SuperMap.GetLayersInfoService = SuperMap.Class(SuperMap.ServiceBase, {
 
             }
         }
-    },
+    }
 
-    CLASS_NAME: "SuperMap.GetLayersInfoService"
-});
+    CLASS_NAME = "SuperMap.GetLayersInfoService"
+}
 
-module.exports = SuperMap.GetLayersInfoService;
+SuperMap.GetLayersInfoService = GetLayersInfoService;

@@ -1,17 +1,7 @@
-﻿/*
- * Class: SuperMap.ThemeRange
- * 范围分段专题图。
- * 范围分段专题图是按照指定的分段方法（如：等距离分段法）对字段的属性值进行分段，使用不同的颜色或符号（线型、填充）表示不同范围段落的属性值在整体上的分布情况，体现区域的差异。
- * 在分段专题图中，专题值按照某种分段方式被分成多个范围段，要素根据各自的专题值被分配到其中一个范围段中，在同一个范围段中的要素使用相同的颜色，填充，符号等风格进行显示。
- * 分段专题图所基于的专题变量必须为数值型，分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
- *
- * Inherits from:
- *  - <SuperMap.Theme>
- */
-require('../REST');
-require('./Theme');
-require('./ThemeRangeItem');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import Theme from './Theme';
+import ThemeRangeItem from './ThemeRangeItem';
+import {RangeMode, ColorGradientType} from '../REST';
 
 /**
  * @class SuperMap.ThemeRange
@@ -28,13 +18,13 @@ var SuperMap = require('../SuperMap');
  *        colorGradientType - {SuperMap.ColorGradientType} 渐变颜色枚举类。<br>
  *        memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
  */
-SuperMap.ThemeRange = SuperMap.Class(SuperMap.Theme, {
+export default class ThemeRange extends Theme {
 
     /*
      * Property: precision
      * {String}
      */
-    precision: '1.0E-12',
+    precision = '1.0E-12';
 
     /**
      * APIProperty: items
@@ -44,7 +34,7 @@ SuperMap.ThemeRange = SuperMap.Class(SuperMap.Theme, {
      *              每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。<br>
      *              如果设置了范围分段模式和分段数，则会自动计算每段的范围[start, end)，故无需设置[start, end)；当然可以设置，那么结果就会按照您设置的值对分段结果进行调整。
      */
-    items: null,
+    items = null;
 
     /**
      * APIProperty: rangeExpression
@@ -52,7 +42,7 @@ SuperMap.ThemeRange = SuperMap.Class(SuperMap.Theme, {
      * @description 分段字段表达式。<br>
      *              由于范围分段专题图基于各种分段方法根据一定的距离进行分段，因而范围分段专题图所基于的字段值的数据类型必须为数值型。对于字段表达式，只能为数值型的字段间的运算。必设字段。
      */
-    rangeExpression: null,
+    rangeExpression = null;
 
     /**
      * APIProperty: rangeMode
@@ -63,7 +53,7 @@ SuperMap.ThemeRange = SuperMap.Class(SuperMap.Theme, {
      *              目前 SuperMap 提供的分段方式包括：等距离分段法、平方根分段法、标准差分段法、对数分段法、等计数分段法和自定义距离法，
      *              显然这些分段方法根据一定的距离进行分段，因而范围分段专题图所基于的专题变量必须为数值型。
      */
-    rangeMode: SuperMap.RangeMode.EQUALINTERVAL,
+    rangeMode = RangeMode.EQUALINTERVAL;
 
     /**
      * APIProperty: rangeParameter
@@ -72,7 +62,7 @@ SuperMap.ThemeRange = SuperMap.Class(SuperMap.Theme, {
      *              当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，
      *              该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。默认值为 -1。
      */
-    rangeParameter: 0,
+    rangeParameter = 0;
 
     /**
      * APIProperty: colorGradientType
@@ -83,25 +73,26 @@ SuperMap.ThemeRange = SuperMap.Class(SuperMap.Theme, {
      *              方案完成填*充。但如果为某几个子项的风格进行单独设置后（设置了 SuperMap.ThemeUniqueItem 或 SuperMap.ThemeRangeItem 类中Style属性），
      *              该配色方案对于这几个子项将不起作用。
      */
-    colorGradientType: SuperMap.ColorGradientType.YELLOW_RED,
+    colorGradientType = ColorGradientType.YELLOW_RED;
 
     /*
      * Constructor: SuperMap.ThemeRange
      * 范围分段专题图构造函数。
      */
-    initialize: function (options) {
-        SuperMap.Theme.prototype.initialize.apply(this, ["RANGE", options]);
+    constructor(options) {
+        super("RANGE", options);
         if (options) {
             SuperMap.Util.extend(this, options);
         }
-    },
+    }
+
 
     /**
      * APIMethod: destroy
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.Theme.prototype.destroy.apply(this, arguments);
+    destroy() {
+        super.destroy();
         var me = this;
         if (me.items) {
             if (me.items.length > 0) {
@@ -116,20 +107,22 @@ SuperMap.ThemeRange = SuperMap.Class(SuperMap.Theme, {
         me.rangeMode = null;
         me.rangeParameter = null;
         me.colorGradientType = null;
-    },
-
-    CLASS_NAME: "SuperMap.ThemeRange"
-});
-SuperMap.ThemeRange.fromObj = function (obj) {
-    if (!obj) return;
-    var res = new SuperMap.ThemeRange();
-    SuperMap.Util.copy(res, obj);
-    var itemsR = obj.items;
-    var len = itemsR ? itemsR.length : 0;
-    res.items = [];
-    for (var i = 0; i < len; i++) {
-        res.items.push(SuperMap.ThemeRangeItem.fromObj(itemsR[i]));
     }
-    return res;
-};
-module.exports = SuperMap.ThemeRange;
+
+    static fromObj(obj) {
+        if (!obj) return;
+        var res = new ThemeRange();
+        SuperMap.Util.copy(res, obj);
+        var itemsR = obj.items;
+        var len = itemsR ? itemsR.length : 0;
+        res.items = [];
+        for (var i = 0; i < len; i++) {
+            res.items.push(ThemeRangeItem.fromObj(itemsR[i]));
+        }
+        return res;
+    }
+
+    CLASS_NAME = "SuperMap.ThemeRange"
+}
+
+SuperMap.ThemeRange = ThemeRange;

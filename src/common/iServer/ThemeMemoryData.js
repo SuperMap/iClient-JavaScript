@@ -1,8 +1,4 @@
-﻿/*
- * Class: SuperMap.ThemeMemoryData
- * 专题图内存数据类。
- */
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
 
 /**
  * @class SuperMap.ThemeMemoryData
@@ -10,19 +6,19 @@ var SuperMap = require('../SuperMap');
  * @param srcData - {Array()} 原始值数组。
  * @param targetData - {Array()} 外部值数组。
  */
-SuperMap.ThemeMemoryData = SuperMap.Class({
+export default  class ThemeMemoryData {
 
     /*
      * Property: srcData
      * {Array()} 原始值数组，该属性值将被 targetData 属性所指定的值替换掉，然后制作专题图，但数据库中的值并不会改变。
      */
-    srcData: null,
+    srcData = null;
 
     /*
      * Property: targetData
      * {Array()} 外部值数组，即用于制作专题图的内存数据，设定该属性值后，会将 srcData 属性所指定的原始值替换掉制作专题图，但数据库中的值并不会改变。
      */
-    targetData: null,
+    targetData = null;
 
     /**
      * @function SuperMap.ThemeMemoryData.prototype.initialize
@@ -30,25 +26,27 @@ SuperMap.ThemeMemoryData = SuperMap.Class({
      * @param srcData - {Array()} 原始值数组。
      * @param targetData - {Array()} 外部值数组。
      */
-    initialize: function (srcData, targetData) {
+    constructor(srcData, targetData) {
         if (srcData) {
             this.srcData = srcData;
         }
         if (targetData) {
             this.targetData = targetData;
         }
-    },
+    }
+
 
     /**
      * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.srcData = null;
         me.targetData = null;
-    },
+    }
+
 
     /*
      * Method: toJSON
@@ -57,7 +55,7 @@ SuperMap.ThemeMemoryData = SuperMap.Class({
      * Returns:
      * {String} 返回转换后的 JSON 字符串。
      */
-    toJSON: function () {
+    toJSON() {
         if (this.srcData && this.targetData) {
             var memoryDataStr = "";
             var count = Math.min(this.srcData.length, this.targetData.length);
@@ -72,8 +70,10 @@ SuperMap.ThemeMemoryData = SuperMap.Class({
         } else {
             return null;
         }
-    },
+    }
 
-    CLASS_NAME: "SuperMap.ThemeMemoryData"
-});
-module.exports = SuperMap.ThemeMemoryData;
+
+    CLASS_NAME = "SuperMap.ThemeMemoryData"
+}
+
+SuperMap.ThemeMemoryData = ThemeMemoryData;

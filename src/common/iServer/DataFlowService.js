@@ -1,33 +1,44 @@
+import SuperMap from '../SuperMap';
+import CommonServiceBase from './CommonServiceBase';
+
 /**
  *@class SuperMap.DataFlowService
  */
-require('./ServiceBase');
-var SuperMap = require('../SuperMap');
-SuperMap.DataFlowService = SuperMap.Class(SuperMap.ServiceBase, {
+export default class DataFlowService extends CommonServiceBase {
     /**
      * Constant: EVENT_TYPES
      * {Array(String)}
      * 此类支持的事件类型
      */
-    EVENT_TYPES: ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSuccessed", "subscribeSocketConnected", "subscribeSocketError", "messageSuccessed","setFilterParamSuccessed"],
-    geometry: null,
-    prjCoordSys: null,
-    excludeField: null,
+    //EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSuccessed", "subscribeSocketConnected", "subscribeSocketError", "messageSuccessed", "setFilterParamSuccessed"];
 
-    initialize: function (url, options) {
-        SuperMap.ServiceBase.prototype.initialize.apply(this, arguments);
+    geometry = null;
+
+    prjCoordSys = null;
+
+    excludeField = null;
+
+    constructor(url, options) {
+        options=options||{};
+        options.EVENT_TYPES=["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSuccessed", "subscribeSocketConnected", "subscribeSocketError", "messageSuccessed", "setFilterParamSuccessed"]
+        super(url, options);
+
         var me = this;
         var end = me.url.substr(me.url.length - 1, 1);
         if (end === '/') {
         } else {
             me.url += "/";
         }
-    },
+        if (options) {
+            SuperMap.Util.extend(me, options);
+        }
+    }
+
     /**
      * 初始化广播
      * @returns {SuperMap.DataFlowService}
      */
-    initBroadcast: function () {
+    initBroadcast() {
         var me = this;
         this.broadcastWebSocket = this._connect(me.url + 'broadcast');
         this.broadcastWebSocket.onopen = function (e) {
@@ -45,8 +56,9 @@ SuperMap.DataFlowService = SuperMap.Class(SuperMap.ServiceBase, {
             me.events.triggerEvent('broadcastSocketError', e);
         };
         return this;
-    },
-    broadcast: function (geoJSONFeature) {
+    }
+
+    broadcast(geoJSONFeature) {
         if (!this.broadcastWebSocket.isOpen) {
             this.events.triggerEvent('broadcastFailed');
             return;
@@ -54,8 +66,9 @@ SuperMap.DataFlowService = SuperMap.Class(SuperMap.ServiceBase, {
         this.broadcastWebSocket.send(JSON.stringify(geoJSONFeature));
         this.events.triggerEvent('broadcastSuccessed');
 
-    },
-    initSubscribe: function () {
+    }
+
+    initSubscribe() {
         var me = this;
         this.subscribeWebSocket = this._connect(this.url + 'subscribe');
         this.subscribeWebSocket.onopen = function (e) {
@@ -71,39 +84,50 @@ SuperMap.DataFlowService = SuperMap.Class(SuperMap.ServiceBase, {
             me._onMessage(e);
         };
         return this;
-    },
+    }
 
-    setPrjCoordSys: function (prjCoordSys) {
+
+    setPrjCoordSys(prjCoordSys) {
         this.prjCoordSys = prjCoordSys;
         this.subscribeWebSocket.send(this._getFilterParams());
         return this;
-    },
-    setExcludeField: function (excludeField) {
+    }
+
+
+    setExcludeField(excludeField) {
         this.excludeField = excludeField;
         this.subscribeWebSocket.send(this._getFilterParams());
         return this;
-    },
-    setGeometry: function (geometry) {
+    }
+
+
+    setGeometry(geometry) {
         this.geometry = geometry;
         this.subscribeWebSocket.send(this._getFilterParams());
         return this;
-    },
-    unSubscribe: function () {
+    }
+
+
+    unSubscribe() {
         if (!this.subscribeWebSocket) {
             return;
         }
         this.subscribeWebSocket.close();
         this.subscribeWebSocket = null;
-    },
-    unBroadcast: function () {
+    }
+
+
+    unBroadcast() {
         if (this.broadcastWebSocket) {
             return;
         }
         this.broadcastWebSocket.close();
         this.broadcastWebSocket = null;
-    },
-    destroy: function () {
-        SuperMap.ServiceBase.prototype.destroy.apply(this, arguments);
+    }
+
+
+    destroy() {
+        SuperMap.CommonServiceBase.prototype.destroy.apply(this, arguments);
         var me = this;
         me.geometry = null;
         me.prjCoordSys = null;
@@ -111,16 +135,22 @@ SuperMap.DataFlowService = SuperMap.Class(SuperMap.ServiceBase, {
         this.unBroadcast();
         this.unSubscribe();
 
-    },
-    _getFilterParams: function () {
-        var filter = {filterParam:{
-            prjCoordSys: this.prjCoordSys,
-            excludeField: this.excludeField,
-            geometry: this.geometry}
+    }
+
+
+    _getFilterParams() {
+        var filter = {
+            filterParam: {
+                prjCoordSys: this.prjCoordSys,
+                excludeField: this.excludeField,
+                geometry: this.geometry
+            }
         };
         return SuperMap.Util.toJSON(filter);
-    },
-    _onMessage: function (e) {
+    }
+
+
+    _onMessage(e) {
         if (e.data && e.data.indexOf("filterParam") > 0) {
             var filterParam = JSON.parse(e.data);
             e.filterParam = filterParam;
@@ -128,12 +158,14 @@ SuperMap.DataFlowService = SuperMap.Class(SuperMap.ServiceBase, {
             this.events.triggerEvent('setFilterParamSuccessed', e);
             return;
         }
-        var feature =JSON.parse(e.data);
+        var feature = JSON.parse(e.data);
         e.featureResult = feature;
         e.eventType = 'messageSuccessed';
         this.events.triggerEvent('messageSuccessed', e);
-    },
-    _connect: function (url) {
+    }
+
+
+    _connect(url) {
         if ("WebSocket" in window) {
             return new WebSocket(url);
         } else if ("MozWebSocket" in window) {
@@ -142,8 +174,9 @@ SuperMap.DataFlowService = SuperMap.Class(SuperMap.ServiceBase, {
             console.log("no WebSocket");
             return null;
         }
-    },
-    CLASS_NAME: "SuperMap.DataFlowService"
-});
+    }
 
-module.exports = SuperMap.DataFlowService;
+    CLASS_NAME = "SuperMap.DataFlowService"
+}
+
+SuperMap.DataFlowService = DataFlowService;

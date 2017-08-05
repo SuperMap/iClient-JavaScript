@@ -1,10 +1,11 @@
-﻿var SuperMap = require('./SuperMap');
+﻿import SuperMap from './SuperMap';
+
 /**
  *服务请求返回结果数据类型
  *  GEOJSON: "GEOJSON",
  *  ISERVER: "ISERVER"
  */
-SuperMap.DataFormat = {
+export var DataFormat = SuperMap.DataFormat = {
     GEOJSON: "GEOJSON",
     ISERVER: "ISERVER"
 };
@@ -30,7 +31,7 @@ SuperMap.DataFormat = {
  *
  * UNKNOWN: "UNKNOWN".
  */
-SuperMap.GeometryType = {
+export var GeometryType = SuperMap.GeometryType = {
     LINE: "LINE",
     LINEM: "LINEM",
     POINT: "POINT",
@@ -52,7 +53,7 @@ SuperMap.GeometryType = {
  *
  * GEOMETRY: "GEOMETRY".
  */
-SuperMap.QueryOption = {
+export var QueryOption = SuperMap.QueryOption = {
     ATTRIBUTE: "ATTRIBUTE",
     ATTRIBUTEANDGEOMETRY: "ATTRIBUTEANDGEOMETRY",
     GEOMETRY: "GEOMETRY"
@@ -67,7 +68,7 @@ SuperMap.QueryOption = {
  *
  * LEFTJOIN: "LEFTJOIN".
  */
-SuperMap.JoinType = {
+export var JoinType = SuperMap.JoinType = {
     INNERJOIN: "INNERJOIN",
     LEFTJOIN: "LEFTJOIN"
 };
@@ -96,7 +97,7 @@ SuperMap.JoinType = {
  *
  * WITHIN: "WITHIN".
  */
-SuperMap.SpatialQueryMode = {
+export var SpatialQueryMode = SuperMap.SpatialQueryMode = {
     CONTAIN: "CONTAIN",
     CROSS: "CROSS",
     DISJOINT: "DISJOINT",
@@ -122,7 +123,7 @@ SuperMap.SpatialQueryMode = {
  * 被包含关系
  * WITHIN: "WITHIN"。
  */
-SuperMap.SpatialRelationType = {
+export var SpatialRelationType = SuperMap.SpatialRelationType = {
     CONTAIN: "CONTAIN",
     INTERSECT: "INTERSECT",
     WITHIN: "WITHIN"
@@ -137,7 +138,7 @@ SuperMap.SpatialRelationType = {
  *
  * AREA: "AREA".
  */
-SuperMap.MeasureMode = {
+export var MeasureMode = SuperMap.MeasureMode = {
     DISTANCE: "DISTANCE",
     AREA: "AREA"
 };
@@ -173,7 +174,7 @@ SuperMap.MeasureMode = {
  *
  * RADIAN: "RADIAN".
  */
-SuperMap.Unit = {
+export var Unit = SuperMap.Unit = {
     METER: "METER",
     KILOMETER: "KILOMETER",
     MILE: "MILE",
@@ -205,7 +206,7 @@ SuperMap.Unit = {
  *
  * UDB: "UDB"。
  */
-SuperMap.EngineType = {
+export var EngineType = SuperMap.EngineType = {
     IMAGEPLUGINS: "IMAGEPLUGINS",
     OGC: "OGC",
     ORACLEPLUS: "ORACLEPLUS",
@@ -228,7 +229,7 @@ SuperMap.EngineType = {
  *
  * VALUE: "VALUE".
  */
-SuperMap.ThemeGraphTextFormat = {
+export var ThemeGraphTextFormat = SuperMap.ThemeGraphTextFormat = {
     CAPTION: "CAPTION",
     CAPTION_PERCENT: "CAPTION_PERCENT",
     CAPTION_VALUE: "CAPTION_VALUE",
@@ -266,7 +267,7 @@ SuperMap.ThemeGraphTextFormat = {
  *
  * STEP: "STEP".
  */
-SuperMap.ThemeGraphType = {
+export var ThemeGraphType = SuperMap.ThemeGraphType = {
     AREA: "AREA",
     BAR: "BAR",
     BAR3D: "BAR3D",
@@ -291,7 +292,7 @@ SuperMap.ThemeGraphType = {
  *
  * YAXES: "YAXES". 显示Y轴的文本
  */
-SuperMap.GraphAxesTextDisplayMode = {
+export var GraphAxesTextDisplayMode = SuperMap.GraphAxesTextDisplayMode = {
     ALL: "ALL",
     NONE: "NONE",
     YAXES: "YAXES"
@@ -305,7 +306,7 @@ SuperMap.GraphAxesTextDisplayMode = {
  *
  * SQUAREROOT: "SQUAREROOT".
  */
-SuperMap.GraduatedMode = {
+export var GraduatedMode = SuperMap.GraduatedMode = {
     CONSTANT: "CONSTANT",
     LOGARITHM: "LOGARITHM",
     SQUAREROOT: "SQUAREROOT"
@@ -327,7 +328,7 @@ SuperMap.GraduatedMode = {
  *
  * STDDEVIATION: "STDDEVIATION".
  */
-SuperMap.RangeMode = {
+export var RangeMode = SuperMap.RangeMode = {
     CUSTOMINTERVAL: "CUSTOMINTERVAL",
     EQUALINTERVAL: "EQUALINTERVAL",
     LOGARITHM: "LOGARITHM",
@@ -352,7 +353,7 @@ SuperMap.RangeMode = {
  *
  * UNIQUE: "UNIQUE".
  */
-SuperMap.ThemeType = {
+export var ThemeType = SuperMap.ThemeType = {
     DOTDENSITY: "DOTDENSITY",
     GRADUATEDSYMBOL: "GRADUATEDSYMBOL",
     GRAPH: "GRAPH",
@@ -419,7 +420,7 @@ SuperMap.ThemeType = {
  *
  * YELLOW_WHITE: "YELLOWWHITE".
  */
-SuperMap.ColorGradientType = {
+export var ColorGradientType = SuperMap.ColorGradientType = {
     BLACK_WHITE: "BLACKWHITE",
     BLUE_BLACK: "BLUEBLACK",
     BLUE_RED: "BLUERED",
@@ -477,7 +478,7 @@ SuperMap.ColorGradientType = {
  *
  * MIDDLERIGHT: "MIDDLERIGHT".
  */
-SuperMap.TextAlignment = {
+export var TextAlignment = SuperMap.TextAlignment = {
     TOPLEFT: "TOPLEFT",
     TOPCENTER: "TOPCENTER",
     TOPRIGHT: "TOPRIGHT",
@@ -506,7 +507,7 @@ SuperMap.TextAlignment = {
  *
  * SQUARE: "SQUARE".
  */
-SuperMap.FillGradientMode = {
+export var FillGradientMode = SuperMap.FillGradientMode = {
     NONE: "NONE",
     LINEAR: "LINEAR",
     RADIAL: "RADIAL",
@@ -528,7 +529,7 @@ SuperMap.FillGradientMode = {
  *
  * RT_TO_LB: "RIGHT_TOP_TO_LEFT_BOTTOM".
  */
-SuperMap.AlongLineDirection = {
+export var AlongLineDirection = SuperMap.AlongLineDirection = {
     NORMAL: "ALONG_LINE_NORMAL",
     LB_TO_RT: "LEFT_BOTTOM_TO_RIGHT_TOP",
     LT_TO_RB: "LEFT_TOP_TO_RIGHT_BOTTOM",
@@ -554,7 +555,7 @@ SuperMap.AlongLineDirection = {
  *
  * TRIANGLE: "TRIANGLE".
  */
-SuperMap.LabelBackShape = {
+export var LabelBackShape = SuperMap.LabelBackShape = {
     DIAMOND: "DIAMOND",
     ELLIPSE: "ELLIPSE",
     MARKER: "MARKER",
@@ -574,7 +575,7 @@ SuperMap.LabelBackShape = {
  *
  * OMIT: "OMIT".
  */
-SuperMap.LabelOverLengthMode = {
+export var LabelOverLengthMode = SuperMap.LabelOverLengthMode = {
     NEWLINE: "NEWLINE",
     NONE: "NONE",
     OMIT: "OMIT"
@@ -595,7 +596,7 @@ SuperMap.LabelOverLengthMode = {
  *
  * WEST: "WEST".
  */
-SuperMap.DirectionType = {
+export var DirectionType = SuperMap.DirectionType = {
     EAST: "EAST",
     NONE: "NONE",
     NORTH: "NORTH",
@@ -617,7 +618,7 @@ SuperMap.DirectionType = {
  *
  * RIGHT: "RIGHT".
  */
-SuperMap.SideType = {
+export var SideType = SuperMap.SideType = {
     LEFT: "LEFT",
     MIDDLE: "MIDDLE",
     NONE: "NONE",
@@ -636,7 +637,7 @@ SuperMap.SideType = {
  *
  * OPTIONALCENTER: "OPTIONALCENTER".
  */
-SuperMap.SupplyCenterType = {
+export var SupplyCenterType = SuperMap.SupplyCenterType = {
     FIXEDCENTER: "FIXEDCENTER",
     NULL: "NULL",
     OPTIONALCENTER: "OPTIONALCENTER"
@@ -659,7 +660,7 @@ SuperMap.SupplyCenterType = {
  *
  * RIGHT: "RIGHT".
  */
-SuperMap.TurnType = {
+export var TurnType = SuperMap.TurnType = {
     AHEAD: "AHEAD",
     BACK: "BACK",
     END: "END",
@@ -676,7 +677,7 @@ SuperMap.TurnType = {
  *
  * ROUND: "ROUND".
  */
-SuperMap.BufferEndType = {
+export var BufferEndType = SuperMap.BufferEndType = {
     FLAT: "FLAT",
     ROUND: "ROUND"
 };
@@ -699,7 +700,7 @@ SuperMap.BufferEndType = {
  *
  * XOR: "XOR".
  */
-SuperMap.OverlayOperationType = {
+export var OverlayOperationType = SuperMap.OverlayOperationType = {
     CLIP: "CLIP",
     ERASE: "ERASE",
     IDENTITY: "IDENTITY",
@@ -718,7 +719,7 @@ SuperMap.OverlayOperationType = {
  *
  * POLISH: "POLISH".
  */
-SuperMap.SmoothMethod = {
+export var SmoothMethod = SuperMap.SmoothMethod = {
     BSPLINE: "BSPLINE",
     POLISH: "POLISH"
 };
@@ -732,7 +733,7 @@ SuperMap.SmoothMethod = {
  *
  * ISOREGION: "ISOREGION".
  */
-SuperMap.SurfaceAnalystMethod = {
+export var SurfaceAnalystMethod = SuperMap.SurfaceAnalystMethod = {
     ISOLINE: "ISOLINE",
     ISOREGION: "ISOREGION"
 };
@@ -747,7 +748,7 @@ SuperMap.SurfaceAnalystMethod = {
  *
  * RECORDSET_ONLY: "RECORDSET_ONLY".
  */
-SuperMap.DataReturnMode = {
+export var DataReturnMode = SuperMap.DataReturnMode = {
     DATASET_AND_RECORDSET: "DATASET_AND_RECORDSET",
     DATASET_ONLY: "DATASET_ONLY",
     RECORDSET_ONLY: "RECORDSET_ONLY"
@@ -764,7 +765,7 @@ SuperMap.DataReturnMode = {
  *
  * DELETE: "delete".
  */
-SuperMap.EditType = {
+export var EditType = SuperMap.EditType = {
     ADD: "add",
     UPDATE: "update",
     DELETE: "delete"
@@ -783,7 +784,7 @@ SuperMap.EditType = {
  *
  * MIN_DISTANCE: "MIN_DISTANCE"
  */
-SuperMap.TransferTactic = {
+export var TransferTactic = SuperMap.TransferTactic = {
     LESS_TIME: "LESS_TIME",
     LESS_TRANSFER: "LESS_TRANSFER",
     LESS_WALK: "LESS_WALK",
@@ -803,7 +804,7 @@ SuperMap.TransferTactic = {
  *
  * NONE: "NONE"
  */
-SuperMap.TransferPreference = {
+export var TransferPreference = SuperMap.TransferPreference = {
     BUS: "BUS",
     SUBWAY: "SUBWAY",
     NO_SUBWAY: "NO_SUBWAY",
@@ -820,7 +821,7 @@ SuperMap.TransferPreference = {
  *
  * POINT: "POINT"
  */
-SuperMap.GridType = {
+export var GridType = SuperMap.GridType = {
     CROSS: "CROSS",
     GRID: "GRID",
     POINT: "POINT"
@@ -838,7 +839,7 @@ SuperMap.GridType = {
  *
  * RGB: "RGB"
  */
-SuperMap.ColorSpaceType = {
+export var ColorSpaceType = SuperMap.ColorSpaceType = {
     CMYK: "CMYK",
     RGB: "RGB"
 };
@@ -855,7 +856,7 @@ SuperMap.ColorSpaceType = {
  *
  * CUSTOM: "CUSTOM"
  */
-SuperMap.LayerType = {
+export var LayerType = SuperMap.LayerType = {
     UGC: "UGC",
     WMS: "WMS",
     WFS: "WFS",
@@ -879,7 +880,7 @@ SuperMap.LayerType = {
  *
  * VARIANCE: "VARIANCE", 统计所选字段的方差
  */
-SuperMap.StatisticMode = {
+export var StatisticMode = SuperMap.StatisticMode = {
     AVERAGE: "AVERAGE",
     MAX: "MAX",
     MIN: "MIN",
@@ -912,7 +913,7 @@ SuperMap.StatisticMode = {
  *
  * UBIT32: "UBIT32", 每个像元用32个比特(即4个字节)来表示
  */
-SuperMap.PixelFormat = {
+export var PixelFormat = SuperMap.PixelFormat = {
     BIT16: "BIT16",
     BIT32: "BIT32",
     BIT64: "BIT64",
@@ -937,7 +938,7 @@ SuperMap.PixelFormat = {
  *
  * QUADTREE: "QUADTREE", 使用 QUADTREE 方式查找参与内插分析的点，仅对样条（RBF）插值和普通克吕金（Kriging）有用
  */
-SuperMap.SearchMode = {
+export var SearchMode = SuperMap.SearchMode = {
     KDTREE_FIXED_COUNT: "KDTREE_FIXED_COUNT",
     KDTREE_FIXED_RADIUS: "KDTREE_FIXED_RADIUS",
     NONE: "NONE",
@@ -954,7 +955,7 @@ SuperMap.SearchMode = {
  *
  * UniversalKriging: "UniversalKriging", 泛克吕金插值法
  */
-SuperMap.InterpolationAlgorithmType = {
+export var InterpolationAlgorithmType = SuperMap.InterpolationAlgorithmType = {
     KRIGING: "KRIGING",
     SimpleKriging: "SimpleKriging",
     UniversalKriging: "UniversalKriging"
@@ -970,7 +971,7 @@ SuperMap.InterpolationAlgorithmType = {
  *
  * SPHERICAL: "SPHERICAL", 球型函数（Spherical Variogram Mode）
  */
-SuperMap.VariogramMode = {
+export var VariogramMode = SuperMap.VariogramMode = {
     EXPONENTIAL: "EXPONENTIAL",
     GAUSSIAN: "GAUSSIAN",
     SPHERICAL: "SPHERICAL"
@@ -984,11 +985,11 @@ SuperMap.VariogramMode = {
  *
  * EXP2: "EXP2", 阶数为2
  */
-SuperMap.Exponent = {
+export var Exponent = SuperMap.Exponent = {
     EXP1: "EXP1",
     EXP2: "EXP2"
 };
-SuperMap.ServerType = {
+export var ServerType = SuperMap.ServerType = {
     ISERVER: "ISERVER",
     IPORTAL: "IPORTAL",
     ONLINE: "ONLINE"
@@ -997,7 +998,7 @@ SuperMap.ServerType = {
  * token申请的客户端标识类型
  * @type {{IP: string, REFERER: string, REQUESTIP: string, NONE: string}}
  */
-SuperMap.ClientType = {
+export var ClientType = SuperMap.ClientType = {
     IP: "IP",
     REFERER: "Referer",
     REQUESTIP: "RequestIP",
@@ -1009,7 +1010,7 @@ SuperMap.ClientType = {
  * 客户端专题图图表类型
  * @type {{BAR: string, BAR3D: string, CIRCLE: string, PIE: string, POINT: string, LINE: string, RING: string}}
  */
-SuperMap.ChartType = {
+export var ChartType = SuperMap.ChartType = {
     BAR: "Bar",
     BAR3D: "Bar3D",
     CIRCLE: "Circle",
@@ -1018,12 +1019,57 @@ SuperMap.ChartType = {
     LINE: "Line",
     RING: "Ring"
 };
-
 /**
  * 裁剪分析模式
  * @type {{CLIP: string, INTERSECT: string}}
  */
-SuperMap.ClipAnalystMode = {
+export var ClipAnalystMode = SuperMap.ClipAnalystMode = {
     CLIP: "clip",
     INTERSECT: "intersect"
+};
+/**
+ * 大数据分析面积单位
+ * @type {{SQUAREMETER: string, SQUAREKILOMETER: string, HECTARE: string, ARE: string, ACRE: string, SQUAREFOOT: string, SQUAREYARD: string, SQUAREMILE: string}}
+ */
+export var AnalystAreaUnit = SuperMap.AnalystAreaUnit = {
+    "SQUAREMETER": "SquareMeter",
+    "SQUAREKILOMETER": "SquareKiloMeter",
+    "HECTARE": "Hectare",
+    "ARE": "Are",
+    "ACRE": "Acre",
+    "SQUAREFOOT": "SquareFoot",
+    "SQUAREYARD": "SquareYard",
+    "SQUAREMILE": "SquareMile"
+};
+/**
+ * 大数据分析单位
+ * @type {{METER: string, KILOMETER: string, YARD: string, FOOT: string, MILE: string}}
+ */
+export var AnalystSizeUnit = SuperMap.AnalystSizeUnit = {
+    "METER": "Meter",
+    "KILOMETER": "Kilometer",
+    "YARD": "Yard",
+    "FOOT": "Foot",
+    "MILE": "Mile",
+};
+/**
+ * 大数据分析统计模式
+ * @type {{MAX: string, MIN: string, AVERAGE: string, SUM: string, VARIANCE: string, STDDEVIATION: string}}
+ */
+export var StatisticAnalystMode = SuperMap.StatisticAnalystMode = {
+    "MAX": "max",
+    "MIN": "min",
+    "AVERAGE": "average",
+    "SUM": "sum",
+    "VARIANCE": "variance",
+    "STDDEVIATION": "stdDeviation"
+};
+/**
+ * 大数据分析聚合类型
+ * @type {{SUMMARYMESH: string, SUMMARYREGION: string}}
+ */
+export var SummaryType = SuperMap.SummaryType = {
+    "SUMMARYMESH": "SUMMARYMESH",
+    "SUMMARYREGION": "SUMMARYREGION",
+
 };

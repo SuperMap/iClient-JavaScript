@@ -1,13 +1,7 @@
-﻿/*
- * Class: SuperMap.QueryByGeometryService
- * Geometry 查询服务类。
- *
- * Inherits from:
- *  - <SuperMap.QueryService>
- */
-require('./QueryService');
-require('./QueryByGeometryParameters');
-var SuperMap = require('../SuperMap');
+﻿import SuperMap from '../SuperMap';
+import QueryService from './QueryService';
+import QueryByGeometryParameters from './QueryByGeometryParameters';
+
 /**
  * @class SuperMap.QueryByGeometryService
  * @description Geometry查询服务类。
@@ -27,7 +21,7 @@ var SuperMap = require('../SuperMap');
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
-SuperMap.QueryByGeometryService = SuperMap.Class(SuperMap.QueryService, {
+export default  class QueryByGeometryService extends QueryService {
 
     /**
      * @function SuperMap.QueryByGeometryService.initialize
@@ -36,16 +30,16 @@ SuperMap.QueryByGeometryService = SuperMap.Class(SuperMap.QueryService, {
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.QueryService.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /**
      * @inheritDoc
      */
-    destroy: function () {
-        SuperMap.QueryService.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /*
      * Method: getJsonParameters
@@ -58,7 +52,7 @@ SuperMap.QueryByGeometryService = SuperMap.Class(SuperMap.QueryService, {
      * Returns:
      * {Object} 转化后的 JSON 字符串。
      */
-    getJsonParameters: function (params) {
+    getJsonParameters(params) {
         var me = this,
             jsonParameters = "",
             qp = null,
@@ -70,9 +64,9 @@ SuperMap.QueryByGeometryService = SuperMap.Class(SuperMap.QueryService, {
             + ",'spatialQueryMode':" + SuperMap.Util.toJSON(params.spatialQueryMode);
         jsonParameters = "{" + jsonParameters + "}";
         return jsonParameters;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.QueryByGeometryService"
-});
+    CLASS_NAME = "SuperMap.QueryByGeometryService"
+}
 
-module.exports = SuperMap.QueryByGeometryService;
+SuperMap.QueryByGeometryService = QueryByGeometryService;

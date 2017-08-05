@@ -1,4 +1,5 @@
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+
 /**
  * @class SuperMap.FieldStatisticsParameters
  * @constructs SuperMap.FieldStatisticsParameters
@@ -7,39 +8,41 @@ var SuperMap = require('../SuperMap');
  * @api
  */
 
-SuperMap.FieldStatisticsParameters = SuperMap.Class({
+export default  class FieldStatisticsParameters {
     /**
      * @property {String} APIProperty: fieldName
      * 字段名
      */
-    fieldName: null,
+    fieldName = null;
     /**
      * @property {String<SuperMap.StatisticMode>}|{Array<String<SuperMap.StatisticMode>} APIProperty: statisticMode
      * 字段统计方法类型
      */
-    statisticMode: null,
+    statisticMode = null;
 
     /**
      * @method SuperMap.FieldStatisticsParameters.initialize
      * @param options - {Object} 参数。
      */
-    initialize: function (options) {
-        options = options || {};
-        SuperMap.Util.extend(this, options);
-    },
+    constructor(options) {
+        if (options) {
+            SuperMap.Util.extend(this, options);
+        }
+    }
 
     /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
 
-    destroy: function () {
+    destroy() {
         var me = this;
         me.fieldName = null;
         me.statisticMode = null;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.FieldStatisticsParameters"
-});
 
-module.exports = SuperMap.FieldStatisticsParameters;
+    CLASS_NAME = "SuperMap.FieldStatisticsParameters"
+}
+
+SuperMap.FieldStatisticsParameters = FieldStatisticsParameters;

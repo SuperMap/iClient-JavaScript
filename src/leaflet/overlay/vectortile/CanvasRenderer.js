@@ -1,5 +1,5 @@
-var L = require("leaflet");
-L.Canvas.Renderer = L.Canvas.extend({
+import L from "leaflet";
+export var CanvasRenderer = L.Canvas.extend({
 
     initialize: function (tileCoord, tileSize, options) {
         L.Canvas.prototype.initialize.call(this, options);
@@ -104,8 +104,3 @@ L.Canvas.Renderer = L.Canvas.extend({
         this._drawnLayers[layer._leaflet_id] = layer;
     }
 });
-
-L.supermap.canvasRenderer = function (tileCoord, tileSize, opts) {
-    return new L.Canvas.Renderer(tileCoord, tileSize, opts);
-};
-module.exports = L.Canvas.Renderer;

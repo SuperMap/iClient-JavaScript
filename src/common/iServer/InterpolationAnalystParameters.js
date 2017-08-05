@@ -1,13 +1,15 @@
-﻿require('../REST');
-var SuperMap = require('../SuperMap');
-SuperMap.InterpolationAnalystParameters = SuperMap.Class({
-    /**
-     * @class SuperMap.InterpolationAnalystParameters
-     * @constructs SuperMap.InterpolationAnalystParameters
-     * @classdesc
-     * 插值分析参数类。
-     * @api
-     */
+﻿import SuperMap from '../SuperMap';
+import {PixelFormat} from '../REST';
+
+/**
+ * @class SuperMap.InterpolationAnalystParameters
+ * @constructs SuperMap.InterpolationAnalystParameters
+ * @classdesc
+ * 插值分析参数类。
+ * @api
+ */
+export default  class InterpolationAnalystParameters {
+
 
     /**
      * APIProperty: bounds
@@ -15,7 +17,7 @@ SuperMap.InterpolationAnalystParameters = SuperMap.Class({
      * 如果缺省，则默认为原数据集的范围。鉴于此插值方法为内插方法，原数据集的范围内的插值结果才相对有参考价值，
      * 因此建议此参数不大于原数据集范围。
      */
-    bounds: null,
+    bounds = null;
 
     /**
      * APIProperty: searchRadius
@@ -23,7 +25,7 @@ SuperMap.InterpolationAnalystParameters = SuperMap.Class({
      * 计算某个位置的Z 值时，会以该位置为圆心，以查找范围的值为半径，落在这个范围内的采样点都将参与运算。
      * 该值需要根据待插值点数据的分布状况和点数据集范围进行设置。
      */
-    searchRadius: 0,
+    searchRadius = 0;
 
     /**
      * APIProperty: zValueFieldName
@@ -31,14 +33,14 @@ SuperMap.InterpolationAnalystParameters = SuperMap.Class({
      * 含义为每个插值点在插值过程中的权重，可以将所有点此字段值设置为1，即所有点在整体插值中权重相同。
      * 当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。
      */
-    zValueFieldName: null,
+    zValueFieldName = null;
 
     /**
      * APIProperty: zValueScale
      * {Number} 用于进行插值分析值的缩放比率，默认值为1。
      * 参加插值分析的值将乘以该参数值后再进行插值，也就是对进行插值分析的值进行统一的扩大或缩小。
      */
-    zValueScale: 1,
+    zValueScale = 1;
 
     /**
      * APIProperty: resolution
@@ -46,26 +48,26 @@ SuperMap.InterpolationAnalystParameters = SuperMap.Class({
      * 该值不能超过待分析数据集的范围边长。
      * 且该值设置时，应该考虑点数据集范围大小来取值，一般为结果栅格行列值（即结果栅格数据集范围除以分辨率），在500以内可以较好地体现密度走势。
      */
-    resolution: null,
+    resolution = null;
 
     /**
      * APIProperty: filterQueryParameter
      * {SuperMap.FilterParameter} 过滤条件，
      *对分析数据集中的点进行过滤，不设置时默认为null，即对数据集中的所有点进行分析。
      */
-    filterQueryParameter: null,
+    filterQueryParameter = null;
 
     /**
      * APIProperty: outputDatasetName
      * {String} 插值分析结果数据集的名称。必设参数
      */
-    outputDatasetName: null,
+    outputDatasetName = null;
 
     /**
      * APIProperty: outputDatasourceName
      * {String} 插值分析结果数据源的名称。必设参数
      */
-    outputDatasourceName: null,
+    outputDatasourceName = null;
 
     /**
      * APIProperty: pixelFormat
@@ -73,14 +75,14 @@ SuperMap.InterpolationAnalystParameters = SuperMap.Class({
      * 默认值为 SuperMap.PixelFormat.BIT16。
      * 支持存储的像素格式有 BIT16、BIT32、DOUBLE、SINGLE、UBIT1、UBIT4、UBIT8、UBIT24、UBIT32。
      */
-    pixelFormat: SuperMap.PixelFormat.BIT16,
+    pixelFormat = PixelFormat.BIT16;
 
     /**
      * APIProperty: dataset
      * {String}用来做插值分析的数据源中数据集的名称，该名称用形如"数据集名称@数据源别名"形式来表示。
      * 当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。
      */
-    dataset: null,
+    dataset = null;
 
     /**
      * APIProperty: inputPoints
@@ -88,20 +90,20 @@ SuperMap.InterpolationAnalystParameters = SuperMap.Class({
      * 当插值分析类型（InterpolationAnalystType）为 geometry 时，此参数为必设参数。
      * 通过离散点直接进行插值分析不需要指定输入数据集inputDatasourceName，inputDatasetName以及zValueFieldName。
      */
-    inputPoints: null,
+    inputPoints = null;
 
     /**
      * APIProperty: InterpolationAnalystType
      * {String} 插值分析类型。差值分析包括数据集插值分析和几何插值分析两类，
      * “dataset”表示对数据集进行插值分析，“geometry”表示对离散点数组进行插值分析，默认值为“dataset”。
      */
-    InterpolationAnalystType: "dataset",
+    InterpolationAnalystType = "dataset";
 
     /**
      * APIProperty: clipParam
      * {SuperMap.ClipParameter}  对插值分析结果进行裁剪的参数。
      */
-    clipParam: null,
+    clipParam = null;
 
     /**
      * @method SuperMap.InterpolationAnalystParameters.initialize
@@ -120,18 +122,19 @@ SuperMap.InterpolationAnalystParameters = SuperMap.Class({
      * inputPoints - {Array <Point||Array} 用于做插值分析的离散点集合。</br>
      * InterpolationAnalystType - {String} 插值分析类型（dataset或geometry），默认为dataset 。</br>
      */
-    initialize: function (options) {
+    constructor(options) {
         if (!options) {
             return;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /*
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.bounds = null;
         me.searchRadius = null;
@@ -142,29 +145,29 @@ SuperMap.InterpolationAnalystParameters = SuperMap.Class({
         me.filterQueryParameter = null;
         me.outputDatasetName = null;
         me.pixelFormat = null;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.InterpolationAnalystParameters"
-});
-
-SuperMap.InterpolationAnalystParameters.toObject = function (interpolationAnalystParameters, tempObj) {
-    for (var name in interpolationAnalystParameters) {
-        if (name === "inputPoints" && interpolationAnalystParameters.InterpolationAnalystType === "geometry") {
-            var objs = [];
-            for (var i = 0; i < interpolationAnalystParameters.inputPoints.length; i++) {
-                var item = interpolationAnalystParameters.inputPoints[i];
-                var obj = {
-                    x: item.x,
-                    y: item.y,
-                    z: item.tag
-                };
-                objs.push(obj);
+    static toObject(interpolationAnalystParameters, tempObj) {
+        for (var name in interpolationAnalystParameters) {
+            if (name === "inputPoints" && interpolationAnalystParameters.InterpolationAnalystType === "geometry") {
+                var objs = [];
+                for (var i = 0; i < interpolationAnalystParameters.inputPoints.length; i++) {
+                    var item = interpolationAnalystParameters.inputPoints[i];
+                    var obj = {
+                        x: item.x,
+                        y: item.y,
+                        z: item.tag
+                    };
+                    objs.push(obj);
+                }
+                tempObj[name] = objs;
+            } else {
+                tempObj[name] = interpolationAnalystParameters[name];
             }
-            tempObj[name] = objs;
-        } else {
-            tempObj[name] = interpolationAnalystParameters[name];
         }
     }
-};
 
-module.exports = SuperMap.InterpolationAnalystParameters;
+    CLASS_NAME = "SuperMap.InterpolationAnalystParameters"
+}
+
+SuperMap.InterpolationAnalystParameters = InterpolationAnalystParameters;

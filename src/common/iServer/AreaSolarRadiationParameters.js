@@ -1,13 +1,12 @@
-
-var SuperMap = require('../SuperMap');
-SuperMap.AreaSolarRadiationParameters = SuperMap.Class({
-    /**
-     * @class SuperMap.AreaSolarRadiationParameters
-     * @constructs SuperMap.AreaSolarRadiationParameters
-     * @classdesc
-     * 地区太阳辐射参数类。
-     * @api
-     */
+import SuperMap from '../SuperMap';
+/**
+ * @class SuperMap.AreaSolarRadiationParameters
+ * @constructs SuperMap.AreaSolarRadiationParameters
+ * @classdesc
+ * 地区太阳辐射参数类。
+ * @api
+ */
+export default  class AreaSolarRadiationParameters {
 
     /**
      * APIProperty: dataset
@@ -16,97 +15,97 @@ SuperMap.AreaSolarRadiationParameters = SuperMap.Class({
      *
      * 注：地区太阳辐射数据必须为栅格数据集。
      */
-    dataset: null,
+    dataset = null;
 
     /**
      * APIProperty: targetDatasourceName
-     *
      * {String}  指定的存储结果数据集的数据源名称（必设参数）； 例如："Jingjin"。
      */
-    targetDatasourceName: null,
+    targetDatasourceName = null;
 
     /**
      * APIProperty: totalGridName
      * {String} 指定地区太阳辐射总辐射量数据集的名称（必设参数）。
      */
-    totalGridName: null,
+    totalGridName = null;
 
     /**
      * APIProperty: diffuseDatasetGridName
      * {String} 指定地区太阳辐射散射辐射量数据集的名称。
      */
-    diffuseDatasetGridName: null,
+    diffuseDatasetGridName = null;
 
     /**
      * APIProperty: durationDatasetGridName
      * {String} 指定地区太阳辐射太阳直射持续时间数据集的名称。
      */
-    durationDatasetGridName: null,
+    durationDatasetGridName = null;
 
     /**
      * APIProperty: directDatasetGridName
      * {String} 指定地区太阳辐射直射辐射量数据集的名称。
      */
-    directDatasetGridName: null,
+    directDatasetGridName = null;
 
     /**
      * APIProperty: latitude
      * {Number} 待计算区域的纬度值。
      */
-    latitude: null,
+    latitude = null;
 
     /**
      * APIProperty: timeMode
      * {String} 时间模式。可设置有“WITHINDAY”（单日）和“MULTIDAYS”（多日）；默认值为"MULTIDAYS";
      */
-    timeMode: "MULTIDAYS",
+    timeMode = "MULTIDAYS";
 
     /**
      * APIProperty: dayStart
      * {Number} 起始日期（年内的第几天）。（必设参数）
      */
-    dayStart: null,
+    dayStart = null;
 
     /**
      * APIProperty: dayEnd
      * {Number} 结束日期（年内的第几天）。（必设参数）
      */
-    dayEnd: null,
+    dayEnd = null;
 
     /**
      * APIProperty: hourStart
      * {Number} 起始时间（一天中的第几个小时）。
      */
-    hourStart: null,
+    hourStart = null;
 
     /**
      * APIProperty: hourEnd
      * {Number} 结束时间（一天中的第几个小时）。
      */
-    hourEnd: null,
+    hourEnd = null;
 
     /**
      * APIProperty: transmittance
      * {Number} 太阳辐射穿过大气的透射率。
      */
-    transmittance: null,
+    transmittance = null;
 
     /**
      * APIProperty: hourInterval
      * {Number} 计算时的小时间隔（设置的越小计算量越大并且计算结果更精确, 默认为0.5小时，如果修改此参数，必须使用整数）
      */
-    hourInterval: null,
+    hourInterval = null;
 
     /**
-     * APIProperty: dayInterval {Number} 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 默认为5天，必须使用整数）
+     * APIProperty: dayInterval
+     * {Number} 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 默认为5天，必须使用整数）
      */
-    dayInterval: null,
+    dayInterval = null;
 
     /**
      * APIProperty: deleteExistResultDataset
      * {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
      */
-    deleteExistResultDataset: false,
+    deleteExistResultDataset = false;
 
     /**
      * @method SuperMap.AreaSolarRadiationParameters.initialize
@@ -130,18 +129,18 @@ SuperMap.AreaSolarRadiationParameters = SuperMap.Class({
      * dayInterval - {Number} 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 默认为5天，必须使用整数）</br>
      * deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
      */
-    initialize: function (options) {
+    constructor(options) {
         if (!options) {
-            return;
+            return this;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
 
-    /*
+    /**
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         var me = this;
         me.dataset = null;
         me.zFactor = 1.0;
@@ -149,27 +148,27 @@ SuperMap.AreaSolarRadiationParameters = SuperMap.Class({
         me.profileCurvatureName = null;
         me.planCurvatureName = null;
         me.deleteExistResultDataset = true;
-    },
+    }
 
-    CLASS_NAME: "SuperMap.AreaSolarRadiationParameters"
-});
-
-SuperMap.AreaSolarRadiationParameters.toObject = function (derrainCurvatureCalculationParameters, tempObj) {
-    var parameter = {};
-    for (var name in derrainCurvatureCalculationParameters) {
-        if (name !== "dataset") {
-            var name1 = (name === "latitude" || name === "timeMode" || name === "dayStart");
-            var name2 = (name === "dayEnd" || name === "hourStart" || name === "hourEnd");
-            var name3 = (name === "transmittance" || name === "hourInterval" || name === "dayInterval");
-            if (name1 || name2 || name3)  {
-                parameter[name] = derrainCurvatureCalculationParameters[name];
-            }
-            else {
-                tempObj[name] = derrainCurvatureCalculationParameters[name];
+    static  toObject(derrainCurvatureCalculationParameters, tempObj) {
+        var parameter = {};
+        for (var name in derrainCurvatureCalculationParameters) {
+            if (name !== "dataset") {
+                var name1 = (name === "latitude" || name === "timeMode" || name === "dayStart");
+                var name2 = (name === "dayEnd" || name === "hourStart" || name === "hourEnd");
+                var name3 = (name === "transmittance" || name === "hourInterval" || name === "dayInterval");
+                if (name1 || name2 || name3) {
+                    parameter[name] = derrainCurvatureCalculationParameters[name];
+                }
+                else {
+                    tempObj[name] = derrainCurvatureCalculationParameters[name];
+                }
             }
         }
+        tempObj["parameter"] = parameter;
     }
-    tempObj["parameter"] = parameter;
-};
 
-module.exports = SuperMap.AreaSolarRadiationParameters;
+    CLASS_NAME = "SuperMap.AreaSolarRadiationParameters";
+}
+
+SuperMap.AreaSolarRadiationParameters = AreaSolarRadiationParameters;

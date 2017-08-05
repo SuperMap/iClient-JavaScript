@@ -1,25 +1,26 @@
-require('./SpatialAnalystBase');
-require('./MathExpressionAnalysisParameters');
-var SuperMap = require('../SuperMap');
-SuperMap.MathExpressionAnalysisService = SuperMap.Class(SuperMap.SpatialAnalystBase, {
-    /**
-     * @class SuperMap.MathExpressionAnalysisService
-     * @constructs SuperMap.MathExpressionAnalysisService
-     * @classdesc
-     * 栅格代数运算服务类。
-     * @extends {SuperMap.SpatialAnalystBase}
-     * @api
-     * @example 例如：
-     * (start code)
-     * var myMathExpressionAnalysisService = new SuperMap.MathExpressionAnalysisService(url);
-     * myMathExpressionAnalysisService.on({
+import SuperMap from '../SuperMap';
+import SpatialAnalystBase from './SpatialAnalystBase';
+import MathExpressionAnalysisParameters from './MathExpressionAnalysisParameters';
+
+/**
+ * @class SuperMap.MathExpressionAnalysisService
+ * @constructs SuperMap.MathExpressionAnalysisService
+ * @classdesc
+ * 栅格代数运算服务类。
+ * @extends {SuperMap.SpatialAnalystBase}
+ * @api
+ * @example 例如：
+ * (start code)
+ * var myMathExpressionAnalysisService = new SuperMap.MathExpressionAnalysisService(url);
+ * myMathExpressionAnalysisService.on({
      *     "processCompleted": processCompleted,
      *     "processFailed": processFailed
      *     }
-     * );
-     * (end)
-     *
-     */
+ * );
+ * (end)
+ *
+ */
+export default  class MathExpressionAnalysisService extends SpatialAnalystBase {
 
     /**
      * @method SuperMap.MathExpressionAnalysisService.initialize
@@ -28,17 +29,17 @@ SuperMap.MathExpressionAnalysisService = SuperMap.Class(SuperMap.SpatialAnalystB
      * Allowed options properties:</br>
      * eventListeners - {Object} 需要被注册的监听器对象。
      */
-    initialize: function (url, options) {
-        SuperMap.SpatialAnalystBase.prototype.initialize.apply(this, arguments);
-    },
+    constructor(url, options) {
+        super(url, options);
+    }
 
     /*
      * APIMethod: destroy
      * 释放资源,将引用资源的属性置空。
      */
-    destroy: function () {
-        SuperMap.SpatialAnalystBase.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     /**
      * APIMethod: processAsync
@@ -46,7 +47,7 @@ SuperMap.MathExpressionAnalysisService = SuperMap.Class(SuperMap.SpatialAnalystB
      * @method SuperMap.MathExpressionAnalysisService.processAsync
      * @param  parameter - {SuperMap.MathExpressionAnalysisParameters}
      */
-    processAsync: function (parameter) {
+    processAsync(parameter) {
         var me = this;
 
         var end = me.url.substr(me.url.length - 1, 1);
@@ -58,11 +59,11 @@ SuperMap.MathExpressionAnalysisService = SuperMap.Class(SuperMap.SpatialAnalystB
 
         var parameterObject = {};
 
-        if (parameter instanceof SuperMap.MathExpressionAnalysisParameters) {
+        if (parameter instanceof MathExpressionAnalysisParameters) {
             me.url += 'datasets/' + parameter.dataset + '/mathanalyst';
         }
 
-        SuperMap.MathExpressionAnalysisParameters.toObject(parameter, parameterObject);
+        MathExpressionAnalysisParameters.toObject(parameter, parameterObject);
         var jsonParameters = SuperMap.Util.toJSON(parameterObject);
 
         if (me.isInTheSameDomain) {
@@ -78,9 +79,10 @@ SuperMap.MathExpressionAnalysisService = SuperMap.Class(SuperMap.SpatialAnalystB
             success: me.serviceProcessCompleted,
             failure: me.serviceProcessFailed
         });
-    },
+    }
 
-    CLASS_NAME: "SuperMap.MathExpressionAnalysisService"
-});
 
-module.exports = SuperMap.MathExpressionAnalysisService;
+    CLASS_NAME = "SuperMap.MathExpressionAnalysisService"
+}
+
+SuperMap.MathExpressionAnalysisService = MathExpressionAnalysisService;

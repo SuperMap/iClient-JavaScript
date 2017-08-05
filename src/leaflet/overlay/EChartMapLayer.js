@@ -1,12 +1,7 @@
-require('../core/Base');
-var L = require("leaflet");
-var echarts = {};
-try {
-    echarts = require("echarts");
-} catch (ex) {
-    echarts = {};
-}
-var EchartsMapLayer = L.Layer.extend({
+import '../core/Base';
+import L from "leaflet";
+import echarts  from "echarts";
+export var EchartsMapLayer = L.Layer.extend({
     includes: [],
     _echartsContainer: null,
     _map: null,
@@ -132,7 +127,7 @@ var EchartsMapLayer = L.Layer.extend({
     },
 
 });
-function LeafletMapCoordSys(LeafletMap, api) {
+export function LeafletMapCoordSys(LeafletMap, api) {
     this._LeafletMap = LeafletMap
     this.dimensions = ['lng', 'lat']
     this._mapOffset = [0, 0]
@@ -187,8 +182,10 @@ LeafletMapCoordSys.create = function (ecModel, api) {
         }
     })
 }
-L.supermap.echartsMapLayer = function (echartsOptions, options) {
+
+
+export var echartsMapLayer= function (echartsOptions, options) {
     return new EchartsMapLayer(echartsOptions, options);
 };
-module.exports = EchartsMapLayer;
+L.supermap.echartsMapLayer  = echartsMapLayer;
 

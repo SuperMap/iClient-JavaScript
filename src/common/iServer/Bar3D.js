@@ -1,3 +1,6 @@
+import SuperMap from '../SuperMap';
+import Graph from './Graph';
+
 /**
  * Class: SuperMap.Feature.Theme.Bar3D
  * 三维柱状图 。
@@ -136,7 +139,7 @@
  *  }
  * ]
  * (end)
- * 
+ *
  * barTopStyle - {Object} 3d 柱状图柱条顶面基础 style，此参数控制柱条顶面基础样式，优先级低于 barTopStyleByFields 和 barTopStyleByCodomain。
  * 此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> ，默认值：barFaceStyle。
  * barTopStyleByFields - {Array{Object}} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为柱条顶面赋 style，此参数按字段控制柱条顶面样式，
@@ -183,7 +186,7 @@
  *  }
  * ]
  * (end)
- * 
+ *
  * barFaceHoverStyle - {Object} 3d 柱条正面 hover 状态时的样式，barHoverAble 为 true 时有效。
  * barSideHoverStyle - {Object} 3d 柱条侧面 hover 状态时的样式，barHoverAble 为 true 时有效，默认值：barFaceHoverStyle。
  * barTopHoverStyle - {Object} 3d 柱条顶面 hover 状态时的样式，barHoverAble 为 true 时有效，默认值：barFaceHoverStyle。
@@ -194,9 +197,7 @@
  * Inherits:
  *  - <SuperMap.Feature.Theme.Graph>
  */
-var SuperMap = require('../SuperMap');
-require('./Graph');
-SuperMap.Feature.Theme.Bar3D = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
+export default  class Bar3D extends Graph {
 
     /**
      * Constructor: SuperMap.Feature.Theme.Bar3D
@@ -212,88 +213,90 @@ SuperMap.Feature.Theme.Bar3D = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
      * Returns:
      * {SuperMap.Feature.Theme.Bar3D} 返回一个三维柱状图表对象。
      */
-    initialize: function(data, layer, fields, setting, lonlat) {
-        SuperMap.Feature.Theme.Graph.prototype.initialize.apply(this, arguments);
-    },
+    constructor(data, layer, fields, setting, lonlat) {
+        super(data, layer, fields, setting, lonlat);
+    }
+
 
     /**
      * APIMethod: destroy
      * 销毁此专题要素。调用 destroy 后此对象所以属性置为 null。
      */
-    destroy: function() {
-        SuperMap.Feature.Theme.Graph.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
+
 
     /**
      * Method: assembleShapes
      * 图形装配实现（扩展接口）
      */
-    assembleShapes: function(){
+    assembleShapes() {
         // 图表配置对象
         var sets = this.setting;
 
         // 默认数据视图框
-        if(!sets.dataViewBoxParameter){
-            if(typeof(sets.useAxis) === "undefined" || sets.useAxis){
+        if (!sets.dataViewBoxParameter) {
+            if (typeof(sets.useAxis) === "undefined" || sets.useAxis) {
                 sets.dataViewBoxParameter = [45, 25, 20, 20];
             }
-            else{
+            else {
                 sets.dataViewBoxParameter = [5, 5, 5, 5];
             }
         }
 
         // 3d 柱图的坐标轴默认使用坐标轴箭头
-        sets.axisUseArrow = (typeof(sets.axisUseArrow) !== "undefined")? sets.axisUseArrow: true;
-        sets.axisXLabelsOffset = (typeof(sets.axisXLabelsOffset) !== "undefined")? sets.axisXLabelsOffset: [-10, 10];
+        sets.axisUseArrow = (typeof(sets.axisUseArrow) !== "undefined") ? sets.axisUseArrow : true;
+        sets.axisXLabelsOffset = (typeof(sets.axisXLabelsOffset) !== "undefined") ? sets.axisXLabelsOffset : [-10, 10];
 
         // 重要步骤：初始化参数
-        if(!this.initBaseParameter()) return;
+        if (!this.initBaseParameter()) return;
 
         // 值域
         var codomain = this.DVBCodomain;
         // 重要步骤：定义图表 Bar 数据视图框中单位值的含义
-        this.DVBUnitValue = (codomain[1]-codomain[0])/this.DVBHeight;
+        this.DVBUnitValue = (codomain[1] - codomain[0]) / this.DVBHeight;
         // 数据视图域
         var dvb = this.dataViewBox;
         // 用户数据值
         var fv = this.dataValues;
-        if(fv.length < 1) return;       // 没有数据
+        if (fv.length < 1) return;       // 没有数据
 
         // 数据溢出值域范围处理
-        for(var i = 0, fvLen = fv.length; i < fvLen; i++){
-            if(fv[i] < codomain[0] || fv[i] > codomain[1]) return;
+        for (var i = 0, fvLen = fv.length; i < fvLen; i++) {
+            if (fv[i] < codomain[0] || fv[i] > codomain[1]) return;
         }
 
         // 获取 x 轴上的图形信息
         var xShapeInfo = this.calculateXShapeInfo(dvb, sets, "Bar3D", fv.length);
-        if(!xShapeInfo) return;
+        if (!xShapeInfo) return;
         // 每个柱条 x 位置
         var xsLoc = xShapeInfo.xPositions;
         // 柱条宽度
         var xsWdith = xShapeInfo.width;
 
         // 坐标轴, 默认启用
-        if(typeof(sets.useBackground) === "undefined" || sets.useBackground){
+        if (typeof(sets.useBackground) === "undefined" || sets.useBackground) {
             this.shapes.push(SuperMap.Feature.ShapeFactory.Background(this.shapeFactory, this.chartBox, sets));
         }
 
         // 坐标轴
-        if(!sets.axis3DParameter || isNaN(sets.axis3DParameter) || sets.axis3DParameter < 15){
+        if (!sets.axis3DParameter || isNaN(sets.axis3DParameter) || sets.axis3DParameter < 15) {
             sets.axis3DParameter = 20;
         }
-        if(typeof(sets.useAxis) === "undefined" || sets.useAxis){
+        if (typeof(sets.useAxis) === "undefined" || sets.useAxis) {
             this.shapes = this.shapes.concat(SuperMap.Feature.ShapeFactory.GraphAxis(this.shapeFactory, dvb, sets, xShapeInfo));
         }
 
         // 3d 偏移量, 默认值 10;
-        var offset3d = (sets.bar3DParameter && !isNaN(sets.bar3DParameter))? sets.bar3DParameter: 10;
+        var offset3d = (sets.bar3DParameter && !isNaN(sets.bar3DParameter)) ? sets.bar3DParameter : 10;
 
-        for(var i = 0; i < fv.length; i++){
+        for (var i = 0; i < fv.length; i++) {
             // 无 3d 偏移量时的柱面顶部 y 坐标
-            var yPx = dvb[1] - (fv[i] - codomain[0])/this.DVBUnitValue;
+            var yPx = dvb[1] - (fv[i] - codomain[0]) / this.DVBUnitValue;
             // 无 3d 偏移量时的柱面的左、右端 x 坐标
-            var iPoiL =  xsLoc[i] - xsWdith/2;
-            var iPoiR =  xsLoc[i] + xsWdith/2;
+            var iPoiL = xsLoc[i] - xsWdith / 2;
+            var iPoiR = xsLoc[i] + xsWdith / 2;
 
             // 3d 柱顶面节点
             var bar3DTopPois = [
@@ -308,7 +311,7 @@ SuperMap.Feature.Theme.Bar3D = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
                 [iPoiR, yPx],
                 [iPoiR - offset3d, yPx + offset3d],
                 [iPoiR - offset3d, dvb[1] + offset3d],
-                [iPoiR,  dvb[1]]
+                [iPoiR, dvb[1]]
             ];
 
             // 3d 柱正面节点
@@ -318,7 +321,7 @@ SuperMap.Feature.Theme.Bar3D = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
                 [iPoiR - offset3d, yPx + offset3d],
                 [iPoiL - offset3d, yPx + offset3d]
             ];
-            if(offset3d <= 0){  // offset3d <= 0 时正面不偏移
+            if (offset3d <= 0) {  // offset3d <= 0 时正面不偏移
                 bar3DFacePois = [
                     [iPoiL, dvb[1]],
                     [iPoiR, dvb[1]],
@@ -334,12 +337,12 @@ SuperMap.Feature.Theme.Bar3D = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
 
 
             // 侧面、正面图形 style 默认值
-            sets.barSideStyle = sets.barSideStyle? sets.barSideStyle: sets.barFaceStyle;
-            sets.barSideStyleByFields = sets.barSideStyleByFields? sets.barSideStyleByFields: sets.barFaceStyleByFields;
-            sets.barSideStyleByCodomain = sets.barSideStyleByCodomain? sets.barSideStyleByCodomain: sets.barFaceStyleByCodomain;
-            sets.barTopStyle = sets.barTopStyle? sets.barTopStyle: sets.barFaceStyle;
-            sets.barTopStyleByFields = sets.barTopStyleByFields? sets.barTopStyleByFields: sets.barFaceStyleByFields;
-            sets.barTopStyleByCodomain = sets.barTopStyleByCodomain? sets.barTopStyleByCodomain: sets.barFaceStyleByCodomain;
+            sets.barSideStyle = sets.barSideStyle ? sets.barSideStyle : sets.barFaceStyle;
+            sets.barSideStyleByFields = sets.barSideStyleByFields ? sets.barSideStyleByFields : sets.barFaceStyleByFields;
+            sets.barSideStyleByCodomain = sets.barSideStyleByCodomain ? sets.barSideStyleByCodomain : sets.barFaceStyleByCodomain;
+            sets.barTopStyle = sets.barTopStyle ? sets.barTopStyle : sets.barFaceStyle;
+            sets.barTopStyleByFields = sets.barTopStyleByFields ? sets.barTopStyleByFields : sets.barFaceStyleByFields;
+            sets.barTopStyleByCodomain = sets.barTopStyleByCodomain ? sets.barTopStyleByCodomain : sets.barFaceStyleByCodomain;
             // 顶面、侧面、正面图形 style
             polyFaceSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool({stroke: true, strokeColor: "#ffffff", fillColor: "#ee9900"},
                 sets.barFaceStyle, sets.barFaceStyleByFields, sets.barFaceStyleByCodomain, i, fv[i]);
@@ -349,8 +352,8 @@ SuperMap.Feature.Theme.Bar3D = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
                 sets.barTopStyle, sets.barTopStyleByFields, sets.barTopStyleByCodomain, i, fv[i]);
 
             // 3d 柱条高亮样式
-            sets.barSideHoverStyle = sets.barSideHoverStyle? sets.barSideHoverStyle: sets.barFaceHoverStyle;
-            sets.barTopHoverStyle = sets.barTopHoverStyle? sets.barTopHoverStyle: sets.barFaceHoverStyle;
+            sets.barSideHoverStyle = sets.barSideHoverStyle ? sets.barSideHoverStyle : sets.barFaceHoverStyle;
+            sets.barTopHoverStyle = sets.barTopHoverStyle ? sets.barTopHoverStyle : sets.barFaceHoverStyle;
             polyFaceSP.highlightStyle = SuperMap.Feature.ShapeFactory.ShapeStyleTool({stroke: true}, sets.barFaceHoverStyle);
             polySideSP.highlightStyle = SuperMap.Feature.ShapeFactory.ShapeStyleTool({stroke: true}, sets.barSideHoverStyle);
             polyTopSP.highlightStyle = SuperMap.Feature.ShapeFactory.ShapeStyleTool({stroke: true}, sets.barTopHoverStyle);
@@ -368,10 +371,10 @@ SuperMap.Feature.Theme.Bar3D = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
             };
 
             // 3d 柱条顶面、侧面、正面图形 hover click 设置
-            if(typeof(sets.barHoverAble) !== "undefined"){
+            if (typeof(sets.barHoverAble) !== "undefined") {
                 polyTopSP.hoverable = polySideSP.hoverable = polyFaceSP.hoverable = sets.barHoverAble;
             }
-            if(typeof(sets.barClickAble) !== "undefined"){
+            if (typeof(sets.barClickAble) !== "undefined") {
                 polyTopSP.clickable = polySideSP.clickable = polyFaceSP.clickable = sets.barClickAble;
             }
 
@@ -384,7 +387,8 @@ SuperMap.Feature.Theme.Bar3D = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
         // 重要步骤：将图形转为由相对坐标表示的图形，以便在地图平移缩放过程中快速重绘图形
         // （统计专题图模块从结构上要求使用相对坐标，assembleShapes() 函数必须在图形装配完成后调用 shapesConvertToRelativeCoordinate() 函数）
         this.shapesConvertToRelativeCoordinate();
-    },
+    }
+
 
     /**
      * Method: calculateXShapeInfo
@@ -406,12 +410,12 @@ SuperMap.Feature.Theme.Bar3D = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
      * width - {Number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
      *
      */
-    calculateXShapeInfo: function(){
+    calculateXShapeInfo() {
         var dvb = this.dataViewBox;     // 数据视图框
         var sets = this.setting;     // 图表配置对象
         var fvc = this.dataValues.length;      // 数组值个数
 
-        if(fvc < 1) return null;
+        if (fvc < 1) return null;
 
         var xBlank;        // x 轴空白间隔参数
         var xShapePositions = [];         // x 轴上图形的位置
@@ -419,25 +423,27 @@ SuperMap.Feature.Theme.Bar3D = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
         var dvbWidth = this.DVBWidth;            // 数据视图框宽度
 
         //  x 轴空白间隔参数处理
-        if(sets.xShapeBlank && sets.xShapeBlank.length && sets.xShapeBlank.length == 3){
+        if (sets.xShapeBlank && sets.xShapeBlank.length && sets.xShapeBlank.length == 3) {
             xBlank = sets.xShapeBlank;
-            var xsLen =  dvbWidth - (xBlank[0] + xBlank[2] + (fvc - 1)*xBlank[1])
-            if(xsLen <= fvc){ return null; }
-            xShapeWidth = xsLen/fvc
+            var xsLen = dvbWidth - (xBlank[0] + xBlank[2] + (fvc - 1) * xBlank[1])
+            if (xsLen <= fvc) {
+                return null;
+            }
+            xShapeWidth = xsLen / fvc
         }
-        else{
+        else {
             // 默认使用等距离空白间隔，空白间隔为图形宽度
-            xShapeWidth = dvbWidth/(2*fvc + 1);
+            xShapeWidth = dvbWidth / (2 * fvc + 1);
             xBlank = [xShapeWidth, xShapeWidth, xShapeWidth];
         }
 
         // 图形 x 轴上的位置计算
         var xOffset = 0
-        for(var i = 0; i < fvc; i++){
-            if(i == 0){
-                xOffset = xBlank[0] + xShapeWidth/2;
+        for (var i = 0; i < fvc; i++) {
+            if (i == 0) {
+                xOffset = xBlank[0] + xShapeWidth / 2;
             }
-            else{
+            else {
                 xOffset += (xShapeWidth + xBlank[1]);
             }
 
@@ -448,8 +454,9 @@ SuperMap.Feature.Theme.Bar3D = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
             "xPositions": xShapePositions,
             "width": xShapeWidth
         };
-    },
+    }
 
-    CLASS_NAME: "SuperMap.Feature.Theme.Bar3D"
-});
-module.exports = SuperMap.Feature.Theme.Bar3D;
+    CLASS_NAME = "SuperMap.Feature.Theme.Bar3D"
+}
+
+SuperMap.Feature.Theme.Bar3D = Bar3D;

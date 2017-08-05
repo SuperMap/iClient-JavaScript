@@ -1,4 +1,6 @@
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import {SpatialQueryMode} from '../REST'
+
 /**
  * @class SuperMap.SingleObjectQueryJobsParameter
  * @description 单对象空间查询分析任务参数类
@@ -7,55 +9,56 @@ var SuperMap = require('../SuperMap');
  *         datasetQuery -{String} 查询对象所在的数据集名称。 <br>
  *         mode -{SuperMap.SpatialQueryMode} 空间查询模式 。 <br>
  */
-SuperMap.SingleObjectQueryJobsParameter = SuperMap.Class({
+export default  class SingleObjectQueryJobsParameter {
 
     /**
      * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{String}
      * @description 数据集名。
      */
-    datasetName: "",
+    datasetName = "";
 
     /**
      * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{String}
      * @description 查询对象所在的数据集名称。
      */
-    datasetQuery: "",
+    datasetQuery = "";
 
     /**
      * @member SuperMap.SingleObjectQueryJobsParameter.prototype.mode -{SuperMap.SpatialQueryMode}
      * @description 空间查询模式 。
      */
-    mode: "CONTAIN",
+    mode = SpatialQueryMode.CONTAIN;
 
-    initialize: function (options) {
+    constructor(options) {
         if (!options) {
             return;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
+
 
     /**
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         this.datasetName = null;
         this.datasetQuery = null;
         this.mode = null;
     }
 
-});
-
-SuperMap.SingleObjectQueryJobsParameter.toObject = function (singleObjectQueryJobsParameter, tempObj) {
-    for (var name in singleObjectQueryJobsParameter) {
-        if (name === "datasetName") {
-            tempObj['input'] = tempObj['input'] || {};
-            tempObj['input'][name] = singleObjectQueryJobsParameter[name];
-            continue;
+    static toObject(singleObjectQueryJobsParameter, tempObj) {
+        for (var name in singleObjectQueryJobsParameter) {
+            if (name === "datasetName") {
+                tempObj['input'] = tempObj['input'] || {};
+                tempObj['input'][name] = singleObjectQueryJobsParameter[name];
+                continue;
+            }
+            tempObj['analyst'] = tempObj['analyst'] || {};
+            tempObj['analyst'][name] = singleObjectQueryJobsParameter[name];
         }
-        tempObj['analyst'] = tempObj['analyst'] || {};
-        tempObj['analyst'][name] = singleObjectQueryJobsParameter[name];
     }
-};
 
-module.exports = SuperMap.SingleObjectQueryJobsParameter;
+}
+
+SuperMap.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;

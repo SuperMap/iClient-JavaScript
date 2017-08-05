@@ -1,6 +1,6 @@
-require("../core/Base");
-var L = require("leaflet");
-var CloudTileLayer = L.TileLayer.extend({
+import '../core/Base';
+import L from "leaflet";
+export var CloudTileLayer = L.TileLayer.extend({
     defaultURL: 'http://t2.supermapcloud.com/FileService/image',
     options: {
         /**
@@ -25,8 +25,7 @@ var CloudTileLayer = L.TileLayer.extend({
         L.stamp(this);
     }
 });
-L.supermap.cloudTileLayer = function (url, options) {
+export var cloudTileLayer = function (url, options) {
     return new CloudTileLayer(url, options);
 };
-
-module.exports = CloudTileLayer;
+L.supermap.cloudTileLayer = cloudTileLayer;

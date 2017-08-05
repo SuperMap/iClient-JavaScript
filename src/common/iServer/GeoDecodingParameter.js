@@ -1,3 +1,8 @@
+import SuperMap from '../SuperMap';
+/**
+ * Class: SuperMap.GeoDecodingParameter
+ * 地理反向匹配参数类。
+ */
 /**
  * @class SuperMap.GeoDecodingParameter
  * @constructs SuperMap.GeoDecodingParameter
@@ -5,82 +10,81 @@
  * 地理反向匹配参数类。
  * @api
  */
-var SuperMap = require('../SuperMap');
-SuperMap.GeoDecodingParameter = SuperMap.Class({
+export default  class GeoDecodingParameter {
 
     /**
-     * APIProperty : x
+     * APIProperty: x
      * {number} 查询位置的横坐标。
      */
-    x: null,
+    x = null;
 
     /**
      * APIProperty: y
      * {number} 查询位置的纵坐标。
      */
-    y: null,
+    y = null;
 
     /**
      * APIProperty: fromIndex
      * {number} 设置返回对象的起始索引值。
      */
-    fromIndex: null,
+    fromIndex = null;
 
     /**
      * APIProperty: toIndex
      * {number} 设置返回对象的结束索引值。
      */
-    toIndex: null,
+    toIndex = null;
 
     /**
      * APIProperty: filters
      * {Array} 过滤字段，限定查询区域。
      */
-    filters: null,
+    filters = null;
 
     /**
      * APIProperty: prjCoordSys
      * {String} 查询结果的坐标系。
      */
-    prjCoordSys: null,
+    prjCoordSys = null;
 
     /**
      * APIProperty: maxReturn
      * {number} 最大返回结果数。
      */
-    maxReturn: null,
+    maxReturn = null;
 
     /**
      * APIProperty: geoDecodingRadius
      * {number} 查询半径。
      */
-    geoDecodingRadius: null,
+    geoDecodingRadius = null;
 
     /**
      *
      * @method SuperMap.GeoDecodingParameter.initialize
      * @param options - {Object} 参数。
      */
-    initialize: function (options) {
+    constructor(options) {
         if (!options) {
             return;
         }
         if (options.filters) {
-            var strs = [];
-            var fields = options.filters.split(',');
+            let strs = [];
+            let fields = options.filters.split(',');
             fields.map(function (field) {
                 strs.push("\"" + field + "\"");
-            })
+            });
             options.filters = strs;
         }
         SuperMap.Util.extend(this, options);
-    },
+    }
 
-    /*
+    /**
      * APIMethod: destroy
      * 释放资源，将引用资源的属性置空。
      */
-    destroy: function () {
+    destroy() {
         this.x = null;
         this.y = null;
         this.fromIndex = null;
@@ -91,6 +95,6 @@ SuperMap.GeoDecodingParameter = SuperMap.Class({
         this.geoDecodingRadius = null;
     }
 
-});
+}
 
-module.exports = SuperMap.GeoDecodingParameter;
+SuperMap.GeoDecodingParameter = GeoDecodingParameter;

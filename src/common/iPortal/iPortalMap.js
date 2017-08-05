@@ -1,53 +1,56 @@
-require('./iPortalServiceBase');
-var SuperMap = require('../SuperMap');
+import SuperMap from '../SuperMap';
+import IPortalServiceBase from './iPortalServiceBase';
+
 /**
  * @class SuperMap.iPortalMap
  * @classdesc iPortal地图编辑
  * @extends {SuperMap.iPortalServiceBase}
  *
  */
-SuperMap.iPortalMap = SuperMap.Class(SuperMap.iPortalServiceBase, {
+export default  class IPortalMap extends IPortalServiceBase {
 
-    authorizeSetting: [],
-    center: '',
-    controls: null,
-    checkStatus: '',
-    createTime: 0,
-    description: '',
-    epsgCode: 0,
-    extent: '',
-    id: 0,
-    isDefaultBottomMap: false,
-    layers: [],
-    level: null,
-    nickname: '',
-    sourceType: '',
-    status: null,
-    tags: [],
-    thumbnail: '',
-    title: '',
-    units: null,
-    updateTime: 0,
-    userName: '',
-    visitCount: 0,
+    authorizeSetting = [];
+    center = "";
+    controls = null;
+    checkStatus = "";
+    createTime = 0;
+    description = "";
+    epsgCode = 0;
+    extent = "";
+    id = 0;
+    isDefaultBottomMap = false;
+    layers = [];
+    level = null;
+    nickname = "";
+    sourceType = "";
+    status = null;
+    tags = [];
+    thumbnail = "";
+    title = "";
+    units = null;
+    updateTime = 0;
+    userName = "";
+    visitCount = 0;
+
     /**
      * @method SuperMap.iPortalMap.initialize
      * @param mapUrl
      * @param params
      */
-    initialize: function (mapUrl, params) {
+    constructor(mapUrl, params) {
+        super(mapUrl);
         params = params || {};
         SuperMap.Util.extend(this, params);
         this.mapUrl = mapUrl;
         // if (this.id) {
         //     this.mapUrl = mapUrl + "/" + this.id;
         // }
-        SuperMap.iPortalServiceBase.prototype.initialize.call(this.mapUrl);
-    },
+    }
+
     /**
      * @method SuperMap.iPortalMap.load
      */
-    load: function () {
+    load() {
         var me = this;
         return me.request("GET", me.mapUrl + ".json")
             .then(function (mapInfo) {
@@ -58,25 +61,26 @@ SuperMap.iPortalMap = SuperMap.Class(SuperMap.iPortalServiceBase, {
                     me[key] = mapInfo[key];
                 }
             });
-    },
+    }
+
     /**
      * @method SuperMap.iPortalMap.update
      */
-    update: function () {
+    update() {
         var mapUpdateParam = {
             units: this.units,
-            level:this.level,
-            center:this.center,
-            controls:this.controls,
-            description:this.description,
-            epsgCode:this.epsgCode,
-            extent:this.extent,
-            status:this.status,
-            tags:this.tags,
-            layers:this.layers,
-            title:this.title,
-            thumbnail:this.thumbnail,
-            sourceType:this.sourceType,
+            level: this.level,
+            center: this.center,
+            controls: this.controls,
+            description: this.description,
+            epsgCode: this.epsgCode,
+            extent: this.extent,
+            status: this.status,
+            tags: this.tags,
+            layers: this.layers,
+            title: this.title,
+            thumbnail: this.thumbnail,
+            sourceType: this.sourceType,
             authorizeSetting: this.authorizeSetting
         };
         var options = {
@@ -85,7 +89,7 @@ SuperMap.iPortalMap = SuperMap.Class(SuperMap.iPortalServiceBase, {
         return this.request("PUT", this.mapUrl, JSON.stringify(mapUpdateParam), options);
     }
 
-});
+}
 
-module.exports = SuperMap.iPortalMap;
+SuperMap.iPortalMap = IPortalMap;
 

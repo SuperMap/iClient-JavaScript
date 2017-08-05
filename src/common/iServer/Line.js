@@ -1,3 +1,6 @@
+import SuperMap from '../SuperMap';
+import Graph from './Graph';
+
 /**
  * Class: SuperMap.Feature.Theme.Line
  * 折线图。
@@ -91,9 +94,7 @@
  * Inherits:
  *  - <SuperMap.Feature.Theme.Graph>
  */
-var SuperMap = require('../SuperMap');
-require('./Graph');
-SuperMap.Feature.Theme.Line = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
+export default  class Line extends Graph {
 
     /**
      * Constructor: SuperMap.Feature.Theme.Line
@@ -109,55 +110,55 @@ SuperMap.Feature.Theme.Line = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
      * Returns:
      * {SuperMap.Feature.Theme.Line} 返回一个折线图。
      */
-    initialize: function(data, layer, fields, setting, lonlat, options) {
-        SuperMap.Feature.Theme.Graph.prototype.initialize.apply(this, arguments);
-    },
+    constructor(data, layer, fields, setting, lonlat, options) {
+        super(data, layer, fields, setting, lonlat, options);
+    }
 
     /**
      * Method: destroy
      * 销毁此专题要素。调用 destroy 后此对象所以属性置为 null。
      */
-    destroy: function() {
-        SuperMap.Feature.Theme.Graph.prototype.destroy.apply(this, arguments);
-    },
+    destroy() {
+        super.destroy();
+    }
 
     //装配图形（扩展接口）
-    assembleShapes: function(){
+    assembleShapes() {
         // 图表配置对象
         var sets = this.setting;
 
         // 默认数据视图框
-        if(!sets.dataViewBoxParameter){
-            if(typeof(sets.useAxis) === "undefined" || sets.useAxis){
+        if (!sets.dataViewBoxParameter) {
+            if (typeof(sets.useAxis) === "undefined" || sets.useAxis) {
                 sets.dataViewBoxParameter = [45, 15, 15, 15];
             }
-            else{
+            else {
                 sets.dataViewBoxParameter = [5, 5, 5, 5];
             }
         }
 
         // 重要步骤：初始化参数
-        if(!this.initBaseParameter()) return;
+        if (!this.initBaseParameter()) return;
 
         var dvb = this.dataViewBox;
 
         // 值域
         var codomain = this.DVBCodomain;
         // 重要步骤：定义图表 Bar 数据视图框中单位值的含义
-        this.DVBUnitValue =  (codomain[1]-codomain[0])/this.DVBHeight;
+        this.DVBUnitValue = (codomain[1] - codomain[0]) / this.DVBHeight;
         var uv = this.DVBUnitValue;
         // 数据值数组
         var fv = this.dataValues;
-        if(fv.length < 1) return;       // 没有数据
+        if (fv.length < 1) return;       // 没有数据
 
         // 获取 x 轴上的图形信息
         var xShapeInfo = this.calculateXShapeInfo();
-        if(!xShapeInfo) return;
+        if (!xShapeInfo) return;
         // 折线每个节点的 x 位置
         var xsLoc = xShapeInfo.xPositions;
 
         // 背景框，默认启用
-        if(typeof(sets.useBackground) === "undefined" || sets.useBackground){
+        if (typeof(sets.useBackground) === "undefined" || sets.useBackground) {
             // 将背景框图形添加到模型的 shapes 数组，注意添加顺序，后添加的图形在先添加的图形之上。
             this.shapes.push(SuperMap.Feature.ShapeFactory.Background(this.shapeFactory, this.chartBox, sets));
         }
@@ -172,12 +173,15 @@ SuperMap.Feature.Theme.Line = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
         var poiLists = [];        // 折线节点数组
 
         var shapePois = [];     // 折线节点图形数组
-        for(var i = 0, len = fv.length; i < len; i++){
+        for (var i = 0, len = fv.length; i < len; i++) {
             // 数据溢出值域检查
-            if(fv[i] < codomain[0] || fv[i] > codomain[1]) {isDataEffective = false; return null;}
+            if (fv[i] < codomain[0] || fv[i] > codomain[1]) {
+                isDataEffective = false;
+                return null;
+            }
 
             xPx = xsLoc[i];
-            yPx = dvb[1] - (fv[i] - codomain[0])/uv;
+            yPx = dvb[1] - (fv[i] - codomain[0]) / uv;
 
             // 折线节点参数对象
             var poiSP = new SuperMap.Feature.ShapeParameters.Point(xPx, yPx);
@@ -187,18 +191,18 @@ SuperMap.Feature.Theme.Line = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
             poiSP.highlightStyle = SuperMap.Feature.ShapeFactory.ShapeStyleTool(null, sets.pointHoverStyle);
 
             // 折线节点 hover click
-            if(typeof(sets.pointHoverAble) !== "undefined"){
+            if (typeof(sets.pointHoverAble) !== "undefined") {
                 poiSP.hoverable = sets.pointHoverAble;
             }
-            if(typeof(sets.pointClickAble) !== "undefined"){
+            if (typeof(sets.pointClickAble) !== "undefined") {
                 poiSP.clickable = sets.pointClickAble;
             }
 
             // 图形携带的数据信息
             poiSP.refDataID = this.data.id;
-            poiSP.dataInfo =  {
+            poiSP.dataInfo = {
                 field: this.fields[i],
-                value:  fv[i]
+                value: fv[i]
             };
 
             // 创建图形并把此图形添加到折线节点图形数组
@@ -211,7 +215,7 @@ SuperMap.Feature.Theme.Line = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
 
         // 折线参数对象
         var lineSP = new SuperMap.Feature.ShapeParameters.Line(poiLists);
-        lineSP.style =SuperMap.Feature.ShapeFactory.ShapeStyleTool({strokeColor: "#ee9900"}, sets.lineStyle);
+        lineSP.style = SuperMap.Feature.ShapeFactory.ShapeStyleTool({strokeColor: "#ee9900"}, sets.lineStyle);
         // 禁止事件响应
         lineSP.clickable = false;
         lineSP.hoverable = false;
@@ -222,14 +226,14 @@ SuperMap.Feature.Theme.Line = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
         this.shapes = this.shapes.concat(shapePois);
 
         // 数据范围检测未通过，清空图形
-        if(isDataEffective === false){
+        if (isDataEffective === false) {
             this.shapes = [];
         }
 
         // 重要步骤：将图形转为由相对坐标表示的图形，以便在地图平移缩放过程中快速重绘图形
         // （统计专题图模块从结构上要求使用相对坐标，assembleShapes() 函数必须在图形装配完成后调用 shapesConvertToRelativeCoordinate() 函数）
         this.shapesConvertToRelativeCoordinate();
-    },
+    }
 
     /**
      * Method: calculateXShapeInfo
@@ -250,12 +254,12 @@ SuperMap.Feature.Theme.Line = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
      * width - {Number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
      *
      */
-    calculateXShapeInfo: function(){
+    calculateXShapeInfo() {
         var dvb = this.dataViewBox;     // 数据视图框
         var sets = this.setting;     // 图表配置对象
         var fvc = this.dataValues.length;      // 数组值个数
 
-        if(fvc < 1) return null;
+        if (fvc < 1) return null;
 
         var xBlank;        // x 轴空白间隔参数
         var xShapePositions = [];         // x 轴上图形的位置
@@ -264,25 +268,27 @@ SuperMap.Feature.Theme.Line = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
         var unitOffset = 0;               // 单位偏移量
 
         //  x 轴空白间隔参数处理
-        if(sets.xShapeBlank && sets.xShapeBlank.length && sets.xShapeBlank.length == 2){
+        if (sets.xShapeBlank && sets.xShapeBlank.length && sets.xShapeBlank.length == 2) {
             xBlank = sets.xShapeBlank;
-            var xsLen =  dvbWidth - (xBlank[0] + xBlank[1]);
-            if(xsLen <= fvc){  return null; }
-            unitOffset = xsLen/(fvc - 1);
+            var xsLen = dvbWidth - (xBlank[0] + xBlank[1]);
+            if (xsLen <= fvc) {
+                return null;
+            }
+            unitOffset = xsLen / (fvc - 1);
         }
-        else{
+        else {
             // 默认使用等距离空白间隔，空白间隔为图形宽度
-            unitOffset = dvbWidth/(fvc + 1);
+            unitOffset = dvbWidth / (fvc + 1);
             xBlank = [unitOffset, unitOffset, unitOffset];
         }
 
         // 图形 x 轴上的位置计算
         var xOffset = 0
-        for(var i = 0; i < fvc; i++){
-            if(i == 0){
+        for (var i = 0; i < fvc; i++) {
+            if (i == 0) {
                 xOffset = xBlank[0];
             }
-            else{
+            else {
                 xOffset += unitOffset;
             }
 
@@ -293,8 +299,9 @@ SuperMap.Feature.Theme.Line = SuperMap.Class(SuperMap.Feature.Theme.Graph, {
             "xPositions": xShapePositions,
             "width": xShapeWidth
         };
-    },
+    }
 
-    CLASS_NAME: "SuperMap.Feature.Theme.Line"
-});
-module.exports = SuperMap.Feature.Theme.Line;
+    CLASS_NAME = "SuperMap.Feature.Theme.Line"
+}
+
+SuperMap.Feature.Theme.Line = Line;
