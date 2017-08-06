@@ -224,10 +224,6 @@ export var  TileVectorLayer = VectorGrid.extend({
         return style;
     },
 
-    setScales: function (scales) {
-        this.scales = scales || this.scales;
-    },
-
     getScale: function (zoom) {
         var me = this;
         //返回当前比例尺

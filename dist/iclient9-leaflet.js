@@ -8249,10 +8249,6 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
         return tileUrl;
     },
 
-    setScales: function setScales(scales) {
-        this.scales = scales || this.scales;
-    },
-
     getScale: function getScale(zoom) {
         var me = this;
         //返回当前比例尺
@@ -17970,10 +17966,6 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
         return style;
     },
 
-    setScales: function setScales(scales) {
-        this.scales = scales || this.scales;
-    },
-
     getScale: function getScale(zoom) {
         var me = this;
         //返回当前比例尺
@@ -24056,48 +24048,6 @@ var JSONFormat = function (_Format) {
                 } catch (e) {
                     // Fall through if the regexp test fails.
                 }
-            } else try {
-                /**
-                 * Parsing happens in three stages. In the first stage, we run the
-                 *     text against a regular expression which looks for non-JSON
-                 *     characters. We are especially concerned with '()' and 'new'
-                 *     because they can cause invocation, and '=' because it can
-                 *     cause mutation. But just to be safe, we will reject all
-                 *     unexpected characters.
-                 */
-                if (/^[\],:{}\s]*$/.test(json.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-
-                    /**
-                     * In the second stage we use the eval function to compile the
-                     *     text into a JavaScript structure. The '{' operator is
-                     *     subject to a syntactic ambiguity in JavaScript - it can
-                     *     begin a block or an object literal. We wrap the text in
-                     *     parens to eliminate the ambiguity.
-                     */
-                    object = eval('(' + json + ')');
-
-                    /**
-                     * In the optional third stage, we recursively walk the new
-                     *     structure, passing each name/value pair to a filter
-                     *     function for possible transformation.
-                     */
-                    if (typeof filter === 'function') {
-                        var _walk = function _walk(k, v) {
-                            if (v && (typeof v === 'undefined' ? 'undefined' : _typeof(v)) === 'object') {
-                                for (var i in v) {
-                                    if (v.hasOwnProperty(i)) {
-                                        v[i] = _walk(i, v[i]);
-                                    }
-                                }
-                            }
-                            return filter(k, v);
-                        };
-
-                        object = _walk('', object);
-                    }
-                }
-            } catch (e) {
-                // Fall through if the regexp test fails.
             }
 
             if (this.keepData) {
@@ -56526,7 +56476,11 @@ _leaflet2.default.Proj.Projection = _leaflet2.default.Class.extend({
     initialize: function initialize(code, def, bounds) {
         var isP4 = _leaflet2.default.Proj._isProj4Obj(code);
         this._proj = isP4 ? code : this._projFromCodeDef(code, def);
-        this.bounds = isP4 ? def : bounds;
+        var boundsOption = bounds;
+        if (_leaflet2.default.Util.isArray(bounds)) {
+            boundsOption = _leaflet2.default.bounds(bounds);
+        }
+        this.bounds = isP4 ? def : boundsOption;
     },
 
     project: function project(latlng) {
@@ -56555,6 +56509,21 @@ _leaflet2.default.Proj.Projection = _leaflet2.default.Class.extend({
         return (0, _proj2.default)(code);
     }
 });
+/**
+ * @class L.Proj.CRS
+ * @description leaflet Proj投影定义类
+ * @extends  L.CRS
+ * @example
+ * 用法：
+ *    var crs =new L.Proj.CRS("EPSG:4326", '', {
+ *          origin: [-180,90],
+ *          scaleDenominators: [2000,1000,500,200,100,50,20,10],
+ *    });
+ *    var map=L.map('map', {
+ *       crs: crs
+ *      ...
+ *    })
+ */
 
 _leaflet2.default.Proj.CRS = _leaflet2.default.Class.extend({
     includes: _leaflet2.default.CRS,
@@ -56563,6 +56532,18 @@ _leaflet2.default.Proj.CRS = _leaflet2.default.Class.extend({
         transformation: new _leaflet2.default.Transformation(1, 0, -1, 0)
     },
 
+    /**
+     * @function L.Proj.CRS.prototype.initialize
+     * @description L.Proj.CRS 投影类构造函数
+     * @param a -{String} proj srsCode。
+     * @param b -{String} proj def。
+     * @param c -{Object} options。可选参数：<br>
+     *                     origin -{Array|L.Point} 原点。必填<br>
+     *                     scales -{Array} 比例尺数组 <br>
+     *                     scaleDenominators -{Array} 比例尺分母数组 <br>
+     *                     resolutions -{Array} 分辨率数组 <br>
+     *                     bounds -{Array|L.Bounds} 范围 <br>
+     */
     initialize: function initialize(a, b, c) {
         var code, proj, def, options;
 
@@ -56584,11 +56565,20 @@ _leaflet2.default.Proj.CRS = _leaflet2.default.Class.extend({
         this.transformation = this.options.transformation;
 
         if (this.options.origin) {
+            if (this.options.origin instanceof _leaflet2.default.Point) {
+                this.options.origin = [this.options.origin.x, this.options.origin.y];
+            }
             this.transformation = new _leaflet2.default.Transformation(1, -this.options.origin[0], -1, this.options.origin[1]);
         }
 
         if (this.options.scales) {
-            this._scales = this.options.scales;
+            this._scales = this._toProj4Scales(this.options.scales);
+        } else if (this.options.scaleDenominators) {
+            var scales = [];
+            for (var i = 0; i < this.options.scaleDenominators.length; i++) {
+                scales[i] = 1 / this.options.scaleDenominators[i];
+            }
+            this._scales = this._toProj4Scales(scales);
         } else if (this.options.resolutions) {
             this._scales = [];
             for (var i = this.options.resolutions.length - 1; i >= 0; i--) {
@@ -56596,6 +56586,8 @@ _leaflet2.default.Proj.CRS = _leaflet2.default.Class.extend({
                     this._scales[i] = 1 / this.options.resolutions[i];
                 }
             }
+        } else if (this.options.bounds) {
+            this._scales = this._getDefaultProj4ScalesByBounds(this.options.bounds);
         }
 
         this.infinite = !this.options.bounds;
@@ -56653,6 +56645,32 @@ _leaflet2.default.Proj.CRS = _leaflet2.default.Class.extend({
             }
         }
         return low;
+    },
+
+    _toProj4Scales: function _toProj4Scales(scales) {
+        var proj4Scales = [];
+        if (!scales) {
+            return proj4Scales;
+        }
+        for (var i = 0; i < scales.length; i++) {
+            proj4Scales[i] = 96 * scales[i] / 0.0254;
+        }
+        return proj4Scales;
+    },
+
+    _getDefaultProj4ScalesByBounds: function _getDefaultProj4ScalesByBounds(bounds) {
+        if (!bounds) {
+            return [];
+        }
+        var boundsSize = _leaflet2.default.bounds(bounds).getSize();
+        var extendsSize = Math.max(boundsSize.x, boundsSize.y);
+        var resolution = extendsSize / 256;
+        var scales = [];
+        var maxZoom = 23;
+        for (var i = 0; i < maxZoom; i++) {
+            scales[i] = Math.pow(2, i) / resolution;
+        }
+        return scales;
     }
 });
 
@@ -63507,7 +63525,7 @@ var names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 /* 396 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[["proj4@2.4.3","E:\\0730\\iClient9"]],"_from":"proj4@2.4.3","_id":"proj4@2.4.3","_inCache":true,"_installable":true,"_location":"/proj4","_nodeVersion":"6.9.2","_npmOperationalInternal":{"host":"packages-18-east.internal.npmjs.com","tmp":"tmp/proj4-2.4.3.tgz_1488570790416_0.3068596587982029"},"_npmUser":{"email":"calvin.metcalf@gmail.com","name":"cwmma"},"_npmVersion":"4.0.5","_phantomChildren":{},"_requested":{"name":"proj4","raw":"proj4@2.4.3","rawSpec":"2.4.3","scope":null,"spec":"2.4.3","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz","_shasum":"f3bb7e631bffc047c36a1a3cc14533a03bbe9969","_shrinkwrap":null,"_spec":"proj4@2.4.3","_where":"E:\\0730\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"email":"madair@dmsolutions.ca","name":"Mike Adair"},{"email":"rich@greenwoodmap.com","name":"Richard Greenwood"},{"email":"calvin.metcalf@gmail.com","name":"Calvin Metcalf"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"1.0.0","wkt-parser":"^1.1.3"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~1.1.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","grunt-rollup":"^1.0.1","istanbul":"~0.2.4","mocha":"~1.17.1","rollup":"^0.41.4","rollup-plugin-json":"^2.0.1","rollup-plugin-node-resolve":"^2.0.0","tin":"~0.4.0"},"directories":{"doc":"docs","test":"test"},"dist":{"shasum":"f3bb7e631bffc047c36a1a3cc14533a03bbe9969","tarball":"https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz"},"gitHead":"e975a5462ad7abb23e33ea75281eb749e77e1510","homepage":"https://github.com/proj4js/proj4js#readme","license":"MIT","main":"dist/proj4-src.js","maintainers":[{"email":"calvin.metcalf@gmail.com","name":"cwmma"},{"email":"andreas.hocevar@gmail.com","name":"ahocevar"}],"module":"lib/index.js","name":"proj4","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"build":"grunt","build:tmerc":"grunt build:tmerc","test":"npm run build && istanbul test _mocha test/test.js"},"version":"2.4.3"}
+module.exports = {"_args":[[{"raw":"proj4@2.4.3","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.4.3","spec":"2.4.3","type":"version"},"E:\\work\\iClient9"]],"_cnpm_publish_time":1488570791097,"_from":"proj4@2.4.3","_hasShrinkwrap":false,"_id":"proj4@2.4.3","_inCache":true,"_location":"/proj4","_nodeVersion":"6.9.2","_npmOperationalInternal":{"host":"packages-18-east.internal.npmjs.com","tmp":"tmp/proj4-2.4.3.tgz_1488570790416_0.3068596587982029"},"_npmUser":{"name":"cwmma","email":"calvin.metcalf@gmail.com"},"_npmVersion":"4.0.5","_phantomChildren":{},"_requested":{"raw":"proj4@2.4.3","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.4.3","spec":"2.4.3","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz","_shasum":"f3bb7e631bffc047c36a1a3cc14533a03bbe9969","_shrinkwrap":null,"_spec":"proj4@2.4.3","_where":"E:\\work\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"1.0.0","wkt-parser":"^1.1.3"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~1.1.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","grunt-rollup":"^1.0.1","istanbul":"~0.2.4","mocha":"~1.17.1","rollup":"^0.41.4","rollup-plugin-json":"^2.0.1","rollup-plugin-node-resolve":"^2.0.0","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"f3bb7e631bffc047c36a1a3cc14533a03bbe9969","size":116887,"noattachment":false,"tarball":"http://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz"},"gitHead":"e975a5462ad7abb23e33ea75281eb749e77e1510","homepage":"https://github.com/proj4js/proj4js#readme","license":"MIT","main":"dist/proj4-src.js","maintainers":[{"name":"ahocevar","email":"andreas.hocevar@gmail.com"},{"name":"cwmma","email":"calvin.metcalf@gmail.com"}],"module":"lib/index.js","name":"proj4","optionalDependencies":{},"publish_time":1488570791097,"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"build":"grunt","build:tmerc":"grunt build:tmerc","test":"npm run build && istanbul test _mocha test/test.js"},"version":"2.4.3"}
 
 /***/ }),
 /* 397 */

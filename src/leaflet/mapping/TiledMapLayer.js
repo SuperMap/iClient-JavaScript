@@ -59,10 +59,6 @@ export var TiledMapLayer = L.TileLayer.extend({
         return tileUrl;
     },
 
-    setScales: function (scales) {
-        this.scales = scales || this.scales;
-    },
-
     getScale: function (zoom) {
         var me = this;
         //返回当前比例尺

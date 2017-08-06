@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>自定义比例尺地图</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
+<script type="text/javascript">
+    var map, url = "http://117.122.248.69:8090/iserver/services/map-jingjin/rest/maps/京津地区地图";
+    //自定义比例尺
+    var scaleDenominators = [100000, 50000, 25000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 1];
+    var origin = [114.59, 42.31];
+    //leaflet CRS投影设置
+    var crs = new L.Proj.CRS("EPSG:4326", '', {
+        origin: origin,
+        scaleDenominators: scaleDenominators,
+    });
+
+    map = L.map('map', {
+        crs: crs,
+        center: [39.79, 116.85],
+        maxZoom: 14,
+        zoom: 10,
+    });
+    L.supermap.tiledMapLayer(url).addTo(map);
+</script>
+</body>
+</html>

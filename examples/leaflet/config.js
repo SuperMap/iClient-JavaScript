@@ -29,6 +29,10 @@ var exampleConfig = {
                     thumbnail: "l_tiledMapLayerNonEarth.png",
                     fileName: "01_tiledMapLayerNonEarth"
                 }, {
+                    name: "自定义比例尺",
+                    thumbnail: "l_tiledMapLayerProj4.png",
+                    fileName: "01_tiledMapLayerProj4"
+                }, {
                     name: "地图信息",
                     thumbnail: "l_mapService.png",
                     fileName: "01_mapService"

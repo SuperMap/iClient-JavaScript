@@ -11,7 +11,11 @@ L.Proj.Projection = L.Class.extend({
     initialize: function (code, def, bounds) {
         var isP4 = L.Proj._isProj4Obj(code);
         this._proj = isP4 ? code : this._projFromCodeDef(code, def);
-        this.bounds = isP4 ? def : bounds;
+        var boundsOption = bounds;
+        if (L.Util.isArray(bounds)) {
+            boundsOption = L.bounds(bounds);
+        }
+        this.bounds = isP4 ? def : boundsOption;
     },
 
     project: function (latlng) {
@@ -40,6 +44,21 @@ L.Proj.Projection = L.Class.extend({
         return proj4(code);
     }
 });
+/**
+ * @class L.Proj.CRS
+ * @description leaflet Proj投影定义类
+ * @extends  L.CRS
+ * @example
+ * 用法：
+ *    var crs =new L.Proj.CRS("EPSG:4326", '', {
+ *          origin: [-180,90],
+ *          scaleDenominators: [2000,1000,500,200,100,50,20,10],
+ *    });
+ *    var map=L.map('map', {
+ *       crs: crs
+ *      ...
+ *    })
+ */
 
 L.Proj.CRS = L.Class.extend({
     includes: L.CRS,
@@ -48,6 +67,18 @@ L.Proj.CRS = L.Class.extend({
         transformation: new L.Transformation(1, 0, -1, 0)
     },
 
+    /**
+     * @function L.Proj.CRS.prototype.initialize
+     * @description L.Proj.CRS 投影类构造函数
+     * @param a -{String} proj srsCode。
+     * @param b -{String} proj def。
+     * @param c -{Object} options。可选参数：<br>
+     *                     origin -{Array|L.Point} 原点。必填<br>
+     *                     scales -{Array} 比例尺数组 <br>
+     *                     scaleDenominators -{Array} 比例尺分母数组 <br>
+     *                     resolutions -{Array} 分辨率数组 <br>
+     *                     bounds -{Array|L.Bounds} 范围 <br>
+     */
     initialize: function (a, b, c) {
         var code,
             proj,
@@ -72,13 +103,22 @@ L.Proj.CRS = L.Class.extend({
         this.transformation = this.options.transformation;
 
         if (this.options.origin) {
+            if (this.options.origin instanceof L.Point) {
+                this.options.origin = [this.options.origin.x, this.options.origin.y];
+            }
             this.transformation =
                 new L.Transformation(1, -this.options.origin[0],
                     -1, this.options.origin[1]);
         }
 
         if (this.options.scales) {
-            this._scales = this.options.scales;
+            this._scales = this._toProj4Scales(this.options.scales);
+        } else if (this.options.scaleDenominators) {
+            var scales = [];
+            for (var i = 0; i < this.options.scaleDenominators.length; i++) {
+                scales[i] = 1 / this.options.scaleDenominators[i];
+            }
+            this._scales = this._toProj4Scales(scales);
         } else if (this.options.resolutions) {
             this._scales = [];
             for (var i = this.options.resolutions.length - 1; i >= 0; i--) {
@@ -86,6 +126,8 @@ L.Proj.CRS = L.Class.extend({
                     this._scales[i] = 1 / this.options.resolutions[i];
                 }
             }
+        } else if (this.options.bounds) {
+            this._scales = this._getDefaultProj4ScalesByBounds(this.options.bounds);
         }
 
         this.infinite = !this.options.bounds;
@@ -144,5 +186,31 @@ L.Proj.CRS = L.Class.extend({
             }
         }
         return low;
+    },
+
+    _toProj4Scales: function (scales) {
+        var proj4Scales = [];
+        if (!scales) {
+            return proj4Scales;
+        }
+        for (var i = 0; i < scales.length; i++) {
+            proj4Scales[i] = (96 * scales[i]) / 0.0254;
+        }
+        return proj4Scales;
+    },
+
+    _getDefaultProj4ScalesByBounds: function (bounds) {
+        if (!bounds) {
+            return [];
+        }
+        var boundsSize = L.bounds(bounds).getSize();
+        var extendsSize = Math.max(boundsSize.x, boundsSize.y);
+        var resolution = extendsSize / 256;
+        var scales = [];
+        var maxZoom = 23;
+        for (var i = 0; i < maxZoom; i++) {
+            scales[i] = Math.pow(2, i) / resolution;
+        }
+        return scales;
     }
 });
