@@ -81,13 +81,13 @@ export default class TileSuperMapRest extends ol.source.TileImage {
 
             params["redirect"] = options.redirect === true;
             //切片是否透明
-            params["transparent"] = options.opaque === true;
+            params["transparent"] = options.transparent === true;
             params["cacheEnabled"] = !(options.cacheEnabled === false);
             params["_cache"] = params["cacheEnabled"];
 
             //设置切片原点
-            if (options.origin && options.origin instanceof Array) {
-                params["origin"] = JSON.stringify({x: options.origin[0], y: options.origin[1]});
+            if (this.origin) {
+                params["origin"] = JSON.stringify({x: this.origin[0], y: this.origin[1]});
             }
 
             if (options.prjCoordSys) {
@@ -157,12 +157,15 @@ export default class TileSuperMapRest extends ol.source.TileImage {
                 } else {
                     if (projection.getCode() === "EPSG:3857") {
                         me.tileGrid = ol.source.TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
+                        me.extent=[-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
                     }
                     if (projection.getCode() === "EPSG:4326") {
                         me.tileGrid = ol.source.TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
+                        me.extent=[-180, -90, 180, 90];
                     }
                 }
             }
+            me.origin = me.tileGrid.getOrigin(0);
             var z = tileCoord[0];
             var x = tileCoord[1];
             var y = -tileCoord[2] - 1;

@@ -12985,13 +12985,13 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
 
             params["redirect"] = options.redirect === true;
             //切片是否透明
-            params["transparent"] = options.opaque === true;
+            params["transparent"] = options.transparent === true;
             params["cacheEnabled"] = !(options.cacheEnabled === false);
             params["_cache"] = params["cacheEnabled"];
 
             //设置切片原点
-            if (options.origin && options.origin instanceof Array) {
-                params["origin"] = JSON.stringify({ x: options.origin[0], y: options.origin[1] });
+            if (this.origin) {
+                params["origin"] = JSON.stringify({ x: this.origin[0], y: this.origin[1] });
             }
 
             if (options.prjCoordSys) {
@@ -13060,12 +13060,15 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
                 } else {
                     if (projection.getCode() === "EPSG:3857") {
                         me.tileGrid = _olDebug2.default.source.TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
+                        me.extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
                     }
                     if (projection.getCode() === "EPSG:4326") {
                         me.tileGrid = _olDebug2.default.source.TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
+                        me.extent = [-180, -90, 180, 90];
                     }
                 }
             }
+            me.origin = me.tileGrid.getOrigin(0);
             var z = tileCoord[0];
             var x = tileCoord[1];
             var y = -tileCoord[2] - 1;
@@ -19118,48 +19121,6 @@ var JSONFormat = function (_Format) {
                 } catch (e) {
                     // Fall through if the regexp test fails.
                 }
-            } else try {
-                /**
-                 * Parsing happens in three stages. In the first stage, we run the
-                 *     text against a regular expression which looks for non-JSON
-                 *     characters. We are especially concerned with '()' and 'new'
-                 *     because they can cause invocation, and '=' because it can
-                 *     cause mutation. But just to be safe, we will reject all
-                 *     unexpected characters.
-                 */
-                if (/^[\],:{}\s]*$/.test(json.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-
-                    /**
-                     * In the second stage we use the eval function to compile the
-                     *     text into a JavaScript structure. The '{' operator is
-                     *     subject to a syntactic ambiguity in JavaScript - it can
-                     *     begin a block or an object literal. We wrap the text in
-                     *     parens to eliminate the ambiguity.
-                     */
-                    object = eval('(' + json + ')');
-
-                    /**
-                     * In the optional third stage, we recursively walk the new
-                     *     structure, passing each name/value pair to a filter
-                     *     function for possible transformation.
-                     */
-                    if (typeof filter === 'function') {
-                        var _walk = function _walk(k, v) {
-                            if (v && (typeof v === 'undefined' ? 'undefined' : _typeof(v)) === 'object') {
-                                for (var i in v) {
-                                    if (v.hasOwnProperty(i)) {
-                                        v[i] = _walk(i, v[i]);
-                                    }
-                                }
-                            }
-                            return filter(k, v);
-                        };
-
-                        object = _walk('', object);
-                    }
-                }
-            } catch (e) {
-                // Fall through if the regexp test fails.
             }
 
             if (this.keepData) {
