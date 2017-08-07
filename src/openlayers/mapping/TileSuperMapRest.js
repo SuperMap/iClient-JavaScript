@@ -2,15 +2,15 @@ import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import '../../common/security/SecurityManager';
 import Util from  '../core/Util';
-import MapService from '../services/MapService';
 
 export default class TileSuperMapRest extends ol.source.TileImage {
 
     constructor(options) {
+        options = options || {};
         if (options.url === undefined) {
             return;
         }
-        options = options || {};
+
         options.attributions = options.attributions ||
             new ol.Attribution({
                 html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
@@ -43,6 +43,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
         });
 
         this.options = options;
+        this._url = options.url;
         //当前切片在切片集中的index
         this.tileSetsIndex = -1;
         this.tempIndex = -1;
@@ -157,11 +158,11 @@ export default class TileSuperMapRest extends ol.source.TileImage {
                 } else {
                     if (projection.getCode() === "EPSG:3857") {
                         me.tileGrid = ol.source.TileSuperMapRest.createTileGrid([-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892]);
-                        me.extent=[-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
+                        me.extent = [-20037508.3427892, -20037508.3427892, 20037508.3427892, 20037508.3427892];
                     }
                     if (projection.getCode() === "EPSG:4326") {
                         me.tileGrid = ol.source.TileSuperMapRest.createTileGrid([-180, -90, 180, 90]);
-                        me.extent=[-180, -90, 180, 90];
+                        me.extent = [-180, -90, 180, 90];
                     }
                 }
             }
@@ -186,19 +187,15 @@ export default class TileSuperMapRest extends ol.source.TileImage {
 
     }
 
-    getTileSetsInfo() {
-        var me = this;
-        new MapService(me.options.url).getTilesets(getTilesInfoSucceed);
-
-        function getTilesInfoSucceed(info) {
-            me.tileSets = info.result;
-            if (Util.isArray(me.tileSets)) {
-                me.tileSets = info.result[0];
-            }
-            me.dispatchEvent({type: 'tilesetsinfoloaded', value: {tileVersions: me.tileSets.tileVersions}});
-            me.changeTilesVersion();
+    setTileSetsInfo(tileSets) {
+        this.tileSets = tileSets;
+        if (Util.isArray(this.tileSets)) {
+            this.tileSets = tileSets[0];
         }
+        this.dispatchEvent({type: 'tilesetsinfoloaded', value: {tileVersions: this.tileSets.tileVersions}});
+        this.changeTilesVersion();
     }
+
 
     //请求上一个版本切片，并重新绘制。
     lastTilesVersion() {

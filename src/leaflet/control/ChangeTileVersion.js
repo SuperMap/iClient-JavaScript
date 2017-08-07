@@ -11,6 +11,7 @@ import '../core/Base';
 import './css/ChangeTileVersion.css';
 import '../mapping/TiledMapLayer' ;
 import L from "leaflet";
+import {MapService} from "../services/MapService";
 export var ChangeTileVersion = L.Control.extend({
 
     options: {
@@ -108,10 +109,14 @@ export var ChangeTileVersion = L.Control.extend({
 
     //请求获取切片集信息
     getTileSetsInfo: function () {
-        if (!this.options.layer) {
-            return;
+        var me = this;
+        if (me.options.layer) {
+            new MapService(me.options.layer._url).getTilesets(getTilesInfoSucceed);
+            function getTilesInfoSucceed(info) {
+                me.options.layer.serTileSetsInfo(info.result);
+            }
+
         }
-        this.options.layer.getTileSetsInfo();
         return this;
     },
 

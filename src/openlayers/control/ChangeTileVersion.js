@@ -1,5 +1,6 @@
 import './css/ChangeTileVersion.css';
 import ol from 'openlayers/dist/ol-debug';
+import MapService from "../services/MapService"
 ol.supermap = ol.supermap || {};
 ol.supermap.control = ol.supermap.control || {};
 
@@ -280,10 +281,13 @@ export default class ChangeTileVersion extends ol.control.Control {
 
     //请求获取切片集信息
     getTileSetsInfo() {
-        if (!this.options.layer) {
-            return;
+        var me = this;
+        if (me.options.layer) {
+            new MapService(me.options.layer._url).getTilesets(getTilesInfoSucceed);
+            function getTilesInfoSucceed(info) {
+                me.options.layer.setTileSetsInfo(info.result);
+            }
         }
-        this.options.layer.getTileSetsInfo();
         return this;
     }
 

@@ -39,14 +39,14 @@ export var toSuperMapGeometry = function (geometry) {
 export var resolutionToScale = function (resolution, dpi, mapUnit) {
     var inchPerMeter = 1 / 0.0254;
     // 地球半径。
-    var meterPerMapUnit = this.getMeterPerMapUnit(mapUnit);
+    var meterPerMapUnit = getMeterPerMapUnit(mapUnit);
     var scale = resolution * dpi * inchPerMeter * meterPerMapUnit;
     scale = 1 / scale;
     return scale;
 };
 export var scaleToResolution = function (scale, dpi, mapUnit) {
     var inchPerMeter = 1 / 0.0254;
-    var meterPerMapUnitValue = this.getMeterPerMapUnit(mapUnit);
+    var meterPerMapUnitValue = getMeterPerMapUnit(mapUnit);
     var resolution = scale * dpi * inchPerMeter * meterPerMapUnitValue;
     resolution = 1 / resolution;
     return resolution;

@@ -7,9 +7,9 @@
  */
 import '../core/Base';
 import '../../common/security/SecurityManager';
-import '../services/MapService';
 import L from "leaflet";
-import SuperMap from "../../common/SuperMap";
+import {ServerType,Unit} from "../../common/REST";
+import * as Util from "../core/Util";
 export var TiledMapLayer = L.TileLayer.extend({
 
     options: {
@@ -30,7 +30,7 @@ export var TiledMapLayer = L.TileLayer.extend({
         tileversion: null,
 
         crs: null,
-        serverType: SuperMap.ServerType.ISERVER,
+        serverType: ServerType.ISERVER,
 
         attribution: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
     },
@@ -93,29 +93,23 @@ export var TiledMapLayer = L.TileLayer.extend({
             );
         }
 
-        var mapUnit = SuperMap.Unit.METER;
+        var mapUnit = Unit.METER;
         if (crs.code) {
             var array = crs.code.split(':');
             if (array && array.length > 1) {
                 var code = parseInt(array[1]);
-                mapUnit = code && code >= 4000 && code <= 5000 ? SuperMap.Unit.DEGREE : SuperMap.Unit.METER;
+                mapUnit = code && code >= 4000 && code <= 5000 ? Unit.DEGREE : Unit.METER;
             }
         }
-        return L.Util.resolutionToScale(resolution, 96, mapUnit);
+        return Util.resolutionToScale(resolution, 96, mapUnit);
     },
-
-    //获取当前图层切片版本列表,获取成功后存储当前的切片版本信息 并切换多相应的版本
-    getTileSetsInfo: function () {
-        var me = this;
-        L.supermap.mapService(this._url).getTilesets(getTilesInfoSucceed);
-        function getTilesInfoSucceed(info) {
-            me.tileSets = info.result;
-            if (L.Util.isArray(me.tileSets)) {
-                me.tileSets = info.result[0];
-            }
-            me.fire('tilesetsinfoloaded', {tileVersions: me.tileSets.tileVersions});
-            me.changeTilesVersion();
+    serTileSetsInfo: function (tileSets) {
+        this.tileSets = tileSets;
+        if (L.Util.isArray(this.tileSets)) {
+            this.tileSets = this.tileSets[0];
         }
+        this.fire('tilesetsinfoloaded', {tileVersions: this.tileSets.tileVersions});
+        this.changeTilesVersion();
     },
 
     //请求上一个版本切片，并重新绘制。
@@ -218,7 +212,7 @@ export var TiledMapLayer = L.TileLayer.extend({
         }
 
         if (options.clipRegionEnabled && options.clipRegion instanceof L.Path) {
-            options.clipRegion = L.Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
+            options.clipRegion = Util.toSuperMapGeometry(options.clipRegion.toGeoJSON());
             options.clipRegion = SuperMap.Util.toJSON(SuperMap.REST.ServerGeometry.fromGeometry(options.clipRegion));
             params["clipRegionEnabled"] = options.clipRegionEnabled;
             params["clipRegion"] = JSON.stringify(options.clipRegion);

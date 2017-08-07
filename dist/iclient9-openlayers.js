@@ -11978,6 +11978,10 @@ var _olDebug = __webpack_require__(2);
 
 var _olDebug2 = _interopRequireDefault(_olDebug);
 
+var _MapService = __webpack_require__(36);
+
+var _MapService2 = _interopRequireDefault(_MapService);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12290,10 +12294,14 @@ var ChangeTileVersion = function (_ol$control$Control) {
     }, {
         key: 'getTileSetsInfo',
         value: function getTileSetsInfo() {
-            if (!this.options.layer) {
-                return;
+            var me = this;
+            if (me.options.layer) {
+                var getTilesInfoSucceed = function getTilesInfoSucceed(info) {
+                    me.options.layer.setTileSetsInfo(info.result);
+                };
+
+                new _MapService2.default(me.options.layer._url).getTilesets(getTilesInfoSucceed);
             }
-            this.options.layer.getTileSetsInfo();
             return this;
         }
 
@@ -12891,10 +12899,6 @@ var _Util = __webpack_require__(7);
 
 var _Util2 = _interopRequireDefault(_Util);
 
-var _MapService = __webpack_require__(36);
-
-var _MapService2 = _interopRequireDefault(_MapService);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12909,10 +12913,11 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
     function TileSuperMapRest(options) {
         _classCallCheck(this, TileSuperMapRest);
 
+        options = options || {};
         if (options.url === undefined) {
             return _possibleConstructorReturn(_this);
         }
-        options = options || {};
+
         options.attributions = options.attributions || new _olDebug2.default.Attribution({
             html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
         });
@@ -12944,6 +12949,7 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
         }));
 
         _this.options = options;
+        _this._url = options.url;
         //当前切片在切片集中的index
         _this.tileSetsIndex = -1;
         _this.tempIndex = -1;
@@ -13091,19 +13097,14 @@ var TileSuperMapRest = function (_ol$source$TileImage) {
     }
 
     _createClass(TileSuperMapRest, [{
-        key: 'getTileSetsInfo',
-        value: function getTileSetsInfo() {
-            var me = this;
-            new _MapService2.default(me.options.url).getTilesets(getTilesInfoSucceed);
-
-            function getTilesInfoSucceed(info) {
-                me.tileSets = info.result;
-                if (_Util2.default.isArray(me.tileSets)) {
-                    me.tileSets = info.result[0];
-                }
-                me.dispatchEvent({ type: 'tilesetsinfoloaded', value: { tileVersions: me.tileSets.tileVersions } });
-                me.changeTilesVersion();
+        key: 'setTileSetsInfo',
+        value: function setTileSetsInfo(tileSets) {
+            this.tileSets = tileSets;
+            if (_Util2.default.isArray(this.tileSets)) {
+                this.tileSets = tileSets[0];
             }
+            this.dispatchEvent({ type: 'tilesetsinfoloaded', value: { tileVersions: this.tileSets.tileVersions } });
+            this.changeTilesVersion();
         }
 
         //请求上一个版本切片，并重新绘制。
