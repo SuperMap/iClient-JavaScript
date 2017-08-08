@@ -111,15 +111,15 @@ L.Proj.CRS = L.Class.extend({
                     -1, this.options.origin[1]);
         }
 
-        if (this.options.scales) {
+        if (this.options.scales&&this.options.scales.length>0) {
             this._scales = this._toProj4Scales(this.options.scales);
-        } else if (this.options.scaleDenominators) {
+        } else if (this.options.scaleDenominators&&this.options.scaleDenominators.length>0) {
             var scales = [];
             for (var i = 0; i < this.options.scaleDenominators.length; i++) {
                 scales[i] = 1 / this.options.scaleDenominators[i];
             }
             this._scales = this._toProj4Scales(scales);
-        } else if (this.options.resolutions) {
+        } else if (this.options.resolutions&&this.options.resolutions.length>0) {
             this._scales = [];
             for (var i = this.options.resolutions.length - 1; i >= 0; i--) {
                 if (this.options.resolutions[i]) {

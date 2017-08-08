@@ -152,7 +152,7 @@ export var WebMap = L.LayerGroup.extend({
         var mapBounds = L.bounds([bounds.leftBottom.x, bounds.leftBottom.y], [bounds.rightTop.x, bounds.rightTop.y]);
         var layerBounds = layerInfo.bounds ? L.bounds([layerInfo.bounds.leftBottom.x, layerInfo.bounds.leftBottom.y], [layerInfo.bounds.rightTop.x, layerInfo.bounds.rightTop.y]) : null;
         var origin = layerBounds ? L.point(layerBounds.min.x, layerBounds.max.y) : L.point(mapBounds.min.x, mapBounds.max.y);
-        var resolutions = !scales ? [] : this.getResolutionsFromScales(scales, 96, layerInfo.units);
+        var resolutions = !scales ? null : this.getResolutionsFromScales(scales, 96, layerInfo.units);
         var crs = this.createCRS(epsgCode, prjCoordSys ? prjCoordSys.type : '', resolutions, origin, layerBounds || mapBounds);
         var mapOptions = {
             bounds: mapBounds,

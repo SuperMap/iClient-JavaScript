@@ -25,7 +25,7 @@ export var NonEarthCRS = L.Class.extend({
     initialize: function (options) {
         if (options.origin) {
             this.transformation =
-                new L.Transformation(1, options.origin.x,
+                new L.Transformation(1, -options.origin.x,
                     -1, options.origin.y);
         }
         this.projection = L.CRS.NonProjection(options.bounds);
