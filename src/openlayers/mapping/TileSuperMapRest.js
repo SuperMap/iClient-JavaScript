@@ -13,7 +13,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
 
         options.attributions = options.attributions ||
             new ol.Attribution({
-                html: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
+                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
             });
 
         var layerUrl = options.url + "/tileImage.png?";

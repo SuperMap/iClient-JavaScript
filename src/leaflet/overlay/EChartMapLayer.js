@@ -8,7 +8,7 @@ export var EchartsMapLayer = L.Layer.extend({
     _ec: null,
     _echartsOptions: null,
     options: {
-        attribution: '© 2017 百度 ECharts with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>',
+        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>",
         loadWhileAnimating:true
     },
     initialize: function (echartsOptions,options) {

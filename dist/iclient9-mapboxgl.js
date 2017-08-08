@@ -398,7 +398,6 @@ var MapvLayer = exports.MapvLayer = function () {
     return MapvLayer;
 }();
 
-;
 _mapboxGl2.default.supermap = _mapboxGl2.default.supermap || {};
 _mapboxGl2.default.supermap.MapvLayer = MapvLayer;
 

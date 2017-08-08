@@ -63,8 +63,8 @@ export class MapVLayer extends SuperMap.Layer {
         this.div.appendChild(this.canvas);
         var context = this.options && this.options.context || "2d";
         this.canvasContext = this.canvas.getContext(context);
-        this.attribution = "© 2017 百度 MapV with <a target='_blank' href='http://iclient.supermapol.com' " +
-            "style='color: #08c;text-decoration: none;'>SuperMap iClient</a>";
+        this.attribution = "© 2017 百度 MapV with <span>© <a target='_blank' href='http://iclient.supermapol.com' " +
+            "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
     }
 
 

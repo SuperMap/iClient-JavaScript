@@ -70,7 +70,7 @@
         };
         var options = {map: map, dataSet: dataSet, mapvOptions: mapvOptions, attributions: [
             new ol.Attribution({
-                html: ' 数据来源 <a href="http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml/">NYCTaxi(纽约出租车上车点)</a>  © 2017 百度 MapV with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
+                html: " 数据来源 <a href="http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml/">NYCTaxi(纽约出租车上车点)</a>  © 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
             })]};
         var layer = new ol.layer.Image({
             source: new ol.source.Mapv(options)

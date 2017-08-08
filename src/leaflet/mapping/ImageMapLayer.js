@@ -30,7 +30,7 @@ export var ImageMapLayer = L.TileLayer.extend({
         crs: null,
         serverType: SuperMap.ServerType.ISERVER,
 
-        attribution: 'Map Data <a href="http://support.supermap.com.cn/product/iServer.aspx">SuperMap iServer</a> with <a href="http://iclient.supermapol.com/">SuperMap iClient</a>'
+        attribution: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
     },
 
     initialize: function (url, options) {

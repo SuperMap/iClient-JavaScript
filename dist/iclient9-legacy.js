@@ -2074,7 +2074,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         _this.div.appendChild(_this.canvas);
         var context = _this.options && _this.options.context || "2d";
         _this.canvasContext = _this.canvas.getContext(context);
-        _this.attribution = "© 2017 百度 MapV with <a target='_blank' href='http://iclient.supermapol.com' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a>";
+        _this.attribution = "© 2017 百度 MapV with <span>© <a target='_blank' href='http://iclient.supermapol.com' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
         return _this;
     }
 

@@ -37,6 +37,5 @@ export class MapvLayer {
     }
 
 }
-;
 mapboxgl.supermap = mapboxgl.supermap || {};
 mapboxgl.supermap.MapvLayer = MapvLayer;

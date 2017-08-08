@@ -25,7 +25,7 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  * (end)
  *
  */
-export default  class InterpolationAnalystService extends SpatialAnalystBase {
+export default class InterpolationAnalystService extends SpatialAnalystBase {
 
 
     /**

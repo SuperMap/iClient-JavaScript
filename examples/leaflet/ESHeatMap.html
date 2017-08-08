@@ -37,14 +37,14 @@
 <script type="text/javascript" src="https://cdn.rawgit.com/davetroy/geohash-js/master/geohash.js"></script>
 <script type="text/javascript">
     var map,
-            timeControl,
-            liveESService,
-            liveRenderer,
-            liveDataSet,
-            geoFenceLayer,
-            dataUrl = "http://117.122.248.69:9200",
-            info = L.control({position: 'bottomleft'}),
-            layerOptions = getGridOptions();
+        timeControl,
+        liveESService,
+        liveRenderer,
+        liveDataSet,
+        geoFenceLayer,
+        dataUrl = "http://117.122.248.69:9200",
+        info = L.control({position: 'bottomleft'}),
+        layerOptions = getGridOptions();
 
     init();
 
@@ -53,8 +53,8 @@
         info.onAdd = function () {
             var popup = L.DomUtil.create('div');
             popup.innerHTML = "<div class='btn-group' role='group' aria-label='...'>" +
-                    "<button  value='grid' type='button' class='btn btn-default'>格网图</button>" +
-                    "<button value='heatmap' type='button' class='btn btn-default'>热力图</button></div>"
+                "<button  value='grid' type='button' class='btn btn-default'>格网图</button>" +
+                "<button value='heatmap' type='button' class='btn btn-default'>热力图</button></div>"
             handleMapEvent(popup, map);
             return popup;
         };
@@ -357,10 +357,10 @@
                 crs: L.CRS.EPSG3857
             });
             var mbAttr = 'Imagery © <a href="http://mapbox.com">Mapbox</a> with ' +
-                            '<a href="http://iclient.supermapol.com">SuperMap iClient</a> ' +
-                            'with <a href="https://www.elastic.co/products/elasticsearch">ElasticSearch</a>',
-                    token = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
-                    mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + token;
+                '<span>© <a href="http://iclient.supermapol.com">SuperMap iClient</a></span> ' +
+                'with © <a href="https://www.elastic.co/products/elasticsearch">ElasticSearch</a>',
+                token = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
+                mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + token;
 
             L.tileLayer(mbUrl, {id: 'mapbox.dark', attribution: mbAttr, noWrap: true}).addTo(map);
         }
@@ -376,8 +376,8 @@
             me._div = L.DomUtil.create('div', 'panel panel-primary controlPane');
             me._div.style.width = "300px";
             var titleDiv = $("<div class='panel-heading text-center' id='toggle' style='cursor: pointer'>" +
-                    "<span class='panel-title text-center'>控制台</span>&nbsp;" +
-                    "<span class='glyphicon glyphicon-triangle-top' id='toggleIcon' ></span></div>").appendTo(me._div);
+                "<span class='panel-title text-center'>控制台</span>&nbsp;" +
+                "<span class='glyphicon glyphicon-triangle-top' id='toggleIcon' ></span></div>").appendTo(me._div);
 
             var contentDiv = $("<div class='panel-body content center-block' style='font-size: 14px'></div>").appendTo(me._div);
 
@@ -386,30 +386,30 @@
             var defaultOption = getDefaultControlOptions();
 
             $("<div class='form-group form-inline'><label class='text-right' for='startTime' >起始时间</label>" +
-                    "<input id='startTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.startTime +
-                    "' value='" + defaultOption.startTime + "'/></div></div>").appendTo(optionsDiv);
+                "<input id='startTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.startTime +
+                "' value='" + defaultOption.startTime + "'/></div></div>").appendTo(optionsDiv);
 
             $("<div class='form-group form-inline'><label class='text-right' for='endTime' >终止时间</label>" +
-                    "<input id='endTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.endTime +
-                    "' value='" + defaultOption.endTime + "'/></div></div>").appendTo(optionsDiv);
+                "<input id='endTime' type='text' class='form-control input-sm' placeholder='" + defaultOption.endTime +
+                "' value='" + defaultOption.endTime + "'/></div></div>").appendTo(optionsDiv);
 
             $("<div class='form-group form-inline'><label class='text-right' for='speed' >刷新步长(ms)</label>" +
-                    "<input id='speed' type='number' min='1' class='form-control input-sm' placeholder='" + defaultOption.speed +
-                    "' value='" + defaultOption.speed + "'/></div></div>").appendTo(optionsDiv);
+                "<input id='speed' type='number' min='1' class='form-control input-sm' placeholder='" + defaultOption.speed +
+                "' value='" + defaultOption.speed + "'/></div></div>").appendTo(optionsDiv);
 
             $("<div class='form-group form-inline'><label class='text-right' for='frequency' >刷新频率(ms)</label>" +
-                    "<input id='frequency' type='number' min='1' class='form-control input-sm' placeholder='" + defaultOption.frequency +
-                    "' value='" + defaultOption.frequency + "'/></div></div>").appendTo(optionsDiv);
+                "<input id='frequency' type='number' min='1' class='form-control input-sm' placeholder='" + defaultOption.frequency +
+                "' value='" + defaultOption.frequency + "'/></div></div>").appendTo(optionsDiv);
 
             var progressDiv = $("<div class='form-group'><div class='form-horizontal text-center'><div class='form-group'>" +
-                    "<label  for='progress'>当前时间：</label><span class='form-control-static' id='progress'>未开始</span>" +
-                    "</div></div></div>").appendTo(contentDiv);
+                "<label  for='progress'>当前时间：</label><span class='form-control-static' id='progress'>未开始</span>" +
+                "</div></div></div>").appendTo(contentDiv);
 
             var controlDiv = $("<section><div class='form-inline text-center'>" +
-                    "<input id='start' type='button'  class='btn btn-default text-center' value='开始'/>&nbsp;" +
-                    "<input id='pause' type='button'  class='btn btn-default text-center' value='暂停'/>&nbsp;" +
-                    "<input id='stop' type='button'  class='btn btn-default text-center' value='停止'/>" +
-                    "</div></section>").appendTo(contentDiv);
+                "<input id='start' type='button'  class='btn btn-default text-center' value='开始'/>&nbsp;" +
+                "<input id='pause' type='button'  class='btn btn-default text-center' value='暂停'/>&nbsp;" +
+                "<input id='stop' type='button'  class='btn btn-default text-center' value='停止'/>" +
+                "</div></section>").appendTo(contentDiv);
 
 
             me._div.addEventListener('mouseover', function () {

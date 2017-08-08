@@ -1,6 +1,6 @@
 var attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
-    "| Map Data <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a> " +
-    " with <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a>";
+    "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+    " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>";
 
 var mapStyles = {
     basic: {
