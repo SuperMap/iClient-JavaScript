@@ -497,7 +497,7 @@ export default  class GeoJSON extends JSONFormat {
         'point': function (point) {
             var p = [point.x, point.y];
             for (var name in point) {
-                if (name !== "x" && name !== "y") {
+                if (name !== "x" && name !== "y"&&!isNaN(point[name])) {
                     p.push(point[name]);
                 }
             }

@@ -2022,7 +2022,7 @@ var GeoJSON = function (_JSONFormat) {
             'point': function point(_point) {
                 var p = [_point.x, _point.y];
                 for (var name in _point) {
-                    if (name !== "x" && name !== "y") {
+                    if (name !== "x" && name !== "y" && !isNaN(_point[name])) {
                         p.push(_point[name]);
                     }
                 }
@@ -56783,9 +56783,17 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
+ * @const L.supermap.CartoStyleMap
+ * @classdesc aaaaaaa
+ */
+/**
  * CartoCSS中的style属性名与leaflet的style属性名的对应表
  * */
-var CartoStyleMap = exports.CartoStyleMap = _leaflet2.default.supermap.CartoStyleMap = {
+var CartoStyleMap = exports.CartoStyleMap = {
+    /**
+     * @constant L.supermap.CartoStyleMap.prototype.TEXT
+     * @description
+     */
     "TEXT": {
         "text-size": "fontSize",
         "text-face-name": "fontFamily",
@@ -56828,7 +56836,7 @@ var CartoStyleMap = exports.CartoStyleMap = _leaflet2.default.supermap.CartoStyl
         "polygon-comp-op": "globalCompositeOperation"
     }
 };
-
+_leaflet2.default.supermap.CartoStyleMap = CartoStyleMap;
 /**
  * 服务端传过来的style属性名与leaflet的style属性名的对应表
  * */

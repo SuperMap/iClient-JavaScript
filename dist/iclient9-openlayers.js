@@ -1934,7 +1934,7 @@ var GeoJSON = function (_JSONFormat) {
             'point': function point(_point) {
                 var p = [_point.x, _point.y];
                 for (var name in _point) {
-                    if (name !== "x" && name !== "y") {
+                    if (name !== "x" && name !== "y" && !isNaN(_point[name])) {
                         p.push(_point[name]);
                     }
                 }
