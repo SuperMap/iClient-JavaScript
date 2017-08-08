@@ -18,16 +18,16 @@
 
 <script type="text/javascript">
     var map, themeLayer, themeSource,
-        url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326",
-        container = document.getElementById('popup'),
-        content = document.getElementById('popup-content'),
-        overlay = new ol.Overlay(({
-            element: container,
-            autoPan: true,
-            autoPanAnimation: {
-                duration: 250
-            }
-        }));
+            url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China_4326",
+            container = document.getElementById('popup'),
+            content = document.getElementById('popup-content'),
+            overlay = new ol.Overlay(({
+                element: container,
+                autoPan: true,
+                autoPanAnimation: {
+                    duration: 250
+                }
+            }));
     new ol.supermap.MapService(url).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
@@ -120,10 +120,11 @@
             }
         }
 
-        var pointerInteraction = new ol.interaction.Pointer();
-        pointerInteraction.handleMoveEvent_ = function (event) {
-            themeSource.fire('mousemove', event);
-        };
+        var pointerInteraction = new ol.interaction.Pointer({
+            handleMoveEvent: function (event) {
+                themeSource.fire('mousemove', event);
+            }
+        });
         map.addInteraction(pointerInteraction);
     });
 

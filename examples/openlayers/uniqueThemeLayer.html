@@ -271,10 +271,11 @@
             }
         });
 
-        var pointerInteraction = new ol.interaction.Pointer();
-        pointerInteraction.handleMoveEvent_ = function (event) {
-            themeSource.fire('mousemove', event);
-        };
+        var pointerInteraction = new ol.interaction.Pointer({
+            handleMoveEvent: function (event) {
+                themeSource.fire('mousemove', event);
+            }
+        });
         map.addInteraction(pointerInteraction);
         clearLayer();
         var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
@@ -292,7 +293,8 @@
             eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}
         });
         getFeatureBySQLService.processAsync(getFeatureBySQLParams);
-    });
+    })
+    ;
 
     function processCompleted(getFeaturesEventArgs) {
         var result = getFeaturesEventArgs.result;

@@ -14265,28 +14265,30 @@ var Mapv = function (_ol$source$ImageCanva) {
             state: options.state
         }));
 
-        _this.layer = new _MapvLayer2.default(opt_options.map, opt_options.dataSet, opt_options.mapvOptions, _this);
-        _this.layer.canvasLayer.draw();
         _this.map = opt_options.map;
+        _this.dataSet = opt_options.dataSet;
+        _this.mapvOptions = opt_options.mapvOptions;
 
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
-            if (this.layer) {
-                if (!this.layer.isEnabledTime()) {
-                    this.layer.canvasLayer.draw();
-                }
-                var mapWidth = Math.ceil(_olDebug2.default.extent.getWidth(extent) / resolution * pixelRatio);
-                var mapHeight = Math.ceil(_olDebug2.default.extent.getHeight(extent) / resolution * pixelRatio);
-                var width = this.map.getSize()[0] * pixelRatio;
-                var height = this.map.getSize()[1] * pixelRatio;
-                var canvas = this.layer.canvasLayer.canvas;
-                var context = _Util2.default.createCanvasContext2D(mapWidth, mapHeight);
-                context.drawImage(canvas, 0, 0, width, height, (mapWidth - width) / 2, (mapHeight - height) / 2, width, height);
-                if (this.resolution !== resolution || JSON.stringify(this.extent) !== JSON.stringify(extent)) {
-                    this.resolution = resolution;
-                    this.extent = extent;
-                }
-                return context.canvas;
+            var mapWidth = Math.round(_olDebug2.default.extent.getWidth(extent) / resolution) * pixelRatio;
+            var mapHeight = Math.round(_olDebug2.default.extent.getHeight(extent) / resolution) * pixelRatio;
+            var width = this.map.getSize()[0] * pixelRatio;
+            var height = this.map.getSize()[1] * pixelRatio;
+            if (!this.layer) {
+                this.layer = new _MapvLayer2.default(this.map, this.dataSet, this.mapvOptions, mapWidth, mapHeight, this);
             }
+            this.layer.offset = [(mapWidth - width) / 2, (mapHeight - height) / 2];
+            if (!this.layer.isEnabledTime()) {
+                this.layer.canvasLayer.draw(mapWidth, mapHeight);
+            }
+            var canvas = this.layer.canvasLayer.canvas;
+            var context = _Util2.default.createCanvasContext2D(mapWidth, mapHeight);
+            context.drawImage(canvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
+            if (this.resolution !== resolution || JSON.stringify(this.extent) !== JSON.stringify(extent)) {
+                this.resolution = resolution;
+                this.extent = extent;
+            }
+            return context.canvas;
         }
         return _this;
     }
@@ -51648,12 +51650,14 @@ var MapvCanvasLayer = function () {
         _classCallCheck(this, MapvCanvasLayer);
 
         this.options = options || {};
+        this.enableMassClear = this.options.enableMassClear;
+        this._map = options.map;
         this.paneName = this.options.paneName || 'mapPane';
         this.context = this.options.context || '2d';
         this.zIndex = this.options.zIndex || 2;
         this.mixBlendMode = this.options.mixBlendMode || null;
-        this.enableMassClear = this.options.enableMassClear;
-        this._map = options.map;
+        this.width = options.width;
+        this.height = options.height;
         this.initialize();
     }
 
@@ -51665,11 +51669,10 @@ var MapvCanvasLayer = function () {
             canvas.style.cssText = "position:absolute;" + "left:0;" + "top:0;" + "z-index:" + me.zIndex + ";user-select:none;";
             canvas.style.mixBlendMode = me.mixBlendMode;
             canvas.className = "mapvClass";
-            var size = me._map.getSize();
             var global$2 = typeof window === 'undefined' ? {} : window;
             var devicePixelRatio = me.devicePixelRatio = global$2.devicePixelRatio;
-            canvas.width = size[0];
-            canvas.height = size[1];
+            canvas.width = me.width;
+            canvas.height = me.height;
             if (me.context == '2d') {
                 canvas.getContext(me.context).scale(devicePixelRatio, devicePixelRatio);
             }
@@ -51678,17 +51681,12 @@ var MapvCanvasLayer = function () {
         }
     }, {
         key: 'draw',
-        value: function draw() {
-            var size = this._map.getSize();
-            var center = this._map.getView().getCenter();
-            if (center) {
-                var _p = this._map.getPixelFromCoordinate(center);
-                if (_p) {
-                    this.canvas.style.left = _p[0] - size[0] / 2 + 'px';
-                    this.canvas.style.top = _p[1] - size[1] / 2 + 'px';
-                    this.options.update && this.options.update.call(this);
-                }
-            }
+        value: function draw(mapWidth, mapHeight) {
+            this.canvas.width = mapWidth;
+            this.canvas.height = mapHeight;
+            this.canvas.style.width = mapWidth + "px";
+            this.canvas.style.height = mapHeight + "px";
+            this.options.update && this.options.update.call(this);
         }
     }, {
         key: 'getContainer',
@@ -51750,7 +51748,7 @@ var BaiduMapLayer = _mapv.baiduMapLayer ? _mapv.baiduMapLayer.__proto__ : Functi
 var MapvLayer = function (_BaiduMapLayer) {
     _inherits(MapvLayer, _BaiduMapLayer);
 
-    function MapvLayer(map, dataSet, options, source) {
+    function MapvLayer(map, dataSet, options, mapWidth, mapHeight, source) {
         _classCallCheck(this, MapvLayer);
 
         var _this = _possibleConstructorReturn(this, (MapvLayer.__proto__ || Object.getPrototypeOf(MapvLayer)).call(this, map, dataSet, options));
@@ -51770,6 +51768,8 @@ var MapvLayer = function (_BaiduMapLayer) {
             mixBlendMode: options.mixBlendMode,
             enableMassClear: options.enableMassClear,
             zIndex: options.zIndex,
+            width: mapWidth,
+            height: mapHeight,
             update: function update() {
                 self._canvasUpdate();
             }
@@ -51869,7 +51869,11 @@ var MapvLayer = function (_BaiduMapLayer) {
             }
             var dataGetOptions = {
                 transferCoordinate: function transferCoordinate(coordinate) {
-                    return map.getPixelFromCoordinate(coordinate);
+                    coordinate = map.getPixelFromCoordinate(coordinate);
+                    if (self.offset) {
+                        coordinate = [coordinate[0] + self.offset[0], coordinate[1] + self.offset[1]];
+                    }
+                    return coordinate;
                 }
             };
             if (time !== undefined) {

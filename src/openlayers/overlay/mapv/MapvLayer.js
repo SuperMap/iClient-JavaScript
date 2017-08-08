@@ -5,7 +5,7 @@ var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
 export default class MapvLayer extends BaiduMapLayer {
 
-    constructor(map, dataSet, options, source) {
+    constructor(map, dataSet, options, mapWidth, mapHeight, source) {
         super(map, dataSet, options);
         this.dataSet = dataSet;
         var self = this;
@@ -22,6 +22,8 @@ export default class MapvLayer extends BaiduMapLayer {
             mixBlendMode: options.mixBlendMode,
             enableMassClear: options.enableMassClear,
             zIndex: options.zIndex,
+            width: mapWidth,
+            height: mapHeight,
             update: function update() {
                 self._canvasUpdate();
             }
@@ -113,7 +115,11 @@ export default class MapvLayer extends BaiduMapLayer {
         }
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
-                return map.getPixelFromCoordinate(coordinate);
+                coordinate = map.getPixelFromCoordinate(coordinate);
+                if (self.offset) {
+                    coordinate = [coordinate[0] + self.offset[0], coordinate[1] + self.offset[1]];
+                }
+                return coordinate;
             }
         };
         if (time !== undefined) {

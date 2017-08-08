@@ -105,9 +105,9 @@
 
 <script type="text/javascript">
     var map, options, themeLayer, themeSource,
-        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图",
-        url2 = "http://support.supermap.com.cn:8090/iserver/services/data-jingjin/rest/data",
-        extent = [104.07, 30.54, 119.51, 42.31];
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图",
+            url2 = "http://support.supermap.com.cn:8090/iserver/services/data-jingjin/rest/data",
+            extent = [104.07, 30.54, 119.51, 42.31];
     new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
@@ -205,10 +205,11 @@
             }
         });
 
-        var pointerInteraction = new ol.interaction.Pointer();
-        pointerInteraction.handleMoveEvent_ = function (event) {
-            themeSource.fire('mousemove', event);
-        };
+        var pointerInteraction = new ol.interaction.Pointer({
+            handleMoveEvent: function (event) {
+                themeSource.fire('mousemove', event);
+            }
+        });
         map.addInteraction(pointerInteraction);
         clearLayer();
         var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;

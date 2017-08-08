@@ -3,12 +3,14 @@ export default class MapvCanvasLayer {
 
     constructor(options) {
         this.options = options || {};
+        this.enableMassClear = this.options.enableMassClear;
+        this._map = options.map;
         this.paneName = this.options.paneName || 'mapPane';
         this.context = this.options.context || '2d';
         this.zIndex = this.options.zIndex || 2;
         this.mixBlendMode = this.options.mixBlendMode || null;
-        this.enableMassClear = this.options.enableMassClear;
-        this._map = options.map;
+        this.width = options.width;
+        this.height = options.height;
         this.initialize();
     }
 
@@ -18,11 +20,10 @@ export default class MapvCanvasLayer {
         canvas.style.cssText = "position:absolute;" + "left:0;" + "top:0;" + "z-index:" + me.zIndex + ";user-select:none;";
         canvas.style.mixBlendMode = me.mixBlendMode;
         canvas.className = "mapvClass";
-        var size = me._map.getSize();
         var global$2 = typeof window === 'undefined' ? {} : window;
         var devicePixelRatio = me.devicePixelRatio = global$2.devicePixelRatio;
-        canvas.width = size[0];
-        canvas.height = size[1];
+        canvas.width = me.width;
+        canvas.height = me.height;
         if (me.context == '2d') {
             canvas.getContext(me.context).scale(devicePixelRatio, devicePixelRatio);
         }
@@ -30,17 +31,12 @@ export default class MapvCanvasLayer {
         canvas.style.height = canvas.height + "px";
     }
 
-    draw() {
-        var size = this._map.getSize();
-        var center = this._map.getView().getCenter();
-        if (center) {
-            var _p = this._map.getPixelFromCoordinate(center);
-            if (_p) {
-                this.canvas.style.left = _p[0] - size[0] / 2 + 'px';
-                this.canvas.style.top = _p[1] - size[1] / 2 + 'px';
-                this.options.update && this.options.update.call(this);
-            }
-        }
+    draw(mapWidth, mapHeight) {
+        this.canvas.width = mapWidth;
+        this.canvas.height = mapHeight;
+        this.canvas.style.width = mapWidth + "px";
+        this.canvas.style.height = mapHeight + "px";
+        this.options.update && this.options.update.call(this);
     }
 
     getContainer() {

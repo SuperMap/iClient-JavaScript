@@ -54,8 +54,8 @@ export default  class TimeFlowControl extends TimeControlBase {
                     },
                     fBound = function () {
                         return fToBind.apply(this instanceof fNOP && oThis
-                            ? this
-                            : oThis,
+                                ? this
+                                : oThis,
                             aArgs.concat(Array.prototype.slice.call(arguments)));
                     };
                 fNOP.prototype = this.prototype;
@@ -162,12 +162,14 @@ export default  class TimeFlowControl extends TimeControlBase {
                 //不循环时
                 if (!me.repeat) {
                     me.running = false;
+                    me.stop();
                     return null;
                 }
-
+                me.stop();
                 me.currentTime = me.startTime;
                 me.oldTime = me.currentTime;
-                me.stop();
+                me.start();
+
             }
             //否则时间递增
             else {
