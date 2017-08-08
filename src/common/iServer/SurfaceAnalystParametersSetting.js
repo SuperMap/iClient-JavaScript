@@ -76,14 +76,6 @@ export default  class SurfaceAnalystParametersSetting {
      */
     constructor(options) {
         if (options) {
-            var clipRg = options.clipRegion;
-            if (clipRg) {
-                if (clipRg instanceof SuperMap.Geometry && clipRg.components) {
-                    options.clipRegion = SuperMap.REST.ServerGeometry.fromGeometry(clipRg);
-                } else {
-                    delete options.clipRegion;
-                }
-            }
             SuperMap.Util.extend(this, options);
         }
     }

@@ -74,6 +74,8 @@ export default class SpatialAnalystBase extends CommonServiceBase {
             }
         } else if (result.recordset && result.recordset.features) {
             result.recordset.features = JSON.parse(geoJSONFormat.write(result.recordset.features));
+        }else if(result.resultGeometry){
+            result.resultGeometry = JSON.parse(geoJSONFormat.write(result.resultGeometry));
         }
 
         return result;

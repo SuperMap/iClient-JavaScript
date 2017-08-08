@@ -348,32 +348,56 @@ export var SpatialAnalystService = ServiceBase.extend({
                 var point = params.points[i];
                 if (L.Util.isArray(point)) {
                     params.points[i] = {x: point[0], y: point[1]};
+                }else if(point instanceof L.LatLng){
+                    params.points[i] = {x: point.lng, y: point.lat};
+                }else{
+                    params.points[i] = {x: point.x, y: point.y};
                 }
             }
         }
+        if (params.point) {
+            if(L.Util.isArray(params.point)){
+                params.point = {x: params.point[0], y: params.point[1]};
+            }else if(params.point instanceof L.LatLng){
+                params.point = {x:params.point.lng, y: params.point.lat};
+            }else{
+                params.point = {x:params.point.x, y: params.point.y};
+            }
 
+        }
         if (params.extractRegion) {
             params.extractRegion = Util.toSuperMapGeometry(params.extractRegion);
         }
-        if (params.clipRegion) {
-            params.clipRegion = Util.toSuperMapGeometry(params.clipRegion);
+        if (params.extractParameter && params.extractParameter.clipRegion) {
+            params.extractParameter.clipRegion = Util.toSuperMapGeometry(params.extractParameter.clipRegion);
         }
         if (params.sourceGeometry) {
             params.sourceGeometry = Util.toSuperMapGeometry(params.sourceGeometry);
         }
-        if (params.sourceRoute && params.sourceRoute.points) {
-            params.sourceRoute.points = Util.toSuperMapGeometry(params.sourceRoute.points);
+        if (params.sourceRoute) {
+            if(params.sourceRoute instanceof  L.Polyline){
+                var target={};
+                target.type="LINEM"
+                target.parts=[params.sourceRoute.getLatLngs().length];
+                target.points = [];
+                for(var i=0;i<params.sourceRoute.getLatLngs().length;i++){
+                    var point=params.sourceRoute.getLatLngs()[i];
+                    target.points= target.points.concat({x:point.lng, y: point.lat,measure:point.alt})
+                }
+                params.sourceRoute = target;
+            }
+
         }
         if (params.operateRegions && L.Util.isArray(params.operateRegions)) {
             params.operateRegions.map(function (geometry, key) {
                 params.operateRegions[key] = Util.toSuperMapGeometry(geometry);
             });
         }
-        if (params.sourceRoute && params.sourceRoute.components && L.Util.isArray(params.sourceRoute.components)) {
-            params.sourceRoute.components.map(function (geometry, key) {
-                params.sourceRoute.components[key] = Util.toSuperMapGeometry(geometry);
-            });
-        }
+        // if (params.sourceRoute && params.sourceRoute.components && L.Util.isArray(params.sourceRoute.components)) {
+        //     params.sourceRoute.components.map(function (geometry, key) {
+        //         params.sourceRoute.components[key] = Util.toSuperMapGeometry(geometry);
+        //     });
+        // }
 
         return params;
     },

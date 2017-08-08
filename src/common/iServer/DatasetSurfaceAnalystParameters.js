@@ -74,6 +74,9 @@ export default  class DatasetSurfaceAnalystParameters extends SurfaceAnalystPara
                 tempObj.filterQueryParameter = datasetSurfaceAnalystParameters.filterQueryParameter;
             }
             if (name === "extractParameter") {
+                if (datasetSurfaceAnalystParameters.extractParameter.clipRegion instanceof SuperMap.Geometry && datasetSurfaceAnalystParameters.extractParameter.clipRegion.components) {
+                    datasetSurfaceAnalystParameters.extractParameter.clipRegion = SuperMap.REST.ServerGeometry.fromGeometry(datasetSurfaceAnalystParameters.extractParameter.clipRegion);
+                }
                 tempObj.extractParameter = datasetSurfaceAnalystParameters.extractParameter;
             }
             else if (name === "dataset") {

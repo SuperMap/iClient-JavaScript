@@ -1932,7 +1932,13 @@ var GeoJSON = function (_JSONFormat) {
              * @return {Array} 一个表示一个点的坐标组。
              */
             'point': function point(_point) {
-                return [_point.x, _point.y];
+                var p = [_point.x, _point.y];
+                for (var name in _point) {
+                    if (name !== "x" && name !== "y") {
+                        p.push(_point[name]);
+                    }
+                }
+                return p;
             },
 
             /**
@@ -2473,7 +2479,8 @@ var GeoJSON = function (_JSONFormat) {
                 for (var j = 0; j < geoParts[i]; j++) {
                     pointList.push({
                         x: parseFloat(geoPoints[pointIndex + j].x),
-                        y: parseFloat(geoPoints[pointIndex + j].y)
+                        y: parseFloat(geoPoints[pointIndex + j].y),
+                        measure: parseFloat(geoPoints[pointIndex + j].measure)
                     });
                 }
                 pointIndex += geoParts[i];
@@ -2691,6 +2698,8 @@ var SpatialAnalystBase = function (_CommonServiceBase) {
                 }
             } else if (result.recordset && result.recordset.features) {
                 result.recordset.features = JSON.parse(geoJSONFormat.write(result.recordset.features));
+            } else if (result.resultGeometry) {
+                result.resultGeometry = JSON.parse(geoJSONFormat.write(result.resultGeometry));
             }
 
             return result;
@@ -17857,8 +17866,8 @@ var SpatialAnalystService = function (_ServiceBase) {
             if (params.extractRegion) {
                 params.extractRegion = this.convertGeometry(params.extractRegion);
             }
-            if (params.clipRegion) {
-                params.clipRegion = this.convertGeometry(params.clipRegion);
+            if (params.extractParameter && params.extractParameter.clipRegion) {
+                params.extractParameter.clipRegion = this.convertGeometry(params.extractParameter.clipRegion);
             }
             if (params.sourceGeometry) {
                 params.sourceGeometry = this.convertGeometry(params.sourceGeometry);
@@ -24026,6 +24035,9 @@ var DatasetSurfaceAnalystParameters = function (_SurfaceAnalystParame) {
                     tempObj.filterQueryParameter = datasetSurfaceAnalystParameters.filterQueryParameter;
                 }
                 if (name === "extractParameter") {
+                    if (datasetSurfaceAnalystParameters.extractParameter.clipRegion instanceof _SuperMap2.default.Geometry && datasetSurfaceAnalystParameters.extractParameter.clipRegion.components) {
+                        datasetSurfaceAnalystParameters.extractParameter.clipRegion = _SuperMap2.default.REST.ServerGeometry.fromGeometry(datasetSurfaceAnalystParameters.extractParameter.clipRegion);
+                    }
                     tempObj.extractParameter = datasetSurfaceAnalystParameters.extractParameter;
                 } else if (name === "dataset") {} else if (name === "surfaceAnalystMethod") {} else {
                     tempObj[name] = datasetSurfaceAnalystParameters[name];
@@ -37903,18 +37915,6 @@ var RouteCalculateMeasureParameters = function () {
         if (!options) {
             return this;
         }
-        var routeFromClient = options.sourceRoute;
-        var routeHandle = {};
-        if (routeFromClient && routeFromClient instanceof _SuperMap2.default.Geometry && routeFromClient.components) {
-            routeHandle.type = routeFromClient.type;
-            routeHandle.parts = routeFromClient.parts;
-            var parts = [];
-            for (var i = 0, len = routeFromClient.components.length; i < len; i++) {
-                parts = parts.concat(routeFromClient.components[i].components);
-            }
-            routeHandle.points = parts;
-            options.sourceRoute = routeHandle;
-        }
         _SuperMap2.default.Util.extend(this, options);
     }
 
@@ -40709,14 +40709,6 @@ var SurfaceAnalystParametersSetting = function () {
         this.CLASS_NAME = "SuperMap.SurfaceAnalystParametersSetting";
 
         if (options) {
-            var clipRg = options.clipRegion;
-            if (clipRg) {
-                if (clipRg instanceof _SuperMap2.default.Geometry && clipRg.components) {
-                    options.clipRegion = _SuperMap2.default.REST.ServerGeometry.fromGeometry(clipRg);
-                } else {
-                    delete options.clipRegion;
-                }
-            }
             _SuperMap2.default.Util.extend(this, options);
         }
     }
@@ -40910,6 +40902,7 @@ var SurfaceAnalystService = function (_SpatialAnalystBase) {
         key: 'getJsonParameters',
         value: function getJsonParameters(params) {
             var jsonParameters = "";
+            var parameterObject = {};
             var me = this,
                 end;
             if (params instanceof _DatasetSurfaceAnalystParameters2.default) {
@@ -40920,6 +40913,8 @@ var SurfaceAnalystService = function (_SpatialAnalystBase) {
                 } else {
                     me.url += end === "/" ? "datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() + ".jsonp?returnContent=true" : "/datasets/" + params.dataset + "/" + params.surfaceAnalystMethod.toLowerCase() + ".jsonp?returnContent=true";
                 }
+                _DatasetSurfaceAnalystParameters2.default.toObject(params, parameterObject);
+                jsonParameters = _SuperMap2.default.Util.toJSON(parameterObject);
             } else if (params instanceof _GeometrySurfaceAnalystParameters2.default) {
                 end = me.url.substr(me.url.length - 1, 1);
                 if (me.isInTheSameDomain) {
@@ -40927,10 +40922,11 @@ var SurfaceAnalystService = function (_SpatialAnalystBase) {
                 } else {
                     me.url += end === "/" ? "geometry/" + params.surfaceAnalystMethod.toLowerCase() + ".jsonp?returnContent=true" : "/geometry/" + params.surfaceAnalystMethod.toLowerCase() + ".jsonp?returnContent=true";
                 }
+                jsonParameters = _SuperMap2.default.Util.toJSON(params);
             } else {
                 return;
             }
-            jsonParameters = _SuperMap2.default.Util.toJSON(params);
+
             return jsonParameters;
         }
     }]);

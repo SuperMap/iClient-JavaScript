@@ -53,18 +53,6 @@ export default  class RouteCalculateMeasureParameters {
         if (!options) {
             return this;
         }
-        var routeFromClient = options.sourceRoute;
-        var routeHandle = {};
-        if (routeFromClient && routeFromClient instanceof SuperMap.Geometry && routeFromClient.components) {
-            routeHandle.type = routeFromClient.type;
-            routeHandle.parts = routeFromClient.parts;
-            var parts = [];
-            for (var i = 0, len = routeFromClient.components.length; i < len; i++) {
-                parts = parts.concat(routeFromClient.components[i].components);
-            }
-            routeHandle.points = parts;
-            options.sourceRoute = routeHandle;
-        }
         SuperMap.Util.extend(this, options);
     }
 
@@ -84,8 +72,6 @@ export default  class RouteCalculateMeasureParameters {
             me.isIgnoreGap = false;
         }
     }
-
-
     CLASS_NAME = "SuperMap.RouteCalculateMeasureParameters"
 }
 

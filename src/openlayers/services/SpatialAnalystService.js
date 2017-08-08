@@ -367,8 +367,8 @@ export default class SpatialAnalystService extends ServiceBase {
         if (params.extractRegion) {
             params.extractRegion = this.convertGeometry(params.extractRegion);
         }
-        if (params.clipRegion) {
-            params.clipRegion = this.convertGeometry(params.clipRegion);
+        if (params.extractParameter && params.extractParameter.clipRegion) {
+            params.extractParameter.clipRegion = this.convertGeometry(params.extractParameter.clipRegion);
         }
         if (params.sourceGeometry) {
             params.sourceGeometry = this.convertGeometry(params.sourceGeometry);

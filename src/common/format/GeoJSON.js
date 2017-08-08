@@ -495,7 +495,13 @@ export default  class GeoJSON extends JSONFormat {
          * @return {Array} 一个表示一个点的坐标组。
          */
         'point': function (point) {
-            return [point.x, point.y];
+            var p = [point.x, point.y];
+            for (var name in point) {
+                if (name !== "x" && name !== "y") {
+                    p.push(point[name]);
+                }
+            }
+            return p;
         },
 
         /**
@@ -733,7 +739,8 @@ export default  class GeoJSON extends JSONFormat {
             for (var j = 0; j < geoParts[i]; j++) {
                 pointList.push({
                     x: parseFloat(geoPoints[pointIndex + j].x),
-                    y: parseFloat(geoPoints[pointIndex + j].y)
+                    y: parseFloat(geoPoints[pointIndex + j].y),
+                    measure: parseFloat(geoPoints[pointIndex + j].measure)
                 });
             }
             pointIndex += geoParts[i];
