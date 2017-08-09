@@ -217,6 +217,10 @@ var exampleConfig = {
                     name: "栅格代数运算",
                     thumbnail: "l_mathExpressionAnalysisService.png",
                     fileName: "04_mathExpressionAnalysisService"
+                }, {
+                    name: "核密度分析",
+                    thumbnail: "l_densityKernelAnalystService.png",
+                    fileName: "04_densityKernelAnalystService"
                 }]
             },
             "networkAnalyst": {
