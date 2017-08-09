@@ -2,6 +2,7 @@ import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import {StyleMap} from '../overlay/vectortile/StyleMap';
 import {DeafultCanvasStyle} from '../overlay/vectortile/DeafultCanvasStyle';
+
 ol.supermap = ol.supermap || {};
 
 export default class StyleUtils {
@@ -211,7 +212,8 @@ export default class StyleUtils {
             style = this.getDefaultStyle(type);
         attributes.FEATUREID = feature.getProperties().id;
         attributes.SCALE = scale;
-        var cartoStyleMap = StyleMap.CartoStyleMap[type];
+        var cartoStyleType = feature.getProperties().type === "TEXT" ? "TEXT" : type;
+        var cartoStyleMap = StyleMap.CartoStyleMap[cartoStyleType];
         var fontSize, fontName;
         if (shader) {
             for (var i = 0, len = shader.length; i < len; i++) {
@@ -231,7 +233,7 @@ export default class StyleUtils {
                     } else {
                         if (prop === "globalCompositeOperation") {
                             value = StyleMap.CartoCompOpMap[value];
-                            if (!value || value === "")continue;
+                            if (!value || value === "") continue;
                         } else if (fromServer && prop === 'pointFile') {
                             value = url + '/tileFeature/symbols/' + value.replace(/(___)/gi, '@');
                         }
@@ -244,7 +246,20 @@ export default class StyleUtils {
             }
         }
         if (feature.getProperties().type === 'TEXT') {
-            return this.toOLTextStyle(style, feature.getProperties().texts[0])
+            var text;
+            if (feature.getProperties().texts) {
+                text = feature.getProperties().texts[0];
+            }
+            if (text == null && style.textName) {
+                var textName = style.textName.substring(1, style.textName.length - 1);
+                text = feature.getProperties().attributes ? feature.getProperties().attributes[textName] : feature.getProperties()[textName];
+                if (text != null) {
+                    var texts = feature.getProperties().texts || [];
+                    texts.push(text);
+                    feature.setProperties({texts: texts});
+                }
+            }
+            return this.toOLTextStyle(style, text)
         }
         if (type === 'POINT' || type === 'MULTIPOINT') {
             return this.toOLPointStyle(style);
@@ -332,7 +347,7 @@ export default class StyleUtils {
     }
 
     static dashStyle(style, widthFactor) {
-        if (!style)return [];
+        if (!style) return [];
         var w = style.strokeWidth * widthFactor;
         var str = style.strokeDashstyle;
         switch (str) {
@@ -349,8 +364,8 @@ export default class StyleUtils {
             case 'longdashdot':
                 return [8 * w, 4 * w, 1, 4 * w];
             default:
-                if (!str)return [];
-                if (SuperMap.Util.isArray(str))return str;
+                if (!str) return [];
+                if (SuperMap.Util.isArray(str)) return str;
                 str = SuperMap.String.trim(str).replace(/\s+/g, ",");
                 return str.replace(/\[|\]/gi, "").split(",");
         }

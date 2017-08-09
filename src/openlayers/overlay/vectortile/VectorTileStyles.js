@@ -2,6 +2,7 @@ import ol from 'openlayers/dist/ol-debug';
 import '../../../common/style/CartoCSS';
 import SuperMap from '../../../common/SuperMap';
 import StyleUtils from '../../core/StyleUtils';
+
 ol.supermap = ol.supermap || {};
 
 export default class VectorTileStyles extends ol.Observable {
@@ -266,7 +267,7 @@ export default class VectorTileStyles extends ol.Observable {
             return null;
         }
         var layerInfo = layersInfo[layerName];
-        if (!layerInfo)return null;
+        if (!layerInfo) return null;
         var layerInfo_simple = {layerIndex: layerInfo.layerIndex, ugcLayerType: layerInfo.ugcLayerType};
         switch (layerInfo.ugcLayerType) {
             case "VECTOR":
@@ -306,7 +307,11 @@ export default class VectorTileStyles extends ol.Observable {
         if (!ol.supermap.VectorTileStyles.getDonotNeedServerCartoCss() && ol.supermap.VectorTileStyles.getCartoShaders()[layerName]) {
             //如果是文本，这里特殊处理。
             if (feature.getProperties().textStyle || feature.getProperties().TEXT_FEATURE_CONTENT || layerInfo.type == 'LABEL' && layerInfo.textField) {
-                return StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
+                var featureStyle = StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
+                if (feature.getGeometry().getType().toUpperCase() === "POINT") {
+                    featureStyle = mergeTextFeatureStyle(layerInfo, feature, url);
+                }
+                return featureStyle;
             }
             return getStyleArray(ol.supermap.VectorTileStyles.getCartoShaders()[layerName]);
         }
@@ -323,6 +328,26 @@ export default class VectorTileStyles extends ol.Observable {
             }
             return styleArray;
         }
+
+        function mergeTextFeatureStyle(layerInfo, feature, url) {
+            var textFeatureStyle = StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
+            if (layerInfo.type == 'LABEL') {
+                feature.setProperties({type: "TEXT"});
+                var cartoTextStyles = getStyleArray(ol.supermap.VectorTileStyles.getCartoShaders()[layerName]);
+                var textStyle = textFeatureStyle.getText();
+                for (var i = 0; i < cartoTextStyles.length; i++) {
+                    if (!textStyle) {
+                        textStyle = cartoTextStyles[i].getText();
+                    } else {
+                        textStyle.setText(cartoTextStyles[i].getText().getText());
+                    }
+                }
+                textFeatureStyle.setText(textStyle);
+                return textFeatureStyle;
+            }
+            return textFeatureStyle;
+        }
+
     };
 
     getFeatureStyle(feature) {
