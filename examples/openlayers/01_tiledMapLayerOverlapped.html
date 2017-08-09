@@ -14,9 +14,11 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var map, urlWorld = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
-            urlJinjing = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
+        urlJinjing = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区人口分布图_专题图";
     map = new ol.Map({
         target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
             center: [116.85, 39.79],
             zoom: 7,

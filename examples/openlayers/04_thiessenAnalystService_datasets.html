@@ -25,6 +25,8 @@
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [4503.6240321526, -3861.911472192499],
                 zoom: 1,

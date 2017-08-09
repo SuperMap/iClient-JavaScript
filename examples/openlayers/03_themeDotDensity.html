@@ -14,12 +14,14 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var map, themeLayer, options,
-            url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+        url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
     var mapService = new ol.supermap.MapService(url);
     mapService.getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [0, 0],
                 zoom: 2,

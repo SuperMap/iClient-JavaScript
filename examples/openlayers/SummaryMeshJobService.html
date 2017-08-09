@@ -103,15 +103,17 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var layer, processingsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
-            token = 'oZdJwpVhYnPNEAt8-ykB-Cy39gEZkdvPZ9knTbCdui1SoBeXWVCwx-j5tOVSScotsUX1qwZF44X9m6wNME1kBg..',
-            map = new ol.Map({
-                target: 'map',
-                view: new ol.View({
-                    center: [-73.95, 40.75],
-                    zoom: 12,
-                    projection: 'EPSG:4326'
-                })
-            });
+        token = 'oZdJwpVhYnPNEAt8-ykB-Cy39gEZkdvPZ9knTbCdui1SoBeXWVCwx-j5tOVSScotsUX1qwZF44X9m6wNME1kBg..',
+        map = new ol.Map({
+            target: 'map',
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
+            view: new ol.View({
+                center: [-73.95, 40.75],
+                zoom: 12,
+                projection: 'EPSG:4326'
+            })
+        });
     map.addLayer(new ol.layer.Tile({
         source: new ol.source.Tianditu({
             url: "http://t0.tianditu.com/vec_c/wmts",
@@ -130,11 +132,12 @@
         $("#summaryregionS").show();
     });
     var processingService = new ol.supermap.ProcessingService(processingsUrl),
-            info = new ol.control.Control({element: document.getElementById('popup')});
+        info = new ol.control.Control({element: document.getElementById('popup')});
 
     info.setMap(map);
     map.addControl(info);
     SuperMap.SecurityManager.registerToken('http://117.122.248.69:8090', token);
+
     function getQuery() {
         if ($('#query').val() === "") {
             return "";
@@ -145,6 +148,7 @@
         });
         return query;
     }
+
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);
         $("#model").modal({show: true, backdrop: 'static', keyboard: false});
@@ -194,9 +198,9 @@
         className += state ? "success" : "danger";
         if (!$('#msg_container')[0]) {
             var alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                    "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
-                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                    "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:400px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
             $('body').append(alertDiv)
         }
         $('#msg_container').addClass(className);

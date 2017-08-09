@@ -14,8 +14,8 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var map, options,
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
-            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         extent: extent,
@@ -25,6 +25,8 @@
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [4503.62, -3861.91],
                 zoom: 1,
@@ -63,6 +65,7 @@
             //用专题图展示分析结果
             showAnalysisResult_ThemeGridUnique();
         });
+
         //构造专题图
         function showAnalysisResult_ThemeGridUnique() {
             //配置专题样式

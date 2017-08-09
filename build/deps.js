@@ -410,6 +410,16 @@ deps = {
                     "des": "瓦片版本切换控件"
                 }]
             },
+            "Logo": {
+                "name": "logo控件",
+                "src": [
+                    "./src/leaflet/control/Logo.js"
+                ],
+                "modules": [{
+                    "name": "L.supermap.control.logo",
+                    "des": "logo控件"
+                }]
+            },
         }
 
     },
@@ -682,6 +692,16 @@ deps = {
                 "modules": [{
                     "name": "ol.supermap.control.ChangeTileVersion",
                     "des": "瓦片版本切换控件"
+                }]
+            },
+            "Logo": {
+                "name": "logo控件",
+                "src": [
+                    "./src/openlayers/control/Logo.js"
+                ],
+                "modules": [{
+                    "name": "ol.supermap.control.Logo",
+                    "des": "logo控件"
                 }]
             }
         }

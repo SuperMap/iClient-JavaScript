@@ -1,0 +1,89 @@
+import ol from 'openlayers/dist/ol-debug';
+import logoSrc from '../../common/control/img/iClient.png'
+
+ol.supermap = ol.supermap || {};
+ol.supermap.control = ol.supermap.control || {};
+/**
+ * Class:ol.supermap.control.Logo
+ * @description Logo控件。</br>
+ *              默认不显示，需手动添加控件。
+ * @constructor
+ * @example
+ * (start code)
+ *      var control = new ol.supermap.control.Logo();
+ *      map.addControl(control);
+ * (end)
+ * @param options -{Object} logo控件配置项</br>
+ *        imageUrl - {String} logo图片地址</br>
+ *        width - {String} logo图片宽</br>
+ *        height - {String} logo图片高</br>
+ *        link - {String} 跳转链接</br>
+ *        alt - {String} logo图片失效时显示文本
+ */
+export default class Logo extends ol.control.Control {
+    constructor(options) {
+        options = options || {};
+        options.imageUrl = options.imageUrl || null;
+        options.width = options.width || null;
+        options.height = options.height || null;
+        options.link = options.link || "http://iclient.supermapol.com";
+        options.alt = options.alt || "SuperMap iClient";
+        super(options);
+        this.options = options;
+        this.element = options.element = initLayerout.call(this);
+
+        function initLayerout() {
+            var className = 'ol-control-logo ol-unselectable ol-control';
+            var div = document.createElement("div");
+            div.className = className;
+
+            setDivStyle.call(this, div);
+
+            var imgSrc = logoSrc;
+            if (this.options.imageUrl) {
+                imgSrc = this.options.imageUrl;
+            }
+            var alt = this.options.alt;
+            var link = this.options.link;
+
+            var imageWidth = "96px";
+            var imageHeight = "26px";
+            var styleSize = "width:" + imageWidth + ";height:" + imageHeight + ";";
+            if (this.options.imageUrl) {
+                imageWidth = this.options.width;
+                imageHeight = this.options.height;
+                styleSize = "width:" + imageWidth + ";height:" + imageHeight + ";";
+                if (!imageWidth || !imageHeight) {
+                    styleSize = "";
+                }
+            }
+
+
+            div.innerHTML = "<a href='" + link + "' target='_blank' style='border: none;display: block;'>" +
+                "<img src=" + imgSrc + " alt='" + alt + "'  style='border: none;" + styleSize + "white-space: nowrap'></a>";
+            return div;
+        }
+
+        function setDivStyle(div) {
+            var attributionsElem = document.getElementsByClassName('ol-attribution');
+            attributionsElem = attributionsElem && attributionsElem[0];
+            var attrHeight = attributionsElem && attributionsElem.clientHeight || 29;
+            div.style.bottom = (parseInt(attrHeight) + 6) + "px";
+            div.style.right = "4px";
+            div.style.marginTop = 0;
+            div.style.marginLeft = 0;
+            div.style.marginBottom = 0;
+            div.style.marginRight = 0;
+            var logoStyle = document.createElement('style');
+            logoStyle.type = 'text/css';
+            logoStyle.innerHTML = '.ol-control-logo,.ol-control-logo:hover {' +
+                'background-color: rgba(255,255,255,0);' +
+                '}';
+            document.getElementsByTagName('head')[0].appendChild(logoStyle);
+        }
+
+    }
+}
+ol.supermap.control.Logo = Logo;
+
+

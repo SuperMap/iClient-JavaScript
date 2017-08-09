@@ -143,6 +143,8 @@
             token = 'oZdJwpVhYnPNEAt8-ykB-Cy39gEZkdvPZ9knTbCdui1SoBeXWVCwx-j5tOVSScotsUX1qwZF44X9m6wNME1kBg..',
             map = new ol.Map({
                 target: 'map',
+                controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
                 view: new ol.View({
                     center: [-73.95, 40.75],
                     zoom: 12,

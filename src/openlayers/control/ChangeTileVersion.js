@@ -8,7 +8,7 @@ ol.supermap.control = ol.supermap.control || {};
  * Class:ol.supermap.control.ChangeTileVersion
  * 版本切换控件(目前仅支持IE10及以上)
  * 暂时不支持自定义位置
- * 用法： var control = ol.supermap.control.ChangeTileVersion({
+ * 用法： var control = new ol.supermap.control.ChangeTileVersion({
  *           layer: baseLayer,
  *           orientation: "horizontal"
  *      });

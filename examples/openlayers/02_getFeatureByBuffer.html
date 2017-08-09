@@ -18,6 +18,8 @@
             url = "http://support.supermap.com.cn:8090/iserver/services/data-world/rest/data";
     map = new ol.Map({
         target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
             center: [-10, 15],
             zoom: 3,

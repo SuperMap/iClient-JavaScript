@@ -43,6 +43,8 @@
 
     map = new ol.Map({
         target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
             center: [50, 0],
             zoom: 3,

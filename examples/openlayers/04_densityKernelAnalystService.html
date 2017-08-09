@@ -14,8 +14,8 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var map, options, densityAnalystResult,
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
-            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+        serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
     var extent = [48.4, -7668.25, 8958.85, -55.58];
     var projection = new ol.proj.Projection({
         extent: extent,
@@ -25,6 +25,8 @@
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
             target: 'map',
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [5000, -3700],
                 zoom: 2,
@@ -62,35 +64,35 @@
         //构造栅格专题图
         function showAnalysisResult_ThemeGridRange() {
             var color1 = new SuperMap.ServerColor(255, 212, 170),
-                    color2 = new SuperMap.ServerColor(255, 127, 0),
-                    color3 = new SuperMap.ServerColor(191, 95, 0),
-                    color4 = new SuperMap.ServerColor(255, 0, 0),
-                    color5 = new SuperMap.ServerColor(191, 0, 0);
+                color2 = new SuperMap.ServerColor(255, 127, 0),
+                color3 = new SuperMap.ServerColor(191, 95, 0),
+                color4 = new SuperMap.ServerColor(255, 0, 0),
+                color5 = new SuperMap.ServerColor(191, 0, 0);
             var themeGridRangeIteme1 = new SuperMap.ThemeGridRangeItem({
-                        start: 0,
-                        end: 0.05,
-                        color: color1
-                    }),
-                    themeGridRangeIteme2 = new SuperMap.ThemeGridRangeItem({
-                        start: 0.05,
-                        end: 5,
-                        color: color2
-                    }),
-                    themeGridRangeIteme3 = new SuperMap.ThemeGridRangeItem({
-                        start: 5,
-                        end: 10,
-                        color: color3
-                    }),
-                    themeGridRangeIteme4 = new SuperMap.ThemeGridRangeItem({
-                        start: 10,
-                        end: 100,
-                        color: color4
-                    }),
-                    themeGridRangeIteme5 = new SuperMap.ThemeGridRangeItem({
-                        start: 100,
-                        end: 360,
-                        color: color5
-                    });
+                    start: 0,
+                    end: 0.05,
+                    color: color1
+                }),
+                themeGridRangeIteme2 = new SuperMap.ThemeGridRangeItem({
+                    start: 0.05,
+                    end: 5,
+                    color: color2
+                }),
+                themeGridRangeIteme3 = new SuperMap.ThemeGridRangeItem({
+                    start: 5,
+                    end: 10,
+                    color: color3
+                }),
+                themeGridRangeIteme4 = new SuperMap.ThemeGridRangeItem({
+                    start: 10,
+                    end: 100,
+                    color: color4
+                }),
+                themeGridRangeIteme5 = new SuperMap.ThemeGridRangeItem({
+                    start: 100,
+                    end: 360,
+                    color: color5
+                });
             var themeGridRange = new SuperMap.ThemeGridRange({
                 reverseColor: false,
                 rangeMode: SuperMap.RangeMode.EQUALINTERVAL,

@@ -188,6 +188,8 @@
             }));
     map = new ol.Map({
         target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
         view: view,
         overlays: [overlay]
     });

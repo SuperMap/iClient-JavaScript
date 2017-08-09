@@ -14,6 +14,8 @@
     var baseLayer, url = "http://117.122.248.69:8090/iserver/services/map-ChinaProvinces/rest/maps/ChinaProvinces";
     var map = new ol.Map({
         target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
             center: [104.79, 33.03],
             zoom: 4,

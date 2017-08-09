@@ -14,9 +14,11 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var map, point, vectorLayer, resultLayer,
-            url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+        url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
     map = new ol.Map({
         target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
             center: [100, 0],
             zoom: 3,

@@ -16,6 +16,8 @@
     var map, resultLayer, url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
     map = new ol.Map({
         target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
             center: [0, 0],
             zoom: 2,

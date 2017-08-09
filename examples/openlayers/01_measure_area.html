@@ -16,9 +16,11 @@
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
     var map, interaction, vectorLayer, alertDiv, feature,
-            url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
+        url = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World";
     map = new ol.Map({
         target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
             center: [0, 0],
             zoom: 3,
@@ -60,9 +62,9 @@
         }
         if (!$('#msg_container')[0]) {
             alertDiv = $("<div class='alert alert-dismissible' id='msg_container' role='alert' " +
-                    "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
-                    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
-                    "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
+                "style='z-index:800;position: absolute;top: 20px;left: 40%;width:250px;display: none'>" +
+                "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>" +
+                "<strong><p id='msg' style='word-wrap: break-word'></p></strong></div>");
             $('body').append(alertDiv)
         }
         $('#msg_container').addClass(className);

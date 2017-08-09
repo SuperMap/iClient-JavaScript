@@ -71,6 +71,8 @@
         var mapJSONObj = serviceResult.result;
         var map = new ol.Map({
             target: 'map',
+            controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
             view: new ol.View({
                 center: [116.443571, 39.887549],
                 zoom: 12,

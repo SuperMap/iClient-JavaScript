@@ -2,6 +2,8 @@ import ol from 'openlayers/dist/ol-debug';
 import {FetchRequest} from '../../common/util/FetchRequest';
 import SuperMap from '../../common/SuperMap';
 import StyleUtils from '../core/StyleUtils';
+import Logo from '../control/Logo';
+
 ol.supermap = ol.supermap || {};
 
 export default class WebMap extends ol.Observable {
@@ -108,9 +110,12 @@ export default class WebMap extends ol.Observable {
     createMap(options) {
         if (!this.map) {
             var view = new ol.View(options);
+            var controls = ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new Logo()]);
             this.map = new ol.Map({
                 target: this.target,
-                view: view
+                view: view,
+                controls: controls
             });
             view.fit(options.extent);
         }
@@ -259,9 +264,9 @@ export default class WebMap extends ol.Observable {
             "http://t{0-7}.tianditu.com/{type}_{proj}/wmts?";
         var type = layerInfo.type.split('_')[1].toLowerCase();
         if (layerInfo.layerType === 'OVERLAY_LAYER') {
-            if (type == "vec")type = "cva"
-            if (type == "img")type = "cia"
-            if (type == "ter")type = "cta"
+            if (type == "vec") type = "cva"
+            if (type == "img") type = "cia"
+            if (type == "ter") type = "cta"
         }
         tdtURL = tdtURL.replace("{type}", type).replace("{proj}", proj);
         var layer = new ol.layer.Tile({

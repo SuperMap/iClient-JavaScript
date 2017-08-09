@@ -31,6 +31,15 @@ module.exports = {
 
     module: {
         rules: [{
+            //图片小于30k采用base64编码
+            test: /\.(png|jpg|jpeg|gif|woff)$/,
+            use: [{
+                loader: 'url-loader',
+                options: {
+                    limit: 30000
+                }
+            }]
+        }, {
             test: /\.js/,
             exclude: /node_modules[\/\\]proj4|legacy/,
             loader: 'babel-loader',

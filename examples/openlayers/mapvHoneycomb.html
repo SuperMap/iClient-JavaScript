@@ -18,6 +18,8 @@
             mbUrl = 'https://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=' + token;
     var map = new ol.Map({
         target: 'map',
+        controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+            .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
             center: ol.proj.transform([105.403119, 38.028658], 'EPSG:4326', 'EPSG:3857'),
             zoom: 4,

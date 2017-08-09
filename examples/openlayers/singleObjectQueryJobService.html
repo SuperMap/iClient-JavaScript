@@ -72,6 +72,8 @@
     var layer, processingsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
             map = new ol.Map({
                 target: 'map',
+                controls: ol.control.defaults({attributionOptions: {collapsed: false}})
+                .extend([new ol.supermap.control.Logo()]),
                 view: new ol.View({
                     center: [-73.95, 40.75],
                     zoom: 12,
