@@ -347,11 +347,13 @@ export default class SpatialAnalystService extends ServiceBase {
         }
         if (params.inputPoints) {
             for (var i = 0; i < params.inputPoints.length; i++) {
-                var inputPoint = params.points[i];
+                var inputPoint = params.inputPoints[i];
                 if (Util.isArray(inputPoint)) {
-                    inputPoint.setCoordinates(inputPoint);
+                    params.inputPoints[i] = {x:inputPoint[0], y:inputPoint[1],tag:inputPoint[2]};
+                }else{
+                    params.inputPoints[i] = {x:inputPoint.getCoordinates()[0], y:inputPoint.getCoordinates()[1],tag:inputPoint.tag};
                 }
-                params.inputPoints[i] = new SuperMap.Geometry.Point(inputPoint.getCoordinates()[0], inputPoint.getCoordinates()[1]);
+
             }
         }
         if (params.points) {
@@ -363,7 +365,13 @@ export default class SpatialAnalystService extends ServiceBase {
                 params.points[i] = new SuperMap.Geometry.Point(point.getCoordinates()[0], point.getCoordinates()[1]);
             }
         }
-
+        if (params.point) {
+                var point = params.point;
+                if (Util.isArray(point)) {
+                    point.setCoordinates(point);
+                }
+            params.point = new SuperMap.Geometry.Point(point.getCoordinates()[0], point.getCoordinates()[1]);
+        }
         if (params.extractRegion) {
             params.extractRegion = this.convertGeometry(params.extractRegion);
         }
@@ -373,8 +381,19 @@ export default class SpatialAnalystService extends ServiceBase {
         if (params.sourceGeometry) {
             params.sourceGeometry = this.convertGeometry(params.sourceGeometry);
         }
-        if (params.sourceRoute && params.sourceRoute.points) {
-            params.sourceRoute.points = this.convertGeometry(params.sourceRoute.points);
+        if (params.sourceRoute) {
+            if(params.sourceRoute instanceof  ol.geom.LineString&&params.sourceRoute.getCoordinates()){
+                var target={};
+                target.type="LINEM"
+                target.parts=[params.sourceRoute.getCoordinates()[0].length];
+                target.points = [];
+                for(var i=0;i<params.sourceRoute.getCoordinates()[0].length;i++){
+                    var point=params.sourceRoute.getCoordinates()[0][i];
+                    target.points= target.points.concat({x:point[0], y: point[1],measure:point[2]})
+                }
+                params.sourceRoute = target;
+            }
+
         }
         if (params.operateRegions && Util.isArray(params.operateRegions)) {
             var me = this;

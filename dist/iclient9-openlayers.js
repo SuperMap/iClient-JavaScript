@@ -17886,11 +17886,12 @@ var SpatialAnalystService = function (_ServiceBase) {
             }
             if (params.inputPoints) {
                 for (var i = 0; i < params.inputPoints.length; i++) {
-                    var inputPoint = params.points[i];
+                    var inputPoint = params.inputPoints[i];
                     if (_Util2.default.isArray(inputPoint)) {
-                        inputPoint.setCoordinates(inputPoint);
+                        params.inputPoints[i] = { x: inputPoint[0], y: inputPoint[1], tag: inputPoint[2] };
+                    } else {
+                        params.inputPoints[i] = { x: inputPoint.getCoordinates()[0], y: inputPoint.getCoordinates()[1], tag: inputPoint.tag };
                     }
-                    params.inputPoints[i] = new _SuperMap2.default.Geometry.Point(inputPoint.getCoordinates()[0], inputPoint.getCoordinates()[1]);
                 }
             }
             if (params.points) {
@@ -17902,7 +17903,13 @@ var SpatialAnalystService = function (_ServiceBase) {
                     params.points[i] = new _SuperMap2.default.Geometry.Point(point.getCoordinates()[0], point.getCoordinates()[1]);
                 }
             }
-
+            if (params.point) {
+                var point = params.point;
+                if (_Util2.default.isArray(point)) {
+                    point.setCoordinates(point);
+                }
+                params.point = new _SuperMap2.default.Geometry.Point(point.getCoordinates()[0], point.getCoordinates()[1]);
+            }
             if (params.extractRegion) {
                 params.extractRegion = this.convertGeometry(params.extractRegion);
             }
@@ -17912,8 +17919,18 @@ var SpatialAnalystService = function (_ServiceBase) {
             if (params.sourceGeometry) {
                 params.sourceGeometry = this.convertGeometry(params.sourceGeometry);
             }
-            if (params.sourceRoute && params.sourceRoute.points) {
-                params.sourceRoute.points = this.convertGeometry(params.sourceRoute.points);
+            if (params.sourceRoute) {
+                if (params.sourceRoute instanceof _olDebug2.default.geom.LineString && params.sourceRoute.getCoordinates()) {
+                    var target = {};
+                    target.type = "LINEM";
+                    target.parts = [params.sourceRoute.getCoordinates()[0].length];
+                    target.points = [];
+                    for (var i = 0; i < params.sourceRoute.getCoordinates()[0].length; i++) {
+                        var point = params.sourceRoute.getCoordinates()[0][i];
+                        target.points = target.points.concat({ x: point[0], y: point[1], measure: point[2] });
+                    }
+                    params.sourceRoute = target;
+                }
             }
             if (params.operateRegions && _Util2.default.isArray(params.operateRegions)) {
                 var me = this;

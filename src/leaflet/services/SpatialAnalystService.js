@@ -338,7 +338,7 @@ export var SpatialAnalystService = ServiceBase.extend({
             for (var i = 0; i < params.inputPoints.length; i++) {
                 var inputPoint = params.inputPoints[i];
                 if (L.Util.isArray(inputPoint)) {
-                    params.inputPoints[i] = {x: inputPoint[0], y: inputPoint[1]};
+                    params.inputPoints[i] = {x: inputPoint[0], y: inputPoint[1],tag:inputPoint[2]};
                 }
             }
         }
