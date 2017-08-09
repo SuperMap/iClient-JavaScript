@@ -44,10 +44,6 @@ export var EchartsMapLayer = L.Layer.extend({
         map.on("zoomstart", function (e) {
             me._disableEchartsContainer();
         });
-        map.on("zoomend", function (e) {
-            me._enableEchartsContainer();
-        });
-
         echarts.registerAction({
             type: 'LeafletMapLayout',
             event: 'LeafletMapLayout',
@@ -92,9 +88,11 @@ export var EchartsMapLayer = L.Layer.extend({
                     if (rendering) {
                         return
                     }
+
                     api.dispatchAction({
                         type: 'LeafletMapLayout'
                     })
+                    me._enableEchartsContainer();
                 }
                 if(me.options.loadWhileAnimating){
                     leafletMap.off('move', this._oldMoveHandler)

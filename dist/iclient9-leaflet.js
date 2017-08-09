@@ -2786,7 +2786,8 @@ var SpatialAnalystBase = function (_CommonServiceBase) {
                 }
             } else if (result.recordset && result.recordset.features) {
                 result.recordset.features = JSON.parse(geoJSONFormat.write(result.recordset.features));
-            } else if (result.resultGeometry) {
+            }
+            if (result.resultGeometry) {
                 result.resultGeometry = JSON.parse(geoJSONFormat.write(result.resultGeometry));
             }
 
@@ -17085,10 +17086,6 @@ var EchartsMapLayer = exports.EchartsMapLayer = _leaflet2.default.Layer.extend({
         map.on("zoomstart", function (e) {
             me._disableEchartsContainer();
         });
-        map.on("zoomend", function (e) {
-            me._enableEchartsContainer();
-        });
-
         _echarts2.default.registerAction({
             type: 'LeafletMapLayout',
             event: 'LeafletMapLayout',
@@ -17131,9 +17128,11 @@ var EchartsMapLayer = exports.EchartsMapLayer = _leaflet2.default.Layer.extend({
                     if (rendering) {
                         return;
                     }
+
                     api.dispatchAction({
                         type: 'LeafletMapLayout'
                     });
+                    me._enableEchartsContainer();
                 }
                 if (me.options.loadWhileAnimating) {
                     leafletMap.off('move', this._oldMoveHandler);
@@ -26086,21 +26085,19 @@ var BufferAnalystService = function (_SpatialAnalystBase) {
          * @param result - {Object} 服务器返回的结果对象。
          *
          */
+        // toGeoJSONResult(result) {
+        //     if (!result) {
+        //         return result;
+        //     }
+        //
+        //     var analystResult = super.toGeoJSONResult(result);
+        //     if (analystResult.resultGeometry) {
+        //         var geoJSONFormat = new GeoJSON();
+        //         result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
+        //     }
+        //     return result;
+        // }
 
-    }, {
-        key: 'toGeoJSONResult',
-        value: function toGeoJSONResult(result) {
-            if (!result) {
-                return result;
-            }
-
-            var analystResult = _get(BufferAnalystService.prototype.__proto__ || Object.getPrototypeOf(BufferAnalystService.prototype), 'toGeoJSONResult', this).call(this, result);
-            if (analystResult.resultGeometry) {
-                var geoJSONFormat = new _GeoJSON2.default();
-                result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
-            }
-            return result;
-        }
     }]);
 
     return BufferAnalystService;
@@ -63546,7 +63543,7 @@ var names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 /* 396 */
 /***/ (function(module, exports) {
 
-module.exports = {"_from":"proj4@2.4.3","_id":"proj4@2.4.3","_inBundle":false,"_integrity":"sha1-87t+Yxv/wEfDaho8wUUzoDu+mWk=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.4.3","name":"proj4","escapedName":"proj4","rawSpec":"2.4.3","saveSpec":null,"fetchSpec":"2.4.3"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz","_shasum":"f3bb7e631bffc047c36a1a3cc14533a03bbe9969","_spec":"proj4@2.4.3","_where":"E:\\codes\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"bundleDependencies":false,"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"1.0.0","wkt-parser":"^1.1.3"},"deprecated":false,"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~1.1.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","grunt-rollup":"^1.0.1","istanbul":"~0.2.4","mocha":"~1.17.1","rollup":"^0.41.4","rollup-plugin-json":"^2.0.1","rollup-plugin-node-resolve":"^2.0.0","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","license":"MIT","main":"dist/proj4-src.js","module":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"build":"grunt","build:tmerc":"grunt build:tmerc","test":"npm run build && istanbul test _mocha test/test.js"},"version":"2.4.3"}
+module.exports = {"_args":[[{"raw":"proj4@2.4.3","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.4.3","spec":"2.4.3","type":"version"},"E:\\git\\iClient9"]],"_from":"proj4@2.4.3","_id":"proj4@2.4.3","_inCache":true,"_location":"/proj4","_nodeVersion":"6.9.2","_npmOperationalInternal":{"host":"packages-18-east.internal.npmjs.com","tmp":"tmp/proj4-2.4.3.tgz_1488570790416_0.3068596587982029"},"_npmUser":{"name":"cwmma","email":"calvin.metcalf@gmail.com"},"_npmVersion":"4.0.5","_phantomChildren":{},"_requested":{"raw":"proj4@2.4.3","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.4.3","spec":"2.4.3","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz","_shasum":"f3bb7e631bffc047c36a1a3cc14533a03bbe9969","_shrinkwrap":null,"_spec":"proj4@2.4.3","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"1.0.0","wkt-parser":"^1.1.3"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~1.1.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","grunt-rollup":"^1.0.1","istanbul":"~0.2.4","mocha":"~1.17.1","rollup":"^0.41.4","rollup-plugin-json":"^2.0.1","rollup-plugin-node-resolve":"^2.0.0","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"f3bb7e631bffc047c36a1a3cc14533a03bbe9969","tarball":"https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz"},"gitHead":"e975a5462ad7abb23e33ea75281eb749e77e1510","homepage":"https://github.com/proj4js/proj4js#readme","license":"MIT","main":"dist/proj4-src.js","maintainers":[{"name":"cwmma","email":"calvin.metcalf@gmail.com"},{"name":"ahocevar","email":"andreas.hocevar@gmail.com"}],"module":"lib/index.js","name":"proj4","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"build":"grunt","build:tmerc":"grunt build:tmerc","test":"npm run build && istanbul test _mocha test/test.js"},"version":"2.4.3"}
 
 /***/ }),
 /* 397 */

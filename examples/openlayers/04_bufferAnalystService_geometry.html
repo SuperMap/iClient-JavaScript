@@ -123,7 +123,7 @@
         //向iServer发送请求并返回结果
         new ol.supermap.SpatialAnalystService(serviceUrl).bufferAnalysis(geoBufferAnalystParams, function (serviceResult) {
             var bufferSource = new ol.source.Vector({
-                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result)
+                features: (new ol.format.GeoJSON()).readFeatures(serviceResult.result.resultGeometry)
             });
             var resultLayer = new ol.layer.Vector({
                 source: bufferSource,

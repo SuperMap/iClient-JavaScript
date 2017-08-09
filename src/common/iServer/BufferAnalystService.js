@@ -111,18 +111,18 @@ export default  class BufferAnalystService extends SpatialAnalystBase {
      * @param result - {Object} 服务器返回的结果对象。
      *
      */
-    toGeoJSONResult(result) {
-        if (!result) {
-            return result;
-        }
-
-        var analystResult = super.toGeoJSONResult(result);
-        if (analystResult.resultGeometry) {
-            var geoJSONFormat = new GeoJSON();
-            result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
-        }
-        return result;
-    }
+    // toGeoJSONResult(result) {
+    //     if (!result) {
+    //         return result;
+    //     }
+    //
+    //     var analystResult = super.toGeoJSONResult(result);
+    //     if (analystResult.resultGeometry) {
+    //         var geoJSONFormat = new GeoJSON();
+    //         result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
+    //     }
+    //     return result;
+    // }
 
     CLASS_NAME = "SuperMap.BufferAnalystService"
 }

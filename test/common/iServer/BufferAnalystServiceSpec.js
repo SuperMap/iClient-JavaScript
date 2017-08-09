@@ -92,7 +92,7 @@ describe('testBufferAnalystService_processAsync', function () {
 
         setTimeout(function () {
             try {
-                var bfMode = analystEventArgsSystem.result;
+                var bfMode = analystEventArgsSystem.result.resultGeometry;
                 expect(bfMode).not.toBeNull();
                 expect(bfMode.type).toEqual("Feature");
                 bfServiceByGeometry.destroy();

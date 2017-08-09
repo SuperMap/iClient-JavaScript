@@ -2698,7 +2698,8 @@ var SpatialAnalystBase = function (_CommonServiceBase) {
                 }
             } else if (result.recordset && result.recordset.features) {
                 result.recordset.features = JSON.parse(geoJSONFormat.write(result.recordset.features));
-            } else if (result.resultGeometry) {
+            }
+            if (result.resultGeometry) {
                 result.resultGeometry = JSON.parse(geoJSONFormat.write(result.resultGeometry));
             }
 
@@ -21137,21 +21138,19 @@ var BufferAnalystService = function (_SpatialAnalystBase) {
          * @param result - {Object} 服务器返回的结果对象。
          *
          */
+        // toGeoJSONResult(result) {
+        //     if (!result) {
+        //         return result;
+        //     }
+        //
+        //     var analystResult = super.toGeoJSONResult(result);
+        //     if (analystResult.resultGeometry) {
+        //         var geoJSONFormat = new GeoJSON();
+        //         result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
+        //     }
+        //     return result;
+        // }
 
-    }, {
-        key: 'toGeoJSONResult',
-        value: function toGeoJSONResult(result) {
-            if (!result) {
-                return result;
-            }
-
-            var analystResult = _get(BufferAnalystService.prototype.__proto__ || Object.getPrototypeOf(BufferAnalystService.prototype), 'toGeoJSONResult', this).call(this, result);
-            if (analystResult.resultGeometry) {
-                var geoJSONFormat = new _GeoJSON2.default();
-                result = JSON.parse(geoJSONFormat.write(analystResult.resultGeometry));
-            }
-            return result;
-        }
     }]);
 
     return BufferAnalystService;
