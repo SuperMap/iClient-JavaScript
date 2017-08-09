@@ -215,7 +215,12 @@ export var  TileVectorLayer = VectorGrid.extend({
 
         //处理标签图层
         if (layerStyleInfo.textField) {
-            feature.properties.textField = layerStyleInfo.textField;
+            var textField = layerStyleInfo.textField;
+            if (textField && textField.indexOf('.')) {
+                var arr = textField.split('.');
+                textField = arr && arr.length > 0 && arr[arr.length - 1];
+            }
+            feature.properties.textField = textField;
         }
 
         me.vectorTileLayerStyles = me.vectorTileLayerStyles || {};

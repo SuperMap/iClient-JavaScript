@@ -92,7 +92,12 @@ export default class StyleUtils {
                 text = feature.getProperties().texts[0];
             }
             if (layerInfo.type === 'LABEL') {
-                text = feature.getProperties().attributes ? feature.getProperties().attributes[layerInfo.textField] : feature.getProperties()[layerInfo.textField];
+                var textField = layerInfo.textField;
+                if (textField && textField.indexOf('.')) {
+                    var arr = textField.split('.');
+                    textField = arr && arr.length > 0 && arr[arr.length - 1];
+                }
+                text = feature.getProperties().attributes ? feature.getProperties().attributes[textField] : feature.getProperties()[textField];
             }
             if (feature.getProperties().TEXT_FEATURE_CONTENT) {
                 text = feature.getProperties().TEXT_FEATURE_CONTENT;
