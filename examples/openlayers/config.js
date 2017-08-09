@@ -162,6 +162,10 @@ var exampleConfig = {
                     thumbnail: "ol_overlayAnalystService.png",
                     fileName: "04_overlayAnalystService"
                 }, {
+                    name: "表面分析",
+                    thumbnail: "ol_surfaceAnalystService.png",
+                    fileName: "04_surfaceAnalystService"
+                },{
                     name: "动态分析",
                     thumbnail: "ol_generateSpatialDataService.png",
                     fileName: "04_generateSpatialDataService"

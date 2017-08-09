@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析-表面分析(提取等值线)</title>
+
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/openlayers/4.0.1/ol.css" rel="stylesheet">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
+<div id="map" style="width: 100%;height:100%"></div>
+
+<script src="http://cdn.bootcss.com/openlayers/4.0.1/ol-debug.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-openlayers.js"></script>
+<script type="text/javascript">
+    var map, options, surfaceAnalystService, surfaceAnalystParameters,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-temperature/rest/maps/全国温度变化图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+    var mapService = new ol.supermap.MapService(baseUrl);
+    var extent = [-2640403.63, 1873792.1, 3247669.39, 5921501.4];
+    var projection = new ol.proj.Projection({
+        extent: extent,
+        units: 'm'
+    });
+    mapService.getMapInfo(function (serviceResult) {
+        var mapJSONObj = serviceResult.result;
+        map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: [531762, 3580330],
+                zoom: 2,
+                projection: projection
+            })
+        });
+        options = ol.source.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        var layer = new ol.layer.Tile({
+            source: new ol.source.TileSuperMapRest(options)
+        });
+        map.addLayer(layer);
+        surfaceAnalystProcess();
+    });
+
+    function surfaceAnalystProcess() {
+        //创建表面分析服务参数
+        var region = new ol.geom.Polygon([[
+            [0, 4010338],
+            [1063524, 4010338],
+            [1063524, 3150322],
+            [0, 3150322]
+        ]]);
+        surfaceAnalystParameters = new SuperMap.DatasetSurfaceAnalystParameters({
+            extractParameter: new SuperMap.SurfaceAnalystParametersSetting({
+                datumValue: 0,
+                interval: 2,
+                resampleTolerance: 0,
+                smoothMethod: SuperMap.SmoothMethod.BSPLINE,
+                smoothness: 3,
+                clipRegion: region
+            }),
+            dataset: "SamplesP@Interpolation",
+            resolution: 3000,
+            zValueFieldName: "AVG_TMP"
+        });
+        //创建表面分析服务实例
+        surfaceAnalystService = new ol.supermap.SpatialAnalystService(serviceUrl);
+        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, function (surfaceAnalystServiceResult) {
+            var result = surfaceAnalystServiceResult.result;
+            if (result && result.recordset && result.recordset.features) {
+                var resultLayer = new ol.layer.Vector({
+                    source: new ol.source.Vector({
+                        features: (new ol.format.GeoJSON()).readFeatures(result.recordset.features)
+                    }),
+                    style: new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(100, 100, 225, 10)',
+                            width: 1.5
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(0, 0, 255, 0.1)'
+                        })
+                    })
+                });
+                map.addLayer(resultLayer);
+            }
+        });
+    }
+</script>
+</body>
+</html>

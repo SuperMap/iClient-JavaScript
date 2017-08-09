@@ -166,9 +166,49 @@ var exampleConfig = {
                     thumbnail: "l_overlayAnalystService.png",
                     fileName: "04_overlayAnalystService"
                 }, {
+                    name: "表面分析",
+                    thumbnail: "l_surfaceAnalystService.png",
+                    fileName: "04_surfaceAnalystService"
+                },{
                     name: "动态分段",
                     thumbnail: "l_generateSpatialDataService.png",
                     fileName: "04_generateSpatialDataService"
+                },{
+                    name: "点定里程",
+                    thumbnail: "l_routeCalculateMeasureService.png",
+                    fileName: "04_routeCalculateMeasureService"
+                }, {
+                    name: "里程定点",
+                    thumbnail: "l_routeLocatorService_point.png",
+                    fileName: "04_routeLocatorService_point"
+                }, {
+                    name: "里程定线",
+                    thumbnail: "l_routeLocatorService_line.png",
+                    fileName: "04_routeLocatorService_line"
+                },{
+                    name: "点密度插值分析",
+                    thumbnail: "l_interpolationAnalystService-Density.png",
+                    fileName: "04_interpolationAnalystService_Density"
+                }, {
+                    name: "反距离加权插值分析",
+                    thumbnail: "l_interpolationAnalystService-IDW-dataset.png",
+                    fileName: "04_interpolationAnalystService_IDW_dataset"
+                }, {
+                    name: "普通克吕金插值分析",
+                    thumbnail: "l_interpolationAnalystService-Kriging.png",
+                    fileName: "04_interpolationAnalystService_Kriging"
+                }, {
+                    name: "泛克吕金插值分析",
+                    thumbnail: "l_interpolationAnalystService_KrigingUniversal.png",
+                    fileName: "04_interpolationAnalystService_KrigingUniversal"
+                }, {
+                    name: "径向基函数插值分析",
+                    thumbnail: "l_interpolationAnalystService_RBF.png",
+                    fileName: "04_interpolationAnalystService_RBF"
+                }, {
+                    name: "离散点插值分析",
+                    thumbnail: "l_interpolationAnalystService_IDW_geometry.png",
+                    fileName: "04_interpolationAnalystService_IDW_geometry"
                 }, {
                     name: "地形曲率计算",
                     thumbnail: "l_terrainCurvatureCalculationService.png",

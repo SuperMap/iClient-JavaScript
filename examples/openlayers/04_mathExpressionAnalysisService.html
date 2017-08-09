@@ -49,14 +49,7 @@
             targetDatasource: "Jingjin",
             //结果数据集名称,必设
             resultGridName: "MathExpressionAnalysis_Result",
-            deleteExistResultDataset: true,
-            /*//指定数据集中参与栅格代数运算的区域
-             extractRegion: L.polygon([
-             [38, 116],
-             [38, 117],
-             [42, 117],
-             [42, 116]
-             ])*/
+            deleteExistResultDataset: true
         });
         //向iServer发起栅格代数运算请求
         new ol.supermap.SpatialAnalystService(serviceUrl).mathExpressionAnalysis(mathExpressionAnalysisParameters, function (serviceResult) {
@@ -122,7 +115,6 @@
                             url: baseUrl,
                             noWrap: true,
                             cacheEnabled: false,
-                            transparent: true,
                             layersID: result.newResourceID,
                             tileGrid: new ol.tilegrid.TileGrid({
                                 extent: extent,

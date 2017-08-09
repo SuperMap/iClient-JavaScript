@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析服务-点定里程</title>
+
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet-src.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, queryBySQLParams, queryBySQLService, resultLayer,
+            pointsList, routeLine, routeCalculateMeasureParameters, routeCalculateMeasureService, resultLayer1,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+    map = L.map('map', {
+        crs: L.CRS.NonEarthCRS({
+            bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+            origin: L.point(48.4, -55.58)
+        }),
+        center: [-3861.91, 4503.62],
+        maxZoom: 18,
+        zoom: 2
+    });
+    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    routeCalculateMeasureProcess();
+
+    function routeCalculateMeasureProcess() {
+        //通过SQL查询的方法建立路由,并添加到地图上
+        queryBySQLService = L.supermap.queryService(baseUrl);
+        queryBySQLParams = new SuperMap.QueryBySQLParameters({
+            queryParams: [
+                new SuperMap.FilterParameter({
+                    name: "RouteDT_road@Changchun",
+                    attributeFilter: "RouteID=1690"
+                })
+            ]
+        });
+        queryBySQLService.queryBySQL(queryBySQLParams, function (SQLQueryServiceResult) {
+            var result = SQLQueryServiceResult.result;
+            if (result && result.recordsets && result.recordsets[0].features) {
+                var resultFeatures = result.recordsets[0].features;
+                resultLayer = L.geoJSON(resultFeatures, {color: "red"}).addTo(map);
+                //将形成路由的点提出来，为了构造下面点定里程服务参数的sourceRoute
+                pointsList = [];
+                var routeObj = resultFeatures.features[0].geometry.coordinates[0];
+                for (var i = 0; i < routeObj.length; i++) {
+                    pointsList.push([routeObj[i][1], routeObj[i][0], routeObj[i][2]])
+                }
+                routeLine = L.polyline(pointsList);
+                //在组成路由的点中选取一个查询点(数组中第8个点),并添加到地图上
+                var marker = L.circleMarker([routeObj[7][1], routeObj[7][0]], {radius: 3, color: 'black'}).addTo(map);
+                //点定里程服务
+                routeCalculateMeasureParameters = new SuperMap.RouteCalculateMeasureParameters({
+                    "sourceRoute": routeLine,   //必选,路由类型
+                    "point": L.point(routeObj[7][0], routeObj[7][1]),            //必选
+                    "tolerance": 10,
+                    "isIgnoreGap": false
+                });
+                routeCalculateMeasureService = L.supermap.spatialAnalystService(serviceUrl);
+                routeCalculateMeasureService.routeCalculateMeasure(routeCalculateMeasureParameters, function (routeCalculateServiceResult) {
+                    if (routeCalculateServiceResult.result && routeCalculateServiceResult.result.measure) {
+                        marker.bindTooltip("查询获取的M值为:" + routeCalculateServiceResult.result.measure + "", {
+                            direction: "top",
+                            offset: L.point(0, -5)
+                        }).openTooltip();
+                    } else {
+                        alert(routeCalculateServiceResult.error.errorMsg);
+                    }
+                });
+            } else {
+                alert(SQLQueryServiceResult.error.errorMsg);
+            }
+        });
+    }
+</script>
+</body>
+</html>

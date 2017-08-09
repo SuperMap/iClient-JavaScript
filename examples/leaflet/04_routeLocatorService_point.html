@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析服务-里程定点</title>
+
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+</body>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, queryBySQLParams, queryBySQLService, resultLayer,
+            pointsList, routeLine, routeLocatorParameters_point, routeLocatorService, resultLayer1,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-changchun/rest/maps/长春市区图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst";
+    map = L.map('map', {
+        crs: L.CRS.NonEarthCRS({
+            bounds: L.bounds([48.4, -7668.25], [8958.85, -55.58]),
+            origin: L.point(48.4, -55.58)
+        }),
+        center: [-3861.91, 4503.62],
+        maxZoom: 18,
+        zoom: 2
+    });
+    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map);
+    routeCalculateMeasureProcess();
+
+    function routeCalculateMeasureProcess() {
+        //通过SQL查询的方法建立路由,并添加到地图上
+        queryBySQLService = L.supermap.queryService(baseUrl);
+        queryBySQLParams = new SuperMap.QueryBySQLParameters({
+            queryParams: [
+                new SuperMap.FilterParameter({
+                    name: "RouteDT_road@Changchun",
+                    attributeFilter: "RouteID=1690"
+                })
+            ]
+        });
+        queryBySQLService.queryBySQL(queryBySQLParams, function (SQLQueryServiceResult) {
+            var result = SQLQueryServiceResult.result;
+            if (result && result.recordsets && result.recordsets[0].features) {
+                var resultFeatures = result.recordsets[0].features;
+                resultLayer = L.geoJSON(resultFeatures, {color: "red"}).addTo(map);
+                //将形成路由的点提出来，为了构造下面里程定点服务sourceRoute属性的polyline
+                pointsList = [];
+                var routeObj = resultFeatures.features[0].geometry.coordinates[0];
+                for (var i = 0; i < routeObj.length; i++) {
+                    pointsList.push([routeObj[i][1], routeObj[i][0], routeObj[i][2]])
+                }
+                routeLine = L.polyline(pointsList);
+                //里程定点服务
+                routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
+                    "sourceRoute": routeLine,
+                    "type": "POINT",
+                    "measure": 200,
+                    "offset": 0,
+                    "isIgnoreGap": true
+                });
+                routeLocatorService = L.supermap.spatialAnalystService(serviceUrl);
+                routeLocatorService.routeLocate(routeLocatorParameters_point, function (routeLocatorServiceResult) {
+                    if (routeLocatorServiceResult.result && routeLocatorServiceResult.result.resultGeometry) {
+                        var layer = L.geoJSON(routeLocatorServiceResult.result.resultGeometry).addTo(map);
+                        layer.bindTooltip("查询到的里程为 " + routeLocatorParameters_point.measure + " 的点", {
+                            direction: "top",
+                            offset: L.point(0, -5)
+                        }).openTooltip();
+                    } else {
+                        alert(routeLocatorServiceResult.error.errorMsg);
+                    }
+                });
+            } else {
+                alert(SQLQueryServiceResult.error.errorMsg);
+            }
+        });
+    }
+</script>
+</html>

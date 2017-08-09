@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析-表面分析(提取等值线)</title>
+
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.css">
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+
+<script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
+<script type="text/javascript">
+    var map, region, resultLayer, surfaceAnalystService, surfaceAnalystParameters,
+            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-temperature/rest/maps/全国温度变化图",
+            serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+    map = L.map('map', {
+        crs: L.CRS.NonEarthCRS({
+            bounds: L.bounds([-2640403.63, 1873792.1], [3247669.39, 5921501.4]),
+            origin: L.point(-2640403.63, 5921501.4)
+        }),
+        center: [3580330, 531762],
+        maxZoom: 18,
+        zoom: 2
+    });
+    L.supermap.tiledMapLayer(baseUrl, {noWrap: true}).addTo(map).on("load", function () {
+        surfaceAnalystProcess();
+    });
+
+    function surfaceAnalystProcess() {
+        region = L.polygon([
+            [4010338, 0],
+            [4010338, 1063524],
+            [3150322, 1063524],
+            [3150322, 0]
+        ]);
+        surfaceAnalystParameters = new SuperMap.DatasetSurfaceAnalystParameters({
+            extractParameter: new SuperMap.SurfaceAnalystParametersSetting({
+                datumValue: 0,
+                interval: 2,
+                resampleTolerance: 0,
+                smoothMethod: SuperMap.SmoothMethod.BSPLINE,
+                smoothness: 3,
+                clipRegion: region
+            }),
+            dataset: "SamplesP@Interpolation",
+            resolution: 3000,
+            zValueFieldName: "AVG_TMP"
+        });
+        surfaceAnalystService = L.supermap.spatialAnalystService(serviceUrl);
+        surfaceAnalystService.surfaceAnalysis(surfaceAnalystParameters, function (serviceResult) {
+            var result = serviceResult.result;
+            if (result && result.recordset && result.recordset.features) {
+                resultLayer = L.geoJSON(result.recordset.features, {weight: 3}).addTo(map);
+            } else {
+                alert(serviceResult.error.errorMsg);
+            }
+        });
+    }
+</script>
+</body>
+</html>
