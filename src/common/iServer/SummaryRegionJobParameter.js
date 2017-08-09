@@ -3,7 +3,7 @@ import {StatisticAnalystMode, SummaryType, AnalystSizeUnit} from '../REST'
 
 /**
  * @class SuperMap.SummaryRegionJobParameter
- * @description 范围汇总分析任务参数类
+ * @classdesc 范围汇总分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName -{String} 数据集名。 <br>
  *         sumShape -{Boolean} 是否统计长度或面积。 <br>

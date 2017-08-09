@@ -4,8 +4,8 @@ import UpdateEdgeWeightParameters from './UpdateEdgeWeightParameters';
 
 /**
  * @class SuperMap.UpdateEdgeWeightService
- * @description 更新边的边的耗费权重服务
- * @augments SuperMap.NetworkAnalystServiceBase
+ * @classdesc 更新边的边的耗费权重服务
+ * @extends SuperMap.NetworkAnalystServiceBase
  * @example
  *(start code)
  * var updateEdgeWeightService = new SuperMap.UpdateEdgeWeightService(url, {
@@ -22,7 +22,7 @@ import UpdateEdgeWeightParameters from './UpdateEdgeWeightParameters';
  */
 export default  class UpdateEdgeWeightService extends NetworkAnalystServiceBase {
 
-    /**
+    /*
      * @function SuperMap.UpdateEdgeWeightService.prototype.initialize
      * @description 更新边的边的耗费权重服务类构造函数。
      * @param url - {String} 服务的访问地址。 如:<br>

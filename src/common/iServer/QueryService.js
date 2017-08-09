@@ -6,8 +6,8 @@ import {DataFormat} from '../REST';
 
 /**
  * @class SuperMap.QueryService
- * @description 查询服务基类。
- * @augments SuperMap.CommonServiceBase
+ * @classdesc 查询服务基类。
+ * @extends SuperMap.CommonServiceBase
  * @param url - {String} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param options - {Object} 可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
@@ -36,8 +36,8 @@ export default  class QueryService extends CommonServiceBase {
      */
     format = DataFormat.GEOJSON;
 
-    /**
-     * @function SuperMap.QueryService.prototype.initialize
+    /*
+     * @function SuperMap.QueryService.prototype.constructor
      * @description 查询服务基类构造函数。
      * @param url - {String} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
      * @param options - {Object} 可选参数。如：<br>
@@ -72,7 +72,6 @@ export default  class QueryService extends CommonServiceBase {
     }
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
@@ -137,15 +136,11 @@ export default  class QueryService extends CommonServiceBase {
         me.events.triggerEvent("processCompleted", {result: result});
     }
 
-    /*
-     * Method: getQueryParameters
-     * 将 JSON 对象表示的查询参数转化为 QueryParameters 对象。
-     *
-     * Parameters:
-     * params - {Object} JSON 字符串表示的查询参数。
-     *
-     * Returns:
-     * {QueryParameters} 返回转化后的 QueryParameters 对象。
+    /**
+     * @function SuperMap.QueryService.prototype.getQueryParameters
+     * @description 将 JSON 对象表示的查询参数转化为 QueryParameters 对象。
+     * @param params - {Object} JSON 字符串表示的查询参数。
+     * @return {QueryParameters} 返回转化后的 QueryParameters 对象。
      */
     getQueryParameters(params) {
         return new QueryParameters({

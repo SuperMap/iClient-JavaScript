@@ -5,12 +5,12 @@ import GeoJSON from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindTSPPathsService
- * @description 旅行商分析服务类<br>
+ * @classdesc 旅行商分析服务类<br>
  *               旅行商分析是路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
  *               旅行商分析也可以指定到达的终点，这时查找从起点能够遍历所有途经点最后到达终点，且花费最小的路径。
  *               该类负责将客户端指定的旅行商分析参数传递给服务端，并接收服务端返回的结果数据。
  *               旅行商分析结果通过该类支持的事件的监听函数参数获取
- * @augments SuperMap.NetworkAnalystServiceBase
+ * @extends SuperMap.NetworkAnalystServiceBase
  * @example
  * (start code)
  * var myFindTSPPathsService = new SuperMap.FindTSPPathsService(url, {
@@ -28,7 +28,7 @@ import GeoJSON from '../format/GeoJSON';
  */
 export default  class FindTSPPathsService extends NetworkAnalystServiceBase {
 
-    /**
+    /*
      * @function SuperMap.FindTSPPathsService.prototype.initialize
      * @description 最佳路径分析服务类构造函数。
      * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
@@ -74,15 +74,11 @@ export default  class FindTSPPathsService extends NetworkAnalystServiceBase {
         });
     }
 
-    /*
-     * Method: getNodesJson
-     * 将节点对象转化为JSON字符串。
-     *
-     * Parameters:
-     * params - {SuperMap.FindTSPPathsParameters}
-     *
-     * Returns:
-     * {Object} 转化后的JSON字符串。
+    /**
+     * @function SuperMap.FindTSPPathsService.prototype.getNodesJson
+     * @description 将节点对象转化为JSON字符串。
+     * @param params - {SuperMap.FindTSPPathsParameters}
+     * @return {Object} 转化后的JSON字符串。
      */
     getNodesJson(params) {
         var jsonParameters = "", nodesString, i, len, nodes;
@@ -104,12 +100,10 @@ export default  class FindTSPPathsService extends NetworkAnalystServiceBase {
         return jsonParameters;
     }
 
-    /*
-     * Method: toGeoJSONResult
-     * 将含有geometry的数据转换为geojson格式。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
+    /**
+     * @function SuperMap.FindTSPPathsService.prototype.toGeoJSONResult
+     * @description 将含有geometry的数据转换为geojson格式。
+     * @param result - {Object} 服务器返回的结果对象。
      */
     toGeoJSONResult(result) {
         if (!result || !result.tspPathList) {

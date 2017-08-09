@@ -5,8 +5,8 @@ const ThemeFeature = SuperMap.Feature.Theme;
 
 /**
  * @class SuperMap.Feature.Theme.Vector
- * @description 矢量专题要素类。
- * @augments SuperMap.Feature.Theme
+ * @classdesc 矢量专题要素类。
+ * @extends SuperMap.Feature.Theme
  * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数, 矢量专题要素的类型为矢量数据 feature。
  * @param layer - {SuperMap.Layer} 此专题要素所在图层，必设参数。
  * @param style - {Object} 样式。
@@ -19,56 +19,56 @@ const ThemeFeature = SuperMap.Feature.Theme;
  */
 export default  class ThemeVector extends ThemeFeature {
 
-    /*
-     * Property: dataBounds
-     * {SuperMap.Bounds} 用户数据的（feature.geometry）地理范围。
+    /**
+     * @member SuperMap.Feature.Theme.Vector.prototype.dataBounds -{SuperMap.Bounds}
+     * @description 用户数据的（feature.geometry）地理范围。
      */
     dataBounds = null;
 
-    /*
-     * Property: nodesClipPixel
-     * {Number} 节点抽稀像素距离，默认值 2。
+    /**
+     * @member SuperMap.Feature.Theme.Vector.prototype.nodesClipPixel -{Number}
+     * @description 节点抽稀像素距离，默认值 2。
      */
     nodesClipPixel = 2;
 
-    /*
-     * Property: isHoverAble
-     * {Boolean} 图形是否可 hover，默认 true
+    /**
+     * @member SuperMap.Feature.Theme.Vector.prototype.isHoverAble -{Boolean}
+     * @description 图形是否可 hover，默认 true
      */
     isHoverAble = true;
 
-    /*
-     * Property: isMultiHover
-     * {Boolean} 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true
+    /**
+     * @member SuperMap.Feature.Theme.Vector.prototype.isMultiHover -{Boolean}
+     * @description 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true
      */
     isMultiHover = true;
 
     /**
-     * Property: isClickAble
-     * {Boolean} 图形是否可点击，默认 true
+     * @member SuperMap.Feature.Theme.Vector.prototype.isClickAble -{Boolean}
+     * @description 图形是否可点击，默认 true
      */
     isClickAble = true;
 
-    /*
-     * Property: highlightStyle
-     * {Object} 高亮样式
+    /**
+     * @member SuperMap.Feature.Theme.Vector.prototype.highlightStyle -{Object}
+     * @description 高亮样式
      */
     highlightStyle = null;
 
-    /*
-     * Property: shapeOptions
-     * {Object}  添加到渲染器前修改 shape 的一些属性，非特殊情况通常不允许这么做
+    /**
+     * @member SuperMap.Feature.Theme.Vector.prototype.shapeOptions -{Object}
+     * @description 添加到渲染器前修改 shape 的一些属性，非特殊情况通常不允许这么做
      */
     shapeOptions = null;
 
-    /*
-     * Property: style
-     * {Object} 可视化图形的 style。在子类中规定其对象结构和默认属性值。
+    /**
+     * @member SuperMap.Feature.Theme.Vector.prototype.style -{Object}
+     * @description 可视化图形的 style。在子类中规定其对象结构和默认属性值。
      */
     style = null;
 
-    /**
-     * @function SuperMap.Feature.Theme.Vector.prototype.initialize
+    /*
+     * @function SuperMap.Feature.Theme.Vector.prototype.constructor
      * @description 创建一个矢量专题要素。
      * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数, 矢量专题要素的类型为矢量数据 feature。
      * @param layer - {SuperMap.Layer} 此专题要素所在图层，必设参数。
@@ -145,7 +145,6 @@ export default  class ThemeVector extends ThemeFeature {
     }
 
     /**
-     * Method: destroy
      * @inheritDoc
      */
     destroy() {
@@ -162,7 +161,6 @@ export default  class ThemeVector extends ThemeFeature {
 
 
     /**
-     * Method: LinearRingAndLineStringToTF
      * @function SuperMap.Feature.Theme.Vector.prototype.lineToTF
      * @description 转换线和线环要素。
      * @param geometry - {SuperMap.Geometry} 用户数据几何地理信息，这里必须是 LineString 或 LineRing。
@@ -240,7 +238,6 @@ export default  class ThemeVector extends ThemeFeature {
 
 
     /**
-     * Method: multiPointToTF
      * @function SuperMap.Feature.Theme.Vector.prototype.multiPointToTF
      * @description 转多点要素。
      * @param geometry - {SuperMap.Geometry} 用户数据几何地理信息，这里必须是 MultiPoint。
@@ -325,7 +322,6 @@ export default  class ThemeVector extends ThemeFeature {
 
 
     /**
-     * Method: multiLineStringToTF
      * @function SuperMap.Feature.Theme.Vector.prototype.multiLineStringToTF
      * @description 转换多线要素。
      * @param geometry - {SuperMap.Geometry} 用户数据几何地理信息，这里必须是 MultiLineString。
@@ -341,7 +337,6 @@ export default  class ThemeVector extends ThemeFeature {
 
 
     /**
-     * Method: multiPolygonToTF
      * @function SuperMap.Feature.Theme.Vector.prototype.multiPolygonToTF
      * @description 转换多面要素。
      * @param geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 MultiPolygon。
@@ -357,7 +352,6 @@ export default  class ThemeVector extends ThemeFeature {
 
 
     /**
-     * Method: pointToTF
      * @function SuperMap.Feature.Theme.Vector.prototype.pointToTF
      * @description 转换点要素。
      * @param geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 Point。
@@ -406,7 +400,6 @@ export default  class ThemeVector extends ThemeFeature {
 
 
     /**
-     * Method: polygonToThemeFeature
      * @function SuperMap.Feature.Theme.Vector.prototype.polygonToThemeFeature
      * @description 转换面要素。
      * @param geometry - {SuperMap.Geometry} 用户数据几何地理信息，这里必须是 Polygon。
@@ -531,7 +524,6 @@ export default  class ThemeVector extends ThemeFeature {
 
 
     /**
-     * Method: rectangleToTF
      * @function SuperMap.Feature.Theme.Vector.prototype.rectangleToTF
      * @description 转换矩形要素。
      * @param geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 Rectangle。
@@ -588,7 +580,6 @@ export default  class ThemeVector extends ThemeFeature {
 
 
     /**
-     * Method: geoTextToTF
      * @function SuperMap.Feature.Theme.Vector.prototype.geoTextToTF
      * @description 转换文本要素。
      * @param geometry - {SuperMap.Geometry}  用户数据几何地理信息，这里必须是 GeoText。
@@ -638,7 +629,6 @@ export default  class ThemeVector extends ThemeFeature {
 
 
     /**
-     * Method: updateAndAddShapes
      * @function SuperMap.Feature.Theme.Vector.prototype.updateAndAddShapes
      * @description 修改位置，针对地图平移操作，地图漫游操作后调用此函数。
      */
@@ -657,7 +647,6 @@ export default  class ThemeVector extends ThemeFeature {
 
 
     /**
-     * APIMethod: getShapesCount
      * @function SuperMap.Feature.Theme.Vector.prototype.getShapesCount
      * @description 获得专题要素中可视化图形的数量。
      * @return {Number} 可视化图形的数量。

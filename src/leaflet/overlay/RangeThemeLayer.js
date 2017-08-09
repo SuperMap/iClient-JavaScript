@@ -1,15 +1,15 @@
 import L from "leaflet";
 import SuperMap from '../../common/SuperMap';
 import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
+
 /**
- * Class: SuperMap.Layer.Range
- * 范围分段专题图。
- *
- * 范围分段专题图对数据（<SuperMap.Feature.Vector>）属性字段（attributes）的属性值进行分段，使用不同的颜色或符号（线型、填充）渲染不同范围段的属性值。
- * 分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
- *
- * Inherits from:
- *  - <GeoFeatureThemeLayer>
+ * @class L.supermap.rangeThemeLayer
+ * @classdesc 范围分段专题图。
+ *            范围分段专题图对数据（<SuperMap.Feature.Vector>）属性字段（attributes）的属性值进行分段，使用不同的颜色或符号（线型、填充）渲染不同范围段的属性值。
+ *            分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
+ * @extends L.supermap.GeoFeatureThemeLayer
+ * @param name - {String} 图层名
+ * @param options - {Object} 图层参数
  */
 export var RangeThemeLayer = GeoFeatureThemeLayer.extend({
 
@@ -32,8 +32,11 @@ export var RangeThemeLayer = GeoFeatureThemeLayer.extend({
         this.styleGroups = [];
     },
 
-
-    //根据用户数据（feature）设置专题要素的 Style
+    /**
+     * @function L.supermap.rangeThemeLayer.prototype.getStyleByData
+     * @description 根据用户数据（feature）设置专题要素的 Style
+     * @param feat - {L.feature} 用户要素数据
+     */
     getStyleByData: function (feat) {
         var me = this,
             feature = feat,

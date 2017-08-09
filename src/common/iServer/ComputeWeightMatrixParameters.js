@@ -3,7 +3,7 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
 
 /**
  * @class SuperMap.ComputeWeightMatrixParameters
- * @description 耗费矩阵分析参数类。<br>
+ * @classdesc 耗费矩阵分析参数类。<br>
  *               根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
  * @param options - {Object} 可选参数。如：<br>
  *         isAnalyzeById - {Boolean} 是否通过节点 ID 指定路径分析的结点。<br>
@@ -13,14 +13,12 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
 export default  class ComputeWeightMatrixParameters {
 
     /**
-     * APIProperty: isAnalyzeById
      * @member SuperMap.ComputeWeightMatrixParameters.prototype.isAnalyzeById {Boolean}
      * @description 是否通过节点 ID 指定路径分析的结点，默认为 false，即通过坐标点指定。
      */
     isAnalyzeById = false;
 
     /**
-     * APIProperty: nodes
      * @member SuperMap.ComputeWeightMatrixParameters.prototype.nodes {Array(Point/Number)}
      * @description 要计算耗费矩阵的点数组，必设字段。<br>
      *               当 SuperMap.ComputeWeightMatrixParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
@@ -29,7 +27,6 @@ export default  class ComputeWeightMatrixParameters {
     nodes = null;
 
     /**
-     * APIProperty: parameter
      * @member SuperMap.ComputeWeightMatrixParameters.prototype.parameter {SuperMap.TransportationAnalystParameter}
      * @description 交通网络分析通用参数。
      */
@@ -50,7 +47,6 @@ export default  class ComputeWeightMatrixParameters {
     }
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */

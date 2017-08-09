@@ -1371,15 +1371,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @class SuperMap.CommonServiceBase common服务基类
- * @constructs SuperMap.CommonServiceBase
+ * @class SuperMap.CommonServiceBase
+ * @classdesc common服务基类
  * @param url - {String} 与客户端交互的服务地址。
  * @param options - {Object} 参数。
  */
 var CommonServiceBase = function () {
 
     /**
-     * @function  initialize
+     * @function SuperMap.CommonServiceBase.prototype.constructor
      * @description  ServiceBase的构造函数
      * @param url - {String} 与客户端交互的服务地址。
      * @param options - {Object} 参数。
@@ -1417,8 +1417,8 @@ var CommonServiceBase = function () {
 
 
     /**
-     * @member  eventListeners -{Object}
-     * @description APIProperty: 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
+     * @member SuperMap.CommonServiceBase.prototype.eventListeners -{Object}
+     * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
      *              相当于调用 SuperMap.Events.on(eventListeners)。
      */
 
@@ -1488,9 +1488,8 @@ var CommonServiceBase = function () {
     }
 
     /**
-     * @override
      * @function  destroy
-     * @description APIMethod: 释放资源，将引用的资源属性置空。
+     * @description 释放资源，将引用的资源属性置空。
      */
 
 
@@ -1525,8 +1524,8 @@ var CommonServiceBase = function () {
 
 
     /**
-     * @member  url -{String|Array}
-     * @description APIProperty: 服务访问地址或者服务访问地址数组。
+     * @member SuperMap.CommonServiceBase.prototype.url -{String|Array}
+     * @description 服务访问地址或者服务访问地址数组。
      *
      * @example
      * var url1 = "http://localhost:8090/iserver/services/map-world/rest/maps/World";
@@ -1536,8 +1535,8 @@ var CommonServiceBase = function () {
 
 
     /**
-     * @member events -{SuperMap.Events}
-     * @description APIProperty: 处理所有事件的对象，支持 processCompleted 、processFailed 两种事件
+     * @member SuperMap.CommonServiceBase.prototype.events -{SuperMap.Events}
+     * @description  处理所有事件的对象，支持 processCompleted 、processFailed 两种事件
      *               服务端成功返回地图信息结果时触发 processCompleted 事件，服务端返回信息结果时触发 processFailed 事件。
      */
 
@@ -1569,10 +1568,8 @@ var CommonServiceBase = function () {
         }
 
         /**
-         * @function  request
+         * @function SuperMap.CommonServiceBase.prototype.request
          * @description APIMethod: 该方法用于向服务发送请求。
-         *
-         * Parameters:
          * @param options - {Object} 参数。
          *        method - {String} 请求方式，包括GET，POST，PUT， DELETE。<br>
          *        url - {String}  发送请求的地址。<br>
@@ -1653,7 +1650,6 @@ var CommonServiceBase = function () {
         }
 
         /*
-         * Method: getUrlCompleted
          * 请求成功后执行此方法。
          *
          * Parameters:
@@ -1668,7 +1664,6 @@ var CommonServiceBase = function () {
         }
 
         /*
-         * Method: getUrlFailed
          * 请求失败后执行此方法。
          *
          * Parameters:
@@ -1688,7 +1683,6 @@ var CommonServiceBase = function () {
         }
 
         /*
-         * Method: ajaxPolling
          * 请求失败后，如果剩余请求失败次数不为0，重新获取url发送请求
          */
 
@@ -1717,7 +1711,6 @@ var CommonServiceBase = function () {
         }
 
         /*
-         * Method: calculatePollingTimes
          * 计算剩余请求失败执行次数。
          */
 
@@ -1746,7 +1739,6 @@ var CommonServiceBase = function () {
         }
 
         /*
-         * Method: isServiceSupportPolling
          * 判断服务是否支持轮询。
          */
 
@@ -1758,7 +1750,6 @@ var CommonServiceBase = function () {
         }
 
         /*
-         * Method: serviceProcessCompleted
          * 状态完成，执行此方法。
          *
          * Parameters:
@@ -1773,7 +1764,6 @@ var CommonServiceBase = function () {
         }
 
         /*
-         * Method: serviceProcessFailed
          * 状态失败，执行此方法。
          *
          * Parameters:
@@ -2020,13 +2010,20 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * Class: SuperMap.Layer.MapVLayer
- * MapV图层。
+ * @class SuperMap.Layer.MapVLayer
+ * @classdesc MapV图层。
+ * @extends SuperMap.Layer
+ * @param name - {String} 图层名
+ * @param options  - {Object} 可选参数，有如下两个参数：<br>
+ *        dataSet - {mapv.DataSet} mapv 的dataSet对象 <br>
+ *        options - {Object} mapv 绘图风格配置信息
  */
 var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
     _inherits(MapVLayer, _SuperMap$Layer);
 
-    /**
+    /*
+     * @function SuperMap.Layer.MapVLayer.prototype.
+     * @description
      * MapV支持webgl和普通canvas渲染.
      * 但目前本图层webgl渲染不能正确显示，待解决
      *
@@ -2038,13 +2035,14 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
 
 
     /**
-     * Proterty: canvas
-     * {Canvas} MapV图主绘制面板。
+     * @member SuperMap.Layer.MapVLayer.prototype.canvas {Canvas}
+     * @description MapV图主绘制面板。
      */
 
 
     /**
-     *mapv 绘图风格配置信息
+     * @member SuperMap.Layer.MapVLayer.prototype.options -{Object}
+     * @description mapv 绘图风格配置信息
      */
     function MapVLayer(name, options) {
         _classCallCheck(this, MapVLayer);
@@ -2079,26 +2077,25 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁图层，释放资源。
+     * @inheritDoc
      */
 
 
     /**
-     * Proterty: canvas
-     * {Canvas} MapV图主绘制对象。
+     * @member SuperMap.Layer.MapVLayer.prototype.canvasContext -{Canvas}
+     * @description MapV图主绘制对象。
      */
 
 
     /**
-     * Proterty: supported
-     * {Boolean} 当前浏览器是否支持canvas绘制，默认为false。
-     * 决定了MapV图是否可用，内部判断使用。
+     * @member SuperMap.Layer.MapVLayer.prototype.supported -{Boolean}
+     * @description 当前浏览器是否支持canvas绘制，默认为false。决定了MapV图是否可用，内部判断使用。
      */
 
 
     /**
-     * mapv dataset 对象
+     * @member SuperMap.Layer.MapVLayer.prototype.dataSet -{mapv.DataSet}
+     * @description mapv dataset 对象
      */
 
 
@@ -2117,9 +2114,10 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         }
 
         /**
-         * 追加数据
-         * @param dataSet {MapV.DataSet}
-         * @param options {MapV options}
+         * @function SuperMap.Layer.MapVLayer.prototype.addData
+         * @description 追加数据
+         * @param dataSet - {MapV.DataSet} 追加数据集
+         * @param options - {MapV.options} 追加的数据参数
          */
 
     }, {
@@ -2129,9 +2127,10 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         }
 
         /**
-         * 设置数据
-         * @param dataSet {MapV.DataSet}
-         * @param options {MapV options}
+         * @function SuperMap.Layer.MapVLayer.prototype.
+         * @description 设置数据
+         * @param dataSet {MapV.DataSet} 追加数据集
+         * @param options {MapV.options} 追加的数据参数
          */
 
     }, {
@@ -2139,6 +2138,13 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         value: function setData(dataSet, options) {
             this.renderer && this.renderer.setData(dataSet, options);
         }
+
+        /**
+         * @function SuperMap.Layer.MapVLayer.prototype.getData
+         * @description 获取数据集
+         * @return {SuperMap.Layer.MapVLayer.prototype.dataSet}
+         */
+
     }, {
         key: 'getData',
         value: function getData() {
@@ -2149,9 +2155,11 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         }
 
         /**
-         * 按照过滤条件移除数据
-         * @param filter
-         * eg: filter=function(data){
+         * @function SuperMap.Layer.MapVLayer.prototype.removeData
+         * @description 按照过滤条件移除数据
+         * @param filter - {String} 过滤条件
+         * @example
+         *  filter=function(data){
          *         if(data.id="1"){
          *            return true
          *         }
@@ -2164,6 +2172,12 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         value: function removeData(filter) {
             this.renderer && this.renderer.removeData(filter);
         }
+
+        /**
+         * @function SuperMap.Layer.MapVLayer.prototype.clearData
+         * @description 清除数据
+         */
+
     }, {
         key: 'clearData',
         value: function clearData() {
@@ -2171,13 +2185,10 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         }
 
         /**
-         * Method: setMap
-         * 图层已经添加到Map中。
-         *
-         * 如果当前浏览器支持canvas，则开始渲染要素；如果不支持则移除图层。
-         *
-         * Parameters:
-         * map - {SuperMap.Map}需要绑定的map对象。
+         * @function SuperMap.Layer.MapVLayer.prototype.setMap
+         * @description 图层已经添加到Map中。
+         *              如果当前浏览器支持canvas，则开始渲染要素；如果不支持则移除图层。
+         * @param map - {SuperMap.Map} 需要绑定的map对象
          */
 
     }, {
@@ -2193,14 +2204,12 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         }
 
         /**
-         * Method: moveTo
-         * 重置当前MapV图层的div，再一次与Map控件保持一致。
-         * 修改当前显示范围，当平移或者缩放结束后开始重绘MapV图的渲染效果。
-         *
-         * Parameters:
-         * bounds - {SuperMap.Bounds}
-         * zoomChanged - {Boolean}
-         * dragging - {Boolean}
+         * @function SuperMap.Layer.MapVLayer.prototype.moveTo
+         * @description 重置当前MapV图层的div，再一次与Map控件保持一致。
+         *              修改当前显示范围，当平移或者缩放结束后开始重绘MapV图的渲染效果。
+         * @param bounds - {SuperMap.Bounds} 图层范围
+         * @param zoomChanged - {Boolean} 空间是否改变
+         * @param dragging - {Boolean} 是否拖动
          */
 
     }, {
@@ -2238,8 +2247,9 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         }
 
         /**
-         * 将经纬度转成底图的投影坐标
-         * @param latLng
+         * @function SuperMap.Layer.MapVLayer.prototype.transferToMapLatLng
+         * @description 将经纬度转成底图的投影坐标
+         * @param latLng - {SuperMap.Lonlat} 经纬度坐标
          */
 
     }, {
@@ -2297,7 +2307,11 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * 地址匹配服务，包括正向匹配和反向匹配。
+ * @class SuperMap.REST.AddressMatchService
+ * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
+ * @extends SuperMap.REST.CommonServiceBase
+ * @param url - {String} 服务地址
+ * @param options - {object} 地址匹配服务可选参数
  */
 var AddressMatchService = exports.AddressMatchService = function (_CommonServiceBase) {
     _inherits(AddressMatchService, _CommonServiceBase);
@@ -2310,6 +2324,16 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
         _this.CLASS_NAME = "SuperMap.REST.AddressMatchService";
         return _this;
     }
+
+    /**
+     * @function SuperMap.REST.AddressMatchService.prototype.code
+     * @description 编码
+     * @param params - {String} 编码参数
+     * @param callback - {function} 回调函数
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.AddressMatchService} 返回正向匹配地址
+     */
+
 
     _createClass(AddressMatchService, [{
         key: 'code',
@@ -2328,6 +2352,16 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
             addressMatchService.code(me.url + '/geocoding', params);
             return me;
         }
+
+        /**
+         * @function SuperMap.REST.AddressMatchService.prototype.decode
+         * @description 解码
+         * @param params - {String} 编码参数
+         * @param callback - {function} 回调函数
+         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+         * @return {SuperMap.REST.AddressMatchService} 返回反向匹配地址
+         */
+
     }, {
         key: 'decode',
         value: function decode(params, callback, resultFormat) {
@@ -3766,7 +3800,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.BuildCacheJobParameter
- * @description 地图缓存参数类
+ * @classdesc 地图缓存参数类
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName - {String} 数据集名称。<br>
  *         cacheName - {String} 缓存名称。<br>
@@ -3781,25 +3815,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var BuildCacheJobParameter = function () {
 
     /**
-     * APIProperty: imageType
      * @member SuperMap.BuildCacheJobParameter.prototype.imageType -{number}
      * @description 缓存类型。
      */
 
+
     /**
-     * APIProperty: version
      * @member SuperMap.BuildCacheJobParameter.prototype.version -{String}
      * @description 版本。
      */
 
+
     /**
-     * APIProperty: serverAddresses
      * @member SuperMap.BuildCacheJobParameter.prototype.serverAddresses -{String}
      * @description MongoDB地址。
      */
 
+
     /**
-     * APIProperty: cacheName
      * @member SuperMap.BuildCacheJobParameter.prototype.cacheName -{String}
      * @description 缓存名称。
      */
@@ -3823,39 +3856,35 @@ var BuildCacheJobParameter = function () {
     }
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * APIProperty: level
      * @member SuperMap.BuildCacheJobParameter.prototype.level -{number}
      * @description 缓存比例尺级别。
      */
 
 
     /**
-     * APIProperty: bounds
      * @member SuperMap.BuildCacheJobParameter.prototype.bounds -{SuperMap.Bounds}
      * @description 缓存范围。
      */
 
+
     /**
-     * APIProperty: database
      * @member SuperMap.BuildCacheJobParameter.prototype.database -{String}
      * @description 数据库。
      */
 
+
     /**
-     * APIProperty: cacheType
      * @member SuperMap.BuildCacheJobParameter.prototype.cacheType -{String}
      * @description 存储类型。
      */
 
     /**
-     * APIProperty: datasetName
      * @member SuperMap.BuildCacheJobParameter.prototype.datasetName -{String}
      * @description 数据集名称。
      */
@@ -3939,17 +3968,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.BuildCacheJobsService
- * @description 创建大数据缓存服务类
- * @augments SuperMap.ProcessingServiceBase
+ * @classdesc 创建大数据缓存服务类
+ * @extends SuperMap.ProcessingServiceBase
  * @param url -{String} 大数据缓存服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-
 var BuildCacheJobsService = function (_ProcessingServiceBas) {
     _inherits(BuildCacheJobsService, _ProcessingServiceBas);
 
-    /**
-     * @function SuperMap.BuildCacheJobsService.constructor
+    /*
+     * @function SuperMap.BuildCacheJobsService.prototype.constructor
      * @description SuperMap.BuildCacheJobsService 的构造函数
      * @param url -{String} 大数据缓存服务地址。
      * @param options - {Object} 交互服务时所需可选参数。
@@ -3975,7 +4003,7 @@ var BuildCacheJobsService = function (_ProcessingServiceBas) {
         }
 
         /**
-         * @function SuperMap.BuildCacheJobsService.getBuildCacheJobs
+         * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJobs
          * @description 获取创建的大数据缓存
          */
 
@@ -3986,7 +4014,7 @@ var BuildCacheJobsService = function (_ProcessingServiceBas) {
         }
 
         /**
-         * @function SuperMap.BuildCacheJobsService.getBuildCacheJob
+         * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJob
          * @description 获取指定 id的大数据缓存
          * @param id - {String} 大数据缓存id
          */
@@ -3998,9 +4026,9 @@ var BuildCacheJobsService = function (_ProcessingServiceBas) {
         }
 
         /**
-         * @function SuperMap.BuildCacheJobsService.addBuildCacheJob
+         * @function SuperMap.BuildCacheJobsService.prototype.addBuildCacheJob
          * @description 新建大数据缓存服务
-         * @param params - {BuildCacheJobParameter}地图缓存参数类
+         * @param params - {SuperMap.BuildCacheJobParameter} 地图缓存参数类
          * @param seconds - {String} 开始创建后，获取创建成功结果的时间间隔
          */
 
@@ -4480,16 +4508,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.KernelDensityJobsService
- * @description 核密度大数据服务类
- * @augments SuperMap.ProcessingServiceBase
+ * @classdesc 核密度大数据服务类
+ * @extends SuperMap.ProcessingServiceBase
  * @param url -{String} 核密度大数据服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
 var KernelDensityJobsService = function (_ProcessingServiceBas) {
     _inherits(KernelDensityJobsService, _ProcessingServiceBas);
 
-    /**
-     * @function SuperMap.KernelDensityJobsService.protitype.initialize
+    /*
+     * @function SuperMap.KernelDensityJobsService.prototype.initialize
      * @description SuperMap.KernelDensityJobsService 的构造函数
      * @param url -{String} 核密度大数据服务地址。
      * @param options - {Object} 交互服务时所需可选参数。
@@ -4517,7 +4545,7 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
         }
 
         /**
-         * @function SuperMap.KernelDensityJobsService.protitype.getKernelDensityJobs
+         * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
          * @description 获取核密度大数据
          * @return {*}
          */
@@ -4529,7 +4557,7 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
         }
 
         /**
-         * @function SuperMap.KernelDensityJobsService.protitype.getKernelDensityJobs
+         * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
          * @description 获取指定id的核密度大数据服务
          * @param id -{String} 指定要获取数据的id
          */
@@ -4541,7 +4569,7 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
         }
 
         /**
-         * @function SuperMap.KernelDensityJobsService.protitype.addKernelDensityJob
+         * @function SuperMap.KernelDensityJobsService.prototype.addKernelDensityJob
          * @description 新建核密度大数据服务
          * @param params - {SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
          * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
@@ -4587,7 +4615,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SingleObjectQueryJobsParameter
- * @description 单对象空间查询分析任务参数类
+ * @classdesc 单对象空间查询分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{String} 数据集名。 <br>
  *         datasetQuery -{String} 查询对象所在的数据集名称。 <br>
@@ -4697,8 +4725,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SingleObjectQueryJobsService
- * @description 大数据单对象查询分析服务类
- * @augments SuperMap.ProcessingServiceBase
+ * @classdesc 大数据单对象查询分析服务类
+ * @extends SuperMap.ProcessingServiceBase
  * @param url -{String} 大数据单对象空间查询分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
@@ -4804,7 +4832,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SummaryMeshJobParameter
- * @description 点聚合分析任务参数类
+ * @classdesc 点聚合分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{String} 数据集名。<br>
  *        query -{SuperMap.Bounds} 分析范围。<br>
@@ -4973,7 +5001,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SummaryMeshJobsService
- * @description 点聚合分析大数据任务类。
+ * @classdesc 点聚合分析大数据任务类。
  * @param url -{String} 点聚合分析任务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
@@ -5003,7 +5031,7 @@ var SummaryMeshJobsService = function (_ProcessingServiceBas) {
         }
 
         /**
-         * @function SuperMap.SummaryMeshJobsService.protitype.getSummaryMeshJobs
+         * @function SuperMap.SummaryMeshJobsService.prototype.getSummaryMeshJobs
          * @description 获取点聚合分析大数据
          */
 
@@ -5014,7 +5042,7 @@ var SummaryMeshJobsService = function (_ProcessingServiceBas) {
         }
 
         /**
-         * @function SuperMap.SummaryMeshJobsService.protitype.getSummaryMeshJob
+         * @function SuperMap.SummaryMeshJobsService.prototype.getSummaryMeshJob
          * @description 获取指定ip的点聚合分析大数据
          * @param id -{String} 指定要获取数据的id
          */
@@ -5026,7 +5054,7 @@ var SummaryMeshJobsService = function (_ProcessingServiceBas) {
         }
 
         /**
-         * @function SuperMap.SummaryMeshJobsService.protitype.addSummaryMeshJob
+         * @function SuperMap.SummaryMeshJobsService.prototype.addSummaryMeshJob
          * @description 新建点聚合分析大数据服务
          * @param params - {SuperMap.SummaryMeshJobParameter} 创建一个空间分析的请求参数。
          * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
@@ -5072,7 +5100,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SummaryRegionJobParameter
- * @description 范围汇总分析任务参数类
+ * @classdesc 范围汇总分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName -{String} 数据集名。 <br>
  *         sumShape -{Boolean} 是否统计长度或面积。 <br>
@@ -5285,8 +5313,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SummaryRegionJobsService
- * @description 范围汇总分析服务类
- * @augments SuperMap.ProcessingServiceBase
+ * @classdesc 范围汇总分析服务类
+ * @extends SuperMap.ProcessingServiceBase
  * @param url -{String} 范围汇总分析服务地址。
  * @param options - {Object} 范围汇总分析服务可选参数。
  */
@@ -5294,7 +5322,7 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryRegionJobsService, _ProcessingServiceBas);
 
     /**
-     * @function SuperMap.SummaryRegionJobsService.protitype.initialize
+     * @function SuperMap.SummaryRegionJobsService.prototype.initialize
      * @description SuperMap.SummaryRegionJobsService 的构造函数
      * @param url -{String} 范围汇总分析服务地址。
      * @param options - {Object} 范围汇总分析服务可选参数。
@@ -5322,7 +5350,7 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
         }
 
         /**
-         * @function SuperMap.SummaryRegionJobsService.protitype.getSummaryRegionJobs
+         * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJobs
          * @description 获取范围汇总分析任务集合。
          * @return {*}
          */
@@ -5334,7 +5362,7 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
         }
 
         /**
-         * @function SuperMap.SummaryRegionJobsService.protitype.getSummaryRegionJob
+         * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJob
          * @description 获取指定id的范围汇总分析任务。
          * @param id -{String} 要获取范围汇总分析任务的id
          */
@@ -5346,7 +5374,7 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
         }
 
         /**
-         * @function SuperMap.SummaryRegionJobsService.protitype.addSummaryRegionJob
+         * @function SuperMap.SummaryRegionJobsService.prototype.addSummaryRegionJob
          * @description 新建范围汇总任务。
          * @param params - {SuperMap.SummaryRegionJobParameter} 创建一个范围汇总任务的请求参数。
          * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
@@ -5392,7 +5420,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.VectorClipJobsParameter
- * @description 矢量裁剪分析任务参数类
+ * @classdesc 矢量裁剪分析任务参数类
  * @param options - {Object} 必填参数。<br>
  *         datasetName -{String} 数据集名。 <br>
  *         datasetOverlay -{String} 裁剪对象数据集。 <br>
@@ -5504,8 +5532,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.VectorClipJobsService
- * @description 大数据矢量裁剪分析服务类
- * @augments SuperMap.ProcessingServiceBase
+ * @classdesc 大数据矢量裁剪分析服务类
+ * @extends SuperMap.ProcessingServiceBase
  * @param url -{String} 大数据矢量裁剪分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
@@ -6067,7 +6095,13 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- * MapV renderer
+ * @class SuperMap.MapVRenderer
+ * @classdesc 地图渲染类
+ * @extends mapv.baiduMapLayer
+ * @param map - {SuperMap.Map} 待渲染的地图
+ * @param layer - {mapv.baiduMapLayer} 待渲染的图层
+ * @param dataSet - {mapv.DataSet} 待渲染的数据集
+ * @param options - {Object} 渲染的参数
  */
 var MapVBaseLayer = _mapv.baiduMapLayer ? _mapv.baiduMapLayer.__proto__ : Function;
 
@@ -6096,18 +6130,39 @@ var MapVRenderer = function (_MapVBaseLayer) {
         return _this;
     }
 
+    /**
+     * @function SuperMap.MapVRenderer.prototype.clickEvent
+     * @description 点击事件
+     * @param e - {object} 触发对象
+     */
+
+
     _createClass(MapVRenderer, [{
         key: 'clickEvent',
         value: function clickEvent(e) {
             var pixel = e.layerPoint;
             _get(MapVRenderer.prototype.__proto__ || Object.getPrototypeOf(MapVRenderer.prototype), 'clickEvent', this).call(this, pixel, e);
         }
+
+        /**
+         * @function SuperMap.MapVRenderer.prototype.mousemoveEvent
+         * @description 鼠标移动事件
+         * @param  e - {object} 触发对象
+         */
+
     }, {
         key: 'mousemoveEvent',
         value: function mousemoveEvent(e) {
             var pixel = e.layerPoint;
             _get(MapVRenderer.prototype.__proto__ || Object.getPrototypeOf(MapVRenderer.prototype), 'mousemoveEvent', this).call(this, pixel, e);
         }
+
+        /**
+         * @function SuperMap.MapVRenderer.prototype.bindEvent
+         * @description 绑定鼠标移动和鼠标点击事件
+         * @param e - {object} 触发对象
+         */
+
     }, {
         key: 'bindEvent',
         value: function bindEvent(e) {
@@ -6122,6 +6177,13 @@ var MapVRenderer = function (_MapVBaseLayer) {
                 }
             }
         }
+
+        /**
+         * @function SuperMap.MapVRenderer.prototype.unbindEvent
+         * @description 解绑鼠标移动和鼠标滑动触发的事件
+         * @param e - {object} 触发对象
+         */
+
     }, {
         key: 'unbindEvent',
         value: function unbindEvent(e) {
@@ -6136,13 +6198,24 @@ var MapVRenderer = function (_MapVBaseLayer) {
                 }
             }
         }
+
+        /**
+         * @function SuperMap.MapVRenderer.prototype.getContext
+         * @description 获取信息
+         */
+
     }, {
         key: 'getContext',
         value: function getContext() {
             return this.canvasLayer && this.canvasLayer.canvasContext;
         }
 
-        //追加数据
+        /**
+         * @function SuperMap.MapVRenderer.prototype.addData
+         * @description 追加数据
+         * @param data - {oject} 待添加的数据
+         * @param options - {oject} 待添加的数据信息
+         */
 
     }, {
         key: 'addData',
@@ -6155,7 +6228,12 @@ var MapVRenderer = function (_MapVBaseLayer) {
             this.update({ options: options });
         }
 
-        //更新覆盖原数据
+        /**
+         * @function SuperMap.MapVRenderer.prototype.updateData
+         * @description 更新覆盖原数据
+         * @param data - {oject} 待更新的数据
+         * @param options - {oject} 待更新的数据信息
+         */
 
     }, {
         key: 'setData',
@@ -6168,11 +6246,24 @@ var MapVRenderer = function (_MapVBaseLayer) {
             this.dataSet.set(_data);
             this.update({ options: options });
         }
+
+        /**
+         * @function SuperMap.MapVRenderer.prototype.getData
+         * @description 获取数据
+         */
+
     }, {
         key: 'getData',
         value: function getData() {
             return this.dataSet;
         }
+
+        /**
+         * @function SuperMap.MapVRenderer.prototype.removeData
+         * @description 删除数据
+         * @param filter - {String} 删除条件\过滤信息
+         */
+
     }, {
         key: 'removeData',
         value: function removeData(filter) {
@@ -6183,19 +6274,35 @@ var MapVRenderer = function (_MapVBaseLayer) {
             this.dataSet.set(newData);
             this.update({ options: null });
         }
+
+        /**
+         * @function SuperMap.MapVRenderer.prototype.clearData
+         * @description 清除数据
+         */
+
     }, {
         key: 'clearData',
         value: function clearData() {
             this.dataSet && this.dataSet.clear();
             this.update({ options: null });
         }
+
+        /**
+         * @function SuperMap.MapVRenderer.prototype.render
+         * @description 着色
+         * @param time - {number}
+         */
+
     }, {
         key: 'render',
         value: function render(time) {
             this._canvasUpdate(time);
         }
 
-        //墨卡托坐标为经纬度
+        /**
+         * @function SuperMap.MapVRenderer.prototype.transferToMercator
+         * @description 墨卡托坐标为经纬度
+         */
 
     }, {
         key: 'transferToMercator',
@@ -6316,27 +6423,58 @@ var MapVRenderer = function (_MapVBaseLayer) {
 
             this.initAnimator();
         }
+
+        /**
+         * @function SuperMap.MapVRenderer.prototype.addAnimatorEvent
+         * @description 添加动画事件
+         */
+
     }, {
         key: 'addAnimatorEvent',
         value: function addAnimatorEvent() {
             this.map.events.on({ 'movestart': this.animatorMovestartEvent.bind(this) });
             this.map.events.on({ 'moveend': this.animatorMoveendEvent.bind(this) });
         }
+
+        /**
+         * @function SuperMap.MapVRenderer.prototype.clear
+         * @description 清除环境
+         * @param context - {object} 当前环境
+         */
+
     }, {
         key: 'clear',
         value: function clear(context) {
             context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         }
+
+        /**
+         * @function SuperMap.MapVRenderer.prototype.show
+         * @description 展示渲染效果
+         */
+
     }, {
         key: 'show',
         value: function show() {
             this.map.addLayer(this.canvasLayer);
         }
+
+        /**
+         * @function SuperMap.MapVRenderer.prototype.hide
+         * @description 隐藏渲染效果
+         */
+
     }, {
         key: 'hide',
         value: function hide() {
             this.map.removeLayer(this.canvasLayer);
         }
+
+        /**
+         * @function SuperMap.MapVRenderer.prototype.draw
+         * @description 渲染绘制
+         */
+
     }, {
         key: 'draw',
         value: function draw() {

@@ -5,12 +5,12 @@ import GeoJSON from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindPathService
- * @description 最佳路径分析服务类。<br>
+ * @classdesc 最佳路径分析服务类。<br>
  *               最佳路径是在网络数据集中指定一些节点，按照节点的选择顺序，<br>
  *               顺序访问这些节点从而求解起止点之间阻抗最小的路经。<br>
  *               该类负责将客户端指定的最佳路径分析参数传递给服务端，并接收服务端返回的结果数据。<br>
  *               最佳路径分析结果通过该类支持的事件的监听函数参数获取
- * @augments SuperMap.NetworkAnalystServiceBase
+ * @extends SuperMap.NetworkAnalystServiceBase
  * @example
  * (start code)
  * var myFindPathService = new SuperMap.FindPathService(url, {
@@ -28,7 +28,7 @@ import GeoJSON from '../format/GeoJSON';
  */
 export default  class FindPathService extends NetworkAnalystServiceBase {
 
-    /**
+    /*
      * @function SuperMap.FindPathService.prototype.initialize
      * @description 最佳路径分析服务类构造函数。
      * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
@@ -74,16 +74,12 @@ export default  class FindPathService extends NetworkAnalystServiceBase {
         });
     }
 
-    /*
-     * Method: getJson
-     * 将对象转化为JSON字符串。
-     *
-     * Parameters:
-     * isAnalyzeById - {Boolean}
-     * params - {Array}
-     *
-     * Returns:
-     * {Object} 转化后的JSON字符串。
+    /**
+     * @function SuperMap.FindPathService.prototype.getJson
+     * @description 将对象转化为JSON字符串。
+     * @param isAnalyzeById - {Boolean} 是否通过id分析
+     * @param params - {Array} 需要转换的数字
+     * @return {Object} 转化后的JSON字符串。
      */
     getJson(isAnalyzeById, params) {
         var jsonString = "[",
@@ -104,12 +100,10 @@ export default  class FindPathService extends NetworkAnalystServiceBase {
         return jsonString;
     }
 
-    /*
-     * Method: toGeoJSONResult
-     * 将含有geometry的数据转换为geojson格式。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
+    /**
+     * @function SuperMap.FindMTSPPathsService.prototype.toGeoJSONResult
+     * @description 将含有geometry的数据转换为geojson格式。
+     * @param result - {Object} 服务器返回的结果对象。
      */
     toGeoJSONResult(result) {
         if (!result || !result.pathList || result.pathList.length < 1) {

@@ -6,10 +6,9 @@ import Image from './Image';
 import Vector from './Vector';
 
 /**
- * @class SuperMap.GetLayersInfoService 获取图层信息服务类构造函数。
- * @augments SuperMap.CommonServiceBase
- * @constructs  SuperMap.GetLayersInfoService
- * Parameters:
+ * @class SuperMap.GetLayersInfoService
+ * @classdesc 获取图层信息服务类构造函数。
+ * @extends SuperMap.CommonServiceBase
  * @param url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
  *         http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；<br>
  *         如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。<br>
@@ -26,7 +25,7 @@ export default  class GetLayersInfoService extends CommonServiceBase {
      */
     isTempLayers = false;
 
-    /**
+    /*
      * @function  initialize
      * @description GetLayersInfoService的构造函数
      * Parameters:
@@ -55,8 +54,8 @@ export default  class GetLayersInfoService extends CommonServiceBase {
     }
 
     /**
-     * @function  processAsync
-     * @description APIMethod: 负责将客户端的更新参数传递到服务端。
+     * @function SuperMap.GetLayersInfoService.prototype.processAsync
+     * @description 负责将客户端的更新参数传递到服务端。
      */
     processAsync() {
         var me = this,

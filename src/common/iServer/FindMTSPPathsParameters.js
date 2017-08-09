@@ -3,9 +3,9 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
 
 /**
  * @class SuperMap.FindMTSPPathsParameters
- * @description 多旅行商分析参数类
+ * @classdesc 多旅行商分析参数类
  * @param options - {Object} 可选参数。如：
- *        centers - {Point>/Integer} 配送中心集合，必设字段。<br>
+ *        centers - {Point/Integer} 配送中心集合，必设字段。<br>
  *        hasLeastTotalCost - {Boolean} 配送模式是否为总花费最小方案。默认为 false。<br>
  *        isAnalyzeById - {Boolean} 是否通过节点 ID 号来指定配送中心点和配送目的点，默认为 false，即通过坐标点指定。<br>
  *        nodes - {Array<{SuperMap.Point}|Number>} 配送目标集合，必设字段。<br>
@@ -14,7 +14,6 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
 export default  class FindMTSPPathsParameters {
 
     /**
-     * APIProperty: centers
      * @member SuperMap.FindMTSPPathsParameters.prototype.centers -{Point/Integer}
      * @description 配送中心集合，必设字段。<br>
      *               当 SuperMap.FindMTSPPathsParameters.isAnalyzeById = false 时，centers 应为点的坐标数组；<br>
@@ -23,7 +22,6 @@ export default  class FindMTSPPathsParameters {
     centers = null;
 
     /**
-     * APIProperty: hasLeastTotalCost
      * @member SuperMap.FindMTSPPathsParameters.prototype.hasLeastTotalCost -{Boolean}
      * @description 配送模式是否为总花费最小方案。默认为 false。<br>
      *               若为 true，则按照总花费最小的模式进行配送，此时可能会出现某几个配送中心点配送的花费较多而其他配送中心点的花费很少的情况。<br>
@@ -32,14 +30,12 @@ export default  class FindMTSPPathsParameters {
     hasLeastTotalCost = false;
 
     /**
-     * APIProperty: isAnalyzeById
      * @member SuperMap.FindMTSPPathsParameters.prototype.isAnalyzeById -{Boolean}
      * @description 是否通过节点 ID 号来指定配送中心点和配送目的点，默认为 false，即通过坐标点指定。
      */
     isAnalyzeById = false;
 
     /**
-     * APIProperty: nodes
      * @member SuperMap.FindMTSPPathsParameters.prototype.nodes -{Array<{SuperMap.Point}|Number>}
      * @description 配送目标集合，必设字段。<br>
      *               当 SuperMap.FindMTSPPathsParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
@@ -48,7 +44,6 @@ export default  class FindMTSPPathsParameters {
     nodes = null;
 
     /**
-     * APIProperty: parameter
      * @member SuperMap.FindMTSPPathsParameters.prototype.parameter -{SuperMap.TransportationAnalystParameter}
      * @description 交通网络分析通用参数。<br>
      *               通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息。<br>
@@ -71,7 +66,6 @@ export default  class FindMTSPPathsParameters {
 
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */

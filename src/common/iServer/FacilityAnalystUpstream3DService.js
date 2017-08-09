@@ -4,8 +4,8 @@ import FacilityAnalystUpstream3DParameters from './FacilityAnalystUpstream3DPara
 
 /**
  * @class SuperMap.FacilityAnalystUpstream3DService
- * @description 上游关键设施查找资源服务类
- * @augments SuperMap.CommonServiceBase
+ * @classdesc 上游关键设施查找资源服务类
+ * @extends SuperMap.CommonServiceBase
  * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
@@ -14,8 +14,8 @@ import FacilityAnalystUpstream3DParameters from './FacilityAnalystUpstream3DPara
  */
 export default  class FacilityAnalystUpstream3DService extends CommonServiceBase {
 
-    /**
-     * @function  SuperMap.FacilityAnalystUpstream3DService.initialize
+    /*
+     * @function  SuperMap.FacilityAnalystUpstream3DService.prototype.initialize
      * @description 上游关键设施查找资源服务类构造函数。
      * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
      *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
@@ -36,7 +36,7 @@ export default  class FacilityAnalystUpstream3DService extends CommonServiceBase
     }
 
     /**
-     * @function SuperMap.FacilityAnalystUpstream3DService.processAsync
+     * @function SuperMap.FacilityAnalystUpstream3DService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param params - {SuperMap.FacilityAnalystUpstream3DParameters} 上游关键设施查找资源参数类
      */

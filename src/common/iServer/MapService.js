@@ -2,8 +2,9 @@
 import CommonServiceBase from './CommonServiceBase';
 
 /**
- * @class SuperMap.MapService 地图信息服务类 。
- * @augments SuperMap.CommonServiceBase
+ * @class SuperMap.MapService
+ * @classdesc 地图信息服务类。
+ * @extends SuperMap.CommonServiceBase
  * @example
  * (start code)
  * var myMapService = new SuperMap.MapService(url, {
@@ -30,8 +31,8 @@ export default  class MapService extends CommonServiceBase {
      * @function SuperMap.MapService.prototype.initialize
      * @description MapService的构造函数
      * @param url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
-     * @param options - {Object} 参数 。
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @param options - {Object} 参数。如：<br>
+     *        eventListeners - {Object} 需要被注册的监听器对象。
      */
     constructor(url, options) {
         super(url, options);

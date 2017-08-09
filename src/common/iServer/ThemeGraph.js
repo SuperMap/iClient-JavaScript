@@ -11,8 +11,8 @@ import {ThemeGraphType, GraduatedMode, GraphAxesTextDisplayMode} from '../REST';
 
 /**
  * @class SuperMap.ThemeGraph
- * @description 统计专题图类。
- * @augments SuperMap.Theme
+ * @classdesc 统计专题图类。
+ * @extends SuperMap.Theme
  * @param options - {Object} 参数。<br>
  *        barWidth - {Number} 柱状专题图中每一个柱的宽度。<br>
  *        flow - {SuperMap.ThemeFlow} 统计专题图流动显示与牵引线设置。<br>
@@ -33,7 +33,6 @@ import {ThemeGraphType, GraduatedMode, GraphAxesTextDisplayMode} from '../REST';
 export default class ThemeGraph extends Theme {
 
     /**
-     * APIProperty: barWidth
      * @member SuperMap.ThemeGraph.prototype.barWidth -{Number}
      * @description 柱状专题图中每一个柱的宽度。使用地图坐标单位，默认值为0。<br>
      *              只有选择的统计图类型为柱状图（柱状图、三维柱状图、堆叠柱状图、三维堆叠柱状图）时，此项才可设置。
@@ -41,7 +40,6 @@ export default class ThemeGraph extends Theme {
     barWidth = 0;
 
     /**
-     * APIProperty: flow
      * @member SuperMap.ThemeGraph.prototype.flow -{SuperMap.ThemeFlow}
      * @description 统计专题图流动显示与牵引线设置。
      *              通过该字段可以设置统计符号是否流动显示和牵引线风格。
@@ -49,7 +47,6 @@ export default class ThemeGraph extends Theme {
     flow = null;
 
     /**
-     * APIProperty: graduatedMode
      * @member SuperMap.ThemeGraph.prototype.graduatedMode -{GraduatedMode}
      * @description 统计图中地理要素的值与图表尺寸间的映射关系（常数、对数、平方根），即分级方式。
      *              默认值为 SuperMap.GraduatedMode.CONSTANT。
@@ -59,35 +56,30 @@ export default class ThemeGraph extends Theme {
     graduatedMode = GraduatedMode.CONSTANT;
 
     /**
-     * APIProperty: graphAxes
      * @member SuperMap.ThemeGraph.prototype.graphAxes -{ThemeGraphAxes}
      * @description 用于设置统计图中坐标轴样式相关信息，如坐标轴颜色、是否显示、坐标文本样式等。
      */
     graphAxes = null;
 
     /**
-     * APIProperty: graphSize
      * @member SuperMap.ThemeGraph.prototype.graphSize -{ThemeGraphSize}
      * @description 用于设置统计符号的最大最小尺寸。
      */
     graphSize = null;
 
     /**
-     * APIProperty: graphSizeFixed
      * @member SuperMap.ThemeGraph.prototype.graphSizeFixed -{Boolean}
      * @description 缩放地图时统计图符号是否固定大小。默认值为 false，即统计图符号将随地图缩放。
      */
     graphSizeFixed = false;
 
     /**
-     * APIProperty: graphText
      * @member SuperMap.ThemeGraph.prototype.graphText -{SuperMap.ThemeGraphText}
      * @description 统计图上的文字是否可以见以及文字标注风格。
      */
     graphText = null;
 
     /**
-     * APIProperty: graphType
      * @member SuperMap.ThemeGraph.prototype.graphType -{SuperMap.ThemeGraphType}
      * @description 统计专题图类型。SuperMap 提供了多种类型的统计图，<br>
      *              分别为面积图、阶梯图、折线图、点状图、柱状图、三维柱状图、饼图、三维饼图、玫瑰图、三维玫瑰图、堆叠柱状图、三维堆叠柱状图、环状图。默认为面积图。
@@ -95,14 +87,12 @@ export default class ThemeGraph extends Theme {
     graphType = ThemeGraphType.AREA;
 
     /**
-     * APIProperty: graphAxesTextDisplayMode
      * @member SuperMap.ThemeGraph.prototype.graphAxesTextDisplayMode -{SuperMap.GraphAxesTextDisplayMode}
      * @description 统计专题图坐标轴文本显示模式 。默认值 SuperMap.GraphAxesTextDisplayMode.NONE。
      */
     graphAxesTextDisplayMode = GraphAxesTextDisplayMode.NONE;
 
     /**
-     * APIProperty: items
      * @member SuperMap.ThemeGraph.prototype.items -{Array<SuperMap.ThemeGraphItem>}
      * @description 统计专题图子项集合。必设字段。
      *              统计专题图可以基于多个变量，反映多种属性，即可以将多个专题变量的值绘制在一个统计图上。每一个专题变量对应的统计图即为一个专题图子项。
@@ -111,7 +101,6 @@ export default class ThemeGraph extends Theme {
     items = null;
 
     /**
-     * APIProperty: memoryKeys
      * @member SuperMap.ThemeGraph.prototype.memoryKeys -{Array(Integer)}
      * @description 以内存数组方式制作专题图时的键数组。<br>
      *              键数组内的数值代表 SmID 值，它与 SuperMap.ThemeGraphItem 类中的值数组（SuperMap.ThemeGraphItem.memoryDoubleValues）要关联起来应用。<br>
@@ -194,21 +183,18 @@ export default class ThemeGraph extends Theme {
     memoryKeys = null;
 
     /**
-     * APIProperty: negativeDisplayed
      * @member SuperMap.ThemeGraph.prototype.negativeDisplayed -{Boolean}
      * @description 专题图中是否显示属性为负值的数据。true 表示显示；默认为 false 即不显示。
      */
     negativeDisplayed = false;
 
     /**
-     * APIProperty: offset
      * @member SuperMap.ThemeGraph.prototype.offset -{SuperMap.ThemeOffset}
      * @description 用于设置统计图相对于要素内点的偏移量。
      */
     offset = null;
 
     /**
-     * APIProperty: overlapAvoided
      * @member SuperMap.ThemeGraph.prototype.overlapAvoided -{Boolean}
      * @description 统计图是否采用避让方式显示。<br>
      *              1.对数据集制作统计专题图:当统计图采用避让方式显示时，如果 overlapAvoided 为 true，则在统计图重叠度很大的情况下，
@@ -219,19 +205,16 @@ export default class ThemeGraph extends Theme {
     overlapAvoided = true;
 
     /**
-     * APIProperty: roseAngle
      * @member SuperMap.ThemeGraph.prototype.roseAngle -{Number}
      * @description 统计图中玫瑰图或三维玫瑰图用于等分的角度，默认为0度，精确到0.1度。在角度为0或者大于360度的情况下均使用360度来等分制作统计图的字段数。
      */
     roseAngle = 0;
 
     /**
-     * APIProperty: startAngle
      * @member SuperMap.ThemeGraph.prototype.startAngle -{Number}
      * @description 饼状统计图扇形的起始角度。默认为0度，精确到0.1度，以水平方向为正向。只有选择的统计图类型为饼状图（饼图、三维饼图、玫瑰图、三维玫瑰图）时，此项才可设置。
      */
     startAngle = 0;
-
 
     /*
      * Constructor: SuperMap.ThemeGraph
@@ -252,7 +235,6 @@ export default class ThemeGraph extends Theme {
 
 
     /**
-     * APIMethod: destroy
      * @inheritDoc
      */
     destroy() {
@@ -297,20 +279,18 @@ export default class ThemeGraph extends Theme {
     }
 
 
-    /*
-     * Method: toJSON
-     * 将SuperMap.ThemeGraph对象转化为json字符串。
-     *
-     * Returns:
-     * {String} 返回转换后的 JSON 字符串。
+    /**
+     * @function SuperMap.ThemeGraph.prototype.toJSON
+     * @description 将SuperMap.ThemeGraph对象转化为json字符串。
+     * @return {String} 返回转换后的 JSON 字符串。
      */
     toJSON() {
         return SuperMap.Util.toJSON(this.toServerJSONObject());
     }
 
-    /*
-     * Method: toServerJSONObject
-     * 转换成对应的 JSON 格式对象。
+    /**
+     * @function SuperMap.ThemeGraph.prototype.toServerJSONObject
+     * @description 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var obj = {};

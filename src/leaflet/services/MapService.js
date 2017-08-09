@@ -5,8 +5,8 @@ import SuperMapMapService from  '../../common/iServer/MapService';
 import TilesetsService from  '../../common/iServer/TilesetsService';
 /**
  * @class  L.supermap.MapService
- * @description 地图信息服务类
- * @augments ServiceBase
+ * @classdesc 地图信息服务类
+ * @extends ServiceBase
  * @param url -{String} 地图服务地址
  * @param options -{Object} 地图服务信息相关参数
  * @example

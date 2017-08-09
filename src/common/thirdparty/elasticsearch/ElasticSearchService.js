@@ -2,8 +2,9 @@ import SuperMap  from '../../SuperMap';
 import Elasticsearch from 'elasticsearch';
 
 /**
- * ElasticSearch服务
- * 通用参数设置请参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-conventions.html
+ * @class SuperMap.ElasticSearchService
+ * @classdesc ElasticSearch服务
+ *              通用参数设置请参考 https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/api-conventions.html
  */
 
 export default  class ElasticSearchService {

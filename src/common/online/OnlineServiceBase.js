@@ -4,7 +4,8 @@ import {ServerType} from '../REST';
 import FetchRequest from '../util/FetchRequest';
 
 /**
- * Online服务基类(使用key作为权限限制的类需要实现此类)
+ * @class SuperMap.OnlineServiceBase
+ * @classdesc Online服务基类(使用key作为权限限制的类需要实现此类)
  */
 export default class OnlineServiceBase {
 

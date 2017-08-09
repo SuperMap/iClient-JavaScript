@@ -1,22 +1,22 @@
-
 import L from "leaflet";
 import SuperMap from '../../common/SuperMap';
 import {GraphThemeLayer} from './theme/GraphThemeLayer';
+
 /**
- * Class: RankSymbolThemeLayer
- * 符号专题图图层。
- *
- * 符号专题图通过为每个要素绘制符号大小来反映其对应的专题值的大小；它只能表示单个个字段属性信息。
- * 符号专题图多用于具有相关数量特征的地图上，比如表示不同地区粮食产量、GDP、人口等。
- * 即通过制作一个符号专题图，就可以清晰展示各个区域相关Value的分布差异等。目前提供的统计图类型有：圆（Circle）
- *
- * 目前提供的符号图形有：圆形（后续进行扩展 心形 五角星 多角心 图片等）
- *
- * Inherits from:
- *  - <GraphThemeLayer>
+ * @class L.supermap.RankSymbolThemeLayer
+ * @classdesc 符号专题图图层。<br>
+ *            符号专题图通过为每个要素绘制符号大小来反映其对应的专题值的大小；它只能表示单个个字段属性信息。<br>
+ *            符号专题图多用于具有相关数量特征的地图上，比如表示不同地区粮食产量、GDP、人口等。<br>
+ *            即通过制作一个符号专题图，就可以清晰展示各个区域相关Value的分布差异等。目前提供的统计图类型有：圆（Circle）<br>
+ *           目前提供的符号图形有：圆形（后续进行扩展 心形 五角星 多角心 图片等）
+ * @extends L.supermap.GraphThemeLayer
+ * @param name - {String} 专题图层名
+ * @param symbolType - {SuperMap.ChartType} 必设参数，目前支持："Circle"。
+ * @param options - {object} 可选参数
  */
 export var RankSymbolThemeLayer = GraphThemeLayer.extend({
-    /**
+
+    /*
      * symbolSetting:各类型图表的 symbolSetting 对象可设属性请参考图表模型类的注释中对 symbolSetting 对象可设属性的描述。
      *  所有图表类型的 symbolSetting 对象通常都具有以下 5 个基础可设属性：
      *  codomain - {Array{Number}} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
@@ -34,16 +34,22 @@ export var RankSymbolThemeLayer = GraphThemeLayer.extend({
         this.symbolSetting = {};
     },
 
-
-    //设置符号类型，此函数可动态改变图表类型。在调用此函数前请通过 symbolSetting 为新类型的图表做相关配置。
-    //图表类型，目前支持："Circle"。
+    /**
+     * @function L.supermap.RankSymbolThemeLayer.prototype.
+     * @description 设置符号类型，此函数可动态改变图表类型。在调用此函数前请通过 symbolSetting 为新类型的图表做相关配置。
+     * @param symbolType - {SuperMap.ChartType} 目前支持："Circle"。 //todo 这里怎么又是supermap的类型
+     */
     setSymbolType: function (symbolType) {
         this.symbolType = symbolType;
         this.redraw();
     },
 
-    //创建专题要素（图形）
-
+    /**
+     * @function L.supermap.RankSymbolThemeLayer.prototype.
+     * @description 创建专题要素（图形）
+     * @param feature  - {L.feature} 要创建的专题图形要素
+     * @return {*}
+     */
     createThematicFeature: function (feature) {
         var me = this;
         var thematicFeature;

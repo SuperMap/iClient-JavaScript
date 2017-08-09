@@ -1,8 +1,25 @@
 import '../core/Base';
 import L from "leaflet";
 
+/**
+ * @class L.supermap.baiduTileLayer
+ * @classdesc 百度切片图层类。
+ * @extends L.TileLayer
+ * @param url -{String} 切片地址
+ * @param options -{object} 切片参数
+ */
 export var BaiduTileLayer = L.TileLayer.extend({
+
+    /**
+     * @member L.supermap.baiduTileLayer.prototype.url -{String}
+     * @description 切片地址
+     */
     url: "http://online{num}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1",
+
+    /**
+     * @member L.supermap.baiduTileLayer.prototype.options -{object}
+     * @description 切片参数
+     */
     options: {
         minZoom: 3,
         maxZoom: 19,
@@ -10,6 +27,7 @@ export var BaiduTileLayer = L.TileLayer.extend({
         retina: L.Browser.retina,
         attribution: "Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
     },
+
     initialize: function (url, options) {
         if (url) {
             this.url = url;
@@ -20,6 +38,12 @@ export var BaiduTileLayer = L.TileLayer.extend({
         }
         L.stamp(this);
     },
+
+    /**
+     * @function L.supermap.baiduTileLayer.prototype.getTileUrl
+     * @description 获取切片地址
+     * @param coords - {} 坐标参数
+     */
     getTileUrl: function (coords) {
         return L.Util.template(this.url, {
             num: Math.abs((coords.x + coords.y) % 8) + 1,

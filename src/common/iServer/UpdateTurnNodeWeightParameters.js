@@ -2,7 +2,7 @@ import SuperMap from '../SuperMap';
 
 /**
  * @class SuperMap.UpdateTurnNodeWeightParameters
- * @description 转向耗费权重更新服务参数类
+ * @classdesc 转向耗费权重更新服务参数类
  * @param options - {Object} 可选参数。如：<br>
  *         nodeId - {String} 转向结点的id。<br>
  *        fromEdgeId - {String} 起始边的id。<br>
@@ -13,35 +13,30 @@ import SuperMap from '../SuperMap';
 export default  class UpdateTurnNodeWeightParameters {
 
     /**
-     * APIProperty:  nodeId
      * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.nodeId -{String}
      * @description 转向结点的id
      */
     nodeId = "";
 
     /**
-     * APIProperty: fromEdgeId
      * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.fromEdgeId -{String}
      * @description 起始边的id
      */
     fromEdgeId = "";
 
     /**
-     * APIProperty: toEdgeId
      * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.toEdgeId -{String}
      * @description 终止边的id
      */
     toEdgeId = "";
 
     /**
-     * APIProperty: weightField
      * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.weightField -{String}
      * @description 转向结点的耗费字段
      */
     weightField = "";
 
     /**
-     * APIProperty: turnNodeWeight
      * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.turnNodeWeight -{String}
      * @description 耗费权重
      */
@@ -63,7 +58,6 @@ export default  class UpdateTurnNodeWeightParameters {
 
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */

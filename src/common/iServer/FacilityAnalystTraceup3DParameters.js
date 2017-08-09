@@ -3,8 +3,8 @@ import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
 
 /**
  * @class SuperMap.FacilityAnalystTraceup3DParameters
- * @description 上游追踪资源参数类
- * @augments SuperMap.FacilityAnalyst3DParameters
+ * @classdesc 上游追踪资源参数类
+ * @extends SuperMap.FacilityAnalyst3DParameters
  * @param options - {Object} 可选参数。如：<br>
  *         edgeID - {Number} 指定的弧段ID。<br>
  *         nodeID - {Integer} 指定的结点ID。<br>

@@ -5,9 +5,9 @@ import {MeasureMode} from '../REST';
 
 /**
  * @class SuperMap.MeasureService
- * @description 量算服务类。
- * 该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
- * @augments SuperMap.CommonServiceBase
+ * @classdesc 量算服务类。
+ *              该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
+ * @extends SuperMap.CommonServiceBase
  * @example
  * (start code)
  * var myMeasuerService = new SuperMap.MeasureService(url, {
@@ -25,13 +25,13 @@ import {MeasureMode} from '../REST';
 export default class MeasureService extends CommonServiceBase {
 
     /**
-     * @member SuperMap.MeasureService.measureMode -{SuperMap.MeasureMode}
+     * @member SuperMap.MeasureService.prototype.measureMode -{SuperMap.MeasureMode}
      * @description 量算模式，包括距离量算模式和面积量算模式。默认值为：MeasureMode.DISTANCE 。
      */
     measureMode = MeasureMode.DISTANCE;
 
     /**
-     * @function SuperMap.MeasureService.initialize
+     * @function SuperMap.MeasureService.prototype.initialize
      * @description 量算服务类构造函数。
      * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
      * @param options - {Object} 交互服务时所需可选参数。如：<br>
@@ -55,7 +55,7 @@ export default class MeasureService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.MeasureService.processAsync
+     * @function SuperMap.MeasureService.prototype.processAsync
      * @description 负责将客户端的量算参数传递到服务端。
      * @param params - {SuperMap.MeasureParameters} 量算参数。
      */

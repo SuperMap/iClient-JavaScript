@@ -5,8 +5,8 @@ import ChartQueryService from '../../common/iServer/ChartQueryService';
 import ChartFeatureInfoSpecsService from '../../common/iServer/ChartFeatureInfoSpecsService';
 /**
  * @class ol.supermap.ChartService
- * @description openlayer的海图服务。
- * @augments ol.supermap.ServiceBase
+ * @classdesc openlayer的海图服务。
+ * @extends ol.supermap.ServiceBase
  * @example
  * 用法：
  *      new ol.supermap.ChartService(url)
@@ -23,7 +23,7 @@ export default class ChartService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.ChartService.queryChart
+     * @function ol.supermap.ChartService.prototype.queryChart
      * @description 查询海图服务。
      * @param params -{SuperMap.ChartQueryParameters} 海图查询所需参数类。
      * @param callback -{function} 回调函数。

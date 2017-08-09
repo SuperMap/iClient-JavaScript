@@ -1,36 +1,49 @@
 import SuperMap from '../SuperMap';
 /**
- * Class: SuperMap.CartoCSS
- * CartoCSS解析类，其主要功能为将CartoCSS字符串解析为CartoCSS的shader属性风格对象
+ * @class SuperMap.CartoCSS
+ * @classdesc CartoCSS解析类，其主要功能为将CartoCSS字符串解析为CartoCSS的shader属性风格对象
+ * @param cartoStr - {String} CartoCSS样式表字符串
+ * @example
+ * (code)
+ * var cartocss=[
+ * "@color:#111;",
+ * "#China_Railway_L__China400::two{",
+ * "line-color:@color;",
+ * "line-width:2",
+ * "}"
+ * ].join("/n");
+ * var carto=new SuperMap.CartoCSS(cartocss);
+ * me.cartoShaders=carto.getShaders();
+ * (end)
  */
 export default  class CartoCSS {
     env = null;
 
     /**
-     * APIProperty: parser
-     * 解析器
-     * */
+     * @member SuperMap.CartoCSS.prototype.parser
+     * @description 解析器
+     */
     parser = null;
 
     /**
-     * Property: ruleSet
-     * CartoCSS规则对象
-     * */
+     * @member SuperMap.CartoCSS.prototype.ruleSet
+     * @description CartoCSS规则对象
+     */
     ruleSet = null;
 
     /**
-     * Property: cartoStr
-     * CartoCSS样式表字符串
-     * */
+     * @member SuperMap.CartoCSS.prototype.cartoStr
+     * @description CartoCSS样式表字符串
+     */
     cartoStr = "";
 
     /**
-     * Property: shaders
-     * Carto着色器集
-     * */
+     * @member SuperMap.CartoCSS.prototype.shaders
+     * @description Carto着色器集
+     */
     shaders = null;
 
-    /**
+    /*
      * Constructor: SuperMap.CartoCSS
      * 此类用于将CartoCSS样式表解析为Carto规则对象，然后可以将Carto规则集转化为Carto图层的渲染信息shader
      *
@@ -68,9 +81,9 @@ export default  class CartoCSS {
     }
 
     /**
-     * Method: getParser
-     * 获取CartoCSS解析器
-     * */
+     * @function SuperMap.CartoCSS.prototype.getParser
+     * @description 获取CartoCSS解析器
+     */
     getParser(env) {
         var input,       // LeSS input string
             i,           // current index in `input`
@@ -880,12 +893,10 @@ export default  class CartoCSS {
 
 
     /**
-     * Method: parse
-     * 利用CartoCSS解析器里面的parse方法，将CartoCSS样式表字符串转化为CartoCSS规则集
-     *
-     * Returns:
-     * {Object} CartoCSS规则集
-     * */
+     * @function SuperMap.CartoCSS.prototype.parse
+     * @description 利用CartoCSS解析器里面的parse方法，将CartoCSS样式表字符串转化为CartoCSS规则集
+     * @return {Object} CartoCSS规则集
+     */
     parse(str) {
         var parser = this.parser;
         var ruleSet = this.ruleSet = parser.parse(str);
@@ -894,12 +905,10 @@ export default  class CartoCSS {
 
 
     /**
-     * Method: toShaders
-     * 将CartoCSS规则集转化为着色器
-     *
-     * Returns:
-     * {Array} CartoCSS着色器集
-     * */
+     * @function SuperMap.CartoCSS.prototype.toShaders
+     * @description 将CartoCSS规则集转化为着色器
+     * @return {Array} CartoCSS着色器集
+     */
     toShaders() {
         if (this.ruleSet) {
             var ruleset = this.ruleSet;
@@ -1026,13 +1035,10 @@ export default  class CartoCSS {
 
 
     /**
-     * APIMethod: getShaders
-     * 获取CartoCSS着色器
-     *
-     * Returns:
-     * {Array} 着色器集
-     *
-     * Examples:
+     * @function SuperMap.CartoCSS.prototype.getShaders
+     * @description 获取CartoCSS着色器
+     * @return {Array} 着色器集
+     * @example
      * (code)
      *   //shaders的结构大概如下：
      *   var shaders=[
@@ -1054,15 +1060,15 @@ export default  class CartoCSS {
      *   }
      *   ];
      * (end)
-     * */
+     */
     getShaders() {
         return this.shaders;
     }
 
     /**
-     * APIMethod: destroy
-     * CartoCSS解析对象的析构函数，用于销毁CartoCSS解析对象
-     * */
+     * @function destroy
+     * @description CartoCSS解析对象的析构函数，用于销毁CartoCSS解析对象
+     */
     destroy() {
         this.cartoStr = null;
         this.env = null;

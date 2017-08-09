@@ -9,8 +9,8 @@ import SummaryRegionJobsService from '../../common/iServer/SummaryRegionJobsServ
 import VectorClipJobsService from '../../common/iServer/VectorClipJobsService';
 /**
  * @class ol.supermap.ProcessingService
- * @description 大数据处理相关服务类。
- * @augments ol.supermap.ServiceBase
+ * @classdesc 大数据处理相关服务类。
+ * @extends ol.supermap.ServiceBase
  * @example
  * 用法：
  *      new ol.supermap.ProcessingService(url,options)
@@ -201,7 +201,7 @@ export default class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.ProcessingService.getBuildCacheJobs
+     * @function ol.supermap.ProcessingService.prototype.getBuildCacheJobs
      * @description 获取生成地图缓存的列表。
      * @param callback -{function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
@@ -369,7 +369,7 @@ export default class ProcessingService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.ProcessingService.getSummaryRegionJobs
+     * @function ol.supermap.ProcessingService.prototype.getSummaryRegionJobs
      * @description 获取范围汇总分析的列表。
      * @param callback -{function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。

@@ -4,8 +4,8 @@ import ThemeParameters from './ThemeParameters';
 
 /**
  * @class SuperMap.ThemeService
- * @description 专题图服务类。
- * @augments SuperMap.CommonServiceBase
+ * @classdesc 专题图服务类。
+ * @extends SuperMap.CommonServiceBase
  * @example
  * (start code)
  * var myThemeService = new SuperMap.ThemeService(url, {
@@ -21,8 +21,8 @@ import ThemeParameters from './ThemeParameters';
  */
 export default  class ThemeService extends CommonServiceBase {
 
-    /**
-     * @function SuperMap.ThemeService.initialize
+    /*
+     * @function SuperMap.ThemeService.prototype.constructor
      * @description 专题图服务类构造函数。
      * @param url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
      * @param options - {Object} 交互服务时所需可选参数。如：<br>
@@ -51,7 +51,7 @@ export default  class ThemeService extends CommonServiceBase {
     }
 
     /**
-     * @function SuperMap.ThemeService.processAsync
+     * @function SuperMap.ThemeService.prototype.processAsync
      * @description 负责将客户端的专题图参数传递到服务端。
      * @param params - {SuperMap.ThemeParameters} 专题图参数类。
      */
@@ -71,15 +71,11 @@ export default  class ThemeService extends CommonServiceBase {
         });
     }
 
-    /*
-     * Method: getJsonParameters
-     * 将专题图参数参数转化为 JSON 字符串。
-     *
-     * Parameters:
-     * params - {SuperMap.ThemeParameters}
-     *
-     * Returns:
-     * {Object} 转化后的JSON字符串。
+    /**
+     * @function SuperMap.ThemeService.prototype.getJsonParameters
+     * @description 将专题图参数参数转化为 JSON 字符串。
+     * @param params - {SuperMap.ThemeParameters} 专题图参数类。
+     * @return {Object} 转化后的JSON字符串。
      */
     getJsonParameters(parameter) {
         var jsonParameters = "",

@@ -1,6 +1,19 @@
 import {Symbolizer} from './Symbolizer';
 import L from "leaflet";
+
+/**
+ * @class L.supermap.PointSymbolizer
+ * @classdesc 点符号类
+ * @extends L.CircleMarker
+ * @param feature - {L.feature} 点要素
+ * @param pxPerExtent - {number} 点符号大小
+ */
 export var PointSymbolizer = L.CircleMarker.extend({
+
+    /**
+     * @member L.supermap.PointSymbolizer.prototype.includes
+     * @description 包含符号
+     */
     includes: Symbolizer.prototype,
 
     statics: {
@@ -12,6 +25,12 @@ export var PointSymbolizer = L.CircleMarker.extend({
         this._makeFeatureParts(feature, pxPerExtent);
     },
 
+    /**
+     * @function L.supermap.PointSymbolizer.prototype.render
+     * @description 绘制点符号
+     * @param renderer - {object} 渲染器
+     * @param style - {String} 符号样式
+     */
     render: function (renderer, style) {
         Symbolizer.prototype.render.call(this, renderer, style);
         this._radius = style.radius || L.CircleMarker.prototype.options.radius;
@@ -30,10 +49,20 @@ export var PointSymbolizer = L.CircleMarker.extend({
         }
     },
 
+    /**
+     * @function L.supermap.PointSymbolizer.prototype.makeInteractive
+     * @description 设置交互
+     */
     makeInteractive: function () {
         this._updateBounds();
     },
 
+    /**
+     * @function L.supermap.PointSymbolizer.prototype.updateStyle
+     * @description 更新替换符号样式
+     * @param renderer - {object} 渲染器
+     * @param style - {String} 符号样式
+     */
     updateStyle: function (renderer, style) {
         this._radius = style.radius || this._radius;
         this._updateBounds();

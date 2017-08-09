@@ -1,18 +1,24 @@
-/**
- * iServer 矢量瓦片json表述出图
- */
-
 import "../../core/Base";
 import {VectorFeatureType} from "./VectorFeatureType";
 import L from "leaflet";
 import * as Util from "../../core/Util";
 import SuperMap from '../../../common/SuperMap';
 
+/**
+ * @class L.supermap.VectorTileJSON
+ * @classdesc iServer 矢量瓦片json表述出图
+ * @param
+ */
 export var VectorTileJSON = L.Class.extend({
+
     initialize: function (url) {
         this.url = url;
     },
 
+    /**
+     * @function L.supermap.VectorTileJSON.prototype.getTile
+     * @description 获取切片
+     */
     getTile: function () {
         var me = this;
         return SuperMap.FetchRequest.get(me.url, null, {

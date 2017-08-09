@@ -4,10 +4,10 @@ import ThemeMemoryData from './ThemeMemoryData';
 
 /**
  * @class SuperMap.Theme
- * @description 专题图基类。
+ * @classdesc 专题图基类。
  * @param  type - {String} 专题图类型。
  * @param options - {Object} 可选参数。如：<br>
- *         memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
+ *        memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
  */
 export default  class Theme {
 
@@ -26,7 +26,7 @@ export default  class Theme {
     type = null;
 
     /**
-     * @function SuperMap.Theme.prototype.initialize
+     * @function SuperMap.Theme.prototype.constructor
      * @description 专题图基类构造函数。
      * @param  type - {String} 专题图类型。
      * @param options - {Object} 可选参数。如：<br>
@@ -44,7 +44,6 @@ export default  class Theme {
 
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
@@ -59,8 +58,8 @@ export default  class Theme {
 
 
     /*
-     * Method: toServerJSONObject
-     * 转换成对应的 JSON 格式对象。
+     * @function SuperMap.Theme.prototype.toServerJSONObject
+     * @description 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         //return 子类实现

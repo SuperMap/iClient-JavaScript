@@ -5,11 +5,11 @@ import GeoJSON from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindLocationService
- * @description 选址分区分析服务类。
+ * @classdesc 选址分区分析服务类。
  *               选址分区分析是为了确定一个或多个待建设施的最佳或最优位置，使得设施可以用一种最经济有效的方式为需求方提供服务或者商品。
  *               选址分区不仅仅是一个选址过程，还要将需求点的需求分配到相应的新建设施的服务区中，因此称之为选址与分区。
  *               选址分区分析结果通过该类支持的事件的监听函数参数获取
- * @augments SuperMap.NetworkAnalystServiceBase
+ * @extends SuperMap.NetworkAnalystServiceBase
  * @example
  * (start code)
  * var findLocationService = new SuperMap.FindLocationService(url, {
@@ -77,15 +77,11 @@ export default class FindLocationService extends NetworkAnalystServiceBase {
         });
     }
 
-    /*
-     * Method: getCentersJson
-     * 将数组对象转化为JSON字符串。
-     *
-     * Parameters:
-     * params - {Array}
-     *
-     * Returns:
-     * {Object} 转化后的JSON字符串。
+    /**
+     * @function SuperMap.FindLocationService.prototype.getCentersJson
+     * @description 将数组对象转化为JSON字符串。
+     * @param params - {Array} 需要转换的参数
+     * @param {Object} 转化后的JSON字符串。
      */
     getCentersJson(params) {
         var json = "[",
@@ -98,12 +94,10 @@ export default class FindLocationService extends NetworkAnalystServiceBase {
         return json;
     }
 
-    /*
-     * Method: toGeoJSONResult
-     * 将含有geometry的数据转换为geojson格式。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
+    /**
+     * @function SuperMap.FindLocationService.prototype.toGeoJSONResult
+     * @description 将含有geometry的数据转换为geojson格式。
+     * @param result - {Object} 服务器返回的结果对象。
      */
     toGeoJSONResult(result) {
         if (!result) {

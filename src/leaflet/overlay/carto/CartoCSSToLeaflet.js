@@ -1,18 +1,33 @@
-/**
- *CartoCSS样式转Leaflet样式
- */
 import '../../core/Base';
 import './CartoDefaultStyle';
 import './CartoStyleMap';
 import CartoCSS from '../../../common/style/CartoCSS';
 import SuperMap from '../../../common/SuperMap';
 import L from "leaflet";
-
+/**
+ * @class L.supermap.CartoCSSToLeaflet
+ * @classdesc CartoCSS样式转Leaflet样式类
+ */
 export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
 
+    /**
+     * @member L.supermap.CartoCSSToLeaflet.prototype.cartoCSS
+     * @description CartoCSS样式
+     */
     cartoCSS: null,
+
+    /**
+     * @member L.supermap.CartoCSSToLeaflet.prototype.mapUrl
+     * @description 地图服务地址
+     */
     mapUrl: null,
 
+    /**
+     * @function L.supermap.CartoCSSToLeaflet.prototype.pretreatedCartoCSS
+     * @description CartoCSS样式预处理
+     * @param cartoStr - {String} Carto信息
+     * @param processCharacters - {object} 需要处理的特征对象
+     */
     pretreatedCartoCSS: function (cartoStr, processCharacters) {
         if (processCharacters) {
             cartoStr = this.processCharacters(cartoStr);
@@ -31,7 +46,11 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
         }
     },
 
-    //替换一些关键符号
+    /**
+     * @function L.supermap.CartoCSSToLeaflet.prototype.processCharacters
+     * @description 替换一些关键符号
+     * @param cartoCSSStr - {String} cartoCSSS信息
+     */
     processCharacters: function (cartoCSSStr) {
         var style = cartoCSSStr;
         if (!style) {
@@ -50,7 +69,11 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
         return style;
     },
 
-
+    /**
+     * @function L.supermap.CartoCSSToLeaflet.prototype.pickShader
+     * @description 拾取着色对象
+     * @param layerName - {String} 图层名称
+     */
     pickShader: function (layerName) {
         if (!this.cartoCSS) {
             return null;
@@ -59,7 +82,11 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
         return this.cartoCSS[name];
     },
 
-
+    /**
+     * @function L.supermap.CartoCSSToLeaflet.prototype.getDefaultStyle
+     * @description 获取默认风格
+     * @param type - {String} 默认风格类型
+     */
     getDefaultStyle: function (type) {
         var style = {};
         //设置默认值
@@ -70,6 +97,12 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
         }
         return style;
     },
+
+    /**
+     * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalMarker
+     * @description 从iPortalMarker中获取样式
+     * @param icon - {String} iPortal图标
+     */
     getStyleFromiPortalMarker: function (icon) {
         if (icon.indexOf("./") == 0) {
             return null;
@@ -85,6 +118,14 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
             popupAnchor: L.point(0, -43)
         });
     },
+
+    /**
+     * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalStyle
+     * @description 从iPortal的风格中获取样式
+     * @param iPortalStyle - {object} iPortal的样式对象
+     * @param type - {String} 样式类型
+     * @param fStyle todo
+     */
     getStyleFromiPortalStyle: function (iPortalStyle, type, fStyle) {
         var featureStyle = fStyle ? JSON.parse(fStyle) : null;
         var style = {};
@@ -138,6 +179,13 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
             return style;
         }
     },
+
+    /**
+     * todo
+     * @function L.supermap.CartoCSSToLeaflet.prototype.dashStyle
+     * @param style
+     * @param widthFactor
+     */
     dashStyle: function (style, widthFactor) {
         if (!style)return [];
         var w = style.strokeWidth * widthFactor;
@@ -162,6 +210,16 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
                 return str.replace(/\[|\]/gi, "").split(",");
         }
     },
+
+    /**
+     * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromCarto
+     * @description 从Carto中获取有效的样式
+     * @param zoom - {} 范围
+     * @param scale - {array} 比例尺
+     * @param shader
+     * @param feature - {} 要素
+     * @param fromServer todo
+     */
     getValidStyleFromCarto: function (zoom, scale, shader, feature, fromServer) {
         if (!shader) {
             return null;
@@ -208,7 +266,12 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
         return style;
     },
 
-
+    /**
+     * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromLayerInfo
+     * @description 通过图层信息获取有效的样式
+     * @param feature - {SuperMap.Feature} 要素
+     * @param layerInfo - {object} 图层信息
+     */
     getValidStyleFromLayerInfo: function (feature, layerInfo) {
         var type = feature.type,
             style = this.getDefaultStyle(type),

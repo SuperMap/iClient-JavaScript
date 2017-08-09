@@ -2,16 +2,23 @@ import '../../core/Base';
 import SuperMap from '../../../common/SuperMap';
 import L from "leaflet";
 /**
- *Class: ThemeFeature
- *客户端专题图要素类
- * 支持的geometry参数类型为L.Point,L.LatLng,L.Polyline,L.Polygon
+ * @class L.supermap.ThemeFeature
+ * @classdesc 客户端专题图要素类。
+ *            支持的geometry参数类型为L.Point,L.LatLng,L.Polyline,L.Polygon
+ * @param geometry - {L.supermap.graphic} 要素图形
+ * @param attributes - {object} 要素属性
  */
 export var ThemeFeature = L.Class.extend({
+
     initialize: function (geometry, attributes) {
         this.geometry = geometry;
         this.attributes = attributes;
     },
 
+    /**
+     * @function L.supermap.ThemeFeature.prototype.toFeature
+     * @description 转为矢量要素
+     */
     toFeature: function () {
         var geometry = this.geometry;
         var points = [];
@@ -34,6 +41,11 @@ export var ThemeFeature = L.Class.extend({
         return new SuperMap.Feature.Vector(geometry, this.attributes);
     },
 
+    /**
+     * @function L.supermap.ThemeFeature.prototype.reverseLatLngs
+     * @description 反算坐标
+     * @param latlngs - {L.latlngs} 坐标值
+     */
     reverseLatLngs: function (latlngs) {
         if (!L.Util.isArray(latlngs)) {
             latlngs = [latlngs];

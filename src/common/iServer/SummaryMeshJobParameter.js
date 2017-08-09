@@ -3,7 +3,7 @@ import {StatisticAnalystMode, SummaryType} from '../REST'
 
 /**
  * @class SuperMap.SummaryMeshJobParameter
- * @description 点聚合分析任务参数类
+ * @classdesc 点聚合分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *        datasetName -{String} 数据集名。<br>
  *        query -{SuperMap.Bounds} 分析范围。<br>

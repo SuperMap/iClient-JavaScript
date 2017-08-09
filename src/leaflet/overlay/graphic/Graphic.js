@@ -1,6 +1,12 @@
 import '../../core/Base';
 import L from "leaflet";
 
+/**
+ * @class L.supermap.graphic
+ * @classdesc 图形类。
+ * @extends L.Class
+ * @param options - {object} 图形参数
+ */
 export var Graphic = L.Class.extend({
 
     initialize: function (options) {
@@ -9,18 +15,36 @@ export var Graphic = L.Class.extend({
         this._canvas = options._canvas;
     },
 
+    /**
+     * @function L.supermap.graphic.prototype.setLatlng
+     * @description 设置经纬度
+     * @param latlng 经纬度参数
+     */
     setLatlng: function (latlng) {
         this._latlng = latlng;
     },
 
+    /**
+     * @function L.supermap.graphic.prototype.setCanvas
+     * @description 设置画布
+     * @param canvas - {object} 传入需要设置的画布
+     */
     setCanvas: function (canvas) {
         this._canvas = canvas;
     },
 
+    /**
+     * @function L.supermap.graphic.prototype.getLatLng
+     * @description 获取经纬度
+     */
     getLatLng: function () {
         return this._latlng;
     },
 
+    /**
+     * @function L.supermap.graphic.prototype.getCanvas
+     * @description 获取画布
+     */
     getCanvas: function () {
         return this._canvas;
     }

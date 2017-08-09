@@ -2,8 +2,8 @@ import SuperMap from '../SuperMap';
 import * as OnlineResources from './OnlineResources';
 
 /**
- * Class:SuperMap.OnlineQueryDatasParameter
- *  myDatas服务资源查询参数
+ * @class SuperMap.OnlineQueryDatasParameter
+ * @classdesc myDatas服务资源查询参数
  */
 export default  class OnlineQueryDatasParameter {
 

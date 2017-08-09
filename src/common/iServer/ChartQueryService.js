@@ -1,13 +1,3 @@
-/*
- * Class: SuperMap.ChartQueryService
- *      海图查询服务类。该类负责将海图查询所需参数（ChartQueryParameters）传递至服务端，并获取服务端的返回结果。
- *      用户可以通过两种方式获取查询结果:
- *      1.通过 AsyncResponder 类获取（推荐使用）；
- *      2.通过监听 QueryEvent.PROCESS_COMPLETE 事件获取。
- *
- * Inherits from:
- *  - <SuperMap.CommonServiceBase>
- */
 import SuperMap from '../SuperMap';
 import {DataFormat} from '../REST';
 import CommonServiceBase from './CommonServiceBase';
@@ -17,11 +7,11 @@ import GeoJSON from '../format/GeoJSON';
 
 /**
  * @class SuperMap.ChartQueryService
- * @description 海图查询服务类。该类负责将海图查询所需参数（ChartQueryParameters）传递至服务端，并获取服务端的返回结果。<br>
+ * @classdesc 海图查询服务类。该类负责将海图查询所需参数（ChartQueryParameters）传递至服务端，并获取服务端的返回结果。<br>
  *      用户可以通过两种方式获取查询结果:<br>
  *      1.通过 AsyncResponder 类获取（推荐使用）；<br>
  *      2.通过监听 QueryEvent.PROCESS_COMPLETE 事件获取。<br>
- * @augments  SuperMap.CommonServiceBase
+ * @extends SuperMap.CommonServiceBase
  * @param url - {String} 地图查询服务访问地址。如："http://192.168.168.35:8090/iserver/services/map-ChartW/rest/maps/海图"。
  * @param options - {Object} 服务交互时所需的可选参数。
  * @example
@@ -55,23 +45,19 @@ import GeoJSON from '../format/GeoJSON';
 export default class ChartQueryService extends CommonServiceBase {
 
     /*
-     * Property: returnContent
      * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。
      */
     returnContent = null;
 
     /*
-     *  Property: format
      *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
     format = DataFormat.GEOJSON;
 
-    /**
-     * @function SuperMap.ChartQueryService.initialize
+    /*
+     * @function SuperMap.ChartQueryService.prototype.initialize
      * @description 获取图层信息服务类构造函数。
-     *
-     * Parameters:
      * @param url - {String} 地图查询服务访问地址。如："http://192.168.168.35:8090/iserver/services/map-ChartW/rest/maps/海图"。
      * @param options - {Object} 查询服务可选参数。
      */
@@ -117,10 +103,9 @@ export default class ChartQueryService extends CommonServiceBase {
 
 
     /**
-     * @function SuperMap.ChartQueryService.processAsync
+     * @function SuperMap.ChartQueryService.prototype.processAsync
      * @description APIMethod:使用服务地址 URL 实例化 ChartQueryService 对象。
-     * Parameters:
-     * @param params - {ChartQueryParameters} 查询参数。
+     * @param params - {SuperMap.ChartQueryParameters} 查询参数。
      */
     processAsync(params) {
         //todo重点需要添加代码的地方
@@ -144,7 +129,6 @@ export default class ChartQueryService extends CommonServiceBase {
 
 
     /*
-     * Method: queryComplete
      * 查询完成，执行此方法。
      *
      * Parameters:

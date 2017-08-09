@@ -25,13 +25,25 @@ import {ThemeLayer} from './ThemeLayer';
 import L from "leaflet";
 import CommontypesConversion from '../../core/CommontypesConversion';
 
+/**
+ * @class L.supermap.GraphThemeLayer
+ * @classdesc 图表专题图层类。
+ * @param name - {String} 专题图表名称
+ * @param chartsType - {String} 图表类型。目前可用："Bar", "Line", "Pie"。
+ * @param options -{object} 待设置得参数。
+ */
 export var GraphThemeLayer = ThemeLayer.extend({
 
+    /**
+     * @member L.supermap.GraphThemeLayer.prototype.options -{object}
+     * @description 待设置得参数。
+     */
     options: {
         //是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。
         isOverLay: true
     },
-    /**
+
+    /*
      *chartsType :图表类型。目前可用："Bar", "Line", "Pie"。
      *chartsSetting:各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。
      *  chartsSetting 对象通常都具有以下 5 个基础可设属性
@@ -44,11 +56,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
      *      它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
      *  decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
      *      如果不设置此参数，在取数据值时不对数据做小数位处理。
-     * @param name
-     * @param chartsType
-     * @param options
      */
-
     initialize: function (name, chartsType, options) {
         var newArgs = [];
         newArgs.push(name);
@@ -60,16 +68,21 @@ export var GraphThemeLayer = ThemeLayer.extend({
         this.chartsSetting = {};
     },
 
-    //设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。
-    //图表类型，目前支持："Bar", "Line", "Pie"。
+    /**
+     * @function L.supermap.GraphThemeLayer.prototype.setChartsType
+     * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。图表类型，目前支持："Bar", "Line", "Pie"。
+     * @param chartsType  - {String} 图表类型。目前可用："Bar", "Line", "Pie"。
+     */
     setChartsType: function (chartsType) {
         this.chartsType = chartsType;
         this.redraw();
     },
 
-
-    //向专题图图层中添加数据, 支持的feature类型为:
-    //iServer返回的feature json对象 或L.supermap.themeFeature类型
+    /**
+     * @function L.supermap.GraphThemeLayer.prototype.addFeatures
+     * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
+     * @param features - {L.features} 待添加得要素
+     */
     addFeatures: function (features) {
         //数组
         if (!(L.Util.isArray(features))) {
@@ -102,8 +115,11 @@ export var GraphThemeLayer = ThemeLayer.extend({
 
     },
 
-    //重绘所有专题要素 此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素
-    //的转换，压盖处理，缓存等步骤。地图漫游时调用此方法进行图层刷新。
+    /**
+     * @function L.supermap.GraphThemeLayer.prototype.redrawThematicFeatures
+     * @description 重绘所有专题要素 此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，压盖处理，缓存等步骤。地图漫游时调用此方法进行图层刷新。
+     * @param bounds - {L.bounds} 重绘得范围
+     */
     redrawThematicFeatures: function (bounds) {
         var me = this;
         //清除当前所有可视元素
@@ -142,7 +158,11 @@ export var GraphThemeLayer = ThemeLayer.extend({
         me.drawCharts();
     },
 
-    // 创建专题要素（图表）
+    /**
+     * @function L.supermap.GraphThemeLayer.prototype.createThematicFeature
+     * @description 创建专题要素（图表）
+     * @param feature - {L.features} 待创建得要素
+     */
     createThematicFeature: function (feature) {
         var me = this;
         var thematicFeature;
@@ -160,7 +180,10 @@ export var GraphThemeLayer = ThemeLayer.extend({
         return thematicFeature;
     },
 
-    // 绘制图表。包含压盖处理。
+    /**
+     * @function L.supermap.GraphThemeLayer.prototype.drawCharts
+     * @description 绘制图表。包含压盖处理。
+     */
     drawCharts: function () {
         var me = this;
         if (!me.renderer) return;
@@ -182,8 +205,11 @@ export var GraphThemeLayer = ThemeLayer.extend({
         me.renderer.render();
     },
 
-    //通过 FeatureID 获取 feature 关联的所有图形。
-    //如果不传入此参数，函数将返回所有图形。
+    /**
+     * @function L.supermap.GraphThemeLayer.prototype.getShapesByFeatureID
+     * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
+     * @param featureID - {number} 要素ID
+     */
     getShapesByFeatureID: function (featureID) {
         var me = this, list = [];
         var shapeList = me.renderer.getAllShapes();
@@ -202,10 +228,11 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * 判断两个四边形是否有压盖。
-     * Parameters:
-     * quadrilateral - {Array<Object>}  四边形节点数组。
-     * 例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+     * @function L.supermap.GraphThemeLayer.prototype.isQuadrilateralOverLap
+     * @description 判断两个四边形是否有压盖。
+     * @param quadrilateral - {Array<Object>} 四边形节点数组。
+     * @example
+     * [{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      * quadrilateral2 - {Array<Object>}  第二个四边形节点数组。
      */
     isQuadrilateralOverLap: function (quadrilateral, quadrilateral2) {
@@ -246,11 +273,11 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * 判断一个点是否在多边形里面。(射线法)
-     * Parameters:
-     * pt - {Object} 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
-     * poly - {Array(Objecy)}  多边形节点数组。
-     * 例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
+     * @function L.supermap.GraphThemeLayer.prototype.isPointInPoly
+     * @description 判断一个点是否在多边形里面。(射线法)
+     * @param pt - {Object} 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
+     * @param poly - {Array(Objecy)}  多边形节点数组。<br>
+     *        例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
      */
     isPointInPoly: function (pt, poly) {
         for (var isIn = false, i = -1, l = poly.length, j = l - 1; ++i < l; j = i)
@@ -261,11 +288,11 @@ export var GraphThemeLayer = ThemeLayer.extend({
     },
 
     /**
-     * 判断图表是否在地图里。
-     * Parameters:
-     * mapPxBounds - {SuperMap.Bounds} 地图像素范围。
-     * chartPxBounds - - {Array<Object>}  图表范围的四边形节点数组。
-     * 例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
+     * @function L.supermap.GraphThemeLayer.prototype.isChartInMap
+     * @description 判断图表是否在地图里。
+     * @param mapPxBounds - {SuperMap.Bounds} 地图像素范围。
+     * @param chartPxBounds - {Array<Object>} 图表范围的四边形节点数组。<br>
+     *        例如：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]。
      */
     isChartInMap: function (mapPxBounds, chartPxBounds) {
         var mb = mapPxBounds;
@@ -283,34 +310,50 @@ export var GraphThemeLayer = ThemeLayer.extend({
         return isIn;
     },
 
-    // 清除缓存数据。
+    /**
+     * @function L.supermap.GraphThemeLayer.prototype.clearCache
+     * @description 清除缓存数据。
+     */
     clearCache: function () {
         this.cache = {};
         this.charts = [];
     },
 
-    //从专题图中删除 feature。这个函数删除所有传递进来的矢量要素（数据）。
+    /**
+     * @function L.supermap.GraphThemeLayer.prototype.removeFeatures
+     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素（数据）。
+     * @param features - {L.features} 待删除得要输
+     */
     removeFeatures: function (features) {
         var me = this;
         me.clearCache();
         ThemeLayer.prototype.removeFeatures.apply(me, arguments);
     },
 
-    //清除当前图层所有的矢量要素。
+    /**
+     * @function L.supermap.GraphThemeLayer.prototype.removeAllFeatures
+     * @description 清除当前图层所有的矢量要素。
+     */
     removeAllFeatures: function () {
         var me = this;
         me.clearCache();
         ThemeLayer.prototype.removeAllFeatures.apply(me, arguments);
     },
 
-    //重绘该图层，成功则返回true，否则返回false。
+    /**
+     * @function L.supermap.GraphThemeLayer.prototype.redraw
+     * @description 重绘该图层，成功则返回true，否则返回false。
+     */
     redraw: function () {
         var me = this;
         me.clearCache();
         return ThemeLayer.prototype.redraw.apply(me, arguments);
     },
 
-    //清除图层。清除的内容包括数据（features） 、专题要素、缓存。
+    /**
+     * @function L.supermap.GraphThemeLayer.prototype.clear
+     * @description 清除图层。清除的内容包括数据（features） 、专题要素、缓存。
+     */
     clear: function () {
         var me = this;
         if (me.renderer) {
@@ -323,11 +366,11 @@ export var GraphThemeLayer = ThemeLayer.extend({
 
 
     /**
-     * 获取权重字段的值。
-     * Parameters:
-     * feature - {SuperMap.Feature.Vector} 数据。
-     * fields - {String} 字段名数组。
-     * defaultValue - {Number} 当通过 weightField 获取不到权重值时，使用 defaultValue 作为权重值。
+     * @function L.supermap.GraphThemeLayer.prototype.getWeightFieldValue
+     * @description 获取权重字段的值。
+     * @param feature - {SuperMap.Feature.Vector} 数据。
+     * @param fields - {String} 字段名数组。
+     * @param defaultValue - {Number} 当通过 weightField 获取不到权重值时，使用 defaultValue 作为权重值。
      */
     getWeightFieldValue: function (feature, weightField, defaultValue) {
         if (typeof(defaultValue) === "undefined" || isNaN(defaultValue)) {

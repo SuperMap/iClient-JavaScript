@@ -1,7 +1,7 @@
 import SuperMap from '../SuperMap';
 /**
  * @class SuperMap.Format
- * @description 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
+ * @classdesc 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
  * @param options - {Object} 选项对象，其属性会被直接设置到format实例。如：<br>
  *        keepData - {Boolean} 如果设置为true， <data> 属性会指向被解析的对象（例如json或xml数据对象）。
  * @return {SuperMap.Format} 实例。

@@ -1,5 +1,11 @@
-import L from "leaflet";
-export var PolyBase = {
+ import L from "leaflet";
+
+ /**
+  * @class L.supermap.PolyBase
+  * @classdesc 多边形基类
+  * @type {{_makeFeatureParts: PolyBase._makeFeatureParts, makeInteractive: PolyBase.makeInteractive}}
+  */
+ export var PolyBase = {
     _makeFeatureParts: function (feat, pxPerExtent) {
         pxPerExtent = pxPerExtent || {x: 1, y: 1};
         var rings = feat.geometry;
@@ -17,6 +23,10 @@ export var PolyBase = {
         }
     },
 
+     /**
+      * @function L.supermap.PointSymbolizer.prototype.makeInteractive
+      * @description 设置交互
+      */
     makeInteractive: function () {
         this._pxBounds = this._getPixelBounds();
     }

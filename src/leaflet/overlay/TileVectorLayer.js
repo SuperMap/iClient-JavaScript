@@ -1,17 +1,24 @@
-/**
- * Class: TiledVectorLayer
- * SuperMap iServer的矢量瓦片图层
- * 用法：
- *      L.superMap.tiledVectorLayer(url).addTo(map);
- */
 import '../core/Base';
 import '../../common/security/SecurityManager';
 import L from "leaflet";
 import {VectorGrid} from './vectortile/VectorGrid';
 import {CartoCSSToLeaflet} from './carto/CartoCSSToLeaflet';
 import SuperMap from '../../common/SuperMap';
+
+/**
+ * @class L.superMap.tiledVectorLayer
+ * @classdesc SuperMap iServer的矢量瓦片图层
+ * @example
+ *      L.superMap.tiledVectorLayer(url).addTo(map);
+ * @param url - {String} 图层数据服务地址
+ * @param options - {object} 图层可选参数
+ */
 export var  TileVectorLayer = VectorGrid.extend({
 
+    /**
+     * @member L.superMap.tiledVectorLayer.prototype.options -{object}
+     * @description 图层可选参数
+     */
     options: {
         //服务器类型<SuperMap.ServerType>iServer|iPortal|Online
         serverType: null,
@@ -67,6 +74,11 @@ export var  TileVectorLayer = VectorGrid.extend({
         }
     },
 
+    /**
+     * @function L.superMap.tiledVectorLayer.prototype.onAdd
+     * @description 添加地图
+     * @param map - {L.map} 待添加的地图
+     */
     onAdd: function (map) {
         this._crs = this.options.crs || map.options.crs;
         this._map = map;
@@ -75,7 +87,10 @@ export var  TileVectorLayer = VectorGrid.extend({
         }
     },
 
-    //获取服务器layers资源下的风格信息(当CartoCSS中不存在相应图层渲染信息时使用)
+    /**
+     * @function L.superMap.tiledVectorLayer.prototype.initLayersInfo
+     * @description 获取服务器layers资源下的风格信息(当CartoCSS中不存在相应图层渲染信息时使用)
+     */
     initLayersInfo: function () {
         var me = this;
         var layersUrl = me.url + "/layers.json";
@@ -106,6 +121,11 @@ export var  TileVectorLayer = VectorGrid.extend({
         });
     },
 
+    /**
+     * @function L.superMap.tiledVectorLayer.prototype.getLayerStyleInfo
+     * @description 获取图层样式信息
+     * @param layerName - {String} 图层名称
+     */
     getLayerStyleInfo: function (layerName) {
         var me = this, layerInfo_simple;
         me.layersStyles = me.layersStyles || {};
@@ -145,7 +165,10 @@ export var  TileVectorLayer = VectorGrid.extend({
         return layerInfo_simple;
     },
 
-    //等待服务器的carto返回之后拼接本地配置的cartoCSS,并调用onAdd出图
+    /**
+     * @function L.superMap.tiledVectorLayer.prototype.getVectorStylesFromServer
+     * @description 等待服务器的carto返回之后拼接本地配置的cartoCSS,并调用onAdd出图
+     */
     getVectorStylesFromServer: function () {
         var me = this;
         var vectorStyleUrl = me.url + "/tileFeature/vectorstyles.json";
@@ -176,8 +199,12 @@ export var  TileVectorLayer = VectorGrid.extend({
         CartoCSSToLeaflet.pretreatedCartoCSS(cartoCSSStr, false);
     },
 
-    //获取图层风格信息，当CartoCSS中包含有对该图层的渲染信息时，优先获取
-    //否则获取layers资源下layerSytle的渲染信息
+    /**
+     * @function L.superMap.tiledVectorLayer.prototype.getVectorTileLayerStyle
+     * @description 获取图层风格信息，当CartoCSS中包含有对该图层的渲染信息时，优先获取,否则获取layers资源下layerSytle的渲染信息
+     * @param coords - {} 图层坐标 //todo
+     * @param feature - {L.feature} 要获取的要是
+     */
     getVectorTileLayerStyle: function (coords, feature) {
         if (!feature) {
             return null;
@@ -224,6 +251,11 @@ export var  TileVectorLayer = VectorGrid.extend({
         return style;
     },
 
+    /**
+     * @function L.superMap.tiledVectorLayer.prototype.getScale
+     * @description 通过空间范围获取比例尺
+     * @param zoom - {String} 空间范围
+     */
     getScale: function (zoom) {
         var me = this;
         //返回当前比例尺
@@ -231,6 +263,11 @@ export var  TileVectorLayer = VectorGrid.extend({
         return me.scales[z];
     },
 
+    /**
+     * @function L.superMap.tiledVectorLayer.prototype.getScaleFromCoords
+     * @description 通过坐标获取比例尺
+     * @param coords - {} 图层坐标系
+     */
     getScaleFromCoords: function (coords) {
         var me = this, scale;
         if (me.scales && me.scales[coords.z]) {
@@ -242,6 +279,11 @@ export var  TileVectorLayer = VectorGrid.extend({
         return scale;
     },
 
+    /**
+     * @function L.superMap.tiledVectorLayer.prototype.getDefaultScale
+     * @description 获取默认比例尺
+     * @param coords - {} 图层坐标
+     */
     getDefaultScale: function (coords) {
         var me = this, crs = me._crs;
         var resolution;

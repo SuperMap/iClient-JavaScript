@@ -1,13 +1,19 @@
-/**
- * Class:MapVLayer
- *  MapV图层
- */
 import L from "leaflet";
 import MapVRenderer from "./mapv/MapVRenderer";
 
-
+/**
+ * @class L.supermap.mapVLayer
+ * @classdesc MapV图层
+ * @param dataSet - {DataSet} MapV图层数据集
+ * @param mapVOptions - {object} MapV图层参数
+ * @param options - {object} 可选参数
+ */
 export var MapVLayer = L.Layer.extend({
 
+    /**
+     * @member L.supermap.mapVLayer.protptype.options
+     * @description 可选参数。
+     */
     options: {
         attributionPrefix: null,
         attribution: " © 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
@@ -27,7 +33,11 @@ export var MapVLayer = L.Layer.extend({
         L.stamp(this);
     },
 
-
+    /**
+     * @function L.supermap.mapVLayer.protptype.onAdd
+     * @description 添加地图图层
+     * @param map - {L.map} 要添加的地图
+     */
     onAdd: function (map) {
         this._map = map;
         var overlayPane = this.getPane();
@@ -48,6 +58,12 @@ export var MapVLayer = L.Layer.extend({
     _show: function () {
         this.canvas.style.display = 'block';
     },
+
+    /**
+     * @function L.supermap.mapVLayer.protptype.onRemove
+     * @description 删除地图图层
+     * @param map - {L.map} 要删除的图层
+     */
     onRemove: function (map) {
         L.DomUtil.remove(this.container);
         map.off({
@@ -57,15 +73,30 @@ export var MapVLayer = L.Layer.extend({
         }, this);
     },
 
-
+    /**
+     * @function L.supermap.mapVLayer.protptype.addData
+     * @description 追加数据
+     * @param data - {object} 要追加的数据
+     * @param options -{object} 要追加的值
+     */
     addData: function (data, options) {
         this.renderer.addData(data, options);
     },
 
+    /**
+     * @function L.supermap.mapVLayer.protptype.update
+     * @description 更新数据
+     * @param data - {object} 要更新的数据
+     * @param options -{object} 要更新的值
+     */
     update: function (data, options) {
         this.renderer.updateData(data, options);
     },
 
+    /**
+     * @function L.supermap.mapVLayer.protptype.getData
+     * @description 获取数据
+     */
     getData: function () {
         if (this.renderer) {
             this.dataSet = this.renderer.getData();
@@ -73,35 +104,68 @@ export var MapVLayer = L.Layer.extend({
         return this.dataSet;
     },
 
-
+    /**
+     * @function L.supermap.mapVLayer.protptype.removeData
+     * @description 删除数据
+     * @param filter - {String} 过滤条件
+     */
     removeData: function (filter) {
         this.renderer && this.renderer.removeData(filter);
     },
 
+    /**
+     * @function L.supermap.mapVLayer.protptype.clearData
+     * @description 清除数据
+     */
     clearData: function () {
         this.renderer.clearData();
     },
 
+    /**
+     * @function L.supermap.mapVLayer.protptype.draw
+     * @description 绘制
+     */
     draw: function () {
         return this._reset();
     },
 
+    /**
+     * @function L.supermap.mapVLayer.protptype.setZIndex
+     * @description 设置叠加优先级
+     * @param zIndex - {number} 优先级
+     */
     setZIndex: function (zIndex) {
         this.canvas.style.zIndex = zIndex;
     },
 
+    /**
+     * @function L.supermap.mapVLayer.protptype.render
+     * @description 着色
+     */
     render: function () {
         this.renderer._canvasUpdate();
     },
 
+    /**
+     * @function L.supermap.mapVLayer.protptype.getCanvas
+     * @description 获取画布
+     */
     getCanvas: function () {
         return this.canvas;
     },
 
+    /**
+     * @function L.supermap.mapVLayer.protptype.getContainer
+     * @description 获取容器
+     */
     getContainer: function () {
         return this.container;
     },
 
+    /**
+     * @function L.supermap.mapVLayer.protptype.getTopLeft
+     * @description 获取左上角坐标
+     */
     getTopLeft: function () {
         var map = this._map;
         var topLeft;

@@ -3,7 +3,7 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
 
 /**
  * @class SuperMap.FindServiceAreasParameters
- * @description 服务区分析参数类.<br>
+ * @classdesc 服务区分析参数类.<br>
  *              服务区分析是以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。<br>
  *              例如：计算某快餐店能够在30分钟内送达快餐的区域。<br>
  * @param options - {Object} 可选参数。<br>
@@ -17,7 +17,6 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
 export default  class FindServiceAreasParameters {
 
     /**
-     * APIProperty: isAnalyzeById
      * @member SuperMap.FindServiceAreasParameters.prototype.isAnalyzeById -{Boolean}
      * @description 是否通过节点 ID 指定路径分析的结点，默认为 false。<br>
      *               指定路径分析经过的结点或设施点有两种方式：输入结点 ID 号或直接输入点坐标。<br>
@@ -27,7 +26,6 @@ export default  class FindServiceAreasParameters {
     isAnalyzeById = false;
 
     /**
-     * APIProperty: isCenterMutuallyExclusive
      * @member SuperMap.FindServiceAreasParameters.prototype.isCenterMutuallyExclusive -{Boolean}
      * @description 是否中心点互斥，即按照中心点的距离进行判断是否要进行互斥处理，默认为 false。<br>
      *               若分析出的服务区有重叠的部分，则通过设置该参数进行互斥处理。
@@ -35,7 +33,6 @@ export default  class FindServiceAreasParameters {
     isCenterMutuallyExclusive = false;
 
     /**
-     * APIProperty: centers
      * @member SuperMap.FindServiceAreasParameters.prototype.centers -{Array<{SuperMap.Point}|Number>}
      * @description 服务站点数组，必设字段。<br>
      *               当该类的 iSAnalyzeById = true 时，通过结点 ID 号指定服务站点；<br>
@@ -44,7 +41,6 @@ export default  class FindServiceAreasParameters {
     centers = null;
 
     /**
-     * APIProperty: isFromCenter
      * @member SuperMap.FindServiceAreasParameters.prototype.isFromCenter -{Boolean}
      * @description 是否从中心点开始分析。默认为 false。<br>
      *               从中心点开始分析和不从中心点开始分析，体现了服务中心和需要该服务的需求地的关系模式。<br>
@@ -62,7 +58,6 @@ export default  class FindServiceAreasParameters {
     weights = null;
 
     /**
-     * APIProperty: parameter
      * @member SuperMap.FindServiceAreasParameters.prototype.parameter -{SuperMap.TransportationAnalystParameter}
      * @description 交通网络分析通用参数。
      */
@@ -83,7 +78,6 @@ export default  class FindServiceAreasParameters {
 
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */

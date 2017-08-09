@@ -3,7 +3,7 @@ import ServerStyle from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeGraduatedSymbolStyle
- * @description 等级符号专题图正负零值显示风格类
+ * @classdesc 等级符号专题图正负零值显示风格类
  * @param options - {Object} 可选参数。如：<br>
  *        negativeDisplayed - {Boolean} 是否显示负值。默认为 false。<br>
  *        negativeStyle - {SuperMap.ServerStyle} 负值的等级符号风格。<br>
@@ -14,32 +14,29 @@ import ServerStyle from './ServerStyle';
 export default  class ThemeGraduatedSymbolStyle {
 
     /**
-     * APIProperty: negativeDisplayed
      * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeDisplayed -{Boolean}
      * @description 是否显示负值。默认为 false。
      */
     negativeDisplayed = false;
+
     /**
-     * APIProperty: negativeStyle
      * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeStyle -{SuperMap.ServerStyle} 负值的等级符号风格。
      */
     negativeStyle = null;
 
     /**
-     * APIProperty: positiveStyle
      * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.positiveStyle -{SuperMap.ServerStyle}
      * @description 正值的等级符号风格。
      */
     positiveStyle = null;
 
     /**
-     * APIProperty: zeroDisplayed
      * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.zeroDisplayed -{Boolean}
      * @description 是否显示0值。默认为 false。
      */
     zeroDisplayed = false;
+
     /**
-     * APIProperty: zeroStyle
      * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.zeroStyle -{SuperMap.ServerStyle}
      * @description 0值的等级符号风格。
      */
@@ -61,7 +58,6 @@ export default  class ThemeGraduatedSymbolStyle {
 
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */

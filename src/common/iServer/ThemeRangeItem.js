@@ -3,7 +3,7 @@ import ServerStyle from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeRangeItem
- * @description 范围分段专题图子项类。<br>
+ * @classdesc 范围分段专题图子项类。<br>
  *              在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。
  *              每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。
  * @param options - {Object} 可选参数。如：<br>
@@ -16,14 +16,12 @@ import ServerStyle from './ServerStyle';
 export default  class ThemeRangeItem {
 
     /**
-     * APIProperty: caption
      * @member SuperMap.ThemeRangeItem.prototype.caption -{String}
      * @description 分段专题图子项的标题。
      */
     caption = null;
 
     /**
-     * APIProperty: end
      * @member SuperMap.ThemeRangeItem.prototype.end -{Number}
      * @description 分段专题图子项的终止值，即该段专题值范围的最大值，默认值为 0。<br>
      *              如果该子项是分段中最后一个子项，则该终止值应大于分段字段（ThemeRange 类的 rangeExpression 属性）的最大值，若该终止值小于分段字段最大值，
@@ -33,7 +31,6 @@ export default  class ThemeRangeItem {
     end = 0;
 
     /**
-     * APIProperty: start
      * @member SuperMap.ThemeRangeItem.prototype.start -{Number}
      * @description 分段专题图子项的起始值，即该段专题值范围的最小值，默认值为 0。<br>
      *              如果该子项是分段中第一个子项，那么该起始值就是分段的最小值；如果子项的序号大于等于1的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。
@@ -42,7 +39,6 @@ export default  class ThemeRangeItem {
     start = 0;
 
     /**
-     * APIProperty: style
      * @member SuperMap.ThemeRangeItem.prototype.style -{SuperMap.ServerStyle}
      * @description 分段专题图子项的风格。
      *              每一个分段专题图子项都对应一种显示风格。
@@ -50,7 +46,6 @@ export default  class ThemeRangeItem {
     style = null;
 
     /**
-     * APIProperty: visible
      * @member SuperMap.ThemeRangeItem.prototype.visible -{Boolean}
      * @description 分段专题图子项是否可见。默认为 true。
      */
@@ -70,7 +65,6 @@ export default  class ThemeRangeItem {
 
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
@@ -87,9 +81,9 @@ export default  class ThemeRangeItem {
         me.visible = null;
     }
 
-    /*
-     * Method: toServerJSONObject
-     * 转换成对应的 JSON 格式对象。
+    /**
+     * @function SuperMap.ThemeRangeItem.prototypetoServerJSONObject
+     * @description 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var obj = {};

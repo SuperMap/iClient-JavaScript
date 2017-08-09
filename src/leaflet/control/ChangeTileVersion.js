@@ -1,17 +1,19 @@
-/**
- * Class:ChangeTileVersion
- * 版本切换控件(目前仅支持IE10及以上)
- * 用法： L.supermap.control.changeTileVersion({
- *      layer: baseLayer,
- *      position: "topleft",
- *      orientation: "horizontal"
- *  }).addTo(map);
- */
 import '../core/Base';
 import './css/ChangeTileVersion.css';
 import '../mapping/TiledMapLayer' ;
 import L from "leaflet";
 import {MapService} from "../services/MapService";
+
+/**
+ * @class L.supermap.control.changeTileVersion
+ * @classdesc 版本切换控件(目前仅支持IE10及以上)
+ * @example
+ * L.supermap.control.changeTileVersion({
+ *      layer: baseLayer,
+ *      position: "topleft",
+ *      orientation: "horizontal"
+ *  }).addTo(map);
+ */
 export var ChangeTileVersion = L.Control.extend({
 
     options: {
@@ -48,15 +50,22 @@ export var ChangeTileVersion = L.Control.extend({
         return layout;
     },
 
-    //设置版本相关信息
-    //@param version {name:{String},desc:{String}}
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.setContent
+     * @description 设置版本相关信息
+     * @param version {name:{String},desc:{String}}
+     */
     setContent: function (version) {
         var content = L.Util.extend({}, version);
         this.setVersionName(content.desc).setToolTip(content.desc);
     },
 
-    //设置版本号
-    //@param content String
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.setVersionName
+     * @description  设置版本号
+     * @param content - {String} 版本信息
+     * @return {L.supermap.control.changeTileVersion} 返回改变后的版本
+     */
     setVersionName: function (content) {
         var value = content;
         if (!content) {
@@ -66,14 +75,22 @@ export var ChangeTileVersion = L.Control.extend({
         return this;
     },
 
-    //设置提示信息
-    //@param tooltip HTMLElement|String
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.setToolTip
+     * @description 设置提示信息
+     * @param tooltip - {HTMLElement|String} 要需要设置的提示信息
+     * @return {L.supermap.control.changeTileVersion}
+     */
     setToolTip: function (tooltip) {
         this.tooltip.innerHTML = tooltip;
         return this;
     },
 
-    //更新进度条长度
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.updateLength
+     * @description 更新进度条长度
+     * @param length - {number} 进度长度参数
+     */
     updateLength: function (length) {
         if (length > 0) {
             this.length = length;
@@ -82,7 +99,11 @@ export var ChangeTileVersion = L.Control.extend({
         return this;
     },
 
-    //绑定图层
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.setLayer
+     * @description 绑定图层
+     * @param layer 报绑定的图层
+     */
     setLayer: function (layer) {
         if (layer) {
             this.options.layer = layer;
@@ -101,13 +122,20 @@ export var ChangeTileVersion = L.Control.extend({
         return this;
     },
 
-    //更新缓存切片集及进度条长度
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.update
+     * @description 更新缓存切片集及进度条长度
+     * @param tileVersions 待更新的切片集
+     */
     update: function (tileVersions) {
         this.tileVersions = tileVersions;
         this.updateLength(this.tileVersions.length);
     },
 
-    //请求获取切片集信息
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.getTileSetsInfo
+     * @description 请求获取切片集信息
+     */
     getTileSetsInfo: function () {
         var me = this;
         if (me.options.layer) {
@@ -120,14 +148,20 @@ export var ChangeTileVersion = L.Control.extend({
         return this;
     },
 
-    //移除绑定的地图图层
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.removeLayer
+     * @description 移除绑定的地图图层
+     */
     removeLayer: function () {
         this.options.layer = null;
         return this;
     },
 
-    //下一个版本
-    // 第一次不进行加减，是无版本的状态
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.nextTilesVersion
+     * @description 下一个版本,第一次不进行加减，是无版本的状态
+     * @return {L.supermap.control.changeTileVersion}
+     */
     nextTilesVersion: function () {
         if (this.firstLoad) {
             this.options.layer.nextTilesVersion();
@@ -139,14 +173,21 @@ export var ChangeTileVersion = L.Control.extend({
         return this;
     },
 
-    //上一个版本
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.lastTilesVersion
+     * @description 上一个版本
+     */
     lastTilesVersion: function () {
         this.slider.value = this.slider.value - 1;
         this.options.layer.lastTilesVersion();
         return this;
     },
 
-    //根据指定版本号请求版本
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.tilesVersion
+     * @description 根据指定版本号请求版本
+     * @param version - {String} 版本号参数
+     */
     tilesVersion: function (version) {
         var layer = this.options.layer,
             tileVersions = this.tileVersions;
@@ -160,13 +201,18 @@ export var ChangeTileVersion = L.Control.extend({
         }
     },
 
-    //获取进度条的值
-    //注：(进度条的值并不是版本号)
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.getValue
+     * @description 获取进度条的值。注：(进度条的值并不是版本号)
+     */
     getValue: function () {
         return this.slider.value;
     },
 
-    //获取当前进度条值对应的版本号
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.getVersion
+     * @description 获取当前进度条值对应的版本号
+     */
     getVersion: function () {
         var version = this.tileVersions[this.getValue()];
         return version && version.name;

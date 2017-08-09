@@ -4,11 +4,11 @@ import SetLayerStatusParameters from './SetLayerStatusParameters';
 
 /**
  * @class SuperMap.SetLayerStatusService
- * @description  子图层显示控制服务类。该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。<br>
+ * @classdesc  子图层显示控制服务类。该类负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。<br>
  *                用户获取服务端返回的各子图层显示状态有两种方式：<br>
  *                一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；<br>
  *                一种是使用 AsyncResponder 类实现异步处理。
- * @augments SuperMap.CommonServiceBase
+ * @extends SuperMap.CommonServiceBase
  * @param url - {String} 地图服务访问地址。请求地图服务,URL 应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
@@ -20,8 +20,8 @@ export default  class SetLayerStatusService extends CommonServiceBase {
 
     mapUrl = null;
 
-    /**
-     * @function  SuperMap.SetLayerStatusService.initialize
+    /*
+     * @function  SuperMap.SetLayerStatusService.prototype.initialize
      * @description 子图层显示控制服务类构造函数。
      * @param url - {String} 地图服务访问地址。请求地图服务,URL 应为：<br>
      *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
@@ -47,7 +47,7 @@ export default  class SetLayerStatusService extends CommonServiceBase {
 
 
     /**
-     * @function SuperMap.SetLayerStatusService. processAsync
+     * @function SuperMap.SetLayerStatusService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
      * @param params - {Object} 修改后的图层资源信息。该参数可以使用获取图层信息服务 <SuperMap.SetLayerStatusParameters>
      *         返回图层信息，然后对其属性进行修改来获取。

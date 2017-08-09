@@ -1,15 +1,22 @@
-/**
- * Class: ImageMapLayer
- * SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)
- * 使用Image资源出图
- * 用法：
- *      L.superMap.imageMapLayer(url).addTo(map);
- */
 import '../core/Base';
 import L from "leaflet";
 import SuperMap from "../../common/SuperMap" ;
+
+/**
+ * @class L.supermap.imageMapLayer
+ * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)使用Image资源出图
+ * @extends L.TileLayer
+ * @example
+ *      L.superMap.imageMapLayer(url).addTo(map);
+ * @param url -{String} 影像图层地址
+ * @param options -{object} 影像图层参数
+ */
 export var ImageMapLayer = L.TileLayer.extend({
 
+    /**
+     * @member L.supermap.imageMapLayer.prototype.options -{object}
+     * @description 影像图层参数。
+     */
     options: {
         //如果有layersID，则是在使用专题图
         layersID: null,
@@ -40,13 +47,23 @@ export var ImageMapLayer = L.TileLayer.extend({
         L.stamp(this);
     },
 
+    /**
+     * @function L.supermap.imageMapLayer.prototype.onAdd
+     * @description 添加影像地图。
+     * @param map - {} 待添加的影像地图参数
+     */
     onAdd: function (map) {
         this._crs = this.options.crs || map.options.crs;
         this._initLayerUrl();
         L.TileLayer.prototype.onAdd.call(this, map);
     },
 
-
+    /**
+     * @function L.supermap.imageMapLayer.prototype.getTileUrl
+     * @description 获取影像图层地址
+     * @param coords - {} 影像图层坐标参数
+     * @return {string} 返回地址
+     */
     getTileUrl: function (coords) {
         //使用ViewBounds出图
         var tileBounds = this._tileCoordsToBounds(coords),

@@ -10,8 +10,8 @@ import VectorClipJobsService from  '../../common/iServer/VectorClipJobsService';
 import CommontypesConversion from '../core/CommontypesConversion';
 /**
  * @class L.supermap.processingService
- * @description 大数据处理相关服务类
- * @augments  L.supermap.ServiceBase
+ * @classdesc 大数据处理相关服务类
+ * @extends  L.supermap.ServiceBase
  * @example
  * 用法：
  *      L.supermap.processingService(url)

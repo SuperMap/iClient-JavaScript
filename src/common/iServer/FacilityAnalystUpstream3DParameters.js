@@ -3,8 +3,8 @@ import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
 
 /**
  * @class SuperMap.FacilityAnalystUpstream3DParameters
- * @description 上游关键设施查找资源参数类
- * @augments SuperMap.FacilityAnalyst3DParameters
+ * @classdesc 上游关键设施查找资源参数类
+ * @extends SuperMap.FacilityAnalyst3DParameters
  * @param options - {Object} 可选参数。如：<br>
  *        edgeID - {Number} 指定的弧段ID。<br>
  *        nodeID - {Integer} 指定的结点ID。<br>
@@ -16,7 +16,6 @@ import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
 export default  class FacilityAnalystUpstream3DParameters extends FacilityAnalyst3DParameters {
 
     /**
-     * APIProperty: sourceNodeIDs
      * @member SuperMap.FacilityAnalystUpstream3DParameters.prototype.sourceNodeIDs -{Array<Number>}
      * @description 指定的设施点ID数组
      * @api

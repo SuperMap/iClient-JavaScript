@@ -3,7 +3,7 @@ import {Unit} from '../REST';
 
 /**
  * @class SuperMap.MeasureParameters
- * @description 量算参数类。
+ * @classdesc 量算参数类。
  * @param geometry - {Object} 要量算的几何对象。
  * @param options - {Object} 可选参数。如：<br>
  *         unit - {Unit} 量算单位。<br>
@@ -13,28 +13,24 @@ import {Unit} from '../REST';
 export default class MeasureParameters {
 
     /**
-     * APIProperty: geometry
-     * @member SuperMap.MeasureParameters.prototype. -{Object}
+     * @member SuperMap.MeasureParameters.prototype.geometry -{Object}
      * @description 要量算的几何对象（{Line} 或 {Polygon}），必设属性。
      */
     geometry = null;
 
     /**
-     * APIProperty: unit
-     * @member SuperMap.MeasureParameters.prototype. -{Unit}
+     * @member SuperMap.MeasureParameters.prototype.unit -{Unit}
      * @description 量算单位。默认单位：米，即量算结果以米为单位。
      */
     unit = Unit.METER;
 
     /**
-     * APIProperty: projection
      * @member SuperMap.MeasureParameters.prototype.prjCoordSys -{String}
      * @description 用来指定该量算操作所使用的投影,该项默认值为空。
      */
     prjCoordSys = null;
 
     /**
-     * APIProperty: distanceMode
      * @member SuperMap.MeasureParameters.prototype.distanceMode -{String}
      * @description 用来指定量算的方式为按球面长度'Geodesic'或者平面长度'Planar'来计算，默认为'Geodesic'。
      * @example
@@ -60,7 +56,6 @@ export default class MeasureParameters {
 
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */

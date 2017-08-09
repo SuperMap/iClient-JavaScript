@@ -4,8 +4,8 @@ import BurstPipelineAnalystParameters from './BurstPipelineAnalystParameters';
 
 /**
  * @class SuperMap.BurstPipelineAnalystService
- * @description 爆管分析服务类;即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
- * @augments SuperMap.NetworkAnalystServiceBase
+ * @classdesc 爆管分析服务类;即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
+ * @extends SuperMap.NetworkAnalystServiceBase
  * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
@@ -37,7 +37,7 @@ export default  class BurstPipelineAnalystService extends NetworkAnalystServiceB
     /**
      * @function SuperMap.BurstPipelineAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @params params - {BurstPipelineAnalystParameters} 爆管分析参数类
+     * @params params - {SuperMap.BurstPipelineAnalystParameters} 爆管分析参数类
      */
     processAsync(params) {
         if (!params) {

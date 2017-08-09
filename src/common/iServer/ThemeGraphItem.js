@@ -3,7 +3,7 @@ import ServerStyle from './ServerStyle';
 
 /**
  * @class SuperMap.ThemeGraphItem
- * @description 统计专题图子项类
+ * @classdesc 统计专题图子项类
  * @param options - {Object} 可选参数。如：<br>
  *        caption - {String} 专题图子项的名称。<br>
  *        graphExpression - {String} 统计专题图的专题变量。<br>
@@ -13,22 +13,19 @@ import ServerStyle from './ServerStyle';
 export default  class ThemeGraphItem {
 
     /**
-     * APIProperty: caption
      * @member SuperMap.ThemeGraphItem.prototype.caption -{String}
      * @description 专题图子项的名称。
      */
     caption = null;
 
     /**
-     * APIProperty: graphExpression
      * @member SuperMap.ThemeGraphItem.prototype.graphExpression -{String}
      * @description 统计专题图的专题变量。专题变量可以是一个字段或字段表达式。字段必须为数值型；表达式只能为数值型的字段间的运算。必设字段。
      */
     graphExpression = null;
 
     /**
-     * APIProperty: memoryDoubleValues
-     * @member SuperMap.ThemeGraphItem.prototype.memoryDoubleValues -{Array(Number)}
+     * @member SuperMap.ThemeGraphItem.prototype.memoryDoubleValues -{Array<Number>}
      * @description 内存数组方式制作专题图时的值数组。<br>
      *              内存数组方式制作专题图时，只对 SmID 值在键数组（SuperMap.ThemeGraph.memoryKeys）中的记录制作专题图。<br>
      *              值数组的数值个数必须与键数组中数值的个数一致。 值数组中的值将代替原来的专题值来制作统计专题图。<br>
@@ -37,7 +34,6 @@ export default  class ThemeGraphItem {
     memoryDoubleValues = null;
 
     /**
-     * APIProperty: uniformStyle
      * @member SuperMap.ThemeGraphItem.prototype.uniformStyle -{SuperMap.ServerStyle}
      * @description 统计专题图子项的显示风格。
      *              每一个统计专题图子项都对应一种显示风格。
@@ -57,7 +53,6 @@ export default  class ThemeGraphItem {
     }
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */

@@ -1,17 +1,23 @@
-/**
- * Class: TiledMapLayer
- * SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)
- * 使用TileImage资源出图
- * 用法：
- *      L.superMap.tiledMapLayer(url).addTo(map);
- */
 import '../core/Base';
 import '../../common/security/SecurityManager';
 import L from "leaflet";
 import {ServerType,Unit} from "../../common/REST";
 import * as Util from "../core/Util";
+/**
+ * @class L.supermap.tiledMapLayer
+ * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)使用TileImage资源出图
+ * @extends L.TileLayer
+ * @example
+ *      L.superMap.tiledMapLayer(url).addTo(map);
+ * @param url -{String} 影像图层地址
+ * @param options -{object} 影像图层参数
+ */
 export var TiledMapLayer = L.TileLayer.extend({
 
+    /**
+     * @member L.supermap.tiledMapLayer.prototype.options
+     * @description 图层参数
+     */
     options: {
         //如果有layersID，则是在使用专题图
         layersID: null,
@@ -46,6 +52,11 @@ export var TiledMapLayer = L.TileLayer.extend({
         this.tempIndex = -1;
     },
 
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.onAdd
+     * @description 添加地图。
+     * @param map - {} 待添加的影像地图参数
+     */
     onAdd: function (map) {
         this._crs = this.options.crs || map.options.crs;
         L.TileLayer.prototype.onAdd.call(this, map);
@@ -112,20 +123,28 @@ export var TiledMapLayer = L.TileLayer.extend({
         this.changeTilesVersion();
     },
 
-    //请求上一个版本切片，并重新绘制。
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.lastTilesVersion
+     * @description 请求上一个版本切片，并重新绘制。
+     */
     lastTilesVersion: function () {
         this.tempIndex = this.tileSetsIndex - 1;
         this.changeTilesVersion();
     },
 
-    //请求下一个版本切片，并重新绘制。
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.nextTilesVersion
+     * @description 请求下一个版本切片，并重新绘制。
+     */
     nextTilesVersion: function () {
         this.tempIndex = this.tileSetsIndex + 1;
         this.changeTilesVersion();
     },
 
-    //切换到某一版本的切片，并重绘。
-    //通过this.tempIndex保存需要切换的版本索引
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.changeTilesVersion
+     * @description 切换到某一版本的切片，并重绘。通过this.tempIndex保存需要切换的版本索引
+     */
     changeTilesVersion: function () {
         var me = this;
         //切片版本集信息是否存在
@@ -149,13 +168,20 @@ export var TiledMapLayer = L.TileLayer.extend({
         }
     },
 
-    //手动设置当前切片集索引
-    //目前主要提供给控件使用
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.updateCurrentTileSetsIndex
+     * @description 手动设置当前切片集索引,目前主要提供给控件使用
+     * @param index - {number} 索引值
+     */
     updateCurrentTileSetsIndex: function (index) {
         this.tempIndex = index;
     },
 
-    //更改URL请求参数中的切片版本号,并重绘
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.mergeTileVersionParam
+     * @description 更改URL请求参数中的切片版本号,并重绘
+     * @param version - {String} 切片版本号
+     */
     mergeTileVersionParam: function (version) {
         if (version) {
             this.requestParams["tileversion"] = version;

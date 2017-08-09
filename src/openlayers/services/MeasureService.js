@@ -4,8 +4,8 @@ import ServiceBase from './ServiceBase';
 import CommonMeasureService from '../../common/iServer/MeasureService';
 /**
  * @class ol.supermap.MeasureService
- * @description 距离测量服务
- * @augments ol.supermap.ServiceBase
+ * @classdesc 距离测量服务
+ * @extends ol.supermap.ServiceBase
  * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
@@ -18,9 +18,9 @@ export default class MeasureService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.MeasureService.measureDistance
+     * @function ol.supermap.MeasureService.prototype.measureDistance
      * @description 测距
-     * @param params -{MeasureParameters} 测量相关参数类
+     * @param params -{SuperMap.MeasureParameters} 测量相关参数类
      * @param callback - {function} 回调函数
      */
     measureDistance(params, callback) {
@@ -28,9 +28,9 @@ export default class MeasureService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.MeasureService.measureArea
+     * @function ol.supermap.MeasureService.prototype.measureArea
      * @description 测面积
-     * @param params -{MeasureParameters} 测量相关参数类
+     * @param params -{SuperMap.MeasureParameters} 测量相关参数类
      * @param callback - {function} 回调函数
      */
     measureArea(params, callback) {

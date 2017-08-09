@@ -5,11 +5,11 @@ import {RangeMode, ColorGradientType} from '../REST';
 
 /**
  * @class SuperMap.ThemeGridRange
- * @description 栅格分段专题图。<br>
+ * @classdesc 栅格分段专题图。<br>
  *              栅格分段专题图，是将所有单元格的值按照某种分段方式分成多个范围段，值在同一个范围段中的单元格使用相同的颜色进行显示。<br>
  *              栅格分段专题图一般用来反映连续分布现象的数量或程度特征。比如某年的全国降水量分布图，将各气象站点的观测值经过内插之后生成的栅格数据进行分段显示。<br>
  *              该类类似于分段专题图类，不同点在于分段专题图的操作对象是矢量数据，而栅格分段专题图的操作对象是栅格数据。<br>
- * @augments SuperMap.Theme
+ * @extends SuperMap.Theme
  * @param options - {Object} 参数。<br>
  *        items - {Array<SuperMap.ThemeGridRangeItem>} 栅格分段专题图子项数组。<br>
  *        reverseColor - {boolean} 是否对栅格分段专题图中分段的颜色风格进行反序显示。<br>
@@ -20,7 +20,6 @@ import {RangeMode, ColorGradientType} from '../REST';
 export default class ThemeGridRange extends Theme {
 
     /**
-     * APIProperty: items
      * @member SuperMap.ThemeGridRange.prototype.items -{Array<SuperMap.ThemeGridRangeItem>}
      * @description 栅格分段专题图子项数组。<br>
      *              在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。<br>
@@ -29,7 +28,6 @@ export default class ThemeGridRange extends Theme {
     items = null;
 
     /**
-     * APIProperty: rangeMode
      * @member SuperMap.ThemeGridRange.prototype.rangeMode -{SuperMap.RangeMode}
      * @description 分段专题图的分段模式。<br>
      *              默认值为 SuperMap.RangeMode.EQUALINTERVAL（等距离分段）。<br>
@@ -40,7 +38,6 @@ export default class ThemeGridRange extends Theme {
     rangeMode = RangeMode.EQUALINTERVAL;
 
     /**
-     * APIProperty: rangeParameter
      * @member SuperMap.ThemeGridRange.prototype.rangeParameter -{Number}
      * @description 分段参数。<br>
      *              当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，<br>
@@ -49,7 +46,6 @@ export default class ThemeGridRange extends Theme {
     rangeParameter = 0;
 
     /**
-     * APIProperty: colorGradientType
      * @member SuperMap.ThemeGridRange.prototype.colorGradientType -{SuperMap.ColorGradientType}
      * @description 渐变颜色枚举类
      *
@@ -57,7 +53,6 @@ export default class ThemeGridRange extends Theme {
     colorGradientType = ColorGradientType.YELLOW_RED;
 
     /**
-     * APIProperty: reverseColor
      * @member SuperMap.ThemeGridRange.prototype.reverseColor -{boolean}
      * @description 是否对栅格分段专题图中分段的颜色风格进行反序显示。
      */
@@ -76,7 +71,6 @@ export default class ThemeGridRange extends Theme {
 
 
     /**
-     * APIMethod: destroy
      * @inheritDoc
      */
     destroy() {

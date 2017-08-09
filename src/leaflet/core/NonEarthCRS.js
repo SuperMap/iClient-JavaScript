@@ -2,10 +2,18 @@ import "../core/Base";
 import L from "leaflet";
 L.Projection = {};
 
+/**
+ * @class L.CRS.NonProjection
+ * @classdesc 非投影坐标对象
+ * @extends L.Class
+ * @param bounds - {L.bounds} 坐标范围
+ */
 export var NonProjection = L.Class.extend({
+
     initialize: function (bounds) {
         this.bounds = bounds;
     },
+
     project: function (latlng) {
         return new L.Point(latlng.lng, latlng.lat);
     },
@@ -19,7 +27,18 @@ export var nonProjection = function (bounds) {
     return new NonProjection(bounds)
 };
 
+/**
+ * @class L.CRS.NonEarthCRS
+ * @classdesc 非地球坐标对象
+ * @extends L.Class
+ * @param options - {} 构建非地球坐标对象参数
+ */
 export var NonEarthCRS = L.Class.extend({
+
+    /**
+     * @member L.CRS.NonEarthCRS.prototype.includes -{object}
+     * @description 包含的坐标对象，默认为：L.CRS。
+     */
     includes: L.CRS,
 
     initialize: function (options) {
@@ -34,6 +53,12 @@ export var NonEarthCRS = L.Class.extend({
         this.resolutions = options.resolutions;
     },
 
+    /**
+     * @function L.CRS.NonEarthCRS.prototype.scale
+     * @description 通过空间范围计算比例尺
+     * @param zoom - {} 空间范围
+     * @return {number} 得到的比例尺
+     */
     scale: function (zoom) {
         if (!this.resolutions || this.resolutions.length === 0) {
             var width = Math.max(this.bounds.getSize().x, this.bounds.getSize().y);
@@ -43,6 +68,12 @@ export var NonEarthCRS = L.Class.extend({
         return 1 / this.resolutions[zoom];
     },
 
+    /**
+     * @function L.CRS.NonEarthCRS.prototype.zoom
+     * @description 通过比例尺计算范围
+     * @param scale - {number} 比例尺
+     * @return {number} 返回空间范围值
+     */
     zoom: function (scale) {
         if (!this.resolutions || this.resolutions.length === 0) {
             var width = Math.max(this.bounds.getSize().x, this.bounds.getSize().y);
@@ -57,6 +88,13 @@ export var NonEarthCRS = L.Class.extend({
         return -1;
     },
 
+    /**
+     * @function L.CRS.NonEarthCRS.prototype.distance
+     * @description 通过两个坐标点计算之间的距离
+     * @param latlng1 - {L.latLng} 坐标点1
+     * @param latlng2 - {L.latLng} 坐标点2
+     * @return {number} 返回距离长度
+     */
     distance: function (latlng1, latlng2) {
         var dx = latlng2.lng - latlng1.lng,
             dy = latlng2.lat - latlng1.lat;

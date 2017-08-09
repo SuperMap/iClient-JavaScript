@@ -3,8 +3,8 @@ import QueryParameters from './QueryParameters';
 
 /**
  * @class SuperMap.QueryByBoundsParameters
- * @description Bounds 查询参数类。该类用于设置 Bounds 查询的相关参数。
- * @augments SuperMap.QueryParameters
+ * @classdesc Bounds 查询参数类。该类用于设置 Bounds 查询的相关参数。
+ * @extends SuperMap.QueryParameters
  * @param options - {Object} 可选参数。如：<br>
  *         customParams - {String} 自定义参数，供扩展使用。<br>
  *         prjCoordSys -{Object} 自定义参数，供isueprmap提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br>
@@ -21,8 +21,7 @@ import QueryParameters from './QueryParameters';
 export default  class QueryByBoundsParameters extends QueryParameters {
 
     /**
-     * APIProperty: returnContent
-     * @member SuperMap.QueryByBoundsParameters.prototype -{Boolean}
+     * @member SuperMap.QueryByBoundsParameters.prototype.returnContent -{Boolean}
      * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
      *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
      *               为 false，则返回的是查询结果资源的 URI。默认为 true。
@@ -30,8 +29,7 @@ export default  class QueryByBoundsParameters extends QueryParameters {
     returnContent = true;
 
     /**
-     * APIProperty: bounds
-     * {@member SuperMap.QueryByBoundsParameters.prototype -SuperMap.Bounds}
+     * @member SuperMap.QueryByBoundsParameters.prototype.bounds -{SuperMap.Bounds}
      * @description 指定的查询范围。
      */
     bounds = null;
@@ -49,7 +47,6 @@ export default  class QueryByBoundsParameters extends QueryParameters {
     }
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */

@@ -8,6 +8,11 @@ import {RegionSymbolizer} from './RegionSymbolizer';
 import {VectorTilePBF} from './VectorTilePBF';
 import {VectorTileJSON} from './VectorTileJSON';
 import {VectorTileFormat} from '../VectorTileFormat';
+
+/**
+ * @class L.supermap.VectorTile
+ * @classdesc 矢量切片图层基类
+ */
 export var VectorTile = L.Class.extend({
 
     initialize: function (options, done) {
@@ -20,6 +25,10 @@ export var VectorTile = L.Class.extend({
         this.layer._textVectorTiles = {};
     },
 
+    /**
+     * @function L.supermap.VectorTile.prototype.renderTile
+     * @description 渲染切片
+     */
     renderTile: function () {
         var me = this, layer = me.layer, coords = me.coords;
         var tileFeatureUrl = layer._getTileUrl(coords);
@@ -38,6 +47,12 @@ export var VectorTile = L.Class.extend({
         })
     },
 
+    /**
+     * @function L.supermap.VectorTile.prototype.render
+     * @description 渲染切片要素
+     * @param tileFeature - {L.feature} 要渲染的切片要素
+     * @param coords - {} 切片坐标
+     */
     render: function (tileFeature, coords) {
         if (!tileFeature) {
             return;

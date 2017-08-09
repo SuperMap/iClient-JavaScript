@@ -3,7 +3,7 @@ import LayerStatus from './LayerStatus';
 
 /**
  * @class SuperMap.SetLayerStatusParameters
- * @description 子图层显示控制参数类,该类存储了各子图层是否可见的状态。<br>
+ * @classdesc 子图层显示控制参数类,该类存储了各子图层是否可见的状态。<br>
  *               注意在 SuperMap iClient 系列产品中所说的图层与 SuperMap Deskpro 的地图对应，子图层与 SuperMap Deskpro 的图层对应。
  * @param options - {Object} 可选参数。如：<br>
  *        layerStatusList - {Array<SuperMap.LayerStatus>} 获取或设置图层可见状态（SuperMap.LayerStatus）集合，必设属性。

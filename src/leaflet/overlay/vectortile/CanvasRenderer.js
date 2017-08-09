@@ -1,4 +1,13 @@
 import L from "leaflet";
+
+/**
+ * @class L.supermap.CanvasRenderer
+ * @classdesc 画布渲染器
+ * @extends L.Canvas
+ * @param tileCoord - {} 切片坐标系
+ * @param tileSize - {number} 切片大小
+ * @param options - {Object} 渲染参数
+ */
 export var CanvasRenderer = L.Canvas.extend({
 
     initialize: function (tileCoord, tileSize, options) {
@@ -18,24 +27,46 @@ export var CanvasRenderer = L.Canvas.extend({
         }
     },
 
+    /**
+     * @function L.supermap.CanvasRenderer.prototype.getCoord
+     * @description 获取坐标
+     */
     getCoord: function () {
         return this._tileCoord;
     },
 
+    /**
+     * @function L.supermap.CanvasRenderer.prototype.getContainer
+     * @description 获取容器
+     */
     getContainer: function () {
         return this._container;
     },
 
+    /**
+     * @function L.supermap.CanvasRenderer.prototype.getOffset
+     * @description
+     */
     getOffset: function () {
         return this._tileCoord.scaleBy(this._size).subtract(this._map.getPixelOrigin());
     },
 
     onAdd: L.Util.falseFn,
 
+    /**
+     * @function L.supermap.CanvasRenderer.prototype.addTo
+     * @description 添加切片地图
+     * @param map - {L.map} 切片地图
+     */
     addTo: function (map) {
         this._map = map;
     },
 
+    /**
+     * @function L.supermap.CanvasRenderer.prototype.removeFrom
+     * @description 删除切片地图
+     * @param map - {L.map} 切片地图
+     */
     removeFrom: function (map) {
         delete this._map;
     },

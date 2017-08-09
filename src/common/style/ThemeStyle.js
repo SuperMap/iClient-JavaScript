@@ -1,7 +1,8 @@
 import SuperMap from '../SuperMap';
+
 /**
- * Class=SuperMap.ThemeStyle
- * 客户端专题图风格类
+ * @class SuperMap.ThemeStyle
+ * @classdesc 客户端专题图风格类
  */
 export default  class ThemeStyle {
 

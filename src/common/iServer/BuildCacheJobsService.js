@@ -4,16 +4,15 @@ import BuildCacheJobParameter from './BuildCacheJobParameter';
 
 /**
  * @class SuperMap.BuildCacheJobsService
- * @description 创建大数据缓存服务类
- * @augments SuperMap.ProcessingServiceBase
+ * @classdesc 创建大数据缓存服务类
+ * @extends SuperMap.ProcessingServiceBase
  * @param url -{String} 大数据缓存服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
-
 export default  class BuildCacheJobsService extends ProcessingServiceBase {
 
-    /**
-     * @function SuperMap.BuildCacheJobsService.constructor
+    /*
+     * @function SuperMap.BuildCacheJobsService.prototype.constructor
      * @description SuperMap.BuildCacheJobsService 的构造函数
      * @param url -{String} 大数据缓存服务地址。
      * @param options - {Object} 交互服务时所需可选参数。
@@ -31,7 +30,7 @@ export default  class BuildCacheJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.BuildCacheJobsService.getBuildCacheJobs
+     * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJobs
      * @description 获取创建的大数据缓存
      */
     getBuildCacheJobs() {
@@ -39,7 +38,7 @@ export default  class BuildCacheJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.BuildCacheJobsService.getBuildCacheJob
+     * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJob
      * @description 获取指定 id的大数据缓存
      * @param id - {String} 大数据缓存id
      */
@@ -48,9 +47,9 @@ export default  class BuildCacheJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.BuildCacheJobsService.addBuildCacheJob
+     * @function SuperMap.BuildCacheJobsService.prototype.addBuildCacheJob
      * @description 新建大数据缓存服务
-     * @param params - {BuildCacheJobParameter}地图缓存参数类
+     * @param params - {SuperMap.BuildCacheJobParameter} 地图缓存参数类
      * @param seconds - {String} 开始创建后，获取创建成功结果的时间间隔
      */
     addBuildCacheJob(params, seconds) {

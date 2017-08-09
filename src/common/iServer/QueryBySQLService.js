@@ -4,8 +4,8 @@ import QueryBySQLParameters from './QueryBySQLParameters';
 
 /**
  * @class SuperMap.QueryBySQLService
- * @description SQL 查询服务类。在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
- * @augments SuperMap.QueryService
+ * @classdesc SQL 查询服务类。在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
+ * @extends SuperMap.QueryService
  * @example
  * (start code)
  * var queryParam = new SuperMap.FilterParameter({
@@ -26,12 +26,12 @@ import QueryBySQLParameters from './QueryBySQLParameters';
  * (end)
  * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ *        eventListeners - {Object} 需要被注册的监听器对象。
  */
 export default  class QueryBySQLService extends QueryService {
 
-    /**
-     * @function SuperMap.QueryBySQLService.initialize
+    /*
+     * @function SuperMap.QueryBySQLService.prototype.constructor
      * @descriptionSQL 查询服务类构造函数。
      * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
      * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -48,16 +48,12 @@ export default  class QueryBySQLService extends QueryService {
         super.destroy();
     }
 
-    /*
-     * Method: getJsonParameters
-     * 将查询参数转化为 JSON 字符串。
-     * 在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
-     *
-     * Parameters:
-     * params - {SuperMap.QueryBySQLParameters}
-     *
-     * Returns:
-     * {Object} 转化后的 JSON 字符串。
+    /**
+     * @function SuperMap.QueryBySQLService.prototype.getJsonParameters
+     * @description 将查询参数转化为 JSON 字符串。
+     *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds等）。
+     * @param params - {SuperMap.QueryBySQLParameters}
+     * @return {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
         var me = this,

@@ -1,18 +1,23 @@
-/**
- *矢量瓦片PBF(MVT)表述出图
- */
 import L from "leaflet";
 import Pbf from 'pbf';
 import VectorTileSpec from 'vector-tile';
 import SuperMap from '../../../common/SuperMap';
 import {VectorFeatureType} from './VectorFeatureType';
 
+/**
+ * @class L.supermap.VectorTilePBF
+ * @classdesc 矢量瓦片PBF(MVT)表述出图
+ */
 export var VectorTilePBF = L.Class.extend({
 
     initialize: function (url) {
         this.url = url;
     },
 
+    /**
+     * @function L.supermap.VectorTilePBF.prototype.getTile
+     * @description 获取切片
+     */
     getTile: function () {
         var me = this;
         return SuperMap.FetchRequest.get(me.url, null, {

@@ -3,11 +3,11 @@ import TimeControlBase from './TimeControlBase';
 
 /**
  * @class SuperMap.TimeControl
- * @description 时间管理类。<br>
+ * @classdesc 时间管理类。<br>
  *              此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。<br>
  *              如设置起始时间为1000，结束时间是2000，步长设置为1，
  *              那么表示按照每次1年（可以通过setSpeed进行修改）的变化从公元1000年开始到公元2000年为止，默认每1秒会1次(通过setFrequency修改)
- * @augments SuperMap.TimeControlBase
+ * @extends SuperMap.TimeControlBase
  * @param callback - {Function} 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
  * @param options - {Object} 该类开放的可选属性。如：<br>
  *        speed - {Number} 步长(单位ms)。不能小于0，默认为1（表示每次刷新的数据之间的间隔为1ms）。<br>

@@ -3,7 +3,7 @@ import ServerColor from './ServerColor';
 
 /**
  * @class SuperMap.ThemeGridUniqueItem
- * @description 栅格单值专题图子项类。<br>
+ * @classdesc 栅格单值专题图子项类。<br>
  *              栅格单值专题图是将值相同的单元格归为一类，每一类是一个专题图子项。<br>
  * @param options - {Object} 可选参数。如：<br>
  *        caption - {String} 栅格单值专题图子项的名称。<br>
@@ -14,28 +14,24 @@ import ServerColor from './ServerColor';
 export default  class ThemeGridUniqueItem {
 
     /**
-     * APIProperty: caption
      * @member SuperMap.ThemeGridUniqueItem.prototype.caption -{String}
      * @description 栅格单值专题图子项的名称。
      */
     caption = null;
 
     /**
-     * APIProperty: color
      * @member SuperMap.ThemeGridUniqueItem.prototype.color -{SuperMap.ServerColor}
      * @description 栅格单值专题图子项的显示颜色。
      */
     color = null;
 
     /**
-     * APIProperty: unique
      * @member SuperMap.ThemeGridUniqueItem.prototype.unique -{Number}
      * @description 栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。
      */
     unique = null;
 
     /**
-     * APIProperty: visible
      * @member SuperMap.ThemeGridUniqueItem.prototype.visible -{Boolean}
      * @description 栅格单值专题图子项是否可见。默认为true。
      */
@@ -54,7 +50,6 @@ export default  class ThemeGridUniqueItem {
     }
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */

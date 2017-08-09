@@ -1,4 +1,12 @@
 import L from "leaflet";
+
+/**
+ * @class L.supermap.SVGRenderer
+ * @classdesc 矢量图层缩放渲染器类
+ * @param tileCoord - {} 切片坐标系
+ * @param tileSize - {number} 切片大小
+ * @param options - {Object} 渲染参数
+ */
 export var  SVGRenderer = L.SVG.extend({
 
     initialize: function (tileCoord, tileSize, options) {
@@ -14,16 +22,29 @@ export var  SVGRenderer = L.SVG.extend({
         this._layers = {};
     },
 
+    /**
+     * @function L.supermap.SVGRenderer.prototype.getCoord
+     * @description 获取坐标
+     */
     getCoord: function () {
         return this._tileCoord;
     },
 
+    /**
+     * @function L.supermap.SVGRenderer.prototype.getContainer
+     * @description 获取容器
+     */
     getContainer: function () {
         return this._container;
     },
 
     onAdd: L.Util.falseFn,
 
+    /**
+     * @function L.supermap.SVGRenderer.prototype.addTo
+     * @description 添加切片地图
+     * @param map - {L.map} 切片地图
+     */
     addTo: function (map) {
         this._map = map;
         if (this.options.interactive) {
@@ -35,6 +56,11 @@ export var  SVGRenderer = L.SVG.extend({
         }
     },
 
+    /**
+     * @function L.supermap.SVGRenderer.prototype.removeFrom
+     * @description 删除切片地图
+     * @param map - {L.map} 切片地图
+     */
     removeFrom: function (map) {
         var map = map || this._map;
         if (this.options.interactive) {

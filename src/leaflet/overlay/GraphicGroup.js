@@ -2,6 +2,13 @@ import '../core/Base';
 import L from "leaflet";
 import './graphic/CircleStyle';
 import './graphic/Graphic';
+
+/**
+ * @class L.supermap.GraphicGroup
+ * @classdesc 图形组合类。
+ * @param graphics - {object} 图形成员
+ * @param options - {object} 可选参数。
+ */
 export var GraphicGroup = L.Path.extend({
 
         initialize: function (graphics, options) {
@@ -10,6 +17,11 @@ export var GraphicGroup = L.Path.extend({
             this.graphics = graphics;
         },
 
+        /**
+         * @function L.supermap.GraphicGroup.prototype.getEvents
+         * @description 获取事件
+         * @return {{click: L.supermap.GraphicGroup._handleClick}}
+         */
         getEvents: function () {
             var events = {
                 click: this._handleClick
@@ -17,7 +29,11 @@ export var GraphicGroup = L.Path.extend({
             return events;
         },
 
-        onAdd: function () {
+    /**
+     * @function L.supermap.GraphicGroup.prototype.onAdd
+     * @description 添加画布？todo
+     */
+    onAdd: function () {
             this._canvas = document.createElement('canvas');
             var width = this._map.getPixelBounds().getSize().x;
             var height = this._map.getPixelBounds().getSize().y;

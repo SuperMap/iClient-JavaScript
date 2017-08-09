@@ -4,8 +4,8 @@ import UpdateTurnNodeWeightParameters from './UpdateTurnNodeWeightParameters';
 
 /**
  * @class SuperMap.UpdateTurnNodeWeightService
- * @description 转向耗费权重更新服务类
- * @augments SuperMap.NetworkAnalystServiceBase
+ * @classdesc 转向耗费权重更新服务类
+ * @extends SuperMap.NetworkAnalystServiceBase
  * @example
  * (start code)
  * var UpdateTurnNodeWeightService = new SuperMap.UpdateTurnNodeWeightService(url, {

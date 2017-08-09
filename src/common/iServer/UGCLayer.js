@@ -1,82 +1,81 @@
 ﻿import SuperMap from '../SuperMap';
 
 /**
- * Class: SuperMap.UGCLayer
- * UGC 图层类。
+ * @class SuperMap.UGCLayer
+ * @classdesc UGC 图层类。
+ * @param options - {Object} 可选参数。如：<br>
+ *        bounds - {SuperMap.Bounds} 图层范围。<br>
+ *        caption - {String} 图层的标题。<br>
+ *        description - {String} 图层的描述信息。<br>
+ *        name - {String} 图层的名称。<br>
+ *        queryable - {Boolean} 图层中的对象是否可以查询。<br>
+ *        subUGCLayers - {Boolean} 是否允许图层的符号大小随图缩放。<br>
+ *        type - {SuperMap.UGCLayerType} 图层类型。<br>
+ *        visible - {Boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。
  */
 export default  class UGCLayer {
 
     /**
-     * APIProperty: bounds
-     * {SuperMap.Bounds} 图层范围。
+     * @member SuperMap.UGCLayer.prototype.bounds -{SuperMap.Bounds}
+     * @description 图层范围。
      */
     bounds = null;
 
     /**
-     * APIProperty: caption
-     * {String} 图层的标题。
+     * @member SuperMap.UGCLayer.prototype.caption -{String}
+     * @description 图层的标题。
      */
     caption = null;
 
     /**
-     * APIProperty: description
-     * {String} 图层的描述信息。
+     * @member SuperMap.UGCLayer.prototype.description -{String}
+     * @description 图层的描述信息。
      */
     description = null;
 
     /**
-     * APIProperty: name
-     * {String} 图层的名称。
+     * @member SuperMap.UGCLayer.prototype.name -{String}
+     * @description 图层的名称。
      */
     name = null;
 
     /**
-     * APIProperty: queryable
-     * {Boolean} 图层中的对象是否可以查询。
+     * @member SuperMap.UGCLayer.prototype.queryable -{Boolean}
+     * @description 图层中的对象是否可以查询。
      */
     queryable = null;
 
     /**
-     * APIProperty: subUGCLayers
-     * {Array} 子图层集。
+     * @member SuperMap.UGCLayer.prototype.subLayers -{Array}
+     * @description 子图层集。
      */
     subLayers = null;
 
     /**
-     * APIProperty: type
-     * {SuperMap.UGCLayerType} 图层类型。
+     * @member SuperMap.UGCLayer.prototype.type -{SuperMap.UGCLayerType}
+     * @description 图层类型。
      */
     type = null;
 
     /**
-     * APIProperty: visible
-     * {Boolean} 图层是否可视。
+     * @member SuperMap.UGCLayer.prototype.visible -{Boolean}
+     * @description 图层是否可视。
      */
     visible = null;
 
-    /**
+    /*
      * Constructor: SuperMap.UGCMapLayer
      * UGC 图层类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * bounds - {SuperMap.Bounds} 图层范围。
-     * caption - {String} 图层的标题。
-     * description - {String} 图层的描述信息。
-     * name - {String} 图层的名称。
-     * queryable - {Boolean} 图层中的对象是否可以查询。
-     * subUGCLayers - {Boolean} 是否允许图层的符号大小随图缩放。
-     * type - {SuperMap.UGCLayerType} 图层类型。
-     * visible - {Boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。
      */
     constructor(options) {
         options = options ? options : {};
         SuperMap.Util.extend(this, options);
     }
 
-
+    /**
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
     destroy() {
         var me = this;
         SuperMap.Util.reset(me);
@@ -84,10 +83,9 @@ export default  class UGCLayer {
 
 
     /**
-     * Method: fromJson
-     * 将服务端JSON对象转换成当前客户端对象
-     * Parameters:
-     * jsonObject - {Object} 要转换的 JSON 对象。
+     * @function SuperMap.UGCLayer.prototype.fromJson
+     * @description 将服务端JSON对象转换成当前客户端对象
+     * @param jsonObject - {Object} 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {
         jsonObject = jsonObject ? jsonObject : {};
@@ -100,8 +98,8 @@ export default  class UGCLayer {
 
 
     /**
-     * Method: toServerJSONObject
-     * 转换成对应的 JSON 格式对象。
+     * @function SuperMap.UGCLayer.prototype.toServerJSONObject
+     * @description 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var jsonObject = {};

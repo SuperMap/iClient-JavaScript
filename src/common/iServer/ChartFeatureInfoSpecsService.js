@@ -3,11 +3,11 @@ import CommonServiceBase from './CommonServiceBase';
 
 /**
  * @class SuperMap.ChartFeatureInfoSpecsService
- * @description 海图物标信息服务类，通过该服务类可以查询到服务端支持的所有海图物标信息。<br>
+ * @classdesc 海图物标信息服务类，通过该服务类可以查询到服务端支持的所有海图物标信息。<br>
  *              用户可以通过两种方式获取查询结果：<br>
  *              一种是通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件；<br>
  *              另一种是使用 AsyncResponder 类实现异步处理。
- * @augments SuperMap.CommonServiceBase
+ * @extends SuperMap.CommonServiceBase
  * @param url - {String} 地图（特指海图）服务地址。<br>
  *        如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。<br>
  *        发送请求格式类似于："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图/chartFeatureInfoSpecs.json"

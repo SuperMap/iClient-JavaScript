@@ -3,7 +3,7 @@ import ServerColor from './ServerColor';
 
 /**
  * @class SuperMap.ThemeGridRangeItem
- * @description 栅格分段专题图子项类。<br>
+ * @classdesc 栅格分段专题图子项类。<br>
  *              在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。<br>
  *              本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。<br>
  * @param options - {Object} 可选参数。如：<br>
@@ -16,28 +16,24 @@ import ServerColor from './ServerColor';
 export default  class ThemeGridRangeItem {
 
     /**
-     * APIProperty: caption
      * @member SuperMap.ThemeGridRangeItem.prototype.caption -{String}
      * @description 栅格分段专题图子项的标题。
      */
     caption = null;
 
     /**
-     * APIProperty:color
      * @member @member SuperMap.ThemeGridRangeItem.prototype.color -{SuperMap.ServerColor}
      * @description 栅格分段专题图中每一个分段专题图子项的对应的颜色。
      */
     color = null;
 
     /**
-     * APIProperty: end
      * @member SuperMap.ThemeGridRangeItem.prototype.end -{Number}
      * @description 栅格分段专题图子项的终止值，即该段专题值范围的最大值，默认值为 0。
      */
     end = 0;
 
     /**
-     * APIProperty: start
      * @member SuperMap.ThemeGridRangeItem.prototype.start -{Number}
      * @description 栅格分段专题图子项的起始值，即该段专题值范围的最小值，默认值为 0。
      */
@@ -45,7 +41,6 @@ export default  class ThemeGridRangeItem {
 
 
     /**
-     * APIProperty: visible
      * @member SuperMap.ThemeGridRangeItem.prototype.visible -{Boolean}
      * @description 栅格分段专题图子项是否可见。默认为 true。
      */
@@ -64,7 +59,6 @@ export default  class ThemeGridRangeItem {
     }
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
@@ -81,9 +75,9 @@ export default  class ThemeGridRangeItem {
         me.visible = null;
     }
 
-    /*
-     * Method: toServerJSONObject
-     * 转换成对应的 JSON 格式对象。
+    /**
+     * @function SuperMap.ThemeGridRangeItem.prototype.toServerJSONObject
+     * @description 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var obj = {};

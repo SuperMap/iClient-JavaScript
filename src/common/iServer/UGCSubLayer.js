@@ -5,57 +5,52 @@ import DatasetInfo from './DatasetInfo';
 import {LayerType} from '../REST';
 
 /**
- * Class: SuperMap.UGCSubLayer
- * 地图服务图层属性信息类，影像图层(Image)、专题图层(ServerTheme)、栅格图层(Grid)、矢量图层(Vector)等图层均继承该类。
- *
- * Inherits from:
- *  - <SuperMap.UGCMapLayer>
+ * @class SuperMap.UGCSubLayer
+ * @classdesc 地图服务图层属性信息类，影像图层(Image)、专题图层(ServerTheme)、栅格图层(Grid)、矢量图层(Vector)等图层均继承该类。
+ * @extends SuperMap.UGCMapLayer
+ * @param options - {Object} 可选参数。如：<br>
+ *        datasetInfo - {SuperMap.DatasetInfo} 数据集信息。<br>
+ *        displayFilter - {String} 图层显示过滤条件。<br>
+ *        joinItems - {SuperMap.JoinItem} 连接信息类。<br>
+ *        representationField - {String} 存储制图表达信息的字段。<br>
+ *        ugcLayerType - {SuperMap.LayerType} 图层类型
  */
 export default  class UGCSubLayer extends UGCMapLayer {
 
     /**
-     * APIProperty: datasetInfo
-     * {SuperMap.DatasetInfo} 数据集信息。
+     * @member SuperMap.UGCSubLayer.prototype.datasetInfo -{SuperMap.DatasetInfo}
+     * @description 数据集信息。
      */
     datasetInfo = null;
 
     /**
-     * APIProperty: displayFilter
-     * {String} 图层显示过滤条件。
+     * @member SuperMap.UGCSubLayer.prototype.displayFilter -{String}
+     * @description 图层显示过滤条件。
      */
     displayFilter = null;
 
     /**
-     * APIProperty: joinItems
-     * {SuperMap.JoinItem} 连接信息类。
+     * @member SuperMap.UGCSubLayer.prototype.joinItems -{SuperMap.JoinItem}
+     * @description 连接信息类。
      */
     joinItems = null;
 
     /**
-     * APIProperty: representationField
-     * {String} 存储制图表达信息的字段。
+     * @member SuperMap.UGCSubLayer.prototype.representationField -{String}
+     * @description 存储制图表达信息的字段。
      */
     representationField = null;
 
     /**
-     * APIProperty: ugcLayerType
-     * {SuperMap.LayerType} 图层类型。
+     * @member SuperMap.UGCSubLayer.prototype.ugcLayerType -{SuperMap.LayerType}
+     * @description 图层类型。
      */
     ugcLayerType = null;
 
-    /**
+    /*
      * Constructor: SuperMap.UGCSubLayer
      * 地图服务图层属性信息类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * datasetInfo - {SuperMap.DatasetInfo} 数据集信息。
-     * displayFilter - {String} 图层显示过滤条件。
-     * joinItems - {SuperMap.JoinItem} 连接信息类。
-     * representationField - {String} 存储制图表达信息的字段。
-     * ugcLayerType - {SuperMap.LayerType} 图层类型。
+     。
      */
     constructor(options) {
         options = options || {};
@@ -64,10 +59,9 @@ export default  class UGCSubLayer extends UGCMapLayer {
 
 
     /**
-     * Method: fromJson
-     * 将服务端JSON对象转换成当前客户端对象
-     * Parameters:
-     * jsonObject - {Object} 要转换的 JSON 对象。
+     * @function SuperMap.UGCSubLayer.prototype.fromJson
+     * @description 将服务端JSON对象转换成当前客户端对象
+     * @param jsonObject - {Object} 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {
         super.fromJson(jsonObject);
@@ -83,7 +77,9 @@ export default  class UGCSubLayer extends UGCMapLayer {
         }
     }
 
-
+    /**
+     * @inheritDoc
+     */
     destroy() {
         super.destroy();
         SuperMap.Util.reset(this);
@@ -91,8 +87,8 @@ export default  class UGCSubLayer extends UGCMapLayer {
 
 
     /**
-     * Method: toServerJSONObject
-     * 转换成对应的 JSON 格式对象。
+     * @function SuperMap.UGCSubLayer.prototype.toServerJSONObject
+     * @description 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var jsonObject = super.toServerJSONObject();

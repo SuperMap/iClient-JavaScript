@@ -4,8 +4,8 @@ import VectorClipJobsParameter from './VectorClipJobsParameter';
 
 /**
  * @class SuperMap.VectorClipJobsService
- * @description 大数据矢量裁剪分析服务类
- * @augments SuperMap.ProcessingServiceBase
+ * @classdesc 大数据矢量裁剪分析服务类
+ * @extends SuperMap.ProcessingServiceBase
  * @param url -{String} 大数据矢量裁剪分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */

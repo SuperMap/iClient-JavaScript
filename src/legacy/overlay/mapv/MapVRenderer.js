@@ -2,7 +2,13 @@ import SuperMap from '../../SuperMap';
 import {baiduMapLayer} from 'mapv';
 
 /**
- * MapV renderer
+ * @class SuperMap.MapVRenderer
+ * @classdesc 地图渲染类
+ * @extends mapv.baiduMapLayer
+ * @param map - {SuperMap.Map} 待渲染的地图
+ * @param layer - {mapv.baiduMapLayer} 待渲染的图层
+ * @param dataSet - {mapv.DataSet} 待渲染的数据集
+ * @param options - {Object} 渲染的参数
  */
 var MapVBaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 
@@ -25,18 +31,31 @@ export default class MapVRenderer extends MapVBaseLayer {
         this.bindEvent();
     }
 
+    /**
+     * @function SuperMap.MapVRenderer.prototype.clickEvent
+     * @description 点击事件
+     * @param e - {object} 触发对象
+     */
     clickEvent(e) {
         var pixel = e.layerPoint;
         super.clickEvent(pixel, e);
     }
 
-
+    /**
+     * @function SuperMap.MapVRenderer.prototype.mousemoveEvent
+     * @description 鼠标移动事件
+     * @param  e - {object} 触发对象
+     */
     mousemoveEvent(e) {
         var pixel = e.layerPoint;
         super.mousemoveEvent(pixel, e);
     }
 
-
+    /**
+     * @function SuperMap.MapVRenderer.prototype.bindEvent
+     * @description 绑定鼠标移动和鼠标点击事件
+     * @param e - {object} 触发对象
+     */
     bindEvent(e) {
         var map = this.map;
 
@@ -50,7 +69,11 @@ export default class MapVRenderer extends MapVBaseLayer {
         }
     }
 
-
+    /**
+     * @function SuperMap.MapVRenderer.prototype.unbindEvent
+     * @description 解绑鼠标移动和鼠标滑动触发的事件
+     * @param e - {object} 触发对象
+     */
     unbindEvent(e) {
         var map = this.map;
 
@@ -64,12 +87,20 @@ export default class MapVRenderer extends MapVBaseLayer {
         }
     }
 
-
+    /**
+     * @function SuperMap.MapVRenderer.prototype.getContext
+     * @description 获取信息
+     */
     getContext() {
         return this.canvasLayer && this.canvasLayer.canvasContext;
     }
 
-    //追加数据
+    /**
+     * @function SuperMap.MapVRenderer.prototype.addData
+     * @description 追加数据
+     * @param data - {oject} 待添加的数据
+     * @param options - {oject} 待添加的数据信息
+     */
     addData(data, options) {
         var _data = data;
         if (data && data.get) {
@@ -79,7 +110,12 @@ export default class MapVRenderer extends MapVBaseLayer {
         this.update({options: options});
     }
 
-    //更新覆盖原数据
+    /**
+     * @function SuperMap.MapVRenderer.prototype.updateData
+     * @description 更新覆盖原数据
+     * @param data - {oject} 待更新的数据
+     * @param options - {oject} 待更新的数据信息
+     */
     setData(data, options) {
         var _data = data;
         if (data && data.get) {
@@ -90,10 +126,19 @@ export default class MapVRenderer extends MapVBaseLayer {
         this.update({options: options});
     }
 
+    /**
+     * @function SuperMap.MapVRenderer.prototype.getData
+     * @description 获取数据
+     */
     getData() {
         return this.dataSet;
     }
 
+    /**
+     * @function SuperMap.MapVRenderer.prototype.removeData
+     * @description 删除数据
+     * @param filter - {String} 删除条件\过滤信息
+     */
     removeData(filter) {
         if (!this.dataSet) {
             return;
@@ -103,16 +148,28 @@ export default class MapVRenderer extends MapVBaseLayer {
         this.update({options: null});
     }
 
+    /**
+     * @function SuperMap.MapVRenderer.prototype.clearData
+     * @description 清除数据
+     */
     clearData() {
         this.dataSet && this.dataSet.clear();
         this.update({options: null});
     }
 
+    /**
+     * @function SuperMap.MapVRenderer.prototype.render
+     * @description 着色
+     * @param time - {number}
+     */
     render(time) {
         this._canvasUpdate(time);
     }
 
-    //墨卡托坐标为经纬度
+    /**
+     * @function SuperMap.MapVRenderer.prototype.transferToMercator
+     * @description 墨卡托坐标为经纬度
+     */
     transferToMercator() {
         if (this.options.coordType && ["bd09mc", "coordinates_mercator"].indexOf(this.options.coordType) > -1) {
             var data = this.dataSet.get();
@@ -230,28 +287,45 @@ export default class MapVRenderer extends MapVBaseLayer {
         this.initAnimator();
     }
 
-
+    /**
+     * @function SuperMap.MapVRenderer.prototype.addAnimatorEvent
+     * @description 添加动画事件
+     */
     addAnimatorEvent() {
         this.map.events.on({'movestart': this.animatorMovestartEvent.bind(this)});
         this.map.events.on({'moveend': this.animatorMoveendEvent.bind(this)});
     }
 
-
+    /**
+     * @function SuperMap.MapVRenderer.prototype.clear
+     * @description 清除环境
+     * @param context - {object} 当前环境
+     */
     clear(context) {
         context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     }
 
-
+    /**
+     * @function SuperMap.MapVRenderer.prototype.show
+     * @description 展示渲染效果
+     */
     show() {
         this.map.addLayer(this.canvasLayer);
     }
 
-
+    /**
+     * @function SuperMap.MapVRenderer.prototype.hide
+     * @description 隐藏渲染效果
+     */
     hide() {
         this.map.removeLayer(this.canvasLayer);
     }
 
 
+    /**
+     * @function SuperMap.MapVRenderer.prototype.draw
+     * @description 渲染绘制
+     */
     draw() {
         this.canvasLayer.redraw();
     }

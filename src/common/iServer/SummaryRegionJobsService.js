@@ -4,15 +4,15 @@ import SummaryRegionJobParameter from './SummaryRegionJobParameter';
 
 /**
  * @class SuperMap.SummaryRegionJobsService
- * @description 范围汇总分析服务类
- * @augments SuperMap.ProcessingServiceBase
+ * @classdesc 范围汇总分析服务类
+ * @extends SuperMap.ProcessingServiceBase
  * @param url -{String} 范围汇总分析服务地址。
  * @param options - {Object} 范围汇总分析服务可选参数。
  */
 export default  class SummaryRegionJobsService extends ProcessingServiceBase {
 
     /**
-     * @function SuperMap.SummaryRegionJobsService.protitype.initialize
+     * @function SuperMap.SummaryRegionJobsService.prototype.initialize
      * @description SuperMap.SummaryRegionJobsService 的构造函数
      * @param url -{String} 范围汇总分析服务地址。
      * @param options - {Object} 范围汇总分析服务可选参数。
@@ -30,7 +30,7 @@ export default  class SummaryRegionJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.SummaryRegionJobsService.protitype.getSummaryRegionJobs
+     * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJobs
      * @description 获取范围汇总分析任务集合。
      * @return {*}
      */
@@ -39,7 +39,7 @@ export default  class SummaryRegionJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.SummaryRegionJobsService.protitype.getSummaryRegionJob
+     * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJob
      * @description 获取指定id的范围汇总分析任务。
      * @param id -{String} 要获取范围汇总分析任务的id
      */
@@ -48,7 +48,7 @@ export default  class SummaryRegionJobsService extends ProcessingServiceBase {
     }
 
     /**
-     * @function SuperMap.SummaryRegionJobsService.protitype.addSummaryRegionJob
+     * @function SuperMap.SummaryRegionJobsService.prototype.addSummaryRegionJob
      * @description 新建范围汇总任务。
      * @param params - {SuperMap.SummaryRegionJobParameter} 创建一个范围汇总任务的请求参数。
      * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。

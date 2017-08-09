@@ -2,7 +2,7 @@ import SuperMap from '../SuperMap';
 
 /**
  * @class SuperMap.BuildCacheJobParameter
- * @description 地图缓存参数类
+ * @classdesc 地图缓存参数类
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName - {String} 数据集名称。<br>
  *         cacheName - {String} 缓存名称。<br>
@@ -16,14 +16,12 @@ import SuperMap from '../SuperMap';
  */
 export default  class BuildCacheJobParameter {
     /**
-     * APIProperty: datasetName
      * @member SuperMap.BuildCacheJobParameter.prototype.datasetName -{String}
      * @description 数据集名称。
      */
     datasetName= "";
 
     /**
-     * APIProperty: cacheName
      * @member SuperMap.BuildCacheJobParameter.prototype.cacheName -{String}
      * @description 缓存名称。
      */
@@ -31,7 +29,6 @@ export default  class BuildCacheJobParameter {
 
 
     /**
-     * APIProperty: cacheType
      * @member SuperMap.BuildCacheJobParameter.prototype.cacheType -{String}
      * @description 存储类型。
      */
@@ -39,52 +36,41 @@ export default  class BuildCacheJobParameter {
 
 
     /**
-     * APIProperty: serverAddresses
      * @member SuperMap.BuildCacheJobParameter.prototype.serverAddresses -{String}
      * @description MongoDB地址。
      */
-
     serverAdresses= "";
 
 
     /**
-     * APIProperty: database
      * @member SuperMap.BuildCacheJobParameter.prototype.database -{String}
      * @description 数据库。
      */
-
     database= "";
 
 
     /**
-     * APIProperty: version
      * @member SuperMap.BuildCacheJobParameter.prototype.version -{String}
      * @description 版本。
      */
-
     version= "";
 
 
     /**
-     * APIProperty: bounds
      * @member SuperMap.BuildCacheJobParameter.prototype.bounds -{SuperMap.Bounds}
      * @description 缓存范围。
      */
-
     bounds= "";
 
 
     /**
-     * APIProperty: imageType
      * @member SuperMap.BuildCacheJobParameter.prototype.imageType -{number}
      * @description 缓存类型。
      */
-
     imageType= 'Heatmap';
 
 
     /**
-     * APIProperty: level
      * @member SuperMap.BuildCacheJobParameter.prototype.level -{number}
      * @description 缓存比例尺级别。
      */
@@ -99,7 +85,6 @@ export default  class BuildCacheJobParameter {
 
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */

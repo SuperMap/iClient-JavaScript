@@ -2,8 +2,8 @@
 import '../security/SecurityManager';
 
 /**
- * @class SuperMap.CommonServiceBase common服务基类
- * @constructs SuperMap.CommonServiceBase
+ * @class SuperMap.CommonServiceBase
+ * @classdesc common服务基类
  * @param url - {String} 与客户端交互的服务地址。
  * @param options - {Object} 参数。
  */
@@ -19,22 +19,22 @@ export default  class CommonServiceBase {
     EVENT_TYPES = ["processCompleted", "processFailed"];
 
     /**
-     * @member events -{SuperMap.Events}
-     * @description APIProperty: 处理所有事件的对象，支持 processCompleted 、processFailed 两种事件
+     * @member SuperMap.CommonServiceBase.prototype.events -{SuperMap.Events}
+     * @description  处理所有事件的对象，支持 processCompleted 、processFailed 两种事件
      *               服务端成功返回地图信息结果时触发 processCompleted 事件，服务端返回信息结果时触发 processFailed 事件。
      */
     events = null;
 
     /**
-     * @member  eventListeners -{Object}
-     * @description APIProperty: 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
+     * @member SuperMap.CommonServiceBase.prototype.eventListeners -{Object}
+     * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
      *              相当于调用 SuperMap.Events.on(eventListeners)。
      */
     eventListeners = null;
 
     /**
-     * @member  url -{String|Array}
-     * @description APIProperty: 服务访问地址或者服务访问地址数组。
+     * @member SuperMap.CommonServiceBase.prototype.url -{String|Array}
+     * @description 服务访问地址或者服务访问地址数组。
      *
      * @example
      * var url1 = "http://localhost:8090/iserver/services/map-world/rest/maps/World";
@@ -97,7 +97,6 @@ export default  class CommonServiceBase {
      */
     _processFailed = null;
 
-
     /*
      * Property: isInTheSameDomain
      * {Boolean}
@@ -105,7 +104,7 @@ export default  class CommonServiceBase {
     isInTheSameDomain = null;
 
     /**
-     * @function  initialize
+     * @function SuperMap.CommonServiceBase.prototype.constructor
      * @description  ServiceBase的构造函数
      * @param url - {String} 与客户端交互的服务地址。
      * @param options - {Object} 参数。
@@ -150,9 +149,8 @@ export default  class CommonServiceBase {
     }
 
     /**
-     * @override
      * @function  destroy
-     * @description APIMethod: 释放资源，将引用的资源属性置空。
+     * @description 释放资源，将引用的资源属性置空。
      */
     destroy() {
         let me = this;
@@ -179,10 +177,8 @@ export default  class CommonServiceBase {
     }
 
     /**
-     * @function  request
+     * @function SuperMap.CommonServiceBase.prototype.request
      * @description APIMethod: 该方法用于向服务发送请求。
-     *
-     * Parameters:
      * @param options - {Object} 参数。
      *        method - {String} 请求方式，包括GET，POST，PUT， DELETE。<br>
      *        url - {String}  发送请求的地址。<br>
@@ -255,7 +251,6 @@ export default  class CommonServiceBase {
     }
 
     /*
-     * Method: getUrlCompleted
      * 请求成功后执行此方法。
      *
      * Parameters:
@@ -268,7 +263,6 @@ export default  class CommonServiceBase {
 
 
     /*
-     * Method: getUrlFailed
      * 请求失败后执行此方法。
      *
      * Parameters:
@@ -286,7 +280,6 @@ export default  class CommonServiceBase {
 
 
     /*
-     * Method: ajaxPolling
      * 请求失败后，如果剩余请求失败次数不为0，重新获取url发送请求
      */
     ajaxPolling() {
@@ -313,7 +306,6 @@ export default  class CommonServiceBase {
 
 
     /*
-     * Method: calculatePollingTimes
      * 计算剩余请求失败执行次数。
      */
     calculatePollingTimes() {
@@ -340,7 +332,6 @@ export default  class CommonServiceBase {
     }
 
     /*
-     * Method: isServiceSupportPolling
      * 判断服务是否支持轮询。
      */
     isServiceSupportPolling() {
@@ -352,7 +343,6 @@ export default  class CommonServiceBase {
     }
 
     /*
-     * Method: serviceProcessCompleted
      * 状态完成，执行此方法。
      *
      * Parameters:
@@ -364,7 +354,6 @@ export default  class CommonServiceBase {
     }
 
     /*
-     * Method: serviceProcessFailed
      * 状态失败，执行此方法。
      *
      * Parameters:

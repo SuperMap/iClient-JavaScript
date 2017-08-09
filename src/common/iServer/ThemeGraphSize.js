@@ -2,7 +2,7 @@
 
 /**
  * @class SuperMap.ThemeGraphSize
- * @description 统计专题图符号尺寸类。
+ * @classdesc 统计专题图符号尺寸类。
  * @param  options - {Object} 可选参数。如：<br>
  *         maxGraphSize - {Number} 统计图中显示的最大图表尺寸基准值。<br>
  *         minGraphSize - {Number} 统计图中显示的最小图表尺寸基准值。
@@ -10,14 +10,12 @@
 export default  class ThemeGraphSize {
 
     /**
-     * APIProperty: maxGraphSize
      * @member SuperMap.ThemeGraphSize.prototype.maxGraphSize -{Number}
      * @description 获取或设置统计图中显示的最大图表尺寸基准值，默认为0像素。
      */
     maxGraphSize = 0;
 
     /**
-     * APIProperty: minGraphSize
      * @member SuperMap.ThemeGraphSize.prototype.minGraphSize -{Number}
      * @description 获取或设置统计图中显示的最小图表尺寸基准值，默认为0像素。
      */
@@ -34,7 +32,6 @@ export default  class ThemeGraphSize {
     }
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */

@@ -5,7 +5,19 @@ import {TextSymbolizer} from './TextSymbolizer';
 import {VectorTileFormat} from '../VectorTileFormat';
 import {VectorFeatureType} from './VectorFeatureType';
 import L from "leaflet";
+
+/**
+ * @class L.supermap.VectorGrid
+ * @classdesc 矢量格网
+ * @extends L.GridLayer
+ * @param options - {Object} 矢量格网参数
+ */
 export var VectorGrid = L.GridLayer.extend({
+
+    /**
+     * @member L.supermap.VectorGrid.prototype.options -{Object}
+     * @description 矢量格网参数
+     */
     options: {
         vectorTileLayerStyles: null,
         //SVG or Canvas
@@ -36,7 +48,12 @@ export var VectorGrid = L.GridLayer.extend({
         me._dataLayerNames = {};
     },
 
-
+    /**
+     * @function L.supermap.VectorGrid.prototype.createTile
+     * @description 创建地切片图层
+     * @param coords - {} 切片坐标
+     * @param done - {} todo
+     */
     createTile: function (coords, done) {
         var me = this;
 
@@ -62,15 +79,31 @@ export var VectorGrid = L.GridLayer.extend({
         return renderer.getContainer();
     },
 
+    /**
+     * @function L.supermap.VectorGrid.prototype.getStyles
+     * @description 获取图层样式
+     */
     getStyles: function () {
         return this.vectorTileLayerStyles;
     },
 
+    /**
+     * @function L.supermap.VectorGrid.prototype.getStyle
+     * @description 获取指定图层样式
+     * @param layerName - {String} 图层名称
+     */
     getStyle: function (layerName) {
         return this.vectorTileLayerStyles && this.vectorTileLayerStyles[layerName];
     },
 
-    //需要id和layerName才能确定一个要素
+    /**
+     * @function L.supermap.VectorGrid.prototype.setFeatureStyle
+     * @description 设置要素风格，需要id和layerName才能确定一个要素
+     * @param id - {number} 要素id
+     * @param layerName - {String} 图层名称
+     * @param layerStyle - {array} 图层样式
+     * @return {L.supermap.VectorGrid}
+     */
     setFeatureStyle: function (id, layerName, layerStyle) {
         var featureKey = this._getFeatureKey(id, layerName);
         this._overriddenStyles[featureKey] = layerStyle;
@@ -87,7 +120,12 @@ export var VectorGrid = L.GridLayer.extend({
         return this;
     },
 
-    //需要id和layerName才能确定一个要素
+    /**
+     * @function L.supermap.VectorGrid.prototype.resetFeatureStyle
+     * @description 重绘要素风格，需要id和layerName才能确定一个要素
+     * @param id - {number} 要素id
+     * @param layerName - {String} 图层名称
+     */
     resetFeatureStyle: function (id, layerName) {
         var featureKey = this._getFeatureKey(id, layerName);
         delete  this._overriddenStyles[featureKey];
@@ -104,6 +142,11 @@ export var VectorGrid = L.GridLayer.extend({
         return this;
     },
 
+    /**
+     * @function L.supermap.VectorGrid.prototype.getDataLayerNames
+     * @description 获取数据图层名字
+     * @return {Array} 返回数据图层名数组
+     */
     getDataLayerNames: function () {
         return Object.keys(this._dataLayerNames);
     },

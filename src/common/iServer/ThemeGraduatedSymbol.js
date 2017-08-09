@@ -7,8 +7,8 @@ import {GraduatedMode} from '../REST';
 
 /**
  * @class SuperMap.ThemeGraduatedSymbol
- * @description 等级符号专题图。
- * @augments SuperMap.Theme
+ * @classdesc 等级符号专题图。
+ * @extends SuperMap.Theme
  * @param options - {Object} 可选参数。如：<br>
  *        baseValue - {Number} 等级符号专题图的基准值，单位同专题变量的单位。<br>
  *        expression - {String} 等级符号专题图的字段或字段表达式。<br>
@@ -21,7 +21,6 @@ import {GraduatedMode} from '../REST';
 export default  class ThemeGraduatedSymbol extends Theme {
 
     /**
-     * APIProperty: baseValue
      * @member SuperMap.ThemeGraduatedSymbol.prototype.baseValue -{ Number}
      * @description 等级符号专题图的基准值，单位同专题变量的单位。<br>
      *              依据此值系统会自动根据分级方式计算其余值对应的符号大小，每个符号的显示大小等于<br>
@@ -31,14 +30,12 @@ export default  class ThemeGraduatedSymbol extends Theme {
     baseValue = 0;
 
     /**
-     * APIProperty: expression
      * @member SuperMap.ThemeGraduatedSymbol.prototype.expression -{String}
      * @description 用于创建等级符号专题图的字段或字段表达式，字段或字段表达式应为数值型。必设字段。
      */
     expression = null;
 
     /**
-     * APIProperty: flow
      * @member SuperMap.ThemeGraduatedSymbol.prototype.flow -{SuperMap.ThemeFlow}
      * @description 等级符号专题图符号流动显示与牵引线设置类。<br>
      *              通过该字段可以设置等级符号是否流动显示和牵引线风格。
@@ -46,7 +43,6 @@ export default  class ThemeGraduatedSymbol extends Theme {
     flow = null;
 
     /**
-     * APIProperty: graduatedMode
      * @member SuperMap.ThemeGraduatedSymbol.prototype.graduatedMode -{SuperMap.GraduatedMode}
      * @description 等级符号专题图分级模式。<br>
      *              分级主要是为了减少制作等级符号专题图中数据大小之间的差异。如果数据之间差距较大，则可以采用对数或者平方根的分级方式来进行，<br>
@@ -59,14 +55,12 @@ export default  class ThemeGraduatedSymbol extends Theme {
     graduatedMode = GraduatedMode.CONSTANT;
 
     /**
-     * APIProperty: offset
-     * @member @member SuperMap.ThemeGraduatedSymbol.prototype.offset -{SuperMap.ThemeOffset}
+     * @member SuperMap.ThemeGraduatedSymbol.prototype.offset -{SuperMap.ThemeOffset}
      * @description 用于设置等级符号图相对于要素内点的偏移量。
      */
     offset = null;
 
     /**
-     * APIProperty: style
      * @member SuperMap.ThemeGraduatedSymbol.prototype.style -{SuperMap.ThemeGraduatedSymbolStyle}
      * @description 用于设置等级符号图正负和零值显示风格。
      */
@@ -88,7 +82,6 @@ export default  class ThemeGraduatedSymbol extends Theme {
     }
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */
@@ -112,21 +105,19 @@ export default  class ThemeGraduatedSymbol extends Theme {
     }
 
 
-    /*
-     * Method: toJSON
-     * 将themeLabel对象转化为json字符串。
-     *
-     * Returns:
-     * {String} 返回转换后的 JSON 字符串。
+    /**
+     * @function SuperMap.ThemeGraduatedSymbol.prototype.toJSON
+     * @description 将themeLabel对象转化为json字符串。
+     * @return {String} 返回转换后的 JSON 字符串。
      */
     toJSON() {
         return SuperMap.Util.toJSON(this.toServerJSONObject());
     }
 
 
-    /*
-     * Method: toServerJSONObject
-     * 转换成对应的 JSON 格式对象。
+    /**
+     * @function SuperMap.ThemeGraduatedSymbol.prototype.toServerJSONObject
+     * @description 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var obj = {};

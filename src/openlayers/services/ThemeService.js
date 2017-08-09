@@ -3,8 +3,8 @@ import ServiceBase from './ServiceBase';
 import CommonThemeService from '../../common/iServer/ThemeService';
 /**
  * @class ol.supermap.ThemeService
- * @description 专题图服务类
- * @augments ol.supermap.ServiceBase
+ * @classdesc 专题图服务类
+ * @extends ol.supermap.ServiceBase
  * @example
  * 用法：
  *      new ol.supermap.ThemeService(url,{
@@ -23,7 +23,7 @@ export default class ThemeService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.ThemeService.getThemeInfo
+     * @function ol.supermap.ThemeService.prototype.getThemeInfo
      * @description 获取专题图信息
      * @param params - {SuperMap.ThemeParameters} 专题图参数类
      * @param callback - {function} 回调函数

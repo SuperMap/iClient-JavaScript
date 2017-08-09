@@ -1,7 +1,18 @@
 import '../../core/Base';
 import L from "leaflet";
+
+/**
+ * @class L.supermap.circleStyle
+ * @classdesc 圆形要素风格
+ * @extends L.Class
+ * @param options - {object} 圆形要素风格参数
+ */
 export var CircleStyle = L.Class.extend({
 
+    /**
+     * @member L.supermap.circleStyle.prototype.options
+     * @description 要素风格参数
+     */
     options: {
         stroke: true,
         color: '#3388ff',
@@ -26,6 +37,10 @@ export var CircleStyle = L.Class.extend({
         this._initStyle();
     },
 
+    /**
+     * @function L.supermap.circleStyle.prototype.getCanvas
+     * @description 获取画布
+     */
     getCanvas: function () {
         return this._canvas;
     },

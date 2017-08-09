@@ -8,9 +8,9 @@ import QueryBySQLService from '../../common/iServer/QueryBySQLService';
 import QueryByGeometryService from '../../common/iServer/QueryByGeometryService';
 /**
  * @class ol.supermap.QueryService
- * @description 地图查询服务类
- * 提供：范围查询，SQL查询，几何查询，距离查询
- * @augments ol.supermap.ServiceBase
+ * @classdesc 地图查询服务类。
+ *            提供：范围查询，SQL查询，几何查询，距离查询
+ * @extends ol.supermap.ServiceBase
  * @param url - {String} 地图查询服务访问地址。
  * @param options - {Object} 服务交互时所需的可选参数。
  * @example
@@ -27,7 +27,7 @@ export default class QueryService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.QueryService.queryByBounds
+     * @function ol.supermap.QueryService.prototype.queryByBounds
      * @description bounds查询地图服务
      * @param params - {SuperMap.QueryByBoundsParameters} 通过Bounds查询的相关参数类
      * @param callback -{function} 回掉函数
@@ -50,7 +50,7 @@ export default class QueryService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.QueryService.queryByDistance
+     * @function ol.supermap.QueryService.prototype.queryByDistance
      * @description 地图距离查询服务
      * @param params - {QueryByDistanceParameters} Distance查询相关参数类
      * @param callback - {function} 回调函数
@@ -73,7 +73,7 @@ export default class QueryService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.QueryService.queryBySQL
+     * @function ol.supermap.QueryService.prototype.queryBySQL
      * @description 地图SQL查询服务
      * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
      * @param callback -{function} 回调函数
@@ -96,7 +96,7 @@ export default class QueryService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.QueryService.queryByGeometry
+     * @function ol.supermap.QueryService.prototype.queryByGeometry
      * @description 地图几何查询服务
      * @param params - {SuperMap.QueryByGeometryParameters} Geometry查询相关参数类
      * @param callback - {function} 回调函数

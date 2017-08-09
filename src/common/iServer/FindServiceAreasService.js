@@ -5,12 +5,12 @@ import GeoJSON from '../format/GeoJSON';
 
 /**
  * @class SuperMap.FindServiceAreasService
- * @description 服务区分析服务类。<br>
+ * @classdesc 服务区分析服务类。<br>
  *               服务区分析是以指定服务站点为中心，<br>
  *               在一定服务范围内查找网络上服务站点能够提供服务的区域范围。<br>
  *               该类负责将客户端指定的服务区分析参数传递给服务端，并接收服务端返回的结果数据。<br>
  *               服务区分析结果通过该类支持的事件的监听函数参数获取
- * @augments SuperMap.NetworkAnalystServiceBase
+ * @extends SuperMap.NetworkAnalystServiceBase
  * @example
  * (start code)
  * var myFindServiceAreasService = new SuperMap.FindServiceAreasService(url, {
@@ -28,7 +28,7 @@ import GeoJSON from '../format/GeoJSON';
  */
 export default  class FindServiceAreasService extends NetworkAnalystServiceBase {
 
-    /**
+    /*
      * @function SuperMap.FindServiceAreasService.prototype.initialize
      * @description 服务区分析服务类构造函数。
      * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
@@ -76,16 +76,12 @@ export default  class FindServiceAreasService extends NetworkAnalystServiceBase 
         });
     }
 
-    /*
-     * Method: getJson
-     * 将对象转化为JSON字符串。
-     *
-     * Parameters:
-     * isAnalyzeById - {Boolean}
-     * params - {Array}
-     *
-     * Returns:
-     * {Object} 转化后的JSON字符串。
+    /**
+     * @function SuperMap.FindServiceAreasService.prototype.getJson
+     * @description 将对象转化为JSON字符串。
+     * @param isAnalyzeById - {Boolean} 是否通过id分析
+     * @param params - {Array} 需要转换的数字
+     * @return {Object} 转化后的JSON字符串。
      */
     getJson(isAnalyzeById, params) {
         var jsonString = "[",
@@ -106,12 +102,10 @@ export default  class FindServiceAreasService extends NetworkAnalystServiceBase 
         return jsonString;
     }
 
-    /*
-     * Method: toGeoJSONResult
-     * 将含有geometry的数据转换为geojson格式。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
+    /**
+     * @function SuperMap.FindServiceAreasService.prototype.toGeoJSONResult
+     * @description 将含有geometry的数据转换为geojson格式。
+     * @param result - {Object} 服务器返回的结果对象。。
      */
     toGeoJSONResult(result) {
         if (!result || !result.serviceAreaList) {

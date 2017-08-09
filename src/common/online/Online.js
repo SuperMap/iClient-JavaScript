@@ -5,8 +5,15 @@ import iPortalServiceBase from './OnlineData';
 import {FetchRequest} from '../util/FetchRequest';
 
 /**
- * Class: SuperMap.Online
- * 对接SuperMap Online 所有基础服务
+ * @class SuperMap.Online
+ * @classdesc 对接SuperMap Online 所有基础服务
+ * @example
+ * var online=new SuperMap.Online();
+ * var services = online.queryDatas(param);
+ * service.then(function(services){
+ *      var service= services[0];
+ *      service.updateDataInfo();
+ * })
  */
 export default class Online {
 
@@ -41,8 +48,9 @@ export default class Online {
     }
 
     /**
-     * 查询Online “我的内容”下“我的数据”服务(需要登录状态获取),并返回可操作的服务对象
-     * @param parameter   <OnlineQueryDatasParameter>
+     * @function SuperMap.Online.prototype.queryDatas
+     * @description 查询Online “我的内容”下“我的数据”服务(需要登录状态获取),并返回可操作的服务对象
+     * @param parameter -｛SuperMap.OnlineQueryDatasParameter｝myDatas服务资源查询参数
      */
     queryDatas(parameter) {
         var me = this, url = me.mDatasUrl;

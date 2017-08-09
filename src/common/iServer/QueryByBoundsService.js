@@ -4,7 +4,7 @@ import QueryByBoundsParameters from './QueryByBoundsParameters';
 
 /**
  * @class SuperMap.QueryByBoundsService
- * @description Bounds 查询服务类。
+ * @classdesc Bounds 查询服务类。
  * @augments SuperMap.QueryService
  * @example
  * (start end)
@@ -23,7 +23,7 @@ import QueryByBoundsParameters from './QueryByBoundsParameters';
  */
 export default  class QueryByBoundsService extends QueryService {
 
-    /**
+    /*
      * @function SuperMap.QueryByBoundsService.initialize
      * @description Bounds 查询服务类构造函数。
      * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
@@ -43,16 +43,12 @@ export default  class QueryByBoundsService extends QueryService {
     }
 
 
-    /*
-     * Method: getJsonParameters
-     * 将查询参数转化为 JSON 字符串。
-     * 在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds 等）。
-     *
-     * Parameters:
-     * params - {SuperMap.QueryByBoundsParameters} Bounds 查询参数。
-     *
-     * Returns:
-     * {Object} 转化后的 JSON 字符串。
+    /**
+     * @function SuperMap.QueryByBoundsService.prototype.getJsonParameters
+     * @description 将查询参数转化为 JSON 字符串。
+     *              在本类中重写此方法，可以实现不同种类的查询（sql, geometry, distance, bounds 等）。
+     * @param params - {SuperMap.QueryByBoundsParameters} Bounds 查询参数。
+     * @return {Object} 转化后的 JSON 字符串。
      */
     getJsonParameters(params) {
         var me = this,

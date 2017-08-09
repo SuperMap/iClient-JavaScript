@@ -2,7 +2,8 @@ import SuperMap from '../SuperMap';
 import OnlineServiceBase from './OnlineServiceBase';
 
 /**
- * Online myData服务
+ * @class SuperMap.OnlineServiceBase
+ * @classdesc Online myData服务
  */
 export default  class OnlineData extends OnlineServiceBase {
     //MD5

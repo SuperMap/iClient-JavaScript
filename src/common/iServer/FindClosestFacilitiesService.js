@@ -5,12 +5,12 @@ import FindClosestFacilitiesParameters from './FindClosestFacilitiesParameters';
 
 /**
  * @class SuperMap.FindClosestFacilitiesService
- * @description 最近设施分析服务类。<br>
+ * @classdesc 最近设施分析服务类。<br>
  *               最近设施分析是指在网络上给定一个事件点和一组设施点，
  *               查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
  *               该类负责将客户端指定的最近设施分析参数传递给服务端，并接收服务端返回的结果数据。
  *              最近设施分析结果通过该类支持的事件的监听函数参数获取
- * @augments SuperMap.NetworkAnalystServiceBase
+ * @extends SuperMap.NetworkAnalystServiceBase
  * @example
  * (start code)
  * var myfindClosestFacilitiesService = new SuperMap.FindClosestFacilitiesService(url, {
@@ -28,8 +28,8 @@ import FindClosestFacilitiesParameters from './FindClosestFacilitiesParameters';
  */
 export default class FindClosestFacilitiesService extends NetworkAnalystServiceBase {
 
-    /**
-     * @function SuperMap.FindClosestFacilitiesService.prototype.initialize
+    /*
+     * @function SuperMap.FindClosestFacilitiesService.prototype.constructor
      * @description 最近设施分析服务类构造函数。
      * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
      *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
@@ -49,7 +49,7 @@ export default class FindClosestFacilitiesService extends NetworkAnalystServiceB
     }
 
     /**
-     * @function SuperMap.FindClosestFacilitiesService.prototype. processAsync
+     * @function SuperMap.FindClosestFacilitiesService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param params - {SuperMap.FindClosestFacilitiesParameters} 最近设施分析服务参数类
      */
@@ -77,16 +77,12 @@ export default class FindClosestFacilitiesService extends NetworkAnalystServiceB
         });
     }
 
-    /*
-     * Method: getJson
-     * 将对象转化为JSON字符串。
-     *
-     * Parameters:
-     * isAnalyzeById - {Boolean}
-     * params - {Array}
-     *
-     * Returns:
-     * {Object} 转化后的JSON字符串。
+    /**
+     * @function SuperMap.FindClosestFacilitiesService.prototype.getJson
+     * @description 将对象转化为JSON字符串。
+     * @param isAnalyzeById - {Boolean}
+     * @param params - {Array}
+     * @return {Object} 转化后的JSON字符串。
      */
     getJson(isAnalyzeById, params) {
         var jsonString = "[",
@@ -107,12 +103,10 @@ export default class FindClosestFacilitiesService extends NetworkAnalystServiceB
         return jsonString;
     }
 
-    /*
-     * Method: toGeoJSONResult
-     * 将含有geometry的数据转换为geojson格式。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
+    /**
+     * @function SuperMap.FindClosestFacilitiesService.prototype.toGeoJSONResult
+     * @description 将含有geometry的数据转换为geojson格式。
+     * @param result - {Object} 服务器返回的结果对象。
      */
     toGeoJSONResult(result) {
         if (!result || !result.facilityPathList) {

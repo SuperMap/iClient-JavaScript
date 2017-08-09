@@ -1,9 +1,11 @@
-/*
- Leaflet对象和SuperMap对象转换工具
- */
 import L from "leaflet"
 import '../core/Base';
 import SuperMap from '../../common/SuperMap';
+
+/**
+ * @class L.supermap.CommontypesConversion
+ * @classdesc  Leaflet对象和SuperMap对象转换工具
+ */
 export default class CommontypesConversion {
    static toSuperMapBounds(bounds) {
         if (bounds instanceof L.LatLngBounds) {

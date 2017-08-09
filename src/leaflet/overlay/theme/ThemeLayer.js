@@ -1,13 +1,19 @@
-/**
- * Class: ThemeLayer
- * 专题图层基类
- */
 import '../../core/Base';
 import SuperMap from '../../../common/SuperMap';
 import L from "leaflet";
 
+/**
+ * @abstract L.supermap.ThemeLayer
+ * @classdesc 专题图层基类
+ * @param name - {String} 专题图层名称
+ * @param options -{object} 待设置得参数。
+ */
 export var ThemeLayer = L.Layer.extend({
 
+    /**
+     * @member L.supermap.ThemeLayer.prototype.options -{object}
+     * @description 待设置得参数。
+     */
     options: {
         name: null,
         opacity: 1,
@@ -26,6 +32,11 @@ export var ThemeLayer = L.Layer.extend({
         this.movingOffset = [0, 0];
     },
 
+    /**
+     * @function L.supermap.ThemeLayer.prototype.getEvents
+     * @description 获取图层事件
+     * @return {{zoomend: ThemeLayer._reset, moveend: ThemeLayer._reset, resize: ThemeLayer._resize}}
+     */
     getEvents: function () {
         var me = this;
         var events = {
@@ -39,12 +50,22 @@ export var ThemeLayer = L.Layer.extend({
         return events;
     },
 
+    /**
+     * @function L.supermap.ThemeLayer.prototype.onRemove
+     * @description 删除某个地图
+     * @param map - {L.map} 要删除的地图
+     */
     onRemove: function (map) {
         if (map) {
             map.removeLayer(this);
         }
     },
 
+    /**
+     * @function L.supermap.ThemeLayer.prototype.onAdd
+     * @description 添加专题图
+     * @param map - {L.map} 要添加的地图
+     */
     onAdd: function (map) {
         var me = this;
         me._initContainer();
@@ -70,17 +91,29 @@ export var ThemeLayer = L.Layer.extend({
         });
     },
 
-    //向专题图图层中添加数据, 支持的feature类型为:
-    //iServer返回的feature json对象 或L.supermap.themeFeature类型
+    /**
+     * @function L.supermap.ThemeLayer.prototype.addFeatures
+     * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
+     * @param features - {L.feature} 要添加的要素
+     */
     addFeatures: function (features) {
         //子类实现此方法
     },
 
-    //抽象方法，可实例化子类必须实现此方法。
+    /**
+     * @function L.supermap.ThemeLayer.prototype.redrawThematicFeatures
+     * @description 抽象方法，可实例化子类必须实现此方法。
+     * @param bounds - {L.bounds} 重绘专题要素范围。
+     */
     redrawThematicFeatures: function (bounds) {
         //子类必须实现此方法
     },
 
+    /**
+     * @function L.supermap.ThemeLayer.prototype.destroyFeatures
+     * @description 销毁某个要素
+     * @param features - {L.feature} 将被销毁得要素
+     */
     destroyFeatures: function (features) {
         if (features === undefined) {
             features = this.features;
@@ -94,7 +127,11 @@ export var ThemeLayer = L.Layer.extend({
         }
     },
 
-    //从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+    /**
+     * @function L.supermap.ThemeLayer.prototype.removeFeatures
+     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+     * @param features - {L.feature} 将被删除得要素
+     */
     removeFeatures: function (features) {
         var me = this;
         if (!features || features.length === 0) {
@@ -143,7 +180,10 @@ export var ThemeLayer = L.Layer.extend({
         me.fire("featuresremoved", {features: featuresFailRemoved, succeed: succeed});
     },
 
-    //清除当前图层所有的矢量要素。
+    /**
+     * @function L.supermap.ThemeLayer.prototype.removeAllFeatures
+     * @description 清除当前图层所有的矢量要素。
+     */
     removeAllFeatures: function () {
         var me = this;
         if (me.renderer) {
@@ -153,7 +193,11 @@ export var ThemeLayer = L.Layer.extend({
         me.fire("featuresremoved", {features: [], succeed: true});
     },
 
-    //查看当前图层中的有效数据。
+    /**
+     * @function L.supermap.ThemeLayer.prototype.getFeatures
+     * @description 查看当前图层中的有效数据。
+     * @return {Array} 返回图层中的有效数据。
+     */
     getFeatures: function () {
         var me = this;
         var len = me.features.length;
@@ -164,8 +208,12 @@ export var ThemeLayer = L.Layer.extend({
         return clonedFeatures;
     },
 
-    //在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
-    //返回此 feature（并且只返回第一个）。
+    /**
+     * @function L.supermap.ThemeLayer.prototype.getFeatureBy
+     * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，返回此 feature（并且只返回第一个）。
+     * @param property - {String} 要素得某个属性名
+     * @param value - {String} 对应属性名得值
+     */
     getFeatureBy: function (property, value) {
         var me = this;
         var feature = null;
@@ -179,12 +227,22 @@ export var ThemeLayer = L.Layer.extend({
         return feature;
     },
 
-    //通过给定一个 id，返回对应的矢量要素,如果不存在则返回 null
+    /**
+     * @function L.supermap.ThemeLayer.prototype.getFeatureById
+     * @description 通过给定一个 id，返回对应的矢量要素,如果不存在则返回 null
+     * @param featureId - {number} 要素id
+     */
     getFeatureById: function (featureId) {
         return this.getFeatureBy('id', featureId);
     },
 
-    //通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
+    /**
+     * @function L.supermap.ThemeLayer.prototype.getFeaturesByAttribute
+     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
+     * @param attrName - {String} key 值
+     * @param attrValue - {String}  value 值
+     * @return {Array} 返回所有匹配的要素数组。
+     */
     getFeaturesByAttribute: function (attrName, attrValue) {
         var me = this,
             feature,
@@ -198,7 +256,11 @@ export var ThemeLayer = L.Layer.extend({
         return foundFeatures;
     },
 
-    //调整图层
+    /**
+     * @function L.supermap.ThemeLayer.prototype.update
+     * @description 调整图层
+     * @param bounds - {L.bounds} 调整范围
+     */
     update: function (bounds) {
         var me = this;
         var offsetLeft = parseInt(me._map.getContainer().style.left, 10);
@@ -223,7 +285,11 @@ export var ThemeLayer = L.Layer.extend({
         me._center = me._map.getCenter();
     },
 
-    //设置图层的不透明度,取值[0-1]之间。
+    /**
+     * @function L.supermap.ThemeLayer.prototype.setOpacity
+     * @description 设置图层的不透明度,取值[0-1]之间。
+     * @param opacity - {number} 不透明度
+     */
     setOpacity: function (opacity) {
         var me = this;
         if (opacity === me.options.opacity) {
@@ -235,8 +301,11 @@ export var ThemeLayer = L.Layer.extend({
         me._updateOpacity();
     },
 
-
-    //重绘该图层
+    /**
+     * @function L.supermap.ThemeLayer.prototype.redraw
+     * @description 重绘该图层
+     * @return {boolean} 返回是否重绘成功
+     */
     redraw: function () {
         var me = this;
         if (!me.renderer) {
@@ -250,7 +319,13 @@ export var ThemeLayer = L.Layer.extend({
         return true;
     },
 
-    //添加专题要素事件监听。添加专题要素事件监听。
+    /**
+     * @function L.supermap.ThemeLayer.prototype.on
+     * @description 添加专题要素事件监听。添加专题要素事件监听。
+     * @param event - {Event} 监听事件
+     * @param callback - {function} 回调函数
+     * @param context - {String} 信息
+     */
     on: function (event, callback, context) {
         if (this.renderer) {
             this.renderer.on(event, callback);
@@ -260,7 +335,13 @@ export var ThemeLayer = L.Layer.extend({
         return this;
     },
 
-    // 移除专题要素事件监听 。
+    /**
+     * @function L.supermap.ThemeLayer.prototype.off
+     * @description 移除专题要素事件监听 。
+     * @param event - {Event} 监听事件
+     * @param callback - {function} 回调函数
+     * @param context - {String} 信息
+     */
     off: function (event, callback, context) {
         var me = this;
         if (me.renderer) {
@@ -271,7 +352,10 @@ export var ThemeLayer = L.Layer.extend({
         return this;
     },
 
-    //将图层添加到地图上之前用户要求添加的事件监听添加到图层。
+    /**
+     * @function L.supermap.ThemeLayer.prototype.addTFEvents
+     * @description 将图层添加到地图上之前用户要求添加的事件监听添加到图层。
+     */
     addTFEvents: function () {
         var me = this;
         var tfEs = me.TFEvents;
@@ -282,8 +366,11 @@ export var ThemeLayer = L.Layer.extend({
         }
     },
 
-    // 地理坐标转为像素坐标。
-    //{Array} 长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+    /**
+     * @function L.supermap.ThemeLayer.prototype.getLocalXY
+     * @description 地理坐标转为像素坐标。{Array} 长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
+     * @param coordinate - {String} 坐标系统
+     */
     getLocalXY: function (coordinate) {
         if (!this._map) {
             return coordinate;

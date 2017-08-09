@@ -6,8 +6,8 @@ import SetLayersInfoService from '../../common/iServer/SetLayersInfoService';
 import SetLayerStatusService from '../../common/iServer/SetLayerStatusService';
 /**
  * @class ol.supermap.LayerInfoService
- * @description 图层信息服务类
- * @augments ol.supermap.ServiceBase
+ * @classdesc 图层信息服务类
+ * @extends ol.supermap.ServiceBase
  * @example
  * 用法：
  *      new ol.supermap.LayerInfoService(url).getLayersInfo(function(result){
@@ -25,7 +25,7 @@ export default class LayerInfoService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.LayerInfoService.getLayersInfo
+     * @function ol.supermap.LayerInfoService.prototype.getLayersInfo
      * @description 获取图层信息服务
      * @param callback - {function} 回调函数
      * @return {ol.supermap.LayerInfoService} 返回图层信息类
@@ -44,7 +44,7 @@ export default class LayerInfoService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.LayerInfoService.setLayerInfo
+     * @function ol.supermap.LayerInfoService.prototype.setLayerInfo
      * @description 设置图层信息服务。可以实现临时图层中子图层的修改
      * @param params - {SuperMap.SetLayerInfoParameters} 设置图层信息参数类
      * @param callback -{function} 回调函数
@@ -76,7 +76,7 @@ export default class LayerInfoService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.LayerInfoService.setLayersInfo
+     * @function ol.supermap.LayerInfoService.prototype.setLayersInfo
      * @description 设置图层信息服务。可以实现创建新的临时图层和对现有临时图层的修改
      * @param params - {SuperMap.SetLayersInfoParameters}  设置图层信息参数类,包括临时图层。
      * @param callback - {function} 回调函数
@@ -109,7 +109,7 @@ export default class LayerInfoService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.LayerInfoService.setLayerStatus
+     * @function ol.supermap.LayerInfoService.prototype.setLayerStatus
      * @description 子图层显示控制服务。负责将子图层显示控制参数传递到服务端，并获取服务端返回的图层显示状态。
      * @param params - {SuperMap.SetLayerStatusParameters} 子图层显示控制参数类
      * @param callback - {function} 回调函数

@@ -4,7 +4,7 @@ import {LabelBackShape} from '../REST';
 
 /**
  * @class SuperMap.ThemeLabelBackground
- * @description 标签背景风格类。通过该类可以设置标签的背景形状和风格。
+ * @classdesc 标签背景风格类。通过该类可以设置标签的背景形状和风格。
  * @param options - {Object} 可选参数。如：<br>
  *        labelBackShape - {SuperMap.LabelBackShape} 标签专题图中标签背景风格。<br>
  *        backStyle - {SuperMap.ServerStyle} 标签专题图中标签背景的形状枚举类。
@@ -12,7 +12,6 @@ import {LabelBackShape} from '../REST';
 export default  class ThemeLabelBackground {
 
     /**
-     * APIProperty: labelBackShape
      * @member SuperMap.ThemeLabelBackground.prototype.labelBackShape -{SuperMap.LabelBackShape}
      * @description 标签专题图中标签背景风格。当背景形状
      *              labelBackShape 属性设为 NONE（即无背景形状） 时，backStyle 属性无效。
@@ -20,7 +19,6 @@ export default  class ThemeLabelBackground {
     labelBackShape = LabelBackShape.NONE;
 
     /**
-     * APIProperty: backStyle
      * @member SuperMap.ThemeLabelBackground.prototype.backStyle -{SuperMap.ServerStyle}
      * @description 标签专题图中标签背景的形状枚举类。背景类型可
      *              以是矩形、圆角矩形、菱形、椭圆形、三角形和符号等，默认为 SuperMap.LabelBackShape.NONE，
@@ -41,7 +39,6 @@ export default  class ThemeLabelBackground {
     }
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */

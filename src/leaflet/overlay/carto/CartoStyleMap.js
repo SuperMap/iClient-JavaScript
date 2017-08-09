@@ -1,13 +1,19 @@
-/**
- * CartoCSS中的style属性名与leaflet的style属性名的对应表
- * */
 import '../../core/Base';
 import L from "leaflet";
-export var CartoStyleMap = L.supermap.CartoStyleMap = {
+
+/**
+ * @class L.supermap.CartoStyleMap
+ * @description CartoCSS中的style属性名与leaflet的style属性名的对应表
+ */
+export var CartoStyleMap  = L.supermap.CartoStyleMap = {
+
+    /*
+     * @constant L.supermap.CartoStyleMap.prototype.TEXT
+     * @description 默认文本样式
+     */
     "TEXT": {
         "text-size": "fontSize",
         "text-face-name": "fontFamily",
-
         "text-align": "textAlign",
         'text-weight': 'fontWeight',
         "text-halo-color": "color",
@@ -15,6 +21,10 @@ export var CartoStyleMap = L.supermap.CartoStyleMap = {
         "text-comp-op": "globalCompositeOperation"
     },
 
+    /*
+     * @constant L.supermap.CartoStyleMap.prototype.POINT
+     * @description 默认点样式
+     */
     "POINT": {
         "point-file": "iconUrl",
         "point-fill": "fillColor",
@@ -22,6 +32,11 @@ export var CartoStyleMap = L.supermap.CartoStyleMap = {
         "point-halo-color": "color",
         "point-comp-op": "globalCompositeOperation"
     },
+
+    /*
+     * @constant L.supermap.CartoStyleMap.prototype.LINE
+     * @description 默认线样式
+     */
     "LINE": {
         "line-color": "color",
         "line-width": "weight",
@@ -32,6 +47,11 @@ export var CartoStyleMap = L.supermap.CartoStyleMap = {
         "line-dasharray": "dashArray",
         "line-comp-op": "globalCompositeOperation"
     },
+
+    /*
+     * @constant L.supermap.CartoStyleMap.prototype.REGION
+     * @description 默认多边形样式
+     */
     "REGION": {
         "line-color": "color",
         "line-width": "weight",
@@ -40,17 +60,21 @@ export var CartoStyleMap = L.supermap.CartoStyleMap = {
         "line-dash-offset": "dashOffset",
         "line-opacity": "opacity",
         "line-dasharray": "dashArray",
-
         "polygon-fill": "fillColor",
         "polygon-opacity": "fillOpacity",
         "polygon-comp-op": "globalCompositeOperation"
     }
 };
-
-/**
- * 服务端传过来的style属性名与leaflet的style属性名的对应表
- * */
+    /**
+ * @constant L.supermap.ServerStyleMap
+ * @description 服务端传过来的style属性名与leaflet的style属性名的对应表
+ */
 L.supermap.ServerStyleMap = {
+
+    /**
+     * @member L.supermap.ServerStyleMap.prototype.lineWidth
+     * @description 线宽
+     */
     lineWidth: {
         leafletStyle: "weight",
         type: "number",
@@ -58,18 +82,30 @@ L.supermap.ServerStyleMap = {
         defaultValue: 0.1
     },
 
+    /**
+     * @member L.supermap.ServerStyleMap.prototype.fillForeColor
+     * @description
+     */
     fillForeColor: {
         leafletStyle: "fillColor",
         type: "color",
         defaultValue: "rgba(0,0,0,0)"
     },
 
+    /**
+     * @member L.supermap.ServerStyleMap.prototype.foreColor
+     * @description
+     */
     foreColor: {
         leafletStyle: "color",
         type: "color",
         defaultValue: "rgba(0,0,0,0)"
     },
 
+    /**
+     * @member L.supermap.ServerStyleMap.prototype.markerSize
+     * @description
+     */
     markerSize: {
         leafletStyle: "markerSize",
         type: "number",
@@ -77,6 +113,10 @@ L.supermap.ServerStyleMap = {
         defaultValue: 2.4,
     },
 
+    /**
+     * @member L.supermap.ServerStyleMap.prototype.lineColor
+     * @description
+     */
     lineColor: {
         leafletStyle: "color",
         type: "color",
@@ -86,8 +126,9 @@ L.supermap.ServerStyleMap = {
 };
 
 /**
- * Canvas中的globalCompositeOperation属性值与CartoCSS中的CompOp属性值对照表
- * */
+ * @constant L.supermap.CompOpMap
+ * @description Canvas中的globalCompositeOperation属性值与CartoCSS中的CompOp属性值对照表
+ */
 L.supermap.CompOpMap = {
     "clear": "",
     "src": "",

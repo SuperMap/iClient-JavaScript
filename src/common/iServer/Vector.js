@@ -3,30 +3,24 @@ import UGCSubLayer from './UGCSubLayer';
 import ServerStyle from './ServerStyle';
 
 /**
- * Class: SuperMap.Vector
- * UGC 矢量图层类。
- *
- * Inherits from:
- *  - <SuperMap.UGCSubLayer>
+ * @class SuperMap.Vector
+ * @classdesc UGC 矢量图层类。
+ * @extends SuperMap.UGCSubLayer
+ * @param options - {Object} 可选参数。如：<br>
+ *        style - {SuperMap.ServerStyle} 矢量图层的风格。
  */
 
 export default  class Vector extends UGCSubLayer {
 
     /**
-     * APIProperty: style
-     * {SuperMap.ServerStyle} 矢量图层的风格。
+     * @member SuperMap.Vector.prototype.style -{SuperMap.ServerStyle}
+     * @description 矢量图层的风格。
      */
     style = null;
 
-    /**
+    /*
      * Constructor: SuperMap.Vector
      * UGC 矢量图层类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * style - {SuperMap.ServerStyle} 矢量图层的风格。
      */
     constructor(options) {
         options = options || {};
@@ -34,8 +28,7 @@ export default  class Vector extends UGCSubLayer {
     }
 
     /**
-     * APIMethod: destroy
-     * 释放资源,将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy() {
         super.destroy();
@@ -43,10 +36,9 @@ export default  class Vector extends UGCSubLayer {
     }
 
     /**
-     * Method: fromJson
-     * 将服务端JSON对象转换成当前客户端对象
-     * Parameters:
-     * jsonObject - {Object} 要转换的 JSON 对象。
+     * @function SuperMap.Vector.prototype.fromJson
+     * @description 将服务端JSON对象转换成当前客户端对象
+     * @param jsonObject - {Object} 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {
         super.fromJson(jsonObject);
@@ -57,8 +49,8 @@ export default  class Vector extends UGCSubLayer {
     }
 
     /**
-     * APIMethod: toServerJSONObject
-     * 转换成对应的 JSON 格式对象。
+     * @function SuperMap.Vector.prototype.toServerJSONObject
+     * @description 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var jsonObject = SuperMap.toServerJSONObject();

@@ -4,7 +4,7 @@ import ServerTextStyle from './ServerTextStyle';
 
 /**
  * @class SuperMap.ThemeGraphAxes
- * @description 统计专题图坐标轴样式类。
+ * @classdesc 统计专题图坐标轴样式类。
  * @param  options - {Object} 可选参数。<br>
  *         axesColor - {SuperMap.ServerColor} 坐标轴颜色。<br>
  *         axesDisplayed - {Boolean} 是否显示坐标轴。<br>
@@ -15,14 +15,12 @@ import ServerTextStyle from './ServerTextStyle';
 export default  class ThemeGraphAxes {
 
     /**
-     * APIProperty: axesColor
      * @member SuperMap.ThemeGraphAxes.prototype.axesColor -{SuperMap.ServerColor}
      * @description 坐标轴颜色，默认为黑色。当 axesDisplayed = true 时有效。
      */
     axesColor = null;
 
     /**
-     * APIProperty: axesDisplayed
      * @member SuperMap.ThemeGraphAxes.prototype.axesDisplayed -{Boolean}
      * @description 是否显示坐标轴。默认为 false，即不显示。<br>
      *              由于饼状图和环状图无坐标轴，故该属性以及所有与坐标轴设置相关的属性都不适用于它们。并且只有当该值为 true 时，其它设置坐标轴的属性才起作用。
@@ -30,21 +28,18 @@ export default  class ThemeGraphAxes {
     axesDisplayed = false;
 
     /**
-     * APIProperty: axesGridDisplayed
      * @member SuperMap.ThemeGraphAxes.prototype.axesGridDisplayed -{Boolean}
      * @description 是否在统计图坐标轴上显示网格。默认为 false，即不显示。
      */
     axesGridDisplayed = false;
 
     /**
-     * APIProperty: axesTextDisplayed
      * @member SuperMap.ThemeGraphAxes.prototype.axesTextDisplayed -{Boolean}
      * @description 是否显示坐标轴的文本标注。默认为 false，即不显示。
      */
     axesTextDisplayed = false;
 
     /**
-     * APIProperty: axesTextStyle
      * @member SuperMap.ThemeGraphAxes.prototype.axesTextStyle -{SuperMap.ServerTextStyle}
      * @description 坐标轴文本风格。当 axesTextDisplayed = true 时有效。
      */
@@ -64,7 +59,6 @@ export default  class ThemeGraphAxes {
     }
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */

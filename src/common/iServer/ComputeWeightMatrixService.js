@@ -4,11 +4,11 @@ import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
 
 /**
  * @class SuperMap.ComputeWeightMatrixService
- * @description 耗费矩阵分析服务类。<br>
+ * @classdesc 耗费矩阵分析服务类。<br>
  *               耗费矩阵是根据交通网络分析参数中的耗费字段来计算一个二维数组，
  *               用来存储指定的任意两点间的资源消耗。
  *               耗费矩阵分析结果通过该类支持的事件的监听函数参数获取
- * @augments SuperMap.NetworkAnalystServiceBase
+ * @extends SuperMap.NetworkAnalystServiceBase
  * @example
  * (start code)
  * var mycomputeWeightMatrixService = new SuperMap.ComputeWeightMatrixService(url,{
@@ -26,7 +26,7 @@ import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
  */
 export default class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
 
-    /**
+    /*
      * @function SuperMap.ComputeWeightMatrixService.prototype.initialize
      * @description 耗费矩阵分析服务类构造函数。
      * @param url - {String} 耗费矩阵分析服务地址。请求服务的URL应为：<br>
@@ -73,16 +73,15 @@ export default class ComputeWeightMatrixService extends NetworkAnalystServiceBas
         });
     }
 
-    /*
-     * Method: getJson
-     * 将对象转化为JSON字符串。
+    /**
+     * @function SuperMap.ComputeWeightMatrixService.prototype.getJson
+     * @description 将对象转化为JSON字符串。
      *
      * Parameters:
-     * isAnalyzeById - {Boolean}
-     * params - {Array}
+     * @param isAnalyzeById - {Boolean} 是否通过id分析
+     * @param params - {Array} 分析参数数组
      *
-     * Returns:
-     * {Object} 转化后的JSON字符串。
+     * @return -{Object} 转化后的JSON字符串。
      */
     getJson(isAnalyzeById, params) {
         var jsonString = "[",

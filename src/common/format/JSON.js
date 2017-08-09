@@ -2,8 +2,8 @@
 import Format from './Format';
 /**
  * @class SuperMap.Format.JSON
- * @description 安全的读写JSON的解析类。使用<SuperMap.Format.JSON> 构造函数创建新实例。
- * @augments SuperMap.Format
+ * @classdesc 安全的读写JSON的解析类。使用<SuperMap.Format.JSON> 构造函数创建新实例。
+ * @extends SuperMap.Format
  * @param options - {Object} 选项对象，其属性会被直接设置到JSON实例。
  */
 export default  class JSONFormat extends Format {

@@ -1,16 +1,30 @@
 import '../core/Base';
 import L from "leaflet";
 import echarts  from "echarts";
+
+/**
+ * @class L.supermap.EchartsMapLayer
+ * @classdesc 图表地图图层类。
+ * @param echartsOptions - {object} 图表参数
+ * @param options - {object} 可选图层参数
+ */
 export var EchartsMapLayer = L.Layer.extend({
+
     includes: [],
     _echartsContainer: null,
     _map: null,
     _ec: null,
     _echartsOptions: null,
+
+    /**
+     * @member L.supermap.EchartsMapLayer.prototype.options - {object}
+     * @description 可选图层参数
+     */
     options: {
         attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>",
         loadWhileAnimating:true
     },
+
     initialize: function (echartsOptions,options) {
         if(echartsOptions){
             echartsOptions.LeafletMap={
@@ -20,6 +34,14 @@ export var EchartsMapLayer = L.Layer.extend({
         this._echartsOptions = echartsOptions;
         L.Util.setOptions(this, options);
     },
+
+    /**
+     * @function L.supermap.EchartsMapLayer.prototype.setOption
+     * @description 设置图表地图参数
+     * @param echartsOptions - {object} 图表参数
+     * @param notMerge todo
+     * @param lazyUpdate
+     */
     setOption: function (echartsOptions, notMerge, lazyUpdate){
         if(echartsOptions){
             echartsOptions.LeafletMap={
@@ -29,12 +51,19 @@ export var EchartsMapLayer = L.Layer.extend({
         this._echartsOptions = echartsOptions;
         this._ec.setOption(echartsOptions,notMerge,lazyUpdate);
     },
+
     _disableEchartsContainer: function () {
         this._echartsContainer.style.visibility = "hidden";
     },
     _enableEchartsContainer: function () {
         this._echartsContainer.style.visibility = "visible";
     },
+
+    /**
+     * @function L.supermap.EchartsMapLayer.prototype.onAdd
+     * @description 添加地图
+     * @param map - {L.map} 待添加的地图
+     */
     onAdd: function (map) {
         this._map = map;
         this._initEchartsContainer();
@@ -113,6 +142,7 @@ export var EchartsMapLayer = L.Layer.extend({
         });
         this._ec.setOption(this._echartsOptions);
     },
+
     _initEchartsContainer: function () {
         var size = this._map.getSize();
         var _div = document.createElement('div');
@@ -125,6 +155,13 @@ export var EchartsMapLayer = L.Layer.extend({
     },
 
 });
+
+/**
+ * @class L.supermap.LeafletMapCoordSys
+ * @classdesc leaflet地图坐标系统类
+ * @param LeafletMap - {L.map}
+ * @param api
+ */
 export function LeafletMapCoordSys(LeafletMap, api) {
     this._LeafletMap = LeafletMap
     this.dimensions = ['lng', 'lat']

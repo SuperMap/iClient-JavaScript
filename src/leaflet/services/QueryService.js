@@ -9,8 +9,8 @@ import QueryByGeometryService from  '../../common/iServer/QueryByGeometryService
 import CommontypesConversion from '../core/CommontypesConversion';
 /**
  * @class  L.supermap.QueryService
- * @description 地图查询服务类。
- * @augments L.supermap.ServiceBase
+ * @classdesc 地图查询服务类。
+ * @extends L.supermap.ServiceBase
  * @param url - {String} 地图查询服务访问地址。
  * @param - options - {Object} 服务交互时所需的可选参数。
  * @example
@@ -21,8 +21,8 @@ import CommontypesConversion from '../core/CommontypesConversion';
  */
 export var QueryService = ServiceBase.extend({
 
-    /**
-     * @function L.supermap.queryService.initialize
+    /*
+     * @function L.supermap.queryService.prototype.initialize
      * @description L.supermap.queryService类的构造函数。
      * @param url - {String} 地图查询服务访问地址。
      * @param options - {Object} 服务交互时所需的可选参数。
@@ -32,7 +32,7 @@ export var QueryService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.queryService.queryByBounds
+     * @function L.supermap.queryService.prototype.queryByBounds
      * @description bounds查询地图服务
      * @param params - {SuperMap.QueryByBoundsParameters} 通过Bounds查询的相关参数类
      * @param callback -{function} 回掉函数
@@ -55,9 +55,9 @@ export var QueryService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.queryService.queryByDistance
+     * @function L.supermap.queryService.prototype.queryByDistance
      * @description 地图距离查询服务
-     * @param params - {QueryByDistanceParameters} Distance查询相关参数类
+     * @param params - {SuperMap.QueryByDistanceParameters} Distance查询相关参数类
      * @param callback - {function} 回调函数
      * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
      */
@@ -78,7 +78,7 @@ export var QueryService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.queryService.queryBySQL
+     * @function L.supermap.queryService.prototype.queryBySQL
      * @description 地图SQL查询服务
      * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
      * @param callback -{function} 回调函数
@@ -101,7 +101,7 @@ export var QueryService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.queryService.queryByGeometry
+     * @function L.supermap.queryService.prototype.queryByGeometry
      * @description 地图几何查询服务
      * @param params - {SuperMap.QueryByGeometryParameters} Geometry查询相关参数类
      * @param callback - {function} 回调函数

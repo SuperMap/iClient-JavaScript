@@ -2,7 +2,7 @@
 
 /**
  * @class SuperMap.FacilityAnalyst3DParameters
- * @description 最近设施分析参数基类。<br>
+ * @classdesc 最近设施分析参数基类。<br>
  *               最近设施分析是指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。<br>
  *               设施点一般为学校、超市、加油站等服务设施；事件点为需要服务设施的事件位置。<br>
  *               例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。<br>
@@ -17,28 +17,24 @@
 export default  class FacilityAnalyst3DParameters {
 
     /**
-     * APIProperty: edgeID
      * @member SuperMap.FacilityAnalyst3DParameters.prototype.edgeID -{Number}
      * @description 指定的弧段ID
      */
     edgeID = null;
 
     /**
-     * APIProperty: nodeID
      * @member SuperMap.FacilityAnalyst3DParameters.prototype.nodeID -{Number}
      * @description 指定的结点ID
      */
     nodeID = null;
 
     /**
-     * APIProperty: weightName
      * @member SuperMap.FacilityAnalyst3DParameters.prototype.weightName -{String}
      * @description 指定的权值字段信息对象的名称
      */
     weightName = null;
 
     /**
-     * APIProperty: isUncertainDirectionValid
      * @member SuperMap.FacilityAnalyst3DParameters.prototype.isUncertainDirectionValid -{Boolean}:
      * @description 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
      *                指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找
@@ -58,7 +54,6 @@ export default  class FacilityAnalyst3DParameters {
     }
 
     /**
-     * APIMethod: destroy
      * @function destroy
      * @description 释放资源，将引用资源的属性置空。
      */

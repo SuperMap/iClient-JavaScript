@@ -2,9 +2,26 @@ import {Symbolizer} from './Symbolizer';
 import {CanvasRenderer} from './CanvasRenderer';
 import {SVGRenderer} from './SVGRenderer';
 import L from "leaflet";
+
+/**
+ * @class L.supermap.TextSymbolizer
+ * @classdesc 文本符号类
+ * @extends L.Path
+ * @param feature - {L.feature} 要素
+ * @param pxPerExtent - {number} 文本符号大小
+ */
 export var TextSymbolizer = L.Path.extend({
+
+    /**
+     * @member L.supermap.TextSymbolizer.prototype.includes
+     * @description 包含符号
+     */
     includes: Symbolizer.prototype,
 
+    /**
+     * @member L.supermap.TextSymbolizer.prototype.options
+     * @description 文本样式参数
+     */
     options: {
         color: 'white',
         fillColor: 'black',
@@ -29,6 +46,12 @@ export var TextSymbolizer = L.Path.extend({
         this.options.offsetY = pxPerExtent || 1;
     },
 
+    /**
+     * @function L.supermap.TextSymbolizer.prototype.render
+     * @description 绘制点符号
+     * @param renderer - {object} 渲染器
+     * @param style - {String} 符号样式
+     */
     render: function (renderer, style) {
         //原本类型就是text的情况
         if (this.properties.texts) {
@@ -59,10 +82,20 @@ export var TextSymbolizer = L.Path.extend({
         }
     },
 
+    /**
+     * @function L.supermap.TextSymbolizer.prototype.makeInteractive
+     * @description 设置交互
+     */
     makeInteractive: function () {
         this._updateBounds();
     },
 
+    /**
+     * @function L.supermap.TextSymbolizer.prototype.updateStyle
+     * @description 更新替换符号样式
+     * @param renderer - {object} 渲染器
+     * @param style - {String} 符号样式
+     */
     updateStyle: function (renderer, style) {
         this._updateBounds();
         return Symbolizer.prototype.updateStyle.call(this, renderer, style);
@@ -82,6 +115,7 @@ export var TextSymbolizer = L.Path.extend({
         return false;
     }
 });
+
 CanvasRenderer.include({
     _getTextWidth: function (layer) {
         return this._ctx.measureText(layer._text).width;
@@ -122,6 +156,7 @@ CanvasRenderer.include({
         ctx.rotate(options.rotation);
     }
 });
+
 SVGRenderer.include({
     _getTextWidth: function (layer) {
         return layer._path.getComputedTextLength() || 0;

@@ -2,7 +2,7 @@
 
 /**
  * @class SuperMap.SupplyCenter
- * @description 资源供给中心类。在资源分配和选址分区分析两个功能中使用。
+ * @classdesc 资源供给中心类。在资源分配和选址分区分析两个功能中使用。
  */
 export default  class SupplyCenter {
     /**

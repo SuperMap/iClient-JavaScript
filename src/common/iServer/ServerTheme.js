@@ -8,32 +8,29 @@ import ThemeRange from './ThemeRange';
 import UGCSubLayer from './UGCSubLayer';
 
 /**
- * Class: SuperMap.ServerTheme
- * UGC 专题图图层类。
- *
- * Inherits from:
- *  - <SuperMap.UGCSubLayer>
+ * @class SuperMap.ServerTheme
+ * @classdesc UGC 专题图图层类。
+ * @extends SuperMap.UGCSubLayer
+ * @param theme - {SuperMap.Theme} 专题图对象。
+ * @param themeElementPosition - {SuperMap.LonLat} 专题图元素位置。
  */
 export default  class ServerTheme extends UGCSubLayer {
 
     /**
-     * @member APIProperty: theme
-     * {SuperMap.Theme} 专题图对象。
+     * @member SuperMap.ServerTheme.prototype.theme -{SuperMap.Theme}
+     * @description 专题图对象。
      */
     theme = null;
 
     /**
-     * @member APIProperty: themeElementPosition
-     * {SuperMap.LonLat} 专题图元素位置。
+     * @member SuperMap.ServerTheme.prototype.themeElementPosition -{SuperMap.LonLat}
+     * @description 专题图元素位置。
      */
     themeElementPosition = null;
 
-    /**
-     * @class SuperMap.ServerTheme UGC 专题图图层类。
-     * @constructs SuperMap.ServerTheme
-     * UGC 专题图图层类类构造函数。
-     * @augments SuperMap.UGCSubLayer
-     * Parameters:
+    /*
+     * @class SuperMap.ServerTheme
+     * @description UGC 专题图图层类类构造函数。
      * @param theme - {SuperMap.Theme} 专题图对象。
      * @param themeElementPosition - {SuperMap.LonLat} 专题图元素位置。
      */
@@ -52,11 +49,10 @@ export default  class ServerTheme extends UGCSubLayer {
     }
 
 
-    /*
-     * Method: fromJson
-     * 将服务端JSON对象转换成当前客户端对象
-     * Parameters:
-     * jsonObject - {Object} 要转换的 JSON 对象。
+    /**
+     * @function SuperMap.ServerTheme.prototype.fromJson
+     * @description 将服务端JSON对象转换成当前客户端对象
+     * @param jsonObject - {Object} 要转换的 JSON 对象。
      */
     fromJson(jsonObject) {
         super.fromJson(jsonObject);
@@ -91,8 +87,8 @@ export default  class ServerTheme extends UGCSubLayer {
     }
 
     /**
-     * @function APIMethod: toServerJSONObject
-     * 转换成对应的 JSON 格式对象。
+     * @function  SuperMap.ServerTheme.prototype.toServerJSONObject
+     * @description 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         //普通属性直接赋值

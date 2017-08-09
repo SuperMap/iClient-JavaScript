@@ -5,10 +5,10 @@ import ThemeGridUniqueItem from './ThemeGridUniqueItem';
 
 /**
  * @class SuperMap.ThemeGridUnique
- * @description 栅格单值专题图类。<br>
+ * @classdesc 栅格单值专题图类。<br>
  *              栅格单值专题图，是将单元格值相同的归为一类，为每一类设定一种颜色，从而用来区分不同的类别。<br>
  *              栅格单值专题图适用于离散栅格数据和部分连续栅格数据，对于单元格值各不相同的那些连续栅格数据，使用栅格单值专题图不具有任何意义。<br>
- * @augments SuperMap.Theme
+ * @extends SuperMap.Theme
  * @param options - {Object} 可选参数。如：<br>
  *        items - {Array<SuperMap.ThemeGridUniqueItem>} 栅格单值专题图子项数组。
  *        defaultcolor - {SuperMap.ServerColor} 栅格单值专题图的默认颜色。
@@ -16,7 +16,6 @@ import ThemeGridUniqueItem from './ThemeGridUniqueItem';
 export default  class ThemeGridUnique extends Theme {
 
     /**
-     * APIProperty: defaultcolor
      * @member SuperMap.ThemeGridUnique.prototype.defaultcolor -{SuperMap.ServerColor}
      * @description 栅格单值专题图的默认颜色。
      *              对于那些未在格网单值专题图子项之列的要素使用该颜色显示。
@@ -24,7 +23,6 @@ export default  class ThemeGridUnique extends Theme {
     defaultcolor = null;
 
     /**
-     * APIProperty: items
      * @member SuperMap.ThemeGridUnique.prototype.items -{Array<SuperMap.ThemeGridUniqueItem>}
      * @description 栅格单值专题图子项数组。
      *              栅格单值专题图将值相同的单元格归为一类，每一类是一个专题图子项。
@@ -45,7 +43,6 @@ export default  class ThemeGridUnique extends Theme {
     }
 
     /**
-     * APIMethod: destroy
      * @inheritDoc
      */
     destroy() {
@@ -67,9 +64,9 @@ export default  class ThemeGridUnique extends Theme {
         }
     }
 
-    /*
-     * Method: toServerJSONObject
-     * 转换成对应的 JSON 格式对象。
+    /**
+     * @function SuperMap.ThemeGridUnique.prototype.toServerJSONObject
+     * @description 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var obj = {};

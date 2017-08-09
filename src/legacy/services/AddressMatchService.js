@@ -4,7 +4,11 @@ import CommonServiceBase from '../../common/iServer/CommonServiceBase';
 import CommonAddressMatchService from '../../common/iServer/AddressMatchService';
 
 /**
- * 地址匹配服务，包括正向匹配和反向匹配。
+ * @class SuperMap.REST.AddressMatchService
+ * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
+ * @extends SuperMap.REST.CommonServiceBase
+ * @param url - {String} 服务地址
+ * @param options - {object} 地址匹配服务可选参数
  */
 export class AddressMatchService extends CommonServiceBase {
 
@@ -12,6 +16,14 @@ export class AddressMatchService extends CommonServiceBase {
         super(url, options);
     }
 
+    /**
+     * @function SuperMap.REST.AddressMatchService.prototype.code
+     * @description 编码
+     * @param params - {String} 编码参数
+     * @param callback - {function} 回调函数
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.AddressMatchService} 返回正向匹配地址
+     */
     code(params, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
@@ -28,6 +40,14 @@ export class AddressMatchService extends CommonServiceBase {
         return me;
     }
 
+    /**
+     * @function SuperMap.REST.AddressMatchService.prototype.decode
+     * @description 解码
+     * @param params - {String} 编码参数
+     * @param callback - {function} 回调函数
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
+     * @return {SuperMap.REST.AddressMatchService} 返回反向匹配地址
+     */
     decode(params, callback, resultFormat) {
         var me = this,
             format = me._processFormat(resultFormat);
