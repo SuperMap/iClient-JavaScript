@@ -15,6 +15,7 @@ export var CartoStyleMap  = L.supermap.CartoStyleMap = {
         "text-size": "fontSize",
         "text-face-name": "fontFamily",
         "text-align": "textAlign",
+        "text-name":"textName",
         'text-weight': 'fontWeight',
         "text-halo-color": "color",
         "text-fill": "fillColor",

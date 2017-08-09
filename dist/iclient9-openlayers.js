@@ -10708,7 +10708,8 @@ var StyleUtils = function () {
                 style = this.getDefaultStyle(type);
             attributes.FEATUREID = feature.getProperties().id;
             attributes.SCALE = scale;
-            var cartoStyleMap = _StyleMap.StyleMap.CartoStyleMap[type];
+            var cartoStyleType = feature.getProperties().type === "TEXT" ? "TEXT" : type;
+            var cartoStyleMap = _StyleMap.StyleMap.CartoStyleMap[cartoStyleType];
             var fontSize, fontName;
             if (shader) {
                 for (var i = 0, len = shader.length; i < len; i++) {
@@ -10741,7 +10742,20 @@ var StyleUtils = function () {
                 }
             }
             if (feature.getProperties().type === 'TEXT') {
-                return this.toOLTextStyle(style, feature.getProperties().texts[0]);
+                var text;
+                if (feature.getProperties().texts) {
+                    text = feature.getProperties().texts[0];
+                }
+                if (text == null && style.textName) {
+                    var textName = style.textName.substring(1, style.textName.length - 1);
+                    text = feature.getProperties().attributes ? feature.getProperties().attributes[textName] : feature.getProperties()[textName];
+                    if (text != null) {
+                        var texts = feature.getProperties().texts || [];
+                        texts.push(text);
+                        feature.setProperties({ texts: texts });
+                    }
+                }
+                return this.toOLTextStyle(style, text);
             }
             if (type === 'POINT' || type === 'MULTIPOINT') {
                 return this.toOLPointStyle(style);
@@ -52887,7 +52901,11 @@ var VectorTileStyles = function (_ol$Observable) {
             if (!_olDebug2.default.supermap.VectorTileStyles.getDonotNeedServerCartoCss() && _olDebug2.default.supermap.VectorTileStyles.getCartoShaders()[layerName]) {
                 //如果是文本，这里特殊处理。
                 if (feature.getProperties().textStyle || feature.getProperties().TEXT_FEATURE_CONTENT || layerInfo.type == 'LABEL' && layerInfo.textField) {
-                    return _StyleUtils2.default.getValidStyleFromLayerInfo(layerInfo, feature, url);
+                    var featureStyle = _StyleUtils2.default.getValidStyleFromLayerInfo(layerInfo, feature, url);
+                    if (feature.getGeometry().getType().toUpperCase() === "POINT") {
+                        featureStyle = mergeTextFeatureStyle(layerInfo, feature, url);
+                    }
+                    return featureStyle;
                 }
                 return getStyleArray(_olDebug2.default.supermap.VectorTileStyles.getCartoShaders()[layerName]);
             }
@@ -52903,6 +52921,25 @@ var VectorTileStyles = function (_ol$Observable) {
                     });
                 }
                 return styleArray;
+            }
+
+            function mergeTextFeatureStyle(layerInfo, feature, url) {
+                var textFeatureStyle = _StyleUtils2.default.getValidStyleFromLayerInfo(layerInfo, feature, url);
+                if (layerInfo.type == 'LABEL') {
+                    feature.setProperties({ type: "TEXT" });
+                    var cartoTextStyles = getStyleArray(_olDebug2.default.supermap.VectorTileStyles.getCartoShaders()[layerName]);
+                    var textStyle = textFeatureStyle.getText();
+                    for (var i = 0; i < cartoTextStyles.length; i++) {
+                        if (!textStyle) {
+                            textStyle = cartoTextStyles[i].getText();
+                        } else {
+                            textStyle.setText(cartoTextStyles[i].getText().getText());
+                        }
+                    }
+                    textFeatureStyle.setText(textStyle);
+                    return textFeatureStyle;
+                }
+                return textFeatureStyle;
             }
         }
     }]);

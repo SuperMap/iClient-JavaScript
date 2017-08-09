@@ -222,12 +222,13 @@ export var  TileVectorLayer = VectorGrid.extend({
 
         var style = me.vectorTileLayerStyles[layerName];
         if (style) {
+            feature = this._mergeFeatureTextField(feature, style);
             return style;
         }
 
         // SuperMap.CartoCSSToLeaflet内部做了客户端配置的cartoCSS和服务端cartoCSS的拼接处理
         // 客户端配置的cartoCSS会覆盖相应图层的服务端cartoCSS
-        if (!style && feature.type !== "TEXT") {
+        if (!style) {
             var scale = this.getScaleFromCoords(coords);
             var shaders = CartoCSSToLeaflet.pickShader(layerName) || [];
             style = [];
@@ -242,9 +243,14 @@ export var  TileVectorLayer = VectorGrid.extend({
             }
         }
 
+        feature = this._mergeFeatureTextField(feature, style);
+
         //次优先级是layers资源的默认的样式，最低优先级是CartoDefaultStyle的样式
-        if (!style || style.length < 1) {
+        if (feature.type === "TEXT" || (!style || style.length < 1)) {
             style = CartoCSSToLeaflet.getValidStyleFromLayerInfo(feature, layerStyleInfo);
+            if (feature.type === "TEXT") {
+                style.textName = "[" + feature.properties.textField + "]";
+            }
         }
 
         me.vectorTileLayerStyles[layerName] = style;
@@ -305,6 +311,26 @@ export var  TileVectorLayer = VectorGrid.extend({
             mapUnit = SuperMap.Unit.DEGREE;
         }
         return L.Util.resolutionToScale(resolution, 96, mapUnit);
+    },
+
+    _mergeFeatureTextField: function (feature, style) {
+        //如果设置了使用服务端cartocss样式，则文本专题图图层优先从carto中读取文本字段的key
+        if (!this.options.serverCartoCSSStyle || !style || feature.type !== "TEXT") {
+            return feature;
+        }
+
+        var tempStyle = style;
+        if (!L.Util.isArray(style)) {
+            tempStyle = [style];
+        }
+        for (var i = 0; i < tempStyle.length; i++) {
+            var textName = tempStyle[i].textName;
+            if (textName && feature.properties) {
+                feature.properties.textField = textName.substring(1, textName.length - 1);
+            }
+        }
+
+        return feature;
     },
 
     _getTileUrl: function (coords) {
