@@ -8,7 +8,7 @@ var commonTools = ({
 
         /*
          * function: open specific example and assert elements 'body','#map' present
-         * params: broswer ;
+         * params: browser ;
          * type(String) - serviceType, eg:'leaflet'、'openlayers' etc.
          * exampleName(String) - eg:'01_tiledMapLayer3857' etc.
          * */
@@ -28,7 +28,7 @@ var commonTools = ({
         /*
          * if standard tile not exist , use this function to get  standard tile.
          * function: getStdTile
-         * params: broswer ;
+         * params: browser ;
          * type(String) - serviceType, eg:'leaflet'、'openlayers'、'3dwebgl'、'mapboxgl' etc.
          * exampleName(String) - eg:'01_tiledMapLayer3857' etc.
          * standardTilePrams(offsetX, offsetY, width, height).

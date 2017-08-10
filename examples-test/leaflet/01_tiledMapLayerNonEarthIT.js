@@ -4,7 +4,7 @@ module.exports = {
         var type = 'leaflet';
         var exampleName = '01_tiledMapLayerNonEarth';
         commonTools.openExampleAndLoadMap(browser, type, exampleName);
-        //commonTools.getStdTile(browser, type, exampleName, 256, 256);
+        //测试过程中截取地图瓦片, 和已有的标准瓦片进行对比
         commonTools.cmpTestTileWithStdTile(browser, type, exampleName, 256, 256);
         browser.end();
     }
