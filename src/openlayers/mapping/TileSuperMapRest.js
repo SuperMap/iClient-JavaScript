@@ -2,7 +2,12 @@ import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import '../../common/security/SecurityManager';
 import Util from  '../core/Util';
-
+/**
+ * @class ol.source.TileSuperMapRest
+ * @classdesc 地图REST瓦片服务
+ * @param options - {object} 交互时所需可选参数
+ * @extends  ol.source.TileImage
+ */
 export default class TileSuperMapRest extends ol.source.TileImage {
 
     constructor(options) {
@@ -76,7 +81,10 @@ export default class TileSuperMapRest extends ol.source.TileImage {
             }
             return newUrl;
         }
-
+        /**
+         * @function  ol.source.TileSuperMapRest.prototype.getAllRequestParams
+         * @description 获取全部请求参数
+         */
         function getAllRequestParams() {
             var me = this, params = {};
 
@@ -123,7 +131,10 @@ export default class TileSuperMapRest extends ol.source.TileImage {
 
             return params;
         }
-
+        /**
+         * @function  ol.source.TileSuperMapRest.prototype.getFullRequestUrl
+         * @description 获取完整的请求地址
+         */
         function getFullRequestUrl() {
             if (this._paramsChanged) {
                 this._layerUrl = createLayerUrl.call(this);
@@ -131,12 +142,18 @@ export default class TileSuperMapRest extends ol.source.TileImage {
             }
             return this._layerUrl || createLayerUrl.call(this);
         }
-
+        /**
+         * @function  ol.source.TileSuperMapRest.prototype.createLayerUrl
+         * @description 获取新建图层地址
+         */
         function createLayerUrl() {
             this._layerUrl = layerUrl + getRequestParamString.call(this);
             return this._layerUrl;
         }
-
+        /**
+         * @function  ol.source.TileSuperMapRest.prototype.getRequestParamString
+         * @description 获取请求参数的字符串
+         */
         function getRequestParamString() {
             this.requestParams = this.requestParams || getAllRequestParams.call(this);
             var params = [];
@@ -186,7 +203,11 @@ export default class TileSuperMapRest extends ol.source.TileImage {
         }
 
     }
-
+    /**
+     * @function  ol.source.TileSuperMapRest.prototype.setTileSetsInfo
+     * @description 初始化瓦片集
+     * @param tileSets -{object} 瓦片集合
+     */
     setTileSetsInfo(tileSets) {
         this.tileSets = tileSets;
         if (Util.isArray(this.tileSets)) {
@@ -196,21 +217,26 @@ export default class TileSuperMapRest extends ol.source.TileImage {
         this.changeTilesVersion();
     }
 
-
-    //请求上一个版本切片，并重新绘制。
+    /**
+     * @function  ol.source.TileSuperMapRest.prototype.lastTilesVersion
+     * @description 请求上一个版本切片，并重新绘制
+     */
     lastTilesVersion() {
         this.tempIndex = this.tileSetsIndex - 1;
         this.changeTilesVersion();
     }
-
-    //请求下一个版本切片，并重新绘制。
+    /**
+     * @function  ol.source.TileSuperMapRest.prototype.nextTilesVersion
+     * @description 请求下一个版本切片，并重新绘制。
+     */
     nextTilesVersion() {
         this.tempIndex = this.tileSetsIndex + 1;
         this.changeTilesVersion();
     }
-
-    //切换到某一版本的切片，并重绘。
-    //通过this.tempIndex保存需要切换的版本索引
+    /**
+     * @function  ol.source.TileSuperMapRest.prototype.changeTilesVersion
+     * @description 切换到某一版本的切片，并重绘。通过this.tempIndex保存需要切换的版本索引。
+     */
     changeTilesVersion() {
         var me = this;
         //切片版本集信息是否存在
@@ -234,13 +260,17 @@ export default class TileSuperMapRest extends ol.source.TileImage {
         }
     }
 
-    //手动设置当前切片集索引
-    //目前主要提供给控件使用
+    /**
+     * @function  ol.source.TileSuperMapRest.prototype.updateCurrentTileSetsIndex
+     * @description 手动设置当前切片集索引，目前主要提供给控件使用。
+     */
     updateCurrentTileSetsIndex(index) {
         this.tempIndex = index;
     }
-
-    //更改URL请求参数中的切片版本号,并重绘
+    /**
+     * @function  ol.source.TileSuperMapRest.prototype.mergeTileVersionParam
+     * @description 更改URL请求参数中的切片版本号,并重绘
+     */
     mergeTileVersionParam(version) {
         if (version) {
             this.requestParams["tileversion"] = version;

@@ -3,7 +3,11 @@ import SuperMap from '../../common/SuperMap';
 import '../../common/security/SecurityManager';
 import './vectortile/VectorTileStyles';
 ol.supermap = ol.supermap || {};
-
+/**
+ * @class ol.source.VectorTileSuperMapRest
+ * @classdesc 矢量瓦片REST服务
+ * @param options -{Object} 交互时所需可选参数。
+ */
 export default class VectorTileSuperMapRest extends ol.source.VectorTile {
 
     constructor(options) {
@@ -118,7 +122,12 @@ export default class VectorTileSuperMapRest extends ol.source.VectorTile {
             var tileSize = ol.size.toSize(me.tileGrid.getTileSize(z, me.tmpSize));
             return layerUrl + "&x=" + x + "&y=" + y + "&width=" + tileSize[0] + "&height=" + tileSize[1] + "&scale=" + scale + "&origin={'x':" + origin[0] + ",'y':" + origin[1] + "}";
         }
-
+        /**
+         * @functionol.source.VectorTileSuperMapRest.prototype.tileLoadFunction
+         * @description 加载瓦片
+         * @param tile -{onject} 瓦片类
+         * @param tileUrl -{string} 瓦片地址
+         */
         function tileLoadFunction(tile, tileUrl) {
             tile.setLoader(function () {
                 SuperMap.FetchRequest.get(tileUrl).then(function (response) {

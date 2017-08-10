@@ -1,5 +1,15 @@
 import {baiduMapLayer} from "mapv";
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
+/**
+ * @class mapboxgl.supermap.MapvRenderer
+ * @classdesc MapV图层渲染
+ * @param map - {String} 地图
+ * @param layer -{Object} 图层
+ * @param dataSet -{Object} 数据集
+ * @param options -{Object} 交互时所需可选参数。
+ * @extends BaseLayer
+ *
+ */
 export default class MapvRenderer extends BaseLayer {
     constructor(map, layer, dataSet, options) {
         if (!BaseLayer) {
@@ -21,12 +31,20 @@ export default class MapvRenderer extends BaseLayer {
         this.map.on('remove', this.removeEvent.bind(this));
         this.bindEvent();
     }
-
+    /**
+     * @class mapboxgl.supermap.prototype.MapvRenderer
+     * @description  点击绑定事件
+     * @param e - {object} 事件
+     */
     clickEvent(e) {
         var pixel = e.layerPoint;
         super.clickEvent(pixel, e);
     }
-
+    /**
+     * @class mapboxgl.supermap.prototype.mousemoveEvent
+     * @description  鼠标移动事件
+     * @param e - {object} 事件
+     */
     mousemoveEvent(e) {
         var pixel = e.layerPoint;
         super.mousemoveEvent(pixel, e);
@@ -56,11 +74,20 @@ export default class MapvRenderer extends BaseLayer {
             }
         }
     }
-
+    /**
+     * @class mapboxgl.supermap.prototype.getContext
+     * @description  获取画布内容
+     */
     getContext() {
         return this.canvasLayer.canvas.getContext(this.context);
     }
 
+    /**
+     * @class mapboxgl.supermap.prototype.updateData
+     * @param dataSet - {object} 数据集
+     * @param options - {object} 交互操作
+     * @description  更新画布内容
+     */
     updateData(dataSet, options) {
         if (dataSet && dataSet.get) {
             this.dataSet.set(dataSet.get());

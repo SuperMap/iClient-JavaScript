@@ -8,12 +8,10 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
 
 /**
  * @class SuperMap.InterpolationAnalystService
- * @constructs SuperMap.InterpolationAnalystService
  * @classdesc
  * 插值分析服务类
  * 插值分析可以将有限的采样点数据，通过插值算法对采样点周围的数值情况进行预测，可以掌握研究区域内数据的总体分布状况，从而使采样的离散点不仅仅反映其所在位置的数值情况，还可以反映区域的数值分布。目前SuperMap iServer的插值功能提供从点数据集插值得到栅格数据集的功能，支持以下常用的内插方法，包括：反距离加权插值、克吕金（Kriging）插值法、样条（径向基函数，Radial Basis Function）插值、点密度插值。
- * @extends {SuperMap.SpatialAnalystBase}
- * @api
+ * @extends SuperMap.SpatialAnalystBase
  * @example 例如：
  * (start code)
  * var myTInterpolationAnalystService = new SuperMap.InterpolationAnalystService(url);
@@ -26,20 +24,18 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  *
  */
 export default class InterpolationAnalystService extends SpatialAnalystBase {
-
-
     /**
-     * Property: mode
-     * {String} 插值分析类型。
+     * @member SuperMap.BuildCacheJobParameter.prototype.mode -{String}
+     * @description 插值分析类型。
      */
+
     mode = null;
 
-    /**
-     * @method SuperMap.InterpolationAnalystService.initialize
+    /*
+     * @function SuperMap.InterpolationAnalystService.prototype.constructor
      * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * @param options - {Object} 参数。
-     * Allowed options properties:</br>
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @param options - {Object} 可选参数。如</br>
+     *        eventListeners - {Object} 需要被注册的监听器对象。
      */
     constructor(url, options) {
         super(url, options);
@@ -49,19 +45,17 @@ export default class InterpolationAnalystService extends SpatialAnalystBase {
         }
     }
 
-
-    /*
-     * APIMethod: destroy
-     * 释放资源,将引用资源的属性置空。
+    /**
+     * @function SuperMap.InterpolationAnalystService.prototype.destroy
+     * @description 释放资源,将引用资源的属性置空。
      */
     destroy() {
         super.destroy();
         this.mode = null;
     }
 
-
     /**
-     * @method SuperMap.InterpolationAnalystService.processAsync
+     * @function SuperMap.InterpolationAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param  parameter - {SuperMap.InterpolationAnalystParameters}
      */

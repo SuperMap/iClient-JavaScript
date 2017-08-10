@@ -4,62 +4,52 @@ import BufferDistance from './BufferDistance';
 
 /**
  * @class SuperMap.BufferSetting
- * @constructs SuperMap.BufferSetting
- * @classdesc
- * 缓冲区分析通用设置类
- * @api
+ * @classdesc 缓冲区分析通用设置类
  */
 export default class BufferSetting {
-
     /**
-     * APIProperty: endType
-     * {SuperMap.BufferEndType} 缓冲区端点枚举值。
-     * 分为平头和圆头两种，默认为平头，即 SuperMap.BufferEndType.FLAT 。
+     * @member SuperMap.BufferSetting.prototype.endType -{SuperMap.BufferEndType}
+     * @description 缓冲区端点枚举值。
+     * 分为平头和圆头两种，默认为平头，即 SuperMap.BufferEndType.FLAT
      */
     endType = BufferEndType.FLAT;
 
     /**
-     * APIProperty: leftDistance
-     * {BufferDistance} 左侧缓冲距离。
+     * @member SuperMap.BufferSetting.prototype.leftDistance -{BufferDistance}
+     * @description 左侧缓冲距离。
      * 默认为100。当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
      * 当为DatasetBufferAnalyst时，单位通过BufferSetting.radiusUnit设置（默认全部为米）。
      */
     leftDistance = null;
 
     /**
-     * APIProperty: rightDistance
-     * {BufferDistance} 右侧缓冲距离。
+     * @member SuperMap.BufferSetting.prototype.rightDistance -{BufferDistance}
+     * @description 右侧缓冲距离。
      * 默认为100。当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
      * 当为DatasetBufferAnalyst时，单位通过BufferSetting.radiusUnit设置（默认全部为米）。
      */
     rightDistance = null;
 
     /**
-     * APIProperty: semicircleLineSegment
-     * {Number} 圆头缓冲圆弧处线段的个数。
+     * @member SuperMap.BufferSetting.prototype.semicircleLineSegment -{Number}
+     * @description 圆头缓冲圆弧处线段的个数。
      * 即用多少个线段来模拟一个半圆，默认值为4。
      */
     semicircleLineSegment = 4;
 
     /**
-     * APIProperty: radiusUnit
-     * [Enum] 缓冲半径单位，默认值为SuperMap.Unit.METER，还可以是SuperMap.Unit.MILIMETER、
-     * SuperMap.Unit.CENTIMETER、SuperMap.Unit.DECIMETER、SuperMap.Unit.KILOMETER、
-     * SuperMap.Unit.FOOT、SuperMap.Unit.INCH、SuperMap.Unit.MILE、
-     * SuperMap.Unit.YARD。仅对DatasetBufferAnalyst有效
+     * @member SuperMap.BufferSetting.prototype.radiusUnit -{Enum}
+     * @description 缓冲半径单位，默认值为SuperMap.Unit.METER，还可以是SuperMap.Unit.MILIMETER、SuperMap.Unit.CENTIMETER、SuperMap.Unit.DECIMETER、SuperMap.Unit.KILOMETER、SuperMap.Unit.FOOT、SuperMap.Unit.INCH、SuperMap.Unit.MILE、SuperMap.Unit.YARD。仅对DatasetBufferAnalyst有效
      */
     radiusUnit = Unit.METER;
 
     /**
-
-     * @method SuperMap.BufferSetting.initialize
-     * @param options - {Object} 参数。
-     *
-     * Allowed options properties:</br>
-     * endType - {SuperMap.BufferEndType} 缓冲区端点枚举值。</br>
-     * leftDistance - {BufferDistance} 左侧缓冲距离。</br>
-     * rightDistance - {BufferDistance} 右侧缓冲距离。</br>
-     * semicircleLineSegment - {Number} 圆头缓冲圆弧处线段的个数。</br>
+     * @function SuperMap.BufferSetting.prototype.constructor
+     * @param options - {Object} 可选参数。如:</br>
+     *        endType - {SuperMap.BufferEndType} 缓冲区端点枚举值。</br>
+     *        leftDistance - {BufferDistance} 左侧缓冲距离。</br>
+     *        rightDistance - {BufferDistance} 右侧缓冲距离。</br>
+     *        semicircleLineSegment - {Number} 圆头缓冲圆弧处线段的个数。</br>
      */
     constructor(options) {
         let me = this;
@@ -72,8 +62,8 @@ export default class BufferSetting {
 
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function SuperMap.BufferSetting.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
         let me = this;

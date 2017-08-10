@@ -4,15 +4,14 @@ import ol from 'openlayers/dist/ol-debug';
 import CommonAddressMatchService from '../../common/iServer/AddressMatchService';
 /**
  * @class ol.supermap.AddressService
- * @constructs ol.supermap.AddressService
- * @classdesc
- * 地址匹配服务
+ * @classdesc 地址匹配服务
  * @example 用法：
  *      new ol.supermap.AddressMatchService(url,options)
  *      .code(function(result){
  *          //doSomething
  *      })
- * @api
+ * @param url - {String} 与客户端交互的服务地址。
+ * @param options -{Object} 交互时所需可选参数。
  */
 export default class AddressMatchService extends ServiceBase {
 
@@ -21,11 +20,11 @@ export default class AddressMatchService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.AddressMatchService.prototype.code
+     * @function ol.supermap.AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
-     * @param params 正向匹配参数。
-     * @param callback 请求结果的回调函数。
-     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     * @param params -{String}正向匹配参数。
+     * @param callback -{function}请求结果的回调函数。
+     * @param resultFormat -{Object}返回的结果类型（默认为GeoJSON）。
      */
     code(params, callback, resultFormat) {
         var me = this,
@@ -44,11 +43,11 @@ export default class AddressMatchService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.AddressMatchService.prototype.decode
+     * @function ol.supermap.AddressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
-     * @param params 反向匹配参数。
-     * @param callback 请求结果的回调函数。
-     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     * @param params -{string} 反向匹配参数。
+     * @param callback -{function}请求结果的回调函数。
+     * @param resultFormat -{Object} 返回的结果类型（默认为GeoJSON）。
      */
     decode(params, callback, resultFormat) {
         var me = this,

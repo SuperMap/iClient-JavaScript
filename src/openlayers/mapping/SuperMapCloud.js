@@ -1,4 +1,10 @@
 import ol from 'openlayers/dist/ol-debug';
+/**
+ * @class ol.source.SuperMapCloud
+ * @classdesc 超图云
+ * @param opt_options - {object} 交互时所需可选参数
+ * @extends ol.source.XYZ
+ */
 export default class SuperMapCloud extends ol.source.XYZ {
 
     constructor(opt_options) {

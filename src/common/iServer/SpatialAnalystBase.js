@@ -2,21 +2,15 @@
 import {DataFormat} from '../REST';
 import CommonServiceBase from './CommonServiceBase';
 import GeoJSON from '../format/GeoJSON';
-
 /**
  * @class SuperMap.SpatialAnalystBase
- * @constructs SuperMap.SpatialAnalystBase
- * @classdesc
- * 空间分析服务基类。
- * @extends {SuperMap.CommonServiceBase}
- * @api
+ * @classdesc 空间分析服务基类。
+ * @extends SuperMap.CommonServiceBase
  */
 export default class SpatialAnalystBase extends CommonServiceBase {
-
     /**
-     *  Property: format
-     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-     *  参数格式为"ISERVER","GEOJSON",GEOJSON
+     * @member SuperMap.SpatialAnalystBase.prototype.format -{String}
+     * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式，参数格式为"ISERVER","GEOJSON",GEOJSON
      */
     format = DataFormat.GEOJSON;
 
@@ -27,10 +21,9 @@ export default class SpatialAnalystBase extends CommonServiceBase {
         }
     }
 
-
-    /*
-     * APIMethod: destroy
-     * 释放资源，将引用的资源属性置空。
+    /**
+     * @inheritDoc
+     *
      */
     destroy() {
         super.destroy();
@@ -39,7 +32,7 @@ export default class SpatialAnalystBase extends CommonServiceBase {
 
 
     /**
-     * @method SuperMap.SpatialAnalystBase.serviceProcessCompleted
+     * @function SuperMap.SpatialAnalystBase.prototype.serviceProcessCompleted
      * @description 分析完成，执行此方法。
      * @param result - {Object} 服务器返回的结果对象。
      */
@@ -56,7 +49,7 @@ export default class SpatialAnalystBase extends CommonServiceBase {
     }
 
     /**
-     * @method SuperMap.SpatialAnalystBase.toGeoJSONResult
+     * @function SuperMap.SpatialAnalystBase.prototype.toGeoJSONResult
      * @description 将含有geometry的数据转换为geojson格式。
      * @param result - {Object} 服务器返回的结果对象。
      *

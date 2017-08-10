@@ -3,32 +3,57 @@ import {ClientType} from '../REST';
 
 /**
  * @class SuperMap.TokenServiceParameter
- * @constructs  SuperMap.TokenServiceParameter
- * @classdesc
- * token申请参数
- * @api
+ * @classdesc token申请参数
  */
 export default class TokenServiceParameter {
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.userName -{String}
+     * @description 用户名。
+     */
     userName = null;
-    password = null;
-    //token申请的客户端标识类型
-    clientType = ClientType.NONE;
-    ip = null;
-    //clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
-    referer = null;
-    //申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
-    expiration = 60;
 
     /**
-     * @method SuperMap.TokenServiceParameter.initialize
-     * @param options - {Object} 参数。
+     * @member SuperMap.TokenServiceParameter.prototype.password -{String}
+     * @description 密码。
+     */
+    password = null;
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.clientType -{String}
+     * @description token申请的客户端标识类型。
+     */
+    clientType = ClientType.NONE;
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.referer -{String}
+     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+     */
+
+    ip = null;
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.referer -{String}
+     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+     */
+    referer = null;
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.expiration -{number}
+     * @description 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
+     */
+    expiration = 60;
+
+    /*
+     * @function SuperMap.TokenServiceParameter.prototype.constructor
+     * * @description 地图缓存参数类
+     *  @param options - {Object} 参数。
      */
     constructor(options) {
         SuperMap.Util.extend(this, options);
     }
 
     /**
-     * @method SuperMap.TokenServiceParameter.toJSON
+     * @function SuperMap.TokenServiceParameter.prototype.toJSON
+     * @description 将所有信息转成JSON字符串
      * @return {String} 参数的JSON字符串
      */
     toJSON() {

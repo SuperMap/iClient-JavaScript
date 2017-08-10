@@ -24,9 +24,9 @@ export default  class IPortalMapsQueryParam {
     visitEnd = 0;
     filterFields = [];
 
-    /**
-     * @method SuperMap.iPortalMapsQueryParam.initialize
-     * @param params
+    /*
+     * @function SuperMap.iPortalMapsQueryParam.prototype.constructor
+     * @param params -{string}
      *
      */
     constructor(params) {

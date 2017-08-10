@@ -2,7 +2,10 @@ import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import GeoJSONFormat from '../../common/format/GeoJSON';
 ol.supermap = ol.supermap || {};
-
+/**
+ * @class ol.supermap.Util
+ * @classdesc 工具类
+ */
 export default class Util {
 
     constructor() {

@@ -5,13 +5,22 @@ import StyleUtils from '../core/StyleUtils';
 import Logo from '../control/Logo';
 
 ol.supermap = ol.supermap || {};
-
+/**
+ * @class ol.supermap.WebMap
+ * @classdesc 网络图层类。
+ */
 export default class WebMap extends ol.Observable {
 
     EventType = {
         WEBMAPLOADEND: 'webmaploadend',
     }
-
+    /*
+     * @function ol.supermap.WebMap.prototype.constructor
+     * @description 默认图层弹出框
+     * @param id -{string} 获取ID
+     * @param options -{object} 交互操作参数
+     *
+     */
     constructor(id, options) {
         super();
         this.id = id;
@@ -23,7 +32,10 @@ export default class WebMap extends ol.Observable {
         this.credentialKey = options.credentialKey || 'key';
         this.load();
     }
-
+    /**
+     * @function ol.supermap.WebMap.prototype.load
+     * @description 登陆窗口后添加地图图层
+     */
     load() {
         if (this.server.indexOf('http://') < 0 && this.server.indexOf('https://') < 0) {
             this.server = "http://" + this.server;
@@ -44,7 +56,11 @@ export default class WebMap extends ol.Observable {
             me.createLayersByJson(layers);
         })
     }
-
+    /**
+     * @function ol.supermap.WebMap.prototype.createLayersByJson
+     * @description 通过json创建图层
+     * @param layersJson - {JSON} 图层的json信息
+     */
     createLayersByJson(layersJson) {
         if (!ol.supermap.Util.isArray(layersJson)) {
             return;
@@ -106,7 +122,11 @@ export default class WebMap extends ol.Observable {
         }
         return 'EPSG:' + epsgCode;
     }
-
+    /**
+     * @function ol.supermap.WebMap.prototype.createMap
+     * @description 创建地图
+     * @param options - {object} 创建地图所需参数
+     */
     createMap(options) {
         if (!this.map) {
             var view = new ol.View(options);
@@ -120,7 +140,14 @@ export default class WebMap extends ol.Observable {
             view.fit(options.extent);
         }
     }
-
+    /**
+     * @function ol.supermap.WebMap.prototype.getResolutionsFromScales
+     * @description 通过比例尺获取分辨率
+     * @param scales - {Array<number>} 排序比例尺数组
+     * @param dpi - {number} 屏幕分辨率
+     * @param units - {String} 地图的单位
+     * @param datum - {SuperMap.Datum} 大地参照系类
+     */
     getResolutionsFromScales(scales, dpi, units, datum) {
         var resolutions = [];
         for (var i = 0; i < scales.length; i++) {
@@ -128,7 +155,12 @@ export default class WebMap extends ol.Observable {
         }
         return resolutions;
     }
-
+    /**
+     * @function ol.supermap.WebMap.prototype.createLayer
+     * @description 创建图层
+     * @param type - {String} 图层类型
+     * @param layerInfo - {object} 图层信息
+     */
     createLayer(type, layerInfo) {
         var prjCoordSys = layerInfo.prjCoordSys,
             epsgCode = prjCoordSys && prjCoordSys.epsgCode || this.mapInfo.epsgCode,
@@ -231,9 +263,14 @@ export default class WebMap extends ol.Observable {
     }
 
     /**
-     * Method: getWmtsResolutionsAndMatrixIds
-     * 获取WMTS图层的分辨率数组和标识矩阵
-     * */
+     * @function ol.supermap.WebMap.prototype.getWmtsResolutionsAndMatrixIds
+     * @description 获取WMTS图层的分辨率数组和标识矩阵
+     * @param wellKnownScaleSet - {object} 图层的分辨率数据集
+     * @param units - {object} 地理单元
+     * @param scales - {string} 地理范围
+     * @param mapOrigin - {object} 原始地图
+     * @param mapExtent - {object} 地图的程度
+     */
     getWmtsResolutionsAndMatrixIds(wellKnownScaleSet, units, scales, mapOrigin, mapExtent) {
         var resolutions = ol.wellKnownScale.getResolutions(wellKnownScaleSet);
         if (!resolutions && scales) {
@@ -257,7 +294,13 @@ export default class WebMap extends ol.Observable {
             extent: extent
         };
     }
-
+    /**
+     * @function ol.supermap.WebMap.prototype.createTiandituLayer
+     * @description 创建天地图图层
+     * @param layerInfo - {object} 图层信息
+     * @param epsgCode - {number} epsg编码
+     * @return {*}
+     */
     createTiandituLayer(layerInfo, epsgCode) {
         var proj = epsgCode === 4326 ? "c" : "w";
         var tdtURL =
@@ -279,7 +322,11 @@ export default class WebMap extends ol.Observable {
         })
         return layer;
     }
-
+    /**
+     * @function ol.supermap.WebMap.prototype.createMarkersLayer
+     * @description 创建图标图层
+     * @param layerInfo - {object} 图层信息
+     */
     createMarkersLayer(layerInfo) {
         var markers = layerInfo.markers || [],
             style = layerInfo.style,
@@ -300,9 +347,10 @@ export default class WebMap extends ol.Observable {
     }
 
     /**
-     * Method: createVectorLayer
-     * 创建矢量要素图层
-     * */
+     * @function ol.supermap.WebMap.prototype.createVectorLayer
+     * @description 创建矢量要素图层
+     * @param layerInfo - {object} 图层信息
+     */
     createVectorLayer(layerInfo) {
         var style = layerInfo.style,
             opacity = layerInfo.opacity,
@@ -352,7 +400,11 @@ export default class WebMap extends ol.Observable {
             }
         }
     }
-
+    /**
+     * @function ol.supermap.WebMap.prototype.createWmsLayer
+     * @description 创建Wms图层
+     * @param layerInfo - {object} 图层信息
+     */
     createWmsLayer(layerInfo) {
         var url = layerInfo.url,
             opacity = layerInfo.opacity,

@@ -3,35 +3,31 @@ import OverlayAnalystParameters from './OverlayAnalystParameters';
 
 /**
  * @class SuperMap.GeometryOverlayAnalystParameters
- * @constructs SuperMap.GeometryOverlayAnalystParameters
  * @classdesc
  * 几何对象叠加分析参数类
  * 对指定的某两个几何对象做叠加分析。通过该类可以指定要做叠加分析的几何对象、叠加操作类型。
- * @extends {SuperMap.OverlayAnalystParameters}
- * @api
+ * @extends SuperMap.OverlayAnalystParameters
  */
 export default  class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {
 
-
     /**
-     * Property: operateGeometry
-     * {SuperMap.Geometry} 叠加分析的操作几何对象。必设字段。
+     * @member SuperMap.GeometryOverlayAnalystParameters.prototype.operateGeometry -{SuperMap.Geometry}
+     * @description 叠加分析的操作几何对象。必设字段。
      */
     operateGeometry = null;
 
     /**
-     * Property: sourceGeometry
-     * {SuperMap.Geometry} 叠加分析的源几何对象。必设字段。
+     * @member SuperMap.GeometryOverlayAnalystParameters.prototype.sourceGeometry -{SuperMap.Geometry}
+     * @description 叠加分析的源几何对象。必设字段。
      */
     sourceGeometry = null;
 
-    /**
-     * @method SuperMap.GeometryOverlayAnalystParameters.initialize
-     * @param options - {Object} 参数。
-     * Allowed options properties:</br>
-     * operateGeometry - {SuperMap.Geometry} 叠加分析的操作几何对象。必设字段。</br>
-     * sourceGeometry - {SuperMap.Geometry} 叠加分析的源几何对象。必设字段。</br>
-     * operation - {SuperMap.OverlayOperationType} 叠加操作枚举值。</br>
+    /*
+     * @function SuperMap.GeometryOverlayAnalystParameters.prototype.constructor
+     * @param options - {Object} 可选参数。如:</br>
+     *        operateGeometry - {SuperMap.Geometry} 叠加分析的操作几何对象。必设字段。</br>
+     *        sourceGeometry - {SuperMap.Geometry} 叠加分析的源几何对象。必设字段。</br>
+     *        operation - {SuperMap.OverlayOperationType} 叠加操作枚举值。</br>
      */
     constructor(options) {
         super(options);
@@ -40,9 +36,8 @@ export default  class GeometryOverlayAnalystParameters extends OverlayAnalystPar
         }
     }
 
-    /*
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+    /**
+     * @inheritDoc
      */
     destroy() {
         super.destroy();

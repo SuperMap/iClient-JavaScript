@@ -2,6 +2,12 @@ import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../../common/SuperMap';
 import Theme from './theme';
 import Vector from '../../../common/iServer/ThemeVector';
+/**
+ * @class ol.source.GeoFeature
+ * @classdesc 地理特征
+ * @param name - {String} 名称
+ * @param opt_options -{Object} 所需可选参数。
+ */
 
 export default class GeoFeature extends Theme {
 
@@ -19,7 +25,10 @@ export default class GeoFeature extends Theme {
         this.highlightStyle = null;
         this.isAllowFeatureStyle = false;
     }
-
+    /**
+     * @function ol.source.GeoFeature.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
     destroy() {
         this.maxCacheCount = null;
         this.isCustomSetMaxCacheCount = null;
@@ -33,6 +42,10 @@ export default class GeoFeature extends Theme {
         this.highlightStyle = null;
         this.isAllowFeatureStyle = null;
     }
+    /**
+     * @function ol.source.GeoFeature.prototype.addFeatures
+     * @description 添加特征
+     */
 
     addFeatures(features) {
         //数组
@@ -57,17 +70,29 @@ export default class GeoFeature extends Theme {
             this.redrawThematicFeatures(this.map.getView().calculateExtent());
         }
     }
-
+    /**
+     * @function ol.source.GeoFeature.prototype.removeFeatures
+     * @param features - {Object} 特征对象参数。
+     * @description 移除制定特征
+     */
     removeFeatures(features) {
         this.clearCache();
         Theme.prototype.removeFeatures.apply(this, arguments);
     }
-
+    /**
+     * @function ol.source.GeoFeature.prototype.removeAllFeatures
+     * @description 移除全部特征
+     */
     removeAllFeatures() {
         this.clearCache();
         Theme.prototype.removeAllFeatures.apply(this, arguments);
     }
 
+    /**
+     * @function ol.source.GeoFeature.prototype.redrawThematicFeatures
+     * @description 高亮专题图
+     * @param extent -{object} 视图范围数据
+     */
     redrawThematicFeatures(extent) {
         //获取高亮专题要素对应的用户 id
         var hoverone = this.renderer.getHoverOne();
@@ -134,7 +159,11 @@ export default class GeoFeature extends Theme {
             this.renderer.updateHoverShapes(hShapes);
         }
     }
-
+    /**
+     * @function ol.source.GeoFeature.prototype.createThematicFeature
+     * @param feature - {Object} 特征对象参数。
+     * @description 创建特征
+     */
     createThematicFeature(feature) {
         var style = SuperMap.Util.copyAttributesWithClip(this.style);
         if (feature.style && this.isAllowFeatureStyle === true) {
@@ -159,23 +188,36 @@ export default class GeoFeature extends Theme {
     canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
         return Theme.prototype.canvasFunctionInternal_.apply(this, arguments);
     }
-
+    /**
+     * @function ol.source.GeoFeature.prototype.clearCache
+     * @description 清除缓存
+     */
     clearCache() {
         this.cache = {};
         this.cacheFields = [];
     }
-
+    /**
+     * @function ol.source.GeoFeature.prototype.clear
+     * @description 清除画布
+     */
     clear() {
         this.renderer.clearAll();
         this.renderer.refresh();
         this.removeAllFeatures();
         this.clearCache();
     }
-
+    /**
+     * @function ol.source.GeoFeature.prototype.getCacheCount
+     * @description 获取缓存长度
+     */
     getCacheCount() {
         return this.cacheFields.length;
     }
-
+    /**
+     * @function ol.source.GeoFeature.prototype.setMaxCacheCount
+     * @description 设置缓存最大条数
+     * @param cacheCount -{number} 缓存总数
+     */
     setMaxCacheCount(cacheCount) {
         if (!isNaN(cacheCount)) {
             this.maxCacheCount = cacheCount;

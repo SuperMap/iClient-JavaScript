@@ -4,17 +4,13 @@ import StopQueryParameters from './StopQueryParameters'
 
 /**
  * @class SuperMap.StopQueryService
- * @constructs SuperMap.StopQueryService
  * @classdesc
  * 站点查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取
- * @extends {SuperMap.CommonServiceBase}
- * @api
+ * @extends SuperMap.CommonServiceBase
  * @param url - {String} 与客户端交互的站点查询服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
- * @param options - {Object} 参数。
- *
- * Allowed options properties:</br>
+ * @param options - {Object} 可選参数。如:</br>
  * eventListeners - {Object} 需要被注册的监听器对象。
  *
  * @example 例如：
@@ -38,9 +34,8 @@ export default  class StopQueryService extends CommonServiceBase {
         SuperMap.Util.extend(this, options);
     }
 
-    /*
-     * APIMethod: destroy
-     * 释放资源,将引用资源的属性置空。
+    /**
+     *@inheritDoc
      */
     destroy() {
         super.destroy();
@@ -48,7 +43,7 @@ export default  class StopQueryService extends CommonServiceBase {
     }
 
     /**
-     * @method SuperMap.StopQueryService.processAsync
+     * @method SuperMap.StopQueryService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
      * @param params - {SuperMap.StopQueryParameters} 交通换乘参数。
      */

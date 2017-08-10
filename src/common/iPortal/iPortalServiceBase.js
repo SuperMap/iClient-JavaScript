@@ -2,17 +2,17 @@ import SuperMap from '../SuperMap';
 import {ServerType} from '../REST';
 import '../security/SecurityManager';
 import {FetchRequest} from '../util/FetchRequest';
-
 /**
  * @class SuperMap.iPortalServiceBase
  * @classdesc iPortal服务基类(有权限限制的类需要实现此类)
  */
 
+
 export default  class IPortalServiceBase {
     /**
-     * @method SuperMap.iPortalServiceBase.initialize
+     * @function SuperMap.iPortalServiceBase.prototype.constructor
      *
-     * @param url
+     * @param url -{String}-服务器域名+端口，如：http://localhost:8092
      */
     constructor(url) {
         var me = this;
@@ -21,12 +21,12 @@ export default  class IPortalServiceBase {
     }
 
     /**
-     * @method SuperMap.iPortalServiceBase.request
+     * @function SuperMap.iPortalServiceBase.prototype.request
      * @description 子类统一通过该方法发送请求
-     * @param url
-     * @param method
-     * @param param
-     * @param requestOptions
+     * @param url -{String}-服务器域名+端口，如：http://localhost:8092
+     * @param method -{INT}
+     * @param requestOptions -{Object}
+     * @description 获取返回参数的json数组
      *
      */
 
@@ -38,11 +38,12 @@ export default  class IPortalServiceBase {
     }
 
 
+
     /**
-     * @method SuperMap.iPortalServiceBase.createCredentialUrl
+     * @function SuperMap.iPortalServiceBase.prototype.createCredentialUrl
      * @description 追加授权信息
-     * @param url
-     * @return {string}
+     * @param url -{String}-服务器域名+端口，如：http://localhost:8092
+     * @return {string} 新地址
      */
 
     createCredentialUrl(url) {
@@ -65,7 +66,7 @@ export default  class IPortalServiceBase {
 
 
     /**
-     * @method  SuperMap.iPortalServiceBase.getCredential
+     * @function SuperMap.iPortalServiceBase.prototype.getCredential
      * @description 获取token
      * @return {string } 返回获取的token
      *
@@ -84,7 +85,7 @@ export default  class IPortalServiceBase {
 
 
     /**
-     * @method SuperMap.iPortalServiceBase.getKey
+     * @function SuperMap.iPortalServiceBase.prototype.getKey
      * @description 其子类需要重写该方法，修改其中获取key的字段
      * 存储key可能是服务id字段，可能是url
      */

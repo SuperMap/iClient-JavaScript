@@ -1,64 +1,59 @@
 ﻿import SuperMap from '../SuperMap';
 import {EditType} from '../REST';
-
 /**
  * @class SuperMap.EditFeaturesParameters
  * @constructs SuperMap.EditFeaturesParameters
- * @classdesc
- * 数据服务中数据集添加、修改、删除参数类。
- * @api
+ * @classdesc 数据服务中数据集添加、修改、删除参数类。
  */
 export default class EditFeaturesParameters {
 
     /**
-     * APIProperty: dataSourceName
-     * {String} 当前需要创建或者是修改的要素的数据源
+     * @member SuperMap.BuildCacheJobParameter.prototype.dataSourceName -{String}
+     * @description 当前需要创建或者是修改的要素的数据源
      */
     dataSourceName = null;
+
     /**
-     * APIProperty: dataSetName
-     * {String} 当前需要创建或者是修改的要素的数据集。
+     * @member SuperMap.BuildCacheJobParameter.prototype.dataSetName -{String}
+     * @description 当前需要创建或者是修改的要素的数据集。
      */
     dataSetName = null;
+
     /**
-     * APIProperty: features
-     * {Array<SuperMap.Feature.Vector|GeoJSON Feature>} 当前需要创建或者是修改的要素集。
+     * @member SuperMap.BuildCacheJobParameter.prototype.features -{ArraySuperMap.Feature.Vector}|{GeoJSON.Feature}
+     * @description 当前需要创建或者是修改的要素集。
      */
     features = null;
 
     /**
-     * APIProperty: editType
-     * {EditType} 要素集更新类型(add、update、delete)，默认为 SuperMap.EditType.ADD.
+     * @member SuperMap.BuildCacheJobParameter.prototype.dataSetName -{EditType}
+     * @description 要素集更新类型(add、update、delete)，默认为 SuperMap.EditType.ADD.
      */
     editType = EditType.ADD;
 
     /**
-     * APIProperty: IDs
-     * {Array(String) 或 Array(Integer)} 执行删除时要素集ID集合。
+     * @member SuperMap.BuildCacheJobParameter.prototype.dataSetName -{Array(String)}|{Array(Integer)}
+     * @description 执行删除时要素集ID集合。
      */
     IDs = null;
 
     /**
-     * APIProperty: returnContent
-     * {Boolean} 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
-     *           true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
+     * @member SuperMap.BuildCacheJobParameter.prototype.returnContent -{Boolean}
+     * @description 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
+     *true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
      */
     returnContent = false;
 
     /**
-     * APIProperty: isUseBatch
-     * {Boolean} 是否使用批量添加要素功能，要素添加时有效。
-     *           批量添加能够提高要素编辑效率。
-     *           true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
+     * @member SuperMap.BuildCacheJobParameter.prototype.isUseBatch -{Boolean}
+     * @description 是否使用批量添加要素功能，要素添加时有效。批量添加能够提高要素编辑效率。true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
      */
     isUseBatch = false;
 
-    /**
-     * @method SuperMap.EditFeaturesParameters.initialize
+    /*
+     * @method SuperMap.EditFeaturesParameters.prototype.constructor
      * @description 数据服务中数据集添加、修改、删除参数类构造函数。
-     * @param options - {Object} 参数。
-     *
-     * Allowed options properties:</br>
+     * @param options - {Object} 可選参数。如:</br>
      * features - {Array(Object)} 当前需要创建或者是修改的要素集。</br>
      * returnContent - {Boolean} 是返回创建要素的ID数组还是返回featureResult资源的URI。</br>
      * editType - {SuperMap.EditType} POST动作类型(ADD、UPDATE、DELETE)，默认为 SuperMap.EditType.ADD。</br>
@@ -72,9 +67,9 @@ export default class EditFeaturesParameters {
     }
 
 
-    /*
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+    /**
+     * @function SuperMap.EditFeaturesParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
         var me = this;
@@ -87,7 +82,7 @@ export default class EditFeaturesParameters {
     }
 
     /**
-     * @method SuperMap.EditFeaturesParameters.toJsonParameters
+     * @method SuperMap.EditFeaturesParameters.prototype.toJsonParameters
      * @description 将 <EditFeaturesParameters> 对象参数转换为 json 字符串。
      * @param params - {SuperMap.EditFeaturesParameters} 地物编辑参数。
      * return {String} 转化后的 json字符串。

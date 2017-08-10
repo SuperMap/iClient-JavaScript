@@ -1,26 +1,18 @@
 import SuperMap from '../SuperMap';
 import GetFeaturesServiceBase from './GetFeaturesServiceBase';
 import GetFeaturesByBoundsParameters from './GetFeaturesByBoundsParameters';
-
 /**
  * @class SuperMap.GetFeaturesByBoundsService
- * @constructs  SuperMap.GetFeaturesByBoundsService
- * @classdesc
- * 数据集范围查询服务类</br>
- * 查询与指定范围对象符合一定空间关系的矢量要素。
+ * @classdesc 数据集范围查询服务类,查询与指定范围对象符合一定空间关系的矢量要素。
  * @description 数据集范围查询服务类构造函数。
- * @extends {SuperMap.GetFeaturesServiceBase}
- * @api
- * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
- *  URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
- * @example："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
- *@param options - {Object} 参数。
- *
- * Allowed options properties:
- * eventListeners - {Object} 需要被注册的监听器对象。</br>
+ * @extends SuperMap.GetFeaturesServiceBase
+ * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
+ * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
+ *@param options - {Object} 可选参数。如：<br>
+ *       eventListeners - {Object} 需要被注册的监听器对象。</br>
  * @example
  * (start code)
- * var myGetFeaturesByBoundsService = new SuperMap.GetFeaturesByBoundsService(url, {
+ * var myGetFeaturesByBoundsService = new SuperMa.GetFeaturesByBoundsService(url, {
      *     eventListeners: {
      *           "processCompleted": getFeatureCompleted,
      *           "processFailed": getFeatureError
@@ -32,9 +24,9 @@ import GetFeaturesByBoundsParameters from './GetFeaturesByBoundsParameters';
  */
 
 export default  class GetFeaturesByBoundsService extends GetFeaturesServiceBase {
-    /**
-     * @method SuperMap.GetFeaturesByBoundsService.initialize
-     * @param url - {string}
+    /*
+     *  @function SuperMap.GetFeaturesByBoundsService.prototype.constructor
+     * @param url - {string} 服务地址。
      * @param options - {Object} 参数。
      */
 
@@ -42,16 +34,15 @@ export default  class GetFeaturesByBoundsService extends GetFeaturesServiceBase 
         super(url, options);
     }
 
-    /*
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+    /**
+     * @inheritDoc
      */
     destroy() {
         super.destroy();
     }
 
     /**
-     * @method SuperMap.GetFeaturesByBoundsService.getJsonParameters
+     * @function SuperMap.GetFeaturesByBoundsService.prototype.getJsonParameters
      * @description 将查询参数转化为 JSON 字符串。
      * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry,Bounds等）。
      *

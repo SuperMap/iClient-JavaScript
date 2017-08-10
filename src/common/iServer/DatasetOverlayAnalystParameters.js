@@ -4,88 +4,82 @@ import FilterParameter from './FilterParameter';
 import OverlayAnalystParameters from './OverlayAnalystParameters';
 /**
  * @class SuperMap.DatasetOverlayAnalystParameters
- * @constructs SuperMap.DatasetOverlayAnalystParameters
- * @classdesc
- * 数据集叠加分析参数类。
- * @extends {SuperMap.GetFeaturesParametersBase}
- * @api
+ * @classdesc 数据集叠加分析参数类。
+ * @extends SuperMap.GetFeaturesParametersBase
  */
 export default  class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {
 
     /**
-     * APIProperty: operateDataset
-     * {String} 叠加分析中操作数据集的名称。
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.operateDataset -{String}
+     * @description 叠加分析中操作数据集的名称。
      */
     operateDataset = null;
 
     /**
-     * APIProperty: operateDatasetFields
-     * {Array(String} 叠加分析中操作数据集保留在结果数据集中的字段名列表。
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.operateDatasetFields -{Array(String)}
+     * @description 叠加分析中操作数据集保留在结果数据集中的字段名列表。
      */
     operateDatasetFields = null;
 
     /**
-     * APIProperty: operateDatasetFilter
-     * {SuperMap.FilterParameter} 设置操作数据集中空间对象过滤条件。
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.operateDatasetFilter -{SuperMap.FilterParameter}
+     * @description 设置操作数据集中空间对象过滤条件。
      */
     operateDatasetFilter = null;
 
     /**
-     * APIProperty: operateRegions
-     * {Array(<SuperMap.Geometry>)}操作面对象集合，表示与这些面对象进行叠加分析。
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.operateRegions -{Array(SuperMap.Geometry)}
+     * @description 操作面对象集合，表示与这些面对象进行叠加分析。
      * 与 operateDataset 参数互斥，冲突时以operateDataset 为准。
      */
     operateRegions = null;
 
 
     /**
-     * APIProperty: sourceDataset
-     * {String} 叠加分析中源数据集的名称。必设字段。
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.sourceDataset -{String}
+     * @description 叠加分析中源数据集的名称。必设字段。
      */
     sourceDataset = null;
 
 
     /**
-     * APIProperty: sourceDatasetFields
-     * {Array(String} 叠加分析中源数据集保留在结果数据集中的字段名列表。
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.sourceDatasetFields -{Array(String)}
+     * @description 叠加分析中源数据集保留在结果数据集中的字段名列表。
      */
     sourceDatasetFields = null;
 
 
     /**
-     * APIProperty: filterQueryParameter
-     * {SuperMap.FilterParameter} 设置源数据集中空间对象过滤条件。
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.filterQueryParameter -{SuperMap.FilterParameter}
+     * @description 设置源数据集中空间对象过滤条件。
      */
     sourceDatasetFilter = null;
 
-
     /**
-     * APIProperty: tolerance
-     * {Integer} 容限。
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.tolerance -{Integer}
+     * @description 容限。
      */
     tolerance = 0;
 
     /**
-     * APIProperty: resultSetting
-     * {SuperMap.DataReturnOption} 结果返回设置类。
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.resultSetting -{SuperMap.DataReturnOption}
+     * @description 结果返回设置类。
      */
     resultSetting = null;
 
-    /**
-     * @method SuperMap.DatasetOverlayAnalystParameters.initialize
-     * @param options - {Object} 参数。
-     *
-     * Allowed options properties:</br>
-     * operateDataset - {String} 叠加分析中操作数据集的名称。必设字段。</br>
-     * operateDatasetFields - {Array(String} 叠加分析中操作数据集保留在结果数据集中的字段名列表。</br>
-     * operateDatasetFilter - {SuperMap.FilterParameter} 设置操作数据集中空间对象过滤条件。</br>
-     * operateRegions - {Array(<SuperMap.Geometry>)} 操作区域。设置了操作区域后，仅对该区域内的对象进行分析。</br>
-     * sourceDataset - {String} 叠加分析中源数据集的名称。必设字段。</br>
-     * sourceDatasetFields - {Array(String} 叠加分析中源数据集保留在结果数据集中的字段名列表。</br>
-     * sourceDatasetFilter - {SuperMap.FilterParameter} 设置源数据集中空间对象过滤条件。</br>
-     * tolerance - {Integer} 容限。</br>
-     * operation - {SuperMap.OverlayOperationType} 叠加操作枚举值。</br>
-     * resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
+    /*
+     * @function SuperMap.DatasetOverlayAnalystParameters.prototype.constructor
+     * @param options - {Object} 可选参数。如：</br>
+     *        operateDataset - {String} 叠加分析中操作数据集的名称。必设字段。</br>
+     *        operateDatasetFields - {Array(String} 叠加分析中操作数据集保留在结果数据集中的字段名列表。</br>
+     *        operateDatasetFilter - {SuperMap.FilterParameter} 设置操作数据集中空间对象过滤条件。</br>
+     *        operateRegions - {Array(<SuperMap.Geometry>)} 操作区域。设置了操作区域后，仅对该区域内的对象进行分析。</br>
+     *        sourceDataset - {String} 叠加分析中源数据集的名称。必设字段。</br>
+     *        sourceDatasetFields - {Array(String} 叠加分析中源数据集保留在结果数据集中的字段名列表。</br>
+     *        sourceDatasetFilter - {SuperMap.FilterParameter} 设置源数据集中空间对象过滤条件。</br>
+     *        tolerance - {Integer} 容限。</br>
+     *        operation - {SuperMap.OverlayOperationType} 叠加操作枚举值。</br>
+     *        resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
      */
     constructor(options) {
         super(options);
@@ -103,9 +97,9 @@ export default  class DatasetOverlayAnalystParameters extends OverlayAnalystPara
     }
 
 
-    /*
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+    /**
+     * @function SuperMap.DatasetOverlayAnalystParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
         super.destroy();

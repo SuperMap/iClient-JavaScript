@@ -1,27 +1,23 @@
 import SuperMap from '../SuperMap';
-
 /**
  * @class SuperMap.FieldStatisticsParameters
- * @constructs SuperMap.FieldStatisticsParameters
- * @classdesc
- * 字段统计信息查询参数类。
- * @api
+ * @classdesc 字段统计信息查询参数类。
  */
-
 export default  class FieldStatisticsParameters {
     /**
-     * @property {String} APIProperty: fieldName
-     * 字段名
+     * @member SuperMap.FieldStatisticsParameters.prototype.fieldName -{String}
+     * @description 字段名
      */
     fieldName = null;
+
     /**
-     * @property {String<SuperMap.StatisticMode>}|{Array<String<SuperMap.StatisticMode>} APIProperty: statisticMode
-     * 字段统计方法类型
+     * @member SuperMap.FieldStatisticsParameters.prototype.statisticMode -{String<SuperMap.StatisticMode>}|{Array<String<SuperMap.StatisticMode>}
+     * @description 字段统计方法类型
      */
     statisticMode = null;
 
-    /**
-     * @method SuperMap.FieldStatisticsParameters.initialize
+    /*
+     * @function SuperMap.FieldStatisticsParameters.prototype.initialize
      * @param options - {Object} 参数。
      */
     constructor(options) {
@@ -30,11 +26,10 @@ export default  class FieldStatisticsParameters {
         }
     }
 
-    /*
-     * APIMethod: destroy
-     * 释放资源,将引用资源的属性置空。
+    /**
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
-
     destroy() {
         var me = this;
         me.fieldName = null;

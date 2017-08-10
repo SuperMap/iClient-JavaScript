@@ -1,7 +1,11 @@
 import MapvRenderer from  "./mapv/MapvRenderer";
 import mapboxgl from 'mapbox-gl';
-/*
- @class MapvLayer
+/**
+ * @class mapboxgl.supermap.MapvLayer
+ * @classdesc MAPV图层信息
+ * @param map - {String} 地图
+ * @param dataSet -{Object} 数据集
+ * @param mapVOptions -{Object} 交互时所需可选参数。
  */
 export class MapvLayer {
 
@@ -13,7 +17,10 @@ export class MapvLayer {
         this.mapContainer = map.getCanvasContainer();
         this.mapContainer.appendChild(this.canvas);
     }
-
+    /**
+     * @function mapboxgl.supermap.MapvLayer.prototype.getTopLeft
+     * @description 获取左上的距离
+     */
     getTopLeft() {
         var map = this.map;
         var topLeft;

@@ -48,7 +48,7 @@ export default class ChartService extends ServiceBase {
     }
 
     /**
-     * @function ol.supermap.ChartService.prototype.CDgetChartFeatureInfo
+     * @function ol.supermap.ChartService.prototype.getChartFeatureInfo
      * @description 获取海图物标信息服务。
      * @param callback -{function} 回调函数
      */

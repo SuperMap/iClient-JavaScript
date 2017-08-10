@@ -4,13 +4,11 @@ import GenerateSpatialDataParameters from './GenerateSpatialDataParameters';
 
 /**
  * @class SuperMap.GenerateSpatialDataService
- * @constructs SuperMap.GenerateSpatialDataService
  * @classdesc
  * 动态分段分析服务类。
  * 该类负责将客户设置的动态分段分析服务参数传递给服务端，并接收服务端返回的动态分段分析结果数据。
  * 获取的结果数据包括 originResult 、result 两种，其中，originResult 为服务端返回的用 JSON 对象表示的动态分段分析结果数据，result 为服务端返回的动态分段分析结果数据。
- * @extends {SuperMap.SpatialAnalystBase}
- * @api
+ * @extends SuperMap.SpatialAnalystBase
  * @example 实例化该类如下例所示：
  * (start code)
  *  function GenerateSpatialData(){
@@ -51,22 +49,18 @@ import GenerateSpatialDataParameters from './GenerateSpatialDataParameters';
      */
 export default  class GenerateSpatialDataService extends SpatialAnalystBase {
 
-
-    /**
-     * @method SuperMap.GenerateSpatialDataService.initialize
+    /*
+     * @method SuperMap.GenerateSpatialDataService.prototype.constructor
      * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * @param options - {Object} 参数。
-     * Allowed options properties:</br>
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @param options - {Object} 可选参数。如:</br>
+     *        eventListeners - {Object} 需要被注册的监听器对象。
      */
     constructor(url, options) {
         super(url, options);
     }
 
-
-    /*
-     * APIMethod: destroy
-     * 释放资源,将引用的资源属性置空。
+    /**
+     * @inheritDoc
      */
     destroy() {
         super.destroy();
@@ -74,7 +68,7 @@ export default  class GenerateSpatialDataService extends SpatialAnalystBase {
 
 
     /**
-     * @method SuperMap.GenerateSpatialDataService.processAsync
+     * @function SuperMap.GenerateSpatialDataService.prototype.processAsync
      * @description 负责将客户端的动态分段服务参数传递到服务端。
      * @param params - {SuperMap.GenerateSpatialDataParameters}
      */
@@ -98,7 +92,7 @@ export default  class GenerateSpatialDataService extends SpatialAnalystBase {
 
 
     /**
-     * @method SuperMap.GenerateSpatialDataService.getJsonParameters
+     * @function SuperMap.GenerateSpatialDataService.prototype.getJsonParameters
      * @description 将参数转化为 JSON 字符串。
      * @param params -  {SuperMap.GenerateSpatialDataParameters}
      * @return {Object} 转化后的JSON字符串。

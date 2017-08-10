@@ -1,5 +1,10 @@
 import ol from 'openlayers/dist/ol-debug';
-
+/**
+ * @class ol.source.Tianditu
+ * @classdesc 天地图
+ * @param opt_options - {object} 交互时所需可选参数
+ * @extends  ol.source.WMTS
+ */
 export default class Tianditu extends ol.source.WMTS {
 
     constructor(opt_options) {

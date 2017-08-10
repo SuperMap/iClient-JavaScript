@@ -2,7 +2,13 @@ import ol from 'openlayers/dist/ol-debug';
 import Util from '../../core/Util';
 import SuperMap from '../../../common/SuperMap';
 import ThemeFeature from './themeFeature';
-
+/**
+ * @class ol.source.Theme
+ * @classdesc 主题
+ * @param name - {String}
+ * @param opt_options -{Object}
+ * @extends  ol.source.ImageCanvas
+ */
 export default class Theme extends ol.source.ImageCanvas {
 
     constructor(name, opt_options) {

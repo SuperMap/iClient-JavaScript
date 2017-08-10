@@ -6,9 +6,7 @@ import TransferPathService from'../../common/iServer/TransferPathService';
 import TransferSolutionService from '../../common/iServer/TransferSolutionService';
 /**
  * @class ol.supermap.TrafficTransferAnalystService
- * @constructs  ol.supermap.TrafficTransferAnalystService
- * @classdesc
- * 交通换乘分析服务类
+ * @classdesc 交通换乘分析服务类
  * @example 用法
  *      new ol.supermap.TrafficTransferAnalystService(url)
  *      .queryStop(params,function(result){
@@ -25,8 +23,8 @@ export default class TrafficTransferAnalystService extends ServiceBase {
     /**
      * @method ol.supermap.TrafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务
-     * @param params {StopQueryParameters}
-     * @param callback
+     * @param params -{StopQueryParameters} 查询相关参数类
+     * @param callback -{function} 回调函数
      */
     queryStop(params, callback) {
         var me = this;
@@ -45,8 +43,8 @@ export default class TrafficTransferAnalystService extends ServiceBase {
     /**
      * @method ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath
      * @description 交通换乘线路查询服务
-     * @param params {TransferPathParameters}
-     * @param callback
+     * @param params -{TransferPathParameters} 查询相关参数类
+     * @param callback -{function} 回调函数
      */
     analysisTransferPath(params, callback) {
         var me = this;
@@ -65,8 +63,8 @@ export default class TrafficTransferAnalystService extends ServiceBase {
     /**
      * @method ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution
      * @description 交通换乘方案查询服务
-     * @param params {TransferSolutionParameters}
-     * @param callback
+     * @param params -{TransferSolutionParameters} 查询相关参数类
+     * @param callback -{function} 回调函数
      */
     analysisTransferSolution(params, callback) {
         var me = this;

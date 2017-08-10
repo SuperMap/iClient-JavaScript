@@ -1,6 +1,11 @@
 import ol from 'openlayers/dist/ol-debug';
 import DataFlowService  from "../services/DataFlowService";
-
+/**
+ * @class ol.source.DataFlow
+ * @classdesc 数据流
+ * @param opt_options -{Object} 交互时所需可选参数
+ * @extends ol.source.Vector
+ */
 export default class DataFlow extends ol.source.Vector {
 
     constructor(opt_options) {
@@ -30,7 +35,11 @@ export default class DataFlow extends ol.source.Vector {
             me.dispatchEvent({type: "setFilterParamSuccessed", value: msg})
         });
     }
-
+    /**
+     * @function ol.source.DataFlow.prototype.setPrjCoordSys
+     * @description 设置坐标参考系
+     * @param prjCoordSys - {object} 参考系
+     */
     setPrjCoordSys(prjCoordSys) {
         this.dataService.setPrjCoordSys(prjCoordSys);
         this.prjCoordSys = prjCoordSys;
@@ -42,7 +51,11 @@ export default class DataFlow extends ol.source.Vector {
         this.excludeField = excludeField;
         return this;
     }
-
+    /**
+     * @function ol.source.DataFlow.prototype.setGeometry
+     * @description 设置几何图形
+     * @param geometry - {object} 要素图形
+     */
     setGeometry(geometry) {
         this.dataService.setGeometry(geometry);
         this.geometry = geometry;

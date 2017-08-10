@@ -4,10 +4,8 @@ import logoSrc from '../../common/control/img/iClient.png'
 ol.supermap = ol.supermap || {};
 ol.supermap.control = ol.supermap.control || {};
 /**
- * Class:ol.supermap.control.Logo
- * @description Logo控件。</br>
- *              默认不显示，需手动添加控件。
- * @constructor
+ * @class:ol.supermap.control.Logo
+ * @classdesc Logo控件。默认不显示，需手动添加控件。
  * @example
  * (start code)
  *      var control = new ol.supermap.control.Logo();
@@ -31,7 +29,10 @@ export default class Logo extends ol.control.Control {
         super(options);
         this.options = options;
         this.element = options.element = initLayerout.call(this);
-
+        /**
+         * @function ol.supermap.control.Logo.prototype.initLayerout
+         * @description 初始化图层信息
+         */
         function initLayerout() {
             var className = 'ol-control-logo ol-unselectable ol-control';
             var div = document.createElement("div");
@@ -63,7 +64,11 @@ export default class Logo extends ol.control.Control {
                 "<img src=" + imgSrc + " alt='" + alt + "'  style='border: none;" + styleSize + "white-space: nowrap'></a>";
             return div;
         }
-
+        /**
+         * @function ol.supermap.control.Logo.prototype.setDivStyle
+         * @div 获取容器对象
+         * @description 设置对象style
+         */
         function setDivStyle(div) {
             var attributionsElem = document.getElementsByClassName('ol-attribution');
             attributionsElem = attributionsElem && attributionsElem[0];

@@ -4,45 +4,38 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
 
 /**
  * @class SuperMap.GetFeaturesByIDsParameters
- * @constructs SuperMap.GetFeaturesByIDsParameters
- * @classdesc
- * ID 查询参数类。
- * @extends {SuperMap.GetFeaturesParametersBase}
- * @api
+ * @classdesc ID 查询参数类。
+ * @extends SuperMap.GetFeaturesParametersBase
  */
 export default  class GetFeaturesByIDsParameters extends GetFeaturesParametersBase {
-
     /**
-     * Property: getFeatureMode
-     * {String} 数据集查询模式。
+     * @member SuperMap.GetFeaturesByIDsParameters.prototype.getFeatureMode -{String}
+     * @description 数据集查询模式。
      */
     getFeatureMode = "ID";
 
     /**
-     * APIProperty: IDs
-     * {Array(Integer)} 所要查询指定的元素ID信息。
+     * @member SuperMap.GetFeaturesByIDsParameters.prototype.IDs -{Array(Integer)}
+     * @description 所要查询指定的元素ID信息。
      */
     IDs = null;
 
     /**
-     * APIProperty: fields
-     * {Array(String)} 设置查询结果返回字段。
-     *                 当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。
-     *                 不设置即返回全部字段。
+     * @member SuperMap.GetFeaturesByIDsParameters.prototype.fields -{Array(String)}
+     *  @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
      */
     fields = null;
 
     /**
-     * @method SuperMap.GetFeaturesBySQLParameters.initialize
+     * @function SuperMap.GetFeaturesBySQLParameters.prototype.constructor
      * @description SQL 查询参数类构造函数。
-     * @param options - {Object} 参数。
-     * Allowed options properties:</br>
-     * IDs - {Array(Integer)} 所要查询指定的元素ID信息。</br>
-     * fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
-     * dataSetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
-     * returnContent - {Boolean} 是否直接返回查询结果。</br>
-     * fromIndex - {Integer} 查询结果的最小索引号。</br>
-     * toIndex - {Integer} 查询结果的最大索引号。</br>
+     * @param options - {Object} 可选参数。如:</br>
+     *        IDs - {Array(Integer)} 所要查询指定的元素ID信息。</br>
+     *        fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
+     *        dataSetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
+     *        returnContent - {Boolean} 是否直接返回查询结果。</br>
+     *        fromIndex - {Integer} 查询结果的最小索引号。</br>
+     *        toIndex - {Integer} 查询结果的最大索引号。</br>
      */
     constructor(options) {
         super(options);
@@ -53,9 +46,8 @@ export default  class GetFeaturesByIDsParameters extends GetFeaturesParametersBa
     }
 
 
-    /*
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+    /**
+     * @inheritDoc
      */
     destroy() {
         super.destroy();
@@ -71,7 +63,7 @@ export default  class GetFeaturesByIDsParameters extends GetFeaturesParametersBa
     }
 
     /**
-     * @method SuperMap.GetFeaturesByIDsParameters.toJsonParameters
+     * @function SuperMap.GetFeaturesByIDsParameters.prototype.toJsonParameters
      * @description 将<SuperMap.GetFeaturesByIDsParameters>对象参数转换为json字符串。
      * @param params - {SuperMap.GetFeaturesByIDsParameters} IDs查询参数。
      * @return {String} 转化后的 json字符串。

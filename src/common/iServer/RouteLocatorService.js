@@ -4,11 +4,8 @@ import RouteLocatorParameters from './RouteLocatorParameters';
 
 /**
  * @class SuperMap.RouteLocatorService
- * @constructs SuperMap.RouteLocatorService
- * @classdesc
- * 路由对象定位空间对象的服务类。
- * @extends {SuperMap.SpatialAnalystBase}
- * @api
+ * @classdesc 路由对象定位空间对象的服务类。
+ * @extends SuperMap.SpatialAnalystBase
  * @example 实例化该类如下例所示：
  * (start code)
  * var routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
@@ -59,29 +56,27 @@ import RouteLocatorParameters from './RouteLocatorParameters';
      */
 export default  class RouteLocatorService extends SpatialAnalystBase {
 
-    /**
-     * @method SuperMap.RouteLocatorService.initialize
-     * @param options - {Object} 参数。
+    /*
+     * @method SuperMap.RouteLocatorService.prototype.constructor
+     * @param options - {Object} 可选参数。如</br>
+     *        eventListeners - {Object} 需要被注册的监听器对象。
      * @param url -{String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * Allowed options properties:</br>
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     *
      *
      */
     constructor(url, options) {
         super(url, options);
     }
 
-
-    /*
-     * APIMethod: destroy
-     * 释放资源,将引用的资源属性置空。
+    /**
+     * @inheritDoc
      */
     destroy() {
         super.destroy();
     }
 
     /**
-     * @method SuperMap.RouteLocatorService.processAsync
+     * @method SuperMap.RouteLocatorService.prototype.processAsync
      * @description 负责将客户端的基于路由对象计算指定点M值操作的参数传递到服务端。
      * @param params - {SuperMap.RouteLocatorParameters}
      */
@@ -103,10 +98,10 @@ export default  class RouteLocatorService extends SpatialAnalystBase {
     }
 
     /**
-     * @method SuperMap.RouteLocatorService.processAsync
+     * @method SuperMap.RouteLocatorService.prototype.processAsync
      * @description 将参数转化为 JSON 字符串。
      * @param params - {SuperMap.RouteLocatorParameters}
-     * return {Object} 转化后的JSON字符串。
+     * @return {Object} 转化后的JSON字符串。
      */
     getJsonParameters(params) {
         var jsonParameters, jsonStr = "geometry/routelocator", me = this, end;

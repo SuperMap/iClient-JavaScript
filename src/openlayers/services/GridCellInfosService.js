@@ -3,15 +3,12 @@ import ServiceBase from './ServiceBase';
 import GetGridCellInfosService from '../../common/iServer/GetGridCellInfosService';
 /**
  * @class ol.supermap.GridCellInfosService
- * @constructs ol.supermap.GridCellInfosService
- * @classdesc
- * 数据栅格查询服务
+ * @classdesc 数据栅格查询服务
  * @example 用法：
  *      new ol.superMap.GridCellInfosService(url)
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })
- * @api
  */
 export default class GridCellInfosService extends ServiceBase {
 
@@ -20,9 +17,9 @@ export default class GridCellInfosService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.GridCellInfosService.prototype.getGridCellInfos
-     * @param params {SuperMap.GetGridCellInfosParameters}
-     * @param callback
+     * @function ol.supermap.GridCellInfosService.prototype.getGridCellInfos
+     * @param params -{SuperMap.GetGridCellInfosParameters} 查询所需参数类
+     * @param callback -{function}
      */
     getGridCellInfos(params, callback) {
         if (!params) {

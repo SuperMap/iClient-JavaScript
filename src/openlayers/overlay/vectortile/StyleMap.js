@@ -1,3 +1,7 @@
+/**
+ * @constant  ol.supermap.pointMap
+ * @description 点图
+ */
 export var pointMap = {
     "point-file": "pointFile",
     "point-fill": "fillStyle",
@@ -9,7 +13,10 @@ export var pointMap = {
     "point-opacity": "globalAlpha",
     "point-comp-op": "globalCompositeOperation"
 };
-
+/**
+ * @constant  ol.supermap.lineMap
+ * @description 线图
+ */
 export var lineMap = {
     "line-color": "strokeStyle",
     "line-width": "lineWidth",
@@ -23,7 +30,10 @@ export var lineMap = {
     "line-offset": "offset",
     "line-comp-op": "globalCompositeOperation"
 };
-
+/**
+ * @constant  ol.supermap.polygonMap
+ * @description 面图
+ */
 export var polygonMap = {
     /*包括LINE的部分，用以设置面的外围边界*/
     "line-color": "strokeStyle",
@@ -45,9 +55,10 @@ export var polygonMap = {
 };
 
 export var StyleMap = {
-    /**
-     * CartoCSS中的style属性名与Canvas的style属性名的对应表
-     * */
+    /*
+     * @constant ol.supermap.StyleMap.prototype.CartoStyleMap
+     * @description CartoCSS中的style属性名与Canvas的style属性名的对应表
+     */
     CartoStyleMap: {
         "TEXT": {
             //前两个属性值组成font
@@ -79,9 +90,11 @@ export var StyleMap = {
         "POLYGON": polygonMap,
         "MULTIPOLYGON": polygonMap
     },
-    /**
-     * 服务端传过来的style属性名与Canvas的style属性名的对应表
-     * */
+    /*
+     * @constant ol.supermap.StyleMap.prototype.ServerStyleMap
+     * @description 服务端传过来的style属性名与Canvas的style属性名的对应表
+     */
+
     ServerStyleMap: {
         fillBackOpaque: {
             canvasStyle: "",
@@ -180,9 +193,10 @@ export var StyleMap = {
             defaultValue: 0
         }
     },
-    /**
-     * Canvas中的globalCompositeOperation属性值与CartoCSS中的CompOp属性值对照表
-     * */
+    /*
+     * @constant ol.supermap.StyleMap.prototype.CartoCompOpMap
+     * @description Canvas中的globalCompositeOperation属性值与CartoCSS中的CompOp属性值对照表
+     */
     CartoCompOpMap: {
         "clear": "",
         "src": "",

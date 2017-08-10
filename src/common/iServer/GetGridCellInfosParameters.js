@@ -2,43 +2,37 @@ import SuperMap from '../SuperMap';
 
 /**
  * @class SuperMap.GetGridCellInfosParameters
- * @constructs SuperMap.GetGridCellInfosParameters
- * @classdesc
- * 数据服务栅格查询参数类。。
- * @api
+ * @classdesc 数据服务栅格查询参数类。。
  */
 export default  class GetGridCellInfosParameters {
-
-
     /**
-     * APIProperty: datasetName
-     * {String} 数据集名称。
+     * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName -{String}
+     * @description 数据集名称。
      */
     datasetName = null;
 
     /**
-     * APIProperty: dataSourceName
-     * {String} 数据源名称。
+     * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName -{String}
+     * @description  数据源名称。
      */
     dataSourceName = null;
 
     /**
-     * APIProperty: X
-     * {Number} 要查询的地理位置X轴
+     * @member SuperMap.GetGridCellInfosParameters.prototype.X -{Number}
+     * @description 要查询的地理位置X轴
      */
     X = null;
 
     /**
-     * APIProperty: X
-     * {Number} 要查询的地理位置Y轴
+     * @member SuperMap.GetGridCellInfosParameters.prototype.Y -{Number}
+     * @description 要查询的地理位置Y轴
      */
     Y = null;
 
-    /**
-     * @method SuperMap.GetGridCellInfosParameters.initialize
+    /*
+     * @function SuperMap.GetGridCellInfosParameters.prototype.constructor
      * @description SQL 查询参数类构造函数。
-     * @param options - {Object} 参数。
-     * Allowed options properties:</br>
+     * @param options - {Object} 可選参数。如:</br>
      * datasetName - {String} 数据集名称。</br>
      * dataSourceName - {String} 数据源名称</br>
      * X - {Integer} 要查询的地理位置X轴。</br>
@@ -52,9 +46,9 @@ export default  class GetGridCellInfosParameters {
     }
 
 
-    /*
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+    /**
+     * @function SuperMap.GetGridCellInfosParameters.prototype.destroy
+     * @description 释放资源，将引用的资源属性置空。
      */
     destroy() {
         var me = this;

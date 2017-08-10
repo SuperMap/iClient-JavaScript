@@ -1,57 +1,48 @@
 import SuperMap from '../SuperMap';
-/*
- * Class: SuperMap.GeoCodingParameter
- * 地理正向匹配参数类。
- */
-
 /**
  * @class SuperMap.GeoCodingParameter
- * @constructs SuperMap.GeoCodingParameter
- * @classdesc
- * 地理正向匹配参数类。
- * @api
+ * @classdesc 地理正向匹配参数类。
  */
-
 export default  class GeoCodingParameter {
 
     /**
-     * APIProperty: address
-     * {String} 地点关键词。
+     * @member SuperMap.GeoCodingParameter.prototype.address -{String}
+     * @description 地点关键词。
      */
     address = null;
 
     /**
-     * APIProperty: fromIndex
-     * {number} 设置返回对象的起始索引值。
+     * @member SuperMap.GeoCodingParameter.prototype.fromIndex -{number}
+     * @description 设置返回对象的起始索引值。
      */
     fromIndex = null;
 
     /**
-     * APIProperty: toIndex
-     * {number} 设置返回对象的结束索引值。
+     * @member SuperMap.GeoCodingParameter.prototype.toIndex -{number}
+     * @description 设置返回对象的结束索引值。
      */
     toIndex = null;
 
     /**
-     * APIProperty: filters
-     * {Array} 过滤字段，限定查询区域。
+     * @member SuperMap.GeoCodingParameter.prototype.filters -{Array}
+     * @description 过滤字段，限定查询区域。
      */
     filters = null;
 
     /**
-     * APIProperty: filters
-     * String 查询结果的坐标系。
+     * @member SuperMap.GeoCodingParameter.prototype.prjCoordSys -{String}
+     * @description  查询结果的坐标系。
      */
     prjCoordSys = null;
 
     /**
-     * APIProperty: maxReturn
-     * String 最大返回结果数。
+     * @member SuperMap.GeoCodingParameter.prototype.maxReturn -{String}
+     * @description 最大返回结果数。
      */
     maxReturn = null;
 
-    /**
-     * @method SuperMap.GeoCodingParameter.initialize
+    /*
+     * @function  SuperMap.GeoCodingParameter.prototype.constructor
      * @param options - {Object} 参数。
      */
     constructor(options) {
@@ -70,8 +61,8 @@ export default  class GeoCodingParameter {
     }
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function SuperMap.GeoCodingParameter.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
         this.address = null;

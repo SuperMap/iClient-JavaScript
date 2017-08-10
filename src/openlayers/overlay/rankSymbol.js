@@ -1,7 +1,13 @@
 import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import Graph from './theme/graph';
-
+/**
+ * @class ol.source.RankSymbol
+ * @classdesc 获取等级标志
+ * @param name - {String} 专题图层名
+ * @param symbolType -{string} 标志类型
+ * @param opt_options -{Object} 交互时所需可选参数
+ */
 export default class RankSymbol extends Graph {
 
     constructor(name, symbolType, opt_options) {
@@ -10,19 +16,30 @@ export default class RankSymbol extends Graph {
         this.themeField = null;
         this.symbolType = symbolType;
     }
-
+    /**
+     * @function ol.source.RankSymbol.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
     destroy() {
         this.symbolType = null;
         this.symbolSetting = null;
         this.themeField = null;
         SuperMap.Layer.Graph.prototype.destroy.apply(this, arguments);
     }
-
+    /**
+     * @function ol.source.RankSymbol.prototype.setSymbolType
+     * @description 设置标志符号
+     * @param symbolType -{string} 符号类型
+     */
     setSymbolType(symbolType) {
         this.symbolType = symbolType;
         this.redraw();
     }
-
+    /**
+     * @function ol.source.RankSymbol.prototype.createThematicFeature
+     * @description 创建专题图形
+     * @param feature -{object} 要创建的专题图形要素
+     */
     createThematicFeature(feature) {
         var thematicFeature;
         // 检查图形创建条件并创建图形

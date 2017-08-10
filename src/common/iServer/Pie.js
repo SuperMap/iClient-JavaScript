@@ -2,33 +2,26 @@ import SuperMap from '../SuperMap';
 import Graph from './Graph';
 
 /**
- * Class: SuperMap.Feature.Theme.Pie
- * 饼图 。
- *
- * 图表 Pie 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：
- *
- * Symbolizer properties:
- * width - {Number} 专题要素（图表）宽度，必设参数。
- * height - {Number} 专题要素（图表）高度，必设参数。
- * codomain - {Array{Number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
- * XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。
- * YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。
+ * @class SuperMap.Feature.Theme.Pie
+ * @classdesc 饼图。图表 Pie 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：</br>
+ * width - {Number} 专题要素（图表）宽度，必设参数。</br>
+ * height - {Number} 专题要素（图表）高度，必设参数。</br>
+ * codomain - {Array{Number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
+ * XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
+ * YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
  * dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
- * 它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。默认值为：[0, 0, 0, 0]。
- * decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
- *
- * useBackground - {Boolean} 是否使用图表背景框，默认不使用。
- * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。
- * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
- * 则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。
- *
+ * 它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。默认值为：[0, 0, 0, 0]。</br>
+ * decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+ * useBackground - {Boolean} 是否使用图表背景框，默认不使用。</br>
+ * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
+ * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
  * sectorStyle - {Object} 饼图中扇形的基础 style，此参数控制饼图扇形基础样式，优先级低于 sectorStyleByFields 和 sectorStyleByCodomain。
- * 此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。
- * sectorStyleByFields - {Array{Object}} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为饼图扇形赋 style，此参数按字段控制饼图扇形样式，
- * 优先级低于 sectorStyleByCodomain，高于 sectorStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。
- * 此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
- * sectorStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的饼图扇形使用 style1，字段 POP_1995 对应的饼图扇形使用 style2 ，字段 POP_1999 对应的饼图扇形使用 style3。
+ * 此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。</br>
+ * sectorStyleByFields - {Array{Object}} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为饼图扇形赋 style，此参数按字段控制饼图扇形样式，优先级低于 sectorStyleByCodomain，高于 sectorStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
+ * sectorStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的饼图扇形使用 style1，字段 POP_1995 对应的饼图扇形使用 style2 ，字段 POP_1999 对应的饼图扇形使用 style3。</br>
  * sectorStyleByCodomain - {Array{Object}} 按饼图扇形代表的数据值所在值域范围控制饼图扇形样式，优先级高于 sectorStyle 和 sectorStyleByFields。
+ *
+ * @example
  * (start code)
  * // sectorStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
@@ -66,42 +59,38 @@ import Graph from './Graph';
  *  }
  * ]
  * (end)
- * sectorHoverStyle - {Object} 饼图扇形 hover 状态时的样式，sectorHoverAble 为 true 时有效。
- * sectorHoverAble - {Object} 是否允许饼图扇形使用 hover 状态，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽饼图扇形对专题图层事件的响应。
+ * sectorHoverStyle - {Object} 饼图扇形 hover 状态时的样式，sectorHoverAble 为 true 时有效。</br>
+ * sectorHoverAble - {Object} 是否允许饼图扇形使用 hover 状态，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽饼图扇形对专题图层事件的响应。</br>
  * sectorClickAble - {Object} 是否允许饼图扇形被点击，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽饼图扇形对专题图层事件的响应。
- *
- * Inherits:
- *  - <SuperMap.Feature.Theme.Graph>
+ * @extends {SuperMap.Feature.Theme.Graph}
  */
 export default  class Pie extends Graph {
 
-    /**
-     * Constructor: SuperMap.Feature.Theme.Pie
-     * 创建一个饼图。
-     *
-     * Parameters:
-     * data - {SuperMap.Feature.Vector}  用户数据，必设参数。
-     * layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
-     * fields - {Array{String}} data 中的参与此图表生成的字段名称，必设参数。
-     * setting - {Object} 图表配置对象，必设参数。
-     * lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
-     *
-     * Returns:
-     * {SuperMap.Feature.Theme.Pie} 返回一个饼图。
+    /*
+     * @function SuperMap.Feature.Theme.Pie.prototype.constructor
+     * @description 创建一个饼图。
+     * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
+     * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
+     * @param fields - {Array{String}} data 中的参与此图表生成的字段名称，必设参数。
+     * @param setting - {Object} 图表配置对象，必设参数。
+     * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+     * @return {SuperMap.Feature.Theme.Pie} 返回一个饼图。
      */
     constructor(data, layer, fields, setting, lonlat) {
         super(data, layer, fields, setting, lonlat);
     }
 
     /**
-     * APIMethod: destroy
-     * 销毁此专题要素。调用 destroy 后此对象所以属性置为 null。
+     * @function SuperMap.Feature.Theme.Pie.prototype.destroy
+     * @description 销毁此专题要素。调用 destroy 后此对象所以属性置为 null。
      */
     destroy() {
         super.destroy();
     }
-
-    //装配图形（扩展接口）
+    /**
+     * @function SuperMap.Feature.Theme.Pie.prototype.assembleShapes
+     * @description 装配图形（扩展接口）
+     */
     assembleShapes() {
         // 图表配置对象
         var sets = this.setting;

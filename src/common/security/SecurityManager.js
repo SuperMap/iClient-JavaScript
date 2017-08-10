@@ -3,10 +3,8 @@ import ServerInfo from './ServerInfo';
 import TokenServiceParameter from './TokenServiceParameter';
 import KeyServiceParameter from './KeyServiceParameter';
 import {FetchRequest} from '../util/FetchRequest';
-
 /**
  * @class SuperMap.SecurityManager
- * @constructs SuperMap.SecurityManager
  * @classdesc
  *  安全管理中心
  *  提供iServer,iPortal,Online统一权限认证管理
@@ -14,19 +12,16 @@ import {FetchRequest} from '../util/FetchRequest';
  *  创建任何一个服务之前调用SuperMap.SecurityManager.registerToken或
  *  SuperMap.SecurityManager.registerKey注册凭据。
  *  发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
- * @api
  */
-
 SuperMap.SecurityManager = {
 
     INNER_WINDOW_WIDTH: 600,
     INNER_WINDOW_HEIGHT: 600,
-
     /**
-     *
+     * @function SuperMap.SecurityManager.prototype.generateToken
      * @description 从服务器获取一个token,在此之前要注册服务器信息
-     * @param url {String} -服务器域名+端口，如：http://localhost:8092
-     * @param tokenParam {SuperMap.TokenServiceParameter}
+     * @param url {String}-服务器域名+端口，如：http://localhost:8092
+     * @param tokenParam -{SuperMap.TokenServiceParameter}
      */
     generateToken: function (url, tokenParam) {
         var serverInfo = this.servers[url];
@@ -38,11 +33,10 @@ SuperMap.SecurityManager = {
         });
     },
 
-
     /**
-     *
+     * @function SuperMap.SecurityManager.prototype.registerServers
      * @description 注册安全服务器相关信息
-     * @param serverInfos {SuperMap.ServerInfo}
+     * @param serverInfos -{SuperMap.ServerInfo}
      */
     registerServers: function (serverInfos) {
         this.servers = this.servers || {};
@@ -56,9 +50,10 @@ SuperMap.SecurityManager = {
     },
 
     /**
+     * @function SuperMap.SecurityManager.prototype.registerToken
      * @description 服务请求都会自动带上这个token
-     * @param url {String} - 服务器域名+端口：如http://localhost:8090
-     * @param token {String}
+     * @param url {String} -服务器域名+端口：如http://localhost:8090
+     * @param token -{String}
      */
     registerToken: function (url, token) {
         this.tokens = this.tokens || {};
@@ -70,9 +65,10 @@ SuperMap.SecurityManager = {
     },
 
     /**
+     * @function SuperMap.SecurityManager.prototype.registerKey
      * @description 注册key,ids为数组(存在一个key对应多个服务)
-     * @param ids   {Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
-     * @param key   {String}
+     * @param ids -{Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
+     * @param key -{String}
      */
     registerKey: function (ids, key) {
         this.keys = this.keys || {};
@@ -87,12 +83,21 @@ SuperMap.SecurityManager = {
         }
     },
 
+    /**
+     * @function SuperMap.SecurityManager.prototype.getServerInfo
+     * @description 获取服务信息
+     * @param url {String}-服务器域名+端口，如：http://localhost:8092
+     */
     getServerInfo: function (url) {
         this.servers = this.servers || {};
         return this.servers[url];
     },
 
-    //token按照域名存储
+    /**
+     * @function SuperMap.SecurityManager.prototype.getToken
+     * @description token按照域名存储
+     * @param url -{String}-服务器域名+端口，如：http://localhost:8092
+     */
     getToken: function (url) {
         if (!url) {
             return;
@@ -108,19 +113,32 @@ SuperMap.SecurityManager = {
         return this.keys[key];
     },
 
-    //Online登录验证
+    /**
+     * @function SuperMap.SecurityManager.prototype.loginOnline
+     * @description Online登录验证
+     * @param callbackLocation -{String} 跳转位置
+     * @param newTab -{boolean}是否新窗口打开
+     */
     loginOnline: function (callbackLocation, newTab) {
         var loginUrl = SecurityManager.SSO + "/login?service=" + callbackLocation;
         this._open(loginUrl, newTab);
     },
 
-    //iPortal登录验证
+    /**
+     * @function SuperMap.SecurityManager.prototype.loginPortal
+     * @description iPortal登录验证
+     * @param url -{String} 网站地址
+     * @param newTab -{boolean}是否新窗口打开
+     */
     loginPortal: function (url, newTab) {
         var end = url.substr(url.length - 1, 1);
         url += end === "/" ? "web/login" : "/web/login";
         this._open(url, newTab);
     },
-
+    /**
+     * @function SuperMap.SecurityManager.prototype.destroyAllCredentials
+     * @description 清空全部验证信息
+     */
     destroyAllCredentials: function () {
         this.keys = null;
         this.tokens = null;

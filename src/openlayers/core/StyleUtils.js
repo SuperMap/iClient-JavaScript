@@ -4,7 +4,14 @@ import {StyleMap} from '../overlay/vectortile/StyleMap';
 import {DeafultCanvasStyle} from '../overlay/vectortile/DeafultCanvasStyle';
 
 ol.supermap = ol.supermap || {};
-
+/**
+ * @class ol.supermap.StyleUtils
+ * @classdesc 风格工具
+ * @param map - {object} 地图
+ * @param layerInfo - {object} 图层信息
+ * @param feature - {object} 特征
+ * @param url - {object} 地址
+ */
 export default class StyleUtils {
 
     static getValidStyleFromLayerInfo(layerInfo, feature, url) {

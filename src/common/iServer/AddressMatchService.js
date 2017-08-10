@@ -6,29 +6,26 @@ import GeoDecodingParameter from './GeoDecodingParameter';
 
 /**
  * @class SuperMap.AddressMatchService
- * @constructs SuperMap.AddressMatchService
- * @classdesc
- * 地址匹配服务，包括正向匹配和反向匹配。
- * @api
-
+ * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
+ * @param options - {Object} 参数。
+ * @param url {string}
  */
 export default class AddressMatchService extends CommonServiceBase {
-    /**
-     *
-     * @method SuperMap.AddressMatchService.initialize
-     * @param options - {Object} 参数。
-     * @param url {string}
+    /*
+     * @function SuperMap.AddressMatchService.prototype.constructor
      */
     constructor(url, options) {
         super(url, options);
     }
-
+    /**
+     * @inheritDoc
+     */
     destroy() {
         super.destroy();
     }
 
     /**
-     * @method SuperMap.AddressMatchService.code
+     * @function SuperMap.AddressMatchService.prototype.code
      * @param url {string} 正向地址匹配服务地址
      * @param params {object} 正向地址匹配服务参数
      */
@@ -37,7 +34,7 @@ export default class AddressMatchService extends CommonServiceBase {
     }
 
     /**
-     * @method SuperMap.AddressMatchService.decode
+     * @function SuperMap.AddressMatchService.prototype.decode
      * @param url {string} 反向地址匹配服务地址
      * @param params {object} 反向地址匹配服务参数
      */

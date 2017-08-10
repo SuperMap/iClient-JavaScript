@@ -1,77 +1,73 @@
 import SuperMap from '../SuperMap';
 /**
  * @class SuperMap.DensityKernelAnalystParameters
- * @constructs SuperMap.DensityKernelAnalystParameters
  * @classdesc
  * 核密度分析参数类
- * @api
  */
 export default  class DensityKernelAnalystParameters {
 
     /**
-     * APIProperty: dataset
-     * {String} 要用来做核密度分析数据源中数据集的名称。
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.dataset -{String}
+     * @description 要用来做核密度分析数据源中数据集的名称。
      * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：Railway@Changchun。必设字段。
-     *
      * 注：核密度分析支持点数据集和线数据集。
      */
     dataset = null;
 
     /**
-     * APIProperty: bounds
-     * {SuperMap.Bounds} 核密度分析的范围，用于确定结果栅格数据集的范围。
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.bounds -{SuperMap.Bounds}
+     * @description 核密度分析的范围，用于确定结果栅格数据集的范围。
      * 如果缺省，则默认为原数据集的范围。
      */
     bounds = null;
 
     /**
-     * APIProperty: fieldName
-     * {String} 用于进行核密度分析的测量值的字段名称，核密度分析不支持文本类型的字段，必设字段。
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.fieldName -{String}
+     * @description 用于进行核密度分析的测量值的字段名称，核密度分析不支持文本类型的字段，必设字段。
      */
     fieldName = null;
 
     /**
-     * APIProperty: resultGridDatasetResolution
-     * {Number} 密度分析结果栅格数据的分辨率，单位与当前数据集相同。默认值为当前数据集的长宽中的最小值除500。
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.resultGridDatasetResolution -{Number}
+     * @description 密度分析结果栅格数据的分辨率，单位与当前数据集相同。默认值为当前数据集的长宽中的最小值除500。
      */
     resultGridDatasetResolution = null;
 
     /**
-     * APIProperty: searchRadius
-     * {Number} 栅格邻域内用于计算密度的查找半径，单位与当前数据集相同。默认值为当前数据集的长宽中的最大值除30。
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.searchRadius -{Number}
+     * @description 栅格邻域内用于计算密度的查找半径，单位与当前数据集相同。默认值为当前数据集的长宽中的最大值除30。
      */
     searchRadius = null;
 
     /**
-     * APIProperty: targetDatasource
-     * {String}  指定的存储结果数据集的数据源，默认为当前分析的数据集所在的数据源。
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.targetDatasource -{String}
+     * @description 指定的存储结果数据集的数据源，默认为当前分析的数据集所在的数据源。
      */
     targetDatasource = null;
 
     /**
-     * APIProperty: resultGridName
-     * {String} 指定结果数据集名称，必设字段。
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.resultGridName -{String}
+     * @description 指定结果数据集名称，必设字段。
      */
     resultGridName = null;
 
     /**
-     * APIProperty: deleteExistResultDataset
-     * {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.deleteExistResultDataset -{Boolean}
+     * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
      */
     deleteExistResultDataset = false;
 
-    /**
-     * @method SuperMap.DensityKernelAnalystParameters.initialize
-     * @param options - {Object} 参数。
-     * Allowed options properties:</br>
-     * dataset - {String} 要用来做核密度分析数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
-     * bounds - {SuperMap.Bounds} 核密度分析的范围，用于确定结果栅格数据集的范围。 如果缺省，则默认为原数据集的范围。</br>
-     * searchRadius - {Number} 栅格邻域内用于计算密度的查找半径，单位与当前数据集相同。默认值为当前数据集的长宽中的最大值除30。</br>
-     * fieldName - {String} 用于进行核密度分析的测量值的字段名称，核密度分析不支持文本类型的字段，必设字段。</br>
-     * resultGridDatasetResolution - {Number} 密度分析结果栅格数据的分辨率，单位与当前数据集相同。默认值为当前数据集的长宽中的最小值除500。</br>
-     * targetDatasource - {String} 指定的存储结果数据集的数据源，默认为当前分析的数据集所在的数据源。</br>
-     * resultGridName - {Number} 指定结果数据集名称，必设字段。</br>
-     * deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
+    /*
+     * @function SuperMap.DensityKernelAnalystParameters.prototype.constructor
+     * @param options - {Object} 可选参数。如:</br>
+     *        dataset - {String} 要用来做核密度分析数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
+     *        bounds - {SuperMap.Bounds} 核密度分析的范围，用于确定结果栅格数据集的范围。 如果缺省，则默认为原数据集的范围。</br>
+     *        searchRadius - {Number} 栅格邻域内用于计算密度的查找半径，单位与当前数据集相同。默认值为当前数据集的长宽中的最大值除30。</br>
+     *        fieldName - {String} 用于进行核密度分析的测量值的字段名称，核密度分析不支持文本类型的字段，必设字段。</br>
+     *        resultGridDatasetResolution - {Number} 密度分析结果栅格数据的分辨率，单位与当前数据集相同。默认值为当前数据集的长宽中的最小值除500。</br>
+     *        targetDatasource - {String} 指定的存储结果数据集的数据源，默认为当前分析的数据集所在的数据源。</br>
+     *        resultGridName - {Number} 指定结果数据集名称，必设字段。</br>
+     *        deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
      */
     constructor(options) {
         if (!options) {
@@ -81,9 +77,9 @@ export default  class DensityKernelAnalystParameters {
     }
 
 
-    /*
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+    /**
+     * @function SuperMap.DensityKernelAnalystParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
         var me = this;

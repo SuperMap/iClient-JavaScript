@@ -1,6 +1,11 @@
 import ol from 'openlayers/dist/ol-debug';
+/**
+ * @class ol.source.Baidu
+ * @classdesc 百度地图
+ * @param opt_options - {object} 可选参数
+ * @extends ol.source.TileImage
+ */
 export default class Baidu extends ol.source.TileImage {
-
     constructor(opt_options) {
         var options = opt_options || {};
         var attributions = options.attributions || new ol.Attribution({

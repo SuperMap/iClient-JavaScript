@@ -4,7 +4,12 @@ import SuperMap from '../../../common/SuperMap';
 import StyleUtils from '../../core/StyleUtils';
 
 ol.supermap = ol.supermap || {};
-
+/**
+ * @class ol.supermap.VectorTileStyles
+ * @classdesc 矢量瓦片风格
+ * @param options -{Object} 交互时所需可选参数
+ * @extends  ol.Observable
+ */
 export default class VectorTileStyles extends ol.Observable {
 
     constructor(options) {
@@ -109,7 +114,10 @@ export default class VectorTileStyles extends ol.Observable {
             ol.supermap.VectorTileStyles.setSelectedId(e.element.selectedId);
             ol.supermap.VectorTileStyles.setLayerName(e.element.layerName);
         });
-
+        /**
+         * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedPointStyle
+         * @description 设置默认选择后的点样式
+         */
         function getDefaultSelectedPointStyle() {
             return new ol.style.Style({
                 image: new ol.style.Circle({
@@ -120,7 +128,10 @@ export default class VectorTileStyles extends ol.Observable {
                 })
             })
         }
-
+        /**
+         * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedLineStyle
+         * @description 设置默认选择后的线样式
+         */
         function getDefaultSelectedLineStyle() {
             return new ol.style.Style({
                 stroke: new ol.style.Stroke({
@@ -129,7 +140,10 @@ export default class VectorTileStyles extends ol.Observable {
                 })
             })
         }
-
+        /**
+         * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedRegionStyle
+         * @description 设置默认选择后的面样式
+         */
         function getDefaultSelectedRegionStyle() {
             return new ol.style.Style({
                 fill: new ol.style.Fill({
@@ -141,7 +155,10 @@ export default class VectorTileStyles extends ol.Observable {
                 })
             })
         }
-
+        /**
+         * @function ol.supermap.VectorTileStyles.prototype.getDefaultSelectedTextStyle
+         * @description 设置默认选择后的文本样式
+         */
         function getDefaultSelectedTextStyle() {
             return new ol.style.Style({
                 text: new ol.style.Text({
@@ -328,7 +345,13 @@ export default class VectorTileStyles extends ol.Observable {
             }
             return styleArray;
         }
-
+        /**
+         * @function ol.supermap.VectorTileStyles.prototype.mergeTextFeatureStyle
+         * @description 合并文本特征样式
+         * @param layerInfo -{string} 图层信息
+         * @param feature -{object} 获取的特征
+         * @param url -{string} 地址
+         */
         function mergeTextFeatureStyle(layerInfo, feature, url) {
             var textFeatureStyle = StyleUtils.getValidStyleFromLayerInfo(layerInfo, feature, url);
             if (layerInfo.type == 'LABEL') {
@@ -349,7 +372,11 @@ export default class VectorTileStyles extends ol.Observable {
         }
 
     };
-
+    /**
+     * @function ol.supermap.VectorTileStyles.prototype.getFeatureStyle
+     * @description 获取特征样式
+     * @param feature -{object} 特征
+     */
     getFeatureStyle(feature) {
         var selectedStyle;
         var layerName = feature.getProperties().layerName || feature.getProperties().layer;

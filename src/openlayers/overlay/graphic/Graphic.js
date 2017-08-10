@@ -1,4 +1,10 @@
 import ol from 'openlayers/dist/ol-debug';
+/**
+ * @class ol.Graphic
+ * @classdesc 地理几何信息
+ * @param geometry - {String}
+ * @extends ol.Object
+ */
 export default class Graphic extends ol.Object {
 
     constructor(geometry) {

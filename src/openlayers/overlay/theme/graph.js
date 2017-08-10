@@ -11,7 +11,13 @@ import '../../../common/iServer/ThemeVector';
 import '../../../common/style/ThemeStyle';
 import SuperMap from '../../../common/SuperMap';
 import Theme from './theme';
-
+/**
+ * @class ol.source.Graph
+ * @classdesc 图像
+ * @param chartsType -{string} 图形类别
+ * @param name - {String} 名称
+ * @param opt_options -{Object} 所需可选参数
+ */
 export default class Graph extends Theme {
 
     constructor(name, chartsType, opt_options) {
@@ -24,7 +30,10 @@ export default class Graph extends Theme {
         this.cache = {};
         this.chartsType = chartsType;
     }
-
+    /**
+     * @function ol.source.Graph.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
     destroy() {
         this.chartsType = null;
         this.chartsSetting = null;
@@ -41,7 +50,11 @@ export default class Graph extends Theme {
         this.chartsType = chartsType;
         this.redraw();
     }
-
+    /**
+     * @function ol.source.Graph.prototype.addFeatures
+     * @description 向专题图图层中添加数据, 支持的feature类型为:iServer返回的feature json对象 或L.supermap.themeFeature类型
+     * @param features - {L.features} 待填加得要素
+     */
     addFeatures(features) {
         //数组
         if (!(SuperMap.Util.isArray(features))) {
@@ -64,7 +77,16 @@ export default class Graph extends Theme {
             this.redrawThematicFeatures(this.map.getView().calculateExtent());
         }
     }
-
+    /**
+     * @function ol.source.Graph.prototype.redrawThematicFeatures
+     * @description 重绘所有专题要素。
+     *              此方法包含绘制专题要素的所有步骤，包含用户数据到专题要素的转换，抽稀，缓存等步骤。
+     *              地图漫游时调用此方法进行图层刷新。
+     * @param extent - {object} 重绘得范围
+     * @param zoomChanged - {string} 重绘得范围
+     * @param dragging - {boolean} 重绘得范围
+     *
+     */
     redrawThematicFeatures(extent, zoomChanged, dragging) {
         //清除当前所有可视元素
         this.renderer.clearAll();

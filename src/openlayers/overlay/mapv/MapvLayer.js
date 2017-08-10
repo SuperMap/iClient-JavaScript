@@ -2,7 +2,10 @@ import ol from 'openlayers/dist/ol-debug';
 import MapvCanvasLayer from './MapvCanvasLayer';
 import {baiduMapLayer} from "mapv";
 var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
-
+/**
+ * @class ol.supermap.MapvLayer
+ * @classdesc 网络图层类。
+ */
 export default class MapvLayer extends BaiduMapLayer {
 
     constructor(map, dataSet, options, mapWidth, mapHeight, source) {

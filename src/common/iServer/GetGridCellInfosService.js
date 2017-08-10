@@ -4,11 +4,8 @@ import GetGridCellInfosParameters from './GetGridCellInfosParameters';
 
 /**
  * @class SuperMap.GetGridCellInfosService
- * @constructs SuperMap.GetGridCellInfosService
- * @classdesc
- * 数据栅格查询服务，支持查询指定地理位置的栅格信息
- * @extends {SuperMap.CommonServiceBase}
- * @api
+ * @classdesc 数据栅格查询服务，支持查询指定地理位置的栅格信息
+ * @extends SuperMap.CommonServiceBase
  * @example  例如：
  * (start code)
  * var myService = new SuperMap.GetGridCellInfosService(url, {eventListeners: {
@@ -18,50 +15,46 @@ import GetGridCellInfosParameters from './GetGridCellInfosParameters';
      * });
  * (end)
  *
- *
  */
 export default  class GetGridCellInfosService extends CommonServiceBase {
 
-
     /**
-     * APIProperty: datasetName
-     * {String} 数据集名称。
+     * @member SuperMap.GetGridCellInfosService.prototype.datasetName -{String}
+     * @description 数据集名称。
      */
     datasetName = null;
 
     /**
-     * APIProperty: dataSourceName
-     * {String} 数据源名称。
+     * @member SuperMap.GetGridCellInfosService.prototype.dataSourceName -{String}
+     * @description 数据源名称。
      */
     dataSourceName = null;
 
     /**
-     * Property: dataSourceName
-     * {String} 数据集类型。
+     * @member SuperMap.GetGridCellInfosService.prototype.datasetType -{String}
+     * @description 数据集类型。
      */
     datasetType = null;
 
     /**
-     * APIProperty: X
-     * {Number} 要查询的地理位置X轴
+     * @member SuperMap.GetGridCellInfosService.prototype.X -{Number}
+     * @description 要查询的地理位置X轴
      */
     X = null;
 
     /**
-     * APIProperty: X
-     * {Number} 要查询的地理位置Y轴
+     * @member SuperMap.GetGridCellInfosService.prototype.Y-{Number}
+     * @description 要查询的地理位置Y轴
      */
     Y = null;
 
-    /**
-     * @method SuperMap.GetGridCellInfosService.initialize
+    /*
+     * @function SuperMap.GetGridCellInfosService.prototype.constructor
      * @description 字段查询服务构造函数。
 
      * @param url - {String} 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
-     * @param options - {Object} 参数。
-     *
-     * Allowed options properties:</br>
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     * @param options - {Object} 可選参数。如:</br>
+     *        eventListeners - {Object} 需要被注册的监听器对象。
      */
     constructor(url, options) {
         super(url, options);
@@ -70,10 +63,8 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
         }
     }
 
-
-    /*
-     * APIMethod: destroy
-     * 释放资源,将引用资源的属性置空。
+    /**
+     * @inheritDoc
      */
     destroy() {
         super.destroy();
@@ -85,11 +76,9 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
         me.datasetType = null;
     }
 
-
-    /*
-     * APIMethod: processAsync
-     * 执行服务，查询数据集信息。
-     * Parameters:
+    /**
+     * @function SuperMap.GetGridCellInfosService.prototype.processAsync
+     * @description 执行服务，查询数据集信息。
      * params - {SuperMap.GetGridCellInfosParameters} 查询参数。
      */
     processAsync(params) {
@@ -109,10 +98,9 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
         me.queryRequest(me.getDatasetInfoCompleted, me.getDatasetInfoFailed);
     }
 
-
-    /*
-     * Method: queryRequest
-     * 执行服务，查询。
+    /**
+     * @function SuperMap.GetGridCellInfosService.prototype.queryRequest
+     * @description 执行服务，查询。
      */
     queryRequest(successFun, failedFunc) {
         var me = this;
@@ -125,9 +113,8 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
         });
     }
 
-
     /**
-     * @method SuperMap.GetGridCellInfosService.getDatasetInfoCompleted
+     * @function SuperMap.GetGridCellInfosService.prototype.getDatasetInfoCompleted
      * @description  数据集查询完成，执行此方法。
      * @param result - {Object} 服务器返回的结果对象。
      */
@@ -138,9 +125,8 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
         me.queryGridInfos();
     }
 
-
     /**
-     * @method SuperMap.GetGridCellInfosService.queryGridInfos
+     * @function SuperMap.GetGridCellInfosService.prototype.queryGridInfos
      * @description 执行服务，查询数据集栅格信息信息。
      */
     queryGridInfos() {
@@ -163,7 +149,7 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
 
 
     /**
-     * @method SuperMap.GetGridCellInfosService.getDatasetInfoFailed
+     *  @function SuperMap.GetGridCellInfosService.prototype.getDatasetInfoFailed
      * @description 数据集查询失败，执行此方法。
      * @param result -  {Object} 服务器返回的结果对象。
      */
@@ -171,7 +157,6 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
         var me = this;
         me.serviceProcessFailed(result);
     }
-
 
     CLASS_NAME = "SuperMap.GetGridCellInfosService"
 }

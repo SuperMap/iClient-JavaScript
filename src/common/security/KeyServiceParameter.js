@@ -1,13 +1,8 @@
 import SuperMap from '../SuperMap';
 import {ClientType} from '../REST';
-
 /**
  * @class SuperMap.KeyServiceParameter
- * @constructs SuperMap.KeyServiceParameter
- * @classdesc
- * key申请参数
-
- * @api
+ * @classdesc key申请参数
  */
 export default class KeyServiceParameter {
     name = null;
@@ -15,8 +10,8 @@ export default class KeyServiceParameter {
     clientType = ClientType.SERVER;
     limitation = null;
 
-    /**
-     * @method SuperMap.KeyServiceParameter.initialize
+    /*
+     * @function SuperMap.KeyServiceParameter.prototype.constructor
      * @param options - {Object} 参数。
      */
     constructor(options) {
@@ -24,7 +19,8 @@ export default class KeyServiceParameter {
     }
 
     /**
-     * @method SuperMap.KeyServiceParameter.toJSON
+     * @function SuperMap.KeyServiceParameter.prototype.toJSON
+     * @description 转换成JSON字符串
      * @return {string} 参数的JSON字符串
      */
     toJSON() {

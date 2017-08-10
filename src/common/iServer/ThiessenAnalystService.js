@@ -6,7 +6,6 @@ import GeoJSON from '../format/GeoJSON';
 
 /**
  * @class SuperMap.ThiessenAnalystService
- * @constructs SuperMap.ThiessenAnalystService
  * @classdesc
  * 泰森多边形分析服务类
  * 该类负责将客户设置的泰森多边形分析参数传递给服务端，并接收服务端返回的分析结果数据。
@@ -14,8 +13,7 @@ import GeoJSON from '../format/GeoJSON';
  * 泰森多边形分析的参数支持两种，当参数为 {SuperMap.DatasetThiessenAnalystParameters} 类型
  * 时，执行数据集泰森多边形分析，当参数为 {SuperMap.GeometryThiessenAnalystParameters} 类型时，
  * 执行几何对象泰森多边形分析。
- * @extends {SuperMap.SpatialAnalystBase}
- * @api
+ * @extends SuperMap.SpatialAnalystBase
  * @example 例如：
  * (start code)
  * var myThiessenAnalystService = new SuperMap.ThiessenAnalystService(url, {
@@ -28,21 +26,18 @@ import GeoJSON from '../format/GeoJSON';
  *
  */
 export default  class ThiessenAnalystService extends SpatialAnalystBase {
-
-
     /**
-     * Property: mode
-     * {String} 缓冲区分析类型
+     * @member SuperMap.ThiessenAnalystService.prototype.mode -{String}
+     * @description 缓冲区分析类型
      */
     mode = null;
 
     /**
-     * @method SuperMap.ThiessenAnalystService.initialize
-     * @param options - {Object} 参数。
+     * @function SuperMap.ThiessenAnalystService.prototype.constructor
+     * @param options - {Object} 参数。如:</br>
+     *        eventListeners - {Object} 需要被注册的监听器对象。
      * @param url - {String} 服务的访问地址。
      * 如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * Allowed options properties:</br>
-     * eventListeners - {Object} 需要被注册的监听器对象。
      */
     constructor(url, options) {
         super(url, options);
@@ -52,9 +47,8 @@ export default  class ThiessenAnalystService extends SpatialAnalystBase {
         }
     }
 
-    /*
-     * APIMethod: destroy
-     * 释放资源,将引用资源的属性置空。
+    /**
+     * @inheritDoc
      */
     destroy() {
         super.destroy();
@@ -62,8 +56,7 @@ export default  class ThiessenAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     *
-     * @method SuperMap.ThiessenAnalystService.processAsync
+     * @function SuperMap.ThiessenAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param parameter - {SuperMap.DatasetThiessenAnalystParameters}/{GeometryThiessenAnalystParameters}
      */
@@ -108,7 +101,7 @@ export default  class ThiessenAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     * @method SuperMap.ThiessenAnalystService.toGeoJSONResult
+     * @function SuperMap.ThiessenAnalystService.prototype.toGeoJSONResult
      * @description 将含有geometry的数据转换为geojson格式。
      * @result - {Object} 服务器返回的结果对象。
      */

@@ -4,7 +4,7 @@ import IPortalServiceBase from './iPortalServiceBase';
 /**
  * @class SuperMap.iPortalService
  * @classdesc iPortal服务
- * @extends {SuperMap.iPortalServiceBase}
+ * @extends SuperMap.iPortalServiceBase
  *
  */
 export default  class IPortalService extends IPortalServiceBase {
@@ -37,10 +37,10 @@ export default  class IPortalService extends IPortalServiceBase {
     version = null;
     visitCount = 0;
 
-    /**
-     * @method SuperMap.iPortalService.initialize
-     * @param seviceUrl
-     * @param params
+    /*
+     * @function SuperMap.iPortalService.prototype.constructor
+     * @param seviceUrl -{string} 服务地址
+     * @param params -{string}
      */
 
     constructor(serviceUrl, params) {
@@ -52,9 +52,10 @@ export default  class IPortalService extends IPortalServiceBase {
             this.serviceUrl = serviceUrl + "/" + this.id;
         }
     }
-
     /**
-     * @method SuperMap.iPortalService.load
+     * @function SuperMap.iPortalService.prototype.load
+     * @description 加载服务信息
+     *
      */
 
     load() {
@@ -71,7 +72,9 @@ export default  class IPortalService extends IPortalServiceBase {
     }
 
     /**
-     * @method SuperMap.iPortalService.update
+     * @function SuperMap.iPortalService.prototype.update
+     * @description 更新服务参数
+     *
      */
     update() {
         var serviceUpdateParam = {

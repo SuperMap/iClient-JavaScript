@@ -1,7 +1,12 @@
 import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../../common/SuperMap';
 ol.supermap = ol.supermap || {};
-
+/**
+ * @class ol.source.ThemeFeature
+ * @classdesc 主题特征
+ * @param geometry - {String}
+ * @param attributes -{String}
+ */
 export default class ThemeFeature {
 
     constructor(geometry, attributes) {

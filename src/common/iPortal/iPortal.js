@@ -9,30 +9,30 @@ import IPortalServiceBase from './iPortalServiceBase';
 /**
  * @class SuperMap.iPortal
  * @classdesc iPortal
- * @extends {SuperMap.iPortalServiceBase}
+ * @extends SuperMap.iPortalServiceBase
  *
  */
 export default  class IPortal extends IPortalServiceBase {
-    /**
-     * @method SuperMap.iPortal.initialize
-     * @param iportalUrl
+    /*
+     * @function SuperMap.iPortal.prototype.constructor
+     * @param iportalUrl -{string} 地址
      */
     constructor(iportalUrl) {
         super(iportalUrl);
         this.iportalUrl = iportalUrl;
     }
-
     /**
-     * @method SuperMap.iPortal.load
-     * @param iportalUrl
+     * @function SuperMap.iPortal.prototype.load
+     * @description 页面加载
      */
     load() {
         return FetchRequest.get(this.iportalUrl + '/web');
     }
 
     /**
-     * @method SuperMap.iPortal.queryServices
-     * @param queryParams
+     * @function SuperMap.iPortal.prototype.queryServices
+     * @param queryParams -{string} 查询参数
+     * @description 查询服务
      */
     queryServices(queryParams) {
         var serviceUrl = this.iportalUrl + "/web/services";
@@ -46,8 +46,9 @@ export default  class IPortal extends IPortalServiceBase {
     }
 
     /**
-     * @method SuperMap.iPortal.deleteServices
-     * @param ids
+     * @function SuperMap.iPortal.prototype.deleteServices
+     * @param ids -{number} 服务的序号
+     * @description 删除服务
      */
     deleteServices(ids) {
         var serviceUrl = this.iportalUrl + "/web/services";
@@ -55,8 +56,9 @@ export default  class IPortal extends IPortalServiceBase {
     }
 
     /**
-     * @method SuperMap.iPortal.queryMaps
-     * @param queryParams
+     * @function SuperMap.iPortal.prototype.queryMaps
+     * @param queryParams -{string} 查询参数
+     * @description 获取地图信息
      */
     queryMaps(queryParams) {
         var mapsUrl = this.iportalUrl + "/web/maps";

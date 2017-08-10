@@ -2,7 +2,12 @@ import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import GeoFeature from './theme/geoFeature';
 import Vector from '../../common/iServer/ThemeVector';
-
+/**
+ * @class ol.source.Range
+ * @classdesc 获取范围信息
+ * @param name - {String} 名称
+ * @param opt_options -{Object} 交互时所需可选参数。
+ */
 export default class Range extends GeoFeature {
 
     constructor(name, opt_options) {
@@ -11,14 +16,21 @@ export default class Range extends GeoFeature {
         this.styleGroups = [];
         this.themeField = null;
     }
-
+    /**
+     * @function ol.source.Range.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
     destroy() {
         this.style = null;
         this.themeField = null;
         this.styleGroups = null;
         GeoFeature.prototype.destroy.apply(this, arguments);
     }
-
+    /**
+     * @function ol.source.Range.prototype.addFeatures
+     * @param features -{object} 要创建的专题图形要素
+     * @description 添加专题图特征
+     */
     addFeatures(features) {
         //数组
         if (!(SuperMap.Util.isArray(features))) {
@@ -44,7 +56,11 @@ export default class Range extends GeoFeature {
             this.redrawThematicFeatures(this.map.getView().calculateExtent());
         }
     }
-
+    /**
+     * @function ol.source.Range.prototype.createThematicFeature
+     * @param feature -{object} 要创建的专题图形要素
+     * @description 创建专题图特征
+     */
     createThematicFeature(feature) {
         //赋 style
         var style = this.getStyleByData(feature);
@@ -66,7 +82,11 @@ export default class Range extends GeoFeature {
 
         return thematicFeature;
     }
-
+    /**
+     * @function ol.source.Range.prototype.getStyleByData
+     * @param fea -{object} 要创建的专题图形要素
+     * @description 获取style
+     */
     getStyleByData(fea) {
         var style = {};
         var feature = fea;

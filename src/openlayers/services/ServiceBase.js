@@ -3,7 +3,7 @@ ol.supermap = ol.supermap || {};
 
 /**
  * @class ol.supermap.ServiceBase
- * @description ol.supermap的服务基类。
+ * @classdesc ol.supermap的服务基类。
  * @param url - {String} 与客户端交互的服务地址。
  * @param options - {Object} 参数。
  */

@@ -2,11 +2,8 @@
 import CommonServiceBase from './CommonServiceBase';
 /**
  * @class SuperMap.GetFieldsService
- * @constructs SuperMap.GetFieldsService
- * @classdesc
- * 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
- * @extends {SuperMap.CommonServiceBase}
- * @api
+ * @classdesc 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
+ * @extends SuperMap.CommonServiceBase
  * @example 例如：
  * (start code)
  * var myService = new SuperMap.GetFieldsService(url, {eventListeners: {
@@ -20,29 +17,26 @@ import CommonServiceBase from './CommonServiceBase';
  *
  */
 export default  class GetFieldsService extends CommonServiceBase {
-
-
     /**
-     * APIProperty: datasource
-     * {String} 要查询的数据集所在的数据源名称。
+     * @member SuperMap.GetFieldsService.prototype.datasource -{String}
+     * @description 要查询的数据集所在的数据源名称。
      */
     datasource = null;
 
     /**
-     * APIProperty: dataset
-     * {String} 要查询的数据集名称。
+     *  @member SuperMap.GetFieldsService.prototype.dataset -{String}
+     *  @description 要查询的数据集名称。
      */
     dataset = null;
 
-    /**
-     * @method SuperMap.GetFieldsService.initialize
+    /*
+     * @method SuperMap.GetFieldsService.prototype.constructor
      * @description 字段查询服务构造函数。
      * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/data-world/rest/data 即可。
-     * @param options - {Object} 参数。
-     * Allowed options properties:</br>
-     * eventListeners - {Object} 需要被注册的监听器对象。</br>
-     * datasource - {String}</br>
-     * dataset - {String}</br>
+     * @param options - {Object} 可選参数。如:</br>
+     *        eventListeners - {Object} 需要被注册的监听器对象。</br>
+     *        datasource - {String}</br>
+     *        dataset - {String}</br>
      */
     constructor(url, options) {
         super(url, options);
@@ -52,9 +46,8 @@ export default  class GetFieldsService extends CommonServiceBase {
     }
 
 
-    /*
-     * APIMethod: destroy
-     * 释放资源,将引用资源的属性置空。
+    /**
+     * @inheritDoc
      */
     destroy() {
         super.destroy();
@@ -64,9 +57,9 @@ export default  class GetFieldsService extends CommonServiceBase {
     }
 
 
-    /*
-     * APIMethod: processAsync
-     * 执行服务，查询指定数据集的字段信息。
+    /**
+     * @method SuperMap.GetFieldsService.prototype.processAsync
+     * @description 执行服务，查询指定数据集的字段信息。
      */
     processAsync() {
         var me = this,

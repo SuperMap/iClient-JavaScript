@@ -4,11 +4,8 @@ import MathExpressionAnalysisParameters from './MathExpressionAnalysisParameters
 
 /**
  * @class SuperMap.MathExpressionAnalysisService
- * @constructs SuperMap.MathExpressionAnalysisService
- * @classdesc
- * 栅格代数运算服务类。
- * @extends {SuperMap.SpatialAnalystBase}
- * @api
+ * @classdesc 栅格代数运算服务类。
+ * @extends SuperMap.SpatialAnalystBase
  * @example 例如：
  * (start code)
  * var myMathExpressionAnalysisService = new SuperMap.MathExpressionAnalysisService(url);
@@ -22,29 +19,27 @@ import MathExpressionAnalysisParameters from './MathExpressionAnalysisParameters
  */
 export default  class MathExpressionAnalysisService extends SpatialAnalystBase {
 
-    /**
-     * @method SuperMap.MathExpressionAnalysisService.initialize
-     * @param options - {Object} 参数。
+    /*
+     * @function SuperMap.MathExpressionAnalysisService.prototype.constructor
+     * @param options - {Object} 可选参数。如:</br>
+     *        eventListeners - {Object} 需要被注册的监听器对象。
      * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * Allowed options properties:</br>
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     *
      */
     constructor(url, options) {
         super(url, options);
     }
 
-    /*
-     * APIMethod: destroy
-     * 释放资源,将引用资源的属性置空。
+    /**
+     * @inheritDoc
      */
     destroy() {
         super.destroy();
     }
 
     /**
-     * APIMethod: processAsync
-     * 负责将客户端的查询参数传递到服务端。
-     * @method SuperMap.MathExpressionAnalysisService.processAsync
+     * @function SuperMap.MathExpressionAnalysisService.prototype.processAsync
+     * @description 负责将客户端的查询参数传递到服务端。
      * @param  parameter - {SuperMap.MathExpressionAnalysisParameters}
      */
     processAsync(parameter) {

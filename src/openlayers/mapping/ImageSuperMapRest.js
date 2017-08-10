@@ -3,6 +3,12 @@ import SuperMap from '../../common/SuperMap';
 import  '../../common/security/SecurityManager';
 import  Util from '../core/Util';
 
+/**
+ * @class ol.source.ImageSuperMapRest
+ * @classdesc Rest
+ * @param options - {object} 交互时所需可选参数
+ * @extends BaiduMapLayer
+ */
 export default class ImageSuperMapRest extends ol.source.TileImage {
 
     constructor(options) {
@@ -17,7 +23,12 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         options.serverType = options.serverType || SuperMap.ServerType.ISERVER;
         //为url添加安全认证信息片段
         layerUrl = appendCredential(layerUrl, options.serverType);
-
+        /**
+         * @function ol.source.ImageSuperMapRest.prototype.appendCredential
+         * @param url - {string} 地址
+         * @param serverType - {object} 服务类型
+         * @description 添加凭据
+         */
         function appendCredential(url, serverType) {
             var newUrl = url, credential, value;
             switch (serverType) {

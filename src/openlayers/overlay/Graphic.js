@@ -1,7 +1,11 @@
 import ol from 'openlayers/dist/ol-debug';
 import Util from '../core/Util';
 import './graphic/Graphic';
-
+/**
+ * @class ol.source.Graphic
+ * @classdesc 图形类。
+ * @param options -{Object} 可选图形参数
+ */
 export default class Graphic extends ol.source.ImageCanvas {
 
     constructor(options) {
@@ -33,7 +37,14 @@ export default class Graphic extends ol.source.ImageCanvas {
             return this.canvasContext_.canvas;
         }
     }
-
+    /**
+     * @functionol.source.Graphic.prototype.forEachFeatureAtCoordinate
+     * @description 获取在视图上的特征
+     * @param coordinate -{string} 坐标
+     * @param resolution -{number} 分辨率
+     * @param callback -{function} 回调函数
+     *
+     */
     forEachFeatureAtCoordinate(coordinate, resolution, rotation, hitTolerance, skippedFeatureUids, callback) {
         var graphics = this.getGraphicsInExtent();
         for (var i = 0; i < graphics.length; i++) {
@@ -59,7 +70,12 @@ export default class Graphic extends ol.source.ImageCanvas {
         var dy2 = -center[1];
         return ol.transform.compose(this.imageTransform, dx1, dy1, sx, sy, 0, dx2, dy2);
     }
-
+    /**
+     * @functionol.source.Graphic.prototype.getGraphicsInExtent
+     * @description 获取面积
+     * @param extent -{object} 长度范围
+     *
+     */
     getGraphicsInExtent(extent) {
         var graphics = [];
         if (!extent) {

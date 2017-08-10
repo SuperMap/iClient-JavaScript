@@ -5,19 +5,14 @@ import GeoJSON from '../format/GeoJSON';
 
 /**
  * @class SuperMap.GetFeaturesServiceBase
- * @constructs  SuperMap.GetFeaturesServiceBase
- * @classdesc
- * 数据服务中数据集查询服务基类。
+ * @classdesc 数据服务中数据集查询服务基类。
  * 获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON
- *
- * @extends {SuperMap.CommonServiceBase}
+ * @extends SuperMap.CommonServiceBase
  * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/</br>
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param eventListeners - {Object} 需要被注册的监听器对象。
  * @example
- *
- *
  * (start code)
  * var myService = new SuperMap.GetFeaturesServiceBase(url, {
      *     eventListeners: {
@@ -26,50 +21,48 @@ import GeoJSON from '../format/GeoJSON';
      *     }
      * });
  * (end)
- *
- * @api
  */
 export default  class GetFeaturesServiceBase extends CommonServiceBase {
-
     /**
-     * @property {Boolean} returnContent
-     *          @description 是否立即返回新创建资源的表述还是返回新资源的URI。
-     *           如果为 true，则直接返回新创建资源，即查询结果的表述。
-     *           如果为 false，则返回的是查询结果资源的 URI。默认为 false。
+     * @member SuperMap.GetFeaturesServiceBase.prototype.returnContent - {Boolean}
+     * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
+     *如果为 true，则直接返回新创建资源，即查询结果的表述。
+     *如果为 false，则返回的是查询结果资源的 URI。默认为 false。
      */
     returnContent = true;
 
     /**
-     * @property {Integer} fromIndex
+     * @member SuperMap.GetFeaturesServiceBase.prototype.fromIndex - {Integer}
      * @description查询结果的最小索引号。
-     *         默认值是0，如果该值大于查询结果的最大索引号，则查询结果为空。
+     * 默认值是0，如果该值大于查询结果的最大索引号，则查询结果为空。
      */
     fromIndex = 0;
 
     /**
-     * Property: toIndex
-     * {Integer} 查询结果的最大索引号。
-     *         如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
+     * @member SuperMap.GetFeaturesServiceBase.prototype.toIndex - {Integer}
+     * @description 查询结果的最大索引号。
+     * 如果该值大于查询结果的最大索引号，则以查询结果的最大索引号为终止索引号。
      */
     toIndex = 19;
 
     /**
-     * APIProperty: maxFeatures
-     * {Integer} 进行SQL查询时，用于设置服务端返回查询结果条目数量，默认为1000。
+     * @member SuperMap.GetFeaturesServiceBase.prototype.maxFeatures -{Integer}
+     * @description 进行SQL查询时，用于设置服务端返回查询结果条目数量，默认为1000。
      */
     maxFeatures = null;
 
     /**
-     *  @property {String} format
-     *  @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+     * @member SuperMap.GetFeaturesServiceBase.prototype.format -{String}
+     * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
     format = DataFormat.GEOJSON;
 
-    /* @method SuperMap.GetFeaturesServiceBase.initialize
-     * @description数据集查询服务基类构造函数。
+    /*
+     * @function SuperMap.GetFeaturesServiceBase.prototype.constructor
+     * @description 数据集查询服务基类构造函数。
      * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
-     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；
+     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；<br>
      * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
      * @param options - {Object} 参数。
      *
@@ -99,9 +92,9 @@ export default  class GetFeaturesServiceBase extends CommonServiceBase {
         }
     }
 
-    /*
-     * APIMethod: destroy
-     * 释放资源,将引用资源的属性置空。
+    /**
+     * @function SuperMap.GetFeaturesServiceBase.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
         super.destroy();
@@ -114,9 +107,9 @@ export default  class GetFeaturesServiceBase extends CommonServiceBase {
     }
 
     /**
-     *@method SuperMap.GetFeaturesServiceBase.processAsync
+     * @function SuperMap.GetFeaturesServiceBase.prototype.processAsync
      * @description  负责将客户端的查询参数传递到服务端。
-     *@param params - {GetFeaturesParametersBase} 查询参数。
+     * @param params - {GetFeaturesParametersBase} 查询参数。
      */
     processAsync(params) {
         if (!params) {
@@ -151,7 +144,7 @@ export default  class GetFeaturesServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @method SuperMap.GetFeaturesServiceBase.getFeatureComplete
+     * @function SuperMap.GetFeaturesServiceBase.prototype.getFeatureComplete
      * @description 查询完成，执行此方法。
      * @param result - {Object} 服务器返回的结果对象。
      */

@@ -2,7 +2,6 @@
 import {EngineType} from '../REST';
 /**
  * @class SuperMap.DatasourceConnectionInfo
- * @constructs SuperMap.DatasourceConnectionInfo
  * @classdesc
  * 数据源连接信息类。
  * 该类包括了进行数据源连接的所有信息，如所要连接的服务器名称、数据库名称、用户名以及密码等。
@@ -10,32 +9,29 @@ import {EngineType} from '../REST';
  * 数据源，其连接信息有所区别。所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。
  * 对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，其 他内容是不可以被修改的。
  * 对于用户创建的数据源连接信息对象，其内容都可以修改。
- * @api
  */
 export default  class DatasourceConnectionInfo {
-
-
     /**
-     * APIProperty: alias
-     * {String} 数据源别名。
+     * @member SuperMap.DatasourceConnectionInfo.prototype.alias -{String}
+     * @description 数据源别名。
      */
     alias = null;
 
     /**
-     * APIProperty: connect
-     * {Boolean} 数据源是否自动连接数据。
+     * @member SuperMap.DatasourceConnectionInfo.prototype.connect -{Boolean}
+     * @description 数据源是否自动连接数据。
      */
     connect = null;
 
     /**
-     * APIProperty: dataBase
-     * {String} 数据源连接的数据库名。
+     * @member SuperMap.DatasourceConnectionInfo.prototype.dataBase -{String}
+     * @description 数据源连接的数据库名。
      */
     dataBase = null;
 
     /**
-     * APIProperty: driver
-     * {String} 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。
+     * @member SuperMap.DatasourceConnectionInfo.prototype.driver -{String}
+     * @description 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。
      * 其中，对于SQL Server 数据库与 iServer 发布的 WMTS 服务，此为必设参数。
      * 对于SQL Server 数据库，它使用 ODBC 连接，所设置的驱动程序名为 "SQL Server" 或 "SQL Native Client"；
      * 对于 iServer 发布的 WMTS 服务，设置的驱动名称为 "WMTS"。
@@ -43,38 +39,38 @@ export default  class DatasourceConnectionInfo {
     driver = null;
 
     /**
-     * APIProperty: engineType
-     * {EngineType} 数据源连接的引擎类型。
+     * @member SuperMap.DatasourceConnectionInfo.prototype.engineType -{EngineType}
+     * @description 数据源连接的引擎类型。
      */
     engineType = null;
 
     /**
-     * APIProperty: exclusive
-     * {Boolean} 是否以独占方式打开数据源。
+     * @member SuperMap.DatasourceConnectionInfo.prototype.exclusive-{Boolean}
+     * @description 是否以独占方式打开数据源。
      */
     exclusive = null;
 
     /**
-     * APIProperty: OpenLinkTable
-     * {Boolean} 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。
+     * @member SuperMap.DatasourceConnectionInfo.prototype.OpenLinkTable -{Boolean}
+     * @description 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable打开。
      */
     OpenLinkTable = null;
 
     /**
-     * APIProperty: password
-     * {String} 登录数据源连接的数据库或文件的密码。
+     * @member SuperMap.DatasourceConnectionInfo.prototype.password -{String}
+     * @description 登录数据源连接的数据库或文件的密码。
      */
     password = null;
 
     /**
-     * APIProperty: readOnly
-     * {Boolean} 是否以只读方式打开数据源。
+     * @member SuperMap.DatasourceConnectionInfo.prototype.readOnly -{Boolean}
+     * @description 是否以只读方式打开数据源。
      */
     readOnly = null;
 
     /**
-     * APIProperty: server
-     * {String} 数据库服务器名、文件名或服务地址。
+     * @member SuperMap.DatasourceConnectionInfo.prototype.server -{String}
+     * @description 数据库服务器名、文件名或服务地址。
      * 1.对于SDB和UDB文件，为其文件的绝对路径。注意：当绝对路径的长度超过UTF-8编码格式的260字节长度，该数据源无法打开。
      * 2.对于Oracle数据库，其服务器名为其TNS服务名称。
      * 3.对于SQL Server数据库，其服务器名为其系统的DSN(Database Source Name)名称。
@@ -89,14 +85,13 @@ export default  class DatasourceConnectionInfo {
     server = null;
 
     /**
-     * APIProperty: user
-     * {String} 登录数据库的用户名。
+     * @member SuperMap.DatasourceConnectionInfo.prototype.user -{String}
+     * @description 登录数据库的用户名。
      */
     user = null;
 
-    /**
-     *
-     * @method SuperMap.DatasourceConnectionInfo.initialize
+    /*
+     * @method SuperMap.DatasourceConnectionInfo.prototype.constructor
      * @description 数据源连接信息类构造函数。
      * @param options - {Object} 参数。
      * Allowed options properties:</br>
@@ -118,9 +113,9 @@ export default  class DatasourceConnectionInfo {
         }
     }
 
-    /*
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+    /**
+     * @method SuperMap.DatasourceConnectionInfo.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
         var me = this;

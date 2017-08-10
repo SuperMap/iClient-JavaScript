@@ -1,31 +1,25 @@
 ﻿import SuperMap from '../SuperMap';
 import BufferAnalystParameters from './BufferAnalystParameters';
 /**
- * Class:  SuperMap.GeometryBufferAnalystParameters
- * 几何对象缓冲区分析参数类
+ * @class SuperMap.GeometryBufferAnalystParameters
+ * @classdesc 几何对象缓冲区分析参数类
  * 对指定的某个几何对象做缓冲区分析。通过该类可以指定要做缓冲区分析的几何对象、缓冲区参数等。
- *
- * Inherits from:
- *  - <SuperMap.BufferAnalystParameters>
+ *  @extends SuperMap.BufferAnalystParameters
  */
 export default  class GeometryBufferAnalystParameters extends BufferAnalystParameters {
 
     /**
-     * Property: sourceGeometry
-     * {Object} 要做缓冲区分析的几何对象(支持Point、LineString、LinearRing、Polygon)。必设字段。
+     * @member SuperMap.GeometryBufferAnalystParameters.prototype.sourceGeometry -{Object}
+     * @description 要做缓冲区分析的几何对象(支持Point、LineString、LinearRing、Polygon)。必设字段。
      */
     sourceGeometry = null;
 
-    /**
-     * Constructor:  SuperMap.GeometryBufferAnalystParameters
-     * 几何对象缓冲区分析参数类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * sourceGeometry - {Object} 要做缓冲区分析的几何对象。必设字段。
-     * bufferSetting - {SuperMap.BufferSetting} 设置缓冲区通用参数。
+    /*
+     * @function SuperMap.GeometryBufferAnalystParameters.prototype.constructor
+     * @description 几何对象缓冲区分析参数类构造函数。
+     * @param options - {Object} 可选参数。如:</br>
+     *        sourceGeometry - {Object} 要做缓冲区分析的几何对象。必设字段。</br>
+     *        bufferSetting - {SuperMap.BufferSetting} 设置缓冲区通用参数。
      */
     constructor(options) {
         super(options);
@@ -34,10 +28,8 @@ export default  class GeometryBufferAnalystParameters extends BufferAnalystParam
         }
     }
 
-
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @inheritDoc
      */
     destroy() {
         super.destroy();

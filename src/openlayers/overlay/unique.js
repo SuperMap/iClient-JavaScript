@@ -2,7 +2,12 @@ import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../common/SuperMap';
 import GeoFeature from './theme/geoFeature';
 import Vector from '../../common/iServer/ThemeVector';
-
+/**
+ * @class ol.source.Unique
+ * @classdesc 地理专题图
+ * @param name - {String}
+ * @param opt_options -{Object}
+ */
 export default class Unique extends GeoFeature {
 
     constructor(name, opt_options) {

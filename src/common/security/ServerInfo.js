@@ -1,27 +1,39 @@
 import SuperMap from '../SuperMap';
 import {ServerType} from '../REST';
-
 /**
  * @class SuperMap.ServerInfo
- * @constructs SuperMap.ServerInfo
- * @classdesc
- * 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
- * @api
+ * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
  */
 
+
 export default class ServerInfo {
-    //服务器类型:SuperMap.ServerType
+    /**
+     * @member SuperMap.ServerInfo.prototype.type -{SuperMap.ServerType}
+     * @description 服务器类型 如：http://supermapiserver:8090
+     */
     type = null;
-    //如：http://supermapiserver:8090
+
+    /**
+     * @member SuperMap.ServerInfo.prototype.server -{string}
+     * @description 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
+     */
     server = null;
-    //非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
+
+    /**
+     * @member SuperMap.ServerInfo.prototype.tokenServiceUrl -{string}
+     * @description 非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
+     */
     tokenServiceUrl = null;
-    //非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
+
+    /**
+     * @member SuperMap.ServerInfo.prototype.keyServiceUrl -{string}
+     * @description 非必填。
+     */
     keyServiceUrl = null;
 
     /**
-     * @method SuperMap.ServerInfo.initialize
-     * @param type
+     * @function SuperMap.ServerInfo.prototype.constructor
+     * @param type -{string} 类型
      * @param options - {Object} 参数。
      */
     constructor(type, options) {

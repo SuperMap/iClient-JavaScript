@@ -4,12 +4,10 @@ import RouteCalculateMeasureParameters from './RouteCalculateMeasureParameters';
 
 /**
  * @class SuperMap.RouteCalculateMeasureService
- * @constructs SuperMap.RouteCalculateMeasureService
  * @classdesc
  * 该类负责将客户设置的计算指定点的M值参数传递给服务端，并接收服务端返回的
  *      指定点的M值。通过该类支持的事件的监听函数参数获取
- * @extends {SuperMap.SpatialAnalystBase}
- * @api
+ * @extends SuperMap.SpatialAnalystBase
  * @example 实例化该类如下例所示：
  * (start code)
  * var parameters = new SuperMap.RouteCalculateMeasureParameters({
@@ -63,27 +61,26 @@ import RouteCalculateMeasureParameters from './RouteCalculateMeasureParameters';
      */
 export default  class RouteCalculateMeasureService extends SpatialAnalystBase {
 
-    /**
-     * @method SuperMap.RouteCalculateMeasureService.initialize
-     * @param options - {Object} 参数。
+    /*
+     * @function SuperMap.RouteCalculateMeasureService.prototype.constructor
+     * @param options - {Object} 可选参数。如:</br>
+     *        eventListeners - {Object} 需要被注册的监听器对象。
      * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
-     * Allowed options properties:</br>
-     * eventListeners - {Object} 需要被注册的监听器对象。
+     *
      */
     constructor(url, options) {
         super(url, options);
     }
 
-    /*
-     * APIMethod: destroy
-     * 释放资源,将引用的资源属性置空。
+    /**
+     * @inheritDoc
      */
     destroy() {
         super.destroy();
     }
 
     /**
-     * @method SuperMap.RouteCalculateMeasureService.processAsync
+     * @function SuperMap.RouteCalculateMeasureService.prototype.processAsync
      * @description 负责将客户端的基于路由对象计算指定点M值操作的参数传递到服务端。
      * @param params - {SuperMap.RouteCalculateMeasureParameters}
      */
@@ -105,7 +102,7 @@ export default  class RouteCalculateMeasureService extends SpatialAnalystBase {
     }
 
     /**
-     * @method SuperMap.RouteCalculateMeasureService.getJsonParameters
+     * @function SuperMap.RouteCalculateMeasureService.prototype.getJsonParameters
      * @description 将参数转化为 JSON 字符串。
      * @param params - {SuperMap.RouteCalculateMeasureParameters}
      * @return {Object} 转化后的JSON字符串。
