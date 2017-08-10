@@ -170,6 +170,18 @@ var exampleConfig = {
                     thumbnail: "ol_generateSpatialDataService.png",
                     fileName: "04_generateSpatialDataService"
                 }, {
+                    name: "点定里程",
+                    thumbnail: "ol_routeCalculateMeasureService.png",
+                    fileName: "04_routeCalculateMeasureService"
+                }, {
+                    name: "里程定点",
+                    thumbnail: "ol_routeLocatorService_point.png",
+                    fileName: "04_routeLocatorService_point"
+                }, {
+                    name: "里程定线",
+                    thumbnail: "ol_routeLocatorService_line.png",
+                    fileName: "04_routeLocatorService_line"
+                },{
                     name: "点密度插值分析",
                     thumbnail: "ol_interpolationAnalystService-Density.png",
                     fileName: "04_interpolationAnalystService_Density"
@@ -193,6 +205,10 @@ var exampleConfig = {
                     name: "地形曲率计算",
                     thumbnail: "ol_terrainCurvatureCalculationService.png",
                     fileName: "04_terrainCurvatureCalculationService"
+                }, {
+                    name: "离散点插值分析",
+                    thumbnail: "ol_interpolationAnalystService_IDW_geometry.png",
+                    fileName: "04_interpolationAnalystService_IDW_geometry"
                 }, {
                     name: "栅格代数运算",
                     thumbnail: "ol_mathExpressionAnalysisService.png",
