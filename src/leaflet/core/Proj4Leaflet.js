@@ -7,7 +7,12 @@ L.Proj._isProj4Obj = function (a) {
     typeof a.forward !== 'undefined');
 };
 
+/**
+ * @class L.Proj.Projection
+ * @classdesc leaflet Proj投影类
+ */
 L.Proj.Projection = L.Class.extend({
+
     initialize: function (code, def, bounds) {
         var isP4 = L.Proj._isProj4Obj(code);
         this._proj = isP4 ? code : this._projFromCodeDef(code, def);
@@ -44,9 +49,10 @@ L.Proj.Projection = L.Class.extend({
         return proj4(code);
     }
 });
+
 /**
  * @class L.Proj.CRS
- * @description leaflet Proj投影定义类
+ * @classdesc leaflet Proj投影定义类
  * @extends  L.CRS
  * @example
  * 用法：
@@ -58,8 +64,15 @@ L.Proj.Projection = L.Class.extend({
  *       crs: crs
  *      ...
  *    })
+ * @param a -{String} proj srsCode。
+ * @param b -{String} proj def。
+ * @param c -{Object} options。可选参数：<br>
+ *                     origin -{Array|L.Point} 原点。必填<br>
+ *                     scales -{Array} 比例尺数组 <br>
+ *                     scaleDenominators -{Array} 比例尺分母数组 <br>
+ *                     resolutions -{Array} 分辨率数组 <br>
+ *                     bounds -{Array|L.Bounds} 范围 <br>
  */
-
 L.Proj.CRS = L.Class.extend({
     includes: L.CRS,
 
@@ -67,18 +80,6 @@ L.Proj.CRS = L.Class.extend({
         transformation: new L.Transformation(1, 0, -1, 0)
     },
 
-    /**
-     * @function L.Proj.CRS.prototype.initialize
-     * @description L.Proj.CRS 投影类构造函数
-     * @param a -{String} proj srsCode。
-     * @param b -{String} proj def。
-     * @param c -{Object} options。可选参数：<br>
-     *                     origin -{Array|L.Point} 原点。必填<br>
-     *                     scales -{Array} 比例尺数组 <br>
-     *                     scaleDenominators -{Array} 比例尺分母数组 <br>
-     *                     resolutions -{Array} 分辨率数组 <br>
-     *                     bounds -{Array|L.Bounds} 范围 <br>
-     */
     initialize: function (a, b, c) {
         var code,
             proj,
@@ -134,6 +135,11 @@ L.Proj.CRS = L.Class.extend({
 
     },
 
+    /**
+     * @function L.Proj.CRS.prototype.scale
+     * @description 通过空间范围获取比例尺值
+     * @param zoom - {number} 空间范围
+     */
     scale: function (zoom) {
         var iZoom = Math.floor(zoom),
             baseScale,
@@ -152,6 +158,11 @@ L.Proj.CRS = L.Class.extend({
         }
     },
 
+    /**
+     * @function L.Proj.CRS.prototype.zoom
+     * @description 通过比例尺获取当前空前范围
+     * @param scale - {number} 比例尺
+     */
     zoom: function (scale) {
         // Find closest number in this._scales, down
         var downScale = this._closestElement(this._scales, scale),

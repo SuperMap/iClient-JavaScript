@@ -214,8 +214,8 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromCarto
      * @description 从Carto中获取有效的样式
-     * @param zoom - {} 范围
-     * @param scale - {array} 比例尺
+     * @param zoom - {number} 范围
+     * @param scale - {number} 比例尺
      * @param shader
      * @param feature - {} 要素
      * @param fromServer todo

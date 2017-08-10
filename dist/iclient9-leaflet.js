@@ -12787,8 +12787,8 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = _leaflet2.default.supermap.C
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromCarto
      * @description 从Carto中获取有效的样式
-     * @param zoom - {} 范围
-     * @param scale - {array} 比例尺
+     * @param zoom - {number} 范围
+     * @param scale - {number} 比例尺
      * @param shader
      * @param feature - {} 要素
      * @param fromServer todo
@@ -13005,8 +13005,8 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @abstract L.supermap.GeoFeatureThemeLayer
- * @classdesc 地理几何专题要素型专题图层基类。此类型专题图的专题要素形状就是由 feature.geometry 决定。此类不建议直接实例化调用。
+ * @function L.supermap.GeoFeatureThemeLayer
+ * @classdesc  地理几何专题要素型专题图层基类。此类型专题图的专题要素形状就是由 feature.geometry 决定。此类不建议直接实例化调用。
  * @extends L.supermap.ThemeLayer
  * @param name - {String} 专题图名
  * @param options - {object} 需要设置得参数对象
@@ -13404,8 +13404,8 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @abstract L.supermap.ThemeLayer
- * @classdesc 专题图层基类
+ * @class L.supermap.ThemeLayer
+ * @classdesc 专题图层基类，调用建议使用其子类实现类。
  * @param name - {String} 专题图层名称
  * @param options -{object} 待设置得参数。
  */
@@ -13897,7 +13897,7 @@ var CanvasRenderer = exports.CanvasRenderer = _leaflet2.default.Canvas.extend({
 
     /**
      * @function L.supermap.CanvasRenderer.prototype.getOffset
-     * @description
+     * @description 停止渲染
      */
     getOffset: function getOffset() {
         return this._tileCoord.scaleBy(this._size).subtract(this._map.getPixelOrigin());
@@ -16249,7 +16249,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.ex
     /**
      * @function L.supermap.control.changeTileVersion.prototype.setContent
      * @description 设置版本相关信息
-     * @param version {name:{String},desc:{String}}
+     * @param version - {String} 版本信息
      */
     setContent: function setContent(version) {
         var content = _leaflet2.default.Util.extend({}, version);
@@ -16298,7 +16298,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.ex
     /**
      * @function L.supermap.control.changeTileVersion.prototype.setLayer
      * @description 绑定图层
-     * @param layer 报绑定的图层
+     * @param layer - {L.supermap.tiledMapLayer} 绑定的图层
      */
     setLayer: function setLayer(layer) {
         if (layer) {
@@ -16321,7 +16321,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.ex
     /**
      * @function L.supermap.control.changeTileVersion.prototype.update
      * @description 更新缓存切片集及进度条长度
-     * @param tileVersions 待更新的切片集
+     * @param tileVersions - {number} 待更新的切片版本
      */
     update: function update(tileVersions) {
         this.tileVersions = tileVersions;
@@ -16556,9 +16556,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /**
  * @class L.supermap.control.Logo
- * @description Logo控件。</br>
- *              map初始化的配置项为logoControl，如果为true，则显示控件；否则不显示该控件。目前默认显示。
- * @constructor
+ * @classdesc Logo控件。</br>
+ *            map初始化的配置项为logoControl，如果为true，则显示控件；否则不显示该控件。目前默认显示。
+ * @extends L.Control
  * @example
  * (start code)
  *  L.supermap.control.Logo({
@@ -17105,7 +17105,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
 
     /**
      * @function L.supermap.webmap.prototype.load
-     * @description
+     * @description 登陆窗口后添加地图图层
      */
     load: function load() {
         if (this.options.server.indexOf('http://') < 0 && this.options.server.indexOf('https://') < 0) {
@@ -17249,7 +17249,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
     /**
      * @function L.supermap.webmap.prototype.getResolutionsFromScales
      * @description 通过比例尺获取分辨率
-     * @param scales - {Array} 排序比例尺数组
+     * @param scales - {Array<number>} 排序比例尺数组
      * @param dpi - {number} 屏幕分辨率
      * @param units - {String} 地图的单位
      * @param datum - {SuperMap.Datum} 大地参照系类
@@ -18787,7 +18787,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
     /**
      * @function L.superMap.tiledVectorLayer.prototype.getScale
      * @description 通过空间范围获取比例尺
-     * @param zoom - {String} 空间范围
+     * @param zoom - {number} 空间范围
      */
     getScale: function getScale(zoom) {
         var me = this;
@@ -57037,7 +57037,7 @@ var nonProjection = exports.nonProjection = function nonProjection(bounds) {
  * @class L.CRS.NonEarthCRS
  * @classdesc 非地球坐标对象
  * @extends L.Class
- * @param options - {} 构建非地球坐标对象参数
+ * @param options - {object} 构建非地球坐标对象参数
  */
 var NonEarthCRS = exports.NonEarthCRS = _leaflet2.default.Class.extend({
 
@@ -57060,7 +57060,7 @@ var NonEarthCRS = exports.NonEarthCRS = _leaflet2.default.Class.extend({
     /**
      * @function L.CRS.NonEarthCRS.prototype.scale
      * @description 通过空间范围计算比例尺
-     * @param zoom - {} 空间范围
+     * @param zoom - {number} 空间范围
      * @return {number} 得到的比例尺
      */
     scale: function scale(zoom) {
@@ -57138,7 +57138,12 @@ _leaflet2.default.Proj._isProj4Obj = function (a) {
     return typeof a.inverse !== 'undefined' && typeof a.forward !== 'undefined';
 };
 
+/**
+ * @class L.Proj.Projection
+ * @classdesc leaflet Proj投影类
+ */
 _leaflet2.default.Proj.Projection = _leaflet2.default.Class.extend({
+
     initialize: function initialize(code, def, bounds) {
         var isP4 = _leaflet2.default.Proj._isProj4Obj(code);
         this._proj = isP4 ? code : this._projFromCodeDef(code, def);
@@ -57175,9 +57180,10 @@ _leaflet2.default.Proj.Projection = _leaflet2.default.Class.extend({
         return (0, _proj2.default)(code);
     }
 });
+
 /**
  * @class L.Proj.CRS
- * @description leaflet Proj投影定义类
+ * @classdesc leaflet Proj投影定义类
  * @extends  L.CRS
  * @example
  * 用法：
@@ -57189,8 +57195,15 @@ _leaflet2.default.Proj.Projection = _leaflet2.default.Class.extend({
  *       crs: crs
  *      ...
  *    })
+ * @param a -{String} proj srsCode。
+ * @param b -{String} proj def。
+ * @param c -{Object} options。可选参数：<br>
+ *                     origin -{Array|L.Point} 原点。必填<br>
+ *                     scales -{Array} 比例尺数组 <br>
+ *                     scaleDenominators -{Array} 比例尺分母数组 <br>
+ *                     resolutions -{Array} 分辨率数组 <br>
+ *                     bounds -{Array|L.Bounds} 范围 <br>
  */
-
 _leaflet2.default.Proj.CRS = _leaflet2.default.Class.extend({
     includes: _leaflet2.default.CRS,
 
@@ -57198,18 +57211,6 @@ _leaflet2.default.Proj.CRS = _leaflet2.default.Class.extend({
         transformation: new _leaflet2.default.Transformation(1, 0, -1, 0)
     },
 
-    /**
-     * @function L.Proj.CRS.prototype.initialize
-     * @description L.Proj.CRS 投影类构造函数
-     * @param a -{String} proj srsCode。
-     * @param b -{String} proj def。
-     * @param c -{Object} options。可选参数：<br>
-     *                     origin -{Array|L.Point} 原点。必填<br>
-     *                     scales -{Array} 比例尺数组 <br>
-     *                     scaleDenominators -{Array} 比例尺分母数组 <br>
-     *                     resolutions -{Array} 分辨率数组 <br>
-     *                     bounds -{Array|L.Bounds} 范围 <br>
-     */
     initialize: function initialize(a, b, c) {
         var code, proj, def, options;
 
@@ -57259,6 +57260,11 @@ _leaflet2.default.Proj.CRS = _leaflet2.default.Class.extend({
         this.infinite = !this.options.bounds;
     },
 
+    /**
+     * @function L.Proj.CRS.prototype.scale
+     * @description 通过空间范围获取比例尺值
+     * @param zoom - {number} 空间范围
+     */
     scale: function scale(zoom) {
         var iZoom = Math.floor(zoom),
             baseScale,
@@ -57277,6 +57283,11 @@ _leaflet2.default.Proj.CRS = _leaflet2.default.Class.extend({
         }
     },
 
+    /**
+     * @function L.Proj.CRS.prototype.zoom
+     * @description 通过比例尺获取当前空前范围
+     * @param scale - {number} 比例尺
+     */
     zoom: function zoom(scale) {
         // Find closest number in this._scales, down
         var downScale = this._closestElement(this._scales, scale),
@@ -57529,7 +57540,7 @@ _leaflet2.default.supermap.ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.fillForeColor
-     * @description
+     * @description 填充前景色
      */
     fillForeColor: {
         leafletStyle: "fillColor",
@@ -57539,7 +57550,7 @@ _leaflet2.default.supermap.ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.foreColor
-     * @description
+     * @description 前景色
      */
     foreColor: {
         leafletStyle: "color",
@@ -57549,7 +57560,7 @@ _leaflet2.default.supermap.ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.markerSize
-     * @description
+     * @description 图标大小
      */
     markerSize: {
         leafletStyle: "markerSize",
@@ -57560,7 +57571,7 @@ _leaflet2.default.supermap.ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.lineColor
-     * @description
+     * @description 线要素颜色
      */
     lineColor: {
         leafletStyle: "color",
@@ -64602,10 +64613,10 @@ module.exports = {
 	"_requiredBy": [
 		"/"
 	],
-	"_resolved": "http://registry.npm.taobao.org/proj4/download/proj4-2.4.3.tgz",
+	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
 	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
 	"_spec": "proj4@2.4.3",
-	"_where": "F:\\dev\\iClient9",
+	"_where": "G:\\iClient9",
 	"author": "",
 	"bugs": {
 		"url": "https://github.com/proj4js/proj4js/issues"

@@ -45,7 +45,7 @@ export var CanvasRenderer = L.Canvas.extend({
 
     /**
      * @function L.supermap.CanvasRenderer.prototype.getOffset
-     * @description
+     * @description 停止渲染
      */
     getOffset: function () {
         return this._tileCoord.scaleBy(this._size).subtract(this._map.getPixelOrigin());

@@ -3,8 +3,8 @@ import SuperMap from '../../../common/SuperMap';
 import L from "leaflet";
 
 /**
- * @abstract L.supermap.ThemeLayer
- * @classdesc 专题图层基类
+ * @class L.supermap.ThemeLayer
+ * @classdesc 专题图层基类，调用建议使用其子类实现类。
  * @param name - {String} 专题图层名称
  * @param options -{object} 待设置得参数。
  */

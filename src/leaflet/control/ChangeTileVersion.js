@@ -53,7 +53,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function L.supermap.control.changeTileVersion.prototype.setContent
      * @description 设置版本相关信息
-     * @param version {name:{String},desc:{String}}
+     * @param version - {String} 版本信息
      */
     setContent: function (version) {
         var content = L.Util.extend({}, version);
@@ -102,7 +102,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function L.supermap.control.changeTileVersion.prototype.setLayer
      * @description 绑定图层
-     * @param layer 报绑定的图层
+     * @param layer - {L.supermap.tiledMapLayer} 绑定的图层
      */
     setLayer: function (layer) {
         if (layer) {
@@ -125,7 +125,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function L.supermap.control.changeTileVersion.prototype.update
      * @description 更新缓存切片集及进度条长度
-     * @param tileVersions 待更新的切片集
+     * @param tileVersions - {number} 待更新的切片版本
      */
     update: function (tileVersions) {
         this.tileVersions = tileVersions;

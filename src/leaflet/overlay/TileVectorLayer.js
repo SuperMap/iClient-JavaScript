@@ -265,7 +265,7 @@ export var  TileVectorLayer = VectorGrid.extend({
     /**
      * @function L.superMap.tiledVectorLayer.prototype.getScale
      * @description 通过空间范围获取比例尺
-     * @param zoom - {String} 空间范围
+     * @param zoom - {number} 空间范围
      */
     getScale: function (zoom) {
         var me = this;

@@ -31,7 +31,7 @@ export var nonProjection = function (bounds) {
  * @class L.CRS.NonEarthCRS
  * @classdesc 非地球坐标对象
  * @extends L.Class
- * @param options - {} 构建非地球坐标对象参数
+ * @param options - {object} 构建非地球坐标对象参数
  */
 export var NonEarthCRS = L.Class.extend({
 
@@ -56,7 +56,7 @@ export var NonEarthCRS = L.Class.extend({
     /**
      * @function L.CRS.NonEarthCRS.prototype.scale
      * @description 通过空间范围计算比例尺
-     * @param zoom - {} 空间范围
+     * @param zoom - {number} 空间范围
      * @return {number} 得到的比例尺
      */
     scale: function (zoom) {

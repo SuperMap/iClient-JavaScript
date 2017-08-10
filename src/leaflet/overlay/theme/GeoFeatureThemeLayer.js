@@ -7,8 +7,8 @@ import CommontypesConversion from '../../core/CommontypesConversion';
 import L from "leaflet";
 
 /**
- * @abstract L.supermap.GeoFeatureThemeLayer
- * @classdesc 地理几何专题要素型专题图层基类。此类型专题图的专题要素形状就是由 feature.geometry 决定。此类不建议直接实例化调用。
+ * @function L.supermap.GeoFeatureThemeLayer
+ * @classdesc  地理几何专题要素型专题图层基类。此类型专题图的专题要素形状就是由 feature.geometry 决定。此类不建议直接实例化调用。
  * @extends L.supermap.ThemeLayer
  * @param name - {String} 专题图名
  * @param options - {object} 需要设置得参数对象

@@ -43,7 +43,7 @@ export var WebMap = L.LayerGroup.extend({
 
     /**
      * @function L.supermap.webmap.prototype.load
-     * @description
+     * @description 登陆窗口后添加地图图层
      */
     load: function () {
         if (this.options.server.indexOf('http://') < 0 && this.options.server.indexOf('https://') < 0) {
@@ -189,7 +189,7 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @function L.supermap.webmap.prototype.getResolutionsFromScales
      * @description 通过比例尺获取分辨率
-     * @param scales - {Array} 排序比例尺数组
+     * @param scales - {Array<number>} 排序比例尺数组
      * @param dpi - {number} 屏幕分辨率
      * @param units - {String} 地图的单位
      * @param datum - {SuperMap.Datum} 大地参照系类

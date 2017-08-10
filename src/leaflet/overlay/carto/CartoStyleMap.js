@@ -85,7 +85,7 @@ L.supermap.ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.fillForeColor
-     * @description
+     * @description 填充前景色
      */
     fillForeColor: {
         leafletStyle: "fillColor",
@@ -95,7 +95,7 @@ L.supermap.ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.foreColor
-     * @description
+     * @description 前景色
      */
     foreColor: {
         leafletStyle: "color",
@@ -105,7 +105,7 @@ L.supermap.ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.markerSize
-     * @description
+     * @description 图标大小
      */
     markerSize: {
         leafletStyle: "markerSize",
@@ -116,7 +116,7 @@ L.supermap.ServerStyleMap = {
 
     /**
      * @member L.supermap.ServerStyleMap.prototype.lineColor
-     * @description
+     * @description 线要素颜色
      */
     lineColor: {
         leafletStyle: "color",
