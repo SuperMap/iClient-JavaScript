@@ -22,6 +22,7 @@ module.exports = function (config) {
                     plugins: ['transform-class-properties']
                 }],
                 require('browserify-css'),
+                require('browserify-imgify'),
                 [require('browserify-istanbul'), {
                     instrumenterConfig: {
                         embedSource: true
