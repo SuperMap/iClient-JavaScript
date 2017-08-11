@@ -54,7 +54,7 @@ export var VectorGrid = L.GridLayer.extend({
     /**
      * @function L.supermap.VectorGrid.prototype.createTile
      * @description 创建地切片图层
-     * @param coords - {} 切片坐标
+     * @param coords - {Object} 切片坐标参数对象
      * @param done - {} todo
      */
     createTile: function (coords, done) {

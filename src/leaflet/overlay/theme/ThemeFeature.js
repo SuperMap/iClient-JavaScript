@@ -44,7 +44,7 @@ export var ThemeFeature = L.Class.extend({
     /**
      * @function L.supermap.ThemeFeature.prototype.reverseLatLngs
      * @description 反算坐标
-     * @param latlngs - {L.latlngs} 坐标值
+     * @param latlngs - {L.latlng} 坐标值
      */
     reverseLatLngs: function (latlngs) {
         if (!L.Util.isArray(latlngs)) {

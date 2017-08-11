@@ -172,7 +172,7 @@ export class MapVLayer extends SuperMap.Layer {
      * @description 重置当前MapV图层的div，再一次与Map控件保持一致。
      *              修改当前显示范围，当平移或者缩放结束后开始重绘MapV图的渲染效果。
      * @param bounds - {SuperMap.Bounds} 图层范围
-     * @param zoomChanged - {Boolean} 空间是否改变
+     * @param zoomChanged - {Boolean} 缩放级别是否改变
      * @param dragging - {Boolean} 是否拖动
      */
     moveTo(bounds, zoomChanged, dragging) {

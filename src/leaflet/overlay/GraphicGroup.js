@@ -31,7 +31,7 @@ export var GraphicGroup = L.Path.extend({
 
     /**
      * @function L.supermap.GraphicGroup.prototype.onAdd
-     * @description 添加画布？todo
+     * @description 添加图形
      */
     onAdd: function () {
             this._canvas = document.createElement('canvas');

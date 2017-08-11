@@ -26,7 +26,6 @@ import Graph from './Graph';
  * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  *
  * @example
- * (start code)
  * // sectorStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
@@ -62,7 +61,6 @@ import Graph from './Graph';
  *      }
  *  }
  * ]
- * (end)
  * sectorHoverStyle - {Object} 饼图扇形 hover 状态时的样式，sectorHoverAble 为 true 时有效。</br>
  * sectorHoverAble - {Object} 是否允许饼图扇形使用 hover 状态，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽饼图扇形对专题图层事件的响应。</br>
  * sectorClickAble - {Object} 是否允许饼图扇形被点击，默认允许。同时设置 sectorHoverAble 和 sectorClickAble 为 false，可以直接屏蔽饼图扇形对专题图层事件的响应。

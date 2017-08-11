@@ -48,7 +48,7 @@ export var RankSymbolThemeLayer = GraphThemeLayer.extend({
      * @function L.supermap.RankSymbolThemeLayer.prototype.
      * @description 创建专题要素（图形）
      * @param feature  - {L.feature} 要创建的专题图形要素
-     * @return {*}
+     * @return {SuperMap.Feature.Theme}
      */
     createThematicFeature: function (feature) {
         var me = this;

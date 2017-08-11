@@ -42,7 +42,7 @@ export var BaiduTileLayer = L.TileLayer.extend({
     /**
      * @function L.supermap.baiduTileLayer.prototype.getTileUrl
      * @description 获取切片地址
-     * @param coords - {} 坐标参数
+     * @param coords - {Object} 坐标参数对象
      */
     getTileUrl: function (coords) {
         return L.Util.template(this.url, {

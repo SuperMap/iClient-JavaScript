@@ -58,14 +58,9 @@ export default  class JSONFormat extends Format {
     /**
      * @function SuperMap.Format.JSON.prototype.read
      * @description 将一个符合json结构的字符串进行解析。
-     *
-     * Parameters:
-     * json - {String} 符合json结构的字符串。
-     * filter - {Function} 过滤方法，最终结果的每一个键值对都会调用该过滤方法，
-     * 并在对应的值的位置替换成该方法返回的值。
-     *
-     * Returns:
-     * {Object} 对象，数组，字符串或数字。
+     * @param json - {String} 符合json结构的字符串。
+     * @param filter - {Function} 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
+     * @return {Object} 对象，数组，字符串或数字。
      */
     read(json, filter) {
         var object;

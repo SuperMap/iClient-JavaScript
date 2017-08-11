@@ -202,7 +202,7 @@ export var  TileVectorLayer = VectorGrid.extend({
     /**
      * @function L.superMap.tiledVectorLayer.prototype.getVectorTileLayerStyle
      * @description 获取图层风格信息，当CartoCSS中包含有对该图层的渲染信息时，优先获取,否则获取layers资源下layerSytle的渲染信息
-     * @param coords - {} 图层坐标 //todo
+     * @param coords - {Object} 图层坐标参数对象
      * @param feature - {L.feature} 要获取的要是
      */
     getVectorTileLayerStyle: function (coords, feature) {
@@ -264,8 +264,8 @@ export var  TileVectorLayer = VectorGrid.extend({
 
     /**
      * @function L.superMap.tiledVectorLayer.prototype.getScale
-     * @description 通过空间范围获取比例尺
-     * @param zoom - {number} 空间范围
+     * @description 通过缩放级别获取比例尺
+     * @param zoom - {number} 缩放级别
      */
     getScale: function (zoom) {
         var me = this;
@@ -277,7 +277,7 @@ export var  TileVectorLayer = VectorGrid.extend({
     /**
      * @function L.superMap.tiledVectorLayer.prototype.getScaleFromCoords
      * @description 通过坐标获取比例尺
-     * @param coords - {} 图层坐标系
+     * @param coords - {Object} 图层坐标参数对象
      */
     getScaleFromCoords: function (coords) {
         var me = this, scale;
@@ -293,7 +293,7 @@ export var  TileVectorLayer = VectorGrid.extend({
     /**
      * @function L.superMap.tiledVectorLayer.prototype.getDefaultScale
      * @description 获取默认比例尺
-     * @param coords - {} 图层坐标
+     * @param coords - {Object} 图层坐标参数对象
      */
     getDefaultScale: function (coords) {
         var me = this, crs = me._crs;

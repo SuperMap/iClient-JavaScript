@@ -62,7 +62,7 @@ export var DataFlowLayer = L.GeoJSON.extend({
     /**
      * @function L.supermap.DataFlowLayer.prototype.onRemove
      * @description 删除指定地图
-     * @param map  - {L.map} 待删除的地图
+     * @param map - {L.map} 待删除的地图
      */
     onRemove: function (map) {
         this.dataService.unSubscribe();
@@ -71,7 +71,7 @@ export var DataFlowLayer = L.GeoJSON.extend({
     /**
      * @function L.supermap.DataFlowLayer.prototype.setPrjCoordSys
      * @description 设置地图投影坐标系统
-     * @param prjCoordSys - {} 投影坐标系统
+     * @param prjCoordSys - {Object} 投影坐标系统
      */
     setPrjCoordSys: function (prjCoordSys) {
         this.dataService.setPrjCoordSys(prjCoordSys);

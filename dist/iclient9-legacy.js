@@ -2205,7 +2205,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
          * @description 重置当前MapV图层的div，再一次与Map控件保持一致。
          *              修改当前显示范围，当平移或者缩放结束后开始重绘MapV图的渲染效果。
          * @param bounds - {SuperMap.Bounds} 图层范围
-         * @param zoomChanged - {Boolean} 空间是否改变
+         * @param zoomChanged - {Boolean} 缩放级别是否改变
          * @param dragging - {Boolean} 是否拖动
          */
 
@@ -4067,6 +4067,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.GeoCodingParameter
  * @classdesc 地理正向匹配参数类。
+ * @param options - {Object} 参数。
  */
 var GeoCodingParameter = function () {
 
@@ -4183,11 +4184,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.GeoDecodingParameter
  * @classdesc 地理反向匹配参数类。
+ * @param options - {Object} 参数。
  */
 var GeoDecodingParameter = function () {
 
     /*
-     * @method SuperMap.GeoDecodingParameter.prototype.constructor
+     * @function SuperMap.GeoDecodingParameter.prototype.constructor
      * @param options - {Object} 参数。
      */
 
@@ -5617,6 +5619,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.KeyServiceParameter
  * @classdesc key申请参数
+ * @param options - {Object} 参数。
  */
 var KeyServiceParameter = function () {
 
@@ -5708,7 +5711,7 @@ _SuperMap2.default.SecurityManager = {
      * @function SuperMap.SecurityManager.prototype.generateToken
      * @description 从服务器获取一个token,在此之前要注册服务器信息
      * @param url {String}-服务器域名+端口，如：http://localhost:8092
-     * @param tokenParam -{SuperMap.TokenServiceParameter}
+     * @param tokenParam -{SuperMap.TokenServiceParameter} 令牌参数
      */
     generateToken: function generateToken(url, tokenParam) {
         var serverInfo = this.servers[url];
@@ -5831,7 +5834,10 @@ _SuperMap2.default.SecurityManager = {
         this.tokens = null;
         this.servers = null;
     },
-
+    /**
+     * @function SuperMap.SecurityManager.prototype.destroyToken
+     * @description 清空令牌信息
+     */
     destroyToken: function destroyToken(url) {
         if (!url) {
             return;
@@ -5842,7 +5848,10 @@ _SuperMap2.default.SecurityManager = {
             delete this.tokens[domain];
         }
     },
-
+    /**
+     * @function SuperMap.SecurityManager.prototype.destroyToken
+     * @description 清空服务授权码
+     */
     destroyKey: function destroyKey(id) {
         if (!id) {
             return;
@@ -6013,12 +6022,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.TokenServiceParameter
  * @classdesc token申请参数
+ * @param options - {Object} 参数。
  */
 var TokenServiceParameter = function () {
 
     /*
      * @function SuperMap.TokenServiceParameter.prototype.constructor
-     * * @description 地图缓存参数类
+     *  @description 地图缓存参数类
      *  @param options - {Object} 参数。
      */
 

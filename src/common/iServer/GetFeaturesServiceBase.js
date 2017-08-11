@@ -15,11 +15,11 @@ import GeoJSON from '../format/GeoJSON';
  * @example
  * (start code)
  * var myService = new SuperMap.GetFeaturesServiceBase(url, {
-     *     eventListeners: {
-     *         "processCompleted": getFeatureCompleted,
-     *         "processFailed": getFeatureError
-     *     }
-     * });
+ *     eventListeners: {
+ *         "processCompleted": getFeatureCompleted,
+ *         "processFailed": getFeatureError
+ *     }
+ * });
  * (end)
  */
 export default  class GetFeaturesServiceBase extends CommonServiceBase {
@@ -33,7 +33,7 @@ export default  class GetFeaturesServiceBase extends CommonServiceBase {
 
     /**
      * @member SuperMap.GetFeaturesServiceBase.prototype.fromIndex - {Integer}
-     * @description查询结果的最小索引号。
+     * @description 查询结果的最小索引号。
      * 默认值是0，如果该值大于查询结果的最大索引号，则查询结果为空。
      */
     fromIndex = 0;

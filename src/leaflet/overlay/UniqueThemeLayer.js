@@ -16,7 +16,7 @@ export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
 
     initialize: function (name, options) {
         GeoFeatureThemeLayer.prototype.initialize.call(this, name, options);
-        //{Array(ThemeStyle)} 图层中专题要素的样式
+        //{Array<SuperMap.ThemeStyle>} 图层中专题要素的样式
         this.style = [];
         //{String} 用于指定专题要素样式的属性字段名称。
         // 此属性字段是要用户数据（feature） attributes 中包含的字段，且字段对应的值的类型必须是数值型。使用标签分组显示还需要设置 styleGroups 属性。

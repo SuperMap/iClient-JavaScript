@@ -34,7 +34,7 @@ export var WMTSLayer = L.TileLayer.extend({
     /**
      * @function L.supermap.WMTSLayer.prototype.getTileUrl
      * @description 获取切片图层地址
-     * @param coords - {} 切片图层坐标参数
+     * @param coords - {Object} 切片图层坐标参数对象
      */
     getTileUrl: function (coords) { // (Point, Number) -> String
         var zoom = this._getZoomForUrl();

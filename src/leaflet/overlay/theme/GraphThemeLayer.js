@@ -1,14 +1,3 @@
-/**
- * Class: GraphThemeLayer
- * 统计专题图图层。
- *
- * 统计专题图通过为每个要素绘制统计图表来反映其对应的专题值的大小。它可同时表示多个字段属性信息，在区域本身与各区域之间形成横向和纵向的对比。
- * 统计专题图多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。
- * 目前提供的统计图类型有：柱状图（Bar），折线图（Line），饼图（Pie），三维柱状图（Bar3D），点状图（Point），环状图（Ring）。
- *
- * Inherits from:
- *  - <ThemeLayer>
- */
 import SuperMap from '../../../common/SuperMap';
 import '../../../common/REST';
 import '../../../common/iServer/Bar';
@@ -27,7 +16,11 @@ import CommontypesConversion from '../../core/CommontypesConversion';
 
 /**
  * @class L.supermap.GraphThemeLayer
- * @classdesc 图表专题图层类。
+ * @classdesc 统计专题图图层。<br>
+ *            统计专题图通过为每个要素绘制统计图表来反映其对应的专题值的大小。它可同时表示多个字段属性信息，在区域本身与各区域之间形成横向和纵向的对比。<br>
+ *            统计专题图多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。<br>
+ *            目前提供的统计图类型有：柱状图（Bar），折线图（Line），饼图（Pie），三维柱状图（Bar3D），点状图（Point），环状图（Ring）。
+ * @extends L.supermap.ThemeLayer
  * @param name - {String} 专题图表名称
  * @param chartsType - {String} 图表类型。目前可用："Bar", "Line", "Pie"。
  * @param options -{object} 待设置得参数。
@@ -49,7 +42,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
      *  chartsSetting 对象通常都具有以下 5 个基础可设属性
      *  width - {Number} 专题要素（图表）宽度，必设参数。
      *  height - {Number} 专题要素（图表）高度，必设参数。
-     *  codomain - {Array{Number}} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+     *  codomain - {Array<Number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
      *  XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。
      *  YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。
      *  dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
@@ -276,7 +269,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
      * @function L.supermap.GraphThemeLayer.prototype.isPointInPoly
      * @description 判断一个点是否在多边形里面。(射线法)
      * @param pt - {Object} 需要判定的点对象，该对象含有属性x(横坐标)，属性y(纵坐标)。
-     * @param poly - {Array(Objecy)}  多边形节点数组。<br>
+     * @param poly - {Array<Object>}  多边形节点数组。<br>
      *        例如一个四边形：[{"x":1,"y":1},{"x":3,"y":1},{"x":6,"y":4},{"x":2,"y":10},{"x":1,"y":1}]
      */
     isPointInPoly: function (pt, poly) {
@@ -368,8 +361,8 @@ export var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GraphThemeLayer.prototype.getWeightFieldValue
      * @description 获取权重字段的值。
-     * @param feature - {SuperMap.Feature.Vector} 数据。
-     * @param fields - {String} 字段名数组。
+     * @param feature - {SuperMap.Feature.Vector} 矢量要素。
+     * @param fields - {Array<String>} 字段名数组。
      * @param defaultValue - {Number} 当通过 weightField 获取不到权重值时，使用 defaultValue 作为权重值。
      */
     getWeightFieldValue: function (feature, weightField, defaultValue) {

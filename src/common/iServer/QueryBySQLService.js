@@ -7,7 +7,6 @@ import QueryBySQLParameters from './QueryBySQLParameters';
  * @classdesc SQL 查询服务类。在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
  * @extends SuperMap.QueryService
  * @example
- * (start code)
  * var queryParam = new SuperMap.FilterParameter({
  *     name: "Countries@World.1",
  *     attributeFilter: "Pop_1994>1000000000 and SmArea>900"
@@ -23,7 +22,6 @@ import QueryBySQLParameters from './QueryBySQLParameters';
  * queryBySQLService.processAsync(queryBySQLParams);
  * function queryCompleted(object){//todo};
  * function queryError(object){//todo};
- * (end)
  * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。

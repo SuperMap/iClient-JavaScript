@@ -9,6 +9,11 @@ import FetchRequest from '../util/FetchRequest';
  */
 export default class OnlineServiceBase {
 
+    /**
+     * @function SuperMap.OnlineServiceBase.prototype.constructor
+     * @description Online服务基类的构造函数
+     * @param options - {Object} 创建online服务可选参数
+     */
     constructor(options) {
         var me = this;
         options = options || {};
@@ -16,6 +21,15 @@ export default class OnlineServiceBase {
         me.serverType = ServerType.ONLINE;
     }
 
+    /*
+     * @function SuperMap.OnlineServiceBase.prototype.request
+     * @description 请求online服务
+     * @param method - {function}
+     * @param url - {String} 服务地址
+     * @param param
+     * @param requestOptions
+     * @return {Promise.<TResult>|jQuery.deferred|jQuery.jqXHR|jQuery.Promise|*}
+     */
     request(method, url, param, requestOptions) {
         url = this.createCredentialUrl(url);
         return FetchRequest.commit(method, url, param, requestOptions).then(function (response) {
@@ -23,7 +37,11 @@ export default class OnlineServiceBase {
         });
     }
 
-    //追加授权信息
+    /**
+     * @function SuperMap.OnlineServiceBase.prototype.createCredentialUrl
+     * @description 追加授权信息
+     * @param url - {String} 对接的online服务地址
+     */
     createCredentialUrl(url) {
         var newUrl = url,
             key = this.getCredential();

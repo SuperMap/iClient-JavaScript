@@ -240,7 +240,7 @@ export var ThemeLayer = L.Layer.extend({
      * @function L.supermap.ThemeLayer.prototype.getFeaturesByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      * @param attrName - {String} key 值
-     * @param attrValue - {String}  value 值
+     * @param attrValue - {String} value 值
      * @return {Array} 返回所有匹配的要素数组。
      */
     getFeaturesByAttribute: function (attrName, attrValue) {
@@ -258,8 +258,8 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.ThemeLayer.prototype.update
-     * @description 调整图层
-     * @param bounds - {L.bounds} 调整范围
+     * @description 更新图层
+     * @param bounds - {L.bounds} 图层范围
      */
     update: function (bounds) {
         var me = this;
@@ -337,7 +337,7 @@ export var ThemeLayer = L.Layer.extend({
 
     /**
      * @function L.supermap.ThemeLayer.prototype.off
-     * @description 移除专题要素事件监听 。
+     * @description 移除专题要素事件监听。
      * @param event - {Event} 监听事件
      * @param callback - {function} 回调函数
      * @param context - {String} 信息

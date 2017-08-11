@@ -108,7 +108,6 @@ export default class ThemeGraph extends Theme {
      *              目前所有的专题图都支持以内存数组的方式制作专题图，但统计专题图与其他专题图指定内存数组的方式不同，<br>
      *              统计专题图使用 memoryKeys 指定内存数组，而其他专题图则使用 memoryData 来指定内存数组。
      * @example
-     * (start code)
      *  memoryKeys的使用方法如：
      *   function addThemeGraph() {
      *      removeTheme();
@@ -178,7 +177,6 @@ export default class ThemeGraph extends Theme {
      *              });
      *       themeService.processAsync(themeParameters);
      *   }
-     * (end)
      */
     memoryKeys = null;
 

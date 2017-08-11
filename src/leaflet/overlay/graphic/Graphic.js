@@ -18,7 +18,7 @@ export var Graphic = L.Class.extend({
     /**
      * @function L.supermap.graphic.prototype.setLatlng
      * @description 设置经纬度
-     * @param latlng 经纬度参数
+     * @param latlng - {L.latlng} 经纬度参数
      */
     setLatlng: function (latlng) {
         this._latlng = latlng;

@@ -2,7 +2,7 @@ import SuperMap from '../SuperMap';
 import OnlineServiceBase from './OnlineServiceBase';
 
 /**
- * @class SuperMap.OnlineServiceBase
+ * @class SuperMap.OnlineData
  * @classdesc Online myData服务
  */
 export default  class OnlineData extends OnlineServiceBase {
@@ -49,12 +49,13 @@ export default  class OnlineData extends OnlineServiceBase {
     //数据的缩略图路径。
     thumbnail = null;
 
+    //TODO 目前并没有对接服务支持的所有操作，日后需要补充完整
     /**
-     ** TODO 目前并没有对接服务支持的所有操作，日后需要补充完整
-     * 所有查询返回的是一个Promise
-     * 在外部使用的时候通过Promise的then方法获取异步结果
-     *
-     * 用法：
+     * @function SuperMap.OnlineData.prototype.constructor
+     * @description 所有查询返回的是一个Promise在外部使用的时候通过Promise的then方法获取异步结果
+     * @param serviceRootUrl - {String} online服务地址
+     * @param options - {Object} 对接online服务可选参数
+     * @example
      * var service = new SuperMap.Online().queryDatas(param)
      *                  .then(function(services){
      *                      var service=services[0];
@@ -63,7 +64,6 @@ export default  class OnlineData extends OnlineServiceBase {
      *                              console.log(result.succeed);
      *                      })
      *                  });
-     *
      */
     constructor(serviceRootUrl, options) {
         super(serviceUrl);
@@ -76,8 +76,10 @@ export default  class OnlineData extends OnlineServiceBase {
         }
     }
 
-
-    //通过url请求获取该服务完整信息
+    /**
+     * @function SuperMap.OnlineData.prototype.load
+     * @description 通过url请求获取该服务完整信息
+     */
     load() {
         if (!this.serviceUrl) {
             return;
@@ -88,14 +90,18 @@ export default  class OnlineData extends OnlineServiceBase {
         });
     }
 
-
-    //获取数据发布的所有服务
+    /**
+     * @function SuperMap.OnlineData.prototype.getPublishedServices
+     * @description 获取数据发布的所有服务
+     */
     getPublishedServices() {
         return this.dataItemServices;
     }
 
-
-    //获取数据的权限信息
+    /**
+     * @function SuperMap.OnlineData.prototype.getAuthorizeSetting
+     * @description 获取数据的权限信息
+     */
     getAuthorizeSetting() {
         return this.authorizeSetting;
     }

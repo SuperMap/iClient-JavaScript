@@ -11,7 +11,6 @@ import FacilityAnalystSinks3DParameters from './FacilityAnalystSinks3DParameters
  *                最近设施分析结果通过该类支持的事件的监听函数参数获取
  * @extends SuperMap.CommonServiceBase
  * @example
- * (start code)
  * var myFacilityAnalystSinks3DService = new SuperMap.FacilityAnalystSinks3DService(url, {
  *     eventListeners: {
  *	       "processCompleted": facilityAnalystSinks3DCompleted,

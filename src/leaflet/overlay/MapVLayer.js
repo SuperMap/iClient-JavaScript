@@ -226,7 +226,7 @@ export var mapVLayer = function (dataSet, mapVOptions, options) {
 L.supermap.mapVLayer = mapVLayer;
 
 L.Map.include({
-    /**
+    /*
      * 获取精确的像素坐标.
      * 当需要绘制比较平滑的曲线的时候可调用此方法代替latLngToContainerPoint
      * @param latlng

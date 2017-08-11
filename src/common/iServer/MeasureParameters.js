@@ -34,9 +34,7 @@ export default class MeasureParameters {
      * @member SuperMap.MeasureParameters.prototype.distanceMode -{String}
      * @description 用来指定量算的方式为按球面长度'Geodesic'或者平面长度'Planar'来计算，默认为'Geodesic'。
      * @example
-     * (start code)
      * var param = new SuperMap.MeasureParameters(getmetry,{distanceMode:'Planar'});
-     * (end)
      */
     distanceMode = null;
 

@@ -42,8 +42,8 @@ export var EchartsMapLayer = L.Layer.extend({
      * @function L.supermap.EchartsMapLayer.prototype.setOption
      * @description 设置图表地图参数
      * @param echartsOptions - {object} 图表参数
-     * @param notMerge todo
-     * @param lazyUpdate
+     * @param notMerge - {boolean} 是否合并参数
+     * @param lazyUpdate - {String} 后台自动更新
      */
     setOption: function (echartsOptions, notMerge, lazyUpdate){
         if(echartsOptions){
@@ -163,7 +163,7 @@ export var EchartsMapLayer = L.Layer.extend({
  * @class L.supermap.LeafletMapCoordSys
  * @classdesc leaflet地图坐标系统类
  * @param LeafletMap - {L.map}
- * @param api
+ * @param api - {Object} 接口
  */
 export function LeafletMapCoordSys(LeafletMap, api) {
     this._LeafletMap = LeafletMap

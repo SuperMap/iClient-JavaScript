@@ -98,7 +98,7 @@ export default  class TransferLine {
     }
 
     /**
-     * @function SuperMap.TransferLine.prototype.fromJson
+     * @function SuperMap.TransferLine.fromJson
      * @description 将返回结果转化为 SuperMap.TransferLine 对象。
      * @param jsonObject - {Object} 新的返回结果。
      * @return {SuperMap.TransferLine} 转化后的 SuperMap.TransferLine 对象。

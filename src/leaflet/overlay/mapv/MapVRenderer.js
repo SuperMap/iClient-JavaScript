@@ -6,10 +6,10 @@ var BaseLayer = baiduMapLayer? baiduMapLayer.__proto__ : Function;
  * @class L.supermap.MapVRenderer
  * @classdesc 地图渲染类
  * @extends L.BaseLayer
- * @param map - {L.Map} 待渲染的地图
+ * @param map - {L.map} 待渲染的地图
  * @param layer - {L.Layer} 待渲染的图层
  * @param dataSet - {DataSet} 待渲染的数据集
- * @param options - {L.Map} 渲染的参数
+ * @param options - {Object} 渲染的参数
  */
 export default class MapVRenderer extends BaseLayer {
 

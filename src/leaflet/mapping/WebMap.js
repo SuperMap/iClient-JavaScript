@@ -27,7 +27,7 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @function L.supermap.webmap.prototype.defaultFeatureLayerPopup
      * @description 默认图层弹出框
-     * @param layer -{} 指定图层
+     * @param layer -{L.Layer} 指定图层
      */
     defaultFeatureLayerPopup: function (layer) {
         return layer.feature.properties.attributes.title + ":" + layer.feature.properties.attributes.description;
@@ -79,7 +79,7 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @function L.supermap.webmap.prototype.addLayerWrapper
      * @description 添加图层容器
-     * @param layer - {} 待添加的图层
+     * @param layer - {L.Layer} 待添加的图层
      * @param isBaseLayer -{boolean} 是否为底图层
      * @param options - {object} 创建地图的可选参数
      */
@@ -304,7 +304,6 @@ export var WebMap = L.LayerGroup.extend({
      * @description 创建天地图图层
      * @param layerInfo - {object} 图层信息
      * @param epsgCode - {number} epsg编码
-     * @return {*}
      */
     createTiandituLayer: function (layerInfo, epsgCode) {
         var proj = epsgCode === 4326 ? "c" : "w";

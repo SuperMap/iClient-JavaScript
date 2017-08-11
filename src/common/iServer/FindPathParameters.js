@@ -15,7 +15,7 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  * @param options - {Object} 可选参数。如：<br>
  *        isAnalyzeById - {Boolean} 是否通过节点 ID 指定路径分析的结点。<br>
  *        hasLeastEdgeCount - {Boolean} 是否按照弧段数最少的进行最佳路径分析。<br>
- *        nodes - {Array()} 最佳路径分析经过的结点或设施点数组，必设字段。该字段至少包含两个点。<br>
+ *        nodes - {Array} 最佳路径分析经过的结点或设施点数组，必设字段。该字段至少包含两个点。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 export default  class FindPathParameters {

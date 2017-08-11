@@ -52,29 +52,17 @@ export default class ChartQueryParameters {
      *      资源 resourceInfo。默认为 true，表示返回 recordsets。
      * @example
      *  Recordsets 和 ResourceInfo 都存储在查询结果类 QueryResult 中。当:
-     *  (start code)
      *  ReturnContent = true
-     *  (end)
      *  表示返回查询记录集，这时查询结果存储在:
-     *  (start code)
      *      QueryResult.Recordsets
-     *  (end)
      *  中，而
-     *  (start code)
      *      QueryResult.ResourceInfo
-     *  (end)
      *  为空；当:
-     *  (start code)
      *      ReturnContent = false
-     *  (end)
      *  时，表示返回查询结果资源，这时查询结果存储在:
-     *  (start code)
      *      QueryResult.ResourceInfo
-     *  (end)
      *  中，而
-     *  (start code)
      *      QueryResult.Recordsets
-     *  (end)
      *  为空。
      */
     returnContent = true;
@@ -91,17 +79,12 @@ export default class ChartQueryParameters {
      */
     expectCount = null;
 
-    /*
-     * Constructor: ChartQueryParameters
-     *  初始化 ChartQueryParameters 类的新实例。
-     */
     constructor(options) {
         if (!options) {
             return;
         }
         SuperMap.Util.extend(this, options);
     }
-
 
     /**
      * @function destroy

@@ -7,7 +7,7 @@ import SuperMap from '../../../common/SuperMap';
 /**
  * @class L.supermap.VectorTileJSON
  * @classdesc iServer 矢量瓦片json表述出图
- * @param
+ * @param url - {String} 矢量瓦片json表述服务地址
  */
 export var VectorTileJSON = L.Class.extend({
 
@@ -17,7 +17,7 @@ export var VectorTileJSON = L.Class.extend({
 
     /**
      * @function L.supermap.VectorTileJSON.prototype.getTile
-     * @description 获取切片
+     * @description 获取瓦片
      */
     getTile: function () {
         var me = this;

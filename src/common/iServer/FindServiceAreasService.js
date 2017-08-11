@@ -12,14 +12,12 @@ import GeoJSON from '../format/GeoJSON';
  *               服务区分析结果通过该类支持的事件的监听函数参数获取
  * @extends SuperMap.NetworkAnalystServiceBase
  * @example
- * (start code)
  * var myFindServiceAreasService = new SuperMap.FindServiceAreasService(url, {
  *          eventListeners: {
  *              "processCompleted": findServiceAreasCompleted,
  *              "processFailed": findServiceAreasError
  *          }
  * });
- * (end)
  * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。

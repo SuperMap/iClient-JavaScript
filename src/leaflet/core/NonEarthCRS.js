@@ -55,8 +55,8 @@ export var NonEarthCRS = L.Class.extend({
 
     /**
      * @function L.CRS.NonEarthCRS.prototype.scale
-     * @description 通过空间范围计算比例尺
-     * @param zoom - {number} 空间范围
+     * @description 通过缩放级别计算比例尺
+     * @param zoom - {number} 缩放级别
      * @return {number} 得到的比例尺
      */
     scale: function (zoom) {

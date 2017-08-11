@@ -16,7 +16,7 @@ export var VectorTilePBF = L.Class.extend({
 
     /**
      * @function L.supermap.VectorTilePBF.prototype.getTile
-     * @description 获取切片
+     * @description 获取瓦片PBF(MVT)
      */
     getTile: function () {
         var me = this;

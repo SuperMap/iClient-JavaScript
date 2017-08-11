@@ -11,7 +11,7 @@ import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
  *        weightName -{String} 指定的权值字段信息对象的名称。<br>
  *        isUncertainDirectionValid -{Boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
  *                                              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。<br>
- *        sourceNodeIDs - {Array(Number)} 指定的设施点ID数组
+ *        sourceNodeIDs - {Array<number>} 指定的设施点ID数组
  */
 export default  class FacilityAnalystUpstream3DParameters extends FacilityAnalyst3DParameters {
 

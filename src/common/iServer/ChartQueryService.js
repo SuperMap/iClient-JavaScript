@@ -16,7 +16,6 @@ import GeoJSON from '../format/GeoJSON';
  * @param options - {Object} 服务交互时所需的可选参数。
  * @example
  * 下面示例显示了如何进行海图属性查询：
- * (start code)
  * var nameArray = ["GB4X0000_52000"];
  * var chartQueryFilterParameter = new ChartQueryFilterParameter({
  *       isQueryPoint:true,
@@ -40,7 +39,6 @@ import GeoJSON from '../format/GeoJSON';
  *        "processFailed":processFailed
  *    });
  * chartQueryService.processAsync(chartQueryParameters);
- * (end)
  */
 export default class ChartQueryService extends CommonServiceBase {
 

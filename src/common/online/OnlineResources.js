@@ -1,6 +1,6 @@
 import SuperMap from '../SuperMap';
 
-/**
+/*
  * 服务发布状态
  */
 export var ServiceStatus = SuperMap.ServiceStatus = {
@@ -11,7 +11,8 @@ export var ServiceStatus = SuperMap.ServiceStatus = {
     UNPUBLISHED: "UNPUBLISHED",
     UNPUBLISHED_FAILED: "UNPUBLISHED_FAILED"
 };
-/**
+
+/*
  * 数据项类型
  */
 export var DataItemType = SuperMap.DataItemType = {
@@ -42,7 +43,7 @@ export var DataItemType = SuperMap.DataItemType = {
     WORKSPACE: "WORKSPACE"
 };
 
-/**
+/*
  * 数据排序字段
  */
 export var DataItemOrderBy = SuperMap.DataItemOrderBy = {
@@ -58,8 +59,7 @@ export var DataItemOrderBy = SuperMap.DataItemOrderBy = {
     USERNAME: "USERNAME"
 };
 
-
-/**
+/*
  * 关键字查询时的过滤字段
  */
 export var FilterField = SuperMap.FilterField = {

@@ -51,7 +51,7 @@ export var VectorTile = L.Class.extend({
      * @function L.supermap.VectorTile.prototype.render
      * @description 渲染切片要素
      * @param tileFeature - {L.feature} 要渲染的切片要素
-     * @param coords - {} 切片坐标
+     * @param coords - {Object} 切片坐标参数对象
      */
     render: function (tileFeature, coords) {
         if (!tileFeature) {

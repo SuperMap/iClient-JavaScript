@@ -3,167 +3,163 @@ import {TextAlignment} from '../REST';
 import ServerColor from './ServerColor';
 
 /**
- * Class: SuperMap.ServerTextStyle
- * 服务端文本风格类
- * 该类用于定义文本风格的相关属性。
+ * @class SuperMap.ServerTextStyle
+ * @classdesc 服务端文本风格类
+ * @description 该类用于定义文本风格的相关属性。
+ * @param options - {Object} 可选参数。如：<br>
+ *        align - {TextAlignment} 文本的对齐方式。<br>
+ *        backColor - {SuperMap.ServerColor} 文本的背景色。<br>
+ *        foreColor - {SuperMap.ServerColor} 文本的前景色。<br>
+ *        backOpaque - {Boolean} 文本背景是否不透明。<br>
+ *        sizeFixed - {Boolean} 文本大小是否固定。<br>
+ *        fontHeight - {Number} 文本字体的高度。<br>
+ *        fontWidth - {Number} 文本字体的宽度。<br>
+ *        fontWeight - {Integer} 文本字体的磅数。<br>
+ *        fontName - {String} 文本字体的名称。<br>
+ *        bold - {Boolean} 文本是否为粗体字。<br>
+ *        italic - {Boolean}文本是否采用斜体。<br>
+ *        italicAngle - {Number} 字体倾斜角度。<br>
+ *        shadow - {Boolean} 文本是否有阴影。<br>
+ *        strikeout - {Boolean} 文本字体是否加删除线。<br>
+ *        outline - {Boolean} 是否以轮廓的方式来显示文本的背景。<br>
+ *        opaqueRate - {Number} 注记文字的不透明度。<br>
+ *        underline - {Boolean} 文本字体是否加下划线。<br>
+ *        rotation -  {Number} 文本旋转的角度。
  */
-export default  class ServerTextStyle {
+export default class ServerTextStyle {
 
     /**
-     * APIProperty: align
-     * {TextAlignment} 文本的对齐方式。
-     * 默认为 SuperMap.TextAlignment.BASELINECENTER（基准线居中对齐）。
+     * @member SuperMap.ServerTextStyle.prototype.align -{TextAlignment}
+     * @description 文本的对齐方式。默认为 SuperMap.TextAlignment.BASELINECENTER（基准线居中对齐）。
      */
     align = TextAlignment.BASELINECENTER;
 
     /**
-     * APIProperty: backColor
-     * {SuperMap.ServerColor} 文本的背景色。
-     * 默认为白色。
+     * @member SuperMap.ServerTextStyle.prototype.backColor -{SuperMap.ServerColor}
+     * @description 文本的背景色。默认为白色。
      */
     backColor = null;
 
     /**
-     * APIProperty: foreColor
-     * {SuperMap.ServerColor} 文本的前景色。
-     * 默认为黑色。
+     * @member SuperMap.ServerTextStyle.prototype.foreColor -{SuperMap.ServerColor}
+     * @description 文本的前景色。默认为黑色。
      */
     foreColor = null;
 
     /**
-     * APIProperty: backOpaque
-     * {Boolean} 文本背景是否不透明。
-     * true 表示文本背景不透明。
+     * @member SuperMap.ServerTextStyle.prototype.backOpaque -{Boolean}
+     * @description 文本背景是否不透明。true 表示文本背景不透明。
      */
     backOpaque = false;
 
     /**
-     * APIProperty: sizeFixed
-     * {Boolean} 文本大小是否固定。
-     * 默认为 true，表示图片为固定像素大小，具体大小请参考 fontHeight 。
-     * 当设为 false 时，图片会随着地图缩放而缩放。
+     * @member SuperMap.ServerTextStyle.prototype.sizeFixed -{Boolean}
+     * @description 文本大小是否固定。默认为 true，表示图片为固定像素大小，具体大小请参考 fontHeight。当设为 false 时，图片会随着地图缩放而缩放。
      */
     sizeFixed = true;
 
     /**
-     * APIProperty: fontHeight
-     * {Number} 文本字体的高度，默认为6，
-     * 单位与 sizeFixed 有关，当 sizeFixed 为 False 时，即非固定文本大小时使用地图坐标单位，
-     * 如地理坐标系下的地图中单位为度；当 sizeFixed 为 True 时，单位为毫米（mm）。
+     * @member SuperMap.ServerTextStyle.prototype.fontHeight -{Number}
+     * @description 文本字体的高度，默认为6，单位与 sizeFixed 有关，当 sizeFixed 为 False 时，即非固定文本大小时使用地图坐标单位，
+     *              如地理坐标系下的地图中单位为度；当 sizeFixed 为 True 时，单位为毫米（mm）。
      */
     fontHeight = 6;
 
     /**
-     * APIProperty: fontWidth
-     * {Number} 文本字体的宽度。
-     * 字体的宽度以英文字符为标准，由于一个中文字符相当于两个英文字符，默认为0地图坐标单位。
+     * @member SuperMap.ServerTextStyle.prototype.fontWidth -{Number}
+     * @description 文本字体的宽度。字体的宽度以英文字符为标准，由于一个中文字符相当于两个英文字符，默认为0地图坐标单位。
      */
     fontWidth = 0;
 
     /**
-     * APIProperty: fontWeight
-     * {Integer} 文本字体的磅数。
-     * 表示粗体的具体数值。取值范围为从0－900之间的整百数，默认值为400。
+     * @member SuperMap.ServerTextStyle.prototype.fontWeight -{Integer}
+     * @description 文本字体的磅数。表示粗体的具体数值。取值范围为从0－900之间的整百数，默认值为400。
      */
     fontWeight = 400;
 
     /**
-     * APIProperty: fontName
-     * {String} 文本字体的名称。
-     * 默认值为 Times New Roman。
+     * @member SuperMap.ServerTextStyle.prototype.fontName -{String}
+     * @description 文本字体的名称。默认值为 Times New Roman。
      */
     fontName = "Times New Roman";
 
     /**
-     * APIProperty: bold
-     * {Boolean} 文本是否为粗体字。
-     * true 表示为粗体。默认值为 false，即文本不是粗体字。
+     * @member SuperMap.ServerTextStyle.prototype.bold -{Boolean}
+     * @description 文本是否为粗体字。true 表示为粗体。默认值为 false，即文本不是粗体字。
      */
     bold = false;
 
     /**
-     * APIProperty: italic
-     * {Boolean}文本是否采用斜体。
-     * true 表示采用斜体。默认为 false。
+     * @member SuperMap.ServerTextStyle.prototype.italic -{Boolean}
+     * @description 文本是否采用斜体。true 表示采用斜体。默认为 false。
      */
     italic = false;
 
     /**
-     * APIProperty: italicAngle
-     * {Number} 字体倾斜角度。
-     * 正负度之间，以度为单位，精确到0.1度，默认为0度。当倾斜角度为0度，为系统默认的字体倾斜样式。正负度是指以纵轴为起始零度线，
-     * 其纵轴左侧为正，右侧为负。允许的最大角度为60，最小-60。大于60按照60处理，小于-60按照-60处理。目前只对标签专题图有效。
+     * @member SuperMap.ServerTextStyle.prototype.italicAngle -{Number}
+     * @description 字体倾斜角度。正负度之间，以度为单位，精确到0.1度，默认为0度。当倾斜角度为0度，为系统默认的字体倾斜样式。
+     *              正负度是指以纵轴为起始零度线，其纵轴左侧为正，右侧为负。允许的最大角度为60，最小-60。大于60按照60处理，小于-60按照-60处理。目前只对标签专题图有效。
      */
     italicAngle = 0;
 
     /**
-     * APIProperty: shadow
-     * {Boolean} 文本是否有阴影。
-     * true 表示给文本增加阴影。默认值为 false，即文本没有阴影。
+     * @member SuperMap.ServerTextStyle.prototype.shadow -{Boolean}
+     * @description 文本是否有阴影。true 表示给文本增加阴影。默认值为 false，即文本没有阴影。
      */
     shadow = false;
 
     /**
-     * APIProperty: strikeout
-     * {Boolean} 文本字体是否加删除线。
-     * true 表示加删除线。默认值为 false，即文本字体不加删除线。
+     * @member SuperMap.ServerTextStyle.prototype.strikeout -{Boolean}
+     * @description 文本字体是否加删除线。true 表示加删除线。默认值为 false，即文本字体不加删除线。
      */
     strikeout = false;
 
     /**
-     * APIProperty: outline
-     * {Boolean} 是否以轮廓的方式来显示文本的背景。
-     * true 表示以轮廓的方式来显示文本的背景。默认值为 false，表示不以轮廓的方式来显示文本的背景。
+     * @member SuperMap.ServerTextStyle.prototype.outline -{Boolean}
+     * @description 是否以轮廓的方式来显示文本的背景。true 表示以轮廓的方式来显示文本的背景。默认值为 false，表示不以轮廓的方式来显示文本的背景。
      */
     outline = false;
 
     /**
-     * APIProperty: opaqueRate
-     * {Number} 注记文字的不透明度。
-     * 不透明度的范围为0-100。默认为0，表示透明。
+     * @member SuperMap.ServerTextStyle.prototype.opaqueRate -{Number}
+     * @description 注记文字的不透明度。不透明度的范围为0-100。默认为0，表示透明。
      */
     opaqueRate = 0;
 
     /**
-     * APIProperty: underline
-     * {Boolean} 文本字体是否加下划线。
-     * true 表示加下划线。默认为 false。
+     * @member SuperMap.ServerTextStyle.prototype.underline -{Boolean}
+     * @description 文本字体是否加下划线。true 表示加下划线。默认为 false。
      */
     underline = false;
 
     /**
-     * APIProperty: rotation
-     * {Number} 文本旋转的角度。
-     * 逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。
+     * @member SuperMap.ServerTextStyle.prototype.rotation -{Number}
+     * @description 文本旋转的角度。逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。
      */
     rotation = 0.0;
 
-    /**
-     * Constructor: SuperMap.ServerTextStyle
-     * 服务端文本风格类构造函数。
-     *
-     * Parameters:
-     * options - {Object} 参数。
-     *
-     * Allowed options properties:
-     * align - {TextAlignment} 文本的对齐方式。
-     * backColor - {SuperMap.ServerColor} 文本的背景色。
-     * foreColor - {SuperMap.ServerColor} 文本的前景色。
-     * backOpaque - {Boolean} 文本背景是否不透明。
-     * sizeFixed - {Boolean} 文本大小是否固定。
-     * fontHeight - {Number} 文本字体的高度。
-     * fontWidth - {Number} 文本字体的宽度。
-     * fontWeight - {Integer} 文本字体的磅数。
-     * fontName - {String} 文本字体的名称。
-     * bold - {Boolean} 文本是否为粗体字。
-     * italic - {Boolean}文本是否采用斜体。
-     * italicAngle - {Number} 字体倾斜角度。
-     * shadow - {Boolean} 文本是否有阴影。
-     * strikeout - {Boolean} 文本字体是否加删除线。
-     * outline - {Boolean} 是否以轮廓的方式来显示文本的背景。
-     * opaqueRate - {Number} 注记文字的不透明度。
-     * underline - {Boolean} 文本字体是否加下划线。
-     * rotation -  {Number} 文本旋转的角度。
+    /*
+     * @function SuperMap.ServerTextStyle.prototype.constructor
+     * @description 服务端文本风格类构造函数。
+     * @param options - {Object} 可选参数。如：<br>
+     *        align - {TextAlignment} 文本的对齐方式。<br>
+     *        backColor - {SuperMap.ServerColor} 文本的背景色。<br>
+     *        foreColor - {SuperMap.ServerColor} 文本的前景色。<br>
+     *        backOpaque - {Boolean} 文本背景是否不透明。<br>
+     *        sizeFixed - {Boolean} 文本大小是否固定。<br>
+     *        fontHeight - {Number} 文本字体的高度。<br>
+     *        fontWidth - {Number} 文本字体的宽度。<br>
+     *        fontWeight - {Integer} 文本字体的磅数。<br>
+     *        fontName - {String} 文本字体的名称。<br>
+     *        bold - {Boolean} 文本是否为粗体字。<br>
+     *        italic - {Boolean}文本是否采用斜体。<br>
+     *        italicAngle - {Number} 字体倾斜角度。<br>
+     *        shadow - {Boolean} 文本是否有阴影。<br>
+     *        strikeout - {Boolean} 文本字体是否加删除线。<br>
+     *        outline - {Boolean} 是否以轮廓的方式来显示文本的背景。<br>
+     *        opaqueRate - {Number} 注记文字的不透明度。<br>
+     *        underline - {Boolean} 文本字体是否加下划线。<br>
+     *        rotation -  {Number} 文本旋转的角度。
      */
     constructor(options) {
         var me = this;
@@ -176,8 +172,8 @@ export default  class ServerTextStyle {
 
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
         var me = this;
@@ -207,6 +203,12 @@ export default  class ServerTextStyle {
         me.rotation = null;
     }
 
+    /**
+     * @function SuperMap.ServerTextStyle.fromJson
+     * @description 将JSON对象转换为 SuperMap.ServerStyle 对象。
+     * @param obj - {Object} 要转换的 JSON 对象。
+     * @return {SuperMap.ServerTextStyle} 转化后的 SuperMap.ServerTextStyle 对象。
+     */
     static fromObj(obj) {
         var res = new ServerTextStyle(obj);
         SuperMap.Util.copy(res, obj);

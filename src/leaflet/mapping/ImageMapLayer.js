@@ -9,12 +9,12 @@ import SuperMap from "../../common/SuperMap" ;
  * @example
  *      L.superMap.imageMapLayer(url).addTo(map);
  * @param url -{String} 影像图层地址
- * @param options -{object} 影像图层参数
+ * @param options -{Object} 影像图层参数
  */
 export var ImageMapLayer = L.TileLayer.extend({
 
     /**
-     * @member L.supermap.imageMapLayer.prototype.options -{object}
+     * @member L.supermap.imageMapLayer.prototype.options -{Object}
      * @description 影像图层参数。
      */
     options: {
@@ -50,7 +50,7 @@ export var ImageMapLayer = L.TileLayer.extend({
     /**
      * @function L.supermap.imageMapLayer.prototype.onAdd
      * @description 添加影像地图。
-     * @param map - {} 待添加的影像地图参数
+     * @param map - {L.map} 待添加的影像地图参数
      */
     onAdd: function (map) {
         this._crs = this.options.crs || map.options.crs;
@@ -61,8 +61,8 @@ export var ImageMapLayer = L.TileLayer.extend({
     /**
      * @function L.supermap.imageMapLayer.prototype.getTileUrl
      * @description 获取影像图层地址
-     * @param coords - {} 影像图层坐标参数
-     * @return {string} 返回地址
+     * @param coords - {Object} 影像图层坐标参数对象
+     * @return {String} 返回地址
      */
     getTileUrl: function (coords) {
         //使用ViewBounds出图

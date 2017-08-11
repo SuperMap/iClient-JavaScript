@@ -16,7 +16,7 @@ import L from "leaflet";
 export var GeoFeatureThemeLayer = ThemeLayer.extend({
 
     /**
-     * @member L.supermap.GeoFeatureThemeLayer.prototype.options - {object}
+     * @member L.supermap.GeoFeatureThemeLayer.prototype.options -{object}
      * @description 待设置得参数对象
      */
     options: {

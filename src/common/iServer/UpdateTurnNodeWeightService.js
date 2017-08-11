@@ -7,14 +7,12 @@ import UpdateTurnNodeWeightParameters from './UpdateTurnNodeWeightParameters';
  * @classdesc 转向耗费权重更新服务类
  * @extends SuperMap.NetworkAnalystServiceBase
  * @example
- * (start code)
  * var UpdateTurnNodeWeightService = new SuperMap.UpdateTurnNodeWeightService(url, {
  *     eventListeners: {
  *         "processCompleted": UpdateTurnNodeWeightCompleted,    //参数为SuperMap.UpdateTurnNodeWeightEventArgs
  *		   "processFailed": UpdateTurnNodeWeightError          //参数为SuperMap.ServiceFailedEventArgs
  *		   }
  * });
- * (end)
  * @param url - {String} 服务的访问地址。如:<br>
  *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param options - {Object} 互服务时所需可选参数。如：<br>

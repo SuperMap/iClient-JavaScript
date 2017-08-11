@@ -9,14 +9,12 @@ import {MeasureMode} from '../REST';
  *              该类负责将量算参数传递到服务端，并获取服务端返回的量算结果。
  * @extends SuperMap.CommonServiceBase
  * @example
- * (start code)
  * var myMeasuerService = new SuperMap.MeasureService(url, {
  *      measureMode: SuperMap.MeasureMode.DISTANCE,
  *      eventListeners:{
  *          "processCompleted": measureCompleted
  *      }
  * });
- * (end)
  * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。

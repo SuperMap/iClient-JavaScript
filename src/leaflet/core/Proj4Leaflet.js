@@ -12,10 +12,15 @@ L.Proj._isProj4Obj = function (a) {
 
 /**
  * @class L.Proj.Projection
- * @classdesc leaflet Proj投影类
+ * @classdesc leaflet Proj投影定义类
  */
 L.Proj.Projection = L.Class.extend({
 
+    /*
+     * @param code - {number} 地理编码
+     * @param def - {String} 定位
+     * @param bounds - {L.bounds} 投影范围参数
+     */
     initialize: function (code, def, bounds) {
         var isP4 = L.Proj._isProj4Obj(code);
         this._proj = isP4 ? code : this._projFromCodeDef(code, def);
@@ -26,11 +31,24 @@ L.Proj.Projection = L.Class.extend({
         this.bounds = isP4 ? def : boundsOption;
     },
 
+    /**
+     * @function L.Proj.Projection.prototype.project
+     * @description 通过地理坐标得到投影坐标
+     * @param latlng - {L.laylng} 经纬度坐标
+     * @return {Point} 返回投影坐标点
+     */
     project: function (latlng) {
         var point = this._proj.forward([latlng.lng, latlng.lat]);
         return new L.Point(point[0], point[1]);
     },
 
+    /**
+     * @function L.Proj.Projection.prototype.unproject
+     * @description 通过投影坐标得到地理坐标
+     * @param point {L.Point} 地理坐标点
+     * @param unbounded - {String} 坐标点高程不限
+     * @return {LatLng} 返回经纬度坐标
+     */
     unproject: function (point, unbounded) {
         var point2 = this._proj.inverse([point.x, point.y]);
         return new L.LatLng(point2[1], point2[0], unbounded);
@@ -55,8 +73,16 @@ L.Proj.Projection = L.Class.extend({
 
 /**
  * @class L.Proj.CRS
- * @classdesc leaflet Proj投影定义类
- * @extends  L.CRS
+ * @classdesc leaflet Proj坐标系统定义类
+ * @param a -{String} proj srsCode。
+ * @param b -{String} proj def。
+ * @param c -{Object} options。可选参数：<br>
+ *                     origin -{Array|L.Point} 原点。必填<br>
+ *                     scales -{Array} 比例尺数组 <br>
+ *                     scaleDenominators -{Array} 比例尺分母数组 <br>
+ *                     resolutions -{Array} 分辨率数组 <br>
+ *                     bounds -{Array|L.Bounds} 范围
+ * @extends L.CRS
  * @example
  * 用法：
  *    var crs =new L.Proj.CRS("EPSG:4326", '', {
@@ -67,14 +93,6 @@ L.Proj.Projection = L.Class.extend({
  *       crs: crs
  *      ...
  *    })
- * @param a -{String} proj srsCode。
- * @param b -{String} proj def。
- * @param c -{Object} options。可选参数：<br>
- *                     origin -{Array|L.Point} 原点。必填<br>
- *                     scales -{Array} 比例尺数组 <br>
- *                     scaleDenominators -{Array} 比例尺分母数组 <br>
- *                     resolutions -{Array} 分辨率数组 <br>
- *                     bounds -{Array|L.Bounds} 范围 <br>
  */
 L.Proj.CRS = L.Class.extend({
     includes: L.CRS,
@@ -83,6 +101,16 @@ L.Proj.CRS = L.Class.extend({
         transformation: new L.Transformation(1, 0, -1, 0)
     },
 
+    /*
+     * @param a -{String} proj srsCode。
+     * @param b -{String} proj def。
+     * @param c -{Object} options。可选参数：<br>
+     *                     origin -{Array|L.Point} 原点。必填<br>
+     *                     scales -{Array} 比例尺数组 <br>
+     *                     scaleDenominators -{Array} 比例尺分母数组 <br>
+     *                     resolutions -{Array} 分辨率数组 <br>
+     *                     bounds -{Array|L.Bounds} 范围
+     */
     initialize: function (a, b, c) {
         var code,
             proj,
@@ -140,8 +168,8 @@ L.Proj.CRS = L.Class.extend({
 
     /**
      * @function L.Proj.CRS.prototype.scale
-     * @description 通过空间范围获取比例尺值
-     * @param zoom - {number} 空间范围
+     * @description 通过缩放级别获取比例尺值
+     * @param zoom - {number} 缩放级别
      */
     scale: function (zoom) {
         var iZoom = Math.floor(zoom),

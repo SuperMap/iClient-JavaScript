@@ -7,14 +7,12 @@ import ThemeParameters from './ThemeParameters';
  * @classdesc 专题图服务类。
  * @extends SuperMap.CommonServiceBase
  * @example
- * (start code)
  * var myThemeService = new SuperMap.ThemeService(url, {
  *     eventListeners: {
  *           "processCompleted": themeCompleted,
  *           "processFailed": themeFailed
  *           }
  * });
- * (end)
  * @param url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
