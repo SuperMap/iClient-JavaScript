@@ -14037,6 +14037,7 @@ var DataFlow = function (_ol$source$Vector) {
             excludeField: options.excludeField
         }));
 
+        _this.idField = options.idField || 'id';
         _this.dataService = new _DataFlowService2.default(options.ws, {
             geometry: options.geometry,
             prjCoordSys: options.prjCoordSys,
@@ -14052,8 +14053,10 @@ var DataFlow = function (_ol$source$Vector) {
         me.dataService.on('setFilterParamSuccessed', function (msg) {
             me.dispatchEvent({ type: "setFilterParamSuccessed", value: msg });
         });
+        _this.featureCache = {};
         return _this;
     }
+
     /**
      * @function ol.source.DataFlow.prototype.setPrjCoordSys
      * @description 设置坐标参考系
@@ -14091,8 +14094,14 @@ var DataFlow = function (_ol$source$Vector) {
     }, {
         key: "_onMessageSuccessed",
         value: function _onMessageSuccessed(msg) {
-            this.clear();
-            this.addFeature(new _olDebug2.default.format.GeoJSON().readFeature(msg.value.featureResult));
+            //this.clear();
+            var geoID = msg.value.featureResult.properties[this.idField];
+            var feature = new _olDebug2.default.format.GeoJSON().readFeature(msg.value.featureResult);
+            if (geoID !== undefined && this.featureCache[geoID]) {
+                this.removeFeature(this.featureCache[geoID]);
+            }
+            this.addFeature(feature);
+            this.featureCache[geoID] = feature;
             this.dispatchEvent({ type: "dataUpdated", value: { source: this, data: msg.featureResult } });
         }
     }]);

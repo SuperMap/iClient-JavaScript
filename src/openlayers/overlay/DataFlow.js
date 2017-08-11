@@ -19,6 +19,7 @@ export default class DataFlow extends ol.source.Vector {
             prjCoordSys: options.prjCoordSys,
             excludeField: options.excludeField,
         });
+        this.idField=options.idField||'id';
         this.dataService = new DataFlowService(options.ws, {
             geometry: options.geometry,
             prjCoordSys: options.prjCoordSys,
@@ -34,7 +35,9 @@ export default class DataFlow extends ol.source.Vector {
         me.dataService.on('setFilterParamSuccessed', function (msg) {
             me.dispatchEvent({type: "setFilterParamSuccessed", value: msg})
         });
+        this.featureCache = {};
     }
+
     /**
      * @function ol.source.DataFlow.prototype.setPrjCoordSys
      * @description 设置坐标参考系
@@ -63,8 +66,14 @@ export default class DataFlow extends ol.source.Vector {
     }
 
     _onMessageSuccessed(msg) {
-        this.clear();
-        this.addFeature((new ol.format.GeoJSON()).readFeature(msg.value.featureResult));
+        //this.clear();
+        var geoID = msg.value.featureResult.properties[this.idField];
+        var feature=(new ol.format.GeoJSON()).readFeature(msg.value.featureResult);
+        if (geoID !== undefined && this.featureCache[geoID]) {
+            this.removeFeature(this.featureCache[geoID]);
+        }
+        this.addFeature(feature);
+        this.featureCache[geoID] = feature;
         this.dispatchEvent({type: "dataUpdated", value: {source: this, data: msg.featureResult}})
     }
 }

@@ -145,18 +145,11 @@
             window.clearInterval(timer);
             return;
         }
-        if (count == 206) {
-            source.setGeometry({
-                coordinates: [[[116.381741960923, 39.8765100055449], [116.414681699817, 39.8765100055449], [116.414681699817, 39.8415115329708], [116.381741960923, 39.8415115329708], [116.381741960923, 39.8765100055449]]],
-                type: "Polygon"
-            });
-        }
         var point = featureResult.result.recordsets[0].features.features[0].geometry.coordinates[count];
         var feature = {
             geometry: {coordinates: [point[0], point[1]], type: "Point"},
-            id: 1,
             type: "Feature",
-            properties: {id: count, time: new Date()}
+            properties: {id: 1, time: new Date()}
         };
         dataFlowService.broadcast(feature);
         count += 3;
