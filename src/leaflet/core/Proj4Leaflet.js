@@ -1,4 +1,7 @@
-import L from "leaflet";
+/**
+ * Inspired by https://github.com/kartena/Proj4Leaflet
+*/
+ import L from "leaflet";
 import proj4 from "proj4";
 L.Proj = {};
 

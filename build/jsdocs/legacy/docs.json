@@ -1,0 +1,27 @@
+{
+    "opts": {
+        "recurse": true,
+        "template": "../../node_modules/jaguarjs-jsdoc",
+        "destination": "./docs/legacy"
+    },
+    "disqus":"",
+    "tags": {
+        "allowUnknownTags": true
+    },
+    "source": {
+        "includePattern": ".+\\.js?$",
+        "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service|Base|Parameters.js?$",
+        "include": [
+            "src/common","src/legacy"
+        ]
+    },
+    "plugins": ["plugins/markdown"],
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false,
+        "default": {
+            "outputSourceFiles": false
+        },
+        "applicationName": "iClient for Legacy(iClient8C)"
+    }
+}

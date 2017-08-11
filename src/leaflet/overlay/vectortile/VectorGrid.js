@@ -1,3 +1,6 @@
+/**
+ * Inspired by https://github.com/Leaflet/Leaflet.VectorGrid
+ */
 import {SVGRenderer} from './SVGRenderer';
 import {CanvasRenderer} from './CanvasRenderer';
 import {VectorTile} from './VectorTile';

@@ -28,7 +28,11 @@
     "test": "karma start ./test/karma.conf.js",
     "citest": "karma start ./test/karma.conf.js --single-run",
     "exampletest": "nightwatch --config ./examples-test/nightwatch.json",
-    "build-docs": "jsdoc -c ./build/docs.json"
+    "build-docs":"npm run build-docs-leaflet&&npm run build-docs-openlayers&&npm run build-docs-mapboxgl&&npm run build-docs-legacy",
+    "build-docs-leaflet": "jsdoc -c ./build/jsdocs/leaflet/docs.json -R ./build/jsdocs/leaflet/index.md",
+    "build-docs-openlayers": "jsdoc -c ./build/jsdocs/openlayers/docs.json -R ./build/jsdocs/openlayers/index.md",
+    "build-docs-mapboxgl": "jsdoc -c ./build/jsdocs/mapboxgl/docs.json -R ./build/jsdocs/mapboxgl/index.md",
+    "build-docs-legacy": "jsdoc -c ./build/jsdocs/legacy/docs.json -R ./build/jsdocs/legacy/index.md"
   },
   "keywords": [
     "SuperMap",
@@ -64,7 +68,9 @@
     "images": "^3.0.0",
     "imports-loader": "^0.7.0",
     "istanbul": "^0.4.5",
+    "jaguarjs-jsdoc": "^1.1.0",
     "jasmine-core": "^2.5.2",
+    "jsdoc": "^3.5.4",
     "karma": "^1.4.1",
     "karma-browserify": "^5.1.1",
     "karma-chrome-launcher": "^2.0.0",

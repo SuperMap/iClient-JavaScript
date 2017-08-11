@@ -107,6 +107,6 @@ export var NonEarthCRS = L.Class.extend({
 export var nonEarthCRS = function (options) {
     return new NonEarthCRS(options)
 };
-L.CRS.NonProjection = nonProjection;
+L.Projection.NonProjection = nonProjection;
 
 L.CRS.NonEarthCRS = nonEarthCRS;

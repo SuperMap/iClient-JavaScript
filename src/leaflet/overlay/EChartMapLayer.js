@@ -1,3 +1,6 @@
+/**
+ * Inspired by https://github.com/lzxue/echartsLayer
+ */
 import '../core/Base';
 import L from "leaflet";
 import echarts  from "echarts";
