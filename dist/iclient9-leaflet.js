@@ -17539,21 +17539,23 @@ var DataFlowLayer = exports.DataFlowLayer = _leaflet2.default.GeoJSON.extend({
     options: {
         geometry: null,
         prjCoordSys: null,
-        excludeField: null
+        excludeField: null,
+        idField: "id"
     },
 
     initialize: function initialize(url, options) {
         options = options || {};
         var me = this;
         if (options.style && !options.pointToLayer) {
-            me.options.pointToLayer = function (geojson, latlng) {
-                return _leaflet2.default.circleMarker(latlng, me.options.style);
+            options.pointToLayer = function (geojson, latlng) {
+                return _leaflet2.default.circleMarker(latlng, options.style());
             };
         }
         _leaflet2.default.Util.setOptions(me, options);
         me._layers = {};
         _leaflet2.default.stamp(me);
         me.url = url;
+        this.idCache = {};
     },
 
     /**
@@ -17622,9 +17624,52 @@ var DataFlowLayer = exports.DataFlowLayer = _leaflet2.default.GeoJSON.extend({
     },
 
     _onMessageSuccessed: function _onMessageSuccessed(msg) {
-        this.clearLayers();
-        this.addData(msg.featureResult);
-        this.fire("dataUpdated", { layer: this, data: msg.featureResult });
+        var geojson = msg.featureResult;
+        var geoID = msg.featureResult.properties[this.options.idField];
+        var layer = null;
+        if (geoID !== undefined && this.idCache[geoID]) {
+            layer = this.getLayer(this.idCache[geoID]);
+            this._updateLayerData(layer, geojson);
+        } else {
+            layer = _leaflet2.default.GeoJSON.geometryToLayer(geojson, this.options);
+            layer.feature = _leaflet2.default.GeoJSON.asFeature(geojson);
+            this.addLayer(layer);
+            if (geoID !== undefined) {
+                this.idCache[geoID] = this.getLayerId(layer);
+            }
+        }
+        if (this.options.onEachFeature) {
+            this.options.onEachFeature(geojson, layer);
+        }
+        this.fire("dataUpdated", { layer: this, updateLayer: layer, data: msg.featureResult });
+    },
+    _updateLayerData: function _updateLayerData(layer, geojson) {
+        if (geojson.properties) {
+            layer.feature.properties = geojson.properties;
+        }
+        var latlngs = [];
+        switch (geojson.geometry.type) {
+            case 'Point':
+                latlngs = _leaflet2.default.GeoJSON.coordsToLatLng(geojson.geometry.coordinates);
+                layer.setLatLng(latlngs);
+                break;
+            case 'LineString':
+                latlngs = _leaflet2.default.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 0);
+                layer.setLatLngs(latlngs);
+                break;
+            case 'MultiLineString':
+                latlngs = _leaflet2.default.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 1);
+                layer.setLatLngs(latlngs);
+                break;
+            case 'Polygon':
+                latlngs = _leaflet2.default.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 1);
+                layer.setLatLngs(latlngs);
+                break;
+            case 'MultiPolygon':
+                latlngs = _leaflet2.default.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 2);
+                layer.setLatLngs(latlngs);
+                break;
+        }
     }
 });
 var dataFlowLayer = exports.dataFlowLayer = function dataFlowLayer(url, options) {

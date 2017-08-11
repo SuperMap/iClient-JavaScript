@@ -18,21 +18,22 @@ export var DataFlowLayer = L.GeoJSON.extend({
         geometry: null,
         prjCoordSys: null,
         excludeField: null,
+        idField: "id"
     },
 
     initialize: function (url, options) {
         options = options || {};
         var me = this;
         if (options.style && !options.pointToLayer) {
-            me.options.pointToLayer = function (geojson, latlng) {
-                return L.circleMarker(latlng, me.options.style);
+            options.pointToLayer = function (geojson, latlng) {
+                return L.circleMarker(latlng, options.style());
             }
         }
         L.Util.setOptions(me, options);
         me._layers = {};
         L.stamp(me);
         me.url = url;
-
+        this.idCache = {};
     },
 
     /**
@@ -101,10 +102,52 @@ export var DataFlowLayer = L.GeoJSON.extend({
     },
 
     _onMessageSuccessed: function (msg) {
-        this.clearLayers();
-        this.addData(msg.featureResult);
-        this.fire("dataUpdated", {layer: this, data: msg.featureResult});
-
+        var geojson = msg.featureResult;
+        var geoID = msg.featureResult.properties[this.options.idField];
+        var layer = null;
+        if (geoID !== undefined && this.idCache[geoID]) {
+            layer = this.getLayer(this.idCache[geoID]);
+            this._updateLayerData(layer, geojson);
+        } else {
+            layer = L.GeoJSON.geometryToLayer(geojson, this.options);
+            layer.feature = L.GeoJSON.asFeature(geojson);
+            this.addLayer(layer);
+            if (geoID !== undefined) {
+                this.idCache[geoID] = this.getLayerId(layer);
+            }
+        }
+        if (this.options.onEachFeature) {
+            this.options.onEachFeature(geojson, layer);
+        }
+        this.fire("dataUpdated", {layer: this, updateLayer: layer, data: msg.featureResult});
+    },
+    _updateLayerData: function (layer, geojson) {
+        if (geojson.properties) {
+            layer.feature.properties = geojson.properties;
+        }
+        var latlngs = [];
+        switch (geojson.geometry.type) {
+            case 'Point':
+                latlngs = L.GeoJSON.coordsToLatLng(geojson.geometry.coordinates);
+                layer.setLatLng(latlngs);
+                break;
+            case 'LineString':
+                latlngs = L.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 0);
+                layer.setLatLngs(latlngs);
+                break;
+            case 'MultiLineString':
+                latlngs = L.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 1);
+                layer.setLatLngs(latlngs);
+                break;
+            case 'Polygon':
+                latlngs = L.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 1);
+                layer.setLatLngs(latlngs);
+                break;
+            case 'MultiPolygon':
+                latlngs = L.GeoJSON.coordsToLatLngs(geojson.geometry.coordinates, 2);
+                layer.setLatLngs(latlngs);
+                break;
+        }
     }
 });
 export var dataFlowLayer = function (url, options) {
