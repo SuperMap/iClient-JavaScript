@@ -3,6 +3,7 @@ import {ClientType} from '../REST';
 /**
  * @class SuperMap.KeyServiceParameter
  * @classdesc key申请参数
+ * @param options - {Object} 参数。
  */
 export default class KeyServiceParameter {
     name = null;

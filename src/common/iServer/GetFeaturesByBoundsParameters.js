@@ -6,6 +6,16 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
 /**
  * @class SuperMap.GetFeaturesByBoundsParameters
  * @classdesc 数据集范围查询参数类,该类用于设置数据集范围查询的相关参数。
+ * @param options - {Object} 参数。如：<br>
+ *        bounds - {SuperMap.Bounds} 用于查询的范围对象。</br>
+ *        attributeFilter - {String} 范围查询属性过滤条件。</br>
+ *        fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
+ *        spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式常量,必设参数。</br>
+ *        queryParameter - {SuperMap.FilterParameter} 查询过滤条件参数。</br>
+ *        datasetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
+ *        returnContent - {Boolean} 是否直接返回查询结果。</br>
+ *        fromIndex - {Integer} 查询结果的最小索引号。</br>
+ *        toIndex - {Integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
  */
 
@@ -50,7 +60,6 @@ export default class GetFeaturesByBoundsParameters extends GetFeaturesParameters
     /*
      * @function SuperMap.GetFeaturesByBoundsParameters.prototype.constructor
      * @description 范围空间查询参数类构造函数。
-     *
      * @param options - {Object} 参数。如：<br>
      *        bounds - {SuperMap.Bounds} 用于查询的范围对象。</br>
      *        attributeFilter - {String} 范围查询属性过滤条件。</br>

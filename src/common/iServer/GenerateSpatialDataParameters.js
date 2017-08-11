@@ -3,9 +3,19 @@ import DataReturnOption from './DataReturnOption';
 
 /**
  * @class SuperMap.GenerateSpatialDataParameters
- * @classdesc
- * 动态分段操作参数类。
- * 通过该类可以为动态分段提供参数信息。
+ * @classdesc 动态分段操作参数类。通过该类可以为动态分段提供参数信息。
+ * @param options - {Object} 可选参数。如:</br>
+ *        routeTable - {String} 路由数据集。</br>
+ *        routeIDField - {String} 路由数据集的标识字段。</br>
+ *        eventTable - {String} 用于生成空间数据的事件表名。</br>
+ *        eventRouteIDField - {String} 用于生成空间数据的事件表的路由标识字段。</br>
+ *        measureField - {String} 用于生成空间数据的事件表的刻度字段，只有当事件为点事件的时候该属性才有意义
+ *        measureStartField - {String} 用于生成空间数据的事件表的起始刻度字段，只有当事件为线事件的时候该属性才有意义。</br>
+ *        measureEndField - {String} 用于生成空间数据的事件表的终止刻度字段，只有当事件为线事件的时候该属性才有意义。</br>
+ *        measureOffsetField - {String} 刻度偏移量字段。</br>
+ *        errorInfoField - {String} 错误信息字段，直接写入原事件表，用于描述事件未能生成对应的点或线时的错误信息。</br>
+ *        retainedFields - {Array(String)} 欲保留到结果空间数据中的字段集合（系统字段除外）。</br>
+ *        dataReturnOption - {SuperMap.DataReturnOption} 设置数据返回的最大记录。</br>
  */
 export default  class GenerateSpatialDataParameters {
 

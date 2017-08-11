@@ -5,6 +5,9 @@ import TerrainCurvatureCalculationParameters from './TerrainCurvatureCalculation
  * @class SuperMap.TerrainCurvatureCalculationService
  * @classdesc 地形曲率计算服务类。
  * @extends SuperMap.SpatialAnalystBase
+ * @param options - {Object} 可选参数。如</br>
+ *        eventListeners - {Object} 需要被注册的监听器对象。
+ * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @example 例如：
  * (start code)
  * var myTerrainCurvatureCalculationService = new SuperMap.TerrainCurvatureCalculationService(url);

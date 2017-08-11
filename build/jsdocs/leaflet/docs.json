@@ -10,7 +10,7 @@
     },
     "source": {
         "includePattern": ".+\\.js?$",
-        "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service|Base.js?$",
+        "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service.js?$",
         "include": [
             "src/common","src/leaflet"
         ]

@@ -5,9 +5,9 @@ import  Util from '../core/Util';
 
 /**
  * @class ol.source.ImageSuperMapRest
- * @classdesc Rest
- * @param options - {object} 交互时所需可选参数
- * @extends BaiduMapLayer
+ * @classdesc UGC 影像图层类。
+ * @param options - {object} 参数
+ * @extends  ol.source.TileImage
  */
 export default class ImageSuperMapRest extends ol.source.TileImage {
 
@@ -100,7 +100,13 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         if (options.cacheEnabled === true && options.tileversion) {
             layerUrl += "tileversion=" + options.tileversion;
         }
-
+        /**
+         * @function ol.source.ImageSuperMapRest.prototype.tileUrlFunction
+         * @param tileCoord - {object} 算瓦片坐标
+         * @param pixelRatio - {object} 像素密度
+         * @param projection - {object} 投影
+         * @description 添加凭据
+         */
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!this.tileGrid) {
                 this.tileGrid = this.getTileGridForProjection(projection);
@@ -133,7 +139,12 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
             layersID: options.layersID
         });
     }
-
+    /**
+     * @function ol.source.ImageSuperMapRest.prototype.optionsFromMapJSON
+     * @param url - {string} 地址
+     * @param mapJSONObj - {object} 地图JSON
+     * @description 获取地图JSON信息
+     */
     static optionsFromMapJSON(url, mapJSONObj) {
         var options = {};
         options.url = url;

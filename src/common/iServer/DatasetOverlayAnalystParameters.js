@@ -5,6 +5,17 @@ import OverlayAnalystParameters from './OverlayAnalystParameters';
 /**
  * @class SuperMap.DatasetOverlayAnalystParameters
  * @classdesc 数据集叠加分析参数类。
+ * @param options - {Object} 可选参数。如：</br>
+ *        operateDataset - {String} 叠加分析中操作数据集的名称。必设字段。</br>
+ *        operateDatasetFields - {Array(String} 叠加分析中操作数据集保留在结果数据集中的字段名列表。</br>
+ *        operateDatasetFilter - {SuperMap.FilterParameter} 设置操作数据集中空间对象过滤条件。</br>
+ *        operateRegions - {Array(<SuperMap.Geometry>)} 操作区域。设置了操作区域后，仅对该区域内的对象进行分析。</br>
+ *        sourceDataset - {String} 叠加分析中源数据集的名称。必设字段。</br>
+ *        sourceDatasetFields - {Array(String} 叠加分析中源数据集保留在结果数据集中的字段名列表。</br>
+ *        sourceDatasetFilter - {SuperMap.FilterParameter} 设置源数据集中空间对象过滤条件。</br>
+ *        tolerance - {Integer} 容限。</br>
+ *        operation - {SuperMap.OverlayOperationType} 叠加操作枚举值。</br>
+ *        resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
  * @extends SuperMap.GetFeaturesParametersBase
  */
 export default  class DatasetOverlayAnalystParameters extends OverlayAnalystParameters {

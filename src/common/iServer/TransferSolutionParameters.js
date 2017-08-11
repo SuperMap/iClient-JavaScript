@@ -3,7 +3,6 @@ import {TransferPreference, TransferTactic} from '../REST';
 
 /**
  * @class SuperMap.TransferSolutionParameters
- * @constructs SuperMap.TransferSolutionParameters
  * @classdesc
  * 交通换乘方案查询参数类。
  * @param options - {Object} 参数。如:</br>

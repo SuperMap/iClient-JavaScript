@@ -5,6 +5,8 @@ import GeoJSON from '../format/GeoJSON';
 /**
  * @class SuperMap.SpatialAnalystBase
  * @classdesc 空间分析服务基类。
+ * @param url -{string} 地址d。
+ * @param options -{Object} 参数。
  * @extends SuperMap.CommonServiceBase
  */
 export default class SpatialAnalystBase extends CommonServiceBase {

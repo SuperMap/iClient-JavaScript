@@ -2,6 +2,7 @@ import SuperMap from '../SuperMap';
 /**
  * @class SuperMap.FieldStatisticsParameters
  * @classdesc 字段统计信息查询参数类。
+ * @param options - {Object} 参数。
  */
 export default  class FieldStatisticsParameters {
     /**

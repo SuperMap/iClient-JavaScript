@@ -5,6 +5,13 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
 /**
  * @class SuperMap.GetFeaturesByIDsParameters
  * @classdesc ID 查询参数类。
+ * @param options - {Object} 可选参数。如:</br>
+ *        IDs - {Array(Integer)} 所要查询指定的元素ID信息。</br>
+ *        fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
+ *        dataSetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
+ *        returnContent - {Boolean} 是否直接返回查询结果。</br>
+ *        fromIndex - {Integer} 查询结果的最小索引号。</br>
+ *        toIndex - {Integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
  */
 export default  class GetFeaturesByIDsParameters extends GetFeaturesParametersBase {

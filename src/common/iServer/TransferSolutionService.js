@@ -7,7 +7,13 @@ import TransferSolutionParameters from './TransferSolutionParameters';
  * @classdesc
  * 交通换乘方案查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取。
- * @extends {SuperMap.CommonServiceBase}
+ * @param url - {String} 与客户端交互的交通换乘方案查询服务地址。
+ * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
+ * @param options - {Object} 参数。
+ * Allowed options properties:</br>
+ * eventListeners - {Object} 需要被注册的监听器对象。</br>
+ *
+ * @extends SuperMap.CommonServiceBase
  * @example 例如：
  * (start code)
  * var myService = new SuperMap.TransferSolutionService(url, {eventListeners: {
@@ -19,15 +25,12 @@ import TransferSolutionParameters from './TransferSolutionParameters';
  *
  */
 export default  class TransferSolutionService extends CommonServiceBase {
-
     /*
-     *
      * @method SuperMap.TransferSolutionService.prototype.constructor
      * @param url - {String} 与客户端交互的交通换乘方案查询服务地址。
      * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
-     * @param options - {Object} 参数。
-     * Allowed options properties:</br>
-     * eventListeners - {Object} 需要被注册的监听器对象。</br>
+     * @param options - {Object} 参数。如:</br>
+     *        eventListeners - {Object} 需要被注册的监听器对象。</br>
      */
     constructor(url, options) {
         super(url, options);

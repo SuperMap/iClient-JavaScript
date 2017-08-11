@@ -21,7 +21,7 @@ export default class TrafficTransferAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.TrafficTransferAnalystService.prototype.queryStop
+     * @function ol.supermap.TrafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务
      * @param params -{StopQueryParameters} 查询相关参数类
      * @param callback -{function} 回调函数
@@ -41,7 +41,7 @@ export default class TrafficTransferAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath
+     * @function ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath
      * @description 交通换乘线路查询服务
      * @param params -{TransferPathParameters} 查询相关参数类
      * @param callback -{function} 回调函数
@@ -61,7 +61,7 @@ export default class TrafficTransferAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution
+     * @function ol.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution
      * @description 交通换乘方案查询服务
      * @param params -{TransferSolutionParameters} 查询相关参数类
      * @param callback -{function} 回调函数

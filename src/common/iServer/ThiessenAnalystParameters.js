@@ -3,6 +3,12 @@
 /**
  * @class SuperMap.ThiessenAnalystParameters
  * @classdesc 泰森多边形分析参数基类。
+ * @param options - {Object} 可选参数。如:</br>
+ *        clipRegion - {SuperMap.Geometry} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
+ *        createResultDataset - {Boolean} 是否返回结果数据集，默认不返回。</br>
+ *        resultDatasetName - {Boolean} 指定结果数据集名称。</br>
+ *        resultDatasourceName - {Boolean} 指定结果数据集所在数据源，默认为当前数据源。</br>
+ *        returnResultRegion - {Boolean} 是否返回分析得到的多边形面数组，默认返回。</br>
  */
 export default class ThiessenAnalystParameters {
     /**

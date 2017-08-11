@@ -5,6 +5,9 @@ import GetGridCellInfosParameters from './GetGridCellInfosParameters';
 /**
  * @class SuperMap.GetGridCellInfosService
  * @classdesc 数据栅格查询服务，支持查询指定地理位置的栅格信息
+ * @param url - {String} 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
+ * @param options - {Object} 可選参数。如:</br>
+ *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.CommonServiceBase
  * @example  例如：
  * (start code)

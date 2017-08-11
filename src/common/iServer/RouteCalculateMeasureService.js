@@ -8,6 +8,9 @@ import RouteCalculateMeasureParameters from './RouteCalculateMeasureParameters';
  * 该类负责将客户设置的计算指定点的M值参数传递给服务端，并接收服务端返回的
  *      指定点的M值。通过该类支持的事件的监听函数参数获取
  * @extends SuperMap.SpatialAnalystBase
+ * @param options - {Object} 可选参数。如:</br>
+ *        eventListeners - {Object} 需要被注册的监听器对象。</br>
+ * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @example 实例化该类如下例所示：
  * (start code)
  * var parameters = new SuperMap.RouteCalculateMeasureParameters({

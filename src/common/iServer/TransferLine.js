@@ -3,6 +3,16 @@
 /**
  * @class SuperMap.TransferLine
  * @classdesc 换乘路线信息类。
+ * @param options - {Object} 可选参数。如:</br>
+ *        lineID - {String} 乘车路线名称。</br>
+ *        lineName - {String} 乘车路线名称。</br>
+ *        lineAliasName - {String} 乘车路线别名。</br>
+ *        startStopIndex - {Number} 上车站点在本公交路线中的索引。</br>
+ *        startStopName - {String} 上车站点名称。</br>
+ *        startStopAliasName - {String} 上车站点别名。</br>
+ *        endStopIndex - {Number} 下车站点在本公交路线中的索引</br>。
+ *        endStopName - {String} 下车站点名称。</br>
+ *        endStopAliasName - {String} 下车站点别名。</br>
  */
 export default  class TransferLine {
     /**
@@ -63,15 +73,15 @@ export default  class TransferLine {
      * @function SuperMap.TransferLine.prototype.constructor
      * @description 换乘路线信息类构造函数。
      * @param options - {Object} 可选参数。如:</br>
-     * lineID - {String} 乘车路线名称。</br>
-     * lineName - {String} 乘车路线名称。</br>
-     * lineAliasName - {String} 乘车路线别名。</br>
-     * startStopIndex - {Number} 上车站点在本公交路线中的索引。</br>
-     * startStopName - {String} 上车站点名称。</br>
-     * startStopAliasName - {String} 上车站点别名。</br>
-     * endStopIndex - {Number} 下车站点在本公交路线中的索引</br>。
-     * endStopName - {String} 下车站点名称。</br>
-     * endStopAliasName - {String} 下车站点别名。</br>
+     *        lineID - {String} 乘车路线名称。</br>
+     *        lineName - {String} 乘车路线名称。</br>
+     *        lineAliasName - {String} 乘车路线别名。</br>
+     *        startStopIndex - {Number} 上车站点在本公交路线中的索引。</br>
+     *        startStopName - {String} 上车站点名称。</br>
+     *        startStopAliasName - {String} 上车站点别名。</br>
+     *        endStopIndex - {Number} 下车站点在本公交路线中的索引</br>。
+     *        endStopName - {String} 下车站点名称。</br>
+     *        endStopAliasName - {String} 下车站点别名。</br>
      */
     constructor(options) {
         options = options || {};

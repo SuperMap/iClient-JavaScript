@@ -6,6 +6,8 @@ import ThiessenAnalystParameters from './ThiessenAnalystParameters';
  * @classdesc
  * 几何对象泰森多边形分析参数类
  * 对指定的某个几何对象做泰森多边形分析。通过该类可以指定要做泰森多边形分析的几何对象、返回数据集名称等。
+ * @param options - {Object} 可选参数。如:</br>
+ *        points - {Array(Point||Array)} 使用点数组进行分析时使用的几何对象。
  * @extends SuperMap.ThiessenAnalystParameters
  */
 

@@ -16,8 +16,8 @@ export default  class TransferPathParameters {
      */
     transferLines = null;
 
+
     /**
-     * APIProperty: points
      *  @member SuperMap.TransferPathParameters.prototype.points -{Array(String)}||{Array(Object)}
      *  @description 两种查询方式：
      *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，

@@ -4,6 +4,7 @@ import {ClientType} from '../REST';
 /**
  * @class SuperMap.TokenServiceParameter
  * @classdesc token申请参数
+ * @param options - {Object} 参数。
  */
 export default class TokenServiceParameter {
     /**
@@ -44,7 +45,7 @@ export default class TokenServiceParameter {
 
     /*
      * @function SuperMap.TokenServiceParameter.prototype.constructor
-     * * @description 地图缓存参数类
+     *  @description 地图缓存参数类
      *  @param options - {Object} 参数。
      */
     constructor(options) {

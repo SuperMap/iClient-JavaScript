@@ -4,6 +4,8 @@ import IPortalServiceBase from './iPortalServiceBase';
 /**
  * @class SuperMap.iPortalMap
  * @classdesc iPortal地图编辑
+ * @param mapUrl -{string}  地图地址
+ * @param params -{object}  服务参数
  * @extends SuperMap.iPortalServiceBase
  *
  */
@@ -32,10 +34,10 @@ export default  class IPortalMap extends IPortalServiceBase {
     userName = "";
     visitCount = 0;
 
-    /**
+    /*
      * @function SuperMap.iPortalMap.prototype.constructor
      * @param mapUrl -{string}  地图地址
-     * @param params -{string}  服务参数
+     * @param params -{object}  服务参数
      */
     constructor(mapUrl, params) {
         super(mapUrl);
@@ -65,7 +67,7 @@ export default  class IPortalMap extends IPortalServiceBase {
     }
 
     /**
-     * @method SuperMap.iPortalMap.prototype.update
+     * @function SuperMap.iPortalMap.prototype.update
      * @description 更新地图参数
      */
     update() {

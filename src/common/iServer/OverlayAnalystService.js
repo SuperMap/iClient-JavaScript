@@ -8,6 +8,9 @@ import GeometryOverlayAnalystParameters from './GeometryOverlayAnalystParameters
  * 叠加分析服务类
  * 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
  * 叠加分析结果通过该类支持的事件的监听函数参数获取
+ * @param url - {String} 服务的访问地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @param options - {Object} 可选参数。如:</br>
+ *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.CommonServiceBase
  * @example 例如：
  * (start code)

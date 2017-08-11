@@ -10,6 +10,7 @@ import IPortalServiceBase from './iPortalServiceBase';
  * @class SuperMap.iPortal
  * @classdesc iPortal
  * @extends SuperMap.iPortalServiceBase
+ * @param iportalUrl -{string} 地址
  *
  */
 export default  class IPortal extends IPortalServiceBase {
@@ -31,7 +32,7 @@ export default  class IPortal extends IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortal.prototype.queryServices
-     * @param queryParams -{string} 查询参数
+     * @param queryParams -{SuperMap.iPortalServicesQueryParam} 查询参数
      * @description 查询服务
      */
     queryServices(queryParams) {
@@ -47,7 +48,7 @@ export default  class IPortal extends IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortal.prototype.deleteServices
-     * @param ids -{number} 服务的序号
+     * @param ids -{number} 服务的id
      * @description 删除服务
      */
     deleteServices(ids) {
@@ -57,7 +58,7 @@ export default  class IPortal extends IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortal.prototype.queryMaps
-     * @param queryParams -{string} 查询参数
+     * @param queryParams -{SuperMap.iPortalMapsQueryParam} 查询参数
      * @description 获取地图信息
      */
     queryMaps(queryParams) {

@@ -6,6 +6,10 @@ import OverlayAnalystParameters from './OverlayAnalystParameters';
  * @classdesc
  * 几何对象叠加分析参数类
  * 对指定的某两个几何对象做叠加分析。通过该类可以指定要做叠加分析的几何对象、叠加操作类型。
+ * @param options - {Object} 可选参数。如:</br>
+ *        operateGeometry - {SuperMap.Geometry} 叠加分析的操作几何对象。必设字段。</br>
+ *        sourceGeometry - {SuperMap.Geometry} 叠加分析的源几何对象。必设字段。</br>
+ *        operation - {SuperMap.OverlayOperationType} 叠加操作枚举值。</br>
  * @extends SuperMap.OverlayAnalystParameters
  */
 export default  class GeometryOverlayAnalystParameters extends OverlayAnalystParameters {

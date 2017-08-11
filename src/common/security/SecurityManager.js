@@ -21,7 +21,7 @@ SuperMap.SecurityManager = {
      * @function SuperMap.SecurityManager.prototype.generateToken
      * @description 从服务器获取一个token,在此之前要注册服务器信息
      * @param url {String}-服务器域名+端口，如：http://localhost:8092
-     * @param tokenParam -{SuperMap.TokenServiceParameter}
+     * @param tokenParam -{SuperMap.TokenServiceParameter} 令牌参数
      */
     generateToken: function (url, tokenParam) {
         var serverInfo = this.servers[url];
@@ -144,7 +144,10 @@ SuperMap.SecurityManager = {
         this.tokens = null;
         this.servers = null;
     },
-
+    /**
+     * @function SuperMap.SecurityManager.prototype.destroyToken
+     * @description 清空令牌信息
+     */
     destroyToken: function (url) {
         if (!url) {
             return;
@@ -155,7 +158,10 @@ SuperMap.SecurityManager = {
             delete this.tokens[domain];
         }
     },
-
+    /**
+     * @function SuperMap.SecurityManager.prototype.destroyToken
+     * @description 清空服务授权码
+     */
     destroyKey: function (id) {
         if (!id) {
             return;

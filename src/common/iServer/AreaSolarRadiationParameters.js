@@ -2,12 +2,13 @@ import SuperMap from '../SuperMap';
 /**
  * @class SuperMap.AreaSolarRadiationParameters
  * @classdesc 地区太阳辐射参数类。
+ * @param option -{Object} 参数。
  */
 export default  class AreaSolarRadiationParameters {
 
     /**
      *  @member SuperMap.AreaSolarRadiationParameters.prototype.dataset -{String}
-     *@description  要用来做地区太阳辐射数据源中数据集的名称。
+     *  @description  要用来做地区太阳辐射数据源中数据集的名称。
      * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin （必设参数）。
      *
      * 注：地区太阳辐射数据必须为栅格数据集。
@@ -104,7 +105,7 @@ export default  class AreaSolarRadiationParameters {
      */
     deleteExistResultDataset = false;
 
-    /**
+    /*
      * @method SuperMap.AreaSolarRadiationParameters.prototype.constructor
      * @param options - {Object} 可選参数。如</br>
      *        dataset - {String} 要用来做地区太阳辐射数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。（必设参数）。

@@ -7,6 +7,9 @@ import GeoRelationAnalystParameters from './GeoRelationAnalystParameters';
  * @classdesc
  * 空间关系分析服务类。
  * 该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
+ * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @param options - {Object} 可选参数。</br>
+ *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.SpatialAnalystBase
  * @example 实例化该类如下例所示：
  * (start code)

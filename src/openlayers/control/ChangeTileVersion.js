@@ -7,6 +7,7 @@ ol.supermap.control = ol.supermap.control || {};
 /**
  * @class ol.supermap.control.ChangeTileVersion
  * @classdesc 版本切换控件(目前仅支持IE10及以上)暂时不支持自定义位置
+ * @param options -{options} 参数
  * @example
  * 用法： var control = new ol.supermap.control.ChangeTileVersion({
  *           layer: baseLayer,
@@ -15,7 +16,10 @@ ol.supermap.control = ol.supermap.control || {};
  *      map.addControl(control)
  */
 export default class ChangeTileVersion extends ol.control.Control {
-
+    /*
+     * @function ol.supermap.control.ChangeTileVersion.prototype.constructor
+     * @param options -{options} 参数
+     */
     constructor(options) {
         options = options || {};
         //鼠标滑过时提示

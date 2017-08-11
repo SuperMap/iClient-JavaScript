@@ -2,6 +2,7 @@ import SuperMap from '../SuperMap';
 /**
  * @class SuperMap.GeoCodingParameter
  * @classdesc 地理正向匹配参数类。
+ * @param options - {Object} 参数。
  */
 export default  class GeoCodingParameter {
 

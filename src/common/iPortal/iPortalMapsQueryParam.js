@@ -3,6 +3,7 @@ import SuperMap from '../SuperMap';
 /**
  * @class SuperMap.iPortalMapsQueryParam
  * @classdesc iPortal地图资源查询参数
+ * @param params -{string}
  *
  */
 export default  class IPortalMapsQueryParam {
@@ -26,7 +27,7 @@ export default  class IPortalMapsQueryParam {
 
     /*
      * @function SuperMap.iPortalMapsQueryParam.prototype.constructor
-     * @param params -{string}
+     * @param params -{object} iPortal地图资源查询具体参数
      *
      */
     constructor(params) {

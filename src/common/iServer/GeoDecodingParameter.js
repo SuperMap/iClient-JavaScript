@@ -2,6 +2,7 @@ import SuperMap from '../SuperMap';
 /**
  * @class SuperMap.GeoDecodingParameter
  * @classdesc 地理反向匹配参数类。
+ * @param options - {Object} 参数。
  */
 export default  class GeoDecodingParameter {
     /**
@@ -52,7 +53,7 @@ export default  class GeoDecodingParameter {
     geoDecodingRadius = null;
 
     /*
-     * @method SuperMap.GeoDecodingParameter.prototype.constructor
+     * @function SuperMap.GeoDecodingParameter.prototype.constructor
      * @param options - {Object} 参数。
      */
     constructor(options) {

@@ -6,8 +6,14 @@ const Collection = SuperMap.Geometry.Collection;
 /**
  * @class SuperMap.Route
  * @classdesc
- * 路由对象类。
- * 路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
+ * 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
+ * @param points - {Array} 形成路由对象的线数组。
+ * @param  options - {Object} 可选参数。如:</br>
+ *         id - {Number} 路由对象在数据库中的id。</br>
+ *         length - {Number} 路由对象的长度。</br>
+ *         maxM - {Number} 最大线性度量值，即所有结点到起始点的量算距离中最大值。</br>
+ *         minM - {Number} 最小线性度量值，即所有结点到起始点的量算距离中最小值。</br>
+ *         type - {String} 数据类型，如："LINEM"</br>
  * @extends SuperMap.Geometry.Collection
  */
 export default  class Route extends Collection {

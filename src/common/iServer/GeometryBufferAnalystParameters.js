@@ -4,7 +4,10 @@ import BufferAnalystParameters from './BufferAnalystParameters';
  * @class SuperMap.GeometryBufferAnalystParameters
  * @classdesc 几何对象缓冲区分析参数类
  * 对指定的某个几何对象做缓冲区分析。通过该类可以指定要做缓冲区分析的几何对象、缓冲区参数等。
- *  @extends SuperMap.BufferAnalystParameters
+ * @param options - {Object} 可选参数。如:</br>
+ *        sourceGeometry - {Object} 要做缓冲区分析的几何对象。必设字段。</br>
+ *        bufferSetting - {SuperMap.BufferSetting} 设置缓冲区通用参数。
+ * @extends SuperMap.BufferAnalystParameters
  */
 export default  class GeometryBufferAnalystParameters extends BufferAnalystParameters {
 

@@ -32,7 +32,7 @@ export default class MapvRenderer extends BaseLayer {
         this.bindEvent();
     }
     /**
-     * @class mapboxgl.supermap.prototype.MapvRenderer
+     * @function mapboxgl.supermap.prototype.clickEvent
      * @description  点击绑定事件
      * @param e - {object} 事件
      */
@@ -41,7 +41,7 @@ export default class MapvRenderer extends BaseLayer {
         super.clickEvent(pixel, e);
     }
     /**
-     * @class mapboxgl.supermap.prototype.mousemoveEvent
+     * @function mapboxgl.supermap.prototype.mousemoveEvent
      * @description  鼠标移动事件
      * @param e - {object} 事件
      */
@@ -75,18 +75,18 @@ export default class MapvRenderer extends BaseLayer {
         }
     }
     /**
-     * @class mapboxgl.supermap.prototype.getContext
-     * @description  获取画布内容
+     * @function mapboxgl.supermap.prototype.getContext
+     * @description  获取画布上下文
      */
     getContext() {
         return this.canvasLayer.canvas.getContext(this.context);
     }
 
     /**
-     * @class mapboxgl.supermap.prototype.updateData
+     * @function mapboxgl.supermap.prototype.updateData
      * @param dataSet - {object} 数据集
-     * @param options - {object} 交互操作
-     * @description  更新画布内容
+     * @param options - {object} 数据项配置
+     * @description  更新数据
      */
     updateData(dataSet, options) {
         if (dataSet && dataSet.get) {

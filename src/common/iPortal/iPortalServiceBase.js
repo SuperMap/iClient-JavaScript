@@ -12,7 +12,7 @@ export default  class IPortalServiceBase {
     /**
      * @function SuperMap.iPortalServiceBase.prototype.constructor
      *
-     * @param url -{String}-服务器域名+端口，如：http://localhost:8092
+     * @param url -{String} 服务器域名+端口，如：http://localhost:8092
      */
     constructor(url) {
         var me = this;
@@ -23,9 +23,10 @@ export default  class IPortalServiceBase {
     /**
      * @function SuperMap.iPortalServiceBase.prototype.request
      * @description 子类统一通过该方法发送请求
-     * @param url -{String}-服务器域名+端口，如：http://localhost:8092
+     * @param url -{String} 服务器域名+端口，如：http://localhost:8092
      * @param method -{INT}
      * @param requestOptions -{Object}
+     * @param param -{Object}
      * @description 获取返回参数的json数组
      *
      */
@@ -42,7 +43,7 @@ export default  class IPortalServiceBase {
     /**
      * @function SuperMap.iPortalServiceBase.prototype.createCredentialUrl
      * @description 追加授权信息
-     * @param url -{String}-服务器域名+端口，如：http://localhost:8092
+     * @param url -{String} 服务器域名+端口，如：http://localhost:8092
      * @return {string} 新地址
      */
 

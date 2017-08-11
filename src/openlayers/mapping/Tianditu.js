@@ -2,7 +2,7 @@ import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.source.Tianditu
  * @classdesc 天地图
- * @param opt_options - {object} 交互时所需可选参数
+ * @param opt_options - {object} 参数
  * @extends  ol.source.WMTS
  */
 export default class Tianditu extends ol.source.WMTS {
@@ -39,14 +39,21 @@ export default class Tianditu extends ol.source.WMTS {
             wrapX: options.wrapX
         })
     }
-
+    /**
+     * @function ol.source.Tianditu.prototype.getTileGrid
+     * @description 网格瓦片
+     * @param projection -{objecxt} 投影
+     */
     static getTileGrid(projection) {
         if (projection === "EPSG:4326" || projection === "EPSG:4490") {
             return ol.source.Tianditu.default4326TileGrid();
         }
         return ol.source.Tianditu.default3857TileGrid();
     }
-
+    /**
+     * @function ol.source.Tianditu.prototype.default4326TileGrid
+     * @description 自定义4326网格瓦片
+     */
     static default4326TileGrid() {
         var tdt_WGS84_resolutions = [];
         var matrixIds = [];
@@ -63,7 +70,10 @@ export default class Tianditu extends ol.source.WMTS {
         });
         return tileGird;
     }
-
+    /**
+     * @function ol.source.Tianditu.prototype.default3857TileGrid
+     * @description 自定义3857网格瓦片
+     */
     static default3857TileGrid() {
         var tdt_Mercator_resolutions = [];
         var matrixIds = [];

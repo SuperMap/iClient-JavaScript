@@ -45,6 +45,12 @@ import Graph from './Graph';
  * 此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
  * pointStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的图形点使用 style1，字段 POP_1995 对应的图形点使用 style2 ，字段 POP_1999 对应的图形点使用 style3。</br>
  * pointStyleByCodomain - {Array{Object}} 按图形点代表的数据值所在值域范围控制图形点样式，优先级高于 pointStyle 和 pointStyleByFields。</br>
+ * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
+ * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
+ * @param fields - {Array(String)} data 中的参与此图表生成的字段名称，必设参数。
+ * @param setting - {Object} 图表配置对象，必设参数。
+ * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ *
  * @example
  * (start code)
  * // pointStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：

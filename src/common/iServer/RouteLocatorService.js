@@ -6,6 +6,9 @@ import RouteLocatorParameters from './RouteLocatorParameters';
  * @class SuperMap.RouteLocatorService
  * @classdesc 路由对象定位空间对象的服务类。
  * @extends SuperMap.SpatialAnalystBase
+ * @param options - {Object} 可选参数。如</br>
+ *        eventListeners - {Object} 需要被注册的监听器对象。
+ * @param url -{String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @example 实例化该类如下例所示：
  * (start code)
  * var routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({

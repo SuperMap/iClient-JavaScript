@@ -43,14 +43,11 @@ export default  class CartoCSS {
      */
     shaders = null;
 
-    /*
-     * Constructor: SuperMap.CartoCSS
-     * 此类用于将CartoCSS样式表解析为Carto规则对象，然后可以将Carto规则集转化为Carto图层的渲染信息shader
-     *
-     * Parameters：
-     * cartoStr - {String} CartoCSS样式表字符串
-     *
-     * Examples:
+    /**
+     * @function SuperMap.CartoCSS.prototype.constructor
+     * @description 此类用于将CartoCSS样式表解析为Carto规则对象，然后可以将Carto规则集转化为Carto图层的渲染信息shader
+     * @param cartoStr - {String} CartoCSS样式表字符串
+     * @example
      * (code)
      * var cartocss=[
      * "@color:#111;",

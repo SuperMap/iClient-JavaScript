@@ -5,6 +5,11 @@ import GetFeaturesByIDsParameters from './GetFeaturesByIDsParameters';
 /**
  * @class SuperMap.GetFeaturesByIDsService
  * @classdesc 数据集ID查询服务类。在数据集集合中查找指定 ID 号对应的空间地物要素。
+ * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务。
+ * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
+ * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
+ * @param options - {Object} 可選参数。如:</br>
+ *        eventListeners - {Object} 需要被注册的监听器对象。</br>
  * @extends SuperMap.GetFeaturesServiceBase
  * @example 例如：
  * (start code)
@@ -21,7 +26,7 @@ import GetFeaturesByIDsParameters from './GetFeaturesByIDsParameters';
 export default  class GetFeaturesByIDsService extends GetFeaturesServiceBase {
 
     /*
-     * @method SuperMap.GetFeaturesByIDsService.prototype.constructor
+     * @function SuperMap.GetFeaturesByIDsService.prototype.constructor
      * @description 数据集ID查询服务类构造函数。
      * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务。
      * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
@@ -41,7 +46,7 @@ export default  class GetFeaturesByIDsService extends GetFeaturesServiceBase {
     }
 
     /**
-     * @method SuperMap.GetFeaturesByIDsService.prototype.getJsonParameters
+     * @function SuperMap.GetFeaturesByIDsService.prototype.getJsonParameters
      * @description 将查询参数转化为 JSON 字符串。
      * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry等）。
      * @param  params - {SuperMap.GetFeaturesByIDsParameters}

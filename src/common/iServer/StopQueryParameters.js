@@ -3,9 +3,8 @@
 /**
  * @class SuperMap.StopQueryParameters
  * @classdesc 站点查询参数类。
+ *
  * @param options - {Object} 可選参数。如:</br>
- *        keyWord - {String} 站点名称关键字。</br>
- *        returnPosition - {Boolean} 是否返回站点坐标信息。</br>
  */
 export default  class StopQueryParameters {
     /**

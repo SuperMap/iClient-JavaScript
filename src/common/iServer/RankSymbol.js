@@ -7,6 +7,12 @@ import Graph from './Graph';
  * 符号专题要素模型采用了可视化图形大小自适应策略，用较少的参数控制着图表诸多图形，图表配置对象 <SuperMap.Feature.Theme.RankSymbol::setting> 的基础属性只有 5 个，
  * 它们控制着图表结构、值域范围、数据小数位等基础图表形态。构成图表的图形必须在图表结构里自适应大小。
  * 此类不可实例化，此类的可实例化子类必须实现 assembleShapes() 方法。
+ * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
+ * @param layer - {SuperMap.Layer.RankSymbol} 此专题要素所在图层，必设参数。
+ * @param fields - {Array(String)} data 中的参与此图表生成的字段名称，必设参数。
+ * @param setting - {Object} 图表配置对象，必设参数。
+ * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ *
  * @extends SuperMap.Feature.Theme.Graph
  *
  */
@@ -35,8 +41,7 @@ export default  class RankSymbol extends Graph {
      * @param setting - {Object} 图表配置对象，必设参数。
      * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
      *
-     * Returns:
-     * {SuperMap.Feature.Theme.RankSymbol} 返回一个统计专题要素。
+     * @return -{SuperMap.Feature.Theme.RankSymbol} 返回一个统计专题要素。
      */
     constructor(data, layer, fields, setting, lonlat, options) {
         super(data, layer, fields, setting, lonlat, options);

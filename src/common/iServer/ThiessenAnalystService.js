@@ -13,6 +13,11 @@ import GeoJSON from '../format/GeoJSON';
  * 泰森多边形分析的参数支持两种，当参数为 {SuperMap.DatasetThiessenAnalystParameters} 类型
  * 时，执行数据集泰森多边形分析，当参数为 {SuperMap.GeometryThiessenAnalystParameters} 类型时，
  * 执行几何对象泰森多边形分析。
+ * @param options - {Object} 参数。如:</br>
+ *        eventListeners - {Object} 需要被注册的监听器对象。
+ * @param url - {String} 服务的访问地址。
+ * 如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ *
  * @extends SuperMap.SpatialAnalystBase
  * @example 例如：
  * (start code)
@@ -32,7 +37,7 @@ export default  class ThiessenAnalystService extends SpatialAnalystBase {
      */
     mode = null;
 
-    /**
+    /*
      * @function SuperMap.ThiessenAnalystService.prototype.constructor
      * @param options - {Object} 参数。如:</br>
      *        eventListeners - {Object} 需要被注册的监听器对象。

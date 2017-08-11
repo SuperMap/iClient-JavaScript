@@ -4,6 +4,8 @@ import {OverlayOperationType} from '../REST';
 /**
  * @class SuperMap.OverlayAnalystParameters
  * @classdesc 叠加分析参数基类，数据集叠加分析参数和几何对象叠加分析参数均继承此基类
+ * @param options - {Object} 可选参数。如:</br>
+ *        operation - {OverlayOperationType} 指定叠加分析操作类型。
  */
 export default class OverlayAnalystParameters {
 
