@@ -21,7 +21,7 @@ export var EchartsMapLayer = L.Layer.extend({
      * @description 可选图层参数
      */
     options: {
-        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>",
+        attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
         loadWhileAnimating:true
     },
 

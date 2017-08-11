@@ -12,7 +12,7 @@ export default class DataFlow extends ol.source.Vector {
         var options = opt_options ? opt_options : {};
         super({
             attributions: options.attributions || new ol.Attribution({
-                html: "© 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
+                html: "© 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
             }),
             ws: options.ws,
             geometry: options.geometry,

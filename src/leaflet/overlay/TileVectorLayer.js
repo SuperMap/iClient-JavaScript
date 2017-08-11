@@ -45,7 +45,7 @@ export var  TileVectorLayer = VectorGrid.extend({
         subdomains: 'abc',
 
         timeout: 10000,
-        attribution: " with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
+        attribution: " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
     },
 
     initialize: function (url, options) {

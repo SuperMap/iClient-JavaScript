@@ -1392,41 +1392,39 @@ var CommonServiceBase = function () {
      */
 
 
-    /*
-     * Property: POLLING_TIMES
-     * {Int} 默认请求失败次数。
+    /**
+     * @member SuperMap.CommonServiceBase.prototype.POLLING_TIMES -{Int}
+     * @description 默认请求失败次数。
      */
 
 
-    /*
-     * Property: options
-     * {Object} 请求参数。
+    /**
+     * @member SuperMap.CommonServiceBase.prototype.options -{Object}
+     * @description 请求参数。
      */
 
 
-    /*
-     * Property: index
-     * {Int} 服务访问地址在数组中的位置。
+    /**
+     * @member SuperMap.CommonServiceBase.prototype.index -{Int}
+     * @description 服务访问地址在数组中的位置。
      */
 
 
-    /*
-     * Property: urls
-     * {Array} 服务访问地址数组。
+    /**
+     * @member SuperMap.CommonServiceBase.prototype.urls -{Array}
+     * @description 服务访问地址数组。
      */
 
 
     /**
      * @member SuperMap.CommonServiceBase.prototype.eventListeners -{Object}
-     * @description 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，
-     *              相当于调用 SuperMap.Events.on(eventListeners)。
+     * @description: 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，相当于调用 SuperMap.Events.on(eventListeners)。
      */
 
 
     /*
-     * Constant: EVENT_TYPES
-     * {Array(String)}
-     * 此类支持的事件类型
+     * @constant: EVENT_TYPES- {Array(String)}
+     * @description 此类支持的事件类型
      * - *processCompleted* 服务端返回信息成功触发该事件 。
      * - *processFailed* 服务端返回信息失败触发该事件 。
      */
@@ -1488,45 +1486,44 @@ var CommonServiceBase = function () {
     }
 
     /**
-     * @function  destroy
-     * @description 释放资源，将引用的资源属性置空。
+     * @override
+     * @function SuperMap.CommonServiceBase.prototype.destroy
+     * @description: 释放资源，将引用的资源属性置空。
+     */
+
+
+    /**
+     * @member SuperMap.CommonServiceBase.prototype.isInTheSameDomain -{Boolean}
      */
 
 
     /*
-     * Property: isInTheSameDomain
-     * {Boolean}
+     * @member SuperMap.CommonServiceBase.prototype._processSuccess -{Function}
+     * @description 请求参数中成功回调函数。
      */
 
 
-    /*
-     * Property: _processSuccess
-     * {Function} 请求参数中成功回调函数。
+    /**
+     *  @member SuperMap.CommonServiceBase.prototype.totalTimes -{Int}
+     *  @description 实际请求失败次数。
      */
 
 
-    /*
-     * Property: totalTimes
-     * {Int} 实际请求失败次数。
+    /**
+     * @member SuperMap.CommonServiceBase.prototype.length -{String}
+     * @description 服务访问地址数组长度。
      */
 
 
-    /*
-     * Property: length
-     * {String} 服务访问地址数组长度。
-     */
-
-
-    /*
-     *  Property: serverType
-     *  {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online
+    /**
+     * @member SuperMap.CommonServiceBase.prototype.serverType -{SuperMap.ServerType}
+     * @description 服务器类型，iServer|iPortal|Online
      */
 
 
     /**
      * @member SuperMap.CommonServiceBase.prototype.url -{String|Array}
-     * @description 服务访问地址或者服务访问地址数组。
-     *
+     * @description: 服务访问地址或者服务访问地址数组。
      * @example
      * var url1 = "http://localhost:8090/iserver/services/map-world/rest/maps/World";
      * var url2 = ["http://192.168.17.168:8090/iserver/services/map-world/rest/maps/World",
@@ -1536,8 +1533,8 @@ var CommonServiceBase = function () {
 
     /**
      * @member SuperMap.CommonServiceBase.prototype.events -{SuperMap.Events}
-     * @description  处理所有事件的对象，支持 processCompleted 、processFailed 两种事件
-     *               服务端成功返回地图信息结果时触发 processCompleted 事件，服务端返回信息结果时触发 processFailed 事件。
+     * @description: 处理所有事件的对象，支持processCompleted 、processFailed 两种事件
+     *服务端成功返回地图信息结果时触发 processCompleted事件，服务端返回信息结果时触发 processFailed 事件。
      */
 
 
@@ -1568,13 +1565,12 @@ var CommonServiceBase = function () {
         }
 
         /**
-         * @function SuperMap.CommonServiceBase.prototype.request
-         * @description APIMethod: 该方法用于向服务发送请求。
+         * @function  SuperMap.CommonServiceBase.prototype.request
+         * @description: 该方法用于向服务发送请求。
          * @param options - {Object} 参数。
          *        method - {String} 请求方式，包括GET，POST，PUT， DELETE。<br>
          *        url - {String}  发送请求的地址。<br>
-         *        params - {Object} 作为查询字符串添加到url中的一组键值对，
-         *                          此参数只适用于GET方式发送的请求。<br>
+         *        params - {Object} 作为查询字符串添加到url中的一组键值对，此参数只适用于GET方式发送的请求。<br>
          *        data - {String } 发送到服务器的数据。<br>
          *        success - {function} 请求成功后的回调函数。<br>
          *        failure - {function} 请求失败后的回调函数。<br>
@@ -1613,9 +1609,10 @@ var CommonServiceBase = function () {
             _SuperMap2.default.Util.committer(me.options);
         }
 
-        /*
-         * 获取凭据信息
-         * parameter url
+        /**
+         * @function SuperMap.CommonServiceBase.prototype.getCredential
+         * @description  获取凭据信息
+         * @param url - {String} 服务地址。
          */
 
     }, {
@@ -1649,11 +1646,10 @@ var CommonServiceBase = function () {
             return credential;
         }
 
-        /*
-         * 请求成功后执行此方法。
-         *
-         * Parameters:
-         * result - {Object} 服务器返回的结果对象。
+        /**
+         * @function SuperMap.CommonServiceBase.prototype.getUrlCompleted
+         * @description 请求成功后执行此方法。
+         * @param result - {Object} 服务器返回的结果对象。
          */
 
     }, {
@@ -1663,11 +1659,10 @@ var CommonServiceBase = function () {
             me._processSuccess(result);
         }
 
-        /*
-         * 请求失败后执行此方法。
-         *
-         * Parameters:
-         * result - {Object} 服务器返回的结果对象。
+        /**
+         * @function SuperMap.CommonServiceBase.prototype.getUrlFailed
+         * @description 请求失败后执行此方法。
+         * @param result - {Object} 服务器返回的结果对象。
          */
 
     }, {
@@ -1682,8 +1677,10 @@ var CommonServiceBase = function () {
             }
         }
 
-        /*
-         * 请求失败后，如果剩余请求失败次数不为0，重新获取url发送请求
+        /**
+         *
+         * @function SuperMap.CommonServiceBase.prototype.ajaxPolling
+         * @description 请求失败后，如果剩余请求失败次数不为0，重新获取url发送请求
          */
 
     }, {
@@ -1710,8 +1707,9 @@ var CommonServiceBase = function () {
             _SuperMap2.default.Util.committer(me.options);
         }
 
-        /*
-         * 计算剩余请求失败执行次数。
+        /**
+         * @function SuperMap.CommonServiceBase.prototype.calculatePollingTimes
+         * @description 计算剩余请求失败执行次数。
          */
 
     }, {
@@ -1738,8 +1736,9 @@ var CommonServiceBase = function () {
             me.totalTimes--;
         }
 
-        /*
-         * 判断服务是否支持轮询。
+        /**
+         * @function SuperMap.CommonServiceBase.prototype.isServiceSupportPolling
+         * @description 判断服务是否支持轮询。
          */
 
     }, {
@@ -1749,11 +1748,10 @@ var CommonServiceBase = function () {
             return !(me.CLASS_NAME === "SuperMap.REST.ThemeService" || me.CLASS_NAME === "SuperMap.REST.EditFeaturesService");
         }
 
-        /*
-         * 状态完成，执行此方法。
-         *
-         * Parameters:
-         * result - {Object} 服务器返回的结果对象。
+        /**
+         * @function SuperMap.CommonServiceBase.prototype.serviceProcessCompleted
+         * @description 状态完成，执行此方法。
+         * @param result - {Object} 服务器返回的结果对象。
          */
 
     }, {
@@ -1763,11 +1761,10 @@ var CommonServiceBase = function () {
             this.events.triggerEvent("processCompleted", { result: result });
         }
 
-        /*
-         * 状态失败，执行此方法。
-         *
-         * Parameters:
-         * result - {Object} 服务器返回的结果对象。
+        /**
+         * @function SuperMap.CommonServiceBase.prototype.serviceProcessFailed
+         * @description 状态失败，执行此方法。
+         * @param result - {Object} 服务器返回的结果对象。
          */
 
     }, {
@@ -2072,7 +2069,7 @@ var MapVLayer = exports.MapVLayer = function (_SuperMap$Layer) {
         _this.div.appendChild(_this.canvas);
         var context = _this.options && _this.options.context || "2d";
         _this.canvasContext = _this.canvas.getContext(context);
-        _this.attribution = "© 2017 百度 MapV with <span>© <a target='_blank' href='http://iclient.supermapol.com' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
+        _this.attribution = "© 2017 百度 <a href='http://mapv.baidu.com' target='_blank'>MapV</a> with <span>© <a target='_blank' href='http://iclient.supermapol.com' " + "style='color: #08c;text-decoration: none;'>SuperMap iClient</a></span>";
         return _this;
     }
 
@@ -3689,20 +3686,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.AddressMatchService
- * @constructs SuperMap.AddressMatchService
- * @classdesc
- * 地址匹配服务，包括正向匹配和反向匹配。
- * @api
-
+ * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
+ * @param options - {Object} 参数。
+ * @param url {string}
  */
 var AddressMatchService = function (_CommonServiceBase) {
     _inherits(AddressMatchService, _CommonServiceBase);
 
-    /**
-     *
-     * @method SuperMap.AddressMatchService.initialize
-     * @param options - {Object} 参数。
-     * @param url {string}
+    /*
+     * @function SuperMap.AddressMatchService.prototype.constructor
      */
     function AddressMatchService(url, options) {
         _classCallCheck(this, AddressMatchService);
@@ -3712,6 +3704,10 @@ var AddressMatchService = function (_CommonServiceBase) {
         _this.CLASS_NAME = "SuperMap.AddressMatchService";
         return _this;
     }
+    /**
+     * @inheritDoc
+     */
+
 
     _createClass(AddressMatchService, [{
         key: 'destroy',
@@ -3720,7 +3716,7 @@ var AddressMatchService = function (_CommonServiceBase) {
         }
 
         /**
-         * @method SuperMap.AddressMatchService.code
+         * @function SuperMap.AddressMatchService.prototype.code
          * @param url {string} 正向地址匹配服务地址
          * @param params {object} 正向地址匹配服务参数
          */
@@ -3732,7 +3728,7 @@ var AddressMatchService = function (_CommonServiceBase) {
         }
 
         /**
-         * @method SuperMap.AddressMatchService.decode
+         * @function SuperMap.AddressMatchService.prototype.decode
          * @param url {string} 反向地址匹配服务地址
          * @param params {object} 反向地址匹配服务参数
          */
@@ -4068,42 +4064,33 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/*
- * Class: SuperMap.GeoCodingParameter
- * 地理正向匹配参数类。
- */
-
 /**
  * @class SuperMap.GeoCodingParameter
- * @constructs SuperMap.GeoCodingParameter
- * @classdesc
- * 地理正向匹配参数类。
- * @api
+ * @classdesc 地理正向匹配参数类。
  */
-
 var GeoCodingParameter = function () {
 
-    /**
-     * @method SuperMap.GeoCodingParameter.initialize
+    /*
+     * @function  SuperMap.GeoCodingParameter.prototype.constructor
      * @param options - {Object} 参数。
      */
 
 
     /**
-     * APIProperty: filters
-     * String 查询结果的坐标系。
+     * @member SuperMap.GeoCodingParameter.prototype.prjCoordSys -{String}
+     * @description  查询结果的坐标系。
      */
 
 
     /**
-     * APIProperty: toIndex
-     * {number} 设置返回对象的结束索引值。
+     * @member SuperMap.GeoCodingParameter.prototype.toIndex -{number}
+     * @description 设置返回对象的结束索引值。
      */
 
 
     /**
-     * APIProperty: address
-     * {String} 地点关键词。
+     * @member SuperMap.GeoCodingParameter.prototype.address -{String}
+     * @description 地点关键词。
      */
     function GeoCodingParameter(options) {
         _classCallCheck(this, GeoCodingParameter);
@@ -4130,26 +4117,26 @@ var GeoCodingParameter = function () {
     }
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @function SuperMap.GeoCodingParameter.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * APIProperty: maxReturn
-     * String 最大返回结果数。
+     * @member SuperMap.GeoCodingParameter.prototype.maxReturn -{String}
+     * @description 最大返回结果数。
      */
 
 
     /**
-     * APIProperty: filters
-     * {Array} 过滤字段，限定查询区域。
+     * @member SuperMap.GeoCodingParameter.prototype.filters -{Array}
+     * @description 过滤字段，限定查询区域。
      */
 
 
     /**
-     * APIProperty: fromIndex
-     * {number} 设置返回对象的起始索引值。
+     * @member SuperMap.GeoCodingParameter.prototype.fromIndex -{number}
+     * @description 设置返回对象的起始索引值。
      */
 
 
@@ -4194,46 +4181,36 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * Class: SuperMap.GeoDecodingParameter
- * 地理反向匹配参数类。
- */
-/**
  * @class SuperMap.GeoDecodingParameter
- * @constructs SuperMap.GeoDecodingParameter
- * @classdesc
- * 地理反向匹配参数类。
- * @api
+ * @classdesc 地理反向匹配参数类。
  */
 var GeoDecodingParameter = function () {
 
-    /**
-     *
-     * @method SuperMap.GeoDecodingParameter.initialize
+    /*
+     * @method SuperMap.GeoDecodingParameter.prototype.constructor
      * @param options - {Object} 参数。
      */
 
 
     /**
-     * APIProperty: maxReturn
-     * {number} 最大返回结果数。
+     *  @member SuperMap.GeoDecodingParameter.prototype.maxReturn -{number}
+     *  @description 最大返回结果数。
      */
 
 
     /**
-     * APIProperty: filters
-     * {Array} 过滤字段，限定查询区域。
+     * @member SuperMap.GeoDecodingParameter.prototype.filters -{Array}
+     * @description 过滤字段，限定查询区域。
      */
 
-
     /**
-     * APIProperty: fromIndex
-     * {number} 设置返回对象的起始索引值。
+     * @member SuperMap.GeoDecodingParameter.prototype.fromIndex - {number}
+     * @description  设置返回对象的起始索引值。
      */
 
-
     /**
-     * APIProperty: x
-     * {number} 查询位置的横坐标。
+     * @member SuperMap.GeoDecodingParameter.prototype.x - {number}
+     * @description 查询位置的横坐标。
      */
     function GeoDecodingParameter(options) {
         _classCallCheck(this, GeoDecodingParameter);
@@ -4262,32 +4239,32 @@ var GeoDecodingParameter = function () {
     }
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+     * @method SuperMap.GeoDecodingParameter.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * APIProperty: geoDecodingRadius
-     * {number} 查询半径。
+     * @member SuperMap.GeoDecodingParameter.prototype.maxReturn -{number}
+     * @description 查询半径。
      */
 
 
     /**
-     * APIProperty: prjCoordSys
-     * {String} 查询结果的坐标系。
+     * @member SuperMap.GeoDecodingParameter.prototype.prjCoordSys -{String}
+     * @description 查询结果的坐标系。
      */
 
 
     /**
-     * APIProperty: toIndex
-     * {number} 设置返回对象的结束索引值。
+     * @member SuperMap.GeoDecodingParameter.prototype.toIndex - {number}
+     * @description 设置返回对象的结束索引值。
      */
 
 
     /**
-     * APIProperty: y
-     * {number} 查询位置的纵坐标。
+     * @member SuperMap.GeoDecodingParameter.prototype.y - {number}
+     * @description 查询位置的纵坐标。
      */
 
 
@@ -5639,16 +5616,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.KeyServiceParameter
- * @constructs SuperMap.KeyServiceParameter
- * @classdesc
- * key申请参数
-
- * @api
+ * @classdesc key申请参数
  */
 var KeyServiceParameter = function () {
 
-    /**
-     * @method SuperMap.KeyServiceParameter.initialize
+    /*
+     * @function SuperMap.KeyServiceParameter.prototype.constructor
      * @param options - {Object} 参数。
      */
     function KeyServiceParameter(options) {
@@ -5664,7 +5637,8 @@ var KeyServiceParameter = function () {
     }
 
     /**
-     * @method SuperMap.KeyServiceParameter.toJSON
+     * @function SuperMap.KeyServiceParameter.prototype.toJSON
+     * @description 转换成JSON字符串
      * @return {string} 参数的JSON字符串
      */
 
@@ -5718,7 +5692,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /**
  * @class SuperMap.SecurityManager
- * @constructs SuperMap.SecurityManager
  * @classdesc
  *  安全管理中心
  *  提供iServer,iPortal,Online统一权限认证管理
@@ -5726,19 +5699,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *  创建任何一个服务之前调用SuperMap.SecurityManager.registerToken或
  *  SuperMap.SecurityManager.registerKey注册凭据。
  *  发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
- * @api
  */
-
 _SuperMap2.default.SecurityManager = {
 
     INNER_WINDOW_WIDTH: 600,
     INNER_WINDOW_HEIGHT: 600,
-
     /**
-     *
+     * @function SuperMap.SecurityManager.prototype.generateToken
      * @description 从服务器获取一个token,在此之前要注册服务器信息
-     * @param url {String} -服务器域名+端口，如：http://localhost:8092
-     * @param tokenParam {SuperMap.TokenServiceParameter}
+     * @param url {String}-服务器域名+端口，如：http://localhost:8092
+     * @param tokenParam -{SuperMap.TokenServiceParameter}
      */
     generateToken: function generateToken(url, tokenParam) {
         var serverInfo = this.servers[url];
@@ -5751,9 +5721,9 @@ _SuperMap2.default.SecurityManager = {
     },
 
     /**
-     *
+     * @function SuperMap.SecurityManager.prototype.registerServers
      * @description 注册安全服务器相关信息
-     * @param serverInfos {SuperMap.ServerInfo}
+     * @param serverInfos -{SuperMap.ServerInfo}
      */
     registerServers: function registerServers(serverInfos) {
         this.servers = this.servers || {};
@@ -5767,9 +5737,10 @@ _SuperMap2.default.SecurityManager = {
     },
 
     /**
+     * @function SuperMap.SecurityManager.prototype.registerToken
      * @description 服务请求都会自动带上这个token
-     * @param url {String} - 服务器域名+端口：如http://localhost:8090
-     * @param token {String}
+     * @param url {String} -服务器域名+端口：如http://localhost:8090
+     * @param token -{String}
      */
     registerToken: function registerToken(url, token) {
         this.tokens = this.tokens || {};
@@ -5781,9 +5752,10 @@ _SuperMap2.default.SecurityManager = {
     },
 
     /**
+     * @function SuperMap.SecurityManager.prototype.registerKey
      * @description 注册key,ids为数组(存在一个key对应多个服务)
-     * @param ids   {Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
-     * @param key   {String}
+     * @param ids -{Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
+     * @param key -{String}
      */
     registerKey: function registerKey(ids, key) {
         this.keys = this.keys || {};
@@ -5798,12 +5770,21 @@ _SuperMap2.default.SecurityManager = {
         }
     },
 
+    /**
+     * @function SuperMap.SecurityManager.prototype.getServerInfo
+     * @description 获取服务信息
+     * @param url {String}-服务器域名+端口，如：http://localhost:8092
+     */
     getServerInfo: function getServerInfo(url) {
         this.servers = this.servers || {};
         return this.servers[url];
     },
 
-    //token按照域名存储
+    /**
+     * @function SuperMap.SecurityManager.prototype.getToken
+     * @description token按照域名存储
+     * @param url -{String}-服务器域名+端口，如：http://localhost:8092
+     */
     getToken: function getToken(url) {
         if (!url) {
             return;
@@ -5819,19 +5800,32 @@ _SuperMap2.default.SecurityManager = {
         return this.keys[key];
     },
 
-    //Online登录验证
+    /**
+     * @function SuperMap.SecurityManager.prototype.loginOnline
+     * @description Online登录验证
+     * @param callbackLocation -{String} 跳转位置
+     * @param newTab -{boolean}是否新窗口打开
+     */
     loginOnline: function loginOnline(callbackLocation, newTab) {
         var loginUrl = SecurityManager.SSO + "/login?service=" + callbackLocation;
         this._open(loginUrl, newTab);
     },
 
-    //iPortal登录验证
+    /**
+     * @function SuperMap.SecurityManager.prototype.loginPortal
+     * @description iPortal登录验证
+     * @param url -{String} 网站地址
+     * @param newTab -{boolean}是否新窗口打开
+     */
     loginPortal: function loginPortal(url, newTab) {
         var end = url.substr(url.length - 1, 1);
         url += end === "/" ? "web/login" : "/web/login";
         this._open(url, newTab);
     },
-
+    /**
+     * @function SuperMap.SecurityManager.prototype.destroyAllCredentials
+     * @description 清空全部验证信息
+     */
     destroyAllCredentials: function destroyAllCredentials() {
         this.keys = null;
         this.tokens = null;
@@ -5920,23 +5914,27 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.ServerInfo
- * @constructs SuperMap.ServerInfo
- * @classdesc
- * 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
- * @api
+ * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
  */
 
 var ServerInfo =
 
 /**
- * @method SuperMap.ServerInfo.initialize
- * @param type
+ * @function SuperMap.ServerInfo.prototype.constructor
+ * @param type -{string} 类型
  * @param options - {Object} 参数。
  */
 
-//非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
 
-//服务器类型:SuperMap.ServerType
+/**
+ * @member SuperMap.ServerInfo.prototype.tokenServiceUrl -{string}
+ * @description 非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
+ */
+
+/**
+ * @member SuperMap.ServerInfo.prototype.type -{SuperMap.ServerType}
+ * @description 服务器类型 如：http://supermapiserver:8090
+ */
 function ServerInfo(type, options) {
     _classCallCheck(this, ServerInfo);
 
@@ -5971,9 +5969,17 @@ function ServerInfo(type, options) {
         }
     }
 }
-//非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
 
-//如：http://supermapiserver:8090
+/**
+ * @member SuperMap.ServerInfo.prototype.keyServiceUrl -{string}
+ * @description 非必填。
+ */
+
+
+/**
+ * @member SuperMap.ServerInfo.prototype.server -{string}
+ * @description 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
+ */
 ;
 
 exports.default = ServerInfo;
@@ -6006,21 +6012,31 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.TokenServiceParameter
- * @constructs  SuperMap.TokenServiceParameter
- * @classdesc
- * token申请参数
- * @api
+ * @classdesc token申请参数
  */
 var TokenServiceParameter = function () {
 
-    /**
-     * @method SuperMap.TokenServiceParameter.initialize
-     * @param options - {Object} 参数。
+    /*
+     * @function SuperMap.TokenServiceParameter.prototype.constructor
+     * * @description 地图缓存参数类
+     *  @param options - {Object} 参数。
      */
 
-    //clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.referer -{String}
+     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+     */
 
-    //token申请的客户端标识类型
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.clientType -{String}
+     * @description token申请的客户端标识类型。
+     */
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.userName -{String}
+     * @description 用户名。
+     */
     function TokenServiceParameter(options) {
         _classCallCheck(this, TokenServiceParameter);
 
@@ -6036,11 +6052,27 @@ var TokenServiceParameter = function () {
     }
 
     /**
-     * @method SuperMap.TokenServiceParameter.toJSON
+     * @function SuperMap.TokenServiceParameter.prototype.toJSON
+     * @description 将所有信息转成JSON字符串
      * @return {String} 参数的JSON字符串
      */
 
-    //申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.expiration -{number}
+     * @description 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
+     */
+
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.referer -{String}
+     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+     */
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.password -{String}
+     * @description 密码。
+     */
 
 
     _createClass(TokenServiceParameter, [{

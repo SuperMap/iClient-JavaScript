@@ -22,7 +22,7 @@ export var WMTSLayer = L.TileLayer.extend({
         tileSize: 256,
         matrixIds: null,
         layer: '',
-        attribution: "with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
+        attribution: "with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
     },
 
     //todo 自动获取Capabilities

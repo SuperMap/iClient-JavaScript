@@ -10,9 +10,9 @@ export default class Tianditu extends ol.source.WMTS {
     constructor(opt_options) {
         var options = opt_options || {};
         var attributions = options.attributions || new ol.Attribution({
-            html: "Map Data <a href='http://www.tianditu.com'><img style='background-color:transparent;bottom:2px;opacity:1;' " +
+            html: "Map Data <a href='http://www.tianditu.com' target='_blank'><img style='background-color:transparent;bottom:2px;opacity:1;' " +
             "src='http://api.tianditu.com/img/map/logo.png' width='53px' height='22px' opacity='0'></a> with " +
-            "<span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
+            "<span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
         });
 
         if (!options.url && !options.urls) {

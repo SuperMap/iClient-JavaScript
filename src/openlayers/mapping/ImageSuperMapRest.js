@@ -17,7 +17,7 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         }
         options.attributions = options.attributions ||
             new ol.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx'>SuperMap iServer</a></span> with <a href='http://icltest.supermapol.com/'>© SuperMap iClient</a>"
+                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <a href='http://icltest.supermapol.com/'>© SuperMap iClient</a>"
             });
         var layerUrl = options.url + "/image.png?";
         options.serverType = options.serverType || SuperMap.ServerType.ISERVER;

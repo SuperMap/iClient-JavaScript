@@ -9,7 +9,7 @@ export default class Baidu extends ol.source.TileImage {
     constructor(opt_options) {
         var options = opt_options || {};
         var attributions = options.attributions || new ol.Attribution({
-                html: "Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
+                html: "Map Data © 2017 Baidu - GS(2016)2089号 - Data © 长地万方 with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
             });
         var tileGrid = ol.source.Baidu.defaultTileGrid();
         var crossOrigin = options.crossOrigin !== undefined ?

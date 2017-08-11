@@ -17,7 +17,7 @@ export default class VectorTileSuperMapRest extends ol.source.VectorTile {
         options.crossOrigin = 'anonymous';
         options.attributions = options.attributions ||
             new ol.Attribution({
-                html: "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
+                html: "Tile Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
             })
         var layerUrl = options.url + '/tileFeature.json?';
         if (options.format instanceof ol.format.MVT) {

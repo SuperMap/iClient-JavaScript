@@ -98,6 +98,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var BaseLayer = _mapv.baiduMapLayer ? _mapv.baiduMapLayer.__proto__ : Function;
+/**
+ * @class mapboxgl.supermap.MapvRenderer
+ * @classdesc MapV图层渲染
+ * @param map - {String} 地图
+ * @param layer -{Object} 图层
+ * @param dataSet -{Object} 数据集
+ * @param options -{Object} 交互时所需可选参数。
+ * @extends BaseLayer
+ *
+ */
 
 var MapvRenderer = function (_BaseLayer) {
     _inherits(MapvRenderer, _BaseLayer);
@@ -127,6 +137,12 @@ var MapvRenderer = function (_BaseLayer) {
         _this.bindEvent();
         return _this;
     }
+    /**
+     * @class mapboxgl.supermap.prototype.MapvRenderer
+     * @description  点击绑定事件
+     * @param e - {object} 事件
+     */
+
 
     _createClass(MapvRenderer, [{
         key: 'clickEvent',
@@ -134,6 +150,12 @@ var MapvRenderer = function (_BaseLayer) {
             var pixel = e.layerPoint;
             _get(MapvRenderer.prototype.__proto__ || Object.getPrototypeOf(MapvRenderer.prototype), 'clickEvent', this).call(this, pixel, e);
         }
+        /**
+         * @class mapboxgl.supermap.prototype.mousemoveEvent
+         * @description  鼠标移动事件
+         * @param e - {object} 事件
+         */
+
     }, {
         key: 'mousemoveEvent',
         value: function mousemoveEvent(e) {
@@ -167,11 +189,24 @@ var MapvRenderer = function (_BaseLayer) {
                 }
             }
         }
+        /**
+         * @class mapboxgl.supermap.prototype.getContext
+         * @description  获取画布内容
+         */
+
     }, {
         key: 'getContext',
         value: function getContext() {
             return this.canvasLayer.canvas.getContext(this.context);
         }
+
+        /**
+         * @class mapboxgl.supermap.prototype.updateData
+         * @param dataSet - {object} 数据集
+         * @param options - {object} 交互操作
+         * @description  更新画布内容
+         */
+
     }, {
         key: 'updateData',
         value: function updateData(dataSet, options) {
@@ -354,8 +389,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/*
- @class MapvLayer
+/**
+ * @class mapboxgl.supermap.MapvLayer
+ * @classdesc MAPV图层信息
+ * @param map - {String} 地图
+ * @param dataSet -{Object} 数据集
+ * @param mapVOptions -{Object} 交互时所需可选参数。
  */
 var MapvLayer = exports.MapvLayer = function () {
     function MapvLayer(map, dataSet, mapVOptions) {
@@ -368,6 +407,11 @@ var MapvLayer = exports.MapvLayer = function () {
         this.mapContainer = map.getCanvasContainer();
         this.mapContainer.appendChild(this.canvas);
     }
+    /**
+     * @function mapboxgl.supermap.MapvLayer.prototype.getTopLeft
+     * @description 获取左上的距离
+     */
+
 
     _createClass(MapvLayer, [{
         key: 'getTopLeft',
