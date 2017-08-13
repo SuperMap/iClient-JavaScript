@@ -23,11 +23,10 @@ export default  class IPortalServiceBase {
     /**
      * @function SuperMap.iPortalServiceBase.prototype.request
      * @description 子类统一通过该方法发送请求
-     * @param url -{String} 服务器域名+端口，如：http://localhost:8092
-     * @param method -{INT}
-     * @param requestOptions -{Object}
-     * @param param -{Object}
-     * @description 获取返回参数的json数组
+     * @param method -{INT} 请求类型
+     * @param url -{String} 服务地址
+     * @param param -{Object} 请求参数
+     * @param requestOptions -{Object} fetch请求配置项
      *
      */
 
@@ -39,12 +38,11 @@ export default  class IPortalServiceBase {
     }
 
 
-
     /**
      * @function SuperMap.iPortalServiceBase.prototype.createCredentialUrl
      * @description 追加授权信息
-     * @param url -{String} 服务器域名+端口，如：http://localhost:8092
-     * @return {string} 新地址
+     * @param url -{String} url
+     * @return {string} 携带带token或key的新地址
      */
 
     createCredentialUrl(url) {
