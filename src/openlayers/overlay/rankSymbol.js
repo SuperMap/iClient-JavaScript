@@ -12,10 +12,31 @@ export default class RankSymbol extends Graph {
 
     constructor(name, symbolType, opt_options) {
         super(name, symbolType, opt_options);
-        this.symbolSetting = {};
-        this.themeField = null;
         this.symbolType = symbolType;
+        this.symbolSetting = opt_options.symbolSetting;
+        this.themeField = opt_options.themeField;
+        this.features = opt_options.features;
+
+        var features = this.features;
+        if (!(SuperMap.Util.isArray(features))) {
+            features = [features];
+        }
+        var event = {features: features};
+        var ret = this.dispatchEvent({type: 'beforefeaturesadded', value: event});
+        if (ret === false) {
+            return;
+        }
+        features = event.features;
+        var toFeatures = [];
+        var featuresFailAdded = [];
+        for (var i = 0, len = features.length; i < len; i++) {
+            toFeatures.push(this.toiClientFeature(features[i]));
+        }
+        this.features = toFeatures;
+        var succeed = featuresFailAdded.length == 0 ? true : false;
+        this.dispatchEvent({type: 'featuresadded', value: {features: featuresFailAdded, succeed: succeed}});
     }
+
     /**
      * @function ol.source.RankSymbol.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
@@ -26,6 +47,7 @@ export default class RankSymbol extends Graph {
         this.themeField = null;
         SuperMap.Layer.Graph.prototype.destroy.apply(this, arguments);
     }
+
     /**
      * @function ol.source.RankSymbol.prototype.setSymbolType
      * @description 设置标志符号
@@ -35,6 +57,7 @@ export default class RankSymbol extends Graph {
         this.symbolType = symbolType;
         this.redraw();
     }
+
     /**
      * @function ol.source.RankSymbol.prototype.createThematicFeature
      * @description 创建专题图形

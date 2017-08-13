@@ -12,27 +12,16 @@ export default class Range extends GeoFeature {
 
     constructor(name, opt_options) {
         super(name, opt_options);
-        this.style = new Object();
-        this.styleGroups = [];
-        this.themeField = null;
-    }
-    /**
-     * @function ol.source.Range.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-    destroy() {
-        this.style = null;
-        this.themeField = null;
-        this.styleGroups = null;
-        GeoFeature.prototype.destroy.apply(this, arguments);
-    }
-    /**
-     * @function ol.source.Range.prototype.addFeatures
-     * @param features -{object} 要创建的专题图形要素
-     * @description 添加专题图特征
-     */
-    addFeatures(features) {
-        //数组
+        this.map = opt_options.map;
+        this.features = opt_options.features;
+        this.style = opt_options.style;
+        this.isHoverAble = opt_options.isHoverAble;
+        this.highlightStyle = opt_options.highlightStyle;
+        this.themeField = opt_options.themeField;
+        this.styleGroups = opt_options.styleGroups;
+
+        //添加features
+        var features = this.features;
         if (!(SuperMap.Util.isArray(features))) {
             features = [features];
         }
@@ -43,19 +32,29 @@ export default class Range extends GeoFeature {
         }
         features = event.features;
         var featuresFailAdded = [];
+        var toFeatures = [];
         for (var i = 0, len = features.length; i < len; i++) {
-            this.features.push(new SuperMap.REST.ServerFeature.fromJson(features[i]).toFeature());
+            toFeatures.push(new SuperMap.REST.ServerFeature.fromJson(features[i]).toFeature());
         }
+        this.features = toFeatures;
         var succeed = featuresFailAdded.length == 0 ? true : false;
         this.dispatchEvent({type: 'featuresadded', value: {features: featuresFailAdded, succeed: succeed}});
         if (!this.isCustomSetMaxCacheCount) {
             this.maxCacheCount = this.features.length * 5;
         }
-        //绘制专题要素
-        if (this.renderer) {
-            this.redrawThematicFeatures(this.map.getView().calculateExtent());
-        }
     }
+
+    /**
+     * @function ol.source.Range.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+    destroy() {
+        this.style = null;
+        this.themeField = null;
+        this.styleGroups = null;
+        GeoFeature.prototype.destroy.apply(this, arguments);
+    }
+
     /**
      * @function ol.source.Range.prototype.createThematicFeature
      * @param feature -{object} 要创建的专题图形要素
@@ -82,6 +81,7 @@ export default class Range extends GeoFeature {
 
         return thematicFeature;
     }
+
     /**
      * @function ol.source.Range.prototype.getStyleByData
      * @param fea -{object} 要创建的专题图形要素

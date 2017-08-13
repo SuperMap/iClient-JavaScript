@@ -15,33 +15,60 @@ export default class Theme extends ol.source.ImageCanvas {
         var options = opt_options ? opt_options : {};
 
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
-            var mapWidth = Math.round(ol.extent.getWidth(extent) / resolution) * pixelRatio;
-            var mapHeight = Math.round(ol.extent.getHeight(extent) / resolution) * pixelRatio;
+            if (!this.notFirst) {
+                this.redrawThematicFeatures(extent);
+                this.notFirst = true;
+            }
+            var mapWidth = size[0] * pixelRatio;
+            var mapHeight = size[1] * pixelRatio;
             var width = this.map.getSize()[0] * pixelRatio;
             var height = this.map.getSize()[1] * pixelRatio;
-            this.div.style.width = width + "px";
-            this.div.style.height = height + "px";
-            this.map.getViewport().appendChild(this.div);
-            this.renderer.resize();
-            this.map.getViewport().removeChild(this.div);
+            if (!this.themeCanvas) {
+                this.div.style.width = mapWidth + "px";
+                this.div.style.height = mapHeight + "px";
+                this.map.getViewport().appendChild(this.div);
+                this.renderer.resize();
+                this.map.getViewport().removeChild(this.div);
+                this.themeCanvas = this.renderer.painter.root.getElementsByTagName('canvas')[0];
+            }
+            this.themeCanvas.width = mapWidth;
+            this.themeCanvas.height = mapHeight;
+            this.themeCanvas.style.width = mapWidth + "px";
+            this.themeCanvas.style.height = mapHeight + "px";
+            this.themeCanvas.getContext('2d').clearRect(0, 0, mapWidth, mapHeight);
+            this.offset = [(mapWidth - width) / 2, (mapHeight - height) / 2];
+
+            var highLightContext = this.renderer.painter._layers.hover.ctx;
+            var copyHighLightContext = Util.createCanvasContext2D(mapWidth, mapHeight);
+            // copyHighLightContext.translate((mapWidth - width) / 2, (mapHeight - height) / 2);
+            copyHighLightContext.drawImage(highLightContext.canvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
+            this.highLightCanvas = copyHighLightContext.canvas;
+
             this.redrawThematicFeatures(extent);
-            var context = Util.createCanvasContext2D(mapWidth, mapHeight);
-            var themeCanvas = this.renderer.painter.root.getElementsByTagName('canvas')[0];
-            context.drawImage(themeCanvas, 0, 0, mapWidth, mapHeight, (mapWidth - width) / 2, (mapHeight - height) / 2, mapWidth, mapHeight);
+            if (!this.context) {
+                this.context = Util.createCanvasContext2D(mapWidth, mapHeight);
+            }
+            var canvas = this.context.canvas;
+            this.context.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.width = mapWidth;
+            canvas.height = mapHeight;
+            canvas.style.width = mapWidth + "px";
+            canvas.style.height = mapHeight + "px";
+            this.context.drawImage(this.themeCanvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
             if (this.resolution !== resolution || JSON.stringify(this.extent) !== JSON.stringify(extent)) {
                 this.highLightCanvas = null;
                 this.resolution = resolution;
                 this.extent = extent;
             }
             if (this.highLightCanvas) {
-                context.drawImage(this.highLightCanvas, 0, 0, mapWidth, mapHeight, (mapWidth - width) / 2, (mapHeight - height) / 2, mapWidth, mapHeight);
+                this.context.drawImage(this.highLightCanvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
             }
-            return context.canvas;
+            return this.context.canvas;
         }
 
         super({
             attributions: options.attributions || new ol.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
             }),
             canvasFunction: canvasFunctionInternal_,
             logo: options.logo,
@@ -309,40 +336,59 @@ export default class Theme extends ol.source.ImageCanvas {
 
     fire(type, event) {
         event = event.originalEvent;
+        var x = this.getX(event);
+        var y = this.getY(event);
+        var rotation = -this.map.getView().getRotation();
+        var center = this.map.getPixelFromCoordinate(this.map.getView().getCenter());
+        var rotatedP = this.rotate([x, y], rotation, center);
+        var resultP = [rotatedP[0] + this.offset[0], rotatedP[1] + this.offset[1]];
+        var offsetEvent = document.createEvent('Event');
+        offsetEvent.initEvent('pointermove', true, true);
+        offsetEvent.offsetX = resultP[0];
+        offsetEvent.offsetY = resultP[1];
+        offsetEvent.layerX = resultP[0];
+        offsetEvent.layerY = resultP[1];
+        offsetEvent.clientX = resultP[0];
+        offsetEvent.clientY = resultP[1];
+        offsetEvent.x = x;
+        offsetEvent.y = y;
         if (type === 'click') {
-            this.renderer.handler._clickHandler(event);
+            this.renderer.handler._clickHandler(offsetEvent);
         }
         if (type === 'dblclick') {
-            this.renderer.handler._dblclickHandler(event);
+            this.renderer.handler._dblclickHandler(offsetEvent);
         }
         if (type === 'onmousewheel') {
-            this.renderer.handler._mousewheelHandler(event);
+            this.renderer.handler._mousewheelHandler(offsetEvent);
         }
         if (type === 'mousemove') {
-            this.renderer.handler._mousemoveHandler(event);
-            this._initHighLightCanvas();
+            this.renderer.handler._mousemoveHandler(offsetEvent);
             this.changed();
         }
         if (type === 'onmouseout') {
-            this.renderer.handler._mouseoutHandler(event);
+            this.renderer.handler._mouseoutHandler(offsetEvent);
         }
         if (type === 'onmousedown') {
-            this.renderer.handler._mousedownHandler(event);
+            this.renderer.handler._mousedownHandler(offsetEvent);
         }
         if (type === 'onmouseup') {
-            this.renderer.handler._mouseupHandler(event);
+            this.renderer.handler._mouseupHandler(offsetEvent);
         }
 
     }
 
-    _initHighLightCanvas() {
-        var highLightContext = this.renderer.painter._layers.hover.ctx;
-        var canvas = highLightContext.canvas;
-        var width = canvas.width;
-        var height = canvas.height;
-        var copyHighLightContext = Util.createCanvasContext2D(width, height);
-        copyHighLightContext.putImageData(highLightContext.getImageData(0, 0, width, height), 0, 0);
-        this.highLightCanvas = copyHighLightContext.canvas;
+    getX(e) {
+        return typeof e.zrenderX != 'undefined' && e.zrenderX
+            || typeof e.offsetX != 'undefined' && e.offsetX
+            || typeof e.layerX != 'undefined' && e.layerX
+            || typeof e.clientX != 'undefined' && e.clientX;
+    }
+
+    getY(e) {
+        return typeof e.zrenderY != 'undefined' && e.zrenderY
+            || typeof e.offsetY != 'undefined' && e.offsetY
+            || typeof e.layerY != 'undefined' && e.layerY
+            || typeof e.clientY != 'undefined' && e.clientY;
     }
 
     /**
@@ -388,21 +434,30 @@ export default class Theme extends ol.source.ImageCanvas {
     }
 
     getLocalXY(coordinate) {
-        var resolution = this.map.getView().getResolution();
-        var extent = this.map.getView().calculateExtent();
+        var pixelP;
         if (coordinate instanceof SuperMap.Geometry.Point || coordinate instanceof SuperMap.Geometry.GeoText) {
-            var x = (coordinate.x / resolution + (-extent[0] / resolution));
-            var y = ((extent[3] / resolution) - coordinate.y / resolution);
-            return [x, y];
+            pixelP = map.getPixelFromCoordinate([coordinate.x, coordinate.y]);
         }
-        else if (coordinate instanceof SuperMap.LonLat) {
-            var x = (coordinate.lon / resolution + (-extent[0] / resolution));
-            var y = ((extent[3] / resolution) - coordinate.lat / resolution);
-            return [x, y];
+        if (coordinate instanceof SuperMap.LonLat) {
+            pixelP = map.getPixelFromCoordinate([coordinate.lon, coordinate.lat]);
         }
-        else {
-            return null;
+        var rotation = -map.getView().getRotation();
+        var center = map.getPixelFromCoordinate(map.getView().getCenter());
+        var rotatedP = pixelP;
+        if (pixelP && center) {
+            rotatedP = this.rotate(pixelP, rotation, center);
         }
+        if (this.offset && rotatedP) {
+            return [rotatedP[0] + this.offset[0], rotatedP[1] + this.offset[1]];
+        }
+        return rotatedP;
+    }
+
+    //获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
+    rotate(pixelP, rotation, center) {
+        var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
+        var y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];
+        return [x, y];
     }
 
     toiClientFeature(feature) {

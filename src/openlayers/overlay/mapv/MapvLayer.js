@@ -118,13 +118,22 @@ export default class MapvLayer extends BaiduMapLayer {
         }
         var dataGetOptions = {
             transferCoordinate: function (coordinate) {
-                coordinate = map.getPixelFromCoordinate(coordinate);
-                if (self.offset) {
-                    coordinate = [coordinate[0] + self.offset[0], coordinate[1] + self.offset[1]];
-                }
-                return coordinate;
+                var pixelP = map.getPixelFromCoordinate(coordinate);
+                var rotation = -map.getView().getRotation();
+                var center = map.getPixelFromCoordinate(map.getView().getCenter());
+                var rotatedP = rotate(pixelP, rotation, center);
+                var result = [rotatedP[0] + self.offset[0], rotatedP[1] + self.offset[1]];
+                return result;
             }
         };
+
+        //获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
+        function rotate(pixelP, rotation, center) {
+            var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
+            var y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];
+            return [x, y];
+        }
+
         if (time !== undefined) {
             dataGetOptions.filter = function (item) {
                 var trails = animationOptions.trails || 10;

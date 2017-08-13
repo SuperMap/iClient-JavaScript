@@ -131,9 +131,9 @@
 
 <script type="text/javascript">
     var map, options, themeLayer, themeSource,
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图",
-            url2 = "http://support.supermap.com.cn:8090/iserver/services/data-jingjin/rest/data",
-            extent = [104.07, 30.54, 119.51, 42.31];
+        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        url2 = "http://support.supermap.com.cn:8090/iserver/services/data-jingjin/rest/data",
+        extent = [104.07, 30.54, 119.51, 42.31];
     new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
@@ -154,149 +154,24 @@
         });
         map.addLayer(layer);
 
-        themeSource = new ol.source.Unique("ThemeLayer", {map: map, opacity: 0.8});
-        themeSource.setOpacity(0.8);
-        themeLayer = new ol.layer.Image({
-            source: themeSource
+        map.once('postrender', function () {
+            var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+            getFeatureParam = new SuperMap.FilterParameter({
+                name: "Jingjin",
+                attributeFilter: "SMID > -1"
+            });
+            getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+                queryParameter: getFeatureParam,
+                toIndex: 500,
+                datasetNames: ["Jingjin:Landuse_R"]
+            });
+            getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(url2, {
+                format: SuperMap.DataFormat.ISERVER,
+                eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}
+            });
+            getFeatureBySQLService.processAsync(getFeatureBySQLParams);
         });
-        themeLayer.setOpacity(0.8);
-        themeSource.style = {
-            shadowBlur: 3,
-            shadowColor: "#000000",
-            shadowOffsetX: 1,
-            shadowOffsetY: 1,
-            fillColor: "#FFFFFF"
-        };
-        // 开启 hover 高亮效果
-        themeSource.isHoverAble = true;
-        // hover 高亮样式
-        themeSource.highlightStyle = {
-            stroke: true,
-            strokeWidth: 2,
-            strokeColor: 'blue',
-            fillColor: "#00F5FF",
-            fillOpacity: 0.2
-        };
-        // 用于单值专题图的属性字段名称
-        themeSource.themeField = "LANDTYPE";
-        // 风格数组，设定值对应的样式
-        themeSource.styleGroups = [
-            {
-                value: "草地",
-                style: {
-                    fillColor: "#C1FFC1"
-                }
-            },
-            {
-                value: "城市",
-                style: {
-                    fillColor: "#CD7054"
-                }
-            },
-            {
-                value: "灌丛",
-                style: {
-                    fillColor: "#7CCD7C"
-                }
-            },
-            {
-                value: "旱地",
-                style: {
-                    fillColor: "#EE9A49"
-                }
-            },
-            {
-                value: "湖泊水库",
-                style: {
-                    fillColor: "#8EE5EE"
-                }
-            },
-            {
-                value: "经济林",
-                style: {
-                    fillColor: "#548B54"
-                }
-            },
-            {
-                value: "沙漠",
-                style: {
-                    fillColor: "#DEB887"
-                }
-            },
-            {
-                value: "水浇地",
-                style: {
-                    fillColor: "#E0FFFF"
-                }
-            },
-            {
-                value: "水田",
-                style: {
-                    fillColor: "#388E8E"
-                }
-            },
-            {
-                value: "用材林",
-                style: {
-                    fillColor: "#556B2F"
-                }
-            },
-            {
-                value: "沼泽",
-                style: {
-                    fillColor: "#2F4F4F"
-                }
-            },
-            {
-                value: "缺省风格",
-                style: {
-                    fillColor: "#ABABAB"
-                }
-            }
-        ];
-        //专题图层 mousemove 事件
-        themeSource.on('mousemove', function (e) {
-            if (e.target && e.target.refDataID) {
-                document.getElementById("infoPlane").style.display = "block";
-                var fid = e.target.refDataID;
-                var fea = themeSource.getFeatureById(fid);
-                if (fea) {
-                    document.getElementById("infoContent").innerHTML = "";
-                    document.getElementById("infoContent").innerHTML += "ID: " + fea.attributes.SMID + "<br/>";
-                    document.getElementById("infoContent").innerHTML += "土地类型: " + fea.attributes.LANDTYPE + "<br/>";
-                    document.getElementById("infoContent").innerHTML += "面积: " + parseFloat(fea.attributes.SMAREA).toFixed(5) + "<br/>";
-                }
-            }
-            else {
-                document.getElementById("infoContent").innerHTML = "";
-                document.getElementById("infoPlane").style.display = "none";
-            }
-        });
-
-        var pointerInteraction = new ol.interaction.Pointer({
-            handleMoveEvent: function (event) {
-                themeSource.fire('mousemove', event);
-            }
-        });
-        map.addInteraction(pointerInteraction);
-        clearLayer();
-        var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
-        getFeatureParam = new SuperMap.FilterParameter({
-            name: "Jingjin",
-            attributeFilter: "SMID > -1"
-        });
-        getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: getFeatureParam,
-            toIndex: 500,
-            datasetNames: ["Jingjin:Landuse_R"]
-        });
-        getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(url2, {
-            format: SuperMap.DataFormat.ISERVER,
-            eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}
-        });
-        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
     })
-    ;
 
     function processCompleted(getFeaturesEventArgs) {
         var result = getFeaturesEventArgs.result;
@@ -317,7 +192,131 @@
             }
             // 岛洞多面要素必需在其他要素之前添加
             feas = IHFeas.concat(feas);
-            themeSource.addFeatures(feas);
+            themeSource = new ol.source.Unique("ThemeLayer",
+                {
+                    map: map,
+                    features: feas,
+                    style: {
+                        shadowBlur: 3,
+                        shadowColor: "#000000",
+                        shadowOffsetX: 1,
+                        shadowOffsetY: 1,
+                        fillColor: "#FFFFFF"
+                    },
+                    isHoverAble: true,
+                    highlightStyle: {
+                        stroke: true,
+                        strokeWidth: 2,
+                        strokeColor: 'blue',
+                        fillColor: "#00F5FF",
+                        fillOpacity: 0.2
+                    },
+                    themeField: "LANDTYPE",
+                    styleGroups: [
+                        {
+                            value: "草地",
+                            style: {
+                                fillColor: "#C1FFC1"
+                            }
+                        },
+                        {
+                            value: "城市",
+                            style: {
+                                fillColor: "#CD7054"
+                            }
+                        },
+                        {
+                            value: "灌丛",
+                            style: {
+                                fillColor: "#7CCD7C"
+                            }
+                        },
+                        {
+                            value: "旱地",
+                            style: {
+                                fillColor: "#EE9A49"
+                            }
+                        },
+                        {
+                            value: "湖泊水库",
+                            style: {
+                                fillColor: "#8EE5EE"
+                            }
+                        },
+                        {
+                            value: "经济林",
+                            style: {
+                                fillColor: "#548B54"
+                            }
+                        },
+                        {
+                            value: "沙漠",
+                            style: {
+                                fillColor: "#DEB887"
+                            }
+                        },
+                        {
+                            value: "水浇地",
+                            style: {
+                                fillColor: "#E0FFFF"
+                            }
+                        },
+                        {
+                            value: "水田",
+                            style: {
+                                fillColor: "#388E8E"
+                            }
+                        },
+                        {
+                            value: "用材林",
+                            style: {
+                                fillColor: "#556B2F"
+                            }
+                        },
+                        {
+                            value: "沼泽",
+                            style: {
+                                fillColor: "#2F4F4F"
+                            }
+                        },
+                        {
+                            value: "缺省风格",
+                            style: {
+                                fillColor: "#ABABAB"
+                            }
+                        }
+                    ]
+                });
+
+            //专题图层 mousemove 事件
+            themeSource.on('mousemove', function (e) {
+                if (e.target && e.target.refDataID) {
+                    document.getElementById("infoPlane").style.display = "block";
+                    var fid = e.target.refDataID;
+                    var fea = themeSource.getFeatureById(fid);
+                    if (fea) {
+                        document.getElementById("infoContent").innerHTML = "";
+                        document.getElementById("infoContent").innerHTML += "ID: " + fea.attributes.SMID + "<br/>";
+                        document.getElementById("infoContent").innerHTML += "土地类型: " + fea.attributes.LANDTYPE + "<br/>";
+                        document.getElementById("infoContent").innerHTML += "面积: " + parseFloat(fea.attributes.SMAREA).toFixed(5) + "<br/>";
+                    }
+                }
+                else {
+                    document.getElementById("infoContent").innerHTML = "";
+                    document.getElementById("infoPlane").style.display = "none";
+                }
+            });
+
+            var pointerInteraction = new ol.interaction.Pointer({
+                handleMoveEvent: function (event) {
+                    themeSource.fire('mousemove', event);
+                }
+            });
+            map.addInteraction(pointerInteraction);
+            themeLayer = new ol.layer.Image({
+                source: themeSource
+            });
+            themeLayer.setOpacity(0.8);
             map.addLayer(themeLayer);
         }
         document.getElementById("mapLegend").style.display = "block";
@@ -325,13 +324,6 @@
 
     function processFailed(e) {
         alert(e.error.errorMsg);
-    }
-
-    function clearLayer() {
-        document.getElementById("mapLegend").style.display = "none";
-        document.getElementById("infoPlane").style.display = "none";
-        //先清除上次的显示结果
-        themeSource.clear();
     }
 
     /*

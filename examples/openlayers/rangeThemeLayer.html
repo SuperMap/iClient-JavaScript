@@ -100,14 +100,14 @@
         </div>
     </div>
 </div>
-<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol-debug.js"></script>
+<script src="http://cdn.bootcss.com/openlayers/4.2.0/ol.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 
 <script type="text/javascript">
-    var map, options, themeLayer, themeSource,
-            baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图",
-            url2 = "http://support.supermap.com.cn:8090/iserver/services/data-jingjin/rest/data",
-            extent = [104.07, 30.54, 119.51, 42.31];
+    var map, themeSource
+    baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图",
+        url2 = "http://support.supermap.com.cn:8090/iserver/services/data-jingjin/rest/data",
+        extent = [104.07, 30.54, 119.51, 42.31];
     new ol.supermap.MapService(baseUrl).getMapInfo(function (serviceResult) {
         var mapJSONObj = serviceResult.result;
         map = new ol.Map({
@@ -121,73 +121,96 @@
                 extent: extent
             })
         });
-        options = ol.source.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
+        var options = ol.source.TileSuperMapRest.optionsFromMapJSON(baseUrl, mapJSONObj);
         var layer = new ol.layer.Tile({
             source: new ol.source.TileSuperMapRest(options)
         });
         map.addLayer(layer);
 
-        themeSource = new ol.source.Range("ThemeLayer", {map: map});
-        themeSource.setOpacity(0.8);
-        themeLayer = new ol.layer.Image({
-            source: themeSource
+        var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
+        getFeatureParam = new SuperMap.FilterParameter({
+            name: "Jingjin",
+            attributeFilter: "SMID > -1"
         });
-        themeLayer.setOpacity(0.8);
-        themeSource.style = {
-            shadowBlur: 16,
-            shadowColor: "#000000",
-            fillColor: "#FFFFFF"
-        };
-        // 开启 hover 高亮效果
-        themeSource.isHoverAble = true;
-        // hover 高亮样式
-        themeSource.highlightStyle = {
-            stroke: true,
-            strokeWidth: 4,
-            strokeColor: 'blue',
-            fillColor: "#00EEEE",
-            fillOpacity: 0.8
-        };
-        // 用于单值专题图的属性字段名称
-        themeSource.themeField = "POP_DENSITY99";
-        // 风格数组，设定值对应的样式
-        themeSource.styleGroups = [
+        getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
+            queryParameter: getFeatureParam,
+            toIndex: 500,
+            datasetNames: ["Jingjin:BaseMap_R"]
+        });
+        getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(url2, {
+            format: SuperMap.DataFormat.ISERVER,
+            eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}
+        });
+        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
+    });
+
+    function processCompleted(getFeaturesEventArgs) {
+        var result = getFeaturesEventArgs.result;
+        if (result && result.features) {
+            map.once('postrender', function () {
+                addThemeLayer(result.features);
+            });
+        }
+        //显示图例
+        document.getElementById("mapLegend").style.display = "block";
+    }
+
+    function addThemeLayer(features) {
+        themeSource = new ol.source.Range("ThemeLayer",
             {
-                start: 0,
-                end: 0.02,
+                map: map,
+                features: features,
                 style: {
-                    color: '#FDE2CA'
-                }
-            },
-            {
-                start: 0.02,
-                end: 0.04,
-                style: {
-                    color: '#FACE9C'
-                }
-            },
-            {
-                start: 0.04,
-                end: 0.06,
-                style: {
-                    color: '#F09C42'
-                }
-            },
-            {
-                start: 0.06,
-                end: 0.1,
-                style: {
-                    color: '#D0770B'
-                }
-            },
-            {
-                start: 0.1,
-                end: 0.2,
-                style: {
-                    color: '#945305'
-                }
-            }
-        ];
+                    shadowBlur: 16,
+                    shadowColor: "#000000",
+                    fillColor: "#FFFFFF"
+                },
+                isHoverAble: true,
+                highlightStyle: {
+                    stroke: true,
+                    strokeWidth: 4,
+                    strokeColor: 'blue',
+                    fillColor: "#00EEEE",
+                    fillOpacity: 0.8
+                },
+                themeField: "POP_DENSITY99",
+                styleGroups: [
+                    {
+                        start: 0,
+                        end: 0.02,
+                        style: {
+                            color: '#FDE2CA'
+                        }
+                    },
+                    {
+                        start: 0.02,
+                        end: 0.04,
+                        style: {
+                            color: '#FACE9C'
+                        }
+                    },
+                    {
+                        start: 0.04,
+                        end: 0.06,
+                        style: {
+                            color: '#F09C42'
+                        }
+                    },
+                    {
+                        start: 0.06,
+                        end: 0.1,
+                        style: {
+                            color: '#D0770B'
+                        }
+                    },
+                    {
+                        start: 0.1,
+                        end: 0.2,
+                        style: {
+                            color: '#945305'
+                        }
+                    }]
+            });
         //专题图层 mousemove 事件
         themeSource.on('mousemove', function (e) {
             if (e.target && e.target.refDataID) {
@@ -213,45 +236,16 @@
             }
         });
         map.addInteraction(pointerInteraction);
-        clearLayer();
-        var getFeatureParam, getFeatureBySQLService, getFeatureBySQLParams;
-        getFeatureParam = new SuperMap.FilterParameter({
-            name: "Jingjin",
-            attributeFilter: "SMID > -1"
+        var themeLayer = new ol.layer.Image({
+            source: themeSource
         });
-        getFeatureBySQLParams = new SuperMap.GetFeaturesBySQLParameters({
-            queryParameter: getFeatureParam,
-            toIndex: 500,
-            datasetNames: ["Jingjin:BaseMap_R"]
-        });
-        getFeatureBySQLService = new SuperMap.GetFeaturesBySQLService(url2, {
-            format: SuperMap.DataFormat.ISERVER,
-            eventListeners: {"processCompleted": processCompleted, "processFailed": processFailed}
-        });
-        getFeatureBySQLService.processAsync(getFeatureBySQLParams);
-    });
-
-    function processCompleted(getFeaturesEventArgs) {
-        var result = getFeaturesEventArgs.result;
-        if (result && result.features) {
-            themeSource.addFeatures(result.features);
-            map.addLayer(themeLayer);
-        }
-        //显示图例
-        document.getElementById("mapLegend").style.display = "block";
+        themeLayer.setOpacity(0.8);
+        map.addLayer(themeLayer);
     }
 
     function processFailed(e) {
         alert(e.error.errorMsg);
     }
-
-    function clearLayer() {
-        document.getElementById("mapLegend").style.display = "none";
-        document.getElementById("infoBox").style.display = "none";
-        //先清除上次的显示结果
-        themeSource.clear();
-    }
-
 </script>
 </body>
 </html>

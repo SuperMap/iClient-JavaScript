@@ -12,20 +12,14 @@ export default class Unique extends GeoFeature {
 
     constructor(name, opt_options) {
         super(name, opt_options);
-        this.themeField = null;
-        this.style = new Object();
-        this.styleGroups = new Array();
-    }
+        this.themeField = opt_options.themeField;
+        this.style = opt_options.style;
+        this.styleGroups = opt_options.styleGroups;
+        this.isHoverAble = opt_options.isHoverAble;
+        this.highlightStyle = opt_options.highlightStyle;
+        this.features = opt_options.features;
 
-    destroy() {
-        this.style = null;
-        this.themeField = null;
-        this.styleGroups = null;
-        GeoFeature.prototype.destroy.apply(this, arguments);
-    }
-
-    addFeatures(features) {
-        //数组
+        var features = this.features;
         if (!(SuperMap.Util.isArray(features))) {
             features = [features];
         }
@@ -33,18 +27,23 @@ export default class Unique extends GeoFeature {
         this.dispatchEvent({type: 'beforefeaturesadded', value: event});
         features = event.features;
         var featuresFailAdded = [];
+        var toFeatures = [];
         for (var i = 0, len = features.length; i < len; i++) {
-            this.features.push(this.toiClientFeature(features[i]));
+            toFeatures.push(this.toiClientFeature(features[i]));
         }
+        this.features = toFeatures;
         var succeed = featuresFailAdded.length == 0 ? true : false;
         this.dispatchEvent({type: 'featuresadded', value: {features: featuresFailAdded, succeed: succeed}});
         if (!this.isCustomSetMaxCacheCount) {
             this.maxCacheCount = this.features.length * 5;
         }
-        //绘制专题要素
-        if (this.renderer) {
-            this.redrawThematicFeatures(this.map.getView().calculateExtent());
-        }
+    }
+
+    destroy() {
+        this.style = null;
+        this.themeField = null;
+        this.styleGroups = null;
+        GeoFeature.prototype.destroy.apply(this, arguments);
     }
 
     createThematicFeature(feature) {

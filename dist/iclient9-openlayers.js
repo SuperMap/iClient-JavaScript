@@ -7337,11 +7337,10 @@ var IPortalServiceBase = function () {
     /**
      * @function SuperMap.iPortalServiceBase.prototype.request
      * @description 子类统一通过该方法发送请求
-     * @param url -{String} 服务器域名+端口，如：http://localhost:8092
-     * @param method -{INT}
-     * @param requestOptions -{Object}
-     * @param param -{Object}
-     * @description 获取返回参数的json数组
+     * @param method -{INT} 请求类型
+     * @param url -{String} 服务地址
+     * @param param -{Object} 请求参数
+     * @param requestOptions -{Object} fetch请求配置项
      *
      */
 
@@ -7357,8 +7356,8 @@ var IPortalServiceBase = function () {
         /**
          * @function SuperMap.iPortalServiceBase.prototype.createCredentialUrl
          * @description 追加授权信息
-         * @param url -{String} 服务器域名+端口，如：http://localhost:8092
-         * @return {string} 新地址
+         * @param url -{String} url
+         * @return {string} 携带带token或key的新地址
          */
 
     }, {
@@ -11403,33 +11402,60 @@ var Theme = function (_ol$source$ImageCanva) {
         var options = opt_options ? opt_options : {};
 
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
-            var mapWidth = Math.round(_olDebug2.default.extent.getWidth(extent) / resolution) * pixelRatio;
-            var mapHeight = Math.round(_olDebug2.default.extent.getHeight(extent) / resolution) * pixelRatio;
+            if (!this.notFirst) {
+                this.redrawThematicFeatures(extent);
+                this.notFirst = true;
+            }
+            var mapWidth = size[0] * pixelRatio;
+            var mapHeight = size[1] * pixelRatio;
             var width = this.map.getSize()[0] * pixelRatio;
             var height = this.map.getSize()[1] * pixelRatio;
-            this.div.style.width = width + "px";
-            this.div.style.height = height + "px";
-            this.map.getViewport().appendChild(this.div);
-            this.renderer.resize();
-            this.map.getViewport().removeChild(this.div);
+            if (!this.themeCanvas) {
+                this.div.style.width = mapWidth + "px";
+                this.div.style.height = mapHeight + "px";
+                this.map.getViewport().appendChild(this.div);
+                this.renderer.resize();
+                this.map.getViewport().removeChild(this.div);
+                this.themeCanvas = this.renderer.painter.root.getElementsByTagName('canvas')[0];
+            }
+            this.themeCanvas.width = mapWidth;
+            this.themeCanvas.height = mapHeight;
+            this.themeCanvas.style.width = mapWidth + "px";
+            this.themeCanvas.style.height = mapHeight + "px";
+            this.themeCanvas.getContext('2d').clearRect(0, 0, mapWidth, mapHeight);
+            this.offset = [(mapWidth - width) / 2, (mapHeight - height) / 2];
+
+            var highLightContext = this.renderer.painter._layers.hover.ctx;
+            var copyHighLightContext = _Util2.default.createCanvasContext2D(mapWidth, mapHeight);
+            // copyHighLightContext.translate((mapWidth - width) / 2, (mapHeight - height) / 2);
+            copyHighLightContext.drawImage(highLightContext.canvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
+            this.highLightCanvas = copyHighLightContext.canvas;
+
             this.redrawThematicFeatures(extent);
-            var context = _Util2.default.createCanvasContext2D(mapWidth, mapHeight);
-            var themeCanvas = this.renderer.painter.root.getElementsByTagName('canvas')[0];
-            context.drawImage(themeCanvas, 0, 0, mapWidth, mapHeight, (mapWidth - width) / 2, (mapHeight - height) / 2, mapWidth, mapHeight);
+            if (!this.context) {
+                this.context = _Util2.default.createCanvasContext2D(mapWidth, mapHeight);
+            }
+            var canvas = this.context.canvas;
+            this.context.clearRect(0, 0, canvas.width, canvas.height);
+            canvas.width = mapWidth;
+            canvas.height = mapHeight;
+            canvas.style.width = mapWidth + "px";
+            canvas.style.height = mapHeight + "px";
+            this.context.drawImage(this.themeCanvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
             if (this.resolution !== resolution || JSON.stringify(this.extent) !== JSON.stringify(extent)) {
                 this.highLightCanvas = null;
                 this.resolution = resolution;
                 this.extent = extent;
             }
             if (this.highLightCanvas) {
-                context.drawImage(this.highLightCanvas, 0, 0, mapWidth, mapHeight, (mapWidth - width) / 2, (mapHeight - height) / 2, mapWidth, mapHeight);
+                this.context.drawImage(this.highLightCanvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
             }
-            return context.canvas;
+            return this.context.canvas;
         }
 
         var _this = _possibleConstructorReturn(this, (Theme.__proto__ || Object.getPrototypeOf(Theme)).call(this, {
             attributions: options.attributions || new _olDebug2.default.Attribution({
-                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+                html: "Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx'>SuperMap iServer</a></span> with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
             }),
             canvasFunction: canvasFunctionInternal_,
             logo: options.logo,
@@ -11724,40 +11750,54 @@ var Theme = function (_ol$source$ImageCanva) {
         key: 'fire',
         value: function fire(type, event) {
             event = event.originalEvent;
+            var x = this.getX(event);
+            var y = this.getY(event);
+            var rotation = -this.map.getView().getRotation();
+            var center = this.map.getPixelFromCoordinate(this.map.getView().getCenter());
+            var rotatedP = this.rotate([x, y], rotation, center);
+            var resultP = [rotatedP[0] + this.offset[0], rotatedP[1] + this.offset[1]];
+            var offsetEvent = document.createEvent('Event');
+            offsetEvent.initEvent('pointermove', true, true);
+            offsetEvent.offsetX = resultP[0];
+            offsetEvent.offsetY = resultP[1];
+            offsetEvent.layerX = resultP[0];
+            offsetEvent.layerY = resultP[1];
+            offsetEvent.clientX = resultP[0];
+            offsetEvent.clientY = resultP[1];
+            offsetEvent.x = x;
+            offsetEvent.y = y;
             if (type === 'click') {
-                this.renderer.handler._clickHandler(event);
+                this.renderer.handler._clickHandler(offsetEvent);
             }
             if (type === 'dblclick') {
-                this.renderer.handler._dblclickHandler(event);
+                this.renderer.handler._dblclickHandler(offsetEvent);
             }
             if (type === 'onmousewheel') {
-                this.renderer.handler._mousewheelHandler(event);
+                this.renderer.handler._mousewheelHandler(offsetEvent);
             }
             if (type === 'mousemove') {
-                this.renderer.handler._mousemoveHandler(event);
-                this._initHighLightCanvas();
+                this.renderer.handler._mousemoveHandler(offsetEvent);
                 this.changed();
             }
             if (type === 'onmouseout') {
-                this.renderer.handler._mouseoutHandler(event);
+                this.renderer.handler._mouseoutHandler(offsetEvent);
             }
             if (type === 'onmousedown') {
-                this.renderer.handler._mousedownHandler(event);
+                this.renderer.handler._mousedownHandler(offsetEvent);
             }
             if (type === 'onmouseup') {
-                this.renderer.handler._mouseupHandler(event);
+                this.renderer.handler._mouseupHandler(offsetEvent);
             }
         }
     }, {
-        key: '_initHighLightCanvas',
-        value: function _initHighLightCanvas() {
-            var highLightContext = this.renderer.painter._layers.hover.ctx;
-            var canvas = highLightContext.canvas;
-            var width = canvas.width;
-            var height = canvas.height;
-            var copyHighLightContext = _Util2.default.createCanvasContext2D(width, height);
-            copyHighLightContext.putImageData(highLightContext.getImageData(0, 0, width, height), 0, 0);
-            this.highLightCanvas = copyHighLightContext.canvas;
+        key: 'getX',
+        value: function getX(e) {
+            return typeof e.zrenderX != 'undefined' && e.zrenderX || typeof e.offsetX != 'undefined' && e.offsetX || typeof e.layerX != 'undefined' && e.layerX || typeof e.clientX != 'undefined' && e.clientX;
+        }
+    }, {
+        key: 'getY',
+        value: function getY(e) {
+            return typeof e.zrenderY != 'undefined' && e.zrenderY || typeof e.offsetY != 'undefined' && e.offsetY || typeof e.layerY != 'undefined' && e.layerY || typeof e.clientY != 'undefined' && e.clientY;
         }
 
         /**
@@ -11809,19 +11849,33 @@ var Theme = function (_ol$source$ImageCanva) {
     }, {
         key: 'getLocalXY',
         value: function getLocalXY(coordinate) {
-            var resolution = this.map.getView().getResolution();
-            var extent = this.map.getView().calculateExtent();
+            var pixelP;
             if (coordinate instanceof _SuperMap2.default.Geometry.Point || coordinate instanceof _SuperMap2.default.Geometry.GeoText) {
-                var x = coordinate.x / resolution + -extent[0] / resolution;
-                var y = extent[3] / resolution - coordinate.y / resolution;
-                return [x, y];
-            } else if (coordinate instanceof _SuperMap2.default.LonLat) {
-                var x = coordinate.lon / resolution + -extent[0] / resolution;
-                var y = extent[3] / resolution - coordinate.lat / resolution;
-                return [x, y];
-            } else {
-                return null;
+                pixelP = map.getPixelFromCoordinate([coordinate.x, coordinate.y]);
             }
+            if (coordinate instanceof _SuperMap2.default.LonLat) {
+                pixelP = map.getPixelFromCoordinate([coordinate.lon, coordinate.lat]);
+            }
+            var rotation = -map.getView().getRotation();
+            var center = map.getPixelFromCoordinate(map.getView().getCenter());
+            var rotatedP = pixelP;
+            if (pixelP && center) {
+                rotatedP = this.rotate(pixelP, rotation, center);
+            }
+            if (this.offset && rotatedP) {
+                return [rotatedP[0] + this.offset[0], rotatedP[1] + this.offset[1]];
+            }
+            return rotatedP;
+        }
+
+        //获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
+
+    }, {
+        key: 'rotate',
+        value: function rotate(pixelP, rotation, center) {
+            var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
+            var y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];
+            return [x, y];
         }
     }, {
         key: 'toiClientFeature',
@@ -14669,7 +14723,7 @@ var Mapv = function (_ol$source$ImageCanva) {
 
         var _this = _possibleConstructorReturn(this, (Mapv.__proto__ || Object.getPrototypeOf(Mapv)).call(this, {
             attributions: options.attributions || new _olDebug2.default.Attribution({
-                html: "© 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+                html: "© 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com'>SuperMap iClient</a></span>"
             }),
             canvasFunction: canvasFunctionInternal_,
             logo: options.logo,
@@ -14684,25 +14738,42 @@ var Mapv = function (_ol$source$ImageCanva) {
         _this.mapvOptions = opt_options.mapvOptions;
 
         function canvasFunctionInternal_(extent, resolution, pixelRatio, size, projection) {
-            var mapWidth = Math.round(_olDebug2.default.extent.getWidth(extent) / resolution) * pixelRatio;
-            var mapHeight = Math.round(_olDebug2.default.extent.getHeight(extent) / resolution) * pixelRatio;
+            var mapWidth = size[0] * pixelRatio;
+            var mapHeight = size[1] * pixelRatio;
             var width = this.map.getSize()[0] * pixelRatio;
             var height = this.map.getSize()[1] * pixelRatio;
             if (!this.layer) {
                 this.layer = new _MapvLayer2.default(this.map, this.dataSet, this.mapvOptions, mapWidth, mapHeight, this);
             }
             this.layer.offset = [(mapWidth - width) / 2, (mapHeight - height) / 2];
-            if (!this.layer.isEnabledTime()) {
-                this.layer.canvasLayer.draw(mapWidth, mapHeight);
+            if (!this.rotate) {
+                this.rotate = this.map.getView().getRotation();
+            } else {
+                if (this.rotate !== this.map.getView().getRotation()) {
+                    this.layer.canvasLayer.resize(mapWidth, mapHeight);
+                    this.rotate = this.map.getView().getRotation();
+                }
             }
             var canvas = this.layer.canvasLayer.canvas;
-            var context = _Util2.default.createCanvasContext2D(mapWidth, mapHeight);
-            context.drawImage(canvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
+            if (!this.layer.isEnabledTime()) {
+                this.layer.canvasLayer.resize(mapWidth, mapHeight);
+                this.layer.canvasLayer.draw();
+            }
+            if (!this.context) {
+                this.context = _Util2.default.createCanvasContext2D(mapWidth, mapHeight);
+            }
+            var canvas2 = this.context.canvas;
+            this.context.clearRect(0, 0, canvas2.width, canvas2.height);
+            canvas2.width = mapWidth;
+            canvas2.height = mapHeight;
+            canvas2.style.width = mapWidth + "px";
+            canvas2.style.height = mapHeight + "px";
+            this.context.drawImage(canvas, 0, 0, mapWidth, mapHeight, 0, 0, mapWidth, mapHeight);
             if (this.resolution !== resolution || JSON.stringify(this.extent) !== JSON.stringify(extent)) {
                 this.resolution = resolution;
                 this.extent = extent;
             }
-            return context.canvas;
+            return this.context.canvas;
         }
         return _this;
     }
@@ -14774,11 +14845,39 @@ var Range = function (_GeoFeature) {
 
         var _this = _possibleConstructorReturn(this, (Range.__proto__ || Object.getPrototypeOf(Range)).call(this, name, opt_options));
 
-        _this.style = new Object();
-        _this.styleGroups = [];
-        _this.themeField = null;
+        _this.map = opt_options.map;
+        _this.features = opt_options.features;
+        _this.style = opt_options.style;
+        _this.isHoverAble = opt_options.isHoverAble;
+        _this.highlightStyle = opt_options.highlightStyle;
+        _this.themeField = opt_options.themeField;
+        _this.styleGroups = opt_options.styleGroups;
+
+        //添加features
+        var features = _this.features;
+        if (!_SuperMap2.default.Util.isArray(features)) {
+            features = [features];
+        }
+        var event = { features: features };
+        var ret = _this.dispatchEvent({ type: 'beforefeaturesadded', value: event });
+        if (ret === false) {
+            return _possibleConstructorReturn(_this);
+        }
+        features = event.features;
+        var featuresFailAdded = [];
+        var toFeatures = [];
+        for (var i = 0, len = features.length; i < len; i++) {
+            toFeatures.push(new _SuperMap2.default.REST.ServerFeature.fromJson(features[i]).toFeature());
+        }
+        _this.features = toFeatures;
+        var succeed = featuresFailAdded.length == 0 ? true : false;
+        _this.dispatchEvent({ type: 'featuresadded', value: { features: featuresFailAdded, succeed: succeed } });
+        if (!_this.isCustomSetMaxCacheCount) {
+            _this.maxCacheCount = _this.features.length * 5;
+        }
         return _this;
     }
+
     /**
      * @function ol.source.Range.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
@@ -14793,39 +14892,7 @@ var Range = function (_GeoFeature) {
             this.styleGroups = null;
             _geoFeature2.default.prototype.destroy.apply(this, arguments);
         }
-        /**
-         * @function ol.source.Range.prototype.addFeatures
-         * @param features -{object} 要创建的专题图形要素
-         * @description 添加专题图特征
-         */
 
-    }, {
-        key: 'addFeatures',
-        value: function addFeatures(features) {
-            //数组
-            if (!_SuperMap2.default.Util.isArray(features)) {
-                features = [features];
-            }
-            var event = { features: features };
-            var ret = this.dispatchEvent({ type: 'beforefeaturesadded', value: event });
-            if (ret === false) {
-                return;
-            }
-            features = event.features;
-            var featuresFailAdded = [];
-            for (var i = 0, len = features.length; i < len; i++) {
-                this.features.push(new _SuperMap2.default.REST.ServerFeature.fromJson(features[i]).toFeature());
-            }
-            var succeed = featuresFailAdded.length == 0 ? true : false;
-            this.dispatchEvent({ type: 'featuresadded', value: { features: featuresFailAdded, succeed: succeed } });
-            if (!this.isCustomSetMaxCacheCount) {
-                this.maxCacheCount = this.features.length * 5;
-            }
-            //绘制专题要素
-            if (this.renderer) {
-                this.redrawThematicFeatures(this.map.getView().calculateExtent());
-            }
-        }
         /**
          * @function ol.source.Range.prototype.createThematicFeature
          * @param feature -{object} 要创建的专题图形要素
@@ -14855,6 +14922,7 @@ var Range = function (_GeoFeature) {
 
             return thematicFeature;
         }
+
         /**
          * @function ol.source.Range.prototype.getStyleByData
          * @param fea -{object} 要创建的专题图形要素
@@ -14960,11 +15028,32 @@ var RankSymbol = function (_Graph) {
 
         var _this = _possibleConstructorReturn(this, (RankSymbol.__proto__ || Object.getPrototypeOf(RankSymbol)).call(this, name, symbolType, opt_options));
 
-        _this.symbolSetting = {};
-        _this.themeField = null;
         _this.symbolType = symbolType;
+        _this.symbolSetting = opt_options.symbolSetting;
+        _this.themeField = opt_options.themeField;
+        _this.features = opt_options.features;
+
+        var features = _this.features;
+        if (!_SuperMap2.default.Util.isArray(features)) {
+            features = [features];
+        }
+        var event = { features: features };
+        var ret = _this.dispatchEvent({ type: 'beforefeaturesadded', value: event });
+        if (ret === false) {
+            return _possibleConstructorReturn(_this);
+        }
+        features = event.features;
+        var toFeatures = [];
+        var featuresFailAdded = [];
+        for (var i = 0, len = features.length; i < len; i++) {
+            toFeatures.push(_this.toiClientFeature(features[i]));
+        }
+        _this.features = toFeatures;
+        var succeed = featuresFailAdded.length == 0 ? true : false;
+        _this.dispatchEvent({ type: 'featuresadded', value: { features: featuresFailAdded, succeed: succeed } });
         return _this;
     }
+
     /**
      * @function ol.source.RankSymbol.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
@@ -14979,6 +15068,7 @@ var RankSymbol = function (_Graph) {
             this.themeField = null;
             _SuperMap2.default.Layer.Graph.prototype.destroy.apply(this, arguments);
         }
+
         /**
          * @function ol.source.RankSymbol.prototype.setSymbolType
          * @description 设置标志符号
@@ -14991,6 +15081,7 @@ var RankSymbol = function (_Graph) {
             this.symbolType = symbolType;
             this.redraw();
         }
+
         /**
          * @function ol.source.RankSymbol.prototype.createThematicFeature
          * @description 创建专题图形
@@ -15077,9 +15168,31 @@ var Unique = function (_GeoFeature) {
 
         var _this = _possibleConstructorReturn(this, (Unique.__proto__ || Object.getPrototypeOf(Unique)).call(this, name, opt_options));
 
-        _this.themeField = null;
-        _this.style = new Object();
-        _this.styleGroups = new Array();
+        _this.themeField = opt_options.themeField;
+        _this.style = opt_options.style;
+        _this.styleGroups = opt_options.styleGroups;
+        _this.isHoverAble = opt_options.isHoverAble;
+        _this.highlightStyle = opt_options.highlightStyle;
+        _this.features = opt_options.features;
+
+        var features = _this.features;
+        if (!_SuperMap2.default.Util.isArray(features)) {
+            features = [features];
+        }
+        var event = { features: features };
+        _this.dispatchEvent({ type: 'beforefeaturesadded', value: event });
+        features = event.features;
+        var featuresFailAdded = [];
+        var toFeatures = [];
+        for (var i = 0, len = features.length; i < len; i++) {
+            toFeatures.push(_this.toiClientFeature(features[i]));
+        }
+        _this.features = toFeatures;
+        var succeed = featuresFailAdded.length == 0 ? true : false;
+        _this.dispatchEvent({ type: 'featuresadded', value: { features: featuresFailAdded, succeed: succeed } });
+        if (!_this.isCustomSetMaxCacheCount) {
+            _this.maxCacheCount = _this.features.length * 5;
+        }
         return _this;
     }
 
@@ -15090,30 +15203,6 @@ var Unique = function (_GeoFeature) {
             this.themeField = null;
             this.styleGroups = null;
             _geoFeature2.default.prototype.destroy.apply(this, arguments);
-        }
-    }, {
-        key: 'addFeatures',
-        value: function addFeatures(features) {
-            //数组
-            if (!_SuperMap2.default.Util.isArray(features)) {
-                features = [features];
-            }
-            var event = { features: features };
-            this.dispatchEvent({ type: 'beforefeaturesadded', value: event });
-            features = event.features;
-            var featuresFailAdded = [];
-            for (var i = 0, len = features.length; i < len; i++) {
-                this.features.push(this.toiClientFeature(features[i]));
-            }
-            var succeed = featuresFailAdded.length == 0 ? true : false;
-            this.dispatchEvent({ type: 'featuresadded', value: { features: featuresFailAdded, succeed: succeed } });
-            if (!this.isCustomSetMaxCacheCount) {
-                this.maxCacheCount = this.features.length * 5;
-            }
-            //绘制专题要素
-            if (this.renderer) {
-                this.redrawThematicFeatures(this.map.getView().calculateExtent());
-            }
         }
     }, {
         key: 'createThematicFeature',
@@ -51910,8 +51999,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class ol.supermap.MapvCanvasLayer
- * @classdesc 地图画布图层
- * @param options - {object} 交互时所需可选参数
+ * @classdesc ��ͼ����ͼ��
+ * @param options - {object} ����ʱ�����ѡ����
  */
 var MapvCanvasLayer = function () {
     function MapvCanvasLayer(options) {
@@ -51947,47 +52036,29 @@ var MapvCanvasLayer = function () {
             canvas.style.width = canvas.width + "px";
             canvas.style.height = canvas.height + "px";
         }
-        /**
-         * @function ol.supermap.MapvCanvasLayer.prototype.draw
-         * @description 创建画布
-         * @param mapWidth  - {number} 地图的宽度
-         * @param mapHeight - {number} 地图的高度
-         */
-
     }, {
         key: 'draw',
-        value: function draw(mapWidth, mapHeight) {
+        value: function draw() {
+            this.options.update && this.options.update.call(this);
+        }
+    }, {
+        key: 'resize',
+        value: function resize(mapWidth, mapHeight) {
             this.canvas.width = mapWidth;
             this.canvas.height = mapHeight;
             this.canvas.style.width = mapWidth + "px";
             this.canvas.style.height = mapHeight + "px";
-            this.options.update && this.options.update.call(this);
         }
-        /**
-         * @function ol.supermap.MapvCanvasLayer.prototype.getContainer
-         * @description 获取内容
-         */
-
     }, {
         key: 'getContainer',
         value: function getContainer() {
             return this.canvas;
         }
-        /**
-         * @function ol.supermap.MapvCanvasLayer.prototype.setZIndex
-         * @description 设置图层层级关系
-         */
-
     }, {
         key: 'setZIndex',
         value: function setZIndex(zIndex) {
             this.canvas.style.zIndex = zIndex;
         }
-        /**
-         * @function ol.supermap.MapvCanvasLayer.prototype.getZIndex
-         * @description 获取图层层级
-         */
-
     }, {
         key: 'getZIndex',
         value: function getZIndex() {
@@ -52163,13 +52234,22 @@ var MapvLayer = function (_BaiduMapLayer) {
             }
             var dataGetOptions = {
                 transferCoordinate: function transferCoordinate(coordinate) {
-                    coordinate = map.getPixelFromCoordinate(coordinate);
-                    if (self.offset) {
-                        coordinate = [coordinate[0] + self.offset[0], coordinate[1] + self.offset[1]];
-                    }
-                    return coordinate;
+                    var pixelP = map.getPixelFromCoordinate(coordinate);
+                    var rotation = -map.getView().getRotation();
+                    var center = map.getPixelFromCoordinate(map.getView().getCenter());
+                    var rotatedP = rotate(pixelP, rotation, center);
+                    var result = [rotatedP[0] + self.offset[0], rotatedP[1] + self.offset[1]];
+                    return result;
                 }
             };
+
+            //获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
+            function rotate(pixelP, rotation, center) {
+                var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
+                var y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];
+                return [x, y];
+            }
+
             if (time !== undefined) {
                 dataGetOptions.filter = function (item) {
                     var trails = animationOptions.trails || 10;
