@@ -15,7 +15,7 @@ export default  class GeoJSON extends JSONFormat {
     ignoreExtraDims = false;
 
     /**
-     * @method SuperMap.Format.GeoJSON.read
+     * @function SuperMap.Format.GeoJSON.read
      * @description 反序列化一个 GeoJSON 字符串
      *
      * @param json - {String}  GeoJSON 字符串
@@ -102,7 +102,7 @@ export default  class GeoJSON extends JSONFormat {
     }
 
     /**
-     *  @method SuperMap.Format.GeoJSON.isValidType
+     *  @function SuperMap.Format.GeoJSON.isValidType
      *  @description 检查一个GeoJSON对象是否和给定的类型相符的合法的对象。
      *  @return {Boolean} GeoJSON是否是给定类型的合法对象。
      */
@@ -138,7 +138,7 @@ export default  class GeoJSON extends JSONFormat {
     }
 
     /**
-     * @method SuperMap.Format.GeoJSON.parseFeature
+     * @function SuperMap.Format.GeoJSON.parseFeature
      * @description 将一个GeoJSON中的feature转化成<SuperMap.Feature.Vector>对象。
      * @param obj - {Object} 从GeoJSON对象中创建一个对象。
      * @return {SuperMap.Feature.Vector} 一个要素。
@@ -165,7 +165,7 @@ export default  class GeoJSON extends JSONFormat {
 
 
     /**
-     * @method SuperMap.Format.GeoJSON.parseGeometry
+     * @function SuperMap.Format.GeoJSON.parseGeometry
      * @description将一个GeoJSON中的几何要素转化成<SuperMap.Geometry>对象。
      * @param obj - {Object} 从GeoJSON对象中创建一个对象。
      * @return {SuperMap.Geometry} 一个几何要素。
@@ -220,7 +220,7 @@ export default  class GeoJSON extends JSONFormat {
      */
     parseCoords = {
         /**
-         * @method SuperMap.Format.GeoJSON.parseCoords.point
+         * @function SuperMap.Format.GeoJSON.parseCoords.point
          * @description 将一组坐标成一个<SuperMap.Geometry>对象。
          * @param array - {Object} GeoJSON片段中的一组坐标。
          * @return {SuperMap.Geometry} 一个几何对象。
@@ -234,7 +234,7 @@ export default  class GeoJSON extends JSONFormat {
         },
 
         /**
-         * @method SuperMap.Format.GeoJSON.parseCoords.multipoint
+         * @function SuperMap.Format.GeoJSON.parseCoords.multipoint
          * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
          * @param array - {Object} GeoJSON片段中的坐标组数组。
          * @return {SuperMap.Geometry} 一个几何对象。
@@ -254,7 +254,7 @@ export default  class GeoJSON extends JSONFormat {
         },
 
         /**
-         * @method SuperMap.Format.GeoJSON.parseCoords.linestring
+         * @function SuperMap.Format.GeoJSON.parseCoords.linestring
          * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
          * @param array - {Object} GeoJSON片段中的坐标组数组。
          * @return {SuperMap.Geometry} 一个几何对象。
@@ -274,7 +274,7 @@ export default  class GeoJSON extends JSONFormat {
         },
 
         /**
-         * @method SuperMap.Format.GeoJSON.parseCoords.multilinestring
+         * @function SuperMap.Format.GeoJSON.parseCoords.multilinestring
          * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
          * @param array - {Object} GeoJSON片段中的坐标组数组。
          * @return {SuperMap.Geometry} 一个几何对象。
@@ -294,7 +294,7 @@ export default  class GeoJSON extends JSONFormat {
         },
 
         /**
-         * @method SuperMap.Format.GeoJSON.parseCoords.polygon
+         * @function SuperMap.Format.GeoJSON.parseCoords.polygon
          * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
          * @return {SuperMap.Geometry} 一个几何对象。
          */
@@ -314,7 +314,7 @@ export default  class GeoJSON extends JSONFormat {
         },
 
         /**
-         * @method SuperMap.Format.GeoJSON.parseCoords.multipolygon
+         * @function SuperMap.Format.GeoJSON.parseCoords.multipolygon
          * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
          * @param array - {Object} GeoJSON片段中的坐标组数组。
          * @return {SuperMap.Geometry} 一个几何对象。
@@ -334,7 +334,7 @@ export default  class GeoJSON extends JSONFormat {
         },
 
         /**
-         * @method SuperMap.Format.GeoJSON.parseCoords.box
+         * @function SuperMap.Format.GeoJSON.parseCoords.box
          * @description 将坐标组数组转化成为一个<SuperMap.Geometry>对象。
          * @param array - {Object} GeoJSON片段中的坐标组数组。
          * @return {SuperMap.Geometry} 一个几何对象。
@@ -357,7 +357,7 @@ export default  class GeoJSON extends JSONFormat {
     };
 
     /**
-     * @method SuperMap.Format.GeoJSON.write
+     * @function SuperMap.Format.GeoJSON.write
      * @description 序列化一个要素对象，几何对象，要素对象数组为一个GeoJSON字符串。
      * @param obj - {Object} 一个 <SuperMap.Feature.Vector> 对象，一个 <SuperMap.Geometry> 对象或者一个要素对象数组。
      * @param pretty - {Boolean} 是否使用换行和缩进来控制输出。默认值为false。
@@ -396,7 +396,7 @@ export default  class GeoJSON extends JSONFormat {
 
 
     /**
-     * @method SuperMap.Format.GeoJSON.createCRSObject
+     * @function SuperMap.Format.GeoJSON.createCRSObject
      * @description 从一个要素对象中创建一个坐标参考系对象。
      * @param object - {SuperMap.Feature.Vector} 要素对象
      * @return {Object} 一个可作为GeoJSON对象的crs属性使用的对象。
@@ -431,7 +431,7 @@ export default  class GeoJSON extends JSONFormat {
      */
     extract = {
         /**
-         * @method SuperMap.Format.GeoJSON.extract.feature
+         * @function SuperMap.Format.GeoJSON.extract.feature
          * @description 返回一个表示单个要素对象的GeoJSON的一部分。
          * @param feature - iServer要素对象
          * @return {Object} 一个表示点的对象。
@@ -459,7 +459,7 @@ export default  class GeoJSON extends JSONFormat {
 
 
         /**
-         * @method SuperMap.Format.GeoJSON.extract.geometry
+         * @function SuperMap.Format.GeoJSON.extract.geometry
          * @description 返回一个表示单个几何对象的GeoJSON的一部分。
          * @param geometry -iServer 几何对象
          * @return {Object} 一个表示几何体的对象。
@@ -489,7 +489,7 @@ export default  class GeoJSON extends JSONFormat {
 
 
         /**
-         * @method SuperMap.Format.GeoJSON.extract.point
+         * @function SuperMap.Format.GeoJSON.extract.point
          * @description 从一个点对象中返回一个坐标组。
          * @param point - {SuperMap.Geometry.Point} 一个点对象。
          * @return {Array} 一个表示一个点的坐标组。
@@ -505,7 +505,7 @@ export default  class GeoJSON extends JSONFormat {
         },
 
         /**
-         * @method SuperMap.Format.GeoJSON.extract.point
+         * @function SuperMap.Format.GeoJSON.extract.point
          * @description 从一个文本对象中返回一个坐标组。
          * @param geo 一个文本对象。
          * @return {Array} 一个表示一个点的坐标组。
@@ -515,7 +515,7 @@ export default  class GeoJSON extends JSONFormat {
         },
 
         /**
-         * @method SuperMap.Format.GeoJSON.extract.multipoint
+         * @function SuperMap.Format.GeoJSON.extract.multipoint
          * @description 从一个多点对象中返一个坐标组数组。
          * @param multipoint - {SuperMap.Geometry.MultiPoint} 多点对象。
          * @return {Array} 一个表示多点的坐标组数组。
@@ -529,7 +529,7 @@ export default  class GeoJSON extends JSONFormat {
         },
 
         /**
-         * @method SuperMap.Format.GeoJSON.extract.linestring
+         * @function SuperMap.Format.GeoJSON.extract.linestring
          * @description 从一个线对象中返回一个坐标组数组。
          * @param linestring - {SuperMap.Geometry.LineString} 线对象。
          * @return {Array} 一个表示线对象的坐标组数组。
@@ -543,7 +543,7 @@ export default  class GeoJSON extends JSONFormat {
         },
 
         /**
-         * @method SuperMap.Format.GeoJSON.extract.multilinestring
+         * @function SuperMap.Format.GeoJSON.extract.multilinestring
          * @description 从一个多线对象中返回一个线数组。
          * @param multilinestring - {SuperMap.Geometry.MultiLineString} 多线对象
          *
@@ -558,7 +558,7 @@ export default  class GeoJSON extends JSONFormat {
         },
 
         /**
-         * @method SuperMap.Format.GeoJSON.extract.polygon
+         * @function SuperMap.Format.GeoJSON.extract.polygon
          * @description 从一个面对象中返回一组线环。
          * @polygon - {SuperMap.Geometry.Polygon} 面对象。
          * @return {Array} 一组表示面的线环。
@@ -572,7 +572,7 @@ export default  class GeoJSON extends JSONFormat {
         },
 
         /**
-         * @method SuperMap.Format.GeoJSON.extract.multipolygon
+         * @function SuperMap.Format.GeoJSON.extract.multipolygon
          * @description 从一个多面对象中返回一组面。
          * @param multipolygon - {SuperMap.Geometry.MultiPolygon} 多面对象。
          * @return {Array} 一组表示多面的面。
@@ -586,7 +586,7 @@ export default  class GeoJSON extends JSONFormat {
         },
 
         /**
-         * @method SuperMap.Format.GeoJSON.extract.collection
+         * @function SuperMap.Format.GeoJSON.extract.collection
          * @description 从一个几何要素集合中一组几何要素数组。
          * @param collection - {SuperMap.Geometry.Collection} 几何要素集合。
          * @return {Array} 一组表示几何要素集合的几何要素数组。
@@ -660,7 +660,7 @@ export default  class GeoJSON extends JSONFormat {
     }
 
     /**
-     * @method SuperMap.Format.GeoJSON.toGeoPoint
+     * @function SuperMap.Format.GeoJSON.toGeoPoint
      * @description 将服务端的点几何对象转换为几何对象
      */
     toGeoPoint(geometry) {
@@ -685,7 +685,7 @@ export default  class GeoJSON extends JSONFormat {
 
     /**
      *
-     * @method SuperMap.Format.GeoJSON.toGeoPoint
+     * @function SuperMap.Format.GeoJSON.toGeoPoint
      * @description 将服务端的线几何对象转换为几何对象。
      */
     toGeoLine(geometry) {
@@ -722,7 +722,7 @@ export default  class GeoJSON extends JSONFormat {
 
     /**
      *
-     * @method SuperMap.Format.GeoJSON.toGeoLinem
+     * @function SuperMap.Format.GeoJSON.toGeoLinem
      * @description 将服务端的路由线几何对象转换为几何对象。
      */
     toGeoLinem(geometry) {
@@ -757,7 +757,7 @@ export default  class GeoJSON extends JSONFormat {
 
     /**
      *
-     * @method SuperMap.Format.GeoJSON.toGeoRegion
+     * @function SuperMap.Format.GeoJSON.toGeoRegion
      * @description 将服务端的面几何对象转换为几何对象。
      */
     toGeoRegion(geometry) {

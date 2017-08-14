@@ -9,11 +9,6 @@ import FetchRequest from '../util/FetchRequest';
  */
 export default class OnlineServiceBase {
 
-    /**
-     * @function SuperMap.OnlineServiceBase.prototype.constructor
-     * @description Online服务基类的构造函数
-     * @param options - {Object} 创建online服务可选参数
-     */
     constructor(options) {
         var me = this;
         options = options || {};

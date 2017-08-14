@@ -3,12 +3,11 @@ import {TransferPreference, TransferTactic} from '../REST';
 
 /**
  * @class SuperMap.TransferSolutionParameters
- * @classdesc
- * 交通换乘方案查询参数类。
+ * @classdesc 交通换乘方案查询参数类。
  * @param options - {Object} 参数。如:</br>
  *        solutionCount - {Boolean} 乘车方案的数量。默认为6。</br>
  *        transferTactic - {SuperMap.TransferTactic} 交通换乘策略类型，
- * 包括时间最短、距离最短、最少换乘、最少步行四种选择。</br>
+ *                      包括时间最短、距离最短、最少换乘、最少步行四种选择。</br>
  *        transferPreference - {SuperMap.TransferPreference} 乘车偏好枚举。</br>
  *        walkingRatio - {Array(Number)} 步行与公交的消耗权重比，默认值为 10。</br>
  *        points - {Array(Number)} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
@@ -112,7 +111,7 @@ export default class TransferSolutionParameters {
 
 
     /**
-     * @method SuperMap.TransferSolutionParameters.prototype.toJsonParameters
+     * @function SuperMap.TransferSolutionParameters.toJsonParameters
      * @description 将 <SuperMap.TransferSolutionParameters> 对象参数转换为 json 字符串。
      * @param  params - {SuperMap.TransferSolutionParameters} 交通换乘参数。
      * @return {String} 转化后的 json字符串。

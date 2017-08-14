@@ -5,15 +5,17 @@ import CommonMatchAddressService from'../../common/iServer/AddressMatchService';
 /**
  * @class L.supermap.addressMatchService
  * @constructs L.supermap.addressMatchService
- * @classdesc
- * 地址匹配服务
- * @extends {ServiceBase.ServiceBase}
+ * @classdesc 地址匹配服务
+ * @extends L.supermap.ServiceBase
  * @example 用法：
  *      L.supermap.addressMatchService(url,options)
  *      .code(function(result){
  *          //doSomething
  *      })
- * @api
+ * @param url - {String} 地址匹配服务地址
+ * @param options {object} 地址匹配服务可选参数。如：<br>
+ *        data - {number}
+ *
  */
 export var  AddressMatchService = ServiceBase.extend({
 
@@ -22,11 +24,11 @@ export var  AddressMatchService = ServiceBase.extend({
     },
 
     /**
-     * @method L.supermap.addressMatchService.code
+     * @function L.supermap.addressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
-     * @param params 正向匹配参数。
-     * @param callback 请求结果的回调函数。
-     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     * @param params - {object} 正向匹配参数。
+     * @param callback - {function} 请求结果的回调函数。
+     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      */
     code: function (params, callback, resultFormat) {
         var me = this,
@@ -45,11 +47,11 @@ export var  AddressMatchService = ServiceBase.extend({
     },
 
     /**
-     * @method L.supermap.addressMatchService.decode
+     * @function L.supermap.addressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
-     * @param params 反向匹配参数。
-     * @param callback 请求结果的回调函数。
-     * @param resultFormat 返回的结果类型（默认为GeoJSON）。
+     * @param params -{object} 反向匹配参数。
+     * @param callback -{function} 请求结果的回调函数。
+     * @param resultFormat -{SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      */
     decode: function (params, callback, resultFormat) {
         var me = this,

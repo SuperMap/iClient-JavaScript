@@ -11,20 +11,17 @@ import EditFeaturesService from '../../common/iServer/EditFeaturesService' ;
 import CommontypesConversion from '../core/CommontypesConversion';
 /**
  * @class L.supermap.FeatureService
- * @constructs L.supermap.FeatureService
- * @classdesc
- * 数据集类。
- * 提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询，地物编辑
+ * @classdesc 要素数据集类。提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询，地物编辑
  * @example 用法：
  *      L.supermap.featureService(url)
  *      .getFeaturesByIDs(param,function(result){
  *          //doSomething
  *      })
- *
- * @extends ServiceBase
- * @api
+ * @extends L.supermap.ServiceBase
+ * @param url - {String} 要素数据集服务地址
+ * @param options - {object} 创建要素数据集服务类可选参数。如：<br>
+ *        serverType - {String} 服务来源 iServer|iPortal|online
  */
-
 export var FeatureService = ServiceBase.extend({
 
     initialize: function (url, options) {
@@ -32,11 +29,11 @@ export var FeatureService = ServiceBase.extend({
     },
 
     /**
-     * @method L.supermap.FeatureService.getFeaturesByIDs
+     * @function L.supermap.FeatureService.prototype.getFeaturesByIDs
      * @description 数据集ID查询服务
-     * @param params {SuperMap.GetFeaturesByIDsParameters}
-     * @param callback
-     * @param resultFormat {SuperMap.DataFormat}
+     * @param params {SuperMap.GetFeaturesByIDsParameters} ID 查询参数类
+     * @param callback - {function} 回调函数
+     * @param resultFormat {SuperMap.DataFormat} 返回结果类型
      */
     getFeaturesByIDs: function (params, callback, resultFormat) {
         var me = this;
@@ -52,12 +49,13 @@ export var FeatureService = ServiceBase.extend({
         return me;
 
     },
+
     /**
-     * @method L.supermap.FeatureService.getFeaturesByBounds
+     * @function L.supermap.FeatureService.prototype.getFeaturesByBounds
      * @description 数据集Bounds查询服务
-     * @param params {SuperMap.GetFeaturesByBoundsParameters}
-     * @param callback
-     * @param resultFormat {SuperMap.DataForma}
+     * @param params {SuperMap.GetFeaturesByBoundsParameters} 数据集范围查询参数类
+     * @param callback - {function} 回调函数
+     * @param resultFormat {SuperMap.DataFormat} 返回结果类型
      */
     getFeaturesByBounds: function (params, callback, resultFormat) {
         var me = this;
@@ -72,12 +70,13 @@ export var FeatureService = ServiceBase.extend({
         getFeaturesByBoundsService.processAsync(me._processParams(params));
         return me;
     },
+
     /**
-     * @method L.supermap.FeatureService.getFeaturesByBuffer
+     * @function L.supermap.FeatureService.prototype.getFeaturesByBuffer
      * @description 数据集Buffer查询服务
-     * @param params {SuperMap.GetFeaturesByBufferParameters}
-     * @param callback
-     * @param resultFormat {SuperMap.DataFormat}
+     * @param params {SuperMap.GetFeaturesByBufferParameters} 数据服务中数据集缓冲区查询参数类
+     * @param callback - {function} 回调函数
+     * @param resultFormat {SuperMap.DataFormat} 返回结果类型
      */
     getFeaturesByBuffer: function (params, callback, resultFormat) {
         var me = this;
@@ -92,12 +91,13 @@ export var FeatureService = ServiceBase.extend({
         getFeatureService.processAsync(me._processParams(params));
         return me;
     },
+
     /**
-     * @method L.supermap.FeatureService.getFeaturesBySQL
+     * @function L.supermap.FeatureService.prototype.getFeaturesBySQL
      * @description 数据集SQL查询服务
-     * @param params {SuperMap.GetFeaturesBySQLParameters}
-     * @param callback
-     * @param resultFormat {SuperMap.DataFormat}
+     * @param params {SuperMap.GetFeaturesBySQLParameters} 数据服务中数据集SQL查询参数类
+     * @param callback - {function} 回调函数
+     * @param resultFormat {SuperMap.DataFormat} 返回结果类型
      */
     getFeaturesBySQL: function (params, callback, resultFormat) {
         var me = this;
@@ -112,12 +112,13 @@ export var FeatureService = ServiceBase.extend({
         getFeatureBySQLService.processAsync(me._processParams(params));
         return me;
     },
+
     /**
-     * @method L.supermap.FeatureService.getFeaturesByGeometry
+     * @function L.supermap.FeatureService.prototype.getFeaturesByGeometry
      * @description 数据集几何查询服务类
-     * @param params {SuperMap.GetFeaturesByGeometryParameters}
-     * @param callback
-     * @param resultFormat {SuperMap.DataFormat}
+     * @param params {SuperMap.GetFeaturesByGeometryParameters} 数据集几何查询参数类
+     * @param callback - {function} 回调函数
+     * @param resultFormat {SuperMap.DataFormat} 返回结果类型
      */
     getFeaturesByGeometry: function (params, callback, resultFormat) {
         var me = this;
@@ -134,12 +135,11 @@ export var FeatureService = ServiceBase.extend({
     },
 
     /**
-     * @method L.supermap.FeatureService.editFeatures
+     * @function L.supermap.FeatureService.prototype.editFeatures
      * @description 地物编辑服务
-     * @param params {SuperMap.EditFeaturesParameters}
-     * @param callback
+     * @param params {SuperMap.EditFeaturesParameters} 数据服务中数据集添加、修改、删除参数类
+     * @param callback - {function} 回调函数
      */
-
     editFeatures: function (params, callback) {
 
         if (!params || !params.dataSourceName || !params.dataSetName) {

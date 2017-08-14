@@ -28,14 +28,6 @@ export default class ServerColor {
      */
     blue = 0;
 
-    /**
-     * @function SuperMap.ServerColor.prototype.constructor
-     * @description 颜色类构造函数。
-     * @param options - {Object} 可选参数。如：<br>
-     *        red - {Number} 获取或设置红色值,默认值为255。<br>
-     *        green - {Number} 获取或设置绿色值,默认值为0。<br>
-     *        blue - {Number} 获取或设置蓝色值,默认值为0。
-     */
     constructor(red, green, blue) {
         if (!red && red != 0) {
             this.red = 255;

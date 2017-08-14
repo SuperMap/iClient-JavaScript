@@ -1,7 +1,7 @@
 import L from "leaflet";
 
-/*
- * @class L.supermap.VectorTileFormat
+/**
+ * @constant L.supermap.VectorTileFormat
  * @classdesc 矢量瓦片格式
  */
 export var VectorTileFormat = {

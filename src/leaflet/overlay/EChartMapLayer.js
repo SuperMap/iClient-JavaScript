@@ -6,10 +6,12 @@ import L from "leaflet";
 import echarts  from "echarts";
 
 /**
- * @class L.supermap.EchartsMapLayer
+ * @class L.supermap.echartsMapLayer
  * @classdesc 图表地图图层类。
  * @param echartsOptions - {object} 图表参数
- * @param options - {object} 可选图层参数
+ * @param options - {object} 可选图层参数。<br>
+ *        attribution - {String} 版权信息。<br>
+ *        loadWhileAnimating - {boolean} 是否在启动时加载。
  */
 export var EchartsMapLayer = L.Layer.extend({
 

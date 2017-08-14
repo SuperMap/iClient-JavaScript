@@ -1,18 +1,22 @@
 ﻿import SuperMap from '../SuperMap';
 import {DataFormat} from '../REST';
 import CommonServiceBase  from './CommonServiceBase';
+
 /**
- * Class: SuperMap.NetworkAnalystServiceBase
- * 网络分析服务基类。
- * Inherits from:
- *  - <SuperMap.CommonServiceBase>
+ * @class SuperMap.NetworkAnalystServiceBase
+ * @description 网络分析服务基类。
+ * @extends SuperMap.CommonServiceBase
+ * @param url - {String} 网络分析服务地址
+ * @param options - {object} 网络分析可选参数。如：<br>
+ *        format - {String} 查询结果返回格式
+ *
  */
 export default  class NetworkAnalystServiceBase extends CommonServiceBase {
 
     /**
-     *  Property: format
-     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-     *  参数格式为"ISERVER","GEOJSON",GEOJSON
+     * @member SuperMap.NetworkAnalystServiceBase.prototype.format -{String}
+     * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+     *              参数格式为"ISERVER","GEOJSON",GEOJSON
      */
     format = DataFormat.GEOJSON;
 
@@ -24,8 +28,8 @@ export default  class NetworkAnalystServiceBase extends CommonServiceBase {
     }
 
     /**
-     * APIMethod: destroy
-     * 释放资源，将引用的资源属性置空。
+     * @function destroy
+     * @description 释放资源，将引用的资源属性置空。
      */
     destroy() {
         super.destroy();
@@ -33,11 +37,9 @@ export default  class NetworkAnalystServiceBase extends CommonServiceBase {
     }
 
     /**
-     * Method: serviceProcessCompleted
-     * 分析完成，执行此方法。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
+     * @function SuperMap.NetworkAnalystServiceBase.prototype.serviceProcessCompleted
+     * @description 分析完成，执行此方法。
+     * @param result - {Object} 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
         var me = this, analystResult;
@@ -52,11 +54,9 @@ export default  class NetworkAnalystServiceBase extends CommonServiceBase {
     }
 
     /**
-     * Method: toGeoJSONResult
-     * 将含有geometry的数据转换为geojson格式。只处理结果中的路由，由子类实现
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
+     * @function SuperMap.NetworkAnalystServiceBase.prototype.toGeoJSONResult
+     * @description 将含有geometry的数据转换为geojson格式。只处理结果中的路由，由子类实现
+     * @param result - {Object} 服务器返回的结果对象。
      */
     toGeoJSONResult(result) {
         return null;

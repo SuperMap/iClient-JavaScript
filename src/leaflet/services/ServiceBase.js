@@ -4,7 +4,8 @@
  * @class L.supermap.ServiceBase
  * @description L.supermap服务基类
  * @param url - {String} 与客户端交互的服务地址。
- * @param options - {Object} 参数。
+ * @param options - {Object} 可选参数。如：<br>
+ *        serverType - {String} 服务来源 iServer|iPortal|online
  */
 export var ServiceBase = L.Evented.extend({
     options: {

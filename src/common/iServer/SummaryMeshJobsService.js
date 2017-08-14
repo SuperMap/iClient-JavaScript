@@ -6,7 +6,12 @@ import SummaryMeshJobParameter from './SummaryMeshJobParameter';
  * @class SuperMap.SummaryMeshJobsService
  * @classdesc 点聚合分析大数据任务类。
  * @param url -{String} 点聚合分析任务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @param options - {Object} 交互服务时所需可选参数。如：<br>
+ *        events - {SuperMap.Events} 处理所有事件的对象。<br>
+ *        eventListeners - {Object} 听器对象。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        index - {number} 服务访问地址在数组中的位置。<br>
+ *        length - {number} 服务访问地址数组长度。
  */
 export default  class SummaryMeshJobsService extends ProcessingServiceBase {
 

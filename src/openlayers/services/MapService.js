@@ -7,7 +7,8 @@ import TilesetsService from '../../common/iServer/TilesetsService';
  * @classdesc 地图信息服务类
  * @extends ol.supermap.ServiceBase
  * @param url -{String} 地图服务地址
- * @param options -{Object} 地图服务信息相关参数
+ * @param options -{Object} 地图服务信息相关参数。如：<br>
+ *        serverType - {String} 服务来源 iServer|iPortal|online。
  * @example
  *   new ol.supermap.MapService(url)
  *      .getMapInfo(function(result){

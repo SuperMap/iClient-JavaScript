@@ -24,13 +24,6 @@ export default class Theme {
      */
     type = null;
 
-    /**
-     * @function SuperMap.Theme.prototype.constructor
-     * @description 专题图基类构造函数。
-     * @param type - {String} 专题图类型。
-     * @param options - {Object} 可选参数。如：<br>
-     *        memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
-     */
     constructor(type, options) {
         if (!type) {
             return this;

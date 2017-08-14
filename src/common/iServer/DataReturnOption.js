@@ -32,15 +32,6 @@ export default  class DataReturnOption {
      */
     deleteExistResultDataset = true;
 
-    /**
-     * @function SuperMap.DataReturnOption.prototype.constructor
-     * @param options - {Object} 可选参数。如:</br>
-     *        expectCount - {Number} 返回的最大记录数。</br>
-     *        dataset - {String} 设置结果数据集标识，当dataReturnMode为 SuperMap.DataReturnMode.DATASET_ONLY
-     或SuperMap.DataReturnMode.DATASET_AND_RECORDSET时有效，作为返回数据集的名称。</br>
-     *        dataReturnMode - {SuperMap.DataReturnMode} 数据返回模式，默认为DataReturnMode.DATASET_ONLY。</br>
-     *        deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。</br>
-     */
     constructor(options) {
         if (options) {
             SuperMap.Util.extend(this, options);

@@ -46,7 +46,6 @@ export default  class DatasetBufferAnalystParameters extends BufferAnalystParame
      */
     isUnion = false;
 
-
     constructor(options) {
         super(options);
         var me = this;

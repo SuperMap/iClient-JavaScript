@@ -80,7 +80,7 @@ export default class GeoRelationAnalystParameters {
     }
 
     /**
-     * @method SuperMap.GeoRelationAnalystParameters.prototype.destroy
+     * @function SuperMap.GeoRelationAnalystParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

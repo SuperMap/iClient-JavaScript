@@ -111,7 +111,7 @@ export default  class DatasourceConnectionInfo {
     }
 
     /**
-     * @method SuperMap.DatasourceConnectionInfo.prototype.destroy
+     * @function SuperMap.DatasourceConnectionInfo.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

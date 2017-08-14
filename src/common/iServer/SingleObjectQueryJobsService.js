@@ -11,12 +11,6 @@ import SingleObjectQueryJobsParameter from './SingleObjectQueryJobsParameter';
  */
 export default  class SingleObjectQueryJobsService extends ProcessingServiceBase {
 
-    /**
-     * @function SuperMap.SingleObjectQueryJobsService.protitype.initialize
-     * @description SuperMap.SingleObjectQueryJobsService 的构造函数
-     * @param url -{String} 大数据单对象空间查询分析服务地址。
-     * @param options - {Object} 交互服务时所需可选参数。
-     */
     constructor(url, options) {
         super(url, options);
         this.url += "/spatialanalyst/query";

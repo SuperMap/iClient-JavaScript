@@ -1,7 +1,7 @@
 import '../../core/Base';
 import L from "leaflet";
 /**
- * @class L.supermap.DefaultStyle
+ * @constant L.supermap.DefaultStyle
  * @description 这个style对应的是默认设置
  */
 export var DefaultStyle = L.supermap.DefaultStyle = {

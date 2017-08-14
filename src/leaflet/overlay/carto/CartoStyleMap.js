@@ -2,7 +2,7 @@ import '../../core/Base';
 import L from "leaflet";
 
 /**
- * @class L.supermap.CartoStyleMap
+ * @constant L.supermap.CartoStyleMap
  * @description CartoCSS中的style属性名与leaflet的style属性名的对应表
  */
 export var CartoStyleMap  = L.supermap.CartoStyleMap = {
@@ -66,7 +66,8 @@ export var CartoStyleMap  = L.supermap.CartoStyleMap = {
         "polygon-comp-op": "globalCompositeOperation"
     }
 };
-    /**
+
+/**
  * @constant L.supermap.ServerStyleMap
  * @description 服务端传过来的style属性名与leaflet的style属性名的对应表
  */

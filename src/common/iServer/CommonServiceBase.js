@@ -4,7 +4,12 @@ import '../security/SecurityManager';
  * @class SuperMap.CommonServiceBase
  * @classdesc common服务基类
  * @param url - {String} 与客户端交互的服务地址。
- * @param options - {Object} 参数。
+ * @param options - {Object} 参数。如：<br>
+ *        events - {SuperMap.Events} 处理所有事件的对象。<br>
+ *        eventListeners - {Object} 听器对象。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        index - {number} 服务访问地址在数组中的位置。<br>
+ *        length - {number} 服务访问地址数组长度。
  */
 export default  class CommonServiceBase {
 
@@ -19,7 +24,7 @@ export default  class CommonServiceBase {
     /**
      * @member SuperMap.CommonServiceBase.prototype.events -{SuperMap.Events}
      * @description: 处理所有事件的对象，支持processCompleted 、processFailed 两种事件
-     *服务端成功返回地图信息结果时触发 processCompleted事件，服务端返回信息结果时触发 processFailed 事件。
+     *               服务端成功返回地图信息结果时触发 processCompleted事件，服务端返回信息结果时触发 processFailed 事件。
      */
     events = null;
 
@@ -52,13 +57,13 @@ export default  class CommonServiceBase {
     serverType = null;
 
     /**
-     * @member SuperMap.CommonServiceBase.prototype.index -{Int}
+     * @member SuperMap.CommonServiceBase.prototype.index -{number}
      * @description 服务访问地址在数组中的位置。
      */
     index = null;
 
     /**
-     * @member SuperMap.CommonServiceBase.prototype.length -{String}
+     * @member SuperMap.CommonServiceBase.prototype.length -{number}
      * @description 服务访问地址数组长度。
      */
     length = null;
@@ -99,7 +104,7 @@ export default  class CommonServiceBase {
      */
     isInTheSameDomain = null;
 
-    /**
+    /*
      * @function SuperMap.CommonServiceBase.prototype.constructor
      * @description  ServiceBase的构造函数
      * @param url - {String} 与客户端交互的服务地址。

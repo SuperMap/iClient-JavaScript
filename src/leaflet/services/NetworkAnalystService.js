@@ -15,8 +15,8 @@ import UpdateTurnNodeWeightService from  '../../common/iServer/UpdateTurnNodeWei
 
 /**
  * @class L.supermap.NetworkAnalystService
- * @classdesc 网络分析服务类
- * @extends  L.supermap.ServiceBase
+ * @description 网络分析服务类
+ * @augments  L.supermap.ServiceBase
  * @example
  * 用法：
  *      L.supermap.networkAnalystService(url)
@@ -27,7 +27,8 @@ import UpdateTurnNodeWeightService from  '../../common/iServer/UpdateTurnNodeWei
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
  * @param options - {Object} 互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ *        serverType - {String} 服务来源 iServer|iPortal|online。<br>
+ *        eventListeners - {Object} 需要被注册的监听器对象。
  */
 export var NetworkAnalystService = ServiceBase.extend({
 

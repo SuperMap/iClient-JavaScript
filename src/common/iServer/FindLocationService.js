@@ -26,14 +26,6 @@ import GeoJSON from '../format/GeoJSON';
  */
 export default class FindLocationService extends NetworkAnalystServiceBase {
 
-    /**
-     * @function SuperMap.FindLocationService.prototype.initialize
-     * @description 选址分区分析服务类构造函数。
-     * @param url - {String} 服务的访问地址。<br>
-     *                        如 http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
-     * @param options - {Object} 互服务时所需可选参数。如：<br>
-     *         eventListeners - {Object} 需要被注册的监听器对象。
-     */
     constructor(url, options) {
         super(url, options);
     }

@@ -19,16 +19,11 @@ import CommontypesConversion from '../core/CommontypesConversion';
  *           //doSomething
  *      })
  * @param url -{String} 大数据服务地址。
- * @param options - {Object} 交互服务时所需可选参数
+ * @param options - {Object} 交互服务时所需可选参数。如：<br>
+ *        serverType - {String} 服务来源 iServer|iPortal|online。
  */
 export var ProcessingService = ServiceBase.extend({
 
-    /**
-     * @function L.supermap.processingService.prototype.initialize
-     * @description L.supermap.processingService 类的构造函数
-     * @param url -{String} 大数据服务地址。
-     * @param options - {Object} 交互服务时所需可选参数
-     */
     initialize: function (url, options) {
         options = options || {};
         L.setOptions(this, options);

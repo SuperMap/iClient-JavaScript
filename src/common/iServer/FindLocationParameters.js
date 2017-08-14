@@ -4,12 +4,11 @@ import SupplyCenter from './SupplyCenter';
 /**
  * @class SuperMap.FindLocationParameters
  * @classdesc 选址分区分析参数类。
- * @param options - {Object} 参数。
- *        Allowed options properties:
- *        expectedSupplyCenterCount - {Integer} 期望用于最终设施选址的资源供给中心数量，必设字段。
- *        isFromCenter - {Boolean} 是否从中心点开始分配资源。默认为 false。
- *        supplyCenters - {Array<SupplyCenter>} 资源供给中心集合，必设字段。
- *        turnWeightField - {String} 转向权值字段的名称。
+ * @param options - {Object} 可选参数。如：<br>
+ *        expectedSupplyCenterCount - {Integer} 期望用于最终设施选址的资源供给中心数量，必设字段。<br>
+ *        isFromCenter - {Boolean} 是否从中心点开始分配资源。默认为 false。<br>
+ *        supplyCenters - {Array<SupplyCenter>} 资源供给中心集合，必设字段。<br>
+ *        turnWeightField - {String} 转向权值字段的名称。<br>
  *        weightName - {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，必设字段。
  */
 export default  class FindLocationParameters {

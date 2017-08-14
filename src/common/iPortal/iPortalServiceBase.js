@@ -5,15 +5,10 @@ import {FetchRequest} from '../util/FetchRequest';
 /**
  * @class SuperMap.iPortalServiceBase
  * @classdesc iPortal服务基类(有权限限制的类需要实现此类)
+ * @param url - {String} iPortal服务地址
  */
-
-
 export default  class IPortalServiceBase {
-    /**
-     * @function SuperMap.iPortalServiceBase.prototype.constructor
-     *
-     * @param url -{String} 服务器域名+端口，如：http://localhost:8092
-     */
+
     constructor(url) {
         var me = this;
         me.serviceUrl = url;
@@ -27,7 +22,6 @@ export default  class IPortalServiceBase {
      * @param url -{String} 服务地址
      * @param param -{Object} 请求参数
      * @param requestOptions -{Object} fetch请求配置项
-     *
      */
 
     request(method, url, param, requestOptions) {

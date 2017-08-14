@@ -5,8 +5,8 @@ import * as Util from '../core/Util';
 import SuperMapMeasureService from '../../common/iServer/MeasureService' ;
 /**
  * @class L.supermap.MeasureService
- * @classdesc 量算服务服务类
- * @extends L.supermap.ServiceBase
+ * @description 量算服务服务类
+ * @augments L.supermap.ServiceBase
  * @example
  * 用法：
  *     L.supermap.measureService(url).measureDistance({
@@ -16,8 +16,9 @@ import SuperMapMeasureService from '../../common/iServer/MeasureService' ;
  *      })
  * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
- *         measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
+ *        serverType - {String} 服务来源 iServer|iPortal|online。<br>
+ *        eventListeners - {Object} 需要被注册的监听器对象。<br>
+ *        measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
  */
 export var MeasureService = ServiceBase.extend({
 

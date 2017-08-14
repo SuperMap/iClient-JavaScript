@@ -3,8 +3,8 @@
  /**
   * @class L.supermap.PolyBase
   * @classdesc 多边形基类
-  * @type {{_makeFeatureParts: PolyBase._makeFeatureParts, makeInteractive: PolyBase.makeInteractive}}
   */
+ //@type {{_makeFeatureParts: PolyBase._makeFeatureParts, makeInteractive: PolyBase.makeInteractive}}
  export var PolyBase = {
     _makeFeatureParts: function (feat, pxPerExtent) {
         pxPerExtent = pxPerExtent || {x: 1, y: 1};
@@ -24,7 +24,7 @@
     },
 
      /**
-      * @function L.supermap.PointSymbolizer.prototype.makeInteractive
+      * @function L.supermap.PolyBase.prototype.makeInteractive
       * @description 设置交互
       */
     makeInteractive: function () {

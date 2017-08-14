@@ -16,14 +16,15 @@ import CommontypesConversion from '../../core/CommontypesConversion';
 
 /**
  * @class L.supermap.GraphThemeLayer
- * @classdesc 统计专题图图层。<br>
- *            统计专题图通过为每个要素绘制统计图表来反映其对应的专题值的大小。它可同时表示多个字段属性信息，在区域本身与各区域之间形成横向和纵向的对比。<br>
- *            统计专题图多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。<br>
- *            目前提供的统计图类型有：柱状图（Bar），折线图（Line），饼图（Pie），三维柱状图（Bar3D），点状图（Point），环状图（Ring）。
+ * @classdesc 统计专题图图层。
+ * @description 统计专题图通过为每个要素绘制统计图表来反映其对应的专题值的大小。它可同时表示多个字段属性信息，在区域本身与各区域之间形成横向和纵向的对比。<br>
+ *              统计专题图多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。
+ *              目前提供的统计图类型有：柱状图（Bar），折线图（Line），饼图（Pie），三维柱状图（Bar3D），点状图（Point），环状图（Ring）。
  * @extends L.supermap.ThemeLayer
  * @param name - {String} 专题图表名称
  * @param chartsType - {String} 图表类型。目前可用："Bar", "Line", "Pie"。
- * @param options -{object} 待设置得参数。
+ * @param options - {object} 待设置得参数。如：<br>
+ *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。
  */
 export var GraphThemeLayer = ThemeLayer.extend({
 

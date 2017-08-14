@@ -4,10 +4,10 @@ import SuperMap from '../SuperMap';
  * @class SuperMap.GetGridCellInfosParameters
  * @classdesc 数据服务栅格查询参数类。
  * @param options - {Object} 可選参数。如:</br>
- * datasetName - {String} 数据集名称。</br>
- * dataSourceName - {String} 数据源名称</br>
- * X - {Integer} 要查询的地理位置X轴。</br>
- * Y - {Integer} 要查询的地理位置Y轴。</br>
+ *        datasetName - {String} 数据集名称。</br>
+ *        dataSourceName - {String} 数据源名称</br>
+ *        X - {Integer} 要查询的地理位置X轴。</br>
+ *        Y - {Integer} 要查询的地理位置Y轴。</br>
  */
 export default  class GetGridCellInfosParameters {
     /**

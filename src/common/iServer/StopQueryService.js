@@ -43,7 +43,7 @@ export default  class StopQueryService extends CommonServiceBase {
     }
 
     /**
-     * @method SuperMap.StopQueryService.prototype.processAsync
+     * @function SuperMap.StopQueryService.prototype.processAsync
      * @description 负责将客户端的更新参数传递到服务端。
      * @param params - {SuperMap.StopQueryParameters} 交通换乘参数。
      */

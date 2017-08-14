@@ -52,7 +52,6 @@ import GenerateSpatialDataParameters from './GenerateSpatialDataParameters';
      */
 export default  class GenerateSpatialDataService extends SpatialAnalystBase {
 
-
     constructor(url, options) {
         super(url, options);
     }

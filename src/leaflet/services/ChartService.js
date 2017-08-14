@@ -15,16 +15,11 @@ import CommontypesConversion from '../core/CommontypesConversion';
  *          //doSomething
  *      })
  * @param url - {String} 与客户端交互的海图服务地址。
- * @param options -{Object} 交互时所需可选参数。
-
+ * @param options -{Object} 交互时所需可选参数。如：<br>
+ *        serverType - {String} 服务来源 iServer|iPortal|online
  */
 var ChartService = ServiceBase.extend({
 
-    /**
-     * @constructor
-     * @param url - {String} 与客户端交互的海图服务地址。
-     * @param options -{Object} 交互时所需可选参数。
-     */
     initialize: function (url, options) {
         ServiceBase.prototype.initialize.call(this, url, options);
     },

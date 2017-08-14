@@ -176,7 +176,7 @@ export default  class Route extends Collection {
 
 
     /**
-     * @method SuperMap.Route.prototype.fromJson
+     * @function SuperMap.Route.fromJson
      * @description  将 JSON 对象转换为 SuperMap.Route 对象。
      * @param jsonObject - {Object} JSON 对象表示的路由对象。
      * @return {SuperMap.Route} 转化后的 Route 对象。

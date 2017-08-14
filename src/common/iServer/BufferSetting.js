@@ -43,14 +43,6 @@ export default class BufferSetting {
      */
     radiusUnit = Unit.METER;
 
-    /**
-     * @function SuperMap.BufferSetting.prototype.constructor
-     * @param options - {Object} 可选参数。如:</br>
-     *        endType - {SuperMap.BufferEndType} 缓冲区端点枚举值。</br>
-     *        leftDistance - {BufferDistance} 左侧缓冲距离。</br>
-     *        rightDistance - {BufferDistance} 右侧缓冲距离。</br>
-     *        semicircleLineSegment - {Number} 圆头缓冲圆弧处线段的个数。</br>
-     */
     constructor(options) {
         let me = this;
         me.leftDistance = new BufferDistance();

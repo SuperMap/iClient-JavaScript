@@ -20,14 +20,6 @@ import UpdateTurnNodeWeightParameters from './UpdateTurnNodeWeightParameters';
  */
 export default  class UpdateTurnNodeWeightService extends NetworkAnalystServiceBase {
 
-    /**
-     * @function SuperMap.UpdateTurnNodeWeightService.prototype.initialize
-     * @description 转向耗费权重更新服务类构造函数。
-     * @param url - {String} 服务的访问地址。如:<br>
-     *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
-     * @param options - {Object} 互服务时所需可选参数。如：<br>
-     *         eventListeners - {Object} 需要被注册的监听器对象。
-     */
     constructor(url, options) {
         super(url, options);
     }

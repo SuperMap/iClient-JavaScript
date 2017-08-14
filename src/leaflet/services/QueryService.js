@@ -12,9 +12,9 @@ import CommontypesConversion from '../core/CommontypesConversion';
  * @classdesc 地图查询服务类。
  * @extends L.supermap.ServiceBase
  * @param url - {String} 地图查询服务访问地址。
- * @param - options - {Object} 服务交互时所需的可选参数。
+ * @param - options - {Object} 服务交互时所需的可选参数。如：<br>
+ *          serverType - {String} 服务来源 iServer|iPortal|online
  * @example
- * 用法：
  *      L.supermap.queryService(url).queryByBounds(param,function(result){
  *          //doSomething
  *      })

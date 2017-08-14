@@ -59,7 +59,7 @@ export default  class GeoRelationAnalystService extends SpatialAnalystBase {
     }
 
     /**
-     * @method SuperMap.GeoRelationAnalystService.prototype.processAsync
+     * @function SuperMap.GeoRelationAnalystService.prototype.processAsync
      * @description 负责将客户端的空间关系分析参数传递到服务端
      * @param parameter - {GeoRelationAnalystParameters} 空间关系分析所需的参数信息。
      */

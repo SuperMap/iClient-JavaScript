@@ -49,15 +49,7 @@ export default  class Format {
      */
     keepData= false;
 
-    /**
-     * @function SuperMap.Format.prototype.initialize
-     * @description 直接实例化这个类没有实际作用，可以通过实例化其子类来进行操作。
-     * @param options - {Object} 选项对象，其属性会被直接设置到format实例。如：<br>
-     *        keepData - {Boolean} 如果设置为true， <data> 属性会指向被解析的对象（例如json或xml数据对象）。
-     * @return {SuperMap.Format} 实例。
-     */
-
-    initialize(options) {
+    constructor(options) {
         SuperMap.Util.extend(this, options);
         this.options = options;
     }

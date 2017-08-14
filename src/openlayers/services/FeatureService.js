@@ -134,7 +134,7 @@ export default class FeatureService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.FeatureService.prototype.editFeatures
+     * @function ol.supermap.FeatureService.prototype.editFeatures
      * @description 地物编辑服务
      * @param params -{SuperMap.EditFeaturesParameters} 查询所需参数类。
      * @param callback -{function} 回调函数

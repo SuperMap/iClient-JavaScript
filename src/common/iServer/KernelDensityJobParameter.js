@@ -5,13 +5,13 @@ import {AnalystSizeUnit, AnalystAreaUnit} from '../REST';
  * @class SuperMap.KernelDensityJobParameter
  * @description 密度分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
- *         datasetName -{String} 数据集名。 <br>
- *         query -{SuperMap.Bounds} 分析范围。 <br>
- *         resolution -{number} 分辨率。 <br>
- *         method -{number} 分析方法。 <br>
- *         meshType -{number} 分析类型。 <br>
- *         fields -{String} 权重索引。 <br>
- *         radius -{number} 分析的影响半径。
+ *        datasetName -{String} 数据集名。 <br>
+ *        query -{SuperMap.Bounds} 分析范围。 <br>
+ *        resolution -{number} 分辨率。 <br>
+ *        method -{number} 分析方法。 <br>
+ *        meshType -{number} 分析类型。 <br>
+ *        fields -{String} 权重索引。 <br>
+ *        radius -{number} 分析的影响半径。
  */
 export default class KernelDensityJobParameter {
 

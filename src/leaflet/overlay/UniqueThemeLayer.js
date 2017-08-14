@@ -3,7 +3,7 @@ import SuperMap from '../../common/SuperMap';
 import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
 
 /**
- * @class L.supermap.UniqueThemeLayer
+ * @class L.supermap.uniqueThemeLayer
  * @classdesc 客户端单值专题图。<br>
  *            单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格<br>
  *            比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。

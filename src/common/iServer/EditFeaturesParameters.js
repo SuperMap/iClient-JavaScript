@@ -2,7 +2,6 @@
 import {EditType} from '../REST';
 /**
  * @class SuperMap.EditFeaturesParameters
- * @constructs SuperMap.EditFeaturesParameters
  * @classdesc 数据服务中数据集添加、修改、删除参数类。
  * @param options - {Object} 可選参数。如:</br>
  *        features - {Array(Object)} 当前需要创建或者是修改的要素集。</br>
@@ -55,7 +54,6 @@ export default class EditFeaturesParameters {
      */
     isUseBatch = false;
 
-
     constructor(options) {
         if (!options) {
             return;
@@ -79,7 +77,7 @@ export default class EditFeaturesParameters {
     }
 
     /**
-     * @method SuperMap.EditFeaturesParameters.prototype.toJsonParameters
+     * @function SuperMap.EditFeaturesParameters.prototype.toJsonParameters
      * @description 将 <EditFeaturesParameters> 对象参数转换为 json 字符串。
      * @param params - {SuperMap.EditFeaturesParameters} 地物编辑参数。
      * return {String} 转化后的 json字符串。

@@ -11,12 +11,6 @@ import SummaryRegionJobParameter from './SummaryRegionJobParameter';
  */
 export default  class SummaryRegionJobsService extends ProcessingServiceBase {
 
-    /**
-     * @function SuperMap.SummaryRegionJobsService.prototype.initialize
-     * @description SuperMap.SummaryRegionJobsService 的构造函数
-     * @param url -{String} 范围汇总分析服务地址。
-     * @param options - {Object} 范围汇总分析服务可选参数。
-     */
     constructor(url, options) {
         super(url, options);
         this.url += "/spatialanalyst/summaryregion";

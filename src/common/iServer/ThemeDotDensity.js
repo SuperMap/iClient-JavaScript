@@ -41,16 +41,6 @@ export default  class ThemeDotDensity extends Theme {
      */
     value = null;
 
-    /**
-     * @function SuperMap.ThemeDotDensity.prototype.initialize
-     * @description 点密度专题图构造函数。
-     * @param options - {Object} 可选参数。如：<br>
-     *        dotExpression - {String} 创建点密度专题图的字段或字段表达式。<br>
-     *        style - {SuperMap.ServerStyle} 点密度专题图中点的风格。<br>
-     *        value - {String} 专题图中每一个点所代表的数值。<br>
-     *        memoryData - {SuperMap.REST.ThemeMemoryData} 专题图内存数据。
-     *
-     */
     constructor(options) {
         super("DOTDENSITY", options);
         var me = this;

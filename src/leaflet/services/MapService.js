@@ -8,7 +8,8 @@ import TilesetsService from  '../../common/iServer/TilesetsService';
  * @classdesc 地图信息服务类
  * @extends ServiceBase
  * @param url -{String} 地图服务地址
- * @param options -{Object} 地图服务信息相关参数
+ * @param options -{Object} 地图服务信息相关参数。如：<br>
+ *        serverType - {String} 服务来源 iServer|iPortal|online
  * @example
  *     L.supermap.mapService(url)
  *      .getMapInfo(function(result){
@@ -20,7 +21,7 @@ export var MapService = ServiceBase.extend({
         projection: null
     },
 
-    /**
+    /*
      * @function L.supermap.MapService.prototype.initialize
      * @description leaflet下MapService类的构造函数
      * @param url -{String} 地图服务地址

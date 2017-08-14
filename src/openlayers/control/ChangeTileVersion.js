@@ -7,7 +7,16 @@ ol.supermap.control = ol.supermap.control || {};
 /**
  * @class ol.supermap.control.ChangeTileVersion
  * @classdesc 版本切换控件(目前仅支持IE10及以上)暂时不支持自定义位置
- * @param options -{options} 参数
+ * @extends ol.control.Control
+ * @param options -{options} 可选参数。如：<br>
+ *        title - {String} 提示信息。<br>
+ *        tooltip - {String} 提示显示位置 top | right | bottom | left。<br>
+ *        collapsed - {boolean} 是否折叠。<br>
+ *        lastText - {String} 上一个版本的按钮布局。<br>
+ *        nextText - {String} 下一个版本的按钮布局。<br>
+ *        ico - {String} 控件显示的logo。<br>
+ *        orientation - {String} 方向horizontal|vertical。<br>
+ *        switch - {boolean} 是否显示上/下一个版本切换控件
  * @example
  * 用法： var control = new ol.supermap.control.ChangeTileVersion({
  *           layer: baseLayer,
@@ -16,6 +25,7 @@ ol.supermap.control = ol.supermap.control || {};
  *      map.addControl(control)
  */
 export default class ChangeTileVersion extends ol.control.Control {
+
     /*
      * @function ol.supermap.control.ChangeTileVersion.prototype.constructor
      * @param options -{options} 参数
@@ -42,7 +52,6 @@ export default class ChangeTileVersion extends ol.control.Control {
         if (!options.nextText) {
             options.nextText = "+";
         }
-
         //控件显示的logo
         if (!options.ico) {
             options.ico = "V";

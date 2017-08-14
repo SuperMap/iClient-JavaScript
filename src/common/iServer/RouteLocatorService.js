@@ -71,7 +71,7 @@ export default  class RouteLocatorService extends SpatialAnalystBase {
     }
 
     /**
-     * @method SuperMap.RouteLocatorService.prototype.processAsync
+     * @function SuperMap.RouteLocatorService.prototype.processAsync
      * @description 负责将客户端的基于路由对象计算指定点M值操作的参数传递到服务端。
      * @param params - {SuperMap.RouteLocatorParameters}
      */
@@ -93,7 +93,7 @@ export default  class RouteLocatorService extends SpatialAnalystBase {
     }
 
     /**
-     * @method SuperMap.RouteLocatorService.prototype.processAsync
+     * @function SuperMap.RouteLocatorService.prototype.processAsync
      * @description 将参数转化为 JSON 字符串。
      * @param params - {SuperMap.RouteLocatorParameters}
      * @return {Object} 转化后的JSON字符串。

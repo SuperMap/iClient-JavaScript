@@ -13,14 +13,14 @@ import L from "leaflet";
  * @class L.supermap.VectorGrid
  * @classdesc 矢量格网
  * @extends L.GridLayer
- * @param options - {Object} 矢量格网参数
+ * @param options - {Object} 矢量格网参数。如：<br>
+ *        vectorTileLayerStyles - {object} 矢量网片图层风格。<br>
+ *        renderer - {String} 渲染器类型。<br>
+ *        format - {L.supermap.VectorTileFormat} 矢量瓦片格式。<br>
+ *        interactive - {boolean} 是否可交互 。
  */
 export var VectorGrid = L.GridLayer.extend({
 
-    /**
-     * @member L.supermap.VectorGrid.prototype.options -{Object}
-     * @description 矢量格网参数
-     */
     options: {
         vectorTileLayerStyles: null,
         //SVG or Canvas

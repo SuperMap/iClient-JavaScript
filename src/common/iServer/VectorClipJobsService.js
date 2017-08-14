@@ -11,12 +11,6 @@ import VectorClipJobsParameter from './VectorClipJobsParameter';
  */
 export default  class VectorClipJobsService extends ProcessingServiceBase {
 
-    /**
-     * @function SuperMap.VectorClipJobsService.protitype.initialize
-     * @description SuperMap.VectorClipJobsService 的构造函数
-     * @param url -{String} 大数据矢量裁剪分析服务地址。
-     * @param options - {Object} 交互服务时所需可选参数。
-     */
     constructor(url, options) {
         super(url, options);
         this.url += "/spatialanalyst/vectorclip";

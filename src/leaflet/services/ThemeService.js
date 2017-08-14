@@ -6,7 +6,6 @@ import SuperMapThemeService from '../../common/iServer/ThemeService';
  * @classdesc 专题图服务类
  * @extends L.supermap.ServiceBase
  * @example
- * 用法：
  *      L.supermap.themeService(url,{
  *            projection:projection
  *      }).getThemeInfo(params,function(result){
@@ -14,12 +13,13 @@ import SuperMapThemeService from '../../common/iServer/ThemeService';
  *      });
  * @param url - {String} 服务的访问地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ *        eventListeners - {Object} 需要被注册的监听器对象。<br>
+ *        serverType - {String} 服务来源 iServer|iPortal|online。
  */
 export var ThemeService = ServiceBase.extend({
 
 
-    /**
+    /*
      * @function L.supermap.ThemeService.prototype.initialize
      * @description L.supermap.ThemeService 的构造函数。
      * @param url - {String} 服务的访问地址。

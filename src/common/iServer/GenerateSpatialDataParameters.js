@@ -95,7 +95,7 @@ export default  class GenerateSpatialDataParameters {
 
 
     /**
-     * @method SuperMap.GenerateSpatialDataParameters.destroy
+     * @function SuperMap.GenerateSpatialDataParameters.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

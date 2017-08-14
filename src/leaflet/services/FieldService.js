@@ -4,15 +4,17 @@ import GetFieldsService from '../../common/iServer/GetFieldsService';
 import FieldStatisticService from '../../common/iServer/FieldStatisticService';
 /**
  * @class  L.supermap.FieldService
- * @constructs L.supermap.FieldService
- * @extends ServiceBase
- * @classdesc
- * 字段服务类
- * @example  用法：
+ * @classdesc 字段服务类
+ * @extends L.supermap.ServiceBase
+ * @example 用法：
  * L.supermap.fieldService(url).getFields(function(result){
       //doSomething
  * });
- * @api
+ * @param url - {String} 字段服务地址
+ * @param options - {object} 字段服务类可选参数。如：<br>
+ *        serverType - {String} 服务来源 iServer|iPortal|online。<br>
+ *        dataSourceName - {String} 数据资源名称 <br>
+ *        dataSetName - {String} 数据集名称
  */
 export var  FieldService = ServiceBase.extend({
 
@@ -28,9 +30,9 @@ export var  FieldService = ServiceBase.extend({
     },
 
     /**
-     * @method L.supermap.FieldService.getFields
+     * @function L.supermap.FieldService.prototype.getFields
      * @description 字段查询服务
-     * @param callback
+     * @param callback - {function} 回调函数
      */
     getFields: function (callback) {
         var me = this;
@@ -49,12 +51,11 @@ export var  FieldService = ServiceBase.extend({
     },
 
     /**
-     * @method L.supermap.FieldService.getFieldStatisticsInfo
+     * @function L.supermap.FieldService.prototype.getFieldStatisticsInfo
      * @description 字段统计服务
-     * @param params {SuperMap.FieldStatisticsParameters}
-     * @param callback
+     * @param params {SuperMap.FieldStatisticsParameters} 字段统计信息查询参数类
+     * @param callback - {function} 回调函数
      */
-
     getFieldStatisticsInfo: function (params, callback) {
         var me = this,
             fieldName = params.fieldName,

@@ -5,7 +5,7 @@ import {ServerType,Unit} from "../../common/REST";
 import * as Util from "../core/Util";
 /**
  * @class L.supermap.tiledMapLayer
- * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)使用TileImage资源出图
+ * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)使用TileImage资源出图.
  * @extends L.TileLayer
  * @example
  *      L.superMap.tiledMapLayer(url).addTo(map);
@@ -15,7 +15,7 @@ import * as Util from "../core/Util";
 export var TiledMapLayer = L.TileLayer.extend({
 
     /**
-     * @member L.supermap.tiledMapLayer.prototype.options
+     * @member L.supermap.tiledMapLayer.prototype.options -{object} 
      * @description 图层参数
      */
     options: {

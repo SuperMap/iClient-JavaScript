@@ -4,10 +4,21 @@ import './graphic/CircleStyle';
 import './graphic/Graphic';
 
 /**
- * @class L.supermap.GraphicGroup
+ * @class L.supermap.graphicGroup
  * @classdesc 图形组合类。
  * @param graphics - {object} 图形成员
- * @param options - {object} 可选参数。
+ * @param options - {object} 可选参数。如：<br>
+ *        stroke - {boolean}
+ *        color - {String} 颜色
+ *        weight - {number} 宽带
+ *        opacity - {number} 透明度
+ *        lineCap - {String} 线帽形状
+ *        lineJoin - {String} 线条交汇边角形状
+ *        fill - {boolean} 是否填充
+ *        fillColor - {String} 填充色
+ *        fillOpacity - {number} 填充透明度
+ *        fillRule - {String} 填充形状
+ *        radius - {number} 半径
  */
 export var GraphicGroup = L.Path.extend({
 

@@ -13,7 +13,15 @@ import GeoJSON from '../format/GeoJSON';
  *      2.通过监听 QueryEvent.PROCESS_COMPLETE 事件获取。<br>
  * @extends SuperMap.CommonServiceBase
  * @param url - {String} 地图查询服务访问地址。如："http://192.168.168.35:8090/iserver/services/map-ChartW/rest/maps/海图"。
- * @param options - {Object} 服务交互时所需的可选参数。
+ * @param options - {Object} 服务交互时所需的可选参数。<br>
+ *        events - {SuperMap.Events} 处理所有事件的对象。<br>
+ *        eventListeners - {Object} 听器对象。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        index - {number} 服务访问地址在数组中的位置。<br>
+ *        length - {number} 服务访问地址数组长度。<br>
+ *        returnContent -{Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。<br>
+ *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+ *                                      参数格式为"ISERVER","GEOJSON",GEOJSON
  * @example
  * 下面示例显示了如何进行海图属性查询：
  * var nameArray = ["GB4X0000_52000"];
@@ -42,23 +50,19 @@ import GeoJSON from '../format/GeoJSON';
  */
 export default class ChartQueryService extends CommonServiceBase {
 
-    /*
-     * {Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。
+    /**
+     * @member SuperMap.ChartQueryService.prototype.returnContent -{Boolean}
+     * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
      */
     returnContent = null;
 
-    /*
-     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
-     *  参数格式为"ISERVER","GEOJSON",GEOJSON
+    /**
+     * @member SuperMap.ChartQueryService.prototype.format -{SuperMap.DataFormat}
+     * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+     *              参数格式为"ISERVER","GEOJSON",GEOJSON
      */
     format = DataFormat.GEOJSON;
 
-    /*
-     * @function SuperMap.ChartQueryService.prototype.initialize
-     * @description 获取图层信息服务类构造函数。
-     * @param url - {String} 地图查询服务访问地址。如："http://192.168.168.35:8090/iserver/services/map-ChartW/rest/maps/海图"。
-     * @param options - {Object} 查询服务可选参数。
-     */
     constructor(url, options) {
         super(url, options);
         options = options || {};

@@ -55,7 +55,7 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.SpatialAnalystService.prototype.bufferAnalysis
+     * @function ol.supermap.SpatialAnalystService.prototype.bufferAnalysis
      * @description 缓冲区分析
      * @param params -{DatasetBufferAnalystParameters} 查询相关参数类
      * @param callback -{function} 回调函数
@@ -77,7 +77,7 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.SpatialAnalystService.prototype.densityAnalysis
+     * @function ol.supermap.SpatialAnalystService.prototype.densityAnalysis
      * @description 点密度分析
      * @param params -{DensityKernelAnalystParameters} 查询相关参数类
      * @param callback -{function} 回调函数
@@ -99,7 +99,7 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.SpatialAnalystService.prototype.generateSpatialData
+     * @function ol.supermap.SpatialAnalystService.prototype.generateSpatialData
      * @description 动态分段分析
      * @param params -{GenerateSpatialDataParameters} 查询相关参数类
      * @param callback -{function} 回调函数
@@ -121,7 +121,7 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis
+     * @function ol.supermap.SpatialAnalystService.prototype.geoRelationAnalysis
      * @description 空间关系分析
      * @param params -{GeoRelationAnalystParameters} 查询相关参数类
      * @param callback -{function} 回调函数
@@ -143,7 +143,7 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis
+     * @function ol.supermap.SpatialAnalystService.prototype.interpolationAnalysis
      * @description 插值分析
      * @param params -{InterpolationRBFAnalystParameters} 查询相关参数类
      * @param callback -{function} 回调函数
@@ -165,7 +165,7 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis
+     * @function ol.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis
      * @description 栅格代数运算
      * @param params -{MathExpressionAnalysisParameters} 查询相关参数类
      * @param callback -{function} 回调函数
@@ -187,7 +187,7 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.SpatialAnalystService.prototype.overlayAnalysis
+     * @function ol.supermap.SpatialAnalystService.prototype.overlayAnalysis
      * @description 叠加分析
      * @param params -{DatasetOverlayAnalystParameters} 查询相关参数类
      * @param callback -{function} 回调函数
@@ -209,7 +209,7 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure
+     * @function ol.supermap.SpatialAnalystService.prototype.routeCalculateMeasure
      * @description 路由测量计算
      * @param params -{RouteCalculateMeasureParameters} 查询相关参数类
      * @param callback -{function} 回调函数
@@ -231,7 +231,7 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.SpatialAnalystService.prototype.routeLocate
+     * @function ol.supermap.SpatialAnalystService.prototype.routeLocate
      * @description 路由定位
      * @param params -{RouteLocatorParameters} 查询相关参数类
      * @param callback -{function} 回调函数
@@ -253,7 +253,7 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis
+     * @function ol.supermap.SpatialAnalystService.prototype.surfaceAnalysis
      * @description 表面分析
      * @param params -{DatasetSurfaceAnalystParameters} 查询相关参数类
      * @param callback -{function} 回调函数
@@ -275,7 +275,7 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate
+     * @function ol.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate
      * @description 地形曲率计算
      * @param params -{TerrainCurvatureCalculationParameters} 查询相关参数类
      * @param callback -{function} 回调函数
@@ -297,7 +297,7 @@ export default class SpatialAnalystService extends ServiceBase {
     }
 
     /**
-     * @method ol.supermap.SpatialAnalystService.prototype.thiessenAnalysis
+     * @function ol.supermap.SpatialAnalystService.prototype.thiessenAnalysis
      * @description 泰森多边形分析
      * @param params -{DatasetThiessenAnalystParameters} 查询相关参数类
      * @param callback -{function} 回调函数

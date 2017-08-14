@@ -1212,6 +1212,18 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * @class SuperMap.ProcessingServiceBase
+ * @description 大数据服务基类
+ * @extends SuperMap.CommonServiceBase
+ * @param url - {String} 大数据服务地址。
+ * @param options - {Object} 参数。如：<br>
+ *        events - {SuperMap.Events} 处理所有事件的对象。<br>
+ *        eventListeners - {Object} 听器对象。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        index - {number} 服务访问地址在数组中的位置。<br>
+ *        length - {number} 服务访问地址数组长度。
+ */
 var ProcessingServiceBase = function (_CommonServiceBase) {
     _inherits(ProcessingServiceBase, _CommonServiceBase);
 
@@ -1219,7 +1231,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
         _classCallCheck(this, ProcessingServiceBase);
 
         options = options || {};
-        /**
+        /*
          * Constant: EVENT_TYPES
          * {Array(String)}
          * 此类支持的事件类型
@@ -1235,6 +1247,11 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
         return _this;
     }
 
+    /**
+     * @inheritDoc
+     */
+
+
     _createClass(ProcessingServiceBase, [{
         key: 'destroy',
         value: function destroy() {
@@ -1242,8 +1259,9 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
         }
 
         /**
-         *
-         * @param url - 一个空间分析的资源地址。
+         * @function SuperMap.ProcessingServiceBase.prototype.getJobs
+         * @description 获取大数据
+         * @param url - {String} 资源地址。
          */
 
     }, {
@@ -1260,11 +1278,12 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
         }
 
         /**
-         *
-         * @param url - 分布式空间分析资源根地址。
-         * @param params - 创建一个空间分析的请求参数。
-         * @param paramType - 请求参数类型。
-         * @param seconds - 开始创建后，获取创建成功结果的时间间隔。
+         * @function SuperMap.ProcessingServiceBase.prototype.addJob
+         * @description 添加大数据
+         * @param url - {String} 资源根地址。
+         * @param params - {object} 创建一个空间分析的请求参数。
+         * @param paramType - {String} - 请求参数类型。
+         * @param seconds - {number} 开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -1374,11 +1393,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.CommonServiceBase
  * @classdesc common服务基类
  * @param url - {String} 与客户端交互的服务地址。
- * @param options - {Object} 参数。
+ * @param options - {Object} 参数。如：<br>
+ *        events - {SuperMap.Events} 处理所有事件的对象。<br>
+ *        eventListeners - {Object} 听器对象。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        index - {number} 服务访问地址在数组中的位置。<br>
+ *        length - {number} 服务访问地址数组长度。
  */
 var CommonServiceBase = function () {
 
-    /**
+    /*
      * @function SuperMap.CommonServiceBase.prototype.constructor
      * @description  ServiceBase的构造函数
      * @param url - {String} 与客户端交互的服务地址。
@@ -1405,7 +1429,7 @@ var CommonServiceBase = function () {
 
 
     /**
-     * @member SuperMap.CommonServiceBase.prototype.index -{Int}
+     * @member SuperMap.CommonServiceBase.prototype.index -{number}
      * @description 服务访问地址在数组中的位置。
      */
 
@@ -1510,7 +1534,7 @@ var CommonServiceBase = function () {
 
 
     /**
-     * @member SuperMap.CommonServiceBase.prototype.length -{String}
+     * @member SuperMap.CommonServiceBase.prototype.length -{number}
      * @description 服务访问地址数组长度。
      */
 
@@ -1534,7 +1558,7 @@ var CommonServiceBase = function () {
     /**
      * @member SuperMap.CommonServiceBase.prototype.events -{SuperMap.Events}
      * @description: 处理所有事件的对象，支持processCompleted 、processFailed 两种事件
-     *服务端成功返回地图信息结果时触发 processCompleted事件，服务端返回信息结果时触发 processFailed 事件。
+     *               服务端成功返回地图信息结果时触发 processCompleted事件，服务端返回信息结果时触发 processFailed 事件。
      */
 
 
@@ -3965,7 +3989,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 创建大数据缓存服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{String} 大数据缓存服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @param options - {Object} 交互服务时所需可选参数。如：<br>
+ *        events - {SuperMap.Events} 处理所有事件的对象。<br>
+ *        eventListeners - {Object} 听器对象。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        index - {number} 服务访问地址在数组中的位置。<br>
+ *        length - {number} 服务访问地址数组长度。
  */
 var BuildCacheJobsService = function (_ProcessingServiceBas) {
     _inherits(BuildCacheJobsService, _ProcessingServiceBas);
@@ -4176,7 +4205,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.GeoDecodingParameter
  * @classdesc 地理反向匹配参数类。
- * @param options - {Object} 参数。
+ * @param options - {Object} 参数。如：<br>
+ *        x - {number} 查询位置的横坐标。<br>
+ *        y - {number} 查询位置的纵坐标。<br>
+ *        fromIndex - {number} 设置返回对象的起始索引值。<br>
+ *        filters -{Array} 过滤字段，限定查询区域。<br>
+ *        prjCoordSys -{String} 查询结果的坐标系。<br>
+ *        maxReturn -{number} 最大返回结果数。<br>
+ *        geoDecodingRadius -{number} 查询半径。
  */
 var GeoDecodingParameter = function () {
 
@@ -4227,13 +4263,13 @@ var GeoDecodingParameter = function () {
     }
 
     /**
-     * @method SuperMap.GeoDecodingParameter.prototype.destroy
+     * @function SuperMap.GeoDecodingParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.GeoDecodingParameter.prototype.maxReturn -{number}
+     * @member SuperMap.GeoDecodingParameter.prototype.geoDecodingRadius -{number}
      * @description 查询半径。
      */
 
@@ -4305,13 +4341,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.KernelDensityJobParameter
  * @description 密度分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
- *         datasetName -{String} 数据集名。 <br>
- *         query -{SuperMap.Bounds} 分析范围。 <br>
- *         resolution -{number} 分辨率。 <br>
- *         method -{number} 分析方法。 <br>
- *         meshType -{number} 分析类型。 <br>
- *         fields -{String} 权重索引。 <br>
- *         radius -{number} 分析的影响半径。
+ *        datasetName -{String} 数据集名。 <br>
+ *        query -{SuperMap.Bounds} 分析范围。 <br>
+ *        resolution -{number} 分辨率。 <br>
+ *        method -{number} 分析方法。 <br>
+ *        meshType -{number} 分析类型。 <br>
+ *        fields -{String} 权重索引。 <br>
+ *        radius -{number} 分析的影响半径。
  */
 var KernelDensityJobParameter = function () {
 
@@ -4481,12 +4517,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var KernelDensityJobsService = function (_ProcessingServiceBas) {
     _inherits(KernelDensityJobsService, _ProcessingServiceBas);
 
-    /*
-     * @function SuperMap.KernelDensityJobsService.prototype.initialize
-     * @description SuperMap.KernelDensityJobsService 的构造函数
-     * @param url -{String} 核密度大数据服务地址。
-     * @param options - {Object} 交互服务时所需可选参数。
-     */
     function KernelDensityJobsService(url, options) {
         _classCallCheck(this, KernelDensityJobsService);
 
@@ -4698,12 +4728,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
     _inherits(SingleObjectQueryJobsService, _ProcessingServiceBas);
 
-    /**
-     * @function SuperMap.SingleObjectQueryJobsService.protitype.initialize
-     * @description SuperMap.SingleObjectQueryJobsService 的构造函数
-     * @param url -{String} 大数据单对象空间查询分析服务地址。
-     * @param options - {Object} 交互服务时所需可选参数。
-     */
     function SingleObjectQueryJobsService(url, options) {
         _classCallCheck(this, SingleObjectQueryJobsService);
 
@@ -4968,7 +4992,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.SummaryMeshJobsService
  * @classdesc 点聚合分析大数据任务类。
  * @param url -{String} 点聚合分析任务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @param options - {Object} 交互服务时所需可选参数。如：<br>
+ *        events - {SuperMap.Events} 处理所有事件的对象。<br>
+ *        eventListeners - {Object} 听器对象。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        index - {number} 服务访问地址在数组中的位置。<br>
+ *        length - {number} 服务访问地址数组长度。
  */
 var SummaryMeshJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryMeshJobsService, _ProcessingServiceBas);
@@ -5286,12 +5315,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var SummaryRegionJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryRegionJobsService, _ProcessingServiceBas);
 
-    /**
-     * @function SuperMap.SummaryRegionJobsService.prototype.initialize
-     * @description SuperMap.SummaryRegionJobsService 的构造函数
-     * @param url -{String} 范围汇总分析服务地址。
-     * @param options - {Object} 范围汇总分析服务可选参数。
-     */
     function SummaryRegionJobsService(url, options) {
         _classCallCheck(this, SummaryRegionJobsService);
 
@@ -5505,12 +5528,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var VectorClipJobsService = function (_ProcessingServiceBas) {
     _inherits(VectorClipJobsService, _ProcessingServiceBas);
 
-    /**
-     * @function SuperMap.VectorClipJobsService.protitype.initialize
-     * @description SuperMap.VectorClipJobsService 的构造函数
-     * @param url -{String} 大数据矢量裁剪分析服务地址。
-     * @param options - {Object} 交互服务时所需可选参数。
-     */
     function VectorClipJobsService(url, options) {
         _classCallCheck(this, VectorClipJobsService);
 
@@ -5605,7 +5622,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.KeyServiceParameter
  * @classdesc key申请参数
- * @param options - {Object} 参数。
+ * @param options - {Object} 参数。如：<br>
+ *        name - {String} 申请服务名称。<br>
+ *        serviceIds - {number} 服务ID。<br>
+ *        clientType - {ClientType} 服务端类型。<br>
+ *        limitation - {number} 有效期
  */
 var KeyServiceParameter = function () {
     function KeyServiceParameter(options) {
@@ -5905,15 +5926,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.ServerInfo
  * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
- * @param type -{string} 类型
- * @param options - {Object} 参数。
+ * @param type - {String} 服务器类型
+ * @param options - {object} 非必填，服务器信息相关可选参数。如：<br>
+ *        server - {string} 数据库服务器名
+ *        tokenServiceUrl - {string} 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
+ *        keyServiceUrl - {string} 非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
  */
-
 var ServerInfo =
 
 /**
  * @member SuperMap.ServerInfo.prototype.tokenServiceUrl -{string}
- * @description 非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
+ * @description 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
  */
 
 /**
@@ -5957,13 +5980,13 @@ function ServerInfo(type, options) {
 
 /**
  * @member SuperMap.ServerInfo.prototype.keyServiceUrl -{string}
- * @description 非必填。
+ * @description 非必填。如：http://supermapiserver:8092/web/mycontent/keys/register.json
  */
 
 
 /**
  * @member SuperMap.ServerInfo.prototype.server -{string}
- * @description 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
+ * @description 非必填，server - {String} 数据库服务器名
  */
 ;
 
@@ -6108,7 +6131,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.MapVRenderer
  * @classdesc 地图渲染类
- * @extends mapv.baiduMapLayer
+ * @extends mapv.MapVBaseLayer
  * @param map - {SuperMap.Map} 待渲染的地图
  * @param layer - {mapv.baiduMapLayer} 待渲染的图层
  * @param dataSet - {mapv.DataSet} 待渲染的数据集

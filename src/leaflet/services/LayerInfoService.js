@@ -10,14 +10,14 @@ import SetLayerStatusService from '../../common/iServer/SetLayerStatusService';
  * @classdesc 图层信息关类
  * @extends L.supermap.ServiceBase
  * @example
- * 用法：
  *      L.supermap.layerInfoService(url).getLayersInfo(function(result){
  *           //doSomething
  *      })
  * @param url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ *        serverType - {String} 服务来源 iServer|iPortal|online。<br>
+ *        eventListeners - {Object} 需要被注册的监听器对象。
  */
 export var LayerInfoService = ServiceBase.extend({
 

@@ -2,20 +2,41 @@ import SuperMap from '../SuperMap';
 import CommonServiceBase from './CommonServiceBase';
 
 /**
- *@class SuperMap.DataFlowService
+ * @class SuperMap.DataFlowService
+ * @classdesc 实时大数据服务类
+ * @extends SuperMap.CommonServiceBase
+ * @param url - {String} 实时大数据服务地址
+ * @param options - {object} 加载实时大数据可选参数。如：<br>
+ *        style - {function} 设置数据加载样式。<br>
+ *        onEachFeature - {function} 设置每个数据加载popup等。<br>
+ *        geometry - {Array<object>} 设置增添的几何要素对象数组。
+ *        excludeField - -{object} 排除字段
  */
 export default class DataFlowService extends CommonServiceBase {
-    /**
-     * Constant: EVENT_TYPES
+
+    /*
+     * @constant EVENT_TYPES
      * {Array(String)}
      * 此类支持的事件类型
      */
     //EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSuccessed", "subscribeSocketConnected", "subscribeSocketError", "messageSuccessed", "setFilterParamSuccessed"];
 
+    /**
+     * @member SuperMap.DataFlowService.prototype.geometry -{Aarry<object>}
+     * @description 设置增添的几何要素对象数组。
+     */
     geometry = null;
 
+    /**
+     * @member SuperMap.DataFlowService.prototype.prjCoordSys -{Object}
+     * @description 动态投影参数
+     */
     prjCoordSys = null;
 
+    /**
+     * @member SuperMap.DataFlowService.prototype.excludeField -{object}
+     * @description 排除字段
+     */
     excludeField = null;
 
     constructor(url, options) {
@@ -35,7 +56,8 @@ export default class DataFlowService extends CommonServiceBase {
     }
 
     /**
-     * 初始化广播
+     * @function SuperMap.DataFlowService.prototype.initBroadcast
+     * @description 初始化广播
      * @returns {SuperMap.DataFlowService}
      */
     initBroadcast() {
@@ -58,6 +80,11 @@ export default class DataFlowService extends CommonServiceBase {
         return this;
     }
 
+    /**
+     * @function SuperMap.DataFlowService.prototype.broadcast
+     * @description 加载广播数据
+     * @param geoJSONFeature {JSON} json格式的要素数据
+     */
     broadcast(geoJSONFeature) {
         if (!this.broadcastWebSocket.isOpen) {
             this.events.triggerEvent('broadcastFailed');
@@ -68,6 +95,11 @@ export default class DataFlowService extends CommonServiceBase {
 
     }
 
+    /**
+     * @function SuperMap.DataFlowService.prototype.initSubscribe
+     * @description 初始化订阅数据
+     * @return {SuperMap.DataFlowService}
+     */
     initSubscribe() {
         var me = this;
         this.subscribeWebSocket = this._connect(this.url + 'subscribe');
@@ -86,28 +118,46 @@ export default class DataFlowService extends CommonServiceBase {
         return this;
     }
 
-
+    /**
+     * @function SuperMap.DataFlowService.prototype.setPrjCoordSys
+     * @description 设置动态投影坐标
+     * @param prjCoordSys -{Object} 动态投影参数
+     * @return {SuperMap.DataFlowService}
+     */
     setPrjCoordSys(prjCoordSys) {
         this.prjCoordSys = prjCoordSys;
         this.subscribeWebSocket.send(this._getFilterParams());
         return this;
     }
 
-
+    /**
+     * @function SuperMap.DataFlowService.prototype.setExcludeField
+     * @description 设置排除字段
+     * @param excludeField - {object} 排除字段
+     * @return {SuperMap.DataFlowService}
+     */
     setExcludeField(excludeField) {
         this.excludeField = excludeField;
         this.subscribeWebSocket.send(this._getFilterParams());
         return this;
     }
 
-
+    /**
+     * @function SuperMap.DataFlowService.prototype.setGeometry
+     * @description 设置添加的几何要素数据
+     * @param geometry - {Array<object>} 设置增添的几何要素对象数组。
+     * @return {SuperMap.DataFlowService}
+     */
     setGeometry(geometry) {
         this.geometry = geometry;
         this.subscribeWebSocket.send(this._getFilterParams());
         return this;
     }
 
-
+    /**
+     * @function SuperMap.DataFlowService.prototype.unSubscribe
+     * @description 结束订阅数据
+     */
     unSubscribe() {
         if (!this.subscribeWebSocket) {
             return;
@@ -116,7 +166,10 @@ export default class DataFlowService extends CommonServiceBase {
         this.subscribeWebSocket = null;
     }
 
-
+    /**
+     * @function SuperMap.DataFlowService.prototype.unBroadcast
+     * @description 结束加载广播
+     */
     unBroadcast() {
         if (this.broadcastWebSocket) {
             return;
@@ -125,7 +178,9 @@ export default class DataFlowService extends CommonServiceBase {
         this.broadcastWebSocket = null;
     }
 
-
+    /**
+     * @inheritDoc
+     */
     destroy() {
         SuperMap.CommonServiceBase.prototype.destroy.apply(this, arguments);
         var me = this;

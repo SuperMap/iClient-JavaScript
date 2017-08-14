@@ -7,6 +7,16 @@ import {CartoCSSToLeaflet} from '../overlay/carto/CartoCSSToLeaflet' ;
 /**
  * @class L.supermap.webmap
  * @classdesc 网络图层类。
+ * @extends L.LayerGroup
+ * @param id - {number} 网络图层id。
+ * @param options - {object} 图层可选参数。如：<br>
+ *        map - {String} 地图。<br>
+ *        server - {String} 服务地址。<br>
+ *        featureLayerPopupEnable - {boolean} 是否启动要素图层提示框。<br>
+ *        featureLayerPopup - {String} 提示框提示信息。<br>
+ *        credentialValue - {String} 证书值。<br>
+ *        credentialKey - {String} 证书密钥。<br>
+ *        attribution - {String} 版权信息。
  */
 export var WebMap = L.LayerGroup.extend({
 

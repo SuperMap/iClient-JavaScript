@@ -2,11 +2,11 @@ import L from "leaflet";
 import {DataFlowService} from "../services/DataFlowService";
 
 /**
- * @class L.supermap.DataFlowLayer
+ * @class L.supermap.dataFlowLayer
  * @classdesc 数据流图层
  * @extends L.GeoJSON
  * @param url - {String} 数据流图层服务地址
- * @param options - {object} 设置图层参数
+ * @param options - {object} 设置图层参数。如：<>
  */
 export var DataFlowLayer = L.GeoJSON.extend({
 

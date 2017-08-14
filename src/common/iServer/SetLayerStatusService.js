@@ -12,7 +12,7 @@ import SetLayerStatusParameters from './SetLayerStatusParameters';
  * @param url - {String} 地图服务访问地址。请求地图服务,URL 应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ *        eventListeners - {Object} 需要被注册的监听器对象。
  */
 export default  class SetLayerStatusService extends CommonServiceBase {
 
@@ -20,14 +20,6 @@ export default  class SetLayerStatusService extends CommonServiceBase {
 
     mapUrl = null;
 
-    /*
-     * @function  SuperMap.SetLayerStatusService.prototype.initialize
-     * @description 子图层显示控制服务类构造函数。
-     * @param url - {String} 地图服务访问地址。请求地图服务,URL 应为：<br>
-     *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
-     * @param options - {Object} 交互服务时所需可选参数。如：<br>
-     *         eventListeners - {Object} 需要被注册的监听器对象。
-     */
     constructor(url, options) {
         super(url, options);
         var me = this;

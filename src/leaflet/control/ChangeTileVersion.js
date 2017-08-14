@@ -13,6 +13,17 @@ import {MapService} from "../services/MapService";
  *      position: "topleft",
  *      orientation: "horizontal"
  *  }).addTo(map);
+ * @param options -{Object} logo控件配置项</br>
+ *        layer - {L.layer} 绑定的底图图层</br>
+ *        position - {String} 控件位置 继承自leaflet control</br>
+ *        title - {String} 鼠标滑过时提示</br>
+ *        tooltip - {String} /tooltip提示显示位置 top | right | bottom | left</br>
+ *        collapsed - {boolean} 是否折叠。<br>
+ *        nextText - {String} 下一个版本的按钮布局
+ *        lastText - {String} 上一个版本的按钮布局
+ *        ico - {String} 控件显示的logo
+ *        orientation - {String} 方向horizontal|vertical
+ *        switch - {boolean} 是否显示上/下一个版本切换控件
  */
 export var ChangeTileVersion = L.Control.extend({
 
@@ -39,6 +50,10 @@ export var ChangeTileVersion = L.Control.extend({
         switch: true,
     },
 
+    /**
+     * @function L.supermap.control.changeTileVersion.prototype.onAdd
+     * @description 添加控件
+     */
     onAdd: function () {
         if (this.options.orientation !== 'vertical') {
             this.options.orientation = 'horizontal';

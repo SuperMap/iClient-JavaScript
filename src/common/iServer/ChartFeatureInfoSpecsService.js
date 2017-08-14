@@ -12,19 +12,10 @@ import CommonServiceBase from './CommonServiceBase';
  *        如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。<br>
  *        发送请求格式类似于："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图/chartFeatureInfoSpecs.json"
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ *        eventListeners - {Object} 需要被注册的监听器对象。
  */
 export default class ChartFeatureInfoSpecsService extends CommonServiceBase {
 
-    /*
-     * @function SuperMap.ChartFeatureInfoSpecsService.prototype.initialize
-     * @description 使用地图（特指海图）服务地址 URL 初始化 ChartFeatureInfoSpecsService类的新实例。
-     * @param url - {String} 地图（特指海图）服务地址。<br>
-     *        如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。<br>
-     *        发送请求格式类似于："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图/chartFeatureInfoSpecs.json"
-     * @param options - {Object} 交互服务时所需可选参数。如：<br>
-     *         eventListeners - {Object} 需要被注册的监听器对象。
-     */
     constructor(url, options) {
         super(url, options);
     }

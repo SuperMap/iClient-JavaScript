@@ -6,7 +6,9 @@ import MapVRenderer from "./mapv/MapVRenderer";
  * @classdesc MapV图层
  * @param dataSet - {DataSet} MapV图层数据集
  * @param mapVOptions - {object} MapV图层参数
- * @param options - {object} 可选参数
+ * @param options - {object} 可选参数。如：<br>
+ *        attributionPrefix - {String} 版权信息前缀。<br>
+ *        attribution - {String} 版权信息。
  */
 export var MapVLayer = L.Layer.extend({
 

@@ -11,12 +11,6 @@ import KernelDensityJobParameter from './KernelDensityJobParameter';
  */
 export default  class KernelDensityJobsService extends ProcessingServiceBase {
 
-    /*
-     * @function SuperMap.KernelDensityJobsService.prototype.initialize
-     * @description SuperMap.KernelDensityJobsService 的构造函数
-     * @param url -{String} 核密度大数据服务地址。
-     * @param options - {Object} 交互服务时所需可选参数。
-     */
     constructor(url, options) {
         super(url, options);
         this.url += "/spatialanalyst/density";

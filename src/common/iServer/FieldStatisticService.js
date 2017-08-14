@@ -9,11 +9,11 @@ import FieldStatisticsParameters from './FieldStatisticsParameters';
  * @extends SuperMap.CommonServiceBase
  * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为:http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param options - {Object} 参数。
- * eventListeners - {Object} 需要被注册的监听器对象。</br>
- * datasource - {String} 数据集所在的数据源名称。</br>
- * dataset - {String} 数据集名称。</br>
- * field - {String} 查询统计的目标字段名称。</br>
- * statisticMode - {StatisticMode} 字段查询统计的方法类型。</br>
+ *        eventListeners - {Object} 需要被注册的监听器对象。</br>
+ *        datasource - {String} 数据集所在的数据源名称。</br>
+ *        dataset - {String} 数据集名称。</br>
+ *        field - {String} 查询统计的目标字段名称。</br>
+ *        statisticMode - {StatisticMode} 字段查询统计的方法类型。</br>
  * @example
  * (start code)
  * var myService = new SuperMap.FieldStatisticService(url, {eventListeners: {

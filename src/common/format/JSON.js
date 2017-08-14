@@ -142,7 +142,7 @@ export default  class JSONFormat extends Format {
      */
     serialize = {
         /**
-         * @method SuperMap.Format.JSON.serialize.object
+         * @function SuperMap.Format.JSON.serialize.object
          * @description Transform an object into a JSON string.
          * @param object - {Object} The object to be serialized.
          * @return {String} A JSON string representing the object.
@@ -187,7 +187,7 @@ export default  class JSONFormat extends Format {
         },
 
         /**
-         * @method SuperMap.Format.JSON.serialize.array
+         * @function SuperMap.Format.JSON.serialize.array
          * @description Transform an array into a JSON string.
          * @param array - {Array} The array to be serialized
          * @return {String} A JSON string representing the array.
@@ -215,7 +215,7 @@ export default  class JSONFormat extends Format {
         },
 
         /**
-         * @method SuperMap.Format.JSON.serialize.string
+         * @function SuperMap.Format.JSON.serialize.string
          * @description Transform a string into a JSON string.
          * @param string - {String} The string to be serialized
          * @return {String} A JSON string representing the string.
@@ -250,7 +250,7 @@ export default  class JSONFormat extends Format {
         },
 
         /**
-         * @method SuperMap.Format.JSON.serialize.number
+         * @function SuperMap.Format.JSON.serialize.number
          * @description Transform a number into a JSON string.
          * @param number - {Number} The number to be serialized.
          * @return {String} A JSON string representing the number.
@@ -260,7 +260,7 @@ export default  class JSONFormat extends Format {
         },
 
         /**
-         * @method SuperMap.Format.JSON.serialize.boolean
+         * @function SuperMap.Format.JSON.serialize.boolean
          * @description Transform a boolean into a JSON string.
          * @param bool - {Boolean} The boolean to be serialized.
          * @return {String} A JSON string representing the boolean.
@@ -270,7 +270,7 @@ export default  class JSONFormat extends Format {
         },
 
         /**
-         * @method SuperMap.Format.JSON.serialize.object
+         * @function SuperMap.Format.JSON.serialize.object
          * @description Transform a date into a JSON string.
          * @param date - {Date} The date to be serialized.
          * @return {String} A JSON string representing the date.

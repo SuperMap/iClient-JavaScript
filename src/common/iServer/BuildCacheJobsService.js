@@ -7,7 +7,12 @@ import BuildCacheJobParameter from './BuildCacheJobParameter';
  * @classdesc 创建大数据缓存服务类
  * @extends SuperMap.ProcessingServiceBase
  * @param url -{String} 大数据缓存服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
+ * @param options - {Object} 交互服务时所需可选参数。如：<br>
+ *        events - {SuperMap.Events} 处理所有事件的对象。<br>
+ *        eventListeners - {Object} 听器对象。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        index - {number} 服务访问地址在数组中的位置。<br>
+ *        length - {number} 服务访问地址数组长度。
  */
 export default  class BuildCacheJobsService extends ProcessingServiceBase {
 

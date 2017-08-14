@@ -4,16 +4,20 @@ import ServiceBase from './ServiceBase';
 import DataFlow from '../../common/iServer/DataFlowService';
 /**
  * @class ol.supermap.DataFlowService
- * @classdesc openlayer实时大数据服务
+ * @classdesc 实时大数据服务
  * @extends ol.supermap.ServiceBase
  * @example
  * 用法：
- *      new ol.supermap.ChartService(url)
+ *      new ol.supermap.DataFlowService(url)
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
  * @param url - {String} 与客户端交互的大数据服务地址。
- * @param options -{Object} 交互时所需可选参数。
+ * @param options - {object} 加载大数据可选参数。如：<br>
+ *        style - {function} 设置数据加载样式。<br>
+ *        onEachFeature - {function} 设置每个数据加载popup等。<br>
+ *        geometry - {Array<object>} 设置增添的几何要素对象数组。
+ *        excludeField - -{object} 排除字段
  */
 export default class DataFlowService extends ServiceBase {
 
@@ -38,23 +42,40 @@ export default class DataFlowService extends ServiceBase {
         });
     }
     /**
-     * @function ol.supermap.DataFlowService.prototype.getBuildCinitBroadcastacheJobs
-     * @description 初始化数据流
+     * @function ol.supermap.DataFlowService.prototype.initBroadcast
+     * @description 初始化广播
+     * @returns {ol.supermap.DataFlowService}
      */
     initBroadcast() {
         this.dataFlow.initBroadcast();
         return this;
     }
 
+    /**
+     * @function ol.supermap.DataFlowService.prototype.broadcast
+     * @description 加载广播数据
+     * @param obj {JSON} json格式的要素数据
+     */
     broadcast(obj) {
         this.dataFlow.broadcast(obj);
     }
 
+    /**
+     * @function ol.supermap.DataFlowService.prototype.initSubscribe
+     * @description 初始化订阅数据
+     * @return {ol.supermap.DataFlowService}
+     */
     initSubscribe() {
         this.dataFlow.initSubscribe();
         return this;
     }
 
+    /**
+     * @function ol.supermap.DataFlowService.prototype.setPrjCoordSys
+     * @description 设置动态投影坐标
+     * @param prjCoordSys -{Object} 动态投影参数
+     * @return {ol.supermap.DataFlowService}
+     */
     setPrjCoordSys(prjCoordSys) {
         if (!prj) {
             return;
@@ -65,22 +86,42 @@ export default class DataFlowService extends ServiceBase {
         return this;
     }
 
+    /**
+     * @function ol.supermap.DataFlowService.prototype.setExcludeField
+     * @description 设置排除字段
+     * @param excludeField - {object} 排除字段
+     * @return {ol.supermap.DataFlowService}
+     */
     setExcludeField(excludeField) {
         this.dataFlow.setExcludeField(excludeField);
         this.options.excludeField = excludeField;
         return this;
     }
 
+    /**
+     * @function ol.supermap.DataFlowService.prototype.setGeometry
+     * @description 设置添加的几何要素数据
+     * @param geometry - {Array<object>} 设置增添的几何要素对象数组。
+     * @return {ol.supermap.DataFlowService}
+     */
     setGeometry(geometry) {
         this.dataFlow.setGeometry(geometry);
         this.options.geometry = geometry;
         return this;
     }
 
+    /**
+     * @function ol.supermap.DataFlowService.prototype.unSubscribe
+     * @description 结束订阅数据
+     */
     unSubscribe() {
         this.dataFlow.unSubscribe();
     }
 
+    /**
+     * @function ol.supermap.DataFlowService.prototype.unBroadcast
+     * @description 结束加载广播
+     */
     unBroadcast() {
         this.dataFlow.unBroadcast();
     }

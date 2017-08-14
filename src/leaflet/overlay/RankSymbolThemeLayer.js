@@ -3,11 +3,11 @@ import SuperMap from '../../common/SuperMap';
 import {GraphThemeLayer} from './theme/GraphThemeLayer';
 
 /**
- * @class L.supermap.RankSymbolThemeLayer
+ * @class L.supermap.rankSymbolThemeLayer
  * @classdesc 符号专题图图层。<br>
- *            符号专题图通过为每个要素绘制符号大小来反映其对应的专题值的大小；它只能表示单个个字段属性信息。<br>
- *            符号专题图多用于具有相关数量特征的地图上，比如表示不同地区粮食产量、GDP、人口等。<br>
- *            即通过制作一个符号专题图，就可以清晰展示各个区域相关Value的分布差异等。目前提供的统计图类型有：圆（Circle）<br>
+ * @description 符号专题图通过为每个要素绘制符号大小来反映其对应的专题值的大小；它只能表示单个个字段属性信息。
+ *            符号专题图多用于具有相关数量特征的地图上，比如表示不同地区粮食产量、GDP、人口等。
+ *            即通过制作一个符号专题图，就可以清晰展示各个区域相关Value的分布差异等。目前提供的统计图类型有：圆（Circle）
  *           目前提供的符号图形有：圆形（后续进行扩展 心形 五角星 多角心 图片等）
  * @extends L.supermap.GraphThemeLayer
  * @param name - {String} 专题图层名

@@ -50,21 +50,6 @@ export default  class OnlineData extends OnlineServiceBase {
     thumbnail = null;
 
     //TODO 目前并没有对接服务支持的所有操作，日后需要补充完整
-    /**
-     * @function SuperMap.OnlineData.prototype.constructor
-     * @description 所有查询返回的是一个Promise在外部使用的时候通过Promise的then方法获取异步结果
-     * @param serviceRootUrl - {String} online服务地址
-     * @param options - {Object} 对接online服务可选参数
-     * @example
-     * var service = new SuperMap.Online().queryDatas(param)
-     *                  .then(function(services){
-     *                      var service=services[0];
-     *                      service.getPublishedServices();
-     *                      service.update().then(function(result){
-     *                              console.log(result.succeed);
-     *                      })
-     *                  });
-     */
     constructor(serviceRootUrl, options) {
         super(serviceUrl);
         var me = this;

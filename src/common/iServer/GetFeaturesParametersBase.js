@@ -48,15 +48,6 @@ export default  class GetFeaturesParametersBase {
      */
     maxFeatures = null;
 
-    /**
-     *
-     * @function SuperMap.GetFeaturesParametersBase.prototype.constructor
-     * @param options - {Object} 参数。如：<br>
-     *        datasetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
-     *        returnContent - {SuperMap.FilterParameter} 是否直接返回查询结果。</br>
-     *        fromIndex - {Integer} 查询结果的最小索引号。</br>
-     *        toIndex - {Integer} 查询结果的最大索引号。</br>
-     */
     constructor(options) {
         if (!options) {
             return;

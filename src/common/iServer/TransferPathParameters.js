@@ -3,8 +3,7 @@ import TransferLine from './TransferLine';
 
 /**
  * @class SuperMap.TransferPathParameters
- * @classdesc
- * 交通换乘线路查询参数类。
+ * @classdesc 交通换乘线路查询参数类。
  * @param options - {Object} 参数。如:</br>
  *        transferLines - {Array(<SuperMap.TransferLine>)} 本换乘分段内可乘车的路线集合。</br>
  *        points - {Array(Integer)} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
@@ -40,7 +39,7 @@ export default  class TransferPathParameters {
     }
 
     /**
-     * @method SuperMap.TransferPathParameters.prototype.toJson
+     * @function SuperMap.TransferPathParameters.toJson
      * @description 将 <SuperMap.TransferPathParameters> 对象参数转换为 json 字符串。
      * @param params - {SuperMap.TransferPathParameters} 交通换乘参数。
      * @returns {String} 转化后的 json字符串。

@@ -4,9 +4,7 @@ import FilterParameter from './FilterParameter';
 import GetFeaturesParametersBase from './GetFeaturesParametersBase';
 /**
  * @class SuperMap.GetFeaturesByGeometryParameters
- * @classdesc
- * 数据集几何查询参数类。
- * 该类用于设置数据集几何查询的相关参数。
+ * @classdesc 数据集几何查询参数类。该类用于设置数据集几何查询的相关参数。
  * @param options - {Object} 可選参数。如:</br>
  *        geometry - {Object} 用于查询的几何对象。</br>
  *        attributeFilter - {String} 几何查询属性过滤条件。</br>
@@ -53,7 +51,6 @@ export default  class GetFeaturesByGeometryParameters extends GetFeaturesParamet
      */
     spatialQueryMode = SpatialQueryMode.CONTAIN;
 
-
     constructor(options) {
         super(options);
         if (!options) {
@@ -87,7 +84,7 @@ export default  class GetFeaturesByGeometryParameters extends GetFeaturesParamet
     }
 
     /**
-     * @method SuperMap.GetFeaturesByGeometryParameters.prototype.toJsonParameters
+     * @function SuperMap.GetFeaturesByGeometryParameters.prototype.toJsonParameters
      * @description 将<SuperMap.GetFeaturesByGeometryParameters>对象参数转换为json字符串。
      * @param params - {SuperMap.GetFeaturesByGeometryParameters} 几何查询参数。
      * @return {String} 转化后的 json字符串。

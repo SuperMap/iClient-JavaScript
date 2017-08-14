@@ -83,17 +83,6 @@ export default  class TimeControlBase {
      */
     events = null;
 
-    /**
-     * @function SuperMap.TimeControlBase.prototype.initialize
-     * @description 时间控制基类得构造函数。
-     * @param options - {Object} 该类开放的可选属性。如：<br>
-     *        speed - {Number} 速度。不能小于0，默认为1（表示每帧渲染的数据之间的间隔为1），设置越大速度越快。<br>
-     *        startTime - {Number} 的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
-     *        endTime - {Number} 的结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
-     *        repeat - {Boolean} 是否重复循环。默认为true。<br>
-     *        reverse - {Boolean} 是否反向。默认为false。<br>
-     *        geoFence - {SuperMap.Geometry} 地理围栏。
-     */
     constructor(options) {
         //设置步长，刷新频率、开始结束时间、是否循环、是否反向
         var me = this;

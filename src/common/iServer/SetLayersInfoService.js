@@ -29,16 +29,6 @@ export default  class SetLayersInfoService extends CommonServiceBase {
      */
     isTempLayers = false;
 
-    /*
-     * @function SuperMap.SetLayersInfoService.prototype.initialize
-     * @description 设置图层信息服务类构造函数。可以实现创建新的临时图层和对现有临时图层的修改。
-     * @param url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
-     *              http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
-     * @param options - {Object} 交互服务时所需可选参数。如：<br>
-     *         resourceID - {String} 图层资源ID，临时图层的资源ID标记。<br>
-     *         isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。<br>
-     *         eventListeners - {Object} 需要被注册的监听器对象。
-     */
     constructor(url, options) {
         super(url, options);
         if (options) {

@@ -54,7 +54,7 @@ export default  class GetFieldsService extends CommonServiceBase {
 
 
     /**
-     * @method SuperMap.GetFieldsService.prototype.processAsync
+     * @function SuperMap.GetFieldsService.prototype.processAsync
      * @description 执行服务，查询指定数据集的字段信息。
      */
     processAsync() {

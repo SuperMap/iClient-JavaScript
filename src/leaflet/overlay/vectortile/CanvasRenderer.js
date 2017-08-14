@@ -6,7 +6,7 @@ import L from "leaflet";
  * @extends L.Canvas
  * @param tileCoord - {Object} 切片坐标系
  * @param tileSize - {number} 切片大小
- * @param options - {Object} 渲染参数
+ * @param options - {Object} 渲染器参数
  */
 export var CanvasRenderer = L.Canvas.extend({
 

@@ -33,7 +33,7 @@ export default  class TerrainCurvatureCalculationService extends SpatialAnalystB
     }
 
     /**
-     * @method SuperMap.TerrainCurvatureCalculationService.prototype.processAsync
+     * @function SuperMap.TerrainCurvatureCalculationService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
      * @param parameter - {SuperMap.TerrainCurvatureCalculationParameters}
      */
