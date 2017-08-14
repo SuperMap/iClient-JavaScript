@@ -33,7 +33,7 @@ var commonTools = ({
          * exampleName(String) - eg:'01_tiledMapLayer3857' etc.
          * standardTilePrams(offsetX, offsetY, width, height).
          * */
-        getStdTile: function (browser, type, exampleName, width, height) {
+        getStdTile: function (browser, type, exampleName, offsetX, offsetY, width, height) {
             var screenShotPath = './examples-test/temp/' + exampleName + '.png';
             var tileTestPath = './examples-test/' + type + '/resources/' + exampleName + '.png';
             browser.pause(5000);
@@ -41,9 +41,9 @@ var commonTools = ({
                 console.log('Screenshot has been saved , now start to get StdTile from Screenshot');
                 var totalWidth = images(screenShotPath).width();
                 var totalHeight = images(screenShotPath).height();
-                var offsetX = (totalWidth - width) / 2;
-                var offsetY = (totalHeight - height) / 2;
-                commonTools.getTileFromScreenshot(screenShotPath, offsetX, offsetY, width, height, tileTestPath);
+                var offX = (totalWidth - width) / 2 + offsetX;
+                var offY = (totalHeight - height) / 2 - offsetY;
+                commonTools.getTileFromScreenshot(screenShotPath, offX, offY, width, height, tileTestPath);
                 console.log('get StdTile completed');
             });
             browser.pause(2000, function () {
@@ -58,10 +58,11 @@ var commonTools = ({
          * params: broswer ;
          * type(String) - serviceType, eg:'leaflet'、'openlayers'、'3dwebgl'、'mapboxgl' etc.
          * exampleName(String) - eg:'01_tiledMapLayer3857' etc.
-         * testTilePrams(width, height) - should be equal with Corresponding standard tile params.
+         * testTilePrams(offsetX, offsetY, width, height) - should be equal with Corresponding standard tile params.
+         * offsetX, offsetY: Offset relative to the center point
          * return : boolean
          * */
-        cmpTestTileWithStdTile: function (browser, type, exampleName, width, height) {
+        cmpTestTileWithStdTile: function (browser, type, exampleName, offsetX, offsetY, width, height) {
             var screenShotPath, tileTestPath, tileStandardPath;
             if (typeof type !== 'string' || typeof exampleName !== 'string') {
                 console.log('invalid input : type or exampleName is not a string');
@@ -75,9 +76,9 @@ var commonTools = ({
                 console.log('start to get the tile');
                 var totalWidth = images(screenShotPath).width();
                 var totalHeight = images(screenShotPath).height();
-                var offsetX = (totalWidth - width) / 2;
-                var offsetY = (totalHeight - height) / 2;
-                commonTools.getTileFromScreenshot(screenShotPath, offsetX, offsetY, width, height, tileTestPath);
+                var offX = (totalWidth - width) / 2 + offsetX;
+                var offY = (totalHeight - height) / 2 - offsetY;
+                commonTools.getTileFromScreenshot(screenShotPath, offX, offY, width, height, tileTestPath);
                 console.log('get the tile completed');
             });
             browser.pause(5000, function () {
@@ -89,9 +90,10 @@ var commonTools = ({
 
         /*
          * function: get a tile with certain range from the screenshot
+         * offX, offY: Offset relative to the top-left corner
          * */
-        getTileFromScreenshot: function (sourceImagePath, offsetX, offsetY, width, height, tilePath) {
-            images(images(sourceImagePath), offsetX, offsetY, width, height)
+        getTileFromScreenshot: function (sourceImagePath, offX, offY, width, height, tilePath) {
+            images(images(sourceImagePath), offX, offY, width, height)
                 .save(tilePath);
         },
 
