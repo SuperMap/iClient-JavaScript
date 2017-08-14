@@ -3,7 +3,7 @@ import L from "leaflet";
 L.Projection = {};
 
 /**
- * @class L.CRS.NonProjection
+ * @class L.Projection.NonProjection
  * @classdesc 非投影坐标对象
  * @extends L.Class
  * @param bounds - {L.bounds} 坐标范围
@@ -47,7 +47,7 @@ export var NonEarthCRS = L.Class.extend({
                 new L.Transformation(1, -options.origin.x,
                     -1, options.origin.y);
         }
-        this.projection = L.CRS.NonProjection(options.bounds);
+        this.projection = L.Projection.NonProjection(options.bounds);
         this.bounds = options.bounds;
         this.origin = options.origin;
         this.resolutions = options.resolutions;
