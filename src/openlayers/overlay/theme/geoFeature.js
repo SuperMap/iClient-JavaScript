@@ -44,6 +44,7 @@ export default class GeoFeature extends Theme {
     }
     /**
      * @function ol.source.GeoFeature.prototype.addFeatures
+     * @param features - {object} 特征对象参数
      * @description 添加特征
      */
 
@@ -224,7 +225,11 @@ export default class GeoFeature extends Theme {
             this.isCustomSetMaxCacheCount = true;
         }
     }
-
+    /**
+     * @function ol.source.GeoFeature.prototype.setMaxCacheCount
+     * @description 通过特征ID获取外形
+     * @param featureID -{number} 特征ID
+     */
     getShapesByFeatureID(featureID) {
         var list = [];
         var shapeList = this.renderer.getAllShapes();

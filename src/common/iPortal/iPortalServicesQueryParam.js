@@ -3,10 +3,9 @@ import SuperMap from '../SuperMap';
 /**
  * @class SuperMap.iPortalServicesQueryParam
  * @classdesc iPortal服务查询参数
- * @param params -{object} 服务参数
+ * @param params -{Object} 服务参数
  *
  */
-
 export default  class IPortalServicesQueryParam {
 
     tags = [];

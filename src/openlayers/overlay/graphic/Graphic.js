@@ -2,7 +2,7 @@ import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.Graphic
  * @classdesc 地理几何信息
- * @param geometry - {String}
+ * @param geometry - {object} 几何对象
  * @extends ol.Object
  */
 export default class Graphic extends ol.Object {
@@ -14,7 +14,10 @@ export default class Graphic extends ol.Object {
         }
         this.setStyle();
     }
-
+    /**
+     * @function  ol.Graphic.prototype.clone
+     * @description 复制当前信息
+     */
     clone() {
         var clone = new ol.supermap.Graphic();
         clone.setId(this.id_);
@@ -22,38 +25,65 @@ export default class Graphic extends ol.Object {
         clone.setStyle(this.style_);
         return clone;
     }
-
+    /**
+     * @function   ol.Graphic.prototype.getId
+     * @description 获取当前ID
+     */
     getId() {
         return this.id_;
     }
-
+    /**
+     * @function   ol.Graphic.prototype.setId
+     * @description 设置当前ID
+     */
     setId(id) {
         this.id_ = id;
     }
-
+    /**
+     * @function   ol.Graphic.prototype.setId
+     * @description 获取当前几何信息
+     */
     getGeometry() {
         return this.geometry_;
     }
-
+    /**
+     * @function   ol.Graphic.prototype.setId
+     * @param geometry -{object} 几何参数
+     * @description  设置当前几何信息
+     */
     setGeometry(geometry) {
         this.geometry_ = geometry;
     }
-
+    /**
+     * @function   ol.Graphic.prototype.getStyle
+     * @description  获取样式
+     */
     getStyle() {
         return this.style_;
     }
-
+    /**
+     * @function   ol.Graphic.prototype.getStyle
+     * @param style -{object} 样式参数
+     * @description  设置样式
+     */
     setStyle(style) {
         this.style_ = style;
         this.styleFunction_ = !style ?
             undefined : ol.Graphic.createStyleFunction(style);
         this.changed();
     }
-
+    /**
+     * @function   ol.Graphic.prototype.getStyleFunction
+     * @description  获取样式函数
+     */
     getStyleFunction() {
         return this.styleFunction_;
     }
-
+    /**
+     * @function   ol.Graphic.prototype.createStyleFunction
+     * @param obj -{object} 对象参数
+     * @description  新建样式函数
+     */
     static createStyleFunction(obj) {
         var styleFunction;
         if (typeof obj === 'function') {
@@ -77,7 +107,10 @@ export default class Graphic extends ol.Object {
         }
         return styleFunction;
     }
-
+    /**
+     * @function   ol.Graphic.prototype.destroy
+     * @description  清除参数值
+     */
     destroy() {
         this.id_ = null;
         this.geometry_ = null;

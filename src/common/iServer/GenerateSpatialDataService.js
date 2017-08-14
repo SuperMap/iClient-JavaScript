@@ -52,12 +52,7 @@ import GenerateSpatialDataParameters from './GenerateSpatialDataParameters';
      */
 export default  class GenerateSpatialDataService extends SpatialAnalystBase {
 
-    /*
-     * @method SuperMap.GenerateSpatialDataService.prototype.constructor
-     * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * @param options - {Object} 可选参数。如:</br>
-     *        eventListeners - {Object} 需要被注册的监听器对象。
-     */
+
     constructor(url, options) {
         super(url, options);
     }

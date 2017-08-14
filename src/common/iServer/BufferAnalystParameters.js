@@ -14,11 +14,7 @@ export default  class BufferAnalystParameters {
      */
     bufferSetting = null;
 
-    /*
-     * @function SuperMap.BufferAnalystParameters.prototype.constructor
-     * @param options - {Object} 可选参数。如:</br>
-     *        bufferSetting - {SuperMap.BufferSetting} 设置缓冲区通用参数。
-     */
+
     constructor(options) {
         var me = this;
         me.bufferSetting = new BufferSetting();

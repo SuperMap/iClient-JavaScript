@@ -17,13 +17,7 @@ export default  class GeometryBufferAnalystParameters extends BufferAnalystParam
      */
     sourceGeometry = null;
 
-    /*
-     * @function SuperMap.GeometryBufferAnalystParameters.prototype.constructor
-     * @description 几何对象缓冲区分析参数类构造函数。
-     * @param options - {Object} 可选参数。如:</br>
-     *        sourceGeometry - {Object} 要做缓冲区分析的几何对象。必设字段。</br>
-     *        bufferSetting - {SuperMap.BufferSetting} 设置缓冲区通用参数。
-     */
+
     constructor(options) {
         super(options);
         if (options) {

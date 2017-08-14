@@ -53,16 +53,7 @@ export default  class TerrainCurvatureCalculationParameters {
      * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
      */
     deleteExistResultDataset = false;
-    /*
-     * @method SuperMap.TerrainCurvatureCalculationParameters.prototype.constructor
-     * @param options - {Object} 可选参数。如</br>
-     *        dataset - {String} 要用来做地形曲率计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。</br>
-     *        zFactor - {Number} 指定的高程缩放系数。默认值为 1.0，表示不缩放。</br>
-     *        averageCurvatureName - {String} 结果数据集：平均曲率数据集的名称，必设字段。</br>
-     *        profileCurvatureName - {String} 结果数据集：剖面曲率数据集的名称。</br>
-     *        planCurvatureName - {String} 结果数据集：平面曲率数据集的名称。</br>
-     *        deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
-     */
+
     constructor(options) {
         if (!options) {
             return;

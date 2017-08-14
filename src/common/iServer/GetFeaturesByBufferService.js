@@ -27,14 +27,6 @@ import GetFeaturesByBufferParameters from './GetFeaturesByBufferParameters';
 
 export default  class GetFeaturesByBufferService extends GetFeaturesServiceBase {
 
-    /*
-     * @function SuperMap.GetFeaturesByBufferService.prototype.constructor
-     * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
-     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
-     * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
-     * @param options - {Object} 可选参数。如：<br>
-     *        eventListeners - {Object} 需要被注册的监听器对象。
-     */
     constructor(url, options) {
         super(url, options);
     }

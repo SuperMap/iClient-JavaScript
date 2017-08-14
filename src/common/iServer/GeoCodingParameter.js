@@ -42,10 +42,7 @@ export default  class GeoCodingParameter {
      */
     maxReturn = null;
 
-    /*
-     * @function  SuperMap.GeoCodingParameter.prototype.constructor
-     * @param options - {Object} 参数。
-     */
+
     constructor(options) {
         if (!options) {
             return;

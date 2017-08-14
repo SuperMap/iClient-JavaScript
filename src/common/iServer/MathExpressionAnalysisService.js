@@ -22,13 +22,6 @@ import MathExpressionAnalysisParameters from './MathExpressionAnalysisParameters
  */
 export default  class MathExpressionAnalysisService extends SpatialAnalystBase {
 
-    /*
-     * @function SuperMap.MathExpressionAnalysisService.prototype.constructor
-     * @param options - {Object} 可选参数。如:</br>
-     *        eventListeners - {Object} 需要被注册的监听器对象。
-     * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     *
-     */
     constructor(url, options) {
         super(url, options);
     }

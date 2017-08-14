@@ -38,15 +38,7 @@ export default class EditFeaturesService extends CommonServiceBase {
      */
     isUseBatch = false;
 
-    /*
-     * @function SuperMap.EditFeaturesService.prototype.constructor
-     * @description 数据集编辑服务基类构造函数。
-     * @param url - {String} 服务端的数据服务资源地址。请求数据服务中数据集编辑服务，URL 应为：</br>
-     * http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/datasources/name/{数据源名}/datasets/name/{数据集名} 。</br>
-     * 例如：http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R
-     * @param options - {Object} 参数。如:</br>
-     * eventListeners - {Object} 需要被注册的监听器对象。
-     */
+
     constructor(url, options) {
         super(url, options);
         if (options) {

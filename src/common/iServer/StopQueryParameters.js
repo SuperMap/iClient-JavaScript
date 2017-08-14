@@ -4,7 +4,7 @@
  * @class SuperMap.StopQueryParameters
  * @classdesc 站点查询参数类。
  *
- * @param options - {Object} 可選参数。如:</br>
+ * @param options - {Object} 参数
  */
 export default  class StopQueryParameters {
     /**
@@ -18,12 +18,6 @@ export default  class StopQueryParameters {
      * @description 是否返回站点坐标信息。
      */
     returnPosition = false;
-
-    /*
-     * @function SuperMap.StopQueryParameters.prototype.constructor
-     * @description SuperMap.StopQueryParameters 的构造函数
-     * @param options - {Object} 交互服务时所需可选参数。
-     */
 
     constructor(options) {
         options = options || {};

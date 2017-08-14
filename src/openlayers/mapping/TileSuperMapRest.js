@@ -5,7 +5,7 @@ import Util from  '../core/Util';
 /**
  * @class ol.source.TileSuperMapRest
  * @classdesc 地图REST瓦片服务
- * @param options - {object} 交互时所需可选参数
+ * @param options - {object} 参数
  * @extends  ol.source.TileImage
  */
 export default class TileSuperMapRest extends ol.source.TileImage {
@@ -262,6 +262,7 @@ export default class TileSuperMapRest extends ol.source.TileImage {
 
     /**
      * @function  ol.source.TileSuperMapRest.prototype.updateCurrentTileSetsIndex
+     * @param index - {object} 可选参数
      * @description 手动设置当前切片集索引，目前主要提供给控件使用。
      */
     updateCurrentTileSetsIndex(index) {
@@ -269,7 +270,8 @@ export default class TileSuperMapRest extends ol.source.TileImage {
     }
     /**
      * @function  ol.source.TileSuperMapRest.prototype.mergeTileVersionParam
-     * @description 更改URL请求参数中的切片版本号,并重绘
+     * @param version - {object} 版本信息
+     * @description 更改URL请求参数中的切片版本号,并重绘。
      */
     mergeTileVersionParam(version) {
         if (version) {

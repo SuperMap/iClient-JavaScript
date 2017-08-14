@@ -71,18 +71,7 @@ export default class GeoRelationAnalystParameters {
      */
     expectCount = 500;
 
-    /*
-     * @method SuperMap.GeoRelationAnalystParameters.prototype.constructor
-     * @param options - {Object} 可选参数。如:</br>
-     *        sourceFilter - {SuperMap.FilterParameter} 空间关系分析中的参考数据集查询参数。仅 name, ids,attributeFilter 和 fields 字段有效。</br>
-     *        referenceFilter - {SuperMap.FilterParameter} 空间关系分析中的参考数据集查询参数。仅 name, ids,attributeFilter 和 fields 字段有效。</br>
-     *        spatialRelationType - {SuperMap.SpatialRelationType} 指定的空间关系类型。</br>
-     *        isBorderInside - {Boolean} 边界处理方式，即位于面边线上的点是否被面包含。此参数仅用于空间关系为包含或被包含的情况。</br>
-     *        returnFeature - {Boolean} 是否返回Feature信息。</br>
-     *        returnGeoRelatedOnly - {Boolean} 仅返回满足指定空间关系的空间对象，默认为 True。</br>
-     *        startRecord - {Integer} 分析结果起始记录位置，默认为0。</br>
-     *        expectCount - {Integer} 空间关系分析期望返回结果记录数，默认为500条，如果实际不足500条结果则返回所有分析结果。</br>
-     */
+
     constructor(options) {
         var me = this;
         if (options) {

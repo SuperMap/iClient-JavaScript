@@ -23,7 +23,7 @@ export default  class IPortalServiceBase {
     /**
      * @function SuperMap.iPortalServiceBase.prototype.request
      * @description 子类统一通过该方法发送请求
-     * @param method -{INT} 请求类型
+     * @param method -{Integer} 请求类型
      * @param url -{String} 服务地址
      * @param param -{Object} 请求参数
      * @param requestOptions -{Object} fetch请求配置项
@@ -38,11 +38,11 @@ export default  class IPortalServiceBase {
     }
 
 
-    /**
+    /*
      * @function SuperMap.iPortalServiceBase.prototype.createCredentialUrl
      * @description 追加授权信息
      * @param url -{String} url
-     * @return {string} 携带带token或key的新地址
+     * @return {string} 携带token或key的新地址
      */
 
     createCredentialUrl(url) {
@@ -64,7 +64,7 @@ export default  class IPortalServiceBase {
     }
 
 
-    /**
+    /*
      * @function SuperMap.iPortalServiceBase.prototype.getCredential
      * @description 获取token
      * @return {string } 返回获取的token
@@ -85,8 +85,7 @@ export default  class IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortalServiceBase.prototype.getKey
-     * @description 其子类需要重写该方法，修改其中获取key的字段
-     * 存储key可能是服务id字段，可能是url
+     * @description 其子类需要重写该方法，修改其中获取key的字段，存储key可能是服务id字段，可能是url
      */
     getKey() {
         //return SuperMap.SecurityManager.getKey(this.id);

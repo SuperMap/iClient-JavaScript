@@ -112,22 +112,6 @@ export default  class InterpolationAnalystParameters {
      */
     clipParam = null;
 
-    /*
-     * @function SuperMap.InterpolationAnalystParameters.prototype.constructor
-     * @param options - {Object} 可选参数。如</br>
-     *        bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
-     *        searchRadius - {Number} 查找半径，即参与运算点的查找范围，与点数据集单位相同。</br>
-     *        zValueFieldName - {String} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。</br>
-     *        zValueScale - {Number} 用于进行插值分析值的缩放比率，默认为1。</br>
-     *        resolution - {Number} 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
-     *        filterQueryParameter - {SuperMap.FilterParameter} 属性过滤条件。</br>
-     *        outputDatasetName - {String} 插值分析结果数据集的名称。</br>
-     *        outputDatasourceName - {String} 插值分析结果数据源的名称。</br>
-     *        pixelFormat - {SuperMap.PixelFormat} 指定结果栅格数据集存储的像素格式。</br>
-     *        dataset - {String} 用于做插值分析的数据源中数据集的名称。</br>
-     *        inputPoints - {Array <Point||Array} 用于做插值分析的离散点集合。</br>
-     *        InterpolationAnalystType - {String} 插值分析类型（dataset或geometry），默认为dataset 。</br>
-     */
     constructor(options) {
         if (!options) {
             return;

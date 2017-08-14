@@ -97,16 +97,6 @@ export default  class Route extends Collection {
      */
     componentTypes = ["SuperMap.Geometry.LinearRing", "SuperMap.Geometry.LineString"];
 
-    /**
-     * @function SuperMap.Route.prototype.constructor
-     * @param points - {Array} 形成路由对象的线数组。
-     * @param  options - {Object} 可选参数。如:</br>
-     *         id - {Number} 路由对象在数据库中的id。</br>
-     *         length - {Number} 路由对象的长度。</br>
-     *         maxM - {Number} 最大线性度量值，即所有结点到起始点的量算距离中最大值。</br>
-     *         minM - {Number} 最小线性度量值，即所有结点到起始点的量算距离中最小值。</br>
-     *         type - {String} 数据类型，如："LINEM"</br>
-     */
     constructor(points, options) {
         super(points, options);
         if (options) {

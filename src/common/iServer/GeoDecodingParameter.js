@@ -52,10 +52,7 @@ export default  class GeoDecodingParameter {
      */
     geoDecodingRadius = null;
 
-    /*
-     * @function SuperMap.GeoDecodingParameter.prototype.constructor
-     * @param options - {Object} 参数。
-     */
+
     constructor(options) {
         if (!options) {
             return;

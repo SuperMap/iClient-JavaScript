@@ -24,11 +24,6 @@ import GetFeaturesByBoundsParameters from './GetFeaturesByBoundsParameters';
  */
 
 export default  class GetFeaturesByBoundsService extends GetFeaturesServiceBase {
-    /*
-     * @function SuperMap.GetFeaturesByBoundsService.prototype.constructor
-     * @param url - {string} 服务地址。
-     * @param options - {Object} 参数。
-     */
 
     constructor(url, options) {
         super(url, options);

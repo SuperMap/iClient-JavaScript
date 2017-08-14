@@ -14,17 +14,15 @@ import IPortalServiceBase from './iPortalServiceBase';
  *
  */
 export default  class IPortal extends IPortalServiceBase {
-    /*
-     * @function SuperMap.iPortal.prototype.constructor
-     * @param iportalUrl -{string} 地址
-     */
+
     constructor(iportalUrl) {
         super(iportalUrl);
         this.iportalUrl = iportalUrl;
     }
     /**
      * @function SuperMap.iPortal.prototype.load
-     * @description 页面加载
+     * @description 加载页面
+     *
      */
     load() {
         return FetchRequest.get(this.iportalUrl + '/web');
@@ -48,7 +46,7 @@ export default  class IPortal extends IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortal.prototype.deleteServices
-     * @param ids -{number} 服务的id
+     * @param ids -{number} 服务的序号
      * @description 删除服务
      */
     deleteServices(ids) {

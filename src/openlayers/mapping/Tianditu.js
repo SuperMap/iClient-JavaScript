@@ -42,7 +42,7 @@ export default class Tianditu extends ol.source.WMTS {
     /**
      * @function ol.source.Tianditu.prototype.getTileGrid
      * @description 网格瓦片
-     * @param projection -{objecxt} 投影
+     * @param projection -{objecxt} 投影参考对象
      */
     static getTileGrid(projection) {
         if (projection === "EPSG:4326" || projection === "EPSG:4490") {

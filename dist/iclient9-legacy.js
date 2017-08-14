@@ -3693,9 +3693,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var AddressMatchService = function (_CommonServiceBase) {
     _inherits(AddressMatchService, _CommonServiceBase);
 
-    /*
-     * @function SuperMap.AddressMatchService.prototype.constructor
-     */
     function AddressMatchService(url, options) {
         _classCallCheck(this, AddressMatchService);
 
@@ -3704,6 +3701,7 @@ var AddressMatchService = function (_CommonServiceBase) {
         _this.CLASS_NAME = "SuperMap.AddressMatchService";
         return _this;
     }
+
     /**
      * @inheritDoc
      */
@@ -3718,7 +3716,7 @@ var AddressMatchService = function (_CommonServiceBase) {
         /**
          * @function SuperMap.AddressMatchService.prototype.code
          * @param url {string} 正向地址匹配服务地址
-         * @param params {object} 正向地址匹配服务参数
+         * @param params {SuperMap.GeoCodingParameter} 正向地址匹配服务参数
          */
 
     }, {
@@ -3730,7 +3728,7 @@ var AddressMatchService = function (_CommonServiceBase) {
         /**
          * @function SuperMap.AddressMatchService.prototype.decode
          * @param url {string} 反向地址匹配服务地址
-         * @param params {object} 反向地址匹配服务参数
+         * @param params {SuperMap.GeoDecodingParameter} 反向地址匹配服务参数
          */
 
     }, {
@@ -4071,12 +4069,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var GeoCodingParameter = function () {
 
-    /*
-     * @function  SuperMap.GeoCodingParameter.prototype.constructor
-     * @param options - {Object} 参数。
-     */
-
-
     /**
      * @member SuperMap.GeoCodingParameter.prototype.prjCoordSys -{String}
      * @description  查询结果的坐标系。
@@ -4187,12 +4179,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 参数。
  */
 var GeoDecodingParameter = function () {
-
-    /*
-     * @function SuperMap.GeoDecodingParameter.prototype.constructor
-     * @param options - {Object} 参数。
-     */
-
 
     /**
      *  @member SuperMap.GeoDecodingParameter.prototype.maxReturn -{number}
@@ -5622,11 +5608,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 参数。
  */
 var KeyServiceParameter = function () {
-
-    /*
-     * @function SuperMap.KeyServiceParameter.prototype.constructor
-     * @param options - {Object} 参数。
-     */
     function KeyServiceParameter(options) {
         _classCallCheck(this, KeyServiceParameter);
 
@@ -5641,8 +5622,8 @@ var KeyServiceParameter = function () {
 
     /**
      * @function SuperMap.KeyServiceParameter.prototype.toJSON
-     * @description 转换成JSON字符串
-     * @return {string} 参数的JSON字符串
+     * @description 转换成JSON对象
+     * @return {object} 参数的JSON对象
      */
 
 
@@ -5924,16 +5905,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.ServerInfo
  * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
- */
-
-var ServerInfo =
-
-/**
- * @function SuperMap.ServerInfo.prototype.constructor
  * @param type -{string} 类型
  * @param options - {Object} 参数。
  */
 
+var ServerInfo =
 
 /**
  * @member SuperMap.ServerInfo.prototype.tokenServiceUrl -{string}
@@ -6025,13 +6001,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 参数。
  */
 var TokenServiceParameter = function () {
-
-    /*
-     * @function SuperMap.TokenServiceParameter.prototype.constructor
-     *  @description 地图缓存参数类
-     *  @param options - {Object} 参数。
-     */
-
     /**
      * @member SuperMap.TokenServiceParameter.prototype.referer -{String}
      * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。

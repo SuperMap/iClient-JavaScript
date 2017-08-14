@@ -26,13 +26,7 @@ export default  class GeometryOverlayAnalystParameters extends OverlayAnalystPar
      */
     sourceGeometry = null;
 
-    /*
-     * @function SuperMap.GeometryOverlayAnalystParameters.prototype.constructor
-     * @param options - {Object} 可选参数。如:</br>
-     *        operateGeometry - {SuperMap.Geometry} 叠加分析的操作几何对象。必设字段。</br>
-     *        sourceGeometry - {SuperMap.Geometry} 叠加分析的源几何对象。必设字段。</br>
-     *        operation - {SuperMap.OverlayOperationType} 叠加操作枚举值。</br>
-     */
+
     constructor(options) {
         super(options);
         if (options) {

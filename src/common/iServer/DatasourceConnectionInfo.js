@@ -103,23 +103,7 @@ export default  class DatasourceConnectionInfo {
      */
     user = null;
 
-    /*
-     * @function SuperMap.DatasourceConnectionInfo.prototype.constructor
-     * @description 数据源连接信息类构造函数。
-     * @param options - {Object} 参数。
-     * Allowed options properties:</br>
-     * alias - {String} 数据源别名。</br>
-     * connect - {Boolean} 数据源是否自动连接数据。</br>
-     * dataBase - {String} 数据源连接的数据库名。</br>
-     * driver - {String} 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。</br>
-     * engineType - {EngineType} 数据源连接的引擎类型。</br>
-     * exclusive - {Boolean} 是否以独占方式打开数据源。</br>
-     * OpenLinkTable - {Boolean} 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。</br>
-     * password - {String} 登录数据源连接的数据库或文件的密码。</br>
-     * readOnly - {Boolean} 是否以只读方式打开数据源。</br>
-     * server - {String} 数据库服务器名或 SDB 文件名。</br>
-     * user - {String} 登录数据库的用户名。</br>
-     */
+
     constructor(options) {
         if (options) {
             SuperMap.Util.extend(this, options);

@@ -60,19 +60,6 @@ export default  class JoinItem {
      */
     joinType = null;
 
-    /*
-     * @function SuperMap.JoinItem.prototype.constructor
-     * @description 连接信息类构造函数。
-     * 设置将TableB连接TableA的连接信息，即建立JoinItem 类并设置其属性，
-     * 当执行TableA的查询操作时，系统将根据连接条件及查询条件，将满足条件
-     * 的TableA中的内容与满足条件的TableB中的内容构成一个查询结果表，并
-     * 这个查询表保存在内存中，需要获取结果时，再从内存中取出相应的内容。
-     *
-     * @param options - {Object} 可選参数。如:</br>
-     *        foreignTableName - {String} 外部表的名称。</br>
-     *        joinFilter - {String} 矢量数据集与外部表之间的连接表达式，即设定两个表之间关联的字段。</br>
-     *        joinType - {JoinType} 两个表之间连接类型。</br>
-     */
     constructor(options) {
         if (options) {
             SuperMap.Util.extend(this, options);

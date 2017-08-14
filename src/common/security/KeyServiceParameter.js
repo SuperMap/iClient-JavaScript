@@ -11,18 +11,14 @@ export default class KeyServiceParameter {
     clientType = ClientType.SERVER;
     limitation = null;
 
-    /*
-     * @function SuperMap.KeyServiceParameter.prototype.constructor
-     * @param options - {Object} 参数。
-     */
     constructor(options) {
         SuperMap.Util.extend(this, options);
     }
 
     /**
      * @function SuperMap.KeyServiceParameter.prototype.toJSON
-     * @description 转换成JSON字符串
-     * @return {string} 参数的JSON字符串
+     * @description 转换成JSON对象
+     * @return {object} 参数的JSON对象
      */
     toJSON() {
         return {

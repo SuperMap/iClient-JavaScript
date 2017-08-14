@@ -5,6 +5,12 @@ var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 /**
  * @class ol.supermap.MapvLayer
  * @classdesc 网络图层类。
+ * @param map - {object} 地图
+ * @param dataSet - {object} 数据集
+ * @param options - {object} 参数
+ * @param mapWidth - {number} 地图宽度
+ * @param mapHeight - {number} 地图高度
+ * @param source - {object} 路径
  */
 export default class MapvLayer extends BaiduMapLayer {
 
@@ -35,7 +41,11 @@ export default class MapvLayer extends BaiduMapLayer {
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
         this.bindEvent();
     }
-
+    /**
+     * @function ol.supermap.MapvLayer.prototype.init
+     * @param options - {object} 参数
+     * @description 初始化参数
+     */
     init(options) {
         var self = this;
         self.options = options;
@@ -46,17 +56,28 @@ export default class MapvLayer extends BaiduMapLayer {
         }
         this.initAnimator();
     }
-
+    /**
+     * @function ol.supermap.MapvLayer.prototype.clickEvent
+     * @param e - {object} 事件参数
+     * @description 点击事件
+     */
     clickEvent(e) {
         var pixel = e.pixel;
         super.clickEvent({x: pixel[0], y: pixel[1]}, e);
     }
-
+    /**
+     * @function ol.supermap.MapvLayer.prototype.mousemoveEvent
+     * @param e - {object} 事件参数
+     * @description 鼠标移动事件
+     */
     mousemoveEvent(e) {
         var pixel = e.pixel;
         super.mousemoveEvent({x: pixel[0], y: pixel[1]}, e);
     }
-
+    /**
+     * @function ol.supermap.MapvLayer.prototype.bindEvent
+     * @description 绑定事件
+     */
     bindEvent() {
         var me = this;
         var map = me.map;
@@ -73,7 +94,10 @@ export default class MapvLayer extends BaiduMapLayer {
             }
         }
     }
-
+    /**
+     * @function ol.supermap.MapvLayer.prototype.unbindEvent
+     * @description 解除绑定事件
+     */
     unbindEvent() {
         var map = this.map;
         if (this.options.methods) {

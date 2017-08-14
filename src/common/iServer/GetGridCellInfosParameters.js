@@ -34,15 +34,6 @@ export default  class GetGridCellInfosParameters {
      */
     Y = null;
 
-    /*
-     * @function SuperMap.GetGridCellInfosParameters.prototype.constructor
-     * @description SQL 查询参数类构造函数。
-     * @param options - {Object} 可選参数。如:</br>
-     * datasetName - {String} 数据集名称。</br>
-     * dataSourceName - {String} 数据源名称</br>
-     * X - {Integer} 要查询的地理位置X轴。</br>
-     * Y - {Integer} 要查询的地理位置Y轴。</br>
-     */
     constructor(options) {
         if (!options) {
             return;

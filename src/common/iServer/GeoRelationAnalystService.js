@@ -46,12 +46,7 @@ import GeoRelationAnalystParameters from './GeoRelationAnalystParameters';
  *
  */
 export default  class GeoRelationAnalystService extends SpatialAnalystBase {
-    /*
-     * @method SuperMap.GeoRelationAnalystService.prototype.constructor
-     * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     * @param options - {Object} 可选参数。</br>
-     *        eventListeners - {Object} 需要被注册的监听器对象。
-     */
+
     constructor(url, options) {
         super(url, options);
     }

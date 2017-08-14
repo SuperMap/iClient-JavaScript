@@ -26,15 +26,6 @@ import GeoJSON from '../format/GeoJSON';
  */
 export default  class FindPathService extends NetworkAnalystServiceBase {
 
-    /*
-     * @function SuperMap.FindPathService.prototype.initialize
-     * @description 最佳路径分析服务类构造函数。
-     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
-     *               http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
-     *               例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
-     * @param options - {Object} 互服务时所需可选参数。如：<br>
-     *         eventListeners - {Object} 需要被注册的监听器对象。
-     */
     constructor(url, options) {
         super(url, options);
     }

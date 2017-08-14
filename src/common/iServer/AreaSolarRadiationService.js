@@ -21,12 +21,7 @@ import AreaSolarRadiationParameters from './AreaSolarRadiationParameters';
  *
  */
 export default  class AreaSolarRadiationService extends SpatialAnalystBase {
-    /*
-     * @method SuperMap.AreaSolarRadiationService.prototype.constructor
-     * @param url - {String} 服务的访问地址。如</br> http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst 。
-     * @param options - {Object} 参数。如:</br>
-     * eventListeners - {Object} 需要被注册的监听器对象。
-     */
+
     constructor(url, options) {
         super(url, options);
     }

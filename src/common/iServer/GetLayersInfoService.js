@@ -25,19 +25,6 @@ export default  class GetLayersInfoService extends CommonServiceBase {
      */
     isTempLayers = false;
 
-    /*
-     * @function  initialize
-     * @description GetLayersInfoService的构造函数
-     * Parameters:
-     * @param url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
-     *         http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；<br>
-     *         如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。<br>
-     *         如果查询临时图层的信息，请指定完成的url，包含临时图层ID信息，如：<br>
-     *         http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID
-     * @param options - {Object} 互服务时所需可选参数。如：<br>
-     *         eventListeners - {Object} 需要被注册的监听器对象。<br>
-     *         isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。
-     */
     constructor(url, options) {
         super(url, options);
         if (options) {

@@ -17,10 +17,7 @@ export default  class FieldStatisticsParameters {
      */
     statisticMode = null;
 
-    /*
-     * @function SuperMap.FieldStatisticsParameters.prototype.initialize
-     * @param options - {Object} 参数。
-     */
+
     constructor(options) {
         if (options) {
             SuperMap.Util.extend(this, options);

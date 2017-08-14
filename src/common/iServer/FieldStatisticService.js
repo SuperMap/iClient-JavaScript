@@ -56,11 +56,6 @@ export default  class FieldStatisticService extends CommonServiceBase {
      */
     statisticMode = null;
 
-    /*
-     * @function SuperMap.FieldStatisticService.prototype.constructor
-     * @param url - {string}
-     * @param options - {Object} 参数。
-     */
 
     constructor(url, options) {
         super(url, options);

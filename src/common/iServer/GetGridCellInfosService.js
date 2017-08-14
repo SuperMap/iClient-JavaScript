@@ -51,14 +51,6 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
      */
     Y = null;
 
-    /*
-     * @function SuperMap.GetGridCellInfosService.prototype.constructor
-     * @description 字段查询服务构造函数。
-
-     * @param url - {String} 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
-     * @param options - {Object} 可選参数。如:</br>
-     *        eventListeners - {Object} 需要被注册的监听器对象。
-     */
     constructor(url, options) {
         super(url, options);
         if (!!options) {

@@ -2,10 +2,10 @@ import MapvRenderer from  "./mapv/MapvRenderer";
 import mapboxgl from 'mapbox-gl';
 /**
  * @class mapboxgl.supermap.MapvLayer
- * @classdesc MAPV图层信息
- * @param map - {String} 地图
+ * @classdesc Mapv图层
+ * @param map - {object} 地图
  * @param dataSet -{Object} 数据集
- * @param mapVOptions -{Object} 交互时所需可选参数。
+ * @param mapVOptions -{Object} Mapv参数
  */
 export class MapvLayer {
 

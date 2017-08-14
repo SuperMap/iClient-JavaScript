@@ -3,7 +3,7 @@ import ServiceBase  from './ServiceBase';
 import ol from 'openlayers/dist/ol-debug';
 import CommonAddressMatchService from '../../common/iServer/AddressMatchService';
 /**
- * @class ol.supermap.AddressService
+ * @class ol.supermap.AddressMatchService
  * @classdesc 地址匹配服务
  * @example 用法：
  *      new ol.supermap.AddressMatchService(url,options)
@@ -22,7 +22,7 @@ export default class AddressMatchService extends ServiceBase {
     /**
      * @function ol.supermap.AddressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
-     * @param params -{String}正向匹配参数。
+     * @param params -{Object}正向匹配参数。
      * @param callback -{function}请求结果的回调函数。
      * @param resultFormat -{Object}返回的结果类型（默认为GeoJSON）。
      */
@@ -45,7 +45,7 @@ export default class AddressMatchService extends ServiceBase {
     /**
      * @function ol.supermap.AddressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
-     * @param params -{string} 反向匹配参数。
+     * @param params -{Object} 反向匹配参数。
      * @param callback -{function}请求结果的回调函数。
      * @param resultFormat -{Object} 返回的结果类型（默认为GeoJSON）。
      */

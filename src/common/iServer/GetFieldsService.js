@@ -34,15 +34,6 @@ export default  class GetFieldsService extends CommonServiceBase {
      */
     dataset = null;
 
-    /*
-     * @method SuperMap.GetFieldsService.prototype.constructor
-     * @description 字段查询服务构造函数。
-     * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/data-world/rest/data 即可。
-     * @param options - {Object} 可選参数。如:</br>
-     *        eventListeners - {Object} 需要被注册的监听器对象。</br>
-     *        datasource - {String}</br>
-     *        dataset - {String}</br>
-     */
     constructor(url, options) {
         super(url, options);
         if (options) {

@@ -218,6 +218,9 @@ export default class StyleUtils {
         }
     }
 
+    /**
+     * @function ol.supermap.StyleUtils.prototype.getStyleFromCarto
+     */
     static getStyleFromCarto(zoom, scale, shader, feature, fromServer, url) {
         var type = feature.getGeometry().getType().toUpperCase(),
             attributes = {},
@@ -284,6 +287,11 @@ export default class StyleUtils {
         }
     }
 
+    /**
+     * @function ol.supermap.StyleUtils.prototype.toOLPointStyle
+     * @description 点样式
+     * @param style -{object} 样式参数
+     */
     static toOLPointStyle(style) {
         if (style.pointFile !== '') {
             return new ol.style.Style({
@@ -306,6 +314,11 @@ export default class StyleUtils {
         });
     }
 
+    /**
+     * @function ol.supermap.StyleUtils.prototype.toOLLineStyle
+     * @description 线样式
+     * @param style -{object} 样式参数
+     */
     static toOLLineStyle(style) {
         return new ol.style.Style({
             stroke: new ol.style.Stroke({
@@ -320,6 +333,11 @@ export default class StyleUtils {
         });
     }
 
+    /**
+     * @function ol.supermap.StyleUtils.prototype.toOLPolygonStyle
+     * @description 面样式
+     * @param style -{object} 样式参数
+     */
     static toOLPolygonStyle(style) {
         var fill = new ol.style.Fill({
             color: style.fillStyle
@@ -339,6 +357,12 @@ export default class StyleUtils {
         });
     }
 
+    /**
+     * @function ol.supermap.StyleUtils.prototype.toOLTextStyle
+     * @description 文本样式
+     * @param style -{object} 样式参数
+     * @param style -{string} 文本参数
+     */
     static toOLTextStyle(style, text) {
         return new ol.style.Style({
             text: new ol.style.Text({
@@ -358,6 +382,12 @@ export default class StyleUtils {
         })
     }
 
+    /**
+     * @function ol.supermap.StyleUtils.prototype.dashStyle
+     * @description 符号样式
+     * @param style -{object} 样式参数
+     * @param widthFactor -{number} 宽度系数
+     */
     static dashStyle(style, widthFactor) {
         if (!style) return [];
         var w = style.strokeWidth * widthFactor;
@@ -383,6 +413,11 @@ export default class StyleUtils {
         }
     }
 
+    /**
+     * @function ol.supermap.StyleUtils.prototype.getStyleFromiPortalMarker
+     * @description 从iPortal标记获取样式
+     * @param icon -{object} 图标参数
+     */
     static getStyleFromiPortalMarker(icon) {
         if (icon.indexOf("./") == 0) {
             return null;
@@ -401,6 +436,13 @@ export default class StyleUtils {
         });
     }
 
+    /**
+     * @function ol.supermap.StyleUtils.prototype.getStyleFromiPortalStyle
+     * @description 从iPortal标记获取样式
+     * @param iPortalStyle -{object} iportal样式
+     * @param type -{object} 类型参数
+     * @param fStyle -{object} 图标参数
+     */
     static getStyleFromiPortalStyle(iPortalStyle, type, fStyle) {
         var featureStyle = fStyle ? JSON.parse(fStyle) : null;
         var me = this;
@@ -465,6 +507,12 @@ export default class StyleUtils {
         }
     }
 
+    /**
+     * @function ol.supermap.StyleUtils.prototype.hexToRgba
+     * @description 十六进制转RGBA格式
+     * @param hex -{object} 十六进制格式参数
+     * @param opacity -{number} Alpha参数
+     */
     static hexToRgba(hex, opacity) {
         var color = [], rgba = [];
         hex = hex.replace(/#/, "");
@@ -483,6 +531,11 @@ export default class StyleUtils {
         return "rgba(" + rgba.join(",") + ")";
     }
 
+    /**
+     * @function ol.supermap.StyleUtils.prototype.getDefaultStyle
+     * @description 获取之定义样式参数
+     * @param type -{string} 类型参数
+     */
     static getDefaultStyle(type) {
         var style = style || {};
         var canvasStyle = DeafultCanvasStyle[type];

@@ -58,15 +58,6 @@ export default  class GetFeaturesServiceBase extends CommonServiceBase {
      */
     format = DataFormat.GEOJSON;
 
-    /*
-     * @function SuperMap.GetFeaturesServiceBase.prototype.constructor
-     * @description 数据集查询服务基类构造函数。
-     * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
-     * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；<br>
-     * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
-     * @param options - {Object} 参数。
-     *
-     */
     constructor(url, options) {
         super(url, options);
         options = options || {};

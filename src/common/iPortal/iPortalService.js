@@ -38,12 +38,6 @@ export default  class IPortalService extends IPortalServiceBase {
     version = null;
     visitCount = 0;
 
-    /*
-     * @function SuperMap.iPortalService.prototype.constructor
-     * @param seviceUrl -{string} 服务地址
-     * @param params -{object}
-     */
-
     constructor(serviceUrl, params) {
         super(serviceUrl);
         params = params || {};

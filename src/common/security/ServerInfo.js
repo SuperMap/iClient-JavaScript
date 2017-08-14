@@ -3,6 +3,8 @@ import {ServerType} from '../REST';
 /**
  * @class SuperMap.ServerInfo
  * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
+ * @param type -{string} 类型
+ * @param options - {Object} 参数。
  */
 
 
@@ -31,11 +33,6 @@ export default class ServerInfo {
      */
     keyServiceUrl = null;
 
-    /**
-     * @function SuperMap.ServerInfo.prototype.constructor
-     * @param type -{string} 类型
-     * @param options - {Object} 参数。
-     */
     constructor(type, options) {
         this.type = type || ServerType.ISERVER;
         SuperMap.Util.extend(this, options);

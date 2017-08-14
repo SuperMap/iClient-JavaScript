@@ -25,13 +25,7 @@ import TransferSolutionParameters from './TransferSolutionParameters';
  *
  */
 export default  class TransferSolutionService extends CommonServiceBase {
-    /*
-     * @method SuperMap.TransferSolutionService.prototype.constructor
-     * @param url - {String} 与客户端交互的交通换乘方案查询服务地址。
-     * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
-     * @param options - {Object} 参数。如:</br>
-     *        eventListeners - {Object} 需要被注册的监听器对象。</br>
-     */
+
     constructor(url, options) {
         super(url, options);
     }

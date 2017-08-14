@@ -74,16 +74,6 @@ import Graph from './Graph';
  */
 export default  class Ring extends Graph {
 
-    /*
-     * @function SuperMap.Feature.Theme.Ring.prototype.constructor
-     * @description 创建一个环状图。
-     * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。</br>
-     * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。</br>
-     * @param fields - {Array(String)} data 中的参与此图表生成的字段名称，必设参数。</br>
-     * @param setting - {Object} 图表配置对象，必设参数。</br>
-     * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。</br>
-     * @return {SuperMap.Feature.Theme.Ring} 返回一个环状图。
-     */
     constructor(data, layer, fields, setting, lonlat) {
         super(data, layer, fields, setting, lonlat);
     }

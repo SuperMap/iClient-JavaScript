@@ -56,7 +56,6 @@ export default class Baidu extends ol.source.TileImage {
             resolutions: [131072 * 2, 131072, 65536, 32768, 16284, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5],
             origin: [0, 0],
             minZoom: 3,
-
         });
         return tileGird;
     }

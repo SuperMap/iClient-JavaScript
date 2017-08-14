@@ -2,7 +2,7 @@ import SuperMap from '../SuperMap';
 /**
  * @class SuperMap.AreaSolarRadiationParameters
  * @classdesc 地区太阳辐射参数类。
- * @param option -{Object} 参数。
+ * @param options -{Object} 参数。
  */
 export default  class AreaSolarRadiationParameters {
 

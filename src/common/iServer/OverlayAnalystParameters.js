@@ -13,11 +13,7 @@ export default class OverlayAnalystParameters {
      * @member SuperMap.OverlayAnalystParameters.prototype.operation -{OverlayOperationType}
      */
     operation = OverlayOperationType.UNION;
-    /**
-     * @function SuperMap.OverlayAnalystParameters.prototype.constructor
-     * @param options - {Object} 可选参数。如:</br>
-     *        operation - {OverlayOperationType} 指定叠加分析操作类型。
-     */
+
     constructor(options) {
         var me = this;
         if (options) {

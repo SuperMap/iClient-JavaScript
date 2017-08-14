@@ -43,11 +43,6 @@ export default class TokenServiceParameter {
      */
     expiration = 60;
 
-    /*
-     * @function SuperMap.TokenServiceParameter.prototype.constructor
-     *  @description 地图缓存参数类
-     *  @param options - {Object} 参数。
-     */
     constructor(options) {
         SuperMap.Util.extend(this, options);
     }

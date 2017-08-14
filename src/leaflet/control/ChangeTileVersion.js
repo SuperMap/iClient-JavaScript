@@ -53,7 +53,7 @@ export var ChangeTileVersion = L.Control.extend({
     /**
      * @function L.supermap.control.changeTileVersion.prototype.setContent
      * @description 设置版本相关信息
-     * @param version - {String} 版本信息
+     * @param version - {object} 版本信息
      */
     setContent: function (version) {
         var content = L.Util.extend({}, version);

@@ -11,12 +11,11 @@ import GeoDecodingParameter from './GeoDecodingParameter';
  * @param url {string}
  */
 export default class AddressMatchService extends CommonServiceBase {
-    /*
-     * @function SuperMap.AddressMatchService.prototype.constructor
-     */
+
     constructor(url, options) {
         super(url, options);
     }
+
     /**
      * @inheritDoc
      */
@@ -27,7 +26,7 @@ export default class AddressMatchService extends CommonServiceBase {
     /**
      * @function SuperMap.AddressMatchService.prototype.code
      * @param url {string} 正向地址匹配服务地址
-     * @param params {object} 正向地址匹配服务参数
+     * @param params {SuperMap.GeoCodingParameter} 正向地址匹配服务参数
      */
     code(url, params) {
         this.processAsync(url, params);
@@ -36,7 +35,7 @@ export default class AddressMatchService extends CommonServiceBase {
     /**
      * @function SuperMap.AddressMatchService.prototype.decode
      * @param url {string} 反向地址匹配服务地址
-     * @param params {object} 反向地址匹配服务参数
+     * @param params {SuperMap.GeoDecodingParameter} 反向地址匹配服务参数
      */
     decode(url, params) {
         this.processAsync(url, params);

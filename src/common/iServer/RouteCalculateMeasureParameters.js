@@ -36,16 +36,6 @@ export default  class RouteCalculateMeasureParameters {
      */
     isIgnoreGap = false;
 
-    /*
-     * @function SuperMap.RouteCalculateMeasureParameters.prototype.constructor
-     * @param options - {Object} 可选参数。如:</br>
-     *        sourceRoute - {Object} 【必选参数】路由对象。该对象可以是用户自己生成或在数据源中查询得到的符合标准的路由对象。</br>
-     *        point - {Object} 【必选参数】二维地理坐标点对象，包含x,y坐标值属性的对象。</br>
-     *        tolerance - {Double} 【可选参数】容限值。</br>
-     *        isIgnoreGap - {Double}  【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
-     *
-     */
-
     constructor(options) {
         if (!options) {
             return this;

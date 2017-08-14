@@ -18,11 +18,6 @@ export default  class GeometryThiessenAnalystParameters extends ThiessenAnalystP
      */
     points = null;
 
-    /*
-     * @function SuperMap.GetFeaturesByBufferService.prototype.constructor
-     * @param options - {Object} 可选参数。如:</br>
-     *        points - {Array(Point||Array)} 使用点数组进行分析时使用的几何对象。
-     */
     constructor(options) {
         super(options);
         if (options) {
