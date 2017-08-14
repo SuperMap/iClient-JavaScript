@@ -1,12 +1,14 @@
 {
     "opts": {
         "recurse": true,
-        "template": "../../node_modules/jaguarjs-jsdoc",
+        "template": "../template",
         "destination": "./docs/openlayers"
     },
     "disqus":"",
     "tags": {
-        "allowUnknownTags": true
+        "allowUnknownTags": true,
+        "linkdoc-openlayers":"https://openlayers.org/en/latest/apidoc/",
+        "linkdoc-htmlExtension":true
     },
     "source": {
         "includePattern": ".+\\.js?$",
@@ -15,7 +17,7 @@
             "src/common","src/openlayers"
         ]
     },
-    "plugins": ["plugins/markdown"],
+    "plugins": ["plugins/markdown","../plugins/linkdoc"],
     "templates": {
         "cleverLinks": false,
         "monospaceLinks": false,

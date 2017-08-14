@@ -1,12 +1,13 @@
 {
     "opts": {
         "recurse": true,
-        "template": "../../node_modules/jaguarjs-jsdoc",
+        "template": "../template",
         "destination": "./docs/leaflet"
     },
     "disqus":"",
     "tags": {
-        "allowUnknownTags": true
+        "allowUnknownTags": true,
+        "linkdoc-leaflet":"http://leafletjs.com/reference-1.2.0.html"
     },
     "source": {
         "includePattern": ".+\\.js?$",
@@ -15,10 +16,10 @@
             "src/common","src/leaflet"
         ]
     },
-    "plugins": ["plugins/markdown"],
+    "plugins": ["plugins/markdown","../plugins/factoryFunction","../plugins/linkdoc"],
     "templates": {
-        "cleverLinks": false,
-        "monospaceLinks": false,
+        "cleverLinks": true,
+        "monospaceLinks": true,
         "default": {
             "outputSourceFiles": false
         },
