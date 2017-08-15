@@ -40,29 +40,37 @@
 <script type="text/javascript" src="http://cdn.bootcss.com/dat-gui/0.6.5/dat.gui.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
-    var token = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
-            mbUrl = 'https://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=' + token;
     var map = new ol.Map({
         target: 'map',
         controls: ol.control.defaults({attributionOptions: {collapsed: false}})
             .extend([new ol.supermap.control.Logo()]),
         view: new ol.View({
-            center: [-73.931577, 40.745654],
-            zoom: 12,
-            projection: 'EPSG:4326'
+            center: ol.proj.transform([-73.931577, 40.745654], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 11,
+            projection: 'EPSG:3857'
         })
     });
+
+    var url = "https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Light";
     map.addLayer(new ol.layer.Tile({
-        source: new ol.source.XYZ({
-            url: mbUrl,
-            attributions: [
-                new ol.Attribution({
-                    html: ' Imagery © <a href="http://mapbox.com" target="_blank">Mapbox</a>'
-                })]
+        source: new ol.source.TileSuperMapRest({
+            url: url,
+            attributions: new ol.Attribution({
+                html: "Map Data © <a href='https://www.supermapol.com/' target='_blank'> SuperMap Online</a>"
+            })
         })
     }));
     $.get('../data/nyc-taxi.csv', function (csvstr) {
         var dataSet = mapv.csv.getDataSet(csvstr);
+
+        dataSet.initGeometry(function (data) {
+            data ={
+                type: 'Point',
+                coordinates: ol.proj.transform([parseFloat(data.lng),parseFloat(data.lat)], 'EPSG:4326', 'EPSG:3857')
+            } ;
+            return data;
+        });
+
         dataSet.initGeometry();
         var mapvOptions = {
             size: 1.5,
@@ -72,7 +80,7 @@
         };
         var options = {map: map, dataSet: dataSet, mapvOptions: mapvOptions, attributions: [
             new ol.Attribution({
-                html: " 数据来源 <a href="http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml/">NYCTaxi(纽约出租车上车点)</a>  © 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
+                html: " 数据来源 <a href='http://www.nyc.gov/html/tlc/html/about/trip_record_data.shtml/'>NYCTaxi(纽约出租车上车点)</a>  © 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
             })]};
         var layer = new ol.layer.Image({
             source: new ol.source.Mapv(options)

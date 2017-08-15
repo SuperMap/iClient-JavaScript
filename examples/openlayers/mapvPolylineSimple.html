@@ -68,8 +68,6 @@
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
 <script type="text/javascript">
-    var token = "pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw",
-            mbUrl = 'https://api.tiles.mapbox.com/v4/mapbox.dark/{z}/{x}/{y}.png?access_token=' + token;
     var container = document.getElementById('popup');
     var closer = document.getElementById('popup-closer');
     var overlay = new ol.Overlay(({
@@ -95,9 +93,14 @@
             projection: 'EPSG:3857'
         })
     });
+
+    var url = "https://www.supermapol.com/iserver/services/map_China/rest/maps/China_Dark";
     map.addLayer(new ol.layer.Tile({
-        source: new ol.source.XYZ({
-            url: mbUrl
+        source: new ol.source.TileSuperMapRest({
+            url: url,
+            attributions: new ol.Attribution({
+                html: "Map Data © <a href='https://www.supermapol.com/' target='_blank'> SuperMap Online</a>"
+            })
         })
     }));
     overlay.setPosition(map.getView().getCenter());
@@ -133,9 +136,7 @@
     };
 
     var options = {
-        map: map, dataSet: dataSet, mapvOptions: mapvOptions, attributions: new ol.Attribution({
-            html: "Imagery © <a href='http://mapbox.com' target='_blank'>Mapbox</a> © 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
-        })
+        map: map, dataSet: dataSet, mapvOptions: mapvOptions
     };
 
     map.addLayer(new ol.layer.Image({
