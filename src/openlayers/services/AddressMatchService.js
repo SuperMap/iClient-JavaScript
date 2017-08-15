@@ -24,11 +24,9 @@ export default class AddressMatchService extends ServiceBase {
      * @description 获取正向地址匹配结果。
      * @param params -{Object}正向匹配参数。
      * @param callback -{function}请求结果的回调函数。
-     * @param resultFormat -{Object}返回的结果类型（默认为GeoJSON）。
      */
-    code(params, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
+    code(params, callback) {
+        var me = this;
         var addressMatchService = new CommonAddressMatchService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
@@ -36,7 +34,6 @@ export default class AddressMatchService extends ServiceBase {
                 processCompleted: callback,
                 processFailed: callback
             },
-            format: format
         });
         addressMatchService.code(me.url + '/geocoding', params);
         return me;
@@ -47,11 +44,9 @@ export default class AddressMatchService extends ServiceBase {
      * @description 获取反向地址匹配结果。
      * @param params -{Object} 反向匹配参数。
      * @param callback -{function}请求结果的回调函数。
-     * @param resultFormat -{Object} 返回的结果类型（默认为GeoJSON）。
      */
-    decode(params, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
+    decode(params, callback) {
+        var me = this;
         var addressMatchService = new CommonAddressMatchService(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
@@ -59,15 +54,10 @@ export default class AddressMatchService extends ServiceBase {
                 processCompleted: callback,
                 processFailed: callback
             },
-            format: format
         });
         addressMatchService.decode(me.url + '/geodecoding', params);
         return me;
     };
-
-    _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : SuperMap.DataFormat.GEOJSON;
-    }
 
 }
 ol.supermap.AddressMatchService = AddressMatchService;

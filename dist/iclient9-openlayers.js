@@ -12668,7 +12668,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class ol.source.Baidu
  * @classdesc 百度地图
  * @param opt_options - {object} 可选参数
- * @extends ol.source.TileImage
+ * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
  */
 var Baidu = function (_ol$source$TileImage) {
     _inherits(Baidu, _ol$source$TileImage);
@@ -15346,23 +15346,20 @@ var AddressMatchService = function (_ServiceBase) {
      * @description 获取正向地址匹配结果。
      * @param params -{Object}正向匹配参数。
      * @param callback -{function}请求结果的回调函数。
-     * @param resultFormat -{Object}返回的结果类型（默认为GeoJSON）。
      */
 
 
     _createClass(AddressMatchService, [{
         key: 'code',
-        value: function code(params, callback, resultFormat) {
-            var me = this,
-                format = me._processFormat(resultFormat);
+        value: function code(params, callback) {
+            var me = this;
             var addressMatchService = new _AddressMatchService2.default(me.url, {
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
                     processFailed: callback
-                },
-                format: format
+                }
             });
             addressMatchService.code(me.url + '/geocoding', params);
             return me;
@@ -15373,30 +15370,22 @@ var AddressMatchService = function (_ServiceBase) {
          * @description 获取反向地址匹配结果。
          * @param params -{Object} 反向匹配参数。
          * @param callback -{function}请求结果的回调函数。
-         * @param resultFormat -{Object} 返回的结果类型（默认为GeoJSON）。
          */
 
     }, {
         key: 'decode',
-        value: function decode(params, callback, resultFormat) {
-            var me = this,
-                format = me._processFormat(resultFormat);
+        value: function decode(params, callback) {
+            var me = this;
             var addressMatchService = new _AddressMatchService2.default(me.url, {
                 serverType: me.options.serverType,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
                     processFailed: callback
-                },
-                format: format
+                }
             });
             addressMatchService.decode(me.url + '/geodecoding', params);
             return me;
-        }
-    }, {
-        key: '_processFormat',
-        value: function _processFormat(resultFormat) {
-            return resultFormat ? resultFormat : _SuperMap2.default.DataFormat.GEOJSON;
         }
     }]);
 

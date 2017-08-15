@@ -2309,8 +2309,6 @@ var _SuperMap = __webpack_require__(4);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _REST = __webpack_require__(1);
-
 var _CommonServiceBase2 = __webpack_require__(3);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
@@ -2351,24 +2349,21 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
      * @description 编码
      * @param params - {String} 编码参数
      * @param callback - {function} 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {SuperMap.REST.AddressMatchService} 返回正向匹配地址
      */
 
 
     _createClass(AddressMatchService, [{
         key: 'code',
-        value: function code(params, callback, resultFormat) {
-            var me = this,
-                format = me._processFormat(resultFormat);
+        value: function code(params, callback) {
+            var me = this;
             var addressMatchService = new _AddressMatchService2.default(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
                     processFailed: callback
-                },
-                format: format
+                }
             });
             addressMatchService.code(me.url + '/geocoding', params);
             return me;
@@ -2379,31 +2374,23 @@ var AddressMatchService = exports.AddressMatchService = function (_CommonService
          * @description 解码
          * @param params - {String} 编码参数
          * @param callback - {function} 回调函数
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          * @return {SuperMap.REST.AddressMatchService} 返回反向匹配地址
          */
 
     }, {
         key: 'decode',
-        value: function decode(params, callback, resultFormat) {
-            var me = this,
-                format = me._processFormat(resultFormat);
+        value: function decode(params, callback) {
+            var me = this;
             var addressMatchService = new _AddressMatchService2.default(me.url, {
                 serverType: me.serverType,
                 eventListeners: {
                     scope: me,
                     processCompleted: callback,
                     processFailed: callback
-                },
-                format: format
+                }
             });
             addressMatchService.decode(me.url + '/geodecoding', params);
             return me;
-        }
-    }, {
-        key: '_processFormat',
-        value: function _processFormat(resultFormat) {
-            return resultFormat ? resultFormat : _REST.DataFormat.GEOJSON;
         }
     }]);
 

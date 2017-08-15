@@ -1,5 +1,4 @@
 import SuperMap from '../SuperMap';
-import {DataFormat} from '../../common/REST';
 import CommonServiceBase from '../../common/iServer/CommonServiceBase';
 import CommonAddressMatchService from '../../common/iServer/AddressMatchService';
 
@@ -21,12 +20,10 @@ export class AddressMatchService extends CommonServiceBase {
      * @description 编码
      * @param params - {String} 编码参数
      * @param callback - {function} 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {SuperMap.REST.AddressMatchService} 返回正向匹配地址
      */
-    code(params, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
+    code(params, callback) {
+        var me = this;
         var addressMatchService = new CommonAddressMatchService(me.url, {
             serverType: me.serverType,
             eventListeners: {
@@ -34,7 +31,6 @@ export class AddressMatchService extends CommonServiceBase {
                 processCompleted: callback,
                 processFailed: callback
             },
-            format: format
         });
         addressMatchService.code(me.url + '/geocoding', params);
         return me;
@@ -45,27 +41,20 @@ export class AddressMatchService extends CommonServiceBase {
      * @description 解码
      * @param params - {String} 编码参数
      * @param callback - {function} 回调函数
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {SuperMap.REST.AddressMatchService} 返回反向匹配地址
      */
-    decode(params, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
+    decode(params, callback) {
+        var me = this;
         var addressMatchService = new CommonAddressMatchService(me.url, {
             serverType: me.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback
-            },
-            format: format
+            }
         });
         addressMatchService.decode(me.url + '/geodecoding', params);
         return me;
-    }
-
-    _processFormat(resultFormat) {
-        return (resultFormat) ? resultFormat : DataFormat.GEOJSON;
     }
 
     CLASS_NAME = "SuperMap.REST.AddressMatchService"

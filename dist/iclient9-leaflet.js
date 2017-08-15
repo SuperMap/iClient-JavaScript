@@ -16813,22 +16813,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.baiduTileLayer
  * @classdesc 百度切片图层类。
- * @extends L.TileLayer
- * @see [L.TileLayer]{@link http://leafletjs.com/reference-1.2.0.html#tilelayer}
+ * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @param url -{String} 切片地址
- * @param options -{object} 切片可选参数。如：<br>
- *        layersID - {number} 图层ID，如果有layersID，则是在使用专题图。<br>
- *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。<br>
- *        transparent - {number} 设置透明度。<br>
- *        cacheEnabled - {String} 启用缓存。<br>
- *        clipRegionEnabled - {boolean} 是否启用地图裁剪。<br>
- *        prjCoordSys - {object} 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。<br>
- *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
- *        overlapDisplayedOptions - {String} 避免地图对象压盖显示的过滤选项。<br>
- *        tileversion - {String} 切片版本名称，cacheEnabled 为 true 时有效。<br>
- *        crs - {L.Proj.CRS} 坐标系统类。<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
- *        attribution - {String} 版权信息。
+ * @param options -{object} 切片参数
  */
 var BaiduTileLayer = exports.BaiduTileLayer = _leaflet2.default.TileLayer.extend({
 
@@ -19409,19 +19396,16 @@ var AddressMatchService = exports.AddressMatchService = _ServiceBase.ServiceBase
      * @description 获取正向地址匹配结果。
      * @param params - {object} 正向匹配参数。
      * @param callback - {function} 请求结果的回调函数。
-     * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      */
-    code: function code(params, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
+    code: function code(params, callback) {
+        var me = this;
         var addressMatchService = new _AddressMatchService2.default(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback
-            },
-            format: format
+            }
         });
         addressMatchService.code(me.url + '/geocoding', params);
         return me;
@@ -19432,27 +19416,21 @@ var AddressMatchService = exports.AddressMatchService = _ServiceBase.ServiceBase
      * @description 获取反向地址匹配结果。
      * @param params -{object} 反向匹配参数。
      * @param callback -{function} 请求结果的回调函数。
-     * @param resultFormat -{SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      */
-    decode: function decode(params, callback, resultFormat) {
-        var me = this,
-            format = me._processFormat(resultFormat);
+    decode: function decode(params, callback) {
+        var me = this;
         var addressMatchService = new _AddressMatchService2.default(me.url, {
             serverType: me.options.serverType,
             eventListeners: {
                 scope: me,
                 processCompleted: callback,
                 processFailed: callback
-            },
-            format: format
+            }
         });
         addressMatchService.decode(me.url + '/geodecoding', params);
         return me;
-    },
-
-    _processFormat: function _processFormat(resultFormat) {
-        return resultFormat ? resultFormat : _SuperMap2.default.DataFormat.GEOJSON;
     }
+
 });
 
 var addressMatchService = exports.addressMatchService = function addressMatchService(url, options) {
@@ -63978,105 +63956,7 @@ var names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 /* 397 */
 /***/ (function(module, exports) {
 
-module.exports = {
-	"_from": "proj4@2.4.3",
-	"_id": "proj4@2.4.3",
-	"_inBundle": false,
-	"_integrity": "sha1-87t+Yxv/wEfDaho8wUUzoDu+mWk=",
-	"_location": "/proj4",
-	"_phantomChildren": {},
-	"_requested": {
-		"type": "version",
-		"registry": true,
-		"raw": "proj4@2.4.3",
-		"name": "proj4",
-		"escapedName": "proj4",
-		"rawSpec": "2.4.3",
-		"saveSpec": null,
-		"fetchSpec": "2.4.3"
-	},
-	"_requiredBy": [
-		"/"
-	],
-	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
-	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
-	"_spec": "proj4@2.4.3",
-	"_where": "G:\\iClient9",
-	"author": "",
-	"bugs": {
-		"url": "https://github.com/proj4js/proj4js/issues"
-	},
-	"bundleDependencies": false,
-	"contributors": [
-		{
-			"name": "Mike Adair",
-			"email": "madair@dmsolutions.ca"
-		},
-		{
-			"name": "Richard Greenwood",
-			"email": "rich@greenwoodmap.com"
-		},
-		{
-			"name": "Calvin Metcalf",
-			"email": "calvin.metcalf@gmail.com"
-		},
-		{
-			"name": "Richard Marsden",
-			"url": "http://www.winwaed.com"
-		},
-		{
-			"name": "T. Mittan"
-		},
-		{
-			"name": "D. Steinwand"
-		},
-		{
-			"name": "S. Nelson"
-		}
-	],
-	"dependencies": {
-		"mgrs": "1.0.0",
-		"wkt-parser": "^1.1.3"
-	},
-	"deprecated": false,
-	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
-	"devDependencies": {
-		"chai": "~1.8.1",
-		"curl": "git://github.com/cujojs/curl.git",
-		"grunt": "~0.4.2",
-		"grunt-cli": "~0.1.13",
-		"grunt-contrib-connect": "~0.6.0",
-		"grunt-contrib-jshint": "~1.1.0",
-		"grunt-contrib-uglify": "~0.11.1",
-		"grunt-mocha-phantomjs": "~0.4.0",
-		"grunt-rollup": "^1.0.1",
-		"istanbul": "~0.2.4",
-		"mocha": "~1.17.1",
-		"rollup": "^0.41.4",
-		"rollup-plugin-json": "^2.0.1",
-		"rollup-plugin-node-resolve": "^2.0.0",
-		"tin": "~0.4.0"
-	},
-	"directories": {
-		"test": "test",
-		"doc": "docs"
-	},
-	"homepage": "https://github.com/proj4js/proj4js#readme",
-	"license": "MIT",
-	"main": "dist/proj4-src.js",
-	"module": "lib/index.js",
-	"name": "proj4",
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/proj4js/proj4js.git"
-	},
-	"scripts": {
-		"build": "grunt",
-		"build:tmerc": "grunt build:tmerc",
-		"test": "npm run build && istanbul test _mocha test/test.js"
-	},
-	"version": "2.4.3"
-};
+module.exports = {"_args":[["proj4@2.4.3","E:\\codes\\iClient9"]],"_from":"proj4@2.4.3","_id":"proj4@2.4.3","_inBundle":false,"_integrity":"sha1-87t+Yxv/wEfDaho8wUUzoDu+mWk=","_location":"/proj4","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"proj4@2.4.3","name":"proj4","escapedName":"proj4","rawSpec":"2.4.3","saveSpec":null,"fetchSpec":"2.4.3"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz","_spec":"2.4.3","_where":"E:\\codes\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"1.0.0","wkt-parser":"^1.1.3"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~1.1.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","grunt-rollup":"^1.0.1","istanbul":"~0.2.4","mocha":"~1.17.1","rollup":"^0.41.4","rollup-plugin-json":"^2.0.1","rollup-plugin-node-resolve":"^2.0.0","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"homepage":"https://github.com/proj4js/proj4js#readme","license":"MIT","main":"dist/proj4-src.js","module":"lib/index.js","name":"proj4","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"build":"grunt","build:tmerc":"grunt build:tmerc","test":"npm run build && istanbul test _mocha test/test.js"},"version":"2.4.3"}
 
 /***/ }),
 /* 398 */
