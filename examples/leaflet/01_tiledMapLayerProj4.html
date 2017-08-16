@@ -19,12 +19,13 @@
     //leaflet CRS投影设置
     var crs = new L.Proj.CRS("EPSG:4326", '', {
         origin: origin,
-        scaleDenominators: scaleDenominators,
+        scaleDenominators: scaleDenominators
     });
 
     map = L.map('map', {
         crs: crs,
         center: [39.79, 116.85],
+        minZoom:1,
         maxZoom: 14,
         zoom: 10,
     });
