@@ -19,15 +19,18 @@ li {
   background-color: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: gray;
+  background-color: #8bbfde;
   border-radius: 4px;
+}
+::-webkit-scrollbar-corner{
+  display: none;
 }
 .navigation {
   position: fixed;
   float: left;
   width: 250px;
   height: 100%;
-  background-color: #1a1a1a;
+  background-color: #3c8dbc;
 }
 .navigation .applicationName {
   margin: 0;
@@ -43,9 +46,6 @@ li {
   padding: 10px 15px;
 }
 .navigation .search input {
-  background-color: #333;
-  color: #fff;
-  border-color: #555;
 }
 .navigation .list {
   padding: 10px 15px 0 15px;
@@ -56,10 +56,10 @@ li {
 .navigation li.item {
   margin-bottom: 8px;
   padding-bottom: 8px;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 .navigation li.item a {
-  color: #bbb;
+  color: #cde3ef;
 }
 .navigation li.item a:hover {
   color: #fff;
@@ -71,7 +71,7 @@ li {
   font-size: 0.8em;
 }
 .navigation li.item .title a {
-  color: #e1e1e1;
+  color: #f5f5f5;
 }
 .navigation li.item .title a:hover {
   color: #fff;
@@ -79,7 +79,7 @@ li {
 .navigation li.item .title .static {
   display: block;
   border-radius: 3px;
-  background-color: #779c34;
+  background-color: #ccc;
   color: #000;
   font-size: 0.7em;
   padding: 2px 4px;
@@ -88,7 +88,7 @@ li {
 .navigation li.item .subtitle {
   margin-top: 10px;
   font: bold 0.65em Helvetica;
-  color: #779c34;
+  color: #ccc;
   display: block;
 }
 .navigation li.item ul > li {
@@ -157,7 +157,7 @@ li {
 .main span.static {
   display: inline-block;
   border-radius: 3px;
-  background-color: #779c34 !important;
+  background-color: #ccc !important;
   color: #fff;
   font-size: 0.7em;
   padding: 2px 4px;
@@ -181,7 +181,7 @@ li {
 .main .subsection-title {
   font-size: 14px;
   margin-top: 30px;
-  color: #779c34;
+  color: #ccc;
 }
 .main .description {
   margin-top: 10px;

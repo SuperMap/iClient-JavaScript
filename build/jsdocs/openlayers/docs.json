@@ -23,7 +23,7 @@
         "monospaceLinks": false,
         "default": {
             "outputSourceFiles": false
-        },
-        "applicationName": "iClient for OpenLayers"
+        }
+        //"applicationName": "iClient for OpenLayers"
     }
 }

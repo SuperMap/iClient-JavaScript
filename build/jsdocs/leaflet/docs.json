@@ -22,7 +22,7 @@
         "monospaceLinks": true,
         "default": {
             "outputSourceFiles": false
-        },
-        "applicationName": "iClient for Leaflet"
+        }
+        //"applicationName": "iClient for Leaflet"
     }
 }

@@ -21,7 +21,7 @@
         "monospaceLinks": false,
         "default": {
             "outputSourceFiles": false
-        },
-        "applicationName": "iClient for Legacy(iClient8C)"
+        }
+        //"applicationName": "iClient for Legacy(iClient8C)"
     }
 }

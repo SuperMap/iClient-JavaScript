@@ -47,7 +47,7 @@ $(function () {
         var height = $(window).height();
         var $el = $('.navigation');
 
-        $el.height(height).find('.list').height(height - 133);
+        $el.height(height).find('.list').height(height - 120);
     };
 
     $(window).on('resize', _onResize);
