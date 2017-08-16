@@ -41,7 +41,7 @@ module.exports = {
             }]
         }, {
             test: /\.js/,
-            exclude: /node_modules[\/\\]proj4|legacy/,
+            exclude: /node_modules[\/\\]proj4|classic/,
             loader: 'babel-loader',
             query: {
                 presets: ['es2015'],

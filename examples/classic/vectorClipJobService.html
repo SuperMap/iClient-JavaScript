@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>单对象查询分析</title>
+    <title>矢量裁剪分析</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .control {
@@ -24,7 +24,7 @@
                 <h4 class="modal-title">提示</h4>
             </div>
             <div class="modal-body">
-                <p>正在创建单对象查询分析...</p>
+                <p>正在创建矢量裁剪分析...</p>
             </div>
         </div>
     </div>
@@ -33,31 +33,25 @@
 <div id="control" class="control" style='width:350px'>
     <div class="panel panel-default">
         <div class='panel-heading'>
-            <h3 class='panel-title'>单对象查询分析</h3>
+            <h3 class='panel-title'>矢量裁剪分析</h3>
         </div>
         <div class='panel-body'>
             <div class='input-group'>
                 <span class='input-group-addon'>源数据集<span title="必填字段" style="color: red;"> * </span>　</span>
                 <input id='datasetName' type='text' class='form-control'
-                       value='ProcessingData_processing_newyorkZone_R'/></div>
+                       value='ProcessingData_newyork_taxi_2013-01_14k'/></div>
             <p></p>
             <div class='input-group'>
-                <span class='input-group-addon'>查询对象数据集<span title="必填字段" style="color: red;"> * </span></span>
-                <input id='datasetQuery' type='text' class='form-control'
+                <span class='input-group-addon'>裁剪对象数据集<span title="必填字段" style="color: red;"> * </span></span>
+                <input id='datasetOverlay' type='text' class='form-control'
                        value='ProcessingData_processing_singleRegion_R'/>
             </div>
             <p></p>
             <div class='input-group'>
                 <span class='input-group-addon'>空间查询模式<span title="必填字段" style="color: red;"> * </span></span>
                 <select class='form-control' id='mode' name='mode'>
-                    <option value='CONTAIN'>包含</option>
-                    <option value='CROSS'>交叉</option>
-                    <option value='DISJOINT'>分离</option>
-                    <option value='IDENTITY'>重合</option>
-                    <option value='INTERSECT' selected>相交</option>
-                    <option value='OVERLAP'>叠加</option>
-                    <option value='TOUCH'>邻接</option>
-                    <option value='WITHIN'>被包含</option>
+                    <option value='clip' selected>内部裁剪</option>
+                    <option value='intersect'>外部裁剪</option>
                 </select>
             </div>
             <p></p>
@@ -70,7 +64,7 @@
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://iclient.supermapol.com/libs/iclient8c/libs/SuperMap.Include.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-legacy.min.js"></script>
+<script type="text/javascript" src="../../dist/iclient-classic.min.js"></script>
 <script type="text/javascript">
     var layer, processingsUrl = "http://117.122.248.69:8090/iserver/services/spatialprocessing/rest/v1/jobs",
             map = new SuperMap.Map("map", {
@@ -95,17 +89,17 @@
             if (map && layer) {
                 map.removeLayer(layer);
             }
-            queryJobs();
+            addVectorClipJobs();
         });
     }
 
-    function queryJobs() {
-        var singleObjectQueryJobsParameter = new SuperMap.SingleObjectQueryJobsParameter({
+    function addVectorClipJobs() {
+        var vectorClipJobsParameter = new SuperMap.VectorClipJobsParameter({
             datasetName: $('#datasetName').val(),
-            datasetQuery: $('#datasetQuery').val(),
+            datasetOverlay: $('#datasetOverlay').val(),
             mode: $('#mode option:selected').attr('value')
         });
-        processingService.addQueryJob(singleObjectQueryJobsParameter, function (serviceResult) {
+        processingService.addVectorClipJob(vectorClipJobsParameter, function (serviceResult) {
             if (serviceResult.error) {
                 $('#btn').prop('disabled', false);
                 $("#model").modal('hide');

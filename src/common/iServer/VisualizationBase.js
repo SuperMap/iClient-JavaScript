@@ -1,1 +1,1 @@
-import '../../legacy/libs/SuperMap_Visualization-8.1.1-15125.js';
+import '../../classic/libs/SuperMap_Visualization-8.1.1-15125.js';

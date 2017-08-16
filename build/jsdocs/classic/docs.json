@@ -2,7 +2,7 @@
     "opts": {
         "recurse": true,
         "template": "../template",
-        "destination": "./docs/legacy"
+        "destination": "./docs/classic"
     },
     "disqus":"",
     "tags": {
@@ -12,7 +12,7 @@
         "includePattern": ".+\\.js?$",
         "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service|Base|Parameters.js?$",
         "include": [
-            "src/common","src/legacy"
+            "src/common","src/classic"
         ]
     },
     "plugins": ["plugins/markdown"],
@@ -22,6 +22,6 @@
         "default": {
             "outputSourceFiles": false
         }
-        //"applicationName": "iClient for Legacy(iClient8C)"
+        //"applicationName": "iClient Classic"
     }
 }

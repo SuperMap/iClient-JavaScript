@@ -1,8 +1,8 @@
 /**
- * legacy 示例配置文件：包含示例的分类、名称、缩略图、文件路径
+ * classic 示例配置文件：包含示例的分类、名称、缩略图、文件路径
  */
 var identification = {
-    name: "Legacy"
+    name: "iClient Classic"
 };
 
 var exampleConfig = {

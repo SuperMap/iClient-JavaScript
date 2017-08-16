@@ -18,7 +18,7 @@ module.exports = function (config) {
             transform: [
                 [require('babelify'), {
                     presets: ["es2015"],
-                    ignore: ["**/legacy/libs/**", "**/test/**"],
+                    ignore: ["**/classic/libs/**", "**/test/**"],
                     plugins: ['transform-class-properties']
                 }],
                 require('browserify-css'),
@@ -34,10 +34,10 @@ module.exports = function (config) {
         // list of files  patterns to load in the browser
         // false 表示初始化的时候不会使用 script 标签直接将相关 js 引入到浏览器，需要自己写代码加载, 注意添加顺序
         files: [
-        /***legacy的源码***/
-            {pattern: '../src/legacy/libs/SuperMap_Basic-8.1.1-15125.js', include: false},
-            {pattern: '../src/legacy/libs/Lang/*.js', include: false},
-            {pattern: '../src/legacy/theme/default/*.css', include: false},
+        /***classic的源码***/
+            {pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-15125.js', include: false},
+            {pattern: '../src/classic/libs/Lang/*.js', include: false},
+            {pattern: '../src/classic/theme/default/*.css', include: false},
         /***common的源码***/
             '../src/common/*.js',
             '../src/common/**/*.js',
@@ -68,8 +68,8 @@ module.exports = function (config) {
         preprocessors: {
             '../node_modules/whatwg-fetch-importable/whatwgFetch.js': ['browserify'],
             '../node_modules/fetch-jsonp/build/fetch-jsonp.js': ['browserify'],
-            '../src/legacy/libs/SuperMap_Basic-8.1.1-15125.js': ['browserify'],
-            '../src/legacy/libs/Lang/*.js': ['browserify'],
+            '../src/classic/libs/SuperMap_Basic-8.1.1-15125.js': ['browserify'],
+            '../src/classic/libs/Lang/*.js': ['browserify'],
             '../src/common/**/*.js': ['browserify'],
             './common/**/*Spec.js': ['browserify'],
             './test-main-common.js': ['browserify'],

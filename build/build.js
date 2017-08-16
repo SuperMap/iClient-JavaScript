@@ -8,7 +8,7 @@ var clientsTabs = {
     "OpenLayers": "openlayers",
     "Leaflet": "leaflet",
     "MapboxGL": "mapboxgl",
-    "Legacy": "legacy",
+    "iClient Classic": "classic",
 };
 //设当前客户端名称，其值为clientsTabs的key值之一
 var currentClientTab = "OpenLayers";

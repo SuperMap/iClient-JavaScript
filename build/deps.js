@@ -724,14 +724,14 @@ deps = {
         }
     },
 
-    "legacy": {
+    "classic": {
         "Services": {
             "title": "服务",
             "description": "对各种功能服务的包装",
             "ProcessingService": {
                 "name": "大数据分析服务",
                 "src": [
-                    "./src/legacy/services/ProcessingService.js"
+                    "./src/classic/services/ProcessingService.js"
                 ],
                 "modules": [{
                     "name": "SuperMap.REST.ProcessingService",
@@ -741,7 +741,7 @@ deps = {
             "AddressMatch": {
                 "name": "地址匹配服务",
                 "src": [
-                    "./src/legacy/services/AddressMatchService.js"
+                    "./src/classic/services/AddressMatchService.js"
                 ],
                 "modules": [{
                     "name": "SuperMap.REST.AddressMatchService",
@@ -755,7 +755,7 @@ deps = {
             "MapV": {
                 "name": "MapV",
                 "src": [
-                    "./src/legacy/overlay/MapVLayer.js"
+                    "./src/classic/overlay/MapVLayer.js"
                 ],
                 "modules": [{
                     "name": "SuperMap.Layer.MapVLayer",

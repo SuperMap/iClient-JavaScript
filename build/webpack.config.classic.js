@@ -1,7 +1,7 @@
 var webpack = require('webpack');
 var pkg = require('../package.json');
 var banner = `
-    iclient9-legacy.(${pkg.homepage})
+    iclient-classic.(${pkg.homepage})
     Copyright© 2000-2017 SuperMap Software Co. Ltd
     license: ${pkg.license}
     version: v${pkg.version}
@@ -13,7 +13,7 @@ module.exports = {
     //入口文件输出配置
     output: {
         path: __dirname + '/../dist',
-        filename: 'iclient9-legacy.js'
+        filename: 'iclient-classic.js'
     },
 
     //其它解决方案配置
@@ -24,8 +24,8 @@ module.exports = {
         'echarts': 'function(){try{return echarts}catch(e){return {}}}()',
         'mapv':  "function(){try{return mapv}catch(e){return {}}}()",
         'elasticsearch': 'function(){try{return elasticsearch}catch(e){return {}}}()',
-        '../legacy/libs/SuperMap_Basic-8.1.1-15125.js': 'SuperMap',
-        '../legacy/libs/SuperMap_Visualization-8.1.1-15125.js': 'SuperMap'
+        '../classic/libs/SuperMap_Basic-8.1.1-15125.js': 'SuperMap',
+        '../classic/libs/SuperMap_Visualization-8.1.1-15125.js': 'SuperMap'
     },
     module: {
         rules: [{

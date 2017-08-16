@@ -31,7 +31,7 @@ module.exports = {
         noParse: /[\/\\]node_modules[\/\\]mapbox-gl[\/\\]dist[\/\\]mapbox-gl\.js$/,
         rules: [{
             test: /\.js/,
-            exclude: /legacy/,
+            exclude: /classic/,
             loader: 'babel-loader',
             query: {
                 presets: ['es2015'],

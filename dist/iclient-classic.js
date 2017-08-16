@@ -1,6 +1,6 @@
 /*!
  * 
- *     iclient9-legacy.(http://iclient.supermapol.com)
+ *     iclient-classic.(http://iclient.supermapol.com)
  *     Copyright© 2000-2017 SuperMap Software Co. Ltd
  *     license: Apache-2.0
  *     version: v9.0.0
@@ -1198,7 +1198,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _CommonServiceBase2 = __webpack_require__(3);
+var _CommonServiceBase2 = __webpack_require__(4);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
@@ -1374,6 +1374,18 @@ _SuperMap2.default.ProcessingServiceBase = ProcessingServiceBase;
 
 
 Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = window.SuperMap;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
@@ -1383,7 +1395,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-__webpack_require__(27);
+__webpack_require__(28);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1809,18 +1821,6 @@ exports.default = CommonServiceBase;
 _SuperMap2.default.CommonServiceBase = CommonServiceBase;
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = window.SuperMap;
-
-/***/ }),
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2014,11 +2014,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _SuperMap = __webpack_require__(4);
+var _SuperMap = __webpack_require__(3);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _MapVRenderer = __webpack_require__(30);
+var _MapVRenderer = __webpack_require__(11);
 
 var _MapVRenderer2 = _interopRequireDefault(_MapVRenderer);
 
@@ -2305,15 +2305,15 @@ exports.AddressMatchService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SuperMap = __webpack_require__(4);
+var _SuperMap = __webpack_require__(3);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _CommonServiceBase2 = __webpack_require__(3);
+var _CommonServiceBase2 = __webpack_require__(4);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _AddressMatchService = __webpack_require__(11);
+var _AddressMatchService = __webpack_require__(12);
 
 var _AddressMatchService2 = _interopRequireDefault(_AddressMatchService);
 
@@ -2413,37 +2413,37 @@ exports.ProcessingService = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SuperMap = __webpack_require__(4);
+var _SuperMap = __webpack_require__(3);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
 var _REST = __webpack_require__(1);
 
-var _CommonServiceBase2 = __webpack_require__(3);
+var _CommonServiceBase2 = __webpack_require__(4);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _KernelDensityJobsService = __webpack_require__(17);
+var _KernelDensityJobsService = __webpack_require__(18);
 
 var _KernelDensityJobsService2 = _interopRequireDefault(_KernelDensityJobsService);
 
-var _SingleObjectQueryJobsService = __webpack_require__(19);
+var _SingleObjectQueryJobsService = __webpack_require__(20);
 
 var _SingleObjectQueryJobsService2 = _interopRequireDefault(_SingleObjectQueryJobsService);
 
-var _BuildCacheJobsService = __webpack_require__(13);
+var _BuildCacheJobsService = __webpack_require__(14);
 
 var _BuildCacheJobsService2 = _interopRequireDefault(_BuildCacheJobsService);
 
-var _SummaryMeshJobsService = __webpack_require__(21);
+var _SummaryMeshJobsService = __webpack_require__(22);
 
 var _SummaryMeshJobsService2 = _interopRequireDefault(_SummaryMeshJobsService);
 
-var _SummaryRegionJobsService = __webpack_require__(23);
+var _SummaryRegionJobsService = __webpack_require__(24);
 
 var _SummaryRegionJobsService2 = _interopRequireDefault(_SummaryRegionJobsService);
 
-var _VectorClipJobsService = __webpack_require__(25);
+var _VectorClipJobsService = __webpack_require__(26);
 
 var _VectorClipJobsService2 = _interopRequireDefault(_VectorClipJobsService);
 
@@ -3669,2439 +3669,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _CommonServiceBase2 = __webpack_require__(3);
-
-var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
-
-var _FetchRequest = __webpack_require__(5);
-
-var _GeoCodingParameter = __webpack_require__(14);
-
-var _GeoCodingParameter2 = _interopRequireDefault(_GeoCodingParameter);
-
-var _GeoDecodingParameter = __webpack_require__(15);
-
-var _GeoDecodingParameter2 = _interopRequireDefault(_GeoDecodingParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class SuperMap.AddressMatchService
- * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
- * @param options - {Object} 参数。
- * @param url {string}
- */
-var AddressMatchService = function (_CommonServiceBase) {
-    _inherits(AddressMatchService, _CommonServiceBase);
-
-    function AddressMatchService(url, options) {
-        _classCallCheck(this, AddressMatchService);
-
-        var _this = _possibleConstructorReturn(this, (AddressMatchService.__proto__ || Object.getPrototypeOf(AddressMatchService)).call(this, url, options));
-
-        _this.CLASS_NAME = "SuperMap.AddressMatchService";
-        return _this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-
-
-    _createClass(AddressMatchService, [{
-        key: 'destroy',
-        value: function destroy() {
-            _get(AddressMatchService.prototype.__proto__ || Object.getPrototypeOf(AddressMatchService.prototype), 'destroy', this).call(this);
-        }
-
-        /**
-         * @function SuperMap.AddressMatchService.prototype.code
-         * @param url {string} 正向地址匹配服务地址
-         * @param params {SuperMap.GeoCodingParameter} 正向地址匹配服务参数
-         */
-
-    }, {
-        key: 'code',
-        value: function code(url, params) {
-            this.processAsync(url, params);
-        }
-
-        /**
-         * @function SuperMap.AddressMatchService.prototype.decode
-         * @param url {string} 反向地址匹配服务地址
-         * @param params {SuperMap.GeoDecodingParameter} 反向地址匹配服务参数
-         */
-
-    }, {
-        key: 'decode',
-        value: function decode(url, params) {
-            this.processAsync(url, params);
-        }
-    }, {
-        key: 'processAsync',
-        value: function processAsync(url, params) {
-            var me = this;
-            return _FetchRequest.FetchRequest.get(url, params).then(function (response) {
-                return response.json();
-            }).then(function (result) {
-                if (result) {
-                    me.serviceProcessCompleted(result);
-                } else {
-                    me.serviceProcessFailed(result);
-                }
-            }).catch(function (e) {
-                me.eventListeners.processFailed({ error: e });
-            });
-        }
-    }, {
-        key: 'serviceProcessCompleted',
-        value: function serviceProcessCompleted(result) {
-            _get(AddressMatchService.prototype.__proto__ || Object.getPrototypeOf(AddressMatchService.prototype), 'serviceProcessCompleted', this).call(this, result);
-        }
-    }, {
-        key: 'serviceProcessFailed',
-        value: function serviceProcessFailed(result) {
-            _get(AddressMatchService.prototype.__proto__ || Object.getPrototypeOf(AddressMatchService.prototype), 'serviceProcessFailed', this).call(this, result);
-        }
-    }]);
-
-    return AddressMatchService;
-}(_CommonServiceBase3.default);
-
-exports.default = AddressMatchService;
-
-_SuperMap2.default.AddressMatchService = AddressMatchService;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.BuildCacheJobParameter
- * @classdesc 地图缓存参数类
- * @param options - {Object} 可选参数。如：<br>
- *         datasetName - {String} 数据集名称。<br>
- *         cacheName - {String} 缓存名称。<br>
- *         cacheType - {String} 存储类型。<br>
- *         serverAdresses - {String} MongoDB地址。<br>
- *         database -- {String} 数据库。<br>
- *         version -{String} 版本。<br>
- *         bounds -{SuperMap.Bounds} 缓存范围。<br>
- *         imageType -{number} 缓存类型.<br>
- *         level -{number} 缓存比例尺级别。
- */
-var BuildCacheJobParameter = function () {
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.imageType -{number}
-     * @description 缓存类型。
-     */
-
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.version -{String}
-     * @description 版本。
-     */
-
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.serverAddresses -{String}
-     * @description MongoDB地址。
-     */
-
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.cacheName -{String}
-     * @description 缓存名称。
-     */
-    function BuildCacheJobParameter(options) {
-        _classCallCheck(this, BuildCacheJobParameter);
-
-        this.datasetName = "";
-        this.cacheName = "";
-        this.cacheType = "";
-        this.serverAdresses = "";
-        this.database = "";
-        this.version = "";
-        this.bounds = "";
-        this.imageType = 'Heatmap';
-        this.level = null;
-
-        if (!options) {
-            return;
-        }
-        _SuperMap2.default.Util.extend(this, options);
-    }
-
-    /**
-     * @function destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.level -{number}
-     * @description 缓存比例尺级别。
-     */
-
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.bounds -{SuperMap.Bounds}
-     * @description 缓存范围。
-     */
-
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.database -{String}
-     * @description 数据库。
-     */
-
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.cacheType -{String}
-     * @description 存储类型。
-     */
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.datasetName -{String}
-     * @description 数据集名称。
-     */
-
-
-    _createClass(BuildCacheJobParameter, [{
-        key: "destroy",
-        value: function destroy() {
-            this.datasetName = null;
-            this.cacheName = null;
-            this.cacheType = null;
-            this.serverAdresses = null;
-            this.database = null;
-            this.version = null;
-            this.bounds = null;
-            this.imageType = null;
-            this.level = null;
-        }
-    }], [{
-        key: "toObject",
-        value: function toObject(buildCacheJobParameter, tempObj) {
-            for (var name in buildCacheJobParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = buildCacheJobParameter[name];
-                    continue;
-                }
-                if (_SuperMap2.default.Util.indexOf(["cacheName", "cacheType", "serverAdresses", "database", "version"], name) > -1) {
-                    tempObj['output'] = tempObj['output'] || {};
-                    tempObj['output'][name] = buildCacheJobParameter[name];
-                    continue;
-                }
-                tempObj['drawing'] = tempObj['drawing'] || {};
-                tempObj['drawing'][name] = buildCacheJobParameter[name];
-            }
-        }
-    }]);
-
-    return BuildCacheJobParameter;
-}();
-
-exports.default = BuildCacheJobParameter;
-
-
-_SuperMap2.default.BuildCacheJobParameter = BuildCacheJobParameter;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _BuildCacheJobParameter = __webpack_require__(12);
-
-var _BuildCacheJobParameter2 = _interopRequireDefault(_BuildCacheJobParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class SuperMap.BuildCacheJobsService
- * @classdesc 创建大数据缓存服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{String} 大数据缓存服务地址。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        events - {SuperMap.Events} 处理所有事件的对象。<br>
- *        eventListeners - {Object} 听器对象。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number} 服务访问地址在数组中的位置。<br>
- *        length - {number} 服务访问地址数组长度。
- */
-var BuildCacheJobsService = function (_ProcessingServiceBas) {
-    _inherits(BuildCacheJobsService, _ProcessingServiceBas);
-
-    /*
-     * @function SuperMap.BuildCacheJobsService.prototype.constructor
-     * @description SuperMap.BuildCacheJobsService 的构造函数
-     * @param url -{String} 大数据缓存服务地址。
-     * @param options - {Object} 交互服务时所需可选参数。
-     */
-    function BuildCacheJobsService(url, options) {
-        _classCallCheck(this, BuildCacheJobsService);
-
-        var _this = _possibleConstructorReturn(this, (BuildCacheJobsService.__proto__ || Object.getPrototypeOf(BuildCacheJobsService)).call(this, url, options));
-
-        _this.url += "/mapping/buildCache";
-        return _this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-
-
-    _createClass(BuildCacheJobsService, [{
-        key: 'destroy',
-        value: function destroy() {
-            _get(BuildCacheJobsService.prototype.__proto__ || Object.getPrototypeOf(BuildCacheJobsService.prototype), 'destory', this).call(this);
-        }
-
-        /**
-         * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJobs
-         * @description 获取创建的大数据缓存
-         */
-
-    }, {
-        key: 'getBuildCacheJobs',
-        value: function getBuildCacheJobs() {
-            return _get(BuildCacheJobsService.prototype.__proto__ || Object.getPrototypeOf(BuildCacheJobsService.prototype), 'getJobs', this).call(this, this.url);
-        }
-
-        /**
-         * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJob
-         * @description 获取指定 id的大数据缓存
-         * @param id - {String} 大数据缓存id
-         */
-
-    }, {
-        key: 'getBuildCacheJob',
-        value: function getBuildCacheJob(id) {
-            return _get(BuildCacheJobsService.prototype.__proto__ || Object.getPrototypeOf(BuildCacheJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
-        }
-
-        /**
-         * @function SuperMap.BuildCacheJobsService.prototype.addBuildCacheJob
-         * @description 新建大数据缓存服务
-         * @param params - {SuperMap.BuildCacheJobParameter} 地图缓存参数类
-         * @param seconds - {String} 开始创建后，获取创建成功结果的时间间隔
-         */
-
-    }, {
-        key: 'addBuildCacheJob',
-        value: function addBuildCacheJob(params, seconds) {
-            _get(BuildCacheJobsService.prototype.__proto__ || Object.getPrototypeOf(BuildCacheJobsService.prototype), 'addJob', this).call(this, this.url, params, _BuildCacheJobParameter2.default, seconds);
-        }
-    }]);
-
-    return BuildCacheJobsService;
-}(_ProcessingServiceBase2.default);
-
-exports.default = BuildCacheJobsService;
-
-
-_SuperMap2.default.BuildCacheJobsService = BuildCacheJobsService;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.GeoCodingParameter
- * @classdesc 地理正向匹配参数类。
- * @param options - {Object} 参数。
- */
-var GeoCodingParameter = function () {
-
-    /**
-     * @member SuperMap.GeoCodingParameter.prototype.prjCoordSys -{String}
-     * @description  查询结果的坐标系。
-     */
-
-
-    /**
-     * @member SuperMap.GeoCodingParameter.prototype.toIndex -{number}
-     * @description 设置返回对象的结束索引值。
-     */
-
-
-    /**
-     * @member SuperMap.GeoCodingParameter.prototype.address -{String}
-     * @description 地点关键词。
-     */
-    function GeoCodingParameter(options) {
-        _classCallCheck(this, GeoCodingParameter);
-
-        this.address = null;
-        this.fromIndex = null;
-        this.toIndex = null;
-        this.filters = null;
-        this.prjCoordSys = null;
-        this.maxReturn = null;
-
-        if (!options) {
-            return;
-        }
-        if (options.filters) {
-            var strs = [];
-            var fields = options.filters.split(',');
-            fields.map(function (field) {
-                strs.push("\"" + field + "\"");
-            });
-            options.filters = strs;
-        }
-        _SuperMap2.default.Util.extend(this, options);
-    }
-
-    /**
-     * @function SuperMap.GeoCodingParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.GeoCodingParameter.prototype.maxReturn -{String}
-     * @description 最大返回结果数。
-     */
-
-
-    /**
-     * @member SuperMap.GeoCodingParameter.prototype.filters -{Array}
-     * @description 过滤字段，限定查询区域。
-     */
-
-
-    /**
-     * @member SuperMap.GeoCodingParameter.prototype.fromIndex -{number}
-     * @description 设置返回对象的起始索引值。
-     */
-
-
-    _createClass(GeoCodingParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.address = null;
-            this.fromIndex = null;
-            this.toIndex = null;
-            this.filters = null;
-            this.prjCoordSys = null;
-            this.maxReturn = null;
-        }
-    }]);
-
-    return GeoCodingParameter;
-}();
-
-exports.default = GeoCodingParameter;
-
-_SuperMap2.default.GeoCodingParameter = GeoCodingParameter;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.GeoDecodingParameter
- * @classdesc 地理反向匹配参数类。
- * @param options - {Object} 参数。如：<br>
- *        x - {number} 查询位置的横坐标。<br>
- *        y - {number} 查询位置的纵坐标。<br>
- *        fromIndex - {number} 设置返回对象的起始索引值。<br>
- *        filters -{Array} 过滤字段，限定查询区域。<br>
- *        prjCoordSys -{String} 查询结果的坐标系。<br>
- *        maxReturn -{number} 最大返回结果数。<br>
- *        geoDecodingRadius -{number} 查询半径。
- */
-var GeoDecodingParameter = function () {
-
-    /**
-     *  @member SuperMap.GeoDecodingParameter.prototype.maxReturn -{number}
-     *  @description 最大返回结果数。
-     */
-
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.filters -{Array}
-     * @description 过滤字段，限定查询区域。
-     */
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.fromIndex - {number}
-     * @description  设置返回对象的起始索引值。
-     */
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.x - {number}
-     * @description 查询位置的横坐标。
-     */
-    function GeoDecodingParameter(options) {
-        _classCallCheck(this, GeoDecodingParameter);
-
-        this.x = null;
-        this.y = null;
-        this.fromIndex = null;
-        this.toIndex = null;
-        this.filters = null;
-        this.prjCoordSys = null;
-        this.maxReturn = null;
-        this.geoDecodingRadius = null;
-
-        if (!options) {
-            return;
-        }
-        if (options.filters) {
-            var strs = [];
-            var fields = options.filters.split(',');
-            fields.map(function (field) {
-                strs.push("\"" + field + "\"");
-            });
-            options.filters = strs;
-        }
-        _SuperMap2.default.Util.extend(this, options);
-    }
-
-    /**
-     * @function SuperMap.GeoDecodingParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.geoDecodingRadius -{number}
-     * @description 查询半径。
-     */
-
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.prjCoordSys -{String}
-     * @description 查询结果的坐标系。
-     */
-
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.toIndex - {number}
-     * @description 设置返回对象的结束索引值。
-     */
-
-
-    /**
-     * @member SuperMap.GeoDecodingParameter.prototype.y - {number}
-     * @description 查询位置的纵坐标。
-     */
-
-
-    _createClass(GeoDecodingParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.x = null;
-            this.y = null;
-            this.fromIndex = null;
-            this.toIndex = null;
-            this.filters = null;
-            this.prjCoordSys = null;
-            this.maxReturn = null;
-            this.geoDecodingRadius = null;
-        }
-    }]);
-
-    return GeoDecodingParameter;
-}();
-
-exports.default = GeoDecodingParameter;
-
-
-_SuperMap2.default.GeoDecodingParameter = GeoDecodingParameter;
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.KernelDensityJobParameter
- * @description 密度分析任务参数类
- * @param options - {Object} 可选参数。如：<br>
- *        datasetName -{String} 数据集名。 <br>
- *        query -{SuperMap.Bounds} 分析范围。 <br>
- *        resolution -{number} 分辨率。 <br>
- *        method -{number} 分析方法。 <br>
- *        meshType -{number} 分析类型。 <br>
- *        fields -{String} 权重索引。 <br>
- *        radius -{number} 分析的影响半径。
- */
-var KernelDensityJobParameter = function () {
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
-     * @description 搜索半径单位。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
-     * @description 分析的影响半径。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
-     * @description 分析类型。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
-     * @description 网格大小。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{String}
-     * @description 数据集名。
-     */
-    function KernelDensityJobParameter(options) {
-        _classCallCheck(this, KernelDensityJobParameter);
-
-        this.datasetName = "";
-        this.query = "";
-        this.resolution = 80;
-        this.method = 0;
-        this.meshType = 0;
-        this.fields = "";
-        this.radius = 300;
-        this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
-        this.radiusUnit = _REST.AnalystSizeUnit.METER;
-        this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
-
-        if (!options) {
-            return;
-        }
-        _SuperMap2.default.Util.extend(this, options);
-    }
-
-    /**
-     * @function destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
-     * @description 面积单位。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
-     * @description 网格大小单位。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.fields -{String}
-     * @description 权重索引。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
-     * @description 分析方法。
-     */
-
-
-    /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
-     * @description 分析范围。
-     */
-
-
-    _createClass(KernelDensityJobParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.datasetName = null;
-            this.query = null;
-            this.resolution = null;
-            this.method = null;
-            this.radius = null;
-            this.meshType = null;
-            this.fields = null;
-            this.meshSizeUnit = null;
-            this.radiusUnit = null;
-            this.areaUnit = null;
-        }
-    }], [{
-        key: 'toObject',
-        value: function toObject(kernelDensityJobParameter, tempObj) {
-            for (var name in kernelDensityJobParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = kernelDensityJobParameter[name];
-                    continue;
-                }
-                tempObj['analyst'] = tempObj['analyst'] || {};
-                tempObj['analyst'][name] = kernelDensityJobParameter[name];
-            }
-        }
-    }]);
-
-    return KernelDensityJobParameter;
-}();
-
-exports.default = KernelDensityJobParameter;
-
-
-_SuperMap2.default.KernelDensityJobParameter = KernelDensityJobParameter;
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _KernelDensityJobParameter = __webpack_require__(16);
-
-var _KernelDensityJobParameter2 = _interopRequireDefault(_KernelDensityJobParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class SuperMap.KernelDensityJobsService
- * @classdesc 核密度大数据服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{String} 核密度大数据服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
- */
-var KernelDensityJobsService = function (_ProcessingServiceBas) {
-    _inherits(KernelDensityJobsService, _ProcessingServiceBas);
-
-    function KernelDensityJobsService(url, options) {
-        _classCallCheck(this, KernelDensityJobsService);
-
-        var _this = _possibleConstructorReturn(this, (KernelDensityJobsService.__proto__ || Object.getPrototypeOf(KernelDensityJobsService)).call(this, url, options));
-
-        _this.CLASS_NAME = "SuperMap.KernelDensityJobsService";
-
-        _this.url += "/spatialanalyst/density";
-        return _this;
-    }
-
-    /**
-     *@inheritDoc
-     */
-
-
-    _createClass(KernelDensityJobsService, [{
-        key: 'destroy',
-        value: function destroy() {
-            _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'destroy', this).call(this);
-        }
-
-        /**
-         * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
-         * @description 获取核密度大数据
-         * @return {*}
-         */
-
-    }, {
-        key: 'getKernelDensityJobs',
-        value: function getKernelDensityJobs() {
-            return _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'getJobs', this).call(this, this.url);
-        }
-
-        /**
-         * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
-         * @description 获取指定id的核密度大数据服务
-         * @param id -{String} 指定要获取数据的id
-         */
-
-    }, {
-        key: 'getKernelDensityJob',
-        value: function getKernelDensityJob(id) {
-            return _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
-        }
-
-        /**
-         * @function SuperMap.KernelDensityJobsService.prototype.addKernelDensityJob
-         * @description 新建核密度大数据服务
-         * @param params - {SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
-         */
-
-    }, {
-        key: 'addKernelDensityJob',
-        value: function addKernelDensityJob(params, seconds) {
-            return _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'addJob', this).call(this, this.url, params, _KernelDensityJobParameter2.default, seconds);
-        }
-    }]);
-
-    return KernelDensityJobsService;
-}(_ProcessingServiceBase2.default);
-
-exports.default = KernelDensityJobsService;
-
-
-_SuperMap2.default.KernelDensityJobsService = KernelDensityJobsService;
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.SingleObjectQueryJobsParameter
- * @classdesc 单对象空间查询分析任务参数类
- * @param options - {Object} 必填参数。<br>
- *         datasetName -{String} 数据集名。 <br>
- *         datasetQuery -{String} 查询对象所在的数据集名称。 <br>
- *         mode -{SuperMap.SpatialQueryMode} 空间查询模式 。 <br>
- */
-var SingleObjectQueryJobsParameter = function () {
-
-    /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{String}
-     * @description 查询对象所在的数据集名称。
-     */
-    function SingleObjectQueryJobsParameter(options) {
-        _classCallCheck(this, SingleObjectQueryJobsParameter);
-
-        this.datasetName = "";
-        this.datasetQuery = "";
-        this.mode = _REST.SpatialQueryMode.CONTAIN;
-
-        if (!options) {
-            return;
-        }
-        _SuperMap2.default.Util.extend(this, options);
-    }
-
-    /**
-     * @function destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.mode -{SuperMap.SpatialQueryMode}
-     * @description 空间查询模式 。
-     */
-
-
-    /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{String}
-     * @description 数据集名。
-     */
-
-
-    _createClass(SingleObjectQueryJobsParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.datasetName = null;
-            this.datasetQuery = null;
-            this.mode = null;
-        }
-    }], [{
-        key: 'toObject',
-        value: function toObject(singleObjectQueryJobsParameter, tempObj) {
-            for (var name in singleObjectQueryJobsParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = singleObjectQueryJobsParameter[name];
-                    continue;
-                }
-                tempObj['analyst'] = tempObj['analyst'] || {};
-                tempObj['analyst'][name] = singleObjectQueryJobsParameter[name];
-            }
-        }
-    }]);
-
-    return SingleObjectQueryJobsParameter;
-}();
-
-exports.default = SingleObjectQueryJobsParameter;
-
-
-_SuperMap2.default.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _SingleObjectQueryJobsParameter = __webpack_require__(18);
-
-var _SingleObjectQueryJobsParameter2 = _interopRequireDefault(_SingleObjectQueryJobsParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class SuperMap.SingleObjectQueryJobsService
- * @classdesc 大数据单对象查询分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{String} 大数据单对象空间查询分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
- */
-var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
-    _inherits(SingleObjectQueryJobsService, _ProcessingServiceBas);
-
-    function SingleObjectQueryJobsService(url, options) {
-        _classCallCheck(this, SingleObjectQueryJobsService);
-
-        var _this = _possibleConstructorReturn(this, (SingleObjectQueryJobsService.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService)).call(this, url, options));
-
-        _this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsService";
-
-        _this.url += "/spatialanalyst/query";
-        return _this;
-    }
-
-    /**
-     *@inheritDoc
-     */
-
-
-    _createClass(SingleObjectQueryJobsService, [{
-        key: 'destroy',
-        value: function destroy() {
-            _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'destroy', this).call(this);
-        }
-
-        /**
-         * @function SuperMap.SingleObjectQueryJobsService.protitype.getQueryJobs
-         * @description 获取大数据单对象空间查询分析所有
-         * @return {*}
-         */
-
-    }, {
-        key: 'getQueryJobs',
-        value: function getQueryJobs() {
-            return _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'getJobs', this).call(this, this.url);
-        }
-
-        /**
-         * @function SuperMap.KernelDensityJobsService.protitype.getQueryJob
-         * @description 获取指定id的单对象空间查询分析服务
-         * @param id -{String} 指定要获取数据的id
-         */
-
-    }, {
-        key: 'getQueryJob',
-        value: function getQueryJob(id) {
-            return _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
-        }
-
-        /**
-         * @function SuperMap.SingleObjectQueryJobsService.protitype.addQueryJob
-         * @description 新建大数据单对象空间查询分析服务
-         * @param params - {SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
-         */
-
-    }, {
-        key: 'addQueryJob',
-        value: function addQueryJob(params, seconds) {
-            return _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'addJob', this).call(this, this.url, params, _SingleObjectQueryJobsParameter2.default, seconds);
-        }
-    }]);
-
-    return SingleObjectQueryJobsService;
-}(_ProcessingServiceBase2.default);
-
-exports.default = SingleObjectQueryJobsService;
-
-
-_SuperMap2.default.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.SummaryMeshJobParameter
- * @classdesc 点聚合分析任务参数类
- * @param options - {Object} 可选参数。如：<br>
- *        datasetName -{String} 数据集名。<br>
- *        query -{SuperMap.Bounds} 分析范围。<br>
- *        resolution -{number} 分辨率。<br>
- *        statisticModes -{String} 分析模式。<br>
- *        meshType -{number} 分析类型。<br>
- *        fields -{number} 权重索引。<br>
- *        type -{String} 聚合类型。
- */
-var SummaryMeshJobParameter = function () {
-
-    /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.fields -{number}
-     * @description 权重字段。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.meshType -{number}
-     * @description  网格面类型(聚合类型为网格面聚合时使用的参数),取值：0或1。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.query -{SuperMap.Bounds}
-     * @description 分析范围(聚合类型为网格面聚合时使用的参数)。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.datasetName -{String}
-     * @description 数据集名。
-     */
-    function SummaryMeshJobParameter(options) {
-        _classCallCheck(this, SummaryMeshJobParameter);
-
-        this.datasetName = "";
-        this.regionDataset = "";
-        this.query = "";
-        this.resolution = 100;
-        this.meshType = 0;
-        this.statisticModes = "";
-        this.fields = "";
-        this.type = _REST.SummaryType.SUMMARYMESH;
-
-        if (!options) {
-            return;
-        }
-        _SuperMap2.default.Util.extend(this, options);
-    }
-
-    /**
-     * @inheritDoc
-     */
-
-
-    /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.type -{SuperMap.SummaryType}
-     * @description 聚合类型。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.statisticModes -{SuperMap.StatisticAnalystMode}
-     * @description 统计模式。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.resolution -{number}
-     * @description 分辨率(聚合类型为网格面聚合时使用的参数)。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.regionDataset -{String}
-     * @description 聚合面数据集(聚合类型为多边形聚合时使用的参数)。
-     */
-
-
-    _createClass(SummaryMeshJobParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.datasetName = null;
-            this.query = null;
-            this.resolution = null;
-            this.statisticModes = null;
-            this.meshType = null;
-            this.fields = null;
-            this.regionDataset = null;
-            this.type = null;
-        }
-    }], [{
-        key: 'toObject',
-        value: function toObject(summaryMeshJobParameter, tempObj) {
-            for (var name in summaryMeshJobParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = summaryMeshJobParameter[name];
-                    continue;
-                }
-                if (name === "type") {
-                    tempObj['type'] = summaryMeshJobParameter[name];
-                    continue;
-                }
-                if (summaryMeshJobParameter.type === 'SUMMARYMESH' && name !== 'regionDataset' || summaryMeshJobParameter.type === 'SUMMARYREGION' && !contains(['meshType', 'resolution', 'query'], name)) {
-                    tempObj['analyst'] = tempObj['analyst'] || {};
-                    tempObj['analyst'][name] = summaryMeshJobParameter[name];
-                }
-            }
-
-            function contains(arr, obj) {
-                var i = arr.length;
-                while (i--) {
-                    if (arr[i] === obj) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-    }]);
-
-    return SummaryMeshJobParameter;
-}();
-
-exports.default = SummaryMeshJobParameter;
-
-
-_SuperMap2.default.SummaryMeshJobParameter = SummaryMeshJobParameter;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _SummaryMeshJobParameter = __webpack_require__(20);
-
-var _SummaryMeshJobParameter2 = _interopRequireDefault(_SummaryMeshJobParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class SuperMap.SummaryMeshJobsService
- * @classdesc 点聚合分析大数据任务类。
- * @param url -{String} 点聚合分析任务地址。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        events - {SuperMap.Events} 处理所有事件的对象。<br>
- *        eventListeners - {Object} 听器对象。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number} 服务访问地址在数组中的位置。<br>
- *        length - {number} 服务访问地址数组长度。
- */
-var SummaryMeshJobsService = function (_ProcessingServiceBas) {
-    _inherits(SummaryMeshJobsService, _ProcessingServiceBas);
-
-    function SummaryMeshJobsService(url, options) {
-        _classCallCheck(this, SummaryMeshJobsService);
-
-        var _this = _possibleConstructorReturn(this, (SummaryMeshJobsService.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService)).call(this, url, options));
-
-        _this.CLASS_NAME = "SuperMap.SummaryMeshJobsService";
-
-        _this.url += "/spatialanalyst/aggregatepoints";
-        return _this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-
-
-    _createClass(SummaryMeshJobsService, [{
-        key: 'destroy',
-        value: function destroy() {
-            _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'destroy', this).call(this);
-        }
-
-        /**
-         * @function SuperMap.SummaryMeshJobsService.prototype.getSummaryMeshJobs
-         * @description 获取点聚合分析大数据
-         */
-
-    }, {
-        key: 'getSummaryMeshJobs',
-        value: function getSummaryMeshJobs() {
-            return _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'getJobs', this).call(this, this.url);
-        }
-
-        /**
-         * @function SuperMap.SummaryMeshJobsService.prototype.getSummaryMeshJob
-         * @description 获取指定ip的点聚合分析大数据
-         * @param id -{String} 指定要获取数据的id
-         */
-
-    }, {
-        key: 'getSummaryMeshJob',
-        value: function getSummaryMeshJob(id) {
-            return _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
-        }
-
-        /**
-         * @function SuperMap.SummaryMeshJobsService.prototype.addSummaryMeshJob
-         * @description 新建点聚合分析大数据服务
-         * @param params - {SuperMap.SummaryMeshJobParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
-         */
-
-    }, {
-        key: 'addSummaryMeshJob',
-        value: function addSummaryMeshJob(params, seconds) {
-            _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'addJob', this).call(this, this.url, params, _SummaryMeshJobParameter2.default, seconds);
-        }
-    }]);
-
-    return SummaryMeshJobsService;
-}(_ProcessingServiceBase2.default);
-
-exports.default = SummaryMeshJobsService;
-
-
-_SuperMap2.default.SummaryMeshJobsService = SummaryMeshJobsService;
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.SummaryRegionJobParameter
- * @classdesc 范围汇总分析任务参数类
- * @param options - {Object} 可选参数。如：<br>
- *         datasetName -{String} 数据集名。 <br>
- *         sumShape -{Boolean} 是否统计长度或面积。 <br>
- *         query -{SuperMap.Bounds} 分析范围。 <br>
- *         standardSummaryFields -{Boolean} 以标准属字段统计。 <br>
- *         standardFields -{String} 以标准属字段统计的字段名称。 <br>
- *         standardStatisticModes -{String} 以标准属字段统计的统计模式。 <br>
- *         weightedSummaryFields -{Boolean} 以权重字段统计。 <br>
- *         weightedFields -{String} 以权重字段统计的字段名称。 <br>
- *         weightedStatisticModes -{String} 以权重字段统计的统计模式。 <br>
- *         resolution -{number} 网格大小。 <br>
- *         meshType -{number} 网格面汇总类型。 <br>
- *         meshSizeUnit -{String} 网格大小单位。 <br>
- *         type -{String} 汇总类型。 <br>
- */
-var SummaryRegionJobParameter = function () {
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
-     * @description 网格大小单位。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.meshType -{number}
-     * @description 网格面汇总类型。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedFields -{String}
-     * @description 以权重字段统计的字段名称。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes -{SuperMap.StatisticAnalystMode}
-     * @description 以标准属字段统计的统计模式。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{Boolean}
-     * @description 以标准属字段统计。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{Boolean}
-     * @description 是否统计长度或面积。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{String}
-     * @description 数据集名。
-     */
-    function SummaryRegionJobParameter(options) {
-        _classCallCheck(this, SummaryRegionJobParameter);
-
-        this.datasetName = "";
-        this.regionDataset = "";
-        this.sumShape = true;
-        this.query = "";
-        this.standardSummaryFields = false;
-        this.standardFields = "";
-        this.standardStatisticModes = "";
-        this.weightedSummaryFields = false;
-        this.weightedFields = "";
-        this.weightedStatisticModes = "";
-        this.meshType = 0;
-        this.resolution = 100;
-        this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
-        this.type = _REST.SummaryType.SUMMARYMESH;
-
-        if (!options) {
-            return;
-        }
-        _SuperMap2.default.Util.extend(this, options);
-    }
-
-    /**
-     * @function destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.type -{SuperMap.SummaryType}
-     * @description 汇总类型。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.resolution -{number}
-     * @description 网格大小。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedStatisticModes -{SuperMap.StatisticAnalystMode}
-     * @description 以权重字段统计的统计模式。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields -{Boolean}
-     * @description 以权重字段统计。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{String}
-     * @description 以标准属字段统计的字段名称。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.query -{SuperMap.Bounds}
-     * @description 分析范围。
-     */
-
-
-    /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{String}
-     * @description 汇总数据源（多边形汇总时用到的参数）。
-     */
-
-
-    _createClass(SummaryRegionJobParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.datasetName = null;
-            this.sumShape = null;
-            this.query = null;
-            this.standardSummaryFields = null;
-            this.standardFields = null;
-            this.standardStatisticModes = null;
-            this.weightedSummaryFields = null;
-            this.weightedFields = null;
-            this.weightedStatisticModes = null;
-            this.meshType = null;
-            this.resolution = null;
-            this.meshSizeUnit = null;
-            this.type = null;
-        }
-    }], [{
-        key: 'toObject',
-        value: function toObject(summaryRegionJobParameter, tempObj) {
-            for (var name in summaryRegionJobParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = summaryRegionJobParameter[name];
-                    continue;
-                }
-                if (name === "type") {
-                    tempObj['type'] = summaryRegionJobParameter[name];
-                    continue;
-                }
-                if (summaryRegionJobParameter.type === "SUMMARYREGION" || summaryRegionJobParameter.type === "SUMMARYMESH" && name !== "regionDataset") {
-                    tempObj['analyst'] = tempObj['analyst'] || {};
-                    tempObj['analyst'][name] = summaryRegionJobParameter[name];
-                }
-            }
-        }
-    }]);
-
-    return SummaryRegionJobParameter;
-}();
-
-exports.default = SummaryRegionJobParameter;
-
-
-_SuperMap2.default.SummaryRegionJobParameter = SummaryRegionJobParameter;
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _SummaryRegionJobParameter = __webpack_require__(22);
-
-var _SummaryRegionJobParameter2 = _interopRequireDefault(_SummaryRegionJobParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class SuperMap.SummaryRegionJobsService
- * @classdesc 范围汇总分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{String} 范围汇总分析服务地址。
- * @param options - {Object} 范围汇总分析服务可选参数。
- */
-var SummaryRegionJobsService = function (_ProcessingServiceBas) {
-    _inherits(SummaryRegionJobsService, _ProcessingServiceBas);
-
-    function SummaryRegionJobsService(url, options) {
-        _classCallCheck(this, SummaryRegionJobsService);
-
-        var _this = _possibleConstructorReturn(this, (SummaryRegionJobsService.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService)).call(this, url, options));
-
-        _this.CLASS_NAME = "SuperMap.SummaryRegionJobsService";
-
-        _this.url += "/spatialanalyst/summaryregion";
-        return _this;
-    }
-
-    /**
-     *@inheritDoc
-     */
-
-
-    _createClass(SummaryRegionJobsService, [{
-        key: 'destroy',
-        value: function destroy() {
-            _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'destroy', this).call(this);
-        }
-
-        /**
-         * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJobs
-         * @description 获取范围汇总分析任务集合。
-         * @return {*}
-         */
-
-    }, {
-        key: 'getSummaryRegionJobs',
-        value: function getSummaryRegionJobs() {
-            return _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'getJobs', this).call(this, this.url);
-        }
-
-        /**
-         * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJob
-         * @description 获取指定id的范围汇总分析任务。
-         * @param id -{String} 要获取范围汇总分析任务的id
-         */
-
-    }, {
-        key: 'getSummaryRegionJob',
-        value: function getSummaryRegionJob(id) {
-            return _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
-        }
-
-        /**
-         * @function SuperMap.SummaryRegionJobsService.prototype.addSummaryRegionJob
-         * @description 新建范围汇总任务。
-         * @param params - {SuperMap.SummaryRegionJobParameter} 创建一个范围汇总任务的请求参数。
-         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
-         */
-
-    }, {
-        key: 'addSummaryRegionJob',
-        value: function addSummaryRegionJob(params, seconds) {
-            return _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'addJob', this).call(this, this.url, params, _SummaryRegionJobParameter2.default, seconds);
-        }
-    }]);
-
-    return SummaryRegionJobsService;
-}(_ProcessingServiceBase2.default);
-
-exports.default = SummaryRegionJobsService;
-
-
-_SuperMap2.default.SummaryRegionJobsService = SummaryRegionJobsService;
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.VectorClipJobsParameter
- * @classdesc 矢量裁剪分析任务参数类
- * @param options - {Object} 必填参数。<br>
- *         datasetName -{String} 数据集名。 <br>
- *         datasetOverlay -{String} 裁剪对象数据集。 <br>
- *         mode -{SuperMap.SpatialQueryMode} 裁剪分析模式 。 <br>
- */
-var VectorClipJobsParameter = function () {
-
-    /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{String}
-     * @description 裁剪对象数据集。
-     */
-    function VectorClipJobsParameter(options) {
-        _classCallCheck(this, VectorClipJobsParameter);
-
-        this.datasetName = "";
-        this.datasetOverlay = "";
-        this.mode = _REST.ClipAnalystMode.CLIP;
-        this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
-
-        options = options || {};
-        if (options.mode && typeof options.mode === "string") {
-            options.mode = options.mode.toLowerCase();
-        }
-        _SuperMap2.default.Util.extend(this, options);
-    }
-
-    /**
-     * @function destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
-     * @description 裁剪分析模式 。
-     */
-
-
-    /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{String}
-     * @description 数据集名。
-     */
-
-
-    _createClass(VectorClipJobsParameter, [{
-        key: 'destroy',
-        value: function destroy() {
-            this.datasetName = null;
-            this.datasetOverlay = null;
-            this.mode = null;
-        }
-    }], [{
-        key: 'toObject',
-        value: function toObject(vectorClipJobsParameter, tempObj) {
-            for (var name in vectorClipJobsParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = vectorClipJobsParameter[name];
-                    continue;
-                }
-                tempObj['analyst'] = tempObj['analyst'] || {};
-                tempObj['analyst'][name] = vectorClipJobsParameter[name];
-            }
-        }
-    }]);
-
-    return VectorClipJobsParameter;
-}();
-
-exports.default = VectorClipJobsParameter;
-
-
-_SuperMap2.default.VectorClipJobsParameter = VectorClipJobsParameter;
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _VectorClipJobsParameter = __webpack_require__(24);
-
-var _VectorClipJobsParameter2 = _interopRequireDefault(_VectorClipJobsParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class SuperMap.VectorClipJobsService
- * @classdesc 大数据矢量裁剪分析服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{String} 大数据矢量裁剪分析服务地址。
- * @param options - {Object} 交互服务时所需可选参数。
- */
-var VectorClipJobsService = function (_ProcessingServiceBas) {
-    _inherits(VectorClipJobsService, _ProcessingServiceBas);
-
-    function VectorClipJobsService(url, options) {
-        _classCallCheck(this, VectorClipJobsService);
-
-        var _this = _possibleConstructorReturn(this, (VectorClipJobsService.__proto__ || Object.getPrototypeOf(VectorClipJobsService)).call(this, url, options));
-
-        _this.CLASS_NAME = "SuperMap.VectorClipJobsService";
-
-        _this.url += "/spatialanalyst/vectorclip";
-        return _this;
-    }
-
-    /**
-     *@inheritDoc
-     */
-
-
-    _createClass(VectorClipJobsService, [{
-        key: 'destroy',
-        value: function destroy() {
-            _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'destroy', this).call(this);
-        }
-
-        /**
-         * @function SuperMap.VectorClipJobsService.protitype.getVectorClipJobs
-         * @description 获取大数据矢量裁剪分析所有
-         * @return {*}
-         */
-
-    }, {
-        key: 'getVectorClipJobs',
-        value: function getVectorClipJobs() {
-            return _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'getJobs', this).call(this, this.url);
-        }
-
-        /**
-         * @function SuperMap.KernelDensityJobsService.protitype.getVectorClipJob
-         * @description 获取指定id的矢量裁剪分析服务
-         * @param id -{String} 指定要获取数据的id
-         */
-
-    }, {
-        key: 'getVectorClipJob',
-        value: function getVectorClipJob(id) {
-            return _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
-        }
-
-        /**
-         * @function SuperMap.VectorClipJobsService.protitype.addVectorClipJob
-         * @description 新建大数据矢量裁剪分析服务
-         * @param params - {SuperMap.VectorClipJobsParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
-         */
-
-    }, {
-        key: 'addVectorClipJob',
-        value: function addVectorClipJob(params, seconds) {
-            return _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'addJob', this).call(this, this.url, params, _VectorClipJobsParameter2.default, seconds);
-        }
-    }]);
-
-    return VectorClipJobsService;
-}(_ProcessingServiceBase2.default);
-
-exports.default = VectorClipJobsService;
-
-
-_SuperMap2.default.VectorClipJobsService = VectorClipJobsService;
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.KeyServiceParameter
- * @classdesc key申请参数
- * @param options - {Object} 参数。如：<br>
- *        name - {String} 申请服务名称。<br>
- *        serviceIds - {number} 服务ID。<br>
- *        clientType - {ClientType} 服务端类型。<br>
- *        limitation - {number} 有效期
- */
-var KeyServiceParameter = function () {
-    function KeyServiceParameter(options) {
-        _classCallCheck(this, KeyServiceParameter);
-
-        this.name = null;
-        this.serviceIds = null;
-        this.clientType = _REST.ClientType.SERVER;
-        this.limitation = null;
-        this.CLASS_NAME = "SuperMap.KeyServiceParameter";
-
-        _SuperMap2.default.Util.extend(this, options);
-    }
-
-    /**
-     * @function SuperMap.KeyServiceParameter.prototype.toJSON
-     * @description 转换成JSON对象
-     * @return {object} 参数的JSON对象
-     */
-
-
-    _createClass(KeyServiceParameter, [{
-        key: 'toJSON',
-        value: function toJSON() {
-            return {
-                name: this.name,
-                serviceIds: this.serviceIds,
-                clientType: this.clientType,
-                limitation: this.limitation
-            };
-        }
-    }]);
-
-    return KeyServiceParameter;
-}();
-
-exports.default = KeyServiceParameter;
-
-
-_SuperMap2.default.KeyServiceParameter = KeyServiceParameter;
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _ServerInfo = __webpack_require__(28);
-
-var _ServerInfo2 = _interopRequireDefault(_ServerInfo);
-
-var _TokenServiceParameter = __webpack_require__(29);
-
-var _TokenServiceParameter2 = _interopRequireDefault(_TokenServiceParameter);
-
-var _KeyServiceParameter = __webpack_require__(26);
-
-var _KeyServiceParameter2 = _interopRequireDefault(_KeyServiceParameter);
-
-var _FetchRequest = __webpack_require__(5);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * @class SuperMap.SecurityManager
- * @classdesc
- *  安全管理中心
- *  提供iServer,iPortal,Online统一权限认证管理
- *  使用说明：
- *  创建任何一个服务之前调用SuperMap.SecurityManager.registerToken或
- *  SuperMap.SecurityManager.registerKey注册凭据。
- *  发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
- */
-_SuperMap2.default.SecurityManager = {
-
-    INNER_WINDOW_WIDTH: 600,
-    INNER_WINDOW_HEIGHT: 600,
-    /**
-     * @function SuperMap.SecurityManager.prototype.generateToken
-     * @description 从服务器获取一个token,在此之前要注册服务器信息
-     * @param url {String}-服务器域名+端口，如：http://localhost:8092
-     * @param tokenParam -{SuperMap.TokenServiceParameter} 令牌参数
-     */
-    generateToken: function generateToken(url, tokenParam) {
-        var serverInfo = this.servers[url];
-        if (!serverInfo) {
-            return;
-        }
-        return _FetchRequest.FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
-            return response.text();
-        });
-    },
-
-    /**
-     * @function SuperMap.SecurityManager.prototype.registerServers
-     * @description 注册安全服务器相关信息
-     * @param serverInfos -{SuperMap.ServerInfo}
-     */
-    registerServers: function registerServers(serverInfos) {
-        this.servers = this.servers || {};
-        if (!_SuperMap2.default.Util.isArray(serverInfos)) {
-            serverInfos = [serverInfos];
-        }
-        for (var i = 0; i < serverInfos.length; i++) {
-            var serverInfo = serverInfos[i];
-            this.servers[serverInfo.server] = serverInfo;
-        }
-    },
-
-    /**
-     * @function SuperMap.SecurityManager.prototype.registerToken
-     * @description 服务请求都会自动带上这个token
-     * @param url {String} -服务器域名+端口：如http://localhost:8090
-     * @param token -{String}
-     */
-    registerToken: function registerToken(url, token) {
-        this.tokens = this.tokens || {};
-        if (!url || !token) {
-            return;
-        }
-        var domain = this._getTokenStorageKey(url);
-        this.tokens[domain] = token;
-    },
-
-    /**
-     * @function SuperMap.SecurityManager.prototype.registerKey
-     * @description 注册key,ids为数组(存在一个key对应多个服务)
-     * @param ids -{Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
-     * @param key -{String}
-     */
-    registerKey: function registerKey(ids, key) {
-        this.keys = this.keys || {};
-        if (!ids || ids.length < 1 || !key) {
-            return;
-        }
-
-        ids = _SuperMap2.default.Util.isArray(ids) ? ids : [ids];
-        for (var i = 0; i < ids.length; i++) {
-            var id = this._getUrlRestString(ids[0]) || ids[0];
-            this.keys[id] = key;
-        }
-    },
-
-    /**
-     * @function SuperMap.SecurityManager.prototype.getServerInfo
-     * @description 获取服务信息
-     * @param url {String}-服务器域名+端口，如：http://localhost:8092
-     */
-    getServerInfo: function getServerInfo(url) {
-        this.servers = this.servers || {};
-        return this.servers[url];
-    },
-
-    /**
-     * @function SuperMap.SecurityManager.prototype.getToken
-     * @description token按照域名存储
-     * @param url -{String}-服务器域名+端口，如：http://localhost:8092
-     */
-    getToken: function getToken(url) {
-        if (!url) {
-            return;
-        }
-        this.tokens = this.tokens || {};
-        var domain = this._getTokenStorageKey(url);
-        return this.tokens[domain];
-    },
-
-    getKey: function getKey(id) {
-        this.keys = this.keys || {};
-        var key = this._getUrlRestString(id) || id;
-        return this.keys[key];
-    },
-
-    /**
-     * @function SuperMap.SecurityManager.prototype.loginOnline
-     * @description Online登录验证
-     * @param callbackLocation -{String} 跳转位置
-     * @param newTab -{boolean}是否新窗口打开
-     */
-    loginOnline: function loginOnline(callbackLocation, newTab) {
-        var loginUrl = SecurityManager.SSO + "/login?service=" + callbackLocation;
-        this._open(loginUrl, newTab);
-    },
-
-    /**
-     * @function SuperMap.SecurityManager.prototype.loginPortal
-     * @description iPortal登录验证
-     * @param url -{String} 网站地址
-     * @param newTab -{boolean}是否新窗口打开
-     */
-    loginPortal: function loginPortal(url, newTab) {
-        var end = url.substr(url.length - 1, 1);
-        url += end === "/" ? "web/login" : "/web/login";
-        this._open(url, newTab);
-    },
-    /**
-     * @function SuperMap.SecurityManager.prototype.destroyAllCredentials
-     * @description 清空全部验证信息
-     */
-    destroyAllCredentials: function destroyAllCredentials() {
-        this.keys = null;
-        this.tokens = null;
-        this.servers = null;
-    },
-    /**
-     * @function SuperMap.SecurityManager.prototype.destroyToken
-     * @description 清空令牌信息
-     */
-    destroyToken: function destroyToken(url) {
-        if (!url) {
-            return;
-        }
-        var domain = this._getTokenStorageKey(url);
-        this.tokens = this.tokens || {};
-        if (this.tokens[domain]) {
-            delete this.tokens[domain];
-        }
-    },
-    /**
-     * @function SuperMap.SecurityManager.prototype.destroyToken
-     * @description 清空服务授权码
-     */
-    destroyKey: function destroyKey(id) {
-        if (!id) {
-            return;
-        }
-        this.keys = this.keys || {};
-        var key = this._getUrlRestString(id) || id;
-        if (this.keys[key]) {
-            delete this.keys[key];
-        }
-    },
-
-    _open: function _open(url, newTab) {
-        newTab = newTab != null ? newTab : true;
-        var offsetX = window.screen.availWidth / 2 - this.INNER_WINDOW_WIDTH / 2;
-        var offsetY = window.screen.availHeight / 2 - this.INNER_WINDOW_HEIGHT / 2;
-        var options = "height=" + this.INNER_WINDOW_HEIGHT + ", width=" + this.INNER_WINDOW_WIDTH + ",top=" + offsetY + ", left=" + offsetX + ",toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no";
-        if (newTab) {
-            window.open(url, 'login');
-        } else {
-            window.open(url, 'login', options);
-        }
-    },
-
-    _getTokenStorageKey: function _getTokenStorageKey(url) {
-        var patten = /http:\/\/([^\/]+)/i;
-        var result = url.match(patten);
-        if (!result) {
-            return url;
-        }
-        return result[0];
-    },
-
-    _getUrlRestString: function _getUrlRestString(url) {
-        if (!url) {
-            return url;
-        }
-        var patten = /http:\/\/(.*\/rest)/i;
-        var result = url.match(patten);
-        if (!result) {
-            return url;
-        }
-        return result[0];
-    }
-
-};
-_SuperMap2.default.SecurityManager.SSO = "https://sso.supermap.com";
-_SuperMap2.default.SecurityManager.ONLINE = "http://www.supermapol.com";
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.ServerInfo
- * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
- * @param type - {String} 服务器类型
- * @param options - {object} 非必填，服务器信息相关可选参数。如：<br>
- *        server - {string} 数据库服务器名
- *        tokenServiceUrl - {string} 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
- *        keyServiceUrl - {string} 非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
- */
-var ServerInfo =
-
-/**
- * @member SuperMap.ServerInfo.prototype.tokenServiceUrl -{string}
- * @description 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
- */
-
-/**
- * @member SuperMap.ServerInfo.prototype.type -{SuperMap.ServerType}
- * @description 服务器类型 如：http://supermapiserver:8090
- */
-function ServerInfo(type, options) {
-    _classCallCheck(this, ServerInfo);
-
-    this.type = null;
-    this.server = null;
-    this.tokenServiceUrl = null;
-    this.keyServiceUrl = null;
-    this.CLASS_NAME = "SuperMap.ServerInfo";
-
-    this.type = type || _REST.ServerType.ISERVER;
-    _SuperMap2.default.Util.extend(this, options);
-    if (!this.server) {
-        console.error('server url require is not  undefined');
-    }
-    var patten = /http:\/\/([^\/]+)/i;
-    this.server = this.server.match(patten)[0];
-
-    var tokenServiceSuffix = "/services/security/tokens.json";
-    if (this.type === _REST.ServerType.ISERVER && this.server.indexOf("iserver") < 0) {
-        tokenServiceSuffix = "/iserver" + tokenServiceSuffix;
-    }
-
-    if (!this.tokenServiceUrl) {
-        this.tokenServiceUrl = this.server + tokenServiceSuffix;
-    }
-
-    if (!this.keyServiceUrl) {
-        if (this.type === _REST.ServerType.IPORTAL) {
-            this.keyServiceUrl = this.server + "/web/mycontent/keys/register.json";
-        } else if (this.type === _REST.ServerType.ONLINE) {
-            this.keyServiceUrl = this.server + "/web/mycontent/keys.json";
-        }
-    }
-}
-
-/**
- * @member SuperMap.ServerInfo.prototype.keyServiceUrl -{string}
- * @description 非必填。如：http://supermapiserver:8092/web/mycontent/keys/register.json
- */
-
-
-/**
- * @member SuperMap.ServerInfo.prototype.server -{string}
- * @description 非必填，server - {String} 数据库服务器名
- */
-;
-
-exports.default = ServerInfo;
-
-
-_SuperMap2.default.ServerInfo = ServerInfo;
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _REST = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class SuperMap.TokenServiceParameter
- * @classdesc token申请参数
- * @param options - {Object} 参数。
- */
-var TokenServiceParameter = function () {
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.referer -{String}
-     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
-     */
-
-
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.clientType -{String}
-     * @description token申请的客户端标识类型。
-     */
-
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.userName -{String}
-     * @description 用户名。
-     */
-    function TokenServiceParameter(options) {
-        _classCallCheck(this, TokenServiceParameter);
-
-        this.userName = null;
-        this.password = null;
-        this.clientType = _REST.ClientType.NONE;
-        this.ip = null;
-        this.referer = null;
-        this.expiration = 60;
-        this.CLASS_NAME = "SuperMap.TokenServiceParameter";
-
-        _SuperMap2.default.Util.extend(this, options);
-    }
-
-    /**
-     * @function SuperMap.TokenServiceParameter.prototype.toJSON
-     * @description 将所有信息转成JSON字符串
-     * @return {String} 参数的JSON字符串
-     */
-
-
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.expiration -{number}
-     * @description 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
-     */
-
-
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.referer -{String}
-     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
-     */
-
-    /**
-     * @member SuperMap.TokenServiceParameter.prototype.password -{String}
-     * @description 密码。
-     */
-
-
-    _createClass(TokenServiceParameter, [{
-        key: 'toJSON',
-        value: function toJSON() {
-            return {
-                userName: this.userName,
-                password: this.password,
-                clientType: this.clientType,
-                ip: this.ip,
-                referer: this.referer,
-                expiration: this.expiration
-            };
-        }
-    }]);
-
-    return TokenServiceParameter;
-}();
-
-exports.default = TokenServiceParameter;
-
-
-_SuperMap2.default.TokenServiceParameter = TokenServiceParameter;
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _SuperMap = __webpack_require__(4);
+var _SuperMap = __webpack_require__(3);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
@@ -6507,6 +4075,2438 @@ var MapVRenderer = function (_MapVBaseLayer) {
 }(MapVBaseLayer);
 
 exports.default = MapVRenderer;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _CommonServiceBase2 = __webpack_require__(4);
+
+var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
+
+var _FetchRequest = __webpack_require__(5);
+
+var _GeoCodingParameter = __webpack_require__(15);
+
+var _GeoCodingParameter2 = _interopRequireDefault(_GeoCodingParameter);
+
+var _GeoDecodingParameter = __webpack_require__(16);
+
+var _GeoDecodingParameter2 = _interopRequireDefault(_GeoDecodingParameter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class SuperMap.AddressMatchService
+ * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
+ * @param options - {Object} 参数。
+ * @param url {string}
+ */
+var AddressMatchService = function (_CommonServiceBase) {
+    _inherits(AddressMatchService, _CommonServiceBase);
+
+    function AddressMatchService(url, options) {
+        _classCallCheck(this, AddressMatchService);
+
+        var _this = _possibleConstructorReturn(this, (AddressMatchService.__proto__ || Object.getPrototypeOf(AddressMatchService)).call(this, url, options));
+
+        _this.CLASS_NAME = "SuperMap.AddressMatchService";
+        return _this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+
+
+    _createClass(AddressMatchService, [{
+        key: 'destroy',
+        value: function destroy() {
+            _get(AddressMatchService.prototype.__proto__ || Object.getPrototypeOf(AddressMatchService.prototype), 'destroy', this).call(this);
+        }
+
+        /**
+         * @function SuperMap.AddressMatchService.prototype.code
+         * @param url {string} 正向地址匹配服务地址
+         * @param params {SuperMap.GeoCodingParameter} 正向地址匹配服务参数
+         */
+
+    }, {
+        key: 'code',
+        value: function code(url, params) {
+            this.processAsync(url, params);
+        }
+
+        /**
+         * @function SuperMap.AddressMatchService.prototype.decode
+         * @param url {string} 反向地址匹配服务地址
+         * @param params {SuperMap.GeoDecodingParameter} 反向地址匹配服务参数
+         */
+
+    }, {
+        key: 'decode',
+        value: function decode(url, params) {
+            this.processAsync(url, params);
+        }
+    }, {
+        key: 'processAsync',
+        value: function processAsync(url, params) {
+            var me = this;
+            return _FetchRequest.FetchRequest.get(url, params).then(function (response) {
+                return response.json();
+            }).then(function (result) {
+                if (result) {
+                    me.serviceProcessCompleted(result);
+                } else {
+                    me.serviceProcessFailed(result);
+                }
+            }).catch(function (e) {
+                me.eventListeners.processFailed({ error: e });
+            });
+        }
+    }, {
+        key: 'serviceProcessCompleted',
+        value: function serviceProcessCompleted(result) {
+            _get(AddressMatchService.prototype.__proto__ || Object.getPrototypeOf(AddressMatchService.prototype), 'serviceProcessCompleted', this).call(this, result);
+        }
+    }, {
+        key: 'serviceProcessFailed',
+        value: function serviceProcessFailed(result) {
+            _get(AddressMatchService.prototype.__proto__ || Object.getPrototypeOf(AddressMatchService.prototype), 'serviceProcessFailed', this).call(this, result);
+        }
+    }]);
+
+    return AddressMatchService;
+}(_CommonServiceBase3.default);
+
+exports.default = AddressMatchService;
+
+_SuperMap2.default.AddressMatchService = AddressMatchService;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.BuildCacheJobParameter
+ * @classdesc 地图缓存参数类
+ * @param options - {Object} 可选参数。如：<br>
+ *         datasetName - {String} 数据集名称。<br>
+ *         cacheName - {String} 缓存名称。<br>
+ *         cacheType - {String} 存储类型。<br>
+ *         serverAdresses - {String} MongoDB地址。<br>
+ *         database -- {String} 数据库。<br>
+ *         version -{String} 版本。<br>
+ *         bounds -{SuperMap.Bounds} 缓存范围。<br>
+ *         imageType -{number} 缓存类型.<br>
+ *         level -{number} 缓存比例尺级别。
+ */
+var BuildCacheJobParameter = function () {
+
+    /**
+     * @member SuperMap.BuildCacheJobParameter.prototype.imageType -{number}
+     * @description 缓存类型。
+     */
+
+
+    /**
+     * @member SuperMap.BuildCacheJobParameter.prototype.version -{String}
+     * @description 版本。
+     */
+
+
+    /**
+     * @member SuperMap.BuildCacheJobParameter.prototype.serverAddresses -{String}
+     * @description MongoDB地址。
+     */
+
+
+    /**
+     * @member SuperMap.BuildCacheJobParameter.prototype.cacheName -{String}
+     * @description 缓存名称。
+     */
+    function BuildCacheJobParameter(options) {
+        _classCallCheck(this, BuildCacheJobParameter);
+
+        this.datasetName = "";
+        this.cacheName = "";
+        this.cacheType = "";
+        this.serverAdresses = "";
+        this.database = "";
+        this.version = "";
+        this.bounds = "";
+        this.imageType = 'Heatmap';
+        this.level = null;
+
+        if (!options) {
+            return;
+        }
+        _SuperMap2.default.Util.extend(this, options);
+    }
+
+    /**
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+
+
+    /**
+     * @member SuperMap.BuildCacheJobParameter.prototype.level -{number}
+     * @description 缓存比例尺级别。
+     */
+
+
+    /**
+     * @member SuperMap.BuildCacheJobParameter.prototype.bounds -{SuperMap.Bounds}
+     * @description 缓存范围。
+     */
+
+
+    /**
+     * @member SuperMap.BuildCacheJobParameter.prototype.database -{String}
+     * @description 数据库。
+     */
+
+
+    /**
+     * @member SuperMap.BuildCacheJobParameter.prototype.cacheType -{String}
+     * @description 存储类型。
+     */
+
+    /**
+     * @member SuperMap.BuildCacheJobParameter.prototype.datasetName -{String}
+     * @description 数据集名称。
+     */
+
+
+    _createClass(BuildCacheJobParameter, [{
+        key: "destroy",
+        value: function destroy() {
+            this.datasetName = null;
+            this.cacheName = null;
+            this.cacheType = null;
+            this.serverAdresses = null;
+            this.database = null;
+            this.version = null;
+            this.bounds = null;
+            this.imageType = null;
+            this.level = null;
+        }
+    }], [{
+        key: "toObject",
+        value: function toObject(buildCacheJobParameter, tempObj) {
+            for (var name in buildCacheJobParameter) {
+                if (name === "datasetName") {
+                    tempObj['input'] = tempObj['input'] || {};
+                    tempObj['input'][name] = buildCacheJobParameter[name];
+                    continue;
+                }
+                if (_SuperMap2.default.Util.indexOf(["cacheName", "cacheType", "serverAdresses", "database", "version"], name) > -1) {
+                    tempObj['output'] = tempObj['output'] || {};
+                    tempObj['output'][name] = buildCacheJobParameter[name];
+                    continue;
+                }
+                tempObj['drawing'] = tempObj['drawing'] || {};
+                tempObj['drawing'][name] = buildCacheJobParameter[name];
+            }
+        }
+    }]);
+
+    return BuildCacheJobParameter;
+}();
+
+exports.default = BuildCacheJobParameter;
+
+
+_SuperMap2.default.BuildCacheJobParameter = BuildCacheJobParameter;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _ProcessingServiceBase = __webpack_require__(2);
+
+var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
+
+var _BuildCacheJobParameter = __webpack_require__(13);
+
+var _BuildCacheJobParameter2 = _interopRequireDefault(_BuildCacheJobParameter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class SuperMap.BuildCacheJobsService
+ * @classdesc 创建大数据缓存服务类
+ * @extends SuperMap.ProcessingServiceBase
+ * @param url -{String} 大数据缓存服务地址。
+ * @param options - {Object} 交互服务时所需可选参数。如：<br>
+ *        events - {SuperMap.Events} 处理所有事件的对象。<br>
+ *        eventListeners - {Object} 听器对象。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        index - {number} 服务访问地址在数组中的位置。<br>
+ *        length - {number} 服务访问地址数组长度。
+ */
+var BuildCacheJobsService = function (_ProcessingServiceBas) {
+    _inherits(BuildCacheJobsService, _ProcessingServiceBas);
+
+    /*
+     * @function SuperMap.BuildCacheJobsService.prototype.constructor
+     * @description SuperMap.BuildCacheJobsService 的构造函数
+     * @param url -{String} 大数据缓存服务地址。
+     * @param options - {Object} 交互服务时所需可选参数。
+     */
+    function BuildCacheJobsService(url, options) {
+        _classCallCheck(this, BuildCacheJobsService);
+
+        var _this = _possibleConstructorReturn(this, (BuildCacheJobsService.__proto__ || Object.getPrototypeOf(BuildCacheJobsService)).call(this, url, options));
+
+        _this.url += "/mapping/buildCache";
+        return _this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+
+
+    _createClass(BuildCacheJobsService, [{
+        key: 'destroy',
+        value: function destroy() {
+            _get(BuildCacheJobsService.prototype.__proto__ || Object.getPrototypeOf(BuildCacheJobsService.prototype), 'destory', this).call(this);
+        }
+
+        /**
+         * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJobs
+         * @description 获取创建的大数据缓存
+         */
+
+    }, {
+        key: 'getBuildCacheJobs',
+        value: function getBuildCacheJobs() {
+            return _get(BuildCacheJobsService.prototype.__proto__ || Object.getPrototypeOf(BuildCacheJobsService.prototype), 'getJobs', this).call(this, this.url);
+        }
+
+        /**
+         * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJob
+         * @description 获取指定 id的大数据缓存
+         * @param id - {String} 大数据缓存id
+         */
+
+    }, {
+        key: 'getBuildCacheJob',
+        value: function getBuildCacheJob(id) {
+            return _get(BuildCacheJobsService.prototype.__proto__ || Object.getPrototypeOf(BuildCacheJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+        }
+
+        /**
+         * @function SuperMap.BuildCacheJobsService.prototype.addBuildCacheJob
+         * @description 新建大数据缓存服务
+         * @param params - {SuperMap.BuildCacheJobParameter} 地图缓存参数类
+         * @param seconds - {String} 开始创建后，获取创建成功结果的时间间隔
+         */
+
+    }, {
+        key: 'addBuildCacheJob',
+        value: function addBuildCacheJob(params, seconds) {
+            _get(BuildCacheJobsService.prototype.__proto__ || Object.getPrototypeOf(BuildCacheJobsService.prototype), 'addJob', this).call(this, this.url, params, _BuildCacheJobParameter2.default, seconds);
+        }
+    }]);
+
+    return BuildCacheJobsService;
+}(_ProcessingServiceBase2.default);
+
+exports.default = BuildCacheJobsService;
+
+
+_SuperMap2.default.BuildCacheJobsService = BuildCacheJobsService;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.GeoCodingParameter
+ * @classdesc 地理正向匹配参数类。
+ * @param options - {Object} 参数。
+ */
+var GeoCodingParameter = function () {
+
+    /**
+     * @member SuperMap.GeoCodingParameter.prototype.prjCoordSys -{String}
+     * @description  查询结果的坐标系。
+     */
+
+
+    /**
+     * @member SuperMap.GeoCodingParameter.prototype.toIndex -{number}
+     * @description 设置返回对象的结束索引值。
+     */
+
+
+    /**
+     * @member SuperMap.GeoCodingParameter.prototype.address -{String}
+     * @description 地点关键词。
+     */
+    function GeoCodingParameter(options) {
+        _classCallCheck(this, GeoCodingParameter);
+
+        this.address = null;
+        this.fromIndex = null;
+        this.toIndex = null;
+        this.filters = null;
+        this.prjCoordSys = null;
+        this.maxReturn = null;
+
+        if (!options) {
+            return;
+        }
+        if (options.filters) {
+            var strs = [];
+            var fields = options.filters.split(',');
+            fields.map(function (field) {
+                strs.push("\"" + field + "\"");
+            });
+            options.filters = strs;
+        }
+        _SuperMap2.default.Util.extend(this, options);
+    }
+
+    /**
+     * @function SuperMap.GeoCodingParameter.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+
+
+    /**
+     * @member SuperMap.GeoCodingParameter.prototype.maxReturn -{String}
+     * @description 最大返回结果数。
+     */
+
+
+    /**
+     * @member SuperMap.GeoCodingParameter.prototype.filters -{Array}
+     * @description 过滤字段，限定查询区域。
+     */
+
+
+    /**
+     * @member SuperMap.GeoCodingParameter.prototype.fromIndex -{number}
+     * @description 设置返回对象的起始索引值。
+     */
+
+
+    _createClass(GeoCodingParameter, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.address = null;
+            this.fromIndex = null;
+            this.toIndex = null;
+            this.filters = null;
+            this.prjCoordSys = null;
+            this.maxReturn = null;
+        }
+    }]);
+
+    return GeoCodingParameter;
+}();
+
+exports.default = GeoCodingParameter;
+
+_SuperMap2.default.GeoCodingParameter = GeoCodingParameter;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.GeoDecodingParameter
+ * @classdesc 地理反向匹配参数类。
+ * @param options - {Object} 参数。如：<br>
+ *        x - {number} 查询位置的横坐标。<br>
+ *        y - {number} 查询位置的纵坐标。<br>
+ *        fromIndex - {number} 设置返回对象的起始索引值。<br>
+ *        filters -{Array} 过滤字段，限定查询区域。<br>
+ *        prjCoordSys -{String} 查询结果的坐标系。<br>
+ *        maxReturn -{number} 最大返回结果数。<br>
+ *        geoDecodingRadius -{number} 查询半径。
+ */
+var GeoDecodingParameter = function () {
+
+    /**
+     *  @member SuperMap.GeoDecodingParameter.prototype.maxReturn -{number}
+     *  @description 最大返回结果数。
+     */
+
+
+    /**
+     * @member SuperMap.GeoDecodingParameter.prototype.filters -{Array}
+     * @description 过滤字段，限定查询区域。
+     */
+
+    /**
+     * @member SuperMap.GeoDecodingParameter.prototype.fromIndex - {number}
+     * @description  设置返回对象的起始索引值。
+     */
+
+    /**
+     * @member SuperMap.GeoDecodingParameter.prototype.x - {number}
+     * @description 查询位置的横坐标。
+     */
+    function GeoDecodingParameter(options) {
+        _classCallCheck(this, GeoDecodingParameter);
+
+        this.x = null;
+        this.y = null;
+        this.fromIndex = null;
+        this.toIndex = null;
+        this.filters = null;
+        this.prjCoordSys = null;
+        this.maxReturn = null;
+        this.geoDecodingRadius = null;
+
+        if (!options) {
+            return;
+        }
+        if (options.filters) {
+            var strs = [];
+            var fields = options.filters.split(',');
+            fields.map(function (field) {
+                strs.push("\"" + field + "\"");
+            });
+            options.filters = strs;
+        }
+        _SuperMap2.default.Util.extend(this, options);
+    }
+
+    /**
+     * @function SuperMap.GeoDecodingParameter.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+
+
+    /**
+     * @member SuperMap.GeoDecodingParameter.prototype.geoDecodingRadius -{number}
+     * @description 查询半径。
+     */
+
+
+    /**
+     * @member SuperMap.GeoDecodingParameter.prototype.prjCoordSys -{String}
+     * @description 查询结果的坐标系。
+     */
+
+
+    /**
+     * @member SuperMap.GeoDecodingParameter.prototype.toIndex - {number}
+     * @description 设置返回对象的结束索引值。
+     */
+
+
+    /**
+     * @member SuperMap.GeoDecodingParameter.prototype.y - {number}
+     * @description 查询位置的纵坐标。
+     */
+
+
+    _createClass(GeoDecodingParameter, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.x = null;
+            this.y = null;
+            this.fromIndex = null;
+            this.toIndex = null;
+            this.filters = null;
+            this.prjCoordSys = null;
+            this.maxReturn = null;
+            this.geoDecodingRadius = null;
+        }
+    }]);
+
+    return GeoDecodingParameter;
+}();
+
+exports.default = GeoDecodingParameter;
+
+
+_SuperMap2.default.GeoDecodingParameter = GeoDecodingParameter;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _REST = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.KernelDensityJobParameter
+ * @description 密度分析任务参数类
+ * @param options - {Object} 可选参数。如：<br>
+ *        datasetName -{String} 数据集名。 <br>
+ *        query -{SuperMap.Bounds} 分析范围。 <br>
+ *        resolution -{number} 分辨率。 <br>
+ *        method -{number} 分析方法。 <br>
+ *        meshType -{number} 分析类型。 <br>
+ *        fields -{String} 权重索引。 <br>
+ *        radius -{number} 分析的影响半径。
+ */
+var KernelDensityJobParameter = function () {
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.radiusUnit -{SuperMap.AnalystSizeUnit}
+     * @description 搜索半径单位。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.radius -{number}
+     * @description 分析的影响半径。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.meshType -{number}
+     * @description 分析类型。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.resolution -{number}
+     * @description 网格大小。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{String}
+     * @description 数据集名。
+     */
+    function KernelDensityJobParameter(options) {
+        _classCallCheck(this, KernelDensityJobParameter);
+
+        this.datasetName = "";
+        this.query = "";
+        this.resolution = 80;
+        this.method = 0;
+        this.meshType = 0;
+        this.fields = "";
+        this.radius = 300;
+        this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
+        this.radiusUnit = _REST.AnalystSizeUnit.METER;
+        this.areaUnit = _REST.AnalystAreaUnit.SQUAREMILE;
+
+        if (!options) {
+            return;
+        }
+        _SuperMap2.default.Util.extend(this, options);
+    }
+
+    /**
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.areaUnit -{SuperMap.AnalystAreaUnit}
+     * @description 面积单位。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
+     * @description 网格大小单位。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.fields -{String}
+     * @description 权重索引。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.method -{number}
+     * @description 分析方法。
+     */
+
+
+    /**
+     * @member SuperMap.KernelDensityJobParameter.prototype.query -{SuperMap.Bounds}
+     * @description 分析范围。
+     */
+
+
+    _createClass(KernelDensityJobParameter, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.datasetName = null;
+            this.query = null;
+            this.resolution = null;
+            this.method = null;
+            this.radius = null;
+            this.meshType = null;
+            this.fields = null;
+            this.meshSizeUnit = null;
+            this.radiusUnit = null;
+            this.areaUnit = null;
+        }
+    }], [{
+        key: 'toObject',
+        value: function toObject(kernelDensityJobParameter, tempObj) {
+            for (var name in kernelDensityJobParameter) {
+                if (name === "datasetName") {
+                    tempObj['input'] = tempObj['input'] || {};
+                    tempObj['input'][name] = kernelDensityJobParameter[name];
+                    continue;
+                }
+                tempObj['analyst'] = tempObj['analyst'] || {};
+                tempObj['analyst'][name] = kernelDensityJobParameter[name];
+            }
+        }
+    }]);
+
+    return KernelDensityJobParameter;
+}();
+
+exports.default = KernelDensityJobParameter;
+
+
+_SuperMap2.default.KernelDensityJobParameter = KernelDensityJobParameter;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _ProcessingServiceBase = __webpack_require__(2);
+
+var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
+
+var _KernelDensityJobParameter = __webpack_require__(17);
+
+var _KernelDensityJobParameter2 = _interopRequireDefault(_KernelDensityJobParameter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class SuperMap.KernelDensityJobsService
+ * @classdesc 核密度大数据服务类
+ * @extends SuperMap.ProcessingServiceBase
+ * @param url -{String} 核密度大数据服务地址。
+ * @param options - {Object} 交互服务时所需可选参数。
+ */
+var KernelDensityJobsService = function (_ProcessingServiceBas) {
+    _inherits(KernelDensityJobsService, _ProcessingServiceBas);
+
+    function KernelDensityJobsService(url, options) {
+        _classCallCheck(this, KernelDensityJobsService);
+
+        var _this = _possibleConstructorReturn(this, (KernelDensityJobsService.__proto__ || Object.getPrototypeOf(KernelDensityJobsService)).call(this, url, options));
+
+        _this.CLASS_NAME = "SuperMap.KernelDensityJobsService";
+
+        _this.url += "/spatialanalyst/density";
+        return _this;
+    }
+
+    /**
+     *@inheritDoc
+     */
+
+
+    _createClass(KernelDensityJobsService, [{
+        key: 'destroy',
+        value: function destroy() {
+            _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'destroy', this).call(this);
+        }
+
+        /**
+         * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
+         * @description 获取核密度大数据
+         * @return {*}
+         */
+
+    }, {
+        key: 'getKernelDensityJobs',
+        value: function getKernelDensityJobs() {
+            return _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'getJobs', this).call(this, this.url);
+        }
+
+        /**
+         * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
+         * @description 获取指定id的核密度大数据服务
+         * @param id -{String} 指定要获取数据的id
+         */
+
+    }, {
+        key: 'getKernelDensityJob',
+        value: function getKernelDensityJob(id) {
+            return _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+        }
+
+        /**
+         * @function SuperMap.KernelDensityJobsService.prototype.addKernelDensityJob
+         * @description 新建核密度大数据服务
+         * @param params - {SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
+         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
+         */
+
+    }, {
+        key: 'addKernelDensityJob',
+        value: function addKernelDensityJob(params, seconds) {
+            return _get(KernelDensityJobsService.prototype.__proto__ || Object.getPrototypeOf(KernelDensityJobsService.prototype), 'addJob', this).call(this, this.url, params, _KernelDensityJobParameter2.default, seconds);
+        }
+    }]);
+
+    return KernelDensityJobsService;
+}(_ProcessingServiceBase2.default);
+
+exports.default = KernelDensityJobsService;
+
+
+_SuperMap2.default.KernelDensityJobsService = KernelDensityJobsService;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _REST = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.SingleObjectQueryJobsParameter
+ * @classdesc 单对象空间查询分析任务参数类
+ * @param options - {Object} 必填参数。<br>
+ *         datasetName -{String} 数据集名。 <br>
+ *         datasetQuery -{String} 查询对象所在的数据集名称。 <br>
+ *         mode -{SuperMap.SpatialQueryMode} 空间查询模式 。 <br>
+ */
+var SingleObjectQueryJobsParameter = function () {
+
+    /**
+     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{String}
+     * @description 查询对象所在的数据集名称。
+     */
+    function SingleObjectQueryJobsParameter(options) {
+        _classCallCheck(this, SingleObjectQueryJobsParameter);
+
+        this.datasetName = "";
+        this.datasetQuery = "";
+        this.mode = _REST.SpatialQueryMode.CONTAIN;
+
+        if (!options) {
+            return;
+        }
+        _SuperMap2.default.Util.extend(this, options);
+    }
+
+    /**
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+
+
+    /**
+     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.mode -{SuperMap.SpatialQueryMode}
+     * @description 空间查询模式 。
+     */
+
+
+    /**
+     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{String}
+     * @description 数据集名。
+     */
+
+
+    _createClass(SingleObjectQueryJobsParameter, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.datasetName = null;
+            this.datasetQuery = null;
+            this.mode = null;
+        }
+    }], [{
+        key: 'toObject',
+        value: function toObject(singleObjectQueryJobsParameter, tempObj) {
+            for (var name in singleObjectQueryJobsParameter) {
+                if (name === "datasetName") {
+                    tempObj['input'] = tempObj['input'] || {};
+                    tempObj['input'][name] = singleObjectQueryJobsParameter[name];
+                    continue;
+                }
+                tempObj['analyst'] = tempObj['analyst'] || {};
+                tempObj['analyst'][name] = singleObjectQueryJobsParameter[name];
+            }
+        }
+    }]);
+
+    return SingleObjectQueryJobsParameter;
+}();
+
+exports.default = SingleObjectQueryJobsParameter;
+
+
+_SuperMap2.default.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _ProcessingServiceBase = __webpack_require__(2);
+
+var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
+
+var _SingleObjectQueryJobsParameter = __webpack_require__(19);
+
+var _SingleObjectQueryJobsParameter2 = _interopRequireDefault(_SingleObjectQueryJobsParameter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class SuperMap.SingleObjectQueryJobsService
+ * @classdesc 大数据单对象查询分析服务类
+ * @extends SuperMap.ProcessingServiceBase
+ * @param url -{String} 大数据单对象空间查询分析服务地址。
+ * @param options - {Object} 交互服务时所需可选参数。
+ */
+var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
+    _inherits(SingleObjectQueryJobsService, _ProcessingServiceBas);
+
+    function SingleObjectQueryJobsService(url, options) {
+        _classCallCheck(this, SingleObjectQueryJobsService);
+
+        var _this = _possibleConstructorReturn(this, (SingleObjectQueryJobsService.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService)).call(this, url, options));
+
+        _this.CLASS_NAME = "SuperMap.SingleObjectQueryJobsService";
+
+        _this.url += "/spatialanalyst/query";
+        return _this;
+    }
+
+    /**
+     *@inheritDoc
+     */
+
+
+    _createClass(SingleObjectQueryJobsService, [{
+        key: 'destroy',
+        value: function destroy() {
+            _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'destroy', this).call(this);
+        }
+
+        /**
+         * @function SuperMap.SingleObjectQueryJobsService.protitype.getQueryJobs
+         * @description 获取大数据单对象空间查询分析所有
+         * @return {*}
+         */
+
+    }, {
+        key: 'getQueryJobs',
+        value: function getQueryJobs() {
+            return _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'getJobs', this).call(this, this.url);
+        }
+
+        /**
+         * @function SuperMap.KernelDensityJobsService.protitype.getQueryJob
+         * @description 获取指定id的单对象空间查询分析服务
+         * @param id -{String} 指定要获取数据的id
+         */
+
+    }, {
+        key: 'getQueryJob',
+        value: function getQueryJob(id) {
+            return _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+        }
+
+        /**
+         * @function SuperMap.SingleObjectQueryJobsService.protitype.addQueryJob
+         * @description 新建大数据单对象空间查询分析服务
+         * @param params - {SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
+         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
+         */
+
+    }, {
+        key: 'addQueryJob',
+        value: function addQueryJob(params, seconds) {
+            return _get(SingleObjectQueryJobsService.prototype.__proto__ || Object.getPrototypeOf(SingleObjectQueryJobsService.prototype), 'addJob', this).call(this, this.url, params, _SingleObjectQueryJobsParameter2.default, seconds);
+        }
+    }]);
+
+    return SingleObjectQueryJobsService;
+}(_ProcessingServiceBase2.default);
+
+exports.default = SingleObjectQueryJobsService;
+
+
+_SuperMap2.default.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _REST = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.SummaryMeshJobParameter
+ * @classdesc 点聚合分析任务参数类
+ * @param options - {Object} 可选参数。如：<br>
+ *        datasetName -{String} 数据集名。<br>
+ *        query -{SuperMap.Bounds} 分析范围。<br>
+ *        resolution -{number} 分辨率。<br>
+ *        statisticModes -{String} 分析模式。<br>
+ *        meshType -{number} 分析类型。<br>
+ *        fields -{number} 权重索引。<br>
+ *        type -{String} 聚合类型。
+ */
+var SummaryMeshJobParameter = function () {
+
+    /**
+     * @member SuperMap.SummaryMeshJobParameter.prototype.fields -{number}
+     * @description 权重字段。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryMeshJobParameter.prototype.meshType -{number}
+     * @description  网格面类型(聚合类型为网格面聚合时使用的参数),取值：0或1。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryMeshJobParameter.prototype.query -{SuperMap.Bounds}
+     * @description 分析范围(聚合类型为网格面聚合时使用的参数)。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryMeshJobParameter.prototype.datasetName -{String}
+     * @description 数据集名。
+     */
+    function SummaryMeshJobParameter(options) {
+        _classCallCheck(this, SummaryMeshJobParameter);
+
+        this.datasetName = "";
+        this.regionDataset = "";
+        this.query = "";
+        this.resolution = 100;
+        this.meshType = 0;
+        this.statisticModes = "";
+        this.fields = "";
+        this.type = _REST.SummaryType.SUMMARYMESH;
+
+        if (!options) {
+            return;
+        }
+        _SuperMap2.default.Util.extend(this, options);
+    }
+
+    /**
+     * @inheritDoc
+     */
+
+
+    /**
+     * @member SuperMap.SummaryMeshJobParameter.prototype.type -{SuperMap.SummaryType}
+     * @description 聚合类型。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryMeshJobParameter.prototype.statisticModes -{SuperMap.StatisticAnalystMode}
+     * @description 统计模式。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryMeshJobParameter.prototype.resolution -{number}
+     * @description 分辨率(聚合类型为网格面聚合时使用的参数)。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryMeshJobParameter.prototype.regionDataset -{String}
+     * @description 聚合面数据集(聚合类型为多边形聚合时使用的参数)。
+     */
+
+
+    _createClass(SummaryMeshJobParameter, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.datasetName = null;
+            this.query = null;
+            this.resolution = null;
+            this.statisticModes = null;
+            this.meshType = null;
+            this.fields = null;
+            this.regionDataset = null;
+            this.type = null;
+        }
+    }], [{
+        key: 'toObject',
+        value: function toObject(summaryMeshJobParameter, tempObj) {
+            for (var name in summaryMeshJobParameter) {
+                if (name === "datasetName") {
+                    tempObj['input'] = tempObj['input'] || {};
+                    tempObj['input'][name] = summaryMeshJobParameter[name];
+                    continue;
+                }
+                if (name === "type") {
+                    tempObj['type'] = summaryMeshJobParameter[name];
+                    continue;
+                }
+                if (summaryMeshJobParameter.type === 'SUMMARYMESH' && name !== 'regionDataset' || summaryMeshJobParameter.type === 'SUMMARYREGION' && !contains(['meshType', 'resolution', 'query'], name)) {
+                    tempObj['analyst'] = tempObj['analyst'] || {};
+                    tempObj['analyst'][name] = summaryMeshJobParameter[name];
+                }
+            }
+
+            function contains(arr, obj) {
+                var i = arr.length;
+                while (i--) {
+                    if (arr[i] === obj) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+    }]);
+
+    return SummaryMeshJobParameter;
+}();
+
+exports.default = SummaryMeshJobParameter;
+
+
+_SuperMap2.default.SummaryMeshJobParameter = SummaryMeshJobParameter;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _ProcessingServiceBase = __webpack_require__(2);
+
+var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
+
+var _SummaryMeshJobParameter = __webpack_require__(21);
+
+var _SummaryMeshJobParameter2 = _interopRequireDefault(_SummaryMeshJobParameter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class SuperMap.SummaryMeshJobsService
+ * @classdesc 点聚合分析大数据任务类。
+ * @param url -{String} 点聚合分析任务地址。
+ * @param options - {Object} 交互服务时所需可选参数。如：<br>
+ *        events - {SuperMap.Events} 处理所有事件的对象。<br>
+ *        eventListeners - {Object} 听器对象。<br>
+ *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
+ *        index - {number} 服务访问地址在数组中的位置。<br>
+ *        length - {number} 服务访问地址数组长度。
+ */
+var SummaryMeshJobsService = function (_ProcessingServiceBas) {
+    _inherits(SummaryMeshJobsService, _ProcessingServiceBas);
+
+    function SummaryMeshJobsService(url, options) {
+        _classCallCheck(this, SummaryMeshJobsService);
+
+        var _this = _possibleConstructorReturn(this, (SummaryMeshJobsService.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService)).call(this, url, options));
+
+        _this.CLASS_NAME = "SuperMap.SummaryMeshJobsService";
+
+        _this.url += "/spatialanalyst/aggregatepoints";
+        return _this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+
+
+    _createClass(SummaryMeshJobsService, [{
+        key: 'destroy',
+        value: function destroy() {
+            _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'destroy', this).call(this);
+        }
+
+        /**
+         * @function SuperMap.SummaryMeshJobsService.prototype.getSummaryMeshJobs
+         * @description 获取点聚合分析大数据
+         */
+
+    }, {
+        key: 'getSummaryMeshJobs',
+        value: function getSummaryMeshJobs() {
+            return _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'getJobs', this).call(this, this.url);
+        }
+
+        /**
+         * @function SuperMap.SummaryMeshJobsService.prototype.getSummaryMeshJob
+         * @description 获取指定ip的点聚合分析大数据
+         * @param id -{String} 指定要获取数据的id
+         */
+
+    }, {
+        key: 'getSummaryMeshJob',
+        value: function getSummaryMeshJob(id) {
+            return _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+        }
+
+        /**
+         * @function SuperMap.SummaryMeshJobsService.prototype.addSummaryMeshJob
+         * @description 新建点聚合分析大数据服务
+         * @param params - {SuperMap.SummaryMeshJobParameter} 创建一个空间分析的请求参数。
+         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
+         */
+
+    }, {
+        key: 'addSummaryMeshJob',
+        value: function addSummaryMeshJob(params, seconds) {
+            _get(SummaryMeshJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryMeshJobsService.prototype), 'addJob', this).call(this, this.url, params, _SummaryMeshJobParameter2.default, seconds);
+        }
+    }]);
+
+    return SummaryMeshJobsService;
+}(_ProcessingServiceBase2.default);
+
+exports.default = SummaryMeshJobsService;
+
+
+_SuperMap2.default.SummaryMeshJobsService = SummaryMeshJobsService;
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _REST = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.SummaryRegionJobParameter
+ * @classdesc 范围汇总分析任务参数类
+ * @param options - {Object} 可选参数。如：<br>
+ *         datasetName -{String} 数据集名。 <br>
+ *         sumShape -{Boolean} 是否统计长度或面积。 <br>
+ *         query -{SuperMap.Bounds} 分析范围。 <br>
+ *         standardSummaryFields -{Boolean} 以标准属字段统计。 <br>
+ *         standardFields -{String} 以标准属字段统计的字段名称。 <br>
+ *         standardStatisticModes -{String} 以标准属字段统计的统计模式。 <br>
+ *         weightedSummaryFields -{Boolean} 以权重字段统计。 <br>
+ *         weightedFields -{String} 以权重字段统计的字段名称。 <br>
+ *         weightedStatisticModes -{String} 以权重字段统计的统计模式。 <br>
+ *         resolution -{number} 网格大小。 <br>
+ *         meshType -{number} 网格面汇总类型。 <br>
+ *         meshSizeUnit -{String} 网格大小单位。 <br>
+ *         type -{String} 汇总类型。 <br>
+ */
+var SummaryRegionJobParameter = function () {
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.meshSizeUnit -{SuperMap.AnalystSizeUnit}
+     * @description 网格大小单位。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.meshType -{number}
+     * @description 网格面汇总类型。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedFields -{String}
+     * @description 以权重字段统计的字段名称。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.standardStatisticModes -{SuperMap.StatisticAnalystMode}
+     * @description 以标准属字段统计的统计模式。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{Boolean}
+     * @description 以标准属字段统计。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{Boolean}
+     * @description 是否统计长度或面积。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{String}
+     * @description 数据集名。
+     */
+    function SummaryRegionJobParameter(options) {
+        _classCallCheck(this, SummaryRegionJobParameter);
+
+        this.datasetName = "";
+        this.regionDataset = "";
+        this.sumShape = true;
+        this.query = "";
+        this.standardSummaryFields = false;
+        this.standardFields = "";
+        this.standardStatisticModes = "";
+        this.weightedSummaryFields = false;
+        this.weightedFields = "";
+        this.weightedStatisticModes = "";
+        this.meshType = 0;
+        this.resolution = 100;
+        this.meshSizeUnit = _REST.AnalystSizeUnit.METER;
+        this.type = _REST.SummaryType.SUMMARYMESH;
+
+        if (!options) {
+            return;
+        }
+        _SuperMap2.default.Util.extend(this, options);
+    }
+
+    /**
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.type -{SuperMap.SummaryType}
+     * @description 汇总类型。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.resolution -{number}
+     * @description 网格大小。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedStatisticModes -{SuperMap.StatisticAnalystMode}
+     * @description 以权重字段统计的统计模式。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields -{Boolean}
+     * @description 以权重字段统计。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{String}
+     * @description 以标准属字段统计的字段名称。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.query -{SuperMap.Bounds}
+     * @description 分析范围。
+     */
+
+
+    /**
+     * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{String}
+     * @description 汇总数据源（多边形汇总时用到的参数）。
+     */
+
+
+    _createClass(SummaryRegionJobParameter, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.datasetName = null;
+            this.sumShape = null;
+            this.query = null;
+            this.standardSummaryFields = null;
+            this.standardFields = null;
+            this.standardStatisticModes = null;
+            this.weightedSummaryFields = null;
+            this.weightedFields = null;
+            this.weightedStatisticModes = null;
+            this.meshType = null;
+            this.resolution = null;
+            this.meshSizeUnit = null;
+            this.type = null;
+        }
+    }], [{
+        key: 'toObject',
+        value: function toObject(summaryRegionJobParameter, tempObj) {
+            for (var name in summaryRegionJobParameter) {
+                if (name === "datasetName") {
+                    tempObj['input'] = tempObj['input'] || {};
+                    tempObj['input'][name] = summaryRegionJobParameter[name];
+                    continue;
+                }
+                if (name === "type") {
+                    tempObj['type'] = summaryRegionJobParameter[name];
+                    continue;
+                }
+                if (summaryRegionJobParameter.type === "SUMMARYREGION" || summaryRegionJobParameter.type === "SUMMARYMESH" && name !== "regionDataset") {
+                    tempObj['analyst'] = tempObj['analyst'] || {};
+                    tempObj['analyst'][name] = summaryRegionJobParameter[name];
+                }
+            }
+        }
+    }]);
+
+    return SummaryRegionJobParameter;
+}();
+
+exports.default = SummaryRegionJobParameter;
+
+
+_SuperMap2.default.SummaryRegionJobParameter = SummaryRegionJobParameter;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _ProcessingServiceBase = __webpack_require__(2);
+
+var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
+
+var _SummaryRegionJobParameter = __webpack_require__(23);
+
+var _SummaryRegionJobParameter2 = _interopRequireDefault(_SummaryRegionJobParameter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class SuperMap.SummaryRegionJobsService
+ * @classdesc 范围汇总分析服务类
+ * @extends SuperMap.ProcessingServiceBase
+ * @param url -{String} 范围汇总分析服务地址。
+ * @param options - {Object} 范围汇总分析服务可选参数。
+ */
+var SummaryRegionJobsService = function (_ProcessingServiceBas) {
+    _inherits(SummaryRegionJobsService, _ProcessingServiceBas);
+
+    function SummaryRegionJobsService(url, options) {
+        _classCallCheck(this, SummaryRegionJobsService);
+
+        var _this = _possibleConstructorReturn(this, (SummaryRegionJobsService.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService)).call(this, url, options));
+
+        _this.CLASS_NAME = "SuperMap.SummaryRegionJobsService";
+
+        _this.url += "/spatialanalyst/summaryregion";
+        return _this;
+    }
+
+    /**
+     *@inheritDoc
+     */
+
+
+    _createClass(SummaryRegionJobsService, [{
+        key: 'destroy',
+        value: function destroy() {
+            _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'destroy', this).call(this);
+        }
+
+        /**
+         * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJobs
+         * @description 获取范围汇总分析任务集合。
+         * @return {*}
+         */
+
+    }, {
+        key: 'getSummaryRegionJobs',
+        value: function getSummaryRegionJobs() {
+            return _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'getJobs', this).call(this, this.url);
+        }
+
+        /**
+         * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJob
+         * @description 获取指定id的范围汇总分析任务。
+         * @param id -{String} 要获取范围汇总分析任务的id
+         */
+
+    }, {
+        key: 'getSummaryRegionJob',
+        value: function getSummaryRegionJob(id) {
+            return _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+        }
+
+        /**
+         * @function SuperMap.SummaryRegionJobsService.prototype.addSummaryRegionJob
+         * @description 新建范围汇总任务。
+         * @param params - {SuperMap.SummaryRegionJobParameter} 创建一个范围汇总任务的请求参数。
+         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
+         */
+
+    }, {
+        key: 'addSummaryRegionJob',
+        value: function addSummaryRegionJob(params, seconds) {
+            return _get(SummaryRegionJobsService.prototype.__proto__ || Object.getPrototypeOf(SummaryRegionJobsService.prototype), 'addJob', this).call(this, this.url, params, _SummaryRegionJobParameter2.default, seconds);
+        }
+    }]);
+
+    return SummaryRegionJobsService;
+}(_ProcessingServiceBase2.default);
+
+exports.default = SummaryRegionJobsService;
+
+
+_SuperMap2.default.SummaryRegionJobsService = SummaryRegionJobsService;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _REST = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.VectorClipJobsParameter
+ * @classdesc 矢量裁剪分析任务参数类
+ * @param options - {Object} 必填参数。<br>
+ *         datasetName -{String} 数据集名。 <br>
+ *         datasetOverlay -{String} 裁剪对象数据集。 <br>
+ *         mode -{SuperMap.SpatialQueryMode} 裁剪分析模式 。 <br>
+ */
+var VectorClipJobsParameter = function () {
+
+    /**
+     * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{String}
+     * @description 裁剪对象数据集。
+     */
+    function VectorClipJobsParameter(options) {
+        _classCallCheck(this, VectorClipJobsParameter);
+
+        this.datasetName = "";
+        this.datasetOverlay = "";
+        this.mode = _REST.ClipAnalystMode.CLIP;
+        this.CLASS_NAME = "SuperMap.VectorClipJobsParameter";
+
+        options = options || {};
+        if (options.mode && typeof options.mode === "string") {
+            options.mode = options.mode.toLowerCase();
+        }
+        _SuperMap2.default.Util.extend(this, options);
+    }
+
+    /**
+     * @function destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
+
+
+    /**
+     * @member SuperMap.VectorClipJobsParameter.prototype.mode -{SuperMap.ClipAnalystMode}
+     * @description 裁剪分析模式 。
+     */
+
+
+    /**
+     * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{String}
+     * @description 数据集名。
+     */
+
+
+    _createClass(VectorClipJobsParameter, [{
+        key: 'destroy',
+        value: function destroy() {
+            this.datasetName = null;
+            this.datasetOverlay = null;
+            this.mode = null;
+        }
+    }], [{
+        key: 'toObject',
+        value: function toObject(vectorClipJobsParameter, tempObj) {
+            for (var name in vectorClipJobsParameter) {
+                if (name === "datasetName") {
+                    tempObj['input'] = tempObj['input'] || {};
+                    tempObj['input'][name] = vectorClipJobsParameter[name];
+                    continue;
+                }
+                tempObj['analyst'] = tempObj['analyst'] || {};
+                tempObj['analyst'][name] = vectorClipJobsParameter[name];
+            }
+        }
+    }]);
+
+    return VectorClipJobsParameter;
+}();
+
+exports.default = VectorClipJobsParameter;
+
+
+_SuperMap2.default.VectorClipJobsParameter = VectorClipJobsParameter;
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _ProcessingServiceBase = __webpack_require__(2);
+
+var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
+
+var _VectorClipJobsParameter = __webpack_require__(25);
+
+var _VectorClipJobsParameter2 = _interopRequireDefault(_VectorClipJobsParameter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ * @class SuperMap.VectorClipJobsService
+ * @classdesc 大数据矢量裁剪分析服务类
+ * @extends SuperMap.ProcessingServiceBase
+ * @param url -{String} 大数据矢量裁剪分析服务地址。
+ * @param options - {Object} 交互服务时所需可选参数。
+ */
+var VectorClipJobsService = function (_ProcessingServiceBas) {
+    _inherits(VectorClipJobsService, _ProcessingServiceBas);
+
+    function VectorClipJobsService(url, options) {
+        _classCallCheck(this, VectorClipJobsService);
+
+        var _this = _possibleConstructorReturn(this, (VectorClipJobsService.__proto__ || Object.getPrototypeOf(VectorClipJobsService)).call(this, url, options));
+
+        _this.CLASS_NAME = "SuperMap.VectorClipJobsService";
+
+        _this.url += "/spatialanalyst/vectorclip";
+        return _this;
+    }
+
+    /**
+     *@inheritDoc
+     */
+
+
+    _createClass(VectorClipJobsService, [{
+        key: 'destroy',
+        value: function destroy() {
+            _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'destroy', this).call(this);
+        }
+
+        /**
+         * @function SuperMap.VectorClipJobsService.protitype.getVectorClipJobs
+         * @description 获取大数据矢量裁剪分析所有
+         * @return {*}
+         */
+
+    }, {
+        key: 'getVectorClipJobs',
+        value: function getVectorClipJobs() {
+            return _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'getJobs', this).call(this, this.url);
+        }
+
+        /**
+         * @function SuperMap.KernelDensityJobsService.protitype.getVectorClipJob
+         * @description 获取指定id的矢量裁剪分析服务
+         * @param id -{String} 指定要获取数据的id
+         */
+
+    }, {
+        key: 'getVectorClipJob',
+        value: function getVectorClipJob(id) {
+            return _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
+        }
+
+        /**
+         * @function SuperMap.VectorClipJobsService.protitype.addVectorClipJob
+         * @description 新建大数据矢量裁剪分析服务
+         * @param params - {SuperMap.VectorClipJobsParameter} 创建一个空间分析的请求参数。
+         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
+         */
+
+    }, {
+        key: 'addVectorClipJob',
+        value: function addVectorClipJob(params, seconds) {
+            return _get(VectorClipJobsService.prototype.__proto__ || Object.getPrototypeOf(VectorClipJobsService.prototype), 'addJob', this).call(this, this.url, params, _VectorClipJobsParameter2.default, seconds);
+        }
+    }]);
+
+    return VectorClipJobsService;
+}(_ProcessingServiceBase2.default);
+
+exports.default = VectorClipJobsService;
+
+
+_SuperMap2.default.VectorClipJobsService = VectorClipJobsService;
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _REST = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.KeyServiceParameter
+ * @classdesc key申请参数
+ * @param options - {Object} 参数。如：<br>
+ *        name - {String} 申请服务名称。<br>
+ *        serviceIds - {number} 服务ID。<br>
+ *        clientType - {ClientType} 服务端类型。<br>
+ *        limitation - {number} 有效期
+ */
+var KeyServiceParameter = function () {
+    function KeyServiceParameter(options) {
+        _classCallCheck(this, KeyServiceParameter);
+
+        this.name = null;
+        this.serviceIds = null;
+        this.clientType = _REST.ClientType.SERVER;
+        this.limitation = null;
+        this.CLASS_NAME = "SuperMap.KeyServiceParameter";
+
+        _SuperMap2.default.Util.extend(this, options);
+    }
+
+    /**
+     * @function SuperMap.KeyServiceParameter.prototype.toJSON
+     * @description 转换成JSON对象
+     * @return {object} 参数的JSON对象
+     */
+
+
+    _createClass(KeyServiceParameter, [{
+        key: 'toJSON',
+        value: function toJSON() {
+            return {
+                name: this.name,
+                serviceIds: this.serviceIds,
+                clientType: this.clientType,
+                limitation: this.limitation
+            };
+        }
+    }]);
+
+    return KeyServiceParameter;
+}();
+
+exports.default = KeyServiceParameter;
+
+
+_SuperMap2.default.KeyServiceParameter = KeyServiceParameter;
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _ServerInfo = __webpack_require__(29);
+
+var _ServerInfo2 = _interopRequireDefault(_ServerInfo);
+
+var _TokenServiceParameter = __webpack_require__(30);
+
+var _TokenServiceParameter2 = _interopRequireDefault(_TokenServiceParameter);
+
+var _KeyServiceParameter = __webpack_require__(27);
+
+var _KeyServiceParameter2 = _interopRequireDefault(_KeyServiceParameter);
+
+var _FetchRequest = __webpack_require__(5);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @class SuperMap.SecurityManager
+ * @classdesc
+ *  安全管理中心
+ *  提供iServer,iPortal,Online统一权限认证管理
+ *  使用说明：
+ *  创建任何一个服务之前调用SuperMap.SecurityManager.registerToken或
+ *  SuperMap.SecurityManager.registerKey注册凭据。
+ *  发送请求时根据url或者服务id获取相应的key或者token并自动添加到服务地址中
+ */
+_SuperMap2.default.SecurityManager = {
+
+    INNER_WINDOW_WIDTH: 600,
+    INNER_WINDOW_HEIGHT: 600,
+    /**
+     * @function SuperMap.SecurityManager.prototype.generateToken
+     * @description 从服务器获取一个token,在此之前要注册服务器信息
+     * @param url {String}-服务器域名+端口，如：http://localhost:8092
+     * @param tokenParam -{SuperMap.TokenServiceParameter} 令牌参数
+     */
+    generateToken: function generateToken(url, tokenParam) {
+        var serverInfo = this.servers[url];
+        if (!serverInfo) {
+            return;
+        }
+        return _FetchRequest.FetchRequest.post(serverInfo.tokenServiceUrl, JSON.stringify(tokenParam.toJSON())).then(function (response) {
+            return response.text();
+        });
+    },
+
+    /**
+     * @function SuperMap.SecurityManager.prototype.registerServers
+     * @description 注册安全服务器相关信息
+     * @param serverInfos -{SuperMap.ServerInfo}
+     */
+    registerServers: function registerServers(serverInfos) {
+        this.servers = this.servers || {};
+        if (!_SuperMap2.default.Util.isArray(serverInfos)) {
+            serverInfos = [serverInfos];
+        }
+        for (var i = 0; i < serverInfos.length; i++) {
+            var serverInfo = serverInfos[i];
+            this.servers[serverInfo.server] = serverInfo;
+        }
+    },
+
+    /**
+     * @function SuperMap.SecurityManager.prototype.registerToken
+     * @description 服务请求都会自动带上这个token
+     * @param url {String} -服务器域名+端口：如http://localhost:8090
+     * @param token -{String}
+     */
+    registerToken: function registerToken(url, token) {
+        this.tokens = this.tokens || {};
+        if (!url || !token) {
+            return;
+        }
+        var domain = this._getTokenStorageKey(url);
+        this.tokens[domain] = token;
+    },
+
+    /**
+     * @function SuperMap.SecurityManager.prototype.registerKey
+     * @description 注册key,ids为数组(存在一个key对应多个服务)
+     * @param ids -{Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
+     * @param key -{String}
+     */
+    registerKey: function registerKey(ids, key) {
+        this.keys = this.keys || {};
+        if (!ids || ids.length < 1 || !key) {
+            return;
+        }
+
+        ids = _SuperMap2.default.Util.isArray(ids) ? ids : [ids];
+        for (var i = 0; i < ids.length; i++) {
+            var id = this._getUrlRestString(ids[0]) || ids[0];
+            this.keys[id] = key;
+        }
+    },
+
+    /**
+     * @function SuperMap.SecurityManager.prototype.getServerInfo
+     * @description 获取服务信息
+     * @param url {String}-服务器域名+端口，如：http://localhost:8092
+     */
+    getServerInfo: function getServerInfo(url) {
+        this.servers = this.servers || {};
+        return this.servers[url];
+    },
+
+    /**
+     * @function SuperMap.SecurityManager.prototype.getToken
+     * @description token按照域名存储
+     * @param url -{String}-服务器域名+端口，如：http://localhost:8092
+     */
+    getToken: function getToken(url) {
+        if (!url) {
+            return;
+        }
+        this.tokens = this.tokens || {};
+        var domain = this._getTokenStorageKey(url);
+        return this.tokens[domain];
+    },
+
+    getKey: function getKey(id) {
+        this.keys = this.keys || {};
+        var key = this._getUrlRestString(id) || id;
+        return this.keys[key];
+    },
+
+    /**
+     * @function SuperMap.SecurityManager.prototype.loginOnline
+     * @description Online登录验证
+     * @param callbackLocation -{String} 跳转位置
+     * @param newTab -{boolean}是否新窗口打开
+     */
+    loginOnline: function loginOnline(callbackLocation, newTab) {
+        var loginUrl = SecurityManager.SSO + "/login?service=" + callbackLocation;
+        this._open(loginUrl, newTab);
+    },
+
+    /**
+     * @function SuperMap.SecurityManager.prototype.loginPortal
+     * @description iPortal登录验证
+     * @param url -{String} 网站地址
+     * @param newTab -{boolean}是否新窗口打开
+     */
+    loginPortal: function loginPortal(url, newTab) {
+        var end = url.substr(url.length - 1, 1);
+        url += end === "/" ? "web/login" : "/web/login";
+        this._open(url, newTab);
+    },
+    /**
+     * @function SuperMap.SecurityManager.prototype.destroyAllCredentials
+     * @description 清空全部验证信息
+     */
+    destroyAllCredentials: function destroyAllCredentials() {
+        this.keys = null;
+        this.tokens = null;
+        this.servers = null;
+    },
+    /**
+     * @function SuperMap.SecurityManager.prototype.destroyToken
+     * @description 清空令牌信息
+     */
+    destroyToken: function destroyToken(url) {
+        if (!url) {
+            return;
+        }
+        var domain = this._getTokenStorageKey(url);
+        this.tokens = this.tokens || {};
+        if (this.tokens[domain]) {
+            delete this.tokens[domain];
+        }
+    },
+    /**
+     * @function SuperMap.SecurityManager.prototype.destroyToken
+     * @description 清空服务授权码
+     */
+    destroyKey: function destroyKey(id) {
+        if (!id) {
+            return;
+        }
+        this.keys = this.keys || {};
+        var key = this._getUrlRestString(id) || id;
+        if (this.keys[key]) {
+            delete this.keys[key];
+        }
+    },
+
+    _open: function _open(url, newTab) {
+        newTab = newTab != null ? newTab : true;
+        var offsetX = window.screen.availWidth / 2 - this.INNER_WINDOW_WIDTH / 2;
+        var offsetY = window.screen.availHeight / 2 - this.INNER_WINDOW_HEIGHT / 2;
+        var options = "height=" + this.INNER_WINDOW_HEIGHT + ", width=" + this.INNER_WINDOW_WIDTH + ",top=" + offsetY + ", left=" + offsetX + ",toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no";
+        if (newTab) {
+            window.open(url, 'login');
+        } else {
+            window.open(url, 'login', options);
+        }
+    },
+
+    _getTokenStorageKey: function _getTokenStorageKey(url) {
+        var patten = /http:\/\/([^\/]+)/i;
+        var result = url.match(patten);
+        if (!result) {
+            return url;
+        }
+        return result[0];
+    },
+
+    _getUrlRestString: function _getUrlRestString(url) {
+        if (!url) {
+            return url;
+        }
+        var patten = /http:\/\/(.*\/rest)/i;
+        var result = url.match(patten);
+        if (!result) {
+            return url;
+        }
+        return result[0];
+    }
+
+};
+_SuperMap2.default.SecurityManager.SSO = "https://sso.supermap.com";
+_SuperMap2.default.SecurityManager.ONLINE = "http://www.supermapol.com";
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _REST = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.ServerInfo
+ * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
+ * @param type - {String} 服务器类型
+ * @param options - {object} 非必填，服务器信息相关可选参数。如：<br>
+ *        server - {string} 数据库服务器名
+ *        tokenServiceUrl - {string} 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
+ *        keyServiceUrl - {string} 非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
+ */
+var ServerInfo =
+
+/**
+ * @member SuperMap.ServerInfo.prototype.tokenServiceUrl -{string}
+ * @description 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
+ */
+
+/**
+ * @member SuperMap.ServerInfo.prototype.type -{SuperMap.ServerType}
+ * @description 服务器类型 如：http://supermapiserver:8090
+ */
+function ServerInfo(type, options) {
+    _classCallCheck(this, ServerInfo);
+
+    this.type = null;
+    this.server = null;
+    this.tokenServiceUrl = null;
+    this.keyServiceUrl = null;
+    this.CLASS_NAME = "SuperMap.ServerInfo";
+
+    this.type = type || _REST.ServerType.ISERVER;
+    _SuperMap2.default.Util.extend(this, options);
+    if (!this.server) {
+        console.error('server url require is not  undefined');
+    }
+    var patten = /http:\/\/([^\/]+)/i;
+    this.server = this.server.match(patten)[0];
+
+    var tokenServiceSuffix = "/services/security/tokens.json";
+    if (this.type === _REST.ServerType.ISERVER && this.server.indexOf("iserver") < 0) {
+        tokenServiceSuffix = "/iserver" + tokenServiceSuffix;
+    }
+
+    if (!this.tokenServiceUrl) {
+        this.tokenServiceUrl = this.server + tokenServiceSuffix;
+    }
+
+    if (!this.keyServiceUrl) {
+        if (this.type === _REST.ServerType.IPORTAL) {
+            this.keyServiceUrl = this.server + "/web/mycontent/keys/register.json";
+        } else if (this.type === _REST.ServerType.ONLINE) {
+            this.keyServiceUrl = this.server + "/web/mycontent/keys.json";
+        }
+    }
+}
+
+/**
+ * @member SuperMap.ServerInfo.prototype.keyServiceUrl -{string}
+ * @description 非必填。如：http://supermapiserver:8092/web/mycontent/keys/register.json
+ */
+
+
+/**
+ * @member SuperMap.ServerInfo.prototype.server -{string}
+ * @description 非必填，server - {String} 数据库服务器名
+ */
+;
+
+exports.default = ServerInfo;
+
+
+_SuperMap2.default.ServerInfo = ServerInfo;
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SuperMap = __webpack_require__(0);
+
+var _SuperMap2 = _interopRequireDefault(_SuperMap);
+
+var _REST = __webpack_require__(1);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class SuperMap.TokenServiceParameter
+ * @classdesc token申请参数
+ * @param options - {Object} 参数。
+ */
+var TokenServiceParameter = function () {
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.referer -{String}
+     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+     */
+
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.clientType -{String}
+     * @description token申请的客户端标识类型。
+     */
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.userName -{String}
+     * @description 用户名。
+     */
+    function TokenServiceParameter(options) {
+        _classCallCheck(this, TokenServiceParameter);
+
+        this.userName = null;
+        this.password = null;
+        this.clientType = _REST.ClientType.NONE;
+        this.ip = null;
+        this.referer = null;
+        this.expiration = 60;
+        this.CLASS_NAME = "SuperMap.TokenServiceParameter";
+
+        _SuperMap2.default.Util.extend(this, options);
+    }
+
+    /**
+     * @function SuperMap.TokenServiceParameter.prototype.toJSON
+     * @description 将所有信息转成JSON字符串
+     * @return {String} 参数的JSON字符串
+     */
+
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.expiration -{number}
+     * @description 申请令牌的有效期，从发布令牌的时间开始计算，单位为分钟。
+     */
+
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.referer -{String}
+     * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
+     */
+
+    /**
+     * @member SuperMap.TokenServiceParameter.prototype.password -{String}
+     * @description 密码。
+     */
+
+
+    _createClass(TokenServiceParameter, [{
+        key: 'toJSON',
+        value: function toJSON() {
+            return {
+                userName: this.userName,
+                password: this.password,
+                clientType: this.clientType,
+                ip: this.ip,
+                referer: this.referer,
+                expiration: this.expiration
+            };
+        }
+    }]);
+
+    return TokenServiceParameter;
+}();
+
+exports.default = TokenServiceParameter;
+
+
+_SuperMap2.default.TokenServiceParameter = TokenServiceParameter;
 
 /***/ }),
 /* 31 */

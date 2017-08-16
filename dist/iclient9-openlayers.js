@@ -30046,7 +30046,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.GetFeaturesByBoundsParameters
  * @classdesc 数据集范围查询参数类,该类用于设置数据集范围查询的相关参数。
  * @param options - {Object} 参数。如：<br>
- *        bounds - {SuperMap.Bounds} 用于查询的范围对象。</br>
+ *        bounds - {SuperMap.Bounds|L.Bounds|ol.extent} 用于查询的范围对象。</br>
  *        attributeFilter - {String} 范围查询属性过滤条件。</br>
  *        fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
  *        spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式常量,必设参数。</br>
@@ -51246,7 +51246,7 @@ var MapvCanvasLayer = function () {
 
         /**
          * @function ol.supermap.MapvCanvasLayer.prototype.resize
-         * @param mapWidth - {number} ��ͼ���
+         * @param mapWidth - {number} ��ͼ����
          * @param mapHeight - {number} ��ͼ�߶�
          * @description ������ͼ��С
          */
@@ -51267,7 +51267,7 @@ var MapvCanvasLayer = function () {
         /**
          * @function ol.supermap.MapvCanvasLayer.prototype.setZIndex
          * @param zIndex - {number} �㼶����
-         * @description ����ͼ��㼶
+         * @description ����ͼ���㼶
          */
 
     }, {
@@ -51277,7 +51277,7 @@ var MapvCanvasLayer = function () {
         }
         /**
          * @function ol.supermap.MapvCanvasLayer.prototype.getZIndex
-         * @description ��ȡͼ��㼶
+         * @description ��ȡͼ���㼶
          */
 
     }, {

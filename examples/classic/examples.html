@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
-<meta charset="UTF-8">
 <head>
-    <title>iClient9 for Legacy示例代码</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>iClient Classic示范程序</title>
     <link rel="shortcut icon" type="image/x-icon" href="../../web/favicon.ico"/>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -14,26 +15,28 @@
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/header.css">
     <link rel="stylesheet" href="../css/sideBar.css">
-    <link rel="stylesheet" href="../css/editor.css">
+    <link rel="stylesheet" href="../css/examples.css">
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="http://cdn.bootcss.com/ace/1.2.6/ace.js"></script>
     <!--[if lt IE 9]>
     <script type="text/javascript" src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
     <script type="text/javascript" src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
+<body class="hold-transition skin-blue sidebar-mini" data-spy="scroll" data-target="#scrollSpy">
+<!-- ./wrapper -->
 <div class="wrapper"></div>
+<!-- ./wrapper -->
 <script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.scrollto/2.1.2/jquery.scrollTo.min.js"></script>
 <script type="text/javascript" src="http://cdn.bootcss.com/admin-lte/2.3.8/js/app.min.js"></script>
 <script>
-    $('.wrapper').load('../section/editor.html', function () {
-        $('.nav-header').load('../section/header.html');
+    $('.wrapper').load('../section/example.html', function () {
+        var header = $('.nav-header');
+        header.load('../section/header.html');
         var body = $('body');
         body.append("<script type='text/javascript' src='./config.js'><\/script>");
         body.append("<script type='text/javascript' src='../js/sidebar.js'><\/script>");
-        body.append("<script type='text/javascript' src='../js/editor.js'><\/script>");
+        body.append("<script type='text/javascript' src='../js/example.js'><\/script>");
     });
 </script>
 </body>
