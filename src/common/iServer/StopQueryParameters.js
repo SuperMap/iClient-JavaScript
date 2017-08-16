@@ -7,13 +7,13 @@
  */
 export default  class StopQueryParameters {
     /**
-     *  @member SuperMap.StopQueryParameters.prototype.keyWord -{String}
+     *  @member SuperMap.StopQueryParameters.prototype.keyWord -{string}
      *  @description 站点名称关键字。
      */
     keyWord = null;
 
     /**
-     * @member SuperMap.StopQueryParameters.prototype.returnPosition -{Boolean}
+     * @member SuperMap.StopQueryParameters.prototype.returnPosition -{boolean}
      * @description 是否返回站点坐标信息。
      */
     returnPosition = false;

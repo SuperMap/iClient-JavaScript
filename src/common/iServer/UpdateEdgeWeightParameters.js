@@ -4,48 +4,44 @@ import SuperMap from '../SuperMap';
  * @class SuperMap.UpdateEdgeWeightParameters
  * @classdesc 边的耗费权重更新服务参数类。
  * @param options - {Object} 可选参数。如：<br>
- *        edgeId - {String} 所在边的id。<br>
- *        fromNodeId - {String} 起始转向点的id。<br>
- *        toNodeId - {String} 终止转向点的id。<br>
- *        weightField - {String} 边的耗费字段。<br>
- *        edgeWeight - {String} 耗费权重。
+ *        edgeId - {string} 所在边的id。<br>
+ *        fromNodeId - {string} 起始转向点的id。<br>
+ *        toNodeId - {string} 终止转向点的id。<br>
+ *        weightField - {string} 边的耗费字段。<br>
+ *        edgeWeight - {string} 耗费权重。
  */
 export default  class UpdateEdgeWeightParameters {
 
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeId -{String}
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeId -{string}
      * @description 所在边的id
      */
     edgeId = "";
 
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.fromNodeId -{String}
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.fromNodeId -{string}
      * @description 起始转向点的id
      */
     fromNodeId = "";
 
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.toNodeId -{String}
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.toNodeId -{string}
      * @description 终止转向点的id
      */
     toNodeId = "";
 
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.weightField -{String}
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.weightField -{string}
      * @description 边的耗费字段
      */
     weightField = "";
 
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeWeight -{String}
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeWeight -{string}
      * @description 耗费权重
      */
     edgeWeight = "";
 
-    /*
-     * Constructor: SuperMap.UpdateEdgeWeightParameters
-     * 边的耗费权重更新服务参数类构造函数。
-     */
     constructor(option) {
         if (!option) return;
 
@@ -58,7 +54,7 @@ export default  class UpdateEdgeWeightParameters {
 
 
     /**
-     * @function destroy
+     * @function SuperMap.UpdateEdgeWeightParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

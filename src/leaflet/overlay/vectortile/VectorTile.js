@@ -11,7 +11,16 @@ import {VectorTileFormat} from '../VectorTileFormat';
 
 /**
  * @class L.supermap.VectorTile
- * @classdesc 矢量切片图层基类
+ * @classdesc 矢量瓦片图层基类
+ * @private
+ * @extends L.Class{@linkdoc-leaflet/#class}
+ * @param options - {Object} 矢量瓦片类构造可选参数。如：<br>
+ *        layer - {string} 图层名称。<br>
+ *        tileSize - {number} 瓦片大小。<br>
+ *        format - {string} 返回值类型。<br>
+ *        coords - {Object} 坐标系统对象。<br>
+ *        renderer - {Object} 渲染器对象。
+ * @param done - {function} 回调函数。
  */
 export var VectorTile = L.Class.extend({
 

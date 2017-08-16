@@ -10,7 +10,7 @@ import CommonAddressMatchService from '../../common/iServer/AddressMatchService'
  *      .code(function(result){
  *          //doSomething
  *      })
- * @param url - {String} 与客户端交互的服务地址。
+ * @param url - {string} 与客户端交互的服务地址。
  * @param options -{Object} 交互时所需可选参数。
  */
 export default class AddressMatchService extends ServiceBase {

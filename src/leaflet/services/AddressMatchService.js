@@ -12,7 +12,7 @@ import CommonMatchAddressService from'../../common/iServer/AddressMatchService';
  *      .code(function(result){
  *          //doSomething
  *      })
- * @param url - {String} 地址匹配服务地址
+ * @param url - {string} 地址匹配服务地址
  * @param options {object} 地址匹配服务可选参数。如：<br>
  *        data - {number}
  *

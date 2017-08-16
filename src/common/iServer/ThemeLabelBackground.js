@@ -26,10 +26,6 @@ export default  class ThemeLabelBackground {
      */
     backStyle = null;
 
-    /*
-     * Constructor: SuperMap.ThemeLabelBackground
-     * 标签背景风格类构造函数，用于创建 ThemeLabelBackGround 类的新实例。
-     */
     constructor(options) {
         var me = this;
         me.backStyle = new ServerStyle();
@@ -39,7 +35,7 @@ export default  class ThemeLabelBackground {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeLabelBackground.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -51,6 +47,12 @@ export default  class ThemeLabelBackground {
         }
     }
 
+    /**
+     * @function SuperMap.ThemeLabelBackground.fromObj
+     * @description 从传入对象获取标签背景风格类。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeLabelBackground}
+     */
     static fromObj(obj) {
         if (!obj) return;
         var t = new ThemeLabelBackground();

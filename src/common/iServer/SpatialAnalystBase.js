@@ -11,7 +11,7 @@ import GeoJSON from '../format/GeoJSON';
  */
 export default class SpatialAnalystBase extends CommonServiceBase {
     /**
-     * @member SuperMap.SpatialAnalystBase.prototype.format -{String}
+     * @member SuperMap.SpatialAnalystBase.prototype.format -{string}
      * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式，参数格式为"ISERVER","GEOJSON",GEOJSON
      */
     format = DataFormat.GEOJSON;

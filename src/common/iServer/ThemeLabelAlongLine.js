@@ -5,17 +5,17 @@ import {AlongLineDirection} from '../REST';
  * @class SuperMap.ThemeLabelAlongLine
  * @classdesc 标签沿线标注样式类。
  * @param options - {Object} 可选参数。如：<br>
- *        isAlongLine - {Boolean} 是否沿线显示文本。<br>
+ *        isAlongLine - {boolean} 是否沿线显示文本。<br>
  *        alongLineDirection - {SuperMap.AlongLineDirection} 标签沿线标注方向。<br>
  *        angleFixed - {Boonlean} 当沿线显示文本时，是否将文本角度固定。<br>
  *        repeatedLabelAvoided - {Boonlean} 沿线循环标注时是否避免标签重复标注。<br>
  *        repeatIntervalFixed - {Boonlean} 循环标注间隔是否固定。<br>
- *        labelRepeatInterval - {Number} 沿线且循环标注时循环标注的间隔。
+ *        labelRepeatInterval - {number}沿线且循环标注时循环标注的间隔。
  */
 export default class ThemeLabelAlongLine {
 
     /**
-     * @member SuperMap.ThemeLabelAlongLine.prototype.isAlongLine -{Boolean}
+     * @member SuperMap.ThemeLabelAlongLine.prototype.isAlongLine -{boolean}
      * @description 是否沿线显示文本。true 表示沿线显示文本，false 表示正常显示文本，默认为 true。
      */
     isAlongLine = true;
@@ -48,16 +48,12 @@ export default class ThemeLabelAlongLine {
     repeatIntervalFixed = false;
 
     /**
-     * @member SuperMap.ThemeLabelAlongLine.prototype.labelRepeatInterval -{Number}
+     * @member SuperMap.ThemeLabelAlongLine.prototype.labelRepeatInterval -{number}
      * @description 沿线且循环标注时循环标注的间隔。长度的单位与地图的地理单位一致。只有设定 RepeatedLabelAvoided 为 true
      *              的时候，labelRepeatInterval 属性才有效。默认为0地图单位。
      */
     labelRepeatInterval = 0;
 
-    /*
-     * Constructor: SuperMap.ThemeLabelAlongLine
-     * 标签沿线标注样式类构造函数，用于创建 SuperMap.ThemeLabelAlongLine 类的新实例。
-     */
     constructor(options) {
         if (options) {
             SuperMap.Util.extend(this, options);
@@ -66,7 +62,7 @@ export default class ThemeLabelAlongLine {
 
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeLabelAlongLine.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -79,6 +75,12 @@ export default class ThemeLabelAlongLine {
         me.labelRepeatInterval = null;
     }
 
+    /**
+     * @function SuperMap.ThemeLabelAlongLine.fromObj
+     * @description 从传入对象获取标签沿线标注样式类。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeLabelAlongLine}
+     */
     static fromObj(obj) {
         if (!obj) return;
         var t = new ThemeLabelAlongLine();

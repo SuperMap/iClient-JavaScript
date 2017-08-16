@@ -6,20 +6,20 @@ import {GeometryType, QueryOption} from '../REST';
  * @class SuperMap.QueryParameters
  * @classdesc 查询参数基类。距离查询、SQL 查询、几何地物查询等各自的参数均继承此类。
  * @param options - {Object} 可选参数。如：<br>
- *         customParams - {String} 自定义参数，供扩展使用。<br>
+ *         customParams - {string} 自定义参数，供扩展使用。<br>
  *         prjCoordSys -{Object} 自定义参数，供isueprmap提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br>
- *         expectCount - {Number} 期望返回结果记录个数。<br>
+ *         expectCount - {number}期望返回结果记录个数。<br>
  *         networkType - {SuperMap.GeometryType} 网络数据集对应的查询类型。<br>
  *         queryOption - {SuperMap.QueryOption} 查询结果类型枚举类。<br>
  *         queryParams -  {Array<SuperMap.FilterParameter>} 查询过滤条件参数数组。<br>
- *         startRecord - {Number} 查询起始记录号。<br>
- *         holdTime - {Number} 资源在服务端保存的时间。<br>
- *         returnCustomResult -{Boolean} 仅供三维使用。
+ *         startRecord - {number}查询起始记录号。<br>
+ *         holdTime - {number}资源在服务端保存的时间。<br>
+ *         returnCustomResult -{boolean} 仅供三维使用。
  */
 export default  class QueryParameters {
 
     /**
-     * @member SuperMap.QueryParameters.prototype.customParams -{String}
+     * @member SuperMap.QueryParameters.prototype.customParams -{string}
      * @description 自定义参数，供扩展使用。
      */
     customParams = null;
@@ -31,7 +31,7 @@ export default  class QueryParameters {
     prjCoordSys = null;
 
     /**
-     * @member SuperMap.QueryParameters.prototype.expectCount -{Number}
+     * @member SuperMap.QueryParameters.prototype.expectCount -{number}
      * @description 期望返回结果记录个数，默认返回100000条查询记录，
      *               如果实际不足100000条则返回实际记录条数。
      */
@@ -60,27 +60,23 @@ export default  class QueryParameters {
     queryParams = null;
 
     /**
-     * @member SuperMap.QueryParameters.prototype.startRecord -{Number}
+     * @member SuperMap.QueryParameters.prototype.startRecord -{number}
      * @description 查询起始记录号，默认值为0。
      */
     startRecord = 0;
 
     /**
-     * @member SuperMap.QueryParameters.prototype.holdTime -{Number}
+     * @member SuperMap.QueryParameters.prototype.holdTime -{number}
      * @description 资源在服务端保存的时间。默认为10（分钟）。
      */
     holdTime = 10;
 
     /**
-     * @member SuperMap.QueryParameters.prototype.returnCustomResult -{Boolean}
+     * @member SuperMap.QueryParameters.prototype.returnCustomResult -{boolean}
      * @description 仅供三维使用。
      */
     returnCustomResult = false;
 
-    /*
-     * Constructor: SuperMap.QueryParameters
-     * 查询参数基类构造函数。
-     */
     constructor(options) {
         if (!options) {
             return;
@@ -88,9 +84,8 @@ export default  class QueryParameters {
         SuperMap.Util.extend(this, options);
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.QueryParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

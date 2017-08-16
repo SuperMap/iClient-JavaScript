@@ -4,13 +4,13 @@ import SuperMap from '../../common/SuperMap';
 
 /**
  * @class L.supermap.CommontypesConversion
- * @classdesc  Leaflet对象和SuperMap对象转换工具
+ * @classdesc Leaflet对象和SuperMap对象转换工具
  */
 export default class CommontypesConversion {
     /**
      * @function L.supermap.CommontypesConversion.toSuperMapBounds
      * @description 将Leaflet对象得bounds转成SuperMap 的bounds对象
-     * @param bounds - {L.Bounds}
+     * @param bounds - {L.Bounds} 图层显示范围
      * @return {L.Bounds|Bounds}
      */
    static toSuperMapBounds(bounds) {

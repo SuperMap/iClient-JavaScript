@@ -6,7 +6,7 @@ import logoSrc from '../../common/control/img/iClient.png'
  * @class L.supermap.control.Logo
  * @classdesc Logo控件。</br>
  *            map初始化的配置项为logoControl，如果为true，则显示控件；否则不显示该控件。目前默认显示。
- * @extends L.Control
+ * @extends L.Control{@linkdoc-leaflet/#control}
  * @example
  * (start code)
  *  L.supermap.control.Logo({
@@ -14,11 +14,11 @@ import logoSrc from '../../common/control/img/iClient.png'
  *  }).addTo(map);
  * (end)
  * @param options -{Object} logo控件配置项</br>
- *        imageUrl - {String} logo图片地址</br>
- *        width - {String} logo图片宽</br>
- *        height - {String} logo图片高</br>
- *        link - {String} 跳转链接</br>
- *        alt - {String} logo图片失效时显示文本
+ *        imageUrl - {string} logo图片地址</br>
+ *        width - {string} logo图片宽</br>
+ *        height - {string} logo图片高</br>
+ *        link - {string} 跳转链接</br>
+ *        alt - {string} logo图片失效时显示文本
  */
 export var Logo = L.Control.extend({
 
@@ -36,6 +36,11 @@ export var Logo = L.Control.extend({
         alt: "SuperMap iClient",
     },
 
+    /**
+     * @function L.supermap.control.Logo.prototype.onAdd
+     * @description 添加一个logo
+     * @return {div} 返回创建得logo
+     */
     onAdd: function () {
         var div = L.DomUtil.create('div', 'iclient-leaflet-logo');
         div.style.marginTop = 0;

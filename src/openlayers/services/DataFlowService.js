@@ -12,11 +12,11 @@ import DataFlow from '../../common/iServer/DataFlowService';
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
- * @param url - {String} 与客户端交互的大数据服务地址。
+ * @param url - {string} 与客户端交互的大数据服务地址。
  * @param options - {object} 加载大数据可选参数。如：<br>
  *        style - {function} 设置数据加载样式。<br>
  *        onEachFeature - {function} 设置每个数据加载popup等。<br>
- *        geometry - {Array<object>} 设置增添的几何要素对象数组。
+ *        geometry - {Array<Object>} 设置增添的几何要素对象数组。
  *        excludeField - -{object} 排除字段
  */
 export default class DataFlowService extends ServiceBase {
@@ -101,7 +101,7 @@ export default class DataFlowService extends ServiceBase {
     /**
      * @function ol.supermap.DataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
-     * @param geometry - {Array<object>} 设置增添的几何要素对象数组。
+     * @param geometry - {Array<Object>} 设置增添的几何要素对象数组。
      * @return {ol.supermap.DataFlowService}
      */
     setGeometry(geometry) {

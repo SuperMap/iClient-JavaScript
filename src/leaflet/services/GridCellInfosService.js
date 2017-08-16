@@ -3,7 +3,7 @@ import {ServiceBase} from './ServiceBase';
 import GetGridCellInfosService from  '../../common/iServer/GetGridCellInfosService';
 
 /**
- * @class L.supermap.GridCellInfosService
+ * @class L.supermap.gridCellInfosService
  * @description 数据栅格查询服务
  * @extends L.supermap.ServiceBase
  * @example
@@ -11,9 +11,9 @@ import GetGridCellInfosService from  '../../common/iServer/GetGridCellInfosServi
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })
- * @param url - {String} 数据栅格查询服务地址
+ * @param url - {string} 数据栅格查询服务地址
  * @param options - {object} 数据栅格查询服务类可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online。<br>
+ *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
  */
 export var GridCellInfosService = ServiceBase.extend({
 

@@ -10,7 +10,7 @@ import GetFeaturesByGeometryService from '../../common/iServer/GetFeaturesByGeom
 import EditFeaturesService from '../../common/iServer/EditFeaturesService' ;
 import CommontypesConversion from '../core/CommontypesConversion';
 /**
- * @class L.supermap.FeatureService
+ * @class L.supermap.featureService
  * @classdesc 要素数据集类。提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询，地物编辑
  * @example 用法：
  *      L.supermap.featureService(url)
@@ -18,9 +18,9 @@ import CommontypesConversion from '../core/CommontypesConversion';
  *          //doSomething
  *      })
  * @extends L.supermap.ServiceBase
- * @param url - {String} 要素数据集服务地址
+ * @param url - {string} 要素数据集服务地址
  * @param options - {object} 创建要素数据集服务类可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
+ *        serverType - {string} 服务来源 iServer|iPortal|online
  */
 export var FeatureService = ServiceBase.extend({
 
@@ -29,7 +29,7 @@ export var FeatureService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.FeatureService.prototype.getFeaturesByIDs
+     * @function L.supermap.featureService.prototype.getFeaturesByIDs
      * @description 数据集ID查询服务
      * @param params {SuperMap.GetFeaturesByIDsParameters} ID 查询参数类
      * @param callback - {function} 回调函数
@@ -51,7 +51,7 @@ export var FeatureService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.FeatureService.prototype.getFeaturesByBounds
+     * @function L.supermap.featureService.prototype.getFeaturesByBounds
      * @description 数据集Bounds查询服务
      * @param params {SuperMap.GetFeaturesByBoundsParameters} 数据集范围查询参数类
      * @param callback - {function} 回调函数
@@ -72,7 +72,7 @@ export var FeatureService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.FeatureService.prototype.getFeaturesByBuffer
+     * @function L.supermap.featureService.prototype.getFeaturesByBuffer
      * @description 数据集Buffer查询服务
      * @param params {SuperMap.GetFeaturesByBufferParameters} 数据服务中数据集缓冲区查询参数类
      * @param callback - {function} 回调函数
@@ -93,7 +93,7 @@ export var FeatureService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.FeatureService.prototype.getFeaturesBySQL
+     * @function L.supermap.featureService.prototype.getFeaturesBySQL
      * @description 数据集SQL查询服务
      * @param params {SuperMap.GetFeaturesBySQLParameters} 数据服务中数据集SQL查询参数类
      * @param callback - {function} 回调函数
@@ -114,7 +114,7 @@ export var FeatureService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.FeatureService.prototype.getFeaturesByGeometry
+     * @function L.supermap.featureService.prototype.getFeaturesByGeometry
      * @description 数据集几何查询服务类
      * @param params {SuperMap.GetFeaturesByGeometryParameters} 数据集几何查询参数类
      * @param callback - {function} 回调函数
@@ -135,7 +135,7 @@ export var FeatureService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.FeatureService.prototype.editFeatures
+     * @function L.supermap.featureService.prototype.editFeatures
      * @description 地物编辑服务
      * @param params {SuperMap.EditFeaturesParameters} 数据服务中数据集添加、修改、删除参数类
      * @param callback - {function} 回调函数

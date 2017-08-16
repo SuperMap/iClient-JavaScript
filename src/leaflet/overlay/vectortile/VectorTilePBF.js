@@ -7,6 +7,9 @@ import {VectorFeatureType} from './VectorFeatureType';
 /**
  * @class L.supermap.VectorTilePBF
  * @classdesc 矢量瓦片PBF(MVT)表述出图
+ * @private
+ * @extends L.Class{@linkdoc-leaflet/#class}
+ * @param url - {string} 矢量瓦片PBF(MVT)表述出图服务地址
  */
 export var VectorTilePBF = L.Class.extend({
 

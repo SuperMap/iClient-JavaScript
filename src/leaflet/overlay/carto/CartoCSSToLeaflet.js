@@ -7,6 +7,7 @@ import L from "leaflet";
 /**
  * @class L.supermap.CartoCSSToLeaflet
  * @classdesc CartoCSS样式转Leaflet样式类
+ * @private
  */
 export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
 
@@ -25,7 +26,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.pretreatedCartoCSS
      * @description CartoCSS样式预处理
-     * @param cartoStr - {String} Carto信息
+     * @param cartoStr - {string} Carto信息
      * @param processCharacters - {object} 需要处理的特征对象
      */
     pretreatedCartoCSS: function (cartoStr, processCharacters) {
@@ -49,7 +50,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.processCharacters
      * @description 替换一些关键符号
-     * @param cartoCSSStr - {String} cartoCSSS信息
+     * @param cartoCSSStr - {string} cartoCSSS信息
      */
     processCharacters: function (cartoCSSStr) {
         var style = cartoCSSStr;
@@ -72,7 +73,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.pickShader
      * @description 拾取着色对象
-     * @param layerName - {String} 图层名称
+     * @param layerName - {string} 图层名称
      */
     pickShader: function (layerName) {
         if (!this.cartoCSS) {
@@ -85,7 +86,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getDefaultStyle
      * @description 获取默认风格
-     * @param type - {String} 默认风格类型
+     * @param type - {string} 默认风格类型
      */
     getDefaultStyle: function (type) {
         var style = {};
@@ -101,7 +102,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalMarker
      * @description 从iPortalMarker中获取样式
-     * @param icon - {String} iPortal图标
+     * @param icon - {string} iPortal图标
      */
     getStyleFromiPortalMarker: function (icon) {
         if (icon.indexOf("./") == 0) {
@@ -123,8 +124,8 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
      * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalStyle
      * @description 从iPortal的风格中获取样式
      * @param iPortalStyle - {object} iPortal的样式对象
-     * @param type - {String} 样式类型
-     * @param fStyle todo
+     * @param type - {string} 样式类型
+     * @param fStyle -{object} 图标参数
      */
     getStyleFromiPortalStyle: function (iPortalStyle, type, fStyle) {
         var featureStyle = fStyle ? JSON.parse(fStyle) : null;
@@ -181,10 +182,10 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
     },
 
     /**
-     * todo
      * @function L.supermap.CartoCSSToLeaflet.prototype.dashStyle
-     * @param style
-     * @param widthFactor
+     * @description 符号样式
+     * @param style -{object} 样式参数
+     * @param widthFactor -{number}宽度系数
      */
     dashStyle: function (style, widthFactor) {
         if (!style)return [];
@@ -214,11 +215,11 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromCarto
      * @description 从Carto中获取有效的样式
-     * @param zoom - {number} 缩放级别
-     * @param scale - {number} 比例尺
+     * @param zoom - {number}缩放级别
+     * @param scale - {number}比例尺
      * @param shader - {Array<Object>} 渲染器对象数组
      * @param feature - {L.feature} 要素
-     * @param fromServer - {String} 服务源
+     * @param fromServer - {string} 服务源
      */
     getValidStyleFromCarto: function (zoom, scale, shader, feature, fromServer) {
         if (!shader) {

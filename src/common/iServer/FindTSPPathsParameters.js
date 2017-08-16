@@ -9,22 +9,22 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  *              旅行商分析和最佳路径分析都是在网络中寻找遍历所有站点的最经济的路径，区别是在遍历网络所有站点的过程中对结点访问顺序不同<br>
  *              最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。<br>
  * @param options - {Object} 可选参数。如：<br>
- *        endNodeAssigned - {Boolean} 是否指定终止点，将指定的途经点的最后一个点作为终止点。<br>
+ *        endNodeAssigned - {boolean} 是否指定终止点，将指定的途经点的最后一个点作为终止点。<br>
  *        true 表示指定终止点，则旅行商必须最后一个访问终止点。默认为 false。<br>
- *        isAnalyzeById - {Boolean} 是否通过节点 ID 号来指定配送中心点和配送目的点，默认为 false，即通过坐标点指定。<br>
+ *        isAnalyzeById - {boolean} 是否通过节点 ID 号来指定配送中心点和配送目的点，默认为 false，即通过坐标点指定。<br>
  *        nodes - {Array<{SuperMap.Point}|Number>} 配送目标集合，必设字段。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。<br>
  */
 export default  class FindTSPPathsParameters {
     /**
-     * @member SuperMap.FindTSPPathsParameters.prototype.endNodeAssigned -{Boolean}
+     * @member SuperMap.FindTSPPathsParameters.prototype.endNodeAssigned -{boolean}
      * @description 是否指定终止点，将指定的途经点的最后一个点作为终止点。<br>
      *               true 表示指定终止点，则旅行商必须最后一个访问终止点。默认为 false。
      */
     endNodeAssigned = false;
 
     /**
-     * @member SuperMap.FindTSPPathsParameters.prototype.isAnalyzeById -{Boolean}
+     * @member SuperMap.FindTSPPathsParameters.prototype.isAnalyzeById -{boolean}
      * @description 是否通过节点 ID 号来指定途经点，默认为 false，即通过坐标点指定。
      */
     isAnalyzeById = false;
@@ -40,16 +40,11 @@ export default  class FindTSPPathsParameters {
     /**
      * @member SuperMap.FindTSPPathsParameters.prototype.parameter -{SuperMap.TransportationAnalystParameter}
      * @description 交通网络分析通用参数。通过本类可以设置障碍边、障碍点、<br>
-     *               权值字段信息的名称标识、转向权值字段等信息。<br>
-     *               SuperMap.TransportationAnalystParameter 类型，它虽然为可选参数，但是如果不设置其中的 resultSetting<br>
+     *              权值字段信息的名称标识、转向权值字段等信息。<br>
+     *              SuperMap.TransportationAnalystParameter 类型，它虽然为可选参数，但是如果不设置其中的 resultSetting<br>
      *              字段，则返回结果空间信息等都为空。
      */
     parameter = null;
-
-    /*
-     * Constructor: SuperMap.FindTSPPathsParameters
-     * 旅行商分析参数类构造函数。
-     */
 
     constructor(options) {
         var me = this;
@@ -60,9 +55,8 @@ export default  class FindTSPPathsParameters {
         SuperMap.Util.extend(this, options);
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.FindTSPPathsParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

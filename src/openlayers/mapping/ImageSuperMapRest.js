@@ -140,7 +140,7 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         });
     }
     /**
-     * @function ol.source.ImageSuperMapRest.prototype.optionsFromMapJSON
+     * @function ol.source.ImageSuperMapRest.optionsFromMapJSON
      * @param url - {string} 地址
      * @param mapJSONObj - {object} 地图JSON
      * @description 获取地图JSON信息

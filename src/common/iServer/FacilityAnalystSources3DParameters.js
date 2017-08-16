@@ -10,10 +10,10 @@ import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
  *               最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
  * @extends SuperMap.FacilityAnalyst3DParameters
  * @param options - {Object} 可选参数。如：<br>
- *         edgeID - {Number} 指定的弧段ID。<br>
+ *         edgeID - {number}指定的弧段ID。<br>
  *         nodeID - {Integer} 指定的结点ID。<br>
- *         weightName -{String} 指定的权值字段信息对象的名称。<br>
- *         isUncertainDirectionValid -{Boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
+ *         weightName -{string} 指定的权值字段信息对象的名称。<br>
+ *         isUncertainDirectionValid -{boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
  *                                              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找
  */
 export default  class FacilityAnalystSources3DParameters extends FacilityAnalyst3DParameters {

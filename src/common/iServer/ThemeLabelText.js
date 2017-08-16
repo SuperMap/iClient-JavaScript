@@ -7,38 +7,38 @@ import LabelMixedTextStyle from './LabelMixedTextStyle';
  * @classdesc 标签中文本风格类。
  *              通过该类可以设置标签中的文本字体大小和显示风格。
  * @param options - {Object} 可选参数。如：<br>
- *        maxTextHeight - {Number} 标签中文本的最大高度。<br>
- *        maxTextWidth - {Number} 标签中文本的最大宽度。<br>
- *        minTextHeight - {Number} 标签中文本的最小高度。<br>
- *        minTextWidth - {Number} 标签中文本的最小宽度。<br>
+ *        maxTextHeight - {number}标签中文本的最大高度。<br>
+ *        maxTextWidth - {number}标签中文本的最大宽度。<br>
+ *        minTextHeight - {number}标签中文本的最小高度。<br>
+ *        minTextWidth - {number}标签中文本的最小宽度。<br>
  *        uniformStyle - {SuperMap.ServerTextStyle} 统一文本风格。<br>
  *        uniformMixedStyle - {SuperMap.LabelMixedTextStyle} 标签专题图统一的文本复合风格。
  */
 export default  class ThemeLabelText {
 
     /**
-     * @member SuperMap.ThemeLabelText.prototype.maxTextHeight -{Number}
+     * @member SuperMap.ThemeLabelText.prototype.maxTextHeight -{number}
      * @description 标签中文本的最大高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
      *              当放大后的文本高度超过最大高度之后就不再放大。高度单位为0.1毫米。高度单位为0.1毫米。默认为 0 毫米。
      */
     maxTextHeight = 0;
 
     /**
-     * @member SuperMap.ThemeLabelText.prototype.maxTextWidth -{Number}
+     * @member SuperMap.ThemeLabelText.prototype.maxTextWidth -{number}
      * @description 标签中文本的最大宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
      *              当放大后的文本宽度超过最大高度之后就不再放大。宽度单位为0.1毫米。默认为0毫米。
      */
     maxTextWidth = 0;
 
     /**
-     * @member SuperMap.ThemeLabelText.prototype.minTextHeight -{Number}
+     * @member SuperMap.ThemeLabelText.prototype.minTextHeight -{number}
      * @description 标签中文本的最小高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
      *              当缩小后的文本高度小于最小高度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
      */
     minTextHeight = 0;
 
     /**
-     * @member SuperMap.ThemeLabelText.prototype.minTextWidth -{Number}
+     * @member SuperMap.ThemeLabelText.prototype.minTextWidth -{number}
      * @description 标签中文本的最小宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
      *              当缩小后的文本宽度小于最小宽度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
      */
@@ -60,10 +60,6 @@ export default  class ThemeLabelText {
      */
     uniformMixedStyle = null;
 
-    /*
-     * Constructor: SuperMap.ThemeLabelText
-     * 标签中文本风格类构造函数，用于创建 SuperMap.ThemeLabelText 类的新实例。
-     */
     constructor(options) {
         var me = this;
         me.uniformStyle = new ServerTextStyle();
@@ -73,7 +69,7 @@ export default  class ThemeLabelText {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeLabelText.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -92,6 +88,12 @@ export default  class ThemeLabelText {
         }
     }
 
+    /**
+     * @function SuperMap.ThemeLabelText.fromObj
+     * @description 从传入对象获取标签中文本风格类。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeLabelText}
+     */
     static fromObj(obj) {
         if (!obj) return;
         var res = new ThemeLabelText();

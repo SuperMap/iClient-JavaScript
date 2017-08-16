@@ -5,21 +5,18 @@ import {WMTSLayer} from "./TileLayer.WMTS";
 /**
  * @class L.supermap.tiandituTileLayer
  * @classdesc 天地图切片图层类。
- * @param defaultURL -{String} 默认图层地址
+ * @extends L.supermap.wmtsLayer
+ * @param defaultURL -{string} 默认图层地址
  * @param options -{Object} 切片图层参数。如：<br>
- *        layer - {String} 图层类型。<br>
- *        style - {String} 图层风格。<br>
- *        tilematrixSet - {String} 瓦片矩阵集。<br>
- *        format - {String} 格式。<br>
+ *        layer - {string} 图层类型。<br>
+ *        style - {string} 图层风格。<br>
+ *        tilematrixSet - {string} 瓦片矩阵集。<br>
+ *        format - {string} 格式。<br>
  *        subdomains - {Array<number>} 子域名数组。<br>
- *        attribution - {String} 版权信息
+ *        attribution - {string} 版权信息
  */
 export var TiandituTileLayer = WMTSLayer.extend({
 
-    /**
-     * @member L.supermap.tiandituTileLayer.prototype.defaultURL -{String}
-     * @description 默认图层地址
-     */
     defaultURL: 'http://t{s}.tianditu.com/img_w/wmts?"',
 
     options: {

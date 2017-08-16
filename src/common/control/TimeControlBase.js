@@ -4,67 +4,67 @@ import SuperMap from '../SuperMap';
  * @class SuperMap.TimeControlBase
  * @classdesc 时间控制基类类。
  * @param options - {Object} 该类开放的可选属性。如：<br>
- *        speed - {Number} 速度。不能小于0，默认为1（表示每帧渲染的数据之间的间隔为1），设置越大速度越快。<br>
- *        startTime - {Number} 的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
- *        endTime - {Number} 的结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
- *        repeat - {Boolean} 是否重复循环。默认为true。<br>
- *        reverse - {Boolean} 是否反向。默认为false。<br>
+ *        speed - {number}速度。不能小于0，默认为1（表示每帧渲染的数据之间的间隔为1），设置越大速度越快。<br>
+ *        startTime - {number}的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
+ *        endTime - {number}的结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
+ *        repeat - {boolean} 是否重复循环。默认为true。<br>
+ *        reverse - {boolean} 是否反向。默认为false。<br>
  *        geoFence - {SuperMap.Geometry} 地理围栏。
  */
 export default  class TimeControlBase {
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.speed -{Number}
+     * @member SuperMap.TimeControlBase.prototype.speed -{number}
      * @description 步长，必须为非负数，默认为1（表示前后两次渲染的数据之间的间隔为1）
      */
     speed = 1;
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.frequency -{Number}
+     * @member SuperMap.TimeControlBase.prototype.frequency -{number}
      * @description 刷新频率(单位ms)，服务器刷新的时间间隔，默认为1s
      */
     frequency = 1000;
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.startTime -{Number}
+     * @member SuperMap.TimeControlBase.prototype.startTime -{number}
      * @description 记录的起始时间，必须为数字，
      *              如果不设置，初始化时为0，建议设置
      */
     startTime = null;
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.endTime -{Number}
+     * @member SuperMap.TimeControlBase.prototype.endTime -{number}
      * @description 记录的结束时间，必须为数字，
      *              如果不设置，初始化时以当前时间进行设置，建议设置
      */
     endTime = null;
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.repeat -{Boolean}
+     * @member SuperMap.TimeControlBase.prototype.repeat -{boolean}
      * @description 是否重复循环，默认为true。
      */
     repeat = true;
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.currentTime -{Number}
+     * @member SuperMap.TimeControlBase.prototype.currentTime -{number}
      * @description 记录近期的时间，也就是当前帧运行到的时间。
      */
     currentTime = null;
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.oldTime -{Number}
+     * @member SuperMap.TimeControlBase.prototype.oldTime -{number}
      * @description 记录上一帧的时间，也就是之前运行到的时间。
      */
     oldTime = null;
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.running -{Boolean}
+     * @member SuperMap.TimeControlBase.prototype.running -{boolean}
      * @description 记录当前是否处于中，默认为false。
      */
     running = false;
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.reverse -{Boolean}
+     * @member SuperMap.TimeControlBase.prototype.reverse -{boolean}
      * @description 是否反向，默认为false。
      */
     reverse = false;
@@ -211,7 +211,7 @@ export default  class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.setSpeed
      * @description 设置步长。
-     * @param speed - {Number} 步长，必须为非负数，默认为1
+     * @param speed - {number}步长，必须为非负数，默认为1
      * @return {Boolean} true代表设置成功，false设置失败（speed小于0时失败）
      */
     setSpeed(speed) {
@@ -237,7 +237,7 @@ export default  class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.setFrequency
      * @description 设置刷新频率。
-     * @param speed - {Number} 刷新频率，单位为ms，默认为1s
+     * @param speed - {number}刷新频率，单位为ms，默认为1s
      * @return {Boolean} true代表设置成功，false设置失败（frequency小于0时失败）
      */
     setFrequency(frequency) {
@@ -263,7 +263,7 @@ export default  class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.setStartTime
      * @description 设置起始时间，设置完成后如果当前时间小于起始时间，则从起始时间开始
-     * @param startTime - {Number} 需要设置的起始时间
+     * @param startTime - {number}需要设置的起始时间
      * @return {Boolean} true代表设置成功，false设置失败（startTime 大于结束时间时失败）
      */
     setStartTime(startTime) {
@@ -296,7 +296,7 @@ export default  class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.setEndTime
      * @description 设置结束时间，设置完成后如果当前时间大于结束，则从起始时间开始
-     * @param endTime - {Number} 需要设置的结束时间
+     * @param endTime - {number}需要设置的结束时间
      * @return {Boolean} true代表设置成功，false设置失败（endTime 小于开始时间时失败）
      */
     setEndTime(endTime) {
@@ -329,7 +329,7 @@ export default  class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.setCurrentTime
      * @description 设置当前时间
-     * @param currentTime - {Number} 需要设置的当前时间
+     * @param currentTime - {number}需要设置的当前时间
      * @return {Boolean} true代表设置成功，false设置失败
      */
     setCurrentTime(currentTime) {
@@ -359,7 +359,7 @@ export default  class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.setRepeat
      * @description 设置是否重复循环
-     * @param repeat - {Boolean} 是否重复循环
+     * @param repeat - {boolean} 是否重复循环
      */
     setRepeat(repeat) {
         this.repeat = repeat;
@@ -379,7 +379,7 @@ export default  class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.setReverse
      * @description 设置是否反向
-     * @param reverse - {Boolean} 是否反向
+     * @param reverse - {boolean} 是否反向
      */
     setReverse(reverse) {
         this.reverse = reverse;
@@ -407,7 +407,7 @@ export default  class TimeControlBase {
 
 
     /**
-     * @function destroy
+     * @function SuperMap.TimeControlBase.prototype.destroy
      * @description 销毁Animator对象，释放资源。
      */
     destroy() {

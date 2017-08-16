@@ -4,19 +4,19 @@ import ServerColor from './ServerColor';
 /**
  * @class SuperMap.ThemeGridRangeItem
  * @classdesc 栅格分段专题图子项类。<br>
- *              在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。<br>
- *              本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。<br>
+ *            在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。<br>
+ *            本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。<br>
  * @param options - {Object} 可选参数。如：<br>
- *        caption - {String} 栅格分段专题图子项的标题。<br>
+ *        caption - {string} 栅格分段专题图子项的标题。<br>
  *        color - {SuperMap.ServerColor}栅格分段专题图中每一个分段专题图子项的对应的颜色。<br>
- *        end - {Number} 栅格分段专题图子项的终止值。<br>
- *        start - {Number} 栅格分段专题图子项的起始值。<br>
- *        visible - {Boolean} 栅格分段专题图子项是否可见。
+ *        end - {number}栅格分段专题图子项的终止值。<br>
+ *        start - {number}栅格分段专题图子项的起始值。<br>
+ *        visible - {boolean} 栅格分段专题图子项是否可见。
  */
 export default  class ThemeGridRangeItem {
 
     /**
-     * @member SuperMap.ThemeGridRangeItem.prototype.caption -{String}
+     * @member SuperMap.ThemeGridRangeItem.prototype.caption -{string}
      * @description 栅格分段专题图子项的标题。
      */
     caption = null;
@@ -28,28 +28,24 @@ export default  class ThemeGridRangeItem {
     color = null;
 
     /**
-     * @member SuperMap.ThemeGridRangeItem.prototype.end -{Number}
+     * @member SuperMap.ThemeGridRangeItem.prototype.end -{number}
      * @description 栅格分段专题图子项的终止值，即该段专题值范围的最大值，默认值为 0。
      */
     end = 0;
 
     /**
-     * @member SuperMap.ThemeGridRangeItem.prototype.start -{Number}
+     * @member SuperMap.ThemeGridRangeItem.prototype.start -{number}
      * @description 栅格分段专题图子项的起始值，即该段专题值范围的最小值，默认值为 0。
      */
     start = 0;
 
 
     /**
-     * @member SuperMap.ThemeGridRangeItem.prototype.visible -{Boolean}
+     * @member SuperMap.ThemeGridRangeItem.prototype.visible -{boolean}
      * @description 栅格分段专题图子项是否可见。默认为 true。
      */
     visible = true;
 
-    /*
-     * Constructor: SuperMap.ThemeGridRangeItem
-     * 栅格分段专题图子项类构造函数。
-     */
     constructor(options) {
         var me = this;
         me.color = new ServerColor();
@@ -59,7 +55,7 @@ export default  class ThemeGridRangeItem {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeGridRangeItem.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -90,6 +86,12 @@ export default  class ThemeGridRangeItem {
         return obj;
     }
 
+    /**
+     * @function SuperMap.ThemeGridRangeItem.fromObj
+     * @description 从传入对象获取栅格分段专题图子项类。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeGridRangeItem}
+     */
     static fromObj(obj) {
         if (!obj) return;
         var res = new ThemeGridRangeItem();

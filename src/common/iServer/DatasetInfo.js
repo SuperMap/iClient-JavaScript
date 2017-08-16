@@ -11,14 +11,14 @@
  *              网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
  * @param options - {Object} 可选参数。如：<br>
  *        bounds - {SuperMap.Bounds} 数据集范围，该字段只读。<br>
- *        dataSourceName - {String} 数据源名称，该字段只读。<br>
- *        description - {String} 数据集的描述信息。<br>
- *        encodeType - {String} 数据集存储时的压缩编码方式，该字段只读。<br>
- *        isReadOnly - {Boolean} 数据集是否为只读。<br>
- *        name - {String} 数据集名称，该字段必须且只读。<br>
+ *        dataSourceName - {string} 数据源名称，该字段只读。<br>
+ *        description - {string} 数据集的描述信息。<br>
+ *        encodeType - {string} 数据集存储时的压缩编码方式，该字段只读。<br>
+ *        isReadOnly - {boolean} 数据集是否为只读。<br>
+ *        name - {string} 数据集名称，该字段必须且只读。<br>
  *        prjCoordSys - {SuperMap.Projection} 数据集的投影信息。<br>
- *        tableName - {String} 表名，该字段只读。<br>
- *        type - {String} 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
+ *        tableName - {string} 表名，该字段只读。<br>
+ *        type - {string} 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
  *                        网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
  */
 export default  class DatasetInfo {
@@ -30,31 +30,31 @@ export default  class DatasetInfo {
     bounds = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.dataSourceName -{String}
+     * @member SuperMap.DatasetInfo.prototype.dataSourceName -{string}
      * @description 数据源名称，该字段只读。
      */
     dataSourceName = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.description -{String}
+     * @member SuperMap.DatasetInfo.prototype.description -{string}
      * @description 数据集的描述信息。
      */
     description = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.encodeType -{String}
+     * @member SuperMap.DatasetInfo.prototype.encodeType -{string}
      * @description 数据集存储时的压缩编码方式，该字段只读。
      */
     encodeType = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.isReadOnly -{Boolean}
+     * @member SuperMap.DatasetInfo.prototype.isReadOnly -{boolean}
      * @description 数据集是否为只读。
      */
     isReadOnly = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.name -{String}
+     * @member SuperMap.DatasetInfo.prototype.name -{string}
      * @description 数据集名称，该字段必须且只读。
      */
     name = null;
@@ -66,33 +66,18 @@ export default  class DatasetInfo {
     prjCoordSys = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.tableName -{String}
+     * @member SuperMap.DatasetInfo.prototype.tableName -{string}
      * @description 表名，该字段只读。
      */
     tableName = null;
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.type -{String}
+     * @member SuperMap.DatasetInfo.prototype.type -{string}
      * @description 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
      *              网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
      */
     type = null;
 
-    /*
-     * @function SuperMap.DatasetInfo.prototype.constructor
-     * @description 数据集信息类构造函数。
-     * @param options - {Object} 可选参数。如：<br>
-     *        bounds - {SuperMap.Bounds} 数据集范围，该字段只读。<br>
-     *        dataSourceName - {String} 数据源名称，该字段只读。<br>
-     *        description - {String} 数据集的描述信息。<br>
-     *        encodeType - {String} 数据集存储时的压缩编码方式，该字段只读。<br>
-     *        isReadOnly - {Boolean} 数据集是否为只读。<br>
-     *        name - {String} 数据集名称，该字段必须且只读。<br>
-     *        prjCoordSys - {SuperMap.Projection} 数据集的投影信息。<br>
-     *        tableName - {String} 表名，该字段只读。<br>
-     *        type - {String} 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
-     *                        网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
-     */
     constructor(options) {
         options = options || {};
         SuperMap.Util.extend(this, options);
@@ -103,13 +88,12 @@ export default  class DatasetInfo {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.DatasetInfo.prototype.destroy
      * @description 释放资源,将引用资源的属性置空。
      */
     destroy() {
         SuperMap.Util.reset(this);
     }
-
 
     /**
      * @function SuperMap.DatasetInfo.prototype.toServerJSONObject

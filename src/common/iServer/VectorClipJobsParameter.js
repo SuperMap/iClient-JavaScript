@@ -5,20 +5,20 @@ import {ClipAnalystMode} from '../REST';
  * @class SuperMap.VectorClipJobsParameter
  * @classdesc 矢量裁剪分析任务参数类
  * @param options - {Object} 必填参数。<br>
- *         datasetName -{String} 数据集名。 <br>
- *         datasetOverlay -{String} 裁剪对象数据集。 <br>
+ *         datasetName -{string} 数据集名。 <br>
+ *         datasetOverlay -{string} 裁剪对象数据集。 <br>
  *         mode -{SuperMap.SpatialQueryMode} 裁剪分析模式 。 <br>
  */
 export default class VectorClipJobsParameter {
 
     /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{String}
+     * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{string}
      * @description 数据集名。
      */
     datasetName = "";
 
     /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{String}
+     * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{string}
      * @description 裁剪对象数据集。
      */
     datasetOverlay = "";
@@ -37,9 +37,8 @@ export default class VectorClipJobsParameter {
         SuperMap.Util.extend(this, options);
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.VectorClipJobsParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

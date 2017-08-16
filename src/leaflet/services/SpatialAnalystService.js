@@ -17,7 +17,7 @@ import TerrainCurvatureCalculationService from '../../common/iServer/TerrainCurv
 import ThiessenAnalystService from '../../common/iServer/ThiessenAnalystService';
 import CommontypesConversion from '../core/CommontypesConversion';
 /**
- * @class L.supermap.SpatialAnalystService
+ * @class L.supermap.spatialAnalystService
  * @classdesc 空间分析服务类。
  * @description 提供：地区太阳辐射、缓冲区分析、点密度分析、动态分段分析、空间关系分析、插值分析、栅格代数运算、叠加分析、路由定位、路由测量计算、表面分析、地形曲率计算、泰森多边形分析。
  * @extends L.supermap.ServiceBase
@@ -26,9 +26,9 @@ import CommontypesConversion from '../core/CommontypesConversion';
  *      .bufferAnalysis(params,function(result){
  *          //doSomething
  *      })
- * @param url -{String} 大数据服务地址。
+ * @param url -{string} 大数据服务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
+ *        serverType - {string} 服务来源 iServer|iPortal|online
  */
 export var SpatialAnalystService = ServiceBase.extend({
 
@@ -36,7 +36,7 @@ export var SpatialAnalystService = ServiceBase.extend({
         ServiceBase.prototype.initialize.call(this, url, options);
     },
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult
+     * @function L.supermap.spatialAnalystService.prototype.getAreaSolarRadiationResult
      * @description 地区太阳辐射
      * @param params - {SuperMap.AreaSolarRadiationParameters} 地区太阳辐射参数类
      * @param callback - {function} 回调函数
@@ -58,7 +58,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.bufferAnalysis
+     * @function L.supermap.spatialAnalystService.prototype.bufferAnalysis
      * @description 缓冲区分析
      * @param params - {SuperMap.DatasetBufferAnalystParameters} 数据集缓冲区分析参数类
      * @param callback - {function} 回调函数
@@ -80,7 +80,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.densityAnalysis
+     * @function L.supermap.spatialAnalystService.prototype.densityAnalysis
      * @description 点密度分析
      * @param params - {SuperMap.DensityKernelAnalystParameters} 核密度分析参数类
      * @param callback - {function} 回调函数
@@ -102,7 +102,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.generateSpatialData
+     * @function L.supermap.spatialAnalystService.prototype.generateSpatialData
      * @description 动态分段分析
      * @param params - {SuperMap.GenerateSpatialDataParameters} 动态分段操作参数类
      * @param callback - {function} 回调函数
@@ -124,7 +124,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.generateSpatialData
+     * @function L.supermap.spatialAnalystService.prototype.generateSpatialData
      * @description 空间关系分析
      * @param params - {SuperMap.GeoRelationAnalystParameters} 空间关系分析服务参数类
      * @param callback - {function} 回调函数
@@ -146,7 +146,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.interpolationAnalysis
+     * @function L.supermap.spatialAnalystService.prototype.interpolationAnalysis
      * @description 插值分析
      * @param params - {SuperMap.InterpolationRBFAnalystParameters} 样条插值（径向基函数插值法）分析参数类
      * @param callback - {function} 回调函数
@@ -168,7 +168,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis
+     * @function L.supermap.spatialAnalystService.prototype.mathExpressionAnalysis
      * @description 栅格代数运算
      * @param params - {SuperMap.MathExpressionAnalysisParameters} 栅格代数运算参数类
      * @param callback - {function} 回调函数
@@ -190,7 +190,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.overlayAnalysis
+     * @function L.supermap.spatialAnalystService.prototype.overlayAnalysis
      * @description 叠加分析
      * @param params - {SuperMap.DatasetOverlayAnalystParameters} 数据集叠加分析参数类
      * @param callback - {function} 回调函数
@@ -212,7 +212,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.routeCalculateMeasure
+     * @function L.supermap.spatialAnalystService.prototype.routeCalculateMeasure
      * @description 路由测量计算
      * @param params - {SuperMap.RouteCalculateMeasureParameters} 基于路由对象计算指定点M值操作的参数类
      * @param callback - {function} 回调函数
@@ -234,7 +234,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.routeLocate
+     * @function L.supermap.spatialAnalystService.prototype.routeLocate
      * @description 路由定位
      * @param params - {SuperMap.RouteLocatorParameters} 路由对象定位空间对象的参数类
      * @param callback - {function} 回调函数
@@ -256,7 +256,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.surfaceAnalysis
+     * @function L.supermap.spatialAnalystService.prototype.surfaceAnalysis
      * @description 表面分析
      * @param params - {SuperMap.DatasetSurfaceAnalystParameters} 数据集表面分析参数类
      * @param callback - {function} 回调函数
@@ -278,7 +278,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate
+     * @function L.supermap.spatialAnalystService.prototype.terrainCurvatureCalculate
      * @description 地形曲率计算
      * @param params - {SuperMap.TerrainCurvatureCalculationParameters} 地形曲率计算参数类。
      * @param callback - {function} 回调函数
@@ -300,7 +300,7 @@ export var SpatialAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.thiessenAnalysis
+     * @function L.supermap.spatialAnalystService.prototype.thiessenAnalysis
      * @description 泰森多边形分析
      * @param params - {SuperMap.DatasetThiessenAnalystParameters} 数据集泰森多边形分析参数类
      * @param callback - {function} 回调函数

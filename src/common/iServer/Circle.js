@@ -3,37 +3,27 @@ import RankSymbol from './RankSymbol';
 
 /**
  * @class SuperMap.Feature.Theme.Circle
- * @classdesc 圆类
- * @classdesc 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>） 可设属性如下：<br>
- *            codomain - {Array<Number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
- *            maxR - {Number} 圆形的最大半径。<br>
- *            minR - {Number} 圆形的最小半径。<br>
- *            fillColor - {String} 圆形的填充色，如：fillColor: "#FFB980"。<br>
+ * @classdesc 圆类。
+ * @description 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>） 可设属性如下：<br>
+ *            codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
+ *            maxR - {number}圆形的最大半径。<br>
+ *            minR - {number}圆形的最小半径。<br>
+ *            fillColor - {string} 圆形的填充色，如：fillColor: "#FFB980"。<br>
  *            circleStyle - {Object} 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。<br>
- *            decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
+ *            decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
  *            circleHoverStyle - {Object} 圆 形 hover 状态时的样式，circleHoverAble 为 true 时有效。<br>
  *            circleHoverAble - {Object} 是否允许圆形使用 hover 状态，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。<br>
  *            circleClickAble - {Object} 是否允许圆形被点击，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
  * @extends SuperMap.Feature.Theme.RankSymbol
  * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
  * @param layer - {SuperMap.Layer.RankSymbol} 此专题要素所在图层，必设参数。
- * @param fields - {Array<String>} data 中的参与此图表生成的字段名称，必设参数。
+ * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
  * @param setting - {Object} 图表配置对象，必设参数。
  * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Circle} 返回一个圆图。
  */
 export default  class Circle extends RankSymbol {
 
-    /**
-     * @function SuperMap.Feature.Theme.Circle.prototype.constructor
-     * @description 创建一个圆形的构造函数。
-     * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
-     * @param layer - {SuperMap.Layer.RankSymbol} 此专题要素所在图层，必设参数。
-     * @param fields - {Array<String>} data 中的参与此图表生成的字段名称，必设参数。
-     * @param setting - {Object} 图表配置对象，必设参数。
-     * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
-     * @return {SuperMap.Feature.Theme.Circle} 返回一个圆图。
-     */
     constructor(data, layer, fields, setting, lonlat) {
         super(data, layer, fields, setting, lonlat);
     }

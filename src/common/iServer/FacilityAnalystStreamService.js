@@ -6,7 +6,7 @@ import FacilityAnalystStreamParameters from './FacilityAnalystStreamParameters';
  * @class SuperMap.FacilityAnalystStreamService
  * @extends 上游/下游 关键设施查找资源服务类;即查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
  * @extends SuperMap.NetworkAnalystServiceBase
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
  * @param options - {Object} 互服务时所需可选参数。如：<br>

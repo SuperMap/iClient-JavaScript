@@ -8,7 +8,7 @@ import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
  *            单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格<br>
  *            比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。
  * @extends L.supermap.GeoFeatureThemeLayer
- * @param name - {String} 专题图层名
+ * @param name - {string} 专题图层名
  * @param options - {object} 可选参数
  */
 export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
@@ -33,7 +33,7 @@ export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
     },
 
     /**
-     * @function L.supermap.UniqueThemeLayer.prototype.getStyleByData
+     * @function L.supermap.uniqueThemeLayer.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style
      * @param feat {L.feature} 用户要素数据
      */

@@ -4,16 +4,16 @@ import {DataFlowService} from "../services/DataFlowService";
 /**
  * @class L.supermap.dataFlowLayer
  * @classdesc 数据流图层
- * @extends L.GeoJSON
- * @param url - {String} 数据流图层服务地址
- * @param options - {object} 设置图层参数。如：<>
+ * @extends L.GeoJSON{@linkdoc-leaflet/#geojson}
+ * @param url - {string} 数据流图层服务地址
+ * @param options - {object} 设置图层参数。如：<br>
+ *        geometry - {SuperMap.Geometry} 几何要素。<br>
+ *        prjCoordSys - {Object} 投影坐标对象。<br>
+ *        excludeField - {string} 排除字段。<br>
+ *        idField - {string} id字段。
  */
 export var DataFlowLayer = L.GeoJSON.extend({
 
-    /**
-     * @member L.supermap.DataFlowLayer.prototype.options
-     * @description 图层设置参数
-     */
     options: {
         geometry: null,
         prjCoordSys: null,
@@ -37,7 +37,7 @@ export var DataFlowLayer = L.GeoJSON.extend({
     },
 
     /**
-     * @function L.supermap.DataFlowLayer.prototype.onAdd
+     * @function L.supermap.dataFlowLayer.prototype.onAdd
      * @description 添加地图
      * @param map - {L.map} 待添加的地图
      */
@@ -60,7 +60,7 @@ export var DataFlowLayer = L.GeoJSON.extend({
     },
 
     /**
-     * @function L.supermap.DataFlowLayer.prototype.onRemove
+     * @function L.supermap.dataFlowLayer.prototype.onRemove
      * @description 删除指定地图
      * @param map - {L.map} 待删除的地图
      */
@@ -69,7 +69,7 @@ export var DataFlowLayer = L.GeoJSON.extend({
     },
 
     /**
-     * @function L.supermap.DataFlowLayer.prototype.setPrjCoordSys
+     * @function L.supermap.dataFlowLayer.prototype.setPrjCoordSys
      * @description 设置地图投影坐标系统
      * @param prjCoordSys - {Object} 投影坐标系统
      */
@@ -80,9 +80,9 @@ export var DataFlowLayer = L.GeoJSON.extend({
     },
 
     /**
-     * @function L.supermap.DataFlowLayer.prototype.setExcludeField
+     * @function L.supermap.dataFlowLayer.prototype.setExcludeField
      * @description 设置唯一字段
-     * @param excludeField - {String} 唯一字段
+     * @param excludeField - {string} 唯一字段
      */
     setExcludeField: function (excludeField) {
         this.dataService.setExcludeField(excludeField);
@@ -91,7 +91,7 @@ export var DataFlowLayer = L.GeoJSON.extend({
     },
 
     /**
-     * @function L.supermap.DataFlowLayer.prototype.setGeometry
+     * @function L.supermap.dataFlowLayer.prototype.setGeometry
      * @description 设置集合要素
      * @param geometry - {L.Geometry} 待设置的几何要素
      */

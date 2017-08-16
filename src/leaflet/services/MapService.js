@@ -4,12 +4,12 @@ import {ServiceBase} from './ServiceBase';
 import SuperMapMapService from  '../../common/iServer/MapService';
 import TilesetsService from  '../../common/iServer/TilesetsService';
 /**
- * @class  L.supermap.MapService
+ * @class  L.supermap.mapService
  * @classdesc 地图信息服务类
- * @extends ServiceBase
- * @param url -{String} 地图服务地址
+ * @extends L.supermap.ServiceBase
+ * @param url -{string} 地图服务地址
  * @param options -{Object} 地图服务信息相关参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
+ *        serverType - {string} 服务来源 iServer|iPortal|online
  * @example
  *     L.supermap.mapService(url)
  *      .getMapInfo(function(result){
@@ -17,16 +17,11 @@ import TilesetsService from  '../../common/iServer/TilesetsService';
  *      })
  */
 export var MapService = ServiceBase.extend({
+
     options: {
         projection: null
     },
 
-    /*
-     * @function L.supermap.MapService.prototype.initialize
-     * @description leaflet下MapService类的构造函数
-     * @param url -{String} 地图服务地址
-     * @param options -{Object} 地图服务信息相关参数
-     */
     initialize: function (url, options) {
         options = options || {};
         L.setOptions(this, options);
@@ -37,7 +32,7 @@ export var MapService = ServiceBase.extend({
     },
 
     /**
-     * @function  L.supermap.MapService.prototype.getMapInfo
+     * @function  L.supermap.mapService.prototype.getMapInfo
      * @description 地图信息查询服务
      * @param callback -{function} 回调函数
      */
@@ -56,7 +51,7 @@ export var MapService = ServiceBase.extend({
     },
 
     /**
-     * @function  L.supermap.MapService.prototype.getTilesets
+     * @function  L.supermap.mapService.prototype.getTilesets
      * @description 切片列表信息查询服务
      * @param callback -{function} 回调函数
      */

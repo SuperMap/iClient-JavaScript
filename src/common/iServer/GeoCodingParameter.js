@@ -7,7 +7,7 @@ import SuperMap from '../SuperMap';
 export default  class GeoCodingParameter {
 
     /**
-     * @member SuperMap.GeoCodingParameter.prototype.address -{String}
+     * @member SuperMap.GeoCodingParameter.prototype.address -{string}
      * @description 地点关键词。
      */
     address = null;
@@ -31,13 +31,13 @@ export default  class GeoCodingParameter {
     filters = null;
 
     /**
-     * @member SuperMap.GeoCodingParameter.prototype.prjCoordSys -{String}
+     * @member SuperMap.GeoCodingParameter.prototype.prjCoordSys -{string}
      * @description  查询结果的坐标系。
      */
     prjCoordSys = null;
 
     /**
-     * @member SuperMap.GeoCodingParameter.prototype.maxReturn -{String}
+     * @member SuperMap.GeoCodingParameter.prototype.maxReturn -{string}
      * @description 最大返回结果数。
      */
     maxReturn = null;

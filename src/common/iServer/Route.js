@@ -9,46 +9,46 @@ const Collection = SuperMap.Geometry.Collection;
  * 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
  * @param points - {Array} 形成路由对象的线数组。
  * @param  options - {Object} 可选参数。如:</br>
- *         id - {Number} 路由对象在数据库中的id。</br>
- *         length - {Number} 路由对象的长度。</br>
- *         maxM - {Number} 最大线性度量值，即所有结点到起始点的量算距离中最大值。</br>
- *         minM - {Number} 最小线性度量值，即所有结点到起始点的量算距离中最小值。</br>
- *         type - {String} 数据类型，如："LINEM"</br>
+ *         id - {number}路由对象在数据库中的id。</br>
+ *         length - {number}路由对象的长度。</br>
+ *         maxM - {number}最大线性度量值，即所有结点到起始点的量算距离中最大值。</br>
+ *         minM - {number}最小线性度量值，即所有结点到起始点的量算距离中最小值。</br>
+ *         type - {string} 数据类型，如："LINEM"</br>
  * @extends SuperMap.Geometry.Collection
  */
 export default  class Route extends Collection {
 
     /**
-     * @member SuperMap.Route.prototype.id -{Number}
+     * @member SuperMap.Route.prototype.id -{number}
      * @description 路由对象在数据库中的id。
      */
     id = null;
 
     /**
-     * @member SuperMap.Route.prototype.center -{Number}
+     * @member SuperMap.Route.prototype.center -{number}
      */
     center = null;
 
     /**
-     * @member SuperMap.Route.prototype.style -{String}
+     * @member SuperMap.Route.prototype.style -{string}
      */
     style = null;
 
     /**
-     * @member SuperMap.Route.prototype.length -{Number}
+     * @member SuperMap.Route.prototype.length -{number}
      * @description 路由对象的长度。
      * 单位与数据集的单位相同。
      */
     length = null;
 
     /**
-     *  @member SuperMap.Route.prototype.maxM -{Number}
+     *  @member SuperMap.Route.prototype.maxM -{number}
      *  @description 最大线性度量值，即所有结点到起始点的量算距离中最大值。
      */
     maxM = null;
 
     /**
-     * @member SuperMap.Route.prototype.minM -{Number}
+     * @member SuperMap.Route.prototype.minM -{number}
      * @description 最小线性度量值，即所有结点到起始点的量算距离中最小值。
      */
     minM = null;
@@ -81,7 +81,7 @@ export default  class Route extends Collection {
     points = null;
 
     /**
-     * @member SuperMap.Route.prototype.type -{String}
+     * @member SuperMap.Route.prototype.type -{string}
      * @description 服务端几何对象类型。
      */
     type = null;

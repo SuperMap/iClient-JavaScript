@@ -24,7 +24,7 @@ export default  class DatasetThiessenAnalystParameters extends ThiessenAnalystPa
     filterQueryParameter = null;
 
     /**
-     * @member SuperMap.DatasetThiessenAnalystParameters.prototype.dataset -{String}
+     * @member SuperMap.DatasetThiessenAnalystParameters.prototype.dataset -{string}
      * @description 数据集名称待分析的数据集名称，请使用‘datasetName@datasourceName’格式来表示。
      */
     dataset = null;

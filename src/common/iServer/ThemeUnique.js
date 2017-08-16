@@ -13,7 +13,7 @@ import {ColorGradientType} from '../REST';
  * @extends SuperMap.Theme
  * @param options - {Object} 可选参数。如：<br>
  *        items - {Array<SuperMap.ThemeUniqueItem>} 单值专题图子项类数组。<br>
- *        uniqueExpression - {String} 用于制作单值专题图的字段或字段表达式。<br>
+ *        uniqueExpression - {string} 用于制作单值专题图的字段或字段表达式。<br>
  *        defaultStyle - {SuperMap.ServerStyle} 未参与单值专题图制作的对象的显示风格。<br>
  *        colorGradientType - {SuperMap.ColorGradientType} 渐变颜色枚举类。<br>
  *        memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
@@ -36,7 +36,7 @@ export default class ThemeUnique extends Theme {
     items = null;
 
     /**
-     * @member SuperMap.ThemeUnique.prototype.uniqueExpression -{String}
+     * @member SuperMap.ThemeUnique.prototype.uniqueExpression -{string}
      * @description 用于制作单值专题图的字段或字段表达式。<br>
      *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段。
      */
@@ -52,10 +52,6 @@ export default class ThemeUnique extends Theme {
      */
     colorGradientType = ColorGradientType.YELLOW_RED;
 
-    /*
-     * Constructor: SuperMap.ThemeUnique
-     * 单值专题图构造函数。
-     */
     constructor(options) {
         super("UNIQUE", options);
         var me = this;
@@ -113,6 +109,12 @@ export default class ThemeUnique extends Theme {
         return obj;
     }
 
+    /**
+     * @function SuperMap.ThemeUniquefromObj
+     * @description 从传入对象获取单值专题图类。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeUnique}
+     */
     static fromObj(obj) {
         var res = new ThemeUnique();
         var uItems = obj.items;

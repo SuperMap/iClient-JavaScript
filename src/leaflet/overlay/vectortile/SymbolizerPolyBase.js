@@ -3,6 +3,7 @@
  /**
   * @class L.supermap.PolyBase
   * @classdesc 多边形基类
+  * @private
   */
  //@type {{_makeFeatureParts: PolyBase._makeFeatureParts, makeInteractive: PolyBase.makeInteractive}}
  export var PolyBase = {

@@ -4,7 +4,7 @@ import ThemeMemoryData from './ThemeMemoryData';
 /**
  * @class SuperMap.Theme
  * @classdesc 专题图基类。
- * @param  type - {String} 专题图类型。
+ * @param  type - {string} 专题图类型。
  * @param options - {Object} 可选参数。如：<br>
  *        memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
  */
@@ -19,7 +19,7 @@ export default class Theme {
     memoryData = null;
 
     /**
-     * @member SuperMap.Theme.prototype.type -{String}
+     * @member SuperMap.Theme.prototype.type -{string}
      * @description 专题图类型。
      */
     type = null;
@@ -35,7 +35,7 @@ export default class Theme {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.Theme.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

@@ -11,7 +11,7 @@ import QueryByGeometryService from '../../common/iServer/QueryByGeometryService'
  * @classdesc 地图查询服务类。
  *            提供：范围查询，SQL查询，几何查询，距离查询
  * @extends ol.supermap.ServiceBase
- * @param url - {String} 地图查询服务访问地址。
+ * @param url - {string} 地图查询服务访问地址。
  * @param options - {Object} 服务交互时所需的可选参数。
  * @example
  * 用法：

@@ -13,15 +13,15 @@ import ServerStyle from './ServerStyle';
  *              每次制作出的专题图，点的数量相同，但点的位置都有差异。
  * @extends SuperMap.Theme
  * @param options - {Object} 可选参数。如：<br>
- *        dotExpression - {String} 创建点密度专题图的字段或字段表达式。<br>
+ *        dotExpression - {string} 创建点密度专题图的字段或字段表达式。<br>
  *        style - {SuperMap.ServerStyle} 点密度专题图中点的风格。<br>
- *        value - {String} 专题图中每一个点所代表的数值。<br>
+ *        value - {string} 专题图中每一个点所代表的数值。<br>
  *        memoryData - {SuperMap.REST.ThemeMemoryData} 专题图内存数据。
  */
 export default  class ThemeDotDensity extends Theme {
 
     /**
-     * @member SuperMap.ThemeDotDensity.prototype.dotExpression -{String}
+     * @member SuperMap.ThemeDotDensity.prototype.dotExpression -{string}
      * @description 创建点密度专题图的字段或字段表达式。点的数目或密集程度的来源。
      */
     dotExpression = null;
@@ -33,7 +33,7 @@ export default  class ThemeDotDensity extends Theme {
     style = null;
 
     /**
-     * @member SuperMap.ThemeDotDensity.prototype.value -{Number}
+     * @member SuperMap.ThemeDotDensity.prototype.value -{number}
      * @description 专题图中每一个点所代表的数值。<br>
      *              点值的确定与地图比例尺以及点的大小有关。地图比例尺越大，相应的图面范围也越大，<br>
      *              点相应就可以越多，此时点值就可以设置相对小一些。点形状越大，<br>
@@ -50,9 +50,8 @@ export default  class ThemeDotDensity extends Theme {
         }
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.ThemeDotDensity.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -82,6 +81,12 @@ export default  class ThemeDotDensity extends Theme {
         return obj;
     }
 
+    /**
+     * @function SuperMap.ThemeDotDensity.fromObj
+     * @description 从传入对象获取点密度专题图中点的风格。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeDotDensity}
+     */
     static fromObj(obj) {
         if (!obj) return;
         var res = new ThemeDotDensity();

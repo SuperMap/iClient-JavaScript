@@ -5,7 +5,7 @@ import MapVRenderer from './mapv/MapVRenderer';
  * @class SuperMap.Layer.MapVLayer
  * @classdesc MapV图层。
  * @extends SuperMap.Layer
- * @param name - {String} 图层名
+ * @param name - {string} 图层名
  * @param options  - {Object} 可选参数，有如下两个参数：<br>
  *        dataSet - {mapv.DataSet} mapv 的dataSet对象 <br>
  *        options - {Object} mapv 绘图风格配置信息
@@ -25,7 +25,7 @@ export class MapVLayer extends SuperMap.Layer {
     options = null;
 
     /**
-     * @member SuperMap.Layer.MapVLayer.prototype.supported -{Boolean}
+     * @member SuperMap.Layer.MapVLayer.prototype.supported -{boolean}
      * @description 当前浏览器是否支持canvas绘制，默认为false。决定了MapV图是否可用，内部判断使用。
      */
     supported = false;
@@ -129,7 +129,7 @@ export class MapVLayer extends SuperMap.Layer {
     /**
      * @function SuperMap.Layer.MapVLayer.prototype.removeData
      * @description 按照过滤条件移除数据
-     * @param filter - {String} 过滤条件
+     * @param filter - {string} 过滤条件
      * @example
      *  filter=function(data){
      *         if(data.id="1"){
@@ -172,8 +172,8 @@ export class MapVLayer extends SuperMap.Layer {
      * @description 重置当前MapV图层的div，再一次与Map控件保持一致。
      *              修改当前显示范围，当平移或者缩放结束后开始重绘MapV图的渲染效果。
      * @param bounds - {SuperMap.Bounds} 图层范围
-     * @param zoomChanged - {Boolean} 缩放级别是否改变
-     * @param dragging - {Boolean} 是否拖动
+     * @param zoomChanged - {boolean} 缩放级别是否改变
+     * @param dragging - {boolean} 是否拖动
      */
     moveTo(bounds, zoomChanged, dragging) {
         super.moveTo(bounds, zoomChanged, dragging);

@@ -16,7 +16,7 @@ import TransferPathParameters from './TransferPathParameters';
      *     }
      * };
  * (end)
- * @param url - {String} 与客户端交互的交通换乘线路查询服务地址。
+ * @param url - {string} 与客户端交互的交通换乘线路查询服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param options - {Object} 可選参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。

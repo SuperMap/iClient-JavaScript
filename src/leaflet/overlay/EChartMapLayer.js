@@ -1,6 +1,3 @@
-/**
- * Inspired by https://github.com/lzxue/echartsLayer
- */
 import '../core/Base';
 import L from "leaflet";
 import echarts  from "echarts";
@@ -8,9 +5,10 @@ import echarts  from "echarts";
 /**
  * @class L.supermap.echartsMapLayer
  * @classdesc 图表地图图层类。
+ * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param echartsOptions - {object} 图表参数
  * @param options - {object} 可选图层参数。<br>
- *        attribution - {String} 版权信息。<br>
+ *        attribution - {string} 版权信息。<br>
  *        loadWhileAnimating - {boolean} 是否在启动时加载。
  */
 export var EchartsMapLayer = L.Layer.extend({
@@ -21,10 +19,6 @@ export var EchartsMapLayer = L.Layer.extend({
     _ec: null,
     _echartsOptions: null,
 
-    /**
-     * @member L.supermap.EchartsMapLayer.prototype.options - {object}
-     * @description 可选图层参数
-     */
     options: {
         attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
         loadWhileAnimating:true
@@ -41,11 +35,11 @@ export var EchartsMapLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.EchartsMapLayer.prototype.setOption
+     * @function L.supermap.echartsMapLayer.prototype.setOption
      * @description 设置图表地图参数
      * @param echartsOptions - {object} 图表参数
      * @param notMerge - {boolean} 是否合并参数
-     * @param lazyUpdate - {String} 后台自动更新
+     * @param lazyUpdate - {string} 后台自动更新
      */
     setOption: function (echartsOptions, notMerge, lazyUpdate){
         if(echartsOptions){
@@ -65,7 +59,7 @@ export var EchartsMapLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.EchartsMapLayer.prototype.onAdd
+     * @function L.supermap.echartsMapLayer.prototype.onAdd
      * @description 添加地图
      * @param map - {L.map} 待添加的地图
      */
@@ -163,8 +157,8 @@ export var EchartsMapLayer = L.Layer.extend({
 
 /**
  * @class L.supermap.LeafletMapCoordSys
- * @classdesc leaflet地图坐标系统类
- * @param LeafletMap - {L.map}
+ * @classdesc 地图坐标系统类
+ * @param LeafletMap - {L.map} 地图
  * @param api - {Object} 接口
  */
 export function LeafletMapCoordSys(LeafletMap, api) {

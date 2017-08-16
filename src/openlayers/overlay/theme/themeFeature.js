@@ -4,8 +4,8 @@ ol.supermap = ol.supermap || {};
 /**
  * @class ol.source.ThemeFeature
  * @classdesc 主题特征
- * @param geometry - {String}
- * @param attributes -{String}
+ * @param geometry - {string}
+ * @param attributes -{string}
  */
 export default class ThemeFeature {
 

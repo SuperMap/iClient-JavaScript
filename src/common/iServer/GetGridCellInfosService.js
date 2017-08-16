@@ -5,7 +5,7 @@ import GetGridCellInfosParameters from './GetGridCellInfosParameters';
 /**
  * @class SuperMap.GetGridCellInfosService
  * @classdesc 数据栅格查询服务，支持查询指定地理位置的栅格信息
- * @param url - {String} 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
+ * @param url - {string} 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
  * @param options - {Object} 可選参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.CommonServiceBase
@@ -22,31 +22,31 @@ import GetGridCellInfosParameters from './GetGridCellInfosParameters';
 export default  class GetGridCellInfosService extends CommonServiceBase {
 
     /**
-     * @member SuperMap.GetGridCellInfosService.prototype.datasetName -{String}
+     * @member SuperMap.GetGridCellInfosService.prototype.datasetName -{string}
      * @description 数据集名称。
      */
     datasetName = null;
 
     /**
-     * @member SuperMap.GetGridCellInfosService.prototype.dataSourceName -{String}
+     * @member SuperMap.GetGridCellInfosService.prototype.dataSourceName -{string}
      * @description 数据源名称。
      */
     dataSourceName = null;
 
     /**
-     * @member SuperMap.GetGridCellInfosService.prototype.datasetType -{String}
+     * @member SuperMap.GetGridCellInfosService.prototype.datasetType -{string}
      * @description 数据集类型。
      */
     datasetType = null;
 
     /**
-     * @member SuperMap.GetGridCellInfosService.prototype.X -{Number}
+     * @member SuperMap.GetGridCellInfosService.prototype.X -{number}
      * @description 要查询的地理位置X轴
      */
     X = null;
 
     /**
-     * @member SuperMap.GetGridCellInfosService.prototype.Y-{Number}
+     * @member SuperMap.GetGridCellInfosService.prototype.Y-{number}
      * @description 要查询的地理位置Y轴
      */
     Y = null;

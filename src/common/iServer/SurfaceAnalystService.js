@@ -12,7 +12,7 @@ import GeometrySurfaceAnalystParameters from './GeometrySurfaceAnalystParameters
  * 表面分析结果通过该类支持的事件的监听函数参数获取
  * @param options - {Object} 可选参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
- * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。s
+ * @param url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。s
  * @extends SuperMap.SpatialAnalystBase
  * @example 例如：
  * (start code)

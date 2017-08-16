@@ -5,24 +5,24 @@ import Graph from './Graph';
  * @class SuperMap.Feature.Theme.Point
  * @classdesc 点状图。
  * @description 图表 Point 配置对象 chartsSetting(SuperMap.Layer.Graph::chartsSetting) 可设属性如下：</br>
- * width - {Number} 专题要素（图表）宽度，必设参数。</br>
- * height - {Number} 专题要素（图表）高度，必设参数。</br>
+ * width - {number}专题要素（图表）宽度，必设参数。</br>
+ * height - {number}专题要素（图表）高度，必设参数。</br>
  * codomain - {Array{Number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
  * XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
  * YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
  * dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
  *                     它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
  *                     当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。</br>
- * decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
- * useBackground - {Boolean} 是否使用图表背景框。</br>
+ * decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+ * useBackground - {boolean} 是否使用图表背景框。</br>
  * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
  * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
  *                 则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
  * xShapeBlank - {Array{Number}} 水平方向上的图形空白间隔参数。
  *                 长度为 2 的数组，第一个元素表示第一个（沿 x 轴方向）图形点与数据视图框左端的空白间距，第二个元素表示最后一个（沿 x 轴方向）图形点与数据视图框右端端的空白间距 。</br>
  * axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
- * axisUseArrow - {Boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。</br>
- * axisYTick - {Number} y 轴刻度数量，默认值：0 ，不使用刻度。</br>
+ * axisUseArrow - {boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。</br>
+ * axisYTick - {number}y 轴刻度数量，默认值：0 ，不使用刻度。</br>
  * axisYLabels - {Array{String}} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。</br>
  * axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
  * axisYLabelsOffset - {Array{Number}} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
@@ -212,7 +212,7 @@ export default  class Point extends Graph {
      * 长度为 2 的数组，第一元素表示第折线左端点与数据视图框左端的空白间距，第二个元素表示折线右端点右端与数据视图框右端端的空白间距 。
      * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：
      * xPositions - {Array{Number}} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。</br>
-     * width - {Number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。</br>
+     * width - {number}表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。</br>
      *
      */
     calculateXShapeInfo() {

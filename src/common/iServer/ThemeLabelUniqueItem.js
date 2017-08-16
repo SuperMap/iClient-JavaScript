@@ -8,57 +8,52 @@ import ServerTextStyle from './ServerTextStyle';
  *              字段指定用于单值的字段，同一值的标签具有相同的显示风格，其中每一个值就是一个专题图子项，<br>
  *              每一个子项都具有其名称、风格、指定的单值、X方向偏移量和Y方向偏移量。
  * @param options - {Object} 可选参数。如：<br>
- *        caption - {String} 专题图子项的名称。<br>
- *        unique - {String} 单值专题图子项的值，可以为数字、字符串等。<br>
- *        offsetX - {Number} 标签在X方向偏移量。<br>
- *        offsetY - {Number} 标签在Y方向偏移量。<br>
- *        visible - {Boolean} 标签专题图子项是否可见。<br>
+ *        caption - {string} 专题图子项的名称。<br>
+ *        unique - {string} 单值专题图子项的值，可以为数字、字符串等。<br>
+ *        offsetX - {number}标签在X方向偏移量。<br>
+ *        offsetY - {number}标签在Y方向偏移量。<br>
+ *        visible - {boolean} 标签专题图子项是否可见。<br>
  *        style - {SuperMap.ServerTextStyle} 标签专题图子项文本的显示风格。
  */
 export default  class ThemeLabelUniqueItem {
 
     /**
-     * SuperMap.ThemeLabelUniqueItem.prototype.caption -{String}
+     * @member SuperMap.ThemeLabelUniqueItem.prototype.caption -{string}
      * @description 标签专题子项的标题。
      */
     caption = null;
 
     /**
-     * SuperMap.ThemeLabelUniqueItem.prototype.unique -{String}
+     * @member SuperMap.ThemeLabelUniqueItem.prototype.unique -{string}
      * @description 单值专题图子项的值，可以为数字、字符串等。
      */
     unique = null;
 
     /**
-     * SuperMap.ThemeLabelUniqueItem.prototype.offsetX -{Number}
+     * @member SuperMap.ThemeLabelUniqueItem.prototype.offsetX -{number}
      * @description 标签在X方向偏移量。
      */
     offsetX = 0;
 
     /**
-     * APIProperty: offsetY
-     * SuperMap.ThemeLabelUniqueItem.prototype.offsetY -{Number}
+     * @member SuperMap.ThemeLabelUniqueItem.prototype.offsetY -{number}
      * @description 标签在Y方向偏移量。
      */
     offsetY = 0;
 
     /**
-     * SuperMap.ThemeLabelUniqueItem.prototype.visible -{Boolean}
+     * @member SuperMap.ThemeLabelUniqueItem.prototype.visible -{boolean}
      * @description 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
      */
     visible = true;
 
     /**
-     * SuperMap.ThemeLabelUniqueItem.prototype.style -{SuperMap.ServerTextStyle}
+     * @member SuperMap.ThemeLabelUniqueItem.prototype.style -{SuperMap.ServerTextStyle}
      * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：
      *              uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelUniqueItem.style（单值子项的文本风格），uniformStyle（统一文本风格）。
      */
     style = null;
 
-    /*
-     * Constructor: SuperMap.ThemeLabelUniqueItem
-     * 单值标签专题图的子项类构造函数，用于创建 SuperMap.ThemeLabelUniqueItem 类的新实例。
-     */
     constructor(options) {
         var me = this;
         me.style = new ServerTextStyle();
@@ -67,9 +62,8 @@ export default  class ThemeLabelUniqueItem {
         }
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.ThemeLabelUniqueItem.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -85,6 +79,12 @@ export default  class ThemeLabelUniqueItem {
         me.visible = null;
     }
 
+    /**
+     * @function SuperMap.ThemeLabelUniqueItem.fromObj
+     * @description 从传入对象获取单值标签专题图的子项类。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeLabelUniqueItem}
+     */
     static fromObj(obj) {
         if (!obj) return;
         var t = new ThemeLabelUniqueItem();

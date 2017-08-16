@@ -8,17 +8,14 @@ import SuperMap from '../../common/SuperMap';
 /**
  * @class L.superMap.tiledVectorLayer
  * @classdesc SuperMap iServer的矢量瓦片图层
+ * @extends L.superMap.VectorGrid
  * @example
  *      L.superMap.tiledVectorLayer(url).addTo(map);
- * @param url - {String} 图层数据服务地址
+ * @param url - {string} 图层数据服务地址
  * @param options - {object} 图层可选参数
  */
 export var  TileVectorLayer = VectorGrid.extend({
 
-    /**
-     * @member L.superMap.tiledVectorLayer.prototype.options -{object}
-     * @description 图层可选参数
-     */
     options: {
         //服务器类型<SuperMap.ServerType>iServer|iPortal|Online
         serverType: null,
@@ -124,7 +121,7 @@ export var  TileVectorLayer = VectorGrid.extend({
     /**
      * @function L.superMap.tiledVectorLayer.prototype.getLayerStyleInfo
      * @description 获取图层样式信息
-     * @param layerName - {String} 图层名称
+     * @param layerName - {string} 图层名称
      */
     getLayerStyleInfo: function (layerName) {
         var me = this, layerInfo_simple;
@@ -265,7 +262,7 @@ export var  TileVectorLayer = VectorGrid.extend({
     /**
      * @function L.superMap.tiledVectorLayer.prototype.getScale
      * @description 通过缩放级别获取比例尺
-     * @param zoom - {number} 缩放级别
+     * @param zoom - {number}缩放级别
      */
     getScale: function (zoom) {
         var me = this;

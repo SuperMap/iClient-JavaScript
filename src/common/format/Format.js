@@ -3,7 +3,7 @@ import SuperMap from '../SuperMap';
  * @class SuperMap.Format
  * @classdesc 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
  * @param options - {Object} 选项对象，其属性会被直接设置到format实例。如：<br>
- *        keepData - {Boolean} 如果设置为true， <data> 属性会指向被解析的对象（例如json或xml数据对象）。
+ *        keepData - {boolean} 如果设置为true， <data> 属性会指向被解析的对象（例如json或xml数据对象）。
  * @return {SuperMap.Format} 实例。
  */
 export default  class Format {
@@ -55,7 +55,7 @@ export default  class Format {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.Format.prototype.destroy
      * @description 销毁该格式类，释放相关资源。
      */
     destroy() {

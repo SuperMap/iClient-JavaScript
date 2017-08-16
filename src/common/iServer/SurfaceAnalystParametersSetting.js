@@ -7,12 +7,12 @@ import {SmoothMethod} from '../REST';
  * 通过该类可以设置表面分析提取等值线、提取等值面的一些参数，包括基准值、等值距、光滑度、光滑方法等。
  * @param options - {Object} 可选参数。如:</br>
  *        clipRegion - {SuperMap.Geometry} 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。</br>
- *        datumValue - {Number} 获取或设置表面分析中提取等值线、提取等值面的基准值。</br>
+ *        datumValue - {number}获取或设置表面分析中提取等值线、提取等值面的基准值。</br>
  *        expectedZValues - {Array(Number)} 获取或设置期望分析结果的 Z 值集合。</br>
- *        interval - {Number} 获取或设置等值距。等值距是两条等值线之间的间隔值。</br>
- *        resampleTolerance - {Number} 获取或设置重采样容限。</br>
+ *        interval - {number}获取或设置等值距。等值距是两条等值线之间的间隔值。</br>
+ *        resampleTolerance - {number}获取或设置重采样容限。</br>
  *        smoothMethod - {SuperMap.SmoothMethod} 获取或设置光滑处理所使用的方法。</br>
- *        smoothness - {Number} 获取或设置表面分析中等值线或等值面的边界线的光滑度。</br>
+ *        smoothness - {number}获取或设置表面分析中等值线或等值面的边界线的光滑度。</br>
  */
 export default  class SurfaceAnalystParametersSetting {
 
@@ -23,7 +23,7 @@ export default  class SurfaceAnalystParametersSetting {
     clipRegion = null;
 
     /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.datumValue -{Number}
+     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.datumValue -{number}
      * @description 获取或设置表面分析中提取等值线、提取等值面的基准值。
      * 基准值是作为一个生成等值线的初始起算值，并不一定是最小等值线的值。 例如，高程范围为 220 -1550 的 DEM 栅格数据，
      * 如果设基准值为0， 等值距为50，则提取等值线时，以基准值0为起点，等值距50为间隔提取等值线，
@@ -39,13 +39,13 @@ export default  class SurfaceAnalystParametersSetting {
     expectedZValues = null;
 
     /**
-     *  @member SuperMap.SurfaceAnalystParametersSetting.prototype.interval -{Number}
+     *  @member SuperMap.SurfaceAnalystParametersSetting.prototype.interval -{number}
      *  @description 获取或设置等值距。等值距是两条等值线之间的间隔值。
      */
     interval = 0;
 
     /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.resampleTolerance -{Number}
+     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.resampleTolerance -{number}
      * @description 获取或设置重采样容限。
      * 容限值越大，采样结果数据越简化。当分析结果出现交叉时，可通过调整重采样容限为较小的值来处理。
      */
@@ -58,7 +58,7 @@ export default  class SurfaceAnalystParametersSetting {
     smoothMethod = SmoothMethod.BSPLINE;
 
     /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.smoothness -{Number}
+     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.smoothness -{number}
      * @description 获取或设置表面分析中等值线或等值面的边界线的光滑度。
      * 以为0-5为例，光滑度为0表示不进行光滑操作，值越大表示光滑度越高。
      * 随着光滑度的增加，提取的等值线越光滑.当然光滑度越大，

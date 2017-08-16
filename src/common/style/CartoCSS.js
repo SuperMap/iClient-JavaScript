@@ -2,7 +2,7 @@ import SuperMap from '../SuperMap';
 /**
  * @class SuperMap.CartoCSS
  * @classdesc CartoCSS解析类，其主要功能为将CartoCSS字符串解析为CartoCSS的shader属性风格对象
- * @param cartoStr - {String} CartoCSS样式表字符串
+ * @param cartoStr - {string} CartoCSS样式表字符串
  * @example
  * (code)
  * var cartocss=[
@@ -1045,7 +1045,7 @@ export default  class CartoCSS {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.CartoCSS.prototype.destroy
      * @description CartoCSS解析对象的析构函数，用于销毁CartoCSS解析对象
      */
     destroy() {

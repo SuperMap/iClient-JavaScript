@@ -7,19 +7,19 @@ import ServerColor from './ServerColor';
  * @description 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
  * @param options - {Object} 可选参数。如：<br>
  *        fillBackColor - {SuperMap.ServerColor} 填充背景颜色。<br>
- *        fillBackOpaque - {Boolean} 背景是否不透明。<br>
+ *        fillBackOpaque - {boolean} 背景是否不透明。<br>
  *        fillForeColor - {SuperMap.ServerColor} 填充颜色。<br>
  *        fillGradientMode - {FillGradientMode} 渐变填充风格的渐变类型。<br>
- *        fillGradientAngle - {Number} 渐变填充的旋转角度。<br>
- *        fillGradientOffsetRatioX - {Number} 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。<br>
- *        fillGradientOffsetRatioY - {Number} 填充中心点相对于填充区域范围中心点的垂直偏移百分比。<br>
- *        fillOpaqueRate - {Number} 填充不透明度。<br>
+ *        fillGradientAngle - {number}渐变填充的旋转角度。<br>
+ *        fillGradientOffsetRatioX - {number}渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。<br>
+ *        fillGradientOffsetRatioY - {number}填充中心点相对于填充区域范围中心点的垂直偏移百分比。<br>
+ *        fillOpaqueRate - {number}填充不透明度。<br>
  *        fillSymbolID - {Integer} 填充符号的编码。<br>
  *        lineColor - {SuperMap.ServerColor} 矢量要素的边线颜色。<br>
  *        lineSymbolID - {Integer} 线状符号的编码。<br>
- *        lineWidth - {Number} 边线的宽度。<br>
- *        markerAngle - {Number} 点状符号的旋转角度。<br>
- *        markerSize - {Number} 点状符号的大小。<br>
+ *        lineWidth - {number}边线的宽度。<br>
+ *        markerAngle - {number}点状符号的旋转角度。<br>
+ *        markerSize - {number}点状符号的大小。<br>
  *        markerSymbolID - {Integer} 点状符号的编码。
  */
 export default class ServerStyle {
@@ -31,7 +31,7 @@ export default class ServerStyle {
     fillBackColor = null;
 
     /**
-     * @member SuperMap.ServerStyle.prototype.fillBackOpaque -{Boolean}
+     * @member SuperMap.ServerStyle.prototype.fillBackOpaque -{boolean}
      * @description 背景是否不透明。false 表示透明。默认值为 false。
      */
     fillBackOpaque = false;
@@ -49,27 +49,27 @@ export default class ServerStyle {
     fillGradientMode = null;
 
     /**
-     * @member SuperMap.ServerStyle.prototype.fillGradientAngle -{Number}
+     * @member SuperMap.ServerStyle.prototype.fillGradientAngle -{number}
      * @description 渐变填充的旋转角度。单位为度，精确到0.1度，逆时针方向为正方向。
      */
     fillGradientAngle = 0;
 
     /**
-     * @member SuperMap.ServerStyle.prototype.fillGradientOffsetRatioX -{Number}
+     * @member SuperMap.ServerStyle.prototype.fillGradientOffsetRatioX -{number}
      * @description 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。它们的关系如下：设填充区域范围中心点的坐标为（x0, y0），
      *              填充中心点的坐标为（x, y），填充区域范围的宽度为 a，水平偏移百分比为 dx，则 x=x0 + a*dx/100。
      */
     fillGradientOffsetRatioX = 0;
 
     /**
-     * @member SuperMap.ServerStyle.prototype.fillGradientOffsetRatioY -{Number}
+     * @member SuperMap.ServerStyle.prototype.fillGradientOffsetRatioY -{number}
      * @function 填充中心点相对于填充区域范围中心点的垂直偏移百分比。它们的关系如下：<br>
      *           设填充区域范围中心点的坐标为（x0, y0），填充中心点的坐标为（x, y），填充区域范围的高度为 b，垂直偏移百分比为 dy，则 y=y0 + b*dx/100。
      */
     fillGradientOffsetRatioY = 0;
 
     /**
-     * @member SuperMap.ServerStyle.prototype.fillOpaqueRate -{Number}
+     * @member SuperMap.ServerStyle.prototype.fillOpaqueRate -{number}
      * @description 填充不透明度。合法值为0--100的数值。其中为0表示完全透明；
      *              100表示完全不透明。赋值小于0时按照0处理，大于100时按照100处理。默认值为 100。
      */
@@ -96,19 +96,19 @@ export default class ServerStyle {
     lineSymbolID = 0;
 
     /**
-     * @member SuperMap.ServerStyle.prototype.lineWidth -{Number}
+     * @member SuperMap.ServerStyle.prototype.lineWidth -{number}
      * @description 边线的宽度。单位为毫米，精度到0.1，默认值为1.0。
      */
     lineWidth = 1;
 
     /**
-     * @member SuperMap.ServerStyle.prototype.markerAngle -{Number}
+     * @member SuperMap.ServerStyle.prototype.markerAngle -{number}
      * @description 点状符号的旋转角度。以度为单位，精确到0.1度，逆时针方向为正方向，默认值为0。
      */
     markerAngle = 0;
 
     /**
-     * @member SuperMap.ServerStyle.prototype.markerSize -{Number}
+     * @member SuperMap.ServerStyle.prototype.markerSize -{number}
      * @description 点状符号的大小。单位为毫米，精度为0.1，默认值为1.0。当该属性设置为0时，采用符号默认大小1.0显示。
      *              当该属性设置为非法值时，交由服务器默认处理。
      */
@@ -121,26 +121,6 @@ export default class ServerStyle {
      */
     markerSymbolID = -1;
 
-    /*
-     * @function SuperMap.ServerStyle.prototype.constructor
-     * @description 服务端矢量要素风格类构造函数。
-     * @param options - {Object} 可选参数。如：<br>
-     *        fillBackColor - {SuperMap.ServerColor} 填充背景颜色。<br>
-     *        fillBackOpaque - {Boolean} 背景是否不透明。<br>
-     *        fillForeColor - {SuperMap.ServerColor} 填充颜色。<br>
-     *        fillGradientMode - {FillGradientMode} 渐变填充风格的渐变类型。<br>
-     *        fillGradientAngle - {Number} 渐变填充的旋转角度。<br>
-     *        fillGradientOffsetRatioX - {Number} 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。<br>
-     *        fillGradientOffsetRatioY - {Number} 填充中心点相对于填充区域范围中心点的垂直偏移百分比。<br>
-     *        fillOpaqueRate - {Number} 填充不透明度。<br>
-     *        fillSymbolID - {Integer} 填充符号的编码。<br>
-     *        lineColor - {SuperMap.ServerColor} 矢量要素的边线颜色。<br>
-     *        lineSymbolID - {Integer} 线状符号的编码。<br>
-     *        lineWidth - {Number} 边线的宽度。<br>
-     *        markerAngle - {Number} 点状符号的旋转角度。<br>
-     *        markerSize - {Number} 点状符号的大小。<br>
-     *        markerSymbolID - {Integer} 点状符号的编码。
-     */
     constructor(options) {
         var me = this;
         me.fillBackColor = new ServerColor(255, 255, 255);
@@ -152,7 +132,7 @@ export default class ServerStyle {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ServerStyle.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -183,7 +163,6 @@ export default class ServerStyle {
         me.markerSize = null;
         me.markerSymbolID = null;
     }
-
 
     /**
      * @function SuperMap.ServerStyle.prototype.toServerJSONObject

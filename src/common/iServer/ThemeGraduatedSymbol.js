@@ -10,8 +10,8 @@ import {GraduatedMode} from '../REST';
  * @classdesc 等级符号专题图。
  * @extends SuperMap.Theme
  * @param options - {Object} 可选参数。如：<br>
- *        baseValue - {Number} 等级符号专题图的基准值，单位同专题变量的单位。<br>
- *        expression - {String} 等级符号专题图的字段或字段表达式。<br>
+ *        baseValue - {number}等级符号专题图的基准值，单位同专题变量的单位。<br>
+ *        expression - {string} 等级符号专题图的字段或字段表达式。<br>
  *        flow - {SuperMap.ThemeFlow} 等级符号专题图符号流动显示与牵引线设置类。<br>
  *        graduatedMode - {SuperMap.GraduatedMode} 等级符号专题图分级模式。<br>
  *        offset - {SuperMap.ThemeOffset} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
@@ -30,7 +30,7 @@ export default  class ThemeGraduatedSymbol extends Theme {
     baseValue = 0;
 
     /**
-     * @member SuperMap.ThemeGraduatedSymbol.prototype.expression -{String}
+     * @member SuperMap.ThemeGraduatedSymbol.prototype.expression -{string}
      * @description 用于创建等级符号专题图的字段或字段表达式，字段或字段表达式应为数值型。必设字段。
      */
     expression = null;
@@ -66,10 +66,6 @@ export default  class ThemeGraduatedSymbol extends Theme {
      */
     style = null;
 
-    /*
-     * Constructor: SuperMap.ThemeGraduatedSymbol
-     * 等级符号专题图构造函数，用于创建 SuperMap.ThemeGraduatedSymbol类的新实例。
-     */
     constructor(options) {
         super("GRADUATEDSYMBOL", options);
         var me = this;
@@ -82,7 +78,7 @@ export default  class ThemeGraduatedSymbol extends Theme {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeGraduatedSymbol.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -146,6 +142,12 @@ export default  class ThemeGraduatedSymbol extends Theme {
         return obj;
     }
 
+    /**
+     * @function SuperMap.ThemeGraduatedSymbol.fromObj
+     * @description 从传入对象获取等级符号专题图。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeGraduatedSymbol}
+     */
     static fromObj(obj) {
         if (!obj) return;
         var res = new SuperMap.ThemeGraduatedSymbol();

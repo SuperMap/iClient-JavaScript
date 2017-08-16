@@ -6,13 +6,13 @@ import {FetchRequest} from '../util/FetchRequest';
  * @class SuperMap.ProcessingServiceBase
  * @description 大数据服务基类
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 大数据服务地址。
+ * @param url - {string} 大数据服务地址。
  * @param options - {Object} 参数。如：<br>
  *        events - {SuperMap.Events} 处理所有事件的对象。<br>
  *        eventListeners - {Object} 听器对象。<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number} 服务访问地址在数组中的位置。<br>
- *        length - {number} 服务访问地址数组长度。
+ *        index - {number}服务访问地址在数组中的位置。<br>
+ *        length - {number}服务访问地址数组长度。
  */
 export default class ProcessingServiceBase extends CommonServiceBase {
 
@@ -40,7 +40,7 @@ export default class ProcessingServiceBase extends CommonServiceBase {
     /**
      * @function SuperMap.ProcessingServiceBase.prototype.getJobs
      * @description 获取大数据
-     * @param url - {String} 资源地址。
+     * @param url - {string} 资源地址。
      */
     getJobs(url) {
         var me = this;
@@ -56,10 +56,10 @@ export default class ProcessingServiceBase extends CommonServiceBase {
     /**
      * @function SuperMap.ProcessingServiceBase.prototype.addJob
      * @description 添加大数据
-     * @param url - {String} 资源根地址。
+     * @param url - {string} 资源根地址。
      * @param params - {object} 创建一个空间分析的请求参数。
-     * @param paramType - {String} - 请求参数类型。
-     * @param seconds - {number} 开始创建后，获取创建成功结果的时间间隔。
+     * @param paramType - {string} - 请求参数类型。
+     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      */
     addJob(url, params, paramType, seconds) {
         var me = this, parameterObject = null;

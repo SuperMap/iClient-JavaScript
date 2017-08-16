@@ -4,6 +4,7 @@ import L from "leaflet";
 /**
  * @constant L.supermap.CartoStyleMap
  * @description CartoCSS中的style属性名与leaflet的style属性名的对应表
+ * @private
  */
 export var CartoStyleMap  = L.supermap.CartoStyleMap = {
 
@@ -70,6 +71,7 @@ export var CartoStyleMap  = L.supermap.CartoStyleMap = {
 /**
  * @constant L.supermap.ServerStyleMap
  * @description 服务端传过来的style属性名与leaflet的style属性名的对应表
+ * @private
  */
 L.supermap.ServerStyleMap = {
 
@@ -130,6 +132,7 @@ L.supermap.ServerStyleMap = {
 /**
  * @constant L.supermap.CompOpMap
  * @description Canvas中的globalCompositeOperation属性值与CartoCSS中的CompOp属性值对照表
+ * @private
  */
 L.supermap.CompOpMap = {
     "clear": "",

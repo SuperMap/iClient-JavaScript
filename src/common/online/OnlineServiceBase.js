@@ -20,7 +20,7 @@ export default class OnlineServiceBase {
      * @function SuperMap.OnlineServiceBase.prototype.request
      * @description 请求online服务
      * @param method - {function}
-     * @param url - {String} 服务地址
+     * @param url - {string} 服务地址
      * @param param
      * @param requestOptions
      * @return {Promise.<TResult>|jQuery.deferred|jQuery.jqXHR|jQuery.Promise|*}
@@ -35,7 +35,7 @@ export default class OnlineServiceBase {
     /**
      * @function SuperMap.OnlineServiceBase.prototype.createCredentialUrl
      * @description 追加授权信息
-     * @param url - {String} 对接的online服务地址
+     * @param url - {string} 对接的online服务地址
      */
     createCredentialUrl(url) {
         var newUrl = url,

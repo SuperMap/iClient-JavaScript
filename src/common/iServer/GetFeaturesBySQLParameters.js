@@ -8,7 +8,7 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
  * @param options - {Object} 可選参数。如:</br>
  *        queryParameter - {SuperMap.FilterParameter} 查询过滤条件参数。</br>
  *         datasetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
- *         returnContent - {Boolean} 是否直接返回查询结果。</br>
+ *         returnContent - {boolean} 是否直接返回查询结果。</br>
  *         fromIndex - {Integer} 查询结果的最小索引号。</br>
  *         toIndex - {Integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
@@ -16,7 +16,7 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
 export default  class GetFeaturesBySQLParameters extends GetFeaturesParametersBase {
 
     /**
-     * @function SuperMap.GetFeaturesBySQLParameters.prototype.getFeatureMode -{String}
+     * @function SuperMap.GetFeaturesBySQLParameters.prototype.getFeatureMode -{string}
      * @description 数据集查询模式。
      */
     getFeatureMode = "SQL";

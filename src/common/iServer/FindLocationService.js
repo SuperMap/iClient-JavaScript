@@ -19,7 +19,7 @@ import GeoJSON from '../format/GeoJSON';
  *		   }
  * });
  * (end)
- * @param url - {String} 服务的访问地址。<br>
+ * @param url - {string} 服务的访问地址。<br>
  *                        如 http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。

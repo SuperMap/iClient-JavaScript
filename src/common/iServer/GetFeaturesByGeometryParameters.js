@@ -7,12 +7,12 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
  * @classdesc 数据集几何查询参数类。该类用于设置数据集几何查询的相关参数。
  * @param options - {Object} 可選参数。如:</br>
  *        geometry - {Object} 用于查询的几何对象。</br>
- *        attributeFilter - {String} 几何查询属性过滤条件。</br>
+ *        attributeFilter - {string} 几何查询属性过滤条件。</br>
  *        fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
  *        spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式常量,必设参数。</br>
  *        queryParameter - {SuperMap.FilterParameter} 查询过滤条件参数。</br>
  *        datasetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
- *        returnContent - {Boolean} 是否直接返回查询结果。</br>
+ *        returnContent - {boolean} 是否直接返回查询结果。</br>
  *        fromIndex - {Integer} 查询结果的最小索引号。</br>
  *        toIndex - {Integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
@@ -40,7 +40,7 @@ export default  class GetFeaturesByGeometryParameters extends GetFeaturesParamet
     fields = null;
 
     /**
-     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.attributeFilter -{String}
+     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.attributeFilter -{string}
      *  @description 几何查询属性过滤条件。
      */
     attributeFilter = null;

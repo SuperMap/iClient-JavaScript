@@ -7,17 +7,17 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  *              服务区分析是以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。<br>
  *              例如：计算某快餐店能够在30分钟内送达快餐的区域。<br>
  * @param options - {Object} 可选参数。<br>
- *        isAnalyzeById - {Boolean} 是否通过节点 ID 指定路径分析的结点。<br>
- *        isCenterMutuallyExclusive - {Boolean} 是否中心点互斥。<br>
+ *        isAnalyzeById - {boolean} 是否通过节点 ID 指定路径分析的结点。<br>
+ *        isCenterMutuallyExclusive - {boolean} 是否中心点互斥。<br>
  *        centers - {Array()} 服务站点数组，必设字段。<br>
- *        isFromCenter - {Boolean} 是否从中心点开始分析。<br>
+ *        isFromCenter - {boolean} 是否从中心点开始分析。<br>
  *        weights - {Array()} 每个服务站点提供服务的阻力半径，超过这个阻力半径的区域不予考虑，其单位与阻力字段一致，必设字段。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 export default  class FindServiceAreasParameters {
 
     /**
-     * @member SuperMap.FindServiceAreasParameters.prototype.isAnalyzeById -{Boolean}
+     * @member SuperMap.FindServiceAreasParameters.prototype.isAnalyzeById -{boolean}
      * @description 是否通过节点 ID 指定路径分析的结点，默认为 false。<br>
      *               指定路径分析经过的结点或设施点有两种方式：输入结点 ID 号或直接输入点坐标。<br>
      *               当该字段为 true 时，表示通过结点 ID 指定途经点，即 SuperMap.FindServiceAreasParameters.centers = [ID1,ID2,...]；<br>
@@ -26,7 +26,7 @@ export default  class FindServiceAreasParameters {
     isAnalyzeById = false;
 
     /**
-     * @member SuperMap.FindServiceAreasParameters.prototype.isCenterMutuallyExclusive -{Boolean}
+     * @member SuperMap.FindServiceAreasParameters.prototype.isCenterMutuallyExclusive -{boolean}
      * @description 是否中心点互斥，即按照中心点的距离进行判断是否要进行互斥处理，默认为 false。<br>
      *               若分析出的服务区有重叠的部分，则通过设置该参数进行互斥处理。
      */
@@ -41,7 +41,7 @@ export default  class FindServiceAreasParameters {
     centers = null;
 
     /**
-     * @member SuperMap.FindServiceAreasParameters.prototype.isFromCenter -{Boolean}
+     * @member SuperMap.FindServiceAreasParameters.prototype.isFromCenter -{boolean}
      * @description 是否从中心点开始分析。默认为 false。<br>
      *               从中心点开始分析和不从中心点开始分析，体现了服务中心和需要该服务的需求地的关系模式。<br>
      *               从中心点开始分析，是一个服务中心向服务需求地提供服务；<br>
@@ -63,10 +63,6 @@ export default  class FindServiceAreasParameters {
      */
     parameter = null;
 
-    /*
-     * Constructor: SuperMap.FindServiceAreasParameters
-     * 服务区分析参数类构造函数。
-     */
     constructor(options) {
         var me = this;
         me.parameter = new TransportationAnalystParameter();
@@ -76,9 +72,8 @@ export default  class FindServiceAreasParameters {
         SuperMap.Util.extend(this, options);
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.FindServiceAreasParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

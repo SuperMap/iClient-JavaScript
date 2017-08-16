@@ -15,7 +15,7 @@ import QueryByGeometryParameters from './QueryByGeometryParameters';
  * });
  * function queryCompleted(object){//todo};
  * function queryError(object){//todo};
- * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
+ * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
@@ -24,7 +24,7 @@ export default  class QueryByGeometryService extends QueryService {
     /*
      * @function SuperMap.QueryByGeometryService.prototype.constructor
      * @description Geometry 查询服务类构造函数。
-     * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
+     * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */

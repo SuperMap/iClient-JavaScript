@@ -5,6 +5,12 @@ import BufferDistance from './BufferDistance';
 /**
  * @class SuperMap.BufferSetting
  * @classdesc 缓冲区分析通用设置类
+ * @param options - {Object} 缓冲区分析设置可选参数。如：<br>
+ *        endType -{SuperMap.BufferEndType} 缓冲区端点枚举值。<br>
+ *        leftDistance -{SuperMap.BufferDistance} 左侧缓冲距离。<br>
+ *        rightDistance -{SuperMap.BufferDistance} 右侧缓冲距离。<br>
+ *        semicircleLineSegment -{number} 圆头缓冲圆弧处线段的个数。<br>
+ *        radiusUnit -{Enum} 缓冲半径单位。
  */
 export default class BufferSetting {
     /**
@@ -15,7 +21,7 @@ export default class BufferSetting {
     endType = BufferEndType.FLAT;
 
     /**
-     * @member SuperMap.BufferSetting.prototype.leftDistance -{BufferDistance}
+     * @member SuperMap.BufferSetting.prototype.leftDistance -{SuperMap.BufferDistance}
      * @description 左侧缓冲距离。
      * 默认为100。当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
      * 当为DatasetBufferAnalyst时，单位通过BufferSetting.radiusUnit设置（默认全部为米）。
@@ -23,7 +29,7 @@ export default class BufferSetting {
     leftDistance = null;
 
     /**
-     * @member SuperMap.BufferSetting.prototype.rightDistance -{BufferDistance}
+     * @member SuperMap.BufferSetting.prototype.rightDistance -{SuperMap.BufferDistance}
      * @description 右侧缓冲距离。
      * 默认为100。当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
      * 当为DatasetBufferAnalyst时，单位通过BufferSetting.radiusUnit设置（默认全部为米）。
@@ -31,7 +37,7 @@ export default class BufferSetting {
     rightDistance = null;
 
     /**
-     * @member SuperMap.BufferSetting.prototype.semicircleLineSegment -{Number}
+     * @member SuperMap.BufferSetting.prototype.semicircleLineSegment -{number}
      * @description 圆头缓冲圆弧处线段的个数。
      * 即用多少个线段来模拟一个半圆，默认值为4。
      */

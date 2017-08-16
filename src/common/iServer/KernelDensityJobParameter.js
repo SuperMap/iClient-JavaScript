@@ -5,18 +5,18 @@ import {AnalystSizeUnit, AnalystAreaUnit} from '../REST';
  * @class SuperMap.KernelDensityJobParameter
  * @description 密度分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
- *        datasetName -{String} 数据集名。 <br>
+ *        datasetName -{string} 数据集名。 <br>
  *        query -{SuperMap.Bounds} 分析范围。 <br>
- *        resolution -{number} 分辨率。 <br>
- *        method -{number} 分析方法。 <br>
- *        meshType -{number} 分析类型。 <br>
- *        fields -{String} 权重索引。 <br>
- *        radius -{number} 分析的影响半径。
+ *        resolution -{number}分辨率。 <br>
+ *        method -{number}分析方法。 <br>
+ *        meshType -{number}分析类型。 <br>
+ *        fields -{string} 权重索引。 <br>
+ *        radius -{number}分析的影响半径。
  */
 export default class KernelDensityJobParameter {
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{String}
+     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{string}
      * @description 数据集名。
      */
     datasetName = "";
@@ -46,7 +46,7 @@ export default class KernelDensityJobParameter {
     meshType = 0;
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.fields -{String}
+     * @member SuperMap.KernelDensityJobParameter.prototype.fields -{string}
      * @description 权重索引。
      */
     fields = "";
@@ -75,7 +75,6 @@ export default class KernelDensityJobParameter {
      */
     areaUnit = AnalystAreaUnit.SQUAREMILE;
 
-
     constructor(options) {
         if (!options) {
             return;
@@ -83,9 +82,8 @@ export default class KernelDensityJobParameter {
         SuperMap.Util.extend(this, options);
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.KernelDensityJobParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

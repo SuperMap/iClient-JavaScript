@@ -3,6 +3,8 @@ import L from "leaflet";
 /**
  * @class L.supermap.Symbolizer
  * @description 符号类
+ * @private
+ * @extends L.Class{@linkdoc-leaflet/#class}
  * @param feature — {L.feature} 要素
  */
 export var Symbolizer = L.Class.extend({
@@ -17,7 +19,7 @@ export var Symbolizer = L.Class.extend({
      * @function L.supermap.Symbolizer.prototype.render
      * @description 绘制线符号
      * @param renderer - {object} 渲染器
-     * @param style - {String} 符号样式
+     * @param style - {string} 符号样式
      */
     render: function (renderer, style) {
         this._renderer = renderer;
@@ -34,7 +36,7 @@ export var Symbolizer = L.Class.extend({
      * @function L.supermap.Symbolizer.prototype.updateStyle
      * @description 更新替换符号样式
      * @param renderer - {object} 渲染器
-     * @param style - {String} 符号样式
+     * @param style - {string} 符号样式
      */
     updateStyle: function (renderer, style) {
         this.options = style;

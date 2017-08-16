@@ -10,14 +10,14 @@ import SurfaceAnalystParametersSetting from './SurfaceAnalystParametersSetting';
  * {SuperMap.DatasetSurfaceAnalystParameters} 和 {SuperMap.GeometrySurfaceAnalystParameters} 继承自该类。
  * @param options - {Object} 可选参数。如:</br>
  *        extractParameter - {SuperMap.SurfaceAnalystParametersSetting} 获取或设置表面分析参数。</br>
- *        resolution - {Number} 指定中间结果（栅格数据集）的分辨率。</br>
+ *        resolution - {number}指定中间结果（栅格数据集）的分辨率。</br>
  *        resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
  *        surfaceAnalystMethod - {SuperMap.SurfaceAnalystMethod} 获取或设置表面分析的提取方法，提取等值线和提取等值面。</br>
  */
 export default  class SurfaceAnalystParameters {
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.resolution -{Number}
+     * @member SuperMap.BuildCacheJobParameter.prototype.resolution -{number}
      * @description 获取或设置指定中间结果（栅格数据集）的分辨率。
      */
     resolution = 0;

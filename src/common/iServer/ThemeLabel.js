@@ -18,15 +18,15 @@ import {LabelOverLengthMode} from '../REST';
  *         background - {SuperMap.ThemeLabelBackground} 标签专题图中标签的背景风格类。<br>
  *         flow - {SuperMap.ThemeFlow} 标签专题图标签流动显示与牵引线设置类。<br>
  *         items - {Array(<SuperMap.ThemeUniqueItem>)} 分段标签专题图的子项数组。<br>
- *         labelExpression - {String} 标注字段表达式。<br>
+ *         labelExpression - {string} 标注字段表达式。<br>
  *         labelOverLengthMode - {SuperMap.LabelOverLengthMode} 标签专题图中超长标签的处理模式枚举类。<br>
  *         matrixCells - {Array<SuperMap.LabelMatrixCell>} 矩阵标签元素数组。<br>
- *         maxLabelLength - {Number} 标签在每一行显示的最大长度。<br>
- *         numericPrecision - {Number} 通过该字段设置其显示的精度。<br>
+ *         maxLabelLength - {number}标签在每一行显示的最大长度。<br>
+ *         numericPrecision - {number}通过该字段设置其显示的精度。<br>
  *         offset - {SuperMap.ThemeOffset} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
- *         overlapAvoided - {Boolean} 是否允许以文本避让方式显示文本。<br>
- *         rangeExpression - {String} 制作分段标签专题的分段字段或字段表达式。<br>
- *         smallGeometryLabeled - {Boolean} 是否显示长度大于被标注对象本身长度的标签。<br>
+ *         overlapAvoided - {boolean} 是否允许以文本避让方式显示文本。<br>
+ *         rangeExpression - {string} 制作分段标签专题的分段字段或字段表达式。<br>
+ *         smallGeometryLabeled - {boolean} 是否显示长度大于被标注对象本身长度的标签。<br>
  *         text - {SuperMap.ThemeLabelText} 标签中文本风格。<br>
  *         memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
  */
@@ -65,7 +65,7 @@ export default class ThemeLabel extends Theme {
     uniqueItems = null;
 
     /**
-     * @member SuperMap.ThemeLabel.prototype.labelExpression -{String}
+     * @member SuperMap.ThemeLabel.prototype.labelExpression -{string}
      * @description 标注字段表达式。系统将 labelExpression 对应的字段或字段表达式的值以标签的形式显示在图层中。必设字段。
      */
     labelExpression = null;
@@ -84,14 +84,14 @@ export default class ThemeLabel extends Theme {
     matrixCells = null;
 
     /**
-     * @member SuperMap.ThemeLabel.prototype.maxLabelLength -{Number}
+     * @member SuperMap.ThemeLabel.prototype.maxLabelLength -{number}
      * @description 标签在每一行显示的最大长度，一个中文为两个字符。
      *              如果超过最大长度，可以采用两种方式来处理，一种是换行的模式进行显示，另一种是以省略号方式显示。默认最大长度为256个字符。
      */
     maxLabelLength = 256;
 
     /**
-     * @member SuperMap.ThemeLabel.prototype.numericPrecision -{Number}
+     * @member SuperMap.ThemeLabel.prototype.numericPrecision -{number}
      * @description 如果显示的标签内容为数字，通过该字段设置其显示的精度。例如标签对应的数字是8071.64529347，
      *              如果该属性为0时，显示8071；为1时，显示8071.6；为3时，则是8071.645。
      */
@@ -104,14 +104,14 @@ export default class ThemeLabel extends Theme {
     offset = null;
 
     /**
-     * @member SuperMap.ThemeLabel.prototype.overlapAvoided -{Boolean}
+     * @member SuperMap.ThemeLabel.prototype.overlapAvoided -{boolean}
      * @description 是否允许以文本避让方式显示文本。默认值为 true， 即自动避免文本叠盖。只针对该标签专题图层中的文本数据。
      *               在标签重叠度很大的情况下，即使使用自动避让功能，可能也无法完全避免标签重叠现象。
      */
     overlapAvoided = true;
 
     /**
-     * @member SuperMap.ThemeLabel.prototype.rangeExpression -{String}
+     * @member SuperMap.ThemeLabel.prototype.rangeExpression -{string}
      * @description 制作分段标签专题的分段字段或字段表达式。该表达式对应的字段（或者字段表达式）的值应该为数值型。
      *              该字段与 items 分段子项联合使用，每个子项的起始值 [start，end)来源于 rangeExpression 字段值。
      *              最后 labelExpression 指定的标签字段（标签专题图要显示的具体内容）会根据分段子项的风格进行分段显示。
@@ -119,14 +119,14 @@ export default class ThemeLabel extends Theme {
     rangeExpression = null;
 
     /**
-     * @member SuperMap.ThemeLabel.prototype.uniqueExpression -{String}
+     * @member SuperMap.ThemeLabel.prototype.uniqueExpression -{string}
      * @description 用于制作单值专题图的字段或字段表达式。
      *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段,必须与labelExpression一起使用
      */
     uniqueExpression = null;
 
     /**
-     * @member SuperMap.ThemeLabel.prototype.smallGeometryLabeled -{Boolean}
+     * @member SuperMap.ThemeLabel.prototype.smallGeometryLabeled -{boolean}
      * @description 是否显示长度大于被标注对象本身长度的标签，默认为 false。在标签的长度大于线或者面对象本身的长度时，
      *              如果该值为 true，则标签文字会叠加在一起显示，为了清楚完整的显示该标签，
      *              可以采用换行模式来显示标签，但必须保证每行的长度小于对象本身的长度。
@@ -139,10 +139,6 @@ export default class ThemeLabel extends Theme {
      */
     text = null;
 
-    /*
-     * Constructor: SuperMap.ThemeLabel
-     * 标签专题图构造函数，用于创建 SuperMap.ThemeLabel 类的新实例。
-     */
     constructor(options) {
         super("LABEL", options);
         var me = this;
@@ -264,6 +260,12 @@ export default class ThemeLabel extends Theme {
         return obj;
     }
 
+    /**
+     * @function SuperMap.ThemeLabel.fromObj
+     * @description 从传入对象获取标签专题图类。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeLabel}
+     */
     static fromObj(obj) {
         if (!obj) return;
         var lab = new ThemeLabel();

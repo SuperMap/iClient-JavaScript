@@ -8,7 +8,7 @@ import StopQueryParameters from './StopQueryParameters'
  * 站点查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 与客户端交互的站点查询服务地址。
+ * @param url - {string} 与客户端交互的站点查询服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param options - {Object} 可選参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。

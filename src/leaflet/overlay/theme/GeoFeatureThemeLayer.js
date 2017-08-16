@@ -9,24 +9,21 @@ import L from "leaflet";
 /**
  * @function L.supermap.GeoFeatureThemeLayer
  * @classdesc  地理几何专题要素型专题图层基类。此类型专题图的专题要素形状就是由 feature.geometry 决定。此类不建议直接实例化调用。
+ * @private
  * @extends L.supermap.ThemeLayer
- * @param name - {String} 专题图名
+ * @param name - {string} 专题图名
  * @param options - {object} 需要设置得参数对象。如：<br>
- *        nodesClipPixel - {Number} 节点抽稀像素距离，默认值 2。<br>
- *        isHoverAble - {Boolean} 图形是否在 hover 时高亮 ，默认值：false。<br>
- *        isMultiHover - {Boolean} 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面），默认值：false。<br>
- *        isClickAble - {Boolean} 图形是否可点击，默认 true。<br>
- *        isAllowFeatureStyle - {Boolean} 是否允许 feature 样式（style） 中的有效属性应用到专题图层。
+ *        nodesClipPixel - {number}节点抽稀像素距离，默认值 2。<br>
+ *        isHoverAble - {boolean} 图形是否在 hover 时高亮 ，默认值：false。<br>
+ *        isMultiHover - {boolean} 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面），默认值：false。<br>
+ *        isClickAble - {boolean} 图形是否可点击，默认 true。<br>
+ *        isAllowFeatureStyle - {boolean} 是否允许 feature 样式（style） 中的有效属性应用到专题图层。
  *                                        默认值为： false，禁止对专题要素使用数据（feature）的 style。
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
  */
 export var GeoFeatureThemeLayer = ThemeLayer.extend({
 
-    /**
-     * @member L.supermap.GeoFeatureThemeLayer.prototype.options -{object}
-     * @description 待设置得参数对象
-     */
     options: {
 
         // {Number} 节点抽稀像素距离，默认值 2。
@@ -251,7 +248,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.setMaxCacheCount
      * @description 设置最大缓存数量。
-     * @param cacheCount - {number} 最大缓存量。
+     * @param cacheCount - {number}最大缓存量。
      */
     setMaxCacheCount: function (cacheCount) {
         if (isNaN(cacheCount)) {
@@ -264,7 +261,7 @@ export var GeoFeatureThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.getShapesByFeatureID
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
-     * @param featureID - {number} 要素ID。
+     * @param featureID - {number}要素ID。
      */
     getShapesByFeatureID: function (featureID) {
         var me = this,

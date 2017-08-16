@@ -8,7 +8,7 @@ import {DataFormat} from '../REST';
  * @class SuperMap.QueryService
  * @classdesc 查询服务基类。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
+ * @param url - {string} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param options - {Object} 可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  * @example
@@ -39,7 +39,7 @@ export default  class QueryService extends CommonServiceBase {
     /*
      * @function SuperMap.QueryService.prototype.constructor
      * @description 查询服务基类构造函数。
-     * @param url - {String} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
+     * @param url - {string} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
      * @param options - {Object} 可选参数。如：<br>
      *        eventListeners - {Object} 需要被注册的监听器对象。
      */
@@ -72,7 +72,7 @@ export default  class QueryService extends CommonServiceBase {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.QueryService.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

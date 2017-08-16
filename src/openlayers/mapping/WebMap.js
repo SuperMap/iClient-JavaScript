@@ -144,8 +144,8 @@ export default class WebMap extends ol.Observable {
      * @function ol.supermap.WebMap.prototype.getResolutionsFromScales
      * @description 通过比例尺获取分辨率
      * @param scales - {Array<number>} 排序比例尺数组
-     * @param dpi - {number} 屏幕分辨率
-     * @param units - {String} 地图的单位
+     * @param dpi - {number}屏幕分辨率
+     * @param units - {string} 地图的单位
      * @param datum - {SuperMap.Datum} 大地参照系类
      */
     getResolutionsFromScales(scales, dpi, units, datum) {
@@ -158,7 +158,7 @@ export default class WebMap extends ol.Observable {
     /**
      * @function ol.supermap.WebMap.prototype.createLayer
      * @description 创建图层
-     * @param type - {String} 图层类型
+     * @param type - {string} 图层类型
      * @param layerInfo - {object} 图层信息
      */
     createLayer(type, layerInfo) {
@@ -298,7 +298,7 @@ export default class WebMap extends ol.Observable {
      * @function ol.supermap.WebMap.prototype.createTiandituLayer
      * @description 创建天地图图层
      * @param layerInfo - {object} 图层信息
-     * @param epsgCode - {number} epsg编码
+     * @param epsgCode - {number}epsg编码
      * @return {*}
      */
     createTiandituLayer(layerInfo, epsgCode) {

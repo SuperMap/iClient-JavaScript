@@ -11,10 +11,10 @@ const ThemeFeature = SuperMap.Feature.Theme;
  * @param layer - {SuperMap.Layer} 此专题要素所在图层，必设参数。
  * @param style - {Object} 样式。
  * @param options - {Object} 创建专题要素时的可选参数。如：<br>
- *        nodesClipPixel - {Number} 节点抽稀像素距离，默认值 2, 单位：像素。<br>
- *        isHoverAble - {Boolean} 图形是否可 hover，默认 true。<br>
- *        isMultiHover - {Boolean} 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true。<br>
- *        isClickAble - {Boolean} 图形是否可点击，默认 true。<br>
+ *        nodesClipPixel - {number}节点抽稀像素距离，默认值 2, 单位：像素。<br>
+ *        isHoverAble - {boolean} 图形是否可 hover，默认 true。<br>
+ *        isMultiHover - {boolean} 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true。<br>
+ *        isClickAble - {boolean} 图形是否可点击，默认 true。<br>
  *        highlightStyle - {Object} 高亮样式。
  */
 export default  class ThemeVector extends ThemeFeature {
@@ -26,25 +26,25 @@ export default  class ThemeVector extends ThemeFeature {
     dataBounds = null;
 
     /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.nodesClipPixel -{Number}
+     * @member SuperMap.Feature.Theme.Vector.prototype.nodesClipPixel -{number}
      * @description 节点抽稀像素距离，默认值 2。
      */
     nodesClipPixel = 2;
 
     /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.isHoverAble -{Boolean}
+     * @member SuperMap.Feature.Theme.Vector.prototype.isHoverAble -{boolean}
      * @description 图形是否可 hover，默认 true
      */
     isHoverAble = true;
 
     /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.isMultiHover -{Boolean}
+     * @member SuperMap.Feature.Theme.Vector.prototype.isMultiHover -{boolean}
      * @description 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true
      */
     isMultiHover = true;
 
     /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.isClickAble -{Boolean}
+     * @member SuperMap.Feature.Theme.Vector.prototype.isClickAble -{boolean}
      * @description 图形是否可点击，默认 true
      */
     isClickAble = true;
@@ -74,10 +74,10 @@ export default  class ThemeVector extends ThemeFeature {
      * @param layer - {SuperMap.Layer} 此专题要素所在图层，必设参数。
      * @param style - {Object} 样式。
      * @param options - {Object} 创建专题要素时的可选参数。如：<br>
-     *        nodesClipPixel - {Number} 节点抽稀像素距离，默认值 2, 单位：像素。<br>
-     *        isHoverAble - {Boolean} 图形是否可 hover，默认 true。<br>
-     *        isMultiHover - {Boolean} 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true。<br>
-     *        isClickAble - {Boolean} 图形是否可点击，默认 true。<br>
+     *        nodesClipPixel - {number}节点抽稀像素距离，默认值 2, 单位：像素。<br>
+     *        isHoverAble - {boolean} 图形是否可 hover，默认 true。<br>
+     *        isMultiHover - {boolean} 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true。<br>
+     *        isClickAble - {boolean} 图形是否可点击，默认 true。<br>
      *        highlightStyle - {Object} 高亮样式。
      * @return {SuperMap.Feature.Theme.Vector} 返回一个矢量专题要素类。
      */

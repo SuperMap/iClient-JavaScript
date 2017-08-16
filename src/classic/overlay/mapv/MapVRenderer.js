@@ -4,6 +4,7 @@ import {baiduMapLayer} from 'mapv';
 /**
  * @class SuperMap.MapVRenderer
  * @classdesc 地图渲染类
+ * @private
  * @extends mapv.MapVBaseLayer
  * @param map - {SuperMap.Map} 待渲染的地图
  * @param layer - {mapv.baiduMapLayer} 待渲染的图层
@@ -137,7 +138,7 @@ export default class MapVRenderer extends MapVBaseLayer {
     /**
      * @function SuperMap.MapVRenderer.prototype.removeData
      * @description 删除数据
-     * @param filter - {String} 删除条件\过滤信息
+     * @param filter - {string} 删除条件\过滤信息
      */
     removeData(filter) {
         if (!this.dataSet) {

@@ -8,31 +8,31 @@ import {ClientType} from '../REST';
  */
 export default class TokenServiceParameter {
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.userName -{String}
+     * @member SuperMap.TokenServiceParameter.prototype.userName -{string}
      * @description 用户名。
      */
     userName = null;
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.password -{String}
+     * @member SuperMap.TokenServiceParameter.prototype.password -{string}
      * @description 密码。
      */
     password = null;
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.clientType -{String}
+     * @member SuperMap.TokenServiceParameter.prototype.clientType -{string}
      * @description token申请的客户端标识类型。
      */
     clientType = ClientType.NONE;
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.referer -{String}
+     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
      * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
      */
 
     ip = null;
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.referer -{String}
+     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
      * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
      */
     referer = null;

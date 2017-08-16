@@ -4,26 +4,23 @@ import L from "leaflet";
 /**
  * @class L.supermap.circleStyle
  * @classdesc 圆形要素风格
- * @extends L.Class
+ * @private
+ * @extends L.Class{@linkdoc-leaflet/#class}
  * @param options - {object} 圆形要素风格参数。如：<br>
  *        stroke - {boolean}
- *        color - {String} 颜色
- *        weight - {number} 宽带
- *        opacity - {number} 透明度
- *        lineCap - {String} 线帽形状
- *        lineJoin - {String} 线条交汇边角形状
+ *        color - {string} 颜色
+ *        weight - {number}宽带
+ *        opacity - {number}透明度
+ *        lineCap - {string} 线帽形状
+ *        lineJoin - {string} 线条交汇边角形状
  *        fill - {boolean} 是否填充
- *        fillColor - {String} 填充色
- *        fillOpacity - {number} 填充透明度
- *        fillRule - {String} 填充形状
- *        radius - {number} 半径
+ *        fillColor - {string} 填充色
+ *        fillOpacity - {number}填充透明度
+ *        fillRule - {string} 填充形状
+ *        radius - {number}半径
  */
 export var CircleStyle = L.Class.extend({
 
-    /**
-     * @member L.supermap.circleStyle.prototype.options
-     * @description 要素风格参数
-     */
     options: {
         stroke: true,
         color: '#3388ff',

@@ -8,12 +8,12 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
  * @classdesc 数据集范围查询参数类,该类用于设置数据集范围查询的相关参数。
  * @param options - {Object} 参数。如：<br>
  *        bounds - {SuperMap.Bounds} 用于查询的范围对象。</br>
- *        attributeFilter - {String} 范围查询属性过滤条件。</br>
+ *        attributeFilter - {string} 范围查询属性过滤条件。</br>
  *        fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
  *        spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式常量,必设参数。</br>
  *        queryParameter - {SuperMap.FilterParameter} 查询过滤条件参数。</br>
  *        datasetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
- *        returnContent - {Boolean} 是否直接返回查询结果。</br>
+ *        returnContent - {boolean} 是否直接返回查询结果。</br>
  *        fromIndex - {Integer} 查询结果的最小索引号。</br>
  *        toIndex - {Integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
@@ -21,7 +21,7 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
 
 export default class GetFeaturesByBoundsParameters extends GetFeaturesParametersBase {
     /**
-     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.getFeatureMode -{String}
+     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.getFeatureMode -{string}
      * @description 数据集查询模式。
      * 范围查询有"BOUNDS"，"BOUNDS_ATTRIBUTEFILTER"两种,当用户设置attributeFilter时会自动切换到BOUNDS_ATTRIBUTEFILTER访问服务。
      */
@@ -41,7 +41,7 @@ export default class GetFeaturesByBoundsParameters extends GetFeaturesParameters
     fields = null;
 
     /**
-     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.attributeFilter -{String}
+     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.attributeFilter -{string}
      * @description 范围查询属性过滤条件。
      */
     attributeFilter = null;

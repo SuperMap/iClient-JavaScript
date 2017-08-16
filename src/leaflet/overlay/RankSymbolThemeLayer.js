@@ -10,7 +10,7 @@ import {GraphThemeLayer} from './theme/GraphThemeLayer';
  *            即通过制作一个符号专题图，就可以清晰展示各个区域相关Value的分布差异等。目前提供的统计图类型有：圆（Circle）
  *           目前提供的符号图形有：圆形（后续进行扩展 心形 五角星 多角心 图片等）
  * @extends L.supermap.GraphThemeLayer
- * @param name - {String} 专题图层名
+ * @param name - {string} 专题图层名
  * @param symbolType - {SuperMap.ChartType} 必设参数，目前支持："Circle"。
  * @param options - {object} 可选参数
  */
@@ -24,7 +24,7 @@ export var RankSymbolThemeLayer = GraphThemeLayer.extend({
      *  YOffset - {Number}  专题要素（图形）在 Y 方向上的偏移值，单位像素。
      *  dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
      *      它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
-     *  decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+     *  decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
      *
      *  symbolType<SuperMap.ChartType>，必设参数，目前支持："Circle"。
      */

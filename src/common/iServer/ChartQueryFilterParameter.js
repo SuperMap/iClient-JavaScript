@@ -3,48 +3,44 @@ import  SuperMap from '../SuperMap';
  * @class SuperMap.ChartQueryFilterParameter
  * @classdesc 海图查询过滤参数类，用于设置海图查询的过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
  * @param options - {Object} 可选参数。如：<br>
- *        isQueryPoint - {Boolean} 是否查询点。
- *        isQueryLine  - {Boolean} 是否查询线。
- *        isQueryRegion  - {Boolean} 是否查询面。
- *        attributeFilter - {String} 属性字段过滤条件。
- *        chartFeatureInfoSpecCode - {Number} 查询的物标代号。
+ *        isQueryPoint - {boolean} 是否查询点。
+ *        isQueryLine  - {boolean} 是否查询线。
+ *        isQueryRegion  - {boolean} 是否查询面。
+ *        attributeFilter - {string} 属性字段过滤条件。
+ *        chartFeatureInfoSpecCode - {number}查询的物标代号。
  */
 export default  class ChartQueryFilterParameter {
 
     /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryPoint -{Boolean}
+     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryPoint -{boolean}
      * @description 是否查询点。
      */
     isQueryPoint = null;
 
     /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryLine -{Boolean}
+     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryLine -{boolean}
      * @description 是否查询线。
      */
     isQueryLine = null;
 
     /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryRegion -{Boolean}
+     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryRegion -{boolean}
      * @description 是否查询面。
      */
     isQueryRegion = null;
 
     /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.attributeFilter -{String}
+     * @member SuperMap.ChartQueryFilterParameter.prototype.attributeFilter -{string}
      * @description 属性字段过滤条件。
      */
     attributeFilter = null;
 
     /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.chartFeatureInfoSpecCode -{Number}
+     * @member SuperMap.ChartQueryFilterParameter.prototype.chartFeatureInfoSpecCode -{number}
      * @description 查询的物标代号。
      */
     chartFeatureInfoSpecCode = null;
 
-    /*
-     * Constructor: ChartQueryFilterParameter
-     * 初始化 ChartQueryFilterParameter 类的新实例。
-     */
     constructor(options) {
         if (!options) {
             return;
@@ -53,7 +49,7 @@ export default  class ChartQueryFilterParameter {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ChartQueryFilterParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

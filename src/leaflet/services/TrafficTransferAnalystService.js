@@ -5,16 +5,16 @@ import TransferPathService from '../../common/iServer/TransferPathService';
 import TransferSolutionService from '../../common/iServer/TransferSolutionService';
 
 /**
- * @class L.supermap.TrafficTransferAnalystService
+ * @class L.supermap.trafficTransferAnalystService
  * @classdesc 交通换乘分析服务类
  * @example
- * L.supermap。/trafficTransferAnalystService(url).queryStop(params,function(result){
+ * L.supermap.trafficTransferAnalystService(url).queryStop(params,function(result){
  *      //doSomething
  *    })
  * @extends L.supermap.ServiceBase
- * @param url - {String} 服务地址
+ * @param url - {string} 服务地址
  * @param option - {object} 可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
+ *        serverType - {string} 服务来源 iServer|iPortal|online
  */
 export var TrafficTransferAnalystService = ServiceBase.extend({
 
@@ -23,7 +23,7 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
     },
 
     /**
-     * @function  L.supermap.TrafficTransferAnalystService.prototype.queryStop
+     * @function  L.supermap.trafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务
      * @param params - {SuperMap.StopQueryParameters} 站点查询参数类
      * @param callback - {function} 回调函数
@@ -42,7 +42,7 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
         return me;
     },
     /**
-     * @function  L.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath
+     * @function  L.supermap.trafficTransferAnalystService.prototype.analysisTransferPath
      * @description 交通换乘线路查询服务
      * @param params - {SuperMap.TransferPathParameters} 交通换乘线路查询参数类
      * @param callback - {function} 回调函数
@@ -61,7 +61,7 @@ export var TrafficTransferAnalystService = ServiceBase.extend({
         return me;
     },
     /**
-     * @function  L.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution
+     * @function  L.supermap.trafficTransferAnalystService.prototype.analysisTransferSolution
      * @description 交通换乘方案查询服务
      * @param params {SuperMap.TransferSolutionParameters} 交通换乘方案查询参数类
      * @param callback - {function} 回调函数

@@ -1255,20 +1255,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.CommonServiceBase
  * @classdesc common服务基类
- * @param url - {String} 与客户端交互的服务地址。
+ * @param url - {string} 与客户端交互的服务地址。
  * @param options - {Object} 参数。如：<br>
  *        events - {SuperMap.Events} 处理所有事件的对象。<br>
  *        eventListeners - {Object} 听器对象。<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number} 服务访问地址在数组中的位置。<br>
- *        length - {number} 服务访问地址数组长度。
+ *        index - {number}服务访问地址在数组中的位置。<br>
+ *        length - {number}服务访问地址数组长度。
  */
 var CommonServiceBase = function () {
 
     /*
      * @function SuperMap.CommonServiceBase.prototype.constructor
      * @description  ServiceBase的构造函数
-     * @param url - {String} 与客户端交互的服务地址。
+     * @param url - {string} 与客户端交互的服务地址。
      * @param options - {Object} 参数。
      */
 
@@ -1380,7 +1380,7 @@ var CommonServiceBase = function () {
 
 
     /**
-     * @member SuperMap.CommonServiceBase.prototype.isInTheSameDomain -{Boolean}
+     * @member SuperMap.CommonServiceBase.prototype.isInTheSameDomain -{boolean}
      */
 
 
@@ -1455,14 +1455,14 @@ var CommonServiceBase = function () {
          * @function  SuperMap.CommonServiceBase.prototype.request
          * @description: 该方法用于向服务发送请求。
          * @param options - {Object} 参数。
-         *        method - {String} 请求方式，包括GET，POST，PUT， DELETE。<br>
-         *        url - {String}  发送请求的地址。<br>
+         *        method - {string} 请求方式，包括GET，POST，PUT， DELETE。<br>
+         *        url - {string}  发送请求的地址。<br>
          *        params - {Object} 作为查询字符串添加到url中的一组键值对，此参数只适用于GET方式发送的请求。<br>
          *        data - {String } 发送到服务器的数据。<br>
          *        success - {function} 请求成功后的回调函数。<br>
          *        failure - {function} 请求失败后的回调函数。<br>
          *        scope - {Object} 如果回调函数是对象的一个公共方法，设定该对象的范围。<br>
-         *        isInTheSameDomain - {Boolean} 请求是否在当前域中。<br>
+         *        isInTheSameDomain - {boolean} 请求是否在当前域中。<br>
          */
 
     }, {
@@ -1499,7 +1499,7 @@ var CommonServiceBase = function () {
         /**
          * @function SuperMap.CommonServiceBase.prototype.getCredential
          * @description  获取凭据信息
-         * @param url - {String} 服务地址。
+         * @param url - {string} 服务地址。
          */
 
     }, {
@@ -1735,23 +1735,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.ServiceBase
  * @description L.supermap服务基类
- * @param url - {String} 与客户端交互的服务地址。
+ * @param url - {string} 与客户端交互的服务地址。
  * @param options - {Object} 可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
+ *        serverType - {string} 服务来源 iServer|iPortal|online
  */
 var ServiceBase = exports.ServiceBase = _leaflet2.default.Evented.extend({
+
     options: {
         url: null,
         //服务来源 iServer|iPortal|online
         serverType: null
     },
 
-    /**
-     * @function L.ServiceBase.prototype.initialize
-     * @description L.supermap服务基类的构造函数
-     * @param url - {String} 与客户端交互的服务地址。
-     * @param options - {Object} 参数。
-     */
     initialize: function initialize(url, options) {
         if (url) {
             url = url.indexOf("/") !== url.length - 1 ? url : url.substr(0, url.length - 1);
@@ -1762,7 +1757,7 @@ var ServiceBase = exports.ServiceBase = _leaflet2.default.Evented.extend({
     },
 
     /**
-     * @function destroy
+     * @function L.supermap.ServiceBase.prototype.destroy
      * @description 释放资源，将引用的资源属性置空。
      */
     destroy: function destroy() {
@@ -2137,8 +2132,8 @@ var GeoJSON = function (_JSONFormat) {
          * @function SuperMap.Format.GeoJSON.read
          * @description 反序列化一个 GeoJSON 字符串
          *
-         * @param json - {String}  GeoJSON 字符串
-         * @param type - {String} 可选的字符串，它决定了输出的格式。
+         * @param json - {string}  GeoJSON 字符串
+         * @param type - {string} 可选的字符串，它决定了输出的格式。
          *     支持的值有："Geometry","Feature",和"FeatureCollection",
          *     如果此值为null，则会使用默认值"FeaureCollection"。
          * @param filter - {Function} 对象中每个层次每个键值对都会调用此函数得出一个结果。
@@ -2346,7 +2341,7 @@ var GeoJSON = function (_JSONFormat) {
          * @function SuperMap.Format.GeoJSON.write
          * @description 序列化一个要素对象，几何对象，要素对象数组为一个GeoJSON字符串。
          * @param obj - {Object} 一个 <SuperMap.Feature.Vector> 对象，一个 <SuperMap.Geometry> 对象或者一个要素对象数组。
-         * @param pretty - {Boolean} 是否使用换行和缩进来控制输出。默认值为false。
+         * @param pretty - {boolean} 是否使用换行和缩进来控制输出。默认值为false。
          * @return {String} 一个GeoJSON字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
          */
         value: function write(obj, pretty) {
@@ -2721,7 +2716,7 @@ var SpatialAnalystBase = function (_CommonServiceBase) {
      */
 
     /**
-     * @member SuperMap.SpatialAnalystBase.prototype.format -{String}
+     * @member SuperMap.SpatialAnalystBase.prototype.format -{string}
      * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式，参数格式为"ISERVER","GEOJSON",GEOJSON
      */
 
@@ -2829,9 +2824,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.NetworkAnalystServiceBase
  * @description 网络分析服务基类。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 网络分析服务地址
+ * @param url - {string} 网络分析服务地址
  * @param options - {object} 网络分析可选参数。如：<br>
- *        format - {String} 查询结果返回格式
+ *        format - {string} 查询结果返回格式
  *
  */
 var NetworkAnalystServiceBase = function (_CommonServiceBase) {
@@ -2852,13 +2847,13 @@ var NetworkAnalystServiceBase = function (_CommonServiceBase) {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.NetworkAnalystServiceBase.prototype.destroy
      * @description 释放资源，将引用的资源属性置空。
      */
 
 
     /**
-     * @member SuperMap.NetworkAnalystServiceBase.prototype.format -{String}
+     * @member SuperMap.NetworkAnalystServiceBase.prototype.format -{string}
      * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *              参数格式为"ISERVER","GEOJSON",GEOJSON
      */
@@ -2943,54 +2938,32 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @description 该类用于定义点状符号、线状符号、填充符号风格及其相关属性。
  * @param options - {Object} 可选参数。如：<br>
  *        fillBackColor - {SuperMap.ServerColor} 填充背景颜色。<br>
- *        fillBackOpaque - {Boolean} 背景是否不透明。<br>
+ *        fillBackOpaque - {boolean} 背景是否不透明。<br>
  *        fillForeColor - {SuperMap.ServerColor} 填充颜色。<br>
  *        fillGradientMode - {FillGradientMode} 渐变填充风格的渐变类型。<br>
- *        fillGradientAngle - {Number} 渐变填充的旋转角度。<br>
- *        fillGradientOffsetRatioX - {Number} 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。<br>
- *        fillGradientOffsetRatioY - {Number} 填充中心点相对于填充区域范围中心点的垂直偏移百分比。<br>
- *        fillOpaqueRate - {Number} 填充不透明度。<br>
+ *        fillGradientAngle - {number}渐变填充的旋转角度。<br>
+ *        fillGradientOffsetRatioX - {number}渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。<br>
+ *        fillGradientOffsetRatioY - {number}填充中心点相对于填充区域范围中心点的垂直偏移百分比。<br>
+ *        fillOpaqueRate - {number}填充不透明度。<br>
  *        fillSymbolID - {Integer} 填充符号的编码。<br>
  *        lineColor - {SuperMap.ServerColor} 矢量要素的边线颜色。<br>
  *        lineSymbolID - {Integer} 线状符号的编码。<br>
- *        lineWidth - {Number} 边线的宽度。<br>
- *        markerAngle - {Number} 点状符号的旋转角度。<br>
- *        markerSize - {Number} 点状符号的大小。<br>
+ *        lineWidth - {number}边线的宽度。<br>
+ *        markerAngle - {number}点状符号的旋转角度。<br>
+ *        markerSize - {number}点状符号的大小。<br>
  *        markerSymbolID - {Integer} 点状符号的编码。
  */
 var ServerStyle = function () {
 
-    /*
-     * @function SuperMap.ServerStyle.prototype.constructor
-     * @description 服务端矢量要素风格类构造函数。
-     * @param options - {Object} 可选参数。如：<br>
-     *        fillBackColor - {SuperMap.ServerColor} 填充背景颜色。<br>
-     *        fillBackOpaque - {Boolean} 背景是否不透明。<br>
-     *        fillForeColor - {SuperMap.ServerColor} 填充颜色。<br>
-     *        fillGradientMode - {FillGradientMode} 渐变填充风格的渐变类型。<br>
-     *        fillGradientAngle - {Number} 渐变填充的旋转角度。<br>
-     *        fillGradientOffsetRatioX - {Number} 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。<br>
-     *        fillGradientOffsetRatioY - {Number} 填充中心点相对于填充区域范围中心点的垂直偏移百分比。<br>
-     *        fillOpaqueRate - {Number} 填充不透明度。<br>
-     *        fillSymbolID - {Integer} 填充符号的编码。<br>
-     *        lineColor - {SuperMap.ServerColor} 矢量要素的边线颜色。<br>
-     *        lineSymbolID - {Integer} 线状符号的编码。<br>
-     *        lineWidth - {Number} 边线的宽度。<br>
-     *        markerAngle - {Number} 点状符号的旋转角度。<br>
-     *        markerSize - {Number} 点状符号的大小。<br>
-     *        markerSymbolID - {Integer} 点状符号的编码。
-     */
-
-
     /**
-     * @member SuperMap.ServerStyle.prototype.markerSize -{Number}
+     * @member SuperMap.ServerStyle.prototype.markerSize -{number}
      * @description 点状符号的大小。单位为毫米，精度为0.1，默认值为1.0。当该属性设置为0时，采用符号默认大小1.0显示。
      *              当该属性设置为非法值时，交由服务器默认处理。
      */
 
 
     /**
-     * @member SuperMap.ServerStyle.prototype.lineWidth -{Number}
+     * @member SuperMap.ServerStyle.prototype.lineWidth -{number}
      * @description 边线的宽度。单位为毫米，精度到0.1，默认值为1.0。
      */
 
@@ -3002,14 +2975,14 @@ var ServerStyle = function () {
 
 
     /**
-     * @member SuperMap.ServerStyle.prototype.fillOpaqueRate -{Number}
+     * @member SuperMap.ServerStyle.prototype.fillOpaqueRate -{number}
      * @description 填充不透明度。合法值为0--100的数值。其中为0表示完全透明；
      *              100表示完全不透明。赋值小于0时按照0处理，大于100时按照100处理。默认值为 100。
      */
 
 
     /**
-     * @member SuperMap.ServerStyle.prototype.fillGradientOffsetRatioX -{Number}
+     * @member SuperMap.ServerStyle.prototype.fillGradientOffsetRatioX -{number}
      * @description 渐变填充中心点相对于填充区域范围中心点的水平偏移百分比。它们的关系如下：设填充区域范围中心点的坐标为（x0, y0），
      *              填充中心点的坐标为（x, y），填充区域范围的宽度为 a，水平偏移百分比为 dx，则 x=x0 + a*dx/100。
      */
@@ -3022,7 +2995,7 @@ var ServerStyle = function () {
 
 
     /**
-     * @member SuperMap.ServerStyle.prototype.fillBackOpaque -{Boolean}
+     * @member SuperMap.ServerStyle.prototype.fillBackOpaque -{boolean}
      * @description 背景是否不透明。false 表示透明。默认值为 false。
      */
     function ServerStyle(options) {
@@ -3055,7 +3028,7 @@ var ServerStyle = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ServerStyle.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -3068,7 +3041,7 @@ var ServerStyle = function () {
 
 
     /**
-     * @member SuperMap.ServerStyle.prototype.markerAngle -{Number}
+     * @member SuperMap.ServerStyle.prototype.markerAngle -{number}
      * @description 点状符号的旋转角度。以度为单位，精确到0.1度，逆时针方向为正方向，默认值为0。
      */
 
@@ -3088,14 +3061,14 @@ var ServerStyle = function () {
 
 
     /**
-     * @member SuperMap.ServerStyle.prototype.fillGradientOffsetRatioY -{Number}
+     * @member SuperMap.ServerStyle.prototype.fillGradientOffsetRatioY -{number}
      * @function 填充中心点相对于填充区域范围中心点的垂直偏移百分比。它们的关系如下：<br>
      *           设填充区域范围中心点的坐标为（x0, y0），填充中心点的坐标为（x, y），填充区域范围的高度为 b，垂直偏移百分比为 dy，则 y=y0 + b*dx/100。
      */
 
 
     /**
-     * @member SuperMap.ServerStyle.prototype.fillGradientAngle -{Number}
+     * @member SuperMap.ServerStyle.prototype.fillGradientAngle -{number}
      * @description 渐变填充的旋转角度。单位为度，精确到0.1度，逆时针方向为正方向。
      */
 
@@ -3227,10 +3200,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/** * @class SuperMap.FilterParameter * @classdesc 查询过滤条件参数类。该类用于设置查询数据集的查询过滤参数。 * @param options - {Object} 可選参数。如: *        attributeFilter - {String} 属性过滤条件。</br> *        name - {String} 查询数据集名称或者图层名称。</br> *        joinItems - {Array(<SuperMap.JoinItem>)} 与外部表的连接信息 SuperMap.JoinItem 数组。</br> *        linkItems - {Array(<SuperMap.LinkItem>)} 与外部表的关联信息 SuperMap.LinkItem 数组。</br> *        ids - {Array(String)} 查询 id 数组，即属性表中的 SmID 值。</br> *        orderBy - {String} 查询排序的字段, orderBy 的字段须为数值型的。</br> *        groupBy - {String} 查询分组条件的字段。</br> *        fields - {Array(String)} 查询字段数组。</br> */
+/** * @class SuperMap.FilterParameter * @classdesc 查询过滤条件参数类。该类用于设置查询数据集的查询过滤参数。 * @param options - {Object} 可選参数。如: *        attributeFilter - {string} 属性过滤条件。</br> *        name - {string} 查询数据集名称或者图层名称。</br> *        joinItems - {Array(<SuperMap.JoinItem>)} 与外部表的连接信息 SuperMap.JoinItem 数组。</br> *        linkItems - {Array(<SuperMap.LinkItem>)} 与外部表的关联信息 SuperMap.LinkItem 数组。</br> *        ids - {Array(String)} 查询 id 数组，即属性表中的 SmID 值。</br> *        orderBy - {string} 查询排序的字段, orderBy 的字段须为数值型的。</br> *        groupBy - {string} 查询分组条件的字段。</br> *        fields - {Array(String)} 查询字段数组。</br> */
 var FilterParameter = function () {
 
-  /**     * @member SuperMap.FilterParameter.prototype.groupBy -{String}     * @description 查询分组条件的字段。     * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段分组时，该字段的用法为 groupBy = "字段名"；     * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。     * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，     * 分别表示某个城市所属的洲和国家。     * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；     * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。     */
+  /**     * @member SuperMap.FilterParameter.prototype.groupBy -{string}     * @description 查询分组条件的字段。     * 相当于 SQL 语句中的 GROUP BY 子句，其格式为：GROUP BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段分组时，该字段的用法为 groupBy = "字段名"；     * 对多个字段分组时，字段之间以英文逗号进行分割，用法为 groupBy = "字段名1, 字段名2"。     * 例如，现有一个全球城市数据集，该数据集有两个字段分别为“Continent”和“Country”，     * 分别表示某个城市所属的洲和国家。     * 如果要按照国家对全球的城市进行分组， 可以设置 groupBy = "Country"；     * 如果以洲和国家对城市进行分组，设置 groupBy = "Continent, Country"。     */
 
 
   /**     * @member SuperMap.FilterParameter.prototype.ids -{Array(String)}     * @description 查询 id 数组，即属性表中的 SmID 值。     */
@@ -3239,7 +3212,7 @@ var FilterParameter = function () {
   /**     * @member SuperMap.FilterParameter.prototype.joinItems -{Array(SuperMap.JoinItem)}     * @description 与外部表的连接信息 SuperMap.JoinItem 数组。     */
 
 
-  /**     * @member SuperMap.FilterParameter.prototype.attributeFilter -{String}     * @description 属性过滤条件。     *     * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，     * attributeFilter 就是其中的“条件表达式”。     * 该字段的用法为 attributeFilter = "过滤条件"。     * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；     * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。     */
+  /**     * @member SuperMap.FilterParameter.prototype.attributeFilter -{string}     * @description 属性过滤条件。     *     * 相当于 SQL 语句中的 WHERE 子句，其格式为：WHERE <条件表达式>，     * attributeFilter 就是其中的“条件表达式”。     * 该字段的用法为 attributeFilter = "过滤条件"。     * 例如，要查询字段 fieldValue 小于100的记录，设置 attributeFilter = "fieldValue < 100"；     * 要查询字段 name 的值为“酒店”的记录，设置 attributeFilter = "name like '%酒店%'"，等等。     */
   function FilterParameter(options) {
     _classCallCheck(this, FilterParameter);
 
@@ -3264,13 +3237,13 @@ var FilterParameter = function () {
   /**     * @member SuperMap.FilterParameter.prototype.fields -{Array(String)}     * @description 查询字段数组，如果不设置则使用系统返回的所有字段。     */
 
 
-  /**     * @member SuperMap.FilterParameter.prototype.orderBy -{String}     * @description 查询排序的字段,orderBy的字段须为数值型的。     * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；     * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。     * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，     * 分别表示国家的面积和1994年的各国人口数量。     * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；     * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。     */
+  /**     * @member SuperMap.FilterParameter.prototype.orderBy -{string}     * @description 查询排序的字段,orderBy的字段须为数值型的。     * 相当于 SQL 语句中的 ORDER BY 子句，其格式为：ORDER BY <列名>，     * 列名即属性表中每一列的名称，列又可称为属性，在 SuperMap 中又称为字段。     * 对单个字段排序时，该字段的用法为 orderBy = "字段名"；     * 对多个字段排序时，字段之间以英文逗号进行分割，用法为 orderBy = "字段名1, 字段名2"。     * 例如，现有一个国家数据集，它有两个字段分别为“SmArea”和“pop_1994”，     * 分别表示国家的面积和1994年的各国人口数量。     * 如果要按照各国人口数量对记录进行排序，则 orderBy = "pop_1994"；     * 如果要以面积和人口进行排序，则 orderBy = "SmArea, pop_1994"。     */
 
 
   /**     * @member SuperMap.FilterParameter.prototype.linkItems -{Array<LinkItem>}     * @description 与外部表的关联信息 LinkItem 数组。     */
 
 
-  /**     * @member SuperMap.FilterParameter.prototype.name -{String}     * @description 查询数据集名称或者图层名称，根据实际的查询对象而定，必设属性。     * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，     * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。     * 因为一个地图的图层可能是来自于不同数据源的数据集，     * 而不同的数据源中可能存在同名的数据集，     * 使用数据集名称不能唯一的确定数据集，     * 所以在进行与地图相关功能的操作时，该值需要设置为图层名称。     */
+  /**     * @member SuperMap.FilterParameter.prototype.name -{string}     * @description 查询数据集名称或者图层名称，根据实际的查询对象而定，必设属性。     * 一般情况下该字段为数据集名称，但在进行与地图相关功能的操作时，     * 需要设置为图层名称（图层名称格式：数据集名称@数据源别名）。     * 因为一个地图的图层可能是来自于不同数据源的数据集，     * 而不同的数据源中可能存在同名的数据集，     * 使用数据集名称不能唯一的确定数据集，     * 所以在进行与地图相关功能的操作时，该值需要设置为图层名称。     */
 
 
   _createClass(FilterParameter, [{
@@ -3330,14 +3303,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ServerColor
  * @classdesc 颜色类。该类使用三原色（ RGB ）来表达颜色。
  * @param options - {Object} 可选参数。如：<br>
- *        red - {Number} 获取或设置红色值,默认值为255。<br>
- *        green - {Number} 获取或设置绿色值,默认值为0。<br>
- *        blue - {Number} 获取或设置蓝色值,默认值为0。
+ *        red - {number}获取或设置红色值,默认值为255。<br>
+ *        green - {number}获取或设置绿色值,默认值为0。<br>
+ *        blue - {number}获取或设置蓝色值,默认值为0。
  */
 var ServerColor = function () {
 
     /**
-     * @member SuperMap.ServerColor.prototype.green -{Number}
+     * @member SuperMap.ServerColor.prototype.green -{number}
      * @description 获取或设置绿色值,默认值为0。
      */
     function ServerColor(red, green, blue) {
@@ -3368,19 +3341,19 @@ var ServerColor = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ServerColor.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.ServerColor.prototype.blue -{Number}
+     * @member SuperMap.ServerColor.prototype.blue -{number}
      * @description 获取或设置蓝色值,默认值为0。
      */
 
 
     /**
-     * @member SuperMap.ServerColor.prototype.red -{Number}
+     * @member SuperMap.ServerColor.prototype.red -{number}
      * @description 获取或设置红色值,默认值为255。
      */
 
@@ -3465,7 +3438,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.Theme
  * @classdesc 专题图基类。
- * @param  type - {String} 专题图类型。
+ * @param  type - {string} 专题图类型。
  * @param options - {Object} 可选参数。如：<br>
  *        memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
  */
@@ -3494,13 +3467,13 @@ var Theme = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.Theme.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.Theme.prototype.type -{String}
+     * @member SuperMap.Theme.prototype.type -{string}
      * @description 专题图类型。
      */
 
@@ -3756,7 +3729,7 @@ var ThemeFeature = _SuperMap2.default.Feature.Theme;
  * @extends SuperMap.Feature.Theme
  * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
  * @param layer - {SuperMap.Layer.Theme} 此专题要素所在图层，必设参数。
- * @param fields - {Array<String>} data 中的参与此图表生成的字段名称，必设参数。
+ * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
  * @param setting - {Object} 图表配置对象，必设参数。
  * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Graph} 返回一个统计专题要素。
@@ -3766,31 +3739,31 @@ var Graph = function (_ThemeFeature) {
     _inherits(Graph, _ThemeFeature);
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.fields -{Array<String>}
+     * @member SuperMap.Feature.Theme.Graph.prototype.fields -{Array<string>}
      * @description 数据（ <SuperMap.Feature.Vector> ）属性字段。
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.DVBHeight -{Number} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.DVBHeight -{number}{ReadOnly}
      * @description 数据视图框高度。
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.DVBOrigonPoint -{Array<Number>} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.DVBOrigonPoint -{Array<number>} {ReadOnly}
      * @description 数据视图框原点，数据视图框左上角点，长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.DVBCenterPoint -{Array<Number>} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.DVBCenterPoint -{Array<number>} {ReadOnly}
      * @description 数据视图框中心点，长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.dataViewBox -{Array<Number>} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.dataViewBox -{Array<number>} {ReadOnly}
      * @description 数据视图框，长度为 4 的一维数组，[left, bottom, right, top]。
      *              dataViewBox 是统计专题要素最核心的内容，它负责解释数据在一个像素区域里的数据可视化含义，
      *              这种含义用可视化图形表达出来，这些表示数据的图形和一些辅助图形组合在一起构成统计专题图表。
@@ -3798,13 +3771,13 @@ var Graph = function (_ThemeFeature) {
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.YOffset -{Number} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.YOffset -{number}{ReadOnly}
      * @description 专题要素（图表）在 Y 方向上的偏移值，单位像素。
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.height -{Number} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.height -{number}{ReadOnly}
      * @description 专题要素（图表）高度 ，必设属性。
      */
 
@@ -3816,7 +3789,7 @@ var Graph = function (_ThemeFeature) {
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.origonPoint -{Array<Number>} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.origonPoint -{Array<number>} {ReadOnly}
      * @description 专题要素（图表）原点，图表左上角点像素坐标，是长度为 2 的一维数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
      */
 
@@ -3889,58 +3862,58 @@ var Graph = function (_ThemeFeature) {
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.dataValues {Array<Number>}
+     * @member SuperMap.Feature.Theme.Graph.prototype.dataValues {Array<number>}
      * @description 图表展示的数据值，通过 fields 从数据（feature）属性中获得。
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.origonPointOffset -{Array<Number>} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.origonPointOffset -{Array<number>} {ReadOnly}
      * @description 数据视图框原点相对于图表框的原点偏移量，长度为 2 的一维数组，第一个元素表示 x 偏移量，第二个元素表示 y 偏移量。
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.DVBWidth -{Number} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.DVBWidth -{number}{ReadOnly}
      * @description 数据视图框宽度。
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.DVBUnitValue -{String} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.DVBUnitValue -{string} {ReadOnly}
      * @description 单位值。在 assembleShapes() 中初始化其具体意义，例如：饼图的 DVBUnitValue 可以定义为"360/数据总和"，
      *              折线图的 DVBUnitValue 可以定义为 "DVBCodomain/DVBHeight"。
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.DVBCodomain -{Array<Number>} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.DVBCodomain -{Array<number>} {ReadOnly}
      * @description 数据视图框的内允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限。
      *              dataViewBox 中允许的数据范围，对数据溢出值域范围情况的处理需要在 assembleShapes 中进行。
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.DVBParameter -{Array<Number>} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.DVBParameter -{Array<number>} {ReadOnly}
      * @description 数据视图框参数，长度为 4 的一维数组（数组元素值 >= 0），[leftOffset, bottomOffset, rightOffset, topOffset]，chartBox 内偏距值。
      *               此属性用于指定数据视图框 dataViewBox 的范围。
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.XOffset -{Number} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.XOffset -{number}{ReadOnly}
      * @description 专题要素（图表）在 X 方向上的偏移值，单位像素。
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.width -{Number} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.width -{number}{ReadOnly}
      * @description 专题要素（图表）宽度 ，必设属性。
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Graph.prototype.chartBox -{Array<Number>} {ReadOnly}
+     * @member SuperMap.Feature.Theme.Graph.prototype.chartBox -{Array<number>} {ReadOnly}
      * @description 专题要素（图表）区域，即图表框，长度为 4 的一维数组，数组的 4 个元素依次表示图表框左端 x 坐标值、
      *              下端 y坐标值、 右端 x坐标值、 上端 y 坐标值；[left, bottom, right, top]。
      */
@@ -3951,14 +3924,14 @@ var Graph = function (_ThemeFeature) {
      * @description 图表配置对象，该对象控制着图表的可视化显示。<br>
      *              下面是此配置对象的 7 个基础可设属性：<br>
      *              Symbolizer properties:<br>
-     *              width - {Number} 专题要素（图表）宽度，必设参数。<br>
-     *              height - {Number} 专题要素（图表）高度，必设参数。<br>
-     *              codomain - {Array<Number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
+     *              width - {number}专题要素（图表）宽度，必设参数。<br>
+     *              height - {number}专题要素（图表）高度，必设参数。<br>
+     *              codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
      *              XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。<br>
      *              YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
-     *              dataViewBoxParameter - {Array<Number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox
+     *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox
      *                                                    （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。<br>
-     *              decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
+     *              decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
      *                                       如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
      *              除了以上 7 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同。
      *              请在此类的子类中查看 setting 对象的可设属性和属性含义。
@@ -4003,14 +3976,14 @@ var Graph = function (_ThemeFeature) {
          * @description 初始化专题要素（图表）基础参数。在调用此方法前，此类的图表模型相关属性都是不可用的 ，此方法在 assembleShapes 函数中调用。<br>
          *              调用此函数关系到 setting 对象的以下属性。<br>
          *              Symbolizer properties:<br>
-         *              width - {Number} 专题要素（图表）宽度，必设参数。<br>
-         *              height - {Number} 专题要素（图表）高度，必设参数。<br>
-         *              codomain - {Array<Number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
+         *              width - {number}专题要素（图表）宽度，必设参数。<br>
+         *              height - {number}专题要素（图表）高度，必设参数。<br>
+         *              codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
          *              XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。<br>
          *              YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
-         *              dataViewBoxParameter - {Array<Number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox。<br>
+         *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox。<br>
          *                                     （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。<br>
-         *              decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+         *              decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
          * @return {Boolean} 初始化参数是否成功。
          */
 
@@ -4261,7 +4234,7 @@ var Graph = function (_ThemeFeature) {
  * @description 根据字段名数组获取指定数据（feature）的属性值数组。属性值类型必须为 Number。
  * @param data - {SuperMap.Feature.Vector} 数据。
  * @param fields - {Array} 字段名数组。
- * @param decimalNumber - {Number} 小数位处理参数，对获取到的属性数据值进行小数位处理。
+ * @param decimalNumber - {number}小数位处理参数，对获取到的属性数据值进行小数位处理。
  * @return {Array} 字段名数组对应的属性数据值数组。
  */
 
@@ -4328,7 +4301,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class L.supermap.CommontypesConversion
- * @classdesc  Leaflet对象和SuperMap对象转换工具
+ * @classdesc Leaflet对象和SuperMap对象转换工具
  */
 var CommontypesConversion = function () {
     function CommontypesConversion() {
@@ -4341,7 +4314,7 @@ var CommontypesConversion = function () {
         /**
          * @function L.supermap.CommontypesConversion.toSuperMapBounds
          * @description 将Leaflet对象得bounds转成SuperMap 的bounds对象
-         * @param bounds - {L.Bounds}
+         * @param bounds - {L.Bounds} 图层显示范围
          * @return {L.Bounds|Bounds}
          */
         value: function toSuperMapBounds(bounds) {
@@ -4399,13 +4372,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.ProcessingServiceBase
  * @description 大数据服务基类
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 大数据服务地址。
+ * @param url - {string} 大数据服务地址。
  * @param options - {Object} 参数。如：<br>
  *        events - {SuperMap.Events} 处理所有事件的对象。<br>
  *        eventListeners - {Object} 听器对象。<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number} 服务访问地址在数组中的位置。<br>
- *        length - {number} 服务访问地址数组长度。
+ *        index - {number}服务访问地址在数组中的位置。<br>
+ *        length - {number}服务访问地址数组长度。
  */
 var ProcessingServiceBase = function (_CommonServiceBase) {
     _inherits(ProcessingServiceBase, _CommonServiceBase);
@@ -4444,7 +4417,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
         /**
          * @function SuperMap.ProcessingServiceBase.prototype.getJobs
          * @description 获取大数据
-         * @param url - {String} 资源地址。
+         * @param url - {string} 资源地址。
          */
 
     }, {
@@ -4463,10 +4436,10 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
         /**
          * @function SuperMap.ProcessingServiceBase.prototype.addJob
          * @description 添加大数据
-         * @param url - {String} 资源根地址。
+         * @param url - {string} 资源根地址。
          * @param params - {object} 创建一个空间分析的请求参数。
-         * @param paramType - {String} - 请求参数类型。
-         * @param seconds - {number} 开始创建后，获取创建成功结果的时间间隔。
+         * @param paramType - {string} - 请求参数类型。
+         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -4580,26 +4553,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.QueryParameters
  * @classdesc 查询参数基类。距离查询、SQL 查询、几何地物查询等各自的参数均继承此类。
  * @param options - {Object} 可选参数。如：<br>
- *         customParams - {String} 自定义参数，供扩展使用。<br>
+ *         customParams - {string} 自定义参数，供扩展使用。<br>
  *         prjCoordSys -{Object} 自定义参数，供isueprmap提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br>
- *         expectCount - {Number} 期望返回结果记录个数。<br>
+ *         expectCount - {number}期望返回结果记录个数。<br>
  *         networkType - {SuperMap.GeometryType} 网络数据集对应的查询类型。<br>
  *         queryOption - {SuperMap.QueryOption} 查询结果类型枚举类。<br>
  *         queryParams -  {Array<SuperMap.FilterParameter>} 查询过滤条件参数数组。<br>
- *         startRecord - {Number} 查询起始记录号。<br>
- *         holdTime - {Number} 资源在服务端保存的时间。<br>
- *         returnCustomResult -{Boolean} 仅供三维使用。
+ *         startRecord - {number}查询起始记录号。<br>
+ *         holdTime - {number}资源在服务端保存的时间。<br>
+ *         returnCustomResult -{boolean} 仅供三维使用。
  */
 var QueryParameters = function () {
 
-    /*
-     * Constructor: SuperMap.QueryParameters
-     * 查询参数基类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.QueryParameters.prototype.holdTime -{Number}
+     * @member SuperMap.QueryParameters.prototype.holdTime -{number}
      * @description 资源在服务端保存的时间。默认为10（分钟）。
      */
 
@@ -4643,19 +4610,19 @@ var QueryParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.QueryParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.QueryParameters.prototype.returnCustomResult -{Boolean}
+     * @member SuperMap.QueryParameters.prototype.returnCustomResult -{boolean}
      * @description 仅供三维使用。
      */
 
 
     /**
-     * @member SuperMap.QueryParameters.prototype.startRecord -{Number}
+     * @member SuperMap.QueryParameters.prototype.startRecord -{number}
      * @description 查询起始记录号，默认值为0。
      */
 
@@ -4669,14 +4636,14 @@ var QueryParameters = function () {
 
 
     /**
-     * @member SuperMap.QueryParameters.prototype.expectCount -{Number}
+     * @member SuperMap.QueryParameters.prototype.expectCount -{number}
      * @description 期望返回结果记录个数，默认返回100000条查询记录，
      *               如果实际不足100000条则返回实际记录条数。
      */
 
 
     /**
-     * @member SuperMap.QueryParameters.prototype.customParams -{String}
+     * @member SuperMap.QueryParameters.prototype.customParams -{string}
      * @description 自定义参数，供扩展使用。
      */
 
@@ -4745,87 +4712,62 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        align - {TextAlignment} 文本的对齐方式。<br>
  *        backColor - {SuperMap.ServerColor} 文本的背景色。<br>
  *        foreColor - {SuperMap.ServerColor} 文本的前景色。<br>
- *        backOpaque - {Boolean} 文本背景是否不透明。<br>
- *        sizeFixed - {Boolean} 文本大小是否固定。<br>
- *        fontHeight - {Number} 文本字体的高度。<br>
- *        fontWidth - {Number} 文本字体的宽度。<br>
+ *        backOpaque - {boolean} 文本背景是否不透明。<br>
+ *        sizeFixed - {boolean} 文本大小是否固定。<br>
+ *        fontHeight - {number}文本字体的高度。<br>
+ *        fontWidth - {number}文本字体的宽度。<br>
  *        fontWeight - {Integer} 文本字体的磅数。<br>
- *        fontName - {String} 文本字体的名称。<br>
- *        bold - {Boolean} 文本是否为粗体字。<br>
- *        italic - {Boolean}文本是否采用斜体。<br>
- *        italicAngle - {Number} 字体倾斜角度。<br>
- *        shadow - {Boolean} 文本是否有阴影。<br>
- *        strikeout - {Boolean} 文本字体是否加删除线。<br>
- *        outline - {Boolean} 是否以轮廓的方式来显示文本的背景。<br>
- *        opaqueRate - {Number} 注记文字的不透明度。<br>
- *        underline - {Boolean} 文本字体是否加下划线。<br>
+ *        fontName - {string} 文本字体的名称。<br>
+ *        bold - {boolean} 文本是否为粗体字。<br>
+ *        italic - {boolean}文本是否采用斜体。<br>
+ *        italicAngle - {number}字体倾斜角度。<br>
+ *        shadow - {boolean} 文本是否有阴影。<br>
+ *        strikeout - {boolean} 文本字体是否加删除线。<br>
+ *        outline - {boolean} 是否以轮廓的方式来显示文本的背景。<br>
+ *        opaqueRate - {number}注记文字的不透明度。<br>
+ *        underline - {boolean} 文本字体是否加下划线。<br>
  *        rotation -  {Number} 文本旋转的角度。
  */
 var ServerTextStyle = function () {
 
-    /*
-     * @function SuperMap.ServerTextStyle.prototype.constructor
-     * @description 服务端文本风格类构造函数。
-     * @param options - {Object} 可选参数。如：<br>
-     *        align - {TextAlignment} 文本的对齐方式。<br>
-     *        backColor - {SuperMap.ServerColor} 文本的背景色。<br>
-     *        foreColor - {SuperMap.ServerColor} 文本的前景色。<br>
-     *        backOpaque - {Boolean} 文本背景是否不透明。<br>
-     *        sizeFixed - {Boolean} 文本大小是否固定。<br>
-     *        fontHeight - {Number} 文本字体的高度。<br>
-     *        fontWidth - {Number} 文本字体的宽度。<br>
-     *        fontWeight - {Integer} 文本字体的磅数。<br>
-     *        fontName - {String} 文本字体的名称。<br>
-     *        bold - {Boolean} 文本是否为粗体字。<br>
-     *        italic - {Boolean}文本是否采用斜体。<br>
-     *        italicAngle - {Number} 字体倾斜角度。<br>
-     *        shadow - {Boolean} 文本是否有阴影。<br>
-     *        strikeout - {Boolean} 文本字体是否加删除线。<br>
-     *        outline - {Boolean} 是否以轮廓的方式来显示文本的背景。<br>
-     *        opaqueRate - {Number} 注记文字的不透明度。<br>
-     *        underline - {Boolean} 文本字体是否加下划线。<br>
-     *        rotation -  {Number} 文本旋转的角度。
-     */
-
-
     /**
-     * @member SuperMap.ServerTextStyle.prototype.underline -{Boolean}
+     * @member SuperMap.ServerTextStyle.prototype.underline -{boolean}
      * @description 文本字体是否加下划线。true 表示加下划线。默认为 false。
      */
 
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.outline -{Boolean}
+     * @member SuperMap.ServerTextStyle.prototype.outline -{boolean}
      * @description 是否以轮廓的方式来显示文本的背景。true 表示以轮廓的方式来显示文本的背景。默认值为 false，表示不以轮廓的方式来显示文本的背景。
      */
 
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.shadow -{Boolean}
+     * @member SuperMap.ServerTextStyle.prototype.shadow -{boolean}
      * @description 文本是否有阴影。true 表示给文本增加阴影。默认值为 false，即文本没有阴影。
      */
 
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.italic -{Boolean}
+     * @member SuperMap.ServerTextStyle.prototype.italic -{boolean}
      * @description 文本是否采用斜体。true 表示采用斜体。默认为 false。
      */
 
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.fontName -{String}
+     * @member SuperMap.ServerTextStyle.prototype.fontName -{string}
      * @description 文本字体的名称。默认值为 Times New Roman。
      */
 
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.fontWidth -{Number}
+     * @member SuperMap.ServerTextStyle.prototype.fontWidth -{number}
      * @description 文本字体的宽度。字体的宽度以英文字符为标准，由于一个中文字符相当于两个英文字符，默认为0地图坐标单位。
      */
 
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.sizeFixed -{Boolean}
+     * @member SuperMap.ServerTextStyle.prototype.sizeFixed -{boolean}
      * @description 文本大小是否固定。默认为 true，表示图片为固定像素大小，具体大小请参考 fontHeight。当设为 false 时，图片会随着地图缩放而缩放。
      */
 
@@ -4872,38 +4814,38 @@ var ServerTextStyle = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ServerTextStyle.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.rotation -{Number}
+     * @member SuperMap.ServerTextStyle.prototype.rotation -{number}
      * @description 文本旋转的角度。逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。
      */
 
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.opaqueRate -{Number}
+     * @member SuperMap.ServerTextStyle.prototype.opaqueRate -{number}
      * @description 注记文字的不透明度。不透明度的范围为0-100。默认为0，表示透明。
      */
 
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.strikeout -{Boolean}
+     * @member SuperMap.ServerTextStyle.prototype.strikeout -{boolean}
      * @description 文本字体是否加删除线。true 表示加删除线。默认值为 false，即文本字体不加删除线。
      */
 
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.italicAngle -{Number}
+     * @member SuperMap.ServerTextStyle.prototype.italicAngle -{number}
      * @description 字体倾斜角度。正负度之间，以度为单位，精确到0.1度，默认为0度。当倾斜角度为0度，为系统默认的字体倾斜样式。
      *              正负度是指以纵轴为起始零度线，其纵轴左侧为正，右侧为负。允许的最大角度为60，最小-60。大于60按照60处理，小于-60按照-60处理。目前只对标签专题图有效。
      */
 
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.bold -{Boolean}
+     * @member SuperMap.ServerTextStyle.prototype.bold -{boolean}
      * @description 文本是否为粗体字。true 表示为粗体。默认值为 false，即文本不是粗体字。
      */
 
@@ -4915,14 +4857,14 @@ var ServerTextStyle = function () {
 
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.fontHeight -{Number}
+     * @member SuperMap.ServerTextStyle.prototype.fontHeight -{number}
      * @description 文本字体的高度，默认为6，单位与 sizeFixed 有关，当 sizeFixed 为 False 时，即非固定文本大小时使用地图坐标单位，
      *              如地理坐标系下的地图中单位为度；当 sizeFixed 为 True 时，单位为毫米（mm）。
      */
 
 
     /**
-     * @member SuperMap.ServerTextStyle.prototype.backOpaque -{Boolean}
+     * @member SuperMap.ServerTextStyle.prototype.backOpaque -{boolean}
      * @description 文本背景是否不透明。true 表示文本背景不透明。
      */
 
@@ -4964,10 +4906,10 @@ var ServerTextStyle = function () {
         }
 
         /**
-         * @function SuperMap.ServerTextStyle.fromJson
-         * @description 将JSON对象转换为 SuperMap.ServerStyle 对象。
-         * @param obj - {Object} 要转换的 JSON 对象。
-         * @return {SuperMap.ServerTextStyle} 转化后的 SuperMap.ServerTextStyle 对象。
+         * @function SuperMap.ServerTextStyle.fromObj
+         * @description 从传入对象获服务端文本风格类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ServerTextStyle}
          */
 
     }], [{
@@ -5014,10 +4956,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/** * @class SuperMap.TransportationAnalystParameter * @classdesc 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 * @param options - {Object} 可选参数。如:</br> *        barrierEdgeIDs - {Array(Number)} 网络分析中障碍弧段的 ID 数组。 *        barrierNodeIDs - {Array(Number)} 网络分析中障碍点的 ID 数组。 *        barrierPoints - {Array(Point)} *        weightFieldName - {String} 阻力字段的名称。 *        turnWeightField - {String} 转向权重字段的名称。 *        resultSetting - {SuperMap.TransportationAnalystResultSetting} 分析结果返回内容。 */
+/** * @class SuperMap.TransportationAnalystParameter * @classdesc 交通网络分析通用参数类。 * 该类主要用来提供交通网络分析所需的通用参数。 * 通过本类可以设置障碍边、障碍点、权值字段信息的名称标识、转向权值字段等信息，还可以对分析结果包含的内容进行一些设置。 * @param options - {Object} 可选参数。如:</br> *        barrierEdgeIDs - {Array(Number)} 网络分析中障碍弧段的 ID 数组。 *        barrierNodeIDs - {Array(Number)} 网络分析中障碍点的 ID 数组。 *        barrierPoints - {Array(Point)} *        weightFieldName - {string} 阻力字段的名称。 *        turnWeightField - {string} 转向权重字段的名称。 *        resultSetting - {SuperMap.TransportationAnalystResultSetting} 分析结果返回内容。 */
 var TransportationAnalystParameter = function () {
 
-  /**     * @member SuperMap.TransportationAnalystParameter.prototype.turnWeightField -{String}     * @description 转向权重字段的名称。     */
+  /**     * @member SuperMap.TransportationAnalystParameter.prototype.turnWeightField -{string}     * @description 转向权重字段的名称。     */
 
 
   /**     * @member SuperMap.TransportationAnalystParameter.prototype.barrierPoints -{Array(Point)}     * @description 网络分析中 Point2D 类型的障碍点数组。障碍点表示任何方向都不能通过此点。     * 当各网络分析参数类中的 isAnalyzeById 属性设置为 false 时，该属性才生效。     */
@@ -5049,7 +4991,7 @@ var TransportationAnalystParameter = function () {
   /**     *  @member SuperMap.TransportationAnalystParameter.prototype.resultSetting -{SuperMap.TransportationAnalystResultSetting}     *  @description 分析结果返回内容。     */
 
 
-  /**     * @member SuperMap.TransportationAnalystParameter.prototype.weightFieldName -{String}     * @description 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */
+  /**     * @member SuperMap.TransportationAnalystParameter.prototype.weightFieldName -{string}     * @description 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，例如表示时间、长度等的字段都可以用作阻力字段。     * 该字段默值为服务器发布的所有耗费字段的第一个字段。     */
 
 
   /**     * @member SuperMap.TransportationAnalystParameter.prototype.v -{Array(Number)}     * @description 网络分析中障碍点的 ID 数组。结点设置为障碍点之后，表示任何方向都不能通过此结点。     */
@@ -5160,7 +5102,7 @@ _SuperMap2.default.SecurityManager = {
      * @function SuperMap.SecurityManager.prototype.registerToken
      * @description 服务请求都会自动带上这个token
      * @param url {String} -服务器域名+端口：如http://localhost:8090
-     * @param token -{String}
+     * @param token -{string}
      */
     registerToken: function registerToken(url, token) {
         this.tokens = this.tokens || {};
@@ -5175,7 +5117,7 @@ _SuperMap2.default.SecurityManager = {
      * @function SuperMap.SecurityManager.prototype.registerKey
      * @description 注册key,ids为数组(存在一个key对应多个服务)
      * @param ids -{Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
-     * @param key -{String}
+     * @param key -{string}
      */
     registerKey: function registerKey(ids, key) {
         this.keys = this.keys || {};
@@ -5203,7 +5145,7 @@ _SuperMap2.default.SecurityManager = {
     /**
      * @function SuperMap.SecurityManager.prototype.getToken
      * @description token按照域名存储
-     * @param url -{String}-服务器域名+端口，如：http://localhost:8092
+     * @param url -{string}-服务器域名+端口，如：http://localhost:8092
      */
     getToken: function getToken(url) {
         if (!url) {
@@ -5223,7 +5165,7 @@ _SuperMap2.default.SecurityManager = {
     /**
      * @function SuperMap.SecurityManager.prototype.loginOnline
      * @description Online登录验证
-     * @param callbackLocation -{String} 跳转位置
+     * @param callbackLocation -{string} 跳转位置
      * @param newTab -{boolean}是否新窗口打开
      */
     loginOnline: function loginOnline(callbackLocation, newTab) {
@@ -5234,7 +5176,7 @@ _SuperMap2.default.SecurityManager = {
     /**
      * @function SuperMap.SecurityManager.prototype.loginPortal
      * @description iPortal登录验证
-     * @param url -{String} 网站地址
+     * @param url -{string} 网站地址
      * @param newTab -{boolean}是否新窗口打开
      */
     loginPortal: function loginPortal(url, newTab) {
@@ -5500,7 +5442,7 @@ var DataReturnOption = function () {
 
 
     /**
-     * @member SuperMap.DataReturnOption.prototype.expectCount -{Number}
+     * @member SuperMap.DataReturnOption.prototype.expectCount -{number}
      * @description 设置返回的最大记录数，小于或者等于0时表示返回所有记录数。
      */
     function DataReturnOption(options) {
@@ -5524,13 +5466,13 @@ var DataReturnOption = function () {
 
 
     /**
-     * @member SuperMap.DataReturnOption.prototype.deleteExistResultDataset -{Boolean}
+     * @member SuperMap.DataReturnOption.prototype.deleteExistResultDataset -{boolean}
      * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。
      */
 
 
     /**
-     * @member SuperMap.DataReturnOption.prototype.dataset -{String}
+     * @member SuperMap.DataReturnOption.prototype.dataset -{string}
      * @description 设置结果数据集标识，当dataReturnMode为 SuperMap.DataReturnMode.DATASET_ONLY
      * 或SuperMap.DataReturnMode.DATASET_AND_RECORDSET时有效，
      * 作为返回数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。
@@ -5585,28 +5527,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *               例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。此例中，事故发生地即是一个事件点，周边的医院则是设施点。<br>
  *               最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
  * @param options - {Object} 可选参数。如：<br>
- *        edgeID - {Number} 指定的弧段ID。<br>
+ *        edgeID - {number}指定的弧段ID。<br>
  *        nodeID - {Integer} 指定的结点ID。<br>
- *        weightName -{String} 指定的权值字段信息对象的名称。<br>
- *        isUncertainDirectionValid -{Boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
+ *        weightName -{string} 指定的权值字段信息对象的名称。<br>
+ *        isUncertainDirectionValid -{boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
  *                                             指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
  */
 var FacilityAnalyst3DParameters = function () {
 
-    /*
-     * Constructor: SuperMap.FacilityAnalyst3DParameters
-     * 最近设施分析参数类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.FacilityAnalyst3DParameters.prototype.weightName -{String}
+     * @member SuperMap.FacilityAnalyst3DParameters.prototype.weightName -{string}
      * @description 指定的权值字段信息对象的名称
      */
 
 
     /**
-     * @member SuperMap.FacilityAnalyst3DParameters.prototype.edgeID -{Number}
+     * @member SuperMap.FacilityAnalyst3DParameters.prototype.edgeID -{number}
      * @description 指定的弧段ID
      */
     function FacilityAnalyst3DParameters(options) {
@@ -5626,20 +5562,20 @@ var FacilityAnalyst3DParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.FacilityAnalyst3DParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.FacilityAnalyst3DParameters.prototype.isUncertainDirectionValid -{Boolean}:
+     * @member SuperMap.FacilityAnalyst3DParameters.prototype.isUncertainDirectionValid -{boolean}:
      * @description 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
      *                指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找
      */
 
 
     /**
-     * @member SuperMap.FacilityAnalyst3DParameters.prototype.nodeID -{Number}
+     * @member SuperMap.FacilityAnalyst3DParameters.prototype.nodeID -{number}
      * @description 指定的结点ID
      */
 
@@ -5695,7 +5631,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var GetFeaturesParametersBase = function () {
 
     /**
-     * @member SuperMap.GetFeaturesParametersBase.prototype.returnCountOnly -{Boolean}
+     * @member SuperMap.GetFeaturesParametersBase.prototype.returnCountOnly -{boolean}
      * @description 只返回查询结果的总数，默认为false。
      */
 
@@ -5747,7 +5683,7 @@ var GetFeaturesParametersBase = function () {
 
 
     /**
-     * @member SuperMap.GetFeaturesParametersBase.prototype.returnContent -{Boolean}
+     * @member SuperMap.GetFeaturesParametersBase.prototype.returnContent -{boolean}
      * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
      *              如果为 true，则直接返回新创建资源，即查询结果的表述。
      *              如果为 false，则返回的是查询结果资源的 URI。默认为 true。
@@ -5816,7 +5752,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 数据服务中数据集查询服务基类。
  * 获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
+ * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务，
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/</br>
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param options - {object} 可选参数。如：<br>
@@ -5889,7 +5825,7 @@ var GetFeaturesServiceBase = function (_CommonServiceBase) {
 
 
     /**
-     * @member SuperMap.GetFeaturesServiceBase.prototype.format -{String}
+     * @member SuperMap.GetFeaturesServiceBase.prototype.format -{string}
      * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
@@ -5902,7 +5838,7 @@ var GetFeaturesServiceBase = function (_CommonServiceBase) {
      */
 
     /**
-     * @member SuperMap.GetFeaturesServiceBase.prototype.returnContent - {Boolean}
+     * @member SuperMap.GetFeaturesServiceBase.prototype.returnContent - {boolean}
      * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
      *如果为 true，则直接返回新创建资源，即查询结果的表述。
      *如果为 false，则返回的是查询结果资源的 URI。默认为 false。
@@ -6016,36 +5952,36 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc插值分析参数类。
  * @param options - {Object} 可选参数。如</br>
  *        bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
- *        searchRadius - {Number} 查找半径，即参与运算点的查找范围，与点数据集单位相同。</br>
- *        zValueFieldName - {String} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。</br>
- *        zValueScale - {Number} 用于进行插值分析值的缩放比率，默认为1。</br>
- *        resolution - {Number} 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
+ *        searchRadius - {number}查找半径，即参与运算点的查找范围，与点数据集单位相同。</br>
+ *        zValueFieldName - {string} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。</br>
+ *        zValueScale - {number}用于进行插值分析值的缩放比率，默认为1。</br>
+ *        resolution - {number}插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
  *        filterQueryParameter - {SuperMap.FilterParameter} 属性过滤条件。</br>
- *        outputDatasetName - {String} 插值分析结果数据集的名称。</br>
- *        outputDatasourceName - {String} 插值分析结果数据源的名称。</br>
+ *        outputDatasetName - {string} 插值分析结果数据集的名称。</br>
+ *        outputDatasourceName - {string} 插值分析结果数据源的名称。</br>
  *        pixelFormat - {SuperMap.PixelFormat} 指定结果栅格数据集存储的像素格式。</br>
- *        dataset - {String} 用于做插值分析的数据源中数据集的名称。</br>
+ *        dataset - {string} 用于做插值分析的数据源中数据集的名称。</br>
  *        inputPoints - {Array <Point||Array} 用于做插值分析的离散点集合。</br>
- *        InterpolationAnalystType - {String} 插值分析类型（dataset或geometry），默认为dataset 。</br>
+ *        InterpolationAnalystType - {string} 插值分析类型（dataset或geometry），默认为dataset 。</br>
  */
 var InterpolationAnalystParameters = function () {
 
     /**
-     * @member SuperMap.InterpolationAnalystParameters.prototype.InterpolationAnalystType -{String}
+     * @member SuperMap.InterpolationAnalystParameters.prototype.InterpolationAnalystType -{string}
      * @description  插值分析类型。差值分析包括数据集插值分析和几何插值分析两类，
      * “dataset”表示对数据集进行插值分析，“geometry”表示对离散点数组进行插值分析，默认值为“dataset”。
      */
 
 
     /**
-     * @member SuperMap.InterpolationAnalystParameters.prototype.dataset -{String}
+     * @member SuperMap.InterpolationAnalystParameters.prototype.dataset -{string}
      * @description 用来做插值分析的数据源中数据集的名称，该名称用形如"数据集名称@数据源别名"形式来表示。
      * 当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。
      */
 
 
     /**
-     * @member SuperMap.InterpolationAnalystParameters.prototype.outputDatasourceName -{String}
+     * @member SuperMap.InterpolationAnalystParameters.prototype.outputDatasourceName -{string}
      * @description 插值分析结果数据源的名称。必设参数
      */
 
@@ -6057,14 +5993,14 @@ var InterpolationAnalystParameters = function () {
 
 
     /**
-     * @member SuperMap.InterpolationAnalystParameters.prototype.zValueScale -{Number}
+     * @member SuperMap.InterpolationAnalystParameters.prototype.zValueScale -{number}
      * @description 用于进行插值分析值的缩放比率，默认值为1。
      * 参加插值分析的值将乘以该参数值后再进行插值，也就是对进行插值分析的值进行统一的扩大或缩小。
      */
 
 
     /**
-     * @member SuperMap.InterpolationAnalystParameters.prototype.searchRadius -{Number}
+     * @member SuperMap.InterpolationAnalystParameters.prototype.searchRadius -{number}
      * @description 查找半径，即参与运算点的查找范围，与点数据集单位相同，默认值为0。
      * 计算某个位置的Z 值时，会以该位置为圆心，以查找范围的值为半径，落在这个范围内的采样点都将参与运算。
      * 该值需要根据待插值点数据的分布状况和点数据集范围进行设置。
@@ -6122,13 +6058,13 @@ var InterpolationAnalystParameters = function () {
 
 
     /**
-     * @member SuperMap.InterpolationAnalystParameters.prototype.outputDatasetName -{String}
+     * @member SuperMap.InterpolationAnalystParameters.prototype.outputDatasetName -{string}
      * @description 插值分析结果数据集的名称。必设参数
      */
 
 
     /**
-     * @member SuperMap.InterpolationAnalystParameters.prototype.resolution -{Number}
+     * @member SuperMap.InterpolationAnalystParameters.prototype.resolution -{number}
      * @description 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。
      * 该值不能超过待分析数据集的范围边长。
      * 且该值设置时，应该考虑点数据集范围大小来取值，一般为结果栅格行列值（即结果栅格数据集范围除以分辨率），在500以内可以较好地体现密度走势。
@@ -6136,7 +6072,7 @@ var InterpolationAnalystParameters = function () {
 
 
     /**
-     * @member SuperMap.InterpolationAnalystParameters.prototype.zValueFieldName -{String}
+     * @member SuperMap.InterpolationAnalystParameters.prototype.zValueFieldName -{string}
      * @description 数据集插值分析中，用于指定进行插值分析的目标字段名，插值分析不支持文本类型的字段。
      * 含义为每个插值点在插值过程中的权重，可以将所有点此字段值设置为1，即所有点在整体插值中权重相同。
      * 当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。
@@ -6264,7 +6200,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.QueryService
  * @classdesc 查询服务基类。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
+ * @param url - {string} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param options - {Object} 可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  * @example
@@ -6283,7 +6219,7 @@ var QueryService = function (_CommonServiceBase) {
     /*
      * @function SuperMap.QueryService.prototype.constructor
      * @description 查询服务基类构造函数。
-     * @param url - {String} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
+     * @param url - {string} 服务地址。请求地图查询服务的 URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
      * @param options - {Object} 可选参数。如：<br>
      *        eventListeners - {Object} 需要被注册的监听器对象。
      */
@@ -6331,7 +6267,7 @@ var QueryService = function (_CommonServiceBase) {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.QueryService.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -6489,9 +6425,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends SuperMap.UGCMapLayer
  * @param options - {Object} 可选参数。如：<br>
  *        datasetInfo - {SuperMap.DatasetInfo} 数据集信息。<br>
- *        displayFilter - {String} 图层显示过滤条件。<br>
+ *        displayFilter - {string} 图层显示过滤条件。<br>
  *        joinItems - {SuperMap.JoinItem} 连接信息类。<br>
- *        representationField - {String} 存储制图表达信息的字段。<br>
+ *        representationField - {string} 存储制图表达信息的字段。<br>
  *        ugcLayerType - {SuperMap.LayerType} 图层类型
  */
 var UGCSubLayer = function (_UGCMapLayer) {
@@ -6505,13 +6441,13 @@ var UGCSubLayer = function (_UGCMapLayer) {
 
 
     /**
-     * @member SuperMap.UGCSubLayer.prototype.representationField -{String}
+     * @member SuperMap.UGCSubLayer.prototype.representationField -{string}
      * @description 存储制图表达信息的字段。
      */
 
 
     /**
-     * @member SuperMap.UGCSubLayer.prototype.displayFilter -{String}
+     * @member SuperMap.UGCSubLayer.prototype.displayFilter -{string}
      * @description 图层显示过滤条件。
      */
     function UGCSubLayer(options) {
@@ -6638,6 +6574,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.Symbolizer
  * @description 符号类
+ * @private
+ * @extends L.Class{@linkdoc-leaflet/#class}
  * @param feature — {L.feature} 要素
  */
 var Symbolizer = exports.Symbolizer = _leaflet2.default.Class.extend({
@@ -6652,7 +6590,7 @@ var Symbolizer = exports.Symbolizer = _leaflet2.default.Class.extend({
      * @function L.supermap.Symbolizer.prototype.render
      * @description 绘制线符号
      * @param renderer - {object} 渲染器
-     * @param style - {String} 符号样式
+     * @param style - {string} 符号样式
      */
     render: function render(renderer, style) {
         this._renderer = renderer;
@@ -6669,7 +6607,7 @@ var Symbolizer = exports.Symbolizer = _leaflet2.default.Class.extend({
      * @function L.supermap.Symbolizer.prototype.updateStyle
      * @description 更新替换符号样式
      * @param renderer - {object} 渲染器
-     * @param style - {String} 符号样式
+     * @param style - {string} 符号样式
      */
     updateStyle: function updateStyle(renderer, style) {
         this.options = style;
@@ -6718,6 +6656,7 @@ Object.defineProperty(exports, "__esModule", {
 /**
  * @constant L.supermap.VectorFeatureType
  * @description 矢量图层要素类型,和SuperMap.CartoStyleMap中的类型相对应
+ * @private
  */
 var VectorFeatureType = exports.VectorFeatureType = {
     LABEL: "LABEL", //label实际处理成TEXT
@@ -6843,7 +6782,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.iPortalServiceBase
  * @classdesc iPortal服务基类(有权限限制的类需要实现此类)
- * @param url - {String} iPortal服务地址
+ * @param url - {string} iPortal服务地址
  */
 var IPortalServiceBase = function () {
     function IPortalServiceBase(url) {
@@ -6860,7 +6799,7 @@ var IPortalServiceBase = function () {
      * @function SuperMap.iPortalServiceBase.prototype.request
      * @description 子类统一通过该方法发送请求
      * @param method -{Integer} 请求类型
-     * @param url -{String} 服务地址
+     * @param url -{string} 服务地址
      * @param param -{Object} 请求参数
      * @param requestOptions -{Object} fetch请求配置项
      */
@@ -6877,7 +6816,7 @@ var IPortalServiceBase = function () {
         /*
          * @function SuperMap.iPortalServiceBase.prototype.createCredentialUrl
          * @description 追加授权信息
-         * @param url -{String} url
+         * @param url -{string} url
          * @return {string} 携带token或key的新地址
          */
 
@@ -6969,8 +6908,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 连接信息类。
  * 该类用于矢量数据集与外部表的连接。外部表可以为另一个矢量数据集（其中纯属性数据集中没有空间几何信息）所对应的 DBMS 表，也可以是用户自建的业务表。需要注意的是，矢量数据集与外部表必须属于同一数据源。表之间的联系的建立有两种方式，一种是连接（join），一种是关联（link）。连接，实际上是依据相同的字段将一个外部表追加到指定的表；而关联是基于一个相同的字段定义了两个表格之间的联系，但不是实际的追加。用于连接两个表的字段的名称不一定相同，但类型必须一致。当两个表格之间建立了连接，通过对主表进行操作，可以对外部表进行查询，制作专题图以及分析等。当两个表格之间是一对一或多对一的关系时，可以使用 join 连接。当为多对一的关系时，允许指定多个字段之间的关联。(注意：SuperMap.JoinItem 目前支持左连接和内连接，不支持全连接和右连接，UDB 引擎不支持内连接。并且用于建立连接的两个表必须在同一个数据源下。)
  * @param options - {Object} 可選参数。如:</br>
- *        foreignTableName - {String} 外部表的名称。</br>
- *        joinFilter - {String} 矢量数据集与外部表之间的连接表达式，即设定两个表之间关联的字段。</br>
+ *        foreignTableName - {string} 外部表的名称。</br>
+ *        joinFilter - {string} 矢量数据集与外部表之间的连接表达式，即设定两个表之间关联的字段。</br>
  *        joinType - {JoinType} 两个表之间连接类型。</br>
  * @example 下面以SQL查询说明joinItem的使用方法：
  *(start code)
@@ -7002,7 +6941,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var JoinItem = function () {
 
     /**
-     * @member SuperMap.JoinItem.prototype.joinFilter -{String}
+     * @member SuperMap.JoinItem.prototype.joinFilter -{string}
      * @description 矢量数据集与外部表之间的连接表达式，即设定两个表之间关联的字段。
      * 例如，将房屋面数据集（Building）的 district 字段与房屋拥有者的纯属性数据集（Owner）的 region 字段相连接，
      * 两个数据集对应的表名称分别为 Table_Building 和 Table_Owner，
@@ -7035,7 +6974,7 @@ var JoinItem = function () {
      */
 
     /**
-     * @member SuperMap.JoinItem.prototype.foreignTableName -{String}
+     * @member SuperMap.JoinItem.prototype.foreignTableName -{string}
      * @description 外部表的名称。
      * 如果外部表的名称是以“表名@数据源名”命名方式，则该属性只需赋值表名。
      * 例如：外部表 Name@changchun，Name 为表名，changchun 为数据源名称，则该属性的赋值应为：Name。
@@ -7139,20 +7078,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 标签或符号流动显示和牵引线风格设置类。
  *              通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
  * @param options - {Object} 可选参数。如：<br>
- *        flowEnabled - {Boolean} 是否流动显示标签或符号。
- *        leaderLineDisplayed - {Boolean} 是否显示标签或符号和它标注的对象之间的牵引线。
+ *        flowEnabled - {boolean} 是否流动显示标签或符号。
+ *        leaderLineDisplayed - {boolean} 是否显示标签或符号和它标注的对象之间的牵引线。
  *        leaderLineStyle - {SuperMap.ServerStyle} 标签或符号与其标注对象之间牵引线的风格。
  */
 var ThemeFlow = function () {
 
-    /*
-     * Constructor: SuperMap.ThemeFlow
-     * 标签或符号流动显示和牵引线风格设置类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.ThemeFlow.prototype.leaderLineDisplayed -{Boolean}
+     * @member SuperMap.ThemeFlow.prototype.leaderLineDisplayed -{boolean}
      * @description 是否显示标签或符号和它标注的对象之间的牵引线。默认值为 false，即不显示标签或符号和它标注的对象之间的牵引线。<br>
      *              只有当 flowEnabled 为 true 时，牵引线才起作用。在当标签流动显示时，其位置不固定，由于牵引线始终指向要素的内点，<br>
      *              因而通过牵引线显示功能可以找到流动的标签或符号实际对应的要素。或者渲染符号偏移它所指向的对象时，图与对象之间可以采用牵引线进行连接。
@@ -7173,19 +7106,19 @@ var ThemeFlow = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeFlow.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.ThemeFlow.prototype.leaderLineStyle {SuperMap.ServerStyle}
+     * @member SuperMap.ThemeFlow.prototype.leaderLineStyle -{SuperMap.ServerStyle}
      * @description 标签或符号与其标注对象之间牵引线的风格。
      */
 
 
     /**
-     * @member SuperMap.ThemeFlow.prototype.flowEnabled -{Boolean}
+     * @member SuperMap.ThemeFlow.prototype.flowEnabled -{boolean}
      * @description 是否流动显示标签或符号。<br>
      *              对于标签专题图而言，对于跨越比较大的区域和线条状的几何对象，在一个地图窗口中不能完全显示的情况下，如果其标签位置比较固定，<br>
      *              在当前地图窗口中该对象的标签不可见，则需要通过平移地图来查看对象的标签信息。如果采用了流动显示的效果，在当前地图窗口中，对象即使是部分显示，<br>
@@ -7204,6 +7137,14 @@ var ThemeFlow = function () {
                 me.leaderLineStyle = null;
             }
         }
+
+        /**
+         * @function SuperMap.ThemeFlow.fromObj
+         * @description 从传入对象获取标签或符号流动显示和牵引线风格设置类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeFlow}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -7295,29 +7236,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *         background - {SuperMap.ThemeLabelBackground} 标签专题图中标签的背景风格类。<br>
  *         flow - {SuperMap.ThemeFlow} 标签专题图标签流动显示与牵引线设置类。<br>
  *         items - {Array(<SuperMap.ThemeUniqueItem>)} 分段标签专题图的子项数组。<br>
- *         labelExpression - {String} 标注字段表达式。<br>
+ *         labelExpression - {string} 标注字段表达式。<br>
  *         labelOverLengthMode - {SuperMap.LabelOverLengthMode} 标签专题图中超长标签的处理模式枚举类。<br>
  *         matrixCells - {Array<SuperMap.LabelMatrixCell>} 矩阵标签元素数组。<br>
- *         maxLabelLength - {Number} 标签在每一行显示的最大长度。<br>
- *         numericPrecision - {Number} 通过该字段设置其显示的精度。<br>
+ *         maxLabelLength - {number}标签在每一行显示的最大长度。<br>
+ *         numericPrecision - {number}通过该字段设置其显示的精度。<br>
  *         offset - {SuperMap.ThemeOffset} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
- *         overlapAvoided - {Boolean} 是否允许以文本避让方式显示文本。<br>
- *         rangeExpression - {String} 制作分段标签专题的分段字段或字段表达式。<br>
- *         smallGeometryLabeled - {Boolean} 是否显示长度大于被标注对象本身长度的标签。<br>
+ *         overlapAvoided - {boolean} 是否允许以文本避让方式显示文本。<br>
+ *         rangeExpression - {string} 制作分段标签专题的分段字段或字段表达式。<br>
+ *         smallGeometryLabeled - {boolean} 是否显示长度大于被标注对象本身长度的标签。<br>
  *         text - {SuperMap.ThemeLabelText} 标签中文本风格。<br>
  *         memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
  */
 var ThemeLabel = function (_Theme) {
     _inherits(ThemeLabel, _Theme);
 
-    /*
-     * Constructor: SuperMap.ThemeLabel
-     * 标签专题图构造函数，用于创建 SuperMap.ThemeLabel 类的新实例。
-     */
-
-
     /**
-     * @member SuperMap.ThemeLabel.prototype.smallGeometryLabeled -{Boolean}
+     * @member SuperMap.ThemeLabel.prototype.smallGeometryLabeled -{boolean}
      * @description 是否显示长度大于被标注对象本身长度的标签，默认为 false。在标签的长度大于线或者面对象本身的长度时，
      *              如果该值为 true，则标签文字会叠加在一起显示，为了清楚完整的显示该标签，
      *              可以采用换行模式来显示标签，但必须保证每行的长度小于对象本身的长度。
@@ -7325,7 +7260,7 @@ var ThemeLabel = function (_Theme) {
 
 
     /**
-     * @member SuperMap.ThemeLabel.prototype.rangeExpression -{String}
+     * @member SuperMap.ThemeLabel.prototype.rangeExpression -{string}
      * @description 制作分段标签专题的分段字段或字段表达式。该表达式对应的字段（或者字段表达式）的值应该为数值型。
      *              该字段与 items 分段子项联合使用，每个子项的起始值 [start，end)来源于 rangeExpression 字段值。
      *              最后 labelExpression 指定的标签字段（标签专题图要显示的具体内容）会根据分段子项的风格进行分段显示。
@@ -7339,7 +7274,7 @@ var ThemeLabel = function (_Theme) {
 
 
     /**
-     * @member SuperMap.ThemeLabel.prototype.maxLabelLength -{Number}
+     * @member SuperMap.ThemeLabel.prototype.maxLabelLength -{number}
      * @description 标签在每一行显示的最大长度，一个中文为两个字符。
      *              如果超过最大长度，可以采用两种方式来处理，一种是换行的模式进行显示，另一种是以省略号方式显示。默认最大长度为256个字符。
      */
@@ -7415,21 +7350,21 @@ var ThemeLabel = function (_Theme) {
 
 
     /**
-     * @member SuperMap.ThemeLabel.prototype.uniqueExpression -{String}
+     * @member SuperMap.ThemeLabel.prototype.uniqueExpression -{string}
      * @description 用于制作单值专题图的字段或字段表达式。
      *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段,必须与labelExpression一起使用
      */
 
 
     /**
-     * @member SuperMap.ThemeLabel.prototype.overlapAvoided -{Boolean}
+     * @member SuperMap.ThemeLabel.prototype.overlapAvoided -{boolean}
      * @description 是否允许以文本避让方式显示文本。默认值为 true， 即自动避免文本叠盖。只针对该标签专题图层中的文本数据。
      *               在标签重叠度很大的情况下，即使使用自动避让功能，可能也无法完全避免标签重叠现象。
      */
 
 
     /**
-     * @member SuperMap.ThemeLabel.prototype.numericPrecision -{Number}
+     * @member SuperMap.ThemeLabel.prototype.numericPrecision -{number}
      * @description 如果显示的标签内容为数字，通过该字段设置其显示的精度。例如标签对应的数字是8071.64529347，
      *              如果该属性为0时，显示8071；为1时，显示8071.6；为3时，则是8071.645。
      */
@@ -7443,7 +7378,7 @@ var ThemeLabel = function (_Theme) {
 
 
     /**
-     * @member SuperMap.ThemeLabel.prototype.labelExpression -{String}
+     * @member SuperMap.ThemeLabel.prototype.labelExpression -{string}
      * @description 标注字段表达式。系统将 labelExpression 对应的字段或字段表达式的值以标签的形式显示在图层中。必设字段。
      */
 
@@ -7572,6 +7507,14 @@ var ThemeLabel = function (_Theme) {
             obj.matrixCells = this.matrixCells;
             return obj;
         }
+
+        /**
+         * @function SuperMap.ThemeLabel.fromObj
+         * @description 从传入对象获取标签专题图类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeLabel}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -7644,20 +7587,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 专题图中文本或符号相对于要素内点的偏移量设置类。
  *              通过该类可以设置专题图中标记文本或符号的偏移量以及偏移量是否随地图缩放而改变。
  * @param options - {Object} 可选参数。如：<br>
- *        offsetFixed - {Boolean} 当前专题图是否固定标记文本或符号的偏移量。<br>
- *        offsetX - {String} 专题图中文本或符号相对于要素内点的水平偏移量。<br>
- *        offsetY - {String} 专题图中文本或符号相对于要素内点的垂直偏移量。
+ *        offsetFixed - {boolean} 当前专题图是否固定标记文本或符号的偏移量。<br>
+ *        offsetX - {string} 专题图中文本或符号相对于要素内点的水平偏移量。<br>
+ *        offsetY - {string} 专题图中文本或符号相对于要素内点的垂直偏移量。
  */
 var ThemeOffset = function () {
 
-    /*
-     * Constructor: SuperMap.ThemeOffset
-     * 专题图中文本或符号相对于要素内点的偏移量设置类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.ThemeOffset.prototype.offsetX -{String}
+     * @member SuperMap.ThemeOffset.prototype.offsetX -{string}
      * @description 专题图中文本或符号相对于要素内点的水平偏移量。偏移量的单位为地图单位。
      *              该偏移量的值为一个常量值或者字段表达式所表示的值，即如果字段表达式为 SmID，其中 SmID = 2，那么水平偏移量为2。
      */
@@ -7675,20 +7612,20 @@ var ThemeOffset = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeOffset.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.ThemeOffset.prototype.offsetY -{String}
+     * @member SuperMap.ThemeOffset.prototype.offsetY -{string}
      * @description 专题图中文本或符号相对于要素内点的垂直偏移量。偏移量的单位为地图单位。
      *              该偏移量的值为一个常量值或者字段表达式所表示的值，即如果字段表达式为 SmID，其中 SmID = 2，那么垂直偏移量为2。
      */
 
 
     /**
-     * @member SuperMap.ThemeOffset.prototype.offsetFixed -{Boolean}
+     * @member SuperMap.ThemeOffset.prototype.offsetFixed -{boolean}
      * @description 当前专题图是否固定标记文本或符号的偏移量。所谓固定偏移量，则文本或符号的偏移量不随地图的缩放而变化。默认为 false，表示偏移量随地图的缩放而变化。
      */
 
@@ -7701,6 +7638,14 @@ var ThemeOffset = function () {
             me.offsetX = null;
             me.offsetY = null;
         }
+
+        /**
+         * @function SuperMap.ThemeOffset.fromObj
+         * @description 从传入对象获取专题图中文本或符号相对于要素内点的偏移量设置类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeOffset}
+         */
+
     }], [{
         key: "fromObj",
         value: function fromObj(obj) {
@@ -7745,10 +7690,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 泰森多边形分析参数基类。
  * @param options - {Object} 可选参数。如:</br>
  *        clipRegion - {SuperMap.Geometry} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
- *        createResultDataset - {Boolean} 是否返回结果数据集，默认不返回。</br>
- *        resultDatasetName - {Boolean} 指定结果数据集名称。</br>
- *        resultDatasourceName - {Boolean} 指定结果数据集所在数据源，默认为当前数据源。</br>
- *        returnResultRegion - {Boolean} 是否返回分析得到的多边形面数组，默认返回。</br>
+ *        createResultDataset - {boolean} 是否返回结果数据集，默认不返回。</br>
+ *        resultDatasetName - {boolean} 指定结果数据集名称。</br>
+ *        resultDatasourceName - {boolean} 指定结果数据集所在数据源，默认为当前数据源。</br>
+ *        returnResultRegion - {boolean} 是否返回分析得到的多边形面数组，默认返回。</br>
  */
 var ThiessenAnalystParameters = function () {
 
@@ -7756,21 +7701,21 @@ var ThiessenAnalystParameters = function () {
      * @function SuperMap.ThiessenAnalystParameters.prototype.constructor
      * @param options - {Object} 可选参数。如:</br>
      *        clipRegion - {SuperMap.Geometry} 结果数据裁剪区域，可以为null，表示不对结果进行裁剪。</br>
-     *        createResultDataset - {Boolean} 是否返回结果数据集，默认不返回。</br>
-     *        resultDatasetName - {Boolean} 指定结果数据集名称。</br>
-     *        resultDatasourceName - {Boolean} 指定结果数据集所在数据源，默认为当前数据源。</br>
-     *        returnResultRegion - {Boolean} 是否返回分析得到的多边形面数组，默认返回。</br>
+     *        createResultDataset - {boolean} 是否返回结果数据集，默认不返回。</br>
+     *        resultDatasetName - {boolean} 指定结果数据集名称。</br>
+     *        resultDatasourceName - {boolean} 指定结果数据集所在数据源，默认为当前数据源。</br>
+     *        returnResultRegion - {boolean} 是否返回分析得到的多边形面数组，默认返回。</br>
      */
 
 
     /**
-     * @member SuperMap.ThiessenAnalystParameters.prototype.resultDatasourceName -{String}
+     * @member SuperMap.ThiessenAnalystParameters.prototype.resultDatasourceName -{string}
      * @description 指定结果数据集所在数据源。
      */
 
 
     /**
-     *  @member SuperMap.ThiessenAnalystParameters.prototype.createResultDataset -{Boolean}
+     *  @member SuperMap.ThiessenAnalystParameters.prototype.createResultDataset -{boolean}
      *  @description 是否返回结果数据集，默认值 false。如果为true，则必须设置属性resultDatasetName和resultDatasourceName。
      */
     function ThiessenAnalystParameters(options) {
@@ -7796,13 +7741,13 @@ var ThiessenAnalystParameters = function () {
 
 
     /**
-     * @member SuperMap.ThiessenAnalystParameters.prototype.returnResultRegion -{Boolean}
+     * @member SuperMap.ThiessenAnalystParameters.prototype.returnResultRegion -{boolean}
      * @description 是否返回分析得到的多边形面数组，默认 true，返回。
      */
 
 
     /**
-     * @member SuperMap.ThiessenAnalystParameters.prototype.resultDatasetName -{String}
+     * @member SuperMap.ThiessenAnalystParameters.prototype.resultDatasetName -{string}
      * @description 指定结果数据集名称。
      */
 
@@ -8024,28 +7969,24 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.wmtsLayer
  * @classdesc wmts图层类
- * @extends L.TileLayer
- * @param url -{String} wmts图层地址
+ * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
+ * @param url -{string} wmts图层地址
  * @param options -{object} wmts图层可选参数。如：<br>
- *        layersID - {number} 图层ID，如果有layersID，则是在使用专题图。<br>
+ *        layersID - {number}图层ID，如果有layersID，则是在使用专题图。<br>
  *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。<br>
- *        transparent - {number} 设置透明度。<br>
- *        cacheEnabled - {String} 启用缓存。<br>
+ *        transparent - {number}设置透明度。<br>
+ *        cacheEnabled - {string} 启用缓存。<br>
  *        clipRegionEnabled - {boolean} 是否启用地图裁剪。<br>
  *        prjCoordSys - {object} 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。<br>
  *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
- *        overlapDisplayedOptions - {String} 避免地图对象压盖显示的过滤选项。<br>
- *        tileversion - {String} 切片版本名称，cacheEnabled 为 true 时有效。<br>
+ *        overlapDisplayedOptions - {string} 避免地图对象压盖显示的过滤选项。<br>
+ *        tileversion - {string} 切片版本名称，cacheEnabled 为 true 时有效。<br>
  *        crs - {L.Proj.CRS} 坐标系统类。<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
- *        attribution - {String} 版权信息。
+ *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
+ *        attribution - {string} 版权信息。
  */
 var WMTSLayer = exports.WMTSLayer = _leaflet2.default.TileLayer.extend({
 
-    /**
-     * @member L.supermap.WMTSLayer.prototype.options
-     * @description 图层参数
-     */
     options: {
         version: '1.0.0',
         style: '',
@@ -8065,7 +8006,7 @@ var WMTSLayer = exports.WMTSLayer = _leaflet2.default.TileLayer.extend({
     },
 
     /**
-     * @function L.supermap.WMTSLayer.prototype.getTileUrl
+     * @function L.supermap.wmtsLayer.prototype.getTileUrl
      * @description 获取切片图层地址
      * @param coords - {Object} 切片图层坐标参数对象
      */
@@ -8130,18 +8071,26 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.tiledMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)使用TileImage资源出图.
- * @extends L.TileLayer
+ * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @example
  *      L.superMap.tiledMapLayer(url).addTo(map);
- * @param url -{String} 影像图层地址
- * @param options -{object} 影像图层参数
+ * @param url -{string} 影像图层地址
+ * @param options -{object} 影像图层参数。如：<br>
+ *        layersID - {number}图层ID，如果有layersID，则是在使用专题图。<br>
+ *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。<br>
+ *        transparent - {number}设置透明度。<br>
+ *        cacheEnabled - {string} 启用缓存。<br>
+ *        clipRegionEnabled - {boolean} 是否启用地图裁剪。<br>
+ *        prjCoordSys - {object} 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。<br>
+ *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
+ *        overlapDisplayedOptions - {string} 避免地图对象压盖显示的过滤选项。<br>
+ *        tileversion - {string} 切片版本名称，cacheEnabled 为 true 时有效。<br>
+ *        crs - {L.Proj.CRS} 坐标系统类。<br>
+ *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
+ *        attribution - {string} 版权信息。<br>
  */
 var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
 
-    /**
-     * @member L.supermap.tiledMapLayer.prototype.options -{object} 
-     * @description 图层参数
-     */
     options: {
         //如果有layersID，则是在使用专题图
         layersID: null,
@@ -8186,6 +8135,12 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
         _leaflet2.default.TileLayer.prototype.onAdd.call(this, map);
     },
 
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.getTileUrl
+     * @description 获取瓦片地址
+     * @param coords - {Object} 坐标对象
+     * @return {string} 返回地址
+     */
     getTileUrl: function getTileUrl(coords) {
         var scale = this.getScaleFromCoords(coords);
         var layerUrl = this._getLayerUrl();
@@ -8193,6 +8148,11 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
         return tileUrl;
     },
 
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.getScale
+     * @description 获取比例尺
+     * @param zoom - {number} 缩放级别
+     */
     getScale: function getScale(zoom) {
         var me = this;
         //返回当前比例尺
@@ -8200,6 +8160,11 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
         return me.scales[z];
     },
 
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.getScaleFromCoords
+     * @description 通过坐标值获取比例尺
+     * @param coords - {Object} 坐标对象参数
+     */
     getScaleFromCoords: function getScaleFromCoords(coords) {
         var me = this,
             scale;
@@ -8212,6 +8177,11 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
         return scale;
     },
 
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.getDefaultScale
+     * @description 获取默认比例尺信息
+     * @param coords - {Object} 坐标对象参数
+     */
     getDefaultScale: function getDefaultScale(coords) {
         var me = this,
             crs = me._crs;
@@ -8236,6 +8206,12 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
         }
         return Util.resolutionToScale(resolution, 96, mapUnit);
     },
+
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.serTileSetsInfo
+     * @description 设置瓦片集信息
+     * @param tileSets - {Array<Object>} 瓦片对象集
+     */
     serTileSetsInfo: function serTileSetsInfo(tileSets) {
         this.tileSets = tileSets;
         if (_leaflet2.default.Util.isArray(this.tileSets)) {
@@ -8293,7 +8269,7 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
     /**
      * @function L.supermap.tiledMapLayer.prototype.updateCurrentTileSetsIndex
      * @description 手动设置当前切片集索引,目前主要提供给控件使用
-     * @param index - {number} 索引值
+     * @param index - {number}索引值
      */
     updateCurrentTileSetsIndex: function updateCurrentTileSetsIndex(index) {
         this.tempIndex = index;
@@ -8302,7 +8278,7 @@ var TiledMapLayer = exports.TiledMapLayer = _leaflet2.default.TileLayer.extend({
     /**
      * @function L.supermap.tiledMapLayer.prototype.mergeTileVersionParam
      * @description 更改URL请求参数中的切片版本号,并重绘
-     * @param version - {String} 切片版本号
+     * @param version - {string} 切片版本号
      */
     mergeTileVersionParam: function mergeTileVersionParam(version) {
         if (version) {
@@ -8460,23 +8436,19 @@ var _DataFlowService2 = _interopRequireDefault(_DataFlowService);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class L.supermap.DataFlowService
+ * @class L.supermap.dataFlowService
  * @classdesc 实时大数据服务类
  * @extends L.supermap.ServiceBase
- * @param url - {String} 实时大数据服务地址
+ * @param url - {string} 实时大数据服务地址
  * @param options - {object} 加载实时大数据可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online。<br>
+ *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
  *        style - {function} 设置数据加载样式。<br>
  *        onEachFeature - {function} 设置每个数据加载popup等。<br>
- *        geometry - {Array<object>} 设置增添的几何要素对象数组。<br>
+ *        geometry - {Array<Object>} 设置增添的几何要素对象数组。<br>
  *        excludeField - -{object} 排除字段
  */
 var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend({
 
-    /**
-     * @member L.supermap.DataFlowService.prototype.options -{object}
-     * @description 加载实时大数据可选参数。
-     */
     options: {
         geometry: null,
         prjCoordSys: null,
@@ -8505,7 +8477,7 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
     },
 
     /**
-     * @function L.supermap.DataFlowService.prototype.initBroadcast
+     * @function L.supermap.dataFlowService.prototype.initBroadcast
      * @description 初始化广播
      * @returns {L.supermap.DataFlowService}
      */
@@ -8515,7 +8487,7 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
     },
 
     /**
-     * @function L.supermap.DataFlowService.prototype.broadcast
+     * @function L.supermap.dataFlowService.prototype.broadcast
      * @description 加载广播数据
      * @param obj {JSON} json格式的要素数据
      */
@@ -8524,7 +8496,7 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
     },
 
     /**
-     * @function L.supermap.DataFlowService.prototype.initSubscribe
+     * @function L.supermap.dataFlowService.prototype.initSubscribe
      * @description 初始化订阅数据
      * @return {L.supermap.DataFlowService}
      */
@@ -8534,7 +8506,7 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
     },
 
     /**
-     * @function L.supermap.DataFlowService.prototype.setPrjCoordSys
+     * @function L.supermap.dataFlowService.prototype.setPrjCoordSys
      * @description 设置动态投影坐标
      * @param prjCoordSys -{Object} 动态投影参数
      * @return {L.supermap.DataFlowService}
@@ -8550,7 +8522,7 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
     },
 
     /**
-     * @function L.supermap.DataFlowService.prototype.setExcludeField
+     * @function L.supermap.dataFlowService.prototype.setExcludeField
      * @description 设置排除字段
      * @param excludeField - {object} 排除字段
      * @return {L.supermap.DataFlowService}
@@ -8562,9 +8534,9 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
     },
 
     /**
-     * @function L.supermap.DataFlowService.prototype.setGeometry
+     * @function L.supermap.dataFlowService.prototype.setGeometry
      * @description 设置添加的几何要素数据
-     * @param geometry - {Array<object>} 设置增添的几何要素对象数组。
+     * @param geometry - {Array<Object>} 设置增添的几何要素对象数组。
      * @return {L.supermap.DataFlowService}
      */
     setGeometry: function setGeometry(geometry) {
@@ -8574,7 +8546,7 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
     },
 
     /**
-     * @function L.supermap.DataFlowService.prototype.unSubscribe
+     * @function L.supermap.dataFlowService.prototype.unSubscribe
      * @description 结束订阅数据
      */
     unSubscribe: function unSubscribe() {
@@ -8582,7 +8554,7 @@ var DataFlowService = exports.DataFlowService = _ServiceBase.ServiceBase.extend(
     },
 
     /**
-     * @function L.supermap.DataFlowService.prototype.unBroadcast
+     * @function L.supermap.dataFlowService.prototype.unBroadcast
      * @description 结束加载广播
      */
     unBroadcast: function unBroadcast() {
@@ -8633,12 +8605,12 @@ var _TilesetsService2 = _interopRequireDefault(_TilesetsService);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class  L.supermap.MapService
+ * @class  L.supermap.mapService
  * @classdesc 地图信息服务类
- * @extends ServiceBase
- * @param url -{String} 地图服务地址
+ * @extends L.supermap.ServiceBase
+ * @param url -{string} 地图服务地址
  * @param options -{Object} 地图服务信息相关参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
+ *        serverType - {string} 服务来源 iServer|iPortal|online
  * @example
  *     L.supermap.mapService(url)
  *      .getMapInfo(function(result){
@@ -8646,16 +8618,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *      })
  */
 var MapService = exports.MapService = _ServiceBase.ServiceBase.extend({
+
     options: {
         projection: null
     },
 
-    /*
-     * @function L.supermap.MapService.prototype.initialize
-     * @description leaflet下MapService类的构造函数
-     * @param url -{String} 地图服务地址
-     * @param options -{Object} 地图服务信息相关参数
-     */
     initialize: function initialize(url, options) {
         options = options || {};
         _leaflet2.default.setOptions(this, options);
@@ -8666,7 +8633,7 @@ var MapService = exports.MapService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function  L.supermap.MapService.prototype.getMapInfo
+     * @function  L.supermap.mapService.prototype.getMapInfo
      * @description 地图信息查询服务
      * @param callback -{function} 回调函数
      */
@@ -8685,7 +8652,7 @@ var MapService = exports.MapService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function  L.supermap.MapService.prototype.getTilesets
+     * @function  L.supermap.mapService.prototype.getTilesets
      * @description 切片列表信息查询服务
      * @param callback -{function} 回调函数
      */
@@ -10069,11 +10036,11 @@ var Collection = _SuperMap2.default.Geometry.Collection;
  * 路由对象类。路由对象为一系列有序的带有属性值 M 的 x，y 坐标对，其中 M 值为该结点的距离属性（到已知点的距离）。
  * @param points - {Array} 形成路由对象的线数组。
  * @param  options - {Object} 可选参数。如:</br>
- *         id - {Number} 路由对象在数据库中的id。</br>
- *         length - {Number} 路由对象的长度。</br>
- *         maxM - {Number} 最大线性度量值，即所有结点到起始点的量算距离中最大值。</br>
- *         minM - {Number} 最小线性度量值，即所有结点到起始点的量算距离中最小值。</br>
- *         type - {String} 数据类型，如："LINEM"</br>
+ *         id - {number}路由对象在数据库中的id。</br>
+ *         length - {number}路由对象的长度。</br>
+ *         maxM - {number}最大线性度量值，即所有结点到起始点的量算距离中最大值。</br>
+ *         minM - {number}最小线性度量值，即所有结点到起始点的量算距离中最小值。</br>
+ *         type - {string} 数据类型，如："LINEM"</br>
  * @extends SuperMap.Geometry.Collection
  */
 
@@ -10108,20 +10075,20 @@ var Route = function (_Collection) {
 
 
     /**
-     * @member SuperMap.Route.prototype.minM -{Number}
+     * @member SuperMap.Route.prototype.minM -{number}
      * @description 最小线性度量值，即所有结点到起始点的量算距离中最小值。
      */
 
 
     /**
-     * @member SuperMap.Route.prototype.length -{Number}
+     * @member SuperMap.Route.prototype.length -{number}
      * @description 路由对象的长度。
      * 单位与数据集的单位相同。
      */
 
 
     /**
-     * @member SuperMap.Route.prototype.center -{Number}
+     * @member SuperMap.Route.prototype.center -{number}
      */
     function Route(points, options) {
         _classCallCheck(this, Route);
@@ -10160,7 +10127,7 @@ var Route = function (_Collection) {
 
 
     /**
-     * @member SuperMap.Route.prototype.type -{String}
+     * @member SuperMap.Route.prototype.type -{string}
      * @description 服务端几何对象类型。
      */
 
@@ -10172,18 +10139,18 @@ var Route = function (_Collection) {
 
 
     /**
-     *  @member SuperMap.Route.prototype.maxM -{Number}
+     *  @member SuperMap.Route.prototype.maxM -{number}
      *  @description 最大线性度量值，即所有结点到起始点的量算距离中最大值。
      */
 
 
     /**
-     * @member SuperMap.Route.prototype.style -{String}
+     * @member SuperMap.Route.prototype.style -{string}
      */
 
 
     /**
-     * @member SuperMap.Route.prototype.id -{Number}
+     * @member SuperMap.Route.prototype.id -{number}
      * @description 路由对象在数据库中的id。
      */
 
@@ -10353,7 +10320,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * {SuperMap.DatasetSurfaceAnalystParameters} 和 {SuperMap.GeometrySurfaceAnalystParameters} 继承自该类。
  * @param options - {Object} 可选参数。如:</br>
  *        extractParameter - {SuperMap.SurfaceAnalystParametersSetting} 获取或设置表面分析参数。</br>
- *        resolution - {Number} 指定中间结果（栅格数据集）的分辨率。</br>
+ *        resolution - {number}指定中间结果（栅格数据集）的分辨率。</br>
  *        resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
  *        surfaceAnalystMethod - {SuperMap.SurfaceAnalystMethod} 获取或设置表面分析的提取方法，提取等值线和提取等值面。</br>
  */
@@ -10366,7 +10333,7 @@ var SurfaceAnalystParameters = function () {
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.resolution -{Number}
+     * @member SuperMap.BuildCacheJobParameter.prototype.resolution -{number}
      * @description 获取或设置指定中间结果（栅格数据集）的分辨率。
      */
     function SurfaceAnalystParameters(options) {
@@ -10473,9 +10440,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *              每次制作出的专题图，点的数量相同，但点的位置都有差异。
  * @extends SuperMap.Theme
  * @param options - {Object} 可选参数。如：<br>
- *        dotExpression - {String} 创建点密度专题图的字段或字段表达式。<br>
+ *        dotExpression - {string} 创建点密度专题图的字段或字段表达式。<br>
  *        style - {SuperMap.ServerStyle} 点密度专题图中点的风格。<br>
- *        value - {String} 专题图中每一个点所代表的数值。<br>
+ *        value - {string} 专题图中每一个点所代表的数值。<br>
  *        memoryData - {SuperMap.REST.ThemeMemoryData} 专题图内存数据。
  */
 var ThemeDotDensity = function (_Theme) {
@@ -10504,13 +10471,13 @@ var ThemeDotDensity = function (_Theme) {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeDotDensity.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.ThemeDotDensity.prototype.value -{Number}
+     * @member SuperMap.ThemeDotDensity.prototype.value -{number}
      * @description 专题图中每一个点所代表的数值。<br>
      *              点值的确定与地图比例尺以及点的大小有关。地图比例尺越大，相应的图面范围也越大，<br>
      *              点相应就可以越多，此时点值就可以设置相对小一些。点形状越大，<br>
@@ -10519,7 +10486,7 @@ var ThemeDotDensity = function (_Theme) {
 
 
     /**
-     * @member SuperMap.ThemeDotDensity.prototype.dotExpression -{String}
+     * @member SuperMap.ThemeDotDensity.prototype.dotExpression -{string}
      * @description 创建点密度专题图的字段或字段表达式。点的数目或密集程度的来源。
      */
 
@@ -10554,6 +10521,14 @@ var ThemeDotDensity = function (_Theme) {
             }
             return obj;
         }
+
+        /**
+         * @function SuperMap.ThemeDotDensity.fromObj
+         * @description 从传入对象获取点密度专题图中点的风格。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeDotDensity}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -10623,8 +10598,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 等级符号专题图。
  * @extends SuperMap.Theme
  * @param options - {Object} 可选参数。如：<br>
- *        baseValue - {Number} 等级符号专题图的基准值，单位同专题变量的单位。<br>
- *        expression - {String} 等级符号专题图的字段或字段表达式。<br>
+ *        baseValue - {number}等级符号专题图的基准值，单位同专题变量的单位。<br>
+ *        expression - {string} 等级符号专题图的字段或字段表达式。<br>
  *        flow - {SuperMap.ThemeFlow} 等级符号专题图符号流动显示与牵引线设置类。<br>
  *        graduatedMode - {SuperMap.GraduatedMode} 等级符号专题图分级模式。<br>
  *        offset - {SuperMap.ThemeOffset} 用于设置标签专题图中标记文本相对于要素内点的偏移量对象。<br>
@@ -10633,12 +10608,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  */
 var ThemeGraduatedSymbol = function (_Theme) {
     _inherits(ThemeGraduatedSymbol, _Theme);
-
-    /*
-     * Constructor: SuperMap.ThemeGraduatedSymbol
-     * 等级符号专题图构造函数，用于创建 SuperMap.ThemeGraduatedSymbol类的新实例。
-     */
-
 
     /**
      * @member SuperMap.ThemeGraduatedSymbol.prototype.offset -{SuperMap.ThemeOffset}
@@ -10684,7 +10653,7 @@ var ThemeGraduatedSymbol = function (_Theme) {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeGraduatedSymbol.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -10708,7 +10677,7 @@ var ThemeGraduatedSymbol = function (_Theme) {
 
 
     /**
-     * @member SuperMap.ThemeGraduatedSymbol.prototype.expression -{String}
+     * @member SuperMap.ThemeGraduatedSymbol.prototype.expression -{string}
      * @description 用于创建等级符号专题图的字段或字段表达式，字段或字段表达式应为数值型。必设字段。
      */
 
@@ -10779,6 +10748,14 @@ var ThemeGraduatedSymbol = function (_Theme) {
             }
             return obj;
         }
+
+        /**
+         * @function SuperMap.ThemeGraduatedSymbol.fromObj
+         * @description 从传入对象获取等级符号专题图。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeGraduatedSymbol}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -10862,33 +10839,27 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 统计专题图类。
  * @extends SuperMap.Theme
  * @param options - {Object} 参数。<br>
- *        barWidth - {Number} 柱状专题图中每一个柱的宽度。<br>
+ *        barWidth - {number}柱状专题图中每一个柱的宽度。<br>
  *        flow - {SuperMap.ThemeFlow} 统计专题图流动显示与牵引线设置。<br>
  *        graduatedMode - {SuperMap.GraduatedMode} 统计图中地理要素的值与图表尺寸间的映射关系。<br>
  *        graphAxes - {SuperMap.ThemeGraphAxes} 统计图中坐标轴样式相关信息。<br>
  *        graphSize - {SuperMap.ThemeGraphSize} 统计符号的最大最小尺寸。<br>
- *        graphSizeFixed - {Boolean} 缩放地图时统计图符号是否固定大小。<br>
+ *        graphSizeFixed - {boolean} 缩放地图时统计图符号是否固定大小。<br>
  *        graphText - {SuperMap.ThemeGraphText} 统计图上的文字是否可以见以及文字标注风格。<br>
  *        graphType - {SuperMap.ThemeGraphType} 统计专题图类型。<br>
  *        items - {Array<SuperMap.ThemeGraphItem>} 统计专题图子项集合。<br>
  *        memoryKeys - {Array(Integer)} 以内存数组方式制作专题图时的键数组。<br>
- *        negativeDisplayed - {Boolean} 专题图中是否显示属性为负值的数据。<br>
+ *        negativeDisplayed - {boolean} 专题图中是否显示属性为负值的数据。<br>
  *        offset - {SuperMap.ThemeOffset} 统计图相对于要素内点的偏移量。<br>
- *        overlapAvoided - {Boolean} 统计图是否采用避让方式显示。<br>
- *        roseAngle - {Number} 统计图中玫瑰图或三维玫瑰图用于等分的角度。<br>
- *        startAngle - {Number} 饼状统计图扇形的起始角度。
+ *        overlapAvoided - {boolean} 统计图是否采用避让方式显示。<br>
+ *        roseAngle - {number}统计图中玫瑰图或三维玫瑰图用于等分的角度。<br>
+ *        startAngle - {number}饼状统计图扇形的起始角度。
  */
 var ThemeGraph = function (_Theme) {
     _inherits(ThemeGraph, _Theme);
 
-    /*
-     * Constructor: SuperMap.ThemeGraph
-     * 统计专题图构造函数。
-     */
-
-
     /**
-     * @member SuperMap.ThemeGraph.prototype.roseAngle -{Number}
+     * @member SuperMap.ThemeGraph.prototype.roseAngle -{number}
      * @description 统计图中玫瑰图或三维玫瑰图用于等分的角度，默认为0度，精确到0.1度。在角度为0或者大于360度的情况下均使用360度来等分制作统计图的字段数。
      */
 
@@ -11007,7 +10978,7 @@ var ThemeGraph = function (_Theme) {
 
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.barWidth -{Number}
+     * @member SuperMap.ThemeGraph.prototype.barWidth -{number}
      * @description 柱状专题图中每一个柱的宽度。使用地图坐标单位，默认值为0。<br>
      *              只有选择的统计图类型为柱状图（柱状图、三维柱状图、堆叠柱状图、三维堆叠柱状图）时，此项才可设置。
      */
@@ -11052,13 +11023,13 @@ var ThemeGraph = function (_Theme) {
 
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.startAngle -{Number}
+     * @member SuperMap.ThemeGraph.prototype.startAngle -{number}
      * @description 饼状统计图扇形的起始角度。默认为0度，精确到0.1度，以水平方向为正向。只有选择的统计图类型为饼状图（饼图、三维饼图、玫瑰图、三维玫瑰图）时，此项才可设置。
      */
 
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.overlapAvoided -{Boolean}
+     * @member SuperMap.ThemeGraph.prototype.overlapAvoided -{boolean}
      * @description 统计图是否采用避让方式显示。<br>
      *              1.对数据集制作统计专题图:当统计图采用避让方式显示时，如果 overlapAvoided 为 true，则在统计图重叠度很大的情况下，
      *              会出现无法完全避免统计图重叠的现象；如果 overlapAvoided 为 false，会过滤掉一些统计图，从而保证所有的统计图均不重叠。<br>
@@ -11068,7 +11039,7 @@ var ThemeGraph = function (_Theme) {
 
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.negativeDisplayed -{Boolean}
+     * @member SuperMap.ThemeGraph.prototype.negativeDisplayed -{boolean}
      * @description 专题图中是否显示属性为负值的数据。true 表示显示；默认为 false 即不显示。
      */
 
@@ -11089,7 +11060,7 @@ var ThemeGraph = function (_Theme) {
 
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.graphSizeFixed -{Boolean}
+     * @member SuperMap.ThemeGraph.prototype.graphSizeFixed -{boolean}
      * @description 缩放地图时统计图符号是否固定大小。默认值为 false，即统计图符号将随地图缩放。
      */
 
@@ -11211,6 +11182,14 @@ var ThemeGraph = function (_Theme) {
             obj.startAngle = this.startAngle;
             return obj;
         }
+
+        /**
+         * @function SuperMap.ThemeGraph.fromObj
+         * @description 从传入对象获取统计专题图类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeGraph}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -11285,23 +11264,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends SuperMap.Theme
  * @param options - {Object} 可选参数。如：<br>
  *        items - {Array<SuperMap.ThemeRangeItem>} 分段专题图子项数组。<br>
- *        rangeExpression - {String} 分段字段表达式。<br>
+ *        rangeExpression - {string} 分段字段表达式。<br>
  *        rangeMode - {SuperMap.RangeMode} 分段专题图的分段模式。<br>
- *        rangeParameter - {Number} 分段参数。<br>
+ *        rangeParameter - {number}分段参数。<br>
  *        colorGradientType - {SuperMap.ColorGradientType} 渐变颜色枚举类。<br>
  *        memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
  */
 var ThemeRange = function (_Theme) {
     _inherits(ThemeRange, _Theme);
 
-    /*
-     * Constructor: SuperMap.ThemeRange
-     * 范围分段专题图构造函数。
-     */
-
-
     /**
-     * @member SuperMap.ThemeRange.prototype.rangeParameter -{Number}
+     * @member SuperMap.ThemeRange.prototype.rangeParameter -{number}
      * @description 分段参数。<br>
      *              当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，
      *              该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。默认值为 -1。
@@ -11309,7 +11282,7 @@ var ThemeRange = function (_Theme) {
 
 
     /**
-     * @member SuperMap.ThemeRange.prototype.rangeExpression -{String}
+     * @member SuperMap.ThemeRange.prototype.rangeExpression -{string}
      * @description 分段字段表达式。<br>
      *              由于范围分段专题图基于各种分段方法根据一定的距离进行分段，因而范围分段专题图所基于的字段值的数据类型必须为数值型。对于字段表达式，只能为数值型的字段间的运算。必设字段。
      */
@@ -11391,6 +11364,14 @@ var ThemeRange = function (_Theme) {
             me.rangeParameter = null;
             me.colorGradientType = null;
         }
+
+        /**
+         * @function SuperMap.ThemeRange.fromObj
+         * @description 从传入对象获取范围分段专题图类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeRange}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -11464,7 +11445,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends SuperMap.Theme
  * @param options - {Object} 可选参数。如：<br>
  *        items - {Array<SuperMap.ThemeUniqueItem>} 单值专题图子项类数组。<br>
- *        uniqueExpression - {String} 用于制作单值专题图的字段或字段表达式。<br>
+ *        uniqueExpression - {string} 用于制作单值专题图的字段或字段表达式。<br>
  *        defaultStyle - {SuperMap.ServerStyle} 未参与单值专题图制作的对象的显示风格。<br>
  *        colorGradientType - {SuperMap.ColorGradientType} 渐变颜色枚举类。<br>
  *        memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
@@ -11472,14 +11453,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var ThemeUnique = function (_Theme) {
     _inherits(ThemeUnique, _Theme);
 
-    /*
-     * Constructor: SuperMap.ThemeUnique
-     * 单值专题图构造函数。
-     */
-
-
     /**
-     * @member SuperMap.ThemeUnique.prototype.uniqueExpression -{String}
+     * @member SuperMap.ThemeUnique.prototype.uniqueExpression -{string}
      * @description 用于制作单值专题图的字段或字段表达式。<br>
      *              该字段值的数据类型可以为数值型或字符型。如果设置字段表达式，只能是相同数据类型字段间的运算。必设字段。
      */
@@ -11580,6 +11555,14 @@ var ThemeUnique = function (_Theme) {
             }
             return obj;
         }
+
+        /**
+         * @function SuperMap.ThemeUniquefromObj
+         * @description 从传入对象获取单值专题图类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeUnique}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -11643,10 +11626,10 @@ var ThemeFeature = _SuperMap2.default.Feature.Theme;
  * @param layer - {SuperMap.Layer} 此专题要素所在图层，必设参数。
  * @param style - {Object} 样式。
  * @param options - {Object} 创建专题要素时的可选参数。如：<br>
- *        nodesClipPixel - {Number} 节点抽稀像素距离，默认值 2, 单位：像素。<br>
- *        isHoverAble - {Boolean} 图形是否可 hover，默认 true。<br>
- *        isMultiHover - {Boolean} 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true。<br>
- *        isClickAble - {Boolean} 图形是否可点击，默认 true。<br>
+ *        nodesClipPixel - {number}节点抽稀像素距离，默认值 2, 单位：像素。<br>
+ *        isHoverAble - {boolean} 图形是否可 hover，默认 true。<br>
+ *        isMultiHover - {boolean} 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true。<br>
+ *        isClickAble - {boolean} 图形是否可点击，默认 true。<br>
  *        highlightStyle - {Object} 高亮样式。
  */
 
@@ -11660,10 +11643,10 @@ var ThemeVector = function (_ThemeFeature) {
      * @param layer - {SuperMap.Layer} 此专题要素所在图层，必设参数。
      * @param style - {Object} 样式。
      * @param options - {Object} 创建专题要素时的可选参数。如：<br>
-     *        nodesClipPixel - {Number} 节点抽稀像素距离，默认值 2, 单位：像素。<br>
-     *        isHoverAble - {Boolean} 图形是否可 hover，默认 true。<br>
-     *        isMultiHover - {Boolean} 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true。<br>
-     *        isClickAble - {Boolean} 图形是否可点击，默认 true。<br>
+     *        nodesClipPixel - {number}节点抽稀像素距离，默认值 2, 单位：像素。<br>
+     *        isHoverAble - {boolean} 图形是否可 hover，默认 true。<br>
+     *        isMultiHover - {boolean} 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true。<br>
+     *        isClickAble - {boolean} 图形是否可点击，默认 true。<br>
      *        highlightStyle - {Object} 高亮样式。
      * @return {SuperMap.Feature.Theme.Vector} 返回一个矢量专题要素类。
      */
@@ -11676,13 +11659,13 @@ var ThemeVector = function (_ThemeFeature) {
 
 
     /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.isClickAble -{Boolean}
+     * @member SuperMap.Feature.Theme.Vector.prototype.isClickAble -{boolean}
      * @description 图形是否可点击，默认 true
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.isHoverAble -{Boolean}
+     * @member SuperMap.Feature.Theme.Vector.prototype.isHoverAble -{boolean}
      * @description 图形是否可 hover，默认 true
      */
 
@@ -11775,13 +11758,13 @@ var ThemeVector = function (_ThemeFeature) {
 
 
     /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.isMultiHover -{Boolean}
+     * @member SuperMap.Feature.Theme.Vector.prototype.isMultiHover -{boolean}
      * @description 是否使用多图形高亮，isHoverAble 为 true 时生效 ，默认 true
      */
 
 
     /**
-     * @member SuperMap.Feature.Theme.Vector.prototype.nodesClipPixel -{Number}
+     * @member SuperMap.Feature.Theme.Vector.prototype.nodesClipPixel -{number}
      * @description 节点抽稀像素距离，默认值 2。
      */
 
@@ -12370,34 +12353,34 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var ThemeStyle =
 /**
- * @member SuperMap.ThemeStyle.prototype.labelXOffset -{Number}
+ * @member SuperMap.ThemeStyle.prototype.labelXOffset -{number}
  * @description  附加文本在x轴方向的偏移量。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.labelAlign -{String}
+ * @member SuperMap.ThemeStyle.prototype.labelAlign -{string}
  * @description 附加文本水平对齐。可以是 'left', 'right', 'center'; 默认值 'center'。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.fontFamily -{String}
+ * @member SuperMap.ThemeStyle.prototype.fontFamily -{string}
  * @description 附加文本字体系列。fontFamily 值是字体族名称或/及类族名称的一个优先表，每个值逗号分割，浏览器会使用它可识别的第一个
  * 可以使用具体的字体名称（"times"、"courier"、"arial"）或字体系列名称（"serif"、"sans-serif"、"cursive"、"fantasy"、"monospace"）。
  * 默认值："arial,sans-serif".
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.fontVariant -{String}
+ * @member SuperMap.ThemeStyle.prototype.fontVariant -{string}
  * @description 附加文本字体变体。可设值："normal", "small-caps"; 默认值："normal" 。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.fontSize -{Number}
+ * @member SuperMap.ThemeStyle.prototype.fontSize -{number}
  * @description 附加文本字体大小。默认值 12，单位是像素。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.label -{String}
+ * @member SuperMap.ThemeStyle.prototype.label -{string}
  * @description 专题要素附加文本标签内容。
  */
 
@@ -12412,29 +12395,29 @@ var ThemeStyle =
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.strokeDashstyle -{String}
+ * @member SuperMap.ThemeStyle.prototype.strokeDashstyle -{string}
  * @description   虚线类型； strokeDashstyle 有八种类型 “dot",“dash",“dashot",“longdash",“longdashdot",“solid", "dashed", "dotted";
  * 默认值 "solid"。solid 表示实线。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.strokeLinecap -{String}
+ * @member SuperMap.ThemeStyle.prototype.strokeLinecap -{string}
  * @description  线帽样式；strokeLinecap 有三种类型 “butt", "round", "square"; 默认为"butt"。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.strokeOpacity -{Number}
+ * @member SuperMap.ThemeStyle.prototype.strokeOpacity -{number}
  * @description  描边的不透明度。取值范围[0, 1]，默认值 1。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.stroke -{Boolean}
+ * @member SuperMap.ThemeStyle.prototype.stroke -{boolean}
  * @description  是否描边，不需要描边则设置为false，默认值为 false。
  *  此属性与 fill 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.fillColor -{String}
+ * @member SuperMap.ThemeStyle.prototype.fillColor -{string}
  * @description 十六进制填充颜色。默认值为 "#000000"。
  */
 function ThemeStyle(options) {
@@ -12472,32 +12455,32 @@ function ThemeStyle(options) {
   _SuperMap2.default.Util.extend(this, options);
 }
 /**
- * @member SuperMap.ThemeStyle.prototype.labelYOffset -{Number}
+ * @member SuperMap.ThemeStyle.prototype.labelYOffset -{number}
  * @description 附加文本在y轴方向的偏移量。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.labelBaseline -{String}
+ * @member SuperMap.ThemeStyle.prototype.labelBaseline -{string}
  * @description  附加文本垂直对齐。 可以是 'top', 'bottom', 'middle';默认值 'middle'。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.labelPosition -{String}
+ * @member SuperMap.ThemeStyle.prototype.labelPosition -{string}
  * @description 附加文本位置, 可以是 'inside', 'left', 'right', 'top', 'bottom'; 默认值 'top'。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.fontWeight -{String}
+ * @member SuperMap.ThemeStyle.prototype.fontWeight -{string}
  * @description 附加文本字体粗细。可设值："normal", "bold", "bolder", "lighter"; 默认值："normal" 。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.fontStyle -{String}
+ * @member SuperMap.ThemeStyle.prototype.fontStyle -{string}
  * @description 附加文本字体样式。可设值："normal", "italic", "oblique"; 默认值："normal" 。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.fontColor -{String}
+ * @member SuperMap.ThemeStyle.prototype.fontColor -{string}
  * @description 附加文本字体颜色。
  */
 
@@ -12512,32 +12495,32 @@ function ThemeStyle(options) {
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.pointRadius -{Number}
+ * @member SuperMap.ThemeStyle.prototype.pointRadius -{number}
  * @description   点半径，默认为 6 （像素）。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.strokeLineJoin -{String}
+ * @member SuperMap.ThemeStyle.prototype.strokeLineJoin -{string}
  * @description  线段连接样式；strokeLineJoin 有三种类型 “miter", "round", "bevel"; 默认为"miter"。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.strokeWidth -{Number}
+ * @member SuperMap.ThemeStyle.prototype.strokeWidth -{number}
  * @description  线宽度/描边宽度，默认值 1。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.strokeColor -{String}
+ * @member SuperMap.ThemeStyle.prototype.strokeColor -{string}
  * @description  十六进制描边颜色
  */
 
 /**
- *  @member SuperMap.ThemeStyle.prototype.fillOpacity -{Number}
+ *  @member SuperMap.ThemeStyle.prototype.fillOpacity -{number}
  *  @description 填充不透明度。取值范围[0, 1]，默认值 1。
  */
 
 /**
- * @member SuperMap.ThemeStyle.prototype.fill -{Boolean}
+ * @member SuperMap.ThemeStyle.prototype.fill -{boolean}
  * @description 是否填充，不需要填充则设置为 false，默认值为 true。
  *  此属性与 stroke 不能同时为 false，如果 fill 与 stroke 同时为 false，将按 fill 与 stroke 的默认值渲染图层。
  */
@@ -12611,6 +12594,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.CartoCSSToLeaflet
  * @classdesc CartoCSS样式转Leaflet样式类
+ * @private
  */
 var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = _leaflet2.default.supermap.CartoCSSToLeaflet = {
 
@@ -12629,7 +12613,7 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = _leaflet2.default.supermap.C
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.pretreatedCartoCSS
      * @description CartoCSS样式预处理
-     * @param cartoStr - {String} Carto信息
+     * @param cartoStr - {string} Carto信息
      * @param processCharacters - {object} 需要处理的特征对象
      */
     pretreatedCartoCSS: function pretreatedCartoCSS(cartoStr, processCharacters) {
@@ -12653,7 +12637,7 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = _leaflet2.default.supermap.C
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.processCharacters
      * @description 替换一些关键符号
-     * @param cartoCSSStr - {String} cartoCSSS信息
+     * @param cartoCSSStr - {string} cartoCSSS信息
      */
     processCharacters: function processCharacters(cartoCSSStr) {
         var style = cartoCSSStr;
@@ -12676,7 +12660,7 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = _leaflet2.default.supermap.C
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.pickShader
      * @description 拾取着色对象
-     * @param layerName - {String} 图层名称
+     * @param layerName - {string} 图层名称
      */
     pickShader: function pickShader(layerName) {
         if (!this.cartoCSS) {
@@ -12689,7 +12673,7 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = _leaflet2.default.supermap.C
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getDefaultStyle
      * @description 获取默认风格
-     * @param type - {String} 默认风格类型
+     * @param type - {string} 默认风格类型
      */
     getDefaultStyle: function getDefaultStyle(type) {
         var style = {};
@@ -12705,7 +12689,7 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = _leaflet2.default.supermap.C
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalMarker
      * @description 从iPortalMarker中获取样式
-     * @param icon - {String} iPortal图标
+     * @param icon - {string} iPortal图标
      */
     getStyleFromiPortalMarker: function getStyleFromiPortalMarker(icon) {
         if (icon.indexOf("./") == 0) {
@@ -12727,8 +12711,8 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = _leaflet2.default.supermap.C
      * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalStyle
      * @description 从iPortal的风格中获取样式
      * @param iPortalStyle - {object} iPortal的样式对象
-     * @param type - {String} 样式类型
-     * @param fStyle todo
+     * @param type - {string} 样式类型
+     * @param fStyle -{object} 图标参数
      */
     getStyleFromiPortalStyle: function getStyleFromiPortalStyle(iPortalStyle, type, fStyle) {
         var featureStyle = fStyle ? JSON.parse(fStyle) : null;
@@ -12784,10 +12768,10 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = _leaflet2.default.supermap.C
     },
 
     /**
-     * todo
      * @function L.supermap.CartoCSSToLeaflet.prototype.dashStyle
-     * @param style
-     * @param widthFactor
+     * @description 符号样式
+     * @param style -{object} 样式参数
+     * @param widthFactor -{number}宽度系数
      */
     dashStyle: function dashStyle(style, widthFactor) {
         if (!style) return [];
@@ -12817,11 +12801,11 @@ var CartoCSSToLeaflet = exports.CartoCSSToLeaflet = _leaflet2.default.supermap.C
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromCarto
      * @description 从Carto中获取有效的样式
-     * @param zoom - {number} 缩放级别
-     * @param scale - {number} 比例尺
+     * @param zoom - {number}缩放级别
+     * @param scale - {number}比例尺
      * @param shader - {Array<Object>} 渲染器对象数组
      * @param feature - {L.feature} 要素
-     * @param fromServer - {String} 服务源
+     * @param fromServer - {string} 服务源
      */
     getValidStyleFromCarto: function getValidStyleFromCarto(zoom, scale, shader, feature, fromServer) {
         if (!shader) {
@@ -13037,24 +13021,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @function L.supermap.GeoFeatureThemeLayer
  * @classdesc  地理几何专题要素型专题图层基类。此类型专题图的专题要素形状就是由 feature.geometry 决定。此类不建议直接实例化调用。
+ * @private
  * @extends L.supermap.ThemeLayer
- * @param name - {String} 专题图名
+ * @param name - {string} 专题图名
  * @param options - {object} 需要设置得参数对象。如：<br>
- *        nodesClipPixel - {Number} 节点抽稀像素距离，默认值 2。<br>
- *        isHoverAble - {Boolean} 图形是否在 hover 时高亮 ，默认值：false。<br>
- *        isMultiHover - {Boolean} 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面），默认值：false。<br>
- *        isClickAble - {Boolean} 图形是否可点击，默认 true。<br>
- *        isAllowFeatureStyle - {Boolean} 是否允许 feature 样式（style） 中的有效属性应用到专题图层。
+ *        nodesClipPixel - {number}节点抽稀像素距离，默认值 2。<br>
+ *        isHoverAble - {boolean} 图形是否在 hover 时高亮 ，默认值：false。<br>
+ *        isMultiHover - {boolean} 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面），默认值：false。<br>
+ *        isClickAble - {boolean} 图形是否可点击，默认 true。<br>
+ *        isAllowFeatureStyle - {boolean} 是否允许 feature 样式（style） 中的有效属性应用到专题图层。
  *                                        默认值为： false，禁止对专题要素使用数据（feature）的 style。
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
  */
 var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer.extend({
 
-    /**
-     * @member L.supermap.GeoFeatureThemeLayer.prototype.options -{object}
-     * @description 待设置得参数对象
-     */
     options: {
 
         // {Number} 节点抽稀像素距离，默认值 2。
@@ -13280,7 +13261,7 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.setMaxCacheCount
      * @description 设置最大缓存数量。
-     * @param cacheCount - {number} 最大缓存量。
+     * @param cacheCount - {number}最大缓存量。
      */
     setMaxCacheCount: function setMaxCacheCount(cacheCount) {
         if (isNaN(cacheCount)) {
@@ -13293,7 +13274,7 @@ var GeoFeatureThemeLayer = exports.GeoFeatureThemeLayer = _ThemeLayer.ThemeLayer
     /**
      * @function L.supermap.GeoFeatureThemeLayer.prototype.getShapesByFeatureID
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
-     * @param featureID - {number} 要素ID。
+     * @param featureID - {number}要素ID。
      */
     getShapesByFeatureID: function getShapesByFeatureID(featureID) {
         var me = this,
@@ -13358,9 +13339,11 @@ var _leaflet2 = _interopRequireDefault(_leaflet);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class L.supermap.ThemeFeature
+ * @class L.supermap.themeFeature
  * @classdesc 客户端专题图要素类。
  *            支持的geometry参数类型为L.Point,L.LatLng,L.Polyline,L.Polygon
+ * @private
+ * @extends L.Class{@linkdoc-leaflet/#class}
  * @param geometry - {L.supermap.graphic} 要素图形
  * @param attributes - {object} 要素属性
  */
@@ -13372,7 +13355,7 @@ var ThemeFeature = exports.ThemeFeature = _leaflet2.default.Class.extend({
     },
 
     /**
-     * @function L.supermap.ThemeFeature.prototype.toFeature
+     * @function L.supermap.themeFeature.prototype.toFeature
      * @description 转为矢量要素
      */
     toFeature: function toFeature() {
@@ -13398,7 +13381,7 @@ var ThemeFeature = exports.ThemeFeature = _leaflet2.default.Class.extend({
     },
 
     /**
-     * @function L.supermap.ThemeFeature.prototype.reverseLatLngs
+     * @function L.supermap.themeFeature.prototype.reverseLatLngs
      * @description 反算坐标
      * @param latlngs - {L.latlng} 坐标值
      */
@@ -13444,15 +13427,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.ThemeLayer
  * @classdesc 专题图层基类，调用建议使用其子类实现类。
- * @param name - {String} 专题图层名称
+ * @private
+ * @extends L.Layer{@linkdoc-leaflet/#layer}
+ * @param name - {string} 专题图层名称
  * @param options -{object} 待设置得参数。
  */
 var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
 
-    /**
-     * @member L.supermap.ThemeLayer.prototype.options -{object}
-     * @description 待设置得参数。
-     */
     options: {
         name: null,
         opacity: 1,
@@ -13650,8 +13631,8 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getFeatureBy
      * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，返回此 feature（并且只返回第一个）。
-     * @param property - {String} 要素得某个属性名
-     * @param value - {String} 对应属性名得值
+     * @param property - {string} 要素得某个属性名
+     * @param value - {string} 对应属性名得值
      */
     getFeatureBy: function getFeatureBy(property, value) {
         var me = this;
@@ -13669,7 +13650,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getFeatureById
      * @description 通过给定一个 id，返回对应的矢量要素,如果不存在则返回 null
-     * @param featureId - {number} 要素id
+     * @param featureId - {number}要素id
      */
     getFeatureById: function getFeatureById(featureId) {
         return this.getFeatureBy('id', featureId);
@@ -13678,8 +13659,8 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getFeaturesByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param attrName - {String} key 值
-     * @param attrValue - {String} value 值
+     * @param attrName - {string} key 值
+     * @param attrValue - {string} value 值
      * @return {Array} 返回所有匹配的要素数组。
      */
     getFeaturesByAttribute: function getFeaturesByAttribute(attrName, attrValue) {
@@ -13725,7 +13706,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.setOpacity
      * @description 设置图层的不透明度,取值[0-1]之间。
-     * @param opacity - {number} 不透明度
+     * @param opacity - {number}不透明度
      */
     setOpacity: function setOpacity(opacity) {
         var me = this;
@@ -13761,7 +13742,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
      * @description 添加专题要素事件监听。添加专题要素事件监听。
      * @param event - {Event} 监听事件
      * @param callback - {function} 回调函数
-     * @param context - {String} 信息
+     * @param context - {string} 信息
      */
     on: function on(event, callback, context) {
         if (this.renderer) {
@@ -13777,7 +13758,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
      * @description 移除专题要素事件监听。
      * @param event - {Event} 监听事件
      * @param callback - {function} 回调函数
-     * @param context - {String} 信息
+     * @param context - {string} 信息
      */
     off: function off(event, callback, context) {
         var me = this;
@@ -13806,7 +13787,7 @@ var ThemeLayer = exports.ThemeLayer = _leaflet2.default.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。{Array} 长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
-     * @param coordinate - {String} 坐标系统
+     * @param coordinate - {string} 坐标系统
      */
     getLocalXY: function getLocalXY(coordinate) {
         if (!this._map) {
@@ -13893,9 +13874,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.CanvasRenderer
  * @classdesc 画布渲染器
- * @extends L.Canvas
+ * @extends L.Canvas{@linkdoc-leaflet/#canvas}
  * @param tileCoord - {Object} 切片坐标系
- * @param tileSize - {number} 切片大小
+ * @param tileSize - {number}切片大小
  * @param options - {Object} 渲染器参数
  */
 var CanvasRenderer = exports.CanvasRenderer = _leaflet2.default.Canvas.extend({
@@ -13945,7 +13926,7 @@ var CanvasRenderer = exports.CanvasRenderer = _leaflet2.default.Canvas.extend({
 
     /**
      * @function L.supermap.CanvasRenderer.prototype.addTo
-     * @description 添加切片地图
+     * @description 添加到切片地图
      * @param map - {L.map} 切片地图
      */
     addTo: function addTo(map) {
@@ -14049,8 +14030,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.SVGRenderer
  * @classdesc 矢量图层缩放渲染器类
- * @param tileCoord - {} 切片坐标系
- * @param tileSize - {number} 切片大小
+ * @private
+ * @extends L.SVG{@linkdoc-leaflet/#svg}
+ * @param tileCoord - {Object} 切片坐标系
+ * @param tileSize - {number}切片大小
  * @param options - {Object} 渲染参数
  */
 var SVGRenderer = exports.SVGRenderer = _leaflet2.default.SVG.extend({
@@ -14088,7 +14071,7 @@ var SVGRenderer = exports.SVGRenderer = _leaflet2.default.SVG.extend({
 
     /**
      * @function L.supermap.SVGRenderer.prototype.addTo
-     * @description 添加切片地图
+     * @description 添加到切片地图
      * @param map - {L.map} 切片地图
      */
     addTo: function addTo(map) {
@@ -14178,6 +14161,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.PolyBase
  * @classdesc 多边形基类
+ * @private
  */
 //@type {{_makeFeatureParts: PolyBase._makeFeatureParts, makeInteractive: PolyBase.makeInteractive}}
 var PolyBase = exports.PolyBase = {
@@ -14236,9 +14220,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.TextSymbolizer
  * @classdesc 文本符号类
- * @extends L.Path
+ * @private
+ * @extends L.Path{@linkdoc-leaflet/#path}
  * @param feature - {L.feature} 要素
- * @param pxPerExtent - {number} 文本符号大小
+ * @param pxPerExtent - {number}文本符号大小
  */
 var TextSymbolizer = exports.TextSymbolizer = _leaflet2.default.Path.extend({
 
@@ -14248,10 +14233,6 @@ var TextSymbolizer = exports.TextSymbolizer = _leaflet2.default.Path.extend({
      */
     includes: _Symbolizer.Symbolizer.prototype,
 
-    /**
-     * @member L.supermap.TextSymbolizer.prototype.options
-     * @description 文本样式参数
-     */
     options: {
         color: 'white',
         fillColor: 'black',
@@ -14280,7 +14261,7 @@ var TextSymbolizer = exports.TextSymbolizer = _leaflet2.default.Path.extend({
      * @function L.supermap.TextSymbolizer.prototype.render
      * @description 绘制点符号
      * @param renderer - {object} 渲染器
-     * @param style - {String} 符号样式
+     * @param style - {string} 符号样式
      */
     render: function render(renderer, style) {
         //原本类型就是text的情况
@@ -14323,7 +14304,7 @@ var TextSymbolizer = exports.TextSymbolizer = _leaflet2.default.Path.extend({
      * @function L.supermap.TextSymbolizer.prototype.updateStyle
      * @description 更新替换符号样式
      * @param renderer - {object} 渲染器
-     * @param style - {String} 符号样式
+     * @param style - {string} 符号样式
      */
     updateStyle: function updateStyle(renderer, style) {
         this._updateBounds();
@@ -15076,12 +15057,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends SuperMap.TimeControlBase
  * @param callback - {Function} 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
  * @param options - {Object} 该类开放的可选属性。如：<br>
- *        speed - {Number} 步长(单位ms)。不能小于0，默认为1（表示每次刷新的数据之间的间隔为1ms）。<br>
+ *        speed - {number}步长(单位ms)。不能小于0，默认为1（表示每次刷新的数据之间的间隔为1ms）。<br>
  *        frequency -  {Number} 刷新频率(单位ms)，默认为1000ms。<br>
- *        startTime - {Number} 起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
- *        endTime - {Number} 结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
- *        repeat - {Boolean} 是否重复循环。默认为true。<br>
- *        reverse - {Boolean} 是否反向。默认为false。
+ *        startTime - {number}起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
+ *        endTime - {number}结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
+ *        repeat - {boolean} 是否重复循环。默认为true。<br>
+ *        reverse - {boolean} 是否反向。默认为false。
  */
 var TimeFlowControl = function (_TimeControlBase) {
     _inherits(TimeFlowControl, _TimeControlBase);
@@ -15476,16 +15457,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var Online = function () {
 
     //TODO 目前并没有对接Online的所有操作，需要补充完整
-    /*
-     * 所有查询返回的是一个Promise,在外部使用的时候通过Promise的then方法获取异步结果
-     * 用法：
-     * var online=new SuperMap.Online();
-     * var services = online.queryDatas(param);
-     * service.then(function(services){
-     *      var service= services[0];
-     *      service.updateDataInfo();
-     * })
-     */
+    //所有查询返回的是一个Promise,在外部使用的时候通过Promise的then方法获取异步结果
     function Online() {
         _classCallCheck(this, Online);
 
@@ -15671,7 +15643,7 @@ var ElasticSearchService = function () {
      */
 
     /**
-     *  @member SuperMap.ElasticSearchService.prototype.url -{String}
+     *  @member SuperMap.ElasticSearchService.prototype.url -{string}
      *  @description ElasticSearch服务地址
      */
 
@@ -16338,6 +16310,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.control.changeTileVersion
  * @classdesc 版本切换控件(目前仅支持IE10及以上)
+ * @extends L.Control{@linkdoc-leaflet/#control}
  * @example
  * L.supermap.control.changeTileVersion({
  *      layer: baseLayer,
@@ -16346,14 +16319,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *  }).addTo(map);
  * @param options -{Object} logo控件配置项</br>
  *        layer - {L.layer} 绑定的底图图层</br>
- *        position - {String} 控件位置 继承自leaflet control</br>
- *        title - {String} 鼠标滑过时提示</br>
- *        tooltip - {String} /tooltip提示显示位置 top | right | bottom | left</br>
+ *        position - {string} 控件位置 继承自leaflet control</br>
+ *        title - {string} 鼠标滑过时提示</br>
+ *        tooltip - {string} /tooltip提示显示位置 top | right | bottom | left</br>
  *        collapsed - {boolean} 是否折叠。<br>
- *        nextText - {String} 下一个版本的按钮布局
- *        lastText - {String} 上一个版本的按钮布局
- *        ico - {String} 控件显示的logo
- *        orientation - {String} 方向horizontal|vertical
+ *        nextText - {string} 下一个版本的按钮布局
+ *        lastText - {string} 上一个版本的按钮布局
+ *        ico - {string} 控件显示的logo
+ *        orientation - {string} 方向horizontal|vertical
  *        switch - {boolean} 是否显示上/下一个版本切换控件
  */
 var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.extend({
@@ -16409,7 +16382,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.ex
     /**
      * @function L.supermap.control.changeTileVersion.prototype.setVersionName
      * @description  设置版本号
-     * @param content - {String} 版本信息
+     * @param content - {string} 版本信息
      * @return {L.supermap.control.changeTileVersion} 返回改变后的版本
      */
     setVersionName: function setVersionName(content) {
@@ -16435,7 +16408,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.ex
     /**
      * @function L.supermap.control.changeTileVersion.prototype.updateLength
      * @description 更新进度条长度
-     * @param length - {number} 进度长度参数
+     * @param length - {number}进度长度参数
      */
     updateLength: function updateLength(length) {
         if (length > 0) {
@@ -16471,7 +16444,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.ex
     /**
      * @function L.supermap.control.changeTileVersion.prototype.update
      * @description 更新缓存切片集及进度条长度
-     * @param tileVersions - {number} 待更新的切片版本
+     * @param tileVersions - {number}待更新的切片版本
      */
     update: function update(tileVersions) {
         this.tileVersions = tileVersions;
@@ -16532,7 +16505,7 @@ var ChangeTileVersion = exports.ChangeTileVersion = _leaflet2.default.Control.ex
     /**
      * @function L.supermap.control.changeTileVersion.prototype.tilesVersion
      * @description 根据指定版本号请求版本
-     * @param version - {String} 版本号参数
+     * @param version - {string} 版本号参数
      */
     tilesVersion: function tilesVersion(version) {
         var layer = this.options.layer,
@@ -16708,7 +16681,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @class L.supermap.control.Logo
  * @classdesc Logo控件。</br>
  *            map初始化的配置项为logoControl，如果为true，则显示控件；否则不显示该控件。目前默认显示。
- * @extends L.Control
+ * @extends L.Control{@linkdoc-leaflet/#control}
  * @example
  * (start code)
  *  L.supermap.control.Logo({
@@ -16716,11 +16689,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *  }).addTo(map);
  * (end)
  * @param options -{Object} logo控件配置项</br>
- *        imageUrl - {String} logo图片地址</br>
- *        width - {String} logo图片宽</br>
- *        height - {String} logo图片高</br>
- *        link - {String} 跳转链接</br>
- *        alt - {String} logo图片失效时显示文本
+ *        imageUrl - {string} logo图片地址</br>
+ *        width - {string} logo图片宽</br>
+ *        height - {string} logo图片高</br>
+ *        link - {string} 跳转链接</br>
+ *        alt - {string} logo图片失效时显示文本
  */
 var Logo = exports.Logo = _leaflet2.default.Control.extend({
 
@@ -16738,6 +16711,11 @@ var Logo = exports.Logo = _leaflet2.default.Control.extend({
         alt: "SuperMap iClient"
     },
 
+    /**
+     * @function L.supermap.control.Logo.prototype.onAdd
+     * @description 添加一个logo
+     * @return {div} 返回创建得logo
+     */
     onAdd: function onAdd() {
         var div = _leaflet2.default.DomUtil.create('div', 'iclient-leaflet-logo');
         div.style.marginTop = 0;
@@ -16814,21 +16792,22 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @class L.supermap.baiduTileLayer
  * @classdesc 百度切片图层类。
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
- * @param url -{String} 切片地址
- * @param options -{object} 切片参数
+ * @param url -{string} 切片地址
+ * @param options -{object} 切片参数。如：<br>
+ *        minZoom - {number} 最小缩放级别
+ *        maxZoom - {number} 最大缩放级别
+ *        bounds - {L.bounds} 显示范围
+ *        retina - {L.Browser} 浏览器显示分辨率
+ *        attribution - {string} 版权信息
  */
 var BaiduTileLayer = exports.BaiduTileLayer = _leaflet2.default.TileLayer.extend({
 
     /**
-     * @member L.supermap.baiduTileLayer.prototype.url -{String}
+     * @member L.supermap.baiduTileLayer.prototype.url -{string}
      * @description 切片地址
      */
     url: "http://online{num}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1",
 
-    /**
-     * @member L.supermap.baiduTileLayer.prototype.options -{object}
-     * @description 切片参数
-     */
     options: {
         minZoom: 3,
         maxZoom: 19,
@@ -16892,34 +16871,29 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.cloudTileLayer
  * @classdesc 云端切片图层类。
- * @extends L.TileLayer
- * @param defaultURL -{String} 默认图层地址
+ * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
+ * @param defaultURL -{string} 默认图层地址
  * @param options -{Object} 云端切片图层可选参数。如：<br>
- *        layersID - {number} 图层ID，如果有layersID，则是在使用专题图。<br>
+ *        layersID - {number}图层ID，如果有layersID，则是在使用专题图。<br>
  *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。<br>
- *        transparent - {number} 设置透明度。<br>
- *        cacheEnabled - {String} 启用缓存。<br>
+ *        transparent - {number}设置透明度。<br>
+ *        cacheEnabled - {string} 启用缓存。<br>
  *        clipRegionEnabled - {boolean} 是否启用地图裁剪。<br>
  *        prjCoordSys - {object} 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。<br>
  *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
- *        overlapDisplayedOptions - {String} 避免地图对象压盖显示的过滤选项。<br>
- *        tileversion - {String} 切片版本名称，cacheEnabled 为 true 时有效。<br>
+ *        overlapDisplayedOptions - {string} 避免地图对象压盖显示的过滤选项。<br>
+ *        tileversion - {string} 切片版本名称，cacheEnabled 为 true 时有效。<br>
  *        crs - {L.Proj.CRS} 坐标系统类。<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online。<br>
- *        attribution - {String} 版权信息。
+ *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
+ *        attribution - {string} 版权信息。<br>
+ *        minZoom - {number} 最小缩放级别。<br>
+ *        maxZoom - {number} 最大缩放级别。<br>
+ *        mapName - {string} 地图名称。
  */
 var CloudTileLayer = exports.CloudTileLayer = _leaflet2.default.TileLayer.extend({
 
-    /**
-     * @member L.supermap.cloudTileLayer.prototype.defaultURL -{String}
-     * @description 默认图层地址
-     */
     defaultURL: 'http://t2.supermapcloud.com/FileService/image',
 
-    /**
-     * @member L.supermap.cloudTileLayer.prototype.options -{Object}
-     * @description 图层参数信息
-     */
     options: {
         /*
          * APIProperty: mapName
@@ -16976,30 +16950,26 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.imageMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)使用Image资源出图
- * @extends L.TileLayer
+ * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @example
  *      L.superMap.imageMapLayer(url).addTo(map);
- * @param url -{String} 影像图层地址
+ * @param url -{string} 影像图层地址
  * @param options -{Object} 影像图层可选参数。如：<br>
- *        layersID - {number} 图层ID，如果有layersID，则是在使用专题图。<br>
+ *        layersID - {number}图层ID，如果有layersID，则是在使用专题图。<br>
  *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。<br>
- *        transparent - {number} 设置透明度。<br>
- *        cacheEnabled - {String} 启用缓存。<br>
+ *        transparent - {number}设置透明度。<br>
+ *        cacheEnabled - {string} 启用缓存。<br>
  *        clipRegionEnabled - {boolean} 是否启用地图裁剪。<br>
  *        prjCoordSys - {object} 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。<br>
  *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
- *        overlapDisplayedOptions - {String} 避免地图对象压盖显示的过滤选项。<br>
- *        tileversion - {String} 切片版本名称，cacheEnabled 为 true 时有效。<br>
+ *        overlapDisplayedOptions - {string} 避免地图对象压盖显示的过滤选项。<br>
+ *        tileversion - {string} 切片版本名称，cacheEnabled 为 true 时有效。<br>
  *        crs - {L.Proj.CRS} 坐标系统类。<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
- *        attribution - {String} 版权信息。
+ *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
+ *        attribution - {string} 版权信息。
  */
 var ImageMapLayer = exports.ImageMapLayer = _leaflet2.default.TileLayer.extend({
 
-    /**
-     * @member L.supermap.imageMapLayer.prototype.options -{Object}
-     * @description 影像图层参数。
-     */
     options: {
         //如果有layersID，则是在使用专题图
         layersID: null,
@@ -17178,21 +17148,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.tiandituTileLayer
  * @classdesc 天地图切片图层类。
- * @param defaultURL -{String} 默认图层地址
+ * @extends L.supermap.wmtsLayer
+ * @param defaultURL -{string} 默认图层地址
  * @param options -{Object} 切片图层参数。如：<br>
- *        layer - {String} 图层类型。<br>
- *        style - {String} 图层风格。<br>
- *        tilematrixSet - {String} 瓦片矩阵集。<br>
- *        format - {String} 格式。<br>
+ *        layer - {string} 图层类型。<br>
+ *        style - {string} 图层风格。<br>
+ *        tilematrixSet - {string} 瓦片矩阵集。<br>
+ *        format - {string} 格式。<br>
  *        subdomains - {Array<number>} 子域名数组。<br>
- *        attribution - {String} 版权信息
+ *        attribution - {string} 版权信息
  */
 var TiandituTileLayer = exports.TiandituTileLayer = _TileLayer.WMTSLayer.extend({
 
-    /**
-     * @member L.supermap.tiandituTileLayer.prototype.defaultURL -{String}
-     * @description 默认图层地址
-     */
     defaultURL: 'http://t{s}.tianditu.com/img_w/wmts?"',
 
     options: {
@@ -17246,23 +17213,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.webmap
  * @classdesc 网络图层类。
- * @extends L.LayerGroup
- * @param id - {number} 网络图层id。
+ * @extends L.LayerGroup{@linkdoc-leaflet/#layergroup}
+ * @param id - {number}网络图层id。
  * @param options - {object} 图层可选参数。如：<br>
- *        map - {String} 地图。<br>
- *        server - {String} 服务地址。<br>
+ *        map - {string} 地图。<br>
+ *        server - {string} 服务地址。<br>
  *        featureLayerPopupEnable - {boolean} 是否启动要素图层提示框。<br>
- *        featureLayerPopup - {String} 提示框提示信息。<br>
- *        credentialValue - {String} 证书值。<br>
- *        credentialKey - {String} 证书密钥。<br>
- *        attribution - {String} 版权信息。
+ *        featureLayerPopup - {string} 提示框提示信息。<br>
+ *        credentialValue - {string} 证书值。<br>
+ *        credentialKey - {string} 证书密钥。<br>
+ *        attribution - {string} 版权信息。
  */
 var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
 
-    /**
-     * @member L.supermap.webmap.prototype.options
-     * @description 图层参数
-     */
     options: {
         map: 'map',
         server: 'http://www.supermapol.com',
@@ -17383,8 +17346,8 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
      * @function L.supermap.webmap.prototype.createCRS
      * @description 创建坐标对象
      * @param epsgCode - {mnumber} epsg编码
-     * @param type - {String} 坐标类型
-     * @param resolutions - {number} 分辨率
+     * @param type - {string} 坐标类型
+     * @param resolutions - {number}分辨率
      * @param origin - {SuperMap.Point} 起始点
      * @param bounds -{SuperMap.Bounds} 指定坐标范围
      */
@@ -17436,8 +17399,8 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
      * @function L.supermap.webmap.prototype.getResolutionsFromScales
      * @description 通过比例尺获取分辨率
      * @param scales - {Array<number>} 排序比例尺数组
-     * @param dpi - {number} 屏幕分辨率
-     * @param units - {String} 地图的单位
+     * @param dpi - {number}屏幕分辨率
+     * @param units - {string} 地图的单位
      * @param datum - {SuperMap.Datum} 大地参照系类
      */
     getResolutionsFromScales: function getResolutionsFromScales(scales, dpi, units, datum) {
@@ -17451,7 +17414,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
     /**
      * @function L.supermap.webmap.prototype.createLayer
      * @description 创建图层
-     * @param type - {String} 图层类型
+     * @param type - {string} 图层类型
      * @param layerInfo - {object} 图层信息
      */
     createLayer: function createLayer(type, layerInfo) {
@@ -17547,7 +17510,7 @@ var WebMap = exports.WebMap = _leaflet2.default.LayerGroup.extend({
      * @function L.supermap.webmap.prototype.createTiandituLayer
      * @description 创建天地图图层
      * @param layerInfo - {object} 图层信息
-     * @param epsgCode - {number} epsg编码
+     * @param epsgCode - {number}epsg编码
      */
     createTiandituLayer: function createTiandituLayer(layerInfo, epsgCode) {
         var proj = epsgCode === 4326 ? "c" : "w";
@@ -17738,16 +17701,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.dataFlowLayer
  * @classdesc 数据流图层
- * @extends L.GeoJSON
- * @param url - {String} 数据流图层服务地址
- * @param options - {object} 设置图层参数。如：<>
+ * @extends L.GeoJSON{@linkdoc-leaflet/#geojson}
+ * @param url - {string} 数据流图层服务地址
+ * @param options - {object} 设置图层参数。如：<br>
+ *        geometry - {SuperMap.Geometry} 几何要素。<br>
+ *        prjCoordSys - {Object} 投影坐标对象。<br>
+ *        excludeField - {string} 排除字段。<br>
+ *        idField - {string} id字段。
  */
 var DataFlowLayer = exports.DataFlowLayer = _leaflet2.default.GeoJSON.extend({
 
-    /**
-     * @member L.supermap.DataFlowLayer.prototype.options
-     * @description 图层设置参数
-     */
     options: {
         geometry: null,
         prjCoordSys: null,
@@ -17771,7 +17734,7 @@ var DataFlowLayer = exports.DataFlowLayer = _leaflet2.default.GeoJSON.extend({
     },
 
     /**
-     * @function L.supermap.DataFlowLayer.prototype.onAdd
+     * @function L.supermap.dataFlowLayer.prototype.onAdd
      * @description 添加地图
      * @param map - {L.map} 待添加的地图
      */
@@ -17794,7 +17757,7 @@ var DataFlowLayer = exports.DataFlowLayer = _leaflet2.default.GeoJSON.extend({
     },
 
     /**
-     * @function L.supermap.DataFlowLayer.prototype.onRemove
+     * @function L.supermap.dataFlowLayer.prototype.onRemove
      * @description 删除指定地图
      * @param map - {L.map} 待删除的地图
      */
@@ -17803,7 +17766,7 @@ var DataFlowLayer = exports.DataFlowLayer = _leaflet2.default.GeoJSON.extend({
     },
 
     /**
-     * @function L.supermap.DataFlowLayer.prototype.setPrjCoordSys
+     * @function L.supermap.dataFlowLayer.prototype.setPrjCoordSys
      * @description 设置地图投影坐标系统
      * @param prjCoordSys - {Object} 投影坐标系统
      */
@@ -17814,9 +17777,9 @@ var DataFlowLayer = exports.DataFlowLayer = _leaflet2.default.GeoJSON.extend({
     },
 
     /**
-     * @function L.supermap.DataFlowLayer.prototype.setExcludeField
+     * @function L.supermap.dataFlowLayer.prototype.setExcludeField
      * @description 设置唯一字段
-     * @param excludeField - {String} 唯一字段
+     * @param excludeField - {string} 唯一字段
      */
     setExcludeField: function setExcludeField(excludeField) {
         this.dataService.setExcludeField(excludeField);
@@ -17825,7 +17788,7 @@ var DataFlowLayer = exports.DataFlowLayer = _leaflet2.default.GeoJSON.extend({
     },
 
     /**
-     * @function L.supermap.DataFlowLayer.prototype.setGeometry
+     * @function L.supermap.dataFlowLayer.prototype.setGeometry
      * @description 设置集合要素
      * @param geometry - {L.Geometry} 待设置的几何要素
      */
@@ -17917,9 +17880,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.echartsMapLayer
  * @classdesc 图表地图图层类。
+ * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param echartsOptions - {object} 图表参数
  * @param options - {object} 可选图层参数。<br>
- *        attribution - {String} 版权信息。<br>
+ *        attribution - {string} 版权信息。<br>
  *        loadWhileAnimating - {boolean} 是否在启动时加载。
  */
 var EchartsMapLayer = exports.EchartsMapLayer = _leaflet2.default.Layer.extend({
@@ -17930,10 +17894,6 @@ var EchartsMapLayer = exports.EchartsMapLayer = _leaflet2.default.Layer.extend({
     _ec: null,
     _echartsOptions: null,
 
-    /**
-     * @member L.supermap.EchartsMapLayer.prototype.options - {object}
-     * @description 可选图层参数
-     */
     options: {
         attribution: "© 2017 百度 ECharts with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
         loadWhileAnimating: true
@@ -17950,11 +17910,11 @@ var EchartsMapLayer = exports.EchartsMapLayer = _leaflet2.default.Layer.extend({
     },
 
     /**
-     * @function L.supermap.EchartsMapLayer.prototype.setOption
+     * @function L.supermap.echartsMapLayer.prototype.setOption
      * @description 设置图表地图参数
      * @param echartsOptions - {object} 图表参数
      * @param notMerge - {boolean} 是否合并参数
-     * @param lazyUpdate - {String} 后台自动更新
+     * @param lazyUpdate - {string} 后台自动更新
      */
     setOption: function setOption(echartsOptions, notMerge, lazyUpdate) {
         if (echartsOptions) {
@@ -17974,7 +17934,7 @@ var EchartsMapLayer = exports.EchartsMapLayer = _leaflet2.default.Layer.extend({
     },
 
     /**
-     * @function L.supermap.EchartsMapLayer.prototype.onAdd
+     * @function L.supermap.echartsMapLayer.prototype.onAdd
      * @description 添加地图
      * @param map - {L.map} 待添加的地图
      */
@@ -18070,12 +18030,9 @@ var EchartsMapLayer = exports.EchartsMapLayer = _leaflet2.default.Layer.extend({
 
 /**
  * @class L.supermap.LeafletMapCoordSys
- * @classdesc leaflet地图坐标系统类
- * @param LeafletMap - {L.map}
+ * @classdesc 地图坐标系统类
+ * @param LeafletMap - {L.map} 地图
  * @param api - {Object} 接口
- */
-/**
- * Inspired by https://github.com/lzxue/echartsLayer
  */
 function LeafletMapCoordSys(LeafletMap, api) {
     this._LeafletMap = LeafletMap;
@@ -18165,19 +18122,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.graphicGroup
  * @classdesc 图形组合类。
+ * @extends L.Path{@linkdoc-leaflet/#path}
  * @param graphics - {object} 图形成员
  * @param options - {object} 可选参数。如：<br>
  *        stroke - {boolean}
- *        color - {String} 颜色
- *        weight - {number} 宽带
- *        opacity - {number} 透明度
- *        lineCap - {String} 线帽形状
- *        lineJoin - {String} 线条交汇边角形状
+ *        color - {string} 颜色
+ *        weight - {number}宽带
+ *        opacity - {number}透明度
+ *        lineCap - {string} 线帽形状
+ *        lineJoin - {string} 线条交汇边角形状
  *        fill - {boolean} 是否填充
- *        fillColor - {String} 填充色
- *        fillOpacity - {number} 填充透明度
- *        fillRule - {String} 填充形状
- *        radius - {number} 半径
+ *        fillColor - {string} 填充色
+ *        fillOpacity - {number}填充透明度
+ *        fillRule - {string} 填充形状
+ *        radius - {number}半径
  */
 var GraphicGroup = exports.GraphicGroup = _leaflet2.default.Path.extend({
 
@@ -18188,7 +18146,7 @@ var GraphicGroup = exports.GraphicGroup = _leaflet2.default.Path.extend({
     },
 
     /**
-     * @function L.supermap.GraphicGroup.prototype.getEvents
+     * @function L.supermap.graphicGroup.prototype.getEvents
      * @description 获取事件
      * @return {{click: L.supermap.GraphicGroup._handleClick}}
      */
@@ -18200,7 +18158,7 @@ var GraphicGroup = exports.GraphicGroup = _leaflet2.default.Path.extend({
     },
 
     /**
-     * @function L.supermap.GraphicGroup.prototype.onAdd
+     * @function L.supermap.graphicGroup.prototype.onAdd
      * @description 添加图形
      */
     onAdd: function onAdd() {
@@ -18311,18 +18269,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.mapVLayer
  * @classdesc MapV图层
+ * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param dataSet - {DataSet} MapV图层数据集
  * @param mapVOptions - {object} MapV图层参数
  * @param options - {object} 可选参数。如：<br>
- *        attributionPrefix - {String} 版权信息前缀。<br>
- *        attribution - {String} 版权信息。
+ *        attributionPrefix - {string} 版权信息前缀。<br>
+ *        attribution - {string} 版权信息。
  */
 var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
 
-    /**
-     * @member L.supermap.mapVLayer.protptype.options
-     * @description 可选参数。
-     */
     options: {
         attributionPrefix: null,
         attribution: " © 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
@@ -18343,7 +18298,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.onAdd
+     * @function L.supermap.mapVLayer.prototype.onAdd
      * @description 添加地图图层
      * @param map - {L.map} 要添加的地图
      */
@@ -18369,7 +18324,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.onRemove
+     * @function L.supermap.mapVLayer.prototype.onRemove
      * @description 删除地图图层
      * @param map - {L.map} 要删除的图层
      */
@@ -18383,7 +18338,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.addData
+     * @function L.supermap.mapVLayer.prototype.addData
      * @description 追加数据
      * @param data - {object} 要追加的数据
      * @param options -{object} 要追加的值
@@ -18393,7 +18348,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.update
+     * @function L.supermap.mapVLayer.prototype.update
      * @description 更新数据
      * @param data - {object} 要更新的数据
      * @param options -{object} 要更新的值
@@ -18403,7 +18358,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.getData
+     * @function L.supermap.mapVLayer.prototype.getData
      * @description 获取数据
      */
     getData: function getData() {
@@ -18414,16 +18369,16 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.removeData
+     * @function L.supermap.mapVLayer.prototype.removeData
      * @description 删除数据
-     * @param filter - {String} 过滤条件
+     * @param filter - {string} 过滤条件
      */
     removeData: function removeData(filter) {
         this.renderer && this.renderer.removeData(filter);
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.clearData
+     * @function L.supermap.mapVLayer.prototype.clearData
      * @description 清除数据
      */
     clearData: function clearData() {
@@ -18431,7 +18386,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.draw
+     * @function L.supermap.mapVLayer.prototype.draw
      * @description 绘制
      */
     draw: function draw() {
@@ -18439,16 +18394,16 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.setZIndex
+     * @function L.supermap.mapVLayer.prototype.setZIndex
      * @description 设置叠加优先级
-     * @param zIndex - {number} 优先级
+     * @param zIndex - {number}优先级
      */
     setZIndex: function setZIndex(zIndex) {
         this.canvas.style.zIndex = zIndex;
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.render
+     * @function L.supermap.mapVLayer.prototype.render
      * @description 着色
      */
     render: function render() {
@@ -18456,7 +18411,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.getCanvas
+     * @function L.supermap.mapVLayer.prototype.getCanvas
      * @description 获取画布
      */
     getCanvas: function getCanvas() {
@@ -18464,7 +18419,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.getContainer
+     * @function L.supermap.mapVLayer.prototype.getContainer
      * @description 获取容器
      */
     getContainer: function getContainer() {
@@ -18472,7 +18427,7 @@ var MapVLayer = exports.MapVLayer = _leaflet2.default.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.getTopLeft
+     * @function L.supermap.mapVLayer.prototype.getTopLeft
      * @description 获取左上角坐标
      */
     getTopLeft: function getTopLeft() {
@@ -18574,13 +18529,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *            范围分段专题图对数据（<SuperMap.Feature.Vector>）属性字段（attributes）的属性值进行分段，使用不同的颜色或符号（线型、填充）渲染不同范围段的属性值。
  *            分段专题图一般用来反映连续分布现象的数量或程度特征，如降水量的分布，土壤侵蚀强度的分布等。
  * @extends L.supermap.GeoFeatureThemeLayer
- * @param name - {String} 图层名
+ * @param name - {string} 图层名
  * @param options - {Object} 图层参数。如：<br>
- *        nodesClipPixel - {Number} 节点抽稀像素距离，默认值 2。<br>
- *        isHoverAble - {Boolean} 图形是否在 hover 时高亮 ，默认值：false。<br>
- *        isMultiHover - {Boolean} 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面），默认值：false。<br>
- *        isClickAble - {Boolean} 图形是否可点击，默认 true。<br>
- *        isAllowFeatureStyle - {Boolean} 是否允许 feature 样式（style） 中的有效属性应用到专题图层。
+ *        nodesClipPixel - {number}节点抽稀像素距离，默认值 2。<br>
+ *        isHoverAble - {boolean} 图形是否在 hover 时高亮 ，默认值：false。<br>
+ *        isMultiHover - {boolean} 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面），默认值：false。<br>
+ *        isClickAble - {boolean} 图形是否可点击，默认 true。<br>
+ *        isAllowFeatureStyle - {boolean} 是否允许 feature 样式（style） 中的有效属性应用到专题图层。
  *                                        默认值为： false，禁止对专题要素使用数据（feature）的 style。
  *                                        此属性可强制将数据 feature 的 style 中有效属性应用到专题要素上，且拥有比图层 style 和 styleGroups 更高的优先级，使专题要素
  *                                        的样式脱离专题图层的控制。可以通过此方式实现对特殊数据（feature） 对应专题要素赋予独立 style。
@@ -18687,7 +18642,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *            即通过制作一个符号专题图，就可以清晰展示各个区域相关Value的分布差异等。目前提供的统计图类型有：圆（Circle）
  *           目前提供的符号图形有：圆形（后续进行扩展 心形 五角星 多角心 图片等）
  * @extends L.supermap.GraphThemeLayer
- * @param name - {String} 专题图层名
+ * @param name - {string} 专题图层名
  * @param symbolType - {SuperMap.ChartType} 必设参数，目前支持："Circle"。
  * @param options - {object} 可选参数
  */
@@ -18701,7 +18656,7 @@ var RankSymbolThemeLayer = exports.RankSymbolThemeLayer = _GraphThemeLayer.Graph
      *  YOffset - {Number}  专题要素（图形）在 Y 方向上的偏移值，单位像素。
      *  dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
      *      它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
-     *  decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
+     *  decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。
      *
      *  symbolType<SuperMap.ChartType>，必设参数，目前支持："Circle"。
      */
@@ -18785,17 +18740,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.superMap.tiledVectorLayer
  * @classdesc SuperMap iServer的矢量瓦片图层
+ * @extends L.superMap.VectorGrid
  * @example
  *      L.superMap.tiledVectorLayer(url).addTo(map);
- * @param url - {String} 图层数据服务地址
+ * @param url - {string} 图层数据服务地址
  * @param options - {object} 图层可选参数
  */
 var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
 
-    /**
-     * @member L.superMap.tiledVectorLayer.prototype.options -{object}
-     * @description 图层可选参数
-     */
     options: {
         //服务器类型<SuperMap.ServerType>iServer|iPortal|Online
         serverType: null,
@@ -18901,7 +18853,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
     /**
      * @function L.superMap.tiledVectorLayer.prototype.getLayerStyleInfo
      * @description 获取图层样式信息
-     * @param layerName - {String} 图层名称
+     * @param layerName - {string} 图层名称
      */
     getLayerStyleInfo: function getLayerStyleInfo(layerName) {
         var me = this,
@@ -19043,7 +18995,7 @@ var TileVectorLayer = exports.TileVectorLayer = _VectorGrid.VectorGrid.extend({
     /**
      * @function L.superMap.tiledVectorLayer.prototype.getScale
      * @description 通过缩放级别获取比例尺
-     * @param zoom - {number} 缩放级别
+     * @param zoom - {number}缩放级别
      */
     getScale: function getScale(zoom) {
         var me = this;
@@ -19271,7 +19223,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *            单值专题图是利用不同的颜色或符号（线型、填充）表示图层中某一属性信息的不同属性值，属性值相同的要素具有相同的渲染风格<br>
  *            比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。
  * @extends L.supermap.GeoFeatureThemeLayer
- * @param name - {String} 专题图层名
+ * @param name - {string} 专题图层名
  * @param options - {object} 可选参数
  */
 var UniqueThemeLayer = exports.UniqueThemeLayer = _GeoFeatureThemeLayer.GeoFeatureThemeLayer.extend({
@@ -19295,7 +19247,7 @@ var UniqueThemeLayer = exports.UniqueThemeLayer = _GeoFeatureThemeLayer.GeoFeatu
     },
 
     /**
-     * @function L.supermap.UniqueThemeLayer.prototype.getStyleByData
+     * @function L.supermap.uniqueThemeLayer.prototype.getStyleByData
      * @description 根据用户数据（feature）设置专题要素的 Style
      * @param feat {L.feature} 用户要素数据
      */
@@ -19380,7 +19332,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *      .code(function(result){
  *          //doSomething
  *      })
- * @param url - {String} 地址匹配服务地址
+ * @param url - {string} 地址匹配服务地址
  * @param options {object} 地址匹配服务可选参数。如：<br>
  *        data - {number}
  *
@@ -19476,7 +19428,7 @@ var _CommontypesConversion2 = _interopRequireDefault(_CommontypesConversion);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class L.supermap.ChartService
+ * @class L.supermap.chartService
  * @classdesc 海图服务。
  * @extends L.supermap.ServiceBase
  * @example
@@ -19485,9 +19437,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
- * @param url - {String} 与客户端交互的海图服务地址。
+ * @param url - {string} 与客户端交互的海图服务地址。
  * @param options -{Object} 交互时所需可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
+ *        serverType - {string} 服务来源 iServer|iPortal|online
  */
 var ChartService = _ServiceBase.ServiceBase.extend({
 
@@ -19496,7 +19448,7 @@ var ChartService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ChartService.prototype.queryChart
+     * @function L.supermap.chartService.prototype.queryChart
      * @description 查询海图服务。
      * @param params -{SuperMap.ChartQueryParameters} 海图查询所需参数类。
      * @param callback -{function} 回调函数。
@@ -19521,7 +19473,7 @@ var ChartService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ChartService.prototype.getChartFeatureInfo
+     * @function L.supermap.chartService.prototype.getChartFeatureInfo
      * @description 获取海图物标信息服务。
      * @param callback -{function} 回调函数
      */
@@ -19624,7 +19576,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class L.supermap.FeatureService
+ * @class L.supermap.featureService
  * @classdesc 要素数据集类。提供：ID查询，范围查询，SQL查询，几何查询，bounds查询，缓冲区查询，地物编辑
  * @example 用法：
  *      L.supermap.featureService(url)
@@ -19632,9 +19584,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *          //doSomething
  *      })
  * @extends L.supermap.ServiceBase
- * @param url - {String} 要素数据集服务地址
+ * @param url - {string} 要素数据集服务地址
  * @param options - {object} 创建要素数据集服务类可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
+ *        serverType - {string} 服务来源 iServer|iPortal|online
  */
 var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
 
@@ -19643,7 +19595,7 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.FeatureService.prototype.getFeaturesByIDs
+     * @function L.supermap.featureService.prototype.getFeaturesByIDs
      * @description 数据集ID查询服务
      * @param params {SuperMap.GetFeaturesByIDsParameters} ID 查询参数类
      * @param callback - {function} 回调函数
@@ -19664,7 +19616,7 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.FeatureService.prototype.getFeaturesByBounds
+     * @function L.supermap.featureService.prototype.getFeaturesByBounds
      * @description 数据集Bounds查询服务
      * @param params {SuperMap.GetFeaturesByBoundsParameters} 数据集范围查询参数类
      * @param callback - {function} 回调函数
@@ -19685,7 +19637,7 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.FeatureService.prototype.getFeaturesByBuffer
+     * @function L.supermap.featureService.prototype.getFeaturesByBuffer
      * @description 数据集Buffer查询服务
      * @param params {SuperMap.GetFeaturesByBufferParameters} 数据服务中数据集缓冲区查询参数类
      * @param callback - {function} 回调函数
@@ -19706,7 +19658,7 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.FeatureService.prototype.getFeaturesBySQL
+     * @function L.supermap.featureService.prototype.getFeaturesBySQL
      * @description 数据集SQL查询服务
      * @param params {SuperMap.GetFeaturesBySQLParameters} 数据服务中数据集SQL查询参数类
      * @param callback - {function} 回调函数
@@ -19727,7 +19679,7 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.FeatureService.prototype.getFeaturesByGeometry
+     * @function L.supermap.featureService.prototype.getFeaturesByGeometry
      * @description 数据集几何查询服务类
      * @param params {SuperMap.GetFeaturesByGeometryParameters} 数据集几何查询参数类
      * @param callback - {function} 回调函数
@@ -19748,7 +19700,7 @@ var FeatureService = exports.FeatureService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.FeatureService.prototype.editFeatures
+     * @function L.supermap.featureService.prototype.editFeatures
      * @description 地物编辑服务
      * @param params {SuperMap.EditFeaturesParameters} 数据服务中数据集添加、修改、删除参数类
      * @param callback - {function} 回调函数
@@ -19871,18 +19823,18 @@ var _FieldStatisticService2 = _interopRequireDefault(_FieldStatisticService);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class  L.supermap.FieldService
+ * @class  L.supermap.fieldService
  * @classdesc 字段服务类
  * @extends L.supermap.ServiceBase
  * @example 用法：
  * L.supermap.fieldService(url).getFields(function(result){
       //doSomething
  * });
- * @param url - {String} 字段服务地址
+ * @param url - {string} 字段服务地址
  * @param options - {object} 字段服务类可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online。<br>
- *        dataSourceName - {String} 数据资源名称 <br>
- *        dataSetName - {String} 数据集名称
+ *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
+ *        dataSourceName - {string} 数据资源名称 <br>
+ *        dataSetName - {string} 数据集名称
  */
 var FieldService = exports.FieldService = _ServiceBase.ServiceBase.extend({
 
@@ -19898,7 +19850,7 @@ var FieldService = exports.FieldService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.FieldService.prototype.getFields
+     * @function L.supermap.fieldService.prototype.getFields
      * @description 字段查询服务
      * @param callback - {function} 回调函数
      */
@@ -19919,7 +19871,7 @@ var FieldService = exports.FieldService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.FieldService.prototype.getFieldStatisticsInfo
+     * @function L.supermap.fieldService.prototype.getFieldStatisticsInfo
      * @description 字段统计服务
      * @param params {SuperMap.FieldStatisticsParameters} 字段统计信息查询参数类
      * @param callback - {function} 回调函数
@@ -20007,7 +19959,7 @@ var _GetGridCellInfosService2 = _interopRequireDefault(_GetGridCellInfosService)
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class L.supermap.GridCellInfosService
+ * @class L.supermap.gridCellInfosService
  * @description 数据栅格查询服务
  * @extends L.supermap.ServiceBase
  * @example
@@ -20015,9 +19967,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *      .getGridCellInfos(param,function(result){
  *           //doSomething
  *      })
- * @param url - {String} 数据栅格查询服务地址
+ * @param url - {string} 数据栅格查询服务地址
  * @param options - {object} 数据栅格查询服务类可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online。<br>
+ *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
  */
 var GridCellInfosService = exports.GridCellInfosService = _ServiceBase.ServiceBase.extend({
 
@@ -20094,17 +20046,17 @@ var _SetLayerStatusService2 = _interopRequireDefault(_SetLayerStatusService);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class L.supermap.LayerInfoService
+ * @class L.supermap.layerInfoService
  * @classdesc 图层信息关类
  * @extends L.supermap.ServiceBase
  * @example
  *      L.supermap.layerInfoService(url).getLayersInfo(function(result){
  *           //doSomething
  *      })
- * @param url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
+ * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online。<br>
+ *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  */
 var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.extend({
@@ -20112,7 +20064,7 @@ var LayerInfoService = exports.LayerInfoService = _ServiceBase.ServiceBase.exten
     /*
      * @function L.supermap.layerInfoService.prototype.initialize
      * @description L.supermap.layerInfoService 得构造函数。
-     * @param url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
+     * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
      *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
      * @param options - {Object} 交互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
@@ -20273,7 +20225,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class L.supermap.MeasureService
+ * @class L.supermap.measureService
  * @description 量算服务服务类
  * @augments L.supermap.ServiceBase
  * @example
@@ -20283,9 +20235,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *      },function(result){
  *           //doSomething
  *      })
- * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param url - {string} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online。<br>
+ *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。<br>
  *        measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
  */
@@ -20293,7 +20245,7 @@ var MeasureService = exports.MeasureService = _ServiceBase.ServiceBase.extend({
 
     /*
      * @function L.supermap.MeasureService.prototype.initialize
-     * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+     * @param url - {string} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
      * @param options - {Object} 交互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      *         measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
@@ -20303,7 +20255,7 @@ var MeasureService = exports.MeasureService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.MeasureService.prototype.measureDistance
+     * @function L.supermap.measureService.prototype.measureDistance
      * @description 测距
      * @param params -{SuperMap.MeasureParameters} 测量相关参数类
      * @param callback - {function} 回调函数
@@ -20314,7 +20266,7 @@ var MeasureService = exports.MeasureService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.MeasureService.prototype.measureArea
+     * @function L.supermap.measureService.prototype.measureArea
      * @description 测面积
      * @param params -{SuperMap.MeasureParameters} 测量相关参数类
      * @param callback - {function} 回调函数
@@ -20325,7 +20277,7 @@ var MeasureService = exports.MeasureService = _ServiceBase.ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.MeasureService.
+     * @function L.supermap.measureService.measure
      * @param params -{SuperMap.MeasureParameters} 测量相关参数类
      * @param callback - {function} 回调函数
      */
@@ -20402,7 +20354,7 @@ var _FacilityAnalystUpstream3DService2 = _interopRequireDefault(_FacilityAnalyst
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class L.supermap.NetworkAnalyst3DService
+ * @class L.supermap.networkAnalyst3DService
  * @classdesc 3D网络分析服务类
  * @extends L.supermap.ServiceBase
  * @example 用法：
@@ -20410,7 +20362,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *      .sinksFacilityAnalyst(params,function(result){
  *           //doSomething
  *      })
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -20418,21 +20370,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.ServiceBase.extend({
 
-    /*
-     * @function L.supermap.NetworkAnalyst3DService.prototype.initialize
-     * @description 3D网络分析服务类构造函数
-     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
-     *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
-     *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
-     * @param options - {Object} 互服务时所需可选参数。如：<br>
-     *         eventListeners - {Object} 需要被注册的监听器对象
-     */
     initialize: function initialize(url, options) {
         _ServiceBase.ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
-     * @function  L.supermap.NetworkAnalyst3DService.prototype.sinksFacilityAnalyst
+     * @function  L.supermap.networkAnalyst3DService.prototype.sinksFacilityAnalyst
      * @description 汇查找服务
      * @param params - {SuperMap.FacilityAnalystSinks3DParameters} 最近设施分析参数类(汇查找资源)
      * @param callback - {function} 回调函数
@@ -20452,7 +20395,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
     },
 
     /**
-     * @function L.supermap.NetworkAnalyst3DService.prototype.sourcesFacilityAnalyst
+     * @function L.supermap.networkAnalyst3DService.prototype.sourcesFacilityAnalyst
      * @description 源查找服务
      * @param params -{SuperMap.FacilityAnalystSources3DParameters} 最近设施分析参数类(源查找服务)
      * @param callback - {function} 回调函数
@@ -20472,7 +20415,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
     },
 
     /**
-     * @function L.supermap.NetworkAnalyst3DService.prototype.traceUpFacilityAnalyst
+     * @function L.supermap.networkAnalyst3DService.prototype.traceUpFacilityAnalyst
      * @description 上游追踪资源服务
      * @param params - {SuperMap.FacilityAnalystTraceup3DParameters} 上游追踪资源参数类
      * @param callback - {function} 回调函数
@@ -20492,7 +20435,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
     },
 
     /**
-     * @function L.supermap.NetworkAnalyst3DService.prototype.traceDownFacilityAnalyst
+     * @function L.supermap.networkAnalyst3DService.prototype.traceDownFacilityAnalyst
      * @description 下游追踪资源服务
      * @param params {SuperMap.FacilityAnalystTracedown3DParameters} 下游追踪资源服务参数类
      * @param callback - {function} 回调函数
@@ -20512,7 +20455,7 @@ var NetworkAnalyst3DService = exports.NetworkAnalyst3DService = _ServiceBase.Ser
     },
 
     /**
-     * @function L.supermap.NetworkAnalyst3DService.prototype.upstreamFacilityAnalyst
+     * @function L.supermap.networkAnalyst3DService.prototype.upstreamFacilityAnalyst
      * @description 上游关键设施查找服务
      * @param params -{SuperMap.FacilityAnalystUpstream3DParameters} 上游关键设施查找服务参数类
      * @param callback - {function} 回调函数
@@ -20607,7 +20550,7 @@ var _UpdateTurnNodeWeightService2 = _interopRequireDefault(_UpdateTurnNodeWeight
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class L.supermap.NetworkAnalystService
+ * @class L.supermap.networkAnalystService
  * @description 网络分析服务类
  * @augments  L.supermap.ServiceBase
  * @example
@@ -20616,30 +20559,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *      .findPath(params,function(result){
  *           //doSomething
  *      })
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
  * @param options - {Object} 互服务时所需可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online。<br>
+ *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  */
 var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.ServiceBase.extend({
 
-    /*
-     * @function L.supermap.NetworkAnalystService.prototype.initialize
-     * @description leaflet客户端网络分析服务类构造函数
-     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
-     *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
-     *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
-     * @param options - {Object} 互服务时所需可选参数。如：<br>
-     *         eventListeners - {Object} 需要被注册的监听器对象。
-     */
     initialize: function initialize(url, options) {
         _ServiceBase.ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
-     * @function L.supermap.NetworkAnalystService.prototype.burstPipelineAnalyst
+     * @function L.supermap.networkAnalystService.prototype.burstPipelineAnalyst
      * @description 爆管分析服务:即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
      * @param params -{SuperMap.BurstPipelineAnalystParameters} 爆管分析服务参数类
      * @param callback -{function} 回调函数
@@ -20659,7 +20593,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.NetworkAnalystService.prototype.computeWeightMatrix
+     * @function L.supermap.networkAnalystService.prototype.computeWeightMatrix
      * @description 耗费矩阵分析服务:根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
      * @param params - {SuperMap.ComputeWeightMatrixParameters} 耗费矩阵分析服务参数类
      * @param callback - {function} 回调函数
@@ -20679,7 +20613,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.NetworkAnalystService.prototype.findClosestFacilities
+     * @function L.supermap.networkAnalystService.prototype.findClosestFacilities
      * @description 最近设施分析服务:指在网络上给定一个事件点和一组设施点，查找从事件点到设施点(或从设施点到事件点)以最小耗费能到达的最佳路径。
      * @param params - {SuperMap.FindClosestFacilitiesParameters} 最近设施分析服务参数类
      * @param callback -{function} 回调函数
@@ -20701,7 +20635,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.NetworkAnalystService.prototype.streamFacilityAnalyst
+     * @function L.supermap.networkAnalystService.prototype.streamFacilityAnalyst
      * @description 上游/下游 关键设施查找资源服务:查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
      * @param params - {SuperMap.FacilityAnalystStreamParameters} 上游/下游 关键设施查找资源服务参数类
      * @param callback - {function} 回调函数
@@ -20723,7 +20657,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.NetworkAnalystService.prototype.findLocation
+     * @function L.supermap.networkAnalystService.prototype.findLocation
      * @description 选址分区分析服务：确定一个或多个待建设施的最佳或最优位置
      * @param params - {SuperMap.FindLocationParameters} 选址分区分析服务参数类
      * @param callback - {function} 回调函数
@@ -20745,7 +20679,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.NetworkAnalystService.prototype.findPath
+     * @function L.supermap.networkAnalystService.prototype.findPath
      * @description 最佳路径分析服务:在网络数据集中指定一些节点，按照节点的选择顺序，顺序访问这些节点从而求解起止点之间阻抗最小的路经。
      * @param params - {SuperMap.FindPathParameters} 最佳路径分析服务参数类
      * @param callback - {function} 回调函数
@@ -20767,7 +20701,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.NetworkAnalystService.prototype.findTSPPaths
+     * @function L.supermap.networkAnalystService.prototype.findTSPPaths
      * @description 旅行商分析服务:路径分析的一种，它从起点开始（默认为用户指定的第一点）查找能够遍历所有途经点且花费最小的路径。
      * @param params - {SuperMap.FindTSPPathsParameters} 旅行商分析服务参数类
      * @param callback - {function} 回调函数
@@ -20789,7 +20723,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function l.supermap.NetworkAnalystService.prototype.findMTSPPaths
+     * @function l.supermap.networkAnalystService.prototype.findMTSPPaths
      * @description 多旅行商分析服务:也称为物流配送，是指在网络数据集中，给定 M 个配送中心点和 N 个配送目的地（M，N 为大于零的整数）。查找经济有效的配送路径，并给出相应的行走路线。
      * @param params - {SuperMap.FindMTSPPathsParameters} 多旅行商分析服务参数类
      * @param callback - {function} 回调函数
@@ -20811,7 +20745,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.NetworkAnalystService.prototype.findServiceAreas
+     * @function L.supermap.networkAnalystService.prototype.findServiceAreas
      * @description 服务区分析服务：以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。
      * @param params - {SuperMap.FindServiceAreasParameters} 服务区分析服务参数类
      * @param callback - {function} 回调函数
@@ -20833,7 +20767,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.NetworkAnalystService.prototype.updateEdgeWeight
+     * @function L.supermap.networkAnalystService.prototype.updateEdgeWeight
      * @description 更新边的耗费权重服务
      * @param params - {SuperMap.UpdateEdgeWeightParameters} 更新边的耗费权重服务参数类
      * @param callback - {function} 回调函数
@@ -20853,7 +20787,7 @@ var NetworkAnalystService = exports.NetworkAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.NetworkAnalystService.prototype.updateTurnNodeWeight
+     * @function L.supermap.networkAnalystService.prototype.updateTurnNodeWeight
      * @description 转向耗费权重更新服务
      * @param params - {SuperMap.UpdateTurnNodeWeightParameters} 转向耗费权重更新服务参数类
      * @param callback - {function} 回调函数
@@ -20986,9 +20920,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *      .getKernelDensityJobs(function(result){
  *           //doSomething
  *      })
- * @param url -{String} 大数据服务地址。
+ * @param url -{string} 大数据服务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online。
+ *        serverType - {string} 服务来源 iServer|iPortal|online。
  */
 var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.extend({
 
@@ -21030,7 +20964,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getKernelDensityJob
      * @description 获取某一个密度分析。
-     * @param id - {String}空间分析的id。
+     * @param id - {string}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {L.supermap.processingService}
@@ -21056,7 +20990,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @description 新建一个密度分析。
      * @param params -{SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
      * @param callback - {function} 请求结果的回调函数。
-     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
+     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {L.supermap.processingService}
      */
@@ -21083,7 +21017,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getKernelDensityJobState
      * @description 获取密度分析的状态。
-     * @param id - {String}密度分析的id。
+     * @param id - {string}密度分析的id。
      */
     getKernelDensityJobState: function getKernelDensityJobState(id) {
         return this.kernelDensityJobs[id];
@@ -21115,7 +21049,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getSummaryMeshJob
      * @description 获取某一个点聚合分析。
-     * @param id - {String}空间分析的id。
+     * @param id - {string}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
      * @return {L.supermap.processingService}
@@ -21141,7 +21075,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @description 新建一个点聚合分析。
      * @param params - {SuperMap.SummaryMeshJobParameter} 点聚合分析任务参数类。
      * @param callback - {function} 请求结果的回调函数。
-     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔
+     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {L.supermap.processingService}
      */
@@ -21168,7 +21102,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getSummaryMeshJobState
      * @description 获取点聚合分析的状态。
-     * @param id - {String} 点聚合分析的id。
+     * @param id - {string} 点聚合分析的id。
      */
     getSummaryMeshJobState: function getSummaryMeshJobState(id) {
         return this.summaryMeshJobs[id];
@@ -21200,7 +21134,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getBuildCacheJob
      * @description 获取某一个生成地图缓存。
-     * @param id - {String} 空间分析的id。
+     * @param id - {string} 空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {L.supermap.processingService}
@@ -21226,7 +21160,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @description 新建一个生成地图缓存。
      * @param params - {SuperMap.BuildCacheJobParameter} 地图缓存参数类
      * @param callback - {function} 请求结果的回调函数
-     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔
+     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
      * @param resultFormat -{SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
      * @return {L.supermap.processingService}
      */
@@ -21253,7 +21187,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getBuildCacheJobState
      * @description 获取生成地图缓存的状态。
-     * @param id - {String}生成地图缓存的id。
+     * @param id - {string}生成地图缓存的id。
      */
     getBuildCacheJobState: function getBuildCacheJobState(id) {
         return this.buildCacheJobs[id];
@@ -21285,7 +21219,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getQueryJob
      * @description 获取某一个单对象查询分析。
-     * @param id - {String}空间分析的id。
+     * @param id - {string}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {L.supermap.processingService}
@@ -21311,7 +21245,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @description 新建一个单对象查询分析。
      * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
      * @param callback - {function} 请求结果的回调函数。
-     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
+     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {L.supermap.processingService}
      */
@@ -21338,7 +21272,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getQueryJobState
      * @description 获取单对象查询分析的状态。
-     * @param id - {String}单对象查询分析的id。
+     * @param id - {string}单对象查询分析的id。
      */
     getQueryJobState: function getQueryJobState(id) {
         return this.queryJobs[id];
@@ -21370,7 +21304,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getSummaryRegionJob
      * @description 获取某一个范围汇总分析。
-     * @param id - {String}范围汇总分析的id。
+     * @param id - {string}范围汇总分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {L.supermap.processingService}
@@ -21396,7 +21330,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @description 新建一个范围汇总分析。
      * @param params -{SuperMap.SingleObjectQueryJobsParameter} 创建一个范围汇总分析的请求参数。
      * @param callback - {function} 请求结果的回调函数。
-     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
+     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {L.supermap.processingService}
      */
@@ -21423,7 +21357,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getSummaryRegionJobState
      * @description 获取范围汇总分析的状态。
-     * @param id - {String}范围汇总分析的id。
+     * @param id - {string}范围汇总分析的id。
      */
     getSummaryRegionJobState: function getSummaryRegionJobState(id) {
         return this.summaryRegionJobs[id];
@@ -21455,7 +21389,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getVectorClipJob
      * @description 获取某一个矢量裁剪分析。
-     * @param id - {String}空间分析的id。
+     * @param id - {string}空间分析的id。
      * @param callback - {function} 请求结果的回调函数。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {L.supermap.processingService}
@@ -21481,7 +21415,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
      * @description 新建一个矢量裁剪分析。
      * @param params -{SuperMap.VectorClipJobsParameter} 创建一个空间分析的请求参数。
      * @param callback - {function} 请求结果的回调函数。
-     * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
+     * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
      * @return {L.supermap.processingService}
      */
@@ -21508,7 +21442,7 @@ var ProcessingService = exports.ProcessingService = _ServiceBase.ServiceBase.ext
     /**
      * @function L.supermap.processingService.prototype.getVectorClipJobState
      * @description 获取矢量裁剪分析的状态。
-     * @param id - {String}矢量裁剪分析的id。
+     * @param id - {string}矢量裁剪分析的id。
      */
     getVectorClipJobState: function getVectorClipJobState(id) {
         return this.vectorClipJobs[id];
@@ -21588,12 +21522,12 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class  L.supermap.QueryService
+ * @class  L.supermap.queryService
  * @classdesc 地图查询服务类。
  * @extends L.supermap.ServiceBase
- * @param url - {String} 地图查询服务访问地址。
+ * @param url - {string} 地图查询服务访问地址。
  * @param - options - {Object} 服务交互时所需的可选参数。如：<br>
- *          serverType - {String} 服务来源 iServer|iPortal|online
+ *          serverType - {string} 服务来源 iServer|iPortal|online
  * @example
  *      L.supermap.queryService(url).queryByBounds(param,function(result){
  *          //doSomething
@@ -21604,7 +21538,7 @@ var QueryService = exports.QueryService = _ServiceBase.ServiceBase.extend({
     /*
      * @function L.supermap.queryService.prototype.initialize
      * @description L.supermap.queryService类的构造函数。
-     * @param url - {String} 地图查询服务访问地址。
+     * @param url - {string} 地图查询服务访问地址。
      * @param options - {Object} 服务交互时所需的可选参数。
      */
     initialize: function initialize(url, options) {
@@ -21825,7 +21759,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class L.supermap.SpatialAnalystService
+ * @class L.supermap.spatialAnalystService
  * @classdesc 空间分析服务类。
  * @description 提供：地区太阳辐射、缓冲区分析、点密度分析、动态分段分析、空间关系分析、插值分析、栅格代数运算、叠加分析、路由定位、路由测量计算、表面分析、地形曲率计算、泰森多边形分析。
  * @extends L.supermap.ServiceBase
@@ -21834,9 +21768,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *      .bufferAnalysis(params,function(result){
  *          //doSomething
  *      })
- * @param url -{String} 大数据服务地址。
+ * @param url -{string} 大数据服务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
+ *        serverType - {string} 服务来源 iServer|iPortal|online
  */
 var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.ServiceBase.extend({
 
@@ -21844,7 +21778,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
         _ServiceBase.ServiceBase.prototype.initialize.call(this, url, options);
     },
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.getAreaSolarRadiationResult
+     * @function L.supermap.spatialAnalystService.prototype.getAreaSolarRadiationResult
      * @description 地区太阳辐射
      * @param params - {SuperMap.AreaSolarRadiationParameters} 地区太阳辐射参数类
      * @param callback - {function} 回调函数
@@ -21866,7 +21800,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.bufferAnalysis
+     * @function L.supermap.spatialAnalystService.prototype.bufferAnalysis
      * @description 缓冲区分析
      * @param params - {SuperMap.DatasetBufferAnalystParameters} 数据集缓冲区分析参数类
      * @param callback - {function} 回调函数
@@ -21888,7 +21822,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.densityAnalysis
+     * @function L.supermap.spatialAnalystService.prototype.densityAnalysis
      * @description 点密度分析
      * @param params - {SuperMap.DensityKernelAnalystParameters} 核密度分析参数类
      * @param callback - {function} 回调函数
@@ -21910,7 +21844,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.generateSpatialData
+     * @function L.supermap.spatialAnalystService.prototype.generateSpatialData
      * @description 动态分段分析
      * @param params - {SuperMap.GenerateSpatialDataParameters} 动态分段操作参数类
      * @param callback - {function} 回调函数
@@ -21932,7 +21866,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.generateSpatialData
+     * @function L.supermap.spatialAnalystService.prototype.generateSpatialData
      * @description 空间关系分析
      * @param params - {SuperMap.GeoRelationAnalystParameters} 空间关系分析服务参数类
      * @param callback - {function} 回调函数
@@ -21954,7 +21888,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.interpolationAnalysis
+     * @function L.supermap.spatialAnalystService.prototype.interpolationAnalysis
      * @description 插值分析
      * @param params - {SuperMap.InterpolationRBFAnalystParameters} 样条插值（径向基函数插值法）分析参数类
      * @param callback - {function} 回调函数
@@ -21976,7 +21910,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.mathExpressionAnalysis
+     * @function L.supermap.spatialAnalystService.prototype.mathExpressionAnalysis
      * @description 栅格代数运算
      * @param params - {SuperMap.MathExpressionAnalysisParameters} 栅格代数运算参数类
      * @param callback - {function} 回调函数
@@ -21998,7 +21932,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.overlayAnalysis
+     * @function L.supermap.spatialAnalystService.prototype.overlayAnalysis
      * @description 叠加分析
      * @param params - {SuperMap.DatasetOverlayAnalystParameters} 数据集叠加分析参数类
      * @param callback - {function} 回调函数
@@ -22020,7 +21954,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.routeCalculateMeasure
+     * @function L.supermap.spatialAnalystService.prototype.routeCalculateMeasure
      * @description 路由测量计算
      * @param params - {SuperMap.RouteCalculateMeasureParameters} 基于路由对象计算指定点M值操作的参数类
      * @param callback - {function} 回调函数
@@ -22042,7 +21976,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.routeLocate
+     * @function L.supermap.spatialAnalystService.prototype.routeLocate
      * @description 路由定位
      * @param params - {SuperMap.RouteLocatorParameters} 路由对象定位空间对象的参数类
      * @param callback - {function} 回调函数
@@ -22064,7 +21998,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.surfaceAnalysis
+     * @function L.supermap.spatialAnalystService.prototype.surfaceAnalysis
      * @description 表面分析
      * @param params - {SuperMap.DatasetSurfaceAnalystParameters} 数据集表面分析参数类
      * @param callback - {function} 回调函数
@@ -22086,7 +22020,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.terrainCurvatureCalculate
+     * @function L.supermap.spatialAnalystService.prototype.terrainCurvatureCalculate
      * @description 地形曲率计算
      * @param params - {SuperMap.TerrainCurvatureCalculationParameters} 地形曲率计算参数类。
      * @param callback - {function} 回调函数
@@ -22108,7 +22042,7 @@ var SpatialAnalystService = exports.SpatialAnalystService = _ServiceBase.Service
     },
 
     /**
-     * @function L.supermap.SpatialAnalystService.prototype.thiessenAnalysis
+     * @function L.supermap.spatialAnalystService.prototype.thiessenAnalysis
      * @description 泰森多边形分析
      * @param params - {SuperMap.DatasetThiessenAnalystParameters} 数据集泰森多边形分析参数类
      * @param callback - {function} 回调函数
@@ -22236,7 +22170,7 @@ var _ThemeService2 = _interopRequireDefault(_ThemeService);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class L.supermap.ThemeService
+ * @class L.supermap.themeService
  * @classdesc 专题图服务类
  * @extends L.supermap.ServiceBase
  * @example
@@ -22245,26 +22179,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  *      }).getThemeInfo(params,function(result){
  *           //doSomething
  *      });
- * @param url - {String} 服务的访问地址。
+ * @param url - {string} 服务的访问地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online。
+ *        serverType - {string} 服务来源 iServer|iPortal|online。
  */
 var ThemeService = exports.ThemeService = _ServiceBase.ServiceBase.extend({
 
-    /*
-     * @function L.supermap.ThemeService.prototype.initialize
-     * @description L.supermap.ThemeService 的构造函数。
-     * @param url - {String} 服务的访问地址。
-     * @param options - {Object} 交互服务时所需可选参数。如：<br>
-     *         eventListeners - {Object} 需要被注册的监听器对象。
-     */
     initialize: function initialize(url, options) {
         _ServiceBase.ServiceBase.prototype.initialize.call(this, url, options);
     },
 
     /**
-     * @function L.supermap.ThemeService.prototype.getThemeInfo
+     * @function L.supermap.themeService.prototype.getThemeInfo
      * @description 获取专题图信息
      * @param params - {SuperMap.ThemeParameters} 专题图参数类
      * @param callback - {function} 回调函数
@@ -22324,16 +22251,16 @@ var _TransferSolutionService2 = _interopRequireDefault(_TransferSolutionService)
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
- * @class L.supermap.TrafficTransferAnalystService
+ * @class L.supermap.trafficTransferAnalystService
  * @classdesc 交通换乘分析服务类
  * @example
- * L.supermap。/trafficTransferAnalystService(url).queryStop(params,function(result){
+ * L.supermap.trafficTransferAnalystService(url).queryStop(params,function(result){
  *      //doSomething
  *    })
  * @extends L.supermap.ServiceBase
- * @param url - {String} 服务地址
+ * @param url - {string} 服务地址
  * @param option - {object} 可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
+ *        serverType - {string} 服务来源 iServer|iPortal|online
  */
 var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = _ServiceBase.ServiceBase.extend({
 
@@ -22342,7 +22269,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = _Ser
     },
 
     /**
-     * @function  L.supermap.TrafficTransferAnalystService.prototype.queryStop
+     * @function  L.supermap.trafficTransferAnalystService.prototype.queryStop
      * @description 站点查询服务
      * @param params - {SuperMap.StopQueryParameters} 站点查询参数类
      * @param callback - {function} 回调函数
@@ -22361,7 +22288,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = _Ser
         return me;
     },
     /**
-     * @function  L.supermap.TrafficTransferAnalystService.prototype.analysisTransferPath
+     * @function  L.supermap.trafficTransferAnalystService.prototype.analysisTransferPath
      * @description 交通换乘线路查询服务
      * @param params - {SuperMap.TransferPathParameters} 交通换乘线路查询参数类
      * @param callback - {function} 回调函数
@@ -22380,7 +22307,7 @@ var TrafficTransferAnalystService = exports.TrafficTransferAnalystService = _Ser
         return me;
     },
     /**
-     * @function  L.supermap.TrafficTransferAnalystService.prototype.analysisTransferSolution
+     * @function  L.supermap.trafficTransferAnalystService.prototype.analysisTransferSolution
      * @description 交通换乘方案查询服务
      * @param params {SuperMap.TransferSolutionParameters} 交通换乘方案查询参数类
      * @param callback - {function} 回调函数
@@ -24264,11 +24191,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.TimeControlBase
  * @classdesc 时间控制基类类。
  * @param options - {Object} 该类开放的可选属性。如：<br>
- *        speed - {Number} 速度。不能小于0，默认为1（表示每帧渲染的数据之间的间隔为1），设置越大速度越快。<br>
- *        startTime - {Number} 的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
- *        endTime - {Number} 的结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
- *        repeat - {Boolean} 是否重复循环。默认为true。<br>
- *        reverse - {Boolean} 是否反向。默认为false。<br>
+ *        speed - {number}速度。不能小于0，默认为1（表示每帧渲染的数据之间的间隔为1），设置越大速度越快。<br>
+ *        startTime - {number}的起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
+ *        endTime - {number}的结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
+ *        repeat - {boolean} 是否重复循环。默认为true。<br>
+ *        reverse - {boolean} 是否反向。默认为false。<br>
  *        geoFence - {SuperMap.Geometry} 地理围栏。
  */
 var TimeControlBase = function () {
@@ -24282,26 +24209,26 @@ var TimeControlBase = function () {
 
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.running -{Boolean}
+     * @member SuperMap.TimeControlBase.prototype.running -{boolean}
      * @description 记录当前是否处于中，默认为false。
      */
 
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.currentTime -{Number}
+     * @member SuperMap.TimeControlBase.prototype.currentTime -{number}
      * @description 记录近期的时间，也就是当前帧运行到的时间。
      */
 
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.endTime -{Number}
+     * @member SuperMap.TimeControlBase.prototype.endTime -{number}
      * @description 记录的结束时间，必须为数字，
      *              如果不设置，初始化时以当前时间进行设置，建议设置
      */
 
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.frequency -{Number}
+     * @member SuperMap.TimeControlBase.prototype.frequency -{number}
      * @description 刷新频率(单位ms)，服务器刷新的时间间隔，默认为1s
      */
     function TimeControlBase(options) {
@@ -24359,32 +24286,32 @@ var TimeControlBase = function () {
 
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.reverse -{Boolean}
+     * @member SuperMap.TimeControlBase.prototype.reverse -{boolean}
      * @description 是否反向，默认为false。
      */
 
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.oldTime -{Number}
+     * @member SuperMap.TimeControlBase.prototype.oldTime -{number}
      * @description 记录上一帧的时间，也就是之前运行到的时间。
      */
 
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.repeat -{Boolean}
+     * @member SuperMap.TimeControlBase.prototype.repeat -{boolean}
      * @description 是否重复循环，默认为true。
      */
 
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.startTime -{Number}
+     * @member SuperMap.TimeControlBase.prototype.startTime -{number}
      * @description 记录的起始时间，必须为数字，
      *              如果不设置，初始化时为0，建议设置
      */
 
 
     /**
-     * @member SuperMap.TimeControlBase.prototype.speed -{Number}
+     * @member SuperMap.TimeControlBase.prototype.speed -{number}
      * @description 步长，必须为非负数，默认为1（表示前后两次渲染的数据之间的间隔为1）
      */
 
@@ -24494,7 +24421,7 @@ var TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setSpeed
          * @description 设置步长。
-         * @param speed - {Number} 步长，必须为非负数，默认为1
+         * @param speed - {number}步长，必须为非负数，默认为1
          * @return {Boolean} true代表设置成功，false设置失败（speed小于0时失败）
          */
 
@@ -24524,7 +24451,7 @@ var TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setFrequency
          * @description 设置刷新频率。
-         * @param speed - {Number} 刷新频率，单位为ms，默认为1s
+         * @param speed - {number}刷新频率，单位为ms，默认为1s
          * @return {Boolean} true代表设置成功，false设置失败（frequency小于0时失败）
          */
 
@@ -24554,7 +24481,7 @@ var TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setStartTime
          * @description 设置起始时间，设置完成后如果当前时间小于起始时间，则从起始时间开始
-         * @param startTime - {Number} 需要设置的起始时间
+         * @param startTime - {number}需要设置的起始时间
          * @return {Boolean} true代表设置成功，false设置失败（startTime 大于结束时间时失败）
          */
 
@@ -24591,7 +24518,7 @@ var TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setEndTime
          * @description 设置结束时间，设置完成后如果当前时间大于结束，则从起始时间开始
-         * @param endTime - {Number} 需要设置的结束时间
+         * @param endTime - {number}需要设置的结束时间
          * @return {Boolean} true代表设置成功，false设置失败（endTime 小于开始时间时失败）
          */
 
@@ -24628,7 +24555,7 @@ var TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setCurrentTime
          * @description 设置当前时间
-         * @param currentTime - {Number} 需要设置的当前时间
+         * @param currentTime - {number}需要设置的当前时间
          * @return {Boolean} true代表设置成功，false设置失败
          */
 
@@ -24662,7 +24589,7 @@ var TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setRepeat
          * @description 设置是否重复循环
-         * @param repeat - {Boolean} 是否重复循环
+         * @param repeat - {boolean} 是否重复循环
          */
 
     }, {
@@ -24686,7 +24613,7 @@ var TimeControlBase = function () {
         /**
          * @function SuperMap.TimeControlBase.prototype.setReverse
          * @description 设置是否反向
-         * @param reverse - {Boolean} 是否反向
+         * @param reverse - {boolean} 是否反向
          */
 
     }, {
@@ -24720,7 +24647,7 @@ var TimeControlBase = function () {
         }
 
         /**
-         * @function destroy
+         * @function SuperMap.TimeControlBase.prototype.destroy
          * @description 销毁Animator对象，释放资源。
          */
 
@@ -24777,7 +24704,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.Format
  * @classdesc 读写各种格式的格式类基类。其子类应该包含并实现read和write方法。
  * @param options - {Object} 选项对象，其属性会被直接设置到format实例。如：<br>
- *        keepData - {Boolean} 如果设置为true， <data> 属性会指向被解析的对象（例如json或xml数据对象）。
+ *        keepData - {boolean} 如果设置为true， <data> 属性会指向被解析的对象（例如json或xml数据对象）。
  * @return {SuperMap.Format} 实例。
  */
 var Format = function () {
@@ -24812,7 +24739,7 @@ var Format = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.Format.prototype.destroy
      * @description 销毁该格式类，释放相关资源。
      */
 
@@ -25006,7 +24933,7 @@ var JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.string
              * @description Transform a string into a JSON string.
-             * @param string - {String} The string to be serialized
+             * @param string - {string} The string to be serialized
              * @return {String} A JSON string representing the string.
              */
             'string': function string(_string) {
@@ -25039,7 +24966,7 @@ var JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.number
              * @description Transform a number into a JSON string.
-             * @param number - {Number} The number to be serialized.
+             * @param number - {number}The number to be serialized.
              * @return {String} A JSON string representing the number.
              */
             'number': function number(_number) {
@@ -25049,7 +24976,7 @@ var JSONFormat = function (_Format) {
             /**
              * @function SuperMap.Format.JSON.serialize.boolean
              * @description Transform a boolean into a JSON string.
-             * @param bool - {Boolean} The boolean to be serialized.
+             * @param bool - {boolean} The boolean to be serialized.
              * @return {String} A JSON string representing the boolean.
              */
             'boolean': function boolean(bool) {
@@ -25074,19 +25001,19 @@ var JSONFormat = function (_Format) {
     }
 
     /**
-     * @member SuperMap.Format.JSON.prototype.indent -{String}
+     * @member SuperMap.Format.JSON.prototype.indent -{string}
      * @description 用于格式化输出，indent字符串会在每次缩进的时候使用一次；
      */
 
 
     /**
-     * @member SuperMap.Format.JSON.prototype.space -{String}
+     * @member SuperMap.Format.JSON.prototype.space -{string}
      * @description 用于格式化输出，space字符串会在名值对的":"后边添加。
      */
 
 
     /**
-     * @member SuperMap.Format.JSON.prototype.newline -{String}
+     * @member SuperMap.Format.JSON.prototype.newline -{string}
      * @description 用于格式化输出, newline字符串会用在每一个名值对或数组项末尾。
      */
 
@@ -25098,14 +25025,14 @@ var JSONFormat = function (_Format) {
 
 
     /**
-     * @member SuperMap.Format.JSON.prototype.pretty -{Boolean}
+     * @member SuperMap.Format.JSON.prototype.pretty -{boolean}
      * @description 是否在序列化的时候使用额外的空格控制结构。在 <write> 方法中使用
      *              默认值为false。
      */
 
 
     /**
-     * @member SuperMap.Format.JSON.prototype.nativeJSON -{Boolean}
+     * @member SuperMap.Format.JSON.prototype.nativeJSON -{boolean}
      * @description 判断浏览器是否原生支持JSON格式数据；
      */
 
@@ -25114,18 +25041,10 @@ var JSONFormat = function (_Format) {
         key: 'read',
 
 
-        /*
-         * Constructor: SuperMap.Format.JSON
-         * 创建一个新的JSON解析器。
-         *
-         * Parameters:
-         * options - {Object} 选项对象，其属性会被直接设置到JSON实例。
-         */
-
         /**
          * @function SuperMap.Format.JSON.prototype.read
          * @description 将一个符合json结构的字符串进行解析。
-         * @param json - {String} 符合json结构的字符串。
+         * @param json - {string} 符合json结构的字符串。
          * @param filter - {Function} 过滤方法，最终结果的每一个键值对都会调用该过滤方法，并在对应的值的位置替换成该方法返回的值。
          * @return {Object} 对象，数组，字符串或数字。
          */
@@ -25149,7 +25068,7 @@ var JSONFormat = function (_Format) {
         /**
          * @function SuperMap.Format.JSON.prototype.write
          * @description 序列化一个对象到一个符合JSON格式的字符串。
-         * @param value - {String} 需要被序列化的对象，数组，字符串，数字，布尔值。
+         * @param value - {string} 需要被序列化的对象，数组，字符串，数字，布尔值。
          * @return {String} 符合JSON格式的字符串。
          */
 
@@ -25754,69 +25673,69 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.AreaSolarRadiationParameters
  * @classdesc 地区太阳辐射参数类。
  * @param options -{Object} 可选参数。如</br>
- *        dataset - {String} 要用来做地区太阳辐射数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。（必设参数）。
- *        targetDatasourceName - {String}  指定的存储结果数据集的数据源名称（必设参数）, 例如："Jingjin"。</br>
- *        totalGridName - {String} 指定地区太阳辐射总辐射量数据集的名称（必设参数）。</br>
- *        diffuseDatasetGridName - {String} 指定地区太阳辐射散射辐射量数据集的名称。</br>
- *        durationDatasetGridName - {String} 指定地区太阳辐射太阳直射持续时间数据集的名称。</br>
- *        directDatasetGridName - {String} 指定地区太阳辐射直射辐射量数据集的名称。</br>
- *        latitude - {Number} 待计算区域的纬度值。</br>
- *        timeMode - {String} 时间模式。可设置有“WITHINDAY”（单日）和“MULTIDAYS”（多日）；默认值为"MULTIDAYS";</br>
- *        dayStart - {Number} 起始日期（年内的第几天）。（必设参数）</br>
- *        dayEnd - {Number} 结束日期（年内的第几天）。（必设参数）</br>
- *        hourStart - {Number} 起始时间（一天中的第几个小时）。</br>
- *        hourEnd - {Number} 结束时间（一天中的第几个小时）。</br>
- *        transmittance - {Number} 太阳辐射穿过大气的透射率。</br>
- *        hourInterval - {Number} 计算时的小时间隔（设置的越小计算量越大并且计算结果更精确, 默认为0.5小时，如果修改此参数，必须使用整数）</br>
- *        dayInterval - {Number} 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 默认为5天，必须使用整数）</br>
- *        deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
+ *        dataset - {string} 要用来做地区太阳辐射数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。（必设参数）。
+ *        targetDatasourceName - {string}  指定的存储结果数据集的数据源名称（必设参数）, 例如："Jingjin"。</br>
+ *        totalGridName - {string} 指定地区太阳辐射总辐射量数据集的名称（必设参数）。</br>
+ *        diffuseDatasetGridName - {string} 指定地区太阳辐射散射辐射量数据集的名称。</br>
+ *        durationDatasetGridName - {string} 指定地区太阳辐射太阳直射持续时间数据集的名称。</br>
+ *        directDatasetGridName - {string} 指定地区太阳辐射直射辐射量数据集的名称。</br>
+ *        latitude - {number}待计算区域的纬度值。</br>
+ *        timeMode - {string} 时间模式。可设置有“WITHINDAY”（单日）和“MULTIDAYS”（多日）；默认值为"MULTIDAYS";</br>
+ *        dayStart - {number}起始日期（年内的第几天）。（必设参数）</br>
+ *        dayEnd - {number}结束日期（年内的第几天）。（必设参数）</br>
+ *        hourStart - {number}起始时间（一天中的第几个小时）。</br>
+ *        hourEnd - {number}结束时间（一天中的第几个小时）。</br>
+ *        transmittance - {number}太阳辐射穿过大气的透射率。</br>
+ *        hourInterval - {number}计算时的小时间隔（设置的越小计算量越大并且计算结果更精确, 默认为0.5小时，如果修改此参数，必须使用整数）</br>
+ *        dayInterval - {number}计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 默认为5天，必须使用整数）</br>
+ *        deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
  */
 var AreaSolarRadiationParameters = function () {
 
     /**
-     * @member SuperMap.AreaSolarRadiationParameters.prototype.dayInterval -{Number}
+     * @member SuperMap.AreaSolarRadiationParameters.prototype.dayInterval -{number}
      * @description 计算时的天数间隔（设置的越小计算量越大并且计算结果更精确, 默认为5天，必须使用整数）
      */
 
 
     /**
-     * @member SuperMap.AreaSolarRadiationParameters.prototype.transmittance -{Number}
+     * @member SuperMap.AreaSolarRadiationParameters.prototype.transmittance -{number}
      * @description 太阳辐射穿过大气的透射率。
      */
 
 
     /**
-     * @member SuperMap.AreaSolarRadiationParameters.prototype.hourStart -{Number}
+     * @member SuperMap.AreaSolarRadiationParameters.prototype.hourStart -{number}
      * @description 起始时间（一天中的第几个小时）。
      */
 
 
     /**
-     *  @member SuperMap.AreaSolarRadiationParameters.prototype.dayStart -{Number}
+     *  @member SuperMap.AreaSolarRadiationParameters.prototype.dayStart -{number}
      *  @description 起始日期（年内的第几天）。（必设参数）
      */
 
 
     /**
-     * @member SuperMap.AreaSolarRadiationParameters.prototype.latitude -{Number}
+     * @member SuperMap.AreaSolarRadiationParameters.prototype.latitude -{number}
      * @description 待计算区域的纬度值。
      */
 
 
     /**
-     *  @member SuperMap.AreaSolarRadiationParameters.prototype.durationDatasetGridName -{String}
+     *  @member SuperMap.AreaSolarRadiationParameters.prototype.durationDatasetGridName -{string}
      * @description  指定地区太阳辐射太阳直射持续时间数据集的名称。
      */
 
 
     /**
-     * @member SuperMap.AreaSolarRadiationParameters.prototype.totalGridName -{String}
+     * @member SuperMap.AreaSolarRadiationParameters.prototype.totalGridName -{string}
      * @description 指定地区太阳辐射总辐射量数据集的名称（必设参数）。
      */
 
 
     /**
-     *  @member SuperMap.AreaSolarRadiationParameters.prototype.dataset -{String}
+     *  @member SuperMap.AreaSolarRadiationParameters.prototype.dataset -{string}
      *  @description  要用来做地区太阳辐射数据源中数据集的名称。
      * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin （必设参数）。
      *
@@ -25856,49 +25775,49 @@ var AreaSolarRadiationParameters = function () {
 
 
     /**
-     * @member SuperMap.AreaSolarRadiationParameters.prototype.deleteExistResultDataset -{Boolean}
+     * @member SuperMap.AreaSolarRadiationParameters.prototype.deleteExistResultDataset -{boolean}
      * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
      */
 
 
     /**
-     *  @member SuperMap.AreaSolarRadiationParameters.prototype.hourInterval -{Number}
+     *  @member SuperMap.AreaSolarRadiationParameters.prototype.hourInterval -{number}
      *  @description 计算时的小时间隔（设置的越小计算量越大并且计算结果更精确, 默认为0.5小时，如果修改此参数，必须使用整数）
      */
 
 
     /**
-     *  @member SuperMap.AreaSolarRadiationParameters.prototype.hourEnd -{Number}
+     *  @member SuperMap.AreaSolarRadiationParameters.prototype.hourEnd -{number}
      * @description 结束时间（一天中的第几个小时）。
      */
 
 
     /**
-     *  @member SuperMap.AreaSolarRadiationParameters.prototype.dayEnd -{Number}
+     *  @member SuperMap.AreaSolarRadiationParameters.prototype.dayEnd -{number}
      * @description 结束日期（年内的第几天）。（必设参数）
      */
 
 
     /**
-     *  @member SuperMap.AreaSolarRadiationParameters.prototype.timeMode -{String}
+     *  @member SuperMap.AreaSolarRadiationParameters.prototype.timeMode -{string}
      *  @description 时间模式。可设置有“WITHINDAY”（单日）和“MULTIDAYS”（多日）；默认值为"MULTIDAYS";
      */
 
 
     /**
-     * @member SuperMap.AreaSolarRadiationParameters.prototype.durationDatasetGridName -{String}
+     * @member SuperMap.AreaSolarRadiationParameters.prototype.durationDatasetGridName -{string}
      * @description 指定地区太阳辐射直射辐射量数据集的名称。
      */
 
 
     /**
-     * @member SuperMap.AreaSolarRadiationParameters.prototype.diffuseDatasetGridName -{String}
+     * @member SuperMap.AreaSolarRadiationParameters.prototype.diffuseDatasetGridName -{string}
      * @description 指定地区太阳辐射散射辐射量数据集的名称。
      */
 
 
     /**
-     * @member SuperMap.AreaSolarRadiationParameters.prototype.targetDatasourceName -{String}
+     * @member SuperMap.AreaSolarRadiationParameters.prototype.targetDatasourceName -{string}
      * @description 指定的存储结果数据集的数据源名称（必设参数）； 例如："Jingjin"。
      */
 
@@ -25980,7 +25899,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.AreaSolarRadiationService
  * @classdesc 地区太阳辐射服务类。
- * @param url - {String} 服务的访问地址。如</br> http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst 。</br>
+ * @param url - {string} 服务的访问地址。如</br> http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst 。</br>
  * @param options - {Object} 参数。如:</br>
  * eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.SpatialAnalystBase
@@ -26098,54 +26017,55 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- *
  * @class SuperMap.Feature.Theme.Bar
- * @classdesc 柱状图 。图表 Bar 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：</br>
- * width - {Number} 专题要素（图表）宽度，必设参数。</br>
- * height - {Number} 专题要素（图表）高度，必设参数。</br>
- * codomain - {Array{Number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
- * XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
- * YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
- * dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
- * 它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
- * 当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。
- * decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
- * useBackground - {Boolean} 是否使用图表背景框，默认使用。</br>
- * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
- * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 , 则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
- * xShapeBlank - {Array(Number)} 水平方向上的图形空白间隔参数。
- * 长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
- * 第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。</br>
- * showShadow - {Boolean} 阴影开关 默认是打开</br>
- * barShadowStyle - {Object} 阴影样式,如：{shadowBlur : 8, shadowOffsetX: 2 , shadowOffsetY : 2,shadowColor : "rgba(100,100,100,0.8)"}</br>
- * barLinearGradient - {Array} 按字段设置柱条样式[渐变开始颜色,渐变终止颜色]  与 themeLayer.themeFields 中的字段一一对应）
- * 如：[["#00FF00","#00CD00"],["#00CCFF","#5E87A2"],["#00FF66","#669985"],["#CCFF00","#94A25E"],["#FF9900","#A2945E"]]</br>
- * useAxis - {Boolean} 是否使用坐标轴，默认使用坐标轴。</br>
- * axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
- * axisUseArrow - {Boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。</br>
- * axisYTick - {Number} y 轴刻度数量，默认值：0 ，不使用刻度。</br>
- * axisYLabels - {Array{String}} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。</br>
- * axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
- * axisYLabelsOffset - {Array{Number}} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
- * 数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。</br>
- * axisXLabels - {Array{String}} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
- * 标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签,否则沿数据视图框下面条边等距排布标签。</br>
- * axisXLabelsStyle - {Object} x 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
- * axisXLabelsOffset - {Array{Number}} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；
- * 数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。</br>
- * useXReferenceLine - {Boolean) 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。</br>
- * xReferenceLineStyle - {Object) 水平参考线样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
- *
- * barStyle - {Object} 柱状图柱条基础 style，此参数控制柱条基础样式，优先级低于 barStyleByFields 和 barStyleByCodomain。
- * 此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。</br>
- * barStyleByFields - {Array{Object}} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为柱条赋 style，此参数按字段控制柱条样式，
- * 优先级低于 barStyleByCodomain，高于 barStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。
- * 此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
- * barStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条使用 style1，字段 POP_1995 对应的柱条使用 style2 ，字段 POP_1999 对应的柱条使用 style3。</br>
- * barStyleByCodomain - {Array{Object}} 按柱条代表的数据值所在值域范围控制柱条样式，优先级高于 barStyle 和 barStyleByFields。</br>
- *
+ * @classdesc 柱状图 。
+ * @description 图表 Bar 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：</br>
+ *              width - {Number} 专题要素（图表）宽度，必设参数。</br>
+ *              height - {Number} 专题要素（图表）高度，必设参数。</br>
+ *              codomain - {Array{Number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
+ *              XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
+ *              YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
+ *              dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
+ *                              它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
+ *                              当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。</br>
+ *              decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+ *              useBackground - {boolean} 是否使用图表背景框，默认使用。</br>
+ *              backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
+ *              backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 , 则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
+ *              xShapeBlank - {Array(Number)} 水平方向上的图形空白间隔参数。
+ *                              长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
+ *                              第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。</br>
+ *              showShadow - {boolean} 阴影开关 默认是打开</br>
+ *              barShadowStyle - {Object} 阴影样式,如：{shadowBlur : 8, shadowOffsetX: 2 , shadowOffsetY : 2,shadowColor : "rgba(100,100,100,0.8)"}</br>
+ *              barLinearGradient - {Array} 按字段设置柱条样式[渐变开始颜色,渐变终止颜色]  与 themeLayer.themeFields 中的字段一一对应）
+ *                              如：[["#00FF00","#00CD00"],["#00CCFF","#5E87A2"],["#00FF66","#669985"],["#CCFF00","#94A25E"],["#FF9900","#A2945E"]]</br>
+ *              useAxis - {boolean} 是否使用坐标轴，默认使用坐标轴。</br>
+ *              axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
+ *              axisUseArrow - {boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。</br>
+ *              axisYTick - {Number} y 轴刻度数量，默认值：0 ，不使用刻度。</br>
+ *              axisYLabels - {Array{String}} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。</br>
+ *              axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
+ *              axisYLabelsOffset - {Array{Number}} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
+ *                              数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。</br>
+ *              axisXLabels - {Array{String}} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
+ *                               标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签,否则沿数据视图框下面条边等距排布标签。</br>
+ *              axisXLabelsStyle - {Object} x 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
+ *              axisXLabelsOffset - {Array{Number}} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；
+ *                               数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。</br>
+ *              useXReferenceLine - {Boolean) 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。</br>
+ *              xReferenceLineStyle - {Object) 水平参考线样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
+ *              barStyle - {Object} 柱状图柱条基础 style，此参数控制柱条基础样式，优先级低于 barStyleByFields 和 barStyleByCodomain。
+ *                               此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。</br>
+ *              barStyleByFields - {Array<Object>} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为柱条赋 style，此参数按字段控制柱条样式，
+ *                               优先级低于 barStyleByCodomain，高于 barStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。
+ *                               此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
+ *                               barStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条使用 style1，字段 POP_1995 对应的柱条使用 style2 ，字段 POP_1999 对应的柱条使用 style3。</br>
+ *              barStyleByCodomain - {Array<Object>} 按柱条代表的数据值所在值域范围控制柱条样式，优先级高于 barStyle 和 barStyleByFields。</br>
+ *              barHoverStyle - {Object} 柱条 hover 状态时的样式，barHoverAble 为 true 时有效。</br>
+ *              barHoverAble - {Object} 是否允许柱条使用 hover 状态，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
+ *              barClickAble - {Object} 是否允许柱条被点击，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
  * @example
- * (start code)
+ * // barStyleByCodomain参数用法如下：
  * // barStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
@@ -26181,28 +26101,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      }
  *  }
  * ]
- * (end)
- * barHoverStyle - {Object} 柱条 hover 状态时的样式，barHoverAble 为 true 时有效。</br>
- * barHoverAble - {Object} 是否允许柱条使用 hover 状态，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
- * barClickAble - {Object} 是否允许柱条被点击，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
- *
  *
  * @extends SuperMap.Feature.Theme.Graph
+ * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
+ * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
+ * @param fields - {Array(String)} data 属性中的参与此图表生成的属性字段名称，必设参数。
+ * @param setting - {Object} 图表配置对象，必设参数。
+ * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @return {SuperMap.Feature.Theme.Bar} 返回一个柱状图表对象。
  */
 var Bar = function (_Graph) {
     _inherits(Bar, _Graph);
 
-    /**
-     * @function SuperMap.Feature.Theme.Bar.prototype.constructor
-     * @description 创建一个柱状图表。
-     * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
-     * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
-     * @param fields - {Array(String)} data 属性中的参与此图表生成的属性字段名称，必设参数。
-     * @param setting - {Object} 图表配置对象，必设参数。
-     * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
-     *
-     * @return {SuperMap.Feature.Theme.Bar} 返回一个柱状图表对象。
-     */
     function Bar(data, layer, fields, setting, lonlat) {
         _classCallCheck(this, Bar);
 
@@ -26213,8 +26123,7 @@ var Bar = function (_Graph) {
     }
 
     /**
-     * @function SuperMap.Feature.Theme.Bar.prototype.destroy
-     * @description 销毁对象。调用 destroy 后此对象所以属性置为 null。
+     * @inheritDoc
      */
 
 
@@ -26346,16 +26255,16 @@ var Bar = function (_Graph) {
         /**
          * @function SuperMap.Feature.Theme.Bar.prototype.calculateXShapeInfo
          * @description 计算 X 轴方向上的图形信息，此信息是一个对象，包含两个属性，
-         * 属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
-         * 如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
-         * width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
-         * 本函数中图形配置对象 setting 可设属性：
-         * xShapeBlank - {Array{Number}} 水平方向上的图形空白间隔参数。
-         * 长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
-         * 第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。
+         *              属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
+         *              如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
+         *              width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
+         *              本函数中图形配置对象 setting 可设属性：
+         *              xShapeBlank - {Array{Number}} 水平方向上的图形空白间隔参数。
+         *              长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
+         *              第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。
          * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：
-         * xPositions - {Array(Number)} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
-         * width - {Number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
+         *         xPositions - {Array(Number)} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
+         *         width - {Number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
          *
          */
 
@@ -26484,60 +26393,53 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /**
- *
  * @class SuperMap.Feature.Theme.Bar3D
  * @classdesc 三维柱状图 。
- * 图表 Bar3D 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：</br>
-
- * width - {Number} 专题要素（图表）宽度，必设参数。</br>
- * height - {Number} 专题要素（图表）高度，必设参数。</br>
- * codomain - {Array{Number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
- * XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
- * YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
- * dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
- * 它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
- * 当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 25, 20, 20]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。</br>
- * decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
- *
- * useBackground - {Boolean} 是否使用图表背景框，默认使用。</br>
- * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
- * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
- * 则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
- *
- * xShapeBlank - {Array{Number}} 水平方向上的图形空白间隔参数。
- * 长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
- * 第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。</br>
- *
- * bar3DParameter - {Number} 3D 柱状参数，3d柱形正面相对于背面向 x 轴和 y 轴负方向偏移的绝对值，默认值：10。</br>
- *
- * useAxis - {Boolean} 是否使用坐标轴，默认使用坐标轴。</br>
- * axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
- * axisUseArrow - {Boolean} 坐标轴是否使用箭头，默认值：true，使用箭头。</br>
- * axisYTick - {Number} y 轴刻度数量，默认值：0 ，不使用刻度。</br>
- * axisYLabels - {Array{String}} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。</br>
- * axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
- * axisYLabelsOffset - {Array{Number}} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
- * 数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。</br>
- * axisXLabels - {Array{String}} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
- * 标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签，
- * 否则沿数据视图框下面条边等距排布标签。</br>
- * axisXLabelsStyle - {Object} x 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
- * axisXLabelsOffset - {Array{Number}} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：-10；
- * 数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：10。</br>
- * useXReferenceLine - {Boolean) 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。</br>
- * xReferenceLineStyle - {Object) 水平参考线样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
- * axis3DParameter - {Number} 3D 坐标轴参数，此属性值在大于等于 15 时有效，默认值：20。</br>
- *
- * barFaceStyle - {Object} 3d 柱状图柱条正面基础 style，此参数控制柱条正面基础样式，优先级低于 barFaceStyleByFields 和 barFaceStyleByCodomain。
- * 此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style>。</br>
- * barFaceStyleByFields - {Array{Object}} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为柱条正面赋 style，此参数按字段控制柱条正面样式，
- * 优先级低于 barFaceStyleByCodomain，高于 barFaceStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。
- * 此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
- * barFaceStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条正面使用 style1，字段 POP_1995 对应的柱条正面使用 style2 ，
- * 字段 POP_1999 对应的柱条正面使用 style3。</br>
- * barFaceStyleByCodomain - {Array{Object}} 按柱条正面代表的数据值所在值域范围控制柱条正面样式，优先级高于 barFaceStyle 和 barFaceStyleByFields。</br>
+ * @description 图表 Bar3D 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：</br>
+ *              width - {Number} 专题要素（图表）宽度，必设参数。</br>
+ *              height - {Number} 专题要素（图表）高度，必设参数。</br>
+ *              codomain - {Array{Number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
+ *              XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
+ *              YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
+ *              dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
+ *                          它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
+ *                          当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 25, 20, 20]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。</br>
+ *              decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+ *              useBackground - {boolean} 是否使用图表背景框，默认使用。</br>
+ *              backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
+ *              backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
+ *                          则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
+ *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。
+ *                          长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
+ *                          第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。</br>
+ *              bar3DParameter - {Number} 3D 柱状参数，3d柱形正面相对于背面向 x 轴和 y 轴负方向偏移的绝对值，默认值：10。</br>
+ *              useAxis - {boolean} 是否使用坐标轴，默认使用坐标轴。</br>
+ *              axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
+ *              axisUseArrow - {boolean} 坐标轴是否使用箭头，默认值：true，使用箭头。</br>
+ *              axisYTick - {Number} y 轴刻度数量，默认值：0 ，不使用刻度。</br>
+ *              axisYLabels - {Array<string>} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。
+ *              axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
+ *              axisYLabelsOffset - {Array<number>} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
+ *                          数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。</br>
+ *              axisXLabels - {Array<string>} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
+ *                          标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签，
+ *                          否则沿数据视图框下面条边等距排布标签。</br>
+ *              axisXLabelsStyle - {Object} x 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
+ *              axisXLabelsOffset - {Array<number>} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：-10；
+ *                          数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：10。</br>
+ *              useXReferenceLine - {Boolean) 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。</br>
+ *              xReferenceLineStyle - {Object) 水平参考线样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
+ *              axis3DParameter - {Number} 3D 坐标轴参数，此属性值在大于等于 15 时有效，默认值：20。</br>
+ *              barFaceStyle - {Object} 3d 柱状图柱条正面基础 style，此参数控制柱条正面基础样式，优先级低于 barFaceStyleByFields 和 barFaceStyleByCodomain。
+ *                          此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style>。</br>
+ *              barFaceStyleByFields - {Array<Object>} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为柱条正面赋 style，此参数按字段控制柱条正面样式，
+ *                          优先级低于 barFaceStyleByCodomain，高于 barFaceStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。
+ *                          此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
+ *              barFaceStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条正面使用 style1，字段 POP_1995 对应的柱条正面使用 style2 ，
+ *                          字段 POP_1999 对应的柱条正面使用 style3。</br>
+ *              barFaceStyleByCodomain - {Array{Object}} 按柱条正面代表的数据值所在值域范围控制柱条正面样式，优先级高于 barFaceStyle 和 barFaceStyleByFields。</br>
  * @example
- * (start code)
+ * // barFaceStyleByCodomain 用法示例如下：
  * // barFaceStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
@@ -26573,19 +26475,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      }
  *  }
  * ]
- * (end)
  *
- * barSideStyle - {Object} 3d 柱状图柱条侧面基础 style，此参数控制柱条侧面基础样式，优先级低于 barSideStyleByFields 和 barSideStyleByCodomain。
- * 此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> ，默认值：barFaceStyle。</br>
- * barSideStyleByFields - {Array{Object}} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为柱条侧面赋 style，此参数按字段控制柱条侧面样式，
- * 优先级低于 barSideStyleByCodomain，高于 barSideStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。
- * 此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
- * barSideStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条侧面使用 style1，字段 POP_1995 对应的柱条侧面使用 style2 ，
- * 字段 POP_1999 对应的柱条侧面使用 style3。默认值：barFaceStyleByFields。</br>
- * barSideStyleByCodomain - {Array(Object)} 按柱条侧面代表的数据值所在值域范围控制柱条侧面样式，优先级高于 barSideStyle 和 barSideStyleByFields。
- * 默认值：barFaceStyleByCodomain。
+ *          barSideStyle - {Object} 3d 柱状图柱条侧面基础 style，此参数控制柱条侧面基础样式，优先级低于 barSideStyleByFields 和 barSideStyleByCodomain。
+ *                          此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> ，默认值：barFaceStyle。</br>
+ *          barSideStyleByFields - {Array<Object>} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为柱条侧面赋 style，此参数按字段控制柱条侧面样式，
+ *                          优先级低于 barSideStyleByCodomain，高于 barSideStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。
+ *                          此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
+ *                          barSideStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条侧面使用 style1，字段 POP_1995 对应的柱条侧面使用 style2 ，
+ *                          字段 POP_1999 对应的柱条侧面使用 style3。默认值：barFaceStyleByFields。</br>
+ *          barSideStyleByCodomain - {Array<Object>} 按柱条侧面代表的数据值所在值域范围控制柱条侧面样式，优先级高于 barSideStyle 和 barSideStyleByFields。
+ *                          默认值：barFaceStyleByCodomain。
  * @example
- * (start code)
+ * // barSideStyleByCodomain 用法示例如下：
  * // barSideStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
@@ -26621,19 +26522,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      }
  *  }
  * ]
- * (end)
  *
- * barTopStyle - {Object} 3d 柱状图柱条顶面基础 style，此参数控制柱条顶面基础样式，优先级低于 barTopStyleByFields 和 barTopStyleByCodomain。
- * 此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> ，默认值：barFaceStyle。</br>
- * barTopStyleByFields - {Array{Object}} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为柱条顶面赋 style，此参数按字段控制柱条顶面样式，
- * 优先级低于 barTopStyleByCodomain，高于 barTopStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。
- * 此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
- * barTopStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条顶面使用 style1，字段 POP_1995 对应的柱条顶面使用 style2 ，
- * 字段 POP_1999 对应的柱条顶面使用 style3。默认值：barFaceStyleByFields。</br>
- * barTopStyleByCodomain - {Array{Object}} 按柱条顶面代表的数据值所在值域范围控制柱条顶面样式，优先级高于 barTopStyle 和 barTopStyleByFields。
- * 默认值：barFaceStyleByCodomain。</br>
+ *              barTopStyle - {Object} 3d 柱状图柱条顶面基础 style，此参数控制柱条顶面基础样式，优先级低于 barTopStyleByFields 和 barTopStyleByCodomain。
+ *                          此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> ，默认值：barFaceStyle。</br>
+ *              barTopStyleByFields - {Array<Object>} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为柱条顶面赋 style，此参数按字段控制柱条顶面样式，
+ *                          优先级低于 barTopStyleByCodomain，高于 barTopStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Polygon::style> 。
+ *                          此参数中的 style 与 themeFields 中的字段一一对应 。例如： themeFields（<SuperMap.Layer.Graph::themeFields>） 为 ["POP_1992", "POP_1995", "POP_1999"],
+ *                          barTopStyleByFields 为[style1, style2, style3]，则在图表中，字段 POP_1992 对应的柱条顶面使用 style1，字段 POP_1995 对应的柱条顶面使用 style2 ，
+ *                          字段 POP_1999 对应的柱条顶面使用 style3。默认值：barFaceStyleByFields。</br>
+ *              barTopStyleByCodomain - {Array<Object>} 按柱条顶面代表的数据值所在值域范围控制柱条顶面样式，优先级高于 barTopStyle 和 barTopStyleByFields。
+ *                          默认值：barFaceStyleByCodomain。</br>
  * @example
- * (start code)
+ * // barTopStyleByCodomain 用法示例如下：
  * // barTopStyleByCodomain 的每个元素是个包含值域信息和与值域对应样式信息的对象，该对象（必须）有三个属性：
  * // start: 值域值下限（包含）;
  * // end: 值域值上限（不包含）;
@@ -26669,30 +26569,24 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      }
  *  }
  * ]
- * (end)
  *
- * barFaceHoverStyle - {Object} 3d 柱条正面 hover 状态时的样式，barHoverAble 为 true 时有效。</br>
- * barSideHoverStyle - {Object} 3d 柱条侧面 hover 状态时的样式，barHoverAble 为 true 时有效，默认值：barFaceHoverStyle。</br>
- * barTopHoverStyle - {Object} 3d 柱条顶面 hover 状态时的样式，barHoverAble 为 true 时有效，默认值：barFaceHoverStyle。</br>
- *
- * barHoverAble - {Object} 是否允许柱条使用 hover 状态，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
- * barClickAble - {Object} 是否允许柱条被点击，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
+ *              barFaceHoverStyle - {Object} 3d 柱条正面 hover 状态时的样式，barHoverAble 为 true 时有效。</br>
+ *              barSideHoverStyle - {Object} 3d 柱条侧面 hover 状态时的样式，barHoverAble 为 true 时有效，默认值：barFaceHoverStyle。</br>
+ *              barTopHoverStyle - {Object} 3d 柱条顶面 hover 状态时的样式，barHoverAble 为 true 时有效，默认值：barFaceHoverStyle。</br>
+ *              barHoverAble - {Object} 是否允许柱条使用 hover 状态，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
+ *              barClickAble - {Object} 是否允许柱条被点击，默认允许。同时设置 barHoverAble 和 barClickAble 为 false，可以直接屏蔽柱条对专题图层事件的响应。</br>
  *
  * @extends SuperMap.Feature.Theme.Graph
+ * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
+ * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
+ * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
+ * @param setting - {Object} 图表配置对象，必设参数。
+ * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
+ * @return {SuperMap.Feature.Theme.Bar3D} 返回一个三维柱状图表对象。
  */
 var Bar3D = function (_Graph) {
     _inherits(Bar3D, _Graph);
 
-    /**
-     * @function SuperMap.Feature.Theme.Bar.prototype.Bar3D
-     * @description 创建一个三维柱状图表。
-     * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
-     * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
-     * @param fields - {Array(String)} data 中的参与此图表生成的字段名称，必设参数。
-     * @param setting - {Object} 图表配置对象，必设参数。
-     * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
-     * @return {SuperMap.Feature.Theme.Bar3D} 返回一个三维柱状图表对象。
-     */
     function Bar3D(data, layer, fields, setting, lonlat) {
         _classCallCheck(this, Bar3D);
 
@@ -26703,8 +26597,7 @@ var Bar3D = function (_Graph) {
     }
 
     /**
-     * @function SuperMap.Feature.Theme.Bar.prototype.destroy
-     * @description 销毁此专题要素。调用 destroy 后此对象所以属性置为 null。
+     * @inheritDoc
      */
 
 
@@ -26858,17 +26751,16 @@ var Bar3D = function (_Graph) {
         /**
          * @function SuperMap.Feature.Theme.Bar.prototype.calculateXShapeInfo
          * @description 计算 X 轴方向上的图形信息，此信息是一个对象，包含两个属性，
-         * 属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
-         * 如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
-         * width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
-         * 本函数中图形配置对象 setting 可设属性:</br>
-         * xShapeBlank - {Array(Number)} 水平方向上的图形空白间隔参数。
-         * 长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
-         * 第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。
+         *              属性 xPositions 是一个一维数组，该数组元素表示图形在 x 轴方向上的像素坐标值，
+         *              如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。
+         *              width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
+         *              本函数中图形配置对象 setting 可设属性:</br>
+         *              xShapeBlank - {Array(Number)} 水平方向上的图形空白间隔参数。
+         *              长度为 3 的数组，第一元素表示第一个图形左端与数据视图框左端的空白间距，第二个元素表示图形间空白间距，
+         *              第三个元素表示最后一个图形右端与数据视图框右端端的空白间距 。
          * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性:</br>
-         * xPositions - {Array(Number)} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。</br>
-         * width - {Number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
-         *
+         *                  xPositions - {Array(Number)} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。</br>
+         *                  width - {Number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
          */
 
     }, {
@@ -26975,7 +26867,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * 缓冲区分析服务类
  * 该类负责将客户设置的缓冲区分析参数传递给服务端，并接收服务端返回的缓冲区分析结果数据。
  * 缓冲区分析结果通过该类支持的事件的监听函数参数获取
- * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @param url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param options - {Object} 可选参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.SpatialAnalystBase
@@ -27013,7 +26905,7 @@ var BufferAnalystService = function (_SpatialAnalystBase) {
      */
 
     /**
-     * @member SuperMap.BufferAnalystService.prototype.mode -{String}
+     * @member SuperMap.BufferAnalystService.prototype.mode -{string}
      * @description 缓冲区分析类型
      */
 
@@ -27120,22 +27012,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.BufferDistance
  * @classdesc 缓冲区分析的缓冲距离类。通过该类可以设置缓冲区分析的缓冲距离，距离可以是数值也可以是数值型的字段表达式。
- * @param options - {String} 缓冲区分析可选参数。如：<br>
- *        exp -{String} 以数值型的字段表达式作为缓冲区分析的距离值。<br>
- *        value -{Number} 以数值作为缓冲区分析的距离值。默认为100，单位：米。
+ * @param options - {string} 缓冲区分析可选参数。如：<br>
+ *        exp -{string} 以数值型的字段表达式作为缓冲区分析的距离值。<br>
+ *        value -{number}以数值作为缓冲区分析的距离值。默认为100，单位：米。
  */
 var BufferDistance = function () {
 
-    /*
-     * @function SuperMap.BufferDistance.prototype.constructor
-     * @param options - {Object} 可选参数。如:</br>
-     *        exp - {String} 以数值型的字段表达式作为缓冲区分析的距离值。</br>
-     *        value - {Number} 以数值作为缓冲区分析的距离值。默认为100，单位：米。</br>
-     */
-
-
     /**
-     * @member SuperMap.BufferDistance.prototype.exp -{String}
+     * @member SuperMap.BufferDistance.prototype.exp -{string}
      * @description 以数值型的字段表达式作为缓冲区分析的距离值。
      */
     function BufferDistance(options) {
@@ -27152,13 +27036,13 @@ var BufferDistance = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.BufferDistance.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.BufferDistance.prototype.value -{Number}
+     * @member SuperMap.BufferDistance.prototype.value -{number}
      * @description 以数值作为缓冲区分析的距离值。默认为100，单位：米。
      */
 
@@ -27208,18 +27092,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.BufferSetting
  * @classdesc 缓冲区分析通用设置类
+ * @param options - {Object} 缓冲区分析设置可选参数。如：<br>
+ *        endType -{SuperMap.BufferEndType} 缓冲区端点枚举值。<br>
+ *        leftDistance -{SuperMap.BufferDistance} 左侧缓冲距离。<br>
+ *        rightDistance -{SuperMap.BufferDistance} 右侧缓冲距离。<br>
+ *        semicircleLineSegment -{number} 圆头缓冲圆弧处线段的个数。<br>
+ *        radiusUnit -{Enum} 缓冲半径单位。
  */
 var BufferSetting = function () {
 
     /**
-     * @member SuperMap.BufferSetting.prototype.semicircleLineSegment -{Number}
+     * @member SuperMap.BufferSetting.prototype.semicircleLineSegment -{number}
      * @description 圆头缓冲圆弧处线段的个数。
      * 即用多少个线段来模拟一个半圆，默认值为4。
      */
 
 
     /**
-     * @member SuperMap.BufferSetting.prototype.leftDistance -{BufferDistance}
+     * @member SuperMap.BufferSetting.prototype.leftDistance -{SuperMap.BufferDistance}
      * @description 左侧缓冲距离。
      * 默认为100。当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
      * 当为DatasetBufferAnalyst时，单位通过BufferSetting.radiusUnit设置（默认全部为米）。
@@ -27255,7 +27145,7 @@ var BufferSetting = function () {
 
 
     /**
-     * @member SuperMap.BufferSetting.prototype.rightDistance -{BufferDistance}
+     * @member SuperMap.BufferSetting.prototype.rightDistance -{SuperMap.BufferDistance}
      * @description 右侧缓冲距离。
      * 默认为100。当为GeometryBufferAnalyst时，单位为默认地图的投影系的单位（如3857为米，4326为度），
      * 当为DatasetBufferAnalyst时，单位通过BufferSetting.radiusUnit设置（默认全部为米）。
@@ -27318,15 +27208,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.BuildCacheJobParameter
  * @classdesc 地图缓存参数类
  * @param options - {Object} 可选参数。如：<br>
- *         datasetName - {String} 数据集名称。<br>
- *         cacheName - {String} 缓存名称。<br>
- *         cacheType - {String} 存储类型。<br>
- *         serverAdresses - {String} MongoDB地址。<br>
+ *         datasetName - {string} 数据集名称。<br>
+ *         cacheName - {string} 缓存名称。<br>
+ *         cacheType - {string} 存储类型。<br>
+ *         serverAdresses - {string} MongoDB地址。<br>
  *         database -- {String} 数据库。<br>
- *         version -{String} 版本。<br>
+ *         version -{string} 版本。<br>
  *         bounds -{SuperMap.Bounds} 缓存范围。<br>
- *         imageType -{number} 缓存类型.<br>
- *         level -{number} 缓存比例尺级别。
+ *         imageType -{number}缓存类型.<br>
+ *         level -{number}缓存比例尺级别。
  */
 var BuildCacheJobParameter = function () {
 
@@ -27337,19 +27227,19 @@ var BuildCacheJobParameter = function () {
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.version -{String}
+     * @member SuperMap.BuildCacheJobParameter.prototype.version -{string}
      * @description 版本。
      */
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.serverAddresses -{String}
+     * @member SuperMap.BuildCacheJobParameter.prototype.serverAddresses -{string}
      * @description MongoDB地址。
      */
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.cacheName -{String}
+     * @member SuperMap.BuildCacheJobParameter.prototype.cacheName -{string}
      * @description 缓存名称。
      */
     function BuildCacheJobParameter(options) {
@@ -27372,7 +27262,7 @@ var BuildCacheJobParameter = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.BuildCacheJobParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -27390,18 +27280,18 @@ var BuildCacheJobParameter = function () {
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.database -{String}
+     * @member SuperMap.BuildCacheJobParameter.prototype.database -{string}
      * @description 数据库。
      */
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.cacheType -{String}
+     * @member SuperMap.BuildCacheJobParameter.prototype.cacheType -{string}
      * @description 存储类型。
      */
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.datasetName -{String}
+     * @member SuperMap.BuildCacheJobParameter.prototype.datasetName -{string}
      * @description 数据集名称。
      */
 
@@ -27486,23 +27376,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.BuildCacheJobsService
  * @classdesc 创建大数据缓存服务类
  * @extends SuperMap.ProcessingServiceBase
- * @param url -{String} 大数据缓存服务地址。
+ * @param url -{string} 大数据缓存服务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *        events - {SuperMap.Events} 处理所有事件的对象。<br>
  *        eventListeners - {Object} 听器对象。<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number} 服务访问地址在数组中的位置。<br>
- *        length - {number} 服务访问地址数组长度。
+ *        index - {number}服务访问地址在数组中的位置。<br>
+ *        length - {number}服务访问地址数组长度。
  */
 var BuildCacheJobsService = function (_ProcessingServiceBas) {
     _inherits(BuildCacheJobsService, _ProcessingServiceBas);
 
-    /*
-     * @function SuperMap.BuildCacheJobsService.prototype.constructor
-     * @description SuperMap.BuildCacheJobsService 的构造函数
-     * @param url -{String} 大数据缓存服务地址。
-     * @param options - {Object} 交互服务时所需可选参数。
-     */
     function BuildCacheJobsService(url, options) {
         _classCallCheck(this, BuildCacheJobsService);
 
@@ -27537,7 +27421,7 @@ var BuildCacheJobsService = function (_ProcessingServiceBas) {
         /**
          * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJob
          * @description 获取指定 id的大数据缓存
-         * @param id - {String} 大数据缓存id
+         * @param id - {string} 大数据缓存id
          */
 
     }, {
@@ -27550,7 +27434,7 @@ var BuildCacheJobsService = function (_ProcessingServiceBas) {
          * @function SuperMap.BuildCacheJobsService.prototype.addBuildCacheJob
          * @description 新建大数据缓存服务
          * @param params - {SuperMap.BuildCacheJobParameter} 地图缓存参数类
-         * @param seconds - {String} 开始创建后，获取创建成功结果的时间间隔
+         * @param seconds - {string} 开始创建后，获取创建成功结果的时间间隔
          */
 
     }, {
@@ -27593,21 +27477,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.BurstPipelineAnalystParameters
  * @classdesc 爆管分析参数类。
  * @param options - {Object} 可选参数。如：<br>
- *         sourceNodeIDs - {Array<Number>} 指定的设施点ID数组。<br>
- *         edgeID - {Number} 指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。<br>
- *         nodeID - {Number} 指定的结点ID （注：edgeID 与 nodeID 不能同时使用）。<br>
- *         isUncertainDirectionValid - {Boolean} 指定不确定流向是否有效；默认false，无效。
+ *         sourceNodeIDs - {Array<number>} 指定的设施点ID数组。<br>
+ *         edgeID - {number}指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。<br>
+ *         nodeID - {number}指定的结点ID （注：edgeID 与 nodeID 不能同时使用）。<br>
+ *         isUncertainDirectionValid - {boolean} 指定不确定流向是否有效；默认false，无效。
  */
 var BurstPipelineAnalystParameters = function () {
 
-    /*
-     * Constructor: BurstPipelineAnalystParameters
-     * 爆管分析参数类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.BurstPipelineAnalystParameters.prototype.nodeID -{Number}
+     * @member SuperMap.BurstPipelineAnalystParameters.prototype.nodeID -{number}
      * @description 指定的结点ID （注：edgeID 与 nodeID 不能同时使用）。
      */
 
@@ -27633,20 +27511,20 @@ var BurstPipelineAnalystParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.BurstPipelineAnalystParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.BurstPipelineAnalystParameters.prototype.isUncertainDirectionValid -{Boolean}
+     * @member SuperMap.BurstPipelineAnalystParameters.prototype.isUncertainDirectionValid -{boolean}
      * @description 指定不确定流向是否有效，默认为false。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
      *              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
      */
 
 
     /**
-     * @member SuperMap.BurstPipelineAnalystParameters.prototype.edgeID -{Number}
+     * @member SuperMap.BurstPipelineAnalystParameters.prototype.edgeID -{number}
      * @description指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。
      */
 
@@ -27708,7 +27586,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.BurstPipelineAnalystService
  * @classdesc 爆管分析服务类;即将给定弧段或节点作为爆管点来进行分析，返回关键结点 ID 数组，普通结点 ID 数组及其上下游弧段 ID 数组。
  * @extends SuperMap.NetworkAnalystServiceBase
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                       http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                       例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -27820,7 +27698,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *              一种是通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件；<br>
  *              另一种是使用 AsyncResponder 类实现异步处理。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 地图（特指海图）服务地址。<br>
+ * @param url - {string} 地图（特指海图）服务地址。<br>
  *        如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。<br>
  *        发送请求格式类似于："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图/chartFeatureInfoSpecs.json"
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
@@ -27914,28 +27792,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ChartQueryFilterParameter
  * @classdesc 海图查询过滤参数类，用于设置海图查询的过滤参数。包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
  * @param options - {Object} 可选参数。如：<br>
- *        isQueryPoint - {Boolean} 是否查询点。
- *        isQueryLine  - {Boolean} 是否查询线。
- *        isQueryRegion  - {Boolean} 是否查询面。
- *        attributeFilter - {String} 属性字段过滤条件。
- *        chartFeatureInfoSpecCode - {Number} 查询的物标代号。
+ *        isQueryPoint - {boolean} 是否查询点。
+ *        isQueryLine  - {boolean} 是否查询线。
+ *        isQueryRegion  - {boolean} 是否查询面。
+ *        attributeFilter - {string} 属性字段过滤条件。
+ *        chartFeatureInfoSpecCode - {number}查询的物标代号。
  */
 var ChartQueryFilterParameter = function () {
 
-    /*
-     * Constructor: ChartQueryFilterParameter
-     * 初始化 ChartQueryFilterParameter 类的新实例。
-     */
-
-
     /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.attributeFilter -{String}
+     * @member SuperMap.ChartQueryFilterParameter.prototype.attributeFilter -{string}
      * @description 属性字段过滤条件。
      */
 
 
     /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryLine -{Boolean}
+     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryLine -{boolean}
      * @description 是否查询线。
      */
     function ChartQueryFilterParameter(options) {
@@ -27955,25 +27827,25 @@ var ChartQueryFilterParameter = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ChartQueryFilterParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.chartFeatureInfoSpecCode -{Number}
+     * @member SuperMap.ChartQueryFilterParameter.prototype.chartFeatureInfoSpecCode -{number}
      * @description 查询的物标代号。
      */
 
 
     /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryRegion -{Boolean}
+     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryRegion -{boolean}
      * @description 是否查询面。
      */
 
 
     /**
-     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryPoint -{Boolean}
+     * @member SuperMap.ChartQueryFilterParameter.prototype.isQueryPoint -{boolean}
      * @description 是否查询点。
      */
 
@@ -28048,21 +27920,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *               查询和海图范围查询两类，通过属性queryMode指定查询模式。必设属性有：<br>
  *               queryMode、chartLayerNames、chartQueryFilterParameters。当进行海图范围查询时，必设属性还包括bounds。
  * @param options - {Object} 可选参数。如：<br>
- *         queryMode - {String} 海图查询模式类型，SuperMap iClient for JavaScript对
+ *         queryMode - {string} 海图查询模式类型，SuperMap iClient for JavaScript对
  *                              海图支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。<br>
  *         bounds - {SuperMap.Bounds}  海图查询范围。<br>
  *         chartLayerNames - {Array(String)} 查询的海图图层的名称。<br>
  *         chartQueryFilterParameters - {Array <ChartQueryFilterParameter} 海图查询过滤参数。包括：物标代码、
  *                                                                         物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。<br>
- *         returnContent - {Boolean} 获取或设置是返回查询结果记录集 recordsets，还
+ *         returnContent - {boolean} 获取或设置是返回查询结果记录集 recordsets，还
  *                                   是返回查询结果的资源 resourceInfo。默认为 true，表示返回 recordsets。<br>
- *         startRecord - {Number} 查询起始记录位置，默认为0。<br>
- *         expectCount - {Number} 期望查询结果返回的记录数，该值大于0。
+ *         startRecord - {number}查询起始记录位置，默认为0。<br>
+ *         expectCount - {number}期望查询结果返回的记录数，该值大于0。
  */
 var ChartQueryParameters = function () {
 
     /**
-     * @member SuperMap.ChartQueryParameters.prototype.startRecord -{Number}
+     * @member SuperMap.ChartQueryParameters.prototype.startRecord -{number}
      * @description 查询起始记录位置，默认为0。
      */
 
@@ -28097,19 +27969,19 @@ var ChartQueryParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ChartQueryParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.ChartQueryParameters.prototype.expectCount -{Number}
+     * @member SuperMap.ChartQueryParameters.prototype.expectCount -{number}
      * @description 期望查询结果返回的记录数，该值大于0。
      */
 
 
     /**
-     * @member SuperMap.ChartQueryParameters.prototype.returnContent -{Boolean}
+     * @member SuperMap.ChartQueryParameters.prototype.returnContent -{boolean}
      * @description 获取或设置是返回查询结果记录集 recordsets，还是返回查询结果的
      *      资源 resourceInfo。默认为 true，表示返回 recordsets。
      * @example
@@ -28136,7 +28008,7 @@ var ChartQueryParameters = function () {
 
 
     /**
-     * @member SuperMap.ChartQueryParameters.prototype.queryMode -{String}
+     * @member SuperMap.ChartQueryParameters.prototype.queryMode -{string}
      * @description 海图查询模式类型，SuperMap iClient for JavaScript对海图支持两种<br>
      *              查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。
      */
@@ -28258,14 +28130,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *      1.通过 AsyncResponder 类获取（推荐使用）；<br>
  *      2.通过监听 QueryEvent.PROCESS_COMPLETE 事件获取。<br>
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 地图查询服务访问地址。如："http://192.168.168.35:8090/iserver/services/map-ChartW/rest/maps/海图"。
+ * @param url - {string} 地图查询服务访问地址。如："http://192.168.168.35:8090/iserver/services/map-ChartW/rest/maps/海图"。
  * @param options - {Object} 服务交互时所需的可选参数。<br>
  *        events - {SuperMap.Events} 处理所有事件的对象。<br>
  *        eventListeners - {Object} 听器对象。<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number} 服务访问地址在数组中的位置。<br>
- *        length - {number} 服务访问地址数组长度。<br>
- *        returnContent -{Boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。<br>
+ *        index - {number}服务访问地址在数组中的位置。<br>
+ *        length - {number}服务访问地址数组长度。<br>
+ *        returnContent -{boolean} 是否立即返回新创建资源的表述还是返回新资源的URI。<br>
  *        format -{SuperMap.DataFormat} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
  *                                      参数格式为"ISERVER","GEOJSON",GEOJSON
  * @example
@@ -28298,7 +28170,7 @@ var ChartQueryService = function (_CommonServiceBase) {
     _inherits(ChartQueryService, _CommonServiceBase);
 
     /**
-     * @member SuperMap.ChartQueryService.prototype.returnContent -{Boolean}
+     * @member SuperMap.ChartQueryService.prototype.returnContent -{boolean}
      * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
      */
     function ChartQueryService(url, options) {
@@ -28476,21 +28348,21 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.Feature.Theme.Circle
- * @classdesc 圆类
- * @classdesc 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>） 可设属性如下：<br>
- *            codomain - {Array<Number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
- *            maxR - {Number} 圆形的最大半径。<br>
- *            minR - {Number} 圆形的最小半径。<br>
- *            fillColor - {String} 圆形的填充色，如：fillColor: "#FFB980"。<br>
+ * @classdesc 圆类。
+ * @description 符号 Circle 配置对象 symbolSetting（<SuperMap.Layer.RankSymbol::setting>） 可设属性如下：<br>
+ *            codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
+ *            maxR - {number}圆形的最大半径。<br>
+ *            minR - {number}圆形的最小半径。<br>
+ *            fillColor - {string} 圆形的填充色，如：fillColor: "#FFB980"。<br>
  *            circleStyle - {Object} 圆形的基础 style，此参数控制圆形基础样式，优先级低于 circleStyleByFields 和 circleStyleByCodomain。<br>
- *            decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
+ *            decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
  *            circleHoverStyle - {Object} 圆 形 hover 状态时的样式，circleHoverAble 为 true 时有效。<br>
  *            circleHoverAble - {Object} 是否允许圆形使用 hover 状态，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。<br>
  *            circleClickAble - {Object} 是否允许圆形被点击，默认允许。同时设置 circleHoverAble 和 circleClickAble 为 false，可以直接屏蔽图形对专题图层事件的响应。
  * @extends SuperMap.Feature.Theme.RankSymbol
  * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
  * @param layer - {SuperMap.Layer.RankSymbol} 此专题要素所在图层，必设参数。
- * @param fields - {Array<String>} data 中的参与此图表生成的字段名称，必设参数。
+ * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
  * @param setting - {Object} 图表配置对象，必设参数。
  * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Circle} 返回一个圆图。
@@ -28498,16 +28370,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Circle = function (_RankSymbol) {
     _inherits(Circle, _RankSymbol);
 
-    /**
-     * @function SuperMap.Feature.Theme.Circle.prototype.constructor
-     * @description 创建一个圆形的构造函数。
-     * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
-     * @param layer - {SuperMap.Layer.RankSymbol} 此专题要素所在图层，必设参数。
-     * @param fields - {Array<String>} data 中的参与此图表生成的字段名称，必设参数。
-     * @param setting - {Object} 图表配置对象，必设参数。
-     * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
-     * @return {SuperMap.Feature.Theme.Circle} 返回一个圆图。
-     */
     function Circle(data, layer, fields, setting, lonlat) {
         _classCallCheck(this, Circle);
 
@@ -28671,13 +28533,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *              对于栅格图层中高程值在颜色对照表中没有对应颜色的点，则查找颜色对照表中与当前高程值相邻的两个高程对应的颜色，<br>
  *              然后通过渐变运算要显示的颜色。如果设置了颜色对照表的话，则颜色表设置无效。
  * @param options - {object} 颜色对照表类可选参数。如：<br>
- *        elevation - {Number} 高程值。<br>
+ *        elevation - {number}高程值。<br>
  *        color -{SuperMap.ServerColor} 服务端颜色类。
  */
 var ColorDictionary = function () {
 
     /**
-     * @member SuperMap.ColorDictionary.prototype.elevation -{Number}
+     * @member SuperMap.ColorDictionary.prototype.elevation -{number}
      * @description 高程值。
      */
     function ColorDictionary(options) {
@@ -28698,7 +28560,7 @@ var ColorDictionary = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ColorDictionary.prototype.destroy
      * @description 释放资源,将引用资源的属性置空。
      */
 
@@ -28767,18 +28629,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 耗费矩阵分析参数类。<br>
  *               根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
  * @param options - {Object} 可选参数。如：<br>
- *         isAnalyzeById - {Boolean} 是否通过节点 ID 指定路径分析的结点。<br>
+ *         isAnalyzeById - {boolean} 是否通过节点 ID 指定路径分析的结点。<br>
  *         nodes - {Array<{SuperMap.Point}|Number>} 要计算耗费矩阵的点数组，必设字段。<br>
  *         parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 var ComputeWeightMatrixParameters = function () {
-
-    /*
-     * Constructor: SuperMap.ComputeWeightMatrixParameters
-     * 耗费矩阵分析参数类构造函数。
-     *
-     */
-
 
     /**
      * @member SuperMap.ComputeWeightMatrixParameters.prototype.nodes {Array(Point/Number)}
@@ -28803,7 +28658,7 @@ var ComputeWeightMatrixParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ComputeWeightMatrixParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -28889,7 +28744,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *		   "processFailed": computeWeightMatrixnError
  *		   }
  * });
- * @param url - {String} 耗费矩阵分析服务地址。请求服务的URL应为：<br>
+ * @param url - {string} 耗费矩阵分析服务地址。请求服务的URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -28952,7 +28807,7 @@ var ComputeWeightMatrixService = function (_NetworkAnalystServic) {
          * @description 将对象转化为JSON字符串。
          *
          * Parameters:
-         * @param isAnalyzeById - {Boolean} 是否通过id分析
+         * @param isAnalyzeById - {boolean} 是否通过id分析
          * @param params - {Array} 分析参数数组
          *
          * @return -{Object} 转化后的JSON字符串。
@@ -29020,11 +28875,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.DataFlowService
  * @classdesc 实时大数据服务类
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 实时大数据服务地址
+ * @param url - {string} 实时大数据服务地址
  * @param options - {object} 加载实时大数据可选参数。如：<br>
  *        style - {function} 设置数据加载样式。<br>
  *        onEachFeature - {function} 设置每个数据加载popup等。<br>
- *        geometry - {Array<object>} 设置增添的几何要素对象数组。
+ *        geometry - {Array<Object>} 设置增添的几何要素对象数组。
  *        excludeField - -{object} 排除字段
  */
 var DataFlowService = function (_CommonServiceBase) {
@@ -29183,7 +29038,7 @@ var DataFlowService = function (_CommonServiceBase) {
         /**
          * @function SuperMap.DataFlowService.prototype.setGeometry
          * @description 设置添加的几何要素数据
-         * @param geometry - {Array<object>} 设置增添的几何要素对象数组。
+         * @param geometry - {Array<Object>} 设置增添的几何要素对象数组。
          * @return {SuperMap.DataFlowService}
          */
 
@@ -29332,11 +29187,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.DatasetBufferAnalystParameters
  * @classdesc  数据集缓冲区分析参数类
  * @param options - {Object} 可选参数。如：</br>
- *        dataset - {String} 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。</br>
+ *        dataset - {string} 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。</br>
  *        filterQueryParameter - {SuperMap.FilterParameter} 设置数据集中几何对象的过滤条件。只有满足此条件的几何对象才参与缓冲区分析。</br>
  *        resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
- *        isAttributeRetained - {Boolean} 是否保留进行缓冲区分析的对象的字段属性，默认为 true。当 isUnion 字段为 false 时该字段有效。</br>
- *        isUnion - {Boolean} 是否将缓冲区与源记录集中的对象合并后返回。对于面对象而言，要求源数据集中的面对象不相交。默认为 false。</br>
+ *        isAttributeRetained - {boolean} 是否保留进行缓冲区分析的对象的字段属性，默认为 true。当 isUnion 字段为 false 时该字段有效。</br>
+ *        isUnion - {boolean} 是否将缓冲区与源记录集中的对象合并后返回。对于面对象而言，要求源数据集中的面对象不相交。默认为 false。</br>
  *        bufferSetting - {SuperMap.BufferSetting} 设置缓冲区通用参数。</br>
  *
  * @extends SuperMap.BufferAnalystParameters
@@ -29345,7 +29200,7 @@ var DatasetBufferAnalystParameters = function (_BufferAnalystParamet) {
     _inherits(DatasetBufferAnalystParameters, _BufferAnalystParamet);
 
     /**
-     * @member SuperMap.DatasetBufferAnalystParameters.prototype.isAttributeRetained -{Boolean}
+     * @member SuperMap.DatasetBufferAnalystParameters.prototype.isAttributeRetained -{boolean}
      * @description 是否保留进行缓冲区分析的对象的字段属性，默认为 true。当 isUnion 字段为 false 时该字段有效。
      */
 
@@ -29382,7 +29237,7 @@ var DatasetBufferAnalystParameters = function (_BufferAnalystParamet) {
 
 
     /**
-     * @member SuperMap.DatasetBufferAnalystParameters.prototype.isUnion -{Boolean}
+     * @member SuperMap.DatasetBufferAnalystParameters.prototype.isUnion -{boolean}
      * @description 是否将缓冲区与源记录集中的对象合并后返回。对于面对象而言，要求源数据集中的面对象不相交。默认为 false。
      */
 
@@ -29393,7 +29248,7 @@ var DatasetBufferAnalystParameters = function (_BufferAnalystParamet) {
      */
 
     /**
-     * @member SuperMap.DatasetBufferAnalystParameters.prototype.dataset -{String}
+     * @member SuperMap.DatasetBufferAnalystParameters.prototype.dataset -{string}
      * @description 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。
      */
 
@@ -29472,55 +29327,38 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *              网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
  * @param options - {Object} 可选参数。如：<br>
  *        bounds - {SuperMap.Bounds} 数据集范围，该字段只读。<br>
- *        dataSourceName - {String} 数据源名称，该字段只读。<br>
- *        description - {String} 数据集的描述信息。<br>
- *        encodeType - {String} 数据集存储时的压缩编码方式，该字段只读。<br>
- *        isReadOnly - {Boolean} 数据集是否为只读。<br>
- *        name - {String} 数据集名称，该字段必须且只读。<br>
+ *        dataSourceName - {string} 数据源名称，该字段只读。<br>
+ *        description - {string} 数据集的描述信息。<br>
+ *        encodeType - {string} 数据集存储时的压缩编码方式，该字段只读。<br>
+ *        isReadOnly - {boolean} 数据集是否为只读。<br>
+ *        name - {string} 数据集名称，该字段必须且只读。<br>
  *        prjCoordSys - {SuperMap.Projection} 数据集的投影信息。<br>
- *        tableName - {String} 表名，该字段只读。<br>
- *        type - {String} 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
+ *        tableName - {string} 表名，该字段只读。<br>
+ *        type - {string} 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
  *                        网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
  */
 var DatasetInfo = function () {
 
-    /*
-     * @function SuperMap.DatasetInfo.prototype.constructor
-     * @description 数据集信息类构造函数。
-     * @param options - {Object} 可选参数。如：<br>
-     *        bounds - {SuperMap.Bounds} 数据集范围，该字段只读。<br>
-     *        dataSourceName - {String} 数据源名称，该字段只读。<br>
-     *        description - {String} 数据集的描述信息。<br>
-     *        encodeType - {String} 数据集存储时的压缩编码方式，该字段只读。<br>
-     *        isReadOnly - {Boolean} 数据集是否为只读。<br>
-     *        name - {String} 数据集名称，该字段必须且只读。<br>
-     *        prjCoordSys - {SuperMap.Projection} 数据集的投影信息。<br>
-     *        tableName - {String} 表名，该字段只读。<br>
-     *        type - {String} 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
-     *                        网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
-     */
-
-
     /**
-     * @member SuperMap.DatasetInfo.prototype.tableName -{String}
+     * @member SuperMap.DatasetInfo.prototype.tableName -{string}
      * @description 表名，该字段只读。
      */
 
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.name -{String}
+     * @member SuperMap.DatasetInfo.prototype.name -{string}
      * @description 数据集名称，该字段必须且只读。
      */
 
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.encodeType -{String}
+     * @member SuperMap.DatasetInfo.prototype.encodeType -{string}
      * @description 数据集存储时的压缩编码方式，该字段只读。
      */
 
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.dataSourceName -{String}
+     * @member SuperMap.DatasetInfo.prototype.dataSourceName -{string}
      * @description 数据源名称，该字段只读。
      */
     function DatasetInfo(options) {
@@ -29546,13 +29384,13 @@ var DatasetInfo = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.DatasetInfo.prototype.destroy
      * @description 释放资源,将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.type -{String}
+     * @member SuperMap.DatasetInfo.prototype.type -{string}
      * @description 数据集类型，该字段必设。主要有点数据集，线数据集，面数据集，文本数据集，复合数据集（CAD数据集）、
      *              网络数据集，栅格数据集(grid dataset)和影像数据集(image dataset)。
      */
@@ -29565,13 +29403,13 @@ var DatasetInfo = function () {
 
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.isReadOnly -{Boolean}
+     * @member SuperMap.DatasetInfo.prototype.isReadOnly -{boolean}
      * @description 数据集是否为只读。
      */
 
 
     /**
-     * @member SuperMap.DatasetInfo.prototype.description -{String}
+     * @member SuperMap.DatasetInfo.prototype.description -{string}
      * @description 数据集的描述信息。
      */
 
@@ -29657,11 +29495,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.DatasetOverlayAnalystParameters
  * @classdesc 数据集叠加分析参数类。
  * @param options - {Object} 可选参数。如：</br>
- *        operateDataset - {String} 叠加分析中操作数据集的名称。必设字段。</br>
+ *        operateDataset - {string} 叠加分析中操作数据集的名称。必设字段。</br>
  *        operateDatasetFields - {Array(String} 叠加分析中操作数据集保留在结果数据集中的字段名列表。</br>
  *        operateDatasetFilter - {SuperMap.FilterParameter} 设置操作数据集中空间对象过滤条件。</br>
  *        operateRegions - {Array(<SuperMap.Geometry>)} 操作区域。设置了操作区域后，仅对该区域内的对象进行分析。</br>
- *        sourceDataset - {String} 叠加分析中源数据集的名称。必设字段。</br>
+ *        sourceDataset - {string} 叠加分析中源数据集的名称。必设字段。</br>
  *        sourceDatasetFields - {Array(String} 叠加分析中源数据集保留在结果数据集中的字段名列表。</br>
  *        sourceDatasetFilter - {SuperMap.FilterParameter} 设置源数据集中空间对象过滤条件。</br>
  *        tolerance - {Integer} 容限。</br>
@@ -29746,7 +29584,7 @@ var DatasetOverlayAnalystParameters = function (_OverlayAnalystParame) {
 
 
     /**
-     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.sourceDataset -{String}
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.sourceDataset -{string}
      * @description 叠加分析中源数据集的名称。必设字段。
      */
 
@@ -29758,7 +29596,7 @@ var DatasetOverlayAnalystParameters = function (_OverlayAnalystParame) {
 
 
     /**
-     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.operateDataset -{String}
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.operateDataset -{string}
      * @description 叠加分析中操作数据集的名称。
      */
 
@@ -29866,9 +29704,9 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.DatasetSurfaceAnalystParameters
  * @classdesc 数据集表面分析参数类。该类对数据集表面分析所用到的参数进行设置。
  * @param options - {Object} 可选参数。如:</br>
- *        dataset - {String} 要用来做数据集表面分析的数据源中数据集的名称。</br>
+ *        dataset - {string} 要用来做数据集表面分析的数据源中数据集的名称。</br>
  *        filterQueryParameter - {SuperMap.FilterParameter} 获取或设置查询过滤条件参数。</br>
- *        zValueFieldName - {String} 获取或设置用于提取操作的字段名称。</br>
+ *        zValueFieldName - {string} 获取或设置用于提取操作的字段名称。</br>
  *        extractParameter - {SuperMap.SurfaceAnalystParametersSetting} 表面分析参数设置类。获取或设置表面分析参数。</br>
  *        resolution - {Integer} 获取或设置指定中间结果（栅格数据集）的分辨率。</br>
  *        resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
@@ -29906,13 +29744,13 @@ var DatasetSurfaceAnalystParameters = function (_SurfaceAnalystParame) {
 
 
     /**
-     * @member SuperMap.DatasetSurfaceAnalystParameters.prototype.zValueFieldName -{String}
+     * @member SuperMap.DatasetSurfaceAnalystParameters.prototype.zValueFieldName -{string}
      * @description 获取或设置用于提取操作的字段名称。
      * 提取等值线时，将使用该字段中的值，对点记录集中的点数据进行插值分析，得到栅格数据集（中间结果），接着从栅格数据集提取等值线。
      */
 
     /**
-     * @member SuperMap.DatasetSurfaceAnalystParameters.prototype.dataset -{String}
+     * @member SuperMap.DatasetSurfaceAnalystParameters.prototype.dataset -{string}
      * @description 要用来做数据集表面分析的数据源中数据集的名称。
      * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：Country@World。必设字段。
      */
@@ -30031,7 +29869,7 @@ var DatasetThiessenAnalystParameters = function (_ThiessenAnalystParam) {
 
 
     /**
-     * @member SuperMap.DatasetThiessenAnalystParameters.prototype.dataset -{String}
+     * @member SuperMap.DatasetThiessenAnalystParameters.prototype.dataset -{string}
      * @description 数据集名称待分析的数据集名称，请使用‘datasetName@datasourceName’格式来表示。
      */
 
@@ -30101,22 +29939,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * 对于用户创建的数据源连接信息对象，其内容都可以修改。
  * @param options - {Object} 参数。
  * Allowed options properties:</br>
- * alias - {String} 数据源别名。</br>
- * connect - {Boolean} 数据源是否自动连接数据。</br>
- * dataBase - {String} 数据源连接的数据库名。</br>
- * driver - {String} 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。</br>
+ * alias - {string} 数据源别名。</br>
+ * connect - {boolean} 数据源是否自动连接数据。</br>
+ * dataBase - {string} 数据源连接的数据库名。</br>
+ * driver - {string} 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。</br>
  * engineType - {EngineType} 数据源连接的引擎类型。</br>
- * exclusive - {Boolean} 是否以独占方式打开数据源。</br>
- * OpenLinkTable - {Boolean} 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。</br>
- * password - {String} 登录数据源连接的数据库或文件的密码。</br>
- * readOnly - {Boolean} 是否以只读方式打开数据源。</br>
- * server - {String} 数据库服务器名或 SDB 文件名。</br>
- * user - {String} 登录数据库的用户名。</br>
+ * exclusive - {boolean} 是否以独占方式打开数据源。</br>
+ * OpenLinkTable - {boolean} 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable 打开。</br>
+ * password - {string} 登录数据源连接的数据库或文件的密码。</br>
+ * readOnly - {boolean} 是否以只读方式打开数据源。</br>
+ * server - {string} 数据库服务器名或 SDB 文件名。</br>
+ * user - {string} 登录数据库的用户名。</br>
  */
 var DatasourceConnectionInfo = function () {
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.server -{String}
+     * @member SuperMap.DatasourceConnectionInfo.prototype.server -{string}
      * @description 数据库服务器名、文件名或服务地址。
      * 1.对于SDB和UDB文件，为其文件的绝对路径。注意：当绝对路径的长度超过UTF-8编码格式的260字节长度，该数据源无法打开。
      * 2.对于Oracle数据库，其服务器名为其TNS服务名称。
@@ -30132,19 +29970,19 @@ var DatasourceConnectionInfo = function () {
 
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.password -{String}
+     * @member SuperMap.DatasourceConnectionInfo.prototype.password -{string}
      * @description 登录数据源连接的数据库或文件的密码。
      */
 
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.exclusive-{Boolean}
+     * @member SuperMap.DatasourceConnectionInfo.prototype.exclusive-{boolean}
      * @description 是否以独占方式打开数据源。
      */
 
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.driver -{String}
+     * @member SuperMap.DatasourceConnectionInfo.prototype.driver -{string}
      * @description 使用 ODBC(Open Database Connectivity，开放数据库互连)的数据库的驱动程序名。
      * 其中，对于SQL Server 数据库与 iServer 发布的 WMTS 服务，此为必设参数。
      * 对于SQL Server 数据库，它使用 ODBC 连接，所设置的驱动程序名为 "SQL Server" 或 "SQL Native Client"；
@@ -30153,7 +29991,7 @@ var DatasourceConnectionInfo = function () {
 
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.connect -{Boolean}
+     * @member SuperMap.DatasourceConnectionInfo.prototype.connect -{boolean}
      * @description 数据源是否自动连接数据。
      */
     function DatasourceConnectionInfo(options) {
@@ -30184,19 +30022,19 @@ var DatasourceConnectionInfo = function () {
 
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.user -{String}
+     * @member SuperMap.DatasourceConnectionInfo.prototype.user -{string}
      * @description 登录数据库的用户名。
      */
 
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.readOnly -{Boolean}
+     * @member SuperMap.DatasourceConnectionInfo.prototype.readOnly -{boolean}
      * @description 是否以只读方式打开数据源。
      */
 
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.OpenLinkTable -{Boolean}
+     * @member SuperMap.DatasourceConnectionInfo.prototype.OpenLinkTable -{boolean}
      * @description 是否把数据库中的其他非 SuperMap 数据表作为 LinkTable打开。
      */
 
@@ -30208,12 +30046,12 @@ var DatasourceConnectionInfo = function () {
 
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.dataBase -{String}
+     * @member SuperMap.DatasourceConnectionInfo.prototype.dataBase -{string}
      * @description 数据源连接的数据库名。
      */
 
     /**
-     * @member SuperMap.DatasourceConnectionInfo.prototype.alias -{String}
+     * @member SuperMap.DatasourceConnectionInfo.prototype.alias -{string}
      * @description 数据源别名。
      */
 
@@ -30283,7 +30121,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc
  *  密度分析服务类，密度分析可计算每个输出栅格像元周围圆形邻域内输入的点或线对象的密度。
  *  密度分析，在某种意义上来说，相当于在表面上将输入的点线对象的测量值散开来，将每个点或线对象的测量量分布在整个研究区域，并计算输出栅格中每个像元的密度值。目前提供1种密度分析：核密度分析（Kernel）。
- * @param  url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @param  url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param options - {Object} 可选参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.SpatialAnalystBase
@@ -30323,7 +30161,7 @@ var DensityAnalystService = function (_SpatialAnalystBase) {
 
 
     /**
-     * @member SuperMap.DensityAnalystService.prototype.mode -{String}
+     * @member SuperMap.DensityAnalystService.prototype.mode -{string}
      * @description 密度分析类型。
      */
 
@@ -30409,37 +30247,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.DensityKernelAnalystParameters
  * @classdesc 核密度分析参数类
  * @param options - {Object} 可选参数。如:</br>
- *        dataset - {String} 要用来做核密度分析数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
+ *        dataset - {string} 要用来做核密度分析数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
  *        bounds - {SuperMap.Bounds} 核密度分析的范围，用于确定结果栅格数据集的范围。 如果缺省，则默认为原数据集的范围。</br>
- *        searchRadius - {Number} 栅格邻域内用于计算密度的查找半径，单位与当前数据集相同。默认值为当前数据集的长宽中的最大值除30。</br>
- *        fieldName - {String} 用于进行核密度分析的测量值的字段名称，核密度分析不支持文本类型的字段，必设字段。</br>
- *        resultGridDatasetResolution - {Number} 密度分析结果栅格数据的分辨率，单位与当前数据集相同。默认值为当前数据集的长宽中的最小值除500。</br>
- *        targetDatasource - {String} 指定的存储结果数据集的数据源，默认为当前分析的数据集所在的数据源。</br>
- *        resultGridName - {Number} 指定结果数据集名称，必设字段。</br>
- *        deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
+ *        searchRadius - {number}栅格邻域内用于计算密度的查找半径，单位与当前数据集相同。默认值为当前数据集的长宽中的最大值除30。</br>
+ *        fieldName - {string} 用于进行核密度分析的测量值的字段名称，核密度分析不支持文本类型的字段，必设字段。</br>
+ *        resultGridDatasetResolution - {number}密度分析结果栅格数据的分辨率，单位与当前数据集相同。默认值为当前数据集的长宽中的最小值除500。</br>
+ *        targetDatasource - {string} 指定的存储结果数据集的数据源，默认为当前分析的数据集所在的数据源。</br>
+ *        resultGridName - {number}指定结果数据集名称，必设字段。</br>
+ *        deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
  */
 var DensityKernelAnalystParameters = function () {
 
     /**
-     * @member SuperMap.DensityKernelAnalystParameters.prototype.resultGridName -{String}
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.resultGridName -{string}
      * @description 指定结果数据集名称，必设字段。
      */
 
 
     /**
-     * @member SuperMap.DensityKernelAnalystParameters.prototype.searchRadius -{Number}
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.searchRadius -{number}
      * @description 栅格邻域内用于计算密度的查找半径，单位与当前数据集相同。默认值为当前数据集的长宽中的最大值除30。
      */
 
 
     /**
-     * @member SuperMap.DensityKernelAnalystParameters.prototype.fieldName -{String}
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.fieldName -{string}
      * @description 用于进行核密度分析的测量值的字段名称，核密度分析不支持文本类型的字段，必设字段。
      */
 
 
     /**
-     * @member SuperMap.DensityKernelAnalystParameters.prototype.dataset -{String}
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.dataset -{string}
      * @description 要用来做核密度分析数据源中数据集的名称。
      * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：Railway@Changchun。必设字段。
      * 注：核密度分析支持点数据集和线数据集。
@@ -30470,19 +30308,19 @@ var DensityKernelAnalystParameters = function () {
 
 
     /**
-     * @member SuperMap.DensityKernelAnalystParameters.prototype.deleteExistResultDataset -{Boolean}
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.deleteExistResultDataset -{boolean}
      * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
      */
 
 
     /**
-     * @member SuperMap.DensityKernelAnalystParameters.prototype.targetDatasource -{String}
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.targetDatasource -{string}
      * @description 指定的存储结果数据集的数据源，默认为当前分析的数据集所在的数据源。
      */
 
 
     /**
-     * @member SuperMap.DensityKernelAnalystParameters.prototype.resultGridDatasetResolution -{Number}
+     * @member SuperMap.DensityKernelAnalystParameters.prototype.resultGridDatasetResolution -{number}
      * @description 密度分析结果栅格数据的分辨率，单位与当前数据集相同。默认值为当前数据集的长宽中的最小值除500。
      */
 
@@ -30555,14 +30393,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 数据服务中数据集添加、修改、删除参数类。
  * @param options - {Object} 可選参数。如:</br>
  *        features - {Array(Object)} 当前需要创建或者是修改的要素集。</br>
- *        returnContent - {Boolean} 是返回创建要素的ID数组还是返回featureResult资源的URI。</br>
+ *        returnContent - {boolean} 是返回创建要素的ID数组还是返回featureResult资源的URI。</br>
  *        editType - {SuperMap.EditType} POST动作类型(ADD、UPDATE、DELETE)，默认为 SuperMap.EditType.ADD。</br>
  *        IDs - {Array(String) 或 Array(Integer)} 删除要素时的要素的ID数组。</br>
  */
 var EditFeaturesParameters = function () {
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.returnContent -{Boolean}
+     * @member SuperMap.BuildCacheJobParameter.prototype.returnContent -{boolean}
      * @description 要素添加时，isUseBatch 不传或传为 false 的情况下有效。
      *true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
      */
@@ -30575,7 +30413,7 @@ var EditFeaturesParameters = function () {
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.dataSetName -{String}
+     * @member SuperMap.BuildCacheJobParameter.prototype.dataSetName -{string}
      * @description 当前需要创建或者是修改的要素的数据集。
      */
     function EditFeaturesParameters(options) {
@@ -30603,7 +30441,7 @@ var EditFeaturesParameters = function () {
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.isUseBatch -{Boolean}
+     * @member SuperMap.BuildCacheJobParameter.prototype.isUseBatch -{boolean}
      * @description 是否使用批量添加要素功能，要素添加时有效。批量添加能够提高要素编辑效率。true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
      */
 
@@ -30621,7 +30459,7 @@ var EditFeaturesParameters = function () {
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.dataSourceName -{String}
+     * @member SuperMap.BuildCacheJobParameter.prototype.dataSourceName -{string}
      * @description 当前需要创建或者是修改的要素的数据源
      */
 
@@ -30723,7 +30561,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.EditFeaturesService
  * @classdesc 数据服务中数据集添加、更新、删除服务类。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 服务端的数据服务资源地址。请求数据服务中数据集编辑服务，URL 应为：</br>
+ * @param url - {string} 服务端的数据服务资源地址。请求数据服务中数据集编辑服务，URL 应为：</br>
  * http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/datasources/name/{数据源名}/datasets/name/{数据集名} 。</br>
  * 例如：http://localhost:8090/iserver/services/data-jingjin/rest/data/datasources/name/Jingjin/datasets/name/Landuse_R
  * @param options - {Object} 参数。如:</br>
@@ -30742,7 +30580,7 @@ var EditFeaturesService = function (_CommonServiceBase) {
     _inherits(EditFeaturesService, _CommonServiceBase);
 
     /**
-     * @member SuperMap.EditFeaturesService.prototype.returnContent -{Boolean}
+     * @member SuperMap.EditFeaturesService.prototype.returnContent -{boolean}
      * @description要素添加时，isUseBatch 不传或传为 false 的情况下有效。true 表示直接返回新创建的要素的 ID 数组;false 表示返回创建的 featureResult 资源的 URI。默认不传时为 false。
      */
     function EditFeaturesService(url, options) {
@@ -30774,7 +30612,7 @@ var EditFeaturesService = function (_CommonServiceBase) {
 
 
     /**
-     * @member SuperMap.EditFeaturesService.prototype.isUseBatch -{Boolean}
+     * @member SuperMap.EditFeaturesService.prototype.isUseBatch -{boolean}
      * @description 是否使用批量添加要素功能，要素添加时有效。
      *           批量添加能够提高要素编辑效率。
      *           true 表示批量添加；false 表示不使用批量添加。默认不传时为 false。
@@ -30888,19 +30726,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *               最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
  * @extends SuperMap.FacilityAnalyst3DParameters
  * @param options - {Object} 可选参数。如：<br>
- *         edgeID - {Number} 指定的弧段ID。<br>
+ *         edgeID - {number}指定的弧段ID。<br>
  *         nodeID - {Integer} 指定的结点ID。<br>
- *         weightName -{String} 指定的权值字段信息对象的名称。<br>
- *         isUncertainDirectionValid -{Boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
+ *         weightName -{string} 指定的权值字段信息对象的名称。<br>
+ *         isUncertainDirectionValid -{boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
  *                                              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找
  */
 var FacilityAnalystSinks3DParameters = function (_FacilityAnalyst3DPar) {
     _inherits(FacilityAnalystSinks3DParameters, _FacilityAnalyst3DPar);
 
-    /*
-     * Constructor: SuperMap.FacilityAnalystSinks3DParameters
-     * 最近设施分析参数类构造函数。
-     */
     function FacilityAnalystSinks3DParameters(options) {
         _classCallCheck(this, FacilityAnalystSinks3DParameters);
 
@@ -30977,7 +30811,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *		   "processFailed": facilityAnalystSinks3DError
  *		   }
  * });
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *              例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。<br>
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -31086,10 +30920,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *               最近设施查找实际上也是一种路径分析，因此对路径分析起作用的障碍边、障碍点、转向表、耗费等属性在最近设施分析时同样可设置。
  * @extends SuperMap.FacilityAnalyst3DParameters
  * @param options - {Object} 可选参数。如：<br>
- *         edgeID - {Number} 指定的弧段ID。<br>
+ *         edgeID - {number}指定的弧段ID。<br>
  *         nodeID - {Integer} 指定的结点ID。<br>
- *         weightName -{String} 指定的权值字段信息对象的名称。<br>
- *         isUncertainDirectionValid -{Boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
+ *         weightName -{string} 指定的权值字段信息对象的名称。<br>
+ *         isUncertainDirectionValid -{boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
  *                                              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找
  */
 var FacilityAnalystSources3DParameters = function (_FacilityAnalyst3DPar) {
@@ -31171,7 +31005,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *               该类负责将客户端指定的最近设施分析参数传递给服务端，并接收服务端返回的结果数据。
  *               最近设施分析结果通过该类支持的事件的监听函数参数获取
  * @extends SuperMap.CommonServiceBase
- * @param  url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param  url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -31266,28 +31100,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @extends 上游/下游关键设施查找资源参数类。
  * @param options - {Object} 可选参数。如：
  *        sourceNodeIDs - {Array（Number）} 指定的设施点ID数组，可以为空。
- *        edgeID - {Number} 指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。
- *        nodeID - {Number} 指定的结点ID （注：edgeID 与 nodeID 不能同时使用）。
- *        isUncertainDirectionValid - {Boolean} 指定不确定流向是否有效；默认false，无效。
- *        queryType - {Number} 分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）
+ *        edgeID - {number}指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。
+ *        nodeID - {number}指定的结点ID （注：edgeID 与 nodeID 不能同时使用）。
+ *        isUncertainDirectionValid - {boolean} 指定不确定流向是否有效；默认false，无效。
+ *        queryType - {number}分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）
  */
 var FacilityAnalystStreamParameters = function () {
 
-    /*
-     * Constructor: SuperMap.FacilityAnalystStreamParameters
-     * 最近设施分析参数类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.FacilityAnalystStreamParameters.prototype.isUncertainDirectionValid -{Boolean}
+     * @member SuperMap.FacilityAnalystStreamParameters.prototype.isUncertainDirectionValid -{boolean}
      * @description 指定不确定流向是否有效，默认为false。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
      *               指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
      */
 
 
     /**
-     * @member SuperMap.FacilityAnalystStreamParameters.prototype.edgeID -{Number}
+     * @member SuperMap.FacilityAnalystStreamParameters.prototype.edgeID -{number}
      * @description 指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。
      */
     function FacilityAnalystStreamParameters(options) {
@@ -31308,25 +31136,25 @@ var FacilityAnalystStreamParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.FacilityAnalystStreamParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.FacilityAnalystStreamParameters.prototype.queryType -{Number}
+     * @member SuperMap.FacilityAnalystStreamParameters.prototype.queryType -{number}
      * @description 分析类型，只能是 0 (上游关键设施查询) 或者是 1（下游关键设施查询）。
      */
 
 
     /**
-     * @member SuperMap.FacilityAnalystStreamParameters.prototype.nodeID -{Number}
+     * @member SuperMap.FacilityAnalystStreamParameters.prototype.nodeID -{number}
      * @description 指定的结点ID （注：edgeID 与 nodeID 不能同时使用）。
      */
 
 
     /**
-     * @member SuperMap.FacilityAnalystStreamParameters.prototype.sourceNodeIDs -{Array<Number>}
+     * @member SuperMap.FacilityAnalystStreamParameters.prototype.sourceNodeIDs -{Array<number>}
      * @description 指定的设施点ID数组,可以为空。
      */
 
@@ -31390,7 +31218,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.FacilityAnalystStreamService
  * @extends 上游/下游 关键设施查找资源服务类;即查找给定弧段或节点的上游/下游中的关键设施结点，返回关键结点 ID 数组及其下游弧段 ID 数组。
  * @extends SuperMap.NetworkAnalystServiceBase
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如: "http://localhost:8090/iserver/services/test/rest/networkanalyst/WaterNet@FacilityNet";
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -31505,20 +31333,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 下游追踪资源参数类
  * @extends SuperMap.FacilityAnalyst3DParameters
  * @param options - {Object} 可选参数。如：<br>
- *        edgeID - {Number} 指定的弧段ID。<br>
+ *        edgeID - {number}指定的弧段ID。<br>
  *        nodeID - {Integer} 指定的结点ID。<br>
- *        weightName -{String} 指定的权值字段信息对象的名称。<br>
- *        isUncertainDirectionValid -{Boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
+ *        weightName -{string} 指定的权值字段信息对象的名称。<br>
+ *        isUncertainDirectionValid -{boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
  *                                              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
 
  */
 var FacilityAnalystTracedown3DParameters = function (_FacilityAnalyst3DPar) {
     _inherits(FacilityAnalystTracedown3DParameters, _FacilityAnalyst3DPar);
 
-    /*
-     * Constructor: SuperMap.FacilityAnalystTracedown3DParameters
-     * 下游追踪资源参数类构造函数。
-     */
     function FacilityAnalystTracedown3DParameters(options) {
         _classCallCheck(this, FacilityAnalystTracedown3DParameters);
 
@@ -31587,24 +31411,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.FacilityAnalystTracedown3DService
  * @classdesc 下游追踪资源服务类
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ *        eventListeners - {Object} 需要被注册的监听器对象。
  */
 var FacilityAnalystTracedown3DService = function (_CommonServiceBase) {
     _inherits(FacilityAnalystTracedown3DService, _CommonServiceBase);
 
-    /*
-     * @function SuperMap.FacilityAnalystTracedown3DService.prototype.constructor
-     * @description 下游追踪资源服务类构造函数
-     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
-     *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
-     *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
-     * @param options - {Object} 互服务时所需可选参数。如：<br>
-     *         eventListeners - {Object} 需要被注册的监听器对象。
-     */
     function FacilityAnalystTracedown3DService(url, options) {
         _classCallCheck(this, FacilityAnalystTracedown3DService);
 
@@ -31701,19 +31516,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 上游追踪资源参数类
  * @extends SuperMap.FacilityAnalyst3DParameters
  * @param options - {Object} 可选参数。如：<br>
- *         edgeID - {Number} 指定的弧段ID。<br>
+ *         edgeID - {number}指定的弧段ID。<br>
  *         nodeID - {Integer} 指定的结点ID。<br>
- *         weightName -{String} 指定的权值字段信息对象的名称。<br>
- *         isUncertainDirectionValid -{Boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
+ *         weightName -{string} 指定的权值字段信息对象的名称。<br>
+ *         isUncertainDirectionValid -{boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；<br>
  *                                              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。
  */
 var FacilityAnalystTraceup3DParameters = function (_FacilityAnalyst3DPar) {
     _inherits(FacilityAnalystTraceup3DParameters, _FacilityAnalyst3DPar);
 
-    /*
-     * Constructor: SuperMap.FacilityAnalystTraceup3DParameters
-     * 上游追踪资源参数类构造函数。
-     */
     function FacilityAnalystTraceup3DParameters(options) {
         _classCallCheck(this, FacilityAnalystTraceup3DParameters);
 
@@ -31782,7 +31593,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.FacilityAnalystTraceup3DService
  * @classdesc 上游追踪资源服务类
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -31794,7 +31605,7 @@ var FacilityAnalystTraceup3DService = function (_CommonServiceBase) {
     /*
      * @function SuperMap.FacilityAnalystTraceup3DService.constructor
      * @description 上游追踪资源服务类构造函数。
-     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+     * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
      *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
      *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
      * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -31896,21 +31707,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 上游关键设施查找资源参数类
  * @extends SuperMap.FacilityAnalyst3DParameters
  * @param options - {Object} 可选参数。如：<br>
- *        edgeID - {Number} 指定的弧段ID。<br>
+ *        edgeID - {number}指定的弧段ID。<br>
  *        nodeID - {Integer} 指定的结点ID。<br>
- *        weightName -{String} 指定的权值字段信息对象的名称。<br>
- *        isUncertainDirectionValid -{Boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
+ *        weightName -{string} 指定的权值字段信息对象的名称。<br>
+ *        isUncertainDirectionValid -{boolean} 指定不确定流向是否有效。指定为 true，表示不确定流向有效，遇到不确定流向时分析继续进行；
  *                                              指定为 false，表示不确定流向无效，遇到不确定流向将停止在该方向上继续查找。<br>
  *        sourceNodeIDs - {Array<number>} 指定的设施点ID数组
  */
 var FacilityAnalystUpstream3DParameters = function (_FacilityAnalyst3DPar) {
     _inherits(FacilityAnalystUpstream3DParameters, _FacilityAnalyst3DPar);
 
-    /*
-     * Constructor: SuperMap.FacilityAnalystUpstream3DParameters
-     * 上游关键设施查找资源参数类构造函数。
-     *
-     */
     function FacilityAnalystUpstream3DParameters(options) {
         _classCallCheck(this, FacilityAnalystUpstream3DParameters);
 
@@ -31930,7 +31736,7 @@ var FacilityAnalystUpstream3DParameters = function (_FacilityAnalyst3DPar) {
 
 
     /**
-     * @member SuperMap.FacilityAnalystUpstream3DParameters.prototype.sourceNodeIDs -{Array<Number>}
+     * @member SuperMap.FacilityAnalystUpstream3DParameters.prototype.sourceNodeIDs -{Array<number>}
      * @description 指定的设施点ID数组
      * @api
      */
@@ -31991,7 +31797,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.FacilityAnalystUpstream3DService
  * @classdesc 上游关键设施查找资源服务类
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -32101,12 +31907,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.FieldStatisticService
  * @classdesc 字段查询统计服务类。用来完成对指定数据集指定字段的查询统计分析，即求平均值，最大值等。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为:http://localhost:8090/iserver/services/data-world/rest/data 即可。
+ * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为:http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param options - {Object} 参数。
  *        eventListeners - {Object} 需要被注册的监听器对象。</br>
- *        datasource - {String} 数据集所在的数据源名称。</br>
- *        dataset - {String} 数据集名称。</br>
- *        field - {String} 查询统计的目标字段名称。</br>
+ *        datasource - {string} 数据集所在的数据源名称。</br>
+ *        dataset - {string} 数据集名称。</br>
+ *        field - {string} 查询统计的目标字段名称。</br>
  *        statisticMode - {StatisticMode} 字段查询统计的方法类型。</br>
  * @example
  * (start code)
@@ -32126,13 +31932,13 @@ var FieldStatisticService = function (_CommonServiceBase) {
     _inherits(FieldStatisticService, _CommonServiceBase);
 
     /**
-     * @member SuperMap.FieldStatisticService.prototype.field -{String}
+     * @member SuperMap.FieldStatisticService.prototype.field -{string}
      * @description 查询统计的目标字段名称。
      */
 
 
     /**
-     * @member SuperMap.FieldStatisticService.prototype.datasource -{String}
+     * @member SuperMap.FieldStatisticService.prototype.datasource -{string}
      * @description 数据集所在的数据源名称。
      */
     function FieldStatisticService(url, options) {
@@ -32158,13 +31964,13 @@ var FieldStatisticService = function (_CommonServiceBase) {
 
 
     /**
-     * @member SuperMap.FieldStatisticService.prototype.statisticMode -{String}
+     * @member SuperMap.FieldStatisticService.prototype.statisticMode -{string}
      * @description 字段查询统计的方法类型。
      */
 
 
     /**
-     * @member SuperMap.FieldStatisticService.prototype.dataset -{String}
+     * @member SuperMap.FieldStatisticService.prototype.dataset -{string}
      * @description 数据集名称。
      */
 
@@ -32240,12 +32046,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.FieldStatisticsParameters
  * @classdesc 字段统计信息查询参数类。
  * @param options - {Object} 参数。如：<br>
- *        fieldName - {String} 字段名。<br>
+ *        fieldName - {string} 字段名。<br>
  *        statisticMode -{String<SuperMap.StatisticMode>}|{Array<String<SuperMap.StatisticMode>} 字段统计方法类型。
  */
 var FieldStatisticsParameters = function () {
     /**
-     * @member SuperMap.FieldStatisticsParameters.prototype.fieldName -{String}
+     * @member SuperMap.FieldStatisticsParameters.prototype.fieldName -{string}
      * @description 字段名
      */
     function FieldStatisticsParameters(options) {
@@ -32261,7 +32067,7 @@ var FieldStatisticsParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.FieldStatisticsParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -32321,21 +32127,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         event - {Point/Integer} 事件点，一般为需要获得服务设施服务的事件位置，必设字段。
  *         expectFacilityCount - {Integer} 要查找的设施点数量。默认值为1。
  *         facilities - {Array<{SuperMap.Point}|Number>} 设施点集合，一般为提供服务的服务设施位置，必设字段。
- *         fromEvent - {Boolean} 是否从事件点到设施点进行查找。
- *         isAnalyzeById - {Boolean} 事件点和设施点是否通过节点 ID 号来指定，默认为 false，即通过坐标点指定事件点和设施点。
- *         maxWeight - {Number} 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。
+ *         fromEvent - {boolean} 是否从事件点到设施点进行查找。
+ *         isAnalyzeById - {boolean} 事件点和设施点是否通过节点 ID 号来指定，默认为 false，即通过坐标点指定事件点和设施点。
+ *         maxWeight - {number}查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。
  *         parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 var FindClosestFacilitiesParameters = function () {
 
-    /*
-     * Constructor: SuperMap.FindClosestFacilitiesParameters
-     * 最近设施分析参数类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.maxWeight -{Number}
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.maxWeight -{number}
      * @description 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。
      *               例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。
      *               那么需要将网络分析参数中 parameter.weightFieldName 设置为表示时间的字段，然后设置查找范围的半径值为10。
@@ -32343,7 +32143,7 @@ var FindClosestFacilitiesParameters = function () {
 
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.fromEvent -{Boolean}
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.fromEvent -{boolean}
      * @description 是否从事件点到设施点进行查找。
      *               最近设施分析主要是通过设施点和事件点之间最优的路线来分析在一定范围内哪个或哪些设施与事件点有最优路线的关系。
      *               这个行走线路是通过网络图层进行网络分析算法计算出来的两点间的最优路线。
@@ -32354,7 +32154,7 @@ var FindClosestFacilitiesParameters = function () {
 
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.expectFacilityCount -{Number}
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.expectFacilityCount -{number}
      * @description 要查找的设施点数量。默认值为1。
      */
     function FindClosestFacilitiesParameters(options) {
@@ -32378,7 +32178,7 @@ var FindClosestFacilitiesParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.FindClosestFacilitiesParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -32392,7 +32192,7 @@ var FindClosestFacilitiesParameters = function () {
 
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.isAnalyzeById -{Boolean}
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.isAnalyzeById -{boolean}
      * @description 事件点和设施点是否通过节点 ID 号来指定，默认为 false，即通过坐标点指定事件点和设施点。
      */
 
@@ -32490,7 +32290,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *		   "processFailed": findClosestFacilitiesError
  *		   }
  * });
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -32502,7 +32302,7 @@ var FindClosestFacilitiesService = function (_NetworkAnalystServic) {
     /*
      * @function SuperMap.FindClosestFacilitiesService.prototype.constructor
      * @description 最近设施分析服务类构造函数。
-     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+     * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
      *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
      *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
      * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -32564,7 +32364,7 @@ var FindClosestFacilitiesService = function (_NetworkAnalystServic) {
         /**
          * @function SuperMap.FindClosestFacilitiesService.prototype.getJson
          * @description 将对象转化为JSON字符串。
-         * @param isAnalyzeById - {Boolean}
+         * @param isAnalyzeById - {boolean}
          * @param params - {Array}
          * @return {Object} 转化后的JSON字符串。
          */
@@ -32660,27 +32460,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 选址分区分析参数类。
  * @param options - {Object} 可选参数。如：<br>
  *        expectedSupplyCenterCount - {Integer} 期望用于最终设施选址的资源供给中心数量，必设字段。<br>
- *        isFromCenter - {Boolean} 是否从中心点开始分配资源。默认为 false。<br>
+ *        isFromCenter - {boolean} 是否从中心点开始分配资源。默认为 false。<br>
  *        supplyCenters - {Array<SupplyCenter>} 资源供给中心集合，必设字段。<br>
- *        turnWeightField - {String} 转向权值字段的名称。<br>
- *        weightName - {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，必设字段。
+ *        turnWeightField - {string} 转向权值字段的名称。<br>
+ *        weightName - {string} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，必设字段。
  */
 var FindLocationParameters = function () {
 
-    /*
-     * Constructor: SuperMap.FindLocationParameters
-     * 服务区分析参数类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.FindLocationParameters.prototype.turnWeightField -{String}
+     * @member SuperMap.FindLocationParameters.prototype.turnWeightField -{string}
      * @description 转向权值字段的名称。
      */
 
 
     /**
-     * @member SuperMap.FindLocationParameters.prototype.isFromCenter -{Boolean}
+     * @member SuperMap.FindLocationParameters.prototype.isFromCenter -{boolean}
      * @description 是否从中心点开始分配资源。默认为 false。
      *                由于网路数据中的弧段具有正反阻力，即弧段的正向阻力值与其反向阻力值可能不同，
      *                因此，在进行分析时，从资源供给中心开始分配资源到需求点与从需求点向资源供给中心分配这两种分配形式下，所得的分析结果会不同。
@@ -32702,13 +32496,13 @@ var FindLocationParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.FindLocationParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.FindLocationParameters.prototype.weightName -{String}
+     * @member SuperMap.FindLocationParameters.prototype.weightName -{string}
      * @description 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，必设字段。
      */
 
@@ -32722,7 +32516,7 @@ var FindLocationParameters = function () {
 
 
     /**
-     * @member SuperMap.FindLocationParameters.prototype.expectedSupplyCenterCount -{Number}
+     * @member SuperMap.FindLocationParameters.prototype.expectedSupplyCenterCount -{number}
      * @description 期望用于最终设施选址的资源供给中心数量，必设字段。
      *               当输入值为0时，最终设施选址的资源供给中心数量默认为覆盖分析区域内的所需最少的供给中心数。
      */
@@ -32808,7 +32602,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *		   }
  * });
  * (end)
- * @param url - {String} 服务的访问地址。<br>
+ * @param url - {string} 服务的访问地址。<br>
  *                        如 http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
@@ -32954,18 +32748,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 多旅行商分析参数类
  * @param options - {Object} 可选参数。如：
  *        centers - {Point/Integer} 配送中心集合，必设字段。<br>
- *        hasLeastTotalCost - {Boolean} 配送模式是否为总花费最小方案。默认为 false。<br>
- *        isAnalyzeById - {Boolean} 是否通过节点 ID 号来指定配送中心点和配送目的点，默认为 false，即通过坐标点指定。<br>
+ *        hasLeastTotalCost - {boolean} 配送模式是否为总花费最小方案。默认为 false。<br>
+ *        isAnalyzeById - {boolean} 是否通过节点 ID 号来指定配送中心点和配送目的点，默认为 false，即通过坐标点指定。<br>
  *        nodes - {Array<{SuperMap.Point}|Number>} 配送目标集合，必设字段。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 var FindMTSPPathsParameters = function () {
-
-    /*
-     * Constructor: SuperMap.FindMTSPPathsParameters
-     * 多旅行商分析参数类构造函数。
-     */
-
 
     /**
      * @member SuperMap.FindMTSPPathsParameters.prototype.nodes -{Array<{SuperMap.Point}|Number>}
@@ -32976,7 +32764,7 @@ var FindMTSPPathsParameters = function () {
 
 
     /**
-     * @member SuperMap.FindMTSPPathsParameters.prototype.hasLeastTotalCost -{Boolean}
+     * @member SuperMap.FindMTSPPathsParameters.prototype.hasLeastTotalCost -{boolean}
      * @description 配送模式是否为总花费最小方案。默认为 false。<br>
      *               若为 true，则按照总花费最小的模式进行配送，此时可能会出现某几个配送中心点配送的花费较多而其他配送中心点的花费很少的情况。<br>
      *               若为 false，则为局部最优，此方案会控制每个配送中心点的花费，使各个中心点花费相对平均，此时总花费不一定最小。
@@ -33000,7 +32788,7 @@ var FindMTSPPathsParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.FindMTSPPathsParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -33014,7 +32802,7 @@ var FindMTSPPathsParameters = function () {
 
 
     /**
-     * @member SuperMap.FindMTSPPathsParameters.prototype.isAnalyzeById -{Boolean}
+     * @member SuperMap.FindMTSPPathsParameters.prototype.isAnalyzeById -{boolean}
      * @description 是否通过节点 ID 号来指定配送中心点和配送目的点，默认为 false，即通过坐标点指定。
      */
 
@@ -33106,7 +32894,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *		   "processFailed": findMTSPPathsError
  *		   }
  * });
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                       http://{服务器地址}:{服务端口号}/iserver/services/网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -33171,7 +32959,7 @@ var FindMTSPPathsService = function (_NetworkAnalystServic) {
         /**
          * @function SuperMap.FindMTSPPathsService.prototype.getJson
          * @description 将对象转化为JSON字符串。
-         * @param isAnalyzeById - {Boolean} 是否通过id分析
+         * @param isAnalyzeById - {boolean} 是否通过id分析
          * @param params - {Array} 需要转换的数字
          * @return {Object} 转化后的JSON字符串。
          */
@@ -33273,18 +33061,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *              计算最佳路径除了受阻抗影响外，还受转向字段的影响。转向值通过 SuperMap.TransportationAnalystParameter.turnWeightField 设置。<br>
  *
  * @param options - {Object} 可选参数。如：<br>
- *        isAnalyzeById - {Boolean} 是否通过节点 ID 指定路径分析的结点。<br>
- *        hasLeastEdgeCount - {Boolean} 是否按照弧段数最少的进行最佳路径分析。<br>
+ *        isAnalyzeById - {boolean} 是否通过节点 ID 指定路径分析的结点。<br>
+ *        hasLeastEdgeCount - {boolean} 是否按照弧段数最少的进行最佳路径分析。<br>
  *        nodes - {Array} 最佳路径分析经过的结点或设施点数组，必设字段。该字段至少包含两个点。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 var FindPathParameters = function () {
-
-    /*
-     * Constructor: SuperMap.FindPathParameters
-     * 最佳路径分析参数类构造函数。
-     */
-
 
     /**
      * @member SuperMap.FindPathParameters.prototype.nodes -{Array<{SuperMap.Point}|Number>}
@@ -33295,7 +33077,7 @@ var FindPathParameters = function () {
 
 
     /**
-     * @member SuperMap.FindPathParameters.prototype.isAnalyzeById -{Boolean}
+     * @member SuperMap.FindPathParameters.prototype.isAnalyzeById -{boolean}
      * @description 是否通过节点 ID 指定路径分析的结点，默认为 false。<br>
      *               指定路径分析经过的结点或设施点有两种方式：输入结点 ID 号或直接输入点坐标。<br>
      *               当该字段为 true 时，表示通过结点 ID 指定途经点，即 SuperMap.FindPathParameters.nodes = [ID1,ID2,...]；<br>
@@ -33319,7 +33101,7 @@ var FindPathParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.FindPathParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -33331,7 +33113,7 @@ var FindPathParameters = function () {
 
 
     /**
-     * @member SuperMap.FindPathParameters.prototype.hasLeastEdgeCount -{Boolean}
+     * @member SuperMap.FindPathParameters.prototype.hasLeastEdgeCount -{boolean}
      * @description 是否按照弧段数最少的进行最佳路径分析。<br>
      *               true 表示按照弧段数最少进行分析，返回弧段数最少的路径中一个阻抗最小的最佳路径；<br>
      *               false表示直接返回阻抗最小的路径，而不考虑弧段的多少。
@@ -33414,7 +33196,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *		   "processFailed": findPathError
  *		   }
  * });
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *               例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -33476,7 +33258,7 @@ var FindPathService = function (_NetworkAnalystServic) {
         /**
          * @function SuperMap.FindPathService.prototype.getJson
          * @description 将对象转化为JSON字符串。
-         * @param isAnalyzeById - {Boolean} 是否通过id分析
+         * @param isAnalyzeById - {boolean} 是否通过id分析
          * @param params - {Array} 需要转换的数字
          * @return {Object} 转化后的JSON字符串。
          */
@@ -33572,20 +33354,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *              服务区分析是以指定服务站点为中心，在一定服务范围内查找网络上服务站点能够提供服务的区域范围。<br>
  *              例如：计算某快餐店能够在30分钟内送达快餐的区域。<br>
  * @param options - {Object} 可选参数。<br>
- *        isAnalyzeById - {Boolean} 是否通过节点 ID 指定路径分析的结点。<br>
- *        isCenterMutuallyExclusive - {Boolean} 是否中心点互斥。<br>
+ *        isAnalyzeById - {boolean} 是否通过节点 ID 指定路径分析的结点。<br>
+ *        isCenterMutuallyExclusive - {boolean} 是否中心点互斥。<br>
  *        centers - {Array()} 服务站点数组，必设字段。<br>
- *        isFromCenter - {Boolean} 是否从中心点开始分析。<br>
+ *        isFromCenter - {boolean} 是否从中心点开始分析。<br>
  *        weights - {Array()} 每个服务站点提供服务的阻力半径，超过这个阻力半径的区域不予考虑，其单位与阻力字段一致，必设字段。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 var FindServiceAreasParameters = function () {
-
-    /*
-     * Constructor: SuperMap.FindServiceAreasParameters
-     * 服务区分析参数类构造函数。
-     */
-
 
     /**
      * APIProperty: weights
@@ -33604,7 +33380,7 @@ var FindServiceAreasParameters = function () {
 
 
     /**
-     * @member SuperMap.FindServiceAreasParameters.prototype.isAnalyzeById -{Boolean}
+     * @member SuperMap.FindServiceAreasParameters.prototype.isAnalyzeById -{boolean}
      * @description 是否通过节点 ID 指定路径分析的结点，默认为 false。<br>
      *               指定路径分析经过的结点或设施点有两种方式：输入结点 ID 号或直接输入点坐标。<br>
      *               当该字段为 true 时，表示通过结点 ID 指定途经点，即 SuperMap.FindServiceAreasParameters.centers = [ID1,ID2,...]；<br>
@@ -33630,7 +33406,7 @@ var FindServiceAreasParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.FindServiceAreasParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -33642,7 +33418,7 @@ var FindServiceAreasParameters = function () {
 
 
     /**
-     * @member SuperMap.FindServiceAreasParameters.prototype.isFromCenter -{Boolean}
+     * @member SuperMap.FindServiceAreasParameters.prototype.isFromCenter -{boolean}
      * @description 是否从中心点开始分析。默认为 false。<br>
      *               从中心点开始分析和不从中心点开始分析，体现了服务中心和需要该服务的需求地的关系模式。<br>
      *               从中心点开始分析，是一个服务中心向服务需求地提供服务；<br>
@@ -33651,7 +33427,7 @@ var FindServiceAreasParameters = function () {
 
 
     /**
-     * @member SuperMap.FindServiceAreasParameters.prototype.isCenterMutuallyExclusive -{Boolean}
+     * @member SuperMap.FindServiceAreasParameters.prototype.isCenterMutuallyExclusive -{boolean}
      * @description 是否中心点互斥，即按照中心点的距离进行判断是否要进行互斥处理，默认为 false。<br>
      *               若分析出的服务区有重叠的部分，则通过设置该参数进行互斥处理。
      */
@@ -33735,7 +33511,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *              "processFailed": findServiceAreasError
  *          }
  * });
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -33799,7 +33575,7 @@ var FindServiceAreasService = function (_NetworkAnalystServic) {
         /**
          * @function SuperMap.FindServiceAreasService.prototype.getJson
          * @description 将对象转化为JSON字符串。
-         * @param isAnalyzeById - {Boolean} 是否通过id分析
+         * @param isAnalyzeById - {boolean} 是否通过id分析
          * @param params - {Array} 需要转换的数字
          * @return {Object} 转化后的JSON字符串。
          */
@@ -33898,18 +33674,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *              旅行商分析和最佳路径分析都是在网络中寻找遍历所有站点的最经济的路径，区别是在遍历网络所有站点的过程中对结点访问顺序不同<br>
  *              最佳路径分析必须按照指定顺序对站点进行访问，而旅行商分析是无序的路径分析。<br>
  * @param options - {Object} 可选参数。如：<br>
- *        endNodeAssigned - {Boolean} 是否指定终止点，将指定的途经点的最后一个点作为终止点。<br>
+ *        endNodeAssigned - {boolean} 是否指定终止点，将指定的途经点的最后一个点作为终止点。<br>
  *        true 表示指定终止点，则旅行商必须最后一个访问终止点。默认为 false。<br>
- *        isAnalyzeById - {Boolean} 是否通过节点 ID 号来指定配送中心点和配送目的点，默认为 false，即通过坐标点指定。<br>
+ *        isAnalyzeById - {boolean} 是否通过节点 ID 号来指定配送中心点和配送目的点，默认为 false，即通过坐标点指定。<br>
  *        nodes - {Array<{SuperMap.Point}|Number>} 配送目标集合，必设字段。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。<br>
  */
 var FindTSPPathsParameters = function () {
-
-    /*
-     * Constructor: SuperMap.FindTSPPathsParameters
-     * 旅行商分析参数类构造函数。
-     */
 
     /**
      * @member SuperMap.FindTSPPathsParameters.prototype.nodes -{Array<{SuperMap.Point}|Number>}
@@ -33919,7 +33690,7 @@ var FindTSPPathsParameters = function () {
      */
 
     /**
-     * @member SuperMap.FindTSPPathsParameters.prototype.endNodeAssigned -{Boolean}
+     * @member SuperMap.FindTSPPathsParameters.prototype.endNodeAssigned -{boolean}
      * @description 是否指定终止点，将指定的途经点的最后一个点作为终止点。<br>
      *               true 表示指定终止点，则旅行商必须最后一个访问终止点。默认为 false。
      */
@@ -33941,7 +33712,7 @@ var FindTSPPathsParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.FindTSPPathsParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -33949,14 +33720,14 @@ var FindTSPPathsParameters = function () {
     /**
      * @member SuperMap.FindTSPPathsParameters.prototype.parameter -{SuperMap.TransportationAnalystParameter}
      * @description 交通网络分析通用参数。通过本类可以设置障碍边、障碍点、<br>
-     *               权值字段信息的名称标识、转向权值字段等信息。<br>
-     *               SuperMap.TransportationAnalystParameter 类型，它虽然为可选参数，但是如果不设置其中的 resultSetting<br>
+     *              权值字段信息的名称标识、转向权值字段等信息。<br>
+     *              SuperMap.TransportationAnalystParameter 类型，它虽然为可选参数，但是如果不设置其中的 resultSetting<br>
      *              字段，则返回结果空间信息等都为空。
      */
 
 
     /**
-     * @member SuperMap.FindTSPPathsParameters.prototype.isAnalyzeById -{Boolean}
+     * @member SuperMap.FindTSPPathsParameters.prototype.isAnalyzeById -{boolean}
      * @description 是否通过节点 ID 号来指定途经点，默认为 false，即通过坐标点指定。
      */
 
@@ -34039,7 +33810,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *		  }
  *  });
  * (end)
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；
  *                       例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -34199,15 +33970,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.GenerateSpatialDataParameters
  * @classdesc 动态分段操作参数类。通过该类可以为动态分段提供参数信息。
  * @param options - {Object} 可选参数。如:</br>
- *        routeTable - {String} 路由数据集。</br>
- *        routeIDField - {String} 路由数据集的标识字段。</br>
- *        eventTable - {String} 用于生成空间数据的事件表名。</br>
- *        eventRouteIDField - {String} 用于生成空间数据的事件表的路由标识字段。</br>
- *        measureField - {String} 用于生成空间数据的事件表的刻度字段，只有当事件为点事件的时候该属性才有意义
- *        measureStartField - {String} 用于生成空间数据的事件表的起始刻度字段，只有当事件为线事件的时候该属性才有意义。</br>
- *        measureEndField - {String} 用于生成空间数据的事件表的终止刻度字段，只有当事件为线事件的时候该属性才有意义。</br>
- *        measureOffsetField - {String} 刻度偏移量字段。</br>
- *        errorInfoField - {String} 错误信息字段，直接写入原事件表，用于描述事件未能生成对应的点或线时的错误信息。</br>
+ *        routeTable - {string} 路由数据集。</br>
+ *        routeIDField - {string} 路由数据集的标识字段。</br>
+ *        eventTable - {string} 用于生成空间数据的事件表名。</br>
+ *        eventRouteIDField - {string} 用于生成空间数据的事件表的路由标识字段。</br>
+ *        measureField - {string} 用于生成空间数据的事件表的刻度字段，只有当事件为点事件的时候该属性才有意义
+ *        measureStartField - {string} 用于生成空间数据的事件表的起始刻度字段，只有当事件为线事件的时候该属性才有意义。</br>
+ *        measureEndField - {string} 用于生成空间数据的事件表的终止刻度字段，只有当事件为线事件的时候该属性才有意义。</br>
+ *        measureOffsetField - {string} 刻度偏移量字段。</br>
+ *        errorInfoField - {string} 错误信息字段，直接写入原事件表，用于描述事件未能生成对应的点或线时的错误信息。</br>
  *        retainedFields - {Array(String)} 欲保留到结果空间数据中的字段集合（系统字段除外）。</br>
  *        dataReturnOption - {SuperMap.DataReturnOption} 设置数据返回的最大记录。</br>
  */
@@ -34377,7 +34148,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * 动态分段分析服务类。
  * 该类负责将客户设置的动态分段分析服务参数传递给服务端，并接收服务端返回的动态分段分析结果数据。
  * 获取的结果数据包括 originResult 、result 两种，其中，originResult 为服务端返回的用 JSON 对象表示的动态分段分析结果数据，result 为服务端返回的动态分段分析结果数据。
- *  @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ *  @param url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param options - {Object} 可选参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.SpatialAnalystBase
@@ -34533,7 +34304,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var GeoCodingParameter = function () {
 
     /**
-     * @member SuperMap.GeoCodingParameter.prototype.prjCoordSys -{String}
+     * @member SuperMap.GeoCodingParameter.prototype.prjCoordSys -{string}
      * @description  查询结果的坐标系。
      */
 
@@ -34545,7 +34316,7 @@ var GeoCodingParameter = function () {
 
 
     /**
-     * @member SuperMap.GeoCodingParameter.prototype.address -{String}
+     * @member SuperMap.GeoCodingParameter.prototype.address -{string}
      * @description 地点关键词。
      */
     function GeoCodingParameter(options) {
@@ -34579,7 +34350,7 @@ var GeoCodingParameter = function () {
 
 
     /**
-     * @member SuperMap.GeoCodingParameter.prototype.maxReturn -{String}
+     * @member SuperMap.GeoCodingParameter.prototype.maxReturn -{string}
      * @description 最大返回结果数。
      */
 
@@ -34640,13 +34411,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.GeoDecodingParameter
  * @classdesc 地理反向匹配参数类。
  * @param options - {Object} 参数。如：<br>
- *        x - {number} 查询位置的横坐标。<br>
- *        y - {number} 查询位置的纵坐标。<br>
- *        fromIndex - {number} 设置返回对象的起始索引值。<br>
+ *        x - {number}查询位置的横坐标。<br>
+ *        y - {number}查询位置的纵坐标。<br>
+ *        fromIndex - {number}设置返回对象的起始索引值。<br>
  *        filters -{Array} 过滤字段，限定查询区域。<br>
- *        prjCoordSys -{String} 查询结果的坐标系。<br>
- *        maxReturn -{number} 最大返回结果数。<br>
- *        geoDecodingRadius -{number} 查询半径。
+ *        prjCoordSys -{string} 查询结果的坐标系。<br>
+ *        maxReturn -{number}最大返回结果数。<br>
+ *        geoDecodingRadius -{number}查询半径。
  */
 var GeoDecodingParameter = function () {
 
@@ -34709,7 +34480,7 @@ var GeoDecodingParameter = function () {
 
 
     /**
-     * @member SuperMap.GeoDecodingParameter.prototype.prjCoordSys -{String}
+     * @member SuperMap.GeoDecodingParameter.prototype.prjCoordSys -{string}
      * @description 查询结果的坐标系。
      */
 
@@ -34784,9 +34555,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        sourceFilter - {SuperMap.FilterParameter} 空间关系分析中的参考数据集查询参数。仅 name, ids,attributeFilter 和 fields 字段有效。</br>
  *        referenceFilter - {SuperMap.FilterParameter} 空间关系分析中的参考数据集查询参数。仅 name, ids,attributeFilter 和 fields 字段有效。</br>
  *        spatialRelationType - {SuperMap.SpatialRelationType} 指定的空间关系类型。</br>
- *        isBorderInside - {Boolean} 边界处理方式，即位于面边线上的点是否被面包含。此参数仅用于空间关系为包含或被包含的情况。</br>
- *        returnFeature - {Boolean} 是否返回Feature信息。</br>
- *        returnGeoRelatedOnly - {Boolean} 仅返回满足指定空间关系的空间对象，默认为 True。</br>
+ *        isBorderInside - {boolean} 边界处理方式，即位于面边线上的点是否被面包含。此参数仅用于空间关系为包含或被包含的情况。</br>
+ *        returnFeature - {boolean} 是否返回Feature信息。</br>
+ *        returnGeoRelatedOnly - {boolean} 仅返回满足指定空间关系的空间对象，默认为 True。</br>
  *        startRecord - {Integer} 分析结果起始记录位置，默认为0。</br>
  *        expectCount - {Integer} 空间关系分析期望返回结果记录数，默认为500条，如果实际不足500条结果则返回所有分析结果。</br>
  */
@@ -34799,7 +34570,7 @@ var GeoRelationAnalystParameters = function () {
 
 
     /**
-     * @member SuperMap.GeoRelationAnalystParameters.prototype.returnFeature -{Boolean}
+     * @member SuperMap.GeoRelationAnalystParameters.prototype.returnFeature -{boolean}
      * @description 是否返回Feature信息。
      */
 
@@ -34847,13 +34618,13 @@ var GeoRelationAnalystParameters = function () {
 
 
     /**
-     * @member SuperMap.GeoRelationAnalystParameters.prototype.returnGeoRelatedOnly -{Boolean}
+     * @member SuperMap.GeoRelationAnalystParameters.prototype.returnGeoRelatedOnly -{boolean}
      * @description 是否仅返回满足指定空间关系的空间对象，默认为 True。
      */
 
 
     /**
-     * @member SuperMap.GeoRelationAnalystParameters.prototype.isBorderInside -{Boolean}
+     * @member SuperMap.GeoRelationAnalystParameters.prototype.isBorderInside -{boolean}
      * @description 边界处理方式，即位于面边线上的点是否被面包含。此参数仅用于空间关系为包含或被包含的情况。
      */
 
@@ -34864,7 +34635,7 @@ var GeoRelationAnalystParameters = function () {
      */
 
     /**
-     *  @member SuperMap.GeoRelationAnalystParameters.prototype.dataset -{String}
+     *  @member SuperMap.GeoRelationAnalystParameters.prototype.dataset -{string}
      *  @description 源数据集名称。
      */
 
@@ -34941,7 +34712,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc
  * 空间关系分析服务类。
  * 该类负责将客户设置的空间关系分析服务参数传递给服务端，并接收服务端返回的空间关系分析结果数据。
- * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @param url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param options - {Object} 可选参数。</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.SpatialAnalystBase
@@ -35303,7 +35074,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param options - {Object} 可选参数。如:</br>
  *        points - {Array(SuperMap.Geometry.Point)} 表面分析的坐标点数组。</br>
  *        zValues - {Array(Number)} 表面分析的坐标点的 Z 值数组。</br>
- *        resolution - {Number} 获取或设置指定中间结果（栅格数据集）的分辨率。</br>
+ *        resolution - {number}获取或设置指定中间结果（栅格数据集）的分辨率。</br>
  *        resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
  *        extractParameter - {SuperMap.SurfaceAnalystParametersSetting} 获取或设置表面分析参数。</br>
  *        surfaceAnalystMethod - {SuperMap.SurfaceAnalystMethod} 获取或设置表面分析的提取方法，提取等值线和提取等值面。</br>
@@ -35509,13 +35280,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.GetFeaturesByBoundsParameters
  * @classdesc 数据集范围查询参数类,该类用于设置数据集范围查询的相关参数。
  * @param options - {Object} 参数。如：<br>
- *        bounds - {SuperMap.Bounds|L.Bounds|ol.extent} 用于查询的范围对象。</br>
- *        attributeFilter - {String} 范围查询属性过滤条件。</br>
+ *        bounds - {SuperMap.Bounds} 用于查询的范围对象。</br>
+ *        attributeFilter - {string} 范围查询属性过滤条件。</br>
  *        fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
  *        spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式常量,必设参数。</br>
  *        queryParameter - {SuperMap.FilterParameter} 查询过滤条件参数。</br>
  *        datasetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
- *        returnContent - {Boolean} 是否直接返回查询结果。</br>
+ *        returnContent - {boolean} 是否直接返回查询结果。</br>
  *        fromIndex - {Integer} 查询结果的最小索引号。</br>
  *        toIndex - {Integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
@@ -35536,7 +35307,7 @@ var GetFeaturesByBoundsParameters = function (_GetFeaturesParameter) {
      */
 
     /**
-     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.getFeatureMode -{String}
+     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.getFeatureMode -{string}
      * @description 数据集查询模式。
      * 范围查询有"BOUNDS"，"BOUNDS_ATTRIBUTEFILTER"两种,当用户设置attributeFilter时会自动切换到BOUNDS_ATTRIBUTEFILTER访问服务。
      */
@@ -35566,7 +35337,7 @@ var GetFeaturesByBoundsParameters = function (_GetFeaturesParameter) {
 
 
     /**
-     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.attributeFilter -{String}
+     * @member SuperMap.GetFeaturesByBoundsParameters.prototype.attributeFilter -{string}
      * @description 范围查询属性过滤条件。
      */
 
@@ -35691,7 +35462,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 数据集范围查询服务类,查询与指定范围对象符合一定空间关系的矢量要素。
  * @description 数据集范围查询服务类构造函数。
  * @extends SuperMap.GetFeaturesServiceBase
- * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
+ * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务，URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param options - {Object} 可选参数。如：<br>
  *       eventListeners - {Object} 需要被注册的监听器对象。</br>
@@ -35796,12 +35567,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.GetFeaturesByBufferParameters
  * @classdesc 数据服务中数据集缓冲区查询参数类。
  * @param options - {Object} 可選参数。如:</br>
- *        bufferDistance - {Number} buffer 距离，单位与所查询图层对应的数据集单位相同。</br>
- *        attributeFilter - {String} 属性查询条件。 </br>
+ *        bufferDistance - {number}buffer 距离，单位与所查询图层对应的数据集单位相同。</br>
+ *        attributeFilter - {string} 属性查询条件。 </br>
  *        fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
  *        geometry - {Object} 空间查询条件。</br>
  *        dataSetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
- *        returnContent - {Boolean} 是否直接返回查询结果。</br>
+ *        returnContent - {boolean} 是否直接返回查询结果。</br>
  *        fromIndex - {Integer} 查询结果的最小索引号。</br>
  *        toIndex - {Integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
@@ -35849,7 +35620,7 @@ var GetFeaturesByBufferParameters = function (_GetFeaturesParameter) {
 
 
     /**
-     * @member SuperMap.GetFeaturesByBufferParameters.prototype.queryParameter - {String}
+     * @member SuperMap.GetFeaturesByBufferParameters.prototype.queryParameter - {string}
      * @description 属性查询条件。
      */
 
@@ -35954,7 +35725,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.GetFeaturesByBufferService
  * @classdesc 数据服务中数据集缓冲区查询服务类。
- * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
+ * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务，
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param options - {Object} 可选参数。如：<br>
@@ -36062,12 +35833,12 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 数据集几何查询参数类。该类用于设置数据集几何查询的相关参数。
  * @param options - {Object} 可選参数。如:</br>
  *        geometry - {Object} 用于查询的几何对象。</br>
- *        attributeFilter - {String} 几何查询属性过滤条件。</br>
+ *        attributeFilter - {string} 几何查询属性过滤条件。</br>
  *        fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
  *        spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式常量,必设参数。</br>
  *        queryParameter - {SuperMap.FilterParameter} 查询过滤条件参数。</br>
  *        datasetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
- *        returnContent - {Boolean} 是否直接返回查询结果。</br>
+ *        returnContent - {boolean} 是否直接返回查询结果。</br>
  *        fromIndex - {Integer} 查询结果的最小索引号。</br>
  *        toIndex - {Integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
@@ -36076,7 +35847,7 @@ var GetFeaturesByGeometryParameters = function (_GetFeaturesParameter) {
     _inherits(GetFeaturesByGeometryParameters, _GetFeaturesParameter);
 
     /**
-     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.attributeFilter -{String}
+     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.attributeFilter -{string}
      *  @description 几何查询属性过滤条件。
      */
 
@@ -36233,7 +36004,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.GetFeaturesByGeometryService
  * @classdesc 数据集几何查询服务类,查询与指定几何对象符合一定空间关系的矢量要素。
- * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，:</br>
+ * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务，:</br>
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data；:</br>
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data"
  * @param options - {Object} 可選参数。如:</br>
@@ -36340,7 +36111,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        IDs - {Array(Integer)} 所要查询指定的元素ID信息。</br>
  *        fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
  *        dataSetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
- *        returnContent - {Boolean} 是否直接返回查询结果。</br>
+ *        returnContent - {boolean} 是否直接返回查询结果。</br>
  *        fromIndex - {Integer} 查询结果的最小索引号。</br>
  *        toIndex - {Integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
@@ -36380,7 +36151,7 @@ var GetFeaturesByIDsParameters = function (_GetFeaturesParameter) {
      */
 
     /**
-     * @member SuperMap.GetFeaturesByIDsParameters.prototype.getFeatureMode -{String}
+     * @member SuperMap.GetFeaturesByIDsParameters.prototype.getFeatureMode -{string}
      * @description 数据集查询模式。
      */
 
@@ -36473,7 +36244,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.GetFeaturesByIDsService
  * @classdesc 数据集ID查询服务类。在数据集集合中查找指定 ID 号对应的空间地物要素。
- * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务。
+ * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务。
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param options - {Object} 可選参数。如:</br>
@@ -36578,7 +36349,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param options - {Object} 可選参数。如:</br>
  *        queryParameter - {SuperMap.FilterParameter} 查询过滤条件参数。</br>
  *         datasetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
- *         returnContent - {Boolean} 是否直接返回查询结果。</br>
+ *         returnContent - {boolean} 是否直接返回查询结果。</br>
  *         fromIndex - {Integer} 查询结果的最小索引号。</br>
  *         toIndex - {Integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
@@ -36587,7 +36358,7 @@ var GetFeaturesBySQLParameters = function (_GetFeaturesParameter) {
     _inherits(GetFeaturesBySQLParameters, _GetFeaturesParameter);
 
     /**
-     * @function SuperMap.GetFeaturesBySQLParameters.prototype.getFeatureMode -{String}
+     * @function SuperMap.GetFeaturesBySQLParameters.prototype.getFeatureMode -{string}
      * @description 数据集查询模式。
      */
     function GetFeaturesBySQLParameters(options) {
@@ -36700,7 +36471,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc
  * 数据服务中数据集 SQL 查询服务类。
  * 在一个或多个指定的图层上查询符合 SQL 条件的空间地物信息。
- * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
+ * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务，
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/；</br>
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param  options - {Object} 可選参数。如</br>
@@ -36799,11 +36570,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.GetFieldsService
  * @classdesc 字段查询服务，支持查询指定数据集的中所有属性字段（field）的集合。
- * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/data-world/rest/data 即可。
+ * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/data-world/rest/data 即可。
  * @param options - {Object} 可選参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。</br>
- *        datasource - {String}</br>
- *        dataset - {String}</br>
+ *        datasource - {string}</br>
+ *        dataset - {string}</br>
  * @extends SuperMap.CommonServiceBase
  * @example 例如：
  * (start code)
@@ -36821,7 +36592,7 @@ var GetFieldsService = function (_CommonServiceBase) {
     _inherits(GetFieldsService, _CommonServiceBase);
 
     /**
-     * @member SuperMap.GetFieldsService.prototype.datasource -{String}
+     * @member SuperMap.GetFieldsService.prototype.datasource -{string}
      * @description 要查询的数据集所在的数据源名称。
      */
     function GetFieldsService(url, options) {
@@ -36845,7 +36616,7 @@ var GetFieldsService = function (_CommonServiceBase) {
 
 
     /**
-     *  @member SuperMap.GetFieldsService.prototype.dataset -{String}
+     *  @member SuperMap.GetFieldsService.prototype.dataset -{string}
      *  @description 要查询的数据集名称。
      */
 
@@ -36919,20 +36690,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.GetGridCellInfosParameters
  * @classdesc 数据服务栅格查询参数类。
  * @param options - {Object} 可選参数。如:</br>
- *        datasetName - {String} 数据集名称。</br>
- *        dataSourceName - {String} 数据源名称</br>
+ *        datasetName - {string} 数据集名称。</br>
+ *        dataSourceName - {string} 数据源名称</br>
  *        X - {Integer} 要查询的地理位置X轴。</br>
  *        Y - {Integer} 要查询的地理位置Y轴。</br>
  */
 var GetGridCellInfosParameters = function () {
 
     /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.X -{Number}
+     * @member SuperMap.GetGridCellInfosParameters.prototype.X -{number}
      * @description 要查询的地理位置X轴
      */
 
     /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName -{String}
+     * @member SuperMap.GetGridCellInfosParameters.prototype.datasetName -{string}
      * @description 数据集名称。
      */
     function GetGridCellInfosParameters(options) {
@@ -36957,13 +36728,13 @@ var GetGridCellInfosParameters = function () {
 
 
     /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.Y -{Number}
+     * @member SuperMap.GetGridCellInfosParameters.prototype.Y -{number}
      * @description 要查询的地理位置Y轴
      */
 
 
     /**
-     * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName -{String}
+     * @member SuperMap.GetGridCellInfosParameters.prototype.dataSourceName -{string}
      * @description  数据源名称。
      */
 
@@ -37025,7 +36796,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.GetGridCellInfosService
  * @classdesc 数据栅格查询服务，支持查询指定地理位置的栅格信息
- * @param url - {String} 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
+ * @param url - {string} 查询服务地址。例如: http://localhost:8090/iserver/services/data-jingjin/rest/data
  * @param options - {Object} 可選参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.CommonServiceBase
@@ -37043,13 +36814,13 @@ var GetGridCellInfosService = function (_CommonServiceBase) {
     _inherits(GetGridCellInfosService, _CommonServiceBase);
 
     /**
-     * @member SuperMap.GetGridCellInfosService.prototype.X -{Number}
+     * @member SuperMap.GetGridCellInfosService.prototype.X -{number}
      * @description 要查询的地理位置X轴
      */
 
 
     /**
-     * @member SuperMap.GetGridCellInfosService.prototype.dataSourceName -{String}
+     * @member SuperMap.GetGridCellInfosService.prototype.dataSourceName -{string}
      * @description 数据源名称。
      */
     function GetGridCellInfosService(url, options) {
@@ -37076,19 +36847,19 @@ var GetGridCellInfosService = function (_CommonServiceBase) {
 
 
     /**
-     * @member SuperMap.GetGridCellInfosService.prototype.Y-{Number}
+     * @member SuperMap.GetGridCellInfosService.prototype.Y-{number}
      * @description 要查询的地理位置Y轴
      */
 
 
     /**
-     * @member SuperMap.GetGridCellInfosService.prototype.datasetType -{String}
+     * @member SuperMap.GetGridCellInfosService.prototype.datasetType -{string}
      * @description 数据集类型。
      */
 
 
     /**
-     * @member SuperMap.GetGridCellInfosService.prototype.datasetName -{String}
+     * @member SuperMap.GetGridCellInfosService.prototype.datasetName -{string}
      * @description 数据集名称。
      */
 
@@ -37259,14 +37030,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.GetLayersInfoService
  * @classdesc 获取图层信息服务类构造函数。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
+ * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
  *         http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；<br>
  *         如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。<br>
  *         如果查询临时图层的信息，请指定完成的url，包含临时图层ID信息，如：<br>
  *         http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
- *         isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。
+ *         isTempLayers - {boolean} 当前url对应的图层是否是临时图层。
  */
 var GetLayersInfoService = function (_CommonServiceBase) {
     _inherits(GetLayersInfoService, _CommonServiceBase);
@@ -37355,7 +37126,7 @@ var GetLayersInfoService = function (_CommonServiceBase) {
          * Method: handleLayers
          * 处理iserver 新增图层组数据 (subLayers.layers 中可能还会含有 subLayers.layers)
          *
-         * len - {Number} subLayers.layers的长度
+         * len - {number}subLayers.layers的长度
          * layers - {Array} subLayers.layers
          */
 
@@ -37457,32 +37228,26 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Grid
  * @classdesc UGC 栅格图层类。
  * @extends SuperMap.UGCSubLayer
+ * @param options - {Object} 可选参数参数。如：<br>
+ *        colorDictionary - {Array<Object>} 颜色对照表对象。<br>
+ *        brightness - {Integer} Grid 图层的亮度。<br>
+ *        colorGradientType - {boolean} 文本压盖时是否显示压盖的文本对象。<br>
+ *        colors - {SuperMap.ServerColor} 颜色表对象。<br>
+ *        contrast - {Integer} Grid 图层的对比度。<br>
+ *        gridType - {SuperMap.GridType} 格网类型。<br>
+ *        horizontalSpacing - {number}格网水平间隔大小。<br>
+ *        sizeFixed - {boolean} 格网是否固定大小，如果不固定大小，则格网随着地图缩放。<br>
+ *        solidStyle - {SuperMap.ServerStyle} 格网实线的样式。<br>
+ *        specialColor - {SuperMap.ServerColor} 栅格数据集无值数据的颜色。<br>
+ *        specialValue - {number}图层的特殊值。<br>
+ *        specialValueTransparent - {boolean} 图层的特殊值（specialValue）所处区域是否透明。<br>
+ *        verticalSpacing - {number}格网垂直间隔大小。
  */
 var Grid = function (_UGCSubLayer) {
     _inherits(Grid, _UGCSubLayer);
 
     /**
-     * @function SuperMap.Grid.prototype.constructor
-     * @description UGC 栅格图层类构造函数。
-     * @param options - {Object} 可选参数参数。如：<br>
-     *        colorDictionary - {Array(Object)} 颜色对照表对象。<br>
-     *        brightness - {Integer} Grid 图层的亮度。<br>
-     *        colorGradientType - {Boolean} 文本压盖时是否显示压盖的文本对象。<br>
-     *        colors - {SuperMap.ServerColor} 颜色表对象。<br>
-     *        contrast - {Integer} Grid 图层的对比度。<br>
-     *        gridType - {SuperMap.GridType} 格网类型。<br>
-     *        horizontalSpacing - {Number} 格网水平间隔大小。<br>
-     *        sizeFixed - {Boolean} 格网是否固定大小，如果不固定大小，则格网随着地图缩放。<br>
-     *        solidStyle - {SuperMap.ServerStyle} 格网实线的样式。<br>
-     *        specialColor - {SuperMap.ServerColor} 栅格数据集无值数据的颜色。<br>
-     *        specialValue - {Number} 图层的特殊值。<br>
-     *        specialValueTransparent - {Boolean} 图层的特殊值（specialValue）所处区域是否透明。<br>
-     *        verticalSpacing - {Number} 格网垂直间隔大小。
-     */
-
-
-    /**
-     * @member SuperMap.Grid.prototype.specialValueTransparent -{Boolean}
+     * @member SuperMap.Grid.prototype.specialValueTransparent -{boolean}
      * @description 图层的特殊值（specialValue）所处区域是否透明。
      */
 
@@ -37494,7 +37259,7 @@ var Grid = function (_UGCSubLayer) {
 
 
     /**
-     * @member SuperMap.Grid.prototype.sizeFixed -{Boolean}
+     * @member SuperMap.Grid.prototype.sizeFixed -{boolean}
      * @description 格网是否固定大小，如果不固定大小，则格网随着地图缩放。
      */
 
@@ -37559,7 +37324,7 @@ var Grid = function (_UGCSubLayer) {
 
 
     /**
-     * @member SuperMap.Grid.prototype.specialValue -{Number}
+     * @member SuperMap.Grid.prototype.specialValue -{number}
      * @description 图层的特殊值。
      */
 
@@ -37571,7 +37336,7 @@ var Grid = function (_UGCSubLayer) {
 
 
     /**
-     * @member SuperMap.Grid.prototype.horizontalSpacing -{Number}
+     * @member SuperMap.Grid.prototype.horizontalSpacing -{number}
      * @description 格网水平间隔大小。
      */
 
@@ -37719,7 +37484,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        brightness - {Integer} 影像图层的亮度。<br>
  *        displayBandIndexes - {Array<Integer>} 返回当前影像图层显示的波段索引。<br>
  *        contrast - {Integer} 影像图层的对比度。<br>
- *        transparent - {Boolean} 是否背景透明。<br>
+ *        transparent - {boolean} 是否背景透明。<br>
  *        transparentColor - {SuperMap.ServerColor} 返回背景透明色。<br>
  *        transparentColorTolerance - {Integer} 背景透明色容限。
  */
@@ -37734,7 +37499,7 @@ var UGCImage = function (_UGCSubLayer) {
      *        brightness - {Integer} 影像图层的亮度。<br>
      *        displayBandIndexes - {Array<Integer>} 返回当前影像图层显示的波段索引。<br>
      *        contrast - {Integer} 影像图层的对比度。<br>
-     *        transparent - {Boolean} 是否背景透明。<br>
+     *        transparent - {boolean} 是否背景透明。<br>
      *        transparentColor - {SuperMap.ServerColor} 返回背景透明色。<br>
      *        transparentColorTolerance - {Integer} 背景透明色容限。
      */
@@ -37786,7 +37551,7 @@ var UGCImage = function (_UGCSubLayer) {
 
 
     /**
-     * @member SuperMap.Image.prototype.transparent -{Boolean}
+     * @member SuperMap.Image.prototype.transparent -{boolean}
      * @description 是否背景透明。
      */
 
@@ -37901,7 +37666,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc
  * 插值分析服务类
  * 插值分析可以将有限的采样点数据，通过插值算法对采样点周围的数值情况进行预测，可以掌握研究区域内数据的总体分布状况，从而使采样的离散点不仅仅反映其所在位置的数值情况，还可以反映区域的数值分布。目前SuperMap iServer的插值功能提供从点数据集插值得到栅格数据集的功能，支持以下常用的内插方法，包括：反距离加权插值、克吕金（Kriging）插值法、样条（径向基函数，Radial Basis Function）插值、点密度插值。
- * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @param url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param options - {Object} 可选参数。如</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  *
@@ -37941,7 +37706,7 @@ var InterpolationAnalystService = function (_SpatialAnalystBase) {
      */
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.mode -{String}
+     * @member SuperMap.BuildCacheJobParameter.prototype.mode -{string}
      * @description 插值分析类型。
      */
 
@@ -38061,15 +37826,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 点密度差值分析参数类
  * @param options - {Object} 可选参数。如:</br>
  *        bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
- *        searchRadius - {Number} 查找半径，即参与运算点的查找范围，与点数据集单位相同，默认值为0。</br>
- *        zValueFieldName - {String} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
- *        zValueScale - {Number} 用于进行插值分析值的缩放比率，默认值为1。</br>
- *        resolution - {Number} 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
+ *        searchRadius - {number}查找半径，即参与运算点的查找范围，与点数据集单位相同，默认值为0。</br>
+ *        zValueFieldName - {string} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
+ *        zValueScale - {number}用于进行插值分析值的缩放比率，默认值为1。</br>
+ *        resolution - {number}插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
  *        filterQueryParameter - {SuperMap.FilterParameter} 属性过滤条件。</br>
- *        outputDatasetName - {String} 插值分析结果数据集的名称。必设参数</br>
- *        outputDatasourceName - {String} 插值分析结果数据源的名称。必设参数</br>
- *        pixelFormat - {String} 指定结果栅格数据集存储的像素格式。</br>
- *        dataset - {String} 用来做插值分析的数据源中数据集的名称，该名称用形如"数据集名称@数据源别名"形式来表示。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
+ *        outputDatasetName - {string} 插值分析结果数据集的名称。必设参数</br>
+ *        outputDatasourceName - {string} 插值分析结果数据源的名称。必设参数</br>
+ *        pixelFormat - {string} 指定结果栅格数据集存储的像素格式。</br>
+ *        dataset - {string} 用来做插值分析的数据源中数据集的名称，该名称用形如"数据集名称@数据源别名"形式来表示。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
  *        inputPoints - {Array <SuperMap.Geometry.Point} 用于做插值分析的离散点集合。当插值分析类型（ SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。</br>
  * @extends SuperMap.InterpolationAnalystParameters
  * @example 例如：
@@ -38159,19 +37924,19 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.InterpolationIDWAnalystParameters
  * @classdesc 反距离加权插值（IDW）分析参数类
  * @param options - {Object} 可选参数。如:</br>
- *        power - {Number} 距离权重计算的幂次。</br>
+ *        power - {number}距离权重计算的幂次。</br>
  *        bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
- *        searchMode - {String} 插值运算时，查找参与运算点的方式，支持固定点数查找、定长查找。必设参数</br>
- *        expectedCount - {Number} 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数，默认值为12。</br>
- *        searchRadius - {Number} 【定长查找】方式下，设置查找半径，即参与运算点的查找范围，与点数据集单位相同，默认值为0。</br>
- *        zValueFieldName - {String} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
- *        zValueScale - {Number} 用于进行插值分析值的缩放比率，默认为1。</br>
- *        resolution - {Number} 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
+ *        searchMode - {string} 插值运算时，查找参与运算点的方式，支持固定点数查找、定长查找。必设参数</br>
+ *        expectedCount - {number}【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数，默认值为12。</br>
+ *        searchRadius - {number}【定长查找】方式下，设置查找半径，即参与运算点的查找范围，与点数据集单位相同，默认值为0。</br>
+ *        zValueFieldName - {string} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
+ *        zValueScale - {number}用于进行插值分析值的缩放比率，默认为1。</br>
+ *        resolution - {number}插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
  *        filterQueryParameter - {SuperMap.FilterParameter} 属性过滤条件。</br>
- *        outputDatasetName - {String} 插值分析结果数据集的名称。必设参数</br>
- *        outputDatasourceName - {String} 插值分析结果数据源的名称。必设参数</br>
- *        pixelFormat - {String} 指定结果栅格数据集存储的像素格式。</br>
- *        dataset - {String} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
+ *        outputDatasetName - {string} 插值分析结果数据集的名称。必设参数</br>
+ *        outputDatasourceName - {string} 插值分析结果数据源的名称。必设参数</br>
+ *        pixelFormat - {string} 指定结果栅格数据集存储的像素格式。</br>
+ *        dataset - {string} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
  *        inputPoints - {Array <SuperMap.Geometry.Point} 用于做插值分析的离散点集合。当插值分析类型（SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。</br>
  * @extends SuperMap.InterpolationAnalystParameters
  * @example 例如：
@@ -38229,13 +37994,13 @@ var InterpolationIDWAnalystParameters = function (_InterpolationAnalyst) {
 
 
     /**
-     * @member SuperMap.InterpolationIDWAnalystParameters.prototype.expectedCount -{Number}
+     * @member SuperMap.InterpolationIDWAnalystParameters.prototype.expectedCount -{number}
      * @description 【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数，默认值为12。
      */
 
 
     /**
-     * @member SuperMap.InterpolationIDWAnalystParameters.prototype.power -{Number}
+     * @member SuperMap.InterpolationIDWAnalystParameters.prototype.power -{number}
      * @description 距离权重计算的幂次，默认值为2。
      * 该值决定了权值下降的速度，幂次越大，随距离的增大权值下降越快，距离预测点越远的点的权值也越小。
      * 理论上，参数值必须大于0，但是0.5到3之间时运算结果更合理，因此推荐值为0.5~3。
@@ -38339,28 +38104,28 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * 克吕金法的优点是以空间统计学作为其坚实的理论基础，物理含义明确；不但能估计测定参数的空间变异分布，而且还可以估算参数的方差分布。克吕金法的缺点是计算步骤较烦琐，
  * 计算量大，且变异函数有时需要根据经验人为选定。
  * @param options - {Object} 可选参数。如:</br>
- *        type - {String} 克吕金插值的类型。必设参数。</br>
- *        mean - {Number} 【简单克吕金】类型下,插值字段的平均值。</br>
- *        angle - {Number} 克吕金算法中旋转角度值，默认值为0。</br>
- *        nugget - {Number} 克吕金算法中块金效应值，默认值为0。</br>
- *        range - {Number} 克吕金算法中自相关阈值，单位与原数据集单位相同，默认值为0。</br>
- *        sill - {Number} 克吕金算法中基台值，默认值为0。</br>
- *        variogramMode - {String} 克吕金插值时的半变函数类型，默认为球型（SPHERICAL）。</br>
- *        exponent - {String} 【泛克吕金】类型下，用于插值的样点数据中趋势面方程的阶数，可选值为exp1、exp2，默认值为exp1。</br>
+ *        type - {string} 克吕金插值的类型。必设参数。</br>
+ *        mean - {number}【简单克吕金】类型下,插值字段的平均值。</br>
+ *        angle - {number}克吕金算法中旋转角度值，默认值为0。</br>
+ *        nugget - {number}克吕金算法中块金效应值，默认值为0。</br>
+ *        range - {number}克吕金算法中自相关阈值，单位与原数据集单位相同，默认值为0。</br>
+ *        sill - {number}克吕金算法中基台值，默认值为0。</br>
+ *        variogramMode - {string} 克吕金插值时的半变函数类型，默认为球型（SPHERICAL）。</br>
+ *        exponent - {string} 【泛克吕金】类型下，用于插值的样点数据中趋势面方程的阶数，可选值为exp1、exp2，默认值为exp1。</br>
  *        bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
- *        searchMode - {String} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找，必设参数。</br>
- *        expectedCount - {Number} 【固定点数查找】方式下，设置待查找的点数，默认值为12；【定长查找】方式下，设置查找的最小点数，默认值为12。</br>
- *        searchRadius - {Number} 【定长查找】方式下，设置参与运算点的查找范围，默认值为0。</br>
- *        maxPointCountForInterpolation - {Number} 【块查找】方式下，设置最多参与插值的点数，默认值为200。</br>
- *        maxPointCountInNode - {Number} 【块查找】方式下，设置单个块内最多参与运算点数，默认值为50。</br>
- *        zValueFieldName - {String} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
- *        zValueScale - {Number} 用于进行插值分析值的缩放比率，默认值为1。</br>
- *        resolution - {Number} 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
+ *        searchMode - {string} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找，必设参数。</br>
+ *        expectedCount - {number}【固定点数查找】方式下，设置待查找的点数，默认值为12；【定长查找】方式下，设置查找的最小点数，默认值为12。</br>
+ *        searchRadius - {number}【定长查找】方式下，设置参与运算点的查找范围，默认值为0。</br>
+ *        maxPointCountForInterpolation - {number}【块查找】方式下，设置最多参与插值的点数，默认值为200。</br>
+ *        maxPointCountInNode - {number}【块查找】方式下，设置单个块内最多参与运算点数，默认值为50。</br>
+ *        zValueFieldName - {string} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
+ *        zValueScale - {number}用于进行插值分析值的缩放比率，默认值为1。</br>
+ *        resolution - {number}插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
  *        filterQueryParameter - {SuperMap.FilterParameter} 属性过滤条件。</br>
- *        outputDatasetName - {String} 插值分析结果数据集的名称，必设参数。</br>
- *        outputDatasourceName - {String} 插值分析结果数据源的名称。必设参数</br>
- *        pixelFormat - {String} 指定结果栅格数据集存储的像素格式。</br>
- *        dataset - {String} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。</br>
+ *        outputDatasetName - {string} 插值分析结果数据集的名称，必设参数。</br>
+ *        outputDatasourceName - {string} 插值分析结果数据源的名称。必设参数</br>
+ *        pixelFormat - {string} 指定结果栅格数据集存储的像素格式。</br>
+ *        dataset - {string} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。</br>
  * 当插值分析类型(SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
  *        inputPoints - {Array <SuperMap.Geometry.Point} 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。</br>
  *
@@ -38394,7 +38159,7 @@ var InterpolationKrigingAnalystParameters = function (_InterpolationAnalyst) {
     _inherits(InterpolationKrigingAnalystParameters, _InterpolationAnalyst);
 
     /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.maxPointCountForInterpolation -{Number}
+     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.maxPointCountForInterpolation -{number}
      * @description 【块查找】方式下，最多参与插值的点数。默认值为200。
      * 仅用于普通克吕金插值，简单克吕金和泛克吕金不支持块查找。
      */
@@ -38421,13 +38186,13 @@ var InterpolationKrigingAnalystParameters = function (_InterpolationAnalyst) {
 
 
     /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.range -{Number}
+     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.range -{number}
      * @description 克吕金算法中自相关阈值，单位与原数据集单位相同。默认值为0。
      */
 
 
     /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.angle -{Number}
+     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.angle -{number}
      * @description 克吕金算法中旋转角度值。默认值为0。
      * 此角度值指示了每个查找邻域相对于水平方向逆时针旋转的角度。
      */
@@ -38487,14 +38252,14 @@ var InterpolationKrigingAnalystParameters = function (_InterpolationAnalyst) {
 
 
     /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.maxPointCountForInterpolation -{Number}
+     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.maxPointCountForInterpolation -{number}
      * @description 【块查找】方式下，设置单个块内最多参与运算点数。默认值为50。
      * 仅用于普通克吕金插值，简单克吕金和泛克吕金不支持块查找。
      */
 
 
     /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.expectedCount -{Number}
+     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.expectedCount -{number}
      * @description【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数，默认值为12。
      * 【定长查找】方式下，设置查找的最小点数，默认值为12
      */
@@ -38508,19 +38273,19 @@ var InterpolationKrigingAnalystParameters = function (_InterpolationAnalyst) {
 
 
     /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.sill -{Number}
+     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.sill -{number}
      * @description 克吕金算法中基台值。默认值为0。
      */
 
 
     /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.nugget -{Number}
+     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.nugget -{number}
      * @description 克吕金算法中块金效应值。默认值为0。
      */
 
 
     /**
-     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.mean -{Number}
+     * @member SuperMap.InterpolationKrigingAnalystParameters.prototype.mean -{number}
      * @description【简单克吕金】方式下，插值字段的平均值。
      * 即采样点插值字段值总和除以采样点数目。
      */
@@ -38590,22 +38355,22 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 样条插值（径向基函数插值法）分析参数类
  * @extends SuperMap.InterpolationAnalystParameters
  * @param options - {Object} 可选参数。如</br>
- *        smooth - {Number} 光滑系数，该值表示插值函数曲线与点的逼近程度，值域为 0到1，默认值为0.1。</br>
- *        tension - {Number} 张力系数，用于调整结果栅格数据表面的特性，默认为40。</br>
+ *        smooth - {number}光滑系数，该值表示插值函数曲线与点的逼近程度，值域为 0到1，默认值为0.1。</br>
+ *        tension - {number}张力系数，用于调整结果栅格数据表面的特性，默认为40。</br>
  *        bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
- *        searchMode - {String} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数。</br>
- *        expectedCount - {Number} 【固定点数查找】方式下，设置参与差值运算的点数，默认值为12。</br>
- *        searchRadius - {Number} 【定长查找】方式下，设置参与运算点的查找范围，默认值为0。</br>
- *        maxPointCountForInterpolation - {Number} 【块查找】方式下，设置最多参与插值的点数。默认为200。</br>
- *        maxPointCountInNode - {Number} 【块查找】方式下，设置单个块内最多参与运算点数。默认为50。</br>
- *        zValueFieldName - {String} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。</br>
- *        zValueScale - {Number} 用于进行插值分析值的缩放比率，默认值为1。</br>
- *        resolution - {Number} 插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
+ *        searchMode - {string} 插值运算时，查找参与运算点的方式，有固定点数查找、定长查找、块查找。必设参数。</br>
+ *        expectedCount - {number}【固定点数查找】方式下，设置参与差值运算的点数，默认值为12。</br>
+ *        searchRadius - {number}【定长查找】方式下，设置参与运算点的查找范围，默认值为0。</br>
+ *        maxPointCountForInterpolation - {number}【块查找】方式下，设置最多参与插值的点数。默认为200。</br>
+ *        maxPointCountInNode - {number}【块查找】方式下，设置单个块内最多参与运算点数。默认为50。</br>
+ *        zValueFieldName - {string} 存储用于进行插值分析的字段名称，插值分析不支持文本类型的字段。当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。</br>
+ *        zValueScale - {number}用于进行插值分析值的缩放比率，默认值为1。</br>
+ *        resolution - {number}插值结果栅格数据集的分辨率，即一个像元所代表的实地距离，与点数据集单位相同。</br>
  *        filterQueryParameter - {SuperMap.FilterParameter} 属性过滤条件。</br>
- *        outputDatasetName - {String} 插值分析结果数据集的名称。必设参数。</br>
- *        outputDatasourceName - {String} 插值分析结果数据源的名称。必设参数。</br>
- *        pixelFormat - {String} 指定结果栅格数据集存储的像素格式。</br>
- *        dataset - {String} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。</br>
+ *        outputDatasetName - {string} 插值分析结果数据集的名称。必设参数。</br>
+ *        outputDatasourceName - {string} 插值分析结果数据源的名称。必设参数。</br>
+ *        pixelFormat - {string} 指定结果栅格数据集存储的像素格式。</br>
+ *        dataset - {string} 要用来做插值分析的数据源中数据集的名称。该名称用形如”数据集名称@数据源别名”形式来表示。当插值分析类型(InterpolationAnalystType)为 dataset 时，必设参数。</br>
  *        inputPoints - {Array <SuperMap.Geometry.Point} 用于做插值分析的离散点集合。当插值分析类型（InterpolationAnalystType）为 geometry 时，必设参数。</br>
  * @example 例如：
  * (start code)
@@ -38631,7 +38396,7 @@ var InterpolationRBFAnalystParameters = function (_InterpolationAnalyst) {
     _inherits(InterpolationRBFAnalystParameters, _InterpolationAnalyst);
 
     /**
-     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.maxPointCountForInterpolation -{Number}
+     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.maxPointCountForInterpolation -{number}
      * @description 【块查找】方式下，最多参与插值的点数。默认值为200。
      */
 
@@ -38647,7 +38412,7 @@ var InterpolationRBFAnalystParameters = function (_InterpolationAnalyst) {
 
 
     /**
-     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.smooth -{Number}
+     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.smooth -{number}
      * @description 光滑系数，值域为 0到1，默认值为0.1，常用取值如0、0.001、0.01、0.1、和0.5。
      * 该值表示插值函数曲线与点的逼近程度，此数值越大，函数曲线与点的偏差越大，反之越小。
      */
@@ -38684,19 +38449,19 @@ var InterpolationRBFAnalystParameters = function (_InterpolationAnalyst) {
 
 
     /**
-     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.maxPointCountInNode -{Number}
+     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.maxPointCountInNode -{number}
      * @description【块查找】方式下，单个块内最多参与运算点数。默认值为50。
      */
 
 
     /**
-     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.expectedCount -{Number}
+     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.expectedCount -{number}
      * @description【固定点数查找】方式下，设置待查找的点数，即参与差值运算的点数。默认值为12。
      */
 
 
     /**
-     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.tension -{Number}
+     * @member SuperMap.InterpolationRBFAnalystParameters.prototype.tension -{number}
      * @description 张力系数，默认为40，常用取值如0、1、5和10。
      * 用于调整结果栅格数据表面的特性，张力越大，插值时每个点对计算结果影响越小，反之越大。
      */
@@ -38758,13 +38523,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.KernelDensityJobParameter
  * @description 密度分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
- *        datasetName -{String} 数据集名。 <br>
+ *        datasetName -{string} 数据集名。 <br>
  *        query -{SuperMap.Bounds} 分析范围。 <br>
- *        resolution -{number} 分辨率。 <br>
- *        method -{number} 分析方法。 <br>
- *        meshType -{number} 分析类型。 <br>
- *        fields -{String} 权重索引。 <br>
- *        radius -{number} 分析的影响半径。
+ *        resolution -{number}分辨率。 <br>
+ *        method -{number}分析方法。 <br>
+ *        meshType -{number}分析类型。 <br>
+ *        fields -{string} 权重索引。 <br>
+ *        radius -{number}分析的影响半径。
  */
 var KernelDensityJobParameter = function () {
 
@@ -38793,7 +38558,7 @@ var KernelDensityJobParameter = function () {
 
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{String}
+     * @member SuperMap.KernelDensityJobParameter.prototype.datasetName -{string}
      * @description 数据集名。
      */
     function KernelDensityJobParameter(options) {
@@ -38817,7 +38582,7 @@ var KernelDensityJobParameter = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.KernelDensityJobParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -38835,7 +38600,7 @@ var KernelDensityJobParameter = function () {
 
 
     /**
-     * @member SuperMap.KernelDensityJobParameter.prototype.fields -{String}
+     * @member SuperMap.KernelDensityJobParameter.prototype.fields -{string}
      * @description 权重索引。
      */
 
@@ -38928,7 +38693,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.KernelDensityJobsService
  * @classdesc 核密度大数据服务类
  * @extends SuperMap.ProcessingServiceBase
- * @param url -{String} 核密度大数据服务地址。
+ * @param url -{string} 核密度大数据服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
 var KernelDensityJobsService = function (_ProcessingServiceBas) {
@@ -38971,7 +38736,7 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
         /**
          * @function SuperMap.KernelDensityJobsService.prototype.getKernelDensityJobs
          * @description 获取指定id的核密度大数据服务
-         * @param id -{String} 指定要获取数据的id
+         * @param id -{string} 指定要获取数据的id
          */
 
     }, {
@@ -38984,7 +38749,7 @@ var KernelDensityJobsService = function (_ProcessingServiceBas) {
          * @function SuperMap.KernelDensityJobsService.prototype.addKernelDensityJob
          * @description 新建核密度大数据服务
          * @param params - {SuperMap.KernelDensityJobParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
+         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -39033,7 +38798,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.LabelImageCell
- * @class 图片类型的矩阵标签元素类。
+ * @classdesc 图片类型的矩阵标签元素类。
  * @description 该类继承自 SuperMap.LabelMatrixCell类，主要对矩阵标签中的专题图类型的矩阵标签元素进行设置。
  *              矩阵标签专题图是标签专题图（ThemeLabel）的一种，其中矩阵标签中的填充元素又可分为图片类型（SuperMap.LabelImageCell）、
  *              符号类型（SuperMap.LabelSymbolCell）、专题图类型（SuperMap.LabelThemeCell）三种，该类是这三种类型的矩阵标签元素其中的一种，
@@ -39042,41 +38807,29 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *              每一维可以是任意类型的矩阵标签元素组成的数组（也可是单个标签元素组成的数组，即数组中只有一个元素）。
  * @extends SuperMap.LabelMatrixCell
  * @param options - {Object} 可选参数。如：<br>
- *        height - {Number} 设置图片的高度，单位为毫米。<br>
- *        pathField - {String} 设置矩阵标签元素所使用图片的路径。<br>
- *        rotation - {Number} 图片的旋转角度。逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。<br>
- *        width - {Number} 设置图片的宽度，单位为毫米。<br>
- *        sizeFixed - {Boolean} 是否固定图片的大小。默认值为 false，即图片将随地图缩放。
+ *        height - {number}设置图片的高度，单位为毫米。<br>
+ *        pathField - {string} 设置矩阵标签元素所使用图片的路径。<br>
+ *        rotation - {number}图片的旋转角度。逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。<br>
+ *        width - {number}设置图片的宽度，单位为毫米。<br>
+ *        sizeFixed - {boolean} 是否固定图片的大小。默认值为 false，即图片将随地图缩放。
  */
 var LabelImageCell = function (_LabelMatrixCell) {
     _inherits(LabelImageCell, _LabelMatrixCell);
 
-    /*
-     * @function SuperMap.LabelImageCell.prototype.constructor
-     * @description 图片类型的矩阵标签元素类构造函数，用于创建 SuperMap.LabelImageCell 类的新实例。
-     * @param options - {Object} 可选参数。如：<br>
-     *        height - {Number} 设置图片的高度，单位为毫米。<br>
-     *        pathField - {String} 设置矩阵标签元素所使用图片的路径。<br>
-     *        rotation - {Number} 图片的旋转角度。逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。<br>
-     *        width - {Number} 设置图片的宽度，单位为毫米。<br>
-     *        sizeFixed - {Boolean} 是否固定图片的大小。默认值为 false，即图片将随地图缩放。
-     */
-
-
     /**
-     * @member SuperMap.LabelImageCell.prototype.sizeFixed -{Boolean}
+     * @member SuperMap.LabelImageCell.prototype.sizeFixed -{boolean}
      * @description 是否固定图片的大小。默认值为 false，即图片将随地图缩放。
      */
 
 
     /**
-     * @member SuperMap.LabelImageCell.prototype.rotation -{Number}
+     * @member SuperMap.LabelImageCell.prototype.rotation -{number}
      * @description 图片的旋转角度。逆时针方向为正方向，单位为度，精确到0.1度。默认值为0.0。
      */
 
 
     /**
-     * @member SuperMap.LabelImageCell.prototype.height -{Number}
+     * @member SuperMap.LabelImageCell.prototype.height -{number}
      * @description 设置图片的高度，单位为毫米。
      */
     function LabelImageCell(options) {
@@ -39099,25 +38852,25 @@ var LabelImageCell = function (_LabelMatrixCell) {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.LabelImageCell.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.LabelImageCell.prototype.type -{Boolean}
+     * @member SuperMap.LabelImageCell.prototype.type -{boolean}
      * @description 制作矩阵专题图时是必须的。
      */
 
 
     /**
-     * @member SuperMap.LabelImageCell.prototype.width -{Number}
+     * @member SuperMap.LabelImageCell.prototype.width -{number}
      * @description 设置图片的宽度，单位为毫米。
      */
 
 
     /**
-     * @member SuperMap.LabelImageCell.prototype.pathField -{String}
+     * @member SuperMap.LabelImageCell.prototype.pathField -{string}
      * @description 设置矩阵标签元素所使用的图片路径对应的字段名。
      */
 
@@ -39182,7 +38935,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *                 索引号为1，2的字符（即“穆”、“朗”）位于第二个分段内，索引号为3的字符（“玛”）在第三个分段内，索引号为4的字符（“峰”）在第四个分段内，其余分段中没有字符。
  * @param options - {Object} 可选参数。如：<br>
  *        defaultStyle - {SuperMap.ServerTextStyle} 默认的文本复合风格。<br>
- *        separator - {String} 文本的分隔符。<br>
+ *        separator - {string} 文本的分隔符。<br>
  *        separatorEnabled - Boolean} 文本的分隔符是否有效。<br>
  *        splitIndexes - {Array(Number)} 分段索引值，分段索引值用来对文本中的字符进行分段。<br>
  *        styles - {Array<SuperMap.ServerTextStyle>} 文本样式集合。
@@ -39190,19 +38943,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var LabelMixedTextStyle = function () {
 
     /**
-     * @function SuperMap.LabelMixedTextStyle.prototype.constructor
-     * @description 标签文本复合风格类构造函数，用于创建 SuperMap.LabelMixedTextStyle 类的新实例。
-     * @param options - {Object} 可选参数。如：<br>
-     *        defaultStyle - {SuperMap.ServerTextStyle} 默认的文本复合风格。<br>
-     *        separator - {String} 文本的分隔符。<br>
-     *        separatorEnabled - Boolean} 文本的分隔符是否有效。<br>
-     *        splitIndexes - {Array(Number)} 分段索引值，分段索引值用来对文本中的字符进行分段。<br>
-     *        styles - {Array<SuperMap.ServerTextStyle>} 文本样式集合。
-     */
-
-
-    /**
-     * @member SuperMap.LabelMixedTextStyle.prototype.splitIndexes -{Array<Number>}
+     * @member SuperMap.LabelMixedTextStyle.prototype.splitIndexes -{Array<number>}
      * @description 分段索引值，分段索引值用来对文本中的字符进行分段。
      *              文本中字符的索引值是以0开始的整数，比如文本“珠穆朗玛峰”，第一个字符（“珠”）的索引值为0，第二个字符（“穆”）的索引值为1，
      *              以此类推；当设置分段索引值数组为[1，3，4，9]时，字符分段范围相应的就是(-∞，1)，[1，3)，[3，4)，[4，9)，[9，+∞)，
@@ -39212,7 +38953,7 @@ var LabelMixedTextStyle = function () {
 
 
     /**
-     * @member SuperMap.LabelMixedTextStyle.prototype.separator -{String}
+     * @member SuperMap.LabelMixedTextStyle.prototype.separator -{string}
      * @description 文本的分隔符，分隔符的风格与前一个字符的风格一样。文本的分隔符是一个将文本分割开的符号，
      *              比如文本 “5_109” 被 “_” 隔符为 “5” 和 “109” 两部分，假设有风格数组：style1、style2。
      *              在显示时，“5” 和分隔符 “_” 使用 Style1 风格渲染，字符串 “109” 使用 Style2 的风格。
@@ -39235,7 +38976,7 @@ var LabelMixedTextStyle = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.LabelMixedTextStyle.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -39248,7 +38989,7 @@ var LabelMixedTextStyle = function () {
 
 
     /**
-     * @member SuperMap.LabelMixedTextStyle.prototype.separatorEnabled -{Boolean}
+     * @member SuperMap.LabelMixedTextStyle.prototype.separatorEnabled -{boolean}
      * @description 文本的分隔符是否有效。分隔符有效时利用分隔符对文本进行分段；无效时根据文本中字符的位置进行分段。
      *              分段后，同一分段内的字符具有相同的显示风格。默认为 false。
      */
@@ -39283,8 +39024,9 @@ var LabelMixedTextStyle = function () {
 
         /**
          * @function SuperMap.LabelMixedTextStyle.fromObj
-         * @description 通过文本对象获取文本风格
-         * @param obj - {Object} 文本对象
+         * @description 从传入对象获取标签文本复合风格类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.LabelMixedTextStyle}
          */
 
     }], [{
@@ -39358,22 +39100,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends SuperMap.LabelMatrixCell
  * @param options - {Object} 可选参数。如：<br>
  *        style - {SuperMap.ServerStyle} 获取或设置符号样式—— SuperMap.ServerStyle 对象。<br>
- *        symbolIDField - {String} 符号 ID 或符号 ID 所对应的字段名称。
+ *        symbolIDField - {string} 符号 ID 或符号 ID 所对应的字段名称。
  */
 var LabelSymbolCell = function (_LabelMatrixCell) {
     _inherits(LabelSymbolCell, _LabelMatrixCell);
 
-    /*
-     * @function SuperMap.LabelSymbolCell.prototype.constructor
-     * @description 符号类型的矩阵标签元素类构造函数，用于创建 SuperMap.LabelSymbolCell 类的新实例。
-     * @param options - {Object} 可选参数。如：<br>
-     *        style - {SuperMap.ServerStyle} 获取或设置符号样式—— SuperMap.ServerStyle 对象。<br>
-     *        symbolIDField - {String} 符号 ID 或符号 ID 所对应的字段名称。
-     */
-
-
     /**
-     * @member SuperMap.LabelSymbolCell.prototype.symbolIDField -{String}
+     * @member SuperMap.LabelSymbolCell.prototype.symbolIDField -{string}
      * @description 获取或设置符号 ID 或符号 ID 所对应的字段名称，必设属性。
      */
     function LabelSymbolCell(options) {
@@ -39395,13 +39128,13 @@ var LabelSymbolCell = function (_LabelMatrixCell) {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.LabelSymbolCell.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.LabelSymbolCell.prototype.type -{String}
+     * @member SuperMap.LabelSymbolCell.prototype.type -{string}
      * @description 制作矩阵专题图时是必须的。
      */
 
@@ -39482,14 +39215,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var LabelThemeCell = function (_LabelMatrixCell) {
     _inherits(LabelThemeCell, _LabelMatrixCell);
 
-    /*
-     * @function SuperMap.LabelThemeCell.prototype.constructor
-     * @description 专题图类型的矩阵标签元素类构造函数，用于创建  SuperMap.LabelThemeCell 类的新实例。
-     * @param options - {Object} 可选参数。如：<br>
-     *        themeLabel - {SuperMap.ThemeLabel} 使用专题图对象作为矩阵标签的一个元素。
-     */
-
-
     /**
      * @member SuperMap.LabelThemeCell.prototype.themeLabel -{SuperMap.ThemeLabel}
      * @description 使用专题图对象作为矩阵标签的一个元素。
@@ -39512,13 +39237,13 @@ var LabelThemeCell = function (_LabelMatrixCell) {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.LabelThemeCell.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.LabelThemeCell.prototype.type -{String}
+     * @member SuperMap.LabelThemeCell.prototype.type -{string}
      * @description 制作矩阵专题图时是必须的。
      */
 
@@ -39568,30 +39293,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 子图层显示参数类。
  * @description 该类存储了各个子图层的名字和是否可见的状态。
  * @param options - {Object} 可选参数。如：<br>
- *        layerName - {String} 获取或设置图层名称。<br>
- *        isVisible - {Boolean} 获取或设置图层是否可见，true 表示可见。<br>
- *        displayFilter - {String} 图层显示 SQL 过滤条件。
+ *        layerName - {string} 获取或设置图层名称。<br>
+ *        isVisible - {boolean} 获取或设置图层是否可见，true 表示可见。<br>
+ *        displayFilter - {string} 图层显示 SQL 过滤条件。
  */
 var LayerStatus = function () {
 
-    /*
-     * @function SuperMap.LayerStatus.prototype.constructor
-     * @description 子图层显示参数类构造函数。
-     * @param options - {Object} 可选参数。如：<br>
-     *        layerName - {String} 获取或设置图层名称。<br>
-     *        isVisible - {Boolean} 获取或设置图层是否可见，true 表示可见。<br>
-     *        displayFilter - {String} 图层显示 SQL 过滤条件。
-     */
-
-
     /**
-     * @member SuperMap.LayerStatus.prototype.displayFilter -{String}
+     * @member SuperMap.LayerStatus.prototype.displayFilter -{string}
      * @description 图层显示 SQL 过滤条件，如 layerStatus.displayFilter = "smid < 10"，表示仅显示 smid 值小于 10 的对象。
      */
 
 
     /**
-     * @member SuperMap.LayerStatus.prototype.layerName -{String}
+     * @member SuperMap.LayerStatus.prototype.layerName -{string}
      * @description 获取或设置图层名称。必设属性。
      */
     function LayerStatus(options) {
@@ -39609,7 +39324,7 @@ var LayerStatus = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.LayerStatus.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -39617,14 +39332,14 @@ var LayerStatus = function () {
     /**
      * @member SuperMap.LayerStatus.prototype.fieldValuesDisplayFilter -{Object}
      * @description 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode,他们的作用如下：<br>
-     *              values：{Array<Number>} - 就是要过滤的值；<br>
+     *              values：{Array<number>} - 就是要过滤的值；<br>
      *              fieldName：{String} - 要过滤的字段名称 只支持数字类型的字段；<br>
      *              fieldValuesDisplayMode：{String} 目前有两个DISPLAY/DISABLE。当为DISPLAY时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素
      */
 
 
     /**
-     * @member SuperMap.LayerStatus.prototype.isVisible -{Boolean}
+     * @member SuperMap.LayerStatus.prototype.isVisible -{boolean}
      * @description 获取或设置图层是否可见，true 表示可见。必设属性。
      */
 
@@ -39720,33 +39435,33 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Feature.Theme.Line
  * @classdesc 折线图。
  * @description 图表 Line 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>）可设属性如下：<br>
- *              width - {Number} 专题要素（图表）宽度，必设参数。<br>
- *              height - {Number} 专题要素（图表）高度，必设参数。<br>
- *              codomain - {Array<Number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
+ *              width - {number}专题要素（图表）宽度，必设参数。<br>
+ *              height - {number}专题要素（图表）高度，必设参数。<br>
+ *              codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
  *              XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。<br>
  *              YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
- *              dataViewBoxParameter - {Array<Number>} 数据视图框 dataViewBox 参数，
+ *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，
  *                      它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
  *                      当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。<br>
- *              decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
- *              useBackground - {Boolean} 是否使用图表背景框。<br>
+ *              decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。<br>
+ *              useBackground - {boolean} 是否使用图表背景框。<br>
  *              backgroundStyle - {Object} 背景样式，此样式对象对象可设属性：<SuperMap.Feature.ShapeParameters.Rectangle::style>。<br>
  *              backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
  *                      则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。<br>
- *              xShapeBlank - {Array<Number>} 水平方向上的图形空白间隔参数。长度为 2 的数组，第一元素表示折线左端点与数据视图框左端的空白间距，
+ *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。长度为 2 的数组，第一元素表示折线左端点与数据视图框左端的空白间距，
  *                       第二个元素表示折线右端点右端与数据视图框右端端的空白间距。<br>
  *              axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style>。<br>
- *              axisUseArrow - {Boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。<br>
- *              axisYTick - {Number} y 轴刻度数量，默认值：0 ，不使用刻度。<br>
- *              axisYLabels - {Array<String>} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。<br>
+ *              axisUseArrow - {boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。<br>
+ *              axisYTick - {number}y 轴刻度数量，默认值：0 ，不使用刻度。<br>
+ *              axisYLabels - {Array<string>} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。<br>
  *              axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。<br>
- *              axisYLabelsOffset - {Array<Number>} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
+ *              axisYLabelsOffset - {Array<number>} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
  *                       数组第二项表示 y 轴标签组纵向上的偏移量，向下为正，默认值：0。<br>
- *              axisXLabels - {Array<String>} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
+ *              axisXLabels - {Array<string>} x 轴上的标签组内容，标签顺序沿着数据视图框下面条边自左向右排布，例如：["92年", "95年", "99年"]。
  *                       标签排布规则：当标签数量与 xShapeInfo 中的属性 xShapeCenter 数量相同（即标签个数与数据个数相等时）, 按照 xShapeCenter 提供的位置排布标签，
  *                       否则沿数据视图框下面条边等距排布标签。<br>
  *              axisXLabelsStyle - {Object} x 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。<br>
- *              axisXLabelsOffset - {Array<Number>} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；
+ *              axisXLabelsOffset - {Array<number>} x 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 x 轴标签组横向上的偏移量，向左为正，默认值：0；
  *                       数组第二项表示 x 轴标签组纵向上的偏移量，向下为正，默认值：0。<br>
  *              useXReferenceLine - {Boolean) 是否使用水平参考线，如果为 true，在 axisYTick 大于 0 时有效，水平参考线是 y 轴刻度在数据视图框里的延伸。<br>
  *              xReferenceLineStyle - {Object) 水平参考线样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style>。<br>
@@ -39802,7 +39517,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends SuperMap.Feature.Theme.Graph
  * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
  * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
- * @param fields - {Array<String>} data 中的参与此图表生成的字段名称，必设参数。
+ * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
  * @param setting - {Object} 图表配置对象，必设参数。
  * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
  * @return {SuperMap.Feature.Theme.Line} 返回一个折线图。
@@ -39814,7 +39529,7 @@ var Line = function (_Graph) {
      * @function SuperMap.Feature.Theme.Line.prototype.Constructor
      * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
      * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。
-     * @param fields - {Array<String>} data 中的参与此图表生成的字段名称，必设参数。
+     * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。
      * @param setting - {Object} 图表配置对象，必设参数。
      * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。
      * @return {SuperMap.Feature.Theme.Line} 返回一个折线图。
@@ -39965,11 +39680,11 @@ var Line = function (_Graph) {
          *              width 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
          *              本函数中图形配置对象 setting 可设属性：
          *              Symbolizer properties:
-         *              xShapeBlank - {Array<Number>} 水平方向上的图形空白间隔参数。
+         *              xShapeBlank - {Array<number>} 水平方向上的图形空白间隔参数。
          *              长度为 2 的数组，第一元素表示第折线左端点与数据视图框左端的空白间距，第二个元素表示折线右端点右端与数据视图框右端端的空白间距 。
          * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：<br>
-         *         xPositions - {Array<Number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。<br>
-         *         width - {Number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
+         *         xPositions - {Array<number>} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。<br>
+         *         width - {number}表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。
          */
 
     }, {
@@ -40053,10 +39768,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/** * @class SuperMap.LinkItem * @constructs SuperMap.LinkItem * @classdesc 关联信息类。 * @description 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表, *              矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。使用LinkItem时， *              空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。SuperMap.LinkItem *              只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 SuperMap.LinkItem;另外，用于建立关联关系的两个表可以不在同一个数据源下。<br> *              (注意：1. 使用 SuperMap.LinkItem 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段；<br> *                    2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。) * @param options - {Object} 参数。 *        datasourceConnectionInfo - {SuperMap.DatasourceConnectionInfo} 关联的外部数据源信息。</br> *        foreignKeys - {Array(String)} 主空间数据集的外键。</br> *        foreignTable - {String} 关联的外部属性表的名称。</br> *        linkFields - {Array(String)} 欲保留的外部属性表的字段。</br> *        linkFilter - {String} 与外部属性表的连接条件。</br> *        name - {String} 此关联信息对象的名称。</br> *        primaryKeys - {Array(String)} 需要关联的外部属性表的主键。</br> * @example 下面以SQL查询说明linkitem的使用方法： * (start code) *  function queryBySQL() { *      // 设置关联的外部数据库信息,alias表示数据库别名 *      var dc = new SuperMap.DatasourceConnectionInfo({ *          dataBase: "RelQuery", *          server: "192.168.168.39", *          user: "sa", *          password: "map", *          driver: "SQL Server", *          connect: true, *          OpenLinkTable: false, *          alias: "RelQuery", *          engineType: EngineType.SQLPLUS, *          readOnly: false, *          exclusive: false *      }); *     // 设置关联信息 *      var linkItem = new SuperMap.LinkItem({ *          datasourceConnectionInfo: dc, *          foreignKeys: ["name"], *          foreignTable: "Pop_2011", *          linkFields: ["SmID as Pid","pop"], *          name: "link", *          primatryKeys: ["name"], *      }); *      // 设置查询参数，在查询参数中添加linkItem关联条件信息 *      var queryParam, queryBySQLParams, queryBySQLService; *      queryParam = new SuperMap.FilterParameter({ *          name: "Province@RelQuery", *          fields: ["SmID","name"], *          attributeFilter: "SmID<7", *          linkItems: [linkItem] *       }), *      queryBySQLParams = new SuperMap.QueryBySQLParameters({ *           queryParams: [queryParam] *              }), *      queryBySQLService = new SuperMap.QueryBySQLService(url, {     *          eventListeners: {     *              "processCompleted": processCompleted,     *              "processFailed": processFailed     *              }     *      });     *      queryBySQLService.processAsync(queryBySQLParams);     *  } *  function processCompleted(queryEventArgs) {//todo} *  function processFailed(e) {//todo} * (end) * */
+/** * @class SuperMap.LinkItem * @constructs SuperMap.LinkItem * @classdesc 关联信息类。 * @description 该类用于矢量数据集与外部表的关联。 外部表是另一个数据集（其中纯属性数据集中没有空间几何信息）中的 DBMS 表, *              矢量数据集与外部表可以属于不同的数据源，但数据源类型目前只支持SQL Server和Oracle类型。使用LinkItem时， *              空间数据和属性数据必须满足关联条件，即主空间数据集与外部属性表之间存在关联字段。SuperMap.LinkItem *              只支持左连接，UDB、PostgreSQL 和 DB2 数据源不支持 SuperMap.LinkItem;另外，用于建立关联关系的两个表可以不在同一个数据源下。<br> *              (注意：1. 使用 SuperMap.LinkItem 的约束条件为：空间数据和属性数据必须有关联条件，即主空间数据集与外部属性表之间存在关联字段；<br> *                    2. 使用外关联表制作专题图时，所关联的字段必须设置表名，例如，如果所关联的字段为BaseMap_R数据集的SmID，就要写成BaseMap_R.SMID。) * @param options - {Object} 参数。 *        datasourceConnectionInfo - {SuperMap.DatasourceConnectionInfo} 关联的外部数据源信息。</br> *        foreignKeys - {Array(String)} 主空间数据集的外键。</br> *        foreignTable - {string} 关联的外部属性表的名称。</br> *        linkFields - {Array(String)} 欲保留的外部属性表的字段。</br> *        linkFilter - {string} 与外部属性表的连接条件。</br> *        name - {string} 此关联信息对象的名称。</br> *        primaryKeys - {Array(String)} 需要关联的外部属性表的主键。</br> * @example 下面以SQL查询说明linkitem的使用方法： * (start code) *  function queryBySQL() { *      // 设置关联的外部数据库信息,alias表示数据库别名 *      var dc = new SuperMap.DatasourceConnectionInfo({ *          dataBase: "RelQuery", *          server: "192.168.168.39", *          user: "sa", *          password: "map", *          driver: "SQL Server", *          connect: true, *          OpenLinkTable: false, *          alias: "RelQuery", *          engineType: EngineType.SQLPLUS, *          readOnly: false, *          exclusive: false *      }); *     // 设置关联信息 *      var linkItem = new SuperMap.LinkItem({ *          datasourceConnectionInfo: dc, *          foreignKeys: ["name"], *          foreignTable: "Pop_2011", *          linkFields: ["SmID as Pid","pop"], *          name: "link", *          primatryKeys: ["name"], *      }); *      // 设置查询参数，在查询参数中添加linkItem关联条件信息 *      var queryParam, queryBySQLParams, queryBySQLService; *      queryParam = new SuperMap.FilterParameter({ *          name: "Province@RelQuery", *          fields: ["SmID","name"], *          attributeFilter: "SmID<7", *          linkItems: [linkItem] *       }), *      queryBySQLParams = new SuperMap.QueryBySQLParameters({ *           queryParams: [queryParam] *              }), *      queryBySQLService = new SuperMap.QueryBySQLService(url, {     *          eventListeners: {     *              "processCompleted": processCompleted,     *              "processFailed": processFailed     *              }     *      });     *      queryBySQLService.processAsync(queryBySQLParams);     *  } *  function processCompleted(queryEventArgs) {//todo} *  function processFailed(e) {//todo} * (end) * */
 var LinkItem = function () {
 
-  /**     * @member SuperMap.LinkItem.prototype.name -{String}     * @description 此关联信息对象的名称。     */
+  /**     * @member SuperMap.LinkItem.prototype.name -{string}     * @description 此关联信息对象的名称。     */
 
 
   /**     * @member SuperMap.LinkItem.prototype.linkFields - {Array(String)}     * @description 欲保留的外部属性表的字段。如果不设置字段或者设置的字段在外部属性表中不存在的话则不返     * 回任何外部属性表的属性信息。如果欲保留的外部表字段与主表字段存在同名，则还需要指定一个不存在字段名作为外部表的字段别名。     */
@@ -40080,16 +39795,16 @@ var LinkItem = function () {
     }
   }
 
-  /**     * @function destroy     * @description 释放资源，将引用资源的属性置空。     */
+  /**     * @function SuperMap.LinkItem.prototype.destroy     * @description 释放资源，将引用资源的属性置空。     */
 
 
   /**     * @member SuperMap.LinkItem.prototype.primaryKeys -{Array(String)}     * @description 需要关联的外部属性表的主键。     */
 
 
-  /**     * @member SuperMap.LinkItem.prototype.linkFilter -{String}     * @description 与外部属性表的连接条件。     */
+  /**     * @member SuperMap.LinkItem.prototype.linkFilter -{string}     * @description 与外部属性表的连接条件。     */
 
 
-  /**     * @member SuperMap.LinkItem.prototype.foreignTable - {String}     * @description 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。     */
+  /**     * @member SuperMap.LinkItem.prototype.foreignTable - {string}     * @description 关联的外部属性表的名称，目前仅支持 Supermap 管理的表，即另一个矢量数据集所对应的 DBMS 表。     */
 
 
   /**     * @member SuperMap.LinkItem.prototype.datasourceConnectionInfo -{SuperMap.DatasourceConnectionInfo}     * @description 关联的外部数据源信息 。     */
@@ -40164,7 +39879,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
      * });
  * (end)
  *
- * @param url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param url - {string} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param options - {Object} 参数 。
  * eventListeners - {Object} 需要被注册的监听器对象。
  */
@@ -40300,38 +40015,38 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.MathExpressionAnalysisParameters
  * @classdesc 栅格代数运算参数类
  * @param options - {Object} 可选参数。如：</br>
- *        dataset - {String} 要用来做栅格代数运算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
+ *        dataset - {string} 要用来做栅格代数运算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：BaseMap_P@Jingjin。必设字段。</br>
  *        extractRegion - {SuperMap.Geometry.Ploygon} 栅格代数运算的范围，指定数据集中参与栅格代数运算的区域。</br>
  *        如果缺省，则计算全部区域，如果参与运算的数据集范围不一致，将使用所有数据集的范围的交集作为计算区域 。</br>
- *        expression - {String} 指定的栅格运算表达式。如：[DatasourceAlias1.Raster1]*2-10；必设字段。</br>
- *        isZip - {Boolean} 是否对结果数据集进行压缩处理。默认为 false，表示不压缩。</br>
- *        ignoreNoValue - {Boolean} 是否忽略无值栅格数据。true </br>表示忽略无值数据，即无值栅格不参与运算。默认为 false。
- *        targetDatasource - {String} 指定存储结果数据集的数据源，必设字段。</br>
- *        resultGridName - {Number} 指定结果数据集名称，必设字段。</br>
- *        deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
+ *        expression - {string} 指定的栅格运算表达式。如：[DatasourceAlias1.Raster1]*2-10；必设字段。</br>
+ *        isZip - {boolean} 是否对结果数据集进行压缩处理。默认为 false，表示不压缩。</br>
+ *        ignoreNoValue - {boolean} 是否忽略无值栅格数据。true </br>表示忽略无值数据，即无值栅格不参与运算。默认为 false。
+ *        targetDatasource - {string} 指定存储结果数据集的数据源，必设字段。</br>
+ *        resultGridName - {number}指定结果数据集名称，必设字段。</br>
+ *        deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
  */
 var MathExpressionAnalysisParameters = function () {
 
     /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.resultGridName -{String}
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.resultGridName -{string}
      * @description 指定结果数据集名称，必设字段。
      */
 
 
     /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.ignoreNoValue -{Boolean}
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.ignoreNoValue -{boolean}
      * @description 是否忽略无值栅格数据，默认为false。
      */
 
 
     /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.expression -{String}
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.expression -{string}
      * @description 指定的栅格运算表达式。如："[DatasourceAlias1.Raster1]*2-10"；必设字段。
      */
 
 
     /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.dataset -{String}
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.dataset -{string}
      * @descriptione 要用来做栅格代数运算数据源中数据集的名称。
      * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。
      *
@@ -40362,19 +40077,19 @@ var MathExpressionAnalysisParameters = function () {
 
 
     /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.deleteExistResultDataset -{Boolean}
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.deleteExistResultDataset -{boolean}
      * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
      */
 
 
     /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.targetDatasource -{String}
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.targetDatasource -{string}
      * @description 指定存储结果数据集的数据源，必设字段。
      */
 
 
     /**
-     * @member SuperMap.MathExpressionAnalysisParameters.prototype.isZip -{Boolean}
+     * @member SuperMap.MathExpressionAnalysisParameters.prototype.isZip -{boolean}
      * @description 是否对结果数据集进行压缩处理。默认为false，表示不压缩。
      */
 
@@ -40481,7 +40196,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 栅格代数运算服务类。
  * @param options - {Object} 可选参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
- * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
+ * @param url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @extends SuperMap.SpatialAnalystBase
  * @example 例如：
  * (start code)
@@ -40595,19 +40310,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param geometry - {Object} 要量算的几何对象。
  * @param options - {Object} 可选参数。如：<br>
  *         unit - {Unit} 量算单位。<br>
- *         prjCoordSys -{String} 用来指定该量算操作所使用的投影,该项默认值为空。<br>
- *         distanceMode -{String} 用来指定量算的方式为按球面长度'Geodesic'或者平面长度'Planar'来计算，默认为'Geodesic'。
+ *         prjCoordSys -{string} 用来指定该量算操作所使用的投影,该项默认值为空。<br>
+ *         distanceMode -{string} 用来指定量算的方式为按球面长度'Geodesic'或者平面长度'Planar'来计算，默认为'Geodesic'。
  */
 var MeasureParameters = function () {
 
-    /*
-     * Constructor: SuperMap.MeasureParameters
-     * 量算参数类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.MeasureParameters.prototype.prjCoordSys -{String}
+     * @member SuperMap.MeasureParameters.prototype.prjCoordSys -{string}
      * @description 用来指定该量算操作所使用的投影,该项默认值为空。
      */
 
@@ -40635,13 +40344,13 @@ var MeasureParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.MeasureParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.MeasureParameters.prototype.distanceMode -{String}
+     * @member SuperMap.MeasureParameters.prototype.distanceMode -{string}
      * @description 用来指定量算的方式为按球面长度'Geodesic'或者平面长度'Planar'来计算，默认为'Geodesic'。
      * @example
      * var param = new SuperMap.MeasureParameters(getmetry,{distanceMode:'Planar'});
@@ -40723,7 +40432,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *          "processCompleted": measureCompleted
  *      }
  * });
- * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param url - {string} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  *         measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
@@ -40882,7 +40591,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * 叠加分析服务类
  * 该类负责将客户设置的叠加分析参数传递给服务端，并接收服务端返回的叠加分析结果数据。
  * 叠加分析结果通过该类支持的事件的监听函数参数获取
- * @param url - {String} 服务的访问地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @param url - {string} 服务的访问地址。如http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param options - {Object} 可选参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.CommonServiceBase
@@ -40921,7 +40630,7 @@ var OverlayAnalystService = function (_SpatialAnalystBase) {
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.mode -{String}
+     * @member SuperMap.BuildCacheJobParameter.prototype.mode -{string}
      * @description 叠加分析类型
      */
 
@@ -41020,15 +40729,15 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.Feature.Theme.Pie
  * @classdesc 饼图。图表 Pie 配置对象 chartsSetting（<SuperMap.Layer.Graph::chartsSetting>） 可设属性如下：</br>
- * width - {Number} 专题要素（图表）宽度，必设参数。</br>
- * height - {Number} 专题要素（图表）高度，必设参数。</br>
+ * width - {number}专题要素（图表）宽度，必设参数。</br>
+ * height - {number}专题要素（图表）高度，必设参数。</br>
  * codomain - {Array{Number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
  * XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
  * YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
  * dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
  * 它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。默认值为：[0, 0, 0, 0]。</br>
- * decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
- * useBackground - {Boolean} 是否使用图表背景框，默认不使用。</br>
+ * decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+ * useBackground - {boolean} 是否使用图表背景框，默认不使用。</br>
  * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
  * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
  * sectorStyle - {Object} 饼图中扇形的基础 style，此参数控制饼图扇形基础样式，优先级低于 sectorStyleByFields 和 sectorStyleByCodomain。
@@ -41255,24 +40964,24 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Feature.Theme.Point
  * @classdesc 点状图。
  * @description 图表 Point 配置对象 chartsSetting(SuperMap.Layer.Graph::chartsSetting) 可设属性如下：</br>
- * width - {Number} 专题要素（图表）宽度，必设参数。</br>
- * height - {Number} 专题要素（图表）高度，必设参数。</br>
+ * width - {number}专题要素（图表）宽度，必设参数。</br>
+ * height - {number}专题要素（图表）高度，必设参数。</br>
  * codomain - {Array{Number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
  * XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
  * YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
  * dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
  *                     它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
  *                     当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。</br>
- * decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
- * useBackground - {Boolean} 是否使用图表背景框。</br>
+ * decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+ * useBackground - {boolean} 是否使用图表背景框。</br>
  * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
  * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,
  *                 则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
  * xShapeBlank - {Array{Number}} 水平方向上的图形空白间隔参数。
  *                 长度为 2 的数组，第一个元素表示第一个（沿 x 轴方向）图形点与数据视图框左端的空白间距，第二个元素表示最后一个（沿 x 轴方向）图形点与数据视图框右端端的空白间距 。</br>
  * axisStyle - {Object} 坐标轴样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Line::style> 。</br>
- * axisUseArrow - {Boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。</br>
- * axisYTick - {Number} y 轴刻度数量，默认值：0 ，不使用刻度。</br>
+ * axisUseArrow - {boolean} 坐标轴是否使用箭头，默认值：false，不使用箭头。</br>
+ * axisYTick - {number}y 轴刻度数量，默认值：0 ，不使用刻度。</br>
  * axisYLabels - {Array{String}} y 轴上的标签组内容，标签顺序沿着数据视图框左面条边自上而下，等距排布。例如：["1000", "750", "500", "250", "0"]。</br>
  * axisYLabelsStyle - {Object} y 轴上的标签组样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Label::style> 。</br>
  * axisYLabelsOffset - {Array{Number}} y 轴上的标签组偏移量。长度为 2 的数组，数组第一项表示 y 轴标签组横向上的偏移量，向左为正，默认值：0；
@@ -41474,7 +41183,7 @@ var Point = function (_Graph) {
          * 长度为 2 的数组，第一元素表示第折线左端点与数据视图框左端的空白间距，第二个元素表示折线右端点右端与数据视图框右端端的空白间距 。
          * @return {Object} 如果计算失败，返回 null；如果计算成功，返回 X 轴方向上的图形信息，此信息是一个对象，包含以下两个属性：
          * xPositions - {Array{Number}} 表示图形在 x 轴方向上的像素坐标值，如果图形在 x 方向上有一定宽度，通常取图形在 x 方向上的中心点为图形在 x 方向上的坐标值。</br>
-         * width - {Number} 表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。</br>
+         * width - {number}表示图形的宽度（特别注意：点的宽度始终为 0，而不是其直径）。</br>
          *
          */
 
@@ -41572,14 +41281,14 @@ var PointWithMeasure = function (_PointGeometry) {
     /**
      * @function SuperMap.PointWithMeasure.prototype.constructor
      * @param options - {Object} 可选参数。如:</br>
-     *        measure - {Number} 度量值，即路由对象属性值 M。</br>
-     *        x - {Number} 获取当前点对象在地理坐标系下的 X 坐标值。</br>
-     *        y - {Number} 获取当前点对象在地理坐标系下的 Y 坐标值。</br>
+     *        measure - {number}度量值，即路由对象属性值 M。</br>
+     *        x - {number}获取当前点对象在地理坐标系下的 X 坐标值。</br>
+     *        y - {number}获取当前点对象在地理坐标系下的 Y 坐标值。</br>
      */
 
 
     /**
-     * @member SuperMap.PointWithMeasure.prototype.y -{Number}
+     * @member SuperMap.PointWithMeasure.prototype.y -{number}
      * @description 获取当前点对象在地理坐标系下的 Y 坐标值。
      */
     function PointWithMeasure(options) {
@@ -41607,13 +41316,13 @@ var PointWithMeasure = function (_PointGeometry) {
 
 
     /**
-     * @member SuperMap.PointWithMeasure.prototype.measure -{Number}
+     * @member SuperMap.PointWithMeasure.prototype.measure -{number}
      * @description 度量值，即路由对象属性值 M。
      */
 
 
     /**
-     * @member SuperMap.PointWithMeasure.prototype.x -{Number}
+     * @member SuperMap.PointWithMeasure.prototype.x -{number}
      * @description 获取当前点对象在地理坐标系下的 X 坐标值。
      */
 
@@ -41723,29 +41432,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc Bounds 查询参数类。该类用于设置 Bounds 查询的相关参数。
  * @extends SuperMap.QueryParameters
  * @param options - {Object} 可选参数。如：<br>
- *         customParams - {String} 自定义参数，供扩展使用。<br>
+ *         customParams - {string} 自定义参数，供扩展使用。<br>
  *         prjCoordSys -{Object} 自定义参数，供isueprmap提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br>
- *         expectCount - {Number} 期望返回结果记录个数。<br>
+ *         expectCount - {number}期望返回结果记录个数。<br>
  *         networkType - {SuperMap.GeometryType} 网络数据集对应的查询类型。<br>
  *         queryOption - {SuperMap.QueryOption} 查询结果类型枚举类。<br>
  *         queryParams -  {Array<SuperMap.FilterParameter>} 查询过滤条件参数数组。<br>
- *         startRecord - {Number} 查询起始记录号。<br>
- *         holdTime - {Number} 资源在服务端保存的时间。<br>
- *         returnCustomResult -{Boolean} 仅供三维使用。<br>
- *         returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
+ *         startRecord - {number}查询起始记录号。<br>
+ *         holdTime - {number}资源在服务端保存的时间。<br>
+ *         returnCustomResult -{boolean} 仅供三维使用。<br>
+ *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
  *         bounds - {SuperMap.Bounds} 指定的查询范围。
  */
 var QueryByBoundsParameters = function (_QueryParameters) {
     _inherits(QueryByBoundsParameters, _QueryParameters);
 
-    /*
-     * Constructor: SuperMap.QueryByBoundsParameters
-     * Bounds 查询参数类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.QueryByBoundsParameters.prototype.returnContent -{Boolean}
+     * @member SuperMap.QueryByBoundsParameters.prototype.returnContent -{boolean}
      * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
      *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
      *               为 false，则返回的是查询结果资源的 URI。默认为 true。
@@ -41767,7 +41470,7 @@ var QueryByBoundsParameters = function (_QueryParameters) {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.QueryByBoundsParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -41848,7 +41551,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * function queryCompleted(object){//todo};
  * function queryError(object){//todo};
  * (end)
- * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
+ * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
@@ -41938,17 +41641,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-/** * @class SuperMap.QueryByDistanceParameters * @classdesc Distance 查询参数类。 *               该类用于设置 Distance 查询的相关参数。 * @extends SuperMap.QueryParameters * @param options - {Object} 可选参数。如：<br> *         customParams - {String} 自定义参数，供扩展使用。<br> *         prjCoordSys -{Object} 自定义参数，供isueprmap提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br> *         expectCount - {Number} 期望返回结果记录个数。<br> *         networkType - {SuperMap.GeometryType} 网络数据集对应的查询类型。<br> *         queryOption - {SuperMap.QueryOption} 查询结果类型枚举类。<br> *         queryParams -  {Array<SuperMap.FilterParameter>} 查询过滤条件参数数组。<br> *         startRecord - {Number} 查询起始记录号。<br> *         holdTime - {Number} 资源在服务端保存的时间。<br> *         returnCustomResult -{Boolean} 仅供三维使用。<br> *         distance - {Number} 查询距离。<br> *         geometry - {Object} 用于查询的几何对象。<br> *         isNearest - {Boolean} 是否为最近距离查询。<br> *         returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。 */
+/** * @class SuperMap.QueryByDistanceParameters * @classdesc Distance 查询参数类。 *               该类用于设置 Distance 查询的相关参数。 * @extends SuperMap.QueryParameters * @param options - {Object} 可选参数。如：<br> *         customParams - {string} 自定义参数，供扩展使用。<br> *         prjCoordSys -{Object} 自定义参数，供isueprmap提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br> *         expectCount - {number}期望返回结果记录个数。<br> *         networkType - {SuperMap.GeometryType} 网络数据集对应的查询类型。<br> *         queryOption - {SuperMap.QueryOption} 查询结果类型枚举类。<br> *         queryParams -  {Array<SuperMap.FilterParameter>} 查询过滤条件参数数组。<br> *         startRecord - {number}查询起始记录号。<br> *         holdTime - {number}资源在服务端保存的时间。<br> *         returnCustomResult -{boolean} 仅供三维使用。<br> *         distance - {number}查询距离。<br> *         geometry - {Object} 用于查询的几何对象。<br> *         isNearest - {boolean} 是否为最近距离查询。<br> *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。 */
 var QueryByDistanceParameters = function (_QueryParameters) {
   _inherits(QueryByDistanceParameters, _QueryParameters);
 
-  /*     * Constructor: SuperMap.QueryByDistanceParameters     * Distance 查询参数类构造函数。     */
+  /**     * @member SuperMap.QueryByDistanceParameters.prototype.isNearest -{boolean}     * @description 是否为最近距离查询。<br>     *               建议该属性与 expectCount （继承自 SuperMap.QueryParameters）属性联合使用。<br>     *               当该属性为 true 时，即表示查找最近地物，如果查询结果数大于期望返回的结果记录数（expectCount），<br>     *               则查找结果为查询总记录中距离中心最近的expectCount个地物。<br>     *               当该属性为不为 true 时，如果查询结果数大于期望返回的结果记录数（expectCount），<br>     *               则查找结果为从查询总记录中随机抽取的expectCount个地物。<br>     *               目前查询结果不支持按远近距离排序。     */
 
 
-  /**     * @member SuperMap.QueryByDistanceParameters.prototype.isNearest -{Boolean}     * @description 是否为最近距离查询。<br>     *               建议该属性与 expectCount （继承自 SuperMap.QueryParameters）属性联合使用。<br>     *               当该属性为 true 时，即表示查找最近地物，如果查询结果数大于期望返回的结果记录数（expectCount），<br>     *               则查找结果为查询总记录中距离中心最近的expectCount个地物。<br>     *               当该属性为不为 true 时，如果查询结果数大于期望返回的结果记录数（expectCount），<br>     *               则查找结果为从查询总记录中随机抽取的expectCount个地物。<br>     *               目前查询结果不支持按远近距离排序。     */
-
-
-  /**     * @member SuperMap.QueryByDistanceParameters.prototype.distance -{Number}     * @description 查询距离，默认为0，单位与所查询图层对应的数据集单位相同。     *               当查找最近地物时，该属性无效。     */
+  /**     * @member SuperMap.QueryByDistanceParameters.prototype.distance -{number}     * @description 查询距离，默认为0，单位与所查询图层对应的数据集单位相同。     *               当查找最近地物时，该属性无效。     */
   function QueryByDistanceParameters(options) {
     _classCallCheck(this, QueryByDistanceParameters);
 
@@ -41967,10 +41667,10 @@ var QueryByDistanceParameters = function (_QueryParameters) {
     return _this;
   }
 
-  /**     * @function destroy     * @description 释放资源，将引用资源的属性置空。     */
+  /**     * @function SuperMap.QueryByDistanceParameters.prototype.destroy     * @description 释放资源，将引用资源的属性置空。     */
 
 
-  /**     * @member SuperMap.QueryByDistanceParameters.prototype.returnContent -{Boolean}     * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>     *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>     *               为 false，则返回的是查询结果资源的 URI。默认为 true。     */
+  /**     * @member SuperMap.QueryByDistanceParameters.prototype.returnContent -{boolean}     * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>     *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>     *               为 false，则返回的是查询结果资源的 URI。默认为 true。     */
 
 
   /**     * @member SuperMap.QueryByDistanceParameters.prototype.geometry -{Object}     * @description 用于查询的地理对象，必设属性。     */
@@ -42050,7 +41750,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * function queryError(object){//todo};
  *(end)
  *
- * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
+ * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
@@ -42148,27 +41848,21 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *               该类用于设置 Geometry查询的相关参数。
  * @extends SuperMap.QueryParameters
  * @param options - {Object} 可选参数。如：<br>
- *         customParams - {String} 自定义参数，供扩展使用。<br>
+ *         customParams - {string} 自定义参数，供扩展使用。<br>
  *         prjCoordSys -{Object} 自定义参数，供isueprmap提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br>
- *         expectCount - {Number} 期望返回结果记录个数。<br>
+ *         expectCount - {number}期望返回结果记录个数。<br>
  *         networkType - {SuperMap.GeometryType} 网络数据集对应的查询类型。<br>
  *         queryOption - {SuperMap.QueryOption} 查询结果类型枚举类。<br>
  *         queryParams - {Array<SuperMap.FilterParameter>} 查询过滤条件参数数组。<br>
- *         startRecord - {Number} 查询起始记录号。<br>
- *         holdTime - {Number} 资源在服务端保存的时间。<br>
- *         returnCustomResult -{Boolean} 仅供三维使用。
- *         returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。
+ *         startRecord - {number}查询起始记录号。<br>
+ *         holdTime - {number}资源在服务端保存的时间。<br>
+ *         returnCustomResult -{boolean} 仅供三维使用。
+ *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。
  *         geometry - {Object} 用于查询的几何对象。
  *         spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式。
  */
 var QueryByGeometryParameters = function (_QueryParameters) {
     _inherits(QueryByGeometryParameters, _QueryParameters);
-
-    /*
-     * Constructor: SuperMap.QueryByGeometryParameters
-     * Geometry 查询参数类构造函数。
-     */
-
 
     /**
      * @member SuperMap.QueryByGeometryParameters.prototype.geometry -{Object}
@@ -42192,7 +41886,7 @@ var QueryByGeometryParameters = function (_QueryParameters) {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.QueryByGeometryParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -42204,7 +41898,7 @@ var QueryByGeometryParameters = function (_QueryParameters) {
 
 
     /**
-     * @member SuperMap.QueryByGeometryParameters.prototype.returnContent -{Boolean}
+     * @member SuperMap.QueryByGeometryParameters.prototype.returnContent -{boolean}
      * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>
      *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>
      *               为 false，则返回的是查询结果资源的 URI。默认为 true。
@@ -42278,7 +41972,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * });
  * function queryCompleted(object){//todo};
  * function queryError(object){//todo};
- * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
+ * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
@@ -42288,7 +41982,7 @@ var QueryByGeometryService = function (_QueryService) {
     /*
      * @function SuperMap.QueryByGeometryService.prototype.constructor
      * @description Geometry 查询服务类构造函数。
-     * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
+     * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
@@ -42375,11 +42069,10 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-/** * @class SuperMap.QueryBySQLParameters * @classdesc SQL 查询参数类。 *               该类用于设置 SQL 查询的相关参数。 * @extends SuperMap.QueryParameters * @param options - {Object} 可选参数。如：<br> *         customParams - {String} 自定义参数，供扩展使用。<br> *         prjCoordSys -{Object} 自定义参数，供isueprmap提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br> *         expectCount - {Number} 期望返回结果记录个数。<br> *         networkType - {SuperMap.GeometryType} 网络数据集对应的查询类型。<br> *         queryOption - {SuperMap.QueryOption} 查询结果类型枚举类。<br> *         queryParams -  {Array<SuperMap.FilterParameter>} 查询过滤条件参数数组。<br> *         startRecord - {Number} 查询起始记录号。<br> *         holdTime - {Number} 资源在服务端保存的时间。<br> *         returnCustomResult -{Boolean} 仅供三维使用。 *         returnContent - {Boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。 */
+/** * @class SuperMap.QueryBySQLParameters * @classdesc SQL 查询参数类。 *               该类用于设置 SQL 查询的相关参数。 * @extends SuperMap.QueryParameters * @param options - {Object} 可选参数。如：<br> *         customParams - {string} 自定义参数，供扩展使用。<br> *         prjCoordSys -{Object} 自定义参数，供isueprmap提供的动态投影查询扩展使用。如 {"epsgCode":3857}。<br> *         expectCount - {number}期望返回结果记录个数。<br> *         networkType - {SuperMap.GeometryType} 网络数据集对应的查询类型。<br> *         queryOption - {SuperMap.QueryOption} 查询结果类型枚举类。<br> *         queryParams -  {Array<SuperMap.FilterParameter>} 查询过滤条件参数数组。<br> *         startRecord - {number}查询起始记录号。<br> *         holdTime - {number}资源在服务端保存的时间。<br> *         returnCustomResult -{boolean} 仅供三维使用。 *         returnContent - {boolean} 是否立即返回新创建资源的表述还是返回新资源的 URI。 */
 var QueryBySQLParameters = function (_QueryParameters) {
   _inherits(QueryBySQLParameters, _QueryParameters);
 
-  /*     * Constructor: SuperMap.QueryBySQLParameters     * SQL 查询参数类构造函数。     */
   function QueryBySQLParameters(options) {
     _classCallCheck(this, QueryBySQLParameters);
 
@@ -42395,10 +42088,10 @@ var QueryBySQLParameters = function (_QueryParameters) {
     return _this;
   }
 
-  /**     * @function destroy     * @description 释放资源，将引用资源的属性置空。     */
+  /**     * @function SuperMap.QueryBySQLParameters.prototype.destroy     * @description 释放资源，将引用资源的属性置空。     */
 
 
-  /**     * @member SuperMap.QueryBySQLParameters.prototype.returnContent -{Boolean}     * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>     *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>     *               为 false，则返回的是查询结果资源的 URI。默认为 true。     */
+  /**     * @member SuperMap.QueryBySQLParameters.prototype.returnContent -{boolean}     * @description 是否立即返回新创建资源的表述还是返回新资源的 URI。<br>     *               如果为 true，则直接返回新创建资源，即查询结果的表述。<br>     *               为 false，则返回的是查询结果资源的 URI。默认为 true。     */
 
 
   _createClass(QueryBySQLParameters, [{
@@ -42473,7 +42166,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * queryBySQLService.processAsync(queryBySQLParams);
  * function queryCompleted(object){//todo};
  * function queryError(object){//todo};
- * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
+ * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  */
@@ -42483,7 +42176,7 @@ var QueryBySQLService = function (_QueryService) {
     /*
      * @function SuperMap.QueryBySQLService.prototype.constructor
      * @descriptionSQL 查询服务类构造函数。
-     * @param url - {String} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
+     * @param url - {string} 服务的访问地址。如访问World Map服务，只需将url设为: http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 即可。
      * @param options - {Object} 互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      */
@@ -42639,7 +42332,7 @@ var RankSymbol = function (_Graph) {
          * XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
          * YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
          * dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
-         * decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+         * decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
          * 除了以上 5 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同。
          * 请在此类的子类中查看 setting 对象的可设属性和属性含义。
          */
@@ -42661,8 +42354,8 @@ var RankSymbol = function (_Graph) {
                  * XOffset - {Number}  专题要素（图形）在 X 方向上的偏移值，单位像素。</br>
                  * YOffset - {Number}  专题要素（图形）在 Y 方向上的偏移值，单位像素。</br>
                  * dataViewBoxParameter - {Array(Number)} 数据视图框 dataViewBox 参数，它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
-                 * decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
-                 * @returns- {Boolean} 初始化参数是否成功。
+                 * decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+                 * @returns- {boolean} 初始化参数是否成功。
                  */
 
         }, {
@@ -42786,18 +42479,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.Feature.Theme.Ring
  * @classdesc 环状图。基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
  * 图表 Ring 配置对象 chartsSetting（SuperMap.Layer.Graph::chartsSetting） 可设属性如下：</br>
- * width - {Number} 专题要素（图表）宽度，必设参数。</br>
- * height - {Number} 专题要素（图表）高度，必设参数。</br>
+ * width - {number}专题要素（图表）宽度，必设参数。</br>
+ * height - {number}专题要素（图表）高度，必设参数。</br>
  * codomain - {Array{Number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
  * XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
  * YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
  * dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
  * 它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。默认值为：[0, 0, 0, 0]。</br>
- * decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
- * useBackground - {Boolean} 是否使用图表背景框，默认不使用。</br>
+ * decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+ * useBackground - {boolean} 是否使用图表背景框，默认不使用。</br>
  * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
  * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
- *innerRingRadius - {Number} 环状图内环半径，默认值: 0，取值范围大于 0，小于外环半径（外环半径：数据视图框长和宽中较小值的二分之一）。</br>
+ *innerRingRadius - {number}环状图内环半径，默认值: 0，取值范围大于 0，小于外环半径（外环半径：数据视图框长和宽中较小值的二分之一）。</br>
  *sectorStyle - {Object} 环状图中扇形的基础 style，此参数控制环状图扇形基础样式，优先级低于 sectorStyleByFields 和 sectorStyleByCodomain。
  * 此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。</br>
  * sectorStyleByFields - {Array{Object}} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为环状图扇形赋 style，此参数按字段控制环状图扇形样式，优先级低于 sectorStyleByCodomain，高于 sectorStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。</br>
@@ -43061,7 +42754,7 @@ var RouteCalculateMeasureParameters = function () {
 
 
     /**
-     * @member SuperMap.RouteCalculateMeasureParameters.prototype.isIgnoreGap -{Boolean}
+     * @member SuperMap.RouteCalculateMeasureParameters.prototype.isIgnoreGap -{boolean}
      * @description【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。
      */
 
@@ -43138,7 +42831,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends SuperMap.SpatialAnalystBase
  * @param options - {Object} 可选参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。</br>
- * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
+ * @param url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @example 实例化该类如下例所示：
  * (start code)
  * var parameters = new SuperMap.RouteCalculateMeasureParameters({
@@ -43310,7 +43003,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        type -  {String} 【必选参数】类型：点 or 线。</br>
  *        measure - {Double} 【必选参数】定位点的M值。只当路由对象定位点时有意义。</br>
  *        offset - {Double} 定位点偏移量。只当路由对象定位点时有意义，默认为0。</br>
- *        isIgnoreGap - {Boolean} 是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
+ *        isIgnoreGap - {boolean} 是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
  *        startMeasure - {Double} 定位线的起始M值。只当路由对象定位线时有意义。</br>
  *        endMeasure -  {Double} 定位线的终止M值。只当路由对象定位线时有意义。</br>
  */
@@ -43329,7 +43022,7 @@ var RouteLocatorParameters = function () {
 
 
     /**
-     * @member SuperMap.RouteLocatorParameters.prototype.type -{String}
+     * @member SuperMap.RouteLocatorParameters.prototype.type -{string}
      * @description 【必选参数】类型：点 or 线。
      * 可选值为:
      * LINE :根据起始 M 值及终止 M 值定位线对象。
@@ -43338,7 +43031,7 @@ var RouteLocatorParameters = function () {
 
 
     /**
-     * @member SuperMap.RouteLocatorParameters.prototype.routeIDField -{String}
+     * @member SuperMap.RouteLocatorParameters.prototype.routeIDField -{string}
      * @description  路由对象所在的字段名称。
      *
      */
@@ -43393,7 +43086,7 @@ var RouteLocatorParameters = function () {
 
 
     /**
-     * @member SuperMap.RouteLocatorParameters.prototype.isIgnoreGap -{Boolean}
+     * @member SuperMap.RouteLocatorParameters.prototype.isIgnoreGap -{boolean}
      * @description 是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。
      */
 
@@ -43412,7 +43105,7 @@ var RouteLocatorParameters = function () {
 
 
     /**
-     * @member SuperMap.RouteLocatorParameters.prototype.dataset -{String}
+     * @member SuperMap.RouteLocatorParameters.prototype.dataset -{string}
      * @description 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。
      */
 
@@ -43483,7 +43176,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends SuperMap.SpatialAnalystBase
  * @param options - {Object} 可选参数。如</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
- * @param url -{String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @param url -{string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @example 实例化该类如下例所示：
  * (start code)
  * var routeLocatorParameters_point = new SuperMap.RouteLocatorParameters({
@@ -43827,21 +43520,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.SetLayerInfoParameters
  * @classdesc 设置图层信息参数类.
  * @param options -{Object} 可选参数。如：<br>
- *         tempLayerID -{String} 临时图层的资源ID。<br>
- *         layerName -{String} 图层资源名。<br>
- *         resourceID -{String} 资源ID。<br>
- *         layerInfo -{String} 要更新的图层信息。
+ *         tempLayerID -{string} 临时图层的资源ID。<br>
+ *         layerName -{string} 图层资源名。<br>
+ *         resourceID -{string} 资源ID。<br>
+ *         layerInfo -{string} 要更新的图层信息。
  */
 var SetLayerInfoParameters = function () {
 
     /**
-     * @member SuperMap.SetLayerInfoParameters.prototype.resourceID -{String}
+     * @member SuperMap.SetLayerInfoParameters.prototype.resourceID -{string}
      * @description 资源ID，
      */
 
 
     /**
-     * @member SuperMap.SetLayerInfoParameters.prototype.tempLayerID -{String}
+     * @member SuperMap.SetLayerInfoParameters.prototype.tempLayerID -{string}
      * @description 临时图层的资源ID
      */
     function SetLayerInfoParameters(options) {
@@ -43858,19 +43551,19 @@ var SetLayerInfoParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.SetLayerInfoParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.SetLayerInfoParameters.prototype.layerInfo -{String}
+     * @member SuperMap.SetLayerInfoParameters.prototype.layerInfo -{string}
      * @description 要更新的图层信息
      */
 
 
     /**
-     * @member SuperMap.SetLayerInfoParameters.prototype.layerName -{String}
+     * @member SuperMap.SetLayerInfoParameters.prototype.layerName -{string}
      * @description 图层资源名
      */
 
@@ -43934,7 +43627,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 设置图层信息服务类。可以实现临时图层中子图层的修改
  *              该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
+ * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
@@ -43963,7 +43656,7 @@ var SetLayerInfoService = function (_CommonServiceBase) {
 
 
     /**
-     * @member SuperMap.SetLayerInfoService.prototype.resourceID - {String}
+     * @member SuperMap.SetLayerInfoService.prototype.resourceID - {string}
      * @description 图层资源ID，临时图层的资源ID标记。
      */
 
@@ -44042,19 +43735,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @param options - {Object} 可选参数。如：<br>
  *        layerStatusList - {Array<SuperMap.LayerStatus>} 获取或设置图层可见状态（SuperMap.LayerStatus）集合，必设属性。
  *                         集合中的每个 SuperMap.LayerStatus 对象代表一个子图层的可视状态。<br>
- *        holdTime - {String} 获取或设置资源在服务端保存的时间。<br>
- *        resourceID - {String} 获取或设置资源服务 ID。
+ *        holdTime - {string} 获取或设置资源在服务端保存的时间。<br>
+ *        resourceID - {string} 获取或设置资源服务 ID。
  */
 var SetLayerStatusParameters = function () {
 
-    /*
-     * Constructor: SuperMap.SetLayerStatusParameters
-     *子图层显示控制参数类的构造函数
-     */
-
-
     /**
-     * @member SuperMap.SetLayerStatusParameters.prototype.holdTime -{Number}
+     * @member SuperMap.SetLayerStatusParameters.prototype.holdTime -{number}
      * @description 获取或设置资源在服务端保存的时间。 默认为 15 分钟。
      */
     function SetLayerStatusParameters(options) {
@@ -44073,13 +43760,13 @@ var SetLayerStatusParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.SetLayerStatusParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.SetLayerStatusParameters.prototype.resourceID -{String}
+     * @member SuperMap.SetLayerStatusParameters.prototype.resourceID -{string}
      * @description 获取或设置资源服务 ID 。非必设参数，如果设置该参数则会在指定的 TempLayer 进行图层的显示控制；<br>
      *                如果不设置该参数，则会首先创建一个 TempLayer ，然后在新创建的 TempLayer 进行图层的显示控制。
      */
@@ -44174,7 +43861,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *                一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；<br>
  *                一种是使用 AsyncResponder 类实现异步处理。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 地图服务访问地址。请求地图服务,URL 应为：<br>
+ * @param url - {string} 地图服务访问地址。请求地图服务,URL 应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
@@ -44355,13 +44042,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.SetLayersInfoParameters
  * @classdesc 设置图层信息参数类
  * @param options -{Object} 可选参数。如：<br>
- *        isTempLayers -{Boolean} 是否是临时图层。<br>
- *        resourceID -{String} 资源ID。<br>
- *        layerInfo -{String} 要更新的图层信息。
+ *        isTempLayers -{boolean} 是否是临时图层。<br>
+ *        resourceID -{string} 资源ID。<br>
+ *        layerInfo -{string} 要更新的图层信息。
  */
 var SetLayersInfoParameters = function () {
     /**
-     * @member SuperMap.SetLayersInfoParameters.prototype.resourceID -{String}
+     * @member SuperMap.SetLayersInfoParameters.prototype.resourceID -{string}
      * @description 资源ID，
      */
     function SetLayersInfoParameters(options) {
@@ -44377,19 +44064,19 @@ var SetLayersInfoParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.SetLayersInfoParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.SetLayersInfoParameters.prototype.layerInfo -{String}
+     * @member SuperMap.SetLayersInfoParameters.prototype.layerInfo -{string}
      * @description 要更新的图层信息。
      */
 
 
     /**
-     * @member SuperMap.SetLayersInfoParameters.prototype.isTempLayers -{Boolean}
+     * @member SuperMap.SetLayersInfoParameters.prototype.isTempLayers -{boolean}
      * @description 是否是临时图层。
      */
 
@@ -44453,18 +44140,18 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *                当 isTempLayers 为 false的时候执行创建临时图层。当 isTempLayers 为 ture 并且临时图层资源 resourceID 被设置有效时执行对临时图层的编辑。<br>
  *                该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
+ * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
  *              http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *         resourceID - {String} 图层资源ID，临时图层的资源ID标记。<br>
- *         isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。<br>
+ *         resourceID - {string} 图层资源ID，临时图层的资源ID标记。<br>
+ *         isTempLayers - {boolean} 当前url对应的图层是否是临时图层。<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
 var SetLayersInfoService = function (_CommonServiceBase) {
     _inherits(SetLayersInfoService, _CommonServiceBase);
 
     /**
-     * @member SuperMap.SetLayersInfoService.prototype.resourceID - {String}
+     * @member SuperMap.SetLayersInfoService.prototype.resourceID - {string}
      * @description 图层资源ID，临时图层的资源ID标记。
      */
     function SetLayersInfoService(url, options) {
@@ -44490,7 +44177,7 @@ var SetLayersInfoService = function (_CommonServiceBase) {
 
 
     /**
-     * @function SuperMap.SetLayersInfoService.prototype.isTempLayers -{Boolean}
+     * @function SuperMap.SetLayersInfoService.prototype.isTempLayers -{boolean}
      * @description 当前url对应的图层是否是临时图层。
      */
 
@@ -44603,14 +44290,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.SingleObjectQueryJobsParameter
  * @classdesc 单对象空间查询分析任务参数类
  * @param options - {Object} 必填参数。<br>
- *         datasetName -{String} 数据集名。 <br>
- *         datasetQuery -{String} 查询对象所在的数据集名称。 <br>
+ *         datasetName -{string} 数据集名。 <br>
+ *         datasetQuery -{string} 查询对象所在的数据集名称。 <br>
  *         mode -{SuperMap.SpatialQueryMode} 空间查询模式 。 <br>
  */
 var SingleObjectQueryJobsParameter = function () {
 
     /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{String}
+     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{string}
      * @description 查询对象所在的数据集名称。
      */
     function SingleObjectQueryJobsParameter(options) {
@@ -44627,7 +44314,7 @@ var SingleObjectQueryJobsParameter = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.SingleObjectQueryJobsParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -44639,7 +44326,7 @@ var SingleObjectQueryJobsParameter = function () {
 
 
     /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{String}
+     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{string}
      * @description 数据集名。
      */
 
@@ -44713,7 +44400,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.SingleObjectQueryJobsService
  * @classdesc 大数据单对象查询分析服务类
  * @extends SuperMap.ProcessingServiceBase
- * @param url -{String} 大数据单对象空间查询分析服务地址。
+ * @param url -{string} 大数据单对象空间查询分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
 var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
@@ -44756,7 +44443,7 @@ var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
         /**
          * @function SuperMap.KernelDensityJobsService.protitype.getQueryJob
          * @description 获取指定id的单对象空间查询分析服务
-         * @param id -{String} 指定要获取数据的id
+         * @param id -{string} 指定要获取数据的id
          */
 
     }, {
@@ -44769,7 +44456,7 @@ var SingleObjectQueryJobsService = function (_ProcessingServiceBas) {
          * @function SuperMap.SingleObjectQueryJobsService.protitype.addQueryJob
          * @description 新建大数据单对象空间查询分析服务
          * @param params - {SuperMap.SingleObjectQueryJobsParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
+         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -44815,7 +44502,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var StopQueryParameters = function () {
     /**
-     *  @member SuperMap.StopQueryParameters.prototype.keyWord -{String}
+     *  @member SuperMap.StopQueryParameters.prototype.keyWord -{string}
      *  @description 站点名称关键字。
      */
     function StopQueryParameters(options) {
@@ -44836,7 +44523,7 @@ var StopQueryParameters = function () {
 
 
     /**
-     * @member SuperMap.StopQueryParameters.prototype.returnPosition -{Boolean}
+     * @member SuperMap.StopQueryParameters.prototype.returnPosition -{boolean}
      * @description 是否返回站点坐标信息。
      */
 
@@ -44897,7 +44584,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * 站点查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 与客户端交互的站点查询服务地址。
+ * @param url - {string} 与客户端交互的站点查询服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param options - {Object} 可選参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
@@ -45006,13 +44693,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.SummaryMeshJobParameter
  * @classdesc 点聚合分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
- *        datasetName -{String} 数据集名。<br>
+ *        datasetName -{string} 数据集名。<br>
  *        query -{SuperMap.Bounds} 分析范围。<br>
- *        resolution -{number} 分辨率。<br>
- *        statisticModes -{String} 分析模式。<br>
- *        meshType -{number} 分析类型。<br>
- *        fields -{number} 权重索引。<br>
- *        type -{String} 聚合类型。
+ *        resolution -{number}分辨率。<br>
+ *        statisticModes -{string} 分析模式。<br>
+ *        meshType -{number}分析类型。<br>
+ *        fields -{number}权重索引。<br>
+ *        type -{string} 聚合类型。
  */
 var SummaryMeshJobParameter = function () {
 
@@ -45035,7 +44722,7 @@ var SummaryMeshJobParameter = function () {
 
 
     /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.datasetName -{String}
+     * @member SuperMap.SummaryMeshJobParameter.prototype.datasetName -{string}
      * @description 数据集名。
      */
     function SummaryMeshJobParameter(options) {
@@ -45080,7 +44767,7 @@ var SummaryMeshJobParameter = function () {
 
 
     /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.regionDataset -{String}
+     * @member SuperMap.SummaryMeshJobParameter.prototype.regionDataset -{string}
      * @description 聚合面数据集(聚合类型为多边形聚合时使用的参数)。
      */
 
@@ -45174,13 +44861,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 /**
  * @class SuperMap.SummaryMeshJobsService
  * @classdesc 点聚合分析大数据任务类。
- * @param url -{String} 点聚合分析任务地址。
+ * @param url -{string} 点聚合分析任务地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *        events - {SuperMap.Events} 处理所有事件的对象。<br>
  *        eventListeners - {Object} 听器对象。<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number} 服务访问地址在数组中的位置。<br>
- *        length - {number} 服务访问地址数组长度。
+ *        index - {number}服务访问地址在数组中的位置。<br>
+ *        length - {number}服务访问地址数组长度。
  */
 var SummaryMeshJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryMeshJobsService, _ProcessingServiceBas);
@@ -45221,7 +44908,7 @@ var SummaryMeshJobsService = function (_ProcessingServiceBas) {
         /**
          * @function SuperMap.SummaryMeshJobsService.prototype.getSummaryMeshJob
          * @description 获取指定ip的点聚合分析大数据
-         * @param id -{String} 指定要获取数据的id
+         * @param id -{string} 指定要获取数据的id
          */
 
     }, {
@@ -45234,7 +44921,7 @@ var SummaryMeshJobsService = function (_ProcessingServiceBas) {
          * @function SuperMap.SummaryMeshJobsService.prototype.addSummaryMeshJob
          * @description 新建点聚合分析大数据服务
          * @param params - {SuperMap.SummaryMeshJobParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
+         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -45279,19 +44966,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.SummaryRegionJobParameter
  * @classdesc 范围汇总分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
- *         datasetName -{String} 数据集名。 <br>
- *         sumShape -{Boolean} 是否统计长度或面积。 <br>
+ *         datasetName -{string} 数据集名。 <br>
+ *         sumShape -{boolean} 是否统计长度或面积。 <br>
  *         query -{SuperMap.Bounds} 分析范围。 <br>
- *         standardSummaryFields -{Boolean} 以标准属字段统计。 <br>
- *         standardFields -{String} 以标准属字段统计的字段名称。 <br>
- *         standardStatisticModes -{String} 以标准属字段统计的统计模式。 <br>
- *         weightedSummaryFields -{Boolean} 以权重字段统计。 <br>
- *         weightedFields -{String} 以权重字段统计的字段名称。 <br>
- *         weightedStatisticModes -{String} 以权重字段统计的统计模式。 <br>
- *         resolution -{number} 网格大小。 <br>
- *         meshType -{number} 网格面汇总类型。 <br>
- *         meshSizeUnit -{String} 网格大小单位。 <br>
- *         type -{String} 汇总类型。 <br>
+ *         standardSummaryFields -{boolean} 以标准属字段统计。 <br>
+ *         standardFields -{string} 以标准属字段统计的字段名称。 <br>
+ *         standardStatisticModes -{string} 以标准属字段统计的统计模式。 <br>
+ *         weightedSummaryFields -{boolean} 以权重字段统计。 <br>
+ *         weightedFields -{string} 以权重字段统计的字段名称。 <br>
+ *         weightedStatisticModes -{string} 以权重字段统计的统计模式。 <br>
+ *         resolution -{number}网格大小。 <br>
+ *         meshType -{number}网格面汇总类型。 <br>
+ *         meshSizeUnit -{string} 网格大小单位。 <br>
+ *         type -{string} 汇总类型。 <br>
  */
 var SummaryRegionJobParameter = function () {
 
@@ -45308,7 +44995,7 @@ var SummaryRegionJobParameter = function () {
 
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedFields -{String}
+     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedFields -{string}
      * @description 以权重字段统计的字段名称。
      */
 
@@ -45320,19 +45007,19 @@ var SummaryRegionJobParameter = function () {
 
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{Boolean}
+     * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{boolean}
      * @description 以标准属字段统计。
      */
 
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{Boolean}
+     * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{boolean}
      * @description 是否统计长度或面积。
      */
 
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{String}
+     * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{string}
      * @description 数据集名。
      */
     function SummaryRegionJobParameter(options) {
@@ -45360,7 +45047,7 @@ var SummaryRegionJobParameter = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.SummaryRegionJobParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -45384,13 +45071,13 @@ var SummaryRegionJobParameter = function () {
 
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields -{Boolean}
+     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields -{boolean}
      * @description 以权重字段统计。
      */
 
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{String}
+     * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{string}
      * @description 以标准属字段统计的字段名称。
      */
 
@@ -45402,7 +45089,7 @@ var SummaryRegionJobParameter = function () {
 
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{String}
+     * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{string}
      * @description 汇总数据源（多边形汇总时用到的参数）。
      */
 
@@ -45492,7 +45179,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.SummaryRegionJobsService
  * @classdesc 范围汇总分析服务类
  * @extends SuperMap.ProcessingServiceBase
- * @param url -{String} 范围汇总分析服务地址。
+ * @param url -{string} 范围汇总分析服务地址。
  * @param options - {Object} 范围汇总分析服务可选参数。
  */
 var SummaryRegionJobsService = function (_ProcessingServiceBas) {
@@ -45535,7 +45222,7 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
         /**
          * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJob
          * @description 获取指定id的范围汇总分析任务。
-         * @param id -{String} 要获取范围汇总分析任务的id
+         * @param id -{string} 要获取范围汇总分析任务的id
          */
 
     }, {
@@ -45548,7 +45235,7 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
          * @function SuperMap.SummaryRegionJobsService.prototype.addSummaryRegionJob
          * @description 新建范围汇总任务。
          * @param params - {SuperMap.SummaryRegionJobParameter} 创建一个范围汇总任务的请求参数。
-         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
+         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -45591,32 +45278,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.SupplyCenter
  * @classdesc 资源供给中心类。在资源分配和选址分区分析两个功能中使用。
  * @param options - {Object} 可选参数。如：<br>
- *        maxWeight - {Number} 资源供给中心的最大耗费值，必设参数。<br>
+ *        maxWeight - {number}资源供给中心的最大耗费值，必设参数。<br>
  *        nodeID - {Integer} 资源供给中心点的结点 ID 号，必设参数。资源供给中心必须是结点。<br>
- *        resourceValue - {Number} 资源供给中心能提供的最大服务量或商品数量，必设参数。<br>
+ *        resourceValue - {number}资源供给中心能提供的最大服务量或商品数量，必设参数。<br>
  *        type - {SuperMap.SupplyCenterType} 资源供给中心点的类型常量。
  */
 var SupplyCenter = function () {
 
-    /*
-     * @function SuperMap.SupplyCenter.prototype.constructor
-     * @description 资源供给中心类构造函数。
-     * @param options - {Object} 可选参数。如：<br>
-     *        maxWeight - {Number} 资源供给中心的最大耗费值，必设参数。<br>
-     *        nodeID - {Integer} 资源供给中心点的结点 ID 号，必设参数。资源供给中心必须是结点。<br>
-     *        resourceValue - {Number} 资源供给中心能提供的最大服务量或商品数量，必设参数。<br>
-     *        type - {SuperMap.SupplyCenterType} 资源供给中心点的类型常量。
-     */
-
-
     /**
-     * @member SuperMap.SupplyCenter.prototype.resourceValue -{Number}
+     * @member SuperMap.SupplyCenter.prototype.resourceValue -{number}
      * @description 资源供给中心能提供的最大服务量或商品数量，必设参数。例如资源中心为学校，资源中心资源量表示该学校能够接纳多少学生。
      */
 
 
     /**
-     * @member SuperMap.SupplyCenter.prototype.maxWeight -{Number}
+     * @member SuperMap.SupplyCenter.prototype.maxWeight -{number}
      * @description 资源供给中心的最大耗费值，必设参数。中心点最大阻值设置越小，表示中心点所提供的资源可影响范围越大。
      *              最大阻力值是用来限制需求点到中心点的花费。
      *              如果需求点（弧段或结点）到此中心的花费大于最大阻力值，则该需求点不属于该资源供给中心提供资源的范围。
@@ -45636,7 +45312,7 @@ var SupplyCenter = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.SupplyCenter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -45723,12 +45399,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * 通过该类可以设置表面分析提取等值线、提取等值面的一些参数，包括基准值、等值距、光滑度、光滑方法等。
  * @param options - {Object} 可选参数。如:</br>
  *        clipRegion - {SuperMap.Geometry} 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。</br>
- *        datumValue - {Number} 获取或设置表面分析中提取等值线、提取等值面的基准值。</br>
+ *        datumValue - {number}获取或设置表面分析中提取等值线、提取等值面的基准值。</br>
  *        expectedZValues - {Array(Number)} 获取或设置期望分析结果的 Z 值集合。</br>
- *        interval - {Number} 获取或设置等值距。等值距是两条等值线之间的间隔值。</br>
- *        resampleTolerance - {Number} 获取或设置重采样容限。</br>
+ *        interval - {number}获取或设置等值距。等值距是两条等值线之间的间隔值。</br>
+ *        resampleTolerance - {number}获取或设置重采样容限。</br>
  *        smoothMethod - {SuperMap.SmoothMethod} 获取或设置光滑处理所使用的方法。</br>
- *        smoothness - {Number} 获取或设置表面分析中等值线或等值面的边界线的光滑度。</br>
+ *        smoothness - {number}获取或设置表面分析中等值线或等值面的边界线的光滑度。</br>
  */
 var SurfaceAnalystParametersSetting = function () {
 
@@ -45739,13 +45415,13 @@ var SurfaceAnalystParametersSetting = function () {
 
 
     /**
-     *  @member SuperMap.SurfaceAnalystParametersSetting.prototype.interval -{Number}
+     *  @member SuperMap.SurfaceAnalystParametersSetting.prototype.interval -{number}
      *  @description 获取或设置等值距。等值距是两条等值线之间的间隔值。
      */
 
 
     /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.datumValue -{Number}
+     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.datumValue -{number}
      * @description 获取或设置表面分析中提取等值线、提取等值面的基准值。
      * 基准值是作为一个生成等值线的初始起算值，并不一定是最小等值线的值。 例如，高程范围为 220 -1550 的 DEM 栅格数据，
      * 如果设基准值为0， 等值距为50，则提取等值线时，以基准值0为起点，等值距50为间隔提取等值线，
@@ -45776,7 +45452,7 @@ var SurfaceAnalystParametersSetting = function () {
 
 
     /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.smoothness -{Number}
+     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.smoothness -{number}
      * @description 获取或设置表面分析中等值线或等值面的边界线的光滑度。
      * 以为0-5为例，光滑度为0表示不进行光滑操作，值越大表示光滑度越高。
      * 随着光滑度的增加，提取的等值线越光滑.当然光滑度越大，
@@ -45786,7 +45462,7 @@ var SurfaceAnalystParametersSetting = function () {
 
 
     /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.resampleTolerance -{Number}
+     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.resampleTolerance -{number}
      * @description 获取或设置重采样容限。
      * 容限值越大，采样结果数据越简化。当分析结果出现交叉时，可通过调整重采样容限为较小的值来处理。
      */
@@ -45876,7 +45552,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * 表面分析结果通过该类支持的事件的监听函数参数获取
  * @param options - {Object} 可选参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
- * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。s
+ * @param url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。s
  * @extends SuperMap.SpatialAnalystBase
  * @example 例如：
  * (start code)
@@ -46010,29 +45686,29 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.TerrainCurvatureCalculationParameters
  * @classdesc 地形曲率计算参数类。
  * @param options - {Object} 可选参数。如</br>
- *        dataset - {String} 要用来做地形曲率计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。</br>
- *        zFactor - {Number} 指定的高程缩放系数。默认值为 1.0，表示不缩放。</br>
- *        averageCurvatureName - {String} 结果数据集：平均曲率数据集的名称，必设字段。</br>
- *        profileCurvatureName - {String} 结果数据集：剖面曲率数据集的名称。</br>
- *        planCurvatureName - {String} 结果数据集：平面曲率数据集的名称。</br>
- *        deleteExistResultDataset - {Boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
+ *        dataset - {string} 要用来做地形曲率计算数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。</br>
+ *        zFactor - {number}指定的高程缩放系数。默认值为 1.0，表示不缩放。</br>
+ *        averageCurvatureName - {string} 结果数据集：平均曲率数据集的名称，必设字段。</br>
+ *        profileCurvatureName - {string} 结果数据集：剖面曲率数据集的名称。</br>
+ *        planCurvatureName - {string} 结果数据集：平面曲率数据集的名称。</br>
+ *        deleteExistResultDataset - {boolean} 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。</br>
  */
 var TerrainCurvatureCalculationParameters = function () {
 
     /**
-     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.planCurvatureName -{String}
+     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.planCurvatureName -{string}
      * @description 结果数据集：平面曲率数据集的名称。
      */
 
 
     /**
-     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.averageCurvatureName -{String}
+     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.averageCurvatureName -{string}
      * @description 结果数据集：平均曲率数据集的名称，必设字段。
      */
 
 
     /**
-     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.dataset -{String}
+     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.dataset -{string}
      * @description 要用来做地形曲率计算数据源中数据集的名称。
      * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。
      * 注：地形曲率计算必须为栅格数据集。
@@ -46061,19 +45737,19 @@ var TerrainCurvatureCalculationParameters = function () {
 
 
     /**
-     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.deleteExistResultDataset -{Boolean}
+     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.deleteExistResultDataset -{boolean}
      * @description 如果用户命名的结果数据集名称与已有的数据集重名，是否删除已有的数据集。默认为 false，即不删除。
      */
 
 
     /**
-     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.profileCurvatureName -{String}
+     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.profileCurvatureName -{string}
      * @description 结果数据集：剖面曲率数据集的名称。
      */
 
 
     /**
-     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.zFactor -{Number}
+     * @member SuperMap.TerrainCurvatureCalculationParameters.prototype.zFactor -{number}
      * @description 指定的高程缩放系数。默认值为 1.0，表示不缩放。
      * 该值是指在 DEM 栅格数据中，栅格值（Z 坐标，即高程值）相对于 X 和 Y 坐标的单位变换系数。
      * 通常有 X，Y，Z 都参加的计算中，需要将高程值乘以一个高程缩放系数，使得三者单位一致。
@@ -46152,7 +45828,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @extends SuperMap.SpatialAnalystBase
  * @param options - {Object} 可选参数。如</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
- * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @param url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @example 例如：
  * (start code)
  * var myTerrainCurvatureCalculationService = new SuperMap.TerrainCurvatureCalculationService(url);
@@ -46265,22 +45941,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeGraduatedSymbolStyle
  * @classdesc 等级符号专题图正负零值显示风格类
  * @param options - {Object} 可选参数。如：<br>
- *        negativeDisplayed - {Boolean} 是否显示负值。默认为 false。<br>
+ *        negativeDisplayed - {boolean} 是否显示负值。默认为 false。<br>
  *        negativeStyle - {SuperMap.ServerStyle} 负值的等级符号风格。<br>
  *        positiveStyle - {SuperMap.ServerStyle}  正值的等级符号风格。<br>
- *        zeroDisplayed - {Boolean} 是否显示0值。默认为 false。<br>
+ *        zeroDisplayed - {boolean} 是否显示0值。默认为 false。<br>
  *        zeroStyle - {SuperMap.ServerStyle} 0值的等级符号风格。
  */
 var ThemeGraduatedSymbolStyle = function () {
 
-    /*
-     * Constructor: SuperMap.ThemeGraduatedSymbolStyle
-     * 等级符号专题图正负零值显示风格类构造函数，用于创建 SuperMap.ThemeGraduatedSymbolStyle 类的新实例。
-     */
-
-
     /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.zeroDisplayed -{Boolean}
+     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.zeroDisplayed -{boolean}
      * @description 是否显示0值。默认为 false。
      */
 
@@ -46308,7 +45978,7 @@ var ThemeGraduatedSymbolStyle = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeGraduatedSymbolStyle.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -46326,7 +45996,7 @@ var ThemeGraduatedSymbolStyle = function () {
 
 
     /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeDisplayed -{Boolean}
+     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeDisplayed -{boolean}
      * @description 是否显示负值。默认为 false。
      */
 
@@ -46341,6 +46011,14 @@ var ThemeGraduatedSymbolStyle = function () {
             me.zeroDisplayed = null;
             me.zeroStyle = null;
         }
+
+        /**
+         * @function SuperMap.ThemeGraduatedSymbolStyle.fromObj
+         * @description 从传入对象获取等级符号专题图正负零值显示风格类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeGraduatedSymbolStyle}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -46396,27 +46074,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 统计专题图坐标轴样式类。
  * @param  options - {Object} 可选参数。<br>
  *         axesColor - {SuperMap.ServerColor} 坐标轴颜色。<br>
- *         axesDisplayed - {Boolean} 是否显示坐标轴。<br>
- *         axesGridDisplayed - {Boolean} 是否在统计图坐标轴上显示网格。<br>
- *         axesTextDisplayed - {Boolean} 是否显示坐标轴的文本标注。<br>
+ *         axesDisplayed - {boolean} 是否显示坐标轴。<br>
+ *         axesGridDisplayed - {boolean} 是否在统计图坐标轴上显示网格。<br>
+ *         axesTextDisplayed - {boolean} 是否显示坐标轴的文本标注。<br>
  *         axesTextStyle - {SuperMap.ServerTextStyle} 统计符号的最大最小尺寸。
  */
 var ThemeGraphAxes = function () {
 
-    /*
-     * Constructor: SuperMap.ThemeGraphAxes
-     * 统计专题图坐标轴样式类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.ThemeGraphAxes.prototype.axesTextDisplayed -{Boolean}
+     * @member SuperMap.ThemeGraphAxes.prototype.axesTextDisplayed -{boolean}
      * @description 是否显示坐标轴的文本标注。默认为 false，即不显示。
      */
 
 
     /**
-     * @member SuperMap.ThemeGraphAxes.prototype.axesDisplayed -{Boolean}
+     * @member SuperMap.ThemeGraphAxes.prototype.axesDisplayed -{boolean}
      * @description 是否显示坐标轴。默认为 false，即不显示。<br>
      *              由于饼状图和环状图无坐标轴，故该属性以及所有与坐标轴设置相关的属性都不适用于它们。并且只有当该值为 true 时，其它设置坐标轴的属性才起作用。
      */
@@ -46439,7 +46111,7 @@ var ThemeGraphAxes = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeGraphAxes.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -46451,7 +46123,7 @@ var ThemeGraphAxes = function () {
 
 
     /**
-     * @member SuperMap.ThemeGraphAxes.prototype.axesGridDisplayed -{Boolean}
+     * @member SuperMap.ThemeGraphAxes.prototype.axesGridDisplayed -{boolean}
      * @description 是否在统计图坐标轴上显示网格。默认为 false，即不显示。
      */
 
@@ -46478,6 +46150,14 @@ var ThemeGraphAxes = function () {
                 me.axesTextStyle = null;
             }
         }
+
+        /**
+         * @function SuperMap.ThemeGraphAxes.fromObj
+         * @description 从传入对象获取统计专题图坐标轴样式类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeGraphAxes}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -46527,21 +46207,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeGraphItem
  * @classdesc 统计专题图子项类
  * @param options - {Object} 可选参数。如：<br>
- *        caption - {String} 专题图子项的名称。<br>
- *        graphExpression - {String} 统计专题图的专题变量。<br>
+ *        caption - {string} 专题图子项的名称。<br>
+ *        graphExpression - {string} 统计专题图的专题变量。<br>
  *        memoryDoubleValues - {Array(Number)} 内存数组方式制作专题图时的值数组。<br>
  *        uniformStyle - {SuperMap.ServerStyle} 统计专题图子项的显示风格
  */
 var ThemeGraphItem = function () {
 
-    /*
-     * Constructor: SuperMap.ThemeGraphItem
-     * 统计专题图子项类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.ThemeGraphItem.prototype.memoryDoubleValues -{Array<Number>}
+     * @member SuperMap.ThemeGraphItem.prototype.memoryDoubleValues -{Array<number>}
      * @description 内存数组方式制作专题图时的值数组。<br>
      *              内存数组方式制作专题图时，只对 SmID 值在键数组（SuperMap.ThemeGraph.memoryKeys）中的记录制作专题图。<br>
      *              值数组的数值个数必须与键数组中数值的个数一致。 值数组中的值将代替原来的专题值来制作统计专题图。<br>
@@ -46550,7 +46224,7 @@ var ThemeGraphItem = function () {
 
 
     /**
-     * @member SuperMap.ThemeGraphItem.prototype.caption -{String}
+     * @member SuperMap.ThemeGraphItem.prototype.caption -{string}
      * @description 专题图子项的名称。
      */
     function ThemeGraphItem(options) {
@@ -46570,7 +46244,7 @@ var ThemeGraphItem = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeGraphItem.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -46583,7 +46257,7 @@ var ThemeGraphItem = function () {
 
 
     /**
-     * @member SuperMap.ThemeGraphItem.prototype.graphExpression -{String}
+     * @member SuperMap.ThemeGraphItem.prototype.graphExpression -{string}
      * @description 统计专题图的专题变量。专题变量可以是一个字段或字段表达式。字段必须为数值型；表达式只能为数值型的字段间的运算。必设字段。
      */
 
@@ -46597,6 +46271,14 @@ var ThemeGraphItem = function () {
             me.memoryDoubleValues = null;
             me.uniformStyle = null;
         }
+
+        /**
+         * @function SuperMap.ThemeGraphItem.fromObj
+         * @description 从传入对象获取统计专题图子项类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeGraphItem}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -46641,19 +46323,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeGraphSize
  * @classdesc 统计专题图符号尺寸类。
  * @param  options - {Object} 可选参数。如：<br>
- *         maxGraphSize - {Number} 统计图中显示的最大图表尺寸基准值。<br>
- *         minGraphSize - {Number} 统计图中显示的最小图表尺寸基准值。
+ *         maxGraphSize - {number}统计图中显示的最大图表尺寸基准值。<br>
+ *         minGraphSize - {number}统计图中显示的最小图表尺寸基准值。
  */
 var ThemeGraphSize = function () {
 
-    /*
-     * Constructor: SuperMap.ThemeGraphSize
-     * 统计专题图符号尺寸类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.ThemeGraphSize.prototype.maxGraphSize -{Number}
+     * @member SuperMap.ThemeGraphSize.prototype.maxGraphSize -{number}
      * @description 获取或设置统计图中显示的最大图表尺寸基准值，默认为0像素。
      */
     function ThemeGraphSize(options) {
@@ -46669,13 +46345,13 @@ var ThemeGraphSize = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeGraphSize.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.ThemeGraphSize.prototype.minGraphSize -{Number}
+     * @member SuperMap.ThemeGraphSize.prototype.minGraphSize -{number}
      * @description 获取或设置统计图中显示的最小图表尺寸基准值，默认为0像素。
      */
 
@@ -46687,6 +46363,14 @@ var ThemeGraphSize = function () {
             me.maxGraphSize = null;
             me.minGraphSize = null;
         }
+
+        /**
+         * @function SuperMap.ThemeGraphSize.fromObj
+         * @description 从传入对象获统计专题图符号尺寸类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeGraphSize}
+         */
+
     }], [{
         key: "fromObj",
         value: function fromObj(obj) {
@@ -46735,17 +46419,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeGraphText
  * @classdesc 统计图文字标注风格类。
  * @param options - {Object} 可选参数。<br>
- *        graphTextDisplayed - {Boolean} 是否显示统计图上的文字标注。<br>
+ *        graphTextDisplayed - {boolean} 是否显示统计图上的文字标注。<br>
  *        graphTextFormat - {SuperMap.ThemeGraphTextFormat} 统计专题图文本显示格式。<br>
  *        graphTextStyle - {SuperMap.ServerTextStyle} 统计图上的文字标注风格。
  */
 var ThemeGraphText = function () {
-
-    /*
-     * Constructor: SuperMap.ThemeGraphText
-     * 统计图文字标注风格类构造函数。
-     */
-
 
     /**
      * @member SuperMap.ThemeGraphText.prototype.graphTextFormat -{SuperMap.ThemeGraphTextFormat}
@@ -46768,7 +46446,7 @@ var ThemeGraphText = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeGraphText.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -46780,7 +46458,7 @@ var ThemeGraphText = function () {
 
 
     /**
-     * @member SuperMap.ThemeGraphText.prototype.graphTextDisplayed -{Boolean}
+     * @member SuperMap.ThemeGraphText.prototype.graphTextDisplayed -{boolean}
      * @description 是否显示统计图上的文字标注。默认为 false，即不显示。
      */
 
@@ -46796,6 +46474,14 @@ var ThemeGraphText = function () {
                 me.graphTextStyle = null;
             }
         }
+
+        /**
+         * @function SuperMap.ThemeGraphText.fromObj
+         * @description 从传入对象获取统计图文字标注风格类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeGraphText}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -46862,7 +46548,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *        items - {Array<SuperMap.ThemeGridRangeItem>} 栅格分段专题图子项数组。<br>
  *        reverseColor - {boolean} 是否对栅格分段专题图中分段的颜色风格进行反序显示。<br>
  *        rangeMode - {SuperMap.RangeMode} 分段专题图的分段模式。<br>
- *        rangeParameter - {Number} 分段参数。<br>
+ *        rangeParameter - {number}分段参数。<br>
  *        colorGradientType - {SuperMap.ColorGradientType} 渐变颜色枚举类。
  */
 var ThemeGridRange = function (_Theme) {
@@ -46919,7 +46605,7 @@ var ThemeGridRange = function (_Theme) {
 
 
     /**
-     * @member SuperMap.ThemeGridRange.prototype.rangeParameter -{Number}
+     * @member SuperMap.ThemeGridRange.prototype.rangeParameter -{number}
      * @description 分段参数。<br>
      *              当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，<br>
      *              该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。默认值为 -1。
@@ -46953,6 +46639,14 @@ var ThemeGridRange = function (_Theme) {
             me.rangeParameter = null;
             me.colorGradientType = null;
         }
+
+        /**
+         * @function SuperMap.ThemeGridRange.fromObj
+         * @description 从传入对象获取栅格分段专题图。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeGridRange}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -47005,25 +46699,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.ThemeGridRangeItem
  * @classdesc 栅格分段专题图子项类。<br>
- *              在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。<br>
- *              本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。<br>
+ *            在栅格分段专题图中，将栅格值按照某种分段模式被分成多个范围段。<br>
+ *            本类用来设置每个范围段的分段起始值、终止值、名称和颜色等。每个分段所表示的范围为 [Start,End)。<br>
  * @param options - {Object} 可选参数。如：<br>
- *        caption - {String} 栅格分段专题图子项的标题。<br>
+ *        caption - {string} 栅格分段专题图子项的标题。<br>
  *        color - {SuperMap.ServerColor}栅格分段专题图中每一个分段专题图子项的对应的颜色。<br>
- *        end - {Number} 栅格分段专题图子项的终止值。<br>
- *        start - {Number} 栅格分段专题图子项的起始值。<br>
- *        visible - {Boolean} 栅格分段专题图子项是否可见。
+ *        end - {number}栅格分段专题图子项的终止值。<br>
+ *        start - {number}栅格分段专题图子项的起始值。<br>
+ *        visible - {boolean} 栅格分段专题图子项是否可见。
  */
 var ThemeGridRangeItem = function () {
 
-    /*
-     * Constructor: SuperMap.ThemeGridRangeItem
-     * 栅格分段专题图子项类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.ThemeGridRangeItem.prototype.start -{Number}
+     * @member SuperMap.ThemeGridRangeItem.prototype.start -{number}
      * @description 栅格分段专题图子项的起始值，即该段专题值范围的最小值，默认值为 0。
      */
 
@@ -47050,25 +46738,25 @@ var ThemeGridRangeItem = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeGridRangeItem.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.ThemeGridRangeItem.prototype.visible -{Boolean}
+     * @member SuperMap.ThemeGridRangeItem.prototype.visible -{boolean}
      * @description 栅格分段专题图子项是否可见。默认为 true。
      */
 
 
     /**
-     * @member SuperMap.ThemeGridRangeItem.prototype.end -{Number}
+     * @member SuperMap.ThemeGridRangeItem.prototype.end -{number}
      * @description 栅格分段专题图子项的终止值，即该段专题值范围的最大值，默认值为 0。
      */
 
 
     /**
-     * @member SuperMap.ThemeGridRangeItem.prototype.caption -{String}
+     * @member SuperMap.ThemeGridRangeItem.prototype.caption -{string}
      * @description 栅格分段专题图子项的标题。
      */
 
@@ -47105,6 +46793,14 @@ var ThemeGridRangeItem = function () {
             }
             return obj;
         }
+
+        /**
+         * @function SuperMap.ThemeGridRangeItem.fromObj
+         * @description 从传入对象获取栅格分段专题图子项类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeGridRangeItem}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -47175,12 +46871,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  */
 var ThemeGridUnique = function (_Theme) {
     _inherits(ThemeGridUnique, _Theme);
-
-    /*
-     * Constructor: SuperMap.ThemeGridUnique
-     * 栅格单值专题图类构造函数。
-     */
-
 
     /**
      * @member SuperMap.ThemeGridUnique.prototype.defaultcolor -{SuperMap.ServerColor}
@@ -47262,6 +46952,14 @@ var ThemeGridUnique = function (_Theme) {
             }
             return obj;
         }
+
+        /**
+         * @function SuperMap.ThemeGridUnique.fromObj
+         * @description 从传入对象获取栅格单值专题图类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeGridUnique}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -47316,27 +47014,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 栅格单值专题图子项类。<br>
  *              栅格单值专题图是将值相同的单元格归为一类，每一类是一个专题图子项。<br>
  * @param options - {Object} 可选参数。如：<br>
- *        caption - {String} 栅格单值专题图子项的名称。<br>
+ *        caption - {string} 栅格单值专题图子项的名称。<br>
  *        color - {SuperMap.ServerColor} 栅格单值专题图子项的显示颜色。<br>
- *        unique - {Number} 栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。<br>
- *        visible - {Boolean} 栅格单值专题图子项是否可见。
+ *        unique - {number}栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。<br>
+ *        visible - {boolean} 栅格单值专题图子项是否可见。
  */
 var ThemeGridUniqueItem = function () {
 
-    /*
-     * Constructor: SuperMap.ThemeGridUniqueItem
-     * 栅格单值专题图子项类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.ThemeGridUniqueItem.prototype.unique -{Number}
+     * @member SuperMap.ThemeGridUniqueItem.prototype.unique -{number}
      * @description 栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。
      */
 
 
     /**
-     * @member SuperMap.ThemeGridUniqueItem.prototype.caption -{String}
+     * @member SuperMap.ThemeGridUniqueItem.prototype.caption -{string}
      * @description 栅格单值专题图子项的名称。
      */
     function ThemeGridUniqueItem(options) {
@@ -47356,13 +47048,13 @@ var ThemeGridUniqueItem = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeGridUniqueItem.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.ThemeGridUniqueItem.prototype.visible -{Boolean}
+     * @member SuperMap.ThemeGridUniqueItem.prototype.visible -{boolean}
      * @description 栅格单值专题图子项是否可见。默认为true。
      */
 
@@ -47387,9 +47079,9 @@ var ThemeGridUniqueItem = function () {
             me.visible = null;
         }
 
-        /*
-         * Method: toServerJSONObject
-         * 转换成对应的 JSON 格式对象。
+        /**
+         * @function SuperMap.ThemeGridUniqueItem.prototype.toServerJSONObject
+         * @description 转换成对应的 JSON 格式对象。
          */
 
     }, {
@@ -47404,6 +47096,14 @@ var ThemeGridUniqueItem = function () {
             }
             return obj;
         }
+
+        /**
+         * @function SuperMap.ThemeGridUniqueItem.fromObj
+         * @description 从传入对象获取栅格单值专题图子项类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeGridUniqueItem}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -47449,20 +47149,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ThemeLabelAlongLine
  * @classdesc 标签沿线标注样式类。
  * @param options - {Object} 可选参数。如：<br>
- *        isAlongLine - {Boolean} 是否沿线显示文本。<br>
+ *        isAlongLine - {boolean} 是否沿线显示文本。<br>
  *        alongLineDirection - {SuperMap.AlongLineDirection} 标签沿线标注方向。<br>
  *        angleFixed - {Boonlean} 当沿线显示文本时，是否将文本角度固定。<br>
  *        repeatedLabelAvoided - {Boonlean} 沿线循环标注时是否避免标签重复标注。<br>
  *        repeatIntervalFixed - {Boonlean} 循环标注间隔是否固定。<br>
- *        labelRepeatInterval - {Number} 沿线且循环标注时循环标注的间隔。
+ *        labelRepeatInterval - {number}沿线且循环标注时循环标注的间隔。
  */
 var ThemeLabelAlongLine = function () {
-
-    /*
-     * Constructor: SuperMap.ThemeLabelAlongLine
-     * 标签沿线标注样式类构造函数，用于创建 SuperMap.ThemeLabelAlongLine 类的新实例。
-     */
-
 
     /**
      * @member SuperMap.ThemeLabelAlongLine.prototype.repeatIntervalFixed -{Boonlean}
@@ -47480,7 +47174,7 @@ var ThemeLabelAlongLine = function () {
 
 
     /**
-     * @member SuperMap.ThemeLabelAlongLine.prototype.isAlongLine -{Boolean}
+     * @member SuperMap.ThemeLabelAlongLine.prototype.isAlongLine -{boolean}
      * @description 是否沿线显示文本。true 表示沿线显示文本，false 表示正常显示文本，默认为 true。
      */
     function ThemeLabelAlongLine(options) {
@@ -47500,13 +47194,13 @@ var ThemeLabelAlongLine = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeLabelAlongLine.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.ThemeLabelAlongLine.prototype.labelRepeatInterval -{Number}
+     * @member SuperMap.ThemeLabelAlongLine.prototype.labelRepeatInterval -{number}
      * @description 沿线且循环标注时循环标注的间隔。长度的单位与地图的地理单位一致。只有设定 RepeatedLabelAvoided 为 true
      *              的时候，labelRepeatInterval 属性才有效。默认为0地图单位。
      */
@@ -47535,6 +47229,14 @@ var ThemeLabelAlongLine = function () {
             me.repeatIntervalFixed = null;
             me.labelRepeatInterval = null;
         }
+
+        /**
+         * @function SuperMap.ThemeLabelAlongLine.fromObj
+         * @description 从传入对象获取标签沿线标注样式类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeLabelAlongLine}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -47589,12 +47291,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var ThemeLabelBackground = function () {
 
-    /*
-     * Constructor: SuperMap.ThemeLabelBackground
-     * 标签背景风格类构造函数，用于创建 ThemeLabelBackGround 类的新实例。
-     */
-
-
     /**
      * @member SuperMap.ThemeLabelBackground.prototype.labelBackShape -{SuperMap.LabelBackShape}
      * @description 标签专题图中标签背景风格。当背景形状
@@ -47615,7 +47311,7 @@ var ThemeLabelBackground = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeLabelBackground.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -47638,6 +47334,14 @@ var ThemeLabelBackground = function () {
                 me.backStyle = null;
             }
         }
+
+        /**
+         * @function SuperMap.ThemeLabelBackground.fromObj
+         * @description 从传入对象获取标签背景风格类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeLabelBackground}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -47692,28 +47396,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *              他们所代表的分段区间分别为[0,5)，[5,10)。那么需要分别设置 SuperMap.ThemeLabelItem[0].start=0，<br>
  *              SuperMap.ThemeLabelItem[0].end=5，SuperMap.ThemeLabelItem[1].start=5，SuperMap.ThemeLabelItem[1].end=10。
  * @param options - {Object} 可选参数。如：<br>
- *        caption - {String} 专题图子项的名称。<br>
- *        end - {Number} 标签专题图子项的终止值。<br>
- *        start - {Number} 标签专题图子项的分段起始值。<br>
- *        visible - {Boolean} 标签专题图子项是否可见。<br>
+ *        caption - {string} 专题图子项的名称。<br>
+ *        end - {number}标签专题图子项的终止值。<br>
+ *        start - {number}标签专题图子项的分段起始值。<br>
+ *        visible - {boolean} 标签专题图子项是否可见。<br>
  *        style - {SuperMap.ServerTextStyle} 标签专题图子项文本的显示风格。
  */
 var ThemeLabelItem = function () {
 
-    /*
-     * Constructor: SuperMap.ThemeLabelItem
-     * 分段标签专题图的子项类构造函数，用于创建 SuperMap.ThemeLabelItem 类的新实例。
-     */
-
-
     /**
-     * @member SuperMap.ThemeLabelItem.prototype.visible -{Boolean}
+     * @member SuperMap.ThemeLabelItem.prototype.visible -{boolean}
      * @description 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
      */
 
 
     /**
-     * @member SuperMap.ThemeLabelItem.prototype.end -{Number}
+     * @member SuperMap.ThemeLabelItem.prototype.end -{number}
      * @description 标签专题图子项的终止值。如果该子项是分段中最后一个子项，那么该终止值就是分段的最大值；
      *              如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常。默认为0。
      */
@@ -47735,7 +47433,7 @@ var ThemeLabelItem = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeLabelItem.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -47748,14 +47446,14 @@ var ThemeLabelItem = function () {
 
 
     /**
-     * @member SuperMap.ThemeLabelItem.prototype.start -{Number}
+     * @member SuperMap.ThemeLabelItem.prototype.start -{number}
      * @description 标签专题图子项的分段起始值。如果该子项是分段中第一项，那么该起始值就是分段的最小值；
      *              如果该子项的序号大于等于 1 的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。默认为0。
      */
 
 
     /**
-     * @member SuperMap.ThemeLabelItem.prototype.caption -{String}
+     * @member SuperMap.ThemeLabelItem.prototype.caption -{string}
      * @description 标签专题子项的标题。
      */
 
@@ -47773,6 +47471,14 @@ var ThemeLabelItem = function () {
             }
             me.visible = null;
         }
+
+        /**
+         * @function SuperMap.ThemeLabelItem.fromObj
+         * @description 从传入对象获取分段标签专题图的子项类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeLabelItem}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -47825,20 +47531,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 标签中文本风格类。
  *              通过该类可以设置标签中的文本字体大小和显示风格。
  * @param options - {Object} 可选参数。如：<br>
- *        maxTextHeight - {Number} 标签中文本的最大高度。<br>
- *        maxTextWidth - {Number} 标签中文本的最大宽度。<br>
- *        minTextHeight - {Number} 标签中文本的最小高度。<br>
- *        minTextWidth - {Number} 标签中文本的最小宽度。<br>
+ *        maxTextHeight - {number}标签中文本的最大高度。<br>
+ *        maxTextWidth - {number}标签中文本的最大宽度。<br>
+ *        minTextHeight - {number}标签中文本的最小高度。<br>
+ *        minTextWidth - {number}标签中文本的最小宽度。<br>
  *        uniformStyle - {SuperMap.ServerTextStyle} 统一文本风格。<br>
  *        uniformMixedStyle - {SuperMap.LabelMixedTextStyle} 标签专题图统一的文本复合风格。
  */
 var ThemeLabelText = function () {
-
-    /*
-     * Constructor: SuperMap.ThemeLabelText
-     * 标签中文本风格类构造函数，用于创建 SuperMap.ThemeLabelText 类的新实例。
-     */
-
 
     /**
      * @member SuperMap.ThemeLabelText.prototype.uniformStyle -{SuperMap.ServerTextStyle}
@@ -47849,14 +47549,14 @@ var ThemeLabelText = function () {
 
 
     /**
-     * @member SuperMap.ThemeLabelText.prototype.minTextHeight -{Number}
+     * @member SuperMap.ThemeLabelText.prototype.minTextHeight -{number}
      * @description 标签中文本的最小高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
      *              当缩小后的文本高度小于最小高度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
      */
 
 
     /**
-     * @member SuperMap.ThemeLabelText.prototype.maxTextHeight -{Number}
+     * @member SuperMap.ThemeLabelText.prototype.maxTextHeight -{number}
      * @description 标签中文本的最大高度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
      *              当放大后的文本高度超过最大高度之后就不再放大。高度单位为0.1毫米。高度单位为0.1毫米。默认为 0 毫米。
      */
@@ -47879,7 +47579,7 @@ var ThemeLabelText = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeLabelText.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -47893,14 +47593,14 @@ var ThemeLabelText = function () {
 
 
     /**
-     * @member SuperMap.ThemeLabelText.prototype.minTextWidth -{Number}
+     * @member SuperMap.ThemeLabelText.prototype.minTextWidth -{number}
      * @description 标签中文本的最小宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
      *              当缩小后的文本宽度小于最小宽度之后就不再缩小。宽度单位为0.1毫米。默认为0毫米。
      */
 
 
     /**
-     * @member SuperMap.ThemeLabelText.prototype.maxTextWidth -{Number}
+     * @member SuperMap.ThemeLabelText.prototype.maxTextWidth -{number}
      * @description 标签中文本的最大宽度。当标签文本不固定大小时，即 SuperMap.ServerTextStyle.sizeFixed = false 有效，
      *              当放大后的文本宽度超过最大高度之后就不再放大。宽度单位为0.1毫米。默认为0毫米。
      */
@@ -47923,6 +47623,14 @@ var ThemeLabelText = function () {
                 me.uniformMixedStyle = null;
             }
         }
+
+        /**
+         * @function SuperMap.ThemeLabelText.fromObj
+         * @description 从传入对象获取标签中文本风格类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeLabelText}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -47975,35 +47683,29 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *              字段指定用于单值的字段，同一值的标签具有相同的显示风格，其中每一个值就是一个专题图子项，<br>
  *              每一个子项都具有其名称、风格、指定的单值、X方向偏移量和Y方向偏移量。
  * @param options - {Object} 可选参数。如：<br>
- *        caption - {String} 专题图子项的名称。<br>
- *        unique - {String} 单值专题图子项的值，可以为数字、字符串等。<br>
- *        offsetX - {Number} 标签在X方向偏移量。<br>
- *        offsetY - {Number} 标签在Y方向偏移量。<br>
- *        visible - {Boolean} 标签专题图子项是否可见。<br>
+ *        caption - {string} 专题图子项的名称。<br>
+ *        unique - {string} 单值专题图子项的值，可以为数字、字符串等。<br>
+ *        offsetX - {number}标签在X方向偏移量。<br>
+ *        offsetY - {number}标签在Y方向偏移量。<br>
+ *        visible - {boolean} 标签专题图子项是否可见。<br>
  *        style - {SuperMap.ServerTextStyle} 标签专题图子项文本的显示风格。
  */
 var ThemeLabelUniqueItem = function () {
 
-    /*
-     * Constructor: SuperMap.ThemeLabelUniqueItem
-     * 单值标签专题图的子项类构造函数，用于创建 SuperMap.ThemeLabelUniqueItem 类的新实例。
-     */
-
-
     /**
-     * SuperMap.ThemeLabelUniqueItem.prototype.visible -{Boolean}
+     * @member SuperMap.ThemeLabelUniqueItem.prototype.visible -{boolean}
      * @description 标签专题图子项是否可见。如果标签专题图子项可见，则为 true，否则为 false。默认值为 true。
      */
 
 
     /**
-     * SuperMap.ThemeLabelUniqueItem.prototype.offsetX -{Number}
+     * @member SuperMap.ThemeLabelUniqueItem.prototype.offsetX -{number}
      * @description 标签在X方向偏移量。
      */
 
 
     /**
-     * SuperMap.ThemeLabelUniqueItem.prototype.caption -{String}
+     * @member SuperMap.ThemeLabelUniqueItem.prototype.caption -{string}
      * @description 标签专题子项的标题。
      */
     function ThemeLabelUniqueItem(options) {
@@ -48025,27 +47727,26 @@ var ThemeLabelUniqueItem = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeLabelUniqueItem.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * SuperMap.ThemeLabelUniqueItem.prototype.style -{SuperMap.ServerTextStyle}
+     * @member SuperMap.ThemeLabelUniqueItem.prototype.style -{SuperMap.ServerTextStyle}
      * @description 标签专题图子项文本的显示风格。各种风格的优先级从高到低为：
      *              uniformMixedStyle（标签文本的复合风格），SuperMap.ThemeLabelUniqueItem.style（单值子项的文本风格），uniformStyle（统一文本风格）。
      */
 
 
     /**
-     * APIProperty: offsetY
-     * SuperMap.ThemeLabelUniqueItem.prototype.offsetY -{Number}
+     * @member SuperMap.ThemeLabelUniqueItem.prototype.offsetY -{number}
      * @description 标签在Y方向偏移量。
      */
 
 
     /**
-     * SuperMap.ThemeLabelUniqueItem.prototype.unique -{String}
+     * @member SuperMap.ThemeLabelUniqueItem.prototype.unique -{string}
      * @description 单值专题图子项的值，可以为数字、字符串等。
      */
 
@@ -48064,6 +47765,14 @@ var ThemeLabelUniqueItem = function () {
             }
             me.visible = null;
         }
+
+        /**
+         * @function SuperMap.ThemeLabelUniqueItem.fromObj
+         * @description 从传入对象获取单值标签专题图的子项类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeLabelUniqueItem}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -48111,14 +47820,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var ThemeMemoryData = function () {
 
-    /*
-     * @function SuperMap.ThemeMemoryData.prototype.constructor
-     * @description 专题图内存数据类构造函数。
-     * @param srcData - {Array} 原始值数组。
-     * @param targetData - {Array} 外部值数组。
-     */
-
-
     /**
      * @member SuperMap.ThemeMemoryData.prototype.srcData -{Array}
      * @description 原始值数组，该属性值将被 targetData 属性所指定的值替换掉，然后制作专题图，但数据库中的值并不会改变。
@@ -48139,7 +47840,7 @@ var ThemeMemoryData = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeMemoryData.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -48266,24 +47967,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc 专题图参数类。
  *               该类存储了制作专题所需的参数，包括数据源、数据集名称和专题图对象。
  * @param options - {Object} 可选参数。如：<br>
- *        datasetNames - {Array<String>} 要制作专题图的数据集数组，必设。<br>
- *        dataSourceNames - {Array<String>} 要制作专题图的数据集所在的数据源数组，必设。<br>
+ *        datasetNames - {Array<string>} 要制作专题图的数据集数组，必设。<br>
+ *        dataSourceNames - {Array<string>} 要制作专题图的数据集所在的数据源数组，必设。<br>
  *        joinItems - {Array<SuperMap.JoinItem>} 专题图外部表的连接信息 JoinItem 数组。<br>
  *        themes - {Array<SuperMap.Theme>} 专题图对象列表。<br>
- *        displayFilters -{Array<String>} 专题图属性过滤条件。<br>
- *        displayOrderBys -{Array<String>} 专题图对象生成符号叠加次序排序字段。<br>
+ *        displayFilters -{Array<string>} 专题图属性过滤条件。<br>
+ *        displayOrderBys -{Array<string>} 专题图对象生成符号叠加次序排序字段。<br>
  *        fieldValuesDisplayFilter -{Object} 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode。
  */
 var ThemeParameters = function () {
 
-    /*
-     * Constructor: SuperMap.ThemeParameters
-     * 专题图参数类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.ThemeParameters.prototype.displayOrderBys -{Array<String>}
+     * @member SuperMap.ThemeParameters.prototype.displayOrderBys -{Array<string>}
      * @description 专题图对象生成符号叠加次序排序字段
      */
 
@@ -48296,7 +47991,7 @@ var ThemeParameters = function () {
 
 
     /**
-     * @member SuperMap.ThemeParameters.prototype.dataSourceNames -{Array<String>}
+     * @member SuperMap.ThemeParameters.prototype.dataSourceNames -{Array<string>}
      * @description 要制作专题图的数据集所在的数据源数组，必设。
      */
     function ThemeParameters(options) {
@@ -48317,7 +48012,7 @@ var ThemeParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -48325,14 +48020,14 @@ var ThemeParameters = function () {
     /**
      * @member SuperMap.ThemeParameters.prototype.fieldValuesDisplayFilter -{Object}
      * @description 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode,他们的作用如下：<br>
-     *               values：{Array<Number>} - 就是要过滤的值；<br>
+     *               values：{Array<number>} - 就是要过滤的值；<br>
      *               fieldName：{String} - 要过滤的字段名称 只支持数字类型的字段；<br>
      *               fieldValuesDisplayMode：{String} 目前有两个DISPLAY/DISABLE。当为DISPLAY时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素
      */
 
 
     /**
-     * @member SuperMap.ThemeParameters.prototype.displayFilters -{Array<String>}
+     * @member SuperMap.ThemeParameters.prototype.displayFilters -{Array<string>}
      * @description 专题图属性过滤条件。
      */
 
@@ -48345,7 +48040,7 @@ var ThemeParameters = function () {
 
 
     /**
-     * @member SuperMap.ThemeParameters.prototype.datasetNames -{Array<String>}
+     * @member SuperMap.ThemeParameters.prototype.datasetNames -{Array<string>}
      * @description 要制作专题图的数据集数组，必设。
      */
 
@@ -48410,19 +48105,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *              在分段专题图中，字段值按照某种分段模式被分成多个范围段，每个范围段即为一个子项，同一范围段的要素属于同一个分段专题图子项。
  *              每个子项都有其分段起始值、终止值、名称和风格等。每个分段所表示的范围为[start, end)。
  * @param options - {Object} 可选参数。如：<br>
- *        caption - {String} 分段专题图子项的标题。<br>
- *        end - {Number} 分段专题图子项的终止值。<br>
- *        start - {Number} 分段专题图子项的起始值。<br>
+ *        caption - {string} 分段专题图子项的标题。<br>
+ *        end - {number}分段专题图子项的终止值。<br>
+ *        start - {number}分段专题图子项的起始值。<br>
  *        style - {SuperMap.ServerStyle} 分段专题图子项的风格。<br>
- *        visible - {Boolean} 分段专题图子项是否可见。
+ *        visible - {boolean} 分段专题图子项是否可见。
  */
 var ThemeRangeItem = function () {
-
-    /*
-     * Constructor: SuperMap.ThemeRangeItem
-     * 范围分段专题图子项类构造函数。
-     */
-
 
     /**
      * @member SuperMap.ThemeRangeItem.prototype.style -{SuperMap.ServerStyle}
@@ -48432,7 +48121,7 @@ var ThemeRangeItem = function () {
 
 
     /**
-     * @member SuperMap.ThemeRangeItem.prototype.end -{Number}
+     * @member SuperMap.ThemeRangeItem.prototype.end -{number}
      * @description 分段专题图子项的终止值，即该段专题值范围的最大值，默认值为 0。<br>
      *              如果该子项是分段中最后一个子项，则该终止值应大于分段字段（ThemeRange 类的 rangeExpression 属性）的最大值，若该终止值小于分段字段最大值，
      *              则剩余部分由内部随机定义其颜色；如果不是最后一项，该终止值必须与其下一子项的起始值相同，否则系统抛出异常；
@@ -48456,19 +48145,19 @@ var ThemeRangeItem = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeRangeItem.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.ThemeRangeItem.prototype.visible -{Boolean}
+     * @member SuperMap.ThemeRangeItem.prototype.visible -{boolean}
      * @description 分段专题图子项是否可见。默认为 true。
      */
 
 
     /**
-     * @member SuperMap.ThemeRangeItem.prototype.start -{Number}
+     * @member SuperMap.ThemeRangeItem.prototype.start -{number}
      * @description 分段专题图子项的起始值，即该段专题值范围的最小值，默认值为 0。<br>
      *              如果该子项是分段中第一个子项，那么该起始值就是分段的最小值；如果子项的序号大于等于1的时候，该起始值必须与前一子项的终止值相同，否则系统会抛出异常。
      *              如果设置了范围分段模式和分段数，则会自动计算每段的范围[start, end)，故无需设置[start, end)；当然可以设置，那么结果就会按您设置的值对分段结果进行调整。
@@ -48476,7 +48165,7 @@ var ThemeRangeItem = function () {
 
 
     /**
-     * @member SuperMap.ThemeRangeItem.prototype.caption -{String}
+     * @member SuperMap.ThemeRangeItem.prototype.caption -{string}
      * @description 分段专题图子项的标题。
      */
 
@@ -48513,6 +48202,14 @@ var ThemeRangeItem = function () {
             }
             return obj;
         }
+
+        /**
+         * @function SuperMap.ThemeRangeItem.fromObj
+         * @description 从传入对象获取范围分段专题图子项类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeRangeItem}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -48578,20 +48275,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *           "processFailed": themeFailed
  *           }
  * });
- * @param url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param url - {string} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
 var ThemeService = function (_CommonServiceBase) {
     _inherits(ThemeService, _CommonServiceBase);
 
-    /*
-     * @function SuperMap.ThemeService.prototype.constructor
-     * @description 专题图服务类构造函数。
-     * @param url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
-     * @param options - {Object} 交互服务时所需可选参数。如：<br>
-     *         eventListeners - {Object} 需要被注册的监听器对象。
-     */
     function ThemeService(url, options) {
         _classCallCheck(this, ThemeService);
 
@@ -48756,27 +48446,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *              单值专题图是将专题值相同的要素归为一类，为每一类设定一种渲染风格，其中每一类就是一个专题图子项。比如，利用单值专题图制作行政区划图，Name 字段代表
  *              省/直辖市名，该字段用来做专题变量，如果该字段的字段值总共有5种不同值，则该行政区划图有5个专题图子项。
  * @param options - {Object} 可选参数。如：<br>
- *        caption - {String} 单值专题图子项的标题。
+ *        caption - {string} 单值专题图子项的标题。
  *        style - {SuperMap.ServerStyle} 单值专题图子项的风格。
- *        unique - {String} 单值专题图子项的单值。
- *        visible - {Boolean} 单值专题图子项是否可见。
+ *        unique - {string} 单值专题图子项的单值。
+ *        visible - {boolean} 单值专题图子项是否可见。
  */
 var ThemeUniqueItem = function () {
 
-    /*
-     * Constructor: SuperMap.ThemeUniqueItem
-     * 单值专题图子项类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.ThemeUniqueItem.prototype.unique -{String}
+     * @member SuperMap.ThemeUniqueItem.prototype.unique -{string}
      * @description 单值专题图子项的值，可以为数字、字符串等。
      */
 
 
     /**
-     * @member SuperMap.ThemeUniqueItem.prototype.caption -{String}
+     * @member SuperMap.ThemeUniqueItem.prototype.caption -{string}
      * @description 单值专题图子项的标题。
      */
     function ThemeUniqueItem(options) {
@@ -48796,13 +48480,13 @@ var ThemeUniqueItem = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeUniqueItem.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.ThemeUniqueItem.prototype.visible -{Boolean}
+     * @member SuperMap.ThemeUniqueItem.prototype.visible -{boolean}
      * @description 单值专题图子项的可见性。默认为 true，表示可见。
      */
 
@@ -48844,6 +48528,14 @@ var ThemeUniqueItem = function () {
             }
             return obj;
         }
+
+        /**
+         * @function SuperMap.ThemeUniqueItem.fromObj
+         * @description 从传入对象获取单值专题图子项类。
+         * @param obj - {object} 传入对象
+         * @return {SuperMap.ThemeUniqueItem}
+         */
+
     }], [{
         key: 'fromObj',
         value: function fromObj(obj) {
@@ -48916,7 +48608,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * 执行几何对象泰森多边形分析。
  * @param options - {Object} 参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
- * @param url - {String} 服务的访问地址。
+ * @param url - {string} 服务的访问地址。
  * 如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  *
  * @extends SuperMap.SpatialAnalystBase
@@ -48934,13 +48626,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var ThiessenAnalystService = function (_SpatialAnalystBase) {
     _inherits(ThiessenAnalystService, _SpatialAnalystBase);
 
-    /*
-     * @function SuperMap.ThiessenAnalystService.prototype.constructor
-     * @param options - {Object} 参数。如:</br>
-     *        eventListeners - {Object} 需要被注册的监听器对象。
-     * @param url - {String} 服务的访问地址。
-     * 如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
-     */
     function ThiessenAnalystService(url, options) {
         _classCallCheck(this, ThiessenAnalystService);
 
@@ -48961,7 +48646,7 @@ var ThiessenAnalystService = function (_SpatialAnalystBase) {
      */
 
     /**
-     * @member SuperMap.ThiessenAnalystService.prototype.mode -{String}
+     * @member SuperMap.ThiessenAnalystService.prototype.mode -{string}
      * @description 缓冲区分析类型
      */
 
@@ -49082,7 +48767,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.TilesetsService
  * @classdesc 切片列表信息查询服务类;即查询切片地图服务的切片列表，返回切片集名称、地图切片元数据信息、切片版本集信息
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 地图服务地址。URL应为：<br>
+ * @param url - {string} 地图服务地址。URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{服务名}/rest/maps/map；<br>
  *                       例如: "http://localhost:8090/iserver/services/test/rest/maps/tianlocal";
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
@@ -49169,38 +48854,38 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.TransferLine
  * @classdesc 换乘路线信息类。
  * @param options - {Object} 可选参数。如:</br>
- *        lineID - {String} 乘车路线名称。</br>
- *        lineName - {String} 乘车路线名称。</br>
- *        lineAliasName - {String} 乘车路线别名。</br>
- *        startStopIndex - {Number} 上车站点在本公交路线中的索引。</br>
- *        startStopName - {String} 上车站点名称。</br>
- *        startStopAliasName - {String} 上车站点别名。</br>
- *        endStopIndex - {Number} 下车站点在本公交路线中的索引</br>。
- *        endStopName - {String} 下车站点名称。</br>
- *        endStopAliasName - {String} 下车站点别名。</br>
+ *        lineID - {string} 乘车路线名称。</br>
+ *        lineName - {string} 乘车路线名称。</br>
+ *        lineAliasName - {string} 乘车路线别名。</br>
+ *        startStopIndex - {number}上车站点在本公交路线中的索引。</br>
+ *        startStopName - {string} 上车站点名称。</br>
+ *        startStopAliasName - {string} 上车站点别名。</br>
+ *        endStopIndex - {number}下车站点在本公交路线中的索引</br>。
+ *        endStopName - {string} 下车站点名称。</br>
+ *        endStopAliasName - {string} 下车站点别名。</br>
  */
 var TransferLine = function () {
 
     /**
-     * @memberSuperMap.TransferLine.prototype.endStopName -{String}
+     * @memberSuperMap.TransferLine.prototype.endStopName -{string}
      * @description 下车站点名称。
      */
 
 
     /**
-     * @memberSuperMap.TransferLine.prototype.startStopAliasName -{String}
+     * @memberSuperMap.TransferLine.prototype.startStopAliasName -{string}
      * @description 上车站点别名。
      */
 
 
     /**
-     * @memberSuperMap.TransferLine.prototype.startStopIndex -{Number}
+     * @memberSuperMap.TransferLine.prototype.startStopIndex -{number}
      * @description 上车站点在本公交路线中的索引。
      */
 
 
     /**
-     * @memberSuperMap.TransferLine.prototype.lineName -{String}
+     * @memberSuperMap.TransferLine.prototype.lineName -{string}
      * @description 乘车路线名称。
      */
     function TransferLine(options) {
@@ -49228,30 +48913,30 @@ var TransferLine = function () {
 
 
     /**
-     * @memberSuperMap.TransferLine.prototype.endStopAliasName -{String}
+     * @memberSuperMap.TransferLine.prototype.endStopAliasName -{string}
      * @description 下车站点别名。
      */
 
 
     /**
-     * @memberSuperMap.TransferLine.prototype.endStopIndex -{Number}
+     * @memberSuperMap.TransferLine.prototype.endStopIndex -{number}
      * @description 下车站点在本公交路线中的索引。
      */
 
 
     /**
-     * @memberSuperMap.TransferLine.prototype.startStopName -{String}
+     * @memberSuperMap.TransferLine.prototype.startStopName -{string}
      * @description 上车站点名称。
      */
 
 
     /**
-     * @memberSuperMap.TransferLine.prototype.lineAliasName -{String}
+     * @memberSuperMap.TransferLine.prototype.lineAliasName -{string}
      * @description 乘车路线别名。
      */
 
     /**
-     * @memberSuperMap.TransferLine.prototype.lineID -{Number}
+     * @memberSuperMap.TransferLine.prototype.lineID -{number}
      * @description 乘车路线名称。
      */
 
@@ -49439,7 +49124,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
      *     }
      * };
  * (end)
- * @param url - {String} 与客户端交互的交通换乘线路查询服务地址。
+ * @param url - {string} 与客户端交互的交通换乘线路查询服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param options - {Object} 可選参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
@@ -49537,7 +49222,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.TransferSolutionParameters
  * @classdesc 交通换乘方案查询参数类。
  * @param options - {Object} 参数。如:</br>
- *        solutionCount - {Boolean} 乘车方案的数量。默认为6。</br>
+ *        solutionCount - {boolean} 乘车方案的数量。默认为6。</br>
  *        transferTactic - {SuperMap.TransferTactic} 交通换乘策略类型，
  *                      包括时间最短、距离最短、最少换乘、最少步行四种选择。</br>
  *        transferPreference - {SuperMap.TransferPreference} 乘车偏好枚举。</br>
@@ -49547,7 +49232,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *        evadeStops - {Array(Number)} 避让站点的ID，默认为null。</br>
  *        priorLines - {Array(Number)} 优先路线的ID，默认为null。</br>
  *        priorStops - {Array(Number)} 优先站点的ID，默认为null。</br>
- *        travelTime - {String} 出行的时间。</br>
+ *        travelTime - {string} 出行的时间。</br>
  */
 var TransferSolutionParameters = function () {
 
@@ -49580,7 +49265,7 @@ var TransferSolutionParameters = function () {
 
 
     /**
-     *  @member SuperMap.TransferSolutionParameters.prototype.solutionCount -{Number}
+     *  @member SuperMap.TransferSolutionParameters.prototype.solutionCount -{number}
      *  @description 乘车方案的数量。默认为6。
      */
     function TransferSolutionParameters(options) {
@@ -49609,7 +49294,7 @@ var TransferSolutionParameters = function () {
 
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.travelTime -{String}
+     * @member SuperMap.TransferSolutionParameters.prototype.travelTime -{string}
      * @description 出行的时间； 格式是："小时:分钟"，如："08:30"。如果设置了该参数，在分析时，则会考虑线路的首末班车时间的限制，即在返回的结果中会提示公交的首末班发车时间。
      */
 
@@ -49718,7 +49403,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc
  * 交通换乘方案查询服务类。
  * 返回结果通过该类支持的事件的监听函数参数获取。
- * @param url - {String} 与客户端交互的交通换乘方案查询服务地址。
+ * @param url - {string} 与客户端交互的交通换乘方案查询服务地址。
  * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
  * @param options - {Object} 参数。
  *        eventListeners - {Object} 需要被注册的监听器对象。</br>
@@ -49736,13 +49421,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var TransferSolutionService = function (_CommonServiceBase) {
     _inherits(TransferSolutionService, _CommonServiceBase);
 
-    /*
-     * @function SuperMap.TransferSolutionService.prototype.constructor
-     * @param url - {String} 与客户端交互的交通换乘方案查询服务地址。
-     * 例如:</br>"http://localhost:8090/iserver/services/traffictransferanalyst-sample/restjsr/traffictransferanalyst/Traffic-Changchun"。
-     * @param options - {Object} 参数。如:</br>
-     *        eventListeners - {Object} 需要被注册的监听器对象。</br>
-     */
     function TransferSolutionService(url, options) {
         _classCallCheck(this, TransferSolutionService);
 
@@ -49836,19 +49514,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/** * @class SuperMap.TransportationAnalystResultSetting * @description 交通网络分析结果参数类。 * 通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。 * @param options - {Object} 可选参数。如:</br> *        returnEdgeFeatures - {Boolean} 是否在分析结果中包含弧段要素集合。</br> *        returnEdgeGeometry - {Boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。</br> *        returnEdgeIDs - {Boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。</br> *        returnNodeFeatures - {Boolean} 是否在分析结果中包含结点要素集合。</br> *        returnNodeGeometry - {Boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。</br> *        returnNodeIDs - {Boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。</br> *        returnPathGuides - {Boolean} 返回分析结果中是否包含行驶导引集合。</br> *        returnRoutes - {Boolean} 返回分析结果中是否包含路由对象的集合。 */
+/** * @class SuperMap.TransportationAnalystResultSetting * @description 交通网络分析结果参数类。 * 通过该类设置交通网络分析返回的结果，包括是否返回图片、是否返回弧段空间信息、是否返回结点空间信息等。 * @param options - {Object} 可选参数。如:</br> *        returnEdgeFeatures - {boolean} 是否在分析结果中包含弧段要素集合。</br> *        returnEdgeGeometry - {boolean} 返回的弧段要素集合中是否包含几何对象信息。默认为 false。</br> *        returnEdgeIDs - {boolean} 返回结果中是否包含经过弧段 ID 集合。默认为 false。</br> *        returnNodeFeatures - {boolean} 是否在分析结果中包含结点要素集合。</br> *        returnNodeGeometry - {boolean} 返回的结点要素集合中是否包含几何对象信息。默认为 false。</br> *        returnNodeIDs - {boolean} 返回结果中是否包含经过结点 ID 集合。默认为 false。</br> *        returnPathGuides - {boolean} 返回分析结果中是否包含行驶导引集合。</br> *        returnRoutes - {boolean} 返回分析结果中是否包含路由对象的集合。 */
 var TransportationAnalystResultSetting = function () {
 
-  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnPathGuides -{Boolean}     * @description 返回分析结果中是否包含行驶导引集合。     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnPathGuides -{boolean}     * @description 返回分析结果中是否包含行驶导引集合。     */
 
 
-  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeGeometry -{Boolean}     * @description 返回的结点要素集合中是否包含几何对象信息。默认为 false。     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeGeometry -{boolean}     * @description 返回的结点要素集合中是否包含几何对象信息。默认为 false。     */
 
 
-  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeIDs -{Boolean}     * @description 返回结果中是否包含经过弧段 ID 集合。默认为 false。     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeIDs -{boolean}     * @description 返回结果中是否包含经过弧段 ID 集合。默认为 false。     */
 
 
-  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeFeatures -{Boolean}     * @description 是否在分析结果中包含弧段要素集合。弧段要素包括弧段的空间信息和属性信息。     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeFeatures -{boolean}     * @description 是否在分析结果中包含弧段要素集合。弧段要素包括弧段的空间信息和属性信息。     */
   function TransportationAnalystResultSetting(options) {
     _classCallCheck(this, TransportationAnalystResultSetting);
 
@@ -49871,16 +49549,16 @@ var TransportationAnalystResultSetting = function () {
   /**     * @function SuperMap.TransportationAnalystResultSetting.prototype.destroy     * @description 释放资源，将引用资源的属性置空。     */
 
 
-  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnRoutes -{Boolean}     * @description 返回分析结果中是否包含路由对象的集合。     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnRoutes -{boolean}     * @description 返回分析结果中是否包含路由对象的集合。     */
 
 
-  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeIDs -{Boolean}     * @description 返回结果中是否包含经过结点 ID 集合。默认为 false。     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeIDs -{boolean}     * @description 返回结果中是否包含经过结点 ID 集合。默认为 false。     */
 
 
-  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeFeatures -{Boolean}     * @description 是否在分析结果中包含结点要素集合。     * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。默认为 false。     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnNodeFeatures -{boolean}     * @description 是否在分析结果中包含结点要素集合。     * 结点要素包括结点的空间信息和属性信息。其中返回的结点要素是否包含空间信息可通过 returnNodeGeometry 字段设置。默认为 false。     */
 
 
-  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeGeometry -{Boolean}     * @description 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     */
+  /**     * @member SuperMap.TransportationAnalystResultSetting.prototype.returnEdgeGeometry -{boolean}     * @description 返回的弧段要素集合中是否包含几何对象信息。默认为 false。     */
 
 
   _createClass(TransportationAnalystResultSetting, [{
@@ -49931,21 +49609,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @classdesc UGC 图层类。
  * @param options - {Object} 可选参数。如：<br>
  *        bounds - {SuperMap.Bounds} 图层范围。<br>
- *        caption - {String} 图层的标题。<br>
- *        description - {String} 图层的描述信息。<br>
- *        name - {String} 图层的名称。<br>
- *        queryable - {Boolean} 图层中的对象是否可以查询。<br>
- *        subUGCLayers - {Boolean} 是否允许图层的符号大小随图缩放。<br>
+ *        caption - {string} 图层的标题。<br>
+ *        description - {string} 图层的描述信息。<br>
+ *        name - {string} 图层的名称。<br>
+ *        queryable - {boolean} 图层中的对象是否可以查询。<br>
+ *        subUGCLayers - {boolean} 是否允许图层的符号大小随图缩放。<br>
  *        type - {SuperMap.UGCLayerType} 图层类型。<br>
- *        visible - {Boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。
+ *        visible - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。
  */
 var UGCLayer = function () {
-
-    /*
-     * Constructor: SuperMap.UGCMapLayer
-     * UGC 图层类构造函数。
-     */
-
 
     /**
      * @member SuperMap.UGCLayer.prototype.type -{SuperMap.UGCLayerType}
@@ -49954,13 +49626,13 @@ var UGCLayer = function () {
 
 
     /**
-     * @member SuperMap.UGCLayer.prototype.queryable -{Boolean}
+     * @member SuperMap.UGCLayer.prototype.queryable -{boolean}
      * @description 图层中的对象是否可以查询。
      */
 
 
     /**
-     * @member SuperMap.UGCLayer.prototype.description -{String}
+     * @member SuperMap.UGCLayer.prototype.description -{string}
      * @description 图层的描述信息。
      */
 
@@ -49987,13 +49659,13 @@ var UGCLayer = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.UGCLayer.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.UGCLayer.prototype.visible -{Boolean}
+     * @member SuperMap.UGCLayer.prototype.visible -{boolean}
      * @description 图层是否可视。
      */
 
@@ -50005,13 +49677,13 @@ var UGCLayer = function () {
 
 
     /**
-     * @member SuperMap.UGCLayer.prototype.name -{String}
+     * @member SuperMap.UGCLayer.prototype.name -{string}
      * @description 图层的名称。
      */
 
 
     /**
-     * @member SuperMap.UGCLayer.prototype.caption -{String}
+     * @member SuperMap.UGCLayer.prototype.caption -{string}
      * @description 图层的标题。
      */
 
@@ -50103,14 +49775,14 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc UGC 地图图层类。
  * @extends SuperMap.UGCLayer
  * @param options - {Object} 可选参数。如：<br>
- *        completeLineSymbolDisplayed - {Boolean} 是否显示完整线型。<br>
- *        maxScale - {Number} 地图最大比例尺。<br>
- *        minScale - {Number} 地图最小比例尺。<br>
- *        minVisibleGeometrySize - {Number} 几何对象的最小可见大小，以像素为单位。<br>
+ *        completeLineSymbolDisplayed - {boolean} 是否显示完整线型。<br>
+ *        maxScale - {number}地图最大比例尺。<br>
+ *        minScale - {number}地图最小比例尺。<br>
+ *        minVisibleGeometrySize - {number}几何对象的最小可见大小，以像素为单位。<br>
  *        opaqueRate - {Integer} 图层的不透明度。<br>
- *        symbolScalable - {Boolean} 是否允许图层的符号大小随图缩放。<br>
- *        symbolScale - {Number} 图层的符号缩放基准比例尺。<br>
- *        overlapDisplayed - {Boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。<br>
+ *        symbolScalable - {boolean} 是否允许图层的符号大小随图缩放。<br>
+ *        symbolScale - {number}图层的符号缩放基准比例尺。<br>
+ *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示，默认为False。<br>
  *        overlapDisplayedOptions - {SuperMap.OverlapDisplayedOptions} 地图的压盖过滤显示选项，当
  *                                   overlapDisplayed 为 false 时有效。
  */
@@ -50124,24 +49796,24 @@ var UGCMapLayer = function (_UGCLayer) {
 
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.overlapDisplayed -{Boolean}
+     * @member SuperMap.UGCMapLayer.prototype.overlapDisplayed -{boolean}
      * @description 地图对象在同一范围内时，是否重叠显示，默认为False。
      */
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.symbolScalable -{Boolean}
+     * @member SuperMap.UGCMapLayer.prototype.symbolScalable -{boolean}
      * @description 是否允许图层的符号大小随图缩放。
      */
 
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.minVisibleGeometrySize -{Number}
+     * @member SuperMap.UGCMapLayer.prototype.minVisibleGeometrySize -{number}
      * @description 几何对象的最小可见大小，以像素为单位。
      */
 
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.maxScale -{Number}
+     * @member SuperMap.UGCMapLayer.prototype.maxScale -{number}
      * @description 地图最大比例尺。
      */
     function UGCMapLayer(options) {
@@ -50176,7 +49848,7 @@ var UGCMapLayer = function (_UGCLayer) {
 
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.symbolScale -{Number}
+     * @member SuperMap.UGCMapLayer.prototype.symbolScale -{number}
      * @description 图层的符号缩放基准比例尺。
      */
 
@@ -50188,13 +49860,13 @@ var UGCMapLayer = function (_UGCLayer) {
 
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.minScale -{Number}
+     * @member SuperMap.UGCMapLayer.prototype.minScale -{number}
      * @description 地图最小比例尺。
      */
 
 
     /**
-     * @member SuperMap.UGCMapLayer.prototype.completeLineSymbolDisplayed -{Boolean}
+     * @member SuperMap.UGCMapLayer.prototype.completeLineSymbolDisplayed -{boolean}
      * @description 是否显示完整线型。
      */
 
@@ -50263,28 +49935,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.UpdateEdgeWeightParameters
  * @classdesc 边的耗费权重更新服务参数类。
  * @param options - {Object} 可选参数。如：<br>
- *        edgeId - {String} 所在边的id。<br>
- *        fromNodeId - {String} 起始转向点的id。<br>
- *        toNodeId - {String} 终止转向点的id。<br>
- *        weightField - {String} 边的耗费字段。<br>
- *        edgeWeight - {String} 耗费权重。
+ *        edgeId - {string} 所在边的id。<br>
+ *        fromNodeId - {string} 起始转向点的id。<br>
+ *        toNodeId - {string} 终止转向点的id。<br>
+ *        weightField - {string} 边的耗费字段。<br>
+ *        edgeWeight - {string} 耗费权重。
  */
 var UpdateEdgeWeightParameters = function () {
 
-    /*
-     * Constructor: SuperMap.UpdateEdgeWeightParameters
-     * 边的耗费权重更新服务参数类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.weightField -{String}
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.weightField -{string}
      * @description 边的耗费字段
      */
 
 
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.fromNodeId -{String}
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.fromNodeId -{string}
      * @description 起始转向点的id
      */
     function UpdateEdgeWeightParameters(option) {
@@ -50307,25 +49973,25 @@ var UpdateEdgeWeightParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.UpdateEdgeWeightParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeWeight -{String}
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeWeight -{string}
      * @description 耗费权重
      */
 
 
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.toNodeId -{String}
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.toNodeId -{string}
      * @description 终止转向点的id
      */
 
 
     /**
-     * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeId -{String}
+     * @member SuperMap.UpdateEdgeWeightParameters.prototype.edgeId -{string}
      * @description 所在边的id
      */
 
@@ -50397,7 +50063,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *		   }
  * });
  * (end)
- * @param url - {String} 服务的访问地址。 如:<br>
+ * @param url - {string} 服务的访问地址。 如:<br>
  *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
@@ -50534,28 +50200,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.UpdateTurnNodeWeightParameters
  * @classdesc 转向耗费权重更新服务参数类
  * @param options - {Object} 可选参数。如：<br>
- *         nodeId - {String} 转向结点的id。<br>
- *        fromEdgeId - {String} 起始边的id。<br>
- *        toEdgeId - {String} 终止边的id。<br>
- *        weightField - {String} 转向结点的耗费字段。<br>
- *        turnNodeWeight - {String} 耗费权重
+ *         nodeId - {string} 转向结点的id。<br>
+ *        fromEdgeId - {string} 起始边的id。<br>
+ *        toEdgeId - {string} 终止边的id。<br>
+ *        weightField - {string} 转向结点的耗费字段。<br>
+ *        turnNodeWeight - {string} 耗费权重
  */
 var UpdateTurnNodeWeightParameters = function () {
 
-    /*
-     * Constructor: SuperMap.UpdateTurnNodeWeightParameters
-     * 转向耗费权重更新服务参数类构造函数。
-     */
-
-
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.weightField -{String}
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.weightField -{string}
      * @description 转向结点的耗费字段
      */
 
 
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.fromEdgeId -{String}
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.fromEdgeId -{string}
      * @description 起始边的id
      */
     function UpdateTurnNodeWeightParameters(option) {
@@ -50578,25 +50238,25 @@ var UpdateTurnNodeWeightParameters = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.UpdateTurnNodeWeightParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
 
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.turnNodeWeight -{String}
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.turnNodeWeight -{string}
      * @description 耗费权重
      */
 
 
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.toEdgeId -{String}
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.toEdgeId -{string}
      * @description 终止边的id
      */
 
 
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.nodeId -{String}
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.nodeId -{string}
      * @description 转向结点的id
      */
 
@@ -50666,7 +50326,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  *		   "processFailed": UpdateTurnNodeWeightError          //参数为SuperMap.ServiceFailedEventArgs
  *		   }
  * });
- * @param url - {String} 服务的访问地址。如:<br>
+ * @param url - {string} 服务的访问地址。如:<br>
  *                       http://localhost:8090/iserver/services/transportationanalyst-sample/rest/networkanalyst/RoadNet@Changchun 。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
@@ -50824,10 +50484,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Vector = function (_UGCSubLayer) {
     _inherits(Vector, _UGCSubLayer);
 
-    /*
-     * Constructor: SuperMap.Vector
-     * UGC 矢量图层类构造函数。
-     */
     function Vector(options) {
         _classCallCheck(this, Vector);
 
@@ -50927,14 +50583,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.VectorClipJobsParameter
  * @classdesc 矢量裁剪分析任务参数类
  * @param options - {Object} 必填参数。<br>
- *         datasetName -{String} 数据集名。 <br>
- *         datasetOverlay -{String} 裁剪对象数据集。 <br>
+ *         datasetName -{string} 数据集名。 <br>
+ *         datasetOverlay -{string} 裁剪对象数据集。 <br>
  *         mode -{SuperMap.SpatialQueryMode} 裁剪分析模式 。 <br>
  */
 var VectorClipJobsParameter = function () {
 
     /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{String}
+     * @member SuperMap.VectorClipJobsParameter.prototype.datasetOverlay -{string}
      * @description 裁剪对象数据集。
      */
     function VectorClipJobsParameter(options) {
@@ -50953,7 +50609,7 @@ var VectorClipJobsParameter = function () {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.VectorClipJobsParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
 
@@ -50965,7 +50621,7 @@ var VectorClipJobsParameter = function () {
 
 
     /**
-     * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{String}
+     * @member SuperMap.VectorClipJobsParameter.prototype.datasetName -{string}
      * @description 数据集名。
      */
 
@@ -51039,7 +50695,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.VectorClipJobsService
  * @classdesc 大数据矢量裁剪分析服务类
  * @extends SuperMap.ProcessingServiceBase
- * @param url -{String} 大数据矢量裁剪分析服务地址。
+ * @param url -{string} 大数据矢量裁剪分析服务地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
 var VectorClipJobsService = function (_ProcessingServiceBas) {
@@ -51082,7 +50738,7 @@ var VectorClipJobsService = function (_ProcessingServiceBas) {
         /**
          * @function SuperMap.KernelDensityJobsService.protitype.getVectorClipJob
          * @description 获取指定id的矢量裁剪分析服务
-         * @param id -{String} 指定要获取数据的id
+         * @param id -{string} 指定要获取数据的id
          */
 
     }, {
@@ -51095,7 +50751,7 @@ var VectorClipJobsService = function (_ProcessingServiceBas) {
          * @function SuperMap.VectorClipJobsService.protitype.addVectorClipJob
          * @description 新建大数据矢量裁剪分析服务
          * @param params - {SuperMap.VectorClipJobsParameter} 创建一个空间分析的请求参数。
-         * @param seconds - {Number} 开始创建后，获取创建成功结果的时间间隔。
+         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          */
 
     }, {
@@ -51519,7 +51175,7 @@ var OnlineServiceBase = function () {
      * @function SuperMap.OnlineServiceBase.prototype.request
      * @description 请求online服务
      * @param method - {function}
-     * @param url - {String} 服务地址
+     * @param url - {string} 服务地址
      * @param param
      * @param requestOptions
      * @return {Promise.<TResult>|jQuery.deferred|jQuery.jqXHR|jQuery.Promise|*}
@@ -51538,7 +51194,7 @@ var OnlineServiceBase = function () {
         /**
          * @function SuperMap.OnlineServiceBase.prototype.createCredentialUrl
          * @description 追加授权信息
-         * @param url - {String} 对接的online服务地址
+         * @param url - {string} 对接的online服务地址
          */
 
     }, {
@@ -51607,10 +51263,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.KeyServiceParameter
  * @classdesc key申请参数
  * @param options - {Object} 参数。如：<br>
- *        name - {String} 申请服务名称。<br>
- *        serviceIds - {number} 服务ID。<br>
+ *        name - {string} 申请服务名称。<br>
+ *        serviceIds - {number}服务ID。<br>
  *        clientType - {ClientType} 服务端类型。<br>
- *        limitation - {number} 有效期
+ *        limitation - {number}有效期
  */
 var KeyServiceParameter = function () {
     function KeyServiceParameter(options) {
@@ -51676,7 +51332,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.ServerInfo
  * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
- * @param type - {String} 服务器类型
+ * @param type - {string} 服务器类型
  * @param options - {object} 非必填，服务器信息相关可选参数。如：<br>
  *        server - {string} 数据库服务器名
  *        tokenServiceUrl - {string} 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
@@ -51736,7 +51392,7 @@ function ServerInfo(type, options) {
 
 /**
  * @member SuperMap.ServerInfo.prototype.server -{string}
- * @description 非必填，server - {String} 数据库服务器名
+ * @description 非必填，server - {string} 数据库服务器名
  */
 ;
 
@@ -51775,18 +51431,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  */
 var TokenServiceParameter = function () {
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.referer -{String}
+     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
      * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
      */
 
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.clientType -{String}
+     * @member SuperMap.TokenServiceParameter.prototype.clientType -{string}
      * @description token申请的客户端标识类型。
      */
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.userName -{String}
+     * @member SuperMap.TokenServiceParameter.prototype.userName -{string}
      * @description 用户名。
      */
     function TokenServiceParameter(options) {
@@ -51817,12 +51473,12 @@ var TokenServiceParameter = function () {
 
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.referer -{String}
+     * @member SuperMap.TokenServiceParameter.prototype.referer -{string}
      * @description clientType=Referer 时，必选。如果按照指定 URL 的方式申请令牌，则传递相应的 URL。
      */
 
     /**
-     * @member SuperMap.TokenServiceParameter.prototype.password -{String}
+     * @member SuperMap.TokenServiceParameter.prototype.password -{string}
      * @description 密码。
      */
 
@@ -51875,7 +51531,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class SuperMap.CartoCSS
  * @classdesc CartoCSS解析类，其主要功能为将CartoCSS字符串解析为CartoCSS的shader属性风格对象
- * @param cartoStr - {String} CartoCSS样式表字符串
+ * @param cartoStr - {string} CartoCSS样式表字符串
  * @example
  * (code)
  * var cartocss=[
@@ -52956,7 +52612,7 @@ var CartoCSS = function () {
         }
 
         /**
-         * @function destroy
+         * @function SuperMap.CartoCSS.prototype.destroy
          * @description CartoCSS解析对象的析构函数，用于销毁CartoCSS解析对象
          */
 
@@ -56334,7 +55990,7 @@ _leaflet2.default.Projection = {};
 /**
  * @class L.Projection.NonProjection
  * @classdesc 非投影坐标对象
- * @extends L.Class
+ * @extends L.Class{@linkdoc-leaflet/#class}
  * @param bounds - {L.bounds} 坐标范围
  */
 var NonProjection = exports.NonProjection = _leaflet2.default.Class.extend({
@@ -56359,7 +56015,7 @@ var nonProjection = exports.nonProjection = function nonProjection(bounds) {
 /**
  * @class L.CRS.NonEarthCRS
  * @classdesc 非地球坐标对象
- * @extends L.Class
+ * @extends L.Class{@linkdoc-leaflet/#class}
  * @param options - {object} 构建非地球坐标对象参数
  */
 var NonEarthCRS = exports.NonEarthCRS = _leaflet2.default.Class.extend({
@@ -56383,7 +56039,7 @@ var NonEarthCRS = exports.NonEarthCRS = _leaflet2.default.Class.extend({
     /**
      * @function L.CRS.NonEarthCRS.prototype.scale
      * @description 通过缩放级别计算比例尺
-     * @param zoom - {number} 缩放级别
+     * @param zoom - {number}缩放级别
      * @return {number} 得到的比例尺
      */
     scale: function scale(zoom) {
@@ -56398,7 +56054,7 @@ var NonEarthCRS = exports.NonEarthCRS = _leaflet2.default.Class.extend({
     /**
      * @function L.CRS.NonEarthCRS.prototype.zoom
      * @description 通过比例尺计算范围
-     * @param scale - {number} 比例尺
+     * @param scale - {number}比例尺
      * @return {number} 返回空间范围值
      */
     zoom: function zoom(scale) {
@@ -56466,15 +56122,14 @@ _leaflet2.default.Proj._isProj4Obj = function (a) {
 
 /**
  * @class L.Proj.Projection
- * @classdesc leaflet Proj投影定义类
+ * @classdesc Proj投影定义类
+ * @extends L.Class{@linkdoc-leaflet/#class}
+ * @param code - {number}地理编码
+ * @param def - {string} 定位
+ * @param bounds - {L.bounds} 投影范围参数
  */
 _leaflet2.default.Proj.Projection = _leaflet2.default.Class.extend({
 
-    /*
-     * @param code - {number} 地理编码
-     * @param def - {String} 定位
-     * @param bounds - {L.bounds} 投影范围参数
-     */
     initialize: function initialize(code, def, bounds) {
         var isP4 = _leaflet2.default.Proj._isProj4Obj(code);
         this._proj = isP4 ? code : this._projFromCodeDef(code, def);
@@ -56500,7 +56155,7 @@ _leaflet2.default.Proj.Projection = _leaflet2.default.Class.extend({
      * @function L.Proj.Projection.prototype.unproject
      * @description 通过投影坐标得到地理坐标
      * @param point {L.Point} 地理坐标点
-     * @param unbounded - {String} 坐标点高程不限
+     * @param unbounded - {string} 坐标点高程不限
      * @return {LatLng} 返回经纬度坐标
      */
     unproject: function unproject(point, unbounded) {
@@ -56527,16 +56182,16 @@ _leaflet2.default.Proj.Projection = _leaflet2.default.Class.extend({
 
 /**
  * @class L.Proj.CRS
- * @classdesc leaflet Proj坐标系统定义类
- * @param a -{String} proj srsCode。
- * @param b -{String} proj def。
+ * @classdesc Proj坐标系统定义类
+ * @extends L.Class{@linkdoc-leaflet/#class}
+ * @param a -{string} proj srsCode。
+ * @param b -{string} proj def。
  * @param c -{Object} options。可选参数：<br>
  *                     origin -{Array|L.Point} 原点。必填<br>
  *                     scales -{Array} 比例尺数组 <br>
  *                     scaleDenominators -{Array} 比例尺分母数组 <br>
  *                     resolutions -{Array} 分辨率数组 <br>
  *                     bounds -{Array|L.Bounds} 范围
- * @extends L.CRS
  * @example
  * 用法：
  *    var crs =new L.Proj.CRS("EPSG:4326", '', {
@@ -56555,16 +56210,6 @@ _leaflet2.default.Proj.CRS = _leaflet2.default.Class.extend({
         transformation: new _leaflet2.default.Transformation(1, 0, -1, 0)
     },
 
-    /*
-     * @param a -{String} proj srsCode。
-     * @param b -{String} proj def。
-     * @param c -{Object} options。可选参数：<br>
-     *                     origin -{Array|L.Point} 原点。必填<br>
-     *                     scales -{Array} 比例尺数组 <br>
-     *                     scaleDenominators -{Array} 比例尺分母数组 <br>
-     *                     resolutions -{Array} 分辨率数组 <br>
-     *                     bounds -{Array|L.Bounds} 范围
-     */
     initialize: function initialize(a, b, c) {
         var code, proj, def, options;
 
@@ -56617,7 +56262,7 @@ _leaflet2.default.Proj.CRS = _leaflet2.default.Class.extend({
     /**
      * @function L.Proj.CRS.prototype.scale
      * @description 通过缩放级别获取比例尺值
-     * @param zoom - {number} 缩放级别
+     * @param zoom - {number}缩放级别
      */
     scale: function scale(zoom) {
         var iZoom = Math.floor(zoom),
@@ -56640,7 +56285,7 @@ _leaflet2.default.Proj.CRS = _leaflet2.default.Class.extend({
     /**
      * @function L.Proj.CRS.prototype.zoom
      * @description 通过比例尺获取当前空前范围
-     * @param scale - {number} 比例尺
+     * @param scale - {number}比例尺
      */
     zoom: function zoom(scale) {
         // Find closest number in this._scales, down
@@ -56728,6 +56373,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @constant L.supermap.DefaultStyle
  * @description 这个style对应的是默认设置
+ * @private
  */
 var DefaultStyle = exports.DefaultStyle = _leaflet2.default.supermap.DefaultStyle = {
 
@@ -56813,6 +56459,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @constant L.supermap.CartoStyleMap
  * @description CartoCSS中的style属性名与leaflet的style属性名的对应表
+ * @private
  */
 var CartoStyleMap = exports.CartoStyleMap = _leaflet2.default.supermap.CartoStyleMap = {
 
@@ -56879,6 +56526,7 @@ var CartoStyleMap = exports.CartoStyleMap = _leaflet2.default.supermap.CartoStyl
 /**
  * @constant L.supermap.ServerStyleMap
  * @description 服务端传过来的style属性名与leaflet的style属性名的对应表
+ * @private
  */
 _leaflet2.default.supermap.ServerStyleMap = {
 
@@ -56939,6 +56587,7 @@ _leaflet2.default.supermap.ServerStyleMap = {
 /**
  * @constant L.supermap.CompOpMap
  * @description Canvas中的globalCompositeOperation属性值与CartoCSS中的CompOp属性值对照表
+ * @private
  */
 _leaflet2.default.supermap.CompOpMap = {
     "clear": "",
@@ -57000,26 +56649,23 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.circleStyle
  * @classdesc 圆形要素风格
- * @extends L.Class
+ * @private
+ * @extends L.Class{@linkdoc-leaflet/#class}
  * @param options - {object} 圆形要素风格参数。如：<br>
  *        stroke - {boolean}
- *        color - {String} 颜色
- *        weight - {number} 宽带
- *        opacity - {number} 透明度
- *        lineCap - {String} 线帽形状
- *        lineJoin - {String} 线条交汇边角形状
+ *        color - {string} 颜色
+ *        weight - {number}宽带
+ *        opacity - {number}透明度
+ *        lineCap - {string} 线帽形状
+ *        lineJoin - {string} 线条交汇边角形状
  *        fill - {boolean} 是否填充
- *        fillColor - {String} 填充色
- *        fillOpacity - {number} 填充透明度
- *        fillRule - {String} 填充形状
- *        radius - {number} 半径
+ *        fillColor - {string} 填充色
+ *        fillOpacity - {number}填充透明度
+ *        fillRule - {string} 填充形状
+ *        radius - {number}半径
  */
 var CircleStyle = exports.CircleStyle = _leaflet2.default.Class.extend({
 
-    /**
-     * @member L.supermap.circleStyle.prototype.options
-     * @description 要素风格参数
-     */
     options: {
         stroke: true,
         color: '#3388ff',
@@ -57105,7 +56751,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.graphic
  * @classdesc 图形类。
- * @extends L.Class
+ * @private
+ * @extends L.Class{@linkdoc-leaflet/#class}
  * @param options - {object} 图形参数
  */
 var Graphic = exports.Graphic = _leaflet2.default.Class.extend({
@@ -57190,6 +56837,7 @@ var BaseLayer = _mapv.baiduMapLayer ? _mapv.baiduMapLayer.__proto__ : Function;
 /**
  * @class L.supermap.MapVRenderer
  * @classdesc 地图渲染类
+ * @private
  * @extends L.BaseLayer
  * @param map - {L.map} 待渲染的地图
  * @param layer - {L.Layer} 待渲染的图层
@@ -57354,7 +57002,7 @@ var MapVRenderer = function (_BaseLayer) {
         /**
          * @function L.supermap.MapVRenderer.prototype.removeData
          * @description 删除数据
-         * @param filter - {String} 删除条件\过滤信息
+         * @param filter - {string} 删除条件\过滤信息
          */
 
     }, {
@@ -57517,7 +57165,7 @@ var MapVRenderer = function (_BaseLayer) {
         /**
          * @function L.supermap.MapVRenderer.prototype.clear
          * @description 清除信息
-         * @param context - {String} 指定要清除的信息
+         * @param context - {string} 指定要清除的信息
          */
 
     }, {
@@ -57606,21 +57254,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.GraphThemeLayer
  * @classdesc 统计专题图图层。
+ * @private
+ * @extends L.supermap.ThemeLayer
  * @description 统计专题图通过为每个要素绘制统计图表来反映其对应的专题值的大小。它可同时表示多个字段属性信息，在区域本身与各区域之间形成横向和纵向的对比。<br>
  *              统计专题图多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。
  *              目前提供的统计图类型有：柱状图（Bar），折线图（Line），饼图（Pie），三维柱状图（Bar3D），点状图（Point），环状图（Ring）。
- * @extends L.supermap.ThemeLayer
- * @param name - {String} 专题图表名称
- * @param chartsType - {String} 图表类型。目前可用："Bar", "Line", "Pie"。
+ * @param name - {string} 专题图表名称
+ * @param chartsType - {string} 图表类型。目前可用："Bar", "Line", "Pie"。
  * @param options - {object} 待设置得参数。如：<br>
  *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。
  */
 var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
 
-    /**
-     * @member L.supermap.GraphThemeLayer.prototype.options -{object}
-     * @description 待设置得参数。
-     */
     options: {
         //是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。
         isOverLay: true
@@ -57630,14 +57275,14 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
      *chartsType :图表类型。目前可用："Bar", "Line", "Pie"。
      *chartsSetting:各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。
      *  chartsSetting 对象通常都具有以下 5 个基础可设属性
-     *  width - {Number} 专题要素（图表）宽度，必设参数。
-     *  height - {Number} 专题要素（图表）高度，必设参数。
-     *  codomain - {Array<Number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+     *  width - {number}专题要素（图表）宽度，必设参数。
+     *  height - {number}专题要素（图表）高度，必设参数。
+     *  codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
      *  XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。
      *  YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。
      *  dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
      *      它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
-     *  decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
+     *  decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
      *      如果不设置此参数，在取数据值时不对数据做小数位处理。
      */
     initialize: function initialize(name, chartsType, options) {
@@ -57654,7 +57299,7 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
     /**
      * @function L.supermap.GraphThemeLayer.prototype.setChartsType
      * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。图表类型，目前支持："Bar", "Line", "Pie"。
-     * @param chartsType  - {String} 图表类型。目前可用："Bar", "Line", "Pie"。
+     * @param chartsType  - {string} 图表类型。目前可用："Bar", "Line", "Pie"。
      */
     setChartsType: function setChartsType(chartsType) {
         this.chartsType = chartsType;
@@ -57788,7 +57433,7 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
     /**
      * @function L.supermap.GraphThemeLayer.prototype.getShapesByFeatureID
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
-     * @param featureID - {number} 要素ID
+     * @param featureID - {number}要素ID
      */
     getShapesByFeatureID: function getShapesByFeatureID(featureID) {
         var me = this,
@@ -57947,8 +57592,8 @@ var GraphThemeLayer = exports.GraphThemeLayer = _ThemeLayer.ThemeLayer.extend({
      * @function L.supermap.GraphThemeLayer.prototype.getWeightFieldValue
      * @description 获取权重字段的值。
      * @param feature - {SuperMap.Feature.Vector} 矢量要素。
-     * @param fields - {Array<String>} 字段名数组。
-     * @param defaultValue - {Number} 当通过 weightField 获取不到权重值时，使用 defaultValue 作为权重值。
+     * @param fields - {Array<string>} 字段名数组。
+     * @param defaultValue - {number}当通过 weightField 获取不到权重值时，使用 defaultValue 作为权重值。
      */
     getWeightFieldValue: function getWeightFieldValue(feature, weightField, defaultValue) {
         if (typeof defaultValue === "undefined" || isNaN(defaultValue)) {
@@ -58102,9 +57747,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.LineSymbolizer
  * @classdesc 线符号类
- * @extends L.Polyline
+ * @private
+ * @extends L.Polyline{@linkdoc-leaflet/#polyline}
  * @param feature - {L.feature} 线要素
- * @param pxPerExtent - {number} 线长
+ * @param pxPerExtent - {number}线长
  */
 var LineSymbolizer = exports.LineSymbolizer = _leaflet2.default.Polyline.extend({
 
@@ -58123,7 +57769,7 @@ var LineSymbolizer = exports.LineSymbolizer = _leaflet2.default.Polyline.extend(
      * @function L.supermap.LineSymbolizer.prototype.render
      * @description 绘制线符号
      * @param renderer - {object} 渲染器
-     * @param style - {String} 符号样式
+     * @param style - {string} 符号样式
      */
     render: function render(renderer, style) {
         style.fill = false;
@@ -58135,7 +57781,7 @@ var LineSymbolizer = exports.LineSymbolizer = _leaflet2.default.Polyline.extend(
      * @function L.supermap.LineSymbolizer.prototype.updateStyle
      * @description 更新替换符号样式
      * @param renderer - {object} 渲染器
-     * @param style - {String} 符号样式
+     * @param style - {string} 符号样式
      */
     updateStyle: function updateStyle(renderer, style) {
         style.fill = false;
@@ -58168,9 +57814,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.PointSymbolizer
  * @classdesc 点符号类
- * @extends L.CircleMarker
+ * @private
+ * @extends L.CircleMarker{@linkdoc-leaflet/#circlemarker}
  * @param feature - {L.feature} 点要素
- * @param pxPerExtent - {number} 点符号大小
+ * @param pxPerExtent - {number}点符号大小
  */
 var PointSymbolizer = exports.PointSymbolizer = _leaflet2.default.CircleMarker.extend({
 
@@ -58193,7 +57840,7 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2.default.CircleMarker.e
      * @function L.supermap.PointSymbolizer.prototype.render
      * @description 绘制点符号
      * @param renderer - {object} 渲染器
-     * @param style - {String} 符号样式
+     * @param style - {string} 符号样式
      */
     render: function render(renderer, style) {
         _Symbolizer.Symbolizer.prototype.render.call(this, renderer, style);
@@ -58225,7 +57872,7 @@ var PointSymbolizer = exports.PointSymbolizer = _leaflet2.default.CircleMarker.e
      * @function L.supermap.PointSymbolizer.prototype.updateStyle
      * @description 更新替换符号样式
      * @param renderer - {object} 渲染器
-     * @param style - {String} 符号样式
+     * @param style - {string} 符号样式
      */
     updateStyle: function updateStyle(renderer, style) {
         this._radius = style.radius || this._radius;
@@ -58343,9 +57990,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.RegionSymbolizer
  * @classdesc 面符号类
- * @extends L.Polygon
+ * @private
+ * @extends L.Polygon{@linkdoc-leaflet/#polygon}
  * @param feature - {L.feature} 面要素
- * @param pxPerExtent - {number} 面积像素大小
+ * @param pxPerExtent - {number}面积像素大小
  */
 var RegionSymbolizer = exports.RegionSymbolizer = _leaflet2.default.Polygon.extend({
 
@@ -58364,7 +58012,7 @@ var RegionSymbolizer = exports.RegionSymbolizer = _leaflet2.default.Polygon.exte
      * @function L.supermap.RegionSymbolizer.prototype.render
      * @description 绘制面符号
      * @param renderer - {object} 渲染器
-     * @param style - {String} 符号样式
+     * @param style - {string} 符号样式
      */
     render: function render(renderer, style) {
         _Symbolizer.Symbolizer.prototype.render.call(this, renderer, style);
@@ -58405,10 +58053,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.VectorGrid
  * @classdesc 矢量格网
- * @extends L.GridLayer
+ * @private
+ * @extends L.GridLayer{@linkdoc-leaflet/#gridlayer}
  * @param options - {Object} 矢量格网参数。如：<br>
  *        vectorTileLayerStyles - {object} 矢量网片图层风格。<br>
- *        renderer - {String} 渲染器类型。<br>
+ *        renderer - {string} 渲染器类型。<br>
  *        format - {L.supermap.VectorTileFormat} 矢量瓦片格式。<br>
  *        interactive - {boolean} 是否可交互 。
  */
@@ -58486,7 +58135,7 @@ var VectorGrid = exports.VectorGrid = _leaflet2.default.GridLayer.extend({
     /**
      * @function L.supermap.VectorGrid.prototype.getStyle
      * @description 获取指定图层样式
-     * @param layerName - {String} 图层名称
+     * @param layerName - {string} 图层名称
      */
     getStyle: function getStyle(layerName) {
         return this.vectorTileLayerStyles && this.vectorTileLayerStyles[layerName];
@@ -58495,9 +58144,9 @@ var VectorGrid = exports.VectorGrid = _leaflet2.default.GridLayer.extend({
     /**
      * @function L.supermap.VectorGrid.prototype.setFeatureStyle
      * @description 设置要素风格，需要id和layerName才能确定一个要素
-     * @param id - {number} 要素id
-     * @param layerName - {String} 图层名称
-     * @param layerStyle - {array} 图层样式
+     * @param id - {number}要素id
+     * @param layerName - {string} 图层名称
+     * @param layerStyle - {Array} 图层样式
      * @return {L.supermap.VectorGrid}
      */
     setFeatureStyle: function setFeatureStyle(id, layerName, layerStyle) {
@@ -58519,8 +58168,8 @@ var VectorGrid = exports.VectorGrid = _leaflet2.default.GridLayer.extend({
     /**
      * @function L.supermap.VectorGrid.prototype.resetFeatureStyle
      * @description 重绘要素风格，需要id和layerName才能确定一个要素
-     * @param id - {number} 要素id
-     * @param layerName - {String} 图层名称
+     * @param id - {number}要素id
+     * @param layerName - {string} 图层名称
      */
     resetFeatureStyle: function resetFeatureStyle(id, layerName) {
         var featureKey = this._getFeatureKey(id, layerName);
@@ -58651,7 +58300,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /**
  * @class L.supermap.VectorTile
- * @classdesc 矢量切片图层基类
+ * @classdesc 矢量瓦片图层基类
+ * @private
+ * @extends L.Class{@linkdoc-leaflet/#class}
+ * @param options - {Object} 矢量瓦片类构造可选参数。如：<br>
+ *        layer - {string} 图层名称。<br>
+ *        tileSize - {number} 瓦片大小。<br>
+ *        format - {string} 返回值类型。<br>
+ *        coords - {Object} 坐标系统对象。<br>
+ *        renderer - {Object} 渲染器对象。
+ * @param done - {function} 回调函数。
  */
 var VectorTile = exports.VectorTile = _leaflet2.default.Class.extend({
 
@@ -58916,7 +58574,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.VectorTileJSON
  * @classdesc iServer 矢量瓦片json表述出图
- * @param url - {String} 矢量瓦片json表述服务地址
+ * @private
+ * @extends L.Class{@linkdoc-leaflet/#class}
+ * @param url - {string} 矢量瓦片json表述服务地址
  */
 var VectorTileJSON = exports.VectorTileJSON = _leaflet2.default.Class.extend({
 
@@ -59083,6 +58743,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /**
  * @class L.supermap.VectorTilePBF
  * @classdesc 矢量瓦片PBF(MVT)表述出图
+ * @private
+ * @extends L.Class{@linkdoc-leaflet/#class}
+ * @param url - {string} 矢量瓦片PBF(MVT)表述出图服务地址
  */
 var VectorTilePBF = exports.VectorTilePBF = _leaflet2.default.Class.extend({
 
@@ -63956,7 +63619,105 @@ var names = ["Van_der_Grinten_I", "VanDerGrinten", "vandg"];
 /* 397 */
 /***/ (function(module, exports) {
 
-module.exports = {"_args":[[{"raw":"proj4@2.4.3","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.4.3","spec":"2.4.3","type":"version"},"E:\\git\\iClient9"]],"_from":"proj4@2.4.3","_id":"proj4@2.4.3","_inCache":true,"_location":"/proj4","_nodeVersion":"6.9.2","_npmOperationalInternal":{"host":"packages-18-east.internal.npmjs.com","tmp":"tmp/proj4-2.4.3.tgz_1488570790416_0.3068596587982029"},"_npmUser":{"name":"cwmma","email":"calvin.metcalf@gmail.com"},"_npmVersion":"4.0.5","_phantomChildren":{},"_requested":{"raw":"proj4@2.4.3","scope":null,"escapedName":"proj4","name":"proj4","rawSpec":"2.4.3","spec":"2.4.3","type":"version"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz","_shasum":"f3bb7e631bffc047c36a1a3cc14533a03bbe9969","_shrinkwrap":null,"_spec":"proj4@2.4.3","_where":"E:\\git\\iClient9","author":"","bugs":{"url":"https://github.com/proj4js/proj4js/issues"},"contributors":[{"name":"Mike Adair","email":"madair@dmsolutions.ca"},{"name":"Richard Greenwood","email":"rich@greenwoodmap.com"},{"name":"Calvin Metcalf","email":"calvin.metcalf@gmail.com"},{"name":"Richard Marsden","url":"http://www.winwaed.com"},{"name":"T. Mittan"},{"name":"D. Steinwand"},{"name":"S. Nelson"}],"dependencies":{"mgrs":"1.0.0","wkt-parser":"^1.1.3"},"description":"Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.","devDependencies":{"chai":"~1.8.1","curl":"git://github.com/cujojs/curl.git","grunt":"~0.4.2","grunt-cli":"~0.1.13","grunt-contrib-connect":"~0.6.0","grunt-contrib-jshint":"~1.1.0","grunt-contrib-uglify":"~0.11.1","grunt-mocha-phantomjs":"~0.4.0","grunt-rollup":"^1.0.1","istanbul":"~0.2.4","mocha":"~1.17.1","rollup":"^0.41.4","rollup-plugin-json":"^2.0.1","rollup-plugin-node-resolve":"^2.0.0","tin":"~0.4.0"},"directories":{"test":"test","doc":"docs"},"dist":{"shasum":"f3bb7e631bffc047c36a1a3cc14533a03bbe9969","tarball":"https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz"},"gitHead":"e975a5462ad7abb23e33ea75281eb749e77e1510","homepage":"https://github.com/proj4js/proj4js#readme","license":"MIT","main":"dist/proj4-src.js","maintainers":[{"name":"cwmma","email":"calvin.metcalf@gmail.com"},{"name":"ahocevar","email":"andreas.hocevar@gmail.com"}],"module":"lib/index.js","name":"proj4","optionalDependencies":{},"readme":"ERROR: No README data found!","repository":{"type":"git","url":"git://github.com/proj4js/proj4js.git"},"scripts":{"build":"grunt","build:tmerc":"grunt build:tmerc","test":"npm run build && istanbul test _mocha test/test.js"},"version":"2.4.3"}
+module.exports = {
+	"_from": "proj4@2.4.3",
+	"_id": "proj4@2.4.3",
+	"_inBundle": false,
+	"_integrity": "sha1-87t+Yxv/wEfDaho8wUUzoDu+mWk=",
+	"_location": "/proj4",
+	"_phantomChildren": {},
+	"_requested": {
+		"type": "version",
+		"registry": true,
+		"raw": "proj4@2.4.3",
+		"name": "proj4",
+		"escapedName": "proj4",
+		"rawSpec": "2.4.3",
+		"saveSpec": null,
+		"fetchSpec": "2.4.3"
+	},
+	"_requiredBy": [
+		"/"
+	],
+	"_resolved": "https://registry.npmjs.org/proj4/-/proj4-2.4.3.tgz",
+	"_shasum": "f3bb7e631bffc047c36a1a3cc14533a03bbe9969",
+	"_spec": "proj4@2.4.3",
+	"_where": "G:\\iClient9",
+	"author": "",
+	"bugs": {
+		"url": "https://github.com/proj4js/proj4js/issues"
+	},
+	"bundleDependencies": false,
+	"contributors": [
+		{
+			"name": "Mike Adair",
+			"email": "madair@dmsolutions.ca"
+		},
+		{
+			"name": "Richard Greenwood",
+			"email": "rich@greenwoodmap.com"
+		},
+		{
+			"name": "Calvin Metcalf",
+			"email": "calvin.metcalf@gmail.com"
+		},
+		{
+			"name": "Richard Marsden",
+			"url": "http://www.winwaed.com"
+		},
+		{
+			"name": "T. Mittan"
+		},
+		{
+			"name": "D. Steinwand"
+		},
+		{
+			"name": "S. Nelson"
+		}
+	],
+	"dependencies": {
+		"mgrs": "1.0.0",
+		"wkt-parser": "^1.1.3"
+	},
+	"deprecated": false,
+	"description": "Proj4js is a JavaScript library to transform point coordinates from one coordinate system to another, including datum transformations.",
+	"devDependencies": {
+		"chai": "~1.8.1",
+		"curl": "git://github.com/cujojs/curl.git",
+		"grunt": "~0.4.2",
+		"grunt-cli": "~0.1.13",
+		"grunt-contrib-connect": "~0.6.0",
+		"grunt-contrib-jshint": "~1.1.0",
+		"grunt-contrib-uglify": "~0.11.1",
+		"grunt-mocha-phantomjs": "~0.4.0",
+		"grunt-rollup": "^1.0.1",
+		"istanbul": "~0.2.4",
+		"mocha": "~1.17.1",
+		"rollup": "^0.41.4",
+		"rollup-plugin-json": "^2.0.1",
+		"rollup-plugin-node-resolve": "^2.0.0",
+		"tin": "~0.4.0"
+	},
+	"directories": {
+		"test": "test",
+		"doc": "docs"
+	},
+	"homepage": "https://github.com/proj4js/proj4js#readme",
+	"license": "MIT",
+	"main": "dist/proj4-src.js",
+	"module": "lib/index.js",
+	"name": "proj4",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/proj4js/proj4js.git"
+	},
+	"scripts": {
+		"build": "grunt",
+		"build:tmerc": "grunt build:tmerc",
+		"test": "npm run build && istanbul test _mocha test/test.js"
+	},
+	"version": "2.4.3"
+};
 
 /***/ }),
 /* 398 */

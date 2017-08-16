@@ -4,67 +4,67 @@
  * @class SuperMap.TransferLine
  * @classdesc 换乘路线信息类。
  * @param options - {Object} 可选参数。如:</br>
- *        lineID - {String} 乘车路线名称。</br>
- *        lineName - {String} 乘车路线名称。</br>
- *        lineAliasName - {String} 乘车路线别名。</br>
- *        startStopIndex - {Number} 上车站点在本公交路线中的索引。</br>
- *        startStopName - {String} 上车站点名称。</br>
- *        startStopAliasName - {String} 上车站点别名。</br>
- *        endStopIndex - {Number} 下车站点在本公交路线中的索引</br>。
- *        endStopName - {String} 下车站点名称。</br>
- *        endStopAliasName - {String} 下车站点别名。</br>
+ *        lineID - {string} 乘车路线名称。</br>
+ *        lineName - {string} 乘车路线名称。</br>
+ *        lineAliasName - {string} 乘车路线别名。</br>
+ *        startStopIndex - {number}上车站点在本公交路线中的索引。</br>
+ *        startStopName - {string} 上车站点名称。</br>
+ *        startStopAliasName - {string} 上车站点别名。</br>
+ *        endStopIndex - {number}下车站点在本公交路线中的索引</br>。
+ *        endStopName - {string} 下车站点名称。</br>
+ *        endStopAliasName - {string} 下车站点别名。</br>
  */
 export default  class TransferLine {
     /**
-     * @memberSuperMap.TransferLine.prototype.lineID -{Number}
+     * @memberSuperMap.TransferLine.prototype.lineID -{number}
      * @description 乘车路线名称。
      */
     lineID = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.lineName -{String}
+     * @memberSuperMap.TransferLine.prototype.lineName -{string}
      * @description 乘车路线名称。
      */
     lineName = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.lineAliasName -{String}
+     * @memberSuperMap.TransferLine.prototype.lineAliasName -{string}
      * @description 乘车路线别名。
      */
     lineAliasName = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.startStopIndex -{Number}
+     * @memberSuperMap.TransferLine.prototype.startStopIndex -{number}
      * @description 上车站点在本公交路线中的索引。
      */
     startStopIndex = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.startStopName -{String}
+     * @memberSuperMap.TransferLine.prototype.startStopName -{string}
      * @description 上车站点名称。
      */
     startStopName = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.startStopAliasName -{String}
+     * @memberSuperMap.TransferLine.prototype.startStopAliasName -{string}
      * @description 上车站点别名。
      */
     startStopAliasName = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.endStopIndex -{Number}
+     * @memberSuperMap.TransferLine.prototype.endStopIndex -{number}
      * @description 下车站点在本公交路线中的索引。
      */
     endStopIndex = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.endStopName -{String}
+     * @memberSuperMap.TransferLine.prototype.endStopName -{string}
      * @description 下车站点名称。
      */
     endStopName = null;
 
     /**
-     * @memberSuperMap.TransferLine.prototype.endStopAliasName -{String}
+     * @memberSuperMap.TransferLine.prototype.endStopAliasName -{string}
      * @description 下车站点别名。
      */
     endStopAliasName = null;

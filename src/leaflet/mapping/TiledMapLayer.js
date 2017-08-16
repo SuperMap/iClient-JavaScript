@@ -6,18 +6,26 @@ import * as Util from "../core/Util";
 /**
  * @class L.supermap.tiledMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)使用TileImage资源出图.
- * @extends L.TileLayer
+ * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @example
  *      L.superMap.tiledMapLayer(url).addTo(map);
- * @param url -{String} 影像图层地址
- * @param options -{object} 影像图层参数
+ * @param url -{string} 影像图层地址
+ * @param options -{object} 影像图层参数。如：<br>
+ *        layersID - {number}图层ID，如果有layersID，则是在使用专题图。<br>
+ *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。<br>
+ *        transparent - {number}设置透明度。<br>
+ *        cacheEnabled - {string} 启用缓存。<br>
+ *        clipRegionEnabled - {boolean} 是否启用地图裁剪。<br>
+ *        prjCoordSys - {object} 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。<br>
+ *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
+ *        overlapDisplayedOptions - {string} 避免地图对象压盖显示的过滤选项。<br>
+ *        tileversion - {string} 切片版本名称，cacheEnabled 为 true 时有效。<br>
+ *        crs - {L.Proj.CRS} 坐标系统类。<br>
+ *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
+ *        attribution - {string} 版权信息。<br>
  */
 export var TiledMapLayer = L.TileLayer.extend({
 
-    /**
-     * @member L.supermap.tiledMapLayer.prototype.options -{object} 
-     * @description 图层参数
-     */
     options: {
         //如果有layersID，则是在使用专题图
         layersID: null,
@@ -62,7 +70,12 @@ export var TiledMapLayer = L.TileLayer.extend({
         L.TileLayer.prototype.onAdd.call(this, map);
     },
 
-
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.getTileUrl
+     * @description 获取瓦片地址
+     * @param coords - {Object} 坐标对象
+     * @return {string} 返回地址
+     */
     getTileUrl: function (coords) {
         var scale = this.getScaleFromCoords(coords);
         var layerUrl = this._getLayerUrl();
@@ -70,6 +83,11 @@ export var TiledMapLayer = L.TileLayer.extend({
         return tileUrl;
     },
 
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.getScale
+     * @description 获取比例尺
+     * @param zoom - {number} 缩放级别
+     */
     getScale: function (zoom) {
         var me = this;
         //返回当前比例尺
@@ -77,6 +95,11 @@ export var TiledMapLayer = L.TileLayer.extend({
         return me.scales[z];
     },
 
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.getScaleFromCoords
+     * @description 通过坐标值获取比例尺
+     * @param coords - {Object} 坐标对象参数
+     */
     getScaleFromCoords: function (coords) {
         var me = this, scale;
         if (me.scales && me.scales[coords.z]) {
@@ -88,6 +111,11 @@ export var TiledMapLayer = L.TileLayer.extend({
         return scale;
     },
 
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.getDefaultScale
+     * @description 获取默认比例尺信息
+     * @param coords - {Object} 坐标对象参数
+     */
     getDefaultScale: function (coords) {
         var me = this, crs = me._crs;
         var resolution;
@@ -114,6 +142,12 @@ export var TiledMapLayer = L.TileLayer.extend({
         }
         return Util.resolutionToScale(resolution, 96, mapUnit);
     },
+
+    /**
+     * @function L.supermap.tiledMapLayer.prototype.serTileSetsInfo
+     * @description 设置瓦片集信息
+     * @param tileSets - {Array<Object>} 瓦片对象集
+     */
     serTileSetsInfo: function (tileSets) {
         this.tileSets = tileSets;
         if (L.Util.isArray(this.tileSets)) {
@@ -171,7 +205,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     /**
      * @function L.supermap.tiledMapLayer.prototype.updateCurrentTileSetsIndex
      * @description 手动设置当前切片集索引,目前主要提供给控件使用
-     * @param index - {number} 索引值
+     * @param index - {number}索引值
      */
     updateCurrentTileSetsIndex: function (index) {
         this.tempIndex = index;
@@ -180,7 +214,7 @@ export var TiledMapLayer = L.TileLayer.extend({
     /**
      * @function L.supermap.tiledMapLayer.prototype.mergeTileVersionParam
      * @description 更改URL请求参数中的切片版本号,并重绘
-     * @param version - {String} 切片版本号
+     * @param version - {string} 切片版本号
      */
     mergeTileVersionParam: function (version) {
         if (version) {

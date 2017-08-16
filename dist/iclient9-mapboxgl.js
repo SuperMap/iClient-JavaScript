@@ -101,7 +101,7 @@ var BaseLayer = _mapv.baiduMapLayer ? _mapv.baiduMapLayer.__proto__ : Function;
 /**
  * @class mapboxgl.supermap.MapvRenderer
  * @classdesc MapV图层渲染
- * @param map - {String} 地图
+ * @param map - {string} 地图
  * @param layer -{Object} 图层
  * @param dataSet -{Object} 数据集
  * @param options -{Object} 交互时所需可选参数。

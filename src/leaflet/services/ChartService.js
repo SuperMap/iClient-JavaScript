@@ -5,7 +5,7 @@ import ChartQueryService from '../../common/iServer/ChartQueryService';
 import ChartFeatureInfoSpecsService from '../../common/iServer/ChartFeatureInfoSpecsService';
 import CommontypesConversion from '../core/CommontypesConversion';
 /**
- * @class L.supermap.ChartService
+ * @class L.supermap.chartService
  * @classdesc 海图服务。
  * @extends L.supermap.ServiceBase
  * @example
@@ -14,9 +14,9 @@ import CommontypesConversion from '../core/CommontypesConversion';
  *      .queryChart(param,function(result){
  *          //doSomething
  *      })
- * @param url - {String} 与客户端交互的海图服务地址。
+ * @param url - {string} 与客户端交互的海图服务地址。
  * @param options -{Object} 交互时所需可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
+ *        serverType - {string} 服务来源 iServer|iPortal|online
  */
 var ChartService = ServiceBase.extend({
 
@@ -25,7 +25,7 @@ var ChartService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ChartService.prototype.queryChart
+     * @function L.supermap.chartService.prototype.queryChart
      * @description 查询海图服务。
      * @param params -{SuperMap.ChartQueryParameters} 海图查询所需参数类。
      * @param callback -{function} 回调函数。
@@ -50,7 +50,7 @@ var ChartService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.ChartService.prototype.getChartFeatureInfo
+     * @function L.supermap.chartService.prototype.getChartFeatureInfo
      * @description 获取海图物标信息服务。
      * @param callback -{function} 回调函数
      */

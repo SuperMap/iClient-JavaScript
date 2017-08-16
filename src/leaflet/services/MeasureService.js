@@ -4,7 +4,7 @@ import {ServiceBase} from './ServiceBase';
 import * as Util from '../core/Util';
 import SuperMapMeasureService from '../../common/iServer/MeasureService' ;
 /**
- * @class L.supermap.MeasureService
+ * @class L.supermap.measureService
  * @description 量算服务服务类
  * @augments L.supermap.ServiceBase
  * @example
@@ -14,9 +14,9 @@ import SuperMapMeasureService from '../../common/iServer/MeasureService' ;
  *      },function(result){
  *           //doSomething
  *      })
- * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param url - {string} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online。<br>
+ *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。<br>
  *        measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
  */
@@ -24,7 +24,7 @@ export var MeasureService = ServiceBase.extend({
 
     /*
      * @function L.supermap.MeasureService.prototype.initialize
-     * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+     * @param url - {string} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
      * @param options - {Object} 交互服务时所需可选参数。如：<br>
      *         eventListeners - {Object} 需要被注册的监听器对象。
      *         measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。
@@ -34,7 +34,7 @@ export var MeasureService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.MeasureService.prototype.measureDistance
+     * @function L.supermap.measureService.prototype.measureDistance
      * @description 测距
      * @param params -{SuperMap.MeasureParameters} 测量相关参数类
      * @param callback - {function} 回调函数
@@ -45,7 +45,7 @@ export var MeasureService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.MeasureService.prototype.measureArea
+     * @function L.supermap.measureService.prototype.measureArea
      * @description 测面积
      * @param params -{SuperMap.MeasureParameters} 测量相关参数类
      * @param callback - {function} 回调函数
@@ -56,7 +56,7 @@ export var MeasureService = ServiceBase.extend({
     },
 
     /**
-     * @function L.supermap.MeasureService.
+     * @function L.supermap.measureService.measure
      * @param params -{SuperMap.MeasureParameters} 测量相关参数类
      * @param callback - {function} 回调函数
      */

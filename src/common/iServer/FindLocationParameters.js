@@ -6,22 +6,22 @@ import SupplyCenter from './SupplyCenter';
  * @classdesc 选址分区分析参数类。
  * @param options - {Object} 可选参数。如：<br>
  *        expectedSupplyCenterCount - {Integer} 期望用于最终设施选址的资源供给中心数量，必设字段。<br>
- *        isFromCenter - {Boolean} 是否从中心点开始分配资源。默认为 false。<br>
+ *        isFromCenter - {boolean} 是否从中心点开始分配资源。默认为 false。<br>
  *        supplyCenters - {Array<SupplyCenter>} 资源供给中心集合，必设字段。<br>
- *        turnWeightField - {String} 转向权值字段的名称。<br>
- *        weightName - {String} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，必设字段。
+ *        turnWeightField - {string} 转向权值字段的名称。<br>
+ *        weightName - {string} 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，必设字段。
  */
 export default  class FindLocationParameters {
 
     /**
-     * @member SuperMap.FindLocationParameters.prototype.expectedSupplyCenterCount -{Number}
+     * @member SuperMap.FindLocationParameters.prototype.expectedSupplyCenterCount -{number}
      * @description 期望用于最终设施选址的资源供给中心数量，必设字段。
      *               当输入值为0时，最终设施选址的资源供给中心数量默认为覆盖分析区域内的所需最少的供给中心数。
      */
     expectedSupplyCenterCount = null;
 
     /**
-     * @member SuperMap.FindLocationParameters.prototype.isFromCenter -{Boolean}
+     * @member SuperMap.FindLocationParameters.prototype.isFromCenter -{boolean}
      * @description 是否从中心点开始分配资源。默认为 false。
      *                由于网路数据中的弧段具有正反阻力，即弧段的正向阻力值与其反向阻力值可能不同，
      *                因此，在进行分析时，从资源供给中心开始分配资源到需求点与从需求点向资源供给中心分配这两种分配形式下，所得的分析结果会不同。
@@ -38,21 +38,17 @@ export default  class FindLocationParameters {
     supplyCenters = null;
 
     /**
-     * @member SuperMap.FindLocationParameters.prototype.turnWeightField -{String}
+     * @member SuperMap.FindLocationParameters.prototype.turnWeightField -{string}
      * @description 转向权值字段的名称。
      */
     turnWeightField = null;
 
     /**
-     * @member SuperMap.FindLocationParameters.prototype.weightName -{String}
+     * @member SuperMap.FindLocationParameters.prototype.weightName -{string}
      * @description 阻力字段的名称，标识了进行网络分析时所使用的阻力字段，必设字段。
      */
     weightName = null;
 
-    /*
-     * Constructor: SuperMap.FindLocationParameters
-     * 服务区分析参数类构造函数。
-     */
     constructor(options) {
         if (!options) {
             return;
@@ -60,9 +56,8 @@ export default  class FindLocationParameters {
         SuperMap.Util.extend(this, options);
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.FindLocationParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

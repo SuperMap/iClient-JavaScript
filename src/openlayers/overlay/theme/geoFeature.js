@@ -5,7 +5,7 @@ import Vector from '../../../common/iServer/ThemeVector';
 /**
  * @class ol.source.GeoFeature
  * @classdesc 地理特征
- * @param name - {String} 名称
+ * @param name - {string} 名称
  * @param opt_options -{Object} 所需可选参数。
  */
 
@@ -217,7 +217,7 @@ export default class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.setMaxCacheCount
      * @description 设置缓存最大条数
-     * @param cacheCount -{number} 缓存总数
+     * @param cacheCount -{number}缓存总数
      */
     setMaxCacheCount(cacheCount) {
         if (!isNaN(cacheCount)) {
@@ -228,7 +228,7 @@ export default class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.setMaxCacheCount
      * @description 通过特征ID获取外形
-     * @param featureID -{number} 特征ID
+     * @param featureID -{number}特征ID
      */
     getShapesByFeatureID(featureID) {
         var list = [];

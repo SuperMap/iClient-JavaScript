@@ -18,8 +18,8 @@ export default  class GeoJSON extends JSONFormat {
      * @function SuperMap.Format.GeoJSON.read
      * @description 反序列化一个 GeoJSON 字符串
      *
-     * @param json - {String}  GeoJSON 字符串
-     * @param type - {String} 可选的字符串，它决定了输出的格式。
+     * @param json - {string}  GeoJSON 字符串
+     * @param type - {string} 可选的字符串，它决定了输出的格式。
      *     支持的值有："Geometry","Feature",和"FeatureCollection",
      *     如果此值为null，则会使用默认值"FeaureCollection"。
      * @param filter - {Function} 对象中每个层次每个键值对都会调用此函数得出一个结果。
@@ -360,7 +360,7 @@ export default  class GeoJSON extends JSONFormat {
      * @function SuperMap.Format.GeoJSON.write
      * @description 序列化一个要素对象，几何对象，要素对象数组为一个GeoJSON字符串。
      * @param obj - {Object} 一个 <SuperMap.Feature.Vector> 对象，一个 <SuperMap.Geometry> 对象或者一个要素对象数组。
-     * @param pretty - {Boolean} 是否使用换行和缩进来控制输出。默认值为false。
+     * @param pretty - {boolean} 是否使用换行和缩进来控制输出。默认值为false。
      * @return {String} 一个GeoJSON字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
      */
     write(obj, pretty) {

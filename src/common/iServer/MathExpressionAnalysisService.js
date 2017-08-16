@@ -7,7 +7,7 @@ import MathExpressionAnalysisParameters from './MathExpressionAnalysisParameters
  * @classdesc 栅格代数运算服务类。
  * @param options - {Object} 可选参数。如:</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
- * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
+ * @param url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst
  * @extends SuperMap.SpatialAnalystBase
  * @example 例如：
  * (start code)

@@ -31,7 +31,7 @@ export default  class RouteCalculateMeasureParameters {
     tolerance = null;
 
     /**
-     * @member SuperMap.RouteCalculateMeasureParameters.prototype.isIgnoreGap -{Boolean}
+     * @member SuperMap.RouteCalculateMeasureParameters.prototype.isIgnoreGap -{boolean}
      * @description【可选参数】是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。
      */
     isIgnoreGap = false;

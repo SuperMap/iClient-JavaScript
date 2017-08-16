@@ -8,7 +8,7 @@ import GeoJSON from '../format/GeoJSON';
  * @classdesc 数据服务中数据集查询服务基类。
  * 获取结果数据类型为Object。包含 result属性，result的数据格式根据format参数决定为GeoJSON或者iServerJSON
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 数据查询结果资源地址。请求数据服务中数据集查询服务，
+ * @param url - {string} 数据查询结果资源地址。请求数据服务中数据集查询服务，
  * URL 应为：http://{服务器地址}:{服务端口号}/iserver/services/{数据服务名}/rest/data/</br>
  * 例如："http://localhost:8090/iserver/services/data-jingjin/rest/data/"
  * @param options - {object} 可选参数。如：<br>
@@ -25,7 +25,7 @@ import GeoJSON from '../format/GeoJSON';
  */
 export default  class GetFeaturesServiceBase extends CommonServiceBase {
     /**
-     * @member SuperMap.GetFeaturesServiceBase.prototype.returnContent - {Boolean}
+     * @member SuperMap.GetFeaturesServiceBase.prototype.returnContent - {boolean}
      * @description 是否立即返回新创建资源的表述还是返回新资源的URI。
      *如果为 true，则直接返回新创建资源，即查询结果的表述。
      *如果为 false，则返回的是查询结果资源的 URI。默认为 false。
@@ -53,7 +53,7 @@ export default  class GetFeaturesServiceBase extends CommonServiceBase {
     maxFeatures = null;
 
     /**
-     * @member SuperMap.GetFeaturesServiceBase.prototype.format -{String}
+     * @member SuperMap.GetFeaturesServiceBase.prototype.format -{string}
      * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */

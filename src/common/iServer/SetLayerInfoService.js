@@ -7,7 +7,7 @@ import SetLayerInfoParameters from './SetLayerInfoParameters';
  * @classdesc 设置图层信息服务类。可以实现临时图层中子图层的修改
  *              该类负责将图层设置参数传递到服务端，并获取服务端返回的结果信息。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
+ * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
@@ -15,7 +15,7 @@ import SetLayerInfoParameters from './SetLayerInfoParameters';
 export default  class SetLayerInfoService extends CommonServiceBase {
 
     /**
-     * @member SuperMap.SetLayerInfoService.prototype.resourceID - {String}
+     * @member SuperMap.SetLayerInfoService.prototype.resourceID - {string}
      * @description 图层资源ID，临时图层的资源ID标记。
      */
     resourceID = null;

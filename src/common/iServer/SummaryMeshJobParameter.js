@@ -5,24 +5,24 @@ import {StatisticAnalystMode, SummaryType} from '../REST'
  * @class SuperMap.SummaryMeshJobParameter
  * @classdesc 点聚合分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
- *        datasetName -{String} 数据集名。<br>
+ *        datasetName -{string} 数据集名。<br>
  *        query -{SuperMap.Bounds} 分析范围。<br>
- *        resolution -{number} 分辨率。<br>
- *        statisticModes -{String} 分析模式。<br>
- *        meshType -{number} 分析类型。<br>
- *        fields -{number} 权重索引。<br>
- *        type -{String} 聚合类型。
+ *        resolution -{number}分辨率。<br>
+ *        statisticModes -{string} 分析模式。<br>
+ *        meshType -{number}分析类型。<br>
+ *        fields -{number}权重索引。<br>
+ *        type -{string} 聚合类型。
  */
 export default class SummaryMeshJobParameter {
 
     /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.datasetName -{String}
+     * @member SuperMap.SummaryMeshJobParameter.prototype.datasetName -{string}
      * @description 数据集名。
      */
     datasetName = "";
 
     /**
-     * @member SuperMap.SummaryMeshJobParameter.prototype.regionDataset -{String}
+     * @member SuperMap.SummaryMeshJobParameter.prototype.regionDataset -{string}
      * @description 聚合面数据集(聚合类型为多边形聚合时使用的参数)。
      */
     regionDataset = "";

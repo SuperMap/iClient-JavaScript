@@ -15,7 +15,7 @@ import Theme from './theme';
  * @class ol.source.Graph
  * @classdesc 图像
  * @param chartsType -{string} 图形类别
- * @param name - {String} 名称
+ * @param name - {string} 名称
  * @param opt_options -{Object} 所需可选参数
  */
 export default class Graph extends Theme {

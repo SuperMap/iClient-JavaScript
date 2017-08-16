@@ -3,8 +3,10 @@ import L from "leaflet";
 /**
  * @class L.supermap.SVGRenderer
  * @classdesc 矢量图层缩放渲染器类
- * @param tileCoord - {} 切片坐标系
- * @param tileSize - {number} 切片大小
+ * @private
+ * @extends L.SVG{@linkdoc-leaflet/#svg}
+ * @param tileCoord - {Object} 切片坐标系
+ * @param tileSize - {number}切片大小
  * @param options - {Object} 渲染参数
  */
 export var  SVGRenderer = L.SVG.extend({
@@ -42,7 +44,7 @@ export var  SVGRenderer = L.SVG.extend({
 
     /**
      * @function L.supermap.SVGRenderer.prototype.addTo
-     * @description 添加切片地图
+     * @description 添加到切片地图
      * @param map - {L.map} 切片地图
      */
     addTo: function (map) {

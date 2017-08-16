@@ -20,12 +20,6 @@ export default  class ThemeMemoryData {
      */
     targetData = null;
 
-    /*
-     * @function SuperMap.ThemeMemoryData.prototype.constructor
-     * @description 专题图内存数据类构造函数。
-     * @param srcData - {Array} 原始值数组。
-     * @param targetData - {Array} 外部值数组。
-     */
     constructor(srcData, targetData) {
         if (srcData) {
             this.srcData = srcData;
@@ -35,9 +29,8 @@ export default  class ThemeMemoryData {
         }
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.ThemeMemoryData.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

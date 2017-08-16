@@ -5,7 +5,7 @@ import Vector from '../../common/iServer/ThemeVector';
 /**
  * @class ol.source.Unique
  * @classdesc 地理专题图
- * @param name - {String}
+ * @param name - {string}
  * @param opt_options -{Object}
  */
 export default class Unique extends GeoFeature {

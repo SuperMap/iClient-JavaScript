@@ -12,13 +12,14 @@ ol.supermap.control = ol.supermap.control || {};
  *      map.addControl(control);
  * (end)
  * @param options -{Object} logo控件配置项</br>
- *        imageUrl - {String} logo图片地址</br>
- *        width - {String} logo图片宽</br>
- *        height - {String} logo图片高</br>
- *        link - {String} 跳转链接</br>
- *        alt - {String} logo图片失效时显示文本
+ *        imageUrl - {string} logo图片地址</br>
+ *        width - {string} logo图片宽</br>
+ *        height - {string} logo图片高</br>
+ *        link - {string} 跳转链接</br>
+ *        alt - {string} logo图片失效时显示文本
  */
 export default class Logo extends ol.control.Control {
+
     constructor(options) {
         options = options || {};
         options.imageUrl = options.imageUrl || null;

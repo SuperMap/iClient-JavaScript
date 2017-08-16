@@ -5,6 +5,7 @@ var BaseLayer = baiduMapLayer? baiduMapLayer.__proto__ : Function;
 /**
  * @class L.supermap.MapVRenderer
  * @classdesc 地图渲染类
+ * @private
  * @extends L.BaseLayer
  * @param map - {L.map} 待渲染的地图
  * @param layer - {L.Layer} 待渲染的图层
@@ -138,7 +139,7 @@ export default class MapVRenderer extends BaseLayer {
     /**
      * @function L.supermap.MapVRenderer.prototype.removeData
      * @description 删除数据
-     * @param filter - {String} 删除条件\过滤信息
+     * @param filter - {string} 删除条件\过滤信息
      */
     removeData(filter) {
         if (!this.dataSet) {
@@ -285,7 +286,7 @@ export default class MapVRenderer extends BaseLayer {
     /**
      * @function L.supermap.MapVRenderer.prototype.clear
      * @description 清除信息
-     * @param context - {String} 指定要清除的信息
+     * @param context - {string} 指定要清除的信息
      */
     clear(context) {
         context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);

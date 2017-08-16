@@ -4,7 +4,8 @@ import L from "leaflet";
 /**
  * @class L.supermap.graphic
  * @classdesc 图形类。
- * @extends L.Class
+ * @private
+ * @extends L.Class{@linkdoc-leaflet/#class}
  * @param options - {object} 图形参数
  */
 export var Graphic = L.Class.extend({

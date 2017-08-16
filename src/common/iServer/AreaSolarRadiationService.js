@@ -5,7 +5,7 @@ import AreaSolarRadiationParameters from './AreaSolarRadiationParameters';
 /**
  * @class SuperMap.AreaSolarRadiationService
  * @classdesc 地区太阳辐射服务类。
- * @param url - {String} 服务的访问地址。如</br> http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst 。</br>
+ * @param url - {string} 服务的访问地址。如</br> http://localhost:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst 。</br>
  * @param options - {Object} 参数。如:</br>
  * eventListeners - {Object} 需要被注册的监听器对象。
  * @extends SuperMap.SpatialAnalystBase

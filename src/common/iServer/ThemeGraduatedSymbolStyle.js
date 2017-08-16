@@ -5,16 +5,16 @@ import ServerStyle from './ServerStyle';
  * @class SuperMap.ThemeGraduatedSymbolStyle
  * @classdesc 等级符号专题图正负零值显示风格类
  * @param options - {Object} 可选参数。如：<br>
- *        negativeDisplayed - {Boolean} 是否显示负值。默认为 false。<br>
+ *        negativeDisplayed - {boolean} 是否显示负值。默认为 false。<br>
  *        negativeStyle - {SuperMap.ServerStyle} 负值的等级符号风格。<br>
  *        positiveStyle - {SuperMap.ServerStyle}  正值的等级符号风格。<br>
- *        zeroDisplayed - {Boolean} 是否显示0值。默认为 false。<br>
+ *        zeroDisplayed - {boolean} 是否显示0值。默认为 false。<br>
  *        zeroStyle - {SuperMap.ServerStyle} 0值的等级符号风格。
  */
 export default  class ThemeGraduatedSymbolStyle {
 
     /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeDisplayed -{Boolean}
+     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeDisplayed -{boolean}
      * @description 是否显示负值。默认为 false。
      */
     negativeDisplayed = false;
@@ -31,7 +31,7 @@ export default  class ThemeGraduatedSymbolStyle {
     positiveStyle = null;
 
     /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.zeroDisplayed -{Boolean}
+     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.zeroDisplayed -{boolean}
      * @description 是否显示0值。默认为 false。
      */
     zeroDisplayed = false;
@@ -42,10 +42,6 @@ export default  class ThemeGraduatedSymbolStyle {
      */
     zeroStyle = null;
 
-    /*
-     * Constructor: SuperMap.ThemeGraduatedSymbolStyle
-     * 等级符号专题图正负零值显示风格类构造函数，用于创建 SuperMap.ThemeGraduatedSymbolStyle 类的新实例。
-     */
     constructor(options) {
         var me = this;
         me.negativeStyle = new ServerStyle();
@@ -56,9 +52,8 @@ export default  class ThemeGraduatedSymbolStyle {
         }
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.ThemeGraduatedSymbolStyle.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -70,6 +65,12 @@ export default  class ThemeGraduatedSymbolStyle {
         me.zeroStyle = null;
     }
 
+    /**
+     * @function SuperMap.ThemeGraduatedSymbolStyle.fromObj
+     * @description 从传入对象获取等级符号专题图正负零值显示风格类。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeGraduatedSymbolStyle}
+     */
     static fromObj(obj) {
         if (!obj) return;
         var res = new ThemeGraduatedSymbolStyle();

@@ -7,8 +7,8 @@ import {Unit} from '../REST';
  * @param geometry - {Object} 要量算的几何对象。
  * @param options - {Object} 可选参数。如：<br>
  *         unit - {Unit} 量算单位。<br>
- *         prjCoordSys -{String} 用来指定该量算操作所使用的投影,该项默认值为空。<br>
- *         distanceMode -{String} 用来指定量算的方式为按球面长度'Geodesic'或者平面长度'Planar'来计算，默认为'Geodesic'。
+ *         prjCoordSys -{string} 用来指定该量算操作所使用的投影,该项默认值为空。<br>
+ *         distanceMode -{string} 用来指定量算的方式为按球面长度'Geodesic'或者平面长度'Planar'来计算，默认为'Geodesic'。
  */
 export default class MeasureParameters {
 
@@ -25,23 +25,19 @@ export default class MeasureParameters {
     unit = Unit.METER;
 
     /**
-     * @member SuperMap.MeasureParameters.prototype.prjCoordSys -{String}
+     * @member SuperMap.MeasureParameters.prototype.prjCoordSys -{string}
      * @description 用来指定该量算操作所使用的投影,该项默认值为空。
      */
     prjCoordSys = null;
 
     /**
-     * @member SuperMap.MeasureParameters.prototype.distanceMode -{String}
+     * @member SuperMap.MeasureParameters.prototype.distanceMode -{string}
      * @description 用来指定量算的方式为按球面长度'Geodesic'或者平面长度'Planar'来计算，默认为'Geodesic'。
      * @example
      * var param = new SuperMap.MeasureParameters(getmetry,{distanceMode:'Planar'});
      */
     distanceMode = null;
 
-    /*
-     * Constructor: SuperMap.MeasureParameters
-     * 量算参数类构造函数。
-     */
     constructor(geometry, options) {
         if (!geometry) {
             return;
@@ -52,9 +48,8 @@ export default class MeasureParameters {
         }
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.MeasureParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

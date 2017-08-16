@@ -6,12 +6,12 @@ import FilterParameter from './FilterParameter';
  * @class SuperMap.GetFeaturesByBufferParameters
  * @classdesc 数据服务中数据集缓冲区查询参数类。
  * @param options - {Object} 可選参数。如:</br>
- *        bufferDistance - {Number} buffer 距离，单位与所查询图层对应的数据集单位相同。</br>
- *        attributeFilter - {String} 属性查询条件。 </br>
+ *        bufferDistance - {number}buffer 距离，单位与所查询图层对应的数据集单位相同。</br>
+ *        attributeFilter - {string} 属性查询条件。 </br>
  *        fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
  *        geometry - {Object} 空间查询条件。</br>
  *        dataSetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
- *        returnContent - {Boolean} 是否直接返回查询结果。</br>
+ *        returnContent - {boolean} 是否直接返回查询结果。</br>
  *        fromIndex - {Integer} 查询结果的最小索引号。</br>
  *        toIndex - {Integer} 查询结果的最大索引号。</br>
  * @extends SuperMap.GetFeaturesParametersBase
@@ -26,7 +26,7 @@ export default  class GetFeaturesByBufferParameters extends GetFeaturesParameter
     bufferDistance = null;
 
     /**
-     * @member SuperMap.GetFeaturesByBufferParameters.prototype.queryParameter - {String}
+     * @member SuperMap.GetFeaturesByBufferParameters.prototype.queryParameter - {string}
      * @description 属性查询条件。
      */
     attributeFilter = null;

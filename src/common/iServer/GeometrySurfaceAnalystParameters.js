@@ -9,7 +9,7 @@ import SurfaceAnalystParameters from './SurfaceAnalystParameters';
  * @param options - {Object} 可选参数。如:</br>
  *        points - {Array(SuperMap.Geometry.Point)} 表面分析的坐标点数组。</br>
  *        zValues - {Array(Number)} 表面分析的坐标点的 Z 值数组。</br>
- *        resolution - {Number} 获取或设置指定中间结果（栅格数据集）的分辨率。</br>
+ *        resolution - {number}获取或设置指定中间结果（栅格数据集）的分辨率。</br>
  *        resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
  *        extractParameter - {SuperMap.SurfaceAnalystParametersSetting} 获取或设置表面分析参数。</br>
  *        surfaceAnalystMethod - {SuperMap.SurfaceAnalystMethod} 获取或设置表面分析的提取方法，提取等值线和提取等值面。</br>

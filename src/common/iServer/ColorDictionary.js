@@ -10,13 +10,13 @@ import ServerColor from './ServerColor';
  *              对于栅格图层中高程值在颜色对照表中没有对应颜色的点，则查找颜色对照表中与当前高程值相邻的两个高程对应的颜色，<br>
  *              然后通过渐变运算要显示的颜色。如果设置了颜色对照表的话，则颜色表设置无效。
  * @param options - {object} 颜色对照表类可选参数。如：<br>
- *        elevation - {Number} 高程值。<br>
+ *        elevation - {number}高程值。<br>
  *        color -{SuperMap.ServerColor} 服务端颜色类。
  */
 export default class ColorDictionary {
 
     /**
-     * @member SuperMap.ColorDictionary.prototype.elevation -{Number}
+     * @member SuperMap.ColorDictionary.prototype.elevation -{number}
      * @description 高程值。
      */
     elevation = null;
@@ -39,7 +39,7 @@ export default class ColorDictionary {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ColorDictionary.prototype.destroy
      * @description 释放资源,将引用资源的属性置空。
      */
     destroy() {

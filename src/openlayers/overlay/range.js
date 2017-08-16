@@ -5,7 +5,7 @@ import Vector from '../../common/iServer/ThemeVector';
 /**
  * @class ol.source.Range
  * @classdesc 获取范围信息
- * @param name - {String} 名称
+ * @param name - {string} 名称
  * @param opt_options -{Object} 交互时所需可选参数。
  */
 export default class Range extends GeoFeature {

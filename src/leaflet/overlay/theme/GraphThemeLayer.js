@@ -17,21 +17,18 @@ import CommontypesConversion from '../../core/CommontypesConversion';
 /**
  * @class L.supermap.GraphThemeLayer
  * @classdesc 统计专题图图层。
+ * @private
+ * @extends L.supermap.ThemeLayer
  * @description 统计专题图通过为每个要素绘制统计图表来反映其对应的专题值的大小。它可同时表示多个字段属性信息，在区域本身与各区域之间形成横向和纵向的对比。<br>
  *              统计专题图多用于具有相关数量特征的地图上，比如表示不同地区多年的粮食产量、GDP、人口等，不同时段客运量、地铁流量等。
  *              目前提供的统计图类型有：柱状图（Bar），折线图（Line），饼图（Pie），三维柱状图（Bar3D），点状图（Point），环状图（Ring）。
- * @extends L.supermap.ThemeLayer
- * @param name - {String} 专题图表名称
- * @param chartsType - {String} 图表类型。目前可用："Bar", "Line", "Pie"。
+ * @param name - {string} 专题图表名称
+ * @param chartsType - {string} 图表类型。目前可用："Bar", "Line", "Pie"。
  * @param options - {object} 待设置得参数。如：<br>
  *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。
  */
 export var GraphThemeLayer = ThemeLayer.extend({
 
-    /**
-     * @member L.supermap.GraphThemeLayer.prototype.options -{object}
-     * @description 待设置得参数。
-     */
     options: {
         //是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。
         isOverLay: true
@@ -41,14 +38,14 @@ export var GraphThemeLayer = ThemeLayer.extend({
      *chartsType :图表类型。目前可用："Bar", "Line", "Pie"。
      *chartsSetting:各类型图表的 chartsSetting 对象可设属性请参考具体图表模型类的注释中对 chartsSetting 对象可设属性的描述。
      *  chartsSetting 对象通常都具有以下 5 个基础可设属性
-     *  width - {Number} 专题要素（图表）宽度，必设参数。
-     *  height - {Number} 专题要素（图表）高度，必设参数。
-     *  codomain - {Array<Number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
+     *  width - {number}专题要素（图表）宽度，必设参数。
+     *  height - {number}专题要素（图表）高度，必设参数。
+     *  codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。
      *  XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。
      *  YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。
      *  dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
      *      它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值，长度为 4 的一维数组。
-     *  decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
+     *  decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
      *      如果不设置此参数，在取数据值时不对数据做小数位处理。
      */
     initialize: function (name, chartsType, options) {
@@ -65,7 +62,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GraphThemeLayer.prototype.setChartsType
      * @description 设置图表类型，此函数可动态改变图表类型。在调用此函数前请通过 chartsSetting 为新类型的图表做相关配置。图表类型，目前支持："Bar", "Line", "Pie"。
-     * @param chartsType  - {String} 图表类型。目前可用："Bar", "Line", "Pie"。
+     * @param chartsType  - {string} 图表类型。目前可用："Bar", "Line", "Pie"。
      */
     setChartsType: function (chartsType) {
         this.chartsType = chartsType;
@@ -202,7 +199,7 @@ export var GraphThemeLayer = ThemeLayer.extend({
     /**
      * @function L.supermap.GraphThemeLayer.prototype.getShapesByFeatureID
      * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
-     * @param featureID - {number} 要素ID
+     * @param featureID - {number}要素ID
      */
     getShapesByFeatureID: function (featureID) {
         var me = this, list = [];
@@ -363,8 +360,8 @@ export var GraphThemeLayer = ThemeLayer.extend({
      * @function L.supermap.GraphThemeLayer.prototype.getWeightFieldValue
      * @description 获取权重字段的值。
      * @param feature - {SuperMap.Feature.Vector} 矢量要素。
-     * @param fields - {Array<String>} 字段名数组。
-     * @param defaultValue - {Number} 当通过 weightField 获取不到权重值时，使用 defaultValue 作为权重值。
+     * @param fields - {Array<string>} 字段名数组。
+     * @param defaultValue - {number}当通过 weightField 获取不到权重值时，使用 defaultValue 作为权重值。
      */
     getWeightFieldValue: function (feature, weightField, defaultValue) {
         if (typeof(defaultValue) === "undefined" || isNaN(defaultValue)) {

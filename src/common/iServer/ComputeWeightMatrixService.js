@@ -16,7 +16,7 @@ import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
  *		   "processFailed": computeWeightMatrixnError
  *		   }
  * });
- * @param url - {String} 耗费矩阵分析服务地址。请求服务的URL应为：<br>
+ * @param url - {string} 耗费矩阵分析服务地址。请求服务的URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -67,7 +67,7 @@ export default class ComputeWeightMatrixService extends NetworkAnalystServiceBas
      * @description 将对象转化为JSON字符串。
      *
      * Parameters:
-     * @param isAnalyzeById - {Boolean} 是否通过id分析
+     * @param isAnalyzeById - {boolean} 是否通过id分析
      * @param params - {Array} 分析参数数组
      *
      * @return -{Object} 转化后的JSON字符串。

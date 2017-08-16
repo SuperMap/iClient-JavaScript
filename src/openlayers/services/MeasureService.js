@@ -6,7 +6,7 @@ import CommonMeasureService from '../../common/iServer/MeasureService';
  * @class ol.supermap.MeasureService
  * @classdesc 距离测量服务
  * @extends ol.supermap.ServiceBase
- * @param url - {String} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param url - {string} 服务访问的地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  *         measureMode - {MeasureMode} 量算模式，包括距离量算模式和面积量算模式。

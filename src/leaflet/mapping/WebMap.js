@@ -7,23 +7,19 @@ import {CartoCSSToLeaflet} from '../overlay/carto/CartoCSSToLeaflet' ;
 /**
  * @class L.supermap.webmap
  * @classdesc 网络图层类。
- * @extends L.LayerGroup
- * @param id - {number} 网络图层id。
+ * @extends L.LayerGroup{@linkdoc-leaflet/#layergroup}
+ * @param id - {number}网络图层id。
  * @param options - {object} 图层可选参数。如：<br>
- *        map - {String} 地图。<br>
- *        server - {String} 服务地址。<br>
+ *        map - {string} 地图。<br>
+ *        server - {string} 服务地址。<br>
  *        featureLayerPopupEnable - {boolean} 是否启动要素图层提示框。<br>
- *        featureLayerPopup - {String} 提示框提示信息。<br>
- *        credentialValue - {String} 证书值。<br>
- *        credentialKey - {String} 证书密钥。<br>
- *        attribution - {String} 版权信息。
+ *        featureLayerPopup - {string} 提示框提示信息。<br>
+ *        credentialValue - {string} 证书值。<br>
+ *        credentialKey - {string} 证书密钥。<br>
+ *        attribution - {string} 版权信息。
  */
 export var WebMap = L.LayerGroup.extend({
 
-    /**
-     * @member L.supermap.webmap.prototype.options
-     * @description 图层参数
-     */
     options: {
         map: 'map',
         server: 'http://www.supermapol.com',
@@ -145,8 +141,8 @@ export var WebMap = L.LayerGroup.extend({
      * @function L.supermap.webmap.prototype.createCRS
      * @description 创建坐标对象
      * @param epsgCode - {mnumber} epsg编码
-     * @param type - {String} 坐标类型
-     * @param resolutions - {number} 分辨率
+     * @param type - {string} 坐标类型
+     * @param resolutions - {number}分辨率
      * @param origin - {SuperMap.Point} 起始点
      * @param bounds -{SuperMap.Bounds} 指定坐标范围
      */
@@ -200,8 +196,8 @@ export var WebMap = L.LayerGroup.extend({
      * @function L.supermap.webmap.prototype.getResolutionsFromScales
      * @description 通过比例尺获取分辨率
      * @param scales - {Array<number>} 排序比例尺数组
-     * @param dpi - {number} 屏幕分辨率
-     * @param units - {String} 地图的单位
+     * @param dpi - {number}屏幕分辨率
+     * @param units - {string} 地图的单位
      * @param datum - {SuperMap.Datum} 大地参照系类
      */
     getResolutionsFromScales: function (scales, dpi, units, datum) {
@@ -215,7 +211,7 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @function L.supermap.webmap.prototype.createLayer
      * @description 创建图层
-     * @param type - {String} 图层类型
+     * @param type - {string} 图层类型
      * @param layerInfo - {object} 图层信息
      */
     createLayer: function (type, layerInfo) {
@@ -313,7 +309,7 @@ export var WebMap = L.LayerGroup.extend({
      * @function L.supermap.webmap.prototype.createTiandituLayer
      * @description 创建天地图图层
      * @param layerInfo - {object} 图层信息
-     * @param epsgCode - {number} epsg编码
+     * @param epsgCode - {number}epsg编码
      */
     createTiandituLayer: function (layerInfo, epsgCode) {
         var proj = epsgCode === 4326 ? "c" : "w";

@@ -4,48 +4,44 @@ import SuperMap from '../SuperMap';
  * @class SuperMap.UpdateTurnNodeWeightParameters
  * @classdesc 转向耗费权重更新服务参数类
  * @param options - {Object} 可选参数。如：<br>
- *         nodeId - {String} 转向结点的id。<br>
- *        fromEdgeId - {String} 起始边的id。<br>
- *        toEdgeId - {String} 终止边的id。<br>
- *        weightField - {String} 转向结点的耗费字段。<br>
- *        turnNodeWeight - {String} 耗费权重
+ *         nodeId - {string} 转向结点的id。<br>
+ *        fromEdgeId - {string} 起始边的id。<br>
+ *        toEdgeId - {string} 终止边的id。<br>
+ *        weightField - {string} 转向结点的耗费字段。<br>
+ *        turnNodeWeight - {string} 耗费权重
  */
 export default  class UpdateTurnNodeWeightParameters {
 
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.nodeId -{String}
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.nodeId -{string}
      * @description 转向结点的id
      */
     nodeId = "";
 
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.fromEdgeId -{String}
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.fromEdgeId -{string}
      * @description 起始边的id
      */
     fromEdgeId = "";
 
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.toEdgeId -{String}
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.toEdgeId -{string}
      * @description 终止边的id
      */
     toEdgeId = "";
 
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.weightField -{String}
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.weightField -{string}
      * @description 转向结点的耗费字段
      */
     weightField = "";
 
     /**
-     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.turnNodeWeight -{String}
+     * @member SuperMap.UpdateTurnNodeWeightParameters.prototype.turnNodeWeight -{string}
      * @description 耗费权重
      */
     turnNodeWeight = "";
 
-    /*
-     * Constructor: SuperMap.UpdateTurnNodeWeightParameters
-     * 转向耗费权重更新服务参数类构造函数。
-     */
     constructor(option) {
         if (!option) return;
 
@@ -56,9 +52,8 @@ export default  class UpdateTurnNodeWeightParameters {
         option.turnNodeWeight && (this.turnNodeWeight = option.turnNodeWeight);
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.UpdateTurnNodeWeightParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

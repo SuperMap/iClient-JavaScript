@@ -5,7 +5,7 @@ import ThemeFeature from './themeFeature';
 /**
  * @class ol.source.Theme
  * @classdesc 主题
- * @param name - {String}
+ * @param name - {string}
  * @param opt_options -{Object}
  * @extends  ol.source.ImageCanvas
  */
@@ -241,8 +241,8 @@ export default class Theme extends ol.source.ImageCanvas {
      * 返回此 feature（并且只返回第一个）。
      *
      * Parameters:
-     * property - {String} feature 的某个属性名称。
-     * value - {String} property 所对应的值。
+     * property - {string} feature 的某个属性名称。
+     * value - {string} property 所对应的值。
      *
      * Returns:
      * {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
@@ -264,7 +264,7 @@ export default class Theme extends ol.source.ImageCanvas {
      * 通过给定一个 id，返回对应的矢量要素。
      *
      * Parameters:
-     * featureId - {String} 矢量要素的属性 id。
+     * featureId - {string} 矢量要素的属性 id。
      *
      * Returns:
      * {SuperMap.Feature.Vector} 对应id的 feature，如果不存在则返回 null。
@@ -278,7 +278,7 @@ export default class Theme extends ol.source.ImageCanvas {
      * 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
      *
      * Parameters:
-     * attrName - {String} 属性的 key。
+     * attrName - {string} 属性的 key。
      * attrValue - {Mixed} 属性对应的 value 值。
      *
      * Returns:
@@ -318,7 +318,7 @@ export default class Theme extends ol.source.ImageCanvas {
      * 支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
      *
      * Parameters:
-     * event - {String} 事件名称。
+     * event - {string} 事件名称。
      * callback - {Function} 事件回调函数。
      *
      */
@@ -396,7 +396,7 @@ export default class Theme extends ol.source.ImageCanvas {
      * 移除专题要素事件监听 。
      *
      * Parameters:
-     * event - {String} 事件名称。
+     * event - {string} 事件名称。
      * callback - {Function} 事件回调函数。
      *
      */

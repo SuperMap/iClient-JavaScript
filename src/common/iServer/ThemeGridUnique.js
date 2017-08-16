@@ -29,10 +29,6 @@ export default  class ThemeGridUnique extends Theme {
      */
     items = null;
 
-    /*
-     * Constructor: SuperMap.ThemeGridUnique
-     * 栅格单值专题图类构造函数。
-     */
     constructor(options) {
         super("GRIDUNIQUE", options);
         var me = this;
@@ -87,6 +83,12 @@ export default  class ThemeGridUnique extends Theme {
         return obj;
     }
 
+    /**
+     * @function SuperMap.ThemeGridUnique.fromObj
+     * @description 从传入对象获取栅格单值专题图类。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeGridUnique}
+     */
     static fromObj(obj) {
         var res = new ThemeGridUnique();
         var uItems = obj.items;

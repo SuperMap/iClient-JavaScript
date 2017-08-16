@@ -14,26 +14,26 @@ import {ThemeGraphType, GraduatedMode, GraphAxesTextDisplayMode} from '../REST';
  * @classdesc 统计专题图类。
  * @extends SuperMap.Theme
  * @param options - {Object} 参数。<br>
- *        barWidth - {Number} 柱状专题图中每一个柱的宽度。<br>
+ *        barWidth - {number}柱状专题图中每一个柱的宽度。<br>
  *        flow - {SuperMap.ThemeFlow} 统计专题图流动显示与牵引线设置。<br>
  *        graduatedMode - {SuperMap.GraduatedMode} 统计图中地理要素的值与图表尺寸间的映射关系。<br>
  *        graphAxes - {SuperMap.ThemeGraphAxes} 统计图中坐标轴样式相关信息。<br>
  *        graphSize - {SuperMap.ThemeGraphSize} 统计符号的最大最小尺寸。<br>
- *        graphSizeFixed - {Boolean} 缩放地图时统计图符号是否固定大小。<br>
+ *        graphSizeFixed - {boolean} 缩放地图时统计图符号是否固定大小。<br>
  *        graphText - {SuperMap.ThemeGraphText} 统计图上的文字是否可以见以及文字标注风格。<br>
  *        graphType - {SuperMap.ThemeGraphType} 统计专题图类型。<br>
  *        items - {Array<SuperMap.ThemeGraphItem>} 统计专题图子项集合。<br>
  *        memoryKeys - {Array(Integer)} 以内存数组方式制作专题图时的键数组。<br>
- *        negativeDisplayed - {Boolean} 专题图中是否显示属性为负值的数据。<br>
+ *        negativeDisplayed - {boolean} 专题图中是否显示属性为负值的数据。<br>
  *        offset - {SuperMap.ThemeOffset} 统计图相对于要素内点的偏移量。<br>
- *        overlapAvoided - {Boolean} 统计图是否采用避让方式显示。<br>
- *        roseAngle - {Number} 统计图中玫瑰图或三维玫瑰图用于等分的角度。<br>
- *        startAngle - {Number} 饼状统计图扇形的起始角度。
+ *        overlapAvoided - {boolean} 统计图是否采用避让方式显示。<br>
+ *        roseAngle - {number}统计图中玫瑰图或三维玫瑰图用于等分的角度。<br>
+ *        startAngle - {number}饼状统计图扇形的起始角度。
  */
 export default class ThemeGraph extends Theme {
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.barWidth -{Number}
+     * @member SuperMap.ThemeGraph.prototype.barWidth -{number}
      * @description 柱状专题图中每一个柱的宽度。使用地图坐标单位，默认值为0。<br>
      *              只有选择的统计图类型为柱状图（柱状图、三维柱状图、堆叠柱状图、三维堆叠柱状图）时，此项才可设置。
      */
@@ -68,7 +68,7 @@ export default class ThemeGraph extends Theme {
     graphSize = null;
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.graphSizeFixed -{Boolean}
+     * @member SuperMap.ThemeGraph.prototype.graphSizeFixed -{boolean}
      * @description 缩放地图时统计图符号是否固定大小。默认值为 false，即统计图符号将随地图缩放。
      */
     graphSizeFixed = false;
@@ -181,7 +181,7 @@ export default class ThemeGraph extends Theme {
     memoryKeys = null;
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.negativeDisplayed -{Boolean}
+     * @member SuperMap.ThemeGraph.prototype.negativeDisplayed -{boolean}
      * @description 专题图中是否显示属性为负值的数据。true 表示显示；默认为 false 即不显示。
      */
     negativeDisplayed = false;
@@ -193,7 +193,7 @@ export default class ThemeGraph extends Theme {
     offset = null;
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.overlapAvoided -{Boolean}
+     * @member SuperMap.ThemeGraph.prototype.overlapAvoided -{boolean}
      * @description 统计图是否采用避让方式显示。<br>
      *              1.对数据集制作统计专题图:当统计图采用避让方式显示时，如果 overlapAvoided 为 true，则在统计图重叠度很大的情况下，
      *              会出现无法完全避免统计图重叠的现象；如果 overlapAvoided 为 false，会过滤掉一些统计图，从而保证所有的统计图均不重叠。<br>
@@ -203,21 +203,17 @@ export default class ThemeGraph extends Theme {
     overlapAvoided = true;
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.roseAngle -{Number}
+     * @member SuperMap.ThemeGraph.prototype.roseAngle -{number}
      * @description 统计图中玫瑰图或三维玫瑰图用于等分的角度，默认为0度，精确到0.1度。在角度为0或者大于360度的情况下均使用360度来等分制作统计图的字段数。
      */
     roseAngle = 0;
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.startAngle -{Number}
+     * @member SuperMap.ThemeGraph.prototype.startAngle -{number}
      * @description 饼状统计图扇形的起始角度。默认为0度，精确到0.1度，以水平方向为正向。只有选择的统计图类型为饼状图（饼图、三维饼图、玫瑰图、三维玫瑰图）时，此项才可设置。
      */
     startAngle = 0;
 
-    /*
-     * Constructor: SuperMap.ThemeGraph
-     * 统计专题图构造函数。
-     */
     constructor(options) {
         super("GRAPH", options);
         var me = this;
@@ -276,7 +272,6 @@ export default class ThemeGraph extends Theme {
         me.graphAxesTextDisplayMode = null;
     }
 
-
     /**
      * @function SuperMap.ThemeGraph.prototype.toJSON
      * @description 将SuperMap.ThemeGraph对象转化为json字符串。
@@ -333,6 +328,12 @@ export default class ThemeGraph extends Theme {
         return obj;
     }
 
+    /**
+     * @function SuperMap.ThemeGraph.fromObj
+     * @description 从传入对象获取统计专题图类。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeGraph}
+     */
     static fromObj(obj) {
         var res = new ThemeGraph();
         var itemsG = obj.items;

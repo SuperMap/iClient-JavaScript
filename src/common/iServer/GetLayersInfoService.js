@@ -9,14 +9,14 @@ import Vector from './Vector';
  * @class SuperMap.GetLayersInfoService
  * @classdesc 获取图层信息服务类构造函数。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
+ * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
  *         http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；<br>
  *         如 http://localhost:8090/iserver/services/map-world/rest/maps/World 。<br>
  *         如果查询临时图层的信息，请指定完成的url，包含临时图层ID信息，如：<br>
  *         http://localhost:8090/iserver/services/map-world/rest/maps/World/tempLayersSet/resourceID
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
- *         isTempLayers - {Boolean} 当前url对应的图层是否是临时图层。
+ *         isTempLayers - {boolean} 当前url对应的图层是否是临时图层。
  */
 export default  class GetLayersInfoService extends CommonServiceBase {
 
@@ -84,7 +84,7 @@ export default  class GetLayersInfoService extends CommonServiceBase {
      * Method: handleLayers
      * 处理iserver 新增图层组数据 (subLayers.layers 中可能还会含有 subLayers.layers)
      *
-     * len - {Number} subLayers.layers的长度
+     * len - {number}subLayers.layers的长度
      * layers - {Array} subLayers.layers
      */
     handleLayers(len, layers) {

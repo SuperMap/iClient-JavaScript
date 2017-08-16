@@ -23,7 +23,7 @@ import ThiessenAnalystService from '../../common/iServer/ThiessenAnalystService'
  *      .bufferAnalysis(params,function(result){
  *          //doSomething
  *      })
- * @param url - {String} 服务的访问地址。
+ * @param url - {string} 服务的访问地址。
  * @param options - {Object} 交互服务时所需可选参数。
  */
 export default class SpatialAnalystService extends ServiceBase {

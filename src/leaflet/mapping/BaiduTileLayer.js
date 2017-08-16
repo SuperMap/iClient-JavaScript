@@ -5,21 +5,22 @@ import L from "leaflet";
  * @class L.supermap.baiduTileLayer
  * @classdesc 百度切片图层类。
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
- * @param url -{String} 切片地址
- * @param options -{object} 切片参数
+ * @param url -{string} 切片地址
+ * @param options -{object} 切片参数。如：<br>
+ *        minZoom - {number} 最小缩放级别
+ *        maxZoom - {number} 最大缩放级别
+ *        bounds - {L.bounds} 显示范围
+ *        retina - {L.Browser} 浏览器显示分辨率
+ *        attribution - {string} 版权信息
  */
 export var BaiduTileLayer = L.TileLayer.extend({
 
     /**
-     * @member L.supermap.baiduTileLayer.prototype.url -{String}
+     * @member L.supermap.baiduTileLayer.prototype.url -{string}
      * @description 切片地址
      */
     url: "http://online{num}.map.bdimg.com/onlinelabel/?qt=tile&x={x}&y={y}&z={z}&styles={styles}&udt=20150815&scaler=1",
 
-    /**
-     * @member L.supermap.baiduTileLayer.prototype.options -{object}
-     * @description 切片参数
-     */
     options: {
         minZoom: 3,
         maxZoom: 19,

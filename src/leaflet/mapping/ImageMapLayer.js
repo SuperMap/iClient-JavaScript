@@ -5,30 +5,26 @@ import SuperMap from "../../common/SuperMap" ;
 /**
  * @class L.supermap.imageMapLayer
  * @classdesc SuperMap iServer 的 REST 地图服务的图层(SuperMap iServer Java 6R 及以上分块动态 REST 图层)使用Image资源出图
- * @extends L.TileLayer
+ * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @example
  *      L.superMap.imageMapLayer(url).addTo(map);
- * @param url -{String} 影像图层地址
+ * @param url -{string} 影像图层地址
  * @param options -{Object} 影像图层可选参数。如：<br>
- *        layersID - {number} 图层ID，如果有layersID，则是在使用专题图。<br>
+ *        layersID - {number}图层ID，如果有layersID，则是在使用专题图。<br>
  *        redirect - {boolean} 是否从定向，如果为 true，则将请求重定向到图片的真实地址；如果为 false，则响应体中是图片的字节流。<br>
- *        transparent - {number} 设置透明度。<br>
- *        cacheEnabled - {String} 启用缓存。<br>
+ *        transparent - {number}设置透明度。<br>
+ *        cacheEnabled - {string} 启用缓存。<br>
  *        clipRegionEnabled - {boolean} 是否启用地图裁剪。<br>
  *        prjCoordSys - {object} 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。<br>
  *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
- *        overlapDisplayedOptions - {String} 避免地图对象压盖显示的过滤选项。<br>
- *        tileversion - {String} 切片版本名称，cacheEnabled 为 true 时有效。<br>
+ *        overlapDisplayedOptions - {string} 避免地图对象压盖显示的过滤选项。<br>
+ *        tileversion - {string} 切片版本名称，cacheEnabled 为 true 时有效。<br>
  *        crs - {L.Proj.CRS} 坐标系统类。<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
- *        attribution - {String} 版权信息。
+ *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
+ *        attribution - {string} 版权信息。
  */
 export var ImageMapLayer = L.TileLayer.extend({
 
-    /**
-     * @member L.supermap.imageMapLayer.prototype.options -{Object}
-     * @description 影像图层参数。
-     */
     options: {
         //如果有layersID，则是在使用专题图
         layersID: null,

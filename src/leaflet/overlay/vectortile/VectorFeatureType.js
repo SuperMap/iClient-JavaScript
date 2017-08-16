@@ -1,6 +1,7 @@
 /**
  * @constant L.supermap.VectorFeatureType
  * @description 矢量图层要素类型,和SuperMap.CartoStyleMap中的类型相对应
+ * @private
  */
 export var VectorFeatureType = {
     LABEL: "LABEL",//label实际处理成TEXT

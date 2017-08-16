@@ -6,14 +6,14 @@ import {ThemeGraphTextFormat} from '../REST';
  * @class SuperMap.ThemeGraphText
  * @classdesc 统计图文字标注风格类。
  * @param options - {Object} 可选参数。<br>
- *        graphTextDisplayed - {Boolean} 是否显示统计图上的文字标注。<br>
+ *        graphTextDisplayed - {boolean} 是否显示统计图上的文字标注。<br>
  *        graphTextFormat - {SuperMap.ThemeGraphTextFormat} 统计专题图文本显示格式。<br>
  *        graphTextStyle - {SuperMap.ServerTextStyle} 统计图上的文字标注风格。
  */
 export default  class ThemeGraphText {
 
     /**
-     * @member SuperMap.ThemeGraphText.prototype.graphTextDisplayed -{Boolean}
+     * @member SuperMap.ThemeGraphText.prototype.graphTextDisplayed -{boolean}
      * @description 是否显示统计图上的文字标注。默认为 false，即不显示。
      */
     graphTextDisplayed = false;
@@ -31,10 +31,6 @@ export default  class ThemeGraphText {
      */
     graphTextStyle = null;
 
-    /*
-     * Constructor: SuperMap.ThemeGraphText
-     * 统计图文字标注风格类构造函数。
-     */
     constructor(options) {
         var me = this;
         me.graphTextStyle = new ServerTextStyle();
@@ -44,7 +40,7 @@ export default  class ThemeGraphText {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeGraphText.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -57,6 +53,12 @@ export default  class ThemeGraphText {
         }
     }
 
+    /**
+     * @function SuperMap.ThemeGraphText.fromObj
+     * @description 从传入对象获取统计图文字标注风格类。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeGraphText}
+     */
     static fromObj(obj) {
         var res = new ThemeGraphText();
         SuperMap.Util.copy(res, obj);

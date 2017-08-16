@@ -5,20 +5,20 @@ import {SpatialQueryMode} from '../REST'
  * @class SuperMap.SingleObjectQueryJobsParameter
  * @classdesc 单对象空间查询分析任务参数类
  * @param options - {Object} 必填参数。<br>
- *         datasetName -{String} 数据集名。 <br>
- *         datasetQuery -{String} 查询对象所在的数据集名称。 <br>
+ *         datasetName -{string} 数据集名。 <br>
+ *         datasetQuery -{string} 查询对象所在的数据集名称。 <br>
  *         mode -{SuperMap.SpatialQueryMode} 空间查询模式 。 <br>
  */
 export default  class SingleObjectQueryJobsParameter {
 
     /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{String}
+     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetName -{string}
      * @description 数据集名。
      */
     datasetName = "";
 
     /**
-     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{String}
+     * @member SuperMap.SingleObjectQueryJobsParameter.prototype.datasetQuery -{string}
      * @description 查询对象所在的数据集名称。
      */
     datasetQuery = "";
@@ -36,9 +36,8 @@ export default  class SingleObjectQueryJobsParameter {
         SuperMap.Util.extend(this, options);
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.SingleObjectQueryJobsParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

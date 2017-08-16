@@ -7,9 +7,9 @@ import ServerTextStyle from './ServerTextStyle';
  * @classdesc 统计专题图坐标轴样式类。
  * @param  options - {Object} 可选参数。<br>
  *         axesColor - {SuperMap.ServerColor} 坐标轴颜色。<br>
- *         axesDisplayed - {Boolean} 是否显示坐标轴。<br>
- *         axesGridDisplayed - {Boolean} 是否在统计图坐标轴上显示网格。<br>
- *         axesTextDisplayed - {Boolean} 是否显示坐标轴的文本标注。<br>
+ *         axesDisplayed - {boolean} 是否显示坐标轴。<br>
+ *         axesGridDisplayed - {boolean} 是否在统计图坐标轴上显示网格。<br>
+ *         axesTextDisplayed - {boolean} 是否显示坐标轴的文本标注。<br>
  *         axesTextStyle - {SuperMap.ServerTextStyle} 统计符号的最大最小尺寸。
  */
 export default  class ThemeGraphAxes {
@@ -21,20 +21,20 @@ export default  class ThemeGraphAxes {
     axesColor = null;
 
     /**
-     * @member SuperMap.ThemeGraphAxes.prototype.axesDisplayed -{Boolean}
+     * @member SuperMap.ThemeGraphAxes.prototype.axesDisplayed -{boolean}
      * @description 是否显示坐标轴。默认为 false，即不显示。<br>
      *              由于饼状图和环状图无坐标轴，故该属性以及所有与坐标轴设置相关的属性都不适用于它们。并且只有当该值为 true 时，其它设置坐标轴的属性才起作用。
      */
     axesDisplayed = false;
 
     /**
-     * @member SuperMap.ThemeGraphAxes.prototype.axesGridDisplayed -{Boolean}
+     * @member SuperMap.ThemeGraphAxes.prototype.axesGridDisplayed -{boolean}
      * @description 是否在统计图坐标轴上显示网格。默认为 false，即不显示。
      */
     axesGridDisplayed = false;
 
     /**
-     * @member SuperMap.ThemeGraphAxes.prototype.axesTextDisplayed -{Boolean}
+     * @member SuperMap.ThemeGraphAxes.prototype.axesTextDisplayed -{boolean}
      * @description 是否显示坐标轴的文本标注。默认为 false，即不显示。
      */
     axesTextDisplayed = false;
@@ -45,10 +45,6 @@ export default  class ThemeGraphAxes {
      */
     axesTextStyle = null;
 
-    /*
-     * Constructor: SuperMap.ThemeGraphAxes
-     * 统计专题图坐标轴样式类构造函数。
-     */
     constructor(options) {
         var me = this;
         me.axesColor = new ServerColor(0, 0, 0);
@@ -59,7 +55,7 @@ export default  class ThemeGraphAxes {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeGraphAxes.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -77,6 +73,12 @@ export default  class ThemeGraphAxes {
         }
     }
 
+    /**
+     * @function SuperMap.ThemeGraphAxes.fromObj
+     * @description 从传入对象获取统计专题图坐标轴样式类。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeGraphAxes}
+     */
     static fromObj(obj) {
         if (!obj) return;
         var res = new ThemeGraphAxes();

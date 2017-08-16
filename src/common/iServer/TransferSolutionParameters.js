@@ -5,7 +5,7 @@ import {TransferPreference, TransferTactic} from '../REST';
  * @class SuperMap.TransferSolutionParameters
  * @classdesc 交通换乘方案查询参数类。
  * @param options - {Object} 参数。如:</br>
- *        solutionCount - {Boolean} 乘车方案的数量。默认为6。</br>
+ *        solutionCount - {boolean} 乘车方案的数量。默认为6。</br>
  *        transferTactic - {SuperMap.TransferTactic} 交通换乘策略类型，
  *                      包括时间最短、距离最短、最少换乘、最少步行四种选择。</br>
  *        transferPreference - {SuperMap.TransferPreference} 乘车偏好枚举。</br>
@@ -15,13 +15,13 @@ import {TransferPreference, TransferTactic} from '../REST';
  *        evadeStops - {Array(Number)} 避让站点的ID，默认为null。</br>
  *        priorLines - {Array(Number)} 优先路线的ID，默认为null。</br>
  *        priorStops - {Array(Number)} 优先站点的ID，默认为null。</br>
- *        travelTime - {String} 出行的时间。</br>
+ *        travelTime - {string} 出行的时间。</br>
  */
 export default class TransferSolutionParameters {
 
 
     /**
-     *  @member SuperMap.TransferSolutionParameters.prototype.solutionCount -{Number}
+     *  @member SuperMap.TransferSolutionParameters.prototype.solutionCount -{number}
      *  @description 乘车方案的数量。默认为6。
      */
     solutionCount = 6;
@@ -90,7 +90,7 @@ export default class TransferSolutionParameters {
     priorStops = null;
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.travelTime -{String}
+     * @member SuperMap.TransferSolutionParameters.prototype.travelTime -{string}
      * @description 出行的时间； 格式是："小时:分钟"，如："08:30"。如果设置了该参数，在分析时，则会考虑线路的首末班车时间的限制，即在返回的结果中会提示公交的首末班发车时间。
      */
     travelTime = null;

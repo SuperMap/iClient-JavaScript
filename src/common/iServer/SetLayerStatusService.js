@@ -9,7 +9,7 @@ import SetLayerStatusParameters from './SetLayerStatusParameters';
  *                一种是通过监听 SetLayerEvent.PROCESS_COMPLETE 事件；<br>
  *                一种是使用 AsyncResponder 类实现异步处理。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 地图服务访问地址。请求地图服务,URL 应为：<br>
+ * @param url - {string} 地图服务访问地址。请求地图服务,URL 应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}；
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *        eventListeners - {Object} 需要被注册的监听器对象。

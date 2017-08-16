@@ -3,13 +3,13 @@ import '../security/SecurityManager';
 /**
  * @class SuperMap.CommonServiceBase
  * @classdesc common服务基类
- * @param url - {String} 与客户端交互的服务地址。
+ * @param url - {string} 与客户端交互的服务地址。
  * @param options - {Object} 参数。如：<br>
  *        events - {SuperMap.Events} 处理所有事件的对象。<br>
  *        eventListeners - {Object} 听器对象。<br>
  *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number} 服务访问地址在数组中的位置。<br>
- *        length - {number} 服务访问地址数组长度。
+ *        index - {number}服务访问地址在数组中的位置。<br>
+ *        length - {number}服务访问地址数组长度。
  */
 export default  class CommonServiceBase {
 
@@ -100,14 +100,14 @@ export default  class CommonServiceBase {
 
 
     /**
-     * @member SuperMap.CommonServiceBase.prototype.isInTheSameDomain -{Boolean}
+     * @member SuperMap.CommonServiceBase.prototype.isInTheSameDomain -{boolean}
      */
     isInTheSameDomain = null;
 
     /*
      * @function SuperMap.CommonServiceBase.prototype.constructor
      * @description  ServiceBase的构造函数
-     * @param url - {String} 与客户端交互的服务地址。
+     * @param url - {string} 与客户端交互的服务地址。
      * @param options - {Object} 参数。
      */
     constructor(url, options) {
@@ -182,14 +182,14 @@ export default  class CommonServiceBase {
      * @function  SuperMap.CommonServiceBase.prototype.request
      * @description: 该方法用于向服务发送请求。
      * @param options - {Object} 参数。
-     *        method - {String} 请求方式，包括GET，POST，PUT， DELETE。<br>
-     *        url - {String}  发送请求的地址。<br>
+     *        method - {string} 请求方式，包括GET，POST，PUT， DELETE。<br>
+     *        url - {string}  发送请求的地址。<br>
      *        params - {Object} 作为查询字符串添加到url中的一组键值对，此参数只适用于GET方式发送的请求。<br>
      *        data - {String } 发送到服务器的数据。<br>
      *        success - {function} 请求成功后的回调函数。<br>
      *        failure - {function} 请求失败后的回调函数。<br>
      *        scope - {Object} 如果回调函数是对象的一个公共方法，设定该对象的范围。<br>
-     *        isInTheSameDomain - {Boolean} 请求是否在当前域中。<br>
+     *        isInTheSameDomain - {boolean} 请求是否在当前域中。<br>
      */
     request(options) {
         let me = this;
@@ -223,7 +223,7 @@ export default  class CommonServiceBase {
     /**
      * @function SuperMap.CommonServiceBase.prototype.getCredential
      * @description  获取凭据信息
-     * @param url - {String} 服务地址。
+     * @param url - {string} 服务地址。
      */
     getCredential(url) {
         let keyUrl = url, credential, value;

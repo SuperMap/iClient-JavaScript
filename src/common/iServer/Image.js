@@ -12,7 +12,7 @@ import {ColorSpaceType} from '../REST';
  *        brightness - {Integer} 影像图层的亮度。<br>
  *        displayBandIndexes - {Array<Integer>} 返回当前影像图层显示的波段索引。<br>
  *        contrast - {Integer} 影像图层的对比度。<br>
- *        transparent - {Boolean} 是否背景透明。<br>
+ *        transparent - {boolean} 是否背景透明。<br>
  *        transparentColor - {SuperMap.ServerColor} 返回背景透明色。<br>
  *        transparentColorTolerance - {Integer} 背景透明色容限。
  */
@@ -43,7 +43,7 @@ export default class UGCImage extends UGCSubLayer {
     displayBandIndexes = null;
 
     /**
-     * @member SuperMap.Image.prototype.transparent -{Boolean}
+     * @member SuperMap.Image.prototype.transparent -{boolean}
      * @description 是否背景透明。
      */
     transparent = null;
@@ -68,7 +68,7 @@ export default class UGCImage extends UGCSubLayer {
      *        brightness - {Integer} 影像图层的亮度。<br>
      *        displayBandIndexes - {Array<Integer>} 返回当前影像图层显示的波段索引。<br>
      *        contrast - {Integer} 影像图层的对比度。<br>
-     *        transparent - {Boolean} 是否背景透明。<br>
+     *        transparent - {boolean} 是否背景透明。<br>
      *        transparentColor - {SuperMap.ServerColor} 返回背景透明色。<br>
      *        transparentColorTolerance - {Integer} 背景透明色容限。
      */

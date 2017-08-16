@@ -14,7 +14,7 @@ import {RangeMode, ColorGradientType} from '../REST';
  *        items - {Array<SuperMap.ThemeGridRangeItem>} 栅格分段专题图子项数组。<br>
  *        reverseColor - {boolean} 是否对栅格分段专题图中分段的颜色风格进行反序显示。<br>
  *        rangeMode - {SuperMap.RangeMode} 分段专题图的分段模式。<br>
- *        rangeParameter - {Number} 分段参数。<br>
+ *        rangeParameter - {number}分段参数。<br>
  *        colorGradientType - {SuperMap.ColorGradientType} 渐变颜色枚举类。
  */
 export default class ThemeGridRange extends Theme {
@@ -38,7 +38,7 @@ export default class ThemeGridRange extends Theme {
     rangeMode = RangeMode.EQUALINTERVAL;
 
     /**
-     * @member SuperMap.ThemeGridRange.prototype.rangeParameter -{Number}
+     * @member SuperMap.ThemeGridRange.prototype.rangeParameter -{number}
      * @description 分段参数。<br>
      *              当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，<br>
      *              该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。默认值为 -1。
@@ -69,7 +69,6 @@ export default class ThemeGridRange extends Theme {
         }
     }
 
-
     /**
      * @inheritDoc
      */
@@ -91,6 +90,12 @@ export default class ThemeGridRange extends Theme {
         me.colorGradientType = null;
     }
 
+    /**
+     * @function SuperMap.ThemeGridRange.fromObj
+     * @description 从传入对象获取栅格分段专题图。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeGridRange}
+     */
     static fromObj(obj) {
         if (!obj) return;
         var res = new ThemeGridRange();

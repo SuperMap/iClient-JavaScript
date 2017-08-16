@@ -6,15 +6,15 @@ import ServerColor from './ServerColor';
  * @classdesc 栅格单值专题图子项类。<br>
  *              栅格单值专题图是将值相同的单元格归为一类，每一类是一个专题图子项。<br>
  * @param options - {Object} 可选参数。如：<br>
- *        caption - {String} 栅格单值专题图子项的名称。<br>
+ *        caption - {string} 栅格单值专题图子项的名称。<br>
  *        color - {SuperMap.ServerColor} 栅格单值专题图子项的显示颜色。<br>
- *        unique - {Number} 栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。<br>
- *        visible - {Boolean} 栅格单值专题图子项是否可见。
+ *        unique - {number}栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。<br>
+ *        visible - {boolean} 栅格单值专题图子项是否可见。
  */
 export default  class ThemeGridUniqueItem {
 
     /**
-     * @member SuperMap.ThemeGridUniqueItem.prototype.caption -{String}
+     * @member SuperMap.ThemeGridUniqueItem.prototype.caption -{string}
      * @description 栅格单值专题图子项的名称。
      */
     caption = null;
@@ -26,21 +26,17 @@ export default  class ThemeGridUniqueItem {
     color = null;
 
     /**
-     * @member SuperMap.ThemeGridUniqueItem.prototype.unique -{Number}
+     * @member SuperMap.ThemeGridUniqueItem.prototype.unique -{number}
      * @description 栅格单值专题图子项的专题值，即单元格的值，值相同的单元格位于一个子项内。
      */
     unique = null;
 
     /**
-     * @member SuperMap.ThemeGridUniqueItem.prototype.visible -{Boolean}
+     * @member SuperMap.ThemeGridUniqueItem.prototype.visible -{boolean}
      * @description 栅格单值专题图子项是否可见。默认为true。
      */
     visible = true;
 
-    /*
-     * Constructor: SuperMap.ThemeGridUniqueItem
-     * 栅格单值专题图子项类构造函数。
-     */
     constructor(options) {
         var me = this;
         me.color = new ServerColor();
@@ -50,7 +46,7 @@ export default  class ThemeGridUniqueItem {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ThemeGridUniqueItem.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -65,9 +61,9 @@ export default  class ThemeGridUniqueItem {
         me.visible = null;
     }
 
-    /*
-     * Method: toServerJSONObject
-     * 转换成对应的 JSON 格式对象。
+    /**
+     * @function SuperMap.ThemeGridUniqueItem.prototype.toServerJSONObject
+     * @description 转换成对应的 JSON 格式对象。
      */
     toServerJSONObject() {
         var obj = {};
@@ -80,6 +76,12 @@ export default  class ThemeGridUniqueItem {
         return obj;
     }
 
+    /**
+     * @function SuperMap.ThemeGridUniqueItem.fromObj
+     * @description 从传入对象获取栅格单值专题图子项类。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeGridUniqueItem}
+     */
     static fromObj(obj) {
         var res = new ThemeGridUniqueItem();
         SuperMap.Util.copy(res, obj);

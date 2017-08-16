@@ -13,19 +13,12 @@ import ThemeParameters from './ThemeParameters';
  *           "processFailed": themeFailed
  *           }
  * });
- * @param url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param url - {string} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
 export default  class ThemeService extends CommonServiceBase {
 
-    /*
-     * @function SuperMap.ThemeService.prototype.constructor
-     * @description 专题图服务类构造函数。
-     * @param url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
-     * @param options - {Object} 交互服务时所需可选参数。如：<br>
-     *         eventListeners - {Object} 需要被注册的监听器对象。
-     */
     constructor(url, options) {
         super(url, options);
         if (options) {

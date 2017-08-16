@@ -18,7 +18,7 @@ import FindClosestFacilitiesParameters from './FindClosestFacilitiesParameters';
  *		   "processFailed": findClosestFacilitiesError
  *		   }
  * });
- * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+ * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -29,7 +29,7 @@ export default class FindClosestFacilitiesService extends NetworkAnalystServiceB
     /*
      * @function SuperMap.FindClosestFacilitiesService.prototype.constructor
      * @description 最近设施分析服务类构造函数。
-     * @param url - {String} 网络分析服务地址。请求网络分析服务，URL应为：<br>
+     * @param url - {string} 网络分析服务地址。请求网络分析服务，URL应为：<br>
      *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
      *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
      * @param options - {Object} 互服务时所需可选参数。如：<br>
@@ -78,7 +78,7 @@ export default class FindClosestFacilitiesService extends NetworkAnalystServiceB
     /**
      * @function SuperMap.FindClosestFacilitiesService.prototype.getJson
      * @description 将对象转化为JSON字符串。
-     * @param isAnalyzeById - {Boolean}
+     * @param isAnalyzeById - {boolean}
      * @param params - {Array}
      * @return {Object} 转化后的JSON字符串。
      */

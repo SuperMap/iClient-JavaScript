@@ -10,9 +10,9 @@ import {LayerType} from '../REST';
  * @extends SuperMap.UGCMapLayer
  * @param options - {Object} 可选参数。如：<br>
  *        datasetInfo - {SuperMap.DatasetInfo} 数据集信息。<br>
- *        displayFilter - {String} 图层显示过滤条件。<br>
+ *        displayFilter - {string} 图层显示过滤条件。<br>
  *        joinItems - {SuperMap.JoinItem} 连接信息类。<br>
- *        representationField - {String} 存储制图表达信息的字段。<br>
+ *        representationField - {string} 存储制图表达信息的字段。<br>
  *        ugcLayerType - {SuperMap.LayerType} 图层类型
  */
 export default  class UGCSubLayer extends UGCMapLayer {
@@ -24,7 +24,7 @@ export default  class UGCSubLayer extends UGCMapLayer {
     datasetInfo = null;
 
     /**
-     * @member SuperMap.UGCSubLayer.prototype.displayFilter -{String}
+     * @member SuperMap.UGCSubLayer.prototype.displayFilter -{string}
      * @description 图层显示过滤条件。
      */
     displayFilter = null;
@@ -36,7 +36,7 @@ export default  class UGCSubLayer extends UGCMapLayer {
     joinItems = null;
 
     /**
-     * @member SuperMap.UGCSubLayer.prototype.representationField -{String}
+     * @member SuperMap.UGCSubLayer.prototype.representationField -{string}
      * @description 存储制图表达信息的字段。
      */
     representationField = null;

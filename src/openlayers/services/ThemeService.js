@@ -12,7 +12,7 @@ import CommonThemeService from '../../common/iServer/ThemeService';
  *      }).getThemeInfo(params,function(result){
  *           //doSomething
  *      });
- * @param url - {String} 服务的访问地址。
+ * @param url - {string} 服务的访问地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */

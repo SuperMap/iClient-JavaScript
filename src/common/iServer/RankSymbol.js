@@ -25,7 +25,7 @@ export default  class RankSymbol extends Graph {
      * XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
      * YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
      * dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
-     * decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+     * decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
      * 除了以上 5 个基础属性，此对象的可设属性在不同子类中有较大差异，不同子类中对同一属性的解释也可能不同。
      * 请在此类的子类中查看 setting 对象的可设属性和属性含义。
      */
@@ -86,8 +86,8 @@ export default  class RankSymbol extends Graph {
      * XOffset - {Number}  专题要素（图形）在 X 方向上的偏移值，单位像素。</br>
      * YOffset - {Number}  专题要素（图形）在 Y 方向上的偏移值，单位像素。</br>
      * dataViewBoxParameter - {Array(Number)} 数据视图框 dataViewBox 参数，它是指图形框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。</br>
-     * decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
-     * @returns- {Boolean} 初始化参数是否成功。
+     * decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+     * @returns- {boolean} 初始化参数是否成功。
      */
     initBaseParameter() {
         // 参数初始化是否成功

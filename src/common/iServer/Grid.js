@@ -9,6 +9,20 @@ import {GridType} from '../REST';
  * @class SuperMap.Grid
  * @classdesc UGC 栅格图层类。
  * @extends SuperMap.UGCSubLayer
+ * @param options - {Object} 可选参数参数。如：<br>
+ *        colorDictionary - {Array<Object>} 颜色对照表对象。<br>
+ *        brightness - {Integer} Grid 图层的亮度。<br>
+ *        colorGradientType - {boolean} 文本压盖时是否显示压盖的文本对象。<br>
+ *        colors - {SuperMap.ServerColor} 颜色表对象。<br>
+ *        contrast - {Integer} Grid 图层的对比度。<br>
+ *        gridType - {SuperMap.GridType} 格网类型。<br>
+ *        horizontalSpacing - {number}格网水平间隔大小。<br>
+ *        sizeFixed - {boolean} 格网是否固定大小，如果不固定大小，则格网随着地图缩放。<br>
+ *        solidStyle - {SuperMap.ServerStyle} 格网实线的样式。<br>
+ *        specialColor - {SuperMap.ServerColor} 栅格数据集无值数据的颜色。<br>
+ *        specialValue - {number}图层的特殊值。<br>
+ *        specialValueTransparent - {boolean} 图层的特殊值（specialValue）所处区域是否透明。<br>
+ *        verticalSpacing - {number}格网垂直间隔大小。
  */
 export default class Grid extends UGCSubLayer {
 
@@ -55,13 +69,13 @@ export default class Grid extends UGCSubLayer {
     gridType = null;
 
     /**
-     * @member SuperMap.Grid.prototype.horizontalSpacing -{Number}
+     * @member SuperMap.Grid.prototype.horizontalSpacing -{number}
      * @description 格网水平间隔大小。
      */
     horizontalSpacing = null;
 
     /**
-     * @member SuperMap.Grid.prototype.sizeFixed -{Boolean}
+     * @member SuperMap.Grid.prototype.sizeFixed -{boolean}
      * @description 格网是否固定大小，如果不固定大小，则格网随着地图缩放。
      */
     sizeFixed = null;
@@ -79,13 +93,13 @@ export default class Grid extends UGCSubLayer {
     specialColor = null;
 
     /**
-     * @member SuperMap.Grid.prototype.specialValue -{Number}
+     * @member SuperMap.Grid.prototype.specialValue -{number}
      * @description 图层的特殊值。
      */
     specialValue = null;
 
     /**
-     * @member SuperMap.Grid.prototype.specialValueTransparent -{Boolean}
+     * @member SuperMap.Grid.prototype.specialValueTransparent -{boolean}
      * @description 图层的特殊值（specialValue）所处区域是否透明。
      */
     specialValueTransparent = null;
@@ -96,24 +110,6 @@ export default class Grid extends UGCSubLayer {
      */
     verticalSpacing = null;
 
-    /**
-     * @function SuperMap.Grid.prototype.constructor
-     * @description UGC 栅格图层类构造函数。
-     * @param options - {Object} 可选参数参数。如：<br>
-     *        colorDictionary - {Array(Object)} 颜色对照表对象。<br>
-     *        brightness - {Integer} Grid 图层的亮度。<br>
-     *        colorGradientType - {Boolean} 文本压盖时是否显示压盖的文本对象。<br>
-     *        colors - {SuperMap.ServerColor} 颜色表对象。<br>
-     *        contrast - {Integer} Grid 图层的对比度。<br>
-     *        gridType - {SuperMap.GridType} 格网类型。<br>
-     *        horizontalSpacing - {Number} 格网水平间隔大小。<br>
-     *        sizeFixed - {Boolean} 格网是否固定大小，如果不固定大小，则格网随着地图缩放。<br>
-     *        solidStyle - {SuperMap.ServerStyle} 格网实线的样式。<br>
-     *        specialColor - {SuperMap.ServerColor} 栅格数据集无值数据的颜色。<br>
-     *        specialValue - {Number} 图层的特殊值。<br>
-     *        specialValueTransparent - {Boolean} 图层的特殊值（specialValue）所处区域是否透明。<br>
-     *        verticalSpacing - {Number} 格网垂直间隔大小。
-     */
     constructor(options) {
         options = options || {};
         super(options);

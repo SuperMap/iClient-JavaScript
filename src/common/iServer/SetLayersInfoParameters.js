@@ -4,25 +4,25 @@ import SuperMap from '../SuperMap';
  * @class SuperMap.SetLayersInfoParameters
  * @classdesc 设置图层信息参数类
  * @param options -{Object} 可选参数。如：<br>
- *        isTempLayers -{Boolean} 是否是临时图层。<br>
- *        resourceID -{String} 资源ID。<br>
- *        layerInfo -{String} 要更新的图层信息。
+ *        isTempLayers -{boolean} 是否是临时图层。<br>
+ *        resourceID -{string} 资源ID。<br>
+ *        layerInfo -{string} 要更新的图层信息。
  */
 export default  class SetLayersInfoParameters {
 
     /**
-     * @member SuperMap.SetLayersInfoParameters.prototype.isTempLayers -{Boolean}
+     * @member SuperMap.SetLayersInfoParameters.prototype.isTempLayers -{boolean}
      * @description 是否是临时图层。
      */
     isTempLayers = null;
     /**
-     * @member SuperMap.SetLayersInfoParameters.prototype.resourceID -{String}
+     * @member SuperMap.SetLayersInfoParameters.prototype.resourceID -{string}
      * @description 资源ID，
      */
     resourceID = null;
 
     /**
-     * @member SuperMap.SetLayersInfoParameters.prototype.layerInfo -{String}
+     * @member SuperMap.SetLayersInfoParameters.prototype.layerInfo -{string}
      * @description 要更新的图层信息。
      */
     layerInfo = null;
@@ -34,7 +34,7 @@ export default  class SetLayersInfoParameters {
 
 
     /**
-     * @function destroy
+     * @function SuperMap.SetLayersInfoParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

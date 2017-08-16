@@ -12,10 +12,11 @@ import L from "leaflet";
 /**
  * @class L.supermap.VectorGrid
  * @classdesc 矢量格网
- * @extends L.GridLayer
+ * @private
+ * @extends L.GridLayer{@linkdoc-leaflet/#gridlayer}
  * @param options - {Object} 矢量格网参数。如：<br>
  *        vectorTileLayerStyles - {object} 矢量网片图层风格。<br>
- *        renderer - {String} 渲染器类型。<br>
+ *        renderer - {string} 渲染器类型。<br>
  *        format - {L.supermap.VectorTileFormat} 矢量瓦片格式。<br>
  *        interactive - {boolean} 是否可交互 。
  */
@@ -93,7 +94,7 @@ export var VectorGrid = L.GridLayer.extend({
     /**
      * @function L.supermap.VectorGrid.prototype.getStyle
      * @description 获取指定图层样式
-     * @param layerName - {String} 图层名称
+     * @param layerName - {string} 图层名称
      */
     getStyle: function (layerName) {
         return this.vectorTileLayerStyles && this.vectorTileLayerStyles[layerName];
@@ -102,9 +103,9 @@ export var VectorGrid = L.GridLayer.extend({
     /**
      * @function L.supermap.VectorGrid.prototype.setFeatureStyle
      * @description 设置要素风格，需要id和layerName才能确定一个要素
-     * @param id - {number} 要素id
-     * @param layerName - {String} 图层名称
-     * @param layerStyle - {array} 图层样式
+     * @param id - {number}要素id
+     * @param layerName - {string} 图层名称
+     * @param layerStyle - {Array} 图层样式
      * @return {L.supermap.VectorGrid}
      */
     setFeatureStyle: function (id, layerName, layerStyle) {
@@ -126,8 +127,8 @@ export var VectorGrid = L.GridLayer.extend({
     /**
      * @function L.supermap.VectorGrid.prototype.resetFeatureStyle
      * @description 重绘要素风格，需要id和layerName才能确定一个要素
-     * @param id - {number} 要素id
-     * @param layerName - {String} 图层名称
+     * @param id - {number}要素id
+     * @param layerName - {string} 图层名称
      */
     resetFeatureStyle: function (id, layerName) {
         var featureKey = this._getFeatureKey(id, layerName);

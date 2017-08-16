@@ -3,9 +3,9 @@ import L from "leaflet";
 /**
  * @class L.supermap.CanvasRenderer
  * @classdesc 画布渲染器
- * @extends L.Canvas
+ * @extends L.Canvas{@linkdoc-leaflet/#canvas}
  * @param tileCoord - {Object} 切片坐标系
- * @param tileSize - {number} 切片大小
+ * @param tileSize - {number}切片大小
  * @param options - {Object} 渲染器参数
  */
 export var CanvasRenderer = L.Canvas.extend({
@@ -55,7 +55,7 @@ export var CanvasRenderer = L.Canvas.extend({
 
     /**
      * @function L.supermap.CanvasRenderer.prototype.addTo
-     * @description 添加切片地图
+     * @description 添加到切片地图
      * @param map - {L.map} 切片地图
      */
     addTo: function (map) {

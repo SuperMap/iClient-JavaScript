@@ -5,9 +5,10 @@ import {PolyBase} from './SymbolizerPolyBase';
 /**
  * @class L.supermap.RegionSymbolizer
  * @classdesc 面符号类
- * @extends L.Polygon
+ * @private
+ * @extends L.Polygon{@linkdoc-leaflet/#polygon}
  * @param feature - {L.feature} 面要素
- * @param pxPerExtent - {number} 面积像素大小
+ * @param pxPerExtent - {number}面积像素大小
  */
 export var RegionSymbolizer = L.Polygon.extend({
 
@@ -26,7 +27,7 @@ export var RegionSymbolizer = L.Polygon.extend({
      * @function L.supermap.RegionSymbolizer.prototype.render
      * @description 绘制面符号
      * @param renderer - {object} 渲染器
-     * @param style - {String} 符号样式
+     * @param style - {string} 符号样式
      */
     render: function (renderer, style) {
         Symbolizer.prototype.render.call(this, renderer, style);

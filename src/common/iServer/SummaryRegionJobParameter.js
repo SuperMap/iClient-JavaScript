@@ -5,36 +5,36 @@ import {StatisticAnalystMode, SummaryType, AnalystSizeUnit} from '../REST'
  * @class SuperMap.SummaryRegionJobParameter
  * @classdesc 范围汇总分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
- *         datasetName -{String} 数据集名。 <br>
- *         sumShape -{Boolean} 是否统计长度或面积。 <br>
+ *         datasetName -{string} 数据集名。 <br>
+ *         sumShape -{boolean} 是否统计长度或面积。 <br>
  *         query -{SuperMap.Bounds} 分析范围。 <br>
- *         standardSummaryFields -{Boolean} 以标准属字段统计。 <br>
- *         standardFields -{String} 以标准属字段统计的字段名称。 <br>
- *         standardStatisticModes -{String} 以标准属字段统计的统计模式。 <br>
- *         weightedSummaryFields -{Boolean} 以权重字段统计。 <br>
- *         weightedFields -{String} 以权重字段统计的字段名称。 <br>
- *         weightedStatisticModes -{String} 以权重字段统计的统计模式。 <br>
- *         resolution -{number} 网格大小。 <br>
- *         meshType -{number} 网格面汇总类型。 <br>
- *         meshSizeUnit -{String} 网格大小单位。 <br>
- *         type -{String} 汇总类型。 <br>
+ *         standardSummaryFields -{boolean} 以标准属字段统计。 <br>
+ *         standardFields -{string} 以标准属字段统计的字段名称。 <br>
+ *         standardStatisticModes -{string} 以标准属字段统计的统计模式。 <br>
+ *         weightedSummaryFields -{boolean} 以权重字段统计。 <br>
+ *         weightedFields -{string} 以权重字段统计的字段名称。 <br>
+ *         weightedStatisticModes -{string} 以权重字段统计的统计模式。 <br>
+ *         resolution -{number}网格大小。 <br>
+ *         meshType -{number}网格面汇总类型。 <br>
+ *         meshSizeUnit -{string} 网格大小单位。 <br>
+ *         type -{string} 汇总类型。 <br>
  */
 export default class SummaryRegionJobParameter {
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{String}
+     * @member SuperMap.SummaryRegionJobParameter.prototype.datasetName -{string}
      * @description 数据集名。
      */
     datasetName = "";
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{String}
+     * @member SuperMap.SummaryRegionJobParameter.prototype.regionDataset -{string}
      * @description 汇总数据源（多边形汇总时用到的参数）。
      */
     regionDataset = "";
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{Boolean}
+     * @member SuperMap.SummaryRegionJobParameter.prototype.sumShape -{boolean}
      * @description 是否统计长度或面积。
      */
     sumShape = true;
@@ -46,13 +46,13 @@ export default class SummaryRegionJobParameter {
     query = "";
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{Boolean}
+     * @member SuperMap.SummaryRegionJobParameter.prototype.standardSummaryFields -{boolean}
      * @description 以标准属字段统计。
      */
     standardSummaryFields = false;
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{String}
+     * @member SuperMap.SummaryRegionJobParameter.prototype.standardFields -{string}
      * @description 以标准属字段统计的字段名称。
      */
     standardFields = "";
@@ -64,13 +64,13 @@ export default class SummaryRegionJobParameter {
     standardStatisticModes = "";
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields -{Boolean}
+     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedSummaryFields -{boolean}
      * @description 以权重字段统计。
      */
     weightedSummaryFields = false;
 
     /**
-     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedFields -{String}
+     * @member SuperMap.SummaryRegionJobParameter.prototype.weightedFields -{string}
      * @description 以权重字段统计的字段名称。
      */
     weightedFields = "";
@@ -105,7 +105,6 @@ export default class SummaryRegionJobParameter {
      */
     type = SummaryType.SUMMARYMESH;
 
-
     constructor(options) {
         if (!options) {
             return;
@@ -113,9 +112,8 @@ export default class SummaryRegionJobParameter {
         SuperMap.Util.extend(this, options);
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.SummaryRegionJobParameter.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

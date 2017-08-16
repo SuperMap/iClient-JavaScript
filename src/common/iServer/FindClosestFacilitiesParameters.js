@@ -8,9 +8,9 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  *         event - {Point/Integer} 事件点，一般为需要获得服务设施服务的事件位置，必设字段。
  *         expectFacilityCount - {Integer} 要查找的设施点数量。默认值为1。
  *         facilities - {Array<{SuperMap.Point}|Number>} 设施点集合，一般为提供服务的服务设施位置，必设字段。
- *         fromEvent - {Boolean} 是否从事件点到设施点进行查找。
- *         isAnalyzeById - {Boolean} 事件点和设施点是否通过节点 ID 号来指定，默认为 false，即通过坐标点指定事件点和设施点。
- *         maxWeight - {Number} 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。
+ *         fromEvent - {boolean} 是否从事件点到设施点进行查找。
+ *         isAnalyzeById - {boolean} 事件点和设施点是否通过节点 ID 号来指定，默认为 false，即通过坐标点指定事件点和设施点。
+ *         maxWeight - {number}查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。
  *         parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 export default  class FindClosestFacilitiesParameters {
@@ -23,7 +23,7 @@ export default  class FindClosestFacilitiesParameters {
     event = null;
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.expectFacilityCount -{Number}
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.expectFacilityCount -{number}
      * @description 要查找的设施点数量。默认值为1。
      */
     expectFacilityCount = 1;
@@ -36,7 +36,7 @@ export default  class FindClosestFacilitiesParameters {
     facilities = null;
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.fromEvent -{Boolean}
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.fromEvent -{boolean}
      * @description 是否从事件点到设施点进行查找。
      *               最近设施分析主要是通过设施点和事件点之间最优的路线来分析在一定范围内哪个或哪些设施与事件点有最优路线的关系。
      *               这个行走线路是通过网络图层进行网络分析算法计算出来的两点间的最优路线。
@@ -47,13 +47,13 @@ export default  class FindClosestFacilitiesParameters {
     fromEvent = false;
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.isAnalyzeById -{Boolean}
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.isAnalyzeById -{boolean}
      * @description 事件点和设施点是否通过节点 ID 号来指定，默认为 false，即通过坐标点指定事件点和设施点。
      */
     isAnalyzeById = false;
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.maxWeight -{Number}
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.maxWeight -{number}
      * @description 查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。
      *               例如事件发生点是一起交通事故，要求查找在10分钟内能到达的最近医院，超过10分钟能到达的都不予考虑。
      *               那么需要将网络分析参数中 parameter.weightFieldName 设置为表示时间的字段，然后设置查找范围的半径值为10。
@@ -68,10 +68,6 @@ export default  class FindClosestFacilitiesParameters {
      */
     parameter = null;
 
-    /*
-     * Constructor: SuperMap.FindClosestFacilitiesParameters
-     * 最近设施分析参数类构造函数。
-     */
     constructor(options) {
         var me = this;
         me.parameter = new TransportationAnalystParameter();
@@ -81,9 +77,8 @@ export default  class FindClosestFacilitiesParameters {
         SuperMap.Util.extend(this, options);
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.FindClosestFacilitiesParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

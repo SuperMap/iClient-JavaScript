@@ -5,18 +5,18 @@ import Graph from './Graph';
  * @class SuperMap.Feature.Theme.Ring
  * @classdesc 环状图。基于路由对象计算指定点M值操作的参数类。通过该类提供参数信息。
  * 图表 Ring 配置对象 chartsSetting（SuperMap.Layer.Graph::chartsSetting） 可设属性如下：</br>
- * width - {Number} 专题要素（图表）宽度，必设参数。</br>
- * height - {Number} 专题要素（图表）高度，必设参数。</br>
+ * width - {number}专题要素（图表）宽度，必设参数。</br>
+ * height - {number}专题要素（图表）高度，必设参数。</br>
  * codomain - {Array{Number}} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
  * XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
  * YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
  * dataViewBoxParameter - {Array{Number}} 数据视图框 dataViewBox 参数，
  * 它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。默认值为：[0, 0, 0, 0]。</br>
- * decimalNumber - {Number} 数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
- * useBackground - {Boolean} 是否使用图表背景框，默认不使用。</br>
+ * decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
+ * useBackground - {boolean} 是否使用图表背景框，默认不使用。</br>
  * backgroundStyle - {Object} 背景样式，此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Rectangle::style>。</br>
  * backgroundRadius - {Array} 背景框矩形圆角半径，可以用数组分别指定四个角的圆角半径，设：左上、右上、右下、左下角的半径依次为 r1、r2、r3、r4 ,则 backgroundRadius 为 [r1、r2、r3、r4 ]，默认值[0, 0, 0, 0]。</br>
- *innerRingRadius - {Number} 环状图内环半径，默认值: 0，取值范围大于 0，小于外环半径（外环半径：数据视图框长和宽中较小值的二分之一）。</br>
+ *innerRingRadius - {number}环状图内环半径，默认值: 0，取值范围大于 0，小于外环半径（外环半径：数据视图框长和宽中较小值的二分之一）。</br>
  *sectorStyle - {Object} 环状图中扇形的基础 style，此参数控制环状图扇形基础样式，优先级低于 sectorStyleByFields 和 sectorStyleByCodomain。
  * 此样式对象对象可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。</br>
  * sectorStyleByFields - {Array{Object}} 按专题字段 themeFields（<SuperMap.Layer.Graph::themeFields>）为环状图扇形赋 style，此参数按字段控制环状图扇形样式，优先级低于 sectorStyleByCodomain，高于 sectorStyle。此数组中的元素是样式对象，其可设属性： <SuperMap.Feature.ShapeParameters.Sector::style> 。</br>

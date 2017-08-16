@@ -14,7 +14,7 @@ import LabelMatrixCell from './LabelMatrixCell';
  * @extends SuperMap.LabelMatrixCell
  * @param options - {Object} 可选参数。如：<br>
  *        style - {SuperMap.ServerStyle} 获取或设置符号样式—— SuperMap.ServerStyle 对象。<br>
- *        symbolIDField - {String} 符号 ID 或符号 ID 所对应的字段名称。
+ *        symbolIDField - {string} 符号 ID 或符号 ID 所对应的字段名称。
  */
 export default  class LabelSymbolCell extends LabelMatrixCell {
 
@@ -26,24 +26,17 @@ export default  class LabelSymbolCell extends LabelMatrixCell {
     style = null;
 
     /**
-     * @member SuperMap.LabelSymbolCell.prototype.symbolIDField -{String}
+     * @member SuperMap.LabelSymbolCell.prototype.symbolIDField -{string}
      * @description 获取或设置符号 ID 或符号 ID 所对应的字段名称，必设属性。
      */
     symbolIDField = null;
 
     /**
-     * @member SuperMap.LabelSymbolCell.prototype.type -{String}
+     * @member SuperMap.LabelSymbolCell.prototype.type -{string}
      * @description 制作矩阵专题图时是必须的。
      */
     type = "SYMBOL";
 
-    /*
-     * @function SuperMap.LabelSymbolCell.prototype.constructor
-     * @description 符号类型的矩阵标签元素类构造函数，用于创建 SuperMap.LabelSymbolCell 类的新实例。
-     * @param options - {Object} 可选参数。如：<br>
-     *        style - {SuperMap.ServerStyle} 获取或设置符号样式—— SuperMap.ServerStyle 对象。<br>
-     *        symbolIDField - {String} 符号 ID 或符号 ID 所对应的字段名称。
-     */
     constructor(options) {
         super(options);
         var me = this;
@@ -54,7 +47,7 @@ export default  class LabelSymbolCell extends LabelMatrixCell {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.LabelSymbolCell.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

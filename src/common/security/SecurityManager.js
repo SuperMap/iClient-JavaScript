@@ -53,7 +53,7 @@ SuperMap.SecurityManager = {
      * @function SuperMap.SecurityManager.prototype.registerToken
      * @description 服务请求都会自动带上这个token
      * @param url {String} -服务器域名+端口：如http://localhost:8090
-     * @param token -{String}
+     * @param token -{string}
      */
     registerToken: function (url, token) {
         this.tokens = this.tokens || {};
@@ -68,7 +68,7 @@ SuperMap.SecurityManager = {
      * @function SuperMap.SecurityManager.prototype.registerKey
      * @description 注册key,ids为数组(存在一个key对应多个服务)
      * @param ids -{Array} 可以是服务id数组或者url地址数组或者webAPI类型数组
-     * @param key -{String}
+     * @param key -{string}
      */
     registerKey: function (ids, key) {
         this.keys = this.keys || {};
@@ -96,7 +96,7 @@ SuperMap.SecurityManager = {
     /**
      * @function SuperMap.SecurityManager.prototype.getToken
      * @description token按照域名存储
-     * @param url -{String}-服务器域名+端口，如：http://localhost:8092
+     * @param url -{string}-服务器域名+端口，如：http://localhost:8092
      */
     getToken: function (url) {
         if (!url) {
@@ -116,7 +116,7 @@ SuperMap.SecurityManager = {
     /**
      * @function SuperMap.SecurityManager.prototype.loginOnline
      * @description Online登录验证
-     * @param callbackLocation -{String} 跳转位置
+     * @param callbackLocation -{string} 跳转位置
      * @param newTab -{boolean}是否新窗口打开
      */
     loginOnline: function (callbackLocation, newTab) {
@@ -127,7 +127,7 @@ SuperMap.SecurityManager = {
     /**
      * @function SuperMap.SecurityManager.prototype.loginPortal
      * @description iPortal登录验证
-     * @param url -{String} 网站地址
+     * @param url -{string} 网站地址
      * @param newTab -{boolean}是否新窗口打开
      */
     loginPortal: function (url, newTab) {

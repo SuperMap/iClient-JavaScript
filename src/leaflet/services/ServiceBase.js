@@ -3,23 +3,18 @@
 /**
  * @class L.supermap.ServiceBase
  * @description L.supermap服务基类
- * @param url - {String} 与客户端交互的服务地址。
+ * @param url - {string} 与客户端交互的服务地址。
  * @param options - {Object} 可选参数。如：<br>
- *        serverType - {String} 服务来源 iServer|iPortal|online
+ *        serverType - {string} 服务来源 iServer|iPortal|online
  */
 export var ServiceBase = L.Evented.extend({
+
     options: {
         url: null,
         //服务来源 iServer|iPortal|online
         serverType: null
     },
 
-    /**
-     * @function L.ServiceBase.prototype.initialize
-     * @description L.supermap服务基类的构造函数
-     * @param url - {String} 与客户端交互的服务地址。
-     * @param options - {Object} 参数。
-     */
     initialize: function (url, options) {
         if (url) {
             url = (url.indexOf("/") !== url.length - 1) ?
@@ -31,7 +26,7 @@ export var ServiceBase = L.Evented.extend({
     },
 
     /**
-     * @function destroy
+     * @function L.supermap.ServiceBase.prototype.destroy
      * @description 释放资源，将引用的资源属性置空。
      */
     destroy: function () {

@@ -8,12 +8,12 @@ import QueryBySQLService from  '../../common/iServer/QueryBySQLService';
 import QueryByGeometryService from  '../../common/iServer/QueryByGeometryService';
 import CommontypesConversion from '../core/CommontypesConversion';
 /**
- * @class  L.supermap.QueryService
+ * @class  L.supermap.queryService
  * @classdesc 地图查询服务类。
  * @extends L.supermap.ServiceBase
- * @param url - {String} 地图查询服务访问地址。
+ * @param url - {string} 地图查询服务访问地址。
  * @param - options - {Object} 服务交互时所需的可选参数。如：<br>
- *          serverType - {String} 服务来源 iServer|iPortal|online
+ *          serverType - {string} 服务来源 iServer|iPortal|online
  * @example
  *      L.supermap.queryService(url).queryByBounds(param,function(result){
  *          //doSomething
@@ -24,7 +24,7 @@ export var QueryService = ServiceBase.extend({
     /*
      * @function L.supermap.queryService.prototype.initialize
      * @description L.supermap.queryService类的构造函数。
-     * @param url - {String} 地图查询服务访问地址。
+     * @param url - {string} 地图查询服务访问地址。
      * @param options - {Object} 服务交互时所需的可选参数。
      */
     initialize: function (url, options) {

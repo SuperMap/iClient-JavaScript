@@ -18,10 +18,6 @@ export default  class Vector extends UGCSubLayer {
      */
     style = null;
 
-    /*
-     * Constructor: SuperMap.Vector
-     * UGC 矢量图层类构造函数。
-     */
     constructor(options) {
         options = options || {};
         super(options);

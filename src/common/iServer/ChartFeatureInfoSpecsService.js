@@ -8,7 +8,7 @@ import CommonServiceBase from './CommonServiceBase';
  *              一种是通过监听 ChartFeatureInfoSpecsEvent.PROCESS_COMPLETE 事件；<br>
  *              另一种是使用 AsyncResponder 类实现异步处理。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 地图（特指海图）服务地址。<br>
+ * @param url - {string} 地图（特指海图）服务地址。<br>
  *        如："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图"。<br>
  *        发送请求格式类似于："http://localhost:8090/iserver/services/map-ChartW/rest/maps/海图/chartFeatureInfoSpecs.json"
  * @param options - {Object} 交互服务时所需可选参数。如：<br>

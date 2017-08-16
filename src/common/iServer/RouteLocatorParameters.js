@@ -12,7 +12,7 @@ import Route from './Route';
  *        type -  {String} 【必选参数】类型：点 or 线。</br>
  *        measure - {Double} 【必选参数】定位点的M值。只当路由对象定位点时有意义。</br>
  *        offset - {Double} 定位点偏移量。只当路由对象定位点时有意义，默认为0。</br>
- *        isIgnoreGap - {Boolean} 是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
+ *        isIgnoreGap - {boolean} 是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
  *        startMeasure - {Double} 定位线的起始M值。只当路由对象定位线时有意义。</br>
  *        endMeasure -  {Double} 定位线的终止M值。只当路由对象定位线时有意义。</br>
  */
@@ -24,13 +24,13 @@ export default  class RouteLocatorParameters {
     sourceRoute = null;
 
     /**
-     * @member SuperMap.RouteLocatorParameters.prototype.dataset -{String}
+     * @member SuperMap.RouteLocatorParameters.prototype.dataset -{string}
      * @description 要用来做缓冲区分析的数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示。
      */
     dataset = null;
 
     /**
-     * @member SuperMap.RouteLocatorParameters.prototype.routeIDField -{String}
+     * @member SuperMap.RouteLocatorParameters.prototype.routeIDField -{string}
      * @description  路由对象所在的字段名称。
      *
      */
@@ -44,7 +44,7 @@ export default  class RouteLocatorParameters {
     routeID = null;
 
     /**
-     * @member SuperMap.RouteLocatorParameters.prototype.type -{String}
+     * @member SuperMap.RouteLocatorParameters.prototype.type -{string}
      * @description 【必选参数】类型：点 or 线。
      * 可选值为:
      * LINE :根据起始 M 值及终止 M 值定位线对象。
@@ -65,7 +65,7 @@ export default  class RouteLocatorParameters {
     offset = 0;
 
     /**
-     * @member SuperMap.RouteLocatorParameters.prototype.isIgnoreGap -{Boolean}
+     * @member SuperMap.RouteLocatorParameters.prototype.isIgnoreGap -{boolean}
      * @description 是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。
      */
     isIgnoreGap = false;

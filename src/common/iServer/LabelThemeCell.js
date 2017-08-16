@@ -24,17 +24,11 @@ export default  class LabelThemeCell extends LabelMatrixCell {
     themeLabel = null;
 
     /**
-     * @member SuperMap.LabelThemeCell.prototype.type -{String}
+     * @member SuperMap.LabelThemeCell.prototype.type -{string}
      * @description 制作矩阵专题图时是必须的。
      */
     type = "THEME";
 
-    /*
-     * @function SuperMap.LabelThemeCell.prototype.constructor
-     * @description 专题图类型的矩阵标签元素类构造函数，用于创建  SuperMap.LabelThemeCell 类的新实例。
-     * @param options - {Object} 可选参数。如：<br>
-     *        themeLabel - {SuperMap.ThemeLabel} 使用专题图对象作为矩阵标签的一个元素。
-     */
     constructor(options) {
         super(options);
         var me = this;
@@ -44,9 +38,8 @@ export default  class LabelThemeCell extends LabelMatrixCell {
         }
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.LabelThemeCell.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

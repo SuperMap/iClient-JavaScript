@@ -7,21 +7,21 @@ import ChartQueryFilterParameter from './ChartQueryFilterParameter';
  *               查询和海图范围查询两类，通过属性queryMode指定查询模式。必设属性有：<br>
  *               queryMode、chartLayerNames、chartQueryFilterParameters。当进行海图范围查询时，必设属性还包括bounds。
  * @param options - {Object} 可选参数。如：<br>
- *         queryMode - {String} 海图查询模式类型，SuperMap iClient for JavaScript对
+ *         queryMode - {string} 海图查询模式类型，SuperMap iClient for JavaScript对
  *                              海图支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。<br>
  *         bounds - {SuperMap.Bounds}  海图查询范围。<br>
  *         chartLayerNames - {Array(String)} 查询的海图图层的名称。<br>
  *         chartQueryFilterParameters - {Array <ChartQueryFilterParameter} 海图查询过滤参数。包括：物标代码、
  *                                                                         物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。<br>
- *         returnContent - {Boolean} 获取或设置是返回查询结果记录集 recordsets，还
+ *         returnContent - {boolean} 获取或设置是返回查询结果记录集 recordsets，还
  *                                   是返回查询结果的资源 resourceInfo。默认为 true，表示返回 recordsets。<br>
- *         startRecord - {Number} 查询起始记录位置，默认为0。<br>
- *         expectCount - {Number} 期望查询结果返回的记录数，该值大于0。
+ *         startRecord - {number}查询起始记录位置，默认为0。<br>
+ *         expectCount - {number}期望查询结果返回的记录数，该值大于0。
  */
 export default class ChartQueryParameters {
 
     /**
-     * @member SuperMap.ChartQueryParameters.prototype.queryMode -{String}
+     * @member SuperMap.ChartQueryParameters.prototype.queryMode -{string}
      * @description 海图查询模式类型，SuperMap iClient for JavaScript对海图支持两种<br>
      *              查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。
      */
@@ -47,7 +47,7 @@ export default class ChartQueryParameters {
     chartQueryFilterParameters = null;
 
     /**
-     * @member SuperMap.ChartQueryParameters.prototype.returnContent -{Boolean}
+     * @member SuperMap.ChartQueryParameters.prototype.returnContent -{boolean}
      * @description 获取或设置是返回查询结果记录集 recordsets，还是返回查询结果的
      *      资源 resourceInfo。默认为 true，表示返回 recordsets。
      * @example
@@ -68,13 +68,13 @@ export default class ChartQueryParameters {
     returnContent = true;
 
     /**
-     * @member SuperMap.ChartQueryParameters.prototype.startRecord -{Number}
+     * @member SuperMap.ChartQueryParameters.prototype.startRecord -{number}
      * @description 查询起始记录位置，默认为0。
      */
     startRecord = 0;
 
     /**
-     * @member SuperMap.ChartQueryParameters.prototype.expectCount -{Number}
+     * @member SuperMap.ChartQueryParameters.prototype.expectCount -{number}
      * @description 期望查询结果返回的记录数，该值大于0。
      */
     expectCount = null;
@@ -87,7 +87,7 @@ export default class ChartQueryParameters {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.ChartQueryParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

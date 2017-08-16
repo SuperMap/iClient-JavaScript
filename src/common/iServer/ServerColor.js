@@ -4,26 +4,26 @@
  * @class SuperMap.ServerColor
  * @classdesc 颜色类。该类使用三原色（ RGB ）来表达颜色。
  * @param options - {Object} 可选参数。如：<br>
- *        red - {Number} 获取或设置红色值,默认值为255。<br>
- *        green - {Number} 获取或设置绿色值,默认值为0。<br>
- *        blue - {Number} 获取或设置蓝色值,默认值为0。
+ *        red - {number}获取或设置红色值,默认值为255。<br>
+ *        green - {number}获取或设置绿色值,默认值为0。<br>
+ *        blue - {number}获取或设置蓝色值,默认值为0。
  */
 export default class ServerColor {
 
     /**
-     * @member SuperMap.ServerColor.prototype.red -{Number}
+     * @member SuperMap.ServerColor.prototype.red -{number}
      * @description 获取或设置红色值,默认值为255。
      */
     red = 255;
 
     /**
-     * @member SuperMap.ServerColor.prototype.green -{Number}
+     * @member SuperMap.ServerColor.prototype.green -{number}
      * @description 获取或设置绿色值,默认值为0。
      */
     green = 0;
 
     /**
-     * @member SuperMap.ServerColor.prototype.blue -{Number}
+     * @member SuperMap.ServerColor.prototype.blue -{number}
      * @description 获取或设置蓝色值,默认值为0。
      */
     blue = 0;
@@ -51,9 +51,8 @@ export default class ServerColor {
         }
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.ServerColor.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

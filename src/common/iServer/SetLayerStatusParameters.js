@@ -8,8 +8,8 @@ import LayerStatus from './LayerStatus';
  * @param options - {Object} 可选参数。如：<br>
  *        layerStatusList - {Array<SuperMap.LayerStatus>} 获取或设置图层可见状态（SuperMap.LayerStatus）集合，必设属性。
  *                         集合中的每个 SuperMap.LayerStatus 对象代表一个子图层的可视状态。<br>
- *        holdTime - {String} 获取或设置资源在服务端保存的时间。<br>
- *        resourceID - {String} 获取或设置资源服务 ID。
+ *        holdTime - {string} 获取或设置资源在服务端保存的时间。<br>
+ *        resourceID - {string} 获取或设置资源服务 ID。
  */
 export default  class SetLayerStatusParameters {
 
@@ -21,22 +21,18 @@ export default  class SetLayerStatusParameters {
     layerStatusList = null;
 
     /**
-     * @member SuperMap.SetLayerStatusParameters.prototype.holdTime -{Number}
+     * @member SuperMap.SetLayerStatusParameters.prototype.holdTime -{number}
      * @description 获取或设置资源在服务端保存的时间。 默认为 15 分钟。
      */
     holdTime = 15;
 
     /**
-     * @member SuperMap.SetLayerStatusParameters.prototype.resourceID -{String}
+     * @member SuperMap.SetLayerStatusParameters.prototype.resourceID -{string}
      * @description 获取或设置资源服务 ID 。非必设参数，如果设置该参数则会在指定的 TempLayer 进行图层的显示控制；<br>
      *                如果不设置该参数，则会首先创建一个 TempLayer ，然后在新创建的 TempLayer 进行图层的显示控制。
      */
     resourceID = null;
 
-    /*
-     * Constructor: SuperMap.SetLayerStatusParameters
-     *子图层显示控制参数类的构造函数
-     */
     constructor(options) {
         var me = this;
         me.layerStatusList = [];
@@ -45,9 +41,8 @@ export default  class SetLayerStatusParameters {
         }
     }
 
-
     /**
-     * @function destroy
+     * @function SuperMap.SetLayerStatusParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
@@ -56,7 +51,6 @@ export default  class SetLayerStatusParameters {
         me.holdTime = null;
         me.resourceID = null;
     }
-
 
     /**
      * @function SuperMap.SetLayerStatusParameters.prototype.toJSON

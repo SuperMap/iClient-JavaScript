@@ -11,7 +11,7 @@ import Elasticsearch from 'elasticsearch';
 
 export default  class ElasticSearchService {
     /**
-     *  @member SuperMap.ElasticSearchService.prototype.url -{String}
+     *  @member SuperMap.ElasticSearchService.prototype.url -{string}
      *  @description ElasticSearch服务地址
      */
     url = null;

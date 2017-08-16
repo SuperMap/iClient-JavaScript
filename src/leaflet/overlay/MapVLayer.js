@@ -4,18 +4,15 @@ import MapVRenderer from "./mapv/MapVRenderer";
 /**
  * @class L.supermap.mapVLayer
  * @classdesc MapV图层
+ * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param dataSet - {DataSet} MapV图层数据集
  * @param mapVOptions - {object} MapV图层参数
  * @param options - {object} 可选参数。如：<br>
- *        attributionPrefix - {String} 版权信息前缀。<br>
- *        attribution - {String} 版权信息。
+ *        attributionPrefix - {string} 版权信息前缀。<br>
+ *        attribution - {string} 版权信息。
  */
 export var MapVLayer = L.Layer.extend({
 
-    /**
-     * @member L.supermap.mapVLayer.protptype.options
-     * @description 可选参数。
-     */
     options: {
         attributionPrefix: null,
         attribution: " © 2017 百度 MapV with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>"
@@ -36,7 +33,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.onAdd
+     * @function L.supermap.mapVLayer.prototype.onAdd
      * @description 添加地图图层
      * @param map - {L.map} 要添加的地图
      */
@@ -62,7 +59,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.onRemove
+     * @function L.supermap.mapVLayer.prototype.onRemove
      * @description 删除地图图层
      * @param map - {L.map} 要删除的图层
      */
@@ -76,7 +73,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.addData
+     * @function L.supermap.mapVLayer.prototype.addData
      * @description 追加数据
      * @param data - {object} 要追加的数据
      * @param options -{object} 要追加的值
@@ -86,7 +83,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.update
+     * @function L.supermap.mapVLayer.prototype.update
      * @description 更新数据
      * @param data - {object} 要更新的数据
      * @param options -{object} 要更新的值
@@ -96,7 +93,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.getData
+     * @function L.supermap.mapVLayer.prototype.getData
      * @description 获取数据
      */
     getData: function () {
@@ -107,16 +104,16 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.removeData
+     * @function L.supermap.mapVLayer.prototype.removeData
      * @description 删除数据
-     * @param filter - {String} 过滤条件
+     * @param filter - {string} 过滤条件
      */
     removeData: function (filter) {
         this.renderer && this.renderer.removeData(filter);
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.clearData
+     * @function L.supermap.mapVLayer.prototype.clearData
      * @description 清除数据
      */
     clearData: function () {
@@ -124,7 +121,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.draw
+     * @function L.supermap.mapVLayer.prototype.draw
      * @description 绘制
      */
     draw: function () {
@@ -132,16 +129,16 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.setZIndex
+     * @function L.supermap.mapVLayer.prototype.setZIndex
      * @description 设置叠加优先级
-     * @param zIndex - {number} 优先级
+     * @param zIndex - {number}优先级
      */
     setZIndex: function (zIndex) {
         this.canvas.style.zIndex = zIndex;
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.render
+     * @function L.supermap.mapVLayer.prototype.render
      * @description 着色
      */
     render: function () {
@@ -149,7 +146,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.getCanvas
+     * @function L.supermap.mapVLayer.prototype.getCanvas
      * @description 获取画布
      */
     getCanvas: function () {
@@ -157,7 +154,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.getContainer
+     * @function L.supermap.mapVLayer.prototype.getContainer
      * @description 获取容器
      */
     getContainer: function () {
@@ -165,7 +162,7 @@ export var MapVLayer = L.Layer.extend({
     },
 
     /**
-     * @function L.supermap.mapVLayer.protptype.getTopLeft
+     * @function L.supermap.mapVLayer.prototype.getTopLeft
      * @description 获取左上角坐标
      */
     getTopLeft: function () {

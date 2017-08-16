@@ -7,7 +7,9 @@ import SuperMap from '../../../common/SuperMap';
 /**
  * @class L.supermap.VectorTileJSON
  * @classdesc iServer 矢量瓦片json表述出图
- * @param url - {String} 矢量瓦片json表述服务地址
+ * @private
+ * @extends L.Class{@linkdoc-leaflet/#class}
+ * @param url - {string} 矢量瓦片json表述服务地址
  */
 export var VectorTileJSON = L.Class.extend({
 

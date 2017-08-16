@@ -12,9 +12,9 @@ import {RangeMode, ColorGradientType} from '../REST';
  * @extends SuperMap.Theme
  * @param options - {Object} 可选参数。如：<br>
  *        items - {Array<SuperMap.ThemeRangeItem>} 分段专题图子项数组。<br>
- *        rangeExpression - {String} 分段字段表达式。<br>
+ *        rangeExpression - {string} 分段字段表达式。<br>
  *        rangeMode - {SuperMap.RangeMode} 分段专题图的分段模式。<br>
- *        rangeParameter - {Number} 分段参数。<br>
+ *        rangeParameter - {number}分段参数。<br>
  *        colorGradientType - {SuperMap.ColorGradientType} 渐变颜色枚举类。<br>
  *        memoryData - {SuperMap.ThemeMemoryData} 专题图内存数据。
  */
@@ -36,7 +36,7 @@ export default class ThemeRange extends Theme {
     items = null;
 
     /**
-     * @member SuperMap.ThemeRange.prototype.rangeExpression -{String}
+     * @member SuperMap.ThemeRange.prototype.rangeExpression -{string}
      * @description 分段字段表达式。<br>
      *              由于范围分段专题图基于各种分段方法根据一定的距离进行分段，因而范围分段专题图所基于的字段值的数据类型必须为数值型。对于字段表达式，只能为数值型的字段间的运算。必设字段。
      */
@@ -53,7 +53,7 @@ export default class ThemeRange extends Theme {
     rangeMode = RangeMode.EQUALINTERVAL;
 
     /**
-     * @member SuperMap.ThemeRange.prototype.rangeParameter -{Number}
+     * @member SuperMap.ThemeRange.prototype.rangeParameter -{number}
      * @description 分段参数。<br>
      *              当分段模式为等距离分段法，平方根分段，对数分段法，计数分段法其中一种模式时，该参数用于设置分段个数，必设；当分段模式为标准差分段法时，
      *              该参数不起作用；当分段模式为自定义距离时，该参数用于设置自定义距离。默认值为 -1。
@@ -70,10 +70,6 @@ export default class ThemeRange extends Theme {
      */
     colorGradientType = ColorGradientType.YELLOW_RED;
 
-    /*
-     * Constructor: SuperMap.ThemeRange
-     * 范围分段专题图构造函数。
-     */
     constructor(options) {
         super("RANGE", options);
         if (options) {
@@ -103,6 +99,12 @@ export default class ThemeRange extends Theme {
         me.colorGradientType = null;
     }
 
+    /**
+     * @function SuperMap.ThemeRange.fromObj
+     * @description 从传入对象获取范围分段专题图类。
+     * @param obj - {object} 传入对象
+     * @return {SuperMap.ThemeRange}
+     */
     static fromObj(obj) {
         if (!obj) return;
         var res = new ThemeRange();

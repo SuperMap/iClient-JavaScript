@@ -5,15 +5,13 @@ import L from "leaflet";
 /**
  * @class L.supermap.ThemeLayer
  * @classdesc 专题图层基类，调用建议使用其子类实现类。
- * @param name - {String} 专题图层名称
+ * @private
+ * @extends L.Layer{@linkdoc-leaflet/#layer}
+ * @param name - {string} 专题图层名称
  * @param options -{object} 待设置得参数。
  */
 export var ThemeLayer = L.Layer.extend({
 
-    /**
-     * @member L.supermap.ThemeLayer.prototype.options -{object}
-     * @description 待设置得参数。
-     */
     options: {
         name: null,
         opacity: 1,
@@ -211,8 +209,8 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getFeatureBy
      * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，返回此 feature（并且只返回第一个）。
-     * @param property - {String} 要素得某个属性名
-     * @param value - {String} 对应属性名得值
+     * @param property - {string} 要素得某个属性名
+     * @param value - {string} 对应属性名得值
      */
     getFeatureBy: function (property, value) {
         var me = this;
@@ -230,7 +228,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getFeatureById
      * @description 通过给定一个 id，返回对应的矢量要素,如果不存在则返回 null
-     * @param featureId - {number} 要素id
+     * @param featureId - {number}要素id
      */
     getFeatureById: function (featureId) {
         return this.getFeatureBy('id', featureId);
@@ -239,8 +237,8 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getFeaturesByAttribute
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param attrName - {String} key 值
-     * @param attrValue - {String} value 值
+     * @param attrName - {string} key 值
+     * @param attrValue - {string} value 值
      * @return {Array} 返回所有匹配的要素数组。
      */
     getFeaturesByAttribute: function (attrName, attrValue) {
@@ -288,7 +286,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.setOpacity
      * @description 设置图层的不透明度,取值[0-1]之间。
-     * @param opacity - {number} 不透明度
+     * @param opacity - {number}不透明度
      */
     setOpacity: function (opacity) {
         var me = this;
@@ -324,7 +322,7 @@ export var ThemeLayer = L.Layer.extend({
      * @description 添加专题要素事件监听。添加专题要素事件监听。
      * @param event - {Event} 监听事件
      * @param callback - {function} 回调函数
-     * @param context - {String} 信息
+     * @param context - {string} 信息
      */
     on: function (event, callback, context) {
         if (this.renderer) {
@@ -340,7 +338,7 @@ export var ThemeLayer = L.Layer.extend({
      * @description 移除专题要素事件监听。
      * @param event - {Event} 监听事件
      * @param callback - {function} 回调函数
-     * @param context - {String} 信息
+     * @param context - {string} 信息
      */
     off: function (event, callback, context) {
         var me = this;
@@ -369,7 +367,7 @@ export var ThemeLayer = L.Layer.extend({
     /**
      * @function L.supermap.ThemeLayer.prototype.getLocalXY
      * @description 地理坐标转为像素坐标。{Array} 长度为 2 的数组，第一个元素表示 x 坐标，第二个元素表示 y 坐标。
-     * @param coordinate - {String} 坐标系统
+     * @param coordinate - {string} 坐标系统
      */
     getLocalXY: function (coordinate) {
         if (!this._map) {

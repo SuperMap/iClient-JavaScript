@@ -6,15 +6,15 @@ import CommonServiceBase  from './CommonServiceBase';
  * @class SuperMap.NetworkAnalystServiceBase
  * @description 网络分析服务基类。
  * @extends SuperMap.CommonServiceBase
- * @param url - {String} 网络分析服务地址
+ * @param url - {string} 网络分析服务地址
  * @param options - {object} 网络分析可选参数。如：<br>
- *        format - {String} 查询结果返回格式
+ *        format - {string} 查询结果返回格式
  *
  */
 export default  class NetworkAnalystServiceBase extends CommonServiceBase {
 
     /**
-     * @member SuperMap.NetworkAnalystServiceBase.prototype.format -{String}
+     * @member SuperMap.NetworkAnalystServiceBase.prototype.format -{string}
      * @description 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *              参数格式为"ISERVER","GEOJSON",GEOJSON
      */
@@ -28,7 +28,7 @@ export default  class NetworkAnalystServiceBase extends CommonServiceBase {
     }
 
     /**
-     * @function destroy
+     * @function SuperMap.NetworkAnalystServiceBase.prototype.destroy
      * @description 释放资源，将引用的资源属性置空。
      */
     destroy() {

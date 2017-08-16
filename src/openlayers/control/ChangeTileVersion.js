@@ -9,13 +9,13 @@ ol.supermap.control = ol.supermap.control || {};
  * @classdesc 版本切换控件(目前仅支持IE10及以上)暂时不支持自定义位置
  * @extends ol.control.Control
  * @param options -{options} 可选参数。如：<br>
- *        title - {String} 提示信息。<br>
- *        tooltip - {String} 提示显示位置 top | right | bottom | left。<br>
+ *        title - {string} 提示信息。<br>
+ *        tooltip - {string} 提示显示位置 top | right | bottom | left。<br>
  *        collapsed - {boolean} 是否折叠。<br>
- *        lastText - {String} 上一个版本的按钮布局。<br>
- *        nextText - {String} 下一个版本的按钮布局。<br>
- *        ico - {String} 控件显示的logo。<br>
- *        orientation - {String} 方向horizontal|vertical。<br>
+ *        lastText - {string} 上一个版本的按钮布局。<br>
+ *        nextText - {string} 下一个版本的按钮布局。<br>
+ *        ico - {string} 控件显示的logo。<br>
+ *        orientation - {string} 方向horizontal|vertical。<br>
  *        switch - {boolean} 是否显示上/下一个版本切换控件
  * @example
  * 用法： var control = new ol.supermap.control.ChangeTileVersion({
@@ -241,7 +241,7 @@ export default class ChangeTileVersion extends ol.control.Control {
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.setContent
      * @description 设置版本相关信息
-     * @param version -{String} 版本信息
+     * @param version -{string} 版本信息
      */
     setContent(version) {
         var content = version || {};
@@ -273,7 +273,7 @@ export default class ChangeTileVersion extends ol.control.Control {
     /**
      * @function ol.supermap.control.ChangeTileVersion.prototype.updateLength
      * @description 更新进度条长度
-     * @param length -{number} 进度条长度
+     * @param length -{number}进度条长度
      */
     updateLength(length) {
         if (length > 0) {

@@ -3,6 +3,7 @@ import L from "leaflet";
 /**
  * @constant L.supermap.DefaultStyle
  * @description 这个style对应的是默认设置
+ * @private
  */
 export var DefaultStyle = L.supermap.DefaultStyle = {
 

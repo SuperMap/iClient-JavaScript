@@ -11,7 +11,7 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  * @classdesc
  * 插值分析服务类
  * 插值分析可以将有限的采样点数据，通过插值算法对采样点周围的数值情况进行预测，可以掌握研究区域内数据的总体分布状况，从而使采样的离散点不仅仅反映其所在位置的数值情况，还可以反映区域的数值分布。目前SuperMap iServer的插值功能提供从点数据集插值得到栅格数据集的功能，支持以下常用的内插方法，包括：反距离加权插值、克吕金（Kriging）插值法、样条（径向基函数，Radial Basis Function）插值、点密度插值。
- * @param url - {String} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
+ * @param url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
  * @param options - {Object} 可选参数。如</br>
  *        eventListeners - {Object} 需要被注册的监听器对象。
  *
@@ -29,7 +29,7 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  */
 export default class InterpolationAnalystService extends SpatialAnalystBase {
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.mode -{String}
+     * @member SuperMap.BuildCacheJobParameter.prototype.mode -{string}
      * @description 插值分析类型。
      */
 

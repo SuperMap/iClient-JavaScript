@@ -15,7 +15,7 @@ import CommonServiceBase from './CommonServiceBase';
      * });
  * (end)
  *
- * @param url - {String} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
+ * @param url - {string} 服务的访问地址。如：http://localhost:8090/iserver/services/map-world/rest/maps/World+Map 。
  * @param options - {Object} 参数 。
  * eventListeners - {Object} 需要被注册的监听器对象。
  */
