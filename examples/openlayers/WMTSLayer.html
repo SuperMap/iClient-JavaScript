@@ -26,6 +26,7 @@
         view: new ol.View({
             center: [0, 0],
             zoom: 0,
+
         }),
         layers: [new ol.layer.Tile({
             opacity: 0.7,
@@ -36,6 +37,7 @@
                 format: 'image/png',
                 tileGrid: new ol.tilegrid.WMTS({
                     origin: [-2.0037508342787E7, 2.0037508342787E7],
+                    extent:[-2.0037508342787E7, -2.0037508342787E7,2.0037508342787E7, 2.0037508342787E7],
                     resolutions: resolutions,
                     matrixIds: matrixIds
                 }),
