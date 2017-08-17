@@ -41,11 +41,7 @@ export default class MapvLayer extends BaiduMapLayer {
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
         this.bindEvent();
     }
-    /**
-     * @function ol.supermap.MapvLayer.prototype.init
-     * @param options - {object} 参数
-     * @description 初始化参数
-     */
+
     init(options) {
         var self = this;
         self.options = options;

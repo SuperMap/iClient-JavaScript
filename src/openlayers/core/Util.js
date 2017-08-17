@@ -12,12 +12,14 @@ export default class Util {
 
     }
 
+
     static toGeoJSON(smObj) {
         if (smObj) {
             var format = new GeoJSONFormat();
             return JSON.parse(format.write(smObj));
         }
     }
+
 
     static toSuperMapGeometry(geoJSON) {
         if (geoJSON && geoJSON.type) {

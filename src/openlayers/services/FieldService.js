@@ -10,8 +10,8 @@ import FieldStatisticService from '../../common/iServer/FieldStatisticService';
  *      new ol.supermap.FieldService(url).getFields(function(result){
  *           //doSomething
  *      });
- * @param url - {string} 与客户端交互的服务地址。
- * @param options -{Object} 交互时所需可选参数。
+ * @param url - {String} 与客户端交互的服务地址。
+ * @param options -{Object} 参数。
  */
 export default class FieldService extends ServiceBase {
 
@@ -24,7 +24,8 @@ export default class FieldService extends ServiceBase {
     /**
      * @function ol.supermap.FieldService.prototype.getFields
      * @description 字段查询服务
-     * @param callback -{function}
+     * @param callback -{function} 回调函数
+     * @return {ol.supermap.FieldService}
      */
     getFields(callback) {
         var me = this;
@@ -47,6 +48,7 @@ export default class FieldService extends ServiceBase {
      * @description 字段统计服务
      * @param params -{SuperMap.FieldStatisticsParameters} 查询所需参数类。
      * @param callback -{function} 回调函数
+     * @return {ol.supermap.FieldService}
      */
     getFieldStatisticsInfo(params, callback) {
         var me = this,

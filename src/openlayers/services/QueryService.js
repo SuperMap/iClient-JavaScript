@@ -30,9 +30,11 @@ export default class QueryService extends ServiceBase {
      * @function ol.supermap.QueryService.prototype.queryByBounds
      * @description bounds查询地图服务
      * @param params - {SuperMap.QueryByBoundsParameters} 通过Bounds查询的相关参数类
-     * @param callback -{function} 回掉函数
+     * @param callback -{function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+     * @return ol.supermap.QueryService}
      */
+
     queryByBounds(params, callback, resultFormat) {
         var me = this;
         var queryService = new QueryByBoundsService(me.url, {
@@ -55,6 +57,7 @@ export default class QueryService extends ServiceBase {
      * @param params - {QueryByDistanceParameters} Distance查询相关参数类
      * @param callback - {function} 回调函数
      * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+     * @return {ol.supermap.QueryService}
      */
     queryByDistance(params, callback, resultFormat) {
         var me = this;
@@ -78,6 +81,7 @@ export default class QueryService extends ServiceBase {
      * @param params - {SuperMap.QueryBySQLParameters} SQL查询相关参数类
      * @param callback -{function} 回调函数
      * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
+     * @return {ol.supermap.QueryService}
      */
     queryBySQL(params, callback, resultFormat) {
         var me = this;
@@ -101,6 +105,7 @@ export default class QueryService extends ServiceBase {
      * @param params - {SuperMap.QueryByGeometryParameters} Geometry查询相关参数类
      * @param callback - {function} 回调函数
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
+     * @return {ol.supermap.QueryService}
      */
     queryByGeometry(params, callback, resultFormat) {
         var me = this;

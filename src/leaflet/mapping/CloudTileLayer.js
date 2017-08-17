@@ -28,15 +28,15 @@ export var CloudTileLayer = L.TileLayer.extend({
     defaultURL: 'http://t2.supermapcloud.com/FileService/image',
 
     options: {
-        /*
-         * APIProperty: mapName
-         * {String} 地图名称，默认为 quanguo。
-         */
+    /**
+     * @member L.supermap.cloudTileLayer.prototype.options -{String}
+     * @description 地图名称，默认为 quanguo。
+     */
         mapName: "quanguo",
-        /*
-         * Property: type
-         * {String} 地图投影。
-         */
+    /**
+     * @member L.supermap.cloudTileLayer.prototype.type -{{String} }
+     * @description 地图投影。
+     */
         type: "web",
         minZoom: 3,
         maxZoom: 18,

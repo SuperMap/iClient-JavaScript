@@ -2,10 +2,10 @@ import ol from 'openlayers/dist/ol-debug';
 import SuperMap from '../../../common/SuperMap';
 ol.supermap = ol.supermap || {};
 /**
- * @class ol.source.ThemeFeature
+ * @class ol.supermap.ThemeFeature
  * @classdesc 主题特征
- * @param geometry - {string}
- * @param attributes -{string}
+ * @param geometry - {object} 几合集
+ * @param attributes -{object} 属性集合
  */
 export default class ThemeFeature {
 
@@ -13,7 +13,10 @@ export default class ThemeFeature {
         this.geometry = geometry;
         this.attributes = attributes;
     }
-
+    /**
+     * @function ol.supermap.ThemeFeature.prototype.toFeature+
+     * @description 转为矢量要素
+     */
     toFeature() {
         var geometry = this.geometry;
         if (geometry instanceof ol.geom.Point) {

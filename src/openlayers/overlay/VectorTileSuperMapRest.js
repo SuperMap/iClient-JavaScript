@@ -6,7 +6,7 @@ ol.supermap = ol.supermap || {};
 /**
  * @class ol.source.VectorTileSuperMapRest
  * @classdesc 矢量瓦片REST服务
- * @param options -{Object} 交互时所需可选参数。
+ * @param options -{Object} 参数。
  */
 export default class VectorTileSuperMapRest extends ol.source.VectorTile {
 

@@ -4,7 +4,9 @@ import './graphic/Graphic';
 /**
  * @class ol.source.Graphic
  * @classdesc 图形类。
- * @param options -{Object} 可选图形参数
+ * @param options -{olx.source.ImageCanvasOptions} 图形参数
+ * @extends ol.source.ImageCanvas
+ *
  */
 export default class Graphic extends ol.source.ImageCanvas {
 

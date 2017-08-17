@@ -50,6 +50,11 @@ export default class Baidu extends ol.source.TileImage {
         });
     }
 
+    /**
+     * @function ol.source.Baidu.prototype.defaultTileGrid
+     * @description 自定义网格切片
+     * @return {ol.tilegrid.TileGrid}
+     */
     static defaultTileGrid() {
         var tileGird = new ol.tilegrid.TileGrid({
             extent: [-33554432, -33554432, 33554432, 33554432],

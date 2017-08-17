@@ -5,8 +5,9 @@ import Vector from '../../../common/iServer/ThemeVector';
 /**
  * @class ol.source.GeoFeature
  * @classdesc 地理特征
- * @param name - {string} 名称
- * @param opt_options -{Object} 所需可选参数。
+ * @param name - {String} 名称
+ * @param opt_options -{olx.source.ImageCanvasOptions} 参数。
+ * @extends  Theme
  */
 
 export default class GeoFeature extends Theme {
@@ -44,8 +45,8 @@ export default class GeoFeature extends Theme {
     }
     /**
      * @function ol.source.GeoFeature.prototype.addFeatures
-     * @param features - {object} 特征对象参数
-     * @description 添加特征
+     * @param features - {object} 要素对象
+     * @description 添加要素
      */
 
     addFeatures(features) {
@@ -73,8 +74,8 @@ export default class GeoFeature extends Theme {
     }
     /**
      * @function ol.source.GeoFeature.prototype.removeFeatures
-     * @param features - {Object} 特征对象参数。
-     * @description 移除制定特征
+     * @param features - {Object} 要删除的要素对象
+     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      */
     removeFeatures(features) {
         this.clearCache();
@@ -82,7 +83,7 @@ export default class GeoFeature extends Theme {
     }
     /**
      * @function ol.source.GeoFeature.prototype.removeAllFeatures
-     * @description 移除全部特征
+     * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures() {
         this.clearCache();
@@ -91,7 +92,7 @@ export default class GeoFeature extends Theme {
 
     /**
      * @function ol.source.GeoFeature.prototype.redrawThematicFeatures
-     * @description 高亮专题图
+     * @description 重绘所有专题要素。
      * @param extent -{object} 视图范围数据
      */
     redrawThematicFeatures(extent) {
@@ -162,8 +163,8 @@ export default class GeoFeature extends Theme {
     }
     /**
      * @function ol.source.GeoFeature.prototype.createThematicFeature
-     * @param feature - {Object} 特征对象参数。
-     * @description 创建特征
+     * @param feature - {Object} 要素对象
+     * @description 创建专题要素
      */
     createThematicFeature(feature) {
         var style = SuperMap.Util.copyAttributesWithClip(this.style);
@@ -199,7 +200,7 @@ export default class GeoFeature extends Theme {
     }
     /**
      * @function ol.source.GeoFeature.prototype.clear
-     * @description 清除画布
+     * @description 清除的内容包括数据（features） 、专题要素、缓存。
      */
     clear() {
         this.renderer.clearAll();
@@ -209,7 +210,8 @@ export default class GeoFeature extends Theme {
     }
     /**
      * @function ol.source.GeoFeature.prototype.getCacheCount
-     * @description 获取缓存长度
+     * @description 获取当前缓存数量。
+     * @return {Number} 返回当前缓存数量。
      */
     getCacheCount() {
         return this.cacheFields.length;
@@ -217,7 +219,7 @@ export default class GeoFeature extends Theme {
     /**
      * @function ol.source.GeoFeature.prototype.setMaxCacheCount
      * @description 设置缓存最大条数
-     * @param cacheCount -{number}缓存总数
+     * @param cacheCount -{number} 最大缓存量
      */
     setMaxCacheCount(cacheCount) {
         if (!isNaN(cacheCount)) {
@@ -227,8 +229,8 @@ export default class GeoFeature extends Theme {
     }
     /**
      * @function ol.source.GeoFeature.prototype.setMaxCacheCount
-     * @description 通过特征ID获取外形
-     * @param featureID -{number}特征ID
+     * @description 通过 FeatureID 获取 feature 关联的所有图形。
+     * @param featureID -{number} 要素ID
      */
     getShapesByFeatureID(featureID) {
         var list = [];

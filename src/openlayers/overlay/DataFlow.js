@@ -3,7 +3,7 @@ import DataFlowService  from "../services/DataFlowService";
 /**
  * @class ol.source.DataFlow
  * @classdesc 数据流
- * @param opt_options -{Object} 交互时所需可选参数
+ * @param opt_options -{olx.source.VectorOptions} 参数
  * @extends ol.source.Vector
  */
 export default class DataFlow extends ol.source.Vector {
@@ -49,6 +49,11 @@ export default class DataFlow extends ol.source.Vector {
         return this;
     }
 
+    /**
+     * @function  ol.source.DataFlow.prototype.setExcludeField
+     * @description 设置唯一字段
+     * @param excludeField -{object} 排除字段。
+     */
     setExcludeField(excludeField) {
         this.dataService.setExcludeField(excludeField);
         this.excludeField = excludeField;

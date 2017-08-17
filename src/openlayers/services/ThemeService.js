@@ -14,7 +14,7 @@ import CommonThemeService from '../../common/iServer/ThemeService';
  *      });
  * @param url - {string} 服务的访问地址。
  * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ *        eventListeners - {Object} 需要被注册的监听器对象。
  */
 export default class ThemeService extends ServiceBase {
 

@@ -8,19 +8,15 @@ ol.supermap = ol.supermap || {};
 /**
  * @class ol.supermap.WebMap
  * @classdesc 网络图层类。
+ * @param id -{string} 获取ID
+ * @param options -{object} 交互操作参数
  */
 export default class WebMap extends ol.Observable {
 
     EventType = {
         WEBMAPLOADEND: 'webmaploadend',
     }
-    /*
-     * @function ol.supermap.WebMap.prototype.constructor
-     * @description 默认图层弹出框
-     * @param id -{string} 获取ID
-     * @param options -{object} 交互操作参数
-     *
-     */
+
     constructor(id, options) {
         super();
         this.id = id;
@@ -82,6 +78,7 @@ export default class WebMap extends ol.Observable {
                 this.createLayer(type, layerInfo);
             }
         }
+
         //底图加载完成后开始处理图层队列里的图层
         while (layerQueue.length > 0) {
             var layerInfo = layerQueue.pop();
@@ -94,6 +91,12 @@ export default class WebMap extends ol.Observable {
         }
         this.dispatchEvent({type: ol.supermap.WebMap.EventType.WEBMAPLOADEND, value: this.map});
     };
+    /**
+     * @function ol.supermap.WebMap.prototype.addLayer
+     * @description 添加图层
+     * @param layer -{SuperMap.Layer} 此专题要素所在图层
+     * @param options - {object} 创建地图所需参数
+     */
 
     addLayer(layer, options) {
         if (!this.map) {
@@ -144,8 +147,8 @@ export default class WebMap extends ol.Observable {
      * @function ol.supermap.WebMap.prototype.getResolutionsFromScales
      * @description 通过比例尺获取分辨率
      * @param scales - {Array<number>} 排序比例尺数组
-     * @param dpi - {number}屏幕分辨率
-     * @param units - {string} 地图的单位
+     * @param dpi - {number} 屏幕分辨率
+     * @param units - {String} 地图的单位
      * @param datum - {SuperMap.Datum} 大地参照系类
      */
     getResolutionsFromScales(scales, dpi, units, datum) {
@@ -158,7 +161,7 @@ export default class WebMap extends ol.Observable {
     /**
      * @function ol.supermap.WebMap.prototype.createLayer
      * @description 创建图层
-     * @param type - {string} 图层类型
+     * @param type - {String} 图层类型
      * @param layerInfo - {object} 图层信息
      */
     createLayer(type, layerInfo) {
@@ -266,8 +269,8 @@ export default class WebMap extends ol.Observable {
      * @function ol.supermap.WebMap.prototype.getWmtsResolutionsAndMatrixIds
      * @description 获取WMTS图层的分辨率数组和标识矩阵
      * @param wellKnownScaleSet - {object} 图层的分辨率数据集
-     * @param units - {object} 地理单元
-     * @param scales - {string} 地理范围
+     * @param units - {String} 地图的单位元
+     * @param scales - {Array<number>} 排序比例尺数组
      * @param mapOrigin - {object} 原始地图
      * @param mapExtent - {object} 地图的程度
      */
@@ -298,9 +301,10 @@ export default class WebMap extends ol.Observable {
      * @function ol.supermap.WebMap.prototype.createTiandituLayer
      * @description 创建天地图图层
      * @param layerInfo - {object} 图层信息
-     * @param epsgCode - {number}epsg编码
-     * @return {*}
+     * @param epsgCode - {number} epsg编码
+     * @return {ol.layer.Tile} 获取天地图的图层
      */
+
     createTiandituLayer(layerInfo, epsgCode) {
         var proj = epsgCode === 4326 ? "c" : "w";
         var tdtURL =

@@ -12,7 +12,10 @@ import TransferSolutionService from '../../common/iServer/TransferSolutionServic
  *      .queryStop(params,function(result){
  *           //doSomething
  *      })
- * @api
+ * @extends ol.supermap.ServiceBase
+ * @param url - {String} 服务地址
+ * @param option - {object} 参数。<br>
+ *        serverType - {String} 服务来源 iServer|iPortal|online
  */
 export default class TrafficTransferAnalystService extends ServiceBase {
 
@@ -25,6 +28,7 @@ export default class TrafficTransferAnalystService extends ServiceBase {
      * @description 站点查询服务
      * @param params -{StopQueryParameters} 查询相关参数类
      * @param callback -{function} 回调函数
+     * @return {ol.supermap.TrafficTransferAnalystService}
      */
     queryStop(params, callback) {
         var me = this;
@@ -45,6 +49,7 @@ export default class TrafficTransferAnalystService extends ServiceBase {
      * @description 交通换乘线路查询服务
      * @param params -{TransferPathParameters} 查询相关参数类
      * @param callback -{function} 回调函数
+     * @return {ol.supermap.TrafficTransferAnalystService}
      */
     analysisTransferPath(params, callback) {
         var me = this;
@@ -65,6 +70,7 @@ export default class TrafficTransferAnalystService extends ServiceBase {
      * @description 交通换乘方案查询服务
      * @param params -{TransferSolutionParameters} 查询相关参数类
      * @param callback -{function} 回调函数
+     * @return {ol.supermap.TrafficTransferAnalystService}
      */
     analysisTransferSolution(params, callback) {
         var me = this;

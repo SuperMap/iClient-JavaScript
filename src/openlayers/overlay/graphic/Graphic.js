@@ -1,7 +1,7 @@
 import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.Graphic
- * @classdesc 地理几何信息
+ * @classdesc 地理几何信息类
  * @param geometry - {object} 几何对象
  * @extends ol.Object
  */

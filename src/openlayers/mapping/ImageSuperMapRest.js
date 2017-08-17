@@ -7,7 +7,7 @@ import  Util from '../core/Util';
  * @class ol.source.ImageSuperMapRest
  * @classdesc UGC 影像图层类。
  * @param options - {object} 参数
- * @extends  ol.source.TileImage
+ * @extends ol.source.TileImage
  */
 export default class ImageSuperMapRest extends ol.source.TileImage {
 
@@ -25,10 +25,12 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         layerUrl = appendCredential(layerUrl, options.serverType);
         /**
          * @function ol.source.ImageSuperMapRest.prototype.appendCredential
+         * @description 添加凭据
          * @param url - {string} 地址
          * @param serverType - {object} 服务类型
-         * @description 添加凭据
+         * @return {string} 添加生成后的新地址
          */
+
         function appendCredential(url, serverType) {
             var newUrl = url, credential, value;
             switch (serverType) {
@@ -100,12 +102,14 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         if (options.cacheEnabled === true && options.tileversion) {
             layerUrl += "tileversion=" + options.tileversion;
         }
+
         /**
          * @function ol.source.ImageSuperMapRest.prototype.tileUrlFunction
-         * @param tileCoord - {object} 算瓦片坐标
+         * @param tileCoord - {object} 瓦片坐标系
          * @param pixelRatio - {object} 像素密度
-         * @param projection - {object} 投影
-         * @description 添加凭据
+         * @param projection - {string} 投影参考系
+         * @description 瓦片地址参数
+         * @return {string} 返回瓦片地址参数
          */
         function tileUrlFunction(tileCoord, pixelRatio, projection) {
             if (!this.tileGrid) {
@@ -188,6 +192,16 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         return options;
     }
 
+    /**
+     * @function ol.source.ImageSuperMapRest.prototype.createTileGrid
+     * @description 创建网格切片
+     * @param extent -{number} 长度
+     * @param maxZoom -{number} 最大的放大级别
+     * @param minZoom -{number} 最小的放大级别
+     * @param tileSize -{number} 瓦片的尺寸
+     * @param origin -{number} 原点
+     * @return {ol.tilegrid.TileGrid} 创建网格切片
+     */
     static createTileGrid(extent, maxZoom, minZoom, tileSize, origin) {
         var tilegrid = ol.tilegrid.createXYZ({
             extent: extent,

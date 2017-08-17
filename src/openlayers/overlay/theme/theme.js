@@ -5,9 +5,9 @@ import ThemeFeature from './themeFeature';
 /**
  * @class ol.source.Theme
  * @classdesc 主题
- * @param name - {string}
- * @param opt_options -{Object}
- * @extends  ol.source.ImageCanvas
+ * @param name - {String}
+ * @param opt_options -{olx.source.ImageCanvasOptions}
+ * @extends ol.source.ImageCanvas
  */
 export default class Theme extends ol.source.ImageCanvas {
 
@@ -101,7 +101,10 @@ export default class Theme extends ol.source.ImageCanvas {
         //处理用户预先（在图层添加到 map 前）监听的事件
         this.addTFEvents();
     }
-
+    /**
+     * @function ol.source.Theme.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
     destroy() {
         this.EVENT_TYPES = null;
         this.isBaseLayer = null;
@@ -116,6 +119,11 @@ export default class Theme extends ol.source.ImageCanvas {
         this.movingOffset = null;
         this.currentMousePosition = null;
     }
+    /**
+     * @function ol.source.Theme.prototype.destroyFeatures
+     * @description 销毁某个要素
+     * @param features - {object} 将被销毁得要素
+     */
 
     destroyFeatures(features) {
         var all = (features == undefined);
@@ -130,6 +138,11 @@ export default class Theme extends ol.source.ImageCanvas {
         }
     }
 
+    /**
+     * @function ol.source.Theme.prototype.setOpacity
+     * @description 设置图层的不透明度,取值[0-1]之间。
+     * @param opacity - {number} 不透明度
+     */
     setOpacity(opacity) {
         if (opacity !== this.opacity) {
             this.opacity = opacity;
@@ -144,30 +157,22 @@ export default class Theme extends ol.source.ImageCanvas {
     }
 
     /**
-     * APIMethod: addFeatures
-     * 抽象方法，可实例化子类必须实现此方法。
-     *
-     * 向专题图图层中添加数据 , 专题图仅接收 SuperMap.Feature.Vector 类型数据，
+     * @function ol.source.Theme.prototype.addFeatures
+     * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 , 专题图仅接收 SuperMap.Feature.Vector 类型数据，
      * feature 将储存于 features 属性中，其存储形式为数组。
-     *
-     *
-     * Parameters:
-     * features - {Array(<SuperMap.Feature.Vector>)} 需要添加的数据。
+     * @param features - {Array(<SuperMap.Feature.Vector>)} 需要添加的数据
      */
     addFeatures(features) {
 
     }
-
     /**
-     * APIMethod: removeFeatures
-     * 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
+     * @function ol.source.Theme.prototype.removeFeatures
+     * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      * 参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
      * 如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有feature。
      * 如果要删除的 feature 数组中的元素特别多，推荐使用 removeAllFeatures，
      * 删除所有feature后再重新添加。这样效率会更高。
-     *
-     * Parameters:
-     * features - {Array(<SuperMap.Feature.Vector>)} 要删除feature的数组。
+     * @param features - {Array(<SuperMap.Feature.Vector>)} 要删除feature的数组。
      */
     removeFeatures(features) {
         if (!features || features.length === 0) {
@@ -207,8 +212,8 @@ export default class Theme extends ol.source.ImageCanvas {
     }
 
     /**
-     * APIMethod: removeAllFeatures
-     * 清除当前图层所有的矢量要素。
+     * @function ol.source.Theme.prototype.removeAllFeatures
+     * @description 清除当前图层所有的矢量要素。
      */
     removeAllFeatures() {
         if (this.renderer) {
@@ -219,11 +224,9 @@ export default class Theme extends ol.source.ImageCanvas {
     }
 
     /**
-     * Method: getFeatures
-     * 查看当前图层中的有效数据。
-     *
-     * Returns:
-     * {SuperMap.Feature.Vector} 用户加入图层的有效数据。
+     * @function ol.source.Theme.prototype.getFeatures
+     * @description 清除当前图层所有的矢量要素。
+     * @return {SuperMap.Feature.Vector} 用户加入图层的有效数据。
      */
     getFeatures() {
         var len = this.features.length;
@@ -236,17 +239,13 @@ export default class Theme extends ol.source.ImageCanvas {
     }
 
     /**
-     * APIMethod: getFeatureBy
-     * 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
-     * 返回此 feature（并且只返回第一个）。
-     *
-     * Parameters:
-     * property - {string} feature 的某个属性名称。
-     * value - {string} property 所对应的值。
-     *
-     * Returns:
-     * {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
+     * @function ol.source.Theme.prototype.getFeatures
+     * @description 清除当前图层所有的矢量要素。
+     * @param property - {String} feature 的某个属性名称。
+     * @param value - {String} property 所对应的值。
+     * @return {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
      */
+
     getFeatureBy(property, value) {
         var feature = null;
         for (var id in this.features) {
@@ -260,29 +259,21 @@ export default class Theme extends ol.source.ImageCanvas {
     }
 
     /**
-     * APIMethod: getFeatureById
-     * 通过给定一个 id，返回对应的矢量要素。
-     *
-     * Parameters:
-     * featureId - {string} 矢量要素的属性 id。
-     *
-     * Returns:
-     * {SuperMap.Feature.Vector} 对应id的 feature，如果不存在则返回 null。
+     * @function ol.source.Theme.prototype.getFeatureById
+     * @description 通过给定一个 id，返回对应的矢量要素。
+     * @param featureId - {String} 矢量要素的属性 id。
+     * @return {SuperMap.Feature.Vector} 对应id的 feature，如果不存在则返回 null。
      */
     getFeatureById(featureId) {
         return this.getFeatureBy('id', featureId);
     }
 
     /**
-     * APIMethod: getFeaturesByAttribute
-     * 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     *
-     * Parameters:
-     * attrName - {string} 属性的 key。
-     * attrValue - {Mixed} 属性对应的 value 值。
-     *
-     * Returns:
-     * Array(<SuperMap.Feature.Vector>) 一个匹配的 feature 数组。
+     * @function ol.source.Theme.prototype.getFeaturesByAttribute
+     * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
+     * @param attrName - {String} 属性的 key。
+     * @param attrValue - {Mixed} 属性对应的 value 值。
+     * @return {SuperMap.Feature.Vector} 一个匹配的 feature 数组。
      */
     getFeaturesByAttribute(attrName, attrValue) {
         var feature,
@@ -300,27 +291,18 @@ export default class Theme extends ol.source.ImageCanvas {
     }
 
     /**
-     * Method: redrawThematicFeatures
-     * 抽象方法，可实例化子类必须实现此方法。
-     *
-     * 重绘专题要素。
-     *
-     * Parameters:
-     * extent - {Array} 当前级别下计算出的地图范围
+     * @function ol.source.Theme.prototype.redrawThematicFeatures
+     * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
+     * @param  extent - {Array} 当前级别下计算出的地图范围
      */
     redrawThematicFeatures(extent) {
     }
 
     /**
-     * APIMethod: on
-     * 添加专题要素事件监听。
-     *
-     * 支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
-     *
-     * Parameters:
-     * event - {string} 事件名称。
-     * callback - {Function} 事件回调函数。
-     *
+     * @function ol.source.Theme.prototype.on
+     * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
+     * @param  event - {String} 事件名称。
+     * @param  callback - {Function} 事件回调函数。
      */
     on(event, callback) {
         var cb = callback;
@@ -333,7 +315,12 @@ export default class Theme extends ol.source.ImageCanvas {
             this.renderer.on(event, cb);
         }
     }
-
+    /**
+     * @function ol.source.Theme.prototype.fire
+     * @description 添加专题要素事件监听
+     * @param  type - {String} 事件类型。
+     * @param  event - {String} 事件名称。
+     */
     fire(type, event) {
         event = event.originalEvent;
         var x = this.getX(event);
@@ -392,13 +379,10 @@ export default class Theme extends ol.source.ImageCanvas {
     }
 
     /**
-     * APIMethod: un
-     * 移除专题要素事件监听 。
-     *
-     * Parameters:
-     * event - {string} 事件名称。
-     * callback - {Function} 事件回调函数。
-     *
+     * @function ol.source.Theme.prototype.un
+     * @description 移除专题要素事件监听 。
+     * @param  event - {String} 事件名称。
+     * @param  callback - {Function} 事件回调函数。
      */
     un(event, callback) {
         var cb = callback;
@@ -421,9 +405,8 @@ export default class Theme extends ol.source.ImageCanvas {
     }
 
     /**
-     * Method: addTFEvents
-     * 将图层添加到地图上之前用户要求添加的事件监听添加到图层。
-     *
+     * @function ol.source.Theme.prototype.addTFEvents
+     * @description 将图层添加到地图上之前用户要求添加的事件监听添加到图层。
      */
     addTFEvents() {
         var tfEs = this.TFEvents;
@@ -432,6 +415,11 @@ export default class Theme extends ol.source.ImageCanvas {
             this.renderer.on(tfEs[i][0], tfEs[i][1]);
         }
     }
+    /**
+     * @function ol.source.Theme.prototype.getLocalXY
+     * @param  coordinate - {object} 事件名称。
+     * @description 坐标系统
+     */
 
     getLocalXY(coordinate) {
         var pixelP;

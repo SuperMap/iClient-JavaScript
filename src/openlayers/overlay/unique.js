@@ -5,8 +5,9 @@ import Vector from '../../common/iServer/ThemeVector';
 /**
  * @class ol.source.Unique
  * @classdesc 地理专题图
- * @param name - {string}
- * @param opt_options -{Object}
+ * @param name - {String} 名称
+ * @param opt_options -{Object} 参数。
+ * @extends  GeoFeature
  */
 export default class Unique extends GeoFeature {
 
@@ -38,14 +39,21 @@ export default class Unique extends GeoFeature {
             this.maxCacheCount = this.features.length * 5;
         }
     }
-
+    /**
+     * @function ol.source.Unique.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
+     */
     destroy() {
         this.style = null;
         this.themeField = null;
         this.styleGroups = null;
         GeoFeature.prototype.destroy.apply(this, arguments);
     }
-
+    /**
+     * @function ol.source.Unique.prototype.createThematicFeature
+     * @description 创建专题要素
+     * @param feature - {object} 要创建得要素
+     */
     createThematicFeature(feature) {
         var style = this.getStyleByData(feature);
         //创建专题要素时的可选参数
@@ -63,7 +71,11 @@ export default class Unique extends GeoFeature {
         }
         return thematicFeature;
     }
-
+    /**
+     * @function ol.source.Unique.prototype.getStyleByData
+     * @description 根据用户数据（feature）设置专题要素的 Style
+     * @param fea {object} 用户要素数据
+     */
     getStyleByData(fea) {
         var style = {};
         var feature = fea;

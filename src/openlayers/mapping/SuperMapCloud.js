@@ -2,7 +2,7 @@ import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.source.SuperMapCloud
  * @classdesc 超图云
- * @param opt_options - {object} 参数
+ * @param opt_options - {olx.source.XYZOptions} 参数
  * @extends ol.source.XYZ
  */
 export default class SuperMapCloud extends ol.source.XYZ {

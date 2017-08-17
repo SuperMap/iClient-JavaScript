@@ -30,7 +30,7 @@ export default class Logo extends ol.control.Control {
         super(options);
         this.options = options;
         this.element = options.element = initLayerout.call(this);
-        /**
+        /*
          * @function ol.supermap.control.Logo.prototype.initLayerout
          * @description 初始化图层信息
          */
@@ -65,9 +65,9 @@ export default class Logo extends ol.control.Control {
                 "<img src=" + imgSrc + " alt='" + alt + "'  style='border: none;" + styleSize + "white-space: nowrap'></a>";
             return div;
         }
-        /**
+        /*
          * @function ol.supermap.control.Logo.prototype.setDivStyle
-         * @div 获取容器对象
+         * @div 获取div对象
          * @description 设置对象style
          */
         function setDivStyle(div) {
