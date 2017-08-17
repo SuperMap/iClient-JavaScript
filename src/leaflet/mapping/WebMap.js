@@ -9,7 +9,7 @@ import {CartoCSSToLeaflet} from '../overlay/carto/CartoCSSToLeaflet' ;
  * @classdesc 网络图层类。
  * @extends L.LayerGroup{@linkdoc-leaflet/#layergroup}
  * @param id - {number}网络图层id。
- * @param options - {object} 图层可选参数。如：<br>
+ * @param options - {Object} 图层可选参数。如：<br>
  *        map - {string} 地图。<br>
  *        server - {string} 服务地址。<br>
  *        featureLayerPopupEnable - {boolean} 是否启动要素图层提示框。<br>
@@ -87,7 +87,7 @@ export var WebMap = L.LayerGroup.extend({
      * @description 添加图层容器
      * @param layer - {L.Layer} 待添加的图层
      * @param isBaseLayer -{boolean} 是否为底图层
-     * @param options - {object} 创建地图的可选参数
+     * @param options - {Object} 创建地图的可选参数
      */
     addLayerWrapper: function (layer, isBaseLayer, options) {
         if (isBaseLayer) {
@@ -176,7 +176,7 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @function L.supermap.webmap.prototype.createMap
      * @description 创建地图
-     * @param options - {object} 创建地图所需参数
+     * @param options - {Object} 创建地图所需参数
      */
     createMap: function (options) {
         var crs = options.crs || L.CRS.EPSG3857;
@@ -212,7 +212,7 @@ export var WebMap = L.LayerGroup.extend({
      * @function L.supermap.webmap.prototype.createLayer
      * @description 创建图层
      * @param type - {string} 图层类型
-     * @param layerInfo - {object} 图层信息
+     * @param layerInfo - {Object} 图层信息
      */
     createLayer: function (type, layerInfo) {
         var prjCoordSys = layerInfo.prjCoordSys,
@@ -308,7 +308,7 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @function L.supermap.webmap.prototype.createTiandituLayer
      * @description 创建天地图图层
-     * @param layerInfo - {object} 图层信息
+     * @param layerInfo - {Object} 图层信息
      * @param epsgCode - {number}epsg编码
      */
     createTiandituLayer: function (layerInfo, epsgCode) {
@@ -334,8 +334,8 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @function L.supermap.webmap.prototype.createMarkersLayer
      * @description 创建图标图层
-     * @param layerInfo - {object} 图层信息
-     * @param crs - {object} 坐标对象
+     * @param layerInfo - {Object} 图层信息
+     * @param crs - {Object} 坐标对象
      */
     createMarkersLayer: function (layerInfo, crs) {
         var markers = layerInfo.markers || [],
@@ -371,8 +371,8 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @function L.supermap.webmap.prototype.createVectorLayer
      * @description 创建矢量要素图层
-     * @param layerInfo - {object} 图层信息
-     * @param crs - {object} 坐标对象
+     * @param layerInfo - {Object} 图层信息
+     * @param crs - {Object} 坐标对象
      */
     createVectorLayer: function (layerInfo, crs) {
         var style = layerInfo.style,
@@ -451,7 +451,7 @@ export var WebMap = L.LayerGroup.extend({
     /**
      * @function L.supermap.webmap.prototype.createWmsLayer
      * @description 创建Wms图层
-     * @param layerInfo - {object} 图层信息
+     * @param layerInfo - {Object} 图层信息
      */
     createWmsLayer: function (layerInfo) {
         var url = layerInfo.url,

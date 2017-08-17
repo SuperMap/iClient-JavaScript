@@ -12,7 +12,7 @@ import L from "leaflet";
  * @private
  * @extends L.supermap.ThemeLayer
  * @param name - {string} 专题图名
- * @param options - {object} 需要设置得参数对象。如：<br>
+ * @param options - {Object} 需要设置得参数对象。如：<br>
  *        nodesClipPixel - {number}节点抽稀像素距离，默认值 2。<br>
  *        isHoverAble - {boolean} 图形是否在 hover 时高亮 ，默认值：false。<br>
  *        isMultiHover - {boolean} 是否多图形同时高亮，用于高亮同一个数据对应的所有图形（如：多面），默认值：false。<br>

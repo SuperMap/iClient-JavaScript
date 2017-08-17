@@ -22,7 +22,7 @@ export default class KeyServiceParameter {
     /**
      * @function SuperMap.KeyServiceParameter.prototype.toJSON
      * @description 转换成JSON对象
-     * @return {object} 参数的JSON对象
+     * @return {Object} 参数的JSON对象
      */
     toJSON() {
         return {

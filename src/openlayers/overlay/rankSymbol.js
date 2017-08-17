@@ -6,8 +6,10 @@ import Graph from './theme/graph';
  * @classdesc 获取等级标志
  * @param name - {string} 专题图层名
  * @param symbolType -{string} 标志类型
- * @param opt_options -{Object} 交互时所需可选参数
+ * @param opt_options -{Object} 参数
+ * @extends  ol.source.Graph
  */
+
 export default class RankSymbol extends Graph {
 
     constructor(name, symbolType, opt_options) {
@@ -61,7 +63,7 @@ export default class RankSymbol extends Graph {
     /**
      * @function ol.source.RankSymbol.prototype.createThematicFeature
      * @description 创建专题图形
-     * @param feature -{object} 要创建的专题图形要素
+     * @param feature -{Object} 要创建的专题图形要素
      */
     createThematicFeature(feature) {
         var thematicFeature;

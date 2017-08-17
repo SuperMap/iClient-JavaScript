@@ -79,7 +79,7 @@ export default  class ThemeGridUniqueItem {
     /**
      * @function SuperMap.ThemeGridUniqueItem.fromObj
      * @description 从传入对象获取栅格单值专题图子项类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeGridUniqueItem}
      */
     static fromObj(obj) {

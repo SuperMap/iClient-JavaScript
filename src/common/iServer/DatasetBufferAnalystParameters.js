@@ -76,7 +76,12 @@ export default  class DatasetBufferAnalystParameters extends BufferAnalystParame
         me.isAttributeRetained = null;
         me.isUnion = null;
     }
-
+    /**
+     * @function SuperMap.DatasetBufferAnalystParameters.toObject
+     * @param datasetBufferAnalystParameters - {Object} 数据集缓冲区分析参数
+     * @param tempObj -{Object} 参数。
+     * @description 生成数据集缓冲区分析对象
+     */
     static toObject(datasetBufferAnalystParameters, tempObj) {
         for (var name in datasetBufferAnalystParameters) {
             if (name === "bufferSetting") {

@@ -6,8 +6,8 @@ import ServerStyle from './ServerStyle';
  * @classdesc 标签或符号流动显示和牵引线风格设置类。
  *              通过该类可以设置专题图中符号是否流动显示、是否使用牵引线以及牵引线风格。
  * @param options - {Object} 可选参数。如：<br>
- *        flowEnabled - {boolean} 是否流动显示标签或符号。
- *        leaderLineDisplayed - {boolean} 是否显示标签或符号和它标注的对象之间的牵引线。
+ *        flowEnabled - {boolean} 是否流动显示标签或符号。<br>
+ *        leaderLineDisplayed - {boolean} 是否显示标签或符号和它标注的对象之间的牵引线。<br>
  *        leaderLineStyle - {SuperMap.ServerStyle} 标签或符号与其标注对象之间牵引线的风格。
  */
 export default  class ThemeFlow {
@@ -60,7 +60,7 @@ export default  class ThemeFlow {
     /**
      * @function SuperMap.ThemeFlow.fromObj
      * @description 从传入对象获取标签或符号流动显示和牵引线风格设置类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeFlow}
      */
     static fromObj(obj) {

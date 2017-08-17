@@ -76,7 +76,7 @@ export default  class ThemeGraphAxes {
     /**
      * @function SuperMap.ThemeGraphAxes.fromObj
      * @description 从传入对象获取统计专题图坐标轴样式类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeGraphAxes}
      */
     static fromObj(obj) {

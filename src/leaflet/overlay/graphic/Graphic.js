@@ -6,7 +6,7 @@ import L from "leaflet";
  * @classdesc 图形类。
  * @private
  * @extends L.Class{@linkdoc-leaflet/#class}
- * @param options - {object} 图形参数
+ * @param options - {Object} 图形参数
  */
 export var Graphic = L.Class.extend({
 
@@ -28,7 +28,7 @@ export var Graphic = L.Class.extend({
     /**
      * @function L.supermap.graphic.prototype.setCanvas
      * @description 设置画布
-     * @param canvas - {object} 传入需要设置的画布
+     * @param canvas - {Object} 传入需要设置的画布
      */
     setCanvas: function (canvas) {
         this._canvas = canvas;

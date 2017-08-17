@@ -84,7 +84,7 @@ export default  class ThemeDotDensity extends Theme {
     /**
      * @function SuperMap.ThemeDotDensity.fromObj
      * @description 从传入对象获取点密度专题图中点的风格。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeDotDensity}
      */
     static fromObj(obj) {

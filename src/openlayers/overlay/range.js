@@ -6,7 +6,8 @@ import Vector from '../../common/iServer/ThemeVector';
  * @class ol.source.Range
  * @classdesc 获取范围信息
  * @param name - {string} 名称
- * @param opt_options -{Object} 交互时所需可选参数。
+ * @param opt_options -{Object} 参数。
+ * @extends ol.source.GeoFeature
  */
 export default class Range extends GeoFeature {
 
@@ -57,7 +58,7 @@ export default class Range extends GeoFeature {
 
     /**
      * @function ol.source.Range.prototype.createThematicFeature
-     * @param feature -{object} 要创建的专题图形要素
+     * @param feature -{Object} 要创建的专题图形要素
      * @description 创建专题图特征
      */
     createThematicFeature(feature) {
@@ -84,7 +85,7 @@ export default class Range extends GeoFeature {
 
     /**
      * @function ol.source.Range.prototype.getStyleByData
-     * @param fea -{object} 要创建的专题图形要素
+     * @param fea -{Object} 要创建的专题图形要素
      * @description 获取style
      */
     getStyleByData(fea) {

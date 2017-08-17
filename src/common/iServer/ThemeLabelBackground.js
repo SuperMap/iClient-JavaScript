@@ -50,7 +50,7 @@ export default  class ThemeLabelBackground {
     /**
      * @function SuperMap.ThemeLabelBackground.fromObj
      * @description 从传入对象获取标签背景风格类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeLabelBackground}
      */
     static fromObj(obj) {

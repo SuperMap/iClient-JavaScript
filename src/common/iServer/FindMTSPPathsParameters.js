@@ -36,7 +36,7 @@ export default  class FindMTSPPathsParameters {
     isAnalyzeById = false;
 
     /**
-     * @member SuperMap.FindMTSPPathsParameters.prototype.nodes -{Array<{SuperMap.Point}|Number>}
+     * @member SuperMap.FindMTSPPathsParameters.prototype.nodes -{Array<SuperMap.Point>}|{Array<Number>}
      * @description 配送目标集合，必设字段。<br>
      *               当 SuperMap.FindMTSPPathsParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
      *               当 SuperMap.FindMTSPPathsParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。

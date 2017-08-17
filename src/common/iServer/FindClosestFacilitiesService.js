@@ -78,8 +78,8 @@ export default class FindClosestFacilitiesService extends NetworkAnalystServiceB
     /**
      * @function SuperMap.FindClosestFacilitiesService.prototype.getJson
      * @description 将对象转化为JSON字符串。
-     * @param isAnalyzeById - {boolean}
-     * @param params - {Array}
+     * @param isAnalyzeById - {boolean} 是否通过ID来分析
+     * @param params - {Array} 分析参数数组
      * @return {Object} 转化后的JSON字符串。
      */
     getJson(isAnalyzeById, params) {

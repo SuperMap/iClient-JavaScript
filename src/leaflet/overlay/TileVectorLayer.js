@@ -12,7 +12,7 @@ import SuperMap from '../../common/SuperMap';
  * @example
  *      L.superMap.tiledVectorLayer(url).addTo(map);
  * @param url - {string} 图层数据服务地址
- * @param options - {object} 图层可选参数
+ * @param options - {Object} 图层可选参数
  */
 export var  TileVectorLayer = VectorGrid.extend({
 

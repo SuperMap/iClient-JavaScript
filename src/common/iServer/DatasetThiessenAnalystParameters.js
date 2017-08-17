@@ -47,7 +47,12 @@ export default  class DatasetThiessenAnalystParameters extends ThiessenAnalystPa
             me.filterQueryParameter = null;
         }
     }
-
+    /**
+     * @function SuperMap.DatasetThiessenAnalystParameters.toObject
+     * @param datasetThiessenAnalystParameters - {Object} 泰森分析数据集参数。
+     * @param tempObj - {Object} 参数。
+     * @description 泰森分析数据集对象
+     */
     static  toObject(datasetThiessenAnalystParameters, tempObj) {
         for (var name in datasetThiessenAnalystParameters) {
             if (name === "clipRegion") {

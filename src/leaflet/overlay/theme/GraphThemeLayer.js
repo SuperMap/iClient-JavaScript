@@ -24,7 +24,7 @@ import CommontypesConversion from '../../core/CommontypesConversion';
  *              目前提供的统计图类型有：柱状图（Bar），折线图（Line），饼图（Pie），三维柱状图（Bar3D），点状图（Point），环状图（Ring）。
  * @param name - {string} 专题图表名称
  * @param chartsType - {string} 图表类型。目前可用："Bar", "Line", "Pie"。
- * @param options - {object} 待设置得参数。如：<br>
+ * @param options - {Object} 待设置得参数。如：<br>
  *        isOverLay - {boolean} 是否进行压盖处理，如果设为 true，图表绘制过程中将隐藏对已在图层中绘制的图表产生压盖的图表,默认值：true。
  */
 export var GraphThemeLayer = ThemeLayer.extend({

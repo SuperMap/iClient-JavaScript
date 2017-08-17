@@ -6,7 +6,7 @@ import L from "leaflet";
  * @classdesc 百度切片图层类。
  * @extends L.TileLayer{@linkdoc-leaflet/#tilelayer}
  * @param url -{string} 切片地址
- * @param options -{object} 切片参数。如：<br>
+ * @param options -{Object} 切片参数。如：<br>
  *        minZoom - {number} 最小缩放级别
  *        maxZoom - {number} 最大缩放级别
  *        bounds - {L.bounds} 显示范围

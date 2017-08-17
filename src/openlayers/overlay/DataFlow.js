@@ -3,8 +3,8 @@ import DataFlowService  from "../services/DataFlowService";
 /**
  * @class ol.source.DataFlow
  * @classdesc 数据流
- * @param opt_options -{Object} 交互时所需可选参数
- * @extends ol.source.Vector
+ * @param opt_options -{olx.source.VectorOptions} 参数
+ * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.Vector}
  */
 export default class DataFlow extends ol.source.Vector {
 
@@ -41,7 +41,7 @@ export default class DataFlow extends ol.source.Vector {
     /**
      * @function ol.source.DataFlow.prototype.setPrjCoordSys
      * @description 设置坐标参考系
-     * @param prjCoordSys - {object} 参考系
+     * @param prjCoordSys - {Object} 参考系
      */
     setPrjCoordSys(prjCoordSys) {
         this.dataService.setPrjCoordSys(prjCoordSys);
@@ -49,6 +49,11 @@ export default class DataFlow extends ol.source.Vector {
         return this;
     }
 
+    /**
+     * @function  ol.source.DataFlow.prototype.setExcludeField
+     * @description 设置唯一字段
+     * @param excludeField -{Object} 排除字段。
+     */
     setExcludeField(excludeField) {
         this.dataService.setExcludeField(excludeField);
         this.excludeField = excludeField;
@@ -57,7 +62,7 @@ export default class DataFlow extends ol.source.Vector {
     /**
      * @function ol.source.DataFlow.prototype.setGeometry
      * @description 设置几何图形
-     * @param geometry - {object} 要素图形
+     * @param geometry - {Object} 要素图形
      */
     setGeometry(geometry) {
         this.dataService.setGeometry(geometry);

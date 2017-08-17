@@ -1,6 +1,5 @@
 import SuperMap from '../SuperMap';
 import ChartQueryFilterParameter from './ChartQueryFilterParameter';
-
 /**
  * @class SuperMap.ChartQueryParameters
  * @classdesc 海图查询参数类，该类用于设置海图查询时的相关参数，海图查询分为海图属性<br>
@@ -10,7 +9,7 @@ import ChartQueryFilterParameter from './ChartQueryFilterParameter';
  *         queryMode - {string} 海图查询模式类型，SuperMap iClient for JavaScript对
  *                              海图支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。<br>
  *         bounds - {SuperMap.Bounds}  海图查询范围。<br>
- *         chartLayerNames - {Array(String)} 查询的海图图层的名称。<br>
+ *         chartLayerNames - {Array<String>} 查询的海图图层的名称。<br>
  *         chartQueryFilterParameters - {Array <ChartQueryFilterParameter} 海图查询过滤参数。包括：物标代码、
  *                                                                         物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。<br>
  *         returnContent - {boolean} 获取或设置是返回查询结果记录集 recordsets，还
@@ -34,13 +33,13 @@ export default class ChartQueryParameters {
     bounds = null;
 
     /**
-     * @member SuperMap.ChartQueryParameters.prototype.chartLayerNames -{Array(String)}
+     * @member SuperMap.ChartQueryParameters.prototype.chartLayerNames -{Array<String>}
      * @description 查询的海图图层的名称。
      */
     chartLayerNames = null;
 
     /**
-     * @member SuperMap.ChartQueryParameters.prototype.chartQueryFilterParameters -{Array(ChartQueryFilterParameter)}
+     * @member SuperMap.ChartQueryParameters.prototype.chartQueryFilterParameters -{Array<ChartQueryFilterParameter>}
      * @description 海图查询过滤参数。<br>
      *               包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
      */

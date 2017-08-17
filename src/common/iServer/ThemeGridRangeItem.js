@@ -89,7 +89,7 @@ export default  class ThemeGridRangeItem {
     /**
      * @function SuperMap.ThemeGridRangeItem.fromObj
      * @description 从传入对象获取栅格分段专题图子项类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeGridRangeItem}
      */
     static fromObj(obj) {

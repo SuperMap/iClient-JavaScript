@@ -20,8 +20,9 @@ import Vector from './Vector';
  */
 export default  class GetLayersInfoService extends CommonServiceBase {
 
-    /*
-     * @instance isTempLayers 当前url对应的图层是否是临时图层。{Boolean}
+    /**
+     * @member SuperMap.BuildCacheJobParameter.prototype.isTempLayers -{Boolean}
+     * @description 当前url对应的图层是否是临时图层。
      */
     isTempLayers = false;
 
@@ -63,10 +64,10 @@ export default  class GetLayersInfoService extends CommonServiceBase {
         });
     }
 
-    /*
-     * Method: getLayerComplted
-     * 编辑完成，执行此方法。
-     * result - {Object} 服务器返回的结果对象。
+    /**
+     * @function SuperMap.GetLayersInfoService.prototype.serviceProcessCompleted
+     * @description 编辑完成，执行此方法。
+     * @param result -{Object} 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
         var me = this, existRes, layers, len;
@@ -79,13 +80,12 @@ export default  class GetLayersInfoService extends CommonServiceBase {
         me.events.triggerEvent("processCompleted", {result: result[0]});
     }
 
-    /*
+    /**
      * TODO 专题图时候可能会用到
-     * Method: handleLayers
-     * 处理iserver 新增图层组数据 (subLayers.layers 中可能还会含有 subLayers.layers)
-     *
-     * len - {number}subLayers.layers的长度
-     * layers - {Array} subLayers.layers
+     * @function SuperMap.GetLayersInfoService.prototype.handleLayers
+     * @description 处理iserver 新增图层组数据 (subLayers.layers 中可能还会含有 subLayers.layers)
+     * @param len - {number} subLayers.layers的长度
+     * @param layers - {Array} subLayers.layers
      */
     handleLayers(len, layers) {
         var me = this, tempLayer;

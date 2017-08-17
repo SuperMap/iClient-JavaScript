@@ -15,7 +15,7 @@ import L from "leaflet";
  * @private
  * @extends L.GridLayer{@linkdoc-leaflet/#gridlayer}
  * @param options - {Object} 矢量格网参数。如：<br>
- *        vectorTileLayerStyles - {object} 矢量网片图层风格。<br>
+ *        vectorTileLayerStyles - {Object} 矢量网片图层风格。<br>
  *        renderer - {string} 渲染器类型。<br>
  *        format - {L.supermap.VectorTileFormat} 矢量瓦片格式。<br>
  *        interactive - {boolean} 是否可交互 。

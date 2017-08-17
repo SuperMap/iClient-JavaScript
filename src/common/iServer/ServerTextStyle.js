@@ -183,7 +183,7 @@ export default class ServerTextStyle {
     /**
      * @function SuperMap.ServerTextStyle.fromObj
      * @description 从传入对象获服务端文本风格类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ServerTextStyle}
      */
     static fromObj(obj) {

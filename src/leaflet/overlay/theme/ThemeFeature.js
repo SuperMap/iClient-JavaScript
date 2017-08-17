@@ -8,7 +8,7 @@ import L from "leaflet";
  * @private
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param geometry - {L.supermap.graphic} 要素图形
- * @param attributes - {object} 要素属性
+ * @param attributes - {Object} 要素属性
  */
 export var ThemeFeature = L.Class.extend({
 

@@ -13,7 +13,7 @@ import TransferSolutionService from '../../common/iServer/TransferSolutionServic
  *    })
  * @extends L.supermap.ServiceBase
  * @param url - {string} 服务地址
- * @param option - {object} 可选参数。如：<br>
+ * @param option - {Object} 可选参数。如：<br>
  *        serverType - {string} 服务来源 iServer|iPortal|online
  */
 export var TrafficTransferAnalystService = ServiceBase.extend({

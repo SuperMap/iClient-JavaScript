@@ -102,7 +102,7 @@ export default class ThemeRange extends Theme {
     /**
      * @function SuperMap.ThemeRange.fromObj
      * @description 从传入对象获取范围分段专题图类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeRange}
      */
     static fromObj(obj) {

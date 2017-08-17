@@ -73,7 +73,7 @@ export default class FindLocationService extends NetworkAnalystServiceBase {
      * @function SuperMap.FindLocationService.prototype.getCentersJson
      * @description 将数组对象转化为JSON字符串。
      * @param params - {Array} 需要转换的参数
-     * @param {Object} 转化后的JSON字符串。
+     * @return {string} 转化后的JSON字符串。
      */
     getCentersJson(params) {
         var json = "[",

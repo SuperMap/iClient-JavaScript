@@ -8,7 +8,7 @@ import GeoDecodingParameter from './GeoDecodingParameter';
  * @class SuperMap.AddressMatchService
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
  * @param options - {Object} 参数。
- * @param url {string}
+ * @param url {string} 地址
  */
 export default class AddressMatchService extends CommonServiceBase {
 
@@ -41,6 +41,13 @@ export default class AddressMatchService extends CommonServiceBase {
         this.processAsync(url, params);
     }
 
+    /**
+     * @function SuperMap.AddressMatchService.prototype.processAsync
+     * @description 负责将客户端的动态分段服务参数传递到服务端。
+     * @param url - {string} 服务地址
+     * @param params - {Object} 参数
+     */
+
     processAsync(url, params) {
         var me = this;
         return FetchRequest.get(url, params).then(function (response) {
@@ -56,10 +63,19 @@ export default class AddressMatchService extends CommonServiceBase {
         });
     }
 
+    /**
+     * @function SuperMap.AddressMatchService.prototype.serviceProcessCompleted
+     * @param result - {Object} 服务器返回的结果对象。
+     * @description 服务流程是否完成
+     */
     serviceProcessCompleted(result) {
         super.serviceProcessCompleted(result);
     }
-
+    /**
+     * @function SuperMap.AddressMatchService.prototype.serviceProcessCompleted
+     * @param result - {Object} 服务器返回的结果对象。
+     * @description 服务流程是否失败
+     */
     serviceProcessFailed(result) {
         super.serviceProcessFailed(result);
     }

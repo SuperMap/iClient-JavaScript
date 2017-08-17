@@ -91,7 +91,7 @@ export default  class ThemeLabelText {
     /**
      * @function SuperMap.ThemeLabelText.fromObj
      * @description 从传入对象获取标签中文本风格类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeLabelText}
      */
     static fromObj(obj) {

@@ -46,7 +46,12 @@ export default class VectorClipJobsParameter {
         this.datasetOverlay = null;
         this.mode = null;
     }
-
+    /**
+     * @function SuperMap.VectorClipJobsParameter.toObject
+     * @param vectorClipJobsParameter - {Object}  矢量裁剪分析任务参数。
+     * @param tempObj - {Object} 参数。
+     * @description 矢量裁剪分析任务对象
+     */
     static toObject(vectorClipJobsParameter, tempObj) {
         for (var name in vectorClipJobsParameter) {
             if (name === "datasetName") {

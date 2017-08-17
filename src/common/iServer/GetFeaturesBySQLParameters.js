@@ -7,7 +7,7 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
  * @classdesc 数据服务中数据集SQL查询参数类。
  * @param options - {Object} 可選参数。如:</br>
  *        queryParameter - {SuperMap.FilterParameter} 查询过滤条件参数。</br>
- *         datasetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
+ *         datasetNames - {Array<String>} 数据集集合中的数据集名称列表。</br>
  *         returnContent - {boolean} 是否直接返回查询结果。</br>
  *         fromIndex - {Integer} 查询结果的最小索引号。</br>
  *         toIndex - {Integer} 查询结果的最大索引号。</br>

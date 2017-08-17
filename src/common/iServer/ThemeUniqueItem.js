@@ -80,7 +80,7 @@ export default  class ThemeUniqueItem {
     /**
      * @function SuperMap.ThemeUniqueItem.fromObj
      * @description 从传入对象获取单值专题图子项类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeUniqueItem}
      */
     static fromObj(obj) {

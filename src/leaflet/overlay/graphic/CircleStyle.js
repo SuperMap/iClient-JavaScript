@@ -6,7 +6,7 @@ import L from "leaflet";
  * @classdesc 圆形要素风格
  * @private
  * @extends L.Class{@linkdoc-leaflet/#class}
- * @param options - {object} 圆形要素风格参数。如：<br>
+ * @param options - {Object} 圆形要素风格参数。如：<br>
  *        stroke - {boolean}
  *        color - {string} 颜色
  *        weight - {number}宽带

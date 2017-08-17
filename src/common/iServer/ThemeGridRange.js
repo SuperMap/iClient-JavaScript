@@ -58,10 +58,6 @@ export default class ThemeGridRange extends Theme {
      */
     reverseColor = false;
 
-    /*
-     * Constructor: SuperMap.ThemeGridRange
-     * 栅格分段专题图构造函数。
-     */
     constructor(options) {
         super("GRIDRANGE", options);
         if (options) {
@@ -93,7 +89,7 @@ export default class ThemeGridRange extends Theme {
     /**
      * @function SuperMap.ThemeGridRange.fromObj
      * @description 从传入对象获取栅格分段专题图。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeGridRange}
      */
     static fromObj(obj) {

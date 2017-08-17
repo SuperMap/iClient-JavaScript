@@ -46,7 +46,7 @@ export var TextSymbolizer = L.Path.extend({
     /**
      * @function L.supermap.TextSymbolizer.prototype.render
      * @description 绘制点符号
-     * @param renderer - {object} 渲染器
+     * @param renderer - {Object} 渲染器
      * @param style - {string} 符号样式
      */
     render: function (renderer, style) {
@@ -90,7 +90,7 @@ export var TextSymbolizer = L.Path.extend({
     /**
      * @function L.supermap.TextSymbolizer.prototype.updateStyle
      * @description 更新替换符号样式
-     * @param renderer - {object} 渲染器
+     * @param renderer - {Object} 渲染器
      * @param style - {string} 符号样式
      */
     updateStyle: function (renderer, style) {

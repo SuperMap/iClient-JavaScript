@@ -17,7 +17,7 @@ import {LabelOverLengthMode} from '../REST';
  *         alongLine - {SuperMap.ThemeLabelAlongLine} 标签沿线标注方向样式类。<br>
  *         background - {SuperMap.ThemeLabelBackground} 标签专题图中标签的背景风格类。<br>
  *         flow - {SuperMap.ThemeFlow} 标签专题图标签流动显示与牵引线设置类。<br>
- *         items - {Array(<SuperMap.ThemeUniqueItem>)} 分段标签专题图的子项数组。<br>
+ *         items - {Array<SuperMap.ThemeUniqueItem>} 分段标签专题图的子项数组。<br>
  *         labelExpression - {string} 标注字段表达式。<br>
  *         labelOverLengthMode - {SuperMap.LabelOverLengthMode} 标签专题图中超长标签的处理模式枚举类。<br>
  *         matrixCells - {Array<SuperMap.LabelMatrixCell>} 矩阵标签元素数组。<br>
@@ -263,7 +263,7 @@ export default class ThemeLabel extends Theme {
     /**
      * @function SuperMap.ThemeLabel.fromObj
      * @description 从传入对象获取标签专题图类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeLabel}
      */
     static fromObj(obj) {

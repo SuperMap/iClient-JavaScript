@@ -78,7 +78,7 @@ export default class ThemeLabelAlongLine {
     /**
      * @function SuperMap.ThemeLabelAlongLine.fromObj
      * @description 从传入对象获取标签沿线标注样式类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeLabelAlongLine}
      */
     static fromObj(obj) {

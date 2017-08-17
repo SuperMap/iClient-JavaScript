@@ -5,8 +5,8 @@ import Util from  '../core/Util';
 /**
  * @class ol.source.TileSuperMapRest
  * @classdesc 地图REST瓦片服务
- * @param options - {object} 参数
- * @extends  ol.source.TileImage
+ * @param options - {olx.source.TileImageOptions} 参数
+ * @extends ol.source.TileImage{@linkdoc-openlayers/ ol.source.TileImage}
  */
 export default class TileSuperMapRest extends ol.source.TileImage {
 
@@ -205,8 +205,8 @@ export default class TileSuperMapRest extends ol.source.TileImage {
     }
     /**
      * @function  ol.source.TileSuperMapRest.prototype.setTileSetsInfo
-     * @description 初始化瓦片集
-     * @param tileSets -{object} 瓦片集合
+     * @description 设置瓦片集信息
+     * @param tileSets -{Object} 瓦片集合
      */
     setTileSetsInfo(tileSets) {
         this.tileSets = tileSets;
@@ -262,16 +262,18 @@ export default class TileSuperMapRest extends ol.source.TileImage {
 
     /**
      * @function  ol.source.TileSuperMapRest.prototype.updateCurrentTileSetsIndex
-     * @param index - {object} 可选参数
+     * @param index - {Object} 可选参数
      * @description 手动设置当前切片集索引，目前主要提供给控件使用。
      */
     updateCurrentTileSetsIndex(index) {
         this.tempIndex = index;
     }
+
     /**
-     * @function  ol.source.TileSuperMapRest.prototype.mergeTileVersionParam
-     * @param version - {object} 版本信息
+     * @function  ol.source.TileSuperMapRest.prototype.mergeTileVersionParamp
      * @description 更改URL请求参数中的切片版本号,并重绘。
+     * @param version - {Object} 版本信息
+     * @return {boolean} 是否合并瓦片版本信息
      */
     mergeTileVersionParam(version) {
         if (version) {
@@ -283,6 +285,12 @@ export default class TileSuperMapRest extends ol.source.TileImage {
         return false;
     }
 
+    /**
+     * @function  ol.source.TileSuperMapRest.optionsFromMapJSON
+     * @param url - {string} 地址
+     * @param mapJSONObj -{Object} 地图JSON对象
+     * @description 更改URL请求参数中的切片版本号,并重绘。
+     */
     static optionsFromMapJSON(url, mapJSONObj) {
         var options = {};
         options.url = url;
@@ -325,6 +333,16 @@ export default class TileSuperMapRest extends ol.source.TileImage {
         });
         return options;
     }
+    /**
+     * @function  ol.source.TileSuperMapRest.createTileGrid
+     * @description 创建切片网格
+     * @param extent -{number} 长度
+     * @param maxZoom -{number} 最大的放大级别
+     * @param minZoom -{number} 最小的放大级别
+     * @param tileSize -{number} 瓦片的尺寸
+     * @param origin -{number} 原点
+     * @return {ol.tilegrid.TileGrid} 新建切片网格
+     */
 
     static createTileGrid(extent, maxZoom, minZoom, tileSize, origin) {
         var tilegrid = ol.tilegrid.createXYZ({

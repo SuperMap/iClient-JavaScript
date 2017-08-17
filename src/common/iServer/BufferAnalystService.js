@@ -22,8 +22,6 @@ import GeoJSON from '../format/GeoJSON';
      *           }
      *    });
  * (end)
- *
- *
  */
 export default  class BufferAnalystService extends SpatialAnalystBase {
     /**

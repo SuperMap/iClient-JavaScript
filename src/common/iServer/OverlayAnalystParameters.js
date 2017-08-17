@@ -4,13 +4,13 @@ import {OverlayOperationType} from '../REST';
 /**
  * @class SuperMap.OverlayAnalystParameters
  * @classdesc 叠加分析参数基类，数据集叠加分析参数和几何对象叠加分析参数均继承此基类
- * @param options - {Object} 可选参数。如:</br>
- *        operation - {OverlayOperationType} 指定叠加分析操作类型。
+ * @param options - {Object} 参数。
  */
 export default class OverlayAnalystParameters {
 
     /**
      * @member SuperMap.OverlayAnalystParameters.prototype.operation -{OverlayOperationType}
+     * @description 指定叠加分析操作类型。
      */
     operation = OverlayOperationType.UNION;
 
@@ -20,7 +20,6 @@ export default class OverlayAnalystParameters {
             SuperMap.Util.extend(me, options);
         }
     }
-
     /**
      * @function SuperMap.OverlayAnalystParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。

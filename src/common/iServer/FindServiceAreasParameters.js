@@ -9,9 +9,9 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  * @param options - {Object} 可选参数。<br>
  *        isAnalyzeById - {boolean} 是否通过节点 ID 指定路径分析的结点。<br>
  *        isCenterMutuallyExclusive - {boolean} 是否中心点互斥。<br>
- *        centers - {Array()} 服务站点数组，必设字段。<br>
+ *        centers - {Array} 服务站点数组，必设字段。<br>
  *        isFromCenter - {boolean} 是否从中心点开始分析。<br>
- *        weights - {Array()} 每个服务站点提供服务的阻力半径，超过这个阻力半径的区域不予考虑，其单位与阻力字段一致，必设字段。<br>
+ *        weights - {Array} 每个服务站点提供服务的阻力半径，超过这个阻力半径的区域不予考虑，其单位与阻力字段一致，必设字段。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 export default  class FindServiceAreasParameters {
@@ -51,7 +51,7 @@ export default  class FindServiceAreasParameters {
 
     /**
      * APIProperty: weights
-     * @member SuperMap.FindServiceAreasParameters.prototype.weights -{Array(Number)}
+     * @member SuperMap.FindServiceAreasParameters.prototype.weights -{Array<Number>}
      * @description 每个服务站点提供服务的阻力半径，即超过这个阻力半径的区域不予考虑，其单位与阻力字段一致，必设字段。<br>
      *               该字段为一个数组，数组长度跟服务中心个数一致，按照索引顺序与站点一一对应，每个元素表示了在对每个服务中心进行服务区分析时，所用的服务半径。
      */

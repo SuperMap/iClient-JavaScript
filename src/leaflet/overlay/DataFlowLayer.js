@@ -6,7 +6,7 @@ import {DataFlowService} from "../services/DataFlowService";
  * @classdesc 数据流图层
  * @extends L.GeoJSON{@linkdoc-leaflet/#geojson}
  * @param url - {string} 数据流图层服务地址
- * @param options - {object} 设置图层参数。如：<br>
+ * @param options - {Object} 设置图层参数。如：<br>
  *        geometry - {SuperMap.Geometry} 几何要素。<br>
  *        prjCoordSys - {Object} 投影坐标对象。<br>
  *        excludeField - {string} 排除字段。<br>

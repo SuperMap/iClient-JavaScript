@@ -12,7 +12,7 @@ import {GraphThemeLayer} from './theme/GraphThemeLayer';
  * @extends L.supermap.GraphThemeLayer
  * @param name - {string} 专题图层名
  * @param symbolType - {SuperMap.ChartType} 必设参数，目前支持："Circle"。
- * @param options - {object} 可选参数
+ * @param options - {Object} 可选参数
  */
 export var RankSymbolThemeLayer = GraphThemeLayer.extend({
 

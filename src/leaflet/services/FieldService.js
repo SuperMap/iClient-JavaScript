@@ -11,7 +11,7 @@ import FieldStatisticService from '../../common/iServer/FieldStatisticService';
       //doSomething
  * });
  * @param url - {string} 字段服务地址
- * @param options - {object} 字段服务类可选参数。如：<br>
+ * @param options - {Object} 字段服务类可选参数。如：<br>
  *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
  *        dataSourceName - {string} 数据资源名称 <br>
  *        dataSetName - {string} 数据集名称

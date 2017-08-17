@@ -85,6 +85,12 @@ export default class SummaryMeshJobParameter {
         this.type = null;
     }
 
+    /**
+     * @function SuperMap.SummaryMeshJobParameter.toObject
+     * @param summaryMeshJobParameter - {Object} 点聚合分析任务参数。
+     * @param tempObj - {Object} 参数。
+     * @description 生成点聚合分析任务对象
+     */
     static toObject(summaryMeshJobParameter, tempObj) {
         for (var name in summaryMeshJobParameter) {
             if (name === "datasetName") {

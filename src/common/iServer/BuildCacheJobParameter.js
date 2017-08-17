@@ -36,7 +36,7 @@ export default  class BuildCacheJobParameter {
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.serverAddresses -{string}
+     * @member SuperMap.BuildCacheJobParameter.prototype.serverAdresses -{string}
      * @description MongoDB地址。
      */
     serverAdresses= "";
@@ -99,6 +99,12 @@ export default  class BuildCacheJobParameter {
         this.level = null;
     }
 
+    /**
+     * @function SuperMap.BuildCacheJobParameter.toObject
+     * @param buildCacheJobParameter - {Object} 地图缓存参数。
+     * @param tempObj - {Object} 参数。
+     * @description 生成地图缓存对象
+     */
     static  toObject(buildCacheJobParameter, tempObj) {
         for (let name in buildCacheJobParameter) {
             if (name === "datasetName") {

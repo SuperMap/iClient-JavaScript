@@ -99,6 +99,12 @@ export default class KernelDensityJobParameter {
         this.areaUnit = null;
     }
 
+    /**
+     * @function SuperMap.KernelDensityJobParameter.toObject
+     * @param kernelDensityJobParameter - {Object} 密度分析任务参数。
+     * @param tempObj - {Object} 参数。
+     * @description 生成密度分析任务对象
+     */
     static toObject(kernelDensityJobParameter, tempObj) {
         for (var name in kernelDensityJobParameter) {
             if (name === "datasetName") {

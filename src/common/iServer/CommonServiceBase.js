@@ -14,7 +14,7 @@ import '../security/SecurityManager';
 export default  class CommonServiceBase {
 
     /*
-     * @constant: EVENT_TYPES- {Array(String)}
+     * @constant: EVENT_TYPES- {Array<String>}
      * @description 此类支持的事件类型
      * - *processCompleted* 服务端返回信息成功触发该事件 。
      * - *processFailed* 服务端返回信息失败触发该事件 。
@@ -75,13 +75,13 @@ export default  class CommonServiceBase {
     options = null;
 
     /**
-     *  @member SuperMap.CommonServiceBase.prototype.totalTimes -{Int}
+     *  @member SuperMap.CommonServiceBase.prototype.totalTimes -{Integer}
      *  @description 实际请求失败次数。
      */
     totalTimes = null;
 
     /**
-     * @member SuperMap.CommonServiceBase.prototype.POLLING_TIMES -{Int}
+     * @member SuperMap.CommonServiceBase.prototype.POLLING_TIMES -{Integer}
      * @description 默认请求失败次数。
      */
     POLLING_TIMES = 3;
@@ -150,7 +150,6 @@ export default  class CommonServiceBase {
     }
 
     /**
-     * @override
      * @function SuperMap.CommonServiceBase.prototype.destroy
      * @description: 释放资源，将引用的资源属性置空。
      */

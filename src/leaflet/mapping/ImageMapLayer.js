@@ -15,7 +15,7 @@ import SuperMap from "../../common/SuperMap" ;
  *        transparent - {number}设置透明度。<br>
  *        cacheEnabled - {string} 启用缓存。<br>
  *        clipRegionEnabled - {boolean} 是否启用地图裁剪。<br>
- *        prjCoordSys - {object} 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。<br>
+ *        prjCoordSys - {Object} 请求的地图的坐标参考系统。 如：prjCoordSys={"epsgCode":3857}。<br>
  *        overlapDisplayed - {boolean} 地图对象在同一范围内时，是否重叠显示。<br>
  *        overlapDisplayedOptions - {string} 避免地图对象压盖显示的过滤选项。<br>
  *        tileversion - {string} 切片版本名称，cacheEnabled 为 true 时有效。<br>

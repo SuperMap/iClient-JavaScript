@@ -13,11 +13,11 @@ import DataFlow from '../../common/iServer/DataFlowService';
  *          //doSomething
  *      })
  * @param url - {string} 与客户端交互的大数据服务地址。
- * @param options - {object} 加载大数据可选参数。如：<br>
+ * @param options - {Object} 加载大数据可选参数。如：<br>
  *        style - {function} 设置数据加载样式。<br>
  *        onEachFeature - {function} 设置每个数据加载popup等。<br>
- *        geometry - {Array<Object>} 设置增添的几何要素对象数组。
- *        excludeField - -{object} 排除字段
+ *        geometry - {Array<Object>} 设置增添的几何要素对象数组。<br>
+ *        excludeField - -{Object} 排除字段
  */
 export default class DataFlowService extends ServiceBase {
 
@@ -89,7 +89,7 @@ export default class DataFlowService extends ServiceBase {
     /**
      * @function ol.supermap.DataFlowService.prototype.setExcludeField
      * @description 设置排除字段
-     * @param excludeField - {object} 排除字段
+     * @param excludeField - {Object} 排除字段
      * @return {ol.supermap.DataFlowService}
      */
     setExcludeField(excludeField) {

@@ -8,7 +8,7 @@ import L from "leaflet";
  * @private
  * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param name - {string} 专题图层名称
- * @param options -{object} 待设置得参数。
+ * @param options -{Object} 待设置得参数。
  */
 export var ThemeLayer = L.Layer.extend({
 

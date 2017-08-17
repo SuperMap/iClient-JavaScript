@@ -1,9 +1,9 @@
 import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.Graphic
- * @classdesc 地理几何信息
- * @param geometry - {object} 几何对象
- * @extends ol.Object
+ * @classdesc 地理几何信息类
+ * @param geometry - {Object} 几何对象
+ * @extends ol.Object{@linkdoc-openlayers/ol.Object}
  */
 export default class Graphic extends ol.Object {
 
@@ -48,7 +48,7 @@ export default class Graphic extends ol.Object {
     }
     /**
      * @function   ol.Graphic.prototype.setId
-     * @param geometry -{object} 几何参数
+     * @param geometry -{Object} 几何参数
      * @description  设置当前几何信息
      */
     setGeometry(geometry) {
@@ -63,7 +63,7 @@ export default class Graphic extends ol.Object {
     }
     /**
      * @function   ol.Graphic.prototype.getStyle
-     * @param style -{object} 样式参数
+     * @param style -{Object} 样式参数
      * @description  设置样式
      */
     setStyle(style) {
@@ -80,8 +80,8 @@ export default class Graphic extends ol.Object {
         return this.styleFunction_;
     }
     /**
-     * @function   ol.Graphic.prototype.createStyleFunction
-     * @param obj -{object} 对象参数
+     * @function   ol.Graphic.createStyleFunction
+     * @param obj -{Object} 对象参数
      * @description  新建样式函数
      */
     static createStyleFunction(obj) {

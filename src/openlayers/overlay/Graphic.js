@@ -4,7 +4,9 @@ import './graphic/Graphic';
 /**
  * @class ol.source.Graphic
  * @classdesc 图形类。
- * @param options -{Object} 可选图形参数
+ * @param options -{olx.source.ImageCanvasOptions} 图形参数
+ * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.ImageCanvas}
+ *
  */
 export default class Graphic extends ol.source.ImageCanvas {
 
@@ -73,7 +75,7 @@ export default class Graphic extends ol.source.ImageCanvas {
     /**
      * @functionol.source.Graphic.prototype.getGraphicsInExtent
      * @description 获取面积
-     * @param extent -{object} 长度范围
+     * @param extent -{Object} 长度范围
      *
      */
     getGraphicsInExtent(extent) {

@@ -2,7 +2,7 @@ import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.supermap.MapvCanvasLayer
  * @classdesc 地图画布图层
- * @param options - {object} 参数
+ * @param options - {Object} 参数
  */
 export default class MapvCanvasLayer {
 
@@ -18,10 +18,7 @@ export default class MapvCanvasLayer {
         this.height = options.height;
         this.initialize();
     }
-    /**
-     * @function ol.supermap.MapvCanvasLayer.prototype.initialize
-     * @description 初始化
-     */
+
     initialize() {
         var me = this;
         var canvas = me.canvas = document.createElement("canvas");
@@ -59,6 +56,11 @@ export default class MapvCanvasLayer {
         this.canvas.style.height = mapHeight + "px";
     }
 
+    /**
+     * @function ol.supermap.MapvCanvasLayer.prototype.getContainer
+     * @description 获取容器
+     * @return {Element}
+     */
     getContainer() {
         return this.canvas;
     }

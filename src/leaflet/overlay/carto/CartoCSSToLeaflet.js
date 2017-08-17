@@ -27,7 +27,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
      * @function L.supermap.CartoCSSToLeaflet.prototype.pretreatedCartoCSS
      * @description CartoCSS样式预处理
      * @param cartoStr - {string} Carto信息
-     * @param processCharacters - {object} 需要处理的特征对象
+     * @param processCharacters - {Object} 需要处理的特征对象
      */
     pretreatedCartoCSS: function (cartoStr, processCharacters) {
         if (processCharacters) {
@@ -123,9 +123,9 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.getStyleFromiPortalStyle
      * @description 从iPortal的风格中获取样式
-     * @param iPortalStyle - {object} iPortal的样式对象
+     * @param iPortalStyle - {Object} iPortal的样式对象
      * @param type - {string} 样式类型
-     * @param fStyle -{object} 图标参数
+     * @param fStyle -{Object} 图标参数
      */
     getStyleFromiPortalStyle: function (iPortalStyle, type, fStyle) {
         var featureStyle = fStyle ? JSON.parse(fStyle) : null;
@@ -184,7 +184,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
     /**
      * @function L.supermap.CartoCSSToLeaflet.prototype.dashStyle
      * @description 符号样式
-     * @param style -{object} 样式参数
+     * @param style -{Object} 样式参数
      * @param widthFactor -{number}宽度系数
      */
     dashStyle: function (style, widthFactor) {
@@ -271,7 +271,7 @@ export var CartoCSSToLeaflet = L.supermap.CartoCSSToLeaflet = {
      * @function L.supermap.CartoCSSToLeaflet.prototype.getValidStyleFromLayerInfo
      * @description 通过图层信息获取有效的样式
      * @param feature - {SuperMap.Feature} 要素
-     * @param layerInfo - {object} 图层信息
+     * @param layerInfo - {Object} 图层信息
      */
     getValidStyleFromLayerInfo: function (feature, layerInfo) {
         var type = feature.type,

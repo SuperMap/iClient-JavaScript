@@ -51,7 +51,7 @@ export default  class ThemeOffset {
     /**
      * @function SuperMap.ThemeOffset.fromObj
      * @description 从传入对象获取专题图中文本或符号相对于要素内点的偏移量设置类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeOffset}
      */
     static fromObj(obj) {

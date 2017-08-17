@@ -19,7 +19,7 @@ import CommontypesConversion from '../core/CommontypesConversion';
  *      })
  * @extends L.supermap.ServiceBase
  * @param url - {string} 要素数据集服务地址
- * @param options - {object} 创建要素数据集服务类可选参数。如：<br>
+ * @param options - {Object} 创建要素数据集服务类可选参数。如：<br>
  *        serverType - {string} 服务来源 iServer|iPortal|online
  */
 export var FeatureService = ServiceBase.extend({

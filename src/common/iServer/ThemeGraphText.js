@@ -56,7 +56,7 @@ export default  class ThemeGraphText {
     /**
      * @function SuperMap.ThemeGraphText.fromObj
      * @description 从传入对象获取统计图文字标注风格类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeGraphText}
      */
     static fromObj(obj) {

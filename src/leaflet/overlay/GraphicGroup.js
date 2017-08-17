@@ -7,8 +7,8 @@ import './graphic/Graphic';
  * @class L.supermap.graphicGroup
  * @classdesc 图形组合类。
  * @extends L.Path{@linkdoc-leaflet/#path}
- * @param graphics - {object} 图形成员
- * @param options - {object} 可选参数。如：<br>
+ * @param graphics - {Object} 图形成员
+ * @param options - {Object} 可选参数。如：<br>
  *        stroke - {boolean}
  *        color - {string} 颜色
  *        weight - {number}宽带

@@ -110,7 +110,7 @@ export default class ProcessingService extends ServiceBase {
     /**
      * @function ol.supermap.ProcessingService.prototype.getKernelDensityJobState
      * @description 获取密度分析的状态。
-     * @param id - {string}密度分析的id。
+     * @param id - {string} 密度分析的id。
      */
     getKernelDensityJobState(id) {
         return this.kernelDensityJobs[id];

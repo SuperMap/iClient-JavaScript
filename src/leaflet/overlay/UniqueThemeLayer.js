@@ -9,7 +9,7 @@ import {GeoFeatureThemeLayer} from './theme/GeoFeatureThemeLayer';
  *            比如土壤类型分布图、土地利用图、行政区划图等。单值专题图着重表示现象质的差别，一般不表示数量的特征。
  * @extends L.supermap.GeoFeatureThemeLayer
  * @param name - {string} 专题图层名
- * @param options - {object} 可选参数
+ * @param options - {Object} 可选参数
  */
 export var UniqueThemeLayer = GeoFeatureThemeLayer.extend({
 

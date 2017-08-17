@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl';
 /**
  * @class mapboxgl.supermap.MapvLayer
  * @classdesc Mapv图层
- * @param map - {object} 地图
+ * @param map - {Object} 地图
  * @param dataSet -{Object} 数据集
  * @param mapVOptions -{Object} Mapv参数
  */

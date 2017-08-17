@@ -7,7 +7,7 @@ import CommonServiceBase  from './CommonServiceBase';
  * @description 网络分析服务基类。
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 网络分析服务地址
- * @param options - {object} 网络分析可选参数。如：<br>
+ * @param options - {Object} 网络分析可选参数。如：<br>
  *        format - {string} 查询结果返回格式
  *
  */

@@ -96,6 +96,8 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
     /**
      * @function SuperMap.GetGridCellInfosService.prototype.queryRequest
      * @description 执行服务，查询。
+     * @param successFun -{function} 成功后执行的函数
+     * @param failedFunc -{function} 失败后执行的函数
      */
     queryRequest(successFun, failedFunc) {
         var me = this;
@@ -144,7 +146,7 @@ export default  class GetGridCellInfosService extends CommonServiceBase {
 
 
     /**
-     *  @function SuperMap.GetGridCellInfosService.prototype.getDatasetInfoFailed
+     * @function SuperMap.GetGridCellInfosService.prototype.getDatasetInfoFailed
      * @description 数据集查询失败，执行此方法。
      * @param result -  {Object} 服务器返回的结果对象。
      */

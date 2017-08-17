@@ -3,7 +3,7 @@ import SuperMap from '../SuperMap';
 /**
  * @class SuperMap.GetGridCellInfosParameters
  * @classdesc 数据服务栅格查询参数类。
- * @param options - {Object} 可選参数。如:</br>
+ * @param options - {Object} 可选参数。如:</br>
  *        datasetName - {string} 数据集名称。</br>
  *        dataSourceName - {string} 数据源名称</br>
  *        X - {Integer} 要查询的地理位置X轴。</br>

@@ -13,7 +13,7 @@ import CommonMatchAddressService from'../../common/iServer/AddressMatchService';
  *          //doSomething
  *      })
  * @param url - {string} 地址匹配服务地址
- * @param options {object} 地址匹配服务可选参数。如：<br>
+ * @param options {Object} 地址匹配服务可选参数。如：<br>
  *        data - {number}
  *
  */
@@ -26,7 +26,7 @@ export var AddressMatchService = ServiceBase.extend({
     /**
      * @function L.supermap.addressMatchService.prototype.code
      * @description 获取正向地址匹配结果。
-     * @param params - {object} 正向匹配参数。
+     * @param params - {Object} 正向匹配参数。
      * @param callback - {function} 请求结果的回调函数。
      */
     code: function (params, callback) {
@@ -46,7 +46,7 @@ export var AddressMatchService = ServiceBase.extend({
     /**
      * @function L.supermap.addressMatchService.prototype.decode
      * @description 获取反向地址匹配结果。
-     * @param params -{object} 反向匹配参数。
+     * @param params -{Object} 反向匹配参数。
      * @param callback -{function} 请求结果的回调函数。
      */
     decode: function (params, callback) {

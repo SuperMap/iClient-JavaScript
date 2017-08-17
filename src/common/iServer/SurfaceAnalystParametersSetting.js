@@ -8,7 +8,7 @@ import {SmoothMethod} from '../REST';
  * @param options - {Object} 可选参数。如:</br>
  *        clipRegion - {SuperMap.Geometry} 获取或设置裁剪面对象，如果不需要对操作结果进行裁剪，可以使用null值取代该参数。</br>
  *        datumValue - {number}获取或设置表面分析中提取等值线、提取等值面的基准值。</br>
- *        expectedZValues - {Array(Number)} 获取或设置期望分析结果的 Z 值集合。</br>
+ *        expectedZValues - {Array<Number>} 获取或设置期望分析结果的 Z 值集合。</br>
  *        interval - {number}获取或设置等值距。等值距是两条等值线之间的间隔值。</br>
  *        resampleTolerance - {number}获取或设置重采样容限。</br>
  *        smoothMethod - {SuperMap.SmoothMethod} 获取或设置光滑处理所使用的方法。</br>
@@ -32,7 +32,7 @@ export default  class SurfaceAnalystParametersSetting {
      */
     datumValue = 0;
     /**
-     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.expectedZValues -{Array(Number)}
+     * @member SuperMap.SurfaceAnalystParametersSetting.prototype.expectedZValues -{Array<Number>}
      * @description 获取或设置期望分析结果的 Z 值集合。
      * Z 值集合存储一系列数值，该数值为待提取等值线的值。即仅高程值在Z值集合中的等值线会被提取。
      */

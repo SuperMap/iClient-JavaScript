@@ -8,12 +8,12 @@ import DataFlow from '../../common/iServer/DataFlowService';
  * @classdesc 实时大数据服务类
  * @extends L.supermap.ServiceBase
  * @param url - {string} 实时大数据服务地址
- * @param options - {object} 加载实时大数据可选参数。如：<br>
+ * @param options - {Object} 加载实时大数据可选参数。如：<br>
  *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
  *        style - {function} 设置数据加载样式。<br>
  *        onEachFeature - {function} 设置每个数据加载popup等。<br>
  *        geometry - {Array<Object>} 设置增添的几何要素对象数组。<br>
- *        excludeField - -{object} 排除字段
+ *        excludeField - -{Object} 排除字段
  */
 export var DataFlowService = ServiceBase.extend({
 
@@ -92,7 +92,7 @@ export var DataFlowService = ServiceBase.extend({
     /**
      * @function L.supermap.dataFlowService.prototype.setExcludeField
      * @description 设置排除字段
-     * @param excludeField - {object} 排除字段
+     * @param excludeField - {Object} 排除字段
      * @return {L.supermap.DataFlowService}
      */
     setExcludeField: function (excludeField) {

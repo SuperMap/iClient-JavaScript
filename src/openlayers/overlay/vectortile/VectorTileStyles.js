@@ -8,7 +8,7 @@ ol.supermap = ol.supermap || {};
  * @class ol.supermap.VectorTileStyles
  * @classdesc 矢量瓦片风格
  * @param options -{Object} 交互时所需可选参数
- * @extends  ol.Observable
+ * @extends ol.Object{@linkdoc-openlayers/ol.Observable}
  */
 export default class VectorTileStyles extends ol.Observable {
 
@@ -174,95 +174,180 @@ export default class VectorTileStyles extends ol.Observable {
             });
         }
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.setCartoShaders
+     * @description 设置Carto的阴影
+     * @param cartoShaders -{Array} Carto阴影
+     */
     static setCartoShaders(cartoShaders) {
         this.cartoShaders = cartoShaders;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.setCartoShaders
+     * @description 获取Carto的阴影
+     */
     static getCartoShaders() {
         return this.cartoShaders;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.clientCartoShaders
+     * @description 设置客户端Carto的阴影
+     * @param clientCartoShaders -{Array} 客户端Carto阴影
+     */
     static setClientCartoShaders(clientCartoShaders) {
         this.clientCartoShaders = clientCartoShaders;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.getClientCartoShaders
+     * @description 获取客户端Carto的阴影
+     */
     static getClientCartoShaders() {
         return this.clientCartoShaders;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.setCartoCss
+     * @description 设置cartoCss的样式
+     * @param cartoCss -{Object} cartoCss的样式
+     */
     static setCartoCss(cartoCss) {
         this.cartoCss = cartoCss;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.setCartoCss
+     * @description 获取CartoCSS的样式
+     */
     static getCartoCss() {
         return this.cartoCss;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.donotNeedServerCartoCss
+     * @description 设置是否需要CartoCss服务
+     * @param donotNeedServerCartoCss -{boolean} 是否需要CartoCss服务
+     */
     static setDonotNeedServerCartoCss(donotNeedServerCartoCss) {
         this.donotNeedServerCartoCss = donotNeedServerCartoCss;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.getDonotNeedServerCartoCss
+     * @description 获取是否需要CartoCss服务
+     * @return {boolean}
+     */
     static getDonotNeedServerCartoCss() {
         return this.donotNeedServerCartoCss;
     }
 
+    /**
+     * @function ol.supermap.VectorTileStyles.setLayersInfo
+     * @param layersInfo -{Array} 图层信息
+     * @description 设置图层信息
+     */
     static setLayersInfo(layersInfo) {
         this.layersInfo = layersInfo;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.getLayersInfo
+     * @description 获取层信息
+     */
     static getLayersInfo() {
         return this.layersInfo;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.setUrl
+     * @param url -{string} 地址
+     * @description 设置地址
+     */
     static setUrl(url) {
         this.url = url;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.getUrl
+     * @description 获取地址
+     */
     static getUrl() {
         return this.url;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.setView
+     * @param view -{Object} 视图
+     * @description 设置视图
+     */
     static setView(view) {
         this.view = view;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.getView
+     * @description 获取视图
+     */
     static getView() {
         return this.view;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.setSelectedId
+     * @param selectedId -{number} 选择序号
+     * @description 设置选择序号
+     */
     static setSelectedId(selectedId) {
         this.selectedId = selectedId;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.getSelectedId
+     * @description 获取选择序号
+     */
     static getSelectedId() {
         return this.selectedId;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.setLayerName
+     * @param layerName -{string} 图层名
+     * @description 设置图层名
+     */
     static setLayerName(layerName) {
         this.layerName = layerName;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.getLayerName
+     * @description 获取图层名
+     */
     static getLayerName() {
         return this.layerName;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.setLayerName
+     * @param selectedPointStyle -{POINT|MULTIPOINT} 设置选择点样式
+     * @description 设置选择后点样式
+     */
     static setSelectedPointStyle(selectedPointStyle) {
         this.selectedPointStyle = selectedPointStyle;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.setSelectedLineStyle
+     * @param selectedLineStyle -{LINESTRING|MULTILINESTRING} 设置选择线样式
+     * @description 设置选择后线样式
+     */
     static setSelectedLineStyle(selectedLineStyle) {
         this.selectedLineStyle = selectedLineStyle;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.setSelectedRegionStyle
+     * @param selectedRegionStyle -{POLYGON|MULTIPOLYGON} 设置选择面样式
+     * @description 设置选择后面样式
+     */
     static setSelectedRegionStyle(selectedRegionStyle) {
         this.selectedRegionStyle = selectedRegionStyle;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.setSelectedTextStyle
+     * @param selectedTextStyle -{string} 设置选择文本样式
+     * @description 设置选择后文本样式
+     */
     static setSelectedTextStyle(selectedTextStyle) {
         this.selectedTextStyle = selectedTextStyle;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.getSelectedStyle
+     * @param type -{string} 选择后的类型
+     * @description 设置选择后的样式
+     */
     static getSelectedStyle(type) {
         if (type === 'POINT' || type === 'MULTIPOINT') {
             return this.selectedPointStyle;
@@ -277,7 +362,11 @@ export default class VectorTileStyles extends ol.Observable {
             return this.selectedTextStyle;
         }
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.getLayerInfo
+     * @param layerName -{string} 图层名
+     * @description 获取图层的信息
+     */
     static getLayerInfo(layerName) {
         var layersInfo = ol.supermap.VectorTileStyles.getLayersInfo();
         if (layersInfo === undefined) {
@@ -307,7 +396,12 @@ export default class VectorTileStyles extends ol.Observable {
         }
         return layerInfo_simple;
     }
-
+    /**
+     * @function ol.supermap.VectorTileStyles.getStyle
+     * @param originalLayerName -{string} 原始图层信息
+     * @param feature -{Object} 要素对象
+     * @description 获取样式
+     */
     static getStyle(originalLayerName, feature) {
         var url = ol.supermap.VectorTileStyles.getUrl(),
             view = ol.supermap.VectorTileStyles.getView(),
@@ -346,10 +440,10 @@ export default class VectorTileStyles extends ol.Observable {
             return styleArray;
         }
         /**
-         * @function ol.supermap.VectorTileStyles.prototype.mergeTextFeatureStyle
+         * @function ol.supermap.VectorTileStyles.mergeTextFeatureStyle
          * @description 合并文本特征样式
          * @param layerInfo -{string} 图层信息
-         * @param feature -{object} 获取的特征
+         * @param feature -{Object} 获取的特征
          * @param url -{string} 地址
          */
         function mergeTextFeatureStyle(layerInfo, feature, url) {
@@ -373,9 +467,9 @@ export default class VectorTileStyles extends ol.Observable {
 
     };
     /**
-     * @function ol.supermap.VectorTileStyles.prototype.getFeatureStyle
-     * @description 获取特征样式
-     * @param feature -{object} 特征
+     * @function ol.supermap.VectorTileStyles.getFeatureStyle
+     * @description 获取要素样式
+     * @param feature -{Object} 要素
      */
     getFeatureStyle(feature) {
         var selectedStyle;

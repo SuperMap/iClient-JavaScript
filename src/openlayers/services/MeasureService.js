@@ -37,6 +37,14 @@ export default class MeasureService extends ServiceBase {
         this.measure(params, 'AREA', callback);
     }
 
+    /**
+     * @function ol.supermap.MeasureService.prototype.measure
+     * @description 测量
+     * @param params -{SuperMap.MeasureParameters} 测量相关参数类
+     * @param type -{string} 类型
+     * @param callback -{function} 回调函数
+     * @return {ol.supermap.MeasureService} 测量服务
+     */
     measure(params, type, callback) {
         var me = this;
         var measureService = new CommonMeasureService(me.url, {

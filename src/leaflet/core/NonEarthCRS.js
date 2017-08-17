@@ -31,12 +31,12 @@ export var nonProjection = function (bounds) {
  * @class L.CRS.NonEarthCRS
  * @classdesc 非地球坐标对象
  * @extends L.Class{@linkdoc-leaflet/#class}
- * @param options - {object} 构建非地球坐标对象参数
+ * @param options - {Object} 构建非地球坐标对象参数
  */
 export var NonEarthCRS = L.Class.extend({
 
     /**
-     * @member L.CRS.NonEarthCRS.prototype.includes -{object}
+     * @member L.CRS.NonEarthCRS.prototype.includes -{Object}
      * @description 包含的坐标对象，默认为：L.CRS。
      */
     includes: L.CRS,

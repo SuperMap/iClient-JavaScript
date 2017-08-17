@@ -12,7 +12,7 @@ import SuperMap from '../SuperMap';
 export default  class BurstPipelineAnalystParameters {
 
     /**
-     * @member SuperMap.BurstPipelineAnalystParameters.prototype.sourceNodeIDs -{Array(Number)}
+     * @member SuperMap.BurstPipelineAnalystParameters.prototype.sourceNodeIDs -{Array<Number>}
      * @description 指定的设施点ID数组,可以为空。
      */
     sourceNodeIDs = null;

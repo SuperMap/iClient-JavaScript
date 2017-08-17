@@ -54,13 +54,13 @@ export default  class Route extends Collection {
     minM = null;
 
     /**
-     * @member SuperMap.Route.prototype.parts -{Array(Number)}
+     * @member SuperMap.Route.prototype.parts -{Array<Number>}
      * @description 服务端几何对象中各个子对象所包含的节点个数。
      */
     parts = null;
 
     /**
-     * @member SuperMap.Route.prototype.points -{Array(Object)}
+     * @member SuperMap.Route.prototype.points -{Array<Object>}
      * @description 路由对象的所有路由点。
      * @example
      * (start code)
@@ -87,7 +87,7 @@ export default  class Route extends Collection {
     type = null;
 
     /**
-     * @member SuperMap.Route.prototype.components -{Array(SuperMap.Geometry)}
+     * @member SuperMap.Route.prototype.components -{Array<SuperMap.Geometry>}
      * @description 存储几何对象的数组。
      */
     components = null;

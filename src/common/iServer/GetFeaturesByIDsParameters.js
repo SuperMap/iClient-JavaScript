@@ -6,9 +6,9 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
  * @class SuperMap.GetFeaturesByIDsParameters
  * @classdesc ID 查询参数类。
  * @param options - {Object} 可选参数。如:</br>
- *        IDs - {Array(Integer)} 所要查询指定的元素ID信息。</br>
- *        fields - {Array(String)} 设置查询结果返回字段。默认返回所有字段。</br>
- *        dataSetNames - {Array(String)} 数据集集合中的数据集名称列表。</br>
+ *        IDs - {Array<Integer>} 所要查询指定的元素ID信息。</br>
+ *        fields - {Array<String>} 设置查询结果返回字段。默认返回所有字段。</br>
+ *        dataSetNames - {Array<String>} 数据集集合中的数据集名称列表。</br>
  *        returnContent - {boolean} 是否直接返回查询结果。</br>
  *        fromIndex - {Integer} 查询结果的最小索引号。</br>
  *        toIndex - {Integer} 查询结果的最大索引号。</br>
@@ -22,14 +22,14 @@ export default  class GetFeaturesByIDsParameters extends GetFeaturesParametersBa
     getFeatureMode = "ID";
 
     /**
-     * @member SuperMap.GetFeaturesByIDsParameters.prototype.IDs -{Array(Integer)}
+     * @member SuperMap.GetFeaturesByIDsParameters.prototype.IDs -{Array<Integer>}
      * @description 所要查询指定的元素ID信息。
      */
     IDs = null;
 
     /**
-     * @member SuperMap.GetFeaturesByIDsParameters.prototype.fields -{Array(String)}
-     *  @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
+     * @member SuperMap.GetFeaturesByIDsParameters.prototype.fields -{Array<String>}
+     * @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
      */
     fields = null;
 
@@ -60,7 +60,7 @@ export default  class GetFeaturesByIDsParameters extends GetFeaturesParametersBa
     }
 
     /**
-     * @function SuperMap.GetFeaturesByIDsParameters.prototype.toJsonParameters
+     * @function SuperMap.GetFeaturesByIDsParameters.toJsonParameters
      * @description 将<SuperMap.GetFeaturesByIDsParameters>对象参数转换为json字符串。
      * @param params - {SuperMap.GetFeaturesByIDsParameters} IDs查询参数。
      * @return {String} 转化后的 json字符串。

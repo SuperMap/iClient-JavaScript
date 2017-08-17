@@ -130,11 +130,10 @@ export default class ChartQueryService extends CommonServiceBase {
     }
 
 
-    /*
-     * 查询完成，执行此方法。
-     *
-     * Parameters:
-     * result - {Object} 服务器返回的结果对象。
+    /**
+     * @function SuperMap.ChartQueryService.prototype.serviceProcessCompleted
+     * @description 查询完成，执行此方法。
+     * @param result - {Object} 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
         var me = this;
@@ -151,15 +150,11 @@ export default class ChartQueryService extends CommonServiceBase {
         me.events.triggerEvent("processCompleted", {result: result});
     }
 
-    /*
-     * @function  getQueryParameters
+    /**
+     * @function SuperMap.ChartQueryService.prototype.getQueryParameters
      * @description 将 JSON 对象表示的查询参数转化为 QueryParameters 对象。
-     *
-     * Parameters:
      * @param params - {Object} JSON 字符串表示的查询参数。
-     *
-     * Returns:
-     * @return {chartQueryFilterParameters} 返回查询结果
+     * @return- {chartQueryFilterParameters} 返回查询结果
      */
     getQueryParameters(params) {
         return new QueryParameters({

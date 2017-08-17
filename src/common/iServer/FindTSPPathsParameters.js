@@ -12,7 +12,7 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  *        endNodeAssigned - {boolean} 是否指定终止点，将指定的途经点的最后一个点作为终止点。<br>
  *        true 表示指定终止点，则旅行商必须最后一个访问终止点。默认为 false。<br>
  *        isAnalyzeById - {boolean} 是否通过节点 ID 号来指定配送中心点和配送目的点，默认为 false，即通过坐标点指定。<br>
- *        nodes - {Array<{SuperMap.Point}|Number>} 配送目标集合，必设字段。<br>
+ *        nodes - {Array<SuperMap.Point>}|{Array<Number>} 配送目标集合，必设字段。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。<br>
  */
 export default  class FindTSPPathsParameters {
@@ -41,7 +41,7 @@ export default  class FindTSPPathsParameters {
      * @member SuperMap.FindTSPPathsParameters.prototype.parameter -{SuperMap.TransportationAnalystParameter}
      * @description 交通网络分析通用参数。通过本类可以设置障碍边、障碍点、<br>
      *              权值字段信息的名称标识、转向权值字段等信息。<br>
-     *              SuperMap.TransportationAnalystParameter 类型，它虽然为可选参数，但是如果不设置其中的 resultSetting<br>
+     *              SuperMap.TransportationAnalystParameter 类型，它虽然为可选参数，但是如果不设置其中的 resultSetting
      *              字段，则返回结果空间信息等都为空。
      */
     parameter = null;

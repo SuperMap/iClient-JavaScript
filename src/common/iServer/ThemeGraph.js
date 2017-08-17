@@ -23,7 +23,7 @@ import {ThemeGraphType, GraduatedMode, GraphAxesTextDisplayMode} from '../REST';
  *        graphText - {SuperMap.ThemeGraphText} 统计图上的文字是否可以见以及文字标注风格。<br>
  *        graphType - {SuperMap.ThemeGraphType} 统计专题图类型。<br>
  *        items - {Array<SuperMap.ThemeGraphItem>} 统计专题图子项集合。<br>
- *        memoryKeys - {Array(Integer)} 以内存数组方式制作专题图时的键数组。<br>
+ *        memoryKeys - {Array<Integer>} 以内存数组方式制作专题图时的键数组。<br>
  *        negativeDisplayed - {boolean} 专题图中是否显示属性为负值的数据。<br>
  *        offset - {SuperMap.ThemeOffset} 统计图相对于要素内点的偏移量。<br>
  *        overlapAvoided - {boolean} 统计图是否采用避让方式显示。<br>
@@ -101,7 +101,7 @@ export default class ThemeGraph extends Theme {
     items = null;
 
     /**
-     * @member SuperMap.ThemeGraph.prototype.memoryKeys -{Array(Integer)}
+     * @member SuperMap.ThemeGraph.prototype.memoryKeys -{Array<Integer>}
      * @description 以内存数组方式制作专题图时的键数组。<br>
      *              键数组内的数值代表 SmID 值，它与 SuperMap.ThemeGraphItem 类中的值数组（SuperMap.ThemeGraphItem.memoryDoubleValues）要关联起来应用。<br>
      *              键数组中数值的个数必须要与值数组的数值个数一致。值数组中的值将代替原来的专题值来制作统计专题图。<br>
@@ -331,7 +331,7 @@ export default class ThemeGraph extends Theme {
     /**
      * @function SuperMap.ThemeGraph.fromObj
      * @description 从传入对象获取统计专题图类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeGraph}
      */
     static fromObj(obj) {

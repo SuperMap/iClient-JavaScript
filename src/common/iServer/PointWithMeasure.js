@@ -5,6 +5,10 @@ const PointGeometry = SuperMap.Geometry.Point;
  * @class SuperMap.PointWithMeasure
  * @classdesc 路由点类。路由点是指具有线性度量值(Measure)的二维地理坐标点。
  * @extends SuperMap.Geometry.Point
+ * @param options - {Object} 可选参数。如:</br>
+ *        measure - {number}度量值，即路由对象属性值 M。</br>
+ *        x - {number}获取当前点对象在地理坐标系下的 X 坐标值。</br>
+ *        y - {number}获取当前点对象在地理坐标系下的 Y 坐标值。</br>
  */
 export default  class PointWithMeasure extends PointGeometry {
 
@@ -26,13 +30,6 @@ export default  class PointWithMeasure extends PointGeometry {
      */
     measure = null;
 
-    /**
-     * @function SuperMap.PointWithMeasure.prototype.constructor
-     * @param options - {Object} 可选参数。如:</br>
-     *        measure - {number}度量值，即路由对象属性值 M。</br>
-     *        x - {number}获取当前点对象在地理坐标系下的 X 坐标值。</br>
-     *        y - {number}获取当前点对象在地理坐标系下的 Y 坐标值。</br>
-     */
     constructor(options) {
         super(options);
         if (options) {
@@ -60,7 +57,8 @@ export default  class PointWithMeasure extends PointGeometry {
 
     /**
      * @function SuperMap.PointWithMeasure.prototype.toJson
-     * @desc
+     * @description 转换为json对象。
+     */
     toJson() {
         var result = "{";
         if (this.measure != null && this.measure != undefined) {

@@ -12,7 +12,7 @@ import GetGridCellInfosService from  '../../common/iServer/GetGridCellInfosServi
  *           //doSomething
  *      })
  * @param url - {string} 数据栅格查询服务地址
- * @param options - {object} 数据栅格查询服务类可选参数。如：<br>
+ * @param options - {Object} 数据栅格查询服务类可选参数。如：<br>
  *        serverType - {string} 服务来源 iServer|iPortal|online。<br>
  */
 export var GridCellInfosService = ServiceBase.extend({

@@ -6,6 +6,7 @@ ol.supermap = ol.supermap || {};
  * @classdesc ol.supermap的服务基类。
  * @param url - {string} 与客户端交互的服务地址。
  * @param options - {Object} 参数。
+ * @extends ol.source.Vector{@linkdoc-openlayers/ol.Observable}
  */
 export default class ServiceBase extends ol.Observable {
     constructor(url, options) {

@@ -70,8 +70,9 @@ export default class ComputeWeightMatrixService extends NetworkAnalystServiceBas
      * @param isAnalyzeById - {boolean} 是否通过id分析
      * @param params - {Array} 分析参数数组
      *
-     * @return -{Object} 转化后的JSON字符串。
+     * @return {string} 转化后的JSON字符串。
      */
+
     getJson(isAnalyzeById, params) {
         var jsonString = "[",
             len = params ? params.length : 0;

@@ -6,8 +6,8 @@ import echarts  from "echarts";
  * @class L.supermap.echartsMapLayer
  * @classdesc 图表地图图层类。
  * @extends L.Layer{@linkdoc-leaflet/#layer}
- * @param echartsOptions - {object} 图表参数
- * @param options - {object} 可选图层参数。<br>
+ * @param echartsOptions - {Object} 图表参数
+ * @param options - {Object} 可选图层参数。<br>
  *        attribution - {string} 版权信息。<br>
  *        loadWhileAnimating - {boolean} 是否在启动时加载。
  */
@@ -37,7 +37,7 @@ export var EchartsMapLayer = L.Layer.extend({
     /**
      * @function L.supermap.echartsMapLayer.prototype.setOption
      * @description 设置图表地图参数
-     * @param echartsOptions - {object} 图表参数
+     * @param echartsOptions - {Object} 图表参数
      * @param notMerge - {boolean} 是否合并参数
      * @param lazyUpdate - {string} 后台自动更新
      */

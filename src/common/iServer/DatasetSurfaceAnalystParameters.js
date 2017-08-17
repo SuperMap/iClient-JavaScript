@@ -60,6 +60,12 @@ export default  class DatasetSurfaceAnalystParameters extends SurfaceAnalystPara
         me.zValueFieldName = null;
     }
 
+    /**
+     * @function SuperMap.DatasetSurfaceAnalystParameters.toObject
+     * @param datasetSurfaceAnalystParameters - {Object} 数据集表面分析参数
+     * @param tempObj -{Object} 参数。
+     * @description 生成数数据集表面分析对象
+     */
     static  toObject(datasetSurfaceAnalystParameters, tempObj) {
         for (var name in datasetSurfaceAnalystParameters) {
             if (name === "filterQueryParameter") {

@@ -6,17 +6,17 @@ import CommonServiceBase from './CommonServiceBase';
  * @classdesc 实时大数据服务类
  * @extends SuperMap.CommonServiceBase
  * @param url - {string} 实时大数据服务地址
- * @param options - {object} 加载实时大数据可选参数。如：<br>
+ * @param options - {Object} 加载实时大数据可选参数。如：<br>
  *        style - {function} 设置数据加载样式。<br>
  *        onEachFeature - {function} 设置每个数据加载popup等。<br>
  *        geometry - {Array<Object>} 设置增添的几何要素对象数组。
- *        excludeField - -{object} 排除字段
+ *        excludeField - -{Object} 排除字段
  */
 export default class DataFlowService extends CommonServiceBase {
 
     /*
      * @constant EVENT_TYPES
-     * {Array(String)}
+     * {Array<String>}
      * 此类支持的事件类型
      */
     //EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSuccessed", "subscribeSocketConnected", "subscribeSocketError", "messageSuccessed", "setFilterParamSuccessed"];
@@ -34,7 +34,7 @@ export default class DataFlowService extends CommonServiceBase {
     prjCoordSys = null;
 
     /**
-     * @member SuperMap.DataFlowService.prototype.excludeField -{object}
+     * @member SuperMap.DataFlowService.prototype.excludeField -{Object}
      * @description 排除字段
      */
     excludeField = null;
@@ -133,7 +133,7 @@ export default class DataFlowService extends CommonServiceBase {
     /**
      * @function SuperMap.DataFlowService.prototype.setExcludeField
      * @description 设置排除字段
-     * @param excludeField - {object} 排除字段
+     * @param excludeField - {Object} 排除字段
      * @return {SuperMap.DataFlowService}
      */
     setExcludeField(excludeField) {

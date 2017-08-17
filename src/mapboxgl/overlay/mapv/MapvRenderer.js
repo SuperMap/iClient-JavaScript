@@ -34,7 +34,7 @@ export default class MapvRenderer extends BaseLayer {
     /**
      * @function mapboxgl.supermap.prototype.clickEvent
      * @description  点击绑定事件
-     * @param e - {object} 事件
+     * @param e - {Object} 事件
      */
     clickEvent(e) {
         var pixel = e.layerPoint;
@@ -43,13 +43,17 @@ export default class MapvRenderer extends BaseLayer {
     /**
      * @function mapboxgl.supermap.prototype.mousemoveEvent
      * @description  鼠标移动事件
-     * @param e - {object} 事件
+     * @param e - {Object} 事件
      */
     mousemoveEvent(e) {
         var pixel = e.layerPoint;
         super.mousemoveEvent(pixel, e);
     }
-
+    /**
+     * @function  mapboxgl.supermap.prototype.bindEvent
+     * @description 绑定事件
+     * @param e - {object} 触发对象
+     */
     bindEvent(e) {
         var map = this.map;
         if (this.options.methods) {
@@ -62,6 +66,11 @@ export default class MapvRenderer extends BaseLayer {
         }
     }
 
+    /**
+     * @function mapboxgl.supermap.prototype.unbindEvent
+     * @description 解绑事件
+     * @param e - {object} 触发对象
+     */
     unbindEvent(e) {
         var map = this.map;
 
@@ -76,7 +85,7 @@ export default class MapvRenderer extends BaseLayer {
     }
     /**
      * @function mapboxgl.supermap.prototype.getContext
-     * @description  获取画布上下文
+     * @description 获取信息
      */
     getContext() {
         return this.canvasLayer.canvas.getContext(this.context);
@@ -84,8 +93,8 @@ export default class MapvRenderer extends BaseLayer {
 
     /**
      * @function mapboxgl.supermap.prototype.updateData
-     * @param dataSet - {object} 数据集
-     * @param options - {object} 数据项配置
+     * @param dataSet - {Object} 数据集
+     * @param options - {Object} 数据项配置
      * @description  更新数据
      */
     updateData(dataSet, options) {
@@ -176,19 +185,31 @@ export default class MapvRenderer extends BaseLayer {
 
         this.initAnimator();
     }
-
+    /**
+     * @function mapboxgl.supermap.prototype.addAnimatorEvent
+     * @description 添加动画事件
+     */
     addAnimatorEvent() {
 
     }
-
+    /**
+     * @function mapboxgl.supermap.prototype.removeEvent
+     * @description 移除事件
+     */
     removeEvent() {
         this.canvasLayer.mapContainer.removeChild(this.canvasLayer.canvas);
     }
-
+    /**
+     * @function mapboxgl.supermap.prototype.moveEvent
+     * @description 隐藏事件
+     */
     moveEvent() {
         this._hide();
     }
-
+    /**
+     * @function mapboxgl.supermap.prototype.resizeEvent
+     * @description 调整事件
+     */
     resizeEvent() {
         var canvas = this.canvasLayer.canvas;
         canvas.style.position = 'absolute';
@@ -199,12 +220,19 @@ export default class MapvRenderer extends BaseLayer {
         canvas.style.width = this.map.getCanvas().style.width;
         canvas.style.height = this.map.getCanvas().style.height;
     }
-
+    /**
+     * @function mapboxgl.supermap.prototype.moveEndEvent
+     * @description 移除最后事件
+     */
     moveEndEvent() {
         this._canvasUpdate();
         this._show();
     }
-
+    /**
+     * @function mapboxgl.supermap.prototype.clear
+     * @param context - {object} 当前环境
+     * @description 清除环境
+     */
     clear(context) {
         context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     }
@@ -216,7 +244,10 @@ export default class MapvRenderer extends BaseLayer {
     _show() {
         this.canvasLayer.canvas.style.display = 'block';
     }
-
+    /**
+     * @function mapboxgl.supermap.prototype.draw
+     * @description 渲染绘制
+     */
     draw() {
         this.canvasLayer.draw();
     }

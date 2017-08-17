@@ -14,7 +14,7 @@ import DataReturnOption from './DataReturnOption';
  *        measureEndField - {string} 用于生成空间数据的事件表的终止刻度字段，只有当事件为线事件的时候该属性才有意义。</br>
  *        measureOffsetField - {string} 刻度偏移量字段。</br>
  *        errorInfoField - {string} 错误信息字段，直接写入原事件表，用于描述事件未能生成对应的点或线时的错误信息。</br>
- *        retainedFields - {Array(String)} 欲保留到结果空间数据中的字段集合（系统字段除外）。</br>
+ *        retainedFields - {Array<String>} 欲保留到结果空间数据中的字段集合（系统字段除外）。</br>
  *        dataReturnOption - {SuperMap.DataReturnOption} 设置数据返回的最大记录。</br>
  */
 export default  class GenerateSpatialDataParameters {
@@ -74,7 +74,7 @@ export default  class GenerateSpatialDataParameters {
     errorInfoField = null;
 
     /**
-     * @member SuperMap.GenerateSpatialDataParameters.prototype.retainedFields -{Array(String)}
+     * @member SuperMap.GenerateSpatialDataParameters.prototype.retainedFields -{Array<String>}
      * @description 欲保留到结果空间数据中的字段集合（系统字段除外）。
      * 生成空间数据时，无论是否指定保留字段，路由 ID 字段、刻度偏移量字段、刻度值字段（点事件为刻度字段，线事件是起始和终止刻度字段）都会保留到结果空间数据中；
      * 如果没有指定 retainedFields 参数或者retainedFields 参数数组长度为0，则返回所有用户字段。
@@ -95,7 +95,7 @@ export default  class GenerateSpatialDataParameters {
 
 
     /**
-     * @function SuperMap.GenerateSpatialDataParameters.destroy
+     * @function SuperMap.GenerateSpatialDataParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {

@@ -79,7 +79,7 @@ export default  class ThemeLabelItem {
     /**
      * @function SuperMap.ThemeLabelItem.fromObj
      * @description 从传入对象获取分段标签专题图的子项类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeLabelItem}
      */
     static fromObj(obj) {

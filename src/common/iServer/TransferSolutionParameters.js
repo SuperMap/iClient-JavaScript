@@ -9,12 +9,12 @@ import {TransferPreference, TransferTactic} from '../REST';
  *        transferTactic - {SuperMap.TransferTactic} 交通换乘策略类型，
  *                      包括时间最短、距离最短、最少换乘、最少步行四种选择。</br>
  *        transferPreference - {SuperMap.TransferPreference} 乘车偏好枚举。</br>
- *        walkingRatio - {Array(Number)} 步行与公交的消耗权重比，默认值为 10。</br>
- *        points - {Array(Number)} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
- *        evadeLines - {Array(Number)} 避让路线的ID，默认为null。</br>
- *        evadeStops - {Array(Number)} 避让站点的ID，默认为null。</br>
- *        priorLines - {Array(Number)} 优先路线的ID，默认为null。</br>
- *        priorStops - {Array(Number)} 优先站点的ID，默认为null。</br>
+ *        walkingRatio - {Array<Number>} 步行与公交的消耗权重比，默认值为 10。</br>
+ *        points - {Array<Number>} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
+ *        evadeLines - {Array<Number>} 避让路线的ID，默认为null。</br>
+ *        evadeStops - {Array<Number>} 避让站点的ID，默认为null。</br>
+ *        priorLines - {Array<Number>} 优先路线的ID，默认为null。</br>
+ *        priorStops - {Array<Number>} 优先站点的ID，默认为null。</br>
  *        travelTime - {string} 出行的时间。</br>
  */
 export default class TransferSolutionParameters {
@@ -57,7 +57,7 @@ export default class TransferSolutionParameters {
     walkingRatio = null;
 
     /**
-     *  @member SuperMap.TransferSolutionParameters.prototype.points - {Array(String)}||{Array(Object)}
+     *  @member SuperMap.TransferSolutionParameters.prototype.points - {Array<String>}|{Array<Object>}
      *  @description 两种查询方式：
      *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，
      * 公交站点的ID对应服务提供者配置中的站点ID字段；
@@ -66,25 +66,25 @@ export default class TransferSolutionParameters {
     points = false;
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.evadeLines -{Array(Number)}
+     * @member SuperMap.TransferSolutionParameters.prototype.evadeLines -{Array<Number>}
      * @description 避让路线ID。
      * */
     evadeLines = null;
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.evadeStops -{Array(Number)}
+     * @member SuperMap.TransferSolutionParameters.prototype.evadeStops -{Array<Number>}
      * @description 避让站点ID。
      * */
     evadeStops = null;
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.priorLines -{Array(Number)}
+     * @member SuperMap.TransferSolutionParameters.prototype.priorLines -{Array<Number>}
      * @description 优先路线ID。
      * */
     priorLines = null;
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.priorStops -{Array(Number)}
+     * @member SuperMap.TransferSolutionParameters.prototype.priorStops -{Array<Number>}
      * @description 优先站点ID。
      * */
     priorStops = null;

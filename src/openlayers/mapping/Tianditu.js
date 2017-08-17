@@ -2,8 +2,8 @@ import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.source.Tianditu
  * @classdesc 天地图
- * @param opt_options - {object} 参数
- * @extends  ol.source.WMTS
+ * @param opt_options - {olx.source.WMTSOptions} 参数
+ * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.WMTS}
  */
 export default class Tianditu extends ol.source.WMTS {
 
@@ -40,7 +40,7 @@ export default class Tianditu extends ol.source.WMTS {
         })
     }
     /**
-     * @function ol.source.Tianditu.prototype.getTileGrid
+     * @function ol.source.Tianditu.getTileGrid
      * @description 网格瓦片
      * @param projection -{objecxt} 投影参考对象
      */
@@ -51,8 +51,9 @@ export default class Tianditu extends ol.source.WMTS {
         return ol.source.Tianditu.default3857TileGrid();
     }
     /**
-     * @function ol.source.Tianditu.prototype.default4326TileGrid
+     * @function ol.source.Tianditu.default4326TileGrid
      * @description 自定义4326网格瓦片
+     * @return {ol.tilegrid.WMTS}
      */
     static default4326TileGrid() {
         var tdt_WGS84_resolutions = [];
@@ -71,8 +72,9 @@ export default class Tianditu extends ol.source.WMTS {
         return tileGird;
     }
     /**
-     * @function ol.source.Tianditu.prototype.default3857TileGrid
+     * @function ol.source.Tianditu.default3857TileGrid
      * @description 自定义3857网格瓦片
+     * @return {ol.tilegrid.WMTS}
      */
     static default3857TileGrid() {
         var tdt_Mercator_resolutions = [];

@@ -62,9 +62,9 @@ export default  class TerrainCurvatureCalculationParameters {
     }
 
 
-    /*
-     * APIMethod: destroy
-     * 释放资源，将引用资源的属性置空。
+    /**
+     * @function SuperMap.TerrainCurvatureCalculationParameters.prototype.destroy
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
         var me = this;
@@ -75,7 +75,12 @@ export default  class TerrainCurvatureCalculationParameters {
         me.planCurvatureName = null;
         me.deleteExistResultDataset = true;
     }
-
+    /**
+     * @function SuperMap.TerrainCurvatureCalculationParameters.toObject
+     * @param derrainCurvatureCalculationParameters - {Object}  地形曲率计算参数
+     * @param tempObj -{Object} 参数。
+     * @description 生成地形曲率计算对象
+     */
     static toObject(derrainCurvatureCalculationParameters, tempObj) {
         for (var name in derrainCurvatureCalculationParameters) {
             if (name !== "dataset") {

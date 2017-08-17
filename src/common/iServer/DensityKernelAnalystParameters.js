@@ -89,7 +89,12 @@ export default  class DensityKernelAnalystParameters {
         me.resultGridName = null;
         me.deleteExistResultDataset = null;
     }
-
+    /**
+     * @function SuperMap.MathExpressionAnalysisParameters.toObject
+     * @param densityKernelAnalystParameters - {Object} 核密度分析参数
+     * @param tempObj - {Object} 参数。
+     * @description 生成对象
+     */
     static toObject(densityKernelAnalystParameters, tempObj) {
         for (var name in densityKernelAnalystParameters) {
             if (name !== "dataset") {

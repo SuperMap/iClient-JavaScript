@@ -20,7 +20,8 @@ export default  class ThemeGraduatedSymbolStyle {
     negativeDisplayed = false;
 
     /**
-     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeStyle -{SuperMap.ServerStyle} 负值的等级符号风格。
+     * @member SuperMap.ThemeGraduatedSymbolStyle.prototype.negativeStyle -{SuperMap.ServerStyle}
+     * @description 负值的等级符号风格。
      */
     negativeStyle = null;
 
@@ -68,7 +69,7 @@ export default  class ThemeGraduatedSymbolStyle {
     /**
      * @function SuperMap.ThemeGraduatedSymbolStyle.fromObj
      * @description 从传入对象获取等级符号专题图正负零值显示风格类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeGraduatedSymbolStyle}
      */
     static fromObj(obj) {

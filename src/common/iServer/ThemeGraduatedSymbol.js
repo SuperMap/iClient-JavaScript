@@ -145,7 +145,7 @@ export default  class ThemeGraduatedSymbol extends Theme {
     /**
      * @function SuperMap.ThemeGraduatedSymbol.fromObj
      * @description 从传入对象获取等级符号专题图。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeGraduatedSymbol}
      */
     static fromObj(obj) {

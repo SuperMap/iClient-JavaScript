@@ -20,7 +20,7 @@ export default class ProcessingServiceBase extends CommonServiceBase {
         options=options||{};
         /*
          * Constant: EVENT_TYPES
-         * {Array(String)}
+         * {Array<String>}
          * 此类支持的事件类型
          * - *processCompleted* 创建成功后触发的事件。
          * - *processFailed* 创建失败后触发的事件 。
@@ -57,7 +57,7 @@ export default class ProcessingServiceBase extends CommonServiceBase {
      * @function SuperMap.ProcessingServiceBase.prototype.addJob
      * @description 添加大数据
      * @param url - {string} 资源根地址。
-     * @param params - {object} 创建一个空间分析的请求参数。
+     * @param params - {Object} 创建一个空间分析的请求参数。
      * @param paramType - {string} - 请求参数类型。
      * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
      */

@@ -3,7 +3,7 @@ import SuperMap from '../SuperMap';
  * @class SuperMap.AreaSolarRadiationParameters
  * @classdesc 地区太阳辐射参数类。
  * @param options -{Object} 可选参数。如</br>
- *        dataset - {string} 要用来做地区太阳辐射数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。（必设参数）。
+ *        dataset - {string} 要用来做地区太阳辐射数据源中数据集的名称。该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。（必设参数）。</br>
  *        targetDatasourceName - {string}  指定的存储结果数据集的数据源名称（必设参数）, 例如："Jingjin"。</br>
  *        totalGridName - {string} 指定地区太阳辐射总辐射量数据集的名称（必设参数）。</br>
  *        diffuseDatasetGridName - {string} 指定地区太阳辐射散射辐射量数据集的名称。</br>
@@ -130,7 +130,7 @@ export default  class AreaSolarRadiationParameters {
 
     /**
      * @function SuperMap.AreaSolarRadiationParameters.prototype.destroy
-     * 释放资源，将引用资源的属性置空。
+     * @description 释放资源，将引用资源的属性置空。
      */
     destroy() {
         var me = this;
@@ -142,6 +142,12 @@ export default  class AreaSolarRadiationParameters {
         me.deleteExistResultDataset = true;
     }
 
+    /**
+     * @function SuperMap.AreaSolarRadiationParameters.toObject
+     * @param derrainCurvatureCalculationParameters - {Object}  区域太阳辐射参数。
+     * @param tempObj - {Object} 参数。
+     * @description 区域太阳辐射对象
+     */
     static  toObject(derrainCurvatureCalculationParameters, tempObj) {
         var parameter = {};
         for (var name in derrainCurvatureCalculationParameters) {

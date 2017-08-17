@@ -131,7 +131,12 @@ export default class SummaryRegionJobParameter {
         this.meshSizeUnit = null;
         this.type = null;
     }
-
+    /**
+     * @function SuperMap.SummaryRegionJobParameter.toObject
+     * @param summaryRegionJobParameter - {Object} 范围汇总分析服务参数
+     * @param tempObj -{Object} 参数。
+     * @description 生成范围汇总分析服务对象
+     */
     static toObject(summaryRegionJobParameter, tempObj) {
         for (var name in summaryRegionJobParameter) {
             if (name === "datasetName") {

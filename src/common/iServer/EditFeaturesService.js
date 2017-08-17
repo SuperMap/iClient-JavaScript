@@ -29,7 +29,6 @@ export default class EditFeaturesService extends CommonServiceBase {
      */
     returnContent = false;
 
-
     /**
      * @member SuperMap.EditFeaturesService.prototype.isUseBatch -{boolean}
      * @description 是否使用批量添加要素功能，要素添加时有效。

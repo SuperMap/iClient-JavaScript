@@ -6,8 +6,8 @@ import MapVRenderer from "./mapv/MapVRenderer";
  * @classdesc MapV图层
  * @extends L.Layer{@linkdoc-leaflet/#layer}
  * @param dataSet - {DataSet} MapV图层数据集
- * @param mapVOptions - {object} MapV图层参数
- * @param options - {object} 可选参数。如：<br>
+ * @param mapVOptions - {Object} MapV图层参数
+ * @param options - {Object} 可选参数。如：<br>
  *        attributionPrefix - {string} 版权信息前缀。<br>
  *        attribution - {string} 版权信息。
  */
@@ -75,8 +75,8 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.addData
      * @description 追加数据
-     * @param data - {object} 要追加的数据
-     * @param options -{object} 要追加的值
+     * @param data - {Object} 要追加的数据
+     * @param options -{Object} 要追加的值
      */
     addData: function (data, options) {
         this.renderer.addData(data, options);
@@ -85,8 +85,8 @@ export var MapVLayer = L.Layer.extend({
     /**
      * @function L.supermap.mapVLayer.prototype.update
      * @description 更新数据
-     * @param data - {object} 要更新的数据
-     * @param options -{object} 要更新的值
+     * @param data - {Object} 要更新的数据
+     * @param options -{Object} 要更新的值
      */
     update: function (data, options) {
         this.renderer.updateData(data, options);

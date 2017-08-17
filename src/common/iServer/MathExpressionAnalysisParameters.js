@@ -90,7 +90,12 @@ export default  class MathExpressionAnalysisParameters {
         me.resultGridName = null;
         me.deleteExistResultDataset = null;
     }
-
+    /**
+     * @function SuperMap.MathExpressionAnalysisParameters.toObject
+     * @param mathExpressionAnalysisParameters - {Object} 数学表达式分析参数
+     * @param tempObj - {Object} 参数。
+     * @description 生成数学表达式分析对象
+     */
     static toObject(mathExpressionAnalysisParameters, tempObj) {
         for (var name in mathExpressionAnalysisParameters) {
             if (name !== "dataset") {

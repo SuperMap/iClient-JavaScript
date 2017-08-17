@@ -3,7 +3,7 @@ import BufferSetting from './BufferSetting';
 /**
  * @class SuperMap.BufferAnalystParameters
  * @classdesc 缓冲区分析参数基类。
- * @param options - {Object} 可选参数。如:</br>
+ * @param options - {Object} 参数。如:</br>
  *        bufferSetting - {SuperMap.BufferSetting} 设置缓冲区通用参数。
  */
 export default  class BufferAnalystParameters {

@@ -40,7 +40,7 @@ export default  class ThemeGraphSize {
     /**
      * @function SuperMap.ThemeGraphSize.fromObj
      * @description 从传入对象获统计专题图符号尺寸类。
-     * @param obj - {object} 传入对象
+     * @param obj - {Object} 传入对象
      * @return {SuperMap.ThemeGraphSize}
      */
     static fromObj(obj) {

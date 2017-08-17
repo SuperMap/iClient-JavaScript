@@ -116,7 +116,12 @@ export default  class InterpolationRBFAnalystParameters extends InterpolationAna
         me.maxPointCountForInterpolation = null;
         me.maxPointCountInNode = null;
     }
-
+    /**
+     * @function SuperMap.InterpolationRBFAnalystParameters.toObject
+     * @param datasetInterpolationRBFAnalystParameters - {Object}  样条插值（径向基函数插值法）分析参数
+     * @param tempObj -{Object} 参数。
+     * @description 生成样条插值（径向基函数插值法）分析对象
+     */
     static toObject(datasetInterpolationRBFAnalystParameters, tempObj) {
         for (var name in datasetInterpolationRBFAnalystParameters) {
             tempObj[name] = datasetInterpolationRBFAnalystParameters[name];
