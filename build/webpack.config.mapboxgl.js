@@ -30,6 +30,15 @@ module.exports = {
     module: {
         noParse: /[\/\\]node_modules[\/\\]mapbox-gl[\/\\]dist[\/\\]mapbox-gl\.js$/,
         rules: [{
+            //图片小于30k采用base64编码
+            test: /\.(png|jpg|jpeg|gif|woff)$/,
+            use: [{
+                loader: 'url-loader',
+                options: {
+                    limit: 30000
+                }
+            }]
+        },{
             test: /\.js/,
             exclude: /classic/,
             loader: 'babel-loader',
