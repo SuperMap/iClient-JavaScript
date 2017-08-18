@@ -143,7 +143,7 @@
 
             //将组成缓冲区的边界点提出来，为了构造下面查询服务的geometry
             var bufferPoints = [];
-            var coordinate = serviceResult.result.geometry.coordinates[0][0];
+            var coordinate = serviceResult.result.resultGeometry.geometry.coordinates[0][0];
             for (var i = 0; i < coordinate.length; i++) {
                 bufferPoints.push([coordinate[i][0], coordinate[i][1]]);
             }

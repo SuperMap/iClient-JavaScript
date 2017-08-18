@@ -10428,8 +10428,8 @@ var StyleUtils = function () {
                     var symbolParameters = {
                         "transparent": true,
                         "resourceType": "SYMBOLMARKER",
-                        "picWidth": Math.ceil(shader.markerSize * _SuperMap2.default.DOTS_PER_INCH * _SuperMap2.default.INCHES_PER_UNIT["mm"]),
-                        "picHeight": Math.ceil(shader.markerSize * _SuperMap2.default.DOTS_PER_INCH * _SuperMap2.default.INCHES_PER_UNIT["mm"]),
+                        "picWidth": Math.ceil(shader.markerSize * _SuperMap2.default.DOTS_PER_INCH * _SuperMap2.default.INCHES_PER_UNIT["mm"]) || 13,
+                        "picHeight": Math.ceil(shader.markerSize * _SuperMap2.default.DOTS_PER_INCH * _SuperMap2.default.INCHES_PER_UNIT["mm"]) || 13,
                         "style": JSON.stringify(shader)
                     };
                     var imageUrl = _SuperMap2.default.Util.urlAppend(url + "/symbol.png", _SuperMap2.default.Util.getParameterString(symbolParameters));
@@ -50929,7 +50929,7 @@ var MapvCanvasLayer = function () {
 
         /**
          * @function ol.supermap.MapvCanvasLayer.prototype.resize
-         * @param mapWidth - {number} ��ͼ���
+         * @param mapWidth - {number} ��ͼ����
          * @param mapHeight - {number} ��ͼ�߶�
          * @description ������ͼ��С
          */
@@ -50950,7 +50950,7 @@ var MapvCanvasLayer = function () {
         /**
          * @function ol.supermap.MapvCanvasLayer.prototype.setZIndex
          * @param zIndex - {number} �㼶����
-         * @description ����ͼ��㼶
+         * @description ����ͼ���㼶
          */
 
     }, {
@@ -50960,7 +50960,7 @@ var MapvCanvasLayer = function () {
         }
         /**
          * @function ol.supermap.MapvCanvasLayer.prototype.getZIndex
-         * @description ��ȡͼ��㼶
+         * @description ��ȡͼ���㼶
          */
 
     }, {
