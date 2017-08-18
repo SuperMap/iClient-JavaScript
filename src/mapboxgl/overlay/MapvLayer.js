@@ -1,5 +1,6 @@
-import MapvRenderer from  "./mapv/MapvRenderer";
+import MapvRenderer from "./mapv/MapvRenderer";
 import mapboxgl from 'mapbox-gl';
+
 /**
  * @class mapboxgl.supermap.MapvLayer
  * @classdesc Mapv图层
@@ -11,12 +12,13 @@ export class MapvLayer {
 
     constructor(map, dataSet, mapVOptions) {
         this.map = map;
-        this.mapvLayer = new MapvRenderer(map, this, dataSet, mapVOptions);
+        this.renderer = new MapvRenderer(map, this, dataSet, mapVOptions);
         this.canvas = this._createCanvas();
-        this.mapvLayer._canvasUpdate();
+        this.renderer._canvasUpdate();
         this.mapContainer = map.getCanvasContainer();
         this.mapContainer.appendChild(this.canvas);
     }
+
     /**
      * @function mapboxgl.supermap.MapvLayer.prototype.getTopLeft
      * @description 获取左上的距离
@@ -29,6 +31,20 @@ export class MapvLayer {
             topLeft = bounds.getNorthWest();
         }
         return topLeft;
+    }
+
+    show() {
+        if (this.renderer) {
+            this.renderer._show();
+        }
+        return this;
+    }
+
+    hide() {
+        if (this.renderer) {
+            this.renderer._hide();
+        }
+        return this;
     }
 
     _createCanvas() {
@@ -44,5 +60,6 @@ export class MapvLayer {
     }
 
 }
+
 mapboxgl.supermap = mapboxgl.supermap || {};
 mapboxgl.supermap.MapvLayer = MapvLayer;

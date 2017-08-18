@@ -23,7 +23,7 @@
     <script src="http://mapv.baidu.com/build/mapv.min.js"></script>
     <script src="https://cdn.bootcss.com/mapbox-gl/0.38.0/mapbox-gl.js"></script>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script defer="defer" type="text/javascript" src="../../dist/iclient9-mapboxgl.min.js"></script>
+    <script type="text/javascript" src="../../dist/iclient9-mapboxgl.min.js"></script>
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%">
 <div id="map"></div>
@@ -53,10 +53,11 @@
         zoom: 10
     });
     map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
     new mapboxgl.Popup({closeOnClick: false})
-            .setLngLat(map.getCenter())
-            .setHTML('示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理')
-            .addTo(map);
+        .setLngLat(map.getCenter())
+        .setHTML('示例数据来源为百度MapV的加偏数据，iClient9未做纠偏处理')
+        .addTo(map);
 
     map.on('load', function () {
         $.get('../data/wuhan-car', function (rs) {
@@ -130,6 +131,7 @@
         });
 
     });
+
 </script>
 </body>
 </html>
