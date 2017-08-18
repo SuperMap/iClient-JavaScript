@@ -6,11 +6,11 @@ import {CartoCSSToLeaflet} from './carto/CartoCSSToLeaflet';
 import SuperMap from '../../common/SuperMap';
 
 /**
- * @class L.superMap.tiledVectorLayer
+ * @class L.supermap.tiledVectorLayer
  * @classdesc SuperMap iServer的矢量瓦片图层
  * @extends L.superMap.VectorGrid
  * @example
- *      L.superMap.tiledVectorLayer(url).addTo(map);
+ *      L.supermap.tiledVectorLayer(url).addTo(map);
  * @param url - {string} 图层数据服务地址
  * @param options - {Object} 图层可选参数
  */
@@ -72,7 +72,7 @@ export var  TileVectorLayer = VectorGrid.extend({
     },
 
     /**
-     * @function L.superMap.tiledVectorLayer.prototype.onAdd
+     * @function L.supermap.tiledVectorLayer.prototype.onAdd
      * @description 添加地图
      * @param map - {L.map} 待添加的地图
      */
@@ -85,7 +85,7 @@ export var  TileVectorLayer = VectorGrid.extend({
     },
 
     /**
-     * @function L.superMap.tiledVectorLayer.prototype.initLayersInfo
+     * @function L.supermap.tiledVectorLayer.prototype.initLayersInfo
      * @description 获取服务器layers资源下的风格信息(当CartoCSS中不存在相应图层渲染信息时使用)
      */
     initLayersInfo: function () {
@@ -119,7 +119,7 @@ export var  TileVectorLayer = VectorGrid.extend({
     },
 
     /**
-     * @function L.superMap.tiledVectorLayer.prototype.getLayerStyleInfo
+     * @function L.supermap.tiledVectorLayer.prototype.getLayerStyleInfo
      * @description 获取图层样式信息
      * @param layerName - {string} 图层名称
      */
@@ -163,7 +163,7 @@ export var  TileVectorLayer = VectorGrid.extend({
     },
 
     /**
-     * @function L.superMap.tiledVectorLayer.prototype.getVectorStylesFromServer
+     * @function L.supermap.tiledVectorLayer.prototype.getVectorStylesFromServer
      * @description 等待服务器的carto返回之后拼接本地配置的cartoCSS,并调用onAdd出图
      */
     getVectorStylesFromServer: function () {
@@ -197,7 +197,7 @@ export var  TileVectorLayer = VectorGrid.extend({
     },
 
     /**
-     * @function L.superMap.tiledVectorLayer.prototype.getVectorTileLayerStyle
+     * @function L.supermap.tiledVectorLayer.prototype.getVectorTileLayerStyle
      * @description 获取图层风格信息，当CartoCSS中包含有对该图层的渲染信息时，优先获取,否则获取layers资源下layerSytle的渲染信息
      * @param coords - {Object} 图层坐标参数对象
      * @param feature - {L.feature} 要获取的要是
@@ -260,7 +260,7 @@ export var  TileVectorLayer = VectorGrid.extend({
     },
 
     /**
-     * @function L.superMap.tiledVectorLayer.prototype.getScale
+     * @function L.supermap.tiledVectorLayer.prototype.getScale
      * @description 通过缩放级别获取比例尺
      * @param zoom - {number}缩放级别
      */
@@ -272,7 +272,7 @@ export var  TileVectorLayer = VectorGrid.extend({
     },
 
     /**
-     * @function L.superMap.tiledVectorLayer.prototype.getScaleFromCoords
+     * @function L.supermap.tiledVectorLayer.prototype.getScaleFromCoords
      * @description 通过坐标获取比例尺
      * @param coords - {Object} 图层坐标参数对象
      */
@@ -288,7 +288,7 @@ export var  TileVectorLayer = VectorGrid.extend({
     },
 
     /**
-     * @function L.superMap.tiledVectorLayer.prototype.getDefaultScale
+     * @function L.supermap.tiledVectorLayer.prototype.getDefaultScale
      * @description 获取默认比例尺
      * @param coords - {Object} 图层坐标参数对象
      */

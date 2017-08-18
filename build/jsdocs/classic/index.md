@@ -1,8 +1,8 @@
 # SuperMap iClient Classic API
 
-*   官网(website)：[http://iclient.supermapol.com/introduction/classic.html#introduce](http://iclient.supermapol.com/introduction/leaflet.html#introduce)
+*   官网(website)：[http://iclient.supermapol.com/introduction/classic.html#introduce](http://iclient.supermapol.com/introduction/classic.html#introduce)
 
-*   源码(source code)：[https://github.com/SuperMap/iClient9/tree/master/src/classic](https://github.com/SuperMap/iClient9/tree/master/src/leaflet)
+*   源码(source code)：[https://github.com/SuperMap/iClient9/tree/master/src/classic](https://github.com/SuperMap/iClient9/tree/master/src/classic)
 
 ## 参考API
 
