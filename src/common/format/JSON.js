@@ -76,7 +76,7 @@ export default  class JSONFormat extends Format {
      * @function SuperMap.Format.JSON.prototype.write
      * @description 序列化一个对象到一个符合JSON格式的字符串。
      * @param value - {string} 需要被序列化的对象，数组，字符串，数字，布尔值。
-     * @return {String} 符合JSON格式的字符串。
+     * @return {string} 符合JSON格式的字符串。
      */
     write(value, pretty) {
         this.pretty = !!pretty;
@@ -97,7 +97,7 @@ export default  class JSONFormat extends Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeIndent
      * @description 根据缩进级别输出一个缩进字符串。
-     * @return {String} 一个适当的缩进字符串。
+     * @return {string} 一个适当的缩进字符串。
      */
     writeIndent() {
         var pieces = [];
@@ -112,7 +112,7 @@ export default  class JSONFormat extends Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeNewline
      * @description 在格式化输出模式情况下输出代表新一行的字符串。
-     * @return {String} 代表新的一行的字符串。
+     * @return {string} 代表新的一行的字符串。
      */
     writeNewline() {
         return (this.pretty) ? this.newline : '';
@@ -121,7 +121,7 @@ export default  class JSONFormat extends Format {
     /**
      * @function SuperMap.Format.JSON.prototype.writeSpace
      * @description 在格式化输出模式情况下输出一个代表空格的字符串。
-     * @return {String} A space.
+     * @return {string} A space.
      */
     writeSpace() {
         return (this.pretty) ? this.space : '';
@@ -137,7 +137,7 @@ export default  class JSONFormat extends Format {
          * @function SuperMap.Format.JSON.serialize.object
          * @description Transform an object into a JSON string.
          * @param object - {Object} The object to be serialized.
-         * @return {String} A JSON string representing the object.
+         * @return {string} A JSON string representing the object.
          */
         'object': function (object) {
             // three special objects that we want to treat differently
@@ -182,7 +182,7 @@ export default  class JSONFormat extends Format {
          * @function SuperMap.Format.JSON.serialize.array
          * @description Transform an array into a JSON string.
          * @param array - {Array} The array to be serialized
-         * @return {String} A JSON string representing the array.
+         * @return {string} A JSON string representing the array.
          */
         'array': function (array) {
             var json;
@@ -210,7 +210,7 @@ export default  class JSONFormat extends Format {
          * @function SuperMap.Format.JSON.serialize.string
          * @description Transform a string into a JSON string.
          * @param string - {string} The string to be serialized
-         * @return {String} A JSON string representing the string.
+         * @return {string} A JSON string representing the string.
          */
         'string': function (string) {
             // If the string contains no control characters, no quote characters, and no
@@ -245,7 +245,7 @@ export default  class JSONFormat extends Format {
          * @function SuperMap.Format.JSON.serialize.number
          * @description Transform a number into a JSON string.
          * @param number - {number}The number to be serialized.
-         * @return {String} A JSON string representing the number.
+         * @return {string} A JSON string representing the number.
          */
         'number': function (number) {
             return isFinite(number) ? String(number) : "null";
@@ -255,7 +255,7 @@ export default  class JSONFormat extends Format {
          * @function SuperMap.Format.JSON.serialize.boolean
          * @description Transform a boolean into a JSON string.
          * @param bool - {boolean} The boolean to be serialized.
-         * @return {String} A JSON string representing the boolean.
+         * @return {string} A JSON string representing the boolean.
          */
         'boolean': function (bool) {
             return String(bool);
@@ -265,7 +265,7 @@ export default  class JSONFormat extends Format {
          * @function SuperMap.Format.JSON.serialize.object
          * @description Transform a date into a JSON string.
          * @param date - {Date} The date to be serialized.
-         * @return {String} A JSON string representing the date.
+         * @return {string} A JSON string representing the date.
          */
         'date': function (date) {
             function format(number) {

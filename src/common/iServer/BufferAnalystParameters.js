@@ -9,11 +9,9 @@ import BufferSetting from './BufferSetting';
 export default  class BufferAnalystParameters {
     /**
      * @member SuperMap.BufferAnalystParameters.prototype.bufferSetting -{SuperMap.BufferSetting}
-     * @description 设置缓冲区通用参数。
-     * 为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
+     * @description 设置缓冲区通用参数。为缓冲区分析提供必要的参数信息，包括左缓冲距离、右缓冲距离、端点类型、圆头缓冲圆弧处线段的个数信息。
      */
     bufferSetting = null;
-
 
     constructor(options) {
         var me = this;

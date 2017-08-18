@@ -106,7 +106,7 @@ export default class ChartQueryService extends CommonServiceBase {
 
     /**
      * @function SuperMap.ChartQueryService.prototype.processAsync
-     * @description APIMethod:使用服务地址 URL 实例化 ChartQueryService 对象。
+     * @description 使用服务地址 URL 实例化 ChartQueryService 对象。
      * @param params - {SuperMap.ChartQueryParameters} 查询参数。
      */
     processAsync(params) {
@@ -154,7 +154,7 @@ export default class ChartQueryService extends CommonServiceBase {
      * @function SuperMap.ChartQueryService.prototype.getQueryParameters
      * @description 将 JSON 对象表示的查询参数转化为 QueryParameters 对象。
      * @param params - {Object} JSON 字符串表示的查询参数。
-     * @return- {chartQueryFilterParameters} 返回查询结果
+     * @return {chartQueryFilterParameters} 返回查询结果
      */
     getQueryParameters(params) {
         return new QueryParameters({

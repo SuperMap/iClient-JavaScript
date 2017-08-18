@@ -3,11 +3,11 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
 
 /**
  * @class SuperMap.ComputeWeightMatrixParameters
- * @classdesc 耗费矩阵分析参数类。
- *               根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。<br>
+ * @classdesc 耗费矩阵分析参数类。<br>
+ *               根据交通网络分析参数中的耗费字段返回一个耗费矩阵。该矩阵是一个二维数组，用来存储任意两点间的资源消耗。
  * @param options - {Object} 可选参数。如：<br>
  *         isAnalyzeById - {boolean} 是否通过节点 ID 指定路径分析的结点。<br>
- *         nodes - {Array<SuperMap.Point>}|{Array<Number>} 要计算耗费矩阵的点数组，必设字段。<br>
+ *         nodes - {Array<SuperMap.Point>}|{Array<number>} 要计算耗费矩阵的点数组，必设字段。<br>
  *         parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 export default  class ComputeWeightMatrixParameters {

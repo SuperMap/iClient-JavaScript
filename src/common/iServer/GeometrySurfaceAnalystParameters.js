@@ -8,7 +8,7 @@ import SurfaceAnalystParameters from './SurfaceAnalystParameters';
  * 该类对几何对象表面分析所用到的参数进行设置。
  * @param options - {Object} 可选参数。如:</br>
  *        points - {Array<SuperMap.Geometry.Point>} 表面分析的坐标点数组。</br>
- *        zValues - {Array<Number>} 表面分析的坐标点的 Z 值数组。</br>
+ *        zValues - {Array<number>} 表面分析的坐标点的 Z 值数组。</br>
  *        resolution - {number}获取或设置指定中间结果（栅格数据集）的分辨率。</br>
  *        resultSetting - {SuperMap.DataReturnOption} 结果返回设置类。</br>
  *        extractParameter - {SuperMap.SurfaceAnalystParametersSetting} 获取或设置表面分析参数。</br>
@@ -24,7 +24,7 @@ export default  class GeometrySurfaceAnalystParameters extends SurfaceAnalystPar
     points = null;
 
     /**
-     * @member SuperMap.GeometrySurfaceAnalystParameters.prototype.zValues -{Array<Number>}
+     * @member SuperMap.GeometrySurfaceAnalystParameters.prototype.zValues -{Array<number>}
      * @description 获取或设置用于提取操作的值。提取等值线时，将使用该数组中的值，
      * 对几何对象中的坐标点数组进行插值分析，得到栅格数据集（中间结果），接着从栅格数据集提取等值线。
      */

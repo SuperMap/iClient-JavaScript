@@ -28,8 +28,8 @@ export default  class GetFeaturesByIDsParameters extends GetFeaturesParametersBa
     IDs = null;
 
     /**
-     * @member SuperMap.GetFeaturesByIDsParameters.prototype.fields -{Array<String>}
-     * @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
+     *  @member SuperMap.GetFeaturesByIDsParameters.prototype.fields -{Array<String>}
+     *  @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
      */
     fields = null;
 
@@ -63,7 +63,7 @@ export default  class GetFeaturesByIDsParameters extends GetFeaturesParametersBa
      * @function SuperMap.GetFeaturesByIDsParameters.toJsonParameters
      * @description 将<SuperMap.GetFeaturesByIDsParameters>对象参数转换为json字符串。
      * @param params - {SuperMap.GetFeaturesByIDsParameters} IDs查询参数。
-     * @return {String} 转化后的 json字符串。
+     * @return {string} 转化后的 json字符串。
      */
     static toJsonParameters(params) {
         var parasByIDs, filterParameter;

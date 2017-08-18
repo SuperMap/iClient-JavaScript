@@ -36,7 +36,7 @@ export default  class AreaSolarRadiationService extends SpatialAnalystBase {
     /**
      * @function SuperMap.AreaSolarRadiationService.prototype.processAsync
      * @description  负责将客户端的查询参数传递到服务端。
-     * @param parameter - {AreaSolarRadiationService}
+     * @param parameter - {SuperMap.AreaSolarRadiationParameters} 地区太阳辐射参数
      */
     processAsync(parameter) {
         var me = this;

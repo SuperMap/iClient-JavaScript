@@ -5,7 +5,7 @@ import IPortalServiceBase from './iPortalServiceBase';
  * @classdesc iPortal服务
  * @extends SuperMap.iPortalServiceBase
  * @param seviceUrl -{string} 服务地址
- * @param params -{string}
+ * @param params -{Object} 服务请求参数
  *
  */
 export default  class IPortalService extends IPortalServiceBase {

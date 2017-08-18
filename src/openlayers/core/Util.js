@@ -5,6 +5,7 @@ ol.supermap = ol.supermap || {};
 /**
  * @class ol.supermap.Util
  * @classdesc 工具类
+ * @private
  */
 export default class Util {
 
@@ -12,14 +13,12 @@ export default class Util {
 
     }
 
-
     static toGeoJSON(smObj) {
         if (smObj) {
             var format = new GeoJSONFormat();
             return JSON.parse(format.write(smObj));
         }
     }
-
 
     static toSuperMapGeometry(geoJSON) {
         if (geoJSON && geoJSON.type) {

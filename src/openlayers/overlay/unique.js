@@ -7,7 +7,7 @@ import Vector from '../../common/iServer/ThemeVector';
  * @classdesc 地理专题图
  * @param name - {String} 名称
  * @param opt_options -{Object} 参数。
- * @extends  ol.source.GeoFeature
+ * @extends ol.source.GeoFeature
  */
 export default class Unique extends GeoFeature {
 
@@ -51,8 +51,8 @@ export default class Unique extends GeoFeature {
     }
     /**
      * @function ol.source.Unique.prototype.createThematicFeature
-     * @description 创建专题要素
-     * @param feature - {Object} 要创建得要素
+     * @param feature -{Object} 要素
+     * @description 创建专题要素。
      */
     createThematicFeature(feature) {
         var style = this.getStyleByData(feature);

@@ -84,11 +84,10 @@ export default class SummaryMeshJobParameter {
         this.regionDataset = null;
         this.type = null;
     }
-
     /**
      * @function SuperMap.SummaryMeshJobParameter.toObject
      * @param summaryMeshJobParameter - {Object} 点聚合分析任务参数。
-     * @param tempObj - {Object} 参数。
+     * @param tempObj - {Object} 目标对象。
      * @description 生成点聚合分析任务对象
      */
     static toObject(summaryMeshJobParameter, tempObj) {

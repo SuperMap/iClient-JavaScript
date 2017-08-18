@@ -18,7 +18,7 @@ import ServerTextStyle from './ServerTextStyle';
  *        defaultStyle - {SuperMap.ServerTextStyle} 默认的文本复合风格。<br>
  *        separator - {string} 文本的分隔符。<br>
  *        separatorEnabled - Boolean} 文本的分隔符是否有效。<br>
- *        splitIndexes - {Array<Number>} 分段索引值，分段索引值用来对文本中的字符进行分段。<br>
+ *        splitIndexes - {Array<number>} 分段索引值，分段索引值用来对文本中的字符进行分段。<br>
  *        styles - {Array<SuperMap.ServerTextStyle>} 文本样式集合。
  */
 export default class LabelMixedTextStyle {

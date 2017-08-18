@@ -18,7 +18,7 @@ export default  class MathExpressionAnalysisParameters {
 
     /**
      * @member SuperMap.MathExpressionAnalysisParameters.prototype.dataset -{string}
-     * @descriptione 要用来做栅格代数运算数据源中数据集的名称。
+     * @description 要用来做栅格代数运算数据源中数据集的名称。
      * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin。必设字段。
      *
      */
@@ -92,9 +92,9 @@ export default  class MathExpressionAnalysisParameters {
     }
     /**
      * @function SuperMap.MathExpressionAnalysisParameters.toObject
-     * @param mathExpressionAnalysisParameters - {Object} 数学表达式分析参数
-     * @param tempObj - {Object} 参数。
-     * @description 生成数学表达式分析对象
+     * @param mathExpressionAnalysisParameters -{Object} 栅格代数运算参数
+     * @param tempObj - {Object} 目标对象
+     * @description 生成栅格代数运算对象
      */
     static toObject(mathExpressionAnalysisParameters, tempObj) {
         for (var name in mathExpressionAnalysisParameters) {

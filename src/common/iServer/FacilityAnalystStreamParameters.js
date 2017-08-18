@@ -2,9 +2,9 @@ import SuperMap from '../SuperMap';
 
 /**
  * @class SuperMap.FacilityAnalystStreamParameters
- * @extends 上游/下游关键设施查找资源参数类。
+ * @description 上游/下游关键设施查找资源参数类。
  * @param options - {Object} 可选参数。如：
- *        sourceNodeIDs - {Array（Number）} 指定的设施点ID数组，可以为空。
+ *        sourceNodeIDs - {Array<number>} 指定的设施点ID数组，可以为空。
  *        edgeID - {number}指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。
  *        nodeID - {number}指定的结点ID （注：edgeID 与 nodeID 不能同时使用）。
  *        isUncertainDirectionValid - {boolean} 指定不确定流向是否有效；默认false，无效。

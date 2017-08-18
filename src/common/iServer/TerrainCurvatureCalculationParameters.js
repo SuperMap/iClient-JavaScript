@@ -78,7 +78,7 @@ export default  class TerrainCurvatureCalculationParameters {
     /**
      * @function SuperMap.TerrainCurvatureCalculationParameters.toObject
      * @param derrainCurvatureCalculationParameters - {Object}  地形曲率计算参数
-     * @param tempObj -{Object} 参数。
+     * @param tempObj - {Object} 目标对象。
      * @description 生成地形曲率计算对象
      */
     static toObject(derrainCurvatureCalculationParameters, tempObj) {

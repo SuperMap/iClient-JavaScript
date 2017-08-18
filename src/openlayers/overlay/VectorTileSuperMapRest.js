@@ -7,7 +7,7 @@ ol.supermap = ol.supermap || {};
  * @class ol.source.VectorTileSuperMapRest
  * @classdesc 矢量瓦片REST服务
  * @param options -{Object} 参数。
- * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.VectorTile}
+ * @extends ol.source.VectorTile{@linkdoc-openlayers/ol.source.VectorTile}
  */
 export default class VectorTileSuperMapRest extends ol.source.VectorTile {
 
@@ -170,7 +170,12 @@ export default class VectorTileSuperMapRest extends ol.source.VectorTile {
             });
         }
     }
-
+    /**
+     * @function ol.source.VectorTileSuperMapRest.optionsFromMapJSON
+     * @param url - {string} 地址
+     * @param mapJSONObj - {Object} 地图JSON
+     * @description 获取地图JSON信息
+     */
     static optionsFromMapJSON(url, mapJSONObj) {
         var options = {};
         options.url = url;

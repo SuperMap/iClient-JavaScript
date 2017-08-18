@@ -30,7 +30,6 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
          * @param serverType - {Object} 服务类型
          * @return {string} 添加生成后的新地址
          */
-
         function appendCredential(url, serverType) {
             var newUrl = url, credential, value;
             switch (serverType) {
@@ -102,7 +101,6 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         if (options.cacheEnabled === true && options.tileversion) {
             layerUrl += "tileversion=" + options.tileversion;
         }
-
         /**
          * @function ol.source.ImageSuperMapRest.prototype.tileUrlFunction
          * @param tileCoord - {Object} 瓦片坐标系
@@ -191,16 +189,15 @@ export default class ImageSuperMapRest extends ol.source.TileImage {
         });
         return options;
     }
-
     /**
      * @function ol.source.ImageSuperMapRest.createTileGrid
+     * @param extent - {number} 长度
+     * @param maxZoom - {number} 最大的放大级别
+     * @param minZoom - {number} 最小的放大级别
+     * @param tileSize - {number} 瓦片的尺寸
+     * @param origin - {number} 原点
      * @description 创建网格切片
-     * @param extent -{number} 长度
-     * @param maxZoom -{number} 最大的放大级别
-     * @param minZoom -{number} 最小的放大级别
-     * @param tileSize -{number} 瓦片的尺寸
-     * @param origin -{number} 原点
-     * @return {ol.tilegrid.TileGrid} 创建网格切片
+     * @return {ol.tilegrid.TileGrid} 创建的网格切片
      */
     static createTileGrid(extent, maxZoom, minZoom, tileSize, origin) {
         var tilegrid = ol.tilegrid.createXYZ({

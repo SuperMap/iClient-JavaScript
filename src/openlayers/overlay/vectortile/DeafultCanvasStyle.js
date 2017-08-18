@@ -1,6 +1,7 @@
 /**
  * @constant ol.supermap.pointStyle
  * @description 点属性名的对应表
+ * @private
  */
 export var pointStyle = {
     pointFile: "",

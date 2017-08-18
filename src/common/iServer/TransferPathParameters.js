@@ -17,7 +17,7 @@ export default  class TransferPathParameters {
 
 
     /**
-     *  @member SuperMap.TransferPathParameters.prototype.points -{Array<String>}|{Array<Object>}
+     *  @member SuperMap.TransferPathParameters.prototype.points -{Array<string>}|{Array<Object>}
      *  @description 两种查询方式：
      *           1. 按照公交站点的起止ID进行查询，则points参数的类型为int[]，形如：[起点ID、终点ID]，
      * 公交站点的ID对应服务提供者配置中的站点ID字段；
@@ -42,7 +42,7 @@ export default  class TransferPathParameters {
      * @function SuperMap.TransferPathParameters.toJson
      * @description 将 <SuperMap.TransferPathParameters> 对象参数转换为 json 字符串。
      * @param params - {SuperMap.TransferPathParameters} 交通换乘参数。
-     * @returns {String} 转化后的 json字符串。
+     * @returns {string} 转化后的 json字符串。
      */
     static toJson(params) {
         if (params) {

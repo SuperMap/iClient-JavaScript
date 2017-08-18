@@ -8,7 +8,7 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  *        centers - {Point/Integer} 配送中心集合，必设字段。<br>
  *        hasLeastTotalCost - {boolean} 配送模式是否为总花费最小方案。默认为 false。<br>
  *        isAnalyzeById - {boolean} 是否通过节点 ID 号来指定配送中心点和配送目的点，默认为 false，即通过坐标点指定。<br>
- *        nodes - {Array<{SuperMap.Point}|Number>} 配送目标集合，必设字段。<br>
+ *        nodes - {Array<{SuperMap.Point}|number>} 配送目标集合，必设字段。<br>
  *        parameter - {SuperMap.TransportationAnalystParameter} 交通网络分析通用参数。
  */
 export default  class FindMTSPPathsParameters {
@@ -36,7 +36,7 @@ export default  class FindMTSPPathsParameters {
     isAnalyzeById = false;
 
     /**
-     * @member SuperMap.FindMTSPPathsParameters.prototype.nodes -{Array<SuperMap.Point>}|{Array<Number>}
+     * @member SuperMap.FindMTSPPathsParameters.prototype.nodes -{Array<SuperMap.Point>}|{Array<number>}
      * @description 配送目标集合，必设字段。<br>
      *               当 SuperMap.FindMTSPPathsParameters.isAnalyzeById = false 时，nodes 应为点的坐标数组；<br>
      *               当 SuperMap.FindMTSPPathsParameters.isAnalyzeById = true 时，nodes 应为点的 ID 数组。

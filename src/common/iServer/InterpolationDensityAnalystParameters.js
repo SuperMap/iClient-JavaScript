@@ -15,7 +15,7 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  *        outputDatasourceName - {string} 插值分析结果数据源的名称。必设参数</br>
  *        pixelFormat - {string} 指定结果栅格数据集存储的像素格式。</br>
  *        dataset - {string} 用来做插值分析的数据源中数据集的名称，该名称用形如"数据集名称@数据源别名"形式来表示。当插值分析类型( SuperMap.InterpolationAnalystType)为 dataset 时，必设参数。</br>
- *        inputPoints - {Array <SuperMap.Geometry.Point} 用于做插值分析的离散点集合。当插值分析类型（ SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。</br>
+ *        inputPoints - {Array <SuperMap.Geometry.Point>} 用于做插值分析的离散点集合。当插值分析类型（ SuperMap.InterpolationAnalystType）为 geometry 时，必设参数。</br>
  * @extends SuperMap.InterpolationAnalystParameters
  * @example 例如：
  * (start code)

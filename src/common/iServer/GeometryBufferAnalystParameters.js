@@ -37,10 +37,10 @@ export default  class GeometryBufferAnalystParameters extends BufferAnalystParam
         }
     }
     /**
-     * @function  SuperMap.GeometryBufferAnalystParameters.toObject
-     * @param geometryBufferAnalystParameters - {Object} 几何缓冲区分析参数。
-     * @param tempObj - {Object} 参数。
-     * @description 生成几何缓冲区分析对象
+     * @function SuperMap.GeometryBufferAnalystParameters.toObject
+     * @param geometryBufferAnalystParameters -{Object} 几何对象缓冲区分析参数
+     * @param tempObj - {Object} 目标对象
+     * @description 生成几何对象缓冲区分析对象
      */
     static  toObject(geometryBufferAnalystParameters, tempObj) {
         for (var name in geometryBufferAnalystParameters) {

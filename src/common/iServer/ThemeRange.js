@@ -20,9 +20,9 @@ import {RangeMode, ColorGradientType} from '../REST';
  */
 export default class ThemeRange extends Theme {
 
-    /*
-     * Property: precision
-     * {String}
+    /**
+     * @member SuperMap.ThemeRange.prototype.precision -{string}
+     * @description 精准度
      */
     precision = '1.0E-12';
 
@@ -43,7 +43,7 @@ export default class ThemeRange extends Theme {
     rangeExpression = null;
 
     /**
-     * @member SuperMap.ThemeRange.prototype.rangeMode -{RangeMode}
+     * @member SuperMap.ThemeRange.prototype.rangeMode -{SuperMap.RangeMode}
      * @description 分段专题图的分段模式。<br>
      *              默认值为 SuperMap.RangeMode.EQUALINTERVAL（等距离分段）。
      *              在分段专题图中，作为专题变量的字段或表达式的值按照某种分段方式被分成多个范围段。

@@ -7,7 +7,7 @@ import CommonAddressMatchService from '../../common/iServer/AddressMatchService'
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
  * @extends SuperMap.REST.CommonServiceBase
  * @param url - {string} 服务地址
- * @param options - {object} 地址匹配服务可选参数
+ * @param options - {Object} 地址匹配服务可选参数
  */
 export class AddressMatchService extends CommonServiceBase {
 

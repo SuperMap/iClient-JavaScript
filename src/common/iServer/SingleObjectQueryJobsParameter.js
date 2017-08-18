@@ -45,12 +45,11 @@ export default  class SingleObjectQueryJobsParameter {
         this.datasetQuery = null;
         this.mode = null;
     }
-
     /**
      * @function SuperMap.SingleObjectQueryJobsParameter.toObject
-     * @param singleObjectQueryJobsParameter - {Object} 单一对象查询服务参数。
-     * @param tempObj -{Object} 参数。
-     * @description 生成单一对象查询服务对象
+     * @param singleObjectQueryJobsParameter -{Object} 单对象空间查询分析任务参数
+     * @param tempObj - {Object} 目标对象
+     * @description 生成单对象空间查询分析任务对象
      */
     static toObject(singleObjectQueryJobsParameter, tempObj) {
         for (var name in singleObjectQueryJobsParameter) {

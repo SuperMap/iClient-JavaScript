@@ -49,9 +49,9 @@ export default  class DatasetThiessenAnalystParameters extends ThiessenAnalystPa
     }
     /**
      * @function SuperMap.DatasetThiessenAnalystParameters.toObject
-     * @param datasetThiessenAnalystParameters - {Object} 泰森分析数据集参数。
-     * @param tempObj - {Object} 参数。
-     * @description 泰森分析数据集对象
+     * @param datasetThiessenAnalystParameters -{Object} 泰森多边形分析服务参数。
+     * @param tempObj - {Object} 目标对象。
+     * @description 生成泰森多边形分析服务对象。
      */
     static  toObject(datasetThiessenAnalystParameters, tempObj) {
         for (var name in datasetThiessenAnalystParameters) {

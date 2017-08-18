@@ -7,11 +7,11 @@ import OverlayAnalystParameters from './OverlayAnalystParameters';
  * @classdesc 数据集叠加分析参数类。
  * @param options - {Object} 可选参数。如：</br>
  *        operateDataset - {string} 叠加分析中操作数据集的名称。必设字段。</br>
- *        operateDatasetFields - {Array<String>} 叠加分析中操作数据集保留在结果数据集中的字段名列表。</br>
+ *        operateDatasetFields - {Array<string>} 叠加分析中操作数据集保留在结果数据集中的字段名列表。</br>
  *        operateDatasetFilter - {SuperMap.FilterParameter} 设置操作数据集中空间对象过滤条件。</br>
  *        operateRegions - {Array<SuperMap.Geometry>} 操作区域。设置了操作区域后，仅对该区域内的对象进行分析。</br>
  *        sourceDataset - {string} 叠加分析中源数据集的名称。必设字段。</br>
- *        sourceDatasetFields - {Array<String>} 叠加分析中源数据集保留在结果数据集中的字段名列表。</br>
+ *        sourceDatasetFields - {Array<string>} 叠加分析中源数据集保留在结果数据集中的字段名列表。</br>
  *        sourceDatasetFilter - {SuperMap.FilterParameter} 设置源数据集中空间对象过滤条件。</br>
  *        tolerance - {Integer} 容限。</br>
  *        operation - {SuperMap.OverlayOperationType} 叠加操作枚举值。</br>
@@ -27,7 +27,7 @@ export default  class DatasetOverlayAnalystParameters extends OverlayAnalystPara
     operateDataset = null;
 
     /**
-     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.operateDatasetFields -{Array<String>}
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.operateDatasetFields -{Array<string>}
      * @description 叠加分析中操作数据集保留在结果数据集中的字段名列表。
      */
     operateDatasetFields = null;
@@ -54,7 +54,7 @@ export default  class DatasetOverlayAnalystParameters extends OverlayAnalystPara
 
 
     /**
-     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.sourceDatasetFields -{Array<String>}
+     * @member SuperMap.DatasetOverlayAnalystParameters.prototype.sourceDatasetFields -{Array<string>}
      * @description 叠加分析中源数据集保留在结果数据集中的字段名列表。
      */
     sourceDatasetFields = null;
@@ -128,8 +128,8 @@ export default  class DatasetOverlayAnalystParameters extends OverlayAnalystPara
     }
     /**
      * @function SuperMap.DatasetOverlayAnalystParameters.toObject
-     * @param datasetOverlayAnalystParameters - {Object} 数据集分析参数。
-     * @param tempObj - {Object} 参数。
+     * @param datasetOverlayAnalystParameters -{Object} 数据集分析参数。
+     * @param tempObj - {Object} 目标对象。
      * @description 生成数据集分析对象
      */
     static toObject(datasetOverlayAnalystParameters, tempObj) {

@@ -78,8 +78,8 @@ export default  class DatasetBufferAnalystParameters extends BufferAnalystParame
     }
     /**
      * @function SuperMap.DatasetBufferAnalystParameters.toObject
-     * @param datasetBufferAnalystParameters - {Object} 数据集缓冲区分析参数
-     * @param tempObj -{Object} 参数。
+     * @param datasetBufferAnalystParameters -{Object} 数据集缓冲区分析参数
+     * @param tempObj - {Object} 目标对象
      * @description 生成数据集缓冲区分析对象
      */
     static toObject(datasetBufferAnalystParameters, tempObj) {

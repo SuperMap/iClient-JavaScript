@@ -43,7 +43,7 @@ export default  class ThemeMemoryData {
     /**
      * @function SuperMap.ThemeMemoryData.prototype.toJSON
      * @description 将 SuperMap.ThemeMemoryData 对象转化为json字符串。
-     * @return {String} 返回转换后的 JSON 字符串。
+     * @return {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
         if (this.srcData && this.targetData) {

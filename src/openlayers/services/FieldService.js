@@ -10,7 +10,7 @@ import FieldStatisticService from '../../common/iServer/FieldStatisticService';
  *      new ol.supermap.FieldService(url).getFields(function(result){
  *           //doSomething
  *      });
- * @param url - {String} 与客户端交互的服务地址。
+ * @param url - {string} 与客户端交互的服务地址。
  * @param options -{Object} 参数。
  * @extends ol.supermap.ServiceBase
  */

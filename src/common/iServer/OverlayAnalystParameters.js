@@ -20,6 +20,7 @@ export default class OverlayAnalystParameters {
             SuperMap.Util.extend(me, options);
         }
     }
+
     /**
      * @function SuperMap.OverlayAnalystParameters.prototype.destroy
      * @description 释放资源，将引用资源的属性置空。

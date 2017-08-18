@@ -25,9 +25,7 @@ export default  class AreaSolarRadiationParameters {
     /**
      *  @member SuperMap.AreaSolarRadiationParameters.prototype.dataset -{string}
      *  @description  要用来做地区太阳辐射数据源中数据集的名称。
-     * 该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin （必设参数）。
-     *
-     * 注：地区太阳辐射数据必须为栅格数据集。
+     *  该名称用形如"数据集名称@数据源别名"形式来表示，例如：JingjinTerrain@Jingjin （必设参数）。注：地区太阳辐射数据必须为栅格数据集。
      */
     dataset = null;
 
@@ -141,12 +139,11 @@ export default  class AreaSolarRadiationParameters {
         me.planCurvatureName = null;
         me.deleteExistResultDataset = true;
     }
-
     /**
      * @function SuperMap.AreaSolarRadiationParameters.toObject
-     * @param derrainCurvatureCalculationParameters - {Object}  区域太阳辐射参数。
-     * @param tempObj - {Object} 参数。
-     * @description 区域太阳辐射对象
+     * @param derrainCurvatureCalculationParameters -{Object} 区域太阳辐射参数。
+     * @param tempObj - {Object} 目标对象
+     * @description 生成区域太阳辐射对象
      */
     static  toObject(derrainCurvatureCalculationParameters, tempObj) {
         var parameter = {};

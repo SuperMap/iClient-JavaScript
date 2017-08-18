@@ -5,9 +5,10 @@ import ThemeFeature from './themeFeature';
 /**
  * @class ol.source.Theme
  * @classdesc 主题
- * @param name - {String}
- * @param opt_options -{olx.source.ImageCanvasOptions}
- * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.ImageCanvas}
+ * @private
+ * @param name - {string} 名称
+ * @param opt_options -{olx.source.ImageCanvasOptions} 参数
+ * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
 export default class Theme extends ol.source.ImageCanvas {
 
@@ -121,10 +122,9 @@ export default class Theme extends ol.source.ImageCanvas {
     }
     /**
      * @function ol.source.Theme.prototype.destroyFeatures
+     * @param features -{Object} 将被销毁的要素
      * @description 销毁某个要素
-     * @param features - {Object} 将被销毁得要素
      */
-
     destroyFeatures(features) {
         var all = (features == undefined);
         if (all) {
@@ -137,7 +137,6 @@ export default class Theme extends ol.source.ImageCanvas {
             }
         }
     }
-
     /**
      * @function ol.source.Theme.prototype.setOpacity
      * @description 设置图层的不透明度,取值[0-1]之间。
@@ -158,21 +157,24 @@ export default class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.addFeatures
-     * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 , 专题图仅接收 SuperMap.Feature.Vector 类型数据，
+     * @param features -{Array<SuperMap.Feature.Vector>} 需要添加的数据
+     * @description 抽象方法，可实例化子类必须实现此方法。向专题图图层中添加数据 ,
+     * 专题图仅接收 SuperMap.Feature.Vector 类型数据，
      * feature 将储存于 features 属性中，其存储形式为数组。
-     * @param features - {Array<SuperMap.Feature.Vector>} 需要添加的数据
      */
     addFeatures(features) {
 
     }
+
+
     /**
      * @function ol.source.Theme.prototype.removeFeatures
+     * @param features - {Array<SuperMap.Feature.Vector>} 要删除feature的数组。
      * @description 从专题图中删除 feature。这个函数删除所有传递进来的矢量要素。
      * 参数中的 features 数组中的每一项，必须是已经添加到当前图层中的 feature，
      * 如果无法确定 feature 数组，则可以调用 removeAllFeatures 来删除所有feature。
      * 如果要删除的 feature 数组中的元素特别多，推荐使用 removeAllFeatures，
      * 删除所有feature后再重新添加。这样效率会更高。
-     * @param features - {Array<SuperMap.Feature.Vector>} 要删除feature的数组。
      */
     removeFeatures(features) {
         if (!features || features.length === 0) {
@@ -210,7 +212,6 @@ export default class Theme extends ol.source.ImageCanvas {
         var succeed = featuresFailRemoved.length == 0 ? true : false;
         this.dispatchEvent({type: "featuresremoved", value: {features: featuresFailRemoved, succeed: succeed}});
     }
-
     /**
      * @function ol.source.Theme.prototype.removeAllFeatures
      * @description 清除当前图层所有的矢量要素。
@@ -225,7 +226,7 @@ export default class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.getFeatures
-     * @description 清除当前图层所有的矢量要素。
+     * @description 查看当前图层中的有效数据。
      * @return {SuperMap.Feature.Vector} 用户加入图层的有效数据。
      */
     getFeatures() {
@@ -239,13 +240,13 @@ export default class Theme extends ol.source.ImageCanvas {
     }
 
     /**
-     * @function ol.source.Theme.prototype.getFeatures
-     * @description 清除当前图层所有的矢量要素。
-     * @param property - {String} feature 的某个属性名称。
-     * @param value - {String} property 所对应的值。
+     * @function ol.source.Theme.prototype.getFeatureBy
+     * @param property - {string} feature 的某个属性名称。
+     * @param value - {string} property 所对应的值。
+     * @description 在专题图的要素数组 features 里面遍历每一个 feature，当 feature[property] === value 时，
+     * 返回此 feature（并且只返回第一个）。
      * @return {SuperMap.Feature.Vector} 第一个匹配属性和值的矢量要素。
      */
-
     getFeatureBy(property, value) {
         var feature = null;
         for (var id in this.features) {
@@ -260,8 +261,8 @@ export default class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.getFeatureById
+     * @param featureId - {string} 矢量要素的属性 id。
      * @description 通过给定一个 id，返回对应的矢量要素。
-     * @param featureId - {String} 矢量要素的属性 id。
      * @return {SuperMap.Feature.Vector} 对应id的 feature，如果不存在则返回 null。
      */
     getFeatureById(featureId) {
@@ -270,10 +271,10 @@ export default class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.getFeaturesByAttribute
+     * @param attrName - {string} 属性的 key。
+     * @param attrValue - {string} 矢量要素的属性 id。
      * @description 通过给定一个属性的 key 值和 value 值，返回所有匹配的要素数组。
-     * @param attrName - {String} 属性的 key。
-     * @param attrValue - {Mixed} 属性对应的 value 值。
-     * @return {SuperMap.Feature.Vector} 一个匹配的 feature 数组。
+     * @return  Array<SuperMap.Feature.Vector> 一个匹配的 feature 数组。
      */
     getFeaturesByAttribute(attrName, attrValue) {
         var feature,
@@ -292,17 +293,17 @@ export default class Theme extends ol.source.ImageCanvas {
 
     /**
      * @function ol.source.Theme.prototype.redrawThematicFeatures
+     * @param extent - {Array} 当前级别下计算出的地图范围
      * @description 抽象方法，可实例化子类必须实现此方法。重绘专题要素。
-     * @param  extent - {Array} 当前级别下计算出的地图范围
      */
     redrawThematicFeatures(extent) {
     }
 
     /**
      * @function ol.source.Theme.prototype.on
+     * @param event - {string} 事件名称。
+     * @param callback - {Function} 事件回调函数。
      * @description 添加专题要素事件监听。支持的事件包括: click、mousedown、mousemove、mouseout、mouseover、mouseup。
-     * @param  event - {String} 事件名称。
-     * @param  callback - {Function} 事件回调函数。
      */
     on(event, callback) {
         var cb = callback;
@@ -315,11 +316,12 @@ export default class Theme extends ol.source.ImageCanvas {
             this.renderer.on(event, cb);
         }
     }
+
     /**
      * @function ol.source.Theme.prototype.fire
+     * @param type - {string} 事件类型。
+     * @param event - {string} 事件名称。
      * @description 添加专题要素事件监听
-     * @param  type - {String} 事件类型。
-     * @param  event - {String} 事件名称。
      */
     fire(type, event) {
         event = event.originalEvent;
@@ -377,12 +379,11 @@ export default class Theme extends ol.source.ImageCanvas {
             || typeof e.layerY != 'undefined' && e.layerY
             || typeof e.clientY != 'undefined' && e.clientY;
     }
-
     /**
      * @function ol.source.Theme.prototype.un
-     * @description 移除专题要素事件监听 。
-     * @param  event - {String} 事件名称。
-     * @param  callback - {Function} 事件回调函数。
+     * @param event - {string} 事件名称。
+     * @param callback - {Function} 事件回调函数。
+     * @description 移除专题要素事件监听
      */
     un(event, callback) {
         var cb = callback;
@@ -417,10 +418,9 @@ export default class Theme extends ol.source.ImageCanvas {
     }
     /**
      * @function ol.source.Theme.prototype.getLocalXY
-     * @param  coordinate - {Object} 事件名称。
-     * @description 坐标系统
+     * @param coordinate - {Object} 坐标位置。
+     * @description 获取坐标系统
      */
-
     getLocalXY(coordinate) {
         var pixelP;
         if (coordinate instanceof SuperMap.Geometry.Point || coordinate instanceof SuperMap.Geometry.GeoText) {
@@ -440,8 +440,13 @@ export default class Theme extends ol.source.ImageCanvas {
         }
         return rotatedP;
     }
-
-    //获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
+    /**
+     * @function ol.source.Theme.prototype.rotate
+     * @param pixelP - {number} 像素坐标点位置。
+     * @param rotation - {number} 旋转角度
+     * @param center - {number} 中心位置。
+     * @description 获取某像素坐标点pixelP绕中心center逆时针旋转rotation弧度后的像素点坐标。
+     */
     rotate(pixelP, rotation, center) {
         var x = Math.cos(rotation) * (pixelP[0] - center[0]) - Math.sin(rotation) * (pixelP[1] - center[1]) + center[0];
         var y = Math.sin(rotation) * (pixelP[0] - center[0]) + Math.cos(rotation) * (pixelP[1] - center[1]) + center[1];

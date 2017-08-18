@@ -361,7 +361,7 @@ export default  class GeoJSON extends JSONFormat {
      * @description 序列化一个要素对象，几何对象，要素对象数组为一个GeoJSON字符串。
      * @param obj - {Object} 一个 <SuperMap.Feature.Vector> 对象，一个 <SuperMap.Geometry> 对象或者一个要素对象数组。
      * @param pretty - {boolean} 是否使用换行和缩进来控制输出。默认值为false。
-     * @return {String} 一个GeoJSON字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
+     * @return {string} 一个GeoJSON字符串，它表示了输入的几何对象，要素对象，或者要素对象数组。
      */
     write(obj, pretty) {
         var geojson = {
@@ -531,7 +531,7 @@ export default  class GeoJSON extends JSONFormat {
         /**
          * @function SuperMap.Format.GeoJSON.extract.linestring
          * @description 从一个线对象中返回一个坐标组数组。
-         * @param linestring - {SuperMap.Geometry.LineString} 线对象。
+         * @param linestring - {SuperMap.Geometry.Linestring} 线对象。
          * @return {Array} 一个表示线对象的坐标组数组。
          */
         'linestring': function (linestring) {
@@ -545,7 +545,7 @@ export default  class GeoJSON extends JSONFormat {
         /**
          * @function SuperMap.Format.GeoJSON.extract.multilinestring
          * @description 从一个多线对象中返回一个线数组。
-         * @param multilinestring - {SuperMap.Geometry.MultiLineString} 多线对象
+         * @param multilinestring - {SuperMap.Geometry.MultiLinestring} 多线对象
          *
          * @return {Array} 一个表示多线的线数组。
          */

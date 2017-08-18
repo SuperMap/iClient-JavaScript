@@ -15,7 +15,7 @@ import SetLayerStatusService from '../../common/iServer/SetLayerStatusService';
  *      })
  * @param url - {string} 与客户端交互的地图服务地址。请求地图服务,URL 应为：<br>
  *               http://{服务器地址}:{服务端口号}/iserver/services/{地图服务名}/rest/maps/{地图名}/tempLayersSet/{tempLayerID}/Rivers@World@@World"；
- * @param options - {Object}  互服务时所需可选参数。如：<br>
+ * @param options - {Object} 服务所需可选参数。如：<br>
  *         eventListeners - {Object} 需要被注册的监听器对象。
  */
 export default class LayerInfoService extends ServiceBase {
@@ -30,7 +30,6 @@ export default class LayerInfoService extends ServiceBase {
      * @param callback - {function} 回调函数
      * @return {ol.supermap.LayerInfoService} 返回图层信息类
      */
-
     getLayersInfo(callback) {
         var me = this;
         var getLayersInfoService = new GetLayersInfoService(me.url, {

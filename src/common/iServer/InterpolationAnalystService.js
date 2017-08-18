@@ -29,7 +29,7 @@ import InterpolationAnalystParameters from './InterpolationAnalystParameters';
  */
 export default class InterpolationAnalystService extends SpatialAnalystBase {
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.mode -{string}
+     * @member SuperMap.InterpolationAnalystService.prototype.mode -{string}
      * @description 插值分析类型。
      */
 

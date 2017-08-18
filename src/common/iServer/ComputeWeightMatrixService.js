@@ -20,7 +20,7 @@ import NetworkAnalystServiceBase from './NetworkAnalystServiceBase';
  *                        http://{服务器地址}:{服务端口号}/iserver/services/{网络分析服务名}/rest/networkanalyst/{网络数据集@数据源}；<br>
  *                        例如:"http://localhost:8090/iserver/services/components-rest/rest/networkanalyst/RoadNet@Changchun"。
  * @param options - {Object} 互服务时所需可选参数。如：<br>
- *         eventListeners - {Object} 需要被注册的监听器对象。
+ *        eventListeners - {Object} 需要被注册的监听器对象。
  */
 export default class ComputeWeightMatrixService extends NetworkAnalystServiceBase {
 
@@ -65,14 +65,10 @@ export default class ComputeWeightMatrixService extends NetworkAnalystServiceBas
     /**
      * @function SuperMap.ComputeWeightMatrixService.prototype.getJson
      * @description 将对象转化为JSON字符串。
-     *
-     * Parameters:
      * @param isAnalyzeById - {boolean} 是否通过id分析
      * @param params - {Array} 分析参数数组
-     *
-     * @return {string} 转化后的JSON字符串。
+     * @return- {string} 转化后的JSON字符串。
      */
-
     getJson(isAnalyzeById, params) {
         var jsonString = "[",
             len = params ? params.length : 0;

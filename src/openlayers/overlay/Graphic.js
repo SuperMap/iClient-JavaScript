@@ -5,8 +5,7 @@ import './graphic/Graphic';
  * @class ol.source.Graphic
  * @classdesc 图形类。
  * @param options -{olx.source.ImageCanvasOptions} 图形参数
- * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.ImageCanvas}
- *
+ * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
 export default class Graphic extends ol.source.ImageCanvas {
 
@@ -43,6 +42,9 @@ export default class Graphic extends ol.source.ImageCanvas {
      * @functionol.source.Graphic.prototype.forEachFeatureAtCoordinate
      * @description 获取在视图上的特征
      * @param coordinate -{string} 坐标
+     * @param rotation -{number} 角度
+     * @param hitTolerance -{number} 精度
+     * @param skippedFeatureUids -{boolean} 跳过功能的UID
      * @param resolution -{number} 分辨率
      * @param callback -{function} 回调函数
      *

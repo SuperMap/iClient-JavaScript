@@ -33,7 +33,7 @@ export default  class FindServiceAreasParameters {
     isCenterMutuallyExclusive = false;
 
     /**
-     * @member SuperMap.FindServiceAreasParameters.prototype.centers -{Array<{SuperMap.Point}|Number>}
+     * @member SuperMap.FindServiceAreasParameters.prototype.centers -{Array<{SuperMap.Point}>}|{Array<number>}
      * @description 服务站点数组，必设字段。<br>
      *               当该类的 iSAnalyzeById = true 时，通过结点 ID 号指定服务站点；<br>
      *               当 iSAnalyzeById = false 时，通过点坐标指定服务站点。
@@ -51,7 +51,7 @@ export default  class FindServiceAreasParameters {
 
     /**
      * APIProperty: weights
-     * @member SuperMap.FindServiceAreasParameters.prototype.weights -{Array<Number>}
+     * @member SuperMap.FindServiceAreasParameters.prototype.weights -{Array<number>}
      * @description 每个服务站点提供服务的阻力半径，即超过这个阻力半径的区域不予考虑，其单位与阻力字段一致，必设字段。<br>
      *               该字段为一个数组，数组长度跟服务中心个数一致，按照索引顺序与站点一一对应，每个元素表示了在对每个服务中心进行服务区分析时，所用的服务半径。
      */

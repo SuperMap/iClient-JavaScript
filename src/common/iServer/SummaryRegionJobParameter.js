@@ -133,8 +133,8 @@ export default class SummaryRegionJobParameter {
     }
     /**
      * @function SuperMap.SummaryRegionJobParameter.toObject
-     * @param summaryRegionJobParameter - {Object} 范围汇总分析服务参数
-     * @param tempObj -{Object} 参数。
+     * @param summaryRegionJobParameter -{Object} 矢量裁剪分析任务参数。
+     * @param tempObj - {Object} 目标对象。
      * @description 生成范围汇总分析服务对象
      */
     static toObject(summaryRegionJobParameter, tempObj) {

@@ -50,7 +50,7 @@ export default class TokenServiceParameter {
     /**
      * @function SuperMap.TokenServiceParameter.prototype.toJSON
      * @description 将所有信息转成JSON字符串
-     * @return {String} 参数的JSON字符串
+     * @return {string} 参数的JSON字符串
      */
     toJSON() {
         return {

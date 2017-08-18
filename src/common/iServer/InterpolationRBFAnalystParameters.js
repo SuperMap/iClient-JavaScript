@@ -118,8 +118,8 @@ export default  class InterpolationRBFAnalystParameters extends InterpolationAna
     }
     /**
      * @function SuperMap.InterpolationRBFAnalystParameters.toObject
-     * @param datasetInterpolationRBFAnalystParameters - {Object}  样条插值（径向基函数插值法）分析参数
-     * @param tempObj -{Object} 参数。
+     * @param datasetInterpolationRBFAnalystParameters -{SuperMap.InterpolationRBFAnalystParameters} 样条插值（径向基函数插值法）分析参数
+     * @param tempObj - {Object} 目标对象
      * @description 生成样条插值（径向基函数插值法）分析对象
      */
     static toObject(datasetInterpolationRBFAnalystParameters, tempObj) {

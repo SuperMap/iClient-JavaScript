@@ -18,9 +18,9 @@ export default  class IPortalServiceBase {
     /**
      * @function SuperMap.iPortalServiceBase.prototype.request
      * @description 子类统一通过该方法发送请求
-     * method -{number}分析方法
+     * @param method -{string} 请求类型
      * @param url -{string} 服务地址
-     * @param param -{SuperMap.iPortalMapParam} 请求参数
+     * @param param -{Object} 请求参数
      * @param requestOptions -{Object} fetch请求配置项
      */
 
@@ -35,7 +35,7 @@ export default  class IPortalServiceBase {
     /*
      * @function SuperMap.iPortalServiceBase.prototype.createCredentialUrl
      * @description 追加授权信息
-     * @param url -{string} url地址
+     * @param url -{string} 创建证书url地址
      * @return {string} 携带token或key的新地址
      */
 

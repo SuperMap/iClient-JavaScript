@@ -14,28 +14,28 @@ import '../security/SecurityManager';
 export default  class CommonServiceBase {
 
     /*
-     * @constant: EVENT_TYPES- {Array<String>}
+     * @constant: EVENT_TYPES- {Array<string>}
      * @description 此类支持的事件类型
      * - *processCompleted* 服务端返回信息成功触发该事件 。
      * - *processFailed* 服务端返回信息失败触发该事件 。
      */
     EVENT_TYPES = ["processCompleted", "processFailed"];
 
-    /**
+    /*
      * @member SuperMap.CommonServiceBase.prototype.events -{SuperMap.Events}
      * @description: 处理所有事件的对象，支持processCompleted 、processFailed 两种事件
      *               服务端成功返回地图信息结果时触发 processCompleted事件，服务端返回信息结果时触发 processFailed 事件。
      */
     events = null;
 
-    /**
+    /*
      * @member SuperMap.CommonServiceBase.prototype.eventListeners -{Object}
      * @description: 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，相当于调用 SuperMap.Events.on(eventListeners)。
      */
     eventListeners = null;
 
-    /**
-     * @member SuperMap.CommonServiceBase.prototype.url -{String|Array}
+    /*
+     * @member SuperMap.CommonServiceBase.prototype.url -{string}|{Array}
      * @description: 服务访问地址或者服务访问地址数组。
      * @example
      * var url1 = "http://localhost:8090/iserver/services/map-world/rest/maps/World";
@@ -101,15 +101,10 @@ export default  class CommonServiceBase {
 
     /**
      * @member SuperMap.CommonServiceBase.prototype.isInTheSameDomain -{boolean}
+     * @description 是否在同一领域内
      */
     isInTheSameDomain = null;
 
-    /*
-     * @function SuperMap.CommonServiceBase.prototype.constructor
-     * @description  ServiceBase的构造函数
-     * @param url - {string} 与客户端交互的服务地址。
-     * @param options - {Object} 参数。
-     */
     constructor(url, options) {
         let me = this;
 

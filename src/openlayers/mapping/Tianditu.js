@@ -3,7 +3,7 @@ import ol from 'openlayers/dist/ol-debug';
  * @class ol.source.Tianditu
  * @classdesc 天地图
  * @param opt_options - {olx.source.WMTSOptions} 参数
- * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.WMTS}
+ * @extends ol.source.WMTS{@linkdoc-openlayers/ol.source.WMTS}
  */
 export default class Tianditu extends ol.source.WMTS {
 
@@ -43,6 +43,7 @@ export default class Tianditu extends ol.source.WMTS {
      * @function ol.source.Tianditu.getTileGrid
      * @description 网格瓦片
      * @param projection -{objecxt} 投影参考对象
+     * @return {ol.tilegrid.WMTS}
      */
     static getTileGrid(projection) {
         if (projection === "EPSG:4326" || projection === "EPSG:4490") {

@@ -31,7 +31,7 @@ export default  class QueryService extends CommonServiceBase {
 
     /*
      *  Property: format
-     *  {String} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
+     *  {string} 查询结果返回格式，目前支持iServerJSON 和GeoJSON两种格式
      *  参数格式为"ISERVER","GEOJSON",GEOJSON
      */
     format = DataFormat.GEOJSON;

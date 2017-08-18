@@ -8,8 +8,8 @@ import Graph from './Graph';
  *              width - {number}专题要素（图表）宽度，必设参数。<br>
  *              height - {number}专题要素（图表）高度，必设参数。<br>
  *              codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
- *              XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。<br>
- *              YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
+ *              XOffset - {number}  专题要素（图表）在 X 方向上的偏移值，单位像素。<br>
+ *              YOffset - {number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
  *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，
  *                      它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。
  *                      当使用坐标轴时 dataViewBoxParameter 的默认值为：[45, 15, 15, 15]；不使用坐标轴时 dataViewBoxParameter 的默认值为：[5, 5, 5, 5]。<br>
@@ -94,7 +94,7 @@ import Graph from './Graph';
  */
 export default  class Line extends Graph {
 
-    /**
+    /*
      * @function SuperMap.Feature.Theme.Line.prototype.Constructor
      * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。
      * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。

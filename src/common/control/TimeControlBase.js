@@ -59,7 +59,7 @@ export default  class TimeControlBase {
 
     /**
      * @member SuperMap.TimeControlBase.prototype.running -{boolean}
-     * @description 记录当前是否处于中，默认为false。
+     * @description 记录当前是否处于运行中，默认为false。
      */
     running = false;
 
@@ -71,7 +71,7 @@ export default  class TimeControlBase {
 
     /*
      * Constant: EVENT_TYPES
-     * {Array(String)}
+     * {Array<String>}
      * 此类支持的事件类型。
      *
      */
@@ -227,7 +227,7 @@ export default  class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.getSpeed
      * @description 获取步长。
-     * @return {Number} 返回当前的步长
+     * @return {number} 返回当前的步长
      */
     getSpeed() {
         return this.speed;
@@ -253,7 +253,7 @@ export default  class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.getFrequency
      * @description 获取刷新频率。
-     * @return {Number} 返回当前的刷新频率
+     * @return {number} 返回当前的刷新频率
      */
     getFrequency() {
         return this.frequency;
@@ -286,7 +286,7 @@ export default  class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.getStartTime
      * @description 获取起始时间
-     * @return {Number} 返回当前的起始时间
+     * @return {number} 返回当前的起始时间
      */
     getStartTime() {
         return this.startTime;
@@ -319,7 +319,7 @@ export default  class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.getEndTime
      * @description 获取结束时间
-     * @return {Number} 返回当前的结束时间
+     * @return {number} 返回当前的结束时间
      */
     getEndTime() {
         return this.endTime;
@@ -349,7 +349,7 @@ export default  class TimeControlBase {
     /**
      * @function SuperMap.TimeControlBase.prototype.getCurrentTime
      * @description 获取当前时间
-     * @return {Number} 返回当前时间
+     * @return {number} 返回当前时间
      */
     getCurrentTime() {
         return this.currentTime;

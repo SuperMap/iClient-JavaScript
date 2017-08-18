@@ -7,10 +7,10 @@ import Graph from './Graph';
  * 图表 Ring 配置对象 chartsSetting（SuperMap.Layer.Graph::chartsSetting） 可设属性如下：</br>
  * width - {number}专题要素（图表）宽度，必设参数。</br>
  * height - {number}专题要素（图表）高度，必设参数。</br>
- * codomain - {Array<Number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
- * XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
- * YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
- * dataViewBoxParameter - {Array<Number>} 数据视图框 dataViewBox 参数，
+ * codomain - {Array<number>} 图表允许展示的数据值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。</br>
+ * XOffset - {number}  专题要素（图表）在 X 方向上的偏移值，单位像素。</br>
+ * YOffset - {number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。</br>
+ * dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，
  * 它是指图表框 chartBox （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。默认值为：[0, 0, 0, 0]。</br>
  * decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。</br>
  * useBackground - {boolean} 是否使用图表背景框，默认不使用。</br>
@@ -24,7 +24,7 @@ import Graph from './Graph';
  * sectorStyleByCodomain - {Array<Object>} 按环状图扇形代表的数据值所在值域范围控制环状图扇形样式，优先级高于 sectorStyle 和 sectorStyleByFields。</br>
  * @param data - {SuperMap.Feature.Vector}  用户数据，必设参数。</br>
  * @param layer - {SuperMap.Layer.Graph} 此专题要素所在图层，必设参数。</br>
- * @param fields - {Array<String>} data 中的参与此图表生成的字段名称，必设参数。</br>
+ * @param fields - {Array<string>} data 中的参与此图表生成的字段名称，必设参数。</br>
  * @param setting - {Object} 图表配置对象，必设参数。</br>
  * @param lonlat - {SuperMap.LonLat} 专题要素地理位置。默认为 data 指代的地理要素 Bounds 中心。</br>
  *

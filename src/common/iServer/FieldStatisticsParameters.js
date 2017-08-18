@@ -4,7 +4,7 @@ import SuperMap from '../SuperMap';
  * @classdesc 字段统计信息查询参数类。
  * @param options - {Object} 参数。如：<br>
  *        fieldName - {string} 字段名。<br>
- *        statisticMode -{String<SuperMap.StatisticMode>}|{Array<String<SuperMap.StatisticMode>} 字段统计方法类型。
+ *        statisticMode -{String<SuperMap.StatisticMode>}|{Array<String<SuperMap.StatisticMode>>} 字段统计方法类型。
  */
 export default  class FieldStatisticsParameters {
     /**
@@ -14,7 +14,7 @@ export default  class FieldStatisticsParameters {
     fieldName = null;
 
     /**
-     * @member SuperMap.FieldStatisticsParameters.prototype.statisticMode -{String<SuperMap.StatisticMode>}|{Array<String<SuperMap.StatisticMode>}
+     * @member SuperMap.FieldStatisticsParameters.prototype.statisticMode -{string<SuperMap.StatisticMode>}|{Array<string{SuperMap.StatisticMode}>}
      * @description 字段统计方法类型
      */
     statisticMode = null;

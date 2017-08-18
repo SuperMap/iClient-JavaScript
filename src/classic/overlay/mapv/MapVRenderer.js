@@ -35,7 +35,7 @@ export default class MapVRenderer extends MapVBaseLayer {
     /**
      * @function SuperMap.MapVRenderer.prototype.clickEvent
      * @description 点击事件
-     * @param e - {object} 触发对象
+     * @param e - {Object} 触发对象
      */
     clickEvent(e) {
         var pixel = e.layerPoint;
@@ -45,7 +45,7 @@ export default class MapVRenderer extends MapVBaseLayer {
     /**
      * @function SuperMap.MapVRenderer.prototype.mousemoveEvent
      * @description 鼠标移动事件
-     * @param  e - {object} 触发对象
+     * @param  e - {Object} 触发对象
      */
     mousemoveEvent(e) {
         var pixel = e.layerPoint;
@@ -55,7 +55,7 @@ export default class MapVRenderer extends MapVBaseLayer {
     /**
      * @function SuperMap.MapVRenderer.prototype.bindEvent
      * @description 绑定鼠标移动和鼠标点击事件
-     * @param e - {object} 触发对象
+     * @param e - {Object} 触发对象
      */
     bindEvent(e) {
         var map = this.map;
@@ -73,7 +73,7 @@ export default class MapVRenderer extends MapVBaseLayer {
     /**
      * @function SuperMap.MapVRenderer.prototype.unbindEvent
      * @description 解绑鼠标移动和鼠标滑动触发的事件
-     * @param e - {object} 触发对象
+     * @param e - {Object} 触发对象
      */
     unbindEvent(e) {
         var map = this.map;
@@ -300,7 +300,7 @@ export default class MapVRenderer extends MapVBaseLayer {
     /**
      * @function SuperMap.MapVRenderer.prototype.clear
      * @description 清除环境
-     * @param context - {object} 当前环境
+     * @param context - {Object} 当前环境
      */
     clear(context) {
         context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);

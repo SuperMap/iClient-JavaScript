@@ -7,10 +7,11 @@ ol.supermap = ol.supermap || {};
 /**
  * @class ol.supermap.StyleUtils
  * @classdesc 风格工具
+ * @private
  * @param map - {Object} 地图
  * @param layerInfo - {Object} 图层信息
  * @param feature - {Object} 特征
- * @param url - {Object} 地址
+ * @param url - {string} 地址
  */
 export default class StyleUtils {
 
@@ -221,12 +222,13 @@ export default class StyleUtils {
     /**
      * @function ol.supermap.StyleUtils.getStyleFromCarto
      * @description 从Carto中获取有效的样式
-     * @param zoom - {number} 缩放级别
+     * @param zoom -{number} 缩放级别
      * @param scale - {number} 比例尺
-     * @param shader - {Array<Object>} 渲染器对象数组
-     * @param feature - {Object} 要素
-     * @param fromServer - {String} 服务源
+     * @param shader -{Array} 渲染器对象数组
+     * @param feature -{Object} 要素
+     * @param fromServer -{string} 服务源
      * @param url -{string} 地址
+     *
      */
     static getStyleFromCarto(zoom, scale, shader, feature, fromServer, url) {
         var type = feature.getGeometry().getType().toUpperCase(),
@@ -300,7 +302,6 @@ export default class StyleUtils {
      * @param style -{Object} 样式参数
      * @return {ol.style.Style} 获取点样式
      */
-
     static toOLPointStyle(style) {
         if (style.pointFile !== '') {
             return new ol.style.Style({
@@ -429,7 +430,6 @@ export default class StyleUtils {
      * @function ol.supermap.StyleUtils.getStyleFromiPortalMarker
      * @description 从iPortal标记获取样式
      * @param icon -{Object} 图标参数
-     * @return {*}
      */
     static getStyleFromiPortalMarker(icon) {
         if (icon.indexOf("./") == 0) {
@@ -453,10 +453,9 @@ export default class StyleUtils {
      * @function ol.supermap.StyleUtils.getStyleFromiPortalStyle
      * @description 从iPortal标记获取样式
      * @param iPortalStyle -{Object} iportal样式
-     * @param type - {String} 样式类型
+     * @param type - {string} 样式类型
      * @param fStyle -{Object} 特征样式
      */
-
     static getStyleFromiPortalStyle(iPortalStyle, type, fStyle) {
         var featureStyle = fStyle ? JSON.parse(fStyle) : null;
         var me = this;
@@ -549,10 +548,9 @@ export default class StyleUtils {
     /**
      * @function ol.supermap.StyleUtils.getDefaultStyle
      * @description 获取默认风格
-     * @param type - {String} 默认风格类型
-     * @return {style|{}} 返回的风格
-     */
+     * @param type -{string} 类型参数
 
+     */
     static getDefaultStyle(type) {
         var style = style || {};
         var canvasStyle = DeafultCanvasStyle[type];

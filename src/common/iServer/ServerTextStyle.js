@@ -24,7 +24,7 @@ import ServerColor from './ServerColor';
  *        outline - {boolean} 是否以轮廓的方式来显示文本的背景。<br>
  *        opaqueRate - {number}注记文字的不透明度。<br>
  *        underline - {boolean} 文本字体是否加下划线。<br>
- *        rotation -  {Number} 文本旋转的角度。
+ *        rotation -  {number} 文本旋转的角度。
  */
 export default class ServerTextStyle {
 

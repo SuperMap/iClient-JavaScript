@@ -34,7 +34,6 @@ export default class QueryService extends ServiceBase {
      * @param resultFormat - {SuperMap.DataFormat} 返回结果类型
      * @return ol.supermap.QueryService}
      */
-
     queryByBounds(params, callback, resultFormat) {
         var me = this;
         var queryService = new QueryByBoundsService(me.url, {

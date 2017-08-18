@@ -90,10 +90,10 @@ export default  class DensityKernelAnalystParameters {
         me.deleteExistResultDataset = null;
     }
     /**
-     * @function SuperMap.MathExpressionAnalysisParameters.toObject
-     * @param densityKernelAnalystParameters - {Object} 核密度分析参数
-     * @param tempObj - {Object} 参数。
-     * @description 生成对象
+     * @function SuperMap.DensityKernelAnalystParameters.toObject
+     * @param densityKernelAnalystParameters -{Object} 核密度分析参数。
+     * @param tempObj - {Object} 目标对象
+     * @description 生成核密度分析对象
      */
     static toObject(densityKernelAnalystParameters, tempObj) {
         for (var name in densityKernelAnalystParameters) {

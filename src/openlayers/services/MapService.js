@@ -47,7 +47,6 @@ export default class MapService extends ServiceBase {
      * @param callback -{function} 回调函数
      * @return {ol.supermap.MapService} 获取服务信息
      */
-
     getTilesets(callback) {
         var me = this;
         var tilesetsService = new TilesetsService(me.url, {

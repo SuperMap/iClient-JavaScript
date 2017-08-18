@@ -18,7 +18,6 @@ export default  class FacilityAnalystUpstream3DParameters extends FacilityAnalys
     /**
      * @member SuperMap.FacilityAnalystUpstream3DParameters.prototype.sourceNodeIDs -{Array<number>}
      * @description 指定的设施点ID数组
-     * @api
      */
     sourceNodeIDs = null;
 

@@ -59,11 +59,10 @@ export default  class DatasetSurfaceAnalystParameters extends SurfaceAnalystPara
         }
         me.zValueFieldName = null;
     }
-
     /**
      * @function SuperMap.DatasetSurfaceAnalystParameters.toObject
-     * @param datasetSurfaceAnalystParameters - {Object} 数据集表面分析参数
-     * @param tempObj -{Object} 参数。
+     * @param datasetSurfaceAnalystParameters -{Object} 数据集表面分析参数
+     * @param tempObj - {Object} 目标对象
      * @description 生成数数据集表面分析对象
      */
     static  toObject(datasetSurfaceAnalystParameters, tempObj) {

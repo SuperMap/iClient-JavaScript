@@ -8,10 +8,10 @@ import GetFeaturesParametersBase from './GetFeaturesParametersBase';
  * @param options - {Object} 可選参数。如:</br>
  *        geometry - {Object} 用于查询的几何对象。</br>
  *        attributeFilter - {string} 几何查询属性过滤条件。</br>
- *        fields - {Array<String>} 设置查询结果返回字段。默认返回所有字段。</br>
+ *        fields - {Array<string>} 设置查询结果返回字段。默认返回所有字段。</br>
  *        spatialQueryMode - {SuperMap.SpatialQueryMode} 空间查询模式常量,必设参数。</br>
  *        queryParameter - {SuperMap.FilterParameter} 查询过滤条件参数。</br>
- *        datasetNames - {Array<String>} 数据集集合中的数据集名称列表。</br>
+ *        datasetNames - {Array<string>} 数据集集合中的数据集名称列表。</br>
  *        returnContent - {boolean} 是否直接返回查询结果。</br>
  *        fromIndex - {Integer} 查询结果的最小索引号。</br>
  *        toIndex - {Integer} 查询结果的最大索引号。</br>
@@ -34,7 +34,7 @@ export default  class GetFeaturesByGeometryParameters extends GetFeaturesParamet
     geometry = null;
 
     /**
-     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.fields {Array<String>}
+     * @member SuperMap.GetFeaturesByGeometryParameters.prototype.fields {Array<string>}
      * @description 设置查询结果返回字段。当指定了返回结果字段后，则 GetFeaturesResult 中的 features 的属性字段只包含所指定的字段。不设置即返回全部字段。
      */
     fields = null;
@@ -86,7 +86,7 @@ export default  class GetFeaturesByGeometryParameters extends GetFeaturesParamet
      * @function SuperMap.GetFeaturesByGeometryParameters.toJsonParameters
      * @description 将<SuperMap.GetFeaturesByGeometryParameters>对象参数转换为json字符串。
      * @param params - {SuperMap.GetFeaturesByGeometryParameters} 几何查询参数。
-     * @return {String} 转化后的 json字符串。
+     * @return {string} 转化后的 json字符串。
      */
     static toJsonParameters(params) {
         var filterParameter,

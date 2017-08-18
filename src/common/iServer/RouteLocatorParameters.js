@@ -9,7 +9,7 @@ import Route from './Route';
  * 如果用户两种参数均设置，优先选择Dataset方式
  * @param options - {Object} 可选参数。如:</br>
  *        sourceRoute -  {SuperMap.Route} 【必选参数】路由对象。</br>
- *        type -  {String} 【必选参数】类型：点 or 线。</br>
+ *        type -  {string} 【必选参数】类型：点 or 线。</br>
  *        measure - {Double} 【必选参数】定位点的M值。只当路由对象定位点时有意义。</br>
  *        offset - {Double} 定位点偏移量。只当路由对象定位点时有意义，默认为0。</br>
  *        isIgnoreGap - {boolean} 是否忽略子对象之间的距离。默认为false，即不忽略子对象之间的距离。</br>
@@ -54,7 +54,7 @@ export default  class RouteLocatorParameters {
 
     /**
      * @member SuperMap.RouteLocatorParameters.prototype.measure -{Double}
-     * @description【必选参数】定位点的M值。只当路由对象定位点时有意义。
+     * @description 必选参数,定位点的M值。只当路由对象定位点时有意义。
      */
     measure = null;
 

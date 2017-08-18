@@ -19,9 +19,8 @@ import Vector from './Vector';
  *         isTempLayers - {boolean} 当前url对应的图层是否是临时图层。
  */
 export default  class GetLayersInfoService extends CommonServiceBase {
-
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.isTempLayers -{Boolean}
+     * @member SuperMap.GetLayersInfoService.prototype.isTempLayers -{Boolean}
      * @description 当前url对应的图层是否是临时图层。
      */
     isTempLayers = false;
@@ -67,7 +66,7 @@ export default  class GetLayersInfoService extends CommonServiceBase {
     /**
      * @function SuperMap.GetLayersInfoService.prototype.serviceProcessCompleted
      * @description 编辑完成，执行此方法。
-     * @param result -{Object} 服务器返回的结果对象。
+     * @param result - {Object} 服务器返回的结果对象。
      */
     serviceProcessCompleted(result) {
         var me = this, existRes, layers, len;

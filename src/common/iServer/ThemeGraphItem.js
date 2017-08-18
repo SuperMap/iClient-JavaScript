@@ -7,7 +7,7 @@ import ServerStyle from './ServerStyle';
  * @param options - {Object} 可选参数。如：<br>
  *        caption - {string} 专题图子项的名称。<br>
  *        graphExpression - {string} 统计专题图的专题变量。<br>
- *        memoryDoubleValues - {Array<Number>} 内存数组方式制作专题图时的值数组。<br>
+ *        memoryDoubleValues - {Array<number>} 内存数组方式制作专题图时的值数组。<br>
  *        uniformStyle - {SuperMap.ServerStyle} 统计专题图子项的显示风格
  */
 export default  class ThemeGraphItem {

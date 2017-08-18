@@ -54,7 +54,7 @@ export default  class Route extends Collection {
     minM = null;
 
     /**
-     * @member SuperMap.Route.prototype.parts -{Array<Number>}
+     * @member SuperMap.Route.prototype.parts -{Array<number>}
      * @description 服务端几何对象中各个子对象所包含的节点个数。
      */
     parts = null;

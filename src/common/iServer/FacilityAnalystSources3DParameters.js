@@ -18,10 +18,7 @@ import FacilityAnalyst3DParameters from './FacilityAnalyst3DParameters';
  */
 export default  class FacilityAnalystSources3DParameters extends FacilityAnalyst3DParameters {
 
-    /*
-     * Constructor: SuperMap.FacilityAnalystSources3DParameters
-     * 最近设施分析参数类构造函数。
-     */
+
     constructor(options) {
         super(options);
     }

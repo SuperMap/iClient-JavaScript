@@ -2,6 +2,7 @@ import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.supermap.MapvCanvasLayer
  * @classdesc 地图画布图层
+ * @private
  * @param options - {Object} 参数
  */
 export default class MapvCanvasLayer {
@@ -18,7 +19,10 @@ export default class MapvCanvasLayer {
         this.height = options.height;
         this.initialize();
     }
-
+    /*
+     * @function ol.supermap.MapvCanvasLayer.prototype.initialize
+     * @description 初始化
+     */
     initialize() {
         var me = this;
         var canvas = me.canvas = document.createElement("canvas");
@@ -35,7 +39,7 @@ export default class MapvCanvasLayer {
         canvas.style.width = canvas.width + "px";
         canvas.style.height = canvas.height + "px";
     }
-    /**
+    /*
      * @function ol.supermap.MapvCanvasLayer.prototype.draw
      * @description 生成地图
      */
@@ -43,7 +47,7 @@ export default class MapvCanvasLayer {
         this.options.update && this.options.update.call(this);
     }
 
-    /**
+    /*
      * @function ol.supermap.MapvCanvasLayer.prototype.resize
      * @param mapWidth - {number} 地图宽度
      * @param mapHeight - {number} 地图高度
@@ -56,7 +60,7 @@ export default class MapvCanvasLayer {
         this.canvas.style.height = mapHeight + "px";
     }
 
-    /**
+    /*
      * @function ol.supermap.MapvCanvasLayer.prototype.getContainer
      * @description 获取容器
      * @return {Element}
@@ -64,7 +68,7 @@ export default class MapvCanvasLayer {
     getContainer() {
         return this.canvas;
     }
-    /**
+    /*
      * @function ol.supermap.MapvCanvasLayer.prototype.setZIndex
      * @param zIndex - {number} 层级参数
      * @description 设置图层层级
@@ -72,7 +76,7 @@ export default class MapvCanvasLayer {
     setZIndex(zIndex) {
         this.canvas.style.zIndex = zIndex;
     }
-    /**
+    /*
      * @function ol.supermap.MapvCanvasLayer.prototype.getZIndex
      * @description 获取图层层级
      */

@@ -16,13 +16,13 @@ export default class DataFlowService extends CommonServiceBase {
 
     /*
      * @constant EVENT_TYPES
-     * {Array<String>}
+     * {Array<string>}
      * 此类支持的事件类型
      */
     //EVENT_TYPES = ["broadcastSocketConnected", "broadcastSocketError", "broadcastFailed", "broadcastSuccessed", "subscribeSocketConnected", "subscribeSocketError", "messageSuccessed", "setFilterParamSuccessed"];
 
     /**
-     * @member SuperMap.DataFlowService.prototype.geometry -{Aarry<object>}
+     * @member SuperMap.DataFlowService.prototype.geometry -{Aarry<Object>}
      * @description 设置增添的几何要素对象数组。
      */
     geometry = null;

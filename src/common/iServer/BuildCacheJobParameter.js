@@ -8,7 +8,7 @@ import SuperMap from '../SuperMap';
  *         cacheName - {string} 缓存名称。<br>
  *         cacheType - {string} 存储类型。<br>
  *         serverAdresses - {string} MongoDB地址。<br>
- *         database -- {String} 数据库。<br>
+ *         database -- {string} 数据库。<br>
  *         version -{string} 版本。<br>
  *         bounds -{SuperMap.Bounds} 缓存范围。<br>
  *         imageType -{number}缓存类型.<br>
@@ -98,11 +98,10 @@ export default  class BuildCacheJobParameter {
         this.imageType = null;
         this.level = null;
     }
-
     /**
      * @function SuperMap.BuildCacheJobParameter.toObject
-     * @param buildCacheJobParameter - {Object} 地图缓存参数。
-     * @param tempObj - {Object} 参数。
+     * @param buildCacheJobParameter -{Object} 地图缓存参数。
+     * @param tempObj - {Object} 目标对象
      * @description 生成地图缓存对象
      */
     static  toObject(buildCacheJobParameter, tempObj) {

@@ -69,8 +69,8 @@ export default  class ThemeParameters {
      * @member SuperMap.ThemeParameters.prototype.fieldValuesDisplayFilter -{Object}
      * @description 图层要素的显示和隐藏的过滤属性，其带有三个属性，分别是:values、fieldName、fieldValuesDisplayMode,他们的作用如下：<br>
      *               values：{Array<number>} - 就是要过滤的值；<br>
-     *               fieldName：{String} - 要过滤的字段名称 只支持数字类型的字段；<br>
-     *               fieldValuesDisplayMode：{String} 目前有两个DISPLAY/DISABLE。当为DISPLAY时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素
+     *               fieldName：{string} - 要过滤的字段名称 只支持数字类型的字段；<br>
+     *               fieldValuesDisplayMode：{string} 目前有两个DISPLAY/DISABLE。当为DISPLAY时，表示只显示以上设置的相应属性值的要素，否则表示不显示以上设置的相应属性值的要素
      */
     fieldValuesDisplayFilter = null;
 

@@ -7,7 +7,7 @@ import TransportationAnalystParameter from './TransportationAnalystParameter';
  * @param options - {Object} 可选参数。
  *         event - {Point/Integer} 事件点，一般为需要获得服务设施服务的事件位置，必设字段。
  *         expectFacilityCount - {Integer} 要查找的设施点数量。默认值为1。
- *         facilities - {Array<{SuperMap.Point}>}|{Array<Number>} 设施点集合，一般为提供服务的服务设施位置，必设字段。
+ *         facilities - {Array<SuperMap.Point>}|{Array<number>} 设施点集合，一般为提供服务的服务设施位置，必设字段。
  *         fromEvent - {boolean} 是否从事件点到设施点进行查找。
  *         isAnalyzeById - {boolean} 事件点和设施点是否通过节点 ID 号来指定，默认为 false，即通过坐标点指定事件点和设施点。
  *         maxWeight - {number}查找半径。单位与该类中 parameter 字段（交通网络分析通用参数）中设置的耗费字段一致。默认值为0，表示查找全网络。
@@ -29,7 +29,7 @@ export default  class FindClosestFacilitiesParameters {
     expectFacilityCount = 1;
 
     /**
-     * @member SuperMap.FindClosestFacilitiesParameters.prototype.facilities -{Array<Point>}|{Array<Number>}
+     * @member SuperMap.FindClosestFacilitiesParameters.prototype.facilities -{Array<Point>}|{Array<number>}
      * @description 设施点集合，一般为提供服务的服务设施位置，必设字段。
      *                可以通过两种方式赋予设施点：当该类中字段 isAnalyzeById = true 时，应输入设施点 ID 号；当 isAnalyzeById = false 时，应输入设施点坐标。
      */

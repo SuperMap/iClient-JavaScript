@@ -17,26 +17,26 @@ import SurfaceAnalystParametersSetting from './SurfaceAnalystParametersSetting';
 export default  class SurfaceAnalystParameters {
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.resolution -{number}
+     * @member SuperMap.SurfaceAnalystParameters.prototype.resolution -{number}
      * @description 获取或设置指定中间结果（栅格数据集）的分辨率。
      */
     resolution = 0;
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.extractParameter -{SuperMap.SurfaceAnalystParametersSetting}
+     * @member SuperMap.SurfaceAnalystParameters.prototype.extractParameter -{SuperMap.SurfaceAnalystParametersSetting}
      * @description 获取或设置表面分析参数。
      * 在进行点数据集进行提取等值面分析时，暂时不支持 SurfaceAnalystParametersSetting 类中的 expectedZValues 字段。
      */
     extractParameter = null;
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.resultSetting -{SuperMap.DataReturnOption}
+     * @member SuperMap.SurfaceAnalystParameters.prototype.resultSetting -{SuperMap.DataReturnOption}
      * @description 结果返回设置类。
      */
     resultSetting = null;
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.surfaceAnalystMethod -{SuperMap.SurfaceAnalystMethod}
+     * @member SuperMap.SurfaceAnalystParameters.prototype.surfaceAnalystMethod -{SuperMap.SurfaceAnalystMethod}
      * @description 获取或设置表面分析的提取方法，提取等值线和提取等值面，默认为等值线分析。
      */
     surfaceAnalystMethod = SurfaceAnalystMethod.ISOLINE;

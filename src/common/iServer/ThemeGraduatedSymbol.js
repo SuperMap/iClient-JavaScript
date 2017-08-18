@@ -21,7 +21,7 @@ import {GraduatedMode} from '../REST';
 export default  class ThemeGraduatedSymbol extends Theme {
 
     /**
-     * @member SuperMap.ThemeGraduatedSymbol.prototype.baseValue -{ Number}
+     * @member SuperMap.ThemeGraduatedSymbol.prototype.baseValue -{number}
      * @description 等级符号专题图的基准值，单位同专题变量的单位。<br>
      *              依据此值系统会自动根据分级方式计算其余值对应的符号大小，每个符号的显示大小等于<br>
      *              ThemeValueSection.positiveStyle（或 zeroStyle，negativeStyle）.markerSize * value / basevalue，<br>
@@ -104,7 +104,7 @@ export default  class ThemeGraduatedSymbol extends Theme {
     /**
      * @function SuperMap.ThemeGraduatedSymbol.prototype.toJSON
      * @description 将themeLabel对象转化为json字符串。
-     * @return {String} 返回转换后的 JSON 字符串。
+     * @return {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
         return SuperMap.Util.toJSON(this.toServerJSONObject());

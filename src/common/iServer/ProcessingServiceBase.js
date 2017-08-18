@@ -20,7 +20,7 @@ export default class ProcessingServiceBase extends CommonServiceBase {
         options=options||{};
         /*
          * Constant: EVENT_TYPES
-         * {Array<String>}
+         * {Array<string>}
          * 此类支持的事件类型
          * - *processCompleted* 创建成功后触发的事件。
          * - *processFailed* 创建失败后触发的事件 。

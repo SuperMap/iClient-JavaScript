@@ -134,7 +134,7 @@ export default class ThemeLabel extends Theme {
     smallGeometryLabeled = false;
 
     /**
-     * @member SuperMap.ThemeLabel.prototype.text -{ThemeLabelText}
+     * @member SuperMap.ThemeLabel.prototype.text -{SuperMap.ThemeLabelText}
      * @description 标签中文本风格。
      */
     text = null;
@@ -200,7 +200,7 @@ export default class ThemeLabel extends Theme {
     /**
      * @function SuperMap.ThemeLabel.prototype.toJSON
      * @description 将themeLabel对象转化为json字符串。
-     * @return {String} 返回转换后的 JSON 字符串。
+     * @return {string} 返回转换后的 JSON 字符串。
      */
     toJSON() {
         return SuperMap.Util.toJSON(this.toServerJSONObject());

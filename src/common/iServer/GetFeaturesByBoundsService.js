@@ -38,12 +38,9 @@ export default  class GetFeaturesByBoundsService extends GetFeaturesServiceBase 
 
     /**
      * @function SuperMap.GetFeaturesByBoundsService.prototype.getJsonParameters
-     * @description 将查询参数转化为 JSON 字符串。
-     * 在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry,Bounds等）。
-     *
+     * @description 将查询参数转化为 JSON 字符串。在本类中重写此方法，可以实现不同种类的查询（ID, SQL, Buffer, Geometry,Bounds等）。
      * @param params  {SuperMap.GetFeaturesByBoundsParameters}
-     *
-     * @return {Object} 转化后的 JSON 字符串。
+     * @return {string} 转化后的 JSON 字符串。
      *
      */
     getJsonParameters(params) {

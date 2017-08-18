@@ -1,7 +1,8 @@
 import ol from 'openlayers/dist/ol-debug';
 /**
  * @class ol.Graphic
- * @classdesc 地理几何信息类
+ * @classdesc 地理几何信息
+ * @private
  * @param geometry - {Object} 几何对象
  * @extends ol.Object{@linkdoc-openlayers/ol.Object}
  */
@@ -108,7 +109,7 @@ export default class Graphic extends ol.Object {
         return styleFunction;
     }
     /**
-     * @function   ol.Graphic.prototype.destroy
+     * @function ol.Graphic.prototype.destroy
      * @description  清除参数值
      */
     destroy() {

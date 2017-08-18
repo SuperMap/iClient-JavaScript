@@ -5,7 +5,7 @@ import Util from '../core/Util';
  * @class ol.source.Mapv
  * @classdesc MapV服务
  * @param opt_options -{olx.source.ImageCanvasOptions} 参数
- * @extends ol.source.Vector{@linkdoc-openlayers/ol.source.ImageCanvas}
+ * @extends ol.source.ImageCanvas{@linkdoc-openlayers/ol.source.ImageCanvas}
  */
 export default class Mapv extends ol.source.ImageCanvas {
 
@@ -68,7 +68,7 @@ export default class Mapv extends ol.source.ImageCanvas {
     /**
      * @function ol.source.Mapv.prototype.update
      * @description 更新数据
-     * @param options -{Object} 要更新的值
+     * @param options -{Object} 要更新的参数
      */
     update(options) {
         this.layer.update(options);

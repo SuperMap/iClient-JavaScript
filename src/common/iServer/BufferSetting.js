@@ -15,8 +15,7 @@ import BufferDistance from './BufferDistance';
 export default class BufferSetting {
     /**
      * @member SuperMap.BufferSetting.prototype.endType -{SuperMap.BufferEndType}
-     * @description 缓冲区端点枚举值。
-     * 分为平头和圆头两种，默认为平头，即 SuperMap.BufferEndType.FLAT
+     * @description 缓冲区端点枚举值。分为平头和圆头两种，默认为平头，即 SuperMap.BufferEndType.FLAT
      */
     endType = BufferEndType.FLAT;
 
@@ -38,8 +37,7 @@ export default class BufferSetting {
 
     /**
      * @member SuperMap.BufferSetting.prototype.semicircleLineSegment -{number}
-     * @description 圆头缓冲圆弧处线段的个数。
-     * 即用多少个线段来模拟一个半圆，默认值为4。
+     * @description 圆头缓冲圆弧处线段的个数。即用多少个线段来模拟一个半圆，默认值为4。
      */
     semicircleLineSegment = 4;
 

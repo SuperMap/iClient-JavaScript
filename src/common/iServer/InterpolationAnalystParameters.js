@@ -3,7 +3,7 @@ import {PixelFormat} from '../REST';
 
 /**
  * @class SuperMap.InterpolationAnalystParameters
- * @classdesc 插值分析参数类。
+ * @classdesc插值分析参数类。
  * @param options - {Object} 可选参数。如</br>
  *        bounds - {SuperMap.Bounds} 插值分析的范围，用于确定结果栅格数据集的范围。</br>
  *        searchRadius - {number}查找半径，即参与运算点的查找范围，与点数据集单位相同。</br>
@@ -15,7 +15,7 @@ import {PixelFormat} from '../REST';
  *        outputDatasourceName - {string} 插值分析结果数据源的名称。</br>
  *        pixelFormat - {SuperMap.PixelFormat} 指定结果栅格数据集存储的像素格式。</br>
  *        dataset - {string} 用于做插值分析的数据源中数据集的名称。</br>
- *        inputPoints - {Array <Point||Array} 用于做插值分析的离散点集合。</br>
+ *        inputPoints - {Array <Point>}|{Array} 用于做插值分析的离散点集合。</br>
  *        InterpolationAnalystType - {string} 插值分析类型（dataset或geometry），默认为dataset 。</br>
  */
 export default  class InterpolationAnalystParameters {
@@ -92,7 +92,7 @@ export default  class InterpolationAnalystParameters {
     dataset = null;
 
     /**
-     * @member SuperMap.InterpolationAnalystParameters.prototype.inputPoints -{Array<Point>}|{Array}
+     * @member SuperMap.InterpolationAnalystParameters.prototype.inputPoints -{Array<Point>}|{Array<Array>}
      *
      * @description 用于做插值分析的离散点（离散点包括Z值）集合。
      * 当插值分析类型（InterpolationAnalystType）为 geometry 时，此参数为必设参数。通过离散点直接进行插值分析不需要指定输入数据集inputDatasourceName，inputDatasetName以及zValueFieldName。
@@ -137,8 +137,8 @@ export default  class InterpolationAnalystParameters {
     }
     /**
      * @function SuperMap.InterpolationAnalystParameters.toObject
-     * @param interpolationAnalystParameters - {Object} 插值分析参数
-     * @param tempObj -{Object} 参数。
+     * @param interpolationAnalystParameters -{Object} 插值分析参数
+     * @param tempObj - {Object} 目标对象
      * @description 生成插值分析对象
      */
     static toObject(interpolationAnalystParameters, tempObj) {

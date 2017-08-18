@@ -1,5 +1,6 @@
 import SuperMap from '../SuperMap';
 import ChartQueryFilterParameter from './ChartQueryFilterParameter';
+
 /**
  * @class SuperMap.ChartQueryParameters
  * @classdesc 海图查询参数类，该类用于设置海图查询时的相关参数，海图查询分为海图属性<br>
@@ -9,8 +10,8 @@ import ChartQueryFilterParameter from './ChartQueryFilterParameter';
  *         queryMode - {string} 海图查询模式类型，SuperMap iClient for JavaScript对
  *                              海图支持两种查询方式：海图属性查询（"ChartAttributeQuery"）和海图空间查询（"ChartBoundsQuery"） 。<br>
  *         bounds - {SuperMap.Bounds}  海图查询范围。<br>
- *         chartLayerNames - {Array<String>} 查询的海图图层的名称。<br>
- *         chartQueryFilterParameters - {Array <ChartQueryFilterParameter} 海图查询过滤参数。包括：物标代码、
+ *         chartLayerNames - {Array<string>} 查询的海图图层的名称。<br>
+ *         chartQueryFilterParameters - {Array <SuperMap.ChartQueryFilterParameter>} 海图查询过滤参数。包括：物标代码、
  *                                                                         物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。<br>
  *         returnContent - {boolean} 获取或设置是返回查询结果记录集 recordsets，还
  *                                   是返回查询结果的资源 resourceInfo。默认为 true，表示返回 recordsets。<br>
@@ -33,13 +34,13 @@ export default class ChartQueryParameters {
     bounds = null;
 
     /**
-     * @member SuperMap.ChartQueryParameters.prototype.chartLayerNames -{Array<String>}
+     * @member SuperMap.ChartQueryParameters.prototype.chartLayerNames -{Array<string>}
      * @description 查询的海图图层的名称。
      */
     chartLayerNames = null;
 
     /**
-     * @member SuperMap.ChartQueryParameters.prototype.chartQueryFilterParameters -{Array<ChartQueryFilterParameter>}
+     * @member SuperMap.ChartQueryParameters.prototype.chartQueryFilterParameters -{Array<SuperMap.ChartQueryFilterParameter>}
      * @description 海图查询过滤参数。<br>
      *               包括：物标代码、物标可应用对象的选择（是否查询点、线或面）、属性字段过滤条件。
      */
@@ -50,19 +51,9 @@ export default class ChartQueryParameters {
      * @description 获取或设置是返回查询结果记录集 recordsets，还是返回查询结果的
      *      资源 resourceInfo。默认为 true，表示返回 recordsets。
      * @example
-     *  Recordsets 和 ResourceInfo 都存储在查询结果类 QueryResult 中。当:
-     *  ReturnContent = true
-     *  表示返回查询记录集，这时查询结果存储在:
-     *      QueryResult.Recordsets
-     *  中，而
-     *      QueryResult.ResourceInfo
-     *  为空；当:
-     *      ReturnContent = false
-     *  时，表示返回查询结果资源，这时查询结果存储在:
-     *      QueryResult.ResourceInfo
-     *  中，而
-     *      QueryResult.Recordsets
-     *  为空。
+     *  Recordsets 和 ResourceInfo 都存储在查询结果类 QueryResult 中。
+     *  当:ReturnContent = true表示返回查询记录集，这时查询结果存储在:QueryResult.Recordsets中，而QueryResult.ResourceInfo为空；
+     *  当:ReturnContent = false时，表示返回查询结果资源，这时查询结果存储在:QueryResult.ResourceInfo中，而QueryResult.Recordsets为空。
      */
     returnContent = true;
 

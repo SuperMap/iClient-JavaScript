@@ -26,7 +26,7 @@ import GeometryOverlayAnalystParameters from './GeometryOverlayAnalystParameters
 export default  class OverlayAnalystService extends SpatialAnalystBase {
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.mode -{string}
+     * @member SuperMap.OverlayAnalystService.prototype.mode -{string}
      * @description 叠加分析类型
      */
     mode = null;

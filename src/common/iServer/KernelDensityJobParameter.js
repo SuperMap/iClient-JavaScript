@@ -98,11 +98,10 @@ export default class KernelDensityJobParameter {
         this.radiusUnit = null;
         this.areaUnit = null;
     }
-
     /**
      * @function SuperMap.KernelDensityJobParameter.toObject
-     * @param kernelDensityJobParameter - {Object} 密度分析任务参数。
-     * @param tempObj - {Object} 参数。
+     * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
+     * @param tempObj - {Object} 目标对象
      * @description 生成密度分析任务对象
      */
     static toObject(kernelDensityJobParameter, tempObj) {

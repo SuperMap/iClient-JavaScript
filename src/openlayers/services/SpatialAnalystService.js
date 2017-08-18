@@ -41,7 +41,6 @@ export default class SpatialAnalystService extends ServiceBase {
      * @param resultFormat -{SuperMap.DataFormat} 返回结果类型
      * @return {ol.supermap.SpatialAnalystService}
      */
-
     getAreaSolarRadiationResult(params, callback, resultFormat) {
         var me = this;
         var areaSolarRadiationService = new AreaSolarRadiationService(me.url, {

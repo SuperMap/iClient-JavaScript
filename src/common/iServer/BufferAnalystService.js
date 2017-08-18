@@ -5,8 +5,7 @@ import GeometryBufferAnalystParameters from './GeometryBufferAnalystParameters';
 import GeoJSON from '../format/GeoJSON';
 /**
  * @class SuperMap.BufferAnalystService
- * @classdesc
- * 缓冲区分析服务类
+ * @classdesc 缓冲区分析服务类
  * 该类负责将客户设置的缓冲区分析参数传递给服务端，并接收服务端返回的缓冲区分析结果数据。
  * 缓冲区分析结果通过该类支持的事件的监听函数参数获取
  * @param url - {string} 服务的访问地址。如 http://localhost:8090/iserver/services/spatialanalyst-changchun/restjsr/spatialanalyst 。
@@ -22,6 +21,8 @@ import GeoJSON from '../format/GeoJSON';
      *           }
      *    });
  * (end)
+ *
+ *
  */
 export default  class BufferAnalystService extends SpatialAnalystBase {
     /**
@@ -51,7 +52,7 @@ export default  class BufferAnalystService extends SpatialAnalystBase {
     /**
      * @method SuperMap.BufferAnalystService.prototype.processAsync
      * @description 负责将客户端的查询参数传递到服务端。
-     * @param parameter - {BufferAnalystParameters}
+     * @param parameter - {BufferAnalystParameters} 缓冲区分析参数
      */
     processAsync(parameter) {
         var parameterObject = {};

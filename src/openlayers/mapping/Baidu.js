@@ -4,7 +4,6 @@ import ol from 'openlayers/dist/ol-debug';
  * @classdesc 百度地图
  * @param opt_options - {Object} 参数
  * @extends ol.source.TileImage{@linkdoc-openlayers/ol.source.TileImage}
- *
  */
 export default class Baidu extends ol.source.TileImage {
     constructor(opt_options) {
@@ -50,7 +49,6 @@ export default class Baidu extends ol.source.TileImage {
             }
         });
     }
-
     /**
      * @function ol.source.Baidu.defaultTileGrid
      * @description 自定义网格切片

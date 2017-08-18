@@ -5,7 +5,8 @@ import Vector from '../../../common/iServer/ThemeVector';
 /**
  * @class ol.source.GeoFeature
  * @classdesc 地理特征
- * @param name - {String} 名称
+ * @private
+ * @param name - {string} 名称
  * @param opt_options -{olx.source.ImageCanvasOptions} 参数。
  * @extends ol.source.Theme
  */
@@ -200,7 +201,7 @@ export default class GeoFeature extends Theme {
     }
     /**
      * @function ol.source.GeoFeature.prototype.clear
-     * @description 清除的内容包括数据（features） 、专题要素、缓存。
+     * @description  清除的内容包括数据（features） 、专题要素、缓存。
      */
     clear() {
         this.renderer.clearAll();
@@ -216,10 +217,11 @@ export default class GeoFeature extends Theme {
     getCacheCount() {
         return this.cacheFields.length;
     }
+
     /**
      * @function ol.source.GeoFeature.prototype.setMaxCacheCount
-     * @description 设置缓存最大条数
-     * @param cacheCount -{number} 最大缓存量
+     * @description 设置最大缓存条数
+     * @param cacheCount -{number} 缓存总数
      */
     setMaxCacheCount(cacheCount) {
         if (!isNaN(cacheCount)) {
@@ -229,8 +231,8 @@ export default class GeoFeature extends Theme {
     }
     /**
      * @function ol.source.GeoFeature.prototype.setMaxCacheCount
-     * @description 通过 FeatureID 获取 feature 关联的所有图形。
-     * @param featureID -{number} 要素ID
+     * @description 通过 FeatureID 获取 feature 关联的所有图形。如果不传入此参数，函数将返回所有图形。
+     * @param featureID -{number} 要素ID。
      */
     getShapesByFeatureID(featureID) {
         var list = [];

@@ -106,7 +106,7 @@ export default class Grid extends UGCSubLayer {
 
     /**
      * @member SuperMap.Grid.prototype.verticalSpacing
-     * @description {Number} 格网垂直间隔大小。
+     * @description {number} 格网垂直间隔大小。
      */
     verticalSpacing = null;
 

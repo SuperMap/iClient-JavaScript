@@ -10,7 +10,7 @@
  *        startStopIndex - {number}上车站点在本公交路线中的索引。</br>
  *        startStopName - {string} 上车站点名称。</br>
  *        startStopAliasName - {string} 上车站点别名。</br>
- *        endStopIndex - {number}下车站点在本公交路线中的索引</br>。
+ *        endStopIndex - {number}下车站点在本公交路线中的索引</br>
  *        endStopName - {string} 下车站点名称。</br>
  *        endStopAliasName - {string} 下车站点别名。</br>
  */

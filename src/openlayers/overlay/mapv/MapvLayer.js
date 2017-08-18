@@ -5,13 +5,14 @@ var BaiduMapLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 /**
  * @class ol.supermap.MapvLayer
  * @classdesc 网络图层类。
+ * @private
  * @param map - {Object} 地图
  * @param dataSet - {Object} 数据集
  * @param options - {Object} 参数
  * @param mapWidth - {number} 地图宽度
  * @param mapHeight - {number} 地图高度
  * @param source - {Object} 路径
- * @extends BaidiMapLayer
+ * @extends BaiduMapLayer
  */
 export default class MapvLayer extends BaiduMapLayer {
 
@@ -42,7 +43,11 @@ export default class MapvLayer extends BaiduMapLayer {
         this.mousemoveEvent = this.mousemoveEvent.bind(this);
         this.bindEvent();
     }
-
+    /**
+     * @function ol.supermap.MapvLayer.prototype.init
+     * @param options - {Object} 参数
+     * @description 初始化参数
+     */
     init(options) {
         var self = this;
         self.options = options;

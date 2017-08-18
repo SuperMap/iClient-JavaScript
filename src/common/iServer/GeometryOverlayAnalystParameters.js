@@ -52,8 +52,8 @@ export default  class GeometryOverlayAnalystParameters extends OverlayAnalystPar
     }
     /**
      * @function SuperMap.GeometryOverlayAnalystParameters.toObject
-     * @param geometryOverlayAnalystParameters - {Object} 几何对象叠加分析参数。
-     * @param tempObj - {Object} 参数。
+     * @param geometryOverlayAnalystParameters -{Object} 几何对象叠加分析参数。
+     * @param tempObj - {Object} 目标对象
      * @description 生成几何对象叠加分析对象
      */
     static toObject(geometryOverlayAnalystParameters, tempObj) {

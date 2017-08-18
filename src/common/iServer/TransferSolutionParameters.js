@@ -9,12 +9,12 @@ import {TransferPreference, TransferTactic} from '../REST';
  *        transferTactic - {SuperMap.TransferTactic} 交通换乘策略类型，
  *                      包括时间最短、距离最短、最少换乘、最少步行四种选择。</br>
  *        transferPreference - {SuperMap.TransferPreference} 乘车偏好枚举。</br>
- *        walkingRatio - {Array<Number>} 步行与公交的消耗权重比，默认值为 10。</br>
- *        points - {Array<Number>} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
- *        evadeLines - {Array<Number>} 避让路线的ID，默认为null。</br>
- *        evadeStops - {Array<Number>} 避让站点的ID，默认为null。</br>
- *        priorLines - {Array<Number>} 优先路线的ID，默认为null。</br>
- *        priorStops - {Array<Number>} 优先站点的ID，默认为null。</br>
+ *        walkingRatio - {Array<number>} 步行与公交的消耗权重比，默认值为 10。</br>
+ *        points - {Array<number>} 两种查询方式：按照公交站点的起止ID进行查询和按照起止点的坐标进行查询。</br>
+ *        evadeLines - {Array<number>} 避让路线的ID，默认为null。</br>
+ *        evadeStops - {Array<number>} 避让站点的ID，默认为null。</br>
+ *        priorLines - {Array<number>} 优先路线的ID，默认为null。</br>
+ *        priorStops - {Array<number>} 优先站点的ID，默认为null。</br>
  *        travelTime - {string} 出行的时间。</br>
  */
 export default class TransferSolutionParameters {
@@ -39,7 +39,7 @@ export default class TransferSolutionParameters {
     transferTactic = TransferTactic.LESS_TIME;
 
     /**
-     *  @member SuperMap.TransferSolutionParameters.prototype.walkingRatio - {Number}
+     *  @member SuperMap.TransferSolutionParameters.prototype.walkingRatio - {number}
      *  @description 步行与公交的消耗权重比，默认值为 10。此值越大，则步行因素对于方案选择的影响越大。例如：
      * 例如现在有两种换乘方案（在仅考虑消耗因素的情况下）：
      * 方案1：坐车10公里，走路1公里；
@@ -66,25 +66,25 @@ export default class TransferSolutionParameters {
     points = false;
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.evadeLines -{Array<Number>}
+     * @member SuperMap.TransferSolutionParameters.prototype.evadeLines -{Array<number>}
      * @description 避让路线ID。
      * */
     evadeLines = null;
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.evadeStops -{Array<Number>}
+     * @member SuperMap.TransferSolutionParameters.prototype.evadeStops -{Array<number>}
      * @description 避让站点ID。
      * */
     evadeStops = null;
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.priorLines -{Array<Number>}
+     * @member SuperMap.TransferSolutionParameters.prototype.priorLines -{Array<number>}
      * @description 优先路线ID。
      * */
     priorLines = null;
 
     /**
-     * @member SuperMap.TransferSolutionParameters.prototype.priorStops -{Array<Number>}
+     * @member SuperMap.TransferSolutionParameters.prototype.priorStops -{Array<number>}
      * @description 优先站点ID。
      * */
     priorStops = null;
@@ -114,7 +114,7 @@ export default class TransferSolutionParameters {
      * @function SuperMap.TransferSolutionParameters.toJsonParameters
      * @description 将 <SuperMap.TransferSolutionParameters> 对象参数转换为 json 字符串。
      * @param  params - {SuperMap.TransferSolutionParameters} 交通换乘参数。
-     * @return {String} 转化后的 json字符串。
+     * @return {string} 转化后的 json字符串。
      */
     static toJson(params) {
         if (params) {

@@ -22,7 +22,7 @@ import CommonServiceBase from './CommonServiceBase';
 export default  class MapService extends CommonServiceBase {
 
     /**
-     * @member  SuperMap.MapService.prototype.projection -{SuperMap.Projection} or {String}
+     * @member  SuperMap.MapService.prototype.projection -{SuperMap.Projection} or {string}
      * @description 根据投影参数获取地图状态信息。
      */
     projection = null;

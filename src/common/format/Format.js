@@ -75,7 +75,7 @@ export default  class Format {
      * @function SuperMap.Format.prototype.write
      * @description Accept an object, and return a string.
      * @param object - {Object} Object to be serialized
-     * @return {String} A string representation of the object.
+     * @return {string} A string representation of the object.
      */
     write(object) {
         //用来写字符串

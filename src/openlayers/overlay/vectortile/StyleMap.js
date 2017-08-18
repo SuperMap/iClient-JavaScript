@@ -1,6 +1,7 @@
 /**
  * @constant  ol.supermap.pointMap
  * @description 点图
+ * @private
  */
 export var pointMap = {
     "point-file": "pointFile",

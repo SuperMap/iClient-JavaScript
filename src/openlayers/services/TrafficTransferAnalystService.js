@@ -6,13 +6,13 @@ import TransferPathService from'../../common/iServer/TransferPathService';
 import TransferSolutionService from '../../common/iServer/TransferSolutionService';
 /**
  * @class ol.supermap.TrafficTransferAnalystService
+ * @extends ol.supermap.ServiceBase
  * @classdesc 交通换乘分析服务类
  * @example 用法
  *      new ol.supermap.TrafficTransferAnalystService(url)
  *      .queryStop(params,function(result){
  *           //doSomething
  *      })
- * @extends ol.supermap.ServiceBase
  * @param url - {String} 服务地址
  * @param option - {Object} 参数。<br>
  *        serverType - {String} 服务来源 iServer|iPortal|online

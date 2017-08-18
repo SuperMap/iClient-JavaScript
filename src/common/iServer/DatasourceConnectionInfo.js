@@ -9,8 +9,7 @@ import {EngineType} from '../REST';
  * 数据源，其连接信息有所区别。所以在使 用该类所包含的成员时，请注意该成员所适用的数据源类型。
  * 对于从数据源对象中返回的数据连接信息对象，只有 connect 方法可以被修改，其 他内容是不可以被修改的。
  * 对于用户创建的数据源连接信息对象，其内容都可以修改。
- * @param options - {Object} 参数。
- * Allowed options properties:</br>
+ * @param options - {Object} 参数。如:</br>
  * alias - {string} 数据源别名。</br>
  * connect - {boolean} 数据源是否自动连接数据。</br>
  * dataBase - {string} 数据源连接的数据库名。</br>

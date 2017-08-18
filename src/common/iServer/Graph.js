@@ -46,8 +46,8 @@ export default class Graph extends ThemeFeature {
      *              width - {number}专题要素（图表）宽度，必设参数。<br>
      *              height - {number}专题要素（图表）高度，必设参数。<br>
      *              codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
-     *              XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。<br>
-     *              YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
+     *              XOffset - {number}  专题要素（图表）在 X 方向上的偏移值，单位像素。<br>
+     *              YOffset - {number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
      *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox
      *                                                    （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。<br>
      *              decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。
@@ -161,13 +161,13 @@ export default class Graph extends ThemeFeature {
 
     /**
      * @member SuperMap.Feature.Theme.Graph.prototype.fields -{Array<string>}
-     * @description 数据（ <SuperMap.Feature.Vector> ）属性字段。
+     * @description 数据{SuperMap.Feature.Vector}属性字段。
      */
     fields = null;
 
     /**
      * @member SuperMap.Feature.Theme.Graph.prototype.dataValues {Array<number>}
-     * @description 图表展示的数据值，通过 fields 从数据（feature）属性中获得。
+     * @description 图表展示的数据值，通过 fields 从数据feature属性中获得。
      */
     dataValues = null;
 
@@ -232,8 +232,8 @@ export default class Graph extends ThemeFeature {
      *              width - {number}专题要素（图表）宽度，必设参数。<br>
      *              height - {number}专题要素（图表）高度，必设参数。<br>
      *              codomain - {Array<number>} 值域，长度为 2 的一维数组，第一个元素表示值域下限，第二个元素表示值域上限，必设参数。<br>
-     *              XOffset - {Number}  专题要素（图表）在 X 方向上的偏移值，单位像素。<br>
-     *              YOffset - {Number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
+     *              XOffset - {number}  专题要素（图表）在 X 方向上的偏移值，单位像素。<br>
+     *              YOffset - {number}  专题要素（图表）在 Y 方向上的偏移值，单位像素。<br>
      *              dataViewBoxParameter - {Array<number>} 数据视图框 dataViewBox 参数，它是指图表框 chartBox。<br>
      *                                     （由图表位置、图表宽度、图表高度构成的图表范围框）在左、下，右，上四个方向上的内偏距值。<br>
      *              decimalNumber - {number}数据值数组 dataValues 元素值小数位数，数据的小数位处理参数，取值范围：[0, 16]。如果不设置此参数，在取数据值时不对数据做小数位处理。

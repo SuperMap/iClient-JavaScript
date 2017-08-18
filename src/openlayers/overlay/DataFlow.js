@@ -48,11 +48,10 @@ export default class DataFlow extends ol.source.Vector {
         this.prjCoordSys = prjCoordSys;
         return this;
     }
-
     /**
-     * @function  ol.source.DataFlow.prototype.setExcludeField
+     * @function ol.source.DataFlow.prototype.setExcludeField
      * @description 设置唯一字段
-     * @param excludeField -{Object} 排除字段。
+     * @param excludeField - {Object} 排除字段。
      */
     setExcludeField(excludeField) {
         this.dataService.setExcludeField(excludeField);

@@ -2,7 +2,7 @@ import SuperMap from '../SuperMap';
 import TimeControlBase from './TimeControlBase';
 
 /**
- * @class SuperMap.TimeControl
+ * @class SuperMap.TimeFlowControl
  * @classdesc 时间管理类。<br>
  *              此类只负责时间上的控制，具体执行的操作需要用户在初始化时的回调函数内部进行实现。<br>
  *              如设置起始时间为1000，结束时间是2000，步长设置为1，
@@ -11,7 +11,7 @@ import TimeControlBase from './TimeControlBase';
  * @param callback - {Function} 每次刷新回调函数，必设属性。具体的效果需要用户在此回调函数里面实现。
  * @param options - {Object} 该类开放的可选属性。如：<br>
  *        speed - {number}步长(单位ms)。不能小于0，默认为1（表示每次刷新的数据之间的间隔为1ms）。<br>
- *        frequency -  {Number} 刷新频率(单位ms)，默认为1000ms。<br>
+ *        frequency -  {number} 刷新频率(单位ms)，默认为1000ms。<br>
  *        startTime - {number}起始时间，必须为数字，且小于等于endTime。如果不设置，初始化时为0，建议设置。<br>
  *        endTime - {number}结束时间，必须为数字，且大于等于startTime。如果不设置，初始化时以当前时间进行设置，建议设置。<br>
  *        repeat - {boolean} 是否重复循环。默认为true。<br>
@@ -121,7 +121,7 @@ export default  class TimeFlowControl extends TimeControlBase {
 
 
     /**
-     * @function SuperMap.TimeControl.prototype.tick
+     * @function SuperMap.TimeFlowControl.prototype.tick
      * @description 定时刷新
      */
     tick() {

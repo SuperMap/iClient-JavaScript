@@ -46,7 +46,7 @@ export default  class IPortal extends IPortalServiceBase {
 
     /**
      * @function SuperMap.iPortal.prototype.deleteServices
-     * @param ids -{number} 服务的序号
+     * @param ids -{Array} 服务的序号
      * @description 删除服务
      */
     deleteServices(ids) {

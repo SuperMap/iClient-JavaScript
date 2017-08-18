@@ -12,14 +12,14 @@ import SuperMap from '../SuperMap';
 export default  class BurstPipelineAnalystParameters {
 
     /**
-     * @member SuperMap.BurstPipelineAnalystParameters.prototype.sourceNodeIDs -{Array<Number>}
+     * @member SuperMap.BurstPipelineAnalystParameters.prototype.sourceNodeIDs -{Array<number>}
      * @description 指定的设施点ID数组,可以为空。
      */
     sourceNodeIDs = null;
 
     /**
      * @member SuperMap.BurstPipelineAnalystParameters.prototype.edgeID -{number}
-     * @description指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。
+     * @description 指定的弧段ID（注：edgeID 与 nodeID 不能同时使用）。
      */
     edgeID = null;
 
