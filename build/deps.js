@@ -721,6 +721,21 @@ deps = {
                     "des": "百度MapV可视化效果"
                 }]
             }
+        },
+        "Control": {
+            "title": "控件",
+            "description": "各种功能在UI上的交互控制",
+
+            "Logo": {
+                "name": "logo控件",
+                "src": [
+                    "./src/mapboxgl/control/Logo.js"
+                ],
+                "modules": [{
+                    "name": "mapboxgl.supermap.LogoControl",
+                    "des": "logo控件"
+                }]
+            }
         }
     },
 
