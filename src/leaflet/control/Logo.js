@@ -3,7 +3,7 @@ import L from 'leaflet';
 import logoSrc from '../../common/control/img/iClient.png'
 
 /**
- * @class L.supermap.control.Logo
+ * @class L.supermap.control.logo
  * @classdesc Logo控件。</br>
  *            map初始化的配置项为logoControl，如果为true，则显示控件；否则不显示该控件。目前默认显示。
  * @extends L.Control{@linkdoc-leaflet/#control}

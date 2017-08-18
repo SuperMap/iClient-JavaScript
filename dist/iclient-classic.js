@@ -1233,7 +1233,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
         options = options || {};
         /*
          * Constant: EVENT_TYPES
-         * {Array(String)}
+         * {Array<string>}
          * 此类支持的事件类型
          * - *processCompleted* 创建成功后触发的事件。
          * - *processFailed* 创建失败后触发的事件 。
@@ -1281,7 +1281,7 @@ var ProcessingServiceBase = function (_CommonServiceBase) {
          * @function SuperMap.ProcessingServiceBase.prototype.addJob
          * @description 添加大数据
          * @param url - {string} 资源根地址。
-         * @param params - {object} 创建一个空间分析的请求参数。
+         * @param params - {Object} 创建一个空间分析的请求参数。
          * @param paramType - {string} - 请求参数类型。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          */
@@ -1415,21 +1415,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var CommonServiceBase = function () {
 
     /*
-     * @function SuperMap.CommonServiceBase.prototype.constructor
-     * @description  ServiceBase的构造函数
-     * @param url - {string} 与客户端交互的服务地址。
-     * @param options - {Object} 参数。
-     */
-
-
-    /*
      * Property: _processFailed
      * {Function} 请求参数中失败回调函数。
      */
 
 
     /**
-     * @member SuperMap.CommonServiceBase.prototype.POLLING_TIMES -{Int}
+     * @member SuperMap.CommonServiceBase.prototype.POLLING_TIMES -{Integer}
      * @description 默认请求失败次数。
      */
 
@@ -1452,14 +1444,14 @@ var CommonServiceBase = function () {
      */
 
 
-    /**
+    /*
      * @member SuperMap.CommonServiceBase.prototype.eventListeners -{Object}
      * @description: 听器对象，在构造函数中设置此参数（可选），对 MapService 支持的两个事件 processCompleted 、processFailed 进行监听，相当于调用 SuperMap.Events.on(eventListeners)。
      */
 
 
     /*
-     * @constant: EVENT_TYPES- {Array(String)}
+     * @constant: EVENT_TYPES- {Array<string>}
      * @description 此类支持的事件类型
      * - *processCompleted* 服务端返回信息成功触发该事件 。
      * - *processFailed* 服务端返回信息失败触发该事件 。
@@ -1522,7 +1514,6 @@ var CommonServiceBase = function () {
     }
 
     /**
-     * @override
      * @function SuperMap.CommonServiceBase.prototype.destroy
      * @description: 释放资源，将引用的资源属性置空。
      */
@@ -1530,6 +1521,7 @@ var CommonServiceBase = function () {
 
     /**
      * @member SuperMap.CommonServiceBase.prototype.isInTheSameDomain -{boolean}
+     * @description 是否在同一领域内
      */
 
 
@@ -1540,7 +1532,7 @@ var CommonServiceBase = function () {
 
 
     /**
-     *  @member SuperMap.CommonServiceBase.prototype.totalTimes -{Int}
+     *  @member SuperMap.CommonServiceBase.prototype.totalTimes -{Integer}
      *  @description 实际请求失败次数。
      */
 
@@ -1557,8 +1549,8 @@ var CommonServiceBase = function () {
      */
 
 
-    /**
-     * @member SuperMap.CommonServiceBase.prototype.url -{String|Array}
+    /*
+     * @member SuperMap.CommonServiceBase.prototype.url -{string}|{Array}
      * @description: 服务访问地址或者服务访问地址数组。
      * @example
      * var url1 = "http://localhost:8090/iserver/services/map-world/rest/maps/World";
@@ -1567,7 +1559,7 @@ var CommonServiceBase = function () {
      */
 
 
-    /**
+    /*
      * @member SuperMap.CommonServiceBase.prototype.events -{SuperMap.Events}
      * @description: 处理所有事件的对象，支持processCompleted 、processFailed 两种事件
      *               服务端成功返回地图信息结果时触发 processCompleted事件，服务端返回信息结果时触发 processFailed 事件。
@@ -2330,7 +2322,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
  * @extends SuperMap.REST.CommonServiceBase
  * @param url - {string} 服务地址
- * @param options - {object} 地址匹配服务可选参数
+ * @param options - {Object} 地址匹配服务可选参数
  */
 var AddressMatchService = exports.AddressMatchService = function (_CommonServiceBase) {
     _inherits(AddressMatchService, _CommonServiceBase);
@@ -3723,7 +3715,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
     /**
      * @function SuperMap.MapVRenderer.prototype.clickEvent
      * @description 点击事件
-     * @param e - {object} 触发对象
+     * @param e - {Object} 触发对象
      */
 
 
@@ -3737,7 +3729,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         /**
          * @function SuperMap.MapVRenderer.prototype.mousemoveEvent
          * @description 鼠标移动事件
-         * @param  e - {object} 触发对象
+         * @param  e - {Object} 触发对象
          */
 
     }, {
@@ -3750,7 +3742,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         /**
          * @function SuperMap.MapVRenderer.prototype.bindEvent
          * @description 绑定鼠标移动和鼠标点击事件
-         * @param e - {object} 触发对象
+         * @param e - {Object} 触发对象
          */
 
     }, {
@@ -3771,7 +3763,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         /**
          * @function SuperMap.MapVRenderer.prototype.unbindEvent
          * @description 解绑鼠标移动和鼠标滑动触发的事件
-         * @param e - {object} 触发对象
+         * @param e - {Object} 触发对象
          */
 
     }, {
@@ -4029,7 +4021,7 @@ var MapVRenderer = function (_MapVBaseLayer) {
         /**
          * @function SuperMap.MapVRenderer.prototype.clear
          * @description 清除环境
-         * @param context - {object} 当前环境
+         * @param context - {Object} 当前环境
          */
 
     }, {
@@ -4122,7 +4114,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @class SuperMap.AddressMatchService
  * @classdesc 地址匹配服务，包括正向匹配和反向匹配。
  * @param options - {Object} 参数。
- * @param url {string}
+ * @param url {string} 地址匹配服务地址。
  */
 var AddressMatchService = function (_CommonServiceBase) {
     _inherits(AddressMatchService, _CommonServiceBase);
@@ -4170,6 +4162,14 @@ var AddressMatchService = function (_CommonServiceBase) {
         value: function decode(url, params) {
             this.processAsync(url, params);
         }
+
+        /**
+         * @function SuperMap.AddressMatchService.prototype.processAsync
+         * @description 负责将客户端的动态分段服务参数传递到服务端。
+         * @param url - {string} 服务地址
+         * @param params - {Object} 参数
+         */
+
     }, {
         key: 'processAsync',
         value: function processAsync(url, params) {
@@ -4186,11 +4186,24 @@ var AddressMatchService = function (_CommonServiceBase) {
                 me.eventListeners.processFailed({ error: e });
             });
         }
+
+        /**
+         * @function SuperMap.AddressMatchService.prototype.serviceProcessCompleted
+         * @param result - {Object} 服务器返回的结果对象。
+         * @description 服务流程是否完成
+         */
+
     }, {
         key: 'serviceProcessCompleted',
         value: function serviceProcessCompleted(result) {
             _get(AddressMatchService.prototype.__proto__ || Object.getPrototypeOf(AddressMatchService.prototype), 'serviceProcessCompleted', this).call(this, result);
         }
+        /**
+         * @function SuperMap.AddressMatchService.prototype.serviceProcessCompleted
+         * @param result - {Object} 服务器返回的结果对象。
+         * @description 服务流程是否失败
+         */
+
     }, {
         key: 'serviceProcessFailed',
         value: function serviceProcessFailed(result) {
@@ -4234,7 +4247,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  *         cacheName - {string} 缓存名称。<br>
  *         cacheType - {string} 存储类型。<br>
  *         serverAdresses - {string} MongoDB地址。<br>
- *         database -- {String} 数据库。<br>
+ *         database -- {string} 数据库。<br>
  *         version -{string} 版本。<br>
  *         bounds -{SuperMap.Bounds} 缓存范围。<br>
  *         imageType -{number}缓存类型.<br>
@@ -4255,7 +4268,7 @@ var BuildCacheJobParameter = function () {
 
 
     /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.serverAddresses -{string}
+     * @member SuperMap.BuildCacheJobParameter.prototype.serverAdresses -{string}
      * @description MongoDB地址。
      */
 
@@ -4331,6 +4344,13 @@ var BuildCacheJobParameter = function () {
             this.imageType = null;
             this.level = null;
         }
+        /**
+         * @function SuperMap.BuildCacheJobParameter.toObject
+         * @param buildCacheJobParameter -{Object} 地图缓存参数。
+         * @param tempObj - {Object} 目标对象
+         * @description 生成地图缓存对象
+         */
+
     }], [{
         key: "toObject",
         value: function toObject(buildCacheJobParameter, tempObj) {
@@ -4853,6 +4873,13 @@ var KernelDensityJobParameter = function () {
             this.radiusUnit = null;
             this.areaUnit = null;
         }
+        /**
+         * @function SuperMap.KernelDensityJobParameter.toObject
+         * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
+         * @param tempObj - {Object} 目标对象
+         * @description 生成密度分析任务对象
+         */
+
     }], [{
         key: 'toObject',
         value: function toObject(kernelDensityJobParameter, tempObj) {
@@ -5064,6 +5091,13 @@ var SingleObjectQueryJobsParameter = function () {
             this.datasetQuery = null;
             this.mode = null;
         }
+        /**
+         * @function SuperMap.SingleObjectQueryJobsParameter.toObject
+         * @param singleObjectQueryJobsParameter -{Object} 单对象空间查询分析任务参数
+         * @param tempObj - {Object} 目标对象
+         * @description 生成单对象空间查询分析任务对象
+         */
+
     }], [{
         key: 'toObject',
         value: function toObject(singleObjectQueryJobsParameter, tempObj) {
@@ -5318,6 +5352,13 @@ var SummaryMeshJobParameter = function () {
             this.regionDataset = null;
             this.type = null;
         }
+        /**
+         * @function SuperMap.SummaryMeshJobParameter.toObject
+         * @param summaryMeshJobParameter - {Object} 点聚合分析任务参数。
+         * @param tempObj - {Object} 目标对象。
+         * @description 生成点聚合分析任务对象
+         */
+
     }], [{
         key: 'toObject',
         value: function toObject(summaryMeshJobParameter, tempObj) {
@@ -5645,6 +5686,13 @@ var SummaryRegionJobParameter = function () {
             this.meshSizeUnit = null;
             this.type = null;
         }
+        /**
+         * @function SuperMap.SummaryRegionJobParameter.toObject
+         * @param summaryRegionJobParameter -{Object} 矢量裁剪分析任务参数。
+         * @param tempObj - {Object} 目标对象。
+         * @description 生成范围汇总分析服务对象
+         */
+
     }], [{
         key: 'toObject',
         value: function toObject(summaryRegionJobParameter, tempObj) {
@@ -5864,6 +5912,13 @@ var VectorClipJobsParameter = function () {
             this.datasetOverlay = null;
             this.mode = null;
         }
+        /**
+         * @function SuperMap.VectorClipJobsParameter.toObject
+         * @param vectorClipJobsParameter -{Object} 范围汇总分析服务参数
+         * @param tempObj - {Object} 目标对象。
+         * @description 矢量裁剪分析任务对象
+         */
+
     }], [{
         key: 'toObject',
         value: function toObject(vectorClipJobsParameter, tempObj) {
@@ -6048,7 +6103,7 @@ var KeyServiceParameter = function () {
     /**
      * @function SuperMap.KeyServiceParameter.prototype.toJSON
      * @description 转换成JSON对象
-     * @return {object} 参数的JSON对象
+     * @return {Object} 参数的JSON对象
      */
 
 
@@ -6116,8 +6171,8 @@ _SuperMap2.default.SecurityManager = {
     /**
      * @function SuperMap.SecurityManager.prototype.generateToken
      * @description 从服务器获取一个token,在此之前要注册服务器信息
-     * @param url {String}-服务器域名+端口，如：http://localhost:8092
-     * @param tokenParam -{SuperMap.TokenServiceParameter} 令牌参数
+     * @param url {string}-服务器域名+端口，如：http://localhost:8092
+     * @param tokenParam -{SuperMap.TokenServiceParameter} token申请参数
      */
     generateToken: function generateToken(url, tokenParam) {
         var serverInfo = this.servers[url];
@@ -6132,7 +6187,7 @@ _SuperMap2.default.SecurityManager = {
     /**
      * @function SuperMap.SecurityManager.prototype.registerServers
      * @description 注册安全服务器相关信息
-     * @param serverInfos -{SuperMap.ServerInfo}
+     * @param serverInfos -{SuperMap.ServerInfo} 服务器信息
      */
     registerServers: function registerServers(serverInfos) {
         this.servers = this.servers || {};
@@ -6148,7 +6203,7 @@ _SuperMap2.default.SecurityManager = {
     /**
      * @function SuperMap.SecurityManager.prototype.registerToken
      * @description 服务请求都会自动带上这个token
-     * @param url {String} -服务器域名+端口：如http://localhost:8090
+     * @param url {string} -服务器域名+端口：如http://localhost:8090
      * @param token -{string}
      */
     registerToken: function registerToken(url, token) {
@@ -6182,7 +6237,7 @@ _SuperMap2.default.SecurityManager = {
     /**
      * @function SuperMap.SecurityManager.prototype.getServerInfo
      * @description 获取服务信息
-     * @param url {String}-服务器域名+端口，如：http://localhost:8092
+     * @param url {string}-服务器域名+端口，如：http://localhost:8092
      */
     getServerInfo: function getServerInfo(url) {
         this.servers = this.servers || {};
@@ -6331,8 +6386,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class SuperMap.ServerInfo
  * @classdesc 服务器信息(安全相关)，包含服务器类型，服务地址，token服务地址等
  * @param type - {string} 服务器类型
- * @param options - {object} 非必填，服务器信息相关可选参数。如：<br>
- *        server - {string} 数据库服务器名
+ * @param options - {Object} 服务器信息相关可选参数。如：<br>
+ *        server - {string} 服务器地址,如：http://supermapiserver:8090/iserver<br>
  *        tokenServiceUrl - {string} 非必填，如：http://supermapiserver:8090/iserver/services/security/tokens.json
  *        keyServiceUrl - {string} 非必填，如：http://supermapiserver:8092/web/mycontent/keys/register.json
  */
@@ -6345,7 +6400,7 @@ var ServerInfo =
 
 /**
  * @member SuperMap.ServerInfo.prototype.type -{SuperMap.ServerType}
- * @description 服务器类型 如：http://supermapiserver:8090
+ * @description 服务器类型
  */
 function ServerInfo(type, options) {
     _classCallCheck(this, ServerInfo);
@@ -6390,7 +6445,7 @@ function ServerInfo(type, options) {
 
 /**
  * @member SuperMap.ServerInfo.prototype.server -{string}
- * @description 非必填，server - {string} 数据库服务器名
+ * @description 必填，服务器地址
  */
 ;
 
@@ -6460,7 +6515,7 @@ var TokenServiceParameter = function () {
     /**
      * @function SuperMap.TokenServiceParameter.prototype.toJSON
      * @description 将所有信息转成JSON字符串
-     * @return {String} 参数的JSON字符串
+     * @return {string} 参数的JSON字符串
      */
 
 

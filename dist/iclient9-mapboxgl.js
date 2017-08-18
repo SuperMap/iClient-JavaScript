@@ -261,7 +261,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class mapboxgl.supermap.MapvLayer
  * @classdesc Mapv图层
- * @param map - {object} 地图
+ * @param map - {Object} 地图
  * @param dataSet -{Object} 数据集
  * @param mapVOptions -{Object} Mapv参数
  */
@@ -397,7 +397,7 @@ var MapvRenderer = function (_BaseLayer) {
     /**
      * @function mapboxgl.supermap.prototype.clickEvent
      * @description  点击绑定事件
-     * @param e - {object} 事件
+     * @param e - {Object} 事件
      */
 
 
@@ -410,7 +410,7 @@ var MapvRenderer = function (_BaseLayer) {
         /**
          * @function mapboxgl.supermap.prototype.mousemoveEvent
          * @description  鼠标移动事件
-         * @param e - {object} 事件
+         * @param e - {Object} 事件
          */
 
     }, {
@@ -419,6 +419,12 @@ var MapvRenderer = function (_BaseLayer) {
             var pixel = e.layerPoint;
             _get(MapvRenderer.prototype.__proto__ || Object.getPrototypeOf(MapvRenderer.prototype), 'mousemoveEvent', this).call(this, pixel, e);
         }
+        /**
+         * @function  mapboxgl.supermap.prototype.bindEvent
+         * @description 绑定事件
+         * @param e - {object} 触发对象
+         */
+
     }, {
         key: 'bindEvent',
         value: function bindEvent(e) {
@@ -432,6 +438,13 @@ var MapvRenderer = function (_BaseLayer) {
                 }
             }
         }
+
+        /**
+         * @function mapboxgl.supermap.prototype.unbindEvent
+         * @description 解绑事件
+         * @param e - {object} 触发对象
+         */
+
     }, {
         key: 'unbindEvent',
         value: function unbindEvent(e) {
@@ -448,7 +461,7 @@ var MapvRenderer = function (_BaseLayer) {
         }
         /**
          * @function mapboxgl.supermap.prototype.getContext
-         * @description  获取画布上下文
+         * @description 获取信息
          */
 
     }, {
@@ -459,8 +472,8 @@ var MapvRenderer = function (_BaseLayer) {
 
         /**
          * @function mapboxgl.supermap.prototype.updateData
-         * @param dataSet - {object} 数据集
-         * @param options - {object} 数据项配置
+         * @param dataSet - {Object} 数据集
+         * @param options - {Object} 数据项配置
          * @description  更新数据
          */
 
@@ -556,19 +569,39 @@ var MapvRenderer = function (_BaseLayer) {
 
             this.initAnimator();
         }
+        /**
+         * @function mapboxgl.supermap.prototype.addAnimatorEvent
+         * @description 添加动画事件
+         */
+
     }, {
         key: 'addAnimatorEvent',
         value: function addAnimatorEvent() {}
+        /**
+         * @function mapboxgl.supermap.prototype.removeEvent
+         * @description 移除事件
+         */
+
     }, {
         key: 'removeEvent',
         value: function removeEvent() {
             this.canvasLayer.mapContainer.removeChild(this.canvasLayer.canvas);
         }
+        /**
+         * @function mapboxgl.supermap.prototype.moveEvent
+         * @description 隐藏事件
+         */
+
     }, {
         key: 'moveEvent',
         value: function moveEvent() {
             this._hide();
         }
+        /**
+         * @function mapboxgl.supermap.prototype.resizeEvent
+         * @description 调整事件
+         */
+
     }, {
         key: 'resizeEvent',
         value: function resizeEvent() {
@@ -581,12 +614,23 @@ var MapvRenderer = function (_BaseLayer) {
             canvas.style.width = this.map.getCanvas().style.width;
             canvas.style.height = this.map.getCanvas().style.height;
         }
+        /**
+         * @function mapboxgl.supermap.prototype.moveEndEvent
+         * @description 移除最后事件
+         */
+
     }, {
         key: 'moveEndEvent',
         value: function moveEndEvent() {
             this._canvasUpdate();
             this._show();
         }
+        /**
+         * @function mapboxgl.supermap.prototype.clear
+         * @param context - {object} 当前环境
+         * @description 清除环境
+         */
+
     }, {
         key: 'clear',
         value: function clear(context) {
@@ -602,6 +646,11 @@ var MapvRenderer = function (_BaseLayer) {
         value: function _show() {
             this.canvasLayer.canvas.style.display = 'block';
         }
+        /**
+         * @function mapboxgl.supermap.prototype.draw
+         * @description 渲染绘制
+         */
+
     }, {
         key: 'draw',
         value: function draw() {

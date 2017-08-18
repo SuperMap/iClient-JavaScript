@@ -1,9 +1,9 @@
 # SuperMap iClient for MapboxGL API
 
 
-*   官网(website)：[http://iclient.supermapol.com/introduction/mapboxgl.html#introduce](http://iclient.supermapol.com/introduction/leaflet.html#introduce)
+*   官网(website)：[http://iclient.supermapol.com/introduction/mapboxgl.html#introduce](http://iclient.supermapol.com/introduction/mapboxgl.html#introduce)
 
-*   源码(source code)：[https://github.com/SuperMap/iClient9/tree/master/src/mapboxgl](https://github.com/SuperMap/iClient9/tree/master/src/leaflet)
+*   源码(source code)：[https://github.com/SuperMap/iClient9/tree/master/src/mapboxgl](https://github.com/SuperMap/iClient9/tree/master/src/mapboxgl)
 
 ## 参考API
 
