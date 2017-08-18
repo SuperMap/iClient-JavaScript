@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'/>
+    <title>GTC2017</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no'/>
+    <link href='http://iclient.supermapol.com/libs/gtc2017/lib/mapbox-gl.css' rel='stylesheet'/>
+    <link href="http://iclient.supermapol.com/libs/gtc2017/lib/css-loader.css" rel="stylesheet">
+    <link href="http://iclient.supermapol.com/libs/gtc2017/style.css" rel="stylesheet">
+    <script type="text/javascript" src='http://iclient.supermapol.com/libs/gtc2017/lib/mapbox-gl.js'></script>
+    <script type="text/javascript" src="http://iclient.supermapol.com/libs/gtc2017/lib/mapv.min.js"></script>
+    <script type="text/javascript" src='http://iclient.supermapol.com/libs/gtc2017/dist/iclient9-mapboxgl.min.js'></script>
+    <script type="text/javascript" src='http://iclient.supermapol.com/libs/gtc2017/index.js'></script>
+</head>
+<body>
+<div class="loader loader-curtain"></div>
+<div id='map'></div>
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
+    var iServerUrl = "http://117.122.248.69:8090/iserver/services/map-chongqing/rest/maps/chongqing3857/tileFeature.mvt?_cache=false&returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}";
+
+    var buildingLayer, heightField = "floor", ratio = 15, layerId = "buildings",
+        center = [106.575424, 29.559371];
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: defaultStyle(iServerUrl),
+        pitch: 60,
+        bearing: 290,
+        center: center,
+        zoom: 12
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    //加载进度
+    map.on('styledata', function (evt) {
+        showLoader();
+    });
+    //关闭进度
+    map.on('render', function (evt) {
+        evt.target.areTilesLoaded() && removeLoader();
+    });
+
+    map.on('load', function () {
+        /*绿色风格*/
+        mapboxgl.supermap.map.setBackground("hsl(47, 26%, 88%)");
+        mapboxgl.supermap.map.setPaintProperty('水系多边形@chongqing', 'fill-color', 'hsl(205, 56%, 73%)');
+        mapboxgl.supermap.map.setPaintProperty('植被_多边形_R@chongqing', 'fill-color', 'hsl(82, 46%, 72%)');
+        mapboxgl.supermap.map.setPaintProperty(['R_一级道路@chongqing', 'R_二级道路@chongqing'], 'line-color', '#fff');
+        mapboxgl.supermap.map.setPaintProperty(['R_三级道路@chongqing', 'R_四级道路@chongqing'], 'line-color', 'hsl(0, 0%, 97%)');
+
+        /*切换蓝色风格*/
+        mapboxgl.supermap.map.setBackground("#042133");
+        mapboxgl.supermap.map.setPaintProperty(['水系多边形@chongqing', '植被_多边形_R@chongqing'], 'fill-color', '#021019');
+        mapboxgl.supermap.map.setPaintProperty(['R_一级道路@chongqing', 'R_二级道路@chongqing'], 'line-color', '#021019');
+        mapboxgl.supermap.map.setPaintProperty(['R_三级道路@chongqing', 'R_四级道路@chongqing'], 'line-color', '#021019');
+
+        /*加载三维专题图*/
+        buildingLayer = new mapboxgl.supermap.RankTheme3DLayer(layerId, map, {
+            // 设置分段
+            heightField: heightField,
+            heightStops: [[1, 15], [40, 600]],
+            colorStops: [
+                [0, 'rgba(33, 41, 52, 0.8)'],
+                [10, 'rgba(69,117,180, 0.7)'],
+                [15, 'rgba(116,173,209, 0.7)'],
+                [20, 'rgba(171,217,233, 0.7)'],
+                [25, 'rgba(254,224,144,0.7)'],
+                [30, 'rgba(253,174,97,0.7)'],
+                [35, 'rgba(244,109,67,0.8)'],
+                [40, 'rgba(215,48,39,0.8)']
+            ],
+            // 显示图例
+            showLegend: true,
+            legendTheme: 'dark',
+            legendRatio: ratio,
+            legendTitle: "高度"
+        });
+        buildingLayer.setData(buildings);
+        addBuildingLayer(buildingLayer);
+
+        /*加载O-D图*/
+        var trafficEndPointLayer = new mapboxgl.supermap.MapvLayer(map, getTrafficEndPointDataSet(trafficPoints), getTrafficEndPointOptions()).hide();
+        var trafficTimePointLayer = new mapboxgl.supermap.MapvLayer(map, getTrafficTimePointDataSet(trafficPoints), getTrafficTimeOptions()).hide();
+        var trafficLineLayer = new mapboxgl.supermap.MapvLayer(map, getTrafficLineDataSet(trafficPoints), {
+            strokeStyle: 'rgba(32,228,243, 0.8)',
+            shadowColor: 'rgba(65,105,225, 0.8)',
+            shadowBlur: 10,
+            lineWidth: 1,
+            draw: 'simple'
+        }).hide();
+        var trafficCenterLayer = new mapboxgl.supermap.MapvLayer(map, getTrafficCenterPointDataSet(center), {
+            fillStyle: 'rgba(192,16,26, 0.8)',
+            shadowColor: 'rgba(192,16,26,1)',
+            shadowBlur: 20,
+            size: 6,
+            draw: 'simple'
+        }).hide();
+        addTrafficLayers([trafficCenterLayer, trafficEndPointLayer, trafficTimePointLayer, trafficLineLayer]);
+
+    });
+</script>
+</body>
+</html>

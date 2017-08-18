@@ -143,6 +143,21 @@ var exampleConfig = {
             }
         }
     },
+    "GTC": {
+        name: "GTC",
+        content: {
+            "GTC2017": {
+                name: "GTC2017",
+                content: [
+                    {
+                        name: "",
+                        thumbnail: "gtc2017.png",
+                        fileName: "GTC2017"
+                    }
+                ]
+            }
+        }
+    },
 };
 /**
  *key值：为exampleConfig配置的key值或者fileName值
@@ -153,14 +168,16 @@ var exampleConfig = {
 var sideBarIconConfig = {
     "iServer": "fa-server",
     "viz": "fa-map",
+    "GTC": "fa-globe",
 };
 
 /**
- *key值：为exampleConfig配置的key值    
+ *key值：为exampleConfig配置的key值
  *value值：fontawesome字体icon名
  *与sideBarIconConfig的区别：sideBarIconConfig包括侧边栏所有层级目录的图标，exampleIconConfig仅包括一级标题的图标
  */
 var exampleIconConfig = {
     "iServer": "fa-server",
     "viz": "fa-map",
+    "GTC": "fa-globe",
 };
