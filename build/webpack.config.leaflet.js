@@ -40,16 +40,21 @@ module.exports = {
                 }
             }]
         }, {
-            test: /\.js/,
+            test: [/\.js$/],
             exclude: /node_modules[\/\\]proj4|classic/,
             loader: 'babel-loader',
             query: {
                 presets: ['es2015'],
                 plugins: [
-                    'transform-class-properties',
+                    'transform-class-properties',"transform-eval",
                 ]
             }
-        }, {
+        },{
+            test: /\.js$/,
+            enforce:"post",
+            loaders: ['es3ify-loader'],
+        },
+            {
             test: /\.css$/,
             use: ExtractTextPlugin.extract({
                 use: {
@@ -57,14 +62,11 @@ module.exports = {
                 }
             }),
         }],
-        loaders: [{
-            test: /\.css$/,
-            loader: ExtractTextPlugin.extract(['style-loader', 'css-loader'])
-        }]
+
     },
     plugins: [
         new webpack.BannerPlugin(banner),
-        new ExtractTextPlugin('/../dist/' + packageName + ".css")
+        new ExtractTextPlugin('/../dist/' + packageName + ".css"),
     ]
 
 };

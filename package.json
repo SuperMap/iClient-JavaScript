@@ -20,7 +20,7 @@
     "deploy-mapboxgl": "webpack --config ./build/webpack.config.mapboxgl.js",
     "deploy-classic": "webpack --config ./build/webpack.config.classic.js",
     "compress-openlayers": "uglifyjs --comments /Copyright©/i -c -m -o ./dist/iclient9-openlayers.min.js -- ./dist/iclient9-openlayers.js && cleancss -o  ./dist/iclient9-openlayers.min.css ./dist/iclient9-openlayers.css",
-    "compress-leaflet": "uglifyjs --comments /Copyright©/i -c -m -o ./dist/iclient9-leaflet.min.js -- ./dist/iclient9-leaflet.js && cleancss -o  ./dist/iclient9-leaflet.min.css ./dist/iclient9-leaflet.css",
+    "compress-leaflet": "uglifyjs --comments /Copyright©/i -c -m --ie8 -o ./dist/iclient9-leaflet.min.js -- ./dist/iclient9-leaflet.js && cleancss -o  ./dist/iclient9-leaflet.min.css ./dist/iclient9-leaflet.css",
     "compress-mapboxgl": "uglifyjs --comments /Copyright©/i -c -m -o ./dist/iclient9-mapboxgl.min.js -- ./dist/iclient9-mapboxgl.js",
     "compress-classic": "uglifyjs --comments /Copyright©/i -c -m -o ./dist/iclient-classic.min.js -- ./dist/iclient-classic.js",
     "package": "node ./build/pack.js",
@@ -28,7 +28,7 @@
     "test": "karma start ./test/karma.conf.js",
     "citest": "karma start ./test/karma.conf.js --single-run",
     "exampletest": "nightwatch --config ./examples-test/nightwatch.json",
-    "build-docs":"npm run build-docs-leaflet&&npm run build-docs-openlayers&&npm run build-docs-mapboxgl&&npm run build-docs-classic",
+    "build-docs": "npm run build-docs-leaflet&&npm run build-docs-openlayers&&npm run build-docs-mapboxgl&&npm run build-docs-classic",
     "build-docs-leaflet": "jsdoc -c ./build/jsdocs/leaflet/docs.json -R ./build/jsdocs/leaflet/index.md",
     "build-docs-openlayers": "jsdoc -c ./build/jsdocs/openlayers/docs.json -R ./build/jsdocs/openlayers/index.md",
     "build-docs-mapboxgl": "jsdoc -c ./build/jsdocs/mapboxgl/docs.json -R ./build/jsdocs/mapboxgl/index.md",
@@ -62,6 +62,7 @@
     "css-loader": "^0.26.1",
     "echarts": "3.6.2",
     "elasticsearch": "13.0.1",
+    "es3ify-loader": "^0.2.0",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.10.0",
     "get-pixels": "^3.3.0",
@@ -98,7 +99,7 @@
     "jaguarjs-jsdoc": "^1.1.0",
     "jsdoc": "^3.5.4",
     "pbf": "3.0.2",
-    "proj4": "2.4.3",
+    "proj4": "2.3.15",
     "whatwg-fetch-importable": "^1.0.3"
   }
 }

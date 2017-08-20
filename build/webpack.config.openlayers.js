@@ -36,11 +36,11 @@ module.exports = {
             use: [{
                 loader: 'url-loader',
                 options: {
-                    limit: 100000
+                    limit: 30000
                 }
             }]
         }, {
-            test: /\.js/,
+            test: /\.js$/,
             exclude: /classic/,
             loader: 'babel-loader',
             query: {
@@ -57,10 +57,6 @@ module.exports = {
                 }
             }),
         }],
-        loaders: [{
-            test: /\.css$/,
-            loader: ExtractTextPlugin.extract(['style-loader', 'css-loader'])
-        }]
     },
     plugins: [
         new webpack.BannerPlugin(banner),
