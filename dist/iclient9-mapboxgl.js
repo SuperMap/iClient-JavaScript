@@ -356,6 +356,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var BaseLayer = _mapv.baiduMapLayer ? _mapv.baiduMapLayer.__proto__ : Function;
 /**
+ * @private
  * @class mapboxgl.supermap.MapvRenderer
  * @classdesc MapV图层渲染
  * @param map - {string} 地图

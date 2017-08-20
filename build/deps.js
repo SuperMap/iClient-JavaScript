@@ -717,7 +717,7 @@ deps = {
                     "./src/mapboxgl/overlay/MapvLayer.js"
                 ],
                 "modules": [{
-                    "name": "MapvLayer",
+                    "name": "mapboxgl.supermap.MapvLayer",
                     "des": "百度MapV可视化效果"
                 }]
             }

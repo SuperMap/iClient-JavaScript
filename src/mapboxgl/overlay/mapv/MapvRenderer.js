@@ -1,6 +1,7 @@
 import {baiduMapLayer} from "mapv";
 var BaseLayer = baiduMapLayer ? baiduMapLayer.__proto__ : Function;
 /**
+ * @private
  * @class mapboxgl.supermap.MapvRenderer
  * @classdesc MapV图层渲染
  * @param map - {string} 地图
