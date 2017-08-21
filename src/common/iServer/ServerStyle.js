@@ -84,7 +84,7 @@ export default class ServerStyle {
 
     /**
      * @member SuperMap.ServerStyle.prototype.lineColor -{SuperMap.ServerColor}
-     * @description 矢量要素的边线颜色。默认为黑色。
+     * @description 矢量要素的边线颜色。默认为黑色。如果等级符号是点符号，点符号的颜色由lineColor控制
      */
     lineColor = null;
 
