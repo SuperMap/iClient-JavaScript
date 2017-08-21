@@ -51519,6 +51519,11 @@ var MapvLayer = function (_BaiduMapLayer) {
             }
         }
     }, {
+        key: 'getContext',
+        value: function getContext() {
+            return this.canvasLayer.canvas.getContext(this.context);
+        }
+    }, {
         key: 'clear',
         value: function clear(context) {
             context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);

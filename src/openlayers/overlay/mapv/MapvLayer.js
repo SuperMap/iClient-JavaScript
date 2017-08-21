@@ -197,6 +197,10 @@ export default class MapvLayer extends BaiduMapLayer {
         }
     }
 
+    getContext() {
+        return this.canvasLayer.canvas.getContext(this.context);
+    }
+
     clear(context) {
         context && context.clearRect && context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     }
