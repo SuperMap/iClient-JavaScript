@@ -3,16 +3,14 @@
 <head>
     <meta charset='utf-8'/>
     <title>GTC2017</title>
-    <meta name='viewport' content='width=device-width,initial-scale=0.5,maximum-scale=1,user-scalable=no'/>
-    <link href='http://iclient.supermapol.com/libs/gtc2017/lib/mapbox-gl.css' rel='stylesheet'/>
-    <link href="http://iclient.supermapol.com/libs/gtc2017/lib/css-loader.css" rel="stylesheet">
-    <link href="http://iclient.supermapol.com/libs/gtc2017/style.css" rel="stylesheet">
-    <script type='text/javascript' src='http://iclient.supermapol.com/libs/gtc2017/buildings.js'></script>
-    <script type='text/javascript' src='http://iclient.supermapol.com/libs/gtc2017/traffic.js'></script>
-    <script type="text/javascript" src='http://iclient.supermapol.com/libs/gtc2017/lib/mapbox-gl.js'></script>
-    <script type="text/javascript" src="http://iclient.supermapol.com/libs/gtc2017/lib/mapv.min.js"></script>
-    <script type="text/javascript" src='http://iclient.supermapol.com/libs/gtc2017/dist/iclient9-mapboxgl.min.js'></script>
-    <script type="text/javascript" src='http://iclient.supermapol.com/libs/gtc2017/index.js'></script>
+    <meta name="viewport" content="width=device-width,initial-scale=0.5,maximum-scale=1,user-scalable=no"/>
+    <link href="http://icltest.supermapol.com/web/libs/gtc2017/lib/mapbox-gl.css" rel="stylesheet"/>
+    <link href="http://icltest.supermapol.com/web/libs/gtc2017/lib/css-loader.css" rel="stylesheet">
+    <link href="http://icltest.supermapol.com/web/libs/gtc2017/style.css" rel="stylesheet">
+    <script type="text/javascript" src="'http://icltest.supermapol.com/web/libs/gtc2017/lib/mapbox-gl.js"></script>
+    <script type="text/javascript" src="http://icltest.supermapol.com/web/libs/gtc2017/lib/mapv.min.js"></script>
+    <script type="text/javascript" src="http://icltest.supermapol.com/web/libs/gtc2017/dist/iclient9-mapboxgl.min.js"></script>
+    <script type="text/javascript" src="http://icltest.supermapol.com/web/libs/gtc2017/index.js"></script>
 </head>
 <body>
 <div class="loader loader-curtain"></div>
@@ -22,7 +20,7 @@
     var iServerUrl = "http://117.122.248.69:8090/iserver/services/map-chongqing/rest/maps/chongqing3857/tileFeature.mvt?_cache=false&returnAttributes=true&compressTolerance=-1&width=512&height=512&viewBounds={bbox-epsg-3857}";
 
     var buildingLayer, heightField = "floor", ratio = 15, layerId = "buildings",
-        center = [106.575424, 29.559371];
+        center = [106.540545, 29.531714];
 
     var map = new mapboxgl.Map({
         container: 'map',
