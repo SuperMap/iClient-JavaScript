@@ -2,6 +2,7 @@ import L from "leaflet";
 
 /**
  * @class L.supermap.CanvasRenderer
+ * @private
  * @classdesc 画布渲染器
  * @extends L.Canvas{@linkdoc-leaflet/#canvas}
  * @param tileCoord - {Object} 切片坐标系

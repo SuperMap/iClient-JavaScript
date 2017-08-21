@@ -157,6 +157,7 @@ export var EchartsMapLayer = L.Layer.extend({
 
 /**
  * @class L.supermap.LeafletMapCoordSys
+ * @private
  * @classdesc 地图坐标系统类
  * @param LeafletMap - {L.map} 地图
  * @param api - {Object} 接口

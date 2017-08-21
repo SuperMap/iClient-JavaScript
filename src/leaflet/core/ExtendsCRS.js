@@ -26,7 +26,7 @@ for (var i = 0; i < 20; i++) {
  * @constant L.CRS.TianDiTu_WGS84CRS
  * @description 天地图WGS84坐标对象
  */
-export var TianDiTu_WGS84CRS = L.CRS.TianDiTu_WGS84 = new L.Proj.CRS("EPSG:4326", '', {
+export var TianDiTu_WGS84CRS = L.CRS.TianDiTu_WGS84 = L.Proj.CRS("EPSG:4326",{
     origin: [-180, 90],
     resolutions: tdt_WGS84_resolutions,
     bounds: L.bounds([-180, -90], [180, 90])
@@ -41,7 +41,7 @@ for (var i = 0; i < 20; i++) {
  * @constant L.CRS.TianDiTu_MercatorCRS
  * @description 天地图墨卡托坐标对象
  */
-export var TianDiTu_MercatorCRS = L.CRS.TianDiTu_Mercator = new L.Proj.CRS("EPSG:3857", '', {
+export var TianDiTu_MercatorCRS = L.CRS.TianDiTu_Mercator = L.Proj.CRS("EPSG:3857",{
     origin: [-20037508.3427892, 20037508.3427892],
     resolutions: tdt_Mercator_resolutions,
     bounds: L.bounds([-20037508.3427892, -20037508.3427892], [20037508.3427892, 20037508.3427892])

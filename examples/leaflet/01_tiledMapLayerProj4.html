@@ -8,7 +8,9 @@
 </head>
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
-
+<!--[if lte IE 8]>
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default-3.3&excludes=Event"></script>
+<![endif]-->
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
 <script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
 <script type="text/javascript">
@@ -17,7 +19,7 @@
     var scaleDenominators = [100000, 50000, 25000, 20000, 10000, 5000, 2000, 1000, 500, 200, 100, 50, 20, 1];
     var origin = [114.59, 42.31];
     //leaflet CRS投影设置
-    var crs = new L.Proj.CRS("EPSG:4326", '', {
+    var crs = L.Proj.CRS("EPSG:4326", {
         origin: origin,
         scaleDenominators: scaleDenominators
     });

@@ -165,7 +165,7 @@ export var WebMap = L.LayerGroup.extend({
             epsgCode = 4326
             //todo 火星
         }
-        return new L.Proj.CRS("EPSG:" + epsgCode, '',
+        return L.Proj.CRS("EPSG:" + epsgCode,
             {
                 origin: origin,
                 resolutions: resolutions,

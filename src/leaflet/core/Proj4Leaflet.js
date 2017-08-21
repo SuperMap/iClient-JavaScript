@@ -1,8 +1,9 @@
 /**
  * Inspired by https://github.com/kartena/Proj4Leaflet
-*/
- import L from "leaflet";
+ */
+import L from "leaflet";
 import proj4 from "proj4";
+window.Proj4js = proj4;
 L.Proj = {};
 
 L.Proj._isProj4Obj = function (a) {
@@ -12,6 +13,7 @@ L.Proj._isProj4Obj = function (a) {
 
 /**
  * @class L.Proj.Projection
+ * @private
  * @classdesc Proj投影定义类
  * @extends L.Class{@linkdoc-leaflet/#class}
  * @param code - {number}地理编码
@@ -74,9 +76,9 @@ L.Proj.Projection = L.Class.extend({
  * @class L.Proj.CRS
  * @classdesc Proj坐标系统定义类
  * @extends L.Class{@linkdoc-leaflet/#class}
- * @param a -{string} proj srsCode。
- * @param b -{string} proj def。
- * @param c -{Object} options。可选参数：<br>
+ * @param srsCode -{string} proj srsCode。
+ * @param options -{Object} options。可选参数：<br>
+ *                     def -{string} 投影的proj4定义。
  *                     origin -{Array|L.Point} 原点。必填<br>
  *                     scales -{Array} 比例尺数组 <br>
  *                     scaleDenominators -{Array} 比例尺分母数组 <br>
@@ -84,7 +86,7 @@ L.Proj.Projection = L.Class.extend({
  *                     bounds -{Array|L.Bounds} 范围
  * @example
  * 用法：
- *    var crs =new L.Proj.CRS("EPSG:4326", '', {
+ *    var crs =L.Proj.CRS("EPSG:4326", '', {
  *          origin: [-180,90],
  *          scaleDenominators: [2000,1000,500,200,100,50,20,10],
  *    });
@@ -93,36 +95,41 @@ L.Proj.Projection = L.Class.extend({
  *      ...
  *    })
  */
-L.Proj.CRS = L.Class.extend({
+export var CRS = L.Class.extend({
     includes: L.CRS,
 
     options: {
         transformation: new L.Transformation(1, 0, -1, 0)
     },
 
-    initialize: function (a, b, c) {
-        var code,
-            proj,
-            def,
-            options;
+    initialize: function (srsCode, options) {
+        var code, proj, def;
 
-        if (L.Proj._isProj4Obj(a)) {
-            proj = a;
+        if (L.Proj._isProj4Obj(srsCode)) {
+            proj = srsCode;
             code = proj.srsCode;
-            options = b || {};
+            options = options || {};
 
             this.projection = new L.Proj.Projection(proj, options.bounds);
         } else {
-            code = a;
-            def = b;
-            options = c || {};
+            code = srsCode;
+            options = options || {};
+            def = options.def || '';
             this.projection = new L.Proj.Projection(code, def, options.bounds);
         }
 
         L.Util.setOptions(this, options);
         this.code = code;
         this.transformation = this.options.transformation;
+        if (this.options.bounds) {
 
+        }
+        if (this.options.bounds) {
+            this.options.bounds = L.bounds(this.options.bounds);
+        }
+        if (!this.options.origin && this.options.bounds) {
+            this.options.origin = [this.options.bounds.min.x, this.options.bounds.max.y];
+        }
         if (this.options.origin) {
             if (this.options.origin instanceof L.Point) {
                 this.options.origin = [this.options.origin.x, this.options.origin.y];
@@ -132,15 +139,15 @@ L.Proj.CRS = L.Class.extend({
                     -1, this.options.origin[1]);
         }
 
-        if (this.options.scales&&this.options.scales.length>0) {
+        if (this.options.scales && this.options.scales.length > 0) {
             this._scales = this._toProj4Scales(this.options.scales);
-        } else if (this.options.scaleDenominators&&this.options.scaleDenominators.length>0) {
+        } else if (this.options.scaleDenominators && this.options.scaleDenominators.length > 0) {
             var scales = [];
             for (var i = 0; i < this.options.scaleDenominators.length; i++) {
                 scales[i] = 1 / this.options.scaleDenominators[i];
             }
             this._scales = this._toProj4Scales(scales);
-        } else if (this.options.resolutions&&this.options.resolutions.length>0) {
+        } else if (this.options.resolutions && this.options.resolutions.length > 0) {
             this._scales = [];
             for (var i = this.options.resolutions.length - 1; i >= 0; i--) {
                 if (this.options.resolutions[i]) {
@@ -234,7 +241,7 @@ L.Proj.CRS = L.Class.extend({
         if (!bounds) {
             return [];
         }
-        var boundsSize = L.bounds(bounds).getSize();
+        var boundsSize = bounds.getSize();
         var extendsSize = Math.max(boundsSize.x, boundsSize.y);
         var resolution = extendsSize / 256;
         var scales = [];
@@ -245,3 +252,7 @@ L.Proj.CRS = L.Class.extend({
         return scales;
     }
 });
+export var crs = function (srsCode, options) {
+    return new CRS(srsCode, options)
+};
+L.Proj.CRS = crs;
