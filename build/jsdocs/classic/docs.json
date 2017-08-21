@@ -12,7 +12,7 @@
         "includePattern": ".+\\.js?$",
         "excludePattern": ".+\\\\src\\\\common\\\\iServer\\\\.*Service|Base|Parameters.js?$",
         "include": [
-            "src/common","src/classic"
+            "src/classic"
         ]
     },
     "plugins": ["plugins/markdown"],
