@@ -20,7 +20,7 @@
 <body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
 <div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
 <script type="text/javascript" src="http://cdn.bootcss.com/leaflet/1.0.3/leaflet.js"></script>
-<script type="text/javascript" src="../../dist/iclient9-leaflet.min.js"></script>
+<script type="text/javascript" src="../../dist/iclient9-leaflet.js"></script>
 <script type="text/javascript">
     var map, currentData, layersName = [], info, fieldService,
         mapURL = "http://support.supermap.com.cn:8090/iserver/services/map-world/rest/maps/World",
@@ -103,10 +103,11 @@
             if (dataInfo.layerName == name) {
                 //设置数据集，数据源，查询fields信息
                 currentData = dataInfo;
-                L.supermap.fieldService(dataURL, {
-                    dataSourceName: dataInfo.dataSourceName,
-                    dataSetName: dataInfo.dataSetName
-                }).getFields(function (serviceResult) {
+                var param = new SuperMap.FieldParameters({
+                    datasource: currentData.dataSourceName,
+                    dataset: currentData.dataSetName,
+                });
+                L.supermap.fieldService(dataURL).getFields(param,function (serviceResult) {
                     if (serviceResult.result && serviceResult.result.fieldNames) {
                         fieldStatistic(serviceResult.result.fieldNames[0]);
                     }
@@ -117,23 +118,22 @@
 
     //统计结果
     function fieldStatistic(fieldName) {
-        var param = new SuperMap.FieldStatisticsParameters({
-            fieldName: fieldName,
-            statisticMode: [
-                SuperMap.StatisticMode.MAX,
-                SuperMap.StatisticMode.MIN,
-                SuperMap.StatisticMode.SUM,
-                SuperMap.StatisticMode.AVERAGE,
-                SuperMap.StatisticMode.STDDEVIATION,
-                SuperMap.StatisticMode.VARIANCE
-            ]
-        });
+
         if (currentData) {
-            L.supermap.fieldService(dataURL, {
-                dataSourceName: currentData.dataSourceName,
-                dataSetName: currentData.dataSetName,
-                fieldName: fieldName
-            }).getFieldStatisticsInfo(param, function (serviceResult) {
+            var param = new SuperMap.FieldStatisticsParameters({
+                datasource: currentData.dataSourceName,
+                dataset: currentData.dataSetName,
+                fieldName: fieldName,
+                statisticMode: [
+                    SuperMap.StatisticMode.MAX,
+                    SuperMap.StatisticMode.MIN,
+                    SuperMap.StatisticMode.SUM,
+                    SuperMap.StatisticMode.AVERAGE,
+                    SuperMap.StatisticMode.STDDEVIATION,
+                    SuperMap.StatisticMode.VARIANCE
+                ]
+            });
+            L.supermap.fieldService(dataURL).getFieldStatisticsInfo(param, function (serviceResult) {
                 info.update(serviceResult.result);
             });
         }

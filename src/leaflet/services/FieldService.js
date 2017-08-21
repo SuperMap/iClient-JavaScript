@@ -18,23 +18,17 @@ import FieldStatisticService from '../../common/iServer/FieldStatisticService';
  */
 export var  FieldService = ServiceBase.extend({
 
-    options: {
-        dataSourceName: null,
-        dataSetName: null
-    },
-
-    initialize: function (url, options) {
-        this.options.dataSourceName = options.dataSourceName;
-        this.options.dataSetName = options.dataSetName;
-        ServiceBase.prototype.initialize.call(this, url, options);
+    initialize: function (url) {
+        ServiceBase.prototype.initialize.call(this, url);
     },
 
     /**
      * @function L.supermap.fieldService.prototype.getFields
      * @description 字段查询服务
+     * @param params {SuperMap.FieldParameters} 字段信息查询参数类
      * @param callback - {function} 回调函数
      */
-    getFields: function (callback) {
+    getFields: function (params,callback) {
         var me = this;
         var getFieldsService = new GetFieldsService(me.url, {
             serverType: me.options.serverType,
@@ -43,8 +37,8 @@ export var  FieldService = ServiceBase.extend({
                 processCompleted: callback,
                 processFailed: callback
             },
-            datasource: me.options.dataSourceName,
-            dataset: me.options.dataSetName
+            datasource: params.datasource,
+            dataset: params.dataset
         });
         getFieldsService.processAsync();
         return me;
@@ -68,12 +62,12 @@ export var  FieldService = ServiceBase.extend({
         //针对每种统计方式分别进行请求
         for (var mode in modes) {
             me.currentStatisticResult[modes[mode]] = null;
-            me._fieldStatisticRequest(fieldName, modes[mode]);
+            me._fieldStatisticRequest(params.datasource,params.dataset,fieldName, modes[mode]);
         }
         return me;
     },
 
-    _fieldStatisticRequest: function (fieldName, statisticMode) {
+    _fieldStatisticRequest: function (dataSourceName,dataSetName,fieldName, statisticMode) {
         var me = this;
         var statisticService = new FieldStatisticService(me.url, {
             eventListeners: {
@@ -81,8 +75,8 @@ export var  FieldService = ServiceBase.extend({
                 processCompleted: me._processCompleted,
                 processFailed: me._statisticsCallback
             },
-            datasource: me.options.dataSourceName,
-            dataset: me.options.dataSetName,
+            datasource: dataSourceName,
+            dataset: dataSetName,
             field: fieldName,
             statisticMode: statisticMode
         });

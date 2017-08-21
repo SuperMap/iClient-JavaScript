@@ -87,10 +87,11 @@
     mapService();
 
     function mapService() {
-        new ol.supermap.FieldService(url, {
-            dataSourceName: "World",
-            dataSetName: "continent_T"
-        }).getFields(function (serviceResult) {
+        var param = new SuperMap.FieldParameters({
+            datasource: "World",
+            dataset: "continent_T"
+        });
+        new ol.supermap.FieldService(url).getFields(param,function (serviceResult) {
             content.innerHTML = serviceResult.result.fieldNames.join(', ');
             overlay.setPosition([0, 0]);
         });

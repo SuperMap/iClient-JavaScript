@@ -1,12 +1,17 @@
 import SuperMap from '../SuperMap';
+import FieldParameters from './FieldParameters';
+
 /**
  * @class SuperMap.FieldStatisticsParameters
  * @classdesc 字段统计信息查询参数类。
  * @param options - {Object} 参数。如：<br>
+ *         datasource - {string} 数据源名称。<br>
+ *        dataset -{string} 数据集名称。
  *        fieldName - {string} 字段名。<br>
  *        statisticMode -{String<SuperMap.StatisticMode>}|{Array<String<SuperMap.StatisticMode>>} 字段统计方法类型。
+ * @extends SuperMap.FieldParameters
  */
-export default  class FieldStatisticsParameters {
+export default  class FieldStatisticsParameters extends FieldParameters{
     /**
      * @member SuperMap.FieldStatisticsParameters.prototype.fieldName -{string}
      * @description 字段名
@@ -20,6 +25,7 @@ export default  class FieldStatisticsParameters {
     statisticMode = null;
 
     constructor(options) {
+        super(options);
         if (options) {
             SuperMap.Util.extend(this, options);
         }

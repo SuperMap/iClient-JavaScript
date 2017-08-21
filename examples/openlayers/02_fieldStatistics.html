@@ -94,9 +94,11 @@
             if (dataInfo.layerName == name) {
                 //设置数据集，数据源，查询fields信息
                 currentData = dataInfo;
-                new ol.supermap.FieldService(dataURL, {
-                    dataSourceName: dataInfo.dataSourceName, dataSetName: dataInfo.dataSetName
-                }).getFields(function (serviceResult) {
+                var param = new SuperMap.FieldParameters({
+                    datasource: dataInfo.dataSourceName,
+                    dataset: dataInfo.dataSetName
+                });
+                new ol.supermap.FieldService(dataURL).getFields(param,function (serviceResult) {
                     fieldStatistic();
                 });
             }
@@ -106,6 +108,8 @@
     function fieldStatistic() {
         var fieldName = 'SmID';
         var param = new SuperMap.FieldStatisticsParameters({
+            datasource: currentData.dataSourceName,
+            dataset: currentData.dataSetName,
             fieldName: fieldName,
             statisticMode: [
                 SuperMap.StatisticMode.MAX,
@@ -117,11 +121,7 @@
             ]
         });
         if (currentData) {
-            new ol.supermap.FieldService(dataURL, {
-                dataSourceName: currentData.dataSourceName,
-                dataSetName: currentData.dataSetName,
-                fieldName: fieldName
-            }).getFieldStatisticsInfo(param, function (serviceResult) {
+            new ol.supermap.FieldService(dataURL).getFieldStatisticsInfo(param, function (serviceResult) {
                 showResult(serviceResult.result);
             });
         }

@@ -1,9 +1,9 @@
 require('../../../src/leaflet/services/FieldService');
 
 var dataServiceURL = GlobeParameter.dataServiceURL;
-var options = {
-    dataSourceName: "World",
-    dataSetName: "continent_T"
+var params = {
+    datasource: "World",
+    dataset: "continent_T"
 };
 
 describe('leaflet_testFieldService', function () {
@@ -20,7 +20,7 @@ describe('leaflet_testFieldService', function () {
 
     //字段查询服务 成功事件
     it('successEvent:getFields', function (done) {
-        var getFieldsService = L.supermap.fieldService(dataServiceURL, options).getFields(function (result) {
+        var getFieldsService = L.supermap.fieldService(dataServiceURL).getFields(params,function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -49,10 +49,7 @@ describe('leaflet_testFieldService', function () {
 
     //字段查询服务 失败事件
     it('failEvent:getFields_dataSourceNotExist', function (done) {
-        var getFieldsService = L.supermap.fieldService(dataServiceURL, {
-            dataSourceName: "World1",
-            dataSetName: "continent_T"
-        }).getFields(function (result) {
+        var getFieldsService = L.supermap.fieldService(dataServiceURL).getFields(params,function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -81,10 +78,12 @@ describe('leaflet_testFieldService', function () {
     //字段统计服务 成功事件
     it('successEvent:getFieldStatisticsInfo', function (done) {
         var getFieldStatisticsInfoParams = new SuperMap.FieldStatisticsParameters({
+            datasource: "World",
+            dataset: "continent_T",
             fieldName: "SmID",
             statisticMode: ["AVERAGE", "MAX", "MIN", "STDDEVIATION", "SUM", "VARIANCE"]
         });
-        var getFieldStatisticsInfoService = L.supermap.fieldService(dataServiceURL, options).getFieldStatisticsInfo(getFieldStatisticsInfoParams, function (result) {
+        var getFieldStatisticsInfoService = L.supermap.fieldService(dataServiceURL).getFieldStatisticsInfo(getFieldStatisticsInfoParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
@@ -121,13 +120,12 @@ describe('leaflet_testFieldService', function () {
     //字段查询服务 失败事件
     it('failEvent:getFieldStatisticsInfo_dataSourceNotExist', function (done) {
         var getFieldStatisticsInfoParams = new SuperMap.FieldStatisticsParameters({
+            datasource: "World1",
+            dataset: "continent_T",
             fieldName: "SmID",
             statisticMode: ["AVERAGE", "MAX", "MIN", "STDDEVIATION", "SUM", "VARIANCE"]
         });
-        var getFieldStatisticsInfoService = L.supermap.fieldService(dataServiceURL, {
-            dataSourceName: "World1",
-            dataSetName: "continent_T"
-        }).getFieldStatisticsInfo(getFieldStatisticsInfoParams, function (result) {
+        var getFieldStatisticsInfoService = L.supermap.fieldService(dataServiceURL).getFieldStatisticsInfo(getFieldStatisticsInfoParams, function (result) {
             serviceResult = result
         });
         setTimeout(function () {
