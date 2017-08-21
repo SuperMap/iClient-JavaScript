@@ -551,10 +551,6 @@ var exampleConfig = {
                         thumbnail: "l_tileVectorLayer_natural.png",
                         fileName: "vectorTileLayerNatural"
                     }, {
-                        name: "MapBox 矢量瓦片",
-                        thumbnail: "l_mapboxVectorTile.png",
-                        fileName: "mapboxVectorTile"
-                    }, {
                         name: "默认风格(MVT)",
                         thumbnail: "l_tileVectorLayer_normal.png",
                         fileName: "vectorTileLayerMVT"
@@ -599,10 +595,6 @@ var exampleConfig = {
                     thumbnail: "l_snapAndModify.png",
                     fileName: "snapAndModify"
                 }]
-            },
-            "drawPlot": {
-                name: "动态标绘",
-                content: null
             }
         }
     },

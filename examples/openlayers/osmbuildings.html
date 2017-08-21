@@ -7,6 +7,7 @@
     <script type="text/javascript" src="http://cdn.bootcss.com/openlayers/4.2.0/ol.js"></script>
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://iclient.supermapol.com/libs/osmbuildings/OSMBuildings-OL3.js"></script>
+    <script type="text/javascript" src="../../dist/iclient9-openlayers.min.js"></script>
     <style>
         .ol-popup {
             position: relative;
@@ -84,15 +85,15 @@
         }),
         overlays: [overlay]
     });
-    map.addLayer(new ol.layer.Tile({
-        source: new ol.source.XYZ({
-            url: "https://a.tiles.mapbox.com/v3/osmbuildings.kbpalbpk/{z}/{x}/{y}.png",
-            attributions: [
-                new ol.Attribution({
-                    html: ' Imagery © <a href="http://mapbox.com" target="_blank">Mapbox</a>'
-                })]
-        })
-    }));
+    var url = "http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China";
+    var layer = new ol.layer.Tile({
+        source: new ol.source.TileSuperMapRest({
+            url: url,
+            wrapX: true
+        }),
+        projection: 'EPSG:3857'
+    });
+    map.addLayer(layer);
 
     loadData();
 

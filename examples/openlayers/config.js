@@ -495,11 +495,6 @@ var exampleConfig = {
                         fileName: "cartoCSS_naturalStyle"
                     },
                     {
-                        name: "MapBox矢量瓦片",
-                        thumbnail: "mapboxVectorLayer.png",
-                        fileName: "mapboxVectorLayer"
-                    },
-                    {
                         name: "默认风格(MVT)",
                         thumbnail: "mvtVectorLayer.png",
                         fileName: "mvtVectorLayer"
@@ -555,10 +550,6 @@ var exampleConfig = {
                     thumbnail: "dragFeatures.png",
                     fileName: "dragFeatures"
                 }]
-            },
-            "drawPlot": {
-                name: "动态标绘",
-                content: null
             }
         }
     },
