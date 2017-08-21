@@ -35,7 +35,7 @@ module.exports = function (config) {
         // false 表示初始化的时候不会使用 script 标签直接将相关 js 引入到浏览器，需要自己写代码加载, 注意添加顺序
         files: [
         /***classic的源码***/
-            {pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-15125.js', include: false},
+            {pattern: '../src/classic/libs/SuperMap_Basic-8.1.1-15221.js', include: false},
             {pattern: '../src/classic/libs/Lang/*.js', include: false},
             {pattern: '../src/classic/theme/default/*.css', include: false},
         /***common的源码***/
@@ -68,7 +68,7 @@ module.exports = function (config) {
         preprocessors: {
             '../node_modules/whatwg-fetch-importable/whatwgFetch.js': ['browserify'],
             '../node_modules/fetch-jsonp/build/fetch-jsonp.js': ['browserify'],
-            '../src/classic/libs/SuperMap_Basic-8.1.1-15125.js': ['browserify'],
+            '../src/classic/libs/SuperMap_Basic-8.1.1-15221.js': ['browserify'],
             '../src/classic/libs/Lang/*.js': ['browserify'],
             '../src/common/**/*.js': ['browserify'],
             './common/**/*Spec.js': ['browserify'],
