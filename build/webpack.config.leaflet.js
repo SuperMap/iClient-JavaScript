@@ -46,7 +46,7 @@ module.exports = {
             query: {
                 presets: ['es2015'],
                 plugins: [
-                    'transform-class-properties',"transform-eval",
+                    'transform-class-properties',
                 ]
             }
         },{
