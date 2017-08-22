@@ -51064,7 +51064,7 @@ var MapvCanvasLayer = function () {
 
         /*
          * @function ol.supermap.MapvCanvasLayer.prototype.resize
-         * @param mapWidth - {number} ��ͼ����
+         * @param mapWidth - {number} ��ͼ���
          * @param mapHeight - {number} ��ͼ�߶�
          * @description ������ͼ��С
          */
@@ -51092,7 +51092,7 @@ var MapvCanvasLayer = function () {
         /*
          * @function ol.supermap.MapvCanvasLayer.prototype.setZIndex
          * @param zIndex - {number} �㼶����
-         * @description ����ͼ���㼶
+         * @description ����ͼ��㼶
          */
 
     }, {
@@ -51102,7 +51102,7 @@ var MapvCanvasLayer = function () {
         }
         /*
          * @function ol.supermap.MapvCanvasLayer.prototype.getZIndex
-         * @description ��ȡͼ���㼶
+         * @description ��ȡͼ��㼶
          */
 
     }, {

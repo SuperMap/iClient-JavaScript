@@ -18,8 +18,41 @@ var exampleConfig = {
                         fileName: "01_tiledMapLayer"
                     }
                 ]
-            }
+            },
+            "data": {
+                name: "数据",
+                content: [{
+                    name: "ID查询",
+                    thumbnail: "mb_getFeatureByIDs.png",
+                    fileName: "02_getFeatureByIDs"
+                }
+                ]
 
+            },
+            "spatialAnalyst": {
+                name: "空间分析",
+                content: [{
+                    name: "缓冲区分析",
+                    thumbnail: "mb_bufferAnalystService.png",
+                    fileName: "04_bufferAnalystService"
+                }]
+            },
+            "addressMatch": {
+                name: "地址匹配",
+                content: [{
+                    name: "地址匹配",
+                    thumbnail: "mb_addressService.png",
+                    fileName: "addressMatchService"
+                }]
+            },
+/*            "processingService": {
+                name: "分布式空间分析",
+                content: [{
+                    name: "密度分析",
+                    thumbnail: "kernelDensityJobService.png",
+                    fileName: "kernelDensityJobService"
+                }]
+            }*/
         }
     },
     "viz": {

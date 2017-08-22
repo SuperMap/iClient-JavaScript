@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>空间分析服务-缓冲区分析</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script type="text/javascript" src="../../dist/mbgl-include.js"></script>
+</head>
+<body style=" margin: 0;overflow: hidden;background: #fff;width: 100%;height:100%;position: absolute;top: 0;">
+<div id="map" style="margin:0 auto;width: 100%;height: 100%"></div>
+<script type="text/javascript">
+    var map, dsBufferAnalystService, dsBufferAnalystParameters,
+        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+            " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
+        baseUrl = "http://support.supermap.com.cn:8090/iserver/services/map-jingjin/rest/maps/京津地区地图/zxyTileImage.png?z={z}&x={x}&y={y}",
+        serviceUrl = "http://support.supermap.com.cn:8090/iserver/services/spatialanalyst-sample/restjsr/spatialanalyst";
+        map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [baseUrl],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 2,
+                "maxzoom": 18
+            }]
+        },
+        center: [116.28094998209556, 39.897168019388474],
+        zoom: 12
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+    map.on("load", function () {
+        bufferAnalystProcess();
+    });
+
+    function bufferAnalystProcess() {
+        map.addLayer({
+            "id": "route",
+            "type": "line",
+            "source": {
+                "type": "geojson",
+                "data": {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "LineString",
+                        "coordinates": [
+                            [116.2143386597,39.8959419733],
+                            [116.2156351162,39.8963250173],
+                            [116.2182280292,39.8968111885],
+                            [116.2740019864,39.8970124079],
+                            [116.3103285499,39.8970574832],
+                            [116.3321510064,39.8970392162],
+                            [116.3377051439,39.8973437531],
+                            [116.3463089006,39.8978391816],
+                        ]
+                    }
+                }
+            },
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round"
+            },
+            "paint": {
+                "line-color": "#888",
+                "line-width": 8
+            }
+        });
+        //缓冲区分析参数
+        dsBufferAnalystParameters = new SuperMap.DatasetBufferAnalystParameters({
+            dataset: "Road_L@Jingjin",
+            filterQueryParameter: new SuperMap.FilterParameter({
+                attributeFilter: "NAME='莲花池东路'"
+            }),
+            bufferSetting: new SuperMap.BufferSetting({
+                endType: SuperMap.BufferEndType.ROUND,
+                leftDistance: {value: 200},
+                rightDistance: {value: 200},
+                semicircleLineSegment: 10
+            })
+        });
+        //缓冲区分析服务
+        dsBufferAnalystService = new SuperMap.BufferAnalystService(serviceUrl, {
+            serverType: SuperMap.ServerType.ISERVER,
+            eventListeners: {
+                processCompleted: callback,
+            },
+            format:SuperMap.DataFormat.GEOJSON
+        });
+        dsBufferAnalystService.processAsync(dsBufferAnalystParameters);
+    }
+    //服务请求完成后的回调函数
+    function callback(serviceResult) {
+        map.addLayer({
+            "id": "queryDatas",
+            "type": "fill",           /* fill类型一般用来表示一个面，一般较大 */
+            "source": {
+                "type": "geojson",
+                "data": serviceResult.result.recordset.features
+            },
+            "paint": {
+                "fill-color": "red", /* 填充的颜色 */
+                "fill-opacity": 0.4  /* 透明度 */
+            },
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>地址匹配服务</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../dist/mbgl-include.js"></script>
+    <style>
+        body{
+            margin: 0;
+            overflow: hidden;
+            background: #fff;
+            width: 100%;
+            height:100%;
+            position: absolute;
+            top: 0;
+        }
+        #map{
+            margin:0 auto;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+        .panel-default{
+            width:20%;
+            float: right;
+            margin: 15px 15px 0 0;
+            position: relative;
+        }
+        .input-group{
+            margin-bottom: 15px;
+        }
+        .marker {
+            display: block;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            padding: 0;
+            background-image: url("https://cdn.bootcss.com/leaflet/1.0.3/images/marker-icon.png");
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div class='panel panel-default'>
+    <div class='panel-body'>
+        <ul class='nav nav-tabs nav-justified' style="margin-bottom: 15px">
+            <li id='geocode' role='presentation' class='active'>
+                <a href='#'>正向匹配</a>
+            </li>
+            <li id='geodecode' role='presentation'>
+                <a href='#'>反向匹配</a>
+            </li>
+        </ul>
+        <div class='tab-content'>
+            <div id='geocodeParam' role='tabpanel' class='tab-pane deplistContent active'>
+                <div class='input-group'>
+                    <span class='input-group-addon'>地址　　　</span>
+                    <input id='address' type='text' class='form-control' placeholder='公司' /></div>
+                <div class='input-group'>
+                    <span class='input-group-addon'>过滤字段　</span>
+                    <input id='filters' type='text' class='form-control' placeholder='北京' /></div>
+                <div class='input-group'>
+                    <span class='input-group-addon'>最小索引　</span>
+                    <input id='fromIndex' type='text' class='form-control' placeholder='0' /></div>
+                <div class='input-group'>
+                    <span class='input-group-addon'>最大索引　</span>
+                    <input id='toIndex' type='text' class='form-control' placeholder='10' /></div>
+                <div class='input-group'>
+                    <span class='input-group-addon'>最大结果数</span>
+                    <input id='maxReturn' type='text' class='form-control' placeholder='-1' /></div>
+                <div class='input-group'>
+                    <span class='input-group-addon'>坐标系　　</span>
+                    <input id='prjCoordSys' type='text' class='form-control' placeholder='{epsgcode:4326}' /></div>
+                <div align='right'>
+                    <input type='button' id='codeBtn' class='btn btn-primary' value='匹配' />
+                </div>
+            </div>
+            <div id='geodecodeParam' role='tabpanel' class='tab-pane deplistContent'>
+                <div class='input-group'>
+                    <span class='input-group-addon'>横坐标　　</span>
+                    <input id='xCoord' type='text' class='form-control' placeholder='116.3518541194752' /></div>
+                <div class='input-group'>
+                    <span class='input-group-addon'>纵坐标　　</span>
+                    <input id='yCoord' type='text' class='form-control' placeholder='40.00097839595237' /></div>
+                <div class='input-group'>
+                    <span class='input-group-addon'>过滤字段　</span>
+                    <input id='filters2' type='text' class='form-control' placeholder='' /></div>
+                <div class='input-group'>
+                    <span class='input-group-addon'>最小索引　</span>
+                    <input id='fromIndex2' type='text' class='form-control' placeholder='0' /></div>
+                <div class='input-group'>
+                    <span class='input-group-addon'>最大索引　</span>
+                    <input id='toIndex2' type='text' class='form-control' placeholder='10' /></div>
+                <div class='input-group'>
+                    <span class='input-group-addon'>最大结果数</span>
+                    <input id='maxReturn2' type='text' class='form-control' placeholder='-1' /></div>
+                <div class='input-group'>
+                    <span class='input-group-addon'>查询半径　</span>
+                    <input id='geoDecodingRadius' type='text' class='form-control' placeholder='-1' /></div>
+                <div class='input-group'>
+                    <span class='input-group-addon'>坐标系　　</span>
+                    <input id='prjCoordSys2' type='text' class='form-control' placeholder='{epsgcode:4326}' /></div>
+                <div align='right'>
+                    <input type='button' id='decodeBtn' class='btn btn-primary' value='匹配' />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //绑定两个按钮触发事件
+    $("#geocode").click(function () {
+        $("#geocode")[0].className = 'active';
+        $("#geodecode")[0].className = '';
+        $("#geocodeParam").addClass('active');
+        $("#geodecodeParam").removeClass('active');
+    });
+    $("#geodecode").click(function () {
+        $("#geocode")[0].className = '';
+        $("#geodecode")[0].className = 'active';
+        $("#geodecodeParam").addClass('active');
+        $("#geocodeParam").removeClass('active');
+    });
+
+    var map, codeMarkers = [], decodeMarkers = [],
+        attribution = "<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox </a>" +
+            "| Map Data <span>© <a href='http://support.supermap.com.cn/product/iServer.aspx' target='_blank'>SuperMap iServer</a></span> " +
+            " with <span>© <a href='http://iclient.supermapol.com' target='_blank'>SuperMap iClient</a></span>",
+        url = 'http://support.supermap.com.cn:8090/iserver/services/map-china400/rest/maps/China/zxyTileImage.png?z={z}&x={x}&y={y}',
+        addressUrl = "http://117.122.248.69:8090/iserver/services/addressmatch-Address/restjsr/v1/address",
+
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: {
+            "version": 8,
+            "sources": {
+                "raster-tiles": {
+                    "attribution": attribution,
+                    "type": "raster",
+                    "tiles": [url],
+                    "tileSize": 256
+                }
+            },
+            "layers": [{
+                "id": "simple-tiles",
+                "type": "raster",
+                "source": "raster-tiles",
+                "minzoom": 2,
+                "maxzoom": 18
+            }]
+        },
+        center: [116.383572,39.914714],
+        zoom: 11
+    });
+    map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+    map.addControl(new mapboxgl.supermap.LogoControl(), 'bottom-right');
+
+    //判断输入字符串是否为空或者全部都是空格
+    function isNull(str) {
+        if (str == "") return true;
+        var regu = "^[ ]+$";
+        var re = new RegExp(regu);
+        return re.test(str);
+    }
+    var addressMatchService = new SuperMap.AddressMatchService(addressUrl,{
+        serverType: SuperMap.ServerType.ISERVER,
+        eventListeners: {
+            processCompleted: match,
+            processFailed: match
+        },
+    });
+
+    var filters = $('#filters').val() || $('#filters').attr('placeholder');
+    $("#codeBtn").click(function () {
+        var geoCodeParam = new SuperMap.GeoCodingParameter({
+            address: $('#address').val() || $('#address').attr('placeholder'),
+            fromIndex: $('#fromIndex').val() || $('#fromIndex').attr('placeholder'),
+            toIndex: $('#toIndex').val() || $('#toIndex').attr('placeholder'),
+            filters: isNull(filters) ? '' : filters,
+            prjCoordSys: $('#prjCoordSys').val() || $('#prjCoordSys').attr('placeholder'),
+            maxReturn: $('#maxReturn').val() || $('#maxReturn').attr('placeholder')
+        });
+        addressMatchService.code(addressUrl + '/geocoding', geoCodeParam);
+    });
+    $("#decodeBtn").click(function () {
+        var geoDecodeParam = new SuperMap.GeoDecodingParameter({
+            x: $('#xCoord').val() || $('#xCoord').attr('placeholder'),
+            y: $('#yCoord').val() || $('#yCoord').attr('placeholder'),
+            fromIndex: $('#fromIndex2').val() || $('#fromIndex2').attr('placeholder'),
+            toIndex: $('#toIndex2').val() || $('#toIndex2').attr('placeholder'),
+            filters: $('#filters2').val() || $('#filters2').attr('placeholder'),
+            prjCoordSys: $('#prjCoordSys2').val() || $('#prjCoordSys2').attr('placeholder'),
+            maxReturn: $('#maxReturn2').val() || $('#maxReturn2').attr('placeholder'),
+            geoDecodingRadius: $('#geoDecodingRadius').val() || $('#geoDecodingRadius').attr('placeholder'),
+        });
+        addressMatchService.decode(addressUrl + '/geodecoding', geoDecodeParam);
+    });
+
+    function match(obj) {
+        clearMarkers();
+        obj.result.map(function (item) {
+            var el = document.createElement('div');
+            el.className = 'marker';
+            el.style.width = '25px';
+            el.style.height = '41px';
+
+            el.addEventListener('click', function() {
+                window.alert(marker.properties.message);
+            });
+
+            var marker = new mapboxgl.Marker(el).setLngLat([item.location.x, item.location.y]);
+            decodeMarkers.push(marker);
+
+            var innerHTML = "";
+            innerHTML += "地址:" + item.address + "<br>";
+            var x = Number(item.location.x.toString().match(/^\d+(?:\.\d{0,2})?/));
+            var y = Number(item.location.y.toString().match(/^\d+(?:\.\d{0,2})?/));
+            innerHTML += "坐标:[" + x + "," + y + "]<br>";
+            if (item.score > 0) {
+                innerHTML += "匹配度:" + item.score + "<br>";
+            }
+            innerHTML += "过滤字段:" + item.filters + "<br>";
+
+            var markerPopup = new mapboxgl.Popup().setLngLat([item.location.x, item.location.y]).setHTML(innerHTML);
+            marker.setPopup(markerPopup);
+        });
+        for (var i = 0; i < decodeMarkers.length; i++) {
+            decodeMarkers[i].addTo(map);
+        }
+        map.setCenter([116.383572,39.914714])
+        map.setZoom(10);
+        // map.setView(L.latLng( 116.383572,39.914714), 10);
+    }
+
+    function clearMarkers() {
+        if (codeMarkers) {
+            for (var i = 0; i < codeMarkers.length; i++) {
+                codeMarkers[i].remove();
+            }
+        }
+        if (decodeMarkers) {
+            for (var i = 0; i < decodeMarkers.length; i++) {
+                decodeMarkers[i].remove();
+            }
+        }
+        codeMarkers = [];
+        decodeMarkers = [];
+    }
+</script>
+</body>
+</html>
