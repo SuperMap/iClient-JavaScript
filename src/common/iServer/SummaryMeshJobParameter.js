@@ -84,6 +84,7 @@ export default class SummaryMeshJobParameter {
         this.regionDataset = null;
         this.type = null;
     }
+
     /**
      * @function SuperMap.SummaryMeshJobParameter.toObject
      * @param summaryMeshJobParameter - {Object} 点聚合分析任务参数。
@@ -103,7 +104,11 @@ export default class SummaryMeshJobParameter {
             }
             if (summaryMeshJobParameter.type === 'SUMMARYMESH' && name !== 'regionDataset' || summaryMeshJobParameter.type === 'SUMMARYREGION' && !contains(['meshType', 'resolution', 'query'], name)) {
                 tempObj['analyst'] = tempObj['analyst'] || {};
-                tempObj['analyst'][name] = summaryMeshJobParameter[name];
+                if (name === 'query') {
+                    tempObj['analyst'][name] = summaryMeshJobParameter[name].toBBOX();
+                } else {
+                    tempObj['analyst'][name] = summaryMeshJobParameter[name];
+                }
             }
         }
 

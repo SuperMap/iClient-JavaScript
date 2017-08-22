@@ -71,7 +71,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 33);
+/******/ 	return __webpack_require__(__webpack_require__.s = 31);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -85,7 +85,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-__webpack_require__(31);
+__webpack_require__(29);
 
 exports.default = window.SuperMap;
 
@@ -1133,7 +1133,7 @@ var ClipAnalystMode = exports.ClipAnalystMode = _SuperMap2.default.ClipAnalystMo
     INTERSECT: "intersect"
 };
 /**
- * 大数据分析面积单位
+ * 分布式空间分析面积单位
  * @type {{SQUAREMETER: string, SQUAREKILOMETER: string, HECTARE: string, ARE: string, ACRE: string, SQUAREFOOT: string, SQUAREYARD: string, SQUAREMILE: string}}
  */
 var AnalystAreaUnit = exports.AnalystAreaUnit = _SuperMap2.default.AnalystAreaUnit = {
@@ -1147,7 +1147,7 @@ var AnalystAreaUnit = exports.AnalystAreaUnit = _SuperMap2.default.AnalystAreaUn
     "SQUAREMILE": "SquareMile"
 };
 /**
- * 大数据分析单位
+ * 分布式空间分析单位
  * @type {{METER: string, KILOMETER: string, YARD: string, FOOT: string, MILE: string}}
  */
 var AnalystSizeUnit = exports.AnalystSizeUnit = _SuperMap2.default.AnalystSizeUnit = {
@@ -1158,7 +1158,7 @@ var AnalystSizeUnit = exports.AnalystSizeUnit = _SuperMap2.default.AnalystSizeUn
     "MILE": "Mile"
 };
 /**
- * 大数据分析统计模式
+ * 分布式空间分析统计模式
  * @type {{MAX: string, MIN: string, AVERAGE: string, SUM: string, VARIANCE: string, STDDEVIATION: string}}
  */
 var StatisticAnalystMode = exports.StatisticAnalystMode = _SuperMap2.default.StatisticAnalystMode = {
@@ -1170,7 +1170,7 @@ var StatisticAnalystMode = exports.StatisticAnalystMode = _SuperMap2.default.Sta
     "STDDEVIATION": "stdDeviation"
 };
 /**
- * 大数据分析聚合类型
+ * 分布式空间分析聚合类型
  * @type {{SUMMARYMESH: string, SUMMARYREGION: string}}
  */
 var SummaryType = exports.SummaryType = _SuperMap2.default.SummaryType = {
@@ -1395,7 +1395,7 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-__webpack_require__(28);
+__webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2415,27 +2415,23 @@ var _CommonServiceBase2 = __webpack_require__(4);
 
 var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
-var _KernelDensityJobsService = __webpack_require__(18);
+var _KernelDensityJobsService = __webpack_require__(16);
 
 var _KernelDensityJobsService2 = _interopRequireDefault(_KernelDensityJobsService);
 
-var _SingleObjectQueryJobsService = __webpack_require__(20);
+var _SingleObjectQueryJobsService = __webpack_require__(18);
 
 var _SingleObjectQueryJobsService2 = _interopRequireDefault(_SingleObjectQueryJobsService);
 
-var _BuildCacheJobsService = __webpack_require__(14);
-
-var _BuildCacheJobsService2 = _interopRequireDefault(_BuildCacheJobsService);
-
-var _SummaryMeshJobsService = __webpack_require__(22);
+var _SummaryMeshJobsService = __webpack_require__(20);
 
 var _SummaryMeshJobsService2 = _interopRequireDefault(_SummaryMeshJobsService);
 
-var _SummaryRegionJobsService = __webpack_require__(24);
+var _SummaryRegionJobsService = __webpack_require__(22);
 
 var _SummaryRegionJobsService2 = _interopRequireDefault(_SummaryRegionJobsService);
 
-var _VectorClipJobsService = __webpack_require__(26);
+var _VectorClipJobsService = __webpack_require__(24);
 
 var _VectorClipJobsService2 = _interopRequireDefault(_VectorClipJobsService);
 
@@ -2469,7 +2465,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         var _this = _possibleConstructorReturn(this, (ProcessingService.__proto__ || Object.getPrototypeOf(ProcessingService)).call(this, url, options));
 
         _this.kernelDensityJobs = {};
-        _this.buildCacheJobs = {};
         _this.summaryMeshJobs = {};
         _this.queryJobs = {};
         _this.summaryRegionJobs = {};
@@ -2545,7 +2540,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         key: 'addKernelDensityJob',
         value: function addKernelDensityJob(params, callback, seconds, resultFormat) {
             var me = this,
-                param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var kernelDensityJobsService = new _KernelDensityJobsService2.default(me.url, {
                 eventListeners: {
@@ -2558,7 +2552,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 },
                 format: format
             });
-            kernelDensityJobsService.addKernelDensityJob(param, seconds);
+            kernelDensityJobsService.addKernelDensityJob(params, seconds);
             return me;
         }
 
@@ -2641,7 +2635,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         key: 'addSummaryMeshJob',
         value: function addSummaryMeshJob(params, callback, seconds, resultFormat) {
             var me = this,
-                param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var summaryMeshJobsService = new _SummaryMeshJobsService2.default(me.url, {
                 eventListeners: {
@@ -2654,7 +2647,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 },
                 format: format
             });
-            summaryMeshJobsService.addSummaryMeshJob(param, seconds);
+            summaryMeshJobsService.addSummaryMeshJob(params, seconds);
             return me;
         }
 
@@ -2668,102 +2661,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         key: 'getSummaryMeshJobState',
         value: function getSummaryMeshJobState(id) {
             return this.summaryMeshJobs[id];
-        }
-
-        /**
-         * @function SuperMap.REST.ProcessingService.prototype.getBuildCacheJobs
-         * @description 获取生成地图缓存的列表。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {SuperMap.REST.ProcessingService}
-         */
-
-    }, {
-        key: 'getBuildCacheJobs',
-        value: function getBuildCacheJobs(callback, resultFormat) {
-            var me = this,
-                format = me._processFormat(resultFormat);
-            var buildCacheJobsService = new _BuildCacheJobsService2.default(me.url, {
-                serverType: me.serverType,
-                eventListeners: {
-                    scope: me,
-                    processCompleted: callback,
-                    processFailed: callback
-                },
-                format: format
-            });
-            buildCacheJobsService.getBuildCacheJobs();
-            return me;
-        }
-
-        /**
-         * @function SuperMap.REST.ProcessingService.prototype.getBuildCacheJob
-         * @description 获取某一个生成地图缓存。
-         * @param id - {string} 空间分析的id。
-         * @param callback - {function} 请求结果的回调函数。
-         * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
-         * @return {SuperMap.REST.ProcessingService}
-         */
-
-    }, {
-        key: 'getBuildCacheJob',
-        value: function getBuildCacheJob(id, callback, resultFormat) {
-            var me = this,
-                format = me._processFormat(resultFormat);
-            var buildCacheJobsService = new _BuildCacheJobsService2.default(me.url, {
-                serverType: me.serverType,
-                eventListeners: {
-                    scope: me,
-                    processCompleted: callback,
-                    processFailed: callback
-                },
-                format: format
-            });
-            buildCacheJobsService.getBuildCacheJob(id);
-            return me;
-        }
-
-        /**
-         * @function SuperMap.REST.ProcessingService.prototype.addBuildCacheJob
-         * @description 新建一个生成地图缓存。
-         * @param params - {SuperMap.BuildCacheJobParameter} 地图缓存参数类
-         * @param callback - {function} 请求结果的回调函数
-         * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔
-         * @param resultFormat -{SuperMap.DataFormat}返回的结果类型（默认为GeoJSON）。
-         * @return {SuperMap.REST.ProcessingService}
-         */
-
-    }, {
-        key: 'addBuildCacheJob',
-        value: function addBuildCacheJob(params, callback, seconds, resultFormat) {
-            var me = this,
-                param = me._processParams(params),
-                format = me._processFormat(resultFormat);
-            var buildCacheJobsService = new _BuildCacheJobsService2.default(me.url, {
-                eventListeners: {
-                    scope: me,
-                    processCompleted: callback,
-                    processFailed: callback,
-                    processRunning: function processRunning(job) {
-                        me.buildCacheJobs[job.id] = job.state;
-                    }
-                },
-                format: format
-            });
-            buildCacheJobsService.addBuildCacheJob(param, seconds);
-            return me;
-        }
-
-        /**
-         * @function SuperMap.REST.ProcessingService.prototype.getBuildCacheJobState
-         * @description 获取生成地图缓存的状态。
-         * @param id - {string}生成地图缓存的id。
-         */
-
-    }, {
-        key: 'getBuildCacheJobState',
-        value: function getBuildCacheJobState(id) {
-            return this.buildCacheJobs[id];
         }
 
         /**
@@ -2833,7 +2730,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         key: 'addQueryJob',
         value: function addQueryJob(params, callback, seconds, resultFormat) {
             var me = this,
-                param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var singleObjectQueryJobsService = new _SingleObjectQueryJobsService2.default(me.url, {
                 eventListeners: {
@@ -2846,7 +2742,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 },
                 format: format
             });
-            singleObjectQueryJobsService.addQueryJob(param, seconds);
+            singleObjectQueryJobsService.addQueryJob(params, seconds);
             return me;
         }
 
@@ -2864,7 +2760,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
 
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobs
-         * @description 获取范围汇总分析的列表。
+         * @description 获取区域汇总分析的列表。
          * @param callback - {function} 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          * @return {SuperMap.REST.ProcessingService}
@@ -2890,8 +2786,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
 
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJob
-         * @description 获取某一个范围汇总分析。
-         * @param id - {string}范围汇总分析的id。
+         * @description 获取某一个区域汇总分析。
+         * @param id - {string}区域汇总分析的id。
          * @param callback - {function} 请求结果的回调函数。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
          * @return {SuperMap.REST.ProcessingService}
@@ -2917,8 +2813,8 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
 
         /**
          * @function SuperMap.REST.ProcessingService.prototype.addSummaryRegionJob
-         * @description 新建一个范围汇总分析。
-         * @param params -{SuperMap.SummaryRegionJobParameter} 创建一个范围汇总分析的请求参数。
+         * @description 新建一个区域汇总分析。
+         * @param params -{SuperMap.SummaryRegionJobParameter} 创建一个区域汇总分析的请求参数。
          * @param callback - {function} 请求结果的回调函数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          * @param resultFormat - {SuperMap.DataFormat} 返回的结果类型（默认为GeoJSON）。
@@ -2929,7 +2825,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         key: 'addSummaryRegionJob',
         value: function addSummaryRegionJob(params, callback, seconds, resultFormat) {
             var me = this,
-                param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var summaryRegionJobsService = new _SummaryRegionJobsService2.default(me.url, {
                 eventListeners: {
@@ -2942,14 +2837,14 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 },
                 format: format
             });
-            summaryRegionJobsService.addSummaryRegionJob(param, seconds);
+            summaryRegionJobsService.addSummaryRegionJob(params, seconds);
             return me;
         }
 
         /**
          * @function SuperMap.REST.ProcessingService.prototype.getSummaryRegionJobState
-         * @description 获取范围汇总分析的状态。
-         * @param id - {string}范围汇总分析的id。
+         * @description 获取区域汇总分析的状态。
+         * @param id - {string}区域汇总分析的id。
          */
 
     }, {
@@ -3025,7 +2920,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         key: 'addVectorClipJob',
         value: function addVectorClipJob(params, callback, seconds, resultFormat) {
             var me = this,
-                param = me._processParams(params),
                 format = me._processFormat(resultFormat);
             var vectorClipJobsService = new _VectorClipJobsService2.default(me.url, {
                 serverType: me.serverType,
@@ -3039,7 +2933,7 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
                 },
                 format: format
             });
-            vectorClipJobsService.addVectorClipJob(param, seconds);
+            vectorClipJobsService.addVectorClipJob(params, seconds);
             return me;
         }
 
@@ -3058,20 +2952,6 @@ var ProcessingService = exports.ProcessingService = function (_CommonServiceBase
         key: '_processFormat',
         value: function _processFormat(resultFormat) {
             return resultFormat ? resultFormat : _REST.DataFormat.GEOJSON;
-        }
-    }, {
-        key: '_processParams',
-        value: function _processParams(params) {
-            if (!params) {
-                return {};
-            }
-            if (params.query) {
-                params.query = params.query.toString();
-            }
-            if (params.bounds) {
-                params.bounds = params.bounds.toString();
-            }
-            return params;
         }
     }]);
 
@@ -3665,7 +3545,7 @@ var _SuperMap = __webpack_require__(3);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _mapv = __webpack_require__(32);
+var _mapv = __webpack_require__(30);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4094,11 +3974,11 @@ var _CommonServiceBase3 = _interopRequireDefault(_CommonServiceBase2);
 
 var _FetchRequest = __webpack_require__(5);
 
-var _GeoCodingParameter = __webpack_require__(15);
+var _GeoCodingParameter = __webpack_require__(13);
 
 var _GeoCodingParameter2 = _interopRequireDefault(_GeoCodingParameter);
 
-var _GeoDecodingParameter = __webpack_require__(16);
+var _GeoDecodingParameter = __webpack_require__(14);
 
 var _GeoDecodingParameter2 = _interopRequireDefault(_GeoDecodingParameter);
 
@@ -4240,283 +4120,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @class SuperMap.BuildCacheJobParameter
- * @classdesc 地图缓存参数类
- * @param options - {Object} 可选参数。如：<br>
- *         datasetName - {string} 数据集名称。<br>
- *         cacheName - {string} 缓存名称。<br>
- *         cacheType - {string} 存储类型。<br>
- *         serverAdresses - {string} MongoDB地址。<br>
- *         database -- {string} 数据库。<br>
- *         version -{string} 版本。<br>
- *         bounds -{SuperMap.Bounds} 缓存范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent。<br>
- *         imageType -{number}缓存类型.<br>
- *         level -{number}缓存比例尺级别。
- */
-var BuildCacheJobParameter = function () {
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.imageType -{number}
-     * @description 缓存类型。
-     */
-
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.version -{string}
-     * @description 版本。
-     */
-
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.serverAdresses -{string}
-     * @description MongoDB地址。
-     */
-
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.cacheName -{string}
-     * @description 缓存名称。
-     */
-    function BuildCacheJobParameter(options) {
-        _classCallCheck(this, BuildCacheJobParameter);
-
-        this.datasetName = "";
-        this.cacheName = "";
-        this.cacheType = "";
-        this.serverAdresses = "";
-        this.database = "";
-        this.version = "";
-        this.bounds = "";
-        this.imageType = 'Heatmap';
-        this.level = null;
-
-        if (!options) {
-            return;
-        }
-        _SuperMap2.default.Util.extend(this, options);
-    }
-
-    /**
-     * @function SuperMap.BuildCacheJobParameter.prototype.destroy
-     * @description 释放资源，将引用资源的属性置空。
-     */
-
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.level -{number}
-     * @description 缓存比例尺级别。
-     */
-
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.bounds
-     * @description 缓存范围。Bounds类型可以是SuperMap.Bounds|L.Bounds|ol.extent
-     */
-
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.database -{string}
-     * @description 数据库。
-     */
-
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.cacheType -{string}
-     * @description 存储类型。
-     */
-
-    /**
-     * @member SuperMap.BuildCacheJobParameter.prototype.datasetName -{string}
-     * @description 数据集名称。
-     */
-
-
-    _createClass(BuildCacheJobParameter, [{
-        key: "destroy",
-        value: function destroy() {
-            this.datasetName = null;
-            this.cacheName = null;
-            this.cacheType = null;
-            this.serverAdresses = null;
-            this.database = null;
-            this.version = null;
-            this.bounds = null;
-            this.imageType = null;
-            this.level = null;
-        }
-
-        /**
-         * @function SuperMap.BuildCacheJobParameter.toObject
-         * @param buildCacheJobParameter -{Object} 地图缓存参数。
-         * @param tempObj - {Object} 目标对象
-         * @description 生成地图缓存对象
-         */
-
-    }], [{
-        key: "toObject",
-        value: function toObject(buildCacheJobParameter, tempObj) {
-            for (var name in buildCacheJobParameter) {
-                if (name === "datasetName") {
-                    tempObj['input'] = tempObj['input'] || {};
-                    tempObj['input'][name] = buildCacheJobParameter[name];
-                    continue;
-                }
-                if (_SuperMap2.default.Util.indexOf(["cacheName", "cacheType", "serverAdresses", "database", "version"], name) > -1) {
-                    tempObj['output'] = tempObj['output'] || {};
-                    tempObj['output'][name] = buildCacheJobParameter[name];
-                    continue;
-                }
-                tempObj['drawing'] = tempObj['drawing'] || {};
-                tempObj['drawing'][name] = buildCacheJobParameter[name];
-            }
-        }
-    }]);
-
-    return BuildCacheJobParameter;
-}();
-
-exports.default = BuildCacheJobParameter;
-
-
-_SuperMap2.default.BuildCacheJobParameter = BuildCacheJobParameter;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-var _ProcessingServiceBase = __webpack_require__(2);
-
-var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
-
-var _BuildCacheJobParameter = __webpack_require__(13);
-
-var _BuildCacheJobParameter2 = _interopRequireDefault(_BuildCacheJobParameter);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @class SuperMap.BuildCacheJobsService
- * @classdesc 创建大数据缓存服务类
- * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 大数据缓存服务地址。
- * @param options - {Object} 交互服务时所需可选参数。如：<br>
- *        events - {SuperMap.Events} 处理所有事件的对象。<br>
- *        eventListeners - {Object} 听器对象。<br>
- *        serverType - {SuperMap.ServerType} 服务器类型，iServer|iPortal|Online。<br>
- *        index - {number}服务访问地址在数组中的位置。<br>
- *        length - {number}服务访问地址数组长度。
- */
-var BuildCacheJobsService = function (_ProcessingServiceBas) {
-    _inherits(BuildCacheJobsService, _ProcessingServiceBas);
-
-    function BuildCacheJobsService(url, options) {
-        _classCallCheck(this, BuildCacheJobsService);
-
-        var _this = _possibleConstructorReturn(this, (BuildCacheJobsService.__proto__ || Object.getPrototypeOf(BuildCacheJobsService)).call(this, url, options));
-
-        _this.url += "/mapping/buildCache";
-        return _this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-
-
-    _createClass(BuildCacheJobsService, [{
-        key: 'destroy',
-        value: function destroy() {
-            _get(BuildCacheJobsService.prototype.__proto__ || Object.getPrototypeOf(BuildCacheJobsService.prototype), 'destory', this).call(this);
-        }
-
-        /**
-         * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJobs
-         * @description 获取创建的大数据缓存
-         */
-
-    }, {
-        key: 'getBuildCacheJobs',
-        value: function getBuildCacheJobs() {
-            return _get(BuildCacheJobsService.prototype.__proto__ || Object.getPrototypeOf(BuildCacheJobsService.prototype), 'getJobs', this).call(this, this.url);
-        }
-
-        /**
-         * @function SuperMap.BuildCacheJobsService.prototype.getBuildCacheJob
-         * @description 获取指定 id的大数据缓存
-         * @param id - {string} 大数据缓存id
-         */
-
-    }, {
-        key: 'getBuildCacheJob',
-        value: function getBuildCacheJob(id) {
-            return _get(BuildCacheJobsService.prototype.__proto__ || Object.getPrototypeOf(BuildCacheJobsService.prototype), 'getJobs', this).call(this, this.url + '/' + id);
-        }
-
-        /**
-         * @function SuperMap.BuildCacheJobsService.prototype.addBuildCacheJob
-         * @description 新建大数据缓存服务
-         * @param params - {SuperMap.BuildCacheJobParameter} 地图缓存参数类
-         * @param seconds - {string} 开始创建后，获取创建成功结果的时间间隔
-         */
-
-    }, {
-        key: 'addBuildCacheJob',
-        value: function addBuildCacheJob(params, seconds) {
-            _get(BuildCacheJobsService.prototype.__proto__ || Object.getPrototypeOf(BuildCacheJobsService.prototype), 'addJob', this).call(this, this.url, params, _BuildCacheJobParameter2.default, seconds);
-        }
-    }]);
-
-    return BuildCacheJobsService;
-}(_ProcessingServiceBase2.default);
-
-exports.default = BuildCacheJobsService;
-
-
-_SuperMap2.default.BuildCacheJobsService = BuildCacheJobsService;
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _SuperMap = __webpack_require__(0);
-
-var _SuperMap2 = _interopRequireDefault(_SuperMap);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
  * @class SuperMap.GeoCodingParameter
  * @classdesc 地理正向匹配参数类。
  * @param options - {Object} 参数。
@@ -4607,7 +4210,7 @@ exports.default = GeoCodingParameter;
 _SuperMap2.default.GeoCodingParameter = GeoCodingParameter;
 
 /***/ }),
-/* 16 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4740,7 +4343,7 @@ exports.default = GeoDecodingParameter;
 _SuperMap2.default.GeoDecodingParameter = GeoDecodingParameter;
 
 /***/ }),
-/* 17 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4874,6 +4477,7 @@ var KernelDensityJobParameter = function () {
             this.radiusUnit = null;
             this.areaUnit = null;
         }
+
         /**
          * @function SuperMap.KernelDensityJobParameter.toObject
          * @param kernelDensityJobParameter -{Object} 密度分析任务参数。
@@ -4891,7 +4495,11 @@ var KernelDensityJobParameter = function () {
                     continue;
                 }
                 tempObj['analyst'] = tempObj['analyst'] || {};
-                tempObj['analyst'][name] = kernelDensityJobParameter[name];
+                if (name === 'query') {
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name].toBBOX();
+                } else {
+                    tempObj['analyst'][name] = kernelDensityJobParameter[name];
+                }
             }
         }
     }]);
@@ -4905,7 +4513,7 @@ exports.default = KernelDensityJobParameter;
 _SuperMap2.default.KernelDensityJobParameter = KernelDensityJobParameter;
 
 /***/ }),
-/* 18 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4927,7 +4535,7 @@ var _ProcessingServiceBase = __webpack_require__(2);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _KernelDensityJobParameter = __webpack_require__(17);
+var _KernelDensityJobParameter = __webpack_require__(15);
 
 var _KernelDensityJobParameter2 = _interopRequireDefault(_KernelDensityJobParameter);
 
@@ -5018,7 +4626,7 @@ exports.default = KernelDensityJobsService;
 _SuperMap2.default.KernelDensityJobsService = KernelDensityJobsService;
 
 /***/ }),
-/* 19 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5123,7 +4731,7 @@ exports.default = SingleObjectQueryJobsParameter;
 _SuperMap2.default.SingleObjectQueryJobsParameter = SingleObjectQueryJobsParameter;
 
 /***/ }),
-/* 20 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5145,7 +4753,7 @@ var _ProcessingServiceBase = __webpack_require__(2);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _SingleObjectQueryJobsParameter = __webpack_require__(19);
+var _SingleObjectQueryJobsParameter = __webpack_require__(17);
 
 var _SingleObjectQueryJobsParameter2 = _interopRequireDefault(_SingleObjectQueryJobsParameter);
 
@@ -5236,7 +4844,7 @@ exports.default = SingleObjectQueryJobsService;
 _SuperMap2.default.SingleObjectQueryJobsService = SingleObjectQueryJobsService;
 
 /***/ }),
-/* 21 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5353,6 +4961,7 @@ var SummaryMeshJobParameter = function () {
             this.regionDataset = null;
             this.type = null;
         }
+
         /**
          * @function SuperMap.SummaryMeshJobParameter.toObject
          * @param summaryMeshJobParameter - {Object} 点聚合分析任务参数。
@@ -5375,7 +4984,11 @@ var SummaryMeshJobParameter = function () {
                 }
                 if (summaryMeshJobParameter.type === 'SUMMARYMESH' && name !== 'regionDataset' || summaryMeshJobParameter.type === 'SUMMARYREGION' && !contains(['meshType', 'resolution', 'query'], name)) {
                     tempObj['analyst'] = tempObj['analyst'] || {};
-                    tempObj['analyst'][name] = summaryMeshJobParameter[name];
+                    if (name === 'query') {
+                        tempObj['analyst'][name] = summaryMeshJobParameter[name].toBBOX();
+                    } else {
+                        tempObj['analyst'][name] = summaryMeshJobParameter[name];
+                    }
                 }
             }
 
@@ -5400,7 +5013,7 @@ exports.default = SummaryMeshJobParameter;
 _SuperMap2.default.SummaryMeshJobParameter = SummaryMeshJobParameter;
 
 /***/ }),
-/* 22 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5422,7 +5035,7 @@ var _ProcessingServiceBase = __webpack_require__(2);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _SummaryMeshJobParameter = __webpack_require__(21);
+var _SummaryMeshJobParameter = __webpack_require__(19);
 
 var _SummaryMeshJobParameter2 = _interopRequireDefault(_SummaryMeshJobParameter);
 
@@ -5516,7 +5129,7 @@ exports.default = SummaryMeshJobsService;
 _SuperMap2.default.SummaryMeshJobsService = SummaryMeshJobsService;
 
 /***/ }),
-/* 23 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5540,7 +5153,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @class SuperMap.SummaryRegionJobParameter
- * @classdesc 范围汇总分析任务参数类
+ * @classdesc 区域汇总分析任务参数类
  * @param options - {Object} 可选参数。如：<br>
  *         datasetName -{string} 数据集名。 <br>
  *         sumShape -{boolean} 是否统计长度或面积。 <br>
@@ -5692,7 +5305,7 @@ var SummaryRegionJobParameter = function () {
          * @function SuperMap.SummaryRegionJobParameter.toObject
          * @param summaryRegionJobParameter -{Object} 矢量裁剪分析任务参数。
          * @param tempObj - {Object} 目标对象。
-         * @description 生成范围汇总分析服务对象
+         * @description 生成区域汇总分析服务对象
          */
 
     }], [{
@@ -5710,7 +5323,11 @@ var SummaryRegionJobParameter = function () {
                 }
                 if (summaryRegionJobParameter.type === "SUMMARYREGION" || summaryRegionJobParameter.type === "SUMMARYMESH" && name !== "regionDataset") {
                     tempObj['analyst'] = tempObj['analyst'] || {};
-                    tempObj['analyst'][name] = summaryRegionJobParameter[name];
+                    if (name === 'query') {
+                        tempObj['analyst'][name] = summaryRegionJobParameter[name].toBBOX();
+                    } else {
+                        tempObj['analyst'][name] = summaryRegionJobParameter[name];
+                    }
                 }
             }
         }
@@ -5725,7 +5342,7 @@ exports.default = SummaryRegionJobParameter;
 _SuperMap2.default.SummaryRegionJobParameter = SummaryRegionJobParameter;
 
 /***/ }),
-/* 24 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5747,7 +5364,7 @@ var _ProcessingServiceBase = __webpack_require__(2);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _SummaryRegionJobParameter = __webpack_require__(23);
+var _SummaryRegionJobParameter = __webpack_require__(21);
 
 var _SummaryRegionJobParameter2 = _interopRequireDefault(_SummaryRegionJobParameter);
 
@@ -5761,10 +5378,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 /**
  * @class SuperMap.SummaryRegionJobsService
- * @classdesc 范围汇总分析服务类
+ * @classdesc 区域汇总分析服务类
  * @extends SuperMap.ProcessingServiceBase
- * @param url -{string} 范围汇总分析服务地址。
- * @param options - {Object} 范围汇总分析服务可选参数。
+ * @param url -{string} 区域汇总分析服务地址。
+ * @param options - {Object} 区域汇总分析服务可选参数。
  */
 var SummaryRegionJobsService = function (_ProcessingServiceBas) {
     _inherits(SummaryRegionJobsService, _ProcessingServiceBas);
@@ -5793,7 +5410,7 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJobs
-         * @description 获取范围汇总分析任务集合。
+         * @description 获取区域汇总分析任务集合。
          * @return {*}
          */
 
@@ -5805,8 +5422,8 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.SummaryRegionJobsService.prototype.getSummaryRegionJob
-         * @description 获取指定id的范围汇总分析任务。
-         * @param id -{string} 要获取范围汇总分析任务的id
+         * @description 获取指定id的区域汇总分析任务。
+         * @param id -{string} 要获取区域汇总分析任务的id
          */
 
     }, {
@@ -5817,8 +5434,8 @@ var SummaryRegionJobsService = function (_ProcessingServiceBas) {
 
         /**
          * @function SuperMap.SummaryRegionJobsService.prototype.addSummaryRegionJob
-         * @description 新建范围汇总任务。
-         * @param params - {SuperMap.SummaryRegionJobParameter} 创建一个范围汇总任务的请求参数。
+         * @description 新建区域汇总任务。
+         * @param params - {SuperMap.SummaryRegionJobParameter} 创建一个区域汇总任务的请求参数。
          * @param seconds - {number}开始创建后，获取创建成功结果的时间间隔。
          */
 
@@ -5838,7 +5455,7 @@ exports.default = SummaryRegionJobsService;
 _SuperMap2.default.SummaryRegionJobsService = SummaryRegionJobsService;
 
 /***/ }),
-/* 25 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5916,7 +5533,7 @@ var VectorClipJobsParameter = function () {
         }
         /**
          * @function SuperMap.VectorClipJobsParameter.toObject
-         * @param vectorClipJobsParameter -{Object} 范围汇总分析服务参数
+         * @param vectorClipJobsParameter -{Object} 区域汇总分析服务参数
          * @param tempObj - {Object} 目标对象。
          * @description 矢量裁剪分析任务对象
          */
@@ -5945,7 +5562,7 @@ exports.default = VectorClipJobsParameter;
 _SuperMap2.default.VectorClipJobsParameter = VectorClipJobsParameter;
 
 /***/ }),
-/* 26 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5967,7 +5584,7 @@ var _ProcessingServiceBase = __webpack_require__(2);
 
 var _ProcessingServiceBase2 = _interopRequireDefault(_ProcessingServiceBase);
 
-var _VectorClipJobsParameter = __webpack_require__(25);
+var _VectorClipJobsParameter = __webpack_require__(23);
 
 var _VectorClipJobsParameter2 = _interopRequireDefault(_VectorClipJobsParameter);
 
@@ -6058,7 +5675,7 @@ exports.default = VectorClipJobsService;
 _SuperMap2.default.VectorClipJobsService = VectorClipJobsService;
 
 /***/ }),
-/* 27 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6130,7 +5747,7 @@ exports.default = KeyServiceParameter;
 _SuperMap2.default.KeyServiceParameter = KeyServiceParameter;
 
 /***/ }),
-/* 28 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6140,15 +5757,15 @@ var _SuperMap = __webpack_require__(0);
 
 var _SuperMap2 = _interopRequireDefault(_SuperMap);
 
-var _ServerInfo = __webpack_require__(29);
+var _ServerInfo = __webpack_require__(27);
 
 var _ServerInfo2 = _interopRequireDefault(_ServerInfo);
 
-var _TokenServiceParameter = __webpack_require__(30);
+var _TokenServiceParameter = __webpack_require__(28);
 
 var _TokenServiceParameter2 = _interopRequireDefault(_TokenServiceParameter);
 
-var _KeyServiceParameter = __webpack_require__(27);
+var _KeyServiceParameter = __webpack_require__(25);
 
 var _KeyServiceParameter2 = _interopRequireDefault(_KeyServiceParameter);
 
@@ -6364,7 +5981,7 @@ _SuperMap2.default.SecurityManager.SSO = "https://sso.supermap.com";
 _SuperMap2.default.SecurityManager.ONLINE = "http://www.supermapol.com";
 
 /***/ }),
-/* 29 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6457,7 +6074,7 @@ exports.default = ServerInfo;
 _SuperMap2.default.ServerInfo = ServerInfo;
 
 /***/ }),
-/* 30 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6561,19 +6178,19 @@ exports.default = TokenServiceParameter;
 _SuperMap2.default.TokenServiceParameter = TokenServiceParameter;
 
 /***/ }),
-/* 31 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = SuperMap;
 
 /***/ }),
-/* 32 */
+/* 30 */
 /***/ (function(module, exports) {
 
 module.exports = function(){try{return mapv}catch(e){return {}}}();
 
 /***/ }),
-/* 33 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(8);

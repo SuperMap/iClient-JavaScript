@@ -136,7 +136,12 @@
         $('#query').val().split(',').map(function (el) {
             query.push(parseFloat(el));
         });
-        return query;
+        return new SuperMap.Bounds(
+                query[0],
+                query[1],
+                query[2],
+                query[3]
+        );
     }
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);

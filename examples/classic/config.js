@@ -10,7 +10,7 @@ var exampleConfig = {
         name: "iServer",
         content: {
             "processingService": {
-                name: "大数据分析",
+                name: "分布式空间分析",
                 content: [{
                     name: "密度分析",
                     thumbnail: "kernelDensityJobService.png",
@@ -20,16 +20,12 @@ var exampleConfig = {
                     thumbnail: "SummaryMeshJobService.png",
                     fileName: "SummaryMeshJobService"
                 }, {
-                    name: "生成地图缓存",
-                    thumbnail: "buildCacheService.png",
-                    fileName: "buildCacheService"
-                }, {
                     name: "单对象查询分析",
                     thumbnail: "lg_singleObjectQueryJob.png",
                     fileName: "singleObjectQueryJobService"
 
                 }, {
-                    name: "范围汇总分析",
+                    name: "区域汇总分析",
                     thumbnail: "SummaryRegionJobService.png",
                     fileName: "SummaryRegionJobService"
                 }, {

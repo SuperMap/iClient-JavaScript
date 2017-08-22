@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>范围汇总分析</title>
+    <title>区域汇总分析</title>
     <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .control {
@@ -24,7 +24,7 @@
                 <h4 class="modal-title">提示</h4>
             </div>
             <div class="modal-body">
-                <p>正在创建范围汇总分析...</p>
+                <p>正在创建区域汇总分析...</p>
             </div>
         </div>
     </div>
@@ -33,7 +33,7 @@
 <div id="control" class="control" style='width:420px'>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">范围汇总分析</h3>
+            <h3 class="panel-title">区域汇总分析</h3>
         </div>
         <div class="panel-body">
             <div class="input-group">
@@ -181,7 +181,12 @@
         $('#query').val().split(',').map(function (el) {
             query.push(parseFloat(el));
         });
-        return query;
+        return new SuperMap.Bounds(
+                query[0],
+                query[1],
+                query[2],
+                query[3]
+        );
     }
     $('#btn').on('click', function () {
         $('#btn').prop('disabled', true);

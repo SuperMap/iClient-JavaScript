@@ -165,7 +165,7 @@ var exampleConfig = {
                     name: "表面分析",
                     thumbnail: "ol_surfaceAnalystService.png",
                     fileName: "04_surfaceAnalystService"
-                },{
+                }, {
                     name: "动态分析",
                     thumbnail: "ol_generateSpatialDataService.png",
                     fileName: "04_generateSpatialDataService"
@@ -181,7 +181,7 @@ var exampleConfig = {
                     name: "里程定线",
                     thumbnail: "ol_routeLocatorService_line.png",
                     fileName: "04_routeLocatorService_line"
-                },{
+                }, {
                     name: "点密度插值分析",
                     thumbnail: "ol_interpolationAnalystService-Density.png",
                     fileName: "04_interpolationAnalystService_Density"
@@ -256,7 +256,7 @@ var exampleConfig = {
                 }]
             },
             "processingService": {
-                name: "大数据分析",
+                name: "分布式空间分析",
                 content: [{
                     name: "密度分析",
                     thumbnail: "kernelDensityJobService.png",
@@ -266,15 +266,11 @@ var exampleConfig = {
                     thumbnail: "SummaryMeshJobService.png",
                     fileName: "SummaryMeshJobService"
                 }, {
-                    name: "生成地图缓存",
-                    thumbnail: "buildCacheService.png",
-                    fileName: "buildCacheService"
-                }, {
                     name: "单对象查询分析",
                     thumbnail: "ol_singleObjectQueryJob.png",
                     fileName: "singleObjectQueryJobService"
                 }, {
-                    name: "范围汇总分析",
+                    name: "区域汇总分析",
                     thumbnail: "SummaryRegionJobService.png",
                     fileName: "SummaryRegionJobService"
                 }, {
@@ -292,9 +288,9 @@ var exampleConfig = {
                 }]
             },
             "dataFlow": {
-                name: "实时大数据",
+                name: "实时数据",
                 content: [{
-                    name: "实时大数据",
+                    name: "实时数据",
                     thumbnail: "dataflow.png",
                     fileName: "dataFlowService"
                 }]
